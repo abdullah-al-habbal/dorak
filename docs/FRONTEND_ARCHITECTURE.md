@@ -37,7 +37,7 @@ frontend/dashboard/
 │           ├── hooks/            # TanStack Query hooks only
 │           ├── schemas/          # Feature-local Zod schemas only
 │           └── types/            # Feature domain contracts only
-├── providers/                    # Narrow client-only providers
+│   └── providers/                # Narrow client-only providers
 └── tests/
 ```
 
