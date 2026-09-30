@@ -44,6 +44,19 @@ middleware. Laravel remains the authorization authority for every API request.
 
 ## Task 2: Next.js Frontend Core Infrastructure (`frontend/dashboard/`)
 
+- [ ] Migrate dashboard source modules to the documented `src/shared/` and
+  `src/features/<feature>/` blueprint before adding domain screens; keep
+  `app/` route/layout composition-only.
+- [ ] Configure path aliases and ESLint import-boundary rules so a feature can
+  import only itself and `shared/`, while UI/routes cannot import feature API
+  callers directly.
+- [ ] Configure lint rules for no raw HTTP outside API modules, no empty
+  catches/floating promises, no route-level client directives by default, and
+  no raw/arbitrary color values in TSX.
+- [ ] Add a structural test/lint gate that rejects uncategorized feature
+  components and unexpected feature subdirectories.
+- [ ] Establish centralized semantic design tokens in `src/shared/theme/` and
+  Tailwind/CSS variables before creating visual components.
 - [ ] Add a server-safe dashboard session/claim verification utility using an
   Edge-compatible signing library and environment-held verification secret.
 - [ ] Add `middleware.ts` that reads the signed role claim without calling a UI
@@ -68,8 +81,9 @@ middleware. Laravel remains the authorization authority for every API request.
 - [ ] Configure `QueryClientProvider` with explicit stale time, retry rules, and
   query/mutation error handling.
 - [ ] Create `services/` modules that are the only place invoking the API client.
-- [ ] Create `hooks/` query and mutation hooks; components consume hooks, never
-  raw `fetch` or `axios`.
+- [ ] Create feature-local `api/` modules as the only dashboard endpoint
+  callers, and feature-local `hooks/` query/mutation hooks; components consume
+  hooks, never raw `fetch` or `axios`.
 - [ ] Add an `AuthProvider` or small auth store exposing claim-derived role,
   permissions, and authenticated actor state to interactive descendants.
 - [ ] Add login/logout flows that establish and clear the signed role claim.
@@ -87,6 +101,9 @@ middleware. Laravel remains the authorization authority for every API request.
 - [ ] Document API error normalization and the interceptor-to-toast flow.
 - [ ] Explicitly ban top-level page `'use client'` without need, useEffect-based
   routing authorization, component-level raw HTTP, and swallowed errors.
+- [ ] Codify the feature-module blueprint, file responsibility matrix,
+  dependency direction, component subcategories, semantic-token-only styling,
+  and mechanical enforcement gates.
 - [ ] Record validation commands: backend feature/full suite, `npx tsc --noEmit`,
   dashboard build, and dashboard frontend tests.
 
