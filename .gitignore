@@ -7,3 +7,6 @@
 /.claude/
 /.aiignore
 /*.bundle
+
+/frontend/dashboard/node_modules/
+/frontend/dashboard/.next/
