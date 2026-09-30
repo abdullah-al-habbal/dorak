@@ -1,0 +1,9 @@
+# Nested repositories retain independent histories.
+/backend/
+/frontend/mobile/
+
+# Local tooling and migration backups are not root coordination artifacts.
+/.agents/
+/.claude/
+/.aiignore
+/*.bundle
