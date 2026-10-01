@@ -3,13 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { bookingStatusSchema, type BookingStatusInput } from '@/features/bookings/schemas/booking-status.schema';
-import type { Booking } from '@/features/bookings/types/booking';
-
-interface BookingStatusDialogProps {
-  booking: Booking;
-  isPending: boolean;
-  onSubmit: (input: BookingStatusInput) => void;
-}
+import type { BookingStatusDialogProps } from '@/features/bookings/types/components';
 
 export function BookingStatusDialog({ booking, isPending, onSubmit }: Readonly<BookingStatusDialogProps>) {
   const form = useForm<BookingStatusInput>({ defaultValues: { status: booking.status === 'pending' ? 'confirmed' : booking.status }, resolver: zodResolver(bookingStatusSchema) });

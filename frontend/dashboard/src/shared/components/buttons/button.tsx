@@ -1,11 +1,5 @@
-import type { ButtonHTMLAttributes } from 'react';
 import { cn } from '@/shared/utils/cn';
-
-type ButtonVariant = 'default' | 'ghost' | 'outline';
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-}
+import type { ButtonProps, ButtonVariant } from '@/shared/types/components';
 
 const variants: Record<ButtonVariant, string> = {
   default: 'bg-primary text-background hover:opacity-90',

@@ -2,12 +2,9 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
+import type { ServerListParams } from '@/shared/types/query';
 
-export interface ServerListParams {
-  page: number;
-  per_page: number;
-  search?: string;
-}
+export type { ServerListParams } from '@/shared/types/query';
 
 function positiveNumber(value: string | null, fallback: number): number {
   const parsed = Number(value);

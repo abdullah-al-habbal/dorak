@@ -1,12 +1,7 @@
 'use client';
 
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import type { Booking } from '@/features/bookings/types/booking';
-
-interface BookingsTableProps {
-  bookings: Booking[];
-  onSelect: (booking: Booking) => void;
-}
+import type { BookingsTableProps } from '@/features/bookings/types/components';
 
 export function BookingsTable({ bookings, onSelect }: Readonly<BookingsTableProps>) {
   const table = useReactTable({

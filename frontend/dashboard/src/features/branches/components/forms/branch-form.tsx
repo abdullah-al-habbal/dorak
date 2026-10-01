@@ -4,13 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/shared/components/forms/input';
 import { createBranchSchema, type CreateBranchInput, type UpdateBranchInput, updateBranchSchema } from '@/features/branches/schemas/branch.schema';
-
-interface BranchFormProps {
-  defaultValues?: UpdateBranchInput;
-  formId: string;
-  onSubmit: (input: CreateBranchInput | UpdateBranchInput) => void;
-  requiresPassword: boolean;
-}
+import type { BranchFormProps } from '@/features/branches/types/components';
 
 export function BranchForm({ defaultValues, formId, onSubmit, requiresPassword }: Readonly<BranchFormProps>) {
   const form = useForm<CreateBranchInput | UpdateBranchInput>({ defaultValues, resolver: zodResolver(requiresPassword ? createBranchSchema : updateBranchSchema) });

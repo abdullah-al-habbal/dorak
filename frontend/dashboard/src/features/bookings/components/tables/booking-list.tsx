@@ -9,7 +9,8 @@ import { useStylists } from '@/features/stylists/hooks/use-stylists';
 import { Input } from '@/shared/components/forms/input';
 import { GenericTableListPage } from '@/shared/components/templates/generic-table-list-page';
 import { useServerQueryParams } from '@/shared/hooks/use-server-query-params';
-import { APP_ROUTES, type DashboardArea } from '@/shared/routes/dashboard-routes';
+import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
+import type { BookingListProps } from '@/features/bookings/types/components';
 
 const statusFilters = [
   { label: 'All', value: '' },
@@ -19,7 +20,7 @@ const statusFilters = [
   { label: 'Canceled', value: 'canceled' },
 ] as const;
 
-export function BookingList({ area }: Readonly<{ area: DashboardArea }>) {
+export function BookingList({ area }: Readonly<BookingListProps>) {
   const params = useServerQueryParams();
   const searchParams = useSearchParams();
   const filters = {

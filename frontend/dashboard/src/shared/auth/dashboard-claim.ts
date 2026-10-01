@@ -1,15 +1,9 @@
 import { jwtVerify } from 'jose';
+import type { DashboardClaim } from '@/shared/types/auth';
+
+export type { DashboardClaim, DashboardRole } from '@/shared/types/auth';
 
 export const dashboardClaimCookieName = 'dorak_dashboard_claim';
-
-export type DashboardRole = 'platform_admin' | 'branch_manager';
-
-export interface DashboardClaim {
-  subject: string;
-  actorType: 'admin' | 'branch';
-  role: DashboardRole;
-  branchId?: string;
-}
 
 export async function verifyDashboardClaim(token: string | undefined): Promise<DashboardClaim | null> {
   const secret = process.env.DASHBOARD_SESSION_SECRET;

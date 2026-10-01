@@ -1,14 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import type { DashboardRole } from '@/shared/auth/dashboard-claim';
 import { Navbar } from '@/shared/components/layout/navbar';
 import { Sidebar } from '@/shared/components/layout/sidebar';
-
-interface DashboardShellProps {
-  children: React.ReactNode;
-  role: DashboardRole;
-}
+import type { DashboardShellProps } from '@/shared/types/components';
 
 export function DashboardShell({ children, role }: Readonly<DashboardShellProps>) {
   const [menuOpen, setMenuOpen] = useState(false);

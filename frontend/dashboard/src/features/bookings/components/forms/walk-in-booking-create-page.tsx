@@ -11,11 +11,12 @@ import type { WalkInBookingInput } from '@/features/bookings/types/booking';
 import { useBranches } from '@/features/branches/hooks/use-branches';
 import { useChairs } from '@/features/chairs/hooks/use-chairs';
 import { useServices } from '@/features/services/hooks/use-services';
-import { APP_ROUTES, type DashboardArea } from '@/shared/routes/dashboard-routes';
+import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
+import type { WalkInBookingCreatePageProps } from '@/features/bookings/types/components';
 
 const formId = 'walk-in-booking';
 
-export function WalkInBookingCreatePage({ area }: Readonly<{ area: DashboardArea }>) {
+export function WalkInBookingCreatePage({ area }: Readonly<WalkInBookingCreatePageProps>) {
   const router = useRouter();
   const form = useForm<WalkInBookingInput>({ defaultValues: { customer_email: '', customer_name: '', customer_phone: '', service_ids: [] } });
   const branchId = form.watch('branch_id');
