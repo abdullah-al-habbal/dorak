@@ -1,4 +1,4 @@
-export { STYLIST_QUERY_KEYS, invalidateStylistViews } from './stylist-query-keys';
+export { STYLIST_QUERY_KEYS } from './stylist-query-keys';
 export { useStylist } from './use-stylist';
 export { useStylists } from './use-stylists';
 export { useCreateStylist } from './use-create-stylist';

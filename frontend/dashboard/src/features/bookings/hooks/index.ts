@@ -1,4 +1,4 @@
-export { BOOKINGS_QUERY_KEYS, invalidateBookingViews } from './booking-query-keys';
+export { BOOKINGS_QUERY_KEYS } from './booking-query-keys';
 export { useBooking } from './use-booking';
 export { useBookings } from './use-bookings';
 export { useCancelBooking } from './use-cancel-booking';

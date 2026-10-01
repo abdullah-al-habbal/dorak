@@ -1,4 +1,4 @@
-export { BRANCH_QUERY_KEYS, invalidateBranchViews } from './branch-query-keys';
+export { BRANCH_QUERY_KEYS } from './branch-query-keys';
 export { useBranch } from './use-branch';
 export { useBranches } from './use-branches';
 export { useCreateBranch } from './use-create-branch';

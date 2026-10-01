@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createService } from '@/features/services/api';
-import { invalidateServiceViews } from '@/features/services/hooks/service-query-keys';
+import { SERVICE_QUERY_KEYS } from '@/features/services/hooks/service-query-keys';
 import type { ServiceInput } from '@/features/services/schemas/service.schema';
+import { useInvalidatingMutation } from '@/shared/hooks';
 
-export function useCreateService() { const client = useQueryClient(); return useMutation({ mutationFn: (input: ServiceInput) => createService(input), onSuccess: () => invalidateServiceViews(client) }); }
+export function useCreateService() { return useInvalidatingMutation({ mutationFn: (input: ServiceInput) => createService(input) }, [SERVICE_QUERY_KEYS.all]); }

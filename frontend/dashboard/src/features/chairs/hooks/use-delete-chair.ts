@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteChair } from '@/features/chairs/api';
-import { chairConflictMessage, invalidateChairViews } from '@/features/chairs/hooks/chair-query-keys';
+import { chairConflictMessage, CHAIR_QUERY_KEYS } from '@/features/chairs/hooks/chair-query-keys';
+import { useInvalidatingMutation } from '@/shared/hooks';
 
-export function useDeleteChair() { const client = useQueryClient(); return useMutation({ mutationFn: deleteChair, onError: chairConflictMessage, onSuccess: () => invalidateChairViews(client) }); }
+export function useDeleteChair() { return useInvalidatingMutation({ mutationFn: deleteChair, onError: chairConflictMessage }, [CHAIR_QUERY_KEYS.all]); }

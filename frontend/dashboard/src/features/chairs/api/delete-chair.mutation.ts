@@ -1,4 +1,4 @@
-import { dashboardApi } from '@/shared/api/client';
+import { mutateEntity } from '@/shared/api';
 import { DASHBOARD_API } from '@/shared/routes/dashboard-routes';
 
-export const deleteChair = (id: string): Promise<void> => dashboardApi(`${DASHBOARD_API.chairs}/${id}`, { method: 'DELETE' });
+export const deleteChair = (id: string): Promise<void> => mutateEntity<never, void>(`${DASHBOARD_API.chairs}/${id}`, 'DELETE');

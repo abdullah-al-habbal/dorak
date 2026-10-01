@@ -1,4 +1,4 @@
-export { SERVICE_QUERY_KEYS, invalidateServiceViews } from './service-query-keys';
+export { SERVICE_QUERY_KEYS } from './service-query-keys';
 export { useService } from './use-service';
 export { useServices } from './use-services';
 export { useCreateService } from './use-create-service';

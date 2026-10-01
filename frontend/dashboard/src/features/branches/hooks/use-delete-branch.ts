@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteBranch } from '@/features/branches/api';
-import { invalidateBranchViews } from '@/features/branches/hooks/branch-query-keys';
+import { BRANCH_QUERY_KEYS } from '@/features/branches/hooks/branch-query-keys';
+import { useInvalidatingMutation } from '@/shared/hooks';
 
-export function useDeleteBranch() { const client = useQueryClient(); return useMutation({ mutationFn: deleteBranch, onSuccess: () => invalidateBranchViews(client) }); }
+export function useDeleteBranch() { return useInvalidatingMutation({ mutationFn: deleteBranch }, [BRANCH_QUERY_KEYS.all]); }

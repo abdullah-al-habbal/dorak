@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteStylist } from '@/features/stylists/api';
-import { invalidateStylistViews } from '@/features/stylists/hooks/stylist-query-keys';
+import { STYLIST_QUERY_KEYS } from '@/features/stylists/hooks/stylist-query-keys';
+import { useInvalidatingMutation } from '@/shared/hooks';
 
-export function useDeleteStylist() { const client = useQueryClient(); return useMutation({ mutationFn: deleteStylist, onSuccess: () => invalidateStylistViews(client) }); }
+export function useDeleteStylist() { return useInvalidatingMutation({ mutationFn: deleteStylist }, [STYLIST_QUERY_KEYS.all]); }

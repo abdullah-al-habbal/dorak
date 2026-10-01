@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { cancelBooking } from '@/features/bookings/api';
-import { invalidateBookingViews } from '@/features/bookings/hooks/booking-query-keys';
+import { BOOKINGS_QUERY_KEYS } from '@/features/bookings/hooks/booking-query-keys';
+import { useInvalidatingMutation } from '@/shared/hooks';
 
-export function useCancelBooking() { const queryClient = useQueryClient(); return useMutation({ mutationFn: cancelBooking, onSuccess: () => invalidateBookingViews(queryClient) }); }
+export function useCancelBooking() { return useInvalidatingMutation({ mutationFn: cancelBooking }, [BOOKINGS_QUERY_KEYS.all, BOOKINGS_QUERY_KEYS.overview, BOOKINGS_QUERY_KEYS.chairs]); }

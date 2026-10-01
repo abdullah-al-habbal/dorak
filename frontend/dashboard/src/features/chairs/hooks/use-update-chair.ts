@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateChair } from '@/features/chairs/api';
-import { chairConflictMessage, invalidateChairViews } from '@/features/chairs/hooks/chair-query-keys';
+import { chairConflictMessage, CHAIR_QUERY_KEYS } from '@/features/chairs/hooks/chair-query-keys';
 import type { ChairInput } from '@/features/chairs/schemas/chair.schema';
+import { useInvalidatingMutation } from '@/shared/hooks';
 
-export function useUpdateChair() { const client = useQueryClient(); return useMutation({ mutationFn: ({ id, input }: { id: string; input: ChairInput }) => updateChair(id, input), onError: chairConflictMessage, onSuccess: () => invalidateChairViews(client) }); }
+export function useUpdateChair() { return useInvalidatingMutation({ mutationFn: ({ id, input }: { id: string; input: ChairInput }) => updateChair(id, input), onError: chairConflictMessage }, [CHAIR_QUERY_KEYS.all]); }
