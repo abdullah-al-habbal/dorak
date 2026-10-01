@@ -5,7 +5,7 @@ const sourceFiles = ['**/*.{ts,tsx}'];
 
 export default tseslint.config(
   {
-    ignores: ['.next/**', 'node_modules/**', 'scripts/**'],
+    ignores: ['.next/**', 'next-env.d.ts', 'node_modules/**', 'scripts/**'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

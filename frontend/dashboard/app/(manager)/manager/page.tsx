@@ -1,1 +1,3 @@
-export default function ManagerPage() { return <main><h1>Branch manager</h1><p>Services, floor plan, schedules, and daily revenue.</p></main>; }
+import { OverviewDashboard } from '@/features/overview/components/cards/overview-dashboard';
+
+export default function ManagerPage() { return <OverviewDashboard />; }

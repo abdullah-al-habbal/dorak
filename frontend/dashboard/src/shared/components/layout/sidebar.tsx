@@ -1,6 +1,6 @@
 'use client';
 
-import { Building2, CalendarDays, LayoutDashboard, Scissors, Users } from 'lucide-react';
+import { Building2, CalendarCheck, CalendarDays, LayoutDashboard, Scissors, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/shared/utils/cn';
@@ -22,6 +22,7 @@ interface DashboardMenuItem {
 const menuItems: DashboardMenuItem[] = [
   { icon: LayoutDashboard, label: 'Overview', path: '' },
   { icon: Building2, label: 'Branches', path: '/branches', platformOnly: true },
+  { icon: CalendarCheck, label: 'Bookings', path: '/bookings' },
   { icon: Scissors, label: 'Services', path: '/services' },
   { icon: CalendarDays, label: 'Chairs', path: '/chairs' },
   { icon: Users, label: 'Stylists', path: '/stylists' },

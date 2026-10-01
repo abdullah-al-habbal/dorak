@@ -1,3 +1,3 @@
-export default function AdminPage() {
-  return <main><h1>Platform overview</h1><p>Salon onboarding, subscriptions, commissions, and platform analytics.</p></main>;
-}
+import { OverviewDashboard } from '@/features/overview/components/cards/overview-dashboard';
+
+export default function AdminPage() { return <OverviewDashboard />; }

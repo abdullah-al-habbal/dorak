@@ -2,7 +2,7 @@ import { dashboardApi, dashboardApiEnvelope } from '@/shared/api/client';
 import type { DashboardPage } from '@/shared/types/pagination';
 import type { ServerListParams } from '@/shared/hooks/use-server-query-params';
 import type { BookingStatusInput } from '@/features/bookings/schemas/booking-status.schema';
-import type { Booking } from '@/features/bookings/types/booking';
+import type { Booking, WalkInBookingInput } from '@/features/bookings/types/booking';
 import { DASHBOARD_API } from '@/shared/routes/dashboard-routes';
 
 export async function listBookings(params: ServerListParams & { chair_id?: string; date_from?: string; date_to?: string; status?: string; stylist_id?: string }): Promise<DashboardPage<Booking>> {
@@ -22,5 +22,6 @@ export function updateBookingStatus(id: string, input: BookingStatusInput): Prom
 }
 
 export const getBooking = (id: string): Promise<Booking> => dashboardApi(`${DASHBOARD_API.bookings}/${id}`);
+export const createWalkInBooking = (input: WalkInBookingInput): Promise<Booking> => dashboardApi(DASHBOARD_API.walkInBookings, { body: JSON.stringify(input), headers: { 'Content-Type': 'application/json' }, method: 'POST' });
 export const cancelBooking = (id: string): Promise<Booking> => dashboardApi(`${DASHBOARD_API.bookings}/${id}/cancel`, { method: 'PATCH' });
 export const rescheduleBooking = (id: string, input: { ends_at: string; time_slot: string }): Promise<Booking> => dashboardApi(`${DASHBOARD_API.bookings}/${id}/reschedule`, { body: JSON.stringify(input), headers: { 'Content-Type': 'application/json' }, method: 'PATCH' });
