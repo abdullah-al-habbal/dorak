@@ -1,3 +1,9 @@
+import type { ServiceableType } from './serviceable-type';
+
+/**
+ * Domain record. Every property is camelCase; the snake_case API contract lives
+ * behind `ServiceResource` on the backend and is translated only by this module.
+ */
 export interface LocalizedServiceName {
   readonly ar: string;
   readonly en: string;
@@ -5,12 +11,12 @@ export interface LocalizedServiceName {
 
 export interface Service {
   readonly active: boolean;
-  readonly catalog_item_id: string | null;
-  readonly currency_id: string;
+  readonly catalogItemId: string | null;
+  readonly currencyId: string;
   readonly duration: number | null;
   readonly id: string;
   readonly name: LocalizedServiceName;
   readonly price: number;
-  readonly serviceable_id: string;
-  readonly serviceable_type: 'barber' | 'brand' | 'branch';
+  readonly serviceableId: string;
+  readonly serviceableType: ServiceableType;
 }

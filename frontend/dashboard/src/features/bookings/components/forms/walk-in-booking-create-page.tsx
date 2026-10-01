@@ -34,9 +34,8 @@ export function WalkInBookingCreatePage({ area }: Readonly<WalkInBookingCreatePa
   const branchServices =
     services.data?.items.filter(
       (service) =>
-        service.serviceable_id === branchId ||
-        (service.serviceable_type === 'brand' &&
-          service.serviceable_id === selectedBranch?.brand_id),
+        service.serviceableId === branchId ||
+        (service.serviceableType === 'brand' && service.serviceableId === selectedBranch?.brand_id),
     ) ?? [];
 
   const submit = (input: WalkInBookingInput) =>

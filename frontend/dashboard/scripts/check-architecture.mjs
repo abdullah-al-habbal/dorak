@@ -12,6 +12,10 @@ const approvedFeatureDirectories = new Set([
   'types',
 ]);
 const approvedComponentDirectories = new Set(['buttons', 'cards', 'dialogs', 'forms', 'tables']);
+const domainNamingPrefix = 'src/shared/entities/domain/';
+const domainNamingExemptions = new Set([`${domainNamingPrefix}service-wire.ts`]);
+const snakeCaseTypeMember = /^\s*(?:readonly\s+)?[a-z][A-Za-z0-9]*_[A-Za-z0-9_]*\s*[?:]/gm;
+const snakeCaseObjectKey = /^\s*'?[a-z][A-Za-z0-9]*_[A-Za-z0-9_]*'?\s*:/gm;
 const errors = [];
 
 async function walk(directory) {
@@ -111,6 +115,25 @@ function checkFile(file, source) {
   }
   if (isComponent && /from\s+['\"]@\/features\/[^'\"]+\/api\//.test(source)) {
     errors.push(`${path}: UI components must consume hooks, not feature API modules.`);
+  }
+  checkDomainNaming(path, source);
+}
+
+/**
+ * Domain records are camelCase end to end; snake_case is confined to the wire
+ * translation module that talks to the backend. Both patterns are anchored to
+ * key position so string values and import paths can never match.
+ */
+function checkDomainNaming(path, source) {
+  if (!path.startsWith(domainNamingPrefix) || domainNamingExemptions.has(path)) {
+    return;
+  }
+
+  for (const match of source.matchAll(snakeCaseTypeMember)) {
+    errors.push(`${path}: '${match[0].trim()}' must be camelCase; domain records use camelCase.`);
+  }
+  for (const match of source.matchAll(snakeCaseObjectKey)) {
+    errors.push(`${path}: '${match[0].trim()}' must be camelCase; domain records use camelCase.`);
   }
 }
 

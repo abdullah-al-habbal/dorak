@@ -1,5 +1,11 @@
 import { z } from 'zod';
 import type { Service } from '@/shared/entities/domain';
+import {
+  mapServiceFromWire,
+  mapServiceInputToWire,
+  type ServiceWire,
+} from '@/shared/entities/domain/service-wire';
+import { serviceableTypeValues } from '@/shared/entities/domain/serviceable-type';
 import { optionalNumber, optionalUuid } from '@/shared/entities/field-coercions';
 import { defineEntityConfig } from '@/shared/entities/types/entity-config';
 
@@ -24,22 +30,22 @@ const fields = {
     max: 1_440,
     schema: optionalNumber(z.coerce.number().int().min(1).max(1_440)),
   },
-  currency_id: { control: 'uuid', label: 'common.brandId', schema: z.string().uuid() },
+  currencyId: { control: 'uuid', label: 'common.currencyId', schema: z.string().uuid() },
   active: { control: 'switch', label: 'common.active', schema: z.boolean().default(true) },
-  serviceable_id: { control: 'uuid', label: 'common.branchId', schema: z.string().uuid() },
-  serviceable_type: {
+  serviceableId: { control: 'uuid', label: 'common.branchId', schema: z.string().uuid() },
+  serviceableType: {
     control: 'select',
     label: 'common.ownerType',
     options: [
-      { value: 'branch', label: 'navigation.branches' },
-      { value: 'brand', label: 'common.brandId' },
+      { value: 'branch', label: 'common.branch' },
+      { value: 'brand', label: 'common.brand' },
       { value: 'barber', label: 'common.stylist' },
     ],
-    schema: z.enum(['branch', 'brand', 'barber']),
+    schema: z.enum(serviceableTypeValues),
   },
-  catalog_item_id: {
+  catalogItemId: {
     control: 'uuid',
-    label: 'common.name',
+    label: 'common.catalogItemId',
     schema: optionalUuid(),
   },
 } as const;
@@ -92,8 +98,13 @@ export const servicesConfig = defineEntityConfig<Service, typeof fields>({
         { label: 'common.price', value: (service) => service.price },
         { label: 'common.duration', value: (service) => service.duration ?? '—' },
         { label: 'common.active', value: (service) => String(service.active) },
-        { label: 'common.ownerType', value: (service) => service.serviceable_type },
+        { label: 'common.ownerType', value: (service) => service.serviceableType },
       ],
     },
+  },
+  overrides: {
+    fromApi: (response) => mapServiceFromWire(response as ServiceWire),
+    toCreatePayload: mapServiceInputToWire,
+    toUpdatePayload: mapServiceInputToWire,
   },
 });

@@ -20,6 +20,6 @@ export type {
   TextField,
 } from './fields';
 export { createEntityHooks } from './entity-hooks';
-export type { LocalizedServiceName, Service } from './domain';
+export type { LocalizedServiceName, Service, ServiceableType } from './domain';
 export { getEntityConfig } from './configs';
 export { EntityForm, EntityShow, EntityTable } from './ui';
