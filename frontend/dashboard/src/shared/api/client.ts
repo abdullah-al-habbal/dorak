@@ -1,5 +1,5 @@
 import { DashboardApiError } from '@/shared/api/dashboard-api-error';
-import { publishDashboardApiError } from '@/shared/api/error-events';
+import { interceptApiError } from '@/shared/api/error-interceptor';
 import type { ApiEnvelope, ApiErrorPayload } from '@/shared/types/api';
 import { dashboardLocaleCookie, isDashboardLocale } from '@/shared/i18n/locale';
 
@@ -12,20 +12,19 @@ export async function dashboardApi<TData>(path: string, init: RequestInit = {}):
 }
 
 export async function dashboardApiEnvelope<TData>(path: string, init: RequestInit = {}): Promise<ApiEnvelope<TData>> {
-  const response = await fetch(`${apiBaseUrl}${path}`, {
-    ...init,
-    credentials: 'include',
-    headers: {
-      Accept: 'application/json',
-      'Accept-Language': dashboardLocale(),
-      ...init.headers,
-    },
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${apiBaseUrl}${path}`, { ...init, credentials: 'include', headers: { Accept: 'application/json', 'Accept-Language': dashboardLocale(), ...init.headers } });
+  } catch {
+    const error = new DashboardApiError(0, { message: 'Unable to connect. Check your internet connection and try again.' });
+    interceptApiError(error);
+    throw error;
+  }
 
   const payload = await parsePayload(response);
   if (!response.ok || !isSuccessfulEnvelope(payload)) {
     const error = new DashboardApiError(response.status, payload ?? {});
-    publishDashboardApiError(error);
+    interceptApiError(error);
     throw error;
   }
 
@@ -44,7 +43,7 @@ async function parsePayload(response: Response): Promise<ApiEnvelope<never> | Ap
   const contentType = response.headers.get('content-type');
   if (!contentType?.includes('application/json')) return null;
 
-  return response.json() as Promise<ApiEnvelope<never> | ApiErrorPayload>;
+  try { return await response.json() as ApiEnvelope<never> | ApiErrorPayload; } catch { return null; }
 }
 
 function isSuccessfulEnvelope(payload: ApiEnvelope<unknown> | ApiErrorPayload | null): payload is ApiEnvelope<unknown> {

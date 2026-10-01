@@ -7,6 +7,7 @@ export interface GenericTableListPageProps {
   description: string;
   emptyMessage: string;
   filters?: ReactNode;
+  isEmpty: boolean;
   isLoading: boolean;
   onPageChange: (page: number) => void;
   onSearchChange: (value: string) => void;

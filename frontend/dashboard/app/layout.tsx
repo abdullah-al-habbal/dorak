@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import './globals.css';
-import { DashboardProviders } from '@/providers/dashboard-providers';
+import { DashboardProviders } from '@/providers';
 import { dashboardLocaleCookie, directionForLocale, isDashboardLocale } from '@/shared/i18n/locale';
 
 export const metadata: Metadata = { title: 'Dorak Dashboard' };
