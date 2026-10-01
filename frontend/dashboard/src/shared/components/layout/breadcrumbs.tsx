@@ -12,5 +12,21 @@ export function Breadcrumbs() {
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
 
-  return <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1 text-sm text-foreground"><Link href={`/${segments[0] ?? ''}`}>Dashboard</Link>{segments.slice(1).map((segment, index) => <span className="flex items-center gap-1" key={`${segment}-${index}`}><ChevronRight size={14} /><span>{label(segment)}</span></span>)}</nav>;
+  return (
+    <nav
+      aria-label="Breadcrumb"
+      className="flex flex-wrap items-center gap-1 text-sm text-foreground"
+    >
+      <Link href={`/${segments[0] ?? ''}`}>Dashboard</Link>
+      {segments.slice(1).map((segment, index) => (
+        <span
+          className="flex items-center gap-1"
+          key={`/${segments.slice(0, index + 2).join('/')}`}
+        >
+          <ChevronRight size={14} />
+          <span>{label(segment)}</span>
+        </span>
+      ))}
+    </nav>
+  );
 }

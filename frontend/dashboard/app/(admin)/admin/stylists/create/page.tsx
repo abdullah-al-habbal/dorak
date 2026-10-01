@@ -1,2 +1,4 @@
 import { StylistEditor } from '@/features/stylists/components/forms/stylist-editor';
-export default function Page() { return <StylistEditor area="admin" />; }
+export default function Page() {
+  return <StylistEditor area="admin" />;
+}

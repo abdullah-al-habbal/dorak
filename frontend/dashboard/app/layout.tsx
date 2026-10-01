@@ -9,5 +9,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const localeCookie = (await cookies()).get(dashboardLocaleCookie)?.value;
   const locale = isDashboardLocale(localeCookie) ? localeCookie : 'en';
 
-  return <html dir={directionForLocale(locale)} lang={locale} suppressHydrationWarning><body><DashboardProviders>{children}</DashboardProviders></body></html>;
+  return (
+    <html dir={directionForLocale(locale)} lang={locale} suppressHydrationWarning>
+      <body>
+        <DashboardProviders>{children}</DashboardProviders>
+      </body>
+    </html>
+  );
 }

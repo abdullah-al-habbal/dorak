@@ -2,4 +2,6 @@
 
 import { ChairConflictDialog } from '@/features/chairs/components/dialogs/chair-conflict-dialog';
 
-export function ModalProvider() { return <ChairConflictDialog />; }
+export function ModalProvider() {
+  return <ChairConflictDialog />;
+}

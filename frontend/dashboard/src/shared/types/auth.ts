@@ -4,5 +4,5 @@ export interface DashboardClaim {
   subject: string;
   actorType: 'admin' | 'branch';
   role: DashboardRole;
-  branchId?: string;
+  branchId?: string | undefined;
 }

@@ -2,4 +2,6 @@
 
 import { Toaster } from 'sonner';
 
-export function ToastProvider() { return <Toaster richColors />; }
+export function ToastProvider() {
+  return <Toaster richColors />;
+}

@@ -1,0 +1,2 @@
+cd frontend/dashboard
+npx --no -- commitlint --edit "$1"

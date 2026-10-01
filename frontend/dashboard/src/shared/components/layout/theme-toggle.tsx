@@ -10,5 +10,14 @@ export function ThemeToggle() {
   const isDark = resolvedTheme === 'dark';
   const { t } = useDashboardTranslation();
 
-  return <Button aria-label={t('common.toggleTheme')} onClick={() => setTheme(isDark ? 'light' : 'dark')} type="button" variant="ghost">{isDark ? <Sun size={18} /> : <Moon size={18} />}</Button>;
+  return (
+    <Button
+      aria-label={t('common.toggleTheme')}
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      type="button"
+      variant="ghost"
+    >
+      {isDark ? <Sun size={18} /> : <Moon size={18} />}
+    </Button>
+  );
 }

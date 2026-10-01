@@ -11,7 +11,7 @@ export interface GenericTableListPageProps {
   isLoading: boolean;
   onPageChange: (page: number) => void;
   onSearchChange: (value: string) => void;
-  pagination?: PaginationState;
+  pagination?: PaginationState | undefined;
   search: string;
   title: string;
 }

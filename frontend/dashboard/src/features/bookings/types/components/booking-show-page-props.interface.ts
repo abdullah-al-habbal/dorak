@@ -1,1 +1,3 @@
-export interface BookingShowPageProps { id: string; }
+export interface BookingShowPageProps {
+  id: string;
+}

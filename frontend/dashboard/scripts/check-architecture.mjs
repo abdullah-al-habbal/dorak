@@ -11,13 +11,7 @@ const approvedFeatureDirectories = new Set([
   'schemas',
   'types',
 ]);
-const approvedComponentDirectories = new Set([
-  'buttons',
-  'cards',
-  'dialogs',
-  'forms',
-  'tables',
-]);
+const approvedComponentDirectories = new Set(['buttons', 'cards', 'dialogs', 'forms', 'tables']);
 const errors = [];
 
 async function walk(directory) {
@@ -27,8 +21,9 @@ async function walk(directory) {
   for (const entry of entries) {
     if (entry.name === 'node_modules' || entry.name === '.next') continue;
     const path = join(directory, entry.name);
-    if (entry.isDirectory()) files.push(...await walk(path));
-    if (entry.isFile() && sourceExtensions.has(entry.name.slice(entry.name.lastIndexOf('.')))) files.push(path);
+    if (entry.isDirectory()) files.push(...(await walk(path)));
+    if (entry.isFile() && sourceExtensions.has(entry.name.slice(entry.name.lastIndexOf('.'))))
+      files.push(path);
   }
 
   return files;
@@ -36,14 +31,18 @@ async function walk(directory) {
 
 function isApiModule(file) {
   const normalized = file.split(sep).join('/');
-  return normalized.includes('/src/shared/api/') || /\/src\/features\/[^/]+\/api\//.test(normalized);
+  return (
+    normalized.includes('/src/shared/api/') || /\/src\/features\/[^/]+\/api\//.test(normalized)
+  );
 }
 
 function checkFeatureDirectories(entries) {
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
     if (!approvedFeatureDirectories.has(entry.name)) {
-      errors.push(`features may not contain '${entry.name}'; use an approved responsibility directory.`);
+      errors.push(
+        `features may not contain '${entry.name}'; use an approved responsibility directory.`,
+      );
     }
   }
 }
@@ -66,7 +65,9 @@ async function checkStructure() {
         const components = await readdir(componentsPath, { withFileTypes: true });
         for (const component of components) {
           if (!component.isDirectory() || !approvedComponentDirectories.has(component.name)) {
-            errors.push(`src/features/${feature.name}/components/${component.name} must be a categorized component directory.`);
+            errors.push(
+              `src/features/${feature.name}/components/${component.name} must be a categorized component directory.`,
+            );
           }
         }
       } catch (error) {
@@ -84,7 +85,9 @@ function checkFile(file, source) {
   const isComponent = path.includes('/components/');
 
   if (isPage && /^\s*['\"]use client['\"];?/m.test(source)) {
-    errors.push(`${path}: route pages must remain server components; move interactivity to a child component.`);
+    errors.push(
+      `${path}: route pages must remain server components; move interactivity to a child component.`,
+    );
   }
   if (!isApiModule(file) && /\bfetch\s*\(/.test(source)) {
     errors.push(`${path}: raw fetch is allowed only in shared/feature API modules.`);
@@ -96,7 +99,11 @@ function checkFile(file, source) {
     errors.push(`${path}: empty catch blocks are prohibited.`);
   }
   const isThemeDefinition = path === 'tailwind.config.ts' || path.startsWith('src/shared/theme/');
-  if (!isThemeDefinition && (/#[0-9a-fA-F]{3,8}\b|\b(?:rgb|hsl)a?\(/.test(source) || /(?:bg|text|border|ring|fill|stroke)-\[#[^\]]+\]/.test(source))) {
+  if (
+    !isThemeDefinition &&
+    (/#[0-9a-fA-F]{3,8}\b|\b(?:rgb|hsl)a?\(/.test(source) ||
+      /(?:bg|text|border|ring|fill|stroke)-\[#[^\]]+\]/.test(source))
+  ) {
     errors.push(`${path}: raw or arbitrary colors are prohibited; use semantic design tokens.`);
   }
   if (/useEffect\s*\([\s\S]{0,700}?router\.(?:push|replace)\s*\(/.test(source)) {

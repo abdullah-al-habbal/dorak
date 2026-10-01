@@ -1,5 +1,5 @@
 export interface ServerListParams {
   page: number;
   per_page: number;
-  search?: string;
+  search?: string | undefined;
 }

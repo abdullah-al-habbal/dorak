@@ -1,0 +1,3 @@
+cd frontend/dashboard
+npx lint-staged
+npm run typecheck

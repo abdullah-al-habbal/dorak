@@ -19,8 +19,10 @@ export const APP_ROUTES = {
   entity: (area: DashboardArea, entity: DashboardEntity) => `${base(area)}/${entity}`,
   create: (area: DashboardArea, entity: DashboardEntity) => `${base(area)}/${entity}/create`,
   createBranch: (area: DashboardArea) => `${base(area)}/branches/new`,
-  edit: (area: DashboardArea, entity: DashboardEntity, id: string) => `${base(area)}/${entity}/${id}/edit`,
-  show: (area: DashboardArea, entity: DashboardEntity, id: string) => `${base(area)}/${entity}/${id}`,
+  edit: (area: DashboardArea, entity: DashboardEntity, id: string) =>
+    `${base(area)}/${entity}/${id}/edit`,
+  show: (area: DashboardArea, entity: DashboardEntity, id: string) =>
+    `${base(area)}/${entity}/${id}`,
 } as const;
 
 export type { DashboardArea, DashboardEntity };

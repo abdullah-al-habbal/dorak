@@ -1,3 +1,5 @@
 import { WalkInBookingCreatePage } from '@/features/bookings/components/forms/walk-in-booking-create-page';
 
-export default function Page() { return <WalkInBookingCreatePage area="admin" />; }
+export default function Page() {
+  return <WalkInBookingCreatePage area="admin" />;
+}

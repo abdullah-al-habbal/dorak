@@ -9,5 +9,24 @@ import type { NavbarProps } from '@/shared/types/components';
 
 export function Navbar({ onOpenMenu }: Readonly<NavbarProps>) {
   const { t } = useDashboardTranslation();
-  return <header className="flex h-16 items-center justify-between border-b bg-surface px-4"><Button aria-label={t('common.openNavigation')} className="md:hidden" onClick={onOpenMenu} type="button" variant="ghost"><Menu size={18} /></Button><div className="ms-auto flex items-center gap-2"><LocaleToggle /><ThemeToggle /><Button aria-label={t('common.profileMenu')} type="button" variant="ghost"><UserCircle size={20} /></Button></div></header>;
+  return (
+    <header className="flex h-16 items-center justify-between border-b bg-surface px-4">
+      <Button
+        aria-label={t('common.openNavigation')}
+        className="md:hidden"
+        onClick={onOpenMenu}
+        type="button"
+        variant="ghost"
+      >
+        <Menu size={18} />
+      </Button>
+      <div className="ms-auto flex items-center gap-2">
+        <LocaleToggle />
+        <ThemeToggle />
+        <Button aria-label={t('common.profileMenu')} type="button" variant="ghost">
+          <UserCircle size={20} />
+        </Button>
+      </div>
+    </header>
+  );
 }

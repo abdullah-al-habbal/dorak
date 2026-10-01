@@ -1,9 +1,9 @@
 import { DashboardApiError } from '@/shared/api/dashboard-api-error';
 import { interceptApiError } from '@/shared/api/error-interceptor';
-import type { ApiEnvelope, ApiErrorPayload } from '@/shared/types/api';
 import { dashboardLocaleCookie, isDashboardLocale } from '@/shared/i18n/locale';
+import type { ApiEnvelope, ApiErrorPayload } from '@/shared/types/api';
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api/v1';
+const apiBaseUrl = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:8000/api/v1';
 
 export async function dashboardApi<TData>(path: string, init: RequestInit = {}): Promise<TData> {
   const envelope = await dashboardApiEnvelope<TData>(path, init);
@@ -11,12 +11,25 @@ export async function dashboardApi<TData>(path: string, init: RequestInit = {}):
   return envelope.data;
 }
 
-export async function dashboardApiEnvelope<TData>(path: string, init: RequestInit = {}): Promise<ApiEnvelope<TData>> {
+export async function dashboardApiEnvelope<TData>(
+  path: string,
+  init: RequestInit = {},
+): Promise<ApiEnvelope<TData>> {
   let response: Response;
   try {
-    response = await fetch(`${apiBaseUrl}${path}`, { ...init, credentials: 'include', headers: { Accept: 'application/json', 'Accept-Language': dashboardLocale(), ...init.headers } });
+    response = await fetch(`${apiBaseUrl}${path}`, {
+      ...init,
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Accept-Language': dashboardLocale(),
+        ...init.headers,
+      },
+    });
   } catch {
-    const error = new DashboardApiError(0, { message: 'Unable to connect. Check your internet connection and try again.' });
+    const error = new DashboardApiError(0, {
+      message: 'Unable to connect. Check your internet connection and try again.',
+    });
     interceptApiError(error);
     throw error;
   }
@@ -32,20 +45,35 @@ export async function dashboardApiEnvelope<TData>(path: string, init: RequestIni
 }
 
 function dashboardLocale(): string {
-  if (typeof document === 'undefined') return 'en';
+  if (typeof document === 'undefined') {
+    return 'en';
+  }
 
-  const value = document.cookie.split('; ').find((cookie) => cookie.startsWith(`${dashboardLocaleCookie}=`))?.split('=')[1];
+  const value = document.cookie
+    .split('; ')
+    .find((cookie) => cookie.startsWith(`${dashboardLocaleCookie}=`))
+    ?.split('=')[1];
 
   return isDashboardLocale(value) ? value : 'en';
 }
 
-async function parsePayload(response: Response): Promise<ApiEnvelope<never> | ApiErrorPayload | null> {
+async function parsePayload(
+  response: Response,
+): Promise<ApiEnvelope<never> | ApiErrorPayload | null> {
   const contentType = response.headers.get('content-type');
-  if (!contentType?.includes('application/json')) return null;
+  if (!contentType?.includes('application/json')) {
+    return null;
+  }
 
-  try { return await response.json() as ApiEnvelope<never> | ApiErrorPayload; } catch { return null; }
+  try {
+    return (await response.json()) as ApiEnvelope<never> | ApiErrorPayload;
+  } catch {
+    return null;
+  }
 }
 
-function isSuccessfulEnvelope(payload: ApiEnvelope<unknown> | ApiErrorPayload | null): payload is ApiEnvelope<unknown> {
+function isSuccessfulEnvelope(
+  payload: ApiEnvelope<unknown> | ApiErrorPayload | null,
+): payload is ApiEnvelope<unknown> {
   return payload !== null && 'success' in payload && payload.success === true && 'data' in payload;
 }

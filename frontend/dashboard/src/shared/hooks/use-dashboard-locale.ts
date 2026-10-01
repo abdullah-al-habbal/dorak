@@ -10,7 +10,9 @@ import {
 } from '@/shared/i18n/locale';
 
 function readLocale(): DashboardLocale {
-  const cookie = document.cookie.split('; ').find((value) => value.startsWith(`${dashboardLocaleCookie}=`));
+  const cookie = document.cookie
+    .split('; ')
+    .find((value) => value.startsWith(`${dashboardLocaleCookie}=`));
   const locale = cookie?.split('=')[1];
 
   return isDashboardLocale(locale) ? locale : 'en';

@@ -1,1 +1,15 @@
-export interface Chair { id: string; barber_id: string | null; branch_id: string; floor_zone: 'men' | 'women' | 'shared'; label: string | null; status: 'available' | 'occupied' | 'maintenance'; ui_metadata: { height: number; position_x: number; position_y: number; rotation?: number; width: number; }; }
+export interface Chair {
+  id: string;
+  barber_id: string | null;
+  branch_id: string;
+  floor_zone: 'men' | 'women' | 'shared';
+  label: string | null;
+  status: 'available' | 'occupied' | 'maintenance';
+  ui_metadata: {
+    height: number;
+    position_x: number;
+    position_y: number;
+    rotation?: number;
+    width: number;
+  };
+}
