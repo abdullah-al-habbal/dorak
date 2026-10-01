@@ -1,6 +1,10 @@
 import { dashboardApiEnvelope } from '@/shared/api/client';
 import type { DashboardPage } from '@/shared/types/pagination';
 
+function isSerializable(value: unknown): value is boolean | number | string {
+  return typeof value === 'boolean' || typeof value === 'number' || typeof value === 'string';
+}
+
 export async function fetchPaginatedList<TItem, TParams extends object>(
   endpoint: string,
   params?: TParams,
@@ -8,7 +12,7 @@ export async function fetchPaginatedList<TItem, TParams extends object>(
   const query = new URLSearchParams();
   if (params !== undefined) {
     for (const [key, value] of Object.entries(params)) {
-      if (value !== undefined && value !== null && value !== '') {
+      if (isSerializable(value) && value !== '') {
         query.set(key, String(value));
       }
     }

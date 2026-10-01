@@ -51,6 +51,49 @@ generic primitives in a feature is prohibited.
 components. It does not contain API access, validation schemas, complex client
 state, or domain business rules.
 
+## Entity Engine
+
+The Entity Engine is the one sanctioned exception to the `shared/` rule above.
+A CRUD entity that differs only in shape — columns, fields, validation, endpoint
+— is declared once as a config instead of being hand-written per feature.
+
+```text
+src/shared/entities/
+├── types/       # Config, column, field, detail, renderer contracts
+├── fields/      # Field control definitions and tree inference
+├── configs/     # One config per entity + the slug registry
+├── domain/      # Domain record contracts owned by configs
+├── ui/          # EntityTable, EntityForm, EntityShow
+├── field-schema.ts       # Field tree -> Zod contract
+├── field-coercions.ts    # Blank form/API value normalization
+├── entity-api.ts         # CRUD client
+└── entity-hooks.ts       # React Query hooks + cache invalidation
+```
+
+Rules:
+
+- The engine owns no domain knowledge. `shared/entities/domain/` holds record
+  contracts, and `shared/entities/configs/` holds field/column/validation
+  declarations. Nothing else in `shared/` may import an entity config.
+- A config imports the engine through deep module paths, never through the
+  `src/shared/entities` barrel, because the barrel also exports the registry
+  that loads configs. This keeps `import/no-cycle` satisfied.
+- `app/(dashboard)/[area]/[entity]/` resolves any registered slug whose
+  `access.areas` contains the area and calls `notFound()` otherwise. A legacy
+  static route always wins over the dynamic segment, so entities migrate
+  incrementally.
+- Escaping the generic renderer is done through `overrides.renderField`, keyed
+  by dotted field path (`name.en`). Renderers receive `control`, `formState`,
+  and `register`; they are mounted as real elements and may use hooks.
+- A field's `control` owns its value semantics. `switch` uses `Controller`, not
+  `register`, because React Hook Form omits unchecked checkboxes from the
+  submitted payload, which would let a `.default()` silently reactivate the
+  record. Optional number and UUID fields normalize `''` and `null` to
+  `undefined` through `field-coercions`.
+- Migrating an entity means deleting its `src/features/<entity>` directory
+  entirely, including its API and hooks, and pointing any remaining cross-feature
+  reader at `createEntityHooks(<config>).useEntities(...)`.
+
 ## Responsibility and dependency rules
 
 One file has one responsibility:

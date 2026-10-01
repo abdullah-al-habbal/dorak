@@ -10,3 +10,4 @@
 
 /frontend/dashboard/node_modules/
 /frontend/dashboard/.next/
+/frontend/dashboard/tsconfig.tsbuildinfo

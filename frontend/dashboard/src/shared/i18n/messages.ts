@@ -80,6 +80,13 @@ const en = {
     chairs: 'Chairs',
     stylists: 'Stylists',
   },
+  services: {
+    created: 'Service created.',
+    deleted: 'Service deleted.',
+    description: 'Manage service names, prices, and durations.',
+    empty: 'No services match your search.',
+    updated: 'Service updated.',
+  },
   common: {
     loading: 'Loading…',
     search: 'Search',
@@ -199,6 +206,13 @@ const ar: typeof en = {
     services: 'الخدمات',
     chairs: 'الكراسي',
     stylists: 'المصممون',
+  },
+  services: {
+    created: 'تم إنشاء الخدمة.',
+    deleted: 'تم حذف الخدمة.',
+    description: 'إدارة أسماء الخدمات والأسعار والمدد.',
+    empty: 'لا توجد خدمات مطابقة لبحثك.',
+    updated: 'تم تحديث الخدمة.',
   },
   common: {
     loading: 'جارٍ التحميل…',

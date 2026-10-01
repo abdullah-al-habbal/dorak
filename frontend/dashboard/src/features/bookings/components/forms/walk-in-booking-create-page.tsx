@@ -7,11 +7,12 @@ import type { WalkInBookingInput } from '@/features/bookings/types/booking';
 import type { WalkInBookingCreatePageProps } from '@/features/bookings/types/components';
 import { useBranches } from '@/features/branches/hooks';
 import { useChairs } from '@/features/chairs/hooks';
-import { useServices } from '@/features/services/hooks';
 import { isDashboardApiError } from '@/shared/api/dashboard-api-error';
 import { showError, showSuccess } from '@/shared/components/feedback/toast';
 import { Input } from '@/shared/components/forms/input';
 import { GenericCreatePage } from '@/shared/components/templates/generic-form-page';
+import { servicesConfig } from '@/shared/entities/configs/services.config';
+import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 
 const formId = 'walk-in-booking';
@@ -25,7 +26,7 @@ export function WalkInBookingCreatePage({ area }: Readonly<WalkInBookingCreatePa
   const chairId = form.watch('chair_id');
   const branches = useBranches({ page: 1, per_page: 100 });
   const chairs = useChairs({ page: 1, per_page: 100 });
-  const services = useServices({ page: 1, per_page: 100 });
+  const services = createEntityHooks(servicesConfig).useEntities({ page: 1, per_page: 100 });
   const mutation = useCreateWalkInBooking();
   const selectedBranch = branches.data?.items.find((branch) => branch.id === branchId);
   const selectedChair = chairs.data?.items.find((chair) => chair.id === chairId);
