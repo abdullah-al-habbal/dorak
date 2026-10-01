@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { GenericShowPage } from '@/shared/components/templates/generic-show-page';
-import { useBranch } from '@/features/branches/hooks/use-branches';
+import { useBranch } from '@/features/branches/hooks';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 import type { BranchPageProps } from '@/features/branches/types/components';
 

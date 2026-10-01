@@ -6,11 +6,11 @@ import { isDashboardApiError } from '@/shared/api/dashboard-api-error';
 import { showError, showSuccess } from '@/shared/components/feedback/toast';
 import { Input } from '@/shared/components/forms/input';
 import { GenericCreatePage } from '@/shared/components/templates/generic-form-page';
-import { useCreateWalkInBooking } from '@/features/bookings/hooks/use-bookings';
+import { useCreateWalkInBooking } from '@/features/bookings/hooks';
 import type { WalkInBookingInput } from '@/features/bookings/types/booking';
-import { useBranches } from '@/features/branches/hooks/use-branches';
-import { useChairs } from '@/features/chairs/hooks/use-chairs';
-import { useServices } from '@/features/services/hooks/use-services';
+import { useBranches } from '@/features/branches/hooks';
+import { useChairs } from '@/features/chairs/hooks';
+import { useServices } from '@/features/services/hooks';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 import type { WalkInBookingCreatePageProps } from '@/features/bookings/types/components';
 

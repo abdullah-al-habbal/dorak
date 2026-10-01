@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { BookingActionsDialog } from '@/features/bookings/components/dialogs/booking-actions-dialog';
-import { useBookings } from '@/features/bookings/hooks/use-bookings';
-import { useChairs } from '@/features/chairs/hooks/use-chairs';
-import { useStylists } from '@/features/stylists/hooks/use-stylists';
+import { useBookings } from '@/features/bookings/hooks';
+import { useChairs } from '@/features/chairs/hooks';
+import { useStylists } from '@/features/stylists/hooks';
 import { Input } from '@/shared/components/forms/input';
 import { GenericTableListPage } from '@/shared/components/templates/generic-table-list-page';
 import { useServerQueryParams } from '@/shared/hooks/use-server-query-params';

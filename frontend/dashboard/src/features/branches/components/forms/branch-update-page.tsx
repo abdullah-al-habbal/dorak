@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { GenericUpdatePage } from '@/shared/components/templates/generic-form-page';
 import { BranchForm } from '@/features/branches/components/forms/branch-form';
-import { useBranch, useUpdateBranch } from '@/features/branches/hooks/use-branches';
+import { useBranch, useUpdateBranch } from '@/features/branches/hooks';
 import type { UpdateBranchInput } from '@/features/branches/schemas/branch.schema';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 import type { BranchPageProps } from '@/features/branches/types/components';

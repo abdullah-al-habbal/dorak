@@ -1,8 +1,8 @@
 'use client';
 
-import { useBookings } from '@/features/bookings/hooks/use-bookings';
-import { useChairs } from '@/features/chairs/hooks/use-chairs';
-import { useOverview } from '@/features/overview/hooks/use-overview';
+import { useBookings } from '@/features/bookings/hooks';
+import { useChairs } from '@/features/chairs/hooks';
+import { useOverview } from '@/features/overview/hooks';
 import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 
 export function OverviewDashboard() {

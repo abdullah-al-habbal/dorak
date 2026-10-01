@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { isDashboardApiError } from '@/shared/api/dashboard-api-error';
 import { Button } from '@/shared/components/buttons/button';
 import { showError, showSuccess } from '@/shared/components/feedback/toast';
-import { useBooking, useCancelBooking, useRescheduleBooking, useUpdateBookingStatus } from '@/features/bookings/hooks/use-bookings';
+import { useBooking, useCancelBooking, useRescheduleBooking, useUpdateBookingStatus } from '@/features/bookings/hooks';
 import type { BookingStatus } from '@/features/bookings/types/booking';
 import type { BookingActionsDialogProps, NextBookingStatus } from '@/features/bookings/types/components';
 

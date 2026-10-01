@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useServerQueryParams } from '@/shared/hooks/use-server-query-params';
 import { GenericTableListPage } from '@/shared/components/templates/generic-table-list-page';
-import { useBranches } from '@/features/branches/hooks/use-branches';
+import { useBranches } from '@/features/branches/hooks';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 import type { BranchListProps } from '@/features/branches/types/components';
 
