@@ -3,9 +3,11 @@
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
+import { ThemeProvider } from 'next-themes';
 import { DashboardApiError, isDashboardApiError } from '@/shared/api/dashboard-api-error';
 import { dashboardApiErrorEvent } from '@/shared/api/error-events';
 import { showError } from '@/shared/components/feedback/toast';
+import { ChairConflictDialog } from '@/features/chairs/components/dialogs/chair-conflict-dialog';
 
 const defaultStaleTimeMs = 30_000;
 
@@ -34,7 +36,7 @@ export function DashboardProviders({ children }: Readonly<{ children: React.Reac
     return () => window.removeEventListener(dashboardApiErrorEvent, listener);
   }, []);
 
-  return <QueryClientProvider client={queryClient}>{children}<Toaster richColors /></QueryClientProvider>;
+  return <ThemeProvider attribute="class" defaultTheme="system" enableSystem><QueryClientProvider client={queryClient}>{children}<ChairConflictDialog /><Toaster richColors /></QueryClientProvider></ThemeProvider>;
 }
 
 function showApiError(error: DashboardApiError): void {
