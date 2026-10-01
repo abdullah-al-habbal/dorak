@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { cancelBooking, createWalkInBooking, getBooking, listBookings, rescheduleBooking, updateBookingStatus } from '@/features/bookings/api/bookings.api';
+import { cancelBooking, createWalkInBooking, getBooking, listBookings, rescheduleBooking, updateBookingStatus } from '@/features/bookings/api';
 import type { BookingStatusInput } from '@/features/bookings/schemas/booking-status.schema';
 import type { ServerListParams } from '@/shared/hooks/use-server-query-params';
 

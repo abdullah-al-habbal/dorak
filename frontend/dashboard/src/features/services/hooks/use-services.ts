@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createService, deleteService, getService, listServices, updateService } from '@/features/services/api/services.api';
+import { createService, deleteService, getService, listServices, updateService } from '@/features/services/api';
 import type { ServiceInput } from '@/features/services/schemas/service.schema';
 import type { ServerListParams } from '@/shared/hooks/use-server-query-params';
 const serviceKey = ['dashboard', 'services'] as const;

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createBranch, deleteBranch, getBranch, listBranches, updateBranch } from '@/features/branches/api/branches.api';
+import { createBranch, deleteBranch, getBranch, listBranches, updateBranch } from '@/features/branches/api';
 import type { CreateBranchInput, UpdateBranchInput } from '@/features/branches/schemas/branch.schema';
 import type { ServerListParams } from '@/shared/hooks/use-server-query-params';
 const branchKey = ['dashboard', 'branches'] as const;

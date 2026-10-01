@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createChair, deleteChair, getChair, listChairs, updateChair } from '@/features/chairs/api/chairs.api';
+import { createChair, deleteChair, getChair, listChairs, updateChair } from '@/features/chairs/api';
 import type { ChairInput } from '@/features/chairs/schemas/chair.schema';
 import type { ServerListParams } from '@/shared/hooks/use-server-query-params';
 import { isDashboardApiError } from '@/shared/api/dashboard-api-error';

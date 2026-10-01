@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createStylist, deleteStylist, getStylist, listStylists, updateStylist } from '@/features/stylists/api/stylists.api';
+import { createStylist, deleteStylist, getStylist, listStylists, updateStylist } from '@/features/stylists/api';
 import type { StylistInput } from '@/features/stylists/schemas/stylist.schema';
 import type { ServerListParams } from '@/shared/hooks/use-server-query-params';
 const stylistKey = ['dashboard', 'stylists'] as const;
