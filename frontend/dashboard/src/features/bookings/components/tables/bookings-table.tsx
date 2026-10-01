@@ -11,9 +11,9 @@ interface BookingsTableProps {
 export function BookingsTable({ bookings, onSelect }: Readonly<BookingsTableProps>) {
   const table = useReactTable({
     columns: [
-      { accessorKey: 'clientName', header: 'Client' },
-      { accessorKey: 'stylistName', header: 'Stylist' },
-      { accessorKey: 'chairLabel', header: 'Chair' },
+      { accessorKey: 'time_slot', header: 'Time' },
+      { accessorFn: (booking) => booking.barber?.name.en ?? '—', header: 'Stylist' },
+      { accessorFn: (booking) => booking.chair?.label ?? '—', header: 'Chair' },
       { accessorKey: 'status', header: 'Status' },
     ],
     data: bookings,

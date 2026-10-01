@@ -1,5 +1,6 @@
 export const DASHBOARD_API = {
   bookings: '/dashboard/bookings',
+  overview: '/dashboard/overview',
   branches: '/dashboard/branches',
   chairs: '/dashboard/chairs',
   services: '/dashboard/services',
@@ -7,7 +8,7 @@ export const DASHBOARD_API = {
 } as const;
 
 type DashboardArea = 'admin' | 'manager';
-type DashboardEntity = 'branches' | 'chairs' | 'services' | 'stylists';
+type DashboardEntity = 'bookings' | 'branches' | 'chairs' | 'services' | 'stylists';
 
 const base = (area: DashboardArea): `/${DashboardArea}` => `/${area}`;
 

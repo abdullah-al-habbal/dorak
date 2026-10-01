@@ -15,7 +15,7 @@ function positiveNumber(value: string | null, fallback: number): number {
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
 }
 
-export function useServerQueryParams(): ServerListParams & { setPage: (page: number) => void; setSearch: (search: string) => void } {
+export function useServerQueryParams(): ServerListParams & { setPage: (page: number) => void; setSearch: (search: string) => void; setValue: (key: string, value: string) => void } {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,5 +37,6 @@ export function useServerQueryParams(): ServerListParams & { setPage: (page: num
     ...params,
     setPage: (page) => update({ page: String(page) }),
     setSearch: (search) => update({ page: '1', search }),
+    setValue: (key, value) => update({ page: '1', [key]: value }),
   };
 }
