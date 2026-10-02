@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { isDashboardApiError } from '@/shared/api/dashboard-api-error';
+import type { DashboardClaim } from '@/shared/auth';
 import { showError, showSuccess } from '@/shared/components/feedback/toast';
 import { Input } from '@/shared/components/forms/input';
 import { GenericCreatePage } from '@/shared/components/templates/generic-form-page';
@@ -22,12 +23,21 @@ const branchHooks = createEntityHooks(branchesConfig);
 const chairHooks = createEntityHooks(chairsConfig);
 const serviceHooks = createEntityHooks(servicesConfig);
 
-export function WalkInBookingForm({ area }: Readonly<{ area: DashboardArea; id?: string }>) {
+export function WalkInBookingForm({
+  area,
+  claim,
+}: Readonly<{ area: DashboardArea; claim: DashboardClaim; id?: string }>) {
   const router = useRouter();
+  /**
+   * A branch manager is bound to the branch in their claim; a platform admin has
+   * no branch and picks freely. `verifyDashboardClaim` guarantees the branch id
+   * is present for the former, so the manual selector is never reachable.
+   */
+  const scopedBranchId = claim.branchId;
   const form = useForm<WalkInBookingInput>({
     defaultValues: {
       barberId: undefined,
-      branchId: '',
+      branchId: scopedBranchId ?? '',
       chairId: '',
       customerEmail: '',
       customerName: '',
@@ -83,14 +93,21 @@ export function WalkInBookingForm({ area }: Readonly<{ area: DashboardArea; id?:
           ),
         )}
       >
-        <select {...form.register('branchId', { required: true })}>
-          <option value="">Select branch</option>
-          {branches.data?.items.map((branch) => (
-            <option key={branch.id} value={branch.id}>
-              {branch.name.en}
-            </option>
-          ))}
-        </select>
+        {scopedBranchId === undefined ? (
+          <select {...form.register('branchId', { required: true })}>
+            <option value="">Select branch</option>
+            {branches.data?.items.map((branch) => (
+              <option key={branch.id} value={branch.id}>
+                {branch.name.en}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <div className="grid gap-1">
+            <input type="hidden" {...form.register('branchId', { required: true })} />
+            <p className="text-muted-foreground text-sm">{selectedBranch?.name.en ?? '—'}</p>
+          </div>
+        )}
         <select disabled={branchId === ''} {...form.register('chairId', { required: true })}>
           <option value="">Select chair</option>
           {branchChairs.map((chair) => (

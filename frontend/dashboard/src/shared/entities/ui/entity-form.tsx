@@ -19,6 +19,7 @@ import { useResetEntityForm } from './use-reset-entity-form';
 
 export function EntityForm<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree>({
   area,
+  claim,
   config,
   id,
 }: Readonly<EntityFormProps<TEntity, TInput, TFields>>) {
@@ -26,15 +27,16 @@ export function EntityForm<TEntity extends EntityRecord, TInput, TFields extends
   return CustomForm === undefined ? (
     <DefaultEntityForm area={area} config={config} {...(id === undefined ? {} : { id })} />
   ) : (
-    <CustomForm area={area} {...(id === undefined ? {} : { id })} />
+    <CustomForm area={area} claim={claim} {...(id === undefined ? {} : { id })} />
   );
 }
 
+/** The default form needs no actor identity: Laravel scopes the session. */
 function DefaultEntityForm<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree>({
   area,
   config,
   id,
-}: Readonly<EntityFormProps<TEntity, TInput, TFields>>) {
+}: Readonly<Omit<EntityFormProps<TEntity, TInput, TFields>, 'claim'>>) {
   const router = useRouter();
   const { t } = useDashboardTranslation();
   const editing = id !== undefined;

@@ -1,11 +1,10 @@
-import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { canAccessArea, dashboardClaimCookieName, managerArea } from '@/shared/auth';
-import { verifyDashboardClaim } from '@/shared/auth/verify-dashboard-claim';
+import { canAccessArea, managerArea } from '@/shared/auth';
+import { resolveRequestClaim } from '@/shared/auth/resolve-request-claim';
 import { DashboardShell } from '@/shared/components/layout/dashboard-shell';
 
 export default async function ManagerLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const claim = await verifyDashboardClaim((await cookies()).get(dashboardClaimCookieName)?.value);
+  const claim = await resolveRequestClaim();
   if (claim === null || !canAccessArea(claim, managerArea)) {
     notFound();
   }

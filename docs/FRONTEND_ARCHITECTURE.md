@@ -147,6 +147,7 @@ src/shared/auth/
 ├── enums/                   # Roles and areas: as const + derived union + guard
 ├── types/                   # One type per file: claim, actor type
 ├── rbac.ts                  # Pure predicates: areaForRole, canAccessArea, hasAnyRole
+├── resolve-request-claim.ts # Server-component cookie read + verify (imports next/headers)
 ├── route-guard.ts           # (claim, pathname) -> allow / redirect decision
 ├── verify-dashboard-claim.ts# JWT verification. Never imported by client code
 └── index.ts                 # Barrel. Deliberately excludes verify-dashboard-claim
@@ -164,15 +165,45 @@ Rules:
   `process.env['DASHBOARD_SESSION_SECRET']` and pulls `jose` into the bundle.
   Client components import the cookie name from the barrel and never the
   verifier.
+- Server components read the claim through `resolveRequestClaim()` rather than
+  re-implementing the cookie read. Middleware has already rejected a missing or
+  invalid claim, but callers still treat `null` as not-found instead of assuming
+  a session exists.
 - A claim is rejected unless it is internally consistent: a branch manager must
   carry the branch it is scoped to and a platform admin must not. This closes
   the window where an unscoped claim would degrade into a manager with no
   branch filter.
 - Navigation items declare `roles?: readonly DashboardRole[]`. An omitted list
-  means every role. This is a visibility hint only, never an authorization gate.
+  means every role. It is a visibility hint only, never an authorization gate,
+  and it must mirror the entity's `access.read` — otherwise the sidebar links a
+  route that returns `notFound()`.
 - Route layouts derive the role from the verified claim instead of asserting it
   from the URL. `middleware.ts` still runs first, so a mismatch ends in
   `notFound()` rather than a shell rendering with a forged role.
+
+## Entity access
+
+Each entity config declares per-operation access as an explicit area tuple:
+
+```ts
+access: {
+  create: { areas: [adminArea] },
+  edit: { areas: [adminArea, managerArea] },
+  read: { areas: [adminArea, managerArea] },
+}
+```
+
+Every operation spells out its areas instead of spreading the full area list, so
+a newly added area is denied by default and cannot leak access through a config
+that happens to predate it. A missing `create` or `edit` means the operation is
+unavailable; there is no `delete` gate because no delete surface exists in the
+frontend, and branch deletion stays server-enforced only.
+
+Custom form components receive the verified claim through
+`EntityFormProps.claim`. A workflow that exposes an area-wide choice must bind
+it to the claim when one is present: `WalkInBookingForm` hides the manual branch
+selector for a branch manager and binds the input to their `branchId`, leaving
+the selector selectable for a platform admin.
 
 Middleware is a UX and routing boundary, not API authorization. Laravel verifies
 the authenticated actor and branch scope on every dashboard endpoint; the

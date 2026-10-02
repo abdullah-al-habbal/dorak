@@ -1,3 +1,4 @@
+import type { DashboardClaim } from '@/shared/auth';
 import type { EntityFieldTree } from '@/shared/entities/fields';
 import type { DashboardArea } from '@/shared/routes/dashboard-routes';
 import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
@@ -11,6 +12,7 @@ export type EntityFormProps<
   TFields extends EntityFieldTree,
 > = {
   readonly area: DashboardArea;
+  readonly claim: DashboardClaim;
   readonly config: EntityConfig<TEntity, TInput, TFields, ServerListParams>;
   readonly id?: EntityId;
 };

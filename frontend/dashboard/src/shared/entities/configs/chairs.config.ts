@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { isDashboardApiError } from '@/shared/api/dashboard-api-error';
-import { dashboardAreas } from '@/shared/auth';
+import { adminArea, managerArea } from '@/shared/auth';
 import { publishChairConflict } from '@/shared/components/feedback/chair-conflict-dialog';
 import { showWarning } from '@/shared/components/feedback/toast';
 import type { Chair } from '@/shared/entities/domain';
@@ -81,9 +81,9 @@ export const chairsConfig = defineEntityConfig<Chair, typeof fields>({
     methods: { update: 'PUT' },
   },
   access: {
-    create: { areas: dashboardAreas },
-    edit: { areas: dashboardAreas },
-    read: { areas: dashboardAreas },
+    create: { areas: [adminArea, managerArea] },
+    edit: { areas: [adminArea, managerArea] },
+    read: { areas: [adminArea, managerArea] },
   },
   messages: {
     singular: 'navigation.chairs',

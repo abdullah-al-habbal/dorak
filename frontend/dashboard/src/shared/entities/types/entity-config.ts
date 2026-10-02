@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import type { z } from 'zod';
-import type { DashboardArea } from '@/shared/auth';
+import type { DashboardArea, DashboardClaim } from '@/shared/auth';
 import type { EntityFieldTree, InferFieldTree } from '@/shared/entities/fields';
 import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
 import type { EntityAccess } from './entity-access';
@@ -55,7 +55,11 @@ export type EntityConfig<
       readonly update?: (id: EntityId) => string;
     };
     readonly onMutationError?: (error: Error) => void;
-    readonly renderForm?: ComponentType<{ readonly area: DashboardArea; readonly id?: EntityId }>;
+    readonly renderForm?: ComponentType<{
+      readonly area: DashboardArea;
+      readonly claim: DashboardClaim;
+      readonly id?: EntityId;
+    }>;
     readonly renderList?: ComponentType<{ readonly area: DashboardArea }>;
     readonly renderShow?: ComponentType<{ readonly area: DashboardArea; readonly id: EntityId }>;
     readonly renderField?: Readonly<Record<string, EntityFieldRenderer>>;

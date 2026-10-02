@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { dashboardAreas } from '@/shared/auth';
+import { adminArea, managerArea } from '@/shared/auth';
 import type { Booking } from '@/shared/entities/domain';
 import {
   mapBookingFromWire,
@@ -53,8 +53,8 @@ export const bookingsConfig = defineEntityConfig<Booking, typeof fields, Booking
     defaultParams: { page: 1, per_page: 15 },
   },
   access: {
-    create: { areas: dashboardAreas },
-    read: { areas: dashboardAreas },
+    create: { areas: [adminArea, managerArea] },
+    read: { areas: [adminArea, managerArea] },
   },
   messages: {
     singular: 'navigation.bookings',
