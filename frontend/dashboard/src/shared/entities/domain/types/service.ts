@@ -1,14 +1,11 @@
-import type { ServiceableType } from './serviceable-type';
+import type { ServiceableType } from '../serviceable-type';
+import type { LocalizedServiceName } from './localized-service-name';
 
 /**
  * Domain record. Every property is camelCase; the snake_case API contract lives
- * behind `ServiceResource` on the backend and is translated only by this module.
+ * behind `ServiceResource` on the backend and is translated only by
+ * `wire/service-wire.ts`.
  */
-export interface LocalizedServiceName {
-  readonly ar: string;
-  readonly en: string;
-}
-
 export interface Service {
   readonly active: boolean;
   readonly catalogItemId: string | null;

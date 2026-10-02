@@ -5,11 +5,12 @@ import { CardSkeleton } from '@/shared/components/feedback/skeletons/card-skelet
 import { GenericShowPage } from '@/shared/components/templates/generic-show-page';
 import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import type { EntityFieldTree } from '@/shared/entities/fields';
-import type { EntityConfig, EntityRecord } from '@/shared/entities/types/entity-config';
+import type { EntityConfig } from '@/shared/entities/types/entity-config';
 import type { EntityId } from '@/shared/entities/types/entity-id';
+import type { EntityRecord } from '@/shared/entities/types/entity-record';
 import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 import type { DashboardArea } from '@/shared/routes/dashboard-routes';
-import type { ServerListParams } from '@/shared/types/query';
+import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
 
 type EntityShowProps<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree> = {
   readonly area: DashboardArea;

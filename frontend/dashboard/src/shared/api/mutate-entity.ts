@@ -1,6 +1,5 @@
 import { dashboardApi } from '@/shared/api/client';
-
-type EntityMutationMethod = 'DELETE' | 'PATCH' | 'POST' | 'PUT';
+import type { EntityMutationMethod } from '@/shared/api/types/entity-mutation-method';
 
 export function mutateEntity<TInput = never, TResponse = unknown>(
   endpoint: string,

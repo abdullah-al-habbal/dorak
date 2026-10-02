@@ -1,31 +1,12 @@
-import type { Booking, BookingStatus, WalkInBookingInput } from './booking';
+import type { Booking } from './types/booking';
+import type { WalkInBookingInput } from './types/walk-in-booking-input';
+import type { BookingWire } from './wire/booking-wire';
+import type { WalkInBookingPayloadWire } from './wire/walk-in-booking-payload-wire';
 
-/** Dashboard booking response and request contract. Snake case stays here. */
-export interface BookingWire {
-  readonly at_home_location: unknown;
-  readonly barber: { readonly name: { readonly en: string } } | null;
-  readonly chair: { readonly label: string | null } | null;
-  readonly created_at: string;
-  readonly ends_at: string | null;
-  readonly id: string;
-  readonly payment_method: string | null;
-  readonly payment_status: string | null;
-  readonly services: readonly { readonly name: { readonly en: string } }[];
-  readonly status: BookingStatus;
-  readonly time_slot: string;
-}
+export type { BookingWire } from './wire/booking-wire';
+export type { WalkInBookingPayloadWire } from './wire/walk-in-booking-payload-wire';
 
-export type WalkInBookingPayloadWire = {
-  readonly barber_id?: string;
-  readonly branch_id: string;
-  readonly chair_id: string;
-  readonly customer_email: string;
-  readonly customer_name: string;
-  readonly customer_phone?: string;
-  readonly service_ids: string[];
-  readonly time_slot: string;
-};
-
+/** Dashboard booking response and request contract. Snake case stays in `wire/`. */
 export function mapBookingFromWire(wire: BookingWire): Booking {
   return {
     barber: wire.barber,

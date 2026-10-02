@@ -1,50 +1,13 @@
-import type { Chair, ChairFloorZone, ChairStatus, ChairUiMetadata } from './chair';
+import type { Chair } from './types/chair';
+import type { ChairFormInput } from './wire/chair-form-input';
+import type { ChairPayloadWire } from './wire/chair-payload-wire';
+import type { ChairWire } from './wire/chair-wire';
 
-/** Backend `ChairResource` contract. Snake case exists only in this adapter. */
-export interface ChairWire {
-  readonly availability: ChairStatus;
-  readonly barber: { readonly id: string } | null;
-  readonly branch_id: string;
-  readonly created_at: string;
-  readonly floor_zone: ChairFloorZone;
-  readonly id: string;
-  readonly label: string | null;
-  readonly status: ChairStatus;
-  readonly ui_metadata: {
-    readonly height: number;
-    readonly position_x: number;
-    readonly position_y: number;
-    readonly rotation?: number | null;
-    readonly width: number;
-  };
-}
+export type { ChairFormInput } from './wire/chair-form-input';
+export type { ChairPayloadWire } from './wire/chair-payload-wire';
+export type { ChairWire } from './wire/chair-wire';
 
-export type ChairPayloadWire = {
-  readonly barber_id: string | null;
-  readonly branch_id: string;
-  readonly floor_zone: ChairFloorZone;
-  readonly label: string;
-  readonly status: ChairStatus;
-  readonly ui_metadata: {
-    readonly height: number;
-    readonly position_x: number;
-    readonly position_y: number;
-    readonly rotation?: number;
-    readonly width: number;
-  };
-};
-
-interface ChairFormInput {
-  readonly barberId: string | null | undefined;
-  readonly branchId: string;
-  readonly floorZone: ChairFloorZone;
-  readonly label: string;
-  readonly status: ChairStatus;
-  readonly uiMetadata: Omit<ChairUiMetadata, 'rotation'> & {
-    readonly rotation: number | null | undefined;
-  };
-}
-
+/** Backend `ChairResource` translation. Snake case stays in the `wire/` DTOs. */
 export function mapChairFromWire(wire: ChairWire): Chair {
   return {
     barberId: wire.barber?.id ?? null,

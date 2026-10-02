@@ -1,3 +1,4 @@
+/** Backend overview resource contract. Snake case stays in this DTO. */
 export interface DashboardOverview {
   active_chairs_count: number;
   active_branches_count: number;

@@ -1,7 +1,8 @@
 import { jwtVerify } from 'jose';
-import type { DashboardClaim } from '@/shared/types/auth';
+import type { DashboardClaim } from '@/shared/types/auth/dashboard-claim';
 
-export type { DashboardClaim, DashboardRole } from '@/shared/types/auth';
+export type { DashboardClaim } from '@/shared/types/auth/dashboard-claim';
+export type { DashboardRole } from '@/shared/types/auth/dashboard-role';
 
 export const dashboardClaimCookieName = 'dorak_dashboard_claim';
 

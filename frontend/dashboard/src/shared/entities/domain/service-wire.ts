@@ -1,41 +1,16 @@
-import type { LocalizedServiceName, Service } from './service';
-import type { ServiceableType } from './serviceable-type';
+import type { Service } from './types/service';
+import type { ServiceFormInput } from './wire/service-form-input';
+import type { ServicePayloadWire } from './wire/service-payload-wire';
+import type { ServiceWire } from './wire/service-wire';
+
+export type { ServiceFormInput } from './wire/service-form-input';
+export type { ServicePayloadWire } from './wire/service-payload-wire';
+export type { ServiceWire } from './wire/service-wire';
 
 /**
- * The only module permitted to name a snake_case property. It mirrors
- * `ServiceResource` exactly as the backend emits it, and is the single place
- * where the API contract is translated into the camelCase domain model.
+ * The only module that translates the API contract into the camelCase domain
+ * model. The snake_case property names themselves live in `wire/service-wire.ts`.
  */
-export interface ServiceWire {
-  readonly active: boolean;
-  readonly at_home: boolean;
-  readonly catalog_item_id: string | null;
-  readonly created_at: string | null;
-  readonly currency_id: string;
-  readonly description: string | null;
-  readonly duration: number | null;
-  readonly id: string;
-  readonly name: LocalizedServiceName;
-  readonly price: number;
-  readonly serviceable_id: string;
-  readonly serviceable_type: ServiceableType;
-}
-
-/** The subset `ServiceRequest` validates on create and update. */
-export type ServicePayloadWire = Omit<ServiceWire, 'at_home' | 'created_at' | 'description' | 'id'>;
-
-/** Zod-inferred service form values, before any field is left blank. */
-interface ServiceFormInput {
-  readonly active: boolean;
-  readonly catalogItemId: string | null | undefined;
-  readonly currencyId: string;
-  readonly duration: number | undefined;
-  readonly name: LocalizedServiceName;
-  readonly price: number;
-  readonly serviceableId: string;
-  readonly serviceableType: ServiceableType;
-}
-
 export function mapServiceFromWire(wire: ServiceWire): Service {
   return {
     active: wire.active,

@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { GenericTableListPage } from '@/shared/components/templates/generic-table-list-page';
 import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import type { EntityFieldTree } from '@/shared/entities/fields';
-import type { EntityConfig, EntityRecord } from '@/shared/entities/types/entity-config';
+import type { EntityConfig } from '@/shared/entities/types/entity-config';
+import type { EntityRecord } from '@/shared/entities/types/entity-record';
 import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 import { useServerQueryParams } from '@/shared/hooks/use-server-query-params';
 import type { DashboardArea } from '@/shared/routes/dashboard-routes';
-import type { ServerListParams } from '@/shared/types/query';
+import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
 
 type EntityTableProps<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree> = {
   readonly area: DashboardArea;

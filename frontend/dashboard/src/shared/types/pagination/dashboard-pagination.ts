@@ -4,8 +4,3 @@ export interface DashboardPagination {
   total: number;
   totalPages: number;
 }
-
-export interface DashboardPage<TItem> {
-  items: TItem[];
-  pagination: DashboardPagination;
-}

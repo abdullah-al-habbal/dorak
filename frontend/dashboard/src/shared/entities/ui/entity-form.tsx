@@ -11,8 +11,8 @@ import {
 import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import { buildEntitySchema } from '@/shared/entities/field-schema';
 import type { EntityFieldTree } from '@/shared/entities/fields';
-import type { EntityRecord } from '@/shared/entities/types/entity-config';
 import type { EntityFormProps } from '@/shared/entities/types/entity-form-props';
+import type { EntityRecord } from '@/shared/entities/types/entity-record';
 import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 import { EntityFields } from './entity-fields';
 import { useResetEntityForm } from './use-reset-entity-form';

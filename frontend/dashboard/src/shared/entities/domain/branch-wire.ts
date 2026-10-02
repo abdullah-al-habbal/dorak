@@ -1,43 +1,16 @@
-import type { Branch, BranchStatus, LocalizedBranchName } from './branch';
+import type { Branch } from './types/branch';
+import type { BranchFormInput } from './wire/branch-form-input';
+import type { BranchPayloadWire } from './wire/branch-payload-wire';
+import type { BranchWire } from './wire/branch-wire';
+
+export type { BranchFormInput } from './wire/branch-form-input';
+export type { BranchPayloadWire } from './wire/branch-payload-wire';
+export type { BranchWire } from './wire/branch-wire';
 
 /**
- * Backend `BranchResource` contract. Snake case may exist only in this wire
- * translation module.
+ * Backend `BranchResource` translation. Snake case may exist only in the `wire/`
+ * DTOs this module consumes.
  */
-export interface BranchWire {
-  readonly brand_id: string;
-  readonly compatibility_score: number | null;
-  readonly created_at: string | null;
-  readonly distance: number | null;
-  readonly email: string;
-  readonly id: string;
-  readonly latitude: number | string | null;
-  readonly longitude: number | string | null;
-  readonly name: LocalizedBranchName;
-  readonly rank: number | null;
-  readonly status: BranchStatus;
-}
-
-export type BranchPayloadWire = {
-  readonly brand_id: string;
-  readonly email: string;
-  readonly latitude: number | null;
-  readonly longitude: number | null;
-  readonly name: LocalizedBranchName;
-  readonly password?: string;
-  readonly status?: BranchStatus;
-};
-
-interface BranchFormInput {
-  readonly brandId: string;
-  readonly email: string;
-  readonly latitude: number | undefined;
-  readonly longitude: number | undefined;
-  readonly name: LocalizedBranchName;
-  readonly password: string | undefined;
-  readonly status: BranchStatus | undefined;
-}
-
 function mapCoordinate(value: number | string | null): number | null {
   return value === null ? null : Number(value);
 }

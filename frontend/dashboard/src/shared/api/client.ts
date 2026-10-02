@@ -1,7 +1,8 @@
 import { DashboardApiError } from '@/shared/api/dashboard-api-error';
 import { interceptApiError } from '@/shared/api/error-interceptor';
 import { dashboardLocaleCookie, isDashboardLocale } from '@/shared/i18n/locale';
-import type { ApiEnvelope, ApiErrorPayload } from '@/shared/types/api';
+import type { ApiEnvelope } from '@/shared/types/api/api-envelope-wire';
+import type { ApiErrorPayload } from '@/shared/types/api/api-error-payload-wire';
 
 const apiBaseUrl = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:8000/api/v1';
 

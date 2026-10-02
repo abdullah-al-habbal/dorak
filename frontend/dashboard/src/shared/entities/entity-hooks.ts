@@ -5,8 +5,9 @@ import { useInvalidatingMutation } from '@/shared/hooks/use-invalidating-mutatio
 import { createQueryKeys } from '@/shared/utils/query-keys';
 import { createEntityApi } from './entity-api';
 import type { EntityFieldTree } from './fields';
-import type { EntityConfig, EntityRecord } from './types/entity-config';
+import type { EntityConfig } from './types/entity-config';
 import type { EntityId } from './types/entity-id';
+import type { EntityRecord } from './types/entity-record';
 
 export function createEntityHooks<
   TEntity extends EntityRecord,

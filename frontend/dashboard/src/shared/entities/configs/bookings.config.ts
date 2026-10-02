@@ -7,7 +7,7 @@ import {
 } from '@/shared/entities/domain/booking-wire';
 import { optionalUuid } from '@/shared/entities/field-coercions';
 import { defineEntityConfig } from '@/shared/entities/types/entity-config';
-import type { ServerListParams } from '@/shared/types/query';
+import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
 
 export type BookingListParams = ServerListParams & {
   readonly chairId?: string | undefined;

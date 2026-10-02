@@ -6,3 +6,4 @@ export type { GenericShowPageProps } from './generic-show-page-props.interface';
 export type { GenericTableListPageProps } from './generic-table-list-page-props.interface';
 export type { NavbarProps } from './navbar-props.interface';
 export type { PaginationState } from './pagination-state.interface';
+export type { SidebarProps } from './sidebar-props.interface';

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { DASHBOARD_MENU_ITEMS } from '@/shared/config/navigation';
 import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
-import type { SidebarProps } from '@/shared/types/navigation';
+import type { SidebarProps } from '@/shared/types/components/sidebar-props.interface';
 import { cn } from '@/shared/utils/cn';
 
 export function Sidebar({ className, role }: Readonly<SidebarProps>) {

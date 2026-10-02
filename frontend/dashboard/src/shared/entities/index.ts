@@ -1,11 +1,13 @@
 export { createEntityApi } from './entity-api';
 export { defineEntityConfig } from './types/entity-config';
-export type { EntityConfig, EntityRecord } from './types/entity-config';
+export type { EntityConfig } from './types/entity-config';
+export type { EntityRecord } from './types/entity-record';
 export type { EntityApiConfig } from './types/entity-api-config';
 export type { EntityColumn } from './types/entity-column';
 export type { EntityDetail } from './types/entity-detail';
 export type { EntityFilter } from './types/entity-filter';
-export type { EntityFieldRenderer, EntityFieldRendererProps } from './types/entity-field-renderer';
+export type { EntityFieldRenderer } from './types/entity-field-renderer';
+export type { EntityFieldRendererProps } from './types/entity-field-renderer-props';
 export type { EntityId } from './types/entity-id';
 export { buildEntitySchema } from './field-schema';
 export { optionalNumber, optionalUuid } from './field-coercions';

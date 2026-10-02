@@ -2,9 +2,9 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
-import type { ServerListParams } from '@/shared/types/query';
+import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
 
-export type { ServerListParams } from '@/shared/types/query';
+export type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
 
 function positiveNumber(value: string | null, fallback: number): number {
   const parsed = Number(value);

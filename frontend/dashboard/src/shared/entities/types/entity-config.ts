@@ -2,17 +2,14 @@ import type { ComponentType } from 'react';
 import type { z } from 'zod';
 import type { EntityFieldTree, InferFieldTree } from '@/shared/entities/fields';
 import type { DashboardArea } from '@/shared/routes/dashboard-routes';
-import type { ServerListParams } from '@/shared/types/query';
+import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
 import type { EntityApiConfig } from './entity-api-config';
 import type { EntityColumn } from './entity-column';
 import type { EntityDetail } from './entity-detail';
 import type { EntityFieldRenderer } from './entity-field-renderer';
 import type { EntityFilter } from './entity-filter';
 import type { EntityId } from './entity-id';
-
-export interface EntityRecord {
-  readonly id: EntityId;
-}
+import type { EntityRecord } from './entity-record';
 
 export type EntityConfig<
   TEntity extends EntityRecord,

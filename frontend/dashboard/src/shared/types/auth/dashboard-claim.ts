@@ -1,4 +1,4 @@
-export type DashboardRole = 'platform_admin' | 'branch_manager';
+import type { DashboardRole } from './dashboard-role';
 
 export interface DashboardClaim {
   subject: string;

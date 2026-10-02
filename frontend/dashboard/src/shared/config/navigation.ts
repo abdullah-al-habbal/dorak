@@ -7,7 +7,7 @@ import {
   Users,
 } from 'lucide-react';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
-import type { DashboardMenuItem } from '@/shared/types/navigation';
+import type { DashboardMenuItem } from '@/shared/types/navigation/dashboard-menu-item';
 
 export const DASHBOARD_MENU_ITEMS: ReadonlyArray<DashboardMenuItem> = [
   { icon: LayoutDashboard, label: 'navigation.overview', path: APP_ROUTES.dashboard },

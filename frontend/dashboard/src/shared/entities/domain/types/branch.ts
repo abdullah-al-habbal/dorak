@@ -1,14 +1,10 @@
+import type { BranchStatus } from './branch-status';
+import type { LocalizedBranchName } from './localized-branch-name';
+
 /**
  * Dashboard branch domain record. Every property is camelCase; the wire
- * contract is isolated in `branch-wire.ts`.
+ * contract is isolated in `wire/branch-wire.ts`.
  */
-export interface LocalizedBranchName {
-  readonly ar: string;
-  readonly en: string;
-}
-
-export type BranchStatus = 'disabled' | 'enabled' | 'pending';
-
 export interface Branch {
   readonly brandId: string;
   readonly email: string;

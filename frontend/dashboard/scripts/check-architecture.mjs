@@ -13,15 +13,10 @@ const approvedFeatureDirectories = new Set([
 ]);
 const approvedComponentDirectories = new Set(['buttons', 'cards', 'dialogs', 'forms', 'tables']);
 const domainNamingPrefix = 'src/shared/entities/domain/';
-const domainNamingExemptions = new Set([
-  `${domainNamingPrefix}branch-wire.ts`,
-  `${domainNamingPrefix}booking-wire.ts`,
-  `${domainNamingPrefix}chair-wire.ts`,
-  `${domainNamingPrefix}service-wire.ts`,
-  `${domainNamingPrefix}stylist-wire.ts`,
-]);
 const snakeCaseTypeMember = /^\s*(?:readonly\s+)?[a-z][A-Za-z0-9]*_[A-Za-z0-9_]*\s*[?:]/gm;
 const snakeCaseObjectKey = /^\s*'?[a-z][A-Za-z0-9]*_[A-Za-z0-9_]*'?\s*:/gm;
+const importDeclaration = /^import\b[\s\S]*?;\s*$/gm;
+const typeDeclaration = /^\s*(?:export\s+)?(?:declare\s+)?(?:type|interface)\s+[A-Za-z_$]/gm;
 const errors = [];
 
 async function walk(directory) {
@@ -122,16 +117,54 @@ function checkFile(file, source) {
   if (isComponent && /from\s+['\"]@\/features\/[^'\"]+\/api\//.test(source)) {
     errors.push(`${path}: UI components must consume hooks, not feature API modules.`);
   }
-  checkDomainNaming(path, source);
+  checkSingleTypeDeclaration(path, source);
+  checkWireNaming(path, source);
+}
+
+/**
+ * A wire module is any `*-wire.ts` file or anything inside a `wire/` directory.
+ * Those files are the only place allowed to spell a backend property name.
+ */
+function isWireModule(path) {
+  const segments = path.split('/');
+  return path.endsWith('-wire.ts') || segments.includes('wire');
+}
+
+/**
+ * Type homes are `types/` directories (excluding the component-prop homes, where
+ * a variant union beside its props is idiomatic) and `wire/` directories. Every
+ * module inside them declares exactly one type or interface.
+ */
+function isTypeHomeModule(path) {
+  const segments = path.split('/');
+  const typesIndex = segments.lastIndexOf('types');
+  return (
+    (typesIndex !== -1 && segments[typesIndex + 1] !== 'components') || segments.includes('wire')
+  );
+}
+
+function checkSingleTypeDeclaration(path, source) {
+  if (!isTypeHomeModule(path)) {
+    return;
+  }
+
+  const body = source.replace(importDeclaration, '');
+  const declarations = body.match(typeDeclaration) ?? [];
+  if (declarations.length > 1) {
+    errors.push(
+      `${path}: declares ${declarations.length} types; a type home holds exactly one type or interface per file.`,
+    );
+  }
 }
 
 /**
  * Domain records are camelCase end to end; snake_case is confined to the wire
- * translation module that talks to the backend. Both patterns are anchored to
- * key position so string values and import paths can never match.
+ * translation modules that talk to the backend. Both patterns are anchored to
+ * key position so string values and import paths can never match, which leaves
+ * backend enum values such as `in_progress` untouched.
  */
-function checkDomainNaming(path, source) {
-  if (!path.startsWith(domainNamingPrefix) || domainNamingExemptions.has(path)) {
+function checkWireNaming(path, source) {
+  if (!path.startsWith(domainNamingPrefix) || isWireModule(path)) {
     return;
   }
 

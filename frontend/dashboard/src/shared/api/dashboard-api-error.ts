@@ -1,4 +1,4 @@
-import type { ApiErrorPayload } from '@/shared/types/api';
+import type { ApiErrorPayload } from '@/shared/types/api/api-error-payload-wire';
 
 export class DashboardApiError extends Error {
   public readonly details: Record<string, string[]>;

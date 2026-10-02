@@ -1,5 +1,5 @@
 import { dashboardApiEnvelope } from '@/shared/api/client';
-import type { DashboardPage } from '@/shared/types/pagination';
+import type { DashboardPage } from '@/shared/types/pagination/dashboard-page';
 
 function isSerializable(value: unknown): value is boolean | number | string {
   return typeof value === 'boolean' || typeof value === 'number' || typeof value === 'string';

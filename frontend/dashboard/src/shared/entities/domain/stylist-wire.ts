@@ -1,41 +1,13 @@
-import type { LocalizedStylistName, Stylist, StylistStatus } from './stylist';
+import type { Stylist } from './types/stylist';
+import type { StylistFormInput } from './wire/stylist-form-input';
+import type { StylistPayloadWire } from './wire/stylist-payload-wire';
+import type { StylistWire } from './wire/stylist-wire';
 
-/** Backend `BarberResource` contract. Snake case stays in this adapter. */
-export interface StylistWire {
-  readonly compatibility_score: number | null;
-  readonly created_at: string | null;
-  readonly distance: number | null;
-  readonly email: string;
-  readonly has_login: boolean;
-  readonly id: string;
-  readonly is_freelancer: boolean;
-  readonly latitude: number | string | null;
-  readonly longitude: number | string | null;
-  readonly name: LocalizedStylistName;
-  readonly phone: string | null;
-  readonly rank: number | null;
-  readonly status: StylistStatus;
-  readonly travel_radius: number | string | null;
-}
+export type { StylistFormInput } from './wire/stylist-form-input';
+export type { StylistPayloadWire } from './wire/stylist-payload-wire';
+export type { StylistWire } from './wire/stylist-wire';
 
-export type StylistPayloadWire = {
-  readonly chair_id?: string;
-  readonly email: string;
-  readonly name: LocalizedStylistName;
-  readonly password?: string;
-  readonly phone: string | null;
-  readonly status?: StylistStatus;
-};
-
-interface StylistFormInput {
-  readonly chairId: string | null | undefined;
-  readonly email: string;
-  readonly name: LocalizedStylistName;
-  readonly password: string | undefined;
-  readonly phone: string | null | undefined;
-  readonly status: StylistStatus | undefined;
-}
-
+/** Backend `BarberResource` translation. Snake case stays in the `wire/` DTOs. */
 export function mapStylistFromWire(wire: StylistWire): Stylist {
   return {
     email: wire.email,

@@ -1,8 +1,9 @@
 import { fetchEntityAt, fetchPaginatedList, mutateEntity } from '@/shared/api';
 import type { EntityFieldTree } from '@/shared/entities/fields';
-import type { EntityConfig, EntityRecord } from '@/shared/entities/types/entity-config';
+import type { EntityConfig } from '@/shared/entities/types/entity-config';
 import type { EntityId } from '@/shared/entities/types/entity-id';
-import type { DashboardPage } from '@/shared/types/pagination';
+import type { EntityRecord } from '@/shared/entities/types/entity-record';
+import type { DashboardPage } from '@/shared/types/pagination/dashboard-page';
 
 export function createEntityApi<
   TEntity extends EntityRecord,

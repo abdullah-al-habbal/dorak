@@ -8,6 +8,7 @@ import { showError, showSuccess } from '@/shared/components/feedback/toast';
 import { bookingsConfig } from '@/shared/entities/configs/bookings.config';
 import type { BookingStatus } from '@/shared/entities/domain';
 import { mapBookingFromWire, type BookingWire } from '@/shared/entities/domain/booking-wire';
+import type { BookingReschedulePayloadWire } from '@/shared/entities/domain/wire/booking-reschedule-payload-wire';
 import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import { useInvalidatingMutation } from '@/shared/hooks/use-invalidating-mutation';
 
@@ -55,7 +56,7 @@ export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string
     {
       mutationFn: async (input: { readonly endsAt: string; readonly timeSlot: string }) =>
         mapBookingFromWire(
-          await mutateEntity<{ ends_at: string; time_slot: string }, BookingWire>(
+          await mutateEntity<BookingReschedulePayloadWire, BookingWire>(
             `/dashboard/bookings/${bookingId}/reschedule`,
             'PATCH',
             {
