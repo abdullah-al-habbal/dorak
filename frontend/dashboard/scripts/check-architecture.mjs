@@ -15,6 +15,8 @@ const approvedComponentDirectories = new Set(['buttons', 'cards', 'dialogs', 'fo
 const domainNamingPrefix = 'src/shared/entities/domain/';
 const snakeCaseTypeMember = /^\s*(?:readonly\s+)?[a-z][A-Za-z0-9]*_[A-Za-z0-9_]*\s*[?:]/gm;
 const snakeCaseObjectKey = /^\s*'?[a-z][A-Za-z0-9]*_[A-Za-z0-9_]*'?\s*:/gm;
+const roleLiteral = /['"](?:platform_admin|branch_manager)['"]/g;
+const authHome = 'src/shared/auth/';
 const importDeclaration = /^import\b[\s\S]*?;\s*$/gm;
 const typeDeclaration = /^\s*(?:export\s+)?(?:declare\s+)?(?:type|interface)\s+[A-Za-z_$]/gm;
 const errors = [];
@@ -117,8 +119,26 @@ function checkFile(file, source) {
   if (isComponent && /from\s+['\"]@\/features\/[^'\"]+\/api\//.test(source)) {
     errors.push(`${path}: UI components must consume hooks, not feature API modules.`);
   }
+  checkRoleLiterals(path, source);
   checkSingleTypeDeclaration(path, source);
   checkWireNaming(path, source);
+}
+
+/**
+ * `src/shared/auth/` owns the role vocabulary. Everywhere else a role must be
+ * imported from the module, so renaming or adding a role cannot leave a stale
+ * literal behind in a component, a config, or a route.
+ */
+function checkRoleLiterals(path, source) {
+  if (path.startsWith(authHome)) {
+    return;
+  }
+
+  for (const match of source.matchAll(roleLiteral)) {
+    errors.push(
+      `${path}: ${match[0]} is a role literal; import the role from '@/shared/auth' instead.`,
+    );
+  }
 }
 
 /**

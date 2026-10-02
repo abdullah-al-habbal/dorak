@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { GenericTableListPage } from '@/shared/components/templates/generic-table-list-page';
+import { canPerformOperation } from '@/shared/entities/entity-access';
 import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import type { EntityFieldTree } from '@/shared/entities/fields';
 import type { EntityConfig } from '@/shared/entities/types/entity-config';
@@ -42,7 +43,7 @@ function DefaultEntityTable<TEntity extends EntityRecord, TInput, TFields extend
   return (
     <GenericTableListPage
       actions={
-        config.ui.form?.create ? (
+        canPerformOperation(config.access, 'create', area) ? (
           <Link
             className="rounded-lg bg-primary px-3 py-2 text-sm text-background"
             href={`${path}/create`}

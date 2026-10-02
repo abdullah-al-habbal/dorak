@@ -1,3 +1,5 @@
+import { type DashboardArea } from '@/shared/auth';
+
 export const DASHBOARD_API = {
   bookings: '/dashboard/bookings',
   walkInBookings: '/dashboard/bookings/walk-in',
@@ -8,7 +10,6 @@ export const DASHBOARD_API = {
   stylists: '/dashboard/stylists',
 } as const;
 
-type DashboardArea = 'admin' | 'manager';
 type DashboardEntity = 'bookings' | 'branches' | 'chairs' | 'services' | 'stylists';
 
 const base = (area: DashboardArea): `/${DashboardArea}` => `/${area}`;

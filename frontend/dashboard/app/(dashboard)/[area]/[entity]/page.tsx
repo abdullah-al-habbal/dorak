@@ -5,7 +5,7 @@ export default async function Page({
   params,
 }: Readonly<{ params: Promise<{ area: string; entity: string }> }>) {
   const { area, entity } = await params;
-  const resolved = resolveDynamicEntity(area, entity);
+  const resolved = resolveDynamicEntity(area, entity, 'read');
 
   return <EntityTable area={resolved.area} config={resolved.config} />;
 }

@@ -1,8 +1,9 @@
 import type { ComponentType } from 'react';
 import type { z } from 'zod';
+import type { DashboardArea } from '@/shared/auth';
 import type { EntityFieldTree, InferFieldTree } from '@/shared/entities/fields';
-import type { DashboardArea } from '@/shared/routes/dashboard-routes';
 import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
+import type { EntityAccess } from './entity-access';
 import type { EntityApiConfig } from './entity-api-config';
 import type { EntityColumn } from './entity-column';
 import type { EntityDetail } from './entity-detail';
@@ -20,7 +21,7 @@ export type EntityConfig<
   readonly slug: string;
   readonly entity: { readonly plural: string; readonly singular: string };
   readonly api: EntityApiConfig<TParams>;
-  readonly access: { readonly areas: readonly DashboardArea[] };
+  readonly access: EntityAccess;
   readonly messages: {
     readonly created: string;
     readonly deleted: string;
@@ -32,7 +33,6 @@ export type EntityConfig<
   };
   readonly fields: TFields;
   readonly ui: {
-    readonly form?: { readonly create?: boolean; readonly edit?: boolean };
     readonly list: {
       readonly columns: readonly EntityColumn<TEntity>[];
       readonly filters?: readonly EntityFilter[];

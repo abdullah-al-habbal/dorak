@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { dashboardAreas } from '@/shared/auth';
 import type { Service } from '@/shared/entities/domain';
 import {
   mapServiceFromWire,
@@ -58,7 +59,11 @@ export const servicesConfig = defineEntityConfig<Service, typeof fields>({
     defaultParams: { page: 1, per_page: 15 },
     methods: { update: 'PUT' },
   },
-  access: { areas: ['admin', 'manager'] },
+  access: {
+    create: { areas: dashboardAreas },
+    edit: { areas: dashboardAreas },
+    read: { areas: dashboardAreas },
+  },
   messages: {
     singular: 'navigation.services',
     plural: 'navigation.services',
@@ -70,7 +75,6 @@ export const servicesConfig = defineEntityConfig<Service, typeof fields>({
   },
   fields,
   ui: {
-    form: { create: true, edit: true },
     list: {
       search: true,
       columns: [

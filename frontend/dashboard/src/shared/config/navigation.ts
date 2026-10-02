@@ -6,6 +6,7 @@ import {
   Scissors,
   Users,
 } from 'lucide-react';
+import { platformAdminRole } from '@/shared/auth';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 import type { DashboardMenuItem } from '@/shared/types/navigation/dashboard-menu-item';
 
@@ -15,7 +16,7 @@ export const DASHBOARD_MENU_ITEMS: ReadonlyArray<DashboardMenuItem> = [
     icon: Building2,
     label: 'navigation.branches',
     path: (area) => APP_ROUTES.entity(area, 'branches'),
-    platformOnly: true,
+    roles: [platformAdminRole],
   },
   {
     icon: CalendarCheck,

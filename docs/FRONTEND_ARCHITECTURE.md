@@ -14,6 +14,7 @@ frontend/dashboard/
 ├── src/
 │   ├── shared/                   # Cross-feature code only; no domain ownership
 │   │   ├── api/                  # Typed base client and error normalization
+│   │   ├── auth/                 # Roles, areas, branch scope, route guards
 │   │   ├── components/
 │   │   │   ├── buttons/
 │   │   │   ├── data-display/
@@ -79,9 +80,13 @@ Rules:
   `src/shared/entities` barrel, because the barrel also exports the registry
   that loads configs. This keeps `import/no-cycle` satisfied.
 - `app/(dashboard)/[area]/[entity]/` resolves any registered slug whose
-  `access.areas` contains the area and calls `notFound()` otherwise. A legacy
-  static route always wins over the dynamic segment, so entities migrate
-  incrementally.
+  `access` grants the operation the route performs — `read` for list and show,
+  `create` for the create form, `edit` for the edit form — and calls
+  `notFound()` otherwise. A legacy static route always wins over the dynamic
+  segment, so entities migrate incrementally.
+- `access` is declared per operation rather than per entity, because the two
+  actors do not share a surface on every entity. An omitted operation grants
+  nobody, which is how an entity declares that it has no such form.
 - Escaping the generic renderer is done through `overrides.renderField`, keyed
   by dotted field path (`name.en`). Renderers receive `control`, `formState`,
   and `register`; they are mounted as real elements and may use hooks.
@@ -123,11 +128,56 @@ when at least two features demonstrably need it.
 
 ## RBAC
 
-Next `middleware.ts` verifies a short-lived signed role claim cookie. It routes
-platform admins to `/admin/*` and branch managers to `/manager/*`; missing or
-invalid claims redirect to `/login`. Middleware is a UX and routing boundary,
-not API authorization. Laravel verifies the authenticated actor and branch
-scope on every dashboard endpoint.
+`src/shared/auth/` is the single owner of the dashboard role vocabulary. There
+are exactly two roles, `platform_admin` and `branch_manager`, and exactly two
+areas, `admin` and `manager`, declared once as `as const` arrays with derived
+union types and `isDashboardRole()` / `isDashboardArea()` guards. The
+role-to-area mapping is a single `satisfies Record<DashboardRole, DashboardArea>`
+table, so adding or renaming a role is a compile error rather than a silent
+mis-routing.
+
+Authorization is role plus branch scope, not granular permissions. A platform
+admin is unscoped and reads across every branch; a branch manager is pinned to
+the `branchId` carried on the claim. This mirrors the Laravel `DashboardActor`,
+where the same two facts decide every branch-scoped query.
+
+```text
+src/shared/auth/
+├── claim-cookie.ts          # Cookie name, safe for client and edge imports
+├── enums/                   # Roles and areas: as const + derived union + guard
+├── types/                   # One type per file: claim, actor type
+├── rbac.ts                  # Pure predicates: areaForRole, canAccessArea, hasAnyRole
+├── route-guard.ts           # (claim, pathname) -> allow / redirect decision
+├── verify-dashboard-claim.ts# JWT verification. Never imported by client code
+└── index.ts                 # Barrel. Deliberately excludes verify-dashboard-claim
+```
+
+Rules:
+
+- `auth` is a leaf. It imports nothing from `routes/`, `entities/`, or
+  `components/`. `routes/` and `entities/` may import from `auth`; never the
+  reverse.
+- No module outside `src/shared/auth/` may spell a role literal.
+  `scripts/check-architecture.mjs` fails the build when one appears; roles are
+  imported instead.
+- The barrel excludes `verify-dashboard-claim.ts` because it reads
+  `process.env['DASHBOARD_SESSION_SECRET']` and pulls `jose` into the bundle.
+  Client components import the cookie name from the barrel and never the
+  verifier.
+- A claim is rejected unless it is internally consistent: a branch manager must
+  carry the branch it is scoped to and a platform admin must not. This closes
+  the window where an unscoped claim would degrade into a manager with no
+  branch filter.
+- Navigation items declare `roles?: readonly DashboardRole[]`. An omitted list
+  means every role. This is a visibility hint only, never an authorization gate.
+- Route layouts derive the role from the verified claim instead of asserting it
+  from the URL. `middleware.ts` still runs first, so a mismatch ends in
+  `notFound()` rather than a shell rendering with a forged role.
+
+Middleware is a UX and routing boundary, not API authorization. Laravel verifies
+the authenticated actor and branch scope on every dashboard endpoint; the
+dashboard only mirrors that decision so the user is not shown surfaces that will
+return `403`.
 
 ## Errors and notifications
 
@@ -174,6 +224,8 @@ Architecture is enforced in code review and CI, not by convention alone.
   client directives, arbitrary color classes, and raw color literals.
 - A structural test verifies each feature directory contains only approved
   subdirectories and categorizes all feature components.
+- The architecture script rejects role literals outside `src/shared/auth/`, so
+  a role rename cannot leave a stale comparison behind.
 - `npx tsc --noEmit`, lint, dashboard tests, and the backend dashboard feature
   tests are mandatory PR/commit gates. Each feature is validated before the
   next feature begins.

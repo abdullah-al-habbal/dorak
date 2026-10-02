@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { adminArea, dashboardAreas } from '@/shared/auth';
 import type { Branch } from '@/shared/entities/domain';
 import {
   mapBranchFromWire,
@@ -72,7 +73,11 @@ export const branchesConfig = defineEntityConfig<Branch, typeof fields>({
     defaultParams: { page: 1, per_page: 15 },
     methods: { update: 'PUT' },
   },
-  access: { areas: ['admin', 'manager'] },
+  access: {
+    create: { areas: [adminArea] },
+    edit: { areas: dashboardAreas },
+    read: { areas: dashboardAreas },
+  },
   messages: {
     singular: 'navigation.branches',
     plural: 'navigation.branches',
@@ -84,7 +89,6 @@ export const branchesConfig = defineEntityConfig<Branch, typeof fields>({
   },
   fields,
   ui: {
-    form: { create: true, edit: true },
     list: {
       search: true,
       columns: [

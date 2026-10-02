@@ -6,6 +6,7 @@ import { GenericTableListPage } from '@/shared/components/templates/generic-tabl
 import { bookingsConfig } from '@/shared/entities/configs/bookings.config';
 import { chairsConfig } from '@/shared/entities/configs/chairs.config';
 import { stylistsConfig } from '@/shared/entities/configs/stylists.config';
+import { canPerformOperation } from '@/shared/entities/entity-access';
 import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import { useServerQueryParams } from '@/shared/hooks/use-server-query-params';
 import type { DashboardArea } from '@/shared/routes/dashboard-routes';
@@ -33,12 +34,14 @@ export function BookingList({ area }: Readonly<{ area: DashboardArea }>) {
   return (
     <GenericTableListPage
       actions={
-        <Link
-          className="rounded-lg bg-primary px-3 py-2 text-sm text-background"
-          href={APP_ROUTES.create(area, 'bookings')}
-        >
-          Create walk-in booking
-        </Link>
+        canPerformOperation(bookingsConfig.access, 'create', area) ? (
+          <Link
+            className="rounded-lg bg-primary px-3 py-2 text-sm text-background"
+            href={APP_ROUTES.create(area, 'bookings')}
+          >
+            Create walk-in booking
+          </Link>
+        ) : undefined
       }
       description="Monitor appointments and resolve cancellations or schedule changes."
       emptyMessage="No bookings match these filters."

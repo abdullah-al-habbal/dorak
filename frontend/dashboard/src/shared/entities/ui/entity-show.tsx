@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { CardSkeleton } from '@/shared/components/feedback/skeletons/card-skeleton';
 import { GenericShowPage } from '@/shared/components/templates/generic-show-page';
+import { canPerformOperation } from '@/shared/entities/entity-access';
 import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import type { EntityFieldTree } from '@/shared/entities/fields';
 import type { EntityConfig } from '@/shared/entities/types/entity-config';
@@ -47,7 +48,7 @@ function DefaultEntityShow<TEntity extends EntityRecord, TInput, TFields extends
   return (
     <GenericShowPage
       actions={
-        config.ui.form?.edit ? (
+        canPerformOperation(config.access, 'edit', area) ? (
           <Link
             className="rounded-lg bg-primary px-3 py-2 text-sm text-background"
             href={`${path}/${id}/edit`}

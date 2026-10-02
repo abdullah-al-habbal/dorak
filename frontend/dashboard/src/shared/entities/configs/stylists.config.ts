@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { dashboardAreas } from '@/shared/auth';
 import type { Stylist } from '@/shared/entities/domain';
 import {
   mapStylistFromWire,
@@ -62,7 +63,11 @@ export const stylistsConfig = defineEntityConfig<Stylist, typeof fields>({
     defaultParams: { page: 1, per_page: 15 },
     methods: { update: 'PUT' },
   },
-  access: { areas: ['admin', 'manager'] },
+  access: {
+    create: { areas: dashboardAreas },
+    edit: { areas: dashboardAreas },
+    read: { areas: dashboardAreas },
+  },
   messages: {
     singular: 'navigation.stylists',
     plural: 'navigation.stylists',
@@ -74,7 +79,6 @@ export const stylistsConfig = defineEntityConfig<Stylist, typeof fields>({
   },
   fields,
   ui: {
-    form: { create: true, edit: true },
     list: {
       search: true,
       columns: [

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { dashboardAreas } from '@/shared/auth';
 import type { Booking } from '@/shared/entities/domain';
 import {
   mapBookingFromWire,
@@ -51,7 +52,10 @@ export const bookingsConfig = defineEntityConfig<Booking, typeof fields, Booking
     collection: '/dashboard/bookings',
     defaultParams: { page: 1, per_page: 15 },
   },
-  access: { areas: ['admin', 'manager'] },
+  access: {
+    create: { areas: dashboardAreas },
+    read: { areas: dashboardAreas },
+  },
   messages: {
     singular: 'navigation.bookings',
     plural: 'navigation.bookings',
@@ -63,7 +67,6 @@ export const bookingsConfig = defineEntityConfig<Booking, typeof fields, Booking
   },
   fields,
   ui: {
-    form: { create: true },
     list: {
       search: true,
       columns: [

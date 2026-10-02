@@ -1,37 +1,34 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { dashboardClaimCookieName, verifyDashboardClaim } from '@/shared/auth/dashboard-claim';
+import { canAccessPathname, dashboardClaimCookieName, homePathForClaim } from '@/shared/auth';
+import { verifyDashboardClaim } from '@/shared/auth/verify-dashboard-claim';
+import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const claim = await verifyDashboardClaim(request.cookies.get(dashboardClaimCookieName)?.value);
   const { pathname } = request.nextUrl;
 
-  if (pathname === '/login') {
-    if (claim?.role === 'platform_admin') {
-      return redirect(request, '/admin');
-    }
-    if (claim?.role === 'branch_manager') {
-      return redirect(request, '/manager');
-    }
-    return NextResponse.next();
+  if (pathname === APP_ROUTES.login) {
+    return claim === null ? NextResponse.next() : redirect(request, homePathForClaim(claim));
   }
 
   if (claim === null) {
-    return redirect(request, '/login');
-  }
-  if (pathname.startsWith('/admin') && claim.role !== 'platform_admin') {
-    return redirect(request, '/manager');
-  }
-  if (pathname.startsWith('/manager') && claim.role !== 'branch_manager') {
-    return redirect(request, '/admin');
+    return redirect(request, APP_ROUTES.login);
   }
 
-  return NextResponse.next();
+  return canAccessPathname(claim, pathname)
+    ? NextResponse.next()
+    : redirect(request, homePathForClaim(claim));
 }
 
 function redirect(request: NextRequest, path: string): NextResponse {
   return NextResponse.redirect(new URL(path, request.url));
 }
 
+/**
+ * Next.js reads `matcher` statically at build time, so these stay string
+ * literals. They must mirror the areas in `src/shared/auth`: `admin` for the
+ * platform admin, `manager` for the branch manager.
+ */
 export const config = {
   matcher: ['/admin/:path*', '/manager/:path*', '/login'],
 };

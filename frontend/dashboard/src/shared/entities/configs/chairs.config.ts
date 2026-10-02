@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { isDashboardApiError } from '@/shared/api/dashboard-api-error';
+import { dashboardAreas } from '@/shared/auth';
 import { publishChairConflict } from '@/shared/components/feedback/chair-conflict-dialog';
 import { showWarning } from '@/shared/components/feedback/toast';
 import type { Chair } from '@/shared/entities/domain';
@@ -79,7 +80,11 @@ export const chairsConfig = defineEntityConfig<Chair, typeof fields>({
     defaultParams: { page: 1, per_page: 15 },
     methods: { update: 'PUT' },
   },
-  access: { areas: ['admin', 'manager'] },
+  access: {
+    create: { areas: dashboardAreas },
+    edit: { areas: dashboardAreas },
+    read: { areas: dashboardAreas },
+  },
   messages: {
     singular: 'navigation.chairs',
     plural: 'navigation.chairs',
@@ -91,7 +96,6 @@ export const chairsConfig = defineEntityConfig<Chair, typeof fields>({
   },
   fields,
   ui: {
-    form: { create: true, edit: true },
     list: {
       search: true,
       columns: [

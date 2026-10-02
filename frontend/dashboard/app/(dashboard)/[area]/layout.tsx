@@ -1,4 +1,7 @@
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
+import { canAccessArea, dashboardClaimCookieName, isDashboardArea } from '@/shared/auth';
+import { verifyDashboardClaim } from '@/shared/auth/verify-dashboard-claim';
 import { DashboardShell } from '@/shared/components/layout/dashboard-shell';
 
 export default async function DashboardAreaLayout({
@@ -6,11 +9,10 @@ export default async function DashboardAreaLayout({
   params,
 }: Readonly<{ children: React.ReactNode; params: Promise<{ area: string }> }>) {
   const { area } = await params;
-  if (area === 'admin') {
-    return <DashboardShell role="platform_admin">{children}</DashboardShell>;
+  const claim = await verifyDashboardClaim((await cookies()).get(dashboardClaimCookieName)?.value);
+  if (!isDashboardArea(area) || claim === null || !canAccessArea(claim, area)) {
+    notFound();
   }
-  if (area === 'manager') {
-    return <DashboardShell role="branch_manager">{children}</DashboardShell>;
-  }
-  notFound();
+
+  return <DashboardShell claim={claim}>{children}</DashboardShell>;
 }

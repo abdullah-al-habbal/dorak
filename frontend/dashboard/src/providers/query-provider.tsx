@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { DashboardApiError, isDashboardApiError } from '@/shared/api/dashboard-api-error';
 import { registerApiErrorHandler } from '@/shared/api/error-interceptor';
-import { dashboardClaimCookieName } from '@/shared/auth/dashboard-claim';
+import { dashboardClaimCookieName } from '@/shared/auth';
 import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 
 const defaultStaleTimeMs = 30_000;

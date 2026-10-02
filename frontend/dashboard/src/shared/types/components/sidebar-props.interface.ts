@@ -1,6 +1,6 @@
-import type { DashboardRole } from '@/shared/types/auth/dashboard-role';
+import type { DashboardClaim } from '@/shared/auth';
 
 export interface SidebarProps {
+  claim: DashboardClaim;
   className?: string;
-  role: DashboardRole;
 }

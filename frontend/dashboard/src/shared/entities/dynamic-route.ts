@@ -1,17 +1,25 @@
 import { notFound } from 'next/navigation';
-import type { DashboardArea } from '@/shared/routes/dashboard-routes';
+import { type DashboardArea, isDashboardArea } from '@/shared/auth';
+import { canPerformOperation } from '@/shared/entities/entity-access';
+import type { EntityOperation } from '@/shared/entities/types/entity-operation';
 import { getEntityConfig } from './configs';
 
 export function resolveDynamicEntity(
   area: string,
   entity: string,
+  operation: EntityOperation,
 ): {
   readonly area: DashboardArea;
   readonly config: NonNullable<ReturnType<typeof getEntityConfig>>;
 } {
   const config = getEntityConfig(entity);
-  if ((area !== 'admin' && area !== 'manager') || !config?.access.areas.includes(area)) {
+  if (
+    !isDashboardArea(area) ||
+    config === undefined ||
+    !canPerformOperation(config.access, operation, area)
+  ) {
     notFound();
   }
+
   return { area, config };
 }
