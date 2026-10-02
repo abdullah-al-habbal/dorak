@@ -65,6 +65,7 @@ src/shared/entities/
 ├── configs/     # One config per entity + the slug registry
 ├── domain/      # Domain record contracts owned by configs
 ├── ui/          # EntityTable, EntityForm, EntityShow
+├── workflows/   # Per-entity overrides that the config tree cannot express
 ├── field-schema.ts       # Field tree -> Zod contract
 ├── field-coercions.ts    # Blank form/API value normalization
 ├── entity-api.ts         # CRUD client
@@ -87,6 +88,20 @@ Rules:
 - `access` is declared per operation rather than per entity, because the two
   actors do not share a surface on every entity. An omitted operation grants
   nobody, which is how an entity declares that it has no such form.
+- An override earns its place only by expressing something the config tree
+  cannot. `renderForm` covers a custom form, `renderShow` a custom detail
+  layout, and `rowActions` per-row controls the View link does not cover. A list
+  override is no longer needed: a config declares its columns, its filters, and
+  its row actions, and `EntityTable` renders all of them. Prefer widening the
+  config contract over adding a second hand-written table.
+- A filter is declared once with both names it needs — `key` for the URL
+  (`chair_id`) and `param` for the list field (`chairId`) — so the engine
+  rebuilds the query from the URL and a list never re-reads `useSearchParams`
+  by hand. Static values use `options`; a filter whose values come from the API
+  uses `renderOptions`.
+- Every label the engine renders is a `DashboardMessageKey`, so a typo in a
+  config is a compile error rather than a raw key in the UI. Select *option*
+  labels stay `string` because their values are runtime data, not messages.
 - Escaping the generic renderer is done through `overrides.renderField`, keyed
   by dotted field path (`name.en`). Renderers receive `control`, `formState`,
   and `register`; they are mounted as real elements and may use hooks.
@@ -216,6 +231,28 @@ The central client parses the backend envelope and normalizes errors. Query and
 mutation hooks publish normalized 401, 403, validation, conflict, and server
 failures through the global toast engine. Route errors use `app/error.tsx` and
 root failures use `app/global-error.tsx`; errors must never be ignored.
+
+## Localization
+
+Both dictionaries live in `src/shared/i18n/messages.ts`, keyed by section, with
+`ar` typed as `typeof en` so a missing or misspelled Arabic key is a compile
+error. Components read a message through `useDashboardTranslation()`. Code below
+the component tree — the API client, `DashboardApiError`, entity configs — cannot
+call a hook, so it resolves messages through `src/shared/i18n/translate.ts`,
+which takes the locale from the same cookie the request sends.
+
+Rules:
+
+- A user-facing string is a `DashboardMessageKey`, never an inline literal. The
+  entity config contracts enforce this for `messages.*`, column and detail
+  labels, field labels, and filter labels, so a bad key fails the build.
+- Brand names, entity names, and status *values* returned by the API are data,
+  not messages, and are rendered as-is.
+- A fallback title for a record with no name uses a field the record already
+  has, not an untranslated placeholder.
+- An entity config that needs to show an error passes `overrides.onMutationError`,
+  which receives the translator from the engine rather than reaching for i18n
+  itself.
 
 ## Banned patterns
 

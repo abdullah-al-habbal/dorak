@@ -1,14 +1,31 @@
 import { z } from 'zod';
 import { adminArea, managerArea } from '@/shared/auth';
-import type { Booking } from '@/shared/entities/domain';
+import type { Booking, BookingStatus, WalkInBookingInput } from '@/shared/entities/domain';
 import {
   mapBookingFromWire,
   mapBookingInputToWire,
   type BookingWire,
 } from '@/shared/entities/domain/booking-wire';
+import type { BookingUpdatePayloadWire } from '@/shared/entities/domain/wire/booking-update-payload-wire';
 import { optionalUuid } from '@/shared/entities/field-coercions';
 import { defineEntityConfig } from '@/shared/entities/types/entity-config';
+import {
+  ChairFilterOptions,
+  StylistFilterOptions,
+} from '@/shared/entities/workflows/bookings/booking-filter-options';
+import { BookingRowActions } from '@/shared/entities/workflows/bookings/booking-row-actions';
 import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
+
+/**
+ * Create takes the full walk-in field set; update only ever carries a status
+ * transition. Modelling both keeps `toCreatePayload` and `toUpdatePayload`
+ * typed instead of forcing one of them to widen.
+ */
+export type BookingCreateInput = WalkInBookingInput;
+
+export type BookingStatusUpdateInput = {
+  readonly status: BookingStatus;
+};
 
 export type BookingListParams = ServerListParams & {
   readonly chairId?: string | undefined;
@@ -45,12 +62,16 @@ const fields = {
   timeSlot: { control: 'text', label: 'bookings.appointmentTime', schema: z.string().min(1) },
 } as const;
 
-export const bookingsConfig = defineEntityConfig<Booking, typeof fields, BookingListParams>({
+export const bookingsConfig = defineEntityConfig<
+  Booking,
+  typeof fields,
+  BookingListParams,
+  BookingCreateInput | BookingStatusUpdateInput
+>({
   slug: 'bookings',
   entity: { singular: 'booking', plural: 'bookings' },
   api: {
     collection: '/dashboard/bookings',
-    defaultParams: { page: 1, per_page: 15 },
   },
   access: {
     create: { areas: [adminArea, managerArea] },
@@ -79,22 +100,47 @@ export const bookingsConfig = defineEntityConfig<Booking, typeof fields, Booking
           value: (booking) => booking.barber?.name.en ?? '—',
         },
       ],
+      filters: [
+        {
+          key: 'chair_id',
+          label: 'common.chair',
+          param: 'chairId',
+          renderOptions: ChairFilterOptions,
+        },
+        {
+          key: 'stylist_id',
+          label: 'common.stylist',
+          param: 'stylistId',
+          renderOptions: StylistFilterOptions,
+        },
+      ],
+      rowActions: BookingRowActions,
     },
     show: {
-      title: () => 'Booking',
       fields: [
         { label: 'common.status', value: (booking) => booking.status },
         { label: 'bookings.start', value: (booking) => booking.timeSlot },
         { label: 'bookings.end', value: (booking) => booking.endsAt ?? '—' },
         { label: 'common.chair', value: (booking) => booking.chair?.label ?? '—' },
         { label: 'common.stylist', value: (booking) => booking.barber?.name.en ?? '—' },
+        {
+          label: 'common.services',
+          value: (booking) => booking.services.map((service) => service.name.en).join(', '),
+        },
       ],
     },
   },
   overrides: {
     endpoint: { create: () => '/dashboard/bookings/walk-in' },
     fromApi: (response) => mapBookingFromWire(response as BookingWire),
-    toCreatePayload: mapBookingInputToWire,
+    toCreatePayload: (input) => mapBookingInputToWire(input as WalkInBookingInput),
+    /**
+     * Create and update carry different payloads, so a status transition gets
+     * its own mapper instead of the walk-in one.
+     */
+    toUpdatePayload: (input): BookingUpdatePayloadWire => ({
+      status: (input as BookingStatusUpdateInput).status,
+    }),
     toListParams: (params) => ({
       chair_id: params.chairId,
       date_from: params.dateFrom,

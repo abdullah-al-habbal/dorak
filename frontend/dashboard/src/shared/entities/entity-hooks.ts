@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 import { useInvalidatingMutation } from '@/shared/hooks/use-invalidating-mutation';
 import { createQueryKeys } from '@/shared/utils/query-keys';
 import { createEntityApi } from './entity-api';
@@ -18,6 +19,22 @@ export function createEntityHooks<
   const api = createEntityApi(config);
   const queryKeys = createQueryKeys(['dashboard', config.slug]);
 
+  /**
+   * `onMutationError` is a config declaration, so it cannot call a hook itself.
+   * Resolving the translator here — inside each `use*` hook, where the rules of
+   * hooks are satisfied — lets a config surface a localized message without the
+   * engine knowing anything about i18n.
+   */
+  const useMutationError = () => {
+    const { t } = useDashboardTranslation();
+    const handler = config.overrides?.onMutationError;
+    return handler === undefined
+      ? undefined
+      : (error: Error) => {
+          handler(error, t);
+        };
+  };
+
   return {
     queryKeys,
     useEntities: (params: TParams) =>
@@ -28,35 +45,35 @@ export function createEntityHooks<
         queryKey: queryKeys.detail(id),
         queryFn: () => api.get(id),
       }),
-    useCreateEntity: () =>
-      useInvalidatingMutation(
+    useCreateEntity: () => {
+      const onError = useMutationError();
+      return useInvalidatingMutation(
         {
           mutationFn: (input: TInput) => api.create(input),
-          ...(config.overrides?.onMutationError === undefined
-            ? {}
-            : { onError: config.overrides.onMutationError }),
+          ...(onError === undefined ? {} : { onError }),
         },
         [queryKeys.all],
-      ),
-    useUpdateEntity: () =>
-      useInvalidatingMutation(
+      );
+    },
+    useUpdateEntity: () => {
+      const onError = useMutationError();
+      return useInvalidatingMutation(
         {
           mutationFn: ({ id, input }: { id: EntityId; input: TInput }) => api.update(id, input),
-          ...(config.overrides?.onMutationError === undefined
-            ? {}
-            : { onError: config.overrides.onMutationError }),
+          ...(onError === undefined ? {} : { onError }),
         },
         [queryKeys.all],
-      ),
-    useDeleteEntity: () =>
-      useInvalidatingMutation(
+      );
+    },
+    useDeleteEntity: () => {
+      const onError = useMutationError();
+      return useInvalidatingMutation(
         {
           mutationFn: (id: EntityId) => api.delete(id),
-          ...(config.overrides?.onMutationError === undefined
-            ? {}
-            : { onError: config.overrides.onMutationError }),
+          ...(onError === undefined ? {} : { onError }),
         },
         [queryKeys.all],
-      ),
+      );
+    },
   };
 }

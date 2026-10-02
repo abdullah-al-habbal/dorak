@@ -70,7 +70,6 @@ export const branchesConfig = defineEntityConfig<Branch, typeof fields>({
   entity: { singular: 'branch', plural: 'branches' },
   api: {
     collection: '/dashboard/branches',
-    defaultParams: { page: 1, per_page: 15 },
     methods: { update: 'PUT' },
   },
   access: {

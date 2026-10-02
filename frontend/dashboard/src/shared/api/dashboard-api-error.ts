@@ -1,3 +1,9 @@
+import {
+  dashboardLocaleCookie,
+  isDashboardLocale,
+  type DashboardLocale,
+} from '@/shared/i18n/locale';
+import { httpMessageKey, translate } from '@/shared/i18n/translate';
 import type { ApiErrorPayload } from '@/shared/types/api/api-error-payload-wire';
 
 export class DashboardApiError extends Error {
@@ -8,8 +14,9 @@ export class DashboardApiError extends Error {
   public constructor(
     public readonly status: number,
     payload: ApiErrorPayload = {},
+    locale: DashboardLocale = 'en',
   ) {
-    super(payload.message ?? defaultMessageForStatus(status));
+    super(payload.message ?? translate(locale, httpMessageKey(status)));
     this.name = 'DashboardApiError';
     this.details = payload.errors ?? {};
     this.requestId = payload.request_id;
@@ -20,21 +27,18 @@ export function isDashboardApiError(error: unknown): error is DashboardApiError 
   return error instanceof DashboardApiError;
 }
 
-function defaultMessageForStatus(status: number): string {
-  if (status === 401) {
-    return 'Your session has expired. Please sign in again.';
+/**
+ * The API layer runs outside React, so the fallback message for a missing
+ * server payload is localized from the same cookie the request sends.
+ */
+export function requestLocale(): DashboardLocale {
+  if (typeof document === 'undefined') {
+    return 'en';
   }
-  if (status === 403) {
-    return 'You do not have permission to perform this action.';
-  }
-  if (status === 409) {
-    return 'This record changed. Refresh and try again.';
-  }
-  if (status === 422) {
-    return 'Please correct the highlighted fields.';
-  }
-  if (status >= 500) {
-    return 'The service is temporarily unavailable. Please try again.';
-  }
-  return 'The request could not be completed.';
+  const cookie = document.cookie
+    .split(';')
+    .map((value) => value.trim())
+    .find((value) => value.startsWith(`${dashboardLocaleCookie}=`));
+  const value = cookie?.slice(`${dashboardLocaleCookie}=`.length);
+  return isDashboardLocale(value) ? value : 'en';
 }

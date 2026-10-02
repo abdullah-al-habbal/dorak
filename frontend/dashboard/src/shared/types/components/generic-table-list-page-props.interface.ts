@@ -10,8 +10,8 @@ export interface GenericTableListPageProps {
   isEmpty: boolean;
   isLoading: boolean;
   onPageChange: (page: number) => void;
-  onSearchChange: (value: string) => void;
+  onSearchChange?: ((value: string) => void) | undefined;
   pagination?: PaginationState | undefined;
-  search: string;
+  search?: string | undefined;
   title: string;
 }

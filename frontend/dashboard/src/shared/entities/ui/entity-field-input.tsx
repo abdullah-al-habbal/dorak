@@ -12,7 +12,7 @@ export function EntityFieldInput({
   register,
 }: Readonly<EntityFieldInputProps>) {
   const { t } = useDashboardTranslation();
-  const label = t(field.label as never);
+  const label = t(field.label);
   if (field.control === 'select') {
     return (
       <label className="grid gap-1 text-sm">
@@ -20,7 +20,7 @@ export function EntityFieldInput({
         <select className="rounded-lg border bg-surface px-3 py-2" {...register(name)}>
           {field.options.map((option) => (
             <option key={option.value} value={option.value}>
-              {t(option.label as never)}
+              {option.label}
             </option>
           ))}
         </select>

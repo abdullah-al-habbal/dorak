@@ -1,4 +1,4 @@
-export interface WalkInBookingInput {
+export type WalkInBookingInput = {
   readonly barberId: string | null | undefined;
   readonly branchId: string;
   readonly chairId: string;
@@ -7,4 +7,4 @@ export interface WalkInBookingInput {
   readonly customerPhone: string | undefined;
   readonly serviceIds: string[];
   readonly timeSlot: string;
-}
+};

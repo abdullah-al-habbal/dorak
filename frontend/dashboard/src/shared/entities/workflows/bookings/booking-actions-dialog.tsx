@@ -10,9 +10,8 @@ import type { BookingStatus } from '@/shared/entities/domain';
 import { mapBookingFromWire, type BookingWire } from '@/shared/entities/domain/booking-wire';
 import type { BookingReschedulePayloadWire } from '@/shared/entities/domain/wire/booking-reschedule-payload-wire';
 import { createEntityHooks } from '@/shared/entities/entity-hooks';
+import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 import { useInvalidatingMutation } from '@/shared/hooks/use-invalidating-mutation';
-
-type NextStatus = Exclude<BookingStatus, 'pending' | 'completed' | 'canceled' | 'no_show'>;
 
 const bookingHooks = createEntityHooks(bookingsConfig);
 const invalidations = [
@@ -22,6 +21,7 @@ const invalidations = [
 ] as const;
 
 export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string }>) {
+  const { t } = useDashboardTranslation();
   const dialog = useRef<HTMLDialogElement>(null);
   const [timeSlot, setTimeSlot] = useState('');
   const [endsAt, setEndsAt] = useState('');
@@ -39,19 +39,12 @@ export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string
     },
     invalidations,
   );
-  const updateStatus = useInvalidatingMutation(
-    {
-      mutationFn: async (status: NextStatus) =>
-        mapBookingFromWire(
-          await mutateEntity<{ status: NextStatus }, BookingWire>(
-            `/dashboard/bookings/${bookingId}`,
-            'PATCH',
-            { status },
-          ),
-        ),
-    },
-    invalidations,
-  );
+  /**
+   * A status transition is the engine's own update path — same collection URL,
+   * same PATCH verb, same `fromApi` mapper — so it reuses `useUpdateEntity`
+   * rather than re-declaring the endpoint.
+   */
+  const updateStatus = bookingHooks.useUpdateEntity();
   const reschedule = useInvalidatingMutation(
     {
       mutationFn: async (input: { readonly endsAt: string; readonly timeSlot: string }) =>
@@ -76,26 +69,29 @@ export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string
   return (
     <>
       <Button onClick={() => dialog.current?.showModal()} type="button" variant="outline">
-        Manage
+        {t('actions.manage')}
       </Button>
       <dialog
         className="max-w-md rounded-lg border bg-surface p-6 text-foreground"
         ref={dialog}
         onClose={close}
       >
-        <h2 className="text-lg font-semibold">Manage booking</h2>
+        <h2 className="text-lg font-semibold">{t('bookings.manage')}</h2>
         <div className="mt-4 grid gap-3">
           <select
             disabled={updateStatus.isPending || nextStatuses(status).length === 0}
             onChange={(event) => {
-              const next = event.target.value as NextStatus | '';
+              const next = event.target.value as Exclude<BookingStatus, 'pending'> | '';
               if (next !== '') {
-                updateStatus.mutate(next, { onSuccess: close });
+                updateStatus.mutate(
+                  { id: bookingId, input: { status: next } },
+                  { onSuccess: close },
+                );
               }
             }}
             value=""
           >
-            <option value="">Select next status</option>
+            <option value="">{t('bookings.selectNextStatus')}</option>
             {nextStatuses(status).map((next) => (
               <option key={next} value={next}>
                 {next}
@@ -120,14 +116,14 @@ export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string
         )}
         <div className="mt-6 flex flex-wrap justify-end gap-2">
           <Button onClick={close} type="button" variant="outline">
-            Close
+            {t('actions.close')}
           </Button>
           <Button
             disabled={cancel.isPending}
             onClick={() =>
               cancel.mutate(undefined, {
                 onSuccess: () => {
-                  showSuccess('Booking canceled.');
+                  showSuccess(t('bookings.cancelled'));
                   close();
                 },
               })
@@ -135,7 +131,7 @@ export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string
             type="button"
             variant="outline"
           >
-            Cancel booking
+            {t('bookings.cancelBooking')}
           </Button>
           <Button
             disabled={reschedule.isPending || timeSlot === '' || endsAt === ''}
@@ -146,13 +142,13 @@ export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string
                   onError: (error) => {
                     const message =
                       isDashboardApiError(error) && error.status === 409
-                        ? 'This chair is already booked for that time. Choose another time window.'
+                        ? t('bookings.conflict')
                         : error.message;
                     setConflict(message);
                     showError(message);
                   },
                   onSuccess: () => {
-                    showSuccess('Booking rescheduled.');
+                    showSuccess(t('bookings.rescheduled'));
                     close();
                   },
                 },
@@ -160,7 +156,7 @@ export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string
             }
             type="button"
           >
-            Reschedule
+            {t('bookings.reschedule')}
           </Button>
         </div>
       </dialog>
@@ -168,7 +164,9 @@ export function BookingActionsDialog({ bookingId }: Readonly<{ bookingId: string
   );
 }
 
-function nextStatuses(status: BookingStatus): readonly NextStatus[] {
+function nextStatuses(
+  status: BookingStatus,
+): readonly Exclude<BookingStatus, 'pending' | 'completed' | 'canceled' | 'no_show'>[] {
   return (
     {
       pending: ['confirmed'],

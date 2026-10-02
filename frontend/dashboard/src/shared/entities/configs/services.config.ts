@@ -56,7 +56,6 @@ export const servicesConfig = defineEntityConfig<Service, typeof fields>({
   entity: { singular: 'service', plural: 'services' },
   api: {
     collection: '/dashboard/services',
-    defaultParams: { page: 1, per_page: 15 },
     methods: { update: 'PUT' },
   },
   access: {
@@ -81,13 +80,11 @@ export const servicesConfig = defineEntityConfig<Service, typeof fields>({
         {
           id: 'name',
           label: 'common.name',
-          serverSortKey: 'name',
           value: (service) => service.name.en,
         },
         {
           id: 'price',
           label: 'common.price',
-          serverSortKey: 'price',
           value: (service) => service.price,
         },
         { id: 'duration', label: 'common.duration', value: (service) => service.duration ?? '—' },

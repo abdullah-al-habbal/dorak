@@ -1,6 +1,7 @@
-import { DashboardApiError } from '@/shared/api/dashboard-api-error';
+import { DashboardApiError, requestLocale } from '@/shared/api/dashboard-api-error';
 import { interceptApiError } from '@/shared/api/error-interceptor';
 import { dashboardLocaleCookie, isDashboardLocale } from '@/shared/i18n/locale';
+import { translate } from '@/shared/i18n/translate';
 import type { ApiEnvelope } from '@/shared/types/api/api-envelope-wire';
 import type { ApiErrorPayload } from '@/shared/types/api/api-error-payload-wire';
 
@@ -28,16 +29,18 @@ export async function dashboardApiEnvelope<TData>(
       },
     });
   } catch {
-    const error = new DashboardApiError(0, {
-      message: 'Unable to connect. Check your internet connection and try again.',
-    });
+    const error = new DashboardApiError(
+      0,
+      { message: translate(requestLocale(), 'http.network') },
+      requestLocale(),
+    );
     interceptApiError(error);
     throw error;
   }
 
   const payload = await parsePayload(response);
   if (!response.ok || !isSuccessfulEnvelope(payload)) {
-    const error = new DashboardApiError(response.status, payload ?? {});
+    const error = new DashboardApiError(response.status, payload ?? {}, requestLocale());
     interceptApiError(error);
     throw error;
   }

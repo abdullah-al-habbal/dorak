@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { type DashboardArea, isDashboardArea } from '@/shared/auth';
 import { canPerformOperation } from '@/shared/entities/entity-access';
 import type { EntityOperation } from '@/shared/entities/types/entity-operation';
-import { getEntityConfig } from './configs';
+import { getEntityConfig, type RegisteredEntityConfig } from './configs';
 
 export function resolveDynamicEntity(
   area: string,
@@ -10,7 +10,7 @@ export function resolveDynamicEntity(
   operation: EntityOperation,
 ): {
   readonly area: DashboardArea;
-  readonly config: NonNullable<ReturnType<typeof getEntityConfig>>;
+  readonly config: RegisteredEntityConfig;
 } {
   const config = getEntityConfig(entity);
   if (

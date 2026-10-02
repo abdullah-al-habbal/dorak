@@ -11,6 +11,7 @@ import {
 } from '@/shared/entities/domain/chair-wire';
 import { optionalNumber, optionalUuid } from '@/shared/entities/field-coercions';
 import { defineEntityConfig } from '@/shared/entities/types/entity-config';
+import type { DashboardMessageKey } from '@/shared/i18n/messages';
 
 const floorZones = ['men', 'women', 'shared'] as const;
 const chairStatuses = ['available', 'occupied', 'maintenance'] as const;
@@ -65,10 +66,10 @@ const fields = {
   },
 } as const;
 
-function handleChairMutationError(error: Error): void {
+function handleChairMutationError(error: Error, t: (key: DashboardMessageKey) => string): void {
   if (isDashboardApiError(error) && error.status === 409) {
     publishChairConflict();
-    showWarning('Chair changes are blocked by active or future bookings.');
+    showWarning(t('chairs.blockedByBookings'));
   }
 }
 
@@ -77,7 +78,6 @@ export const chairsConfig = defineEntityConfig<Chair, typeof fields>({
   entity: { singular: 'chair', plural: 'chairs' },
   api: {
     collection: '/dashboard/chairs',
-    defaultParams: { page: 1, per_page: 15 },
     methods: { update: 'PUT' },
   },
   access: {
@@ -105,7 +105,7 @@ export const chairsConfig = defineEntityConfig<Chair, typeof fields>({
       ],
     },
     show: {
-      title: (chair) => chair.label ?? 'Chair',
+      title: (chair) => chair.label ?? chair.id,
       fields: [
         { label: 'common.label', value: (chair) => chair.label ?? '—' },
         { label: 'common.status', value: (chair) => chair.status },

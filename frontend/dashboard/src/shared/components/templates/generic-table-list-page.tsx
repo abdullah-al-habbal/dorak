@@ -37,22 +37,24 @@ export function GenericTableListPage({
         {actions}
       </header>
       <div className="flex flex-wrap gap-3">
-        <label className="relative">
-          <span className="sr-only">{t('common.search')}</span>
-          <Search className="absolute start-3 top-3 text-foreground" size={16} />
-          <Input
-            className="ps-9"
-            onChange={(event) => onSearchChange(event.target.value)}
-            placeholder={t('common.search')}
-            value={search}
-          />
-        </label>
+        {onSearchChange === undefined ? null : (
+          <label className="relative">
+            <span className="sr-only">{t('common.search')}</span>
+            <Search className="absolute start-3 top-3 text-foreground" size={16} />
+            <Input
+              className="ps-9"
+              onChange={(event) => onSearchChange(event.target.value)}
+              placeholder={t('common.search')}
+              value={search ?? ''}
+            />
+          </label>
+        )}
         {filters}
       </div>
       {isLoading ? (
         <TableSkeleton />
       ) : isEmpty ? (
-        <EmptyState description={emptyMessage} title="No records found" />
+        <EmptyState description={emptyMessage} title={t('common.noRecords')} />
       ) : (
         children
       )}

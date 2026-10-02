@@ -11,6 +11,7 @@ import type { EntityId } from '@/shared/entities/types/entity-id';
 import type { EntityRecord } from '@/shared/entities/types/entity-record';
 import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 import type { DashboardArea } from '@/shared/routes/dashboard-routes';
+import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
 
 type EntityShowProps<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree> = {
@@ -44,24 +45,27 @@ function DefaultEntityShow<TEntity extends EntityRecord, TInput, TFields extends
   if (entity === undefined) {
     return <CardSkeleton />;
   }
-  const path = `/${area}/${config.slug}`;
   return (
     <GenericShowPage
       actions={
         canPerformOperation(config.access, 'edit', area) ? (
           <Link
             className="rounded-lg bg-primary px-3 py-2 text-sm text-background"
-            href={`${path}/${id}/edit`}
+            href={APP_ROUTES.edit(area, config.slug, id)}
           >
             {t('actions.edit')}
           </Link>
         ) : undefined
       }
       details={config.ui.show.fields.map((field) => ({
-        label: t(field.label as never),
+        label: t(field.label),
         value: field.value(entity),
       }))}
-      title={config.ui.show.title(entity)}
+      title={
+        config.ui.show.title === undefined
+          ? t(config.messages.singular)
+          : config.ui.show.title(entity)
+      }
     />
   );
 }

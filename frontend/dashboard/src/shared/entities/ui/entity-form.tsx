@@ -14,6 +14,7 @@ import type { EntityFieldTree } from '@/shared/entities/fields';
 import type { EntityFormProps } from '@/shared/entities/types/entity-form-props';
 import type { EntityRecord } from '@/shared/entities/types/entity-record';
 import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
+import { APP_ROUTES } from '@/shared/routes/dashboard-routes';
 import { EntityFields } from './entity-fields';
 import { useResetEntityForm } from './use-reset-entity-form';
 
@@ -48,7 +49,7 @@ function DefaultEntityForm<TEntity extends EntityRecord, TInput, TFields extends
   const existing = hooks.useEntity(id ?? '');
   const create = hooks.useCreateEntity();
   const update = hooks.useUpdateEntity();
-  const path = `/${area}/${config.slug}`;
+  const path = APP_ROUTES.entity(area, config.slug);
 
   useResetEntityForm(existing.data as never, form.reset);
 
@@ -56,8 +57,8 @@ function DefaultEntityForm<TEntity extends EntityRecord, TInput, TFields extends
     if (id === undefined) {
       create.mutate(values as TInput, {
         onSuccess: (entity) => {
-          showSuccess(t(config.messages.created as never));
-          router.push(`${path}/${entity.id}`);
+          showSuccess(t(config.messages.created));
+          router.push(APP_ROUTES.show(area, config.slug, entity.id));
         },
       });
       return;
@@ -66,8 +67,8 @@ function DefaultEntityForm<TEntity extends EntityRecord, TInput, TFields extends
       { id, input: values as TInput },
       {
         onSuccess: () => {
-          showSuccess(t(config.messages.updated as never));
-          router.push(`${path}/${id}`);
+          showSuccess(t(config.messages.updated));
+          router.push(APP_ROUTES.show(area, config.slug, id));
         },
       },
     );
@@ -76,7 +77,7 @@ function DefaultEntityForm<TEntity extends EntityRecord, TInput, TFields extends
 
   return (
     <Template
-      cancelHref={editing ? `${path}/${id}` : path}
+      cancelHref={editing ? APP_ROUTES.show(area, config.slug, id) : path}
       formId={`${config.slug}-editor`}
       isLoading={editing && existing.isLoading}
       isPending={create.isPending || update.isPending}

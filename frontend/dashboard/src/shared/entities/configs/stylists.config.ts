@@ -60,7 +60,6 @@ export const stylistsConfig = defineEntityConfig<Stylist, typeof fields>({
   entity: { singular: 'stylist', plural: 'stylists' },
   api: {
     collection: '/dashboard/stylists',
-    defaultParams: { page: 1, per_page: 15 },
     methods: { update: 'PUT' },
   },
   access: {
