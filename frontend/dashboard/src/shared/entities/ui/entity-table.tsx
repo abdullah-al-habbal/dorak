@@ -19,6 +19,18 @@ export function EntityTable<TEntity extends EntityRecord, TInput, TFields extend
   area,
   config,
 }: Readonly<EntityTableProps<TEntity, TInput, TFields>>) {
+  const CustomList = config.overrides?.renderList;
+  return CustomList === undefined ? (
+    <DefaultEntityTable area={area} config={config} />
+  ) : (
+    <CustomList area={area} />
+  );
+}
+
+function DefaultEntityTable<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree>({
+  area,
+  config,
+}: Readonly<EntityTableProps<TEntity, TInput, TFields>>) {
   const { t } = useDashboardTranslation();
   const params = useServerQueryParams();
   const hooks = createEntityHooks(config);

@@ -1,6 +1,6 @@
 'use client';
 
-import { ChairConflictDialog } from '@/features/chairs/components/dialogs/chair-conflict-dialog';
+import { ChairConflictDialog } from '@/shared/components/feedback/chair-conflict-dialog';
 
 export function ModalProvider() {
   return <ChairConflictDialog />;

@@ -13,7 +13,13 @@ const approvedFeatureDirectories = new Set([
 ]);
 const approvedComponentDirectories = new Set(['buttons', 'cards', 'dialogs', 'forms', 'tables']);
 const domainNamingPrefix = 'src/shared/entities/domain/';
-const domainNamingExemptions = new Set([`${domainNamingPrefix}service-wire.ts`]);
+const domainNamingExemptions = new Set([
+  `${domainNamingPrefix}branch-wire.ts`,
+  `${domainNamingPrefix}booking-wire.ts`,
+  `${domainNamingPrefix}chair-wire.ts`,
+  `${domainNamingPrefix}service-wire.ts`,
+  `${domainNamingPrefix}stylist-wire.ts`,
+]);
 const snakeCaseTypeMember = /^\s*(?:readonly\s+)?[a-z][A-Za-z0-9]*_[A-Za-z0-9_]*\s*[?:]/gm;
 const snakeCaseObjectKey = /^\s*'?[a-z][A-Za-z0-9]*_[A-Za-z0-9_]*'?\s*:/gm;
 const errors = [];

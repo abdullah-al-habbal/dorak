@@ -59,7 +59,13 @@ export function EntityFieldInput({
         min={field.control === 'number' ? field.min : undefined}
         placeholder={field.control === 'number' ? undefined : field.placeholder}
         step={field.control === 'number' ? field.step : undefined}
-        type={field.control === 'number' ? 'number' : field.control === 'email' ? 'email' : 'text'}
+        type={
+          field.control === 'number'
+            ? 'number'
+            : field.control === 'email' || field.control === 'password'
+              ? field.control
+              : 'text'
+        }
         {...register(name)}
       />
     </label>

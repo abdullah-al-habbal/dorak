@@ -22,6 +22,19 @@ export function EntityShow<TEntity extends EntityRecord, TInput, TFields extends
   config,
   id,
 }: Readonly<EntityShowProps<TEntity, TInput, TFields>>) {
+  const CustomShow = config.overrides?.renderShow;
+  return CustomShow === undefined ? (
+    <DefaultEntityShow area={area} config={config} id={id} />
+  ) : (
+    <CustomShow area={area} id={id} />
+  );
+}
+
+function DefaultEntityShow<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree>({
+  area,
+  config,
+  id,
+}: Readonly<EntityShowProps<TEntity, TInput, TFields>>) {
   const { t } = useDashboardTranslation();
   const hooks = createEntityHooks(config);
   const query = hooks.useEntity(id);

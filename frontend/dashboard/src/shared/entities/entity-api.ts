@@ -25,7 +25,8 @@ export function createEntityApi<
 
   return {
     async list(params: TParams): Promise<DashboardPage<TEntity>> {
-      const page = await fetchPaginatedList<unknown, TParams>(url.list(params), params);
+      const listParams = config.overrides?.toListParams?.(params) ?? params;
+      const page = await fetchPaginatedList<unknown, object>(url.list(params), listParams);
       return { ...page, items: page.items.map(fromApi) };
     },
     async get(id: EntityId): Promise<TEntity> {

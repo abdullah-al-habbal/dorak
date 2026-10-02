@@ -22,16 +22,31 @@ export function EntityForm<TEntity extends EntityRecord, TInput, TFields extends
   config,
   id,
 }: Readonly<EntityFormProps<TEntity, TInput, TFields>>) {
+  const CustomForm = config.overrides?.renderForm;
+  return CustomForm === undefined ? (
+    <DefaultEntityForm area={area} config={config} {...(id === undefined ? {} : { id })} />
+  ) : (
+    <CustomForm area={area} {...(id === undefined ? {} : { id })} />
+  );
+}
+
+function DefaultEntityForm<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree>({
+  area,
+  config,
+  id,
+}: Readonly<EntityFormProps<TEntity, TInput, TFields>>) {
   const router = useRouter();
   const { t } = useDashboardTranslation();
-  const schema = buildEntitySchema(config.fields);
-  const form = useForm<FieldValues>({ resolver: zodResolver(schema) as never });
+  const editing = id !== undefined;
+  const schema =
+    (editing ? config.overrides?.schema?.update : config.overrides?.schema?.create) ??
+    buildEntitySchema(config.fields);
+  const form = useForm<FieldValues>({ resolver: zodResolver(schema as never) as never });
   const hooks = createEntityHooks(config);
   const existing = hooks.useEntity(id ?? '');
   const create = hooks.useCreateEntity();
   const update = hooks.useUpdateEntity();
   const path = `/${area}/${config.slug}`;
-  const editing = id !== undefined;
 
   useResetEntityForm(existing.data as never, form.reset);
 

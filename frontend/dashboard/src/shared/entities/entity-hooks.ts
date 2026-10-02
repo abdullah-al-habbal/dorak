@@ -28,15 +28,34 @@ export function createEntityHooks<
         queryFn: () => api.get(id),
       }),
     useCreateEntity: () =>
-      useInvalidatingMutation({ mutationFn: (input: TInput) => api.create(input) }, [
-        queryKeys.all,
-      ]),
+      useInvalidatingMutation(
+        {
+          mutationFn: (input: TInput) => api.create(input),
+          ...(config.overrides?.onMutationError === undefined
+            ? {}
+            : { onError: config.overrides.onMutationError }),
+        },
+        [queryKeys.all],
+      ),
     useUpdateEntity: () =>
       useInvalidatingMutation(
-        { mutationFn: ({ id, input }: { id: EntityId; input: TInput }) => api.update(id, input) },
+        {
+          mutationFn: ({ id, input }: { id: EntityId; input: TInput }) => api.update(id, input),
+          ...(config.overrides?.onMutationError === undefined
+            ? {}
+            : { onError: config.overrides.onMutationError }),
+        },
         [queryKeys.all],
       ),
     useDeleteEntity: () =>
-      useInvalidatingMutation({ mutationFn: (id: EntityId) => api.delete(id) }, [queryKeys.all]),
+      useInvalidatingMutation(
+        {
+          mutationFn: (id: EntityId) => api.delete(id),
+          ...(config.overrides?.onMutationError === undefined
+            ? {}
+            : { onError: config.overrides.onMutationError }),
+        },
+        [queryKeys.all],
+      ),
   };
 }

@@ -1,17 +1,23 @@
 'use client';
 
-import { useBookings } from '@/features/bookings/hooks';
-import { useChairs } from '@/features/chairs/hooks';
 import { useOverview } from '@/features/overview/hooks';
 import { CardSkeleton } from '@/shared/components/feedback/skeletons/card-skeleton';
+import { bookingsConfig } from '@/shared/entities/configs/bookings.config';
+import { chairsConfig } from '@/shared/entities/configs/chairs.config';
+import { createEntityHooks } from '@/shared/entities/entity-hooks';
 import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
 
 export function OverviewDashboard() {
   const { t } = useDashboardTranslation();
   const overview = useOverview();
   const today = new Date().toISOString().slice(0, 10);
-  const chairs = useChairs({ page: 1, per_page: 100 });
-  const bookings = useBookings({ date_from: today, date_to: today, page: 1, per_page: 100 });
+  const chairs = createEntityHooks(chairsConfig).useEntities({ page: 1, per_page: 100 });
+  const bookings = createEntityHooks(bookingsConfig).useEntities({
+    dateFrom: today,
+    dateTo: today,
+    page: 1,
+    per_page: 100,
+  });
   if (overview.data === undefined) {
     return (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -80,7 +86,7 @@ export function OverviewDashboard() {
                   </p>
                 </div>
                 <div className="text-right text-sm">
-                  <p>{formatTime(booking.time_slot)}</p>
+                  <p>{formatTime(booking.timeSlot)}</p>
                   <p className="capitalize">{statusLabel(t, booking.status)}</p>
                 </div>
               </li>
