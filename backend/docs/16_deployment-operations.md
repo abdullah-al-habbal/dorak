@@ -1,0 +1,527 @@
+# 16 — Deployment Operations & Known Limitations
+
+Scope: the atomic-release deployment in `.github/workflows/deploy.yml` and the
+issues deliberately **not** solved by it. Written during the deployment repair
+that fixed the `config:cache`-before-swap bug.
+
+Each section below is a standing record, not a task list for that repair.
+
+---
+
+## Root cause this deployment repair fixed
+
+`config:cache` ran **before** the atomic swap. Laravel serialises absolute
+filesystem paths, so the cached config baked
+`…/dev_release_<timestamp>/storage/…`. The next line renamed that directory to
+`dev`, leaving every baked path dangling. Laravel's local driver then recreated
+the release directory on first write — the "ghost release".
+
+Confirmed on the live server, not inferred:
+
+```text
+dev/bootstrap/cache/config.php          20 distinct *_release_* paths
+  logging single path   -> …/dev_release_20260820_011154/storage/logs/laravel.log
+  view compiled         -> …/dev_release_20260820_011154/storage/framework/views
+  public disk root      -> …/dev_release_20260820_011154/storage/app/public
+  onboarding source[0]  -> …/dev_release_20260820_011154/database/seeders/assets/…jpg
+                           exists? NO   (real file exists under dev/)
+
+dev_release_20260820_011154/            NOT a git repository, 14 files:
+  storage/framework/views/*.php         13 compiled Blade files
+  storage/logs/laravel-2026-08-20.log   9289 bytes, actively written
+dev/storage/logs/                       only .gitignore (14 bytes)
+```
+
+The ghost contains exactly the three baked paths that get *written* to. Nothing
+else was ever there.
+
+**Fix:** `config:cache` and `view:cache` moved after the swap; `route:cache`
+stays before it (path-independent, release-local `bootstrap/cache`).
+
+---
+
+## TODO 44 — Composer security advisories (separate task)
+
+Eight pre-existing advisories, **not addressed** by the deployment repair:
+
+| Package | Version | Advisories |
+|---|---|---|
+| `guzzlehttp/guzzle` | 7.15.1 | 2 (one **high** — CVE-2026-69246, noncanonical host bypasses host-based checks; CVE-2026-69245, noncanonical cookie domain keeps subdomain scope) |
+| `league/commonmark` | 2.8.3 | 6 (three **high** — DoS via colliding heading slugs, duplicate footnote definitions, deeply nested XML output) |
+
+**Verified unchanged by this work.** `composer.lock` diff is a single line (the
+`content-hash`); a package-by-package comparison against `HEAD` shows
+**181 packages both sides, 0 version changes**. Both packages are transitive.
+
+Not silently ignored. Owner action: schedule a dependency-update task.
+
+---
+
+## TODO 45 — Pre-existing issues, deliberately untouched
+
+| Issue | Detail |
+|---|---|
+| Larastan `level: max` errors | **15**, identical count before and after `8a07a89`. Files: `ClientFaceProfile/Services/{FaceAnalysisService,FaceAnalysisResponseParser}`, `Marketing/…/GetMarketingPageRequest`, `Client/Jobs/SendEmailVerificationCodeJob`, `Client/Handlers/Client/{VerifyEmailHandler,RegisterHandler}` |
+| Stale PHPStan baseline | `phpstan-baseline.neon` ignores a `GetMarketingPageRequest::getLocale()` error that no longer occurs. `ignore.unmatched` is non-ignorable, so a *fixed* bug now fails the gate |
+| `.env.testing` mail config | still carries an empty `MAIL_URL=`. Inert today (`MAIL_MAILER=log`), but an empty `MAIL_URL` passes `isset()` and nulls the transport |
+| Development-only OTP logging | `ForgotPasswordHandler` + `SendEmailVerificationHandler` log the generated OTP, gated on `app()->environment('local')`. Committed in `8a07a89`. **Must be stripped before anything merges toward staging** |
+| `modules/Core/Enums/Universe.php` | one added blank line, unrelated to any task, left as found |
+| `APP_URL` is mandatory | `modules/Core/Config/filesystems.php:20` evaluates `rtrim(env('APP_URL'), '/')` with **no default**. Any environment missing `APP_URL` dies with `TypeError: rtrim(): Argument #1 ($string) must be of type string, null given`. This is why CI must use `composer install --no-scripts` |
+
+---
+
+## Production / `main` isolation — designed, deliberately not implemented
+
+**Current state: `main` cannot deploy, and there is nothing for it to deploy to.**
+
+### The production environment does not exist
+
+Verified on the server:
+
+```text
+/home/u685718414/domains/
+├── dev-dorak-backend.io/     ← this project (dev only)
+│   ├── shared/               .env + storage
+│   └── public_html/dev
+└── internationalboard.uk/    ← unrelated project
+```
+
+There is no production domain, no `public_html/main` anywhere, and no
+production database. `main` exists in git (`940d9e7`, 0 commits ahead of `dev`,
+15 behind) but has no target.
+
+So this is not "production shares dev state" — production has not been built.
+Implementing a production deployment now would be infrastructure for something
+that does not exist.
+
+### What protects `main` today — two independent layers, both verified
+
+1. **Trigger scope.** `deploy.yml` has `on: push: branches: ["dev"]`. A push to
+   `main` does not start the workflow at all.
+2. **Runtime branch guard.** `workflow_dispatch` accepts no `branches:` filter
+   in GitHub Actions — the key is silently ignored — so the guard is the real
+   control:
+
+   ```bash
+   if [ "$BRANCH_NAME" != "dev" ]; then
+     echo "❌ This workflow only deploys the dev branch (got: $BRANCH_NAME)"
+     exit 1
+   fi
+   ```
+
+   Proven on the real path, not just locally: dispatching the workflow on a
+   throwaway branch produced
+   `❌ This workflow only deploys the dev branch (got: tmp/yaml-probe)`
+   and exited before any server work.
+
+`backend-ci.yml` does run on `main` (push and PR). That is correct and carries
+no risk — it never touches the server.
+
+### What would break if `main` were naively enabled
+
+Adding `main` to the push branches and relaxing the guard, without new
+infrastructure, gives every one of these:
+
+| Variable | Value | Consequence for a `main` deploy |
+|---|---|---|
+| `DORAK_TARGET` | `…/dev-dorak-backend.io/public_html/dev` | production code **overwrites the dev release** |
+| `DORAK_SHARED_DIR` | `…/dev-dorak-backend.io/shared` | production boots on the **dev `.env`** — dev `APP_KEY`, dev DB `u685718414_dev_dorak_db`, `APP_DEBUG=true`, `MAIL_MAILER=log` |
+| `DORAK_HEALTH_URL` | `https://dev-dorak-backend.io/…` | health check passes against the **wrong site** |
+| `DORAK_ENVIRONMENT` | `development` | production reports itself as development |
+| storage | dev `shared/storage` | production uploads land in **dev** storage |
+
+`APP_DEBUG=true` alone would expose stack traces and configuration on a
+production host.
+
+One thing is already safe: the migration lock is
+`/tmp/laravel_migrate_$(basename "$TARGET").lock`, which yields `…_dev.lock` vs
+`…_main.lock`. Distinct targets cannot block each other.
+
+### Required design before `main` is ever enabled
+
+```text
+dev-dorak-backend.io/                <prod-domain>/
+├── shared/                          ├── shared/
+│   ├── .env      (dev)              │   ├── .env      (production)
+│   └── storage/  (dev)              │   └── storage/  (production)
+└── public_html/dev                  └── public_html/main
+```
+
+No shared state of any kind between the two — separate `.env`, separate
+`APP_KEY`, separate database and credentials, separate storage, separate logs,
+separate health URL.
+
+**Use a separate workflow file, not conditional logic in this one.**
+`deploy-production.yml` with its own hardcoded `DORAK_*` values and its own
+guard requiring `main`. Branching a single workflow on `github.ref_name` puts
+both environments' paths in one file, one editing mistake away from each other;
+two files make cross-contamination structurally impossible. The remote script
+can be kept identical.
+
+Checklist to enable production:
+
+1. Provision the production domain and database.
+2. Create `<prod>/shared/.env` — `APP_ENV=production`, `APP_DEBUG=false`, a
+   freshly generated `APP_KEY`, production DB credentials, real mail transport.
+   Mode `600`, as the dev one already is.
+3. Add `deploy-production.yml` with production `DORAK_*` values and a
+   `!= "main"` guard.
+4. Confirm the expand/contract migration policy is being followed — production
+   is where a contract migration actually costs something.
+5. Strip the development-only OTP logging (see the pre-existing issues section).
+6. Resolve `APP_DEBUG` and any other dev-only settings.
+
+**Nothing implemented for this.** The guards that matter already exist and are
+verified; the rest is infrastructure that does not yet exist to configure.
+
+---
+
+## Migration safety — the expand/contract policy (enforced)
+
+### Why it matters here
+
+Migrations run **before** the atomic swap:
+
+```text
+migrate  →  route:cache  →  SWAP  →  config:cache  →  view:cache  →  health
+```
+
+Between `migrate` and the swap, the **previous** release serves traffic against
+the **new** schema. If a later step fails, the trap restores the old code and
+the schema stays migrated. Only backward-compatible migrations survive that.
+
+### What the current 56 migrations actually contain
+
+Audited 2026-08-23 with `php scripts/check_migrations.php --all`:
+
+| Category | Count |
+|---|---|
+| `CREATE`-only (new tables) | 52 |
+| Additive `ALTER` | 4 |
+| **Destructive operations in any `up()`** | **0** |
+| Non-empty `down()` | 56 / 56 |
+
+All four ALTERs add nullable or defaulted columns only:
+
+```php
+$table->decimal('travel_radius', 5, 2)->nullable()                  // barbers
+$table->string('phone')->nullable(); $table->string('avatar')->nullable();
+$table->string('status', 20)->default('enabled'); $table->softDeletes();
+$table->json('requirements')->nullable(); …->string('type')->nullable()
+$table->foreignId('catalog_item_id')->nullable()->constrained()->nullOnDelete()
+```
+
+**Every migration in the repository is already expand-safe.** The pre-swap
+ordering is correct for the current set; the policy exists to keep it that way.
+
+### The rule
+
+**Expand — safe, ships in one release:**
+
+- new tables
+- new columns that are `nullable()` or have a `default()`
+- new indexes
+- new **nullable** foreign keys
+
+**Contract — must be a separate, later release:**
+
+- dropping or renaming a column or table
+- narrowing a type, or `->change()` of any kind
+- adding `NOT NULL` without a default to a populated table
+- **removing an enum case, or narrowing a cast**
+- data transformations
+
+**Never:** edit a migration that has already shipped. Add a new one.
+
+### Enum and cast changes are contract operations
+
+This is the class that actually caused an incident, and it involves **no
+migration at all**, so no schema review would have caught it.
+
+`8a07a89` removed `neutral` from `UniverseEnum` and `Core\Enums\Universe`, and
+edited the shipped `create_clients_table` default. Every row still holding
+`preferred_universe = 'neutral'` then threw on read:
+
+```text
+ValueError: "neutral" is not a valid backing value for enum Modules\Core\Enums\Universe
+```
+
+Locally that was 3/3 clients and 2/2 brands — every client read, including the
+login path. The dev server escaped only because its database was empty. The same
+mistake had already happened once in the opposite direction; the note recording
+it was deleted in the same commit.
+
+Correct sequence for retiring an enum value:
+
+```text
+release N    accept the new value; keep the old case in the enum
+release N+1  data migration:  UPDATE clients SET preferred_universe='men'
+                              WHERE preferred_universe='neutral'
+             plus an ALTER migration for the column default
+release N+2  remove the old case from the enum
+```
+
+Note that changing a `create_*_table` default does **not** alter an existing
+database. `migrate` never re-runs an applied migration, so the live column
+default stays as it was. Defaults on existing tables need their own `ALTER`
+migration.
+
+### Enforcement
+
+`scripts/check_migrations.php`, run by `backend-ci.yml` on every push and PR.
+It fails the build on:
+
+1. destructive operations in the `up()` of a **new** migration;
+2. modification of a migration that has **already shipped**.
+
+Deliberate contract releases opt out per file, which makes the decision visible
+in review:
+
+```php
+// @contract-migration: drop legacy column, no code has referenced it since v2.3
+```
+
+Run it locally:
+
+```bash
+php scripts/check_migrations.php               # vs origin/dev
+php scripts/check_migrations.php --all         # every migration
+php scripts/check_migrations.php --base=<ref>
+```
+
+Verified against seven cases: `dropColumn`, `->change()`, and NOT-NULL-without-
+default are rejected; nullable/defaulted additions, `CREATE` with NOT NULL
+columns, and waived destructive changes are allowed; editing a shipped migration
+is rejected. All 56 current migrations pass.
+
+**What the guard does not cover:** enum-case removal and cast narrowing. Those
+live in `Enums/` and `casts()`, not in migrations, and a reliable automated check
+produced too many false positives on legitimate refactors. They remain a review
+responsibility — the sequence above is the checklist.
+
+---
+
+## Database rollback policy
+
+```text
+application rollback  ≠  database rollback
+```
+
+### What "application rollback is safe" means
+
+Precisely this: **the previous release can serve traffic correctly against the
+newer schema, indefinitely, with no manual intervention.**
+
+Note the pre-swap window and the post-rollback state are the *same* condition —
+old code against new schema. That is why expand/contract is not merely a
+migration convention here: it is what makes rollback safe at all. If a release
+is expand-only, rollback is safe. If it is not, rollback restores code that will
+break, and the deployment's "recovery" is an illusion.
+
+Rollback is **not** safe, whatever the trap prints, when the release contains a
+contract operation, an enum-case removal, or a data transformation.
+
+### Which migrations are allowed in the current pre-swap model
+
+Only **expand** operations, unwaived:
+
+| Operation | Allowed pre-swap | Why |
+|---|---|---|
+| New table | ✅ | Old code does not know it exists |
+| Nullable column on existing table | ✅ | Old `INSERT`s omit it; NULL is valid |
+| Column with a `default()` | ✅ | Old `INSERT`s omit it; the default applies |
+| New index | ✅ | Invisible to application code |
+| Nullable FK | ✅ | Old `INSERT`s omit it |
+| `softDeletes()` on an existing table | ⚠️ | Structurally safe, semantically not — see below |
+| NOT NULL without default | ❌ | Old `INSERT`s fail immediately |
+| New UNIQUE on an existing table | ❌ | Old code may write a now-illegal duplicate |
+| Drop / rename / narrow / `->change()` | ❌ | Old code queries what is gone |
+| Enum-case removal, cast narrowing | ❌ | Existing rows throw on cast |
+| Data transformation | ❌ | Not reversible by `down()` |
+
+Current repository state: 52 `CREATE`-only, 4 additive `ALTER`, **0 UNIQUE added
+to an existing table**, **0 destructive operations**. Every migration is in the
+allowed set, so code rollback is genuinely safe today.
+
+**The `softDeletes()` caveat.** `0001_01_01_200002` added `deleted_at` to
+`clients`. Structurally that is a nullable column and old code keeps working.
+But a release *before* `SoftDeletes` was on the model has no global scope, so it
+would return soft-deleted clients as if they were live. Structural
+compatibility is not behavioural compatibility. Rolling back across a migration
+like this needs a moment's thought even though the guard permits it.
+
+### What happens when migrations have run and the deployment then fails
+
+1. The trap restores the previous release directory.
+2. **The schema stays migrated.** Nothing reverts it.
+3. The trap prints the warning below.
+
+Two findings make this sharper than it looks, both verified rather than assumed:
+
+**Migrations may be partially applied.** MySQL/MariaDB have no transactional
+DDL, so Laravel commits each migration on its own. A run that fails on
+migration 7 leaves 1–6 applied *and recorded*. Verified locally: a valid
+migration was applied and written to the `migrations` table while the command
+exited 1 because a later one failed. `deploy.yml` therefore sets
+`MIGRATIONS_APPLIED` **before** invoking `migrate`, not after — setting it
+afterwards meant the warning never fired for the case that needs it most.
+
+**`artisan migrate:rollback` is actively dangerous here — do not use it.**
+The restored release does not contain the new migration's file. Laravel's
+`Migrator::rollbackMigrations` (framework `Migrator.php:333`) prints
+`Migration not found` and `continue`s — it *skips* that migration, leaves the
+schema changed and the `migrations` row in place, and **rolls back the rest of
+the batch anyway, exiting 0**.
+
+Verified end to end on a throwaway database:
+
+```text
+migrate:rollback  →  exit 0
+  probe migration : table STILL exists, migrations row STILL present
+  everything else in batch 1 : rolled back
+```
+
+On a database whose baseline is a single batch, that is the entire schema
+destroyed, reported as success. An operator reaching for `migrate:rollback`
+after a failed deploy would make the incident far worse.
+
+### Recovery procedure
+
+```text
+1. Read the trap output: did migrations run?
+2. artisan migrate:status  — run from the RESTORED release.
+     Rows marked "Ran?  Yes" with no corresponding file are the migrations
+     the restored code does not know about.
+3. Decide, do NOT run migrate:rollback:
+     • expand-only (the normal case) — no action needed. The restored
+       release runs correctly against the newer schema. Fix forward.
+     • contract or data change — restore from backup, or hand-write a
+       corrective forward migration in the next release.
+4. Never delete rows from the `migrations` table to "undo" a migration.
+```
+
+### `down()` is a development convenience, not a recovery mechanism
+
+All 56 migrations have a non-empty `down()`, and all of them drop. That is
+correct for `CREATE` migrations and lossy for the four ALTERs — rolling those
+back discards the added columns' data.
+
+None of that matters in production, because the rollback path cannot reach
+those `down()` methods: the restored release does not contain the files. This
+is also why the guard's test suite deliberately does **not** test `down()`
+reversibility — a green "rollback works" test would assert a capability that
+does not exist in the deployment.
+
+Production recovery is restore-from-backup, or fix-forward.
+
+### Enforcement, and its honest limits
+
+`scripts/check_migrations.php` (CI-blocking) rejects contract operations and
+edits to shipped migrations. `tests/Unit/Deployment/MigrationGuardTest.php`
+covers the guard itself — 9 cases — because CI-blocking logic that silently
+stops working takes the policy down with it.
+
+What is **not** enforced, and must not be assumed safe:
+
+- **Enum-case removal and cast narrowing.** They live in `Enums/` and `casts()`,
+  not migrations. This is the class that caused the actual incident.
+- **Behavioural compatibility.** The `softDeletes()` case above passes every
+  automated check and still changes what old code returns.
+- **Data transformations** written outside a migration.
+
+The guard raises the floor. It does not make rollback safe by itself — the
+expand-only discipline does, and a waiver suspends it for that release.
+
+---
+
+## Compiled-view retention — investigated, no cleanup needed
+
+**Conclusion: `shared/storage/framework/views` cannot grow indefinitely. No
+pruning mechanism exists, and none should be added.**
+
+An earlier draft of this document claimed the opposite — that `view:cache` only
+writes, that each release adds its own set keyed by absolute source path, and
+that stale files accumulate. That was wrong on every count. Corrected below with
+the evidence.
+
+### How Laravel actually manages compiled views
+
+**Filenames are deterministic.** `Compiler::getCompiledPath()`:
+
+```php
+return $this->cachePath.'/'.hash('xxh128', 'v2'.Str::after($path, $this->basePath)).'.'.$this->compiledExtension;
+```
+
+`$basePath` comes from `ViewServiceProvider`:
+
+```php
+$app['config']->get('view.relative_hash', false) ? $app->basePath() : ''
+```
+
+`view.relative_hash` is unset in this project (verified at runtime: `NULL`), so
+`basePath` is `''` and the hash covers the **absolute** source path. That would
+matter if releases were served from their own directories — but the atomic swap
+moves every release into the same fixed path, `public_html/dev`, so the absolute
+paths are identical on every deploy and the hashes are stable.
+
+**`view:cache` deletes before it writes.** `ViewCacheCommand::handle()` opens
+with:
+
+```php
+$this->callSilent('view:clear');
+```
+
+and `ViewClearCommand` globs `config('view.compiled').'/*'` and deletes it all.
+So the directory is wiped and rebuilt on every deploy.
+
+### Evidence
+
+Local reproduction:
+
+```text
+view:clear                     ->   0 files
+view:cache (run 1)             -> 317 files
+plant a stale compiled file    -> 318 files
+view:cache (run 2)             -> 317 files
+identical filename set across runs : YES
+planted stale file survived        : NO — removed
+net growth over 2 runs + 1 stale   : 0
+```
+
+317 compiled files come from 13 first-party Blade templates plus vendor package
+views (Filament and friends). That number is a property of the dependency tree,
+not of deployment count.
+
+### Answers to the questions asked
+
+| Question | Answer |
+|---|---|
+| Filenames deterministic for a given source path? | Yes — `xxh128` of the path |
+| Does `view:cache` remove old files? | **Yes** — it calls `view:clear` first |
+| Referenced by path from runtime state? | No. Resolved by hashing the source path at render time |
+| Does Laravel ever need an older release's compiled files? | No. A miss triggers lazy recompilation |
+| Are stale files harmless? | Yes, and moot — `view:cache` removes them |
+| Safe for concurrent requests? | Yes. A request that misses compiles the view on the fly |
+| Is age-based pruning reliable? | Irrelevant, and would be unsafe — all files share one mtime |
+| Is release-ownership pruning possible? | No, and unnecessary — paths are release-independent |
+| Should cleanup run after a successful deploy? | No cleanup should run at all |
+
+### Consequence for the deployment
+
+`deploy.yml` runs `view:cache` **after** the swap and does not call `view:clear`
+separately — but `view:cache` clears internally regardless, so the shared
+directory is briefly emptied and immediately rebuilt.
+
+That is safe **because it happens after the swap**, when the new release is
+already live: the gap between clear and recompile is covered by Blade's lazy
+compile on a cache miss. It would **not** be safe before the swap, when the
+previous release is still serving out of the same shared directory — which is
+why `optimize:clear` (which also runs `view:clear`) stays out of the pre-swap
+phase.
+
+The rollback target `${TARGET}_old` does not need its compiled views preserved;
+after a rollback they are recompiled lazily on first request.
+
+**Nothing to implement.** Adding a pruning mechanism here would be automation
+for a problem that does not exist, and every candidate design (age-based,
+release-ownership) is either unreliable or actively unsafe.

@@ -1,0 +1,46 @@
+import 'package:json_annotation/json_annotation.dart';
+
+import 'package:core/src/network/dto/at_home_location.dto.dart';
+import 'package:core/src/network/dto/booking_barber.dto.dart';
+import 'package:core/src/network/dto/booking_chair.dto.dart';
+import 'package:core/src/network/dto/booking_service.dto.dart';
+
+part 'booking.dto.g.dart';
+
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+class BookingDto {
+  final String id;
+  final DateTime timeSlot;
+  final DateTime? endsAt;
+  final String status;
+  @JsonKey(defaultValue: 'pay_at_salon')
+  final String paymentMethod;
+  @JsonKey(defaultValue: 'unpaid_in_person')
+  final String paymentStatus;
+  final bool? cancellationEligible;
+  final DateTime? cancellationCutoffAt;
+  final BookingChairDto? chair;
+  final BookingBarberDto? barber;
+  final List<BookingServiceDto> services;
+  final AtHomeLocationDto? atHomeLocation;
+  final DateTime? createdAt;
+
+  const BookingDto({
+    required this.id,
+    required this.timeSlot,
+    this.endsAt,
+    required this.status,
+    this.paymentMethod = 'pay_at_salon',
+    this.paymentStatus = 'unpaid_in_person',
+    this.cancellationEligible,
+    this.cancellationCutoffAt,
+    this.chair,
+    this.barber,
+    this.services = const [],
+    this.atHomeLocation,
+    this.createdAt,
+  });
+
+  factory BookingDto.fromJson(Map<String, dynamic> json) =>
+      _$BookingDtoFromJson(json);
+}

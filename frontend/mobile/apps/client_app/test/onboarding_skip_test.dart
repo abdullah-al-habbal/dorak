@@ -1,0 +1,111 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:client_app/src/core/navigation/app.router.dart';
+import 'package:client_app/src/core/navigation/app_routes.entity.dart';
+import 'package:client_app/src/features/discovery/discovery.screen.dart'
+    as discovery_feed;
+import 'package:client_app/src/features/onboarding/welcome.screen.dart';
+
+import 'helpers/fakes.dart';
+
+void main() {
+  late InMemoryAppPreferences preferences;
+  late AppRouter router;
+
+  setUp(() {
+    preferences = InMemoryAppPreferences();
+  });
+
+  Future<void> startTour(WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1290, 2796);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    final pair = sessionPair(FakeAuthRepository(), InMemoryTokenStorage());
+    router = buildRouter(
+      session: pair.session,
+      auth: pair.auth,
+      preferences: preferences,
+      apiClient: fakeApiClient(),
+    );
+    await tester.pumpWidget(routerHarness(router));
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pumpAndSettle();
+    router.router.go(AppRoutes.onboardingWelcome);
+    await tester.pumpAndSettle();
+    expect(find.byType(WelcomeScreen), findsOneWidget);
+  }
+
+  Future<void> openSkipSheet(WidgetTester tester) async {
+    await tester.tap(find.text('Skip'));
+    await tester.pumpAndSettle();
+    expect(find.text('Skip Onboarding?'), findsOneWidget);
+  }
+
+  testWidgets('"Skip for now" leaves the flag untouched', (tester) async {
+    await startTour(tester);
+
+    await openSkipSheet(tester);
+    await tester.tap(find.text('Skip for now'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+    expect(
+      preferences.dontShowOnboarding,
+      isFalse,
+      reason: 'the tour must reappear on the next cold start',
+    );
+  });
+
+  testWidgets('"Don\'t show again" persists the flag', (tester) async {
+    await startTour(tester);
+
+    await openSkipSheet(tester);
+    await tester.tap(find.text("Don't show again"));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+    expect(preferences.dontShowOnboarding, isTrue);
+  });
+
+  testWidgets('"Cancel" stays on the tour and changes nothing', (tester) async {
+    await startTour(tester);
+
+    await openSkipSheet(tester);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(WelcomeScreen), findsOneWidget);
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsNothing);
+    expect(preferences.dontShowOnboarding, isFalse);
+  });
+
+  testWidgets('completing all four steps persists the flag', (tester) async {
+    await startTour(tester);
+
+    await tester.tap(find.text('Get Started'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Next'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Next'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Get Started'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+    expect(preferences.dontShowOnboarding, isTrue);
+  });
+
+  testWidgets('Home is the only route left after the tour', (tester) async {
+    await startTour(tester);
+
+    await openSkipSheet(tester);
+    await tester.tap(find.text("Don't show again"));
+    await tester.pumpAndSettle();
+
+    expect(preferences.dontShowOnboarding, isTrue);
+    expect(router.router.canPop(), isFalse);
+  });
+}

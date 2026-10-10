@@ -1,0 +1,13 @@
+<?php
+
+// root/modules/Core/Routes/Api/V1/api_v1_routes.php
+declare(strict_types=1);
+
+use Illuminate\Support\Facades\Route;
+use Modules\Core\Http\Actions\Shared\HealthCheckAction;
+use Modules\Core\Http\Actions\Shared\RegisterDeviceTokenAction;
+
+Route::prefix('v1')->name('api.v1.')->group(function (): void {
+    Route::get('/health', HealthCheckAction::class)->name('health');
+    Route::middleware('auth:client,barber,branch_api,admin_api')->post('/user/device-token', RegisterDeviceTokenAction::class)->name('device-token.register');
+});

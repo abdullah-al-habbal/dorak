@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Barber\Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Modules\Barber\Enums\BarberStatusEnum;
+use Modules\Barber\Models\BarberModel;
+
+#[UseModel(BarberModel::class)]
+class BarberFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'name' => [
+                'en' => fake()->name(),
+                'ar' => fake('ar_SA')->name(),
+            ],
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10),
+            'is_freelancer' => false,
+            'status' => BarberStatusEnum::Pending->value,
+            'client_id' => null,
+        ];
+    }
+
+    public function freelancer(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_freelancer' => true,
+        ]);
+    }
+}

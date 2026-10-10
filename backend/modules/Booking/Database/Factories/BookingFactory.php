@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Booking\Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Enums\BookingPaymentMethod;
+use Modules\Booking\Enums\BookingPaymentStatus;
+use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Models\BookingModel;
+use Modules\Chair\Models\ChairModel;
+use Modules\Client\Models\ClientModel;
+
+#[UseModel(BookingModel::class)]
+class BookingFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'client_id' => ClientModel::factory(),
+            'chair_id' => ChairModel::factory(),
+            'barber_id' => BarberModel::factory(),
+            'time_slot' => $timeSlot = fake()->dateTimeBetween('+1 day', '+1 week'),
+            'ends_at' => (clone $timeSlot)->modify('+30 minutes'),
+            'status' => BookingStatus::Confirmed->value,
+            'payment_method' => BookingPaymentMethod::PayAtSalon->value,
+            'payment_status' => BookingPaymentStatus::UnpaidInPerson->value,
+            'at_home_location' => null,
+        ];
+    }
+
+    public function completed(): static
+    {
+        return $this->state(fn (array $attrs) => [
+            'status' => BookingStatus::Completed->value,
+        ]);
+    }
+
+    public function cancelled(): static
+    {
+        return $this->state(fn (array $attrs) => [
+            'status' => BookingStatus::Canceled->value,
+        ]);
+    }
+
+    public function atHome(): static
+    {
+        return $this->state(fn (array $attrs) => [
+            'at_home_location' => [
+                'latitude' => fake()->latitude(),
+                'longitude' => fake()->longitude(),
+                'street' => fake()->streetName(),
+                'building' => (string) fake()->buildingNumber(),
+                'unit' => (string) fake()->numberBetween(1, 100),
+            ],
+            'chair_id' => null,
+        ]);
+    }
+}

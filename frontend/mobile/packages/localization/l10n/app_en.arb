@@ -1,0 +1,1143 @@
+{
+  "@@locale": "en",
+  "splashTitle": "Dorak",
+  "@splashTitle": {
+    "description": "App brand name displayed on splash screen"
+  },
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip button label"
+  },
+  "onboardingWelcomeTitle": "Your grooming experience, reimagined.",
+  "@onboardingWelcomeTitle": {
+    "description": "Welcome screen headline"
+  },
+  "onboardingWelcomeSubtitle": "Discover top-tier professionals, book with ease, and personalize your style journey.",
+  "@onboardingWelcomeSubtitle": {
+    "description": "Welcome screen subtitle"
+  },
+  "onboardingGetStarted": "Get Started",
+  "@onboardingGetStarted": {
+    "description": "Primary CTA on welcome screen"
+  },
+  "skipOnboardingQuestion": "Skip Onboarding?",
+  "@skipOnboardingQuestion": {
+    "description": "Skip bottom sheet title"
+  },
+  "skipForNow": "Skip for now",
+  "@skipForNow": {
+    "description": "Skip bottom sheet primary action"
+  },
+  "dontShowAgain": "Don't show again",
+  "@dontShowAgain": {
+    "description": "Skip bottom sheet secondary action"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Skip bottom sheet cancel action"
+  },
+  "discoveryTitle": "Find the perfect fit.",
+  "@discoveryTitle": {
+    "description": "Discovery screen headline"
+  },
+  "discoverySubtitle": "Explore nearby shops, expert barbers, and premium services tailored to your needs.",
+  "@discoverySubtitle": {
+    "description": "Discovery screen subtitle"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Discovery screen primary CTA"
+  },
+  "discoveryCardShops": "Shops",
+  "@discoveryCardShops": {
+    "description": "Discovery card 1 label"
+  },
+  "discoveryCardBarbers": "Barbers",
+  "@discoveryCardBarbers": {
+    "description": "Discovery card 2 label"
+  },
+  "discoveryCardServices": "Services",
+  "@discoveryCardServices": {
+    "description": "Discovery card 3 label"
+  },
+  "previous": "Back",
+  "@previous": {
+    "description": "Discovery screen back action"
+  },
+  "localeArabic": "العربية",
+  "@localeArabic": {
+    "description": "Locale toggle label to switch to Arabic"
+  },
+  "localeEnglish": "English",
+  "@localeEnglish": {
+    "description": "Locale toggle label to switch to English"
+  },
+  "homeTitle": "Home",
+  "@homeTitle": {
+    "description": "Home screen title"
+  },
+  "bookingTitle": "Book when it works for you.",
+  "@bookingTitle": {
+    "description": "Booking innovation screen headline"
+  },
+  "bookingSubtitle": "Choose your service, professional, and time — then book in just a few taps.",
+  "@bookingSubtitle": {
+    "description": "Booking innovation screen subtitle"
+  },
+  "bookingServiceLabel": "Premium Fade",
+  "@bookingServiceLabel": {
+    "description": "Booking demo service card label"
+  },
+  "bookingServiceMeta": "45 min • $65",
+  "@bookingServiceMeta": {
+    "description": "Booking demo service card meta"
+  },
+  "bookingProfessionalLabel": "Marcus T.",
+  "@bookingProfessionalLabel": {
+    "description": "Booking demo professional name"
+  },
+  "bookingProfessionalRating": "4.9",
+  "@bookingProfessionalRating": {
+    "description": "Booking demo professional rating"
+  },
+  "bookingDateLabel": "Tomorrow",
+  "@bookingDateLabel": {
+    "description": "Booking demo date label"
+  },
+  "bookingTimeLabel": "2:30 PM",
+  "@bookingTimeLabel": {
+    "description": "Booking demo time label"
+  },
+  "aiTitle": "Discover styles made for you.",
+  "@aiTitle": {
+    "description": "AI feature showcase screen headline"
+  },
+  "aiSubtitle": "Get personalized style recommendations based on your preferences and, if you choose, your face profile.",
+  "@aiSubtitle": {
+    "description": "AI feature showcase screen subtitle"
+  },
+  "aiMatchLabel": "98% Match",
+  "@aiMatchLabel": {
+    "description": "AI demo match card label"
+  },
+  "aiRecommendedLabel": "Recommended",
+  "@aiRecommendedLabel": {
+    "description": "AI demo recommendation card label"
+  },
+  "aiStyleFade": "Premium Fade",
+  "@aiStyleFade": {
+    "description": "AI demo recommended style one"
+  },
+  "aiStyleCrop": "Textured Crop",
+  "@aiStyleCrop": {
+    "description": "AI demo recommended style two"
+  },
+  "aiFaceShapeLabel": "Face Shape: Oval",
+  "@aiFaceShapeLabel": {
+    "description": "AI demo face shape chip label"
+  },
+  "aiPrivacyNote": "Face analysis is entirely optional.",
+  "@aiPrivacyNote": {
+    "description": "AI demo privacy note"
+  },
+  "authWelcomeTitle": "Welcome to Dorak",
+  "@authWelcomeTitle": {
+    "description": "Auth entry screen title"
+  },
+  "authSubtitle": "Sign in to access your personalized experience, or continue as a guest to explore.",
+  "@authSubtitle": {
+    "description": "Auth entry screen subtitle"
+  },
+  "authLogIn": "Log In",
+  "@authLogIn": {
+    "description": "Auth entry primary CTA"
+  },
+  "authCreateAccount": "Create Account",
+  "@authCreateAccount": {
+    "description": "Auth entry secondary CTA"
+  },
+  "authContinueAsGuest": "Continue as Guest",
+  "@authContinueAsGuest": {
+    "description": "Auth entry guest action"
+  },
+  "authGuestHint": "Explore Dorak without creating an account.",
+  "@authGuestHint": {
+    "description": "Auth entry guest helper text"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button tooltip"
+  },
+  "loginTitle": "Welcome Back",
+  "@loginTitle": {
+    "description": "Login screen title"
+  },
+  "loginSubtitle": "Sign in to your account",
+  "@loginSubtitle": {
+    "description": "Login screen subtitle"
+  },
+  "loginEmailLabel": "Email",
+  "@loginEmailLabel": {
+    "description": "Login email field label"
+  },
+  "loginPasswordLabel": "Password",
+  "@loginPasswordLabel": {
+    "description": "Login password field label"
+  },
+  "loginForgotPassword": "Forgot Password?",
+  "@loginForgotPassword": {
+    "description": "Login forgot password link"
+  },
+  "loginButton": "Log In",
+  "@loginButton": {
+    "description": "Login submit button"
+  },
+  "loginSignUpPrompt": "Don't have an account?",
+  "@loginSignUpPrompt": {
+    "description": "Login footer prompt before the sign-up link"
+  },
+  "loginCreateAccountLink": "Create Account",
+  "@loginCreateAccountLink": {
+    "description": "Login footer sign-up link"
+  },
+  "loginErrorInvalidCredentials": "Invalid email or password",
+  "@loginErrorInvalidCredentials": {
+    "description": "Login 401 error message"
+  },
+  "signUpTitle": "Create your account",
+  "@signUpTitle": {
+    "description": "Sign-up screen title"
+  },
+  "signUpSubtitle": "Join Dorak for personalized grooming and effortless booking.",
+  "@signUpSubtitle": {
+    "description": "Sign-up screen subtitle"
+  },
+  "signUpFullNameLabel": "Full Name",
+  "@signUpFullNameLabel": {
+    "description": "Sign-up full name field label"
+  },
+  "signUpEmailLabel": "Email",
+  "@signUpEmailLabel": {
+    "description": "Sign-up email field label"
+  },
+  "signUpPasswordLabel": "Password",
+  "@signUpPasswordLabel": {
+    "description": "Sign-up password field label"
+  },
+  "signUpConfirmPasswordLabel": "Confirm Password",
+  "@signUpConfirmPasswordLabel": {
+    "description": "Sign-up confirm password field label"
+  },
+  "signUpPasswordHint": "At least 8 characters",
+  "@signUpPasswordHint": {
+    "description": "Sign-up password requirement hint"
+  },
+  "signUpButton": "Create Account",
+  "@signUpButton": {
+    "description": "Sign-up submit button"
+  },
+  "signUpAlreadyHaveAccount": "Already have an account?",
+  "@signUpAlreadyHaveAccount": {
+    "description": "Sign-up footer prompt before the login link"
+  },
+  "signUpLogInLink": "Log In",
+  "@signUpLogInLink": {
+    "description": "Sign-up footer login link"
+  },
+  "verifyTitle": "Verify Your Account",
+  "@verifyTitle": {
+    "description": "Verify account screen title"
+  },
+  "verifySubtitle": "Enter the 6-digit code we sent to {email}",
+  "@verifySubtitle": {
+    "description": "Verify account subtitle with the masked destination",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyButton": "Verify & Continue",
+  "@verifyButton": {
+    "description": "Verify account submit button"
+  },
+  "verifyDidNotReceive": "Didn't receive the code?",
+  "@verifyDidNotReceive": {
+    "description": "Verify account resend prompt"
+  },
+  "verifyResend": "Resend Code",
+  "@verifyResend": {
+    "description": "Verify account resend action"
+  },
+  "verifyResendDisabled": "Resend Code ({seconds}s)",
+  "@verifyResendDisabled": {
+    "description": "Verify account resend action during cooldown",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyErrorInvalid": "Invalid code. Please try again.",
+  "@verifyErrorInvalid": {
+    "description": "Verify account invalid code error"
+  },
+  "verifySkip": "Verify later",
+  "@verifySkip": {
+    "description": "Verify account skip action"
+  },
+  "fieldRequired": "This field is required",
+  "@fieldRequired": {
+    "description": "Form validation error for an empty required field"
+  },
+  "fieldInvalidEmail": "Please enter a valid email address",
+  "@fieldInvalidEmail": {
+    "description": "Form validation error for a malformed email"
+  },
+  "fieldPasswordTooShort": "Password must be at least 8 characters",
+  "@fieldPasswordTooShort": {
+    "description": "Form validation error for a short password"
+  },
+  "fieldPasswordMismatch": "Passwords do not match",
+  "@fieldPasswordMismatch": {
+    "description": "Form validation error when confirm password differs"
+  },
+  "errorNetwork": "No connection. Check your network and try again.",
+  "@errorNetwork": {
+    "description": "Transport failure message"
+  },
+  "errorGeneric": "Something went wrong. Please try again.",
+  "@errorGeneric": {
+    "description": "Fallback error message"
+  },
+  "actionRetry": "Try again",
+  "@actionRetry": {
+    "description": "Retry action label for failed states"
+  },
+  "errorTitleGeneric": "Something went wrong",
+  "@errorTitleGeneric": {
+    "description": "Fallback error state title"
+  },
+  "errorTitleOffline": "You're offline",
+  "@errorTitleOffline": {
+    "description": "Offline state title"
+  },
+  "emptyTitleGeneric": "Nothing here yet",
+  "@emptyTitleGeneric": {
+    "description": "Fallback empty state title"
+  },
+  "emptyMessageGeneric": "There's nothing to show right now.",
+  "@emptyMessageGeneric": {
+    "description": "Fallback empty state message"
+  },
+  "recoveryEmailTitle": "Forgot Password?",
+  "@recoveryEmailTitle": {
+    "description": "recoveryEmailTitle"
+  },
+  "recoveryEmailSubtitle": "Enter the email on your account and we'll send you a 6-digit reset code.",
+  "@recoveryEmailSubtitle": {
+    "description": "recoveryEmailSubtitle"
+  },
+  "recoveryEmailLabel": "Email",
+  "@recoveryEmailLabel": {
+    "description": "recoveryEmailLabel"
+  },
+  "recoverySendCodeButton": "Send Code",
+  "@recoverySendCodeButton": {
+    "description": "recoverySendCodeButton"
+  },
+  "recoveryReturnToLogIn": "Return to Log In",
+  "@recoveryReturnToLogIn": {
+    "description": "recoveryReturnToLogIn"
+  },
+  "recoveryOtpTitle": "Enter Reset Code",
+  "@recoveryOtpTitle": {
+    "description": "recoveryOtpTitle"
+  },
+  "recoveryOtpSubtitle": "If {email} is registered, we've sent it a 6-digit code. It expires in 10 minutes.",
+  "@recoveryOtpSubtitle": {
+    "description": "recoveryOtpSubtitle",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "recoveryOtpContinueButton": "Continue",
+  "@recoveryOtpContinueButton": {
+    "description": "recoveryOtpContinueButton"
+  },
+  "recoveryOtpIncomplete": "Enter all 6 digits",
+  "@recoveryOtpIncomplete": {
+    "description": "recoveryOtpIncomplete"
+  },
+  "recoveryResend": "Resend Code",
+  "@recoveryResend": {
+    "description": "recoveryResend"
+  },
+  "recoveryResendDisabled": "Resend Code ({seconds}s)",
+  "@recoveryResendDisabled": {
+    "description": "recoveryResendDisabled",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "recoveryDidNotReceive": "Didn't receive the code?",
+  "@recoveryDidNotReceive": {
+    "description": "recoveryDidNotReceive"
+  },
+  "recoveryNewPasswordTitle": "Create New Password",
+  "@recoveryNewPasswordTitle": {
+    "description": "recoveryNewPasswordTitle"
+  },
+  "recoveryNewPasswordSubtitle": "Choose a new password for your account.",
+  "@recoveryNewPasswordSubtitle": {
+    "description": "recoveryNewPasswordSubtitle"
+  },
+  "recoveryNewPasswordLabel": "New Password",
+  "@recoveryNewPasswordLabel": {
+    "description": "recoveryNewPasswordLabel"
+  },
+  "recoveryConfirmPasswordLabel": "Confirm New Password",
+  "@recoveryConfirmPasswordLabel": {
+    "description": "recoveryConfirmPasswordLabel"
+  },
+  "recoveryResetButton": "Reset Password",
+  "@recoveryResetButton": {
+    "description": "recoveryResetButton"
+  },
+  "recoveryCodeRejected": "That code is invalid or has expired.",
+  "@recoveryCodeRejected": {
+    "description": "recoveryCodeRejected"
+  },
+  "recoveryReenterCode": "Re-enter code",
+  "@recoveryReenterCode": {
+    "description": "recoveryReenterCode"
+  },
+  "passwordResetSuccessTitle": "Password Updated",
+  "@passwordResetSuccessTitle": {
+    "description": "passwordResetSuccessTitle"
+  },
+  "passwordResetSuccessMessage": "Your password has been changed. You can now log in with your new password.",
+  "@passwordResetSuccessMessage": {
+    "description": "passwordResetSuccessMessage"
+  },
+  "onboardingConfigUnavailable": "Couldn't load the latest artwork.",
+  "@onboardingConfigUnavailable": {
+    "description": "onboardingConfigUnavailable"
+  },
+  "bookingsTitle": "No bookings yet",
+  "@bookingsTitle": {
+    "description": "Bookings screen empty state title"
+  },
+  "bookingsSubtitle": "Your upcoming and past bookings will appear here.",
+  "@bookingsSubtitle": {
+    "description": "Bookings screen empty state subtitle"
+  },
+  "bookingsActionLabel": "Discover",
+  "@bookingsActionLabel": {
+    "description": "Bookings empty state action button label"
+  },
+  "favoritesTitle": "No favorites yet",
+  "@favoritesTitle": {
+    "description": "Favorites screen empty state title"
+  },
+  "favoritesSubtitle": "Tap the heart on a salon or barber to save it here.",
+  "@favoritesSubtitle": {
+    "description": "Favorites screen empty state subtitle"
+  },
+  "favoritesActionLabel": "Discover",
+  "@favoritesActionLabel": {
+    "description": "Favorites empty state action button label"
+  },
+  "profileTitle": "Profile",
+  "@profileTitle": {
+    "description": "Profile screen empty state title"
+  },
+  "profileSubtitle": "Your account and preferences will appear here.",
+  "@profileSubtitle": {
+    "description": "Profile screen empty state subtitle"
+  },
+  "profileActionLabel": "Discover",
+  "@profileActionLabel": {
+    "description": "Profile empty state action button label"
+  },
+  "discoveryTitle": "Find the perfect fit.",
+  "@discoveryTitle": {
+    "description": "Discovery screen headline"
+  },
+  "discoverySubtitle": "Explore nearby shops, expert barbers, and premium services tailored to your needs.",
+  "@discoverySubtitle": {
+    "description": "Discovery screen subtitle"
+  },
+  "locationRequiredTitle": "Location Required",
+  "@locationRequiredTitle": {
+    "description": "Location required screen title"
+  },
+  "locationRequiredMessage": "Enable location access to discover nearby branches.",
+  "@locationRequiredMessage": {
+    "description": "Location required screen message"
+  },
+  "enableLocationAction": "Enable Location",
+  "@enableLocationAction": {
+    "description": "Enable location action button label"
+  },
+  "availableNow": "Available Now",
+  "@availableNow": {
+    "description": "Available now filter label"
+  },
+  "price": "Price",
+  "@price": {
+    "description": "Price filter label"
+  },
+  "rating": "Rating",
+  "@rating": {
+    "description": "Rating filter label"
+  },
+  "distance": "Distance",
+  "@distance": {
+    "description": "Distance filter label"
+  },
+  "viewDetails": "View Details",
+  "@viewDetails": {
+    "description": "View details button label"
+  },
+  "bookNow": "Book Now",
+  "@bookNow": {
+    "description": "Book now button label"
+  },
+  "discoverUniverseMen": "Men",
+  "@discoverUniverseMen": {
+    "description": "Universe switcher option for men-only branches"
+  },
+  "discoverUniverseWomen": "Women",
+  "@discoverUniverseWomen": {
+    "description": "Universe switcher option for women-only branches"
+  },
+  "discoverRankedByDistance": "Ranked by distance",
+  "@discoverRankedByDistance": {
+    "description": "Caption confirming results are ordered by distance"
+  },
+  "discoverDistanceLabel": "{km} km",
+  "@discoverDistanceLabel": {
+    "description": "Distance in kilometres shown on a result card",
+    "placeholders": {
+      "km": {
+        "type": "double"
+      }
+    }
+  },
+  "discoverStaleLabel": "Showing saved results",
+  "@discoverStaleLabel": {
+    "description": "Badge shown when the feed renders from a cached fetch"
+  },
+  "discoverRankBadge": "#{rank}",
+  "@discoverRankBadge": {
+    "description": "Rank position badge on a result card",
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "discoverTabLabel": "Discover",
+  "@discoverTabLabel": {
+    "description": "Discover tab label in the bottom navigation bar"
+  },
+  "changePasswordTitle": "Change Password",
+  "@changePasswordTitle": {
+    "description": "Change password screen title"
+  },
+  "changePasswordSubtitle": "Enter your current password, then choose a new one.",
+  "@changePasswordSubtitle": {
+    "description": "Change password screen subtitle"
+  },
+  "changePasswordCurrentLabel": "Current Password",
+  "@changePasswordCurrentLabel": {
+    "description": "Current password field label"
+  },
+  "changePasswordNewLabel": "New Password",
+  "@changePasswordNewLabel": {
+    "description": "New password field label"
+  },
+  "changePasswordConfirmLabel": "Confirm New Password",
+  "@changePasswordConfirmLabel": {
+    "description": "Confirm new password field label"
+  },
+  "changePasswordSubmit": "Update Password",
+  "@changePasswordSubmit": {
+    "description": "Change password submit button label"
+  },
+  "changePasswordSuccessTitle": "Password Updated",
+  "@changePasswordSuccessTitle": {
+    "description": "Change password success title"
+  },
+  "changePasswordSuccessMessage": "Your password has been changed.",
+  "@changePasswordSuccessMessage": {
+    "description": "Change password success message"
+  },
+  "changePasswordDone": "Done",
+  "@changePasswordDone": {
+    "description": "Change password success dismiss button label"
+  },
+  "bookingsTabLabel": "Bookings",
+  "@bookingsTabLabel": {
+    "description": "Bookings tab label in the bottom navigation bar"
+  },
+  "bookingFilterUpcoming": "Upcoming",
+  "@bookingFilterUpcoming": {
+    "description": "Bookings filter option for upcoming bookings"
+  },
+  "bookingFilterPast": "Past",
+  "@bookingFilterPast": {
+    "description": "Bookings filter option for past bookings"
+  },
+  "bookingStatusConfirmed": "Confirmed",
+  "@bookingStatusConfirmed": {
+    "description": "Booking status badge for confirmed bookings"
+  },
+  "bookingStatusCanceled": "Canceled",
+  "@bookingStatusCanceled": {
+    "description": "Booking status badge for canceled bookings"
+  },
+  "bookingStatusCompleted": "Completed",
+  "@bookingStatusCompleted": {
+    "description": "Booking status badge for completed bookings"
+  },
+  "bookingWithBarber": "with {name}",
+  "@bookingWithBarber": {
+    "description": "Booking card barber attribution line",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bookingChairLabel": "Chair {label}",
+  "@bookingChairLabel": {
+    "description": "Booking card chair line",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "bookingCancelAction": "Cancel Booking",
+  "@bookingCancelAction": {
+    "description": "Cancel booking button label"
+  },
+  "bookingCancelConfirmTitle": "Cancel this booking?",
+  "@bookingCancelConfirmTitle": {
+    "description": "Cancel booking confirmation dialog title"
+  },
+  "bookingCancelConfirmMessage": "Your slot will be freed. You can book again anytime.",
+  "@bookingCancelConfirmMessage": {
+    "description": "Cancel booking confirmation dialog message"
+  },
+  "bookingCancelConfirm": "Yes, Cancel",
+  "@bookingCancelConfirm": {
+    "description": "Cancel booking confirmation dialog confirm button"
+  },
+  "branchChairsCount": "{count} chairs",
+  "@branchChairsCount": {
+    "description": "Branch detail chairs count line",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "branchAvailableLabel": "Available",
+  "@branchAvailableLabel": {
+    "description": "Floor plan legend for available chairs"
+  },
+  "branchOccupiedLabel": "Occupied",
+  "@branchOccupiedLabel": {
+    "description": "Floor plan legend for occupied chairs"
+  },
+  "branchMaintenanceLabel": "Maintenance",
+  "@branchMaintenanceLabel": {
+    "description": "Floor plan label for chairs under maintenance"
+  },
+  "branchBarbersTitle": "Barbers",
+  "@branchBarbersTitle": {
+    "description": "Branch detail barbers section title"
+  },
+  "branchServicesTitle": "Services",
+  "@branchServicesTitle": {
+    "description": "Branch detail services section title"
+  },
+  "bookingSelectChair": "Select a chair",
+  "@bookingSelectChair": {
+    "description": "Booking sheet chair step title"
+  },
+  "bookingSelectServices": "Select services",
+  "@bookingSelectServices": {
+    "description": "Booking sheet services step title"
+  },
+  "bookingSelectTime": "Select time",
+  "@bookingSelectTime": {
+    "description": "Booking sheet time step title"
+  },
+  "bookingConfirmAction": "Confirm Booking",
+  "@bookingConfirmAction": {
+    "description": "Booking sheet confirm button label"
+  },
+  "bookingSuccessTitle": "Booking Confirmed",
+  "@bookingSuccessTitle": {
+    "description": "Booking success title"
+  },
+  "bookingSuccessMessage": "Your slot is reserved.",
+  "@bookingSuccessMessage": {
+    "description": "Booking success message"
+  },
+  "bookingViewBookings": "View My Bookings",
+  "@bookingViewBookings": {
+    "description": "Booking success navigation button label"
+  },
+  "bookingConflictMessage": "That slot was just taken. Please pick another time.",
+  "@bookingConflictMessage": {
+    "description": "Message shown when the server reports a booking conflict"
+  },
+  "discoverCompatibilityBadge": "{percent}%",
+  "@discoverCompatibilityBadge": {
+    "description": "Compatibility score badge on a result card",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "historyTitle": "Service History",
+  "@historyTitle": {
+    "description": "Service history section title on the profile tab"
+  },
+  "historyEmptyTitle": "No history yet",
+  "@historyEmptyTitle": {
+    "description": "Service history empty state title"
+  },
+  "historyEmptyMessage": "Services you've booked will appear here after their appointment.",
+  "@historyEmptyMessage": {
+    "description": "Service history empty state message"
+  },
+  "historyRebookAction": "Book Again",
+  "@historyRebookAction": {
+    "description": "Rebook action on a history entry"
+  },
+  "historyRebookTitle": "Book Again",
+  "@historyRebookTitle": {
+    "description": "Rebook sheet title"
+  },
+  "historyRebookMessage": "Pick a new time for {item}.",
+  "@historyRebookMessage": {
+    "description": "Rebook sheet message naming the service",
+    "placeholders": {
+      "item": {
+        "type": "String"
+      }
+    }
+  },
+  "historyRebookSuccessTitle": "Booked Again",
+  "@historyRebookSuccessTitle": {
+    "description": "Rebook success title"
+  },
+  "historyRebookSuccessMessage": "Your new slot is reserved. Find it in Bookings.",
+  "@historyRebookSuccessMessage": {
+    "description": "Rebook success message"
+  },
+  "profileMemberLabel": "Member",
+  "@profileMemberLabel": {
+    "description": "Profile header name fallback when the client name is unknown"
+  },
+  "avatarUpdateAction": "Change Photo",
+  "@avatarUpdateAction": {
+    "description": "Avatar upload affordance on the profile header"
+  },
+  "faceAnalysisTitle": "Face Analysis",
+  "@faceAnalysisTitle": {
+    "description": "Face analysis module title"
+  },
+  "faceAnalysisDetectedShape": "Detected Shape",
+  "@faceAnalysisDetectedShape": {
+    "description": "Detected face shape label"
+  },
+  "faceAnalysisConfidence": "Confidence",
+  "@faceAnalysisConfidence": {
+    "description": "Analysis confidence label"
+  },
+  "faceScanAction": "Scan my face",
+  "@faceScanAction": {
+    "description": "Face photo upload action"
+  },
+  "faceAnalysisPendingTitle": "Analysis in progress",
+  "@faceAnalysisPendingTitle": {
+    "description": "Pending analysis title"
+  },
+  "faceAnalysisPendingMessage": "We are analyzing your face. Check again in a moment.",
+  "@faceAnalysisPendingMessage": {
+    "description": "Pending analysis message"
+  },
+  "faceAnalysisEmptyTitle": "No analysis yet",
+  "@faceAnalysisEmptyTitle": {
+    "description": "Empty analysis state title"
+  },
+  "faceAnalysisEmptyMessage": "Upload a photo to discover the styles that suit you.",
+  "@faceAnalysisEmptyMessage": {
+    "description": "Empty analysis state message"
+  },
+  "actionCheckAgain": "Check again",
+  "@actionCheckAgain": {
+    "description": "Re-polls a pending face analysis"
+  },
+  "faceShapeOval": "Oval",
+  "@faceShapeOval": {
+    "description": "Detected face shape: oval"
+  },
+  "faceShapeRound": "Round",
+  "@faceShapeRound": {
+    "description": "Detected face shape: round"
+  },
+  "faceShapeSquare": "Square",
+  "@faceShapeSquare": {
+    "description": "Detected face shape: square"
+  },
+  "faceShapeHeart": "Heart",
+  "@faceShapeHeart": {
+    "description": "Detected face shape: heart"
+  },
+  "faceShapeDiamond": "Diamond",
+  "@faceShapeDiamond": {
+    "description": "Detected face shape: diamond"
+  },
+  "faceShapeOblong": "Oblong",
+  "@faceShapeOblong": {
+    "description": "Detected face shape: oblong"
+  },
+  "faceShapeTriangle": "Triangle",
+  "@faceShapeTriangle": {
+    "description": "Detected face shape: triangle"
+  },
+  "curatedForYouTitle": "Curated For You",
+  "@curatedForYouTitle": {
+    "description": "AI style recommendations title"
+  },
+  "curatedEmptyMessage": "No matching styles yet.",
+  "@curatedEmptyMessage": {
+    "description": "Empty recommendations message"
+  },
+  "curatedPriceRange": "{min}–{max} {currency}",
+  "@curatedPriceRange": {
+    "description": "Catalog item price range",
+    "placeholders": {
+      "min": {
+        "type": "num"
+      },
+      "max": {
+        "type": "num"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "stylistServicesTitle": "Services",
+  "@stylistServicesTitle": {
+    "description": "Stylist profile services section heading"
+  },
+  "stylistNoServicesMessage": "No services listed yet.",
+  "@stylistNoServicesMessage": {
+    "description": "Shown when a stylist has no services"
+  },
+  "serviceAtHomeLabel": "At-Home Available",
+  "@serviceAtHomeLabel": {
+    "description": "Badge label for services available at home"
+  },
+  "serviceDurationLabel": "{minutes} min",
+  "@serviceDurationLabel": {
+    "description": "Service duration",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "servicePrice": "{displayPrice} {currency}",
+  "@servicePrice": {
+    "description": "Formatted service price with currency code",
+    "placeholders": {
+      "displayPrice": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "stylistStatServicesLabel": "Services",
+  "@stylistStatServicesLabel": {
+    "description": "Stat label for number of services on stylist profile"
+  },
+  "stylistStatRankLabel": "Rank",
+  "@stylistStatRankLabel": {
+    "description": "Stat label for stylist rank"
+  },
+  "stylistStatCompatibilityLabel": "Compatibility",
+  "@stylistStatCompatibilityLabel": {
+    "description": "Stat label for stylist compatibility score"
+  },
+  "reviewTitle": "Rate Your Experience",
+  "@reviewTitle": {
+    "description": "Review submit screen app bar title"
+  },
+  "reviewStylistPrompt": "How was your session?",
+  "@reviewStylistPrompt": {
+    "description": "Review submit screen rating prompt"
+  },
+  "reviewCommentHint": "Share more details... (optional)",
+  "@reviewCommentHint": {
+    "description": "Review submit screen comment field hint"
+  },
+  "reviewSubmitButton": "Submit Review",
+  "@reviewSubmitButton": {
+    "description": "Review submit button label"
+  },
+  "reviewSubmitSuccess": "Review submitted",
+  "@reviewSubmitSuccess": {
+    "description": "Review submit success message"
+  },
+  "reviewAlreadyReviewed": "You already reviewed this booking",
+  "@reviewAlreadyReviewed": {
+    "description": "Shown when the server reports an already-reviewed conflict"
+  },
+  "reviewBookingNotCompleted": "This booking hasn't been completed yet",
+  "@reviewBookingNotCompleted": {
+    "description": "Shown when the server reports the booking is not completed"
+  },
+  "reviewErrorGeneric": "Could not submit your review",
+  "@reviewErrorGeneric": {
+    "description": "Fallback review submit error message"
+  },
+  "reviewStarLabel": "{stars} out of 5 stars",
+  "@reviewStarLabel": {
+    "description": "Screen-reader label for the star rating row",
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewCommentsSection": "Reviews",
+  "@reviewCommentsSection": {
+    "description": "Branch detail reviews section heading"
+  },
+  "bookingRateAction": "Rate",
+  "@bookingRateAction": {
+    "description": "Rate action on a completed booking card"
+  },
+  "profileCompletionTitle": "Complete Your Profile",
+  "@profileCompletionTitle": {
+    "description": "Profile completion screen title"
+  },
+  "profileCompletionSubtitle": "Add your details to personalize your Dorak experience.",
+  "@profileCompletionSubtitle": {
+    "description": "Profile completion screen subtitle"
+  },
+  "profileCompletionNameLabel": "Name",
+  "@profileCompletionNameLabel": {
+    "description": "Profile completion name field"
+  },
+  "profileCompletionPhoneLabel": "Phone number",
+  "@profileCompletionPhoneLabel": {
+    "description": "Profile completion phone field"
+  },
+  "profileCompletionContinue": "Save & Continue",
+  "@profileCompletionContinue": {
+    "description": "Profile completion submit action"
+  },
+  "profileCompletionError": "Could not save your profile",
+  "@profileCompletionError": {
+    "description": "Profile completion generic error"
+  },
+  "bookingAtHomeToggle": "Book at home",
+  "@bookingAtHomeToggle": {
+    "description": "Switch label for an at-home booking"
+  },
+  "bookingAtHomeStreetLabel": "Street",
+  "@bookingAtHomeStreetLabel": {
+    "description": "At-home booking street field"
+  },
+  "bookingAtHomeBuildingLabel": "Building",
+  "@bookingAtHomeBuildingLabel": {
+    "description": "At-home booking building field"
+  },
+  "bookingAtHomeUnitLabel": "Unit / apartment",
+  "@bookingAtHomeUnitLabel": {
+    "description": "At-home booking unit field"
+  },
+  "bookingAtHomePinAction": "Use current location as GPS pin",
+  "@bookingAtHomePinAction": {
+    "description": "Action to select the current GPS location for an at-home booking"
+  },
+  "bookingAtHomePinSelected": "GPS pin selected: {latitude}, {longitude}",
+  "@bookingAtHomePinSelected": {
+    "description": "Selected at-home GPS coordinates",
+    "placeholders": {
+      "latitude": {"type": "String"},
+      "longitude": {"type": "String"}
+    }
+  },
+  "bookingAtHomeLocationError": "We couldn't get your GPS location. Check location permission and try again.",
+  "@bookingAtHomeLocationError": {
+    "description": "At-home GPS selection failure"
+  },
+  "bookingEndTimeLabel": "Ends {time}",
+  "@bookingEndTimeLabel": {
+    "description": "Server-derived booking end time",
+    "placeholders": {
+      "time": {"type": "String"}
+    }
+  },
+  "bookingCancellationClosed": "Cancellation is unavailable within two hours of the appointment.",
+  "@bookingCancellationClosed": {
+    "description": "Shown when the two-hour booking cancellation cutoff has passed"
+  },
+  "reviewStatusPublished": "Published",
+  "@reviewStatusPublished": {
+    "description": "Published review status indicator"
+  },
+  "reviewStatusUnderReview": "Under review",
+  "@reviewStatusUnderReview": {
+    "description": "Disputed review status indicator"
+  },
+  "reviewStatusHidden": "Hidden",
+  "@reviewStatusHidden": {
+    "description": "Hidden review status indicator"
+  },
+  "reviewStatusResolved": "Resolved",
+  "@reviewStatusResolved": {
+    "description": "Resolved review status indicator"
+  },
+  "reviewDisputeHoldNote": "This review is held for up to 48 hours while an administrator resolves the dispute.",
+  "@reviewDisputeHoldNote": {
+    "description": "Review dispute workflow notice"
+  },
+  "floorZoneMen": "Men's zone",
+  "@floorZoneMen": {
+    "description": "Floor-plan section for men's chairs"
+  },
+  "floorZoneWomen": "Women's zone",
+  "@floorZoneWomen": {
+    "description": "Floor-plan section for women's chairs"
+  },
+  "floorZoneShared": "Shared zone",
+  "@floorZoneShared": {
+    "description": "Floor-plan section for shared chairs"
+  },
+  "managerManualBarberTitle": "Add barber",
+  "@managerManualBarberTitle": {
+    "description": "Branch manager manual barber creation title"
+  },
+  "managerManualBarberSubtitle": "Create a barber profile without creating a login account.",
+  "@managerManualBarberSubtitle": {
+    "description": "Manual barber creation explanation"
+  },
+  "managerBarberNameEnglish": "Name in English",
+  "@managerBarberNameEnglish": {
+    "description": "English barber name field"
+  },
+  "managerBarberNameArabic": "Name in Arabic",
+  "@managerBarberNameArabic": {
+    "description": "Arabic barber name field"
+  },
+  "managerBarberPhone": "Phone number",
+  "@managerBarberPhone": {
+    "description": "Manual barber phone field"
+  },
+  "managerBarberPhoneHint": "Include country code, for example +963...",
+  "@managerBarberPhoneHint": {
+    "description": "E.164 phone input hint"
+  },
+  "managerBarberPhoneSharedNote": "A client may use this same number. It creates a separate barber profile.",
+  "@managerBarberPhoneSharedNote": {
+    "description": "Explains client and barber phone-number sharing"
+  },
+  "managerBarberCreate": "Create barber",
+  "@managerBarberCreate": {
+    "description": "Manual barber creation action"
+  },
+  "managerBarberPhoneInvalid": "Enter a valid phone number with country code.",
+  "@managerBarberPhoneInvalid": {
+    "description": "Invalid normalized phone message"
+  },
+  "managerBarberCreated": "Barber created without a login account.",
+  "@managerBarberCreated": {
+    "description": "Manual barber creation success"
+  },
+  "managerBarberCreateError": "Could not create the barber. Please try again.",
+  "@managerBarberCreateError": {
+    "description": "Manual barber creation generic failure"
+  },
+  "bookingSavedAddressesLabel": "Saved addresses",
+  "bookingFirstAvailable": "First available",
+  "bookingPreferredBarber": "Preferred barber",
+  "bookingSummaryTitle": "Booking summary",
+  "bookingTotalPrice": "Total price: {price}",
+  "@bookingTotalPrice": {"placeholders": {"price": {}}},
+  "bookingTotalDuration": "Estimated duration: {minutes} min",
+  "@bookingTotalDuration": {"placeholders": {"minutes": {"type": "int"}}},
+  "bookingPaymentTitle": "Payment",
+  "bookingPayAtSalon": "Pay at salon",
+  "bookingPayAtSalonOnly": "Payment is due in person when you arrive at the salon.",
+  "bookingStatusInProgress": "In progress",
+  "bookingTrackerTitle": "Appointment status",
+  "bookingTrackerConfirmed": "Your appointment is confirmed.",
+  "bookingTrackerInProgress": "Your appointment is in progress.",
+  "bookingTrackerCompleted": "Your appointment is completed.",
+  "bookingTrackerCancelled": "This appointment was cancelled."
+  ,"bookingTrackAction": "Track appointment",
+  "profileEditAction": "Edit profile",
+  "profileSavedAddressesAction": "Saved addresses",
+  "profileEditTitle": "Edit profile",
+  "profileSaveAction": "Save",
+  "profileFullNameLabel": "Full name",
+  "profilePhoneNumberLabel": "Phone number",
+  "savedAddressesTitle": "Saved addresses",
+  "savedAddressAddTitle": "Add address",
+  "savedAddressEditTitle": "Edit address",
+  "savedAddressStreetLabel": "Street",
+  "savedAddressBuildingLabel": "Building",
+  "savedAddressUnitLabel": "Unit",
+  "savedAddressLatitudeLabel": "Latitude",
+  "savedAddressLongitudeLabel": "Longitude",
+  "businessBranchOperationsTitle": "Branch operations",
+  "businessRetry": "Retry",
+  "businessDashboardTitle": "Dashboard",
+  "businessTodayRevenue": "Today revenue: {value}",
+  "@businessTodayRevenue": {"placeholders": {"value": {}}},
+  "businessMonthlyRevenue": "Monthly revenue: {value}",
+  "@businessMonthlyRevenue": {"placeholders": {"value": {}}},
+  "businessTodayBookings": "Today bookings: {value}",
+  "@businessTodayBookings": {"placeholders": {"value": {"type": "int"}}},
+  "businessActiveChairs": "Active chairs: {active}/{total}",
+  "@businessActiveChairs": {"placeholders": {"active": {"type": "int"}, "total": {"type": "int"}}},
+  "businessChairStatus": "Chair status: {value}",
+  "@businessChairStatus": {"placeholders": {"value": {}}},
+  "businessBranchHint": "Branch",
+  "businessAppointmentsTitle": "Appointments",
+  "businessStart": "Start",
+  "businessComplete": "Complete",
+  "businessNoShow": "No-show",
+  "businessCancelBooking": "Cancel",
+  "businessChairsTitle": "Chairs",
+  "businessUnassigned": "Unassigned",
+  "stylistTodayTitle": "Today",
+  "stylistWorkstationOnline": "Workstation online",
+  "stylistUpdateFailed": "Could not update. Pull to retry.",
+  "stylistTodayAppointments": "Today's appointments",
+  "stylistAcceptBooking": "Accept Booking",
+  "stylistStartSession": "Start Session",
+  "stylistCompleteSession": "Complete Session",
+  "stylistMarkNoShow": "Mark No-Show"
+}

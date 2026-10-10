@@ -1,0 +1,166 @@
+# Feature Index — Dorak Client App (`apps/client_app`)
+
+> **Append entry after adding each feature.** Chronological map of features built in the client (end-user) app. Monorepo-wide index: [`docs/feature-index.md`](../../docs/feature-index.md).
+
+---
+
+### Splash — Stitch 001
+- `lib/src/features/splash/splash.screen.dart` — staged fade-in, auto-advance after 2.5s via the injected `onFinished`, which runs `AppRouter._leaveSplash` → `AppGate.resolve`. No early-advance gesture despite earlier notes here.
+- `lib/src/features/splash/widgets/splash_logo.widget.dart` — animated logo.
+- `lib/src/features/splash/widgets/splash_background.widget.dart` — gradient + `noise_overlay.png` (converted from SVG — `Image.asset` cannot decode SVG).
+
+### Onboarding Welcome — Stitch 002
+- `lib/src/features/onboarding/welcome.screen.dart` — StatefulWidget, staggered fade, `ProgressDots(4, 0)`, Get Started CTA, skip sheet.
+- `lib/src/features/onboarding/widgets/welcome_content.widget.dart` — hero image, headline, sub-text, CTA row.
+
+### Onboarding Discovery — Stitch 003
+- `lib/src/features/onboarding/discovery.screen.dart` — `ProgressDots(4, 1)`, Next CTA.
+- `lib/src/features/onboarding/widgets/discovery_content.widget.dart` — headline/subtitle + card deck.
+- `lib/src/features/onboarding/widgets/discovery_card_deck.widget.dart` — staggered fade-slide-up cards (`Interval` per index).
+- `lib/src/features/onboarding/discovery_card.entity.dart` — pure value object (icon, title, description keys); no wire format, hand-written.
+- `lib/src/features/onboarding/widgets/onboarding_hero.widget.dart` — local asset `onboarding_hero.jpg` with remote URL override + `errorBuilder`.
+
+### Onboarding Booking — Stitch 004
+- `lib/src/features/onboarding/booking.screen.dart` — `ProgressDots(4, 2)`, Back + Next, skip sheet.
+- `lib/src/features/onboarding/widgets/booking_content.widget.dart`
+- `lib/src/features/onboarding/widgets/booking_visual.widget.dart` — 3 tilted glass cards (service / professional / date-time), staggered fade-slide-up, Material icons in tinted containers (offline-safe, no network images).
+
+### Onboarding AI Showcase — Stitch 005
+- `lib/src/features/onboarding/ai_showcase.screen.dart` — `ProgressDots(4, 3)`, Back + Get Started.
+- `lib/src/features/onboarding/widgets/ai_showcase_content.widget.dart` — avatar + face-shape chip, 2 recommendation cards with mini progress bars (`FractionallySizedBox`), decorative rings, privacy note.
+- `lib/src/features/onboarding/widgets/ai_showcase_visual.widget.dart`
+
+### Onboarding Infrastructure
+- `lib/src/features/onboarding/onboarding_config.bloc.dart` (with `.event.dart` / `.state.dart`) — `OnboardingConfigBloc`: loads `/app/onboarding-config` (locale-aware), reloads on locale switch, dedupes same-locale loads.
+- `lib/src/features/onboarding/widgets/skip_bottom_sheet.sheet.dart` — shared 3-option skip sheet; pops itself before Skip / Don't show again navigate.
+- Flow lives in `lib/src/core/navigation/app.router.dart` (go_router, not `main.dart`). `Skip for now` leaves `dontShowOnboarding` alone; `Don't show again` and finishing the tour persist it.
+
+### Authentication — Stitch 006–009
+- `lib/src/features/auth/auth_entry.screen.dart` (006) + `widgets/auth_entry_{background,content,header}.widget.dart`, `auth_guest_button.widget.dart`.
+- `lib/src/features/auth/login.screen.dart` + `widgets/login_content.widget.dart` (007). The forgot-password link opens 011 (the parameter is still nullable so it *can* be hidden).
+- `lib/src/features/auth/sign_up.screen.dart` + `widgets/sign_up_content.widget.dart` (008) — name / email / password / confirm; the confirm value is sent as `password_confirmation`.
+- `lib/src/features/auth/verify_account.screen.dart` + `widgets/verify_account_content.widget.dart` + `widgets/otp_input_field.widget.dart` (009) — 6 digits, auto-advance, 60 s resend cooldown, masked destination, "Verify later" skip.
+- `lib/src/features/auth/widgets/auth_text_field.widget.dart` — floating label, rounded-top/sharp-bottom underline, focus + error states, password toggle. Local to the app; promotion to `design_system` is Track 15.
+- `lib/src/features/auth/widgets/auth_header.widget.dart`, `widgets/auth_shell.widget.dart` (responsive layout shared by all auth screens). The inline error row now comes from `design_system`'s `StatusBanner` — `auth_error_banner.widget.dart` was promoted and removed in Track 12.
+- `lib/src/features/auth/auth_validators.entity.dart` — email / min-8 / confirmation-match, mirroring the backend rules.
+- `lib/src/features/auth/auth_error.entity.dart` — maps exceptions to local ARB strings. The backend's own `message` is an untranslated key and must never be rendered.
+
+### Password Recovery — Stitch 011–014
+- `lib/src/features/auth/password_recovery.bloc.dart` (+ `.event.dart`, `.state.dart`) and `recovery_signal.entity.dart` — app-layer bloc over the core `AuthRepository`; carries `email` and `code` across the four steps.
+- `forgot_password.screen.dart` (011) + `widgets/forgot_password_content.widget.dart` — email field, `AuthValidators.email`, "Send Code".
+- `recovery_otp.screen.dart` (012) + `widgets/recovery_otp_content.widget.dart` — six reused `OtpInputField`s, masked destination, 60 s resend cooldown. **Cannot validate the code** — no such endpoint exists.
+- `create_new_password.screen.dart` (013) + `widgets/create_new_password_content.widget.dart` — new + confirm password. **This is where a rejected code surfaces**, with a "Re-enter code" action back to 012.
+- `password_reset_success.screen.dart` (014) — a thin `StatusView` wrapper; the first production consumer of that Track 12 component. Exits with `router.go`, so the recovery stack is dropped.
+- Constraints and the enumeration mitigation: `docs/authentication/password_recovery.md`.
+
+### Bootstrap & Navigation
+- `lib/main.dart` — binding init, dotenv, `SharedAppPreferences.create()`, then `DorakApp`.
+- `lib/app.dart` — builds secure storage → `ApiClient` (with `tokenProvider`) → `DioAuthRepository` → `AuthBloc` → `SessionBloc(repository, storage)` → `OnboardingConfigBloc` → `LocaleBloc`; starts `session.ready` unawaited so restore overlaps the splash; subscribes the auth stream → `SessionAuthenticated`, the unauthorized stream → `UnauthorizedDetected`, and locale → config reload. Test seams: `tokenStorage`, `authRepository`.
+- `lib/src/core/navigation/app.router.dart` — `AppRouter` (go_router); three stream listeners (session + auth + recovery) re-run the redirect and react to `SessionSignal` / `AuthSignal` / `RecoverySignal` before acknowledging; `router.go(AppRoutes.home)` clears the stack.
+- `lib/src/core/navigation/app_routes.entity.dart` — `AppRoutes` path constants.
+- `lib/src/core/navigation/app_gate.entity.dart` — `AppGate.resolve`, a pure function called from `AppRouter._leaveSplash` once `session.ready` completes (session first, onboarding flag second). It is deliberately **not** in the redirect — the splash must hold for its animation.
+
+### Home
+- `lib/src/features/home/home.screen.dart` — placeholder (`homeTitle`). Real dashboard TBD; no logout affordance yet.
+
+### Tests
+- `test/widget_test.dart` — real `DorakApp` bootstrap: splash → gate → auth entry.
+- `test/app_gate_test.dart` — all six launch-gate branches.
+- `test/auth_flow_test.dart` — login, validation, sign-up → verify, OTP success/failure, skip, resend cooldown.
+- `test/password_recovery_bloc_test.dart` — recovery transitions, the enumeration mitigation, the carried code, the rejected code.
+- `test/password_recovery_flow_test.dart` — 011→014 route walk; an unregistered email still advances; a rejected code routes back to 012; 014 drops the stack.
+- `test/onboarding_config_bloc_test.dart` — config load, retry after a failure, locale refetch.
+- `test/locale_switcher_flow_test.dart` — shared `LocaleSwitcher` across the auth screens, EN↔AR round trip, RTL flip.
+- `test/session_expired_test.dart` — 401 mid-session → session-expired signal → auth redirect.
+- `test/onboarding_skip_test.dart` — Skip vs Don't show again vs Cancel, full four-step walk, empty back-stack.
+- `test/helpers/fakes.dart` — router harness + in-memory storage/preferences/auth fakes.
+
+### Discovery Feed — Stitch 016 (CL-09)
+- `lib/src/features/discovery/discovery.{bloc,event,state}.dart` + `discovery_filter.entity.dart` — location-gated feed over `Paged<BranchDto>` + `FeedCache` (stale label, revalidate, evict-on-filter-change).
+- `lib/src/features/discovery/discovery.screen.dart` — location-required / error / loading / empty / feed states, pull-to-refresh, infinite scroll.
+- `lib/src/features/discovery/widgets/discovery_filter_bar.widget.dart` — universe segmented control, available-now switch, price range, rating slider.
+- `lib/src/features/discovery/widgets/discovery_result_card.widget.dart` — rank/compatibility/distance badges, Book Now, optional View Details.
+- `test/discovery_bloc_test.dart` — 15 bloc cases; `test/helpers/fakes.dart` gains `FakeExploreRepository`, `FakeLocationProvider`, `FakeFeedCache`, `testPosition`/`testBranch`/`testBranchPage`, `fakeDiscoveryBloc`.
+
+### Authenticated Password Change — Track 17
+- `lib/src/features/auth/change_password.{bloc,event,state}.dart` — submit over `AuthRepository.changePassword`, `succeeded` flag, typed error.
+- `lib/src/features/auth/change_password.screen.dart` + `widgets/change_password_content.widget.dart` — `AuthShell` form (current/new/confirm), `AuthValidators`, 422 field errors in the banner, success `StatusView` with Done pop.
+- Entered from the Profile tab (`SecondaryButton`), nested `/profile/password` route.
+- `test/change_password_bloc_test.dart` + `test/change_password_flow_test.dart`.
+
+### My Bookings — Stitch 017a (CL-10a)
+- `lib/src/features/booking/booking.{bloc,event,state}.dart` — upcoming/past filter, refresh, load-more, cancel-then-reload over `Paged<BookingDto>`.
+- `lib/src/features/booking/bookings.screen.dart` — filter + list + cancel confirm dialog; filter renders in the empty state.
+- `lib/src/features/booking/widgets/booking_card.widget.dart` — locale-aware time, status badge, barber/chair/services, cancel affordance.
+- `test/booking_bloc_test.dart` + `test/booking_flow_test.dart`; `FakeBookingRepository`, `testBooking`/`testBookingPage`, `fakeBookingBloc` in fakes.
+
+### Branch Floor Plan & Booking Creation — Stitch 017b (CL-10b)
+- `lib/src/features/booking/branch_detail.{bloc,event,state}.dart` — parallel detail + floor-plan load (plan failure tolerated), chair/services/time selection, submit (`canSubmit` = chair + time), 409 conflict, retry.
+- `lib/src/features/booking/branch_detail.screen.dart` — floor plan grid, barbers, services checklist, date + time pickers, confirm, success `StatusView` → My Bookings.
+- `lib/src/features/booking/widgets/floor_plan_grid.widget.dart` — legend + tappable available chairs.
+- Nested `/discover/branch/:branchId` route; "View Details" on result cards; `BranchDetailBloc` built in `app.dart`.
+- `test/branch_detail_bloc_test.dart`; `FakeBranchRepository`, `testFloorPlan`, `testBranchDetail`, fake `createBooking` in fakes.
+
+### Service History & Rebook — Stitch 018a (CL-11a)
+- `lib/src/features/profile/history.{bloc,event,state}.dart` — `HistoryBloc` over `Paged<ServiceHistoryDto>` (start/refresh/load-more/retry) + rebook submit → `rebooked` flag, `HistoryRebookRequested` resets via `HistoryRebookAcknowledged`.
+- `lib/src/features/profile/profile.screen.dart` — rebuilt into the 018 profile tab: client-name header card (fallback `profileMemberLabel`), Change Password entry kept, Service History section (per-entry rebook via Material date + time pickers, per-card `rebookingId` loader, 409 → `bookingConflictMessage`, success `StatusView` → My Bookings), RefreshIndicator + scroll load-more + retry + first-load/empty/error states.
+- `test/history_bloc_test.dart` (8 cases) + `test/history_flow_test.dart`; `FakeHistoryRepository`, `testServiceHistory`/`testHistoryPage`, `fakeHistoryBloc`, `buildRouter` `history` param in fakes.
+
+### Face Analysis & AI Style — Stitch 018b (CL-11b)
+- `lib/src/features/profile/face_analysis.{bloc,event,state}.dart` — `FaceAnalysisBloc` over core `FaceProfileRepository` + `ServiceCatalogRepository`: start loads recommendations, scan uploads the photo and lands on a pending state (`recommendations` returned empty because the backend job runs async), Check again re-polls, and `recommended_catalog_item_ids` are resolved into `CatalogItemDto`s by paging the catalog (per_page 100, cap 5 pages, catalog failure tolerated).
+- `lib/src/features/profile/avatar.{bloc,event,state}.dart` — `AvatarBloc` over core `ProfileRepository.uploadAvatar` → `avatarUrl`.
+- `lib/src/features/profile/{photo_picker,image_picker_photo_picker}.provider.dart` — `PhotoPicker` seam + `ImagePickerPhotoPicker` (`image_picker` dep, hidden so tests never hit the platform).
+- `lib/src/features/profile/profile.screen.dart` — avatar header (tap to upload, in-flight loader, fallback initial + camera badge), Face Analysis card (empty / pending / result with shape + confidence + photo / error-with-retry), Curated For You section (item name `[localeCode] ?? ['en']`, price range, style period).
+- `test/face_analysis_bloc_test.dart` (9 cases) + `test/avatar_bloc_test.dart` (2) + `test/face_analysis_flow_test.dart` (4); `FakeFaceProfileRepository`, `FakeProfileRepository`, `FakeServiceCatalogRepository`, `FakePhotoPicker`, `testFaceAnalysis`/`testCatalogItem`/`testCatalogPage`, `fakeFaceAnalysisBloc`/`fakeAvatarBloc`, `buildRouter` params in fakes.
+
+### Stylist Profile — Stitch 019 (CL-12)
+- `lib/src/features/stylist/stylist_profile.{bloc,event,state}.dart` — `StylistProfileBloc` over core `ExploreRepository.getBarberDetail` + `CurrencyRepository.getCurrencies` (parallel detail + currencies load, currency failure tolerated, retry).
+- `lib/src/features/stylist/stylist_profile.screen.dart` — avatar header, stats row mapping `rank`/`compatibility_score` onto `discoverRankBadge`/`discoverCompatibilityBadge` localizations, services list with price/currency/duration/at-home flag.
+- Branch-detail barbers → tappable rows navigating to `/discover/barber/:barberId`.
+- `test/stylist_profile_bloc_test.dart` + `test/stylist_profile_flow_test.dart`.
+
+### Empty Scaffolds (no files yet)
+- `lib/src/features/profile/` (password entry button only)
+- `lib/src/core/{di,theme}/`
+
+### Review & Rating — Stitch 020 (CL-13)
+
+- `lib/src/features/review/review_submit.event.dart` — `ReviewSubmitStarted(bookingId, {rating, comment})`, `ReviewSubmitRetried`.
+- `lib/src/features/review/review_submit.state.dart` — `bookingId`, `rating`, `comment`, `isSubmitting`, `submitted`, `error`.
+- `lib/src/features/review/review_submit.bloc.dart` — `ReviewSubmitBloc` over `ReviewRepository.submitReview`; retry re-submits from stored rating.
+- `lib/src/features/review/review_submit.screen.dart` — `ReviewSubmitScreen`: star rating row (1–5), comment field (max 1000, 4 rows), submit `PrimaryButton` (`isLoading`/`isDisabled`), success `StatusView` ("Review submitted" → View Bookings).
+- `lib/src/core/navigation/app_routes.entity.dart` — `reviewSegment`, `reviewDetail(bookingId)`.
+- `lib/src/core/navigation/app.router.dart` — `/reviews/:bookingId` route nested under the Bookings shell branch.
+- `lib/src/features/booking/widgets/booking_card.widget.dart` — `rateLabel`/`onRate` params; "Rate" button shown when `status == 'completed'`.
+- `lib/src/features/booking/bookings.screen.dart` — `onRate` callback → `router.push(reviewDetail(bookingId))`.
+- `lib/app.dart` — `DioReviewRepository` + `ReviewSubmitBloc` DI, closed in `dispose()`.
+- `test/helpers/fakes.dart` — `FakeReviewRepository`, `testReview()`, `fakeReviewSubmitBloc()`, `reviewSubmit` param on `buildRouter`.
+
+### Assets
+- `assets/images/noise_overlay.png` — generated noise texture (replaces SVG).
+- `assets/images/onboarding_hero.jpg` — hero image, local-first.
+
+---
+
+## Client Feature Registry
+
+| # | Feature | Status | Source |
+|---|---------|--------|--------|
+| CL-01 | Splash | ✅ Complete | Stitch 001 |
+| CL-02 | Onboarding Welcome | ✅ Complete | Stitch 002 |
+| CL-03 | Onboarding Discovery | ✅ Complete | Stitch 003 |
+| CL-04 | Onboarding Booking | ✅ Complete | Stitch 004 |
+| CL-05 | Onboarding AI Showcase | ✅ Complete | Stitch 005 |
+| CL-06 | Onboarding Infrastructure (config, skip sheet, flow) | ✅ Complete | — |
+| CL-07 | Home placeholder | ✅ Complete | — |
+| CL-08 | Auth flow — entry / login / register / verify | ✅ Complete | Stitch 006–009 |
+| CL-08c | Locale switcher on all pre-Home screens (onboarding header + auth entry/login/register/verify via shared `LocaleSwitcher`) | ✅ Complete | — |
+| CL-08b | Password recovery — forgot / code / new password / success | ✅ Complete | Stitch 011–014 |
+| CL-14 | Launch gate + go_router route table | ✅ Complete | Tracks 10–11 |
+| CL-09 | Discovery Feed | ✅ Complete | Stitch 016 |
+| CL-17 | Authenticated password change | ✅ Complete | Track 17 |
+| CL-10a | My Bookings (list/filter/cancel) | ✅ Complete | Stitch 017a |
+| CL-10b | Branch Floor Plan & Booking creation | ✅ Complete | Stitch 017b |
+| CL-11 | Personalised Profile & AI Style — 018a Service History + Rebook; 018b Face Analysis + AI recs | ✅ Complete | Stitch 018 |
+| CL-12 | Stylist Profile | ✅ Complete | Stitch 019 |
+| CL-13 | Review & Rating | ✅ Complete | Stitch 020 |

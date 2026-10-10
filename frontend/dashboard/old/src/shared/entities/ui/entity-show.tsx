@@ -1,0 +1,71 @@
+'use client';
+
+import Link from 'next/link';
+import type { DashboardArea } from '@/shared/auth';
+import { CardSkeleton } from '@/shared/components/feedback/skeletons/card-skeleton';
+import { GenericShowPage } from '@/shared/components/templates/generic-show-page';
+import { canPerformOperation } from '@/shared/entities/entity-access';
+import { createEntityHooks } from '@/shared/entities/entity-hooks';
+import type { EntityFieldTree } from '@/shared/entities/fields';
+import type { EntityConfig } from '@/shared/entities/types/entity-config';
+import type { EntityId } from '@/shared/entities/types/entity-id';
+import type { EntityRecord } from '@/shared/entities/types/entity-record';
+import { useDashboardTranslation } from '@/shared/hooks/use-dashboard-translation';
+import { APP_ROUTES } from '@/shared/routes/app-routes.const';
+import type { ServerListParams } from '@/shared/types/query/server-list-params-wire';
+
+type EntityShowProps<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree> = {
+  readonly area: DashboardArea;
+  readonly config: EntityConfig<TEntity, TInput, TFields, ServerListParams>;
+  readonly id: EntityId;
+};
+
+export function EntityShow<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree>({
+  area,
+  config,
+  id,
+}: Readonly<EntityShowProps<TEntity, TInput, TFields>>) {
+  const CustomShow = config.overrides?.renderShow;
+  return CustomShow === undefined ? (
+    <DefaultEntityShow area={area} config={config} id={id} />
+  ) : (
+    <CustomShow area={area} id={id} />
+  );
+}
+
+function DefaultEntityShow<TEntity extends EntityRecord, TInput, TFields extends EntityFieldTree>({
+  area,
+  config,
+  id,
+}: Readonly<EntityShowProps<TEntity, TInput, TFields>>) {
+  const { t } = useDashboardTranslation();
+  const hooks = createEntityHooks(config);
+  const query = hooks.useEntity(id);
+  const entity = query.data;
+  if (entity === undefined) {
+    return <CardSkeleton />;
+  }
+  return (
+    <GenericShowPage
+      actions={
+        canPerformOperation(config.access, 'edit', area) ? (
+          <Link
+            className="rounded-lg bg-primary px-3 py-2 text-sm text-background"
+            href={APP_ROUTES.edit(area, config.slug, id)}
+          >
+            {t('actions.edit')}
+          </Link>
+        ) : undefined
+      }
+      details={config.ui.show.fields.map((field) => ({
+        label: t(field.label),
+        value: field.value(entity),
+      }))}
+      title={
+        config.ui.show.title === undefined
+          ? t(config.messages.singular)
+          : config.ui.show.title(entity)
+      }
+    />
+  );
+}

@@ -1,0 +1,69 @@
+<?php
+
+// modules/OfferedService/Models/OfferedServiceModel.php
+declare(strict_types=1);
+
+namespace Modules\OfferedService\Models;
+
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Modules\Currency\Models\CurrencyModel;
+use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
+use Spatie\Translatable\Attributes\Translatable;
+use Spatie\Translatable\HasTranslations;
+
+#[Fillable([
+    'serviceable_id',
+    'serviceable_type',
+    'name',
+    'description',
+    'price',
+    'currency_id',
+    'duration',
+    'at_home',
+    'active',
+    'catalog_item_id',
+])]
+#[Table('offered_services')]
+#[Translatable([
+    'name',
+    'description',
+])]
+class OfferedServiceModel extends Model
+{
+    use HasFactory;
+    use HasTranslations;
+    use HasUuids;
+
+    protected function casts(): array
+    {
+        return [
+            'name' => 'array',
+            'description' => 'array',
+            'price' => 'decimal:2',
+            'at_home' => 'boolean',
+            'active' => 'boolean',
+            'duration' => 'integer',
+        ];
+    }
+
+    public function serviceable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(CurrencyModel::class, 'currency_id');
+    }
+
+    public function catalogItem(): BelongsTo
+    {
+        return $this->belongsTo(ServiceCatalogItemModel::class, 'catalog_item_id');
+    }
+}

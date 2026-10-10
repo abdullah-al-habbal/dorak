@@ -1,0 +1,3 @@
+include: ../../analysis_options.yaml
+
+# Dorak shared lint baseline (see /analysis_options.yaml).

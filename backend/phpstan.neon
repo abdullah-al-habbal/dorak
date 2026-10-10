@@ -1,0 +1,20 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - modules/
+        - bootstrap/
+    excludePaths:
+        - vendor/*
+        - node_modules/*
+        - storage/*
+        - .env.testing
+        - modules/*/Database/Migrations/*
+        - modules/*/Database/Factories/*
+        - modules/*/Database/Seeders/*
+    tmpDir: storage/framework/cache/phpstan
+    configDirectories:
+        - modules/Core/Config

@@ -1,0 +1,67 @@
+name: dorak_mobile_workspace
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dev_dependencies:
+  melos: ^8.2.2
+
+workspace:
+  - apps/client_app
+  - apps/business_app
+  - apps/stylist_app
+  - packages/design_system
+  - packages/core
+  - packages/localization
+  - packages/feature_floor_plan
+
+melos:
+  name: dorak_mobile
+  packages:
+    - apps/*
+    - packages/*
+
+  scripts:
+    bootstrap:
+      exec:
+        command: dart pub get
+        concurrency: 1
+      description: Resolve all workspace dependencies (native pub workspaces).
+
+    generate:
+      exec:
+        command: flutter gen-l10n
+        concurrency: 1
+      packageFilters:
+        scope: localization
+      description: Regenerate localization ARB output in the localization package.
+
+    build:
+      exec:
+        command: sh -c "if grep -q json_serializable pubspec.yaml; then dart run build_runner build ; fi"
+        concurrency: 4
+      description: Run code generation (build_runner) in packages that declare json_serializable.
+
+    analyze:
+      exec:
+        command: flutter analyze
+        concurrency: 1
+      description: Run static analysis in every workspace package.
+
+    test:
+      exec:
+        command: flutter test
+        concurrency: 1
+      description: Run tests in every workspace package.
+
+    taxonomy:
+      run: dart run tool/check_taxonomy.dart
+      description: Validate dot-suffix file taxonomy and architectural placement.
+
+    verify:
+      run: |
+        dart run melos run generate &&
+        dart run melos run build &&
+        dart run melos run analyze &&
+        dart run melos run taxonomy &&
+        dart run melos run test
+      description: Full verification gate (generate, build, analyze, taxonomy, test).

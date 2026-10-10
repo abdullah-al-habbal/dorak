@@ -1,13 +1,11 @@
-# Nested repositories retain independent histories.
-/backend/
-/frontend/mobile/
-
 # Local tooling and migration backups are not root coordination artifacts.
 /.agents/
 /.claude/
 /.aiignore
 /*.bundle
 
-/frontend/dashboard/node_modules/
-/frontend/dashboard/.next/
-/frontend/dashboard/tsconfig.tsbuildinfo
+# Generated frontend artifacts and local agent caches.
+/frontend/**/node_modules/
+/frontend/**/.next/
+/frontend/**/.agents/
+/frontend/**/tsconfig.tsbuildinfo

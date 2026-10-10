@@ -1,0 +1,119 @@
+# CLAUDE.md — `packages/core`
+
+Scoped rules for this package. Inherits everything in
+[`../../CLAUDE.md`](../../CLAUDE.md); this file adds and narrows.
+Inventory and API surface: [`AGENTS.md`](./AGENTS.md).
+
+---
+
+## 1. What this package is for
+
+The single source of infrastructure for every Dorak app: HTTP, environment
+config, device storage, session lifecycle, wire models, exceptions.
+
+It is **pure Dart + Flutter foundation**. It contains no UI, no screens, no
+localized strings.
+
+## 2. Dependency ceiling
+
+Permitted: third-party packages, and `localization` if a genuine need arises
+(currently **not** depended on — keep it that way unless a task requires it).
+
+Forbidden, without exception:
+
+- `design_system` — core must never know about colours, typography or widgets.
+- `feature_floor_plan` or any other feature package.
+- **Any `apps/*` import.** If core needs something from an app, the design is
+  wrong: invert it with a callback or an abstract contract.
+
+Current third-party set: `bloc`, `dio`, `equatable`, `flutter_dotenv`,
+`json_annotation`, `flutter_secure_storage`, `shared_preferences`. Adding
+another needs a reason recorded in this file or in `docs/`.
+
+`bloc` is **pure Dart** and is permitted here by
+[ADR 0001](../../docs/architecture/decisions/0001-bloc-in-core.md).
+`flutter_bloc` and `go_router` are **not** — the Flutter bindings and all
+routing stay in the app layer.
+
+## 3. Allowed file roles here
+
+`.client.dart` · `.interceptor.dart` · `.exception.dart` · `.dto.dart` ·
+`.entity.dart` · `.endpoints.dart` · `.repository.dart` · `.bloc.dart` ·
+`.event.dart` · `.state.dart` · `.provider.dart` · `.storage.dart` ·
+`.barrel.dart`
+
+`.storage.dart` is **exclusive to this package** — the taxonomy checker rejects
+it anywhere else. `.screen.dart`, `.token.dart` and `.theme.dart` are rejected
+here.
+
+## 4. Hard rules
+
+1. **One HTTP stack.** Everything goes through `ApiClient`. Never construct a
+   bare `Dio` outside `api.client.dart`, never add `http`.
+2. **No transport type escapes.** A `DioException` must never reach a caller —
+   `ApiClient._guard` maps it. The one deliberate leak is
+   `NetworkException.type`, which is a `DioExceptionType`; do not widen that.
+3. **DTOs are generated.** Every `*.dto.dart` declares
+   `part '<name>.dto.g.dart'` and `@JsonSerializable`. Hand-written `fromJson`
+   is forbidden for wire models. Response DTOs use `createToJson: false`;
+   generics use `genericArgumentFactories: true`. Run `melos run build` after
+   editing one and commit the `.g.dart`.
+4. **`.entity.dart` is for value objects only** — no JSON, no codegen.
+5. **Endpoints stay domain-split.** One `<domain>.endpoints.dart` per backend
+   module. A monolithic route file is a violation.
+6. **Never hardcode a base URL.** It comes from `.env` through
+   `ConfigProvider`. Tests pass an explicit `baseUrl`.
+7. **Do not invent endpoints.** Only add a route constant that exists in
+   `dorak-backend`.
+8. **Storage contracts stay abstract.** Every store is an abstract class plus a
+   concrete implementation in the same file, so tests can substitute a fake and
+   never touch a platform channel.
+9. **Abstract + impl in one file.** `AuthRepository` + `DioAuthRepository`,
+   `TokenStorage` + `SecureTokenStorage`. Do not split them.
+10. **Export through barrels.** A new public type must be reachable from
+    `lib/core.dart`, via its section barrel.
+
+## 5. State management
+
+Session state lives **in this package as pure `bloc`s** — `SessionBloc`,
+`SessionEvent`, `SessionState`, `SessionSignal` plus the auth split `AuthBloc`,
+`AuthEvent`, `AuthState`, `AuthSignal` (no Flutter dependency). The session
+aggregate is two independent blocs: `AuthBloc` owns active auth actions
+(login/register/verify/resend) and shares `TokenStorage`; `SessionBloc(AuthRepository, TokenStorage)`
+owns session truth (restore/logout/unauthorized/ack). The two are **decoupled**:
+the app layer forwards an auth success to `SessionBloc` via
+`SessionAuthenticated(client)` — no bloc-to-bloc dependency. `SessionState` uses
+`SessionSignal` (`sessionExpired | authenticationRequired`); `AuthState` uses
+`AuthSignal` (`loginSucceeded | registrationSucceeded | verificationSucceeded`).
+The unauthorized signal lives on `ApiClient` as a broadcast `unauthorizedStream`
+(fires once per 401/403 burst until reset). The former `ChangeNotifier` layer
+(`SessionController`, `UnauthorizedNotifier`) and the pagination notifiers were
+removed in Phase 4. **Do not add `ChangeNotifier` state here.**
+
+Convention: success sets the owning bloc's signal for the router; failures land
+in `state.error` — screens map via `AuthError.from` (app layer). No Riverpod,
+Provider or GetIt anywhere.
+
+**The canonical contract is
+[`docs/state_management/conventions.md`](../../docs/state_management/conventions.md)** —
+Bloc/Event/State shape, `clearX` flags on every nullable field, loading vs
+submitting, retry, refresh, concurrency latches, and testing. Read it before
+adding or changing a bloc here.
+
+Pagination state uses `Paged<T>`
+(`lib/src/network/paged.entity.dart`) — an immutable value object with named
+transitions and **no public `copyWith`**. There is no generic `PaginationBloc`.
+See [`docs/state_management/pagination.md`](../../docs/state_management/pagination.md).
+
+## 6. Verification
+
+```bash
+cd frontend/mobile
+dart run melos run build      # after any DTO change
+dart run melos run analyze
+dart run melos run test
+```
+
+New public behaviour needs a test in `packages/core/test/`. Use the existing
+helpers (`test/helpers/fake_dio.dart`, `test/helpers/fake_auth.dart`) rather
+than adding a mocking package.

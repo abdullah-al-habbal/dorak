@@ -1,0 +1,153 @@
+import 'package:core/core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import 'package:client_app/src/features/auth/auth_entry.screen.dart';
+import 'package:client_app/src/features/discovery/discovery.screen.dart'
+    as discovery_feed;
+import 'package:client_app/src/features/profile/profile_completion.screen.dart';
+
+import 'helpers/fakes.dart';
+
+void main() {
+  late FakeAuthRepository repository;
+
+  setUp(() {
+    repository = FakeAuthRepository();
+  });
+
+  Future<void> runGate(
+    WidgetTester tester, {
+    required SessionBloc session,
+    required AuthBloc auth,
+    required AppPreferences preferences,
+  }) async {
+    tester.view.physicalSize = const Size(1290, 2796);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(
+      routerHarness(
+        buildRouter(
+          session: session,
+          auth: auth,
+          preferences: preferences,
+          apiClient: fakeApiClient(),
+        ),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('returning logged-in user goes straight Home', (tester) async {
+    final pair = sessionPair(repository, InMemoryTokenStorage('stored-token'));
+
+    await runGate(
+      tester,
+      session: pair.session,
+      auth: pair.auth,
+      preferences: InMemoryAppPreferences(),
+    );
+
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+    expect(find.byType(AuthEntryScreen), findsNothing);
+  });
+
+  testWidgets('returning incomplete user is sent to profile completion', (
+    tester,
+  ) async {
+    final pair = sessionPair(repository, InMemoryTokenStorage('stored-token'));
+
+    await runGate(
+      tester,
+      session: pair.session,
+      auth: pair.auth,
+      preferences: InMemoryAppPreferences(profileCompleted: false),
+    );
+
+    expect(find.byType(ProfileCompletionScreen), findsOneWidget);
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsNothing);
+  });
+
+  testWidgets('new device lands on the auth entry screen', (tester) async {
+    final pair = sessionPair(repository, InMemoryTokenStorage());
+
+    await runGate(
+      tester,
+      session: pair.session,
+      auth: pair.auth,
+      preferences: InMemoryAppPreferences(),
+    );
+
+    expect(find.byType(AuthEntryScreen), findsOneWidget);
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsNothing);
+  });
+
+  testWidgets('returning guest who already saw the tour goes Home', (
+    tester,
+  ) async {
+    final pair = sessionPair(repository, InMemoryTokenStorage());
+
+    await runGate(
+      tester,
+      session: pair.session,
+      auth: pair.auth,
+      preferences: InMemoryAppPreferences(dontShowOnboarding: true),
+    );
+
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+    expect(find.byType(AuthEntryScreen), findsNothing);
+  });
+
+  testWidgets('a revoked token falls through to the onboarding check', (
+    tester,
+  ) async {
+    repository.refreshTokenError = unauthorized();
+    final storage = InMemoryTokenStorage('revoked-token');
+    final pair = sessionPair(repository, storage);
+
+    await runGate(
+      tester,
+      session: pair.session,
+      auth: pair.auth,
+      preferences: InMemoryAppPreferences(),
+    );
+
+    expect(storage.token, isNull, reason: 'dead token must be discarded');
+    expect(find.byType(AuthEntryScreen), findsOneWidget);
+  });
+
+  testWidgets('a revoked token on a dismissed-tour device goes Home', (
+    tester,
+  ) async {
+    repository.refreshTokenError = unauthorized();
+    final pair = sessionPair(repository, InMemoryTokenStorage('revoked-token'));
+
+    await runGate(
+      tester,
+      session: pair.session,
+      auth: pair.auth,
+      preferences: InMemoryAppPreferences(dontShowOnboarding: true),
+    );
+
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+  });
+
+  testWidgets('offline start keeps the session and goes Home', (tester) async {
+    repository.refreshTokenError = offline();
+    final storage = InMemoryTokenStorage('stored-token');
+    final pair = sessionPair(repository, storage);
+
+    await runGate(
+      tester,
+      session: pair.session,
+      auth: pair.auth,
+      preferences: InMemoryAppPreferences(),
+    );
+
+    expect(storage.token, 'stored-token');
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+  });
+}

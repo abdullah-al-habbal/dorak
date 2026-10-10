@@ -1,0 +1,46 @@
+import type { IBooking } from "@/services/api/dashboard/ibooking.types";
+import type { IBranch } from "@/services/api/dashboard/ibranch.types";
+import type { IChair } from "@/services/api/dashboard/ichair.types";
+import type { IDashboardOverview } from "@/services/api/dashboard/idashboard-overview.types";
+import type { IService } from "@/services/api/dashboard/iservice.types";
+import type { IStylist } from "@/services/api/dashboard/istylist.types";
+
+type WireRecord = Record<string, unknown>;
+
+function record(value: unknown): WireRecord { return value !== null && typeof value === "object" ? value as WireRecord : {}; }
+function string(value: unknown, fallback = ""): string { return typeof value === "string" ? value : fallback; }
+function nullableString(value: unknown): string | null { return typeof value === "string" ? value : null; }
+function localized(value: unknown) { const item = record(value); return { en: string(item.en), ar: string(item.ar) }; }
+
+export function mapBranch(wire: unknown): IBranch {
+  const item = record(wire);
+  const number = (value: unknown) => typeof value === "number" ? value : typeof value === "string" && value !== "" ? Number(value) : null;
+  return { id: string(item.id), brandId: string(item.brand_id), email: string(item.email), latitude: number(item.latitude), longitude: number(item.longitude), name: localized(item.name), status: string(item.status, "pending") as IBranch["status"] };
+}
+
+export function mapChair(wire: unknown): IChair {
+  const item = record(wire); const barber = record(item.barber); const uiMetadata = record(item.ui_metadata);
+  return { id: string(item.id), barberId: nullableString(barber.id), branchId: string(item.branch_id), floorZone: string(item.floor_zone, "shared") as IChair["floorZone"], label: nullableString(item.label), status: string(item.availability ?? item.status, "available") as IChair["status"], positionX: Number(uiMetadata.position_x ?? 0), positionY: Number(uiMetadata.position_y ?? 0), width: Number(uiMetadata.width ?? 1), height: Number(uiMetadata.height ?? 1), rotation: typeof uiMetadata.rotation === "number" ? uiMetadata.rotation : null };
+}
+
+export function mapService(wire: unknown): IService {
+  const item = record(wire);
+  return { id: string(item.id), active: item.active === true, catalogItemId: nullableString(item.catalog_item_id), currencyId: string(item.currency_id), duration: typeof item.duration === "number" ? item.duration : null, name: localized(item.name), price: typeof item.price === "number" ? item.price : Number(item.price ?? 0), serviceableId: string(item.serviceable_id), serviceableType: string(item.serviceable_type, "branch") as IService["serviceableType"] };
+}
+
+export function mapStylist(wire: unknown): IStylist {
+  const item = record(wire);
+  return { id: string(item.id), chairId: nullableString(item.chair_id), email: string(item.email), name: localized(item.name), phone: nullableString(item.phone), status: string(item.status, "pending") as IStylist["status"] };
+}
+
+export function mapBooking(wire: unknown): IBooking {
+  const item = record(wire); const barber = record(item.barber); const chair = record(item.chair);
+  const services = Array.isArray(item.services) ? item.services.map((service) => ({ name: { en: string(record(record(service).name).en) } })) : [];
+  return { id: string(item.id), barber: item.barber === null ? null : { name: { en: string(record(barber.name).en) } }, chair: item.chair === null ? null : { label: nullableString(chair.label) }, endsAt: nullableString(item.ends_at), services, status: string(item.status, "pending") as IBooking["status"], timeSlot: string(item.time_slot) };
+}
+
+export function mapDashboardOverview(wire: unknown): IDashboardOverview {
+  const item = record(wire);
+  const count = (value: unknown) => typeof value === "number" ? value : Number(value ?? 0);
+  return { activeChairsCount: count(item.active_chairs_count), activeBranchesCount: count(item.active_branches_count), bookingsCount: count(item.bookings_count), completedBookingsCount: count(item.completed_bookings_count), revenue: count(item.revenue), stylistsCount: count(item.stylists_count), todayBookingsCount: count(item.today_bookings_count) };
+}

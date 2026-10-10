@@ -1,0 +1,1928 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_ar.dart';
+import 'app_localizations_en.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'generated/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('ar'),
+  ];
+
+  /// App brand name displayed on splash screen
+  ///
+  /// In en, this message translates to:
+  /// **'Dorak'**
+  String get splashTitle;
+
+  /// Skip button label
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// Welcome screen headline
+  ///
+  /// In en, this message translates to:
+  /// **'Your grooming experience, reimagined.'**
+  String get onboardingWelcomeTitle;
+
+  /// Welcome screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Discover top-tier professionals, book with ease, and personalize your style journey.'**
+  String get onboardingWelcomeSubtitle;
+
+  /// Primary CTA on welcome screen
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStarted;
+
+  /// Skip bottom sheet title
+  ///
+  /// In en, this message translates to:
+  /// **'Skip Onboarding?'**
+  String get skipOnboardingQuestion;
+
+  /// Skip bottom sheet primary action
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get skipForNow;
+
+  /// Skip bottom sheet secondary action
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t show again'**
+  String get dontShowAgain;
+
+  /// Skip bottom sheet cancel action
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Discovery screen headline
+  ///
+  /// In en, this message translates to:
+  /// **'Find the perfect fit.'**
+  String get discoveryTitle;
+
+  /// Discovery screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Explore nearby shops, expert barbers, and premium services tailored to your needs.'**
+  String get discoverySubtitle;
+
+  /// Discovery screen primary CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// Discovery card 1 label
+  ///
+  /// In en, this message translates to:
+  /// **'Shops'**
+  String get discoveryCardShops;
+
+  /// Discovery card 2 label
+  ///
+  /// In en, this message translates to:
+  /// **'Barbers'**
+  String get discoveryCardBarbers;
+
+  /// Discovery card 3 label
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get discoveryCardServices;
+
+  /// Discovery screen back action
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get previous;
+
+  /// Locale toggle label to switch to Arabic
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get localeArabic;
+
+  /// Locale toggle label to switch to English
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get localeEnglish;
+
+  /// Home screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeTitle;
+
+  /// Booking innovation screen headline
+  ///
+  /// In en, this message translates to:
+  /// **'Book when it works for you.'**
+  String get bookingTitle;
+
+  /// Booking innovation screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your service, professional, and time — then book in just a few taps.'**
+  String get bookingSubtitle;
+
+  /// Booking demo service card label
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Fade'**
+  String get bookingServiceLabel;
+
+  /// Booking demo service card meta
+  ///
+  /// In en, this message translates to:
+  /// **'45 min • \$65'**
+  String get bookingServiceMeta;
+
+  /// Booking demo professional name
+  ///
+  /// In en, this message translates to:
+  /// **'Marcus T.'**
+  String get bookingProfessionalLabel;
+
+  /// Booking demo professional rating
+  ///
+  /// In en, this message translates to:
+  /// **'4.9'**
+  String get bookingProfessionalRating;
+
+  /// Booking demo date label
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get bookingDateLabel;
+
+  /// Booking demo time label
+  ///
+  /// In en, this message translates to:
+  /// **'2:30 PM'**
+  String get bookingTimeLabel;
+
+  /// AI feature showcase screen headline
+  ///
+  /// In en, this message translates to:
+  /// **'Discover styles made for you.'**
+  String get aiTitle;
+
+  /// AI feature showcase screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Get personalized style recommendations based on your preferences and, if you choose, your face profile.'**
+  String get aiSubtitle;
+
+  /// AI demo match card label
+  ///
+  /// In en, this message translates to:
+  /// **'98% Match'**
+  String get aiMatchLabel;
+
+  /// AI demo recommendation card label
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended'**
+  String get aiRecommendedLabel;
+
+  /// AI demo recommended style one
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Fade'**
+  String get aiStyleFade;
+
+  /// AI demo recommended style two
+  ///
+  /// In en, this message translates to:
+  /// **'Textured Crop'**
+  String get aiStyleCrop;
+
+  /// AI demo face shape chip label
+  ///
+  /// In en, this message translates to:
+  /// **'Face Shape: Oval'**
+  String get aiFaceShapeLabel;
+
+  /// AI demo privacy note
+  ///
+  /// In en, this message translates to:
+  /// **'Face analysis is entirely optional.'**
+  String get aiPrivacyNote;
+
+  /// Auth entry screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Dorak'**
+  String get authWelcomeTitle;
+
+  /// Auth entry screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to access your personalized experience, or continue as a guest to explore.'**
+  String get authSubtitle;
+
+  /// Auth entry primary CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get authLogIn;
+
+  /// Auth entry secondary CTA
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get authCreateAccount;
+
+  /// Auth entry guest action
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Guest'**
+  String get authContinueAsGuest;
+
+  /// Auth entry guest helper text
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Dorak without creating an account.'**
+  String get authGuestHint;
+
+  /// Back button tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// Login screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back'**
+  String get loginTitle;
+
+  /// Login screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to your account'**
+  String get loginSubtitle;
+
+  /// Login email field label
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmailLabel;
+
+  /// Login password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPasswordLabel;
+
+  /// Login forgot password link
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get loginForgotPassword;
+
+  /// Login submit button
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get loginButton;
+
+  /// Login footer prompt before the sign-up link
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get loginSignUpPrompt;
+
+  /// Login footer sign-up link
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get loginCreateAccountLink;
+
+  /// Login 401 error message
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password'**
+  String get loginErrorInvalidCredentials;
+
+  /// Sign-up screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get signUpTitle;
+
+  /// Sign-up screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Join Dorak for personalized grooming and effortless booking.'**
+  String get signUpSubtitle;
+
+  /// Sign-up full name field label
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get signUpFullNameLabel;
+
+  /// Sign-up email field label
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get signUpEmailLabel;
+
+  /// Sign-up password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get signUpPasswordLabel;
+
+  /// Sign-up confirm password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get signUpConfirmPasswordLabel;
+
+  /// Sign-up password requirement hint
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get signUpPasswordHint;
+
+  /// Sign-up submit button
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get signUpButton;
+
+  /// Sign-up footer prompt before the login link
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get signUpAlreadyHaveAccount;
+
+  /// Sign-up footer login link
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get signUpLogInLink;
+
+  /// Verify account screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Account'**
+  String get verifyTitle;
+
+  /// Verify account subtitle with the masked destination
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code we sent to {email}'**
+  String verifySubtitle(String email);
+
+  /// Verify account submit button
+  ///
+  /// In en, this message translates to:
+  /// **'Verify & Continue'**
+  String get verifyButton;
+
+  /// Verify account resend prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get verifyDidNotReceive;
+
+  /// Verify account resend action
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get verifyResend;
+
+  /// Verify account resend action during cooldown
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code ({seconds}s)'**
+  String verifyResendDisabled(int seconds);
+
+  /// Verify account invalid code error
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid code. Please try again.'**
+  String get verifyErrorInvalid;
+
+  /// Verify account skip action
+  ///
+  /// In en, this message translates to:
+  /// **'Verify later'**
+  String get verifySkip;
+
+  /// Form validation error for an empty required field
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get fieldRequired;
+
+  /// Form validation error for a malformed email
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get fieldInvalidEmail;
+
+  /// Form validation error for a short password
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get fieldPasswordTooShort;
+
+  /// Form validation error when confirm password differs
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get fieldPasswordMismatch;
+
+  /// Transport failure message
+  ///
+  /// In en, this message translates to:
+  /// **'No connection. Check your network and try again.'**
+  String get errorNetwork;
+
+  /// Fallback error message
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorGeneric;
+
+  /// Retry action label for failed states
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get actionRetry;
+
+  /// Fallback error state title
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorTitleGeneric;
+
+  /// Offline state title
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get errorTitleOffline;
+
+  /// Fallback empty state title
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet'**
+  String get emptyTitleGeneric;
+
+  /// Fallback empty state message
+  ///
+  /// In en, this message translates to:
+  /// **'There\'s nothing to show right now.'**
+  String get emptyMessageGeneric;
+
+  /// recoveryEmailTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get recoveryEmailTitle;
+
+  /// recoveryEmailSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the email on your account and we\'ll send you a 6-digit reset code.'**
+  String get recoveryEmailSubtitle;
+
+  /// recoveryEmailLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get recoveryEmailLabel;
+
+  /// recoverySendCodeButton
+  ///
+  /// In en, this message translates to:
+  /// **'Send Code'**
+  String get recoverySendCodeButton;
+
+  /// recoveryReturnToLogIn
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Log In'**
+  String get recoveryReturnToLogIn;
+
+  /// recoveryOtpTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Reset Code'**
+  String get recoveryOtpTitle;
+
+  /// recoveryOtpSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'If {email} is registered, we\'ve sent it a 6-digit code. It expires in 10 minutes.'**
+  String recoveryOtpSubtitle(String email);
+
+  /// recoveryOtpContinueButton
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get recoveryOtpContinueButton;
+
+  /// recoveryOtpIncomplete
+  ///
+  /// In en, this message translates to:
+  /// **'Enter all 6 digits'**
+  String get recoveryOtpIncomplete;
+
+  /// recoveryResend
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get recoveryResend;
+
+  /// recoveryResendDisabled
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code ({seconds}s)'**
+  String recoveryResendDisabled(int seconds);
+
+  /// recoveryDidNotReceive
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get recoveryDidNotReceive;
+
+  /// recoveryNewPasswordTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Password'**
+  String get recoveryNewPasswordTitle;
+
+  /// recoveryNewPasswordSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a new password for your account.'**
+  String get recoveryNewPasswordSubtitle;
+
+  /// recoveryNewPasswordLabel
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get recoveryNewPasswordLabel;
+
+  /// recoveryConfirmPasswordLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get recoveryConfirmPasswordLabel;
+
+  /// recoveryResetButton
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get recoveryResetButton;
+
+  /// recoveryCodeRejected
+  ///
+  /// In en, this message translates to:
+  /// **'That code is invalid or has expired.'**
+  String get recoveryCodeRejected;
+
+  /// recoveryReenterCode
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter code'**
+  String get recoveryReenterCode;
+
+  /// passwordResetSuccessTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Password Updated'**
+  String get passwordResetSuccessTitle;
+
+  /// passwordResetSuccessMessage
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been changed. You can now log in with your new password.'**
+  String get passwordResetSuccessMessage;
+
+  /// onboardingConfigUnavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the latest artwork.'**
+  String get onboardingConfigUnavailable;
+
+  /// Bookings screen empty state title
+  ///
+  /// In en, this message translates to:
+  /// **'No bookings yet'**
+  String get bookingsTitle;
+
+  /// Bookings screen empty state subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your upcoming and past bookings will appear here.'**
+  String get bookingsSubtitle;
+
+  /// Bookings empty state action button label
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get bookingsActionLabel;
+
+  /// Favorites screen empty state title
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites yet'**
+  String get favoritesTitle;
+
+  /// Favorites screen empty state subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart on a salon or barber to save it here.'**
+  String get favoritesSubtitle;
+
+  /// Favorites empty state action button label
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get favoritesActionLabel;
+
+  /// Profile screen empty state title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// Profile screen empty state subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your account and preferences will appear here.'**
+  String get profileSubtitle;
+
+  /// Profile empty state action button label
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get profileActionLabel;
+
+  /// Location required screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Location Required'**
+  String get locationRequiredTitle;
+
+  /// Location required screen message
+  ///
+  /// In en, this message translates to:
+  /// **'Enable location access to discover nearby branches.'**
+  String get locationRequiredMessage;
+
+  /// Enable location action button label
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Location'**
+  String get enableLocationAction;
+
+  /// Available now filter label
+  ///
+  /// In en, this message translates to:
+  /// **'Available Now'**
+  String get availableNow;
+
+  /// Price filter label
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// Rating filter label
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get rating;
+
+  /// Distance filter label
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get distance;
+
+  /// View details button label
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewDetails;
+
+  /// Book now button label
+  ///
+  /// In en, this message translates to:
+  /// **'Book Now'**
+  String get bookNow;
+
+  /// Universe switcher option for men-only branches
+  ///
+  /// In en, this message translates to:
+  /// **'Men'**
+  String get discoverUniverseMen;
+
+  /// Universe switcher option for women-only branches
+  ///
+  /// In en, this message translates to:
+  /// **'Women'**
+  String get discoverUniverseWomen;
+
+  /// Caption confirming results are ordered by distance
+  ///
+  /// In en, this message translates to:
+  /// **'Ranked by distance'**
+  String get discoverRankedByDistance;
+
+  /// Distance in kilometres shown on a result card
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String discoverDistanceLabel(double km);
+
+  /// Badge shown when the feed renders from a cached fetch
+  ///
+  /// In en, this message translates to:
+  /// **'Showing saved results'**
+  String get discoverStaleLabel;
+
+  /// Rank position badge on a result card
+  ///
+  /// In en, this message translates to:
+  /// **'#{rank}'**
+  String discoverRankBadge(int rank);
+
+  /// Discover tab label in the bottom navigation bar
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get discoverTabLabel;
+
+  /// Change password screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePasswordTitle;
+
+  /// Change password screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password, then choose a new one.'**
+  String get changePasswordSubtitle;
+
+  /// Current password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get changePasswordCurrentLabel;
+
+  /// New password field label
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get changePasswordNewLabel;
+
+  /// Confirm new password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get changePasswordConfirmLabel;
+
+  /// Change password submit button label
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get changePasswordSubmit;
+
+  /// Change password success title
+  ///
+  /// In en, this message translates to:
+  /// **'Password Updated'**
+  String get changePasswordSuccessTitle;
+
+  /// Change password success message
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been changed.'**
+  String get changePasswordSuccessMessage;
+
+  /// Change password success dismiss button label
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get changePasswordDone;
+
+  /// Bookings tab label in the bottom navigation bar
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get bookingsTabLabel;
+
+  /// Bookings filter option for upcoming bookings
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get bookingFilterUpcoming;
+
+  /// Bookings filter option for past bookings
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get bookingFilterPast;
+
+  /// Booking status badge for confirmed bookings
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get bookingStatusConfirmed;
+
+  /// Booking status badge for canceled bookings
+  ///
+  /// In en, this message translates to:
+  /// **'Canceled'**
+  String get bookingStatusCanceled;
+
+  /// Booking status badge for completed bookings
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get bookingStatusCompleted;
+
+  /// Booking card barber attribution line
+  ///
+  /// In en, this message translates to:
+  /// **'with {name}'**
+  String bookingWithBarber(String name);
+
+  /// Booking card chair line
+  ///
+  /// In en, this message translates to:
+  /// **'Chair {label}'**
+  String bookingChairLabel(String label);
+
+  /// Cancel booking button label
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Booking'**
+  String get bookingCancelAction;
+
+  /// Cancel booking confirmation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this booking?'**
+  String get bookingCancelConfirmTitle;
+
+  /// Cancel booking confirmation dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'Your slot will be freed. You can book again anytime.'**
+  String get bookingCancelConfirmMessage;
+
+  /// Cancel booking confirmation dialog confirm button
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Cancel'**
+  String get bookingCancelConfirm;
+
+  /// Branch detail chairs count line
+  ///
+  /// In en, this message translates to:
+  /// **'{count} chairs'**
+  String branchChairsCount(int count);
+
+  /// Floor plan legend for available chairs
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get branchAvailableLabel;
+
+  /// Floor plan legend for occupied chairs
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied'**
+  String get branchOccupiedLabel;
+
+  /// Floor plan label for chairs under maintenance
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get branchMaintenanceLabel;
+
+  /// Branch detail barbers section title
+  ///
+  /// In en, this message translates to:
+  /// **'Barbers'**
+  String get branchBarbersTitle;
+
+  /// Branch detail services section title
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get branchServicesTitle;
+
+  /// Booking sheet chair step title
+  ///
+  /// In en, this message translates to:
+  /// **'Select a chair'**
+  String get bookingSelectChair;
+
+  /// Booking sheet services step title
+  ///
+  /// In en, this message translates to:
+  /// **'Select services'**
+  String get bookingSelectServices;
+
+  /// Booking sheet time step title
+  ///
+  /// In en, this message translates to:
+  /// **'Select time'**
+  String get bookingSelectTime;
+
+  /// Booking sheet confirm button label
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Booking'**
+  String get bookingConfirmAction;
+
+  /// Booking success title
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Confirmed'**
+  String get bookingSuccessTitle;
+
+  /// Booking success message
+  ///
+  /// In en, this message translates to:
+  /// **'Your slot is reserved.'**
+  String get bookingSuccessMessage;
+
+  /// Booking success navigation button label
+  ///
+  /// In en, this message translates to:
+  /// **'View My Bookings'**
+  String get bookingViewBookings;
+
+  /// Message shown when the server reports a booking conflict
+  ///
+  /// In en, this message translates to:
+  /// **'That slot was just taken. Please pick another time.'**
+  String get bookingConflictMessage;
+
+  /// Compatibility score badge on a result card
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String discoverCompatibilityBadge(int percent);
+
+  /// Service history section title on the profile tab
+  ///
+  /// In en, this message translates to:
+  /// **'Service History'**
+  String get historyTitle;
+
+  /// Service history empty state title
+  ///
+  /// In en, this message translates to:
+  /// **'No history yet'**
+  String get historyEmptyTitle;
+
+  /// Service history empty state message
+  ///
+  /// In en, this message translates to:
+  /// **'Services you\'ve booked will appear here after their appointment.'**
+  String get historyEmptyMessage;
+
+  /// Rebook action on a history entry
+  ///
+  /// In en, this message translates to:
+  /// **'Book Again'**
+  String get historyRebookAction;
+
+  /// Rebook sheet title
+  ///
+  /// In en, this message translates to:
+  /// **'Book Again'**
+  String get historyRebookTitle;
+
+  /// Rebook sheet message naming the service
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a new time for {item}.'**
+  String historyRebookMessage(String item);
+
+  /// Rebook success title
+  ///
+  /// In en, this message translates to:
+  /// **'Booked Again'**
+  String get historyRebookSuccessTitle;
+
+  /// Rebook success message
+  ///
+  /// In en, this message translates to:
+  /// **'Your new slot is reserved. Find it in Bookings.'**
+  String get historyRebookSuccessMessage;
+
+  /// Profile header name fallback when the client name is unknown
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get profileMemberLabel;
+
+  /// Avatar upload affordance on the profile header
+  ///
+  /// In en, this message translates to:
+  /// **'Change Photo'**
+  String get avatarUpdateAction;
+
+  /// Face analysis module title
+  ///
+  /// In en, this message translates to:
+  /// **'Face Analysis'**
+  String get faceAnalysisTitle;
+
+  /// Detected face shape label
+  ///
+  /// In en, this message translates to:
+  /// **'Detected Shape'**
+  String get faceAnalysisDetectedShape;
+
+  /// Analysis confidence label
+  ///
+  /// In en, this message translates to:
+  /// **'Confidence'**
+  String get faceAnalysisConfidence;
+
+  /// Face photo upload action
+  ///
+  /// In en, this message translates to:
+  /// **'Scan my face'**
+  String get faceScanAction;
+
+  /// Pending analysis title
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis in progress'**
+  String get faceAnalysisPendingTitle;
+
+  /// Pending analysis message
+  ///
+  /// In en, this message translates to:
+  /// **'We are analyzing your face. Check again in a moment.'**
+  String get faceAnalysisPendingMessage;
+
+  /// Empty analysis state title
+  ///
+  /// In en, this message translates to:
+  /// **'No analysis yet'**
+  String get faceAnalysisEmptyTitle;
+
+  /// Empty analysis state message
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a photo to discover the styles that suit you.'**
+  String get faceAnalysisEmptyMessage;
+
+  /// Re-polls a pending face analysis
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get actionCheckAgain;
+
+  /// Detected face shape: oval
+  ///
+  /// In en, this message translates to:
+  /// **'Oval'**
+  String get faceShapeOval;
+
+  /// Detected face shape: round
+  ///
+  /// In en, this message translates to:
+  /// **'Round'**
+  String get faceShapeRound;
+
+  /// Detected face shape: square
+  ///
+  /// In en, this message translates to:
+  /// **'Square'**
+  String get faceShapeSquare;
+
+  /// Detected face shape: heart
+  ///
+  /// In en, this message translates to:
+  /// **'Heart'**
+  String get faceShapeHeart;
+
+  /// Detected face shape: diamond
+  ///
+  /// In en, this message translates to:
+  /// **'Diamond'**
+  String get faceShapeDiamond;
+
+  /// Detected face shape: oblong
+  ///
+  /// In en, this message translates to:
+  /// **'Oblong'**
+  String get faceShapeOblong;
+
+  /// Detected face shape: triangle
+  ///
+  /// In en, this message translates to:
+  /// **'Triangle'**
+  String get faceShapeTriangle;
+
+  /// AI style recommendations title
+  ///
+  /// In en, this message translates to:
+  /// **'Curated For You'**
+  String get curatedForYouTitle;
+
+  /// Empty recommendations message
+  ///
+  /// In en, this message translates to:
+  /// **'No matching styles yet.'**
+  String get curatedEmptyMessage;
+
+  /// Catalog item price range
+  ///
+  /// In en, this message translates to:
+  /// **'{min}–{max} {currency}'**
+  String curatedPriceRange(num min, num max, String currency);
+
+  /// Stylist profile services section heading
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get stylistServicesTitle;
+
+  /// Shown when a stylist has no services
+  ///
+  /// In en, this message translates to:
+  /// **'No services listed yet.'**
+  String get stylistNoServicesMessage;
+
+  /// Badge label for services available at home
+  ///
+  /// In en, this message translates to:
+  /// **'At-Home Available'**
+  String get serviceAtHomeLabel;
+
+  /// Service duration
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String serviceDurationLabel(int minutes);
+
+  /// Formatted service price with currency code
+  ///
+  /// In en, this message translates to:
+  /// **'{displayPrice} {currency}'**
+  String servicePrice(String displayPrice, String currency);
+
+  /// Stat label for number of services on stylist profile
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get stylistStatServicesLabel;
+
+  /// Stat label for stylist rank
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get stylistStatRankLabel;
+
+  /// Stat label for stylist compatibility score
+  ///
+  /// In en, this message translates to:
+  /// **'Compatibility'**
+  String get stylistStatCompatibilityLabel;
+
+  /// Review submit screen app bar title
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Your Experience'**
+  String get reviewTitle;
+
+  /// Review submit screen rating prompt
+  ///
+  /// In en, this message translates to:
+  /// **'How was your session?'**
+  String get reviewStylistPrompt;
+
+  /// Review submit screen comment field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Share more details... (optional)'**
+  String get reviewCommentHint;
+
+  /// Review submit button label
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Review'**
+  String get reviewSubmitButton;
+
+  /// Review submit success message
+  ///
+  /// In en, this message translates to:
+  /// **'Review submitted'**
+  String get reviewSubmitSuccess;
+
+  /// Shown when the server reports an already-reviewed conflict
+  ///
+  /// In en, this message translates to:
+  /// **'You already reviewed this booking'**
+  String get reviewAlreadyReviewed;
+
+  /// Shown when the server reports the booking is not completed
+  ///
+  /// In en, this message translates to:
+  /// **'This booking hasn\'t been completed yet'**
+  String get reviewBookingNotCompleted;
+
+  /// Fallback review submit error message
+  ///
+  /// In en, this message translates to:
+  /// **'Could not submit your review'**
+  String get reviewErrorGeneric;
+
+  /// Screen-reader label for the star rating row
+  ///
+  /// In en, this message translates to:
+  /// **'{stars} out of 5 stars'**
+  String reviewStarLabel(int stars);
+
+  /// Branch detail reviews section heading
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviewCommentsSection;
+
+  /// Rate action on a completed booking card
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get bookingRateAction;
+
+  /// Profile completion screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Your Profile'**
+  String get profileCompletionTitle;
+
+  /// Profile completion screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Add your details to personalize your Dorak experience.'**
+  String get profileCompletionSubtitle;
+
+  /// Profile completion name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get profileCompletionNameLabel;
+
+  /// Profile completion phone field
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get profileCompletionPhoneLabel;
+
+  /// Profile completion submit action
+  ///
+  /// In en, this message translates to:
+  /// **'Save & Continue'**
+  String get profileCompletionContinue;
+
+  /// Profile completion generic error
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save your profile'**
+  String get profileCompletionError;
+
+  /// Switch label for an at-home booking
+  ///
+  /// In en, this message translates to:
+  /// **'Book at home'**
+  String get bookingAtHomeToggle;
+
+  /// At-home booking street field
+  ///
+  /// In en, this message translates to:
+  /// **'Street'**
+  String get bookingAtHomeStreetLabel;
+
+  /// At-home booking building field
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get bookingAtHomeBuildingLabel;
+
+  /// At-home booking unit field
+  ///
+  /// In en, this message translates to:
+  /// **'Unit / apartment'**
+  String get bookingAtHomeUnitLabel;
+
+  /// Action to select the current GPS location for an at-home booking
+  ///
+  /// In en, this message translates to:
+  /// **'Use current location as GPS pin'**
+  String get bookingAtHomePinAction;
+
+  /// Selected at-home GPS coordinates
+  ///
+  /// In en, this message translates to:
+  /// **'GPS pin selected: {latitude}, {longitude}'**
+  String bookingAtHomePinSelected(String latitude, String longitude);
+
+  /// At-home GPS selection failure
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t get your GPS location. Check location permission and try again.'**
+  String get bookingAtHomeLocationError;
+
+  /// Server-derived booking end time
+  ///
+  /// In en, this message translates to:
+  /// **'Ends {time}'**
+  String bookingEndTimeLabel(String time);
+
+  /// Shown when the two-hour booking cancellation cutoff has passed
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation is unavailable within two hours of the appointment.'**
+  String get bookingCancellationClosed;
+
+  /// Published review status indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get reviewStatusPublished;
+
+  /// Disputed review status indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Under review'**
+  String get reviewStatusUnderReview;
+
+  /// Hidden review status indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden'**
+  String get reviewStatusHidden;
+
+  /// Resolved review status indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get reviewStatusResolved;
+
+  /// Review dispute workflow notice
+  ///
+  /// In en, this message translates to:
+  /// **'This review is held for up to 48 hours while an administrator resolves the dispute.'**
+  String get reviewDisputeHoldNote;
+
+  /// Floor-plan section for men's chairs
+  ///
+  /// In en, this message translates to:
+  /// **'Men\'s zone'**
+  String get floorZoneMen;
+
+  /// Floor-plan section for women's chairs
+  ///
+  /// In en, this message translates to:
+  /// **'Women\'s zone'**
+  String get floorZoneWomen;
+
+  /// Floor-plan section for shared chairs
+  ///
+  /// In en, this message translates to:
+  /// **'Shared zone'**
+  String get floorZoneShared;
+
+  /// Branch manager manual barber creation title
+  ///
+  /// In en, this message translates to:
+  /// **'Add barber'**
+  String get managerManualBarberTitle;
+
+  /// Manual barber creation explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Create a barber profile without creating a login account.'**
+  String get managerManualBarberSubtitle;
+
+  /// English barber name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name in English'**
+  String get managerBarberNameEnglish;
+
+  /// Arabic barber name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name in Arabic'**
+  String get managerBarberNameArabic;
+
+  /// Manual barber phone field
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get managerBarberPhone;
+
+  /// E.164 phone input hint
+  ///
+  /// In en, this message translates to:
+  /// **'Include country code, for example +963...'**
+  String get managerBarberPhoneHint;
+
+  /// Explains client and barber phone-number sharing
+  ///
+  /// In en, this message translates to:
+  /// **'A client may use this same number. It creates a separate barber profile.'**
+  String get managerBarberPhoneSharedNote;
+
+  /// Manual barber creation action
+  ///
+  /// In en, this message translates to:
+  /// **'Create barber'**
+  String get managerBarberCreate;
+
+  /// Invalid normalized phone message
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number with country code.'**
+  String get managerBarberPhoneInvalid;
+
+  /// Manual barber creation success
+  ///
+  /// In en, this message translates to:
+  /// **'Barber created without a login account.'**
+  String get managerBarberCreated;
+
+  /// Manual barber creation generic failure
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create the barber. Please try again.'**
+  String get managerBarberCreateError;
+
+  /// No description provided for @bookingSavedAddressesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved addresses'**
+  String get bookingSavedAddressesLabel;
+
+  /// No description provided for @bookingFirstAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'First available'**
+  String get bookingFirstAvailable;
+
+  /// No description provided for @bookingPreferredBarber.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred barber'**
+  String get bookingPreferredBarber;
+
+  /// No description provided for @bookingSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking summary'**
+  String get bookingSummaryTitle;
+
+  /// No description provided for @bookingTotalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Total price: {price}'**
+  String bookingTotalPrice(Object price);
+
+  /// No description provided for @bookingTotalDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated duration: {minutes} min'**
+  String bookingTotalDuration(int minutes);
+
+  /// No description provided for @bookingPaymentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get bookingPaymentTitle;
+
+  /// No description provided for @bookingPayAtSalon.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay at salon'**
+  String get bookingPayAtSalon;
+
+  /// No description provided for @bookingPayAtSalonOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment is due in person when you arrive at the salon.'**
+  String get bookingPayAtSalonOnly;
+
+  /// No description provided for @bookingStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get bookingStatusInProgress;
+
+  /// No description provided for @bookingTrackerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment status'**
+  String get bookingTrackerTitle;
+
+  /// No description provided for @bookingTrackerConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your appointment is confirmed.'**
+  String get bookingTrackerConfirmed;
+
+  /// No description provided for @bookingTrackerInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your appointment is in progress.'**
+  String get bookingTrackerInProgress;
+
+  /// No description provided for @bookingTrackerCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your appointment is completed.'**
+  String get bookingTrackerCompleted;
+
+  /// No description provided for @bookingTrackerCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'This appointment was cancelled.'**
+  String get bookingTrackerCancelled;
+
+  /// No description provided for @bookingTrackAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Track appointment'**
+  String get bookingTrackAction;
+
+  /// No description provided for @profileEditAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get profileEditAction;
+
+  /// No description provided for @profileSavedAddressesAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved addresses'**
+  String get profileSavedAddressesAction;
+
+  /// No description provided for @profileEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get profileEditTitle;
+
+  /// No description provided for @profileSaveAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get profileSaveAction;
+
+  /// No description provided for @profileFullNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get profileFullNameLabel;
+
+  /// No description provided for @profilePhoneNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get profilePhoneNumberLabel;
+
+  /// No description provided for @savedAddressesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved addresses'**
+  String get savedAddressesTitle;
+
+  /// No description provided for @savedAddressAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add address'**
+  String get savedAddressAddTitle;
+
+  /// No description provided for @savedAddressEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit address'**
+  String get savedAddressEditTitle;
+
+  /// No description provided for @savedAddressStreetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Street'**
+  String get savedAddressStreetLabel;
+
+  /// No description provided for @savedAddressBuildingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get savedAddressBuildingLabel;
+
+  /// No description provided for @savedAddressUnitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get savedAddressUnitLabel;
+
+  /// No description provided for @savedAddressLatitudeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get savedAddressLatitudeLabel;
+
+  /// No description provided for @savedAddressLongitudeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get savedAddressLongitudeLabel;
+
+  /// No description provided for @businessBranchOperationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch operations'**
+  String get businessBranchOperationsTitle;
+
+  /// No description provided for @businessRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get businessRetry;
+
+  /// No description provided for @businessDashboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get businessDashboardTitle;
+
+  /// No description provided for @businessTodayRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Today revenue: {value}'**
+  String businessTodayRevenue(Object value);
+
+  /// No description provided for @businessMonthlyRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly revenue: {value}'**
+  String businessMonthlyRevenue(Object value);
+
+  /// No description provided for @businessTodayBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Today bookings: {value}'**
+  String businessTodayBookings(int value);
+
+  /// No description provided for @businessActiveChairs.
+  ///
+  /// In en, this message translates to:
+  /// **'Active chairs: {active}/{total}'**
+  String businessActiveChairs(int active, int total);
+
+  /// No description provided for @businessChairStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Chair status: {value}'**
+  String businessChairStatus(Object value);
+
+  /// No description provided for @businessBranchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get businessBranchHint;
+
+  /// No description provided for @businessAppointmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments'**
+  String get businessAppointmentsTitle;
+
+  /// No description provided for @businessStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get businessStart;
+
+  /// No description provided for @businessComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get businessComplete;
+
+  /// No description provided for @businessNoShow.
+  ///
+  /// In en, this message translates to:
+  /// **'No-show'**
+  String get businessNoShow;
+
+  /// No description provided for @businessCancelBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get businessCancelBooking;
+
+  /// No description provided for @businessChairsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chairs'**
+  String get businessChairsTitle;
+
+  /// No description provided for @businessUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Unassigned'**
+  String get businessUnassigned;
+
+  /// No description provided for @stylistTodayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get stylistTodayTitle;
+
+  /// No description provided for @stylistWorkstationOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Workstation online'**
+  String get stylistWorkstationOnline;
+
+  /// No description provided for @stylistUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update. Pull to retry.'**
+  String get stylistUpdateFailed;
+
+  /// No description provided for @stylistTodayAppointments.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s appointments'**
+  String get stylistTodayAppointments;
+
+  /// No description provided for @stylistAcceptBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Booking'**
+  String get stylistAcceptBooking;
+
+  /// No description provided for @stylistStartSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Session'**
+  String get stylistStartSession;
+
+  /// No description provided for @stylistCompleteSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Session'**
+  String get stylistCompleteSession;
+
+  /// No description provided for @stylistMarkNoShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark No-Show'**
+  String get stylistMarkNoShow;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['ar', 'en'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'ar':
+      return AppLocalizationsAr();
+    case 'en':
+      return AppLocalizationsEn();
+  }
+
+  throw FlutterError(
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}

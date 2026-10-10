@@ -1,0 +1,214 @@
+# Feature Index — Dorak Mobile (Flutter Monorepo)
+
+> **Append entry after adding each feature.** This is the chronological map of every feature built across the monorepo. Per-app indexes: [`apps/client_app/docs/feature-index.md`](../apps/client_app/docs/feature-index.md), [`apps/business_app/docs/feature-index.md`](../apps/business_app/docs/feature-index.md), [`apps/stylist_app/docs/feature-index.md`](../apps/stylist_app/docs/feature-index.md).
+
+---
+
+## Shared Packages
+
+### design_system
+- `DorakColors` — `colors.token.dart`, light + dark palettes, accessed via `DorakColors.of(context)` (theme aware). All raw hex lives here, nowhere else.
+- `DorakTypography` — `typography.token.dart` (IBM Plex Sans, deferred fonts via `fontFamilyFallback`).
+- `DorakDimensions` — `dimensions.token.dart` (spacing, radii, max-widths).
+- `tokens.barrel.dart` — barrel export of all token files.
+- `DorakTheme` — `dorak_theme.theme.dart`, `DorakTheme.forLocale(locale, brightness)`.
+- Shared widgets (each its own file, one class each, string-parameterized — design_system never imports localization):
+  - `primary_button.widget.dart` — full-width pill, `radiusFull`, `primaryContainer`, optional `isLoading`/`isDisabled`
+  - `secondary_button.widget.dart` — outlined pill for Back/secondary actions
+  - `skip_button.widget.dart` — borderless shrink-wrap `TextButton`
+  - `progress_dots.widget.dart` — `count` + `activeIndex`
+  - `onboarding_header.widget.dart` — brand icon + label, locale toggle, Skip (all strings injected)
+  - `bottom_sheet_modal.widget.dart` — modal wrapper
+  - `gradient_overlay.widget.dart`
+  - `hero_image.widget.dart` — local-asset-first image with remote override + `errorBuilder`
+  - `swipe_navigation.widget.dart` — swipe-left/right gesture routing
+  - `status_view.widget.dart` — Track 12: empty / error / offline / retry (centred icon + title + message? + action?)
+  - `app_loader.widget.dart` — Track 12: `AppLoader.page()` full-page / `AppLoader.inline()` footer spinner
+  - `shimmer_box.widget.dart` — Track 12: animated skeleton primitive (hand-rolled, no package)
+  - `status_banner.widget.dart` — Track 12: compact inline message row (promoted from auth's `AuthErrorBanner`, used by login/sign-up/verify)
+  - `locale_switcher.widget.dart` — shrink-wrap `TextButton`, `label` + `onPressed` (the shared EN/AR toggle button; rendered identically by `OnboardingHeader` and auth's `AuthHeader`/entry)
+
+### localization
+- Source of truth: `l10n/app_en.arb` (template) + `app_ar.arb` (Arabic). Every key exists in BOTH locales.
+- Generated output `lib/src/generated/` via `flutter gen-l10n` (committed, excluded from analyzer/taxonomy).
+- RTL handled by Flutter locale resolution automatically.
+
+### core
+- `ConfigProvider` — `.env` via dotenv (`app_config.entity.dart`, `config.provider.dart`).
+- `ApiClient` — Dio-based (`api.client.dart`).
+- Interceptors: `auth.interceptor.dart`, `locale.interceptor.dart`, `logging.interceptor.dart`, `retry.interceptor.dart`.
+- Contracts: `ApiResponse<T>` / `api_response.dto.dart`, `PaginatedData<T>`, `PaginationMeta`, exceptions (`ApiException`, `NetworkException`, `ValidationException`). Paging **state** is app-layer Bloc work — the legacy pagination notifiers were deleted (see `docs/state_management/pagination.md`).
+- `endpoints/app.endpoints.dart`, `endpoints/auth.endpoints.dart` — domain-split endpoint declarations.
+- `onboarding_config.repository.dart` — `OnboardingConfigRepository` + `OnboardingConfigDto` (GET /api/v1/app/onboarding-config).
+- `auth.repository.dart` — `AuthRepository` + `DioAuthRepository`: login, register (sends `password_confirmation`), logout, refreshToken, sendEmailVerification, verifyEmail, forgotPassword, resetPassword, changePassword (`PATCH /client/password`). DTOs `AuthResponseDto`, `ClientDto`, `TokenResponseDto`.
+- `change_password.{bloc,event,state}.dart` + `change_password.screen.dart` + `change_password_content.widget.dart` (Track 17) — authenticated password change entered from the Profile tab (`/profile/password`); 422 field errors in the banner, success `StatusView` with Done pop.
+- **Storage** (`src/storage/`) — `TokenStorage` / `SecureTokenStorage` (flutter_secure_storage) and `AppPreferences` / `SharedAppPreferences` (shared_preferences, `dontShowOnboarding`). See `docs/core/storage.md`.
+- **Session** (`src/session/`) — two independent pure `bloc`s over `AuthRepository` + `TokenStorage`: `AuthBloc` (`.bloc.dart`/`.event.dart`/`.state.dart`) for active auth actions (login/register/verify/resend), `SessionBloc` for session truth (restore/logout/unauthorized/ack). Decoupled: the app layer forwards auth successes as `SessionAuthenticated`. Type-safe one-shot signals — `SessionSignal` on `SessionState`, `AuthSignal` on `AuthState` — consumed by the router's two stream listeners. See `docs/core/session.md`.
+
+### feature_floor_plan
+- Stub only — `feature_floor_plan.dart` barrel, no implementation yet.
+
+---
+
+## Client App (`apps/client_app`)
+
+### Splash — Stitch 001
+- `splash.screen.dart` — StatefulWidget, staged fade-in (logo, tagline, foreground), 2.5s auto-advance via `onFinished`, swipe/button to advance early.
+- `splash_logo.widget.dart`, `splash_background.widget.dart` — gradient + PNG noise texture.
+- **Asset fix:** `noise_overlay.svg` → generated `noise_overlay.png` (Flutter `Image.asset` cannot decode SVG).
+
+### Onboarding Welcome — Stitch 002
+- `welcome.screen.dart` + `welcome_content.widget.dart` — hero image, headline, sub-text, CTA, `ProgressDots(4, 0)`, Get Started.
+
+### Onboarding Discovery — Stitch 003
+- `discovery.screen.dart`, `discovery_content.widget.dart`, `discovery_card_deck.widget.dart` (staggered fade-slide cards), `discovery_card.entity.dart` (pure value object, hand-written — no JSON wire format), `onboarding_hero.widget.dart` (local asset + remote override).
+- CTA `next`, `ProgressDots(4, 1)`.
+
+### Onboarding Booking — Stitch 004
+- `booking.screen.dart`, `booking_content.widget.dart`, `booking_visual.widget.dart` — 3 tilted glass cards (service / professional / date-time), staggered fade-slide-up, `ProgressDots(4, 2)`, Back + Next.
+
+### Onboarding AI Showcase — Stitch 005
+- `ai_showcase.screen.dart`, `ai_showcase_content.widget.dart`, `ai_showcase_visual.widget.dart` — avatar + face-shape chip, two recommendation cards with mini progress bars, decorative rings, privacy note, `ProgressDots(4, 3)`, Back + Get Started.
+
+### Onboarding Infrastructure
+- `onboarding_config.bloc.dart` (`.event.dart`/`.state.dart`) — `OnboardingConfigBloc`, loads `/app/onboarding-config` per locale, reloads on locale switch.
+- `skip_bottom_sheet.sheet.dart` — shared 3-option skip sheet (Skip / Don't show again / Cancel); dismisses itself before either decision navigates.
+- Flow wiring in `src/core/navigation/app.router.dart` (go_router). `Skip for now` leaves `dontShowOnboarding` untouched; `Don't show again` and completing the tour persist it. See `docs/flows/onboarding.md`.
+
+
+### Authentication — Stitch 006–009
+- `auth_entry.screen.dart` (006) — now reachable; its three callbacks are bound by `app.router.dart`.
+- `login.screen.dart` + `login_content.widget.dart` (007).
+- `sign_up.screen.dart` + `sign_up_content.widget.dart` (008) — 4 fields; the confirm field feeds `password_confirmation`.
+- `verify_account.screen.dart` + `verify_account_content.widget.dart` + `otp_input_field.widget.dart` (009) — 6-digit code, 60 s resend cooldown, masked destination, non-blocking skip.
+- Shared: `auth_text_field.widget.dart`, `auth_header.widget.dart`, `auth_error_banner.widget.dart`, `auth_validators.entity.dart`, `auth_error.entity.dart` (maps exceptions to local ARB strings — backend `message` values are untranslated keys).
+
+### Password Recovery — Stitch 011–014
+- `password_recovery.bloc.dart` (`.event.dart`/`.state.dart`) + `recovery_signal.entity.dart` — app-layer bloc over the core `AuthRepository`; carries email + code across the flow.
+- `forgot_password.screen.dart` (011), `recovery_otp.screen.dart` (012), `create_new_password.screen.dart` (013), `password_reset_success.screen.dart` (014 — the first `StatusView` consumer).
+- Content widgets: `forgot_password_content`, `recovery_otp_content`, `create_new_password_content`.
+- **Three backend constraints** drive the design: no verify-reset-code endpoint (a bad code surfaces on 013, not 012), a 10-minute cache TTL, and `exists:clients,email` as an enumeration oracle the client deliberately does not surface. Resend calls `forgotPassword`, not `sendEmailVerification`. See `docs/authentication/password_recovery.md`.
+
+### Navigation & Launch Gate
+- `src/core/navigation/app.router.dart` — `AppRouter` (go_router): route table + redirects; success paths use `router.go('/home')`, which clears the stack.
+- `src/core/navigation/app_routes.entity.dart` — `AppRoutes` path constants.
+- `src/core/navigation/app_gate.entity.dart` — post-splash decision (`AppGate.resolve`, a pure function called from `AppRouter._leaveSplash`): session first, onboarding flag second. See `docs/flows/app_launch.md`.
+
+### Home
+- `home.screen.dart` — placeholder landing (`homeTitle`), real dashboard TBD. No logout affordance yet.
+
+### Discovery Feed — Stitch 016 (CL-09) ✅ Complete
+- `DiscoveryBloc` + filter entity over `Paged<BranchDto>` + `FeedCache`; `DiscoveryScreen` with filter bar + result cards on the Discover tab; guest Book Now raises `RequireAuthentication`.
+
+### My Bookings — Stitch 017a (CL-10) ✅ Complete
+- `BookingRepository` + `BookingDto` family in core; `BookingBloc` + list screen + card + cancel confirm on the Bookings tab.
+
+### Branch Floor Plan & Booking Creation — Stitch 017b (CL-10) ✅ Complete
+- `BranchRepository.getFloorPlan` + `ExploreRepository.getBranchDetail` + `BookingRepository.createBooking` in core; `BranchDetailBloc` + `BranchDetailScreen` + `FloorPlanGrid` (chair/services/time selection, 409 conflict, success → My Bookings) on `/discover/branch/:branchId`.
+
+### Service History & Rebook — Stitch 018a (CL-11) ✅ Complete
+- `HistoryRepository` + `ServiceHistoryDto` family (barber/branch/catalog-item/media) in core; `HistoryBloc` over `Paged<ServiceHistoryDto>` + rebook; `ProfileScreen` rebuilt as the 018 profile tab (name header card, Service History feed, rebook via Material pickers, 409 conflict, success → My Bookings).
+
+### Face Analysis & AI Style — Stitch 018b (CL-11) ✅ Complete
+- Core: `FaceProfileRepository` (`POST /client/face-profile` multipart upload, `GET /client/face-profile/recommendations`), `ProfileRepository` (`PATCH /client/profile`, `POST /client/avatar`, `PATCH /client/preferences/universe`), `ServiceCatalogRepository` (`GET /service-catalog/items` paged); DTOs `FacePhotoDto`/`FaceAnalysisResultDto`/`AvatarDto`/`UniversePreferenceDto`/`CatalogPriceRangeDto`/`CatalogItemDto` (+`ClientDto.preferredUniverse`), codegen. App: `FaceAnalysisBloc` (upload → pending → re-check; curated items resolved by paging the catalog) + `AvatarBloc` over the `PhotoPicker` seam; `ProfileScreen` avatar header, Face Analysis card (empty/pending/result/error) and Curated For You section.
+
+### Stylist Profile — Stitch 019 (CL-12) ✅ Complete
+- Core: `ExploreRepository.getBarberDetail` (`GET /explore/barbers/{barber}`, returns `{...BarberResource, services}`), `CurrencyRepository` (`GET /currencies` public); DTOs `BarberProfileDto`/`BarberServiceDto`/`CurrencyDto` (codegen). App: `StylistProfileBloc` (parallel detail + currencies, currency failure tolerated, retry), `StylistProfileScreen` (avatar header, stats row, services list with price/currency/duration/at-home), branch-detail barbers → tappable rows, route `/discover/barber/:barberId`.
+
+### Review & Rating — Stitch 020 (CL-13) ✅ Complete
+- Core: `ReviewEndpoints` (`POST /client/bookings/{booking}/review`, `GET /branches/{branch}/reviews`), `ReviewDto`/`SubmitReviewDto` (codegen), `ReviewRepository`/`DioReviewRepository` (`submitReview` → 201 `ReviewDto`; `getBranchReviews` → `Paged<ReviewDto>`). App: `ReviewSubmitBloc` (`ReviewSubmitStarted(bookingId, rating, comment)` → `isSubmitting`/`submitted`/`error`; `ReviewSubmitRetried` re-submits from stored rating), `ReviewSubmitScreen` (star row 1–5, comment field max 1000, submit `PrimaryButton` with `isLoading`/`isDisabled` guard, success `StatusView`), route `/reviews/:bookingId` under the Bookings shell branch, "Rate" button on `BookingCard` when `status == 'completed'`, `app.dart` DI + dispose.
+
+### Empty Scaffolds (not implemented)
+- `features/profile/` — directories only, no files.
+
+---
+
+## Business App (`apps/business_app`)
+
+- Skeleton only — `main.dart` boots `DorakApp`, no features yet.
+
+---
+
+## Stylist App (`apps/stylist_app`)
+
+- Skeleton only — `main.dart` boots `DorakApp`, no features yet.
+
+---
+
+## Stitch Migration Status
+
+Each export is flagged ✅ **Migrated** (implemented in Flutter, verified by `flutter analyze` + `flutter test` + `tool/check_taxonomy.dart`, export folder deleted) or ⏳ **Pending** (folder still in `docs/stitch/exports/`).
+
+| Export | Screen | Feature | Status |
+|--------|--------|---------|--------|
+| 001 | Splash | CL-01 | ✅ Migrated |
+| 002 | Onboarding Welcome | CL-02 | ✅ Migrated |
+| 003 | Onboarding Discovery | CL-03 | ✅ Migrated |
+| 004 | Onboarding Booking | CL-04 | ✅ Migrated |
+| 005 | Onboarding AI Showcase | CL-05 | ✅ Migrated |
+| 006 | Authentication Entry | CL-08 | ✅ Migrated |
+| 007 | Login | CL-08 | ✅ Migrated |
+| 008 | Create Your Account | CL-08 | ✅ Migrated |
+| 009 | Verify Your Account | CL-08 | ✅ Migrated |
+| 010 | Complete Your Profile | CL-08 | ✅ Complete |
+| 011 | Forgot Password | CL-08 | ✅ Migrated |
+| 012 | Forgot Password OTP | CL-08 | ✅ Migrated |
+| 013 | Create New Password | CL-08 | ✅ Migrated |
+| 014 | Password Reset Success | CL-08 | ✅ Migrated |
+| 016 | Discovery Feed | CL-09 | ✅ Complete |
+| 017a | My Bookings (list/filter/cancel) | CL-10 | ✅ Complete |
+| 017b | Branch Floor Plan & Booking creation | CL-10 | ✅ Complete |
+| 018a | Service History & Rebook | CL-11 | ✅ Complete |
+| 018b | Face Analysis & AI Style (face analysis + AI recs) | CL-11 | ✅ Complete |
+| 019 | Stylist Profile | CL-12 | ✅ Complete |
+| 020 | Review & Rating | CL-13 | ✅ Complete |
+
+> Note: `015_design.md` is a standalone design doc (not a screen export).
+
+---
+
+## Feature Registry
+
+All Flutter features built, verified, and passing the gate (`melos run verify`: generate → build → analyze → taxonomy → test).
+
+| # | Feature | App / Pkg | Status | Source |
+|---|---------|-----------|--------|--------|
+| FE-01 | Design Tokens (colors/typography/dimensions) | design_system | ✅ Complete | Track 01 |
+| FE-02 | Themes & Semantics | design_system | ✅ Complete | Track 02 |
+| FE-03 | Localization Foundation (EN + AR) | localization | ✅ Complete | Track 03 |
+| FE-04 | Networking + Interceptors + DTO contracts | core | ✅ Complete | Tracks 07–08 |
+| FE-05 | Splash Screen | client_app | ✅ Complete | Stitch 001 |
+| FE-06 | Onboarding — Welcome | client_app | ✅ Complete | Stitch 002 |
+| FE-07 | Onboarding — Discovery | client_app | ✅ Complete | Stitch 003 |
+| FE-08 | Onboarding — Booking | client_app | ✅ Complete | Stitch 004 |
+| FE-09 | Onboarding — AI Showcase | client_app | ✅ Complete | Stitch 005 |
+| FE-10 | Onboarding Infrastructure (config fetch, skip sheet, flow) | client_app | ✅ Complete | — |
+| FE-11 | Home placeholder | client_app | ✅ Complete | — |
+| FE-12 | Floor Plan package | feature_floor_plan | ⏸ Stub | Track pending |
+| FE-13 | Storage (secure token + preferences) | core | ✅ Complete | Track 05 |
+| FE-14 | Session management (`SessionBloc`) | core | ✅ Complete | Track 06 |
+| FE-15 | Auth repository (full endpoint surface) | core | ✅ Complete | Track 06 |
+| FE-16 | Launch gate + navigation coordinators | client_app | ✅ Complete | Tracks 10–11 |
+| FE-17 | Auth screens: entry / login / sign-up / verify | client_app | ✅ Complete | Stitch 006–009 |
+
+### Not Started
+- No remaining client Stitch screen exports. `business_app` and `stylist_app`
+  remain skeletons.
+- `business_app` and `stylist_app` features — both apps are skeletons.
+
+### Backend routes for unbuilt features
+
+Recorded so nobody re-derives them from the Stitch HTML or invents a route.
+
+| Feature | Endpoint | Notes |
+|---|---|---|
+| Discovery Feed (016) | `GET /explore/branches` | **There is no `/client/discovery-feed`.** Requires `latitude`, `longitude`, `radius`, `universe`; accepts `per_page` (max 100), `catalog_item_ids[]`, `available_now`, `price_range{min,max}`, `rating_min`, `face_shape_compatible`. `clientId` is nullable — **guest-accessible**. Location permission is a prerequisite. |
+| Discovery preferences | `GET`/`PATCH /client/discovery-preferences` | A separate preferences resource, **not** the feed |
+| Stylist Profile (019) | `GET /explore/barbers`, `GET /explore/barbers/{barber}`, `GET /currencies` (public) | `{barber}` returns `{...BarberResource, services}` |
+| Branch detail (017) | `GET /explore/branches/{branch}`, `GET /branches/{branch}/floor-plan`, `GET /branches/{branch}/chairs` | |
+| Review & Rating (020) | `GET /branches/{branch}/reviews` | |
+
+Paginated collections all return the same envelope
+(`meta.pagination.{total,count,per_page,current_page,total_pages}`) and are
+consumed through `ApiClient.getPaginated` → `PaginatedData<T>` → `Paged<T>`.
+See `docs/state_management/pagination.md`.

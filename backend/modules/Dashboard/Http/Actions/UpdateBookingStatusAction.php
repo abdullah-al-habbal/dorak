@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Dashboard\Http\Actions;
+
+use Illuminate\Http\JsonResponse;
+use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
+use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
+use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Models\BookingModel;
+use Modules\Core\Http\Actions\BaseApiAction;
+use Modules\Dashboard\Http\Requests\UpdateBookingStatusRequest;
+use Modules\Dashboard\Support\DashboardActor;
+
+final class UpdateBookingStatusAction extends BaseApiAction
+{
+    public function __construct(private readonly BookingLifecycleEloquentResolver $resolver) {}
+
+    public function __invoke(UpdateBookingStatusRequest $request, string $booking): JsonResponse
+    {
+        /** @var DashboardActor $actor */
+        $actor = $request->attributes->get('dashboard_actor');
+        $model = BookingModel::query()->when(! $actor->isPlatformAdmin(), fn ($query) => $query->whereHas('chair', fn ($chair) => $chair->where('branch_id', $actor->branchId)))->findOrFail($booking);
+        $status = $request->enum('status', BookingStatus::class);
+        if (! $status instanceof BookingStatus) {
+            return $this->unprocessable(message: 'Invalid booking status.');
+        }
+
+        try {
+            return $this->updated(new BookingResource($this->resolver->transitionForDashboard($model->id, $status)));
+        } catch (InvalidBookingTransitionException) {
+            return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
+        }
+    }
+}

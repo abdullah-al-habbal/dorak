@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Dashboard\Eloquent\Resolvers\Bookings;
+
+use Modules\Branch\Models\BranchModel;
+use Modules\Chair\Models\ChairModel;
+use Modules\Dashboard\CQRS\Command\CreateWalkInBookingCommand;
+use Modules\OfferedService\Models\OfferedServiceModel;
+
+final class WalkInBookingScopeResolver
+{
+    public function ensureResourcesBelongToBranch(CreateWalkInBookingCommand $command): void
+    {
+        $branch = BranchModel::query()->findOrFail($command->branchId);
+        $chair = ChairModel::query()->whereBelongsTo($branch)->findOrFail($command->chairId);
+
+        if ($command->barberId !== null && $chair->barber_id !== $command->barberId) {
+            abort(422, 'The stylist must be assigned to the selected chair.');
+        }
+
+        $serviceCount = OfferedServiceModel::query()
+            ->whereIn('id', $command->serviceIds)
+            ->where(function ($query) use ($branch): void {
+                $query->where(function ($service) use ($branch): void {
+                    $service->where('serviceable_type', 'branch')->where('serviceable_id', $branch->id);
+                })->orWhere(function ($service) use ($branch): void {
+                    $service->where('serviceable_type', 'brand')->where('serviceable_id', $branch->brand_id);
+                });
+            })
+            ->count();
+
+        if ($serviceCount !== count($command->serviceIds)) {
+            abort(422, 'Every service must be available to the selected branch.');
+        }
+    }
+}

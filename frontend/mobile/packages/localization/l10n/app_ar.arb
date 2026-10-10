@@ -1,0 +1,1067 @@
+{
+  "@@locale": "ar",
+  "splashTitle": "Dorak",
+  "@splashTitle": {
+    "description": "App brand name displayed on splash screen"
+  },
+  "skip": "تخطي",
+  "@skip": {
+    "description": "Skip button label"
+  },
+  "onboardingWelcomeTitle": "تجربة العناية بك، من جديد.",
+  "@onboardingWelcomeTitle": {
+    "description": "Welcome screen headline"
+  },
+  "onboardingWelcomeSubtitle": "اكتشف نخبة المحترفين، واحجز بسهولة، وخصص رحلتك الأنيقة.",
+  "@onboardingWelcomeSubtitle": {
+    "description": "Welcome screen subtitle"
+  },
+  "onboardingGetStarted": "ابدأ الآن",
+  "@onboardingGetStarted": {
+    "description": "Primary CTA on welcome screen"
+  },
+  "skipOnboardingQuestion": "تخطي مرحلة التعريف؟",
+  "@skipOnboardingQuestion": {
+    "description": "Skip bottom sheet title"
+  },
+  "skipForNow": "تخطَّ الآن",
+  "@skipForNow": {
+    "description": "Skip bottom sheet primary action"
+  },
+  "dontShowAgain": "لا تظهر مجددًا",
+  "@dontShowAgain": {
+    "description": "Skip bottom sheet secondary action"
+  },
+  "cancel": "إلغاء",
+  "@cancel": {
+    "description": "Skip bottom sheet cancel action"
+  },
+  "discoveryTitle": "اعثر على الأنسب لك.",
+  "@discoveryTitle": {
+    "description": "Discovery screen headline"
+  },
+  "discoverySubtitle": "استكشف المتاجر القريبة وأفضل الحلاقين والخدمات المتميزة المصممة لاحتياجاتك.",
+  "@discoverySubtitle": {
+    "description": "Discovery screen subtitle"
+  },
+  "next": "التالي",
+  "@next": {
+    "description": "Discovery screen primary CTA"
+  },
+  "discoveryCardShops": "المتاجر",
+  "@discoveryCardShops": {
+    "description": "Discovery card 1 label"
+  },
+  "discoveryCardBarbers": "الحلاقون",
+  "@discoveryCardBarbers": {
+    "description": "Discovery card 2 label"
+  },
+  "discoveryCardServices": "الخدمات",
+  "@discoveryCardServices": {
+    "description": "Discovery card 3 label"
+  },
+  "previous": "رجوع",
+  "@previous": {
+    "description": "Discovery screen back action"
+  },
+  "localeArabic": "العربية",
+  "@localeArabic": {
+    "description": "Locale toggle label to switch to Arabic"
+  },
+  "localeEnglish": "English",
+  "@localeEnglish": {
+    "description": "Locale toggle label to switch to English"
+  },
+  "homeTitle": "الرئيسية",
+  "@homeTitle": {
+    "description": "Home screen title"
+  },
+  "bookingTitle": "احجز متى يناسبك.",
+  "@bookingTitle": {
+    "description": "Booking innovation screen headline"
+  },
+  "bookingSubtitle": "اختر خدمتك ومحترفك والوقت المناسب — ثم احجز في بضع لمسات.",
+  "@bookingSubtitle": {
+    "description": "Booking innovation screen subtitle"
+  },
+  "bookingServiceLabel": "بريميوم فايد",
+  "@bookingServiceLabel": {
+    "description": "Booking demo service card label"
+  },
+  "bookingServiceMeta": "45 دقيقة • $65",
+  "@bookingServiceMeta": {
+    "description": "Booking demo service card meta"
+  },
+  "bookingProfessionalLabel": "ماركوس تي.",
+  "@bookingProfessionalLabel": {
+    "description": "Booking demo professional name"
+  },
+  "bookingProfessionalRating": "4.9",
+  "@bookingProfessionalRating": {
+    "description": "Booking demo professional rating"
+  },
+  "bookingDateLabel": "غدًا",
+  "@bookingDateLabel": {
+    "description": "Booking demo date label"
+  },
+  "bookingTimeLabel": "2:30 مساءً",
+  "@bookingTimeLabel": {
+    "description": "Booking demo time label"
+  },
+  "aiTitle": "اكتشف تسريحات صُممت من أجلك.",
+  "@aiTitle": {
+    "description": "AI feature showcase screen headline"
+  },
+  "aiSubtitle": "احصل على توصيات شخصية مبنية على تفضيلاتك، وإذا أردت، على ملامح وجهك.",
+  "@aiSubtitle": {
+    "description": "AI feature showcase screen subtitle"
+  },
+  "aiMatchLabel": "تطابق 98٪",
+  "@aiMatchLabel": {
+    "description": "AI demo match card label"
+  },
+  "aiRecommendedLabel": "موصى به",
+  "@aiRecommendedLabel": {
+    "description": "AI demo recommendation card label"
+  },
+  "aiStyleFade": "بريميوم فايد",
+  "@aiStyleFade": {
+    "description": "AI demo recommended style one"
+  },
+  "aiStyleCrop": "قصّة تكستشر كروب",
+  "@aiStyleCrop": {
+    "description": "AI demo recommended style two"
+  },
+  "aiFaceShapeLabel": "شكل الوجه: بيضاوي",
+  "@aiFaceShapeLabel": {
+    "description": "AI demo face shape chip label"
+  },
+  "aiPrivacyNote": "تحليل الوجه اختياري بالكامل.",
+  "@aiPrivacyNote": {
+    "description": "AI demo privacy note"
+  },
+  "authWelcomeTitle": "مرحباً بك في دوراك",
+  "@authWelcomeTitle": {
+    "description": "Auth entry screen title"
+  },
+  "authSubtitle": "سجّل الدخول للوصول إلى تجربتك المخصصة، أو تابع كزائر للاستكشاف.",
+  "@authSubtitle": {
+    "description": "Auth entry screen subtitle"
+  },
+  "authLogIn": "تسجيل الدخول",
+  "@authLogIn": {
+    "description": "Auth entry primary CTA"
+  },
+  "authCreateAccount": "إنشاء حساب",
+  "@authCreateAccount": {
+    "description": "Auth entry secondary CTA"
+  },
+  "authContinueAsGuest": "المتابعة كزائر",
+  "@authContinueAsGuest": {
+    "description": "Auth entry guest action"
+  },
+  "authGuestHint": "استكشف دوراك دون إنشاء حساب.",
+  "@authGuestHint": {
+    "description": "Auth entry guest helper text"
+  },
+  "back": "رجوع",
+  "@back": {
+    "description": "Back button tooltip"
+  },
+  "loginTitle": "مرحباً بعودتك",
+  "@loginTitle": {
+    "description": "Login screen title"
+  },
+  "loginSubtitle": "سجّل الدخول إلى حسابك",
+  "@loginSubtitle": {
+    "description": "Login screen subtitle"
+  },
+  "loginEmailLabel": "البريد الإلكتروني",
+  "@loginEmailLabel": {
+    "description": "Login email field label"
+  },
+  "loginPasswordLabel": "كلمة المرور",
+  "@loginPasswordLabel": {
+    "description": "Login password field label"
+  },
+  "loginForgotPassword": "نسيت كلمة المرور؟",
+  "@loginForgotPassword": {
+    "description": "Login forgot password link"
+  },
+  "loginButton": "تسجيل الدخول",
+  "@loginButton": {
+    "description": "Login submit button"
+  },
+  "loginSignUpPrompt": "ليس لديك حساب؟",
+  "@loginSignUpPrompt": {
+    "description": "Login footer prompt before the sign-up link"
+  },
+  "loginCreateAccountLink": "إنشاء حساب",
+  "@loginCreateAccountLink": {
+    "description": "Login footer sign-up link"
+  },
+  "loginErrorInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+  "@loginErrorInvalidCredentials": {
+    "description": "Login 401 error message"
+  },
+  "signUpTitle": "أنشئ حسابك",
+  "@signUpTitle": {
+    "description": "Sign-up screen title"
+  },
+  "signUpSubtitle": "انضم إلى دوراك للحصول على عناية شخصية وحجز سهل.",
+  "@signUpSubtitle": {
+    "description": "Sign-up screen subtitle"
+  },
+  "signUpFullNameLabel": "الاسم الكامل",
+  "@signUpFullNameLabel": {
+    "description": "Sign-up full name field label"
+  },
+  "signUpEmailLabel": "البريد الإلكتروني",
+  "@signUpEmailLabel": {
+    "description": "Sign-up email field label"
+  },
+  "signUpPasswordLabel": "كلمة المرور",
+  "@signUpPasswordLabel": {
+    "description": "Sign-up password field label"
+  },
+  "signUpConfirmPasswordLabel": "تأكيد كلمة المرور",
+  "@signUpConfirmPasswordLabel": {
+    "description": "Sign-up confirm password field label"
+  },
+  "signUpPasswordHint": "على الأقل 8 أحرف",
+  "@signUpPasswordHint": {
+    "description": "Sign-up password requirement hint"
+  },
+  "signUpButton": "إنشاء حساب",
+  "@signUpButton": {
+    "description": "Sign-up submit button"
+  },
+  "signUpAlreadyHaveAccount": "لديك حساب بالفعل؟",
+  "@signUpAlreadyHaveAccount": {
+    "description": "Sign-up footer prompt before the login link"
+  },
+  "signUpLogInLink": "تسجيل الدخول",
+  "@signUpLogInLink": {
+    "description": "Sign-up footer login link"
+  },
+  "verifyTitle": "تحقق من حسابك",
+  "@verifyTitle": {
+    "description": "Verify account screen title"
+  },
+  "verifySubtitle": "أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى {email}",
+  "@verifySubtitle": {
+    "description": "Verify account subtitle with the masked destination",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyButton": "تحقق واستمر",
+  "@verifyButton": {
+    "description": "Verify account submit button"
+  },
+  "verifyDidNotReceive": "لم تستلم الرمز؟",
+  "@verifyDidNotReceive": {
+    "description": "Verify account resend prompt"
+  },
+  "verifyResend": "إعادة إرسال الرمز",
+  "@verifyResend": {
+    "description": "Verify account resend action"
+  },
+  "verifyResendDisabled": "إعادة إرسال الرمز ({seconds}ث)",
+  "@verifyResendDisabled": {
+    "description": "Verify account resend action during cooldown",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyErrorInvalid": "رمز غير صحيح. يرجى المحاولة مرة أخرى.",
+  "@verifyErrorInvalid": {
+    "description": "Verify account invalid code error"
+  },
+  "verifySkip": "التحقق لاحقاً",
+  "@verifySkip": {
+    "description": "Verify account skip action"
+  },
+  "fieldRequired": "هذا الحقل مطلوب",
+  "@fieldRequired": {
+    "description": "Form validation error for an empty required field"
+  },
+  "fieldInvalidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+  "@fieldInvalidEmail": {
+    "description": "Form validation error for a malformed email"
+  },
+  "fieldPasswordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+  "@fieldPasswordTooShort": {
+    "description": "Form validation error for a short password"
+  },
+  "fieldPasswordMismatch": "كلمات المرور غير متطابقة",
+  "@fieldPasswordMismatch": {
+    "description": "Form validation error when confirm password differs"
+  },
+  "errorNetwork": "لا يوجد اتصال. تحقق من شبكتك وحاول مرة أخرى.",
+  "@errorNetwork": {
+    "description": "Transport failure message"
+  },
+  "errorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+  "@errorGeneric": {
+    "description": "Fallback error message"
+  },
+  "actionRetry": "حاول مرة أخرى",
+  "@actionRetry": {
+    "description": "Retry action label for failed states"
+  },
+  "errorTitleGeneric": "حدث خطأ ما",
+  "@errorTitleGeneric": {
+    "description": "Fallback error state title"
+  },
+  "errorTitleOffline": "أنت غير متصل بالإنترنت",
+  "@errorTitleOffline": {
+    "description": "Offline state title"
+  },
+  "emptyTitleGeneric": "لا يوجد شيء هنا بعد",
+  "@emptyTitleGeneric": {
+    "description": "Fallback empty state title"
+  },
+  "emptyMessageGeneric": "لا يوجد شيء لعرضه حالياً.",
+  "@emptyMessageGeneric": {
+    "description": "Fallback empty state message"
+  },
+  "recoveryEmailTitle": "نسيت كلمة المرور؟",
+  "recoveryEmailSubtitle": "أدخل البريد الإلكتروني المرتبط بحسابك وسنرسل لك رمز إعادة تعيين من 6 أرقام.",
+  "recoveryEmailLabel": "البريد الإلكتروني",
+  "recoverySendCodeButton": "إرسال الرمز",
+  "recoveryReturnToLogIn": "العودة إلى تسجيل الدخول",
+  "recoveryOtpTitle": "أدخل رمز إعادة التعيين",
+  "recoveryOtpSubtitle": "إذا كان {email} مسجلاً، فقد أرسلنا إليه رمزاً من 6 أرقام. تنتهي صلاحيته بعد 10 دقائق.",
+  "recoveryOtpContinueButton": "متابعة",
+  "recoveryOtpIncomplete": "أدخل الأرقام الستة كاملة",
+  "recoveryResend": "إعادة إرسال الرمز",
+  "recoveryResendDisabled": "إعادة إرسال الرمز ({seconds} ث)",
+  "recoveryDidNotReceive": "لم تستلم الرمز؟",
+  "recoveryNewPasswordTitle": "إنشاء كلمة مرور جديدة",
+  "recoveryNewPasswordSubtitle": "اختر كلمة مرور جديدة لحسابك.",
+  "recoveryNewPasswordLabel": "كلمة المرور الجديدة",
+  "recoveryConfirmPasswordLabel": "تأكيد كلمة المرور الجديدة",
+  "recoveryResetButton": "إعادة تعيين كلمة المرور",
+  "recoveryCodeRejected": "هذا الرمز غير صالح أو انتهت صلاحيته.",
+  "recoveryReenterCode": "إعادة إدخال الرمز",
+  "passwordResetSuccessTitle": "تم تحديث كلمة المرور",
+  "passwordResetSuccessMessage": "تم تغيير كلمة المرور. يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.",
+  "onboardingConfigUnavailable": "لم نتمكن من تحميل أحدث صورة.",
+  "bookingsTitle": "لا توجد حجوزات بعد",
+  "@bookingsTitle": {
+    "description": "Bookings screen empty state title"
+  },
+  "bookingsSubtitle": "ستظهر حجوزاتك القادمة والسابقة هنا.",
+  "@bookingsSubtitle": {
+    "description": "Bookings screen empty state subtitle"
+  },
+  "bookingsActionLabel": "اكتشف",
+  "@bookingsActionLabel": {
+    "description": "Bookings empty state action button label"
+  },
+  "favoritesTitle": "لا توجد مفضلات بعد",
+  "@favoritesTitle": {
+    "description": "Favorites screen empty state title"
+  },
+  "favoritesSubtitle": "اضغط على القلب في صالون أو حلاق لحفظه هنا.",
+  "@favoritesSubtitle": {
+    "description": "Favorites screen empty state subtitle"
+  },
+  "favoritesActionLabel": "اكتشف",
+  "@favoritesActionLabel": {
+    "description": "Favorites empty state action button label"
+  },
+  "profileTitle": "الملف الشخصي",
+  "@profileTitle": {
+    "description": "Profile screen empty state title"
+  },
+  "profileSubtitle": "سيظهر حسابك وتفضيلاتك هنا.",
+  "@profileSubtitle": {
+    "description": "Profile screen empty state subtitle"
+  },
+  "profileActionLabel": "اكتشف",
+  "@profileActionLabel": {
+    "description": "Profile empty state action button label"
+  },
+  "discoveryTitle": "اعثر على الأنسب لك.",
+  "@discoveryTitle": {
+    "description": "Discovery screen headline"
+  },
+  "discoverySubtitle": "استكشف المتاجر القريبة وأفضل الحلاقين والخدمات المتميزة المصممة لاحتياجاتك.",
+  "@discoverySubtitle": {
+    "description": "Discovery screen subtitle"
+  },
+  "locationRequiredTitle": "مطلوب الموقع",
+  "@locationRequiredTitle": {
+    "description": "Location required screen title"
+  },
+  "locationRequiredMessage": "أذِن بالوصول للموقع لاكتشاف الفروع القريبة.",
+  "@locationRequiredMessage": {
+    "description": "Location required screen message"
+  },
+  "enableLocationAction": "تفعيل الموقع",
+  "@enableLocationAction": {
+    "description": "Enable location action button label"
+  },
+  "availableNow": "متاح الآن",
+  "@availableNow": {
+    "description": "Available now filter label"
+  },
+  "price": "السعر",
+  "@price": {
+    "description": "Price filter label"
+  },
+  "rating": "التقييم",
+  "@rating": {
+    "description": "Rating filter label"
+  },
+  "distance": "المسافة",
+  "@distance": {
+    "description": "Distance filter label"
+  },
+  "viewDetails": "عرض التفاصيل",
+  "@viewDetails": {
+    "description": "View details button label"
+  },
+  "bookNow": "احجز الآن",
+  "@bookNow": {
+    "description": "Book now button label"
+  },
+  "discoverUniverseMen": "رجال",
+  "@discoverUniverseMen": {
+    "description": "Universe switcher option for men-only branches"
+  },
+  "discoverUniverseWomen": "نساء",
+  "@discoverUniverseWomen": {
+    "description": "Universe switcher option for women-only branches"
+  },
+  "discoverRankedByDistance": "مرتبة حسب المسافة",
+  "@discoverRankedByDistance": {
+    "description": "Caption confirming results are ordered by distance"
+  },
+  "discoverDistanceLabel": "{km} كم",
+  "@discoverDistanceLabel": {
+    "description": "Distance in kilometres shown on a result card",
+    "placeholders": {
+      "km": {
+        "type": "double"
+      }
+    }
+  },
+  "discoverStaleLabel": "عرض النتائج المحفوظة",
+  "@discoverStaleLabel": {
+    "description": "Badge shown when the feed renders from a cached fetch"
+  },
+  "discoverRankBadge": "#{rank}",
+  "@discoverRankBadge": {
+    "description": "Rank position badge on a result card",
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "discoverTabLabel": "اكتشف",
+  "@discoverTabLabel": {
+    "description": "Discover tab label in the bottom navigation bar"
+  },
+  "changePasswordTitle": "تغيير كلمة المرور",
+  "@changePasswordTitle": {
+    "description": "Change password screen title"
+  },
+  "changePasswordSubtitle": "أدخل كلمة المرور الحالية، ثم اختر كلمة جديدة.",
+  "@changePasswordSubtitle": {
+    "description": "Change password screen subtitle"
+  },
+  "changePasswordCurrentLabel": "كلمة المرور الحالية",
+  "@changePasswordCurrentLabel": {
+    "description": "Current password field label"
+  },
+  "changePasswordNewLabel": "كلمة المرور الجديدة",
+  "@changePasswordNewLabel": {
+    "description": "New password field label"
+  },
+  "changePasswordConfirmLabel": "تأكيد كلمة المرور الجديدة",
+  "@changePasswordConfirmLabel": {
+    "description": "Confirm new password field label"
+  },
+  "changePasswordSubmit": "تحديث كلمة المرور",
+  "@changePasswordSubmit": {
+    "description": "Change password submit button label"
+  },
+  "changePasswordSuccessTitle": "تم تحديث كلمة المرور",
+  "@changePasswordSuccessTitle": {
+    "description": "Change password success title"
+  },
+  "changePasswordSuccessMessage": "تم تغيير كلمة المرور الخاصة بك.",
+  "@changePasswordSuccessMessage": {
+    "description": "Change password success message"
+  },
+  "changePasswordDone": "تم",
+  "@changePasswordDone": {
+    "description": "Change password success dismiss button label"
+  },
+  "bookingsTabLabel": "حجوزات",
+  "@bookingsTabLabel": {
+    "description": "Bookings tab label in the bottom navigation bar"
+  },
+  "bookingFilterUpcoming": "القادمة",
+  "@bookingFilterUpcoming": {
+    "description": "Bookings filter option for upcoming bookings"
+  },
+  "bookingFilterPast": "السابقة",
+  "@bookingFilterPast": {
+    "description": "Bookings filter option for past bookings"
+  },
+  "bookingStatusConfirmed": "مؤكد",
+  "@bookingStatusConfirmed": {
+    "description": "Booking status badge for confirmed bookings"
+  },
+  "bookingStatusCanceled": "ملغي",
+  "@bookingStatusCanceled": {
+    "description": "Booking status badge for canceled bookings"
+  },
+  "bookingStatusCompleted": "مكتمل",
+  "@bookingStatusCompleted": {
+    "description": "Booking status badge for completed bookings"
+  },
+  "bookingWithBarber": "مع {name}",
+  "@bookingWithBarber": {
+    "description": "Booking card barber attribution line",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bookingChairLabel": "كرسي {label}",
+  "@bookingChairLabel": {
+    "description": "Booking card chair line",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "bookingCancelAction": "إلغاء الحجز",
+  "@bookingCancelAction": {
+    "description": "Cancel booking button label"
+  },
+  "bookingCancelConfirmTitle": "إلغاء هذا الحجز؟",
+  "@bookingCancelConfirmTitle": {
+    "description": "Cancel booking confirmation dialog title"
+  },
+  "bookingCancelConfirmMessage": "سيتم تحرير موعدك. يمكنك الحجز مرة أخرى في أي وقت.",
+  "@bookingCancelConfirmMessage": {
+    "description": "Cancel booking confirmation dialog message"
+  },
+  "bookingCancelConfirm": "نعم، إلغاء",
+  "@bookingCancelConfirm": {
+    "description": "Cancel booking confirmation dialog confirm button"
+  },
+  "branchChairsCount": "{count} كراسي",
+  "@branchChairsCount": {
+    "description": "Branch detail chairs count line",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "branchAvailableLabel": "متاح",
+  "@branchAvailableLabel": {
+    "description": "Floor plan legend for available chairs"
+  },
+  "branchOccupiedLabel": "مشغول",
+  "@branchOccupiedLabel": {
+    "description": "Floor plan legend for occupied chairs"
+  },
+  "branchMaintenanceLabel": "صيانة",
+  "@branchMaintenanceLabel": {
+    "description": "Floor plan label for chairs under maintenance"
+  },
+  "branchBarbersTitle": "الحلاقون",
+  "@branchBarbersTitle": {
+    "description": "Branch detail barbers section title"
+  },
+  "branchServicesTitle": "الخدمات",
+  "@branchServicesTitle": {
+    "description": "Branch detail services section title"
+  },
+  "bookingSelectChair": "اختر الكرسي",
+  "@bookingSelectChair": {
+    "description": "Booking sheet chair step title"
+  },
+  "bookingSelectServices": "اختر الخدمات",
+  "@bookingSelectServices": {
+    "description": "Booking sheet services step title"
+  },
+  "bookingSelectTime": "اختر الوقت",
+  "@bookingSelectTime": {
+    "description": "Booking sheet time step title"
+  },
+  "bookingConfirmAction": "تأكيد الحجز",
+  "@bookingConfirmAction": {
+    "description": "Booking sheet confirm button label"
+  },
+  "bookingSuccessTitle": "تم تأكيد الحجز",
+  "@bookingSuccessTitle": {
+    "description": "Booking success title"
+  },
+  "bookingSuccessMessage": "تم حجز موعدك.",
+  "@bookingSuccessMessage": {
+    "description": "Booking success message"
+  },
+  "bookingViewBookings": "عرض حجوزاتي",
+  "@bookingViewBookings": {
+    "description": "Booking success navigation button label"
+  },
+  "bookingConflictMessage": "تم حجز هذا الموعد للتو. اختر وقتًا آخر.",
+  "@bookingConflictMessage": {
+    "description": "Message shown when the server reports a booking conflict"
+  },
+  "discoverCompatibilityBadge": "{percent}%",
+  "@discoverCompatibilityBadge": {
+    "description": "Compatibility score badge on a result card",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "historyTitle": "سجل الخدمات",
+  "@historyTitle": {
+    "description": "Service history section title on the profile tab"
+  },
+  "historyEmptyTitle": "لا يوجد سجل بعد",
+  "@historyEmptyTitle": {
+    "description": "Service history empty state title"
+  },
+  "historyEmptyMessage": "ستظهر الخدمات التي حجزتها هنا بعد موعدها.",
+  "@historyEmptyMessage": {
+    "description": "Service history empty state message"
+  },
+  "historyRebookAction": "إعادة الحجز",
+  "@historyRebookAction": {
+    "description": "Rebook action on a history entry"
+  },
+  "historyRebookTitle": "إعادة الحجز",
+  "@historyRebookTitle": {
+    "description": "Rebook sheet title"
+  },
+  "historyRebookMessage": "اختر موعدًا جديدًا لـ{item}.",
+  "@historyRebookMessage": {
+    "description": "Rebook sheet message naming the service",
+    "placeholders": {
+      "item": {
+        "type": "String"
+      }
+    }
+  },
+  "historyRebookSuccessTitle": "تم إعادة الحجز",
+  "@historyRebookSuccessTitle": {
+    "description": "Rebook success title"
+  },
+  "historyRebookSuccessMessage": "تم حجز موعدك الجديد. ستجده في الحجوزات.",
+  "@historyRebookSuccessMessage": {
+    "description": "Rebook success message"
+  },
+  "profileMemberLabel": "عضو",
+  "@profileMemberLabel": {
+    "description": "Profile header name fallback when the client name is unknown"
+  },
+  "avatarUpdateAction": "تغيير الصورة",
+  "@avatarUpdateAction": {
+    "description": "Avatar upload affordance on the profile header"
+  },
+  "faceAnalysisTitle": "تحليل الوجه",
+  "@faceAnalysisTitle": {
+    "description": "Face analysis module title"
+  },
+  "faceAnalysisDetectedShape": "شكل الوجه المكتشف",
+  "@faceAnalysisDetectedShape": {
+    "description": "Detected face shape label"
+  },
+  "faceAnalysisConfidence": "درجة الثقة",
+  "@faceAnalysisConfidence": {
+    "description": "Analysis confidence label"
+  },
+  "faceScanAction": "امسح وجهي",
+  "@faceScanAction": {
+    "description": "Face photo upload action"
+  },
+  "faceAnalysisPendingTitle": "التحليل قيد التنفيذ",
+  "@faceAnalysisPendingTitle": {
+    "description": "Pending analysis title"
+  },
+  "faceAnalysisPendingMessage": "نحن نحلل وجهك. تحقق مجددًا بعد قليل.",
+  "@faceAnalysisPendingMessage": {
+    "description": "Pending analysis message"
+  },
+  "faceAnalysisEmptyTitle": "لا يوجد تحليل بعد",
+  "@faceAnalysisEmptyTitle": {
+    "description": "Empty analysis state title"
+  },
+  "faceAnalysisEmptyMessage": "ارفع صورة لاكتشاف التسريحات التي تناسبك.",
+  "@faceAnalysisEmptyMessage": {
+    "description": "Empty analysis state message"
+  },
+  "actionCheckAgain": "تحقق مجددًا",
+  "@actionCheckAgain": {
+    "description": "Re-polls a pending face analysis"
+  },
+  "faceShapeOval": "بيضاوي",
+  "@faceShapeOval": {
+    "description": "Detected face shape: oval"
+  },
+  "faceShapeRound": "دائري",
+  "@faceShapeRound": {
+    "description": "Detected face shape: round"
+  },
+  "faceShapeSquare": "مربع",
+  "@faceShapeSquare": {
+    "description": "Detected face shape: square"
+  },
+  "faceShapeHeart": "قلب",
+  "@faceShapeHeart": {
+    "description": "Detected face shape: heart"
+  },
+  "faceShapeDiamond": "ماسي",
+  "@faceShapeDiamond": {
+    "description": "Detected face shape: diamond"
+  },
+  "faceShapeOblong": "مستطيل",
+  "@faceShapeOblong": {
+    "description": "Detected face shape: oblong"
+  },
+  "faceShapeTriangle": "مثلث",
+  "@faceShapeTriangle": {
+    "description": "Detected face shape: triangle"
+  },
+  "curatedForYouTitle": "مختار لك",
+  "@curatedForYouTitle": {
+    "description": "AI style recommendations title"
+  },
+  "curatedEmptyMessage": "لا توجد تسريحات مناسبة بعد.",
+  "@curatedEmptyMessage": {
+    "description": "Empty recommendations message"
+  },
+  "curatedPriceRange": "{min}–{max} {currency}",
+  "@curatedPriceRange": {
+    "description": "Catalog item price range",
+    "placeholders": {
+      "min": {
+        "type": "num"
+      },
+      "max": {
+        "type": "num"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "stylistServicesTitle": "الخدمات",
+  "@stylistServicesTitle": {
+    "description": "Stylist profile services section heading"
+  },
+  "stylistNoServicesMessage": "لا توجد خدمات بعد.",
+  "@stylistNoServicesMessage": {
+    "description": "Shown when a stylist has no services"
+  },
+  "serviceAtHomeLabel": "متاح بالمنزل",
+  "@serviceAtHomeLabel": {
+    "description": "Badge label for services available at home"
+  },
+  "serviceDurationLabel": "{minutes} دقيقة",
+  "@serviceDurationLabel": {
+    "description": "Service duration",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "servicePrice": "{displayPrice} {currency}",
+  "@servicePrice": {
+    "description": "Formatted service price with currency code",
+    "placeholders": {
+      "displayPrice": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "stylistStatServicesLabel": "الخدمات",
+  "@stylistStatServicesLabel": {
+    "description": "Stat label for number of services on stylist profile"
+  },
+  "stylistStatRankLabel": "الترتيب",
+  "@stylistStatRankLabel": {
+    "description": "Stat label for stylist rank"
+  },
+  "stylistStatCompatibilityLabel": "التوافق",
+  "@stylistStatCompatibilityLabel": {
+    "description": "Stat label for stylist compatibility score"
+  },
+  "reviewTitle": "تقييم تجربتك",
+  "@reviewTitle": {
+    "description": "Review submit screen app bar title"
+  },
+  "reviewStylistPrompt": "كيف كانت جلستك؟",
+  "@reviewStylistPrompt": {
+    "description": "Review submit screen rating prompt"
+  },
+  "reviewCommentHint": "شاركونا التفاصيل الإضافية (اختياري)",
+  "@reviewCommentHint": {
+    "description": "Review submit screen comment field hint"
+  },
+  "reviewSubmitButton": "رسل التقييم",
+  "@reviewSubmitButton": {
+    "description": "Review submit button label"
+  },
+  "reviewSubmitSuccess": "تم إرسال التقييم",
+  "@reviewSubmitSuccess": {
+    "description": "Review submit success message"
+  },
+  "reviewAlreadyReviewed": "قد قمت بالفعل بتقييم هذا الحجز",
+  "@reviewAlreadyReviewed": {
+    "description": "Shown when the server reports an already-reviewed conflict"
+  },
+  "reviewBookingNotCompleted": "لم يكتمل هذا الحجز بعد",
+  "@reviewBookingNotCompleted": {
+    "description": "Shown when the server reports the booking is not completed"
+  },
+  "reviewErrorGeneric": "لم نتمكنا من إرسال تقييمك",
+  "@reviewErrorGeneric": {
+    "description": "Fallback review submit error message"
+  },
+  "reviewStarLabel": "{stars} من 5 نجوم",
+  "@reviewStarLabel": {
+    "description": "Screen-reader label for the star rating row",
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewCommentsSection": "التقييمات",
+  "@reviewCommentsSection": {
+    "description": "Branch detail reviews section heading"
+  },
+  "bookingRateAction": "قيّم",
+  "@bookingRateAction": {
+    "description": "Rate action on a completed booking card"
+  },
+  "profileCompletionTitle": "أكمل ملفك الشخصي",
+  "@profileCompletionTitle": {
+    "description": "Profile completion screen title"
+  },
+  "profileCompletionSubtitle": "أضف بياناتك لتخصيص تجربتك في دوراك.",
+  "@profileCompletionSubtitle": {
+    "description": "Profile completion screen subtitle"
+  },
+  "profileCompletionNameLabel": "الاسم",
+  "@profileCompletionNameLabel": {
+    "description": "Profile completion name field"
+  },
+  "profileCompletionPhoneLabel": "رقم الهاتف",
+  "@profileCompletionPhoneLabel": {
+    "description": "Profile completion phone field"
+  },
+  "profileCompletionContinue": "حفظ ومتابعة",
+  "@profileCompletionContinue": {
+    "description": "Profile completion submit action"
+  },
+  "profileCompletionError": "تعذر حفظ ملفك الشخصي",
+  "@profileCompletionError": {
+    "description": "Profile completion generic error"
+  },
+  "bookingAtHomeToggle": "الحجز في المنزل",
+  "@bookingAtHomeToggle": {
+    "description": "Switch label for an at-home booking"
+  },
+  "bookingAtHomeStreetLabel": "الشارع",
+  "@bookingAtHomeStreetLabel": {
+    "description": "At-home booking street field"
+  },
+  "bookingAtHomeBuildingLabel": "البناء",
+  "@bookingAtHomeBuildingLabel": {
+    "description": "At-home booking building field"
+  },
+  "bookingAtHomeUnitLabel": "الوحدة / الشقة",
+  "@bookingAtHomeUnitLabel": {
+    "description": "At-home booking unit field"
+  },
+  "bookingAtHomePinAction": "استخدم موقعي الحالي كدبوس GPS",
+  "@bookingAtHomePinAction": {
+    "description": "Action to select the current GPS location for an at-home booking"
+  },
+  "bookingAtHomePinSelected": "تم تحديد دبوس GPS: {latitude}، {longitude}",
+  "@bookingAtHomePinSelected": {
+    "description": "Selected at-home GPS coordinates",
+    "placeholders": {
+      "latitude": {"type": "String"},
+      "longitude": {"type": "String"}
+    }
+  },
+  "bookingAtHomeLocationError": "تعذر الحصول على موقع GPS. تحقق من إذن الموقع ثم حاول مجدداً.",
+  "@bookingAtHomeLocationError": {
+    "description": "At-home GPS selection failure"
+  },
+  "bookingEndTimeLabel": "ينتهي في {time}",
+  "@bookingEndTimeLabel": {
+    "description": "Server-derived booking end time",
+    "placeholders": {
+      "time": {"type": "String"}
+    }
+  },
+  "bookingCancellationClosed": "لا يمكن الإلغاء خلال ساعتين قبل الموعد.",
+  "@bookingCancellationClosed": {
+    "description": "Shown when the two-hour booking cancellation cutoff has passed"
+  },
+  "reviewStatusPublished": "منشور",
+  "@reviewStatusPublished": {
+    "description": "Published review status indicator"
+  },
+  "reviewStatusUnderReview": "قيد المراجعة",
+  "@reviewStatusUnderReview": {
+    "description": "Disputed review status indicator"
+  },
+  "reviewStatusHidden": "مخفي",
+  "@reviewStatusHidden": {
+    "description": "Hidden review status indicator"
+  },
+  "reviewStatusResolved": "تم الحل",
+  "@reviewStatusResolved": {
+    "description": "Resolved review status indicator"
+  },
+  "reviewDisputeHoldNote": "هذا التقييم معلّق لمدة تصل إلى 48 ساعة بينما يحل المسؤول النزاع.",
+  "@reviewDisputeHoldNote": {
+    "description": "Review dispute workflow notice"
+  },
+  "floorZoneMen": "قسم الرجال",
+  "@floorZoneMen": {
+    "description": "Floor-plan section for men's chairs"
+  },
+  "floorZoneWomen": "قسم النساء",
+  "@floorZoneWomen": {
+    "description": "Floor-plan section for women's chairs"
+  },
+  "floorZoneShared": "القسم المشترك",
+  "@floorZoneShared": {
+    "description": "Floor-plan section for shared chairs"
+  },
+  "managerManualBarberTitle": "إضافة حلاق",
+  "@managerManualBarberTitle": {
+    "description": "Branch manager manual barber creation title"
+  },
+  "managerManualBarberSubtitle": "أنشئ ملف حلاق دون إنشاء حساب لتسجيل الدخول.",
+  "@managerManualBarberSubtitle": {
+    "description": "Manual barber creation explanation"
+  },
+  "managerBarberNameEnglish": "الاسم بالإنجليزية",
+  "@managerBarberNameEnglish": {
+    "description": "English barber name field"
+  },
+  "managerBarberNameArabic": "الاسم بالعربية",
+  "@managerBarberNameArabic": {
+    "description": "Arabic barber name field"
+  },
+  "managerBarberPhone": "رقم الهاتف",
+  "@managerBarberPhone": {
+    "description": "Manual barber phone field"
+  },
+  "managerBarberPhoneHint": "أضف رمز البلد، مثلاً +963...",
+  "@managerBarberPhoneHint": {
+    "description": "E.164 phone input hint"
+  },
+  "managerBarberPhoneSharedNote": "يمكن لعميل استخدام الرقم نفسه. سيُنشأ ملف حلاق منفصل.",
+  "@managerBarberPhoneSharedNote": {
+    "description": "Explains client and barber phone-number sharing"
+  },
+  "managerBarberCreate": "إنشاء حلاق",
+  "@managerBarberCreate": {
+    "description": "Manual barber creation action"
+  },
+  "managerBarberPhoneInvalid": "أدخل رقم هاتف صالحاً مع رمز البلد.",
+  "@managerBarberPhoneInvalid": {
+    "description": "Invalid normalized phone message"
+  },
+  "managerBarberCreated": "تم إنشاء الحلاق دون حساب لتسجيل الدخول.",
+  "@managerBarberCreated": {
+    "description": "Manual barber creation success"
+  },
+  "managerBarberCreateError": "تعذر إنشاء الحلاق. حاول مجدداً.",
+  "@managerBarberCreateError": {
+    "description": "Manual barber creation generic failure"
+  },
+  "bookingSavedAddressesLabel": "العناوين المحفوظة",
+  "bookingFirstAvailable": "أول متاح",
+  "bookingPreferredBarber": "الحلاق المفضل",
+  "bookingSummaryTitle": "ملخص الحجز",
+  "bookingTotalPrice": "السعر الإجمالي: {price}",
+  "@bookingTotalPrice": {"placeholders": {"price": {}}},
+  "bookingTotalDuration": "المدة المتوقعة: {minutes} دقيقة",
+  "@bookingTotalDuration": {"placeholders": {"minutes": {"type": "int"}}},
+  "bookingPaymentTitle": "الدفع",
+  "bookingPayAtSalon": "الدفع في الصالون",
+  "bookingPayAtSalonOnly": "يستحق الدفع شخصياً عند وصولك إلى الصالون.",
+  "bookingStatusInProgress": "قيد التنفيذ",
+  "bookingTrackerTitle": "حالة الموعد",
+  "bookingTrackerConfirmed": "تم تأكيد موعدك.",
+  "bookingTrackerInProgress": "موعدك قيد التنفيذ.",
+  "bookingTrackerCompleted": "اكتمل موعدك.",
+  "bookingTrackerCancelled": "تم إلغاء هذا الموعد."
+  ,"bookingTrackAction": "تتبع الموعد",
+  "profileEditAction": "تعديل الملف الشخصي",
+  "profileSavedAddressesAction": "العناوين المحفوظة",
+  "profileEditTitle": "تعديل الملف الشخصي",
+  "profileSaveAction": "حفظ",
+  "profileFullNameLabel": "الاسم الكامل",
+  "profilePhoneNumberLabel": "رقم الهاتف",
+  "savedAddressesTitle": "العناوين المحفوظة",
+  "savedAddressAddTitle": "إضافة عنوان",
+  "savedAddressEditTitle": "تعديل العنوان",
+  "savedAddressStreetLabel": "الشارع",
+  "savedAddressBuildingLabel": "البناء",
+  "savedAddressUnitLabel": "الوحدة",
+  "savedAddressLatitudeLabel": "خط العرض",
+  "savedAddressLongitudeLabel": "خط الطول",
+  "businessBranchOperationsTitle": "عمليات الفرع",
+  "businessRetry": "إعادة المحاولة",
+  "businessDashboardTitle": "لوحة المعلومات",
+  "businessTodayRevenue": "إيرادات اليوم: {value}",
+  "@businessTodayRevenue": {"placeholders": {"value": {}}},
+  "businessMonthlyRevenue": "الإيرادات الشهرية: {value}",
+  "@businessMonthlyRevenue": {"placeholders": {"value": {}}},
+  "businessTodayBookings": "حجوزات اليوم: {value}",
+  "@businessTodayBookings": {"placeholders": {"value": {"type": "int"}}},
+  "businessActiveChairs": "الكراسي النشطة: {active}/{total}",
+  "@businessActiveChairs": {"placeholders": {"active": {"type": "int"}, "total": {"type": "int"}}},
+  "businessChairStatus": "حالة الكراسي: {value}",
+  "@businessChairStatus": {"placeholders": {"value": {}}},
+  "businessBranchHint": "الفرع",
+  "businessAppointmentsTitle": "المواعيد",
+  "businessStart": "ابدأ",
+  "businessComplete": "إكمال",
+  "businessNoShow": "لم يحضر",
+  "businessCancelBooking": "إلغاء",
+  "businessChairsTitle": "الكراسي",
+  "businessUnassigned": "غير معيّن",
+  "stylistTodayTitle": "اليوم",
+  "stylistWorkstationOnline": "محطة العمل متصلة",
+  "stylistUpdateFailed": "تعذر التحديث. اسحب لإعادة المحاولة.",
+  "stylistTodayAppointments": "مواعيد اليوم",
+  "stylistAcceptBooking": "قبول الحجز",
+  "stylistStartSession": "بدء الجلسة",
+  "stylistCompleteSession": "إنهاء الجلسة",
+  "stylistMarkNoShow": "تحديد عدم الحضور"
+}

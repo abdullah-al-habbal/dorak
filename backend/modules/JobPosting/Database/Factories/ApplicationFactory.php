@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\JobPosting\Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Barber\Models\BarberModel;
+use Modules\JobPosting\Enums\ApplicationStatus;
+use Modules\JobPosting\Models\ApplicationModel;
+use Modules\JobPosting\Models\JobPostingModel;
+
+#[UseModel(ApplicationModel::class)]
+class ApplicationFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'job_posting_id' => JobPostingModel::factory(),
+            'barber_id' => BarberModel::factory(),
+            'profile_snapshot' => [
+                'name' => fake()->name(),
+                'bio' => fake()->sentence(),
+                'is_freelancer' => false,
+                'rating' => fake()->randomFloat(1, 3, 5),
+            ],
+            'status' => ApplicationStatus::Submitted->value,
+        ];
+    }
+}

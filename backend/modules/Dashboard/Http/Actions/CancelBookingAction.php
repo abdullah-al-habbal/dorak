@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Dashboard\Http\Actions;
+
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
+use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
+use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Core\Http\Actions\BaseApiAction;
+use Modules\Dashboard\CQRS\Query\ShowBookingQuery;
+use Modules\Dashboard\Handlers\Bookings\ShowBookingHandler;
+use Modules\Dashboard\Support\DashboardActor;
+
+final class CancelBookingAction extends BaseApiAction
+{
+    public function __construct(private readonly ShowBookingHandler $showHandler, private readonly BookingLifecycleEloquentResolver $lifecycle) {}
+
+    public function __invoke(Request $request, string $booking): JsonResponse
+    {
+        /** @var DashboardActor $actor */
+        $actor = $request->attributes->get('dashboard_actor');
+        $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->isPlatformAdmin() ? null : $actor->branchId));
+        try {
+            return $this->updated(new BookingResource($this->lifecycle->transitionForDashboard($model->id, BookingStatus::Canceled)));
+        } catch (InvalidBookingTransitionException) {
+            return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
+        }
+    }
+}
