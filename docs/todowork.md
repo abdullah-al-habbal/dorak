@@ -5,7 +5,7 @@
 > Open product decisions blocking tasks: [decisions-required.md](decisions-required.md).
 
 ## Phase 1 — Security & Authorization (P0)
-- [ ] Task 01: Fix Barber Affiliation Ownership Authorization -> [Spec](tasks/task-01-affiliation-ownership.md)
+- [x] Task 01: Fix Barber Affiliation Ownership Authorization -> [Spec](tasks/task-01-affiliation-ownership.md)
 - [ ] Task 02: Fix Client History Ownership (Rebook & Media) -> [Spec](tasks/task-02-client-history-ownership.md)
 - [ ] Task 03: Correct Admin API Authentication Guards -> [Spec](tasks/task-03-admin-api-guards.md)
 - [ ] Task 04: Restrict Service Catalog Mutations to Admins -> [Spec](tasks/task-04-service-catalog-authorization.md)

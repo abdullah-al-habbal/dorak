@@ -4,13 +4,24 @@ declare(strict_types=1);
 
 namespace Modules\BarberAffiliation\Http\Requests\Barber;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\CQRS\Command\Barber\CreateAffiliationCommand;
 use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class CreateAffiliationRequest extends BaseApiFormRequest
 {
+    public function authorize(): bool
+    {
+        $barber = $this->user('barber');
+
+        return $barber instanceof BarberModel
+            && Gate::forUser($barber)->allows('create', [BarberAffiliationModel::class, (string) $this->route('barber')]);
+    }
+
     public function rules(): array
     {
         return [

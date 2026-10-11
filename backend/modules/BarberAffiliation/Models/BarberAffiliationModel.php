@@ -18,6 +18,8 @@ use Modules\BarberAffiliation\Enums\AffiliationStatus;
 
 #[Fillable([
     'barber_id',
+    'initiated_by_type',
+    'initiated_by_id',
     'affiliable_id',
     'affiliable_type',
     'status',

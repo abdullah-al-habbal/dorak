@@ -1,2 +1,1 @@
-cd frontend/dashboard
-npx --no -- commitlint --edit "$1"
+frontend/dashboard/old/node_modules/.bin/commitlint --config frontend/dashboard/old/.commitlintrc.json --edit "$1"

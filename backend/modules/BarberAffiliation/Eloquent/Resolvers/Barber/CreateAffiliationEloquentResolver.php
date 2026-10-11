@@ -25,6 +25,8 @@ final class CreateAffiliationEloquentResolver
 
         return BarberAffiliationModel::create([
             'barber_id' => $barber->id,
+            'initiated_by_type' => BarberModel::class,
+            'initiated_by_id' => $barber->id,
             'affiliable_id' => $command->affiliableId,
             'affiliable_type' => $command->affiliableType,
             'commission_rate' => $command->commissionRate,

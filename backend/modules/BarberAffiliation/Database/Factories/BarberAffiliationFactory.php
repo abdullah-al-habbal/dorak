@@ -19,6 +19,8 @@ class BarberAffiliationFactory extends Factory
     {
         return [
             'barber_id' => BarberModel::factory(),
+            'initiated_by_type' => BranchModel::class,
+            'initiated_by_id' => BranchModel::factory(),
             'affiliable_id' => BranchModel::factory(),
             'affiliable_type' => AffiliableType::Branch->value,
             'status' => AffiliationStatus::Accepted->value,
