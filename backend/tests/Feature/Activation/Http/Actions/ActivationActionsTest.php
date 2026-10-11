@@ -3,14 +3,15 @@
 declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
+use Modules\Admin\Models\AdminModel;
 
 beforeEach(function () {
     $this->barber = BarberModel::factory()->create();
-    $this->actingAs($this->barber, 'barber');
+    $this->actingAs(AdminModel::factory()->create(), 'admin_api');
 });
 
 it('activates a barber', function () {
-    $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/activate", [
+    $response = $this->postJson("/api/v1/admin/barbers/{$this->barber->id}/activate", [
         'reason' => 'Approved for platform',
     ]);
 
@@ -20,7 +21,7 @@ it('activates a barber', function () {
 });
 
 it('deactivates a barber', function () {
-    $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/deactivate", [
+    $response = $this->postJson("/api/v1/admin/barbers/{$this->barber->id}/deactivate", [
         'reason' => 'Violation of terms',
     ]);
 
@@ -29,20 +30,20 @@ it('deactivates a barber', function () {
 });
 
 it('activates without reason', function () {
-    $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/activate");
+    $response = $this->postJson("/api/v1/admin/barbers/{$this->barber->id}/activate");
 
     $response->assertCreated();
     expect($response->json('data.status'))->toBe('enabled');
 });
 
 it('returns 404 for non-existent barber activation', function () {
-    $response = $this->postJson('/api/v1/barbers/00000000-0000-0000-0000-000000000000/activate');
+    $response = $this->postJson('/api/v1/admin/barbers/00000000-0000-0000-0000-000000000000/activate');
 
     $response->assertNotFound();
 });
 
 it('returns 404 for non-existent barber deactivation', function () {
-    $response = $this->postJson('/api/v1/barbers/00000000-0000-0000-0000-000000000000/deactivate');
+    $response = $this->postJson('/api/v1/admin/barbers/00000000-0000-0000-0000-000000000000/deactivate');
 
     $response->assertNotFound();
 });

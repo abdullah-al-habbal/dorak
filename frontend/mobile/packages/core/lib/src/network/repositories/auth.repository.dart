@@ -39,6 +39,7 @@ abstract class AuthRepository {
     required String password,
     required String passwordConfirmation,
   });
+  Future<void> deleteAccount(String password);
 }
 
 class DioAuthRepository implements AuthRepository {
@@ -154,6 +155,10 @@ class DioAuthRepository implements AuthRepository {
       parser: _discardBody,
     );
   }
+
+  @override
+  Future<void> deleteAccount(String password) =>
+      _client.delete(AuthEndpoints.deleteAccount, data: {'password': password});
 
   static void _discardBody(dynamic _) {}
 }

@@ -6,17 +6,22 @@ import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
 import type { NextRequest } from "next/server";
 
 interface Context { params: Promise<{ path: string[] }>; }
-const ALLOWED_PATHS = new Set(["profile", "portfolio", "schedule", "appointments/today", "workstation-status"]);
+const ALLOWED_PATHS = new Set(["profile", "portfolio", "schedule", "appointments/today", "travel-radius", "workstation-status"]);
 const BOOKING_TRANSITION_PATH = /^bookings\/[A-Za-z0-9-]+\/(accept|start|complete|no-show|cancel)$/;
+const PORTFOLIO_ITEM_PATH = /^portfolio\/[A-Za-z0-9-]+$/;
 
 export async function GET(request: NextRequest, context: Context) { return proxyBarberRequest(request, context); }
 export async function PATCH(request: NextRequest, context: Context) { return proxyBarberRequest(request, context); }
 export async function POST(request: NextRequest, context: Context) { return proxyBarberRequest(request, context); }
+export async function DELETE(request: NextRequest, context: Context) { return proxyBarberRequest(request, context); }
 
 async function proxyBarberRequest(request: NextRequest, context: Context) {
   const { path } = await context.params;
   const joined = path.join("/");
-  if (!ALLOWED_PATHS.has(joined) && !BOOKING_TRANSITION_PATH.test(joined)) return noStore(apiFailure(404, "resource_not_found", "Barber resource not found."));
+  const isAllowed = ALLOWED_PATHS.has(joined)
+    || BOOKING_TRANSITION_PATH.test(joined)
+    || (request.method === "DELETE" && PORTFOLIO_ITEM_PATH.test(joined));
+  if (!isAllowed) return noStore(apiFailure(404, "resource_not_found", "Barber resource not found."));
   const token = readSessionCookies(request.cookies).accessToken;
   if (!token) return noStore(apiFailure(401, "session_expired", "Your session has expired."));
   const body = request.method === "GET" ? undefined : await request.text();

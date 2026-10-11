@@ -200,6 +200,9 @@ class FakeAuthRepository implements AuthRepository {
   int forgotPasswordCalls = 0;
   Map<String, String>? resetPasswordPayload;
 
+  @override
+  Future<void> deleteAccount(String password) async {}
+
   /// Counts session re-probes. One `RestoreRequested` with a stored token calls
   /// `refreshToken` exactly once, so this is how a test observes a restore
   /// without depending on frame timing.
@@ -680,6 +683,13 @@ class FakeHistoryRepository implements HistoryRepository {
   int rebookCalls = 0;
   String? lastRebookedId;
   DateTime? lastRebookSlot;
+
+  @override
+  Future<HistoryMediaDto> attachMedia({
+    required String historyId,
+    required String photoUrl,
+    required String photoType,
+  }) async => HistoryMediaDto(id: 'media-1', photoUrl: photoUrl);
 
   @override
   Future<PaginatedData<ServiceHistoryDto>> getHistory({

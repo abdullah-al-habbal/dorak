@@ -111,6 +111,9 @@ class FakeAuthRepository implements AuthRepository {
   Map<String, Object?>? registeredPayload;
 
   @override
+  Future<void> deleteAccount(String password) async {}
+
+  @override
   Future<String> refreshToken() async {
     refreshTokenCalls++;
     final error = refreshTokenError;

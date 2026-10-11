@@ -10,6 +10,7 @@ class AuthEndpoints {
   static const String verifyEmail = '/client/email/verify';
   static const String sendEmailVerification = '/client/email/verify/send';
   static const String changePassword = '/client/password';
+  static const String deleteAccount = '/client/account';
 
   static String socialLogin(String provider) => '/client/social/$provider';
 }

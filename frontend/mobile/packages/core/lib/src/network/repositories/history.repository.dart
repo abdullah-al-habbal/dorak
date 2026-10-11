@@ -7,6 +7,11 @@ abstract class HistoryRepository {
   });
 
   Future<BookingDto> rebookFromHistory(String historyId, DateTime timeSlot);
+  Future<HistoryMediaDto> attachMedia({
+    required String historyId,
+    required String photoUrl,
+    required String photoType,
+  });
 }
 
 class DioHistoryRepository implements HistoryRepository {
@@ -39,4 +44,15 @@ class DioHistoryRepository implements HistoryRepository {
       parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
   }
+
+  @override
+  Future<HistoryMediaDto> attachMedia({
+    required String historyId,
+    required String photoUrl,
+    required String photoType,
+  }) => _apiClient.post(
+    HistoryEndpoints.attachMedia.replaceFirst('{history}', historyId),
+    data: {'photo_url': photoUrl, 'photo_type': photoType},
+    parser: (json) => HistoryMediaDto.fromJson(json as Map<String, dynamic>),
+  );
 }
