@@ -1,0 +1,161 @@
+# Open Product Decisions
+
+> Generated from every `Decision required` bullet in `tasks/`. Each blocks its task's acceptance criteria. Record the answer in the task spec, then tick it here.
+
+## [Task 01: Fix Barber Affiliation Ownership Authorization](tasks/task-01-affiliation-ownership.md)
+- [ ] Decision required: which party is the "receiving party" depends on the invite direction designed in Task 55. Until then, a barber may accept or reject only affiliations whose `barber_id` is their own **and** that were not initiated by them. If no initiator column exists, add `initiated_by_type` and `initiated_by_id`.
+
+## [Task 04: Restrict Service Catalog Mutations to Admins](tasks/task-04-service-catalog-authorization.md)
+- [ ] Decision required: whether branches may **propose** catalog items for admin approval. If yes, this becomes a separate endpoint and is out of scope here.
+
+## [Task 05: Scope Chair Barber Assignment to Branch Affiliations](tasks/task-05-chair-barber-assignment-scope.md)
+- [ ] Decision required: confirm both sources count as membership.
+
+## [Task 06: Move Job Application Decisions to Branch Managers](tasks/task-06-job-application-status-authz.md)
+- [ ] Decision required: does a withdraw status exist? `ApplicationStatus` has no `withdrawn` case today.
+
+## [Task 09: Enforce Account Status at Login and Hide Inactive Entities in Explore](tasks/task-09-activation-status-visibility.md)
+- [ ] Decision required: whether a `pending` client (email not yet verified) may log in with limited scope. If yes, document the allowed routes.
+
+## [Task 12: Enforce Branch Manager Scope and Last-Branch Guard](tasks/task-12-branch-manager-scope.md)
+- [ ] Decision required: behaviour for future bookings on a deleted branch (block deletion while upcoming bookings exist, or cancel them and notify). The default proposed here is to block with 409.
+
+## [Task 13: Fix Booking Completion for Bookings Without a Barber](tasks/task-13-booking-completion-null-barber.md)
+- [ ] Decision required: the HIST-1 granularity. This spec proposes one row per service.
+
+## [Task 18: Centralize Booking Status Transitions](tasks/task-18-booking-lifecycle-service.md)
+- [ ] **Decision required:** allow `Confirmed → NoShow` (EC-3), or keep `NoShow` only from `InProgress`. Update `canTransitionTo` and its tests to match the decision.
+
+## [Task 21: Add Slot Availability Endpoint](tasks/task-21-slot-availability-endpoint.md)
+- [ ] Excludes times inside the 2-hour cancellation window only if product requires it. **Decision required:** the minimum lead time for new bookings.
+
+## [Task 22: Validate Bookings Against Branch Hours and Barber Schedule](tasks/task-22-booking-hours-schedule-validation.md)
+- [ ] **Decision required:** timezone for schedule times. The barber's or branch's local timezone needs a stored timezone; until then, UTC.
+- [ ] **Decision required:** behavior when a barber has no schedule rows. Either treat as always available (backward compatible) or never bookable.
+
+## [Task 23: Validate Service Ownership and Resolve Chair Barber on Booking](tasks/task-23-booking-service-ownership.md)
+- [ ] **Decision required (EC-9):** enforce one barber calendar across all affiliations, or per shop. Default: across all affiliations, matching the current overlap query on `barber_id`.
+
+## [Task 24: Allow Booking a Shop Barber Without Picking a Chair](tasks/task-24-barber-booking-without-chair.md)
+- [ ] **Decision required:** add a `bookings.branch_id` column, or resolve the branch through the barber's chair at check-in.
+
+## [Task 25: Enforce At-Home Booking Rules](tasks/task-25-at-home-booking-rules.md)
+- [ ] the barber has `is_freelancer = true` (**Decision required:** whether affiliated barbers may also do at-home);
+
+## [Task 27: Handle Chair Maintenance Conflicts with Existing Bookings](tasks/task-27-chair-maintenance-conflicts.md)
+- [ ] **Decision required (EC-2 is marked open in spec):** cancel-and-notify vs. reassign to another free chair. Record it here.
+
+## [Task 30: Persist Notification Delivery Records](tasks/task-30-notification-delivery-records.md)
+- [ ] **Decision required:** retention period for delivery rows.
+
+## [Task 34: Implement Phone OTP Verification](tasks/task-34-phone-otp-verification.md)
+- [ ] Decision required: SMS provider (none is configured in the repo) and whether phone OTP is also a login method (PRD wording "phone OTP login") or verification only.
+
+## [Task 36: Enforce Account Deletion Rules and History Anonymization](tasks/task-36-account-deletion-rules.md)
+- [ ] Decision required: keep soft delete + PII scrub, or hard delete with history `client_id` set to NULL.
+
+## [Task 37: Implement Barber Self Sign-Up](tasks/task-37-barber-self-signup.md)
+- [ ] Decision required: should self-registered barbers start `pending` until admin activation (ties to Task 53) or active immediately?
+
+## [Task 38: Implement Brand Owner Role](tasks/task-38-brand-owner-role.md)
+- [ ] Decision required: model the owner as a new authenticatable (own guard, e.g. `owner_api`) or as a client with an owner capability that can obtain a dashboard session. Record the decision in an ADR.
+
+## [Task 39: Resolve Review Subject for Barber and At-Home Bookings](tasks/task-39-review-subject-resolution.md)
+- [ ] Decision required: should a chair booking with an assigned barber produce a review for the branch only, the barber only, or both (a rating for each)? The entity model (`backend/docs/06_entity-model-abstract.md:182-186`) suggests separate review records.
+
+## [Task 40: Implement Two-Way Reviews and Client Reputation](tasks/task-40-two-way-reviews-reputation.md)
+- [ ] Decision required: are client-subject reviews visible to the client, and can barbers (not just branches) rate clients?
+
+## [Task 41: Complete Review Dispute Workflow](tasks/task-41-review-dispute-workflow.md)
+- [ ] Decision required: keep or remove the client-side dispute route (client disputing their own review has no spec basis).
+
+## [Task 43: Add Explore Text Search](tasks/task-43-explore-text-search.md)
+- [ ] Decision required: SQL `LIKE` across translatable JSON columns vs a search engine (Scout/Meilisearch); the DB engine question in Task 63 affects this.
+
+## [Task 44: Support Unisex Universe and Barber Universe Filter](tasks/task-44-universe-unisex-and-barber-filter.md)
+- [ ] Decision required: universe stays on the brand or moves to the branch (A5 says branch); also whether `universe` becomes optional per BE-03 (default to the client's `preferred_universe`).
+
+## [Task 45: Include Freelancers in Search Results](tasks/task-45-freelancers-in-search.md)
+- [ ] Decision required: a unified `GET explore/search` returning typed items (`branch` | `barber`), or keep two endpoints and have the client merge them. Record the decision.
+
+## [Task 46: Apply Composite Ranking Before Pagination](tasks/task-46-composite-ranking-ordering.md)
+- [ ] Decision required: should `face_shape_compatible` filter results (PRD §5) or only boost; and should it default to the authenticated client's latest face analysis.
+
+## [Task 49: Apply Brand Creation Defaults](tasks/task-49-brand-creation-defaults.md)
+- [ ] Decision required: which first-branch fields are mandatory at brand creation (address/coordinates now or later via Task 51).
+
+## [Task 50: Implement Brand Feature Flags](tasks/task-50-brand-feature-flags.md)
+- [ ] Downgrade (I3/EC‑6): when `multi_branch` is turned off and the brand has more than one branch, keep existing branches, but block creating new ones. Decision required: whether extra branches become read-only or stay operational.
+
+## [Task 52: Expose Settings and Preferences API](tasks/task-52-settings-preferences-api.md)
+- [ ] Decision required: whether `dashboard/profile/notifications` is replaced by Preference or kept as an alias.
+
+## [Task 53: Complete Activation Management](tasks/task-53-activation-management.md)
+- [ ] Decision required: whether a barber's self-deactivation should remain (the spec text implies the owner controls activation). Keep the current behavior until decided.
+- [ ] Deactivating a branch must not delete bookings. Decision required: whether future bookings are auto-cancelled (and notified via Task 28) or kept.
+
+## [Task 54: Add Barber Bio and Self-Service Services API](tasks/task-54-barber-profile-and-services-api.md)
+- [ ] D1: remove `branch` from the allowed `serviceable_type`. Decision required: migrate any existing branch-owned `offered_services` rows to the parent brand, or block the change until data is cleaned up.
+
+## [Task 55: Complete Affiliation Lifecycle](tasks/task-55-affiliation-lifecycle.md)
+- [ ] On terminate, unassign the barber from the branch's chairs (`chairs.barber_id = null`). For future bookings, decision required: cancel and notify via Task 28, or keep them.
+- [ ] Decision required: rename `accepted` to `active`, or update the spec (record the outcome in Task 87).
+
+## [Task 56: Complete Job Board](tasks/task-56-job-board-completion.md)
+- [ ] EC‑20: change the FKs to `nullOnDelete` or soft-delete branches/postings. On branch removal, set open postings to `closed` and keep the applications. Decision required: soft delete vs nullable FK.
+
+## [Task 57: Open Currency Conversion to Clients and Convert Prices](tasks/task-57-currency-client-conversion.md)
+- [ ] Decision required: keep `POST /currency/convert` (and update the spec) or add a `GET` alias. Record the outcome in Task 87.
+
+## [Task 58: Complete Client History](tasks/task-58-client-history-completion.md)
+- [ ] HIST-1: record all booking services. Decision required: one history row per service, or one row with an `offered_service_ids` JSON/pivot. The observer must not fail when `barber_id` is null (Task 13).
+- [ ] HIST-3 barber read: add `GET /api/v1/barber/clients/{client}/history` (auth:barber). Allow only if the client has a booking with this barber (Decision required: any past booking, or an upcoming/active one only).
+
+## [Task 60: Fix Favorites and Saved Filter Contracts](tasks/task-60-favorites-and-saved-filters-contract.md)
+- [ ] Make `POST /api/v1/client/favorites` idempotent: `firstOrCreate`, returning 200 with the existing favorite or 201 when created. Decision required: idempotent add, or true toggle (a second call removes). Idempotent add is recommended because `DELETE /client/favorites/{favorite}` already exists.
+
+## [Task 62: Fix Recommendation Pipeline](tasks/task-62-recommendation-pipeline-fixes.md)
+- [ ] `rebuildEdges`: also rebuild `history` edges, and `visited` edges from interaction logs. Decision required: whether `face_matched` and `similar_client` ship now or are deferred (PRD marks some as later).
+
+## [Task 63: Provision pgvector Storage for Preference Vectors](tasks/task-63-pgvector-storage.md)
+- [ ] Decision required: target production database. Either:
+
+## [Task 64: Add Status Change Audit Trail](tasks/task-64-status-audit-trail.md)
+- [ ] Decision required: retention period for audit rows (indefinite vs. N years).
+
+## [Task 65: Specify and Build Monetization and Analytics APIs](tasks/task-65-monetization-analytics-apis.md)
+- [ ] Decision required: payment provider (none, or a named PSP), and whether payments are online at booking time or offline.
+- [ ] Decision required: subscription plans and how they map to the brand feature flags from Task 50 (`multi_branch`, `job_board`).
+- [ ] Decision required: commission model (percent or fixed; per booking or per period) and payout schedule.
+- [ ] `backend/docs/features/BE-20-monetization.md` exists, every "Decision required" above is answered, and it is marked approved by the product owner.
+
+## [Task 67: Conform Modules to Context Namespacing](tasks/task-67-context-namespacing-conformance.md)
+- [ ] Decision required: whether Core base classes and middleware are exempt from BE-18. If they are, document the exemption in BE-18.
+
+## [Task 70: Wire Booking Detail Page and Full Status Set](tasks/task-70-booking-detail-and-status.md)
+- [ ] Decision required: expose the allowed next statuses per booking in the booking resource (e.g. `allowed_transitions`), or hard-code the transition map in the UI. Recommended: the backend field, so the UI never drifts from the lifecycle.
+
+## [Task 71: Enable List Search and Filters](tasks/task-71-list-search-filters.md)
+- [ ] Bookings: keep the existing filters. Add `search` on client name/email only if the product wants it (Decision required).
+
+## [Task 72: Replace Portal Home Placeholders and Fix Overview](tasks/task-72-portal-home-and-overview.md)
+- [ ] Decision required: an admin viewing several brands with different base currencies. Either convert to one platform currency (needs Task 57) or return revenue per currency.
+
+## [Task 74: Add Branch Operations BFF and UI](tasks/task-74-branch-operations-bff-ui.md)
+- [ ] Decision required: **(a)** proxy `/api/v1/branch/*` directly with the manager's dashboard token (Sanctum, branch provider), or **(b)** add equivalent endpoints to the `Dashboard` module behind `DashboardOperationsAuthorizationMiddleware` so that admins can also use them for any branch. Recommended: (b) for floor plan, profile and reviews, so admin and manager share one contract and one policy. Whichever is chosen, a feature test must prove the token or guard works end to end.
+- [ ] Floor-plan payload completeness (`backend/docs/06_entity-model-abstract.md:153-156`): the floor plan must carry a canvas size (width/height/unit) and static decoration components (waiting area, mirror, etc.) alongside chairs. Today `GET /branches/{branch}/floor-plan` returns only preset, zones and chairs. Extend `PATCH branch/floor-plan` to accept `canvas` and `decorations`, and extend the GET response. Decision required: whether these are persisted (e.g. in the branch's floor-plan configuration) or computed. The spec leaves it open.
+
+## [Task 75: Add Branch People BFF and UI (Affiliations, Jobs, Barbers)](tasks/task-75-branch-people-bff-ui.md)
+- [ ] Decision required: managed barber creation. Use only the existing dashboard `stylists` create, or keep `POST branch/barbers`, but not both. If `stylists` covers it, `branch/barbers` becomes mobile-only (Task 85).
+
+## [Task 77: Add Brand and Service Catalog Management UI](tasks/task-77-catalog-brand-management-ui.md)
+- [ ] Brands: Decision required. Either add admin brand management under `auth:admin_api`, or let the brand owner manage brands through the dashboard once the Brand Owner role exists (Task 38). This UI follows that decision.
+
+## [Task 81: Clean Up Client Auth Flows](tasks/task-81-client-auth-cleanup.md)
+- [ ] Social login: add provider buttons in `login_content.widget.dart` behind a config flag. **Decision required:** which providers and SDKs (Google/Apple) ship in v1.
+
+## [Task 83: Build Stylist App Features](tasks/task-83-stylist-app-features.md)
+- [ ] **Decision required:** whether barbers may self activate/deactivate (`barbers/{barber}/activate|deactivate`). Task 53 defines the semantics; do not build UI for it until then.
+
+## [Task 86: Clean Up Shared Mobile Packages](tasks/task-86-mobile-shared-packages-cleanup.md)
+- [ ] **Decision required:** either (a) move the floor-plan widgets from `client_app` into `feature_floor_plan` so `business_app` can reuse them for floor-plan configuration (Task 85), or (b) delete the package and remove it from the `workspace:` list. Do not leave it empty.

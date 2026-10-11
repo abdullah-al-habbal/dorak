@@ -2,6 +2,7 @@
 
 > Source: monorepo audit of 2026-10-11 (backend routes, backend vs product/feature specs, dashboard BFF/UI, mobile apps).
 > Order = execution priority. Respect each spec's **Depends on** line. Tick a box only when every acceptance criterion in the spec passes.
+> Open product decisions blocking tasks: [decisions-required.md](decisions-required.md).
 
 ## Phase 1 — Security & Authorization (P0)
 - [ ] Task 01: Fix Barber Affiliation Ownership Authorization -> [Spec](tasks/task-01-affiliation-ownership.md)

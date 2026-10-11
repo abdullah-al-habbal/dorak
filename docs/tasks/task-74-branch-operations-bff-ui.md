@@ -17,6 +17,7 @@ The backend exposes a full branch-manager API under `/api/v1/branch/*` (`auth:br
 ### Backend (API / DB / Policies)
 - Decision required: **(a)** proxy `/api/v1/branch/*` directly with the manager's dashboard token (Sanctum, branch provider), or **(b)** add equivalent endpoints to the `Dashboard` module behind `DashboardOperationsAuthorizationMiddleware` so that admins can also use them for any branch. Recommended: (b) for floor plan, profile and reviews, so admin and manager share one contract and one policy. Whichever is chosen, a feature test must prove the token or guard works end to end.
 - No duplicate status endpoint: booking status changes go through the Task 18 lifecycle service only.
+- Floor-plan payload completeness (`backend/docs/06_entity-model-abstract.md:153-156`): the floor plan must carry a canvas size (width/height/unit) and static decoration components (waiting area, mirror, etc.) alongside chairs. Today `GET /branches/{branch}/floor-plan` returns only preset, zones and chairs. Extend `PATCH branch/floor-plan` to accept `canvas` and `decorations`, and extend the GET response. Decision required: whether these are persisted (e.g. in the branch's floor-plan configuration) or computed. The spec leaves it open.
 ### Dashboard (BFF / React)
 - BFF: add exact method+path entries (per Task 11) for the chosen endpoints only.
 - Pages under `app/(portals)/manager/` (and `admin/` if option b): Branch profile (view/edit), Floor plan (view chairs and zones; edit layout via PATCH floor-plan), Chairs (status toggle available/maintenance with the conflict warning from Task 27), and Reviews (paginated list).
@@ -28,6 +29,7 @@ The backend exposes a full branch-manager API under `/api/v1/branch/*` (`auth:br
 ## Acceptance Criteria
 - [ ] Manager can view and edit the branch profile. PATCH returns 200 and a reload shows the new values. A manager cannot edit another branch (403 or 404, feature test).
 - [ ] Floor plan page renders chairs from the API. Saving a layout sends PATCH and returns 200; an invalid payload shows the backend 422 field errors.
+- [ ] `GET /api/v1/branches/{branch}/floor-plan` returns `canvas` {width, height, unit} and a `decorations` array. A PATCH with an invalid canvas returns 422 (feature test). The editor renders the decorations and saves them.
 - [ ] Toggling a chair to maintenance while it has future bookings shows the Task 27 conflict response, and does not silently succeed.
 - [ ] Branch reviews page lists the reviews returned by the API, paginated.
 - [ ] BFF rejects any method/path not declared for these endpoints with 404 or 405. Vitest per route.

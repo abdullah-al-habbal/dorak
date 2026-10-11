@@ -31,5 +31,5 @@ Branch detail builds its service list only from services of barbers sitting at c
 - [ ] `php artisan test` and `melos run test` pass; PHPStan max + Pint clean.
 
 ## Out of Scope
-- Floor-plan canvas size/decorations — not scheduled in this task set beyond Task 74 (floor-plan editor).
+- Floor-plan canvas size and decorations (Task 74).
 - Affiliation lifecycle — Task 55.
