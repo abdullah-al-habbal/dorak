@@ -13,7 +13,7 @@ final class ServiceCatalogItemPolicy
 {
     public function create(BranchModel|AdminModel|ClientModel $actor): bool
     {
-        return $actor instanceof BranchModel || $actor instanceof AdminModel;
+        return $actor instanceof AdminModel;
     }
 
     public function update(BranchModel|AdminModel|ClientModel $actor, ServiceCatalogItemModel $item): bool

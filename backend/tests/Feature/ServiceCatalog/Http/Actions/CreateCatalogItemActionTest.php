@@ -11,7 +11,7 @@ beforeEach(function () {
     $this->category = ServiceCatalogCategoryModel::factory()->create();
 });
 
-it('creates a catalog item', function () {
+it('rejects a branch attempting to create a catalog item', function () {
     $branch = BranchModel::factory()->create();
     $this->actingAs($branch, 'branch_api');
     $payload = [
@@ -23,18 +23,13 @@ it('creates a catalog item', function () {
 
     $response = $this->postJson('/api/v1/service-catalog/items', $payload);
 
-    $response->assertCreated();
-    $response->assertJsonStructure([
-        'success',
-        'data' => ['id', 'name', 'slug'],
-        'message',
-    ]);
-    expect($response->json('data.name.en'))->toBe('Classic Haircut');
+    $response->assertUnauthorized();
+    $this->assertDatabaseMissing('service_catalog_items', ['slug' => 'classic-haircut']);
 });
 
 it('requires category_id', function () {
-    $branch = BranchModel::factory()->create();
-    $this->actingAs($branch, 'branch_api');
+    $admin = AdminModel::factory()->create();
+    $this->actingAs($admin, 'admin_api');
     $response = $this->postJson('/api/v1/service-catalog/items', [
         'name' => ['en' => 'Test', 'ar' => 'اختبار'],
         'slug' => 'test',
@@ -46,8 +41,8 @@ it('requires category_id', function () {
 });
 
 it('requires unique slug', function () {
-    $branch = BranchModel::factory()->create();
-    $this->actingAs($branch, 'branch_api');
+    $admin = AdminModel::factory()->create();
+    $this->actingAs($admin, 'admin_api');
     $payload = [
         'category_id' => $this->category->id,
         'name' => ['en' => 'First', 'ar' => 'الأول'],
@@ -61,7 +56,7 @@ it('requires unique slug', function () {
     $response->assertJsonValidationErrors(['slug']);
 });
 
-it('returns forbidden when a client attempts a catalog mutation', function () {
+it('rejects a client attempting to create a catalog item', function () {
     $client = ClientModel::factory()->create();
     $this->actingAs($client, 'client');
 
@@ -72,7 +67,8 @@ it('returns forbidden when a client attempts a catalog mutation', function () {
         'is_active' => true,
     ]);
 
-    $response->assertForbidden();
+    $response->assertUnauthorized();
+    $this->assertDatabaseMissing('service_catalog_items', ['slug' => 'test']);
 });
 
 it('allows an admin to create a catalog item', function () {
