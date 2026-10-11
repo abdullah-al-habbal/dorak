@@ -25,8 +25,8 @@ final class RescheduleBookingAction extends BaseApiAction
         $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->isPlatformAdmin() ? null : $actor->branchId));
         try {
             return $this->updated(new BookingResource($this->resolver->resolve($model->id, $request->date('time_slot'), $request->date('ends_at'))));
-        } catch (ChairHasActiveBookingsException $exception) {
-            return $this->error('BOOKING_SLOT_CONFLICT', $exception->getMessage(), 409);
+        } catch (ChairHasActiveBookingsException) {
+            return $this->error('BOOKING_SLOT_CONFLICT', __('dashboard::messages.booking_slot_conflict'), 409);
         }
     }
 }

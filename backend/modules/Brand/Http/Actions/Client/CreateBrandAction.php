@@ -22,7 +22,6 @@ final class CreateBrandAction extends BaseApiAction
 
         return $this->created(
             data: new BrandResource($brand),
-            message: 'Brand created successfully',
         );
     }
 }

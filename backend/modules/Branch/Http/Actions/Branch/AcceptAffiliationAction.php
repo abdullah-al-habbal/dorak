@@ -23,7 +23,7 @@ final class AcceptAffiliationAction extends BaseApiAction
             ->findOrFail($affiliation);
 
         if ($affiliationModel->status !== AffiliationStatus::Pending) {
-            return $this->businessError(ErrorCodeEnum::BAD_REQUEST, message: 'Affiliation is not in pending status');
+            return $this->businessError(ErrorCodeEnum::BAD_REQUEST, message: __('branch::messages.affiliation_not_pending'));
         }
 
         $affiliationModel->update([

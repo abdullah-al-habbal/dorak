@@ -22,14 +22,14 @@ final class SendPasswordResetCode extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reset your password',
+            subject: __('client::messages.password_reset_subject'),
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            htmlString: "<p>Your password reset code: <strong>{$this->code}</strong></p><p>This code expires in 10 minutes.</p>",
+            htmlString: __('client::messages.password_reset_body', ['code' => $this->code]),
         );
     }
 }

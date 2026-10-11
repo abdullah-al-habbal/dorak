@@ -19,7 +19,7 @@ final class DashboardOperationsAuthorizationMiddleware
         $actor = $request->attributes->get('dashboard_actor');
 
         if ($actor === null || $actor->isBarber()) {
-            throw new AuthorizationException('This dashboard operation is not available to barbers.');
+            throw new AuthorizationException(__('dashboard::messages.barber_operation_unavailable'));
         }
 
         return $next($request);

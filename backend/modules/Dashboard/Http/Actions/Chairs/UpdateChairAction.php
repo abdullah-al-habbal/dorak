@@ -36,12 +36,12 @@ final class UpdateChairAction extends BaseApiAction
 
         try {
             $updated = $this->updateHandler->handle($model, new UpdateChairCommand($attributes, $scope));
-        } catch (ChairHasActiveBookingsException $exception) {
-            return $this->error('CHAIR_HAS_ACTIVE_BOOKINGS', $exception->getMessage(), 409);
+        } catch (ChairHasActiveBookingsException) {
+            return $this->error('CHAIR_HAS_ACTIVE_BOOKINGS', __('dashboard::messages.chair_has_active_bookings'), 409);
         }
 
         return $updated === null
-            ? $this->forbidden('The barber belongs to another branch.')
+            ? $this->forbidden(__('dashboard::messages.barber_other_branch'))
             : $this->updated(ChairResource::make($updated));
     }
 }

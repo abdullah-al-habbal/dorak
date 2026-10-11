@@ -19,7 +19,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
     {
         $branch = $request->user('branch_api');
         if (! $branch instanceof BranchModel) {
-            abort(401);
+            return $this->unauthorized();
         }
         Gate::forUser($branch)->authorize('manage', $branch);
         $model = BookingModel::query()
@@ -28,11 +28,11 @@ final class UpdateBookingStatusAction extends BaseApiAction
             ->findOrFail($booking);
         $value = $request->input('status');
         if (! is_string($value)) {
-            abort(422, 'Invalid booking status.');
+            return $this->unprocessable(message: __('branch::messages.invalid_booking_status'));
         }
         $status = BookingStatus::from($value);
         if (! in_array($status, [BookingStatus::InProgress, BookingStatus::Completed, BookingStatus::NoShow, BookingStatus::Canceled], true)) {
-            abort(422, 'Unsupported booking status transition.');
+            return $this->unprocessable(message: __('branch::messages.unsupported_booking_status_transition'));
         }
         $model->update(['status' => $status]);
 

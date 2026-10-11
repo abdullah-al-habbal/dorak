@@ -32,8 +32,8 @@ final class DestroyChairAction extends BaseApiAction
 
         try {
             $this->destroyHandler->handle($model, new DestroyChairCommand($chair));
-        } catch (ChairHasActiveBookingsException $exception) {
-            return $this->error('CHAIR_HAS_ACTIVE_BOOKINGS', $exception->getMessage(), 409);
+        } catch (ChairHasActiveBookingsException) {
+            return $this->error('CHAIR_HAS_ACTIVE_BOOKINGS', __('dashboard::messages.chair_has_active_bookings'), 409);
         }
 
         return $this->deleted();

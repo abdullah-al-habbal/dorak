@@ -48,9 +48,9 @@ final class CreateBookingAction extends BaseApiAction
                 status: 422,
             );
         } catch (ActiveBookingBanException) {
-            return $this->error(message: 'Booking is unavailable for this account.', status: 403);
+            return $this->error(message: __('booking::messages.unavailable_for_account'), status: 403);
         } catch (BookingOutsideScheduleException) {
-            return $this->error(message: 'The requested time is outside the barber schedule.', status: 422);
+            return $this->error(message: __('booking::messages.time_outside_schedule'), status: 422);
         }
     }
 }

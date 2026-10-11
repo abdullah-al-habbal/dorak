@@ -20,7 +20,7 @@ final class ConvertCurrencyAction extends BaseApiAction
         $result = $this->handler->handle($request->toQuery());
 
         if ($result === null) {
-            return $this->notFound(message: 'Exchange rate not found for this pair');
+            return $this->notFound(message: __('currency::messages.exchange_rate_not_found'));
         }
 
         return $this->ok(data: [

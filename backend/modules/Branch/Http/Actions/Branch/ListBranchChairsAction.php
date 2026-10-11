@@ -18,7 +18,7 @@ final class ListBranchChairsAction extends BaseApiAction
     {
         $branch = $request->user('branch_api');
         if (! $branch instanceof BranchModel) {
-            abort(401);
+            return $this->unauthorized();
         }
         Gate::forUser($branch)->authorize('manage', $branch);
         $chairs = ChairModel::query()->where('branch_id', $branch->id)->with('barber')->paginate($request->integer('per_page', 15));

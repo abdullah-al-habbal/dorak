@@ -25,16 +25,16 @@ final class ApplyForJobAction extends BaseApiAction
             return $this->businessError(
                 ErrorCodeEnum::UNPROCESSABLE_ENTITY,
                 message: match ($result->errorCode) {
-                    'not_open' => __('Job posting is not open for applications'),
-                    'already_applied' => __('Already applied to this job'),
-                    default => __('Unprocessable'),
+                    'not_open' => __('jobposting::messages.not_open'),
+                    'already_applied' => __('jobposting::messages.already_applied'),
+                    default => __('core::messages.unprocessable'),
                 },
             );
         }
 
         return $this->created(
             data: new ApplicationResource($result->application),
-            message: 'Application submitted successfully',
+            message: __('jobposting::messages.application_submitted'),
         );
     }
 }

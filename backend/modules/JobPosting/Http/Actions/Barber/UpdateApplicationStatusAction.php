@@ -22,7 +22,7 @@ final class UpdateApplicationStatusAction extends BaseApiAction
 
         return $this->updated(
             data: new ApplicationResource($applicationModel),
-            message: 'Application status updated',
+            message: __('jobposting::messages.status_updated'),
         );
     }
 }

@@ -17,7 +17,7 @@ final class WalkInBookingScopeResolver
         $chair = ChairModel::query()->whereBelongsTo($branch)->findOrFail($command->chairId);
 
         if ($command->barberId !== null && $chair->barber_id !== $command->barberId) {
-            abort(422, 'The stylist must be assigned to the selected chair.');
+            throw new WalkInStylistNotAssignedException;
         }
 
         $serviceCount = OfferedServiceModel::query()
@@ -32,7 +32,7 @@ final class WalkInBookingScopeResolver
             ->count();
 
         if ($serviceCount !== count($command->serviceIds)) {
-            abort(422, 'Every service must be available to the selected branch.');
+            throw new WalkInServicesUnavailableException;
         }
     }
 }

@@ -6,14 +6,18 @@ namespace Modules\Dashboard\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use LogicException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Core\Helpers\ApiResponseTrait;
 use Modules\Dashboard\Support\DashboardActor;
 use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardAuthorizationMiddleware
 {
+    use ApiResponseTrait;
+
     public function handle(Request $request, Closure $next): Response
     {
         foreach ($this->guards() as $guard) {
@@ -35,7 +39,7 @@ final class DashboardAuthorizationMiddleware
             return $next($request);
         }
 
-        abort(401);
+        return $this->unauthorized();
     }
 
     /** @return list<string> */
@@ -50,7 +54,7 @@ final class DashboardAuthorizationMiddleware
             'admin_api' => new DashboardActor($model->id, DashboardActor::ADMIN, 'platform_admin', null),
             'branch_api' => new DashboardActor($model->id, DashboardActor::BRANCH, 'branch_manager', $model->id, (string) $model->getAttribute('brand_id')),
             'barber' => new DashboardActor($model->id, DashboardActor::BARBER, 'barber', null),
-            default => abort(401),
+            default => throw new LogicException('Unsupported dashboard guard.'),
         };
     }
 }

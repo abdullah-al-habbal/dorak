@@ -30,13 +30,13 @@ abstract class TransitionBookingAction extends BaseApiAction
         $barber = Auth::guard('barber')->user();
 
         if (! $barber instanceof BarberModel) {
-            abort(401);
+            return $this->unauthorized();
         }
 
         try {
             $updated = $this->resolver->transitionForBarber($booking, $barber->id, $this->targetStatus());
             event(new BookingStatusUpdatedEvent($updated->id, (string) $updated->chair()->value('branch_id'), $barber->id, $updated->status->value));
-            SendBookingStatusNotificationJob::dispatch($updated->id, false);
+            SendBookingStatusNotificationJob::dispatch($updated->id, false, app()->getLocale());
 
             return $this->ok(data: new BookingResource($updated));
         } catch (BookingNotAssignedException) {

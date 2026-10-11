@@ -19,7 +19,11 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private readonly string $bookingId, private readonly bool $created) {}
+    public function __construct(
+        private readonly string $bookingId,
+        private readonly bool $created,
+        private readonly string $locale = 'en',
+    ) {}
 
     public function handle(FcmNotificationSender $sender): void
     {
@@ -31,15 +35,15 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
         $data = ['type' => 'booking_status', 'booking_id' => $booking->id, 'status' => $booking->status->value];
         if ($this->created) {
             if ($booking->barber_id !== null) {
-                $sender->sendTo(BarberModel::class, $booking->barber_id, 'New booking request', 'A booking requires your attention.', $data);
+                $sender->sendTo(BarberModel::class, trans('booking::messages.notification_new_request_title', [], $this->locale), trans('booking::messages.notification_barber_request_body', [], $this->locale), $data);
             }
             $branchId = $booking->chair?->branch_id;
             if ($branchId !== null) {
-                $sender->sendTo(BranchModel::class, $branchId, 'New booking request', 'A booking requires branch attention.', $data);
+                $sender->sendTo(BranchModel::class, $branchId, trans('booking::messages.notification_new_request_title', [], $this->locale), trans('booking::messages.notification_branch_request_body', [], $this->locale), $data);
             }
 
             return;
         }
-        $sender->sendTo(ClientModel::class, $booking->client_id, 'Booking status updated', "Your booking is now {$booking->status->value}.", $data);
+        $sender->sendTo(ClientModel::class, $booking->client_id, trans('booking::messages.notification_status_title', [], $this->locale), trans('booking::messages.notification_status_body', ['status' => $booking->status->value], $this->locale), $data);
     }
 }

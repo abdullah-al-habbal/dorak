@@ -23,7 +23,7 @@ final class StoreStylistAction extends BaseApiAction
         $attributes = $request->validated();
 
         if (! $actor->isPlatformAdmin() && ! isset($attributes['chair_id'])) {
-            return $this->unprocessable('A branch manager must assign a branch chair.');
+            return $this->unprocessable(__('dashboard::messages.assign_branch_chair'));
         }
 
         return $this->created(BarberResource::make($this->handler->handle(

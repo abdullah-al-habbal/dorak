@@ -19,11 +19,11 @@ final class SendDashboardEmailChangeCode extends Mailable
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: 'Confirm your Dorak email address');
+        return new Envelope(subject: __('dashboard::email.email_change_subject'));
     }
 
     public function content(): Content
     {
-        return new Content(htmlString: "<p>Your email-change confirmation code: <strong>{$this->code}</strong></p><p>This code expires in 10 minutes.</p>");
+        return new Content(htmlString: __('dashboard::email.email_change_body', ['code' => $this->code]));
     }
 }

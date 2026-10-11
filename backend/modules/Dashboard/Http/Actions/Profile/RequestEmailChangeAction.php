@@ -22,7 +22,7 @@ final class RequestEmailChangeAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $result = $this->handler->handle($actor, $request->toCommand());
         if ($result === null) {
-            return $this->unprocessable('This email address is already in use.', ['email' => ['This email address is already in use.']]);
+            return $this->unprocessable(__('dashboard::messages.email_already_in_use'), ['email' => [__('dashboard::messages.email_already_in_use')]]);
         }
 
         Mail::to($result['change']->email)->send(new SendDashboardEmailChangeCode($result['code']));

@@ -21,7 +21,7 @@ final class UpdatePasswordAction extends BaseApiAction
         /** @var AdminModel|BranchModel|BarberModel $model */
         $model = $request->attributes->get('dashboard_model');
         if (! $this->handler->handle($model, $request->toCommand())) {
-            return $this->unprocessable('Current password is incorrect.', ['current_password' => ['Current password is incorrect.']]);
+            return $this->unprocessable(__('dashboard::messages.current_password_incorrect'), ['current_password' => [__('dashboard::messages.current_password_incorrect')]]);
         }
 
         return $this->updated(['password_updated' => true]);

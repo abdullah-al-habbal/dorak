@@ -11,4 +11,11 @@ return [
     'cancel_too_late' => 'لا يمكن إلغاء الحجز قبل أقل من ساعتين من الموعد.',
     'invalid_booking_transition' => 'لا يمكن نقل هذا الحجز إلى الحالة المطلوبة.',
     'booking_not_assigned' => 'يمكنك تحديث الحجوزات المعيّنة لك فقط.',
+    'unavailable_for_account' => 'الحجز غير متاح لهذا الحساب.',
+    'time_outside_schedule' => 'الوقت المطلوب خارج جدول الحلاق.',
+    'notification_new_request_title' => 'طلب حجز جديد',
+    'notification_barber_request_body' => 'يوجد حجز يتطلب اهتمامك.',
+    'notification_branch_request_body' => 'يوجد حجز يتطلب اهتمام الفرع.',
+    'notification_status_title' => 'تم تحديث حالة الحجز',
+    'notification_status_body' => 'حالة حجزك الآن: :status.',
 ];

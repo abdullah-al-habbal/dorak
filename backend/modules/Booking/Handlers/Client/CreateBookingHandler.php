@@ -22,7 +22,7 @@ final class CreateBookingHandler
         $booking = DB::transaction(function () use ($command): BookingModel {
             return $this->resolver->resolve($command);
         });
-        SendBookingStatusNotificationJob::dispatch($booking->id, true);
+        SendBookingStatusNotificationJob::dispatch($booking->id, true, app()->getLocale());
 
         return new CreateBookingResult(booking: $booking);
     }

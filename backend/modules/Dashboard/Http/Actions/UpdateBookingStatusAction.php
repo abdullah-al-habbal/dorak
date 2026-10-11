@@ -25,7 +25,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
         $model = BookingModel::query()->when(! $actor->isPlatformAdmin(), fn ($query) => $query->whereHas('chair', fn ($chair) => $chair->where('branch_id', $actor->branchId)))->findOrFail($booking);
         $status = $request->enum('status', BookingStatus::class);
         if (! $status instanceof BookingStatus) {
-            return $this->unprocessable(message: 'Invalid booking status.');
+            return $this->unprocessable(message: __('dashboard::messages.invalid_booking_status'));
         }
 
         try {

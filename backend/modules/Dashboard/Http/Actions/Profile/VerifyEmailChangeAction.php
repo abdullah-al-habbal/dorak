@@ -25,7 +25,7 @@ final class VerifyEmailChangeAction extends BaseApiAction
         /** @var AdminModel|BranchModel|BarberModel $model */
         $model = $request->attributes->get('dashboard_model');
         if (! $this->handler->handle($model, $actor, $request->toCommand())) {
-            return $this->unprocessable('The confirmation code is invalid or expired.', ['code' => ['The confirmation code is invalid or expired.']]);
+            return $this->unprocessable(__('dashboard::messages.invalid_confirmation_code'), ['code' => [__('dashboard::messages.invalid_confirmation_code')]]);
         }
 
         return $this->updated(DashboardProfileData::fromModel($model->fresh())->toArray());

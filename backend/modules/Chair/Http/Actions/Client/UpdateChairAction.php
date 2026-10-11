@@ -23,9 +23,6 @@ final class UpdateChairAction extends BaseApiAction
         Gate::forUser($request->user())->authorize('update', $chair);
         $chair = $this->handler->handle($request->toCommand($chair->getKey()));
 
-        return $this->ok(
-            data: new ChairResource($chair),
-            message: 'Chair updated successfully',
-        );
+        return $this->updated(data: new ChairResource($chair));
     }
 }

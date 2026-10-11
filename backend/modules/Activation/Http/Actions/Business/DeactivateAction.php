@@ -24,7 +24,7 @@ final class DeactivateAction extends BaseApiAction
 
         return $this->created(
             data: new ActivationLogResource($log),
-            message: 'Barber deactivated successfully',
+            message: __('activation::messages.barber_deactivated'),
         );
     }
 }

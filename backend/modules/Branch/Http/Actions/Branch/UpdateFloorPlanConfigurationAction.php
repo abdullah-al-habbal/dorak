@@ -24,13 +24,13 @@ final class UpdateFloorPlanConfigurationAction extends BaseApiAction
         $preset = $request->enum('preset', FloorPlanPreset::class);
 
         if ($preset === null) {
-            return $this->unprocessable(errors: ['preset' => ['The selected preset is invalid.']]);
+            return $this->unprocessable(errors: ['preset' => [__('branch::messages.invalid_floor_plan_preset')]]);
         }
 
         $zones = $request->array('zones');
 
         if ($preset === FloorPlanPreset::UnisexZoned && ! $this->hasRequiredZones($zones)) {
-            return $this->unprocessable(errors: ['zones' => ['Unisex layouts require both men and women zones.']]);
+            return $this->unprocessable(errors: ['zones' => [__('branch::messages.unisex_layout_requires_both_zones')]]);
         }
 
         $branch->update(['floor_plan_preset' => $preset, 'floor_plan_zones' => $zones]);

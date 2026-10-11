@@ -17,7 +17,7 @@ final class UpdateWorkstationStatusAction extends BaseApiAction
     {
         $barber = Auth::guard('barber')->user();
         if (! $barber instanceof BarberModel) {
-            abort(401);
+            return $this->unauthorized();
         }
         $barber->update(['workstation_online' => $request->boolean('online')]);
         event(new WorkstationStatusToggledEvent($barber->id, (bool) $barber->getAttribute('workstation_online')));

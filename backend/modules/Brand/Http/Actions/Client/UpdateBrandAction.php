@@ -20,9 +20,6 @@ final class UpdateBrandAction extends BaseApiAction
     {
         $brand = $this->handler->handle($request->toCommand($brand));
 
-        return $this->ok(
-            data: new BrandResource($brand),
-            message: 'Brand updated successfully',
-        );
+        return $this->updated(data: new BrandResource($brand));
     }
 }

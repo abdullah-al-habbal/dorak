@@ -24,7 +24,7 @@ final class ActivateAction extends BaseApiAction
 
         return $this->created(
             data: new ActivationLogResource($log),
-            message: 'Barber activated successfully',
+            message: __('activation::messages.barber_activated'),
         );
     }
 }

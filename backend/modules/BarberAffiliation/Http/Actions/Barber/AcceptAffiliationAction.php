@@ -22,12 +22,12 @@ final class AcceptAffiliationAction extends BaseApiAction
         $result = $this->handler->handle($request->toCommand($affiliation));
 
         if (! $result->success) {
-            return $this->businessError(ErrorCodeEnum::BAD_REQUEST, message: 'Affiliation is not in pending status');
+            return $this->businessError(ErrorCodeEnum::BAD_REQUEST, message: __('barberaffiliation::messages.not_pending'));
         }
 
         return $this->ok(
             data: new BarberAffiliationResource($result->affiliation),
-            message: 'Affiliation accepted successfully',
+            message: __('barberaffiliation::messages.accepted'),
         );
     }
 }

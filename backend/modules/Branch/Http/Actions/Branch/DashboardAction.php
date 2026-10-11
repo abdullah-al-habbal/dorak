@@ -21,7 +21,7 @@ final class DashboardAction extends BaseApiAction
     {
         $branch = $request->user('branch_api');
         if (! $branch instanceof BranchModel) {
-            abort(401);
+            return $this->unauthorized();
         }
         $today = now()->startOfDay();
 

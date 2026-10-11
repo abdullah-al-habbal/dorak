@@ -27,13 +27,13 @@ final class CreateAffiliationAction extends BaseApiAction
         } catch (BarberAlreadyAffiliatedException) {
             return $this->businessError(
                 ErrorCodeEnum::CONFLICT,
-                message: 'Barber already affiliated to a branch',
+                message: __('barberaffiliation::messages.already_affiliated'),
             );
         }
 
         return $this->created(
             data: new BarberAffiliationResource($result->affiliation),
-            message: 'Affiliation created successfully',
+            message: __('barberaffiliation::messages.created'),
         );
     }
 }

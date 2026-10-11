@@ -16,7 +16,7 @@ final class ListPortfolioAction extends BaseApiAction
     {
         $barber = Auth::guard('barber')->user();
         if (! $barber instanceof BarberModel) {
-            abort(401);
+            return $this->unauthorized();
         }
 
         return $this->ok(BarberPortfolioPhotoResource::collection(

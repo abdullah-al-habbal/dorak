@@ -32,7 +32,7 @@ final class StoreChairAction extends BaseApiAction
         ));
 
         return $chair === null
-            ? $this->forbidden('The barber belongs to another branch.')
+            ? $this->forbidden(__('dashboard::messages.barber_other_branch'))
             : $this->created(ChairResource::make($chair));
     }
 }

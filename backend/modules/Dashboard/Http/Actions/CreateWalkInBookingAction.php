@@ -10,6 +10,8 @@ use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
 use Modules\Booking\Http\Resources\Client\BookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
+use Modules\Dashboard\Eloquent\Resolvers\Bookings\WalkInServicesUnavailableException;
+use Modules\Dashboard\Eloquent\Resolvers\Bookings\WalkInStylistNotAssignedException;
 use Modules\Dashboard\Handlers\Bookings\CreateWalkInBookingHandler;
 use Modules\Dashboard\Http\Requests\CreateWalkInBookingRequest;
 use Modules\Dashboard\Support\DashboardActor;
@@ -31,9 +33,13 @@ final class CreateWalkInBookingAction extends BaseApiAction
         try {
             return $this->created(new BookingResource($this->handler->handle($command)));
         } catch (ChairNotAvailableException|DoubleBookingException) {
-            return $this->error('BOOKING_SLOT_CONFLICT', 'The selected chair or stylist is no longer available for this time.', 409);
+            return $this->error('BOOKING_SLOT_CONFLICT', __('dashboard::messages.chair_stylist_unavailable'), 409);
         } catch (InvalidBookingServicesException) {
-            return $this->unprocessable(message: 'Select active services with a valid duration.');
+            return $this->unprocessable(message: __('booking::messages.invalid_booking_services'));
+        } catch (WalkInStylistNotAssignedException) {
+            return $this->unprocessable(message: __('dashboard::messages.stylist_not_assigned_to_chair'));
+        } catch (WalkInServicesUnavailableException) {
+            return $this->unprocessable(message: __('dashboard::messages.services_unavailable_for_branch'));
         }
     }
 }

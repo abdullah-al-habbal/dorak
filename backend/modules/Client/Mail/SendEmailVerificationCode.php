@@ -22,14 +22,14 @@ final class SendEmailVerificationCode extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verify your email address',
+            subject: __('client::messages.email_verification_subject'),
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            htmlString: "<p>Your email verification code: <strong>{$this->code}</strong></p><p>This code expires in 10 minutes.</p>",
+            htmlString: __('client::messages.email_verification_body', ['code' => $this->code]),
         );
     }
 }
