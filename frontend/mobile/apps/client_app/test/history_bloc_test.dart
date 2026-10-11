@@ -129,6 +129,62 @@ void main() {
     );
 
     blocTest<HistoryBloc, HistoryState>(
+      'forbidden and missing history errors stay in the rebook error state',
+      build: bloc,
+      seed: () => HistoryState(
+        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+      ),
+      setUp: () => repository.rebookError = const ApiException(
+        statusCode: 403,
+        code: 'FORBIDDEN',
+        message: 'Forbidden',
+      ),
+      act: (bloc) => bloc.add(
+        HistoryRebookRequested('history-1', DateTime(2026, 9, 20, 9)),
+      ),
+      verify: (bloc) {
+        expect(bloc.state.rebookingId, isNull);
+        expect(bloc.state.rebooked, isFalse);
+        expect(
+          bloc.state.rebookError,
+          isA<ApiException>().having(
+            (error) => error.isForbidden,
+            'isForbidden',
+            isTrue,
+          ),
+        );
+      },
+    );
+
+    blocTest<HistoryBloc, HistoryState>(
+      'missing history errors stay in the rebook error state',
+      build: bloc,
+      seed: () => HistoryState(
+        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+      ),
+      setUp: () => repository.rebookError = const ApiException(
+        statusCode: 404,
+        code: 'NOT_FOUND',
+        message: 'Not found',
+      ),
+      act: (bloc) => bloc.add(
+        HistoryRebookRequested('history-1', DateTime(2026, 9, 20, 9)),
+      ),
+      verify: (bloc) {
+        expect(bloc.state.rebookingId, isNull);
+        expect(bloc.state.rebooked, isFalse);
+        expect(
+          bloc.state.rebookError,
+          isA<ApiException>().having(
+            (error) => error.isNotFound,
+            'isNotFound',
+            isTrue,
+          ),
+        );
+      },
+    );
+
+    blocTest<HistoryBloc, HistoryState>(
       'acknowledging the success returns to the list',
       build: bloc,
       seed: () => HistoryState(

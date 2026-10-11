@@ -136,5 +136,45 @@ void main() {
       expect(created.status, 'pending');
       expect(created.barber?.name, isNull);
     });
+
+    test(
+      'rebook and media attachment surface forbidden responses as ApiException',
+      () async {
+        final fake = fakeDio(
+          handler: (options) => jsonResponse(
+            options,
+            statusCode: 403,
+            data: errorEnvelope(
+              statusCode: 403,
+              code: 'FORBIDDEN',
+              message: 'Forbidden',
+            ),
+          ),
+        );
+        final repository = DioHistoryRepository(clientWith(fake));
+
+        final forbidden = isA<ApiException>().having(
+          (error) => error.isForbidden,
+          'isForbidden',
+          isTrue,
+        );
+
+        await expectLater(
+          repository.rebookFromHistory(
+            'history-1',
+            DateTime.utc(2026, 9, 20, 9),
+          ),
+          throwsA(forbidden),
+        );
+        await expectLater(
+          repository.attachMedia(
+            historyId: 'history-1',
+            photoUrl: 'https://example.com/photo.jpg',
+            photoType: 'after',
+          ),
+          throwsA(forbidden),
+        );
+      },
+    );
   });
 }

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\ClientHistory\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Modules\Booking\Models\BookingModel;
+use Modules\ClientHistory\Models\ClientServiceHistoryModel;
 use Modules\ClientHistory\Observers\BookingCompletedObserver;
+use Modules\ClientHistory\Policies\ClientServiceHistoryPolicy;
 use Modules\Core\Providers\BaseModuleServiceProvider;
 
 final class ClientHistoryServiceProvider extends BaseModuleServiceProvider
@@ -20,6 +23,7 @@ final class ClientHistoryServiceProvider extends BaseModuleServiceProvider
 
     protected function afterBoot(): void
     {
+        Gate::policy(ClientServiceHistoryModel::class, ClientServiceHistoryPolicy::class);
         BookingModel::observe(BookingCompletedObserver::class);
     }
 }

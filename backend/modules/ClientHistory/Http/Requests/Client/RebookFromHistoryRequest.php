@@ -5,11 +5,23 @@ declare(strict_types=1);
 namespace Modules\ClientHistory\Http\Requests\Client;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
+use Modules\Client\Models\ClientModel;
 use Modules\ClientHistory\CQRS\Command\RebookFromHistoryCommand;
+use Modules\ClientHistory\Models\ClientServiceHistoryModel;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class RebookFromHistoryRequest extends BaseApiFormRequest
 {
+    public function authorize(): bool
+    {
+        $history = ClientServiceHistoryModel::query()->findOrFail($this->route('history'));
+        $client = $this->user('client');
+
+        return $client instanceof ClientModel
+            && Gate::forUser($client)->allows('view', $history);
+    }
+
     public function rules(): array
     {
         return [

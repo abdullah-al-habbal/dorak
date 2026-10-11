@@ -13,7 +13,9 @@ final class RebookFromHistoryEloquentResolver
 {
     public function resolve(RebookFromHistoryCommand $command): BookingModel
     {
-        $history = ClientServiceHistoryModel::findOrFail($command->historyId);
+        $history = ClientServiceHistoryModel::query()
+            ->where('client_id', $command->clientId)
+            ->findOrFail($command->historyId);
         $duration = $history->booking?->ends_at?->diffInMinutes($history->booking->time_slot)
             ?? $history->offeredService?->duration
             ?? 30;
