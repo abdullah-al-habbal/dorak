@@ -19,7 +19,9 @@ dependencies:
   flutter_secure_storage: ^11.0.0
   geolocator: ^14.0.1
   json_annotation: ^4.12.0
+  laravel_reverb: ^0.7.1
   shared_preferences: ^2.3.5
+  pusher_channels_flutter: ^2.6.0
 
 dev_dependencies:
   bloc_test: ^10.0.0

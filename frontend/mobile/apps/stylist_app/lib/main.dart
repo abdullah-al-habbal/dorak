@@ -25,6 +25,7 @@ class StylistApp extends StatefulWidget {
 class _StylistAppState extends State<StylistApp> {
   late final ApiClient _client;
   late final StylistBloc _bloc;
+  late final RealtimeClient? _realtime;
   late final PushNotificationService _pushNotifications;
   @override
   void initState() {
@@ -33,17 +34,34 @@ class _StylistAppState extends State<StylistApp> {
       baseUrl: ConfigProvider.config.apiBaseV1Url,
       tokenProvider: SecureBarberTokenStorage().read,
     );
+    _realtime = _createRealtime();
+    if (_realtime != null) {
+      unawaited(_realtime.connect());
+    }
     _pushNotifications = PushNotificationService(_client);
     unawaited(_pushNotifications.initialize());
-    _bloc = StylistBloc(DioStylistOperationsRepository(_client))..load();
+    _bloc = StylistBloc(
+      DioStylistOperationsRepository(_client),
+      realtime: _realtime,
+    )..load();
   }
 
   @override
   void dispose() {
     _bloc.close();
+    _realtime?.dispose();
     unawaited(_pushNotifications.dispose());
     _client.dispose();
     super.dispose();
+  }
+
+  RealtimeClient? _createRealtime() {
+    final configuration = ConfigProvider.realtimeConfiguration;
+    if (configuration.appKey.isEmpty || configuration.host.isEmpty) return null;
+    return RealtimeClient(
+      configuration: configuration,
+      tokenProvider: SecureBarberTokenStorage().read,
+    );
   }
 
   @override

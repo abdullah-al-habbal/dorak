@@ -24,6 +24,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   late final ApiClient _apiClient;
   late final ManualBarberBloc _barbers;
   late final BranchOperationsBloc _operations;
+  late final RealtimeClient? _realtime;
   late final PushNotificationService _pushNotifications;
 
   @override
@@ -34,6 +35,10 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       baseUrl: ConfigProvider.config.apiBaseV1Url,
       tokenProvider: _tokenStorage.read,
     );
+    _realtime = _createRealtime();
+    if (_realtime != null) {
+      unawaited(_realtime.connect());
+    }
     _pushNotifications = PushNotificationService(_apiClient);
     unawaited(_pushNotifications.initialize());
     _barbers = ManualBarberBloc(
@@ -41,6 +46,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     );
     _operations = BranchOperationsBloc(
       DioBranchOperationsRepository(_apiClient),
+      realtime: _realtime,
     );
   }
 
@@ -48,9 +54,19 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   void dispose() {
     _barbers.close();
     _operations.close();
+    _realtime?.dispose();
     unawaited(_pushNotifications.dispose());
     _apiClient.dispose();
     super.dispose();
+  }
+
+  RealtimeClient? _createRealtime() {
+    final configuration = ConfigProvider.realtimeConfiguration;
+    if (configuration.appKey.isEmpty || configuration.host.isEmpty) return null;
+    return RealtimeClient(
+      configuration: configuration,
+      tokenProvider: _tokenStorage.read,
+    );
   }
 
   @override

@@ -4,9 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylist_app/src/features/operations/stylist.state.dart';
 
 class StylistBloc extends Cubit<StylistState> {
-  StylistBloc(this._repository) : super(StylistState());
+  StylistBloc(
+    StylistOperationsRepository repository, {
+    RealtimeClient? realtime,
+  }) : this._(repository, realtime);
+
+  StylistBloc._(this._repository, this._realtime) : super(StylistState());
 
   final StylistOperationsRepository _repository;
+  final RealtimeClient? _realtime;
+  RealtimeSubscription? _subscription;
   int _loadGeneration = 0;
   int _onlineGeneration = 0;
 
@@ -14,9 +21,21 @@ class StylistBloc extends Cubit<StylistState> {
     final generation = ++_loadGeneration;
     emit(state.copyWith(loading: true, clearError: true));
     try {
-      final page = await _repository.getTodayAppointments();
+      final results = await Future.wait([
+        _repository.getTodayAppointments(),
+        _repository.getProfile(),
+      ]);
       if (isClosed || generation != _loadGeneration) return;
-      emit(state.copyWith(loading: false, appointments: page.data));
+      final page = results[0] as PaginatedData<BookingDto>;
+      final profile = results[1] as BarberProfileDto;
+      emit(
+        state.copyWith(
+          loading: false,
+          appointments: page.data,
+          online: profile.workstationOnline,
+        ),
+      );
+      _subscription ??= _realtime?.subscribeToBarber(profile.id, _onRealtime);
     } catch (error) {
       if (isClosed || generation != _loadGeneration) return;
       emit(state.copyWith(loading: false, error: error));
@@ -54,5 +73,20 @@ class StylistBloc extends Cubit<StylistState> {
       if (isClosed) return;
       emit(state.copyWith(clearUpdatingBooking: true, error: error));
     }
+  }
+
+  void _onRealtime(String event, Map<String, dynamic> payload) {
+    switch (event) {
+      case 'booking.status.updated':
+      case 'booking.cancelled':
+      case 'workstation.status.toggled':
+        load();
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
   }
 }

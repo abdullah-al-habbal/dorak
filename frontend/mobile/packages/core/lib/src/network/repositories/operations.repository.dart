@@ -35,6 +35,7 @@ class DioBranchOperationsRepository implements BranchOperationsRepository {
 }
 
 abstract class StylistOperationsRepository {
+  Future<BarberProfileDto> getProfile();
   Future<PaginatedData<BookingDto>> getTodayAppointments();
   Future<bool> updateWorkstationStatus(bool online);
   Future<BookingDto> transitionBooking(String id, String action);
@@ -43,6 +44,12 @@ abstract class StylistOperationsRepository {
 class DioStylistOperationsRepository implements StylistOperationsRepository {
   const DioStylistOperationsRepository(this._client);
   final ApiClient _client;
+  @override
+  Future<BarberProfileDto> getProfile() => _client.get(
+    OperationsEndpoints.barberProfile,
+    parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
+  );
+
   @override
   Future<PaginatedData<BookingDto>> getTodayAppointments() =>
       _client.getPaginated(

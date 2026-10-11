@@ -13,6 +13,7 @@ BarberProfileDto _$BarberProfileDtoFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String,
       isFreelancer: json['is_freelancer'] as bool? ?? false,
       status: json['status'] as String? ?? '',
+      workstationOnline: json['workstation_online'] as bool? ?? false,
       travelRadius: (json['travel_radius'] as num?)?.toDouble(),
       latitude: (json['latitude'] as num?)?.toDouble() ?? 0,
       longitude: (json['longitude'] as num?)?.toDouble() ?? 0,

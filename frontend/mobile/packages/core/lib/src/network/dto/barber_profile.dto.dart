@@ -11,6 +11,7 @@ class BarberProfileDto {
   final String email;
   final bool isFreelancer;
   final String status;
+  final bool workstationOnline;
   final double? travelRadius;
   final double latitude;
   final double longitude;
@@ -26,6 +27,7 @@ class BarberProfileDto {
     required this.email,
     this.isFreelancer = false,
     this.status = '',
+    this.workstationOnline = false,
     this.travelRadius,
     this.latitude = 0,
     this.longitude = 0,

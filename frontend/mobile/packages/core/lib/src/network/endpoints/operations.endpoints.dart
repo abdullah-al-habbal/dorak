@@ -6,6 +6,7 @@ class OperationsEndpoints {
   static const branchBookingStatus = '/branch/bookings/{booking}/status';
   static const branchChairs = '/branch/chairs';
   static const barberTodayAppointments = '/barber/appointments/today';
+  static const barberProfile = '/barber/profile';
   static const barberWorkstationStatus = '/barber/workstation-status';
   static const barberBookingAccept = '/barber/bookings/{booking}/accept';
   static const barberBookingStart = '/barber/bookings/{booking}/start';
