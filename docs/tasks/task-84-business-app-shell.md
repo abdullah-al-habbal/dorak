@@ -1,0 +1,35 @@
+# Task 84: Build Business App Shell (Login, Router, Session)
+
+**Phase:** Phase 14 — Mobile · **Priority:** P1 · **Depends on:** Task 09 (status enforcement at login), Task 12 (branch manager scope) · **Audit source:** Mobile audit — "Branch login (business): Missing Mobile Flow"; structure note "business_app … one screen: home is `BranchOperationsScreen`"
+
+## Overview & Root Cause
+`business_app` cannot authenticate. It reads `SecureBranchTokenStorage`, but no code writes it, and there is no login screen or router. The `MaterialApp` `home` is hard-wired to `BranchOperationsScreen`, so the already-built `ManualBarberScreen` is unreachable, and later features (Task 85) have no navigation structure.
+
+## Evidence
+- `frontend/mobile/apps/business_app/lib/app.dart:33` — `_tokenStorage = widget.tokenStorage ?? SecureBranchTokenStorage();` is read-only, with no write anywhere in `apps/business_app`.
+- `frontend/mobile/apps/business_app/lib/app.dart:80` — `home: BranchOperationsScreen(bloc: _operations)`.
+- `frontend/mobile/apps/business_app/lib/src/features/barbers/manual_barber.screen.dart:13` — `ManualBarberScreen` is never referenced outside its own file and tests.
+- Backend route exists: `POST api/v1/branch/login`.
+
+## Full-Stack Scope
+### Backend (API / DB / Policies)
+- None — `POST branch/login` exists. Status/ban rejection comes from Tasks 08/09.
+
+### Dashboard (BFF / React)
+- None — mobile-only app shell.
+
+### Mobile (Flutter / Repositories)
+- `packages/core`: add `BranchAuthRepository.login(email, password)` / `logout()` and `BranchAuthEndpoints.login = '/branch/login'`.
+- `apps/business_app`: add `src/core/navigation/app.router.dart` (go_router, following `client_app` conventions) with `/login`, `/operations` (existing `BranchOperationsScreen`) and `/barbers/new` (existing `ManualBarberScreen`). Replace `home:` with `MaterialApp.router`, and add a redirect guard on token presence.
+- Session bloc: write to `SecureBranchTokenStorage` on login, clear it on logout or 401. Register the push device token only after login.
+- Add a navigation entry from operations to "Add barber" so `ManualBarberScreen` becomes reachable.
+
+## Acceptance Criteria
+- [ ] Repository test: `login` sends `POST /branch/login` and writes the token to `SecureBranchTokenStorage`.
+- [ ] Router test: with no token the app lands on `/login`; with a token it lands on `/operations`.
+- [ ] Widget test: from operations, tapping "Add barber" renders `ManualBarberScreen`.
+- [ ] Session test: a 401 clears the token and redirects to `/login`.
+- [ ] Existing `apps/business_app/test/manual_barber_screen_test.dart` still passes; `melos run analyze` and `melos run test` pass.
+
+## Out of Scope
+- Branch feature screens (job postings, floor plan, chair toggle, affiliations, profile, reviews) — Task 85.
