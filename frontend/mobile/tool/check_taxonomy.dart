@@ -113,7 +113,7 @@ void main(List<String> args) {
   }
 
   if (violations.isEmpty) {
-    print('Taxonomy check passed.');
+    stdout.writeln('Taxonomy check passed.');
     return;
   }
 
