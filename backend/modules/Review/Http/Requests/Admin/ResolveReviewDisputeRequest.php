@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Review\Http\Requests\Admin;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\Rules\Enum;
+use Modules\Admin\Models\AdminModel;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Review\CQRS\Command\Admin\ResolveReviewDisputeCommand;
 use Modules\Review\Enums\ReviewStatus;
@@ -19,6 +21,23 @@ final class ResolveReviewDisputeRequest extends BaseApiFormRequest
 
     public function toCommand(string $reviewId): ResolveReviewDisputeCommand
     {
-        return new ResolveReviewDisputeCommand($reviewId, $this->user('admin')->getKey(), $this->enum('status', ReviewStatus::class));
+        $admin = $this->user('admin_api');
+        $status = $this->enum('status', ReviewStatus::class);
+
+        if (! $admin instanceof AdminModel) {
+            throw new AuthenticationException;
+        }
+
+        if (! $status instanceof ReviewStatus) {
+            throw new \LogicException('The validated review status must be a ReviewStatus enum.');
+        }
+
+        $adminId = $admin->getKey();
+
+        if (! is_string($adminId)) {
+            throw new \LogicException('The authenticated admin ID must be a UUID string.');
+        }
+
+        return new ResolveReviewDisputeCommand($reviewId, $adminId, $status);
     }
 }

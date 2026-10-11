@@ -1207,7 +1207,7 @@ describe('Currency API', function () {
     describe('GET /api/v1/exchange-rates', function () {
         it('returns list of exchange rates', function () {
             $admin = AdminModel::factory()->create();
-            $this->actingAs($admin, 'admin');
+            $token = $admin->createToken('admin-api')->plainTextToken;
 
             $from = CurrencyModel::factory()->create(['code' => 'USD']);
             $to = CurrencyModel::factory()->create(['code' => 'EUR']);
@@ -1217,7 +1217,8 @@ describe('Currency API', function () {
                 'rate' => 0.85,
             ]);
 
-            $response = $this->getJson('/api/v1/exchange-rates');
+            $response = $this->withToken($token)
+                ->getJson('/api/v1/exchange-rates');
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
@@ -1232,7 +1233,7 @@ describe('Currency API', function () {
     describe('POST /api/v1/currency/convert', function () {
         it('returns conversion result shape', function () {
             $admin = AdminModel::factory()->create();
-            $this->actingAs($admin, 'admin');
+            $token = $admin->createToken('admin-api')->plainTextToken;
 
             $from = CurrencyModel::factory()->create(['code' => 'USD']);
             $to = CurrencyModel::factory()->create(['code' => 'EUR']);
@@ -1242,11 +1243,12 @@ describe('Currency API', function () {
                 'rate' => 0.85,
             ]);
 
-            $response = $this->postJson('/api/v1/currency/convert', [
-                'from' => 'USD',
-                'to' => 'EUR',
-                'amount' => 100,
-            ]);
+            $response = $this->withToken($token)
+                ->postJson('/api/v1/currency/convert', [
+                    'from' => 'USD',
+                    'to' => 'EUR',
+                    'amount' => 100,
+                ]);
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');

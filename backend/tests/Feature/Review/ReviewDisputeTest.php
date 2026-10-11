@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Models\BarberModel;
+use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
@@ -34,11 +36,11 @@ it('lets an admin resolve a dispute outside its client response window', functio
         'disputed_at' => now()->subHours(49),
     ]);
     $admin = AdminModel::factory()->create();
-    $this->actingAs($admin, 'admin');
-
-    $response = $this->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", [
-        'status' => ReviewStatus::Hidden->value,
-    ]);
+    $response = $this
+        ->withToken($admin->createToken('test')->plainTextToken)
+        ->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", [
+            'status' => ReviewStatus::Hidden->value,
+        ]);
 
     $response->assertOk()->assertJsonPath('data.status', ReviewStatus::Hidden->value);
     $this->assertDatabaseHas('reviews', [
@@ -46,4 +48,26 @@ it('lets an admin resolve a dispute outside its client response window', functio
         'status' => ReviewStatus::Hidden->value,
         'resolved_by' => $admin->id,
     ]);
+});
+
+it('rejects client, barber, and branch bearer tokens when resolving a dispute', function () {
+    $review = ReviewModel::factory()->create([
+        'status' => ReviewStatus::Disputed,
+    ]);
+
+    $actors = [
+        ClientModel::factory()->create(),
+        BarberModel::factory()->create(),
+        BranchModel::factory()->create(),
+    ];
+
+    foreach ($actors as $actor) {
+        $response = $this
+            ->withToken($actor->createToken('test')->plainTextToken)
+            ->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", [
+                'status' => ReviewStatus::Hidden->value,
+            ]);
+
+        $response->assertUnauthorized();
+    }
 });

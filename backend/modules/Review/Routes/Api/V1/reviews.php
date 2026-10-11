@@ -13,7 +13,7 @@ Route::middleware('auth:client')->group(function (): void {
     Route::post('/client/reviews/{review}/dispute', FlagReviewDisputeAction::class)->name('reviews.dispute');
 });
 
-Route::middleware('auth:admin')->group(function (): void {
+Route::middleware('auth:admin_api')->group(function (): void {
     Route::patch('/admin/reviews/{review}/resolve', ResolveReviewDisputeAction::class)->name('reviews.resolve');
 });
 
