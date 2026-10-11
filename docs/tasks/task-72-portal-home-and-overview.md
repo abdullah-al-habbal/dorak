@@ -6,10 +6,10 @@
 The admin and manager portal roots render a generic placeholder, "Your protected portal shell is ready for authenticated features.", and the sidebar's first item ("dashboard") points to them. The overview page formats revenue with a hard-coded `currency: "USD"` and uses inline English strings. The backend overview returns `'revenue' => 0.0` unconditionally, so the revenue tile is always wrong.
 
 ## Evidence
-- `frontend/dashboard/new/src/app/(portals)/admin/page.tsx` and `…/manager/page.tsx` — `createPortalPage()`.
-- `frontend/dashboard/new/src/i18n/messages/en.constant.ts:29` — the placeholder description string.
-- `frontend/dashboard/new/src/config/routes.constant.ts:62-68` — `PORTAL_NAVIGATION` "dashboard" item points to the portal root for all actors.
-- `frontend/dashboard/new/src/components/overview/overview-dashboard.tsx:22-25,37` — inline "Today bookings", "Active chairs", "Stylists", "Revenue", "No bookings today." and `currency: "USD"`.
+- `frontend/dashboard/src/app/(portals)/admin/page.tsx` and `…/manager/page.tsx` — `createPortalPage()`.
+- `frontend/dashboard/src/i18n/messages/en.constant.ts:29` — the placeholder description string.
+- `frontend/dashboard/src/config/routes.constant.ts:62-68` — `PORTAL_NAVIGATION` "dashboard" item points to the portal root for all actors.
+- `frontend/dashboard/src/components/overview/overview-dashboard.tsx:22-25,37` — inline "Today bookings", "Active chairs", "Stylists", "Revenue", "No bookings today." and `currency: "USD"`.
 - `backend/modules/Dashboard/Http/Actions/OverviewAction.php:36` — `'revenue' => 0.0`.
 
 ## Full-Stack Scope

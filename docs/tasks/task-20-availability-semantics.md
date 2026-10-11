@@ -27,7 +27,7 @@ Separately, the floor plan reads `date` and `time_slot` as server time (UTC), bu
 - Delete `availabilityBlockingValues()` if nothing uses it any more.
 
 ### Dashboard (BFF / React)
-- Check `frontend/dashboard/new/src/services/api/dashboard/walk-in-booking.schema.ts` and `booking-reschedule.schema.ts` send UTC ISO timestamps. Convert local input to UTC before sending.
+- Check `frontend/dashboard/src/services/api/dashboard/walk-in-booking.schema.ts` and `booking-reschedule.schema.ts` send UTC ISO timestamps. Convert local input to UTC before sending.
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/packages/core/lib/src/network/repositories/branch.repository.dart` — send floor-plan time in UTC, matching `booking.repository.dart`.

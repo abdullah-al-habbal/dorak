@@ -17,7 +17,7 @@ Clients are meant to see ratings for shops and barbers, but branch and barber re
 - Expose `rating_avg` and `rating_count` in `BranchResource`, `BarberResource`, branch detail and barber detail.
 - Backfill command/migration step for existing reviews.
 ### Dashboard (BFF / React)
-- Show rating on branch list/detail where branches are rendered (`frontend/dashboard/new/src/services/api/dashboard/ibranch.types.ts` + list columns).
+- Show rating on branch list/detail where branches are rendered (`frontend/dashboard/src/services/api/dashboard/ibranch.types.ts` + list columns).
 ### Mobile (Flutter / Repositories)
 - Add `ratingAvg`, `ratingCount` to `packages/core/lib/src/network/dto/branch.dto.dart`, `branch_detail.dto.dart` and `barber_profile.dto.dart`; render on discovery cards and `apps/client_app/lib/src/features/stylist/stylist_profile.screen.dart`.
 

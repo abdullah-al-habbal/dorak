@@ -28,7 +28,7 @@ When a client books a chair that has a linked barber without sending `barber_id`
 - Apply the same rules to dashboard walk-in and reschedule.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/components/bookings/walk-in-booking-form.tsx` — limit the service picker to the selected chair's branch/brand and barber services. Show the 422 error.
+- `frontend/dashboard/src/components/bookings/walk-in-booking-form.tsx` — limit the service picker to the selected chair's branch/brand and barber services. Show the 422 error.
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/apps/client_app/lib/src/features/booking/branch_detail.bloc.dart` — offer only services returned for the selected chair or barber (branch detail payload, completed in Task 48). Map the 422 to a message.

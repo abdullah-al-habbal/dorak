@@ -16,7 +16,7 @@
 - Decision required: should a chair booking with an assigned barber produce a review for the branch only, the barber only, or both (a rating for each)? The entity model (`backend/docs/06_entity-model-abstract.md:182-186`) suggests separate review records.
 - Add `GET /api/v1/barbers/{barber}/reviews` (public, paginated) mirroring `GET branches/{branch}/reviews`.
 ### Dashboard (BFF / React)
-- Barber workspace (`frontend/dashboard/new/src/components/barber-workspace/barber-workspace.tsx`) may show the barber's reviews — optional, tracked in Task 69.
+- Barber workspace (`frontend/dashboard/src/components/barber-workspace/barber-workspace.tsx`) may show the barber's reviews — optional, tracked in Task 69.
 ### Mobile (Flutter / Repositories)
 - `packages/core/lib/src/network/repositories/review.repository.dart`: add `getBarberReviews`.
 - `apps/client_app/lib/src/features/review/review_submit.bloc.dart`: remove any client-side assumption that only chair bookings are reviewable.

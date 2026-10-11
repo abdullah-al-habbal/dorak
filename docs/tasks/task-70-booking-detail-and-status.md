@@ -6,11 +6,11 @@
 The booking detail page exists for admin and manager, but nothing links to it: booking rows render only `BookingActionsDialog`, while other resources get Details/Edit links. The shared `EntityDetailPage` always renders an Edit link to `/{actor}/{resource}/{id}/edit`, and no `bookings/[id]/edit` route exists, so the link is dead. The status-change form offers only `confirmed` and `in_progress`, while the backend `BookingStatus` enum has six cases and the dashboard `UpdateBookingStatusRequest` accepts any enum value.
 
 ## Evidence
-- `frontend/dashboard/new/src/components/entities/entity-list-page.tsx:55` — `resource === "bookings" ? <BookingActionsDialog …/> : <Link …/${item.id}>…`, so booking rows have no details link.
-- `frontend/dashboard/new/src/app/(portals)/admin/bookings/[id]/page.tsx` and `…/manager/bookings/[id]/page.tsx` — render `EntityDetailPage` for bookings.
-- `frontend/dashboard/new/src/components/entities/entity-detail-page.tsx:21` — unconditional Edit link to `/${actor}/${resource}/${id}/edit`. No `bookings/[id]/edit` route exists under `app/(portals)`.
-- `frontend/dashboard/new/src/services/api/dashboard/booking-status.schema.ts` — `z.enum(["confirmed","in_progress"])`.
-- `frontend/dashboard/new/src/components/bookings/booking-actions-dialog.tsx:42` — Select offers Confirmed and In progress only.
+- `frontend/dashboard/src/components/entities/entity-list-page.tsx:55` — `resource === "bookings" ? <BookingActionsDialog …/> : <Link …/${item.id}>…`, so booking rows have no details link.
+- `frontend/dashboard/src/app/(portals)/admin/bookings/[id]/page.tsx` and `…/manager/bookings/[id]/page.tsx` — render `EntityDetailPage` for bookings.
+- `frontend/dashboard/src/components/entities/entity-detail-page.tsx:21` — unconditional Edit link to `/${actor}/${resource}/${id}/edit`. No `bookings/[id]/edit` route exists under `app/(portals)`.
+- `frontend/dashboard/src/services/api/dashboard/booking-status.schema.ts` — `z.enum(["confirmed","in_progress"])`.
+- `frontend/dashboard/src/components/bookings/booking-actions-dialog.tsx:42` — Select offers Confirmed and In progress only.
 - `backend/modules/Booking/Enums/BookingStatus.php:9-14` — pending, confirmed, in_progress, canceled, completed, no_show.
 
 ## Full-Stack Scope

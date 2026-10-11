@@ -6,10 +6,10 @@
 The barber BFF allowlists profile, portfolio, schedule, travel radius and booking transitions. The workspace UI uses only a fraction of them: it renders Accept and Cancel buttons only, shows travel radius read-only, lists the portfolio without upload or delete, and never shows the schedule. `getBarberSchedule` is exported but never called. The backend routes all exist (`barber/schedule` GET/PATCH, `barber/profile` PATCH, `barber/portfolio` POST/DELETE, `barber/travel-radius` PATCH, and `barber/bookings/{booking}/start|complete|no-show`).
 
 ## Evidence
-- `frontend/dashboard/new/src/services/api/barber-workspace.query.ts:19` — `getBarberSchedule` has no consumer.
-- `frontend/dashboard/new/src/services/api/barber-workspace.mutation.ts:4` — `transitionBarberBooking` supports `accept|start|complete|no-show`.
-- `frontend/dashboard/new/src/components/barber-workspace/barber-workspace.tsx` — renders only the `accept` button and a cancel dialog per appointment. Travel radius and portfolio are display-only.
-- `frontend/dashboard/new/src/app/api/barber/[...path]/route.ts:9-11` — allowlist includes `profile`, `portfolio`, `schedule`, `travel-radius` and `portfolio/{id}` (DELETE).
+- `frontend/dashboard/src/services/api/barber-workspace.query.ts:19` — `getBarberSchedule` has no consumer.
+- `frontend/dashboard/src/services/api/barber-workspace.mutation.ts:4` — `transitionBarberBooking` supports `accept|start|complete|no-show`.
+- `frontend/dashboard/src/components/barber-workspace/barber-workspace.tsx` — renders only the `accept` button and a cancel dialog per appointment. Travel radius and portfolio are display-only.
+- `frontend/dashboard/src/app/api/barber/[...path]/route.ts:9-11` — allowlist includes `profile`, `portfolio`, `schedule`, `travel-radius` and `portfolio/{id}` (DELETE).
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)

@@ -19,7 +19,7 @@ Activation exists only for barbers. Admins can activate or deactivate a barber t
 
 ### Dashboard (BFF / React)
 - Admin: the activate/deactivate branch and barber buttons belong to Task 76; this task only provides the API.
-- Manager: add an activate/deactivate action on the stylists list (`frontend/dashboard/new/src/components/entities/`), routed through the Task 75 BFF.
+- Manager: add an activate/deactivate action on the stylists list (`frontend/dashboard/src/components/entities/`), routed through the Task 75 BFF.
 
 ### Mobile (Flutter / Repositories)
 - business_app: barber activation toggle (Task 85). Add `activateBarber`/`deactivateBarber` to `frontend/mobile/packages/core/lib/src/network/repositories/managed_barber.repository.dart`.

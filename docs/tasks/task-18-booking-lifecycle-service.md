@@ -29,8 +29,8 @@ Separately, no path can mark a confirmed booking as a no-show: the enum allows `
 - A not-allowed transition returns 422, using the existing `InvalidBookingTransitionException` mapping.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/services/api/dashboard/booking-status.schema.ts` currently only allows `["confirmed","in_progress"]`. Widen it to the transitions the backend accepts (display side is done in Task 70).
-- `frontend/dashboard/new/src/components/bookings/booking-actions-dialog.tsx` — show the 422 transition error message.
+- `frontend/dashboard/src/services/api/dashboard/booking-status.schema.ts` currently only allows `["confirmed","in_progress"]`. Widen it to the transitions the backend accepts (display side is done in Task 70).
+- `frontend/dashboard/src/components/bookings/booking-actions-dialog.tsx` — show the 422 transition error message.
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/apps/business_app/lib/src/features/operations/branch_operations.screen.dart:110-130` — the status menu offers every status for every booking. Filter it by the booking's current status, using the same transition table.

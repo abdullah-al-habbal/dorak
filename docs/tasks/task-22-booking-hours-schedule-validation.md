@@ -21,7 +21,7 @@ Barbers maintain a weekly schedule (`barber_schedules`, exposed at `GET/PATCH /b
 - Error: 422 with code `booking_outside_schedule`.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/components/bookings/walk-in-booking-form.tsx` and `booking-actions-dialog.tsx` (reschedule) — show the `booking_outside_schedule` error message.
+- `frontend/dashboard/src/components/bookings/walk-in-booking-form.tsx` and `booking-actions-dialog.tsx` (reschedule) — show the `booking_outside_schedule` error message.
 
 ### Mobile (Flutter / Repositories)
 - No new calls. The client app uses Task 21 slots, which already exclude out-of-schedule times. Map the 422 code to a localized message in `frontend/mobile/apps/client_app/lib/src/features/booking/branch_detail.bloc.dart`.

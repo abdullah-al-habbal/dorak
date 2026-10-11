@@ -29,7 +29,7 @@ So clients are not told when a shop cancels or reschedules them, and dashboards 
 - Remove the per-action dispatches so there are no duplicates.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/hooks/use-branch-channel.ts` and `use-barber-channel.ts` — listen for `.booking.status.updated`, `.booking.cancelled` and the new reschedule event, and invalidate the matching dashboard query keys (`["dashboard","bookings"]`, `["dashboard","overview"]`, `["barber","appointments"]`).
+- `frontend/dashboard/src/hooks/use-branch-channel.ts` and `use-barber-channel.ts` — listen for `.booking.status.updated`, `.booking.cancelled` and the new reschedule event, and invalidate the matching dashboard query keys (`["dashboard","bookings"]`, `["dashboard","overview"]`, `["barber","appointments"]`).
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/packages/core/lib/src/notifications/push_notification.client.dart` — handle the payload `type` values for status update and reschedule, and route taps to booking details by ID (deep-link fix in Task 78).

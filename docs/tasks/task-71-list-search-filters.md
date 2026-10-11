@@ -6,8 +6,8 @@
 Every dashboard entity list hard-codes `supportsSearch = false`, so the search input never renders. `dashboard.query.ts` already serialises `search`, `status`, `date_from`, `date_to`, `chair_id` and `stylist_id`, but only the overview page uses them. On the backend, `ListBookingsRequest` accepts `chair_id`, `date_from`, `date_to`, `status` and `stylist_id`, but no `search`. No dashboard resolver implements free-text search for branches, chairs, services or stylists.
 
 ## Evidence
-- `frontend/dashboard/new/src/components/entities/entity-list-page.tsx:30` — `const supportsSearch = false;`.
-- `frontend/dashboard/new/src/services/api/dashboard/dashboard.query.ts:13-18` — query params for search/status/date/chair/stylist.
+- `frontend/dashboard/src/components/entities/entity-list-page.tsx:30` — `const supportsSearch = false;`.
+- `frontend/dashboard/src/services/api/dashboard/dashboard.query.ts:13-18` — query params for search/status/date/chair/stylist.
 - `backend/modules/Dashboard/Http/Requests/ListBookingsRequest.php` — rules: chair_id, date_from, date_to, per_page, status, stylist_id (no `search`).
 - Grep for `search` under `backend/modules/Dashboard` finds nothing.
 

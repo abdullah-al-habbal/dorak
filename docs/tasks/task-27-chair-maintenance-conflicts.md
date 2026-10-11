@@ -23,7 +23,7 @@ Rule E5 says existing bookings on a chair that goes into maintenance must be "ha
 - The response lists the affected booking IDs.
 
 ### Dashboard (BFF / React)
-- Chair edit form (generic entity form under `frontend/dashboard/new/src/components/entities/`, schema `services/api/dashboard/chair-form.schema.ts`) — on 409, show the conflicting bookings and a "Set maintenance and cancel N bookings" confirmation that resends with `force=true`.
+- Chair edit form (generic entity form under `frontend/dashboard/src/components/entities/`, schema `services/api/dashboard/chair-form.schema.ts`) — on 409, show the conflicting bookings and a "Set maintenance and cancel N bookings" confirmation that resends with `force=true`.
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/apps/business_app/lib/src/features/operations/branch_operations.screen.dart` — the chair toggle UI is added in Task 85, and must handle the same 409 and confirm flow.

@@ -8,7 +8,7 @@ Branch managers can accept or reject affiliations, manage job postings, review a
 ## Evidence
 - `backend/modules/Branch/Routes/Api/V1/branch.php:35-46` — `POST barbers`, `GET affiliations`, `POST affiliations/{affiliation}/accept|reject`, `GET|POST job-postings`, `PUT|DELETE job-postings/{jobPosting}`, `GET job-postings/{jobPosting}/applications`.
 - `backend/modules/Dashboard/Routes/Api/V1/dashboard.php:86-90` — dashboard `stylists` CRUD already exists (it overlaps `POST branch/barbers`).
-- `frontend/dashboard/new/src/services/api/dashboard/dashboard-resource.constant.ts` — no proxy root for any of these.
+- `frontend/dashboard/src/services/api/dashboard/dashboard-resource.constant.ts` — no proxy root for any of these.
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)

@@ -16,8 +16,8 @@ The specs define a Brand Owner who manages branches, chairs, services, bookings 
 - Add `DashboardActor::OWNER` with brand scope; extend dashboard authorization middleware and policies so an owner can manage all branches, chairs, services and bookings of brands they own and nothing else.
 - Dashboard login must accept owner credentials and issue a claim with `brand_id`.
 ### Dashboard (BFF / React)
-- Add an `owner` portal entry in `frontend/dashboard/new/src/config/routes.constant.ts` (`PORTAL_NAVIGATION`) with brand switcher, branches list and per-branch views reusing existing manager components.
-- `frontend/dashboard/new/src/app/api/auth/login/route.ts` must handle the owner actor.
+- Add an `owner` portal entry in `frontend/dashboard/src/config/routes.constant.ts` (`PORTAL_NAVIGATION`) with brand switcher, branches list and per-branch views reusing existing manager components.
+- `frontend/dashboard/src/app/api/auth/login/route.ts` must handle the owner actor.
 ### Mobile (Flutter / Repositories)
 - None for this task — the business app shell (Task 84) decides whether owners also use the business app.
 

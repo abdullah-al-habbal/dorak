@@ -16,8 +16,8 @@ The secret is shared between backend and BFF (`DASHBOARD_SESSION_SECRET`), and t
 - `backend/modules/Dashboard/Support/DashboardSessionClaim.php:28-39`: payload has `actor_type`, `exp`, `iat`, `iss`, `role` and `sub`, with no `jti` and no `kid` header.
 - `backend/modules/Dashboard/Http/Actions/DashboardLoginAction.php:34-35`: claim returned in the JSON body.
 - `backend/modules/Dashboard/Config/dashboard.php:8`: `env('DASHBOARD_SESSION_SECRET')`.
-- `frontend/dashboard/new/src/services/api/auth/cookies.ts:7-10`: `httpOnly: true`, `sameSite: "lax"`, `secure` only when `NODE_ENV === "production"`, path-scoped.
-- `frontend/dashboard/new/src/services/api/auth/session.util.ts`: BFF-side `verifySessionClaim`.
+- `frontend/dashboard/src/services/api/auth/cookies.ts:7-10`: `httpOnly: true`, `sameSite: "lax"`, `secure` only when `NODE_ENV === "production"`, path-scoped.
+- `frontend/dashboard/src/services/api/auth/session.util.ts`: BFF-side `verifySessionClaim`.
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
@@ -28,9 +28,9 @@ The secret is shared between backend and BFF (`DASHBOARD_SESSION_SECRET`), and t
 - `MeAction` and the dashboard authorization middleware reject revoked JTIs with 401.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/services/api/auth/session.util.ts`: verify using the `kid` header against a keyed secret set (same env format), so the old and new secrets are both accepted during rotation.
-- `frontend/dashboard/new/src/app/api/auth/logout/route.ts`: call the backend logout so the JTI is revoked, not only the cookies cleared.
-- Document the rotation procedure in `frontend/dashboard/new/.env.example` and `backend/.env.example`.
+- `frontend/dashboard/src/services/api/auth/session.util.ts`: verify using the `kid` header against a keyed secret set (same env format), so the old and new secrets are both accepted during rotation.
+- `frontend/dashboard/src/app/api/auth/logout/route.ts`: call the backend logout so the JTI is revoked, not only the cookies cleared.
+- Document the rotation procedure in `frontend/dashboard/.env.example` and `backend/.env.example`.
 
 ### Mobile (Flutter / Repositories)
 - None. Mobile apps use Sanctum tokens, not dashboard claims.
@@ -40,7 +40,7 @@ The secret is shared between backend and BFF (`DASHBOARD_SESSION_SECRET`), and t
 - [ ] With secrets `{k1, k2}` and k2 active, a claim signed with k1 is still accepted. After k1 is removed, it is rejected with 401.
 - [ ] After `POST /api/v1/dashboard/logout`, reusing the same claim on `GET /api/v1/dashboard/me` returns 401.
 - [ ] After a session refresh, the previous claim's JTI returns 401.
-- [ ] The BFF verifier accepts both active and previous kids (vitest in `frontend/dashboard/new/tests/services/`).
+- [ ] The BFF verifier accepts both active and previous kids (vitest in `frontend/dashboard/tests/services/`).
 - [ ] The cookie attributes stay `httpOnly`, `sameSite=lax`, `secure` in production and path-scoped (existing cookie test).
 - [ ] `php artisan test` and dashboard `npm run test` pass; PHPStan (max) and Pint are clean for touched files.
 

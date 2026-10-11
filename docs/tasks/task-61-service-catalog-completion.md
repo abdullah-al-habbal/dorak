@@ -32,7 +32,7 @@ The catalog supports item CRUD and a list filtered by category or search. Gaps:
 
 ### Dashboard (BFF / React)
 - Admin catalog UI (Task 77) must expose tags, default duration and the enum pickers.
-- The service form catalog picker (`frontend/dashboard/new/src/services/api/dashboard/service-form.schema.ts`) lists active items only. The lookup goes through `frontend/dashboard/new/src/app/api/lookups/[resource]/route.ts`.
+- The service form catalog picker (`frontend/dashboard/src/services/api/dashboard/service-form.schema.ts`) lists active items only. The lookup goes through `frontend/dashboard/src/app/api/lookups/[resource]/route.ts`.
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/packages/core/lib/src/network/repositories/service_catalog.repository.dart` and `frontend/mobile/packages/core/lib/src/network/endpoints/service_catalog.endpoints.dart`: add categories plus tag, universe and face_shape filter params, and parse `tags`/`media`.

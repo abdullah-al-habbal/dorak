@@ -23,7 +23,7 @@
 - Decision required: keep `POST /currency/convert` (and update the spec) or add a `GET` alias. Record the outcome in Task 87.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/components/overview/overview-dashboard.tsx`: replace the hard-coded `"USD"` with the brand base currency (overlaps Task 72; reference only).
+- `frontend/dashboard/src/components/overview/overview-dashboard.tsx`: replace the hard-coded `"USD"` with the brand base currency (overlaps Task 72; reference only).
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/packages/core/lib/src/network/endpoints/currency.endpoints.dart` and `frontend/mobile/packages/core/lib/src/network/repositories/currency.repository.dart`: add rates/convert if client-side conversion is needed.

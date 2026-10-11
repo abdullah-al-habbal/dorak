@@ -10,7 +10,7 @@ The backend exposes a full branch-manager API under `/api/v1/branch/*` (`auth:br
 - `backend/modules/Branch/Routes/Api/V1/floor-plan.php:8` — `GET /branches/{branch}/floor-plan` (public).
 - `backend/modules/Chair/Routes/Api/V1/chairs.php:12` — `GET /branches/{branch}/chairs`.
 - `backend/modules/Review/Routes/Api/V1/reviews.php:20` — `GET /branches/{branch}/reviews`.
-- `frontend/dashboard/new/src/services/api/dashboard/dashboard-resource.constant.ts` — proxy roots: overview, branches, chairs, services, stylists, bookings, profile.
+- `frontend/dashboard/src/services/api/dashboard/dashboard-resource.constant.ts` — proxy roots: overview, branches, chairs, services, stylists, bookings, profile.
 - `backend/modules/Dashboard/Handlers/DashboardLoginHandler.php:26-34` — manager dashboard tokens are Sanctum tokens on the branch model with ability `dashboard`.
 
 ## Full-Stack Scope

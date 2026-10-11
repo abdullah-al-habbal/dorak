@@ -21,7 +21,7 @@ Rule E3 lets a client book "by the barber" instead of by the chair, and EC-4 say
 - Make sure branch-scoped lists (`branch/bookings`, `dashboard/bookings`) and the branch broadcast channel include mode (b) bookings.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/services/api/dashboard/ibooking.types.ts` — `chair` becomes nullable for mode (b). Booking list and detail components must render "No chair assigned".
+- `frontend/dashboard/src/services/api/dashboard/ibooking.types.ts` — `chair` becomes nullable for mode (b). Booking list and detail components must render "No chair assigned".
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/packages/core/lib/src/network/repositories/booking.repository.dart` — let `createBooking` take a barber-only payload.

@@ -19,7 +19,7 @@ House rules require unisex venues to appear in both the men and women universes,
 - Decision required: universe stays on the brand or moves to the branch (A5 says branch); also whether `universe` becomes optional per BE-03 (default to the client's `preferred_universe`).
 - Add `universe` to barbers (column or derived from affiliations) and to `ExploreBarbersRequest`.
 ### Dashboard (BFF / React)
-- Expose universe (including `unisex`) in brand/branch forms (`frontend/dashboard/new/src/services/api/dashboard/branch-form.schema.ts` if moved to branch; brand form via Task 77).
+- Expose universe (including `unisex`) in brand/branch forms (`frontend/dashboard/src/services/api/dashboard/branch-form.schema.ts` if moved to branch; brand form via Task 77).
 ### Mobile (Flutter / Repositories)
 - `apps/client_app/lib/src/features/discovery/discovery_filter.entity.dart`: pass universe to barber discovery too (Task 79 uses it).
 

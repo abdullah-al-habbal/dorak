@@ -7,7 +7,7 @@ The product promises a per-branch digital storefront: profile, hours, location, 
 
 ## Evidence
 - `backend/modules/Branch/Database/Migrations/0001_01_01_200011_create_branches_table.php:14-24` — columns: id, brand_id, name, email, password, status, latitude, longitude only.
-- `frontend/dashboard/new/src/services/api/dashboard/branch-form.schema.ts:6-13` — the form has only name, brandId, email, password, lat/lng, status.
+- `frontend/dashboard/src/services/api/dashboard/branch-form.schema.ts:6-13` — the form has only name, brandId, email, password, lat/lng, status.
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
@@ -18,7 +18,7 @@ The product promises a per-branch digital storefront: profile, hours, location, 
 - Task 22 consumes the hours for booking validation.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/services/api/dashboard/branch-form.schema.ts` and `frontend/dashboard/new/src/services/api/dashboard/ibranch.types.ts`: add the new fields.
+- `frontend/dashboard/src/services/api/dashboard/branch-form.schema.ts` and `frontend/dashboard/src/services/api/dashboard/ibranch.types.ts`: add the new fields.
 - Add an opening-hours editor to the branch form. The branch-scoped BFF routes are added in Task 74.
 
 ### Mobile (Flutter / Repositories)

@@ -29,7 +29,7 @@ As a result an at-home booking can be created with no barber at all, which also 
 - The Task 21 barber slot endpoint must also apply these rules when an `at_home` flag is passed.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/services/api/dashboard/service-form.schema.ts` and the service form component — add an "Available at home" toggle that maps to `at_home`.
+- `frontend/dashboard/src/services/api/dashboard/service-form.schema.ts` and the service form component — add an "Available at home" toggle that maps to `at_home`.
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/apps/client_app/lib/src/features/booking/branch_detail.state.dart:52-60` — at-home submit requires a selected barber and at-home services.

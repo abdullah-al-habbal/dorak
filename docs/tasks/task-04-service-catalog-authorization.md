@@ -24,7 +24,7 @@ So any branch can create, edit or soft-delete global catalog items, and the edit
 
 ### Dashboard (BFF / React)
 - None in this task. The admin catalog management UI is Task 77 and must call these routes with the admin token.
-- `frontend/dashboard/new/src/app/api/lookups/[resource]/route.ts` (read-only list) is unaffected.
+- `frontend/dashboard/src/app/api/lookups/[resource]/route.ts` (read-only list) is unaffected.
 
 ### Mobile (Flutter / Repositories)
 - None. `frontend/mobile/packages/core/lib/src/network/repositories/service_catalog.repository.dart` only reads.

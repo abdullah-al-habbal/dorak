@@ -17,7 +17,7 @@ The specs define two reviews per booking: the client rates the shop/barber and t
 - Client reputation: aggregate of client-subject reviews exposed on the client resource used by branch/barber booking views.
 - Decision required: are client-subject reviews visible to the client, and can barbers (not just branches) rate clients?
 ### Dashboard (BFF / React)
-- Add a "Rate client" action on completed bookings in the manager bookings list (`frontend/dashboard/new/src/components/bookings/booking-actions-dialog.tsx`) via a new BFF path (allow-listed per Task 11).
+- Add a "Rate client" action on completed bookings in the manager bookings list (`frontend/dashboard/src/components/bookings/booking-actions-dialog.tsx`) via a new BFF path (allow-listed per Task 11).
 - Show client reputation in booking details (Task 70 page).
 ### Mobile (Flutter / Repositories)
 - Business app: "Rate client" on completed bookings (tracked in Task 85).

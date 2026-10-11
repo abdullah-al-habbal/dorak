@@ -21,7 +21,7 @@ The entity model gives barbers a translatable bio, but the barbers table has no 
 - `catalog_item_id` validation follows the Task 14 ID decision.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/services/api/dashboard/service-form.schema.ts`: add `atHome`, and remove the `branch` serviceable option.
+- `frontend/dashboard/src/services/api/dashboard/service-form.schema.ts`: add `atHome`, and remove the `branch` serviceable option.
 - Barber workspace services section is in Task 69.
 
 ### Mobile (Flutter / Repositories)

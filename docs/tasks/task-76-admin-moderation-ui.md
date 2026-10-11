@@ -9,7 +9,7 @@ Admin-only backend actions have no dashboard surface: barber activation and deac
 - `backend/modules/Activation/Routes/Api/V1/activation.php:9-11` — `auth:admin_api` on `admin/barbers/{barber}/activate|deactivate`.
 - `backend/modules/Review/Routes/Api/V1/reviews.php:16-17` — `auth:admin` (session) on `PATCH admin/reviews/{review}/resolve`. There is no list-disputes route in this file.
 - `backend/modules/Currency/Routes/Api/V1/currencies.php:12-14` — `auth:admin` on `GET exchange-rates` and `POST currency/convert`.
-- `frontend/dashboard/new/src/services/api/dashboard/dashboard-resource.constant.ts` — no admin moderation roots.
+- `frontend/dashboard/src/services/api/dashboard/dashboard-resource.constant.ts` — no admin moderation roots.
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)

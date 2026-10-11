@@ -33,7 +33,7 @@ A banned user keeps full access to the platform.
 - When a ban is created, revoke the user's Sanctum tokens (listener on `BanModel` created).
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/app/api/auth/login/route.ts`: surface the backend 403 ban message on the login form instead of a generic error.
+- `frontend/dashboard/src/app/api/auth/login/route.ts`: surface the backend 403 ban message on the login form instead of a generic error.
 
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/apps/client_app/lib/src/features/auth/auth_error.entity.dart`: map the ban error to a dedicated "account suspended" message, shown on login.

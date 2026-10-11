@@ -25,7 +25,7 @@ Status and spec documents claim completeness or contracts that the code does not
 - None — documentation only. Each code task updates its own spec on merge; this task covers the remaining sweep and the status docs.
 
 ### Dashboard (BFF / React)
-- Update `frontend/dashboard/new/EXECUTION_PLAN.md` and `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` status markers to match Tasks 68–77.
+- Update `frontend/dashboard/EXECUTION_PLAN.md` and `docs/DASHBOARD_IMPLEMENTATION_PLAN.md` status markers to match Tasks 68–77.
 
 ### Mobile (Flutter / Repositories)
 - Update `frontend/mobile/docs/index.md` feature status to match Tasks 78–86.

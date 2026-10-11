@@ -25,7 +25,7 @@ Two further defects:
 - Distinguish "key absent" (leave unchanged) from "explicit null" (unassign). The command needs a tri-state value or a `barberIdProvided` flag.
 
 ### Dashboard (BFF / React)
-- `frontend/dashboard/new/src/services/api/dashboard/chair-form.schema.ts`: the barber picker must allow clearing (send `null`).
+- `frontend/dashboard/src/services/api/dashboard/chair-form.schema.ts`: the barber picker must allow clearing (send `null`).
 - Show a 422 validation error on the `barber_id` field when the backend rejects a barber.
 
 ### Mobile (Flutter / Repositories)

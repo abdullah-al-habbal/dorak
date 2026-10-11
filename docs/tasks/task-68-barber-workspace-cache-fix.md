@@ -6,8 +6,8 @@
 The barber workspace runs its mutations through `useDashboardMutation`, which only invalidates keys under `["dashboard", …]`. The workspace queries are keyed `["barber", …]`, so after accept, cancel or a workstation toggle the lists never refetch and show stale data until the page reloads. The workstation toggle also sends `!online`, where `online` is local state that starts as `false`, instead of negating the server value (`currentOnline`). When the server says the barber is online, pressing "Go offline" sends `online: true`.
 
 ## Evidence
-- `frontend/dashboard/new/src/hooks/use-dashboard-mutation.ts:11-14` — invalidates `["dashboard", resource]`, `["dashboard","bookings"]`, `["dashboard","chairs"]` and `["dashboard","overview"]` only.
-- `frontend/dashboard/new/src/components/barber-workspace/barber-workspace.tsx:20-22` — queries keyed `["barber","appointments","today"]`, `["barber","profile"]` and `["barber","portfolio"]`.
+- `frontend/dashboard/src/hooks/use-dashboard-mutation.ts:11-14` — invalidates `["dashboard", resource]`, `["dashboard","bookings"]`, `["dashboard","chairs"]` and `["dashboard","overview"]` only.
+- `frontend/dashboard/src/components/barber-workspace/barber-workspace.tsx:20-22` — queries keyed `["barber","appointments","today"]`, `["barber","profile"]` and `["barber","portfolio"]`.
 - `barber-workspace.tsx:23` — `useDashboardMutation("barber-workstation", () => updateBarberWorkstation(!online))`.
 - `barber-workspace.tsx:25` — `currentOnline = profile.data?.workstationOnline ?? online` is used for display but not for the payload.
 

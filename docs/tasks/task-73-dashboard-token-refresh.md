@@ -6,10 +6,10 @@
 The BFF exposes `POST /api/auth/refresh`, but no client code calls it. Refresh happens only in `proxy.ts` during navigation, which calls `refreshDashboardSession` against the backend directly. Client-side `apiRequest` calls that get a 401 mid-session just report "session expired" without retrying. A user who stays on one page past the access-token TTL is logged out on the next mutation, even though they hold a valid refresh token.
 
 ## Evidence
-- `frontend/dashboard/new/src/config/routes.constant.ts:42` — `refresh: "/api/auth/refresh"` is defined but not referenced outside its own route.
-- `frontend/dashboard/new/src/proxy.ts:13,28-31` — navigation-time refresh via `refreshDashboardSession`.
-- `frontend/dashboard/new/src/services/api/client.ts:54` — `if (auth === "session" && response.status === 401) reportSessionExpired();`, with no retry.
-- `frontend/dashboard/new/src/app/api/auth/refresh/route.ts` — BFF handler with no caller.
+- `frontend/dashboard/src/config/routes.constant.ts:42` — `refresh: "/api/auth/refresh"` is defined but not referenced outside its own route.
+- `frontend/dashboard/src/proxy.ts:13,28-31` — navigation-time refresh via `refreshDashboardSession`.
+- `frontend/dashboard/src/services/api/client.ts:54` — `if (auth === "session" && response.status === 401) reportSessionExpired();`, with no retry.
+- `frontend/dashboard/src/app/api/auth/refresh/route.ts` — BFF handler with no caller.
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)

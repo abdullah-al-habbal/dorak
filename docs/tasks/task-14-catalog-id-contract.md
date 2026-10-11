@@ -16,7 +16,7 @@ The PRD requires non-guessable identifiers, so the fix is to migrate the catalog
 - `backend/modules/ClientHistory/Database/Migrations/2026_07_19_000001_create_client_service_histories_table.php:20`: `foreignId('catalog_item_id')`.
 - `backend/modules/Dashboard/Http/Requests/ServiceRequest.php:14`: `'catalog_item_id' => ['nullable', 'uuid', Rule::exists('service_catalog_items', 'id')]`.
 - `backend/modules/ServiceCatalog/Http/Resources/Shared/ServiceCatalogItemResource.php:14`: `'id' => $this->id` (an integer today).
-- `frontend/dashboard/new/src/services/api/dashboard/service-form.schema.ts:11`: `catalogItemId: z.string().uuid().nullable()`.
+- `frontend/dashboard/src/services/api/dashboard/service-form.schema.ts:11`: `catalogItemId: z.string().uuid().nullable()`.
 - `frontend/mobile/packages/core/lib/src/network/dto/catalog_item.dto.g.dart:11`: `id: json['id'] as String`.
 - `frontend/mobile/packages/core/lib/src/network/dto/service_history.dto.g.dart:13`: `catalogItemId: json['catalog_item_id'] as String?`.
 

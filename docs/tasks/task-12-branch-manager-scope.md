@@ -13,7 +13,7 @@ The dashboard `StoreBranchAction` and `DestroyBranchAction` allow any branch-man
 - `backend/modules/Dashboard/Eloquent/Resolvers/Branches/DestroyBranchEloquentResolver.php`: `$branch->delete()` with no last-branch check.
 - `backend/modules/Dashboard/Eloquent/Resolvers/Branches/StoreBranchEloquentResolver.php`: unconditional `create`.
 - `backend/modules/Dashboard/Routes/Api/V1/dashboard.php:73,75`: `POST /branches` and `DELETE /branches/{branch}`.
-- `frontend/dashboard/new/src/app/(portals)/manager/branches/create`: the manager portal exposes a create-branch page.
+- `frontend/dashboard/src/app/(portals)/manager/branches/create`: the manager portal exposes a create-branch page.
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
@@ -23,7 +23,7 @@ The dashboard `StoreBranchAction` and `DestroyBranchAction` allow any branch-man
 - Decision required: behaviour for future bookings on a deleted branch (block deletion while upcoming bookings exist, or cancel them and notify). The default proposed here is to block with 409.
 
 ### Dashboard (BFF / React)
-- Remove `frontend/dashboard/new/src/app/(portals)/manager/branches/create` and hide the create and delete actions in the manager branches list (`frontend/dashboard/new/src/app/(portals)/manager/branches/page.tsx`).
+- Remove `frontend/dashboard/src/app/(portals)/manager/branches/create` and hide the create and delete actions in the manager branches list (`frontend/dashboard/src/app/(portals)/manager/branches/page.tsx`).
 - The manager branches list should show only the manager's own branch, or redirect to its detail page.
 - The admin branch delete action shows the 409 "last branch" message.
 
