@@ -1,6 +1,6 @@
 # Feature Index — Dorak Stylist App (`apps/stylist_app`)
 
-> **Append entry after adding each feature.** Monorepo-wide index: [`docs/feature-index.md`](../../docs/feature-index.md).
+> **Append entry after adding each feature.** Monorepo-wide index: [`docs/feature-index.md`](../../../docs/feature-index.md).
 
 ---
 

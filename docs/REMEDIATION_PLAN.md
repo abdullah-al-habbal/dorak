@@ -1,4 +1,16 @@
+---
+nodeid: docs.remediation
+parentnode: docs.todowork
+childnodes:
+  - docs.architecture
+  - backend.docs
+codeanchors:
+  - backend/modules/Booking/
+---
+
 # MVP Alignment Remediation Plan
+
+> Planning snapshot: current task status and priority live in [`todowork.md`](todowork.md); use the [documentation graph](INDEX.md) to find current subsystem docs.
 
 ## Phase 2: In-person payment policy
 

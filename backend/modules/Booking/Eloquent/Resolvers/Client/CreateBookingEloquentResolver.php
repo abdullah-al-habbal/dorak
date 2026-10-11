@@ -6,7 +6,10 @@ namespace Modules\Booking\Eloquent\Resolvers\Client;
 
 use Carbon\Carbon;
 use Modules\Barber\Models\BarberModel;
+use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Booking\CQRS\Command\Client\CreateBookingCommand;
+use Modules\Booking\Eloquent\Resolvers\Shared\ActiveBookingBanException;
+use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
@@ -14,14 +17,20 @@ use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
-use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
+use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class CreateBookingEloquentResolver
 {
     public function resolve(CreateBookingCommand $command): BookingModel
     {
+        $client = ClientModel::query()->lockForUpdate()->findOrFail($command->clientId);
+
+        if ($client->isBanned()) {
+            throw new ActiveBookingBanException;
+        }
+
         $services = OfferedServiceModel::query()
             ->whereIn('id', $command->serviceIds)
             ->where('active', true)
@@ -49,7 +58,7 @@ final class CreateBookingEloquentResolver
         if ($command->chairId !== null) {
             $chair = ChairModel::query()->lockForUpdate()->findOrFail($command->chairId);
 
-            if ($chair->status === ChairStatus::Maintenance) {
+            if (! $chair->status->isBookable()) {
                 throw new ChairNotAvailableException;
             }
 
@@ -57,7 +66,34 @@ final class CreateBookingEloquentResolver
         }
 
         if ($command->barberId !== null) {
-            BarberModel::query()->lockForUpdate()->findOrFail($command->barberId);
+            $barber = BarberModel::query()->lockForUpdate()->findOrFail($command->barberId);
+
+            if ($barber->bans()->active()->exists()) {
+                throw new ActiveBookingBanException;
+            }
+
+            $scheduleExists = BarberScheduleModel::query()
+                ->where('barber_id', $command->barberId)
+                ->exists();
+
+            // An empty schedule remains backward compatible until Task 22's
+            // product decision is made; configured schedules are enforced.
+            if ($scheduleExists) {
+                $slotStart = $command->timeSlot->format('H:i:s');
+                $slotEnd = $endsAt->format('H:i:s');
+                $insideSchedule = BarberScheduleModel::query()
+                    ->where('barber_id', $command->barberId)
+                    ->where('day_of_week', $command->timeSlot->dayOfWeek)
+                    ->where('is_active', true)
+                    ->where('start_time', '<=', $slotStart)
+                    ->where('end_time', '>=', $slotEnd)
+                    ->exists();
+
+                if (! $insideSchedule) {
+                    throw new BookingOutsideScheduleException;
+                }
+            }
+
             $this->ensureNoOverlap('barber_id', $command->barberId, $command->timeSlot, $endsAt);
         }
 

@@ -9,3 +9,5 @@
 /frontend/**/.next/
 /frontend/**/.agents/
 /frontend/**/tsconfig.tsbuildinfo
+/frontend/mobile/.dart_tool/
+/frontend/mobile/build/

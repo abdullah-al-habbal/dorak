@@ -19,15 +19,15 @@ use Modules\Client\Http\Actions\Client\UploadAvatarAction;
 use Modules\Client\Http\Actions\Client\VerifyEmailAction;
 
 Route::prefix('client')->name('client.')->group(function (): void {
-    Route::post('/login', LoginAction::class)->name('login');
-    Route::post('/register', RegisterAction::class)->name('register');
-    Route::post('/social/{provider}', SocialLoginAction::class)->name('social.login');
-    Route::post('/forgot-password', ForgotPasswordAction::class)->name('forgot-password');
-    Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password');
+    Route::post('/login', LoginAction::class)->name('login')->middleware('throttle:5,1');
+    Route::post('/register', RegisterAction::class)->name('register')->middleware('throttle:5,1');
+    Route::post('/social/{provider}', SocialLoginAction::class)->name('social.login')->middleware('throttle:5,1');
+    Route::post('/forgot-password', ForgotPasswordAction::class)->name('forgot-password')->middleware('throttle:5,1');
+    Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password')->middleware('throttle:5,1');
 
     Route::middleware('auth:client')->group(function (): void {
         Route::post('/logout', LogoutAction::class)->name('logout');
-        Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token');
+        Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
         Route::patch('/preferences/universe', UpdateUniversePreferenceAction::class)->name('preferences.universe');
         Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
         Route::post('/avatar', UploadAvatarAction::class)->name('avatar.upload');

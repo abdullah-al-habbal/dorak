@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Modules\Booking\Http\Actions\Client;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Booking\Eloquent\Resolvers\Shared\ActiveBookingBanException;
+use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
@@ -45,6 +47,10 @@ final class CreateBookingAction extends BaseApiAction
                 message: __('booking::messages.invalid_booking_services'),
                 status: 422,
             );
+        } catch (ActiveBookingBanException) {
+            return $this->error(message: 'Booking is unavailable for this account.', status: 403);
+        } catch (BookingOutsideScheduleException) {
+            return $this->error(message: 'The requested time is outside the barber schedule.', status: 422);
         }
     }
 }

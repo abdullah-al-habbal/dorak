@@ -15,8 +15,9 @@ Barbers maintain a weekly schedule (`barber_schedules`, exposed at `GET/PATCH /b
 ### Backend (API / DB / Policies)
 - Add a `BookingWindowValidator` to the Booking module. It rejects a booking interval `[time_slot, ends_at)` that is not fully inside an active `barber_schedules` row for that barber's weekday.
   - **Decision required:** timezone for schedule times. The barber's or branch's local timezone needs a stored timezone; until then, UTC.
-- Apply it in client create (`CreateBookingEloquentResolver`), rebook (inherited via Task 19), dashboard reschedule and walk-in, and the Task 21 slot generator.
-- **Decision required:** behavior when a barber has no schedule rows. Either treat as always available (backward compatible) or never bookable.
+- Current implementation enforces configured schedules in client create and rebook. Dashboard reschedule, walk-in, and Task 21 slot generation remain open.
+  - Until a timezone field exists, schedule checks use the timestamp's current timezone (UTC in the API contract).
+- **Decision recorded:** a barber with no schedule rows remains bookable for backward compatibility. Once any schedule rows exist, only active rows that contain the complete booking interval are bookable.
 - Branch hours: once Task 51 adds hours, extend the validator to chair bookings. Until then, record this as a pending sub-criterion.
 - Error: 422 with code `booking_outside_schedule`.
 
@@ -27,8 +28,7 @@ Barbers maintain a weekly schedule (`barber_schedules`, exposed at `GET/PATCH /b
 - No new calls. The client app uses Task 21 slots, which already exclude out-of-schedule times. Map the 422 code to a localized message in `frontend/mobile/apps/client_app/lib/src/features/booking/branch_detail.bloc.dart`.
 
 ## Acceptance Criteria
-- [ ] `POST /api/v1/bookings` with a barber whose schedule for that weekday is 09:00–17:00 and a slot at 18:00 returns 422 `booking_outside_schedule`.
-- [ ] The same request at 10:00 returns 201.
+- [x] Client booking and rebook reject configured out-of-schedule times with 422; a same-day slot contained in an active schedule is accepted.
 - [ ] Dashboard reschedule and walk-in outside the schedule return 422.
 - [ ] The Task 21 slot endpoints return no slots outside the barber's schedule (assertion added to `BranchSlotsTest` and `BarberSlotsTest`).
 - [ ] The no-schedule decision is recorded here and asserted in the Feature test `BookingScheduleValidationTest`.

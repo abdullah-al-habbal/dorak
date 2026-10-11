@@ -1,4 +1,17 @@
+---
+nodeid: docs.decisions
+parentnode: docs.todowork
+childnodes:
+  - docs.todowork
+codeanchors:
+  - backend/modules/
+  - frontend/dashboard/src/
+  - frontend/mobile/apps/
+---
+
 # Open Product Decisions
+
+Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-nodes).
 
 > Generated from every `Decision required` bullet in `tasks/`. Each blocks its task's acceptance criteria. Record the answer in the task spec, then tick it here.
 

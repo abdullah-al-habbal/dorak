@@ -4,36 +4,43 @@ declare(strict_types=1);
 
 namespace Modules\ClientHistory\Eloquent\Resolvers;
 
-use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\CQRS\Command\Client\CreateBookingCommand;
+use Modules\Booking\Events\BookingCreatedEvent;
+use Modules\Booking\Handlers\Client\CreateBookingHandler;
 use Modules\Booking\Models\BookingModel;
 use Modules\ClientHistory\CQRS\Command\RebookFromHistoryCommand;
 use Modules\ClientHistory\Models\ClientServiceHistoryModel;
 
 final class RebookFromHistoryEloquentResolver
 {
+    public function __construct(
+        private readonly CreateBookingHandler $createBookingHandler,
+    ) {}
+
     public function resolve(RebookFromHistoryCommand $command): BookingModel
     {
         $history = ClientServiceHistoryModel::query()
             ->where('client_id', $command->clientId)
+            ->with(['booking.services'])
             ->findOrFail($command->historyId);
-        $duration = $history->booking?->ends_at?->diffInMinutes($history->booking->time_slot)
-            ?? $history->offeredService?->duration
-            ?? 30;
+        $serviceIds = $history->booking?->services->pluck('id')->all() ?? [];
 
-        $booking = BookingModel::create([
-            'client_id' => $command->clientId,
-            'barber_id' => $history->barber_id,
-            'chair_id' => $history->booking?->chair_id,
-            'time_slot' => $command->timeSlot,
-            'ends_at' => $command->timeSlot->copy()->addMinutes($duration),
-            'status' => BookingStatus::Confirmed,
-        ]);
-
-        if ($history->offered_service_id !== null) {
-            $booking->services()->attach($history->offered_service_id);
+        if ($serviceIds === [] && $history->offered_service_id !== null) {
+            $serviceIds = [$history->offered_service_id];
         }
 
-        $booking->load(['chair.barber', 'barber', 'services']);
+        $booking = $this->createBookingHandler->handle(new CreateBookingCommand(
+            chairId: $history->booking?->chair_id,
+            barberId: $history->barber_id,
+            clientId: $command->clientId,
+            timeSlot: $command->timeSlot,
+            serviceIds: $serviceIds,
+            atHomeLocation: $history->booking?->at_home_location,
+        ))->booking;
+
+        if ($history->branch_id !== null) {
+            event(new BookingCreatedEvent($booking->id, (string) $history->branch_id));
+        }
 
         return $booking;
     }

@@ -1,3 +1,12 @@
+---
+nodeid: dashboard.execution
+parentnode: dashboard.guide
+childnodes:
+  - dashboard.architecture
+codeanchors:
+  - frontend/dashboard/src/
+---
+
 # Multi-Actor Frontend Execution Plan
 
 ## Status

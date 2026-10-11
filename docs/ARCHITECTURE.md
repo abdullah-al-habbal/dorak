@@ -1,4 +1,20 @@
+---
+nodeid: docs.architecture
+parentnode: docs.todowork
+childnodes:
+  - backend.docs
+  - dashboard.guide
+  - mobile.guide
+  - docs.deployment
+codeanchors:
+  - backend/modules/Booking/
+  - frontend/dashboard/src/
+  - frontend/mobile/apps/
+---
+
 # Dorak MVP Architecture
+
+Routes: [documentation graph](INDEX.md) · [work tracker](todowork.md) · [deployment guide](DEPLOYMENT_GUIDE.md).
 
 ## E2E booking flow
 

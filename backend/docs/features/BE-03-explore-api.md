@@ -1,7 +1,7 @@
 # BE-03 — Explore API
 
 ## Status: ✅ Complete
-## Frontend Consumer: [FE-01 Explore Recommendations](../../../../dorak-frontend/apps/dorak_client_app/docs/features/FE-01-explore-recommendations.md)
+## Frontend Consumer: [Mobile feature index](../../../frontend/mobile/docs/feature-index.md)
 
 ## What Was Built
 - `ExploreBranchesAction` — Haversine SQL radius search with `latitude`, `longitude`, `radius`, `universe` filters + recommendation ranking

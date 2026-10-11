@@ -1311,11 +1311,16 @@ describe('ClientHistory API', function () {
     {
         $client = ClientModel::factory()->create();
         $barber = BarberModel::factory()->create();
+        $service = OfferedServiceModel::factory()->create([
+            'serviceable_id' => $barber->id,
+            'serviceable_type' => 'barber',
+        ]);
         $booking = BookingModel::factory()->create([
             'client_id' => $client->id,
             'barber_id' => $barber->id,
             'status' => BookingStatus::Confirmed,
         ]);
+        $booking->services()->attach($service->id);
 
         $booking->update(['status' => BookingStatus::Completed]);
 
@@ -1389,8 +1394,8 @@ describe('ClientHistory API', function () {
 
             assertApiEnvelope($rebookResponse, 201);
             $data = $rebookResponse->json('data');
-            expect($data)->toHaveKeys(['id', 'time_slot', 'status', 'barber_id']);
-            expect($data['status'])->toBe('confirmed');
+            expect($data)->toHaveKeys(['id', 'time_slot', 'status', 'barber', 'services', 'payment_method', 'payment_status']);
+            expect($data['status'])->toBe('pending');
         });
 
         it('returns 401 without auth', function () {

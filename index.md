@@ -1,21 +1,27 @@
-# Dorak Monorepo Master Rulebook
+---
+nodeid: repo.root
+parentnode: null
+childnodes:
+  - docs.todowork
+  - docs.graph
+  - backend.guide
+  - dashboard.guide
+  - mobile.guide
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
 
-## Entry Points for AI Agents
+# Dorak Monorepo
 
-- Mobile work → read **`frontend/mobile/AGENTS.md`** first, then `frontend/mobile/CLAUDE.md`, then `frontend/mobile/docs/index.md`.
-- Backend work → read **`backend/AGENTS.md`** first.
+Start with [`docs/todowork.md`](docs/todowork.md), the single source of truth for
+project work and task status. Use the [documentation graph](docs/INDEX.md) to
+route from repository area to the relevant Markdown files.
 
-## Architecture Overview
-This repository uses a Dart Workspace monorepo structure containing mobile applications and shared local packages alongside the backend service.
+## Subsystem entry points
 
-### Directory Structure
-- `backend/`: Core backend service and API services.
-- `frontend/mobile/`: Flutter mobile application workspace.
-  - `apps/`: Target applications (`client_app`, `business_app`, `stylist_app`).
-  - `packages/`: Shared feature and core packages (`core`, `design_system`, `localization`, `feature_floor_plan`).
-- `docs/`: Architectural decision records (ADRs) and documentation.
-
-## Monorepo Guidelines
-1. **Workspace Resolution**: All apps and packages under `frontend/mobile/` must maintain `resolution: workspace` in their `pubspec.yaml`.
-2. **Local Package Referencing**: Apps consume internal packages via relative path dependencies (`../../packages/`).
-3. **AI Context Scope**: Heavy binaries, backend sources, and generated Flutter files (`*.g.dart`, `*.freezed.dart`) are excluded via `.aiignore`.
+- [Backend guide](backend/AGENTS.md) · [Backend documentation](backend/docs/README.md)
+- [Dashboard guide](frontend/dashboard/AGENTS.md) · [Dashboard execution plan](frontend/dashboard/EXECUTION_PLAN.md)
+- [Mobile guide](frontend/mobile/AGENTS.md) · [Mobile documentation](frontend/mobile/docs/index.md)
+- [Task specifications](docs/todowork.md#phase-15--documentation-p3)

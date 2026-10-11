@@ -1,6 +1,6 @@
 # Feature Index — Dorak Business App (`apps/business_app`)
 
-> **Append entry after adding each feature.** Monorepo-wide index: [`docs/feature-index.md`](../../docs/feature-index.md).
+> **Append entry after adding each feature.** Monorepo-wide index: [`docs/feature-index.md`](../../../docs/feature-index.md).
 
 ---
 

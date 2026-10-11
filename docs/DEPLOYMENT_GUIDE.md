@@ -1,4 +1,20 @@
+---
+nodeid: docs.deployment
+parentnode: docs.architecture
+childnodes:
+  - backend.docs
+  - dashboard.guide
+  - mobile.guide
+codeanchors:
+  - .github/workflows/
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Dorak Deployment and Handover Guide
+
+Routes: [documentation graph](INDEX.md) · [work tracker](todowork.md) · [architecture](ARCHITECTURE.md).
 
 ## Local startup
 

@@ -1,3 +1,14 @@
+---
+nodeid: mobile.guide
+parentnode: repo.root
+childnodes:
+  - mobile.docs
+  - mobile.claude
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 # AGENTS.md — Dorak Mobile
 
 **Read this file before touching anything in `frontend/mobile/`.** It is the single
@@ -8,7 +19,7 @@ The Dart source carries almost no comments by design. Rationale lives here. If
 you are about to "clean up" something that looks odd, check §9 first — most of
 it is deliberate.
 
----
+Documentation routes: [mobile documentation](docs/index.md) · [repository graph](../../docs/INDEX.md) · [work tracker](../../docs/todowork.md).
 
 ## 1. Read order
 
@@ -32,8 +43,8 @@ child contradicts nothing, the parent still applies.
 | Unit | Docs | State |
 |---|---|---|
 | `apps/client_app` | [`AGENTS`](./apps/client_app/AGENTS.md) · [`CLAUDE`](./apps/client_app/CLAUDE.md) | real features; the reference implementation |
-| `apps/business_app` | [`AGENTS`](./apps/business_app/AGENTS.md) · [`CLAUDE`](./apps/business_app/CLAUDE.md) | `flutter create` stub |
-| `apps/stylist_app` | [`AGENTS`](./apps/stylist_app/AGENTS.md) · [`CLAUDE`](./apps/stylist_app/CLAUDE.md) | `flutter create` stub |
+| `apps/business_app` | [`AGENTS`](./apps/business_app/AGENTS.md) · [`CLAUDE`](./apps/business_app/CLAUDE.md) | application shell; feature work remains in Tasks 84–85 |
+| `apps/stylist_app` | [`AGENTS`](./apps/stylist_app/AGENTS.md) · [`CLAUDE`](./apps/stylist_app/CLAUDE.md) | application shell; feature work remains in Tasks 82–83 |
 | `packages/core` | [`AGENTS`](./packages/core/AGENTS.md) · [`CLAUDE`](./packages/core/CLAUDE.md) | HTTP, config, storage, session, DTOs |
 | `packages/design_system` | [`AGENTS`](./packages/design_system/AGENTS.md) · [`CLAUDE`](./packages/design_system/CLAUDE.md) | tokens, theme, fonts, 14 widgets |
 | `packages/localization` | [`AGENTS`](./packages/localization/AGENTS.md) · [`CLAUDE`](./packages/localization/CLAUDE.md) | 192 keys, EN + AR |
@@ -42,36 +53,9 @@ child contradicts nothing, the parent still applies.
 Read the child for the unit you are touching **before** editing it. If you touch
 two units, read both.
 
-**Most files under `docs/` are 0-byte stubs**, and `docs/index.md` names several
-directories that do not exist at all (`docs/agent/`, `docs/engineering/`,
-`docs/networking/`, `docs/storage/`). Never assume a doc exists because it is
-referenced. `docs/runtime/` existed nowhere until 2026-09-02 (Track 10); its
-only content file is `docs/runtime/app_lifecycle.md`.
-
-These are the only docs with content:
-
-```
-docs/index.md                            docs/feature-index.md
-docs/architecture/coding_conventions.md  docs/state_management/pagination.md
-docs/state_management/index.md           docs/state_management/conventions.md
-docs/state_management/async_state.md     docs/state_management/refresh.md
-docs/architecture/decisions/0001-bloc-in-core.md
-docs/architecture/decisions/0002-design-system-go-router.md
-docs/core/networking.md                  docs/core/interceptors.md
-docs/core/exceptions.md                  docs/core/result_state.md
-docs/core/storage.md                     docs/core/session.md
-docs/authentication/auth_flow.md         docs/flows/app_launch.md
-docs/authentication/password_recovery.md
-docs/runtime/app_lifecycle.md
-docs/screens/authentication/{forgot_password,recovery_otp,
-                             create_new_password,password_reset_success}.md
-docs/flows/onboarding.md                 docs/flows/guest_access.md
-docs/navigation/routes.md                docs/navigation/guards.md
-docs/future-features/perPage/perPage.md  docs/future-features/discovery-016.md
-apps/{client,business,stylist}_app/docs/feature-index.md
-```
-
-`docs/core/background_tasks.md` is whitespace only — treat it as empty.
+The former zero-byte placeholders under `docs/` have been removed. Use the
+[repository documentation graph](../../docs/INDEX.md) for the current file
+inventory; a roadmap mention does not mean a document currently exists.
 
 `docs/stitch/exports/` holds the remaining unimplemented screen designs
 (010, 015–020 — 011–014 were built and their folders removed): `code.html` is the layout source, `screen.png` the reference, and
@@ -87,9 +71,9 @@ Dart pub workspace + Melos. Everything lives under `frontend/mobile/`.
 
 ```
 apps/
-  client_app/      end-user app — the only one with real features
-  business_app/    `flutter create` counter stub, no workspace deps
-  stylist_app/     `flutter create` counter stub, no workspace deps
+  client_app/      end-user app — feature-rich reference application
+  business_app/    operations application shell; feature work remains open
+  stylist_app/     stylist application shell; feature work remains open
 packages/
   core/            networking, storage, session, DTOs, config
   design_system/   tokens, theme, shared widgets
@@ -409,8 +393,8 @@ Authentication always outranks the onboarding flag.
 - Logout UI. `SessionBloc` handles `LogoutRequested`; no affordance calls it.
 - DI container. Wiring is manual construction in `DorakApp.initState`.
 - Locale persistence. The toggle is in-memory and resets on restart.
-- `business_app` / `stylist_app` features. Both are untouched counter stubs
-  with no workspace package dependencies.
+- `business_app` / `stylist_app` feature coverage remains open (Tasks 82–85);
+  both applications already have their shells.
 - Design-system inputs, cards, chips, dialogs, app bars. Session-expired and
   authentication-required flows exist (Track 06/11), and Track 12 added the
   loading/empty/error/offline/retry state widgets — **consumed only by auth

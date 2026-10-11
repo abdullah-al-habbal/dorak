@@ -1,4 +1,16 @@
+---
+nodeid: mobile.docs
+parentnode: mobile.guide
+childnodes:
+  - mobile.claude
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 # Dorak Mobile — AI Execution Index
+
+Repository routes: [mobile guide](../AGENTS.md) · [documentation graph](../../../docs/INDEX.md) · [work tracker](../../../docs/todowork.md).
 
 Repository: `dorak-mobile`
 Architecture contract: `/CLAUDE.md`
@@ -101,184 +113,16 @@ See:
 
 ## 4. Documentation Map
 
-### Agent
+The repository-wide [documentation graph](../../../docs/INDEX.md) catalogs every
+maintained Markdown document by folder. This mobile index routes into the
+current topic docs; it does not list planned files that have not been created.
 
-```text
-docs/agent/
-├── execution_protocol.md
-├── context_protocol.md
-├── task_protocol.md
-├── verification_protocol.md
-└── completion_protocol.md
-```
-
-### Architecture
-
-```text
-docs/architecture/
-├── system_overview.md
-├── dependency_rules.md
-├── monorepo_structure.md
-├── package_boundaries.md
-├── feature_architecture.md
-├── data_flow.md
-├── error_flow.md
-└── decisions/
-```
-
-### Engineering
-
-```text
-docs/engineering/
-├── coding_conventions.md
-├── naming_conventions.md
-├── dart_conventions.md
-├── flutter_conventions.md
-├── dependency_injection.md
-├── repository_pattern.md
-├── dto_entity_mapping.md
-├── immutability.md
-├── nullability.md
-└── security.md
-```
-
-### Runtime
-
-```text
-docs/runtime/
-├── app_lifecycle.md
-├── bootstrap.md
-├── environment.md
-├── session_lifecycle.md
-├── authentication_lifecycle.md
-├── offline_behavior.md
-├── background_tasks.md
-├── notifications.md
-└── deep_linking.md
-```
-
-### State Management
-
-```text
-docs/state_management/
-├── architecture.md
-├── state_model.md
-├── async_operations.md
-├── loading_states.md
-├── error_states.md
-├── pagination.md
-├── refresh.md
-└── background_operations.md
-```
-
-### Networking
-
-```text
-docs/networking/
-├── architecture.md
-├── http_client.md
-├── request_pipeline.md
-├── interceptors.md
-├── error_mapping.md
-├── retry_policy.md
-├── timeout_policy.md
-├── serialization.md
-└── environments.md
-```
-
-### Realtime
-
-```text
-docs/realtime/
-└── reverb.md
-```
-
-### Storage
-
-```text
-docs/storage/
-├── architecture.md
-├── secure_storage.md
-├── cache.md
-├── preferences.md
-└── persistence_rules.md
-```
-
-### Design System
-
-```text
-docs/design_system/
-├── index.md
-├── tokens/
-├── themes/
-├── semantics/
-├── components/
-└── states/
-```
-
-### Authentication
-
-```text
-docs/authentication/
-├── auth_flow.md
-├── login.md
-├── registration.md
-├── verification.md
-├── otp.md
-├── password_recovery.md
-├── session.md
-└── profile_completion.md
-```
-
-### Navigation
-
-```text
-docs/navigation/
-├── routes.md
-├── guards.md
-├── deep_links.md
-└── lifecycle.md
-```
-
-### Flows
-
-```text
-docs/flows/
-├── app_launch.md
-├── onboarding.md
-├── guest_access.md
-├── authentication.md
-├── file_upload.md
-├── background_upload.md
-└── notifications.md
-```
-
-### Screens
-
-```text
-docs/screens/
-├── authentication/
-├── onboarding/
-├── profile/
-├── discovery/
-├── booking/
-├── appointments/
-├── services/
-└── ai/
-```
-
-### Testing
-
-```text
-docs/testing/
-├── strategy.md
-├── unit.md
-├── widget.md
-├── golden.md
-├── integration.md
-├── architecture_tests.md
-└── quality_gates.md
-```
+- Architecture: [coding conventions](architecture/coding_conventions.md) and [architecture decisions](architecture/decisions/0001-bloc-in-core.md).
+- Core runtime: [networking](core/networking.md), [session](core/session.md), [runtime lifecycle](runtime/app_lifecycle.md), and [realtime](realtime/reverb.md).
+- State and navigation: [state management](state_management/index.md), [routes](navigation/routes.md), and [guards](navigation/guards.md).
+- Product flows: [authentication](authentication/auth_flow.md), [onboarding](flows/onboarding.md), and [guest access](flows/guest_access.md).
+- Design: [design-system index](design_system/index.md) and [password recovery screen](screens/authentication/forgot_password.md).
+- Verification: use the package and app verification instructions in [mobile guide](../AGENTS.md).
 
 ---
 

@@ -1,3 +1,12 @@
+---
+nodeid: backend.claude
+parentnode: backend.guide
+childnodes:
+  - backend.docs
+codeanchors:
+  - backend/modules/
+---
+
 # Dorak Backend — AI Agent Orchestra (.CLAUDE.md)
 
 ## 📚 Source of Truth

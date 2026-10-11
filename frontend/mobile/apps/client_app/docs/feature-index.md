@@ -1,6 +1,6 @@
 # Feature Index — Dorak Client App (`apps/client_app`)
 
-> **Append entry after adding each feature.** Chronological map of features built in the client (end-user) app. Monorepo-wide index: [`docs/feature-index.md`](../../docs/feature-index.md).
+> **Append entry after adding each feature.** Chronological map of features built in the client (end-user) app. Monorepo-wide index: [`docs/feature-index.md`](../../../docs/feature-index.md).
 
 ---
 

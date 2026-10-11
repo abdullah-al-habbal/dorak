@@ -1,4 +1,17 @@
+---
+nodeid: backend.guide
+parentnode: repo.root
+childnodes:
+  - backend.docs
+  - backend.claude
+codeanchors:
+  - backend/modules/
+  - backend/bootstrap/
+---
+
 ## Quick start
+
+Documentation routes: [product documentation](docs/README.md) · [repository graph](../docs/INDEX.md) · [work tracker](../docs/todowork.md).
 
 ```bash
 composer setup          # install + .env + key:generate + migrate + npm

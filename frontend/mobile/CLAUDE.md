@@ -1,3 +1,13 @@
+---
+nodeid: mobile.claude
+parentnode: mobile.guide
+childnodes:
+  - mobile.docs
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 # Dorak Monorepo — AI Agent & Developer Guidelines (`CLAUDE.md`)
 
 > **Read [`AGENTS.md`](./AGENTS.md) first.** It is the entry point: current

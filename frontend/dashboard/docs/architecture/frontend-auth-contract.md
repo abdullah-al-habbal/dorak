@@ -1,4 +1,17 @@
+---
+nodeid: dashboard.auth_contract
+parentnode: dashboard.guide
+childnodes:
+  - dashboard.architecture
+  - backend.docs
+codeanchors:
+  - frontend/dashboard/src/proxy.ts
+  - frontend/dashboard/src/services/api/
+---
+
 # Frontend authentication and portal contract
+
+Routes: [dashboard guide](../../AGENTS.md) · [documentation graph](../../../../docs/INDEX.md) · [work tracker](../../../../docs/todowork.md).
 
 ## Status
 

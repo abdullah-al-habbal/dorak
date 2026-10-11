@@ -5,12 +5,20 @@ declare(strict_types=1);
 use Modules\Barber\Models\BarberModel;
 use Modules\Client\Models\ClientModel;
 use Modules\ClientHistory\Models\ClientServiceHistoryModel;
+use Modules\OfferedService\Models\OfferedServiceModel;
 
 function clientHistoryFor(ClientModel $client): ClientServiceHistoryModel
 {
+    $barber = BarberModel::factory()->create();
+    $service = OfferedServiceModel::factory()->create([
+        'serviceable_id' => $barber->id,
+        'serviceable_type' => 'barber',
+    ]);
+
     return ClientServiceHistoryModel::query()->create([
         'client_id' => $client->id,
-        'barber_id' => BarberModel::factory()->create()->id,
+        'barber_id' => $barber->id,
+        'offered_service_id' => $service->id,
         'performed_at' => now()->subDay(),
     ]);
 }

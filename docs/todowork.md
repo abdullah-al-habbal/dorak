@@ -1,8 +1,22 @@
+---
+nodeid: docs.todowork
+parentnode: repo.root
+childnodes:
+  - docs.graph
+  - docs.architecture
+  - docs.decisions
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Master Monorepo Execution Plan
 
 > Source: monorepo audit of 2026-10-11 (backend routes, backend vs product/feature specs, dashboard BFF/UI, mobile apps).
 > Order = execution priority. Respect each spec's **Depends on** line. Tick a box only when every acceptance criterion in the spec passes.
 > Open product decisions blocking tasks: [decisions-required.md](decisions-required.md).
+> Documentation routes: [repository graph](INDEX.md) · [root orientation](../index.md).
 
 ## Phase 1 — Security & Authorization (P0)
 - [x] Task 01: Fix Barber Affiliation Ownership Authorization -> [Spec](tasks/task-01-affiliation-ownership.md)

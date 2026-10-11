@@ -21,7 +21,7 @@ use Modules\Booking\Http\Actions\Barber\NoShowBookingAction;
 use Modules\Booking\Http\Actions\Barber\StartBookingAction;
 
 Route::prefix('barber')->name('barber.')->group(function (): void {
-    Route::post('/login', LoginAction::class)->name('login');
+    Route::post('/login', LoginAction::class)->name('login')->middleware('throttle:5,1');
 
     Route::middleware('auth:barber')->group(function (): void {
         Route::get('/profile', GetProfileAction::class)->name('profile.show');

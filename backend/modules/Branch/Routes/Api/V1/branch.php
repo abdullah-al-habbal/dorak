@@ -24,7 +24,7 @@ use Modules\Branch\Http\Actions\Branch\UpdateJobPostingAction;
 use Modules\Branch\Http\Actions\Branch\UpdateProfileAction;
 
 Route::prefix('branch')->name('branch.')->group(function (): void {
-    Route::post('/login', LoginAction::class)->name('login');
+    Route::post('/login', LoginAction::class)->name('login')->middleware('throttle:5,1');
 
     Route::middleware('auth:branch_api')->group(function (): void {
         Route::get('/dashboard', DashboardAction::class)->name('dashboard');
