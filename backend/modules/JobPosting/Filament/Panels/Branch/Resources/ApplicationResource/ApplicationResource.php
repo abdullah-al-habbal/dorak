@@ -20,7 +20,10 @@ class ApplicationResource extends Resource
 
     protected static ?string $slug = 'applications';
 
-    protected static ?string $navigationGroup = 'Job Postings';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('jobposting::ui.job_postings');
+    }
 
     public static function getEloquentQuery(): Builder
     {

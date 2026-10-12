@@ -20,7 +20,7 @@ final class CurrenciesTable
                 TextColumn::make('code')
                     ->searchable(),
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('currency::ui.name'))
                     ->searchable(),
                 TextColumn::make('symbol'),
                 IconColumn::make('is_default')

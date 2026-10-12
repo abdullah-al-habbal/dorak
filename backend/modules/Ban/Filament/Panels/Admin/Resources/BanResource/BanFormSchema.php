@@ -22,7 +22,7 @@ final class BanFormSchema
                 ->columns(2)
                 ->schema([
                     MorphToSelect::make('bannable')
-                        ->label('Entity')
+                        ->label(__('ban::ui.entity'))
                         ->types([
                             MorphToSelect\Type::make(ClientModel::class)
                                 ->titleAttribute('email'),
@@ -38,7 +38,7 @@ final class BanFormSchema
                         ->required()
                         ->default(now()),
                     DateTimePicker::make('banned_until')
-                        ->helperText('Leave empty for permanent ban'),
+                        ->helperText(__('ban::ui.leave_empty_for_permanent_ban')),
                 ]),
         ]);
     }

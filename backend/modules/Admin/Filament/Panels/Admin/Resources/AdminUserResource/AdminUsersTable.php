@@ -18,7 +18,7 @@ final class AdminUsersTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('admin::ui.name'))
                     ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),

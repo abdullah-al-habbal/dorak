@@ -17,10 +17,10 @@ final class BansTable
         return $table
             ->columns([
                 TextColumn::make('bannable_type')
-                    ->label('Type')
+                    ->label(__('ban::ui.type'))
                     ->searchable(),
                 TextColumn::make('bannable_id')
-                    ->label('Entity ID')
+                    ->label(__('ban::ui.entity_id'))
                     ->searchable(),
                 TextColumn::make('reason')
                     ->limit(30),
@@ -29,9 +29,9 @@ final class BansTable
                     ->sortable(),
                 TextColumn::make('banned_until')
                     ->dateTime()
-                    ->placeholder('Permanent'),
+                    ->placeholder(__('ban::ui.permanent')),
                 TextColumn::make('admin.email')
-                    ->label('Banned By'),
+                    ->label(__('ban::ui.banned_by')),
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([

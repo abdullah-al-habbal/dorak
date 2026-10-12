@@ -16,17 +16,17 @@ final class BarberFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Name')
+            Section::make(__('barber::ui.name'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('barber::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('barber::ui.name_arabic'))
                         ->required(),
                 ]),
-            Section::make('Account')
+            Section::make(__('barber::ui.account'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('email')
@@ -39,7 +39,7 @@ final class BarberFormSchema
                         ->required(fn (string $operation): bool => $operation === 'create'),
                     Toggle::make('is_freelancer'),
                 ]),
-            Section::make('Status')
+            Section::make(__('barber::ui.status'))
                 ->schema([
                     Select::make('status')
                         ->options([

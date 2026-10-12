@@ -13,17 +13,17 @@ final class ProfileFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Name')
+            Section::make(__('barber::ui.name'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('barber::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('barber::ui.name_arabic'))
                         ->required(),
                 ]),
-            Section::make('Account')
+            Section::make(__('barber::ui.account'))
                 ->schema([
                     TextInput::make('email')
                         ->email()
@@ -32,7 +32,7 @@ final class ProfileFormSchema
                     TextInput::make('password')
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
-                        ->helperText('Leave empty to keep current password'),
+                        ->helperText(__('barber::ui.leave_empty_to_keep_current_password')),
                 ]),
         ]);
     }

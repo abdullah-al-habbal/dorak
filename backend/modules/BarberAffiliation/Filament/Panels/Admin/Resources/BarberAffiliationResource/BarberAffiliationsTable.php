@@ -17,10 +17,10 @@ final class BarberAffiliationsTable
         return $table
             ->columns([
                 TextColumn::make('barber.email')
-                    ->label('Barber')
+                    ->label(__('barberaffiliation::ui.barber'))
                     ->searchable(),
                 TextColumn::make('affiliable_type')
-                    ->label('Entity Type'),
+                    ->label(__('barberaffiliation::ui.entity_type')),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

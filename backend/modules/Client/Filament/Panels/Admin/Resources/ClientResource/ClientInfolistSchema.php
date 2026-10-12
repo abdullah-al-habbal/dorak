@@ -13,13 +13,13 @@ final class ClientInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Client Details')
+            Section::make(__('client::ui.client_details'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('client::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('client::ui.name_arabic')),
                     TextEntry::make('email'),
                     TextEntry::make('phone'),
                     TextEntry::make('status')

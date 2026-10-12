@@ -20,7 +20,7 @@ final class LanguagesTable
                 TextColumn::make('code')
                     ->searchable(),
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('language::ui.name'))
                     ->searchable(),
                 TextColumn::make('direction')
                     ->badge()

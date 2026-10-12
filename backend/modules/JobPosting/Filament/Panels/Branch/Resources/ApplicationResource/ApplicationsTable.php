@@ -15,9 +15,9 @@ final class ApplicationsTable
         return $table
             ->columns([
                 TextColumn::make('barber.name.en')
-                    ->label('Barber'),
+                    ->label(__('jobposting::ui.barber')),
                 TextColumn::make('jobPosting.title.en')
-                    ->label('Job Title'),
+                    ->label(__('jobposting::ui.job_title')),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -29,7 +29,7 @@ final class ApplicationsTable
                     }),
                 TextColumn::make('created_at')
                     ->dateTime()
-                    ->label('Applied'),
+                    ->label(__('jobposting::ui.applied')),
             ])
             ->actions([
                 ViewAction::make(),

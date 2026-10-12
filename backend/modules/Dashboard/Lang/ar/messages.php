@@ -15,4 +15,12 @@ return [
     'stylist_not_assigned_to_chair' => 'يجب تعيين الحلاق إلى الكرسي المحدد.',
     'services_unavailable_for_branch' => 'يجب أن تكون جميع الخدمات متاحة للفرع المحدد.',
     'barber_operation_unavailable' => 'عملية لوحة التحكم هذه غير متاحة للحلاقين.',
+    'refresh_ttl_invalid' => 'يجب ألا تقل قيمة DASHBOARD_REFRESH_TTL_SECONDS عن 3600 ثانية.',
+    'session_secret_invalid' => 'يجب ألا يقل طول DASHBOARD_SESSION_SECRET عن 32 حرفًا.',
+    'claim_ttl_invalid' => 'يجب ألا تقل قيمة DASHBOARD_CLAIM_TTL_SECONDS عن 60 ثانية.',
+    'claim_encoding_failed' => 'تعذر ترميز بيانات جلسة لوحة التحكم.',
+    'actor_type_unsupported' => 'نوع مستخدم لوحة التحكم غير مدعوم: :actor_type',
+    'guard_unsupported' => 'حارس لوحة التحكم غير مدعوم.',
+    'booking_time_overlap' => 'يتداخل الوقت المحدد مع حجز نشط.',
+    'chair_has_active_or_future_bookings' => 'للكرسي حجوزات نشطة أو مستقبلية.',
 ];

@@ -23,7 +23,7 @@ final class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#2563eb',
             ])
-            ->brandName('Dorak Admin');
+            ->brandName(__('core::messages.admin_panel'));
 
         $this->discoverFromModules($panel, 'Admin');
 

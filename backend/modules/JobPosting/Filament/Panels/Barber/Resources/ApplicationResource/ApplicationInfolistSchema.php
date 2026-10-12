@@ -14,11 +14,11 @@ final class ApplicationInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Application Details')
+            Section::make(__('jobposting::ui.application_details'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('jobPosting.title.en')
-                        ->label('Job Posting'),
+                        ->label(__('jobposting::ui.job_posting')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (ApplicationStatus $state): string => match ($state) {
@@ -28,7 +28,7 @@ final class ApplicationInfolistSchema
                             ApplicationStatus::Rejected => 'danger',
                         }),
                     TextEntry::make('profile_snapshot')
-                        ->label('Profile Snapshot'),
+                        ->label(__('jobposting::ui.profile_snapshot')),
                     TextEntry::make('created_at')
                         ->dateTime(),
                 ]),

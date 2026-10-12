@@ -18,7 +18,7 @@ final class ServiceCatalogItemTagsTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('servicecatalog::ui.name'))
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),

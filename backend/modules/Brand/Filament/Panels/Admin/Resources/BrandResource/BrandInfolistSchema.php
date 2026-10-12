@@ -17,15 +17,15 @@ final class BrandInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('brand::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('brand::ui.name_arabic')),
                     TextEntry::make('owner.email')
-                        ->label('Owner'),
+                        ->label(__('brand::ui.owner')),
                     TextEntry::make('baseCurrency.code')
-                        ->label('Base Currency'),
+                        ->label(__('brand::ui.base_currency')),
                     TextEntry::make('description.en')
-                        ->label('Description')
+                        ->label(__('brand::ui.description'))
                         ->html(),
                     TextEntry::make('created_at')
                         ->dateTime(),

@@ -23,10 +23,10 @@ final class LanguageFormSchema
                         ->maxLength(2)
                         ->unique(ignoreRecord: true),
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('language::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('language::ui.name_arabic'))
                         ->required(),
                     Select::make('direction')
                         ->options([

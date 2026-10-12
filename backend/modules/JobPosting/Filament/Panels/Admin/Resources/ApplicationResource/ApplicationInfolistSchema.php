@@ -17,9 +17,9 @@ final class ApplicationInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('jobPosting.title.en')
-                        ->label('Job Posting'),
+                        ->label(__('jobposting::ui.job_posting')),
                     TextEntry::make('barber.email')
-                        ->label('Barber'),
+                        ->label(__('jobposting::ui.barber')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {

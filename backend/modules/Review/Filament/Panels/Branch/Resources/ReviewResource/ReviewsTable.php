@@ -15,15 +15,15 @@ final class ReviewsTable
         return $table
             ->columns([
                 TextColumn::make('author.name.en')
-                    ->label('Client'),
+                    ->label(__('review::ui.client')),
                 TextColumn::make('rating')
-                    ->label('Rating')
+                    ->label(__('review::ui.rating'))
                     ->icon('heroicon-m-star')
                     ->iconColor('warning'),
                 TextColumn::make('comment')
                     ->limit(50),
                 TextColumn::make('booking.id')
-                    ->label('Booking')
+                    ->label(__('review::ui.booking'))
                     ->limit(10),
                 TextColumn::make('created_at')
                     ->dateTime(),

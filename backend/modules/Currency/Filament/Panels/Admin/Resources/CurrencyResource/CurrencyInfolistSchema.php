@@ -19,9 +19,9 @@ final class CurrencyInfolistSchema
                 ->schema([
                     TextEntry::make('code'),
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('currency::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('currency::ui.name_arabic')),
                     TextEntry::make('symbol'),
                     IconEntry::make('is_default')
                         ->boolean(),

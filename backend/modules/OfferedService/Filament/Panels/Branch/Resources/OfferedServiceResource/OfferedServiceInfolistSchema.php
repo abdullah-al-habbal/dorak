@@ -14,19 +14,19 @@ final class OfferedServiceInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Service Details')
+            Section::make(__('offeredservice::ui.service_details'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('offeredservice::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('offeredservice::ui.name_arabic')),
                     TextEntry::make('price')
                         ->money(fn (OfferedServiceModel $record): string => $record->currency->code ?? 'USD'),
                     TextEntry::make('duration')
-                        ->label('Duration (minutes)'),
+                        ->label(__('offeredservice::ui.duration_minutes')),
                     TextEntry::make('at_home')
-                        ->label('At Home')
+                        ->label(__('offeredservice::ui.at_home'))
                         ->boolean(),
                     TextEntry::make('active')
                         ->boolean(),

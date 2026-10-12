@@ -14,17 +14,17 @@ final class ClientFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Name')
+            Section::make(__('client::ui.name'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('client::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('client::ui.name_arabic'))
                         ->required(),
                 ]),
-            Section::make('Account')
+            Section::make(__('client::ui.account'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('email')
@@ -38,7 +38,7 @@ final class ClientFormSchema
                     TextInput::make('phone')
                         ->tel(),
                 ]),
-            Section::make('Status')
+            Section::make(__('client::ui.status'))
                 ->schema([
                     Select::make('status')
                         ->options([

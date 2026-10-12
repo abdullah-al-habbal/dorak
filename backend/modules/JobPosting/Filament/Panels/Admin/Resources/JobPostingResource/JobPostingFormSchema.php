@@ -19,10 +19,10 @@ final class JobPostingFormSchema
                 ->columns(2)
                 ->schema([
                     TextInput::make('title.en')
-                        ->label('Title (English)')
+                        ->label(__('jobposting::ui.title_english'))
                         ->required(),
                     TextInput::make('title.ar')
-                        ->label('Title (Arabic)')
+                        ->label(__('jobposting::ui.title_arabic'))
                         ->required(),
                     Select::make('branch_id')
                         ->relationship('branch', 'name.en')
@@ -34,12 +34,12 @@ final class JobPostingFormSchema
                         ])
                         ->required(),
                 ]),
-            Section::make('Description')
+            Section::make(__('jobposting::ui.description'))
                 ->schema([
                     RichEditor::make('description.en')
-                        ->label('Description (English)'),
+                        ->label(__('jobposting::ui.description_english')),
                     RichEditor::make('description.ar')
-                        ->label('Description (Arabic)'),
+                        ->label(__('jobposting::ui.description_arabic')),
                 ]),
         ]);
     }

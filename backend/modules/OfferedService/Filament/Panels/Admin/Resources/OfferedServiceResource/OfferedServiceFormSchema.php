@@ -22,13 +22,13 @@ final class OfferedServiceFormSchema
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('offeredservice::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('offeredservice::ui.name_arabic'))
                         ->required(),
                     MorphToSelect::make('serviceable')
-                        ->label('Entity')
+                        ->label(__('offeredservice::ui.entity'))
                         ->types([
                             MorphToSelect\Type::make(BrandModel::class)
                                 ->titleAttribute('name.en'),
@@ -49,12 +49,12 @@ final class OfferedServiceFormSchema
                     Toggle::make('active')
                         ->default(true),
                 ]),
-            Section::make('Description')
+            Section::make(__('offeredservice::ui.description'))
                 ->schema([
                     RichEditor::make('description.en')
-                        ->label('Description (English)'),
+                        ->label(__('offeredservice::ui.description_english')),
                     RichEditor::make('description.ar')
-                        ->label('Description (Arabic)'),
+                        ->label(__('offeredservice::ui.description_arabic')),
                 ]),
         ]);
     }

@@ -18,7 +18,7 @@ final class BranchsTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('branch::ui.name'))
                     ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),

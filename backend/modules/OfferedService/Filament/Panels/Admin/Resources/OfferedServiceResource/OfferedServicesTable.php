@@ -18,10 +18,10 @@ final class OfferedServicesTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('offeredservice::ui.name'))
                     ->searchable(),
                 TextColumn::make('serviceable_type')
-                    ->label('Entity'),
+                    ->label(__('offeredservice::ui.entity')),
                 TextColumn::make('price')
                     ->sortable(),
                 TextColumn::make('duration')

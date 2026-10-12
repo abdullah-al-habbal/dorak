@@ -17,7 +17,7 @@ final class BarberAffiliationsTable
         return $table
             ->columns([
                 TextColumn::make('barber.name.en')
-                    ->label('Barber'),
+                    ->label(__('barberaffiliation::ui.barber')),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -29,12 +29,12 @@ final class BarberAffiliationsTable
                     }),
                 TextColumn::make('invited_at')
                     ->dateTime()
-                    ->label('Affiliated'),
+                    ->label(__('barberaffiliation::ui.affiliated')),
             ])
             ->actions([
                 ViewAction::make(),
                 Action::make('accept')
-                    ->label('Accept')
+                    ->label(__('barberaffiliation::ui.accept'))
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->requiresConfirmation()
@@ -44,7 +44,7 @@ final class BarberAffiliationsTable
                         'accepted_at' => now(),
                     ])),
                 Action::make('reject')
-                    ->label('Reject')
+                    ->label(__('barberaffiliation::ui.reject'))
                     ->icon('heroicon-o-x-mark')
                     ->color('danger')
                     ->requiresConfirmation()

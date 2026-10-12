@@ -15,7 +15,7 @@ final class ReviewTable
         return $table
             ->columns([
                 TextColumn::make('author.name.en')
-                    ->label('Client'),
+                    ->label(__('review::ui.client')),
                 TextColumn::make('rating')
                     ->badge(),
                 TextColumn::make('comment')

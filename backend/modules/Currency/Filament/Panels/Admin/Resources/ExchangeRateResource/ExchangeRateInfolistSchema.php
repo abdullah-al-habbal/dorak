@@ -17,9 +17,9 @@ final class ExchangeRateInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('fromCurrency.code')
-                        ->label('From Currency'),
+                        ->label(__('currency::ui.from_currency')),
                     TextEntry::make('toCurrency.code')
-                        ->label('To Currency'),
+                        ->label(__('currency::ui.to_currency')),
                     TextEntry::make('rate'),
                     TextEntry::make('effective_at')
                         ->dateTime(),

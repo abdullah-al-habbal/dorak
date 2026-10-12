@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Modules\Barber\Models\BarberModel;
 use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Models\BarberModel;
 
 beforeEach(function () {
     $this->barber = BarberModel::factory()->create();

@@ -17,15 +17,15 @@ final class ActivationLogInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('activable_type')
-                        ->label('Entity Type'),
+                        ->label(__('activation::ui.entity_type')),
                     TextEntry::make('activable_id')
-                        ->label('Entity ID'),
+                        ->label(__('activation::ui.entity_id')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (string $state): string => $state === 'enabled' ? 'success' : 'danger'),
                     TextEntry::make('reason'),
                     TextEntry::make('admin.email')
-                        ->label('Admin'),
+                        ->label(__('activation::ui.admin')),
                     TextEntry::make('activated_at')
                         ->dateTime(),
                     TextEntry::make('expires_at')

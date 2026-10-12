@@ -19,9 +19,9 @@ final class LanguageInfolistSchema
                 ->schema([
                     TextEntry::make('code'),
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('language::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('language::ui.name_arabic')),
                     TextEntry::make('direction')
                         ->badge()
                         ->color(fn (string $state): string => $state === 'rtl' ? 'info' : 'gray'),

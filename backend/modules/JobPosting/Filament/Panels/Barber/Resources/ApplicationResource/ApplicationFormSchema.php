@@ -16,10 +16,10 @@ final class ApplicationFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Application')
+            Section::make(__('jobposting::ui.application'))
                 ->schema([
                     Select::make('job_posting_id')
-                        ->label('Job Posting')
+                        ->label(__('jobposting::ui.job_posting'))
                         ->options(
                             JobPostingModel::query()
                                 ->where('status', JobPostingStatusEnum::Open)
@@ -30,7 +30,7 @@ final class ApplicationFormSchema
                         ->required(),
                     Textarea::make('profile_snapshot')
                         ->rows(5)
-                        ->label('Profile Snapshot'),
+                        ->label(__('jobposting::ui.profile_snapshot')),
                 ]),
         ]);
     }

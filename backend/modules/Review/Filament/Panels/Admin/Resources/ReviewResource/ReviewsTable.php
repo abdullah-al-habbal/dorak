@@ -15,13 +15,13 @@ final class ReviewsTable
         return $table
             ->columns([
                 TextColumn::make('booking_id')
-                    ->label('Booking')
+                    ->label(__('review::ui.booking'))
                     ->searchable(),
                 TextColumn::make('author.email')
-                    ->label('Author')
+                    ->label(__('review::ui.author'))
                     ->searchable(),
                 TextColumn::make('author_type')
-                    ->label('Author Type'),
+                    ->label(__('review::ui.author_type')),
                 TextColumn::make('rating')
                     ->sortable(),
                 TextColumn::make('comment')

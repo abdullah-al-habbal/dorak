@@ -21,7 +21,7 @@ final class DashboardRefreshTokenResolver
     {
         $ttl = config('dashboard.dashboard.refresh_ttl_seconds', self::DefaultTtlSeconds);
         if (! is_int($ttl) || $ttl < self::MinimumTtlSeconds) {
-            throw new RuntimeException('DASHBOARD_REFRESH_TTL_SECONDS must be at least 3600 seconds.');
+            throw new RuntimeException(__('dashboard::messages.refresh_ttl_invalid'));
         }
 
         return $ttl;
@@ -104,7 +104,7 @@ final class DashboardRefreshTokenResolver
             DashboardActor::ADMIN => new DashboardActor($record->actor_id, DashboardActor::ADMIN, 'platform_admin', null),
             DashboardActor::BRANCH => new DashboardActor($record->actor_id, DashboardActor::BRANCH, 'branch_manager', $record->actor_id),
             DashboardActor::BARBER => new DashboardActor($record->actor_id, DashboardActor::BARBER, 'barber', null),
-            default => throw new InvalidArgumentException('Unsupported dashboard actor type: '.$record->actor_type),
+            default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $record->actor_type])),
         };
     }
 
@@ -114,7 +114,7 @@ final class DashboardRefreshTokenResolver
             DashboardActor::ADMIN => 'admin_api',
             DashboardActor::BRANCH => 'branch_api',
             DashboardActor::BARBER => 'barber',
-            default => throw new InvalidArgumentException('Unsupported dashboard actor type: '.$actorType),
+            default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $actorType])),
         };
     }
 

@@ -18,12 +18,12 @@ final class PreferenceInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('preferenceable_type')
-                        ->label('Entity Type'),
+                        ->label(__('preference::ui.entity_type')),
                     TextEntry::make('preferenceable_id')
-                        ->label('Entity ID'),
+                        ->label(__('preference::ui.entity_id')),
                     TextEntry::make('preferred_language'),
                     TextEntry::make('displayCurrency.code')
-                        ->label('Display Currency'),
+                        ->label(__('preference::ui.display_currency')),
                     IconEntry::make('notification_enabled')
                         ->boolean(),
                     TextEntry::make('theme')

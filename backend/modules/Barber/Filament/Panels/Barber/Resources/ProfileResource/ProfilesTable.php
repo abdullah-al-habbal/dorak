@@ -16,7 +16,7 @@ final class ProfilesTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name'),
+                    ->label(__('barber::ui.name')),
                 TextColumn::make('email'),
                 TextColumn::make('created_at')
                     ->dateTime(),

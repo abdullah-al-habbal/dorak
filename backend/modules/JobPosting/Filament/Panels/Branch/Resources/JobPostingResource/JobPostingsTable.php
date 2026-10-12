@@ -16,7 +16,7 @@ final class JobPostingsTable
         return $table
             ->columns([
                 TextColumn::make('title.en')
-                    ->label('Title'),
+                    ->label(__('jobposting::ui.title')),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -27,7 +27,7 @@ final class JobPostingsTable
                     }),
                 TextColumn::make('applications_count')
                     ->counts('applications')
-                    ->label('Applications'),
+                    ->label(__('jobposting::ui.applications')),
                 TextColumn::make('created_at')
                     ->dateTime(),
             ])

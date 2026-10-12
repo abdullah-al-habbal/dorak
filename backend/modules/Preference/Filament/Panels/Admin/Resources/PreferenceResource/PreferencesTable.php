@@ -18,13 +18,13 @@ final class PreferencesTable
         return $table
             ->columns([
                 TextColumn::make('preferenceable_type')
-                    ->label('Entity Type'),
+                    ->label(__('preference::ui.entity_type')),
                 TextColumn::make('preferenceable_id')
-                    ->label('Entity ID')
+                    ->label(__('preference::ui.entity_id'))
                     ->searchable(),
                 TextColumn::make('preferred_language'),
                 TextColumn::make('displayCurrency.code')
-                    ->label('Currency'),
+                    ->label(__('preference::ui.currency')),
                 IconColumn::make('notification_enabled')
                     ->boolean(),
             ])

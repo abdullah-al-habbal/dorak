@@ -17,11 +17,11 @@ final class BookingInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('client.email')
-                        ->label('Client'),
+                        ->label(__('booking::ui.client')),
                     TextEntry::make('chair.label')
-                        ->label('Chair'),
+                        ->label(__('booking::ui.chair')),
                     TextEntry::make('barber.email')
-                        ->label('Barber'),
+                        ->label(__('booking::ui.barber')),
                     TextEntry::make('time_slot')
                         ->dateTime(),
                     TextEntry::make('status')

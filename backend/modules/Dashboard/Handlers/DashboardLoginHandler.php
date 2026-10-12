@@ -78,7 +78,7 @@ final class DashboardLoginHandler
             DashboardActor::ADMIN => AdminModel::query()->findOrFail($actor->id),
             DashboardActor::BRANCH => BranchModel::query()->findOrFail($actor->id),
             DashboardActor::BARBER => BarberModel::query()->findOrFail($actor->id),
-            default => throw new InvalidArgumentException('Unsupported dashboard actor type: '.$actor->actorType),
+            default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $actor->actorType])),
         };
     }
 

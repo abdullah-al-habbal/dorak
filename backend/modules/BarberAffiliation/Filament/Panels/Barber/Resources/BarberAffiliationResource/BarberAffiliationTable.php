@@ -16,7 +16,7 @@ final class BarberAffiliationTable
         return $table
             ->columns([
                 TextColumn::make('affiliable')
-                    ->label('Branch/Brand'),
+                    ->label(__('barberaffiliation::ui.branch_brand')),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (AffiliationStatus $state): string => match ($state) {
@@ -26,7 +26,7 @@ final class BarberAffiliationTable
                         AffiliationStatus::Terminated => 'danger',
                     }),
                 TextColumn::make('commission_rate')
-                    ->label('Commission'),
+                    ->label(__('barberaffiliation::ui.commission')),
                 TextColumn::make('invited_at')
                     ->dateTime(),
                 TextColumn::make('accepted_at')

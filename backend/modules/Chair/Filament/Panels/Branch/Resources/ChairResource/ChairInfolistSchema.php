@@ -13,13 +13,13 @@ final class ChairInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Chair')
+            Section::make(__('chair::ui.chair'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('label'),
                     TextEntry::make('barber.name.en')
-                        ->label('Barber')
-                        ->placeholder('Unassigned'),
+                        ->label(__('chair::ui.barber'))
+                        ->placeholder(__('chair::ui.unassigned')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {

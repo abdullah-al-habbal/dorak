@@ -18,12 +18,12 @@ final class ServiceCatalogCategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('servicecatalog::ui.name'))
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
                 TextColumn::make('items_count')
-                    ->label('Items')
+                    ->label(__('servicecatalog::ui.items'))
                     ->counts('items'),
                 ToggleColumn::make('is_active'),
                 TextColumn::make('created_at')

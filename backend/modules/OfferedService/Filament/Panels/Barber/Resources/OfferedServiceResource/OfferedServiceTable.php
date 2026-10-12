@@ -18,11 +18,11 @@ final class OfferedServiceTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name'),
+                    ->label(__('offeredservice::ui.name')),
                 TextColumn::make('price')
                     ->money(),
                 TextColumn::make('duration')
-                    ->label('Duration (min)'),
+                    ->label(__('offeredservice::ui.duration_min')),
                 IconColumn::make('at_home')
                     ->boolean(),
                 IconColumn::make('active')

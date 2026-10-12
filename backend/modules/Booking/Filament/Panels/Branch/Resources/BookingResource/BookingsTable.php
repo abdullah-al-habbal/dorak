@@ -16,11 +16,11 @@ final class BookingsTable
         return $table
             ->columns([
                 TextColumn::make('client.name.en')
-                    ->label('Client'),
+                    ->label(__('booking::ui.client')),
                 TextColumn::make('barber.name.en')
-                    ->label('Barber'),
+                    ->label(__('booking::ui.barber')),
                 TextColumn::make('chair.label')
-                    ->label('Chair'),
+                    ->label(__('booking::ui.chair')),
                 TextColumn::make('time_slot')
                     ->dateTime(),
                 TextColumn::make('status')

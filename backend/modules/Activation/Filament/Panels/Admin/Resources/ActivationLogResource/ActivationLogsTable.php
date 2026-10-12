@@ -15,17 +15,17 @@ final class ActivationLogsTable
         return $table
             ->columns([
                 TextColumn::make('activable_type')
-                    ->label('Type')
+                    ->label(__('activation::ui.type'))
                     ->searchable(),
                 TextColumn::make('activable_id')
-                    ->label('Entity ID')
+                    ->label(__('activation::ui.entity_id'))
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn ($state): string => $state?->value === 'enabled' ? 'success' : 'danger')
                     ->formatStateUsing(fn ($state): string => $state?->value ?? 'unknown'),
                 TextColumn::make('admin.email')
-                    ->label('Admin'),
+                    ->label(__('activation::ui.admin')),
                 TextColumn::make('activated_at')
                     ->dateTime()
                     ->sortable(),

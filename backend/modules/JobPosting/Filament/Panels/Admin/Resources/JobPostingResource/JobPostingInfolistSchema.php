@@ -17,16 +17,16 @@ final class JobPostingInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('title.en')
-                        ->label('Title (English)'),
+                        ->label(__('jobposting::ui.title_english')),
                     TextEntry::make('title.ar')
-                        ->label('Title (Arabic)'),
+                        ->label(__('jobposting::ui.title_arabic')),
                     TextEntry::make('branch.name.en')
-                        ->label('Branch'),
+                        ->label(__('jobposting::ui.branch')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (string $state): string => $state === 'open' ? 'success' : 'danger'),
                     TextEntry::make('description.en')
-                        ->label('Description')
+                        ->label(__('jobposting::ui.description'))
                         ->html(),
                     TextEntry::make('created_at')
                         ->dateTime(),

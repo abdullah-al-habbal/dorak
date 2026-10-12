@@ -10,6 +10,6 @@ final class BookingOutsideScheduleException extends RuntimeException
 {
     public function __construct()
     {
-        parent::__construct('The requested time is outside the barber schedule.');
+        parent::__construct(__('booking::messages.time_outside_schedule'));
     }
 }

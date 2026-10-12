@@ -19,11 +19,17 @@ class AdminUserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationLabel = 'Admin Users';
-
-    protected static ?string $pluralModelLabel = 'Admin Users';
-
     protected static ?string $slug = 'admin-users';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin::ui.admin_users');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin::ui.admin_users');
+    }
 
     public static function form(Form $form): Form
     {

@@ -15,7 +15,7 @@ final class BookingFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Booking Details')
+            Section::make(__('booking::ui.booking_details'))
                 ->schema([
                     Select::make('status')
                         ->options(collect(BookingStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->label()]))

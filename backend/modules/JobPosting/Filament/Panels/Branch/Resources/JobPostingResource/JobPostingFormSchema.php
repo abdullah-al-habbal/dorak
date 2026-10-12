@@ -16,21 +16,21 @@ final class JobPostingFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Job Posting')
+            Section::make(__('jobposting::ui.job_posting'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('title.en')
-                        ->label('Title (English)')
+                        ->label(__('jobposting::ui.title_english'))
                         ->required(),
                     TextInput::make('title.ar')
-                        ->label('Title (Arabic)')
+                        ->label(__('jobposting::ui.title_arabic'))
                         ->required(),
                     Textarea::make('description.en')
-                        ->label('Description (English)')
+                        ->label(__('jobposting::ui.description_english'))
                         ->rows(4)
                         ->required(),
                     Textarea::make('description.ar')
-                        ->label('Description (Arabic)')
+                        ->label(__('jobposting::ui.description_arabic'))
                         ->rows(4)
                         ->required(),
                     Select::make('status')

@@ -24,7 +24,7 @@ final class BarberAffiliationFormSchema
                         ->relationship('barber', 'email')
                         ->required(),
                     MorphToSelect::make('affiliable')
-                        ->label('Entity')
+                        ->label(__('barberaffiliation::ui.entity'))
                         ->types([
                             MorphToSelect\Type::make(BrandModel::class)
                                 ->titleAttribute('name.en'),

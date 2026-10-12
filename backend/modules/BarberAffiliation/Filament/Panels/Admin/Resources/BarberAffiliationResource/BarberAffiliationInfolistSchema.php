@@ -17,11 +17,11 @@ final class BarberAffiliationInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('barber.email')
-                        ->label('Barber'),
+                        ->label(__('barberaffiliation::ui.barber')),
                     TextEntry::make('affiliable_type')
-                        ->label('Entity Type'),
+                        ->label(__('barberaffiliation::ui.entity_type')),
                     TextEntry::make('affiliable_id')
-                        ->label('Entity ID'),
+                        ->label(__('barberaffiliation::ui.entity_id')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {

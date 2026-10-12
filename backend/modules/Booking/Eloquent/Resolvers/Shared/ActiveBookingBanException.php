@@ -10,6 +10,6 @@ final class ActiveBookingBanException extends RuntimeException
 {
     public function __construct()
     {
-        parent::__construct('A client or barber with an active ban cannot book.');
+        parent::__construct(__('booking::messages.active_booking_ban'));
     }
 }

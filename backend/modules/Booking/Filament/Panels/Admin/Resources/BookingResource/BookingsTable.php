@@ -16,13 +16,13 @@ final class BookingsTable
         return $table
             ->columns([
                 TextColumn::make('client.email')
-                    ->label('Client')
+                    ->label(__('booking::ui.client'))
                     ->searchable(),
                 TextColumn::make('barber.email')
-                    ->label('Barber')
+                    ->label(__('booking::ui.barber'))
                     ->searchable(),
                 TextColumn::make('chair.label')
-                    ->label('Chair'),
+                    ->label(__('booking::ui.chair')),
                 TextColumn::make('time_slot')
                     ->dateTime()
                     ->sortable(),

@@ -35,7 +35,7 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
         $data = ['type' => 'booking_status', 'booking_id' => $booking->id, 'status' => $booking->status->value];
         if ($this->created) {
             if ($booking->barber_id !== null) {
-                $sender->sendTo(BarberModel::class, trans('booking::messages.notification_new_request_title', [], $this->locale), trans('booking::messages.notification_barber_request_body', [], $this->locale), $data);
+                $sender->sendTo(BarberModel::class, $booking->barber_id, trans('booking::messages.notification_new_request_title', [], $this->locale), trans('booking::messages.notification_barber_request_body', [], $this->locale), $data);
             }
             $branchId = $booking->chair?->branch_id;
             if ($branchId !== null) {

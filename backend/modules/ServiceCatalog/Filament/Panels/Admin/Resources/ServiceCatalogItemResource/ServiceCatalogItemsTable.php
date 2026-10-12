@@ -18,10 +18,10 @@ final class ServiceCatalogItemsTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('servicecatalog::ui.name'))
                     ->searchable(),
                 TextColumn::make('category.name.en')
-                    ->label('Category'),
+                    ->label(__('servicecatalog::ui.category')),
                 TextColumn::make('slug')
                     ->searchable(),
                 TextColumn::make('sku')

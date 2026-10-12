@@ -14,11 +14,11 @@ final class BarberAffiliationInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Affiliation Details')
+            Section::make(__('barberaffiliation::ui.affiliation_details'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('affiliable')
-                        ->label('Branch/Brand'),
+                        ->label(__('barberaffiliation::ui.branch_brand')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (AffiliationStatus $state): string => match ($state) {
@@ -28,7 +28,7 @@ final class BarberAffiliationInfolistSchema
                             AffiliationStatus::Terminated => 'danger',
                         }),
                     TextEntry::make('commission_rate')
-                        ->label('Commission Rate'),
+                        ->label(__('barberaffiliation::ui.commission_rate')),
                     TextEntry::make('invited_at')
                         ->dateTime(),
                     TextEntry::make('accepted_at')

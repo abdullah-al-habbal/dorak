@@ -31,7 +31,7 @@ final class RescheduleBookingEloquentResolver
                 }
                 $collision = BookingModel::query()->where($column, $resourceId)->whereKeyNot($booking->id)->whereIn('status', BookingStatus::reservationBlockingValues())->where('time_slot', '<', $endsAt)->where('ends_at', '>', $timeSlot)->lockForUpdate()->exists();
                 if ($collision) {
-                    throw new ChairHasActiveBookingsException('The selected time overlaps an active booking.');
+                    throw new ChairHasActiveBookingsException(__('dashboard::messages.booking_time_overlap'));
                 }
             }
             $booking->update(['time_slot' => $timeSlot, 'ends_at' => $endsAt]);

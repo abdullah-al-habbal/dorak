@@ -17,9 +17,9 @@ final class BookingTable
         return $table
             ->columns([
                 TextColumn::make('client.name.en')
-                    ->label('Client'),
+                    ->label(__('booking::ui.client')),
                 TextColumn::make('chair.name')
-                    ->label('Chair'),
+                    ->label(__('booking::ui.chair')),
                 TextColumn::make('time_slot')
                     ->dateTime(),
                 TextColumn::make('status')

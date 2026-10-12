@@ -13,7 +13,7 @@ final class ChairConflictResolver
     {
         $blocked = BookingModel::query()->where('chair_id', $chairId)->whereIn('status', BookingStatus::reservationBlockingValues())->where('ends_at', '>', now())->exists();
         if ($blocked) {
-            throw new ChairHasActiveBookingsException('Chair has active or future bookings.');
+            throw new ChairHasActiveBookingsException(__('dashboard::messages.chair_has_active_or_future_bookings'));
         }
     }
 }

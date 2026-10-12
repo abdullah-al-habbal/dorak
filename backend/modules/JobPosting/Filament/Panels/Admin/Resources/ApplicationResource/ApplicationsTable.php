@@ -16,10 +16,10 @@ final class ApplicationsTable
         return $table
             ->columns([
                 TextColumn::make('jobPosting.title.en')
-                    ->label('Job Posting')
+                    ->label(__('jobposting::ui.job_posting'))
                     ->searchable(),
                 TextColumn::make('barber.email')
-                    ->label('Barber')
+                    ->label(__('jobposting::ui.barber'))
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()

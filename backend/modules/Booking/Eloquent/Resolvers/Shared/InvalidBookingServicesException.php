@@ -8,6 +8,6 @@ final class InvalidBookingServicesException extends \RuntimeException
 {
     public function __construct()
     {
-        parent::__construct('Booking services must be active and have a duration.');
+        parent::__construct(__('booking::messages.invalid_services_for_booking'));
     }
 }

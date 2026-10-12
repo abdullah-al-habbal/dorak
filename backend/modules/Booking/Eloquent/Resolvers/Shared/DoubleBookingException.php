@@ -8,6 +8,6 @@ final class DoubleBookingException extends \RuntimeException
 {
     public function __construct()
     {
-        parent::__construct('This seat was just taken.');
+        parent::__construct(__('booking::messages.double_booking'));
     }
 }

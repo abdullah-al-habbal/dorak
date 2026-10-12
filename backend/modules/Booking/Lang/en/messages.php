@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 return [
     'booking_created' => 'Booking request created successfully.',
+    'not_own_booking' => 'You can only view your own bookings.',
+    'canceled' => 'Booking canceled successfully.',
     'chair_not_available' => 'This chair is not available for booking.',
     'double_booking' => 'This seat was just taken. Please choose another time or chair.',
     'invalid_booking_services' => 'Choose active services with a valid duration.',
@@ -13,6 +15,8 @@ return [
     'cancel_too_late' => 'Bookings can only be canceled at least two hours before the appointment.',
     'unavailable_for_account' => 'Booking is unavailable for this account.',
     'time_outside_schedule' => 'The requested time is outside the barber schedule.',
+    'active_booking_ban' => 'A client or barber with an active ban cannot book.',
+    'invalid_services_for_booking' => 'Booking services must be active and have a duration.',
     'notification_new_request_title' => 'New booking request',
     'notification_barber_request_body' => 'A booking requires your attention.',
     'notification_branch_request_body' => 'A booking requires branch attention.',

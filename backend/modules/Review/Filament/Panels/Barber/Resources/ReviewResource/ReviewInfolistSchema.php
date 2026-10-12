@@ -13,11 +13,11 @@ final class ReviewInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Review Details')
+            Section::make(__('review::ui.review_details'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('author.name.en')
-                        ->label('Client'),
+                        ->label(__('review::ui.client')),
                     TextEntry::make('rating')
                         ->badge(),
                     TextEntry::make('comment'),

@@ -13,22 +13,22 @@ final class ReviewInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Review')
+            Section::make(__('review::ui.review'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('author.name.en')
-                        ->label('Client'),
+                        ->label(__('review::ui.client')),
                     TextEntry::make('booking.id')
-                        ->label('Booking Reference'),
+                        ->label(__('review::ui.booking_reference')),
                     TextEntry::make('rating')
-                        ->label('Rating')
+                        ->label(__('review::ui.rating'))
                         ->icon('heroicon-m-star')
                         ->iconColor('warning'),
                     TextEntry::make('created_at')
                         ->dateTime()
-                        ->label('Date'),
+                        ->label(__('review::ui.date')),
                     TextEntry::make('comment')
-                        ->label('Comment')
+                        ->label(__('review::ui.comment'))
                         ->columnSpanFull(),
                 ]),
         ]);

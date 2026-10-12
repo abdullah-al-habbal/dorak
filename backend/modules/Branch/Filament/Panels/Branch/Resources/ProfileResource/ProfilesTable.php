@@ -16,7 +16,7 @@ final class ProfilesTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name'),
+                    ->label(__('branch::ui.name')),
                 TextColumn::make('email'),
                 TextColumn::make('phone'),
                 TextColumn::make('created_at')

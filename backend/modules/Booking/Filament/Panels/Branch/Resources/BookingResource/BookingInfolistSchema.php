@@ -13,15 +13,15 @@ final class BookingInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Booking')
+            Section::make(__('booking::ui.booking'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('client.name.en')
-                        ->label('Client'),
+                        ->label(__('booking::ui.client')),
                     TextEntry::make('barber.name.en')
-                        ->label('Barber'),
+                        ->label(__('booking::ui.barber')),
                     TextEntry::make('chair.label')
-                        ->label('Chair'),
+                        ->label(__('booking::ui.chair')),
                     TextEntry::make('time_slot')
                         ->dateTime(),
                     TextEntry::make('status')

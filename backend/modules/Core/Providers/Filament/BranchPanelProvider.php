@@ -22,7 +22,7 @@ final class BranchPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#7c3aed',
             ])
-            ->brandName('Dorak Branch')
+            ->brandName(__('core::messages.branch_panel'))
             ->middleware([
                 ScopePanelToCurrentUser::class,
             ]);

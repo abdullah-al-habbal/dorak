@@ -15,13 +15,13 @@ final class BarberInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Barber Details')
+            Section::make(__('barber::ui.barber_details'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('barber::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('barber::ui.name_arabic')),
                     TextEntry::make('email'),
                     TextEntry::make('status')
                         ->badge()
@@ -33,7 +33,7 @@ final class BarberInfolistSchema
                     IconEntry::make('is_freelancer')
                         ->boolean(),
                     IconEntry::make('is_enabled')
-                        ->label('Enabled')
+                        ->label(__('barber::ui.enabled'))
                         ->boolean(),
                     TextEntry::make('created_at')
                         ->dateTime(),

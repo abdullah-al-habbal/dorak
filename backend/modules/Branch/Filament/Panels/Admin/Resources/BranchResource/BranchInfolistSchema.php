@@ -13,13 +13,13 @@ final class BranchInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Branch Details')
+            Section::make(__('branch::ui.branch_details'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('branch::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('branch::ui.name_arabic')),
                     TextEntry::make('email'),
                     TextEntry::make('phone'),
                     TextEntry::make('status')

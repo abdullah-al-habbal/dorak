@@ -20,7 +20,7 @@ final class PreferenceFormSchema
                 ->columns(2)
                 ->schema([
                     MorphToSelect::make('preferenceable')
-                        ->label('Entity')
+                        ->label(__('preference::ui.entity'))
                         ->types([
                             MorphToSelect\Type::make(BrandModel::class)
                                 ->titleAttribute('name.en'),

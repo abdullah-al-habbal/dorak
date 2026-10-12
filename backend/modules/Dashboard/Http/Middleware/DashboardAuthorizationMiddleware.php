@@ -54,7 +54,7 @@ final class DashboardAuthorizationMiddleware
             'admin_api' => new DashboardActor($model->id, DashboardActor::ADMIN, 'platform_admin', null),
             'branch_api' => new DashboardActor($model->id, DashboardActor::BRANCH, 'branch_manager', $model->id, (string) $model->getAttribute('brand_id')),
             'barber' => new DashboardActor($model->id, DashboardActor::BARBER, 'barber', null),
-            default => throw new LogicException('Unsupported dashboard guard.'),
+            default => throw new LogicException(__('dashboard::messages.guard_unsupported')),
         };
     }
 }

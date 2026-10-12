@@ -13,13 +13,13 @@ final class ApplicationInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Application')
+            Section::make(__('jobposting::ui.application'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('barber.name.en')
-                        ->label('Barber'),
+                        ->label(__('jobposting::ui.barber')),
                     TextEntry::make('jobPosting.title.en')
-                        ->label('Job Title'),
+                        ->label(__('jobposting::ui.job_title')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {
@@ -31,12 +31,12 @@ final class ApplicationInfolistSchema
                         }),
                     TextEntry::make('created_at')
                         ->dateTime()
-                        ->label('Applied'),
+                        ->label(__('jobposting::ui.applied')),
                 ]),
-            Section::make('Profile Snapshot')
+            Section::make(__('jobposting::ui.profile_snapshot'))
                 ->schema([
                     TextEntry::make('profile_snapshot')
-                        ->label('Snapshot')
+                        ->label(__('jobposting::ui.snapshot'))
                         ->json(),
                 ]),
         ]);

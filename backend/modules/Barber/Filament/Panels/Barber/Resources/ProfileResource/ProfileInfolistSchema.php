@@ -13,13 +13,13 @@ final class ProfileInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Profile')
+            Section::make(__('barber::ui.profile'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('barber::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('barber::ui.name_arabic')),
                     TextEntry::make('email'),
                     TextEntry::make('status')
                         ->badge()

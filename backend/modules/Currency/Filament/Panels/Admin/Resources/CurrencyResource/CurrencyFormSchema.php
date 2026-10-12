@@ -22,10 +22,10 @@ final class CurrencyFormSchema
                         ->maxLength(3)
                         ->unique(ignoreRecord: true),
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('currency::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('currency::ui.name_arabic'))
                         ->required(),
                     TextInput::make('symbol')
                         ->required()

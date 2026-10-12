@@ -22,10 +22,10 @@ final class ServiceCatalogItemFormSchema
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('servicecatalog::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('servicecatalog::ui.name_arabic'))
                         ->required(),
                     TextInput::make('slug')
                         ->required()
@@ -44,12 +44,12 @@ final class ServiceCatalogItemFormSchema
                     Toggle::make('is_active')
                         ->default(true),
                 ]),
-            Section::make('Description')
+            Section::make(__('servicecatalog::ui.description'))
                 ->schema([
                     TextInput::make('description.en')
-                        ->label('Description (English)'),
+                        ->label(__('servicecatalog::ui.description_english')),
                     TextInput::make('description.ar')
-                        ->label('Description (Arabic)'),
+                        ->label(__('servicecatalog::ui.description_arabic')),
                 ]),
         ]);
     }

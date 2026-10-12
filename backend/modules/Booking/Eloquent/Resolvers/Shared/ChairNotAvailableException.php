@@ -8,6 +8,6 @@ final class ChairNotAvailableException extends \RuntimeException
 {
     public function __construct()
     {
-        parent::__construct('Chair is not available for booking.');
+        parent::__construct(__('booking::messages.chair_not_available'));
     }
 }

@@ -13,18 +13,18 @@ final class JobPostingInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Job Posting')
+            Section::make(__('jobposting::ui.job_posting'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('title.en')
-                        ->label('Title (English)'),
+                        ->label(__('jobposting::ui.title_english')),
                     TextEntry::make('title.ar')
-                        ->label('Title (Arabic)'),
+                        ->label(__('jobposting::ui.title_arabic')),
                     TextEntry::make('description.en')
-                        ->label('Description (English)')
+                        ->label(__('jobposting::ui.description_english'))
                         ->columnSpanFull(),
                     TextEntry::make('description.ar')
-                        ->label('Description (Arabic)')
+                        ->label(__('jobposting::ui.description_arabic'))
                         ->columnSpanFull(),
                     TextEntry::make('status')
                         ->badge()
@@ -36,7 +36,7 @@ final class JobPostingInfolistSchema
                         }),
                     TextEntry::make('applications_count')
                         ->counts('applications')
-                        ->label('Applications'),
+                        ->label(__('jobposting::ui.applications')),
                     TextEntry::make('created_at')
                         ->dateTime(),
                 ]),

@@ -17,12 +17,12 @@ final class ServiceCatalogCategoryInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('servicecatalog::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('servicecatalog::ui.name_arabic')),
                     TextEntry::make('slug'),
                     TextEntry::make('is_active')
-                        ->label('Active'),
+                        ->label(__('servicecatalog::ui.active')),
                     TextEntry::make('created_at')
                         ->dateTime(),
                 ]),

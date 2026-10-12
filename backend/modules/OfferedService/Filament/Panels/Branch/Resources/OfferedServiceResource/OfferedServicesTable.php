@@ -17,11 +17,11 @@ final class OfferedServicesTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name'),
+                    ->label(__('offeredservice::ui.name')),
                 TextColumn::make('price')
                     ->money(fn ($record): string => $record->currency->code ?? 'USD'),
                 TextColumn::make('duration')
-                    ->label('Minutes'),
+                    ->label(__('offeredservice::ui.minutes')),
                 IconColumn::make('at_home')
                     ->boolean(),
                 IconColumn::make('active')

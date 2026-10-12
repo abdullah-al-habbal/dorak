@@ -14,13 +14,13 @@ final class AdminUserInfolistSchema
     public static function make(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Admin Details')
+            Section::make(__('admin::ui.admin_details'))
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('admin::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('admin::ui.name_arabic')),
                     TextEntry::make('email'),
                     TextEntry::make('created_at')
                         ->dateTime(),

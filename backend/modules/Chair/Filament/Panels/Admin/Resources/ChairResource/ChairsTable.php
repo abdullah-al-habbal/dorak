@@ -19,10 +19,10 @@ final class ChairsTable
                 TextColumn::make('label')
                     ->searchable(),
                 TextColumn::make('branch.name.en')
-                    ->label('Branch')
+                    ->label(__('chair::ui.branch'))
                     ->searchable(),
                 TextColumn::make('barber.email')
-                    ->label('Barber')
+                    ->label(__('chair::ui.barber'))
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()

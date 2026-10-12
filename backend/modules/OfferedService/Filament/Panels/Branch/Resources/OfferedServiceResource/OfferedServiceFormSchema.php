@@ -15,14 +15,14 @@ final class OfferedServiceFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Service Details')
+            Section::make(__('offeredservice::ui.service_details'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('offeredservice::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('offeredservice::ui.name_arabic'))
                         ->required(),
                     TextInput::make('price')
                         ->numeric()
@@ -31,13 +31,13 @@ final class OfferedServiceFormSchema
                         ->relationship('currency', 'code')
                         ->required(),
                     TextInput::make('duration')
-                        ->label('Duration (minutes)')
+                        ->label(__('offeredservice::ui.duration_minutes'))
                         ->numeric()
                         ->required(),
                     Checkbox::make('at_home')
-                        ->label('Available at Home'),
+                        ->label(__('offeredservice::ui.available_at_home')),
                     Checkbox::make('active')
-                        ->label('Active')
+                        ->label(__('offeredservice::ui.active'))
                         ->default(true),
                 ]),
         ]);

@@ -18,10 +18,10 @@ final class ServiceCatalogItemTagFormSchema
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('servicecatalog::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('servicecatalog::ui.name_arabic'))
                         ->required(),
                     TextInput::make('slug')
                         ->required()

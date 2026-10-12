@@ -17,10 +17,10 @@ final class ExchangeRatesTable
         return $table
             ->columns([
                 TextColumn::make('fromCurrency.code')
-                    ->label('From')
+                    ->label(__('currency::ui.from'))
                     ->searchable(),
                 TextColumn::make('toCurrency.code')
-                    ->label('To')
+                    ->label(__('currency::ui.to'))
                     ->searchable(),
                 TextColumn::make('rate')
                     ->sortable(),

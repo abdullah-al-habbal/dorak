@@ -8,6 +8,6 @@ final class BarberAlreadyAffiliatedException extends \RuntimeException
 {
     public function __construct()
     {
-        parent::__construct('Barber already affiliated to a branch.');
+        parent::__construct(__('barberaffiliation::messages.already_affiliated'));
     }
 }

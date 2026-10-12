@@ -16,13 +16,13 @@ final class ChairFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Chair')
+            Section::make(__('chair::ui.chair'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('label')
                         ->required(),
                     Select::make('barber_id')
-                        ->label('Barber')
+                        ->label(__('chair::ui.barber'))
                         ->relationship('barber', 'name.en')
                         ->searchable()
                         ->preload()
@@ -32,7 +32,7 @@ final class ChairFormSchema
                         ->required()
                         ->default(ChairStatus::Available),
                     JSONInput::make('ui_metadata')
-                        ->label('UI Metadata')
+                        ->label(__('chair::ui.ui_metadata'))
                         ->nullable(),
                 ]),
         ]);

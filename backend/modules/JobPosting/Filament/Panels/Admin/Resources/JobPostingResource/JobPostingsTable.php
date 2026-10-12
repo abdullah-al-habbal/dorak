@@ -17,10 +17,10 @@ final class JobPostingsTable
         return $table
             ->columns([
                 TextColumn::make('title.en')
-                    ->label('Title')
+                    ->label(__('jobposting::ui.title'))
                     ->searchable(),
                 TextColumn::make('branch.name.en')
-                    ->label('Branch')
+                    ->label(__('jobposting::ui.branch'))
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()

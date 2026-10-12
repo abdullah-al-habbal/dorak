@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\ClientRecommendation\Console\Commands;
 
-use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Laravel\Ai\Embeddings;
@@ -18,19 +17,30 @@ use Modules\ClientRecommendation\Models\ClientPreferenceVectorModel;
 use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 use Modules\ClientRecommendation\ValuesObjects\RecommendationFactorWeightsValueObject;
+use Symfony\Component\Console\Input\InputOption;
 
-#[Signature('recommend:recompute-vectors
-    {--client-id= : Recompute a single client by UUID}
-    {--force : Skip freshness check}')]
-#[Description('Recompute client preference vectors from interaction signals')]
+#[Signature('recommend:recompute-vectors {--client-id=} {--force}')]
 final class RecomputeClientVectorsCommand extends Command
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setDescription(trans('clientrecommendation::messages.cli_description', [], 'en'));
+        $definition = $this->getDefinition();
+        $options = array_map(static fn (InputOption $option): InputOption => match ($option->getName()) {
+            'client-id' => new InputOption('client-id', null, InputOption::VALUE_OPTIONAL, trans('clientrecommendation::messages.cli_client_id_option', [], 'en')),
+            'force' => new InputOption('force', null, InputOption::VALUE_NONE, trans('clientrecommendation::messages.cli_force_option', [], 'en')),
+            default => $option,
+        }, $definition->getOptions());
+        $definition->setOptions($options);
+    }
+
     public function handle(): int
     {
         $clientId = $this->option('client-id');
         $clientId !== null
-            ? $this->info("Recomputing vector for client: {$clientId}")
-            : $this->info('Recomputing vectors for all clients with signals...');
+            ? $this->info($this->cli('cli_recomputing_client', ['client_id' => $clientId]))
+            : $this->info($this->cli('cli_recomputing_all_clients'));
 
         ClientModel::query()
             ->when($clientId, fn ($q, $id) => $q->where('id', $id))
@@ -42,7 +52,7 @@ final class RecomputeClientVectorsCommand extends Command
 
         $this->recomputeEntityEmbeddings($clientId);
 
-        $this->info('Done.');
+        $this->info($this->cli('cli_done'));
 
         return self::SUCCESS;
     }
@@ -90,7 +100,7 @@ final class RecomputeClientVectorsCommand extends Command
             $embedding = $response->embeddings[0] ?? null;
 
             if ($embedding === null) {
-                $this->warn("No embedding returned for {$config['type']}: {$entity->id}");
+                $this->warn($this->cli('cli_embedding_missing', ['entity_type' => $config['type'], 'entity_id' => $entity->id]));
 
                 return;
             }
@@ -110,9 +120,9 @@ final class RecomputeClientVectorsCommand extends Command
                 ]
             );
 
-            $this->info("Embedding computed for {$config['type']}: {$entity->id}");
+            $this->info($this->cli('cli_embedding_computed', ['entity_type' => $config['type'], 'entity_id' => $entity->id]));
         } catch (\Throwable $e) {
-            $this->error("Failed for {$config['type']} {$entity->id}: {$e->getMessage()}");
+            $this->error($this->cli('cli_embedding_failed', ['entity_type' => $config['type'], 'entity_id' => $entity->id, 'reason' => $e->getMessage()]));
         }
     }
 
@@ -180,7 +190,7 @@ final class RecomputeClientVectorsCommand extends Command
             $embedding = $response->embeddings[0] ?? null;
 
             if ($embedding === null) {
-                $this->warn("No embedding returned for client: {$client->id}");
+                $this->warn($this->cli('cli_client_embedding_missing', ['client_id' => $client->id]));
 
                 return;
             }
@@ -199,9 +209,9 @@ final class RecomputeClientVectorsCommand extends Command
 
             $this->rebuildEdges($client);
 
-            $this->info("Vector computed for client: {$client->id}");
+            $this->info($this->cli('cli_client_vector_computed', ['client_id' => $client->id]));
         } catch (\Throwable $e) {
-            $this->error("Failed for client {$client->id}: {$e->getMessage()}");
+            $this->error($this->cli('cli_client_vector_failed', ['client_id' => $client->id, 'reason' => $e->getMessage()]));
         }
     }
 
@@ -246,5 +256,10 @@ final class RecomputeClientVectorsCommand extends Command
                 ['weight' => 1.0]
             );
         }
+    }
+
+    private function cli(string $key, array $replace = []): string
+    {
+        return trans('clientrecommendation::messages.'.$key, $replace, 'en');
     }
 }

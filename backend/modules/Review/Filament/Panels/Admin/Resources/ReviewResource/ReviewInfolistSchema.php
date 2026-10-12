@@ -17,13 +17,13 @@ final class ReviewInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('booking_id')
-                        ->label('Booking'),
+                        ->label(__('review::ui.booking')),
                     TextEntry::make('author.email')
-                        ->label('Author'),
+                        ->label(__('review::ui.author')),
                     TextEntry::make('author_type')
-                        ->label('Author Type'),
+                        ->label(__('review::ui.author_type')),
                     TextEntry::make('subject_type')
-                        ->label('Subject Type'),
+                        ->label(__('review::ui.subject_type')),
                     TextEntry::make('rating')
                         ->badge()
                         ->color(fn (int $state): string => match (true) {

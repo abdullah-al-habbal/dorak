@@ -17,8 +17,8 @@ final class ChairsTable
             ->columns([
                 TextColumn::make('label'),
                 TextColumn::make('barber.name.en')
-                    ->label('Barber')
-                    ->placeholder('Unassigned'),
+                    ->label(__('chair::ui.barber'))
+                    ->placeholder(__('chair::ui.unassigned')),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

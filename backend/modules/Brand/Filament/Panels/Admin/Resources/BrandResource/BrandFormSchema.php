@@ -19,10 +19,10 @@ final class BrandFormSchema
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('brand::ui.name_english'))
                         ->required(),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('brand::ui.name_arabic'))
                         ->required(),
                     Select::make('owner_id')
                         ->relationship('owner', 'email')
@@ -33,12 +33,12 @@ final class BrandFormSchema
                     TextInput::make('logo')
                         ->url(),
                 ]),
-            Section::make('Description')
+            Section::make(__('brand::ui.description'))
                 ->schema([
                     RichEditor::make('description.en')
-                        ->label('Description (English)'),
+                        ->label(__('brand::ui.description_english')),
                     RichEditor::make('description.ar')
-                        ->label('Description (Arabic)'),
+                        ->label(__('brand::ui.description_arabic')),
                 ]),
         ]);
     }

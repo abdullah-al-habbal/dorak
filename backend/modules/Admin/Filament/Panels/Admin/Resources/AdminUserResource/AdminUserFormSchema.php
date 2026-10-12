@@ -16,19 +16,19 @@ final class AdminUserFormSchema
     public static function make(Form $form): Form
     {
         return $form->schema([
-            Section::make('Name')
+            Section::make(__('admin::ui.name'))
                 ->columns(2)
                 ->schema([
                     TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('admin::ui.name_english'))
                         ->required()
                         ->live(true)
                         ->afterStateUpdated(fn (Set $set, ?string $state) => $set('email', $state ? Str::slug($state).'@dorak.sy' : null)),
                     TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('admin::ui.name_arabic'))
                         ->required(),
                 ]),
-            Section::make('Account')
+            Section::make(__('admin::ui.account'))
                 ->schema([
                     TextInput::make('email')
                         ->email()

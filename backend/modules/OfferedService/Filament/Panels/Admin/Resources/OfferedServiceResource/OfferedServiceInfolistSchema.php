@@ -18,13 +18,13 @@ final class OfferedServiceInfolistSchema
                 ->columns(2)
                 ->schema([
                     TextEntry::make('name.en')
-                        ->label('Name (English)'),
+                        ->label(__('offeredservice::ui.name_english')),
                     TextEntry::make('name.ar')
-                        ->label('Name (Arabic)'),
+                        ->label(__('offeredservice::ui.name_arabic')),
                     TextEntry::make('serviceable_type')
-                        ->label('Entity Type'),
+                        ->label(__('offeredservice::ui.entity_type')),
                     TextEntry::make('currency.code')
-                        ->label('Currency'),
+                        ->label(__('offeredservice::ui.currency')),
                     TextEntry::make('price'),
                     TextEntry::make('duration')
                         ->suffix(' min'),
@@ -33,7 +33,7 @@ final class OfferedServiceInfolistSchema
                     IconEntry::make('active')
                         ->boolean(),
                     TextEntry::make('description.en')
-                        ->label('Description')
+                        ->label(__('offeredservice::ui.description'))
                         ->html(),
                 ]),
         ]);

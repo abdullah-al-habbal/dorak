@@ -18,13 +18,13 @@ final class BrandsTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('brand::ui.name'))
                     ->searchable(),
                 TextColumn::make('owner.email')
-                    ->label('Owner')
+                    ->label(__('brand::ui.owner'))
                     ->searchable(),
                 TextColumn::make('baseCurrency.code')
-                    ->label('Currency'),
+                    ->label(__('brand::ui.currency')),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

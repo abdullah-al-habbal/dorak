@@ -21,7 +21,10 @@ class BookingResource extends Resource
 
     protected static ?string $slug = 'bookings';
 
-    protected static ?string $navigationLabel = 'Bookings';
+    public static function getNavigationLabel(): string
+    {
+        return __('booking::ui.bookings');
+    }
 
     public static function getEloquentQuery(): Builder
     {

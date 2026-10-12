@@ -19,7 +19,7 @@ final class DashboardSessionClaim
     {
         $secret = config('dashboard.dashboard.session_secret');
         if (! is_string($secret) || mb_strlen($secret) < 32) {
-            throw new RuntimeException('DASHBOARD_SESSION_SECRET must be at least 32 characters.');
+            throw new RuntimeException(__('dashboard::messages.session_secret_invalid'));
         }
 
         $ttl = $this->expiresIn();
@@ -45,7 +45,7 @@ final class DashboardSessionClaim
     {
         $ttl = config('dashboard.dashboard.claim_ttl_seconds', self::DefaultTtlSeconds);
         if (! is_int($ttl) || $ttl < 60) {
-            throw new RuntimeException('DASHBOARD_CLAIM_TTL_SECONDS must be at least 60 seconds.');
+            throw new RuntimeException(__('dashboard::messages.claim_ttl_invalid'));
         }
 
         return $ttl;
@@ -57,7 +57,7 @@ final class DashboardSessionClaim
         try {
             return $this->base64Url(json_encode($value, JSON_THROW_ON_ERROR));
         } catch (JsonException $exception) {
-            throw new RuntimeException('Unable to encode dashboard claim.', previous: $exception);
+            throw new RuntimeException(__('dashboard::messages.claim_encoding_failed'), previous: $exception);
         }
     }
 

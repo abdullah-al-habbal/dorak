@@ -18,9 +18,9 @@ final class ChairInfolistSchema
                 ->schema([
                     TextEntry::make('label'),
                     TextEntry::make('branch.name.en')
-                        ->label('Branch'),
+                        ->label(__('chair::ui.branch')),
                     TextEntry::make('barber.email')
-                        ->label('Barber'),
+                        ->label(__('chair::ui.barber')),
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {

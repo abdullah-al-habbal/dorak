@@ -18,7 +18,7 @@ final class ClientsTable
         return $table
             ->columns([
                 TextColumn::make('name.en')
-                    ->label('Name')
+                    ->label(__('client::ui.name'))
                     ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
