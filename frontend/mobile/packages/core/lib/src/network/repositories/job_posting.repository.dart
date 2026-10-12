@@ -5,7 +5,6 @@ abstract class JobPostingRepository {
   Future<JobPostingDto> getJob(String id);
   Future<JobApplicationDto> apply(String jobId, {String? coverLetter});
   Future<PaginatedData<JobApplicationDto>> getApplications({String? status});
-  Future<JobApplicationDto> updateApplicationStatus(String id, String status);
   Future<PaginatedData<JobPostingDto>> getBranchJobPostings();
   Future<JobPostingDto> saveBranchJobPosting(
     Map<String, dynamic> values, {
@@ -13,6 +12,11 @@ abstract class JobPostingRepository {
   });
   Future<void> deleteBranchJobPosting(String id);
   Future<PaginatedData<JobApplicationDto>> getBranchApplications(String jobId);
+  Future<JobApplicationDto> updateBranchApplicationStatus(
+    String jobId,
+    String applicationId,
+    String status,
+  );
   Future<Map<String, dynamic>> updateBranchFloorPlan({
     required String preset,
     List<Map<String, dynamic>> zones = const [],
@@ -52,14 +56,6 @@ class DioJobPostingRepository implements JobPostingRepository {
             JobApplicationDto.fromJson(json as Map<String, dynamic>),
       );
   @override
-  Future<JobApplicationDto> updateApplicationStatus(String id, String status) =>
-      _client.put(
-        JobPostingEndpoints.applicationStatus(id),
-        data: {'status': status},
-        parser: (json) =>
-            JobApplicationDto.fromJson(json as Map<String, dynamic>),
-      );
-  @override
   Future<PaginatedData<JobPostingDto>> getBranchJobPostings() =>
       _client.getPaginated(
         JobPostingEndpoints.branchJobPostings,
@@ -93,6 +89,16 @@ class DioJobPostingRepository implements JobPostingRepository {
     JobPostingEndpoints.branchApplications(jobId),
     itemParser: (json) =>
         JobApplicationDto.fromJson(json as Map<String, dynamic>),
+  );
+  @override
+  Future<JobApplicationDto> updateBranchApplicationStatus(
+    String jobId,
+    String applicationId,
+    String status,
+  ) => _client.patch(
+    JobPostingEndpoints.branchApplicationStatus(jobId, applicationId),
+    data: {'status': status},
+    parser: (json) => JobApplicationDto.fromJson(json as Map<String, dynamic>),
   );
   @override
   Future<Map<String, dynamic>> updateBranchFloorPlan({

@@ -25,7 +25,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: both branch-managed barbers and barbers with an accepted affiliation to the branch or its brand count as members.
 
 ## [Task 06: Move Job Application Decisions to Branch Managers](tasks/task-06-job-application-status-authz.md)
-- [ ] Decision required: does a withdraw status exist? `ApplicationStatus` has no `withdrawn` case today.
+- [x] Decision resolved: no withdrawal status is introduced. Remove the barber decision route; any future withdrawal flow needs a separately specified domain state and workflow.
 
 ## [Task 09: Enforce Account Status at Login and Hide Inactive Entities in Explore](tasks/task-09-activation-status-visibility.md)
 - [ ] Decision required: whether a `pending` client (email not yet verified) may log in with limited scope. If yes, document the allowed routes.

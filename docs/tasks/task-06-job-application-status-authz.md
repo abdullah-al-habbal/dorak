@@ -19,7 +19,7 @@ The branch manager, who owns the decision according to the spec, has a list rout
 - Add `PATCH /api/v1/branch/job-postings/{jobPosting}/applications/{application}/status` under `auth:branch_api`. Authorize only when `jobPosting.branch_id === auth('branch_api')->id()` and the application belongs to that posting.
 - Enforce transitions: `submitted → reviewed | accepted | rejected` and `reviewed → accepted | rejected`. `accepted` and `rejected` are terminal; an invalid transition returns 422.
 - Remove the barber route `PUT /applications/{application}/status`, or restrict it to the applicant **withdrawing** their own application.
-  - Decision required: does a withdraw status exist? `ApplicationStatus` has no `withdrawn` case today.
+- Decision resolved: no withdrawal status is introduced in this task. Remove the barber status route; withdrawal requires a separately specified domain state and workflow.
 - Return 404 (not authorize-true) when the application does not exist.
 
 ### Dashboard (BFF / React)
@@ -32,13 +32,13 @@ The branch manager, who owns the decision according to the spec, has a list rout
 - `frontend/mobile/packages/core/lib/src/network/endpoints/job_posting.endpoints.dart`: add the branch application status endpoint constant.
 
 ## Acceptance Criteria
-- [ ] As any barber, `PUT /api/v1/applications/{id}/status` with `accepted` returns 403 or 404 (or 405 if the route is removed), and the status is unchanged.
-- [ ] As the owning branch, `PATCH /api/v1/branch/job-postings/{posting}/applications/{id}/status` with `accepted` returns 200, and the DB shows `accepted`.
-- [ ] As a different branch, the same request returns 403.
-- [ ] `accepted → submitted` returns 422.
-- [ ] A missing application ID returns 404.
-- [ ] Feature test `tests/Feature/JobPosting/ApplicationStatusAuthorizationTest.php` covers every case above.
-- [ ] `php artisan test` and `melos run test` pass; PHPStan (max) and Pint are clean for touched files.
+- [x] As any barber, `PUT /api/v1/applications/{id}/status` with `accepted` returns 403 or 404 (or 405 if the route is removed), and the status is unchanged.
+- [x] As the owning branch, `PATCH /api/v1/branch/job-postings/{posting}/applications/{id}/status` with `accepted` returns 200, and the DB shows `accepted`.
+- [x] As a different branch, the same request returns 403.
+- [x] `accepted → submitted` returns 422.
+- [x] A missing application ID returns 404.
+- [x] Feature test `tests/Feature/JobPosting/ApplicationStatusAuthorizationTest.php` covers every case above.
+- [x] `php artisan test` and `melos run test` pass; PHPStan (max) and Pint are clean for touched files.
 
 ## Out of Scope
 - Application notifications to the shop and the barber: Task 31.

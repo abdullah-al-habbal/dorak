@@ -5161,12 +5161,6 @@ parameters:
 			path: modules/JobPosting/Eloquent/Resolvers/Barber/ListApplicationsEloquentResolver.php
 
 		-
-			message: '#^Method Modules\\JobPosting\\Eloquent\\Resolvers\\Barber\\UpdateApplicationStatusEloquentResolver\:\:resolve\(\) should return Modules\\JobPosting\\Models\\ApplicationModel but returns Modules\\JobPosting\\Models\\ApplicationModel\|null\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/JobPosting/Eloquent/Resolvers/Barber/UpdateApplicationStatusEloquentResolver.php
-
-		-
 			message: '#^Method Modules\\JobPosting\\Eloquent\\Resolvers\\Shared\\ListJobPostingsEloquentResolver\:\:resolve\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -5315,36 +5309,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: modules/JobPosting/Http/Requests/Barber/ListApplicationsRequest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\JobPosting\\Models\\ApplicationModel\>\|Modules\\JobPosting\\Models\\ApplicationModel\:\:\$jobPosting\.$#'
-			identifier: property.notFound
-			count: 1
-			path: modules/JobPosting/Http/Requests/Barber/UpdateApplicationStatusRequest.php
-
-		-
-			message: '#^Cannot access property \$branch_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: modules/JobPosting/Http/Requests/Barber/UpdateApplicationStatusRequest.php
-
-		-
-			message: '#^Cannot access property \$id on Modules\\Admin\\Models\\AdminModel\|Modules\\Barber\\Models\\BarberModel\|Modules\\Branch\\Models\\BranchModel\|Modules\\Client\\Models\\ClientModel\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: modules/JobPosting/Http/Requests/Barber/UpdateApplicationStatusRequest.php
-
-		-
-			message: '#^Method Modules\\JobPosting\\Http\\Requests\\Barber\\UpdateApplicationStatusRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/JobPosting/Http/Requests/Barber/UpdateApplicationStatusRequest.php
-
-		-
-			message: '#^Parameter \#1 \$value of static method Modules\\JobPosting\\Enums\\ApplicationStatus\:\:from\(\) expects int\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/JobPosting/Http/Requests/Barber/UpdateApplicationStatusRequest.php
 
 		-
 			message: '#^Cannot cast mixed to int\.$#'

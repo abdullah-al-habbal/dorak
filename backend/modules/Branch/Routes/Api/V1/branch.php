@@ -18,6 +18,7 @@ use Modules\Branch\Http\Actions\Branch\ListReviewsAction;
 use Modules\Branch\Http\Actions\Branch\LoginAction;
 use Modules\Branch\Http\Actions\Branch\RejectAffiliationAction;
 use Modules\Branch\Http\Actions\Branch\ToggleChairStatusAction;
+use Modules\Branch\Http\Actions\Branch\UpdateApplicationStatusAction;
 use Modules\Branch\Http\Actions\Branch\UpdateBookingStatusAction;
 use Modules\Branch\Http\Actions\Branch\UpdateFloorPlanConfigurationAction;
 use Modules\Branch\Http\Actions\Branch\UpdateJobPostingAction;
@@ -44,6 +45,7 @@ Route::prefix('branch')->name('branch.')->group(function (): void {
         Route::put('/job-postings/{jobPosting}', UpdateJobPostingAction::class)->name('job-postings.update');
         Route::delete('/job-postings/{jobPosting}', DeleteJobPostingAction::class)->name('job-postings.delete');
         Route::get('/job-postings/{jobPosting}/applications', ListApplicationsAction::class)->name('job-postings.applications');
+        Route::patch('/job-postings/{jobPosting}/applications/{application}/status', UpdateApplicationStatusAction::class)->name('job-postings.applications.status');
         Route::get('/reviews', ListReviewsAction::class)->name('reviews.list');
     });
 });
