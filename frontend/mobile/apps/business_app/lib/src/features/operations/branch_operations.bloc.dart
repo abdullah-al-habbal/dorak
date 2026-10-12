@@ -22,6 +22,7 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
     emit(state.copyWith(loading: true, clearError: true));
     try {
       final results = await Future.wait([
+        _repository.getProfile(),
         _repository.getDashboard(),
         _repository.getBookings(),
         _repository.getChairs(),
@@ -30,14 +31,15 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
       emit(
         BranchOperationsState(
           loading: false,
-          dashboard: results[0] as BranchDashboardDto,
-          bookings: (results[1] as PaginatedData<BookingDto>).data,
-          chairs: (results[2] as PaginatedData<FloorChairDto>).data,
+          profile: results[0] as BranchDto,
+          dashboard: results[1] as BranchDashboardDto,
+          bookings: (results[2] as PaginatedData<BookingDto>).data,
+          chairs: (results[3] as PaginatedData<FloorChairDto>).data,
         ),
       );
       if (_realtime != null) {
         for (final branch
-            in (results[0] as BranchDashboardDto).assignedBranches) {
+            in (results[1] as BranchDashboardDto).assignedBranches) {
           if (_subscribedBranchIds.add(branch.id)) {
             _subscriptions.add(
               _realtime.subscribeToBranch(branch.id, _onRealtime),
@@ -48,6 +50,23 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
     } catch (error) {
       if (isClosed || generation != _loadGeneration) return;
       emit(state.copyWith(loading: false, error: error));
+    }
+  }
+
+  Future<void> updateChairStatus(String id, String status) async {
+    try {
+      final updated = await _repository.updateChairStatus(id, status);
+      if (isClosed) return;
+      emit(
+        state.copyWith(
+          chairs: state.chairs
+              .map((chair) => chair.id == id ? updated : chair)
+              .toList(growable: false),
+          clearError: true,
+        ),
+      );
+    } catch (error) {
+      if (!isClosed) emit(state.copyWith(error: error));
     }
   }
 

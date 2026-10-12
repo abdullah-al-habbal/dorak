@@ -31,6 +31,7 @@ class StylistBloc extends Cubit<StylistState> {
       emit(
         state.copyWith(
           loading: false,
+          profile: profile,
           appointments: page.data,
           online: profile.workstationOnline,
         ),

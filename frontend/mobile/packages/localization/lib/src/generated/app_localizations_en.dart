@@ -229,6 +229,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldRequired => 'This field is required';
 
   @override
+  String get fieldInvalid => 'Please check this field';
+
+  @override
   String get fieldInvalidEmail => 'Please enter a valid email address';
 
   @override
@@ -907,6 +910,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessBranchOperationsTitle => 'Branch operations';
 
   @override
+  String businessAppointmentDateTime(String date, String time) {
+    return '$date · $time';
+  }
+
+  @override
+  String get bookingStatusPending => 'Pending';
+
+  @override
+  String get bookingStatusNoShow => 'No-show';
+
+  @override
+  String get bookingStatusUnknown => 'Unknown status';
+
+  @override
+  String get staffLogOut => 'Log out';
+
+  @override
+  String get businessLoginTitle => 'Sign in to your branch';
+
+  @override
+  String get businessLoginSubtitle =>
+      'Use your branch account to manage operations.';
+
+  @override
+  String get stylistLoginTitle => 'Sign in to your stylist account';
+
+  @override
+  String get stylistLoginSubtitle =>
+      'Manage your appointments and work status.';
+
+  @override
+  String get chairStatusAvailable => 'Available';
+
+  @override
+  String get chairStatusOccupied => 'Occupied';
+
+  @override
+  String get chairStatusMaintenance => 'Under maintenance';
+
+  @override
+  String get chairStatusUnknown => 'Unknown status';
+
+  @override
   String get businessRetry => 'Retry';
 
   @override
@@ -963,6 +1009,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stylistTodayTitle => 'Today';
+
+  @override
+  String stylistAppointmentDateTime(String date, String time) {
+    return '$date · $time';
+  }
 
   @override
   String get stylistWorkstationOnline => 'Workstation online';

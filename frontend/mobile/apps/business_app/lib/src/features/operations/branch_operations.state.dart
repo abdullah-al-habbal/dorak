@@ -5,6 +5,7 @@ class BranchOperationsState extends Equatable {
   BranchOperationsState({
     this.loading = false,
     this.dashboard,
+    this.profile,
     List<BookingDto> bookings = const [],
     List<FloorChairDto> chairs = const [],
     this.error,
@@ -13,6 +14,7 @@ class BranchOperationsState extends Equatable {
 
   final bool loading;
   final BranchDashboardDto? dashboard;
+  final BranchDto? profile;
   final List<BookingDto> bookings;
   final List<FloorChairDto> chairs;
   final Object? error;
@@ -20,6 +22,7 @@ class BranchOperationsState extends Equatable {
   BranchOperationsState copyWith({
     bool? loading,
     BranchDashboardDto? dashboard,
+    BranchDto? profile,
     List<BookingDto>? bookings,
     List<FloorChairDto>? chairs,
     Object? error,
@@ -27,11 +30,19 @@ class BranchOperationsState extends Equatable {
   }) => BranchOperationsState(
     loading: loading ?? this.loading,
     dashboard: dashboard ?? this.dashboard,
+    profile: profile ?? this.profile,
     bookings: bookings ?? this.bookings,
     chairs: chairs ?? this.chairs,
     error: clearError ? null : error ?? this.error,
   );
 
   @override
-  List<Object?> get props => [loading, dashboard, bookings, chairs, error];
+  List<Object?> get props => [
+    loading,
+    dashboard,
+    profile,
+    bookings,
+    chairs,
+    error,
+  ];
 }

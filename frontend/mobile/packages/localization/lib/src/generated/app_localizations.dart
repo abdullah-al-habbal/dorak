@@ -518,6 +518,12 @@ abstract class AppLocalizations {
   /// **'This field is required'**
   String get fieldRequired;
 
+  /// Generic localized validation error when server details are unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Please check this field'**
+  String get fieldInvalid;
+
   /// Form validation error for a malformed email
   ///
   /// In en, this message translates to:
@@ -1754,6 +1760,84 @@ abstract class AppLocalizations {
   /// **'Branch operations'**
   String get businessBranchOperationsTitle;
 
+  /// Localized date and time shown for a business appointment
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · {time}'**
+  String businessAppointmentDateTime(String date, String time);
+
+  /// Pending booking status
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get bookingStatusPending;
+
+  /// No-show booking status
+  ///
+  /// In en, this message translates to:
+  /// **'No-show'**
+  String get bookingStatusNoShow;
+
+  /// Fallback booking status label
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown status'**
+  String get bookingStatusUnknown;
+
+  /// Staff account logout action
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get staffLogOut;
+
+  /// Business app login title
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to your branch'**
+  String get businessLoginTitle;
+
+  /// Business app login subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Use your branch account to manage operations.'**
+  String get businessLoginSubtitle;
+
+  /// Stylist app login title
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to your stylist account'**
+  String get stylistLoginTitle;
+
+  /// Stylist app login subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your appointments and work status.'**
+  String get stylistLoginSubtitle;
+
+  /// Available chair status
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get chairStatusAvailable;
+
+  /// Occupied chair status
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied'**
+  String get chairStatusOccupied;
+
+  /// Chair maintenance status
+  ///
+  /// In en, this message translates to:
+  /// **'Under maintenance'**
+  String get chairStatusMaintenance;
+
+  /// Fallback chair status label
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown status'**
+  String get chairStatusUnknown;
+
   /// No description provided for @businessRetry.
   ///
   /// In en, this message translates to:
@@ -1849,6 +1933,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today'**
   String get stylistTodayTitle;
+
+  /// Localized date and time shown for a stylist appointment
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · {time}'**
+  String stylistAppointmentDateTime(String date, String time);
 
   /// No description provided for @stylistWorkstationOnline.
   ///

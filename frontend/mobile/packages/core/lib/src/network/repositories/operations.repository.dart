@@ -1,15 +1,23 @@
 import 'package:core/core.dart';
 
 abstract class BranchOperationsRepository {
+  Future<BranchDto> getProfile();
   Future<BranchDashboardDto> getDashboard();
   Future<PaginatedData<BookingDto>> getBookings();
   Future<BookingDto> updateBookingStatus(String id, String status);
   Future<PaginatedData<FloorChairDto>> getChairs();
+  Future<FloorChairDto> updateChairStatus(String id, String status);
 }
 
 class DioBranchOperationsRepository implements BranchOperationsRepository {
   const DioBranchOperationsRepository(this._client);
   final ApiClient _client;
+  @override
+  Future<BranchDto> getProfile() => _client.get(
+    BranchEndpoints.profile,
+    parser: (json) => BranchDto.fromJson(json as Map<String, dynamic>),
+  );
+
   @override
   Future<BranchDashboardDto> getDashboard() => _client.get(
     OperationsEndpoints.branchDashboard,
@@ -32,6 +40,14 @@ class DioBranchOperationsRepository implements BranchOperationsRepository {
     OperationsEndpoints.branchChairs,
     itemParser: (json) => FloorChairDto.fromJson(json as Map<String, dynamic>),
   );
+
+  @override
+  Future<FloorChairDto> updateChairStatus(String id, String status) =>
+      _client.patch(
+        BranchEndpoints.chairStatus.replaceFirst('{chair}', id),
+        data: {'status': status},
+        parser: (json) => FloorChairDto.fromJson(json as Map<String, dynamic>),
+      );
 }
 
 abstract class StylistOperationsRepository {

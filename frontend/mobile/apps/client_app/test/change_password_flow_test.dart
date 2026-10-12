@@ -103,7 +103,7 @@ void main() {
     expect(find.text('Passwords do not match'), findsOneWidget);
   });
 
-  testWidgets('wrong current password shows the server field error', (
+  testWidgets('wrong current password shows a localized field error', (
     tester,
   ) async {
     repository.changePasswordError = const ValidationException(
@@ -124,7 +124,7 @@ void main() {
       confirm: 'new-secret123',
     );
 
-    expect(find.text('The current password is incorrect.'), findsOneWidget);
+    expect(find.text('Please check this field'), findsOneWidget);
     expect(find.text('Password Updated'), findsNothing);
   });
 }

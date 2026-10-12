@@ -230,6 +230,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fieldRequired => 'هذا الحقل مطلوب';
 
   @override
+  String get fieldInvalid => 'يرجى التحقق من هذا الحقل';
+
+  @override
   String get fieldInvalidEmail => 'يرجى إدخال بريد إلكتروني صحيح';
 
   @override
@@ -898,6 +901,47 @@ class AppLocalizationsAr extends AppLocalizations {
   String get businessBranchOperationsTitle => 'عمليات الفرع';
 
   @override
+  String businessAppointmentDateTime(String date, String time) {
+    return '$date · $time';
+  }
+
+  @override
+  String get bookingStatusPending => 'قيد الانتظار';
+
+  @override
+  String get bookingStatusNoShow => 'لم يحضر';
+
+  @override
+  String get bookingStatusUnknown => 'حالة غير معروفة';
+
+  @override
+  String get staffLogOut => 'تسجيل الخروج';
+
+  @override
+  String get businessLoginTitle => 'تسجيل الدخول إلى فرعك';
+
+  @override
+  String get businessLoginSubtitle => 'استخدم حساب الفرع لإدارة العمليات.';
+
+  @override
+  String get stylistLoginTitle => 'تسجيل الدخول إلى حساب الحلاق';
+
+  @override
+  String get stylistLoginSubtitle => 'أدر مواعيدك وحالة عملك.';
+
+  @override
+  String get chairStatusAvailable => 'متاح';
+
+  @override
+  String get chairStatusOccupied => 'مشغول';
+
+  @override
+  String get chairStatusMaintenance => 'قيد الصيانة';
+
+  @override
+  String get chairStatusUnknown => 'حالة غير معروفة';
+
+  @override
   String get businessRetry => 'إعادة المحاولة';
 
   @override
@@ -954,6 +998,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stylistTodayTitle => 'اليوم';
+
+  @override
+  String stylistAppointmentDateTime(String date, String time) {
+    return '$date · $time';
+  }
 
   @override
   String get stylistWorkstationOnline => 'محطة العمل متصلة';

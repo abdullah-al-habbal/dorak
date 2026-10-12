@@ -1,0 +1,136 @@
+import 'dart:async';
+
+import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localization/localization.dart';
+
+import 'package:stylist_app/src/core/navigation/app.router.dart';
+import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
+
+class StylistApp extends StatefulWidget {
+  const StylistApp({super.key});
+
+  @override
+  State<StylistApp> createState() => _StylistAppState();
+}
+
+class _StylistAppState extends State<StylistApp> {
+  Locale _locale = const Locale('en');
+  late final ApiClient _client;
+  late final StylistBloc _bloc;
+  late final RealtimeClient? _realtime;
+  late final PushNotificationService _pushNotifications;
+  late final StylistAppRouter _router;
+  late final StaffSessionBloc _session;
+  late final TokenStorage _tokenStorage;
+  late final StreamSubscription<void> _unauthorizedSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _tokenStorage = SecureBarberTokenStorage();
+    _client = ApiClient(
+      baseUrl: ConfigProvider.config.apiBaseV1Url,
+      tokenProvider: _tokenStorage.read,
+      localeResolver: () => _locale.languageCode,
+    );
+    _realtime = _createRealtime(_tokenStorage);
+    _pushNotifications = PushNotificationService(_client);
+    _session = StaffSessionBloc(
+      DioStaffAuthRepository(_client, BarberAuthEndpoints.login),
+      _tokenStorage,
+    );
+    _unauthorizedSubscription = _client.unauthorizedStream.listen(
+      (_) => _onUnauthorized(),
+    );
+    _bloc = StylistBloc(
+      DioStylistOperationsRepository(_client),
+      realtime: _realtime,
+    );
+    _router = StylistAppRouter(
+      operations: _bloc,
+      session: _session,
+      onLocaleToggle: _toggleLocale,
+      onLogout: _logout,
+      onAuthenticated: _onAuthenticated,
+    );
+    unawaited(_restoreSession());
+  }
+
+  @override
+  void dispose() {
+    _router.dispose();
+    _session.close();
+    _unauthorizedSubscription.cancel();
+    _bloc.close();
+    _realtime?.dispose();
+    unawaited(_pushNotifications.dispose());
+    _client.dispose();
+    super.dispose();
+  }
+
+  RealtimeClient? _createRealtime(TokenStorage tokenStorage) {
+    final configuration = ConfigProvider.realtimeConfiguration;
+    if (configuration.appKey.isEmpty || configuration.host.isEmpty) return null;
+    return RealtimeClient(
+      configuration: configuration,
+      tokenProvider: tokenStorage.read,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => MaterialApp.router(
+    locale: _locale,
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    theme: DorakTheme.forLocale(_locale, Brightness.light),
+    routerConfig: _router.router,
+    builder: (context, child) => MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _bloc),
+        BlocProvider.value(value: _session),
+      ],
+      child: child!,
+    ),
+  );
+
+  void _toggleLocale() => setState(
+    () => _locale = _locale.languageCode == 'en'
+        ? const Locale('ar')
+        : const Locale('en'),
+  );
+
+  Future<void> _restoreSession() async {
+    await _session.restore();
+    if (mounted && _session.state.isAuthenticated) _onAuthenticated();
+  }
+
+  void _onAuthenticated() {
+    _client.resetUnauthorizedSignal();
+    unawaited(_pushNotifications.initialize());
+    if (_realtime != null) unawaited(_realtime.connect());
+    unawaited(_bloc.load());
+    _router.router.go('/home');
+  }
+
+  Future<void> _logout() async {
+    await _session.logout();
+    await _pushNotifications.stop();
+    await _realtime?.disconnectForLogout();
+    if (mounted) _router.router.go('/login');
+  }
+
+  void _onUnauthorized() {
+    unawaited(
+      Future.wait([
+        _session.unauthorized(),
+        _pushNotifications.stop(),
+        if (_realtime != null) _realtime.disconnectForLogout(),
+      ]).then((_) {
+        if (mounted) _router.router.go('/login');
+      }),
+    );
+  }
+}

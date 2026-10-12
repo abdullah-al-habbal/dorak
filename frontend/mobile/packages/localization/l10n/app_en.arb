@@ -290,6 +290,10 @@
   "@fieldRequired": {
     "description": "Form validation error for an empty required field"
   },
+  "fieldInvalid": "Please check this field",
+  "@fieldInvalid": {
+    "description": "Generic localized validation error when server details are unavailable"
+  },
   "fieldInvalidEmail": "Please enter a valid email address",
   "@fieldInvalidEmail": {
     "description": "Form validation error for a malformed email"
@@ -1112,6 +1116,35 @@
   "savedAddressLatitudeLabel": "Latitude",
   "savedAddressLongitudeLabel": "Longitude",
   "businessBranchOperationsTitle": "Branch operations",
+  "businessAppointmentDateTime": "{date} · {time}",
+  "@businessAppointmentDateTime": {
+    "description": "Localized date and time shown for a business appointment",
+    "placeholders": {"date": {"type": "String"}, "time": {"type": "String"}}
+  },
+  "bookingStatusPending": "Pending",
+  "@bookingStatusPending": {"description": "Pending booking status"},
+  "bookingStatusNoShow": "No-show",
+  "@bookingStatusNoShow": {"description": "No-show booking status"},
+  "bookingStatusUnknown": "Unknown status",
+  "@bookingStatusUnknown": {"description": "Fallback booking status label"},
+  "staffLogOut": "Log out",
+  "@staffLogOut": {"description": "Staff account logout action"},
+  "businessLoginTitle": "Sign in to your branch",
+  "@businessLoginTitle": {"description": "Business app login title"},
+  "businessLoginSubtitle": "Use your branch account to manage operations.",
+  "@businessLoginSubtitle": {"description": "Business app login subtitle"},
+  "stylistLoginTitle": "Sign in to your stylist account",
+  "@stylistLoginTitle": {"description": "Stylist app login title"},
+  "stylistLoginSubtitle": "Manage your appointments and work status.",
+  "@stylistLoginSubtitle": {"description": "Stylist app login subtitle"},
+  "chairStatusAvailable": "Available",
+  "@chairStatusAvailable": {"description": "Available chair status"},
+  "chairStatusOccupied": "Occupied",
+  "@chairStatusOccupied": {"description": "Occupied chair status"},
+  "chairStatusMaintenance": "Under maintenance",
+  "@chairStatusMaintenance": {"description": "Chair maintenance status"},
+  "chairStatusUnknown": "Unknown status",
+  "@chairStatusUnknown": {"description": "Fallback chair status label"},
   "businessRetry": "Retry",
   "businessDashboardTitle": "Dashboard",
   "businessTodayRevenue": "Today revenue: {value}",
@@ -1133,6 +1166,11 @@
   "businessChairsTitle": "Chairs",
   "businessUnassigned": "Unassigned",
   "stylistTodayTitle": "Today",
+  "stylistAppointmentDateTime": "{date} · {time}",
+  "@stylistAppointmentDateTime": {
+    "description": "Localized date and time shown for a stylist appointment",
+    "placeholders": {"date": {"type": "String"}, "time": {"type": "String"}}
+  },
   "stylistWorkstationOnline": "Workstation online",
   "stylistUpdateFailed": "Could not update. Pull to retry.",
   "stylistTodayAppointments": "Today's appointments",

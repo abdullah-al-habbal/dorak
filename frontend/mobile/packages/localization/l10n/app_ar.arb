@@ -290,6 +290,10 @@
   "@fieldRequired": {
     "description": "Form validation error for an empty required field"
   },
+  "fieldInvalid": "يرجى التحقق من هذا الحقل",
+  "@fieldInvalid": {
+    "description": "Generic localized validation error when server details are unavailable"
+  },
   "fieldInvalidEmail": "يرجى إدخال بريد إلكتروني صحيح",
   "@fieldInvalidEmail": {
     "description": "Form validation error for a malformed email"
@@ -1036,6 +1040,35 @@
   "savedAddressLatitudeLabel": "خط العرض",
   "savedAddressLongitudeLabel": "خط الطول",
   "businessBranchOperationsTitle": "عمليات الفرع",
+  "businessAppointmentDateTime": "{date} · {time}",
+  "@businessAppointmentDateTime": {
+    "description": "Localized date and time shown for a business appointment",
+    "placeholders": {"date": {"type": "String"}, "time": {"type": "String"}}
+  },
+  "bookingStatusPending": "قيد الانتظار",
+  "@bookingStatusPending": {"description": "Pending booking status"},
+  "bookingStatusNoShow": "لم يحضر",
+  "@bookingStatusNoShow": {"description": "No-show booking status"},
+  "bookingStatusUnknown": "حالة غير معروفة",
+  "@bookingStatusUnknown": {"description": "Fallback booking status label"},
+  "staffLogOut": "تسجيل الخروج",
+  "@staffLogOut": {"description": "Staff account logout action"},
+  "businessLoginTitle": "تسجيل الدخول إلى فرعك",
+  "@businessLoginTitle": {"description": "Business app login title"},
+  "businessLoginSubtitle": "استخدم حساب الفرع لإدارة العمليات.",
+  "@businessLoginSubtitle": {"description": "Business app login subtitle"},
+  "stylistLoginTitle": "تسجيل الدخول إلى حساب الحلاق",
+  "@stylistLoginTitle": {"description": "Stylist app login title"},
+  "stylistLoginSubtitle": "أدر مواعيدك وحالة عملك.",
+  "@stylistLoginSubtitle": {"description": "Stylist app login subtitle"},
+  "chairStatusAvailable": "متاح",
+  "@chairStatusAvailable": {"description": "Available chair status"},
+  "chairStatusOccupied": "مشغول",
+  "@chairStatusOccupied": {"description": "Occupied chair status"},
+  "chairStatusMaintenance": "قيد الصيانة",
+  "@chairStatusMaintenance": {"description": "Chair maintenance status"},
+  "chairStatusUnknown": "حالة غير معروفة",
+  "@chairStatusUnknown": {"description": "Fallback chair status label"},
   "businessRetry": "إعادة المحاولة",
   "businessDashboardTitle": "لوحة المعلومات",
   "businessTodayRevenue": "إيرادات اليوم: {value}",
@@ -1057,6 +1090,11 @@
   "businessChairsTitle": "الكراسي",
   "businessUnassigned": "غير معيّن",
   "stylistTodayTitle": "اليوم",
+  "stylistAppointmentDateTime": "{date} · {time}",
+  "@stylistAppointmentDateTime": {
+    "description": "Localized date and time shown for a stylist appointment",
+    "placeholders": {"date": {"type": "String"}, "time": {"type": "String"}}
+  },
   "stylistWorkstationOnline": "محطة العمل متصلة",
   "stylistUpdateFailed": "تعذر التحديث. اسحب لإعادة المحاولة.",
   "stylistTodayAppointments": "مواعيد اليوم",

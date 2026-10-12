@@ -12,6 +12,7 @@ class PushNotificationService {
   StreamSubscription<String>? _tokenRefreshSubscription;
 
   Future<void> initialize() async {
+    if (_tokenRefreshSubscription != null) return;
     await Firebase.initializeApp();
     await FirebaseMessaging.instance.requestPermission();
     final token = await FirebaseMessaging.instance.getToken();
@@ -26,6 +27,10 @@ class PushNotificationService {
     parser: (_) {},
   );
 
-  Future<void> dispose() =>
-      _tokenRefreshSubscription?.cancel() ?? Future.value();
+  Future<void> stop() async {
+    await _tokenRefreshSubscription?.cancel();
+    _tokenRefreshSubscription = null;
+  }
+
+  Future<void> dispose() => stop();
 }

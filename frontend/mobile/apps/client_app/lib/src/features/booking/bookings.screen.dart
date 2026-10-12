@@ -258,10 +258,11 @@ class _BookingsFeedState extends State<_BookingsFeed> {
     final l10n = AppLocalizations.of(context)!;
     return switch (status) {
       'confirmed' => l10n.bookingStatusConfirmed,
+      'pending' => l10n.bookingStatusPending,
       'canceled' => l10n.bookingStatusCanceled,
       'completed' => l10n.bookingStatusCompleted,
       'in_progress' => l10n.bookingStatusInProgress,
-      _ => status,
+      _ => l10n.bookingStatusUnknown,
     };
   }
 

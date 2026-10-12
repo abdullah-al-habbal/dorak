@@ -6,8 +6,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
 class BranchOperationsScreen extends StatefulWidget {
-  const BranchOperationsScreen({super.key, required this.bloc});
+  const BranchOperationsScreen({
+    super.key,
+    required this.bloc,
+    required this.onLocaleToggle,
+    required this.onLogout,
+    required this.onAddBarber,
+  });
   final BranchOperationsBloc bloc;
+  final VoidCallback onLocaleToggle;
+  final VoidCallback onLogout;
+  final VoidCallback onAddBarber;
   @override
   State<BranchOperationsScreen> createState() => _BranchOperationsScreenState();
 }
@@ -23,7 +32,29 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.businessBranchOperationsTitle)),
+      appBar: AppBar(
+        title: Text(l10n.businessBranchOperationsTitle),
+        actions: [
+          IconButton(
+            tooltip: l10n.staffLogOut,
+            onPressed: widget.onLogout,
+            icon: const Icon(Icons.logout),
+          ),
+          IconButton(
+            tooltip: l10n.managerManualBarberTitle,
+            onPressed: widget.onAddBarber,
+            icon: const Icon(Icons.person_add_alt_1_outlined),
+          ),
+          TextButton(
+            onPressed: widget.onLocaleToggle,
+            child: Text(
+              Localizations.localeOf(context).languageCode == 'en'
+                  ? l10n.localeArabic
+                  : l10n.localeEnglish,
+            ),
+          ),
+        ],
+      ),
       body: BlocBuilder<BranchOperationsBloc, BranchOperationsState>(
         bloc: widget.bloc,
         builder: (context, state) {
@@ -44,6 +75,12 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
+                if (state.profile != null)
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(state.profile!.name),
+                    subtitle: Text(state.profile!.email),
+                  ),
                 if (dashboard != null)
                   Card(
                     child: Padding(
@@ -102,10 +139,17 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                   (booking) => Card(
                     child: ListTile(
                       title: Text(
-                        '${booking.timeSlot.toLocal()} · ${booking.status}',
+                        l10n.businessAppointmentDateTime(
+                          MaterialLocalizations.of(
+                            context,
+                          ).formatMediumDate(booking.timeSlot.toLocal()),
+                          MaterialLocalizations.of(context).formatTimeOfDay(
+                            TimeOfDay.fromDateTime(booking.timeSlot.toLocal()),
+                          ),
+                        ),
                       ),
                       subtitle: Text(
-                        booking.barber?.name ?? booking.chair?.label ?? '',
+                        '${booking.barber?.name ?? booking.chair?.label ?? l10n.businessUnassigned} · ${_bookingStatus(l10n, booking.status)}',
                       ),
                       trailing: PopupMenuButton<String>(
                         onSelected: (status) =>
@@ -138,7 +182,25 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                   (chair) => ListTile(
                     title: Text(chair.label ?? chair.id),
                     subtitle: Text(
-                      '${chair.availability ?? chair.status} · ${chair.barber?.name ?? l10n.businessUnassigned}',
+                      '${_chairStatus(l10n, chair.availability ?? chair.status)} · ${chair.barber?.name ?? l10n.businessUnassigned}',
+                    ),
+                    trailing: PopupMenuButton<String>(
+                      onSelected: (status) =>
+                          widget.bloc.updateChairStatus(chair.id, status),
+                      itemBuilder: (_) => [
+                        PopupMenuItem(
+                          value: 'available',
+                          child: Text(l10n.chairStatusAvailable),
+                        ),
+                        PopupMenuItem(
+                          value: 'occupied',
+                          child: Text(l10n.chairStatusOccupied),
+                        ),
+                        PopupMenuItem(
+                          value: 'maintenance',
+                          child: Text(l10n.chairStatusMaintenance),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -149,4 +211,22 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
       ),
     );
   }
+
+  String _bookingStatus(AppLocalizations l10n, String status) =>
+      switch (status) {
+        'pending' => l10n.bookingStatusPending,
+        'confirmed' => l10n.bookingStatusConfirmed,
+        'in_progress' => l10n.bookingStatusInProgress,
+        'completed' => l10n.bookingStatusCompleted,
+        'canceled' || 'cancelled' => l10n.bookingStatusCanceled,
+        'no_show' => l10n.bookingStatusNoShow,
+        _ => l10n.bookingStatusUnknown,
+      };
+
+  String _chairStatus(AppLocalizations l10n, String status) => switch (status) {
+    'available' => l10n.chairStatusAvailable,
+    'occupied' => l10n.chairStatusOccupied,
+    'maintenance' => l10n.chairStatusMaintenance,
+    _ => l10n.chairStatusUnknown,
+  };
 }

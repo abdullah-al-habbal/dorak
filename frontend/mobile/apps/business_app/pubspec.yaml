@@ -46,6 +46,7 @@ dependencies:
     path: ../../packages/design_system
   localization:
     path: ../../packages/localization
+  go_router: ^17.5.0
 
 dev_dependencies:
   flutter_test:

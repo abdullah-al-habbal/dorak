@@ -49,7 +49,11 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           onRefresh: _refreshCubit.refresh,
           child: _BookingDetailsBody(
             booking: state.booking,
-            serviceLine: _serviceLine,
+            serviceLine: (service, localeCode) => _serviceLine(
+              service,
+              localeCode,
+              AppLocalizations.of(context)!,
+            ),
             statusLabel: _statusLabel,
           ),
         ),
@@ -57,9 +61,14 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     );
   }
 
-  String _serviceLine(BookingServiceDto service, String localeCode) {
+  String _serviceLine(
+    BookingServiceDto service,
+    String localeCode,
+    AppLocalizations l10n,
+  ) {
     final details = [
-      if (service.duration != null) '${service.duration} min',
+      if (service.duration != null)
+        l10n.serviceDurationLabel(service.duration!),
       if (service.price != null)
         LocaleFormatters.decimal(service.price!, localeCode),
     ];
@@ -71,10 +80,11 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
   String _statusLabel(AppLocalizations l10n, String status) {
     return switch (status) {
       'confirmed' => l10n.bookingStatusConfirmed,
+      'pending' => l10n.bookingStatusPending,
       'in_progress' => l10n.bookingStatusInProgress,
       'completed' => l10n.bookingStatusCompleted,
       'canceled' || 'cancelled' => l10n.bookingStatusCanceled,
-      _ => status,
+      _ => l10n.bookingStatusUnknown,
     };
   }
 }

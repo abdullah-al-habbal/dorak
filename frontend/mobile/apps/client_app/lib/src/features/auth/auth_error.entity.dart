@@ -16,7 +16,9 @@ class AuthError {
     if (error is ValidationException) {
       return AuthError(
         message: unprocessableMessage ?? l10n.errorGeneric,
-        fieldErrors: error.errors,
+        fieldErrors: {
+          for (final field in error.errors.keys) field: [l10n.fieldInvalid],
+        },
       );
     }
     if (error is NetworkException) {

@@ -5,6 +5,7 @@ class StylistState extends Equatable {
   StylistState({
     this.loading = false,
     this.online = false,
+    this.profile,
     this.updatingBookingId,
     List<BookingDto> appointments = const [],
     this.error,
@@ -12,6 +13,7 @@ class StylistState extends Equatable {
 
   final bool loading;
   final bool online;
+  final BarberProfileDto? profile;
   final String? updatingBookingId;
   final List<BookingDto> appointments;
   final Object? error;
@@ -19,6 +21,7 @@ class StylistState extends Equatable {
   StylistState copyWith({
     bool? loading,
     bool? online,
+    BarberProfileDto? profile,
     String? updatingBookingId,
     bool clearUpdatingBooking = false,
     List<BookingDto>? appointments,
@@ -27,6 +30,7 @@ class StylistState extends Equatable {
   }) => StylistState(
     loading: loading ?? this.loading,
     online: online ?? this.online,
+    profile: profile ?? this.profile,
     updatingBookingId: clearUpdatingBooking
         ? null
         : updatingBookingId ?? this.updatingBookingId,
@@ -38,6 +42,7 @@ class StylistState extends Equatable {
   List<Object?> get props => [
     loading,
     online,
+    profile,
     updatingBookingId,
     appointments,
     error,
