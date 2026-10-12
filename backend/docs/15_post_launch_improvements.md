@@ -401,7 +401,7 @@ Step 11: PerformanceMonitor     (15 min)  ✅ DONE — dead code deleted
 - `GET /api/v1/clients/{client}/bans/check` — check if client has active bans. Auth:client
 
 **Files to create/modify:**
-- `modules/Ban/Http/Actions/Client/CheckClientBansAction.php`
+- `modules/Ban/Http/Actions/Api/V1/Client/CheckClientBanAction.php`
 - Tests
 
 ---

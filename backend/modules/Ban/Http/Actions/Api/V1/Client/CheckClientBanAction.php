@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Modules\Ban\Http\Actions\Client;
+namespace Modules\Ban\Http\Actions\Api\V1\Client;
 
 use Illuminate\Http\JsonResponse;
 use Modules\Ban\Handlers\Client\CheckClientBanHandler;
 use Modules\Ban\Http\Requests\Client\CheckClientBanRequest;
+use Modules\Client\Models\ClientModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 
-final class CheckClientBansAction extends BaseApiAction
+final class CheckClientBanAction extends BaseApiAction
 {
     public function __construct(
         private readonly CheckClientBanHandler $handler,
@@ -21,7 +22,7 @@ final class CheckClientBansAction extends BaseApiAction
 
         $authenticatedClient = $request->user();
 
-        if ($authenticatedClient->id !== $client) {
+        if (! ($authenticatedClient instanceof ClientModel) || (string) $authenticatedClient->getAuthIdentifier() !== $client) {
             return $this->forbidden();
         }
 
