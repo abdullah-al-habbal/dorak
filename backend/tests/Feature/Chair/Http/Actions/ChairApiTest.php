@@ -83,7 +83,7 @@ describe('update chair', function () {
 
     it('assigns barber to chair', function () {
         $branch = BranchModel::factory()->create();
-        $barber = BarberModel::factory()->create();
+        $barber = BarberModel::factory()->create(['managed_by_branch_id' => $branch->id]);
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
         $this->actingAs($branch, 'branch_api');
 

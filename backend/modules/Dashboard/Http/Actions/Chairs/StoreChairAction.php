@@ -28,7 +28,7 @@ final class StoreChairAction extends BaseApiAction
 
         $chair = $this->handler->handle(new StoreChairCommand(
             $attributes,
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $attributes['branch_id'],
         ));
 
         return $chair === null

@@ -25,6 +25,7 @@ final readonly class UpdateChairHandler
         if (! $this->barberAssignmentResolver->ensureWithinBranch($attributes['barber_id'] ?? null, $command->branchId)) {
             return null;
         }
+
         $deactivating = array_key_exists('status', $attributes)
             && $attributes['status'] !== ChairStatus::Available->value;
         $reassigningBarber = array_key_exists('barber_id', $attributes)

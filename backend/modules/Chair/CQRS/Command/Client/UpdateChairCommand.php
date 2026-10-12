@@ -13,6 +13,7 @@ final readonly class UpdateChairCommand
         public ?string $label,
         public ?string $status,
         public ?string $barberId,
+        public bool $barberIdProvided,
         public ?FloorZone $floorZone,
         public ?array $uiMetadata,
     ) {}

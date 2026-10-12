@@ -20,6 +20,9 @@ final readonly class StoreStylistHandler
     {
         $this->assignmentResolver->ensureWithinBranch($command->attributes['chair_id'] ?? null, $command->branchId);
 
-        return $this->resolver->resolve($command->attributes);
+        return $this->resolver->resolve([
+            ...$command->attributes,
+            'managed_by_branch_id' => $command->branchId,
+        ]);
     }
 }

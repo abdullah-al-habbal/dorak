@@ -28,7 +28,7 @@ use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'email', 'phone', 'password', 'has_login', 'status', 'is_freelancer', 'client_id', 'latitude', 'longitude', 'travel_radius', 'workstation_online'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'has_login', 'status', 'is_freelancer', 'client_id', 'latitude', 'longitude', 'travel_radius', 'workstation_online', 'managed_by_branch_id'])]
 #[Hidden(['password', 'remember_token'])]
 #[Table('barbers')]
 #[Translatable(['name'])]

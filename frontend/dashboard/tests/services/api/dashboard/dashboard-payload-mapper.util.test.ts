@@ -1,10 +1,28 @@
 import {
+  mapChairPayload,
   mapBookingReschedulePayload,
   mapWalkInBookingPayload,
 } from "@/services/api/dashboard/dashboard-payload-mapper.util";
 import { describe, expect, it } from "vitest";
 
 describe("dashboard payload mappers", () => {
+  it("sends barber_id null when clearing a chair assignment", () => {
+    expect(
+      mapChairPayload({
+        label: "A1",
+        branchId: "b4e18cf2-6c48-41bb-857d-6db23f2cbaab",
+        barberId: null,
+        floorZone: "shared",
+        status: "available",
+        positionX: 0,
+        positionY: 0,
+        width: 1,
+        height: 1,
+        rotation: null,
+      }).barber_id,
+    ).toBeNull();
+  });
+
   it("maps camelCase walk-in input only at backend boundary", () => {
     expect(
       mapWalkInBookingPayload({

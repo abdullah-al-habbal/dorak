@@ -20,7 +20,7 @@ Two further defects:
 - Introduce one shared rule or service, `BarberBelongsToBranch`. It returns true when either:
   - the barber was created as a managed barber by the branch, or
   - the barber has an `accepted` affiliation whose affiliable is the branch or its brand.
-- Decision required: confirm both sources count as membership.
+- Decision resolved: both branch-managed barbers and barbers with an accepted affiliation to the branch or its brand count as members.
 - Apply the rule in `UpdateChairRequest` and in the Dashboard `ChairBarberAssignmentResolver`, replacing the current weaker check.
 - Distinguish "key absent" (leave unchanged) from "explicit null" (unassign). The command needs a tri-state value or a `barberIdProvided` flag.
 

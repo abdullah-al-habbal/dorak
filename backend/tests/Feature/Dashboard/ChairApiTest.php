@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Database\Factories\BarberAffiliationFactory;
+use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 
@@ -37,14 +40,57 @@ describe('Dashboard Chair API', function (): void {
         $this->getJson("/api/v1/dashboard/chairs/{$chair->id}")->assertNotFound();
     });
 
-    it('does not let a branch manager assign a barber already owned by another branch', function (): void {
+    it('rejects a foreign barber with a field validation error', function (): void {
         $barber = BarberModel::factory()->create();
-        ChairModel::factory()->create(['branch_id' => $this->otherBranch->id, 'barber_id' => $barber->id]);
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
         $this->actingAs($this->branch, 'branch_api');
 
         $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, ['barber_id' => $barber->id]))
-            ->assertForbidden();
+            ->assertUnprocessable()
+            ->assertJsonStructure(['errors' => ['barber_id']]);
+        expect($chair->fresh()->barber_id)->toBeNull();
+    });
+
+    it('rejects a foreign barber when creating a dashboard chair', function (): void {
+        $barber = BarberModel::factory()->create();
+        $chair = ChairModel::factory()->make(['branch_id' => $this->branch->id]);
+        $this->actingAs($this->branch, 'branch_api');
+
+        $this->postJson('/api/v1/dashboard/chairs', chairPayload($chair, ['barber_id' => $barber->id]))
+            ->assertUnprocessable()
+            ->assertJsonStructure(['errors' => ['barber_id']]);
+        expect(ChairModel::query()->where('branch_id', $this->branch->id)->exists())->toBeFalse();
+    });
+
+    it('allows a barber with an accepted brand affiliation', function (): void {
+        $brand = BrandModel::factory()->create();
+        $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
+        $barber = BarberModel::factory()->create();
+        BarberAffiliationFactory::new()->create([
+            'barber_id' => $barber->id,
+            'affiliable_id' => $brand->id,
+            'affiliable_type' => 'brand',
+            'status' => AffiliationStatus::Accepted->value,
+        ]);
+        $this->actingAs($branch, 'branch_api');
+
+        $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, ['barber_id' => $barber->id]))->assertOk();
+        expect($chair->fresh()->barber_id)->toBe($barber->id);
+    });
+
+    it('clears and preserves barber assignment according to barber_id presence', function (): void {
+        $barber = BarberModel::factory()->create(['managed_by_branch_id' => $this->branch->id]);
+        $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $barber->id]);
+        $this->actingAs($this->branch, 'branch_api');
+
+        $payload = chairPayload($chair);
+        unset($payload['barber_id']);
+        $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", $payload)->assertOk();
+        expect($chair->fresh()->barber_id)->toBe($barber->id);
+
+        $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, ['barber_id' => null]))->assertOk();
+        expect($chair->fresh()->barber_id)->toBeNull();
     });
 
     it('returns conflict when a future booking protects a chair from deactivation', function (): void {

@@ -23,7 +23,7 @@ codeanchors:
 - [x] Task 02: Fix Client History Ownership (Rebook & Media) -> [Spec](tasks/task-02-client-history-ownership.md)
 - [x] Task 03: Correct Admin API Authentication Guards -> [Spec](tasks/task-03-admin-api-guards.md)
 - [x] Task 04: Restrict Service Catalog Mutations to Admins -> [Spec](tasks/task-04-service-catalog-authorization.md)
-- [ ] Task 05: Scope Chair Barber Assignment to Branch Affiliations -> [Spec](tasks/task-05-chair-barber-assignment-scope.md)
+- [x] Task 05: Scope Chair Barber Assignment to Branch Affiliations -> [Spec](tasks/task-05-chair-barber-assignment-scope.md)
 - [ ] Task 06: Move Job Application Decisions to Branch Managers -> [Spec](tasks/task-06-job-application-status-authz.md)
 - [ ] Task 07: Store Face Photos Privately with Signed Access -> [Spec](tasks/task-07-face-photo-privacy.md)
 - [ ] Task 08: Enforce Client and Barber Bans at Login and Booking -> [Spec](tasks/task-08-ban-enforcement.md)

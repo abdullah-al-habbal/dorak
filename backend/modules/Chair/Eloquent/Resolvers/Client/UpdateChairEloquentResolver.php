@@ -23,7 +23,7 @@ final class UpdateChairEloquentResolver
             $data['status'] = $command->status;
         }
 
-        if ($command->barberId !== null) {
+        if ($command->barberIdProvided) {
             $data['barber_id'] = $command->barberId;
         }
 

@@ -22,7 +22,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [ ] Decision required: whether branches may **propose** catalog items for admin approval. If yes, this becomes a separate endpoint and is out of scope here.
 
 ## [Task 05: Scope Chair Barber Assignment to Branch Affiliations](tasks/task-05-chair-barber-assignment-scope.md)
-- [ ] Decision required: confirm both sources count as membership.
+- [x] Decision resolved: both branch-managed barbers and barbers with an accepted affiliation to the branch or its brand count as members.
 
 ## [Task 06: Move Job Application Decisions to Branch Managers](tasks/task-06-job-application-status-authz.md)
 - [ ] Decision required: does a withdraw status exist? `ApplicationStatus` has no `withdrawn` case today.

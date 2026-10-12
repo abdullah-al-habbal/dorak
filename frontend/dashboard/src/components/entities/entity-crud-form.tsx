@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
+import { ApiClientError } from "@/services/api/client-error";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
 import {
@@ -423,6 +424,19 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
             );
             router.push(`/${session.actor}/${resource}`);
           },
+          onError: (error) => {
+            if (
+              resource === "chairs" &&
+              error instanceof ApiClientError &&
+              error.status === 422 &&
+              error.errors?.barber_id?.[0]
+            ) {
+              form.setError("barberId", {
+                type: "server",
+                message: error.errors.barber_id[0],
+              });
+            }
+          },
         }),
       )}
     >
@@ -479,6 +493,11 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
               }
             />
           )}
+          {field === "barberId" && form.formState.errors.barberId?.message ? (
+            <span className="text-input-error-focus-border" role="alert">
+              {String(form.formState.errors.barberId.message)}
+            </span>
+          ) : null}
         </label>
       ))}
       {form.formState.isSubmitted &&
