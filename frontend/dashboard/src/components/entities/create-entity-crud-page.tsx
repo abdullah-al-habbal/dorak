@@ -1,4 +1,5 @@
 import { EntityCrudForm } from "@/components/entities/entity-crud-form";
+import { EntityCrudHeading } from "@/components/entities/entity-crud-heading";
 
 export function createEntityCrudPage(
   resource: "branches" | "chairs" | "services" | "stylists",
@@ -6,9 +7,7 @@ export function createEntityCrudPage(
   return function EntityCrudPage() {
     return (
       <section className="space-y-6">
-        <h1 className="text-2xl font-semibold text-title-50">
-          Create {resource}
-        </h1>
+        <EntityCrudHeading resource={resource} />
         <EntityCrudForm resource={resource} />
       </section>
     );
@@ -37,7 +36,7 @@ async function EntityEditRoute({
   const { id } = await params;
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-semibold text-title-50">Edit {resource}</h1>
+      <EntityCrudHeading resource={resource} editing />
       <EntityCrudForm resource={resource} id={id} />
     </section>
   );

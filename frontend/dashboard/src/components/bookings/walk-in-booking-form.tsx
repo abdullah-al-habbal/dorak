@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
+import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
 import {
   mapBranch,
@@ -30,6 +31,8 @@ import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
 export function WalkInBookingForm() {
+  const dictionary = useDictionary();
+  const copy = dictionary.walkInBooking;
   const session = useSession();
   const router = useRouter();
   const form = useForm<z.input<typeof walkInBookingSchema>>({
@@ -85,17 +88,19 @@ export function WalkInBookingForm() {
       onSubmit={form.handleSubmit((value) =>
         mutation.mutate(value, {
           onSuccess: () => {
-            notifySuccess("Walk-in booking created.");
+            notifySuccess(copy.success);
             router.push(`/${session.actor}/bookings`);
           },
         }),
       )}
     >
       {session.branchId ? (
-        <p className="text-text-secondary">Branch scope: {session.branchId}</p>
+        <p className="text-text-secondary">
+          {copy.branchScope.replace("{branchId}", session.branchId)}
+        </p>
       ) : (
         <label className="grid gap-1">
-          Branch
+          {copy.branch}
           <Select
             value={branchId}
             onChange={(value) => {
@@ -121,7 +126,7 @@ export function WalkInBookingForm() {
         </label>
       )}
       <label className="grid gap-1">
-        Chair
+        {copy.chair}
         <Select
           value={chairId}
           onChange={(value) => {
@@ -150,14 +155,14 @@ export function WalkInBookingForm() {
         </Select>
       </label>
       <label className="grid gap-1">
-        Customer name
+        {copy.customerName}
         <Input
           {...form.register("customerName")}
           state={form.formState.errors.customerName ? "error" : "default"}
         />
       </label>
       <label className="grid gap-1">
-        Customer email
+        {copy.customerEmail}
         <Input
           type="email"
           {...form.register("customerEmail")}
@@ -165,11 +170,11 @@ export function WalkInBookingForm() {
         />
       </label>
       <label className="grid gap-1">
-        Customer phone
+        {copy.customerPhone}
         <Input {...form.register("customerPhone")} />
       </label>
       <label className="grid gap-1">
-        Appointment time
+        {copy.appointmentTime}
         <Input
           type="datetime-local"
           {...form.register("timeSlot")}
@@ -177,7 +182,7 @@ export function WalkInBookingForm() {
         />
       </label>
       <label className="grid gap-1 sm:col-span-2">
-        Services
+        {copy.services}
         <Select
           selectionMode="multiple"
           value={serviceIds}
@@ -204,7 +209,7 @@ export function WalkInBookingForm() {
       </label>
       <div className="sm:col-span-2">
         <Button type="submit" isDisabled={mutation.isPending}>
-          Create walk-in booking
+          {copy.create}
         </Button>
       </div>
     </form>

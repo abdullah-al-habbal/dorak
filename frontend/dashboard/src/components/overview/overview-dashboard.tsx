@@ -16,6 +16,7 @@ import {
 } from "@/services/api/dashboard/dashboard-mapper.util";
 import type { IBooking } from "@/services/api/dashboard/ibooking.types";
 import type { IChair } from "@/services/api/dashboard/ichair.types";
+import { useDictionary } from "@/hooks/use-dictionary";
 import { useQuery } from "@tanstack/react-query";
 
 function today(): string {
@@ -23,6 +24,7 @@ function today(): string {
 }
 
 export function OverviewDashboard() {
+  const dictionary = useDictionary();
   const overview = useQuery({
     queryKey: ["dashboard", "overview"],
     queryFn: getDashboardOverview,
@@ -53,13 +55,24 @@ export function OverviewDashboard() {
 
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-semibold text-title-50">Overview</h1>
+      <h1 className="text-2xl font-semibold text-title-50">
+        {dictionary.overviewDashboard.title}
+      </h1>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Metric title="Today bookings" value={metric?.todayBookingsCount} />
-        <Metric title="Active chairs" value={metric?.activeChairsCount} />
-        <Metric title="Stylists" value={metric?.stylistsCount} />
         <Metric
-          title="Revenue"
+          title={dictionary.overviewDashboard.todayBookings}
+          value={metric?.todayBookingsCount}
+        />
+        <Metric
+          title={dictionary.overviewDashboard.activeChairs}
+          value={metric?.activeChairsCount}
+        />
+        <Metric
+          title={dictionary.overviewDashboard.stylists}
+          value={metric?.stylistsCount}
+        />
+        <Metric
+          title={dictionary.overviewDashboard.revenue}
           value={
             metric
               ? new Intl.NumberFormat(undefined, {
@@ -73,18 +86,25 @@ export function OverviewDashboard() {
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Chair occupancy</CardTitle>
+            <CardTitle>{dictionary.overviewDashboard.chairOccupancy}</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChairOccupancy chairs={chairs.data ?? []} />
+            <ChairOccupancy
+              chairs={chairs.data ?? []}
+              emptyMessage={dictionary.overviewDashboard.noChairs}
+            />
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Today&apos;s schedule</CardTitle>
+            <CardTitle>{dictionary.overviewDashboard.todaysSchedule}</CardTitle>
           </CardHeader>
           <CardContent>
-            <TodayBookings bookings={bookings.data ?? []} />
+            <TodayBookings
+              bookings={bookings.data ?? []}
+              emptyMessage={dictionary.overviewDashboard.noBookings}
+              appointmentLabel={dictionary.operations.appointment}
+            />
           </CardContent>
         </Card>
       </div>
@@ -110,9 +130,15 @@ function Metric({
     </Card>
   );
 }
-function ChairOccupancy({ chairs }: { chairs: IChair[] }) {
+function ChairOccupancy({
+  chairs,
+  emptyMessage,
+}: {
+  chairs: IChair[];
+  emptyMessage: string;
+}) {
   return chairs.length === 0 ? (
-    <p className="text-text-secondary">No chairs found.</p>
+    <p className="text-text-secondary">{emptyMessage}</p>
   ) : (
     <ul className="grid gap-2 sm:grid-cols-2">
       {chairs.map((chair) => (
@@ -127,9 +153,17 @@ function ChairOccupancy({ chairs }: { chairs: IChair[] }) {
     </ul>
   );
 }
-function TodayBookings({ bookings }: { bookings: IBooking[] }) {
+function TodayBookings({
+  bookings,
+  emptyMessage,
+  appointmentLabel,
+}: {
+  bookings: IBooking[];
+  emptyMessage: string;
+  appointmentLabel: string;
+}) {
   return bookings.length === 0 ? (
-    <p className="text-text-secondary">No bookings today.</p>
+    <p className="text-text-secondary">{emptyMessage}</p>
   ) : (
     <ol className="space-y-3">
       {bookings.map((booking) => (
@@ -138,7 +172,9 @@ function TodayBookings({ bookings }: { bookings: IBooking[] }) {
           key={booking.id}
         >
           <span>
-            {booking.barber?.name.en ?? booking.chair?.label ?? "Appointment"}
+            {booking.barber?.name.en ??
+              booking.chair?.label ??
+              appointmentLabel}
           </span>
           <span>{booking.timeSlot}</span>
         </li>

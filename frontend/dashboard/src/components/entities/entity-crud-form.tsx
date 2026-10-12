@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
+import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
 import {
   branchCreateSchema,
@@ -115,6 +116,7 @@ function payloadFor(resource: EditableResource, value: unknown) {
 }
 
 export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
+  const dictionary = useDictionary();
   const session = useSession();
   const router = useRouter();
   const editing = id !== undefined;
@@ -404,14 +406,20 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
   );
 
   if (editing && existing.isPending)
-    return <p className="text-text-secondary">Loading…</p>;
+    return (
+      <p className="text-text-secondary">{dictionary.operations.loading}</p>
+    );
   return (
     <form
       className="grid gap-4 sm:grid-cols-2"
       onSubmit={form.handleSubmit((value) =>
         mutation.mutate(value, {
           onSuccess: () => {
-            notifySuccess(editing ? "Changes saved." : "Created.");
+            notifySuccess(
+              editing
+                ? dictionary.operations.changesSaved
+                : dictionary.operations.created,
+            );
             router.push(`/${session.actor}/${resource}`);
           },
         }),

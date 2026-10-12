@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
+import { useDictionary } from "@/hooks/use-dictionary";
 import { bookingRescheduleSchema } from "@/services/api/dashboard/booking-reschedule.schema";
 import { bookingStatusSchema } from "@/services/api/dashboard/booking-status.schema";
 import { mapBookingReschedulePayload } from "@/services/api/dashboard/dashboard-payload-mapper.util";
@@ -37,12 +38,15 @@ interface IBookingActionsDialogProps {
   bookingId: string;
 }
 
-function conflictMessage(error: unknown): string {
+function conflictMessage(
+  error: unknown,
+  copy: { conflict: string; failed: string },
+): string {
   return error instanceof ApiClientError && error.status === 409
-    ? "Booking conflicts with the requested schedule."
+    ? copy.conflict
     : error instanceof Error
       ? error.message
-      : "Booking action failed.";
+      : copy.failed;
 }
 function iso(value: string): string {
   return new Date(value).toISOString();
@@ -52,6 +56,8 @@ export function BookingActionsDialog({
   bookingId,
 }: IBookingActionsDialogProps) {
   const [open, setOpen] = useState(false);
+  const dictionary = useDictionary();
+  const copy = dictionary.bookingActions;
   const [bookingStatus, setBookingStatus] = useState("confirmed");
   const rescheduleForm = useForm<z.input<typeof bookingRescheduleSchema>>({
     resolver: zodResolver(bookingRescheduleSchema),
@@ -80,20 +86,24 @@ export function BookingActionsDialog({
     (value: z.input<typeof bookingStatusSchema>) =>
       updateBookingStatus(bookingId, value),
   );
-  const failed = (error: unknown) => toast.error(conflictMessage(error));
+  const failed = (error: unknown) => toast.error(conflictMessage(error, copy));
   const closeOnSuccess = () => {
-    toast.success("Booking updated.");
+    toast.success(copy.bookingUpdated);
     setOpen(false);
   };
 
   return (
     <>
       <Button appearance="outline" size="sm" onPress={() => setOpen(true)}>
-        Manage
+        {copy.manage}
       </Button>
-      <Dialog isOpen={open} onOpenChange={setOpen} labels={{ close: "Close" }}>
+      <Dialog
+        isOpen={open}
+        onOpenChange={setOpen}
+        labels={{ close: copy.close }}
+      >
         <DialogHeader>
-          <DialogTitle>Manage booking</DialogTitle>
+          <DialogTitle>{copy.manageTitle}</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <form
@@ -106,7 +116,7 @@ export function BookingActionsDialog({
             )}
           >
             <label className="grid gap-1 text-sm">
-              Start
+              {copy.start}
               <Input
                 type="datetime-local"
                 {...rescheduleForm.register("timeSlot")}
@@ -116,7 +126,7 @@ export function BookingActionsDialog({
               />
             </label>
             <label className="grid gap-1 text-sm">
-              End
+              {copy.end}
               <Input
                 type="datetime-local"
                 {...rescheduleForm.register("endsAt")}
@@ -126,7 +136,7 @@ export function BookingActionsDialog({
               />
             </label>
             <Button type="submit" isDisabled={reschedule.isPending}>
-              Reschedule
+              {copy.reschedule}
             </Button>
           </form>
           <form
@@ -139,7 +149,7 @@ export function BookingActionsDialog({
             )}
           >
             <Select
-              aria-label="Next booking status"
+              aria-label={copy.nextStatus}
               value={bookingStatus}
               onChange={(value) => {
                 const nextValue = String(value) as z.input<
@@ -154,8 +164,8 @@ export function BookingActionsDialog({
                 <SelectIndicator />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem id="confirmed">Confirmed</SelectItem>
-                <SelectItem id="in_progress">In progress</SelectItem>
+                <SelectItem id="confirmed">{copy.confirmed}</SelectItem>
+                <SelectItem id="in_progress">{copy.inProgress}</SelectItem>
               </SelectContent>
             </Select>
             <Button
@@ -163,13 +173,13 @@ export function BookingActionsDialog({
               appearance="outline"
               isDisabled={status.isPending}
             >
-              Update status
+              {copy.updateStatus}
             </Button>
           </form>
         </DialogBody>
         <DialogFooter>
           <Button appearance="outline" onPress={() => setOpen(false)}>
-            Close
+            {copy.close}
           </Button>
           <Button
             appearance="outline"
@@ -181,7 +191,7 @@ export function BookingActionsDialog({
             }
             isDisabled={cancel.isPending}
           >
-            Cancel booking
+            {copy.cancelBooking}
           </Button>
         </DialogFooter>
       </Dialog>
