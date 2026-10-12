@@ -1,14 +1,14 @@
 import { readSessionCookies } from "@/services/api/auth/cookies";
 import { bearerHeaders } from "@/services/api/http.util";
 import { apiFailure, noStore } from "@/services/api/response.util";
+import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
+  const copy = getRequestDictionary(request).common.apiError;
   const token = readSessionCookies(request.cookies).accessToken;
   if (!token)
-    return noStore(
-      apiFailure(401, "session_expired", "Your session has expired."),
-    );
+    return noStore(apiFailure(401, "session_expired", copy.unauthorized));
   const response = await fetch(
     `${(process.env.BACKEND_API_URL ?? "http://localhost:8000").replace(/\/+$/, "")}/api/v1/broadcasting/auth`,
     {

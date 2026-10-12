@@ -3,6 +3,7 @@ import { backendRequest } from "@/services/api/auth/backend-client";
 import { readSessionCookies } from "@/services/api/auth/cookies";
 import { bearerHeaders } from "@/services/api/http.util";
 import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
+import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import type { NextRequest } from "next/server";
 
 interface Context {
@@ -34,6 +35,7 @@ export async function DELETE(request: NextRequest, context: Context) {
 }
 
 async function proxyBarberRequest(request: NextRequest, context: Context) {
+  const copy = getRequestDictionary(request).common.apiError;
   const { path } = await context.params;
   const joined = path.join("/");
   const isAllowed =
@@ -41,14 +43,10 @@ async function proxyBarberRequest(request: NextRequest, context: Context) {
     BOOKING_TRANSITION_PATH.test(joined) ||
     (request.method === "DELETE" && PORTFOLIO_ITEM_PATH.test(joined));
   if (!isAllowed)
-    return noStore(
-      apiFailure(404, "resource_not_found", "Barber resource not found."),
-    );
+    return noStore(apiFailure(404, "resource_not_found", copy.notFound));
   const token = readSessionCookies(request.cookies).accessToken;
   if (!token)
-    return noStore(
-      apiFailure(401, "session_expired", "Your session has expired."),
-    );
+    return noStore(apiFailure(401, "session_expired", copy.unauthorized));
   const body = request.method === "GET" ? undefined : await request.text();
   const result = await backendRequest<unknown>(
     `${ROUTES.api.barber.root}/${joined}${request.nextUrl.search}`,
@@ -63,7 +61,7 @@ async function proxyBarberRequest(request: NextRequest, context: Context) {
       apiFailure(
         result.status || 502,
         result.envelope?.code ?? "barber_request_failed",
-        result.envelope?.message ?? "Barber service is unavailable.",
+        copy.server,
         result.envelope?.errors,
       ),
     );

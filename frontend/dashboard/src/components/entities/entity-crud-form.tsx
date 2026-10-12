@@ -117,6 +117,7 @@ function payloadFor(resource: EditableResource, value: unknown) {
 
 export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
   const dictionary = useDictionary();
+  const fieldCopy = dictionary.operations.field;
   const session = useSession();
   const router = useRouter();
   const editing = id !== undefined;
@@ -263,33 +264,33 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
   const optionsFor = (field: string) => {
     if (field === "status" && resource === "branches")
       return [
-        ["pending", "Pending"],
-        ["enabled", "Enabled"],
-        ["disabled", "Disabled"],
+        ["pending", fieldCopy.pending],
+        ["enabled", fieldCopy.enabled],
+        ["disabled", fieldCopy.disabled],
       ] as const;
     if (field === "status" && resource === "chairs")
       return [
-        ["available", "Available"],
-        ["occupied", "Occupied"],
-        ["maintenance", "Maintenance"],
+        ["available", fieldCopy.available],
+        ["occupied", fieldCopy.occupied],
+        ["maintenance", fieldCopy.maintenance],
       ] as const;
     if (field === "status" && resource === "stylists")
       return [
-        ["pending", "Pending"],
-        ["enabled", "Enabled"],
-        ["disabled", "Disabled"],
+        ["pending", fieldCopy.pending],
+        ["enabled", fieldCopy.enabled],
+        ["disabled", fieldCopy.disabled],
       ] as const;
     if (field === "floorZone")
       return [
-        ["men", "Men"],
-        ["women", "Women"],
-        ["shared", "Shared"],
+        ["men", fieldCopy.men],
+        ["women", fieldCopy.women],
+        ["shared", fieldCopy.shared],
       ] as const;
     if (field === "serviceableType")
       return [
-        ["branch", "Branch"],
-        ["brand", "Brand"],
-        ["barber", "Barber"],
+        ["branch", fieldCopy.branch],
+        ["brand", fieldCopy.brand],
+        ["barber", fieldCopy.barber],
       ] as const;
     if (field === "brandId")
       return (brands.data ?? []).map((item) => [item.id, item.label] as const);
@@ -299,7 +300,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
       );
     if (field === "catalogItemId")
       return [
-        ["", "Unassigned"],
+        ["", fieldCopy.unassigned],
         ...(catalogItems.data ?? []).map(
           (item) => [item.id, item.label] as const,
         ),
@@ -360,7 +361,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
     }
     if (field === "barberId")
       return [
-        ["", "Unassigned"],
+        ["", fieldCopy.unassigned],
         ...(stylists.data?.items ?? []).map(
           (item) =>
             [
@@ -378,7 +379,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
       ];
     if (field === "chairId")
       return [
-        ["", "Unassigned"],
+        ["", fieldCopy.unassigned],
         ...(chairs.data?.items ?? []).map(
           (item) =>
             [
@@ -427,7 +428,15 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
     >
       {fields.map((field) => (
         <label className="grid gap-2 text-sm text-text-100" key={field}>
-          <span>{field}</span>
+          <span>
+            {fieldCopy[
+              (field.replace(".", "") === "nameen"
+                ? "nameEn"
+                : field.replace(".", "") === "namear"
+                  ? "nameAr"
+                  : field) as keyof typeof fieldCopy
+            ] ?? field}
+          </span>
           {optionsFor(field) ? (
             <Select
               value={
@@ -472,9 +481,15 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
           )}
         </label>
       ))}
+      {form.formState.isSubmitted &&
+      Object.keys(form.formState.errors).length > 0 ? (
+        <p className="text-input-error-focus-border sm:col-span-2" role="alert">
+          {dictionary.validation.invalidField}
+        </p>
+      ) : null}
       <div className="sm:col-span-2">
         <Button type="submit" isDisabled={mutation.isPending}>
-          {editing ? "Save changes" : "Create"}
+          {editing ? fieldCopy.saveChanges : dictionary.operations.create}
         </Button>
       </div>
     </form>

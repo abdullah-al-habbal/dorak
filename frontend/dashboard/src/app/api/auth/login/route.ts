@@ -6,18 +6,28 @@ import { parseLoginBody } from "@/services/api/auth/login-body.util";
 import { sessionFromBackendLoginData } from "@/services/api/auth/session.util";
 import type { BackendLoginData } from "@/services/api/auth/auth.types";
 import { apiFailure, apiSuccess } from "@/services/api/response.util";
+import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 
 export async function POST(request: Request) {
+  const dictionary = getRequestDictionary(request);
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return apiFailure(400, "invalid_request", "Invalid request.");
+    return apiFailure(
+      400,
+      "invalid_request",
+      dictionary.common.apiError.validation,
+    );
   }
 
   const credentials = parseLoginBody(body);
   if (credentials === null) {
-    return apiFailure(400, "invalid_credentials", "Invalid credentials.");
+    return apiFailure(
+      400,
+      "invalid_credentials",
+      dictionary.auth.invalidCredentials,
+    );
   }
 
   const { actor, email, password } = credentials;
@@ -38,7 +48,7 @@ export async function POST(request: Request) {
     return apiFailure(
       result.status > 0 ? result.status : 502,
       envelope?.code ?? "sign_in_failed",
-      envelope?.message ?? "Unable to sign in.",
+      dictionary.common.apiError.unauthorized,
       envelope?.errors,
     );
   }
@@ -51,7 +61,7 @@ export async function POST(request: Request) {
     return apiFailure(
       502,
       "session_setup_failed",
-      "Unable to establish a secure session.",
+      dictionary.common.apiError.server,
     );
   }
 

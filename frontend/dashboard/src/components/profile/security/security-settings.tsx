@@ -4,12 +4,14 @@ import { Button } from "@/components/tailgrids/core/button";
 import { Card } from "@/components/tailgrids/core/card";
 import { Input } from "@/components/tailgrids/core/input";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { updatePassword } from "@/services/api/dashboard/profile.mutation";
 import { toast } from "sonner";
 import { useState } from "react";
 
 export function SecuritySettings() {
-  const copy = useDictionary().profile.security;
+  const dictionary = useDictionary();
+  const copy = dictionary.profile.security;
   const [currentPassword, setCurrentPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
@@ -17,7 +19,8 @@ export function SecuritySettings() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (password !== confirmation) return toast.error(copy.confirmPassword);
+    if (password !== confirmation)
+      return toast.error(dictionary.validation.passwordMismatch);
     setSaving(true);
     try {
       await updatePassword({
@@ -30,7 +33,7 @@ export function SecuritySettings() {
       setConfirmation("");
       toast.success(copy.updatePassword);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : copy.updatePassword);
+      toast.error(apiErrorMessage(error, dictionary));
     } finally {
       setSaving(false);
     }

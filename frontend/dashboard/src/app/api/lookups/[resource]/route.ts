@@ -3,6 +3,7 @@ import { readSessionCookies } from "@/services/api/auth/cookies";
 import { verifySessionClaim } from "@/services/api/auth/session.util";
 import { bearerHeaders } from "@/services/api/http.util";
 import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
+import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import type { LookupOption, LookupResource } from "@/services/api/lookup.types";
 import type { NextRequest } from "next/server";
 
@@ -37,25 +38,16 @@ export async function GET(
   request: NextRequest,
   context: { params: Promise<{ resource: string }> },
 ) {
+  const copy = getRequestDictionary(request).common.apiError;
   const { resource } = await context.params;
   const { accessToken, claim } = readSessionCookies(request.cookies);
   const session = await verifySessionClaim(claim);
   if (!accessToken || !session)
-    return noStore(
-      apiFailure(401, "session_expired", "Your session has expired."),
-    );
+    return noStore(apiFailure(401, "session_expired", copy.unauthorized));
   if (session.actor_type === "barber")
-    return noStore(
-      apiFailure(
-        403,
-        "forbidden",
-        "This lookup is not available for this actor.",
-      ),
-    );
+    return noStore(apiFailure(403, "forbidden", copy.forbidden));
   if (!isLookupResource(resource))
-    return noStore(
-      apiFailure(404, "resource_not_found", "Lookup resource not found."),
-    );
+    return noStore(apiFailure(404, "resource_not_found", copy.notFound));
 
   const result = await backendRequest<unknown>(LOOKUP_PATHS[resource], {
     headers: bearerHeaders(accessToken),
@@ -65,7 +57,7 @@ export async function GET(
       apiFailure(
         result.status || 502,
         result.envelope?.code ?? "lookup_request_failed",
-        result.envelope?.message ?? "Lookup service is unavailable.",
+        copy.server,
       ),
     );
 

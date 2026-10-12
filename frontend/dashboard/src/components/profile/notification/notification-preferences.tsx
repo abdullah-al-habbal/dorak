@@ -3,13 +3,16 @@
 import { Button } from "@/components/tailgrids/core/button";
 import { Card } from "@/components/tailgrids/core/card";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { getNotificationPreferences } from "@/services/api/dashboard/profile.query";
 import { updateNotificationPreferences } from "@/services/api/dashboard/profile.mutation";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export function NotificationPreferences() {
-  const copy = useDictionary().profile.tabs.notification;
+  const dictionary = useDictionary();
+  const copy = dictionary.profile.tabs.notification;
+  const labels = dictionary.profile.notification;
   const preferences = useQuery({
     queryKey: ["dashboard", "profile", "notifications"],
     queryFn: getNotificationPreferences,
@@ -26,7 +29,7 @@ export function NotificationPreferences() {
       });
       toast.success(copy.title);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : copy.title);
+      toast.error(apiErrorMessage(error, dictionary));
     }
   }
   const values = preferences.data;
@@ -35,11 +38,11 @@ export function NotificationPreferences() {
       <h2 className="text-xl font-semibold text-text-primary">{copy.title}</h2>
       <form className="mt-6 grid gap-3" onSubmit={save}>
         {[
-          ["email", values?.emailEnabled],
-          ["push", values?.pushEnabled],
-          ["booking", values?.bookingEnabled],
-          ["system", values?.systemEnabled],
-        ].map(([name, checked]) => (
+          ["email", values?.emailEnabled, labels.email],
+          ["push", values?.pushEnabled, labels.push],
+          ["booking", values?.bookingEnabled, labels.booking],
+          ["system", values?.systemEnabled, labels.system],
+        ].map(([name, checked, label]) => (
           <label
             className="flex items-center gap-3 text-sm text-text-primary"
             key={String(name)}
@@ -49,7 +52,7 @@ export function NotificationPreferences() {
               name={String(name)}
               defaultChecked={Boolean(checked)}
             />
-            {String(name)}
+            {label}
           </label>
         ))}
         <Button type="submit">{copy.title}</Button>

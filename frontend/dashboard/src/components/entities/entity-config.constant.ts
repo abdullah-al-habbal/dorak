@@ -9,66 +9,61 @@ import type { IStylist } from "@/services/api/dashboard/istylist.types";
 export const ENTITY_CONFIGS = {
   branches: {
     resource: "branches",
-    title: "Branches",
     columns: [
-      { id: "name", label: "Name", value: (item: IBranch) => item.name.en },
-      { id: "email", label: "Email", value: (item: IBranch) => item.email },
-      { id: "status", label: "Status", value: (item: IBranch) => item.status },
+      { id: "name", label: "name", value: (item: IBranch) => item.name.en },
+      { id: "email", label: "email", value: (item: IBranch) => item.email },
+      { id: "status", label: "status", value: (item: IBranch) => item.status },
     ],
   },
   chairs: {
     resource: "chairs",
-    title: "Chairs",
     columns: [
       {
         id: "label",
-        label: "Label",
+        label: "label",
         value: (item: IChair) => item.label ?? item.id,
       },
-      { id: "zone", label: "Zone", value: (item: IChair) => item.floorZone },
-      { id: "status", label: "Status", value: (item: IChair) => item.status },
+      { id: "zone", label: "zone", value: (item: IChair) => item.floorZone },
+      { id: "status", label: "status", value: (item: IChair) => item.status },
     ],
   },
   services: {
     resource: "services",
-    title: "Services",
     columns: [
-      { id: "name", label: "Name", value: (item: IService) => item.name.en },
-      { id: "price", label: "Price", value: (item: IService) => item.price },
+      { id: "name", label: "name", value: (item: IService) => item.name.en },
+      { id: "price", label: "price", value: (item: IService) => item.price },
       {
         id: "active",
-        label: "Active",
-        value: (item: IService) => (item.active ? "Active" : "Inactive"),
+        label: "active",
+        value: (item: IService) => (item.active ? "active" : "inactive"),
       },
     ],
   },
   stylists: {
     resource: "stylists",
-    title: "Stylists",
     columns: [
-      { id: "name", label: "Name", value: (item: IStylist) => item.name.en },
-      { id: "email", label: "Email", value: (item: IStylist) => item.email },
-      { id: "status", label: "Status", value: (item: IStylist) => item.status },
+      { id: "name", label: "name", value: (item: IStylist) => item.name.en },
+      { id: "email", label: "email", value: (item: IStylist) => item.email },
+      { id: "status", label: "status", value: (item: IStylist) => item.status },
     ],
   },
   bookings: {
     resource: "bookings",
-    title: "Bookings",
     columns: [
       {
         id: "time",
-        label: "Appointment",
+        label: "appointment",
         value: (item: IBooking) => item.timeSlot,
       },
-      { id: "status", label: "Status", value: (item: IBooking) => item.status },
+      { id: "status", label: "status", value: (item: IBooking) => item.status },
       {
         id: "chair",
-        label: "Chair",
+        label: "chair",
         value: (item: IBooking) => item.chair?.label ?? "—",
       },
       {
         id: "stylist",
-        label: "Stylist",
+        label: "stylist",
         value: (item: IBooking) => item.barber?.name.en ?? "—",
       },
     ],

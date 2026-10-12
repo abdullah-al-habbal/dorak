@@ -22,21 +22,22 @@ import {
 import { mapWalkInBookingPayload } from "@/services/api/dashboard/dashboard-payload-mapper.util";
 import { getDashboardList } from "@/services/api/dashboard/dashboard.query";
 import { createWalkInBooking } from "@/services/api/dashboard/dashboard-workflow.mutation";
-import { walkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
+import { createWalkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
+import type { WalkInBookingInput } from "@/services/api/dashboard/walk-in-booking.types";
 import { notifySuccess } from "@/services/api/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
 
 export function WalkInBookingForm() {
   const dictionary = useDictionary();
   const copy = dictionary.walkInBooking;
+  const schema = createWalkInBookingSchema(dictionary.validation);
   const session = useSession();
   const router = useRouter();
-  const form = useForm<z.input<typeof walkInBookingSchema>>({
-    resolver: zodResolver(walkInBookingSchema),
+  const form = useForm<WalkInBookingInput>({
+    resolver: zodResolver(schema),
     defaultValues: {
       branchId: session.branchId ?? "",
       chairId: "",
@@ -74,7 +75,7 @@ export function WalkInBookingForm() {
   });
   const mutation = useDashboardMutation(
     "bookings",
-    (value: z.input<typeof walkInBookingSchema>) =>
+    (value: WalkInBookingInput) =>
       createWalkInBooking(
         mapWalkInBookingPayload({
           ...value,
@@ -207,6 +208,12 @@ export function WalkInBookingForm() {
           </SelectContent>
         </Select>
       </label>
+      {form.formState.isSubmitted &&
+      Object.keys(form.formState.errors).length > 0 ? (
+        <p className="text-input-error-focus-border sm:col-span-2" role="alert">
+          {dictionary.validation.invalidField}
+        </p>
+      ) : null}
       <div className="sm:col-span-2">
         <Button type="submit" isDisabled={mutation.isPending}>
           {copy.create}

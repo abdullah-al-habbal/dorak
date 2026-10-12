@@ -20,7 +20,8 @@ import {
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { bookingRescheduleSchema } from "@/services/api/dashboard/booking-reschedule.schema";
+import { createBookingRescheduleSchema } from "@/services/api/dashboard/booking-reschedule.schema";
+import type { BookingRescheduleInput } from "@/services/api/dashboard/booking-reschedule.types";
 import { bookingStatusSchema } from "@/services/api/dashboard/booking-status.schema";
 import { mapBookingReschedulePayload } from "@/services/api/dashboard/dashboard-payload-mapper.util";
 import {
@@ -29,6 +30,7 @@ import {
   updateBookingStatus,
 } from "@/services/api/dashboard/dashboard-workflow.mutation";
 import { ApiClientError } from "@/services/api/client-error";
+import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -40,13 +42,12 @@ interface IBookingActionsDialogProps {
 
 function conflictMessage(
   error: unknown,
-  copy: { conflict: string; failed: string },
+  copy: { conflict: string },
+  dictionary: ReturnType<typeof useDictionary>,
 ): string {
   return error instanceof ApiClientError && error.status === 409
     ? copy.conflict
-    : error instanceof Error
-      ? error.message
-      : copy.failed;
+    : apiErrorMessage(error, dictionary);
 }
 function iso(value: string): string {
   return new Date(value).toISOString();
@@ -58,9 +59,10 @@ export function BookingActionsDialog({
   const [open, setOpen] = useState(false);
   const dictionary = useDictionary();
   const copy = dictionary.bookingActions;
+  const rescheduleSchema = createBookingRescheduleSchema(dictionary.validation);
   const [bookingStatus, setBookingStatus] = useState("confirmed");
-  const rescheduleForm = useForm<z.input<typeof bookingRescheduleSchema>>({
-    resolver: zodResolver(bookingRescheduleSchema),
+  const rescheduleForm = useForm<BookingRescheduleInput>({
+    resolver: zodResolver(rescheduleSchema),
     defaultValues: { timeSlot: "", endsAt: "" },
   });
   const statusForm = useForm<z.input<typeof bookingStatusSchema>>({
@@ -72,7 +74,7 @@ export function BookingActionsDialog({
   );
   const reschedule = useDashboardMutation(
     "bookings",
-    (value: z.input<typeof bookingRescheduleSchema>) =>
+    (value: BookingRescheduleInput) =>
       rescheduleBooking(
         bookingId,
         mapBookingReschedulePayload({
@@ -86,7 +88,8 @@ export function BookingActionsDialog({
     (value: z.input<typeof bookingStatusSchema>) =>
       updateBookingStatus(bookingId, value),
   );
-  const failed = (error: unknown) => toast.error(conflictMessage(error, copy));
+  const failed = (error: unknown) =>
+    toast.error(conflictMessage(error, copy, dictionary));
   const closeOnSuccess = () => {
     toast.success(copy.bookingUpdated);
     setOpen(false);
@@ -135,6 +138,12 @@ export function BookingActionsDialog({
                 }
               />
             </label>
+            {rescheduleForm.formState.isSubmitted &&
+            Object.keys(rescheduleForm.formState.errors).length > 0 ? (
+              <p className="text-input-error-focus-border" role="alert">
+                {dictionary.validation.invalidField}
+              </p>
+            ) : null}
             <Button type="submit" isDisabled={reschedule.isPending}>
               {copy.reschedule}
             </Button>

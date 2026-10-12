@@ -22,6 +22,7 @@ import { EntityDeleteDialog } from "@/components/entities/entity-delete-dialog";
 import { useSession } from "@/hooks/use-session";
 import { useBranchChannel } from "@/hooks/use-branch-channel";
 import Link from "next/link";
+import { apiErrorMessage } from "@/services/api/api-error-message.util";
 
 interface EntityListPageProps {
   resource: Exclude<DashboardResource, "overview">;
@@ -54,7 +55,7 @@ export function EntityListPage({ resource }: EntityListPageProps) {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-title-50">
-            {config.title}
+            {dictionary.common.nav[resource]}
           </h1>
           <p className="mt-1 text-sm text-text-secondary">
             {query.data?.pagination.total ?? 0} {dictionary.operations.records}
@@ -96,7 +97,7 @@ export function EntityListPage({ resource }: EntityListPageProps) {
       ) : null}
       {query.isError ? (
         <p className="text-input-error-focus-border" role="alert">
-          {query.error.message}
+          {apiErrorMessage(query.error, dictionary)}
         </p>
       ) : null}
       {query.data ? (
@@ -105,7 +106,11 @@ export function EntityListPage({ resource }: EntityListPageProps) {
             <TableHeader>
               <TableRow>
                 {config.columns.map((column) => (
-                  <TableHead key={column.id}>{column.label}</TableHead>
+                  <TableHead key={column.id}>
+                    {dictionary.operations.field[
+                      column.label as keyof typeof dictionary.operations.field
+                    ] ?? column.label}
+                  </TableHead>
                 ))}
                 <TableHead>{dictionary.operations.actions}</TableHead>
               </TableRow>
@@ -115,7 +120,14 @@ export function EntityListPage({ resource }: EntityListPageProps) {
                 <TableRow key={item.id}>
                   {config.columns.map((column) => (
                     <TableCell key={column.id}>
-                      {column.value(item as never)}
+                      {(() => {
+                        const value = column.value(item as never);
+                        const statusLabels = dictionary.operations.field;
+                        return typeof value === "string" &&
+                          value in statusLabels
+                          ? statusLabels[value as keyof typeof statusLabels]
+                          : value;
+                      })()}
                     </TableCell>
                   ))}
                   <TableCell>

@@ -5,6 +5,7 @@ import { getDashboardEntity } from "@/services/api/dashboard/dashboard.query";
 import type { DashboardResource } from "@/services/api/dashboard/dashboard-resource.types";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { apiErrorMessage } from "@/services/api/api-error-message.util";
 
 interface EntityDetailPageProps {
   actor: "admin" | "manager";
@@ -31,7 +32,7 @@ export function EntityDetailPage({
   if (query.isError)
     return (
       <p className="text-input-error-focus-border" role="alert">
-        {query.error.message}
+        {apiErrorMessage(query.error, dictionary)}
       </p>
     );
   const values = Object.entries(query.data ?? {}).filter(
@@ -44,7 +45,9 @@ export function EntityDetailPage({
           <h1 className="text-2xl font-semibold text-title-50">
             {dictionary.operations.details}
           </h1>
-          <p className="mt-1 text-sm text-text-secondary">{resource}</p>
+          <p className="mt-1 text-sm text-text-secondary">
+            {dictionary.common.nav[resource]}
+          </p>
         </div>
         <Link
           className="rounded-lg border border-button-primary-outline-stroke px-4 py-2 text-sm text-button-primary-outline-text"
@@ -57,9 +60,19 @@ export function EntityDetailPage({
         {values.map(([key, value]) => (
           <div className="border-b border-border-primary pb-3" key={key}>
             <dt className="text-xs font-medium uppercase tracking-wide text-text-secondary">
-              {key.replaceAll("_", " ")}
+              {dictionary.operations.field[
+                key.replace(/_([a-z])/g, (_, letter: string) =>
+                  letter.toUpperCase(),
+                ) as keyof typeof dictionary.operations.field
+              ] ?? dictionary.operations.details}
             </dt>
-            <dd className="mt-1 text-sm text-text-100">{String(value)}</dd>
+            <dd className="mt-1 text-sm text-text-100">
+              {typeof value === "string" && value in dictionary.operations.field
+                ? dictionary.operations.field[
+                    value as keyof typeof dictionary.operations.field
+                  ]
+                : String(value)}
+            </dd>
           </div>
         ))}
       </dl>

@@ -1,17 +1,17 @@
 import { ROUTES } from "@/config/routes.constant";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
+import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 
 export const dynamic = "force-dynamic";
 
 /** Public BFF health endpoint. Upstream request never carries user credentials. */
-export async function GET() {
+export async function GET(request: Request = new Request("http://localhost")) {
+  const copy = getRequestDictionary(request).common.apiError;
   const result = await backendRequest(ROUTES.api.dashboard.health);
 
   if (result.status === 0 || result.status >= 500) {
-    return noStore(
-      apiFailure(503, "backend_unavailable", "Backend service is unavailable."),
-    );
+    return noStore(apiFailure(503, "backend_unavailable", copy.server));
   }
 
   if (result.status >= 300 && result.status < 500) {

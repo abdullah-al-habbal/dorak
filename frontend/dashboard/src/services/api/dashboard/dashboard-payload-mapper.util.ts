@@ -9,8 +9,8 @@ import {
   stylistCreateSchema,
   stylistEditSchema,
 } from "@/services/api/dashboard/stylist-form.schema";
-import { walkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
-import { bookingRescheduleSchema } from "@/services/api/dashboard/booking-reschedule.schema";
+import type { WalkInBookingInput } from "@/services/api/dashboard/walk-in-booking.types";
+import type { BookingRescheduleInput } from "@/services/api/dashboard/booking-reschedule.types";
 
 export function mapBranchPayload(
   input: z.infer<typeof branchCreateSchema> | z.infer<typeof branchEditSchema>,
@@ -67,9 +67,7 @@ export function mapStylistPayload(
     status: input.status,
   };
 }
-export function mapWalkInBookingPayload(
-  input: z.infer<typeof walkInBookingSchema>,
-) {
+export function mapWalkInBookingPayload(input: WalkInBookingInput) {
   return {
     ...(input.barberId ? { barber_id: input.barberId } : {}),
     branch_id: input.branchId,
@@ -81,8 +79,6 @@ export function mapWalkInBookingPayload(
     time_slot: input.timeSlot,
   };
 }
-export function mapBookingReschedulePayload(
-  input: z.infer<typeof bookingRescheduleSchema>,
-) {
+export function mapBookingReschedulePayload(input: BookingRescheduleInput) {
   return { ends_at: input.endsAt, time_slot: input.timeSlot };
 }

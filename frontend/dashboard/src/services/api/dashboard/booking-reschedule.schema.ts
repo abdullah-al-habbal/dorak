@@ -1,23 +1,29 @@
 import { z } from "zod";
 
-export const bookingRescheduleSchema = z
-  .object({
-    timeSlot: z
-      .string()
-      .min(1)
-      .refine(
-        (value) => !Number.isNaN(new Date(value).getTime()),
-        "Invalid start time.",
-      ),
-    endsAt: z
-      .string()
-      .min(1)
-      .refine(
-        (value) => !Number.isNaN(new Date(value).getTime()),
-        "Invalid end time.",
-      ),
-  })
-  .refine((input) => new Date(input.endsAt) > new Date(input.timeSlot), {
-    message: "End time must follow start time.",
-    path: ["endsAt"],
-  });
+export function createBookingRescheduleSchema(copy: {
+  invalidStartTime: string;
+  invalidEndTime: string;
+  endAfterStart: string;
+}) {
+  return z
+    .object({
+      timeSlot: z
+        .string()
+        .min(1)
+        .refine(
+          (value) => !Number.isNaN(new Date(value).getTime()),
+          copy.invalidStartTime,
+        ),
+      endsAt: z
+        .string()
+        .min(1)
+        .refine(
+          (value) => !Number.isNaN(new Date(value).getTime()),
+          copy.invalidEndTime,
+        ),
+    })
+    .refine((input) => new Date(input.endsAt) > new Date(input.timeSlot), {
+      message: copy.endAfterStart,
+      path: ["endsAt"],
+    });
+}

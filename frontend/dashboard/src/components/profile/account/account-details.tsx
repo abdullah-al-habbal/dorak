@@ -3,6 +3,7 @@
 import { Card } from "@/components/tailgrids/core/card";
 import { useSession } from "@/hooks/use-session";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { Input } from "@/components/tailgrids/core/input";
 import { Button } from "@/components/tailgrids/core/button";
 import { getProfile } from "@/services/api/dashboard/profile.query";
@@ -18,7 +19,8 @@ import { useRouter } from "next/navigation";
 
 export function AccountDetails() {
   const session = useSession();
-  const copy = useDictionary().profile.account;
+  const dictionary = useDictionary();
+  const copy = dictionary.profile.account;
   const profile = useQuery({
     queryKey: ["dashboard", "profile"],
     queryFn: getProfile,
@@ -38,7 +40,7 @@ export function AccountDetails() {
       await profile.refetch();
       toast.success(copy.details);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : copy.details);
+      toast.error(apiErrorMessage(error, dictionary));
     }
   }
   async function beginEmailChange(event: React.FormEvent<HTMLFormElement>) {
@@ -48,7 +50,7 @@ export function AccountDetails() {
       await profile.refetch();
       toast.success(copy.email);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : copy.email);
+      toast.error(apiErrorMessage(error, dictionary));
     }
   }
   async function confirmEmailChange(event: React.FormEvent<HTMLFormElement>) {
@@ -60,7 +62,7 @@ export function AccountDetails() {
       router.refresh();
       toast.success(copy.email);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : copy.email);
+      toast.error(apiErrorMessage(error, dictionary));
     }
   }
 

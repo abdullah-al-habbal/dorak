@@ -8,6 +8,5 @@ export interface EntityColumn<TEntity> {
 
 export interface EntityConfig<TEntity> {
   resource: Exclude<DashboardResource, "overview">;
-  title: string;
   columns: EntityColumn<TEntity>[];
 }

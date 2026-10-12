@@ -1,10 +1,12 @@
-import { walkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
+import { en } from "@/i18n/messages/en.constant";
+import { createWalkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
 import { describe, expect, it } from "vitest";
 
 describe("walkInBookingSchema", () => {
+  const schema = createWalkInBookingSchema(en.validation);
   it("requires at least one service", () => {
     expect(
-      walkInBookingSchema.safeParse({
+      schema.safeParse({
         branchId: "b4e18cf2-6c48-41bb-857d-6db23f2cbaab",
         chairId: "b4e18cf2-6c48-41bb-857d-6db23f2cbaab",
         barberId: null,
