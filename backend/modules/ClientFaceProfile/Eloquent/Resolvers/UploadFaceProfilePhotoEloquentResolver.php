@@ -13,7 +13,7 @@ final class UploadFaceProfilePhotoEloquentResolver
     {
         return ClientFaceProfileModel::create([
             'client_id' => $command->clientId,
-            'image_url' => $command->imageUrl,
+            'image_path' => $command->imagePath,
             'image_hash' => $command->imageHash,
             'is_primary' => $command->isPrimary,
             'uploaded_at' => now(),

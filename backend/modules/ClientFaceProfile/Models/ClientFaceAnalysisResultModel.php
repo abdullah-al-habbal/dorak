@@ -9,12 +9,28 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Modules\Client\Models\ClientModel;
 use Modules\ClientFaceProfile\Eloquent\Casts\FaceAnalysisFeaturesCast;
 use Modules\ClientFaceProfile\Eloquent\Casts\RecommendedCatalogItemIdsCast;
 use Modules\ClientFaceProfile\Enums\AnalysisSourceEnum;
 use Modules\ClientFaceProfile\Enums\DetectedFaceShapeEnum;
+use Modules\ClientFaceProfile\ValuesObjects\FaceAnalysisFeaturesValueObject;
+use Modules\ClientFaceProfile\ValuesObjects\RecommendedCatalogItemIdsValueObject;
 
+/**
+ * @property string $id
+ * @property string $face_profile_id
+ * @property string $analysis_version
+ * @property AnalysisSourceEnum $analysis_source
+ * @property DetectedFaceShapeEnum $detected_face_shape
+ * @property string $confidence_score
+ * @property FaceAnalysisFeaturesValueObject|null $detected_features
+ * @property RecommendedCatalogItemIdsValueObject|null $recommended_catalog_item_ids
+ * @property Carbon $computed_at
+ * @property Carbon $created_at
+ * @property-read ClientFaceProfileModel|null $faceProfile
+ */
 #[Fillable([
     'client_id', 'face_profile_id', 'analysis_version', 'analysis_source',
     'detected_face_shape', 'confidence_score', 'detected_features',

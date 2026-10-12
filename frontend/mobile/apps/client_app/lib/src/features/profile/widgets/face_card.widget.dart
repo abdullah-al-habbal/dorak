@@ -81,7 +81,11 @@ class FaceCard extends StatelessWidget {
           ),
         Row(
           children: [
-            _facePhoto(context, latest.faceProfile?.imageUrl),
+            _facePhoto(
+              context,
+              latest.faceProfile?.imageUrl,
+              onExpired: onCheckAgain,
+            ),
             const SizedBox(width: DorakDimensions.spacingMedium),
             Expanded(
               child: Column(
@@ -116,7 +120,7 @@ class FaceCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (state.uploadedPhotoUrl != null) ...[
-          _facePhoto(context, state.uploadedPhotoUrl),
+          _facePhoto(context, state.uploadedPhotoUrl, onExpired: onCheckAgain),
           const SizedBox(height: DorakDimensions.spacingMedium),
         ],
         Text(l10n.faceAnalysisPendingTitle, style: DorakTypography.titleLg),
@@ -151,26 +155,17 @@ class FaceCard extends StatelessWidget {
     );
   }
 
-  Widget _facePhoto(BuildContext context, String? url) {
+  Widget _facePhoto(
+    BuildContext context,
+    String? url, {
+    VoidCallback? onExpired,
+  }) {
     final colors = DorakColors.of(context);
     final placeholder = Container(
       color: colors.surfaceContainerHighest,
       child: Icon(Icons.face_outlined, color: colors.onSurfaceVariant),
     );
-    return ClipRRect(
-      borderRadius: DorakDimensions.radiusSm,
-      child: SizedBox(
-        width: 56,
-        height: 56,
-        child: url == null
-            ? placeholder
-            : Image.network(
-                url,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => placeholder,
-              ),
-      ),
-    );
+    return _FacePhoto(url: url, placeholder: placeholder, onExpired: onExpired);
   }
 
   String _shapeLabel(AppLocalizations l10n, String shape) {
@@ -192,4 +187,45 @@ class FaceCard extends StatelessWidget {
     }
     return shape;
   }
+}
+
+class _FacePhoto extends StatefulWidget {
+  const _FacePhoto({
+    required this.url,
+    required this.placeholder,
+    this.onExpired,
+  });
+
+  final String? url;
+  final Widget placeholder;
+  final VoidCallback? onExpired;
+
+  @override
+  State<_FacePhoto> createState() => _FacePhotoState();
+}
+
+class _FacePhotoState extends State<_FacePhoto> {
+  bool _refreshRequested = false;
+
+  @override
+  Widget build(BuildContext context) => ClipRRect(
+    borderRadius: DorakDimensions.radiusSm,
+    child: SizedBox(
+      width: 56,
+      height: 56,
+      child: widget.url == null
+          ? widget.placeholder
+          : Image.network(
+              widget.url!,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                if (!_refreshRequested) {
+                  _refreshRequested = true;
+                  widget.onExpired?.call();
+                }
+                return widget.placeholder;
+              },
+            ),
+    ),
+  );
 }

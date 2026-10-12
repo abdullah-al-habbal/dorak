@@ -15,17 +15,18 @@ use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
+    Storage::fake('local');
     Storage::fake('public');
 });
 
 function createFaceProfile(string $clientId): ClientFaceProfileModel
 {
     $file = UploadedFile::fake()->image('face.jpg', 400, 400);
-    $path = $file->store('face-profiles', 'public');
+    $path = $file->store("face-profiles/{$clientId}", 'local');
 
     return ClientFaceProfileModel::create([
         'client_id' => $clientId,
-        'image_url' => Storage::disk('public')->url($path),
+        'image_path' => $path,
         'image_hash' => md5($file->get()),
         'is_primary' => true,
         'uploaded_at' => now(),

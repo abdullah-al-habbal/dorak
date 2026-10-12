@@ -8,7 +8,7 @@ final readonly class UploadFaceProfilePhotoCommand
 {
     public function __construct(
         public string $clientId,
-        public string $imageUrl,
+        public string $imagePath,
         public string $imageHash,
         public bool $isPrimary,
     ) {}
