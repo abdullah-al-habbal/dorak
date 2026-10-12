@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Client\Handlers\Client;
 
+use Exception;
 use Laravel\Socialite\Facades\Socialite;
 use Modules\Client\CQRS\Command\Client\SocialLoginCommand;
 use Modules\Client\Eloquent\Resolvers\Client\SocialLoginEloquentResolver;
@@ -19,7 +20,7 @@ final class SocialLoginHandler
     {
         try {
             $socialUser = Socialite::driver($command->provider)->stateless()->userFromToken($command->accessToken);
-        } catch (\Exception) {
+        } catch (Exception) {
             return SocialLoginResult::invalidToken();
         }
 

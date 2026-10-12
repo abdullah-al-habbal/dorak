@@ -18,6 +18,7 @@ use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 use Modules\ClientRecommendation\ValuesObjects\RecommendationFactorWeightsValueObject;
 use Symfony\Component\Console\Input\InputOption;
+use Throwable;
 
 #[Signature('recommend:recompute-vectors {--client-id=} {--force}')]
 final class RecomputeClientVectorsCommand extends Command
@@ -121,7 +122,7 @@ final class RecomputeClientVectorsCommand extends Command
             );
 
             $this->info($this->cli('cli_embedding_computed', ['entity_type' => $config['type'], 'entity_id' => $entity->id]));
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->error($this->cli('cli_embedding_failed', ['entity_type' => $config['type'], 'entity_id' => $entity->id, 'reason' => $e->getMessage()]));
         }
     }
@@ -210,7 +211,7 @@ final class RecomputeClientVectorsCommand extends Command
             $this->rebuildEdges($client);
 
             $this->info($this->cli('cli_client_vector_computed', ['client_id' => $client->id]));
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->error($this->cli('cli_client_vector_failed', ['client_id' => $client->id, 'reason' => $e->getMessage()]));
         }
     }

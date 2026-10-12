@@ -8,6 +8,7 @@ use Modules\Client\CQRS\Command\Client\RegisterCommand;
 use Modules\Client\Eloquent\Resolvers\Client\RegisterEloquentResolver;
 use Modules\Client\Jobs\SendEmailVerificationCodeJob;
 use Modules\Client\ValuesObjects\RegisterResult;
+use Throwable;
 
 final class RegisterHandler
 {
@@ -23,7 +24,7 @@ final class RegisterHandler
 
         try {
             SendEmailVerificationCodeJob::dispatch((string) $client->id)->afterCommit();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             report($e);
         }
 
