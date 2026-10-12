@@ -139,6 +139,10 @@ class AppRouter {
         router.go(AppRoutes.authEntry);
         session.add(SignalAcknowledged());
         apiClient.resetUnauthorizedSignal();
+      case SessionSignal.accountBanned:
+        router.go(AppRoutes.authEntry);
+        session.add(SignalAcknowledged());
+        apiClient.resetUnauthorizedSignal();
       case SessionSignal.authenticationRequired:
         router.push<void>(AppRoutes.authEntry);
         session.add(SignalAcknowledged());
@@ -330,6 +334,7 @@ class AppRouter {
             path: AppRoutes.loginSegment,
             builder: (context, state) => LoginScreen(
               auth: auth,
+              session: session,
               onCreateAccount: () => router.push<void>(AppRoutes.authRegister),
               onForgotPassword: () =>
                   router.push<void>(AppRoutes.authForgotPassword),

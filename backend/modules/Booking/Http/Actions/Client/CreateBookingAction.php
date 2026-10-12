@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Booking\Http\Actions\Client;
 
 use Illuminate\Http\JsonResponse;
+use InvalidArgumentException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ActiveBookingBanException;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
@@ -26,7 +27,10 @@ final class CreateBookingAction extends BaseApiAction
     {
         try {
             $result = $this->handler->handle($request->toCommand());
-            event(new BookingCreatedEvent($result->booking->id, (string) $result->booking->chair()->value('branch_id')));
+            event(new BookingCreatedEvent(
+                $this->eventIdentifier($result->booking->getKey()),
+                $this->eventIdentifier($result->booking->chair()->value('branch_id')),
+            ));
 
             return $this->created(
                 data: new BookingResource($result->booking),
@@ -48,9 +52,22 @@ final class CreateBookingAction extends BaseApiAction
                 status: 422,
             );
         } catch (ActiveBookingBanException) {
-            return $this->error(message: __('booking::messages.unavailable_for_account'), status: 403);
+            return $this->error(code: 'ACCOUNT_BANNED', message: __('ban::ui.account_banned'), status: 403);
         } catch (BookingOutsideScheduleException) {
             return $this->error(message: __('booking::messages.time_outside_schedule'), status: 422);
         }
+    }
+
+    private function eventIdentifier(mixed $value): string
+    {
+        if ($value === null) {
+            return '';
+        }
+
+        if (! is_scalar($value)) {
+            throw new InvalidArgumentException('Booking broadcast identifiers must be scalar.');
+        }
+
+        return (string) $value;
     }
 }

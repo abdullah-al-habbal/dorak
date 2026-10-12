@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Barber\Handlers\Barber;
 
 use Illuminate\Support\Facades\Hash;
+use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\CQRS\Command\Barber\LoginCommand;
 use Modules\Barber\Repositories\LoginEloquentResolver;
 use Modules\Barber\ValuesObjects\LoginResult;
@@ -21,6 +22,10 @@ final class LoginHandler
 
         if ($barber === null || $barber->getAttribute('has_login') !== true || $barber->getAttribute('password') === null || ! Hash::check($command->password, $barber->getAttribute('password'))) {
             return LoginResult::invalidCredentials();
+        }
+
+        if ($barber->isBanned()) {
+            throw new AccountBannedException;
         }
 
         $token = $barber->createToken('barber-app')->plainTextToken;

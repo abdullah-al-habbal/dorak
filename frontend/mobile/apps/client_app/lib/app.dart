@@ -40,6 +40,7 @@ class _DorakAppState extends State<DorakApp> {
   late final LocaleBloc _localeBloc;
   late final AppRouter _router;
   late final StreamSubscription<void> _unauthorizedSubscription;
+  late final StreamSubscription<void> _accountBannedSubscription;
   late final StreamSubscription<AuthState> _authCoordinatorSubscription;
   late final AppLifecycleListener _lifecycleListener;
   late final PushNotificationService _pushNotifications;
@@ -70,6 +71,9 @@ class _DorakAppState extends State<DorakApp> {
     _unauthorizedSubscription = _apiClient.unauthorizedStream.listen((_) {
       _sessionBloc.add(UnauthorizedDetected());
     });
+    _accountBannedSubscription = _apiClient.accountBannedStream.listen((_) {
+      _sessionBloc.add(AccountBannedDetected());
+    });
 
     _lifecycleListener = AppLifecycleListener(onResume: _probeSessionOnResume);
 
@@ -96,6 +100,7 @@ class _DorakAppState extends State<DorakApp> {
     _lifecycleListener.dispose();
     _authCoordinatorSubscription.cancel();
     _unauthorizedSubscription.cancel();
+    _accountBannedSubscription.cancel();
     _router.dispose();
     _authBloc.close();
     _sessionBloc.close();

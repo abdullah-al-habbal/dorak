@@ -48,7 +48,9 @@ export async function POST(request: Request) {
     return apiFailure(
       result.status > 0 ? result.status : 502,
       envelope?.code ?? "sign_in_failed",
-      dictionary.common.apiError.unauthorized,
+      envelope?.code === "ACCOUNT_BANNED"
+        ? envelope.message
+        : dictionary.common.apiError.unauthorized,
       envelope?.errors,
     );
   }

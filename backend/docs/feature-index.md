@@ -44,6 +44,11 @@
 - `PreferenceModel` — polymorphic `preferenceable()` (MorphTo). Fields: preferred_language, notification_enabled, display_currency_id, theme, price_display_mode
 - `BanModel` — polymorphic `bannable()` (MorphTo). Scope: `active` (banned_from ≤ now AND banned_until null OR > now)
 
+### Ban Enforcement (Task 08)
+- Client, barber, and dashboard-barber login return 403 `ACCOUNT_BANNED` for active bans; client social login, registration for an already-banned email, and token refresh apply the same check.
+- `EnsureNotBanned` rejects banned client/barber API sessions; the self-service ban check remains available so clients can inspect their ban status.
+- Booking creation rejects banned clients and barbers before persistence. `BanObserver` revokes active clients' and barbers' Sanctum tokens when a ban is created.
+
 ### Floor Plan & Booking Engine
 - `GetFloorPlanAction` [GET /api/v1/branches/{branch}/floor-plan] — returns chairs with barber, no auth
 - `ChairResource` — id, label, status, ui_metadata, barber (via BarberResource::make)

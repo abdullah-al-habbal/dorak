@@ -19,10 +19,12 @@ class AuthInterceptor extends Interceptor {
 
   final Future<String?> Function() tokenProvider;
   final void Function() reportUnauthorized;
+  final void Function() reportAccountBanned;
 
   AuthInterceptor({
     required this.tokenProvider,
     required this.reportUnauthorized,
+    required this.reportAccountBanned,
   });
 
   @override
@@ -50,7 +52,12 @@ class AuthInterceptor extends Interceptor {
         _authLifecyclePaths.contains(path) || path.startsWith(_socialPrefix);
 
     if (carriedBearer && !isAuthLifecycle && (status == 401 || status == 403)) {
-      reportUnauthorized();
+      final body = err.response?.data;
+      if (body is Map && body['code'] == 'ACCOUNT_BANNED') {
+        reportAccountBanned();
+      } else {
+        reportUnauthorized();
+      }
     }
 
     handler.next(err);

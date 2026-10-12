@@ -17,6 +17,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     on<RestoreRequested>(_onRestore);
     on<LogoutRequested>(_onLogout);
     on<UnauthorizedDetected>(_onUnauthorizedDetected);
+    on<AccountBannedDetected>(_onAccountBannedDetected);
     on<RequireAuthentication>(_onRequireAuthentication);
     on<SignalAcknowledged>(_onSignalAcknowledged);
     on<SessionAuthenticated>(_onSessionAuthenticated);
@@ -34,13 +35,21 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     SessionAuthenticated event,
     Emitter<SessionState> emit,
   ) {
-    if (_expiring || state.signal == SessionSignal.sessionExpired) return;
+    if (_expiring ||
+        state.signal == SessionSignal.sessionExpired ||
+        state.signal == SessionSignal.accountBanned) {
+      return;
+    }
     if (state.status == AuthStatus.authenticated &&
         state.client == event.client) {
       return;
     }
     emit(
-      state.copyWith(status: AuthStatus.authenticated, client: event.client),
+      state.copyWith(
+        status: AuthStatus.authenticated,
+        client: event.client,
+        clearError: true,
+      ),
     );
   }
 
@@ -164,6 +173,37 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     Emitter<SessionState> emit,
   ) {
     emit(state.copyWith(signal: SessionSignal.authenticationRequired));
+  }
+
+  Future<void> _onAccountBannedDetected(
+    AccountBannedDetected event,
+    Emitter<SessionState> emit,
+  ) async {
+    if (_expiring || state.signal == SessionSignal.accountBanned) return;
+    _expiring = true;
+    Object? error;
+    try {
+      await _tokenStorage.clear();
+    } catch (caught) {
+      error = caught;
+    } finally {
+      _expiring = false;
+    }
+    emit(
+      state.copyWith(
+        status: AuthStatus.guest,
+        clearClient: true,
+        isLoading: false,
+        error:
+            error ??
+            const ApiException(
+              statusCode: 403,
+              code: 'ACCOUNT_BANNED',
+              message: 'Account suspended',
+            ),
+        signal: SessionSignal.accountBanned,
+      ),
+    );
   }
 
   void _onSignalAcknowledged(

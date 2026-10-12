@@ -204,6 +204,10 @@
   "@loginErrorInvalidCredentials": {
     "description": "Login 401 error message"
   },
+  "authAccountSuspended": "هذا الحساب موقوف. تواصل مع الدعم للمساعدة.",
+  "@authAccountSuspended": {
+    "description": "Shown when a ban prevents login or ends an active session"
+  },
   "signUpTitle": "أنشئ حسابك",
   "@signUpTitle": {
     "description": "Sign-up screen title"

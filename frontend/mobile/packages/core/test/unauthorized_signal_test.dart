@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,6 +46,45 @@ void main() {
 
     expect(error.isForbidden, isTrue);
     expect(api.unauthorizedSignalFired, isTrue);
+  });
+
+  test('ACCOUNT_BANNED gets its own session signal stream', () async {
+    final dio = Dio(BaseOptions(baseUrl: 'http://test/api/v1'));
+    dio.httpClientAdapter = FakeHttpClientAdapter(
+      (options) => Future.value(
+        ResponseBody.fromString(
+          jsonEncode(
+            errorEnvelope(
+              code: 'ACCOUNT_BANNED',
+              statusCode: 403,
+              message: 'Account suspended',
+            ),
+          ),
+          403,
+          headers: {
+            'content-type': ['application/json'],
+          },
+        ),
+      ),
+    );
+    final api = ApiClient(
+      baseUrl: 'http://test/api/v1',
+      dio: dio,
+      enableLogging: false,
+      maxRetries: 0,
+      tokenProvider: token(),
+    );
+    var bannedNotifications = 0;
+    final subscription = api.accountBannedStream.listen((_) {
+      bannedNotifications++;
+    });
+    addTearDown(subscription.cancel);
+
+    final error = await failingGet(api, '/client/profile');
+
+    expect(error.code, 'ACCOUNT_BANNED');
+    expect(bannedNotifications, 1);
+    expect(api.unauthorizedSignalFired, isFalse);
   });
 
   test('auth-lifecycle routes never fire the signal', () async {

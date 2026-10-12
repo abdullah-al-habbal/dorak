@@ -58,8 +58,17 @@ final class CreateBookingEloquentResolver
         if ($command->chairId !== null) {
             $chair = ChairModel::query()->lockForUpdate()->findOrFail($command->chairId);
 
-            if (! $chair->status->isBookable()) {
+            if (! $chair->currentAvailability()->isBookable()) {
                 throw new ChairNotAvailableException;
+            }
+
+            $assignedBarberId = $chair->getAttribute('barber_id');
+            if (is_string($assignedBarberId) && $assignedBarberId !== $command->barberId) {
+                $assignedBarber = BarberModel::query()->lockForUpdate()->findOrFail($assignedBarberId);
+
+                if ($assignedBarber->isBanned()) {
+                    throw new ActiveBookingBanException;
+                }
             }
 
             $this->ensureNoOverlap('chair_id', $command->chairId, $command->timeSlot, $endsAt);
@@ -68,7 +77,7 @@ final class CreateBookingEloquentResolver
         if ($command->barberId !== null) {
             $barber = BarberModel::query()->lockForUpdate()->findOrFail($command->barberId);
 
-            if ($barber->bans()->active()->exists()) {
+            if ($barber->isBanned()) {
                 throw new ActiveBookingBanException;
             }
 

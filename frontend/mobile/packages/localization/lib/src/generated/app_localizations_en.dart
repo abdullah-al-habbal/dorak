@@ -167,6 +167,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginErrorInvalidCredentials => 'Invalid email or password';
 
   @override
+  String get authAccountSuspended =>
+      'This account is suspended. Contact support for help.';
+
+  @override
   String get signUpTitle => 'Create your account';
 
   @override

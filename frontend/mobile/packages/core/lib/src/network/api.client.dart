@@ -27,9 +27,13 @@ class ApiClient {
   final Dio dio;
   final StreamController<void> _unauthorizedController =
       StreamController<void>.broadcast();
+  final StreamController<void> _accountBannedController =
+      StreamController<void>.broadcast();
   bool _unauthorizedFired = false;
+  bool _accountBannedFired = false;
 
   Stream<void> get unauthorizedStream => _unauthorizedController.stream;
+  Stream<void> get accountBannedStream => _accountBannedController.stream;
 
   bool get unauthorizedSignalFired => _unauthorizedFired;
 
@@ -56,6 +60,7 @@ class ApiClient {
           AuthInterceptor(
             tokenProvider: tokenProvider,
             reportUnauthorized: reportUnauthorized,
+            reportAccountBanned: reportAccountBanned,
           ),
         if (enableLogging) LoggingInterceptor(),
         RetryInterceptor(dio: this.dio, maxRetries: maxRetries),
@@ -70,10 +75,18 @@ class ApiClient {
 
   void resetUnauthorizedSignal() {
     _unauthorizedFired = false;
+    _accountBannedFired = false;
   }
 
   void dispose() {
     _unauthorizedController.close();
+    _accountBannedController.close();
+  }
+
+  void reportAccountBanned() {
+    if (_accountBannedFired) return;
+    _accountBannedFired = true;
+    _accountBannedController.add(null);
   }
 
   Future<T> get<T>(

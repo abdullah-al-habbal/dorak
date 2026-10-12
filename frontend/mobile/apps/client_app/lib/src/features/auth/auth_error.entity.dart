@@ -25,6 +25,9 @@ class AuthError {
       return AuthError(message: l10n.errorNetwork);
     }
     if (error is ApiException) {
+      if (error.code == 'ACCOUNT_BANNED') {
+        return AuthError(message: l10n.authAccountSuspended);
+      }
       if (error.isUnauthorized || error.isForbidden) {
         return AuthError(message: unauthorizedMessage ?? l10n.errorGeneric);
       }

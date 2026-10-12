@@ -9,6 +9,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -60,6 +61,17 @@ class BarberModel extends Authenticatable implements FilamentUser
         return $this->morphMany(BanModel::class, 'bannable');
     }
 
+    public function isBanned(): bool
+    {
+        return $this->bans()
+            ->where('banned_from', '<=', now())
+            ->where(fn (Builder $query): Builder => $query
+                ->whereNull('banned_until')
+                ->orWhere('banned_until', '>', now())
+            )
+            ->exists();
+    }
+
     public function services(): MorphMany
     {
         return $this->morphMany(OfferedServiceModel::class, 'serviceable');
@@ -75,11 +87,13 @@ class BarberModel extends Authenticatable implements FilamentUser
         return $this->hasMany(BookingModel::class, 'barber_id');
     }
 
+    /** @return HasMany<ChairModel, $this> */
     public function chairs(): HasMany
     {
         return $this->hasMany(ChairModel::class, 'barber_id');
     }
 
+    /** @return HasMany<BarberPortfolioPhotoModel, $this> */
     public function portfolioPhotos(): HasMany
     {
         return $this->hasMany(BarberPortfolioPhotoModel::class, 'barber_id');

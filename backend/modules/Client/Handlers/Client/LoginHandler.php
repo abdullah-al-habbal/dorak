@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Client\Handlers\Client;
 
 use Illuminate\Support\Facades\Hash;
+use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Client\CQRS\Command\Client\LoginCommand;
 use Modules\Client\Repositories\LoginEloquentResolver;
 use Modules\Client\ValuesObjects\LoginResult;
@@ -21,6 +22,10 @@ final class LoginHandler
 
         if ($client === null || ! Hash::check($command->password, $client->password)) {
             return LoginResult::invalidCredentials();
+        }
+
+        if ($client->isBanned()) {
+            throw new AccountBannedException;
         }
 
         $token = $client->createToken('client-app')->plainTextToken;

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'account_banned' => 'This account is suspended. Contact support for help.',
     'banned_by' => 'Banned By',
     'entity' => 'Entity',
     'entity_id' => 'Entity ID',

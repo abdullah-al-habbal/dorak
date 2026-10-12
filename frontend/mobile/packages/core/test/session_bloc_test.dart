@@ -271,6 +271,35 @@ void main() {
     );
 
     blocTest<SessionBloc, SessionState>(
+      'an account ban clears the token and raises the ban-specific signal',
+      build: () {
+        storage.token = 'stored-token';
+        return bloc();
+      },
+      act: (bloc) async {
+        await bloc.ready;
+        bloc.add(AccountBannedDetected());
+      },
+      expect: () => [
+        const SessionState(isLoading: true),
+        const SessionState(status: AuthStatus.authenticated),
+        const SessionState(
+          status: AuthStatus.guest,
+          error: ApiException(
+            statusCode: 403,
+            code: 'ACCOUNT_BANNED',
+            message: 'Account suspended',
+          ),
+          signal: SessionSignal.accountBanned,
+        ),
+      ],
+      verify: (_) {
+        expect(storage.token, isNull);
+        expect(storage.clearCount, 1);
+      },
+    );
+
+    blocTest<SessionBloc, SessionState>(
       'RequireAuthentication broadcasts the sign-in prompt',
       build: bloc,
       act: (bloc) => bloc.add(RequireAuthentication()),

@@ -6,8 +6,10 @@ namespace Modules\Client\Handlers\Client;
 
 use Exception;
 use Laravel\Socialite\Facades\Socialite;
+use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Client\CQRS\Command\Client\SocialLoginCommand;
 use Modules\Client\Eloquent\Resolvers\Client\SocialLoginEloquentResolver;
+use Modules\Client\Models\ClientModel;
 use Modules\Client\ValuesObjects\SocialLoginResult;
 
 final class SocialLoginHandler
@@ -45,15 +47,23 @@ final class SocialLoginHandler
             $isNew = true;
         }
 
+        if (! $client instanceof ClientModel) {
+            return SocialLoginResult::invalidToken();
+        }
+
+        if ($client->isBanned()) {
+            throw new AccountBannedException;
+        }
+
         $token = $client->createToken('client-app')->plainTextToken;
 
         return SocialLoginResult::success(
             token: $token,
             clientData: [
-                'id' => $client->id,
-                'name' => $client->name,
-                'email' => $client->email,
-                'phone' => $client->phone,
+                'id' => $client->getAuthIdentifier(),
+                'name' => $client->getAttribute('name'),
+                'email' => $client->getAttribute('email'),
+                'phone' => $client->getAttribute('phone'),
             ],
             isNew: $isNew,
         );

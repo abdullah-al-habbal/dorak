@@ -204,6 +204,10 @@
   "@loginErrorInvalidCredentials": {
     "description": "Login 401 error message"
   },
+  "authAccountSuspended": "This account is suspended. Contact support for help.",
+  "@authAccountSuspended": {
+    "description": "Shown when a ban prevents login or ends an active session"
+  },
   "signUpTitle": "Create your account",
   "@signUpTitle": {
     "description": "Sign-up screen title"

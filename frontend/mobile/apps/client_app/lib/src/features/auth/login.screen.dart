@@ -14,6 +14,7 @@ import 'package:client_app/src/features/auth/widgets/login_content.widget.dart';
 
 class LoginScreen extends StatefulWidget {
   final AuthBloc auth;
+  final SessionBloc session;
   final VoidCallback onCreateAccount;
   final VoidCallback? onLocaleToggle;
 
@@ -22,6 +23,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({
     super.key,
     required this.auth,
+    required this.session,
     required this.onCreateAccount,
     this.onLocaleToggle,
     this.onForgotPassword,
@@ -86,29 +88,39 @@ class _LoginScreenState extends State<LoginScreen>
               localeLabel: isArabic ? l10n.localeEnglish : l10n.localeArabic,
               onLocaleToggle: widget.onLocaleToggle,
             ),
-            child: BlocBuilder<AuthBloc, AuthState>(
-              bloc: widget.auth,
-              builder: (context, state) {
-                final error = state.error == null
-                    ? null
-                    : AuthError.from(
-                        state.error!,
-                        l10n,
-                        unauthorizedMessage: l10n.loginErrorInvalidCredentials,
+            child: BlocBuilder<SessionBloc, SessionState>(
+              bloc: widget.session,
+              builder: (context, sessionState) =>
+                  BlocBuilder<AuthBloc, AuthState>(
+                    bloc: widget.auth,
+                    builder: (context, state) {
+                      final error =
+                          sessionState.error is ApiException &&
+                              (sessionState.error! as ApiException).code ==
+                                  'ACCOUNT_BANNED'
+                          ? AuthError(message: l10n.authAccountSuspended)
+                          : state.error == null
+                          ? null
+                          : AuthError.from(
+                              state.error!,
+                              l10n,
+                              unauthorizedMessage:
+                                  l10n.loginErrorInvalidCredentials,
+                            );
+                      return LoginContent(
+                        titleAnimation: _staggeredAnimations[0],
+                        formAnimation: _staggeredAnimations[1],
+                        actionsAnimation: _staggeredAnimations[2],
+                        onSubmit: (email, password) => widget.auth.add(
+                          LoginRequested(email: email, password: password),
+                        ),
+                        error: error,
+                        isSubmitting: state.isSubmitting,
+                        onForgotPassword: widget.onForgotPassword,
+                        onCreateAccount: widget.onCreateAccount,
                       );
-                return LoginContent(
-                  titleAnimation: _staggeredAnimations[0],
-                  formAnimation: _staggeredAnimations[1],
-                  actionsAnimation: _staggeredAnimations[2],
-                  onSubmit: (email, password) => widget.auth.add(
-                    LoginRequested(email: email, password: password),
+                    },
                   ),
-                  error: error,
-                  isSubmitting: state.isSubmitting,
-                  onForgotPassword: widget.onForgotPassword,
-                  onCreateAccount: widget.onCreateAccount,
-                );
-              },
             ),
           ),
         ],

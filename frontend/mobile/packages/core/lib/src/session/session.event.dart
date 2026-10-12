@@ -15,6 +15,8 @@ class LogoutRequested extends SessionEvent {}
 
 class UnauthorizedDetected extends SessionEvent {}
 
+class AccountBannedDetected extends SessionEvent {}
+
 class RequireAuthentication extends SessionEvent {}
 
 class SignalAcknowledged extends SessionEvent {}

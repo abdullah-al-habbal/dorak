@@ -404,6 +404,12 @@ abstract class AppLocalizations {
   /// **'Invalid email or password'**
   String get loginErrorInvalidCredentials;
 
+  /// Shown when a ban prevents login or ends an active session
+  ///
+  /// In en, this message translates to:
+  /// **'This account is suspended. Contact support for help.'**
+  String get authAccountSuspended;
+
   /// Sign-up screen title
   ///
   /// In en, this message translates to:

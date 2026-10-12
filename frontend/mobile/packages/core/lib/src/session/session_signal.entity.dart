@@ -1,1 +1,6 @@
-enum SessionSignal { none, sessionExpired, authenticationRequired }
+enum SessionSignal {
+  none,
+  sessionExpired,
+  accountBanned,
+  authenticationRequired,
+}

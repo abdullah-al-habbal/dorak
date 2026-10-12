@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'account_banned' => 'هذا الحساب موقوف. تواصل مع الدعم للمساعدة.',
     'banned_by' => 'حظر بواسطة',
     'entity' => 'الكيان',
     'entity_id' => 'معرّف الكيان',

@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Handlers;
 use Illuminate\Support\Facades\Hash;
 use InvalidArgumentException;
 use Modules\Admin\Models\AdminModel;
+use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Dashboard\Support\DashboardActor;
@@ -37,8 +38,10 @@ final class DashboardLoginHandler
     private function authenticateAdmin(string $email, string $password): ?DashboardActor
     {
         $admin = AdminModel::query()->where('email', $email)->first();
-        if ($admin instanceof AdminModel && Hash::check($password, $admin->password)) {
-            return new DashboardActor($admin->id, DashboardActor::ADMIN, 'platform_admin', null);
+        $storedPassword = $admin?->getAttribute('password');
+        $adminId = $admin?->getAuthIdentifier();
+        if ($admin instanceof AdminModel && is_string($storedPassword) && is_string($adminId) && Hash::check($password, $storedPassword)) {
+            return new DashboardActor($adminId, DashboardActor::ADMIN, 'platform_admin', null);
         }
 
         return null;
@@ -47,8 +50,10 @@ final class DashboardLoginHandler
     private function authenticateBranch(string $email, string $password): ?DashboardActor
     {
         $branch = BranchModel::query()->where('email', $email)->first();
-        if ($branch instanceof BranchModel && Hash::check($password, $branch->password)) {
-            return new DashboardActor($branch->id, DashboardActor::BRANCH, 'branch_manager', $branch->id);
+        $storedPassword = $branch?->getAttribute('password');
+        $branchId = $branch?->getAuthIdentifier();
+        if ($branch instanceof BranchModel && is_string($storedPassword) && is_string($branchId) && Hash::check($password, $storedPassword)) {
+            return new DashboardActor($branchId, DashboardActor::BRANCH, 'branch_manager', $branchId);
         }
 
         return null;
@@ -61,15 +66,21 @@ final class DashboardLoginHandler
             ->where('has_login', true)
             ->first();
 
-        if (! $barber instanceof BarberModel || ! Hash::check($password, $barber->password)) {
+        $storedPassword = $barber?->getAttribute('password');
+        $barberId = $barber?->getAuthIdentifier();
+        if (! $barber instanceof BarberModel || ! is_string($storedPassword) || ! is_string($barberId) || ! Hash::check($password, $storedPassword)) {
             return null;
         }
 
-        if (! $barber->status->isEnabled()) {
+        if ($barber->isBanned()) {
+            throw new AccountBannedException;
+        }
+
+        if (! $barber->isEnabled) {
             return null;
         }
 
-        return new DashboardActor($barber->id, DashboardActor::BARBER, 'barber', null);
+        return new DashboardActor($barberId, DashboardActor::BARBER, 'barber', null);
     }
 
     private function resolveModel(DashboardActor $actor): AdminModel|BranchModel|BarberModel

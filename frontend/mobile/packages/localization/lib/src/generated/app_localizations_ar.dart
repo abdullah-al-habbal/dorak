@@ -168,6 +168,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'البريد الإلكتروني أو كلمة المرور غير صحيحة';
 
   @override
+  String get authAccountSuspended =>
+      'هذا الحساب موقوف. تواصل مع الدعم للمساعدة.';
+
+  @override
   String get signUpTitle => 'أنشئ حسابك';
 
   @override
