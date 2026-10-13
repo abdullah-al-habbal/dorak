@@ -21,7 +21,15 @@ final class RefreshSessionAction extends BaseApiAction
 
     public function __invoke(RefreshSessionRequest $request): JsonResponse
     {
-        $rotated = $this->refreshResolver->rotate((string) $request->validated('refresh_token'));
+        $validated = $request->validated();
+        $previousClaim = $validated['claim'] ?? null;
+        $refreshToken = $validated['refresh_token'] ?? null;
+        $this->claim->revokeClaim(is_string($previousClaim) ? $previousClaim : null);
+        if (! is_string($refreshToken)) {
+            return $this->unauthorized(message: $this->trans('core::messages.invalid_credentials'));
+        }
+
+        $rotated = $this->refreshResolver->rotate($refreshToken);
         if ($rotated === null) {
             return $this->unauthorized(message: $this->trans('core::messages.invalid_credentials'));
         }

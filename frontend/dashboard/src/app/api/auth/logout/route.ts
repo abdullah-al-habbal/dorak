@@ -9,13 +9,15 @@ import { bearerHeaders } from "@/services/api/http.util";
 import { apiSuccess } from "@/services/api/response.util";
 
 export async function POST(request: NextRequest) {
-  const { accessToken, refreshToken } = readSessionCookies(request.cookies);
+  const { accessToken, refreshToken, claim } = readSessionCookies(
+    request.cookies,
+  );
 
   if (accessToken) {
     await backendRequest(ROUTES.api.dashboard.logout, {
       method: "POST",
       headers: bearerHeaders(accessToken),
-      body: JSON.stringify(refreshToken ? { refresh_token: refreshToken } : {}),
+      body: JSON.stringify({ refresh_token: refreshToken, claim }),
     });
   }
 

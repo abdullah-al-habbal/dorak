@@ -4,13 +4,13 @@ import type {
   RefreshedSession,
 } from "@/services/api/auth/auth.types";
 import { verifyDashboardClaim } from "@/services/api/auth/jwt.util";
-import { getSessionSecret } from "@/services/api/auth/session-secret.util";
+import { getSessionSecrets } from "@/services/api/auth/session-secret.util";
 
 /** Verify a claim cookie against the shared session secret; absent tokens fail closed. */
 export async function verifySessionClaim(
   token: string | undefined,
 ): Promise<DashboardClaim | null> {
-  return token ? verifyDashboardClaim(token, getSessionSecret()) : null;
+  return token ? verifyDashboardClaim(token, getSessionSecrets()) : null;
 }
 
 function isPositiveWholeSeconds(value: number): boolean {

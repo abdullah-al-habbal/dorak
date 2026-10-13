@@ -14,8 +14,8 @@ function base64Url(value: Buffer | string): string {
   return Buffer.from(value).toString("base64url");
 }
 
-function sign(claim: DashboardClaim, secret = SECRET): string {
-  const header = base64Url(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+function sign(claim: DashboardClaim, secret = SECRET, kid = "default"): string {
+  const header = base64Url(JSON.stringify({ alg: "HS256", kid, typ: "JWT" }));
   const payload = base64Url(JSON.stringify(claim));
   const signature = createHmac("sha256", secret)
     .update(`${header}.${payload}`)
@@ -34,6 +34,7 @@ function makeClaim(overrides: Partial<DashboardClaim> = {}): DashboardClaim {
     iat: now,
     exp: now + 3600,
     iss: "dorak-backend",
+    jti: "jti-1",
     ...overrides,
   };
 }
@@ -95,6 +96,22 @@ describe("verifyDashboardClaim", () => {
     await expect(
       verifyDashboardClaim(sign(makeClaim()), "short"),
     ).resolves.toBeNull();
+  });
+
+  it("accepts claims signed by active or retained rotation keys", async () => {
+    const previous = "previous-dashboard-session-secret-at-least-32";
+    const active = "active-dashboard-session-secret-at-least-32-characters";
+    const keys = { old: previous, new: active };
+
+    await expect(
+      verifyDashboardClaim(sign(makeClaim(), previous, "old"), keys),
+    ).resolves.toMatchObject({ jti: "jti-1" });
+    await expect(
+      verifyDashboardClaim(sign(makeClaim(), previous, "old"), { new: active }),
+    ).resolves.toBeNull();
+    await expect(
+      verifyDashboardClaim(sign(makeClaim(), active, "new"), keys),
+    ).resolves.toMatchObject({ jti: "jti-1" });
   });
 });
 

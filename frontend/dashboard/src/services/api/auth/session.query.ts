@@ -48,7 +48,10 @@ export const getServerSession = cache(async (): Promise<AuthSession | null> => {
   const { ok, envelope } = await backendRequest<BackendMeData>(
     ROUTES.api.dashboard.me,
     {
-      headers: bearerHeaders(accessToken),
+      headers: {
+        ...bearerHeaders(accessToken),
+        ...(claimToken ? { "X-Dashboard-Session": claimToken } : {}),
+      },
     },
   );
 

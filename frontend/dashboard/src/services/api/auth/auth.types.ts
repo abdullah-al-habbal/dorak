@@ -18,6 +18,7 @@ export interface DashboardClaim {
   iat: number;
   exp: number;
   iss: string;
+  jti: string;
 }
 
 export interface AuthSession {

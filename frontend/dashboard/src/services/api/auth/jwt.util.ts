@@ -55,6 +55,8 @@ function hasExactDashboardClaimShape(claim: unknown): claim is DashboardClaim {
     !isOneOf(DASHBOARD_ROLES, claim.role) ||
     typeof claim.sub !== "string" ||
     claim.sub.length === 0 ||
+    typeof claim.jti !== "string" ||
+    claim.jti.length === 0 ||
     typeof issuedAt !== "number" ||
     typeof expiresAt !== "number" ||
     !Number.isSafeInteger(issuedAt) ||
@@ -111,13 +113,9 @@ export function isClaimExpired(
  */
 export async function verifyDashboardClaim(
   token: string,
-  secret: string,
+  secretSet: string | Record<string, string>,
   now: number = Date.now(),
 ): Promise<DashboardClaim | null> {
-  if (secret.length < 32) {
-    return null;
-  }
-
   const parts = splitJwt(token);
   if (parts === null) {
     return null;
@@ -130,10 +128,19 @@ export async function verifyDashboardClaim(
     !isRecord(header) ||
     header.alg !== "HS256" ||
     header.typ !== "JWT" ||
+    typeof header.kid !== "string" ||
     !hasExactDashboardClaimShape(claim)
   ) {
     return null;
   }
+
+  const secret =
+    typeof secretSet === "string"
+      ? header.kid === "default"
+        ? secretSet
+        : ""
+      : secretSet[header.kid];
+  if (typeof secret !== "string" || secret.length < 32) return null;
 
   let valid: boolean;
   try {

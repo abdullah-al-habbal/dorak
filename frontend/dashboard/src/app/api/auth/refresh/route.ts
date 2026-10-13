@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   }
 
   const refreshed = refreshToken
-    ? await refreshDashboardSession(refreshToken)
+    ? await refreshDashboardSession(refreshToken, claim)
     : null;
   if (!refreshed) {
     const response = apiFailure(401, "refresh_unauthorized", copy.unauthorized);

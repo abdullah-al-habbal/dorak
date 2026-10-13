@@ -13,12 +13,16 @@ import { sessionFromBackendLoginData } from "@/services/api/auth/session.util";
  */
 export async function refreshDashboardSession(
   refreshToken: string,
+  previousClaim?: string,
 ): Promise<RefreshedSession | null> {
   const { ok, envelope } = await backendRequest<BackendLoginData>(
     ROUTES.api.dashboard.refresh,
     {
       method: "POST",
-      body: JSON.stringify({ refresh_token: refreshToken }),
+      body: JSON.stringify({
+        refresh_token: refreshToken,
+        claim: previousClaim,
+      }),
     },
   );
 

@@ -9,6 +9,8 @@ use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Dashboard\Models\DashboardRefreshTokenModel;
+use Modules\Dashboard\Support\DashboardActor;
+use Modules\Dashboard\Support\DashboardSessionClaim;
 
 describe('Dashboard auth API', function (): void {
     beforeEach(function (): void {
@@ -33,13 +35,17 @@ describe('Dashboard auth API', function (): void {
             'password' => 'password',
         ])->assertOk();
 
-        $claim = decodeDashboardClaim((string) $response->json('data.claim'));
+        $claimToken = (string) $response->json('data.claim');
+        $claim = decodeDashboardClaim($claimToken);
+        $header = decodeDashboardClaimHeader($claimToken);
+        expect($header)->toMatchArray(['alg' => 'HS256', 'kid' => 'default']);
         expect($claim)
             ->toMatchArray([
                 'actor_type' => 'barber',
                 'iss' => 'dorak-backend',
                 'role' => 'barber',
                 'sub' => $barber->id,
+                'jti' => $claim['jti'],
             ])
             ->not->toHaveKey('branch_id');
         expect($response->json('data.refresh_token'))->toBeString()->not->toBeEmpty();
@@ -64,6 +70,35 @@ describe('Dashboard auth API', function (): void {
             'email' => $barber->email,
             'password' => 'password',
         ])->assertUnauthorized();
+    });
+
+    it('signs with the active key and accepts retained keys until removal', function (): void {
+        $oldSecret = 'dashboard-key-k1-secret-at-least-thirty-two-characters';
+        $newSecret = 'dashboard-key-k2-secret-at-least-thirty-two-characters';
+        config([
+            'dashboard.dashboard.session_secrets' => json_encode(['k1' => $oldSecret, 'k2' => $newSecret]),
+            'dashboard.dashboard.active_kid' => 'k1',
+        ]);
+        $claimService = app(DashboardSessionClaim::class);
+        $admin = AdminModel::factory()->create();
+        $actor = new DashboardActor((string) $admin->id, DashboardActor::ADMIN, 'platform_admin', null);
+        $oldClaim = $claimService->issue($actor);
+        $token = $admin->createToken('dashboard-session', ['dashboard'])->plainTextToken;
+
+        config(['dashboard.dashboard.active_kid' => 'k2']);
+        expect(decodeDashboardClaimHeader($claimService->issue($actor))['kid'])->toBe('k2');
+        expect($claimService->isValid($oldClaim))->toBeTrue();
+        $this->withHeader('X-Dashboard-Session', $oldClaim)
+            ->withToken($token)
+            ->getJson('/api/v1/dashboard/me')
+            ->assertOk();
+
+        config(['dashboard.dashboard.session_secrets' => json_encode(['k2' => $newSecret])]);
+        expect($claimService->isValid($oldClaim))->toBeFalse();
+        $this->withHeader('X-Dashboard-Session', $oldClaim)
+            ->withToken($token)
+            ->getJson('/api/v1/dashboard/me')
+            ->assertUnauthorized();
     });
 
     it('returns the admin identity and token abilities from me', function (): void {
@@ -149,6 +184,7 @@ describe('Dashboard auth API', function (): void {
 
         $rotated = $this->postJson('/api/v1/dashboard/refresh', [
             'refresh_token' => $originalRefresh,
+            'claim' => $login->json('data.claim'),
         ])->assertOk();
 
         expect($rotated->json('data.refresh_token'))->toBeString()->not->toBe($originalRefresh);
@@ -156,6 +192,10 @@ describe('Dashboard auth API', function (): void {
         $this->withHeader('Authorization', 'Bearer '.$rotated->json('data.token'))
             ->getJson('/api/v1/dashboard/me')
             ->assertOk();
+
+        $this->withHeader('X-Dashboard-Session', (string) $login->json('data.claim'))
+            ->getJson('/api/v1/dashboard/me')
+            ->assertUnauthorized();
 
         $this->postJson('/api/v1/dashboard/refresh', [
             'refresh_token' => $originalRefresh,
@@ -194,16 +234,21 @@ describe('Dashboard auth API', function (): void {
         ])->assertOk();
 
         $token = (string) $login->json('data.token');
+        $claim = (string) $login->json('data.claim');
         $refreshToken = (string) $login->json('data.refresh_token');
 
         $this->withHeader('Authorization', 'Bearer '.$token)
-            ->postJson('/api/v1/dashboard/logout')
+            ->postJson('/api/v1/dashboard/logout', ['claim' => $claim])
             ->assertOk()
             ->assertJsonPath('data.logged_out', true);
 
         $this->app['auth']->forgetGuards();
 
         $this->withHeader('Authorization', 'Bearer '.$token)
+            ->getJson('/api/v1/dashboard/me')
+            ->assertUnauthorized();
+
+        $this->withHeader('X-Dashboard-Session', $claim)
             ->getJson('/api/v1/dashboard/me')
             ->assertUnauthorized();
 
@@ -220,4 +265,12 @@ function decodeDashboardClaim(string $claim): array
     $payload = json_decode(base64_decode(strtr($encodedPayload, '-_', '+/')), true, flags: JSON_THROW_ON_ERROR);
 
     return $payload;
+}
+
+/** @return array<string, mixed> */
+function decodeDashboardClaimHeader(string $claim): array
+{
+    [$encodedHeader] = explode('.', $claim);
+
+    return json_decode(base64_decode(strtr($encodedHeader, '-_', '+/')), true, flags: JSON_THROW_ON_ERROR);
 }

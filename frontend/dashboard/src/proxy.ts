@@ -30,7 +30,7 @@ export async function proxy(request: NextRequest) {
 
   if (claim === null) {
     const refreshed = cookies.refreshToken
-      ? await refreshDashboardSession(cookies.refreshToken)
+      ? await refreshDashboardSession(cookies.refreshToken, cookies.claim)
       : null;
     if (refreshed) {
       const response = NextResponse.redirect(request.nextUrl.clone());

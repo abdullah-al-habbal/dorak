@@ -35,7 +35,7 @@ export async function DELETE(request: NextRequest, context: Context) {
 async function proxyDashboardRequest(request: NextRequest, context: Context) {
   const copy = getRequestDictionary(request).common.apiError;
   const { path } = await context.params;
-  const token = readSessionCookies(request.cookies).accessToken;
+  const { accessToken: token, claim } = readSessionCookies(request.cookies);
   if (!token)
     return noStore(apiFailure(401, "session_expired", copy.unauthorized));
   if (!isDashboardResourcePath(path))
@@ -53,7 +53,10 @@ async function proxyDashboardRequest(request: NextRequest, context: Context) {
     `${ROUTES.api.dashboard.root}/${path.join("/")}${request.nextUrl.search}`,
     {
       method: request.method,
-      headers: bearerHeaders(token),
+      headers: {
+        ...bearerHeaders(token),
+        ...(claim ? { "X-Dashboard-Session": claim } : {}),
+      },
       ...(body ? { body } : {}),
     },
   );

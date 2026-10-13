@@ -11,7 +11,7 @@ const SECRET =
 
 function sign(claim: DashboardClaim): string {
   const header = Buffer.from(
-    JSON.stringify({ alg: "HS256", typ: "JWT" }),
+    JSON.stringify({ alg: "HS256", kid: "default", typ: "JWT" }),
   ).toString("base64url");
   const payload = Buffer.from(JSON.stringify(claim)).toString("base64url");
   const signature = createHmac("sha256", SECRET)
@@ -33,6 +33,7 @@ function credentials(
       iat: now,
       exp: now + 3600,
       iss: "dorak-backend",
+      jti: "jti-test",
     }),
     token: "access-token",
     refresh_token: "refresh-token",
