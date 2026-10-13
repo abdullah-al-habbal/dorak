@@ -7,7 +7,7 @@ const { backendRequest, readSessionCookies } = vi.hoisted(() => ({
 }));
 vi.mock("@/services/api/auth/backend-client", () => ({ backendRequest }));
 vi.mock("@/services/api/auth/cookies", () => ({ readSessionCookies }));
-import { GET } from "@/app/api/dashboard/[...path]/route";
+import { GET, PATCH } from "@/app/api/dashboard/[...path]/route";
 
 beforeEach(() => {
   backendRequest.mockReset();
@@ -36,4 +36,16 @@ it("proxies an allowed dashboard resource with the session bearer token", async 
     success: true,
     data: { items: [{ id: "branch-1" }] },
   });
+});
+
+it("rejects a disallowed method and path without calling the backend", async () => {
+  const response = await PATCH(
+    new NextRequest("http://localhost/api/dashboard/branches/branch-1", {
+      method: "PATCH",
+    }),
+    { params: Promise.resolve({ path: ["branches", "branch-1"] }) },
+  );
+
+  expect(response.status).toBe(404);
+  expect(backendRequest).not.toHaveBeenCalled();
 });

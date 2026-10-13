@@ -1,29 +1,34 @@
-import { isOneOf } from "@/utils/guards.util";
-import { DASHBOARD_PROXY_ROOTS } from "@/services/api/dashboard/dashboard-resource.constant";
+const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
+  method: string;
+  path: RegExp;
+}> = [
+  { method: "GET", path: /^overview$/ },
+  { method: "GET", path: /^bookings$/ },
+  { method: "POST", path: /^bookings\/walk-in$/ },
+  { method: "GET", path: /^bookings\/[A-Za-z0-9-]+$/ },
+  { method: "PATCH", path: /^bookings\/[A-Za-z0-9-]+$/ },
+  { method: "PATCH", path: /^bookings\/[A-Za-z0-9-]+\/(cancel|reschedule)$/ },
+  ...["branches", "chairs", "services", "stylists"].flatMap((root) => [
+    { method: "GET", path: new RegExp(`^${root}$`) },
+    { method: "POST", path: new RegExp(`^${root}$`) },
+    { method: "GET", path: new RegExp(`^${root}/[A-Za-z0-9-]+$`) },
+    { method: "PUT", path: new RegExp(`^${root}/[A-Za-z0-9-]+$`) },
+    { method: "DELETE", path: new RegExp(`^${root}/[A-Za-z0-9-]+$`) },
+  ]),
+  { method: "GET", path: /^profile$/ },
+  { method: "PATCH", path: /^profile$/ },
+  { method: "POST", path: /^profile\/email\/(change|verify)$/ },
+  { method: "PUT", path: /^profile\/password$/ },
+  { method: "GET", path: /^profile\/notifications$/ },
+  { method: "PATCH", path: /^profile\/notifications$/ },
+];
 
-const ID_SEGMENT = /^[A-Za-z0-9-]+$/;
-
-/** Accept only documented dashboard endpoints; never turn BFF into an open proxy. */
-export function isDashboardResourcePath(path: readonly string[]): boolean {
-  if (path.length === 1) return isOneOf(DASHBOARD_PROXY_ROOTS, path[0]);
-  if (
-    !isOneOf(DASHBOARD_PROXY_ROOTS, path[0]) ||
-    !path.every((segment) => ID_SEGMENT.test(segment))
-  )
-    return false;
-
-  return (
-    (path[0] !== "overview" && path.length === 2) ||
-    (path[0] === "profile" &&
-      path.length === 2 &&
-      ["password", "notifications"].includes(path[1])) ||
-    (path[0] === "profile" &&
-      path.length === 3 &&
-      path[1] === "email" &&
-      ["change", "verify"].includes(path[2])) ||
-    (path[0] === "bookings" && path.length === 2 && path[1] === "walk-in") ||
-    (path[0] === "bookings" &&
-      path.length === 3 &&
-      ["cancel", "reschedule"].includes(path[2]))
+export function isDashboardRouteAllowed(
+  method: string,
+  path: readonly string[],
+): boolean {
+  const joined = path.join("/");
+  return DASHBOARD_ROUTE_RULES.some(
+    (rule) => rule.method === method.toUpperCase() && rule.path.test(joined),
   );
 }

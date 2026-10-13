@@ -9,7 +9,13 @@ const { backendRequest, readSessionCookies } = vi.hoisted(() => ({
 vi.mock("@/services/api/auth/backend-client", () => ({ backendRequest }));
 vi.mock("@/services/api/auth/cookies", () => ({ readSessionCookies }));
 
-import { DELETE, PATCH } from "@/app/api/barber/[...path]/route";
+import {
+  DELETE,
+  GET,
+  PATCH,
+  POST,
+  PUT,
+} from "@/app/api/barber/[...path]/route";
 
 const context = (path: string[]) => ({ params: Promise.resolve({ path }) });
 
@@ -65,4 +71,23 @@ describe("barber BFF proxy", () => {
     );
     expect(response.status).toBe(200);
   });
+
+  it.each([
+    { method: "GET", path: ["travel-radius"], handler: GET },
+    { method: "POST", path: ["profile"], handler: POST },
+    { method: "PUT", path: ["profile", "x"], handler: PUT },
+  ])(
+    "rejects unlisted $method $path without calling the backend",
+    async ({ method, path, handler }) => {
+      const response = await handler(
+        new NextRequest(`http://localhost/api/barber/${path.join("/")}`, {
+          method,
+        }),
+        context(path),
+      );
+
+      expect(response.status).toBe(404);
+      expect(backendRequest).not.toHaveBeenCalled();
+    },
+  );
 });

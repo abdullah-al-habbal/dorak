@@ -7,7 +7,7 @@ import {
   dashboardProfileRequestBody,
   dashboardProfileResponseData,
 } from "@/services/api/dashboard/dashboard-profile-bff.util";
-import { isDashboardResourcePath } from "@/services/api/dashboard/dashboard-path.util";
+import { isDashboardRouteAllowed } from "@/services/api/dashboard/dashboard-path.util";
 import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import type { NextRequest } from "next/server";
@@ -35,11 +35,12 @@ export async function DELETE(request: NextRequest, context: Context) {
 async function proxyDashboardRequest(request: NextRequest, context: Context) {
   const copy = getRequestDictionary(request).common.apiError;
   const { path } = await context.params;
+  if (!isDashboardRouteAllowed(request.method, path))
+    return noStore(apiFailure(404, "resource_not_found", copy.notFound));
+
   const { accessToken: token, claim } = readSessionCookies(request.cookies);
   if (!token)
     return noStore(apiFailure(401, "session_expired", copy.unauthorized));
-  if (!isDashboardResourcePath(path))
-    return noStore(apiFailure(404, "resource_not_found", copy.notFound));
 
   const rawBody =
     request.method === "GET" || request.method === "DELETE"

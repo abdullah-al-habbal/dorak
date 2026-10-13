@@ -9,17 +9,26 @@ import type { NextRequest } from "next/server";
 interface Context {
   params: Promise<{ path: string[] }>;
 }
-const ALLOWED_PATHS = new Set([
-  "profile",
-  "portfolio",
-  "schedule",
-  "appointments/today",
-  "travel-radius",
-  "workstation-status",
-]);
-const BOOKING_TRANSITION_PATH =
-  /^bookings\/[A-Za-z0-9-]+\/(accept|start|complete|no-show|cancel)$/;
-const PORTFOLIO_ITEM_PATH = /^portfolio\/[A-Za-z0-9-]+$/;
+const BARBER_ROUTE_RULES: ReadonlyArray<{
+  method: string;
+  path: RegExp;
+}> = [
+  { method: "GET", path: /^profile$/ },
+  { method: "PATCH", path: /^profile$/ },
+  { method: "GET", path: /^portfolio$/ },
+  { method: "POST", path: /^portfolio$/ },
+  { method: "DELETE", path: /^portfolio\/[A-Za-z0-9-]+$/ },
+  { method: "GET", path: /^schedule$/ },
+  { method: "PATCH", path: /^schedule$/ },
+  { method: "GET", path: /^appointments\/today$/ },
+  { method: "PATCH", path: /^travel-radius$/ },
+  { method: "PATCH", path: /^workstation-status$/ },
+  {
+    method: "PATCH",
+    path: /^bookings\/[A-Za-z0-9-]+\/(accept|start|complete|no-show)$/,
+  },
+  { method: "POST", path: /^bookings\/[A-Za-z0-9-]+\/cancel$/ },
+];
 
 export async function GET(request: NextRequest, context: Context) {
   return proxyBarberRequest(request, context);
@@ -30,6 +39,9 @@ export async function PATCH(request: NextRequest, context: Context) {
 export async function POST(request: NextRequest, context: Context) {
   return proxyBarberRequest(request, context);
 }
+export async function PUT(request: NextRequest, context: Context) {
+  return proxyBarberRequest(request, context);
+}
 export async function DELETE(request: NextRequest, context: Context) {
   return proxyBarberRequest(request, context);
 }
@@ -38,10 +50,9 @@ async function proxyBarberRequest(request: NextRequest, context: Context) {
   const copy = getRequestDictionary(request).common.apiError;
   const { path } = await context.params;
   const joined = path.join("/");
-  const isAllowed =
-    ALLOWED_PATHS.has(joined) ||
-    BOOKING_TRANSITION_PATH.test(joined) ||
-    (request.method === "DELETE" && PORTFOLIO_ITEM_PATH.test(joined));
+  const isAllowed = BARBER_ROUTE_RULES.some(
+    (rule) => rule.method === request.method && rule.path.test(joined),
+  );
   if (!isAllowed)
     return noStore(apiFailure(404, "resource_not_found", copy.notFound));
   const token = readSessionCookies(request.cookies).accessToken;
