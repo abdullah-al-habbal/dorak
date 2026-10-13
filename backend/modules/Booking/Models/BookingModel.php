@@ -22,6 +22,11 @@ use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Review\Models\ReviewModel;
 
+/**
+ * @property string $client_id
+ * @property string|null $barber_id
+ * @property string|null $chair_id
+ */
 #[Fillable(['client_id', 'chair_id', 'barber_id', 'time_slot', 'ends_at', 'status', 'cancellation_reason', 'payment_method', 'payment_status', 'at_home_location'])]
 #[Table('bookings')]
 class BookingModel extends Model
@@ -46,16 +51,19 @@ class BookingModel extends Model
         return $this->belongsTo(ClientModel::class, 'client_id');
     }
 
+    /** @return BelongsTo<ChairModel, $this> */
     public function chair(): BelongsTo
     {
         return $this->belongsTo(ChairModel::class, 'chair_id');
     }
 
+    /** @return BelongsTo<BarberModel, $this> */
     public function barber(): BelongsTo
     {
         return $this->belongsTo(BarberModel::class, 'barber_id');
     }
 
+    /** @return BelongsToMany<OfferedServiceModel, $this> */
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(OfferedServiceModel::class, 'booking_offered_service', 'booking_id', 'offered_service_id');

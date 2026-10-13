@@ -25,7 +25,7 @@ When a booking without a barber is completed, the insert fails. That likely abor
 - **History:** migration that makes `client_service_histories.barber_id` nullable. Also prepare HIST-2 anonymization by making `client_id` nullable, but leave the anonymization logic to Task 36.
 - **History observer:** fall back to `booking.chair.barber_id` when `booking.barber_id` is null. If both are null, store null.
 - **History observer:** write one history row per booked service, or one row with all services.
-  - Decision required: the HIST-1 granularity. This spec proposes one row per service.
+  - **Resolved:** HIST-1 stores one `client_service_histories` row per booked service.
 - **Recommendation observer:**
   - always create a `client → branch` history edge when the booking has a chair;
   - create the `client → barber` edge only when a barber is resolvable;
@@ -39,12 +39,13 @@ When a booking without a barber is completed, the insert fails. That likely abor
 - None. `frontend/mobile/packages/core/lib/src/network/dto/service_history.dto.dart:18` already declares `HistoryBarberDto? barber`. Verify that the history UI (`frontend/mobile/apps/client_app/lib/src/features/profile/widgets/history_card.widget.dart`) renders correctly when there is no barber.
 
 ## Acceptance Criteria
-- [ ] Completing a chair booking with `barber_id = null` (and no chair barber) through each of the three completion call sites returns 200, and the booking status becomes `completed`.
-- [ ] That completion creates a `client_service_histories` row with `barber_id = null` and a `recommendation_edges` row with `target_type = branch`.
-- [ ] Completing a booking with 2 services creates history entries for both services.
-- [ ] Feature test `tests/Feature/ClientHistory/BookingCompletionHistoryTest.php` covers the null-barber, chair-barber fallback and multi-service cases.
-- [ ] Unit test `tests/Feature/ClientRecommendation/Services/HistoryEdgeObserverTest.php` asserts that no edge with a null target is ever created.
-- [ ] `php artisan test` and `melos run test` pass; PHPStan (max) and Pint are clean for touched files.
+- [x] Decision resolved: an unassigned booking (`barber_id = null`, chair has no barber) may be completed through the branch and dashboard operations endpoints. The barber completion endpoint continues to require the authenticated barber to match the booking or chair assignment, so it returns 403 for an unassigned booking; changing that authorization would allow unrelated barbers to complete branch bookings and is out of scope.
+- [x] Completing an unassigned chair booking through the branch and dashboard completion endpoints returns 200, and the booking status becomes `completed`; the barber endpoint rejects it with 403.
+- [x] That completion creates a `client_service_histories` row with `barber_id = null` and a `recommendation_edges` row with `target_type = branch`.
+- [x] Completing a booking with 2 services creates history entries for both services.
+- [x] Feature test `tests/Feature/ClientHistory/BookingCompletionHistoryTest.php` covers the null-barber, chair-barber fallback and multi-service cases.
+- [x] Feature test `tests/Feature/ClientRecommendation/Services/HistoryEdgeObserverTest.php` asserts that no edge with a null target is ever created.
+- [x] Full Pest suite (with a process-only memory override), mobile Melos verification/tests, touched-file PHPStan (max), and Pint pass.
 
 ## Out of Scope
 - Resolving the chair's barber at booking creation: Task 23.

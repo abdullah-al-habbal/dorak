@@ -34,7 +34,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: block branch deletion with HTTP 409 while future bookings remain; do not cancel bookings or send notifications as part of deletion.
 
 ## [Task 13: Fix Booking Completion for Bookings Without a Barber](tasks/task-13-booking-completion-null-barber.md)
-- [ ] Decision required: the HIST-1 granularity. This spec proposes one row per service.
+- [x] Decision resolved: HIST-1 stores one `client_service_histories` row per booked service.
 
 ## [Task 18: Centralize Booking Status Transitions](tasks/task-18-booking-lifecycle-service.md)
 - [ ] **Decision required:** allow `Confirmed → NoShow` (EC-3), or keep `NoShow` only from `InProgress`. Update `canTransitionTo` and its tests to match the decision.

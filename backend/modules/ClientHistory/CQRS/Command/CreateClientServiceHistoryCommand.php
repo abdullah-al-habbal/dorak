@@ -9,12 +9,12 @@ use Carbon\Carbon;
 final readonly class CreateClientServiceHistoryCommand
 {
     public function __construct(
-        public string $clientId,
+        public ?string $clientId,
         public string $bookingId,
-        public string $barberId,
+        public ?string $barberId,
         public ?string $branchId,
         public ?string $offeredServiceId,
-        public ?string $catalogItemId,
+        public ?int $catalogItemId,
         public Carbon $performedAt,
     ) {}
 }

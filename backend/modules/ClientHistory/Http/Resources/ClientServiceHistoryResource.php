@@ -23,15 +23,15 @@ final class ClientServiceHistoryResource extends JsonResource
             'client_notes' => $this->client_notes,
             'barber_notes' => $this->barber_notes,
             'metadata' => $this->metadata?->toArray(),
-            'barber' => $this->whenLoaded('barber', fn () => [
+            'barber' => $this->whenLoaded('barber', fn () => $this->barber === null ? null : [
                 'id' => $this->barber->id,
                 'name' => $this->barber->name,
             ]),
-            'branch' => $this->whenLoaded('branch', fn () => [
+            'branch' => $this->whenLoaded('branch', fn () => $this->branch === null ? null : [
                 'id' => $this->branch->id,
                 'name' => $this->branch->name,
             ]),
-            'catalog_item' => $this->whenLoaded('catalogItem', fn () => [
+            'catalog_item' => $this->whenLoaded('catalogItem', fn () => $this->catalogItem === null ? null : [
                 'id' => $this->catalogItem->id,
                 'name' => $this->catalogItem->getTranslations('name'),
             ]),

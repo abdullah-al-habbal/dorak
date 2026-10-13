@@ -18,6 +18,10 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Enums\FloorZone;
 
+/**
+ * @property string $branch_id
+ * @property string|null $barber_id
+ */
 #[Fillable(['branch_id', 'barber_id', 'label', 'floor_zone', 'ui_metadata', 'status'])]
 #[Table('chairs')]
 class ChairModel extends Model

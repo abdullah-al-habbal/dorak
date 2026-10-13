@@ -2848,7 +2848,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\ClientHistory\\Http\\Resources\\ClientServiceHistoryResource\:\:\$barber\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: modules/ClientHistory/Http/Resources/ClientServiceHistoryResource.php
 
 		-
@@ -2872,7 +2872,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\ClientHistory\\Http\\Resources\\ClientServiceHistoryResource\:\:\$branch\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: modules/ClientHistory/Http/Resources/ClientServiceHistoryResource.php
 
 		-
@@ -2884,7 +2884,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\ClientHistory\\Http\\Resources\\ClientServiceHistoryResource\:\:\$catalogItem\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: modules/ClientHistory/Http/Resources/ClientServiceHistoryResource.php
 
 		-

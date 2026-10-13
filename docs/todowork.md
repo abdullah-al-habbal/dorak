@@ -33,7 +33,7 @@ codeanchors:
 - [x] Task 12: Enforce Branch Manager Scope and Last-Branch Guard -> [Spec](tasks/task-12-branch-manager-scope.md)
 
 ## Phase 2 — Data Integrity & Broken Pipelines (P0)
-- [ ] Task 13: Fix Booking Completion for Bookings Without a Barber -> [Spec](tasks/task-13-booking-completion-null-barber.md)
+- [x] Task 13: Fix Booking Completion for Bookings Without a Barber -> [Spec](tasks/task-13-booking-completion-null-barber.md)
 - [ ] Task 14: Align Service Catalog ID Type with API Contracts -> [Spec](tasks/task-14-catalog-id-contract.md)
 - [ ] Task 15: Dispatch Face Analysis on Photo Upload -> [Spec](tasks/task-15-face-analysis-dispatch.md)
 - [ ] Task 16: Migrate Push Delivery to FCM HTTP v1 -> [Spec](tasks/task-16-fcm-http-v1.md)
