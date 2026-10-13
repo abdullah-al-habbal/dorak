@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
 
 #[UseModel(ClientModel::class)]
@@ -24,6 +25,7 @@ class ClientFactory extends Factory
             ],
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'status' => ClientStatusEnum::Enabled,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

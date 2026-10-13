@@ -62,6 +62,7 @@ class OfferedServiceModel extends Model
         return $this->belongsTo(CurrencyModel::class, 'currency_id');
     }
 
+    /** @return BelongsTo<ServiceCatalogItemModel, $this> */
     public function catalogItem(): BelongsTo
     {
         return $this->belongsTo(ServiceCatalogItemModel::class, 'catalog_item_id');

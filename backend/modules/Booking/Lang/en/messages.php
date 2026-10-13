@@ -16,6 +16,7 @@ return [
     'unavailable_for_account' => 'Booking is unavailable for this account.',
     'time_outside_schedule' => 'The requested time is outside the barber schedule.',
     'active_booking_ban' => 'A client or barber with an active ban cannot book.',
+    'entity_not_discoverable' => 'This branch or barber is not available for booking.',
     'invalid_services_for_booking' => 'Booking services must be active and have a duration.',
     'notification_new_request_title' => 'New booking request',
     'notification_barber_request_body' => 'A booking requires your attention.',

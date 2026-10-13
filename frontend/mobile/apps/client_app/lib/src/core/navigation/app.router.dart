@@ -155,7 +155,12 @@ class AppRouter {
   void _onAuthChanged(AuthState state) {
     switch (state.signal) {
       case AuthSignal.loginSucceeded:
-        router.go(_postAuthRoute());
+        final client = state.client;
+        if (client != null && !client.emailVerified) {
+          router.push<void>(AppRoutes.authVerify, extra: client.email);
+        } else {
+          router.go(_postAuthRoute());
+        }
         auth.add(AuthSignalAcknowledged());
       case AuthSignal.registrationSucceeded:
         router.push<void>(

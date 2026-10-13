@@ -3,6 +3,5 @@
 declare(strict_types=1);
 
 return [
-    'barber_activated' => 'تم تفعيل الحلاق بنجاح.',
-    'barber_deactivated' => 'تم إلغاء تفعيل الحلاق بنجاح.',
+    'account_not_active' => 'هذا الحساب غير مفعل. أكمل التحقق أو تواصل مع الدعم.',
 ];

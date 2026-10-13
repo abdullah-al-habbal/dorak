@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Explore\Eloquent\Resolvers\Shared;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Modules\Branch\Models\BranchModel;
@@ -26,7 +27,7 @@ final class ExploreBranchesEloquentResolver
             $payload->latitude, $payload->longitude, $payload->latitude
         );
 
-        $subQuery = BranchModel::query()
+        $subQuery = BranchModel::query()->discoverable()
             ->select('branches.*')
             ->selectRaw("{$haversine} AS distance")
             ->whereNotNull('latitude')
@@ -69,8 +70,12 @@ final class ExploreBranchesEloquentResolver
         if ($payload->faceShapeCompatible !== null) {
             $faceMatchIds = BranchModel::query()
                 ->whereIn('id', $branchIds)
-                ->whereHas('offeredServices', fn ($q) => $q->whereHas('catalogItem', fn ($q) => $q->whereJsonContains('face_shapes', $payload->faceShapeCompatible)
-                )
+                ->whereHas('offeredServices', fn ($q) => $q
+                    ->where('active', true)
+                    ->whereHas('catalogItem', fn ($q) => $q
+                        ->where('active', true)
+                        ->whereJsonContains('face_shapes', $payload->faceShapeCompatible)
+                    )
                 )
                 ->pluck('id')
                 ->toArray();
@@ -106,10 +111,17 @@ final class ExploreBranchesEloquentResolver
         return $paginator;
     }
 
-    private function applyFilters($query, ExploreBranchesQuery $payload)
+    /**
+     * @param  Builder<BranchModel>  $query
+     * @return Builder<BranchModel>
+     */
+    private function applyFilters(Builder $query, ExploreBranchesQuery $payload): Builder
     {
         if ($payload->catalogItemIds !== null) {
-            $query->whereHas('offeredServices', fn ($q) => $q->whereIn('catalog_item_id', $payload->catalogItemIds)
+            $query->whereHas('offeredServices', fn ($q) => $q
+                ->where('active', true)
+                ->whereIn('catalog_item_id', $payload->catalogItemIds)
+                ->whereHas('catalogItem', fn ($catalog) => $catalog->where('active', true))
             );
         }
 
@@ -123,6 +135,8 @@ final class ExploreBranchesEloquentResolver
 
         if ($payload->priceRangeMin !== null || $payload->priceRangeMax !== null) {
             $query->whereHas('offeredServices', fn ($q) => $q
+                ->where('active', true)
+                ->whereHas('catalogItem', fn ($catalog) => $catalog->where('active', true))
                 ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price', '>=', $payload->priceRangeMin))
                 ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price', '<=', $payload->priceRangeMax))
             );
@@ -138,7 +152,8 @@ final class ExploreBranchesEloquentResolver
         return $query;
     }
 
-    private function applyBoundingBox($query, float $latitude, float $longitude, float $radius): void
+    /** @param Builder<BranchModel> $query */
+    private function applyBoundingBox(Builder $query, float $latitude, float $longitude, float $radius): void
     {
         $latitudeDelta = $radius / 111.32;
         $longitudeDelta = $radius / (111.32 * max(cos(deg2rad($latitude)), 0.000001));

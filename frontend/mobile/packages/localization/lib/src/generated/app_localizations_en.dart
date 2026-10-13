@@ -171,6 +171,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This account is suspended. Contact support for help.';
 
   @override
+  String get authAccountNotActive =>
+      'This account is not active. Complete verification or contact support.';
+
+  @override
   String get signUpTitle => 'Create your account';
 
   @override

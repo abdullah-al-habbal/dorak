@@ -172,6 +172,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'هذا الحساب موقوف. تواصل مع الدعم للمساعدة.';
 
   @override
+  String get authAccountNotActive =>
+      'هذا الحساب غير مفعل. أكمل التحقق أو تواصل مع الدعم.';
+
+  @override
   String get signUpTitle => 'أنشئ حسابك';
 
   @override

@@ -28,6 +28,9 @@ class AuthError {
       if (error.code == 'ACCOUNT_BANNED') {
         return AuthError(message: l10n.authAccountSuspended);
       }
+      if (error.code == 'ACCOUNT_NOT_ACTIVE') {
+        return AuthError(message: l10n.authAccountNotActive);
+      }
       if (error.isUnauthorized || error.isForbidden) {
         return AuthError(message: unauthorizedMessage ?? l10n.errorGeneric);
       }

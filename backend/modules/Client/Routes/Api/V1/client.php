@@ -17,6 +17,7 @@ use Modules\Client\Http\Actions\Client\UpdateProfileAction;
 use Modules\Client\Http\Actions\Client\UpdateUniversePreferenceAction;
 use Modules\Client\Http\Actions\Client\UploadAvatarAction;
 use Modules\Client\Http\Actions\Client\VerifyEmailAction;
+use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
 
 Route::prefix('client')->name('client.')->group(function (): void {
     Route::post('/login', LoginAction::class)->name('login')->middleware('throttle:5,1');
@@ -25,15 +26,18 @@ Route::prefix('client')->name('client.')->group(function (): void {
     Route::post('/forgot-password', ForgotPasswordAction::class)->name('forgot-password')->middleware('throttle:5,1');
     Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password')->middleware('throttle:5,1');
 
-    Route::middleware('auth:client')->group(function (): void {
+    Route::middleware(['auth:client', EnsureClientAccountAccess::class.':verification'])->group(function (): void {
         Route::post('/logout', LogoutAction::class)->name('logout');
+        Route::post('/email/verify', VerifyEmailAction::class)->name('email.verify');
+        Route::post('/email/verify/send', SendEmailVerificationAction::class)->name('email.verify.send')->middleware('throttle:3,1');
+    });
+
+    Route::middleware(['auth:client', EnsureClientAccountAccess::class])->group(function (): void {
         Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
         Route::patch('/preferences/universe', UpdateUniversePreferenceAction::class)->name('preferences.universe');
         Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
         Route::post('/avatar', UploadAvatarAction::class)->name('avatar.upload');
         Route::delete('/account', DeleteAccountAction::class)->name('account.delete');
-        Route::post('/email/verify', VerifyEmailAction::class)->name('email.verify');
-        Route::post('/email/verify/send', SendEmailVerificationAction::class)->name('email.verify.send')->middleware('throttle:3,1');
         Route::patch('/password', ChangePasswordAction::class)->name('password.change');
     });
 });

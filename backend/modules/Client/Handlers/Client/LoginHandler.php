@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Modules\Client\Handlers\Client;
 
 use Illuminate\Support\Facades\Hash;
+use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Client\CQRS\Command\Client\LoginCommand;
+use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Repositories\LoginEloquentResolver;
 use Modules\Client\ValuesObjects\LoginResult;
 
@@ -28,7 +30,12 @@ final class LoginHandler
             throw new AccountBannedException;
         }
 
-        $token = $client->createToken('client-app')->plainTextToken;
+        if ($client->getAttribute('status') === ClientStatusEnum::Disabled
+            || ($client->getAttribute('status') === ClientStatusEnum::Pending && $client->getAttribute('email_verified_at') !== null)) {
+            throw new AccountNotActiveException;
+        }
+
+        $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
         return LoginResult::success(
             token: $token,
@@ -37,6 +44,7 @@ final class LoginHandler
                 'name' => $client->name,
                 'email' => $client->email,
                 'phone' => $client->phone,
+                'email_verified' => $client->getAttribute('email_verified_at') !== null,
             ],
         );
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Booking\Eloquent\Resolvers\Client;
 
 use Carbon\Carbon;
+use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Booking\CQRS\Command\Client\CreateBookingCommand;
@@ -13,10 +14,12 @@ use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
+use Modules\Booking\Eloquent\Resolvers\Shared\NonDiscoverableBookingEntityException;
 use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
@@ -58,6 +61,10 @@ final class CreateBookingEloquentResolver
         if ($command->chairId !== null) {
             $chair = ChairModel::query()->lockForUpdate()->findOrFail($command->chairId);
 
+            if (! BranchModel::query()->discoverable()->whereKey($chair->getAttribute('branch_id'))->exists()) {
+                throw new NonDiscoverableBookingEntityException;
+            }
+
             if (! $chair->currentAvailability()->isBookable()) {
                 throw new ChairNotAvailableException;
             }
@@ -69,6 +76,9 @@ final class CreateBookingEloquentResolver
                 if ($assignedBarber->isBanned()) {
                     throw new ActiveBookingBanException;
                 }
+                if ($assignedBarber->getAttribute('status') !== BarberStatusEnum::Enabled) {
+                    throw new NonDiscoverableBookingEntityException;
+                }
             }
 
             $this->ensureNoOverlap('chair_id', $command->chairId, $command->timeSlot, $endsAt);
@@ -79,6 +89,9 @@ final class CreateBookingEloquentResolver
 
             if ($barber->isBanned()) {
                 throw new ActiveBookingBanException;
+            }
+            if ($barber->getAttribute('status') !== BarberStatusEnum::Enabled) {
+                throw new NonDiscoverableBookingEntityException;
             }
 
             $scheduleExists = BarberScheduleModel::query()

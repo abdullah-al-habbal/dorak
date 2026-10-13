@@ -410,6 +410,12 @@ abstract class AppLocalizations {
   /// **'This account is suspended. Contact support for help.'**
   String get authAccountSuspended;
 
+  /// Shown when login is blocked because the account is pending or disabled
+  ///
+  /// In en, this message translates to:
+  /// **'This account is not active. Complete verification or contact support.'**
+  String get authAccountNotActive;
+
   /// Sign-up screen title
   ///
   /// In en, this message translates to:

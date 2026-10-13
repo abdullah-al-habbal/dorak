@@ -27,7 +27,7 @@ codeanchors:
 - [x] Task 06: Move Job Application Decisions to Branch Managers -> [Spec](tasks/task-06-job-application-status-authz.md)
 - [x] Task 07: Store Face Photos Privately with Signed Access -> [Spec](tasks/task-07-face-photo-privacy.md)
 - [x] Task 08: Enforce Client and Barber Bans at Login and Booking -> [Spec](tasks/task-08-ban-enforcement.md)
-- [ ] Task 09: Enforce Account Status at Login and Hide Inactive Entities in Explore -> [Spec](tasks/task-09-activation-status-visibility.md)
+- [x] Task 09: Enforce Account Status at Login and Hide Inactive Entities in Explore -> [Spec](tasks/task-09-activation-status-visibility.md)
 - [ ] Task 10: Harden Dashboard Session Claim (HttpOnly Cookie, jti, Rotation) -> [Spec](tasks/task-10-dashboard-session-hardening.md)
 - [ ] Task 11: Restrict BFF Catch-All Proxies to Declared Method+Path Pairs -> [Spec](tasks/task-11-bff-proxy-method-allowlist.md)
 - [ ] Task 12: Enforce Branch Manager Scope and Last-Branch Guard -> [Spec](tasks/task-12-branch-manager-scope.md)

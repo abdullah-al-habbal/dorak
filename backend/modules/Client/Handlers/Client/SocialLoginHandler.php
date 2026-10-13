@@ -6,9 +6,11 @@ namespace Modules\Client\Handlers\Client;
 
 use Exception;
 use Laravel\Socialite\Facades\Socialite;
+use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Client\CQRS\Command\Client\SocialLoginCommand;
 use Modules\Client\Eloquent\Resolvers\Client\SocialLoginEloquentResolver;
+use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\ValuesObjects\SocialLoginResult;
 
@@ -55,7 +57,12 @@ final class SocialLoginHandler
             throw new AccountBannedException;
         }
 
-        $token = $client->createToken('client-app')->plainTextToken;
+        if ($client->getAttribute('status') === ClientStatusEnum::Disabled
+            || ($client->getAttribute('status') === ClientStatusEnum::Pending && $client->getAttribute('email_verified_at') !== null)) {
+            throw new AccountNotActiveException;
+        }
+
+        $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
         return SocialLoginResult::success(
             token: $token,
@@ -64,6 +71,7 @@ final class SocialLoginHandler
                 'name' => $client->getAttribute('name'),
                 'email' => $client->getAttribute('email'),
                 'phone' => $client->getAttribute('phone'),
+                'email_verified' => $client->getAttribute('email_verified_at') !== null,
             ],
             isNew: $isNew,
         );

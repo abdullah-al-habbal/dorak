@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Modules\Branch\Handlers\Branch;
 
 use Illuminate\Support\Facades\Hash;
+use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Branch\CQRS\Command\Branch\LoginCommand;
+use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Repositories\BranchLoginEloquentResolver;
 use Modules\Branch\ValuesObjects\BranchLoginResult;
 
@@ -21,6 +23,10 @@ final class LoginHandler
 
         if ($branch === null || ! Hash::check($command->password, $branch->password)) {
             return BranchLoginResult::invalidCredentials();
+        }
+
+        if ($branch->getAttribute('status') !== BranchStatusEnum::Enabled) {
+            throw new AccountNotActiveException;
         }
 
         $token = $branch->createToken('branch-app')->plainTextToken;

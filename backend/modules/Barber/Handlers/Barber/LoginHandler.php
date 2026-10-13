@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Modules\Barber\Handlers\Barber;
 
 use Illuminate\Support\Facades\Hash;
+use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\CQRS\Command\Barber\LoginCommand;
+use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Repositories\LoginEloquentResolver;
 use Modules\Barber\ValuesObjects\LoginResult;
 
@@ -26,6 +28,10 @@ final class LoginHandler
 
         if ($barber->isBanned()) {
             throw new AccountBannedException;
+        }
+
+        if ($barber->getAttribute('status') !== BarberStatusEnum::Enabled) {
+            throw new AccountNotActiveException;
         }
 
         $token = $barber->createToken('barber-app')->plainTextToken;

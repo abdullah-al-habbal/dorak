@@ -64,6 +64,32 @@ it('creates new client via social login', function () {
     ]);
 });
 
+it('issues a verification-only token to a pending client on social login', function () {
+    $client = ClientModel::factory()->create([
+        'email' => 'pending-social@example.com',
+        'status' => 'pending',
+        'email_verified_at' => null,
+    ]);
+    SocialAccountModel::factory()->create([
+        'client_id' => $client->id,
+        'provider' => 'google',
+        'provider_id' => 'google-uid-123',
+    ]);
+
+    $stateless = Mockery::mock();
+    $stateless->shouldReceive('userFromToken')->with('pending-social-token')->andReturn($this->user);
+    $driver = Mockery::mock();
+    $driver->shouldReceive('stateless')->andReturn($stateless);
+    Socialite::shouldReceive('driver')->with('google')->andReturn($driver);
+
+    $response = $this->postJson('/api/v1/client/social/google', [
+        'access_token' => 'pending-social-token',
+    ])->assertOk()->assertJsonPath('data.client.email_verified', false);
+
+    expect($client->tokens()->firstOrFail()->abilities)->toBe(['email-verification']);
+    $this->withToken($response->json('data.token'))->getJson('/api/v1/bookings')->assertForbidden();
+});
+
 it('returns existing client when social account already linked', function () {
     $client = ClientModel::factory()->create(['email' => 'existing@example.com']);
     SocialAccountModel::factory()->create([

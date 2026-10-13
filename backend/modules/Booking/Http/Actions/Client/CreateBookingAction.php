@@ -11,6 +11,7 @@ use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
+use Modules\Booking\Eloquent\Resolvers\Shared\NonDiscoverableBookingEntityException;
 use Modules\Booking\Events\BookingCreatedEvent;
 use Modules\Booking\Handlers\Client\CreateBookingHandler;
 use Modules\Booking\Http\Requests\Client\CreateBookingRequest;
@@ -53,6 +54,8 @@ final class CreateBookingAction extends BaseApiAction
             );
         } catch (ActiveBookingBanException) {
             return $this->error(code: 'ACCOUNT_BANNED', message: __('ban::ui.account_banned'), status: 403);
+        } catch (NonDiscoverableBookingEntityException) {
+            return $this->error(code: 'ENTITY_NOT_DISCOVERABLE', message: __('booking::messages.entity_not_discoverable'), status: 422);
         } catch (BookingOutsideScheduleException) {
             return $this->error(message: __('booking::messages.time_outside_schedule'), status: 422);
         }

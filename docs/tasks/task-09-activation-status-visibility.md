@@ -22,7 +22,7 @@ Clients, barbers and branches all have a `status` enum (`pending`, `enabled`, `d
   - client `LoginHandler` and `SocialLoginHandler`;
   - barber `LoginHandler`;
   - branch `LoginHandler`.
-  - Decision required: whether a `pending` client (email not yet verified) may log in with limited scope. If yes, document the allowed routes.
+  - **Decision resolved:** pending or unverified clients may log in only with a verification-only token. It may access `POST /api/v1/client/email/verify/send`, `POST /api/v1/client/email/verify`, and `POST /api/v1/client/logout`. Successful email verification upgrades that token to normal client access; disabled clients remain forbidden.
 - **Explore:** add a reusable `discoverable()` scope on `BarberModel` and `BranchModel` (`status = enabled` and no active ban). Apply it in:
   - Explore branches and barbers (list and detail);
   - the floor plan;
@@ -38,14 +38,14 @@ Clients, barbers and branches all have a `status` enum (`pending`, `enabled`, `d
 - The stylist and business app logins (Tasks 82 and 84) must handle the same 403.
 
 ## Acceptance Criteria
-- [ ] A client with `status=disabled` gets 403 from `POST /api/v1/client/login`.
-- [ ] A barber with `status=disabled` gets 403 from `POST /api/v1/barber/login`; a disabled branch gets 403 from `POST /api/v1/branch/login`.
-- [ ] `GET /api/v1/explore/branches` excludes a branch with `status=disabled` and a branch with an active ban.
-- [ ] `GET /api/v1/explore/barbers` excludes disabled and banned barbers.
-- [ ] `GET /api/v1/explore/branches/{disabledBranch}` returns 404.
-- [ ] `POST /api/v1/bookings` targeting a disabled branch's chair returns 422.
-- [ ] Feature tests `tests/Feature/Explore/DiscoverabilityTest.php` and `tests/Feature/Auth/AccountStatusLoginTest.php` cover the cases above.
-- [ ] `php artisan test` passes; PHPStan (max) and Pint are clean for touched files.
+- [x] A client with `status=disabled` gets 403 from `POST /api/v1/client/login`.
+- [x] A barber with `status=disabled` gets 403 from `POST /api/v1/barber/login`; a disabled branch gets 403 from `POST /api/v1/branch/login`.
+- [x] `GET /api/v1/explore/branches` excludes a branch with `status=disabled` and a branch with an active ban.
+- [x] `GET /api/v1/explore/barbers` excludes disabled and banned barbers.
+- [x] `GET /api/v1/explore/branches/{disabledBranch}` returns 404.
+- [x] `POST /api/v1/bookings` targeting a disabled branch's chair returns 422.
+- [x] Feature tests `tests/Feature/Explore/DiscoverabilityTest.php` and `tests/Feature/Auth/AccountStatusLoginTest.php` cover the cases above.
+- [x] The full Pest suite passes; PHPStan (max) and Pint are clean for touched files.
 
 ## Out of Scope
 - Branch activate/deactivate endpoints and owner-driven barber activation: Task 53.

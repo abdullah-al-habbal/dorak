@@ -9,6 +9,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Activation\Models\ActivationLogModel;
+use Modules\Ban\Models\BanModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Enums\FloorPlanPreset;
@@ -52,11 +54,33 @@ class BranchModel extends Authenticatable implements FilamentUser
         return $this->morphMany(ActivationLogModel::class, 'activable');
     }
 
+    /** @return MorphMany<BanModel, $this> */
+    public function bans(): MorphMany
+    {
+        return $this->morphMany(BanModel::class, 'bannable');
+    }
+
+    /**
+     * @param  Builder<BranchModel>  $query
+     * @return Builder<BranchModel>
+     */
+    public function scopeDiscoverable(Builder $query): Builder
+    {
+        return $query->where('status', BranchStatusEnum::Enabled->value)
+            ->whereDoesntHave('bans', fn ($bans) => $bans
+                ->where('banned_from', '<=', now())
+                ->where(fn ($activeBans) => $activeBans
+                    ->whereNull('banned_until')
+                    ->orWhere('banned_until', '>', now())
+                ));
+    }
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(BrandModel::class, 'brand_id');
     }
 
+    /** @return HasMany<ChairModel, $this> */
     public function chairs(): HasMany
     {
         return $this->hasMany(ChairModel::class, 'branch_id');

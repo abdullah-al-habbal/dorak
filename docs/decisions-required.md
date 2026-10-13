@@ -28,7 +28,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: no withdrawal status is introduced. Remove the barber decision route; any future withdrawal flow needs a separately specified domain state and workflow.
 
 ## [Task 09: Enforce Account Status at Login and Hide Inactive Entities in Explore](tasks/task-09-activation-status-visibility.md)
-- [ ] Decision required: whether a `pending` client (email not yet verified) may log in with limited scope. If yes, document the allowed routes.
+- [x] Decision resolved: pending or unverified clients may log in only with a verification-only token. That token may access `POST /api/v1/client/email/verify/send`, `POST /api/v1/client/email/verify`, and `POST /api/v1/client/logout`. Email verification upgrades that token to normal client access; disabled clients remain forbidden.
 
 ## [Task 12: Enforce Branch Manager Scope and Last-Branch Guard](tasks/task-12-branch-manager-scope.md)
 - [ ] Decision required: behaviour for future bookings on a deleted branch (block deletion while upcoming bookings exist, or cancel them and notify). The default proposed here is to block with 409.

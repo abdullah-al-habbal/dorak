@@ -13,6 +13,8 @@ class ClientDto extends Equatable {
   final String email;
   final String? phone;
   final String? preferredUniverse;
+  @JsonKey(defaultValue: true)
+  final bool emailVerified;
 
   const ClientDto({
     required this.id,
@@ -20,11 +22,12 @@ class ClientDto extends Equatable {
     required this.email,
     this.phone,
     this.preferredUniverse,
+    this.emailVerified = true,
   });
 
   factory ClientDto.fromJson(Map<String, dynamic> json) =>
       _$ClientDtoFromJson(json);
 
   @override
-  List<Object?> get props => [id, name, email, phone, preferredUniverse];
+  List<Object?> get props => [id, name, email, phone, preferredUniverse, emailVerified];
 }

@@ -74,6 +74,15 @@ class ClientModel extends Authenticatable implements FilamentUser
         return $this->bans()->active()->exists();
     }
 
+    /** @return list<string> */
+    public function accessTokenAbilities(): array
+    {
+        return $this->getAttribute('status') === ClientStatusEnum::Enabled
+            && $this->getAttribute('email_verified_at') !== null
+            ? ['client-active']
+            : ['email-verification'];
+    }
+
     protected function casts(): array
     {
         return [

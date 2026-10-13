@@ -208,6 +208,10 @@
   "@authAccountSuspended": {
     "description": "Shown when a ban prevents login or ends an active session"
   },
+  "authAccountNotActive": "This account is not active. Complete verification or contact support.",
+  "@authAccountNotActive": {
+    "description": "Shown when login is blocked because the account is pending or disabled"
+  },
   "signUpTitle": "Create your account",
   "@signUpTitle": {
     "description": "Sign-up screen title"

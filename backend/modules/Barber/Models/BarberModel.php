@@ -56,6 +56,7 @@ class BarberModel extends Authenticatable implements FilamentUser
         return $this->morphMany(ActivationLogModel::class, 'activable');
     }
 
+    /** @return MorphMany<BanModel, $this> */
     public function bans(): MorphMany
     {
         return $this->morphMany(BanModel::class, 'bannable');
@@ -72,6 +73,22 @@ class BarberModel extends Authenticatable implements FilamentUser
             ->exists();
     }
 
+    /**
+     * @param  Builder<BarberModel>  $query
+     * @return Builder<BarberModel>
+     */
+    public function scopeDiscoverable(Builder $query): Builder
+    {
+        return $query->where('status', BarberStatusEnum::Enabled->value)
+            ->whereDoesntHave('bans', fn ($bans) => $bans
+                ->where('banned_from', '<=', now())
+                ->where(fn ($activeBans) => $activeBans
+                    ->whereNull('banned_until')
+                    ->orWhere('banned_until', '>', now())
+                ));
+    }
+
+    /** @return MorphMany<OfferedServiceModel, $this> */
     public function services(): MorphMany
     {
         return $this->morphMany(OfferedServiceModel::class, 'serviceable');

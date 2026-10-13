@@ -26,7 +26,7 @@ class BarberFactory extends Factory
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'is_freelancer' => false,
-            'status' => BarberStatusEnum::Pending->value,
+            'status' => BarberStatusEnum::Enabled->value,
             'client_id' => null,
         ];
     }

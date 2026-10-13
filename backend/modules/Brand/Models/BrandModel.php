@@ -53,6 +53,7 @@ class BrandModel extends Model
         return $this->belongsTo(CurrencyModel::class, 'base_currency_id');
     }
 
+    /** @return HasMany<BranchModel, $this> */
     public function branches(): HasMany
     {
         return $this->hasMany(BranchModel::class, 'brand_id');

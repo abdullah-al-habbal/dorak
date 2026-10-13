@@ -28,7 +28,7 @@ final class RegisterHandler
 
         $client = $this->resolver->resolve($command);
 
-        $token = $client->createToken('client-app')->plainTextToken;
+        $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
         try {
             SendEmailVerificationCodeJob::dispatch((string) $client->id)->afterCommit();
@@ -43,6 +43,7 @@ final class RegisterHandler
                 'name' => $client->name,
                 'email' => $client->email,
                 'phone' => $client->phone,
+                'email_verified' => $client->getAttribute('email_verified_at') !== null,
             ],
         );
     }

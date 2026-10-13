@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
 use Modules\ClientInteraction\Http\Actions\Client\AddFavoriteAction;
 use Modules\ClientInteraction\Http\Actions\Client\CreateSavedFilterAction;
 use Modules\ClientInteraction\Http\Actions\Client\DeleteSavedFilterAction;
@@ -14,7 +15,7 @@ use Modules\ClientInteraction\Http\Actions\Client\ShowSavedFilterAction;
 use Modules\ClientInteraction\Http\Actions\Client\UpdateDiscoveryPreferenceAction;
 use Modules\ClientInteraction\Http\Actions\Client\UpdateSavedFilterAction;
 
-Route::middleware('auth:client')->group(function () {
+Route::middleware(['auth:client', EnsureClientAccountAccess::class])->group(function () {
     Route::get('/client/favorites', ListFavoritesAction::class)->name('client.favorites.index');
     Route::post('/client/favorites', AddFavoriteAction::class)->name('client.favorites.store');
     Route::delete('/client/favorites/{favorite}', RemoveFavoriteAction::class)->name('client.favorites.destroy');

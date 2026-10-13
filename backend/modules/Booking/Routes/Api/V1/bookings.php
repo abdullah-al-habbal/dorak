@@ -7,8 +7,9 @@ use Modules\Booking\Http\Actions\Client\CancelBookingAction;
 use Modules\Booking\Http\Actions\Client\CreateBookingAction;
 use Modules\Booking\Http\Actions\Client\ListUserBookingsAction;
 use Modules\Booking\Http\Actions\Client\ShowBookingAction;
+use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
 
-Route::middleware('auth:client')->group(function (): void {
+Route::middleware(['auth:client', EnsureClientAccountAccess::class])->group(function (): void {
     Route::post('/bookings', CreateBookingAction::class)->name('bookings.create');
     Route::get('/bookings', ListUserBookingsAction::class)->name('bookings.list');
     Route::get('/bookings/{booking}', ShowBookingAction::class)->name('bookings.show');

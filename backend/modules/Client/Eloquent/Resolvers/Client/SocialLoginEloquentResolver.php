@@ -6,6 +6,7 @@ namespace Modules\Client\Eloquent\Resolvers\Client;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
 
@@ -28,7 +29,9 @@ final class SocialLoginEloquentResolver
         return ClientModel::create([
             'name' => $name,
             'email' => $email,
+            'email_verified_at' => now(),
             'password' => Hash::make(Str::random(32)),
+            'status' => ClientStatusEnum::Enabled,
         ]);
     }
 

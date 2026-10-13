@@ -34,11 +34,13 @@ class ChairModel extends Model
         ];
     }
 
+    /** @return BelongsTo<BranchModel, $this> */
     public function branch(): BelongsTo
     {
         return $this->belongsTo(BranchModel::class, 'branch_id');
     }
 
+    /** @return BelongsTo<BarberModel, $this> */
     public function barber(): BelongsTo
     {
         return $this->belongsTo(BarberModel::class, 'barber_id');
@@ -52,6 +54,10 @@ class ChairModel extends Model
     public function currentAvailability(): ChairStatus
     {
         $status = $this->getAttribute('status');
+
+        if (! $status instanceof ChairStatus) {
+            return ChairStatus::Maintenance;
+        }
 
         if ($status !== ChairStatus::Available) {
             return $status;
