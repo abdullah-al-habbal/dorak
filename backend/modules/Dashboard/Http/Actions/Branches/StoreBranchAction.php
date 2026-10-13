@@ -16,8 +16,10 @@ final class StoreBranchAction extends BaseApiAction
     public function __construct(private readonly StoreBranchHandler $handler) {}
 
     public function __invoke(StoreBranchRequest $request): JsonResponse
-    { /** @var DashboardActor $actor */ $actor = $request->attributes->get('dashboard_actor');
-        if (! $actor->isPlatformAdmin() && (! $actor->isBranchManager() || $actor->brandId !== $request->validated('brand_id'))) {
+    {
+        /** @var DashboardActor $actor */
+        $actor = $request->attributes->get('dashboard_actor');
+        if (! $actor->isPlatformAdmin()) {
             return $this->forbidden();
         }
 

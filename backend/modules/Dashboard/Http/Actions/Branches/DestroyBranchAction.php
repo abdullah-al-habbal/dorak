@@ -6,9 +6,12 @@ namespace Modules\Dashboard\Http\Actions\Branches;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use LogicException;
 use Modules\Branch\Models\BranchModel;
+use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\DestroyBranchCommand;
+use Modules\Dashboard\Eloquent\Resolvers\Branches\BranchLifecycleConflictException;
 use Modules\Dashboard\Handlers\Branches\DestroyBranchHandler;
 use Modules\Dashboard\Support\DashboardActor;
 
@@ -17,10 +20,26 @@ final class DestroyBranchAction extends BaseApiAction
     public function __construct(private readonly DestroyBranchHandler $handler) {}
 
     public function __invoke(Request $request, BranchModel $branch): JsonResponse
-    { /** @var DashboardActor $actor */ $actor = $request->attributes->get('dashboard_actor');
-        if (! $actor->isPlatformAdmin() && (! $actor->isBranchManager() || $actor->brandId !== $branch->brand_id)) {
+    {
+        /** @var DashboardActor $actor */
+        $actor = $request->attributes->get('dashboard_actor');
+        if (! $actor->isPlatformAdmin()) {
             return $this->forbidden();
-        } $this->handler->handle($branch, new DestroyBranchCommand($branch->id));
+        }
+
+        try {
+            $branchId = $branch->getAttribute('id');
+            if (! is_string($branchId) && ! is_int($branchId)) {
+                throw new LogicException('Branch identifier must be scalar.');
+            }
+            $this->handler->handle($branch, new DestroyBranchCommand((string) $branchId));
+        } catch (BranchLifecycleConflictException $exception) {
+            $message = $exception->reason === 'last_branch'
+                ? __('dashboard::messages.branch_last_active')
+                : __('dashboard::messages.branch_has_upcoming_bookings');
+
+            return $this->error(ErrorCodeEnum::CONFLICT, $message, 409);
+        }
 
         return $this->deleted();
     }

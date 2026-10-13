@@ -6,5 +6,5 @@ namespace Modules\Dashboard\CQRS\Query;
 
 final readonly class ListBranchesQuery
 {
-    public function __construct(public ?string $brandId, public int $perPage) {}
+    public function __construct(public ?string $brandId, public int $perPage, public ?string $branchId = null) {}
 }

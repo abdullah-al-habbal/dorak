@@ -8,7 +8,7 @@ use Modules\Booking\Models\BookingModel;
 describe('Dashboard Overview API', function (): void {
     it('returns dashboard summary metrics for a platform admin', function (): void {
         BookingModel::factory()->create(['time_slot' => now(), 'ends_at' => now()->addMinutes(30)]);
-        $this->actingAs(AdminModel::factory()->create(), 'admin_api');
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
 
         $this->getJson('/api/v1/dashboard/overview')
             ->assertOk()

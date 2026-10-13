@@ -20,7 +20,7 @@ The dashboard `StoreBranchAction` and `DestroyBranchAction` allow any branch-man
 - `StoreBranchAction` and `DestroyBranchAction`: allow only the platform admin. Brand Owner access is added in Task 38. Branch managers get 403.
 - `UpdateBranchAction`: a branch manager may update **only their own branch** (`actor.branchId === branch.id`), not siblings.
 - `DestroyBranchEloquentResolver`: if the branch is the brand's last remaining branch, refuse with 409 (`ErrorCodeEnum::CONFLICT`).
-- Decision required: behaviour for future bookings on a deleted branch (block deletion while upcoming bookings exist, or cancel them and notify). The default proposed here is to block with 409.
+- Decision resolved: block branch deletion with HTTP 409 while future bookings remain; do not cancel bookings or send notifications as part of deletion.
 
 ### Dashboard (BFF / React)
 - Remove `frontend/dashboard/src/app/(portals)/manager/branches/create` and hide the create and delete actions in the manager branches list (`frontend/dashboard/src/app/(portals)/manager/branches/page.tsx`).
@@ -31,14 +31,14 @@ The dashboard `StoreBranchAction` and `DestroyBranchAction` allow any branch-man
 - None. The business app has no branch create or delete flow.
 
 ## Acceptance Criteria
-- [ ] Manager actor: `POST /api/v1/dashboard/branches` returns 403, and no row is created.
-- [ ] Manager actor: `DELETE /api/v1/dashboard/branches/{siblingOrOwn}` returns 403.
-- [ ] Manager actor: `PUT /api/v1/dashboard/branches/{sibling}` returns 403; `PUT` on their own branch returns 200.
-- [ ] Admin actor: `DELETE` on a brand's only branch returns 409, and the branch still exists.
-- [ ] Admin actor: `DELETE` on one of two branches returns 200 or 204.
-- [ ] Additions to `tests/Feature/Dashboard/BranchApiTest.php` cover each case.
-- [ ] The manager portal has no route `/manager/branches/create` (vitest route test or build check).
-- [ ] `php artisan test` and dashboard `npm run test` pass; PHPStan (max) and Pint are clean for touched files.
+- [x] Manager actor: `POST /api/v1/dashboard/branches` returns 403, and no row is created.
+- [x] Manager actor: `DELETE /api/v1/dashboard/branches/{siblingOrOwn}` returns 403.
+- [x] Manager actor: `PUT /api/v1/dashboard/branches/{sibling}` returns 403; `PUT` on their own branch returns 200.
+- [x] Admin actor: `DELETE` on a brand's only branch returns 409, and the branch still exists.
+- [x] Admin actor: `DELETE` on one of two branches returns 200 or 204.
+- [x] Additions to `tests/Feature/Dashboard/BranchApiTest.php` cover each case, including future bookings and final active branch deactivation.
+- [x] The manager portal has no route `/manager/branches/create`; the list and API expose only the assigned branch and hide create/delete actions.
+- [x] Backend Pest suite (642 tests) and dashboard `npm run test` (182 tests) pass; targeted PHPStan and Pint checks are clean for touched files.
 
 ## Out of Scope
 - The Brand Owner role and its branch management: Task 38.

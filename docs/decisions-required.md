@@ -31,7 +31,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: pending or unverified clients may log in only with a verification-only token. That token may access `POST /api/v1/client/email/verify/send`, `POST /api/v1/client/email/verify`, and `POST /api/v1/client/logout`. Email verification upgrades that token to normal client access; disabled clients remain forbidden.
 
 ## [Task 12: Enforce Branch Manager Scope and Last-Branch Guard](tasks/task-12-branch-manager-scope.md)
-- [ ] Decision required: behaviour for future bookings on a deleted branch (block deletion while upcoming bookings exist, or cancel them and notify). The default proposed here is to block with 409.
+- [x] Decision resolved: block branch deletion with HTTP 409 while future bookings remain; do not cancel bookings or send notifications as part of deletion.
 
 ## [Task 13: Fix Booking Completion for Bookings Without a Barber](tasks/task-13-booking-completion-null-barber.md)
 - [ ] Decision required: the HIST-1 granularity. This spec proposes one row per service.

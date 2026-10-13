@@ -16,7 +16,7 @@ describe('Dashboard Booking API', function (): void {
         BookingModel::factory()->create(['chair_id' => $ownChair->id, 'status' => BookingStatus::Pending->value]);
         BookingModel::factory()->create(['chair_id' => $ownChair->id, 'status' => BookingStatus::Confirmed->value]);
         BookingModel::factory()->create(['chair_id' => $otherChair->id, 'status' => BookingStatus::Pending->value]);
-        $this->actingAs($branch, 'branch_api');
+        $this->authenticateDashboardActor($branch);
 
         $this->getJson('/api/v1/dashboard/bookings?status=pending&chair_id='.$ownChair->id)
             ->assertOk()
@@ -28,7 +28,7 @@ describe('Dashboard Booking API', function (): void {
         $otherBranch = BranchModel::factory()->create();
         $own = BookingModel::factory()->create(['chair_id' => ChairModel::factory()->create(['branch_id' => $branch->id])->id, 'status' => BookingStatus::Pending->value]);
         $other = BookingModel::factory()->create(['chair_id' => ChairModel::factory()->create(['branch_id' => $otherBranch->id])->id, 'status' => BookingStatus::Pending->value]);
-        $this->actingAs($branch, 'branch_api');
+        $this->authenticateDashboardActor($branch);
 
         $this->patchJson("/api/v1/dashboard/bookings/{$own->id}/cancel")->assertOk()->assertJsonPath('data.status', BookingStatus::Canceled->value);
         $this->getJson("/api/v1/dashboard/bookings/{$other->id}")->assertNotFound();
@@ -39,7 +39,7 @@ describe('Dashboard Booking API', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
         $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'time_slot' => now()->addDay(), 'ends_at' => now()->addDay()->addMinutes(30)]);
         BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Confirmed->value, 'time_slot' => now()->addDays(2), 'ends_at' => now()->addDays(2)->addMinutes(30)]);
-        $this->actingAs($branch, 'branch_api');
+        $this->authenticateDashboardActor($branch);
 
         $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}/reschedule", ['time_slot' => now()->addDays(3)->toIso8601String(), 'ends_at' => now()->addDays(3)->addMinutes(30)->toIso8601String()])->assertOk();
         $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}/reschedule", ['time_slot' => now()->addDays(2)->toIso8601String(), 'ends_at' => now()->addDays(2)->addMinutes(30)->toIso8601String()])->assertConflict()->assertJsonPath('code', 'BOOKING_SLOT_CONFLICT');

@@ -23,4 +23,6 @@ return [
     'guard_unsupported' => 'حارس لوحة التحكم غير مدعوم.',
     'booking_time_overlap' => 'يتداخل الوقت المحدد مع حجز نشط.',
     'chair_has_active_or_future_bookings' => 'للكرسي حجوزات نشطة أو مستقبلية.',
+    'branch_last_active' => 'يجب أن يحتفظ النشاط بفرع نشط واحد على الأقل.',
+    'branch_has_upcoming_bookings' => 'لا يمكن حذف فرع لديه حجوزات قادمة.',
 ];

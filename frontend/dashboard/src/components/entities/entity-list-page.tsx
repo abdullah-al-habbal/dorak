@@ -32,6 +32,8 @@ export function EntityListPage({ resource }: EntityListPageProps) {
   const config = ENTITY_CONFIGS[resource];
   const dictionary = useDictionary();
   const session = useSession();
+  const managerBranchList =
+    resource === "branches" && session.actor === "manager";
   useBranchChannel(session.branchId);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -73,7 +75,7 @@ export function EntityListPage({ resource }: EntityListPageProps) {
               }}
             />
           ) : null}
-          {resource !== "bookings" ? (
+          {managerBranchList ? null : resource !== "bookings" ? (
             <Link
               className="rounded-lg bg-button-primary-background px-4 py-2 text-sm text-button-primary-text"
               href={`/${session.actor}/${resource}/create`}
@@ -148,10 +150,12 @@ export function EntityListPage({ resource }: EntityListPageProps) {
                           >
                             {dictionary.operations.edit}
                           </Link>
-                          <EntityDeleteDialog
-                            resource={resource}
-                            id={item.id}
-                          />
+                          {managerBranchList ? null : (
+                            <EntityDeleteDialog
+                              resource={resource}
+                              id={item.id}
+                            />
+                          )}
                         </>
                       )}
                     </div>

@@ -22,7 +22,7 @@ describe('Dashboard Chair API', function (): void {
     it('limits a branch manager to chairs in its branch', function (): void {
         $own = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
         $other = ChairModel::factory()->create(['branch_id' => $this->otherBranch->id]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $this->getJson("/api/v1/dashboard/chairs/{$own->id}")->assertOk();
         $this->getJson("/api/v1/dashboard/chairs/{$other->id}")->assertNotFound();
@@ -30,7 +30,7 @@ describe('Dashboard Chair API', function (): void {
     });
 
     it('lets an admin update and delete an unbooked chair', function (): void {
-        $this->actingAs(AdminModel::factory()->create(), 'admin_api');
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
 
         $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, ['label' => 'A-02']))
@@ -43,7 +43,7 @@ describe('Dashboard Chair API', function (): void {
     it('rejects a foreign barber with a field validation error', function (): void {
         $barber = BarberModel::factory()->create();
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, ['barber_id' => $barber->id]))
             ->assertUnprocessable()
@@ -54,7 +54,7 @@ describe('Dashboard Chair API', function (): void {
     it('rejects a foreign barber when creating a dashboard chair', function (): void {
         $barber = BarberModel::factory()->create();
         $chair = ChairModel::factory()->make(['branch_id' => $this->branch->id]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $this->postJson('/api/v1/dashboard/chairs', chairPayload($chair, ['barber_id' => $barber->id]))
             ->assertUnprocessable()
@@ -73,7 +73,7 @@ describe('Dashboard Chair API', function (): void {
             'affiliable_type' => 'brand',
             'status' => AffiliationStatus::Accepted->value,
         ]);
-        $this->actingAs($branch, 'branch_api');
+        $this->authenticateDashboardActor($branch);
 
         $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, ['barber_id' => $barber->id]))->assertOk();
         expect($chair->fresh()->barber_id)->toBe($barber->id);
@@ -82,7 +82,7 @@ describe('Dashboard Chair API', function (): void {
     it('clears and preserves barber assignment according to barber_id presence', function (): void {
         $barber = BarberModel::factory()->create(['managed_by_branch_id' => $this->branch->id]);
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $barber->id]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $payload = chairPayload($chair);
         unset($payload['barber_id']);
@@ -100,7 +100,7 @@ describe('Dashboard Chair API', function (): void {
             'status' => BookingStatus::Pending->value,
             'ends_at' => now()->addHour(),
         ]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, [
             'status' => ChairStatus::Maintenance->value,
@@ -114,7 +114,7 @@ describe('Dashboard Chair API', function (): void {
             'status' => BookingStatus::Confirmed->value,
             'ends_at' => now()->addHour(),
         ]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $this->deleteJson("/api/v1/dashboard/chairs/{$chair->id}")
             ->assertConflict()

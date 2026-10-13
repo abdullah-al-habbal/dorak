@@ -15,7 +15,7 @@ describe('Dashboard Service API', function (): void {
     });
 
     it('lets an admin create a branch-owned service', function (): void {
-        $this->actingAs($this->admin, 'admin_api');
+        $this->authenticateDashboardActor($this->admin);
         $currency = CurrencyModel::factory()->create();
 
         $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch, $currency))
@@ -25,7 +25,7 @@ describe('Dashboard Service API', function (): void {
 
     it('lets an admin update and delete a service', function (): void {
         $service = OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $this->branch->id]);
-        $this->actingAs($this->admin, 'admin_api');
+        $this->authenticateDashboardActor($this->admin);
         $currency = CurrencyModel::factory()->create();
 
         $this->putJson("/api/v1/dashboard/services/{$service->id}", servicePayload($this->branch, $currency, ['price' => 31]))
@@ -38,7 +38,7 @@ describe('Dashboard Service API', function (): void {
     it('scopes a branch manager to services owned by its branch', function (): void {
         $own = OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $this->branch->id]);
         $other = OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $this->otherBranch->id]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $this->getJson("/api/v1/dashboard/services/{$own->id}")->assertOk();
         $this->getJson("/api/v1/dashboard/services/{$other->id}")->assertNotFound();
@@ -48,7 +48,7 @@ describe('Dashboard Service API', function (): void {
     });
 
     it('rejects a branch manager attempting to create a service for another owner', function (): void {
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
         $currency = CurrencyModel::factory()->create();
 
         $this->postJson('/api/v1/dashboard/services', servicePayload($this->otherBranch, $currency))

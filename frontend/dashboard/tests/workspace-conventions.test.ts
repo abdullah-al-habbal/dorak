@@ -28,6 +28,12 @@ function listFiles(dir: string): string[] {
 }
 
 describe("workspace conventions", () => {
+  it("removes the manager branch creation route", () => {
+    expect(
+      existsSync(`${ROOT}src/app/(portals)/manager/branches/create/page.tsx`),
+    ).toBe(false);
+  });
+
   it("keeps src/ free of test files and test folders", () => {
     expect(
       listFiles("src").filter(

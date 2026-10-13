@@ -16,7 +16,7 @@ describe('Dashboard Stylist API', function (): void {
 
     it('lets an admin provision a barber account with a chair assignment', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
-        $this->actingAs($this->admin, 'admin_api');
+        $this->authenticateDashboardActor($this->admin);
 
         $this->postJson('/api/v1/dashboard/stylists', stylistPayload($chair))
             ->assertCreated()
@@ -27,7 +27,7 @@ describe('Dashboard Stylist API', function (): void {
 
     it('lets an admin update and delete a stylist account', function (): void {
         $stylist = BarberModel::factory()->create();
-        $this->actingAs($this->admin, 'admin_api');
+        $this->authenticateDashboardActor($this->admin);
 
         $this->putJson("/api/v1/dashboard/stylists/{$stylist->id}", [
             'name' => ['en' => 'Updated Stylist', 'ar' => 'حلاق محدث'],
@@ -43,7 +43,7 @@ describe('Dashboard Stylist API', function (): void {
         $otherStylist = BarberModel::factory()->create();
         ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $ownStylist->id]);
         ChairModel::factory()->create(['branch_id' => $this->otherBranch->id, 'barber_id' => $otherStylist->id]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $this->getJson("/api/v1/dashboard/stylists/{$ownStylist->id}")->assertOk();
         $this->getJson("/api/v1/dashboard/stylists/{$otherStylist->id}")->assertNotFound();
@@ -52,7 +52,7 @@ describe('Dashboard Stylist API', function (): void {
 
     it('does not let a branch manager assign a barber to another branch chair', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $this->otherBranch->id]);
-        $this->actingAs($this->branch, 'branch_api');
+        $this->authenticateDashboardActor($this->branch);
 
         $this->postJson('/api/v1/dashboard/stylists', stylistPayload($chair))
             ->assertNotFound();

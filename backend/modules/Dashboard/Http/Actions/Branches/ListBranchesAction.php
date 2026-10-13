@@ -17,8 +17,14 @@ final class ListBranchesAction extends BaseApiAction
     public function __construct(private readonly ListBranchesHandler $handler) {}
 
     public function __invoke(Request $request): JsonResponse
-    { /** @var DashboardActor $actor */ $actor = $request->attributes->get('dashboard_actor');
-        $branches = $this->handler->handle(new ListBranchesQuery($actor->isPlatformAdmin() ? null : $actor->brandId, $request->integer('per_page', 15)));
+    {
+        /** @var DashboardActor $actor */
+        $actor = $request->attributes->get('dashboard_actor');
+        $branches = $this->handler->handle(new ListBranchesQuery(
+            $actor->isPlatformAdmin() ? null : $actor->brandId,
+            $request->integer('per_page', 15),
+            $actor->isBranchManager() ? $actor->branchId : null,
+        ));
 
         return $this->paginated($branches, BranchResource::class);
     }
