@@ -23,23 +23,32 @@ final class RebookFromHistoryEloquentResolver
             ->where('client_id', $command->clientId)
             ->with(['booking.services'])
             ->findOrFail($command->historyId);
-        $serviceIds = $history->booking?->services->pluck('id')->all() ?? [];
+        $sourceBooking = $history->getRelation('booking');
+        $sourceBooking = $sourceBooking instanceof BookingModel ? $sourceBooking : null;
+        $serviceIds = $sourceBooking?->services->modelKeys() ?? [];
 
-        if ($serviceIds === [] && $history->offered_service_id !== null) {
-            $serviceIds = [$history->offered_service_id];
+        $offeredServiceId = $history->getAttribute('offered_service_id');
+        if ($serviceIds === [] && is_string($offeredServiceId)) {
+            $serviceIds = [$offeredServiceId];
         }
 
+        $chairId = $sourceBooking?->getAttribute('chair_id');
+        $barberId = $history->getAttribute('barber_id');
+        $atHomeLocation = $sourceBooking?->getAttribute('at_home_location');
+        $branchId = $history->getAttribute('branch_id');
+
         $booking = $this->createBookingHandler->handle(new CreateBookingCommand(
-            chairId: $history->booking?->chair_id,
-            barberId: $history->barber_id,
+            chairId: is_string($chairId) ? $chairId : null,
+            barberId: is_string($barberId) ? $barberId : null,
             clientId: $command->clientId,
             timeSlot: $command->timeSlot,
             serviceIds: $serviceIds,
-            atHomeLocation: $history->booking?->at_home_location,
+            atHomeLocation: is_array($atHomeLocation) ? $atHomeLocation : null,
         ))->booking;
 
-        if ($history->branch_id !== null) {
-            event(new BookingCreatedEvent($booking->id, (string) $history->branch_id));
+        $bookingId = $booking->getKey();
+        if (is_string($bookingId)) {
+            event(new BookingCreatedEvent($bookingId, is_string($branchId) ? $branchId : ''));
         }
 
         return $booking;

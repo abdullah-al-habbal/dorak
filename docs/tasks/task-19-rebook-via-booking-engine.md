@@ -31,14 +31,14 @@ Task 02 fixes ownership only. This task removes the duplicated engine.
 - `frontend/mobile/packages/core/lib/src/network/repositories/history.repository.dart:36-42` — no contract change. Confirm it parses error codes.
 
 ## Acceptance Criteria
-- [ ] `RebookFromHistoryEloquentResolver` no longer calls `BookingModel::create`. It delegates to the create-booking handler.
-- [ ] A rebook overlapping an existing `pending`, `confirmed` or `in_progress` booking for the same chair or barber returns 409, and no row is created.
-- [ ] A successful rebook returns 201 with `status = pending` and the payment defaults set.
-- [ ] A successful rebook dispatches `SendBookingStatusNotificationJob` and `BookingCreatedEvent`, asserted with `Queue::fake` and `Event::fake`.
-- [ ] Rebooking another client's history returns 403 (as required by Task 02's ownership policy).
-- [ ] The Feature test `RebookFromHistoryTest` covers success, overlap, maintenance chair, inactive service and foreign history.
-- [ ] The client_app `history_bloc_test.dart` covers the 409 failure state.
-- [ ] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
+- [x] `RebookFromHistoryEloquentResolver` no longer calls `BookingModel::create`. It delegates to the create-booking handler.
+- [x] A rebook overlapping an existing `pending`, `confirmed` or `in_progress` booking for the same chair or barber returns 409, and no row is created.
+- [x] A successful rebook returns 201 with `status = pending` and the payment defaults set.
+- [x] A successful rebook dispatches `SendBookingStatusNotificationJob` and `BookingCreatedEvent`, asserted with `Queue::fake` and `Event::fake`.
+- [x] Rebooking another client's history returns 403 (as required by Task 02's ownership policy).
+- [x] The Feature test `RebookFromHistoryTest` covers success, overlap, maintenance chair, inactive service and foreign history.
+- [x] The client_app `history_bloc_test.dart` covers the 409 failure state.
+- [x] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
 
 ## Out of Scope
 - Hours and schedule validation (Task 22).
