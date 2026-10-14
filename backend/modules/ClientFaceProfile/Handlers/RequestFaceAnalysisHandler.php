@@ -14,6 +14,6 @@ final class RequestFaceAnalysisHandler
         AnalyzeFacePhotoJob::dispatch(
             faceProfileId: $command->faceProfileId,
             clientId: $command->clientId,
-        );
+        )->afterCommit();
     }
 }

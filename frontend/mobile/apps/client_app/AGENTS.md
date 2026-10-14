@@ -172,8 +172,8 @@ History feed with per-entry rebook (Material date + time pickers, per-card
 My Bookings).
 
 **Built:** face analysis + AI style (018b) — `FaceAnalysisBloc` (start loads
-recommendations; scan uploads the photo and lands on a pending state because
-the backend job runs async; Check again re-polls; `recommended_catalog_item_ids`
+recommendations; scan uploads the photo and polls its backend `analysis_status`
+with bounded backoff; terminal failure offers a new scan; `recommended_catalog_item_ids`
 resolved by paging the catalog, catalog failure tolerated) + `AvatarBloc`
 (upload → `avatarUrl`) over a `PhotoPicker` seam (`ImagePickerPhotoPicker`,
 `image_picker` hidden behind it). `ProfileScreen` gained an avatar header
@@ -241,7 +241,7 @@ links, locale persistence.
 | `image_picker` is a runtime dep behind a `PhotoPicker` seam | The scan + avatar uploads live behind the app-local abstract `PhotoPicker`; `ImagePickerPhotoPicker` is the only consumer of the platform plugin, so widget tests inject `FakePhotoPicker` and never hit the gallery. |
 | Avatar camera badge uploads by tapping the avatar (or badge) | The whole `InkWell` circle is the target — a 56 px hit area instead of a 24 px one. While uploading the badge swaps to `AppLoader.inline()`. |
 | Avatar fallback initial + `Image.network` `errorBuilder` | A stored `avatar_url` can 400 outside the test binder; the initial renders instead of a broken image. |
-| Pending analysis is `awaitingAnalysis`, not a separate screen | The backend dispatches `AnalyzeFacePhotoJob` async (never on upload), so `recommendations` stays empty right after a scan. `FaceAnalysisState.awaitingAnalysis` turns the ready-empty state into a pending card with a "Check again" poll; a second empty poll keeps it pending until a result exists. |
+| Pending analysis is `awaitingAnalysis`, not a separate screen | The backend dispatches `AnalyzeFacePhotoJob` after upload and exposes profile status through `GET /client/face-profile/{profile}`. The bloc polls with bounded backoff; terminal failure can be retried with a new scan. |
 | `recommended_catalog_item_ids` resolved by paging the catalog | `/service-catalog/items` has no ids filter and no face-shape filter — the bloc pages `per_page: 100` up to 5 pages; a catalog failure is tolerated (`curated` stays empty) so the analysis card still renders. |
 | Curated card price + style period share one `Text` (`join('\n')`) | Same idiom as the history meta lines; keeps a single tappable surface and no new card layout. |
 | Face shape labels come from `faceShape*` ARB keys via a private `_shapeLabel` switch | Seven enum values (`oval|round|square|heart|diamond|oblong|triangle`) map to localized strings; unknown values fall through as the raw string. |

@@ -883,6 +883,9 @@ class FakeFaceProfileRepository implements FaceProfileRepository {
   List<FaceAnalysisResultDto> recommendations = const [];
   Object? uploadError;
   Object? recommendationsError;
+  List<String?> profileStatuses = const ['pending'];
+  Object? profileError;
+  int profileCalls = 0;
 
   int uploadCalls = 0;
   int recommendationsCalls = 0;
@@ -908,6 +911,23 @@ class FakeFaceProfileRepository implements FaceProfileRepository {
     final failure = recommendationsError;
     if (failure != null) throw failure;
     return recommendations;
+  }
+
+  @override
+  Future<FacePhotoDto> getProfile(String id) async {
+    profileCalls++;
+    final failure = profileError;
+    if (failure != null) throw failure;
+    final index = profileCalls - 1;
+    final status =
+        profileStatuses[index < profileStatuses.length
+            ? index
+            : profileStatuses.length - 1];
+    return FacePhotoDto(
+      id: id,
+      imageUrl: 'https://cdn.example.com/face-$id.jpg',
+      analysisStatus: status,
+    );
   }
 }
 

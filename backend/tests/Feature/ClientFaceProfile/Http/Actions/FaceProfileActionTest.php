@@ -3,10 +3,14 @@
 declare(strict_types=1);
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use Modules\Client\Models\ClientModel;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
+    Queue::fake();
+    Storage::fake('local');
 });
 
 it('uploads face photo and returns profile', function () {
@@ -55,6 +59,31 @@ it('returns recommendations list', function () {
 
     $response->assertOk();
     expect($response->json('data'))->toBeArray();
+});
+
+it('returns the authenticated client face profile analysis status', function () {
+    $upload = UploadedFile::fake()->image('face.jpg', 400, 400);
+    $response = $this->actingAs($this->client, 'client')
+        ->postJson('/api/v1/client/face-profile', ['photo' => $upload]);
+    $response->assertCreated();
+
+    $profileId = $response->json('data.id');
+    $this->actingAs($this->client, 'client')
+        ->getJson("/api/v1/client/face-profile/{$profileId}")
+        ->assertOk()
+        ->assertJsonPath('data.analysis_status', 'pending');
+});
+
+it('does not expose another clients face profile status', function () {
+    $upload = UploadedFile::fake()->image('face.jpg', 400, 400);
+    $profileId = $this->actingAs($this->client, 'client')
+        ->postJson('/api/v1/client/face-profile', ['photo' => $upload])
+        ->json('data.id');
+
+    $otherClient = ClientModel::factory()->create();
+    $this->actingAs($otherClient, 'client')
+        ->getJson("/api/v1/client/face-profile/{$profileId}")
+        ->assertNotFound();
 });
 
 it('returns 401 without auth for recommendations', function () {

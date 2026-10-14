@@ -31,7 +31,11 @@ void main() {
 
     final pair = sessionPair(authRepository, storage);
     addTearDown(pair.coordinator.cancel);
-    final faceAnalysis = FaceAnalysisBloc(faceRepository, catalogRepository);
+    final faceAnalysis = FaceAnalysisBloc(
+      faceRepository,
+      catalogRepository,
+      wait: (_) async {},
+    );
     final avatar = AvatarBloc(profileRepository);
     addTearDown(faceAnalysis.close);
     addTearDown(avatar.close);
@@ -79,6 +83,13 @@ void main() {
       expect(find.text('Check again'), findsOneWidget);
 
       faceRepository.recommendations = [testFaceAnalysis()];
+      faceRepository.profileStatuses = [
+        'pending',
+        'pending',
+        'pending',
+        'pending',
+        'completed',
+      ];
       await tester.tap(find.text('Check again'));
       await tester.pumpAndSettle();
 

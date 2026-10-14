@@ -9,6 +9,8 @@ class FaceAnalysisState extends Equatable {
     this.status = FaceAnalysisStatus.initial,
     this.latest,
     this.uploadedPhotoUrl,
+    this.faceProfileId,
+    this.analysisFailed = false,
     List<CatalogItemDto> curated = const [],
     this.awaitingAnalysis = false,
     this.error,
@@ -18,6 +20,8 @@ class FaceAnalysisState extends Equatable {
   final FaceAnalysisStatus status;
   final FaceAnalysisResultDto? latest;
   final String? uploadedPhotoUrl;
+  final String? faceProfileId;
+  final bool analysisFailed;
   final List<CatalogItemDto> curated;
   final bool awaitingAnalysis;
   final Object? error;
@@ -29,9 +33,12 @@ class FaceAnalysisState extends Equatable {
     bool clearLatest = false,
     String? uploadedPhotoUrl,
     bool clearUploadedPhotoUrl = false,
+    String? faceProfileId,
+    bool clearFaceProfileId = false,
     List<CatalogItemDto>? curated,
     bool clearCurated = false,
     bool? awaitingAnalysis,
+    bool? analysisFailed,
     Object? error,
     bool clearError = false,
     Object? catalogError,
@@ -43,8 +50,12 @@ class FaceAnalysisState extends Equatable {
       uploadedPhotoUrl: clearUploadedPhotoUrl
           ? null
           : uploadedPhotoUrl ?? this.uploadedPhotoUrl,
+      faceProfileId: clearFaceProfileId
+          ? null
+          : faceProfileId ?? this.faceProfileId,
       curated: clearCurated ? const [] : curated ?? this.curated,
       awaitingAnalysis: awaitingAnalysis ?? this.awaitingAnalysis,
+      analysisFailed: analysisFailed ?? this.analysisFailed,
       error: clearError ? null : error ?? this.error,
       catalogError: clearCatalogError
           ? null
@@ -57,6 +68,8 @@ class FaceAnalysisState extends Equatable {
     status,
     latest,
     uploadedPhotoUrl,
+    faceProfileId,
+    analysisFailed,
     curated,
     awaitingAnalysis,
     error,

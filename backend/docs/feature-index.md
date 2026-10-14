@@ -273,6 +273,7 @@
 - `FaceAnalysisFeaturesValueObject`, `RecommendedCatalogItemIdsValueObject`, `DetectedFaceShapeEnum`, `AnalysisSourceEnum`
 - Casts: `FaceAnalysisFeaturesCast`, `RecommendedCatalogItemIdsCast`
 - `UploadFaceProfilePhotoAction` [POST /api/v1/client/face-profile] (auth:client) — stores photo, sets primary flag, dispatches `AnalyzeFacePhotoJob`
+- `ShowFaceProfileAction` [GET /api/v1/client/face-profile/{profile}] (auth:client) — returns the owned profile including `analysis_status`
 - `GetFaceBasedRecommendationsAction` [GET /api/v1/client/face-profile/recommendations] (auth:client) — returns analysis results with recommended catalog items
 - `AnalyzeFacePhotoJob` — async queue job for AI analysis (subclass Laravel job, placeholder pipeline)
 - 7 contract tests in `ApiResponseContractTest`

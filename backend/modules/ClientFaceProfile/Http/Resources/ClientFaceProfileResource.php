@@ -18,6 +18,7 @@ final class ClientFaceProfileResource extends JsonResource
             'id' => $this->id,
             'image_url' => FaceProfilePhotoUrl::forId($this->id),
             'is_primary' => $this->is_primary,
+            'analysis_status' => $this->analysis_status,
             'uploaded_at' => $this->uploaded_at->toIso8601String(),
             'created_at' => $this->created_at->toIso8601String(),
         ];

@@ -48,6 +48,7 @@ final class UploadFaceProfilePhotoAction extends BaseApiAction
             'id' => $profile->id,
             'image_url' => FaceProfilePhotoUrl::for($profile),
             'is_primary' => $profile->is_primary,
+            'analysis_status' => $profile->analysis_status,
             'uploaded_at' => $profile->uploaded_at->toIso8601String(),
         ]);
     }

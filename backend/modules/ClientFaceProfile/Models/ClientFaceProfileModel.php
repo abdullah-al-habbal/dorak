@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientFaceProfile\Enums\FaceAnalysisStatusEnum;
 
 /**
  * @property string $id
@@ -19,10 +20,11 @@ use Modules\Client\Models\ClientModel;
  * @property string|null $image_path
  * @property string $image_hash
  * @property bool $is_primary
+ * @property FaceAnalysisStatusEnum $analysis_status
  * @property Carbon $uploaded_at
  * @property Carbon $created_at
  */
-#[Fillable(['client_id', 'image_path', 'image_hash', 'is_primary', 'uploaded_at'])]
+#[Fillable(['client_id', 'image_path', 'image_hash', 'is_primary', 'analysis_status', 'uploaded_at'])]
 #[Table('client_face_profiles')]
 class ClientFaceProfileModel extends Model
 {
@@ -32,6 +34,7 @@ class ClientFaceProfileModel extends Model
     {
         return [
             'is_primary' => 'boolean',
+            'analysis_status' => FaceAnalysisStatusEnum::class,
             'uploaded_at' => 'datetime',
         ];
     }

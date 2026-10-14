@@ -9,6 +9,8 @@ abstract class FaceProfileRepository {
   });
 
   Future<List<FaceAnalysisResultDto>> getRecommendations();
+
+  Future<FacePhotoDto> getProfile(String id);
 }
 
 class DioFaceProfileRepository implements FaceProfileRepository {
@@ -42,6 +44,14 @@ class DioFaceProfileRepository implements FaceProfileRepository {
                 FaceAnalysisResultDto.fromJson(item as Map<String, dynamic>),
           )
           .toList(),
+    );
+  }
+
+  @override
+  Future<FacePhotoDto> getProfile(String id) {
+    return _apiClient.get<FacePhotoDto>(
+      FaceProfileEndpoints.profile(id),
+      parser: (json) => FacePhotoDto.fromJson(json as Map<String, dynamic>),
     );
   }
 }

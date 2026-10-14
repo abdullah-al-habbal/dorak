@@ -7,12 +7,14 @@ class FacePhotoDto {
   final String id;
   final String imageUrl;
   final bool isPrimary;
+  final String? analysisStatus;
   final DateTime? uploadedAt;
 
   const FacePhotoDto({
     required this.id,
     required this.imageUrl,
     this.isPrimary = false,
+    this.analysisStatus,
     this.uploadedAt,
   });
 

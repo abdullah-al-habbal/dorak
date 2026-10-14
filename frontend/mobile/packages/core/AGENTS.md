@@ -147,8 +147,8 @@ barber/branch/catalogItem/media) and `rebookFromHistory` (slot
 `is_primary` to `POST /client/face-profile`; `getRecommendations()` reads
 `GET /client/face-profile/recommendations` (latest-`computed_at` first,
 nullable `recommended_catalog_item_ids`, nested `face_profile`). NB: upload
-does **not** trigger analysis server-side — the client shows a pending state
-and re-polls.
+queues analysis server-side; `getProfile(id)` reads the profile's
+`analysis_status` while the bounded client poll waits for completion.
 
 `ProfileRepository` / `DioProfileRepository` — 018b: `updateProfile`
 (`PATCH /client/profile`, null-aware map entries `'name': ?name`), 

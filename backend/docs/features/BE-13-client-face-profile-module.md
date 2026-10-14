@@ -16,6 +16,7 @@
 | Method | Endpoint | Auth | Action |
 |--------|----------|------|--------|
 | POST | `/api/v1/client/face-profile` | auth:client | `UploadFaceProfilePhotoAction` |
+| GET | `/api/v1/client/face-profile/{profile}` | auth:client | `ShowFaceProfileAction` |
 | GET | `/api/v1/client/face-profile/recommendations` | auth:client | `GetFaceBasedRecommendationsAction` |
 
 ## Response Schemas
@@ -28,11 +29,18 @@ Multipart upload — accepts `photo` file + `is_primary` boolean.
     "id": "uuid",
     "image_url": "https://...",
     "is_primary": true,
+    "analysis_status": "pending",
     "uploaded_at": "2026-07-24T12:00:00Z",
     "created_at": "2026-07-24T12:00:00Z"
   }
 }
 ```
+
+### GET /api/v1/client/face-profile/{profile} → 200
+Returns the authenticated client's profile, including `analysis_status`
+(`pending`, `completed`, or `failed`). A profile owned by another client returns
+404. Upload queues analysis asynchronously and remains successful if queue
+dispatch fails; terminal job failure updates the status to `failed`.
 
 ### GET /api/v1/client/face-profile/recommendations → 200
 ```json

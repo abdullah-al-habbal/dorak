@@ -10,12 +10,15 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\Backoff;
 use Illuminate\Queue\Attributes\Timeout;
 use Illuminate\Queue\Attributes\Tries;
+use Illuminate\Support\Facades\Log;
 use Modules\ClientFaceProfile\CQRS\Command\StoreFaceAnalysisResultCommand;
+use Modules\ClientFaceProfile\Enums\FaceAnalysisStatusEnum;
 use Modules\ClientFaceProfile\Handlers\StoreFaceAnalysisResultHandler;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
 use Modules\ClientFaceProfile\Services\FaceAnalysisService;
 use Modules\ClientFaceProfile\ValuesObjects\RecommendedCatalogItemIdsValueObject;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
+use Throwable;
 
 #[Tries(3)]
 #[Timeout(120)]
@@ -64,5 +67,23 @@ class AnalyzeFacePhotoJob implements ShouldQueue
         );
 
         $handler->handle($command);
+
+        $profile->update(['analysis_status' => FaceAnalysisStatusEnum::Completed]);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $profile = ClientFaceProfileModel::query()
+            ->where('id', $this->faceProfileId)
+            ->where('client_id', $this->clientId)
+            ->first();
+
+        $profile?->update(['analysis_status' => FaceAnalysisStatusEnum::Failed]);
+
+        Log::error('Face analysis job exhausted its retries.', [
+            'face_profile_id' => $this->faceProfileId,
+            'client_id' => $this->clientId,
+            'exception' => $exception,
+        ]);
     }
 }

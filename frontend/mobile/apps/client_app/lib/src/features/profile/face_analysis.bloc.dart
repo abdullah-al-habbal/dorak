@@ -5,17 +5,27 @@ import 'package:client_app/src/features/profile/face_analysis.event.dart';
 import 'package:client_app/src/features/profile/face_analysis.state.dart';
 
 class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
-  FaceAnalysisBloc(this._faceProfile, this._catalog)
-    : super(FaceAnalysisState()) {
+  FaceAnalysisBloc(
+    this._faceProfile,
+    this._catalog, {
+    Future<void> Function(Duration)? wait,
+  }) : _wait = wait ?? Future<void>.delayed,
+       super(FaceAnalysisState()) {
     on<FaceAnalysisStarted>(_onStarted);
     on<FaceAnalysisPhotoScanned>(_onPhotoScanned);
     on<FaceAnalysisCheckedAgain>(_onCheckedAgain);
   }
 
   static const int _maxCatalogPages = 5;
+  static const List<Duration> _analysisPollDelays = [
+    Duration(seconds: 1),
+    Duration(seconds: 2),
+    Duration(seconds: 4),
+  ];
 
   final FaceProfileRepository _faceProfile;
   final ServiceCatalogRepository _catalog;
+  final Future<void> Function(Duration) _wait;
 
   Future<void> _onStarted(
     FaceAnalysisStarted event,
@@ -34,15 +44,22 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
       state.copyWith(
         status: FaceAnalysisStatus.uploading,
         clearUploadedPhotoUrl: true,
+        clearFaceProfileId: true,
         clearError: true,
         awaitingAnalysis: true,
+        analysisFailed: false,
       ),
     );
     try {
       final photo = await _faceProfile.uploadFacePhoto(event.filePath);
       if (emit.isDone) return;
-      emit(state.copyWith(uploadedPhotoUrl: photo.imageUrl));
-      await _load(emit);
+      emit(
+        state.copyWith(
+          uploadedPhotoUrl: photo.imageUrl,
+          faceProfileId: photo.id,
+        ),
+      );
+      await _pollAnalysis(photo.id, emit);
     } catch (error) {
       if (emit.isDone) return;
       emit(state.copyWith(status: FaceAnalysisStatus.failed, error: error));
@@ -59,7 +76,52 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
         status == FaceAnalysisStatus.uploading) {
       return;
     }
-    await _load(emit);
+    final profileId = state.faceProfileId;
+    if (profileId == null) {
+      await _load(emit);
+    } else {
+      await _pollAnalysis(profileId, emit);
+    }
+  }
+
+  Future<void> _pollAnalysis(
+    String profileId,
+    Emitter<FaceAnalysisState> emit,
+  ) async {
+    try {
+      for (var attempt = 0; attempt <= _analysisPollDelays.length; attempt++) {
+        if (attempt > 0) await _wait(_analysisPollDelays[attempt - 1]);
+        final profile = await _faceProfile.getProfile(profileId);
+        if (emit.isDone) return;
+        switch (profile.analysisStatus) {
+          case 'completed':
+            emit(state.copyWith(awaitingAnalysis: false));
+            await _load(emit);
+            return;
+          case 'failed':
+            emit(
+              state.copyWith(
+                status: FaceAnalysisStatus.failed,
+                awaitingAnalysis: false,
+                analysisFailed: true,
+                error: StateError('Face analysis failed.'),
+              ),
+            );
+            return;
+          case 'pending':
+          default:
+            emit(
+              state.copyWith(
+                status: FaceAnalysisStatus.ready,
+                awaitingAnalysis: true,
+              ),
+            );
+        }
+      }
+    } catch (error) {
+      if (emit.isDone) return;
+      emit(state.copyWith(status: FaceAnalysisStatus.failed, error: error));
+    }
   }
 
   Future<void> _load(Emitter<FaceAnalysisState> emit) async {
@@ -90,6 +152,7 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
           latest: latest,
           curated: curatedResult.items,
           awaitingAnalysis: false,
+          analysisFailed: false,
           catalogError: curatedResult.error,
           clearCatalogError: curatedResult.error == null,
         ),

@@ -28,16 +28,18 @@ As a result, `GET /client/face-profile/recommendations` stays empty, and the rec
 ### Mobile (Flutter / Repositories)
 - `frontend/mobile/packages/core/lib/src/network/dto/face_photo.dto.dart`: add `analysisStatus`.
 - `frontend/mobile/apps/client_app/lib/src/features/profile/face_analysis.bloc.dart`:
-  - after upload, poll the face profile or recommendations until `analysis_status != pending`, with a bounded number of attempts and backoff;
+  - after upload, poll the authenticated `GET /api/v1/client/face-profile/{profile}` status route until `analysis_status != pending`, with a bounded number of attempts and backoff;
   - show `failed` as a retryable error.
 
+**Contract decision:** Keep the existing recommendations array response unchanged. Add an authenticated face-profile read route keyed by the upload response's profile ID so clients can distinguish pending, completed, and failed analysis.
+
 ## Acceptance Criteria
-- [ ] `POST /api/v1/client/face-profile` with `Queue::fake()` asserts that `AnalyzeFacePhotoJob` was pushed once, with the new profile ID and client ID.
-- [ ] Running the job synchronously with a faked AI response stores a result, and `GET /api/v1/client/face-profile/recommendations` returns a non-empty payload.
-- [ ] A job failure (faked exception) results in `analysis_status = failed`, and the upload response was still 201.
-- [ ] Feature test `tests/Feature/ClientFaceProfile/FaceAnalysisDispatchTest.php` covers the three cases above.
-- [ ] Mobile bloc test: the upload → pending → completed state sequence is emitted.
-- [ ] `php artisan test` and `melos run test` pass; PHPStan (max) and Pint are clean for touched files.
+- [x] `POST /api/v1/client/face-profile` with `Queue::fake()` asserts that `AnalyzeFacePhotoJob` was pushed once, with the new profile ID and client ID.
+- [x] Running the job synchronously with a faked AI response stores a result, and `GET /api/v1/client/face-profile/recommendations` returns a non-empty payload.
+- [x] A job failure (faked exception) results in `analysis_status = failed`, and the upload response was still 201.
+- [x] Feature test `tests/Feature/ClientFaceProfile/FaceAnalysisDispatchTest.php` covers the three cases above.
+- [x] Mobile bloc test: the upload → pending → completed state sequence is emitted.
+- [x] `php artisan test` and `melos run test` pass; PHPStan (max) and Pint are clean for touched files.
 
 ## Out of Scope
 - Private photo storage: Task 07.

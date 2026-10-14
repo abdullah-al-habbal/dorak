@@ -18,7 +18,7 @@ void main() {
   });
 
   FaceAnalysisBloc bloc() {
-    return FaceAnalysisBloc(face, catalog);
+    return FaceAnalysisBloc(face, catalog, wait: (_) async {});
   }
 
   group('FaceAnalysisStarted', () {
@@ -91,6 +91,35 @@ void main() {
   });
 
   group('FaceAnalysisPhotoScanned', () {
+    blocTest<FaceAnalysisBloc, FaceAnalysisState>(
+      'upload polls pending then completed and loads recommendations',
+      build: bloc,
+      setUp: () {
+        face.profileStatuses = ['pending', 'completed'];
+        face.recommendations = [testFaceAnalysis()];
+      },
+      act: (bloc) => bloc.add(const FaceAnalysisPhotoScanned('/tmp/face.jpg')),
+      verify: (bloc) {
+        expect(face.uploadCalls, 1);
+        expect(face.profileCalls, 2);
+        expect(bloc.state.faceProfileId, 'photo-1');
+        expect(bloc.state.awaitingAnalysis, isFalse);
+        expect(bloc.state.latest?.detectedFaceShape, 'oval');
+      },
+    );
+
+    blocTest<FaceAnalysisBloc, FaceAnalysisState>(
+      'terminal analysis failure is retryable as a new scan',
+      build: bloc,
+      setUp: () => face.profileStatuses = ['failed'],
+      act: (bloc) => bloc.add(const FaceAnalysisPhotoScanned('/tmp/face.jpg')),
+      verify: (bloc) {
+        expect(bloc.state.status, FaceAnalysisStatus.failed);
+        expect(bloc.state.analysisFailed, isTrue);
+        expect(bloc.state.awaitingAnalysis, isFalse);
+      },
+    );
+
     blocTest<FaceAnalysisBloc, FaceAnalysisState>(
       'an upload followed by no result leaves the card awaiting analysis',
       build: bloc,

@@ -146,5 +146,34 @@ void main() {
         expect(results.last.faceProfile, isNotNull);
       },
     );
+
+    test('getProfile reads the profile analysis status', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: {
+                'id': 'face-3',
+                'image_url': 'https://cdn.dorak.io/face-profiles/face-3.jpg',
+                'is_primary': true,
+                'analysis_status': 'pending',
+                'uploaded_at': '2026-09-10T09:02:00.000Z',
+                'created_at': '2026-09-10T09:02:00.000Z',
+              },
+            ),
+          );
+        },
+      );
+      final repository = DioFaceProfileRepository(clientWith(fake));
+
+      final profile = await repository.getProfile('face-3');
+
+      expect(captured.path, FaceProfileEndpoints.profile('face-3'));
+      expect(captured.method, 'GET');
+      expect(profile.analysisStatus, 'pending');
+    });
   });
 }

@@ -59,7 +59,7 @@ class FaceCard extends StatelessWidget {
       title: l10n.errorTitleGeneric,
       message: message,
       actionLabel: l10n.actionRetry,
-      onAction: onCheckAgain,
+      onAction: state.analysisFailed ? onScan : onCheckAgain,
     );
   }
 
