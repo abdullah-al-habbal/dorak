@@ -10,11 +10,9 @@ CatalogItemDto _$CatalogItemDtoFromJson(Map<String, dynamic> json) =>
     CatalogItemDto(
       id: json['id'] as String,
       name: Map<String, String>.from(json['name'] as Map),
-      description:
-          (json['description'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, e as String),
-          ) ??
-          const {},
+      description: json['description'] == null
+          ? const {}
+          : _descriptionFromJson(json['description']),
       priceRange: json['price_range'] == null
           ? null
           : CatalogPriceRangeDto.fromJson(

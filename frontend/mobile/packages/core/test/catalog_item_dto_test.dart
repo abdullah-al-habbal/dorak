@@ -58,6 +58,33 @@ void main() {
     });
   });
 
+  group('CatalogItemDto description robustness', () {
+    test('treats an empty list description as an empty map', () {
+      final dto = CatalogItemDto.fromJson({
+        ..._catalogItemPayload(),
+        'description': <dynamic>[],
+      });
+
+      expect(dto.description, isEmpty);
+    });
+
+    test('treats a null description as an empty map', () {
+      final dto = CatalogItemDto.fromJson({
+        ..._catalogItemPayload(),
+        'description': null,
+      });
+
+      expect(dto.description, isEmpty);
+    });
+
+    test('keeps a normal translation map', () {
+      final dto = CatalogItemDto.fromJson(_catalogItemPayload());
+
+      expect(dto.description['en'], 'Short sides');
+      expect(dto.description['ar'], 'جوانب قصيرة');
+    });
+  });
+
   group('ServiceHistoryDto catalog reference', () {
     test('parses UUID catalog item references', () {
       final dto = ServiceHistoryDto.fromJson({

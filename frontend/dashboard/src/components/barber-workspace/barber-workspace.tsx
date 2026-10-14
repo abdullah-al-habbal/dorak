@@ -24,6 +24,7 @@ import {
   getBarberWorkspaceProfile,
 } from "@/services/api/barber-workspace.query";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { useState } from "react";
 
 export function BarberWorkspace() {
@@ -112,12 +113,19 @@ export function BarberWorkspace() {
           {portfolio.data?.length ? (
             <div className="mt-3 grid grid-cols-3 gap-2">
               {portfolio.data.map((photo) => (
-                <img
-                  alt={dictionary.barberWorkspace.portfolio}
-                  className="aspect-square rounded-md object-cover"
+                <div
+                  className="relative aspect-square overflow-hidden rounded-md"
                   key={photo.id}
-                  src={photo.url}
-                />
+                >
+                  <Image
+                    alt={dictionary.barberWorkspace.portfolio}
+                    className="object-cover"
+                    fill
+                    sizes="(min-width: 1024px) 33vw, 33vw"
+                    src={photo.url}
+                    unoptimized
+                  />
+                </div>
               ))}
             </div>
           ) : (

@@ -3,8 +3,9 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 // Guards workspace conventions: tests/x/y.test.ts must test src/x/y.ts(x), src/ holds no test artefacts,
-// every module specifier (static, dynamic, require, vi.mock, CSS @import) uses the @/ alias, and src/
-// follows the file taxonomy (*.enum.ts, *.constant.ts, *.types.ts, use-*.ts hooks, *.util.ts).
+// every module specifier (static, dynamic, require, vi.mock, CSS @import) uses the @/ alias, src/ uses
+// next/image rather than a native <img>, and src/ follows the file taxonomy (*.enum.ts, *.constant.ts,
+// *.types.ts, use-*.ts hooks, *.util.ts).
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const SELF = "workspace-conventions.test.ts";
 const SOURCE_FILE = /\.(tsx?|css)$/;
@@ -66,6 +67,16 @@ describe("workspace conventions", () => {
         )
         .map((file) => `${dir}/${file}`),
     );
+    expect(offenders).toEqual([]);
+  });
+
+  it("uses next/image instead of a native <img> in src/", () => {
+    const offenders = listFiles("src")
+      .filter((file) => CODE_FILE.test(file))
+      .filter((file) =>
+        /<img[\s/>]/.test(readFileSync(`${ROOT}src/${file}`, "utf8")),
+      )
+      .map((file) => `src/${file}`);
     expect(offenders).toEqual([]);
   });
 
