@@ -37,7 +37,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: HIST-1 stores one `client_service_histories` row per booked service.
 
 ## [Task 18: Centralize Booking Status Transitions](tasks/task-18-booking-lifecycle-service.md)
-- [ ] **Decision required:** allow `Confirmed → NoShow` (EC-3), or keep `NoShow` only from `InProgress`. Update `canTransitionTo` and its tests to match the decision.
+- [x] Decision resolved: allow `Confirmed → NoShow` per EC-3, where a no-show is the outcome when the client never arrives. `NoShow` remains allowed from `InProgress` as well.
 
 ## [Task 21: Add Slot Availability Endpoint](tasks/task-21-slot-availability-endpoint.md)
 - [ ] Excludes times inside the 2-hour cancellation window only if product requires it. **Decision required:** the minimum lead time for new bookings.

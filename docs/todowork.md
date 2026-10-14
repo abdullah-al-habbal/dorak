@@ -40,7 +40,7 @@ codeanchors:
 - [x] Task 17: Backfill Feature Tests for Uncovered Routes -> [Spec](tasks/task-17-backfill-feature-tests.md)
 
 ## Phase 3 — Booking Engine (P1)
-- [ ] Task 18: Centralize Booking Status Transitions -> [Spec](tasks/task-18-booking-lifecycle-service.md)
+- [x] Task 18: Centralize Booking Status Transitions -> [Spec](tasks/task-18-booking-lifecycle-service.md)
 - [ ] Task 19: Route Rebook Through the Booking Engine -> [Spec](tasks/task-19-rebook-via-booking-engine.md)
 - [ ] Task 20: Unify Availability Semantics and Time Contract -> [Spec](tasks/task-20-availability-semantics.md)
 - [ ] Task 21: Add Slot Availability Endpoint -> [Spec](tasks/task-21-slot-availability-endpoint.md)

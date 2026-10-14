@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
@@ -26,6 +27,8 @@ use Modules\Review\Models\ReviewModel;
  * @property string $client_id
  * @property string|null $barber_id
  * @property string|null $chair_id
+ * @property Carbon $time_slot
+ * @property Carbon $ends_at
  * @property BookingStatus $status
  */
 #[Fillable(['client_id', 'chair_id', 'barber_id', 'time_slot', 'ends_at', 'status', 'cancellation_reason', 'payment_method', 'payment_status', 'at_home_location'])]

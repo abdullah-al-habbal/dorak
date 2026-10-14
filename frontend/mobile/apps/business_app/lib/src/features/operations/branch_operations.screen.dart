@@ -1,4 +1,5 @@
 import 'package:business_app/src/features/operations/branch_operations.bloc.dart';
+import 'package:business_app/src/features/operations/booking_status_menu.widget.dart';
 import 'package:business_app/src/features/operations/branch_operations.state.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
@@ -151,27 +152,10 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                       subtitle: Text(
                         '${booking.barber?.name ?? booking.chair?.label ?? l10n.businessUnassigned} · ${_bookingStatus(l10n, booking.status)}',
                       ),
-                      trailing: PopupMenuButton<String>(
+                      trailing: BookingStatusMenu(
+                        currentStatus: booking.status,
                         onSelected: (status) =>
                             widget.bloc.updateBooking(booking.id, status),
-                        itemBuilder: (_) => [
-                          PopupMenuItem(
-                            value: 'in_progress',
-                            child: Text(l10n.businessStart),
-                          ),
-                          PopupMenuItem(
-                            value: 'completed',
-                            child: Text(l10n.businessComplete),
-                          ),
-                          PopupMenuItem(
-                            value: 'no_show',
-                            child: Text(l10n.businessNoShow),
-                          ),
-                          PopupMenuItem(
-                            value: 'canceled',
-                            child: Text(l10n.businessCancelBooking),
-                          ),
-                        ],
                       ),
                     ),
                   ),

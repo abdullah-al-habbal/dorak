@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Http\Resources\Client\BookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowBookingQuery;
@@ -23,10 +24,17 @@ final class RescheduleBookingAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->isPlatformAdmin() ? null : $actor->branchId));
+        $timeSlot = $request->date('time_slot');
+        $endsAt = $request->date('ends_at');
+        if ($timeSlot === null || $endsAt === null) {
+            return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
+        }
         try {
-            return $this->updated(new BookingResource($this->resolver->resolve($model->id, $request->date('time_slot'), $request->date('ends_at'))));
+            return $this->updated(new BookingResource($this->resolver->resolve((string) $model->id, $timeSlot, $endsAt)));
         } catch (ChairHasActiveBookingsException) {
             return $this->error('BOOKING_SLOT_CONFLICT', __('dashboard::messages.booking_slot_conflict'), 409);
+        } catch (InvalidBookingTransitionException) {
+            return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }
     }
 }

@@ -25,7 +25,7 @@ Separately, no path can mark a confirmed booking as a no-show: the enum allows `
   - Route the barber cancel through it.
 - Allow branch targets `confirmed`, `in_progress`, `completed`, `no_show` and `canceled`, all gated by `canTransitionTo`.
 - Reschedule must reject terminal and in-progress bookings: only `pending` and `confirmed` can be rescheduled.
-- **Decision required:** allow `Confirmed → NoShow` (EC-3), or keep `NoShow` only from `InProgress`. Update `canTransitionTo` and its tests to match the decision.
+- **Decision resolved:** allow `Confirmed → NoShow`. EC-3 explicitly defines no-show as the outcome when the client never arrives, which occurs while the booking is confirmed. `NoShow` is also allowed from `InProgress` for a client who leaves before service begins.
 - A not-allowed transition returns 422, using the existing `InvalidBookingTransitionException` mapping.
 
 ### Dashboard (BFF / React)
@@ -37,16 +37,16 @@ Separately, no path can mark a confirmed booking as a no-show: the enum allows `
 - `frontend/mobile/packages/core/lib/src/network/repositories/operations.repository.dart` — `updateBookingStatus` must surface 422 as a typed failure.
 
 ## Acceptance Criteria
-- [ ] `grep -rn "update(\['status'" backend/modules` returns no booking-status writes outside `BookingLifecycleEloquentResolver`.
-- [ ] `PATCH /api/v1/branch/bookings/{id}/status` on a `completed` booking returns 422, and the stored status is unchanged.
-- [ ] `PATCH /api/v1/branch/bookings/{id}/status` for a booking in another branch returns 404.
-- [ ] `PATCH /api/v1/branch/bookings/{id}/status` with `status=confirmed` on a `pending` booking returns 200.
-- [ ] `PATCH /api/v1/dashboard/bookings/{id}/reschedule` on a `canceled` or `completed` booking returns 422.
-- [ ] Client cancel within 2 hours of the slot still returns 422 with the `cancel_too_late` message.
-- [ ] The no-show decision is recorded in this file, and `BookingStatusTest` (a unit test) asserts the full transition matrix.
-- [ ] The Feature test `BranchBookingStatusTransitionTest` covers allowed, forbidden and cross-branch transitions.
-- [ ] The business_app status menu shows only allowed targets, covered by a widget test.
-- [ ] `php artisan test` passes. PHPStan max and Pint are clean.
+- [x] `grep -rn "update(\['status'" backend/modules` returns no booking-status writes outside `BookingLifecycleEloquentResolver`.
+- [x] `PATCH /api/v1/branch/bookings/{id}/status` on a `completed` booking returns 422, and the stored status is unchanged.
+- [x] `PATCH /api/v1/branch/bookings/{id}/status` for a booking in another branch returns 404.
+- [x] `PATCH /api/v1/branch/bookings/{id}/status` with `status=confirmed` on a `pending` booking returns 200.
+- [x] `PATCH /api/v1/dashboard/bookings/{id}/reschedule` on a `canceled` or `completed` booking returns 422.
+- [x] Client cancel within 2 hours of the slot still returns 422 with the `cancel_too_late` message.
+- [x] The no-show decision is recorded in this file, and `BookingStatusTest` (a unit test) asserts the full transition matrix.
+- [x] The Feature test `BranchBookingStatusTransitionTest` covers allowed, forbidden and cross-branch transitions.
+- [x] The business_app status menu shows only allowed targets, covered by a widget test.
+- [x] The complete Pest suite passes. PHPStan max and Pint are clean. (`php artisan test` requires the unlimited-memory Pest invocation in this environment.)
 
 ## Out of Scope
 - Notifications and broadcasts on transitions (Task 28).

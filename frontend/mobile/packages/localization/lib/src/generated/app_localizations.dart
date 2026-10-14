@@ -1904,6 +1904,12 @@ abstract class AppLocalizations {
   /// **'Appointments'**
   String get businessAppointmentsTitle;
 
+  /// No description provided for @businessConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get businessConfirm;
+
   /// No description provided for @businessStart.
   ///
   /// In en, this message translates to:

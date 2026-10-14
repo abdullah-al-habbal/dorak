@@ -6,13 +6,15 @@ namespace Modules\Booking\Eloquent\Resolvers\Shared;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\CQRS\Command\Client\CancelBookingCommand;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\ValuesObjects\CancelBookingResult;
 use Modules\Chair\Models\ChairModel;
 
 final class BookingLifecycleEloquentResolver
 {
-    public function transitionForDashboard(string $bookingId, BookingStatus $target): BookingModel
+    public function transitionForDashboard(string|int $bookingId, BookingStatus $target): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $target): BookingModel {
             $booking = BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
@@ -25,11 +27,68 @@ final class BookingLifecycleEloquentResolver
             }
             $booking->update(['status' => $target]);
 
-            return $booking->fresh(['chair.barber', 'barber', 'services']);
+            return $booking->refresh()->load(['chair.barber', 'barber', 'services']);
         });
     }
 
-    public function transitionForBarber(string $bookingId, string $barberId, BookingStatus $target): BookingModel
+    public function transitionForBranch(string|int $bookingId, string|int $branchId, BookingStatus $target): BookingModel
+    {
+        return DB::transaction(function () use ($bookingId, $branchId, $target): BookingModel {
+            $booking = BookingModel::query()->whereHas('chair', fn ($query) => $query->where('branch_id', $branchId))
+                ->with('chair')->lockForUpdate()->findOrFail($bookingId);
+            if (! in_array($target, [BookingStatus::Confirmed, BookingStatus::InProgress, BookingStatus::Completed, BookingStatus::NoShow, BookingStatus::Canceled], true)
+                || ! $booking->status->canTransitionTo($target)) {
+                throw new InvalidBookingTransitionException;
+            }
+            if ($target === BookingStatus::Confirmed) {
+                $this->lockAssignedResources($booking);
+                $this->ensureNoActiveOverlap($booking);
+            }
+            $booking->update(['status' => $target]);
+
+            return $booking->refresh()->load(['chair.barber', 'barber', 'services']);
+        });
+    }
+
+    public function cancelForClient(CancelBookingCommand $command): CancelBookingResult
+    {
+        return DB::transaction(function () use ($command): CancelBookingResult {
+            $booking = BookingModel::query()->with(['chair.barber', 'barber', 'services'])->lockForUpdate()->findOrFail($command->bookingId);
+            if ($booking->client_id !== $command->clientId) {
+                return CancelBookingResult::notOwnBooking();
+            }
+            if (! $booking->status->canTransitionTo(BookingStatus::Canceled)) {
+                return CancelBookingResult::invalidStatus();
+            }
+            if ($booking->time_slot->lessThanOrEqualTo(now()->addHours(2))) {
+                return CancelBookingResult::tooLate();
+            }
+            $booking->update(['status' => BookingStatus::Canceled]);
+
+            return CancelBookingResult::success($booking->refresh());
+        });
+    }
+
+    public function cancelForBarber(string|int $bookingId, string|int $barberId, string $reason): BookingModel
+    {
+        return DB::transaction(function () use ($bookingId, $barberId, $reason): BookingModel {
+            $booking = BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
+            if ($booking->barber_id !== $barberId && $booking->chair?->barber_id !== $barberId) {
+                throw new BookingNotAssignedException;
+            }
+            if (! $booking->status->canTransitionTo(BookingStatus::Canceled)) {
+                throw new InvalidBookingTransitionException;
+            }
+            if ($booking->time_slot->lessThanOrEqualTo(now()->addHours(2))) {
+                throw new BookingCancellationTooLateException;
+            }
+            $booking->update(['status' => BookingStatus::Canceled, 'cancellation_reason' => $reason]);
+
+            return $booking->refresh()->load('chair');
+        });
+    }
+
+    public function transitionForBarber(string|int $bookingId, string|int $barberId, BookingStatus $target): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $barberId, $target): BookingModel {
             $booking = BookingModel::query()
@@ -55,7 +114,7 @@ final class BookingLifecycleEloquentResolver
 
             $booking->update(['status' => $target]);
 
-            return $booking->fresh(['chair.barber', 'barber', 'services']);
+            return $booking->refresh()->load(['chair.barber', 'barber', 'services']);
         });
     }
 

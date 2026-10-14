@@ -57,7 +57,7 @@ it('locks, cancels, persists the reason, and broadcasts the cancellation', funct
         ->assertJsonPath('data.id', $booking->id)
         ->assertJsonPath('data.status', BookingStatus::Canceled->value);
 
-    expect(file_get_contents(base_path('modules/Booking/Http/Actions/Barber/CancelBookingAction.php')))->toContain('lockForUpdate()');
+    expect(file_get_contents(base_path('modules/Booking/Eloquent/Resolvers/Shared/BookingLifecycleEloquentResolver.php')))->toContain('lockForUpdate()');
     $this->assertDatabaseHas('bookings', [
         'id' => $booking->id,
         'status' => BookingStatus::Canceled->value,

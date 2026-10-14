@@ -76,11 +76,16 @@ it('writes one history row for every booked service', function (): void {
 it('completes an unassigned booking through the branch endpoint', function (): void {
     $branch = BranchModel::factory()->create();
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
-    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'barber_id' => null]);
-    $this->actingAs($branch, 'branch_api')
-        ->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Completed->value])
-        ->assertOk()
-        ->assertJsonPath('data.status', BookingStatus::Completed->value);
+    $booking = BookingModel::factory()->create([
+        'chair_id' => $chair->id,
+        'barber_id' => null,
+        'status' => BookingStatus::Pending,
+    ]);
+    $this->actingAs($branch, 'branch_api');
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Confirmed->value])->assertOk();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::InProgress->value])->assertOk();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Completed->value])
+        ->assertOk()->assertJsonPath('data.status', BookingStatus::Completed->value);
 
     expect($booking->fresh()->status)->toBe(BookingStatus::Completed);
 });

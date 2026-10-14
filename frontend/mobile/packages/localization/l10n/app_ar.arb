@@ -1091,6 +1091,7 @@
   "@businessChairStatus": {"placeholders": {"value": {}}},
   "businessBranchHint": "الفرع",
   "businessAppointmentsTitle": "المواعيد",
+  "businessConfirm": "تأكيد",
   "businessStart": "ابدأ",
   "businessComplete": "إكمال",
   "businessNoShow": "لم يحضر",

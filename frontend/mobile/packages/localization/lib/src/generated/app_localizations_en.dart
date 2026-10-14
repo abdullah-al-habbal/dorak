@@ -998,6 +998,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessAppointmentsTitle => 'Appointments';
 
   @override
+  String get businessConfirm => 'Confirm';
+
+  @override
   String get businessStart => 'Start';
 
   @override

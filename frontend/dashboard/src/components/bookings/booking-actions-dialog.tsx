@@ -42,12 +42,14 @@ interface IBookingActionsDialogProps {
 
 function conflictMessage(
   error: unknown,
-  copy: { conflict: string },
+  copy: { conflict: string; invalidTransition: string },
   dictionary: ReturnType<typeof useDictionary>,
 ): string {
-  return error instanceof ApiClientError && error.status === 409
-    ? copy.conflict
-    : apiErrorMessage(error, dictionary);
+  if (error instanceof ApiClientError && error.status === 409)
+    return copy.conflict;
+  if (error instanceof ApiClientError && error.status === 422)
+    return copy.invalidTransition;
+  return apiErrorMessage(error, dictionary);
 }
 function iso(value: string): string {
   return new Date(value).toISOString();
@@ -175,6 +177,9 @@ export function BookingActionsDialog({
               <SelectContent>
                 <SelectItem id="confirmed">{copy.confirmed}</SelectItem>
                 <SelectItem id="in_progress">{copy.inProgress}</SelectItem>
+                <SelectItem id="completed">{copy.completed}</SelectItem>
+                <SelectItem id="no_show">{copy.noShow}</SelectItem>
+                <SelectItem id="canceled">{copy.canceled}</SelectItem>
               </SelectContent>
             </Select>
             <Button

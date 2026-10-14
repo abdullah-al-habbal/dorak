@@ -1167,6 +1167,7 @@
   "@businessChairStatus": {"placeholders": {"value": {}}},
   "businessBranchHint": "Branch",
   "businessAppointmentsTitle": "Appointments",
+  "businessConfirm": "Confirm",
   "businessStart": "Start",
   "businessComplete": "Complete",
   "businessNoShow": "No-show",

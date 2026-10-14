@@ -6,6 +6,36 @@ import 'helpers/fake_dio.dart';
 
 void main() {
   test(
+    'branch booking status 422 is surfaced as a typed API failure',
+    () async {
+      final fake = fakeDio(
+        handler: (options) => jsonResponse(
+          options,
+          statusCode: 422,
+          data: errorEnvelope(
+            code: 'VALIDATION_FAILED',
+            statusCode: 422,
+            message: 'Invalid transition',
+          ),
+        ),
+      );
+
+      await expectLater(
+        DioBranchOperationsRepository(
+          clientWith(fake),
+        ).updateBookingStatus('booking-1', 'completed'),
+        throwsA(
+          isA<ApiException>().having(
+            (error) => error.statusCode,
+            'statusCode',
+            422,
+          ),
+        ),
+      );
+    },
+  );
+
+  test(
     'branch profile uses the authenticated branch profile endpoint',
     () async {
       RequestOptions? captured;

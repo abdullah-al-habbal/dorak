@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Models\BookingModel;
+use Modules\Branch\Models\BranchModel;
+use Modules\Chair\Models\ChairModel;
+
+beforeEach(function (): void {
+    $this->branch = BranchModel::factory()->create(['password' => bcrypt('password123')]);
+    $this->actingAs($this->branch, 'branch_api');
+});
+
+it('confirms a pending booking in the branch', function (): void {
+    $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
+    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
+
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'confirmed'])
+        ->assertOk()->assertJsonPath('data.status', 'confirmed');
+});
+
+it('rejects transitions from terminal bookings without changing their status', function (): void {
+    $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
+    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Completed]);
+
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'in_progress'])->assertUnprocessable();
+    expect($booking->fresh()->status)->toBe(BookingStatus::Completed);
+});
+
+it('hides bookings outside the branch scope', function (): void {
+    $chair = ChairModel::factory()->create();
+    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
+
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'confirmed'])->assertNotFound();
+});
+
+it('allows a confirmed booking to become a no-show', function (): void {
+    $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
+    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Confirmed]);
+
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'no_show'])
+        ->assertOk()->assertJsonPath('data.status', 'no_show');
+});

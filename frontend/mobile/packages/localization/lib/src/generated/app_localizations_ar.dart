@@ -987,6 +987,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get businessAppointmentsTitle => 'المواعيد';
 
   @override
+  String get businessConfirm => 'تأكيد';
+
+  @override
   String get businessStart => 'ابدأ';
 
   @override

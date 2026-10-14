@@ -22,7 +22,7 @@ enum BookingStatus: string
     {
         return match ($this) {
             self::Pending => in_array($target, [self::Confirmed, self::Canceled], true),
-            self::Confirmed => in_array($target, [self::InProgress, self::Canceled], true),
+            self::Confirmed => in_array($target, [self::InProgress, self::Canceled, self::NoShow], true),
             self::InProgress => in_array($target, [self::Completed, self::Canceled, self::NoShow], true),
             self::Completed, self::Canceled, self::NoShow => false,
         };

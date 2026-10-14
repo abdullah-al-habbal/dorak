@@ -44,4 +44,19 @@ describe('Dashboard Booking API', function (): void {
         $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}/reschedule", ['time_slot' => now()->addDays(3)->toIso8601String(), 'ends_at' => now()->addDays(3)->addMinutes(30)->toIso8601String()])->assertOk();
         $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}/reschedule", ['time_slot' => now()->addDays(2)->toIso8601String(), 'ends_at' => now()->addDays(2)->addMinutes(30)->toIso8601String()])->assertConflict()->assertJsonPath('code', 'BOOKING_SLOT_CONFLICT');
     });
+
+    it('rejects rescheduling completed and canceled bookings', function (): void {
+        $branch = BranchModel::factory()->create();
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
+        $completed = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Completed]);
+        $canceled = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Canceled]);
+        $this->authenticateDashboardActor($branch);
+
+        foreach ([$completed, $canceled] as $booking) {
+            $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}/reschedule", [
+                'time_slot' => now()->addDays(3)->toIso8601String(),
+                'ends_at' => now()->addDays(3)->addMinutes(30)->toIso8601String(),
+            ])->assertUnprocessable();
+        }
+    });
 });

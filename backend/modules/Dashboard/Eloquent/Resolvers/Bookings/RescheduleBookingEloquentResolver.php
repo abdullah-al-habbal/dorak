@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Eloquent\Resolvers\Bookings;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Chair\Models\ChairModel;
@@ -14,10 +15,13 @@ use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 
 final class RescheduleBookingEloquentResolver
 {
-    public function resolve(string $bookingId, Carbon $timeSlot, Carbon $endsAt): BookingModel
+    public function resolve(string|int $bookingId, Carbon $timeSlot, Carbon $endsAt): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $timeSlot, $endsAt): BookingModel {
             $booking = BookingModel::query()->lockForUpdate()->findOrFail($bookingId);
+            if (! in_array($booking->status, [BookingStatus::Pending, BookingStatus::Confirmed], true)) {
+                throw new InvalidBookingTransitionException;
+            }
             if ($booking->chair_id !== null) {
                 ChairModel::query()->lockForUpdate()->findOrFail($booking->chair_id);
             }
@@ -36,7 +40,7 @@ final class RescheduleBookingEloquentResolver
             }
             $booking->update(['time_slot' => $timeSlot, 'ends_at' => $endsAt]);
 
-            return $booking->fresh(['chair', 'barber', 'client', 'services']);
+            return $booking->refresh()->load(['chair', 'barber', 'client', 'services']);
         });
     }
 }
