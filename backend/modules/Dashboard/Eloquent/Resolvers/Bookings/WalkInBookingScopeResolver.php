@@ -14,7 +14,7 @@ final class WalkInBookingScopeResolver
     public function ensureResourcesBelongToBranch(CreateWalkInBookingCommand $command): void
     {
         $branch = BranchModel::query()->findOrFail($command->branchId);
-        $chair = ChairModel::query()->whereBelongsTo($branch)->findOrFail($command->chairId);
+        $chair = ChairModel::query()->whereBelongsTo($branch, 'branch')->findOrFail($command->chairId);
 
         if ($command->barberId !== null && $chair->barber_id !== $command->barberId) {
             throw new WalkInStylistNotAssignedException;
@@ -26,7 +26,7 @@ final class WalkInBookingScopeResolver
                 $query->where(function ($service) use ($branch): void {
                     $service->where('serviceable_type', 'branch')->where('serviceable_id', $branch->id);
                 })->orWhere(function ($service) use ($branch): void {
-                    $service->where('serviceable_type', 'brand')->where('serviceable_id', $branch->brand_id);
+                    $service->where('serviceable_type', 'brand')->where('serviceable_id', $branch->getAttribute('brand_id'));
                 });
             })
             ->count();
