@@ -17,6 +17,7 @@
 - `BaseApiAction` + `ApiResponseTrait` — paginated/ok/created/error/validation helpers
 - `BaseModuleServiceProvider` — auto-mounts `Routes/Api/V1/*.php` at `/api/v1` with `['api']` middleware
 - Auth guards: `client` (sanctum), `barber` (sanctum), `barber_dashboard` (session), `branch` (session), `admin` (session)
+- `FcmNotificationSender` — sends per-device notifications through FCM HTTP v1 using a cached OAuth2 service-account token; prunes unregistered device tokens and retries transient failures
 
 ### Client
 - `LoginAction` [POST /api/v1/client/login] — email/password → Sanctum `client-app` token + client profile

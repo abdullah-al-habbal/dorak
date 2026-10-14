@@ -26,6 +26,7 @@ use Modules\Review\Models\ReviewModel;
  * @property string $client_id
  * @property string|null $barber_id
  * @property string|null $chair_id
+ * @property BookingStatus $status
  */
 #[Fillable(['client_id', 'chair_id', 'barber_id', 'time_slot', 'ends_at', 'status', 'cancellation_reason', 'payment_method', 'payment_status', 'at_home_location'])]
 #[Table('bookings')]

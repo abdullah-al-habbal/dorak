@@ -32,12 +32,12 @@
 - None for the contract. `push_notification.client.dart` must re-register its token on refresh (verify that the `onTokenRefresh` handler calls `POST /user/device-token`).
 
 ## Acceptance Criteria
-- [ ] With `Http::fake()`, sending to 2 tokens issues 2 requests to `.../v1/projects/{id}/messages:send` with a `Bearer` OAuth token. No request goes to `/fcm/send`.
-- [ ] A faked `404 UNREGISTERED` response for one token deletes that token row. The other token is still sent, and the job completes without an exception.
-- [ ] Missing credentials: the job completes, nothing is sent, and a warning is logged.
-- [ ] A faked 503 is retried (the job is released or retried; covered by the test).
-- [ ] Unit test `tests/Unit/Core/Services/FcmNotificationSenderTest.php` covers each case above.
-- [ ] `php artisan test` passes; PHPStan (max) and Pint are clean for touched files.
+- [x] With `Http::fake()`, sending to 2 tokens issues 2 requests to `.../v1/projects/{id}/messages:send` with a `Bearer` OAuth token. No request goes to `/fcm/send`.
+- [x] A faked `404 UNREGISTERED` response for one token deletes that token row. The other token is still sent, and the job completes without an exception.
+- [x] Missing credentials: the job completes, nothing is sent, and a warning is logged.
+- [x] A faked 503 is retried (the job is released or retried; covered by the test).
+- [x] Unit test `tests/Unit/Core/Services/FcmNotificationSenderTest.php` covers each case above.
+- [x] Backend suite passes; PHPStan (max) and Pint are clean for touched files. The Artisan test wrapper hit PHP's 128 MB memory ceiling, so the suite was run with its documented unlimited-memory Pest fallback.
 
 ## Out of Scope
 - Sending notifications on all booking transitions: Task 28.
