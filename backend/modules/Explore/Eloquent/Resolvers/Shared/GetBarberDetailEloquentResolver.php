@@ -17,7 +17,7 @@ final class GetBarberDetailEloquentResolver
         $barber = BarberModel::discoverable()->with('services.catalogItem')->findOrFail($query->barberId);
         $services = $barber->services
             ->filter(fn (OfferedServiceModel $service): bool => $service->getAttribute('active') === true
-                && $service->catalogItem?->getAttribute('active') === true)
+                && $service->catalogItem?->getAttribute('is_active') === true)
             ->values();
 
         return array_merge(

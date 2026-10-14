@@ -16,7 +16,7 @@ final class ShowCatalogItemAction extends BaseApiAction
         private readonly GetCatalogItemHandler $handler,
     ) {}
 
-    public function __invoke(int $id): JsonResponse
+    public function __invoke(string $id): JsonResponse
     {
         $query = new GetCatalogItemQuery($id);
         $item = $this->handler->handle($query);

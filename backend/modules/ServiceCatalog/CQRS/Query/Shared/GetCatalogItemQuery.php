@@ -7,6 +7,6 @@ namespace Modules\ServiceCatalog\CQRS\Query\Shared;
 final readonly class GetCatalogItemQuery
 {
     public function __construct(
-        public int $id,
+        public string $id,
     ) {}
 }

@@ -6,7 +6,7 @@ namespace Modules\ClientFaceProfile\ValuesObjects;
 
 final readonly class RecommendedCatalogItemIdsValueObject
 {
-    /** @param array<int> $ids */
+    /** @param list<string> $ids */
     private function __construct(
         private array $ids,
     ) {}
@@ -14,7 +14,7 @@ final readonly class RecommendedCatalogItemIdsValueObject
     public static function fromArray(array $data): self
     {
         return new self(
-            ids: isset($data['ids']) ? array_map('intval', (array) $data['ids']) : [],
+            ids: isset($data['ids']) ? array_values(array_map(strval(...), array_filter((array) $data['ids'], is_scalar(...)))) : [],
         );
     }
 

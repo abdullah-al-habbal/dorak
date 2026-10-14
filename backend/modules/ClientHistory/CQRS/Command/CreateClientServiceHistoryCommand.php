@@ -14,7 +14,7 @@ final readonly class CreateClientServiceHistoryCommand
         public ?string $barberId,
         public ?string $branchId,
         public ?string $offeredServiceId,
-        public ?int $catalogItemId,
+        public ?string $catalogItemId,
         public Carbon $performedAt,
     ) {}
 }

@@ -13,7 +13,7 @@ final class ListCatalogItemsRequest extends BaseApiFormRequest
     {
         return [
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
-            'category_id' => ['nullable', 'integer', 'exists:service_catalog_categories,id'],
+            'category_id' => ['nullable', 'uuid', 'exists:service_catalog_categories,id'],
             'search' => ['nullable', 'string', 'max:255'],
         ];
     }
@@ -21,7 +21,7 @@ final class ListCatalogItemsRequest extends BaseApiFormRequest
     public function toQuery(): ListCatalogItemsQuery
     {
         return new ListCatalogItemsQuery(
-            categoryId: $this->validated('category_id') !== null ? (int) $this->validated('category_id') : null,
+            categoryId: $this->validated('category_id') !== null ? $this->string('category_id')->toString() : null,
             search: $this->validated('search'),
             perPage: (int) ($this->validated('per_page') ?? 20),
         );

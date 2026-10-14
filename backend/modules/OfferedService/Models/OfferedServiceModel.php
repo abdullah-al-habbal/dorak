@@ -19,7 +19,7 @@ use Spatie\Translatable\HasTranslations;
 
 /**
  * @property string $id
- * @property int|null $catalog_item_id
+ * @property string|null $catalog_item_id
  */
 #[Fillable([
     'serviceable_id',

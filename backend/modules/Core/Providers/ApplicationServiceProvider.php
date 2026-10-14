@@ -14,6 +14,8 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
+use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
 final class ApplicationServiceProvider extends BaseModuleServiceProvider
 {
@@ -57,6 +59,8 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
             'branch' => BranchModel::class,
             'barber' => BarberModel::class,
             'client' => ClientModel::class,
+            'catalog_item' => ServiceCatalogItemModel::class,
+            'catalog_category' => ServiceCatalogCategoryModel::class,
             // Keep existing rows that were persisted before aliases were
             // enforced readable while all new writes use the stable aliases.
             AdminModel::class => AdminModel::class,

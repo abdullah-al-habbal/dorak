@@ -16,7 +16,7 @@ final class CreateCatalogItemRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required', 'integer', 'exists:service_catalog_categories,id'],
+            'category_id' => ['required', 'uuid', 'exists:service_catalog_categories,id'],
             'name.en' => ['required', 'string', 'max:255'],
             'name.ar' => ['required', 'string', 'max:255'],
             'description.en' => ['nullable', 'string', 'max:5000'],
@@ -44,7 +44,7 @@ final class CreateCatalogItemRequest extends BaseApiFormRequest
         $data = $this->validated();
 
         return new CreateCatalogItemCommand(
-            categoryId: (int) $data['category_id'],
+            categoryId: $this->string('category_id')->toString(),
             name: $data['name'],
             description: $data['description'] ?? null,
             slug: $data['slug'],

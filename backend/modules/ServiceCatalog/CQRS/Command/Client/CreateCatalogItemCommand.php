@@ -11,7 +11,7 @@ use Modules\ServiceCatalog\Enums\StylePeriodEnum;
 final readonly class CreateCatalogItemCommand
 {
     public function __construct(
-        public int $categoryId,
+        public string $categoryId,
         public array $name,
         public ?array $description,
         public string $slug,

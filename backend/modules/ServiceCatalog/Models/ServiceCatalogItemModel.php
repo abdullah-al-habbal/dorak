@@ -6,6 +6,7 @@ namespace Modules\ServiceCatalog\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,7 +44,7 @@ use Spatie\Translatable\HasTranslations;
 ])]
 class ServiceCatalogItemModel extends Model
 {
-    use HasFactory, HasTranslations, SoftDeletes;
+    use HasFactory, HasTranslations, HasUuids, SoftDeletes;
 
     protected function casts(): array
     {
@@ -71,7 +72,7 @@ class ServiceCatalogItemModel extends Model
             'service_catalog_item_tag_assignments',
             'item_id',
             'tag_id',
-        );
+        )->using(ServiceCatalogItemTagAssignmentModel::class);
     }
 
     public function media(): MorphMany

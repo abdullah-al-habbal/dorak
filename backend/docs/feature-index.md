@@ -251,6 +251,7 @@
 - Filament Admin CRUD: Categories, Items, Tags (list/create/edit/view)
 - `OfferedServiceModel.catalog_item_id` FK + migration
 - Registered in `bootstrap/providers.php`
+- Task 14: all catalog tables keyed by UUID (`HasUuids`); API `id`/`category_id`/`catalog_item_id(s)` are UUID strings and validated with `uuid`; morph aliases `catalog_item`/`catalog_category`
 
 ### PRD Phase 2 — ClientHistory Module (Complete)
 - 2 Models: `ClientServiceHistoryModel`, `ClientServiceHistoryMediaModel`

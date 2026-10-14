@@ -17,7 +17,7 @@ final class ExploreBarbersRequest extends BaseApiFormRequest
             'radius' => ['required', 'numeric', 'min:0'],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
             'catalog_item_ids' => ['sometimes', 'array'],
-            'catalog_item_ids.*' => ['integer', 'exists:service_catalog_items,id'],
+            'catalog_item_ids.*' => ['uuid', 'exists:service_catalog_items,id'],
             'available_now' => ['sometimes', 'boolean'],
             'price_range' => ['sometimes', 'array:min,max'],
             'price_range.min' => ['numeric', 'min:0'],

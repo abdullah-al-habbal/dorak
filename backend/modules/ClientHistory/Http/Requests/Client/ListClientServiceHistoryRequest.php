@@ -13,7 +13,7 @@ final class ListClientServiceHistoryRequest extends BaseApiFormRequest
     {
         return [
             'per_page' => ['nullable', 'integer', 'min:1', 'max:50'],
-            'catalog_item_id' => ['nullable', 'string', 'exists:service_catalog_items,id'],
+            'catalog_item_id' => ['nullable', 'uuid', 'exists:service_catalog_items,id'],
         ];
     }
 

@@ -11,8 +11,8 @@ use Modules\ServiceCatalog\Enums\StylePeriodEnum;
 final readonly class UpdateCatalogItemCommand
 {
     public function __construct(
-        public int $id,
-        public ?int $categoryId,
+        public string $id,
+        public ?string $categoryId,
         public ?array $name,
         public ?array $description,
         public ?string $slug,

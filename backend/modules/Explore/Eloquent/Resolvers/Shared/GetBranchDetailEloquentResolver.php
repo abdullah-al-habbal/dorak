@@ -27,7 +27,7 @@ final class GetBranchDetailEloquentResolver
 
         $services = $barbers->flatMap(fn (BarberModel $barber) => $barber->services
             ->filter(fn (OfferedServiceModel $service): bool => $service->getAttribute('active') === true
-                && $service->catalogItem?->getAttribute('active') === true))
+                && $service->catalogItem?->getAttribute('is_active') === true))
             ->unique('id')
             ->values();
 

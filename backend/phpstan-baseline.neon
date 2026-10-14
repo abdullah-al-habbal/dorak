@@ -6133,11 +6133,6 @@ parameters:
 			count: 1
 			path: modules/ServiceCatalog/Http/Actions/Shared/ListCatalogItemsAction.php
 
-		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 1
-			path: modules/ServiceCatalog/Http/Requests/Client/CreateCatalogItemRequest.php
 
 		-
 			message: '#^Method Modules\\ServiceCatalog\\Http\\Requests\\Client\\CreateCatalogItemRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
@@ -6298,7 +6293,7 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
-			count: 2
+			count: 1
 			path: modules/ServiceCatalog/Http/Requests/Shared/ListCatalogItemsRequest.php
 
 		-

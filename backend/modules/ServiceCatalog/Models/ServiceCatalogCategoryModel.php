@@ -6,6 +6,7 @@ namespace Modules\ServiceCatalog\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,7 +23,7 @@ use Spatie\Translatable\HasTranslations;
 ])]
 class ServiceCatalogCategoryModel extends Model
 {
-    use HasFactory, HasTranslations, SoftDeletes;
+    use HasFactory, HasTranslations, HasUuids, SoftDeletes;
 
     protected function casts(): array
     {
@@ -43,6 +44,6 @@ class ServiceCatalogCategoryModel extends Model
 
     public function items(): HasMany
     {
-        return $this->hasMany(ServiceCatalogItem::class, 'category_id');
+        return $this->hasMany(ServiceCatalogItemModel::class, 'category_id');
     }
 }

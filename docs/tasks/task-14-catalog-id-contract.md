@@ -37,12 +37,18 @@ The PRD requires non-guessable identifiers, so the fix is to migrate the catalog
 - None beyond verification: the DTOs already expect strings. Add a DTO parsing test with a UUID `id`, in `frontend/mobile/packages/core/test/`.
 
 ## Acceptance Criteria
-- [ ] `GET /api/v1/service-catalog/items` returns string UUID `id`s for items, categories and tags.
-- [ ] `POST /api/v1/dashboard/services` with a valid `catalog_item_id` UUID returns 201, and `offered_services.catalog_item_id` is persisted.
-- [ ] After the migration, every existing `offered_services` and `client_service_histories` catalog reference points to the same logical item (migration test with seeded data).
-- [ ] `GET /api/v1/explore/branches?catalog_item_ids[]=<uuid>` filters correctly.
-- [ ] Mobile `CatalogItemDto.fromJson` parses the API payload without a TypeError (unit test).
-- [ ] `php artisan test`, dashboard `npm run test` and `melos run test` pass; PHPStan (max) and Pint are clean for touched files.
+- [x] `GET /api/v1/service-catalog/items` returns string UUID `id`s for items, categories and tags.
+- [x] `POST /api/v1/dashboard/services` with a valid `catalog_item_id` UUID returns 201, and `offered_services.catalog_item_id` is persisted.
+- [x] After the migration, every existing `offered_services` and `client_service_histories` catalog reference points to the same logical item (migration test with seeded data).
+- [x] `GET /api/v1/explore/branches?catalog_item_ids[]=<uuid>` filters correctly.
+- [x] Mobile `CatalogItemDto.fromJson` parses the API payload without a TypeError (unit test).
+- [x] `php artisan test`, dashboard `npm run test` and `melos run test` pass; PHPStan (max) and Pint are clean for touched files.
+
+## Implementation Notes
+- `2026_10_14_000001_convert_service_catalog_ids_to_uuid` rebuilds the five catalog tables (snapshot rows, recreate with UUID keys, reinsert) so it runs on both MySQL and the SQLite test database. It remaps the internal catalog FKs, `offered_services.catalog_item_id`, `client_service_histories.catalog_item_id`, `catalog_item_ids` in saved filters, face-analysis `recommended_catalog_item_ids`, catalog media owners, and `catalog_item` morph references in favorites, interaction logs and recommendation edges. Stale JSON ids that point to no catalog row are dropped.
+- Tag assignments use the `ServiceCatalogItemTagAssignmentModel` pivot so attached rows receive UUIDs.
+- `catalog_item` and `catalog_category` are registered in the enforced morph map; without them, loading catalog `media` on `GET /service-catalog/items/{id}` threw.
+- The Explore catalog filters queried a non-existent `active` column on catalog items; they now use `is_active`.
 
 ## Out of Scope
 - Tag assignment API, inactive filtering and enum validation: Task 61.

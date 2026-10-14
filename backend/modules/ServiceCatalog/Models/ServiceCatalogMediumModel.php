@@ -6,6 +6,7 @@ namespace Modules\ServiceCatalog\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 #[Table('service_catalog_media')]
 class ServiceCatalogMediumModel extends Model
 {
+    use HasUuids;
+
     protected function casts(): array
     {
         return [

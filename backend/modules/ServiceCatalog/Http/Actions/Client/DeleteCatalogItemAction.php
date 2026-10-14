@@ -18,7 +18,7 @@ final class DeleteCatalogItemAction extends BaseApiAction
         private readonly DeleteCatalogItemHandler $handler,
     ) {}
 
-    public function __invoke(Request $request, int $id): JsonResponse
+    public function __invoke(Request $request, string $id): JsonResponse
     {
         $item = ServiceCatalogItemModel::query()->findOrFail($id);
         Gate::forUser($request->user())->authorize('delete', $item);

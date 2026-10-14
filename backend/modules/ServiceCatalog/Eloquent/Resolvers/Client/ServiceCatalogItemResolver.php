@@ -8,7 +8,7 @@ use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
 final class ServiceCatalogItemResolver
 {
-    public static function resolveById(int $id): ?ServiceCatalogItemModel
+    public static function resolveById(string $id): ?ServiceCatalogItemModel
     {
         return ServiceCatalogItemModel::with(['category', 'tags', 'media'])
             ->find($id);

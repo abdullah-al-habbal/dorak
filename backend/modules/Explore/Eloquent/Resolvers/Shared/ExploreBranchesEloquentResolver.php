@@ -121,7 +121,7 @@ final class ExploreBranchesEloquentResolver
             $query->whereHas('offeredServices', fn ($q) => $q
                 ->where('active', true)
                 ->whereIn('catalog_item_id', $payload->catalogItemIds)
-                ->whereHas('catalogItem', fn ($catalog) => $catalog->where('active', true))
+                ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
             );
         }
 
@@ -136,7 +136,7 @@ final class ExploreBranchesEloquentResolver
         if ($payload->priceRangeMin !== null || $payload->priceRangeMax !== null) {
             $query->whereHas('offeredServices', fn ($q) => $q
                 ->where('active', true)
-                ->whereHas('catalogItem', fn ($catalog) => $catalog->where('active', true))
+                ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
                 ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price', '>=', $payload->priceRangeMin))
                 ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price', '<=', $payload->priceRangeMax))
             );

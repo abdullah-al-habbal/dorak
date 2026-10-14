@@ -18,7 +18,7 @@ final class UpdateCatalogItemRequest extends BaseApiFormRequest
         $id = $this->route('id');
 
         return [
-            'category_id' => ['sometimes', 'integer', 'exists:service_catalog_categories,id'],
+            'category_id' => ['sometimes', 'uuid', 'exists:service_catalog_categories,id'],
             'name.en' => ['sometimes', 'string', 'max:255'],
             'name.ar' => ['sometimes', 'string', 'max:255'],
             'description.en' => ['nullable', 'string', 'max:5000'],
@@ -41,13 +41,13 @@ final class UpdateCatalogItemRequest extends BaseApiFormRequest
         ];
     }
 
-    public function toCommand(int $id): UpdateCatalogItemCommand
+    public function toCommand(string $id): UpdateCatalogItemCommand
     {
         $data = $this->validated();
 
         return new UpdateCatalogItemCommand(
             id: $id,
-            categoryId: $data['category_id'] ?? null,
+            categoryId: isset($data['category_id']) ? $this->string('category_id')->toString() : null,
             name: $data['name'] ?? null,
             description: $data['description'] ?? null,
             slug: $data['slug'] ?? null,
