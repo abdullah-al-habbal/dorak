@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Core\Config;
 
+use Modules\Core\Logging\StructuredJsonFormatter;
+use Modules\Core\Logging\StructuredLoggingTap;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
@@ -19,12 +21,15 @@ return [
             'driver' => 'stack',
             'channels' => explode(',', (string) env('LOG_STACK')),
             'ignore_exceptions' => false,
+            'tap' => [StructuredLoggingTap::class],
         ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL'),
             'replace_placeholders' => true,
+            'formatter' => StructuredJsonFormatter::class,
+            'tap' => [StructuredLoggingTap::class],
         ],
         'daily' => [
             'driver' => 'daily',
@@ -32,6 +37,8 @@ return [
             'level' => env('LOG_LEVEL'),
             'days' => env('LOG_DAILY_DAYS'),
             'replace_placeholders' => true,
+            'formatter' => StructuredJsonFormatter::class,
+            'tap' => [StructuredLoggingTap::class],
         ],
         'slack' => [
             'driver' => 'slack',
@@ -59,7 +66,8 @@ return [
             'handler_with' => [
                 'stream' => 'php://stderr',
             ],
-            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'formatter' => StructuredJsonFormatter::class,
+            'tap' => [StructuredLoggingTap::class],
             'processors' => [PsrLogMessageProcessor::class],
         ],
         'syslog' => [

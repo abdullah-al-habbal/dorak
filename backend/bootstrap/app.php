@@ -9,6 +9,9 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Modules\Ban\Http\Middleware\EnsureNotBanned;
 use Modules\Core\Http\Middleware\AssignRequestUuidMiddleware;
+use Modules\Core\Services\ApiExceptionResponseHandler;
+use Modules\Core\Services\LoggerService;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -22,4 +25,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
+        $exceptions->reportable(function (Throwable $exception): bool {
+            app(LoggerService::class)->exception($exception);
+
+            return false;
+        });
+        $exceptions->respond(function (Response $response): Response {
+            return app(ApiExceptionResponseHandler::class)->handle($response, request());
+        });
     })->create();

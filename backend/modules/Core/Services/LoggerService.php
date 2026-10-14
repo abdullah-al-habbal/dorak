@@ -4,32 +4,36 @@ declare(strict_types=1);
 
 namespace Modules\Core\Services;
 
-use Illuminate\Log\LogManager;
 use Illuminate\Support\Facades\Log;
-use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class LoggerService
 {
-    private LoggerInterface $logger;
-
-    public function __construct(?LogManager $logManager = null)
-    {
-        $this->logger = ($logManager ?? Log::channel('daily'));
-    }
-
     public function info(string $message, array $context = []): void
     {
-        $this->logger->info($message, $this->enrichContext($context));
+        Log::info($message, $this->enrichContext($context));
     }
 
     public function warning(string $message, array $context = []): void
     {
-        $this->logger->warning($message, $this->enrichContext($context));
+        Log::warning($message, $this->enrichContext($context));
     }
 
     public function error(string $message, array $context = []): void
     {
-        $this->logger->error($message, $this->enrichContext($context));
+        Log::error($message, $this->enrichContext($context));
+    }
+
+    /** @param array<string, mixed> $context */
+    public function exception(Throwable $exception, array $context = []): void
+    {
+        Log::error('Unhandled exception', $this->enrichContext([
+            ...$context,
+            'exception' => $exception::class,
+            'exception_message' => $exception->getMessage(),
+            'exception_file' => $exception->getFile(),
+            'exception_line' => $exception->getLine(),
+        ]));
     }
 
     private function enrichContext(array $context): array
@@ -37,7 +41,7 @@ final class LoggerService
         $request = request();
 
         if ($request?->attributes->has('request_uuid')) {
-            $context['request_uuid'] = $request->attributes->get('request_uuid');
+            $context['uuid'] = $request->attributes->get('request_uuid');
         }
 
         return $context;
