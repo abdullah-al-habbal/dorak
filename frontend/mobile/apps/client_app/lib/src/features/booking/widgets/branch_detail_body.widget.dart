@@ -66,10 +66,11 @@ class BranchDetailBody extends StatelessWidget {
         _PaymentMethodSection(l10n: l10n),
         const SizedBox(height: DorakDimensions.spacingLarge),
         _BookingSubmitSection(
+          bloc: bloc,
           state: state,
           l10n: l10n,
           submitMessage: _submitMessage(context),
-          onPickTime: () => _pickTime(context),
+          onPickDate: () => _pickDate(context),
           onSubmit: () => bloc.add(const BranchDetailBookingSubmitted()),
         ),
       ],
@@ -93,7 +94,7 @@ class BranchDetailBody extends StatelessWidget {
     return l10n.errorGeneric;
   }
 
-  Future<void> _pickTime(BuildContext context) async {
+  Future<void> _pickDate(BuildContext context) async {
     final now = DateTime.now();
     final date = await showDatePicker(
       context: context,
@@ -101,16 +102,7 @@ class BranchDetailBody extends StatelessWidget {
       lastDate: now.add(const Duration(days: 60)),
     );
     if (date == null || !context.mounted) return;
-    final time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (time == null) return;
-    bloc.add(
-      BranchDetailTimeChanged(
-        DateTime(date.year, date.month, date.day, time.hour, time.minute),
-      ),
-    );
+    bloc.add(BranchDetailDateChanged(date));
   }
 }
 
@@ -209,47 +201,77 @@ class _ServiceSelectionSection extends StatelessWidget {
 
 class _BookingSubmitSection extends StatelessWidget {
   const _BookingSubmitSection({
+    required this.bloc,
     required this.state,
     required this.l10n,
     required this.submitMessage,
-    required this.onPickTime,
+    required this.onPickDate,
     required this.onSubmit,
   });
 
+  final BranchDetailBloc bloc;
   final BranchDetailState state;
   final AppLocalizations l10n;
   final String submitMessage;
-  final VoidCallback onPickTime;
+  final VoidCallback onPickDate;
   final VoidCallback onSubmit;
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Text(l10n.bookingSelectTime, style: DorakTypography.titleLg),
-      const SizedBox(height: DorakDimensions.spacingSmall),
-      SecondaryButton(
-        label: state.selectedTime == null
-            ? l10n.bookingSelectTime
-            : LocaleFormatters.dateTime(
-                state.selectedTime!.toLocal(),
-                Localizations.localeOf(context).languageCode,
-              ),
-        onPressed: onPickTime,
-      ),
-      const SizedBox(height: DorakDimensions.spacingMedium),
-      if (state.submitError != null) ...[
-        StatusBanner(message: submitMessage),
+  Widget build(BuildContext context) {
+    final localeCode = Localizations.localeOf(context).languageCode;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(l10n.bookingSelectDate, style: DorakTypography.titleLg),
         const SizedBox(height: DorakDimensions.spacingSmall),
+        SecondaryButton(
+          label: state.selectedDate == null
+              ? l10n.bookingSelectDate
+              : LocaleFormatters.date(
+                  state.selectedDate!.toLocal(),
+                  localeCode,
+                ),
+          onPressed: onPickDate,
+        ),
+        const SizedBox(height: DorakDimensions.spacingMedium),
+        Text(l10n.bookingSelectTime, style: DorakTypography.titleLg),
+        const SizedBox(height: DorakDimensions.spacingSmall),
+        if (state.isLoadingSlots)
+          const Center(child: CircularProgressIndicator())
+        else if (state.slots.isEmpty)
+          Text(l10n.bookingNoSlots, style: DorakTypography.bodyMd)
+        else
+          Wrap(
+            spacing: DorakDimensions.spacingSmall,
+            runSpacing: DorakDimensions.spacingSmall,
+            children: state.slots.map((slot) {
+              final selected =
+                  state.selectedTime != null &&
+                  slot.startsAt.isAtSameMomentAs(state.selectedTime!);
+              return ChoiceChip(
+                label: Text(
+                  LocaleFormatters.time(slot.startsAt.toLocal(), localeCode),
+                ),
+                selected: selected,
+                onSelected: (_) =>
+                    bloc.add(BranchDetailSlotSelected(slot.startsAt)),
+              );
+            }).toList(),
+          ),
+        const SizedBox(height: DorakDimensions.spacingMedium),
+        if (state.submitError != null) ...[
+          StatusBanner(message: submitMessage),
+          const SizedBox(height: DorakDimensions.spacingSmall),
+        ],
+        PrimaryButton(
+          label: l10n.bookingConfirmAction,
+          onPressed: onSubmit,
+          isDisabled: !state.canSubmit,
+          isLoading: state.isSubmitting,
+        ),
       ],
-      PrimaryButton(
-        label: l10n.bookingConfirmAction,
-        onPressed: onSubmit,
-        isDisabled: !state.canSubmit,
-        isLoading: state.isSubmitting,
-      ),
-    ],
-  );
+    );
+  }
 }
 
 class _BranchHeader extends StatelessWidget {

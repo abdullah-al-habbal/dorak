@@ -20,12 +20,17 @@ class BranchDetailState extends Equatable {
     this.atHomeLatitude,
     this.atHomeLongitude,
     this.isLocating = false,
+    this.selectedDate,
+    List<SlotDto> slots = const [],
+    this.isLoadingSlots = false,
+    this.slotsError,
     this.selectedTime,
     this.isSubmitting = false,
     this.submitError,
     this.succeeded = false,
   }) : selectedServiceIds = List.unmodifiable(selectedServiceIds),
-       savedAddresses = List.unmodifiable(savedAddresses);
+       savedAddresses = List.unmodifiable(savedAddresses),
+       slots = List.unmodifiable(slots);
 
   final String? branchId;
   final bool isLoading;
@@ -44,6 +49,10 @@ class BranchDetailState extends Equatable {
   final double? atHomeLatitude;
   final double? atHomeLongitude;
   final bool isLocating;
+  final DateTime? selectedDate;
+  final List<SlotDto> slots;
+  final bool isLoadingSlots;
+  final Object? slotsError;
   final DateTime? selectedTime;
   final bool isSubmitting;
   final Object? submitError;
@@ -51,6 +60,9 @@ class BranchDetailState extends Equatable {
 
   bool get canSubmit {
     if (isSubmitting || isLocating || selectedTime == null) return false;
+    if (!slots.any((slot) => slot.startsAt.isAtSameMomentAs(selectedTime!))) {
+      return false;
+    }
     if (!isAtHomeBooking) return selectedChairId != null;
     return atHomeStreet.trim().isNotEmpty &&
         atHomeBuilding.trim().isNotEmpty &&
@@ -81,6 +93,12 @@ class BranchDetailState extends Equatable {
     double? atHomeLongitude,
     bool clearAtHomeLocation = false,
     bool? isLocating,
+    DateTime? selectedDate,
+    bool clearDate = false,
+    List<SlotDto>? slots,
+    bool? isLoadingSlots,
+    Object? slotsError,
+    bool clearSlotsError = false,
     DateTime? selectedTime,
     bool clearTime = false,
     bool? isSubmitting,
@@ -114,6 +132,10 @@ class BranchDetailState extends Equatable {
           ? null
           : atHomeLongitude ?? this.atHomeLongitude,
       isLocating: isLocating ?? this.isLocating,
+      selectedDate: clearDate ? null : selectedDate ?? this.selectedDate,
+      slots: slots ?? this.slots,
+      isLoadingSlots: isLoadingSlots ?? this.isLoadingSlots,
+      slotsError: clearSlotsError ? null : slotsError ?? this.slotsError,
       selectedTime: clearTime ? null : selectedTime ?? this.selectedTime,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       submitError: clearSubmitError ? null : submitError ?? this.submitError,
@@ -140,6 +162,10 @@ class BranchDetailState extends Equatable {
     atHomeLatitude,
     atHomeLongitude,
     isLocating,
+    selectedDate,
+    slots,
+    isLoadingSlots,
+    slotsError,
     selectedTime,
     isSubmitting,
     submitError,

@@ -622,6 +622,24 @@ class FakeBookingRepository implements BookingRepository {
   Object? createError;
   int createCalls = 0;
 
+  List<SlotDto> barberSlots = testSlots();
+  Object? barberSlotsError;
+  int getBarberSlotsCalls = 0;
+  String? lastBarberSlotsId;
+
+  @override
+  Future<List<SlotDto>> getBarberSlots(
+    String barberId, {
+    required DateTime date,
+    required List<String> serviceIds,
+  }) async {
+    getBarberSlotsCalls++;
+    lastBarberSlotsId = barberId;
+    final failure = barberSlotsError;
+    if (failure != null) throw failure;
+    return barberSlots;
+  }
+
   @override
   Future<void> cancelBooking(String id) async {
     cancelCalls++;
@@ -731,10 +749,33 @@ FloorPlanDto testFloorPlan() => const FloorPlanDto(
   ],
 );
 
+DateTime testSlotStart() => DateTime.utc(2026, 9, 10, 14, 30);
+
+List<SlotDto> testSlots({
+  DateTime? startsAt,
+  int count = 1,
+  Duration step = const Duration(minutes: 30),
+}) {
+  final start = startsAt ?? testSlotStart();
+  return List<SlotDto>.generate(
+    count,
+    (index) => SlotDto(
+      startsAt: start.add(step * index),
+      endsAt: start.add(step * index + step),
+    ),
+  );
+}
+
 class FakeBranchRepository implements BranchRepository {
   FloorPlanDto plan = testFloorPlan();
+  List<SlotDto> slots = testSlots();
   Object? error;
+  Object? slotsError;
   int getFloorPlanCalls = 0;
+  int getBranchSlotsCalls = 0;
+  DateTime? lastSlotsDate;
+  List<String>? lastSlotsServiceIds;
+  String? lastSlotsChairId;
 
   @override
   Future<FloorPlanDto> getFloorPlan(
@@ -746,6 +787,23 @@ class FakeBranchRepository implements BranchRepository {
     final failure = error;
     if (failure != null) throw failure;
     return plan;
+  }
+
+  @override
+  Future<List<SlotDto>> getBranchSlots(
+    String branchId, {
+    required DateTime date,
+    required List<String> serviceIds,
+    String? chairId,
+    String? barberId,
+  }) async {
+    getBranchSlotsCalls++;
+    lastSlotsDate = date;
+    lastSlotsServiceIds = serviceIds;
+    lastSlotsChairId = chairId;
+    final failure = slotsError;
+    if (failure != null) throw failure;
+    return slots;
   }
 }
 

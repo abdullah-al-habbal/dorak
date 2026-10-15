@@ -22,6 +22,12 @@ abstract class BookingRepository {
   });
 
   Future<void> cancelBooking(String id);
+
+  Future<List<SlotDto>> getBarberSlots(
+    String barberId, {
+    required DateTime date,
+    required List<String> serviceIds,
+  });
 }
 
 class DioBookingRepository implements BookingRepository {
@@ -104,6 +110,31 @@ class DioBookingRepository implements BookingRepository {
     return _apiClient.post<void>(
       BookingEndpoints.cancelBooking.replaceFirst('{booking}', id),
       parser: _discardBody,
+    );
+  }
+
+  @override
+  Future<List<SlotDto>> getBarberSlots(
+    String barberId, {
+    required DateTime date,
+    required List<String> serviceIds,
+  }) {
+    final query = <String, dynamic>{
+      'date': date.toUtc().toIso8601String().split('T').first,
+      'service_ids': serviceIds,
+    };
+    return _apiClient.get<List<SlotDto>>(
+      BookingEndpoints.barberSlots.replaceFirst('{barber}', barberId),
+      queryParameters: query,
+      parser: (json) {
+        if (json is List) {
+          return json
+              .whereType<Map<String, dynamic>>()
+              .map(SlotDto.fromJson)
+              .toList();
+        }
+        throw const FormatException('Expected a list of slots');
+      },
     );
   }
 

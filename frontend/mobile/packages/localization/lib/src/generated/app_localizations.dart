@@ -1058,6 +1058,18 @@ abstract class AppLocalizations {
   /// **'Select time'**
   String get bookingSelectTime;
 
+  /// Booking sheet date step title
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get bookingSelectDate;
+
+  /// Shown when the slot list for the selected date is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No available slots'**
+  String get bookingNoSlots;
+
   /// Booking sheet confirm button label
   ///
   /// In en, this message translates to:

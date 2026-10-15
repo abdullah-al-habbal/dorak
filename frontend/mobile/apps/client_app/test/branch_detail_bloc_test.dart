@@ -69,30 +69,57 @@ void main() {
       branchId: '1',
       detail: testBranchDetail(),
       plan: testFloorPlan(),
+      selectedDate: DateTime.utc(2026, 9, 10),
+      selectedServiceIds: const ['service-1'],
     );
 
     blocTest<BranchDetailBloc, BranchDetailState>(
-      'chair selection is recorded and submittable with a time',
+      'chair selection loads slots and records the chosen slot',
       build: bloc,
       seed: seeded,
       act: (bloc) {
         bloc
           ..add(const BranchDetailChairSelected('chair-1'))
-          ..add(BranchDetailTimeChanged(DateTime.utc(2026, 9, 10, 14, 30)));
+          ..add(BranchDetailSlotSelected(testSlotStart()));
       },
       verify: (bloc) {
         expect(bloc.state.selectedChairId, 'chair-1');
+        expect(bloc.state.slots, isNotEmpty);
+        expect(bloc.state.selectedTime, testSlotStart());
         expect(bloc.state.canSubmit, isTrue);
       },
     );
 
     blocTest<BranchDetailBloc, BranchDetailState>(
-      'services selection is recorded',
+      'services selection is recorded and reloads slots',
       build: bloc,
-      seed: seeded,
+      seed: () => BranchDetailState(
+        branchId: '1',
+        detail: testBranchDetail(),
+        plan: testFloorPlan(),
+        selectedDate: DateTime.utc(2026, 9, 10),
+        selectedChairId: 'chair-1',
+      ),
       act: (bloc) => bloc.add(const BranchDetailServicesChanged(['service-1'])),
       verify: (bloc) {
         expect(bloc.state.selectedServiceIds, ['service-1']);
+        expect(bloc.state.slots, isNotEmpty);
+      },
+    );
+
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'slots are not loaded until services are selected',
+      build: bloc,
+      seed: () => BranchDetailState(
+        branchId: '1',
+        detail: testBranchDetail(),
+        plan: testFloorPlan(),
+        selectedDate: DateTime.utc(2026, 9, 10),
+        selectedChairId: 'chair-1',
+      ),
+      act: (bloc) => bloc.add(const BranchDetailChairSelected('chair-1')),
+      verify: (bloc) {
+        expect(bloc.state.slots, isEmpty);
       },
     );
   });
@@ -104,7 +131,8 @@ void main() {
       plan: testFloorPlan(),
       selectedChairId: 'chair-1',
       selectedServiceIds: const ['service-1'],
-      selectedTime: DateTime.utc(2026, 9, 10, 14, 30),
+      slots: testSlots(),
+      selectedTime: testSlotStart(),
     );
 
     blocTest<BranchDetailBloc, BranchDetailState>(
@@ -135,13 +163,33 @@ void main() {
     );
 
     blocTest<BranchDetailBloc, BranchDetailState>(
+      'cannot submit a time that was not offered by the slot list',
+      build: bloc,
+      seed: () => BranchDetailState(
+        branchId: '1',
+        detail: testBranchDetail(),
+        plan: testFloorPlan(),
+        selectedChairId: 'chair-1',
+        selectedServiceIds: const ['service-1'],
+        slots: testSlots(),
+        selectedTime: testSlotStart().add(const Duration(minutes: 7)),
+      ),
+      act: (bloc) => bloc.add(const BranchDetailBookingSubmitted()),
+      expect: () => [],
+      verify: (_) {
+        expect(bookings.createCalls, 0);
+      },
+    );
+
+    blocTest<BranchDetailBloc, BranchDetailState>(
       'submit without a chair is a no-op',
       build: bloc,
       seed: () => BranchDetailState(
         branchId: '1',
         detail: testBranchDetail(),
         plan: testFloorPlan(),
-        selectedTime: DateTime.utc(2026, 9, 10, 14, 30),
+        slots: testSlots(),
+        selectedTime: testSlotStart(),
       ),
       act: (bloc) => bloc.add(const BranchDetailBookingSubmitted()),
       expect: () => [],
@@ -163,6 +211,7 @@ void main() {
         atHomeUnit: '4B',
         atHomeLatitude: 33.8938,
         atHomeLongitude: 35.5018,
+        slots: testSlots(startsAt: DateTime.utc(2026, 10, 1, 14, 30)),
         selectedTime: DateTime.utc(2026, 10, 1, 14, 30),
         selectedServiceIds: const ['service-1'],
       ),

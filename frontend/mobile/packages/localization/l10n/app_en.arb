@@ -693,6 +693,14 @@
   "@bookingSelectTime": {
     "description": "Booking sheet time step title"
   },
+  "bookingSelectDate": "Select date",
+  "@bookingSelectDate": {
+    "description": "Booking sheet date step title"
+  },
+  "bookingNoSlots": "No available slots",
+  "@bookingNoSlots": {
+    "description": "Shown when the slot list for the selected date is empty"
+  },
   "bookingConfirmAction": "Confirm Booking",
   "@bookingConfirmAction": {
     "description": "Booking sheet confirm button label"

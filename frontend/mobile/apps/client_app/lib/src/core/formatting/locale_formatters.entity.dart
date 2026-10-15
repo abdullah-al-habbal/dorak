@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 /// Reuses locale-specific formatters so widget rebuilds only format values.
 abstract final class LocaleFormatters {
   static final Map<String, DateFormat> _dateTimeFormatters = {};
+  static final Map<String, DateFormat> _dateFormatters = {};
   static final Map<String, DateFormat> _timeFormatters = {};
   static final Map<String, NumberFormat> _decimalFormatters = {};
 
@@ -10,6 +11,10 @@ abstract final class LocaleFormatters {
       _dateTimeFormatters
           .putIfAbsent(localeCode, () => DateFormat.yMMMd(localeCode).add_Hm())
           .format(value);
+
+  static String date(DateTime value, String localeCode) => _dateFormatters
+      .putIfAbsent(localeCode, () => DateFormat.yMMMd(localeCode))
+      .format(value);
 
   static String time(DateTime value, String localeCode) => _timeFormatters
       .putIfAbsent(localeCode, () => DateFormat.Hm(localeCode))

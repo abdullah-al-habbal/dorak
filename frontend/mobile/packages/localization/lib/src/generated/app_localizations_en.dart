@@ -525,6 +525,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookingSelectTime => 'Select time';
 
   @override
+  String get bookingSelectDate => 'Select date';
+
+  @override
+  String get bookingNoSlots => 'No available slots';
+
+  @override
   String get bookingConfirmAction => 'Confirm Booking';
 
   @override

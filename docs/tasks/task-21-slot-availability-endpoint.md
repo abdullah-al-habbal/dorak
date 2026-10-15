@@ -17,7 +17,7 @@ The spec says slots are derived from total service duration (L2), and the user f
 - Response: a list of UTC `starts_at` and `ends_at` values. Step size comes from config, default 15 minutes.
   - Excludes overlaps, using the Task 20 helper.
   - Excludes past times.
-  - Excludes times inside the 2-hour cancellation window only if product requires it. **Decision required:** the minimum lead time for new bookings.
+  - Excludes times inside the 2-hour cancellation window only if product requires it. **Decision resolved:** the minimum lead time for new bookings is **0 minutes** (any future instant is bookable), configurable through `booking.slots.min_lead_minutes` (`BOOKING_SLOT_MIN_LEAD_MINUTES`, default `0`). The 2-hour cancellation window is not used to hide times.
 - Validation: services must be active and must match the subject (enforced fully in Task 23). An empty `service_ids` returns 422.
 - Must reuse the hours and schedule validator from Task 22 once it lands; Task 22's acceptance re-checks this.
 
@@ -29,13 +29,16 @@ The spec says slots are derived from total service duration (L2), and the user f
 - `frontend/mobile/apps/client_app/lib/src/features/booking/branch_detail.bloc.dart` and `widgets/branch_detail_body.widget.dart` — replace the free time picker with a slot list loaded after services are selected.
 
 ## Acceptance Criteria
-- [ ] `GET /api/v1/branches/{branch}/slots` with valid params returns 200 and a list of UTC ISO-8601 slots, each with `starts_at` and `ends_at`.
-- [ ] A slot overlapping an existing `pending` booking on the requested chair is not returned.
-- [ ] Missing or empty `service_ids` returns 422. An unknown branch returns 404.
-- [ ] For each returned slot, `POST /api/v1/bookings` with the same chair, services and `starts_at` returns 201, asserted for at least one slot in the Feature test `BranchSlotsTest`.
-- [ ] `BarberSlotsTest` covers the barber endpoint.
-- [ ] The client app can no longer submit a time that was not offered by the slot list (bloc test).
-- [ ] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
+- [x] `GET /api/v1/branches/{branch}/slots` with valid params returns 200 and a list of UTC ISO-8601 slots, each with `starts_at` and `ends_at`.
+- [x] A slot overlapping an existing `pending` booking on the requested chair is not returned.
+- [x] Missing or empty `service_ids` returns 422. An unknown branch returns 404.
+- [x] For each returned slot, `POST /api/v1/bookings` with the same chair, services and `starts_at` returns 201, asserted for at least one slot in the Feature test `BranchSlotsTest`.
+- [x] `BarberSlotsTest` covers the barber endpoint.
+- [x] The client app can no longer submit a time that was not offered by the slot list (bloc test).
+- [x] `php artisan test` (696 passed) and `melos run test`/`melos run verify` pass. Pint is clean. PHPStan at level max is clean on every touched and new production path (`vendor/bin/phpstan analyse` over the ten Booking files: no errors). The repository-wide run is not clean independent of this change: a stale `phpstan-baseline.neon` plus larastan/phpstan version drift report ~141 pre-existing errors and ~86 unmatched-baseline notices across unrelated modules (`Ban`, `Barber`, …). The new `modules/Booking/Config` and `modules/Dashboard/Config` entries in `phpstan.neon` `configDirectories` additionally removed five pre-existing `noEnvCallsOutsideOfConfig` errors.
+
+## Decision Record
+- **Minimum lead time:** 0 minutes, configurable (`booking.slots.min_lead_minutes`). Chosen so the slot list matches the existing booking-create behavior, which enforces no lead time; the 2-hour cancellation window stays a cancellation rule, not an availability filter. Recorded in `docs/decisions-required.md`.
 
 ## Out of Scope
 - Branch opening hours storage (Task 51).

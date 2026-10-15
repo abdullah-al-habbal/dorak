@@ -20,7 +20,8 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
     on<BranchDetailSavedAddressSelected>(_onSavedAddressSelected);
     on<BranchDetailBarberPreferenceChanged>(_onBarberPreferenceChanged);
     on<BranchDetailAtHomeLocationRequested>(_onAtHomeLocationRequested);
-    on<BranchDetailTimeChanged>(_onTimeChanged);
+    on<BranchDetailDateChanged>(_onDateChanged);
+    on<BranchDetailSlotSelected>(_onSlotSelected);
     on<BranchDetailBookingSubmitted>(_onSubmitted);
     on<BranchDetailRetried>(_onRetried);
   }
@@ -30,6 +31,8 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
   final BookingRepository _bookings;
   final LocationProvider _location;
   final AppPreferences _preferences;
+
+  int _slotsRequestId = 0;
 
   Future<void> _onStarted(
     BranchDetailStarted event,
@@ -88,7 +91,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
   void _onBarberPreferenceChanged(
     BranchDetailBarberPreferenceChanged event,
     Emitter<BranchDetailState> emit,
-  ) {
+  ) async {
     emit(
       state.copyWith(
         preferredBarberId: event.barberId,
@@ -96,12 +99,13 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
         clearSubmitError: true,
       ),
     );
+    await _loadSlots(emit);
   }
 
   void _onChairSelected(
     BranchDetailChairSelected event,
     Emitter<BranchDetailState> emit,
-  ) {
+  ) async {
     if (event.chairId == null) {
       emit(state.copyWith(clearChair: true, clearSubmitError: true));
     } else {
@@ -109,24 +113,26 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
         state.copyWith(selectedChairId: event.chairId, clearSubmitError: true),
       );
     }
+    await _loadSlots(emit);
   }
 
   void _onServicesChanged(
     BranchDetailServicesChanged event,
     Emitter<BranchDetailState> emit,
-  ) {
+  ) async {
     emit(
       state.copyWith(
         selectedServiceIds: List<String>.unmodifiable(event.serviceIds),
         clearSubmitError: true,
       ),
     );
+    await _loadSlots(emit);
   }
 
   void _onBookingModeChanged(
     BranchDetailBookingModeChanged event,
     Emitter<BranchDetailState> emit,
-  ) {
+  ) async {
     emit(
       state.copyWith(
         isAtHomeBooking: event.isAtHome,
@@ -134,6 +140,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
         clearSubmitError: true,
       ),
     );
+    await _loadSlots(emit);
   }
 
   void _onAtHomeAddressChanged(
@@ -177,28 +184,110 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
     }
   }
 
-  Future<void> _onTimeChanged(
-    BranchDetailTimeChanged event,
+  Future<void> _onDateChanged(
+    BranchDetailDateChanged event,
     Emitter<BranchDetailState> emit,
   ) async {
-    if (event.time == null) {
+    if (event.date == null) {
+      emit(state.copyWith(clearDate: true, clearTime: true, clearSubmitError: true));
+      await _loadSlots(emit);
+      return;
+    }
+    emit(
+      state.copyWith(
+        selectedDate: event.date,
+        clearTime: true,
+        clearSubmitError: true,
+      ),
+    );
+    await _loadSlots(emit);
+  }
+
+  Future<void> _onSlotSelected(
+    BranchDetailSlotSelected event,
+    Emitter<BranchDetailState> emit,
+  ) async {
+    final startsAt = event.startsAt;
+    if (startsAt == null) {
       emit(state.copyWith(clearTime: true, clearSubmitError: true));
-    } else {
-      emit(state.copyWith(selectedTime: event.time, clearSubmitError: true));
-      final branchId = state.branchId;
-      if (branchId == null || state.isAtHomeBooking) return;
-      try {
-        final plan = await _branches.getFloorPlan(
-          branchId,
-          timeSlot: event.time!,
-          durationMinutes: _selectedDuration(),
+      return;
+    }
+    emit(state.copyWith(selectedTime: startsAt, clearSubmitError: true));
+    final branchId = state.branchId;
+    if (branchId == null || state.isAtHomeBooking) return;
+    try {
+      final plan = await _branches.getFloorPlan(
+        branchId,
+        timeSlot: startsAt,
+        durationMinutes: _selectedDuration(),
+      );
+      if (emit.isDone) return;
+      emit(state.copyWith(plan: plan, planFailed: false));
+    } catch (_) {
+      if (emit.isDone) return;
+      emit(state.copyWith(planFailed: true));
+    }
+  }
+
+  Future<void> _loadSlots(Emitter<BranchDetailState> emit) async {
+    final requestId = ++_slotsRequestId;
+    final branchId = state.branchId;
+    final date = state.selectedDate;
+    final serviceIds = state.selectedServiceIds;
+    if (branchId == null || date == null || serviceIds.isEmpty) {
+      emit(state.copyWith(slots: const [], isLoadingSlots: false));
+      return;
+    }
+
+    emit(state.copyWith(isLoadingSlots: true, clearSlotsError: true));
+    try {
+      final List<SlotDto> slots;
+      if (state.isAtHomeBooking) {
+        final barberId = state.preferredBarberId;
+        if (barberId == null) {
+          emit(state.copyWith(slots: const [], isLoadingSlots: false));
+          return;
+        }
+        slots = await _bookings.getBarberSlots(
+          barberId,
+          date: date,
+          serviceIds: serviceIds,
         );
-        if (emit.isDone) return;
-        emit(state.copyWith(plan: plan, planFailed: false));
-      } catch (_) {
-        if (emit.isDone) return;
-        emit(state.copyWith(planFailed: true));
+      } else {
+        final chairId = state.selectedChairId;
+        if (chairId == null) {
+          emit(state.copyWith(slots: const [], isLoadingSlots: false));
+          return;
+        }
+        slots = await _branches.getBranchSlots(
+          branchId,
+          date: date,
+          serviceIds: serviceIds,
+          chairId: chairId,
+          barberId: state.preferredBarberId,
+        );
       }
+      if (emit.isDone || requestId != _slotsRequestId) return;
+      final time = state.selectedTime;
+      final keepTime =
+          time != null &&
+          slots.any((slot) => slot.startsAt.isAtSameMomentAs(time));
+      emit(
+        state.copyWith(
+          slots: slots,
+          isLoadingSlots: false,
+          clearTime: !keepTime,
+        ),
+      );
+    } catch (error) {
+      if (emit.isDone || requestId != _slotsRequestId) return;
+      emit(
+        state.copyWith(
+          slots: const [],
+          isLoadingSlots: false,
+          slotsError: error,
+        ),
+      );
     }
   }
 

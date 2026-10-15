@@ -7,7 +7,6 @@ namespace Modules\Booking\Eloquent\Resolvers\Client;
 use Carbon\Carbon;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
-use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Booking\CQRS\Command\Client\CreateBookingCommand;
 use Modules\Booking\Eloquent\Resolvers\Shared\ActiveBookingBanException;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
@@ -19,6 +18,7 @@ use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
@@ -95,26 +95,8 @@ final class CreateBookingEloquentResolver
                 throw new NonDiscoverableBookingEntityException;
             }
 
-            $scheduleExists = BarberScheduleModel::query()
-                ->where('barber_id', $command->barberId)
-                ->exists();
-
-            // An empty schedule remains backward compatible until Task 22's
-            // product decision is made; configured schedules are enforced.
-            if ($scheduleExists) {
-                $slotStart = $command->timeSlot->format('H:i:s');
-                $slotEnd = $endsAt->format('H:i:s');
-                $insideSchedule = BarberScheduleModel::query()
-                    ->where('barber_id', $command->barberId)
-                    ->where('day_of_week', $command->timeSlot->dayOfWeek)
-                    ->where('is_active', true)
-                    ->where('start_time', '<=', $slotStart)
-                    ->where('end_time', '>=', $slotEnd)
-                    ->exists();
-
-                if (! $insideSchedule) {
-                    throw new BookingOutsideScheduleException;
-                }
+            if (! BarberScheduleAvailability::covers($command->barberId, $command->timeSlot, $endsAt)) {
+                throw new BookingOutsideScheduleException;
             }
 
             $this->ensureNoOverlap('barber_id', $command->barberId, $command->timeSlot, $endsAt);

@@ -95,11 +95,11 @@
 - `test/booking_bloc_test.dart` + `test/booking_flow_test.dart`; `FakeBookingRepository`, `testBooking`/`testBookingPage`, `fakeBookingBloc` in fakes.
 
 ### Branch Floor Plan & Booking Creation — Stitch 017b (CL-10b)
-- `lib/src/features/booking/branch_detail.{bloc,event,state}.dart` — parallel detail + floor-plan load (plan failure tolerated), chair/services/time selection, submit (`canSubmit` = chair + time), 409 conflict, retry.
-- `lib/src/features/booking/branch_detail.screen.dart` — floor plan grid, barbers, services checklist, date + time pickers, confirm, success `StatusView` → My Bookings.
+- `lib/src/features/booking/branch_detail.{bloc,event,state}.dart` — parallel detail + floor-plan load (plan failure tolerated), chair/services/date/slot selection, submit (`canSubmit` = chair + time ∈ offered slots), 409 conflict, retry. `_loadSlots` (Task 21) calls `BranchRepository.getBranchSlots` or `BookingRepository.getBarberSlots` once services (and a chair, or an at-home barber) are chosen, guarded by a synchronous request-id latch against stale responses.
+- `lib/src/features/booking/branch_detail.screen.dart` — floor plan grid, barbers, services checklist, date picker + slot `ChoiceChip` list (free time picker removed), confirm, success `StatusView` → My Bookings.
 - `lib/src/features/booking/widgets/floor_plan_grid.widget.dart` — legend + tappable available chairs.
 - Nested `/discover/branch/:branchId` route; "View Details" on result cards; `BranchDetailBloc` built in `app.dart`.
-- `test/branch_detail_bloc_test.dart`; `FakeBranchRepository`, `testFloorPlan`, `testBranchDetail`, fake `createBooking` in fakes.
+- `test/branch_detail_bloc_test.dart` (incl. "cannot submit a time that was not offered by the slot list"); `FakeBranchRepository`/`FakeBookingRepository` slot methods, `testSlots`/`testSlotStart`, `testFloorPlan`, `testBranchDetail`, fake `createBooking` in fakes.
 
 ### Service History & Rebook — Stitch 018a (CL-11a)
 - `lib/src/features/profile/history.{bloc,event,state}.dart` — `HistoryBloc` over `Paged<ServiceHistoryDto>` (start/refresh/load-more/retry) + rebook submit → `rebooked` flag, `HistoryRebookRequested` resets via `HistoryRebookAcknowledged`.

@@ -52,6 +52,47 @@ void main() {
       expect(fake.callCount, 1);
     });
 
+    test('getBranchSlots parses UTC slots and sends date + services', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: [
+                {
+                  'starts_at': '2026-10-01T12:00:00.000Z',
+                  'ends_at': '2026-10-01T12:30:00.000Z',
+                },
+                {
+                  'starts_at': '2026-10-01T12:15:00.000Z',
+                  'ends_at': '2026-10-01T12:45:00.000Z',
+                },
+              ],
+            ),
+          );
+        },
+      );
+      final repository = DioBranchRepository(clientWith(fake));
+
+      final slots = await repository.getBranchSlots(
+        'branch-1',
+        date: DateTime.utc(2026, 10, 1),
+        serviceIds: const ['service-1', 'service-2'],
+        chairId: 'chair-1',
+      );
+
+      expect(captured.path, '/branches/branch-1/slots');
+      expect(captured.queryParameters['date'], '2026-10-01');
+      expect(captured.queryParameters['service_ids'], ['service-1', 'service-2']);
+      expect(captured.queryParameters['chair_id'], 'chair-1');
+      expect(captured.queryParameters.containsKey('barber_id'), isFalse);
+      expect(slots, hasLength(2));
+      expect(slots.first.startsAt, DateTime.utc(2026, 10, 1, 12));
+      expect(slots.first.endsAt, DateTime.utc(2026, 10, 1, 12, 30));
+    });
+
     test(
       'floor plan and booking requests encode the same UTC instant',
       () async {

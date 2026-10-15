@@ -40,7 +40,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: allow `Confirmed → NoShow` per EC-3, where a no-show is the outcome when the client never arrives. `NoShow` remains allowed from `InProgress` as well.
 
 ## [Task 21: Add Slot Availability Endpoint](tasks/task-21-slot-availability-endpoint.md)
-- [ ] Excludes times inside the 2-hour cancellation window only if product requires it. **Decision required:** the minimum lead time for new bookings.
+- [x] Decision resolved: the minimum lead time for new bookings is 0 minutes (any future instant is bookable), configurable via `booking.slots.min_lead_minutes` (`BOOKING_SLOT_MIN_LEAD_MINUTES`, default `0`). The 2-hour cancellation window is a cancellation rule, not an availability filter.
 
 ## [Task 22: Validate Bookings Against Branch Hours and Barber Schedule](tasks/task-22-booking-hours-schedule-validation.md)
 - [ ] **Decision required:** timezone for schedule times. The barber's or branch's local timezone needs a stored timezone; until then, UTC.

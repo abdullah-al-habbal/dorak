@@ -522,6 +522,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingSelectTime => 'اختر الوقت';
 
   @override
+  String get bookingSelectDate => 'اختر التاريخ';
+
+  @override
+  String get bookingNoSlots => 'لا توجد مواعيد متاحة';
+
+  @override
   String get bookingConfirmAction => 'تأكيد الحجز';
 
   @override

@@ -225,5 +225,38 @@ void main() {
       expect(captured.path, '/client/bookings/booking-1/cancel');
       expect(captured.method, 'POST');
     });
+
+    test('getBarberSlots parses UTC slots and sends date + services', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: [
+                {
+                  'starts_at': '2026-10-01T12:00:00.000Z',
+                  'ends_at': '2026-10-01T12:30:00.000Z',
+                },
+              ],
+            ),
+          );
+        },
+      );
+      final repository = DioBookingRepository(clientWith(fake));
+
+      final slots = await repository.getBarberSlots(
+        'barber-1',
+        date: DateTime.utc(2026, 10, 1),
+        serviceIds: const ['service-1'],
+      );
+
+      expect(captured.path, '/barbers/barber-1/slots');
+      expect(captured.queryParameters['date'], '2026-10-01');
+      expect(captured.queryParameters['service_ids'], ['service-1']);
+      expect(slots, hasLength(1));
+      expect(slots.first.startsAt, DateTime.utc(2026, 10, 1, 12));
+    });
   });
 }

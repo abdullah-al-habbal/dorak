@@ -105,6 +105,7 @@
 
 ### Branch Floor Plan & Booking Creation — Stitch 017b (CL-10) ✅ Complete
 - `BranchRepository.getFloorPlan` + `ExploreRepository.getBranchDetail` + `BookingRepository.createBooking` in core; `BranchDetailBloc` + `BranchDetailScreen` + `FloorPlanGrid` (chair/services/time selection, 409 conflict, success → My Bookings) on `/discover/branch/:branchId`.
+- Slot availability (Task 21): `SlotDto` + `BranchRepository.getBranchSlots` (`GET /branches/{branch}/slots`) + `BookingRepository.getBarberSlots` (`GET /barbers/{barber}/slots`) in core. The branch detail replaces the free time picker with a date picker + a slot `ChoiceChip` list loaded once services (and a chair or at-home barber) are chosen; `canSubmit` requires the selected time to be one of the offered slots.
 
 ### Service History & Rebook — Stitch 018a (CL-11) ✅ Complete
 - `HistoryRepository` + `ServiceHistoryDto` family (barber/branch/catalog-item/media) in core; `HistoryBloc` over `Paged<ServiceHistoryDto>` + rebook; `ProfileScreen` rebuilt as the 018 profile tab (name header card, Service History feed, rebook via Material pickers, 409 conflict, success → My Bookings).
@@ -205,7 +206,8 @@ Recorded so nobody re-derives them from the Stitch HTML or invents a route.
 | Discovery Feed (016) | `GET /explore/branches` | **There is no `/client/discovery-feed`.** Requires `latitude`, `longitude`, `radius`, `universe`; accepts `per_page` (max 100), `catalog_item_ids[]`, `available_now`, `price_range{min,max}`, `rating_min`, `face_shape_compatible`. `clientId` is nullable — **guest-accessible**. Location permission is a prerequisite. |
 | Discovery preferences | `GET`/`PATCH /client/discovery-preferences` | A separate preferences resource, **not** the feed |
 | Stylist Profile (019) | `GET /explore/barbers`, `GET /explore/barbers/{barber}`, `GET /currencies` (public) | `{barber}` returns `{...BarberResource, services}` |
-| Branch detail (017) | `GET /explore/branches/{branch}`, `GET /branches/{branch}/floor-plan`, `GET /branches/{branch}/chairs` | |
+| Branch detail (017) | `GET /explore/branches/{branch}`, `GET /branches/{branch}/floor-plan`, `GET /branches/{branch}/chairs`, `GET /branches/{branch}/slots` | Slots: `date` + `service_ids[]` + (`chair_id` or `barber_id`); returns UTC `starts_at`/`ends_at` |
+| Barber slots (Task 21) | `GET /barbers/{barber}/slots` | `date` + `service_ids[]`; at-home/freelancer bookings |
 | Review & Rating (020) | `GET /branches/{branch}/reviews` | |
 
 Paginated collections all return the same envelope

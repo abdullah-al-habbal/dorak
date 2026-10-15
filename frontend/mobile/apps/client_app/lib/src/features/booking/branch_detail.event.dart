@@ -82,13 +82,22 @@ class BranchDetailAtHomeLocationRequested extends BranchDetailEvent {
   const BranchDetailAtHomeLocationRequested();
 }
 
-class BranchDetailTimeChanged extends BranchDetailEvent {
-  const BranchDetailTimeChanged(this.time);
+class BranchDetailDateChanged extends BranchDetailEvent {
+  const BranchDetailDateChanged(this.date);
 
-  final DateTime? time;
+  final DateTime? date;
 
   @override
-  List<Object?> get props => [time];
+  List<Object?> get props => [date];
+}
+
+class BranchDetailSlotSelected extends BranchDetailEvent {
+  const BranchDetailSlotSelected(this.startsAt);
+
+  final DateTime? startsAt;
+
+  @override
+  List<Object?> get props => [startsAt];
 }
 
 class BranchDetailBookingSubmitted extends BranchDetailEvent {

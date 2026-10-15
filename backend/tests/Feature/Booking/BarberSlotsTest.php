@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+use Carbon\Carbon;
+use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Models\BookingModel;
+use Modules\OfferedService\Models\OfferedServiceModel;
+
+beforeEach(function (): void {
+    $this->barber = BarberModel::factory()->freelancer()->create();
+    $this->service = OfferedServiceModel::factory()->create(['duration' => 30]);
+    $this->slotsUrl = fn (Carbon $date): string => '/api/v1/barbers/'.$this->barber->id.'/slots?'.http_build_query([
+        'date' => $date->format('Y-m-d'),
+        'service_ids' => [$this->service->id],
+    ]);
+});
+
+it('returns bookable UTC slots for a barber', function (): void {
+    $slots = $this->getJson(($this->slotsUrl)(Carbon::tomorrow()))->assertOk()->json('data');
+
+    expect($slots)->not->toBeEmpty();
+
+    foreach ($slots as $slot) {
+        expect($slot['starts_at'])->toEndWith('Z');
+        expect($slot['ends_at'])->toEndWith('Z');
+    }
+});
+
+it('excludes slots overlapping a pending booking on the barber', function (): void {
+    $date = Carbon::tomorrow();
+    $startsAt = $date->copy()->setTime(10, 0);
+
+    BookingModel::factory()->atHome()->create([
+        'barber_id' => $this->barber->id,
+        'time_slot' => $startsAt,
+        'ends_at' => $startsAt->copy()->addMinutes(30),
+        'status' => BookingStatus::Pending,
+    ]);
+
+    $starts = collect(
+        $this->getJson(($this->slotsUrl)($date))->assertOk()->json('data'),
+    )->pluck('starts_at');
+
+    expect($starts)->not->toContain($startsAt->toIso8601ZuluString());
+    expect($starts)->toContain($startsAt->copy()->addMinutes(30)->toIso8601ZuluString());
+});
+
+it('rejects a missing service list with 422', function (): void {
+    $this->getJson('/api/v1/barbers/'.$this->barber->id.'/slots?'.http_build_query([
+        'date' => Carbon::tomorrow()->format('Y-m-d'),
+    ]))->assertUnprocessable();
+});
+
+it('returns 404 for an unknown barber', function (): void {
+    $this->getJson('/api/v1/barbers/00000000-0000-0000-0000-000000000000/slots?'.http_build_query([
+        'date' => Carbon::tomorrow()->format('Y-m-d'),
+        'service_ids' => [$this->service->id],
+    ]))->assertNotFound();
+});

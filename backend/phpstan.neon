@@ -18,3 +18,5 @@ parameters:
     tmpDir: storage/framework/cache/phpstan
     configDirectories:
         - modules/Core/Config
+        - modules/Booking/Config
+        - modules/Dashboard/Config
