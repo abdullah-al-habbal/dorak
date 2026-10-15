@@ -544,6 +544,9 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم حجز هذا الموعد للتو. اختر وقتًا آخر.';
 
   @override
+  String get bookingOutsideScheduleMessage => 'الوقت المطلوب خارج جدول الحلاق.';
+
+  @override
   String discoverCompatibilityBadge(int percent) {
     return '$percent%';
   }

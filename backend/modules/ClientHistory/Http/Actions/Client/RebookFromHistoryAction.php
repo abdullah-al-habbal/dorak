@@ -34,7 +34,7 @@ final class RebookFromHistoryAction extends BaseApiAction
         } catch (ActiveBookingBanException) {
             return $this->error(message: __('booking::messages.unavailable_for_account'), status: 403);
         } catch (BookingOutsideScheduleException) {
-            return $this->error(message: __('booking::messages.time_outside_schedule'), status: 422);
+            return $this->error('booking_outside_schedule', __('booking::messages.time_outside_schedule'), 422);
         }
 
         return $this->created(data: new BookingResource($booking));

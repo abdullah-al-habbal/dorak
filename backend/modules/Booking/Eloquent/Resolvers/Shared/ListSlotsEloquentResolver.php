@@ -41,6 +41,8 @@ final class ListSlotsEloquentResolver
         $step = max(1, $this->configInt('booking.slots.step_minutes', 15));
         $minLead = max(0, $this->configInt('booking.slots.min_lead_minutes', 0));
 
+        $effectiveBarberId = $query->barberId ?? $this->assignedBarberId($query);
+
         $dayStart = $query->date->copy()->utc()->startOfDay();
         $dayEnd = $dayStart->copy()->addDay();
         $earliest = Carbon::now()->utc()->addMinutes($minLead);
@@ -52,7 +54,7 @@ final class ListSlotsEloquentResolver
             $endsAt = $start->copy()->addMinutes($totalDuration);
 
             if (! $endsAt->greaterThan($dayEnd) && ! $start->lessThan($earliest)) {
-                if ($this->isFree($query, $start, $endsAt)) {
+                if ($this->isFree($query, $effectiveBarberId, $start, $endsAt)) {
                     $slots[] = ['starts_at' => $start->copy(), 'ends_at' => $endsAt];
                 }
             }
@@ -125,6 +127,7 @@ final class ListSlotsEloquentResolver
 
     private function isFree(
         ListSlotsQuery $query,
+        ?string $barberId,
         Carbon $startsAt,
         Carbon $endsAt,
     ): bool {
@@ -132,17 +135,32 @@ final class ListSlotsEloquentResolver
             return false;
         }
 
-        if ($query->barberId !== null) {
-            if ($this->overlaps('barber_id', $query->barberId, $startsAt, $endsAt)) {
-                return false;
-            }
+        if ($query->barberId !== null && $this->overlaps('barber_id', $query->barberId, $startsAt, $endsAt)) {
+            return false;
+        }
 
-            if (! BarberScheduleAvailability::covers($query->barberId, $startsAt, $endsAt)) {
-                return false;
-            }
+        if ($barberId !== null && ! BarberScheduleAvailability::covers($barberId, $startsAt, $endsAt)) {
+            return false;
         }
 
         return true;
+    }
+
+    private function assignedBarberId(ListSlotsQuery $query): ?string
+    {
+        if ($query->chairId === null) {
+            return null;
+        }
+
+        $chair = ChairModel::query()->find($query->chairId);
+
+        if ($chair === null) {
+            return null;
+        }
+
+        $barberId = $chair->getAttribute('barber_id');
+
+        return is_string($barberId) ? $barberId : null;
     }
 
     private function overlaps(string $column, string $resourceId, Carbon $startsAt, Carbon $endsAt): bool

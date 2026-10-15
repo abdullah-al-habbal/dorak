@@ -24,11 +24,14 @@ import { getDashboardList } from "@/services/api/dashboard/dashboard.query";
 import { createWalkInBooking } from "@/services/api/dashboard/dashboard-workflow.mutation";
 import { createWalkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
 import type { WalkInBookingInput } from "@/services/api/dashboard/walk-in-booking.types";
+import { apiErrorMessage } from "@/services/api/api-error-message.util";
+import { ApiClientError } from "@/services/api/client-error";
 import { notifySuccess } from "@/services/api/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export function WalkInBookingForm() {
   const dictionary = useDictionary();
@@ -83,6 +86,13 @@ export function WalkInBookingForm() {
         }),
       ),
   );
+  const failed = (error: unknown) =>
+    toast.error(
+      error instanceof ApiClientError &&
+        error.code === "booking_outside_schedule"
+        ? copy.outsideSchedule
+        : apiErrorMessage(error, dictionary),
+    );
   return (
     <form
       className="grid gap-4 sm:grid-cols-2"
@@ -92,6 +102,7 @@ export function WalkInBookingForm() {
             notifySuccess(copy.success);
             router.push(`/${session.actor}/bookings`);
           },
+          onError: failed,
         }),
       )}
     >

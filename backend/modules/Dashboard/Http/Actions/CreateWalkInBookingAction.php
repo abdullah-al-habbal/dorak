@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
@@ -36,6 +37,8 @@ final class CreateWalkInBookingAction extends BaseApiAction
             return $this->error('BOOKING_SLOT_CONFLICT', __('dashboard::messages.chair_stylist_unavailable'), 409);
         } catch (InvalidBookingServicesException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_services'));
+        } catch (BookingOutsideScheduleException) {
+            return $this->error('booking_outside_schedule', __('booking::messages.time_outside_schedule'), 422);
         } catch (WalkInStylistNotAssignedException) {
             return $this->unprocessable(message: __('dashboard::messages.stylist_not_assigned_to_chair'));
         } catch (WalkInServicesUnavailableException) {

@@ -1100,6 +1100,12 @@ abstract class AppLocalizations {
   /// **'That slot was just taken. Please pick another time.'**
   String get bookingConflictMessage;
 
+  /// Message shown when the server rejects a booking outside the barber schedule
+  ///
+  /// In en, this message translates to:
+  /// **'The requested time is outside the barber schedule.'**
+  String get bookingOutsideScheduleMessage;
+
   /// Compatibility score badge on a result card
   ///
   /// In en, this message translates to:

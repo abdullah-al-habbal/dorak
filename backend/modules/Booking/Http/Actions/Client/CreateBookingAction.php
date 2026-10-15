@@ -57,7 +57,7 @@ final class CreateBookingAction extends BaseApiAction
         } catch (NonDiscoverableBookingEntityException) {
             return $this->error(code: 'ENTITY_NOT_DISCOVERABLE', message: __('booking::messages.entity_not_discoverable'), status: 422);
         } catch (BookingOutsideScheduleException) {
-            return $this->error(message: __('booking::messages.time_outside_schedule'), status: 422);
+            return $this->error('booking_outside_schedule', __('booking::messages.time_outside_schedule'), 422);
         }
     }
 

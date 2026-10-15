@@ -80,6 +80,9 @@ class BranchDetailBody extends StatelessWidget {
   String _submitMessage(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final error = state.submitError;
+    if (error is ApiException && error.code == 'booking_outside_schedule') {
+      return l10n.bookingOutsideScheduleMessage;
+    }
     if (error is ApiException && error.statusCode == 409) {
       return l10n.bookingConflictMessage;
     }

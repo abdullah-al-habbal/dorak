@@ -7,9 +7,11 @@ namespace Modules\Dashboard\Eloquent\Resolvers\Bookings;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
@@ -28,6 +30,10 @@ final class RescheduleBookingEloquentResolver
             }
             if ($booking->barber_id !== null) {
                 BarberModel::query()->lockForUpdate()->findOrFail($booking->barber_id);
+
+                if (! BarberScheduleAvailability::covers($booking->barber_id, $timeSlot, $endsAt)) {
+                    throw new BookingOutsideScheduleException;
+                }
             }
             foreach (['chair_id', 'barber_id'] as $column) {
                 $resourceId = $booking->getAttribute($column);

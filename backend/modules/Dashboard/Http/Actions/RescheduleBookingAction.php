@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Http\Resources\Client\BookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -33,6 +34,8 @@ final class RescheduleBookingAction extends BaseApiAction
             return $this->updated(new BookingResource($this->resolver->resolve((string) $model->id, $timeSlot, $endsAt)));
         } catch (ChairHasActiveBookingsException) {
             return $this->error('BOOKING_SLOT_CONFLICT', __('dashboard::messages.booking_slot_conflict'), 409);
+        } catch (BookingOutsideScheduleException) {
+            return $this->error('booking_outside_schedule', __('booking::messages.time_outside_schedule'), 422);
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }

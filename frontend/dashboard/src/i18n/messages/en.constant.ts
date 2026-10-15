@@ -336,6 +336,7 @@ export const en = {
     bookingUpdated: "Booking updated.",
     conflict: "Booking conflicts with the requested schedule.",
     invalidTransition: "This booking cannot move to the requested status.",
+    outsideSchedule: "The requested time is outside the barber schedule.",
     failed: "Booking action failed.",
   },
   validation: {
@@ -357,6 +358,7 @@ export const en = {
     appointmentTime: "Appointment time",
     services: "Services",
     create: "Create walk-in booking",
+    outsideSchedule: "The requested time is outside the barber schedule.",
   },
   barberWorkspace: {
     title: "Today’s workspace",

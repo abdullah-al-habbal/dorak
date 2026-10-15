@@ -645,6 +645,10 @@
   "@bookingConflictMessage": {
     "description": "Message shown when the server reports a booking conflict"
   },
+  "bookingOutsideScheduleMessage": "الوقت المطلوب خارج جدول الحلاق.",
+  "@bookingOutsideScheduleMessage": {
+    "description": "Message shown when the server rejects a booking outside the barber schedule"
+  },
   "discoverCompatibilityBadge": "{percent}%",
   "@discoverCompatibilityBadge": {
     "description": "Compatibility score badge on a result card",

@@ -44,7 +44,7 @@ codeanchors:
 - [x] Task 19: Route Rebook Through the Booking Engine -> [Spec](tasks/task-19-rebook-via-booking-engine.md)
 - [x] Task 20: Unify Availability Semantics and Time Contract -> [Spec](tasks/task-20-availability-semantics.md)
 - [x] Task 21: Add Slot Availability Endpoint -> [Spec](tasks/task-21-slot-availability-endpoint.md)
-- [ ] Task 22: Validate Bookings Against Branch Hours and Barber Schedule -> [Spec](tasks/task-22-booking-hours-schedule-validation.md)
+- [x] Task 22: Validate Bookings Against Branch Hours and Barber Schedule -> [Spec](tasks/task-22-booking-hours-schedule-validation.md)
 - [ ] Task 23: Validate Service Ownership and Resolve Chair Barber on Booking -> [Spec](tasks/task-23-booking-service-ownership.md)
 - [ ] Task 24: Allow Booking a Shop Barber Without Picking a Chair -> [Spec](tasks/task-24-barber-booking-without-chair.md)
 - [ ] Task 25: Enforce At-Home Booking Rules -> [Spec](tasks/task-25-at-home-booking-rules.md)

@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Carbon\Carbon;
+use Modules\Barber\Models\BarberModel;
+use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
@@ -84,6 +86,31 @@ it('drops a slot once it has been booked', function (): void {
     )->pluck('starts_at');
 
     expect($starts)->not->toContain($start);
+});
+
+it('returns no slots outside the assigned barber active schedule', function (): void {
+    $barber = BarberModel::factory()->create();
+    $chair = ChairModel::factory()->create([
+        'branch_id' => $this->branch->id,
+        'barber_id' => $barber->id,
+    ]);
+    $date = Carbon::tomorrow();
+    BarberScheduleModel::factory()->create([
+        'barber_id' => $barber->id,
+        'day_of_week' => $date->dayOfWeek,
+        'start_time' => '09:00',
+        'end_time' => '11:00',
+        'is_active' => true,
+    ]);
+
+    $slots = $this->getJson(($this->slotsUrl)($date, ['chair_id' => $chair->id]))->assertOk()->json('data');
+
+    expect($slots)->not->toBeEmpty();
+
+    foreach ($slots as $slot) {
+        expect(substr($slot['starts_at'], 11, 5))->toBeGreaterThanOrEqual('09:00');
+        expect(substr($slot['ends_at'], 11, 5))->toBeLessThanOrEqual('11:00');
+    }
 });
 
 it('rejects a missing service list with 422', function (): void {

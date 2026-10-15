@@ -42,9 +42,18 @@ interface IBookingActionsDialogProps {
 
 function conflictMessage(
   error: unknown,
-  copy: { conflict: string; invalidTransition: string },
+  copy: {
+    conflict: string;
+    invalidTransition: string;
+    outsideSchedule: string;
+  },
   dictionary: ReturnType<typeof useDictionary>,
 ): string {
+  if (
+    error instanceof ApiClientError &&
+    error.code === "booking_outside_schedule"
+  )
+    return copy.outsideSchedule;
   if (error instanceof ApiClientError && error.status === 409)
     return copy.conflict;
   if (error instanceof ApiClientError && error.status === 422)

@@ -43,8 +43,8 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: the minimum lead time for new bookings is 0 minutes (any future instant is bookable), configurable via `booking.slots.min_lead_minutes` (`BOOKING_SLOT_MIN_LEAD_MINUTES`, default `0`). The 2-hour cancellation window is a cancellation rule, not an availability filter.
 
 ## [Task 22: Validate Bookings Against Branch Hours and Barber Schedule](tasks/task-22-booking-hours-schedule-validation.md)
-- [ ] **Decision required:** timezone for schedule times. The barber's or branch's local timezone needs a stored timezone; until then, UTC.
-- [ ] **Decision required:** behavior when a barber has no schedule rows. Either treat as always available (backward compatible) or never bookable.
+- [x] Decision resolved: schedule times are compared in the timestamp's timezone. The API contract is UTC, so schedule checks run against UTC until a barber/branch timezone column exists; no new column is added by this task.
+- [x] Decision resolved: a barber with no schedule rows stays bookable (backward compatible). Once any rows exist, only an active row that fully contains the booking interval `[time_slot, ends_at)` on the start weekday is bookable.
 
 ## [Task 23: Validate Service Ownership and Resolve Chair Barber on Booking](tasks/task-23-booking-service-ownership.md)
 - [ ] **Decision required (EC-9):** enforce one barber calendar across all affiliations, or per shop. Default: across all affiliations, matching the current overlap query on `barber_id`.

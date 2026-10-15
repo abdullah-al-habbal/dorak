@@ -547,6 +547,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'That slot was just taken. Please pick another time.';
 
   @override
+  String get bookingOutsideScheduleMessage =>
+      'The requested time is outside the barber schedule.';
+
+  @override
   String discoverCompatibilityBadge(int percent) {
     return '$percent%';
   }

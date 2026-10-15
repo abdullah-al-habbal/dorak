@@ -13,10 +13,10 @@ Barbers maintain a weekly schedule (`barber_schedules`, exposed at `GET/PATCH /b
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
-- Add a `BookingWindowValidator` to the Booking module. It rejects a booking interval `[time_slot, ends_at)` that is not fully inside an active `barber_schedules` row for that barber's weekday.
-  - **Decision required:** timezone for schedule times. The barber's or branch's local timezone needs a stored timezone; until then, UTC.
-- Current implementation enforces configured schedules in client create and rebook. Dashboard reschedule, walk-in, and Task 21 slot generation remain open.
-  - Until a timezone field exists, schedule checks use the timestamp's current timezone (UTC in the API contract).
+- Add a schedule validator to the Booking module. It rejects a booking interval `[time_slot, ends_at)` that is not fully inside an active `barber_schedules` row for that barber's weekday.
+  - **Decision resolved:** schedule times are compared in the timestamp's timezone. The API contract is UTC, so schedule checks run against UTC until a barber/branch timezone column exists.
+- Current implementation enforces configured schedules in client create, rebook, dashboard reschedule, walk-in, and Task 21 slot generation.
+  - Schedule checks use the timestamp's current timezone (UTC in the API contract).
 - **Decision recorded:** a barber with no schedule rows remains bookable for backward compatibility. Once any schedule rows exist, only active rows that contain the complete booking interval are bookable.
 - Branch hours: once Task 51 adds hours, extend the validator to chair bookings. Until then, record this as a pending sub-criterion.
 - Error: 422 with code `booking_outside_schedule`.
@@ -29,11 +29,16 @@ Barbers maintain a weekly schedule (`barber_schedules`, exposed at `GET/PATCH /b
 
 ## Acceptance Criteria
 - [x] Client booking and rebook reject configured out-of-schedule times with 422; a same-day slot contained in an active schedule is accepted.
-- [ ] Dashboard reschedule and walk-in outside the schedule return 422.
-- [ ] The Task 21 slot endpoints return no slots outside the barber's schedule (assertion added to `BranchSlotsTest` and `BarberSlotsTest`).
-- [ ] The no-schedule decision is recorded here and asserted in the Feature test `BookingScheduleValidationTest`.
-- [ ] The branch-hours sub-criterion stays open, tracked against Task 51.
-- [ ] `php artisan test` passes. PHPStan max and Pint are clean.
+- [x] Dashboard reschedule and walk-in outside the schedule return 422.
+- [x] The Task 21 slot endpoints return no slots outside the barber's schedule (assertion added to `BranchSlotsTest` and `BarberSlotsTest`).
+- [x] The no-schedule decision is recorded here and asserted in the Feature test `BookingScheduleValidationTest`.
+- [x] The branch-hours sub-criterion stays open, tracked against Task 51.
+- [x] `php artisan test` passes. PHPStan max and Pint are clean.
+
+## Implementation Notes
+- The validator lives at `backend/modules/Booking/Queries/BarberScheduleAvailability.php` (not `BookingWindowValidator`) — the earlier Task 21 work introduced it under this name and both the create resolver and the slot resolver already consume it. Renaming would churn unrelated call sites; the behaviour matches the spec.
+- Branch slot generation resolves the assigned barber from the requested chair when no `barber_id` is supplied, so chair bookings also exclude out-of-schedule times.
+- Mobile maps the `booking_outside_schedule` 422 in the screen/widget layer (`branch_detail_body.widget.dart` `_submitMessage`) rather than the bloc, per the mobile convention that error→copy mapping stays out of blocs.
 
 ## Out of Scope
 - Storing branch hours and "today's hours" (Task 51).

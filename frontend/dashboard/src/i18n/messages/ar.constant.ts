@@ -331,6 +331,7 @@ export const ar: Dictionary = {
     bookingUpdated: "تم تحديث الحجز.",
     conflict: "يتعارض الحجز مع الجدول المطلوب.",
     invalidTransition: "لا يمكن نقل الحجز إلى الحالة المطلوبة.",
+    outsideSchedule: "الوقت المطلوب خارج جدول الحلاق.",
     failed: "تعذر تنفيذ إجراء الحجز.",
   },
   validation: {
@@ -352,6 +353,7 @@ export const ar: Dictionary = {
     appointmentTime: "وقت الموعد",
     services: "الخدمات",
     create: "إنشاء حجز مباشر",
+    outsideSchedule: "الوقت المطلوب خارج جدول الحلاق.",
   },
   barberWorkspace: {
     title: "مساحة عمل اليوم",

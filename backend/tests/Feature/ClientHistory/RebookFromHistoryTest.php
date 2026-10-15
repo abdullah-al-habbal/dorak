@@ -144,7 +144,8 @@ it('rejects times outside a configured active barber schedule', function (): voi
     ]);
 
     rebookAt($client, $history, $slot)
-        ->assertUnprocessable();
+        ->assertUnprocessable()
+        ->assertJsonPath('code', 'booking_outside_schedule');
 
     $this->assertDatabaseCount('bookings', 0);
 });

@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+use Modules\Barber\Models\BarberModel;
+use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\OfferedService\Models\OfferedServiceModel;
 
 describe('Dashboard Booking API', function (): void {
     it('scopes and filters a branch manager booking list', function (): void {
@@ -58,5 +61,59 @@ describe('Dashboard Booking API', function (): void {
                 'ends_at' => now()->addDays(3)->addMinutes(30)->toIso8601String(),
             ])->assertUnprocessable();
         }
+    });
+
+    it('rejects a reschedule outside the barber schedule', function (): void {
+        $branch = BranchModel::factory()->create();
+        $barber = BarberModel::factory()->create();
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id]);
+        $booking = BookingModel::factory()->create([
+            'chair_id' => $chair->id,
+            'barber_id' => $barber->id,
+            'time_slot' => now()->addDay(),
+            'ends_at' => now()->addDay()->addMinutes(30),
+        ]);
+        $target = now()->addDays(3)->startOfDay()->addHours(18);
+        BarberScheduleModel::factory()->create([
+            'barber_id' => $barber->id,
+            'day_of_week' => $target->dayOfWeek,
+            'start_time' => '09:00',
+            'end_time' => '17:00',
+            'is_active' => true,
+        ]);
+        $this->authenticateDashboardActor($branch);
+
+        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}/reschedule", [
+            'time_slot' => $target->toIso8601String(),
+            'ends_at' => $target->copy()->addMinutes(30)->toIso8601String(),
+        ])->assertUnprocessable()->assertJsonPath('code', 'booking_outside_schedule');
+    });
+
+    it('rejects a walk-in booking outside the barber schedule', function (): void {
+        $branch = BranchModel::factory()->create();
+        $barber = BarberModel::factory()->create(['managed_by_branch_id' => $branch->id]);
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id]);
+        $service = OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $branch->id, 'duration' => 30]);
+        $target = now()->addDays(3)->startOfDay()->addHours(18);
+        BarberScheduleModel::factory()->create([
+            'barber_id' => $barber->id,
+            'day_of_week' => $target->dayOfWeek,
+            'start_time' => '09:00',
+            'end_time' => '17:00',
+            'is_active' => true,
+        ]);
+        $this->authenticateDashboardActor($branch);
+
+        $this->postJson('/api/v1/dashboard/bookings/walk-in', [
+            'branch_id' => $branch->id,
+            'chair_id' => $chair->id,
+            'barber_id' => $barber->id,
+            'customer_name' => 'Walk In',
+            'customer_email' => 'walk-in-schedule@example.test',
+            'service_ids' => [$service->id],
+            'time_slot' => $target->toIso8601String(),
+        ])->assertUnprocessable()->assertJsonPath('code', 'booking_outside_schedule');
+
+        $this->assertDatabaseCount('bookings', 0);
     });
 });
