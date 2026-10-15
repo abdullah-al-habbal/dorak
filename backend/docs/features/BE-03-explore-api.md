@@ -126,7 +126,7 @@
 | `universe` | string | — | men/women (branches only) |
 | `page` | int | 1 | Pagination |
 | `catalog_item_ids[]` | uuid[] | — | Filter by catalog items |
-| `available_now` | bool | — | Available chairs in current slot |
+| `available_now` | bool | — | Excludes a barber or branch chair with a pending, confirmed, or in-progress booking overlapping the next 15 minutes |
 | `price_range[min]` | float | — | Min service price |
 | `price_range[max]` | float | — | Max service price |
 | `rating_min` | float | — | Min average rating |

@@ -23,6 +23,12 @@
 ## Response Schemas
 
 ### GET /api/v1/branches/{branch}/floor-plan → 200
+Query parameters: `starts_at` (required ISO-8601 UTC timestamp, such as
+`2026-07-25T14:00:00Z`) and `duration` (minutes). Booking create, walk-in,
+reschedule, and rebook `time_slot` values use the same UTC timestamp contract.
+Floor-plan and booking checks share half-open interval overlap semantics and
+consider pending, confirmed, and in-progress bookings as blocking.
+
 ```json
 {
   "data": {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Branch\Eloquent\Resolvers\Shared;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\CQRS\Query\Shared\GetFloorPlanQuery;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
@@ -19,10 +19,9 @@ final class GetFloorPlanEloquentResolver
         $branch = BranchModel::discoverable()->findOrFail($availability->branchId);
         $branch->load([
             'chairs.barber',
-            'chairs.bookings' => fn (HasMany $query) => $query
-                ->whereIn('status', BookingStatus::availabilityBlockingValues())
-                ->where('time_slot', '<', $endsAt)
-                ->where('ends_at', '>', $availability->startsAt),
+            'chairs.bookings' => function (HasMany $query) use ($availability, $endsAt): void {
+                BookingAvailability::apply($query->getQuery(), $availability->startsAt, $endsAt);
+            },
         ]);
 
         $branch->chairs->each(function (ChairModel $chair): void {

@@ -44,7 +44,7 @@ it('rejects booking a chair in an inactive branch with 422', function (): void {
 
     $this->withToken($token)->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'time_slot' => now()->addDay()->format('Y-m-d H:i:s'),
+        'time_slot' => now()->addDay()->toIso8601ZuluString(),
         'service_ids' => [$service->id],
     ])->assertUnprocessable()->assertJsonPath('code', 'ENTITY_NOT_DISCOVERABLE');
 
@@ -54,6 +54,9 @@ it('rejects booking a chair in an inactive branch with 422', function (): void {
 it('hides an inactive branch floor plan', function (): void {
     $branch = BranchModel::factory()->create(['status' => 'disabled']);
 
-    $this->getJson("/api/v1/branches/{$branch->id}/floor-plan?date=".now()->addDay()->toDateString().'&time_slot=15:15&duration=30')
+    $this->getJson('/api/v1/branches/'.$branch->id.'/floor-plan?'.http_build_query([
+        'starts_at' => now()->addDay()->toIso8601ZuluString(),
+        'duration' => 30,
+    ]))
         ->assertNotFound();
 });

@@ -17,7 +17,7 @@ beforeEach(function () {
 
 it('creates a booking with chair_id', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $response = $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -40,7 +40,7 @@ it('rejects payment gateway payloads for in-person bookings', function () {
 
     $response = $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'time_slot' => Carbon::now()->addDay()->format('Y-m-d H:i:s'),
+        'time_slot' => Carbon::now()->addDay()->toIso8601ZuluString(),
         'service_ids' => [$this->service->id],
         'payment_intent' => 'pi_not_supported',
     ]);
@@ -51,7 +51,7 @@ it('rejects payment gateway payloads for in-person bookings', function () {
 
 it('rejects double booking on same chair and time_slot', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -71,7 +71,7 @@ it('rejects double booking on same chair and time_slot', function () {
 it('rejects booking on unavailable chair', function () {
     $chair = ChairModel::factory()->create();
     $chair->update(['status' => 'maintenance']);
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $response = $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -84,7 +84,7 @@ it('rejects booking on unavailable chair', function () {
 
 it('rejects booking with past time_slot', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->subDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->subDay()->toIso8601ZuluString();
 
     $response = $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -96,7 +96,7 @@ it('rejects booking with past time_slot', function () {
 });
 
 it('creates at-home booking without chair_id', function () {
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $response = $this->postJson('/api/v1/bookings', [
         'at_home_location' => [
@@ -116,7 +116,7 @@ it('creates at-home booking without chair_id', function () {
 
 it('rejects booking with both chair_id and at_home_location', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $response = $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -136,7 +136,7 @@ it('rejects booking with both chair_id and at_home_location', function () {
 
 it('ensures only one booking per chair+slot in database after conflict', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -158,7 +158,7 @@ it('ensures only one booking per chair+slot in database after conflict', functio
 
 it('allows booking after a cancelled booking on same chair+slot', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -181,7 +181,7 @@ it('allows booking after a cancelled booking on same chair+slot', function () {
 it('allows different chairs for same time_slot', function () {
     $chairA = ChairModel::factory()->create();
     $chairB = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chairA->id,
@@ -195,12 +195,12 @@ it('allows different chairs for same time_slot', function () {
         'service_ids' => [$this->service->id],
     ])->assertCreated();
 
-    expect(BookingModel::where('time_slot', $timeSlot)->count())->toBe(2);
+    expect(BookingModel::where('time_slot', Carbon::parse($timeSlot)->toDateTimeString())->count())->toBe(2);
 });
 
 it('prevents race condition: concurrent booking for same chair+slot', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     // Simulate concurrent request: insert a booking directly (bypassing check)
     // then verify API rejects a second one
@@ -224,7 +224,7 @@ it('requires authentication', function () {
 
     $response = $this->postJson('/api/v1/bookings', [
         'chair_id' => 'some-id',
-        'time_slot' => Carbon::now()->addDay()->format('Y-m-d H:i:s'),
+        'time_slot' => Carbon::now()->addDay()->toIso8601ZuluString(),
         'service_ids' => [$this->service->id],
     ]);
 
@@ -238,7 +238,7 @@ it('derives the booking end time from the selected service durations', function 
 
     $response = $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'time_slot' => $timeSlot->format('Y-m-d H:i:s'),
+        'time_slot' => $timeSlot->toIso8601ZuluString(),
         'service_ids' => [$service->id],
     ]);
 
@@ -253,13 +253,13 @@ it('rejects an overlapping booking for the same chair', function () {
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'time_slot' => $timeSlot->format('Y-m-d H:i:s'),
+        'time_slot' => $timeSlot->toIso8601ZuluString(),
         'service_ids' => [$service->id],
     ])->assertCreated();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'time_slot' => $timeSlot->copy()->addMinutes(30)->format('Y-m-d H:i:s'),
+        'time_slot' => $timeSlot->copy()->addMinutes(30)->toIso8601ZuluString(),
         'service_ids' => [$this->service->id],
     ])->assertStatus(409);
 });
@@ -274,14 +274,14 @@ it('rejects an overlapping booking for the same barber on another chair', functi
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chairA->id,
         'barber_id' => $barber->id,
-        'time_slot' => $timeSlot->format('Y-m-d H:i:s'),
+        'time_slot' => $timeSlot->toIso8601ZuluString(),
         'service_ids' => [$service->id],
     ])->assertCreated();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chairB->id,
         'barber_id' => $barber->id,
-        'time_slot' => $timeSlot->copy()->addMinutes(30)->format('Y-m-d H:i:s'),
+        'time_slot' => $timeSlot->copy()->addMinutes(30)->toIso8601ZuluString(),
         'service_ids' => [$this->service->id],
     ])->assertStatus(409);
 });
@@ -293,7 +293,7 @@ it('requires a full address for at-home bookings', function () {
             'longitude' => 36.3,
             'street' => 'Al Hamra Street',
         ],
-        'time_slot' => Carbon::tomorrow()->setTime(10, 0)->format('Y-m-d H:i:s'),
+        'time_slot' => Carbon::tomorrow()->setTime(10, 0)->toIso8601ZuluString(),
         'service_ids' => [$this->service->id],
     ]);
 

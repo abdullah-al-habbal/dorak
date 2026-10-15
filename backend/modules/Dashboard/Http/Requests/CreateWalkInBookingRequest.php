@@ -11,6 +11,7 @@ use Modules\Dashboard\CQRS\Command\CreateWalkInBookingCommand;
 
 final class CreateWalkInBookingRequest extends BaseApiFormRequest
 {
+    /** @return array<string, mixed> */
     public function rules(): array
     {
         return [
@@ -23,22 +24,26 @@ final class CreateWalkInBookingRequest extends BaseApiFormRequest
             'customer_phone' => ['nullable', 'string', 'max:30'],
             'service_ids' => ['required', 'array', 'min:1'],
             'service_ids.*' => ['uuid', 'distinct', Rule::exists('offered_services', 'id')],
-            'time_slot' => ['required', 'date', 'after:now'],
+            'time_slot' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
         ];
     }
 
     public function toCommand(): CreateWalkInBookingCommand
     {
+        $barberId = $this->validated('barber_id');
+        $clientId = $this->validated('client_id');
+        $customerPhone = $this->validated('customer_phone');
+
         return new CreateWalkInBookingCommand(
-            branchId: $this->validated('branch_id'),
-            chairId: $this->validated('chair_id'),
-            barberId: $this->validated('barber_id'),
-            clientId: $this->validated('client_id'),
-            customerName: $this->validated('customer_name'),
-            customerEmail: $this->validated('customer_email'),
-            customerPhone: $this->validated('customer_phone'),
-            timeSlot: Carbon::parse($this->validated('time_slot')),
-            serviceIds: $this->validated('service_ids'),
+            branchId: $this->string('branch_id')->toString(),
+            chairId: $this->string('chair_id')->toString(),
+            barberId: is_string($barberId) ? $barberId : null,
+            clientId: is_string($clientId) ? $clientId : null,
+            customerName: $this->string('customer_name')->toString(),
+            customerEmail: $this->string('customer_email')->toString(),
+            customerPhone: is_string($customerPhone) ? $customerPhone : null,
+            timeSlot: Carbon::parse($this->string('time_slot')->toString())->utc(),
+            serviceIds: $this->array('service_ids'),
         );
     }
 }

@@ -99,7 +99,7 @@ it('rejects a banned client booking without creating a booking row', function ()
             'building' => '12',
             'unit' => '4B',
         ],
-        'time_slot' => now()->addDay()->format('Y-m-d H:i:s'),
+        'time_slot' => now()->addDay()->toIso8601ZuluString(),
         'service_ids' => [],
     ])->assertForbidden()->assertJsonPath('code', 'ACCOUNT_BANNED');
 
@@ -116,7 +116,7 @@ it('rejects a chair booking when its assigned barber is banned', function (): vo
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'time_slot' => now()->addDay()->format('Y-m-d H:i:s'),
+        'time_slot' => now()->addDay()->toIso8601ZuluString(),
         'service_ids' => [$service->id],
     ])->assertForbidden()->assertJsonPath('code', 'ACCOUNT_BANNED');
 

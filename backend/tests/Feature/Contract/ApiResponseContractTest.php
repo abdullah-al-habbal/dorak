@@ -782,7 +782,7 @@ describe('Booking API', function () {
                 'serviceable_id' => $chair->branch_id,
                 'serviceable_type' => BranchModel::class,
             ]);
-            $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+            $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
             $response = $this->postJson('/api/v1/bookings', [
                 'chair_id' => $chair->id,

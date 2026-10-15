@@ -78,10 +78,7 @@ class DioBookingRepository implements BookingRepository {
     if (hasAtHomeLocation && chairId != null) {
       throw ArgumentError('At-home bookings cannot include a chair.');
     }
-    final slot = timeSlot.toUtc();
-    String two(int value) => value.toString().padLeft(2, '0');
-    final formatted =
-        '${slot.year}-${two(slot.month)}-${two(slot.day)} ${two(slot.hour)}:${two(slot.minute)}:${two(slot.second)}';
+    final formatted = timeSlot.toUtc().toIso8601String();
     return _apiClient.post<BookingDto>(
       BookingEndpoints.bookings,
       data: {

@@ -123,7 +123,7 @@ void main() {
       expect(captured.data, {
         'chair_id': 'chair-1',
         'barber_id': 'barber-1',
-        'time_slot': '2026-09-10 14:30:00',
+        'time_slot': '2026-09-10T14:30:00.000Z',
         'service_ids': ['service-1'],
       });
       expect(created.id, 'booking-1');

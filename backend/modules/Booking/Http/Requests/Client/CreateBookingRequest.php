@@ -15,7 +15,7 @@ final class CreateBookingRequest extends BaseApiFormRequest
         return [
             'chair_id' => ['nullable', 'string', 'exists:chairs,id', 'required_without:at_home_location', 'prohibits:at_home_location'],
             'barber_id' => ['nullable', 'string', 'exists:barbers,id'],
-            'time_slot' => ['required', 'date_format:Y-m-d H:i:s', 'after:now'],
+            'time_slot' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
             'service_ids' => ['required', 'array', 'min:1'],
             'service_ids.*' => ['string', 'distinct', 'exists:offered_services,id'],
             'at_home_location' => ['nullable', 'array', 'required_without:chair_id', 'prohibits:chair_id'],
@@ -37,7 +37,7 @@ final class CreateBookingRequest extends BaseApiFormRequest
             chairId: $this->validated('chair_id'),
             barberId: $this->validated('barber_id'),
             clientId: $this->user()->id,
-            timeSlot: Carbon::parse($this->validated('time_slot')),
+            timeSlot: Carbon::parse($this->validated('time_slot'))->utc(),
             serviceIds: $this->validated('service_ids'),
             atHomeLocation: $this->validated('at_home_location'),
         );

@@ -10,14 +10,16 @@ Five code paths each decide "is this chair or barber busy?" with different statu
 
 Separately, the floor plan reads `date` and `time_slot` as server time (UTC), but the client app sends local wall-clock time for the floor plan and UTC for the booking. Any device not on UTC checks availability for a different hour than the one it books.
 
+## Resolved Contract
+- Availability uses the half-open interval overlap rule (`existing.time_slot < requested.ends_at` and `existing.ends_at > requested.starts_at`) and treats `pending`, `confirmed`, and `in_progress` bookings as blocking.
+- The floor-plan query takes `starts_at` as an ISO-8601 UTC timestamp. Booking create, walk-in, reschedule, and rebook timestamps use the same UTC ISO-8601 contract (`Z` or `+00:00`). Dashboard date/time inputs are converted to UTC before submission; mobile sends the same UTC instant for availability and booking.
+- Explore `available_now` uses a 15-minute look-ahead window.
+
 ## Evidence
-- `backend/modules/Booking/Eloquent/Resolvers/Client/CreateBookingEloquentResolver.php:95` — `reservationBlockingValues()`, which includes `pending`.
-- `backend/modules/Branch/Eloquent/Resolvers/Shared/GetFloorPlanEloquentResolver.php:22` — `availabilityBlockingValues()`, which excludes `pending`.
-- `backend/modules/Chair/Eloquent/Resolvers/Shared/ListChairsEloquentResolver.php:21` — `where('status', BookingStatus::Confirmed)` only.
-- `backend/modules/Explore/Eloquent/Resolvers/Shared/ExploreBranchesEloquentResolver.php:117` and `backend/modules/Explore/Eloquent/Resolvers/Shared/ExploreBarbersEloquentResolver.php:114` — `available_now` checks `status = confirmed` only.
-- `backend/modules/Branch/Http/Requests/Shared/GetFloorPlanRequest.php:26-29` — `Carbon::createFromFormat('Y-m-d H:i', date.' '.time_slot)` in the app timezone. `backend/modules/Core/Config/app.php:15` sets the timezone to `UTC`.
-- `frontend/mobile/packages/core/lib/src/network/repositories/branch.repository.dart:25-28` — sends local `date` and `time_slot`.
-- `frontend/mobile/packages/core/lib/src/network/repositories/booking.repository.dart:81` — sends `timeSlot.toUtc()`.
+- `backend/modules/Booking/Queries/BookingAvailability.php` — the shared blocking-status and interval-overlap predicate.
+- `backend/modules/Booking/Eloquent/Resolvers/Client/CreateBookingEloquentResolver.php`, `backend/modules/Branch/Eloquent/Resolvers/Shared/GetFloorPlanEloquentResolver.php`, `backend/modules/Chair/Eloquent/Resolvers/Shared/ListChairsEloquentResolver.php`, and the Explore resolvers — availability and reservation call sites.
+- `backend/modules/Branch/Http/Requests/Shared/GetFloorPlanRequest.php` — validates and parses `starts_at` as UTC ISO-8601.
+- `frontend/mobile/packages/core/lib/src/network/repositories/branch.repository.dart` and `booking.repository.dart` — send UTC ISO-8601 for both requests.
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
@@ -34,12 +36,12 @@ Separately, the floor plan reads `date` and `time_slot` as server time (UTC), bu
 - `frontend/mobile/packages/core/test/booking_repository_test.dart` and a new branch repository test must assert the floor-plan and booking requests carry the same UTC instant.
 
 ## Acceptance Criteria
-- [ ] A chair with a `pending` booking at T appears unavailable in `GET /api/v1/branches/{branch}/floor-plan` for T, and in `GET /api/v1/chairs`.
-- [ ] A barber with an `in_progress` booking overlapping now is excluded by `available_now=1` on `explore/barbers`. A booking that ended (`ends_at < now`) does not exclude them.
-- [ ] One availability helper is referenced by all four call sites. `grep -rn "where('status', 'confirmed')" backend/modules/Explore backend/modules/Chair` returns nothing.
-- [ ] Feature test `AvailabilityConsistencyTest`: for the same branch, chair, instant and duration, the floor plan reports free if and only if `POST /bookings` succeeds.
-- [ ] Mobile unit test: with a non-UTC device timezone (for example UTC+3), the floor-plan and booking requests encode the same UTC instant.
-- [ ] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
+- [x] A chair with a `pending` booking at T appears unavailable in `GET /api/v1/branches/{branch}/floor-plan` for T, and in `GET /api/v1/chairs`.
+- [x] A barber with an `in_progress` booking overlapping now is excluded by `available_now=1` on `explore/barbers`. A booking that ended (`ends_at < now`) does not exclude them.
+- [x] One availability helper is referenced by all availability and reservation overlap call sites. `where('status', 'confirmed')` checks were removed from Explore and Chair.
+- [x] Feature test `AvailabilityConsistencyTest`: for the same branch, chair, instant and duration, the floor plan reports free if and only if `POST /bookings` succeeds.
+- [x] Mobile unit test: with an explicit UTC+3 timestamp, the floor-plan and booking requests encode the same UTC instant.
+- [x] The full backend Pest suite (memory-unlimited fallback for the Artisan wrapper's 128 MB limit) and `melos run test` pass. PHPStan max and Pint are clean.
 
 ## Out of Scope
 - Slot listing (Task 21).

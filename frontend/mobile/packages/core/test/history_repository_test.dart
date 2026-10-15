@@ -101,7 +101,7 @@ void main() {
       expect(captured.queryParameters['per_page'], 30);
     });
 
-    test('rebookFromHistory posts the slot in server format', () async {
+    test('rebookFromHistory posts the slot as a UTC ISO timestamp', () async {
       late RequestOptions captured;
       final fake = fakeDio(
         handler: (options) {
@@ -114,7 +114,7 @@ void main() {
               code: 'CREATED',
               data: {
                 'id': 'booking-2',
-                'time_slot': '2026-09-20 09:00:00',
+                'time_slot': '2026-09-20T09:00:00.000Z',
                 'status': 'pending',
                 'barber_id': 'barber-1',
               },
@@ -131,7 +131,7 @@ void main() {
 
       expect(captured.path, '/client/history/history-1/rebook');
       expect(captured.method, 'POST');
-      expect(captured.data, {'time_slot': '2026-09-20 09:00:00'});
+      expect(captured.data, {'time_slot': '2026-09-20T09:00:00.000Z'});
       expect(created.id, 'booking-2');
       expect(created.status, 'pending');
       expect(created.barber?.name, isNull);

@@ -13,8 +13,7 @@ final class GetFloorPlanRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
-            'time_slot' => ['required', 'date_format:H:i'],
+            'starts_at' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after_or_equal:now'],
             'duration' => ['required', 'integer', 'min:1', 'max:480'],
         ];
     }
@@ -23,11 +22,8 @@ final class GetFloorPlanRequest extends BaseApiFormRequest
     {
         return new GetFloorPlanQuery(
             branchId: $branchId,
-            startsAt: Carbon::createFromFormat(
-                'Y-m-d H:i',
-                $this->validated('date').' '.$this->validated('time_slot'),
-            ),
-            durationMinutes: (int) $this->validated('duration'),
+            startsAt: Carbon::parse($this->string('starts_at')->toString())->utc(),
+            durationMinutes: $this->integer('duration'),
         );
     }
 }

@@ -7,6 +7,8 @@ namespace Modules\Explore\Eloquent\Resolvers\Shared;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Models\BranchModel;
 use Modules\ClientRecommendation\Models\ClientPreferenceVectorModel;
 use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
@@ -126,11 +128,13 @@ final class ExploreBranchesEloquentResolver
         }
 
         if ($payload->availableNow !== null && $payload->availableNow) {
-            $query->whereHas('chairs', fn ($q) => $q->whereDoesntHave('bookings', fn ($b) => $b->where('status', 'confirmed')
-                ->where('time_slot', '<=', now())
-                ->where('time_slot', '>', now()->subHour())
-            )
-            );
+            $startsAt = now();
+            $endsAt = $startsAt->copy()->addMinutes(BookingModel::MINIMUM_SERVICE_DURATION_MINUTES);
+            $query->whereHas('chairs', function ($q) use ($startsAt, $endsAt): void {
+                $q->whereDoesntHave('bookings', function ($bookingQuery) use ($startsAt, $endsAt): void {
+                    BookingAvailability::apply($bookingQuery, $startsAt, $endsAt);
+                });
+            });
         }
 
         if ($payload->priceRangeMin !== null || $payload->priceRangeMax !== null) {

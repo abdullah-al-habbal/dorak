@@ -29,14 +29,8 @@ enum BookingStatus: string
     }
 
     /** @return list<string> */
-    public static function availabilityBlockingValues(): array
-    {
-        return [self::Confirmed->value, self::InProgress->value];
-    }
-
-    /** @return list<string> */
     public static function reservationBlockingValues(): array
     {
-        return [self::Pending->value, ...self::availabilityBlockingValues()];
+        return [self::Pending->value, self::Confirmed->value, self::InProgress->value];
     }
 }

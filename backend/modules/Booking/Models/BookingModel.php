@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Modules\Booking\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -13,7 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Carbon;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
@@ -35,6 +35,8 @@ use Modules\Review\Models\ReviewModel;
 #[Table('bookings')]
 class BookingModel extends Model
 {
+    public const MINIMUM_SERVICE_DURATION_MINUTES = 15;
+
     use HasFactory;
     use HasUuids;
 

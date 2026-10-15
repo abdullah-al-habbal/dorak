@@ -9,6 +9,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Booking\CQRS\Command\Client\CancelBookingCommand;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\BookingAvailability;
 use Modules\Booking\ValuesObjects\CancelBookingResult;
 use Modules\Chair\Models\ChairModel;
 
@@ -138,14 +139,11 @@ final class BookingLifecycleEloquentResolver
                 continue;
             }
 
-            $conflict = BookingModel::query()
+            $query = BookingModel::query()
                 ->where($column, $resourceId)
-                ->whereKeyNot($booking->getKey())
-                ->whereIn('status', BookingStatus::availabilityBlockingValues())
-                ->where('time_slot', '<', $booking->ends_at)
-                ->where('ends_at', '>', $booking->time_slot)
-                ->lockForUpdate()
-                ->exists();
+                ->whereKeyNot($booking->getKey());
+            BookingAvailability::apply($query, $booking->time_slot, $booking->ends_at);
+            $conflict = $query->lockForUpdate()->exists();
 
             if ($conflict) {
                 throw new DoubleBookingException;

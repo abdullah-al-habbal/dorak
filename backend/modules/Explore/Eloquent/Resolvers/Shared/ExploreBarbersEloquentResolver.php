@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\BookingAvailability;
 use Modules\ClientRecommendation\Models\ClientPreferenceVectorModel;
 use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
@@ -123,10 +125,11 @@ final class ExploreBarbersEloquentResolver
         }
 
         if ($payload->availableNow !== null && $payload->availableNow) {
-            $query->whereDoesntHave('bookings', fn ($b) => $b->where('status', 'confirmed')
-                ->where('time_slot', '<=', now())
-                ->where('time_slot', '>', now()->subHour())
-            );
+            $startsAt = now();
+            $endsAt = $startsAt->copy()->addMinutes(BookingModel::MINIMUM_SERVICE_DURATION_MINUTES);
+            $query->whereDoesntHave('bookings', function ($bookingQuery) use ($startsAt, $endsAt): void {
+                BookingAvailability::apply($bookingQuery, $startsAt, $endsAt);
+            });
         }
 
         if ($payload->priceRangeMin !== null || $payload->priceRangeMax !== null) {

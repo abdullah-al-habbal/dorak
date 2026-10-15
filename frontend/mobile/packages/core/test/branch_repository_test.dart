@@ -40,8 +40,9 @@ void main() {
       );
 
       expect(captured.path, '/branches/branch-1/floor-plan');
-      expect(captured.queryParameters['date'], '2026-10-01');
-      expect(captured.queryParameters['time_slot'], '15:00');
+      expect(captured.queryParameters['starts_at'], '2026-10-01T12:00:00.000Z');
+      expect(captured.queryParameters.containsKey('date'), isFalse);
+      expect(captured.queryParameters.containsKey('time_slot'), isFalse);
       expect(captured.queryParameters['duration'], 30);
       expect(plan.branchName, 'Branch 1');
       expect(plan.chairs, hasLength(2));
@@ -50,5 +51,71 @@ void main() {
       expect(plan.chairs.last.status, 'occupied');
       expect(fake.callCount, 1);
     });
+
+    test(
+      'floor plan and booking requests encode the same UTC instant',
+      () async {
+        late RequestOptions floorPlanRequest;
+        late RequestOptions bookingRequest;
+        final timeSlot = DateTime.parse('2026-10-01T18:00:00+03:00');
+        final branchApi = clientWith(
+          fakeDio(
+            handler: (options) {
+              floorPlanRequest = options;
+              return jsonResponse(
+                options,
+                data: successEnvelope(
+                  data: {
+                    'branch_id': 'branch-1',
+                    'branch_name': 'Branch 1',
+                    'chairs': [],
+                  },
+                ),
+              );
+            },
+          ),
+        );
+        final bookingApi = clientWith(
+          fakeDio(
+            handler: (options) {
+              bookingRequest = options;
+              return jsonResponse(
+                options,
+                statusCode: 201,
+                data: successEnvelope(
+                  statusCode: 201,
+                  data: {
+                    'id': 'booking-1',
+                    'time_slot': '2026-10-01T15:00:00.000Z',
+                    'ends_at': '2026-10-01T15:30:00.000Z',
+                    'status': 'pending',
+                    'payment_method': 'pay_at_salon',
+                    'payment_status': 'unpaid_in_person',
+                    'services': [],
+                    'created_at': '2026-09-30T10:00:00.000Z',
+                  },
+                ),
+              );
+            },
+          ),
+        );
+
+        await DioBranchRepository(
+          branchApi,
+        ).getFloorPlan('branch-1', timeSlot: timeSlot, durationMinutes: 30);
+        await DioBookingRepository(
+          bookingApi,
+        ).createBooking(chairId: 'chair-1', timeSlot: timeSlot);
+
+        expect(
+          floorPlanRequest.queryParameters['starts_at'],
+          bookingRequest.data['time_slot'],
+        );
+        expect(
+          floorPlanRequest.queryParameters['starts_at'],
+          '2026-10-01T15:00:00.000Z',
+        );
+      },
+    );
   });
 }

@@ -19,6 +19,7 @@ use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
@@ -148,13 +149,9 @@ final class CreateBookingEloquentResolver
 
     private function ensureNoOverlap(string $column, string $resourceId, Carbon $startsAt, Carbon $endsAt): void
     {
-        $conflict = BookingModel::query()
-            ->where($column, $resourceId)
-            ->whereIn('status', BookingStatus::reservationBlockingValues())
-            ->where('time_slot', '<', $endsAt)
-            ->where('ends_at', '>', $startsAt)
-            ->lockForUpdate()
-            ->exists();
+        $query = BookingModel::query()->where($column, $resourceId);
+        BookingAvailability::apply($query, $startsAt, $endsAt);
+        $conflict = $query->lockForUpdate()->exists();
 
         if ($conflict) {
             throw new DoubleBookingException;

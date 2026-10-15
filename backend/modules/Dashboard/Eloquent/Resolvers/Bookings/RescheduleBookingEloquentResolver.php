@@ -10,6 +10,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\BookingAvailability;
 use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 
@@ -33,7 +34,9 @@ final class RescheduleBookingEloquentResolver
                 if ($resourceId === null) {
                     continue;
                 }
-                $collision = BookingModel::query()->where($column, $resourceId)->whereKeyNot($booking->id)->whereIn('status', BookingStatus::reservationBlockingValues())->where('time_slot', '<', $endsAt)->where('ends_at', '>', $timeSlot)->lockForUpdate()->exists();
+                $query = BookingModel::query()->where($column, $resourceId)->whereKeyNot($booking->id);
+                BookingAvailability::apply($query, $timeSlot, $endsAt);
+                $collision = $query->lockForUpdate()->exists();
                 if ($collision) {
                     throw new ChairHasActiveBookingsException(__('dashboard::messages.booking_time_overlap'));
                 }

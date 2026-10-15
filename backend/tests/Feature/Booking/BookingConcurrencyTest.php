@@ -16,7 +16,7 @@ beforeEach(function () {
 
 it('rejects second booking when same chair+slot already confirmed', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -40,7 +40,7 @@ it('rejects second booking when same chair+slot already confirmed', function () 
 it('allows bookings on different chairs for same time_slot', function () {
     $chairA = ChairModel::factory()->create();
     $chairB = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chairA->id,
@@ -54,12 +54,12 @@ it('allows bookings on different chairs for same time_slot', function () {
         'service_ids' => [$this->service->id],
     ])->assertCreated();
 
-    expect(BookingModel::where('time_slot', $timeSlot)->count())->toBe(2);
+    expect(BookingModel::where('time_slot', Carbon::parse($timeSlot)->toDateTimeString())->count())->toBe(2);
 });
 
 it('handles race condition: direct DB insert then API attempt', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     BookingModel::create([
         'client_id' => $this->client->id,
@@ -80,7 +80,7 @@ it('handles race condition: direct DB insert then API attempt', function () {
 
 it('allows re-booking after cancellation on same chair+slot', function () {
     $chair = ChairModel::factory()->create();
-    $timeSlot = Carbon::now()->addDay()->format('Y-m-d H:i:s');
+    $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -98,7 +98,7 @@ it('allows re-booking after cancellation on same chair+slot', function () {
     ])->assertCreated();
 
     expect(BookingModel::where('chair_id', $chair->id)
-        ->where('time_slot', $timeSlot)
+        ->where('time_slot', Carbon::parse($timeSlot)->toDateTimeString())
         ->count()
     )->toBe(2);
 });

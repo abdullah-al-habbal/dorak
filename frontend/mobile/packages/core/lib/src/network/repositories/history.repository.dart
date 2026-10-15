@@ -34,10 +34,7 @@ class DioHistoryRepository implements HistoryRepository {
 
   @override
   Future<BookingDto> rebookFromHistory(String historyId, DateTime timeSlot) {
-    final slot = timeSlot.toUtc();
-    String two(int value) => value.toString().padLeft(2, '0');
-    final formatted =
-        '${slot.year}-${two(slot.month)}-${two(slot.day)} ${two(slot.hour)}:${two(slot.minute)}:${two(slot.second)}';
+    final formatted = timeSlot.toUtc().toIso8601String();
     return _apiClient.post<BookingDto>(
       HistoryEndpoints.rebookFromHistory.replaceFirst('{history}', historyId),
       data: {'time_slot': formatted},
