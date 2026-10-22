@@ -8,5 +8,7 @@ export interface IBranch {
   latitude: number | null;
   longitude: number | null;
   name: ILocalizedName;
+  ratingAvg: number | null;
+  ratingCount: number;
   status: "pending" | "enabled" | "disabled";
 }

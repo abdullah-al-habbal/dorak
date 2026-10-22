@@ -46,13 +46,13 @@ void main() {
             options,
             data: successEnvelope(
               data: {
-                'id': 12,
+                'id': '12',
                 'name': 'Central Branch',
                 'email': 'branch@example.com',
                 'status': 'active',
                 'latitude': 0,
                 'longitude': 0,
-                'brand_id': 2,
+                'brand_id': '2',
               },
             ),
           );

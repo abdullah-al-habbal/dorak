@@ -9,6 +9,7 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
+use Modules\Review\Services\SubjectRatingRefresher;
 
 /**
  * L4: a dispute holds a review for at most 48 hours. Disputes no admin decided
@@ -20,17 +21,24 @@ final class ReleaseExpiredReviewDisputesCommand extends Command
 {
     public const int WINDOW_HOURS = 48;
 
-    public function handle(): int
+    public function handle(SubjectRatingRefresher $ratings): int
     {
-        $released = ReviewModel::query()
+        $expired = ReviewModel::query()
             ->where('status', ReviewStatus::Disputed)
-            ->where('disputed_at', '<=', now()->subHours(self::WINDOW_HOURS))
-            ->update([
-                'status' => ReviewStatus::Published,
-                'resolved_at' => now(),
-                'resolved_by' => null,
-                'updated_at' => now(),
-            ]);
+            ->where('disputed_at', '<=', now()->subHours(self::WINDOW_HOURS));
+        $subjects = (clone $expired)->select(['subject_type', 'subject_id'])->distinct()->get();
+
+        $released = $expired->update([
+            'status' => ReviewStatus::Published,
+            'resolved_at' => now(),
+            'resolved_by' => null,
+            'updated_at' => now(),
+        ]);
+
+        // The bulk update bypasses the model observer, so refresh the ratings here.
+        foreach ($subjects as $subject) {
+            $ratings->refresh((string) $subject->getAttribute('subject_type'), (string) $subject->getAttribute('subject_id'));
+        }
 
         $this->info(trans('review::messages.disputes_released', ['count' => $released], 'en'));
 

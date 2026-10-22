@@ -5,6 +5,7 @@ import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 
 import 'package:client_app/src/core/formatting/locale_formatters.entity.dart';
+import 'package:client_app/src/core/formatting/rating_label.entity.dart';
 import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.event.dart';
 import 'package:client_app/src/features/booking/branch_detail.state.dart';
@@ -37,6 +38,12 @@ class BranchDetailBody extends StatelessWidget {
           detail: detail,
           colors: colors,
           chairsLabel: l10n.branchChairsCount(detail.chairsCount),
+          ratingLabel: RatingLabel.of(
+            l10n,
+            average: detail.ratingAvg,
+            count: detail.ratingCount,
+            localeCode: Localizations.localeOf(context).languageCode,
+          ),
           onFavorite: onFavorite,
         ),
         const SizedBox(height: DorakDimensions.spacingLarge),
@@ -286,11 +293,13 @@ class _BranchHeader extends StatelessWidget {
     required this.detail,
     required this.colors,
     required this.chairsLabel,
+    required this.ratingLabel,
     required this.onFavorite,
   });
   final BranchDetailDto detail;
   final DorakColors colors;
   final String chairsLabel;
+  final String ratingLabel;
   final void Function(String, String) onFavorite;
   @override
   Widget build(BuildContext context) => Column(
@@ -308,6 +317,11 @@ class _BranchHeader extends StatelessWidget {
           icon: const Icon(Icons.favorite_border),
           onPressed: () => onFavorite(detail.id.toString(), 'branch'),
         ),
+      ),
+      const SizedBox(height: 4),
+      Text(
+        ratingLabel,
+        style: DorakTypography.bodyMd.copyWith(color: colors.primary),
       ),
       const SizedBox(height: 4),
       Text(

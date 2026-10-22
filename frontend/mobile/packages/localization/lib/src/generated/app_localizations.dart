@@ -860,6 +860,18 @@ abstract class AppLocalizations {
   /// **'Ranked by distance'**
   String get discoverRankedByDistance;
 
+  /// Average rating and review count of a branch or barber
+  ///
+  /// In en, this message translates to:
+  /// **'★ {rating} ({count, plural, =1{1 review} other{{count} reviews}})'**
+  String ratingSummary(String rating, int count);
+
+  /// Shown instead of a rating when a branch or barber has no published reviews
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get ratingNoReviews;
+
   /// Distance in kilometres shown on a result card
   ///
   /// In en, this message translates to:

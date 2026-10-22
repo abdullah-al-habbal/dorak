@@ -494,7 +494,7 @@ describe('Explore API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             if (count($data) > 0) {
-                expect($data[0])->toHaveKeys(['id', 'name', 'email', 'status', 'latitude', 'longitude', 'brand_id', 'distance', 'compatibility_score', 'rank', 'created_at']);
+                expect($data[0])->toHaveKeys(['id', 'name', 'email', 'status', 'latitude', 'longitude', 'brand_id', 'rating_avg', 'rating_count', 'distance', 'compatibility_score', 'rank', 'created_at']);
             }
         });
 
@@ -521,7 +521,7 @@ describe('Explore API', function () {
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'name', 'chairs_count', 'barbers', 'services', 'created_at']);
+            expect($data)->toHaveKeys(['id', 'name', 'rating_avg', 'rating_count', 'chairs_count', 'barbers', 'services', 'created_at']);
             expect($data['barbers'])->toBeArray();
             expect($data['services'])->toBeArray();
         });

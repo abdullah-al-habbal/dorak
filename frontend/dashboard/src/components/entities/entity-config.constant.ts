@@ -13,6 +13,14 @@ export const ENTITY_CONFIGS = {
       { id: "name", label: "name", value: (item: IBranch) => item.name.en },
       { id: "email", label: "email", value: (item: IBranch) => item.email },
       { id: "status", label: "status", value: (item: IBranch) => item.status },
+      {
+        id: "rating",
+        label: "rating",
+        value: (item: IBranch) =>
+          item.ratingAvg === null
+            ? "—"
+            : `★ ${item.ratingAvg} (${item.ratingCount})`,
+      },
     ],
   },
   chairs: {

@@ -92,13 +92,13 @@ void main() {
         cache.entries[key] = FeedCacheEntry(
           items: const [
             {
-              'id': 9,
+              'id': '9',
               'name': 'Cached Branch',
               'email': 'cached@example.com',
               'status': 'approved',
               'latitude': 24.7136,
               'longitude': 46.6753,
-              'brand_id': 7,
+              'brand_id': '7',
             },
           ],
           meta: const {
@@ -134,13 +134,13 @@ void main() {
         cache.entries[key] = FeedCacheEntry(
           items: const [
             {
-              'id': 9,
+              'id': '9',
               'name': 'Cached Branch',
               'email': 'cached@example.com',
               'status': 'approved',
               'latitude': 24.7136,
               'longitude': 46.6753,
-              'brand_id': 7,
+              'brand_id': '7',
             },
           ],
           meta: const {
@@ -177,13 +177,13 @@ void main() {
         cache.entries[key] = FeedCacheEntry(
           items: const [
             {
-              'id': 9,
+              'id': '9',
               'name': 'Cached Branch',
               'email': 'cached@example.com',
               'status': 'approved',
               'latitude': 24.7136,
               'longitude': 46.6753,
-              'brand_id': 7,
+              'brand_id': '7',
             },
           ],
           meta: const {
@@ -305,7 +305,7 @@ void main() {
       act: (bloc) => bloc.add(const DiscoveryLoadMoreRequested()),
       verify: (bloc) {
         expect(repository.lastPage, 2);
-        expect(bloc.state.page.items.map((branch) => branch.id), [1, 2]);
+        expect(bloc.state.page.items.map((branch) => branch.id), ['1', '2']);
       },
     );
 

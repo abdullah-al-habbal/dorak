@@ -536,6 +536,16 @@
   "@discoverRankedByDistance": {
     "description": "Caption confirming results are ordered by distance"
   },
+  "ratingSummary": "★ {rating} ({count, plural, =1{1 review} other{{count} reviews}})",
+  "@ratingSummary": {
+    "description": "Average rating and review count of a branch or barber",
+    "placeholders": {
+      "rating": {"type": "String"},
+      "count": {"type": "int"}
+    }
+  },
+  "ratingNoReviews": "No reviews yet",
+  "@ratingNoReviews": {"description": "Shown instead of a rating when a branch or barber has no published reviews"},
   "discoverDistanceLabel": "{km} km",
   "@discoverDistanceLabel": {
     "description": "Distance in kilometres shown on a result card",

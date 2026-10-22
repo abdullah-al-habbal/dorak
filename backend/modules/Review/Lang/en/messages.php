@@ -19,4 +19,5 @@ return [
     'branch_rates_client' => 'This booking belongs to a branch; the branch rates the client.',
     'dispute_not_reviewed_party' => 'Only the branch or barber this review is about can dispute it.',
     'disputes_released' => ':count expired review dispute(s) re-published.',
+    'ratings_refreshed' => 'Ratings recomputed for :count branches and barbers.',
 ];

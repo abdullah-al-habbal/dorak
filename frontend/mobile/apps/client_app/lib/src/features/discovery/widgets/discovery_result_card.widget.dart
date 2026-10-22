@@ -7,6 +7,7 @@ class DiscoveryResultCard extends StatelessWidget {
   const DiscoveryResultCard({
     super.key,
     required this.branch,
+    required this.ratingLabel,
     required this.rankBadge,
     required this.compatibilityBadge,
     required this.distanceLabel,
@@ -17,6 +18,7 @@ class DiscoveryResultCard extends StatelessWidget {
   });
 
   final BranchDto branch;
+  final String ratingLabel;
   final String? rankBadge;
   final String? compatibilityBadge;
   final String? distanceLabel;
@@ -30,6 +32,7 @@ class DiscoveryResultCard extends StatelessWidget {
     final colors = DorakColors.of(context);
     final viewDetails = onViewDetails;
     final badges = [
+      ratingLabel,
       rankBadge,
       compatibilityBadge,
       distanceLabel,

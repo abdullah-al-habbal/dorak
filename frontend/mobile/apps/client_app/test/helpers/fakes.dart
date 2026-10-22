@@ -361,13 +361,13 @@ Position testPosition({
 );
 
 BranchDto testBranch({int id = 1}) => BranchDto(
-  id: id,
+  id: '$id',
   name: 'Branch $id',
   email: 'branch$id@example.com',
   status: 'approved',
   latitude: 24.7136,
   longitude: 46.6753,
-  brandId: 7,
+  brandId: '7',
   distance: 3.5,
   compatibilityScore: 0.92,
   rank: id,
@@ -472,13 +472,13 @@ class FakeExploreRepository implements ExploreRepository {
 }
 
 BranchDetailDto testBranchDetail() => const BranchDetailDto(
-  id: 1,
+  id: '1',
   name: 'Branch 1',
   email: 'branch1@example.com',
   status: 'approved',
   latitude: 24.7136,
   longitude: 46.6753,
-  brandId: 7,
+  brandId: '7',
   chairsCount: 2,
   barbers: [BookingBarberDto(id: 'barber-1', name: 'Karim')],
   services: [BookingServiceDto(id: 'service-1', name: 'Fade', price: 80)],

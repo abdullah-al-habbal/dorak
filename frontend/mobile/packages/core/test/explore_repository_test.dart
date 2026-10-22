@@ -5,13 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'helpers/fake_dio.dart';
 
 Map<String, Object> branch({int id = 1}) => {
-  'id': id,
+  'id': '$id',
   'name': 'Branch $id',
   'email': 'branch$id@example.com',
   'status': 'approved',
   'latitude': 24.7136,
   'longitude': 46.6753,
-  'brand_id': 1,
+  'brand_id': '1',
   'distance': 3.5,
   'compatibility_score': 0.92,
   'rank': 1,
@@ -128,13 +128,13 @@ void main() {
             options,
             data: successEnvelope(
               data: {
-                'id': 1,
+                'id': '1',
                 'name': 'Branch 1',
                 'email': 'branch1@example.com',
                 'status': 'approved',
                 'latitude': 24.7136,
                 'longitude': 46.6753,
-                'brand_id': 7,
+                'brand_id': '7',
                 'chairs_count': 2,
                 'barbers': [
                   {'id': 'barber-1', 'name': 'Karim'},

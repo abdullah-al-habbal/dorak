@@ -6,7 +6,6 @@ namespace Modules\Explore\Eloquent\Resolvers\Shared;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 use Modules\Booking\Models\BookingModel;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Models\BranchModel;
@@ -15,7 +14,6 @@ use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 use Modules\ClientRecommendation\Services\ExploreRankingWeightsResolver;
 use Modules\Explore\CQRS\Query\Shared\ExploreBranchesQuery;
-use Modules\Review\Enums\ReviewStatus;
 
 final class ExploreBranchesEloquentResolver
 {
@@ -148,12 +146,8 @@ final class ExploreBranchesEloquentResolver
         }
 
         if ($payload->ratingMin !== null) {
-            // Only published reviews count: disputed and hidden ones are held back (L4).
-            $query->whereHas('reviews', fn ($q) => $q->where('status', ReviewStatus::Published)->select(DB::raw('avg(rating)'))
-                ->groupBy('subject_id')
-                // `? + 0` keeps the comparison numeric: SQLite binds the float as text.
-                ->havingRaw('avg(rating) >= (? + 0)', [$payload->ratingMin])
-            );
+            // Stored aggregate of published/resolved reviews (Task 42).
+            $query->where('rating_avg', '>=', $payload->ratingMin);
         }
 
         return $query;

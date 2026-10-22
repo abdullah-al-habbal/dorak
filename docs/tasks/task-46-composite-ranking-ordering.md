@@ -32,3 +32,5 @@ The recommendation PRD orders explore results by a composite score and then pagi
 
 ## Out of Scope
 - Recompute command, edges and vector storage — Task 62, Task 63.
+
+> Note (Task 42): use the stored `rating_avg`/`rating_count` columns on `branches` and `barbers` for the rating weight.

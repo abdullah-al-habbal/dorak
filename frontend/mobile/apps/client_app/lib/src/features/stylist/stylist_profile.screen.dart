@@ -5,6 +5,7 @@ import 'package:localization/localization.dart';
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 
+import 'package:client_app/src/core/formatting/rating_label.entity.dart';
 import 'package:client_app/src/core/formatting/locale_formatters.entity.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.event.dart';
@@ -126,6 +127,16 @@ class _StylistProfileBody extends StatelessWidget {
                 style: DorakTypography.headlineLgMobile.copyWith(
                   color: colors.onSurface,
                 ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                RatingLabel.of(
+                  l10n,
+                  average: profile.ratingAvg,
+                  count: profile.ratingCount,
+                  localeCode: l10n.localeName,
+                ),
+                style: DorakTypography.bodyMd.copyWith(color: colors.primary),
               ),
               const SizedBox(height: 4),
               Row(

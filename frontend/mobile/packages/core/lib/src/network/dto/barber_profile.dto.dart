@@ -11,6 +11,9 @@ class BarberProfileDto {
   final String email;
   final bool isFreelancer;
   final String status;
+  final double? ratingAvg;
+  @JsonKey(defaultValue: 0)
+  final int ratingCount;
   final bool workstationOnline;
   final double? travelRadius;
   final double latitude;
@@ -27,6 +30,8 @@ class BarberProfileDto {
     required this.email,
     this.isFreelancer = false,
     this.status = '',
+    this.ratingAvg,
+    this.ratingCount = 0,
     this.workstationOnline = false,
     this.travelRadius,
     this.latitude = 0,

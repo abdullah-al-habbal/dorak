@@ -6,6 +6,7 @@ import 'package:localization/localization.dart';
 
 import 'package:design_system/design_system.dart';
 
+import 'package:client_app/src/core/formatting/rating_label.entity.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.event.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
@@ -105,6 +106,12 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
               ),
               child: DiscoveryResultCard(
                 branch: branch,
+                ratingLabel: RatingLabel.of(
+                  l10n,
+                  average: branch.ratingAvg,
+                  count: branch.ratingCount,
+                  localeCode: Localizations.localeOf(context).languageCode,
+                ),
                 rankBadge: branch.rank == null
                     ? null
                     : l10n.discoverRankBadge(branch.rank!),

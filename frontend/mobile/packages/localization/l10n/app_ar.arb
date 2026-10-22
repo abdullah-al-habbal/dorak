@@ -457,6 +457,8 @@
   "@discoverRankedByDistance": {
     "description": "Caption confirming results are ordered by distance"
   },
+  "ratingSummary": "★ {rating} ({count, plural, =1{مراجعة واحدة} =2{مراجعتان} few{{count} مراجعات} many{{count} مراجعة} other{{count} مراجعة}})",
+  "ratingNoReviews": "لا توجد مراجعات بعد",
   "discoverDistanceLabel": "{km} كم",
   "@discoverDistanceLabel": {
     "description": "Distance in kilometres shown on a result card",

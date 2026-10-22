@@ -38,6 +38,8 @@ export function mapBranch(wire: unknown): IBranch {
     latitude: number(item.latitude),
     longitude: number(item.longitude),
     name: localized(item.name),
+    ratingAvg: number(item.rating_avg),
+    ratingCount: number(item.rating_count) ?? 0,
     status: string(item.status, "pending") as IBranch["status"],
   };
 }

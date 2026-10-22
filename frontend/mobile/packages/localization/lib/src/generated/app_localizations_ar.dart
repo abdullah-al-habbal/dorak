@@ -412,6 +412,23 @@ class AppLocalizationsAr extends AppLocalizations {
   String get discoverRankedByDistance => 'مرتبة حسب المسافة';
 
   @override
+  String ratingSummary(String rating, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مراجعة',
+      many: '$count مراجعة',
+      few: '$count مراجعات',
+      two: 'مراجعتان',
+      one: 'مراجعة واحدة',
+    );
+    return '★ $rating ($_temp0)';
+  }
+
+  @override
+  String get ratingNoReviews => 'لا توجد مراجعات بعد';
+
+  @override
   String discoverDistanceLabel(double km) {
     return '$km كم';
   }

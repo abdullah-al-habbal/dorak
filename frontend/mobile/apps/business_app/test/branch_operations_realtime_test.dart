@@ -55,13 +55,13 @@ class _CountingRepository implements BranchOperationsRepository {
 
   @override
   Future<BranchDto> getProfile() async => const BranchDto(
-    id: 1,
+    id: 'branch-1',
     name: 'Branch',
     email: 'branch@example.com',
     status: 'active',
     latitude: 0,
     longitude: 0,
-    brandId: 1,
+    brandId: 'brand-1',
   );
 
   @override

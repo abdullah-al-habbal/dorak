@@ -4,13 +4,16 @@ part 'branch.dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class BranchDto {
-  final int id;
+  final String id;
   final String name;
   final String email;
   final String status;
   final double latitude;
   final double longitude;
-  final int brandId;
+  final String brandId;
+  final double? ratingAvg;
+  @JsonKey(defaultValue: 0)
+  final int ratingCount;
   final double? distance;
   final double? compatibilityScore;
   final int? rank;
@@ -24,6 +27,8 @@ class BranchDto {
     required this.latitude,
     required this.longitude,
     required this.brandId,
+    this.ratingAvg,
+    this.ratingCount = 0,
     this.distance,
     this.compatibilityScore,
     this.rank,
