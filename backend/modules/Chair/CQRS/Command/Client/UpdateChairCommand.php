@@ -16,5 +16,6 @@ final readonly class UpdateChairCommand
         public bool $barberIdProvided,
         public ?FloorZone $floorZone,
         public ?array $uiMetadata,
+        public bool $force = false,
     ) {}
 }

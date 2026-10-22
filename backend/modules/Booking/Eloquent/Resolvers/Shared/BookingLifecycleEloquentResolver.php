@@ -89,6 +89,22 @@ final class BookingLifecycleEloquentResolver
         });
     }
 
+    public function cancelForChairMaintenance(string|int $bookingId): BookingModel
+    {
+        return DB::transaction(function () use ($bookingId): BookingModel {
+            $booking = BookingModel::query()->lockForUpdate()->findOrFail($bookingId);
+            if (! $booking->status->canTransitionTo(BookingStatus::Canceled)) {
+                throw new InvalidBookingTransitionException;
+            }
+            $booking->update([
+                'status' => BookingStatus::Canceled,
+                'cancellation_reason' => BookingModel::CANCELLATION_REASON_CHAIR_MAINTENANCE,
+            ]);
+
+            return $booking->refresh();
+        });
+    }
+
     public function transitionForBarber(string|int $bookingId, string|int $barberId, BookingStatus $target): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $barberId, $target): BookingModel {

@@ -25,8 +25,12 @@ export function mapBranchPayload(
     status: input.status,
   };
 }
-export function mapChairPayload(input: z.infer<typeof chairFormSchema>) {
+export function mapChairPayload(
+  input: z.infer<typeof chairFormSchema>,
+  force = false,
+) {
   return {
+    ...(force ? { force: true } : {}),
     barber_id: input.barberId,
     branch_id: input.branchId,
     floor_zone: input.floorZone,

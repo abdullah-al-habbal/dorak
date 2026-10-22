@@ -992,6 +992,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chairStatusMaintenance => 'Under maintenance';
 
   @override
+  String get chairMaintenanceConflictTitle => 'Chair has upcoming bookings';
+
+  @override
+  String chairMaintenanceConflictBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count upcoming bookings use this chair. Setting maintenance will cancel them and notify each client.',
+      one:
+          '1 upcoming booking uses this chair. Setting maintenance will cancel it and notify the client.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chairMaintenanceConflictConfirm(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Set maintenance and cancel $count bookings',
+      one: 'Set maintenance and cancel 1 booking',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get chairMaintenanceConflictKeep => 'Keep chair available';
+
+  @override
   String get chairStatusUnknown => 'Unknown status';
 
   @override

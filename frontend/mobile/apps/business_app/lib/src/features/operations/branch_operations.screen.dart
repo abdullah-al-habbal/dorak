@@ -56,8 +56,13 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
           ),
         ],
       ),
-      body: BlocBuilder<BranchOperationsBloc, BranchOperationsState>(
+      body: BlocConsumer<BranchOperationsBloc, BranchOperationsState>(
         bloc: widget.bloc,
+        listenWhen: (previous, current) =>
+            previous.pendingMaintenance != current.pendingMaintenance &&
+            current.pendingMaintenance != null,
+        listener: (context, state) =>
+            _confirmMaintenance(context, state.pendingMaintenance!),
         builder: (context, state) {
           if (state.loading && state.dashboard == null) {
             return const Center(child: CircularProgressIndicator());
@@ -194,6 +199,37 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
         },
       ),
     );
+  }
+
+  Future<void> _confirmMaintenance(
+    BuildContext context,
+    PendingChairMaintenance pending,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.chairMaintenanceConflictTitle),
+        content: Text(l10n.chairMaintenanceConflictBody(pending.bookingCount)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.chairMaintenanceConflictKeep),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(
+              l10n.chairMaintenanceConflictConfirm(pending.bookingCount),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      await widget.bloc.confirmChairMaintenance();
+    } else {
+      widget.bloc.dismissChairMaintenance();
+    }
   }
 
   String _bookingStatus(AppLocalizations l10n, String status) =>

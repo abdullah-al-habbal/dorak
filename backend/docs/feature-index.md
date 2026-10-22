@@ -4,6 +4,7 @@
 
 ### Manager & Stylist Mobile Operations
 - `PATCH /api/v1/branch/bookings/{booking}/status` — branch-authenticated booking transition to `in_progress`, `completed`, `no_show`, or `canceled`, scoped to the manager's branch.
+- `PATCH /api/v1/branch/chairs/{chair}/status`, `PUT /api/v1/dashboard/chairs/{chair}`, `PATCH /api/v1/chairs/{chair}` — moving a chair to `maintenance` returns 409 `CHAIR_HAS_ACTIVE_BOOKINGS` (`errors.booking_ids`) while future reservation-blocking bookings exist; `force=true` cancels them (`cancellation_reason = chair_maintenance`), notifies each client and lists `meta.canceled_booking_ids`. Shared `ChairStatusService`.
 - `GET /api/v1/branch/chairs` — branch-authenticated chair list, scoped to the manager's branch.
 - `GET /api/v1/branch/dashboard` — daily/monthly completed-service revenue, booking/chair metrics, and the authenticated branch switcher payload.
 - `GET /api/v1/barber/appointments/today` — barber-authenticated, barber-scoped appointments for today.

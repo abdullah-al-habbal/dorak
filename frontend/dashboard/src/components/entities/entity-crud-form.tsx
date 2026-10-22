@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/tailgrids/core/button";
+import { ChairMaintenanceConflict } from "@/components/entities/chair-maintenance-conflict";
 import { Input } from "@/components/tailgrids/core/input";
 import {
   Select,
@@ -19,6 +20,7 @@ import {
   branchCreateSchema,
   branchEditSchema,
 } from "@/services/api/dashboard/branch-form.schema";
+import { chairConflictBookingIds } from "@/services/api/dashboard/chair-maintenance-conflict.util";
 import { chairFormSchema } from "@/services/api/dashboard/chair-form.schema";
 import { serviceFormSchema } from "@/services/api/dashboard/service-form.schema";
 import {
@@ -107,11 +109,11 @@ function defaultsFor(resource: EditableResource, branchId: string | null) {
   };
 }
 
-function payloadFor(resource: EditableResource, value: unknown) {
+function payloadFor(resource: EditableResource, value: unknown, force = false) {
   if (resource === "branches")
     return mapBranchPayload(value as z.infer<typeof branchCreateSchema>);
   if (resource === "chairs")
-    return mapChairPayload(value as z.infer<typeof chairFormSchema>);
+    return mapChairPayload(value as z.infer<typeof chairFormSchema>, force);
   if (resource === "services")
     return mapServicePayload(value as z.infer<typeof serviceFormSchema>);
   return mapStylistPayload(value as z.infer<typeof stylistCreateSchema>);
@@ -186,12 +188,50 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         status: current.status,
       });
   }, [existing.data, form, resource]);
-  const mutation = useDashboardMutation(resource, async (value: unknown) => {
-    const payload = payloadFor(resource, value);
-    return editing
-      ? updateDashboardEntity(resource, id, payload)
-      : createDashboardEntity(resource, payload);
-  });
+  const [conflictBookingIds, setConflictBookingIds] = useState<string[] | null>(
+    null,
+  );
+  const mutation = useDashboardMutation(
+    resource,
+    async ({ value, force }: { value: unknown; force: boolean }) => {
+      const payload = payloadFor(resource, value, force);
+      return editing
+        ? updateDashboardEntity(resource, id, payload)
+        : createDashboardEntity(resource, payload);
+    },
+  );
+  const submit = (value: unknown, force: boolean) => {
+    setConflictBookingIds(null);
+    mutation.mutate(
+      { value, force },
+      {
+        onSuccess: () => {
+          notifySuccess(
+            editing
+              ? dictionary.operations.changesSaved
+              : dictionary.operations.created,
+          );
+          router.push(`/${session.actor}/${resource}`);
+        },
+        onError: (error) => {
+          const conflict =
+            resource === "chairs" ? chairConflictBookingIds(error) : null;
+          if (conflict !== null) setConflictBookingIds(conflict);
+          if (
+            resource === "chairs" &&
+            error instanceof ApiClientError &&
+            error.status === 422 &&
+            error.errors?.barber_id?.[0]
+          ) {
+            form.setError("barberId", {
+              type: "server",
+              message: error.errors.barber_id[0],
+            });
+          }
+        },
+      },
+    );
+  };
   const branches = useQuery({
     queryKey: ["dashboard", "branches", "form-options"],
     queryFn: () =>
@@ -417,31 +457,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
   return (
     <form
       className="grid gap-4 sm:grid-cols-2"
-      onSubmit={form.handleSubmit((value) =>
-        mutation.mutate(value, {
-          onSuccess: () => {
-            notifySuccess(
-              editing
-                ? dictionary.operations.changesSaved
-                : dictionary.operations.created,
-            );
-            router.push(`/${session.actor}/${resource}`);
-          },
-          onError: (error) => {
-            if (
-              resource === "chairs" &&
-              error instanceof ApiClientError &&
-              error.status === 422 &&
-              error.errors?.barber_id?.[0]
-            ) {
-              form.setError("barberId", {
-                type: "server",
-                message: error.errors.barber_id[0],
-              });
-            }
-          },
-        }),
-      )}
+      onSubmit={form.handleSubmit((value) => submit(value, false))}
     >
       {fields.map((field) => (
         <label className="grid gap-2 text-sm text-text-100" key={field}>
@@ -510,6 +526,16 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         <p className="text-input-error-focus-border sm:col-span-2" role="alert">
           {dictionary.validation.invalidField}
         </p>
+      ) : null}
+      {conflictBookingIds !== null ? (
+        <ChairMaintenanceConflict
+          bookingIds={conflictBookingIds}
+          canForce={form.getValues("status") === "maintenance"}
+          isPending={mutation.isPending}
+          onConfirm={() =>
+            void form.handleSubmit((value) => submit(value, true))()
+          }
+        />
       ) : null}
       <div className="sm:col-span-2">
         <Button type="submit" isDisabled={mutation.isPending}>

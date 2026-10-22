@@ -977,6 +977,42 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chairStatusMaintenance => 'قيد الصيانة';
 
   @override
+  String get chairMaintenanceConflictTitle => 'للكرسي حجوزات قادمة';
+
+  @override
+  String chairMaintenanceConflictBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'هناك $count حجزًا قادمًا على هذا الكرسي. سيؤدي تعيين الصيانة إلى إلغائها وإشعار كل عميل.',
+      few:
+          'هناك $count حجوزات قادمة على هذا الكرسي. سيؤدي تعيين الصيانة إلى إلغائها وإشعار كل عميل.',
+      two:
+          'هناك حجزان قادمان على هذا الكرسي. سيؤدي تعيين الصيانة إلى إلغائهما وإشعار العميلين.',
+      one:
+          'هناك حجز قادم واحد على هذا الكرسي. سيؤدي تعيين الصيانة إلى إلغائه وإشعار العميل.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chairMaintenanceConflictConfirm(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تعيين الصيانة وإلغاء $count حجزًا',
+      few: 'تعيين الصيانة وإلغاء $count حجوزات',
+      two: 'تعيين الصيانة وإلغاء حجزين',
+      one: 'تعيين الصيانة وإلغاء حجز واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get chairMaintenanceConflictKeep => 'إبقاء الكرسي متاحًا';
+
+  @override
   String get chairStatusUnknown => 'حالة غير معروفة';
 
   @override

@@ -13,11 +13,16 @@ final class BookingCancelledEvent implements ShouldBroadcast
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public string $bookingId, public string $branchId, public string $barberId) {}
+    public function __construct(public string $bookingId, public string $branchId, public ?string $barberId) {}
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel('branch.'.$this->branchId), new PrivateChannel('barber.'.$this->barberId)];
+        $channels = [new PrivateChannel('branch.'.$this->branchId)];
+        if ($this->barberId !== null) {
+            $channels[] = new PrivateChannel('barber.'.$this->barberId);
+        }
+
+        return $channels;
     }
 
     public function broadcastAs(): string

@@ -23,6 +23,23 @@ describe("dashboard payload mappers", () => {
     ).toBeNull();
   });
 
+  it("adds force only when the maintenance conflict is confirmed", () => {
+    const input = {
+      label: "A1",
+      branchId: "b4e18cf2-6c48-41bb-857d-6db23f2cbaab",
+      barberId: null,
+      floorZone: "shared" as const,
+      status: "maintenance" as const,
+      positionX: 0,
+      positionY: 0,
+      width: 1,
+      height: 1,
+      rotation: null,
+    };
+    expect(mapChairPayload(input)).not.toHaveProperty("force");
+    expect(mapChairPayload(input, true)).toHaveProperty("force", true);
+  });
+
   it("maps camelCase walk-in input only at backend boundary", () => {
     expect(
       mapWalkInBookingPayload({

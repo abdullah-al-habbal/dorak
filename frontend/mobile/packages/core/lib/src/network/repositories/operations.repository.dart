@@ -6,7 +6,11 @@ abstract class BranchOperationsRepository {
   Future<PaginatedData<BookingDto>> getBookings();
   Future<BookingDto> updateBookingStatus(String id, String status);
   Future<PaginatedData<FloorChairDto>> getChairs();
-  Future<FloorChairDto> updateChairStatus(String id, String status);
+  Future<FloorChairDto> updateChairStatus(
+    String id,
+    String status, {
+    bool force = false,
+  });
 }
 
 class DioBranchOperationsRepository implements BranchOperationsRepository {
@@ -42,12 +46,15 @@ class DioBranchOperationsRepository implements BranchOperationsRepository {
   );
 
   @override
-  Future<FloorChairDto> updateChairStatus(String id, String status) =>
-      _client.patch(
-        BranchEndpoints.chairStatus.replaceFirst('{chair}', id),
-        data: {'status': status},
-        parser: (json) => FloorChairDto.fromJson(json as Map<String, dynamic>),
-      );
+  Future<FloorChairDto> updateChairStatus(
+    String id,
+    String status, {
+    bool force = false,
+  }) => _client.patch(
+    BranchEndpoints.chairStatus.replaceFirst('{chair}', id),
+    data: {'status': status, if (force) 'force': true},
+    parser: (json) => FloorChairDto.fromJson(json as Map<String, dynamic>),
+  );
 }
 
 abstract class StylistOperationsRepository {

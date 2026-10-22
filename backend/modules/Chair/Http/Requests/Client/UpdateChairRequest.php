@@ -19,6 +19,7 @@ final class UpdateChairRequest extends BaseApiFormRequest
         return [
             'label' => ['sometimes', 'string', 'max:255'],
             'status' => ['sometimes', 'string', new Enum(ChairStatus::class)],
+            'force' => ['sometimes', 'boolean'],
             'barber_id' => ['sometimes', 'nullable', 'string', 'exists:barbers,id', new BarberBelongsToBranch($this->route('chair')?->branch_id)],
             'floor_zone' => ['nullable', 'string', new Enum(FloorZone::class)],
             'ui_metadata' => ['nullable', 'array'],
@@ -41,6 +42,7 @@ final class UpdateChairRequest extends BaseApiFormRequest
             barberIdProvided: $this->exists('barber_id'),
             floorZone: $this->enum('floor_zone', FloorZone::class),
             uiMetadata: $this->validated('ui_metadata'),
+            force: $this->boolean('force'),
         );
     }
 }

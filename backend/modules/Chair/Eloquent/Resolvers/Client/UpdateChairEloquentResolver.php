@@ -6,10 +6,14 @@ namespace Modules\Chair\Eloquent\Resolvers\Client;
 
 use Modules\Chair\CQRS\Command\Client\UpdateChairCommand;
 use Modules\Chair\Models\ChairModel;
+use Modules\Chair\Services\ChairStatusService;
+use Modules\Chair\ValuesObjects\ChairStatusChangeResult;
 
 final class UpdateChairEloquentResolver
 {
-    public function resolve(UpdateChairCommand $command): ChairModel
+    public function __construct(private readonly ChairStatusService $chairStatus) {}
+
+    public function resolve(UpdateChairCommand $command): ChairStatusChangeResult
     {
         $chair = ChairModel::with(['branch', 'barber'])->findOrFail($command->chairId);
 
@@ -35,9 +39,9 @@ final class UpdateChairEloquentResolver
             $data['ui_metadata'] = $command->uiMetadata;
         }
 
-        $chair->update($data);
-        $chair->load(['branch', 'barber']);
+        $result = $this->chairStatus->update($chair, $data, $command->force);
+        $result->chair->load('branch');
 
-        return $chair;
+        return $result;
     }
 }

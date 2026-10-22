@@ -242,6 +242,11 @@ export const ar: Dictionary = {
     actions: "الإجراءات",
     backToList: "العودة إلى القائمة",
     deleting: "جارٍ الحذف…",
+    chairConflictTitle: "للكرسي حجوزات نشطة",
+    chairConflictBody:
+      "هناك {count} حجز(ات) قادمة على هذا الكرسي. سيؤدي تعيينه للصيانة إلى إلغائها وإشعار كل عميل.",
+    chairConflictConfirm: "تعيين الصيانة وإلغاء {count} حجوزات",
+    chairConflictBookingIds: "معرّفات الحجوزات",
     deleted: "تم حذف السجل.",
     loadingDetails: "جارٍ تحميل التفاصيل…",
     loading: "جارٍ التحميل…",

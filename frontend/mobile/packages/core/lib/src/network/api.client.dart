@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 
 import 'package:core/src/network/exceptions/api.exception.dart';
+import 'package:core/src/network/exceptions/chair_has_active_bookings.exception.dart';
 import 'package:core/src/network/exceptions/network.exception.dart';
 import 'package:core/src/network/exceptions/validation.exception.dart';
 import 'package:core/src/network/interceptors/auth.interceptor.dart';
@@ -263,6 +264,21 @@ class ApiClient {
         code: code,
         message: message,
         errors: errors,
+      );
+    }
+
+    if (code == ChairHasActiveBookingsException.errorCode) {
+      final rawErrors = body['errors'];
+      final rawIds = rawErrors is Map<String, dynamic>
+          ? rawErrors['booking_ids']
+          : null;
+      return ChairHasActiveBookingsException(
+        statusCode: statusCode,
+        code: code,
+        message: message,
+        bookingIds: rawIds is List
+            ? rawIds.map((id) => id.toString()).toList(growable: false)
+            : const [],
       );
     }
 

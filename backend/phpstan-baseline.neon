@@ -1177,18 +1177,6 @@ parameters:
 			path: modules/Branch/Http/Actions/Branch/ToggleChairStatusAction.php
 
 		-
-			message: '#^Cannot access property \$status on Modules\\Chair\\Models\\ChairModel\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: modules/Branch/Http/Actions/Branch/ToggleChairStatusAction.php
-
-		-
-			message: '#^Cannot access property \$value on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: modules/Branch/Http/Actions/Branch/ToggleChairStatusAction.php
-
-		-
 			message: '#^Parameter \#1 \$value of static method Modules\\Chair\\Enums\\ChairStatus\:\:from\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 1

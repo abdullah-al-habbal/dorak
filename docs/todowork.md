@@ -49,7 +49,7 @@ codeanchors:
 - [x] Task 24: Allow Booking a Shop Barber Without Picking a Chair -> [Spec](tasks/task-24-barber-booking-without-chair.md)
 - [x] Task 25: Enforce At-Home Booking Rules -> [Spec](tasks/task-25-at-home-booking-rules.md)
 - [x] Task 26: Fix Client Booking List Status Buckets -> [Spec](tasks/task-26-client-booking-list-statuses.md)
-- [ ] Task 27: Handle Chair Maintenance Conflicts with Existing Bookings -> [Spec](tasks/task-27-chair-maintenance-conflicts.md)
+- [x] Task 27: Handle Chair Maintenance Conflicts with Existing Bookings -> [Spec](tasks/task-27-chair-maintenance-conflicts.md)
 
 ## Phase 4 — Notifications & Realtime (P1)
 - [ ] Task 28: Notify on Every Booking Transition -> [Spec](tasks/task-28-booking-notification-coverage.md)

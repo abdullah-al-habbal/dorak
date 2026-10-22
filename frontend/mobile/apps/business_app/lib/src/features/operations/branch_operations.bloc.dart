@@ -53,9 +53,17 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
     }
   }
 
-  Future<void> updateChairStatus(String id, String status) async {
+  Future<void> updateChairStatus(
+    String id,
+    String status, {
+    bool force = false,
+  }) async {
     try {
-      final updated = await _repository.updateChairStatus(id, status);
+      final updated = await _repository.updateChairStatus(
+        id,
+        status,
+        force: force,
+      );
       if (isClosed) return;
       emit(
         state.copyWith(
@@ -63,11 +71,33 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
               .map((chair) => chair.id == id ? updated : chair)
               .toList(growable: false),
           clearError: true,
+          clearPendingMaintenance: true,
+        ),
+      );
+      if (force) await load();
+    } on ChairHasActiveBookingsException catch (conflict) {
+      if (isClosed) return;
+      emit(
+        state.copyWith(
+          pendingMaintenance: PendingChairMaintenance(
+            chairId: id,
+            bookingCount: conflict.bookingIds.length,
+          ),
         ),
       );
     } catch (error) {
       if (!isClosed) emit(state.copyWith(error: error));
     }
+  }
+
+  Future<void> confirmChairMaintenance() async {
+    final pending = state.pendingMaintenance;
+    if (pending == null) return;
+    await updateChairStatus(pending.chairId, 'maintenance', force: true);
+  }
+
+  void dismissChairMaintenance() {
+    emit(state.copyWith(clearPendingMaintenance: true));
   }
 
   Future<void> updateBooking(String id, String status) async {

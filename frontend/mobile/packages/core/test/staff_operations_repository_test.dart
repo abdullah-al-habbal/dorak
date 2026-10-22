@@ -94,4 +94,63 @@ void main() {
       expect(chair.status, 'maintenance');
     },
   );
+
+  test(
+    'forced chair status sends force and keeps the maintenance flow',
+    () async {
+      RequestOptions? captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: {'id': 'chair-1', 'label': 'A', 'status': 'maintenance'},
+            ),
+          );
+        },
+      );
+
+      await DioBranchOperationsRepository(
+        clientWith(fake),
+      ).updateChairStatus('chair-1', 'maintenance', force: true);
+
+      expect(captured!.data, {'status': 'maintenance', 'force': true});
+    },
+  );
+
+  test(
+    'chair maintenance conflict surfaces the conflicting booking ids',
+    () async {
+      final fake = fakeDio(
+        handler: (options) => jsonResponse(
+          options,
+          statusCode: 409,
+          data: {
+            'success': false,
+            'statusCode': 409,
+            'code': 'CHAIR_HAS_ACTIVE_BOOKINGS',
+            'message': 'The chair has active bookings.',
+            'errors': {
+              'booking_ids': ['booking-1', 'booking-2'],
+            },
+          },
+        ),
+      );
+
+      await expectLater(
+        DioBranchOperationsRepository(
+          clientWith(fake),
+        ).updateChairStatus('chair-1', 'maintenance'),
+        throwsA(
+          isA<ChairHasActiveBookingsException>()
+              .having((e) => e.statusCode, 'statusCode', 409)
+              .having((e) => e.bookingIds, 'bookingIds', [
+                'booking-1',
+                'booking-2',
+              ]),
+        ),
+      );
+    },
+  );
 }

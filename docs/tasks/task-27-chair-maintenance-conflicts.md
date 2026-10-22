@@ -19,8 +19,16 @@ Rule E5 says existing bookings on a chair that goes into maintenance must be "ha
   - With an explicit `force=true` (branch or dashboard actor only): set maintenance, then for each affected future booking:
     - transition it to `canceled` through the lifecycle (Task 18), with `cancellation_reason = chair_maintenance`;
     - dispatch the client notification (Task 28).
-  - **Decision required (EC-2 is marked open in spec):** cancel-and-notify vs. reassign to another free chair. Record it here.
+  - **Decision (EC-2, resolved): cancel-and-notify.** Reassigning to another free chair is not attempted: the client chose a specific chair/time, and silent substitution is the "silently dropped" behaviour rule E5 forbids. Rebooking UX stays a follow-up.
 - The response lists the affected booking IDs.
+
+### Implemented contract
+- Shared service `Modules\Chair\Services\ChairStatusService::update()`, used by `PATCH /branch/chairs/{chair}/status`, `PUT /dashboard/chairs/{chair}` and `PATCH /chairs/{chair}`. A chair row lock plus booking row locks make the check and the cancellations atomic; notifications and broadcasts are dispatched after commit.
+- Affected bookings: `chair_id` = chair, status in `pending|confirmed|in_progress`, `ends_at > now()` (same predicate as the dashboard check). Only transitions *into* `maintenance` are checked; the branch toggle to `occupied`/`available` is unaffected. Dashboard `occupied` and barber reassignment keep the existing non-forceable 409.
+- Request: optional boolean `force` (ignored unless status is `maintenance`).
+- 409: `code = CHAIR_HAS_ACTIVE_BOOKINGS`, `errors.booking_ids = [...]`; chair and bookings unchanged.
+- 200 with `force=true`: `meta.canceled_booking_ids = [...]` (empty array when nothing was affected); each booking is `canceled` with `cancellation_reason = chair_maintenance` and one `SendBookingStatusNotificationJob` is dispatched per booking.
+- Dashboard: `ChairMaintenanceConflict` confirmation in `EntityCrudForm`; business app: conflict dialog in `branch_operations.screen.dart` (Task 85 keeps the rest of the business-app work).
 
 ### Dashboard (BFF / React)
 - Chair edit form (generic entity form under `frontend/dashboard/src/components/entities/`, schema `services/api/dashboard/chair-form.schema.ts`) — on 409, show the conflicting bookings and a "Set maintenance and cancel N bookings" confirmation that resends with `force=true`.
@@ -30,14 +38,14 @@ Rule E5 says existing bookings on a chair that goes into maintenance must be "ha
 - client_app: the affected client receives the push and sees the booking as canceled (Task 26 Past list).
 
 ## Acceptance Criteria
-- [ ] `PATCH /api/v1/branch/chairs/{chair}/status` `{status: maintenance}` on a chair with a future `confirmed` booking returns 409, and the chair status is unchanged.
-- [ ] The same request with `force=true` returns 200, the chair is `maintenance`, and the booking is `canceled` with reason `chair_maintenance`.
-- [ ] With `force=true`, one `SendBookingStatusNotificationJob` is dispatched per affected booking (`Queue::fake`).
-- [ ] The dashboard `PUT /api/v1/dashboard/chairs/{chair}` behaves identically (same code path), asserted in `ChairApiTest`.
-- [ ] The EC-2 decision is recorded here.
-- [ ] Feature test `ChairMaintenanceConflictTest` exists and passes.
-- [ ] `php artisan test` passes. PHPStan max and Pint are clean.
+- [x] `PATCH /api/v1/branch/chairs/{chair}/status` `{status: maintenance}` on a chair with a future `confirmed` booking returns 409 (`CHAIR_HAS_ACTIVE_BOOKINGS`; lower-case code in the original draft was normalized to match the dashboard), and the chair status is unchanged.
+- [x] The same request with `force=true` returns 200, the chair is `maintenance`, and the booking is `canceled` with reason `chair_maintenance`.
+- [x] With `force=true`, one `SendBookingStatusNotificationJob` is dispatched per affected booking (`Queue::fake`).
+- [x] The dashboard `PUT /api/v1/dashboard/chairs/{chair}` behaves identically (same code path), asserted in `ChairApiTest`.
+- [x] The EC-2 decision is recorded here.
+- [x] Feature test `ChairMaintenanceConflictTest` exists and passes.
+- [x] `php artisan test` passes. PHPStan max and Pint are clean.
 
 ## Out of Scope
-- Business app chair-toggle UI (Task 85).
+- Remaining business app work in Task 85 (the chair toggle and its conflict dialog landed here because the toggle already existed).
 - Rebooking UX for the client (follow-up once the EC-2 decision is made).

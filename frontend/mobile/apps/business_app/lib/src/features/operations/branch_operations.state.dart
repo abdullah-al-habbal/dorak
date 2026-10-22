@@ -1,6 +1,19 @@
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 
+class PendingChairMaintenance extends Equatable {
+  const PendingChairMaintenance({
+    required this.chairId,
+    required this.bookingCount,
+  });
+
+  final String chairId;
+  final int bookingCount;
+
+  @override
+  List<Object?> get props => [chairId, bookingCount];
+}
+
 class BranchOperationsState extends Equatable {
   BranchOperationsState({
     this.loading = false,
@@ -9,6 +22,7 @@ class BranchOperationsState extends Equatable {
     List<BookingDto> bookings = const [],
     List<FloorChairDto> chairs = const [],
     this.error,
+    this.pendingMaintenance,
   }) : bookings = List.unmodifiable(bookings),
        chairs = List.unmodifiable(chairs);
 
@@ -18,6 +32,7 @@ class BranchOperationsState extends Equatable {
   final List<BookingDto> bookings;
   final List<FloorChairDto> chairs;
   final Object? error;
+  final PendingChairMaintenance? pendingMaintenance;
 
   BranchOperationsState copyWith({
     bool? loading,
@@ -26,7 +41,9 @@ class BranchOperationsState extends Equatable {
     List<BookingDto>? bookings,
     List<FloorChairDto>? chairs,
     Object? error,
+    PendingChairMaintenance? pendingMaintenance,
     bool clearError = false,
+    bool clearPendingMaintenance = false,
   }) => BranchOperationsState(
     loading: loading ?? this.loading,
     dashboard: dashboard ?? this.dashboard,
@@ -34,6 +51,9 @@ class BranchOperationsState extends Equatable {
     bookings: bookings ?? this.bookings,
     chairs: chairs ?? this.chairs,
     error: clearError ? null : error ?? this.error,
+    pendingMaintenance: clearPendingMaintenance
+        ? null
+        : pendingMaintenance ?? this.pendingMaintenance,
   );
 
   @override
@@ -44,5 +64,6 @@ class BranchOperationsState extends Equatable {
     bookings,
     chairs,
     error,
+    pendingMaintenance,
   ];
 }

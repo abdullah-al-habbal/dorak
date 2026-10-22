@@ -7,5 +7,5 @@ namespace Modules\Dashboard\CQRS\Command;
 final readonly class UpdateChairCommand
 {
     /** @param array<string, mixed> $attributes */
-    public function __construct(public array $attributes, public ?string $branchId) {}
+    public function __construct(public array $attributes, public ?string $branchId, public bool $force = false) {}
 }

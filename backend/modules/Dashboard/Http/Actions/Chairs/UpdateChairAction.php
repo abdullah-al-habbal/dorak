@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Chairs;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Chair\Exceptions\ChairHasActiveBookingsException as ChairMaintenanceConflictException;
 use Modules\Chair\Http\Resources\Shared\ChairResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\UpdateChairCommand;
@@ -29,19 +30,23 @@ final class UpdateChairAction extends BaseApiAction
         $scope = $actor->isPlatformAdmin() ? null : $actor->branchId;
         $model = $this->showHandler->handle(new ShowChairQuery($chair, $scope));
         $attributes = $request->validated();
+        $force = (bool) ($attributes['force'] ?? false);
+        unset($attributes['force']);
 
         if (! $actor->isPlatformAdmin() && $attributes['branch_id'] !== $actor->branchId) {
             return $this->forbidden();
         }
 
         try {
-            $updated = $this->updateHandler->handle($model, new UpdateChairCommand($attributes, $model->branch_id));
+            $updated = $this->updateHandler->handle($model, new UpdateChairCommand($attributes, $model->branch_id, $force));
+        } catch (ChairMaintenanceConflictException $conflict) {
+            return $this->error('CHAIR_HAS_ACTIVE_BOOKINGS', __('dashboard::messages.chair_has_active_bookings'), 409, ['booking_ids' => $conflict->bookingIds]);
         } catch (ChairHasActiveBookingsException) {
             return $this->error('CHAIR_HAS_ACTIVE_BOOKINGS', __('dashboard::messages.chair_has_active_bookings'), 409);
         }
 
         return $updated === null
             ? $this->forbidden(__('dashboard::messages.barber_other_branch'))
-            : $this->updated(ChairResource::make($updated));
+            : $this->updated(ChairResource::make($updated->chair), meta: ['canceled_booking_ids' => $updated->canceledBookingIds]);
     }
 }

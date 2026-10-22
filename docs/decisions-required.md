@@ -57,7 +57,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: affiliated barbers ARE allowed to take at-home bookings, so there is no `is_freelancer` check. The booking must still respect the barber's schedule and the single barber calendar (EC-9 overlap on `bookings.barber_id`), so it cannot conflict with shop bookings.
 
 ## [Task 27: Handle Chair Maintenance Conflicts with Existing Bookings](tasks/task-27-chair-maintenance-conflicts.md)
-- [ ] **Decision required (EC-2 is marked open in spec):** cancel-and-notify vs. reassign to another free chair. Record it here.
+- [x] Decision resolved (EC-2): cancel-and-notify. Moving a chair to maintenance is rejected with 409 `CHAIR_HAS_ACTIVE_BOOKINGS` while reservation-blocking bookings (`pending`/`confirmed`/`in_progress`, ending in the future) exist. With an explicit `force=true`, those bookings are canceled through the lifecycle with `cancellation_reason = chair_maintenance` and each client receives one status notification. Automatic reassignment to another free chair is not done; client rebooking UX is a follow-up.
 
 ## [Task 30: Persist Notification Delivery Records](tasks/task-30-notification-delivery-records.md)
 - [ ] **Decision required:** retention period for delivery rows.

@@ -6,7 +6,7 @@ namespace Modules\Chair\Handlers\Client;
 
 use Modules\Chair\CQRS\Command\Client\UpdateChairCommand;
 use Modules\Chair\Eloquent\Resolvers\Client\UpdateChairEloquentResolver;
-use Modules\Chair\Models\ChairModel;
+use Modules\Chair\ValuesObjects\ChairStatusChangeResult;
 
 final class UpdateChairHandler
 {
@@ -14,7 +14,7 @@ final class UpdateChairHandler
         private readonly UpdateChairEloquentResolver $resolver,
     ) {}
 
-    public function handle(UpdateChairCommand $command): ChairModel
+    public function handle(UpdateChairCommand $command): ChairStatusChangeResult
     {
         return $this->resolver->resolve($command);
     }

@@ -247,6 +247,11 @@ export const en = {
     actions: "Actions",
     backToList: "Back to list",
     deleting: "Deleting…",
+    chairConflictTitle: "Chair has active bookings",
+    chairConflictBody:
+      "{count} upcoming booking(s) use this chair. Setting it to maintenance will cancel them and notify each client.",
+    chairConflictConfirm: "Set maintenance and cancel {count} bookings",
+    chairConflictBookingIds: "Booking IDs",
     deleted: "Record deleted.",
     loadingDetails: "Loading details…",
     loading: "Loading…",

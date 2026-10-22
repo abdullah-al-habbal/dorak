@@ -64,6 +64,7 @@ export 'package:core/src/network/endpoints/service_catalog.endpoints.dart';
 export 'package:core/src/network/endpoints/client_interaction.endpoints.dart';
 export 'package:core/src/network/endpoints/job_posting.endpoints.dart';
 export 'package:core/src/network/exceptions/api.exception.dart';
+export 'package:core/src/network/exceptions/chair_has_active_bookings.exception.dart';
 export 'package:core/src/network/exceptions/network.exception.dart';
 export 'package:core/src/network/exceptions/validation.exception.dart';
 export 'package:core/src/network/interceptors/auth.interceptor.dart';

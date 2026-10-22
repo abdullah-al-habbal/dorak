@@ -25,7 +25,7 @@ The business app covers only the dashboard, the bookings list, the chairs list a
 - Move `updateBranchFloorPlan` from `job_posting.repository.dart` into a `BranchManagementRepository`. Add methods for chair status, affiliations, profile and reviews.
 - Booking status menu: build the items from the allowed transitions for `booking.status` (mirroring the backend `BookingStatus::canTransitionTo` set from Task 18), and surface backend rejection errors.
 - Screens (registered in the Task 84 router):
-  - **Chairs:** a chair status toggle on the chairs list, with a conflict dialog for the Task 27 response.
+  - **Chairs:** a chair status toggle on the chairs list, with a conflict dialog for the Task 27 response. *(Delivered in Task 27: `BranchOperationsBloc.updateChairStatus`/`confirmChairMaintenance`, `PendingChairMaintenance` state and the dialog; only verify here.)*
   - **Job postings:** list/create/edit/delete, plus applicants with accept/reject via the Task 06 endpoint.
   - **Floor plan:** a configuration screen.
   - **Affiliations:** inbox with accept/reject.

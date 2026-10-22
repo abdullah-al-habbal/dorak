@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Queue;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Database\Factories\BarberAffiliationFactory;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
@@ -105,6 +107,33 @@ describe('Dashboard Chair API', function (): void {
         $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, [
             'status' => ChairStatus::Maintenance->value,
         ]))->assertConflict()->assertJsonPath('code', 'CHAIR_HAS_ACTIVE_BOOKINGS');
+    });
+
+    it('cancels and notifies future bookings when maintenance is forced', function (): void {
+        Queue::fake();
+        $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
+        $booking = BookingModel::factory()->create([
+            'chair_id' => $chair->id,
+            'status' => BookingStatus::Confirmed->value,
+            'time_slot' => now()->addHour(),
+            'ends_at' => now()->addHours(2),
+        ]);
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, [
+            'status' => ChairStatus::Maintenance->value,
+        ]))->assertConflict()->assertJsonPath('errors.booking_ids', [$booking->id]);
+        expect($chair->fresh()->status)->toBe(ChairStatus::Available);
+
+        $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, [
+            'status' => ChairStatus::Maintenance->value,
+            'force' => true,
+        ]))->assertOk()->assertJsonPath('meta.canceled_booking_ids', [$booking->id]);
+
+        expect($chair->fresh()->status)->toBe(ChairStatus::Maintenance);
+        expect($booking->fresh()->status)->toBe(BookingStatus::Canceled);
+        expect($booking->fresh()->cancellation_reason)->toBe('chair_maintenance');
+        Queue::assertPushed(SendBookingStatusNotificationJob::class, 1);
     });
 
     it('returns conflict when a future booking protects a chair from deletion', function (): void {

@@ -1898,6 +1898,30 @@ abstract class AppLocalizations {
   /// **'Under maintenance'**
   String get chairStatusMaintenance;
 
+  /// Title of the dialog shown when a chair cannot enter maintenance because of upcoming bookings
+  ///
+  /// In en, this message translates to:
+  /// **'Chair has upcoming bookings'**
+  String get chairMaintenanceConflictTitle;
+
+  /// No description provided for @chairMaintenanceConflictBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 upcoming booking uses this chair. Setting maintenance will cancel it and notify the client.} other{{count} upcoming bookings use this chair. Setting maintenance will cancel them and notify each client.}}'**
+  String chairMaintenanceConflictBody(int count);
+
+  /// No description provided for @chairMaintenanceConflictConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Set maintenance and cancel 1 booking} other{Set maintenance and cancel {count} bookings}}'**
+  String chairMaintenanceConflictConfirm(int count);
+
+  /// Dismiss the chair maintenance conflict dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Keep chair available'**
+  String get chairMaintenanceConflictKeep;
+
   /// Fallback chair status label
   ///
   /// In en, this message translates to:
