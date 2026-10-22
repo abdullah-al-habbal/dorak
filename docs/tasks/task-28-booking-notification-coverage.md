@@ -41,6 +41,8 @@ So clients are not told when a shop cancels or reschedules them, and dashboards 
 - Success side effects: one `BookingStatusUpdatedEvent` (or `BookingCancelledEvent` for cancels, or `BookingRescheduledEvent` for reschedules, `.booking.rescheduled`) plus one `SendBookingStatusNotificationJob`. Events implement `ShouldDispatchAfterCommit` and the job uses `afterCommit()`, so a rollback never notifies. The reschedule job sends the client a `booking_rescheduled` push with the new `time_slot`.
 - Event `barberId` is now nullable; the notifier falls back to the chair's barber.
 - Dashboard: `use-branch-channel.ts` and `use-barber-channel.ts` listen for status, cancel and reschedule events. Mobile: stylist and business blocs refresh on `booking.rescheduled`. Docs: this file and `docs/todowork.md`.
+- Actor exclusion: a client's own cancel still sends one `SendBookingStatusNotificationJob` (`actorIsClient`), but it pushes the barber and branch instead of the client. Other paths push the client.
+- Mobile tests: `branch_operations_realtime_test.dart` (business_app) and `stylist_realtime_test.dart` (stylist_app) cover the realtime refresh, including `booking.rescheduled`. client_app has no realtime handler (Task 29). `RealtimeSubscription.fromCancel` lets tests fake the transport.
 - Deviations: the per-action dispatches in `ChairStatusService` were removed too, since the lifecycle resolver now covers the maintenance cancel. Push-tap routing in `push_notification.client.dart` is left to Task 78, because the service has no message handlers today.
 
 ## Acceptance Criteria

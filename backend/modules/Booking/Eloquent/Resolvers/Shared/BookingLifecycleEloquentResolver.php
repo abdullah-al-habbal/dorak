@@ -73,7 +73,7 @@ final class BookingLifecycleEloquentResolver
             }
             $booking->update(['status' => BookingStatus::Canceled]);
             $booking->refresh();
-            $this->notifier->statusChanged($booking, true);
+            $this->notifier->statusChanged($booking, true, actorIsClient: true);
 
             return CancelBookingResult::success($booking);
         });

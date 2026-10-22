@@ -17,7 +17,7 @@ use Modules\Booking\Models\BookingModel;
  */
 final class BookingTransitionNotifier
 {
-    public function statusChanged(BookingModel $booking, bool $canceled): void
+    public function statusChanged(BookingModel $booking, bool $canceled, bool $actorIsClient = false): void
     {
         $bookingId = (string) $booking->id;
         $branchId = (string) ($booking->branch_id ?? $booking->chair?->branch_id);
@@ -26,7 +26,7 @@ final class BookingTransitionNotifier
         event($canceled
             ? new BookingCancelledEvent($bookingId, $branchId, $barberId)
             : new BookingStatusUpdatedEvent($bookingId, $branchId, $barberId, $booking->status->value));
-        SendBookingStatusNotificationJob::dispatch($bookingId, false, app()->getLocale())->afterCommit();
+        SendBookingStatusNotificationJob::dispatch($bookingId, false, app()->getLocale(), false, $actorIsClient)->afterCommit();
     }
 
     public function rescheduled(BookingModel $booking): void

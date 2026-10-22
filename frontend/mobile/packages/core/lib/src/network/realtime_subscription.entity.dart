@@ -1,9 +1,14 @@
 import 'package:laravel_reverb/laravel_reverb.dart';
 
 class RealtimeSubscription {
-  RealtimeSubscription(this._subscription);
+  RealtimeSubscription(Subscription subscription)
+    : _cancel = subscription.cancel;
 
-  final Subscription _subscription;
+  /// Wraps a bare cancel callback, for transports (and test fakes) that have no
+  /// Reverb [Subscription].
+  RealtimeSubscription.fromCancel(this._cancel);
 
-  void cancel() => _subscription.cancel();
+  final void Function() _cancel;
+
+  void cancel() => _cancel();
 }
