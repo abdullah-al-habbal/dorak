@@ -49,7 +49,7 @@ files in that area.
 ## Task execution
 
 - Prefer the reusable
-  [Dorak task executor](.agents/skills/monorepo-task-executor/SKILL.md) for
+  [Dorak task executor](.claude/skills/monorepo-task-executor/SKILL.md) for
   document-routed task work: audit the spec, implement the vertical slice, run
   the applicable gates, then mark the task `[x]` in `docs/todowork.md` only on
   evidence.

@@ -1,6 +1,7 @@
 # Local tooling and migration backups are not root coordination artifacts.
 /.agents/
-/.claude/
+/.claude/*
+!/.claude/skills/
 /.aiignore
 /*.bundle
 

@@ -123,6 +123,6 @@ Read [AGENTS.md](AGENTS.md) and the applicable subsystem guide before making
 changes. Follow the path/import rules there, preserve API and package
 boundaries, and update task and decision documentation when work changes their
 status. For tasks routed through `docs/tasks/`, use the reusable
-[monorepo task executor](.agents/skills/monorepo-task-executor/SKILL.md).
+[monorepo task executor](.claude/skills/monorepo-task-executor/SKILL.md).
 
 Keep local work local unless the user explicitly requests a remote Git action.

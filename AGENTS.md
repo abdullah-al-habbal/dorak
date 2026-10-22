@@ -37,7 +37,7 @@ specific; read it before changing files in that area.
   only after its acceptance criteria and required gates pass.
 - Preserve unrelated working-tree changes. Never use destructive Git commands.
   Do not push or change remotes unless the user explicitly requests it.
-- Prefer the reusable [Dorak task executor](.agents/skills/monorepo-task-executor/SKILL.md)
+- Prefer the reusable [Dorak task executor](.claude/skills/monorepo-task-executor/SKILL.md)
   for document-routed task work.
 - When the user types `/graphify`, invoke the available Skill tool with
   `skill: "graphify"` before doing anything else.
