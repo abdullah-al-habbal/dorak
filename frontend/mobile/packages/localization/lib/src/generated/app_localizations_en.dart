@@ -990,6 +990,40 @@ class AppLocalizationsEn extends AppLocalizations {
       'Manage your appointments and work status.';
 
   @override
+  String get stylistSignUpLink => 'New to Dorak? Create a stylist account';
+
+  @override
+  String get stylistSignUpTitle => 'Join Dorak as a stylist';
+
+  @override
+  String get stylistSignUpSubtitle =>
+      'Create your account. An administrator reviews new stylists before they can take bookings.';
+
+  @override
+  String get stylistSignUpFreelancerLabel =>
+      'I work independently (freelancer)';
+
+  @override
+  String get stylistSignUpEmailTaken =>
+      'An account with this email already exists.';
+
+  @override
+  String get stylistVerifyCodeLabel => 'Verification code';
+
+  @override
+  String get stylistVerifyCodeResent => 'A new code was sent.';
+
+  @override
+  String get stylistPendingTitle => 'Awaiting approval';
+
+  @override
+  String get stylistPendingMessage =>
+      'Your account was created. An administrator will review and activate it; you can sign in once it is approved.';
+
+  @override
+  String get stylistPendingBackToLogin => 'Back to sign in';
+
+  @override
   String get chairStatusAvailable => 'Available';
 
   @override

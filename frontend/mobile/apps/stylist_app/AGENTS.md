@@ -1,6 +1,8 @@
 # AGENTS.md — `apps/stylist_app`
 
-**Status: `flutter create` counter stub. No Dorak features exist.**
+**Status (2026-10-22): login, session, today/operations screen and barber self
+sign-up exist. Sections 2–3 below predate that and are kept for history; audit
+against the code (Task 82/87).**
 
 Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md)
 · Files: [`docs/feature-index.md`](./docs/feature-index.md)
@@ -10,32 +12,27 @@ Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md
 ## 1. What is actually here
 
 ```
-lib/main.dart                 73 lines — MyApp + MyHomePage + _counter
-test/widget_test.dart         the default counter test
-.env / .env.example           present, and dotenv IS loaded
-docs/feature-index.md         records "App is a skeleton"
+lib/main.dart                               bootstrap
+lib/app.dart                                StylistApp: ApiClient, StaffSessionBloc, StylistBloc,
+                                            StylistSignUpBloc, realtime, push (constructor DI)
+lib/src/core/navigation/app.router.dart     go_router: /login, /signup (public), /home
+lib/src/features/auth/                      stylist_login.screen, stylist_sign_up.{screen,bloc,state},
+                                            stylist_sign_up_step.entity
+lib/src/features/operations/                stylist.{screen,bloc,state} — today + workstation
 ```
 
-That is the entire app. `main.dart` is the stock Flutter demo with one edit —
-`main()` is `Future<void>` and awaits `dotenv.load()` — plus a few stray empty
-`//` lines left from the template.
+### Self sign-up (Task 37)
 
-`.env` carries the same backend URLs as the other apps:
+`/signup` posts `POST barber/register`, then offers the emailed code
+(`POST barber/email/verify`, skippable) and ends on an "awaiting approval" step.
+New barbers are `pending` until an admin activates them, and the backend
+refuses their login with `ACCOUNT_NOT_ACTIVE` (shown on the login screen).
 
-```
-API_BASE_URL=https://dev-dorak-backend.io/api
-API_BASE_URL_V1=https://dev-dorak-backend.io/api/v1
-```
-
-...but nothing reads them — `ConfigProvider` lives in `core`, and this app does
-not depend on `core`.
-
-**Its `pubspec.yaml` declares no workspace packages**: no `core`, no
-`design_system`, no `localization`. It is in the Melos workspace and passes the
-gate only because it is untouched.
-
-> `docs/feature-index.md` claims `main.dart` boots `DorakApp`. It does not — it
-> boots `MyApp`. The doc is wrong.
+The registration token only reaches the onboarding routes (profile read, email
+verification) while pending, so it is **not** a session: `StylistSignUpBloc`
+holds it in memory, `app.dart`'s `ApiClient` token provider reads it before the
+stored session token, and leaving the flow (`reset()`) drops it. It is never
+written to `SecureBarberTokenStorage`.
 
 ## 2. What it is meant to become
 

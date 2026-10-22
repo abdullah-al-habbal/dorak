@@ -23,6 +23,9 @@
 - `GET /api/v1/branch/dashboard` — daily/monthly completed-service revenue, booking/chair metrics, and the authenticated branch switcher payload.
 - `GET /api/v1/barber/appointments/today` — barber-authenticated, barber-scoped appointments for today.
 - `PATCH /api/v1/barber/workstation-status` — barber-authenticated online/offline workstation presence; persisted as `barbers.workstation_online`.
+- `POST /api/v1/barber/register` — public, `throttle:5,1`; barber self sign-up (`name`, `email` unique in barbers, `password` + confirmation, optional `is_freelancer` default true, optional `phone`). Creates a `pending` barber with `has_login`, queues the email code, returns 201 `{token, barber}` (`BarberResource`, now incl. `email_verified_at`). Pending barbers cannot log in (403 `ACCOUNT_NOT_ACTIVE`) until an admin activates them (Task 37).
+- `POST /api/v1/barber/email/verify/send` (`throttle:3,1`), `POST /api/v1/barber/email/verify` (`code`, `throttle:5,1`) — barber email verification; hashed 6-digit code, 10-minute TTL, 5-attempt lockout; wrong code 422 `VALIDATION_FAILED` + `errors.code`; success returns the barber.
+- `EnsureBarberAccountAccess` (Task 37) gates every barber-token route on current status: `onboarding` (pending/enabled: profile read, email verification), `approved` (not pending: self activate/deactivate), default `active` (enabled: all other barber routes, including affiliations and job applications). Otherwise 403 `ACCOUNT_NOT_ACTIVE`.
 
 ---
 

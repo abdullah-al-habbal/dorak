@@ -8,6 +8,7 @@ import 'package:localization/localization.dart';
 
 import 'package:stylist_app/src/core/navigation/app.router.dart';
 import 'package:stylist_app/src/core/navigation/notification_location.entity.dart';
+import 'package:stylist_app/src/features/auth/stylist_sign_up.bloc.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 
 class StylistApp extends StatefulWidget {
@@ -25,6 +26,7 @@ class _StylistAppState extends State<StylistApp> {
   late final PushNotificationService _pushNotifications;
   late final StylistAppRouter _router;
   late final StaffSessionBloc _session;
+  late final StylistSignUpBloc _signUp;
   late final TokenStorage _tokenStorage;
   late final StreamSubscription<void> _unauthorizedSubscription;
   late final StreamSubscription<NotificationTarget>
@@ -36,7 +38,7 @@ class _StylistAppState extends State<StylistApp> {
     _tokenStorage = SecureBarberTokenStorage();
     _client = ApiClient(
       baseUrl: ConfigProvider.config.apiBaseV1Url,
-      tokenProvider: _tokenStorage.read,
+      tokenProvider: _readToken,
       localeResolver: () => _locale.languageCode,
     );
     _realtime = _createRealtime(_tokenStorage);
@@ -48,6 +50,7 @@ class _StylistAppState extends State<StylistApp> {
       DioStaffAuthRepository(_client, BarberAuthEndpoints.login),
       _tokenStorage,
     );
+    _signUp = StylistSignUpBloc(DioBarberRegistrationRepository(_client));
     _unauthorizedSubscription = _client.unauthorizedStream.listen(
       (_) => _onUnauthorized(),
     );
@@ -58,6 +61,7 @@ class _StylistAppState extends State<StylistApp> {
     _router = StylistAppRouter(
       operations: _bloc,
       session: _session,
+      signUp: _signUp,
       onLocaleToggle: _toggleLocale,
       onLogout: _logout,
       onAuthenticated: _onAuthenticated,
@@ -69,6 +73,7 @@ class _StylistAppState extends State<StylistApp> {
   void dispose() {
     _router.dispose();
     _session.close();
+    _signUp.close();
     _unauthorizedSubscription.cancel();
     _notificationOpenSubscription.cancel();
     _bloc.close();
@@ -77,6 +82,9 @@ class _StylistAppState extends State<StylistApp> {
     _client.dispose();
     super.dispose();
   }
+
+  Future<String?> _readToken() async =>
+      _signUp.state.onboardingToken ?? await _tokenStorage.read();
 
   RealtimeClient? _createRealtime(TokenStorage tokenStorage) {
     final configuration = ConfigProvider.realtimeConfiguration;

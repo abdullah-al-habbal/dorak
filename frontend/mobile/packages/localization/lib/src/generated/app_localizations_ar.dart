@@ -975,6 +975,39 @@ class AppLocalizationsAr extends AppLocalizations {
   String get stylistLoginSubtitle => 'أدر مواعيدك وحالة عملك.';
 
   @override
+  String get stylistSignUpLink => 'جديد في دوراك؟ أنشئ حساب مصفف';
+
+  @override
+  String get stylistSignUpTitle => 'انضم إلى دوراك كمصفف';
+
+  @override
+  String get stylistSignUpSubtitle =>
+      'أنشئ حسابك. يراجع المشرف المصففين الجدد قبل أن يتمكنوا من استقبال الحجوزات.';
+
+  @override
+  String get stylistSignUpFreelancerLabel => 'أعمل بشكل مستقل';
+
+  @override
+  String get stylistSignUpEmailTaken =>
+      'يوجد حساب مسجل بهذا البريد الإلكتروني.';
+
+  @override
+  String get stylistVerifyCodeLabel => 'رمز التحقق';
+
+  @override
+  String get stylistVerifyCodeResent => 'تم إرسال رمز جديد.';
+
+  @override
+  String get stylistPendingTitle => 'بانتظار الموافقة';
+
+  @override
+  String get stylistPendingMessage =>
+      'تم إنشاء حسابك. سيراجعه المشرف ويفعّله، ويمكنك تسجيل الدخول بعد الموافقة.';
+
+  @override
+  String get stylistPendingBackToLogin => 'العودة إلى تسجيل الدخول';
+
+  @override
   String get chairStatusAvailable => 'متاح';
 
   @override

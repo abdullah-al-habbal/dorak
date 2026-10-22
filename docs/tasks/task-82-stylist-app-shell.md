@@ -23,7 +23,7 @@
 - `apps/stylist_app`: introduce `app.dart` + `src/core/navigation/app.router.dart` (go_router, matching `client_app` conventions) with `/login` and `/home` (the today/operations screen). Add a redirect guard based on token presence.
 - Add a session bloc (reuse the `packages/core/lib/src/session` pattern) that writes the token to `SecureBarberTokenStorage` on login and clears it on logout or 401.
 - Move the `ApiClient`/realtime/push construction out of `main.dart` into an app-services provider, as `client_app/lib/src/core/navigation/app_services.provider.dart` does. Register the device token only after login.
-- Add a login screen using `design_system` components and localization keys.
+- Add a login screen using `design_system` components and localization keys. Note (Task 37): `/login`, `/home` and `/signup` routes, `StaffSessionBloc` wiring and the login screen already exist in `stylist_app`; Task 37 added the self sign-up route (`StylistSignUpScreen`/`StylistSignUpBloc`) and its onboarding-token handling in `app.dart`. Audit the remaining shell items against the code before re-implementing them.
 
 ## Acceptance Criteria
 - [ ] Repository test: `login` sends `POST /barber/login` and the returned token is written to `SecureBarberTokenStorage`.

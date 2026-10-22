@@ -10,11 +10,13 @@ class StylistLoginScreen extends StatefulWidget {
     required this.session,
     required this.onAuthenticated,
     required this.onLocaleToggle,
+    required this.onSignUp,
   });
 
   final StaffSessionBloc session;
   final VoidCallback onAuthenticated;
   final VoidCallback onLocaleToggle;
+  final VoidCallback onSignUp;
 
   @override
   State<StylistLoginScreen> createState() => _StylistLoginScreenState();
@@ -41,6 +43,14 @@ class _StylistLoginScreenState extends State<StylistLoginScreen> {
     if (mounted && widget.session.state.isAuthenticated) {
       widget.onAuthenticated();
     }
+  }
+
+  String _errorMessage(Object error, AppLocalizations l10n) {
+    if (error is NetworkException) return l10n.errorNetwork;
+    if (error is ApiException && error.code == 'ACCOUNT_NOT_ACTIVE') {
+      return l10n.authAccountNotActive;
+    }
+    return l10n.loginErrorInvalidCredentials;
   }
 
   @override
@@ -119,17 +129,18 @@ class _StylistLoginScreenState extends State<StylistLoginScreen> {
                     ),
                     if (state.error != null) ...[
                       const SizedBox(height: DorakDimensions.spacingMedium),
-                      StatusBanner(
-                        message: state.error is NetworkException
-                            ? l10n.errorNetwork
-                            : l10n.loginErrorInvalidCredentials,
-                      ),
+                      StatusBanner(message: _errorMessage(state.error!, l10n)),
                     ],
                     const SizedBox(height: DorakDimensions.spacingLarge),
                     PrimaryButton(
                       label: l10n.loginButton,
                       isLoading: state.isSubmitting,
                       onPressed: _submit,
+                    ),
+                    const SizedBox(height: DorakDimensions.spacingSmall),
+                    TextButton(
+                      onPressed: widget.onSignUp,
+                      child: Text(l10n.stylistSignUpLink),
                     ),
                   ],
                 ),

@@ -1892,6 +1892,66 @@ abstract class AppLocalizations {
   /// **'Manage your appointments and work status.'**
   String get stylistLoginSubtitle;
 
+  /// Link from the stylist login to self sign-up
+  ///
+  /// In en, this message translates to:
+  /// **'New to Dorak? Create a stylist account'**
+  String get stylistSignUpLink;
+
+  /// Stylist sign-up title
+  ///
+  /// In en, this message translates to:
+  /// **'Join Dorak as a stylist'**
+  String get stylistSignUpTitle;
+
+  /// Stylist sign-up subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account. An administrator reviews new stylists before they can take bookings.'**
+  String get stylistSignUpSubtitle;
+
+  /// Switch: the stylist is a freelancer
+  ///
+  /// In en, this message translates to:
+  /// **'I work independently (freelancer)'**
+  String get stylistSignUpFreelancerLabel;
+
+  /// Error when the sign-up email is already registered
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email already exists.'**
+  String get stylistSignUpEmailTaken;
+
+  /// Label of the email code field in stylist sign-up
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code'**
+  String get stylistVerifyCodeLabel;
+
+  /// Shown after the email code is resent
+  ///
+  /// In en, this message translates to:
+  /// **'A new code was sent.'**
+  String get stylistVerifyCodeResent;
+
+  /// Title after stylist sign-up
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting approval'**
+  String get stylistPendingTitle;
+
+  /// Message after stylist sign-up
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was created. An administrator will review and activate it; you can sign in once it is approved.'**
+  String get stylistPendingMessage;
+
+  /// Button returning to stylist login
+  ///
+  /// In en, this message translates to:
+  /// **'Back to sign in'**
+  String get stylistPendingBackToLogin;
+
   /// Available chair status
   ///
   /// In en, this message translates to:

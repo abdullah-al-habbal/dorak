@@ -19,6 +19,7 @@ final class BarberResource extends JsonResource
             'has_login' => $this->offsetGet('has_login'),
             'is_freelancer' => $this->is_freelancer,
             'status' => $this->status,
+            'email_verified_at' => $this->offsetGet('email_verified_at'),
             'workstation_online' => (bool) $this->offsetGet('workstation_online'),
             'travel_radius' => $this->travel_radius,
             'latitude' => $this->latitude,

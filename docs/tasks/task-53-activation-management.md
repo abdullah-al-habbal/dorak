@@ -14,7 +14,7 @@ Activation exists only for barbers. Admins can activate or deactivate a barber t
 ### Backend (API / DB / Policies)
 - Add `POST /api/v1/admin/branches/{branch}/activate|deactivate` (auth:admin_api), writing `activation_logs` like the barber path.
 - Add a branch-owner path `POST /api/v1/branch/barbers/{barber}/activate|deactivate` (auth:branch_api). The policy must require an accepted affiliation between the barber and the branch (or the branch's brand); otherwise return 403.
-- Decision required: whether a barber's self-deactivation should remain (the spec text implies the owner controls activation). Keep the current behavior until decided.
+- Decision required: whether a barber's self-deactivation should remain (the spec text implies the owner controls activation). Keep the current behavior until decided. Note (Task 37): the self activate/deactivate routes now use `EnsureBarberAccountAccess:approved`, so a `pending` (self-registered, awaiting approval) barber cannot activate themselves; every other barber route requires `enabled`.
 - Deactivating a branch must not delete bookings. Decision required: whether future bookings are auto-cancelled (and notified via Task 28) or kept.
 
 ### Dashboard (BFF / React)
