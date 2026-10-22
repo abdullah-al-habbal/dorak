@@ -11,10 +11,12 @@ return [
     'dispute_flagged' => 'Review dispute flagged for administrative review.',
     'dispute_resolved' => 'Review dispute resolved.',
     'dispute_not_allowed' => 'This review cannot be disputed.',
-    'dispute_resolution_not_available' => 'This dispute cannot be resolved until the 48-hour review window has elapsed.',
+    'dispute_resolution_not_available' => 'Only a disputed review can be resolved.',
     'notification_review_request_title' => 'How was your visit?',
     'notification_review_request_body' => 'Your booking is complete. Tell us about your experience.',
     'client_reviewed' => 'Client rated successfully.',
     'booking_not_finished' => 'Clients can be rated only after a completed or no-show booking.',
     'branch_rates_client' => 'This booking belongs to a branch; the branch rates the client.',
+    'dispute_not_reviewed_party' => 'Only the branch or barber this review is about can dispute it.',
+    'disputes_released' => ':count expired review dispute(s) re-published.',
 ];

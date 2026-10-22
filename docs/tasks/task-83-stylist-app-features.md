@@ -51,3 +51,5 @@ The stylist app implements only today's appointments, the workstation toggle and
 - Branch-side affiliation and job management (Task 85).
 
 > Note (Task 40): the client-review contract is ready — `rateClient` on `StylistOperationsRepository` in `packages/core`, and staff booking payloads carry `client.reputation {average, count}` (`BookingDto.client`, dashboard `IBooking.client`).
+
+> Note (Task 41): barber dispute route is `POST /api/v1/barber/reviews/{review}/dispute`.

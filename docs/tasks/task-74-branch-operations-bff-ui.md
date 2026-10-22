@@ -38,3 +38,5 @@ The backend exposes a full branch-manager API under `/api/v1/branch/*` (`auth:br
 ## Out of Scope
 - Affiliations, job postings and managed barbers (Task 75).
 - Review dispute resolution (Task 76).
+
+> Note (Task 41): the manager "Dispute" action calls `POST /api/v1/branch/reviews/{review}/dispute` (`reason` 10–1000) — or add a dashboard-scoped equivalent for brand owners.

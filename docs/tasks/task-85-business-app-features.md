@@ -45,3 +45,5 @@ The business app covers only the dashboard, the bookings list, the chairs list a
 - Shared floor-plan package decision (Task 86).
 
 > Note (Task 40): the client-review contract is ready — `rateClient` on `BranchOperationsRepository` in `packages/core`, and staff booking payloads carry `client.reputation {average, count}` (`BookingDto.client`, dashboard `IBooking.client`).
+
+> Note (Task 41): branch dispute route is `POST /api/v1/branch/reviews/{review}/dispute`.

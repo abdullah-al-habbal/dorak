@@ -15,6 +15,7 @@ use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 use Modules\ClientRecommendation\Services\ExploreRankingWeightsResolver;
 use Modules\Explore\CQRS\Query\Shared\ExploreBranchesQuery;
+use Modules\Review\Enums\ReviewStatus;
 
 final class ExploreBranchesEloquentResolver
 {
@@ -147,9 +148,11 @@ final class ExploreBranchesEloquentResolver
         }
 
         if ($payload->ratingMin !== null) {
-            $query->whereHas('reviews', fn ($q) => $q->select(DB::raw('avg(rating)'))
+            // Only published reviews count: disputed and hidden ones are held back (L4).
+            $query->whereHas('reviews', fn ($q) => $q->where('status', ReviewStatus::Published)->select(DB::raw('avg(rating)'))
                 ->groupBy('subject_id')
-                ->having(DB::raw('avg(rating)'), '>=', $payload->ratingMin)
+                // `? + 0` keeps the comparison numeric: SQLite binds the float as text.
+                ->havingRaw('avg(rating) >= (? + 0)', [$payload->ratingMin])
             );
         }
 

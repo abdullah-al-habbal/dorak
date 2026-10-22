@@ -33,3 +33,5 @@ Admin-only backend actions have no dashboard surface: barber activation and deac
 ## Out of Scope
 - Review dispute business rules and the 48-hour window (Task 41).
 - Platform analytics, subscriptions and payouts (Task 65).
+
+> Note (Task 41): admins may resolve a disputed review at any time (`PATCH admin/reviews/{review}/resolve`, `published|hidden`); unresolved disputes auto-release after 48 h.

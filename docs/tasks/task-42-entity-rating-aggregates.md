@@ -30,3 +30,5 @@ Clients are meant to see ratings for shops and barbers, but branch and barber re
 
 ## Out of Scope
 - Composite ranking weights — Task 46.
+
+> Note (Task 41): `rating_min` already counts only `published` reviews and compares numerically on MySQL and SQLite; aggregates should use the same rule.

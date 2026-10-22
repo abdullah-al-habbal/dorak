@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Review\Handlers\Admin;
 
-use Carbon\Carbon;
 use Modules\Review\CQRS\Command\Admin\ResolveReviewDisputeCommand;
 use Modules\Review\Eloquent\Resolvers\Shared\ManageReviewDisputeEloquentResolver;
 use Modules\Review\Enums\ReviewStatus;
@@ -18,9 +17,10 @@ final class ResolveReviewDisputeHandler
     {
         $review = $this->resolver->find($command->reviewId);
 
-        $disputedAt = $review->getAttribute('disputed_at');
-
-        if ($review->getAttribute('status') !== ReviewStatus::Disputed || ! $disputedAt instanceof Carbon || $disputedAt->greaterThan(now()->subHours(48))) {
+        // Admins decide at any time while the review is disputed; disputes
+        // nobody decides within 48 hours are re-published by
+        // `reviews:release-expired-disputes`.
+        if ($review->getAttribute('status') !== ReviewStatus::Disputed) {
             return null;
         }
 
