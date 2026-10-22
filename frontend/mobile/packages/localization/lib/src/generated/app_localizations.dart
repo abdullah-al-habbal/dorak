@@ -2119,6 +2119,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications'**
   String get profileNotificationsAction;
+
+  /// Title of the phone verification screen
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your phone'**
+  String get phoneVerifyTitle;
+
+  /// Subtitle of the phone verification screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code we sent to {phone}'**
+  String phoneVerifySubtitle(String phone);
+
+  /// Label of the phone code field
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code'**
+  String get phoneVerifyCodeLabel;
+
+  /// Button that submits the phone code
+  ///
+  /// In en, this message translates to:
+  /// **'Verify phone'**
+  String get phoneVerifyButton;
+
+  /// Button that requests a new phone code
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get phoneVerifyResend;
+
+  /// Button that leaves phone verification without verifying
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get phoneVerifySkip;
+
+  /// Validation message for an incomplete phone code
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code.'**
+  String get phoneVerifyIncomplete;
+
+  /// Error when the phone code is rejected
+  ///
+  /// In en, this message translates to:
+  /// **'That code is invalid or has expired.'**
+  String get phoneVerifyInvalidCode;
+
+  /// Error when the phone number is rejected
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number can\'t be verified. Check it or use another number.'**
+  String get phoneVerifyPhoneRejected;
+
+  /// Error when phone code requests are rate limited
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait a minute and try again.'**
+  String get phoneVerifyThrottled;
+
+  /// Status shown after the phone is verified
+  ///
+  /// In en, this message translates to:
+  /// **'Phone verified'**
+  String get phoneVerifyVerified;
+
+  /// Badge shown next to a verified phone number
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get profilePhoneVerifiedLabel;
+
+  /// Hint under the profile phone field
+  ///
+  /// In en, this message translates to:
+  /// **'Changing your phone sends a verification code'**
+  String get profilePhoneChangeHint;
 }
 
 class _AppLocalizationsDelegate

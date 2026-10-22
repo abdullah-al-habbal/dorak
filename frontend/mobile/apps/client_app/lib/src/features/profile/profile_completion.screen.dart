@@ -22,7 +22,7 @@ class ProfileCompletionScreen extends StatefulWidget {
   final ProfileCompletionBloc bloc;
   final String initialName;
   final String? initialPhone;
-  final VoidCallback onCompleted;
+  final ValueChanged<String?> onCompleted;
 
   @override
   State<ProfileCompletionScreen> createState() =>
@@ -55,7 +55,7 @@ class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
         child: BlocConsumer<ProfileCompletionBloc, ProfileCompletionState>(
           bloc: widget.bloc,
           listener: (context, state) {
-            if (state.completed) widget.onCompleted();
+            if (state.completed) widget.onCompleted(state.phoneToVerify);
           },
           builder: (context, state) => _ProfileCompletionBody(
             state: state,
@@ -81,6 +81,7 @@ class _ProfileCompletionScreenState extends State<ProfileCompletionScreen> {
       ProfileCompletionSubmitted(
         name: _nameController.text.trim(),
         phone: _phoneController.text.trim(),
+        currentPhone: widget.initialPhone ?? '',
       ),
     );
   }

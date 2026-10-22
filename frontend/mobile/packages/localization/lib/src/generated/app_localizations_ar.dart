@@ -1123,4 +1123,47 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileNotificationsAction => 'الإشعارات';
+
+  @override
+  String get phoneVerifyTitle => 'تأكيد رقم الهاتف';
+
+  @override
+  String phoneVerifySubtitle(String phone) {
+    return 'أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى $phone';
+  }
+
+  @override
+  String get phoneVerifyCodeLabel => 'رمز التحقق';
+
+  @override
+  String get phoneVerifyButton => 'تأكيد الهاتف';
+
+  @override
+  String get phoneVerifyResend => 'إعادة إرسال الرمز';
+
+  @override
+  String get phoneVerifySkip => 'ليس الآن';
+
+  @override
+  String get phoneVerifyIncomplete => 'أدخل الرمز المكوّن من 6 أرقام.';
+
+  @override
+  String get phoneVerifyInvalidCode => 'الرمز غير صحيح أو منتهي الصلاحية.';
+
+  @override
+  String get phoneVerifyPhoneRejected =>
+      'لا يمكن تأكيد رقم الهاتف هذا. تحقق منه أو استخدم رقماً آخر.';
+
+  @override
+  String get phoneVerifyThrottled =>
+      'محاولات كثيرة. انتظر دقيقة ثم حاول مجدداً.';
+
+  @override
+  String get phoneVerifyVerified => 'تم تأكيد الهاتف';
+
+  @override
+  String get profilePhoneVerifiedLabel => 'موثّق';
+
+  @override
+  String get profilePhoneChangeHint => 'تغيير الهاتف يرسل رمز تحقق';
 }

@@ -418,6 +418,8 @@ Client routes are under `/client`.
 | Refresh | `POST /client/refresh-token` | `auth:client`. Revokes and reissues. Used as the session-validity probe |
 | Send code | `POST /client/email/verify/send` | `auth:client`. 6 digits, 10-minute TTL. Regenerates and invalidates any previous code. Rate-limited: `throttle:3,1` (3/min) |
 | Verify | `POST /client/email/verify` | `auth:client`, `{code}`, `size:6`. 422 on wrong code. 5 wrong attempts invalidate the code (forces a resend) |
+| Phone code | `POST /client/phone/otp` | `auth:client` (active only), `{phone}`; sends one SMS, 6 digits hashed in cache, 10-minute TTL, `throttle:3,1`. 422 if the phone is verified on another client |
+| Phone verify | `POST /client/phone/verify` | `auth:client` (active only), `{code}`, `throttle:5,1`. 422 on a wrong/expired code; 5 wrong attempts invalidate it. Returns the client with `phone_verified_at`. `PATCH /client/profile` rejects a changed `phone` with 422 |
 | Logout | `POST /client/logout` | `auth:client`. 200 with **no `data` key** |
 | Change password | `PATCH /client/password` | `auth:client`. `{current_password, password, password_confirmation}` (`confirmed` rule). 422 field errors are real copy. Success message is an untranslated key — never render it |
 | Barber detail | `GET /explore/barbers/{barber}` | Public. Returns `{...BarberResource, services}` — services nested inside the barber resource |

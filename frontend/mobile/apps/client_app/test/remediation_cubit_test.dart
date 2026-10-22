@@ -19,6 +19,32 @@ void main() {
     await cubit.close();
   });
 
+  group('ProfileEditCubit phone change', () {
+    test('a changed phone is not patched and asks for verification', () async {
+      final repository = FakeProfileRepository();
+      final cubit = ProfileEditCubit(repository, initialPhone: '+963900000000');
+
+      await cubit.save(name: 'Sara', phone: ' +963911111111 ');
+
+      expect(cubit.state.saved, isTrue);
+      expect(cubit.state.phoneToVerify, '+963911111111');
+      expect(repository.requestOtpCalls, 0);
+      await cubit.close();
+    });
+
+    test('an unchanged phone needs no verification', () async {
+      final cubit = ProfileEditCubit(
+        FakeProfileRepository(),
+        initialPhone: '+963900000000',
+      );
+
+      await cubit.save(name: 'Sara', phone: '+963900000000');
+
+      expect(cubit.state.phoneToVerify, isNull);
+      await cubit.close();
+    });
+  });
+
   group('ProfileEditCubit email change', () {
     test('a new email is sent and requires verification', () async {
       final repository = FakeProfileRepository();

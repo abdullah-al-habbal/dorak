@@ -11,6 +11,7 @@ use Modules\Client\Http\Actions\Client\LoginAction;
 use Modules\Client\Http\Actions\Client\LogoutAction;
 use Modules\Client\Http\Actions\Client\RefreshTokenAction;
 use Modules\Client\Http\Actions\Client\RegisterAction;
+use Modules\Client\Http\Actions\Client\RequestPhoneOtpAction;
 use Modules\Client\Http\Actions\Client\ResetPasswordAction;
 use Modules\Client\Http\Actions\Client\SendEmailVerificationAction;
 use Modules\Client\Http\Actions\Client\SocialLoginAction;
@@ -18,6 +19,7 @@ use Modules\Client\Http\Actions\Client\UpdateProfileAction;
 use Modules\Client\Http\Actions\Client\UpdateUniversePreferenceAction;
 use Modules\Client\Http\Actions\Client\UploadAvatarAction;
 use Modules\Client\Http\Actions\Client\VerifyEmailAction;
+use Modules\Client\Http\Actions\Client\VerifyPhoneOtpAction;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
 
 Route::prefix('client')->name('client.')->group(function (): void {
@@ -40,6 +42,8 @@ Route::prefix('client')->name('client.')->group(function (): void {
         Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
         Route::post('/avatar', UploadAvatarAction::class)->name('avatar.upload');
         Route::delete('/account', DeleteAccountAction::class)->name('account.delete');
+        Route::post('/phone/otp', RequestPhoneOtpAction::class)->name('phone.otp')->middleware('throttle:3,1');
+        Route::post('/phone/verify', VerifyPhoneOtpAction::class)->name('phone.verify')->middleware('throttle:5,1');
         Route::patch('/password', ChangePasswordAction::class)->name('password.change');
     });
 });

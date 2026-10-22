@@ -18,6 +18,7 @@ class AppRoutes {
   static const String authResetPassword = '/auth/reset-password';
   static const String authResetPasswordSuccess = '/auth/reset-password/success';
   static const String profileCompletion = '/profile-completion';
+  static const String phoneVerify = '/profile/phone-verify';
 
   // Main shell routes (StatefulShellRoute)
   static const String discover = '/discover';

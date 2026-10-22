@@ -150,7 +150,7 @@ nullable `recommended_catalog_item_ids`, nested `face_profile`). NB: upload
 queues analysis server-side; `getProfile(id)` reads the profile's
 `analysis_status` while the bounded client poll waits for completion.
 
-`ProfileRepository` / `DioProfileRepository` — 018b: `updateProfile`
+`ProfileRepository` / `DioProfileRepository` — Task 34: `requestPhoneOtp(phone)` / `verifyPhoneOtp(code)` (phone is no longer an `updateProfile` argument); 018b: `updateProfile`
 (`PATCH /client/profile`, null-aware map entries `'name': ?name`), 
 `uploadAvatar(filePath)` (multipart `avatar`, ≤ 2048 kB → `{avatar_url}`),
 `updatePreferredUniverse` (`PATCH /client/preferences/universe`).

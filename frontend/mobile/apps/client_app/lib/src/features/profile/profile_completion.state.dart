@@ -4,11 +4,13 @@ class ProfileCompletionState extends Equatable {
   const ProfileCompletionState({
     this.isSubmitting = false,
     this.completed = false,
+    this.phoneToVerify,
     this.error,
   });
 
   final bool isSubmitting;
   final bool completed;
+  final String? phoneToVerify;
   final Object? error;
 
   ProfileCompletionState copyWith({
@@ -25,5 +27,5 @@ class ProfileCompletionState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [isSubmitting, completed, error];
+  List<Object?> get props => [isSubmitting, completed, phoneToVerify, error];
 }

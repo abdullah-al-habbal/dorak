@@ -11,11 +11,13 @@ void main() {
   late FakeProfileRepository repository;
   ClientDto? saved;
   String? verifyEmail;
+  String? verifyPhone;
 
   setUp(() {
     repository = FakeProfileRepository();
     saved = null;
     verifyEmail = null;
+    verifyPhone = null;
   });
 
   Future<void> openEdit(WidgetTester tester) async {
@@ -35,6 +37,7 @@ void main() {
                     email: 'sara@example.com',
                     onSaved: (client) => saved = client,
                     onEmailVerificationRequired: (email) => verifyEmail = email,
+                    onPhoneVerificationRequired: (phone) => verifyPhone = phone,
                   ),
                 ),
               ),
@@ -79,6 +82,23 @@ void main() {
     expect(repository.lastEmail, 'new@example.com');
     expect(saved?.emailVerified, isFalse);
     expect(verifyEmail, 'new@example.com');
+    expect(find.text('Edit profile'), findsNothing);
+  });
+
+  testWidgets('changing the phone routes to phone verification', (
+    tester,
+  ) async {
+    await openEdit(tester);
+
+    await tester.enterText(
+      find.widgetWithText(TextField, '+963900000000'),
+      '+963911111111',
+    );
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+
+    expect(verifyPhone, '+963911111111');
+    expect(verifyEmail, isNull);
     expect(find.text('Edit profile'), findsNothing);
   });
 

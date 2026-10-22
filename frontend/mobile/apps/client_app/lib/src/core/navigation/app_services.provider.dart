@@ -11,6 +11,7 @@ import 'package:client_app/src/features/profile/avatar.bloc.dart';
 import 'package:client_app/src/features/profile/face_analysis.bloc.dart';
 import 'package:client_app/src/features/profile/favorites.bloc.dart';
 import 'package:client_app/src/features/profile/history.bloc.dart';
+import 'package:client_app/src/features/profile/phone_verification.bloc.dart';
 import 'package:client_app/src/features/profile/profile_completion.bloc.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
 import 'package:client_app/src/features/review/review_submit.bloc.dart';
@@ -23,6 +24,7 @@ class AppServices {
   const AppServices({
     required this.createOnboardingConfig,
     required this.createProfileCompletion,
+    required this.createPhoneVerification,
     required this.createPasswordRecovery,
     required this.createDiscovery,
     required this.createFavorites,
@@ -49,6 +51,8 @@ class AppServices {
         OnboardingConfigBloc(DioOnboardingConfigRepository(apiClient)),
     createProfileCompletion: () =>
         ProfileCompletionBloc(DioProfileRepository(apiClient), preferences),
+    createPhoneVerification: (phone) =>
+        PhoneVerificationBloc(DioProfileRepository(apiClient), phone),
     createPasswordRecovery: () => PasswordRecoveryBloc(authRepository),
     createDiscovery: () => DiscoveryBloc(
       DioExploreRepository(apiClient),
@@ -85,6 +89,7 @@ class AppServices {
 
   final OnboardingConfigBloc Function() createOnboardingConfig;
   final ProfileCompletionBloc Function() createProfileCompletion;
+  final PhoneVerificationBloc Function(String phone) createPhoneVerification;
   final PasswordRecoveryBloc Function() createPasswordRecovery;
   final DiscoveryBloc Function() createDiscovery;
   final FavoritesBloc Function() createFavorites;

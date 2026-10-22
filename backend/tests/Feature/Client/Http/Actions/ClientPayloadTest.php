@@ -9,14 +9,14 @@ use Laravel\Socialite\Two\User as SocialUser;
 use Modules\Client\Mail\SendEmailVerificationCode;
 use Modules\Client\Models\ClientModel;
 
-const CLIENT_PAYLOAD_KEYS = ['id', 'name', 'email', 'phone', 'avatar', 'preferred_universe', 'email_verified_at', 'created_at'];
+const CLIENT_PAYLOAD_KEYS = ['id', 'name', 'email', 'phone', 'phone_verified_at', 'avatar', 'preferred_universe', 'email_verified_at', 'created_at'];
 
 function clientPayloadKeys(): array
 {
     return CLIENT_PAYLOAD_KEYS;
 }
 
-it('returns the same 8-key client object from login, register, social login and profile', function (): void {
+it('returns the same 9-key client object from login, register, social login and profile', function (): void {
     Mail::fake();
     $client = ClientModel::factory()->create(['password' => 'secret-pass-1']);
 
@@ -46,14 +46,14 @@ it('returns the same 8-key client object from login, register, social login and 
     $this->withToken($login->json('data.token'))->getJson('/api/v1/client/profile')
         ->assertOk()
         ->assertJsonStructure(['data' => clientPayloadKeys()])
-        ->assertJsonCount(8, 'data')
+        ->assertJsonCount(9, 'data')
         ->assertJsonPath('data.preferred_universe', 'men');
 
-    expect($register->json('data.client'))->toHaveKeys(clientPayloadKeys())->toHaveCount(8);
+    expect($register->json('data.client'))->toHaveKeys(clientPayloadKeys())->toHaveCount(9);
     expect($register->json('data.client.preferred_universe'))->toBe('men');
     expect($register->json('data.client.created_at'))->not->toBeNull();
-    expect($socialResponse->json('data.client'))->toHaveCount(8);
-    expect($login->json('data.client'))->toHaveCount(8);
+    expect($socialResponse->json('data.client'))->toHaveCount(9);
+    expect($login->json('data.client'))->toHaveCount(9);
 });
 
 it('exposes the avatar as a public url', function (): void {

@@ -18,7 +18,6 @@ final class UpdateProfileEloquentResolver
             'name' => $command->name,
             'email' => $command->email,
             'password' => $command->password ? Hash::make($command->password) : null,
-            'phone' => $command->phone,
         ], fn ($value) => $value !== null);
 
         if ($command->email !== null && strcasecmp($command->email, (string) $client->email) !== 0) {

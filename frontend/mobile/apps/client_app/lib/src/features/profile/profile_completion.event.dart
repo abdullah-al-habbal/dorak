@@ -8,11 +8,16 @@ sealed class ProfileCompletionEvent extends Equatable {
 }
 
 class ProfileCompletionSubmitted extends ProfileCompletionEvent {
-  const ProfileCompletionSubmitted({required this.name, required this.phone});
+  const ProfileCompletionSubmitted({
+    required this.name,
+    required this.phone,
+    this.currentPhone = '',
+  });
 
   final String name;
   final String phone;
+  final String currentPhone;
 
   @override
-  List<Object?> get props => [name, phone];
+  List<Object?> get props => [name, phone, currentPhone];
 }

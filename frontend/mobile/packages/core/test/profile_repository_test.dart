@@ -96,31 +96,55 @@ void main() {
       },
     );
 
-    test('updateProfile omits not provided fields', () async {
+    test('requestPhoneOtp posts the phone to the otp endpoint', () async {
       late RequestOptions captured;
       final fake = fakeDio(
         handler: (options) {
           captured = options;
-          return jsonResponse(
-            options,
-            data: successEnvelope(
-              data: {
-                'id': 'client-1',
-                'name': '',
-                'email': '',
-                'phone': null,
-                'preferred_universe': null,
-              },
-            ),
-          );
+          return jsonResponse(options, data: successEnvelope());
         },
       );
       final repository = DioProfileRepository(clientWith(fake));
 
-      await repository.updateProfile(phone: '+966500000002');
+      await repository.requestPhoneOtp('+963911222333');
 
-      expect(captured.data, {'phone': '+966500000002'});
+      expect(captured.path, ProfileEndpoints.phoneOtp);
+      expect(captured.method, 'POST');
+      expect(captured.data, {'phone': '+963911222333'});
     });
+
+    test(
+      'verifyPhoneOtp posts the code and parses the verified client',
+      () async {
+        late RequestOptions captured;
+        final fake = fakeDio(
+          handler: (options) {
+            captured = options;
+            return jsonResponse(
+              options,
+              data: successEnvelope(
+                data: {
+                  'id': 'client-1',
+                  'name': 'Ahmad',
+                  'email': 'ahmad@example.com',
+                  'phone': '+963911222333',
+                  'phone_verified_at': '2026-09-02T10:00:00.000000Z',
+                },
+              ),
+            );
+          },
+        );
+        final repository = DioProfileRepository(clientWith(fake));
+
+        final client = await repository.verifyPhoneOtp('123456');
+
+        expect(captured.path, ProfileEndpoints.phoneVerify);
+        expect(captured.method, 'POST');
+        expect(captured.data, {'code': '123456'});
+        expect(client.phone, '+963911222333');
+        expect(client.phoneVerified, isTrue);
+      },
+    );
 
     test('uploadAvatar posts multipart and parses avatar_url', () async {
       late RequestOptions captured;

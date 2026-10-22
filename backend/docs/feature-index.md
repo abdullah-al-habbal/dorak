@@ -101,7 +101,7 @@
 - `ShowBookingAction` [GET /api/v1/bookings/{booking}] — validates ownership, returns booking resource. Auth:client
 
 ### Profile Read
-- `GetProfileAction` [GET /api/v1/client/profile] — returns the authenticated client via `ClientProfileResource` (`id`, `name`, `email`, `phone`, `avatar`, `preferred_universe`, `email_verified_at`, `created_at`) — the same 8-key object login, register, social login and `PATCH /client/profile` return. Auth:client, verification scope (unverified clients allowed). Mobile uses it to restore the session client after a cold start.
+- `GetProfileAction` [GET /api/v1/client/profile] — returns the authenticated client via `ClientProfileResource` (`id`, `name`, `email`, `phone`, `avatar`, `preferred_universe`, `email_verified_at`, `phone_verified_at`, `created_at`) — the same 8-key object login, register, social login and `PATCH /client/profile` return. Auth:client, verification scope (unverified clients allowed). Mobile uses it to restore the session client after a cold start.
 
 ### Profile Update
 - `UpdateProfileAction` [PATCH /api/v1/client/profile] — nullable name/email/password fields. Auth:client. Changing the email clears `email_verified_at` and queues a new verification code (`SendEmailVerificationCodeJob`); the client is then limited to the verification-only routes until `POST /client/email/verify` succeeds.
@@ -214,6 +214,12 @@
 - `UploadAvatarAction` [POST /api/v1/client/avatar] — multipart upload, stores in `public/avatars`, returns URL. Auth:client
 - `DeleteAccountAction` [DELETE /api/v1/client/account] — requires password confirmation, blocks if active bookings exist. Auth:client
 - 5 contract tests for account deletion
+
+### Phone OTP Verification
+- `RequestPhoneOtpAction` [POST /api/v1/client/phone/otp] — normalizes the phone, caches a hashed 6-digit code (10-min TTL) and sends one SMS through `Modules\Core\Contracts\SmsSender` (`services.sms.driver`, `log` driver). Auth:client (active), `throttle:3,1`
+- `VerifyPhoneOtpAction` [POST /api/v1/client/phone/verify] — checks the hashed code (5-attempt lockout), sets `phone` + `phone_verified_at`, returns `ClientProfileResource`. Auth:client (active), `throttle:5,1`
+- `PATCH /api/v1/client/profile` returns 422 for a changed `phone`; the phone changes only through this flow
+- Tests: `tests/Feature/Client/Http/Actions/PhoneOtpTest.php`
 
 ### Email Verification
 - `SendEmailVerificationAction` [POST /api/v1/client/email/verify/send] — sends 6-digit code to client email, 10-min TTL cache. Auth:client

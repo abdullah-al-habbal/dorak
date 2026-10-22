@@ -31,6 +31,14 @@ class ClientFactory extends Factory
         ];
     }
 
+    public function phoneVerified(string $phone = '+963911000000'): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'phone' => $phone,
+            'phone_verified_at' => now(),
+        ]);
+    }
+
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [

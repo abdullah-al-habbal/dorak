@@ -21,6 +21,7 @@ final class ClientProfileResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
+            'phone_verified_at' => $this->phone_verified_at?->toISOString(),
             'avatar' => $avatar === null ? null : Storage::disk('public')->url($avatar),
             'preferred_universe' => $this->preferred_universe?->value,
             'email_verified_at' => $this->email_verified_at?->toISOString(),

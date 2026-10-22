@@ -10,12 +10,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
+use InvalidArgumentException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Contracts\SmsSender;
 use Modules\Core\Models\NotificationDeliveryModel;
+use Modules\Core\Services\Sms\LogSmsSender;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
@@ -31,6 +34,8 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
 
     public function register(): void
     {
+        $this->registerSmsSender();
+
         // When config is cached, the custom config keys are already baked into
         // bootstrap/cache/config.php (loadAppConfig ran during `config:cache`).
         // Re-requiring the files here would call env() — which returns null once
@@ -40,6 +45,18 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
         }
 
         $this->loadAppConfig();
+    }
+
+    private function registerSmsSender(): void
+    {
+        $this->app->bind(SmsSender::class, function ($app): SmsSender {
+            $driver = $app->make(ConfigRepository::class)->get('services.sms.driver');
+
+            return match ($driver) {
+                'log' => new LogSmsSender,
+                default => throw new InvalidArgumentException('Unsupported SMS driver.'),
+            };
+        });
     }
 
     protected function loadRoutes(): void {}

@@ -21,11 +21,17 @@ class FakeProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<ClientDto> updateProfile({
-    String? name,
-    String? email,
-    String? phone,
-  }) {
+  Future<ClientDto> updateProfile({String? name, String? email}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> requestPhoneOtp(String phone) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ClientDto> verifyPhoneOtp(String code) {
     throw UnimplementedError();
   }
 

@@ -21,10 +21,18 @@ class ProfileCompletionBloc
     if (state.isSubmitting) return;
     emit(const ProfileCompletionState(isSubmitting: true));
     try {
-      await _profiles.updateProfile(name: event.name, phone: event.phone);
+      await _profiles.updateProfile(name: event.name);
       await _preferences.setProfileCompleted(true);
       if (emit.isDone) return;
-      emit(const ProfileCompletionState(completed: true));
+      final phone = event.phone.trim();
+      final needsVerification =
+          phone.isNotEmpty && phone != event.currentPhone.trim();
+      emit(
+        ProfileCompletionState(
+          completed: true,
+          phoneToVerify: needsVerification ? phone : null,
+        ),
+      );
     } catch (error) {
       if (emit.isDone) return;
       emit(ProfileCompletionState(error: error));

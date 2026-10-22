@@ -16,6 +16,8 @@ class ProfileEditScreen extends StatefulWidget {
     this.email = '',
     this.onSaved,
     this.onEmailVerificationRequired,
+    this.onPhoneVerificationRequired,
+    this.phoneVerified = false,
   });
   final ProfileRepository repository;
   final String name;
@@ -23,6 +25,8 @@ class ProfileEditScreen extends StatefulWidget {
   final String email;
   final ValueChanged<ClientDto>? onSaved;
   final ValueChanged<String>? onEmailVerificationRequired;
+  final ValueChanged<String>? onPhoneVerificationRequired;
+  final bool phoneVerified;
   @override
   State<ProfileEditScreen> createState() => _ProfileEditScreenState();
 }
@@ -36,7 +40,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   @override
   void initState() {
     super.initState();
-    _cubit = ProfileEditCubit(widget.repository, initialEmail: widget.email);
+    _cubit = ProfileEditCubit(
+      widget.repository,
+      initialEmail: widget.email,
+      initialPhone: widget.phone ?? '',
+    );
   }
 
   Future<void> _save() async {
@@ -50,8 +58,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     final client = state.client;
     if (client != null) widget.onSaved?.call(client);
     Navigator.pop(context);
+    final phone = state.phoneToVerify;
     if (state.needsEmailVerification) {
       widget.onEmailVerificationRequired?.call(client?.email ?? _email.text);
+    } else if (phone != null) {
+      widget.onPhoneVerificationRequired?.call(phone);
     }
   }
 
@@ -95,6 +106,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     labelText: l10n.profilePhoneNumberLabel,
+                    helperText: l10n.profilePhoneChangeHint,
+                    suffixText: widget.phoneVerified
+                        ? l10n.profilePhoneVerifiedLabel
+                        : null,
                   ),
                 ),
                 if (error != null) ...[

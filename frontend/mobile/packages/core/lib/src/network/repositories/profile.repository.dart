@@ -5,7 +5,11 @@ import 'package:core/core.dart';
 abstract class ProfileRepository {
   Future<ClientDto> getProfile();
 
-  Future<ClientDto> updateProfile({String? name, String? email, String? phone});
+  Future<ClientDto> updateProfile({String? name, String? email});
+
+  Future<void> requestPhoneOtp(String phone);
+
+  Future<ClientDto> verifyPhoneOtp(String code);
 
   Future<AvatarDto> uploadAvatar(String filePath);
 
@@ -26,19 +30,29 @@ class DioProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<ClientDto> updateProfile({
-    String? name,
-    String? email,
-    String? phone,
-  }) {
-    final data = <String, dynamic>{
-      'name': ?name,
-      'email': ?email,
-      'phone': ?phone,
-    };
+  Future<ClientDto> updateProfile({String? name, String? email}) {
+    final data = <String, dynamic>{'name': ?name, 'email': ?email};
     return _apiClient.patch<ClientDto>(
       ProfileEndpoints.update,
       data: data,
+      parser: (json) => ClientDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<void> requestPhoneOtp(String phone) {
+    return _apiClient.post<void>(
+      ProfileEndpoints.phoneOtp,
+      data: {'phone': phone},
+      parser: (_) {},
+    );
+  }
+
+  @override
+  Future<ClientDto> verifyPhoneOtp(String code) {
+    return _apiClient.post<ClientDto>(
+      ProfileEndpoints.phoneVerify,
+      data: {'code': code},
       parser: (json) => ClientDto.fromJson(json as Map<String, dynamic>),
     );
   }

@@ -26,7 +26,7 @@ use Modules\Core\Enums\Universe;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'email', 'email_verified_at', 'password', 'preferred_universe', 'phone', 'avatar', 'status'])]
+#[Fillable(['name', 'email', 'email_verified_at', 'password', 'preferred_universe', 'phone', 'phone_verified_at', 'avatar', 'status'])]
 #[Hidden(['password', 'remember_token'])]
 #[Table('clients')]
 #[Translatable(['name'])]
@@ -87,6 +87,7 @@ class ClientModel extends Authenticatable implements FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => ClientStatusEnum::class,
             'preferred_universe' => Universe::class,

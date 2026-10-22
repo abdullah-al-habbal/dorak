@@ -22,6 +22,7 @@ import 'package:client_app/src/features/profile/face_analysis.bloc.dart';
 import 'package:client_app/src/features/profile/history.bloc.dart';
 import 'package:client_app/src/features/profile/favorites.bloc.dart';
 import 'package:client_app/src/features/profile/photo_picker.provider.dart';
+import 'package:client_app/src/features/profile/phone_verification.bloc.dart';
 import 'package:client_app/src/features/profile/profile_completion.bloc.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
 import 'package:client_app/src/features/review/review_submit.bloc.dart';
@@ -56,6 +57,7 @@ AppRouter buildRouter({
   ReviewSubmitBloc? reviewSubmit,
   FavoritesBloc? favorites,
   ProfileCompletionBloc? profileCompletion,
+  PhoneVerificationBloc? phoneVerification,
   NotificationsBloc? notifications,
   PhotoPicker? photoPicker,
   VoidCallback switchLocale = _noSwitchLocale,
@@ -86,6 +88,7 @@ AppRouter buildRouter({
     profileCompletion:
         profileCompletion ??
         ProfileCompletionBloc(FakeProfileRepository(), preferences),
+    phoneVerification: phoneVerification,
     notifications: notifications ?? fakeNotificationsBloc(),
     photoPicker: photoPicker ?? FakePhotoPicker(),
     switchLocale: switchLocale,
@@ -1024,7 +1027,12 @@ class FakeProfileRepository implements ProfileRepository {
   Object? updateError;
   int updateCalls = 0;
   String? lastName;
-  String? lastPhone;
+  Object? requestOtpError;
+  Object? verifyOtpError;
+  int requestOtpCalls = 0;
+  int verifyOtpCalls = 0;
+  String? lastOtpPhone;
+  String? lastOtpCode;
   String? lastEmail;
 
   @override
@@ -1037,14 +1045,9 @@ class FakeProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<ClientDto> updateProfile({
-    String? name,
-    String? email,
-    String? phone,
-  }) async {
+  Future<ClientDto> updateProfile({String? name, String? email}) async {
     updateCalls++;
     lastName = name;
-    lastPhone = phone;
     final failure = updateError;
     if (failure != null) throw failure;
     lastEmail = email;
@@ -1053,8 +1056,31 @@ class FakeProfileRepository implements ProfileRepository {
       id: 'uuid-1',
       name: name ?? 'Sara',
       email: email ?? 'sara@example.com',
-      phone: phone,
       emailVerifiedAt: emailChanged ? null : DateTime.utc(2026, 1, 1),
+    );
+  }
+
+  @override
+  Future<void> requestPhoneOtp(String phone) async {
+    requestOtpCalls++;
+    lastOtpPhone = phone;
+    final failure = requestOtpError;
+    if (failure != null) throw failure;
+  }
+
+  @override
+  Future<ClientDto> verifyPhoneOtp(String code) async {
+    verifyOtpCalls++;
+    lastOtpCode = code;
+    final failure = verifyOtpError;
+    if (failure != null) throw failure;
+    return ClientDto(
+      id: 'uuid-1',
+      name: 'Sara',
+      email: 'sara@example.com',
+      phone: lastOtpPhone,
+      phoneVerifiedAt: DateTime.utc(2026, 2, 1),
+      emailVerifiedAt: DateTime.utc(2026, 1, 1),
     );
   }
 

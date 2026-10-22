@@ -1132,4 +1132,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileNotificationsAction => 'Notifications';
+
+  @override
+  String get phoneVerifyTitle => 'Verify your phone';
+
+  @override
+  String phoneVerifySubtitle(String phone) {
+    return 'Enter the 6-digit code we sent to $phone';
+  }
+
+  @override
+  String get phoneVerifyCodeLabel => 'Verification code';
+
+  @override
+  String get phoneVerifyButton => 'Verify phone';
+
+  @override
+  String get phoneVerifyResend => 'Resend code';
+
+  @override
+  String get phoneVerifySkip => 'Not now';
+
+  @override
+  String get phoneVerifyIncomplete => 'Enter the 6-digit code.';
+
+  @override
+  String get phoneVerifyInvalidCode => 'That code is invalid or has expired.';
+
+  @override
+  String get phoneVerifyPhoneRejected =>
+      'This phone number can\'t be verified. Check it or use another number.';
+
+  @override
+  String get phoneVerifyThrottled =>
+      'Too many attempts. Please wait a minute and try again.';
+
+  @override
+  String get phoneVerifyVerified => 'Phone verified';
+
+  @override
+  String get profilePhoneVerifiedLabel => 'Verified';
+
+  @override
+  String get profilePhoneChangeHint =>
+      'Changing your phone sends a verification code';
 }

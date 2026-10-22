@@ -20,6 +20,26 @@ void main() {
     ),
     verify: (bloc) {
       expect(bloc.state.completed, isTrue);
+      expect(bloc.state.phoneToVerify, '+963900000000');
+    },
+  );
+
+  blocTest<ProfileCompletionBloc, ProfileCompletionState>(
+    'does not ask to verify an unchanged phone',
+    build: () => ProfileCompletionBloc(
+      FakeProfileRepository(),
+      InMemoryAppPreferences(profileCompleted: false),
+    ),
+    act: (bloc) => bloc.add(
+      const ProfileCompletionSubmitted(
+        name: 'Sara',
+        phone: '+963900000000',
+        currentPhone: '+963900000000',
+      ),
+    ),
+    verify: (bloc) {
+      expect(bloc.state.completed, isTrue);
+      expect(bloc.state.phoneToVerify, isNull);
     },
   );
 }

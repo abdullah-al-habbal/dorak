@@ -6,7 +6,7 @@
 ## What Was Built
 - **ClientModel**: added `phone` (nullable string), `avatar` (nullable string), `status` (string, default `enabled`), `SoftDeletes` trait
 - **ClientStatusEnum**: `pending`, `enabled`, `disabled`
-- **UpdateProfileAction**: accepts `phone` field alongside `name`, `email`, `password`
+- **UpdateProfileAction**: accepts `name`, `email`, `password`; a `phone` that differs from the stored one is rejected with 422 (Task 34) — the phone changes only through `POST /client/phone/otp` + `POST /client/phone/verify`, which also set `phone_verified_at`
 - **UploadAvatarAction**: multipart upload to `public/avatars`, returns public URL, deletes old avatar
 - **DeleteAccountAction**: password confirmation required, blocks if active bookings exist, soft-deletes
 - **SendEmailVerificationAction**: sends 6-digit code via mailable, 10-min TTL in cache

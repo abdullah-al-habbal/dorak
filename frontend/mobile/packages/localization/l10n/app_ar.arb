@@ -1155,5 +1155,18 @@
   "notificationsEmptyMessage": "ستظهر هنا تحديثات الحجوزات والدعوات وطلبات التقييم.",
   "notificationsMarkAllRead": "تعليم الكل كمقروء",
   "notificationsUnreadLabel": "غير مقروء",
-  "profileNotificationsAction": "الإشعارات"
+  "profileNotificationsAction": "الإشعارات",
+  "phoneVerifyTitle": "تأكيد رقم الهاتف",
+  "phoneVerifySubtitle": "أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى {phone}",
+  "phoneVerifyCodeLabel": "رمز التحقق",
+  "phoneVerifyButton": "تأكيد الهاتف",
+  "phoneVerifyResend": "إعادة إرسال الرمز",
+  "phoneVerifySkip": "ليس الآن",
+  "phoneVerifyIncomplete": "أدخل الرمز المكوّن من 6 أرقام.",
+  "phoneVerifyInvalidCode": "الرمز غير صحيح أو منتهي الصلاحية.",
+  "phoneVerifyPhoneRejected": "لا يمكن تأكيد رقم الهاتف هذا. تحقق منه أو استخدم رقماً آخر.",
+  "phoneVerifyThrottled": "محاولات كثيرة. انتظر دقيقة ثم حاول مجدداً.",
+  "phoneVerifyVerified": "تم تأكيد الهاتف",
+  "profilePhoneVerifiedLabel": "موثّق",
+  "profilePhoneChangeHint": "تغيير الهاتف يرسل رمز تحقق"
 }

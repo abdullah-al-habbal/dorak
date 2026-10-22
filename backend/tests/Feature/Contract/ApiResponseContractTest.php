@@ -172,7 +172,7 @@ describe('Client API', function () {
             expect($data['name'])->toBe('Updated Name');
         });
 
-        it('updates phone on profile update', function () {
+        it('rejects a changed phone on profile update', function () {
             $client = ClientModel::factory()->create();
             $token = $client->createToken('client-app')->plainTextToken;
 
@@ -181,8 +181,8 @@ describe('Client API', function () {
                     'phone' => '+963999999999',
                 ]);
 
-            assertApiEnvelope($response, 200);
-            expect($response->json('data.phone'))->toBe('+963999999999');
+            $response->assertStatus(422)->assertJsonValidationErrors(['phone'], 'errors');
+            expect($client->fresh()->phone)->toBeNull();
         });
     });
 

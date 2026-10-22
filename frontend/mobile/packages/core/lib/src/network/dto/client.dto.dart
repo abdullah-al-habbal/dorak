@@ -12,6 +12,7 @@ class ClientDto extends Equatable {
   @JsonKey(defaultValue: '')
   final String email;
   final String? phone;
+  final DateTime? phoneVerifiedAt;
   final String? avatar;
   final String? preferredUniverse;
   final DateTime? emailVerifiedAt;
@@ -22,6 +23,7 @@ class ClientDto extends Equatable {
     required this.name,
     required this.email,
     this.phone,
+    this.phoneVerifiedAt,
     this.avatar,
     this.preferredUniverse,
     this.emailVerifiedAt,
@@ -33,12 +35,15 @@ class ClientDto extends Equatable {
 
   bool get emailVerified => emailVerifiedAt != null;
 
+  bool get phoneVerified => phoneVerifiedAt != null;
+
   @override
   List<Object?> get props => [
     id,
     name,
     email,
     phone,
+    phoneVerifiedAt,
     avatar,
     preferredUniverse,
     emailVerifiedAt,

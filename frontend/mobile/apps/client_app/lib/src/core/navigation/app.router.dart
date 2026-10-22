@@ -47,6 +47,8 @@ import 'package:client_app/src/features/profile/history.bloc.dart';
 import 'package:client_app/src/features/notifications/notifications.bloc.dart';
 import 'package:client_app/src/features/notifications/notifications.screen.dart';
 import 'package:client_app/src/features/profile/photo_picker.provider.dart';
+import 'package:client_app/src/features/profile/phone_verification.bloc.dart';
+import 'package:client_app/src/features/profile/phone_verification.screen.dart';
 import 'package:client_app/src/features/profile/profile_completion.bloc.dart';
 import 'package:client_app/src/features/profile/profile_completion.screen.dart';
 import 'package:client_app/src/features/profile/profile.screen.dart';
@@ -79,6 +81,7 @@ class AppRouter {
   final StylistProfileBloc? stylistProfile;
   final ReviewSubmitBloc? reviewSubmit;
   final ProfileCompletionBloc? profileCompletion;
+  final PhoneVerificationBloc? phoneVerification;
   final NotificationsBloc? notifications;
   final PhotoPicker photoPicker;
   final VoidCallback switchLocale;
@@ -110,6 +113,7 @@ class AppRouter {
     this.stylistProfile,
     this.reviewSubmit,
     this.profileCompletion,
+    this.phoneVerification,
     this.notifications,
     required this.photoPicker,
     required this.switchLocale,
@@ -189,6 +193,14 @@ class AppRouter {
           : AppRoutes.splash;
     }
     return null;
+  }
+
+  void _leavePhoneVerification() {
+    if (router.canPop()) {
+      router.pop();
+    } else {
+      router.go(AppRoutes.discover);
+    }
   }
 
   String _postAuthRoute() => preferences.profileCompleted
@@ -282,9 +294,34 @@ class AppRouter {
             bloc: bloc,
             initialName: session.state.client?.name ?? '',
             initialPhone: session.state.client?.phone,
-            onCompleted: () => router.go(AppRoutes.discover),
+            onCompleted: (phone) {
+              router.go(AppRoutes.discover);
+              if (phone != null) {
+                unawaited(
+                  router.push<void>(AppRoutes.phoneVerify, extra: phone),
+                );
+              }
+            },
           ),
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.phoneVerify,
+        builder: (context, state) {
+          final phone = state.extra as String? ?? '';
+          return _scope(
+            phoneVerification,
+            () => services.createPhoneVerification(phone),
+            (bloc) => PhoneVerificationScreen(
+              bloc: bloc,
+              onVerified: (client) {
+                session.add(SessionAuthenticated(client));
+                _leavePhoneVerification();
+              },
+              onSkip: _leavePhoneVerification,
+            ),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.onboardingWelcome,
@@ -622,6 +659,12 @@ class AppRouter {
                           session.add(SessionAuthenticated(client)),
                       onEmailVerificationRequired: (email) =>
                           router.push<void>(AppRoutes.authVerify, extra: email),
+                      onPhoneVerificationRequired: (phone) => router.push<void>(
+                        AppRoutes.phoneVerify,
+                        extra: phone,
+                      ),
+                      phoneVerified:
+                          session.state.client?.phoneVerified ?? false,
                     ),
                   ),
                   GoRoute(
