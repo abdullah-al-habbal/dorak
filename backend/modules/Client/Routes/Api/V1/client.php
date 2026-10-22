@@ -29,14 +29,14 @@ Route::prefix('client')->name('client.')->group(function (): void {
 
     Route::middleware(['auth:client', EnsureClientAccountAccess::class.':verification'])->group(function (): void {
         Route::post('/logout', LogoutAction::class)->name('logout');
+        Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
+        Route::get('/profile', GetProfileAction::class)->name('profile.show');
         Route::post('/email/verify', VerifyEmailAction::class)->name('email.verify');
         Route::post('/email/verify/send', SendEmailVerificationAction::class)->name('email.verify.send')->middleware('throttle:3,1');
     });
 
     Route::middleware(['auth:client', EnsureClientAccountAccess::class])->group(function (): void {
-        Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
         Route::patch('/preferences/universe', UpdateUniversePreferenceAction::class)->name('preferences.universe');
-        Route::get('/profile', GetProfileAction::class)->name('profile.show');
         Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
         Route::post('/avatar', UploadAvatarAction::class)->name('avatar.upload');
         Route::delete('/account', DeleteAccountAction::class)->name('account.delete');

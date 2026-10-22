@@ -101,7 +101,7 @@
 - `ShowBookingAction` [GET /api/v1/bookings/{booking}] — validates ownership, returns booking resource. Auth:client
 
 ### Profile Read
-- `GetProfileAction` [GET /api/v1/client/profile] — returns the authenticated client via `ClientProfileResource` (`id`, `name`, `email`, `phone`, `avatar`, `preferred_universe`, `email_verified_at`, `created_at`) — the same 8-key object login, register, social login and `PATCH /client/profile` return. Auth:client + active account. Mobile uses it to restore the session client after a cold start.
+- `GetProfileAction` [GET /api/v1/client/profile] — returns the authenticated client via `ClientProfileResource` (`id`, `name`, `email`, `phone`, `avatar`, `preferred_universe`, `email_verified_at`, `created_at`) — the same 8-key object login, register, social login and `PATCH /client/profile` return. Auth:client, verification scope (unverified clients allowed). Mobile uses it to restore the session client after a cold start.
 
 ### Profile Update
 - `UpdateProfileAction` [PATCH /api/v1/client/profile] — nullable name/email/password fields. Auth:client. Changing the email clears `email_verified_at` and queues a new verification code (`SendEmailVerificationCodeJob`); the client is then limited to the verification-only routes until `POST /client/email/verify` succeeds.

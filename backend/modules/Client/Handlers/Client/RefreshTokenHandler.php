@@ -23,7 +23,7 @@ final class RefreshTokenHandler
 
         $this->resolver->deleteCurrentToken($client);
 
-        $token = $client->createToken('client-app')->plainTextToken;
+        $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
         return RefreshTokenResult::success($token);
     }
