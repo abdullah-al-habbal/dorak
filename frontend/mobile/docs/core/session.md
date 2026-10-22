@@ -13,7 +13,7 @@ The session layer (`packages/core/lib/src/session/`) is split into two pure
   `SendVerificationCodeRequested`, `VerifyEmailRequested`. It writes the returned
   token, exposes the signed-in `client`, and raises the matching `AuthSignal`.
 * `SessionBloc` (`session.bloc.dart` + `session.event.dart` + `session.state.dart`)
-  owns the **session truth**: `SessionBloc(AuthRepository, TokenStorage)`. It
+  owns the **session truth**: `SessionBloc(AuthRepository, TokenStorage, ProfileRepository)`. It
   drives restore, logout, the unauthorized flow and signal acknowledgement. It
   has **no dependency on `AuthBloc`**: an `AuthBloc` success is coordinated by
   the app layer, which forwards it as `SessionAuthenticated(client)`
@@ -83,16 +83,19 @@ order, so the session is updated before the router navigates and acknowledges.
 
 ## Restoration
 
-The backend exposes **no `GET /client/me`**, so there is no profile probe.
 Validity is checked by rotating the token through
-`POST /client/refresh-token`, which sits behind `auth:client`.
+`POST /client/refresh-token`, which sits behind `auth:client`. After a
+successful rotation the bloc loads the client with `GET /client/profile`
+(`ProfileRepository.getProfile()`), so `SessionState.client` is populated after
+a cold start.
 
 ```text
 token = await tokenStorage.read()
 
 read() throws            -> guest  (error recorded)   <- fail-safe
 token == null            -> guest
-refreshToken() succeeds  -> persist rotated token, authenticated
+refreshToken() succeeds  -> persist rotated token, getProfile(), authenticated + client
+  (getProfile() failures follow the same 401/403 / network / other split below)
   ApiException 401/403   -> clear token, guest
   NetworkException       -> authenticated  (token kept)
   other ApiException     -> authenticated  (token kept)

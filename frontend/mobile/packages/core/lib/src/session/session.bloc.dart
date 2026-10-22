@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:core/src/network/exceptions/api.exception.dart';
 import 'package:core/src/network/exceptions/network.exception.dart';
 import 'package:core/src/network/repositories/auth.repository.dart';
+import 'package:core/src/network/repositories/profile.repository.dart';
 import 'package:core/src/session/auth_status.entity.dart';
 import 'package:core/src/session/session.event.dart';
 import 'package:core/src/session/session.state.dart';
@@ -12,7 +13,7 @@ import 'package:core/src/session/session_signal.entity.dart';
 import 'package:core/src/storage/token.storage.dart';
 
 class SessionBloc extends Bloc<SessionEvent, SessionState> {
-  SessionBloc(this._repository, this._tokenStorage)
+  SessionBloc(this._repository, this._tokenStorage, this._profileRepository)
     : super(const SessionState()) {
     on<RestoreRequested>(_onRestore);
     on<LogoutRequested>(_onLogout);
@@ -25,6 +26,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
 
   final AuthRepository _repository;
   final TokenStorage _tokenStorage;
+  final ProfileRepository _profileRepository;
 
   Future<void>? _restoration;
   bool _expiring = false;
@@ -87,7 +89,11 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
           if (rotated.isNotEmpty) {
             await _tokenStorage.write(rotated);
           }
-          next = state.copyWith(status: AuthStatus.authenticated);
+          final client = await _profileRepository.getProfile();
+          next = state.copyWith(
+            status: AuthStatus.authenticated,
+            client: client,
+          );
         } on NetworkException catch (e) {
           next = state.copyWith(status: AuthStatus.authenticated, error: e);
         } on ApiException catch (e) {

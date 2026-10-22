@@ -19,6 +19,7 @@ class DorakApp extends StatefulWidget {
   final AppPreferences preferences;
   final TokenStorage? tokenStorage;
   final AuthRepository? authRepository;
+  final ProfileRepository? profileRepository;
   final FeedCache? feedCache;
 
   const DorakApp({
@@ -26,6 +27,7 @@ class DorakApp extends StatefulWidget {
     required this.preferences,
     this.tokenStorage,
     this.authRepository,
+    this.profileRepository,
     this.feedCache,
   });
 
@@ -71,7 +73,11 @@ class _DorakAppState extends State<DorakApp> {
     unawaited(_initializePushNotifications());
     final repository = widget.authRepository ?? DioAuthRepository(_apiClient);
     _authBloc = AuthBloc(repository, _tokenStorage);
-    _sessionBloc = SessionBloc(repository, _tokenStorage);
+    _sessionBloc = SessionBloc(
+      repository,
+      _tokenStorage,
+      widget.profileRepository ?? DioProfileRepository(_apiClient),
+    );
     unawaited(_sessionBloc.ready);
 
     _authCoordinatorSubscription = _authBloc.stream.listen(

@@ -28,6 +28,7 @@ void main() {
         preferences: InMemoryAppPreferences(),
         tokenStorage: InMemoryTokenStorage(),
         authRepository: FakeAuthRepository(),
+        profileRepository: FakeProfileRepository(),
       ),
     );
 
@@ -67,7 +68,9 @@ void main() {
     Future<FakeAuthRepository> pumpAuthenticatedApp(
       WidgetTester tester, {
       FakeAuthRepository? repository,
+      FakeProfileRepository? profiles,
     }) async {
+      profiles ??= FakeProfileRepository();
       tester.view.physicalSize = const Size(1290, 2796);
       tester.view.devicePixelRatio = 3.0;
       addTearDown(tester.view.reset);
@@ -78,6 +81,7 @@ void main() {
           preferences: InMemoryAppPreferences(dontShowOnboarding: true),
           tokenStorage: InMemoryTokenStorage('stored-token'),
           authRepository: repo,
+          profileRepository: profiles,
         ),
       );
       await tester.pump();
@@ -85,6 +89,16 @@ void main() {
       await tester.pumpAndSettle();
       return repo;
     }
+
+    testWidgets('a cold start with a stored token restores the profile', (
+      tester,
+    ) async {
+      final profiles = FakeProfileRepository();
+      await pumpAuthenticatedApp(tester, profiles: profiles);
+
+      expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+      expect(profiles.getProfileCalls, 1);
+    });
 
     testWidgets('resuming from the background re-probes the session', (
       tester,
@@ -157,6 +171,7 @@ void main() {
           preferences: InMemoryAppPreferences(dontShowOnboarding: true),
           tokenStorage: InMemoryTokenStorage('stored-token'),
           authRepository: repository,
+          profileRepository: FakeProfileRepository(),
         ),
       );
       await tester.pump();

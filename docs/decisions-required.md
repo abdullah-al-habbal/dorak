@@ -64,6 +64,9 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved (admins): the inbox endpoints accept `client`, `barber` and `branch_api` only, as the spec lists. The dashboard bell is hidden for admin sessions (`admin_api`), which receive no notifications today.
 - [x] Decision resolved (dashboard test tooling): `@testing-library/react`, `@testing-library/dom`, `@testing-library/user-event` and `jsdom` were added as dev dependencies so the bell can have a real component test; Vitest now also picks up `tests/**/*.test.tsx` (per-file `// @vitest-environment jsdom`).
 
+
+## [Task 32: Add Client Profile Read Endpoint and Session Restore](tasks/task-32-client-profile-endpoint.md)
+- [x] Decision resolved: `GET /api/v1/client/profile` returns the exact client payload login, register and social login return (`id`, `name`, `email`, `phone`, `email_verified`), produced by one shared `ClientModel::authPayload()`. It sits behind the normal `auth:client` + active-account middleware, so unverified or disabled clients get 403 `ACCOUNT_NOT_ACTIVE`. On cold start the session restore fetches the profile after the token refresh; a 401/403 from the profile clears the token and falls back to guest, while offline or server errors keep the session authenticated without a client. `preferred_universe`/`avatar` stay with Task 33.
 ## [Task 34: Implement Phone OTP Verification](tasks/task-34-phone-otp-verification.md)
 - [ ] Decision required: SMS provider (none is configured in the repo) and whether phone OTP is also a login method (PRD wording "phone OTP login") or verification only.
 

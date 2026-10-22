@@ -39,13 +39,7 @@ final class LoginHandler
 
         return LoginResult::success(
             token: $token,
-            clientData: [
-                'id' => $client->id,
-                'name' => $client->name,
-                'email' => $client->email,
-                'phone' => $client->phone,
-                'email_verified' => $client->getAttribute('email_verified_at') !== null,
-            ],
+            clientData: $client->authPayload(),
         );
     }
 }

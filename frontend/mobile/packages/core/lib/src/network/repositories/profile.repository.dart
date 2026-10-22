@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:core/core.dart';
 
 abstract class ProfileRepository {
+  Future<ClientDto> getProfile();
+
   Future<ClientDto> updateProfile({String? name, String? email, String? phone});
 
   Future<AvatarDto> uploadAvatar(String filePath);
@@ -14,6 +16,14 @@ class DioProfileRepository implements ProfileRepository {
   const DioProfileRepository(this._apiClient);
 
   final ApiClient _apiClient;
+
+  @override
+  Future<ClientDto> getProfile() {
+    return _apiClient.get<ClientDto>(
+      ProfileEndpoints.show,
+      parser: (json) => ClientDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
 
   @override
   Future<ClientDto> updateProfile({

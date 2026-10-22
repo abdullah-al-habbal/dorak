@@ -100,6 +100,9 @@
 - `CancelBookingAction` [POST /api/v1/client/bookings/{booking}/cancel] — validates ownership + confirmed status → canceled. Auth:client
 - `ShowBookingAction` [GET /api/v1/bookings/{booking}] — validates ownership, returns booking resource. Auth:client
 
+### Profile Read
+- `GetProfileAction` [GET /api/v1/client/profile] — returns the authenticated client's `id`, `name`, `email`, `phone`, `email_verified` (the same payload as login, via `ClientModel::authPayload()`). Auth:client + active account. Mobile uses it to restore the session client after a cold start.
+
 ### Profile Update
 - `UpdateProfileAction` [PATCH /api/v1/client/profile] — nullable name/email/password fields. Auth:client
 - `UpdateProfileRequest` — validates email (unique ignoring current) + password (min 8, nullable)

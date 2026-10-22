@@ -31,6 +31,38 @@ Map<String, dynamic> catalogItem({
 
 void main() {
   group('DioProfileRepository', () {
+    test('getProfile reads the authenticated client profile', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: {
+                'id': 'client-1',
+                'name': 'Ahmad',
+                'email': 'ahmad@example.com',
+                'phone': '+966500000001',
+                'email_verified': true,
+              },
+            ),
+          );
+        },
+      );
+      final repository = DioProfileRepository(clientWith(fake));
+
+      final client = await repository.getProfile();
+
+      expect(captured.path, ProfileEndpoints.show);
+      expect(captured.method, 'GET');
+      expect(client.id, 'client-1');
+      expect(client.name, 'Ahmad');
+      expect(client.email, 'ahmad@example.com');
+      expect(client.phone, '+966500000001');
+      expect(client.emailVerified, isTrue);
+    });
+
     test(
       'updateProfile sends only the provided fields and parses the client',
       () async {

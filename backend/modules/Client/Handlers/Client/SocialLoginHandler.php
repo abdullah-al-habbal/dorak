@@ -66,13 +66,7 @@ final class SocialLoginHandler
 
         return SocialLoginResult::success(
             token: $token,
-            clientData: [
-                'id' => $client->getAuthIdentifier(),
-                'name' => $client->getAttribute('name'),
-                'email' => $client->getAttribute('email'),
-                'phone' => $client->getAttribute('phone'),
-                'email_verified' => $client->getAttribute('email_verified_at') !== null,
-            ],
+            clientData: $client->authPayload(),
             isNew: $isNew,
         );
     }

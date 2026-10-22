@@ -3,17 +3,20 @@ import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers/fake_auth.dart';
+import 'helpers/fake_profile.dart';
 
 void main() {
   late FakeAuthRepository repository;
+  late FakeProfileRepository profiles;
   late InMemoryTokenStorage storage;
 
   setUp(() {
     repository = FakeAuthRepository();
+    profiles = FakeProfileRepository();
     storage = InMemoryTokenStorage();
   });
 
-  SessionBloc bloc() => SessionBloc(repository, storage);
+  SessionBloc bloc() => SessionBloc(repository, storage, profiles);
 
   group('restore', () {
     blocTest<SessionBloc, SessionState>(
@@ -37,12 +40,118 @@ void main() {
       act: (bloc) => bloc.add(RestoreRequested()),
       expect: () => [
         const SessionState(isLoading: true),
-        const SessionState(status: AuthStatus.authenticated),
+        const SessionState(
+          status: AuthStatus.authenticated,
+          client: FakeProfileRepository.defaultClient,
+        ),
       ],
       verify: (_) {
         expect(storage.token, 'fresh-token');
         expect(repository.refreshTokenCalls, 1);
       },
+    );
+
+    blocTest<SessionBloc, SessionState>(
+      'a cold start with a stored token restores the client profile',
+      build: () {
+        storage.token = 'stored-token';
+        return bloc();
+      },
+      act: (bloc) => bloc.add(RestoreRequested()),
+      expect: () => [
+        const SessionState(isLoading: true),
+        const SessionState(
+          status: AuthStatus.authenticated,
+          client: FakeProfileRepository.defaultClient,
+        ),
+      ],
+      verify: (bloc) {
+        expect(bloc.state.client?.name, 'Sara');
+        expect(bloc.state.client?.phone, '+966500000001');
+        expect(profiles.getProfileCalls, 1);
+      },
+    );
+
+    blocTest<SessionBloc, SessionState>(
+      'the profile is not fetched when there is no stored token',
+      build: bloc,
+      act: (bloc) => bloc.add(RestoreRequested()),
+      verify: (_) => expect(profiles.getProfileCalls, 0),
+    );
+
+    blocTest<SessionBloc, SessionState>(
+      'the profile is not fetched when the token refresh fails',
+      build: () {
+        storage.token = 'stored-token';
+        repository.refreshTokenError = offline();
+        return bloc();
+      },
+      act: (bloc) => bloc.add(RestoreRequested()),
+      verify: (bloc) {
+        expect(profiles.getProfileCalls, 0);
+        expect(bloc.state.client, isNull);
+      },
+    );
+
+    blocTest<SessionBloc, SessionState>(
+      'going offline while loading the profile keeps the session without a client',
+      build: () {
+        storage.token = 'stored-token';
+        profiles.getProfileError = offline();
+        return bloc();
+      },
+      act: (bloc) => bloc.add(RestoreRequested()),
+      expect: () => [
+        const SessionState(isLoading: true),
+        SessionState(status: AuthStatus.authenticated, error: offline()),
+      ],
+      verify: (_) {
+        expect(storage.token, 'rotated-token');
+        expect(storage.clearCount, 0);
+      },
+    );
+
+    blocTest<SessionBloc, SessionState>(
+      'a 401 while loading the profile clears the token and falls back to guest',
+      build: () {
+        storage.token = 'stored-token';
+        profiles.getProfileError = unauthorized();
+        return bloc();
+      },
+      act: (bloc) => bloc.add(RestoreRequested()),
+      expect: () => [
+        const SessionState(isLoading: true),
+        const SessionState(status: AuthStatus.guest),
+      ],
+      verify: (_) {
+        expect(storage.token, isNull);
+        expect(storage.clearCount, 1);
+      },
+    );
+
+    blocTest<SessionBloc, SessionState>(
+      'a server error while loading the profile keeps the session',
+      build: () {
+        storage.token = 'stored-token';
+        profiles.getProfileError = const ApiException(
+          statusCode: 500,
+          code: 'SERVER_ERROR',
+          message: 'boom',
+        );
+        return bloc();
+      },
+      act: (bloc) => bloc.add(RestoreRequested()),
+      expect: () => [
+        const SessionState(isLoading: true),
+        SessionState(
+          status: AuthStatus.authenticated,
+          error: const ApiException(
+            statusCode: 500,
+            code: 'SERVER_ERROR',
+            message: 'boom',
+          ),
+        ),
+      ],
     );
 
     blocTest<SessionBloc, SessionState>(
@@ -139,7 +248,10 @@ void main() {
       },
       expect: () => [
         const SessionState(isLoading: true),
-        const SessionState(status: AuthStatus.authenticated),
+        const SessionState(
+          status: AuthStatus.authenticated,
+          client: FakeProfileRepository.defaultClient,
+        ),
       ],
       verify: (_) => expect(repository.refreshTokenCalls, 1),
     );
@@ -232,7 +344,10 @@ void main() {
       },
       expect: () => [
         const SessionState(isLoading: true),
-        const SessionState(status: AuthStatus.authenticated),
+        const SessionState(
+          status: AuthStatus.authenticated,
+          client: FakeProfileRepository.defaultClient,
+        ),
         const SessionState(
           status: AuthStatus.guest,
           signal: SessionSignal.sessionExpired,
@@ -258,7 +373,10 @@ void main() {
       },
       expect: () => [
         const SessionState(isLoading: true),
-        const SessionState(status: AuthStatus.authenticated),
+        const SessionState(
+          status: AuthStatus.authenticated,
+          client: FakeProfileRepository.defaultClient,
+        ),
         const SessionState(
           status: AuthStatus.guest,
           signal: SessionSignal.sessionExpired,
@@ -282,7 +400,10 @@ void main() {
       },
       expect: () => [
         const SessionState(isLoading: true),
-        const SessionState(status: AuthStatus.authenticated),
+        const SessionState(
+          status: AuthStatus.authenticated,
+          client: FakeProfileRepository.defaultClient,
+        ),
         const SessionState(
           status: AuthStatus.guest,
           error: ApiException(

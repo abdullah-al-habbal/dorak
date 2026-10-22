@@ -100,7 +100,7 @@ AppRouter buildRouter({
 })
 sessionPair(AuthRepository repository, TokenStorage storage) {
   final auth = AuthBloc(repository, storage);
-  final session = SessionBloc(repository, storage);
+  final session = SessionBloc(repository, storage, FakeProfileRepository());
   final coordinator = auth.stream.listen(
     (authState) => coordinateAuthSuccess(authState, session),
   );
@@ -1000,6 +1000,21 @@ class FakeFaceProfileRepository implements FaceProfileRepository {
 }
 
 class FakeProfileRepository implements ProfileRepository {
+  Object? getProfileError;
+  int getProfileCalls = 0;
+
+  @override
+  Future<ClientDto> getProfile() async {
+    getProfileCalls++;
+    final failure = getProfileError;
+    if (failure != null) throw failure;
+    return const ClientDto(
+      id: 'uuid-1',
+      name: 'Sara',
+      email: 'sara@example.com',
+    );
+  }
+
   String avatarUrl = 'https://cdn.example.com/avatar.jpg';
   Object? uploadError;
   int avatarUploadCalls = 0;

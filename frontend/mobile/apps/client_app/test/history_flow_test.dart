@@ -52,7 +52,8 @@ void main() {
   ) async {
     await pumpProfile(tester);
 
-    expect(find.text('Member'), findsOneWidget);
+    expect(find.text('Sara'), findsOneWidget);
+    expect(find.text('Member'), findsNothing);
     expect(find.textContaining('Classic Fade'), findsOneWidget);
     expect(find.textContaining('Karim'), findsOneWidget);
     expect(find.text('Service History'), findsOneWidget);

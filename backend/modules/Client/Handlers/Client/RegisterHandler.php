@@ -38,13 +38,7 @@ final class RegisterHandler
 
         return RegisterResult::success(
             $token,
-            [
-                'id' => $client->id,
-                'name' => $client->name,
-                'email' => $client->email,
-                'phone' => $client->phone,
-                'email_verified' => $client->getAttribute('email_verified_at') !== null,
-            ],
+            $client->authPayload(),
         );
     }
 }
