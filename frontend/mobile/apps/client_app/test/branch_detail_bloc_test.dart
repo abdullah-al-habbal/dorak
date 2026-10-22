@@ -250,5 +250,27 @@ void main() {
         expect(bookings.createCalls, 0);
       },
     );
+
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'loads at-home barber slots with the client coordinates',
+      build: bloc,
+      seed: () => BranchDetailState(
+        branchId: '1',
+        detail: testBranchDetail(),
+        plan: testFloorPlan(),
+        isAtHomeBooking: true,
+        preferredBarberId: 'barber-1',
+        atHomeLatitude: 33.8938,
+        atHomeLongitude: 35.5018,
+        selectedServiceIds: const ['service-1'],
+      ),
+      act: (bloc) =>
+          bloc.add(BranchDetailDateChanged(DateTime.utc(2026, 10, 1))),
+      verify: (_) {
+        expect(bookings.lastBarberSlotsId, 'barber-1');
+        expect(bookings.lastBarberSlotsLatitude, 33.8938);
+        expect(bookings.lastBarberSlotsLongitude, 35.5018);
+      },
+    );
   });
 }

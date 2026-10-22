@@ -1106,6 +1106,30 @@ abstract class AppLocalizations {
   /// **'The requested time is outside the barber schedule.'**
   String get bookingOutsideScheduleMessage;
 
+  /// Shown when the server rejects an at-home booking without a barber
+  ///
+  /// In en, this message translates to:
+  /// **'An at-home booking requires a barber.'**
+  String get bookingAtHomeBarberRequiredMessage;
+
+  /// Shown when a selected service is not an at-home service of the barber
+  ///
+  /// In en, this message translates to:
+  /// **'Every service must be an at-home service offered by the selected barber.'**
+  String get bookingAtHomeServiceNotEligibleMessage;
+
+  /// Shown when the barber has no travel radius
+  ///
+  /// In en, this message translates to:
+  /// **'This barber does not offer at-home service.'**
+  String get bookingAtHomeNotOfferedMessage;
+
+  /// Shown when the client location is beyond the barber travel radius
+  ///
+  /// In en, this message translates to:
+  /// **'Your location is outside the barber\'s travel radius.'**
+  String get bookingAtHomeOutOfRadiusMessage;
+
   /// Compatibility score badge on a result card
   ///
   /// In en, this message translates to:

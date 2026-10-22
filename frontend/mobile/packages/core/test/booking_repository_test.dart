@@ -291,6 +291,30 @@ void main() {
       expect(captured.queryParameters['service_ids'], ['service-1']);
       expect(slots, hasLength(1));
       expect(slots.first.startsAt, DateTime.utc(2026, 10, 1, 12));
+      expect(captured.queryParameters.containsKey('at_home'), isFalse);
+    });
+
+    test('getBarberSlots sends at_home with coordinates', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(options, data: successEnvelope(data: []));
+        },
+      );
+      final repository = DioBookingRepository(clientWith(fake));
+
+      await repository.getBarberSlots(
+        'barber-1',
+        date: DateTime.utc(2026, 10, 1),
+        serviceIds: const ['service-1'],
+        atHomeLatitude: 33.5,
+        atHomeLongitude: 36.3,
+      );
+
+      expect(captured.queryParameters['at_home'], 1);
+      expect(captured.queryParameters['latitude'], 33.5);
+      expect(captured.queryParameters['longitude'], 36.3);
     });
   });
 }

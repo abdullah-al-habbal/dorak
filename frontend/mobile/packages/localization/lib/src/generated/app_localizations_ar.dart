@@ -547,6 +547,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingOutsideScheduleMessage => 'الوقت المطلوب خارج جدول الحلاق.';
 
   @override
+  String get bookingAtHomeBarberRequiredMessage =>
+      'الحجز المنزلي يتطلب اختيار حلاق.';
+
+  @override
+  String get bookingAtHomeServiceNotEligibleMessage =>
+      'يجب أن تكون كل الخدمات خدمات منزلية يقدّمها الحلاق المختار.';
+
+  @override
+  String get bookingAtHomeNotOfferedMessage =>
+      'هذا الحلاق لا يقدّم خدمة منزلية.';
+
+  @override
+  String get bookingAtHomeOutOfRadiusMessage => 'موقعك خارج نطاق تنقّل الحلاق.';
+
+  @override
   String discoverCompatibilityBadge(int percent) {
     return '$percent%';
   }

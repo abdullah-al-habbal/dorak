@@ -178,6 +178,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
           isLocating: false,
         ),
       );
+      if (state.isAtHomeBooking) await _loadSlots(emit);
     } catch (error) {
       if (emit.isDone) return;
       emit(state.copyWith(isLocating: false, submitError: error));
@@ -189,7 +190,13 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
     Emitter<BranchDetailState> emit,
   ) async {
     if (event.date == null) {
-      emit(state.copyWith(clearDate: true, clearTime: true, clearSubmitError: true));
+      emit(
+        state.copyWith(
+          clearDate: true,
+          clearTime: true,
+          clearSubmitError: true,
+        ),
+      );
       await _loadSlots(emit);
       return;
     }
@@ -252,6 +259,8 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
           barberId,
           date: date,
           serviceIds: serviceIds,
+          atHomeLatitude: state.atHomeLatitude,
+          atHomeLongitude: state.atHomeLongitude,
         );
       } else {
         final chairId = state.selectedChairId;

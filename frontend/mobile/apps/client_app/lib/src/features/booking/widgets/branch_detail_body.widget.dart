@@ -83,6 +83,8 @@ class BranchDetailBody extends StatelessWidget {
     if (error is ApiException && error.code == 'booking_outside_schedule') {
       return l10n.bookingOutsideScheduleMessage;
     }
+    final atHomeMessage = _atHomeMessage(l10n, error);
+    if (atHomeMessage != null) return atHomeMessage;
     if (error is ApiException && error.statusCode == 409) {
       return l10n.bookingConflictMessage;
     }
@@ -241,6 +243,8 @@ class _BookingSubmitSection extends StatelessWidget {
         const SizedBox(height: DorakDimensions.spacingSmall),
         if (state.isLoadingSlots)
           const Center(child: CircularProgressIndicator())
+        else if (_atHomeMessage(l10n, state.slotsError) case final message?)
+          StatusBanner(message: message)
         else if (state.slots.isEmpty)
           Text(l10n.bookingNoSlots, style: DorakTypography.bodyMd)
         else
@@ -394,4 +398,16 @@ class _PaymentMethodSection extends StatelessWidget {
       Text(l10n.bookingPayAtSalonOnly, style: DorakTypography.bodyMd),
     ],
   );
+}
+
+String? _atHomeMessage(AppLocalizations l10n, Object? error) {
+  if (error is! ApiException) return null;
+  return switch (error.code) {
+    'at_home_barber_required' => l10n.bookingAtHomeBarberRequiredMessage,
+    'at_home_service_not_eligible' =>
+      l10n.bookingAtHomeServiceNotEligibleMessage,
+    'at_home_not_offered' => l10n.bookingAtHomeNotOfferedMessage,
+    'at_home_out_of_radius' => l10n.bookingAtHomeOutOfRadiusMessage,
+    _ => null,
+  };
 }

@@ -551,6 +551,22 @@ class AppLocalizationsEn extends AppLocalizations {
       'The requested time is outside the barber schedule.';
 
   @override
+  String get bookingAtHomeBarberRequiredMessage =>
+      'An at-home booking requires a barber.';
+
+  @override
+  String get bookingAtHomeServiceNotEligibleMessage =>
+      'Every service must be an at-home service offered by the selected barber.';
+
+  @override
+  String get bookingAtHomeNotOfferedMessage =>
+      'This barber does not offer at-home service.';
+
+  @override
+  String get bookingAtHomeOutOfRadiusMessage =>
+      'Your location is outside the barber\'s travel radius.';
+
+  @override
   String discoverCompatibilityBadge(int percent) {
     return '$percent%';
   }

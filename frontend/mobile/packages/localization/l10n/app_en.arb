@@ -725,6 +725,22 @@
   "@bookingOutsideScheduleMessage": {
     "description": "Message shown when the server rejects a booking outside the barber schedule"
   },
+  "bookingAtHomeBarberRequiredMessage": "An at-home booking requires a barber.",
+  "@bookingAtHomeBarberRequiredMessage": {
+    "description": "Shown when the server rejects an at-home booking without a barber"
+  },
+  "bookingAtHomeServiceNotEligibleMessage": "Every service must be an at-home service offered by the selected barber.",
+  "@bookingAtHomeServiceNotEligibleMessage": {
+    "description": "Shown when a selected service is not an at-home service of the barber"
+  },
+  "bookingAtHomeNotOfferedMessage": "This barber does not offer at-home service.",
+  "@bookingAtHomeNotOfferedMessage": {
+    "description": "Shown when the barber has no travel radius"
+  },
+  "bookingAtHomeOutOfRadiusMessage": "Your location is outside the barber's travel radius.",
+  "@bookingAtHomeOutOfRadiusMessage": {
+    "description": "Shown when the client location is beyond the barber travel radius"
+  },
   "discoverCompatibilityBadge": "{percent}%",
   "@discoverCompatibilityBadge": {
     "description": "Compatibility score badge on a result card",

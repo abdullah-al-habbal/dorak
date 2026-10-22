@@ -28,6 +28,8 @@ abstract class BookingRepository {
     String barberId, {
     required DateTime date,
     required List<String> serviceIds,
+    double? atHomeLatitude,
+    double? atHomeLongitude,
   });
 }
 
@@ -124,10 +126,16 @@ class DioBookingRepository implements BookingRepository {
     String barberId, {
     required DateTime date,
     required List<String> serviceIds,
+    double? atHomeLatitude,
+    double? atHomeLongitude,
   }) {
+    final isAtHome = atHomeLatitude != null && atHomeLongitude != null;
     final query = <String, dynamic>{
       'date': date.toUtc().toIso8601String().split('T').first,
       'service_ids': serviceIds,
+      if (isAtHome) 'at_home': 1,
+      if (isAtHome) 'latitude': atHomeLatitude,
+      if (isAtHome) 'longitude': atHomeLongitude,
     };
     return _apiClient.get<List<SlotDto>>(
       BookingEndpoints.barberSlots.replaceFirst('{barber}', barberId),

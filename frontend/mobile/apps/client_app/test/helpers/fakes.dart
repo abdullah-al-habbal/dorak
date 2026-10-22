@@ -627,15 +627,21 @@ class FakeBookingRepository implements BookingRepository {
   Object? barberSlotsError;
   int getBarberSlotsCalls = 0;
   String? lastBarberSlotsId;
+  double? lastBarberSlotsLatitude;
+  double? lastBarberSlotsLongitude;
 
   @override
   Future<List<SlotDto>> getBarberSlots(
     String barberId, {
     required DateTime date,
     required List<String> serviceIds,
+    double? atHomeLatitude,
+    double? atHomeLongitude,
   }) async {
     getBarberSlotsCalls++;
     lastBarberSlotsId = barberId;
+    lastBarberSlotsLatitude = atHomeLatitude;
+    lastBarberSlotsLongitude = atHomeLongitude;
     final failure = barberSlotsError;
     if (failure != null) throw failure;
     return barberSlots;
