@@ -9,4 +9,5 @@ return [
     'name_arabic' => 'الاسم (بالعربية)',
     'name_english' => 'الاسم (بالإنجليزية)',
     'status' => 'الحالة',
+    'delete_blocked_active_bookings' => 'لا يمكن الحذف: لدى العميل حجوزات معلقة أو مؤكدة أو جارية',
 ];

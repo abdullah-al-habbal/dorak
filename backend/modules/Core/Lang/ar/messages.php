@@ -19,7 +19,7 @@ return [
     'server_error' => 'خطأ في الخادم',
     'invalid_credentials' => 'بيانات الاعتماد غير صحيحة',
     'invalid_social_token' => 'رمز تسجيل الدخول الاجتماعي غير صالح',
-    'active_bookings_block_deletion' => 'ألغِ حجوزاتك النشطة قبل حذف حسابك',
+    'active_bookings_block_deletion' => 'أكمل أو ألغِ حجوزاتك المعلقة والمؤكدة والجارية قبل حذف حسابك',
     'email_already_verified' => 'تم التحقق من البريد الإلكتروني بالفعل',
     'verification_code_sent' => 'تم إرسال رمز التحقق إلى بريدك الإلكتروني',
     'invalid_verification_code' => 'رمز التحقق غير صالح',

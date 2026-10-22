@@ -278,7 +278,7 @@ describe('DELETE /api/v1/client/account', function () {
                 'password' => 'password123',
             ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(409);
         $this->assertNotSoftDeleted('clients', ['id' => $client->id]);
     });
 

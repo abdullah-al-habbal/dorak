@@ -28,7 +28,7 @@ Several client features have backend routes, and often repository methods, but n
 - None — client-mobile-only features.
 
 ### Mobile (Flutter / Repositories)
-- **Delete account**: add a confirm-with-password action in `profile.screen.dart` via a profile bloc event that calls `deleteAccount`. On success, clear the session and redirect to auth. Surface the 409/422 returned when bookings are active (Task 36).
+- **Delete account**: add a confirm-with-password action in `profile.screen.dart` via a profile bloc event that calls `deleteAccount`. On success, clear the session and redirect to auth. Surface the 409 `ACCOUNT_HAS_ACTIVE_BOOKINGS` returned while any booking is pending, confirmed or in progress (finalized by Task 36); a wrong password is 401.
 - **Universe**: persist the discovery universe toggle through `updatePreferredUniverse`. Seed `DiscoveryFilters.universe` from the session client's `preferred_universe` (from Task 33's payload) instead of the hard-coded `'men'`.
 - **Saved filters / discovery preferences**: instantiate `DioClientInteractionRepository` in `app_services.provider.dart`. Add save/apply/delete filter UI in `discovery_filter_bar.widget.dart` and a preferences screen (default radius, hidden brands, show unavailable). Add `getSavedFilter(id)` / `updateSavedFilter` methods.
 - **History media**: add a photo picker in `history_card.widget.dart` that calls `attachMedia` (multipart once Task 58 lands).

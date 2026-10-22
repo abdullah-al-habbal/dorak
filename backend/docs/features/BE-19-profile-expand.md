@@ -97,7 +97,9 @@
 }
 ```
 **Response (invalid password):** 401 — `"core::messages.invalid_credentials"`
-**Response (active bookings):** 422 — `"core::messages.active_bookings_block_deletion"`
+**Response (active bookings):** 409 — `code: "ACCOUNT_HAS_ACTIVE_BOOKINGS"`, `message: "core::messages.active_bookings_block_deletion"`, when any booking is `pending`, `confirmed` or `in_progress` (Task 36). The account is unchanged.
+
+**On success (Task 36):** all tokens and social accounts are deleted; the client row is soft-deleted after its PII is scrubbed (name → "Deleted client", email → `deleted-{id}@deleted.invalid`, phone/phone_verified_at/email_verified_at/avatar → null, random password, status `disabled`); the avatar file is removed. Service history rows are kept but anonymized (HIST-2): `client_id`, `booking_id`, `client_notes`, `barber_notes` → null and their media rows deleted. The original email can register again. The admin panel delete action uses the same `ClientAccountDeletion` service and rules.
 
 ### POST /api/v1/client/email/verify/send
 No request body (uses authenticated user's email).

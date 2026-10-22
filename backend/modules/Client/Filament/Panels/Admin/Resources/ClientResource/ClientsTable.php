@@ -10,6 +10,9 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Activation\Filament\Actions\ToggleActivationAction;
+use Modules\Client\Enums\ClientStatusEnum;
+use Modules\Client\Models\ClientModel;
+use Modules\Client\Services\ClientAccountDeletion;
 
 final class ClientsTable
 {
@@ -25,10 +28,10 @@ final class ClientsTable
                 TextColumn::make('phone'),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'enabled' => 'success',
-                        'disabled' => 'danger',
-                        default => 'warning',
+                    ->color(fn (ClientStatusEnum $state): string => match ($state) {
+                        ClientStatusEnum::Enabled => 'success',
+                        ClientStatusEnum::Disabled => 'danger',
+                        ClientStatusEnum::Pending => 'warning',
                     }),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -38,7 +41,9 @@ final class ClientsTable
                 ViewAction::make(),
                 EditAction::make(),
                 ToggleActivationAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->using(fn (ClientModel $record, ClientAccountDeletion $deletion): bool => $deletion->delete($record))
+                    ->failureNotificationTitle(__('client::ui.delete_blocked_active_bookings')),
             ])
             ->bulkActions([]);
     }

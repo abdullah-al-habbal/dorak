@@ -317,4 +317,34 @@ void main() {
       ),
     );
   });
+
+  test('deleteAccount blocked by active bookings keeps the 409 code', () async {
+    RequestOptions? captured;
+    final fake = fakeDio(
+      handler: (options) {
+        captured = options;
+        return jsonResponse(
+          options,
+          statusCode: 409,
+          data: errorEnvelope(
+            code: 'ACCOUNT_HAS_ACTIVE_BOOKINGS',
+            statusCode: 409,
+            message: 'Finish or cancel your bookings first',
+          ),
+        );
+      },
+    );
+
+    await expectLater(
+      DioAuthRepository(clientWith(fake)).deleteAccount('secret123'),
+      throwsA(
+        isA<ApiException>()
+            .having((e) => e.statusCode, 'statusCode', 409)
+            .having((e) => e.code, 'code', 'ACCOUNT_HAS_ACTIVE_BOOKINGS'),
+      ),
+    );
+    expect(captured!.method, 'DELETE');
+    expect(captured!.path, '/client/account');
+    expect(captured!.data, {'password': 'secret123'});
+  });
 }

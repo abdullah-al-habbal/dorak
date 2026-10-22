@@ -212,7 +212,7 @@
 - `ClientModel` — added `phone`, `avatar`, `status`, `SoftDeletes` trait; fillable + casts updated
 - `UpdateProfileAction` [PATCH /api/v1/client/profile] — now accepts/returns `phone` field
 - `UploadAvatarAction` [POST /api/v1/client/avatar] — multipart upload, stores in `public/avatars`, returns URL. Auth:client
-- `DeleteAccountAction` [DELETE /api/v1/client/account] — requires password confirmation, blocks if active bookings exist. Auth:client
+- `DeleteAccountAction` [DELETE /api/v1/client/account] — requires password confirmation; 409 `ACCOUNT_HAS_ACTIVE_BOOKINGS` while any booking is pending/confirmed/in_progress; otherwise revokes tokens, scrubs PII, soft-deletes, and anonymizes service history (HIST-2) via the shared `ClientAccountDeletion` service, also used by the admin panel (Task 36). Auth:client
 - 5 contract tests for account deletion
 
 ### Phone OTP Verification

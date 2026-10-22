@@ -19,7 +19,7 @@ return [
     'server_error' => 'Server error',
     'invalid_credentials' => 'Invalid credentials',
     'invalid_social_token' => 'Invalid social token',
-    'active_bookings_block_deletion' => 'Cancel your active bookings before deleting your account',
+    'active_bookings_block_deletion' => 'Finish or cancel your pending, confirmed, and in-progress bookings before deleting your account',
     'email_already_verified' => 'Email is already verified',
     'verification_code_sent' => 'Verification code sent to your email',
     'invalid_verification_code' => 'Invalid verification code',

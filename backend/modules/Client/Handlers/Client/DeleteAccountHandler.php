@@ -7,13 +7,13 @@ namespace Modules\Client\Handlers\Client;
 use Illuminate\Support\Facades\Hash;
 use Modules\Client\CQRS\Command\Client\DeleteAccountCommand;
 use Modules\Client\Models\ClientModel;
-use Modules\Client\Repositories\DeleteAccountEloquentResolver;
+use Modules\Client\Services\ClientAccountDeletion;
 use Modules\Client\ValuesObjects\DeleteAccountResult;
 
 final class DeleteAccountHandler
 {
     public function __construct(
-        private readonly DeleteAccountEloquentResolver $resolver,
+        private readonly ClientAccountDeletion $deletion,
     ) {}
 
     public function handle(DeleteAccountCommand $command): DeleteAccountResult
@@ -24,7 +24,7 @@ final class DeleteAccountHandler
             return DeleteAccountResult::invalidCredentials();
         }
 
-        $deleted = $this->resolver->execute($client);
+        $deleted = $this->deletion->delete($client);
 
         if (! $deleted) {
             return DeleteAccountResult::activeBookings();

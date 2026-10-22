@@ -62,7 +62,7 @@ codeanchors:
 - [x] Task 33: Complete Auth Payload and Email Re-verification -> [Spec](tasks/task-33-auth-payload-email-reverification.md)
 - [x] Task 34: Implement Phone OTP Verification -> [Spec](tasks/task-34-phone-otp-verification.md)
 - [x] Task 35: Verify Password Recovery Code Server-Side -> [Spec](tasks/task-35-password-recovery-code-verification.md)
-- [ ] Task 36: Enforce Account Deletion Rules and History Anonymization -> [Spec](tasks/task-36-account-deletion-rules.md)
+- [x] Task 36: Enforce Account Deletion Rules and History Anonymization -> [Spec](tasks/task-36-account-deletion-rules.md)
 - [ ] Task 37: Implement Barber Self Sign-Up -> [Spec](tasks/task-37-barber-self-signup.md)
 - [ ] Task 38: Implement Brand Owner Role -> [Spec](tasks/task-38-brand-owner-role.md)
 
