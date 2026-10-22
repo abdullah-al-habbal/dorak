@@ -1110,4 +1110,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stylistMarkNoShow => 'Mark No-Show';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsEmptyTitle => 'No notifications yet';
+
+  @override
+  String get notificationsEmptyMessage => 'Booking updates will appear here.';
+
+  @override
+  String get notificationsMarkAllRead => 'Mark all as read';
+
+  @override
+  String get notificationsUnreadLabel => 'Unread';
+
+  @override
+  String get profileNotificationsAction => 'Notifications';
 }

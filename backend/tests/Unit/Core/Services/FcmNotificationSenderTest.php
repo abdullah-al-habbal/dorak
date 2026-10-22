@@ -7,6 +7,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
 use Modules\Core\Services\FcmNotificationSender;
 
@@ -46,7 +47,7 @@ it('sends every device token through FCM HTTP v1 with an OAuth bearer token', fu
     registerFcmToken('first-device-token');
     registerFcmToken('second-device-token');
 
-    app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', 'Title', 'Body', ['type' => 'booking_status']);
+    app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', ['type' => 'booking_status']);
 
     Http::assertSent(function (Request $request): bool {
         return str_contains($request->url(), '/v1/projects/dorak-test-project/messages:send')
@@ -75,7 +76,7 @@ it('prunes an unregistered token and continues sending to other devices', functi
     $invalid = registerFcmToken('invalid-device-token');
     $valid = registerFcmToken('valid-device-token');
 
-    app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', 'Title', 'Body', []);
+    app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);
 
     expect(DeviceTokenModel::query()->find($invalid->id))->toBeNull()
         ->and(DeviceTokenModel::query()->find($valid->id))->not->toBeNull();
@@ -89,8 +90,8 @@ it('logs one warning and skips delivery when credentials are missing', function 
     registerFcmToken('device-token');
     $sender = app(FcmNotificationSender::class);
 
-    $sender->sendTo('client', '00000000-0000-4000-8000-000000000001', 'Title', 'Body', []);
-    $sender->sendTo('client', '00000000-0000-4000-8000-000000000001', 'Title', 'Body', []);
+    $sender->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);
+    $sender->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);
 
     Http::assertNothingSent();
     Log::shouldHaveReceived('warning')->once()->with('FCM delivery skipped because project credentials are missing.');
@@ -104,7 +105,7 @@ it('retries a 503 response and lets the queue retry the job after exhaustion', f
     ]);
     registerFcmToken('device-token');
 
-    expect(fn () => app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', 'Title', 'Body', []))
+    expect(fn () => app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []))
         ->toThrow(RequestException::class);
     expect(Http::recorded()->filter(fn (array $pair): bool => str_contains($pair[0]->url(), '/messages:send')))->toHaveCount(3);
 });

@@ -2,6 +2,14 @@
 
 > **Append entry after adding each feature.** This is the chronological map of every feature built.
 
+### Notification Inbox & Delivery Records (Task 30)
+- Tables `notifications` (uuid, `notifiable` morph using `client`/`barber`/`branch` aliases, `type` `booking_update|invite|application|review_request`, `title`, `body`, `data`, unique `dedupe_key`, `read_at`) and `notification_deliveries` (`notification_id`, nullable `device_token_id` with `nullOnDelete`, `status` `sent|failed`, `provider_message_id`, `error`, `attempted_at`).
+- `NotificationWriter` + `FcmNotificationSender::sendTo(..., NotificationTypeEnum $type, ..., ?string $dispatchKey)` — writes one inbox row per recipient (idempotent per dispatch key, so queue retries never duplicate rows or re-push delivered devices), then one delivery row per device attempt; still writes the inbox row when FCM is unconfigured or the recipient has no device.
+- `GET /api/v1/notifications` — `auth:client,barber,branch_api`; unread first, newest first; `per_page` 1–100 (default 20); `meta.pagination` + `meta.unread_count`.
+- `PATCH /api/v1/notifications/{notification}/read` — idempotent; another actor's ID returns 404 `RESOURCE_NOT_FOUND`.
+- `POST /api/v1/notifications/read-all` — `data {updated, unread_count: 0}`.
+- `NotificationDeliveryModel` is `MassPrunable` after 90 days; `model:prune` scheduled daily at 03:00 by `ApplicationServiceProvider`.
+
 ### Manager & Stylist Mobile Operations
 - `PATCH /api/v1/branch/bookings/{booking}/status` — branch-authenticated booking transition to `in_progress`, `completed`, `no_show`, or `canceled`, scoped to the manager's branch.
 - `PATCH /api/v1/branch/chairs/{chair}/status`, `PUT /api/v1/dashboard/chairs/{chair}`, `PATCH /api/v1/chairs/{chair}` — moving a chair to `maintenance` returns 409 `CHAIR_HAS_ACTIVE_BOOKINGS` (`errors.booking_ids`) while future reservation-blocking bookings exist; `force=true` cancels them (`cancellation_reason = chair_maintenance`), notifies each client and lists `meta.canceled_booking_ids`. Shared `ChairStatusService`.
@@ -18,7 +26,7 @@
 - `BaseApiAction` + `ApiResponseTrait` — paginated/ok/created/error/validation helpers
 - `BaseModuleServiceProvider` — auto-mounts `Routes/Api/V1/*.php` at `/api/v1` with `['api']` middleware
 - Auth guards: `client` (sanctum), `barber` (sanctum), `barber_dashboard` (session), `branch` (session), `admin` (session)
-- `FcmNotificationSender` — sends per-device notifications through FCM HTTP v1 using a cached OAuth2 service-account token; prunes unregistered device tokens and retries transient failures
+- `FcmNotificationSender` — sends per-device notifications through FCM HTTP v1 using a cached OAuth2 service-account token; prunes unregistered device tokens and retries transient failures; persists inbox and delivery records (Task 30)
 
 ### Client
 - `LoginAction` [POST /api/v1/client/login] — email/password → Sanctum `client-app` token + client profile

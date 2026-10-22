@@ -389,7 +389,8 @@ Authentication always outranks the onboarding flag.
 - Social login. The endpoint constant exists; the backend has no configured
   Socialite drivers, so it always 401s.
 - Per-route auth guards (beyond the launch gate + 401 redirect), guest guards,
-  deep links, notifications.
+  deep links, push-tap routing. (The notification inbox is built — Task 30,
+  client_app `/profile/notifications`.)
 - Logout UI. `SessionBloc` handles `LogoutRequested`; no affordance calls it.
 - DI container. Wiring is manual construction in `DorakApp.initState`.
 - Locale persistence. The toggle is in-memory and resets on restart.

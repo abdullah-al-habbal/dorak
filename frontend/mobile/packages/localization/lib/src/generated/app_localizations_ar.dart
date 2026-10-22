@@ -1101,4 +1101,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stylistMarkNoShow => 'تحديد عدم الحضور';
+
+  @override
+  String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get notificationsEmptyTitle => 'لا توجد إشعارات بعد';
+
+  @override
+  String get notificationsEmptyMessage => 'ستظهر تحديثات الحجوزات هنا.';
+
+  @override
+  String get notificationsMarkAllRead => 'تعليم الكل كمقروء';
+
+  @override
+  String get notificationsUnreadLabel => 'غير مقروء';
+
+  @override
+  String get profileNotificationsAction => 'الإشعارات';
 }

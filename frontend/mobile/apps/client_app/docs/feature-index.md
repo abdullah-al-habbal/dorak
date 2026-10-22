@@ -119,6 +119,11 @@
 - Branch-detail barbers → tappable rows navigating to `/discover/barber/:barberId`.
 - `test/stylist_profile_bloc_test.dart` + `test/stylist_profile_flow_test.dart`.
 
+### Notification Inbox (Task 30)
+- `lib/src/features/notifications/notifications.{bloc,event,state}.dart` — `NotificationsBloc` over `Paged<NotificationDto>`: start/refresh/load-more/retry, mark one read (`markingId`), mark all read (`isMarkingAll`); each mark reloads page 1 so server ordering (unread first) stays authoritative.
+- `lib/src/features/notifications/notifications.screen.dart` + `widgets/notification_tile.widget.dart` — inbox at `/profile/notifications` (nested profile route via `_scope`), entered from the Profile tab's Notifications button; tap marks an unread row read; app-bar "Mark all as read" while anything is unread.
+- Wiring: `AppServices.createNotifications`, `AppRouter.notifications` test seam, `buildRouter(notifications:)` + `FakeNotificationRepository` in `test/helpers/fakes.dart`.
+
 ### Empty Scaffolds (no files yet)
 - `lib/src/features/profile/` (password entry button only)
 - `lib/src/core/{di,theme}/`

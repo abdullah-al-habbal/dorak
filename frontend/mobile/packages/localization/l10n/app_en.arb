@@ -1224,5 +1224,17 @@
   "stylistAcceptBooking": "Accept Booking",
   "stylistStartSession": "Start Session",
   "stylistCompleteSession": "Complete Session",
-  "stylistMarkNoShow": "Mark No-Show"
+  "stylistMarkNoShow": "Mark No-Show",
+  "notificationsTitle": "Notifications",
+  "@notificationsTitle": {"description": "App bar title of the notification inbox"},
+  "notificationsEmptyTitle": "No notifications yet",
+  "@notificationsEmptyTitle": {"description": "Empty-state title of the notification inbox"},
+  "notificationsEmptyMessage": "Booking updates will appear here.",
+  "@notificationsEmptyMessage": {"description": "Empty-state message of the notification inbox"},
+  "notificationsMarkAllRead": "Mark all as read",
+  "@notificationsMarkAllRead": {"description": "Inbox action that marks every notification read"},
+  "notificationsUnreadLabel": "Unread",
+  "@notificationsUnreadLabel": {"description": "Screen-reader label for an unread notification"},
+  "profileNotificationsAction": "Notifications",
+  "@profileNotificationsAction": {"description": "Profile button that opens the notification inbox"}
 }

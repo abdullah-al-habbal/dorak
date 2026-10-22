@@ -12,6 +12,7 @@ Today, `FcmNotificationSender` is only called from the booking notification job 
 
 ## Evidence
 - A grep for `FcmNotificationSender`, `Notification::` and `->notify(` in `backend/modules` matches only `Booking/Jobs/SendBookingStatusNotificationJob.php`, `Core/Services/FcmNotificationSender.php` and `Activation/Filament/Actions/ToggleActivationAction.php`.
+  - Task 30 re-check (2026-10-22): `ToggleActivationAction` no longer calls the sender; the booking job is its only caller. Task 30 added `FcmNotificationSender::sendTo(..., NotificationTypeEnum $type, ..., ?string $dispatchKey)` and `NotificationWriter`; new jobs should pass a stable dispatch key and the matching `NotificationTypeEnum` case.
 - `backend/modules/BarberAffiliation/Http/Actions/Barber/CreateAffiliationAction.php` — creates an affiliation with no notification.
 - `backend/modules/JobPosting/Http/Actions/Barber/ApplyForJobAction.php` — creates an application with no notification.
 - `backend/modules/Booking/Http/Actions/Barber/CompleteBookingAction.php` — completion sends the booking-status push only. There is no review request.

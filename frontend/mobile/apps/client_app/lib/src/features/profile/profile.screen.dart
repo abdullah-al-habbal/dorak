@@ -33,6 +33,7 @@ class ProfileScreen extends StatefulWidget {
     required this.onViewBookings,
     required this.onEditProfile,
     required this.onSavedAddresses,
+    required this.onNotifications,
   });
 
   final HistoryBloc history;
@@ -44,6 +45,7 @@ class ProfileScreen extends StatefulWidget {
   final VoidCallback onViewBookings;
   final VoidCallback onEditProfile;
   final VoidCallback onSavedAddresses;
+  final VoidCallback onNotifications;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -116,6 +118,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         context,
                       )!.profileSavedAddressesAction,
                       onPressed: widget.onSavedAddresses,
+                    ),
+                    const SizedBox(height: DorakDimensions.spacingSmall),
+                    SecondaryButton(
+                      label: AppLocalizations.of(
+                        context,
+                      )!.profileNotificationsAction,
+                      onPressed: widget.onNotifications,
                     ),
                     const SizedBox(height: DorakDimensions.spacingLarge),
                     SecondaryButton(

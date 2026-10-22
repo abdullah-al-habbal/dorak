@@ -44,6 +44,7 @@
 - `change_password.{bloc,event,state}.dart` + `change_password.screen.dart` + `change_password_content.widget.dart` (Track 17) — authenticated password change entered from the Profile tab (`/profile/password`); 422 field errors in the banner, success `StatusView` with Done pop.
 - **Storage** (`src/storage/`) — `TokenStorage` / `SecureTokenStorage` (flutter_secure_storage) and `AppPreferences` / `SharedAppPreferences` (shared_preferences, `dontShowOnboarding`). See `docs/core/storage.md`.
 - **Session** (`src/session/`) — two independent pure `bloc`s over `AuthRepository` + `TokenStorage`: `AuthBloc` (`.bloc.dart`/`.event.dart`/`.state.dart`) for active auth actions (login/register/verify/resend), `SessionBloc` for session truth (restore/logout/unauthorized/ack). Decoupled: the app layer forwards auth successes as `SessionAuthenticated`. Type-safe one-shot signals — `SessionSignal` on `SessionState`, `AuthSignal` on `AuthState` — consumed by the router's two stream listeners. See `docs/core/session.md`.
+- `notification.repository.dart` — `NotificationRepository` + `DioNotificationRepository` (Task 30): paged inbox, mark one read, mark all read.
 
 ### feature_floor_plan
 - Stub only — `feature_floor_plan.dart` barrel, no implementation yet.
@@ -118,6 +119,9 @@
 
 ### Review & Rating — Stitch 020 (CL-13) ✅ Complete
 - Core: `ReviewEndpoints` (`POST /client/bookings/{booking}/review`, `GET /branches/{branch}/reviews`), `ReviewDto`/`SubmitReviewDto` (codegen), `ReviewRepository`/`DioReviewRepository` (`submitReview` → 201 `ReviewDto`; `getBranchReviews` → `Paged<ReviewDto>`). App: `ReviewSubmitBloc` (`ReviewSubmitStarted(bookingId, rating, comment)` → `isSubmitting`/`submitted`/`error`; `ReviewSubmitRetried` re-submits from stored rating), `ReviewSubmitScreen` (star row 1–5, comment field max 1000, submit `PrimaryButton` with `isLoading`/`isDisabled` guard, success `StatusView`), route `/reviews/:bookingId` under the Bookings shell branch, "Rate" button on `BookingCard` when `status == 'completed'`, `app.dart` DI + dispose.
+
+### Notification Inbox — Task 30 ✅ Complete
+- `NotificationRepository` + `NotificationDto` + `NotificationEndpoints` in core (`GET /notifications`, `PATCH /notifications/{id}/read`, `POST /notifications/read-all`, shared by every actor); client_app `NotificationsBloc` + inbox screen at `/profile/notifications`. stylist/business inboxes follow their shells (Tasks 82, 84); push-tap routing is Task 78.
 
 ### Empty Scaffolds (not implemented)
 - `features/profile/` — directories only, no files.

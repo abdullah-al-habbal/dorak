@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Core\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -14,6 +15,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Models\NotificationDeliveryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
@@ -49,6 +51,16 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
         $this->loadAppRoutes();
         Broadcast::routes(['prefix' => 'api/v1', 'middleware' => ['api', 'auth:admin_api,branch_api,barber,client']]);
         require __DIR__.'/../Routes/channels.php';
+        $this->scheduleNotificationDeliveryPruning();
+    }
+
+    private function scheduleNotificationDeliveryPruning(): void
+    {
+        $this->app->afterResolving(Schedule::class, function (Schedule $schedule): void {
+            $schedule->command('model:prune', ['--model' => [NotificationDeliveryModel::class]])
+                ->dailyAt('03:00')
+                ->withoutOverlapping();
+        });
     }
 
     private function registerMorphMap(): void

@@ -19,11 +19,15 @@ trait ApiResponseTrait
         return app(TranslatorHandlerService::class)->translate($key, $replace, $locale);
     }
 
+    /**
+     * @param  array<string, mixed>  $meta  merged next to `pagination`
+     */
     public function paginated(
         LengthAwarePaginator $paginator,
         string $resourceClass,
         SuccessCodeEnum|string $code = SuccessCodeEnum::SUCCESS,
-        ?string $message = null
+        ?string $message = null,
+        array $meta = [],
     ): JsonResponse {
         return $this->success(
             data: $resourceClass::collection($paginator->items()),
@@ -37,6 +41,7 @@ trait ApiResponseTrait
                     'current_page' => $paginator->currentPage(),
                     'total_pages' => $paginator->lastPage(),
                 ],
+                ...$meta,
             ]
         );
     }

@@ -234,6 +234,8 @@ links, locale persistence.
 | `buildRouter` takes `bookings` + `branchDetail` fakes | Matched-param seams keep constructors honest; defaults per feature keep unrelated router tests untouched. |
 | History rebook success renders a `StatusView`, navigation via `onViewBookings` callback | Bloc never navigates; the screen surface + callback (`router.go(AppRoutes.bookings)`) keeps routing in the router wiring. |
 | Rebook error mapping lives in the screen, not the bloc | Same rule as booking submit: bloc stores the raw `ApiException` in `rebookError`; the screen maps 409 → `bookingConflictMessage`, `NetworkException` → `errorNetwork`, else `errorGeneric`. |
+| Notification mark-read reloads page 1 instead of patching the item | `Paged.succeeded` appends when the last trigger was `more`, and the backend orders unread first — refetching keeps order and unread state server-authoritative (same idiom as booking cancel). |
+| Notification inbox lives under `/profile/notifications` | Not a fifth shell tab; entry is a Profile `SecondaryButton`. Tapping a row only marks it read — deep-linking to the booking is push-tap routing (Task 78). |
 | History item name resolved from the translations map | `catalog_item.name[localeCode] ?? ['en'] ?? ''` — object keys are locale codes, value is the localized display name. |
 | Profile header name falls back to `profileMemberLabel` | `RefreshTokenAction` returns only `{token}` — no profile data survives a restore, so a restored logged-in user has no known name. Avatar initial falls back to `'?'`. |
 | Rebook slot formatted like `createBooking` | UTC `yyyy-MM-dd HH:mm:ss`, shared convention with 017b booking creation. |

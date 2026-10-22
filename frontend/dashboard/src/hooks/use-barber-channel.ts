@@ -10,8 +10,10 @@ export function useBarberChannel(barberId: string | null) {
     if (!barberId) return;
     const echo = realtimeEcho();
     if (!echo) return;
-    const refreshAppointments = () =>
+    const refreshAppointments = () => {
       queryClient.invalidateQueries({ queryKey: ["barber", "appointments"] });
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    };
     echo
       .private(`barber.${barberId}`)
       .listen(".booking.status.updated", refreshAppointments)

@@ -15,6 +15,7 @@ import 'package:client_app/src/features/auth/password_recovery.bloc.dart';
 import 'package:client_app/src/features/booking/booking.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
+import 'package:client_app/src/features/notifications/notifications.bloc.dart';
 import 'package:client_app/src/features/onboarding/onboarding_config.bloc.dart';
 import 'package:client_app/src/features/profile/avatar.bloc.dart';
 import 'package:client_app/src/features/profile/face_analysis.bloc.dart';
@@ -55,6 +56,7 @@ AppRouter buildRouter({
   ReviewSubmitBloc? reviewSubmit,
   FavoritesBloc? favorites,
   ProfileCompletionBloc? profileCompletion,
+  NotificationsBloc? notifications,
   PhotoPicker? photoPicker,
   VoidCallback switchLocale = _noSwitchLocale,
   void Function(String barberId) onBarberSelected = _noBarberSelected,
@@ -84,6 +86,7 @@ AppRouter buildRouter({
     profileCompletion:
         profileCompletion ??
         ProfileCompletionBloc(FakeProfileRepository(), preferences),
+    notifications: notifications ?? fakeNotificationsBloc(),
     photoPicker: photoPicker ?? FakePhotoPicker(),
     switchLocale: switchLocale,
     apiClient: apiClient,
@@ -1223,3 +1226,100 @@ class FakeReviewRepository implements ReviewRepository {
 ReviewSubmitBloc fakeReviewSubmitBloc({FakeReviewRepository? repository}) {
   return ReviewSubmitBloc(repository ?? FakeReviewRepository());
 }
+
+NotificationDto testNotification({
+  String id = 'notification-1',
+  String title = 'Booking confirmed',
+  DateTime? readAt,
+}) => NotificationDto(
+  id: id,
+  type: 'booking_update',
+  title: title,
+  body: 'Your booking is confirmed',
+  data: const {'booking_id': 'booking-1'},
+  readAt: readAt,
+  createdAt: DateTime.utc(2026, 10, 22, 10),
+);
+
+PaginatedData<NotificationDto> testNotificationPage({
+  List<NotificationDto>? notifications,
+  int currentPage = 1,
+  int totalPages = 1,
+}) {
+  final items = notifications ?? [testNotification()];
+  return PaginatedData(
+    data: items,
+    meta: PaginationMeta(
+      total: items.length,
+      count: items.length,
+      perPage: 20,
+      currentPage: currentPage,
+      totalPages: totalPages,
+    ),
+  );
+}
+
+class FakeNotificationRepository implements NotificationRepository {
+  PaginatedData<NotificationDto> firstPage = testNotificationPage();
+  PaginatedData<NotificationDto>? morePage;
+  Object? error;
+  Object? markError;
+
+  int getNotificationsCalls = 0;
+  int markReadCalls = 0;
+  int markAllReadCalls = 0;
+  int lastPage = 1;
+  String? lastMarkedId;
+
+  @override
+  Future<PaginatedData<NotificationDto>> getNotifications({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    getNotificationsCalls++;
+    lastPage = page;
+    final failure = error;
+    if (failure != null) throw failure;
+    if (page > 1 && morePage != null) return morePage!;
+    return firstPage;
+  }
+
+  @override
+  Future<NotificationDto> markRead(String notificationId) async {
+    markReadCalls++;
+    lastMarkedId = notificationId;
+    final failure = markError;
+    if (failure != null) throw failure;
+    final readAt = DateTime.utc(2026, 10, 22, 11);
+    final updated = firstPage.data.map(
+      (item) => item.id == notificationId
+          ? testNotification(id: item.id, title: item.title, readAt: readAt)
+          : item,
+    );
+    firstPage = testNotificationPage(notifications: updated.toList());
+    return firstPage.data.firstWhere((item) => item.id == notificationId);
+  }
+
+  @override
+  Future<void> markAllRead() async {
+    markAllReadCalls++;
+    final failure = markError;
+    if (failure != null) throw failure;
+    final readAt = DateTime.utc(2026, 10, 22, 11);
+    firstPage = testNotificationPage(
+      notifications: firstPage.data
+          .map(
+            (item) => testNotification(
+              id: item.id,
+              title: item.title,
+              readAt: item.readAt ?? readAt,
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+NotificationsBloc fakeNotificationsBloc([
+  FakeNotificationRepository? repository,
+]) => NotificationsBloc(repository ?? FakeNotificationRepository());

@@ -5,6 +5,7 @@ import 'package:client_app/src/features/auth/password_recovery.bloc.dart';
 import 'package:client_app/src/features/booking/booking.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
+import 'package:client_app/src/features/notifications/notifications.bloc.dart';
 import 'package:client_app/src/features/onboarding/onboarding_config.bloc.dart';
 import 'package:client_app/src/features/profile/avatar.bloc.dart';
 import 'package:client_app/src/features/profile/face_analysis.bloc.dart';
@@ -35,6 +36,7 @@ class AppServices {
     required this.createAvatar,
     required this.createChangePassword,
     required this.createProfileRepository,
+    required this.createNotifications,
   });
 
   factory AppServices.live({
@@ -77,6 +79,8 @@ class AppServices {
     createAvatar: () => AvatarBloc(DioProfileRepository(apiClient)),
     createChangePassword: () => ChangePasswordBloc(authRepository),
     createProfileRepository: () => DioProfileRepository(apiClient),
+    createNotifications: () =>
+        NotificationsBloc(DioNotificationRepository(apiClient)),
   );
 
   final OnboardingConfigBloc Function() createOnboardingConfig;
@@ -94,4 +98,5 @@ class AppServices {
   final AvatarBloc Function() createAvatar;
   final ChangePasswordBloc Function() createChangePassword;
   final ProfileRepository Function() createProfileRepository;
+  final NotificationsBloc Function() createNotifications;
 }

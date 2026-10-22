@@ -78,6 +78,8 @@ export const en = {
       empty: "You have no notifications.",
       markAllRead: "Mark all as read",
       viewAll: "View All",
+      unreadLabel: "Notifications, {count} unread",
+      unread: "Unread",
     },
     userMenu: {
       fallbackName: "Account",

@@ -79,6 +79,8 @@ export const ar: Dictionary = {
       empty: "لا توجد إشعارات لديك.",
       markAllRead: "تعليم الكل كمقروء",
       viewAll: "عرض الكل",
+      unreadLabel: "الإشعارات، {count} غير مقروءة",
+      unread: "غير مقروء",
     },
     userMenu: {
       fallbackName: "الحساب",

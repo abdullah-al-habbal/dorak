@@ -1,0 +1,37 @@
+import 'package:equatable/equatable.dart';
+
+sealed class NotificationsEvent extends Equatable {
+  const NotificationsEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class NotificationsStarted extends NotificationsEvent {
+  const NotificationsStarted();
+}
+
+class NotificationsRefreshRequested extends NotificationsEvent {
+  const NotificationsRefreshRequested();
+}
+
+class NotificationsLoadMoreRequested extends NotificationsEvent {
+  const NotificationsLoadMoreRequested();
+}
+
+class NotificationsRetryRequested extends NotificationsEvent {
+  const NotificationsRetryRequested();
+}
+
+class NotificationMarkReadRequested extends NotificationsEvent {
+  const NotificationMarkReadRequested(this.id);
+
+  final String id;
+
+  @override
+  List<Object?> get props => [id];
+}
+
+class NotificationsMarkAllReadRequested extends NotificationsEvent {
+  const NotificationsMarkAllReadRequested();
+}

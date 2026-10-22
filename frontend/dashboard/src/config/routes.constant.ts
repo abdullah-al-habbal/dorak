@@ -62,6 +62,10 @@ export const ROUTES = {
     barber: {
       root: "/api/v1/barber",
     },
+    notifications: {
+      root: "/api/v1/notifications",
+      inbox: "/api/notifications",
+    },
   },
 } as const;
 

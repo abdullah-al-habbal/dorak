@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace Modules\Core\Services;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Modules\Core\Enums\NotificationDeliveryStatusEnum;
+use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
+use Modules\Core\Models\NotificationModel;
 use Throwable;
 
 final class FcmNotificationSender
@@ -21,11 +27,29 @@ final class FcmNotificationSender
 
     private bool $missingCredentialsWarningLogged = false;
 
+    public function __construct(
+        private readonly NotificationWriter $writer,
+    ) {}
+
     /**
+     * Records the inbox notification for the recipient, then pushes it to each
+     * registered device and records one delivery row per attempt. A dispatch
+     * key keeps a retried job from duplicating the notification or re-pushing
+     * devices that already received it.
+     *
      * @param  array<string, bool|float|int|string|null>  $data
      */
-    public function sendTo(string $userType, string $userId, string $title, string $body, array $data): void
-    {
+    public function sendTo(
+        string $userType,
+        string $userId,
+        NotificationTypeEnum $type,
+        string $title,
+        string $body,
+        array $data,
+        ?string $dispatchKey = null,
+    ): NotificationModel {
+        $notification = $this->writer->record($userType, $userId, $type, $title, $body, $data, $dispatchKey);
+
         $projectId = config('services.fcm.project_id');
         $credentials = $this->credentials();
 
@@ -35,14 +59,18 @@ final class FcmNotificationSender
                 $this->missingCredentialsWarningLogged = true;
             }
 
-            return;
+            return $notification;
         }
 
+        $alias = $this->writer->morphAlias($userType);
+        $deliveredTokenIds = $this->writer->deliveredTokenIds($notification);
+
         DeviceTokenModel::query()
-            ->where('user_type', $userType)
+            ->whereIn('user_type', array_unique([$userType, $alias, Relation::getMorphedModel($alias) ?? $userType]))
             ->where('user_id', $userId)
+            ->whereNotIn('id', $deliveredTokenIds)
             ->get()
-            ->each(function (DeviceTokenModel $deviceToken) use ($projectId, $credentials, $title, $body, $data): void {
+            ->each(function (DeviceTokenModel $deviceToken) use ($notification, $projectId, $credentials, $title, $body, $data): void {
                 $token = $deviceToken->getAttribute('token');
                 if (! is_string($token)) {
                     return;
@@ -65,11 +93,20 @@ final class FcmNotificationSender
                             ],
                         ]);
 
+                    if ($response->successful()) {
+                        $messageId = $response->json('name');
+                        $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Sent, is_string($messageId) ? $messageId : null);
+
+                        return;
+                    }
+
+                    $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Failed, error: $this->errorSummary($response));
+
                     if ($response->status() === 429 || $response->serverError()) {
                         $response->throw();
                     } elseif ($this->isInvalidTokenResponse($response->status(), $response->json())) {
                         $deviceToken->delete();
-                    } elseif ($response->failed()) {
+                    } else {
                         Log::warning('FCM rejected a device notification.', [
                             'device_token_id' => $deviceToken->id,
                             'status' => $response->status(),
@@ -81,12 +118,29 @@ final class FcmNotificationSender
                         throw $exception;
                     }
 
+                    $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Failed, error: Str::limit($exception::class.': '.$exception->getMessage(), 1000));
                     Log::warning('FCM device notification failed.', [
                         'device_token_id' => $deviceToken->id,
                         'exception' => $exception::class,
                     ]);
                 }
             });
+
+        return $notification;
+    }
+
+    private function errorSummary(Response $response): string
+    {
+        $error = $response->json('error');
+        $summary = 'HTTP '.$response->status();
+        if (is_array($error)) {
+            $status = $error['status'] ?? null;
+            $message = $error['message'] ?? null;
+            $summary .= is_string($status) ? " {$status}" : '';
+            $summary .= is_string($message) ? ": {$message}" : '';
+        }
+
+        return Str::limit($summary, 1000);
     }
 
     /**

@@ -4,6 +4,7 @@ import { MenuIcon } from "@/components/common/header/icons";
 import { LocaleToggle } from "@/components/common/header/locale-toggle";
 import { ThemeToggle } from "@/components/common/header/theme-toggle";
 import { Button } from "@/components/tailgrids/core/button";
+import { NotificationBell } from "@/components/portal/notification-bell";
 import { PortalUserMenu } from "@/components/portal/portal-user-menu";
 import { ChevronLeft, ChevronRight } from "@tailgrids/icons";
 import { useDictionary } from "@/hooks/use-dictionary";
@@ -67,6 +68,7 @@ export function PortalHeader({
           <ThemeToggle />
           <LocaleToggle />
         </div>
+        <NotificationBell />
         <PortalUserMenu />
       </div>
     </header>

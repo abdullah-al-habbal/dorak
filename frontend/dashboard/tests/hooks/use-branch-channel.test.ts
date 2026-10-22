@@ -11,7 +11,7 @@ vi.mock("@tanstack/react-query", () => ({
 vi.mock("@/services/realtime/echo-client", () => ({ realtimeEcho: vi.fn() }));
 
 describe("useBranchChannel", () => {
-  it("invalidates bookings and overview when a booking is cancelled", () => {
+  it("invalidates bookings, overview and notifications when a booking is cancelled", () => {
     const handlers: Record<string, () => void> = {};
     const channel = {
       listen: vi.fn((event: string, handler: () => void) => {
@@ -32,6 +32,9 @@ describe("useBranchChannel", () => {
     });
     expect(invalidateQueries).toHaveBeenCalledWith({
       queryKey: ["dashboard", "overview"],
+    });
+    expect(invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["notifications"],
     });
     expect(Object.keys(handlers)).toContain(".booking.rescheduled");
   });

@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-/** @property string $token */
+/**
+ * @property string $id
+ * @property string $token
+ */
 #[Fillable(['user_id', 'user_type', 'token', 'platform', 'last_used_at'])]
 #[Table('device_tokens')]
 final class DeviceTokenModel extends Model

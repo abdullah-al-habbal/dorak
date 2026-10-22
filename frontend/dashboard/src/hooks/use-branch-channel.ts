@@ -21,6 +21,7 @@ export function useBranchChannel(branchId: string | null) {
     const refresh = () => {
       queryClient.invalidateQueries({ queryKey: ["dashboard", "bookings"] });
       queryClient.invalidateQueries({ queryKey: ["dashboard", "overview"] });
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
     };
     for (const event of BOOKING_EVENTS) channel.listen(event, refresh);
     return () => echo.leave(`private-branch.${branchId}`);

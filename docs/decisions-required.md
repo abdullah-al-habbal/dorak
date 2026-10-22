@@ -60,7 +60,9 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved (EC-2): cancel-and-notify. Moving a chair to maintenance is rejected with 409 `CHAIR_HAS_ACTIVE_BOOKINGS` while reservation-blocking bookings (`pending`/`confirmed`/`in_progress`, ending in the future) exist. With an explicit `force=true`, those bookings are canceled through the lifecycle with `cancellation_reason = chair_maintenance` and each client receives one status notification. Automatic reassignment to another free chair is not done; client rebooking UX is a follow-up.
 
 ## [Task 30: Persist Notification Delivery Records](tasks/task-30-notification-delivery-records.md)
-- [ ] **Decision required:** retention period for delivery rows.
+- [x] Decision resolved (retention): `notification_deliveries` rows are kept 90 days. `NotificationDeliveryModel` is `MassPrunable` on `attempted_at < now − 90 days`, and `model:prune` runs daily at 03:00. `notifications` (inbox) rows are not pruned; an inbox retention policy is a follow-up if the table grows.
+- [x] Decision resolved (admins): the inbox endpoints accept `client`, `barber` and `branch_api` only, as the spec lists. The dashboard bell is hidden for admin sessions (`admin_api`), which receive no notifications today.
+- [x] Decision resolved (dashboard test tooling): `@testing-library/react`, `@testing-library/dom`, `@testing-library/user-event` and `jsdom` were added as dev dependencies so the bell can have a real component test; Vitest now also picks up `tests/**/*.test.tsx` (per-file `// @vitest-environment jsdom`).
 
 ## [Task 34: Implement Phone OTP Verification](tasks/task-34-phone-otp-verification.md)
 - [ ] Decision required: SMS provider (none is configured in the repo) and whether phone OTP is also a login method (PRD wording "phone OTP login") or verification only.

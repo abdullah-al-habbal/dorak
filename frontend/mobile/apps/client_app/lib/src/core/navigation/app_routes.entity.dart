@@ -27,6 +27,7 @@ class AppRoutes {
   static const String profilePassword = '/profile/password';
   static const String profileEdit = '/profile/edit';
   static const String profileAddresses = '/profile/addresses';
+  static const String profileNotifications = '/profile/notifications';
 
   static const String branchDetailSegment = 'branch/:branchId';
   static const String discoverBarberSegment = 'barber/:barberId';
@@ -61,4 +62,5 @@ class AppRoutes {
   static const String profilePasswordSegment = 'password';
   static const String profileEditSegment = 'edit';
   static const String profileAddressesSegment = 'addresses';
+  static const String profileNotificationsSegment = 'notifications';
 }

@@ -2077,6 +2077,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark No-Show'**
   String get stylistMarkNoShow;
+
+  /// App bar title of the notification inbox
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// Empty-state title of the notification inbox
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get notificationsEmptyTitle;
+
+  /// Empty-state message of the notification inbox
+  ///
+  /// In en, this message translates to:
+  /// **'Booking updates will appear here.'**
+  String get notificationsEmptyMessage;
+
+  /// Inbox action that marks every notification read
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get notificationsMarkAllRead;
+
+  /// Screen-reader label for an unread notification
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get notificationsUnreadLabel;
+
+  /// Profile button that opens the notification inbox
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get profileNotificationsAction;
 }
 
 class _AppLocalizationsDelegate

@@ -44,6 +44,8 @@ import 'package:client_app/src/features/profile/face_analysis.bloc.dart';
 import 'package:client_app/src/features/profile/favorites.screen.dart';
 import 'package:client_app/src/features/profile/favorites.bloc.dart';
 import 'package:client_app/src/features/profile/history.bloc.dart';
+import 'package:client_app/src/features/notifications/notifications.bloc.dart';
+import 'package:client_app/src/features/notifications/notifications.screen.dart';
 import 'package:client_app/src/features/profile/photo_picker.provider.dart';
 import 'package:client_app/src/features/profile/profile_completion.bloc.dart';
 import 'package:client_app/src/features/profile/profile_completion.screen.dart';
@@ -77,6 +79,7 @@ class AppRouter {
   final StylistProfileBloc? stylistProfile;
   final ReviewSubmitBloc? reviewSubmit;
   final ProfileCompletionBloc? profileCompletion;
+  final NotificationsBloc? notifications;
   final PhotoPicker photoPicker;
   final VoidCallback switchLocale;
   final ApiClient apiClient;
@@ -107,6 +110,7 @@ class AppRouter {
     this.stylistProfile,
     this.reviewSubmit,
     this.profileCompletion,
+    this.notifications,
     required this.photoPicker,
     required this.switchLocale,
     required this.apiClient,
@@ -590,6 +594,8 @@ class AppRouter {
                           router.push<void>(AppRoutes.profileEdit),
                       onSavedAddresses: () =>
                           router.push<void>(AppRoutes.profileAddresses),
+                      onNotifications: () =>
+                          router.push<void>(AppRoutes.profileNotifications),
                     ),
                   ),
                 ),
@@ -617,6 +623,14 @@ class AppRouter {
                     path: AppRoutes.profileAddressesSegment,
                     builder: (context, state) =>
                         SavedAddressesScreen(preferences: preferences),
+                  ),
+                  GoRoute(
+                    path: AppRoutes.profileNotificationsSegment,
+                    builder: (context, state) => _scope(
+                      notifications,
+                      services.createNotifications,
+                      (bloc) => NotificationsScreen(bloc: bloc),
+                    ),
                   ),
                 ],
               ),
