@@ -14,8 +14,8 @@ final class ListBranchesEloquentResolver
     public function resolve(ListBranchesQuery $query): LengthAwarePaginator
     {
         return BranchModel::query()
-            ->when($query->brandId !== null, fn ($builder) => $builder->where('brand_id', $query->brandId))
-            ->when($query->branchId !== null, fn ($builder) => $builder->whereKey($query->branchId))
+            ->when($query->brandIds !== null, fn ($builder) => $builder->whereIn('brand_id', $query->brandIds))
+            ->when($query->branchIds !== null, fn ($builder) => $builder->whereKey($query->branchIds))
             ->paginate($query->perPage);
     }
 }

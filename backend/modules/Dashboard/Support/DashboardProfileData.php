@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Support;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
 
 final readonly class DashboardProfileData
 {
@@ -17,7 +18,7 @@ final readonly class DashboardProfileData
         public ?string $pendingEmail = null,
     ) {}
 
-    public static function fromModel(AdminModel|BranchModel|BarberModel $model, ?string $pendingEmail = null): self
+    public static function fromModel(AdminModel|BranchModel|BarberModel|ClientModel $model, ?string $pendingEmail = null): self
     {
         $name = $model->getAttribute('name');
         $locale = (string) app()->getLocale();

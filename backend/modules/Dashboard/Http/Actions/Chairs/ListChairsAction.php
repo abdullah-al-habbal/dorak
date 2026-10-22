@@ -21,7 +21,7 @@ final class ListChairsAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $chairs = $this->handler->handle(new ListChairsQuery(
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
             $request->integer('per_page', 15),
         ));
 

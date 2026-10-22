@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Eloquent\Resolvers\Profile\DashboardEmailChangeEloquentResolver;
 use Modules\Dashboard\Support\DashboardActor;
@@ -20,7 +21,7 @@ final class GetProfileAction extends BaseApiAction
 
     public function __invoke(Request $request): JsonResponse
     {
-        /** @var AdminModel|BranchModel|BarberModel $model */
+        /** @var AdminModel|BranchModel|BarberModel|ClientModel $model */
         $model = $request->attributes->get('dashboard_model');
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');

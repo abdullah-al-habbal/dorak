@@ -10,16 +10,23 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
+use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class DashboardLoginHandler
 {
+    public function __construct(
+        private readonly DashboardOwnerActorResolver $ownerActors,
+    ) {}
+
     public function authenticate(string $actorType, string $email, string $password): ?DashboardActor
     {
         return match ($actorType) {
             DashboardActor::ADMIN => $this->authenticateAdmin($email, $password),
             DashboardActor::BRANCH => $this->authenticateBranch($email, $password),
             DashboardActor::BARBER => $this->authenticateBarber($email, $password),
+            DashboardActor::OWNER => $this->authenticateOwner($email, $password),
             default => null,
         };
     }
@@ -83,12 +90,28 @@ final class DashboardLoginHandler
         return new DashboardActor($barberId, DashboardActor::BARBER, 'barber', null);
     }
 
-    private function resolveModel(DashboardActor $actor): AdminModel|BranchModel|BarberModel
+    private function authenticateOwner(string $email, string $password): ?DashboardActor
+    {
+        $client = ClientModel::query()->where('email', $email)->first();
+        $storedPassword = $client?->getAttribute('password');
+        if (! $client instanceof ClientModel || ! is_string($storedPassword) || ! Hash::check($password, $storedPassword)) {
+            return null;
+        }
+
+        if ($client->isBanned()) {
+            throw new AccountBannedException;
+        }
+
+        return $this->ownerActors->forClient($client);
+    }
+
+    private function resolveModel(DashboardActor $actor): AdminModel|BranchModel|BarberModel|ClientModel
     {
         return match ($actor->actorType) {
             DashboardActor::ADMIN => AdminModel::query()->findOrFail($actor->id),
             DashboardActor::BRANCH => BranchModel::query()->findOrFail($actor->id),
             DashboardActor::BARBER => BarberModel::query()->findOrFail($actor->id),
+            DashboardActor::OWNER => ClientModel::query()->findOrFail($actor->id),
             default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $actor->actorType])),
         };
     }

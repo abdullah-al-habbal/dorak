@@ -115,6 +115,43 @@ describe("verifyDashboardClaim", () => {
   });
 });
 
+describe("brand owner claims", () => {
+  const ownerClaim = (overrides: Partial<DashboardClaim> = {}) =>
+    makeClaim({
+      actor_type: "owner",
+      role: "brand_owner",
+      brand_id: "brand-1",
+      brand_ids: ["brand-1", "brand-2"],
+      ...overrides,
+    });
+
+  it("accepts an owner claim carrying its brand ids", async () => {
+    await expect(
+      verifyDashboardClaim(sign(ownerClaim()), SECRET),
+    ).resolves.toMatchObject({
+      actor_type: "owner",
+      brand_ids: ["brand-1", "brand-2"],
+    });
+  });
+
+  it.each([
+    ["no brands", { brand_ids: [] }],
+    ["a primary brand outside the list", { brand_id: "brand-9" }],
+    ["a branch scope", { branch_id: "branch-1" }],
+    ["the wrong role", { role: "branch_manager" as const }],
+  ])("rejects an owner claim with %s", async (_label, overrides) => {
+    await expect(
+      verifyDashboardClaim(sign(ownerClaim(overrides)), SECRET),
+    ).resolves.toBeNull();
+  });
+
+  it("rejects brand ids on a non-owner claim", async () => {
+    await expect(
+      verifyDashboardClaim(sign(makeClaim({ brand_ids: ["brand-1"] })), SECRET),
+    ).resolves.toBeNull();
+  });
+});
+
 describe("peekDashboardClaim", () => {
   it("decodes the payload without verifying the signature", () => {
     const claim = makeClaim({

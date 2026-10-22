@@ -18,7 +18,7 @@ final readonly class UpdateStylistHandler
 
     public function handle(BarberModel $stylist, UpdateStylistCommand $command): BarberModel
     {
-        $this->assignmentResolver->ensureWithinBranch($command->attributes['chair_id'] ?? null, $command->branchId);
+        $this->assignmentResolver->ensureWithinBranches($command->attributes['chair_id'] ?? null, $command->branchIds);
 
         return $this->resolver->resolve($stylist, $command->attributes);
     }

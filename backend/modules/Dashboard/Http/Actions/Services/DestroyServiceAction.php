@@ -26,7 +26,7 @@ final class DestroyServiceAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowServiceQuery(
             $service,
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
         ));
         $this->destroyHandler->handle($model, new DestroyServiceCommand($service));
 

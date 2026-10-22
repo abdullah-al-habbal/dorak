@@ -21,6 +21,6 @@ final class ShowBookingAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
 
-        return $this->ok(new BookingResource($this->handler->handle(new ShowBookingQuery($booking, $actor->isPlatformAdmin() ? null : $actor->branchId))));
+        return $this->ok(new BookingResource($this->handler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()))));
     }
 }

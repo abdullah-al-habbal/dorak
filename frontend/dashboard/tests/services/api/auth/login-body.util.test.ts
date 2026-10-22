@@ -21,7 +21,7 @@ describe("parseLoginBody", () => {
     null,
     "string",
     {},
-    { actor: "owner", email: "a@b.c", password: "x" },
+    { actor: "client", email: "a@b.c", password: "x" },
     { actor: "admin", email: 1, password: "x" },
     { actor: "admin", email: "a@b.c" },
   ])("rejects malformed payload %j", (payload) => {

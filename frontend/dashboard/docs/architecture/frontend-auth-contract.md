@@ -26,6 +26,12 @@ contract possible are recorded in `backend-additions.md`.
 | `admin`            | `admin_api`   | `admin`        | `/admin`         | `/admin/login`   |
 | `branch`           | `branch_api`  | `manager`      | `/manager`       | `/manager/login` |
 | `barber`           | `barber`      | `barber`       | `/barber`        | `/barber/login`  |
+| `owner`            | `client`      | `owner`        | `/owner`         | `/owner/login`   |
+
+A brand owner is a client account referenced by `brands.owner_id` (ADR
+[0001](../../../../docs/adr/0001-brand-owner-as-client.md), Task 38). Its
+dashboard token is a client Sanctum token with the `dashboard` ability; mobile
+client tokens never pass the dashboard middleware.
 
 The active actor is derived from the signed claim, never from the URL. A request
 to another actor's portal redirects to the active actor's portal.
@@ -58,7 +64,7 @@ to another actor's portal redirects to the active actor's portal.
 | `/api/v1/dashboard/logout`  | POST   | `dashboard` ability             | Revoke access + refresh tokens          |
 | `/health`                   | GET    | none                            | Public backend availability probe       |
 
-Login body: `{ actor_type: "admin" | "branch" | "barber", email, password }`.
+Login body: `{ actor_type: "admin" | "branch" | "barber" | "owner", email, password }`.
 The shared response envelope is `{ success, statusCode, code, message, timestamp, data, ... }`.
 
 ## Claim
@@ -68,10 +74,12 @@ The shared response envelope is `{ success, statusCode, code, message, timestamp
 
 ```json
 {
-  "actor_type": "admin | branch | barber",
-  "role": "platform_admin | branch_manager | barber",
+  "actor_type": "admin | branch | barber | owner",
+  "role": "platform_admin | branch_manager | barber | brand_owner",
   "sub": "<actor uuid>",
-  "branch_id": "<branch uuid, omitted for admin/barber>",
+  "branch_id": "<branch uuid, omitted for admin/barber/owner>",
+  "brand_id": "<owner only: first owned brand>",
+  "brand_ids": ["<owner only: every owned brand>"],
   "iat": 0,
   "exp": 0,
   "iss": "dorak-backend"
@@ -88,6 +96,7 @@ Sanctum token abilities (there are no spatie roles on the dashboard actors).
 | `subject`                      | Stable authenticated principal ID                          |
 | `actor` / `actorType` / `role` | Active actor and backend role                              |
 | `branchId`                     | Branch scope for `branch_manager` actors, otherwise `null` |
+| `brandIds`                     | Owned brands for `brand_owner` actors, otherwise `[]`      |
 | `permissions`                  | Token abilities for presentation and server authorization  |
 | `displayName` / `email`        | Header/profile presentation                                |
 | `claimExpiresAt`               | Expiry derived from the verified claim                     |
@@ -101,6 +110,7 @@ Sanctum token abilities (there are no spatie roles on the dashboard actors).
 | `/admin/*`       | `admin` session                    | Redirect to active portal otherwise |
 | `/manager/*`     | `manager` session                  | Redirect to active portal otherwise |
 | `/barber/*`      | `barber` session                   | Redirect to active portal otherwise |
+| `/owner/*`       | `owner` session                    | Redirect to active portal otherwise |
 | `/profile/*`     | Any valid session                  | Accessible to every actor           |
 | `/forbidden`     | Public                             | Access-denied explanation           |
 

@@ -25,7 +25,7 @@ final class UpdateStylistAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        $scope = $actor->isPlatformAdmin() ? null : $actor->branchId;
+        $scope = $actor->scopedBranchIds();
         $model = $this->showHandler->handle(new ShowStylistQuery($stylist, $scope));
 
         return $this->updated(BarberResource::make($this->updateHandler->handle(

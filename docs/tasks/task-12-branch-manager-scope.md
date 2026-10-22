@@ -17,7 +17,7 @@ The dashboard `StoreBranchAction` and `DestroyBranchAction` allow any branch-man
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
-- `StoreBranchAction` and `DestroyBranchAction`: allow only the platform admin. Brand Owner access is added in Task 38. Branch managers get 403.
+- `StoreBranchAction` and `DestroyBranchAction`: allow only the platform admin. Brand Owner access is added in Task 38. Branch managers get 403. Note (Task 38): brand owners may now create, update and delete branches of brands they own via `DashboardActor::canManageBrand()`.
 - `UpdateBranchAction`: a branch manager may update **only their own branch** (`actor.branchId === branch.id`), not siblings.
 - `DestroyBranchEloquentResolver`: if the branch is the brand's last remaining branch, refuse with 409 (`ErrorCodeEnum::CONFLICT`).
 - Decision resolved: block branch deletion with HTTP 409 while future bookings remain; do not cancel bookings or send notifications as part of deletion.

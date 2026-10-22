@@ -21,7 +21,7 @@ final class ListBookingsAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $bookings = $this->handler->handle(new ListBookingsQuery(
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
             $request->validated(),
         ));
 

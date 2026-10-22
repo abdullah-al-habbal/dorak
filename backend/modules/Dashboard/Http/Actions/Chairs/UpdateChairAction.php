@@ -27,13 +27,13 @@ final class UpdateChairAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        $scope = $actor->isPlatformAdmin() ? null : $actor->branchId;
+        $scope = $actor->scopedBranchIds();
         $model = $this->showHandler->handle(new ShowChairQuery($chair, $scope));
         $attributes = $request->validated();
         $force = (bool) ($attributes['force'] ?? false);
         unset($attributes['force']);
 
-        if (! $actor->isPlatformAdmin() && $attributes['branch_id'] !== $actor->branchId) {
+        if (! $actor->canAccessBranch($attributes['branch_id'])) {
             return $this->forbidden();
         }
 

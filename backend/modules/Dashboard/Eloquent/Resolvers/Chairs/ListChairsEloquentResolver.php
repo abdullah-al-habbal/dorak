@@ -24,7 +24,7 @@ final class ListChairsEloquentResolver
                     return BookingAvailability::apply($bookings->getQuery(), $now, $now->copy()->addSecond());
                 },
             ])
-            ->when($query->branchId !== null, fn ($builder) => $builder->where('branch_id', $query->branchId))
+            ->when($query->branchIds !== null, fn ($builder) => $builder->whereIn('branch_id', $query->branchIds))
             ->paginate($query->perPage);
     }
 }

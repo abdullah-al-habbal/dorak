@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Handlers\Profile\UpdateDashboardPasswordHandler;
 use Modules\Dashboard\Http\Requests\UpdateDashboardPasswordRequest;
@@ -18,7 +19,7 @@ final class UpdatePasswordAction extends BaseApiAction
 
     public function __invoke(UpdateDashboardPasswordRequest $request): JsonResponse
     {
-        /** @var AdminModel|BranchModel|BarberModel $model */
+        /** @var AdminModel|BranchModel|BarberModel|ClientModel $model */
         $model = $request->attributes->get('dashboard_model');
         if (! $this->handler->handle($model, $request->toCommand())) {
             return $this->unprocessable(__('dashboard::messages.current_password_incorrect'), ['current_password' => [__('dashboard::messages.current_password_incorrect')]]);

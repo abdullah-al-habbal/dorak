@@ -64,7 +64,7 @@ codeanchors:
 - [x] Task 35: Verify Password Recovery Code Server-Side -> [Spec](tasks/task-35-password-recovery-code-verification.md)
 - [x] Task 36: Enforce Account Deletion Rules and History Anonymization -> [Spec](tasks/task-36-account-deletion-rules.md)
 - [x] Task 37: Implement Barber Self Sign-Up -> [Spec](tasks/task-37-barber-self-signup.md)
-- [ ] Task 38: Implement Brand Owner Role -> [Spec](tasks/task-38-brand-owner-role.md)
+- [x] Task 38: Implement Brand Owner Role -> [Spec](tasks/task-38-brand-owner-role.md)
 
 ## Phase 6 — Reviews (P1)
 - [ ] Task 39: Resolve Review Subject for Barber and At-Home Bookings -> [Spec](tasks/task-39-review-subject-resolution.md)

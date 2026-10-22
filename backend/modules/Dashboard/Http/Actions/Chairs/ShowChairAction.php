@@ -22,7 +22,7 @@ final class ShowChairAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->handler->handle(new ShowChairQuery(
             $chair,
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
         ));
 
         return $this->ok(ChairResource::make($model));

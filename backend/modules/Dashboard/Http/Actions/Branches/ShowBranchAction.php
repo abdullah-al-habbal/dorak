@@ -27,8 +27,8 @@ final class ShowBranchAction extends BaseApiAction
         }
         $result = $this->handler->handle(new ShowBranchQuery(
             (string) $branchId,
-            $actor->isPlatformAdmin() ? null : $actor->brandId,
-            $actor->isBranchManager() ? $actor->branchId : null,
+            $actor->scopedBrandIds(),
+            $actor->scopedBranchIds(),
         ));
 
         return $this->success($result);

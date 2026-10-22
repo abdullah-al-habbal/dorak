@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { PORTAL_ACTORS, PORTAL_CONFIG, ROUTES } from "@/config/routes.constant";
+import {
+  PORTAL_ACTORS,
+  PORTAL_CONFIG,
+  PORTAL_NAVIGATION,
+  ROUTES,
+} from "@/config/routes.constant";
 
 describe("route constants", () => {
   it("defines each profile tab below its actor portal", () => {
@@ -13,5 +18,33 @@ describe("route constants", () => {
 
   it("derives portal actors from the actor configuration", () => {
     expect(PORTAL_ACTORS).toEqual(Object.keys(PORTAL_CONFIG));
+  });
+
+  it("gives brand owners their own portal with the operations destinations", () => {
+    expect(ROUTES.portal.owner.login).toBe("/owner/login");
+    const ownerKeys = PORTAL_NAVIGATION.filter((item) =>
+      item.actors.includes("owner"),
+    ).map((item) => item.key);
+
+    expect(ownerKeys).toEqual([
+      "dashboard",
+      "overview",
+      "branches",
+      "bookings",
+      "services",
+      "chairs",
+      "stylists",
+    ]);
+    expect(ROUTES.operations.resource("owner", "branches")).toBe(
+      "/owner/branches",
+    );
+  });
+
+  it("keeps the operations destinations away from barbers", () => {
+    const barberKeys = PORTAL_NAVIGATION.filter((item) =>
+      item.actors.includes("barber"),
+    ).map((item) => item.key);
+
+    expect(barberKeys).toEqual(["dashboard"]);
   });
 });

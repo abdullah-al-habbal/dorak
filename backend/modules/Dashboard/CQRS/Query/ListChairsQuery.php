@@ -6,5 +6,6 @@ namespace Modules\Dashboard\CQRS\Query;
 
 final readonly class ListChairsQuery
 {
-    public function __construct(public ?string $branchId, public int $perPage) {}
+    /** @param list<string>|null $branchIds null = unrestricted */
+    public function __construct(public ?array $branchIds, public int $perPage) {}
 }

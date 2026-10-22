@@ -21,9 +21,9 @@ final class ListBranchesAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $branches = $this->handler->handle(new ListBranchesQuery(
-            $actor->isPlatformAdmin() ? null : $actor->brandId,
+            $actor->scopedBrandIds(),
             $request->integer('per_page', 15),
-            $actor->isBranchManager() ? $actor->branchId : null,
+            $actor->scopedBranchIds(),
         ));
 
         return $this->paginated($branches, BranchResource::class);

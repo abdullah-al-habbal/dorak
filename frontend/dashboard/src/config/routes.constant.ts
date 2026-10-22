@@ -2,8 +2,14 @@ import type {
   PortalNavigationItem,
   PortalRouteConfig,
 } from "@/config/routes.types";
-import { AUTH_ACTORS } from "@/services/api/auth/actors.constant";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import {
+  AUTH_ACTORS,
+  OPERATIONS_ACTORS,
+} from "@/services/api/auth/actors.constant";
+import type {
+  AuthActor,
+  OperationsActor,
+} from "@/services/api/auth/auth.types";
 import { mapRecord } from "@/utils/record.util";
 
 // Every actor portal shares one path shape and copy-key convention; the actor
@@ -37,9 +43,9 @@ export const ROUTES = {
   forbidden: "/forbidden",
   portal: PORTAL_CONFIG,
   operations: {
-    overview: (actor: "admin" | "manager") => `/${actor}/overview`,
+    overview: (actor: OperationsActor) => `/${actor}/overview`,
     resource: (
-      actor: "admin" | "manager",
+      actor: OperationsActor,
       resource: "branches" | "chairs" | "services" | "stylists" | "bookings",
     ) => `/${actor}/${resource}`,
   },
@@ -83,42 +89,42 @@ export const PORTAL_NAVIGATION: readonly PortalNavigationItem[] = [
   {
     key: "overview",
     icon: "home",
-    actors: ["admin", "manager"],
-    href: (actor) => ROUTES.operations.overview(actor as "admin" | "manager"),
+    actors: OPERATIONS_ACTORS,
+    href: (actor) => ROUTES.operations.overview(actor as OperationsActor),
   },
   {
     key: "branches",
     icon: "home",
-    actors: ["admin", "manager"],
+    actors: OPERATIONS_ACTORS,
     href: (actor) =>
-      ROUTES.operations.resource(actor as "admin" | "manager", "branches"),
+      ROUTES.operations.resource(actor as OperationsActor, "branches"),
   },
   {
     key: "bookings",
     icon: "home",
-    actors: ["admin", "manager"],
+    actors: OPERATIONS_ACTORS,
     href: (actor) =>
-      ROUTES.operations.resource(actor as "admin" | "manager", "bookings"),
+      ROUTES.operations.resource(actor as OperationsActor, "bookings"),
   },
   {
     key: "services",
     icon: "home",
-    actors: ["admin", "manager"],
+    actors: OPERATIONS_ACTORS,
     href: (actor) =>
-      ROUTES.operations.resource(actor as "admin" | "manager", "services"),
+      ROUTES.operations.resource(actor as OperationsActor, "services"),
   },
   {
     key: "chairs",
     icon: "home",
-    actors: ["admin", "manager"],
+    actors: OPERATIONS_ACTORS,
     href: (actor) =>
-      ROUTES.operations.resource(actor as "admin" | "manager", "chairs"),
+      ROUTES.operations.resource(actor as OperationsActor, "chairs"),
   },
   {
     key: "stylists",
     icon: "home",
-    actors: ["admin", "manager"],
+    actors: OPERATIONS_ACTORS,
     href: (actor) =>
-      ROUTES.operations.resource(actor as "admin" | "manager", "stylists"),
+      ROUTES.operations.resource(actor as OperationsActor, "stylists"),
   },
 ];

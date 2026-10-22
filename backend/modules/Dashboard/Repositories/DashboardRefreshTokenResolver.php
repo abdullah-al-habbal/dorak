@@ -13,6 +13,10 @@ use RuntimeException;
 
 final class DashboardRefreshTokenResolver
 {
+    public function __construct(
+        private readonly DashboardOwnerActorResolver $ownerActors,
+    ) {}
+
     private const int DefaultTtlSeconds = 2592000;
 
     private const int MinimumTtlSeconds = 3600;
@@ -52,6 +56,11 @@ final class DashboardRefreshTokenResolver
             }
 
             $actor = $this->actorFromRecord($record);
+            if ($actor === null) {
+                $record->forceFill(['revoked_at' => now()])->save();
+
+                return null;
+            }
             [$newRecord, $newPlainText] = $this->persist($actor);
 
             $record->forceFill([
@@ -98,12 +107,13 @@ final class DashboardRefreshTokenResolver
         return [$record, $plainText];
     }
 
-    private function actorFromRecord(DashboardRefreshTokenModel $record): DashboardActor
+    private function actorFromRecord(DashboardRefreshTokenModel $record): ?DashboardActor
     {
         return match ($record->actor_type) {
             DashboardActor::ADMIN => new DashboardActor($record->actor_id, DashboardActor::ADMIN, 'platform_admin', null),
             DashboardActor::BRANCH => new DashboardActor($record->actor_id, DashboardActor::BRANCH, 'branch_manager', $record->actor_id),
             DashboardActor::BARBER => new DashboardActor($record->actor_id, DashboardActor::BARBER, 'barber', null),
+            DashboardActor::OWNER => $this->ownerActors->forClientId($record->actor_id),
             default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $record->actor_type])),
         };
     }
@@ -114,6 +124,7 @@ final class DashboardRefreshTokenResolver
             DashboardActor::ADMIN => 'admin_api',
             DashboardActor::BRANCH => 'branch_api',
             DashboardActor::BARBER => 'barber',
+            DashboardActor::OWNER => 'client',
             default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $actorType])),
         };
     }

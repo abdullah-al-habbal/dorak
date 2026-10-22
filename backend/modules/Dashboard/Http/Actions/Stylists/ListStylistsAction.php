@@ -21,7 +21,7 @@ final class ListStylistsAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $stylists = $this->handler->handle(new ListStylistsQuery(
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
             $request->integer('per_page', 15),
         ));
 

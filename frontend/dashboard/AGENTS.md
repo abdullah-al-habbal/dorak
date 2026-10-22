@@ -45,7 +45,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Conventions
 
-- App Router routes: `/`, `/{actor}/login`, `/{actor}`, and `/{actor}/profile/*` where actor is `admin`, `manager`, or `barber`.
+- App Router routes: `/`, `/{actor}/login`, `/{actor}`, and `/{actor}/profile/*` where actor is `admin`, `manager`, `owner`, or `barber`. Operations pages (`overview`, `branches`, `bookings`, `services`, `chairs`, `stylists`) exist for `OPERATIONS_ACTORS` (`admin`, `manager`, `owner`).
 - Keep every application path in `src/config/routes.constant.ts` (resolvers in `routes.util.ts`); legacy flat profile paths are retired.
 - Portal layouts perform canonical server session/actor validation; do not bypass them in nested routes.
 - Prefer Client Components but keep `layout.tsx` SSR; add `"use client"` when necessary.

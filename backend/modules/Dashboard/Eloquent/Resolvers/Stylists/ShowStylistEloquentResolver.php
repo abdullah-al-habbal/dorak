@@ -13,9 +13,9 @@ final class ShowStylistEloquentResolver
     {
         return BarberModel::query()
             ->whereKey($query->stylistId)
-            ->when($query->branchId !== null, fn ($builder) => $builder->whereHas(
+            ->when($query->branchIds !== null, fn ($builder) => $builder->whereHas(
                 'chairs',
-                fn ($chairs) => $chairs->where('branch_id', $query->branchId),
+                fn ($chairs) => $chairs->whereIn('branch_id', $query->branchIds),
             ))
             ->firstOrFail();
     }

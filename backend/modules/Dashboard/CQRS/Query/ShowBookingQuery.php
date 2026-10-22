@@ -6,5 +6,6 @@ namespace Modules\Dashboard\CQRS\Query;
 
 final readonly class ShowBookingQuery
 {
-    public function __construct(public string $bookingId, public ?string $branchId) {}
+    /** @param list<string>|null $branchIds null = unrestricted */
+    public function __construct(public string $bookingId, public ?array $branchIds) {}
 }

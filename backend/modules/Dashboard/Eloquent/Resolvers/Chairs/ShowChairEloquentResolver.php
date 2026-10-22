@@ -14,7 +14,7 @@ final class ShowChairEloquentResolver
         return ChairModel::query()
             ->with('barber')
             ->whereKey($query->chairId)
-            ->when($query->branchId !== null, fn ($builder) => $builder->where('branch_id', $query->branchId))
+            ->when($query->branchIds !== null, fn ($builder) => $builder->whereIn('branch_id', $query->branchIds))
             ->firstOrFail();
     }
 }

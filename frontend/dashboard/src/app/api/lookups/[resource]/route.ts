@@ -61,12 +61,20 @@ export async function GET(
       ),
     );
 
+  // A brand owner may only pick brands they own; the backend rejects others.
+  const ownedBrandIds =
+    resource === "brands" && session.actor_type === "owner"
+      ? new Set(session.brand_ids ?? [])
+      : null;
   const data: LookupOption[] = result.envelope.data
     .filter(
       (item): item is Record<string, unknown> =>
         typeof item === "object" &&
         item !== null &&
         typeof item.id === "string",
+    )
+    .filter(
+      (item) => ownedBrandIds === null || ownedBrandIds.has(item.id as string),
     )
     .map((item) => ({
       id: item.id as string,

@@ -24,7 +24,7 @@ final class RescheduleBookingAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->isPlatformAdmin() ? null : $actor->branchId));
+        $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()));
         $timeSlot = $request->date('time_slot');
         $endsAt = $request->date('ends_at');
         if ($timeSlot === null || $endsAt === null) {

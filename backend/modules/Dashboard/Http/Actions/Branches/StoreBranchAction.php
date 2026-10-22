@@ -19,7 +19,7 @@ final class StoreBranchAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        if (! $actor->isPlatformAdmin()) {
+        if (! $actor->canManageBrand($request->validated('brand_id'))) {
             return $this->forbidden();
         }
 

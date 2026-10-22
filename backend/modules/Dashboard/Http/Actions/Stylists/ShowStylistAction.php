@@ -22,7 +22,7 @@ final class ShowStylistAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->handler->handle(new ShowStylistQuery(
             $stylist,
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
         ));
 
         return $this->ok(BarberResource::make($model));

@@ -13,9 +13,9 @@ final class ListServicesEloquentResolver
     public function resolve(ListServicesQuery $query): LengthAwarePaginator
     {
         return OfferedServiceModel::query()
-            ->when($query->branchId !== null, fn ($builder) => $builder
+            ->when($query->branchIds !== null, fn ($builder) => $builder
                 ->where('serviceable_type', 'branch')
-                ->where('serviceable_id', $query->branchId))
+                ->whereIn('serviceable_id', $query->branchIds))
             ->paginate($query->perPage);
     }
 }

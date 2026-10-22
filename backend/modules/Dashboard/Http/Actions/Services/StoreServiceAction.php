@@ -22,7 +22,7 @@ final class StoreServiceAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $attributes = $request->validated();
 
-        if (! $actor->isPlatformAdmin() && ($attributes['serviceable_type'] !== 'branch' || $attributes['serviceable_id'] !== $actor->branchId)) {
+        if (! $actor->isPlatformAdmin() && ($attributes['serviceable_type'] !== 'branch' || ! $actor->canAccessBranch($attributes['serviceable_id']))) {
             return $this->forbidden();
         }
 

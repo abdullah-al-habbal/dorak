@@ -10,7 +10,9 @@ use LogicException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
 use Modules\Core\Helpers\ApiResponseTrait;
+use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardSessionClaim;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +21,10 @@ final class DashboardAuthorizationMiddleware
 {
     use ApiResponseTrait;
 
-    public function __construct(private readonly DashboardSessionClaim $claim) {}
+    public function __construct(
+        private readonly DashboardSessionClaim $claim,
+        private readonly DashboardOwnerActorResolver $ownerActors,
+    ) {}
 
     /** @param Closure(Request): Response $next */
     public function handle(Request $request, Closure $next): Response
@@ -31,7 +36,7 @@ final class DashboardAuthorizationMiddleware
 
         foreach ($this->guards() as $guard) {
             $model = $request->user($guard);
-            if (! $model instanceof AdminModel && ! $model instanceof BranchModel && ! $model instanceof BarberModel) {
+            if (! $model instanceof AdminModel && ! $model instanceof BranchModel && ! $model instanceof BarberModel && ! $model instanceof ClientModel) {
                 continue;
             }
 
@@ -40,7 +45,12 @@ final class DashboardAuthorizationMiddleware
                 continue;
             }
 
-            $request->attributes->set('dashboard_actor', $this->actorFor($guard, $model));
+            $actor = $this->actorFor($guard, $model);
+            if ($actor === null) {
+                continue;
+            }
+
+            $request->attributes->set('dashboard_actor', $actor);
             $request->attributes->set('dashboard_guard', $guard);
             $request->attributes->set('dashboard_model', $model);
             $request->attributes->set('dashboard_token', $token);
@@ -54,10 +64,10 @@ final class DashboardAuthorizationMiddleware
     /** @return list<string> */
     private function guards(): array
     {
-        return ['admin_api', 'branch_api', 'barber'];
+        return ['admin_api', 'branch_api', 'barber', 'client'];
     }
 
-    private function actorFor(string $guard, AdminModel|BranchModel|BarberModel $model): DashboardActor
+    private function actorFor(string $guard, AdminModel|BranchModel|BarberModel|ClientModel $model): ?DashboardActor
     {
         if ($guard === 'admin_api' && $model instanceof AdminModel) {
             return new DashboardActor($this->idFor($model), DashboardActor::ADMIN, 'platform_admin', null);
@@ -67,6 +77,9 @@ final class DashboardAuthorizationMiddleware
         }
         if ($guard === 'barber' && $model instanceof BarberModel) {
             return new DashboardActor($this->idFor($model), DashboardActor::BARBER, 'barber', null);
+        }
+        if ($guard === 'client' && $model instanceof ClientModel) {
+            return $this->ownerActors->forClient($model);
         }
 
         throw new LogicException(__('dashboard::messages.guard_unsupported'));

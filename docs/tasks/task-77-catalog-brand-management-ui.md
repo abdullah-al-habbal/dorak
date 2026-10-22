@@ -3,7 +3,7 @@
 **Phase:** Phase 13 — Dashboard · **Priority:** P2 · **Depends on:** Task 04, Task 14, Task 38, Task 49, Task 61 · **Audit source:** Dashboard BFF/UI audit (Brands CRUD, Service catalog CRUD — only list proxied as lookup)
 
 ## Overview & Root Cause
-The dashboard uses brands and service-catalog items only as dropdown lookups through `app/api/lookups/[resource]/route.ts`. Creating and editing brands, and creating, editing and deleting catalog items, has no UI. Backend authorization is also wrong for both. Catalog mutations accept any branch or client token (Task 04). Brand create and update are `auth:client` (the owner-as-client model), so an admin token cannot manage brands at all (Task 38).
+The dashboard uses brands and service-catalog items only as dropdown lookups through `app/api/lookups/[resource]/route.ts`. Creating and editing brands, and creating, editing and deleting catalog items, has no UI. Backend authorization is also wrong for both. Catalog mutations accept any branch or client token (Task 04). Brand create and update are `auth:client` (the owner-as-client model), so an admin token cannot manage brands at all (Task 38). Note (Task 38): the owner-as-client model is confirmed by ADR 0001; the dashboard owner portal exists, and its brand switcher was deferred to this task.
 
 ## Evidence
 - `frontend/dashboard/src/app/api/lookups/[resource]/route.ts:9-13` — `LOOKUP_PATHS` covers brands, currencies and service-catalog-items, GET only.

@@ -35,6 +35,7 @@
 - `BaseApiAction` + `ApiResponseTrait` — paginated/ok/created/error/validation helpers
 - `BaseModuleServiceProvider` — auto-mounts `Routes/Api/V1/*.php` at `/api/v1` with `['api']` middleware
 - Auth guards: `client` (sanctum), `barber` (sanctum), `barber_dashboard` (session), `branch` (session), `admin` (session)
+- Dashboard brand owner (Task 38, ADR 0001): `POST /api/v1/dashboard/login` with `actor_type = owner` authenticates a client that owns ≥1 brand (enabled, verified, not banned); the client Sanctum token carries the `dashboard` ability and the claim `brand_id` + `brand_ids`. Owners operate on every branch of their brands (branches CRUD, bookings, chairs, services, stylists, overview) via `DashboardActor::scopedBranchIds()/canAccessBranch()/canManageBrand()`; other brands → 404 (reads) / 403 (writes). `GET dashboard/me` exposes `brand_id`/`brand_ids`.
 - `FcmNotificationSender` — sends per-device notifications through FCM HTTP v1 using a cached OAuth2 service-account token; prunes unregistered device tokens and retries transient failures; persists inbox and delivery records (Task 30)
 
 ### Client

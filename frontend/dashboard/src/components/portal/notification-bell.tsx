@@ -21,11 +21,16 @@ import { cn } from "@/utils/cn.util";
 import { Bell1 } from "@tailgrids/icons";
 import { useRouter } from "next/navigation";
 
-/** Admin sessions authenticate as admin_api, which has no notification inbox. */
+/**
+ * Admin sessions authenticate as admin_api, which has no notification inbox.
+ * Brand owners authenticate as their client account, whose inbox holds their
+ * personal client notifications rather than brand operations, so the bell is
+ * hidden for them too.
+ */
 export function NotificationBell() {
   const session = useSession();
   const router = useRouter();
-  const isEnabled = session.actor !== "admin";
+  const isEnabled = session.actor !== "admin" && session.actor !== "owner";
   const copy = useDictionary().common.notifications;
   const inbox = useNotificationInboxQuery(isEnabled);
   const markRead = useMarkNotificationReadMutation();

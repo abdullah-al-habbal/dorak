@@ -7,8 +7,11 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use LogicException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
+use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardSessionClaim;
 
@@ -16,13 +19,16 @@ abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
 
-    protected function authenticateDashboardActor(AdminModel|BranchModel $model): static
+    protected function authenticateDashboardActor(AdminModel|BranchModel|ClientModel $model): static
     {
         config(['dashboard.dashboard.session_secret' => 'dashboard-session-secret-that-is-at-least-thirty-two-characters']);
         $id = (string) $model->getKey();
-        $actor = $model instanceof AdminModel
-            ? new DashboardActor($id, DashboardActor::ADMIN, 'platform_admin')
-            : new DashboardActor($id, DashboardActor::BRANCH, 'branch_manager', $id, (string) $model->getAttribute('brand_id'));
+        $actor = match (true) {
+            $model instanceof AdminModel => new DashboardActor($id, DashboardActor::ADMIN, 'platform_admin'),
+            $model instanceof ClientModel => app(DashboardOwnerActorResolver::class)->forClient($model)
+                ?? throw new LogicException('The client owns no brand.'),
+            default => new DashboardActor($id, DashboardActor::BRANCH, 'branch_manager', $id, (string) $model->getAttribute('brand_id')),
+        };
 
         return $this
             ->withToken($model->createToken('dashboard-session', ['dashboard'])->plainTextToken)

@@ -23,7 +23,7 @@ final class CancelBookingAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->isPlatformAdmin() ? null : $actor->branchId));
+        $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()));
         try {
             return $this->updated(new BookingResource($this->lifecycle->transitionForDashboard($model->id, BookingStatus::Canceled)));
         } catch (InvalidBookingTransitionException) {

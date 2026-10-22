@@ -21,7 +21,7 @@ final class ListServicesAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $services = $this->handler->handle(new ListServicesQuery(
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
             $request->integer('per_page', 15),
         ));
 

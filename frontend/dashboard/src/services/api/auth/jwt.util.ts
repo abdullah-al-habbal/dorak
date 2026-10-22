@@ -67,6 +67,25 @@ function hasExactDashboardClaimShape(claim: unknown): claim is DashboardClaim {
     return false;
   }
 
+  if (claim.actor_type === "owner") {
+    return (
+      claim.role === "brand_owner" &&
+      claim.branch_id === undefined &&
+      typeof claim.brand_id === "string" &&
+      claim.brand_id.length > 0 &&
+      Array.isArray(claim.brand_ids) &&
+      claim.brand_ids.length > 0 &&
+      claim.brand_ids.every(
+        (brandId) => typeof brandId === "string" && brandId.length > 0,
+      ) &&
+      claim.brand_ids.includes(claim.brand_id)
+    );
+  }
+
+  if (claim.brand_id !== undefined || claim.brand_ids !== undefined) {
+    return false;
+  }
+
   if (claim.actor_type === "branch") {
     return (
       typeof claim.branch_id === "string" &&

@@ -14,7 +14,7 @@ Brand creation only inserts the `brands` row. House rule A1 requires that creati
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
-- Inside one DB transaction, `CreateBrandEloquentResolver` creates the brand plus its first branch. The branch's name and coordinates come from the request; its credentials or manager link follow Task 38.
+- Inside one DB transaction, `CreateBrandEloquentResolver` creates the brand plus its first branch. The branch's name and coordinates come from the request; its credentials or manager link follow Task 38. Note (Task 38): branches stay separate login accounts (email + password); the brand owner manages them from the dashboard `owner` portal, so the first branch still needs branch credentials or a generated placeholder.
 - Add `universe` (`men|women|unisex`, after Task 44 adds `unisex`) to `CreateBrandRequest` and `UpdateBrandRequest`.
 - Add a unique `slug` column, generated from `name.en` and de-duplicated with a suffix. Expose it in `BrandResource`.
 - Use `withCount('branches')` in `ListBrandsEloquentResolver` and return `branches_count` from the count attribute.

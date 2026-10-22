@@ -10,6 +10,7 @@ describe("actor mappings", () => {
     expect(BACKEND_ACTOR_TYPE).toEqual({
       admin: "admin",
       manager: "branch",
+      owner: "owner",
       barber: "barber",
     });
   });
@@ -18,6 +19,7 @@ describe("actor mappings", () => {
     expect(ACTOR_FROM_BACKEND).toEqual({
       admin: "admin",
       branch: "manager",
+      owner: "owner",
       barber: "barber",
     });
   });

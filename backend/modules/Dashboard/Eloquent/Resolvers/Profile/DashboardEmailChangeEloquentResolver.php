@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Eloquent\Resolvers\Profile;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
 use Modules\Dashboard\Models\DashboardEmailChangeModel;
 use Modules\Dashboard\Support\DashboardActor;
 
@@ -16,7 +17,8 @@ final class DashboardEmailChangeEloquentResolver
     {
         return AdminModel::query()->where('email', $email)->whereKeyNot($actor->id)->exists()
             || BranchModel::query()->where('email', $email)->whereKeyNot($actor->id)->exists()
-            || BarberModel::query()->where('email', $email)->whereKeyNot($actor->id)->exists();
+            || BarberModel::query()->where('email', $email)->whereKeyNot($actor->id)->exists()
+            || ($actor->isBrandOwner() && ClientModel::withTrashed()->where('email', $email)->whereKeyNot($actor->id)->exists());
     }
 
     public function upsert(DashboardActor $actor, string $email, string $codeHash): DashboardEmailChangeModel
@@ -35,7 +37,7 @@ final class DashboardEmailChangeEloquentResolver
             ->first();
     }
 
-    public function apply(AdminModel|BranchModel|BarberModel $model, DashboardEmailChangeModel $change): void
+    public function apply(AdminModel|BranchModel|BarberModel|ClientModel $model, DashboardEmailChangeModel $change): void
     {
         $model->forceFill(['email' => $change->email, 'email_verified_at' => now()])->save();
         $change->delete();

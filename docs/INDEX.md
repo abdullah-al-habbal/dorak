@@ -225,6 +225,7 @@ Entries are grouped by their repository-relative folder. Each linked file is a l
 - [Dashboard Implementation Plan](DASHBOARD_IMPLEMENTATION_PLAN.md)
 
 - [Decisions Required](decisions-required.md)
+- [ADR 0001 Brand Owner As Client](adr/0001-brand-owner-as-client.md)
 
 - [Deployment Guide](DEPLOYMENT_GUIDE.md)
 

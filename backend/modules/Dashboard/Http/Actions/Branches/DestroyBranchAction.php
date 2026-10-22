@@ -23,7 +23,7 @@ final class DestroyBranchAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        if (! $actor->isPlatformAdmin()) {
+        if (! $actor->canManageBrand($branch->getAttribute('brand_id'))) {
             return $this->forbidden();
         }
 

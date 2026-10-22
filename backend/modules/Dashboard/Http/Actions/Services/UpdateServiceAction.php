@@ -25,11 +25,11 @@ final class UpdateServiceAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        $scope = $actor->isPlatformAdmin() ? null : $actor->branchId;
+        $scope = $actor->scopedBranchIds();
         $model = $this->showHandler->handle(new ShowServiceQuery($service, $scope));
         $attributes = $request->validated();
 
-        if (! $actor->isPlatformAdmin() && ($attributes['serviceable_type'] !== 'branch' || $attributes['serviceable_id'] !== $actor->branchId)) {
+        if (! $actor->isPlatformAdmin() && ($attributes['serviceable_type'] !== 'branch' || ! $actor->canAccessBranch($attributes['serviceable_id']))) {
             return $this->forbidden();
         }
 

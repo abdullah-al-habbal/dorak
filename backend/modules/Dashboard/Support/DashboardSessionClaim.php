@@ -32,6 +32,7 @@ final class DashboardSessionClaim
             'role' => $actor->role,
             'sub' => $actor->id,
             ...($actor->branchId === null ? [] : ['branch_id' => $actor->branchId]),
+            ...($actor->isBrandOwner() ? ['brand_id' => $actor->brandId, 'brand_ids' => $actor->brandIds] : []),
         ];
         $encodedHeader = $this->encode(['alg' => self::Algorithm, 'kid' => $kid, 'typ' => 'JWT']);
         $encodedPayload = $this->encode($payload);
@@ -172,7 +173,7 @@ final class DashboardSessionClaim
         return $ttl;
     }
 
-    /** @param array<string, int|string> $value */
+    /** @param array<string, int|string|list<string>|null> $value */
     private function encode(array $value): string
     {
         try {

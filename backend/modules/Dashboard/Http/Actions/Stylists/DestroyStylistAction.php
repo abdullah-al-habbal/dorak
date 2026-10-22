@@ -26,7 +26,7 @@ final class DestroyStylistAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowStylistQuery(
             $stylist,
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
         ));
         $this->destroyHandler->handle($model, new DestroyStylistCommand($stylist));
 

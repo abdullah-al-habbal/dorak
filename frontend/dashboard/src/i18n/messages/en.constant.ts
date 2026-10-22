@@ -6,6 +6,7 @@ export const en = {
       "Choose the portal that matches your role to securely manage platform, branch, and barber operations.",
     admin: "Admin portal",
     manager: "Manager portal",
+    owner: "Brand owner portal",
     barber: "Barber portal",
     portalNavigationLabel: "Portal sign in",
   },
@@ -20,11 +21,13 @@ export const en = {
     invalidCredentials: "The provided credentials are incorrect.",
     adminTitle: "Admin sign in",
     managerTitle: "Manager sign in",
+    ownerTitle: "Brand owner sign in",
     barberTitle: "Barber sign in",
   },
   portal: {
     adminTitle: "Admin workspace",
     managerTitle: "Manager workspace",
+    ownerTitle: "Brand owner workspace",
     barberTitle: "Barber workspace",
     description:
       "Your protected portal shell is ready for authenticated features.",

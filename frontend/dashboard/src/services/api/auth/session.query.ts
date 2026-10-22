@@ -67,6 +67,9 @@ export const getServerSession = cache(async (): Promise<AuthSession | null> => {
     role: claim.role,
     subject: me.id,
     branchId: me.branch_id,
+    brandIds: Array.isArray(me.brand_ids)
+      ? me.brand_ids.filter((brandId) => typeof brandId === "string")
+      : [],
     displayName: me.display_name,
     email: me.email,
     permissions: me.permissions,

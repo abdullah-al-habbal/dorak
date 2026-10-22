@@ -27,7 +27,7 @@ final class DestroyChairAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowChairQuery(
             $chair,
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
         ));
 
         try {

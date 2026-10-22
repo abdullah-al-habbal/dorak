@@ -22,7 +22,7 @@ final class StoreChairAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $attributes = $request->validated();
 
-        if (! $actor->isPlatformAdmin() && $attributes['branch_id'] !== $actor->branchId) {
+        if (! $actor->canAccessBranch($attributes['branch_id'])) {
             return $this->forbidden();
         }
 

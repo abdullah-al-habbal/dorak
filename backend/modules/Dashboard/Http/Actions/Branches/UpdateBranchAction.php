@@ -28,7 +28,7 @@ final class UpdateBranchAction extends BaseApiAction
             throw new LogicException('Branch identifier must be scalar.');
         }
         $branchId = (string) $branchId;
-        if (! $actor->isPlatformAdmin() && (! $actor->isBranchManager() || $actor->branchId !== $branchId)) {
+        if (! $actor->isPlatformAdmin() && (! $actor->canAccessBranch($branchId) || ! $this->keepsBrandInScope($actor, $branch, $request->validated('brand_id')))) {
             return $this->forbidden();
         }
 
@@ -39,5 +39,18 @@ final class UpdateBranchAction extends BaseApiAction
         }
 
         return $this->updated($updatedBranch);
+    }
+
+    /**
+     * A branch manager cannot move their branch to another brand, and a brand
+     * owner can move it only between brands they own.
+     */
+    private function keepsBrandInScope(DashboardActor $actor, BranchModel $branch, mixed $brandId): bool
+    {
+        if ($actor->isBrandOwner()) {
+            return $actor->canManageBrand($brandId);
+        }
+
+        return (string) $branch->getAttribute('brand_id') === (string) $brandId;
     }
 }

@@ -8,15 +8,25 @@ use Modules\Chair\Models\ChairModel;
 
 final class StylistChairAssignmentResolver
 {
-    public function ensureWithinBranch(?string $chairId, ?string $branchId): void
+    /**
+     * Fails with 404 unless the chair is inside the actor's branch scope, and
+     * returns that chair's branch. A null scope (platform admin) or no chair
+     * skips the check and returns null.
+     *
+     * @param  list<string>|null  $branchIds
+     */
+    public function ensureWithinBranches(?string $chairId, ?array $branchIds): ?string
     {
-        if ($branchId === null || $chairId === null) {
-            return;
+        if ($branchIds === null || $chairId === null) {
+            return null;
         }
 
-        ChairModel::query()
+        $branchId = ChairModel::query()
             ->whereKey($chairId)
-            ->where('branch_id', $branchId)
-            ->firstOrFail();
+            ->whereIn('branch_id', $branchIds)
+            ->firstOrFail()
+            ->getAttribute('branch_id');
+
+        return is_string($branchId) || is_int($branchId) ? (string) $branchId : null;
     }
 }

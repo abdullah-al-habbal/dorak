@@ -1,10 +1,13 @@
 import type {
   AUTH_ACTORS,
+  OPERATIONS_ACTORS,
   BACKEND_ACTOR_TYPES,
   DASHBOARD_ROLES,
 } from "@/services/api/auth/actors.constant";
 
 export type AuthActor = (typeof AUTH_ACTORS)[number];
+
+export type OperationsActor = (typeof OPERATIONS_ACTORS)[number];
 
 export type BackendActorType = (typeof BACKEND_ACTOR_TYPES)[number];
 
@@ -15,6 +18,8 @@ export interface DashboardClaim {
   role: DashboardRole;
   sub: string;
   branch_id?: string;
+  brand_id?: string;
+  brand_ids?: string[];
   iat: number;
   exp: number;
   iss: string;
@@ -27,6 +32,7 @@ export interface AuthSession {
   role: DashboardRole;
   subject: string;
   branchId: string | null;
+  brandIds: string[];
   displayName: string | null;
   email: string | null;
   permissions: string[];
@@ -46,6 +52,8 @@ export interface BackendMeData {
   actor_type: BackendActorType;
   role: DashboardRole;
   branch_id: string | null;
+  brand_id?: string | null;
+  brand_ids?: string[];
   display_name: string | null;
   email: string | null;
   permissions: string[];

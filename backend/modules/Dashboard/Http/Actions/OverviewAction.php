@@ -20,12 +20,13 @@ final class OverviewAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        $bookings = BookingModel::query()->when(! $actor->isPlatformAdmin(), fn ($query) => $query->forBranch($actor->branchId));
-        $branches = BranchModel::query()->when(! $actor->isPlatformAdmin(), fn ($query) => $query->whereKey($actor->branchId));
+        $scope = $actor->scopedBranchIds();
+        $bookings = BookingModel::query()->when($scope !== null, fn ($query) => $query->forBranches($scope ?? []));
+        $branches = BranchModel::query()->when($scope !== null, fn ($query) => $query->whereKey($scope ?? []));
 
         $todayBookings = (clone $bookings)->whereBetween('time_slot', [now()->startOfDay(), now()->endOfDay()]);
         $activeChairs = ChairModel::query()->where('status', 'available')
-            ->when(! $actor->isPlatformAdmin(), fn ($query) => $query->where('branch_id', $actor->branchId));
+            ->when($scope !== null, fn ($query) => $query->whereIn('branch_id', $scope ?? []));
 
         return $this->success([
             'active_chairs_count' => $activeChairs->count(),
@@ -34,7 +35,7 @@ final class OverviewAction extends BaseApiAction
             'active_branches_count' => $branches->count(),
             'today_bookings_count' => $todayBookings->count(),
             'revenue' => 0.0,
-            'stylists_count' => BarberModel::query()->when(! $actor->isPlatformAdmin(), fn ($query) => $query->whereIn('id', BookingModel::query()->forBranch($actor->branchId)->select('barber_id')))->count(),
+            'stylists_count' => BarberModel::query()->when($scope !== null, fn ($query) => $query->whereIn('id', BookingModel::query()->forBranches($scope ?? [])->select('barber_id')))->count(),
         ]);
     }
 }

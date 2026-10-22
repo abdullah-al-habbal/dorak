@@ -18,11 +18,11 @@ final readonly class StoreStylistHandler
 
     public function handle(StoreStylistCommand $command): BarberModel
     {
-        $this->assignmentResolver->ensureWithinBranch($command->attributes['chair_id'] ?? null, $command->branchId);
+        $branchId = $this->assignmentResolver->ensureWithinBranches($command->attributes['chair_id'] ?? null, $command->branchIds);
 
         return $this->resolver->resolve([
             ...$command->attributes,
-            'managed_by_branch_id' => $command->branchId,
+            'managed_by_branch_id' => $branchId,
         ]);
     }
 }

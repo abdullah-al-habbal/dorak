@@ -12,8 +12,8 @@ final class ShowBranchEloquentResolver
     public function resolve(ShowBranchQuery $query): BranchModel
     {
         return BranchModel::query()
-            ->when($query->scopeBrandId !== null, fn ($builder) => $builder->where('brand_id', $query->scopeBrandId))
-            ->when($query->scopeBranchId !== null, fn ($builder) => $builder->whereKey($query->scopeBranchId))
+            ->when($query->scopeBrandIds !== null, fn ($builder) => $builder->whereIn('brand_id', $query->scopeBrandIds))
+            ->when($query->scopeBranchIds !== null, fn ($builder) => $builder->whereKey($query->scopeBranchIds))
             ->findOrFail($query->id);
     }
 }

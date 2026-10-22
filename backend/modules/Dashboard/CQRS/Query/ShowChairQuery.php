@@ -6,5 +6,6 @@ namespace Modules\Dashboard\CQRS\Query;
 
 final readonly class ShowChairQuery
 {
-    public function __construct(public string $chairId, public ?string $branchId) {}
+    /** @param list<string>|null $branchIds null = unrestricted */
+    public function __construct(public string $chairId, public ?array $branchIds) {}
 }

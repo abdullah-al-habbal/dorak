@@ -22,7 +22,7 @@ final class ShowServiceAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->handler->handle(new ShowServiceQuery(
             $service,
-            $actor->isPlatformAdmin() ? null : $actor->branchId,
+            $actor->scopedBranchIds(),
         ));
 
         return $this->ok(ServiceResource::make($model));

@@ -13,7 +13,7 @@ final class ShowBookingEloquentResolver
     {
         return BookingModel::query()->with(['chair', 'barber', 'client', 'services'])
             ->whereKey($query->bookingId)
-            ->when($query->branchId !== null, fn ($builder) => $builder->forBranch($query->branchId))
+            ->when($query->branchIds !== null, fn ($builder) => $builder->forBranches($query->branchIds))
             ->firstOrFail();
     }
 }

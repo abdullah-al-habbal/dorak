@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
 
@@ -18,7 +19,7 @@ final class MeAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        /** @var AdminModel|BranchModel|BarberModel $model */
+        /** @var AdminModel|BranchModel|BarberModel|ClientModel $model */
         $model = $request->attributes->get('dashboard_model');
         $token = $request->attributes->get('dashboard_token');
 
@@ -27,13 +28,15 @@ final class MeAction extends BaseApiAction
             'actor_type' => $actor->actorType,
             'role' => $actor->role,
             'branch_id' => $actor->branchId,
+            'brand_id' => $actor->brandId,
+            'brand_ids' => $actor->brandIds,
             'display_name' => $this->displayName($model),
             'email' => $model->getAttribute('email'),
             'permissions' => array_values((array) ($token?->abilities ?? [])),
         ]);
     }
 
-    private function displayName(AdminModel|BranchModel|BarberModel $model): ?string
+    private function displayName(AdminModel|BranchModel|BarberModel|ClientModel $model): ?string
     {
         $name = $model->getAttribute('name');
 

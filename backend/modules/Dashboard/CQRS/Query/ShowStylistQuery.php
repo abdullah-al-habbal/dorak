@@ -6,5 +6,6 @@ namespace Modules\Dashboard\CQRS\Query;
 
 final readonly class ShowStylistQuery
 {
-    public function __construct(public string $stylistId, public ?string $branchId) {}
+    /** @param list<string>|null $branchIds null = unrestricted */
+    public function __construct(public string $stylistId, public ?array $branchIds) {}
 }

@@ -27,7 +27,7 @@ final class CreateWalkInBookingAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $command = $request->toCommand();
 
-        if (! $actor->isPlatformAdmin() && $actor->branchId !== $command->branchId) {
+        if (! $actor->canAccessBranch($command->branchId)) {
             return $this->forbidden();
         }
 

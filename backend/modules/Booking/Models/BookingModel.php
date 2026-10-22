@@ -80,6 +80,26 @@ class BookingModel extends Model
      *
      * @param  Builder<BookingModel>  $query
      */
+    /**
+     * Bookings of any of the given branches, matched by `branch_id` or, for
+     * legacy rows, through the chair. An empty list matches nothing.
+     *
+     * @param  list<string>  $branchIds
+     */
+    public function scopeForBranches(Builder $query, array $branchIds): void
+    {
+        if ($branchIds === []) {
+            $query->whereRaw('0 = 1');
+
+            return;
+        }
+
+        $query->where(function (Builder $scoped) use ($branchIds): void {
+            $scoped->whereIn('branch_id', $branchIds)
+                ->orWhereHas('chair', fn (Builder $chair) => $chair->whereIn('branch_id', $branchIds));
+        });
+    }
+
     public function scopeForBranch(Builder $query, string|int|null $branchId): void
     {
         if ($branchId === null) {

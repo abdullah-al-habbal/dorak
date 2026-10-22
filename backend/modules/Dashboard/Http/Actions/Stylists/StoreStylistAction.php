@@ -27,7 +27,7 @@ final class StoreStylistAction extends BaseApiAction
         }
 
         return $this->created(BarberResource::make($this->handler->handle(
-            new StoreStylistCommand($attributes, $actor->isPlatformAdmin() ? null : $actor->branchId),
+            new StoreStylistCommand($attributes, $actor->scopedBranchIds()),
         )));
     }
 }
