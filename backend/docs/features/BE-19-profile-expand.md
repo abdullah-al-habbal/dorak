@@ -176,7 +176,18 @@ No request body (uses authenticated user's email).
   "errors": null
 }
 ```
-**Response (invalid code):** 422 — `"core::messages.invalid_reset_code"`
+**Response (invalid code):** 422 — `code: "VALIDATION_FAILED"`, `message: "core::messages.invalid_reset_code"`, `errors: {"code": ["..."]}`. Wrong codes count against the 5-attempt budget shared with the verify route (Task 35).
+
+### POST /api/v1/client/forgot-password/verify
+Checks a reset code without consuming it (Task 35). Public, `throttle:5,1`.
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `email` | string | yes | valid email; no `exists` rule (no account enumeration) |
+| `code` | string | yes | exactly 6 characters |
+
+**Response:** 200 `core::messages.reset_code_verified`, `data: null`.
+**Response (wrong/expired/invalidated code, or unknown email):** 422 — `code: "VALIDATION_FAILED"`, `errors: {"code": ["core::messages.invalid_reset_code"]}`. The fifth wrong attempt across verify and reset discards the code; request a new one.
 
 ### PATCH /api/v1/client/password
 **Request:**

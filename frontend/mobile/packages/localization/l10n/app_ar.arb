@@ -360,6 +360,7 @@
   "recoveryConfirmPasswordLabel": "تأكيد كلمة المرور الجديدة",
   "recoveryResetButton": "إعادة تعيين كلمة المرور",
   "recoveryCodeRejected": "هذا الرمز غير صالح أو انتهت صلاحيته.",
+  "recoveryCodeThrottled": "محاولات كثيرة. انتظر دقيقة ثم حاول مجدداً.",
   "recoveryReenterCode": "إعادة إدخال الرمز",
   "passwordResetSuccessTitle": "تم تحديث كلمة المرور",
   "passwordResetSuccessMessage": "تم تغيير كلمة المرور. يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.",

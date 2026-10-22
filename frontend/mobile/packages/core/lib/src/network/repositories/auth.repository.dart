@@ -27,6 +27,11 @@ abstract class AuthRepository {
 
   Future<void> forgotPassword(String email);
 
+  /// Checks a password-reset code without consuming it. Throws a
+  /// `ValidationException` with a `code` field error when the code is wrong,
+  /// expired, or invalidated after too many attempts.
+  Future<void> verifyResetCode({required String email, required String code});
+
   Future<void> resetPassword({
     required String email,
     required String code,
@@ -116,6 +121,15 @@ class DioAuthRepository implements AuthRepository {
     return _client.post<void>(
       AuthEndpoints.forgotPassword,
       data: {'email': email},
+      parser: _discardBody,
+    );
+  }
+
+  @override
+  Future<void> verifyResetCode({required String email, required String code}) {
+    return _client.post<void>(
+      AuthEndpoints.verifyResetCode,
+      data: {'email': email, 'code': code},
       parser: _discardBody,
     );
   }

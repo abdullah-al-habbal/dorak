@@ -94,6 +94,7 @@ void main() {
       AuthEndpoints.logout,
       AuthEndpoints.refreshToken,
       AuthEndpoints.forgotPassword,
+      AuthEndpoints.verifyResetCode,
       AuthEndpoints.resetPassword,
       AuthEndpoints.verifyEmail,
       AuthEndpoints.sendEmailVerification,

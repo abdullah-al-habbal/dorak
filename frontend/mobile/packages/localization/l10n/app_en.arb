@@ -424,6 +424,10 @@
   "@recoveryCodeRejected": {
     "description": "recoveryCodeRejected"
   },
+  "recoveryCodeThrottled": "Too many attempts. Please wait a minute and try again.",
+  "@recoveryCodeThrottled": {
+    "description": "Error when password-reset code checks are rate limited"
+  },
   "recoveryReenterCode": "Re-enter code",
   "@recoveryReenterCode": {
     "description": "recoveryReenterCode"

@@ -6,6 +6,7 @@ class AuthEndpoints {
   static const String logout = '/client/logout';
   static const String refreshToken = '/client/refresh-token';
   static const String forgotPassword = '/client/forgot-password';
+  static const String verifyResetCode = '/client/forgot-password/verify';
   static const String resetPassword = '/client/reset-password';
   static const String verifyEmail = '/client/email/verify';
   static const String sendEmailVerification = '/client/email/verify/send';

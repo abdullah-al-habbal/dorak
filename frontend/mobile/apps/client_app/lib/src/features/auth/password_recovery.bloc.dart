@@ -47,17 +47,35 @@ class PasswordRecoveryBloc
     emit(state.copyWith(isSubmitting: false, signal: RecoverySignal.codeSent));
   }
 
-  void _onCodeEntered(
+  Future<void> _onCodeEntered(
     RecoveryCodeEntered event,
     Emitter<PasswordRecoveryState> emit,
-  ) {
+  ) async {
+    if (state.isSubmitting) return;
     emit(
       state.copyWith(
         code: event.code,
+        isSubmitting: true,
         clearError: true,
         clearFieldErrors: true,
-        signal: RecoverySignal.codeAccepted,
+        signal: RecoverySignal.none,
       ),
+    );
+
+    try {
+      await _repository.verifyResetCode(email: state.email, code: event.code);
+    } on ValidationException catch (e) {
+      emit(
+        state.copyWith(isSubmitting: false, error: e, fieldErrors: e.errors),
+      );
+      return;
+    } catch (e) {
+      emit(state.copyWith(isSubmitting: false, error: e));
+      return;
+    }
+
+    emit(
+      state.copyWith(isSubmitting: false, signal: RecoverySignal.codeAccepted),
     );
   }
 

@@ -704,6 +704,12 @@ abstract class AppLocalizations {
   /// **'That code is invalid or has expired.'**
   String get recoveryCodeRejected;
 
+  /// Error when password-reset code checks are rate limited
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait a minute and try again.'**
+  String get recoveryCodeThrottled;
+
   /// recoveryReenterCode
   ///
   /// In en, this message translates to:

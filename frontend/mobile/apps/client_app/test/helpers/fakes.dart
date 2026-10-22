@@ -202,10 +202,12 @@ class FakeAuthRepository implements AuthRepository {
   Object? verifyEmailError;
   Object? forgotPasswordError;
   Object? resetPasswordError;
+  Object? verifyResetCodeError;
 
   String? forgotPasswordEmail;
   int forgotPasswordCalls = 0;
   Map<String, String>? resetPasswordPayload;
+  Map<String, String>? verifyResetCodePayload;
 
   @override
   Future<void> deleteAccount(String password) async {}
@@ -276,6 +278,16 @@ class FakeAuthRepository implements AuthRepository {
     forgotPasswordEmail = email;
     forgotPasswordCalls++;
     final error = forgotPasswordError;
+    if (error != null) throw error;
+  }
+
+  @override
+  Future<void> verifyResetCode({
+    required String email,
+    required String code,
+  }) async {
+    verifyResetCodePayload = {'email': email, 'code': code};
+    final error = verifyResetCodeError;
     if (error != null) throw error;
   }
 

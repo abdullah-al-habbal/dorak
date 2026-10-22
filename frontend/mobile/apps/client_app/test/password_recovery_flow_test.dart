@@ -173,27 +173,67 @@ void main() {
     },
   );
 
-  testWidgets('a rejected code surfaces on the password step with a way back', (
+  testWidgets('a wrong code is rejected on the code step itself', (
     tester,
   ) async {
-    repository.resetPasswordError = codeRejected();
+    repository.verifyResetCodeError = codeRejected();
     await pumpLogin(tester);
     await requestCode(tester, 'sara@example.com');
     await enterCode(tester, '000000');
-    await enterNewPassword(tester, 'newsecret123');
 
     expect(
-      find.byType(CreateNewPasswordScreen),
+      find.byType(RecoveryOtpScreen),
       findsOneWidget,
-      reason:
-          'the backend has no verify-reset-code endpoint, so a bad code can '
-          'only be discovered when reset-password is submitted',
+      reason: 'the code is verified server-side before the password step',
     );
+    expect(find.byType(CreateNewPasswordScreen), findsNothing);
     expect(find.text('That code is invalid or has expired.'), findsOneWidget);
+    expect(repository.verifyResetCodePayload, {
+      'email': 'sara@example.com',
+      'code': '000000',
+    });
+    expect(repository.resetPasswordPayload, isNull);
+  });
 
-    await tester.tap(find.text('Re-enter code'));
-    await tester.pumpAndSettle();
+  testWidgets('a throttled code check asks the user to wait', (tester) async {
+    repository.verifyResetCodeError = const ApiException(
+      statusCode: 429,
+      code: 'TOO_MANY_REQUESTS',
+      message: 'core::messages.too_many_requests',
+    );
+    await pumpLogin(tester);
+    await requestCode(tester, 'sara@example.com');
+    await enterCode(tester, '123456');
 
     expect(find.byType(RecoveryOtpScreen), findsOneWidget);
+    expect(
+      find.text('Too many attempts. Please wait a minute and try again.'),
+      findsOneWidget,
+    );
   });
+
+  testWidgets(
+    'a code rejected at reset surfaces on the password step with a way back',
+    (tester) async {
+      repository.resetPasswordError = codeRejected();
+      await pumpLogin(tester);
+      await requestCode(tester, 'sara@example.com');
+      await enterCode(tester, '000000');
+      await enterNewPassword(tester, 'newsecret123');
+
+      expect(
+        find.byType(CreateNewPasswordScreen),
+        findsOneWidget,
+        reason:
+            'a code that expired or was invalidated after verification is '
+            'only discovered when reset-password is submitted',
+      );
+      expect(find.text('That code is invalid or has expired.'), findsOneWidget);
+
+      await tester.tap(find.text('Re-enter code'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(RecoveryOtpScreen), findsOneWidget);
+    },
+  );
 }

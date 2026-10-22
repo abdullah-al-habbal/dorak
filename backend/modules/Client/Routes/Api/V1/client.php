@@ -20,6 +20,7 @@ use Modules\Client\Http\Actions\Client\UpdateUniversePreferenceAction;
 use Modules\Client\Http\Actions\Client\UploadAvatarAction;
 use Modules\Client\Http\Actions\Client\VerifyEmailAction;
 use Modules\Client\Http\Actions\Client\VerifyPhoneOtpAction;
+use Modules\Client\Http\Actions\Client\VerifyResetCodeAction;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
 
 Route::prefix('client')->name('client.')->group(function (): void {
@@ -27,6 +28,7 @@ Route::prefix('client')->name('client.')->group(function (): void {
     Route::post('/register', RegisterAction::class)->name('register')->middleware('throttle:5,1');
     Route::post('/social/{provider}', SocialLoginAction::class)->name('social.login')->middleware('throttle:5,1');
     Route::post('/forgot-password', ForgotPasswordAction::class)->name('forgot-password')->middleware('throttle:5,1');
+    Route::post('/forgot-password/verify', VerifyResetCodeAction::class)->name('forgot-password.verify')->middleware('throttle:5,1');
     Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password')->middleware('throttle:5,1');
 
     Route::middleware(['auth:client', EnsureClientAccountAccess::class.':verification'])->group(function (): void {

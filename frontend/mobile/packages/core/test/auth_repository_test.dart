@@ -270,4 +270,51 @@ void main() {
       ),
     );
   });
+
+  test('verifyResetCode posts email and code to the verify route', () async {
+    RequestOptions? captured;
+    final fake = fakeDio(
+      handler: (options) {
+        captured = options;
+        return jsonResponse(options, data: successEnvelope());
+      },
+    );
+
+    await DioAuthRepository(
+      clientWith(fake),
+    ).verifyResetCode(email: 'sara@example.com', code: '123456');
+
+    expect(captured!.path, '/client/forgot-password/verify');
+    expect(captured!.data, {'email': 'sara@example.com', 'code': '123456'});
+  });
+
+  test('rejected reset code surfaces a code field error', () async {
+    final fake = fakeDio(
+      handler: (options) => jsonResponse(
+        options,
+        statusCode: 422,
+        data: errorEnvelope(
+          code: 'VALIDATION_FAILED',
+          statusCode: 422,
+          message: 'Invalid or expired reset code',
+          errors: {
+            'code': ['Invalid or expired reset code'],
+          },
+        ),
+      ),
+    );
+
+    await expectLater(
+      DioAuthRepository(
+        clientWith(fake),
+      ).verifyResetCode(email: 'sara@example.com', code: '000000'),
+      throwsA(
+        isA<ValidationException>().having(
+          (e) => e.errorsFor('code'),
+          'errorsFor(code)',
+          ['Invalid or expired reset code'],
+        ),
+      ),
+    );
+  });
 }

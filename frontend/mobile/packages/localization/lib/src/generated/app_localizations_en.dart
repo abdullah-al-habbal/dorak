@@ -330,6 +330,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recoveryCodeRejected => 'That code is invalid or has expired.';
 
   @override
+  String get recoveryCodeThrottled =>
+      'Too many attempts. Please wait a minute and try again.';
+
+  @override
   String get recoveryReenterCode => 'Re-enter code';
 
   @override

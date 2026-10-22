@@ -229,7 +229,8 @@
 
 ### Forgot / Reset Password
 - `ForgotPasswordAction` [POST /api/v1/client/forgot-password] — sends 6-digit reset code to email, 10-min TTL. No auth.
-- `ResetPasswordAction` [POST /api/v1/client/reset-password] — validates code + new password, resets password, revokes all tokens. No auth.
+- `VerifyResetCodeAction` [POST /api/v1/client/forgot-password/verify] — checks the reset code without consuming it; 422 `VALIDATION_FAILED` + `errors.code` for a wrong code or unknown email (no enumeration). Shares a 5-attempt budget with reset via `PasswordResetCodeVerifier` (Task 35). No auth.
+- `ResetPasswordAction` [POST /api/v1/client/reset-password] — validates code + new password, resets password, revokes all tokens; a bad code is 422 `VALIDATION_FAILED` + `errors.code`. No auth.
 - `SendPasswordResetCode` — mailable with Blade template
 - 4 contract tests
 

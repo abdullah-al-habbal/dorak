@@ -14,6 +14,7 @@ it('limits repeated requests to mobile authentication and recovery routes', func
     'client registration' => ['/api/v1/client/register', []],
     'client social login' => ['/api/v1/client/social/google', []],
     'client password recovery request' => ['/api/v1/client/forgot-password', []],
+    'client password recovery code check' => ['/api/v1/client/forgot-password/verify', []],
     'client password reset' => ['/api/v1/client/reset-password', []],
     'barber login' => ['/api/v1/barber/login', []],
     'branch login' => ['/api/v1/branch/login', []],

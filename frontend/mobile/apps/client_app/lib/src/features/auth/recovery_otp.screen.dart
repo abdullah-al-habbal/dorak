@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:localization/localization.dart';
 
@@ -47,9 +48,7 @@ class RecoveryOtpScreen extends StatelessWidget {
             child: BlocBuilder<PasswordRecoveryBloc, PasswordRecoveryState>(
               bloc: recovery,
               builder: (context, state) {
-                final error = state.error == null
-                    ? null
-                    : AuthError.from(state.error!, l10n);
+                final error = _errorFor(state.error, l10n);
                 return RecoveryOtpContent(
                   destination: state.email,
                   onContinue: (code) => recovery.add(RecoveryCodeEntered(code)),
@@ -63,6 +62,20 @@ class RecoveryOtpScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  /// A rejected code (422) reads as "invalid or expired" rather than a generic
+  /// failure, and the attempt throttle gets its own wait-and-retry message.
+  static AuthError? _errorFor(Object? error, AppLocalizations l10n) {
+    if (error == null) return null;
+    if (error is ApiException && error.isRateLimited) {
+      return AuthError(message: l10n.recoveryCodeThrottled);
+    }
+    return AuthError.from(
+      error,
+      l10n,
+      unprocessableMessage: l10n.recoveryCodeRejected,
     );
   }
 }

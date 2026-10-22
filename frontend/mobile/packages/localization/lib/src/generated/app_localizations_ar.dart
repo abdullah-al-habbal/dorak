@@ -331,6 +331,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recoveryCodeRejected => 'هذا الرمز غير صالح أو انتهت صلاحيته.';
 
   @override
+  String get recoveryCodeThrottled =>
+      'محاولات كثيرة. انتظر دقيقة ثم حاول مجدداً.';
+
+  @override
   String get recoveryReenterCode => 'إعادة إدخال الرمز';
 
   @override

@@ -84,21 +84,62 @@ void main() {
     );
   });
 
-  group('carry the code', () {
+  group('verify the code', () {
     blocTest<PasswordRecoveryBloc, PasswordRecoveryState>(
-      'the code is held in state and acknowledged before navigation',
+      'a code the server accepts is held in state and acknowledged',
       build: bloc,
-      act: (bloc) => bloc.add(const RecoveryCodeEntered('123456')),
+      act: (bloc) async {
+        bloc.add(const RecoveryCodeRequested('sara@example.com'));
+        await pumpEventQueue();
+        bloc.add(const RecoveryCodeEntered('123456'));
+        await pumpEventQueue();
+      },
       verify: (bloc) {
+        expect(repository.verifyResetCodePayload, {
+          'email': 'sara@example.com',
+          'code': '123456',
+        });
         expect(bloc.state.code, '123456');
         expect(bloc.state.hasCode, isTrue);
-        expect(
-          bloc.state.signal,
-          RecoverySignal.codeAccepted,
-          reason:
-              'the backend has no verify-reset-code endpoint, so the code '
-              'is carried to the reset step rather than validated here',
-        );
+        expect(bloc.state.isSubmitting, isFalse);
+        expect(bloc.state.signal, RecoverySignal.codeAccepted);
+      },
+    );
+
+    blocTest<PasswordRecoveryBloc, PasswordRecoveryState>(
+      'a wrong code never emits codeAccepted and surfaces on the OTP step',
+      build: () {
+        repository.verifyResetCodeError = codeRejected();
+        return bloc();
+      },
+      act: (bloc) => bloc.add(const RecoveryCodeEntered('000000')),
+      verify: (bloc) {
+        expect(bloc.state.isCodeRejected, isTrue);
+        expect(bloc.state.error, isA<ValidationException>());
+        expect(bloc.state.isSubmitting, isFalse);
+        expect(bloc.state.signal, RecoverySignal.none);
+      },
+      expect: () => [
+        isA<PasswordRecoveryState>()
+            .having((s) => s.isSubmitting, 'isSubmitting', isTrue)
+            .having((s) => s.signal, 'signal', RecoverySignal.none),
+        isA<PasswordRecoveryState>()
+            .having((s) => s.isCodeRejected, 'isCodeRejected', isTrue)
+            .having((s) => s.signal, 'signal', RecoverySignal.none),
+      ],
+    );
+
+    blocTest<PasswordRecoveryBloc, PasswordRecoveryState>(
+      'a transport failure does not accept the code',
+      build: () {
+        repository.verifyResetCodeError = offline();
+        return bloc();
+      },
+      act: (bloc) => bloc.add(const RecoveryCodeEntered('123456')),
+      verify: (bloc) {
+        expect(bloc.state.error, isA<NetworkException>());
+        expect(bloc.state.signal, RecoverySignal.none);
+        expect(bloc.state.isSubmitting, isFalse);
       },
     );
   });
@@ -132,7 +173,7 @@ void main() {
     );
 
     blocTest<PasswordRecoveryBloc, PasswordRecoveryState>(
-      'a rejected code surfaces here, not on the OTP step',
+      'a code that expires between verify and reset still surfaces here',
       build: () {
         repository.resetPasswordError = codeRejected();
         return bloc();
