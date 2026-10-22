@@ -78,8 +78,14 @@ class BookingModel extends Model
      *
      * @param  Builder<BookingModel>  $query
      */
-    public function scopeForBranch(Builder $query, string|int $branchId): void
+    public function scopeForBranch(Builder $query, string|int|null $branchId): void
     {
+        if ($branchId === null) {
+            $query->whereRaw('0 = 1');
+
+            return;
+        }
+
         $query->where(function (Builder $scoped) use ($branchId): void {
             $scoped->where('branch_id', $branchId)
                 ->orWhereHas('chair', fn (Builder $chair) => $chair->where('branch_id', $branchId));

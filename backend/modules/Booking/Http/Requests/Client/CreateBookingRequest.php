@@ -34,6 +34,8 @@ final class CreateBookingRequest extends BaseApiFormRequest
 
     public function toCommand(): CreateBookingCommand
     {
+        $branchId = $this->validated('branch_id');
+
         return new CreateBookingCommand(
             chairId: $this->validated('chair_id'),
             barberId: $this->validated('barber_id'),
@@ -41,7 +43,7 @@ final class CreateBookingRequest extends BaseApiFormRequest
             timeSlot: Carbon::parse($this->validated('time_slot'))->utc(),
             serviceIds: $this->validated('service_ids'),
             atHomeLocation: $this->validated('at_home_location'),
-            branchId: $this->validated('branch_id'),
+            branchId: is_string($branchId) ? $branchId : null,
         );
     }
 }

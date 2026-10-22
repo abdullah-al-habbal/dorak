@@ -11,6 +11,7 @@ abstract class BookingRepository {
 
   Future<BookingDto> createBooking({
     String? chairId,
+    String? branchId,
     String? barberId,
     required DateTime timeSlot,
     List<String>? serviceIds,
@@ -59,6 +60,7 @@ class DioBookingRepository implements BookingRepository {
   @override
   Future<BookingDto> createBooking({
     String? chairId,
+    String? branchId,
     String? barberId,
     required DateTime timeSlot,
     List<String>? serviceIds,
@@ -84,11 +86,15 @@ class DioBookingRepository implements BookingRepository {
     if (hasAtHomeLocation && chairId != null) {
       throw ArgumentError('At-home bookings cannot include a chair.');
     }
+    if (chairId != null && branchId != null) {
+      throw ArgumentError('Chair bookings cannot include a branch.');
+    }
     final formatted = timeSlot.toUtc().toIso8601String();
     return _apiClient.post<BookingDto>(
       BookingEndpoints.bookings,
       data: {
         'chair_id': ?chairId,
+        'branch_id': ?branchId,
         'barber_id': ?barberId,
         'time_slot': formatted,
         'service_ids': ?serviceIds,

@@ -598,6 +598,7 @@ class FakeBookingRepository implements BookingRepository {
   @override
   Future<BookingDto> createBooking({
     String? chairId,
+    String? branchId,
     String? barberId,
     required DateTime timeSlot,
     List<String>? serviceIds,

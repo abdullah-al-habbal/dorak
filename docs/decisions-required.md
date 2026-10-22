@@ -51,7 +51,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: a chair-linked barber that differs from an explicit `barber_id` returns 422; with no chair, only services owned by the booked barber are accepted (barber-only/at-home rules are refined in Tasks 24/25).
 
 ## [Task 24: Allow Booking a Shop Barber Without Picking a Chair](tasks/task-24-barber-booking-without-chair.md)
-- [ ] **Decision required:** add a `bookings.branch_id` column, or resolve the branch through the barber's chair at check-in.
+- [x] Decision resolved: add a nullable `bookings.branch_id` column (backfilled from chairs). It is set for every in-person booking; branch-scoped queries use `BookingModel::forBranch()`, which also matches legacy rows through the chair. A barber is affiliated if they have an accepted affiliation with the branch or its brand.
 
 ## [Task 25: Enforce At-Home Booking Rules](tasks/task-25-at-home-booking-rules.md)
 - [ ] the barber has `is_freelancer = true` (**Decision required:** whether affiliated barbers may also do at-home);

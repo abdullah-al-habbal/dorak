@@ -59,7 +59,7 @@ export const ENTITY_CONFIGS = {
       {
         id: "chair",
         label: "chair",
-        value: (item: IBooking) => item.chair?.label ?? "—",
+        value: (item: IBooking) => item.chair?.label ?? "No chair assigned",
       },
       {
         id: "stylist",

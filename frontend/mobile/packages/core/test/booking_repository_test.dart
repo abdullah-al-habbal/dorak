@@ -129,6 +129,40 @@ void main() {
       expect(created.id, 'booking-1');
     });
 
+    test('createBooking posts a barber-only booking with a branch', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            statusCode: 201,
+            data: successEnvelope(
+              statusCode: 201,
+              code: 'CREATED',
+              data: {...booking(), 'chair': null},
+            ),
+          );
+        },
+      );
+      final repository = DioBookingRepository(clientWith(fake));
+
+      final created = await repository.createBooking(
+        branchId: 'branch-1',
+        barberId: 'barber-1',
+        timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+        serviceIds: const ['service-1'],
+      );
+
+      expect(captured.data, {
+        'branch_id': 'branch-1',
+        'barber_id': 'barber-1',
+        'time_slot': '2026-09-10T14:30:00.000Z',
+        'service_ids': ['service-1'],
+      });
+      expect(created.chair, isNull);
+    });
+
     test('createBooking conflict surfaces the status code', () async {
       final fake = fakeDio(
         handler: (options) => jsonResponse(

@@ -17,7 +17,7 @@ Rule E3 lets a client book "by the barber" instead of by the chair, and EC-4 say
   - (b) `barber_id` plus a `branch_id` where the barber has an accepted affiliation, with no chair;
   - (c) `at_home_location` plus `barber_id`, per Task 25.
 - For mode (b): run the barber overlap check, leave `chair_id` null, and record `branch_id` on the booking so the branch dashboard and channels see it.
-  - **Decision required:** add a `bookings.branch_id` column, or resolve the branch through the barber's chair at check-in.
+  - **Decision resolved:** add a nullable `bookings.branch_id` column; see `docs/decisions-required.md`.
 - Make sure branch-scoped lists (`branch/bookings`, `dashboard/bookings`) and the branch broadcast channel include mode (b) bookings.
 
 ### Dashboard (BFF / React)
@@ -29,14 +29,14 @@ Rule E3 lets a client book "by the barber" instead of by the chair, and EC-4 say
 - The entry UI belongs to Task 79.
 
 ## Acceptance Criteria
-- [ ] `POST /api/v1/bookings` with `barber_id` and `branch_id` (affiliated), services and a slot, without `chair_id`, returns 201 with `chair = null`.
-- [ ] The same request with a branch where the barber has no accepted affiliation returns 422.
-- [ ] A request with none of chair, barber+branch, or at-home returns 422.
-- [ ] A request with both `chair_id` and `at_home_location` still returns 422.
-- [ ] A mode (b) booking appears in `GET /api/v1/branch/bookings` for that branch.
-- [ ] Feature test `BarberOnlyBookingTest` covers the above.
-- [ ] Client `booking.dto.dart` parses a booking with a null chair (unit test).
-- [ ] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
+- [x] `POST /api/v1/bookings` with `barber_id` and `branch_id` (affiliated), services and a slot, without `chair_id`, returns 201 with `chair = null`.
+- [x] The same request with a branch where the barber has no accepted affiliation returns 422.
+- [x] A request with none of chair, barber+branch, or at-home returns 422.
+- [x] A request with both `chair_id` and `at_home_location` still returns 422.
+- [x] A mode (b) booking appears in `GET /api/v1/branch/bookings` for that branch.
+- [x] Feature test `BarberOnlyBookingTest` covers the above.
+- [x] Client `booking.dto.dart` parses a booking with a null chair (unit test).
+- [x] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
 
 ## Out of Scope
 - UI entry from the stylist profile (Task 79).

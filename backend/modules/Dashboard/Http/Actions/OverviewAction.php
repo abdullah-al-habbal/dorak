@@ -34,7 +34,7 @@ final class OverviewAction extends BaseApiAction
             'active_branches_count' => $branches->count(),
             'today_bookings_count' => $todayBookings->count(),
             'revenue' => 0.0,
-            'stylists_count' => BarberModel::query()->when(! $actor->isPlatformAdmin(), fn ($query) => $query->whereHas('bookings', fn ($booking) => $booking->forBranch($actor->branchId)))->count(),
+            'stylists_count' => BarberModel::query()->when(! $actor->isPlatformAdmin(), fn ($query) => $query->whereIn('id', BookingModel::query()->forBranch($actor->branchId)->select('barber_id')))->count(),
         ]);
     }
 }
