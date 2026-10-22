@@ -42,6 +42,7 @@ it('filters upcoming bookings', function () {
         'client_id' => $this->client->id,
         'status' => 'confirmed',
         'time_slot' => now()->addWeek(),
+        'ends_at' => now()->addWeek()->addMinutes(30),
     ]);
     BookingModel::factory()->completed()->create([
         'client_id' => $this->client->id,
@@ -63,6 +64,7 @@ it('filters past bookings', function () {
         'client_id' => $this->client->id,
         'status' => 'confirmed',
         'time_slot' => now()->addWeek(),
+        'ends_at' => now()->addWeek()->addMinutes(30),
     ]);
 
     $response = $this->getJson('/api/v1/bookings?status=past&per_page=10');

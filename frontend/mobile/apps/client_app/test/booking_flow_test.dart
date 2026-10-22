@@ -73,6 +73,18 @@ void main() {
     );
   });
 
+  testWidgets('pending booking shows the Pending label and Cancel action', (
+    tester,
+  ) async {
+    repository.firstPage = testBookingPage(
+      bookings: [testBooking(status: 'pending')],
+    );
+    await pumpBookings(tester);
+
+    expect(find.text('Pending'), findsOneWidget);
+    expect(find.text('Cancel Booking'), findsOneWidget);
+  });
+
   testWidgets('past filter reloads with the past status', (tester) async {
     repository.firstPage = testBookingPage(bookings: const []);
     await pumpBookings(tester);

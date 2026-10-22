@@ -204,9 +204,11 @@ class _BookingsFeedState extends State<_BookingsFeed> {
                 booking.timeSlot.isAfter(
                   DateTime.now().add(const Duration(hours: 2)),
                 );
+            final cancelableStatus =
+                booking.status == 'pending' || booking.status == 'confirmed';
             final cancellable =
                 state.filter == 'upcoming' &&
-                booking.status == 'confirmed' &&
+                cancelableStatus &&
                 cancellationAllowed;
             final rateable = booking.status == 'completed';
             return Padding(
@@ -232,8 +234,7 @@ class _BookingsFeedState extends State<_BookingsFeed> {
                         ),
                       ),
                 cancelLabel: l10n.bookingCancelAction,
-                cancellationWarning:
-                    booking.status == 'confirmed' && !cancellationAllowed
+                cancellationWarning: cancelableStatus && !cancellationAllowed
                     ? l10n.bookingCancellationClosed
                     : null,
                 isCancelling: state.cancellingId == booking.id,
@@ -262,6 +263,7 @@ class _BookingsFeedState extends State<_BookingsFeed> {
       'canceled' => l10n.bookingStatusCanceled,
       'completed' => l10n.bookingStatusCompleted,
       'in_progress' => l10n.bookingStatusInProgress,
+      'no_show' => l10n.bookingStatusNoShow,
       _ => l10n.bookingStatusUnknown,
     };
   }

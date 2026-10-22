@@ -33,12 +33,12 @@ So every newly created booking (`pending` is the default) is invisible in both t
 - `frontend/mobile/packages/localization` — add the new status strings (en and ar).
 
 ## Acceptance Criteria
-- [ ] After `POST /api/v1/bookings` (status `pending`), `GET /api/v1/bookings?filter=upcoming` contains the new booking.
-- [ ] An `in_progress` booking is in Upcoming. A `no_show` booking is in Past.
-- [ ] A `pending` booking whose `ends_at` has passed is in Past and not in Upcoming.
-- [ ] No status value appears in both lists, and every status appears in exactly one (covered by the Feature test `ListUserBookingsFilterTest` with one booking per status).
-- [ ] client_app widget test: a `pending` booking shows the localized "Pending" label and a Cancel action.
-- [ ] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
+- [x] After `POST /api/v1/bookings` (status `pending`), `GET /api/v1/bookings?filter=upcoming` contains the new booking.
+- [x] An `in_progress` booking is in Upcoming. A `no_show` booking is in Past.
+- [x] A `pending` booking whose `ends_at` has passed is in Past and not in Upcoming.
+- [x] No status value appears in both lists, and every status appears in exactly one (covered by the Feature test `ListUserBookingsFilterTest` with one booking per status).
+- [x] client_app widget test: a `pending` booking shows the localized "Pending" label and a Cancel action.
+- [x] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
 
 ## Out of Scope
 - Realtime updates of the list (Task 29).
