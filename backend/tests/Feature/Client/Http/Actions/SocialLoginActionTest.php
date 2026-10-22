@@ -84,7 +84,7 @@ it('issues a verification-only token to a pending client on social login', funct
 
     $response = $this->postJson('/api/v1/client/social/google', [
         'access_token' => 'pending-social-token',
-    ])->assertOk()->assertJsonPath('data.client.email_verified', false);
+    ])->assertOk()->assertJsonPath('data.client.email_verified_at', null);
 
     expect($client->tokens()->firstOrFail()->abilities)->toBe(['email-verification']);
     $this->withToken($response->json('data.token'))->getJson('/api/v1/bookings')->assertForbidden();

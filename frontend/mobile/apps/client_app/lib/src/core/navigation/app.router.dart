@@ -617,6 +617,11 @@ class AppRouter {
                       repository: services.createProfileRepository(),
                       name: session.state.client?.name ?? '',
                       phone: session.state.client?.phone,
+                      email: session.state.client?.email ?? '',
+                      onSaved: (client) =>
+                          session.add(SessionAuthenticated(client)),
+                      onEmailVerificationRequired: (email) =>
+                          router.push<void>(AppRoutes.authVerify, extra: email),
                     ),
                   ),
                   GoRoute(

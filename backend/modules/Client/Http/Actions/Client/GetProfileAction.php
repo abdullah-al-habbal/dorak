@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Client\CQRS\Query\Client\GetProfileQuery;
 use Modules\Client\Handlers\Client\GetProfileHandler;
+use Modules\Client\Http\Resources\Client\ClientProfileResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class GetProfileAction extends BaseApiAction
@@ -22,6 +23,6 @@ final class GetProfileAction extends BaseApiAction
             clientId: (string) $request->user()->getAuthIdentifier(),
         ));
 
-        return $this->ok(data: $client->authPayload());
+        return $this->ok(data: ClientProfileResource::make($client)->resolve());
     }
 }

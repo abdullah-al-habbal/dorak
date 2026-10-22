@@ -74,18 +74,6 @@ class ClientModel extends Authenticatable implements FilamentUser
         return $this->bans()->active()->exists();
     }
 
-    /** @return array{id: string, name: string, email: string, phone: ?string, email_verified: bool} */
-    public function authPayload(): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'email_verified' => $this->getAttribute('email_verified_at') !== null,
-        ];
-    }
-
     /** @return list<string> */
     public function accessTokenAbilities(): array
     {

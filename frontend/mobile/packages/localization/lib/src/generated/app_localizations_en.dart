@@ -925,6 +925,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profilePhoneNumberLabel => 'Phone number';
 
   @override
+  String get profileEmailLabel => 'Email';
+
+  @override
   String get savedAddressesTitle => 'Saved addresses';
 
   @override

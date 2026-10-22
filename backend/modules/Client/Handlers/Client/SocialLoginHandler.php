@@ -11,6 +11,7 @@ use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Client\CQRS\Command\Client\SocialLoginCommand;
 use Modules\Client\Eloquent\Resolvers\Client\SocialLoginEloquentResolver;
 use Modules\Client\Enums\ClientStatusEnum;
+use Modules\Client\Http\Resources\Client\ClientProfileResource;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\ValuesObjects\SocialLoginResult;
 
@@ -66,7 +67,7 @@ final class SocialLoginHandler
 
         return SocialLoginResult::success(
             token: $token,
-            clientData: $client->authPayload(),
+            clientData: ClientProfileResource::make($client->refresh())->resolve(),
             isNew: $isNew,
         );
     }

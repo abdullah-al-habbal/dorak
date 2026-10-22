@@ -185,11 +185,12 @@ class InMemoryAppPreferences implements AppPreferences {
 }
 
 class FakeAuthRepository implements AuthRepository {
-  static const ClientDto _client = ClientDto(
+  static final ClientDto _client = ClientDto(
     id: 'uuid-1',
     name: 'Sara',
     email: 'sara@example.com',
     phone: null,
+    emailVerifiedAt: DateTime.utc(2026, 1, 1),
   );
 
   Object? refreshTokenError;
@@ -236,7 +237,7 @@ class FakeAuthRepository implements AuthRepository {
   }) async {
     final error = loginError;
     if (error != null) throw error;
-    return const AuthResponseDto(token: 'login-token', client: _client);
+    return AuthResponseDto(token: 'login-token', client: _client);
   }
 
   @override
@@ -249,7 +250,7 @@ class FakeAuthRepository implements AuthRepository {
   }) async {
     final error = registerError;
     if (error != null) throw error;
-    return const AuthResponseDto(token: 'register-token', client: _client);
+    return AuthResponseDto(token: 'register-token', client: _client);
   }
 
   @override
@@ -1008,10 +1009,11 @@ class FakeProfileRepository implements ProfileRepository {
     getProfileCalls++;
     final failure = getProfileError;
     if (failure != null) throw failure;
-    return const ClientDto(
+    return ClientDto(
       id: 'uuid-1',
       name: 'Sara',
       email: 'sara@example.com',
+      emailVerifiedAt: DateTime.utc(2026, 1, 1),
     );
   }
 
@@ -1023,6 +1025,7 @@ class FakeProfileRepository implements ProfileRepository {
   int updateCalls = 0;
   String? lastName;
   String? lastPhone;
+  String? lastEmail;
 
   @override
   Future<AvatarDto> uploadAvatar(String filePath) async {
@@ -1044,11 +1047,14 @@ class FakeProfileRepository implements ProfileRepository {
     lastPhone = phone;
     final failure = updateError;
     if (failure != null) throw failure;
+    lastEmail = email;
+    final emailChanged = email != null && email != 'sara@example.com';
     return ClientDto(
       id: 'uuid-1',
       name: name ?? 'Sara',
-      email: 'sara@example.com',
+      email: email ?? 'sara@example.com',
       phone: phone,
+      emailVerifiedAt: emailChanged ? null : DateTime.utc(2026, 1, 1),
     );
   }
 

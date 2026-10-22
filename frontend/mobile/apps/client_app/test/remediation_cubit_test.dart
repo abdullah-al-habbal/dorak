@@ -19,6 +19,64 @@ void main() {
     await cubit.close();
   });
 
+  group('ProfileEditCubit email change', () {
+    test('a new email is sent and requires verification', () async {
+      final repository = FakeProfileRepository();
+      final cubit = ProfileEditCubit(
+        repository,
+        initialEmail: 'sara@example.com',
+      );
+
+      await cubit.save(
+        name: 'Sara',
+        phone: '+963900000000',
+        email: ' New@Example.com ',
+      );
+
+      expect(repository.lastEmail, 'New@Example.com');
+      expect(cubit.state.saved, isTrue);
+      expect(cubit.state.client?.emailVerified, isFalse);
+      expect(cubit.state.needsEmailVerification, isTrue);
+      await cubit.close();
+    });
+
+    test('an unchanged email is not sent and needs no verification', () async {
+      final repository = FakeProfileRepository();
+      final cubit = ProfileEditCubit(
+        repository,
+        initialEmail: 'sara@example.com',
+      );
+
+      await cubit.save(
+        name: 'Sara',
+        phone: '+963900000000',
+        email: 'SARA@example.com',
+      );
+
+      expect(repository.lastEmail, isNull);
+      expect(cubit.state.saved, isTrue);
+      expect(cubit.state.needsEmailVerification, isFalse);
+      await cubit.close();
+    });
+
+    test('a failed save surfaces the error without verification', () async {
+      final repository = FakeProfileRepository()
+        ..updateError = const ApiException(
+          statusCode: 500,
+          code: 'SERVER_ERROR',
+          message: 'boom',
+        );
+      final cubit = ProfileEditCubit(repository, initialEmail: 'a@b.co');
+
+      await cubit.save(name: 'Sara', phone: '', email: 'c@d.co');
+
+      expect(cubit.state.saved, isFalse);
+      expect(cubit.state.error, isA<ApiException>());
+      expect(cubit.state.needsEmailVerification, isFalse);
+      await cubit.close();
+    });
+  });
+
   test('SavedAddressesCubit saves and deletes an address', () async {
     final preferences = InMemoryAppPreferences();
     final cubit = SavedAddressesCubit(preferences);

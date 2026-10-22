@@ -912,6 +912,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profilePhoneNumberLabel => 'رقم الهاتف';
 
   @override
+  String get profileEmailLabel => 'البريد الإلكتروني';
+
+  @override
   String get savedAddressesTitle => 'العناوين المحفوظة';
 
   @override

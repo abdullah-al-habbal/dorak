@@ -7,6 +7,7 @@ namespace Modules\Client\Handlers\Client;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Client\CQRS\Command\Client\RegisterCommand;
 use Modules\Client\Eloquent\Resolvers\Client\RegisterEloquentResolver;
+use Modules\Client\Http\Resources\Client\ClientProfileResource;
 use Modules\Client\Jobs\SendEmailVerificationCodeJob;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\ValuesObjects\RegisterResult;
@@ -38,7 +39,7 @@ final class RegisterHandler
 
         return RegisterResult::success(
             $token,
-            $client->authPayload(),
+            ClientProfileResource::make($client->refresh())->resolve(),
         );
     }
 }

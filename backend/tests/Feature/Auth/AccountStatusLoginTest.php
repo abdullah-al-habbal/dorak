@@ -27,7 +27,7 @@ it('issues a verification-only login token to pending clients', function (): voi
     $response = $this->postJson('/api/v1/client/login', [
         'email' => $client->email,
         'password' => 'password',
-    ])->assertOk()->assertJsonPath('data.client.email_verified', false);
+    ])->assertOk()->assertJsonPath('data.client.email_verified_at', null);
 
     $token = $client->tokens()->firstOrFail();
     expect($token->abilities)->toBe(['email-verification']);

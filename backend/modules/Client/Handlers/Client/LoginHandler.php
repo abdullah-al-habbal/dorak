@@ -9,6 +9,7 @@ use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Client\CQRS\Command\Client\LoginCommand;
 use Modules\Client\Enums\ClientStatusEnum;
+use Modules\Client\Http\Resources\Client\ClientProfileResource;
 use Modules\Client\Repositories\LoginEloquentResolver;
 use Modules\Client\ValuesObjects\LoginResult;
 
@@ -39,7 +40,7 @@ final class LoginHandler
 
         return LoginResult::success(
             token: $token,
-            clientData: $client->authPayload(),
+            clientData: ClientProfileResource::make($client)->resolve(),
         );
     }
 }

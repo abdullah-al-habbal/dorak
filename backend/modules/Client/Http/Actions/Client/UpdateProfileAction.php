@@ -7,6 +7,7 @@ namespace Modules\Client\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\Client\Handlers\Client\UpdateProfileHandler;
 use Modules\Client\Http\Requests\Client\UpdateProfileRequest;
+use Modules\Client\Http\Resources\Client\ClientProfileResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class UpdateProfileAction extends BaseApiAction
@@ -19,12 +20,6 @@ final class UpdateProfileAction extends BaseApiAction
     {
         $client = $this->handler->handle($request->toCommand());
 
-        return $this->ok(data: [
-            'id' => $client->id,
-            'name' => $client->name,
-            'email' => $client->email,
-            'phone' => $client->phone,
-            'preferred_universe' => $client->preferred_universe,
-        ]);
+        return $this->ok(data: ClientProfileResource::make($client)->resolve());
     }
 }

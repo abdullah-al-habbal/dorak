@@ -21,10 +21,14 @@ final class UpdateProfileEloquentResolver
             'phone' => $command->phone,
         ], fn ($value) => $value !== null);
 
+        if ($command->email !== null && strcasecmp($command->email, (string) $client->email) !== 0) {
+            $data['email_verified_at'] = null;
+        }
+
         if ($data !== []) {
             $client->update($data);
         }
 
-        return $client->fresh();
+        return $client;
     }
 }

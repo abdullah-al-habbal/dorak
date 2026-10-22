@@ -44,7 +44,7 @@ void main() {
                 'name': 'Ahmad',
                 'email': 'ahmad@example.com',
                 'phone': '+966500000001',
-                'email_verified': true,
+                'email_verified_at': '2026-09-01T09:30:00.000000Z',
               },
             ),
           );

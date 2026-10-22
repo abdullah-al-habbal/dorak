@@ -1145,6 +1145,7 @@
   "profileSaveAction": "Save",
   "profileFullNameLabel": "Full name",
   "profilePhoneNumberLabel": "Phone number",
+  "profileEmailLabel": "Email",
   "savedAddressesTitle": "Saved addresses",
   "savedAddressAddTitle": "Add address",
   "savedAddressEditTitle": "Edit address",

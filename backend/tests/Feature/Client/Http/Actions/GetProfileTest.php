@@ -18,7 +18,7 @@ it('returns the authenticated client profile', function (): void {
         ->assertJsonPath('data.name', $client->name)
         ->assertJsonPath('data.email', $client->email)
         ->assertJsonPath('data.phone', '+963911111111')
-        ->assertJsonPath('data.email_verified', true);
+        ->assertJsonPath('data.email_verified_at', $client->email_verified_at->toISOString());
 });
 
 it('returns the same client payload as login', function (): void {

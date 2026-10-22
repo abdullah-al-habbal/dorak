@@ -1772,6 +1772,12 @@ abstract class AppLocalizations {
   /// **'Phone number'**
   String get profilePhoneNumberLabel;
 
+  /// No description provided for @profileEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get profileEmailLabel;
+
   /// No description provided for @savedAddressesTitle.
   ///
   /// In en, this message translates to:

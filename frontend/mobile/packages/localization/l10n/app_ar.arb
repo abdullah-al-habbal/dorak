@@ -1069,6 +1069,7 @@
   "profileSaveAction": "حفظ",
   "profileFullNameLabel": "الاسم الكامل",
   "profilePhoneNumberLabel": "رقم الهاتف",
+  "profileEmailLabel": "البريد الإلكتروني",
   "savedAddressesTitle": "العناوين المحفوظة",
   "savedAddressAddTitle": "إضافة عنوان",
   "savedAddressEditTitle": "تعديل العنوان",

@@ -6,7 +6,9 @@ namespace Modules\Client\Handlers\Client;
 
 use Modules\Client\CQRS\Command\Client\UpdateProfileCommand;
 use Modules\Client\Eloquent\Resolvers\Client\UpdateProfileEloquentResolver;
+use Modules\Client\Jobs\SendEmailVerificationCodeJob;
 use Modules\Client\Models\ClientModel;
+use Throwable;
 
 final class UpdateProfileHandler
 {
@@ -16,6 +18,16 @@ final class UpdateProfileHandler
 
     public function handle(UpdateProfileCommand $command): ClientModel
     {
-        return $this->resolver->resolve($command);
+        $client = $this->resolver->resolve($command);
+
+        if ($client->wasChanged('email_verified_at') && $client->email_verified_at === null) {
+            try {
+                SendEmailVerificationCodeJob::dispatch((string) $client->id)->afterCommit();
+            } catch (Throwable $e) {
+                report($e);
+            }
+        }
+
+        return $client->refresh();
     }
 }
