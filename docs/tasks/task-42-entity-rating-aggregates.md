@@ -3,7 +3,7 @@
 **Phase:** Discovery · **Priority:** P1 · **Depends on:** Task 39, Task 41 · **Audit source:** Product-spec audit — Discovery (`backend/docs/03_persona-journeys.md:16`, `backend/docs/06_entity-model-abstract.md:104`); feature-spec audit — Rec PRD US-04 (`rating_min` for barbers)
 
 ## Overview & Root Cause
-Clients are meant to see ratings for shops and barbers, but branch and barber resources expose no rating fields and no aggregate is stored. The `rating_min` filter computes `avg(rating)` on the fly over all reviews, including disputed ones, and because reviews only ever have a branch subject (Task 39), barber `rating_min` filtering removes every barber.
+Clients are meant to see ratings for shops and barbers, but branch and barber resources expose no rating fields and no aggregate is stored. The `rating_min` filter computes `avg(rating)` on the fly over all reviews, including disputed ones, and because reviews only ever have a branch subject (Task 39), barber `rating_min` filtering removes every barber. Note (Task 39): barber-subject reviews now exist for every completed booking with a barber (chair, in-shop and at-home).
 
 ## Evidence
 - `backend/modules/Branch/Http/Resources/Shared/BranchResource.php:15-25` — no rating fields.

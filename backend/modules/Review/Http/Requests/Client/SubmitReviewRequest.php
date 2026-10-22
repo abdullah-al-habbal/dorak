@@ -14,6 +14,7 @@ final class SubmitReviewRequest extends BaseApiFormRequest
         return [
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'comment' => ['nullable', 'string', 'max:1000'],
+            'barber_rating' => ['sometimes', 'nullable', 'integer', 'min:1', 'max:5'],
         ];
     }
 
@@ -25,6 +26,7 @@ final class SubmitReviewRequest extends BaseApiFormRequest
             authorType: $this->user()->getMorphClass(),
             rating: (int) $this->validated('rating'),
             comment: $this->validated('comment'),
+            barberRating: $this->validated('barber_rating') === null ? null : (int) $this->validated('barber_rating'),
         );
     }
 }

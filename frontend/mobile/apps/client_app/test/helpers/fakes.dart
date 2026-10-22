@@ -1247,6 +1247,8 @@ class FakeReviewRepository implements ReviewRepository {
   String? lastBookingId;
   int? lastRating;
   String? lastComment;
+  int? lastBarberRating;
+  String? lastBarberId;
   ReviewDto? submittedReview;
 
   PaginatedData<ReviewDto> reviewsPage = PaginatedData(
@@ -1259,8 +1261,10 @@ class FakeReviewRepository implements ReviewRepository {
     String bookingId, {
     required int rating,
     String? comment,
+    int? barberRating,
   }) async {
     submitCalls++;
+    lastBarberRating = barberRating;
     lastBookingId = bookingId;
     lastRating = rating;
     lastComment = comment;
@@ -1276,6 +1280,19 @@ class FakeReviewRepository implements ReviewRepository {
     int perPage = 20,
   }) async {
     reviewsCalls++;
+    final failure = reviewsError;
+    if (failure != null) throw failure;
+    return reviewsPage;
+  }
+
+  @override
+  Future<PaginatedData<ReviewDto>> getBarberReviews(
+    String barberId, {
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    reviewsCalls++;
+    lastBarberId = barberId;
     final failure = reviewsError;
     if (failure != null) throw failure;
     return reviewsPage;

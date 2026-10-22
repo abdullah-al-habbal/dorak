@@ -37,6 +37,9 @@ final class SubmitReviewAction extends BaseApiAction
         return $this->created(
             data: new ReviewResource($result->review),
             message: __('review::messages.submitted'),
+            meta: $result->barberReview === null ? [] : [
+                'barber_review' => ReviewResource::make($result->barberReview)->resolve(),
+            ],
         );
     }
 }

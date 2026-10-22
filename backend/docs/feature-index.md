@@ -6,7 +6,7 @@
 - Queued jobs (all `afterCommit`, ID-only scalar payloads, stable `dispatchKey`, en+ar copy): `AffiliationInvitedNotification` (`invite`), `AffiliationRespondedNotification` (`invite`), `JobApplicationReceivedNotification` (`application`), `JobApplicationStatusChangedNotification` (`application`), `ReviewRequestNotification` (`review_request`).
 - Triggers: `POST /barbers/{barber}/affiliate` (branch targets only), barber `POST /affiliations/{id}/accept|reject` and branch `POST /branch/affiliations/{id}/accept|reject`, `POST /jobs/{job}/apply`, `PATCH /branch/job-postings/{posting}/applications/{application}/status`, and booking completion through `BookingTransitionNotifier::statusChanged` (barber, branch and dashboard routes).
 - FCM/inbox `data`: `type` (enum value), `event` (`affiliation_invited|affiliation_responded|application_received|application_status_changed|review_request`) plus IDs (`affiliation_id`, `application_id`, `job_posting_id`, `booking_id`, `status`).
-- Not notified: brand-targeted affiliation requests (no notifiable actor), Filament direct edits, review requests for bookings with no chair/branch to review. Tests: `tests/Feature/Notification/DomainEventNotificationTest.php`.
+- Not notified: brand-targeted affiliation requests (no notifiable actor), Filament direct edits, review requests for bookings with neither a branch nor a barber to review (Task 39). Tests: `tests/Feature/Notification/DomainEventNotificationTest.php`.
 
 ### Notification Inbox & Delivery Records (Task 30)
 - Tables `notifications` (uuid, `notifiable` morph using `client`/`barber`/`branch` aliases, `type` `booking_update|invite|application|review_request`, `title`, `body`, `data`, unique `dedupe_key`, `read_at`) and `notification_deliveries` (`notification_id`, nullable `device_token_id` with `nullOnDelete`, `status` `sent|failed`, `provider_message_id`, `error`, `attempted_at`).
@@ -94,9 +94,10 @@
 - Routes added to explore.php
 
 ### Review API
-- `SubmitReviewAction` [POST /api/v1/client/bookings/{booking}/review] — validates booking ownership + completed status + no duplicate; derives subject_type/subject_id from chair.branch or barber. Auth:client
-- `GetBranchReviewsAction` [GET /api/v1/branches/{branch}/reviews] — paginated reviews for a branch. No auth
-- `ReviewResource` — id, rating, comment, author_name, created_at
+- `SubmitReviewAction` [POST /api/v1/client/bookings/{booking}/review] — validates ownership + completed status + one submission per client per booking (409). Subjects (Task 39): in-shop booking with a barber → branch review (`rating`) + barber review (`barber_rating` ?? `rating`, returned in `meta.barber_review`); barber-only/at-home → barber review; neither → 422 `no_subject`. Auth:client
+- `GetBranchReviewsAction` [GET /api/v1/branches/{branch}/reviews] — paginated published reviews for a branch. No auth
+- `GetBarberReviewsAction` [GET /api/v1/barbers/{barber}/reviews] — paginated published reviews for a barber (Task 39). No auth
+- `ReviewResource` — id, subject_type, subject_id, rating, comment, status, disputed_at, resolved_at, author_name, created_at
 - `SubmitReviewRequest` — validates rating (1-5) + comment (nullable, max 500)
 - Routes: reviews.php
 

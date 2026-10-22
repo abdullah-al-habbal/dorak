@@ -3,4 +3,5 @@ class ReviewEndpoints {
 
   static const String submitReview = '/client/bookings/{booking}/review';
   static const String branchReviews = '/branches/{branch}/reviews';
+  static const String barberReviews = '/barbers/{barber}/reviews';
 }

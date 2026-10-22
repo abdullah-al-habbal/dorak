@@ -12,11 +12,17 @@ final readonly class SubmitReviewResult
         public bool $success,
         public ?ReviewModel $review,
         public ?string $errorCode,
+        public ?ReviewModel $barberReview = null,
     ) {}
 
-    public static function success(ReviewModel $review): self
+    /**
+     * $review is the primary review (the branch, or the barber when the
+     * booking has no branch); $barberReview is the extra barber review written
+     * alongside a branch review.
+     */
+    public static function success(ReviewModel $review, ?ReviewModel $barberReview = null): self
     {
-        return new self(true, $review, null);
+        return new self(true, $review, null, $barberReview);
     }
 
     public static function notOwnBooking(): self

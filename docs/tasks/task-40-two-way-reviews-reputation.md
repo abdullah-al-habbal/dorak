@@ -1,6 +1,6 @@
 # Task 40: Implement Two-Way Reviews and Client Reputation
 
-**Phase:** Reviews · **Priority:** P1 · **Depends on:** Task 39 · **Audit source:** Product-spec audit — Reviews (`backend/docs/04_house-rules.md:65` F1, `backend/docs/06_entity-model-abstract.md:115`, `:182-186`)
+**Phase:** Reviews · **Priority:** P1 · **Depends on:** Task 39 (done: `BookingModel::reviews()` is now HasMany and the duplicate check is per author, so shop→client reviews can coexist with client reviews on the same booking) · **Audit source:** Product-spec audit — Reviews (`backend/docs/04_house-rules.md:65` F1, `backend/docs/06_entity-model-abstract.md:115`, `:182-186`)
 
 ## Overview & Root Cause
 The specs define two reviews per booking: the client rates the shop/barber and the shop rates the client, and clients carry a reputation rating. The code allows exactly one review per booking (`booking->review()->exists()` blocks a second) and only exposes a client submit route, so shops cannot rate clients and no client reputation exists.

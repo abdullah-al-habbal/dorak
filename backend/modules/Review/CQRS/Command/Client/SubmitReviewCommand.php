@@ -12,5 +12,6 @@ final readonly class SubmitReviewCommand
         public string $authorType,
         public int $rating,
         public ?string $comment,
+        public ?int $barberRating = null,
     ) {}
 }

@@ -10,9 +10,18 @@ use Modules\Review\Models\ReviewModel;
 
 final class SubmitReviewEloquentResolver
 {
-    public function findBookingWithSubject(string $bookingId): BookingModel
+    /** Locks the booking so two concurrent submissions cannot both pass the duplicate check. */
+    public function findBookingForReview(string $bookingId): BookingModel
     {
-        return BookingModel::with('chair.branch')->findOrFail($bookingId);
+        return BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
+    }
+
+    public function authorHasReviewed(BookingModel $booking, string $authorId, string $authorType): bool
+    {
+        return $booking->reviews()
+            ->where('author_id', $authorId)
+            ->where('author_type', $authorType)
+            ->exists();
     }
 
     public function createReview(array $data): ReviewModel

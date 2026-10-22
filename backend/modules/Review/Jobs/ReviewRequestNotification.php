@@ -37,8 +37,9 @@ final class ReviewRequestNotification implements ShouldQueue
     public function handle(FcmNotificationSender $sender): void
     {
         $booking = BookingModel::query()->with('chair')->find($this->bookingId);
-        // Submission needs a completed booking with a branch to review.
-        if ($booking === null || $booking->status !== BookingStatus::Completed || $booking->chair?->branch_id === null) {
+        // Submission needs a completed booking with a branch or a barber to review (Task 39).
+        $hasSubject = ($booking?->branch_id ?? $booking?->chair?->branch_id) !== null || $booking?->barber_id !== null;
+        if ($booking === null || $booking->status !== BookingStatus::Completed || ! $hasSubject) {
             return;
         }
 

@@ -212,5 +212,81 @@ void main() {
 
       expect(captured.queryParameters['page'], 2);
     });
+
+    test('submitReview sends barber_rating only when given', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            statusCode: 201,
+            data: successEnvelope(
+              statusCode: 201,
+              code: 'CREATED',
+              data: {
+                ...review(),
+                'subject_type': 'branch',
+                'subject_id': 'branch-1',
+              },
+            ),
+          );
+        },
+      );
+      final repository = DioReviewRepository(clientWith(fake));
+
+      final result = await repository.submitReview(
+        'booking-1',
+        rating: 5,
+        barberRating: 3,
+      );
+
+      expect(captured.data, {'rating': 5, 'barber_rating': 3});
+      expect(result.subjectType, 'branch');
+      expect(result.subjectId, 'branch-1');
+      expect(result.isBranchReview, isTrue);
+    });
+
+    test('getBarberReviews reads the barber review route', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: [
+                {
+                  ...review(id: 'r1', rating: 4),
+                  'subject_type': 'barber',
+                  'subject_id': 'barber-1',
+                },
+              ],
+              meta: {
+                'pagination': {
+                  'total': 1,
+                  'count': 1,
+                  'per_page': 10,
+                  'current_page': 2,
+                  'total_pages': 2,
+                },
+              },
+            ),
+          );
+        },
+      );
+      final repository = DioReviewRepository(clientWith(fake));
+
+      final page = await repository.getBarberReviews(
+        'barber-1',
+        page: 2,
+        perPage: 10,
+      );
+
+      expect(captured.path, '/barbers/barber-1/reviews');
+      expect(captured.queryParameters, {'page': 2, 'per_page': 10});
+      expect(page.data.single.isBarberReview, isTrue);
+      expect(page.data.single.subjectId, 'barber-1');
+    });
   });
 }

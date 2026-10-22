@@ -181,9 +181,27 @@ it('writes an inbox row with an id-only payload for each notification', function
         ->and($review->data)->toBe(['type' => 'review_request', 'event' => 'review_request', 'booking_id' => $booking->id]);
 });
 
-it('does not send a review request for a booking without a branch to review', function (): void {
+it('does not send a review request for a booking with neither a branch nor a barber', function (): void {
     $client = ClientModel::factory()->create();
-    $booking = BookingModel::factory()->create(['chair_id' => null, 'client_id' => $client->id, 'status' => BookingStatus::Completed]);
+    $booking = BookingModel::factory()->create(['chair_id' => null, 'branch_id' => null, 'barber_id' => null, 'client_id' => $client->id, 'status' => BookingStatus::Completed]);
+
+    (new ReviewRequestNotification($booking->id))->handle(app(FcmNotificationSender::class));
+
+    expect(NotificationModel::query()->where('notifiable_id', $client->id)->count())->toBe(0);
+});
+
+it('sends a review request for a completed at-home booking with a barber', function (): void {
+    $client = ClientModel::factory()->create();
+    $booking = BookingModel::factory()->atHome()->create(['branch_id' => null, 'client_id' => $client->id, 'status' => BookingStatus::Completed]);
+
+    (new ReviewRequestNotification($booking->id))->handle(app(FcmNotificationSender::class));
+
+    expect(NotificationModel::query()->where('notifiable_id', $client->id)->sole()->type)->toBe(NotificationTypeEnum::ReviewRequest);
+});
+
+it('keeps skipping review requests for unfinished bookings', function (): void {
+    $client = ClientModel::factory()->create();
+    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed]);
 
     (new ReviewRequestNotification($booking->id))->handle(app(FcmNotificationSender::class));
 

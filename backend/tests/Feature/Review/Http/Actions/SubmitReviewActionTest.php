@@ -93,9 +93,22 @@ it('includes author_name in review response', function () {
     expect($response->json('data.author_name'))->toBe($this->client->name);
 });
 
-it('rejects review for at-home booking without chair', function () {
+it('reviews the barber of an at-home booking without chair (Task 39)', function () {
     $booking = BookingModel::factory()->completed()->atHome()->create([
         'client_id' => $this->client->id,
+    ]);
+
+    $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
+        'rating' => 5,
+    ]);
+
+    $response->assertCreated()->assertJsonPath('data.subject_type', 'barber');
+});
+
+it('rejects review for an at-home booking with no barber', function () {
+    $booking = BookingModel::factory()->completed()->atHome()->create([
+        'client_id' => $this->client->id,
+        'barber_id' => null,
     ]);
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [

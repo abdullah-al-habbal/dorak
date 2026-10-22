@@ -5,6 +5,8 @@ part 'review.dto.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class ReviewDto {
   final String id;
+  final String? subjectType;
+  final String? subjectId;
   final int rating;
   final String? comment;
   final String? authorName;
@@ -15,6 +17,8 @@ class ReviewDto {
 
   const ReviewDto({
     required this.id,
+    this.subjectType,
+    this.subjectId,
     required this.rating,
     this.comment,
     this.authorName,
@@ -23,6 +27,9 @@ class ReviewDto {
     this.resolvedAt,
     required this.createdAt,
   });
+
+  bool get isBarberReview => subjectType == 'barber';
+  bool get isBranchReview => subjectType == 'branch';
 
   bool get published => status == 'published';
   bool get disputed => status == 'disputed';

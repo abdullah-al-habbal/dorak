@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
@@ -126,8 +126,9 @@ class BookingModel extends Model
         return $this->belongsToMany(OfferedServiceModel::class, 'booking_offered_service', 'booking_id', 'offered_service_id');
     }
 
-    public function review(): HasOne
+    /** Every review written about this booking, by either side and for any subject. */
+    public function reviews(): HasMany
     {
-        return $this->hasOne(ReviewModel::class, 'booking_id');
+        return $this->hasMany(ReviewModel::class, 'booking_id');
     }
 }

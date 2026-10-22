@@ -4,12 +4,22 @@ declare(strict_types=1);
 
 namespace Modules\Review\Handlers\Client;
 
+use Illuminate\Support\Facades\DB;
+use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Review\CQRS\Command\Client\SubmitReviewCommand;
 use Modules\Review\Eloquent\Resolvers\Client\SubmitReviewEloquentResolver;
 use Modules\Review\ValuesObjects\SubmitReviewResult;
 
+/**
+ * A client reviews a completed booking once. The subjects are the booking's
+ * branch (`branch_id`, or the chair's branch for legacy rows) and its barber:
+ * an in-shop booking with a barber yields one review for each, an at-home or
+ * barber-only booking yields a barber review, and a booking with neither has
+ * no subject.
+ */
 final class SubmitReviewHandler
 {
     public function __construct(
@@ -18,36 +28,66 @@ final class SubmitReviewHandler
 
     public function handle(SubmitReviewCommand $command): SubmitReviewResult
     {
-        $booking = $this->resolver->findBookingWithSubject($command->bookingId);
+        return DB::transaction(function () use ($command): SubmitReviewResult {
+            $booking = $this->resolver->findBookingForReview($command->bookingId);
 
-        if ($booking->client_id !== $command->authorId) {
-            return SubmitReviewResult::notOwnBooking();
-        }
+            if ($booking->client_id !== $command->authorId) {
+                return SubmitReviewResult::notOwnBooking();
+            }
 
-        if ($booking->status !== BookingStatus::Completed) {
-            return SubmitReviewResult::bookingNotCompleted();
-        }
+            if ($booking->status !== BookingStatus::Completed) {
+                return SubmitReviewResult::bookingNotCompleted();
+            }
 
-        if ($booking->review()->exists()) {
-            return SubmitReviewResult::alreadyReviewed();
-        }
+            if ($this->resolver->authorHasReviewed($booking, $command->authorId, $command->authorType)) {
+                return SubmitReviewResult::alreadyReviewed();
+            }
 
-        $subjectId = $booking->chair?->branch_id;
+            $branchId = $this->branchIdOf($booking);
+            $barberId = $booking->getAttribute('barber_id');
+            $barberId = is_string($barberId) && $barberId !== '' ? $barberId : null;
 
-        if ($subjectId === null) {
-            return SubmitReviewResult::noSubject();
-        }
+            if ($branchId === null && $barberId === null) {
+                return SubmitReviewResult::noSubject();
+            }
 
-        $review = $this->resolver->createReview([
+            $barberReview = $barberId === null ? null : $this->resolver->createReview([
+                ...$this->baseAttributes($booking, $command),
+                'subject_id' => $barberId,
+                'subject_type' => (new BarberModel)->getMorphClass(),
+                'rating' => $branchId === null ? $command->rating : ($command->barberRating ?? $command->rating),
+            ]);
+
+            if ($branchId === null && $barberReview !== null) {
+                return SubmitReviewResult::success($barberReview);
+            }
+
+            $branchReview = $this->resolver->createReview([
+                ...$this->baseAttributes($booking, $command),
+                'subject_id' => $branchId,
+                'subject_type' => (new BranchModel)->getMorphClass(),
+                'rating' => $command->rating,
+            ]);
+
+            return SubmitReviewResult::success($branchReview, $barberReview);
+        });
+    }
+
+    private function branchIdOf(BookingModel $booking): ?string
+    {
+        $branchId = $booking->getAttribute('branch_id') ?? $booking->chair?->getAttribute('branch_id');
+
+        return is_string($branchId) && $branchId !== '' ? $branchId : null;
+    }
+
+    /** @return array<string, mixed> */
+    private function baseAttributes(BookingModel $booking, SubmitReviewCommand $command): array
+    {
+        return [
             'booking_id' => $booking->id,
             'author_id' => $command->authorId,
             'author_type' => $command->authorType,
-            'subject_id' => $subjectId,
-            'subject_type' => (new BranchModel)->getMorphClass(),
-            'rating' => $command->rating,
             'comment' => $command->comment,
-        ]);
-
-        return SubmitReviewResult::success($review);
+        ];
     }
 }

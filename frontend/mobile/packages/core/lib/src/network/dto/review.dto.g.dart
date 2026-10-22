@@ -8,6 +8,8 @@ part of 'review.dto.dart';
 
 ReviewDto _$ReviewDtoFromJson(Map<String, dynamic> json) => ReviewDto(
   id: json['id'] as String,
+  subjectType: json['subject_type'] as String?,
+  subjectId: json['subject_id'] as String?,
   rating: (json['rating'] as num).toInt(),
   comment: json['comment'] as String?,
   authorName: json['author_name'] as String?,
