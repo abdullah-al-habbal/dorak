@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Broadcast;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
 
 Broadcast::channel('branch.{branchId}', function (AdminModel|BranchModel|BarberModel $user, string $branchId): bool {
     if ($user instanceof AdminModel) {
@@ -28,3 +29,5 @@ Broadcast::channel('barber.{barberId}', function (AdminModel|BranchModel|BarberM
 
     return $user->barbers()->whereKey($barberId)->exists();
 }, ['guards' => ['admin_api', 'branch_api', 'barber']]);
+
+Broadcast::channel('client.{clientId}', fn (ClientModel $user, string $clientId): bool => (string) $user->id === $clientId, ['guards' => ['client']]);

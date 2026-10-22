@@ -14,13 +14,17 @@ final class BookingStatusUpdatedEvent implements ShouldBroadcast, ShouldDispatch
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public string $bookingId, public string $branchId, public ?string $barberId, public string $status) {}
+    public function __construct(public string $bookingId, public string $branchId, public ?string $barberId, public string $status, private ?string $clientId = null) {}
 
     public function broadcastOn(): array
     {
         $channels = [new PrivateChannel('branch.'.$this->branchId)];
         if ($this->barberId !== null) {
             $channels[] = new PrivateChannel('barber.'.$this->barberId);
+        }
+
+        if ($this->clientId !== null) {
+            $channels[] = new PrivateChannel('client.'.$this->clientId);
         }
 
         return $channels;

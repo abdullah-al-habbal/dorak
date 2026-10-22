@@ -48,7 +48,7 @@ final class RebookFromHistoryEloquentResolver
 
         $bookingId = $booking->getKey();
         if (is_string($bookingId)) {
-            event(new BookingCreatedEvent($bookingId, is_string($branchId) ? $branchId : ''));
+            event(new BookingCreatedEvent($bookingId, is_string($branchId) ? $branchId : '', $command->clientId));
         }
 
         return $booking;

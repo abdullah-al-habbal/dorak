@@ -13,11 +13,16 @@ final class BookingCreatedEvent implements ShouldBroadcast
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public string $bookingId, public string $branchId) {}
+    public function __construct(public string $bookingId, public string $branchId, private ?string $clientId = null) {}
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel('branch.'.$this->branchId)];
+        $channels = [new PrivateChannel('branch.'.$this->branchId)];
+        if ($this->clientId !== null) {
+            $channels[] = new PrivateChannel('client.'.$this->clientId);
+        }
+
+        return $channels;
     }
 
     public function broadcastAs(): string

@@ -44,6 +44,8 @@ class _DorakAppState extends State<DorakApp> {
   late final StreamSubscription<AuthState> _authCoordinatorSubscription;
   late final AppLifecycleListener _lifecycleListener;
   late final PushNotificationService _pushNotifications;
+  late final RealtimeClient? _realtime;
+  late final StreamSubscription<SessionState> _realtimeSessionSubscription;
 
   @override
   void initState() {
@@ -58,6 +60,7 @@ class _DorakAppState extends State<DorakApp> {
       enableLogging: kDebugMode,
     );
     _pushNotifications = PushNotificationService(_apiClient);
+    _realtime = _createRealtime();
     unawaited(_pushNotifications.initialize());
     final repository = widget.authRepository ?? DioAuthRepository(_apiClient);
     _authBloc = AuthBloc(repository, _tokenStorage);
@@ -74,6 +77,10 @@ class _DorakAppState extends State<DorakApp> {
     _accountBannedSubscription = _apiClient.accountBannedStream.listen((_) {
       _sessionBloc.add(AccountBannedDetected());
     });
+
+    _realtimeSessionSubscription = _sessionBloc.stream.listen(
+      _syncRealtimeWithSession,
+    );
 
     _lifecycleListener = AppLifecycleListener(onResume: _probeSessionOnResume);
 
@@ -92,6 +99,7 @@ class _DorakAppState extends State<DorakApp> {
       photoPicker: const ImagePickerPhotoPicker(),
       switchLocale: _switchLocale,
       apiClient: _apiClient,
+      realtime: _realtime,
     );
   }
 
@@ -99,6 +107,7 @@ class _DorakAppState extends State<DorakApp> {
   void dispose() {
     _lifecycleListener.dispose();
     _authCoordinatorSubscription.cancel();
+    _realtimeSessionSubscription.cancel();
     _unauthorizedSubscription.cancel();
     _accountBannedSubscription.cancel();
     _router.dispose();
@@ -106,8 +115,28 @@ class _DorakAppState extends State<DorakApp> {
     _sessionBloc.close();
     _localeBloc.close();
     unawaited(_pushNotifications.dispose());
+    _realtime?.dispose();
     _apiClient.dispose();
     super.dispose();
+  }
+
+  RealtimeClient? _createRealtime() {
+    final configuration = ConfigProvider.realtimeConfiguration;
+    if (configuration.appKey.isEmpty || configuration.host.isEmpty) return null;
+    return RealtimeClient(
+      configuration: configuration,
+      tokenProvider: _tokenStorage.read,
+    );
+  }
+
+  void _syncRealtimeWithSession(SessionState state) {
+    final realtime = _realtime;
+    if (realtime == null) return;
+    if (state.status.isAuthenticated) {
+      unawaited(realtime.connect());
+    } else if (state.status == AuthStatus.guest) {
+      unawaited(realtime.disconnectForLogout());
+    }
   }
 
   void _switchLocale() {

@@ -47,7 +47,7 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
         $this->registerMorphMap();
         $this->registerFactoryResolution();
         $this->loadAppRoutes();
-        Broadcast::routes(['prefix' => 'api/v1', 'middleware' => ['api', 'auth:admin_api,branch_api,barber']]);
+        Broadcast::routes(['prefix' => 'api/v1', 'middleware' => ['api', 'auth:admin_api,branch_api,barber,client']]);
         require __DIR__.'/../Routes/channels.php';
     }
 

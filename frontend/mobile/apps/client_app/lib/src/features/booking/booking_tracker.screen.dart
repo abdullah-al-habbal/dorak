@@ -13,10 +13,14 @@ class BookingTrackerScreen extends StatefulWidget {
     super.key,
     required this.booking,
     required this.repository,
+    this.realtime,
+    this.clientId,
   });
 
   final BookingDto booking;
   final BookingRepository repository;
+  final RealtimeClient? realtime;
+  final String? clientId;
 
   @override
   State<BookingTrackerScreen> createState() => _BookingTrackerScreenState();
@@ -29,10 +33,15 @@ class _BookingTrackerScreenState extends State<BookingTrackerScreen> {
   @override
   void initState() {
     super.initState();
-    _refreshCubit = BookingRefreshCubit(widget.repository, widget.booking);
+    _refreshCubit = BookingRefreshCubit(
+      widget.repository,
+      widget.booking,
+      realtime: widget.realtime,
+      clientId: widget.clientId,
+    );
     _pollingTimer = Timer.periodic(
       const Duration(seconds: 10),
-      (_) => _refreshCubit.refresh(),
+      (_) => _refreshCubit.pollIfDisconnected(),
     );
   }
 

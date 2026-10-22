@@ -80,6 +80,7 @@ class AppRouter {
   final PhotoPicker photoPicker;
   final VoidCallback switchLocale;
   final ApiClient apiClient;
+  final RealtimeClient? realtime;
 
   late final GoRouter router;
   late final StreamSubscription<SessionState> _sessionSubscription;
@@ -109,6 +110,7 @@ class AppRouter {
     required this.photoPicker,
     required this.switchLocale,
     required this.apiClient,
+    this.realtime,
   }) : services =
            services ??
            AppServices.live(
@@ -526,6 +528,8 @@ class AppRouter {
                     builder: (context, state) => BookingTrackerScreen(
                       booking: state.extra! as BookingDto,
                       repository: services.createBookingRepository(),
+                      realtime: realtime,
+                      clientId: session.state.client?.id,
                     ),
                   ),
                   GoRoute(

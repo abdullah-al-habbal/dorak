@@ -21,6 +21,18 @@ class _FakeRealtime implements RealtimeClient {
   ) => throw UnimplementedError();
 
   @override
+  RealtimeSubscription subscribeToClient(
+    String clientId,
+    void Function(String event, Map<String, dynamic> payload) onEvent,
+  ) => throw UnimplementedError();
+
+  @override
+  bool get isConnected => false;
+
+  @override
+  Stream<bool> get connectionChanges => const Stream<bool>.empty();
+
+  @override
   Future<void> connect() async {}
 
   @override

@@ -33,6 +33,7 @@ final class CreateBookingAction extends BaseApiAction
             event(new BookingCreatedEvent(
                 $this->eventIdentifier($result->booking->getKey()),
                 $this->eventIdentifier($result->booking->branch_id),
+                $this->eventIdentifier($result->booking->client_id),
             ));
 
             return $this->created(

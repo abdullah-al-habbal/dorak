@@ -47,6 +47,12 @@ class RealtimeClient {
 
   Future<void> connect() => _reverb.connect();
 
+  bool get isConnected => _reverb.state == ReverbState.connected;
+
+  /// Emits `true` whenever the socket becomes connected and `false` otherwise.
+  Stream<bool> get connectionChanges =>
+      _reverb.states.map((state) => state == ReverbState.connected);
+
   RealtimeSubscription subscribeToBranch(
     String branchId,
     void Function(String event, Map<String, dynamic> payload) onEvent,
@@ -56,6 +62,11 @@ class RealtimeClient {
     String barberId,
     void Function(String event, Map<String, dynamic> payload) onEvent,
   ) => _subscribe(RealtimeChannels.barber(barberId), onEvent);
+
+  RealtimeSubscription subscribeToClient(
+    String clientId,
+    void Function(String event, Map<String, dynamic> payload) onEvent,
+  ) => _subscribe(RealtimeChannels.client(clientId), onEvent);
 
   Future<void> disconnectForLogout() => _reverb.disconnect(forget: true);
 

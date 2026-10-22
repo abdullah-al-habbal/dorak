@@ -10,6 +10,10 @@ void main() {
     test('builds the Laravel barber channel without a duplicate prefix', () {
       expect(RealtimeChannels.barber('barber-1'), 'barber.barber-1');
     });
+
+    test('builds the Laravel client channel without a duplicate prefix', () {
+      expect(RealtimeChannels.client('client-1'), 'client.client-1');
+    });
   });
 
   test('RealtimeConfiguration keeps the backend authorization endpoint', () {
