@@ -83,6 +83,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
       'pending' => l10n.bookingStatusPending,
       'in_progress' => l10n.bookingStatusInProgress,
       'completed' => l10n.bookingStatusCompleted,
+      'no_show' => l10n.bookingStatusNoShow,
       'canceled' || 'cancelled' => l10n.bookingStatusCanceled,
       _ => l10n.bookingStatusUnknown,
     };

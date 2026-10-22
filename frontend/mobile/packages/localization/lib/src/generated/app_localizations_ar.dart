@@ -882,6 +882,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingTrackerCompleted => 'اكتمل موعدك.';
 
   @override
+  String get bookingTrackerPending => 'موعدك بانتظار التأكيد.';
+
+  @override
+  String get bookingTrackerNoShow => 'تم تسجيل هذا الموعد كعدم حضور.';
+
+  @override
   String get bookingTrackerCancelled => 'تم إلغاء هذا الموعد.';
 
   @override

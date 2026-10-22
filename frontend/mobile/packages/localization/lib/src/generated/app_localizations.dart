@@ -1712,6 +1712,18 @@ abstract class AppLocalizations {
   /// **'Your appointment is completed.'**
   String get bookingTrackerCompleted;
 
+  /// No description provided for @bookingTrackerPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your appointment is awaiting confirmation.'**
+  String get bookingTrackerPending;
+
+  /// No description provided for @bookingTrackerNoShow.
+  ///
+  /// In en, this message translates to:
+  /// **'This appointment was marked as a no-show.'**
+  String get bookingTrackerNoShow;
+
   /// No description provided for @bookingTrackerCancelled.
   ///
   /// In en, this message translates to:

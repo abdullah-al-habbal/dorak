@@ -1059,6 +1059,8 @@
   "bookingTrackerConfirmed": "تم تأكيد موعدك.",
   "bookingTrackerInProgress": "موعدك قيد التنفيذ.",
   "bookingTrackerCompleted": "اكتمل موعدك.",
+  "bookingTrackerPending": "موعدك بانتظار التأكيد.",
+  "bookingTrackerNoShow": "تم تسجيل هذا الموعد كعدم حضور.",
   "bookingTrackerCancelled": "تم إلغاء هذا الموعد."
   ,"bookingTrackAction": "تتبع الموعد",
   "profileEditAction": "تعديل الملف الشخصي",

@@ -1135,6 +1135,8 @@
   "bookingTrackerConfirmed": "Your appointment is confirmed.",
   "bookingTrackerInProgress": "Your appointment is in progress.",
   "bookingTrackerCompleted": "Your appointment is completed.",
+  "bookingTrackerPending": "Your appointment is awaiting confirmation.",
+  "bookingTrackerNoShow": "This appointment was marked as a no-show.",
   "bookingTrackerCancelled": "This appointment was cancelled."
   ,"bookingTrackAction": "Track appointment",
   "profileEditAction": "Edit profile",

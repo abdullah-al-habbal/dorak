@@ -85,6 +85,41 @@ void main() {
     expect(find.text('Cancel Booking'), findsOneWidget);
   });
 
+  testWidgets('tracker explains a pending booking', (tester) async {
+    repository.firstPage = testBookingPage(
+      bookings: [testBooking(status: 'pending')],
+    );
+    await pumpBookings(tester);
+
+    await tester.tap(find.text('Track appointment'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Your appointment is awaiting confirmation.'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('past no-show shows its label and tracker message', (
+    tester,
+  ) async {
+    repository.firstPage = testBookingPage(
+      bookings: [testBooking(status: 'no_show')],
+    );
+    await pumpBookings(tester);
+
+    await tester.tap(find.text('Past'));
+    await tester.pumpAndSettle();
+    expect(find.text('No-show'), findsOneWidget);
+
+    await tester.tap(find.text('Track appointment'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('This appointment was marked as a no-show.'),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('past filter reloads with the past status', (tester) async {
     repository.firstPage = testBookingPage(bookings: const []);
     await pumpBookings(tester);

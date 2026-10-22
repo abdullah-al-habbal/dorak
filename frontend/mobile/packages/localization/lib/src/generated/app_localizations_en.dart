@@ -893,6 +893,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookingTrackerCompleted => 'Your appointment is completed.';
 
   @override
+  String get bookingTrackerPending =>
+      'Your appointment is awaiting confirmation.';
+
+  @override
+  String get bookingTrackerNoShow =>
+      'This appointment was marked as a no-show.';
+
+  @override
   String get bookingTrackerCancelled => 'This appointment was cancelled.';
 
   @override
