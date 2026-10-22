@@ -29,4 +29,6 @@ return [
     'notification_branch_request_body' => 'يوجد حجز يتطلب اهتمام الفرع.',
     'notification_status_title' => 'تم تحديث حالة الحجز',
     'notification_status_body' => 'حالة حجزك الآن: :status.',
+    'notification_rescheduled_title' => 'تمت إعادة جدولة الحجز',
+    'notification_rescheduled_body' => 'تم نقل حجزك إلى :time.',
 ];

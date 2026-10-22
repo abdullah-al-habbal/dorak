@@ -80,6 +80,7 @@ class StylistBloc extends Cubit<StylistState> {
     switch (event) {
       case 'booking.status.updated':
       case 'booking.cancelled':
+      case 'booking.rescheduled':
       case 'workstation.status.toggled':
         load();
     }

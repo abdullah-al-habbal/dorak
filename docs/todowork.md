@@ -52,7 +52,7 @@ codeanchors:
 - [x] Task 27: Handle Chair Maintenance Conflicts with Existing Bookings -> [Spec](tasks/task-27-chair-maintenance-conflicts.md)
 
 ## Phase 4 — Notifications & Realtime (P1)
-- [ ] Task 28: Notify on Every Booking Transition -> [Spec](tasks/task-28-booking-notification-coverage.md)
+- [x] Task 28: Notify on Every Booking Transition -> [Spec](tasks/task-28-booking-notification-coverage.md)
 - [ ] Task 29: Add Client Realtime Booking Channel -> [Spec](tasks/task-29-client-realtime-channel.md)
 - [ ] Task 30: Persist Notification Delivery Records -> [Spec](tasks/task-30-notification-delivery-records.md)
 - [ ] Task 31: Notify on Invitations, Applications and Review Requests -> [Spec](tasks/task-31-domain-event-notifications.md)

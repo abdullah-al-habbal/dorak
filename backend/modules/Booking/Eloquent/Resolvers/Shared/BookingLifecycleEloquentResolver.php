@@ -10,11 +10,14 @@ use Modules\Booking\CQRS\Command\Client\CancelBookingCommand;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Booking\Queries\BookingAvailability;
+use Modules\Booking\Services\BookingTransitionNotifier;
 use Modules\Booking\ValuesObjects\CancelBookingResult;
 use Modules\Chair\Models\ChairModel;
 
 final class BookingLifecycleEloquentResolver
 {
+    public function __construct(private readonly BookingTransitionNotifier $notifier) {}
+
     public function transitionForDashboard(string|int $bookingId, BookingStatus $target): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $target): BookingModel {
@@ -27,8 +30,10 @@ final class BookingLifecycleEloquentResolver
                 $this->ensureNoActiveOverlap($booking);
             }
             $booking->update(['status' => $target]);
+            $booking->refresh()->load(['chair.barber', 'barber', 'services']);
+            $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
 
-            return $booking->refresh()->load(['chair.barber', 'barber', 'services']);
+            return $booking;
         });
     }
 
@@ -46,8 +51,10 @@ final class BookingLifecycleEloquentResolver
                 $this->ensureNoActiveOverlap($booking);
             }
             $booking->update(['status' => $target]);
+            $booking->refresh()->load(['chair.barber', 'barber', 'services']);
+            $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
 
-            return $booking->refresh()->load(['chair.barber', 'barber', 'services']);
+            return $booking;
         });
     }
 
@@ -65,8 +72,10 @@ final class BookingLifecycleEloquentResolver
                 return CancelBookingResult::tooLate();
             }
             $booking->update(['status' => BookingStatus::Canceled]);
+            $booking->refresh();
+            $this->notifier->statusChanged($booking, true);
 
-            return CancelBookingResult::success($booking->refresh());
+            return CancelBookingResult::success($booking);
         });
     }
 
@@ -84,8 +93,10 @@ final class BookingLifecycleEloquentResolver
                 throw new BookingCancellationTooLateException;
             }
             $booking->update(['status' => BookingStatus::Canceled, 'cancellation_reason' => $reason]);
+            $booking->refresh()->load('chair');
+            $this->notifier->statusChanged($booking, true);
 
-            return $booking->refresh()->load('chair');
+            return $booking;
         });
     }
 
@@ -100,8 +111,10 @@ final class BookingLifecycleEloquentResolver
                 'status' => BookingStatus::Canceled,
                 'cancellation_reason' => BookingModel::CANCELLATION_REASON_CHAIR_MAINTENANCE,
             ]);
+            $booking->refresh();
+            $this->notifier->statusChanged($booking, true);
 
-            return $booking->refresh();
+            return $booking;
         });
     }
 
@@ -130,8 +143,10 @@ final class BookingLifecycleEloquentResolver
             }
 
             $booking->update(['status' => $target]);
+            $booking->refresh()->load(['chair.barber', 'barber', 'services']);
+            $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
 
-            return $booking->refresh()->load(['chair.barber', 'barber', 'services']);
+            return $booking;
         });
     }
 

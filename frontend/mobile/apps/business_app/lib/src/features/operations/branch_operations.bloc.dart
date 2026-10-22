@@ -115,6 +115,7 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
       case 'booking.created':
       case 'booking.status.updated':
       case 'booking.cancelled':
+      case 'booking.rescheduled':
         load();
     }
   }

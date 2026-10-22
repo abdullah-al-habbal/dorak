@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Booking\Services;
+
+use Modules\Booking\Events\BookingCancelledEvent;
+use Modules\Booking\Events\BookingRescheduledEvent;
+use Modules\Booking\Events\BookingStatusUpdatedEvent;
+use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
+use Modules\Booking\Models\BookingModel;
+
+/**
+ * Single dispatch point for the broadcast and push that follow a booking
+ * change. Everything is deferred until the surrounding transaction commits, so
+ * a rolled-back transition never notifies.
+ */
+final class BookingTransitionNotifier
+{
+    public function statusChanged(BookingModel $booking, bool $canceled): void
+    {
+        $bookingId = (string) $booking->id;
+        $branchId = (string) ($booking->branch_id ?? $booking->chair?->branch_id);
+        $barberId = $booking->barber_id ?? $booking->chair?->barber_id;
+
+        event($canceled
+            ? new BookingCancelledEvent($bookingId, $branchId, $barberId)
+            : new BookingStatusUpdatedEvent($bookingId, $branchId, $barberId, $booking->status->value));
+        SendBookingStatusNotificationJob::dispatch($bookingId, false, app()->getLocale())->afterCommit();
+    }
+
+    public function rescheduled(BookingModel $booking): void
+    {
+        $bookingId = (string) $booking->id;
+        $barberId = $booking->barber_id ?? $booking->chair?->barber_id;
+
+        event(new BookingRescheduledEvent($bookingId, (string) ($booking->branch_id ?? $booking->chair?->branch_id), $barberId, $booking->time_slot->toIso8601String()));
+        SendBookingStatusNotificationJob::dispatch($bookingId, false, app()->getLocale(), true)->afterCommit();
+    }
+}

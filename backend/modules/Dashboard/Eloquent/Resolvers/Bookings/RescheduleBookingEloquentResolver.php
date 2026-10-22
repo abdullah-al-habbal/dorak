@@ -13,11 +13,14 @@ use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
+use Modules\Booking\Services\BookingTransitionNotifier;
 use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 
 final class RescheduleBookingEloquentResolver
 {
+    public function __construct(private readonly BookingTransitionNotifier $notifier) {}
+
     public function resolve(string|int $bookingId, Carbon $timeSlot, Carbon $endsAt): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $timeSlot, $endsAt): BookingModel {
@@ -49,7 +52,10 @@ final class RescheduleBookingEloquentResolver
             }
             $booking->update(['time_slot' => $timeSlot, 'ends_at' => $endsAt]);
 
-            return $booking->refresh()->load(['chair', 'barber', 'client', 'services']);
+            $booking->refresh()->load(['chair', 'barber', 'client', 'services']);
+            $this->notifier->rescheduled($booking);
+
+            return $booking;
         });
     }
 }

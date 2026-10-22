@@ -11,7 +11,6 @@ use Modules\Booking\Eloquent\Resolvers\Shared\BookingCancellationTooLateExceptio
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingNotAssignedException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
-use Modules\Booking\Events\BookingCancelledEvent;
 use Modules\Booking\Http\Requests\Barber\CancelBarberBookingRequest;
 use Modules\Booking\Http\Resources\Client\BookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -35,7 +34,6 @@ final class CancelBookingAction extends BaseApiAction
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.cancel_invalid_status'));
         }
-        event(new BookingCancelledEvent((string) $result->id, (string) $result->branch_id, (string) $barber->id));
 
         return $this->ok(new BookingResource($result));
     }

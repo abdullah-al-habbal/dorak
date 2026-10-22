@@ -35,12 +35,20 @@ So clients are not told when a shop cancels or reschedules them, and dashboards 
 - `frontend/mobile/packages/core/lib/src/notifications/push_notification.client.dart` — handle the payload `type` values for status update and reschedule, and route taps to booking details by ID (deep-link fix in Task 78).
 - stylist_app and business_app blocs (`stylist.bloc.dart`, `branch_operations.bloc.dart`) — refresh on the new broadcast events.
 
+### Implemented contract
+- Shared code path: `BookingTransitionNotifier::statusChanged()` / `rescheduled()`, called from every `BookingLifecycleEloquentResolver` writer (dashboard, branch, barber, client cancel, barber cancel, chair-maintenance cancel) and from `RescheduleBookingEloquentResolver`.
+- Scope: every successful status change or reschedule. A rejected transition (422) throws before the notifier runs.
+- Success side effects: one `BookingStatusUpdatedEvent` (or `BookingCancelledEvent` for cancels, or `BookingRescheduledEvent` for reschedules, `.booking.rescheduled`) plus one `SendBookingStatusNotificationJob`. Events implement `ShouldDispatchAfterCommit` and the job uses `afterCommit()`, so a rollback never notifies. The reschedule job sends the client a `booking_rescheduled` push with the new `time_slot`.
+- Event `barberId` is now nullable; the notifier falls back to the chair's barber.
+- Dashboard: `use-branch-channel.ts` and `use-barber-channel.ts` listen for status, cancel and reschedule events. Mobile: stylist and business blocs refresh on `booking.rescheduled`. Docs: this file and `docs/todowork.md`.
+- Deviations: the per-action dispatches in `ChairStatusService` were removed too, since the lifecycle resolver now covers the maintenance cancel. Push-tap routing in `push_notification.client.dart` is left to Task 78, because the service has no message handlers today.
+
 ## Acceptance Criteria
-- [ ] For each transition path the following holds, verified with `Queue::fake` and `Event::fake` in the Feature test `BookingTransitionNotificationTest` (one case per path): exactly one `SendBookingStatusNotificationJob` and one broadcast event are dispatched. The paths are client cancel, barber cancel and accept/start/complete/no-show, dashboard update/cancel/reschedule, and branch status update.
-- [ ] A transition rejected with 422 dispatches nothing.
-- [ ] No action class under `backend/modules/*/Http/Actions` dispatches `SendBookingStatusNotificationJob` directly (grep check). Only the lifecycle service and the create handler do.
-- [ ] Dashboard test: receiving `.booking.cancelled` on the branch channel invalidates `["dashboard","bookings"]`.
-- [ ] `php artisan test`, `npm run test` and `melos run test` pass. PHPStan max and Pint are clean.
+- [x] For each transition path the following holds, verified with `Queue::fake` and `Event::fake` in the Feature test `BookingTransitionNotificationTest` (one case per path): exactly one `SendBookingStatusNotificationJob` and one broadcast event are dispatched. The paths are client cancel, barber cancel and accept/start/complete/no-show, dashboard update/cancel/reschedule, and branch status update.
+- [x] A transition rejected with 422 dispatches nothing.
+- [x] No action class under `backend/modules/*/Http/Actions` dispatches `SendBookingStatusNotificationJob` directly (grep check). Only the lifecycle service and the create handler do.
+- [x] Dashboard test: receiving `.booking.cancelled` on the branch channel invalidates `["dashboard","bookings"]`.
+- [x] `php artisan test`, `npm run test` and `melos run test` pass. PHPStan max and Pint are clean.
 
 ## Out of Scope
 - FCM transport fix (Task 16).

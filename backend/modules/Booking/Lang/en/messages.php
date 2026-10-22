@@ -29,4 +29,6 @@ return [
     'notification_branch_request_body' => 'A booking requires branch attention.',
     'notification_status_title' => 'Booking status updated',
     'notification_status_body' => 'Your booking is now :status.',
+    'notification_rescheduled_title' => 'Booking rescheduled',
+    'notification_rescheduled_body' => 'Your booking has moved to :time.',
 ];

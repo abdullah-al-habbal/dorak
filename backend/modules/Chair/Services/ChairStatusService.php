@@ -7,8 +7,6 @@ namespace Modules\Chair\Services;
 use Illuminate\Support\Facades\DB;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Enums\BookingStatus;
-use Modules\Booking\Events\BookingCancelledEvent;
-use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
 use Modules\Booking\Models\BookingModel;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Exceptions\ChairHasActiveBookingsException;
@@ -56,12 +54,6 @@ final class ChairStatusService
 
             return $locked->refresh()->load('barber');
         });
-
-        $locale = app()->getLocale();
-        foreach ($canceled as $booking) {
-            event(new BookingCancelledEvent((string) $booking->id, (string) $booking->branch_id, $booking->barber_id ?? $updated->barber_id));
-            SendBookingStatusNotificationJob::dispatch((string) $booking->id, false, $locale);
-        }
 
         return new ChairStatusChangeResult($updated, array_map(fn (BookingModel $booking): string => (string) $booking->id, $canceled));
     }

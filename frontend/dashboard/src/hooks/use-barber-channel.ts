@@ -10,11 +10,13 @@ export function useBarberChannel(barberId: string | null) {
     if (!barberId) return;
     const echo = realtimeEcho();
     if (!echo) return;
+    const refreshAppointments = () =>
+      queryClient.invalidateQueries({ queryKey: ["barber", "appointments"] });
     echo
       .private(`barber.${barberId}`)
-      .listen(".booking.cancelled", () =>
-        queryClient.invalidateQueries({ queryKey: ["barber", "appointments"] }),
-      )
+      .listen(".booking.status.updated", refreshAppointments)
+      .listen(".booking.cancelled", refreshAppointments)
+      .listen(".booking.rescheduled", refreshAppointments)
       .listen(".workstation.status.toggled", () =>
         queryClient.invalidateQueries({ queryKey: ["barber", "profile"] }),
       );

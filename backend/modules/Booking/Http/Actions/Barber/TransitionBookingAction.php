@@ -12,9 +12,7 @@ use Modules\Booking\Eloquent\Resolvers\Shared\BookingNotAssignedException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
-use Modules\Booking\Events\BookingStatusUpdatedEvent;
 use Modules\Booking\Http\Resources\Client\BookingResource;
-use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 abstract class TransitionBookingAction extends BaseApiAction
@@ -35,8 +33,6 @@ abstract class TransitionBookingAction extends BaseApiAction
 
         try {
             $updated = $this->resolver->transitionForBarber($booking, $barber->id, $this->targetStatus());
-            event(new BookingStatusUpdatedEvent($updated->id, (string) $updated->branch_id, $barber->id, $updated->status->value));
-            SendBookingStatusNotificationJob::dispatch($updated->id, false, app()->getLocale());
 
             return $this->ok(data: new BookingResource($updated));
         } catch (BookingNotAssignedException) {

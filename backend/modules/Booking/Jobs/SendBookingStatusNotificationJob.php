@@ -27,6 +27,7 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
         private readonly string $bookingId,
         private readonly bool $created,
         private readonly string $locale = 'en',
+        private readonly bool $rescheduled = false,
     ) {}
 
     public function handle(FcmNotificationSender $sender): void
@@ -45,6 +46,12 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
             if ($branchId !== null) {
                 $sender->sendTo(BranchModel::class, $branchId, trans('booking::messages.notification_new_request_title', [], $this->locale), trans('booking::messages.notification_branch_request_body', [], $this->locale), $data);
             }
+
+            return;
+        }
+        if ($this->rescheduled) {
+            $data = ['type' => 'booking_rescheduled', 'booking_id' => $booking->id, 'status' => $booking->status->value, 'time_slot' => $booking->time_slot->toIso8601String()];
+            $sender->sendTo(ClientModel::class, $booking->client_id, trans('booking::messages.notification_rescheduled_title', [], $this->locale), trans('booking::messages.notification_rescheduled_body', ['time' => $booking->time_slot->toDateTimeString()], $this->locale), $data);
 
             return;
         }
