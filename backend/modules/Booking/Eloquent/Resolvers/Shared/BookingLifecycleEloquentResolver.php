@@ -35,7 +35,7 @@ final class BookingLifecycleEloquentResolver
     public function transitionForBranch(string|int $bookingId, string|int $branchId, BookingStatus $target): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $branchId, $target): BookingModel {
-            $booking = BookingModel::query()->whereHas('chair', fn ($query) => $query->where('branch_id', $branchId))
+            $booking = BookingModel::query()->forBranch($branchId)
                 ->with('chair')->lockForUpdate()->findOrFail($bookingId);
             if (! in_array($target, [BookingStatus::Confirmed, BookingStatus::InProgress, BookingStatus::Completed, BookingStatus::NoShow, BookingStatus::Canceled], true)
                 || ! $booking->status->canTransitionTo($target)) {

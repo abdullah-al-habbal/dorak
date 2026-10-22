@@ -15,7 +15,7 @@ final class ListBookingsEloquentResolver
         $filters = $query->filters;
 
         return BookingModel::query()->with(['chair', 'barber', 'client', 'services'])
-            ->when($query->branchId !== null, fn ($builder) => $builder->whereHas('chair', fn ($chair) => $chair->where('branch_id', $query->branchId)))
+            ->when($query->branchId !== null, fn ($builder) => $builder->forBranch($query->branchId))
             ->when(isset($filters['chair_id']), fn ($builder) => $builder->where('chair_id', $filters['chair_id']))
             ->when(isset($filters['stylist_id']), fn ($builder) => $builder->where('barber_id', $filters['stylist_id']))
             ->when(isset($filters['status']), fn ($builder) => $builder->where('status', $filters['status']))

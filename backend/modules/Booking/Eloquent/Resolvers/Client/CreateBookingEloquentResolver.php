@@ -7,8 +7,12 @@ namespace Modules\Booking\Eloquent\Resolvers\Client;
 use Carbon\Carbon;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationStatus;
+use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\CQRS\Command\Client\CreateBookingCommand;
 use Modules\Booking\Eloquent\Resolvers\Shared\ActiveBookingBanException;
+use Modules\Booking\Eloquent\Resolvers\Shared\BarberNotAffiliatedException;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
@@ -48,6 +52,13 @@ final class CreateBookingEloquentResolver
 
         $barberId = $command->barberId ?? $chairBarberId;
 
+        $branchId = $chair?->getAttribute('branch_id') ?? $command->branchId;
+        $branchId = is_string($branchId) ? $branchId : null;
+
+        if ($chair === null && $branchId !== null) {
+            $this->ensureBarberAffiliatedWithBranch($barberId, $branchId);
+        }
+
         $services = OfferedServiceModel::query()
             ->whereIn('id', $command->serviceIds)
             ->where('active', true)
@@ -67,7 +78,7 @@ final class CreateBookingEloquentResolver
                 throw new InvalidBookingServicesException;
             }
 
-            if (! $this->isOwnedByBookingScope($service, $chair, $barberId)) {
+            if (! $this->isOwnedByBookingScope($service, $branchId, $barberId)) {
                 throw new InvalidBookingServicesException;
             }
 
@@ -76,10 +87,13 @@ final class CreateBookingEloquentResolver
 
         $endsAt = $command->timeSlot->copy()->addMinutes($totalDuration);
 
-        if ($chair !== null) {
-            if (! BranchModel::query()->discoverable()->whereKey($chair->getAttribute('branch_id'))->exists()) {
+        if ($branchId !== null) {
+            if (! BranchModel::query()->discoverable()->whereKey($branchId)->exists()) {
                 throw new NonDiscoverableBookingEntityException;
             }
+        }
+
+        if ($chair !== null) {
 
             if (! $chair->currentAvailability()->isBookable()) {
                 throw new ChairNotAvailableException;
@@ -108,6 +122,7 @@ final class CreateBookingEloquentResolver
         $bookingData = [
             'client_id' => $command->clientId,
             'barber_id' => $barberId,
+            'branch_id' => $branchId,
             'time_slot' => $command->timeSlot,
             'ends_at' => $endsAt,
             'status' => BookingStatus::Pending,
@@ -132,14 +147,32 @@ final class CreateBookingEloquentResolver
         return $booking;
     }
 
-    private function isOwnedByBookingScope(OfferedServiceModel $service, ?ChairModel $chair, ?string $barberId): bool
+    private function ensureBarberAffiliatedWithBranch(?string $barberId, string $branchId): void
+    {
+        $brandId = BranchModel::query()->whereKey($branchId)->value('brand_id');
+
+        $affiliated = $barberId !== null && BarberAffiliationModel::query()
+            ->where('barber_id', $barberId)
+            ->where('status', AffiliationStatus::Accepted)
+            ->where(function ($query) use ($branchId, $brandId): void {
+                $query->where(fn ($branch) => $branch->where('affiliable_type', AffiliableType::Branch)->where('affiliable_id', $branchId))
+                    ->orWhere(fn ($brand) => $brand->where('affiliable_type', AffiliableType::Brand)->where('affiliable_id', $brandId));
+            })
+            ->exists();
+
+        if (! $affiliated) {
+            throw new BarberNotAffiliatedException;
+        }
+    }
+
+    private function isOwnedByBookingScope(OfferedServiceModel $service, ?string $branchId, ?string $barberId): bool
     {
         $ownerId = $service->getAttribute('serviceable_id');
 
         return match ($service->getAttribute('serviceable_type')) {
             'barber' => $barberId !== null && $ownerId === $barberId,
-            'branch' => $chair !== null && $ownerId === $chair->getAttribute('branch_id'),
-            'brand' => $chair !== null && $ownerId === $chair->branch()->value('brand_id'),
+            'branch' => $branchId !== null && $ownerId === $branchId,
+            'brand' => $branchId !== null && $ownerId === BranchModel::query()->whereKey($branchId)->value('brand_id'),
             default => false,
         };
     }

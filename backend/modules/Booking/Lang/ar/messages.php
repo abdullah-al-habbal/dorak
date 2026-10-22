@@ -19,6 +19,7 @@ return [
     'entity_not_discoverable' => 'هذا الفرع أو الحلاق غير متاح للحجز.',
     'invalid_services_for_booking' => 'يجب أن تكون خدمات الحجز نشطة ولها مدة محددة.',
     'barber_chair_mismatch' => 'الكرسي مرتبط بحلاق مختلف عن الحلاق المطلوب.',
+    'barber_not_affiliated' => 'الحلاق غير منتسب إلى هذا الفرع.',
     'notification_new_request_title' => 'طلب حجز جديد',
     'notification_barber_request_body' => 'يوجد حجز يتطلب اهتمامك.',
     'notification_branch_request_body' => 'يوجد حجز يتطلب اهتمام الفرع.',

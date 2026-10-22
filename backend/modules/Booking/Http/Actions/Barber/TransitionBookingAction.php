@@ -35,7 +35,7 @@ abstract class TransitionBookingAction extends BaseApiAction
 
         try {
             $updated = $this->resolver->transitionForBarber($booking, $barber->id, $this->targetStatus());
-            event(new BookingStatusUpdatedEvent($updated->id, (string) $updated->chair()->value('branch_id'), $barber->id, $updated->status->value));
+            event(new BookingStatusUpdatedEvent($updated->id, (string) $updated->branch_id, $barber->id, $updated->status->value));
             SendBookingStatusNotificationJob::dispatch($updated->id, false, app()->getLocale());
 
             return $this->ok(data: new BookingResource($updated));

@@ -35,7 +35,7 @@ final class CancelBookingAction extends BaseApiAction
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.cancel_invalid_status'));
         }
-        event(new BookingCancelledEvent((string) $result->id, (string) $result->chair?->branch_id, (string) $barber->id));
+        event(new BookingCancelledEvent((string) $result->id, (string) $result->branch_id, (string) $barber->id));
 
         return $this->ok(new BookingResource($result));
     }

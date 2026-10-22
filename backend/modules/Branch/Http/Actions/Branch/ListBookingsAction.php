@@ -18,7 +18,7 @@ final class ListBookingsAction extends BaseApiAction
         $branch = $request->user('branch_api');
         Gate::forUser($branch)->authorize('manage', $branch);
 
-        $bookings = BookingModel::whereHas('chair', fn ($q) => $q->where('branch_id', $branch->id))
+        $bookings = BookingModel::query()->forBranch($branch->id)
             ->with(['chair', 'client', 'services'])
             ->orderByDesc('time_slot')
             ->paginate($request->input('per_page', 15));

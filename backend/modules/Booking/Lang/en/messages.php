@@ -19,6 +19,7 @@ return [
     'entity_not_discoverable' => 'This branch or barber is not available for booking.',
     'invalid_services_for_booking' => 'Booking services must be active and have a duration.',
     'barber_chair_mismatch' => 'The chair is linked to a different barber than the one requested.',
+    'barber_not_affiliated' => 'The barber is not affiliated with this branch.',
     'notification_new_request_title' => 'New booking request',
     'notification_barber_request_body' => 'A booking requires your attention.',
     'notification_branch_request_body' => 'A booking requires branch attention.',

@@ -22,6 +22,7 @@ class BookingFactory extends Factory
         return [
             'client_id' => ClientModel::factory(),
             'chair_id' => ChairModel::factory(),
+            'branch_id' => fn (array $attrs) => ChairModel::query()->whereKey($attrs['chair_id'])->value('branch_id'),
             'barber_id' => BarberModel::factory(),
             'time_slot' => $timeSlot = fake()->dateTimeBetween('+1 day', '+1 week'),
             'ends_at' => (clone $timeSlot)->modify('+30 minutes'),

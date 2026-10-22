@@ -8,6 +8,7 @@ namespace Modules\Booking\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
 use Modules\Booking\Enums\BookingStatus;
+use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
@@ -27,11 +29,12 @@ use Modules\Review\Models\ReviewModel;
  * @property string $client_id
  * @property string|null $barber_id
  * @property string|null $chair_id
+ * @property string|null $branch_id
  * @property Carbon $time_slot
  * @property Carbon $ends_at
  * @property BookingStatus $status
  */
-#[Fillable(['client_id', 'chair_id', 'barber_id', 'time_slot', 'ends_at', 'status', 'cancellation_reason', 'payment_method', 'payment_status', 'at_home_location'])]
+#[Fillable(['client_id', 'chair_id', 'branch_id', 'barber_id', 'time_slot', 'ends_at', 'status', 'cancellation_reason', 'payment_method', 'payment_status', 'at_home_location'])]
 #[Table('bookings')]
 class BookingModel extends Model
 {
@@ -61,6 +64,26 @@ class BookingModel extends Model
     public function chair(): BelongsTo
     {
         return $this->belongsTo(ChairModel::class, 'chair_id');
+    }
+
+    /** @return BelongsTo<BranchModel, $this> */
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(BranchModel::class, 'branch_id');
+    }
+
+    /**
+     * Bookings that belong to a branch: pinned to it directly (barber-only mode)
+     * or through the booked chair.
+     *
+     * @param  Builder<BookingModel>  $query
+     */
+    public function scopeForBranch(Builder $query, string|int $branchId): void
+    {
+        $query->where(function (Builder $scoped) use ($branchId): void {
+            $scoped->where('branch_id', $branchId)
+                ->orWhereHas('chair', fn (Builder $chair) => $chair->where('branch_id', $branchId));
+        });
     }
 
     /** @return BelongsTo<BarberModel, $this> */
