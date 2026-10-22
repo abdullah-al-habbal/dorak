@@ -29,7 +29,7 @@ beforeEach(function (): void {
         'branch_id' => $this->branch->id,
         'barber_id' => $this->barber->id,
     ]);
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30]);
+    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
     $this->actingAs($this->client, 'client');
     $this->bookAt = fn (Carbon $timeSlot) => $this->postJson('/api/v1/bookings', [
         'chair_id' => $this->chair->id,

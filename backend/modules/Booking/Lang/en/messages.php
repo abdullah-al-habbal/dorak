@@ -18,6 +18,7 @@ return [
     'active_booking_ban' => 'A client or barber with an active ban cannot book.',
     'entity_not_discoverable' => 'This branch or barber is not available for booking.',
     'invalid_services_for_booking' => 'Booking services must be active and have a duration.',
+    'barber_chair_mismatch' => 'The chair is linked to a different barber than the one requested.',
     'notification_new_request_title' => 'New booking request',
     'notification_barber_request_body' => 'A booking requires your attention.',
     'notification_branch_request_body' => 'A booking requires branch attention.',

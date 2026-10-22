@@ -18,6 +18,7 @@ return [
     'active_booking_ban' => 'لا يمكن للعميل أو الحلاق المحظور حاليًا إجراء حجز.',
     'entity_not_discoverable' => 'هذا الفرع أو الحلاق غير متاح للحجز.',
     'invalid_services_for_booking' => 'يجب أن تكون خدمات الحجز نشطة ولها مدة محددة.',
+    'barber_chair_mismatch' => 'الكرسي مرتبط بحلاق مختلف عن الحلاق المطلوب.',
     'notification_new_request_title' => 'طلب حجز جديد',
     'notification_barber_request_body' => 'يوجد حجز يتطلب اهتمامك.',
     'notification_branch_request_body' => 'يوجد حجز يتطلب اهتمام الفرع.',

@@ -112,7 +112,7 @@ it('rejects a chair booking when its assigned barber is banned', function (): vo
     $barber = BarberModel::factory()->create();
     $barber->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
     $chair = ChairModel::factory()->create(['barber_id' => $barber->id]);
-    $service = OfferedServiceModel::factory()->create(['duration' => 30]);
+    $service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $chair->branch->brand_id]);
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,

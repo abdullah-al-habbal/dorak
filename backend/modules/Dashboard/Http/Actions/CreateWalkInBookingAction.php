@@ -35,8 +35,8 @@ final class CreateWalkInBookingAction extends BaseApiAction
             return $this->created(new BookingResource($this->handler->handle($command)));
         } catch (ChairNotAvailableException|DoubleBookingException) {
             return $this->error('BOOKING_SLOT_CONFLICT', __('dashboard::messages.chair_stylist_unavailable'), 409);
-        } catch (InvalidBookingServicesException) {
-            return $this->unprocessable(message: __('booking::messages.invalid_booking_services'));
+        } catch (InvalidBookingServicesException $exception) {
+            return $this->unprocessable(message: $exception->getMessage());
         } catch (BookingOutsideScheduleException) {
             return $this->error('booking_outside_schedule', __('booking::messages.time_outside_schedule'), 422);
         } catch (WalkInStylistNotAssignedException) {

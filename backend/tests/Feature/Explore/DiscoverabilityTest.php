@@ -40,7 +40,7 @@ it('rejects booking a chair in an inactive branch with 422', function (): void {
     $token = $client->createToken('booking-test', ['client-active'])->plainTextToken;
     $chair = ChairModel::factory()->create();
     $chair->branch->update(['status' => 'disabled']);
-    $service = OfferedServiceModel::factory()->create(['duration' => 30]);
+    $service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $chair->branch->brand_id]);
 
     $this->withToken($token)->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,

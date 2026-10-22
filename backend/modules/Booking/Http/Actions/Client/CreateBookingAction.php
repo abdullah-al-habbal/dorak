@@ -47,9 +47,9 @@ final class CreateBookingAction extends BaseApiAction
                 message: __('booking::messages.double_booking'),
                 status: 409,
             );
-        } catch (InvalidBookingServicesException) {
+        } catch (InvalidBookingServicesException $exception) {
             return $this->error(
-                message: __('booking::messages.invalid_booking_services'),
+                message: $exception->getMessage(),
                 status: 422,
             );
         } catch (ActiveBookingBanException) {

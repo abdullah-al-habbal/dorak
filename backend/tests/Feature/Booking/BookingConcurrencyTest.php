@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 use Carbon\Carbon;
 use Modules\Booking\Models\BookingModel;
+use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30]);
+    $this->branch = BranchModel::factory()->create();
+    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
     $this->actingAs($this->client, 'client');
 });
 
 it('rejects second booking when same chair+slot already confirmed', function () {
-    $chair = ChairModel::factory()->create();
+    $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
@@ -38,8 +40,8 @@ it('rejects second booking when same chair+slot already confirmed', function () 
 });
 
 it('allows bookings on different chairs for same time_slot', function () {
-    $chairA = ChairModel::factory()->create();
-    $chairB = ChairModel::factory()->create();
+    $chairA = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
+    $chairB = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [
@@ -58,7 +60,7 @@ it('allows bookings on different chairs for same time_slot', function () {
 });
 
 it('handles race condition: direct DB insert then API attempt', function () {
-    $chair = ChairModel::factory()->create();
+    $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     BookingModel::create([
@@ -79,7 +81,7 @@ it('handles race condition: direct DB insert then API attempt', function () {
 });
 
 it('allows re-booking after cancellation on same chair+slot', function () {
-    $chair = ChairModel::factory()->create();
+    $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $this->postJson('/api/v1/bookings', [

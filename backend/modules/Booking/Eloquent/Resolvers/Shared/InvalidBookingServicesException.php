@@ -6,8 +6,8 @@ namespace Modules\Booking\Eloquent\Resolvers\Shared;
 
 final class InvalidBookingServicesException extends \RuntimeException
 {
-    public function __construct()
+    public function __construct(string $messageKey = 'booking::messages.invalid_booking_services')
     {
-        parent::__construct(__('booking::messages.invalid_services_for_booking'));
+        parent::__construct(__($messageKey));
     }
 }

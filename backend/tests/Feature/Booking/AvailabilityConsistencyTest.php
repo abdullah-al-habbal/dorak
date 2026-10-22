@@ -13,8 +13,8 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function (): void {
     $this->client = ClientModel::factory()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30]);
     $this->branch = BranchModel::factory()->create();
+    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
     $this->chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $this->actingAs($this->client, 'client');
 });

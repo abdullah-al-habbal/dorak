@@ -47,7 +47,8 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: a barber with no schedule rows stays bookable (backward compatible). Once any rows exist, only an active row that fully contains the booking interval `[time_slot, ends_at)` on the start weekday is bookable.
 
 ## [Task 23: Validate Service Ownership and Resolve Chair Barber on Booking](tasks/task-23-booking-service-ownership.md)
-- [ ] **Decision required (EC-9):** enforce one barber calendar across all affiliations, or per shop. Default: across all affiliations, matching the current overlap query on `barber_id`.
+- [x] Decision resolved (EC-9): one barber calendar across all affiliations. The overlap check runs on `bookings.barber_id` regardless of chair or shop, so a barber cannot be double-booked across chairs or shops.
+- [x] Decision resolved: a chair-linked barber that differs from an explicit `barber_id` returns 422; with no chair, only services owned by the booked barber are accepted (barber-only/at-home rules are refined in Tasks 24/25).
 
 ## [Task 24: Allow Booking a Shop Barber Without Picking a Chair](tasks/task-24-barber-booking-without-chair.md)
 - [ ] **Decision required:** add a `bookings.branch_id` column, or resolve the branch through the barber's chair at check-in.

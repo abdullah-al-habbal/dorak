@@ -780,7 +780,7 @@ describe('Booking API', function () {
             $chair = ChairModel::factory()->create();
             $service = OfferedServiceModel::factory()->create([
                 'serviceable_id' => $chair->branch_id,
-                'serviceable_type' => BranchModel::class,
+                'serviceable_type' => 'branch',
             ]);
             $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 

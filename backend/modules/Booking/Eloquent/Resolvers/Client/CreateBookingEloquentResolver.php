@@ -35,6 +35,19 @@ final class CreateBookingEloquentResolver
             throw new ActiveBookingBanException;
         }
 
+        $chair = $command->chairId !== null
+            ? ChairModel::query()->lockForUpdate()->findOrFail($command->chairId)
+            : null;
+
+        $chairBarberId = $chair?->getAttribute('barber_id');
+        $chairBarberId = is_string($chairBarberId) ? $chairBarberId : null;
+
+        if ($chairBarberId !== null && $command->barberId !== null && $command->barberId !== $chairBarberId) {
+            throw new InvalidBookingServicesException('booking::messages.barber_chair_mismatch');
+        }
+
+        $barberId = $command->barberId ?? $chairBarberId;
+
         $services = OfferedServiceModel::query()
             ->whereIn('id', $command->serviceIds)
             ->where('active', true)
@@ -54,14 +67,16 @@ final class CreateBookingEloquentResolver
                 throw new InvalidBookingServicesException;
             }
 
+            if (! $this->isOwnedByBookingScope($service, $chair, $barberId)) {
+                throw new InvalidBookingServicesException;
+            }
+
             $totalDuration += $duration;
         }
 
         $endsAt = $command->timeSlot->copy()->addMinutes($totalDuration);
 
-        if ($command->chairId !== null) {
-            $chair = ChairModel::query()->lockForUpdate()->findOrFail($command->chairId);
-
+        if ($chair !== null) {
             if (! BranchModel::query()->discoverable()->whereKey($chair->getAttribute('branch_id'))->exists()) {
                 throw new NonDiscoverableBookingEntityException;
             }
@@ -70,23 +85,11 @@ final class CreateBookingEloquentResolver
                 throw new ChairNotAvailableException;
             }
 
-            $assignedBarberId = $chair->getAttribute('barber_id');
-            if (is_string($assignedBarberId) && $assignedBarberId !== $command->barberId) {
-                $assignedBarber = BarberModel::query()->lockForUpdate()->findOrFail($assignedBarberId);
-
-                if ($assignedBarber->isBanned()) {
-                    throw new ActiveBookingBanException;
-                }
-                if ($assignedBarber->getAttribute('status') !== BarberStatusEnum::Enabled) {
-                    throw new NonDiscoverableBookingEntityException;
-                }
-            }
-
             $this->ensureNoOverlap('chair_id', $command->chairId, $command->timeSlot, $endsAt);
         }
 
-        if ($command->barberId !== null) {
-            $barber = BarberModel::query()->lockForUpdate()->findOrFail($command->barberId);
+        if ($barberId !== null) {
+            $barber = BarberModel::query()->lockForUpdate()->findOrFail($barberId);
 
             if ($barber->isBanned()) {
                 throw new ActiveBookingBanException;
@@ -95,16 +98,16 @@ final class CreateBookingEloquentResolver
                 throw new NonDiscoverableBookingEntityException;
             }
 
-            if (! BarberScheduleAvailability::covers($command->barberId, $command->timeSlot, $endsAt)) {
+            if (! BarberScheduleAvailability::covers($barberId, $command->timeSlot, $endsAt)) {
                 throw new BookingOutsideScheduleException;
             }
 
-            $this->ensureNoOverlap('barber_id', $command->barberId, $command->timeSlot, $endsAt);
+            $this->ensureNoOverlap('barber_id', $barberId, $command->timeSlot, $endsAt);
         }
 
         $bookingData = [
             'client_id' => $command->clientId,
-            'barber_id' => $command->barberId,
+            'barber_id' => $barberId,
             'time_slot' => $command->timeSlot,
             'ends_at' => $endsAt,
             'status' => BookingStatus::Pending,
@@ -127,6 +130,18 @@ final class CreateBookingEloquentResolver
         $booking->load(['chair.barber', 'barber', 'services']);
 
         return $booking;
+    }
+
+    private function isOwnedByBookingScope(OfferedServiceModel $service, ?ChairModel $chair, ?string $barberId): bool
+    {
+        $ownerId = $service->getAttribute('serviceable_id');
+
+        return match ($service->getAttribute('serviceable_type')) {
+            'barber' => $barberId !== null && $ownerId === $barberId,
+            'branch' => $chair !== null && $ownerId === $chair->getAttribute('branch_id'),
+            'brand' => $chair !== null && $ownerId === $chair->branch()->value('brand_id'),
+            default => false,
+        };
     }
 
     private function ensureNoOverlap(string $column, string $resourceId, Carbon $startsAt, Carbon $endsAt): void
