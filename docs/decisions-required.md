@@ -54,7 +54,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: add a nullable `bookings.branch_id` column (backfilled from chairs). It is set for every in-person booking; branch-scoped queries use `BookingModel::forBranch()`, which also matches legacy rows through the chair. A barber is affiliated if they have an accepted affiliation with the branch or its brand.
 
 ## [Task 25: Enforce At-Home Booking Rules](tasks/task-25-at-home-booking-rules.md)
-- [ ] the barber has `is_freelancer = true` (**Decision required:** whether affiliated barbers may also do at-home);
+- [x] Decision resolved: affiliated barbers ARE allowed to take at-home bookings, so there is no `is_freelancer` check. The booking must still respect the barber's schedule and the single barber calendar (EC-9 overlap on `bookings.barber_id`), so it cannot conflict with shop bookings.
 
 ## [Task 27: Handle Chair Maintenance Conflicts with Existing Bookings](tasks/task-27-chair-maintenance-conflicts.md)
 - [ ] **Decision required (EC-2 is marked open in spec):** cancel-and-notify vs. reassign to another free chair. Record it here.

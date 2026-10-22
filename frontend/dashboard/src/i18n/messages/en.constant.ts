@@ -278,6 +278,7 @@ export const en = {
       serviceableId: "Service owner",
       serviceableType: "Service owner type",
       catalogItemId: "Catalog item",
+      atHome: "Available at home",
       phone: "Phone",
       chairId: "Chair",
       name: "Name",

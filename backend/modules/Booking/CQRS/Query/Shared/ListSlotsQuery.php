@@ -17,5 +17,7 @@ final readonly class ListSlotsQuery
         public ?string $branchId = null,
         public ?string $chairId = null,
         public ?string $barberId = null,
+        public ?float $atHomeLatitude = null,
+        public ?float $atHomeLongitude = null,
     ) {}
 }

@@ -11,6 +11,7 @@ const serviceInput = {
   duration: 30,
   currencyId: "b4e18cf2-6c48-41bb-857d-6db23f2cbaab",
   active: true,
+  atHome: false,
   serviceableId: "6f1c2d3e-4b5a-4c6d-8e7f-9a0b1c2d3e4f",
   serviceableType: "branch",
   catalogItemId,
@@ -37,5 +38,17 @@ describe("serviceFormSchema catalog item contract", () => {
     expect(
       mapService({ id: "s1", catalog_item_id: catalogItemId }).catalogItemId,
     ).toBe(catalogItemId);
+  });
+});
+
+describe("serviceFormSchema at-home flag", () => {
+  it("sends atHome as at_home and reads it back from the API", () => {
+    const parsed = serviceFormSchema.safeParse({
+      ...serviceInput,
+      atHome: true,
+    });
+
+    expect(parsed.success && mapServicePayload(parsed.data).at_home).toBe(true);
+    expect(mapService({ id: "s1", at_home: true }).atHome).toBe(true);
   });
 });

@@ -22,7 +22,7 @@ As a result an at-home booking can be created with no barber at all, which also 
 ### Backend (API / DB / Policies)
 - When `at_home_location` is present, the request must satisfy all of the following, else 422 with a distinct code per rule:
   - `barber_id` is present;
-  - the barber has `is_freelancer = true` (**Decision required:** whether affiliated barbers may also do at-home);
+  - **Decision resolved:** affiliated barbers may also do at-home; there is no `is_freelancer` check. Schedule and overlap checks still apply on the barber's single calendar, so an at-home booking cannot conflict with shop bookings or the shop schedule;
   - every service is `at_home = true` and owned by that barber;
   - the Haversine distance from the barber's coordinates to the client's is at most `travel_radius` km. A null radius means the barber does not offer at-home.
 - Add `at_home` (boolean) to `Dashboard/Http/Requests/ServiceRequest.php` and its payload mapping.
@@ -36,14 +36,14 @@ As a result an at-home booking can be created with no barber at all, which also 
 - `branch_detail.bloc.dart` — map the at-home 422 codes to localized messages.
 
 ## Acceptance Criteria
-- [ ] `POST /api/v1/bookings` with `at_home_location` and no `barber_id` returns 422.
-- [ ] With a non-freelancer barber (if the decision keeps that rule), it returns 422.
-- [ ] With a service where `at_home = false`, it returns 422.
-- [ ] With client coordinates outside `travel_radius`, it returns 422. Inside the radius with valid services, it returns 201.
-- [ ] `POST /api/v1/dashboard/services` accepts and persists `at_home: true`, and the response includes it.
-- [ ] Feature test `AtHomeBookingRulesTest` covers each rule. `ServiceApiTest` covers `at_home`.
-- [ ] Client bloc test: at-home submit is disabled without a barber.
-- [ ] `php artisan test`, `npm run test` and `melos run test` pass. PHPStan max and Pint are clean.
+- [x] `POST /api/v1/bookings` with `at_home_location` and no `barber_id` returns 422.
+- [x] An affiliated (non-freelancer) barber may take an at-home booking; it still returns 409 on overlap and 422 outside the schedule.
+- [x] With a service where `at_home = false`, it returns 422.
+- [x] With client coordinates outside `travel_radius`, it returns 422. Inside the radius with valid services, it returns 201.
+- [x] `POST /api/v1/dashboard/services` accepts and persists `at_home: true`, and the response includes it.
+- [x] Feature test `AtHomeBookingRulesTest` covers each rule. `ServiceApiTest` covers `at_home`.
+- [x] Client bloc test: at-home submit is disabled without a barber.
+- [x] `php artisan test`, `npm run test` and `melos run test` pass. PHPStan max and Pint are clean.
 
 ## Out of Scope
 - Barber self-service of services (Task 54).

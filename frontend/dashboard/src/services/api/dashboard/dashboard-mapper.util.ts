@@ -70,6 +70,7 @@ export function mapService(wire: unknown): IService {
   return {
     id: string(item.id),
     active: item.active === true,
+    atHome: item.at_home === true,
     catalogItemId: nullableString(item.catalog_item_id),
     currencyId: string(item.currency_id),
     duration: typeof item.duration === "number" ? item.duration : null,

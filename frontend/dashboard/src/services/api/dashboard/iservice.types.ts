@@ -4,6 +4,7 @@ import type { ILocalizedName } from "@/services/api/dashboard/ilocalized-name.ty
 export interface IService {
   id: DashboardEntityId;
   active: boolean;
+  atHome: boolean;
   catalogItemId: DashboardEntityId | null;
   currencyId: DashboardEntityId;
   duration: number | null;

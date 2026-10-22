@@ -64,7 +64,8 @@ class BranchDetailState extends Equatable {
       return false;
     }
     if (!isAtHomeBooking) return selectedChairId != null;
-    return atHomeStreet.trim().isNotEmpty &&
+    return preferredBarberId != null &&
+        atHomeStreet.trim().isNotEmpty &&
         atHomeBuilding.trim().isNotEmpty &&
         atHomeUnit.trim().isNotEmpty &&
         atHomeLatitude != null &&

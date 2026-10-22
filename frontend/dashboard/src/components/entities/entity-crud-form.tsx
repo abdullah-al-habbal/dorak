@@ -92,6 +92,7 @@ function defaultsFor(resource: EditableResource, branchId: string | null) {
       duration: null,
       currencyId: "",
       active: true,
+      atHome: false,
       serviceableId: branchId ?? "",
       serviceableType: "branch",
       catalogItemId: null,
@@ -170,6 +171,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         duration: current.duration,
         currencyId: current.currencyId,
         active: current.active,
+        atHome: current.atHome,
         serviceableId: current.serviceableId,
         serviceableType: current.serviceableType,
         catalogItemId: current.catalogItemId,
@@ -252,6 +254,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
               "serviceableId",
               "serviceableType",
               "catalogItemId",
+              "atHome",
             ]
           : [
               "name.en",
@@ -451,7 +454,9 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
                   : field) as keyof typeof fieldCopy
             ] ?? field}
           </span>
-          {optionsFor(field) ? (
+          {field === "atHome" ? (
+            <input type="checkbox" {...form.register("atHome" as never)} />
+          ) : optionsFor(field) ? (
             <Select
               value={
                 selectValues[field] ??

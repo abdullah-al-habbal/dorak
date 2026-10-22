@@ -22,6 +22,7 @@ use Modules\Booking\Enums\BookingPaymentMethod;
 use Modules\Booking\Enums\BookingPaymentStatus;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\AtHomeBookingRules;
 use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Models\BranchModel;
@@ -67,6 +68,15 @@ final class CreateBookingEloquentResolver
 
         if ($services->count() !== count($command->serviceIds)) {
             throw new InvalidBookingServicesException;
+        }
+
+        if ($command->atHomeLocation !== null) {
+            AtHomeBookingRules::ensure(
+                $barberId,
+                $services,
+                $this->coordinate($command->atHomeLocation['latitude'] ?? null),
+                $this->coordinate($command->atHomeLocation['longitude'] ?? null),
+            );
         }
 
         $totalDuration = 0;
@@ -145,6 +155,11 @@ final class CreateBookingEloquentResolver
         $booking->load(['chair.barber', 'barber', 'services']);
 
         return $booking;
+    }
+
+    private function coordinate(mixed $value): float
+    {
+        return is_numeric($value) ? (float) $value : 0.0;
     }
 
     private function ensureBarberAffiliatedWithBranch(?string $barberId, string $branchId): void

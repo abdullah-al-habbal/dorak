@@ -273,6 +273,7 @@ export const ar: Dictionary = {
       serviceableId: "مالك الخدمة",
       serviceableType: "نوع مالك الخدمة",
       catalogItemId: "عنصر الكتالوج",
+      atHome: "متاحة في المنزل",
       phone: "الهاتف",
       chairId: "الكرسي",
       name: "الاسم",

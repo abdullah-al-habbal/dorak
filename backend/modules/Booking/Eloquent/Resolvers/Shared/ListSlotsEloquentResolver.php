@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\CQRS\Query\Shared\ListSlotsQuery;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Queries\AtHomeBookingRules;
 use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Chair\Models\ChairModel;
@@ -24,7 +25,7 @@ final class ListSlotsEloquentResolver
             return [];
         }
 
-        $totalDuration = $this->totalDuration($query->serviceIds);
+        $totalDuration = $this->totalDuration($query);
 
         if (! $this->chairIsBookable($query)) {
             return [];
@@ -65,18 +66,19 @@ final class ListSlotsEloquentResolver
         return $slots;
     }
 
-    /**
-     * @param  list<string>  $serviceIds
-     */
-    private function totalDuration(array $serviceIds): int
+    private function totalDuration(ListSlotsQuery $query): int
     {
         $services = OfferedServiceModel::query()
-            ->whereIn('id', $serviceIds)
+            ->whereIn('id', $query->serviceIds)
             ->where('active', true)
             ->get();
 
-        if ($services->count() !== count($serviceIds)) {
+        if ($services->count() !== count($query->serviceIds)) {
             throw new InvalidBookingServicesException;
+        }
+
+        if ($query->atHomeLatitude !== null && $query->atHomeLongitude !== null) {
+            AtHomeBookingRules::ensure($query->barberId, $services, $query->atHomeLatitude, $query->atHomeLongitude);
         }
 
         $total = 0;

@@ -206,6 +206,7 @@ void main() {
         detail: testBranchDetail(),
         plan: testFloorPlan(),
         isAtHomeBooking: true,
+        preferredBarberId: 'barber-1',
         atHomeStreet: 'Al Hamra Street',
         atHomeBuilding: '12',
         atHomeUnit: '4B',
@@ -223,6 +224,30 @@ void main() {
         expect(bookings.lastAtHomeUnit, '4B');
         expect(bookings.lastAtHomeLatitude, 33.8938);
         expect(bookings.lastAtHomeLongitude, 35.5018);
+      },
+    );
+
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'does not submit an at-home booking without a selected barber',
+      build: bloc,
+      seed: () => BranchDetailState(
+        branchId: '1',
+        detail: testBranchDetail(),
+        plan: testFloorPlan(),
+        isAtHomeBooking: true,
+        atHomeStreet: 'Al Hamra Street',
+        atHomeBuilding: '12',
+        atHomeUnit: '4B',
+        atHomeLatitude: 33.8938,
+        atHomeLongitude: 35.5018,
+        slots: testSlots(startsAt: DateTime.utc(2026, 10, 1, 14, 30)),
+        selectedTime: DateTime.utc(2026, 10, 1, 14, 30),
+        selectedServiceIds: const ['service-1'],
+      ),
+      act: (bloc) => bloc.add(const BranchDetailBookingSubmitted()),
+      expect: () => [],
+      verify: (_) {
+        expect(bookings.createCalls, 0);
       },
     );
   });

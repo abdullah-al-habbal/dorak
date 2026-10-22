@@ -6,6 +6,7 @@ namespace Modules\Booking\Http\Actions\Shared;
 
 use Illuminate\Http\JsonResponse;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Eloquent\Resolvers\Shared\AtHomeBookingRuleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
 use Modules\Booking\Handlers\Shared\ListSlotsHandler;
 use Modules\Booking\Http\Requests\Shared\ListBarberSlotsRequest;
@@ -24,6 +25,8 @@ final class ListBarberSlotsAction extends BaseApiAction
 
         try {
             $slots = $this->handler->handle($request->toQuery($barber));
+        } catch (AtHomeBookingRuleException $exception) {
+            return $this->error(code: $exception->errorCode, message: $exception->getMessage(), status: 422);
         } catch (InvalidBookingServicesException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_services'));
         }

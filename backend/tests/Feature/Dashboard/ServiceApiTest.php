@@ -23,6 +23,16 @@ describe('Dashboard Service API', function (): void {
             ->assertJsonPath('data.serviceable_id', $this->branch->id);
     });
 
+    it('accepts and persists at_home', function (): void {
+        $this->authenticateDashboardActor($this->admin);
+        $currency = CurrencyModel::factory()->create();
+
+        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch, $currency, ['at_home' => true]))
+            ->assertCreated()
+            ->assertJsonPath('data.at_home', true);
+        $this->assertDatabaseHas('offered_services', ['at_home' => true, 'serviceable_id' => $this->branch->id]);
+    });
+
     it('lets an admin update and delete a service', function (): void {
         $service = OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $this->branch->id]);
         $this->authenticateDashboardActor($this->admin);

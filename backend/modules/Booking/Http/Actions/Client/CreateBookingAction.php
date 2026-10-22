@@ -7,6 +7,7 @@ namespace Modules\Booking\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use InvalidArgumentException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ActiveBookingBanException;
+use Modules\Booking\Eloquent\Resolvers\Shared\AtHomeBookingRuleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\BarberNotAffiliatedException;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
@@ -55,6 +56,8 @@ final class CreateBookingAction extends BaseApiAction
             );
         } catch (BarberNotAffiliatedException $exception) {
             return $this->error(code: 'barber_not_affiliated', message: $exception->getMessage(), status: 422);
+        } catch (AtHomeBookingRuleException $exception) {
+            return $this->error(code: $exception->errorCode, message: $exception->getMessage(), status: 422);
         } catch (ActiveBookingBanException) {
             return $this->error(code: 'ACCOUNT_BANNED', message: __('ban::ui.account_banned'), status: 403);
         } catch (NonDiscoverableBookingEntityException) {

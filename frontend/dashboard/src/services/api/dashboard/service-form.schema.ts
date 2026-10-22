@@ -9,6 +9,7 @@ export const serviceFormSchema = z.object({
   duration: z.coerce.number().int().min(1).max(1440).nullable(),
   currencyId: z.string().uuid(),
   active: z.boolean(),
+  atHome: z.boolean(),
   serviceableId: z.string().uuid(),
   serviceableType: z.enum(["branch", "brand", "barber"]),
   catalogItemId: z.string().uuid().nullable(),
