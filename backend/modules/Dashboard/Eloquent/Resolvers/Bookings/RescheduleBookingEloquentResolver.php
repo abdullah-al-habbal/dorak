@@ -52,7 +52,7 @@ final class RescheduleBookingEloquentResolver
             }
             $booking->update(['time_slot' => $timeSlot, 'ends_at' => $endsAt]);
 
-            $booking->refresh()->load(['chair', 'barber', 'client', 'services']);
+            $booking->refresh()->load(['chair', 'barber', 'client' => fn ($query) => $query->withReputation(), 'services']);
             $this->notifier->rescheduled($booking);
 
             return $booking;

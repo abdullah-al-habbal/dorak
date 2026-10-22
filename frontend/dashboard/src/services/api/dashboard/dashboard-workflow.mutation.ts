@@ -48,6 +48,16 @@ export function rescheduleBooking<TData>(
   );
 }
 
+export function rateBookingClient<TData>(
+  id: DashboardEntityId,
+  payload: unknown,
+) {
+  return apiRequest<TData>(
+    `/api/dashboard/bookings/${encodeURIComponent(id)}/review`,
+    { auth: "session", method: "POST", body: JSON.stringify(payload) },
+  );
+}
+
 export function updateBookingStatus<TData>(
   id: DashboardEntityId,
   payload: unknown,

@@ -14,4 +14,7 @@ return [
     'dispute_resolution_not_available' => 'This dispute cannot be resolved until the 48-hour review window has elapsed.',
     'notification_review_request_title' => 'How was your visit?',
     'notification_review_request_body' => 'Your booking is complete. Tell us about your experience.',
+    'client_reviewed' => 'Client rated successfully.',
+    'booking_not_finished' => 'Clients can be rated only after a completed or no-show booking.',
+    'branch_rates_client' => 'This booking belongs to a branch; the branch rates the client.',
 ];

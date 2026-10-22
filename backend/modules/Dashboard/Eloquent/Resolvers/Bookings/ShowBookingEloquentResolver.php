@@ -11,7 +11,7 @@ final class ShowBookingEloquentResolver
 {
     public function resolve(ShowBookingQuery $query): BookingModel
     {
-        return BookingModel::query()->with(['chair', 'barber', 'client', 'services'])
+        return BookingModel::query()->with(['chair', 'barber', 'client' => fn ($query) => $query->withReputation(), 'services'])
             ->whereKey($query->bookingId)
             ->when($query->branchIds !== null, fn ($builder) => $builder->forBranches($query->branchIds))
             ->firstOrFail();

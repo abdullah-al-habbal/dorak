@@ -8,6 +8,7 @@ const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
   { method: "GET", path: /^bookings\/[A-Za-z0-9-]+$/ },
   { method: "PATCH", path: /^bookings\/[A-Za-z0-9-]+$/ },
   { method: "PATCH", path: /^bookings\/[A-Za-z0-9-]+\/(cancel|reschedule)$/ },
+  { method: "POST", path: /^bookings\/[A-Za-z0-9-]+\/review$/ },
   ...["branches", "chairs", "services", "stylists"].flatMap((root) => [
     { method: "GET", path: new RegExp(`^${root}$`) },
     { method: "POST", path: new RegExp(`^${root}$`) },

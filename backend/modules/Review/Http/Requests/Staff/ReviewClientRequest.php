@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Review\Http\Requests\Staff;
+
+use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Review\CQRS\Command\Staff\ReviewClientCommand;
+
+final class ReviewClientRequest extends BaseApiFormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'comment' => ['nullable', 'string', 'max:1000'],
+        ];
+    }
+
+    /**
+     * @param  'branch'|'barber'  $authorSide
+     * @param  list<string>|null  $branchScope
+     */
+    public function toCommand(string $bookingId, string $authorSide, ?string $barberId, ?array $branchScope): ReviewClientCommand
+    {
+        $comment = $this->validated('comment');
+
+        return new ReviewClientCommand(
+            bookingId: $bookingId,
+            authorSide: $authorSide,
+            barberId: $barberId,
+            branchScope: $branchScope,
+            rating: (int) $this->validated('rating'),
+            comment: is_string($comment) ? $comment : null,
+        );
+    }
+}

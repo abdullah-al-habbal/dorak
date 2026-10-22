@@ -6,6 +6,10 @@ export interface IBooking {
   id: DashboardEntityId;
   barber: { name: Pick<ILocalizedName, "en"> } | null;
   chair: { label: string | null } | null;
+  client: {
+    name: string | null;
+    reputation: { average: number | null; count: number };
+  } | null;
   endsAt: string | null;
   services: Array<{ name: Pick<ILocalizedName, "en"> }>;
   status: BookingStatus;

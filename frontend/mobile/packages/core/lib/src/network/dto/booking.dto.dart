@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:core/src/network/dto/at_home_location.dto.dart';
 import 'package:core/src/network/dto/booking_barber.dto.dart';
 import 'package:core/src/network/dto/booking_chair.dto.dart';
+import 'package:core/src/network/dto/booking_client.dto.dart';
 import 'package:core/src/network/dto/booking_service.dto.dart';
 
 part 'booking.dto.g.dart';
@@ -21,6 +22,7 @@ class BookingDto {
   final DateTime? cancellationCutoffAt;
   final BookingChairDto? chair;
   final BookingBarberDto? barber;
+  final BookingClientDto? client;
   final List<BookingServiceDto> services;
   final AtHomeLocationDto? atHomeLocation;
   final DateTime? createdAt;
@@ -36,6 +38,7 @@ class BookingDto {
     this.cancellationCutoffAt,
     this.chair,
     this.barber,
+    this.client,
     this.services = const [],
     this.atHomeLocation,
     this.createdAt,

@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
-use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Booking\Models\BookingModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Http\Requests\UpdateBookingStatusRequest;
@@ -29,7 +29,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
         }
 
         try {
-            return $this->updated(new BookingResource($this->resolver->transitionForDashboard($model->id, $status)));
+            return $this->updated(new StaffBookingResource($this->resolver->transitionForDashboard($model->id, $status)));
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }

@@ -35,3 +35,5 @@ The booking detail page exists for admin and manager, but nothing links to it: b
 ## Out of Scope
 - The backend lifecycle itself (Task 18).
 - Status history display (Task 64).
+
+> Note (Task 40): the client-review contract is ready — `rateClient` on `BranchOperationsRepository` in `packages/core`, and staff booking payloads carry `client.reputation {average, count}` (`BookingDto.client`, dashboard `IBooking.client`).

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
-use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowBookingQuery;
 use Modules\Dashboard\Handlers\Bookings\ShowBookingHandler;
@@ -25,7 +25,7 @@ final class CancelBookingAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()));
         try {
-            return $this->updated(new BookingResource($this->lifecycle->transitionForDashboard($model->id, BookingStatus::Canceled)));
+            return $this->updated(new StaffBookingResource($this->lifecycle->transitionForDashboard($model->id, BookingStatus::Canceled)));
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }

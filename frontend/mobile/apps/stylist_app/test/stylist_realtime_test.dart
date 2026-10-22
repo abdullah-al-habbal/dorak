@@ -71,6 +71,13 @@ class _CountingRepository implements StylistOperationsRepository {
   @override
   Future<BookingDto> transitionBooking(String id, String action) =>
       throw UnimplementedError();
+
+  @override
+  Future<ReviewDto> rateClient(
+    String bookingId, {
+    required int rating,
+    String? comment,
+  }) => throw UnimplementedError();
 }
 
 void main() {

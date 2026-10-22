@@ -95,6 +95,13 @@ class _CountingRepository implements BranchOperationsRepository {
     String status, {
     bool force = false,
   }) => throw UnimplementedError();
+
+  @override
+  Future<ReviewDto> rateClient(
+    String bookingId, {
+    required int rating,
+    String? comment,
+  }) => throw UnimplementedError();
 }
 
 void main() {

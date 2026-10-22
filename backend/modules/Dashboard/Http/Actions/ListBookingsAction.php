@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ListBookingsQuery;
 use Modules\Dashboard\Handlers\Bookings\ListBookingsHandler;
@@ -25,6 +25,6 @@ final class ListBookingsAction extends BaseApiAction
             $request->validated(),
         ));
 
-        return $this->paginated($bookings, BookingResource::class);
+        return $this->paginated($bookings, StaffBookingResource::class);
     }
 }

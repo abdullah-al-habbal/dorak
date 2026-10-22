@@ -10,6 +10,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,6 +24,8 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Client\Database\Factories\ClientFactory;
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Core\Enums\Universe;
+use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
@@ -67,6 +70,29 @@ class ClientModel extends Authenticatable implements FilamentUser
     public function bookings(): HasMany
     {
         return $this->hasMany(BookingModel::class, 'client_id');
+    }
+
+    /**
+     * Published reviews in which a branch or barber rated this client: the
+     * client's reputation (Task 40). They are shown to staff, never to the
+     * client.
+     *
+     * @return MorphMany<ReviewModel, $this>
+     */
+    public function receivedReviews(): MorphMany
+    {
+        return $this->morphMany(ReviewModel::class, 'subject')->where('status', ReviewStatus::Published);
+    }
+
+    /**
+     * @param  Builder<ClientModel>  $query
+     * @return Builder<ClientModel>
+     */
+    public function scopeWithReputation(Builder $query): Builder
+    {
+        return $query
+            ->withAvg('receivedReviews as reputation_average', 'rating')
+            ->withCount('receivedReviews as reputation_count');
     }
 
     public function isBanned(): bool

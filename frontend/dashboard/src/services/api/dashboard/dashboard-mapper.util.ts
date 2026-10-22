@@ -97,6 +97,24 @@ export function mapStylist(wire: unknown): IStylist {
   };
 }
 
+function mapBookingClient(wire: unknown): IBooking["client"] {
+  if (wire === null || typeof wire !== "object") return null;
+  const client = record(wire);
+  const name = client.name;
+  const reputation = record(client.reputation);
+  return {
+    name:
+      typeof name === "string"
+        ? name
+        : nullableString(record(name).en ?? record(name).ar),
+    reputation: {
+      average:
+        typeof reputation.average === "number" ? reputation.average : null,
+      count: typeof reputation.count === "number" ? reputation.count : 0,
+    },
+  };
+}
+
 export function mapBooking(wire: unknown): IBooking {
   const item = record(wire);
   const barber = record(item.barber);
@@ -113,6 +131,7 @@ export function mapBooking(wire: unknown): IBooking {
         ? null
         : { name: { en: string(record(barber.name).en) } },
     chair: item.chair === null ? null : { label: nullableString(chair.label) },
+    client: mapBookingClient(item.client),
     endsAt: nullableString(item.ends_at),
     services,
     status: string(item.status, "pending") as IBooking["status"],

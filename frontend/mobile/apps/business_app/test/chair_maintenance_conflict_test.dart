@@ -43,6 +43,13 @@ class _ConflictRepository implements BranchOperationsRepository {
   @override
   Future<PaginatedData<FloorChairDto>> getChairs() async =>
       throw StateError('offline');
+
+  @override
+  Future<ReviewDto> rateClient(
+    String bookingId, {
+    required int rating,
+    String? comment,
+  }) => throw UnimplementedError();
 }
 
 void main() {

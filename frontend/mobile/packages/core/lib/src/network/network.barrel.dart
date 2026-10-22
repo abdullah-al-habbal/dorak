@@ -18,6 +18,8 @@ export 'package:core/src/network/dto/face_analysis_result.dto.dart';
 export 'package:core/src/network/dto/face_photo.dto.dart';
 export 'package:core/src/network/dto/universe_preference.dto.dart';
 export 'package:core/src/network/dto/booking_barber.dto.dart';
+export 'package:core/src/network/dto/booking_client.dto.dart';
+export 'package:core/src/network/dto/client_reputation.dto.dart';
 export 'package:core/src/network/dto/branch_detail.dto.dart';
 export 'package:core/src/network/dto/booking_chair.dto.dart';
 export 'package:core/src/network/dto/booking_service.dto.dart';

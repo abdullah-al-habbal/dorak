@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { BookingRateClientForm } from "@/components/bookings/booking-rate-client-form";
 import { Button } from "@/components/tailgrids/core/button";
 import {
   Dialog,
@@ -20,6 +21,7 @@ import {
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useSession } from "@/hooks/use-session";
 import { createBookingRescheduleSchema } from "@/services/api/dashboard/booking-reschedule.schema";
 import type { BookingRescheduleInput } from "@/services/api/dashboard/booking-reschedule.types";
 import { bookingStatusSchema } from "@/services/api/dashboard/booking-status.schema";
@@ -69,6 +71,9 @@ export function BookingActionsDialog({
 }: IBookingActionsDialogProps) {
   const [open, setOpen] = useState(false);
   const dictionary = useDictionary();
+  const session = useSession();
+  const canRateClient =
+    session.actor === "manager" || session.actor === "owner";
   const copy = dictionary.bookingActions;
   const rescheduleSchema = createBookingRescheduleSchema(dictionary.validation);
   const [bookingStatus, setBookingStatus] = useState("confirmed");
@@ -199,6 +204,12 @@ export function BookingActionsDialog({
               {copy.updateStatus}
             </Button>
           </form>
+          {canRateClient ? (
+            <BookingRateClientForm
+              bookingId={bookingId}
+              onRated={() => setOpen(false)}
+            />
+          ) : null}
         </DialogBody>
         <DialogFooter>
           <Button appearance="outline" onPress={() => setOpen(false)}>

@@ -43,3 +43,5 @@ The business app covers only the dashboard, the bookings list, the chairs list a
 ## Out of Scope
 - Login/router (Task 84).
 - Shared floor-plan package decision (Task 86).
+
+> Note (Task 40): the client-review contract is ready — `rateClient` on `BranchOperationsRepository` in `packages/core`, and staff booking payloads carry `client.reputation {average, count}` (`BookingDto.client`, dashboard `IBooking.client`).

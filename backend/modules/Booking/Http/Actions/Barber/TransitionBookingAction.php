@@ -12,7 +12,7 @@ use Modules\Booking\Eloquent\Resolvers\Shared\BookingNotAssignedException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
-use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 abstract class TransitionBookingAction extends BaseApiAction
@@ -34,7 +34,7 @@ abstract class TransitionBookingAction extends BaseApiAction
         try {
             $updated = $this->resolver->transitionForBarber($booking, $barber->id, $this->targetStatus());
 
-            return $this->ok(data: new BookingResource($updated));
+            return $this->ok(data: new StaffBookingResource($updated));
         } catch (BookingNotAssignedException) {
             return $this->error(message: __('booking::messages.booking_not_assigned'), status: 403);
         } catch (InvalidBookingTransitionException) {

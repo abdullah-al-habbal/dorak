@@ -10,6 +10,7 @@ describe("isDashboardRouteAllowed", () => {
     ["PATCH", ["bookings", "booking-1"]],
     ["PATCH", ["bookings", "booking-1", "cancel"]],
     ["PATCH", ["bookings", "booking-1", "reschedule"]],
+    ["POST", ["bookings", "booking-1", "review"]],
     ...["branches", "chairs", "services", "stylists"].flatMap((root) => [
       ["GET", [root]],
       ["POST", [root]],

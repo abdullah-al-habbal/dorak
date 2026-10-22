@@ -96,6 +96,7 @@
 ### Review API
 - `SubmitReviewAction` [POST /api/v1/client/bookings/{booking}/review] — validates ownership + completed status + one submission per client per booking (409). Subjects (Task 39): in-shop booking with a barber → branch review (`rating`) + barber review (`barber_rating` ?? `rating`, returned in `meta.barber_review`); barber-only/at-home → barber review; neither → 422 `no_subject`. Auth:client
 - `GetBranchReviewsAction` [GET /api/v1/branches/{branch}/reviews] — paginated published reviews for a branch. No auth
+- Client reviews (Task 40): `POST /api/v1/branch/bookings/{booking}/review` (auth:branch_api), `POST /api/v1/barber/bookings/{booking}/review` (auth:barber, branchless bookings only), `POST /api/v1/dashboard/bookings/{booking}/review` (manager/owner) — rate the client of a completed/no-show booking; one per `(booking, author_type, subject_type)`. Staff booking payloads (`StaffBookingResource`) include `client.reputation {average, count}`; client payloads never do.
 - `GetBarberReviewsAction` [GET /api/v1/barbers/{barber}/reviews] — paginated published reviews for a barber (Task 39). No auth
 - `ReviewResource` — id, subject_type, subject_id, rating, comment, status, disputed_at, resolved_at, author_name, created_at
 - `SubmitReviewRequest` — validates rating (1-5) + comment (nullable, max 500)

@@ -9,7 +9,7 @@ use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
-use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Eloquent\Resolvers\Bookings\WalkInServicesUnavailableException;
 use Modules\Dashboard\Eloquent\Resolvers\Bookings\WalkInStylistNotAssignedException;
@@ -32,7 +32,7 @@ final class CreateWalkInBookingAction extends BaseApiAction
         }
 
         try {
-            return $this->created(new BookingResource($this->handler->handle($command)));
+            return $this->created(new StaffBookingResource($this->handler->handle($command)));
         } catch (ChairNotAvailableException|DoubleBookingException) {
             return $this->error('BOOKING_SLOT_CONFLICT', __('dashboard::messages.chair_stylist_unavailable'), 409);
         } catch (InvalidBookingServicesException $exception) {

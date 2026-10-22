@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
-use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Branch\Http\Requests\Branch\UpdateBookingStatusRequest;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -31,7 +31,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
         }
         $status = BookingStatus::from($value);
         try {
-            return $this->ok(data: BookingResource::make($this->lifecycle->transitionForBranch($booking, $branch->id, $status)));
+            return $this->ok(data: StaffBookingResource::make($this->lifecycle->transitionForBranch($booking, $branch->id, $status)));
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }

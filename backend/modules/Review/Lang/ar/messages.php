@@ -14,4 +14,7 @@ return [
     'dispute_resolution_not_available' => 'لا يمكن حل هذا النزاع قبل انقضاء فترة المراجعة البالغة 48 ساعة.',
     'notification_review_request_title' => 'كيف كانت زيارتك؟',
     'notification_review_request_body' => 'اكتمل حجزك. شاركنا تجربتك.',
+    'client_reviewed' => 'تم تقييم العميل بنجاح.',
+    'booking_not_finished' => 'يمكن تقييم العملاء فقط بعد حجز مكتمل أو حجز لم يحضر إليه العميل.',
+    'branch_rates_client' => 'هذا الحجز تابع لفرع؛ الفرع هو من يقيّم العميل.',
 ];

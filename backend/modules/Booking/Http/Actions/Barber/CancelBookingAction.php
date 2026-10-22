@@ -12,7 +12,7 @@ use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingNotAssignedException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Http\Requests\Barber\CancelBarberBookingRequest;
-use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class CancelBookingAction extends BaseApiAction
@@ -35,6 +35,6 @@ final class CancelBookingAction extends BaseApiAction
             return $this->unprocessable(message: __('booking::messages.cancel_invalid_status'));
         }
 
-        return $this->ok(new BookingResource($result));
+        return $this->ok(new StaffBookingResource($result));
     }
 }

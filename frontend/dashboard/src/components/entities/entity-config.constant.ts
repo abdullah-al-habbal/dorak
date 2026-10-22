@@ -66,6 +66,18 @@ export const ENTITY_CONFIGS = {
         label: "stylist",
         value: (item: IBooking) => item.barber?.name.en ?? "—",
       },
+      {
+        id: "client",
+        label: "client",
+        value: (item: IBooking) =>
+          item.client === null
+            ? "—"
+            : `${item.client.name ?? "—"}${
+                item.client.reputation.average === null
+                  ? ""
+                  : ` · ★ ${item.client.reputation.average} (${item.client.reputation.count})`
+              }`,
+      },
     ],
   },
 } as const satisfies Record<

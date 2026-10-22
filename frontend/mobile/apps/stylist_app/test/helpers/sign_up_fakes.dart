@@ -80,6 +80,13 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
   @override
   Future<bool> updateWorkstationStatus(bool online) =>
       throw UnimplementedError();
+
+  @override
+  Future<ReviewDto> rateClient(
+    String bookingId, {
+    required int rating,
+    String? comment,
+  }) => throw UnimplementedError();
 }
 
 ValidationException fieldRejected(String field) => ValidationException(

@@ -5,6 +5,13 @@ abstract class BranchOperationsRepository {
   Future<BranchDashboardDto> getDashboard();
   Future<PaginatedData<BookingDto>> getBookings();
   Future<BookingDto> updateBookingStatus(String id, String status);
+
+  /// Rates the client of a completed or no-show booking of this branch.
+  Future<ReviewDto> rateClient(
+    String bookingId, {
+    required int rating,
+    String? comment,
+  });
   Future<PaginatedData<FloorChairDto>> getChairs();
   Future<FloorChairDto> updateChairStatus(
     String id,
@@ -40,6 +47,20 @@ class DioBranchOperationsRepository implements BranchOperationsRepository {
         parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
       );
   @override
+  Future<ReviewDto> rateClient(
+    String bookingId, {
+    required int rating,
+    String? comment,
+  }) => _client.post(
+    OperationsEndpoints.branchBookingReview.replaceFirst(
+      '{booking}',
+      bookingId,
+    ),
+    data: {'rating': rating, 'comment': ?comment},
+    parser: (json) => ReviewDto.fromJson(json as Map<String, dynamic>),
+  );
+
+  @override
   Future<PaginatedData<FloorChairDto>> getChairs() => _client.getPaginated(
     OperationsEndpoints.branchChairs,
     itemParser: (json) => FloorChairDto.fromJson(json as Map<String, dynamic>),
@@ -62,6 +83,14 @@ abstract class StylistOperationsRepository {
   Future<PaginatedData<BookingDto>> getTodayAppointments();
   Future<bool> updateWorkstationStatus(bool online);
   Future<BookingDto> transitionBooking(String id, String action);
+
+  /// Rates the client of a completed or no-show booking that has no branch
+  /// (at-home); a branch booking is rated by the branch instead.
+  Future<ReviewDto> rateClient(
+    String bookingId, {
+    required int rating,
+    String? comment,
+  });
 }
 
 class DioStylistOperationsRepository implements StylistOperationsRepository {
@@ -102,4 +131,18 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
       parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
   }
+
+  @override
+  Future<ReviewDto> rateClient(
+    String bookingId, {
+    required int rating,
+    String? comment,
+  }) => _client.post(
+    OperationsEndpoints.barberBookingReview.replaceFirst(
+      '{booking}',
+      bookingId,
+    ),
+    data: {'rating': rating, 'comment': ?comment},
+    parser: (json) => ReviewDto.fromJson(json as Map<String, dynamic>),
+  );
 }

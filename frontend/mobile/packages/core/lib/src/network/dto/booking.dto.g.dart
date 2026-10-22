@@ -25,6 +25,9 @@ BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
   barber: json['barber'] == null
       ? null
       : BookingBarberDto.fromJson(json['barber'] as Map<String, dynamic>),
+  client: json['client'] == null
+      ? null
+      : BookingClientDto.fromJson(json['client'] as Map<String, dynamic>),
   services:
       (json['services'] as List<dynamic>?)
           ?.map((e) => BookingServiceDto.fromJson(e as Map<String, dynamic>))

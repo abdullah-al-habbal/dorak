@@ -68,7 +68,7 @@ codeanchors:
 
 ## Phase 6 — Reviews (P1)
 - [x] Task 39: Resolve Review Subject for Barber and At-Home Bookings -> [Spec](tasks/task-39-review-subject-resolution.md)
-- [ ] Task 40: Implement Two-Way Reviews and Client Reputation -> [Spec](tasks/task-40-two-way-reviews-reputation.md)
+- [x] Task 40: Implement Two-Way Reviews and Client Reputation -> [Spec](tasks/task-40-two-way-reviews-reputation.md)
 - [ ] Task 41: Complete Review Dispute Workflow -> [Spec](tasks/task-41-review-dispute-workflow.md)
 
 ## Phase 7 — Discovery (P1)

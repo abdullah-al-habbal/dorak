@@ -29,6 +29,7 @@ use Modules\Dashboard\Http\Actions\Profile\UpdateProfileAction;
 use Modules\Dashboard\Http\Actions\Profile\VerifyEmailChangeAction;
 use Modules\Dashboard\Http\Actions\RefreshSessionAction;
 use Modules\Dashboard\Http\Actions\RescheduleBookingAction;
+use Modules\Dashboard\Http\Actions\ReviewBookingClientAction;
 use Modules\Dashboard\Http\Actions\Services\DestroyServiceAction;
 use Modules\Dashboard\Http\Actions\Services\ListServicesAction;
 use Modules\Dashboard\Http\Actions\Services\ShowServiceAction;
@@ -68,6 +69,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::patch('/bookings/{booking}', UpdateBookingStatusAction::class);
         Route::patch('/bookings/{booking}/cancel', CancelBookingAction::class);
         Route::patch('/bookings/{booking}/reschedule', RescheduleBookingAction::class);
+        Route::post('/bookings/{booking}/review', ReviewBookingClientAction::class);
         Route::get('/branches', ListBranchesAction::class);
         Route::get('/branches/{branch}', ShowBranchAction::class);
         Route::post('/branches', StoreBranchAction::class);

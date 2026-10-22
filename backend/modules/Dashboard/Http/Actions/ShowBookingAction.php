@@ -6,7 +6,7 @@ namespace Modules\Dashboard\Http\Actions;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Modules\Booking\Http\Resources\Client\BookingResource;
+use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowBookingQuery;
 use Modules\Dashboard\Handlers\Bookings\ShowBookingHandler;
@@ -21,6 +21,6 @@ final class ShowBookingAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
 
-        return $this->ok(new BookingResource($this->handler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()))));
+        return $this->ok(new StaffBookingResource($this->handler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()))));
     }
 }
