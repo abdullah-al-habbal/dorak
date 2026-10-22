@@ -22,7 +22,7 @@ class NotificationTile extends StatelessWidget {
     final colors = DorakColors.of(context);
     final unread = notification.isUnread;
     return Semantics(
-      button: unread,
+      button: true,
       label: unread ? unreadLabel : null,
       child: Material(
         color: unread ? colors.surfaceContainer : colors.surfaceContainerLow,
@@ -31,7 +31,7 @@ class NotificationTile extends StatelessWidget {
           customBorder: const RoundedRectangleBorder(
             borderRadius: DorakDimensions.radiusMd,
           ),
-          onTap: unread && !isMarking ? onTap : null,
+          onTap: isMarking ? null : onTap,
           child: Padding(
             padding: const EdgeInsets.all(DorakDimensions.spacingMedium),
             child: Row(

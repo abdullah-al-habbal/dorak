@@ -9,6 +9,7 @@ import 'package:localization/localization.dart';
 import 'package:business_app/src/features/barbers/manual_barber.bloc.dart';
 import 'package:business_app/src/features/operations/branch_operations.bloc.dart';
 import 'package:business_app/src/core/navigation/app.router.dart';
+import 'package:business_app/src/core/navigation/notification_location.entity.dart';
 
 class DorakBusinessApp extends StatefulWidget {
   const DorakBusinessApp({super.key, this.tokenStorage, this.repository});
@@ -31,6 +32,8 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   late final BusinessAppRouter _router;
   late final StaffSessionBloc _session;
   late final StreamSubscription<void> _unauthorizedSubscription;
+  late final StreamSubscription<NotificationTarget>
+  _notificationOpenSubscription;
 
   @override
   void initState() {
@@ -43,6 +46,9 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     );
     _realtime = _createRealtime();
     _pushNotifications = PushNotificationService(_apiClient);
+    _notificationOpenSubscription = _pushNotifications.opened.listen(
+      _openNotification,
+    );
     _session = StaffSessionBloc(
       DioStaffAuthRepository(_apiClient, BranchAuthEndpoints.login),
       _tokenStorage,
@@ -75,6 +81,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     _router.dispose();
     _session.close();
     _unauthorizedSubscription.cancel();
+    _notificationOpenSubscription.cancel();
     _realtime?.dispose();
     unawaited(_pushNotifications.dispose());
     _apiClient.dispose();
@@ -123,9 +130,20 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
 
   void _onAuthenticated() {
     _apiClient.resetUnauthorizedSignal();
-    unawaited(_pushNotifications.initialize());
+    unawaited(_initializePushNotifications());
     if (_realtime != null) unawaited(_realtime.connect());
     _router.router.go('/operations');
+  }
+
+  Future<void> _initializePushNotifications() async {
+    await _pushNotifications.initialize();
+    final initial = _pushNotifications.takeInitialTarget();
+    if (initial != null) _openNotification(initial);
+  }
+
+  void _openNotification(NotificationTarget target) {
+    final location = NotificationLocation.of(target);
+    if (location != null && mounted) _router.router.go(location);
   }
 
   Future<void> _logout() async {

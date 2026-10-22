@@ -1109,7 +1109,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationsEmptyTitle => 'لا توجد إشعارات بعد';
 
   @override
-  String get notificationsEmptyMessage => 'ستظهر تحديثات الحجوزات هنا.';
+  String get notificationsEmptyMessage =>
+      'ستظهر هنا تحديثات الحجوزات والدعوات وطلبات التقييم.';
 
   @override
   String get notificationsMarkAllRead => 'تعليم الكل كمقروء';

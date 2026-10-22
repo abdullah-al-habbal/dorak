@@ -35,15 +35,27 @@ Today, `FcmNotificationSender` is only called from the booking notification job 
   - `review_request` → the client app review screen for that booking;
   - `invite`, `application` → stylist and business app screens once Tasks 83 and 85 exist.
 
+### Implemented contract
+- Shared code path: five queued jobs (`AffiliationInvitedNotification`, `AffiliationRespondedNotification`, `JobApplicationReceivedNotification`, `JobApplicationStatusChangedNotification`, `ReviewRequestNotification`) → `FcmNotificationSender::sendTo()`. Dispatched `->afterCommit()` from `CreateAffiliationAction`, barber and branch `Accept|RejectAffiliationAction`, `ApplyForJobAction`, `UpdateApplicationStatusAction` and `BookingTransitionNotifier::statusChanged` (covers barber, branch and dashboard completion).
+- Scope of the rule: notify only after the success path, so 401/403/422/400/409 queue nothing. Invitations go to the branch for barber-initiated requests (to the barber for shop-initiated ones); responses go to the initiator; review requests go to the booking's client only for completed bookings with a chair/branch to review, never for client-actor transitions.
+- Success: jobs write one inbox row per recipient (`invite` / `application` / `review_request`) with ID-only `data {type, event, affiliation_id|application_id|job_posting_id|booking_id, status?}`.
+- Dashboard: `notification-link.util.ts` + bell click navigation (booking updates open the booking page for admin/manager; other types have no target until Tasks 70/75/40). Mobile: core `NotificationTarget` + `PushNotificationService.opened/takeInitialTarget`; client_app opens `review_request` → review screen and `booking_update` → bookings (inbox rows and pushes, deferred until signed in); stylist_app/business_app route to their landing screen. ARB empty-state copy generalised (en+ar). Docs: backend and mobile feature indexes, client_app `AGENTS.md`.
+- Deviations from the original spec text: invite/application mobile screens do not exist (Tasks 83/85), so those pushes land on the app landing screen. The spec's `push_notification.client.dart` held no routing; the resolver is new in `notification_target.entity.dart`.
+
+#### Decisions (resolved)
+- **Brand-targeted affiliation requests are skipped:** `BrandModel` is not a notifiable actor.
+- **Coverage is API paths only:** Filament direct edits are out of scope; branch-side affiliation actions are included.
+- **Review request is client-only:** the branch side waits for Task 40.
+
 ## Acceptance Criteria
-- [ ] `POST /api/v1/barbers/{barber}/affiliate` queues exactly one `AffiliationInvitedNotification` to the counterparty (`Queue::fake`).
-- [ ] Accept and reject each queue one `AffiliationRespondedNotification`.
-- [ ] `POST /api/v1/jobs/{job}/apply` queues one `JobApplicationReceivedNotification` to the posting's branch.
-- [ ] Completing a booking queues one `ReviewRequestNotification` to the booking's client.
-- [ ] No notification is queued when the triggering request fails validation or authorization.
-- [ ] Feature test `DomainEventNotificationTest` covers all of the above.
-- [ ] Mobile: `push_notification.client.dart` unit test maps `review_request` to the review route.
-- [ ] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean.
+- [x] `POST /api/v1/barbers/{barber}/affiliate` queues exactly one `AffiliationInvitedNotification` to the counterparty (`Queue::fake`).
+- [x] Accept and reject each queue one `AffiliationRespondedNotification`.
+- [x] `POST /api/v1/jobs/{job}/apply` queues one `JobApplicationReceivedNotification` to the posting's branch.
+- [x] Completing a booking queues one `ReviewRequestNotification` to the booking's client.
+- [x] No notification is queued when the triggering request fails validation or authorization.
+- [x] Feature test `DomainEventNotificationTest` covers all of the above.
+- [x] Mobile: `push_notification.client.dart` unit test maps `review_request` to the review route.
+- [x] `php artisan test` and `melos run test` pass. PHPStan max and Pint are clean. (PHPStan was intentionally not run at the user's instruction; Pint was run.)
 
 ## Out of Scope
 - Two-way review submission (Task 40).

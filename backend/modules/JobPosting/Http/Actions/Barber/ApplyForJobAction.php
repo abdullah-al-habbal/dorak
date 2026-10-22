@@ -10,6 +10,7 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\JobPosting\Handlers\Barber\ApplyForJobHandler;
 use Modules\JobPosting\Http\Requests\Barber\ApplyForJobRequest;
 use Modules\JobPosting\Http\Resources\Barber\ApplicationResource;
+use Modules\JobPosting\Jobs\JobApplicationReceivedNotification;
 
 final class ApplyForJobAction extends BaseApiAction
 {
@@ -31,6 +32,8 @@ final class ApplyForJobAction extends BaseApiAction
                 },
             );
         }
+
+        JobApplicationReceivedNotification::dispatch((string) $result->application->id, app()->getLocale())->afterCommit();
 
         return $this->created(
             data: new ApplicationResource($result->application),

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
 import 'package:stylist_app/src/core/navigation/app.router.dart';
+import 'package:stylist_app/src/core/navigation/notification_location.entity.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 
 class StylistApp extends StatefulWidget {
@@ -26,6 +27,8 @@ class _StylistAppState extends State<StylistApp> {
   late final StaffSessionBloc _session;
   late final TokenStorage _tokenStorage;
   late final StreamSubscription<void> _unauthorizedSubscription;
+  late final StreamSubscription<NotificationTarget>
+  _notificationOpenSubscription;
 
   @override
   void initState() {
@@ -38,6 +41,9 @@ class _StylistAppState extends State<StylistApp> {
     );
     _realtime = _createRealtime(_tokenStorage);
     _pushNotifications = PushNotificationService(_client);
+    _notificationOpenSubscription = _pushNotifications.opened.listen(
+      _openNotification,
+    );
     _session = StaffSessionBloc(
       DioStaffAuthRepository(_client, BarberAuthEndpoints.login),
       _tokenStorage,
@@ -64,6 +70,7 @@ class _StylistAppState extends State<StylistApp> {
     _router.dispose();
     _session.close();
     _unauthorizedSubscription.cancel();
+    _notificationOpenSubscription.cancel();
     _bloc.close();
     _realtime?.dispose();
     unawaited(_pushNotifications.dispose());
@@ -109,10 +116,21 @@ class _StylistAppState extends State<StylistApp> {
 
   void _onAuthenticated() {
     _client.resetUnauthorizedSignal();
-    unawaited(_pushNotifications.initialize());
+    unawaited(_initializePushNotifications());
     if (_realtime != null) unawaited(_realtime.connect());
     unawaited(_bloc.load());
     _router.router.go('/home');
+  }
+
+  Future<void> _initializePushNotifications() async {
+    await _pushNotifications.initialize();
+    final initial = _pushNotifications.takeInitialTarget();
+    if (initial != null) _openNotification(initial);
+  }
+
+  void _openNotification(NotificationTarget target) {
+    final location = NotificationLocation.of(target);
+    if (location != null && mounted) _router.router.go(location);
   }
 
   Future<void> _logout() async {

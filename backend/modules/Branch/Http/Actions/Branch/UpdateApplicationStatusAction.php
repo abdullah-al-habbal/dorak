@@ -13,6 +13,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\JobPosting\Enums\ApplicationStatus;
 use Modules\JobPosting\Http\Resources\Barber\ApplicationResource;
+use Modules\JobPosting\Jobs\JobApplicationStatusChangedNotification;
 use Modules\JobPosting\Models\ApplicationModel;
 use Modules\JobPosting\Models\JobPostingModel;
 
@@ -66,6 +67,8 @@ final class UpdateApplicationStatusAction extends BaseApiAction
             $model->update(['status' => $nextStatus]);
 
             $model->refresh();
+
+            JobApplicationStatusChangedNotification::dispatch((string) $model->id, app()->getLocale())->afterCommit();
 
             return $model;
         });

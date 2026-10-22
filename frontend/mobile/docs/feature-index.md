@@ -45,6 +45,7 @@
 - **Storage** (`src/storage/`) — `TokenStorage` / `SecureTokenStorage` (flutter_secure_storage) and `AppPreferences` / `SharedAppPreferences` (shared_preferences, `dontShowOnboarding`). See `docs/core/storage.md`.
 - **Session** (`src/session/`) — two independent pure `bloc`s over `AuthRepository` + `TokenStorage`: `AuthBloc` (`.bloc.dart`/`.event.dart`/`.state.dart`) for active auth actions (login/register/verify/resend), `SessionBloc` for session truth (restore/logout/unauthorized/ack). Decoupled: the app layer forwards auth successes as `SessionAuthenticated`. Type-safe one-shot signals — `SessionSignal` on `SessionState`, `AuthSignal` on `AuthState` — consumed by the router's two stream listeners. See `docs/core/session.md`.
 - `notification.repository.dart` — `NotificationRepository` + `DioNotificationRepository` (Task 30): paged inbox, mark one read, mark all read.
+- `notifications/notification_target.entity.dart` — `NotificationTarget.fromPayload(type:, data:)` resolves inbox or FCM payloads to `review|booking|invite|application|unknown` (never throws); `PushNotificationService.opened` / `takeInitialTarget()` expose tapped pushes (Task 31). stylist_app and business_app map them through their own `notification_location.entity.dart` to the landing screen until Tasks 83/85 add invite/application screens.
 
 ### feature_floor_plan
 - Stub only — `feature_floor_plan.dart` barrel, no implementation yet.

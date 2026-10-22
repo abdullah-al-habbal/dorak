@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\BarberAffiliation\Handlers\Barber\AcceptAffiliationHandler;
 use Modules\BarberAffiliation\Http\Requests\Barber\AcceptAffiliationRequest;
 use Modules\BarberAffiliation\Http\Resources\Barber\BarberAffiliationResource;
+use Modules\BarberAffiliation\Jobs\AffiliationRespondedNotification;
 use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 
@@ -24,6 +25,8 @@ final class AcceptAffiliationAction extends BaseApiAction
         if (! $result->success) {
             return $this->businessError(ErrorCodeEnum::BAD_REQUEST, message: __('barberaffiliation::messages.not_pending'));
         }
+
+        AffiliationRespondedNotification::dispatch((string) $result->affiliation->id, true, app()->getLocale())->afterCommit();
 
         return $this->ok(
             data: new BarberAffiliationResource($result->affiliation),

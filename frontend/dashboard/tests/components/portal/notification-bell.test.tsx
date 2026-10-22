@@ -13,12 +13,14 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const session = vi.hoisted(() => ({ actor: "manager" }));
+const router = vi.hoisted(() => ({ push: vi.fn() }));
 
 // jsdom ships no CSS.escape; react-aria menus use it to find item elements.
 vi.stubGlobal("CSS", {
   escape: (value: string) => value.replace(/["\\]/g, "\\$&"),
 });
 
+vi.mock("next/navigation", () => ({ useRouter: () => router }));
 vi.mock("@/hooks/use-session", () => ({ useSession: () => session }));
 vi.mock("@/hooks/use-dictionary", async () => {
   const { en: dictionary } = await vi.importActual<
@@ -34,12 +36,18 @@ vi.mock("@/services/api/notification-inbox.mutation", () => ({
   markAllNotificationsRead: vi.fn(),
 }));
 
-const notification = (id: string, title: string, readAt: string | null) => ({
+const notification = (
+  id: string,
+  title: string,
+  readAt: string | null,
+  type = "booking_update",
+  data: Record<string, unknown> = {},
+) => ({
   id,
-  type: "booking_update",
+  type,
   title,
   body: `${title} body`,
-  data: {},
+  data,
   readAt,
   createdAt: "2026-10-22T10:00:00Z",
 });
@@ -71,6 +79,7 @@ const unreadLabel = (count: number) =>
 
 beforeEach(() => {
   session.actor = "manager";
+  router.push.mockReset();
   vi.mocked(getNotificationInbox).mockReset();
   vi.mocked(markNotificationRead).mockReset();
   vi.mocked(markAllNotificationsRead).mockReset();
@@ -142,4 +151,64 @@ describe("NotificationBell", () => {
     expect(container.innerHTML).toBe("");
     expect(getNotificationInbox).not.toHaveBeenCalled();
   });
+
+  it("opens the booking for a booking update", async () => {
+    vi.mocked(getNotificationInbox).mockResolvedValue({
+      items: [
+        notification(
+          "n-1",
+          "Booking moved",
+          "2026-10-22T11:00:00Z",
+          "booking_update",
+          {
+            booking_id: "b-9",
+          },
+        ),
+      ],
+      unreadCount: 0,
+      total: 1,
+    });
+    const user = userEvent.setup();
+    renderBell();
+
+    await user.click(await screen.findByRole("button"));
+    await user.click(
+      await screen.findByRole("menuitem", { name: /Booking moved/ }),
+    );
+
+    expect(router.push).toHaveBeenCalledWith("/manager/bookings/b-9");
+  });
+
+  it.each(["invite", "application", "review_request"])(
+    "renders %s notifications and marks them read without navigating",
+    async (type) => {
+      vi.mocked(getNotificationInbox)
+        .mockResolvedValueOnce({
+          items: [
+            notification("n-1", "Heads up", null, type, { booking_id: "b-9" }),
+          ],
+          unreadCount: 1,
+          total: 1,
+        })
+        .mockResolvedValue({ items: [], unreadCount: 0, total: 0 });
+      vi.mocked(markNotificationRead).mockResolvedValue(
+        notification("n-1", "Heads up", "2026-10-22T11:00:00Z", type),
+      );
+      const user = userEvent.setup();
+      renderBell();
+
+      await user.click(
+        await screen.findByRole("button", { name: unreadLabel(1) }),
+      );
+      await user.click(
+        await screen.findByRole("menuitem", { name: /Heads up/ }),
+      );
+
+      expect(markNotificationRead).toHaveBeenCalledWith(
+        "n-1",
+        expect.anything(),
+      );
+      expect(router.push).not.toHaveBeenCalled();
+    },
+  );
 });

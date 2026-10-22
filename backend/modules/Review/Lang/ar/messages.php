@@ -12,4 +12,6 @@ return [
     'dispute_resolved' => 'تم حل نزاع التقييم.',
     'dispute_not_allowed' => 'لا يمكن الاعتراض على هذا التقييم.',
     'dispute_resolution_not_available' => 'لا يمكن حل هذا النزاع قبل انقضاء فترة المراجعة البالغة 48 ساعة.',
+    'notification_review_request_title' => 'كيف كانت زيارتك؟',
+    'notification_review_request_body' => 'اكتمل حجزك. شاركنا تجربتك.',
 ];

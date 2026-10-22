@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:localization/localization.dart';
 
 import 'package:design_system/design_system.dart';
 
+import 'package:client_app/src/core/navigation/notification_location.entity.dart';
 import 'package:client_app/src/features/notifications/notifications.bloc.dart';
 import 'package:client_app/src/features/notifications/notifications.event.dart';
 import 'package:client_app/src/features/notifications/notifications.state.dart';
@@ -140,14 +143,25 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               notification: notification,
               unreadLabel: l10n.notificationsUnreadLabel,
               isMarking: state.markingId == notification.id,
-              onTap: () => widget.bloc.add(
-                NotificationMarkReadRequested(notification.id),
-              ),
+              onTap: () => _open(context, notification),
             );
           },
         ),
       ),
     );
+  }
+
+  void _open(BuildContext context, NotificationDto notification) {
+    if (notification.isUnread) {
+      widget.bloc.add(NotificationMarkReadRequested(notification.id));
+    }
+    final location = NotificationLocation.of(
+      NotificationTarget.fromPayload(
+        type: notification.type,
+        data: notification.data,
+      ),
+    );
+    if (location != null) unawaited(context.push<void>(location));
   }
 
   Widget _footer(NotificationsState state, AppLocalizations l10n) {

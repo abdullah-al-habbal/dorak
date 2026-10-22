@@ -2,6 +2,12 @@
 
 > **Append entry after adding each feature.** This is the chronological map of every feature built.
 
+### Domain-Event Notifications (Task 31)
+- Queued jobs (all `afterCommit`, ID-only scalar payloads, stable `dispatchKey`, en+ar copy): `AffiliationInvitedNotification` (`invite`), `AffiliationRespondedNotification` (`invite`), `JobApplicationReceivedNotification` (`application`), `JobApplicationStatusChangedNotification` (`application`), `ReviewRequestNotification` (`review_request`).
+- Triggers: `POST /barbers/{barber}/affiliate` (branch targets only), barber `POST /affiliations/{id}/accept|reject` and branch `POST /branch/affiliations/{id}/accept|reject`, `POST /jobs/{job}/apply`, `PATCH /branch/job-postings/{posting}/applications/{application}/status`, and booking completion through `BookingTransitionNotifier::statusChanged` (barber, branch and dashboard routes).
+- FCM/inbox `data`: `type` (enum value), `event` (`affiliation_invited|affiliation_responded|application_received|application_status_changed|review_request`) plus IDs (`affiliation_id`, `application_id`, `job_posting_id`, `booking_id`, `status`).
+- Not notified: brand-targeted affiliation requests (no notifiable actor), Filament direct edits, review requests for bookings with no chair/branch to review. Tests: `tests/Feature/Notification/DomainEventNotificationTest.php`.
+
 ### Notification Inbox & Delivery Records (Task 30)
 - Tables `notifications` (uuid, `notifiable` morph using `client`/`barber`/`branch` aliases, `type` `booking_update|invite|application|review_request`, `title`, `body`, `data`, unique `dedupe_key`, `read_at`) and `notification_deliveries` (`notification_id`, nullable `device_token_id` with `nullOnDelete`, `status` `sent|failed`, `provider_message_id`, `error`, `attempted_at`).
 - `NotificationWriter` + `FcmNotificationSender::sendTo(..., NotificationTypeEnum $type, ..., ?string $dispatchKey)` — writes one inbox row per recipient (idempotent per dispatch key, so queue retries never duplicate rows or re-push delivered devices), then one delivery row per device attempt; still writes the inbox row when FCM is unconfigured or the recipient has no device.

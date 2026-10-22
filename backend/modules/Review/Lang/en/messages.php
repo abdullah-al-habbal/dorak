@@ -12,4 +12,6 @@ return [
     'dispute_resolved' => 'Review dispute resolved.',
     'dispute_not_allowed' => 'This review cannot be disputed.',
     'dispute_resolution_not_available' => 'This dispute cannot be resolved until the 48-hour review window has elapsed.',
+    'notification_review_request_title' => 'How was your visit?',
+    'notification_review_request_body' => 'Your booking is complete. Tell us about your experience.',
 ];

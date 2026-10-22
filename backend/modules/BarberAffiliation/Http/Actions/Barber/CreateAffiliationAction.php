@@ -6,9 +6,11 @@ namespace Modules\BarberAffiliation\Http\Actions\Barber;
 
 use Illuminate\Http\JsonResponse;
 use Modules\BarberAffiliation\Eloquent\Resolvers\Barber\BarberAlreadyAffiliatedException;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Handlers\Barber\CreateAffiliationHandler;
 use Modules\BarberAffiliation\Http\Requests\Barber\CreateAffiliationRequest;
 use Modules\BarberAffiliation\Http\Resources\Barber\BarberAffiliationResource;
+use Modules\BarberAffiliation\Jobs\AffiliationInvitedNotification;
 use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 
@@ -29,6 +31,10 @@ final class CreateAffiliationAction extends BaseApiAction
                 ErrorCodeEnum::CONFLICT,
                 message: __('barberaffiliation::messages.already_affiliated'),
             );
+        }
+
+        if ($result->affiliation->affiliable_type === AffiliableType::Branch) {
+            AffiliationInvitedNotification::dispatch((string) $result->affiliation->id, app()->getLocale())->afterCommit();
         }
 
         return $this->created(

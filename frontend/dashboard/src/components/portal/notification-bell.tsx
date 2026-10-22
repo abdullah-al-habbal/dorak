@@ -16,12 +16,15 @@ import { useMarkAllNotificationsReadMutation } from "@/hooks/use-mark-all-notifi
 import { useMarkNotificationReadMutation } from "@/hooks/use-mark-notification-read-mutation";
 import { useNotificationInboxQuery } from "@/hooks/use-notification-inbox-query";
 import { useSession } from "@/hooks/use-session";
+import { notificationHref } from "@/services/api/notification-link.util";
 import { cn } from "@/utils/cn.util";
 import { Bell1 } from "@tailgrids/icons";
+import { useRouter } from "next/navigation";
 
 /** Admin sessions authenticate as admin_api, which has no notification inbox. */
 export function NotificationBell() {
   const session = useSession();
+  const router = useRouter();
   const isEnabled = session.actor !== "admin";
   const copy = useDictionary().common.notifications;
   const inbox = useNotificationInboxQuery(isEnabled);
@@ -71,6 +74,8 @@ export function NotificationBell() {
               textValue={notification.title}
               onAction={() => {
                 if (!notification.readAt) markRead.mutate(notification.id);
+                const href = notificationHref(notification, session.actor);
+                if (href) router.push(href);
               }}
             >
               <NotificationBellItem

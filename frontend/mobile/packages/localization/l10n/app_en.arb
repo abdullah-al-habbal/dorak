@@ -1229,7 +1229,7 @@
   "@notificationsTitle": {"description": "App bar title of the notification inbox"},
   "notificationsEmptyTitle": "No notifications yet",
   "@notificationsEmptyTitle": {"description": "Empty-state title of the notification inbox"},
-  "notificationsEmptyMessage": "Booking updates will appear here.",
+  "notificationsEmptyMessage": "Booking updates, invitations and review requests will appear here.",
   "@notificationsEmptyMessage": {"description": "Empty-state message of the notification inbox"},
   "notificationsMarkAllRead": "Mark all as read",
   "@notificationsMarkAllRead": {"description": "Inbox action that marks every notification read"},

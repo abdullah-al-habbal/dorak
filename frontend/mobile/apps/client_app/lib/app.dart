@@ -11,6 +11,7 @@ import 'package:client_app/src/core/locale/locale.bloc.dart';
 import 'package:client_app/src/core/locale/locale.event.dart';
 import 'package:client_app/src/core/navigation/app.router.dart';
 import 'package:client_app/src/core/navigation/app_services.provider.dart';
+import 'package:client_app/src/core/navigation/notification_location.entity.dart';
 import 'package:client_app/src/core/session/auth_coordination.entity.dart';
 import 'package:client_app/src/features/profile/image_picker_photo_picker.provider.dart';
 
@@ -46,6 +47,9 @@ class _DorakAppState extends State<DorakApp> {
   late final PushNotificationService _pushNotifications;
   late final RealtimeClient? _realtime;
   late final StreamSubscription<SessionState> _realtimeSessionSubscription;
+  late final StreamSubscription<NotificationTarget>
+  _notificationOpenSubscription;
+  String? _pendingNotificationLocation;
 
   @override
   void initState() {
@@ -61,7 +65,10 @@ class _DorakAppState extends State<DorakApp> {
     );
     _pushNotifications = PushNotificationService(_apiClient);
     _realtime = _createRealtime();
-    unawaited(_pushNotifications.initialize());
+    _notificationOpenSubscription = _pushNotifications.opened.listen(
+      _openNotification,
+    );
+    unawaited(_initializePushNotifications());
     final repository = widget.authRepository ?? DioAuthRepository(_apiClient);
     _authBloc = AuthBloc(repository, _tokenStorage);
     _sessionBloc = SessionBloc(repository, _tokenStorage);
@@ -108,6 +115,7 @@ class _DorakAppState extends State<DorakApp> {
     _lifecycleListener.dispose();
     _authCoordinatorSubscription.cancel();
     _realtimeSessionSubscription.cancel();
+    _notificationOpenSubscription.cancel();
     _unauthorizedSubscription.cancel();
     _accountBannedSubscription.cancel();
     _router.dispose();
@@ -129,7 +137,33 @@ class _DorakAppState extends State<DorakApp> {
     );
   }
 
+  Future<void> _initializePushNotifications() async {
+    await _pushNotifications.initialize();
+    final initial = _pushNotifications.takeInitialTarget();
+    if (initial != null) _openNotification(initial);
+  }
+
+  /// Opens the screen for a tapped push. A guest first signs in, so the
+  /// location is held and opened once the session becomes authenticated.
+  void _openNotification(NotificationTarget target) {
+    final location = NotificationLocation.of(target);
+    if (location == null) return;
+    if (_sessionBloc.state.status.isAuthenticated) {
+      unawaited(_router.router.push<void>(location));
+    } else {
+      _pendingNotificationLocation = location;
+    }
+  }
+
+  void _openPendingNotification(SessionState state) {
+    final location = _pendingNotificationLocation;
+    if (location == null || !state.status.isAuthenticated) return;
+    _pendingNotificationLocation = null;
+    unawaited(_router.router.push<void>(location));
+  }
+
   void _syncRealtimeWithSession(SessionState state) {
+    _openPendingNotification(state);
     final realtime = _realtime;
     if (realtime == null) return;
     if (state.status.isAuthenticated) {

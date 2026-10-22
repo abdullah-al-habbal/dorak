@@ -7,6 +7,7 @@ namespace Modules\Branch\Http\Actions\Branch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
+use Modules\BarberAffiliation\Jobs\AffiliationRespondedNotification;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Enums\SuccessCodeEnum;
@@ -29,6 +30,8 @@ final class RejectAffiliationAction extends BaseApiAction
         $affiliationModel->update([
             'status' => AffiliationStatus::Rejected,
         ]);
+
+        AffiliationRespondedNotification::dispatch((string) $affiliationModel->id, false, app()->getLocale())->afterCommit();
 
         return $this->success(
             data: $affiliationModel->fresh()->load('barber'),

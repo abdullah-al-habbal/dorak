@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:client_app/src/core/navigation/app_routes.entity.dart';
+import 'package:client_app/src/features/booking/bookings.screen.dart';
 import 'package:client_app/src/features/notifications/notifications.bloc.dart';
 import 'package:client_app/src/features/notifications/notifications.screen.dart';
+import 'package:client_app/src/features/review/review_submit.bloc.dart';
+import 'package:client_app/src/features/review/review_submit.screen.dart';
 
 import 'helpers/fakes.dart';
 
@@ -26,11 +29,14 @@ void main() {
     final pair = sessionPair(authRepository, storage);
     final notifications = NotificationsBloc(repository);
     addTearDown(notifications.close);
+    final reviewBloc = ReviewSubmitBloc(FakeReviewRepository());
+    addTearDown(reviewBloc.close);
 
     final router = buildRouter(
       session: pair.session,
       auth: pair.auth,
       notifications: notifications,
+      reviewSubmit: reviewBloc,
       preferences: InMemoryAppPreferences(dontShowOnboarding: true),
       apiClient: fakeApiClient(),
     );
@@ -116,5 +122,75 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Booking confirmed'), findsOneWidget);
+  });
+
+  testWidgets('tapping a review request opens the review for its booking', (
+    tester,
+  ) async {
+    repository.firstPage = testNotificationPage(
+      notifications: [
+        testNotification(
+          title: 'How was your visit?',
+          type: 'review_request',
+          data: const {'booking_id': 'booking-7'},
+        ),
+      ],
+    );
+    await pumpInbox(tester);
+
+    await tester.tap(find.text('How was your visit?'));
+    await tester.pumpAndSettle();
+
+    expect(repository.lastMarkedId, 'notification-1');
+    final screen = tester.widget<ReviewSubmitScreen>(
+      find.byType(ReviewSubmitScreen),
+    );
+    expect(screen.bookingId, 'booking-7');
+  });
+
+  testWidgets('a read review request still opens the review', (tester) async {
+    repository.firstPage = testNotificationPage(
+      notifications: [
+        testNotification(
+          title: 'How was your visit?',
+          type: 'review_request',
+          data: const {'booking_id': 'booking-7'},
+          readAt: DateTime.utc(2026, 10, 22, 11),
+        ),
+      ],
+    );
+    await pumpInbox(tester);
+
+    await tester.tap(find.text('How was your visit?'));
+    await tester.pumpAndSettle();
+
+    expect(repository.markReadCalls, 0);
+    expect(find.byType(ReviewSubmitScreen), findsOneWidget);
+  });
+
+  testWidgets('a booking update opens the bookings list', (tester) async {
+    await pumpInbox(tester);
+
+    await tester.tap(find.text('Booking confirmed'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BookingsScreen), findsOneWidget);
+  });
+
+  testWidgets('invite and application rows only mark read for now', (
+    tester,
+  ) async {
+    repository.firstPage = testNotificationPage(
+      notifications: [
+        testNotification(title: 'New invite', type: 'invite', data: const {}),
+      ],
+    );
+    await pumpInbox(tester);
+
+    await tester.tap(find.text('New invite'));
+    await tester.pumpAndSettle();
+
+    expect(repository.lastMarkedId, 'notification-1');
+    expect(find.byType(NotificationsScreen), findsOneWidget);
   });
 }

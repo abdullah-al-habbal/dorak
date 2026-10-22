@@ -124,6 +124,11 @@
 - `lib/src/features/notifications/notifications.screen.dart` + `widgets/notification_tile.widget.dart` — inbox at `/profile/notifications` (nested profile route via `_scope`), entered from the Profile tab's Notifications button; tap marks an unread row read; app-bar "Mark all as read" while anything is unread.
 - Wiring: `AppServices.createNotifications`, `AppRouter.notifications` test seam, `buildRouter(notifications:)` + `FakeNotificationRepository` in `test/helpers/fakes.dart`.
 
+### Notification Tap Routing (Task 31)
+- `lib/src/core/navigation/notification_location.entity.dart` — maps a core `NotificationTarget` to a route: `review_request` → `/bookings/reviews/:bookingId`, `booking_update` → `/bookings`; invite/application/unknown → none.
+- Inbox rows now navigate (read rows too) after marking an unread row read; `DorakApp` opens pushed notifications (`PushNotificationService.opened` + `takeInitialTarget()`), holding the location until the session is authenticated.
+- Tests: `test/notification_location_test.dart`, `test/notifications_flow_test.dart`.
+
 ### Empty Scaffolds (no files yet)
 - `lib/src/features/profile/` (password entry button only)
 - `lib/src/core/{di,theme}/`

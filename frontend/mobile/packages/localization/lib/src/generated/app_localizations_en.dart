@@ -1118,7 +1118,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsEmptyTitle => 'No notifications yet';
 
   @override
-  String get notificationsEmptyMessage => 'Booking updates will appear here.';
+  String get notificationsEmptyMessage =>
+      'Booking updates, invitations and review requests will appear here.';
 
   @override
   String get notificationsMarkAllRead => 'Mark all as read';

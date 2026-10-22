@@ -1231,12 +1231,14 @@ NotificationDto testNotification({
   String id = 'notification-1',
   String title = 'Booking confirmed',
   DateTime? readAt,
+  String type = 'booking_update',
+  Map<String, dynamic> data = const {'booking_id': 'booking-1'},
 }) => NotificationDto(
   id: id,
-  type: 'booking_update',
+  type: type,
   title: title,
   body: 'Your booking is confirmed',
-  data: const {'booking_id': 'booking-1'},
+  data: data,
   readAt: readAt,
   createdAt: DateTime.utc(2026, 10, 22, 10),
 );

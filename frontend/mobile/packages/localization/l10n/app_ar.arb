@@ -1151,7 +1151,7 @@
   "stylistMarkNoShow": "تحديد عدم الحضور",
   "notificationsTitle": "الإشعارات",
   "notificationsEmptyTitle": "لا توجد إشعارات بعد",
-  "notificationsEmptyMessage": "ستظهر تحديثات الحجوزات هنا.",
+  "notificationsEmptyMessage": "ستظهر هنا تحديثات الحجوزات والدعوات وطلبات التقييم.",
   "notificationsMarkAllRead": "تعليم الكل كمقروء",
   "notificationsUnreadLabel": "غير مقروء",
   "profileNotificationsAction": "الإشعارات"

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Booking\Services;
 
+use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Events\BookingCancelledEvent;
 use Modules\Booking\Events\BookingRescheduledEvent;
 use Modules\Booking\Events\BookingStatusUpdatedEvent;
 use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
 use Modules\Booking\Models\BookingModel;
+use Modules\Review\Jobs\ReviewRequestNotification;
 
 /**
  * Single dispatch point for the broadcast and push that follow a booking
@@ -28,6 +30,10 @@ final class BookingTransitionNotifier
             ? new BookingCancelledEvent($bookingId, $branchId, $barberId, $clientId)
             : new BookingStatusUpdatedEvent($bookingId, $branchId, $barberId, $booking->status->value, $clientId));
         SendBookingStatusNotificationJob::dispatch($bookingId, false, app()->getLocale(), false, $actorIsClient)->afterCommit();
+
+        if ($booking->status === BookingStatus::Completed && ! $actorIsClient) {
+            ReviewRequestNotification::dispatch($bookingId, app()->getLocale())->afterCommit();
+        }
     }
 
     public function rescheduled(BookingModel $booking): void

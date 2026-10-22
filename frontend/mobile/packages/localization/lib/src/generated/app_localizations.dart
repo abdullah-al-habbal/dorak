@@ -2093,7 +2093,7 @@ abstract class AppLocalizations {
   /// Empty-state message of the notification inbox
   ///
   /// In en, this message translates to:
-  /// **'Booking updates will appear here.'**
+  /// **'Booking updates, invitations and review requests will appear here.'**
   String get notificationsEmptyMessage;
 
   /// Inbox action that marks every notification read
