@@ -37,6 +37,10 @@ final class UpdateBrandEloquentResolver
             $data['base_currency_id'] = $command->baseCurrencyId;
         }
 
+        if ($command->universe !== null) {
+            $data['universe'] = $command->universe;
+        }
+
         if ($command->logo !== null) {
             $data['logo'] = $command->logo;
         }

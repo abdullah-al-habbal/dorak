@@ -122,7 +122,9 @@ class BranchModel extends Authenticatable implements FilamentUser
             }
 
             $brandUniverse = BrandModel::query()->whereKey($branch->getAttribute('brand_id'))->value('universe');
-            $branch->setAttribute('universe', VenueUniverse::tryFrom((string) $brandUniverse) ?? VenueUniverse::Unisex);
+            $branch->setAttribute('universe', $brandUniverse instanceof VenueUniverse
+                ? $brandUniverse
+                : (VenueUniverse::tryFrom((string) $brandUniverse) ?? VenueUniverse::Unisex));
         });
     }
 

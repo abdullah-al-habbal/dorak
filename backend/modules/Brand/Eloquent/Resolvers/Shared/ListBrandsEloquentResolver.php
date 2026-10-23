@@ -12,6 +12,6 @@ final class ListBrandsEloquentResolver
 {
     public function resolve(ListBrandsQuery $payload): LengthAwarePaginator
     {
-        return BrandModel::with(['owner', 'baseCurrency'])->paginate($payload->perPage);
+        return BrandModel::with(['owner', 'baseCurrency'])->withCount('branches')->paginate($payload->perPage);
     }
 }

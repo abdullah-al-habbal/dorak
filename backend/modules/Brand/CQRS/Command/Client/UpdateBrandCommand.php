@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Brand\CQRS\Command\Client;
 
+use Modules\Core\Enums\VenueUniverse;
+
 final readonly class UpdateBrandCommand
 {
     public function __construct(
@@ -15,5 +17,6 @@ final readonly class UpdateBrandCommand
         public ?string $logo,
         public ?string $descriptionEn,
         public ?string $descriptionAr,
+        public ?VenueUniverse $universe = null,
     ) {}
 }

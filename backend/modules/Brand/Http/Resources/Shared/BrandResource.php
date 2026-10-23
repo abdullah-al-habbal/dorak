@@ -23,7 +23,11 @@ final class BrandResource extends JsonResource
                 'id' => $this->baseCurrency->id,
                 'code' => $this->baseCurrency->code,
             ]),
-            'branches_count' => $this->whenLoaded('branches', fn () => $this->branches->count()),
+            'slug' => $this->offsetGet('slug'),
+            'universe' => $this->offsetGet('universe'),
+            'branches_count' => $this->offsetGet('branches_count') !== null
+                ? (int) $this->offsetGet('branches_count')
+                : $this->whenLoaded('branches', fn () => $this->branches->count()),
             'created_at' => $this->created_at->toIso8601String(),
         ];
     }

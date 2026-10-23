@@ -30,3 +30,5 @@ The dashboard uses brands and service-catalog items only as dropdown lookups thr
 
 ## Out of Scope
 - Catalog domain rules such as inactive-item referencing and tag assignment (Task 61).
+
+> Note (Task 49): `POST /api/v1/brands` accepts `universe` and an optional `first_branch{name, latitude, longitude, email, password}` and always creates one pending branch; brand payloads carry `slug`, `universe` and integer `branches_count`.

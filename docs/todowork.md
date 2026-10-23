@@ -81,7 +81,7 @@ codeanchors:
 - [x] Task 48: Complete Branch and Barber Detail Payloads -> [Spec](tasks/task-48-branch-barber-detail-completeness.md)
 
 ## Phase 8 — Brand, Branch & Barber Platform (P2)
-- [ ] Task 49: Apply Brand Creation Defaults -> [Spec](tasks/task-49-brand-creation-defaults.md)
+- [x] Task 49: Apply Brand Creation Defaults -> [Spec](tasks/task-49-brand-creation-defaults.md)
 - [ ] Task 50: Implement Brand Feature Flags -> [Spec](tasks/task-50-brand-feature-flags.md)
 - [ ] Task 51: Add Branch Storefront Fields and Opening Hours -> [Spec](tasks/task-51-branch-storefront-fields.md)
 - [ ] Task 52: Expose Settings and Preferences API -> [Spec](tasks/task-52-settings-preferences-api.md)

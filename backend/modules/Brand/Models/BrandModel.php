@@ -14,16 +14,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Str;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\VenueUniverse;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Preference\Models\PreferenceModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['owner_id', 'name', 'description', 'logo', 'base_currency_id'])]
+#[Fillable(['owner_id', 'name', 'slug', 'universe', 'description', 'logo', 'base_currency_id'])]
 #[Table('brands')]
 #[Translatable([
     'name',
@@ -35,9 +37,33 @@ class BrandModel extends Model
     use HasTranslations;
     use HasUuids;
 
+    /** Every brand gets a unique slug from `name.en`, suffixed `-2`, `-3`… on clashes (Task 49). */
+    protected static function booted(): void
+    {
+        static::creating(function (BrandModel $brand): void {
+            if (is_string($brand->getAttribute('slug')) && $brand->getAttribute('slug') !== '') {
+                return;
+            }
+
+            $brand->setAttribute('slug', self::uniqueSlug((string) $brand->getTranslation('name', 'en', false)));
+        });
+    }
+
+    public static function uniqueSlug(string $name): string
+    {
+        $base = Str::slug($name) ?: 'brand';
+        $slug = $base;
+        for ($suffix = 2; self::query()->where('slug', $slug)->exists(); $suffix++) {
+            $slug = "{$base}-{$suffix}";
+        }
+
+        return $slug;
+    }
+
     protected function casts(): array
     {
         return [
+            'universe' => VenueUniverse::class,
             'description' => 'array',
             'name' => 'array',
         ];
