@@ -14,6 +14,8 @@ use Modules\Explore\Support\ExploreUniverse;
 
 final class ExploreSearchRequest extends BaseApiFormRequest
 {
+    use AppliesDiscoveryPreferences;
+
     public function rules(): array
     {
         return [
@@ -47,7 +49,7 @@ final class ExploreSearchRequest extends BaseApiFormRequest
             'radius' => (float) $this->validated('radius'),
             'perPage' => (int) ($this->validated('per_page') ?? 20),
             'catalogItemIds' => $this->validated('catalog_item_ids'),
-            'availableNow' => $this->boolean('available_now'),
+            'availableNow' => $this->availableNowWithPreferences(),
             'priceRangeMin' => isset($priceRange['min']) ? (float) $priceRange['min'] : null,
             'priceRangeMax' => isset($priceRange['max']) ? (float) $priceRange['max'] : null,
             'ratingMin' => $this->validated('rating_min') !== null ? (float) $this->validated('rating_min') : null,
@@ -59,7 +61,7 @@ final class ExploreSearchRequest extends BaseApiFormRequest
         ];
 
         return new ExploreSearchQuery(
-            branches: new ExploreBranchesQuery(...$shared),
+            branches: new ExploreBranchesQuery(...$shared, hiddenBrandIds: $this->discoveryPreferences()->hiddenBrandIds),
             barbers: new ExploreBarbersQuery(...$shared),
             page: (int) ($this->validated('page') ?? 1),
             perPage: $shared['perPage'],

@@ -45,3 +45,5 @@ Several client features have backend routes, and often repository methods, but n
 ## Out of Scope
 - Social login and the password-recovery cleanup (Task 81).
 - Backend contract changes (the tasks listed under Depends on).
+
+> Note (Task 47): saved discovery preferences now change Explore results server-side (`hidden_brand_ids`, `default_radius`, `show_unavailable`), so the preferences screen only needs to save them.

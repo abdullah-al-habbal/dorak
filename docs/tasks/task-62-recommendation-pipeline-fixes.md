@@ -48,3 +48,5 @@ The nightly recompute command (`recommend:recompute-vectors`) runs, but it is in
 ## Out of Scope
 - Ranking order and α redistribution (Task 46). pgvector column type (Task 63).
 - Interaction log writes (Task 47). Face job dispatch (Task 15).
+
+> Note (Task 47): `client_interaction_logs` is now written (`view`, `search` with null interactable, `favorite`); `RecomputeClientVectorsCommand` does not read it yet — build the `visited` edges from `view` rows here.

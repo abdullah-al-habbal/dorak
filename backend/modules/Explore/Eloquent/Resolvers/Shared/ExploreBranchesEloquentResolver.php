@@ -47,6 +47,10 @@ final class ExploreBranchesEloquentResolver
             $subQuery->whereIn('universe', VenueUniverse::servingClient($payload->universe));
         }
 
+        if ($payload->hiddenBrandIds !== []) {
+            $subQuery->whereNotIn('brand_id', $payload->hiddenBrandIds);
+        }
+
         $subQuery = $this->applyFilters($subQuery, $payload);
 
         return BranchModel::query()->fromSub($subQuery, 'branches_sub')

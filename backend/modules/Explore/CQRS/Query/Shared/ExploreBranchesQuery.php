@@ -24,5 +24,7 @@ final readonly class ExploreBranchesQuery
         public ?string $search = null,
         /** @var list<string>|null */
         public ?array $tagIds = null,
+        /** @var list<string> */
+        public array $hiddenBrandIds = [],
     ) {}
 }

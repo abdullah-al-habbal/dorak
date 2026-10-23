@@ -12,6 +12,8 @@ use Modules\Explore\Support\ExploreUniverse;
 
 final class ExploreBranchesRequest extends BaseApiFormRequest
 {
+    use AppliesDiscoveryPreferences;
+
     public function rules(): array
     {
         return [
@@ -45,12 +47,13 @@ final class ExploreBranchesRequest extends BaseApiFormRequest
             universe: ExploreUniverse::resolve($this->validated('universe'), $this->user('client')),
             perPage: (int) ($this->validated('per_page') ?? 20),
             catalogItemIds: $this->validated('catalog_item_ids'),
-            availableNow: $this->boolean('available_now'),
+            availableNow: $this->availableNowWithPreferences(),
             priceRangeMin: isset($priceRange['min']) ? (float) $priceRange['min'] : null,
             priceRangeMax: isset($priceRange['max']) ? (float) $priceRange['max'] : null,
             ratingMin: $this->validated('rating_min') !== null ? (float) $this->validated('rating_min') : null,
             faceShapeCompatible: $this->validated('face_shape_compatible'),
             clientId: $this->user()?->id,
+            hiddenBrandIds: $this->discoveryPreferences()->hiddenBrandIds,
             search: is_string($this->validated('q')) && trim($this->validated('q')) !== '' ? trim($this->validated('q')) : null,
             tagIds: $this->validated('tag_ids'),
         );
