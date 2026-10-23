@@ -8,10 +8,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Enums\FloorPlanPreset;
 use Modules\Branch\Http\Requests\Branch\UpdateFloorPlanConfigurationRequest;
+use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class UpdateFloorPlanConfigurationAction extends BaseApiAction
 {
+    public function __construct(private readonly BrandFeatures $brandFeatures) {}
+
     public function __invoke(UpdateFloorPlanConfigurationRequest $request): JsonResponse
     {
         $branch = $request->user('branch_api');
@@ -21,6 +24,7 @@ final class UpdateFloorPlanConfigurationAction extends BaseApiAction
         }
 
         Gate::forUser($branch)->authorize('manage', $branch);
+        $this->brandFeatures->ensureBranchManageable($branch->getKey());
         $preset = $request->enum('preset', FloorPlanPreset::class);
 
         if ($preset === null) {

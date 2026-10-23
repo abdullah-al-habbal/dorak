@@ -144,6 +144,8 @@ export const ar: Dictionary = {
       validation: "تحقّق من البيانات المُدخلة وحاول مرة أخرى.",
       server: "الخدمة غير متاحة. حاول مجددًا بعد قليل.",
       unexpected: "حدث خطأ ما. حاول مرة أخرى.",
+      featureNotEnabled:
+        "يتطلب هذا ميزة مميزة غير مفعّلة لهذه العلامة التجارية.",
     },
     apiSuccess: {
       signedIn: "تم تسجيل الدخول بنجاح.",
@@ -308,6 +310,7 @@ export const ar: Dictionary = {
       women: "نساء",
       shared: "مشترك",
       unisex: "للجنسين",
+      multiBranchRequired: "تتطلب ميزة الفروع المتعددة",
       branch: "فرع",
       brand: "علامة تجارية",
       barber: "حلّاق",

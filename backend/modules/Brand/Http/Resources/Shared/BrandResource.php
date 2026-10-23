@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Brand\Http\Resources\Shared;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Brand\Services\BrandFeatures;
 
 final class BrandResource extends JsonResource
 {
@@ -28,6 +29,7 @@ final class BrandResource extends JsonResource
             'branches_count' => $this->offsetGet('branches_count') !== null
                 ? (int) $this->offsetGet('branches_count')
                 : $this->whenLoaded('branches', fn () => $this->branches->count()),
+            'features' => app(BrandFeatures::class)->all($this->resource),
             'created_at' => $this->created_at->toIso8601String(),
         ];
     }

@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\DestroyStylistCommand;
 use Modules\Dashboard\CQRS\Query\ShowStylistQuery;
@@ -16,6 +17,7 @@ use Modules\Dashboard\Support\DashboardActor;
 final class DestroyStylistAction extends BaseApiAction
 {
     public function __construct(
+        private readonly BrandFeatures $brandFeatures,
         private readonly ShowStylistHandler $showHandler,
         private readonly DestroyStylistHandler $destroyHandler,
     ) {}
@@ -28,6 +30,7 @@ final class DestroyStylistAction extends BaseApiAction
             $stylist,
             $actor->scopedBranchIds(),
         ));
+        $this->brandFeatures->ensureBranchManageable($model->managed_by_branch_id);
         $this->destroyHandler->handle($model, new DestroyStylistCommand($stylist));
 
         return $this->deleted();

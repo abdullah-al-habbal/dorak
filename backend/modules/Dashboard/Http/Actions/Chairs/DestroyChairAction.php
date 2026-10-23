@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Chairs;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\DestroyChairCommand;
 use Modules\Dashboard\CQRS\Query\ShowChairQuery;
@@ -17,6 +18,7 @@ use Modules\Dashboard\Support\DashboardActor;
 final class DestroyChairAction extends BaseApiAction
 {
     public function __construct(
+        private readonly BrandFeatures $brandFeatures,
         private readonly ShowChairHandler $showHandler,
         private readonly DestroyChairHandler $destroyHandler,
     ) {}
@@ -29,6 +31,8 @@ final class DestroyChairAction extends BaseApiAction
             $chair,
             $actor->scopedBranchIds(),
         ));
+
+        $this->brandFeatures->ensureBranchManageable($model->branch_id);
 
         try {
             $this->destroyHandler->handle($model, new DestroyChairCommand($chair));

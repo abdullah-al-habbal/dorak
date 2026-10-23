@@ -70,3 +70,38 @@ it("offers a brand owner only the brands they own", async () => {
     data: [{ id: "brand-1", label: "Dorak" }],
   });
 });
+
+it("flags brands that cannot take another branch without multi-branch", async () => {
+  backendRequest.mockResolvedValue({
+    ok: true,
+    status: 200,
+    envelope: {
+      data: [
+        {
+          id: "full",
+          name: { en: "Full" },
+          branches_count: 1,
+          features: { multi_branch: false },
+        },
+        {
+          id: "premium",
+          name: { en: "Premium" },
+          branches_count: 3,
+          features: { multi_branch: true },
+        },
+      ],
+    },
+  });
+
+  const response = await GET(
+    new NextRequest("http://localhost/api/lookups/brands"),
+    { params: Promise.resolve({ resource: "brands" }) },
+  );
+
+  await expect(response.json()).resolves.toMatchObject({
+    data: [
+      { id: "full", branchLimitReached: true },
+      { id: "premium", branchLimitReached: false },
+    ],
+  });
+});

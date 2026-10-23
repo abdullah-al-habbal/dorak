@@ -25,11 +25,14 @@ final class ApiExceptionResponseHandler
         $code = $this->errorCode($status);
         $responsePayload = $response instanceof JsonResponse ? $response->getData(true) : [];
         $payload = is_array($responsePayload) ? $responsePayload : [];
+        // A domain exception that renders its own stable `code` (e.g.
+        // `feature_not_enabled`) keeps it and its translated message.
+        $domainCode = isset($payload['code']) && is_string($payload['code']) && $payload['code'] !== '' ? $payload['code'] : null;
         $body = [
             'success' => false,
             'statusCode' => $status,
-            'code' => $code->value,
-            'message' => __($code->getMessageKey()),
+            'code' => $domainCode ?? $code->value,
+            'message' => $domainCode !== null && is_string($payload['message'] ?? null) ? $payload['message'] : __($code->getMessageKey()),
             'timestamp' => Carbon::now()->toISOString(),
             'request_id' => $uuid,
         ];

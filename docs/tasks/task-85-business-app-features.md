@@ -47,3 +47,5 @@ The business app covers only the dashboard, the bookings list, the chairs list a
 > Note (Task 40): the client-review contract is ready — `rateClient` on `BranchOperationsRepository` in `packages/core`, and staff booking payloads carry `client.reputation {average, count}` (`BookingDto.client`, dashboard `IBooking.client`).
 
 > Note (Task 41): branch dispute route is `POST /api/v1/branch/reviews/{review}/dispute`.
+
+> Note (Task 50): `core` throws `FeatureNotEnabledException` (`feature`) for 403 `feature_not_enabled`; show an upgrade message instead of a generic error.

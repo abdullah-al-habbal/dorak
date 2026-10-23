@@ -13,6 +13,10 @@ describe("apiErrorMessage", () => {
     [new ApiClientError("Bad", 400), en.common.apiError.validation],
     [new ApiClientError("Auth", 401), en.common.apiError.unauthorized],
     [new ApiClientError("No access", 403), en.common.apiError.forbidden],
+    [
+      new ApiClientError("Premium", 403, "feature_not_enabled"),
+      en.common.apiError.featureNotEnabled,
+    ],
     [new ApiClientError("Missing", 404), en.common.apiError.notFound],
     [new ApiClientError("Invalid", 422), en.common.apiError.validation],
     [new ApiClientError("Server", 503), en.common.apiError.server],

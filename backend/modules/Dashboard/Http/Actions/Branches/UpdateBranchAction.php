@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Http\Actions\Branches;
 use Illuminate\Http\JsonResponse;
 use LogicException;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\UpdateBranchCommand;
@@ -17,7 +18,8 @@ use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateBranchAction extends BaseApiAction
 {
-    public function __construct(private readonly UpdateBranchHandler $handler) {}
+    public function __construct(
+        private readonly BrandFeatures $brandFeatures, private readonly UpdateBranchHandler $handler) {}
 
     public function __invoke(UpdateBranchRequest $request, BranchModel $branch): JsonResponse
     {
@@ -28,6 +30,7 @@ final class UpdateBranchAction extends BaseApiAction
             throw new LogicException('Branch identifier must be scalar.');
         }
         $branchId = (string) $branchId;
+        $this->brandFeatures->ensureBranchManageable($branchId);
         if (! $actor->isPlatformAdmin() && (! $actor->canAccessBranch($branchId) || ! $this->keepsBrandInScope($actor, $branch, $request->validated('brand_id')))) {
             return $this->forbidden();
         }

@@ -346,7 +346,19 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         ["barber", fieldCopy.barber],
       ] as const;
     if (field === "brandId")
-      return (brands.data ?? []).map((item) => [item.id, item.label] as const);
+      return (brands.data ?? []).map((item) => {
+        const locked =
+          resource === "branches" &&
+          !editing &&
+          item.branchLimitReached === true;
+        return [
+          item.id,
+          locked
+            ? `${item.label} (${fieldCopy.multiBranchRequired})`
+            : item.label,
+          locked,
+        ] as const;
+      });
     if (field === "currencyId")
       return (currencies.data ?? []).map(
         (item) => [item.id, item.label] as const,
@@ -506,9 +518,13 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
                 <SelectIndicator />
               </SelectTrigger>
               <SelectContent>
-                {optionsFor(field)?.map(([value, label]) => (
-                  <SelectItem id={value} key={value}>
-                    {label}
+                {optionsFor(field)?.map((option) => (
+                  <SelectItem
+                    id={option[0]}
+                    key={option[0]}
+                    isDisabled={option[2] === true}
+                  >
+                    {option[1]}
                   </SelectItem>
                 ))}
               </SelectContent>

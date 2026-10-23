@@ -6,6 +6,7 @@ import { ApiClientError } from "@/services/api/client-error";
 function apiErrorCopyKey(error: unknown): ApiErrorCopyKey {
   if (!(error instanceof ApiClientError)) return "unexpected";
   if (error.kind === "offline") return "offline";
+  if (error.code === "feature_not_enabled") return "featureNotEnabled";
   return (
     API_ERROR_STATUS_COPY[error.status] ??
     (error.status >= 500 ? "server" : "unexpected")

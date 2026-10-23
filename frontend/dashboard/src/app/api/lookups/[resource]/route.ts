@@ -34,6 +34,13 @@ function lookupLabel(
   return String(item.title ?? item.id);
 }
 
+function brandBranchLimitReached(item: Record<string, unknown>): boolean {
+  const features = item.features as Record<string, unknown> | undefined;
+  const branchesCount =
+    typeof item.branches_count === "number" ? item.branches_count : 0;
+  return branchesCount >= 1 && features?.multi_branch !== true;
+}
+
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ resource: string }> },
@@ -79,6 +86,9 @@ export async function GET(
     .map((item) => ({
       id: item.id as string,
       label: lookupLabel(resource, item),
+      ...(resource === "brands"
+        ? { branchLimitReached: brandBranchLimitReached(item) }
+        : {}),
     }));
   return noStore(apiSuccess(data));
 }

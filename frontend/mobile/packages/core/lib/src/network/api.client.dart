@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 import 'package:core/src/network/exceptions/api.exception.dart';
 import 'package:core/src/network/exceptions/chair_has_active_bookings.exception.dart';
+import 'package:core/src/network/exceptions/feature_not_enabled.exception.dart';
 import 'package:core/src/network/exceptions/network.exception.dart';
 import 'package:core/src/network/exceptions/validation.exception.dart';
 import 'package:core/src/network/interceptors/auth.interceptor.dart';
@@ -279,6 +280,21 @@ class ApiClient {
         bookingIds: rawIds is List
             ? rawIds.map((id) => id.toString()).toList(growable: false)
             : const [],
+      );
+    }
+
+    if (code == FeatureNotEnabledException.errorCode) {
+      final rawErrors = body['errors'];
+      final rawFeature = rawErrors is Map<String, dynamic>
+          ? rawErrors['feature']
+          : null;
+      return FeatureNotEnabledException(
+        statusCode: statusCode,
+        code: code,
+        message: message,
+        feature: rawFeature is List && rawFeature.isNotEmpty
+            ? rawFeature.first.toString()
+            : null,
       );
     }
 

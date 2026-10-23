@@ -7,6 +7,7 @@ use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Events\ChairStatusUpdated;
 use Modules\Chair\Models\ChairModel;
@@ -258,6 +259,8 @@ describe('Branch API', function () {
         });
 
         describe('POST /api/v1/branch/job-postings', function () {
+            beforeEach(fn () => app(BrandFeatures::class)->set($this->branch->brand, [BrandFeatures::JOB_BOARD => true]));
+
             it('creates a job posting', function () {
                 $response = $this->postJson('/api/v1/branch/job-postings', [
                     'title' => ['en' => 'Barber Wanted', 'ar' => 'حلاق مطلوب'],
@@ -282,6 +285,8 @@ describe('Branch API', function () {
         });
 
         describe('PUT /api/v1/branch/job-postings/{jobPosting}', function () {
+            beforeEach(fn () => app(BrandFeatures::class)->set($this->branch->brand, [BrandFeatures::JOB_BOARD => true]));
+
             it('updates a job posting', function () {
                 $jobPosting = JobPostingModel::factory()->create(['branch_id' => $this->branch->id]);
 

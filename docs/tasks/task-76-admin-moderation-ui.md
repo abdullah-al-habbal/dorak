@@ -35,3 +35,5 @@ Admin-only backend actions have no dashboard surface: barber activation and deac
 - Platform analytics, subscriptions and payouts (Task 65).
 
 > Note (Task 41): admins may resolve a disputed review at any time (`PATCH admin/reviews/{review}/resolve`, `published|hidden`); unresolved disputes auto-release after 48 h.
+
+> Note (Task 50): brand flags are toggled with `PATCH /api/v1/admin/brands/{brand}/features` (`multi_branch`, `job_board`).

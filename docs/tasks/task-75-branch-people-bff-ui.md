@@ -34,3 +34,5 @@ Branch managers can accept or reject affiliations, manage job postings, review a
 ## Out of Scope
 - Barber-side affiliation and job flows (Task 83).
 - Notifications for invites and applications (Task 31).
+
+> Note (Task 50): job-posting writes return 403 `feature_not_enabled` unless the brand has `job_board`; read `features.job_board` from the brand payload to hide the action.

@@ -143,6 +143,8 @@ export const en = {
       validation: "Check submitted information and try again.",
       server: "Service is unavailable. Try again shortly.",
       unexpected: "Something went wrong. Try again.",
+      featureNotEnabled:
+        "This needs a premium feature that is not enabled for this brand.",
     },
     apiSuccess: {
       signedIn: "Signed in successfully.",
@@ -313,6 +315,7 @@ export const en = {
       women: "Women",
       shared: "Shared",
       unisex: "Unisex",
+      multiBranchRequired: "multi-branch feature required",
       branch: "Branch",
       brand: "Brand",
       barber: "Barber",

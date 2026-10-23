@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Chairs;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Http\Resources\Shared\ChairResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreChairCommand;
@@ -14,7 +15,8 @@ use Modules\Dashboard\Support\DashboardActor;
 
 final class StoreChairAction extends BaseApiAction
 {
-    public function __construct(private readonly StoreChairHandler $handler) {}
+    public function __construct(
+        private readonly BrandFeatures $brandFeatures, private readonly StoreChairHandler $handler) {}
 
     public function __invoke(ChairRequest $request): JsonResponse
     {
@@ -25,6 +27,7 @@ final class StoreChairAction extends BaseApiAction
         if (! $actor->canAccessBranch($attributes['branch_id'])) {
             return $this->forbidden();
         }
+        $this->brandFeatures->ensureBranchManageable($attributes['branch_id']);
 
         $chair = $this->handler->handle(new StoreChairCommand(
             $attributes,
