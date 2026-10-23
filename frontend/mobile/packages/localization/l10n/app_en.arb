@@ -536,6 +536,8 @@
   "@discoverRankedByDistance": {
     "description": "Caption confirming results are ordered by distance"
   },
+  "discoverSearchHint": "Search shops, brands or services",
+  "@discoverSearchHint": {"description": "Hint of the discovery keyword search field"},
   "ratingSummary": "★ {rating} ({count, plural, =1{1 review} other{{count} reviews}})",
   "@ratingSummary": {
     "description": "Average rating and review count of a branch or barber",

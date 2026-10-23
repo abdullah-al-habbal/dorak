@@ -10,6 +10,7 @@ class DiscoveryFilters extends Equatable {
     this.priceRangeMax,
     this.ratingMin,
     this.catalogItemIds = const [],
+    this.query = '',
   });
 
   final String universe;
@@ -20,6 +21,7 @@ class DiscoveryFilters extends Equatable {
   final double? priceRangeMax;
   final double? ratingMin;
   final List<int> catalogItemIds;
+  final String query;
 
   DiscoveryFilters copyWith({
     String? universe,
@@ -33,6 +35,7 @@ class DiscoveryFilters extends Equatable {
     double? ratingMin,
     bool clearRatingMin = false,
     List<int>? catalogItemIds,
+    String? query,
   }) {
     return DiscoveryFilters(
       universe: universe ?? this.universe,
@@ -49,6 +52,7 @@ class DiscoveryFilters extends Equatable {
           : priceRangeMax ?? this.priceRangeMax,
       ratingMin: clearRatingMin ? null : ratingMin ?? this.ratingMin,
       catalogItemIds: catalogItemIds ?? this.catalogItemIds,
+      query: query ?? this.query,
     );
   }
 
@@ -62,5 +66,6 @@ class DiscoveryFilters extends Equatable {
     priceRangeMax,
     ratingMin,
     catalogItemIds,
+    query,
   ];
 }

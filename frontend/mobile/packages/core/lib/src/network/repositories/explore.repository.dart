@@ -14,6 +14,7 @@ abstract class ExploreRepository {
     double? priceRangeMax,
     double? ratingMin,
     String? faceShapeCompatible,
+    String? query,
   });
 
   Future<RawPaginated<BranchDto>> getBranchesPayload({
@@ -29,6 +30,7 @@ abstract class ExploreRepository {
     double? priceRangeMax,
     double? ratingMin,
     String? faceShapeCompatible,
+    String? query,
   });
 
   Future<BranchDetailDto> getBranchDetail(String branchId);
@@ -55,6 +57,7 @@ class DioExploreRepository implements ExploreRepository {
     double? priceRangeMax,
     double? ratingMin,
     String? faceShapeCompatible,
+    String? query,
   }) async {
     final payload = await _fetch(
       latitude: latitude,
@@ -69,6 +72,7 @@ class DioExploreRepository implements ExploreRepository {
       priceRangeMax: priceRangeMax,
       ratingMin: ratingMin,
       faceShapeCompatible: faceShapeCompatible,
+      query: query,
     );
     return payload.data;
   }
@@ -87,6 +91,7 @@ class DioExploreRepository implements ExploreRepository {
     double? priceRangeMax,
     double? ratingMin,
     String? faceShapeCompatible,
+    String? query,
   }) {
     return _fetch(
       latitude: latitude,
@@ -101,6 +106,7 @@ class DioExploreRepository implements ExploreRepository {
       priceRangeMax: priceRangeMax,
       ratingMin: ratingMin,
       faceShapeCompatible: faceShapeCompatible,
+      query: query,
     );
   }
 
@@ -117,8 +123,9 @@ class DioExploreRepository implements ExploreRepository {
     required double? priceRangeMax,
     required double? ratingMin,
     required String? faceShapeCompatible,
+    required String? query,
   }) {
-    final query = <String, dynamic>{
+    final params = <String, dynamic>{
       'latitude': latitude,
       'longitude': longitude,
       'radius': radius,
@@ -127,13 +134,13 @@ class DioExploreRepository implements ExploreRepository {
       'per_page': perPage,
     };
     if (catalogItemIds != null && catalogItemIds.isNotEmpty) {
-      query['catalog_item_ids'] = catalogItemIds;
+      params['catalog_item_ids'] = catalogItemIds;
     }
     if (availableNow != null) {
-      query['available_now'] = availableNow;
+      params['available_now'] = availableNow;
     }
     if (priceRangeMin != null || priceRangeMax != null) {
-      query['price_range'] = <String, dynamic>{
+      params['price_range'] = <String, dynamic>{
         // ignore: use_null_aware_elements
         if (priceRangeMin case final min?) 'min': min,
         // ignore: use_null_aware_elements
@@ -141,15 +148,19 @@ class DioExploreRepository implements ExploreRepository {
       };
     }
     if (ratingMin != null) {
-      query['rating_min'] = ratingMin;
+      params['rating_min'] = ratingMin;
     }
     if (faceShapeCompatible != null) {
-      query['face_shape_compatible'] = faceShapeCompatible;
+      params['face_shape_compatible'] = faceShapeCompatible;
+    }
+    final text = query?.trim();
+    if (text != null && text.isNotEmpty) {
+      params['q'] = text;
     }
 
     return _apiClient.getRawPaginated<BranchDto>(
       ExploreEndpoints.branches,
-      queryParameters: query,
+      queryParameters: params,
       itemParser: (json) => BranchDto.fromJson(json as Map<String, dynamic>),
     );
   }

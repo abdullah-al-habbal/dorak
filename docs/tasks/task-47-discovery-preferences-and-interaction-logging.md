@@ -31,3 +31,5 @@ Clients can save discovery preferences (`hidden_brand_ids`, `show_unavailable`, 
 ## Out of Scope
 - Saved filters contract fixes — Task 60.
 - Recommendation recompute fixes — Task 62.
+
+> Note (Task 43): log searches from the `q` parameter on `explore/branches` and `explore/barbers`.

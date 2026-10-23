@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Explore\Eloquent\Resolvers\Shared;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Models\BookingModel;
@@ -14,10 +15,12 @@ use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 use Modules\ClientRecommendation\Services\ExploreRankingWeightsResolver;
 use Modules\Explore\CQRS\Query\Shared\ExploreBarbersQuery;
+use Modules\Explore\Support\ExploreTextSearch;
 
 final class ExploreBarbersEloquentResolver
 {
     public function __construct(
+        private readonly ExploreTextSearch $search,
         private readonly ExploreRankingWeightsResolver $weightsResolver,
     ) {}
 
@@ -138,6 +141,32 @@ final class ExploreBarbersEloquentResolver
                 ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price', '>=', $payload->priceRangeMin))
                 ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price', '<=', $payload->priceRangeMax))
             );
+        }
+
+        if ($payload->search !== null) {
+            $pattern = $this->search->pattern($payload->search);
+            $query->where(function (Builder $match) use ($pattern): void {
+                $this->search->orMatchTranslatable($match, ['name'], $pattern);
+                $match->orWhereHas('services', fn (Builder $services) => $services
+                    ->where('active', true)
+                    ->where(function (Builder $service) use ($pattern): void {
+                        $this->search->orMatchTranslatable($service, ['name'], $pattern);
+                        $service->orWhereHas('catalogItem', fn (Builder $item) => $item
+                            ->where('is_active', true)
+                            ->where(function (Builder $catalog) use ($pattern): void {
+                                $this->search->orMatchTranslatable($catalog, ['name'], $pattern);
+                                $catalog->orWhereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, $pattern, null));
+                            }));
+                    }));
+            });
+        }
+
+        if ($payload->tagIds !== null) {
+            $query->whereHas('services', fn (Builder $services) => $services
+                ->where('active', true)
+                ->whereHas('catalogItem', fn (Builder $item) => $item
+                    ->where('is_active', true)
+                    ->whereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, null, $payload->tagIds))));
         }
 
         if ($payload->ratingMin !== null) {

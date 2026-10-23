@@ -357,4 +357,49 @@ void main() {
       },
     );
   });
+
+  group('DiscoverySearchChanged', () {
+    blocTest<DiscoveryBloc, DiscoveryState>(
+      'typing a query triggers exactly one request after the debounce',
+      build: bloc,
+      act: (bloc) async {
+        bloc.add(const DiscoveryLocationRequested());
+        await pumpEventQueue();
+        final callsAfterLocation = repository.getBranchesPayloadCalls;
+        bloc.add(const DiscoverySearchChanged('r'));
+        bloc.add(const DiscoverySearchChanged('ro'));
+        bloc.add(const DiscoverySearchChanged('royal '));
+        await pumpEventQueue();
+        expect(
+          repository.getBranchesPayloadCalls,
+          callsAfterLocation,
+          reason: 'nothing is requested while the user is still typing',
+        );
+        await Future<void>.delayed(
+          DiscoveryBloc.searchDebounce + const Duration(milliseconds: 50),
+        );
+        await pumpEventQueue();
+        expect(repository.getBranchesPayloadCalls, callsAfterLocation + 1);
+      },
+      wait: const Duration(milliseconds: 600),
+      verify: (bloc) {
+        expect(repository.lastQuery, 'royal');
+        expect(bloc.state.filters.query, 'royal');
+        expect(bloc.state.searchQuery, 'royal ');
+      },
+    );
+
+    blocTest<DiscoveryBloc, DiscoveryState>(
+      'repeating the active query does not refetch',
+      build: bloc,
+      seed: () => DiscoveryState(
+        latitude: 24.7,
+        longitude: 46.6,
+        filters: const DiscoveryFilters(query: 'royal'),
+      ),
+      act: (bloc) => bloc.add(const DiscoverySearchChanged('royal')),
+      wait: DiscoveryBloc.searchDebounce + const Duration(milliseconds: 50),
+      verify: (_) => expect(repository.getBranchesPayloadCalls, 0),
+    );
+  });
 }

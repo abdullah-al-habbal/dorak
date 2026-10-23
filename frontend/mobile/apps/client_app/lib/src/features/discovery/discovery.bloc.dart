@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client_app/src/features/discovery/discovery.event.dart';
+import 'package:client_app/src/features/discovery/discovery_filter.entity.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
 
 class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
@@ -19,10 +20,12 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     on<DiscoveryLoadMoreRequested>(_onLoadMore);
     on<DiscoveryRefreshRequested>(_onRefresh);
     on<DiscoveryRetryRequested>(_onRetry);
-    on<DiscoverySearchChanged>(
-      (event, emit) => emit(state.copyWith(searchQuery: event.query)),
-    );
+    on<DiscoverySearchChanged>(_onSearchChanged);
   }
+
+  static const Duration searchDebounce = Duration(milliseconds: 400);
+
+  int _searchGeneration = 0;
 
   final ExploreRepository _repository;
   final LocationProvider _locationProvider;
@@ -88,15 +91,35 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     await _loadFirst(emit);
   }
 
+  Future<void> _onSearchChanged(
+    DiscoverySearchChanged event,
+    Emitter<DiscoveryState> emit,
+  ) async {
+    final generation = ++_searchGeneration;
+    emit(state.copyWith(searchQuery: event.query));
+    await Future<void>.delayed(searchDebounce);
+    if (emit.isDone || generation != _searchGeneration) return;
+    final query = event.query.trim();
+    if (query == state.filters.query) return;
+    await _applyFilters(state.filters.copyWith(query: query), emit);
+  }
+
   Future<void> _onFiltersChanged(
     DiscoveryFiltersChanged event,
     Emitter<DiscoveryState> emit,
   ) async {
     if (event.filters == state.filters) return;
+    await _applyFilters(event.filters, emit);
+  }
+
+  Future<void> _applyFilters(
+    DiscoveryFilters filters,
+    Emitter<DiscoveryState> emit,
+  ) async {
     await _evictCurrentKey();
     emit(
       state.copyWith(
-        filters: event.filters,
+        filters: filters,
         page: state.page.reset(),
         isStale: false,
       ),
@@ -125,6 +148,7 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
         priceRangeMax: state.filters.priceRangeMax,
         ratingMin: state.filters.ratingMin,
         catalogItemIds: state.filters.catalogItemIds,
+        query: state.filters.query,
       );
       if (emit.isDone) return;
       emit(state.copyWith(page: state.page.succeeded(page)));
@@ -190,6 +214,7 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
         priceRangeMax: state.filters.priceRangeMax,
         ratingMin: state.filters.ratingMin,
         catalogItemIds: state.filters.catalogItemIds,
+        query: state.filters.query,
       );
       if (emit.isDone) return;
       if (key != null) {

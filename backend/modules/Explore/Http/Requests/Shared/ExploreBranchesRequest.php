@@ -26,6 +26,9 @@ final class ExploreBranchesRequest extends BaseApiFormRequest
             'price_range.min' => ['numeric', 'min:0'],
             'price_range.max' => ['numeric', 'min:0'],
             'rating_min' => ['sometimes', 'numeric', 'min:0', 'max:5'],
+            'q' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'tag_ids' => ['sometimes', 'array'],
+            'tag_ids.*' => ['uuid', 'exists:service_catalog_item_tags,id'],
             'face_shape_compatible' => ['sometimes', 'string'],
         ];
     }
@@ -47,6 +50,8 @@ final class ExploreBranchesRequest extends BaseApiFormRequest
             ratingMin: $this->validated('rating_min') !== null ? (float) $this->validated('rating_min') : null,
             faceShapeCompatible: $this->validated('face_shape_compatible'),
             clientId: $this->user()?->id,
+            search: is_string($this->validated('q')) && trim($this->validated('q')) !== '' ? trim($this->validated('q')) : null,
+            tagIds: $this->validated('tag_ids'),
         );
     }
 }

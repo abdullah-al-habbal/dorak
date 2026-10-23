@@ -860,6 +860,12 @@ abstract class AppLocalizations {
   /// **'Ranked by distance'**
   String get discoverRankedByDistance;
 
+  /// Hint of the discovery keyword search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search shops, brands or services'**
+  String get discoverSearchHint;
+
   /// Average rating and review count of a branch or barber
   ///
   /// In en, this message translates to:

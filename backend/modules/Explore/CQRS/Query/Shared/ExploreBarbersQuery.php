@@ -18,5 +18,8 @@ final readonly class ExploreBarbersQuery
         public ?float $ratingMin = null,
         public ?string $faceShapeCompatible = null,
         public ?string $clientId = null,
+        public ?string $search = null,
+        /** @var list<string>|null */
+        public ?array $tagIds = null,
     ) {}
 }

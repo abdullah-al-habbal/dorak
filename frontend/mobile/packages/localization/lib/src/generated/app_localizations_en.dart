@@ -415,6 +415,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discoverRankedByDistance => 'Ranked by distance';
 
   @override
+  String get discoverSearchHint => 'Search shops, brands or services';
+
+  @override
   String ratingSummary(String rating, int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

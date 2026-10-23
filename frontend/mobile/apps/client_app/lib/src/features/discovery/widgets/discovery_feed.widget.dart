@@ -32,24 +32,9 @@ class DiscoveryFeed extends StatefulWidget {
 }
 
 class _DiscoveryFeedState extends State<DiscoveryFeed> {
-  List<BranchDto>? _cachedSource;
-  String? _cachedQuery;
-  List<BranchDto> _cachedItems = const [];
   StreamSubscription<DiscoveryState>? _refreshSubscription;
 
-  List<BranchDto> get _items {
-    final source = widget.state.page.items;
-    final query = widget.state.searchQuery.toLowerCase();
-    if (identical(source, _cachedSource) && query == _cachedQuery) {
-      return _cachedItems;
-    }
-    _cachedSource = source;
-    _cachedQuery = query;
-    _cachedItems = List.unmodifiable(
-      source.where((branch) => branch.name.toLowerCase().contains(query)),
-    );
-    return _cachedItems;
-  }
+  List<BranchDto> get _items => widget.state.page.items;
 
   Future<void> _refresh() async {
     await _refreshSubscription?.cancel();
@@ -210,7 +195,10 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
           ),
           const SizedBox(height: DorakDimensions.spacingSmall),
           TextField(
-            decoration: const InputDecoration(prefixIcon: Icon(Icons.search)),
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              hintText: l10n.discoverSearchHint,
+            ),
             onChanged: (query) => bloc.add(DiscoverySearchChanged(query)),
           ),
           if (state.catalogItems.isNotEmpty)

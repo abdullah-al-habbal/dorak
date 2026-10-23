@@ -400,6 +400,8 @@ class FakeExploreRepository implements ExploreRepository {
 
   int getBranchesCalls = 0;
   int getBranchesPayloadCalls = 0;
+  String? lastQuery;
+  final List<String?> queries = [];
   int lastPage = 1;
   String? lastUniverse;
   bool? lastAvailableNow;
@@ -418,8 +420,10 @@ class FakeExploreRepository implements ExploreRepository {
     double? priceRangeMax,
     double? ratingMin,
     String? faceShapeCompatible,
+    String? query,
   }) async {
     getBranchesCalls++;
+    lastQuery = query;
     lastPage = page;
     lastUniverse = universe;
     lastAvailableNow = availableNow;
@@ -443,8 +447,11 @@ class FakeExploreRepository implements ExploreRepository {
     double? priceRangeMax,
     double? ratingMin,
     String? faceShapeCompatible,
+    String? query,
   }) async {
     getBranchesPayloadCalls++;
+    lastQuery = query;
+    queries.add(query);
     lastUniverse = universe;
     lastAvailableNow = availableNow;
     final failure = error;

@@ -223,5 +223,48 @@ void main() {
       expect(service.active, isTrue);
       expect(service.createdAt, isNotNull);
     });
+
+    test('sends a trimmed q only when the search text is not blank', () async {
+      final captured = <Map<String, dynamic>>[];
+      final fake = fakeDio(
+        handler: (options) {
+          captured.add(Map.of(options.queryParameters));
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: <dynamic>[],
+              meta: {
+                'pagination': {
+                  'total': 0,
+                  'count': 0,
+                  'per_page': 20,
+                  'current_page': 1,
+                  'total_pages': 1,
+                },
+              },
+            ),
+          );
+        },
+      );
+      final repository = DioExploreRepository(clientWith(fake));
+
+      await repository.getBranches(
+        latitude: 1,
+        longitude: 2,
+        radius: 3,
+        universe: 'men',
+        query: '  royal ',
+      );
+      await repository.getBranches(
+        latitude: 1,
+        longitude: 2,
+        radius: 3,
+        universe: 'men',
+        query: '   ',
+      );
+
+      expect(captured.first['q'], 'royal');
+      expect(captured.last.containsKey('q'), isFalse);
+    });
   });
 }

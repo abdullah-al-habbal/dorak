@@ -39,3 +39,5 @@ The product promises a per-branch digital storefront: profile, hours, location, 
 - Booking validation against hours (Task 22).
 - Gender category / unisex (Task 44).
 - Business app hours UI (Task 85).
+
+> Note (Task 43): when branch tags are added, extend `Modules\Explore\Support\ExploreTextSearch` usage in `ExploreBranchesEloquentResolver` so `q` matches them too.

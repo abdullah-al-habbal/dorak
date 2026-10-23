@@ -49,3 +49,5 @@ The catalog supports item CRUD and a list filtered by category or search. Gaps:
 ## Out of Scope
 - Admin-only authorization (Task 04). ID type alignment (Task 14).
 - Admin catalog UI (Task 77).
+
+> Note (Task 43): explore `q` already matches catalog-item and tag names, and `tag_ids[]` filters by tag; the client app's catalog chips still use `int.tryParse` on UUID ids and never render.
