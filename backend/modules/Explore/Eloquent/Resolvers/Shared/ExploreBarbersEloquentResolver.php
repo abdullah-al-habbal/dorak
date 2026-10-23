@@ -10,19 +10,16 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Models\BookingModel;
 use Modules\Booking\Queries\BookingAvailability;
-use Modules\ClientRecommendation\Models\ClientPreferenceVectorModel;
-use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
-use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
-use Modules\ClientRecommendation\Services\ExploreRankingWeightsResolver;
 use Modules\Core\Enums\VenueUniverse;
 use Modules\Explore\CQRS\Query\Shared\ExploreBarbersQuery;
+use Modules\Explore\Support\ExploreRanker;
 use Modules\Explore\Support\ExploreTextSearch;
 
 final class ExploreBarbersEloquentResolver
 {
     public function __construct(
         private readonly ExploreTextSearch $search,
-        private readonly ExploreRankingWeightsResolver $weightsResolver,
+        private readonly ExploreRanker $ranker,
     ) {}
 
     /**
@@ -87,72 +84,13 @@ final class ExploreBarbersEloquentResolver
 
     public function resolve(ExploreBarbersQuery $payload): LengthAwarePaginator
     {
-        $query = $this->candidates($payload);
+        $candidates = $this->candidates($payload)->limit(ExploreRanker::CANDIDATE_CAP)->get();
+        $faceShape = $this->ranker->faceShapeFor($payload->faceShapeCompatible, $payload->clientId);
 
-        $paginator = $query->paginate($payload->perPage);
-
-        if ($payload->clientId === null) {
-            return $paginator;
-        }
-
-        $barberIds = $paginator->pluck('id')->toArray();
-
-        $edgeWeights = RecommendationEdgeModel::where('source_type', 'client')
-            ->where('source_id', $payload->clientId)
-            ->where('target_type', 'barber')
-            ->whereIn('target_id', $barberIds)
-            ->pluck('weight', 'target_id');
-
-        $clientEmbedding = ClientPreferenceVectorModel::where('client_id', $payload->clientId)->value('embedding');
-
-        $targetEmbeddings = [];
-        if ($clientEmbedding !== null) {
-            $targetEmbeddings = EntityEmbeddingModel::where('entity_type', 'barber')
-                ->whereIn('entity_id', $barberIds)
-                ->pluck('embedding', 'entity_id');
-        }
-
-        $faceMatchIds = [];
-        if ($payload->faceShapeCompatible !== null) {
-            $faceMatchIds = BarberModel::query()
-                ->whereIn('id', $barberIds)
-                ->whereHas('services', fn ($q) => $q
-                    ->where('active', true)
-                    ->whereHas('catalogItem', fn ($q) => $q
-                        ->where('active', true)
-                        ->whereJsonContains('face_shapes', $payload->faceShapeCompatible)
-                    )
-                )
-                ->pluck('id')
-                ->toArray();
-        }
-
-        $weights = $this->weightsResolver->resolveFor($payload->clientId);
-
-        $scored = $paginator->getCollection()->map(function ($barber) use ($edgeWeights, $faceMatchIds, $payload, $clientEmbedding, $targetEmbeddings, $weights) {
-            $geographic = 1 / (1 + $barber->distance / $payload->radius);
-            $edgeBoost = (float) $edgeWeights->get($barber->id, 0);
-
-            $vectorSimilarity = 0.0;
-            if ($clientEmbedding !== null && isset($targetEmbeddings[$barber->id])) {
-                $vectorSimilarity = $this->cosineSimilarity($clientEmbedding, $targetEmbeddings[$barber->id]);
-            }
-
-            $faceMatch = in_array($barber->id, $faceMatchIds) ? 1 : 0;
-
-            $barber->compatibility_score = $geographic * $weights->geographic()
-                + $vectorSimilarity * $weights->alpha()
-                + $edgeBoost * $weights->beta()
-                + $faceMatch * $weights->gamma();
-
-            return $barber;
-        });
-
-        $scored = $scored->sortByDesc('compatibility_score')->values();
-        $scored->each(fn ($barber, $i) => $barber->rank = $i + 1);
-        $paginator->setCollection($scored);
-
-        return $paginator;
+        return $this->ranker->paginate(
+            $this->ranker->score($candidates, 'barber', $payload->clientId, $faceShape, $payload->radius),
+            $payload->perPage,
+        );
     }
 
     /**
@@ -212,6 +150,15 @@ final class ExploreBarbersEloquentResolver
                     ->whereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, null, $payload->tagIds))));
         }
 
+        if ($payload->faceShapeCompatible !== null) {
+            // An explicit face shape filters (REC-1); the client's own analysis only boosts.
+            $query->whereHas('services', fn (Builder $services) => $services
+                ->where('active', true)
+                ->whereHas('catalogItem', fn (Builder $item) => $item
+                    ->where('is_active', true)
+                    ->whereJsonContains('face_shapes', $payload->faceShapeCompatible)));
+        }
+
         if ($payload->ratingMin !== null) {
             // Stored aggregate of published/resolved reviews (Task 42).
             $query->where('rating_avg', '>=', $payload->ratingMin);
@@ -231,22 +178,5 @@ final class ExploreBarbersEloquentResolver
         if ($longitude - $longitudeDelta >= -180 && $longitude + $longitudeDelta <= 180) {
             $query->whereBetween('longitude', [$longitude - $longitudeDelta, $longitude + $longitudeDelta]);
         }
-    }
-
-    private function cosineSimilarity(array $a, array $b): float
-    {
-        $dot = 0.0;
-        $normA = 0.0;
-        $normB = 0.0;
-        foreach ($a as $i => $val) {
-            $dot += $val * ($b[$i] ?? 0.0);
-            $normA += $val * $val;
-        }
-        foreach ($b as $val) {
-            $normB += $val * $val;
-        }
-        $denom = sqrt($normA) * sqrt($normB);
-
-        return $denom > 0.0 ? $dot / $denom : 0.0;
     }
 }

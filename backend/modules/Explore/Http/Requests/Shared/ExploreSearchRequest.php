@@ -33,6 +33,7 @@ final class ExploreSearchRequest extends BaseApiFormRequest
             'price_range.min' => ['numeric', 'min:0'],
             'price_range.max' => ['numeric', 'min:0'],
             'rating_min' => ['sometimes', 'numeric', 'min:0', 'max:5'],
+            'face_shape_compatible' => ['sometimes', 'string'],
         ];
     }
 
@@ -53,6 +54,8 @@ final class ExploreSearchRequest extends BaseApiFormRequest
             'search' => is_string($text) && trim($text) !== '' ? trim($text) : null,
             'tagIds' => $this->validated('tag_ids'),
             'universe' => ExploreUniverse::resolve($this->validated('universe'), $this->user('client')),
+            'faceShapeCompatible' => $this->validated('face_shape_compatible'),
+            'clientId' => $this->user('client')?->getKey(),
         ];
 
         return new ExploreSearchQuery(

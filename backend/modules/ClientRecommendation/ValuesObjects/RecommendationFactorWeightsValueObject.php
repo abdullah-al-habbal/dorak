@@ -38,6 +38,33 @@ final readonly class RecommendationFactorWeightsValueObject
         );
     }
 
+    /**
+     * The same weights with α (vector similarity) removed and its share spread
+     * proportionally over β, γ and the geographic weight, so the total stays
+     * 1.0 when there is no vector to compare (Task 46).
+     */
+    public function withoutAlpha(): self
+    {
+        $rest = $this->beta + $this->gamma + $this->geographic;
+        if ($this->alpha <= 0.0 || $rest <= 0.0) {
+            return $this;
+        }
+
+        $scale = ($this->alpha + $rest) / $rest;
+
+        return new self(
+            alpha: 0.0,
+            beta: $this->beta * $scale,
+            gamma: $this->gamma * $scale,
+            geographic: $this->geographic * $scale,
+        );
+    }
+
+    public function total(): float
+    {
+        return $this->alpha + $this->beta + $this->gamma + $this->geographic;
+    }
+
     public function toArray(): array
     {
         return [

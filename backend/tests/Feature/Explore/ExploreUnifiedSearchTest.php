@@ -2,8 +2,13 @@
 
 declare(strict_types=1);
 
+use Laravel\Pennant\Feature;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
+use Modules\ClientRecommendation\Constants\RecommendationConstants;
+use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
+use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 
 const UNIFIED_URL = '/api/v1/explore/search?latitude=33.5&longitude=36.3&radius=50';
 
@@ -81,4 +86,21 @@ it('validates the location parameters', function (): void {
     $this->getJson('/api/v1/explore/search?q=karim')
         ->assertStatus(422)
         ->assertJsonValidationErrors(['latitude', 'longitude', 'radius']);
+});
+
+it('ranks shops and freelancers together for a signed-in client', function (): void {
+    Feature::define('explore-ranking', fn () => RecommendationConstants::EXPLORE_RANKING_VARIANT_DEFAULT);
+    $nearBranch = BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3]);
+    $favourite = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.7, 'longitude' => 36.3]);
+    $client = ClientModel::factory()->create();
+    RecommendationEdgeModel::create([
+        'source_type' => 'client', 'source_id' => $client->id,
+        'target_type' => 'barber', 'target_id' => $favourite->id,
+        'edge_type' => EdgeTypeEnum::Favorite, 'weight' => 1.0,
+    ]);
+
+    $items = $this->actingAs($client, 'client')->getJson(UNIFIED_URL)->assertOk()->json('data');
+
+    expect(array_map(fn (array $item) => $item['entity']['id'], $items))->toBe([$favourite->id, $nearBranch->id])
+        ->and($items[0]['entity']['rank'])->toBe(1);
 });

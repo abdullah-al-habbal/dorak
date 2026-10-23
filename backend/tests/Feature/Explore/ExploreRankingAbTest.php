@@ -33,9 +33,11 @@ it('uses default weights ranking margin for explore barbers', function () {
         fn (array $item) => [$item['id'] => (float) $item['compatibility_score']]
     )->all();
 
+    // The client has no preference vector, so α (0.4) is redistributed (Task 46):
+    // the edge margin is β / (1 − α) = 0.3 / 0.6 = 0.5.
     expect($scores[$fav->id])->toBeGreaterThan($scores[$plain->id]);
-    expect($scores[$fav->id] - $scores[$plain->id])->toBeGreaterThan(0.29);
-    expect($scores[$fav->id] - $scores[$plain->id])->toBeLessThan(0.31);
+    expect($scores[$fav->id] - $scores[$plain->id])->toBeGreaterThan(0.49);
+    expect($scores[$fav->id] - $scores[$plain->id])->toBeLessThan(0.51);
 });
 
 it('applies factor-weights-v2 margin when feature is active for the client', function () {
@@ -62,7 +64,8 @@ it('applies factor-weights-v2 margin when feature is active for the client', fun
         fn (array $item) => [$item['id'] => (float) $item['compatibility_score']]
     )->all();
 
+    // v2 without a vector: β / (1 − α) = 0.35 / 0.6 ≈ 0.583.
     expect($scores[$fav->id])->toBeGreaterThan($scores[$plain->id]);
-    expect($scores[$fav->id] - $scores[$plain->id])->toBeGreaterThan(0.31);
-    expect($scores[$fav->id] - $scores[$plain->id])->toBeLessThan(0.36);
+    expect($scores[$fav->id] - $scores[$plain->id])->toBeGreaterThan(0.57);
+    expect($scores[$fav->id] - $scores[$plain->id])->toBeLessThan(0.59);
 });
