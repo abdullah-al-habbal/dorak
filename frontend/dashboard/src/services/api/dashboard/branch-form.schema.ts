@@ -14,6 +14,7 @@ export const branchCreateSchema = z.object({
   latitude: coordinate.min(-90).max(90).nullable(),
   longitude: coordinate.min(-180).max(180).nullable(),
   status: z.enum(["pending", "enabled", "disabled"]),
+  universe: z.enum(["men", "women", "unisex"]),
 });
 
 export const branchEditSchema = branchCreateSchema.extend({

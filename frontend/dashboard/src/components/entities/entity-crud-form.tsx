@@ -73,6 +73,7 @@ function defaultsFor(resource: EditableResource, branchId: string | null) {
       latitude: null,
       longitude: null,
       status: "pending",
+      universe: "unisex",
     };
   if (resource === "chairs")
     return {
@@ -152,6 +153,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         latitude: current.latitude,
         longitude: current.longitude,
         status: current.status,
+        universe: current.universe,
       });
     if (resource === "chairs")
       form.reset({
@@ -270,6 +272,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
           "latitude",
           "longitude",
           "status",
+          "universe",
         ]
       : resource === "chairs"
         ? [
@@ -323,6 +326,12 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         ["pending", fieldCopy.pending],
         ["enabled", fieldCopy.enabled],
         ["disabled", fieldCopy.disabled],
+      ] as const;
+    if (field === "universe")
+      return [
+        ["men", fieldCopy.men],
+        ["women", fieldCopy.women],
+        ["unisex", fieldCopy.unisex],
       ] as const;
     if (field === "floorZone")
       return [

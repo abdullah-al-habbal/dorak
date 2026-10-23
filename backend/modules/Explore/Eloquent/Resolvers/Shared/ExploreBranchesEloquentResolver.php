@@ -14,6 +14,7 @@ use Modules\ClientRecommendation\Models\ClientPreferenceVectorModel;
 use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 use Modules\ClientRecommendation\Services\ExploreRankingWeightsResolver;
+use Modules\Core\Enums\VenueUniverse;
 use Modules\Explore\CQRS\Query\Shared\ExploreBranchesQuery;
 use Modules\Explore\Support\ExploreTextSearch;
 
@@ -39,7 +40,9 @@ final class ExploreBranchesEloquentResolver
 
         $this->applyBoundingBox($subQuery, $payload->latitude, $payload->longitude, $payload->radius);
 
-        $subQuery->whereHas('brand', fn ($q) => $q->where('universe', $payload->universe));
+        if ($payload->universe !== null) {
+            $subQuery->whereIn('universe', VenueUniverse::servingClient($payload->universe));
+        }
 
         $subQuery = $this->applyFilters($subQuery, $payload);
 

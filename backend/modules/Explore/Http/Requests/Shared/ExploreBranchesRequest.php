@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Modules\Client\Enums\UniverseEnum;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Explore\CQRS\Query\Shared\ExploreBranchesQuery;
+use Modules\Explore\Support\ExploreUniverse;
 
 final class ExploreBranchesRequest extends BaseApiFormRequest
 {
@@ -17,7 +18,7 @@ final class ExploreBranchesRequest extends BaseApiFormRequest
             'latitude' => ['required', 'numeric', 'between:-90,90'],
             'longitude' => ['required', 'numeric', 'between:-180,180'],
             'radius' => ['required', 'numeric', 'min:0'],
-            'universe' => ['required', Rule::enum(UniverseEnum::class)],
+            'universe' => ['sometimes', 'nullable', Rule::enum(UniverseEnum::class)],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
             'catalog_item_ids' => ['sometimes', 'array'],
             'catalog_item_ids.*' => ['uuid', 'exists:service_catalog_items,id'],
@@ -41,7 +42,7 @@ final class ExploreBranchesRequest extends BaseApiFormRequest
             latitude: (float) $this->validated('latitude'),
             longitude: (float) $this->validated('longitude'),
             radius: (float) $this->validated('radius'),
-            universe: UniverseEnum::from($this->validated('universe')),
+            universe: ExploreUniverse::resolve($this->validated('universe'), $this->user('client')),
             perPage: (int) ($this->validated('per_page') ?? 20),
             catalogItemIds: $this->validated('catalog_item_ids'),
             availableNow: $this->boolean('available_now'),

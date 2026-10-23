@@ -15,6 +15,7 @@ BranchDetailDto _$BranchDetailDtoFromJson(Map<String, dynamic> json) =>
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
       brandId: json['brand_id'] as String,
+      universe: json['universe'] as String?,
       ratingAvg: (json['rating_avg'] as num?)?.toDouble(),
       ratingCount: (json['rating_count'] as num?)?.toInt() ?? 0,
       distance: (json['distance'] as num?)?.toDouble(),

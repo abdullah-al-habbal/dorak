@@ -11,6 +11,7 @@ class BarberProfileDto {
   final String email;
   final bool isFreelancer;
   final String status;
+  final String? universe;
   final double? ratingAvg;
   @JsonKey(defaultValue: 0)
   final int ratingCount;
@@ -30,6 +31,7 @@ class BarberProfileDto {
     required this.email,
     this.isFreelancer = false,
     this.status = '',
+    this.universe,
     this.ratingAvg,
     this.ratingCount = 0,
     this.workstationOnline = false,

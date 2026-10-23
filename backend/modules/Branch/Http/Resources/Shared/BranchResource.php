@@ -19,6 +19,7 @@ final class BranchResource extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'brand_id' => $this->brand_id,
+            'universe' => $this->offsetGet('universe'),
             'rating_avg' => $this->offsetGet('rating_avg') === null ? null : (float) $this->offsetGet('rating_avg'),
             'rating_count' => (int) ($this->offsetGet('rating_count') ?? 0),
             'distance' => $this->distance ?? null,

@@ -23,6 +23,7 @@ export function mapBranchPayload(
     name: input.name,
     ...(input.password ? { password: input.password } : {}),
     status: input.status,
+    universe: input.universe,
   };
 }
 export function mapChairPayload(

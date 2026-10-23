@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Explore\Http\Requests\Shared;
 
+use Illuminate\Validation\Rule;
+use Modules\Client\Enums\UniverseEnum;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Explore\CQRS\Query\Shared\ExploreBarbersQuery;
+use Modules\Explore\Support\ExploreUniverse;
 
 final class ExploreBarbersRequest extends BaseApiFormRequest
 {
@@ -23,6 +26,7 @@ final class ExploreBarbersRequest extends BaseApiFormRequest
             'price_range.min' => ['numeric', 'min:0'],
             'price_range.max' => ['numeric', 'min:0'],
             'rating_min' => ['sometimes', 'numeric', 'min:0', 'max:5'],
+            'universe' => ['sometimes', 'nullable', Rule::enum(UniverseEnum::class)],
             'q' => ['sometimes', 'nullable', 'string', 'max:100'],
             'tag_ids' => ['sometimes', 'array'],
             'tag_ids.*' => ['uuid', 'exists:service_catalog_item_tags,id'],
@@ -48,6 +52,7 @@ final class ExploreBarbersRequest extends BaseApiFormRequest
             clientId: $this->user()?->id,
             search: is_string($this->validated('q')) && trim($this->validated('q')) !== '' ? trim($this->validated('q')) : null,
             tagIds: $this->validated('tag_ids'),
+            universe: ExploreUniverse::resolve($this->validated('universe'), $this->user('client')),
         );
     }
 }

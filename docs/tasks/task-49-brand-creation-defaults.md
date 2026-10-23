@@ -39,3 +39,5 @@ Brand creation only inserts the `brands` row. House rule A1 requires that creati
 - Last-branch delete guard and manager scope (Task 12).
 - `unisex` enum value (Task 44).
 - Storefront fields (Task 51) and feature flags (Task 50).
+
+> Note (Task 44): the venue universe now lives on `branches.universe`; `brands.universe` is only the default a new branch inherits — allow `unisex` there when the brand API sets it.

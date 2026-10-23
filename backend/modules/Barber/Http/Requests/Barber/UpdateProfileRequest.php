@@ -6,6 +6,7 @@ namespace Modules\Barber\Http\Requests\Barber;
 
 use Illuminate\Validation\Rule;
 use Modules\Barber\CQRS\Command\Barber\UpdateProfileCommand;
+use Modules\Core\Enums\VenueUniverse;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class UpdateProfileRequest extends BaseApiFormRequest
@@ -17,6 +18,7 @@ final class UpdateProfileRequest extends BaseApiFormRequest
             'email' => ['nullable', 'email', Rule::unique('barbers', 'email')->ignore($this->user()->id)],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'is_freelancer' => ['nullable', 'boolean'],
+            'universe' => ['nullable', Rule::enum(VenueUniverse::class)],
         ];
     }
 
@@ -28,6 +30,7 @@ final class UpdateProfileRequest extends BaseApiFormRequest
             email: $this->validated('email'),
             password: $this->validated('password'),
             isFreelancer: $this->validated('is_freelancer'),
+            universe: $this->validated('universe') === null ? null : VenueUniverse::from((string) $this->validated('universe')),
         );
     }
 }

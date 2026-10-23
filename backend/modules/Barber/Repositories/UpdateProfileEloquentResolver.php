@@ -18,6 +18,7 @@ final class UpdateProfileEloquentResolver
             'email' => $command->email,
             'password' => $command->password,
             'is_freelancer' => $command->isFreelancer,
+            'universe' => $command->universe,
         ], fn ($value) => $value !== null);
 
         $barber->update($data);

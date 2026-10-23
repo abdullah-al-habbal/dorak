@@ -16,19 +16,28 @@ House rules require unisex venues to appear in both the men and women universes,
 ### Backend (API / DB / Policies)
 - Add a venue-level universe enum including `unisex` (keep the client preference enum as men/women).
 - Branch search: `universe=men` matches `men` + `unisex`; same for `women`.
-- Decision required: universe stays on the brand or moves to the branch (A5 says branch); also whether `universe` becomes optional per BE-03 (default to the client's `preferred_universe`).
+  - **Decision (resolved, best option): branch-level universe; optional filter defaulting to the client's preference.** A5 and the entity model put the gender category on the branch, so one brand can run men's, women's and unisex branches; BE-03 makes `universe` optional and a client's saved preference is the natural default, while guests see everything.
 - Add `universe` to barbers (column or derived from affiliations) and to `ExploreBarbersRequest`.
+### Implemented contract
+- Shared code path: `Modules\Core\Enums\VenueUniverse::servingClient()` (men→men+unisex, women→women+unisex) and `Modules\Explore\Support\ExploreUniverse::resolve()` (explicit → `preferred_universe` via the `client` guard → null), used by `ExploreBranchesEloquentResolver` and `ExploreBarbersEloquentResolver`. `BranchModel::creating` inherits the brand universe (or `unisex`) when none is given.
+- Scope of the rule: branches filter on `branches.universe`, barbers on `barbers.universe`; a null resolved universe applies no universe filter. Migrations `2026_10_23_000001_add_universe_to_{branches,barbers}_table` (branch rows backfilled from the brand; barbers default `unisex`).
+- Request: `GET explore/branches` and `GET explore/barbers`: `universe` optional (`men`|`women`). `PUT/POST dashboard/branches`: optional `universe` (`men`|`women`|`unisex`). `PATCH barber/profile`: optional `universe`.
+- Failure: any other `universe` value → 422 validation error on both explore endpoints.
+- Success: `BranchResource` and `BarberResource` expose `universe`.
+- Dashboard: branch form "Clientele" select (men/women/unisex, default unisex), schema, payload mapper, `IBranch.universe`, en/ar copy, Vitest. Mobile: `BranchDto`, `BranchDetailDto`, `BarberProfileDto` gain `universe`; the client discovery filter already sends `universe`; barber discovery in the app is Task 79 (it can now pass `universe`). Docs: this spec, `docs/decisions-required.md`, `backend/docs/feature-index.md`.
+- Deviations from the original spec text: `brands.universe` is kept (not dropped) as the default for new branches; Task 49 can extend it to `unisex`.
+
 ### Dashboard (BFF / React)
 - Expose universe (including `unisex`) in brand/branch forms (`frontend/dashboard/src/services/api/dashboard/branch-form.schema.ts` if moved to branch; brand form via Task 77).
 ### Mobile (Flutter / Repositories)
 - `apps/client_app/lib/src/features/discovery/discovery_filter.entity.dart`: pass universe to barber discovery too (Task 79 uses it).
 
 ## Acceptance Criteria
-- [ ] A `unisex` branch is returned for both `universe=men` and `universe=women` (Feature test).
-- [ ] A `men` branch is not returned for `universe=women`.
-- [ ] `GET explore/barbers?universe=women` filters barbers; invalid value → 422.
-- [ ] Behaviour when `universe` is omitted matches the recorded decision and is covered by a test.
-- [ ] `php artisan test` passes; PHPStan max + Pint clean.
+- [x] A `unisex` branch is returned for both `universe=men` and `universe=women` (Feature test).
+- [x] A `men` branch is not returned for `universe=women`.
+- [x] `GET explore/barbers?universe=women` filters barbers; invalid value → 422.
+- [x] Behaviour when `universe` is omitted matches the recorded decision and is covered by a test.
+- [x] `php artisan test` passes; Pint clean (PHPStan skipped for this run on the user's instruction).
 
 ## Out of Scope
 - Setting universe through the brand API — Task 49.

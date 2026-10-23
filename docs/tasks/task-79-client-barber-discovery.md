@@ -35,3 +35,5 @@ Discovery lists branches only. The `GET /explore/barbers` endpoint constant is d
 ## Out of Scope
 - Text search (Task 43) and the unisex universe (Task 44).
 - Slot availability lookup (Task 21).
+
+> Note (Task 44): `GET explore/barbers` accepts optional `universe` (`men`|`women`, also matches `unisex` barbers) and defaults to the signed-in client's preference.

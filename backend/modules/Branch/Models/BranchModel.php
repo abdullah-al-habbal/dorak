@@ -27,12 +27,13 @@ use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Enums\FloorPlanPreset;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\Core\Enums\VenueUniverse;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'email', 'password', 'brand_id', 'latitude', 'longitude', 'status', 'floor_plan_preset', 'floor_plan_zones'])]
+#[Fillable(['name', 'email', 'password', 'brand_id', 'latitude', 'longitude', 'status', 'floor_plan_preset', 'floor_plan_zones', 'universe'])]
 #[Hidden(['password', 'remember_token'])]
 #[Table('branches')]
 #[Translatable(['name'])]
@@ -109,10 +110,27 @@ class BranchModel extends Authenticatable implements FilamentUser
         );
     }
 
+    /**
+     * A branch created without a universe inherits its brand's (Task 44), on
+     * every creation path (dashboard, Filament, brand onboarding).
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (BranchModel $branch): void {
+            if ($branch->getAttribute('universe') !== null) {
+                return;
+            }
+
+            $brandUniverse = BrandModel::query()->whereKey($branch->getAttribute('brand_id'))->value('universe');
+            $branch->setAttribute('universe', VenueUniverse::tryFrom((string) $brandUniverse) ?? VenueUniverse::Unisex);
+        });
+    }
+
     protected function casts(): array
     {
         return [
             'status' => BranchStatusEnum::class,
+            'universe' => VenueUniverse::class,
             'floor_plan_preset' => FloorPlanPreset::class,
             'floor_plan_zones' => 'array',
             'email_verified_at' => 'datetime',

@@ -24,12 +24,13 @@ use Modules\Barber\Database\Factories\BarberFactory;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Booking\Models\BookingModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\Core\Enums\VenueUniverse;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'email', 'phone', 'password', 'has_login', 'status', 'is_freelancer', 'client_id', 'latitude', 'longitude', 'travel_radius', 'workstation_online', 'managed_by_branch_id'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'has_login', 'status', 'is_freelancer', 'client_id', 'latitude', 'longitude', 'travel_radius', 'workstation_online', 'managed_by_branch_id', 'universe'])]
 #[Hidden(['password', 'remember_token'])]
 #[Table('barbers')]
 #[Translatable(['name'])]
@@ -128,6 +129,7 @@ class BarberModel extends Authenticatable implements FilamentUser
     {
         return [
             'status' => BarberStatusEnum::class,
+            'universe' => VenueUniverse::class,
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'has_login' => 'boolean',

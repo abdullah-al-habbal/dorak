@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Explore\CQRS\Query\Shared;
 
+use Modules\Client\Enums\UniverseEnum;
+
 final readonly class ExploreBarbersQuery
 {
     public function __construct(
@@ -21,5 +23,6 @@ final readonly class ExploreBarbersQuery
         public ?string $search = null,
         /** @var list<string>|null */
         public ?array $tagIds = null,
+        public ?UniverseEnum $universe = null,
     ) {}
 }

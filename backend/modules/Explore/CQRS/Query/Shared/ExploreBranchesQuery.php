@@ -12,7 +12,7 @@ final readonly class ExploreBranchesQuery
         public float $latitude,
         public float $longitude,
         public float $radius,
-        public UniverseEnum $universe,
+        public ?UniverseEnum $universe,
         public int $perPage,
         public ?array $catalogItemIds = null,
         public ?bool $availableNow = null,

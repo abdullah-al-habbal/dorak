@@ -11,4 +11,5 @@ export interface IBranch {
   ratingAvg: number | null;
   ratingCount: number;
   status: "pending" | "enabled" | "disabled";
+  universe: "men" | "women" | "unisex";
 }

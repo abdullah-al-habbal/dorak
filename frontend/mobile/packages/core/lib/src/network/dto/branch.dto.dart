@@ -11,6 +11,7 @@ class BranchDto {
   final double latitude;
   final double longitude;
   final String brandId;
+  final String? universe;
   final double? ratingAvg;
   @JsonKey(defaultValue: 0)
   final int ratingCount;
@@ -27,6 +28,7 @@ class BranchDto {
     required this.latitude,
     required this.longitude,
     required this.brandId,
+    this.universe,
     this.ratingAvg,
     this.ratingCount = 0,
     this.distance,

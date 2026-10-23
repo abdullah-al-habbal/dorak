@@ -57,8 +57,12 @@ describe("mapBranch", () => {
     ...rating,
   });
 
-  it("maps the stored rating aggregate", () => {
-    const branch = mapBranch(wireBranch({ rating_avg: 4.33, rating_count: 3 }));
+  it("maps the stored rating aggregate and universe", () => {
+    const branch = mapBranch(
+      wireBranch({ rating_avg: 4.33, rating_count: 3, universe: "women" }),
+    );
+
+    expect(branch.universe).toBe("women");
 
     expect(branch.ratingAvg).toBe(4.33);
     expect(branch.ratingCount).toBe(3);

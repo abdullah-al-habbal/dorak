@@ -41,6 +41,7 @@ export function mapBranch(wire: unknown): IBranch {
     ratingAvg: number(item.rating_avg),
     ratingCount: number(item.rating_count) ?? 0,
     status: string(item.status, "pending") as IBranch["status"],
+    universe: string(item.universe, "unisex") as IBranch["universe"],
   };
 }
 

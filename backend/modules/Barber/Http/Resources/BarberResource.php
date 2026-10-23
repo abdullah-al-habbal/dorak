@@ -18,6 +18,7 @@ final class BarberResource extends JsonResource
             'phone' => $this->offsetGet('phone'),
             'has_login' => $this->offsetGet('has_login'),
             'is_freelancer' => $this->is_freelancer,
+            'universe' => $this->offsetGet('universe'),
             'status' => $this->status,
             'rating_avg' => $this->offsetGet('rating_avg') === null ? null : (float) $this->offsetGet('rating_avg'),
             'rating_count' => (int) ($this->offsetGet('rating_count') ?? 0),

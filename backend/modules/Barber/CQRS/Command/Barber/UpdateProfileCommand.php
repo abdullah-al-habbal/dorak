@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Barber\CQRS\Command\Barber;
 
+use Modules\Core\Enums\VenueUniverse;
+
 final readonly class UpdateProfileCommand
 {
     public function __construct(
@@ -12,5 +14,6 @@ final readonly class UpdateProfileCommand
         public ?string $email,
         public ?string $password,
         public ?bool $isFreelancer,
+        public ?VenueUniverse $universe = null,
     ) {}
 }

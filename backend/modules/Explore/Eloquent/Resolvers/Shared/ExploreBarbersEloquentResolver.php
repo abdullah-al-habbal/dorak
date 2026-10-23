@@ -14,6 +14,7 @@ use Modules\ClientRecommendation\Models\ClientPreferenceVectorModel;
 use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 use Modules\ClientRecommendation\Services\ExploreRankingWeightsResolver;
+use Modules\Core\Enums\VenueUniverse;
 use Modules\Explore\CQRS\Query\Shared\ExploreBarbersQuery;
 use Modules\Explore\Support\ExploreTextSearch;
 
@@ -39,6 +40,10 @@ final class ExploreBarbersEloquentResolver
             ->whereNotNull('longitude');
 
         $this->applyBoundingBox($subQuery, $payload->latitude, $payload->longitude, $payload->radius);
+
+        if ($payload->universe !== null) {
+            $subQuery->whereIn('universe', VenueUniverse::servingClient($payload->universe));
+        }
 
         $subQuery = $this->applyFilters($subQuery, $payload);
 
