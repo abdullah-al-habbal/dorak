@@ -523,6 +523,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingCancelConfirm => 'نعم، إلغاء';
 
   @override
+  String branchChairBarberServices(String name) {
+    return 'خدمات $name';
+  }
+
+  @override
+  String get branchChairShopMenu => 'قائمة خدمات الصالون';
+
+  @override
+  String get branchChairNoServices => 'لا توجد خدمات مدرجة لهذا الكرسي بعد.';
+
+  @override
+  String get stylistWorkplacesTitle => 'يعمل في';
+
+  @override
+  String stylistWorkplaceChair(String place, String chair) {
+    return '$place · $chair';
+  }
+
+  @override
   String branchChairsCount(int count) {
     return '$count كراسي';
   }

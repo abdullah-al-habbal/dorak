@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:core/src/network/dto/barber_service.dto.dart';
+import 'package:core/src/network/dto/barber_workplace.dto.dart';
 
 part 'barber_profile.dto.g.dart';
 
@@ -24,6 +25,7 @@ class BarberProfileDto {
   final int? rank;
   final DateTime? createdAt;
   final List<BarberServiceDto> services;
+  final List<BarberWorkplaceDto> workplaces;
 
   const BarberProfileDto({
     required this.id,
@@ -43,6 +45,7 @@ class BarberProfileDto {
     this.rank,
     this.createdAt,
     this.services = const [],
+    this.workplaces = const [],
   });
 
   factory BarberProfileDto.fromJson(Map<String, dynamic> json) =>

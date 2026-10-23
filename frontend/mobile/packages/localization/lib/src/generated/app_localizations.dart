@@ -1040,6 +1040,36 @@ abstract class AppLocalizations {
   /// **'Yes, Cancel'**
   String get bookingCancelConfirm;
 
+  /// Heading of the selected chair's services when a barber sits there
+  ///
+  /// In en, this message translates to:
+  /// **'Services by {name}'**
+  String branchChairBarberServices(String name);
+
+  /// Heading of the services shown for a chair with no seated barber
+  ///
+  /// In en, this message translates to:
+  /// **'Shop menu'**
+  String get branchChairShopMenu;
+
+  /// Shown when the selected chair has no services
+  ///
+  /// In en, this message translates to:
+  /// **'No services are listed for this chair yet.'**
+  String get branchChairNoServices;
+
+  /// Heading of the list of shops a stylist works at
+  ///
+  /// In en, this message translates to:
+  /// **'Works at'**
+  String get stylistWorkplacesTitle;
+
+  /// A workplace with the chair the stylist sits at
+  ///
+  /// In en, this message translates to:
+  /// **'{place} · {chair}'**
+  String stylistWorkplaceChair(String place, String chair);
+
   /// Branch detail chairs count line
   ///
   /// In en, this message translates to:

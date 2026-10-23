@@ -17,4 +17,9 @@ FloorPlanDto _$FloorPlanDtoFromJson(Map<String, dynamic> json) => FloorPlanDto(
           ?.map((e) => FloorChairDto.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  branchServices:
+      (json['branch_services'] as List<dynamic>?)
+          ?.map((e) => BookingServiceDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );

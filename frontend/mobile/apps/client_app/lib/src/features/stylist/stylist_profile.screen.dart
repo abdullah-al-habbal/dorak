@@ -5,6 +5,7 @@ import 'package:localization/localization.dart';
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 
+import 'package:client_app/src/features/stylist/widgets/stylist_workplaces.widget.dart';
 import 'package:client_app/src/core/formatting/rating_label.entity.dart';
 import 'package:client_app/src/core/formatting/locale_formatters.entity.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
@@ -93,6 +94,10 @@ class _StylistProfileBody extends StatelessWidget {
       children: [
         _buildHeader(profile, colors, l10n),
         const SizedBox(height: DorakDimensions.spacingLarge),
+        if (profile.workplaces.isNotEmpty) ...[
+          StylistWorkplaces(workplaces: profile.workplaces),
+          const SizedBox(height: DorakDimensions.spacingLarge),
+        ],
         _buildStats(profile, colors, l10n),
         const SizedBox(height: DorakDimensions.spacingLarge),
         _buildServices(profile, colors, l10n, localeCode),

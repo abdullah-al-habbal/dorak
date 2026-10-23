@@ -10,14 +10,22 @@ use Modules\Branch\Http\Resources\Shared\BranchResource;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Explore\CQRS\Query\Shared\GetBranchDetailQuery;
-use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
+use Modules\OfferedService\Http\Resources\Shared\MenuServiceResource;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class GetBranchDetailEloquentResolver
 {
+    /**
+     * Branch detail (BE-03, Task 48): the branch, its seated barbers, and the
+     * full menu — the branch's and brand's own bookable services plus the
+     * bookable services of the seated barbers, each tagged with its `owner`.
+     */
     public function resolve(GetBranchDetailQuery $query): array
     {
-        $branch = BranchModel::discoverable()->with('chairs.barber.services.catalogItem')->findOrFail($query->branchId);
+        $bookable = fn ($services) => $services->bookable()->with('catalogItem');
+        $branch = BranchModel::discoverable()
+            ->with(['chairs.barber.services' => $bookable])
+            ->findOrFail($query->branchId);
 
         $barbers = $branch->chairs
             ->map(fn (ChairModel $chair): ?BarberModel => $chair->barber)
@@ -25,9 +33,13 @@ final class GetBranchDetailEloquentResolver
             ->unique('id')
             ->values();
 
-        $services = $barbers->flatMap(fn (BarberModel $barber) => $barber->services
-            ->filter(fn (OfferedServiceModel $service): bool => $service->getAttribute('active') === true
-                && $service->catalogItem?->getAttribute('is_active') === true))
+        $menu = OfferedServiceModel::query()
+            ->bookable()
+            ->offeredAtShop((string) $branch->getKey(), $branch->getAttribute('brand_id') === null ? null : (string) $branch->getAttribute('brand_id'))
+            ->orderBy('serviceable_type')
+            ->orderBy('price')
+            ->get()
+            ->concat($barbers->flatMap(fn (BarberModel $barber) => $barber->services))
             ->unique('id')
             ->values();
 
@@ -36,7 +48,7 @@ final class GetBranchDetailEloquentResolver
             [
                 'chairs_count' => $branch->chairs->count(),
                 'barbers' => BarberResource::collection($barbers),
-                'services' => ServiceResource::collection($services),
+                'services' => MenuServiceResource::collection($menu),
             ],
         );
     }

@@ -11,6 +11,7 @@ import 'package:client_app/src/features/booking/branch_detail.event.dart';
 import 'package:client_app/src/features/booking/branch_detail.state.dart';
 import 'package:client_app/src/features/booking/widgets/at_home_booking_fields.widget.dart';
 import 'package:client_app/src/features/booking/widgets/booking_summary.widget.dart';
+import 'package:client_app/src/features/booking/widgets/chair_services.widget.dart';
 import 'package:client_app/src/features/booking/widgets/floor_plan_grid.widget.dart';
 
 class BranchDetailBody extends StatelessWidget {
@@ -131,6 +132,15 @@ class _BookingModeSection extends StatelessWidget {
   final AppLocalizations l10n;
   final DorakColors colors;
 
+  FloorChairDto? get _selectedChair {
+    final id = state.selectedChairId;
+    if (id == null) return null;
+    for (final chair in state.plan?.chairs ?? const <FloorChairDto>[]) {
+      if (chair.id == id) return chair;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) => Column(
     children: [
@@ -154,6 +164,10 @@ class _BookingModeSection extends StatelessWidget {
           availableLabel: l10n.branchAvailableLabel,
           occupiedLabel: l10n.branchOccupiedLabel,
         ),
+        if (_selectedChair case final chair?) ...[
+          const SizedBox(height: DorakDimensions.spacingMedium),
+          ChairServices(chair: chair, plan: state.plan!),
+        ],
         const SizedBox(height: DorakDimensions.spacingLarge),
       ] else if (state.planFailed) ...[
         StatusBanner(

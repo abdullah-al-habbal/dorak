@@ -672,6 +672,16 @@
   "@bookingCancelConfirm": {
     "description": "Cancel booking confirmation dialog confirm button"
   },
+  "branchChairBarberServices": "Services by {name}",
+  "@branchChairBarberServices": {"description": "Heading of the selected chair's services when a barber sits there", "placeholders": {"name": {"type": "String"}}},
+  "branchChairShopMenu": "Shop menu",
+  "@branchChairShopMenu": {"description": "Heading of the services shown for a chair with no seated barber"},
+  "branchChairNoServices": "No services are listed for this chair yet.",
+  "@branchChairNoServices": {"description": "Shown when the selected chair has no services"},
+  "stylistWorkplacesTitle": "Works at",
+  "@stylistWorkplacesTitle": {"description": "Heading of the list of shops a stylist works at"},
+  "stylistWorkplaceChair": "{place} · {chair}",
+  "@stylistWorkplaceChair": {"description": "A workplace with the chair the stylist sits at", "placeholders": {"place": {"type": "String"}, "chair": {"type": "String"}}},
   "branchChairsCount": "{count} chairs",
   "@branchChairsCount": {
     "description": "Branch detail chairs count line",

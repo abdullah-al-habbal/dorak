@@ -17,5 +17,8 @@ FloorChairDto _$FloorChairDtoFromJson(Map<String, dynamic> json) =>
       branchId: json['branch_id'] as String?,
       barber: json['barber'] == null
           ? null
-          : BookingBarberDto.fromJson(json['barber'] as Map<String, dynamic>),
+          : FloorChairBarberDto.fromJson(
+              json['barber'] as Map<String, dynamic>,
+            ),
+      servicesSource: json['services_source'] as String? ?? 'branch',
     );

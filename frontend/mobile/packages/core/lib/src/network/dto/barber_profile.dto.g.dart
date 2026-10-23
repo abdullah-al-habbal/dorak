@@ -31,4 +31,11 @@ BarberProfileDto _$BarberProfileDtoFromJson(Map<String, dynamic> json) =>
               ?.map((e) => BarberServiceDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      workplaces:
+          (json['workplaces'] as List<dynamic>?)
+              ?.map(
+                (e) => BarberWorkplaceDto.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const [],
     );

@@ -582,6 +582,11 @@
   "@bookingCancelConfirm": {
     "description": "Cancel booking confirmation dialog confirm button"
   },
+  "branchChairBarberServices": "خدمات {name}",
+  "branchChairShopMenu": "قائمة خدمات الصالون",
+  "branchChairNoServices": "لا توجد خدمات مدرجة لهذا الكرسي بعد.",
+  "stylistWorkplacesTitle": "يعمل في",
+  "stylistWorkplaceChair": "{place} · {chair}",
   "branchChairsCount": "{count} كراسي",
   "@branchChairsCount": {
     "description": "Branch detail chairs count line",

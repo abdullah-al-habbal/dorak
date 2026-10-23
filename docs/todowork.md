@@ -78,7 +78,7 @@ codeanchors:
 - [x] Task 45: Include Freelancers in Search Results -> [Spec](tasks/task-45-freelancers-in-search.md)
 - [x] Task 46: Apply Composite Ranking Before Pagination -> [Spec](tasks/task-46-composite-ranking-ordering.md)
 - [x] Task 47: Apply Discovery Preferences and Log Interactions -> [Spec](tasks/task-47-discovery-preferences-and-interaction-logging.md)
-- [ ] Task 48: Complete Branch and Barber Detail Payloads -> [Spec](tasks/task-48-branch-barber-detail-completeness.md)
+- [x] Task 48: Complete Branch and Barber Detail Payloads -> [Spec](tasks/task-48-branch-barber-detail-completeness.md)
 
 ## Phase 8 — Brand, Branch & Barber Platform (P2)
 - [ ] Task 49: Apply Brand Creation Defaults -> [Spec](tasks/task-49-brand-creation-defaults.md)

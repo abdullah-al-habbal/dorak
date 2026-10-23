@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Modules\Branch\Http\Actions\Shared;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Barber\Http\Resources\BarberResource;
 use Modules\Branch\Handlers\Shared\GetFloorPlanHandler;
 use Modules\Branch\Http\Requests\Shared\GetFloorPlanRequest;
 use Modules\Branch\Http\Resources\Shared\ChairResource;
+use Modules\Chair\Models\ChairModel;
 use Modules\Core\Http\Actions\BaseApiAction;
+use Modules\OfferedService\Http\Resources\Shared\MenuServiceResource;
+use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class GetFloorPlanAction extends BaseApiAction
 {
@@ -27,7 +31,22 @@ final class GetFloorPlanAction extends BaseApiAction
                 'preset' => $branchModel->floor_plan_preset?->value,
                 'zones' => $branchModel->floor_plan_zones ?? [],
             ],
-            'chairs' => ChairResource::collection($branchModel->chairs),
+            'chairs' => $branchModel->chairs->map(fn (ChairModel $chair): array => [
+                ...ChairResource::make($chair)->resolve($request),
+                // A seated barber brings their own menu; an empty chair uses the shop's (Task 48).
+                'barber' => $chair->barber === null ? null : [
+                    ...BarberResource::make($chair->barber)->resolve($request),
+                    'services' => MenuServiceResource::collection($chair->barber->services)->resolve($request),
+                ],
+                'services_source' => $chair->barber === null ? 'branch' : 'barber',
+            ])->values(),
+            'branch_services' => MenuServiceResource::collection(
+                OfferedServiceModel::query()
+                    ->bookable()
+                    ->offeredAtShop((string) $branchModel->getKey(), $branchModel->getAttribute('brand_id') === null ? null : (string) $branchModel->getAttribute('brand_id'))
+                    ->orderBy('price')
+                    ->get(),
+            )->resolve($request),
         ]);
     }
 }

@@ -9,11 +9,15 @@ class BookingServiceDto {
   final double? price;
   final int? duration;
 
+  /// Who offers it on a menu (`brand` | `branch` | `barber`), when known.
+  final String? owner;
+
   const BookingServiceDto({
     required this.id,
     required this.name,
     this.price,
     this.duration,
+    this.owner,
   });
 
   factory BookingServiceDto.fromJson(Map<String, dynamic> json) =>

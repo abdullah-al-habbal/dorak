@@ -1,0 +1,100 @@
+<?php
+
+declare(strict_types=1);
+
+use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Models\BarberAffiliationModel;
+use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Models\BrandModel;
+use Modules\Chair\Models\ChairModel;
+use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
+
+function menuService(string $type, string $ownerId, array $overrides = []): OfferedServiceModel
+{
+    return OfferedServiceModel::factory()->create([
+        'serviceable_type' => $type,
+        'serviceable_id' => $ownerId,
+        'catalog_item_id' => null,
+        'active' => true,
+        ...$overrides,
+    ]);
+}
+
+describe('branch detail menu', function (): void {
+    it('lists brand and branch services even with no seated barbers', function (): void {
+        $brand = BrandModel::factory()->create();
+        $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
+        $brandService = menuService('brand', $brand->id);
+        $branchService = menuService('branch', $branch->id);
+
+        $services = $this->getJson("/api/v1/explore/branches/{$branch->id}")->assertOk()->json('data.services');
+
+        expect(collect($services)->pluck('id')->all())->toEqualCanonicalizing([$brandService->id, $branchService->id])
+            ->and(collect($services)->pluck('owner', 'id')->all())->toEqual([$brandService->id => 'brand', $branchService->id => 'branch']);
+    });
+
+    it('adds seated barbers\' services tagged as barber', function (): void {
+        $branch = BranchModel::factory()->create();
+        $barber = BarberModel::factory()->create();
+        ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id]);
+        $barberService = menuService('barber', $barber->id);
+
+        $services = collect($this->getJson("/api/v1/explore/branches/{$branch->id}")->json('data.services'));
+
+        expect($services->firstWhere('id', $barberService->id)['owner'] ?? null)->toBe('barber');
+    });
+
+    it('never returns inactive services or services of an inactive catalog item', function (): void {
+        $branch = BranchModel::factory()->create();
+        $inactiveItem = ServiceCatalogItemModel::factory()->create(['is_active' => false]);
+        menuService('branch', $branch->id, ['active' => false]);
+        menuService('branch', $branch->id, ['catalog_item_id' => $inactiveItem->id]);
+        $freeText = menuService('branch', $branch->id);
+
+        $ids = collect($this->getJson("/api/v1/explore/branches/{$branch->id}")->json('data.services'))->pluck('id')->all();
+
+        expect($ids)->toBe([$freeText->id]);
+    });
+});
+
+describe('floor plan chairs', function (): void {
+    it('includes the seated barber\'s services and the shop menu for empty chairs', function (): void {
+        $branch = BranchModel::factory()->create();
+        $barber = BarberModel::factory()->create();
+        $seated = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id]);
+        $empty = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
+        $barberService = menuService('barber', $barber->id);
+        $shopService = menuService('branch', $branch->id);
+
+        $startsAt = now()->addDay()->startOfHour()->utc()->format('Y-m-d\\TH:i:s\\Z');
+        $data = $this->getJson("/api/v1/branches/{$branch->id}/floor-plan?starts_at={$startsAt}&duration=30")->assertOk()->json('data');
+        $chairs = collect($data['chairs'])->keyBy('id');
+
+        expect($chairs[$seated->id]['services_source'])->toBe('barber')
+            ->and(collect($chairs[$seated->id]['barber']['services'])->pluck('id')->all())->toBe([$barberService->id])
+            ->and($chairs[$empty->id]['services_source'])->toBe('branch')
+            ->and($chairs[$empty->id]['barber'])->toBeNull()
+            ->and(collect($data['branch_services'])->pluck('id')->all())->toBe([$shopService->id]);
+    });
+});
+
+describe('barber detail workplaces', function (): void {
+    it('lists accepted affiliations only, with the chair label', function (): void {
+        $barber = BarberModel::factory()->create(['is_freelancer' => true]);
+        $branch = BranchModel::factory()->create();
+        $brand = BrandModel::factory()->create();
+        ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id, 'label' => 'Chair 4']);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => $branch->id, 'status' => 'accepted']);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'brand', 'affiliable_id' => $brand->id, 'status' => 'accepted']);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => BranchModel::factory()->create()->id, 'status' => 'pending']);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => BranchModel::factory()->create()->id, 'status' => 'terminated']);
+
+        $data = $this->getJson("/api/v1/explore/barbers/{$barber->id}")->assertOk()->json('data');
+
+        expect($data['workplaces'])->toHaveCount(2)
+            ->and(collect($data['workplaces'])->firstWhere('type', 'branch'))->toMatchArray(['id' => $branch->id, 'chair_label' => 'Chair 4'])
+            ->and(collect($data['workplaces'])->firstWhere('type', 'brand'))->toMatchArray(['id' => $brand->id, 'chair_label' => null])
+            ->and($data)->toHaveKeys(['rating_avg', 'rating_count']);
+    });
+});

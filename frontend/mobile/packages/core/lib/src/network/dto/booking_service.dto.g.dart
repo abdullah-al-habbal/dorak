@@ -12,4 +12,5 @@ BookingServiceDto _$BookingServiceDtoFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       price: (json['price'] as num?)?.toDouble(),
       duration: (json['duration'] as num?)?.toInt(),
+      owner: json['owner'] as String?,
     );

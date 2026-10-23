@@ -18,7 +18,7 @@ final class GetFloorPlanEloquentResolver
         $availability = $query;
         $branch = BranchModel::discoverable()->findOrFail($availability->branchId);
         $branch->load([
-            'chairs.barber',
+            'chairs.barber.services' => fn ($services) => $services->bookable(),
             'chairs.bookings' => function (HasMany $query) use ($availability, $endsAt): void {
                 BookingAvailability::apply($query->getQuery(), $availability->startsAt, $endsAt);
             },

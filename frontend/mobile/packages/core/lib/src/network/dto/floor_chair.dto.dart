@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:core/src/network/dto/booking_barber.dto.dart';
+import 'package:core/src/network/dto/floor_chair_barber.dto.dart';
 
 part 'floor_chair.dto.g.dart';
 
@@ -13,7 +13,9 @@ class FloorChairDto {
   final String? floorZone;
   final Map<String, dynamic>? uiMetadata;
   final String? branchId;
-  final BookingBarberDto? barber;
+  final FloorChairBarberDto? barber;
+  @JsonKey(defaultValue: 'branch')
+  final String servicesSource;
 
   const FloorChairDto({
     required this.id,
@@ -24,6 +26,7 @@ class FloorChairDto {
     this.uiMetadata,
     this.branchId,
     this.barber,
+    this.servicesSource = 'branch',
   });
 
   factory FloorChairDto.fromJson(Map<String, dynamic> json) =>
