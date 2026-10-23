@@ -15,7 +15,7 @@
 | Gate | Command | Result |
 | --- | --- | --- |
 | Backend tests | `<cmd>` | <n passed> |
-| Pint / PHPStan | `<cmd>` | <clean / pre-existing findings listed below> |
+| Pint | `<cmd>` | <clean / pre-existing findings listed below> |
 | Dashboard | lint, typecheck, test, build | <result, counts> |
 | Mobile | `dart run melos run verify` | <result> |
 

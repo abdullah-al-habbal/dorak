@@ -18,6 +18,23 @@ Before building, read `docs/02_prd.md` then `docs/feature-index.md` to see what 
 - Models suffix `Model`, Actions suffix `Action`. Spatie Translatable for bilingual fields.
 - `BaseModuleServiceProvider` extends all providers; it auto-mounts `Routes/Api/V1/*.php` at `/api/v1`.
 - Api response shape via `ApiResponseBodyValueObject` + `ApiResponseTrait` (paginated/ok/error).
+- **Authorization is not ownership scoping.** A `where('*_id', $actor->id)` query filter is
+  not an authorization check. Any Action that reads or mutates a resource another actor could
+  own MUST authorize via a `*Policy` class + `$this->authorize()` / `Gate::allows()` / `->can()`.
+  See `.claude/skills/laravel-native-abstractions/SKILL.md` (`references/requests-validation-authorization.md`)
+  before adding or touching one of these paths — this repo currently has zero Policy classes,
+  so do not copy the existing scoped-query pattern into new code.
+- All validation lives in a `FormRequest` (`Http/Requests/`), never inline `$request->validate()`
+  in an Action/Handler — see `.claude/skills/10StrictBackendArchitecture/SKILL.md`.
+- Mass assignment is blocked by `#[Fillable([...])]` on every model — never widen it to `*`.
+- Eager-load exactly what a Handler/Resource will access; check query counts for N+1 (Eloquent
+  strict mode is off in this repo, so nothing fails loudly on its own) — see
+  `laravel-native-abstractions` → `references/eloquent-relationships.md`.
+- Keep Actions/Handlers/Resolvers single-purpose: one method, roughly ≤40 lines, one class
+  ≤300 lines. A Handler needing 4+ loose parameters takes a CQRS Command/Query object instead
+  (already the convention — see `cqrs-pattern`).
+- No magic strings/numbers for statuses, codes, or thresholds — use a Backed Enum
+  (`12StrictEnums`) or a named class constant.
 
 ## 🗺 Feature Index
 After adding a feature, append entry to `docs/feature-index.md`.
@@ -32,4 +49,8 @@ Key skills under `.claude/skills/`:
 ## 🚀 Protocol
 1. Read `docs/02_prd.md` + `docs/feature-index.md`
 2. Read relevant `.claude/skills/*/SKILL.md`
-3. Implement → `composer analyse` (0 new phpstan errors)
+3. Implement → `vendor/bin/pint --test` + `composer test` (Pest, MySQL `dorak_test`)
+
+PHPStan is explicitly exempted as a required gate in this repo (kept out to save
+tokens/time) — `vendor/bin/pint --test` and `composer test` remain mandatory and are what
+the Husky pre-push hook enforces; CI additionally re-checks formatting.

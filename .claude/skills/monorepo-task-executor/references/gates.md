@@ -6,10 +6,13 @@ Run each from the stated directory. Never claim a gate passed unless the command
 - Full suite: `php artisan test`. On the memory ceiling: `php -d memory_limit=-1 vendor/bin/pest`.
 - Focused: `php -d memory_limit=1G vendor/bin/pest tests/Feature/...`.
 - Style: `vendor/bin/pint <touched paths>`, then `vendor/bin/pint --test <touched paths>`.
-- Static: `vendor/bin/phpstan analyse --memory-limit=2G --no-progress --debug <touched production PHP paths>` (never migrations or tests).
-  - Compare with a baseline; report pre-existing findings separately and fix new ones.
-  - If removed code was covered by `phpstan-baseline.neon`, delete the now-unmatched entries (`ignore.unmatched` cannot be ignored). Entries include an `identifier:` line.
 - Migrations: also `php scripts/check_migrations.php`.
+- PHPStan is explicitly exempted as a required gate for this repo (see `backend/CLAUDE.md`) —
+  do not run or report it as a blocking check. `pint --test` and `php artisan test`/Pest remain
+  mandatory.
+- Authorization: for any touched Action that reads or mutates another actor's resource,
+  confirm a `*Policy` + `$this->authorize()`/`Gate::allows()`/`->can()` check exists — a scoped
+  query alone (`where('*_id', ...)`) does not satisfy this gate.
 
 ## Dashboard (`frontend/dashboard/`)
 Whenever dashboard code, copy, or contracts change: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`. Do not assume a `new/` subdirectory.

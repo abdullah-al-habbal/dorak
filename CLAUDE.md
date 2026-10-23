@@ -36,6 +36,12 @@ files in that area.
 - Add focused regression coverage for changed behavior and run the checks
   required by the subsystem guide and task specification. Mark a task complete
   only after its acceptance criteria and required gates pass.
+- Each subsystem guide carries its own security and code-quality governance
+  (authorization/ownership checks, type-safety rules, file/method size limits,
+  magic-literal and data-clump avoidance, UI performance rules) — read
+  `backend/CLAUDE.md`, `frontend/dashboard/AGENTS.md`, or
+  `frontend/mobile/CLAUDE.md` before writing code in that area; these rules
+  apply in addition to, not instead of, the subsystem's existing skills.
 
 ## Git workflow (local only)
 

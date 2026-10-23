@@ -54,39 +54,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - CSS partials are imported from `src/app/layout.tsx` via `@/` (Tailwind's CSS `@import` cannot resolve the alias); keep `default.css` → `dark.css` → `globals.css` order.
 - Sole exception: `next/font/local` `path` strings are filesystem paths that Next resolves relative to the calling file, not module imports — keep them relative.
 
-## File taxonomy
+## More
 
-Enforced for `src/` (except `components/tailgrids/core/` and `*.d.ts`) by `tests/workspace-conventions.test.ts`:
-
-- Enums: `<name>.enum.ts` — prefer `as const` arrays + derived unions; no `enum` elsewhere.
-- Constants: `<name>.constant.ts` — every exported `SCREAMING_CASE` value; nothing callable.
-- Types / interfaces: `<name>.types.ts` — every exported `type`/`interface`; no runtime exports.
-- Hooks: `src/hooks/use-<name>.ts` — exactly one exported hook per file, file name = hook name.
-- Utilities: `<name>.util.ts` — pure helpers, guards, mappers, formatters.
-- Data access: reads in `<name>.query.ts`, writes in `<name>.mutation.ts`; never mix them in one module. Client hooks wrap them one per file (`use-login-mutation.ts`).
-- React contexts live in their own `*-context.ts`; providers render, hooks consume.
-- No bare catch-all names (`types.ts`, `constants.ts`, `utils.ts`, `helpers.ts`).
-- Next.js special files (`page`, `layout`, `route`, `error`, `loading`, `not-found`, `proxy`) keep framework names.
-
-## Styling rules
-
-- Use **Tailwind CSS** with the project's **semantic tokens** (`text-text-*`, `bg-card-*`, `border-*`, etc.).
-- Never hardcode hex colors — always reference tokens from `src/app/globals.css`.
-- Do NOT create new CSS utility classes.
-- FullCalendar overrides belong in `src/app/css/calendars.css`.
-
-## Component rules
-
-- **Modular sub-components**: Never place all code into a single monolithic file. Split complex UI into focused, single-responsibility sub-components in separate files (e.g. `header.tsx`, `filter-bar.tsx`, `card-item.tsx`).
-- **Follow React composition best practices**:
-  - **Single Responsibility**: Keep sub-components focused on one concern—separate container/state logic from presentational rendering.
-  - **Composition over prop drilling**: Prefer passing `children` or using compound component patterns over passing deeply nested props through intermediate layers.
-  - **Avoid inline render helpers**: Extract repeated or section-level JSX into dedicated sub-component files rather than helper functions like `renderHeader()` inside `index.tsx`.
-  - **Typed prop contracts**: Define explicit, strongly typed interfaces for each sub-component in `<name>.types.ts`; only non-exported prop interfaces may stay co-located with the sub-component.
-- Prefer primitives from `src/components/tailgrids/core/` (Button, Card, Badge, Select, Tabs, Dialog, etc.) over raw HTML or third-party equivalents.
-- Use `react-aria` skill for accessible component architecture when building interactive primitives.
-- Icons: use `@tailgrids/icons` for standard controls. For feature-local icons, place them in `icons.tsx`. Never generate SVG icons — use letter placeholders if no icon is available.
-- Add `"use client"` directive when the component uses hooks, event handlers, or browser APIs.
+| Topic                                                                 | Read                                                                                     |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| File taxonomy (enums, constants, types, hooks, query/mutation)        | [`references/file-taxonomy.md`](references/file-taxonomy.md)                             |
+| Styling & component composition rules                                 | [`references/component-and-styling-rules.md`](references/component-and-styling-rules.md) |
+| Type safety & code quality (`any`, casts, size limits, guard clauses) | [`references/type-safety.md`](references/type-safety.md)                                 |
 
 ## Data fetching & state
 
