@@ -23,19 +23,20 @@ use Modules\Booking\Http\Actions\Barber\CancelBookingAction;
 use Modules\Booking\Http\Actions\Barber\CompleteBookingAction;
 use Modules\Booking\Http\Actions\Barber\NoShowBookingAction;
 use Modules\Booking\Http\Actions\Barber\StartBookingAction;
+use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
 Route::prefix('barber')->name('barber.')->group(function (): void {
     Route::post('/login', LoginAction::class)->name('login')->middleware('throttle:5,1');
 
     Route::post('/register', RegisterAction::class)->name('register')->middleware('throttle:5,1');
 
-    Route::middleware(['auth:barber', EnsureBarberAccountAccess::class.':onboarding'])->group(function (): void {
+    Route::middleware(['auth:barber', EnsureBarberAccountAccess::class.':onboarding', ApplyPreferredLocaleMiddleware::class.':barber'])->group(function (): void {
         Route::get('/profile', GetProfileAction::class)->name('profile.show');
         Route::post('/email/verify/send', SendEmailVerificationAction::class)->name('email.verify.send')->middleware('throttle:3,1');
         Route::post('/email/verify', VerifyEmailAction::class)->name('email.verify')->middleware('throttle:5,1');
     });
 
-    Route::middleware(['auth:barber', EnsureBarberAccountAccess::class])->group(function (): void {
+    Route::middleware(['auth:barber', EnsureBarberAccountAccess::class, ApplyPreferredLocaleMiddleware::class.':barber'])->group(function (): void {
         Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
         Route::post('/portfolio', UploadPortfolioAction::class)->name('portfolio.upload');
         Route::get('/portfolio', ListPortfolioAction::class)->name('portfolio.list');

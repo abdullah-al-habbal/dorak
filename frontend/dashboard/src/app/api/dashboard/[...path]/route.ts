@@ -47,7 +47,7 @@ async function proxyDashboardRequest(request: NextRequest, context: Context) {
       ? undefined
       : await request.text();
   const body =
-    rawBody && path[0] === "profile"
+    rawBody && (path[0] === "profile" || path[0] === "settings")
       ? dashboardProfileRequestBody(rawBody)
       : rawBody;
   const result = await backendRequest<unknown>(
@@ -79,6 +79,8 @@ async function proxyDashboardRequest(request: NextRequest, context: Context) {
       ? dashboardPage(result.envelope.data, result.envelope.meta)
       : result.envelope.data;
   const data =
-    path[0] === "profile" ? dashboardProfileResponseData(rawData) : rawData;
+    path[0] === "profile" || path[0] === "settings"
+      ? dashboardProfileResponseData(rawData)
+      : rawData;
   return noStore(apiSuccess(data));
 }

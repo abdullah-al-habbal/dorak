@@ -7,4 +7,5 @@ class ProfileEndpoints {
   static const String phoneVerify = '/client/phone/verify';
   static const String avatar = '/client/avatar';
   static const String universe = '/client/preferences/universe';
+  static const String settings = '/client/settings';
 }

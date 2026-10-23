@@ -27,6 +27,7 @@ function portalRoutes<TActor extends AuthActor>(actor: TActor) {
       account: `${profile}/account`,
       security: `${profile}/security`,
       notification: `${profile}/notification`,
+      settings: `${profile}/settings`,
     },
     copy: {
       publicLabel: actor,

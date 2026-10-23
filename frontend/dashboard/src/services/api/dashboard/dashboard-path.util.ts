@@ -22,6 +22,8 @@ const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
   { method: "PUT", path: /^profile\/password$/ },
   { method: "GET", path: /^profile\/notifications$/ },
   { method: "PATCH", path: /^profile\/notifications$/ },
+  { method: "GET", path: /^settings$/ },
+  { method: "PATCH", path: /^settings$/ },
 ];
 
 export function isDashboardRouteAllowed(

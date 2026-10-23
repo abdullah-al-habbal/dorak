@@ -38,6 +38,36 @@ it("proxies an allowed dashboard resource with the session bearer token", async 
   });
 });
 
+it("converts settings request and response bodies between camelCase and snake_case", async () => {
+  backendRequest.mockResolvedValue({
+    ok: true,
+    status: 200,
+    envelope: {
+      data: { preferred_language: "ar", notification_enabled: true },
+    },
+  });
+  const request = new NextRequest("http://localhost/api/dashboard/settings", {
+    method: "PATCH",
+    body: JSON.stringify({ preferredLanguage: "ar" }),
+  });
+
+  const response = await PATCH(request, {
+    params: Promise.resolve({ path: ["settings"] }),
+  });
+
+  expect(backendRequest).toHaveBeenCalledWith(
+    "/api/v1/dashboard/settings",
+    expect.objectContaining({
+      method: "PATCH",
+      body: JSON.stringify({ preferred_language: "ar" }),
+    }),
+  );
+  await expect(response.json()).resolves.toMatchObject({
+    success: true,
+    data: { preferredLanguage: "ar", notificationEnabled: true },
+  });
+});
+
 it("rejects a disallowed method and path without calling the backend", async () => {
   const response = await PATCH(
     new NextRequest("http://localhost/api/dashboard/branches/branch-1", {

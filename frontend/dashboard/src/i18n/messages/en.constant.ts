@@ -164,6 +164,10 @@ export const en = {
         title: "Notification",
         description: "Customize your notification preferences",
       },
+      settings: {
+        title: "Settings",
+        description: "Language, currency and display preferences",
+      },
     },
     account: {
       details: "Account Details",
@@ -234,6 +238,21 @@ export const en = {
       securityAlert: "Security Alert",
       booking: "Booking notifications",
       system: "System notifications",
+    },
+    settings: {
+      title: "Settings",
+      language: "Preferred language",
+      languageEn: "English",
+      languageAr: "Arabic",
+      currency: "Display currency",
+      theme: "Theme",
+      themeLight: "Light",
+      themeDark: "Dark",
+      priceDisplayMode: "Price display",
+      priceDisplayModeTaxInclusive: "Tax inclusive",
+      priceDisplayModeTaxExclusive: "Tax exclusive",
+      notificationEnabled: "Enable notifications",
+      save: "Save settings",
     },
   },
   operations: {

@@ -1,0 +1,145 @@
+<?php
+
+declare(strict_types=1);
+
+use Illuminate\Support\Str;
+use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Models\BarberModel;
+use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
+use Modules\Currency\Models\CurrencyModel;
+use Modules\Preference\Models\PreferenceModel;
+use Tests\TestCase;
+
+it('returns defaults for a client with no settings row and creates exactly one row', function (): void {
+    $client = ClientModel::factory()->create();
+    $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
+
+    $this->withToken($token)->getJson('/api/v1/client/settings')
+        ->assertOk()
+        ->assertJsonPath('data.notification_enabled', true)
+        ->assertJsonPath('data.preferred_language', null);
+
+    expect(PreferenceModel::query()->where('preferenceable_type', 'client')->where('preferenceable_id', $client->id)->count())->toBe(1);
+
+    $this->withToken($token)->getJson('/api/v1/client/settings')->assertOk();
+    expect(PreferenceModel::query()->where('preferenceable_type', 'client')->where('preferenceable_id', $client->id)->count())->toBe(1);
+});
+
+it('rejects an unknown display currency with 422', function (): void {
+    $client = ClientModel::factory()->create();
+    $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
+
+    $this->withToken($token)->patchJson('/api/v1/client/settings', [
+        'display_currency_id' => (string) Str::uuid(),
+    ])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('display_currency_id');
+
+    expect(PreferenceModel::query()->where('preferenceable_id', $client->id)->first()?->display_currency_id)->toBeNull();
+});
+
+it('persists a valid settings update for a client', function (): void {
+    $client = ClientModel::factory()->create();
+    $currency = CurrencyModel::factory()->create();
+    $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
+
+    $this->withToken($token)->patchJson('/api/v1/client/settings', [
+        'preferred_language' => 'ar',
+        'notification_enabled' => false,
+        'display_currency_id' => $currency->id,
+        'theme' => 'dark',
+        'price_display_mode' => 'tax_exclusive',
+    ])
+        ->assertOk()
+        ->assertJsonPath('data.preferred_language', 'ar')
+        ->assertJsonPath('data.notification_enabled', false)
+        ->assertJsonPath('data.display_currency_id', $currency->id)
+        ->assertJsonPath('data.theme', 'dark')
+        ->assertJsonPath('data.price_display_mode', 'tax_exclusive');
+});
+
+it('scopes settings to the authenticated client only', function (): void {
+    $client = ClientModel::factory()->create();
+    $other = ClientModel::factory()->create();
+    $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
+
+    $this->withToken($token)->patchJson('/api/v1/client/settings', ['preferred_language' => 'en']);
+
+    $this->app['auth']->forgetGuards();
+    $this->withToken($other->createToken('client-app', $other->accessTokenAbilities())->plainTextToken)
+        ->getJson('/api/v1/client/settings')
+        ->assertOk()
+        ->assertJsonPath('data.preferred_language', null);
+
+    expect(PreferenceModel::query()->count())->toBe(2);
+});
+
+it('returns defaults and persists settings for a barber', function (): void {
+    $barber = BarberModel::factory()->create();
+    $token = $barber->createToken('barber-app')->plainTextToken;
+
+    $this->withToken($token)->getJson('/api/v1/barber/settings')
+        ->assertOk()
+        ->assertJsonPath('data.notification_enabled', true);
+
+    $this->withToken($token)->patchJson('/api/v1/barber/settings', ['theme' => 'dark'])
+        ->assertOk()
+        ->assertJsonPath('data.theme', 'dark');
+
+    expect(PreferenceModel::query()->where('preferenceable_type', 'barber')->where('preferenceable_id', $barber->id)->count())->toBe(1);
+});
+
+it('returns defaults and persists settings for a branch', function (): void {
+    $branch = BranchModel::factory()->create();
+    $token = $branch->createToken('branch-app')->plainTextToken;
+
+    $this->withToken($token)->getJson('/api/v1/branch/settings')
+        ->assertOk()
+        ->assertJsonPath('data.notification_enabled', true);
+
+    $this->withToken($token)->patchJson('/api/v1/branch/settings', ['preferred_language' => 'ar'])
+        ->assertOk()
+        ->assertJsonPath('data.preferred_language', 'ar');
+
+    expect(PreferenceModel::query()->where('preferenceable_type', 'branch')->where('preferenceable_id', $branch->id)->count())->toBe(1);
+});
+
+it('returns and persists settings for a dashboard admin actor', function (): void {
+    $admin = AdminModel::factory()->create();
+    $token = dashboardToken($this, $admin);
+
+    $this->withHeader('Authorization', 'Bearer '.$token)
+        ->getJson('/api/v1/dashboard/settings')
+        ->assertOk()
+        ->assertJsonPath('data.notification_enabled', true);
+
+    $this->withHeader('Authorization', 'Bearer '.$token)
+        ->patchJson('/api/v1/dashboard/settings', ['theme' => 'dark'])
+        ->assertOk()
+        ->assertJsonPath('data.theme', 'dark');
+
+    expect(PreferenceModel::query()->where('preferenceable_type', 'admin')->where('preferenceable_id', $admin->id)->count())->toBe(1);
+});
+
+it('responds with translated resources once a barber sets an Arabic preferred language', function (): void {
+    $barber = BarberModel::factory()->create(['name' => ['en' => 'John Doe', 'ar' => 'جون دو']]);
+    $token = $barber->createToken('barber-app')->plainTextToken;
+
+    $this->withToken($token)->patchJson('/api/v1/barber/settings', ['preferred_language' => 'ar'])->assertOk();
+
+    $this->withToken($token)->getJson('/api/v1/barber/profile')
+        ->assertOk()
+        ->assertJsonPath('data.name', 'جون دو');
+});
+
+function dashboardToken(TestCase $test, AdminModel $admin): string
+{
+    config(['dashboard.dashboard.session_secret' => 'dashboard-session-secret-that-is-at-least-thirty-two-characters']);
+
+    return (string) $test->postJson('/api/v1/dashboard/login', [
+        'actor_type' => 'admin',
+        'email' => $admin->email,
+        'password' => 'password',
+    ])->assertOk()->json('data.token');
+}

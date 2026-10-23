@@ -54,6 +54,7 @@ import 'package:client_app/src/features/profile/profile_completion.screen.dart';
 import 'package:client_app/src/features/profile/profile.screen.dart';
 import 'package:client_app/src/features/profile/profile_edit.screen.dart';
 import 'package:client_app/src/features/profile/saved_addresses.screen.dart';
+import 'package:client_app/src/features/profile/settings.screen.dart';
 import 'package:client_app/src/features/splash/splash.screen.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.screen.dart';
@@ -635,6 +636,8 @@ class AppRouter {
                           router.push<void>(AppRoutes.profileAddresses),
                       onNotifications: () =>
                           router.push<void>(AppRoutes.profileNotifications),
+                      onSettings: () =>
+                          router.push<void>(AppRoutes.profileSettings),
                     ),
                   ),
                 ),
@@ -680,6 +683,13 @@ class AppRouter {
                       notifications,
                       services.createNotifications,
                       (bloc) => NotificationsScreen(bloc: bloc),
+                    ),
+                  ),
+                  GoRoute(
+                    path: AppRoutes.profileSettingsSegment,
+                    builder: (context, state) => SettingsScreen(
+                      repository: services.createProfileRepository(),
+                      currencyRepository: services.createCurrencyRepository(),
                     ),
                   ),
                 ],

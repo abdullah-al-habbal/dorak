@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Modules\Core\Enums\Locale;
+use Modules\Preference\Enums\PriceDisplayModeEnum;
+use Modules\Preference\Enums\ThemeEnum;
 
 #[Fillable([
     'preferenceable_id',
@@ -30,7 +33,10 @@ class PreferenceModel extends Model
     protected function casts(): array
     {
         return [
+            'preferred_language' => Locale::class,
             'notification_enabled' => 'boolean',
+            'theme' => ThemeEnum::class,
+            'price_display_mode' => PriceDisplayModeEnum::class,
         ];
     }
 

@@ -20,8 +20,17 @@ The PRD says each Brand, Branch, Barber and Client owns a Settings record (langu
 - Lazily create the preference row on first GET (`firstOrCreate` on the morph).
 - Validate `preferred_language` (en|ar), `display_currency_id` (exists:currencies), `price_display_mode` (enum), `theme`, `notification_enabled`.
 - Apply `preferred_language` as the response locale for the authenticated user. The locale middleware currently lives only in the Website module (unverified at runtime).
-- Decision required: whether `dashboard/profile/notifications` is replaced by Preference or kept as an alias.
+- **Decision (dashboard/profile/notifications, resolved): kept, unchanged.** It is a distinct, finer-grained concept (per-channel email/push/booking/system toggles) from Preference's single `notification_enabled` flag; replacing it would lose granularity for no benefit. The new `dashboard/settings` endpoint exposes `notification_enabled` alongside it for parity with the other three actors.
 - Task 57 reads `display_currency_id` and `price_display_mode`.
+
+### Implemented contract
+- Shared code path: `Modules\Preference\Handlers\GetSettingsHandler::handle()` / `UpdateSettingsHandler::handle()`, backed by `GetOrCreateSettingsEloquentResolver` / `UpdateSettingsEloquentResolver`. Used by `GET/PATCH /api/v1/client/settings`, `GET/PATCH /api/v1/barber/settings`, `GET/PATCH /api/v1/branch/settings`, `GET/PATCH /api/v1/dashboard/settings` (all four Actions in `Modules\Preference\Http\Actions\{Client,Barber,Branch,Dashboard}`).
+- Scope of the rule: each actor's settings resolve to one `preferences` row keyed by `(preferenceable_type, preferenceable_id)` where the owner is the actor's own entity (`client`/`barber`/`branch`/`admin` morph aliases, already registered in `ApplicationServiceProvider::registerMorphMap()`). A dashboard `owner` actor (Task 38 brand owner) maps to the owning `client` row, so an owner's dashboard settings and their client-app settings are the same row by design. The row is lazily created on first `GET` or `PATCH` (`firstOrCreate`), never pre-seeded.
+- Request (PATCH): `preferred_language` (`ar`|`en`, nullable), `notification_enabled` (bool), `display_currency_id` (nullable, `exists:currencies,id`), `theme` (`light`|`dark`, nullable, new `Modules\Preference\Enums\ThemeEnum`), `price_display_mode` (`tax_inclusive`|`tax_exclusive`, nullable, new `Modules\Preference\Enums\PriceDisplayModeEnum`). All fields are `sometimes` (partial update).
+- Failure: an unknown `display_currency_id` returns HTTP 422 `VALIDATION_FAILED` with `errors.display_currency_id`; the row is left unchanged (validation runs before any write). A request from one owner can never read or write another owner's row — there is no ID in the path or request body, the owner is derived solely from the authenticated guard/dashboard actor.
+- Success: HTTP 200, `data` = `{preferred_language, notification_enabled, display_currency_id, theme, price_display_mode}` via `SettingsResource`. Side effect: `Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware`, added to the authenticated route groups of `client`, `barber`, `branch_api` and `dashboard`, calls `App::setLocale()` from the stored `preferred_language` on every authenticated request by that actor, so Spatie-translatable resources respond in that locale, not just the settings endpoints.
+- Dashboard: the existing BFF catch-all `frontend/dashboard/src/app/api/dashboard/[...path]/route.ts` is extended to allow and case-convert the `settings` path (`dashboard-path.util.ts`, `dashboard-profile-bff.util.ts`); a `settings` profile tab and page exist under all four portal roots (`src/app/(portals)/{admin,manager,owner,barber}/profile/settings/`), rendered by `src/components/profile/settings/settings-preferences.tsx`. Mobile: `frontend/mobile/packages/core/lib/src/network/repositories/profile.repository.dart` gains `getSettings`/`updateSettings` (backed by a new `SettingsDto`); `client_app` gets a `SettingsCubit` + `SettingsScreen` (language/currency/price mode) reachable from the profile tab.
+- Deviations from the original spec text: none beyond the dashboard-notifications decision above.
 
 ### Dashboard (BFF / React)
 - Add a settings page under the profile area, through a BFF route to `dashboard/settings`.
@@ -32,13 +41,13 @@ The PRD says each Brand, Branch, Barber and Client owns a Settings record (langu
 - client_app profile settings screen: language, currency, price mode. stylist_app and business_app settings screens are in Tasks 83 and 85.
 
 ## Acceptance Criteria
-- [ ] `GET /api/v1/client/settings` returns 200 with defaults for a client with no row, and creates exactly one `preferences` row.
-- [ ] `PATCH /api/v1/client/settings` with `display_currency_id` of a non-existent currency returns 422.
-- [ ] A client cannot read or modify another owner's settings (no ID in the path; Feature test asserts scoping).
-- [ ] With `preferred_language=ar`, translatable resources come back in Arabic for that user (Feature test).
-- [ ] Equivalent Feature tests pass for the barber and branch guards.
-- [ ] Mobile repository unit tests cover get/update (`melos run test` passes).
-- [ ] `php artisan test` passes; PHPStan max + Pint clean.
+- [x] `GET /api/v1/client/settings` returns 200 with defaults for a client with no row, and creates exactly one `preferences` row.
+- [x] `PATCH /api/v1/client/settings` with `display_currency_id` of a non-existent currency returns 422.
+- [x] A client cannot read or modify another owner's settings (no ID in the path; Feature test asserts scoping).
+- [x] With `preferred_language=ar`, translatable resources come back in Arabic for that user (Feature test).
+- [x] Equivalent Feature tests pass for the barber and branch guards.
+- [x] Mobile repository unit tests cover get/update (`melos run test` passes).
+- [x] `php artisan test` passes; Pint clean. PHPStan is skipped per `backend/CLAUDE.md` repo policy (not a required gate).
 
 ## Out of Scope
 - Currency conversion of prices (Task 57).

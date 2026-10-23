@@ -199,6 +199,80 @@ void main() {
         expect(preference.preferredUniverse, 'women');
       },
     );
+
+    test(
+      'getSettings reads the authenticated owner settings',
+      () async {
+        late RequestOptions captured;
+        final fake = fakeDio(
+          handler: (options) {
+            captured = options;
+            return jsonResponse(
+              options,
+              data: successEnvelope(
+                data: {
+                  'preferred_language': 'ar',
+                  'notification_enabled': true,
+                  'display_currency_id': 'currency-1',
+                  'theme': 'dark',
+                  'price_display_mode': 'tax_inclusive',
+                },
+              ),
+            );
+          },
+        );
+        final repository = DioProfileRepository(clientWith(fake));
+
+        final settings = await repository.getSettings();
+
+        expect(captured.path, ProfileEndpoints.settings);
+        expect(captured.method, 'GET');
+        expect(settings.preferredLanguage, 'ar');
+        expect(settings.notificationEnabled, isTrue);
+        expect(settings.displayCurrencyId, 'currency-1');
+        expect(settings.theme, 'dark');
+        expect(settings.priceDisplayMode, 'tax_inclusive');
+      },
+    );
+
+    test(
+      'updateSettings sends only the provided fields and parses settings',
+      () async {
+        late RequestOptions captured;
+        final fake = fakeDio(
+          handler: (options) {
+            captured = options;
+            return jsonResponse(
+              options,
+              data: successEnvelope(
+                data: {
+                  'preferred_language': 'en',
+                  'notification_enabled': false,
+                  'display_currency_id': null,
+                  'theme': null,
+                  'price_display_mode': null,
+                },
+              ),
+            );
+          },
+        );
+        final repository = DioProfileRepository(clientWith(fake));
+
+        final settings = await repository.updateSettings(
+          preferredLanguage: 'en',
+          notificationEnabled: false,
+        );
+
+        expect(captured.path, ProfileEndpoints.settings);
+        expect(captured.method, 'PATCH');
+        expect(captured.data, {
+          'preferred_language': 'en',
+          'notification_enabled': false,
+        });
+        expect(settings.preferredLanguage, 'en');
+        expect(settings.notificationEnabled, isFalse);
+      },
+    );
   });
 
   group('DioServiceCatalogRepository', () {

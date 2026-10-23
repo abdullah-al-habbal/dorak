@@ -72,6 +72,8 @@ void main() {
   testWidgets('cancelling the picker dispatches nothing', (tester) async {
     await pumpProfile(tester);
 
+    await tester.ensureVisible(find.text('Book Again'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Book Again'));
     await tester.pumpAndSettle();
     expect(find.byType(DatePickerDialog), findsOneWidget);

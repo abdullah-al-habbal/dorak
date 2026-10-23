@@ -44,12 +44,13 @@ use Modules\Dashboard\Http\Actions\Stylists\UpdateStylistAction;
 use Modules\Dashboard\Http\Actions\UpdateBookingStatusAction;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOperationsAuthorizationMiddleware;
+use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
 Route::prefix('dashboard')->group(function (): void {
     Route::post('/login', DashboardLoginAction::class)->middleware('throttle:5,1');
     Route::post('/refresh', RefreshSessionAction::class)->middleware('throttle:10,1');
 
-    Route::middleware(DashboardAuthorizationMiddleware::class)->group(function (): void {
+    Route::middleware([DashboardAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
         Route::get('/me', MeAction::class);
         Route::post('/logout', LogoutAction::class);
         Route::get('/profile', GetProfileAction::class);

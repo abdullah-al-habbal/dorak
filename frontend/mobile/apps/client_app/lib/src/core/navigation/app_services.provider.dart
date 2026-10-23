@@ -39,6 +39,7 @@ class AppServices {
     required this.createChangePassword,
     required this.createProfileRepository,
     required this.createNotifications,
+    required this.createCurrencyRepository,
   });
 
   factory AppServices.live({
@@ -85,6 +86,7 @@ class AppServices {
     createProfileRepository: () => DioProfileRepository(apiClient),
     createNotifications: () =>
         NotificationsBloc(DioNotificationRepository(apiClient)),
+    createCurrencyRepository: () => DioCurrencyRepository(apiClient),
   );
 
   final OnboardingConfigBloc Function() createOnboardingConfig;
@@ -104,4 +106,5 @@ class AppServices {
   final ChangePasswordBloc Function() createChangePassword;
   final ProfileRepository Function() createProfileRepository;
   final NotificationsBloc Function() createNotifications;
+  final CurrencyRepository Function() createCurrencyRepository;
 }

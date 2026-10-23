@@ -1844,6 +1844,78 @@ abstract class AppLocalizations {
   /// **'Email'**
   String get profileEmailLabel;
 
+  /// Profile button that opens the language, currency and display settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileSettingsAction;
+
+  /// Title of the client settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileSettingsTitle;
+
+  /// Label for the preferred language selector on the settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred language'**
+  String get profileSettingsLanguageLabel;
+
+  /// English option in the preferred language selector
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get profileSettingsLanguageEnglish;
+
+  /// Arabic option in the preferred language selector
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get profileSettingsLanguageArabic;
+
+  /// Label for the display currency selector on the settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Display currency'**
+  String get profileSettingsCurrencyLabel;
+
+  /// Label for the price display mode selector on the settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Price display'**
+  String get profileSettingsPriceDisplayModeLabel;
+
+  /// Tax inclusive option in the price display mode selector
+  ///
+  /// In en, this message translates to:
+  /// **'Tax inclusive'**
+  String get profileSettingsPriceDisplayModeTaxInclusive;
+
+  /// Tax exclusive option in the price display mode selector
+  ///
+  /// In en, this message translates to:
+  /// **'Tax exclusive'**
+  String get profileSettingsPriceDisplayModeTaxExclusive;
+
+  /// Button that submits the settings form
+  ///
+  /// In en, this message translates to:
+  /// **'Save settings'**
+  String get profileSettingsSaveAction;
+
+  /// Confirmation message shown after settings are saved
+  ///
+  /// In en, this message translates to:
+  /// **'Settings saved'**
+  String get profileSettingsSaved;
+
+  /// Error message shown when saving settings fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save your settings'**
+  String get profileSettingsError;
+
   /// No description provided for @savedAddressesTitle.
   ///
   /// In en, this message translates to:

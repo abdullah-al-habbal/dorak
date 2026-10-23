@@ -165,6 +165,10 @@ export const ar: Dictionary = {
         title: "الإشعارات",
         description: "خصّص تفضيلات الإشعارات لديك",
       },
+      settings: {
+        title: "الإعدادات",
+        description: "اللغة والعملة وتفضيلات العرض",
+      },
     },
     account: {
       details: "تفاصيل الحساب",
@@ -229,6 +233,21 @@ export const ar: Dictionary = {
       securityAlert: "تنبيه أمني",
       booking: "إشعارات الحجوزات",
       system: "إشعارات النظام",
+    },
+    settings: {
+      title: "الإعدادات",
+      language: "اللغة المفضلة",
+      languageEn: "الإنجليزية",
+      languageAr: "العربية",
+      currency: "عملة العرض",
+      theme: "المظهر",
+      themeLight: "فاتح",
+      themeDark: "داكن",
+      priceDisplayMode: "عرض السعر",
+      priceDisplayModeTaxInclusive: "شامل الضريبة",
+      priceDisplayModeTaxExclusive: "غير شامل الضريبة",
+      notificationEnabled: "تفعيل الإشعارات",
+      save: "حفظ الإعدادات",
     },
   },
   operations: {

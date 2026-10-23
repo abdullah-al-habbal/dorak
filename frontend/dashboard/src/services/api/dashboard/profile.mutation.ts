@@ -1,8 +1,10 @@
 import { apiRequest } from "@/services/api/client";
 import type { INotificationPreferences } from "@/services/api/dashboard/inotification-preferences.types";
 import type { IProfile } from "@/services/api/dashboard/iprofile.types";
+import type { ISettings } from "@/services/api/dashboard/isettings.types";
 import type { IUpdatePasswordInput } from "@/services/api/dashboard/iupdate-password-input.types";
 import type { IUpdateProfileInput } from "@/services/api/dashboard/iupdate-profile-input.types";
+import type { IUpdateSettingsInput } from "@/services/api/dashboard/iupdate-settings-input.types";
 
 export function updateProfile(input: IUpdateProfileInput): Promise<IProfile> {
   return apiRequest<IProfile>("/api/dashboard/profile", {
@@ -57,4 +59,14 @@ export async function updateNotificationPreferences(
       body: JSON.stringify(input),
     },
   );
+}
+
+export async function updateSettings(
+  input: IUpdateSettingsInput,
+): Promise<ISettings> {
+  return apiRequest<ISettings>("/api/dashboard/settings", {
+    auth: "session",
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
 }

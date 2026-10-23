@@ -19,4 +19,9 @@ export const PROFILE_TABS = [
     icon: "user",
     href: (actor) => ROUTES.portal[actor].profile.notification,
   },
+  {
+    tab: "settings",
+    icon: "user",
+    href: (actor) => ROUTES.portal[actor].profile.settings,
+  },
 ] as const satisfies readonly ProfileTabConfig[];

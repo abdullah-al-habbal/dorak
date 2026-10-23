@@ -14,6 +14,16 @@ abstract class ProfileRepository {
   Future<AvatarDto> uploadAvatar(String filePath);
 
   Future<UniversePreferenceDto> updatePreferredUniverse(String universe);
+
+  Future<SettingsDto> getSettings();
+
+  Future<SettingsDto> updateSettings({
+    String? preferredLanguage,
+    bool? notificationEnabled,
+    String? displayCurrencyId,
+    String? theme,
+    String? priceDisplayMode,
+  });
 }
 
 class DioProfileRepository implements ProfileRepository {
@@ -76,6 +86,36 @@ class DioProfileRepository implements ProfileRepository {
       data: {'preferred_universe': universe},
       parser: (json) =>
           UniversePreferenceDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<SettingsDto> getSettings() {
+    return _apiClient.get<SettingsDto>(
+      ProfileEndpoints.settings,
+      parser: (json) => SettingsDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<SettingsDto> updateSettings({
+    String? preferredLanguage,
+    bool? notificationEnabled,
+    String? displayCurrencyId,
+    String? theme,
+    String? priceDisplayMode,
+  }) {
+    final data = <String, dynamic>{
+      'preferred_language': ?preferredLanguage,
+      'notification_enabled': ?notificationEnabled,
+      'display_currency_id': ?displayCurrencyId,
+      'theme': ?theme,
+      'price_display_mode': ?priceDisplayMode,
+    };
+    return _apiClient.patch<SettingsDto>(
+      ProfileEndpoints.settings,
+      data: data,
+      parser: (json) => SettingsDto.fromJson(json as Map<String, dynamic>),
     );
   }
 }

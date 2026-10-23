@@ -9,6 +9,7 @@ export interface PortalRouteConfig {
     account: string;
     security: string;
     notification: string;
+    settings: string;
   };
   copy: {
     publicLabel: keyof Dictionary["public"];

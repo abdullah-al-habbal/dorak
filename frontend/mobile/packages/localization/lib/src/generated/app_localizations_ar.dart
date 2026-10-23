@@ -964,6 +964,42 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileEmailLabel => 'البريد الإلكتروني';
 
   @override
+  String get profileSettingsAction => 'الإعدادات';
+
+  @override
+  String get profileSettingsTitle => 'الإعدادات';
+
+  @override
+  String get profileSettingsLanguageLabel => 'اللغة المفضلة';
+
+  @override
+  String get profileSettingsLanguageEnglish => 'الإنجليزية';
+
+  @override
+  String get profileSettingsLanguageArabic => 'العربية';
+
+  @override
+  String get profileSettingsCurrencyLabel => 'عملة العرض';
+
+  @override
+  String get profileSettingsPriceDisplayModeLabel => 'عرض السعر';
+
+  @override
+  String get profileSettingsPriceDisplayModeTaxInclusive => 'شامل الضريبة';
+
+  @override
+  String get profileSettingsPriceDisplayModeTaxExclusive => 'غير شامل الضريبة';
+
+  @override
+  String get profileSettingsSaveAction => 'حفظ الإعدادات';
+
+  @override
+  String get profileSettingsSaved => 'تم حفظ الإعدادات';
+
+  @override
+  String get profileSettingsError => 'تعذر حفظ الإعدادات';
+
+  @override
   String get savedAddressesTitle => 'العناوين المحفوظة';
 
   @override

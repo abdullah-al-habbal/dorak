@@ -1164,6 +1164,41 @@ class FakeProfileRepository implements ProfileRepository {
   Future<UniversePreferenceDto> updatePreferredUniverse(String universe) async {
     return UniversePreferenceDto(preferredUniverse: universe);
   }
+
+  SettingsDto settings = const SettingsDto(notificationEnabled: true);
+  Object? getSettingsError;
+  Object? updateSettingsError;
+  int getSettingsCalls = 0;
+  int updateSettingsCalls = 0;
+
+  @override
+  Future<SettingsDto> getSettings() async {
+    getSettingsCalls++;
+    final failure = getSettingsError;
+    if (failure != null) throw failure;
+    return settings;
+  }
+
+  @override
+  Future<SettingsDto> updateSettings({
+    String? preferredLanguage,
+    bool? notificationEnabled,
+    String? displayCurrencyId,
+    String? theme,
+    String? priceDisplayMode,
+  }) async {
+    updateSettingsCalls++;
+    final failure = updateSettingsError;
+    if (failure != null) throw failure;
+    settings = SettingsDto(
+      preferredLanguage: preferredLanguage ?? settings.preferredLanguage,
+      notificationEnabled: notificationEnabled ?? settings.notificationEnabled,
+      displayCurrencyId: displayCurrencyId ?? settings.displayCurrencyId,
+      theme: theme ?? settings.theme,
+      priceDisplayMode: priceDisplayMode ?? settings.priceDisplayMode,
+    );
+    return settings;
+  }
 }
 
 class FakeServiceCatalogRepository implements ServiceCatalogRepository {

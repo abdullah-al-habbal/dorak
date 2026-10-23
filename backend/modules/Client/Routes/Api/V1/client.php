@@ -22,6 +22,7 @@ use Modules\Client\Http\Actions\Client\VerifyEmailAction;
 use Modules\Client\Http\Actions\Client\VerifyPhoneOtpAction;
 use Modules\Client\Http\Actions\Client\VerifyResetCodeAction;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
+use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
 Route::prefix('client')->name('client.')->group(function (): void {
     Route::post('/login', LoginAction::class)->name('login')->middleware('throttle:5,1');
@@ -31,7 +32,7 @@ Route::prefix('client')->name('client.')->group(function (): void {
     Route::post('/forgot-password/verify', VerifyResetCodeAction::class)->name('forgot-password.verify')->middleware('throttle:5,1');
     Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password')->middleware('throttle:5,1');
 
-    Route::middleware(['auth:client', EnsureClientAccountAccess::class.':verification'])->group(function (): void {
+    Route::middleware(['auth:client', EnsureClientAccountAccess::class.':verification', ApplyPreferredLocaleMiddleware::class.':client'])->group(function (): void {
         Route::post('/logout', LogoutAction::class)->name('logout');
         Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
         Route::get('/profile', GetProfileAction::class)->name('profile.show');
@@ -39,7 +40,7 @@ Route::prefix('client')->name('client.')->group(function (): void {
         Route::post('/email/verify/send', SendEmailVerificationAction::class)->name('email.verify.send')->middleware('throttle:3,1');
     });
 
-    Route::middleware(['auth:client', EnsureClientAccountAccess::class])->group(function (): void {
+    Route::middleware(['auth:client', EnsureClientAccountAccess::class, ApplyPreferredLocaleMiddleware::class.':client'])->group(function (): void {
         Route::patch('/preferences/universe', UpdateUniversePreferenceAction::class)->name('preferences.universe');
         Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
         Route::post('/avatar', UploadAvatarAction::class)->name('avatar.upload');

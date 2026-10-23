@@ -975,6 +975,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileEmailLabel => 'Email';
 
   @override
+  String get profileSettingsAction => 'Settings';
+
+  @override
+  String get profileSettingsTitle => 'Settings';
+
+  @override
+  String get profileSettingsLanguageLabel => 'Preferred language';
+
+  @override
+  String get profileSettingsLanguageEnglish => 'English';
+
+  @override
+  String get profileSettingsLanguageArabic => 'Arabic';
+
+  @override
+  String get profileSettingsCurrencyLabel => 'Display currency';
+
+  @override
+  String get profileSettingsPriceDisplayModeLabel => 'Price display';
+
+  @override
+  String get profileSettingsPriceDisplayModeTaxInclusive => 'Tax inclusive';
+
+  @override
+  String get profileSettingsPriceDisplayModeTaxExclusive => 'Tax exclusive';
+
+  @override
+  String get profileSettingsSaveAction => 'Save settings';
+
+  @override
+  String get profileSettingsSaved => 'Settings saved';
+
+  @override
+  String get profileSettingsError => 'Could not save your settings';
+
+  @override
   String get savedAddressesTitle => 'Saved addresses';
 
   @override

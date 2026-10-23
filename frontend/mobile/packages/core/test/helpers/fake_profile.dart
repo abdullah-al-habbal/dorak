@@ -44,4 +44,20 @@ class FakeProfileRepository implements ProfileRepository {
   Future<UniversePreferenceDto> updatePreferredUniverse(String universe) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<SettingsDto> getSettings() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<SettingsDto> updateSettings({
+    String? preferredLanguage,
+    bool? notificationEnabled,
+    String? displayCurrencyId,
+    String? theme,
+    String? priceDisplayMode,
+  }) {
+    throw UnimplementedError();
+  }
 }

@@ -18,7 +18,7 @@ class PreferenceSeeder extends Seeder
             'notification_enabled' => true,
             'display_currency_id' => null,
             'theme' => 'light',
-            'price_display_mode' => 'single',
+            'price_display_mode' => 'tax_inclusive',
         ]);
     }
 }

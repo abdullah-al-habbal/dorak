@@ -116,7 +116,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved (best option): a branch with no hours configured stays always open (as barber schedules, Task 22); a dated override beats the weekly row; times are UTC `H:i` and overnight hours are not supported until a branch timezone exists; storefront tags are free-form strings on the branch, matched by explore search. Branch hours are now enforced for bookings and slots (closes Task 22's pending sub-criterion).
 
 ## [Task 52: Expose Settings and Preferences API](tasks/task-52-settings-preferences-api.md)
-- [ ] Decision required: whether `dashboard/profile/notifications` is replaced by Preference or kept as an alias.
+- [x] Decision resolved (best option): `dashboard/profile/notifications` is kept, unchanged. It models four independent per-channel toggles (`email_enabled`, `push_enabled`, `booking_enabled`, `system_enabled`) on `dashboard_notification_preferences`, a different granularity than Preference's single `notification_enabled` flag; collapsing one into the other would either lose the per-channel UI or force four new Preference columns duplicating a working endpoint. The new `dashboard/settings` endpoint still exposes `notification_enabled` for parity with the client/barber/branch contract, and both read/write the same underlying actor's row independently.
 
 ## [Task 53: Complete Activation Management](tasks/task-53-activation-management.md)
 - [ ] Decision required: whether a barber's self-deactivation should remain (the spec text implies the owner controls activation). Keep the current behavior until decided.
