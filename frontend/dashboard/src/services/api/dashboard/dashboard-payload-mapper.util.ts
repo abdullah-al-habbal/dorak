@@ -3,6 +3,7 @@ import {
   branchCreateSchema,
   branchEditSchema,
 } from "@/services/api/dashboard/branch-form.schema";
+import { openingHoursPayload } from "@/services/api/dashboard/branch-opening-hours.util";
 import { chairFormSchema } from "@/services/api/dashboard/chair-form.schema";
 import { serviceFormSchema } from "@/services/api/dashboard/service-form.schema";
 import {
@@ -24,6 +25,11 @@ export function mapBranchPayload(
     ...(input.password ? { password: input.password } : {}),
     status: input.status,
     universe: input.universe,
+    description: input.description,
+    address: input.address,
+    ...(openingHoursPayload(input.openingHours).length > 0
+      ? { opening_hours: openingHoursPayload(input.openingHours) }
+      : {}),
   };
 }
 export function mapChairPayload(

@@ -226,6 +226,7 @@ links, locale persistence.
 | Booking times use `intl` directly | Locale-aware `DateFormat.yMMMd(locale).add_Hm()`; `intl: ^0.20.0` pinned same as `localization`. |
 | Cancel is a Material `AlertDialog`, not a sheet | No dialog exists in `design_system` (Track 15); a two-action confirm dialog is the responsible minimum for a destructive action. |
 | Segmented universe control, not chips | `design_system` has no chip (Track 15) — Material `SegmentedButton` covers men/women without inventing one. |
+| Branch storefront line under the header (Task 51) | `BranchStorefront` shows description, address and `today_hours` only when present; a branch without configured hours shows no hours line rather than a guessed "open". |
 | Branch detail loads detail + floor plan in parallel, plan failure tolerated | A dead floor-plan endpoint must not blank the whole branch page — `planFailed` renders an inline retry `StatusBanner` under the loaded detail. |
 | Booking submit requires chair + time; services optional | `canSubmit = chair && time && !isSubmitting`; `service_ids` is nullable on the wire and sent as `null` when empty (backend `required_without`/lists are optional). |
 | Barber silently resolved from the selected chair | The plan's `ChairResource` carries `barber`; the user picks a chair, not a barber — the submit payload fills `barber_id` from the chair to keep the booking consistent. |

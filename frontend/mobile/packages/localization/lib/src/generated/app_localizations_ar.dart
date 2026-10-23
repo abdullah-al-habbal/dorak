@@ -1248,4 +1248,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profilePhoneChangeHint => 'تغيير الهاتف يرسل رمز تحقق';
+
+  @override
+  String branchTodayHours(String opens, String closes) {
+    return 'اليوم $opens–$closes';
+  }
+
+  @override
+  String get branchClosedToday => 'مغلق اليوم';
+
+  @override
+  String get branchAddressLabel => 'العنوان';
 }

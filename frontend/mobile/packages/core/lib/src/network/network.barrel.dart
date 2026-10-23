@@ -21,6 +21,7 @@ export 'package:core/src/network/dto/booking_barber.dto.dart';
 export 'package:core/src/network/dto/booking_client.dto.dart';
 export 'package:core/src/network/dto/client_reputation.dto.dart';
 export 'package:core/src/network/dto/branch_detail.dto.dart';
+export 'package:core/src/network/dto/branch_hours.dto.dart';
 export 'package:core/src/network/dto/booking_chair.dto.dart';
 export 'package:core/src/network/dto/booking_service.dto.dart';
 export 'package:core/src/network/dto/branch.dto.dart';

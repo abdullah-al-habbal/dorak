@@ -33,10 +33,10 @@ use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'email', 'password', 'brand_id', 'latitude', 'longitude', 'status', 'floor_plan_preset', 'floor_plan_zones', 'universe'])]
+#[Fillable(['name', 'email', 'password', 'brand_id', 'latitude', 'longitude', 'status', 'floor_plan_preset', 'floor_plan_zones', 'universe', 'description', 'address', 'tags'])]
 #[Hidden(['password', 'remember_token'])]
 #[Table('branches')]
-#[Translatable(['name'])]
+#[Translatable(['name', 'description', 'address'])]
 class BranchModel extends Authenticatable implements FilamentUser
 {
     use HasApiTokens;
@@ -74,6 +74,18 @@ class BranchModel extends Authenticatable implements FilamentUser
                     ->whereNull('banned_until')
                     ->orWhere('banned_until', '>', now())
                 ));
+    }
+
+    /** @return HasMany<BranchOpeningHourModel, $this> */
+    public function openingHours(): HasMany
+    {
+        return $this->hasMany(BranchOpeningHourModel::class, 'branch_id')->orderBy('weekday');
+    }
+
+    /** @return HasMany<BranchHoursOverrideModel, $this> */
+    public function hoursOverrides(): HasMany
+    {
+        return $this->hasMany(BranchHoursOverrideModel::class, 'branch_id');
     }
 
     public function brand(): BelongsTo
@@ -133,6 +145,7 @@ class BranchModel extends Authenticatable implements FilamentUser
         return [
             'status' => BranchStatusEnum::class,
             'universe' => VenueUniverse::class,
+            'tags' => 'json:unicode',
             'floor_plan_preset' => FloorPlanPreset::class,
             'floor_plan_zones' => 'array',
             'email_verified_at' => 'datetime',

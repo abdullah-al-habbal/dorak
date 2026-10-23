@@ -7,13 +7,19 @@ namespace Modules\Dashboard\Eloquent\Resolvers\Branches;
 use Illuminate\Support\Facades\DB;
 use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
+use Modules\Branch\Services\BranchHours;
 
 final class UpdateBranchEloquentResolver
 {
+    public function __construct(private readonly BranchHours $hours) {}
+
     /** @param array<string, mixed> $attributes */
     public function resolve(BranchModel $branch, array $attributes): BranchModel
     {
-        DB::transaction(function () use ($branch, $attributes): void {
+        $week = $attributes['opening_hours'] ?? null;
+        unset($attributes['opening_hours']);
+
+        DB::transaction(function () use ($branch, $attributes, $week): void {
             if (($attributes['status'] ?? null) === BranchStatusEnum::Disabled->value
                 && $branch->getAttribute('status') === BranchStatusEnum::Enabled) {
                 $branch->brand()->lockForUpdate()->first();
@@ -28,8 +34,11 @@ final class UpdateBranchEloquentResolver
             }
 
             $branch->update($attributes);
+            if (is_array($week)) {
+                $this->hours->replaceWeek($branch, $week);
+            }
         });
 
-        return $branch->fresh() ?? $branch;
+        return ($branch->fresh() ?? $branch)->load('openingHours');
     }
 }

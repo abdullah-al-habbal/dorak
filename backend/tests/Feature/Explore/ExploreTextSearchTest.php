@@ -105,3 +105,12 @@ it('searches barbers by name and service', function (): void {
     expect($this->getJson($url.'karim')->assertOk()->json('data.*.id'))->toBe([$karim->id])
         ->and($this->getJson($url.urlencode('towel'))->assertOk()->json('data.*.id'))->toBe([$omar->id]);
 });
+
+it('matches branch tags in English and Arabic', function (): void {
+    $kids = searchableBranch('Little Cuts');
+    $kids->update(['tags' => ['Kids', 'أطفال']]);
+    searchableBranch('Grown Ups');
+
+    expect(branchSearchIds('kids'))->toBe([$kids->id])
+        ->and(branchSearchIds('أطفال'))->toBe([$kids->id]);
+});

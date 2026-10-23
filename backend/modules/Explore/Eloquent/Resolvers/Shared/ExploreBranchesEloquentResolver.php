@@ -107,6 +107,7 @@ final class ExploreBranchesEloquentResolver
             $pattern = $this->search->pattern($payload->search);
             $query->where(function (Builder $match) use ($pattern): void {
                 $this->search->orMatchTranslatable($match, ['name'], $pattern);
+                $this->search->orMatchJsonList($match, 'branches.tags', $pattern);
                 $match->orWhereHas('brand', fn (Builder $brand) => $brand->where(fn (Builder $names) => $this->search->orMatchTranslatable($names, ['name'], $pattern)));
 
                 $match->orWhereHas('offeredServices', fn (Builder $services) => $services

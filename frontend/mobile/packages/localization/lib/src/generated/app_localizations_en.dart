@@ -1257,4 +1257,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get profilePhoneChangeHint =>
       'Changing your phone sends a verification code';
+
+  @override
+  String branchTodayHours(String opens, String closes) {
+    return 'Today $opens–$closes';
+  }
+
+  @override
+  String get branchClosedToday => 'Closed today';
+
+  @override
+  String get branchAddressLabel => 'Address';
 }

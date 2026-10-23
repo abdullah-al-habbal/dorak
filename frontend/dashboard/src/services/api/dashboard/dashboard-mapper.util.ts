@@ -38,6 +38,23 @@ export function mapBranch(wire: unknown): IBranch {
     latitude: number(item.latitude),
     longitude: number(item.longitude),
     name: localized(item.name),
+    description: localized(item.description),
+    address: localized(item.address),
+    tags: Array.isArray(item.tags) ? item.tags.map((tag) => String(tag)) : [],
+    openingHours: (Array.isArray(item.opening_hours)
+      ? item.opening_hours
+      : []
+    ).map((day) => {
+      const row = record(day);
+      const time = (value: unknown) =>
+        typeof value === "string" && value !== "" ? value.slice(0, 5) : null;
+      return {
+        weekday: Number(row.weekday),
+        isClosed: row.is_closed === true || row.is_closed === 1,
+        opensAt: time(row.opens_at),
+        closesAt: time(row.closes_at),
+      };
+    }),
     ratingAvg: number(item.rating_avg),
     ratingCount: number(item.rating_count) ?? 0,
     status: string(item.status, "pending") as IBranch["status"],

@@ -32,7 +32,7 @@ Barbers maintain a weekly schedule (`barber_schedules`, exposed at `GET/PATCH /b
 - [x] Dashboard reschedule and walk-in outside the schedule return 422.
 - [x] The Task 21 slot endpoints return no slots outside the barber's schedule (assertion added to `BranchSlotsTest` and `BarberSlotsTest`).
 - [x] The no-schedule decision is recorded here and asserted in the Feature test `BookingScheduleValidationTest`.
-- [x] The branch-hours sub-criterion stays open, tracked against Task 51.
+- [x] The branch-hours sub-criterion is closed by Task 51: `Modules\Branch\Services\BranchHours::covers()` is enforced in client create, dashboard reschedule/walk-in and slot generation (422 `booking_outside_schedule`).
 - [x] `php artisan test` passes. PHPStan max and Pint are clean.
 
 ## Implementation Notes

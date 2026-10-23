@@ -112,6 +112,9 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 ## [Task 50: Implement Brand Feature Flags](tasks/task-50-brand-feature-flags.md)
 - [x] Decision resolved (best option, EC-6): extra branches are never destroyed and stay **visible and bookable** (clients and their bookings are unaffected; daily booking operations such as status changes continue), but they become **read-only for configuration** — branch details, chairs, services, stylists, floor plan and managed barbers return 403 `feature_not_enabled` — except for the brand's original (oldest) branch, until `multi_branch` is on again. Adding a branch is refused while the brand already has one and the flag is off.
 
+## [Task 51: Add Branch Storefront Fields and Opening Hours](tasks/task-51-branch-storefront-fields.md)
+- [x] Decision resolved (best option): a branch with no hours configured stays always open (as barber schedules, Task 22); a dated override beats the weekly row; times are UTC `H:i` and overnight hours are not supported until a branch timezone exists; storefront tags are free-form strings on the branch, matched by explore search. Branch hours are now enforced for bookings and slots (closes Task 22's pending sub-criterion).
+
 ## [Task 52: Expose Settings and Preferences API](tasks/task-52-settings-preferences-api.md)
 - [ ] Decision required: whether `dashboard/profile/notifications` is replaced by Preference or kept as an alias.
 

@@ -26,12 +26,15 @@ use Modules\Booking\Queries\AtHomeBookingRules;
 use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Models\BranchModel;
+use Modules\Branch\Services\BranchHours;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class CreateBookingEloquentResolver
 {
+    public function __construct(private readonly BranchHours $branchHours) {}
+
     public function resolve(CreateBookingCommand $command): BookingModel
     {
         $client = ClientModel::query()->lockForUpdate()->findOrFail($command->clientId);
@@ -110,6 +113,10 @@ final class CreateBookingEloquentResolver
             }
 
             $this->ensureNoOverlap('chair_id', $command->chairId, $command->timeSlot, $endsAt);
+        }
+
+        if (! $this->branchHours->covers($branchId, $command->timeSlot, $endsAt)) {
+            throw new BookingOutsideScheduleException;
         }
 
         if ($barberId !== null) {

@@ -40,3 +40,5 @@ The backend exposes a full branch-manager API under `/api/v1/branch/*` (`auth:br
 - Review dispute resolution (Task 76).
 
 > Note (Task 41): the manager "Dispute" action calls `POST /api/v1/branch/reviews/{review}/dispute` (`reason` 10–1000) — or add a dashboard-scoped equivalent for brand owners.
+
+> Note (Task 51): branch-account hours live at `PUT /api/v1/branch/opening-hours` and `PUT|DELETE /api/v1/branch/hours-overrides/{date}`; the dashboard branch form already edits weekly hours through `PUT /api/v1/dashboard/branches/{branch}` (`opening_hours`). Today's-hours overrides still need a BFF route and UI here.

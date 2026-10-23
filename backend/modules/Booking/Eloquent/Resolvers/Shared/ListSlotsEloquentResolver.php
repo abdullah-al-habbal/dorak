@@ -11,11 +11,14 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Booking\Queries\AtHomeBookingRules;
 use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
+use Modules\Branch\Services\BranchHours;
 use Modules\Chair\Models\ChairModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class ListSlotsEloquentResolver
 {
+    public function __construct(private readonly BranchHours $branchHours) {}
+
     /**
      * @return list<array{starts_at: Carbon, ends_at: Carbon}>
      */
@@ -43,6 +46,7 @@ final class ListSlotsEloquentResolver
         $minLead = max(0, $this->configInt('booking.slots.min_lead_minutes', 0));
 
         $effectiveBarberId = $query->barberId ?? $this->assignedBarberId($query);
+        $branchId = $this->slotBranchId($query);
 
         $dayStart = $query->date->copy()->utc()->startOfDay();
         $dayEnd = $dayStart->copy()->addDay();
@@ -55,7 +59,8 @@ final class ListSlotsEloquentResolver
             $endsAt = $start->copy()->addMinutes($totalDuration);
 
             if (! $endsAt->greaterThan($dayEnd) && ! $start->lessThan($earliest)) {
-                if ($this->isFree($query, $effectiveBarberId, $start, $endsAt)) {
+                if ($this->isFree($query, $effectiveBarberId, $start, $endsAt)
+                    && $this->branchHours->covers($branchId, $start, $endsAt)) {
                     $slots[] = ['starts_at' => $start->copy(), 'ends_at' => $endsAt];
                 }
             }
@@ -146,6 +151,15 @@ final class ListSlotsEloquentResolver
         }
 
         return true;
+    }
+
+    private function slotBranchId(ListSlotsQuery $query): ?string
+    {
+        $branchId = $query->chairId === null
+            ? $query->branchId
+            : ChairModel::query()->whereKey($query->chairId)->value('branch_id');
+
+        return is_string($branchId) ? $branchId : null;
     }
 
     private function assignedBarberId(ListSlotsQuery $query): ?string

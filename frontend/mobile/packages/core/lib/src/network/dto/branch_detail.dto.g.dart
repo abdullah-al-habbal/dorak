@@ -6,35 +6,46 @@ part of 'branch_detail.dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BranchDetailDto _$BranchDetailDtoFromJson(Map<String, dynamic> json) =>
-    BranchDetailDto(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      status: json['status'] as String,
-      latitude: (json['latitude'] as num).toDouble(),
-      longitude: (json['longitude'] as num).toDouble(),
-      brandId: json['brand_id'] as String,
-      universe: json['universe'] as String?,
-      ratingAvg: (json['rating_avg'] as num?)?.toDouble(),
-      ratingCount: (json['rating_count'] as num?)?.toInt() ?? 0,
-      distance: (json['distance'] as num?)?.toDouble(),
-      compatibilityScore: (json['compatibility_score'] as num?)?.toDouble(),
-      rank: (json['rank'] as num?)?.toInt(),
-      createdAt: json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
-      chairsCount: (json['chairs_count'] as num?)?.toInt() ?? 0,
-      barbers:
-          (json['barbers'] as List<dynamic>?)
-              ?.map((e) => BookingBarberDto.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      services:
-          (json['services'] as List<dynamic>?)
-              ?.map(
-                (e) => BookingServiceDto.fromJson(e as Map<String, dynamic>),
-              )
-              .toList() ??
-          const [],
-    );
+BranchDetailDto _$BranchDetailDtoFromJson(
+  Map<String, dynamic> json,
+) => BranchDetailDto(
+  id: json['id'] as String,
+  name: json['name'] as String,
+  email: json['email'] as String,
+  status: json['status'] as String,
+  latitude: (json['latitude'] as num).toDouble(),
+  longitude: (json['longitude'] as num).toDouble(),
+  brandId: json['brand_id'] as String,
+  universe: json['universe'] as String?,
+  ratingAvg: (json['rating_avg'] as num?)?.toDouble(),
+  ratingCount: (json['rating_count'] as num?)?.toInt() ?? 0,
+  distance: (json['distance'] as num?)?.toDouble(),
+  compatibilityScore: (json['compatibility_score'] as num?)?.toDouble(),
+  rank: (json['rank'] as num?)?.toInt(),
+  createdAt: json['created_at'] == null
+      ? null
+      : DateTime.parse(json['created_at'] as String),
+  chairsCount: (json['chairs_count'] as num?)?.toInt() ?? 0,
+  barbers:
+      (json['barbers'] as List<dynamic>?)
+          ?.map((e) => BookingBarberDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  services:
+      (json['services'] as List<dynamic>?)
+          ?.map((e) => BookingServiceDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  description: json['description'] as String?,
+  address: json['address'] as String?,
+  tags:
+      (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
+  openingHours:
+      (json['opening_hours'] as List<dynamic>?)
+          ?.map((e) => BranchHoursDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
+  todayHours: json['today_hours'] == null
+      ? null
+      : BranchHoursDto.fromJson(json['today_hours'] as Map<String, dynamic>),
+);

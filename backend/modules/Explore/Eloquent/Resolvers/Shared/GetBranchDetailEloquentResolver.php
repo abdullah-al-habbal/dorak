@@ -8,6 +8,7 @@ use Modules\Barber\Http\Resources\BarberResource;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Http\Resources\Shared\BranchResource;
 use Modules\Branch\Models\BranchModel;
+use Modules\Branch\Services\BranchHours;
 use Modules\Chair\Models\ChairModel;
 use Modules\Explore\CQRS\Query\Shared\GetBranchDetailQuery;
 use Modules\OfferedService\Http\Resources\Shared\MenuServiceResource;
@@ -15,6 +16,8 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class GetBranchDetailEloquentResolver
 {
+    public function __construct(private readonly BranchHours $hours) {}
+
     /**
      * Branch detail (BE-03, Task 48): the branch, its seated barbers, and the
      * full menu — the branch's and brand's own bookable services plus the
@@ -49,6 +52,8 @@ final class GetBranchDetailEloquentResolver
                 'chairs_count' => $branch->chairs->count(),
                 'barbers' => BarberResource::collection($barbers),
                 'services' => MenuServiceResource::collection($menu),
+                'opening_hours' => $this->hours->week($branch),
+                'today_hours' => $this->hours->forDate((string) $branch->getKey(), now()),
             ],
         );
     }

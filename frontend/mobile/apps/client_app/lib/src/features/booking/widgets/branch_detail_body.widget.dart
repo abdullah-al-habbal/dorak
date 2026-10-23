@@ -11,6 +11,7 @@ import 'package:client_app/src/features/booking/branch_detail.event.dart';
 import 'package:client_app/src/features/booking/branch_detail.state.dart';
 import 'package:client_app/src/features/booking/widgets/at_home_booking_fields.widget.dart';
 import 'package:client_app/src/features/booking/widgets/booking_summary.widget.dart';
+import 'package:client_app/src/features/booking/widgets/branch_storefront.widget.dart';
 import 'package:client_app/src/features/booking/widgets/chair_services.widget.dart';
 import 'package:client_app/src/features/booking/widgets/floor_plan_grid.widget.dart';
 
@@ -47,6 +48,7 @@ class BranchDetailBody extends StatelessWidget {
           ),
           onFavorite: onFavorite,
         ),
+        BranchStorefront(detail: detail),
         const SizedBox(height: DorakDimensions.spacingLarge),
         _BookingModeSection(
           bloc: bloc,

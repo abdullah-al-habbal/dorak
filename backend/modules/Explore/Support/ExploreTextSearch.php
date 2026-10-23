@@ -50,6 +50,22 @@ final class ExploreTextSearch
     }
 
     /**
+     * Adds `lower(col) like ?` for a JSON list of plain strings (branch tags,
+     * Task 51). The list is stored unescaped (`json:unicode`) so Arabic tags
+     * match too.
+     *
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     *
+     * @param  Builder<TModel>|QueryBuilder  $query
+     */
+    public function orMatchJsonList(Builder|QueryBuilder $query, string $column, string $pattern): void
+    {
+        $grammar = $query instanceof Builder ? $query->getQuery()->getGrammar() : $query->getGrammar();
+
+        $query->orWhereRaw('lower('.$grammar->wrap($column).") like ? escape '!'", [$pattern]);
+    }
+
+    /**
      * Restricts a catalog-item query (aliased to `service_catalog_items`) to
      * items whose tags match the text or are in $tagIds.
      *

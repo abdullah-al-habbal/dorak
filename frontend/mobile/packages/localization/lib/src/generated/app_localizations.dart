@@ -2323,6 +2323,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Changing your phone sends a verification code'**
   String get profilePhoneChangeHint;
+
+  /// Branch detail line with today's opening hours
+  ///
+  /// In en, this message translates to:
+  /// **'Today {opens}–{closes}'**
+  String branchTodayHours(String opens, String closes);
+
+  /// Branch detail line when the branch is closed today
+  ///
+  /// In en, this message translates to:
+  /// **'Closed today'**
+  String get branchClosedToday;
+
+  /// Accessibility label for the branch address line
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get branchAddressLabel;
 }
 
 class _AppLocalizationsDelegate

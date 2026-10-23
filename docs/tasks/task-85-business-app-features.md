@@ -49,3 +49,5 @@ The business app covers only the dashboard, the bookings list, the chairs list a
 > Note (Task 41): branch dispute route is `POST /api/v1/branch/reviews/{review}/dispute`.
 
 > Note (Task 50): `core` throws `FeatureNotEnabledException` (`feature`) for 403 `feature_not_enabled`; show an upgrade message instead of a generic error.
+
+> Note (Task 51): hours editing uses `PUT /api/v1/branch/opening-hours` and `PUT|DELETE /api/v1/branch/hours-overrides/{date}`; `GET /api/v1/branch/profile` returns `translations`, `opening_hours` and `today_hours`. `core` has `BranchHoursDto`.

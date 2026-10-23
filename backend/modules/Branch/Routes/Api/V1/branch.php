@@ -7,6 +7,7 @@ use Modules\Branch\Http\Actions\Branch\AcceptAffiliationAction;
 use Modules\Branch\Http\Actions\Branch\CreateJobPostingAction;
 use Modules\Branch\Http\Actions\Branch\CreateManagedBarberAction;
 use Modules\Branch\Http\Actions\Branch\DashboardAction;
+use Modules\Branch\Http\Actions\Branch\DeleteHoursOverrideAction;
 use Modules\Branch\Http\Actions\Branch\DeleteJobPostingAction;
 use Modules\Branch\Http\Actions\Branch\GetProfileAction;
 use Modules\Branch\Http\Actions\Branch\ListAffiliationsAction;
@@ -21,7 +22,9 @@ use Modules\Branch\Http\Actions\Branch\ToggleChairStatusAction;
 use Modules\Branch\Http\Actions\Branch\UpdateApplicationStatusAction;
 use Modules\Branch\Http\Actions\Branch\UpdateBookingStatusAction;
 use Modules\Branch\Http\Actions\Branch\UpdateFloorPlanConfigurationAction;
+use Modules\Branch\Http\Actions\Branch\UpdateHoursOverrideAction;
 use Modules\Branch\Http\Actions\Branch\UpdateJobPostingAction;
+use Modules\Branch\Http\Actions\Branch\UpdateOpeningHoursAction;
 use Modules\Branch\Http\Actions\Branch\UpdateProfileAction;
 
 Route::prefix('branch')->name('branch.')->group(function (): void {
@@ -31,6 +34,9 @@ Route::prefix('branch')->name('branch.')->group(function (): void {
         Route::get('/dashboard', DashboardAction::class)->name('dashboard');
         Route::get('/profile', GetProfileAction::class)->name('profile.get');
         Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');
+        Route::put('/opening-hours', UpdateOpeningHoursAction::class)->name('opening-hours.update');
+        Route::put('/hours-overrides/{date}', UpdateHoursOverrideAction::class)->name('hours-overrides.update')->where('date', '\d{4}-\d{2}-\d{2}');
+        Route::delete('/hours-overrides/{date}', DeleteHoursOverrideAction::class)->name('hours-overrides.delete')->where('date', '\d{4}-\d{2}-\d{2}');
         Route::patch('/floor-plan', UpdateFloorPlanConfigurationAction::class)->name('floor-plan.update');
         Route::patch('/chairs/{chair}/status', ToggleChairStatusAction::class)->name('chairs.status');
         Route::post('/barbers', CreateManagedBarberAction::class)->name('barbers.create');

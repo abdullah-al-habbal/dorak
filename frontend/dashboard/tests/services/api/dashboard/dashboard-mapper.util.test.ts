@@ -68,6 +68,33 @@ describe("mapBranch", () => {
     expect(branch.ratingCount).toBe(3);
   });
 
+  it("maps the storefront fields and trims stored hour times", () => {
+    const branch = mapBranch(
+      wireBranch({
+        description: { en: "Downtown shop", ar: "محل وسط البلد" },
+        address: { en: "Main St", ar: "الشارع الرئيسي" },
+        tags: ["kids"],
+        opening_hours: [
+          {
+            weekday: 1,
+            opens_at: "09:00:00",
+            closes_at: "17:30:00",
+            is_closed: false,
+          },
+          { weekday: 5, opens_at: null, closes_at: null, is_closed: true },
+        ],
+      }),
+    );
+
+    expect(branch.description.ar).toBe("محل وسط البلد");
+    expect(branch.address.en).toBe("Main St");
+    expect(branch.tags).toEqual(["kids"]);
+    expect(branch.openingHours).toEqual([
+      { weekday: 1, isClosed: false, opensAt: "09:00", closesAt: "17:30" },
+      { weekday: 5, isClosed: true, opensAt: null, closesAt: null },
+    ]);
+  });
+
   it("maps an unrated branch to a null average and zero count", () => {
     const branch = mapBranch(wireBranch({ rating_avg: null, rating_count: 0 }));
 

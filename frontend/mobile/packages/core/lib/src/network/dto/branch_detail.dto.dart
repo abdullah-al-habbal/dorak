@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'package:core/src/network/dto/booking_barber.dto.dart';
 import 'package:core/src/network/dto/booking_service.dto.dart';
+import 'package:core/src/network/dto/branch_hours.dto.dart';
 
 part 'branch_detail.dto.g.dart';
 
@@ -25,6 +26,13 @@ class BranchDetailDto {
   final int chairsCount;
   final List<BookingBarberDto> barbers;
   final List<BookingServiceDto> services;
+  final String? description;
+  final String? address;
+  @JsonKey(defaultValue: <String>[])
+  final List<String> tags;
+  @JsonKey(defaultValue: <BranchHoursDto>[])
+  final List<BranchHoursDto> openingHours;
+  final BranchHoursDto? todayHours;
 
   const BranchDetailDto({
     required this.id,
@@ -44,6 +52,11 @@ class BranchDetailDto {
     this.chairsCount = 0,
     this.barbers = const [],
     this.services = const [],
+    this.description,
+    this.address,
+    this.tags = const [],
+    this.openingHours = const [],
+    this.todayHours,
   });
 
   factory BranchDetailDto.fromJson(Map<String, dynamic> json) =>

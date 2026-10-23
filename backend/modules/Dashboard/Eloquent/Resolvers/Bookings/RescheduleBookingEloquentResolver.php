@@ -14,12 +14,16 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Booking\Services\BookingTransitionNotifier;
+use Modules\Branch\Services\BranchHours;
 use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 
 final class RescheduleBookingEloquentResolver
 {
-    public function __construct(private readonly BookingTransitionNotifier $notifier) {}
+    public function __construct(
+        private readonly BookingTransitionNotifier $notifier,
+        private readonly BranchHours $branchHours,
+    ) {}
 
     public function resolve(string|int $bookingId, Carbon $timeSlot, Carbon $endsAt): BookingModel
     {
@@ -30,6 +34,9 @@ final class RescheduleBookingEloquentResolver
             }
             if ($booking->chair_id !== null) {
                 ChairModel::query()->lockForUpdate()->findOrFail($booking->chair_id);
+            }
+            if (! $this->branchHours->covers($booking->branch_id, $timeSlot, $endsAt)) {
+                throw new BookingOutsideScheduleException;
             }
             if ($booking->barber_id !== null) {
                 BarberModel::query()->lockForUpdate()->findOrFail($booking->barber_id);

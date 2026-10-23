@@ -2,7 +2,12 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/tailgrids/core/button";
+import { BranchOpeningHoursEditor } from "@/components/entities/branch-opening-hours-editor";
 import { ChairMaintenanceConflict } from "@/components/entities/chair-maintenance-conflict";
+import {
+  emptyToNull,
+  fieldLabelKey,
+} from "@/components/entities/entity-form-field.util";
 import { Input } from "@/components/tailgrids/core/input";
 import {
   Select,
@@ -20,6 +25,8 @@ import {
   branchCreateSchema,
   branchEditSchema,
 } from "@/services/api/dashboard/branch-form.schema";
+import { fullWeek } from "@/services/api/dashboard/branch-opening-hours.util";
+import type { IBranchOpeningDay } from "@/services/api/dashboard/ibranch-opening-day.types";
 import { chairConflictBookingIds } from "@/services/api/dashboard/chair-maintenance-conflict.util";
 import { chairFormSchema } from "@/services/api/dashboard/chair-form.schema";
 import { serviceFormSchema } from "@/services/api/dashboard/service-form.schema";
@@ -74,6 +81,9 @@ function defaultsFor(resource: EditableResource, branchId: string | null) {
       longitude: null,
       status: "pending",
       universe: "unisex",
+      description: { en: null, ar: null },
+      address: { en: null, ar: null },
+      openingHours: fullWeek(),
     };
   if (resource === "chairs")
     return {
@@ -154,6 +164,9 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         longitude: current.longitude,
         status: current.status,
         universe: current.universe,
+        description: emptyToNull(current.description),
+        address: emptyToNull(current.address),
+        openingHours: fullWeek(current.openingHours as IBranchOpeningDay[]),
       });
     if (resource === "chairs")
       form.reset({
@@ -273,6 +286,10 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
           "longitude",
           "status",
           "universe",
+          "description.en",
+          "description.ar",
+          "address.en",
+          "address.ar",
         ]
       : resource === "chairs"
         ? [
@@ -483,13 +500,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
       {fields.map((field) => (
         <label className="grid gap-2 text-sm text-text-100" key={field}>
           <span>
-            {fieldCopy[
-              (field.replace(".", "") === "nameen"
-                ? "nameEn"
-                : field.replace(".", "") === "namear"
-                  ? "nameAr"
-                  : field) as keyof typeof fieldCopy
-            ] ?? field}
+            {fieldCopy[fieldLabelKey(field) as keyof typeof fieldCopy] ?? field}
           </span>
           {field === "atHome" ? (
             <input type="checkbox" {...form.register("atHome" as never)} />
@@ -546,6 +557,9 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
           ) : null}
         </label>
       ))}
+      {resource === "branches" ? (
+        <BranchOpeningHoursEditor form={form} />
+      ) : null}
       {form.formState.isSubmitted &&
       Object.keys(form.formState.errors).length > 0 ? (
         <p className="text-input-error-focus-border sm:col-span-2" role="alert">

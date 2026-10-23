@@ -19,6 +19,9 @@ final class BranchResource extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'brand_id' => $this->brand_id,
+            'description' => $this->localized('description'),
+            'address' => $this->localized('address'),
+            'tags' => array_values((array) ($this->offsetGet('tags') ?? [])),
             'universe' => $this->offsetGet('universe'),
             'rating_avg' => $this->offsetGet('rating_avg') === null ? null : (float) $this->offsetGet('rating_avg'),
             'rating_count' => (int) ($this->offsetGet('rating_count') ?? 0),
@@ -27,5 +30,12 @@ final class BranchResource extends JsonResource
             'rank' => $this->rank ?? null,
             'created_at' => $this->created_at,
         ];
+    }
+
+    private function localized(string $attribute): ?string
+    {
+        $value = $this->resource->getTranslation($attribute, app()->getLocale());
+
+        return is_string($value) && $value !== '' ? $value : null;
     }
 }

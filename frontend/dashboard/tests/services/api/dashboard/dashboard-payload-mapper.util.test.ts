@@ -1,4 +1,5 @@
 import {
+  mapBranchPayload,
   mapChairPayload,
   mapBookingReschedulePayload,
   mapWalkInBookingPayload,
@@ -6,6 +7,40 @@ import {
 import { describe, expect, it } from "vitest";
 
 describe("dashboard payload mappers", () => {
+  const branchInput = {
+    name: { en: "Main", ar: "الرئيسي" },
+    brandId: "b4e18cf2-6c48-41bb-857d-6db23f2cbaab",
+    email: "branch@example.com",
+    password: "long-enough-password",
+    latitude: null,
+    longitude: null,
+    status: "enabled" as const,
+    universe: "unisex" as const,
+    description: { en: "Downtown", ar: null },
+    address: { en: null, ar: null },
+  };
+
+  it("sends the storefront fields and only the configured opening days", () => {
+    const payload = mapBranchPayload({
+      ...branchInput,
+      openingHours: [
+        { weekday: 0, isClosed: false, opensAt: "09:00", closesAt: "17:00" },
+        { weekday: 1, isClosed: false, opensAt: null, closesAt: null },
+        { weekday: 5, isClosed: true, opensAt: "09:00", closesAt: "12:00" },
+      ],
+    });
+
+    expect(payload.description).toEqual({ en: "Downtown", ar: null });
+    expect(payload.opening_hours).toEqual([
+      { weekday: 0, is_closed: false, opens_at: "09:00", closes_at: "17:00" },
+      { weekday: 5, is_closed: true, opens_at: null, closes_at: null },
+    ]);
+  });
+
+  it("omits opening_hours when no day is configured", () => {
+    expect(mapBranchPayload(branchInput)).not.toHaveProperty("opening_hours");
+  });
+
   it("sends barber_id null when clearing a chair assignment", () => {
     expect(
       mapChairPayload({

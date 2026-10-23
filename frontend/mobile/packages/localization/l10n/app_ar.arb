@@ -1189,5 +1189,8 @@
   "phoneVerifyThrottled": "محاولات كثيرة. انتظر دقيقة ثم حاول مجدداً.",
   "phoneVerifyVerified": "تم تأكيد الهاتف",
   "profilePhoneVerifiedLabel": "موثّق",
-  "profilePhoneChangeHint": "تغيير الهاتف يرسل رمز تحقق"
+  "profilePhoneChangeHint": "تغيير الهاتف يرسل رمز تحقق",
+  "branchTodayHours": "اليوم {opens}–{closes}",
+  "branchClosedToday": "مغلق اليوم",
+  "branchAddressLabel": "العنوان"
 }

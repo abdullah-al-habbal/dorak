@@ -1313,5 +1313,11 @@
   "profilePhoneVerifiedLabel": "Verified",
   "@profilePhoneVerifiedLabel": {"description": "Badge shown next to a verified phone number"},
   "profilePhoneChangeHint": "Changing your phone sends a verification code",
-  "@profilePhoneChangeHint": {"description": "Hint under the profile phone field"}
+  "@profilePhoneChangeHint": {"description": "Hint under the profile phone field"},
+  "branchTodayHours": "Today {opens}–{closes}",
+  "@branchTodayHours": {"description": "Branch detail line with today's opening hours", "placeholders": {"opens": {"type": "String"}, "closes": {"type": "String"}}},
+  "branchClosedToday": "Closed today",
+  "@branchClosedToday": {"description": "Branch detail line when the branch is closed today"},
+  "branchAddressLabel": "Address",
+  "@branchAddressLabel": {"description": "Accessibility label for the branch address line"}
 }
