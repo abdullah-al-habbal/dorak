@@ -415,6 +415,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discoverRankedByDistance => 'Ranked by distance';
 
   @override
+  String get discoverFreelancerBadge => 'Freelancer';
+
+  @override
+  String get discoverTravelsToYou => 'Travels to you';
+
+  @override
   String get discoverSearchHint => 'Search shops, brands or services';
 
   @override

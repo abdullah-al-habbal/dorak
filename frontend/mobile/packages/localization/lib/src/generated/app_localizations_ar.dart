@@ -412,6 +412,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get discoverRankedByDistance => 'مرتبة حسب المسافة';
 
   @override
+  String get discoverFreelancerBadge => 'مستقل';
+
+  @override
+  String get discoverTravelsToYou => 'يأتي إليك';
+
+  @override
   String get discoverSearchHint => 'ابحث عن صالونات أو علامات تجارية أو خدمات';
 
   @override

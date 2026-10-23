@@ -860,6 +860,18 @@ abstract class AppLocalizations {
   /// **'Ranked by distance'**
   String get discoverRankedByDistance;
 
+  /// Badge on a freelancer result in discovery
+  ///
+  /// In en, this message translates to:
+  /// **'Freelancer'**
+  String get discoverFreelancerBadge;
+
+  /// Shown instead of a distance for a freelancer without a fixed location
+  ///
+  /// In en, this message translates to:
+  /// **'Travels to you'**
+  String get discoverTravelsToYou;
+
   /// Hint of the discovery keyword search field
   ///
   /// In en, this message translates to:

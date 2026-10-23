@@ -24,6 +24,7 @@ export 'package:core/src/network/dto/branch_detail.dto.dart';
 export 'package:core/src/network/dto/booking_chair.dto.dart';
 export 'package:core/src/network/dto/booking_service.dto.dart';
 export 'package:core/src/network/dto/branch.dto.dart';
+export 'package:core/src/network/dto/explore_search_item.dto.dart';
 export 'package:core/src/network/dto/branch_dashboard.dto.dart';
 export 'package:core/src/network/dto/floor_chair.dto.dart';
 export 'package:core/src/network/dto/floor_plan.dto.dart';

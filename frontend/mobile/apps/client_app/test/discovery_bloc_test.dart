@@ -26,7 +26,7 @@ void main() {
     test('asks for location before anything else', () {
       expect(
         bloc().state,
-        DiscoveryState(page: const Paged<BranchDto>.initial()),
+        DiscoveryState(page: const Paged<ExploreSearchItemDto>.initial()),
       );
     });
   });
@@ -40,11 +40,11 @@ void main() {
       expect: () => [
         DiscoveryState(
           locationStatus: LocationPermissionStatus.denied,
-          page: Paged<BranchDto>.initial(),
+          page: Paged<ExploreSearchItemDto>.initial(),
         ),
       ],
       verify: (_) {
-        expect(repository.getBranchesPayloadCalls, 0);
+        expect(repository.searchPayloadCalls, 0);
       },
     );
 
@@ -55,7 +55,7 @@ void main() {
       verify: (bloc) {
         expect(bloc.state.locationReady, isTrue);
         expect(bloc.state.page.items, hasLength(1));
-        expect(bloc.state.page.items.first.name, 'Branch 1');
+        expect(bloc.state.page.items.first.branch!.name, 'Branch 1');
         expect(bloc.state.isStale, isFalse);
         expect(cache.writeCalls, 1);
       },
@@ -69,11 +69,11 @@ void main() {
       expect: () => [
         DiscoveryState(
           locationStatus: LocationPermissionStatus.granted,
-          page: Paged<BranchDto>.initial(),
+          page: Paged<ExploreSearchItemDto>.initial(),
         ),
       ],
       verify: (_) {
-        expect(repository.getBranchesPayloadCalls, 0);
+        expect(repository.searchPayloadCalls, 0);
       },
     );
   });
@@ -92,13 +92,16 @@ void main() {
         cache.entries[key] = FeedCacheEntry(
           items: const [
             {
-              'id': '9',
-              'name': 'Cached Branch',
-              'email': 'cached@example.com',
-              'status': 'approved',
-              'latitude': 24.7136,
-              'longitude': 46.6753,
-              'brand_id': '7',
+              'type': 'branch',
+              'entity': {
+                'id': '9',
+                'name': 'Cached Branch',
+                'email': 'cached@example.com',
+                'status': 'approved',
+                'latitude': 24.7136,
+                'longitude': 46.6753,
+                'brand_id': '7',
+              },
             },
           ],
           meta: const {
@@ -115,9 +118,9 @@ void main() {
       },
       act: (bloc) => bloc.add(const DiscoveryLocationRequested()),
       verify: (bloc) {
-        expect(bloc.state.page.items.first.name, 'Cached Branch');
+        expect(bloc.state.page.items.first.branch!.name, 'Cached Branch');
         expect(bloc.state.isStale, isFalse);
-        expect(repository.getBranchesPayloadCalls, 0);
+        expect(repository.searchPayloadCalls, 0);
       },
     );
 
@@ -134,13 +137,16 @@ void main() {
         cache.entries[key] = FeedCacheEntry(
           items: const [
             {
-              'id': '9',
-              'name': 'Cached Branch',
-              'email': 'cached@example.com',
-              'status': 'approved',
-              'latitude': 24.7136,
-              'longitude': 46.6753,
-              'brand_id': '7',
+              'type': 'branch',
+              'entity': {
+                'id': '9',
+                'name': 'Cached Branch',
+                'email': 'cached@example.com',
+                'status': 'approved',
+                'latitude': 24.7136,
+                'longitude': 46.6753,
+                'brand_id': '7',
+              },
             },
           ],
           meta: const {
@@ -157,8 +163,8 @@ void main() {
       },
       act: (bloc) => bloc.add(const DiscoveryLocationRequested()),
       verify: (bloc) {
-        expect(repository.getBranchesPayloadCalls, 1);
-        expect(bloc.state.page.items.first.name, 'Branch 1');
+        expect(repository.searchPayloadCalls, 1);
+        expect(bloc.state.page.items.first.branch!.name, 'Branch 1');
         expect(bloc.state.isStale, isFalse);
       },
     );
@@ -177,13 +183,16 @@ void main() {
         cache.entries[key] = FeedCacheEntry(
           items: const [
             {
-              'id': '9',
-              'name': 'Cached Branch',
-              'email': 'cached@example.com',
-              'status': 'approved',
-              'latitude': 24.7136,
-              'longitude': 46.6753,
-              'brand_id': '7',
+              'type': 'branch',
+              'entity': {
+                'id': '9',
+                'name': 'Cached Branch',
+                'email': 'cached@example.com',
+                'status': 'approved',
+                'latitude': 24.7136,
+                'longitude': 46.6753,
+                'brand_id': '7',
+              },
             },
           ],
           meta: const {
@@ -200,7 +209,7 @@ void main() {
       },
       act: (bloc) => bloc.add(const DiscoveryLocationRequested()),
       verify: (bloc) {
-        expect(bloc.state.page.items.first.name, 'Cached Branch');
+        expect(bloc.state.page.items.first.branch!.name, 'Cached Branch');
         expect(bloc.state.isStale, isTrue);
         expect(bloc.state.page.hasFailed, isFalse);
       },
@@ -228,7 +237,9 @@ void main() {
         locationStatus: LocationPermissionStatus.granted,
         latitude: 24.7136,
         longitude: 46.6753,
-        page: Paged<BranchDto>.initial().succeeded(testBranchPage()),
+        page: Paged<ExploreSearchItemDto>.initial().succeeded(
+          asSearchPage(testBranchPage()),
+        ),
       ),
       act: (bloc) => bloc.add(const DiscoveryUniverseChanged('women')),
       verify: (bloc) {
@@ -259,7 +270,7 @@ void main() {
       act: (bloc) => bloc.add(const DiscoveryUniverseChanged('men')),
       expect: () => [],
       verify: (_) {
-        expect(repository.getBranchesPayloadCalls, 0);
+        expect(repository.searchPayloadCalls, 0);
       },
     );
   });
@@ -291,8 +302,10 @@ void main() {
         locationStatus: LocationPermissionStatus.granted,
         latitude: 24.7136,
         longitude: 46.6753,
-        page: Paged<BranchDto>.initial().succeeded(
-          testBranchPage(branches: [testBranch(id: 1)], totalPages: 2),
+        page: Paged<ExploreSearchItemDto>.initial().succeeded(
+          asSearchPage(
+            testBranchPage(branches: [testBranch(id: 1)], totalPages: 2),
+          ),
         ),
       ),
       setUp: () {
@@ -316,8 +329,10 @@ void main() {
         locationStatus: LocationPermissionStatus.granted,
         latitude: 24.7136,
         longitude: 46.6753,
-        page: Paged<BranchDto>.initial().succeeded(
-          testBranchPage(branches: [testBranch(id: 1)], totalPages: 2),
+        page: Paged<ExploreSearchItemDto>.initial().succeeded(
+          asSearchPage(
+            testBranchPage(branches: [testBranch(id: 1)], totalPages: 2),
+          ),
         ),
       ),
       setUp: () => repository.error = offline(),
@@ -335,11 +350,13 @@ void main() {
         locationStatus: LocationPermissionStatus.granted,
         latitude: 24.7136,
         longitude: 46.6753,
-        page: Paged<BranchDto>.initial().succeeded(testBranchPage()),
+        page: Paged<ExploreSearchItemDto>.initial().succeeded(
+          asSearchPage(testBranchPage()),
+        ),
       ),
       act: (bloc) => bloc.add(const DiscoveryRefreshRequested()),
       verify: (bloc) {
-        expect(repository.getBranchesPayloadCalls, 1);
+        expect(repository.searchPayloadCalls, 1);
         expect(bloc.state.page.items, hasLength(1));
         expect(bloc.state.isStale, isFalse);
       },
@@ -365,13 +382,13 @@ void main() {
       act: (bloc) async {
         bloc.add(const DiscoveryLocationRequested());
         await pumpEventQueue();
-        final callsAfterLocation = repository.getBranchesPayloadCalls;
+        final callsAfterLocation = repository.searchPayloadCalls;
         bloc.add(const DiscoverySearchChanged('r'));
         bloc.add(const DiscoverySearchChanged('ro'));
         bloc.add(const DiscoverySearchChanged('royal '));
         await pumpEventQueue();
         expect(
-          repository.getBranchesPayloadCalls,
+          repository.searchPayloadCalls,
           callsAfterLocation,
           reason: 'nothing is requested while the user is still typing',
         );
@@ -379,7 +396,7 @@ void main() {
           DiscoveryBloc.searchDebounce + const Duration(milliseconds: 50),
         );
         await pumpEventQueue();
-        expect(repository.getBranchesPayloadCalls, callsAfterLocation + 1);
+        expect(repository.searchPayloadCalls, callsAfterLocation + 1);
       },
       wait: const Duration(milliseconds: 600),
       verify: (bloc) {
@@ -399,7 +416,7 @@ void main() {
       ),
       act: (bloc) => bloc.add(const DiscoverySearchChanged('royal')),
       wait: DiscoveryBloc.searchDebounce + const Duration(milliseconds: 50),
-      verify: (_) => expect(repository.getBranchesPayloadCalls, 0),
+      verify: (_) => expect(repository.searchPayloadCalls, 0),
     );
   });
 }

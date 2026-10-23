@@ -37,3 +37,5 @@ Discovery lists branches only. The `GET /explore/barbers` endpoint constant is d
 - Slot availability lookup (Task 21).
 
 > Note (Task 44): `GET explore/barbers` accepts optional `universe` (`men`|`women`, also matches `unisex` barbers) and defaults to the signed-in client's preference.
+
+> Note (Task 45): freelancers already appear in the client discovery feed via `explore/search` with a `DiscoveryBarberCard` that opens the stylist profile.

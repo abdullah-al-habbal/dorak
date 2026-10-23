@@ -34,3 +34,5 @@ The recommendation PRD orders explore results by a composite score and then pagi
 - Recompute command, edges and vector storage — Task 62, Task 63.
 
 > Note (Task 42): use the stored `rating_avg`/`rating_count` columns on `branches` and `barbers` for the rating weight.
+
+> Note (Task 45): `explore/search` merges branch and freelancer candidates by distance only; apply the composite ranking to the merged list (both resolvers expose `candidates()`).

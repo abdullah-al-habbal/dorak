@@ -33,6 +33,23 @@ abstract class ExploreRepository {
     String? query,
   });
 
+  /// Shops and freelancers in one list, nearest first (`explore/search`,
+  /// Task 45). Freelancers without a location appear only for a text [query].
+  Future<RawPaginated<ExploreSearchItemDto>> searchPayload({
+    required double latitude,
+    required double longitude,
+    required double radius,
+    String? universe,
+    int page = 1,
+    int perPage = 20,
+    List<int>? catalogItemIds,
+    bool? availableNow,
+    double? priceRangeMin,
+    double? priceRangeMax,
+    double? ratingMin,
+    String? query,
+  });
+
   Future<BranchDetailDto> getBranchDetail(String branchId);
 
   Future<BarberProfileDto> getBarberDetail(String barberId);
@@ -162,6 +179,47 @@ class DioExploreRepository implements ExploreRepository {
       ExploreEndpoints.branches,
       queryParameters: params,
       itemParser: (json) => BranchDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<RawPaginated<ExploreSearchItemDto>> searchPayload({
+    required double latitude,
+    required double longitude,
+    required double radius,
+    String? universe,
+    int page = 1,
+    int perPage = 20,
+    List<int>? catalogItemIds,
+    bool? availableNow,
+    double? priceRangeMin,
+    double? priceRangeMax,
+    double? ratingMin,
+    String? query,
+  }) {
+    final text = query?.trim();
+    return _apiClient.getRawPaginated<ExploreSearchItemDto>(
+      ExploreEndpoints.search,
+      queryParameters: {
+        'latitude': latitude,
+        'longitude': longitude,
+        'radius': radius,
+        'universe': ?universe,
+        'page': page,
+        'per_page': perPage,
+        if (catalogItemIds != null && catalogItemIds.isNotEmpty)
+          'catalog_item_ids': catalogItemIds,
+        'available_now': ?availableNow,
+        if (priceRangeMin != null || priceRangeMax != null)
+          'price_range': <String, dynamic>{
+            'min': ?priceRangeMin,
+            'max': ?priceRangeMax,
+          },
+        'rating_min': ?ratingMin,
+        if (text != null && text.isNotEmpty) 'q': text,
+      },
+      itemParser: (json) =>
+          ExploreSearchItemDto.fromJson(json as Map<String, dynamic>),
     );
   }
 

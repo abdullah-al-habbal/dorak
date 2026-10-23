@@ -480,6 +480,8 @@ class AppRouter {
                     onBookNow: _onBookNow,
                     onViewDetails: (branchId) =>
                         router.push<void>(AppRoutes.branchDetail(branchId)),
+                    onViewStylist: (barberId) =>
+                        router.push<void>(AppRoutes.barberDetail(barberId)),
                   ),
                 ),
                 routes: [

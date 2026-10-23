@@ -25,7 +25,13 @@ final class ExploreBranchesEloquentResolver
         private readonly ExploreRankingWeightsResolver $weightsResolver,
     ) {}
 
-    public function resolve(ExploreBranchesQuery $payload): LengthAwarePaginator
+    /**
+     * Every branch matching the search inside the radius, nearest first,
+     * with a `distance` column (km). Shared with `explore/search` (Task 45).
+     *
+     * @return Builder<BranchModel>
+     */
+    public function candidates(ExploreBranchesQuery $payload): Builder
     {
         $haversine = sprintf(
             '(6371 * acos(cos(radians(%f)) * cos(radians(latitude)) * cos(radians(longitude) - radians(%f)) + sin(radians(%f)) * sin(radians(latitude))))',
@@ -46,9 +52,15 @@ final class ExploreBranchesEloquentResolver
 
         $subQuery = $this->applyFilters($subQuery, $payload);
 
-        $query = BranchModel::query()->fromSub($subQuery, 'branches_sub')
+        return BranchModel::query()->fromSub($subQuery, 'branches_sub')
             ->where('distance', '<', $payload->radius)
             ->orderBy('distance');
+
+    }
+
+    public function resolve(ExploreBranchesQuery $payload): LengthAwarePaginator
+    {
+        $query = $this->candidates($payload);
 
         $paginator = $query->paginate($payload->perPage);
 

@@ -75,7 +75,7 @@ codeanchors:
 - [x] Task 42: Compute and Expose Branch and Barber Ratings -> [Spec](tasks/task-42-entity-rating-aggregates.md)
 - [x] Task 43: Add Explore Text Search -> [Spec](tasks/task-43-explore-text-search.md)
 - [x] Task 44: Support Unisex Universe and Barber Universe Filter -> [Spec](tasks/task-44-universe-unisex-and-barber-filter.md)
-- [ ] Task 45: Include Freelancers in Search Results -> [Spec](tasks/task-45-freelancers-in-search.md)
+- [x] Task 45: Include Freelancers in Search Results -> [Spec](tasks/task-45-freelancers-in-search.md)
 - [ ] Task 46: Apply Composite Ranking Before Pagination -> [Spec](tasks/task-46-composite-ranking-ordering.md)
 - [ ] Task 47: Apply Discovery Preferences and Log Interactions -> [Spec](tasks/task-47-discovery-preferences-and-interaction-logging.md)
 - [ ] Task 48: Complete Branch and Barber Detail Payloads -> [Spec](tasks/task-48-branch-barber-detail-completeness.md)

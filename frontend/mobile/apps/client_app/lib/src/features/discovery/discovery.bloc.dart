@@ -136,7 +136,7 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     }
     emit(state.copyWith(page: state.page.loadingMore()));
     try {
-      final page = await _repository.getBranches(
+      final payload = await _repository.searchPayload(
         latitude: state.latitude!,
         longitude: state.longitude!,
         radius: state.filters.radius,
@@ -151,7 +151,7 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
         query: state.filters.query,
       );
       if (emit.isDone) return;
-      emit(state.copyWith(page: state.page.succeeded(page)));
+      emit(state.copyWith(page: state.page.succeeded(payload.data)));
     } catch (error) {
       if (emit.isDone) return;
       emit(state.copyWith(page: state.page.failed(error)));
@@ -203,7 +203,7 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
 
   Future<void> _fetchFirst(Emitter<DiscoveryState> emit, String? key) async {
     try {
-      final payload = await _repository.getBranchesPayload(
+      final payload = await _repository.searchPayload(
         latitude: state.latitude!,
         longitude: state.longitude!,
         radius: state.filters.radius,
@@ -270,11 +270,13 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     if (key != null) await _cache?.evict(key);
   }
 
-  PaginatedData<BranchDto>? _parseEntry(FeedCacheEntry entry) {
+  PaginatedData<ExploreSearchItemDto>? _parseEntry(FeedCacheEntry entry) {
     try {
       final items = entry.items
           .map(
-            (item) => BranchDto.fromJson((item as Map).cast<String, dynamic>()),
+            (item) => ExploreSearchItemDto.fromJson(
+              (item as Map).cast<String, dynamic>(),
+            ),
           )
           .toList();
       final pagination = entry.meta['pagination'];

@@ -360,6 +360,28 @@ Position testPosition({
   speedAccuracy: 0,
 );
 
+ExploreSearchItemDto testBranchItem(BranchDto branch) => ExploreSearchItemDto(
+  type: 'branch',
+  distance: branch.distance,
+  branch: branch,
+);
+
+ExploreSearchItemDto testBarberItem(
+  BarberProfileDto barber, {
+  double? distance,
+}) => ExploreSearchItemDto(type: 'barber', distance: distance, barber: barber);
+
+PaginatedData<ExploreSearchItemDto> asSearchPage(
+  PaginatedData<BranchDto> page, {
+  List<BarberProfileDto> barbers = const [],
+}) => PaginatedData(
+  data: [
+    ...page.data.map(testBranchItem),
+    ...barbers.map((barber) => testBarberItem(barber, distance: 1.2)),
+  ],
+  meta: page.meta,
+);
+
 BranchDto testBranch({int id = 1}) => BranchDto(
   id: '$id',
   name: 'Branch $id',
@@ -458,6 +480,41 @@ class FakeExploreRepository implements ExploreRepository {
     if (failure != null) throw failure;
     return (data: firstPage, rawItems: rawItems, rawMeta: rawMeta);
   }
+
+  int searchPayloadCalls = 0;
+
+  @override
+  Future<RawPaginated<ExploreSearchItemDto>> searchPayload({
+    required double latitude,
+    required double longitude,
+    required double radius,
+    String? universe,
+    int page = 1,
+    int perPage = 20,
+    List<int>? catalogItemIds,
+    bool? availableNow,
+    double? priceRangeMin,
+    double? priceRangeMax,
+    double? ratingMin,
+    String? query,
+  }) async {
+    searchPayloadCalls++;
+    lastQuery = query;
+    queries.add(query);
+    lastPage = page;
+    lastUniverse = universe;
+    lastAvailableNow = availableNow;
+    final failure = error;
+    if (failure != null) throw failure;
+    final source = page > 1 && morePage != null ? morePage! : firstPage;
+    return (
+      data: asSearchPage(source, barbers: searchBarbers),
+      rawItems: rawItems,
+      rawMeta: rawMeta,
+    );
+  }
+
+  List<BarberProfileDto> searchBarbers = const [];
 
   BranchDetailDto detail = testBranchDetail();
 

@@ -16,12 +16,14 @@ class DiscoveryView extends StatelessWidget {
     required this.onLocaleToggle,
     required this.onBookNow,
     required this.onViewDetails,
+    this.onViewStylist,
   });
 
   final DiscoveryBloc bloc;
   final VoidCallback onLocaleToggle;
   final VoidCallback onBookNow;
   final ValueChanged<String>? onViewDetails;
+  final ValueChanged<String>? onViewStylist;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +75,7 @@ class DiscoveryView extends StatelessWidget {
             state: state,
             onBookNow: onBookNow,
             onViewDetails: onViewDetails,
+            onViewStylist: onViewStylist,
           );
         },
       ),

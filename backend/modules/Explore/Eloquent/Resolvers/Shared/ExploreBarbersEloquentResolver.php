@@ -25,7 +25,13 @@ final class ExploreBarbersEloquentResolver
         private readonly ExploreRankingWeightsResolver $weightsResolver,
     ) {}
 
-    public function resolve(ExploreBarbersQuery $payload): LengthAwarePaginator
+    /**
+     * Every barber matching the search inside the radius, nearest first,
+     * with a `distance` column (km). Shared with `explore/search` (Task 45).
+     *
+     * @return Builder<BarberModel>
+     */
+    public function candidates(ExploreBarbersQuery $payload): Builder
     {
         $haversine = sprintf(
             '(6371 * acos(cos(radians(%f)) * cos(radians(latitude)) * cos(radians(longitude) - radians(%f)) + sin(radians(%f)) * sin(radians(latitude))))',
@@ -47,9 +53,41 @@ final class ExploreBarbersEloquentResolver
 
         $subQuery = $this->applyFilters($subQuery, $payload);
 
-        $query = BarberModel::query()->fromSub($subQuery, 'barbers_sub')
+        return BarberModel::query()->fromSub($subQuery, 'barbers_sub')
             ->where('distance', '<', $payload->radius)
             ->orderBy('distance');
+
+    }
+
+    /**
+     * EC-11: freelancers without a base location cannot be placed on the map,
+     * so they are found only by a text search, whatever the radius. Returns
+     * null when the request has no `q`.
+     *
+     * @return Builder<BarberModel>|null
+     */
+    public function locationlessTextMatches(ExploreBarbersQuery $payload): ?Builder
+    {
+        if ($payload->search === null) {
+            return null;
+        }
+
+        $query = BarberModel::query()->discoverable()
+            ->select('barbers.*')
+            ->selectRaw('NULL AS distance')
+            ->where('is_freelancer', true)
+            ->where(fn (Builder $missing) => $missing->whereNull('latitude')->orWhereNull('longitude'));
+
+        if ($payload->universe !== null) {
+            $query->whereIn('universe', VenueUniverse::servingClient($payload->universe));
+        }
+
+        return $this->applyFilters($query, $payload);
+    }
+
+    public function resolve(ExploreBarbersQuery $payload): LengthAwarePaginator
+    {
+        $query = $this->candidates($payload);
 
         $paginator = $query->paginate($payload->perPage);
 

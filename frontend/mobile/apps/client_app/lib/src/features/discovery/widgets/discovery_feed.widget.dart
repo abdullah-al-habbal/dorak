@@ -10,6 +10,7 @@ import 'package:client_app/src/core/formatting/rating_label.entity.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.event.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
+import 'package:client_app/src/features/discovery/widgets/discovery_barber_card.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_filter_bar.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_result_card.widget.dart';
 
@@ -20,12 +21,14 @@ class DiscoveryFeed extends StatefulWidget {
     required this.state,
     required this.onBookNow,
     required this.onViewDetails,
+    this.onViewStylist,
   });
 
   final DiscoveryBloc bloc;
   final DiscoveryState state;
   final VoidCallback onBookNow;
   final ValueChanged<String>? onViewDetails;
+  final ValueChanged<String>? onViewStylist;
 
   @override
   State<DiscoveryFeed> createState() => _DiscoveryFeedState();
@@ -34,7 +37,7 @@ class DiscoveryFeed extends StatefulWidget {
 class _DiscoveryFeedState extends State<DiscoveryFeed> {
   StreamSubscription<DiscoveryState>? _refreshSubscription;
 
-  List<BranchDto> get _items => widget.state.page.items;
+  List<ExploreSearchItemDto> get _items => widget.state.page.items;
 
   Future<void> _refresh() async {
     await _refreshSubscription?.cancel();
@@ -84,37 +87,60 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
           itemBuilder: (context, index) {
             if (index == 0) return _feedHeader(context);
             if (index == items.length + 1) return _feedFooter(context);
-            final branch = items[index - 1];
+            final item = items[index - 1];
+            final localeCode = Localizations.localeOf(context).languageCode;
+            final barber = item.barber;
+            final branch = item.branch;
             return Padding(
               padding: const EdgeInsets.only(
                 bottom: DorakDimensions.spacingMedium,
               ),
-              child: DiscoveryResultCard(
-                branch: branch,
-                ratingLabel: RatingLabel.of(
-                  l10n,
-                  average: branch.ratingAvg,
-                  count: branch.ratingCount,
-                  localeCode: Localizations.localeOf(context).languageCode,
-                ),
-                rankBadge: branch.rank == null
-                    ? null
-                    : l10n.discoverRankBadge(branch.rank!),
-                compatibilityBadge: branch.compatibilityScore == null
-                    ? null
-                    : l10n.discoverCompatibilityBadge(
-                        (branch.compatibilityScore! * 100).round(),
+              child: barber != null
+                  ? DiscoveryBarberCard(
+                      barber: barber,
+                      ratingLabel: RatingLabel.of(
+                        l10n,
+                        average: barber.ratingAvg,
+                        count: barber.ratingCount,
+                        localeCode: localeCode,
                       ),
-                distanceLabel: branch.distance == null
-                    ? null
-                    : l10n.discoverDistanceLabel(branch.distance!),
-                bookNowLabel: l10n.bookNow,
-                onBookNow: widget.onBookNow,
-                viewDetailsLabel: l10n.viewDetails,
-                onViewDetails: widget.onViewDetails == null
-                    ? null
-                    : () => widget.onViewDetails!(branch.id.toString()),
-              ),
+                      freelancerLabel: l10n.discoverFreelancerBadge,
+                      distanceLabel: item.distance == null
+                          ? l10n.discoverTravelsToYou
+                          : l10n.discoverDistanceLabel(item.distance!),
+                      viewProfileLabel: l10n.viewDetails,
+                      onViewProfile: widget.onViewStylist == null
+                          ? null
+                          : () => widget.onViewStylist!(barber.id),
+                    )
+                  : branch == null
+                  ? const SizedBox.shrink()
+                  : DiscoveryResultCard(
+                      branch: branch,
+                      ratingLabel: RatingLabel.of(
+                        l10n,
+                        average: branch.ratingAvg,
+                        count: branch.ratingCount,
+                        localeCode: localeCode,
+                      ),
+                      rankBadge: branch.rank == null
+                          ? null
+                          : l10n.discoverRankBadge(branch.rank!),
+                      compatibilityBadge: branch.compatibilityScore == null
+                          ? null
+                          : l10n.discoverCompatibilityBadge(
+                              (branch.compatibilityScore! * 100).round(),
+                            ),
+                      distanceLabel: branch.distance == null
+                          ? null
+                          : l10n.discoverDistanceLabel(branch.distance!),
+                      bookNowLabel: l10n.bookNow,
+                      onBookNow: widget.onBookNow,
+                      viewDetailsLabel: l10n.viewDetails,
+                      onViewDetails: widget.onViewDetails == null
+                          ? null
+                          : () => widget.onViewDetails!(branch.id),
+                    ),
             );
           },
         ),

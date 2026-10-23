@@ -9,7 +9,7 @@ class DiscoveryState extends Equatable {
     this.latitude,
     this.longitude,
     this.filters = const DiscoveryFilters(),
-    this.page = const Paged<BranchDto>.initial(),
+    this.page = const Paged<ExploreSearchItemDto>.initial(),
     this.isStale = false,
     this.searchQuery = '',
     List<CatalogItemDto> catalogItems = const [],
@@ -20,7 +20,7 @@ class DiscoveryState extends Equatable {
   final double? latitude;
   final double? longitude;
   final DiscoveryFilters filters;
-  final Paged<BranchDto> page;
+  final Paged<ExploreSearchItemDto> page;
   final bool isStale;
   final String searchQuery;
   final List<CatalogItemDto> catalogItems;
@@ -36,7 +36,7 @@ class DiscoveryState extends Equatable {
     double? latitude,
     double? longitude,
     DiscoveryFilters? filters,
-    Paged<BranchDto>? page,
+    Paged<ExploreSearchItemDto>? page,
     bool? isStale,
     String? searchQuery,
     List<CatalogItemDto>? catalogItems,

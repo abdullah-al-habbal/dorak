@@ -536,6 +536,10 @@
   "@discoverRankedByDistance": {
     "description": "Caption confirming results are ordered by distance"
   },
+  "discoverFreelancerBadge": "Freelancer",
+  "@discoverFreelancerBadge": {"description": "Badge on a freelancer result in discovery"},
+  "discoverTravelsToYou": "Travels to you",
+  "@discoverTravelsToYou": {"description": "Shown instead of a distance for a freelancer without a fixed location"},
   "discoverSearchHint": "Search shops, brands or services",
   "@discoverSearchHint": {"description": "Hint of the discovery keyword search field"},
   "ratingSummary": "★ {rating} ({count, plural, =1{1 review} other{{count} reviews}})",
