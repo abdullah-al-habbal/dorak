@@ -1,30 +1,18 @@
-export interface INotificationItem {
-  id: string;
-  type: string;
-  title: string;
-  body: string;
-  data: Record<string, unknown>;
-  readAt: string | null;
-  createdAt: string;
-}
+import { z } from "zod";
+import {
+  NotificationItemSchema,
+  NotificationInboxSchema,
+  NotificationReadAllSchema,
+  BackendNotificationSchema,
+} from "@/services/api/notification-inbox/schema/notification-inbox.schema";
 
-export interface INotificationInbox {
-  items: INotificationItem[];
-  unreadCount: number;
-  total: number;
-}
+export type NotificationItem = z.infer<typeof NotificationItemSchema>;
+export type NotificationInbox = z.infer<typeof NotificationInboxSchema>;
+export type NotificationReadAll = z.infer<typeof NotificationReadAllSchema>;
+export type BackendNotification = z.infer<typeof BackendNotificationSchema>;
 
-export interface INotificationReadAll {
-  updated: number;
-  unreadCount: number;
-}
-
-export interface IBackendNotification {
-  id: string;
-  type: string;
-  title: string;
-  body: string;
-  data?: Record<string, unknown> | null;
-  read_at: string | null;
-  created_at: string;
-}
+// Backward compatibility aliases
+export type INotificationItem = NotificationItem;
+export type INotificationInbox = NotificationInbox;
+export type INotificationReadAll = NotificationReadAll;
+export type IBackendNotification = BackendNotification;

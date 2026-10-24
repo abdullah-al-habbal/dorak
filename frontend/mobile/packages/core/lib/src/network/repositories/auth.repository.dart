@@ -44,6 +44,10 @@ abstract class AuthRepository {
     required String password,
     required String passwordConfirmation,
   });
+  Future<void> socialLogin({
+    required String provider,
+    required String accessToken,
+  });
   Future<void> deleteAccount(String password);
 }
 
@@ -166,6 +170,18 @@ class DioAuthRepository implements AuthRepository {
         'password': password,
         'password_confirmation': passwordConfirmation,
       },
+      parser: _discardBody,
+    );
+  }
+
+  @override
+  Future<void> socialLogin({
+    required String provider,
+    required String accessToken,
+  }) {
+    return _client.post<void>(
+      AuthEndpoints.socialLogin(provider),
+      data: {'access_token': accessToken},
       parser: _discardBody,
     );
   }

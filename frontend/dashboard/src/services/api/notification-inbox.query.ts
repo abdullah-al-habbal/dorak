@@ -1,10 +1,10 @@
-import { ROUTES } from "@/config/routes.constant";
 import { apiRequest } from "@/services/api/client";
-import type { INotificationInbox } from "@/services/api/notification-inbox.types";
+import { NotificationInboxEndpoints } from "@/services/api/notification-inbox/endpoints/notification-inbox.endpoints";
+import type { NotificationInbox } from "@/services/api/notification-inbox.types";
 
-export function getNotificationInbox(): Promise<INotificationInbox> {
-  return apiRequest<INotificationInbox>(
-    `${ROUTES.api.notifications.inbox}?per_page=20`,
+export function getNotificationInbox(): Promise<NotificationInbox> {
+  return apiRequest<NotificationInbox>(
+    `${NotificationInboxEndpoints.inbox}?per_page=20`,
     { auth: "session" },
   );
 }

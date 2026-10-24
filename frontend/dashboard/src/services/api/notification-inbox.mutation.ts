@@ -1,20 +1,20 @@
-import { ROUTES } from "@/config/routes.constant";
 import { apiRequest } from "@/services/api/client";
+import { NotificationInboxEndpoints } from "@/services/api/notification-inbox/endpoints/notification-inbox.endpoints";
 import type {
-  INotificationItem,
-  INotificationReadAll,
+  NotificationItem,
+  NotificationReadAll,
 } from "@/services/api/notification-inbox.types";
 
-export function markNotificationRead(id: string): Promise<INotificationItem> {
-  return apiRequest<INotificationItem>(
-    `${ROUTES.api.notifications.inbox}/${encodeURIComponent(id)}/read`,
-    { auth: "session", method: "PATCH" },
-  );
+export function markNotificationRead(id: string): Promise<NotificationItem> {
+  return apiRequest<NotificationItem>(NotificationInboxEndpoints.markRead(id), {
+    auth: "session",
+    method: "PATCH",
+  });
 }
 
-export function markAllNotificationsRead(): Promise<INotificationReadAll> {
-  return apiRequest<INotificationReadAll>(
-    `${ROUTES.api.notifications.inbox}/read-all`,
+export function markAllNotificationsRead(): Promise<NotificationReadAll> {
+  return apiRequest<NotificationReadAll>(
+    NotificationInboxEndpoints.markAllRead,
     { auth: "session", method: "POST" },
   );
 }
