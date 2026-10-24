@@ -1,28 +1,33 @@
 import { apiRequest } from "@/services/api/client";
+import { BarberEndpoints } from "@/services/api/barber-workspace/endpoints/barber-workspace.endpoints";
+import type {
+  TransitionBookingInput,
+  CancelBookingInput,
+} from "@/services/api/barber-workspace.types";
 
 export function updateBarberWorkstation(online: boolean) {
-  return apiRequest<unknown>("/api/barber/workstation-status", {
+  return apiRequest<unknown>(BarberEndpoints.workstationStatus, {
     auth: "session",
     method: "PATCH",
     body: JSON.stringify({ online }),
   });
 }
+
 export function transitionBarberBooking(
   id: string,
-  transition: "accept" | "start" | "complete" | "no-show",
+  transition: TransitionBookingInput["transition"],
 ) {
   return apiRequest<unknown>(
-    `/api/barber/bookings/${encodeURIComponent(id)}/${transition}`,
+    BarberEndpoints.bookingTransition(id, transition),
     { auth: "session", method: "PATCH" },
   );
 }
+
 export function cancelBarberBooking(id: string, cancellationReason: string) {
-  return apiRequest<unknown>(
-    `/api/barber/bookings/${encodeURIComponent(id)}/cancel`,
-    {
-      auth: "session",
-      method: "POST",
-      body: JSON.stringify({ cancellation_reason: cancellationReason }),
-    },
-  );
+  const input: CancelBookingInput = { cancellation_reason: cancellationReason };
+  return apiRequest<unknown>(BarberEndpoints.bookingCancel(id), {
+    auth: "session",
+    method: "POST",
+    body: JSON.stringify(input),
+  });
 }

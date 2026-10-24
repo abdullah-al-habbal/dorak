@@ -1,12 +1,20 @@
-export interface BarberAppointment {
-  id: string;
-  status: string;
-  timeSlot: string;
-  chair?: { label?: string | null } | null;
-}
+import { z } from "zod";
+import {
+  BarberAppointmentSchema,
+  BarberWorkspaceProfileSchema,
+  UpdateWorkstationStatusInputSchema,
+  TransitionBookingInputSchema,
+  CancelBookingInputSchema,
+} from "@/services/api/barber-workspace/schema/barber-workspace.schema";
 
-export interface BarberWorkspaceProfile {
-  workstationOnline?: boolean;
-  travelRadius?: number | null;
-  portfolio?: Array<{ id: string; url?: string; path?: string }>;
-}
+export type BarberAppointment = z.infer<typeof BarberAppointmentSchema>;
+export type BarberWorkspaceProfile = z.infer<
+  typeof BarberWorkspaceProfileSchema
+>;
+export type UpdateWorkstationStatusInput = z.infer<
+  typeof UpdateWorkstationStatusInputSchema
+>;
+export type TransitionBookingInput = z.infer<
+  typeof TransitionBookingInputSchema
+>;
+export type CancelBookingInput = z.infer<typeof CancelBookingInputSchema>;

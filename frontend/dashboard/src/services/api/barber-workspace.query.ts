@@ -1,4 +1,5 @@
 import { apiRequest } from "@/services/api/client";
+import { BarberEndpoints } from "@/services/api/barber-workspace/endpoints/barber-workspace.endpoints";
 import type {
   BarberAppointment,
   BarberWorkspaceProfile,
@@ -15,14 +16,15 @@ function mapAppointment(value: Record<string, unknown>): BarberAppointment {
 
 export async function getBarberTodayAppointments() {
   const page = await apiRequest<{ items: Record<string, unknown>[] }>(
-    "/api/barber/appointments/today",
+    BarberEndpoints.appointmentsToday,
     { auth: "session" },
   );
   return { items: page.items.map(mapAppointment) };
 }
+
 export async function getBarberWorkspaceProfile(): Promise<BarberWorkspaceProfile> {
   const profile = await apiRequest<Record<string, unknown>>(
-    "/api/barber/profile",
+    BarberEndpoints.profile,
     { auth: "session" },
   );
   return {
@@ -34,12 +36,14 @@ export async function getBarberWorkspaceProfile(): Promise<BarberWorkspaceProfil
       typeof profile.travel_radius === "number" ? profile.travel_radius : null,
   };
 }
+
 export function getBarberSchedule() {
-  return apiRequest<unknown>("/api/barber/schedule", { auth: "session" });
+  return apiRequest<unknown>(BarberEndpoints.schedule, { auth: "session" });
 }
+
 export function getBarberPortfolio() {
   return apiRequest<Array<{ id: string; url: string; sort_order: number }>>(
-    "/api/barber/portfolio",
+    BarberEndpoints.portfolio,
     { auth: "session" },
   );
 }

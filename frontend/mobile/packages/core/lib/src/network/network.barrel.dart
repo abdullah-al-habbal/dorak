@@ -55,6 +55,7 @@ export 'package:core/src/network/dto/job_application.dto.dart';
 export 'package:core/src/network/dto/submit_review.dto.dart';
 export 'package:core/src/network/dto/slot.dto.dart';
 export 'package:core/src/network/dto/settings.dto.dart';
+export 'package:core/src/network/endpoints/api_endpoints.dart';
 export 'package:core/src/network/endpoints/app.endpoints.dart';
 export 'package:core/src/network/endpoints/auth.endpoints.dart';
 export 'package:core/src/network/endpoints/barber_auth.endpoints.dart';
