@@ -12,3 +12,10 @@ BookingChairDto _$BookingChairDtoFromJson(Map<String, dynamic> json) =>
       label: json['label'] as String?,
       status: json['status'] as String?,
     );
+
+Map<String, dynamic> _$BookingChairDtoToJson(BookingChairDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'label': instance.label,
+      'status': instance.status,
+    };

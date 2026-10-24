@@ -1,4 +1,4 @@
-export 'package:core/src/network/endpoints/api_endpoints.dart';
+export 'package:core/src/network/endpoints/api.endpoints.dart';
 export 'package:core/src/network/endpoints/app.endpoints.dart';
 export 'package:core/src/network/endpoints/auth.endpoints.dart';
 export 'package:core/src/network/endpoints/barber_auth.endpoints.dart';

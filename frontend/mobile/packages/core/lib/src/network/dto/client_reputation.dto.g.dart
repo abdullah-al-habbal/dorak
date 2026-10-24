@@ -11,3 +11,7 @@ ClientReputationDto _$ClientReputationDtoFromJson(Map<String, dynamic> json) =>
       average: (json['average'] as num?)?.toDouble(),
       count: (json['count'] as num?)?.toInt() ?? 0,
     );
+
+Map<String, dynamic> _$ClientReputationDtoToJson(
+  ClientReputationDto instance,
+) => <String, dynamic>{'average': instance.average, 'count': instance.count};

@@ -8,7 +8,7 @@ import 'package:core/src/network/dto/booking_service.dto.dart';
 
 part 'booking.dto.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: true)
 class BookingDto {
   final String id;
   final DateTime timeSlot;
@@ -46,4 +46,6 @@ class BookingDto {
 
   factory BookingDto.fromJson(Map<String, dynamic> json) =>
       _$BookingDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BookingDtoToJson(this);
 }

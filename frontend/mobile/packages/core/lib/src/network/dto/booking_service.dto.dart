@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'booking_service.dto.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: true)
 class BookingServiceDto {
   final String id;
   final String name;
@@ -22,4 +22,6 @@ class BookingServiceDto {
 
   factory BookingServiceDto.fromJson(Map<String, dynamic> json) =>
       _$BookingServiceDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BookingServiceDtoToJson(this);
 }

@@ -42,3 +42,22 @@ BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
       ? null
       : DateTime.parse(json['created_at'] as String),
 );
+
+Map<String, dynamic> _$BookingDtoToJson(
+  BookingDto instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'time_slot': instance.timeSlot.toIso8601String(),
+  'ends_at': instance.endsAt?.toIso8601String(),
+  'status': instance.status,
+  'payment_method': instance.paymentMethod,
+  'payment_status': instance.paymentStatus,
+  'cancellation_eligible': instance.cancellationEligible,
+  'cancellation_cutoff_at': instance.cancellationCutoffAt?.toIso8601String(),
+  'chair': instance.chair,
+  'barber': instance.barber,
+  'client': instance.client,
+  'services': instance.services,
+  'at_home_location': instance.atHomeLocation,
+  'created_at': instance.createdAt?.toIso8601String(),
+};

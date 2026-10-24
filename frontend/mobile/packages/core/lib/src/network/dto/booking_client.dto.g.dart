@@ -17,3 +17,11 @@ BookingClientDto _$BookingClientDtoFromJson(Map<String, dynamic> json) =>
               json['reputation'] as Map<String, dynamic>,
             ),
     );
+
+Map<String, dynamic> _$BookingClientDtoToJson(BookingClientDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'phone': instance.phone,
+      'reputation': instance.reputation,
+    };

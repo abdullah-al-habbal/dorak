@@ -1,8 +1,8 @@
-export interface LookupOption {
-  id: string;
-  label: string;
-  /** Brands only: the brand already has a branch and lacks `multi_branch`, so another branch would be refused (A3). */
-  branchLimitReached?: boolean;
-}
+import { z } from "zod";
+import {
+  LookupOptionSchema,
+  LookupResourceSchema,
+} from "@/services/api/lookup/schema/lookup.schema";
 
-export type LookupResource = "brands" | "currencies" | "service-catalog-items";
+export type LookupOption = z.infer<typeof LookupOptionSchema>;
+export type LookupResource = z.infer<typeof LookupResourceSchema>;

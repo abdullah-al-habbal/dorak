@@ -6,7 +6,7 @@ part 'booking_client.dto.g.dart';
 
 /// The client on a booking as staff (branch, barber) see it. Client-facing
 /// booking payloads never include it.
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: true)
 class BookingClientDto {
   final String id;
   final String? name;
@@ -22,4 +22,6 @@ class BookingClientDto {
 
   factory BookingClientDto.fromJson(Map<String, dynamic> json) =>
       _$BookingClientDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BookingClientDtoToJson(this);
 }

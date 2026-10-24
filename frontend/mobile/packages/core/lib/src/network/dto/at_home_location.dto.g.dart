@@ -14,3 +14,12 @@ AtHomeLocationDto _$AtHomeLocationDtoFromJson(Map<String, dynamic> json) =>
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
     );
+
+Map<String, dynamic> _$AtHomeLocationDtoToJson(AtHomeLocationDto instance) =>
+    <String, dynamic>{
+      'street': instance.street,
+      'building': instance.building,
+      'unit': instance.unit,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+    };

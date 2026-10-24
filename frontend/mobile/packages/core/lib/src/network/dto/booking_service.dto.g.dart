@@ -14,3 +14,12 @@ BookingServiceDto _$BookingServiceDtoFromJson(Map<String, dynamic> json) =>
       duration: (json['duration'] as num?)?.toInt(),
       owner: json['owner'] as String?,
     );
+
+Map<String, dynamic> _$BookingServiceDtoToJson(BookingServiceDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'price': instance.price,
+      'duration': instance.duration,
+      'owner': instance.owner,
+    };

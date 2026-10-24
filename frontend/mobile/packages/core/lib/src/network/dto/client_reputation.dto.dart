@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'client_reputation.dto.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: true)
 class ClientReputationDto {
   final double? average;
   @JsonKey(defaultValue: 0)
@@ -14,4 +14,6 @@ class ClientReputationDto {
 
   factory ClientReputationDto.fromJson(Map<String, dynamic> json) =>
       _$ClientReputationDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ClientReputationDtoToJson(this);
 }
