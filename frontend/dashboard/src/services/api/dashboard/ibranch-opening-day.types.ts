@@ -1,6 +1,4 @@
-export interface IBranchOpeningDay {
-  weekday: number;
-  isClosed: boolean;
-  opensAt: string | null;
-  closesAt: string | null;
-}
+import { z } from "zod";
+import { BranchOpeningDaySchema } from "@/services/api/dashboard/schema/dashboard-entities.schema";
+
+export type IBranchOpeningDay = z.infer<typeof BranchOpeningDaySchema>;

@@ -1,4 +1,5 @@
 import { apiRequest } from "@/services/api/client";
+import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
 import type { INotificationPreferences } from "@/services/api/dashboard/inotification-preferences.types";
 import type { IProfile } from "@/services/api/dashboard/iprofile.types";
 import type { ISettings } from "@/services/api/dashboard/isettings.types";
@@ -7,7 +8,7 @@ import type { IUpdateProfileInput } from "@/services/api/dashboard/iupdate-profi
 import type { IUpdateSettingsInput } from "@/services/api/dashboard/iupdate-settings-input.types";
 
 export function updateProfile(input: IUpdateProfileInput): Promise<IProfile> {
-  return apiRequest<IProfile>("/api/dashboard/profile", {
+  return apiRequest<IProfile>(DashboardEndpoints.profile, {
     auth: "session",
     method: "PATCH",
     body: JSON.stringify(input),
@@ -18,7 +19,7 @@ export async function updatePassword(
   input: IUpdatePasswordInput,
 ): Promise<void> {
   await apiRequest<{ passwordUpdated: boolean }>(
-    "/api/dashboard/profile/password",
+    DashboardEndpoints.profilePassword,
     {
       auth: "session",
       method: "PUT",
@@ -31,7 +32,7 @@ export function requestEmailChange(
   email: string,
 ): Promise<{ pendingEmail: string; expiresAt: string }> {
   return apiRequest<{ pendingEmail: string; expiresAt: string }>(
-    "/api/dashboard/profile/email/change",
+    DashboardEndpoints.profileEmailChange,
     {
       auth: "session",
       method: "POST",
@@ -41,7 +42,7 @@ export function requestEmailChange(
 }
 
 export function verifyEmailChange(code: string): Promise<IProfile> {
-  return apiRequest<IProfile>("/api/dashboard/profile/email/verify", {
+  return apiRequest<IProfile>(DashboardEndpoints.profileEmailVerify, {
     auth: "session",
     method: "POST",
     body: JSON.stringify({ code }),
@@ -52,7 +53,7 @@ export async function updateNotificationPreferences(
   input: INotificationPreferences,
 ): Promise<INotificationPreferences> {
   return apiRequest<INotificationPreferences>(
-    "/api/dashboard/profile/notifications",
+    DashboardEndpoints.profileNotifications,
     {
       auth: "session",
       method: "PATCH",
@@ -64,7 +65,7 @@ export async function updateNotificationPreferences(
 export async function updateSettings(
   input: IUpdateSettingsInput,
 ): Promise<ISettings> {
-  return apiRequest<ISettings>("/api/dashboard/settings", {
+  return apiRequest<ISettings>(DashboardEndpoints.settings, {
     auth: "session",
     method: "PATCH",
     body: JSON.stringify(input),

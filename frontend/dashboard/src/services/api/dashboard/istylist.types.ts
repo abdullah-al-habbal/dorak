@@ -1,11 +1,4 @@
-import type { DashboardEntityId } from "@/services/api/dashboard/dashboard-entity-id.types";
-import type { ILocalizedName } from "@/services/api/dashboard/ilocalized-name.types";
+import { z } from "zod";
+import { StylistSchema } from "@/services/api/dashboard/schema/dashboard-entities.schema";
 
-export interface IStylist {
-  id: DashboardEntityId;
-  email: string;
-  chairId: DashboardEntityId | null;
-  name: ILocalizedName;
-  phone: string | null;
-  status: "pending" | "enabled" | "disabled";
-}
+export type IStylist = z.infer<typeof StylistSchema>;

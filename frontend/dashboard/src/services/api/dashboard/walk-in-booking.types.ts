@@ -1,10 +1,6 @@
-export interface WalkInBookingInput {
-  branchId: string;
-  chairId: string;
-  barberId: string | null;
-  customerName: string;
-  customerEmail: string;
-  customerPhone?: string | undefined;
-  serviceIds: string[];
-  timeSlot: string;
-}
+import { z } from "zod";
+import { createWalkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
+
+export type WalkInBookingInput = z.infer<
+  ReturnType<typeof createWalkInBookingSchema>
+>;

@@ -1,15 +1,4 @@
-import type { DashboardEntityId } from "@/services/api/dashboard/dashboard-entity-id.types";
-import type { ILocalizedName } from "@/services/api/dashboard/ilocalized-name.types";
+import { z } from "zod";
+import { ServiceSchema } from "@/services/api/dashboard/schema/dashboard-entities.schema";
 
-export interface IService {
-  id: DashboardEntityId;
-  active: boolean;
-  atHome: boolean;
-  catalogItemId: DashboardEntityId | null;
-  currencyId: DashboardEntityId;
-  duration: number | null;
-  name: ILocalizedName;
-  price: number;
-  serviceableId: DashboardEntityId;
-  serviceableType: "branch" | "brand" | "barber";
-}
+export type IService = z.infer<typeof ServiceSchema>;

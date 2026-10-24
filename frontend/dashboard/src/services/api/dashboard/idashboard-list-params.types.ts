@@ -1,10 +1,4 @@
-export interface IDashboardListParams {
-  page?: number;
-  perPage?: number;
-  search?: string;
-  status?: string;
-  dateFrom?: string;
-  dateTo?: string;
-  chairId?: string;
-  stylistId?: string;
-}
+import { z } from "zod";
+import { DashboardListParamsSchema } from "@/services/api/dashboard/schema/dashboard-inputs.schema";
+
+export type IDashboardListParams = z.infer<typeof DashboardListParamsSchema>;

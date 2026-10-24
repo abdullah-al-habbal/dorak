@@ -1,5 +1,6 @@
 import { apiRequest } from "@/services/api/client";
 import type { DashboardEntityId } from "@/services/api/dashboard/dashboard-entity-id.types";
+import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
 
 export function mutateDashboardEntity<TData, TInput>(
   resource: string,
@@ -7,8 +8,10 @@ export function mutateDashboardEntity<TData, TInput>(
   input?: TInput,
   id?: DashboardEntityId,
 ) {
-  const suffix = id ? `/${encodeURIComponent(id)}` : "";
-  return apiRequest<TData>(`/api/dashboard/${resource}${suffix}`, {
+  const path = id
+    ? DashboardEndpoints.resourceById(resource, id)
+    : DashboardEndpoints.resource(resource);
+  return apiRequest<TData>(path, {
     auth: "session",
     method,
     ...(input === undefined ? {} : { body: JSON.stringify(input) }),
