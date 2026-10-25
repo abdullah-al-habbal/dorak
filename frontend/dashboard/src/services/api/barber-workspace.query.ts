@@ -35,10 +35,6 @@ export async function getBarberWorkspaceProfile(): Promise<BarberWorkspaceProfil
   };
 }
 
-export function getBarberSchedule() {
-  return api.get<unknown>(BarberEndpoints.schedule);
-}
-
 export function getBarberPortfolio() {
   return api.get<Array<{ id: string; url: string; sort_order: number }>>(
     BarberEndpoints.portfolio,

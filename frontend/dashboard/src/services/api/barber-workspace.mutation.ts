@@ -6,17 +6,17 @@ import type {
 } from "@/services/api/barber-workspace.types";
 
 export function updateBarberWorkstation(online: boolean) {
-  return api.patch<unknown>(BarberEndpoints.workstationStatus, { online });
+  return api.patch<void>(BarberEndpoints.workstationStatus, { online });
 }
 
 export function transitionBarberBooking(
   id: string,
   transition: TransitionBookingInput["transition"],
 ) {
-  return api.patch<unknown>(BarberEndpoints.bookingTransition(id, transition));
+  return api.patch<void>(BarberEndpoints.bookingTransition(id, transition));
 }
 
 export function cancelBarberBooking(id: string, cancellationReason: string) {
   const input: CancelBookingInput = { cancellation_reason: cancellationReason };
-  return api.post<unknown>(BarberEndpoints.bookingCancel(id), input);
+  return api.post<void>(BarberEndpoints.bookingCancel(id), input);
 }

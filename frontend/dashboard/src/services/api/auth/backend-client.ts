@@ -20,6 +20,10 @@ const ENVELOPE_FIELDS = {
   timestamp: "string",
 } as const;
 
+function isApiEnvelope<TData>(payload: unknown): payload is ApiEnvelope<TData> {
+  return hasFieldTypes(payload, ENVELOPE_FIELDS);
+}
+
 function backendBaseUrl(): string {
   return (process.env.BACKEND_API_URL ?? "http://localhost:8000").replace(
     /\/+$/,
@@ -54,9 +58,7 @@ export async function backendRequest<TData>(
     }
 
     const payload = await readJson(response);
-    const envelope = hasFieldTypes(payload, ENVELOPE_FIELDS)
-      ? (payload as unknown as ApiEnvelope<TData>)
-      : null;
+    const envelope = isApiEnvelope<TData>(payload) ? payload : null;
 
     return {
       ok: response.ok,

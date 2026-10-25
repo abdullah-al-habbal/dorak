@@ -26,14 +26,17 @@ import {
   branchEditSchema,
 } from "@/services/api/dashboard/branch-form.schema";
 import { fullWeek } from "@/services/api/dashboard/branch-opening-hours.util";
-import type { IBranchOpeningDay } from "@/services/api/dashboard/ibranch-opening-day.types";
+import type { IBranch } from "@/services/api/dashboard/ibranch.types";
 import { chairConflictBookingIds } from "@/services/api/dashboard/chair-maintenance-conflict.util";
 import { chairFormSchema } from "@/services/api/dashboard/chair-form.schema";
+import type { IChair } from "@/services/api/dashboard/ichair.types";
 import { serviceFormSchema } from "@/services/api/dashboard/service-form.schema";
+import type { IService } from "@/services/api/dashboard/iservice.types";
 import {
   stylistCreateSchema,
   stylistEditSchema,
 } from "@/services/api/dashboard/stylist-form.schema";
+import type { IStylist } from "@/services/api/dashboard/istylist.types";
 import {
   createDashboardEntity,
   updateDashboardEntity,
@@ -56,6 +59,31 @@ import { useQuery } from "@tanstack/react-query";
 import type { z } from "zod";
 
 type EditableResource = "branches" | "chairs" | "services" | "stylists";
+
+function isBranchData(
+  resource: EditableResource,
+  data: unknown,
+): data is IBranch {
+  return resource === "branches";
+}
+function isChairData(
+  resource: EditableResource,
+  data: unknown,
+): data is IChair {
+  return resource === "chairs";
+}
+function isServiceData(
+  resource: EditableResource,
+  data: unknown,
+): data is IService {
+  return resource === "services";
+}
+function isStylistData(
+  resource: EditableResource,
+  data: unknown,
+): data is IStylist {
+  return resource === "stylists";
+}
 
 interface IEntityCrudFormProps {
   resource: EditableResource;
@@ -152,9 +180,9 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
       ),
   });
   useEffect(() => {
-    if (!existing.data) return;
-    const current = existing.data as unknown as Record<string, unknown>;
-    if (resource === "branches")
+    const current = existing.data;
+    if (!current) return;
+    if (isBranchData(resource, current))
       form.reset({
         name: current.name,
         brandId: current.brandId,
@@ -166,9 +194,9 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         universe: current.universe,
         description: emptyToNull(current.description),
         address: emptyToNull(current.address),
-        openingHours: fullWeek(current.openingHours as IBranchOpeningDay[]),
+        openingHours: fullWeek(current.openingHours),
       });
-    if (resource === "chairs")
+    if (isChairData(resource, current))
       form.reset({
         label: current.label ?? "",
         branchId: current.branchId,
@@ -181,7 +209,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         height: current.height,
         rotation: current.rotation,
       });
-    if (resource === "services")
+    if (isServiceData(resource, current))
       form.reset({
         name: current.name,
         price: current.price,
@@ -193,7 +221,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         serviceableType: current.serviceableType,
         catalogItemId: current.catalogItemId,
       });
-    if (resource === "stylists")
+    if (isStylistData(resource, current))
       form.reset({
         name: current.name,
         email: current.email,
