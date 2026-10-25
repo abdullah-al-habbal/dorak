@@ -57,6 +57,28 @@ describe('Dashboard Stylist API', function (): void {
         $this->postJson('/api/v1/dashboard/stylists', stylistPayload($chair))
             ->assertNotFound();
     });
+
+    it('lets a branch manager activate and deactivate their own stylist', function (): void {
+        $stylist = BarberModel::factory()->create();
+        ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $stylist->id]);
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->patchJson("/api/v1/dashboard/stylists/{$stylist->id}/deactivate")
+            ->assertOk()
+            ->assertJsonPath('data.status', 'disabled');
+        $this->patchJson("/api/v1/dashboard/stylists/{$stylist->id}/activate")
+            ->assertOk()
+            ->assertJsonPath('data.status', 'enabled');
+    });
+
+    it('does not let a branch manager activate a stylist outside their branch', function (): void {
+        $otherStylist = BarberModel::factory()->create();
+        ChairModel::factory()->create(['branch_id' => $this->otherBranch->id, 'barber_id' => $otherStylist->id]);
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->patchJson("/api/v1/dashboard/stylists/{$otherStylist->id}/deactivate")
+            ->assertNotFound();
+    });
 });
 
 function stylistPayload(ChairModel $chair): array

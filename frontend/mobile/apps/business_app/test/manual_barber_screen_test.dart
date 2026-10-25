@@ -25,6 +25,26 @@ class FakeManagedBarberRepository implements ManagedBarberRepository {
       hasLogin: false,
     );
   }
+
+  @override
+  Future<ActivationLogDto> activateBarber(String barberId) async {
+    return ActivationLogDto(
+      id: 'log-1',
+      activableId: barberId,
+      activableType: 'barber',
+      status: 'enabled',
+    );
+  }
+
+  @override
+  Future<ActivationLogDto> deactivateBarber(String barberId) async {
+    return ActivationLogDto(
+      id: 'log-1',
+      activableId: barberId,
+      activableType: 'barber',
+      status: 'disabled',
+    );
+  }
 }
 
 void main() {

@@ -16,19 +16,21 @@ final class ToggleActivationRequest extends BaseApiFormRequest
         ];
     }
 
-    public function toActivateCommand(string $barber): ToggleActivationCommand
+    public function toActivateCommand(string $activableId, string $activableType = 'barber'): ToggleActivationCommand
     {
         return new ToggleActivationCommand(
-            barberId: $barber,
+            activableId: $activableId,
+            activableType: $activableType,
             activate: true,
             reason: $this->validated('reason') ? (string) $this->validated('reason') : null,
         );
     }
 
-    public function toDeactivateCommand(string $barber): ToggleActivationCommand
+    public function toDeactivateCommand(string $activableId, string $activableType = 'barber'): ToggleActivationCommand
     {
         return new ToggleActivationCommand(
-            barberId: $barber,
+            activableId: $activableId,
+            activableType: $activableType,
             activate: false,
             reason: $this->validated('reason') ? (string) $this->validated('reason') : null,
         );

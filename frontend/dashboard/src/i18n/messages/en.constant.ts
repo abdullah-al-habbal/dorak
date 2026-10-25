@@ -285,6 +285,10 @@ export const en = {
     loading: "Loading…",
     created: "Created.",
     changesSaved: "Changes saved.",
+    activate: "Activate",
+    deactivate: "Deactivate",
+    activated: "Stylist activated.",
+    deactivated: "Stylist deactivated.",
     field: {
       nameEn: "Name (English)",
       nameAr: "Name (Arabic)",

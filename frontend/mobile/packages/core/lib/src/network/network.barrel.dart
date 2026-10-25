@@ -32,6 +32,7 @@ export 'package:core/src/network/dto/floor_plan.dto.dart';
 export 'package:core/src/network/dto/floor_plan_layout.dto.dart';
 export 'package:core/src/network/dto/floor_plan_zone.dto.dart';
 export 'package:core/src/network/dto/history_barber.dto.dart';
+export 'package:core/src/network/dto/activation_log.dto.dart';
 export 'package:core/src/network/dto/managed_barber.dto.dart';
 export 'package:core/src/network/dto/history_branch.dto.dart';
 export 'package:core/src/network/dto/history_catalog_item.dto.dart';

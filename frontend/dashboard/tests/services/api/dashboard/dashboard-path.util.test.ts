@@ -27,6 +27,8 @@ describe("isDashboardRouteAllowed", () => {
     ["PATCH", ["profile", "notifications"]],
     ["GET", ["settings"]],
     ["PATCH", ["settings"]],
+    ["PATCH", ["stylists", "stylist-1", "activate"]],
+    ["PATCH", ["stylists", "stylist-1", "deactivate"]],
   ] as [string, readonly string[]][])("allows %s %s", (method, path) => {
     expect(isDashboardRouteAllowed(method, path)).toBe(true);
   });
@@ -40,6 +42,8 @@ describe("isDashboardRouteAllowed", () => {
     ["POST", ["bookings"]],
     ["GET", ["branches", "../secrets"]],
     ["POST", ["settings"]],
+    ["PUT", ["stylists", "stylist-1", "activate"]],
+    ["PATCH", ["stylists", "stylist-1", "suspend"]],
   ] as [string, readonly string[]][])("rejects %s %s", (method, path) => {
     expect(isDashboardRouteAllowed(method, path)).toBe(false);
   });

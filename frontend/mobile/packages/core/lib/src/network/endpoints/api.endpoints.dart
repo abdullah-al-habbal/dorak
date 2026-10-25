@@ -128,6 +128,8 @@ class _BranchEndpoints {
   String floorPlan(String branchId) => BranchEndpoints.floorPlan.replaceFirst('{branch}', branchId);
   String slots(String branchId) => BranchEndpoints.slots.replaceFirst('{branch}', branchId);
   String get managedBarbers => BranchEndpoints.managedBarbers;
+  String activateBarber(String barberId) => BranchEndpoints.activateBarber.replaceFirst('{barber}', barberId);
+  String deactivateBarber(String barberId) => BranchEndpoints.deactivateBarber.replaceFirst('{barber}', barberId);
   String get profile => BranchEndpoints.profile;
   String chairStatus(String chairId) => BranchEndpoints.chairStatus.replaceFirst('{chair}', chairId);
 }

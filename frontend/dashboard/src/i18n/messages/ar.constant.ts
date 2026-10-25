@@ -280,6 +280,10 @@ export const ar: Dictionary = {
     loading: "جارٍ التحميل…",
     created: "تم الإنشاء.",
     changesSaved: "تم حفظ التغييرات.",
+    activate: "تفعيل",
+    deactivate: "إلغاء التفعيل",
+    activated: "تم تفعيل الحلاق.",
+    deactivated: "تم إلغاء تفعيل الحلاق.",
     field: {
       nameEn: "الاسم (بالإنجليزية)",
       nameAr: "الاسم (بالعربية)",

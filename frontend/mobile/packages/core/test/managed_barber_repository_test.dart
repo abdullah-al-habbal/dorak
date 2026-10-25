@@ -40,4 +40,62 @@ void main() {
     });
     expect(barber.hasLogin, isFalse);
   });
+
+  test('activates a barber through the branch endpoint', () async {
+    late RequestOptions captured;
+    final fake = fakeDio(
+      handler: (options) {
+        captured = options;
+        return jsonResponse(
+          options,
+          statusCode: 201,
+          data: successEnvelope(
+            statusCode: 201,
+            data: {
+              'id': 'log-1',
+              'activable_id': 'barber-1',
+              'activable_type': 'barber',
+              'status': 'enabled',
+              'reason': null,
+            },
+          ),
+        );
+      },
+    );
+    final repository = DioManagedBarberRepository(clientWith(fake));
+
+    final log = await repository.activateBarber('barber-1');
+
+    expect(captured.path, BranchEndpoints.activateBarber.replaceFirst('{barber}', 'barber-1'));
+    expect(log.status, 'enabled');
+  });
+
+  test('deactivates a barber through the branch endpoint', () async {
+    late RequestOptions captured;
+    final fake = fakeDio(
+      handler: (options) {
+        captured = options;
+        return jsonResponse(
+          options,
+          statusCode: 201,
+          data: successEnvelope(
+            statusCode: 201,
+            data: {
+              'id': 'log-1',
+              'activable_id': 'barber-1',
+              'activable_type': 'barber',
+              'status': 'disabled',
+              'reason': null,
+            },
+          ),
+        );
+      },
+    );
+    final repository = DioManagedBarberRepository(clientWith(fake));
+
+    final log = await repository.deactivateBarber('barber-1');
+
+    expect(captured.path, BranchEndpoints.deactivateBarber.replaceFirst('{barber}', 'barber-1'));
+    expect(log.status, 'disabled');
+  });
 }

@@ -16,6 +16,10 @@ const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
     { method: "PUT", path: new RegExp(`^${root}/[A-Za-z0-9-]+$`) },
     { method: "DELETE", path: new RegExp(`^${root}/[A-Za-z0-9-]+$`) },
   ]),
+  {
+    method: "PATCH",
+    path: /^stylists\/[A-Za-z0-9-]+\/(activate|deactivate)$/,
+  },
   { method: "GET", path: /^profile$/ },
   { method: "PATCH", path: /^profile$/ },
   { method: "POST", path: /^profile\/email\/(change|verify)$/ },

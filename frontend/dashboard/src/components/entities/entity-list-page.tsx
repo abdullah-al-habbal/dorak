@@ -15,10 +15,12 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { getDashboardList } from "@/services/api/dashboard/dashboard.query";
 import { mapDashboardEntity } from "@/services/api/dashboard/dashboard-entity.util";
 import type { DashboardResource } from "@/services/api/dashboard/dashboard-resource.types";
+import type { IStylist } from "@/services/api/dashboard/istylist.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BookingActionsDialog } from "@/components/bookings/booking-actions-dialog";
 import { EntityDeleteDialog } from "@/components/entities/entity-delete-dialog";
+import { StylistActivationToggle } from "@/components/entities/stylist-activation-toggle";
 import { useSession } from "@/hooks/use-session";
 import { useBranchChannel } from "@/hooks/use-branch-channel";
 import Link from "next/link";
@@ -150,6 +152,12 @@ export function EntityListPage({ resource }: EntityListPageProps) {
                           >
                             {dictionary.operations.edit}
                           </Link>
+                          {resource === "stylists" ? (
+                            <StylistActivationToggle
+                              id={item.id}
+                              status={(item as IStylist).status}
+                            />
+                          ) : null}
                           {managerBranchList ? null : (
                             <EntityDeleteDialog
                               resource={resource}

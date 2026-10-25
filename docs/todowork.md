@@ -85,7 +85,7 @@ codeanchors:
 - [x] Task 50: Implement Brand Feature Flags -> [Spec](tasks/task-50-brand-feature-flags.md)
 - [x] Task 51: Add Branch Storefront Fields and Opening Hours -> [Spec](tasks/task-51-branch-storefront-fields.md)
 - [x] Task 52: Expose Settings and Preferences API -> [Spec](tasks/task-52-settings-preferences-api.md)
-- [ ] Task 53: Complete Activation Management -> [Spec](tasks/task-53-activation-management.md)
+- [x] Task 53: Complete Activation Management -> [Spec](tasks/task-53-activation-management.md)
 - [ ] Task 54: Add Barber Bio and Self-Service Services API -> [Spec](tasks/task-54-barber-profile-and-services-api.md)
 - [ ] Task 55: Complete Affiliation Lifecycle -> [Spec](tasks/task-55-affiliation-lifecycle.md)
 - [ ] Task 56: Complete Job Board -> [Spec](tasks/task-56-job-board-completion.md)

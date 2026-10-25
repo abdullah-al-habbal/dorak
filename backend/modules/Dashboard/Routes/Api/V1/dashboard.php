@@ -36,6 +36,8 @@ use Modules\Dashboard\Http\Actions\Services\ShowServiceAction;
 use Modules\Dashboard\Http\Actions\Services\StoreServiceAction;
 use Modules\Dashboard\Http\Actions\Services\UpdateServiceAction;
 use Modules\Dashboard\Http\Actions\ShowBookingAction;
+use Modules\Dashboard\Http\Actions\Stylists\ActivateStylistAction;
+use Modules\Dashboard\Http\Actions\Stylists\DeactivateStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\DestroyStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\ListStylistsAction;
 use Modules\Dashboard\Http\Actions\Stylists\ShowStylistAction;
@@ -91,5 +93,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/stylists/{stylist}', ShowStylistAction::class);
         Route::put('/stylists/{stylist}', UpdateStylistAction::class);
         Route::delete('/stylists/{stylist}', DestroyStylistAction::class);
+        Route::patch('/stylists/{stylist}/activate', ActivateStylistAction::class);
+        Route::patch('/stylists/{stylist}/deactivate', DeactivateStylistAction::class);
     });
 });
