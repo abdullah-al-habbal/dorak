@@ -14,7 +14,7 @@ class CuratedCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final colors = DorakColors.of(context);
     final localeCode = Localizations.localeOf(context).languageCode;
-    final name = item.name[localeCode] ?? item.name['en'] ?? '';
+    final name = LocalizedName.resolve(item.name, localeCode);
     final price = item.priceRange;
     final lines = <String>[
       if (price?.min != null && price?.max != null)

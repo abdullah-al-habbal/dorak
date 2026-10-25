@@ -9,7 +9,6 @@ import 'package:design_system/design_system.dart';
 
 import 'package:client_app/src/features/profile/avatar.bloc.dart';
 import 'package:client_app/src/features/profile/avatar.event.dart';
-import 'package:client_app/src/features/profile/avatar.state.dart';
 import 'package:client_app/src/features/profile/face_analysis.bloc.dart';
 import 'package:client_app/src/features/profile/face_analysis.event.dart';
 import 'package:client_app/src/features/profile/face_analysis.state.dart';
@@ -19,7 +18,8 @@ import 'package:client_app/src/features/profile/history.state.dart';
 import 'package:client_app/src/features/profile/photo_picker.provider.dart';
 import 'package:client_app/src/features/profile/widgets/curated_card.widget.dart';
 import 'package:client_app/src/features/profile/widgets/face_card.widget.dart';
-import 'package:client_app/src/features/profile/widgets/history_card.widget.dart';
+import 'package:client_app/src/features/profile/widgets/history_feed.widget.dart';
+import 'package:client_app/src/features/profile/widgets/profile_header.widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -109,7 +109,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(DorakDimensions.marginMobile),
                   children: [
-                    _profileHeader(context),
+                    ProfileHeader(
+                      avatar: widget.avatar,
+                      clientName: widget.clientName,
+                      onPickAvatar: () => _pickAndUploadAvatar(context),
+                    ),
                     SecondaryButton(
                       label: AppLocalizations.of(context)!.profileEditAction,
                       onPressed: widget.onEditProfile,
@@ -148,7 +152,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: DorakTypography.titleLg,
                     ),
                     const SizedBox(height: DorakDimensions.spacingSmall),
-                    ..._historySection(context, state),
+                    HistoryFeed(
+                      state: state,
+                      localeCode: Localizations.localeOf(context).languageCode,
+                      onRetry: () =>
+                          widget.history.add(const HistoryRetryRequested()),
+                      onRebook: (item) => _pickRebookTime(context, item),
+                    ),
                   ],
                 ),
               ),
@@ -170,98 +180,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         widget.history.add(const HistoryRebookAcknowledged());
         widget.onViewBookings();
       },
-    );
-  }
-
-  Widget _profileHeader(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final colors = DorakColors.of(context);
-    final name = widget.clientName;
-    final initial = (name == null || name.isEmpty)
-        ? '?'
-        : name.characters.first.toUpperCase();
-    return Container(
-      padding: const EdgeInsets.all(DorakDimensions.spacingMedium),
-      decoration: BoxDecoration(
-        color: colors.surfaceContainerLow,
-        borderRadius: DorakDimensions.radiusMd,
-      ),
-      child: Row(
-        children: [
-          BlocBuilder<AvatarBloc, AvatarState>(
-            bloc: widget.avatar,
-            builder: (context, avatarState) {
-              return InkWell(
-                onTap: () => _pickAndUploadAvatar(context),
-                customBorder: const CircleBorder(),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    _avatarImage(context, avatarState.avatarUrl, initial),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        width: DorakDimensions.spacingLarge,
-                        height: DorakDimensions.spacingLarge,
-                        decoration: BoxDecoration(
-                          color: colors.surface,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: colors.outline),
-                        ),
-                        child: avatarState.isUploading
-                            ? const Center(child: AppLoader.inline())
-                            : Icon(
-                                Icons.camera_alt_outlined,
-                                size: 14,
-                                color: colors.primary,
-                              ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          const SizedBox(width: DorakDimensions.spacingMedium),
-          Expanded(
-            child: Text(
-              (name == null || name.isEmpty) ? l10n.profileMemberLabel : name,
-              style: DorakTypography.headlineLgMobile.copyWith(
-                color: colors.onSurface,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _avatarImage(BuildContext context, String? avatarUrl, String initial) {
-    final colors = DorakColors.of(context);
-    final fallback = ColoredBox(
-      color: colors.primaryContainer,
-      child: Center(
-        child: Text(
-          initial,
-          style: DorakTypography.titleLg.copyWith(
-            color: colors.onPrimaryContainer,
-          ),
-        ),
-      ),
-    );
-    return ClipOval(
-      child: SizedBox(
-        width: 56,
-        height: 56,
-        child: avatarUrl == null
-            ? fallback
-            : Image.network(
-                avatarUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => fallback,
-              ),
-      ),
     );
   }
 
@@ -330,116 +248,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final path = await widget.photoPicker.pickPhoto();
     if (path == null) return;
     widget.faceAnalysis.add(FaceAnalysisPhotoScanned(path));
-  }
-
-  List<Widget> _historySection(BuildContext context, HistoryState state) {
-    if (state.page.hasFailedFirst) {
-      return [
-        StatusView(
-          icon: Icons.error_outline,
-          title: AppLocalizations.of(context)!.errorTitleGeneric,
-          message: AppLocalizations.of(context)!.errorNetwork,
-          actionLabel: AppLocalizations.of(context)!.actionRetry,
-          onAction: () => widget.history.add(const HistoryRetryRequested()),
-        ),
-      ];
-    }
-    if (state.page.isFirstLoad) {
-      return const [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: DorakDimensions.spacingMedium,
-          ),
-          child: Center(child: AppLoader.inline()),
-        ),
-      ];
-    }
-    if (state.page.isEmpty) {
-      return [
-        StatusView(
-          icon: Icons.history_outlined,
-          title: AppLocalizations.of(context)!.historyEmptyTitle,
-          message: AppLocalizations.of(context)!.historyEmptyMessage,
-        ),
-      ];
-    }
-    final localeCode = Localizations.localeOf(context).languageCode;
-    final children = <Widget>[];
-    if (state.rebookError != null) {
-      children.add(
-        Padding(
-          padding: const EdgeInsets.only(bottom: DorakDimensions.spacingSmall),
-          child: StatusBanner(
-            message: _rebookMessage(context, state.rebookError),
-          ),
-        ),
-      );
-    }
-    final items = _itemNames(localeCode, state.page.items);
-    for (var i = 0; i < state.page.items.length; i++) {
-      final item = state.page.items[i];
-      children.add(
-        Padding(
-          padding: const EdgeInsets.only(bottom: DorakDimensions.spacingMedium),
-          child: HistoryCard(
-            item: item,
-            itemName: items[i],
-            localeCode: localeCode,
-            rebookLabel: AppLocalizations.of(context)!.historyRebookAction,
-            isRebooking: state.rebookingId == item.id,
-            onRebook: () => _pickRebookTime(context, item),
-          ),
-        ),
-      );
-    }
-    children.add(_feedFooter(context, state));
-    return children;
-  }
-
-  Widget _feedFooter(BuildContext context, HistoryState state) {
-    if (state.page.isLoadingMore) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: DorakDimensions.spacingMedium),
-        child: Center(child: AppLoader.inline()),
-      );
-    }
-    if (state.page.hasFailedMore) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: DorakDimensions.spacingSmall,
-        ),
-        child: StatusBanner(
-          message: AppLocalizations.of(context)!.errorNetwork,
-          actionLabel: AppLocalizations.of(context)!.actionRetry,
-          onAction: () => widget.history.add(const HistoryRetryRequested()),
-        ),
-      );
-    }
-    return const SizedBox.shrink();
-  }
-
-  static List<String> _itemNames(
-    String localeCode,
-    List<ServiceHistoryDto> items,
-  ) {
-    return items.map((item) {
-      final names = item.catalogItem?.name ?? const <String, String>{};
-      return names[localeCode] ?? names['en'] ?? '';
-    }).toList();
-  }
-
-  String _rebookMessage(BuildContext context, Object? error) {
-    final l10n = AppLocalizations.of(context)!;
-    if (error is ApiException && error.statusCode == 409) {
-      return l10n.bookingConflictMessage;
-    }
-    if (error is NetworkException) return l10n.errorNetwork;
-    return l10n.errorGeneric;
-  }
-
-  Object? stateRebookErrorOf(BuildContext context) {
-    final state = context.read<HistoryBloc>().state;
-    return state.rebookError;
   }
 
   Future<void> _pickRebookTime(
