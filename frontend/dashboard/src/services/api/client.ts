@@ -3,6 +3,8 @@ import type { ApiFailureKind } from "@/services/api/client-error.types";
 import type { ApiRequestOptions } from "@/services/api/client.types";
 import type { ApiSuccess } from "@/services/api/envelope.types";
 import { isApiResponse } from "@/services/api/envelope.util";
+import { HTTP_METHOD } from "@/services/api/http-method.constant";
+import type { HttpMethod } from "@/services/api/http-method.types";
 import {
   isRedirectResponse,
   jsonRequestHeaders,
@@ -13,6 +15,7 @@ import { reportSessionExpired } from "@/services/api/session-expiry";
 import { devWarn } from "@/utils/dev-warn.util";
 
 const REQUEST_TIMEOUT_MS = 15_000;
+const API_BASE = "/api";
 
 function clientFailure(
   message: string,
@@ -101,3 +104,37 @@ export async function apiRequest<TData>(
   reportApiFailure(null);
   return (payload as ApiSuccess<TData>).data;
 }
+
+type ApiCallOptions = Omit<ApiRequestOptions, "method" | "body">;
+
+function send<TData>(
+  method: HttpMethod,
+  path: string,
+  body?: unknown,
+  options?: ApiCallOptions,
+): Promise<TData> {
+  const { auth = "session", ...init } = options ?? {};
+  return apiRequest<TData>(`${API_BASE}${path}`, {
+    ...init,
+    auth,
+    method,
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+  });
+}
+
+/**
+ * HTTP method shortcuts over apiRequest: prepend /api, default to
+ * session-scoped auth, and stringify request bodies for the caller.
+ */
+export const api = {
+  get: <TData>(path: string, options?: ApiCallOptions) =>
+    send<TData>(HTTP_METHOD.GET, path, undefined, options),
+  post: <TData>(path: string, body?: unknown, options?: ApiCallOptions) =>
+    send<TData>(HTTP_METHOD.POST, path, body, options),
+  patch: <TData>(path: string, body?: unknown, options?: ApiCallOptions) =>
+    send<TData>(HTTP_METHOD.PATCH, path, body, options),
+  put: <TData>(path: string, body?: unknown, options?: ApiCallOptions) =>
+    send<TData>(HTTP_METHOD.PUT, path, body, options),
+  delete: <TData>(path: string, options?: ApiCallOptions) =>
+    send<TData>(HTTP_METHOD.DELETE, path, undefined, options),
+};
