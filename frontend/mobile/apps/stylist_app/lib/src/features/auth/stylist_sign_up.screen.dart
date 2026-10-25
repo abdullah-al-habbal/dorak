@@ -65,13 +65,6 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
     widget.onBackToLogin();
   }
 
-  String _errorMessage(Object error, AppLocalizations l10n) {
-    final apiError = ApiError.from(error, l10n);
-    if (apiError.errorsFor('email') != null) return l10n.stylistSignUpEmailTaken;
-    if (apiError.errorsFor('code') != null) return l10n.verifyErrorInvalid;
-    return apiError.message;
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -97,13 +90,33 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
             child: BlocBuilder<StylistSignUpBloc, StylistSignUpState>(
               bloc: widget.signUp,
               builder: (context, state) => switch (state.step) {
-                StylistSignUpStep.form => _buildForm(context, state, l10n),
-                StylistSignUpStep.verifyEmail => _buildVerify(
-                  context,
-                  state,
-                  l10n,
+                StylistSignUpStep.form => _SignUpFormStep(
+                  formKey: _formKey,
+                  name: _name,
+                  email: _email,
+                  password: _password,
+                  confirmation: _confirmation,
+                  isFreelancer: _isFreelancer,
+                  onFreelancerChanged: (value) =>
+                      setState(() => _isFreelancer = value),
+                  state: state,
+                  l10n: l10n,
+                  onSubmit: _register,
+                  onBackToLogin: _backToLogin,
                 ),
-                StylistSignUpStep.pending => _buildPending(context, l10n),
+                StylistSignUpStep.verifyEmail => _VerifyEmailStep(
+                  formKey: _codeFormKey,
+                  code: _code,
+                  state: state,
+                  l10n: l10n,
+                  onVerify: _verify,
+                  onResend: widget.signUp.resendCode,
+                  onSkip: widget.signUp.skipVerification,
+                ),
+                StylistSignUpStep.pending => _PendingApprovalStep(
+                  l10n: l10n,
+                  onBackToLogin: _backToLogin,
+                ),
               },
             ),
           ),
@@ -111,42 +124,76 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
       ),
     );
   }
+}
 
-  Widget _heading(BuildContext context, String title, String subtitle) {
-    final colors = DorakColors.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          title,
-          style: DorakTypography.headlineLgMobile.copyWith(
-            color: colors.onSurface,
-          ),
+Widget _stepHeading(BuildContext context, String title, String subtitle) {
+  final colors = DorakColors.of(context);
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Text(
+        title,
+        style: DorakTypography.headlineLgMobile.copyWith(
+          color: colors.onSurface,
         ),
-        const SizedBox(height: DorakDimensions.spacingSmall),
-        Text(
-          subtitle,
-          style: DorakTypography.bodyLg.copyWith(
-            color: colors.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: DorakDimensions.spacingLarge),
-      ],
-    );
-  }
+      ),
+      const SizedBox(height: DorakDimensions.spacingSmall),
+      Text(
+        subtitle,
+        style: DorakTypography.bodyLg.copyWith(color: colors.onSurfaceVariant),
+      ),
+      const SizedBox(height: DorakDimensions.spacingLarge),
+    ],
+  );
+}
 
-  Widget _buildForm(
-    BuildContext context,
-    StylistSignUpState state,
-    AppLocalizations l10n,
-  ) => Form(
-    key: _formKey,
+String _signUpErrorMessage(Object error, AppLocalizations l10n) {
+  final apiError = ApiError.from(error, l10n);
+  if (apiError.errorsFor('email') != null) return l10n.stylistSignUpEmailTaken;
+  if (apiError.errorsFor('code') != null) return l10n.verifyErrorInvalid;
+  return apiError.message;
+}
+
+class _SignUpFormStep extends StatelessWidget {
+  const _SignUpFormStep({
+    required this.formKey,
+    required this.name,
+    required this.email,
+    required this.password,
+    required this.confirmation,
+    required this.isFreelancer,
+    required this.onFreelancerChanged,
+    required this.state,
+    required this.l10n,
+    required this.onSubmit,
+    required this.onBackToLogin,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController name;
+  final TextEditingController email;
+  final TextEditingController password;
+  final TextEditingController confirmation;
+  final bool isFreelancer;
+  final ValueChanged<bool> onFreelancerChanged;
+  final StylistSignUpState state;
+  final AppLocalizations l10n;
+  final VoidCallback onSubmit;
+  final VoidCallback onBackToLogin;
+
+  @override
+  Widget build(BuildContext context) => Form(
+    key: formKey,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _heading(context, l10n.stylistSignUpTitle, l10n.stylistSignUpSubtitle),
+        _stepHeading(
+          context,
+          l10n.stylistSignUpTitle,
+          l10n.stylistSignUpSubtitle,
+        ),
         TextFormField(
-          controller: _name,
+          controller: name,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(labelText: l10n.signUpFullNameLabel),
           validator: (value) =>
@@ -154,7 +201,7 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
         ),
         const SizedBox(height: DorakDimensions.spacingMedium),
         TextFormField(
-          controller: _email,
+          controller: email,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(labelText: l10n.signUpEmailLabel),
@@ -170,7 +217,7 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
         ),
         const SizedBox(height: DorakDimensions.spacingMedium),
         TextFormField(
-          controller: _password,
+          controller: password,
           obscureText: true,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
@@ -185,35 +232,35 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
         ),
         const SizedBox(height: DorakDimensions.spacingMedium),
         TextFormField(
-          controller: _confirmation,
+          controller: confirmation,
           obscureText: true,
           textInputAction: TextInputAction.done,
           decoration: InputDecoration(
             labelText: l10n.signUpConfirmPasswordLabel,
           ),
           validator: (value) =>
-              value != _password.text ? l10n.fieldPasswordMismatch : null,
+              value != password.text ? l10n.fieldPasswordMismatch : null,
         ),
         const SizedBox(height: DorakDimensions.spacingSmall),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(l10n.stylistSignUpFreelancerLabel),
-          value: _isFreelancer,
-          onChanged: (value) => setState(() => _isFreelancer = value),
+          value: isFreelancer,
+          onChanged: onFreelancerChanged,
         ),
         if (state.error != null) ...[
           const SizedBox(height: DorakDimensions.spacingMedium),
-          StatusBanner(message: _errorMessage(state.error!, l10n)),
+          StatusBanner(message: _signUpErrorMessage(state.error!, l10n)),
         ],
         const SizedBox(height: DorakDimensions.spacingLarge),
         PrimaryButton(
           label: l10n.signUpButton,
           isLoading: state.isSubmitting,
-          onPressed: _register,
+          onPressed: onSubmit,
         ),
         const SizedBox(height: DorakDimensions.spacingSmall),
         TextButton(
-          onPressed: _backToLogin,
+          onPressed: onBackToLogin,
           child: Text(
             '${l10n.signUpAlreadyHaveAccount} ${l10n.signUpLogInLink}',
           ),
@@ -221,19 +268,36 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
       ],
     ),
   );
+}
 
-  Widget _buildVerify(
-    BuildContext context,
-    StylistSignUpState state,
-    AppLocalizations l10n,
-  ) => Form(
-    key: _codeFormKey,
+class _VerifyEmailStep extends StatelessWidget {
+  const _VerifyEmailStep({
+    required this.formKey,
+    required this.code,
+    required this.state,
+    required this.l10n,
+    required this.onVerify,
+    required this.onResend,
+    required this.onSkip,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController code;
+  final StylistSignUpState state;
+  final AppLocalizations l10n;
+  final VoidCallback onVerify;
+  final VoidCallback onResend;
+  final VoidCallback onSkip;
+
+  @override
+  Widget build(BuildContext context) => Form(
+    key: formKey,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _heading(context, l10n.verifyTitle, l10n.verifySubtitle(state.email)),
+        _stepHeading(context, l10n.verifyTitle, l10n.verifySubtitle(state.email)),
         TextFormField(
-          controller: _code,
+          controller: code,
           keyboardType: TextInputType.number,
           maxLength: 6,
           decoration: InputDecoration(labelText: l10n.stylistVerifyCodeLabel),
@@ -243,7 +307,7 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
         ),
         if (state.error != null) ...[
           const SizedBox(height: DorakDimensions.spacingMedium),
-          StatusBanner(message: _errorMessage(state.error!, l10n)),
+          StatusBanner(message: _signUpErrorMessage(state.error!, l10n)),
         ] else if (state.codeResent) ...[
           const SizedBox(height: DorakDimensions.spacingMedium),
           Text(l10n.stylistVerifyCodeResent),
@@ -252,28 +316,40 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
         PrimaryButton(
           label: l10n.verifyButton,
           isLoading: state.isSubmitting,
-          onPressed: _verify,
+          onPressed: onVerify,
         ),
         const SizedBox(height: DorakDimensions.spacingSmall),
         TextButton(
-          onPressed: state.isSubmitting ? null : widget.signUp.resendCode,
+          onPressed: state.isSubmitting ? null : onResend,
           child: Text(l10n.verifyResend),
         ),
         TextButton(
-          onPressed: state.isSubmitting ? null : widget.signUp.skipVerification,
+          onPressed: state.isSubmitting ? null : onSkip,
           child: Text(l10n.verifySkip),
         ),
       ],
     ),
   );
+}
 
-  Widget _buildPending(BuildContext context, AppLocalizations l10n) => Column(
+class _PendingApprovalStep extends StatelessWidget {
+  const _PendingApprovalStep({required this.l10n, required this.onBackToLogin});
+
+  final AppLocalizations l10n;
+  final VoidCallback onBackToLogin;
+
+  @override
+  Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      _heading(context, l10n.stylistPendingTitle, l10n.stylistPendingMessage),
+      _stepHeading(
+        context,
+        l10n.stylistPendingTitle,
+        l10n.stylistPendingMessage,
+      ),
       PrimaryButton(
         label: l10n.stylistPendingBackToLogin,
-        onPressed: _backToLogin,
+        onPressed: onBackToLogin,
       ),
     ],
   );
