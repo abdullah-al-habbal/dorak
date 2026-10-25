@@ -3,8 +3,10 @@
 import { Button } from "@/components/tailgrids/core/button";
 import { Card } from "@/components/tailgrids/core/card";
 import { Checkbox } from "@/components/tailgrids/core/checkbox";
+import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { apiErrorMessage } from "@/services/api/api-error-message.util";
+import type { INotificationPreferences } from "@/services/api/dashboard/inotification-preferences.types";
 import { getNotificationPreferences } from "@/services/api/dashboard/profile.query";
 import { updateNotificationPreferences } from "@/services/api/dashboard/profile.mutation";
 import { useQuery } from "@tanstack/react-query";
@@ -18,26 +20,31 @@ export function NotificationPreferences() {
     queryKey: ["dashboard", "profile", "notifications"],
     queryFn: getNotificationPreferences,
   });
-  async function save(event: React.FormEvent<HTMLFormElement>) {
+  const save = useDashboardMutation(
+    "profile",
+    (input: INotificationPreferences) => updateNotificationPreferences(input),
+  );
+  function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    try {
-      await updateNotificationPreferences({
+    save.mutate(
+      {
         emailEnabled: form.has("email"),
         pushEnabled: form.has("push"),
         bookingEnabled: form.has("booking"),
         systemEnabled: form.has("system"),
-      });
-      toast.success(copy.title);
-    } catch (error) {
-      toast.error(apiErrorMessage(error, dictionary));
-    }
+      },
+      {
+        onSuccess: () => toast.success(copy.title),
+        onError: (error) => toast.error(apiErrorMessage(error, dictionary)),
+      },
+    );
   }
   const values = preferences.data;
   return (
     <Card className="bg-transparent p-5">
       <h2 className="text-xl font-semibold text-text-primary">{copy.title}</h2>
-      <form className="mt-6 grid gap-3" onSubmit={save}>
+      <form className="mt-6 grid gap-3" onSubmit={submit}>
         {[
           ["email", values?.emailEnabled, labels.email],
           ["push", values?.pushEnabled, labels.push],
@@ -52,7 +59,9 @@ export function NotificationPreferences() {
             {label}
           </Checkbox>
         ))}
-        <Button type="submit">{copy.title}</Button>
+        <Button type="submit" isDisabled={save.isPending}>
+          {copy.title}
+        </Button>
       </form>
     </Card>
   );

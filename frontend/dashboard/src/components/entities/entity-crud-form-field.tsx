@@ -22,12 +22,11 @@ export function EntityCrudFormField({
   form,
 }: IEntityCrudFormFieldProps) {
   const fieldValue = useWatch({ control: form.control, name: field as never });
-  return (
-    <label className="grid gap-2 text-sm text-text-100" key={field}>
-      <span>
-        {fieldCopy[fieldLabelKey(field) as keyof typeof fieldCopy] ?? field}
-      </span>
-      {field === "atHome" ? (
+  const fieldLabel =
+    fieldCopy[fieldLabelKey(field) as keyof typeof fieldCopy] ?? field;
+  if (field === "atHome")
+    return (
+      <div className="grid gap-2 text-sm text-text-100">
         <Controller
           control={form.control}
           name="atHome"
@@ -35,10 +34,17 @@ export function EntityCrudFormField({
             <Checkbox
               isSelected={atHomeField.value === true}
               onChange={atHomeField.onChange}
-            />
+            >
+              {fieldLabel}
+            </Checkbox>
           )}
         />
-      ) : options ? (
+      </div>
+    );
+  return (
+    <label className="grid gap-2 text-sm text-text-100">
+      <span>{fieldLabel}</span>
+      {options ? (
         <Select
           value={String(fieldValue ?? "")}
           onChange={(value) => {
