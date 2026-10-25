@@ -13,6 +13,13 @@ BookingServiceDto _$BookingServiceDtoFromJson(Map<String, dynamic> json) =>
       price: (json['price'] as num?)?.toDouble(),
       duration: (json['duration'] as num?)?.toInt(),
       owner: json['owner'] as String?,
+      displayPrice: json['display_price'] == null
+          ? null
+          : DisplayPriceDto.fromJson(
+              json['display_price'] as Map<String, dynamic>,
+            ),
+      conversionUnavailable: json['conversion_unavailable'] as bool? ?? false,
+      dualPriceDisplay: json['dual_price_display'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$BookingServiceDtoToJson(BookingServiceDto instance) =>
@@ -22,4 +29,7 @@ Map<String, dynamic> _$BookingServiceDtoToJson(BookingServiceDto instance) =>
       'price': instance.price,
       'duration': instance.duration,
       'owner': instance.owner,
+      'display_price': instance.displayPrice,
+      'conversion_unavailable': instance.conversionUnavailable,
+      'dual_price_display': instance.dualPriceDisplay,
     };

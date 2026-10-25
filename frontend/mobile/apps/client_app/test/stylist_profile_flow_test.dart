@@ -84,6 +84,61 @@ void main() {
     });
   });
 
+  group('stylist profile prices', () {
+    testWidgets('shows the converted price only in converted-only mode', (
+      tester,
+    ) async {
+      exploreRepository.barberDetail = testBarberProfile(
+        services: [
+          const BarberServiceDto(
+            id: 'svc-1',
+            name: 'Haircut',
+            price: 50,
+            currencyId: 'curr-1',
+            duration: 30,
+            atHome: false,
+            active: true,
+            displayPrice: DisplayPriceDto(amount: 90, currencyCode: 'EUR'),
+          ),
+        ],
+        rank: 3,
+        compatibilityScore: 0.85,
+      );
+      final bloc = StylistProfileBloc(exploreRepository, currencyRepository);
+      await loadBarberProfile(tester, bloc: bloc);
+
+      expect(find.textContaining('EUR'), findsOneWidget);
+      expect(find.textContaining('SAR'), findsNothing);
+    });
+
+    testWidgets('shows both base and converted prices in dual mode', (
+      tester,
+    ) async {
+      exploreRepository.barberDetail = testBarberProfile(
+        services: [
+          const BarberServiceDto(
+            id: 'svc-1',
+            name: 'Haircut',
+            price: 50,
+            currencyId: 'curr-1',
+            duration: 30,
+            atHome: false,
+            active: true,
+            displayPrice: DisplayPriceDto(amount: 90, currencyCode: 'EUR'),
+            dualPriceDisplay: true,
+          ),
+        ],
+        rank: 3,
+        compatibilityScore: 0.85,
+      );
+      final bloc = StylistProfileBloc(exploreRepository, currencyRepository);
+      await loadBarberProfile(tester, bloc: bloc);
+
+      expect(find.textContaining('EUR'), findsOneWidget);
+      expect(find.textContaining('SAR'), findsOneWidget);
+    });
+  });
+
   group('stylist profile error', () {
     testWidgets('shows error then retry reloads', (tester) async {
       exploreRepository.error = offline();

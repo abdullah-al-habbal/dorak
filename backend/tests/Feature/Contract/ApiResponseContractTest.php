@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
-use Modules\Admin\Models\AdminModel;
 use Modules\Ban\Models\BanModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
@@ -1205,10 +1204,7 @@ describe('Currency API', function () {
     });
 
     describe('GET /api/v1/exchange-rates', function () {
-        it('returns list of exchange rates', function () {
-            $admin = AdminModel::factory()->create();
-            $token = $admin->createToken('admin-api')->plainTextToken;
-
+        it('returns list of exchange rates without authentication', function () {
             $from = CurrencyModel::factory()->create(['code' => 'USD']);
             $to = CurrencyModel::factory()->create(['code' => 'EUR']);
             ExchangeRateModel::factory()->create([
@@ -1217,8 +1213,7 @@ describe('Currency API', function () {
                 'rate' => 0.85,
             ]);
 
-            $response = $this->withToken($token)
-                ->getJson('/api/v1/exchange-rates');
+            $response = $this->getJson('/api/v1/exchange-rates');
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
@@ -1230,11 +1225,8 @@ describe('Currency API', function () {
         });
     });
 
-    describe('POST /api/v1/currency/convert', function () {
-        it('returns conversion result shape', function () {
-            $admin = AdminModel::factory()->create();
-            $token = $admin->createToken('admin-api')->plainTextToken;
-
+    describe('GET /api/v1/currency/convert', function () {
+        it('returns conversion result shape without authentication', function () {
             $from = CurrencyModel::factory()->create(['code' => 'USD']);
             $to = CurrencyModel::factory()->create(['code' => 'EUR']);
             ExchangeRateModel::factory()->create([
@@ -1243,12 +1235,7 @@ describe('Currency API', function () {
                 'rate' => 0.85,
             ]);
 
-            $response = $this->withToken($token)
-                ->postJson('/api/v1/currency/convert', [
-                    'from' => 'USD',
-                    'to' => 'EUR',
-                    'amount' => 100,
-                ]);
+            $response = $this->getJson('/api/v1/currency/convert?from=USD&to=EUR&amount=100');
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');

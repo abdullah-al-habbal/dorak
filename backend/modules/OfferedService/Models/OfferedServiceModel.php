@@ -45,6 +45,9 @@ class OfferedServiceModel extends Model
     use HasTranslations;
     use HasUuids;
 
+    /** @var list<string> */
+    protected $with = ['currency'];
+
     protected function casts(): array
     {
         return [

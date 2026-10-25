@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:core/src/network/dto/display_price.dto.dart';
+
 part 'barber_service.dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
@@ -13,6 +15,11 @@ class BarberServiceDto {
   final bool atHome;
   final bool active;
   final DateTime? createdAt;
+  final DisplayPriceDto? displayPrice;
+  @JsonKey(defaultValue: false)
+  final bool conversionUnavailable;
+  @JsonKey(defaultValue: false)
+  final bool dualPriceDisplay;
 
   const BarberServiceDto({
     required this.id,
@@ -24,6 +31,9 @@ class BarberServiceDto {
     this.atHome = false,
     this.active = true,
     this.createdAt,
+    this.displayPrice,
+    this.conversionUnavailable = false,
+    this.dualPriceDisplay = false,
   });
 
   factory BarberServiceDto.fromJson(Map<String, dynamic> json) =>

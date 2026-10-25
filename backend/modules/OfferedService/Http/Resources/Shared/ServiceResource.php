@@ -4,12 +4,22 @@ declare(strict_types=1);
 
 namespace Modules\OfferedService\Http\Resources\Shared;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Currency\Services\PriceConverter;
 
 final class ServiceResource extends JsonResource
 {
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
+        $displayPrice = app(PriceConverter::class)->displayPriceFor(
+            request: $request,
+            basePrice: (float) $this->price,
+            baseCurrencyCode: $this->currency?->code ?? '',
+            ownerType: (string) $this->serviceable_type,
+            ownerId: (string) $this->serviceable_id,
+        );
+
         return [
             'id' => $this->id,
             'serviceable_id' => $this->serviceable_id,
@@ -23,6 +33,11 @@ final class ServiceResource extends JsonResource
             'at_home' => (bool) $this->at_home,
             'active' => (bool) $this->active,
             'created_at' => $this->created_at?->toIso8601String(),
+            ...($displayPrice === null ? [] : [
+                'display_price' => $displayPrice->conversionUnavailable ? null : $displayPrice->toArray(),
+                'conversion_unavailable' => $displayPrice->conversionUnavailable,
+                'dual_price_display' => $displayPrice->dualPriceDisplay,
+            ]),
         ];
     }
 }

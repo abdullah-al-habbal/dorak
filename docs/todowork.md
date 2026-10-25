@@ -91,7 +91,7 @@ codeanchors:
 - [x] Task 56: Complete Job Board -> [Spec](tasks/task-56-job-board-completion.md)
 
 ## Phase 9 — Currency (P2)
-- [ ] Task 57: Open Currency Conversion to Clients and Convert Prices -> [Spec](tasks/task-57-currency-client-conversion.md)
+- [x] Task 57: Open Currency Conversion to Clients and Convert Prices -> [Spec](tasks/task-57-currency-client-conversion.md)
 
 ## Phase 10 — Client Intelligence (P2)
 - [ ] Task 58: Complete Client History -> [Spec](tasks/task-58-client-history-completion.md)

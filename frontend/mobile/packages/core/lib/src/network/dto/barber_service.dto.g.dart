@@ -19,4 +19,11 @@ BarberServiceDto _$BarberServiceDtoFromJson(Map<String, dynamic> json) =>
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
+      displayPrice: json['display_price'] == null
+          ? null
+          : DisplayPriceDto.fromJson(
+              json['display_price'] as Map<String, dynamic>,
+            ),
+      conversionUnavailable: json['conversion_unavailable'] as bool? ?? false,
+      dualPriceDisplay: json['dual_price_display'] as bool? ?? false,
     );

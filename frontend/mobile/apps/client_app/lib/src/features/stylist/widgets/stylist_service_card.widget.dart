@@ -3,7 +3,7 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
-import 'package:client_app/src/core/formatting/locale_formatters.entity.dart';
+import 'package:client_app/src/features/stylist/widgets/stylist_service_price.widget.dart';
 
 class StylistServiceCard extends StatelessWidget {
   const StylistServiceCard({
@@ -24,7 +24,6 @@ class StylistServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currencyCode = currencyById[service.currencyId]?.code ?? '';
-    final formattedPrice = LocaleFormatters.decimal(service.price, localeCode);
     return Container(
       margin: const EdgeInsets.only(bottom: DorakDimensions.spacingSmall),
       padding: const EdgeInsets.all(DorakDimensions.spacingSmall),
@@ -75,9 +74,12 @@ class StylistServiceCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
-                l10n.servicePrice(formattedPrice, currencyCode),
-                style: DorakTypography.labelLg.copyWith(color: colors.primary),
+              StylistServicePrice(
+                service: service,
+                currencyCode: currencyCode,
+                colors: colors,
+                l10n: l10n,
+                localeCode: localeCode,
               ),
               if (service.duration != null) ...[
                 const SizedBox(height: 4),
