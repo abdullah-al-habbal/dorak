@@ -1,103 +1,50 @@
+import { z } from "zod";
 import type {
-  AUTH_ACTORS,
-  OPERATIONS_ACTORS,
-  BACKEND_ACTOR_TYPES,
-  DASHBOARD_ROLES,
-} from "@/services/api/auth/actors.constant";
+  AuthActor,
+  OperationsActor,
+  BackendActorType,
+  DashboardRole,
+} from "@/services/api/auth/actors.types";
+import {
+  DashboardClaimSchema,
+  AuthSessionSchema,
+  BackendLoginDataSchema,
+  BackendMeDataSchema,
+  ApiEnvelopeSchema,
+  LoginCredentialsSchema,
+  LoginResponseSchema,
+  LogoutResponseSchema,
+  SessionCookiePayloadSchema,
+  RefreshedSessionSchema,
+} from "@/services/api/auth/schema/auth.schema";
 
-export type AuthActor = (typeof AUTH_ACTORS)[number];
+export type { AuthActor, OperationsActor, BackendActorType, DashboardRole };
 
-export type OperationsActor = (typeof OPERATIONS_ACTORS)[number];
+export type DashboardClaim = z.infer<typeof DashboardClaimSchema>;
 
-export type BackendActorType = (typeof BACKEND_ACTOR_TYPES)[number];
+export type AuthSession = z.infer<typeof AuthSessionSchema>;
 
-export type DashboardRole = (typeof DASHBOARD_ROLES)[number];
+export type BackendLoginData = z.infer<typeof BackendLoginDataSchema>;
 
-export interface DashboardClaim {
-  actor_type: BackendActorType;
-  role: DashboardRole;
-  sub: string;
-  branch_id?: string;
-  brand_id?: string;
-  brand_ids?: string[];
-  iat: number;
-  exp: number;
-  iss: string;
-  jti: string;
-}
+export type BackendMeData = z.infer<typeof BackendMeDataSchema>;
 
-export interface AuthSession {
-  actor: AuthActor;
-  actorType: BackendActorType;
-  role: DashboardRole;
-  subject: string;
-  branchId: string | null;
-  brandIds: string[];
-  displayName: string | null;
-  email: string | null;
-  permissions: string[];
-  claimExpiresAt: number;
-}
-
-export interface BackendLoginData {
-  claim: string;
-  expires_in: number;
-  token: string;
-  refresh_token: string;
-  refresh_expires_in: number;
-}
-
-export interface BackendMeData {
-  id: string;
-  actor_type: BackendActorType;
-  role: DashboardRole;
-  branch_id: string | null;
-  brand_id?: string | null;
-  brand_ids?: string[];
-  display_name: string | null;
-  email: string | null;
-  permissions: string[];
-}
-
-export interface ApiEnvelope<TData> {
-  success: boolean;
-  statusCode: number;
-  code: string;
-  message: string;
-  timestamp: string;
+export type ApiEnvelope<TData> = z.infer<typeof ApiEnvelopeSchema> & {
   data?: TData;
-  meta?: Record<string, unknown>;
-  errors?: Record<string, string[]>;
-}
+};
 
-export interface LoginCredentials {
-  actor: AuthActor;
-  email: string;
-  password: string;
-}
+export type LoginCredentials = z.infer<typeof LoginCredentialsSchema>;
 
-export interface LoginResponse {
-  actor: AuthActor;
-}
+export type LoginResponse = z.infer<typeof LoginResponseSchema>;
 
-export type LogoutResponse = Record<string, never>;
+export type LogoutResponse = z.infer<typeof LogoutResponseSchema>;
 
-export interface BackendResult<TData> {
+export type SessionCookiePayload = z.infer<typeof SessionCookiePayloadSchema>;
+
+export type RefreshedSession = z.infer<typeof RefreshedSessionSchema>;
+
+export type BackendResult<TData> = {
   ok: boolean;
   status: number;
   envelope: ApiEnvelope<TData> | null;
   failure: "none" | "transport" | "redirect" | "invalid-response";
-}
-
-export interface SessionCookiePayload {
-  claim: string;
-  accessToken: string;
-  refreshToken: string;
-  claimMaxAgeSeconds: number;
-  refreshMaxAgeSeconds: number;
-}
-
-export interface RefreshedSession {
-  claim: DashboardClaim;
-  cookies: SessionCookiePayload;
-}
+};

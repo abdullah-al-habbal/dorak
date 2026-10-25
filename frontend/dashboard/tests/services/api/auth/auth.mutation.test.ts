@@ -1,12 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ROUTES } from "@/config/routes.constant";
+import { AuthEndpoints } from "@/services/api/auth/endpoints/auth.endpoints";
 import { requestLogin, requestLogout } from "@/services/api/auth/auth.mutation";
-import { apiRequest } from "@/services/api/client";
+import { api } from "@/services/api/client";
 
-vi.mock("@/services/api/client", () => ({ apiRequest: vi.fn() }));
+vi.mock("@/services/api/client", () => ({
+  api: { post: vi.fn() },
+}));
 
 describe("auth requests", () => {
-  beforeEach(() => vi.mocked(apiRequest).mockReset().mockResolvedValue({}));
+  beforeEach(() => vi.mocked(api.post).mockReset().mockResolvedValue({}));
 
   it("posts credentials to the BFF login route", async () => {
     const credentials = {
@@ -15,17 +17,13 @@ describe("auth requests", () => {
       password: "secret",
     };
     await requestLogin(credentials);
-    expect(apiRequest).toHaveBeenCalledWith(ROUTES.api.auth.login, {
-      method: "POST",
-      body: JSON.stringify(credentials),
+    expect(api.post).toHaveBeenCalledWith(AuthEndpoints.login, credentials, {
+      auth: "public",
     });
   });
 
   it("posts a session-scoped logout", async () => {
     await requestLogout();
-    expect(apiRequest).toHaveBeenCalledWith(ROUTES.api.auth.logout, {
-      method: "POST",
-      auth: "session",
-    });
+    expect(api.post).toHaveBeenCalledWith(AuthEndpoints.logout);
   });
 });

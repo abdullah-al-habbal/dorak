@@ -1,23 +1,19 @@
-import { ROUTES } from "@/config/routes.constant";
+import { AuthEndpoints } from "@/services/api/auth/endpoints/auth.endpoints";
+import { api } from "@/services/api/client";
 import type {
   LoginCredentials,
   LoginResponse,
   LogoutResponse,
 } from "@/services/api/auth/auth.types";
-import { apiRequest } from "@/services/api/client";
 
 export function requestLogin(
   credentials: LoginCredentials,
 ): Promise<LoginResponse> {
-  return apiRequest<LoginResponse>(ROUTES.api.auth.login, {
-    method: "POST",
-    body: JSON.stringify(credentials),
+  return api.post<LoginResponse>(AuthEndpoints.login, credentials, {
+    auth: "public",
   });
 }
 
 export function requestLogout(): Promise<LogoutResponse> {
-  return apiRequest<LogoutResponse>(ROUTES.api.auth.logout, {
-    method: "POST",
-    auth: "session",
-  });
+  return api.post<LogoutResponse>(AuthEndpoints.logout);
 }

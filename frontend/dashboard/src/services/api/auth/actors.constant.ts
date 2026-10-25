@@ -1,7 +1,3 @@
-import type {
-  AuthActor,
-  BackendActorType,
-} from "@/services/api/auth/auth.types";
 import { invertRecord } from "@/utils/record.util";
 
 /** Frontend portal actors. Adding an actor here drives routes, login pages and navigation. */
@@ -24,14 +20,19 @@ export const DASHBOARD_ROLES = [
   "barber",
 ] as const;
 
-export const BACKEND_ACTOR_TYPE: Record<AuthActor, BackendActorType> = {
+export const BACKEND_ACTOR_TYPE: Record<
+  (typeof AUTH_ACTORS)[number],
+  (typeof BACKEND_ACTOR_TYPES)[number]
+> = {
   admin: "admin",
   manager: "branch",
   owner: "owner",
   barber: "barber",
 };
 
-export const ACTOR_FROM_BACKEND: Record<BackendActorType, AuthActor> =
-  invertRecord(BACKEND_ACTOR_TYPE);
+export const ACTOR_FROM_BACKEND: Record<
+  (typeof BACKEND_ACTOR_TYPES)[number],
+  (typeof AUTH_ACTORS)[number]
+> = invertRecord(BACKEND_ACTOR_TYPE);
 
-export const DEFAULT_ACTOR: AuthActor = "admin";
+export const DEFAULT_ACTOR: (typeof AUTH_ACTORS)[number] = "admin";
