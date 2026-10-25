@@ -198,4 +198,84 @@ void main() {
       },
     );
   });
+
+  group('photo gallery', () {
+    blocTest<FaceAnalysisBloc, FaceAnalysisState>(
+      'loads the photo gallery alongside recommendations',
+      build: bloc,
+      setUp: () {
+        face.photos = [testFacePhoto(id: 'photo-1')];
+      },
+      act: (bloc) => bloc.add(const FaceAnalysisStarted()),
+      verify: (bloc) {
+        expect(bloc.state.photos.map((p) => p.id), ['photo-1']);
+        expect(bloc.state.atPhotoLimit, isFalse);
+      },
+    );
+
+    blocTest<FaceAnalysisBloc, FaceAnalysisState>(
+      'rejects a scan client-side once 5 photos are already loaded',
+      build: bloc,
+      setUp: () {
+        face.photos = List.generate(5, (i) => testFacePhoto(id: 'photo-$i'));
+      },
+      act: (bloc) async {
+        bloc.add(const FaceAnalysisStarted());
+        await Future<void>.delayed(Duration.zero);
+        bloc.add(const FaceAnalysisPhotoScanned('/tmp/face.jpg'));
+      },
+      verify: (bloc) {
+        expect(bloc.state.photoLimitReached, isTrue);
+        expect(face.uploadCalls, 0);
+      },
+    );
+
+    blocTest<FaceAnalysisBloc, FaceAnalysisState>(
+      'maps the server face_photo_limit_reached error onto the state',
+      build: bloc,
+      setUp: () {
+        face.uploadError = const ApiException(
+          statusCode: 422,
+          code: 'face_photo_limit_reached',
+          message: 'A client may have at most 5 face profile photos.',
+        );
+      },
+      act: (bloc) => bloc.add(const FaceAnalysisPhotoScanned('/tmp/face.jpg')),
+      verify: (bloc) {
+        expect(bloc.state.status, FaceAnalysisStatus.failed);
+        expect(bloc.state.photoLimitReached, isTrue);
+      },
+    );
+
+    blocTest<FaceAnalysisBloc, FaceAnalysisState>(
+      'deletes a photo from the gallery',
+      build: bloc,
+      seed: () => FaceAnalysisState(
+        status: FaceAnalysisStatus.ready,
+        photos: [testFacePhoto(id: 'photo-1'), testFacePhoto(id: 'photo-2')],
+      ),
+      act: (bloc) => bloc.add(const FaceAnalysisPhotoDeleted('photo-1')),
+      verify: (bloc) {
+        expect(face.lastDeletedPhotoId, 'photo-1');
+        expect(bloc.state.photos.map((p) => p.id), ['photo-2']);
+      },
+    );
+
+    blocTest<FaceAnalysisBloc, FaceAnalysisState>(
+      'sets a photo as primary and unsets the others locally',
+      build: bloc,
+      seed: () => FaceAnalysisState(
+        status: FaceAnalysisStatus.ready,
+        photos: [testFacePhoto(id: 'photo-1'), testFacePhoto(id: 'photo-2')],
+      ),
+      act: (bloc) => bloc.add(const FaceAnalysisPhotoSetPrimary('photo-2')),
+      verify: (bloc) {
+        expect(face.lastSetPrimaryPhotoId, 'photo-2');
+        final primary = bloc.state.photos.firstWhere((p) => p.id == 'photo-2');
+        final other = bloc.state.photos.firstWhere((p) => p.id == 'photo-1');
+        expect(primary.isPrimary, isTrue);
+        expect(other.isPrimary, isFalse);
+      },
+    );
+  });
 }

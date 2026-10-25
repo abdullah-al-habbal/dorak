@@ -11,6 +11,12 @@ abstract class FaceProfileRepository {
   Future<List<FaceAnalysisResultDto>> getRecommendations();
 
   Future<FacePhotoDto> getProfile(String id);
+
+  Future<List<FacePhotoDto>> listPhotos();
+
+  Future<void> deletePhoto(String id);
+
+  Future<FacePhotoDto> setPrimaryPhoto(String id);
 }
 
 class DioFaceProfileRepository implements FaceProfileRepository {
@@ -51,6 +57,29 @@ class DioFaceProfileRepository implements FaceProfileRepository {
   Future<FacePhotoDto> getProfile(String id) {
     return _apiClient.get<FacePhotoDto>(
       ApiEndpoints.faceProfile.profile(id),
+      parser: (json) => FacePhotoDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<List<FacePhotoDto>> listPhotos() {
+    return _apiClient.get<List<FacePhotoDto>>(
+      ApiEndpoints.faceProfile.list,
+      parser: (json) => (json as List<dynamic>)
+          .map((item) => FacePhotoDto.fromJson(item as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
+  @override
+  Future<void> deletePhoto(String id) {
+    return _apiClient.delete(ApiEndpoints.faceProfile.delete(id));
+  }
+
+  @override
+  Future<FacePhotoDto> setPrimaryPhoto(String id) {
+    return _apiClient.patch<FacePhotoDto>(
+      ApiEndpoints.faceProfile.setPrimary(id),
       parser: (json) => FacePhotoDto.fromJson(json as Map<String, dynamic>),
     );
   }

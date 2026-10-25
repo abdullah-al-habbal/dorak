@@ -15,7 +15,12 @@ class FaceAnalysisState extends Equatable {
     this.awaitingAnalysis = false,
     this.error,
     this.catalogError,
-  }) : curated = List.unmodifiable(curated);
+    List<FacePhotoDto> photos = const [],
+    this.photoLimitReached = false,
+  }) : curated = List.unmodifiable(curated),
+       photos = List.unmodifiable(photos);
+
+  static const int maxPhotos = 5;
 
   final FaceAnalysisStatus status;
   final FaceAnalysisResultDto? latest;
@@ -26,6 +31,10 @@ class FaceAnalysisState extends Equatable {
   final bool awaitingAnalysis;
   final Object? error;
   final Object? catalogError;
+  final List<FacePhotoDto> photos;
+  final bool photoLimitReached;
+
+  bool get atPhotoLimit => photos.length >= maxPhotos;
 
   FaceAnalysisState copyWith({
     FaceAnalysisStatus? status,
@@ -43,6 +52,8 @@ class FaceAnalysisState extends Equatable {
     bool clearError = false,
     Object? catalogError,
     bool clearCatalogError = false,
+    List<FacePhotoDto>? photos,
+    bool? photoLimitReached,
   }) {
     return FaceAnalysisState(
       status: status ?? this.status,
@@ -60,6 +71,8 @@ class FaceAnalysisState extends Equatable {
       catalogError: clearCatalogError
           ? null
           : catalogError ?? this.catalogError,
+      photos: photos ?? this.photos,
+      photoLimitReached: photoLimitReached ?? this.photoLimitReached,
     );
   }
 
@@ -74,5 +87,7 @@ class FaceAnalysisState extends Equatable {
     awaitingAnalysis,
     error,
     catalogError,
+    photos,
+    photoLimitReached,
   ];
 }

@@ -162,8 +162,11 @@ class _ExploreEndpoints {
 class _FaceProfileEndpoints {
   const _FaceProfileEndpoints();
   String get upload => FaceProfileEndpoints.upload;
+  String get list => FaceProfileEndpoints.list;
   String profile(String id) => FaceProfileEndpoints.profile(id);
   String get recommendations => FaceProfileEndpoints.recommendations;
+  String delete(String id) => FaceProfileEndpoints.delete(id);
+  String setPrimary(String id) => FaceProfileEndpoints.setPrimary(id);
 }
 
 class _FavoriteEndpoints {

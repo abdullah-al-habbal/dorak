@@ -23,3 +23,21 @@ class FaceAnalysisPhotoScanned extends FaceAnalysisEvent {
 class FaceAnalysisCheckedAgain extends FaceAnalysisEvent {
   const FaceAnalysisCheckedAgain();
 }
+
+class FaceAnalysisPhotoDeleted extends FaceAnalysisEvent {
+  const FaceAnalysisPhotoDeleted(this.photoId);
+
+  final String photoId;
+
+  @override
+  List<Object?> get props => [photoId];
+}
+
+class FaceAnalysisPhotoSetPrimary extends FaceAnalysisEvent {
+  const FaceAnalysisPhotoSetPrimary(this.photoId);
+
+  final String photoId;
+
+  @override
+  List<Object?> get props => [photoId];
+}

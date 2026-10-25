@@ -175,5 +175,110 @@ void main() {
       expect(captured.method, 'GET');
       expect(profile.analysisStatus, FaceProfileAnalysisStatus.pending);
     });
+
+    test('listPhotos parses the owning clients photo list', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: [
+                {
+                  'id': 'face-1',
+                  'image_url': 'https://cdn.dorak.io/face-profiles/face-1.jpg',
+                  'is_primary': true,
+                  'uploaded_at': '2026-09-10T09:00:00.000Z',
+                },
+              ],
+            ),
+          );
+        },
+      );
+      final repository = DioFaceProfileRepository(clientWith(fake));
+
+      final photos = await repository.listPhotos();
+
+      expect(captured.path, FaceProfileEndpoints.list);
+      expect(captured.method, 'GET');
+      expect(photos, hasLength(1));
+      expect(photos.first.isPrimary, isTrue);
+    });
+
+    test('deletePhoto sends a DELETE request', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(options, data: successEnvelope(data: null));
+        },
+      );
+      final repository = DioFaceProfileRepository(clientWith(fake));
+
+      await repository.deletePhoto('face-1');
+
+      expect(captured.path, FaceProfileEndpoints.delete('face-1'));
+      expect(captured.method, 'DELETE');
+    });
+
+    test('setPrimaryPhoto patches the primary flag', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: {
+                'id': 'face-1',
+                'image_url': 'https://cdn.dorak.io/face-profiles/face-1.jpg',
+                'is_primary': true,
+                'uploaded_at': '2026-09-10T09:00:00.000Z',
+              },
+            ),
+          );
+        },
+      );
+      final repository = DioFaceProfileRepository(clientWith(fake));
+
+      final photo = await repository.setPrimaryPhoto('face-1');
+
+      expect(captured.path, FaceProfileEndpoints.setPrimary('face-1'));
+      expect(captured.method, 'PATCH');
+      expect(photo.isPrimary, isTrue);
+    });
+
+    test(
+      'uploadFacePhoto surfaces the photo limit error as ApiException',
+      () async {
+        final file = File('${Directory.systemTemp.path}/face-limit.jpg')
+          ..writeAsStringSync('photo bytes');
+        addTearDown(file.deleteSync);
+        final fake = fakeDio(
+          handler: (options) => jsonResponse(
+            options,
+            statusCode: 422,
+            data: errorEnvelope(
+              statusCode: 422,
+              code: 'face_photo_limit_reached',
+              message: 'A client may have at most 5 face profile photos.',
+            ),
+          ),
+        );
+        final repository = DioFaceProfileRepository(clientWith(fake));
+
+        final limitReached = isA<ApiException>().having(
+          (error) => error.code,
+          'code',
+          'face_photo_limit_reached',
+        );
+
+        await expectLater(
+          repository.uploadFacePhoto(file.path),
+          throwsA(limitReached),
+        );
+      },
+    );
   });
 }

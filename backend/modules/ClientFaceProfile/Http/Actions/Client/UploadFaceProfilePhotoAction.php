@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Modules\ClientFaceProfile\Http\Actions\Client;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Modules\Client\Models\ClientModel;
 use Modules\ClientFaceProfile\CQRS\Command\UploadFaceProfilePhotoCommand;
+use Modules\ClientFaceProfile\Eloquent\Resolvers\FacePhotoLimitReachedException;
 use Modules\ClientFaceProfile\Handlers\UploadFaceProfilePhotoHandler;
 use Modules\ClientFaceProfile\Http\Requests\Client\UploadFaceProfilePhotoRequest;
 use Modules\ClientFaceProfile\Services\FaceProfilePhotoUrl;
@@ -42,7 +44,13 @@ final class UploadFaceProfilePhotoAction extends BaseApiAction
             isPrimary: $request->boolean('is_primary', false),
         );
 
-        $profile = $this->handler->handle($command);
+        try {
+            $profile = $this->handler->handle($command);
+        } catch (FacePhotoLimitReachedException $exception) {
+            Storage::disk('local')->delete($path);
+
+            return $this->error(code: 'face_photo_limit_reached', message: $exception->getMessage(), status: 422);
+        }
 
         return $this->created(data: [
             'id' => $profile->id,

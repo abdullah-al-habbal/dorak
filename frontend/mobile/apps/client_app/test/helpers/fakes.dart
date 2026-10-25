@@ -1056,6 +1056,16 @@ class FakeFaceProfileRepository implements FaceProfileRepository {
   String? lastUploadedPath;
   bool? lastIsPrimary;
 
+  List<FacePhotoDto> photos = const [];
+  Object? listPhotosError;
+  Object? deletePhotoError;
+  Object? setPrimaryError;
+  int listPhotosCalls = 0;
+  int deletePhotoCalls = 0;
+  int setPrimaryCalls = 0;
+  String? lastDeletedPhotoId;
+  String? lastSetPrimaryPhotoId;
+
   @override
   Future<FacePhotoDto> uploadFacePhoto(
     String filePath, {
@@ -1091,6 +1101,35 @@ class FakeFaceProfileRepository implements FaceProfileRepository {
       id: id,
       imageUrl: 'https://cdn.example.com/face-$id.jpg',
       analysisStatus: status,
+    );
+  }
+
+  @override
+  Future<List<FacePhotoDto>> listPhotos() async {
+    listPhotosCalls++;
+    final failure = listPhotosError;
+    if (failure != null) throw failure;
+    return photos;
+  }
+
+  @override
+  Future<void> deletePhoto(String id) async {
+    deletePhotoCalls++;
+    lastDeletedPhotoId = id;
+    final failure = deletePhotoError;
+    if (failure != null) throw failure;
+  }
+
+  @override
+  Future<FacePhotoDto> setPrimaryPhoto(String id) async {
+    setPrimaryCalls++;
+    lastSetPrimaryPhotoId = id;
+    final failure = setPrimaryError;
+    if (failure != null) throw failure;
+    return FacePhotoDto(
+      id: id,
+      imageUrl: 'https://cdn.example.com/face-$id.jpg',
+      isPrimary: true,
     );
   }
 }
