@@ -1,11 +1,13 @@
+const BASE = "/barber";
+
 export const BarberEndpoints = {
-  workstationStatus: "/api/barber/workstation-status",
-  appointmentsToday: "/api/barber/appointments/today",
-  profile: "/api/barber/profile",
-  schedule: "/api/barber/schedule",
-  portfolio: "/api/barber/portfolio",
+  workstationStatus: `${BASE}/workstation-status`,
+  appointmentsToday: `${BASE}/appointments/today`,
+  profile: `${BASE}/profile`,
+  schedule: `${BASE}/schedule`,
+  portfolio: `${BASE}/portfolio`,
   bookingTransition: (id: string, transition: string) =>
-    `/api/barber/bookings/${encodeURIComponent(id)}/${transition}`,
+    `${BASE}/bookings/${encodeURIComponent(id)}/${transition}`,
   bookingCancel: (id: string) =>
-    `/api/barber/bookings/${encodeURIComponent(id)}/cancel`,
+    `${BASE}/bookings/${encodeURIComponent(id)}/cancel`,
 } as const;
