@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -140,6 +142,9 @@ void main() {
     test(
       'rebook and media attachment surface forbidden responses as ApiException',
       () async {
+        final file = File('${Directory.systemTemp.path}/history-photo.jpg')
+          ..writeAsStringSync('photo bytes');
+        addTearDown(file.deleteSync);
         final fake = fakeDio(
           handler: (options) => jsonResponse(
             options,
@@ -169,12 +174,78 @@ void main() {
         await expectLater(
           repository.attachMedia(
             historyId: 'history-1',
-            photoUrl: 'https://example.com/photo.jpg',
+            photoPath: file.path,
             photoType: 'after',
           ),
           throwsA(forbidden),
         );
       },
     );
+
+    test('attachMedia posts a multipart photo file', () async {
+      late RequestOptions captured;
+      final file = File('${Directory.systemTemp.path}/history-photo.jpg')
+        ..writeAsStringSync('photo bytes');
+      addTearDown(file.deleteSync);
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            statusCode: 201,
+            data: successEnvelope(
+              statusCode: 201,
+              code: 'CREATED',
+              data: {
+                'id': 'media-2',
+                'photo_url': 'https://dorak.test/signed/media-2',
+                'uploaded_at': '2026-09-20T09:00:00.000Z',
+              },
+            ),
+          );
+        },
+      );
+      final repository = DioHistoryRepository(clientWith(fake));
+
+      final media = await repository.attachMedia(
+        historyId: 'history-1',
+        photoPath: file.path,
+        photoType: 'after',
+      );
+
+      expect(captured.path, '/client/history/history-1/media');
+      expect(captured.method, 'POST');
+      final formData = captured.data as FormData;
+      expect(formData.files.single.key, 'photo');
+      expect(formData.files.single.value.filename, 'history-photo.jpg');
+      expect(formData.fields.single.key, 'photo_type');
+      expect(formData.fields.single.value, 'after');
+      expect(media.id, 'media-2');
+      expect(media.photoUrl, 'https://dorak.test/signed/media-2');
+    });
+
+    test('updateEntry patches only the provided rating and notes', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(data: history()),
+          );
+        },
+      );
+      final repository = DioHistoryRepository(clientWith(fake));
+
+      final updated = await repository.updateEntry(
+        historyId: 'history-1',
+        clientRating: 5,
+      );
+
+      expect(captured.path, '/client/history/history-1');
+      expect(captured.method, 'PATCH');
+      expect(captured.data, {'client_rating': 5});
+      expect(updated.id, 'history-1');
+    });
   });
 }

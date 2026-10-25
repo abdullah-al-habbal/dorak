@@ -26,17 +26,17 @@ final class AttachHistoryMediaRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'photo_url' => ['required', 'string', 'max:2048'],
+            'photo' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:5120'],
             'photo_type' => ['required', Rule::enum(HistoryMediaType::class)],
         ];
     }
 
-    public function toCommand(string $historyId): AttachHistoryMediaCommand
+    public function toCommand(string $historyId, string $photoPath): AttachHistoryMediaCommand
     {
         return new AttachHistoryMediaCommand(
             historyId: $historyId,
             clientId: (string) $this->user('client')->id,
-            photoUrl: (string) $this->validated('photo_url'),
+            photoPath: $photoPath,
             photoType: HistoryMediaType::from($this->validated('photo_type')),
         );
     }

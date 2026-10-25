@@ -18,7 +18,7 @@ final class AttachHistoryMediaEloquentResolver
 
         return ClientServiceHistoryMediaModel::create([
             'history_id' => $command->historyId,
-            'photo_url' => $command->photoUrl,
+            'photo_path' => $command->photoPath,
             'photo_type' => $command->photoType,
             'uploaded_at' => now(),
         ]);

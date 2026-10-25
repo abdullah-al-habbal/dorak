@@ -175,6 +175,7 @@ class _FavoriteEndpoints {
 class _HistoryEndpoints {
   const _HistoryEndpoints();
   String get history => HistoryEndpoints.history;
+  String updateEntry(String historyId) => HistoryEndpoints.updateEntry.replaceFirst('{history}', historyId);
   String rebookFromHistory(String historyId) => HistoryEndpoints.rebookFromHistory.replaceFirst('{history}', historyId);
   String attachMedia(String historyId) => HistoryEndpoints.attachMedia.replaceFirst('{history}', historyId);
 }

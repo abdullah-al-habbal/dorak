@@ -94,7 +94,7 @@ codeanchors:
 - [x] Task 57: Open Currency Conversion to Clients and Convert Prices -> [Spec](tasks/task-57-currency-client-conversion.md)
 
 ## Phase 10 — Client Intelligence (P2)
-- [ ] Task 58: Complete Client History -> [Spec](tasks/task-58-client-history-completion.md)
+- [x] Task 58: Complete Client History -> [Spec](tasks/task-58-client-history-completion.md)
 - [ ] Task 59: Enforce Face Profile Photo Lifecycle -> [Spec](tasks/task-59-face-profile-lifecycle.md)
 - [ ] Task 60: Fix Favorites and Saved Filter Contracts -> [Spec](tasks/task-60-favorites-and-saved-filters-contract.md)
 - [ ] Task 61: Complete Service Catalog Module -> [Spec](tasks/task-61-service-catalog-completion.md)

@@ -801,9 +801,17 @@ class FakeHistoryRepository implements HistoryRepository {
   @override
   Future<HistoryMediaDto> attachMedia({
     required String historyId,
-    required String photoUrl,
+    required String photoPath,
     required String photoType,
-  }) async => HistoryMediaDto(id: 'media-1', photoUrl: photoUrl);
+  }) async =>
+      HistoryMediaDto(id: 'media-1', photoUrl: 'https://example.com/$photoPath');
+
+  @override
+  Future<ServiceHistoryDto> updateEntry({
+    required String historyId,
+    int? clientRating,
+    String? clientNotes,
+  }) async => firstPage.data.firstWhere((entry) => entry.id == historyId);
 
   @override
   Future<PaginatedData<ServiceHistoryDto>> getHistory({

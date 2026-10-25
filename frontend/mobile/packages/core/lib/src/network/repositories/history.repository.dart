@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import 'package:core/core.dart';
 
 abstract class HistoryRepository {
@@ -7,10 +9,17 @@ abstract class HistoryRepository {
   });
 
   Future<BookingDto> rebookFromHistory(String historyId, DateTime timeSlot);
+
   Future<HistoryMediaDto> attachMedia({
     required String historyId,
-    required String photoUrl,
+    required String photoPath,
     required String photoType,
+  });
+
+  Future<ServiceHistoryDto> updateEntry({
+    required String historyId,
+    int? clientRating,
+    String? clientNotes,
   });
 }
 
@@ -45,11 +54,35 @@ class DioHistoryRepository implements HistoryRepository {
   @override
   Future<HistoryMediaDto> attachMedia({
     required String historyId,
-    required String photoUrl,
+    required String photoPath,
     required String photoType,
-  }) => _apiClient.post(
-    ApiEndpoints.history.attachMedia(historyId),
-    data: {'photo_url': photoUrl, 'photo_type': photoType},
-    parser: (json) => HistoryMediaDto.fromJson(json as Map<String, dynamic>),
-  );
+  }) async {
+    final formData = FormData.fromMap({
+      'photo': await MultipartFile.fromFile(photoPath),
+      'photo_type': photoType,
+    });
+    return _apiClient.post<HistoryMediaDto>(
+      ApiEndpoints.history.attachMedia(historyId),
+      data: formData,
+      parser: (json) => HistoryMediaDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<ServiceHistoryDto> updateEntry({
+    required String historyId,
+    int? clientRating,
+    String? clientNotes,
+  }) {
+    final data = <String, dynamic>{
+      'client_rating': ?clientRating,
+      'client_notes': ?clientNotes,
+    };
+    return _apiClient.patch<ServiceHistoryDto>(
+      ApiEndpoints.history.updateEntry(historyId),
+      data: data,
+      parser: (json) =>
+          ServiceHistoryDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
 }

@@ -2,10 +2,16 @@
 
 declare(strict_types=1);
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Modules\Barber\Models\BarberModel;
 use Modules\Client\Models\ClientModel;
 use Modules\ClientHistory\Models\ClientServiceHistoryModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
+
+beforeEach(function (): void {
+    Storage::fake('local');
+});
 
 function clientHistoryFor(ClientModel $client): ClientServiceHistoryModel
 {
@@ -42,7 +48,7 @@ it('forbids attaching media to another client history and creates no media', fun
 
     $this->actingAs($actor, 'client')
         ->postJson("/api/v1/client/history/{$history->id}/media", [
-            'photo_url' => 'https://example.com/foreign-history.jpg',
+            'photo' => UploadedFile::fake()->image('foreign-history.jpg'),
             'photo_type' => 'after',
         ])
         ->assertForbidden();
@@ -50,16 +56,24 @@ it('forbids attaching media to another client history and creates no media', fun
     $this->assertDatabaseCount('client_service_history_media', 0);
 });
 
-it('returns not found for missing client history records', function (string $endpoint, array $payload): void {
+it('returns not found for a missing history record on rebook', function (): void {
     $client = ClientModel::factory()->create();
 
     $this->actingAs($client, 'client')
-        ->postJson("/api/v1/client/history/missing-history/{$endpoint}", $payload)
+        ->postJson('/api/v1/client/history/missing-history/rebook', ['time_slot' => now()->addDay()->toIso8601String()])
         ->assertNotFound();
-})->with([
-    'rebook' => ['rebook', ['time_slot' => now()->addDay()->toIso8601String()]],
-    'media' => ['media', ['photo_url' => 'https://example.com/missing-history.jpg', 'photo_type' => 'after']],
-]);
+});
+
+it('returns not found for a missing history record on media upload', function (): void {
+    $client = ClientModel::factory()->create();
+
+    $this->actingAs($client, 'client')
+        ->postJson('/api/v1/client/history/missing-history/media', [
+            'photo' => UploadedFile::fake()->image('missing-history.jpg'),
+            'photo_type' => 'after',
+        ])
+        ->assertNotFound();
+});
 
 it('allows an owner to rebook and attach media to their history', function (): void {
     $client = ClientModel::factory()->create();
@@ -73,7 +87,7 @@ it('allows an owner to rebook and attach media to their history', function (): v
 
     $this->actingAs($client, 'client')
         ->postJson("/api/v1/client/history/{$history->id}/media", [
-            'photo_url' => 'https://example.com/owned-history.jpg',
+            'photo' => UploadedFile::fake()->image('owned-history.jpg'),
             'photo_type' => 'after',
         ])
         ->assertCreated();

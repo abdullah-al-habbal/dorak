@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\ClientHistory\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\ClientHistory\Services\HistoryMediaPhotoUrl;
 
 final class ClientServiceHistoryResource extends JsonResource
 {
@@ -37,7 +38,7 @@ final class ClientServiceHistoryResource extends JsonResource
             ]),
             'media' => $this->whenLoaded('media', fn () => $this->media->map(fn ($m) => [
                 'id' => $m->id,
-                'photo_url' => $m->photo_url,
+                'photo_url' => HistoryMediaPhotoUrl::for($m),
                 'photo_type' => $m->photo_type->value,
                 'uploaded_at' => $m->uploaded_at->toIso8601String(),
             ])),

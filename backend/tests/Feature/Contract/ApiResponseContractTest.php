@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 use Modules\Ban\Models\BanModel;
@@ -1336,6 +1337,7 @@ describe('ClientHistory API', function () {
 
     describe('POST /api/v1/client/history/{history}/media', function () {
         it('attaches media to history entry', function () {
+            Storage::fake('local');
             $ctx = createHistoryEntry();
 
             $response = $this->actingAs($ctx['client'], 'client')
@@ -1345,7 +1347,7 @@ describe('ClientHistory API', function () {
 
             $mediaResponse = $this->actingAs($ctx['client'], 'client')
                 ->postJson("/api/v1/client/history/{$historyId}/media", [
-                    'photo_url' => 'https://example.com/photo.jpg',
+                    'photo' => UploadedFile::fake()->image('photo.jpg'),
                     'photo_type' => 'after',
                 ]);
 
@@ -1356,8 +1358,9 @@ describe('ClientHistory API', function () {
         });
 
         it('returns 401 without auth', function () {
+            Storage::fake('local');
             $response = $this->postJson('/api/v1/client/history/some-id/media', [
-                'photo_url' => 'https://example.com/photo.jpg',
+                'photo' => UploadedFile::fake()->image('photo.jpg'),
                 'photo_type' => 'after',
             ]);
             expect($response->status())->toBe(401);
