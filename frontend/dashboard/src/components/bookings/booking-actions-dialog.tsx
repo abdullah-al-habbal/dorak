@@ -1,7 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { conflictMessage } from "@/components/bookings/booking-actions-dialog.util";
 import { BookingRateClientForm } from "@/components/bookings/booking-rate-client-form";
+import { BookingRescheduleForm } from "@/components/bookings/booking-reschedule-form";
+import { BookingStatusUpdateForm } from "@/components/bookings/booking-status-update-form";
 import { Button } from "@/components/tailgrids/core/button";
 import {
   Dialog,
@@ -10,60 +12,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/tailgrids/core/dialog";
-import { Input } from "@/components/tailgrids/core/input";
-import {
-  Select,
-  SelectContent,
-  SelectIndicator,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
-import { createBookingRescheduleSchema } from "@/services/api/dashboard/booking-reschedule.schema";
-import type { BookingRescheduleInput } from "@/services/api/dashboard/booking-reschedule.types";
-import { bookingStatusSchema } from "@/services/api/dashboard/booking-status.schema";
-import { mapBookingReschedulePayload } from "@/services/api/dashboard/dashboard-payload-mapper.util";
-import {
-  cancelBooking,
-  rescheduleBooking,
-  updateBookingStatus,
-} from "@/services/api/dashboard/dashboard-workflow.mutation";
-import { ApiClientError } from "@/services/api/client-error";
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
+import { cancelBooking } from "@/services/api/dashboard/dashboard-workflow.mutation";
 import { toast } from "sonner";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
 
 interface IBookingActionsDialogProps {
   bookingId: string;
-}
-
-function conflictMessage(
-  error: unknown,
-  copy: {
-    conflict: string;
-    invalidTransition: string;
-    outsideSchedule: string;
-  },
-  dictionary: ReturnType<typeof useDictionary>,
-): string {
-  if (
-    error instanceof ApiClientError &&
-    error.code === "booking_outside_schedule"
-  )
-    return copy.outsideSchedule;
-  if (error instanceof ApiClientError && error.status === 409)
-    return copy.conflict;
-  if (error instanceof ApiClientError && error.status === 422)
-    return copy.invalidTransition;
-  return apiErrorMessage(error, dictionary);
-}
-function iso(value: string): string {
-  return new Date(value).toISOString();
 }
 
 export function BookingActionsDialog({
@@ -75,34 +32,8 @@ export function BookingActionsDialog({
   const canRateClient =
     session.actor === "manager" || session.actor === "owner";
   const copy = dictionary.bookingActions;
-  const rescheduleSchema = createBookingRescheduleSchema(dictionary.validation);
-  const rescheduleForm = useForm<BookingRescheduleInput>({
-    resolver: zodResolver(rescheduleSchema),
-    defaultValues: { timeSlot: "", endsAt: "" },
-  });
-  const statusForm = useForm<z.input<typeof bookingStatusSchema>>({
-    resolver: zodResolver(bookingStatusSchema),
-    defaultValues: { status: "confirmed" },
-  });
-  const bookingStatus = statusForm.watch("status");
   const cancel = useDashboardMutation("bookings", () =>
     cancelBooking(bookingId),
-  );
-  const reschedule = useDashboardMutation(
-    "bookings",
-    (value: BookingRescheduleInput) =>
-      rescheduleBooking(
-        bookingId,
-        mapBookingReschedulePayload({
-          timeSlot: iso(value.timeSlot),
-          endsAt: iso(value.endsAt),
-        }),
-      ),
-  );
-  const status = useDashboardMutation(
-    "bookings",
-    (value: z.input<typeof bookingStatusSchema>) =>
-      updateBookingStatus(bookingId, value),
   );
   const failed = (error: unknown) =>
     toast.error(conflictMessage(error, copy, dictionary));
@@ -125,84 +56,26 @@ export function BookingActionsDialog({
           <DialogTitle>{copy.manageTitle}</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <form
-            className="grid gap-3"
-            onSubmit={rescheduleForm.handleSubmit((value) =>
-              reschedule.mutate(value, {
-                onSuccess: closeOnSuccess,
-                onError: failed,
-              }),
-            )}
-          >
-            <label className="grid gap-1 text-sm">
-              {copy.start}
-              <Input
-                type="datetime-local"
-                {...rescheduleForm.register("timeSlot")}
-                state={
-                  rescheduleForm.formState.errors.timeSlot ? "error" : "default"
-                }
-              />
-            </label>
-            <label className="grid gap-1 text-sm">
-              {copy.end}
-              <Input
-                type="datetime-local"
-                {...rescheduleForm.register("endsAt")}
-                state={
-                  rescheduleForm.formState.errors.endsAt ? "error" : "default"
-                }
-              />
-            </label>
-            {rescheduleForm.formState.isSubmitted &&
-            Object.keys(rescheduleForm.formState.errors).length > 0 ? (
-              <p className="text-input-error-focus-border" role="alert">
-                {dictionary.validation.invalidField}
-              </p>
-            ) : null}
-            <Button type="submit" isDisabled={reschedule.isPending}>
-              {copy.reschedule}
-            </Button>
-          </form>
-          <form
-            className="mt-4 flex gap-2"
-            onSubmit={statusForm.handleSubmit((value) =>
-              status.mutate(value, {
-                onSuccess: closeOnSuccess,
-                onError: failed,
-              }),
-            )}
-          >
-            <Select
-              aria-label={copy.nextStatus}
-              value={bookingStatus}
-              onChange={(value) => {
-                const nextValue = String(value) as z.input<
-                  typeof bookingStatusSchema
-                >["status"];
-                statusForm.setValue("status", nextValue);
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue />
-                <SelectIndicator />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem id="confirmed">{copy.confirmed}</SelectItem>
-                <SelectItem id="in_progress">{copy.inProgress}</SelectItem>
-                <SelectItem id="completed">{copy.completed}</SelectItem>
-                <SelectItem id="no_show">{copy.noShow}</SelectItem>
-                <SelectItem id="canceled">{copy.canceled}</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              type="submit"
-              appearance="outline"
-              isDisabled={status.isPending}
-            >
-              {copy.updateStatus}
-            </Button>
-          </form>
+          <BookingRescheduleForm
+            bookingId={bookingId}
+            startLabel={copy.start}
+            endLabel={copy.end}
+            rescheduleLabel={copy.reschedule}
+            onSuccess={closeOnSuccess}
+            onError={failed}
+          />
+          <BookingStatusUpdateForm
+            bookingId={bookingId}
+            nextStatusLabel={copy.nextStatus}
+            confirmedLabel={copy.confirmed}
+            inProgressLabel={copy.inProgress}
+            completedLabel={copy.completed}
+            noShowLabel={copy.noShow}
+            canceledLabel={copy.canceled}
+            updateStatusLabel={copy.updateStatus}
+            onSuccess={closeOnSuccess}
+            onError={failed}
+          />
           {canRateClient ? (
             <BookingRateClientForm
               bookingId={bookingId}
