@@ -281,423 +281,428 @@ class AppRouter {
 
   List<RouteBase> _routes() {
     return [
-      GoRoute(
-        path: AppRoutes.splash,
-        builder: (context, state) =>
-            SplashScreen(onFinished: () => unawaited(_leaveSplash())),
-      ),
-      GoRoute(
-        path: AppRoutes.profileCompletion,
-        builder: (context, state) => _scope(
-          profileCompletion,
-          services.createProfileCompletion,
-          (bloc) => ProfileCompletionScreen(
-            bloc: bloc,
-            initialName: session.state.client?.name ?? '',
-            initialPhone: session.state.client?.phone,
-            onCompleted: (phone) {
-              router.go(AppRoutes.discover);
-              if (phone != null) {
-                unawaited(
-                  router.push<void>(AppRoutes.phoneVerify, extra: phone),
-                );
-              }
-            },
-          ),
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.phoneVerify,
-        builder: (context, state) {
-          final phone = state.extra as String? ?? '';
-          return _scope(
-            phoneVerification,
-            () => services.createPhoneVerification(phone),
-            (bloc) => PhoneVerificationScreen(
-              bloc: bloc,
-              onVerified: (client) {
-                session.add(SessionAuthenticated(client));
-                _leavePhoneVerification();
-              },
-              onSkip: _leavePhoneVerification,
-            ),
-          );
-        },
-      ),
-      GoRoute(
-        path: AppRoutes.onboardingWelcome,
-        builder: (context, state) => _scope(
-          onboardingConfig,
-          _newOnboardingConfig,
-          (bloc) => WelcomeScreen(
-            onboardingConfig: bloc,
-            onNext: () => router.push<void>(AppRoutes.onboardingDiscovery),
-            onSkipForNow: _skipForNow,
-            onDontShowAgain: () => unawaited(_dismissForever()),
-            onLocaleToggle: switchLocale,
-          ),
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.onboardingDiscovery,
-        builder: (context, state) => _scope(
-          onboardingConfig,
-          _newOnboardingConfig,
-          (bloc) => DiscoveryScreen(
-            onboardingConfig: bloc,
-            onNext: () => router.push<void>(AppRoutes.onboardingBooking),
-            onSkipForNow: _skipForNow,
-            onDontShowAgain: () => unawaited(_dismissForever()),
-            onLocaleToggle: switchLocale,
-          ),
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.onboardingBooking,
-        builder: (context, state) => BookingScreen(
-          onNext: () => router.push<void>(AppRoutes.onboardingAiStyle),
-          onSkipForNow: _skipForNow,
-          onDontShowAgain: () => unawaited(_dismissForever()),
-          onLocaleToggle: switchLocale,
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.onboardingAiStyle,
-        builder: (context, state) => AiShowcaseScreen(
-          onNext: () => unawaited(_dismissForever()),
-          onSkipForNow: _skipForNow,
-          onDontShowAgain: () => unawaited(_dismissForever()),
-          onLocaleToggle: switchLocale,
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.authEntry,
-        builder: (context, state) => AuthEntryScreen(
-          onLogin: () => router.push<void>(AppRoutes.authLogin),
-          onSignup: () => router.push<void>(AppRoutes.authRegister),
-          onGuest: () => router.go(AppRoutes.onboardingWelcome),
-          onLocaleToggle: switchLocale,
-        ),
-        routes: [
-          GoRoute(
-            path: AppRoutes.loginSegment,
-            builder: (context, state) => LoginScreen(
-              auth: auth,
-              session: session,
-              onCreateAccount: () => router.push<void>(AppRoutes.authRegister),
-              onForgotPassword: () =>
-                  router.push<void>(AppRoutes.authForgotPassword),
-              onLocaleToggle: switchLocale,
-            ),
-          ),
-          GoRoute(
-            path: AppRoutes.registerSegment,
-            builder: (context, state) => SignUpScreen(
-              auth: auth,
-              onLogInLink: () => router.push<void>(AppRoutes.authLogin),
-              onLocaleToggle: switchLocale,
-            ),
-          ),
-          GoRoute(
-            path: AppRoutes.verifySegment,
-            builder: (context, state) => VerifyAccountScreen(
-              auth: auth,
-              destination: state.extra as String? ?? '',
-              onSkip: () => router.go(AppRoutes.discover),
-              onLocaleToggle: switchLocale,
-            ),
-          ),
-          ShellRoute(
-            builder: (context, state, child) =>
-                _scope(recovery, services.createPasswordRecovery, (_) => child),
-            routes: [
-              GoRoute(
-                path: AppRoutes.forgotPasswordSegment,
-                builder: (context, state) => _recoveryScreen(
-                  (recovery) => ForgotPasswordScreen(
-                    recovery: recovery,
-                    onReturnToLogIn: () => router.go(AppRoutes.authLogin),
-                    onLocaleToggle: switchLocale,
-                  ),
-                ),
-                routes: [
-                  GoRoute(
-                    path: AppRoutes.recoveryOtpSegment,
-                    builder: (context, state) => _recoveryScreen(
-                      (recovery) => RecoveryOtpScreen(
-                        recovery: recovery,
-                        onLocaleToggle: switchLocale,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              GoRoute(
-                path: AppRoutes.resetPasswordSegment,
-                builder: (context, state) => _recoveryScreen(
-                  (recovery) => CreateNewPasswordScreen(
-                    recovery: recovery,
-                    onReenterCode: () => router.go(AppRoutes.authRecoveryOtp),
-                    onLocaleToggle: switchLocale,
-                  ),
-                ),
-                routes: [
-                  GoRoute(
-                    path: AppRoutes.resetPasswordSuccessSegment,
-                    builder: (context, state) => _recoveryScreen(
-                      (_) => PasswordResetSuccessScreen(
-                        onLogIn: () => router.go(AppRoutes.authLogin),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+      _splashRoute(),
+      _profileCompletionRoute(),
+      _phoneVerifyRoute(),
+      ..._onboardingRoutes(),
+      _authRoute(),
       // Legacy home route redirects to the shell (Discover tab)
       GoRoute(
         path: AppRoutes.home,
         redirect: (context, state) => AppRoutes.discover,
       ),
-      // Main authenticated shell with bottom navigation
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return MainShell(navigationShell: navigationShell);
+      _mainShellRoute(),
+    ];
+  }
+
+  GoRoute _splashRoute() => GoRoute(
+    path: AppRoutes.splash,
+    builder: (context, state) =>
+        SplashScreen(onFinished: () => unawaited(_leaveSplash())),
+  );
+
+  GoRoute _profileCompletionRoute() => GoRoute(
+    path: AppRoutes.profileCompletion,
+    builder: (context, state) => _scope(
+      profileCompletion,
+      services.createProfileCompletion,
+      (bloc) => ProfileCompletionScreen(
+        bloc: bloc,
+        initialName: session.state.client?.name ?? '',
+        initialPhone: session.state.client?.phone,
+        onCompleted: (phone) {
+          router.go(AppRoutes.discover);
+          if (phone != null) {
+            unawaited(router.push<void>(AppRoutes.phoneVerify, extra: phone));
+          }
         },
-        branches: [
-          // Tab 0: Discover
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.discover,
-                builder: (context, state) => _scope(
-                  discovery,
-                  services.createDiscovery,
-                  (bloc) => discovery_feed.DiscoveryScreen(
-                    bloc: bloc,
-                    onLocaleToggle: switchLocale,
-                    onBookNow: _onBookNow,
-                    onViewDetails: (branchId) =>
-                        router.push<void>(AppRoutes.branchDetail(branchId)),
-                    onViewStylist: (barberId) =>
-                        router.push<void>(AppRoutes.barberDetail(barberId)),
-                  ),
-                ),
-                routes: [
-                  GoRoute(
-                    path: AppRoutes.branchDetailSegment,
-                    builder: (context, state) => _scope(
-                      favorites,
-                      services.createFavorites,
-                      (favoritesBloc) => _scope(
-                        branchDetail,
-                        services.createBranchDetail,
-                        (bloc) => BranchDetailScreen(
-                          bloc: bloc,
-                          branchId: state.pathParameters['branchId'] ?? '',
-                          onLocaleToggle: switchLocale,
-                          onViewBookings: () => router.go(AppRoutes.bookings),
-                          onBarberSelected: (barberId) => router.push<void>(
-                            AppRoutes.barberDetail(barberId),
-                          ),
-                          onFavorite: (id, type) => unawaited(
-                            favoritesBloc.add(
-                              favorableId: id,
-                              favorableType: type,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GoRoute(
-                    path: AppRoutes.discoverBarberSegment,
-                    builder: (context, state) => _scope(
-                      stylistProfile,
-                      services.createStylistProfile,
-                      (bloc) => StylistProfileScreen(
-                        bloc: bloc,
-                        barberId: state.pathParameters['barberId'] ?? '',
-                        onLocaleToggle: switchLocale,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      ),
+    ),
+  );
+
+  GoRoute _phoneVerifyRoute() => GoRoute(
+    path: AppRoutes.phoneVerify,
+    builder: (context, state) {
+      final phone = state.extra as String? ?? '';
+      return _scope(
+        phoneVerification,
+        () => services.createPhoneVerification(phone),
+        (bloc) => PhoneVerificationScreen(
+          bloc: bloc,
+          onVerified: (client) {
+            session.add(SessionAuthenticated(client));
+            _leavePhoneVerification();
+          },
+          onSkip: _leavePhoneVerification,
+        ),
+      );
+    },
+  );
+
+  List<RouteBase> _onboardingRoutes() => [
+    GoRoute(
+      path: AppRoutes.onboardingWelcome,
+      builder: (context, state) => _scope(
+        onboardingConfig,
+        _newOnboardingConfig,
+        (bloc) => WelcomeScreen(
+          onboardingConfig: bloc,
+          onNext: () => router.push<void>(AppRoutes.onboardingDiscovery),
+          onSkipForNow: _skipForNow,
+          onDontShowAgain: () => unawaited(_dismissForever()),
+          onLocaleToggle: switchLocale,
+        ),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.onboardingDiscovery,
+      builder: (context, state) => _scope(
+        onboardingConfig,
+        _newOnboardingConfig,
+        (bloc) => DiscoveryScreen(
+          onboardingConfig: bloc,
+          onNext: () => router.push<void>(AppRoutes.onboardingBooking),
+          onSkipForNow: _skipForNow,
+          onDontShowAgain: () => unawaited(_dismissForever()),
+          onLocaleToggle: switchLocale,
+        ),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.onboardingBooking,
+      builder: (context, state) => BookingScreen(
+        onNext: () => router.push<void>(AppRoutes.onboardingAiStyle),
+        onSkipForNow: _skipForNow,
+        onDontShowAgain: () => unawaited(_dismissForever()),
+        onLocaleToggle: switchLocale,
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.onboardingAiStyle,
+      builder: (context, state) => AiShowcaseScreen(
+        onNext: () => unawaited(_dismissForever()),
+        onSkipForNow: _skipForNow,
+        onDontShowAgain: () => unawaited(_dismissForever()),
+        onLocaleToggle: switchLocale,
+      ),
+    ),
+  ];
+
+  GoRoute _authRoute() => GoRoute(
+    path: AppRoutes.authEntry,
+    builder: (context, state) => AuthEntryScreen(
+      onLogin: () => router.push<void>(AppRoutes.authLogin),
+      onSignup: () => router.push<void>(AppRoutes.authRegister),
+      onGuest: () => router.go(AppRoutes.onboardingWelcome),
+      onLocaleToggle: switchLocale,
+    ),
+    routes: [
+      GoRoute(
+        path: AppRoutes.loginSegment,
+        builder: (context, state) => LoginScreen(
+          auth: auth,
+          session: session,
+          onCreateAccount: () => router.push<void>(AppRoutes.authRegister),
+          onForgotPassword: () =>
+              router.push<void>(AppRoutes.authForgotPassword),
+          onLocaleToggle: switchLocale,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.registerSegment,
+        builder: (context, state) => SignUpScreen(
+          auth: auth,
+          onLogInLink: () => router.push<void>(AppRoutes.authLogin),
+          onLocaleToggle: switchLocale,
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.verifySegment,
+        builder: (context, state) => VerifyAccountScreen(
+          auth: auth,
+          destination: state.extra as String? ?? '',
+          onSkip: () => router.go(AppRoutes.discover),
+          onLocaleToggle: switchLocale,
+        ),
+      ),
+      _passwordRecoveryShellRoute(),
+    ],
+  );
+
+  ShellRoute _passwordRecoveryShellRoute() => ShellRoute(
+    builder: (context, state, child) =>
+        _scope(recovery, services.createPasswordRecovery, (_) => child),
+    routes: [
+      GoRoute(
+        path: AppRoutes.forgotPasswordSegment,
+        builder: (context, state) => _recoveryScreen(
+          (recovery) => ForgotPasswordScreen(
+            recovery: recovery,
+            onReturnToLogIn: () => router.go(AppRoutes.authLogin),
+            onLocaleToggle: switchLocale,
           ),
-          // Tab 1: Bookings
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.bookings,
-                builder: (context, state) => _scope(
-                  bookings,
-                  services.createBookings,
-                  (bloc) => BookingsScreen(
-                    bloc: bloc,
-                    onLocaleToggle: switchLocale,
-                    onRate: (bookingId) =>
-                        router.push<void>(AppRoutes.reviewDetail(bookingId)),
-                    onTrack: (booking) => router.push<void>(
-                      AppRoutes.bookingTracker,
-                      extra: booking,
-                    ),
-                    onDetails: (booking) => router.push<void>(
-                      AppRoutes.bookingDetails(booking.id),
-                      extra: booking,
-                    ),
-                  ),
-                ),
-                routes: [
-                  GoRoute(
-                    path: AppRoutes.reviewSegment,
-                    builder: (context, state) => _scope(
-                      reviewSubmit,
-                      services.createReviewSubmit,
-                      (bloc) => ReviewSubmitScreen(
-                        bloc: bloc,
-                        bookingId: state.pathParameters['bookingId'] ?? '',
-                        onLocaleToggle: switchLocale,
-                        onSubmitted: () => router.go(AppRoutes.bookings),
-                        onBack: () => router.pop(),
-                        onViewBookings: () => router.go(AppRoutes.bookings),
-                      ),
-                    ),
-                  ),
-                  GoRoute(
-                    path: AppRoutes.bookingTrackerSegment,
-                    builder: (context, state) => BookingTrackerScreen(
-                      booking: state.extra! as BookingDto,
-                      repository: services.createBookingRepository(),
-                      realtime: realtime,
-                      clientId: session.state.client?.id,
-                    ),
-                  ),
-                  GoRoute(
-                    path: AppRoutes.bookingDetailsSegment,
-                    builder: (context, state) => BookingDetailsScreen(
-                      booking: state.extra! as BookingDto,
-                      repository: services.createBookingRepository(),
-                    ),
-                  ),
-                ],
+        ),
+        routes: [
+          GoRoute(
+            path: AppRoutes.recoveryOtpSegment,
+            builder: (context, state) => _recoveryScreen(
+              (recovery) => RecoveryOtpScreen(
+                recovery: recovery,
+                onLocaleToggle: switchLocale,
               ),
-            ],
-          ),
-          // Tab 2: Favorites
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.favorites,
-                builder: (context, state) => _scope(
-                  favorites,
-                  services.createFavorites,
-                  (bloc) => FavoritesScreen(bloc: bloc),
-                ),
-              ),
-            ],
-          ),
-          // Tab 3: Profile
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.profile,
-                builder: (context, state) => MultiBlocProvider(
-                  providers: [
-                    if (history == null)
-                      BlocProvider(create: (_) => services.createHistory())
-                    else
-                      BlocProvider.value(value: history!),
-                    if (faceAnalysis == null)
-                      BlocProvider(create: (_) => services.createFaceAnalysis())
-                    else
-                      BlocProvider.value(value: faceAnalysis!),
-                    if (avatar == null)
-                      BlocProvider(create: (_) => services.createAvatar())
-                    else
-                      BlocProvider.value(value: avatar!),
-                  ],
-                  child: Builder(
-                    builder: (context) => ProfileScreen(
-                      history: context.read<HistoryBloc>(),
-                      faceAnalysis: context.read<FaceAnalysisBloc>(),
-                      avatar: context.read<AvatarBloc>(),
-                      photoPicker: photoPicker,
-                      clientName: session.state.client?.name,
-                      onChangePassword: () =>
-                          router.push<void>(AppRoutes.profilePassword),
-                      onViewBookings: () => router.go(AppRoutes.bookings),
-                      onEditProfile: () =>
-                          router.push<void>(AppRoutes.profileEdit),
-                      onSavedAddresses: () =>
-                          router.push<void>(AppRoutes.profileAddresses),
-                      onNotifications: () =>
-                          router.push<void>(AppRoutes.profileNotifications),
-                      onSettings: () =>
-                          router.push<void>(AppRoutes.profileSettings),
-                    ),
-                  ),
-                ),
-                routes: [
-                  GoRoute(
-                    path: AppRoutes.profilePasswordSegment,
-                    builder: (context, state) => _scope(
-                      passwordChange,
-                      services.createChangePassword,
-                      (bloc) => ChangePasswordScreen(
-                        passwordChange: bloc,
-                        onLocaleToggle: switchLocale,
-                      ),
-                    ),
-                  ),
-                  GoRoute(
-                    path: AppRoutes.profileEditSegment,
-                    builder: (context, state) => ProfileEditScreen(
-                      repository: services.createProfileRepository(),
-                      name: session.state.client?.name ?? '',
-                      phone: session.state.client?.phone,
-                      email: session.state.client?.email ?? '',
-                      onSaved: (client) =>
-                          session.add(SessionAuthenticated(client)),
-                      onEmailVerificationRequired: (email) =>
-                          router.push<void>(AppRoutes.authVerify, extra: email),
-                      onPhoneVerificationRequired: (phone) => router.push<void>(
-                        AppRoutes.phoneVerify,
-                        extra: phone,
-                      ),
-                      phoneVerified:
-                          session.state.client?.phoneVerified ?? false,
-                    ),
-                  ),
-                  GoRoute(
-                    path: AppRoutes.profileAddressesSegment,
-                    builder: (context, state) =>
-                        SavedAddressesScreen(preferences: preferences),
-                  ),
-                  GoRoute(
-                    path: AppRoutes.profileNotificationsSegment,
-                    builder: (context, state) => _scope(
-                      notifications,
-                      services.createNotifications,
-                      (bloc) => NotificationsScreen(bloc: bloc),
-                    ),
-                  ),
-                  GoRoute(
-                    path: AppRoutes.profileSettingsSegment,
-                    builder: (context, state) => SettingsScreen(
-                      repository: services.createProfileRepository(),
-                      currencyRepository: services.createCurrencyRepository(),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ],
       ),
-    ];
-  }
+      GoRoute(
+        path: AppRoutes.resetPasswordSegment,
+        builder: (context, state) => _recoveryScreen(
+          (recovery) => CreateNewPasswordScreen(
+            recovery: recovery,
+            onReenterCode: () => router.go(AppRoutes.authRecoveryOtp),
+            onLocaleToggle: switchLocale,
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: AppRoutes.resetPasswordSuccessSegment,
+            builder: (context, state) => _recoveryScreen(
+              (_) => PasswordResetSuccessScreen(
+                onLogIn: () => router.go(AppRoutes.authLogin),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+
+  StatefulShellRoute _mainShellRoute() => StatefulShellRoute.indexedStack(
+    builder: (context, state, navigationShell) {
+      return MainShell(navigationShell: navigationShell);
+    },
+    branches: [
+      _discoverBranch(),
+      _bookingsBranch(),
+      _favoritesBranch(),
+      _profileBranch(),
+    ],
+  );
+
+  StatefulShellBranch _discoverBranch() => StatefulShellBranch(
+    routes: [
+      GoRoute(
+        path: AppRoutes.discover,
+        builder: (context, state) => _scope(
+          discovery,
+          services.createDiscovery,
+          (bloc) => discovery_feed.DiscoveryScreen(
+            bloc: bloc,
+            onLocaleToggle: switchLocale,
+            onBookNow: _onBookNow,
+            onViewDetails: (branchId) =>
+                router.push<void>(AppRoutes.branchDetail(branchId)),
+            onViewStylist: (barberId) =>
+                router.push<void>(AppRoutes.barberDetail(barberId)),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: AppRoutes.branchDetailSegment,
+            builder: (context, state) => _scope(
+              favorites,
+              services.createFavorites,
+              (favoritesBloc) => _scope(
+                branchDetail,
+                services.createBranchDetail,
+                (bloc) => BranchDetailScreen(
+                  bloc: bloc,
+                  branchId: state.pathParameters['branchId'] ?? '',
+                  onLocaleToggle: switchLocale,
+                  onViewBookings: () => router.go(AppRoutes.bookings),
+                  onBarberSelected: (barberId) =>
+                      router.push<void>(AppRoutes.barberDetail(barberId)),
+                  onFavorite: (id, type) => unawaited(
+                    favoritesBloc.add(favorableId: id, favorableType: type),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.discoverBarberSegment,
+            builder: (context, state) => _scope(
+              stylistProfile,
+              services.createStylistProfile,
+              (bloc) => StylistProfileScreen(
+                bloc: bloc,
+                barberId: state.pathParameters['barberId'] ?? '',
+                onLocaleToggle: switchLocale,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+
+  StatefulShellBranch _bookingsBranch() => StatefulShellBranch(
+    routes: [
+      GoRoute(
+        path: AppRoutes.bookings,
+        builder: (context, state) => _scope(
+          bookings,
+          services.createBookings,
+          (bloc) => BookingsScreen(
+            bloc: bloc,
+            onLocaleToggle: switchLocale,
+            onRate: (bookingId) =>
+                router.push<void>(AppRoutes.reviewDetail(bookingId)),
+            onTrack: (booking) =>
+                router.push<void>(AppRoutes.bookingTracker, extra: booking),
+            onDetails: (booking) => router.push<void>(
+              AppRoutes.bookingDetails(booking.id),
+              extra: booking,
+            ),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: AppRoutes.reviewSegment,
+            builder: (context, state) => _scope(
+              reviewSubmit,
+              services.createReviewSubmit,
+              (bloc) => ReviewSubmitScreen(
+                bloc: bloc,
+                bookingId: state.pathParameters['bookingId'] ?? '',
+                onLocaleToggle: switchLocale,
+                onSubmitted: () => router.go(AppRoutes.bookings),
+                onBack: () => router.pop(),
+                onViewBookings: () => router.go(AppRoutes.bookings),
+              ),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.bookingTrackerSegment,
+            builder: (context, state) => BookingTrackerScreen(
+              booking: state.extra! as BookingDto,
+              repository: services.createBookingRepository(),
+              realtime: realtime,
+              clientId: session.state.client?.id,
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.bookingDetailsSegment,
+            builder: (context, state) => BookingDetailsScreen(
+              booking: state.extra! as BookingDto,
+              repository: services.createBookingRepository(),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+
+  StatefulShellBranch _favoritesBranch() => StatefulShellBranch(
+    routes: [
+      GoRoute(
+        path: AppRoutes.favorites,
+        builder: (context, state) => _scope(
+          favorites,
+          services.createFavorites,
+          (bloc) => FavoritesScreen(bloc: bloc),
+        ),
+      ),
+    ],
+  );
+
+  StatefulShellBranch _profileBranch() => StatefulShellBranch(
+    routes: [
+      GoRoute(
+        path: AppRoutes.profile,
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            if (history == null)
+              BlocProvider(create: (_) => services.createHistory())
+            else
+              BlocProvider.value(value: history!),
+            if (faceAnalysis == null)
+              BlocProvider(create: (_) => services.createFaceAnalysis())
+            else
+              BlocProvider.value(value: faceAnalysis!),
+            if (avatar == null)
+              BlocProvider(create: (_) => services.createAvatar())
+            else
+              BlocProvider.value(value: avatar!),
+          ],
+          child: Builder(
+            builder: (context) => ProfileScreen(
+              history: context.read<HistoryBloc>(),
+              faceAnalysis: context.read<FaceAnalysisBloc>(),
+              avatar: context.read<AvatarBloc>(),
+              photoPicker: photoPicker,
+              clientName: session.state.client?.name,
+              onChangePassword: () =>
+                  router.push<void>(AppRoutes.profilePassword),
+              onViewBookings: () => router.go(AppRoutes.bookings),
+              onEditProfile: () => router.push<void>(AppRoutes.profileEdit),
+              onSavedAddresses: () =>
+                  router.push<void>(AppRoutes.profileAddresses),
+              onNotifications: () =>
+                  router.push<void>(AppRoutes.profileNotifications),
+              onSettings: () => router.push<void>(AppRoutes.profileSettings),
+            ),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: AppRoutes.profilePasswordSegment,
+            builder: (context, state) => _scope(
+              passwordChange,
+              services.createChangePassword,
+              (bloc) => ChangePasswordScreen(
+                passwordChange: bloc,
+                onLocaleToggle: switchLocale,
+              ),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.profileEditSegment,
+            builder: (context, state) => ProfileEditScreen(
+              repository: services.createProfileRepository(),
+              name: session.state.client?.name ?? '',
+              phone: session.state.client?.phone,
+              email: session.state.client?.email ?? '',
+              onSaved: (client) => session.add(SessionAuthenticated(client)),
+              onEmailVerificationRequired: (email) =>
+                  router.push<void>(AppRoutes.authVerify, extra: email),
+              onPhoneVerificationRequired: (phone) =>
+                  router.push<void>(AppRoutes.phoneVerify, extra: phone),
+              phoneVerified: session.state.client?.phoneVerified ?? false,
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.profileAddressesSegment,
+            builder: (context, state) =>
+                SavedAddressesScreen(preferences: preferences),
+          ),
+          GoRoute(
+            path: AppRoutes.profileNotificationsSegment,
+            builder: (context, state) => _scope(
+              notifications,
+              services.createNotifications,
+              (bloc) => NotificationsScreen(bloc: bloc),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.profileSettingsSegment,
+            builder: (context, state) => SettingsScreen(
+              repository: services.createProfileRepository(),
+              currencyRepository: services.createCurrencyRepository(),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
 }
