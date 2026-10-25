@@ -88,7 +88,7 @@ codeanchors:
 - [x] Task 53: Complete Activation Management -> [Spec](tasks/task-53-activation-management.md)
 - [x] Task 54: Add Barber Bio and Self-Service Services API -> [Spec](tasks/task-54-barber-profile-and-services-api.md)
 - [x] Task 55: Complete Affiliation Lifecycle -> [Spec](tasks/task-55-affiliation-lifecycle.md)
-- [ ] Task 56: Complete Job Board -> [Spec](tasks/task-56-job-board-completion.md)
+- [x] Task 56: Complete Job Board -> [Spec](tasks/task-56-job-board-completion.md)
 
 ## Phase 9 — Currency (P2)
 - [ ] Task 57: Open Currency Conversion to Clients and Convert Prices -> [Spec](tasks/task-57-currency-client-conversion.md)

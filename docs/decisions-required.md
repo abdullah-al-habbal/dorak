@@ -130,7 +130,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved (user-directed): renamed `accepted` → `active` everywhere — the `AffiliationStatus` enum case/value, every Filament status badge/select/color map, and a data migration (`2026_10_25_000001_rename_affiliation_status_accepted_to_active.php`) backfilling existing `accepted` rows to `active`. The `accepted_at` column and the `accept`/`notification_responded_accepted_body` *action*-oriented translation keys were intentionally left as-is: they name the accept action, not the resulting status value.
 
 ## [Task 56: Complete Job Board](tasks/task-56-job-board-completion.md)
-- [ ] EC‑20: change the FKs to `nullOnDelete` or soft-delete branches/postings. On branch removal, set open postings to `closed` and keep the applications. Decision required: soft delete vs nullable FK.
+- [x] Decision resolved: nullable FK over soft delete. `job_postings.branch_id` is now `nullable()` with `nullOnDelete()` (no soft-delete column added to `branches`/`job_postings`). A `BranchModel::deleting` hook closes the branch's open postings before the delete runs, so `job_applications` rows always survive a branch deletion regardless of FK behavior; the nullable FK only guards against an already-deleted branch leaving a dangling `branch_id`.
 
 ## [Task 57: Open Currency Conversion to Clients and Convert Prices](tasks/task-57-currency-client-conversion.md)
 - [ ] Decision required: keep `POST /currency/convert` (and update the spec) or add a `GET` alias. Record the outcome in Task 87.

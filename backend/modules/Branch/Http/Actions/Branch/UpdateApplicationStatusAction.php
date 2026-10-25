@@ -53,8 +53,8 @@ final class UpdateApplicationStatusAction extends BaseApiAction
 
             $currentStatus = ApplicationStatus::from($currentStatusValue);
             $allowedTransitions = match ($currentStatus) {
-                ApplicationStatus::Submitted => [ApplicationStatus::Reviewed, ApplicationStatus::Accepted, ApplicationStatus::Rejected],
-                ApplicationStatus::Reviewed => [ApplicationStatus::Accepted, ApplicationStatus::Rejected],
+                ApplicationStatus::Submitted => [ApplicationStatus::Seen, ApplicationStatus::Accepted, ApplicationStatus::Rejected],
+                ApplicationStatus::Seen => [ApplicationStatus::Accepted, ApplicationStatus::Rejected],
                 ApplicationStatus::Accepted, ApplicationStatus::Rejected => [],
             };
 

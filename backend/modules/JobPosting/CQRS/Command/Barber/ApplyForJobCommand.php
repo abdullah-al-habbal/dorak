@@ -9,8 +9,5 @@ final readonly class ApplyForJobCommand
     public function __construct(
         public string $jobPostingId,
         public string $barberId,
-        public string $barberName,
-        public string $barberEmail,
-        public bool $isFreelancer,
     ) {}
 }

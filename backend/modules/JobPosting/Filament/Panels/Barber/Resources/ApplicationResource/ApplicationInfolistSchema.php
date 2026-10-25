@@ -23,7 +23,7 @@ final class ApplicationInfolistSchema
                         ->badge()
                         ->color(fn (ApplicationStatus $state): string => match ($state) {
                             ApplicationStatus::Submitted => 'warning',
-                            ApplicationStatus::Reviewed => 'info',
+                            ApplicationStatus::Seen => 'info',
                             ApplicationStatus::Accepted => 'success',
                             ApplicationStatus::Rejected => 'danger',
                         }),

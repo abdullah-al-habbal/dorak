@@ -21,9 +21,6 @@ final class ApplyForJobRequest extends BaseApiFormRequest
         return new ApplyForJobCommand(
             jobPostingId: $jobPostingId,
             barberId: (string) $this->user()->id,
-            barberName: $this->user()->name,
-            barberEmail: $this->user()->email,
-            isFreelancer: $this->user()->is_freelancer ?? false,
         );
     }
 }

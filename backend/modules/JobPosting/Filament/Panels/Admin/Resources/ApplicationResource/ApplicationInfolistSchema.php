@@ -25,7 +25,7 @@ final class ApplicationInfolistSchema
                         ->color(fn (string $state): string => match ($state) {
                             'accepted' => 'success',
                             'rejected' => 'danger',
-                            'reviewed' => 'info',
+                            'seen' => 'info',
                             default => 'warning',
                         }),
                 ]),

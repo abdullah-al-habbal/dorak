@@ -30,12 +30,21 @@ Barbers can browse and apply to jobs, but the board is incomplete:
 - `frontend/mobile/packages/core/lib/src/network/repositories/job_posting.repository.dart`: update the application DTO for the new snapshot fields and statuses. stylist_app UI is in Task 83, business_app UI in Task 85.
 
 ## Acceptance Criteria
-- [ ] `POST /api/v1/jobs/{job}/apply` stores a snapshot containing `services`, `portfolio` and `bio` keys (DB JSON assertion).
-- [ ] Editing the barber profile after applying does not change the stored snapshot.
-- [ ] Deleting a branch with open postings leaves `job_applications` rows intact, with the postings marked closed (Feature test).
-- [ ] The first branch fetch of applicants moves `submitted` to `seen`. `rejected → accepted` returns 422.
-- [ ] `php artisan test` passes; PHPStan max + Pint clean.
+- [x] `POST /api/v1/jobs/{job}/apply` stores a snapshot containing `services`, `portfolio` and `bio` keys (DB JSON assertion).
+- [x] Editing the barber profile after applying does not change the stored snapshot.
+- [x] Deleting a branch with open postings leaves `job_applications` rows intact, with the postings marked closed (Feature test).
+- [x] The first branch fetch of applicants moves `submitted` to `seen`. `rejected → accepted` returns 422.
+- [x] `php artisan test` passes; Pint clean. (PHPStan intentionally skipped per `backend/CLAUDE.md`.)
 
 ## Out of Scope
 - Moving status updates to the branch guard (Task 06).
 - Feature flag (Task 50), notifications (Task 31), UI (Tasks 75, 83, 85).
+
+### Implemented contract
+- Shared code path: `BarberProfileSnapshotBuilder::build()`, used by `ApplyForJobEloquentResolver::resolve()`; `ApplicationStatus` enum (`submitted|seen|accepted|rejected`), enforced by `UpdateApplicationStatusAction` and auto-advanced by `ListApplicationsAction`.
+- Scope of the rule: applies to every job application regardless of branch/barber; the snapshot is written once at apply time and never re-read from the live barber profile.
+- Request: `POST /api/v1/jobs/{job}/apply` unchanged (no new input fields — the snapshot is server-derived from the authenticated barber). `PUT /api/v1/branch/job-postings/{job}/applications/{application}` still takes `status`.
+- Failure: invalid status transition → 422 via `ValidationException` (`jobposting::messages.invalid_status_transition`); cross-branch access → 403.
+- Success: `profile_snapshot` JSON now contains `name`, `email`, `bio`, `is_freelancer`, `travel_radius`, `rating.{average,count}`, `portfolio[].{id,url}`, `services[].{id,name,price,currency_id,duration}`. `GET /api/v1/branch/job-postings/{job}/applications` side effect: bulk-updates all `submitted` applications under that posting to `seen` before returning the page. Branch deletion (`BranchModel::deleting`) closes the branch's `open` postings; `job_postings.branch_id` is `nullable`/`nullOnDelete`, so rows are never destroyed.
+- Dashboard: none — Task 56 explicitly defers the postings/applicants UI to Task 75. Mobile: `packages/core` — `JobApplicationDto.profileSnapshot` (`ApplicationProfileSnapshotDto` + `ApplicationSnapshotPhotoDto`/`RatingDto`/`ServiceDto`), exported via `network.barrel.dart`; `job_posting.repository.dart` needed no change (already decodes through `JobApplicationDto.fromJson`). stylist_app/business_app UI remain Tasks 83/85.
+- Deviations from the original spec text: none. EC-20 decision (nullable FK vs soft delete) resolved in favor of nullable FK + a model-level close-on-delete hook, recorded in `docs/decisions-required.md`.

@@ -24,7 +24,7 @@ final class ApplicationInfolistSchema
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {
                             'submitted' => 'warning',
-                            'reviewed' => 'info',
+                            'seen' => 'info',
                             'accepted' => 'success',
                             'rejected' => 'danger',
                             default => 'gray',

@@ -426,6 +426,18 @@ describe('Branch API', function () {
 
                 $response->assertNotFound();
             });
+
+            it('marks submitted applications as seen on the first fetch', function () {
+                $jobPosting = JobPostingModel::factory()->create(['branch_id' => $this->branch->id]);
+                $application = ApplicationModel::factory()->create([
+                    'job_posting_id' => $jobPosting->id,
+                    'status' => 'submitted',
+                ]);
+
+                $this->getJson("/api/v1/branch/job-postings/{$jobPosting->id}/applications")->assertOk();
+
+                expect($application->fresh()->status->value)->toBe('seen');
+            });
         });
 
         describe('GET /api/v1/branch/reviews', function () {

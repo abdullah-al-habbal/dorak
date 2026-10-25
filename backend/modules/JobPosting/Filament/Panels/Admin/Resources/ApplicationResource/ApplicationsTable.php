@@ -26,7 +26,7 @@ final class ApplicationsTable
                     ->color(fn (string $state): string => match ($state) {
                         'accepted' => 'success',
                         'rejected' => 'danger',
-                        'reviewed' => 'info',
+                        'seen' => 'info',
                         default => 'warning',
                     }),
                 TextColumn::make('created_at')

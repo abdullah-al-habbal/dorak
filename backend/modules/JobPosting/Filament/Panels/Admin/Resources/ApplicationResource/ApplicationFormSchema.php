@@ -26,7 +26,7 @@ final class ApplicationFormSchema
                     Select::make('status')
                         ->options([
                             'pending' => 'Pending',
-                            'reviewed' => 'Reviewed',
+                            'seen' => 'Seen',
                             'accepted' => 'Accepted',
                             'rejected' => 'Rejected',
                         ])

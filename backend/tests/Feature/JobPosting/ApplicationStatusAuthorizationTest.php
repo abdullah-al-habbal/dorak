@@ -63,6 +63,21 @@ it('rejects terminal status transitions', function () {
     expect($application->fresh()->status->value)->toBe('accepted');
 });
 
+it('rejects a rejected to accepted transition', function () {
+    $branch = BranchModel::factory()->create();
+    $posting = JobPostingModel::factory()->create(['branch_id' => $branch->id]);
+    $application = ApplicationModel::factory()->create([
+        'job_posting_id' => $posting->id,
+        'status' => 'rejected',
+    ]);
+    $this->actingAs($branch, 'branch_api');
+
+    $this->patchJson(applicationStatusUrl($posting, $application), ['status' => 'accepted'])
+        ->assertUnprocessable();
+
+    expect($application->fresh()->status->value)->toBe('rejected');
+});
+
 it('returns not found when the application does not exist', function () {
     $branch = BranchModel::factory()->create();
     $posting = JobPostingModel::factory()->create(['branch_id' => $branch->id]);

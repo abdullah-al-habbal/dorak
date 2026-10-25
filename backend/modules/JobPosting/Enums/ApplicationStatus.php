@@ -7,7 +7,7 @@ namespace Modules\JobPosting\Enums;
 enum ApplicationStatus: string
 {
     case Submitted = 'submitted';
-    case Reviewed = 'reviewed';
+    case Seen = 'seen';
     case Accepted = 'accepted';
     case Rejected = 'rejected';
 
