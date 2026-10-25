@@ -1,11 +1,18 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@/components/tailgrids/core/card";
 import { useSession } from "@/hooks/use-session";
+import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { Input } from "@/components/tailgrids/core/input";
 import { Button } from "@/components/tailgrids/core/button";
+import {
+  requestEmailChangeSchema,
+  updateDisplayNameSchema,
+  verifyEmailChangeSchema,
+} from "@/services/api/dashboard/account-details.schema";
 import { getProfile } from "@/services/api/dashboard/profile.query";
 import {
   requestEmailChange,
@@ -13,58 +20,58 @@ import {
   verifyEmailChange,
 } from "@/services/api/dashboard/profile.mutation";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import type { z } from "zod";
 
 export function AccountDetails() {
   const session = useSession();
   const dictionary = useDictionary();
   const copy = dictionary.profile.account;
+  const router = useRouter();
   const profile = useQuery({
     queryKey: ["dashboard", "profile"],
     queryFn: getProfile,
   });
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const router = useRouter();
   const current = profile.data;
 
-  async function saveName(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    try {
-      await updateProfile({
-        displayName: displayName || current?.displayName || "",
-      });
-      await profile.refetch();
-      toast.success(copy.details);
-    } catch (error) {
-      toast.error(apiErrorMessage(error, dictionary));
-    }
-  }
-  async function beginEmailChange(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    try {
-      await requestEmailChange(email);
-      await profile.refetch();
-      toast.success(copy.email);
-    } catch (error) {
-      toast.error(apiErrorMessage(error, dictionary));
-    }
-  }
-  async function confirmEmailChange(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    try {
-      await verifyEmailChange(code);
-      setCode("");
-      await profile.refetch();
-      router.refresh();
-      toast.success(copy.email);
-    } catch (error) {
-      toast.error(apiErrorMessage(error, dictionary));
-    }
-  }
+  const nameForm = useForm<z.infer<typeof updateDisplayNameSchema>>({
+    resolver: zodResolver(updateDisplayNameSchema),
+    defaultValues: { displayName: session.displayName ?? "" },
+  });
+  useEffect(() => {
+    if (current) nameForm.reset({ displayName: current.displayName ?? "" });
+  }, [current, nameForm]);
+  const saveName = useDashboardMutation(
+    "profile",
+    (value: z.infer<typeof updateDisplayNameSchema>) =>
+      updateProfile({ displayName: value.displayName }),
+  );
+
+  const emailForm = useForm<z.infer<typeof requestEmailChangeSchema>>({
+    resolver: zodResolver(requestEmailChangeSchema),
+    defaultValues: { email: "" },
+  });
+  const beginEmailChange = useDashboardMutation(
+    "profile",
+    (value: z.infer<typeof requestEmailChangeSchema>) =>
+      requestEmailChange(value.email),
+  );
+
+  const codeForm = useForm<z.infer<typeof verifyEmailChangeSchema>>({
+    resolver: zodResolver(verifyEmailChangeSchema),
+    defaultValues: { code: "" },
+  });
+  const confirmEmailChange = useDashboardMutation(
+    "profile",
+    (value: z.infer<typeof verifyEmailChangeSchema>) =>
+      verifyEmailChange(value.code),
+  );
+
+  const failed = (error: unknown) =>
+    toast.error(apiErrorMessage(error, dictionary));
 
   return (
     <Card className="bg-transparent p-5">
@@ -72,46 +79,73 @@ export function AccountDetails() {
         {copy.details}
       </h2>
 
-      <form className="mt-6 grid gap-3" onSubmit={saveName}>
+      <form
+        className="mt-6 grid gap-3"
+        onSubmit={nameForm.handleSubmit((value) =>
+          saveName.mutate(value, {
+            onSuccess: () => toast.success(copy.details),
+            onError: failed,
+          }),
+        )}
+      >
         <label className="grid gap-2 text-sm text-text-primary">
           {copy.fullName}
           <Input
-            value={
-              displayName || current?.displayName || session.displayName || ""
-            }
-            onChange={(event) => setDisplayName(event.target.value)}
-            required
+            {...nameForm.register("displayName")}
+            state={nameForm.formState.errors.displayName ? "error" : "default"}
           />
         </label>
-        <Button type="submit">{copy.details}</Button>
+        <Button type="submit" isDisabled={saveName.isPending}>
+          {copy.details}
+        </Button>
       </form>
-      <form className="mt-6 grid gap-3" onSubmit={beginEmailChange}>
+      <form
+        className="mt-6 grid gap-3"
+        onSubmit={emailForm.handleSubmit((value) =>
+          beginEmailChange.mutate(value, {
+            onSuccess: () => toast.success(copy.email),
+            onError: failed,
+          }),
+        )}
+      >
         <label className="grid gap-2 text-sm text-text-primary">
           {copy.email}
           <Input
             type="email"
-            value={email}
             placeholder={
               current?.email ?? session.email ?? copy.emailPlaceholder
             }
-            onChange={(event) => setEmail(event.target.value)}
-            required
+            {...emailForm.register("email")}
+            state={emailForm.formState.errors.email ? "error" : "default"}
           />
         </label>
-        <Button type="submit">{copy.email}</Button>
+        <Button type="submit" isDisabled={beginEmailChange.isPending}>
+          {copy.email}
+        </Button>
       </form>
       {current?.pendingEmail ? (
-        <form className="mt-4 grid gap-3" onSubmit={confirmEmailChange}>
+        <form
+          className="mt-4 grid gap-3"
+          onSubmit={codeForm.handleSubmit((value) =>
+            confirmEmailChange.mutate(value, {
+              onSuccess: () => {
+                codeForm.reset();
+                router.refresh();
+                toast.success(copy.email);
+              },
+              onError: failed,
+            }),
+          )}
+        >
           <p className="text-sm text-text-secondary">{current.pendingEmail}</p>
           <Input
-            value={code}
             inputMode="numeric"
-            minLength={6}
-            maxLength={6}
-            onChange={(event) => setCode(event.target.value)}
-            required
+            {...codeForm.register("code")}
+            state={codeForm.formState.errors.code ? "error" : "default"}
           />
-          <Button type="submit">{copy.email}</Button>
+          <Button type="submit" isDisabled={confirmEmailChange.isPending}>
+            {copy.email}
+          </Button>
         </form>
       ) : null}
     </Card>
