@@ -25,7 +25,7 @@ class DioHistoryRepository implements HistoryRepository {
     int perPage = 15,
   }) {
     return _apiClient.getPaginated<ServiceHistoryDto>(
-      HistoryEndpoints.history,
+      ApiEndpoints.history.history,
       queryParameters: {'page': page, 'per_page': perPage},
       itemParser: (json) =>
           ServiceHistoryDto.fromJson(json as Map<String, dynamic>),
@@ -36,7 +36,7 @@ class DioHistoryRepository implements HistoryRepository {
   Future<BookingDto> rebookFromHistory(String historyId, DateTime timeSlot) {
     final formatted = timeSlot.toUtc().toIso8601String();
     return _apiClient.post<BookingDto>(
-      HistoryEndpoints.rebookFromHistory.replaceFirst('{history}', historyId),
+      ApiEndpoints.history.rebookFromHistory(historyId),
       data: {'time_slot': formatted},
       parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
@@ -48,7 +48,7 @@ class DioHistoryRepository implements HistoryRepository {
     required String photoUrl,
     required String photoType,
   }) => _apiClient.post(
-    HistoryEndpoints.attachMedia.replaceFirst('{history}', historyId),
+    ApiEndpoints.history.attachMedia(historyId),
     data: {'photo_url': photoUrl, 'photo_type': photoType},
     parser: (json) => HistoryMediaDto.fromJson(json as Map<String, dynamic>),
   );

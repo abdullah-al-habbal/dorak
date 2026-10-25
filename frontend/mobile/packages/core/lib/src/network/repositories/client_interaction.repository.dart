@@ -19,7 +19,7 @@ class DioClientInteractionRepository implements ClientInteractionRepository {
   final ApiClient _client;
   @override
   Future<List<SavedFilterDto>> getSavedFilters() => _client.get(
-    ClientInteractionEndpoints.savedFilters,
+    ApiEndpoints.clientInteraction.savedFilters,
     parser: (json) => (json as List)
         .map((item) => SavedFilterDto.fromJson(item as Map<String, dynamic>))
         .toList(),
@@ -33,13 +33,13 @@ class DioClientInteractionRepository implements ClientInteractionRepository {
     final data = {'name': name, 'filter_config': filterConfig};
     if (id == null) {
       return _client.post(
-        ClientInteractionEndpoints.savedFilters,
+        ApiEndpoints.clientInteraction.savedFilters,
         data: data,
         parser: (json) => SavedFilterDto.fromJson(json as Map<String, dynamic>),
       );
     }
     return _client.put(
-      ClientInteractionEndpoints.savedFilter(id),
+      ApiEndpoints.clientInteraction.savedFilter(id),
       data: data,
       parser: (json) => SavedFilterDto.fromJson(json as Map<String, dynamic>),
     );
@@ -47,10 +47,10 @@ class DioClientInteractionRepository implements ClientInteractionRepository {
 
   @override
   Future<void> deleteSavedFilter(String id) =>
-      _client.delete(ClientInteractionEndpoints.savedFilter(id));
+      _client.delete(ApiEndpoints.clientInteraction.savedFilter(id));
   @override
   Future<DiscoveryPreferenceDto> getDiscoveryPreferences() => _client.get(
-    ClientInteractionEndpoints.discoveryPreferences,
+    ApiEndpoints.clientInteraction.discoveryPreferences,
     parser: (json) =>
         DiscoveryPreferenceDto.fromJson(json as Map<String, dynamic>),
   );
@@ -58,7 +58,7 @@ class DioClientInteractionRepository implements ClientInteractionRepository {
   Future<DiscoveryPreferenceDto> updateDiscoveryPreferences(
     Map<String, dynamic> values,
   ) => _client.patch(
-    ClientInteractionEndpoints.discoveryPreferences,
+    ApiEndpoints.clientInteraction.discoveryPreferences,
     data: values,
     parser: (json) =>
         DiscoveryPreferenceDto.fromJson(json as Map<String, dynamic>),

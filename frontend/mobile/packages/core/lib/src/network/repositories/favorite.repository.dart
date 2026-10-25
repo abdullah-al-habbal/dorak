@@ -24,7 +24,7 @@ class DioFavoriteRepository implements FavoriteRepository {
     int page = 1,
     int perPage = 20,
   }) => _apiClient.getPaginated<ClientFavoriteDto>(
-    FavoriteEndpoints.favorites,
+    ApiEndpoints.favorite.favorites,
     queryParameters: {'page': page, 'per_page': perPage},
     itemParser: (json) =>
         ClientFavoriteDto.fromJson(json as Map<String, dynamic>),
@@ -35,13 +35,13 @@ class DioFavoriteRepository implements FavoriteRepository {
     required String favorableId,
     required String favorableType,
   }) => _apiClient.post<ClientFavoriteDto>(
-    FavoriteEndpoints.favorites,
+    ApiEndpoints.favorite.favorites,
     data: {'favorable_id': favorableId, 'favorable_type': favorableType},
     parser: (json) => ClientFavoriteDto.fromJson(json as Map<String, dynamic>),
   );
 
   @override
   Future<void> removeFavorite(String favoriteId) => _apiClient.delete(
-    FavoriteEndpoints.favoriteDetail.replaceFirst('{favorite}', favoriteId),
+    ApiEndpoints.favorite.favoriteDetail(favoriteId),
   );
 }

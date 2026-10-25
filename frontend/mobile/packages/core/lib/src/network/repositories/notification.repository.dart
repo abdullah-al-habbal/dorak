@@ -22,7 +22,7 @@ class DioNotificationRepository implements NotificationRepository {
     int perPage = 20,
   }) {
     return _apiClient.getPaginated<NotificationDto>(
-      NotificationEndpoints.notifications,
+      ApiEndpoints.notification.notifications,
       queryParameters: {'page': page, 'per_page': perPage},
       itemParser: (json) =>
           NotificationDto.fromJson(json as Map<String, dynamic>),
@@ -32,10 +32,7 @@ class DioNotificationRepository implements NotificationRepository {
   @override
   Future<NotificationDto> markRead(String notificationId) {
     return _apiClient.patch<NotificationDto>(
-      NotificationEndpoints.markRead.replaceFirst(
-        '{notification}',
-        notificationId,
-      ),
+      ApiEndpoints.notification.markRead(notificationId),
       parser: (json) => NotificationDto.fromJson(json as Map<String, dynamic>),
     );
   }
@@ -43,7 +40,7 @@ class DioNotificationRepository implements NotificationRepository {
   @override
   Future<void> markAllRead() {
     return _apiClient.post<void>(
-      NotificationEndpoints.markAllRead,
+      ApiEndpoints.notification.markAllRead,
       parser: _discardBody,
     );
   }

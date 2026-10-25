@@ -50,7 +50,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       _openNotification,
     );
     _session = StaffSessionBloc(
-      DioStaffAuthRepository(_apiClient, BranchAuthEndpoints.login),
+      DioStaffAuthRepository(_apiClient, ApiEndpoints.branchAuth.login),
       _tokenStorage,
     );
     _unauthorizedSubscription = _apiClient.unauthorizedStream.listen(

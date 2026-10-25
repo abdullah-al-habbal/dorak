@@ -47,7 +47,7 @@ class _StylistAppState extends State<StylistApp> {
       _openNotification,
     );
     _session = StaffSessionBloc(
-      DioStaffAuthRepository(_client, BarberAuthEndpoints.login),
+      DioStaffAuthRepository(_client, ApiEndpoints.barberAuth.login),
       _tokenStorage,
     );
     _signUp = StylistSignUpBloc(DioBarberRegistrationRepository(_client));

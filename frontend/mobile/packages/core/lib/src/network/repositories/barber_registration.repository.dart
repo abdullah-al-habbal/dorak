@@ -1,6 +1,4 @@
-import 'package:core/src/network/api.client.dart';
-import 'package:core/src/network/dto/token_response.dto.dart';
-import 'package:core/src/network/endpoints/barber_auth.endpoints.dart';
+import 'package:core/core.dart';
 
 /// Barber self sign-up. A new account starts `pending` until an admin
 /// activates it; the token returned by [register] only reaches the profile
@@ -35,7 +33,7 @@ class DioBarberRegistrationRepository implements BarberRegistrationRepository {
     required bool isFreelancer,
   }) async {
     final response = await _client.post(
-      BarberAuthEndpoints.register,
+      ApiEndpoints.barberAuth.register,
       data: {
         'name': name,
         'email': email,
@@ -53,13 +51,13 @@ class DioBarberRegistrationRepository implements BarberRegistrationRepository {
 
   @override
   Future<void> sendEmailVerification() => _client.post<void>(
-    BarberAuthEndpoints.sendEmailVerification,
+    ApiEndpoints.barberAuth.sendEmailVerification,
     parser: _discardBody,
   );
 
   @override
   Future<void> verifyEmail(String code) => _client.post<void>(
-    BarberAuthEndpoints.verifyEmail,
+    ApiEndpoints.barberAuth.verifyEmail,
     data: {'code': code},
     parser: _discardBody,
   );

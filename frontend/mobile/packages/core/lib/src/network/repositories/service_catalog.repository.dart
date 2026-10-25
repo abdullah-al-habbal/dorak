@@ -18,7 +18,7 @@ class DioServiceCatalogRepository implements ServiceCatalogRepository {
     int perPage = 100,
   }) {
     return _apiClient.getPaginated<CatalogItemDto>(
-      ServiceCatalogEndpoints.items,
+      ApiEndpoints.serviceCatalog.items,
       queryParameters: {'page': page, 'per_page': perPage},
       itemParser: (json) =>
           CatalogItemDto.fromJson(json as Map<String, dynamic>),

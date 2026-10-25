@@ -28,7 +28,7 @@ class DioFaceProfileRepository implements FaceProfileRepository {
       'is_primary': isPrimary,
     });
     return _apiClient.post<FacePhotoDto>(
-      FaceProfileEndpoints.upload,
+      ApiEndpoints.faceProfile.upload,
       data: formData,
       parser: (json) => FacePhotoDto.fromJson(json as Map<String, dynamic>),
     );
@@ -37,7 +37,7 @@ class DioFaceProfileRepository implements FaceProfileRepository {
   @override
   Future<List<FaceAnalysisResultDto>> getRecommendations() {
     return _apiClient.get<List<FaceAnalysisResultDto>>(
-      FaceProfileEndpoints.recommendations,
+      ApiEndpoints.faceProfile.recommendations,
       parser: (json) => (json as List<dynamic>)
           .map(
             (item) =>
@@ -50,7 +50,7 @@ class DioFaceProfileRepository implements FaceProfileRepository {
   @override
   Future<FacePhotoDto> getProfile(String id) {
     return _apiClient.get<FacePhotoDto>(
-      FaceProfileEndpoints.profile(id),
+      ApiEndpoints.faceProfile.profile(id),
       parser: (json) => FacePhotoDto.fromJson(json as Map<String, dynamic>),
     );
   }

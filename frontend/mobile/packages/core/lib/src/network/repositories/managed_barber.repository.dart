@@ -22,7 +22,7 @@ class DioManagedBarberRepository implements ManagedBarberRepository {
     String? chairId,
   }) {
     return _apiClient.post<ManagedBarberDto>(
-      BranchEndpoints.managedBarbers,
+      ApiEndpoints.branch.managedBarbers,
       data: {
         'name': {'en': nameEn, 'ar': nameAr},
         'phone': phone,

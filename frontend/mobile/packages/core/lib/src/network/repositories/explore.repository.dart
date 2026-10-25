@@ -176,7 +176,7 @@ class DioExploreRepository implements ExploreRepository {
     }
 
     return _apiClient.getRawPaginated<BranchDto>(
-      ExploreEndpoints.branches,
+      ApiEndpoints.explore.branches,
       queryParameters: params,
       itemParser: (json) => BranchDto.fromJson(json as Map<String, dynamic>),
     );
@@ -199,7 +199,7 @@ class DioExploreRepository implements ExploreRepository {
   }) {
     final text = query?.trim();
     return _apiClient.getRawPaginated<ExploreSearchItemDto>(
-      ExploreEndpoints.search,
+      ApiEndpoints.explore.search,
       queryParameters: {
         'latitude': latitude,
         'longitude': longitude,
@@ -226,7 +226,7 @@ class DioExploreRepository implements ExploreRepository {
   @override
   Future<BranchDetailDto> getBranchDetail(String branchId) {
     return _apiClient.get<BranchDetailDto>(
-      ExploreEndpoints.branchDetail.replaceFirst('{branch}', branchId),
+      ApiEndpoints.explore.branchDetail(branchId),
       parser: (json) => BranchDetailDto.fromJson(json as Map<String, dynamic>),
     );
   }
@@ -234,7 +234,7 @@ class DioExploreRepository implements ExploreRepository {
   @override
   Future<BarberProfileDto> getBarberDetail(String barberId) {
     return _apiClient.get<BarberProfileDto>(
-      ExploreEndpoints.barberDetail.replaceFirst('{barber}', barberId),
+      ApiEndpoints.explore.barberDetail(barberId),
       parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
     );
   }

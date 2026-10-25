@@ -29,20 +29,20 @@ class DioJobPostingRepository implements JobPostingRepository {
   @override
   Future<PaginatedData<JobPostingDto>> getJobs({int perPage = 20}) =>
       _client.getPaginated(
-        JobPostingEndpoints.jobs,
+        ApiEndpoints.jobPosting.jobs,
         queryParameters: {'per_page': perPage},
         itemParser: (json) =>
             JobPostingDto.fromJson(json as Map<String, dynamic>),
       );
   @override
   Future<JobPostingDto> getJob(String id) => _client.get(
-    JobPostingEndpoints.job(id),
+    ApiEndpoints.jobPosting.job(id),
     parser: (json) => JobPostingDto.fromJson(json as Map<String, dynamic>),
   );
   @override
   Future<JobApplicationDto> apply(String jobId, {String? coverLetter}) =>
       _client.post(
-        JobPostingEndpoints.apply(jobId),
+        ApiEndpoints.jobPosting.apply(jobId),
         data: {'cover_letter': ?coverLetter},
         parser: (json) =>
             JobApplicationDto.fromJson(json as Map<String, dynamic>),
@@ -50,7 +50,7 @@ class DioJobPostingRepository implements JobPostingRepository {
   @override
   Future<PaginatedData<JobApplicationDto>> getApplications({String? status}) =>
       _client.getPaginated(
-        JobPostingEndpoints.applications,
+        ApiEndpoints.jobPosting.applications,
         queryParameters: {'status': ?status},
         itemParser: (json) =>
             JobApplicationDto.fromJson(json as Map<String, dynamic>),
@@ -58,7 +58,7 @@ class DioJobPostingRepository implements JobPostingRepository {
   @override
   Future<PaginatedData<JobPostingDto>> getBranchJobPostings() =>
       _client.getPaginated(
-        JobPostingEndpoints.branchJobPostings,
+        ApiEndpoints.jobPosting.branchJobPostings,
         itemParser: (json) =>
             JobPostingDto.fromJson(json as Map<String, dynamic>),
       );
@@ -68,25 +68,25 @@ class DioJobPostingRepository implements JobPostingRepository {
     String? id,
   }) => id == null
       ? _client.post(
-          JobPostingEndpoints.branchJobPostings,
+          ApiEndpoints.jobPosting.branchJobPostings,
           data: values,
           parser: (json) =>
               JobPostingDto.fromJson(json as Map<String, dynamic>),
         )
       : _client.put(
-          JobPostingEndpoints.branchJobPosting(id),
+          ApiEndpoints.jobPosting.branchJobPosting(id),
           data: values,
           parser: (json) =>
               JobPostingDto.fromJson(json as Map<String, dynamic>),
         );
   @override
   Future<void> deleteBranchJobPosting(String id) =>
-      _client.delete(JobPostingEndpoints.branchJobPosting(id));
+      _client.delete(ApiEndpoints.jobPosting.branchJobPosting(id));
   @override
   Future<PaginatedData<JobApplicationDto>> getBranchApplications(
     String jobId,
   ) => _client.getPaginated(
-    JobPostingEndpoints.branchApplications(jobId),
+    ApiEndpoints.jobPosting.branchApplications(jobId),
     itemParser: (json) =>
         JobApplicationDto.fromJson(json as Map<String, dynamic>),
   );
@@ -96,7 +96,7 @@ class DioJobPostingRepository implements JobPostingRepository {
     String applicationId,
     String status,
   ) => _client.patch(
-    JobPostingEndpoints.branchApplicationStatus(jobId, applicationId),
+    ApiEndpoints.jobPosting.branchApplicationStatus(jobId, applicationId),
     data: {'status': status},
     parser: (json) => JobApplicationDto.fromJson(json as Map<String, dynamic>),
   );
@@ -105,7 +105,7 @@ class DioJobPostingRepository implements JobPostingRepository {
     required String preset,
     List<Map<String, dynamic>> zones = const [],
   }) => _client.patch(
-    JobPostingEndpoints.branchFloorPlan,
+    ApiEndpoints.jobPosting.branchFloorPlan,
     data: {'preset': preset, 'zones': zones},
     parser: (json) => Map<String, dynamic>.from(json as Map),
   );

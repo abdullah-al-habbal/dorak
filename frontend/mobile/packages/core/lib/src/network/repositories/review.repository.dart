@@ -45,7 +45,7 @@ class DioReviewRepository implements ReviewRepository {
       data['barber_rating'] = barberRating;
     }
     return _apiClient.post<ReviewDto>(
-      ReviewEndpoints.submitReview.replaceFirst('{booking}', bookingId),
+      ApiEndpoints.review.submitReview(bookingId),
       data: data,
       parser: (json) => ReviewDto.fromJson(json as Map<String, dynamic>),
     );
@@ -58,7 +58,7 @@ class DioReviewRepository implements ReviewRepository {
     int perPage = 20,
   }) {
     return _apiClient.getPaginated<ReviewDto>(
-      ReviewEndpoints.branchReviews.replaceFirst('{branch}', branchId),
+      ApiEndpoints.review.branchReviews(branchId),
       queryParameters: {'page': page, 'per_page': perPage},
       itemParser: (json) => ReviewDto.fromJson(json as Map<String, dynamic>),
     );
@@ -71,7 +71,7 @@ class DioReviewRepository implements ReviewRepository {
     int perPage = 20,
   }) {
     return _apiClient.getPaginated<ReviewDto>(
-      ReviewEndpoints.barberReviews.replaceFirst('{barber}', barberId),
+      ApiEndpoints.review.barberReviews(barberId),
       queryParameters: {'page': page, 'per_page': perPage},
       itemParser: (json) => ReviewDto.fromJson(json as Map<String, dynamic>),
     );

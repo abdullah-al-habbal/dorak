@@ -12,7 +12,7 @@ class DioCurrencyRepository implements CurrencyRepository {
   @override
   Future<List<CurrencyDto>> getCurrencies() {
     return _apiClient.get<List<CurrencyDto>>(
-      CurrencyEndpoints.currencies,
+      ApiEndpoints.currency.currencies,
       parser: (json) => (json as List<dynamic>)
           .map((item) => CurrencyDto.fromJson(item as Map<String, dynamic>))
           .toList(),

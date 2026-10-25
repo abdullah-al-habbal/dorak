@@ -45,7 +45,7 @@ class DioBookingRepository implements BookingRepository {
     int perPage = 20,
   }) {
     return _apiClient.getPaginated<BookingDto>(
-      BookingEndpoints.bookings,
+      ApiEndpoints.booking.bookings,
       queryParameters: {'status': ?status, 'page': page, 'per_page': perPage},
       itemParser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
@@ -54,7 +54,7 @@ class DioBookingRepository implements BookingRepository {
   @override
   Future<BookingDto> getBooking(String id) {
     return _apiClient.get<BookingDto>(
-      BookingEndpoints.bookingDetail.replaceFirst('{booking}', id),
+      ApiEndpoints.booking.bookingDetail(id),
       parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
   }
@@ -93,7 +93,7 @@ class DioBookingRepository implements BookingRepository {
     }
     final formatted = timeSlot.toUtc().toIso8601String();
     return _apiClient.post<BookingDto>(
-      BookingEndpoints.bookings,
+      ApiEndpoints.booking.bookings,
       data: {
         'chair_id': ?chairId,
         'branch_id': ?branchId,
@@ -116,7 +116,7 @@ class DioBookingRepository implements BookingRepository {
   @override
   Future<void> cancelBooking(String id) {
     return _apiClient.post<void>(
-      BookingEndpoints.cancelBooking.replaceFirst('{booking}', id),
+      ApiEndpoints.booking.cancelBooking(id),
       parser: _discardBody,
     );
   }
@@ -138,7 +138,7 @@ class DioBookingRepository implements BookingRepository {
       if (isAtHome) 'longitude': atHomeLongitude,
     };
     return _apiClient.get<List<SlotDto>>(
-      BookingEndpoints.barberSlots.replaceFirst('{barber}', barberId),
+      ApiEndpoints.booking.barberSlots(barberId),
       queryParameters: query,
       parser: (json) {
         if (json is List) {

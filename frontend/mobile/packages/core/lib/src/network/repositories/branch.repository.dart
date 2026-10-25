@@ -29,7 +29,7 @@ class DioBranchRepository implements BranchRepository {
   }) {
     final startsAt = timeSlot.toUtc().toIso8601String();
     return _apiClient.get<FloorPlanDto>(
-      BranchEndpoints.floorPlan.replaceFirst('{branch}', branchId),
+      ApiEndpoints.branch.floorPlan(branchId),
       queryParameters: {'starts_at': startsAt, 'duration': durationMinutes},
       parser: (json) => FloorPlanDto.fromJson(json as Map<String, dynamic>),
     );
@@ -54,7 +54,7 @@ class DioBranchRepository implements BranchRepository {
       query['barber_id'] = barberId;
     }
     return _apiClient.get<List<SlotDto>>(
-      BranchEndpoints.slots.replaceFirst('{branch}', branchId),
+      ApiEndpoints.branch.slots(branchId),
       queryParameters: query,
       parser: (json) {
         if (json is List) {

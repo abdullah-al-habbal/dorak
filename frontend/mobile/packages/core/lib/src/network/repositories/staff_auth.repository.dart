@@ -1,5 +1,4 @@
-import 'package:core/src/network/api.client.dart';
-import 'package:core/src/network/dto/token_response.dto.dart';
+import 'package:core/core.dart';
 
 abstract class StaffAuthRepository {
   Future<String> login({required String email, required String password});
