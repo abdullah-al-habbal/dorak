@@ -1,15 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/tailgrids/core/button";
-import {
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/tailgrids/core/dialog";
-import { Input } from "@/components/tailgrids/core/input";
+import { BarberAppointmentsSection } from "@/components/barber-workspace/barber-appointments-section";
+import { BarberCancelBookingDialog } from "@/components/barber-workspace/barber-cancel-booking-dialog";
+import { BarberPortfolioCard } from "@/components/barber-workspace/barber-portfolio-card";
+import { BarberTravelCard } from "@/components/barber-workspace/barber-travel-card";
+import { BarberWorkstationCard } from "@/components/barber-workspace/barber-workstation-card";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useBarberAppointmentsQuery } from "@/hooks/use-barber-appointments-query";
@@ -23,13 +19,13 @@ import {
   transitionBarberBooking,
   updateBarberWorkstation,
 } from "@/services/api/barber-workspace.mutation";
-import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
 export function BarberWorkspace() {
   const dictionary = useDictionary();
+  const copy = dictionary.barberWorkspace;
   const session = useSession();
   useBarberChannel(session.subject);
   const [online, setOnline] = useState(false);
@@ -60,180 +56,69 @@ export function BarberWorkspace() {
     (value: z.infer<typeof cancelBarberBookingFormSchema>) =>
       cancelBarberBooking(cancellingId ?? "", value.cancellationReason),
   );
+  const closeCancelDialog = () => {
+    setCancellingId(null);
+    cancelForm.reset();
+  };
 
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold text-title-50">
-          {dictionary.barberWorkspace.title}
-        </h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          {dictionary.barberWorkspace.description}
-        </p>
+        <h1 className="text-2xl font-semibold text-title-50">{copy.title}</h1>
+        <p className="mt-1 text-sm text-text-secondary">{copy.description}</p>
       </header>
       <div className="grid gap-4 lg:grid-cols-3">
-        <section className="rounded-xl border border-border-primary bg-card-primary p-5">
-          <h2 className="font-semibold text-title-50">
-            {dictionary.barberWorkspace.workstation}
-          </h2>
-          <p className="mt-2 text-sm text-text-secondary">
-            {currentOnline
-              ? dictionary.barberWorkspace.online
-              : dictionary.barberWorkspace.offline}
-          </p>
-          <Button
-            className="mt-4"
-            isDisabled={workstation.isPending}
-            onPress={() =>
-              workstation.mutate(undefined, {
-                onSuccess: () => setOnline((value) => !value),
-              })
-            }
-          >
-            {currentOnline
-              ? dictionary.barberWorkspace.goOffline
-              : dictionary.barberWorkspace.goOnline}
-          </Button>
-        </section>
-        <section className="rounded-xl border border-border-primary bg-card-primary p-5">
-          <h2 className="font-semibold text-title-50">
-            {dictionary.barberWorkspace.travel}
-          </h2>
-          <p className="mt-2 text-sm text-text-secondary">
-            {profile.data?.travelRadius ?? dictionary.common.status.unavailable}
-          </p>
-        </section>
-        <section className="rounded-xl border border-border-primary bg-card-primary p-5">
-          <h2 className="font-semibold text-title-50">
-            {dictionary.barberWorkspace.portfolio}
-          </h2>
-          {portfolio.data?.length ? (
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              {portfolio.data.map((photo) => (
-                <div
-                  className="relative aspect-square overflow-hidden rounded-md"
-                  key={photo.id}
-                >
-                  <Image
-                    alt={dictionary.barberWorkspace.portfolio}
-                    className="object-cover"
-                    fill
-                    sizes="(min-width: 1024px) 33vw, 33vw"
-                    src={photo.url}
-                    unoptimized
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="mt-2 text-sm text-text-secondary">
-              {dictionary.barberWorkspace.noPortfolio}
-            </p>
-          )}
-        </section>
-      </div>
-      <section className="rounded-xl border border-border-primary bg-card-primary p-5">
-        <h2 className="font-semibold text-title-50">
-          {dictionary.barberWorkspace.appointments}
-        </h2>
-        {appointments.isPending ? (
-          <p className="mt-3 text-sm text-text-secondary">
-            {dictionary.common.status.loading}
-          </p>
-        ) : null}
-        {appointments.data?.items.map((appointment) => (
-          <article
-            className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border-primary p-4"
-            key={appointment.id}
-          >
-            <div>
-              <p className="font-medium text-text-100">
-                {dictionary.operations.appointment}
-              </p>
-              <p className="text-sm text-text-secondary">
-                {appointment.timeSlot}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button
-                size="sm"
-                appearance="outline"
-                onPress={() =>
-                  transition.mutate({ id: appointment.id, action: "accept" })
-                }
-              >
-                {dictionary.barberWorkspace.transition.accept}
-              </Button>
-              <Button
-                size="sm"
-                variant="danger"
-                appearance="outline"
-                onPress={() => setCancellingId(appointment.id)}
-              >
-                {dictionary.barberWorkspace.cancellation}
-              </Button>
-            </div>
-          </article>
-        ))}
-      </section>
-      <Dialog
-        isOpen={cancellingId !== null}
-        onOpenChange={(value) => {
-          if (!value) {
-            setCancellingId(null);
-            cancelForm.reset();
+        <BarberWorkstationCard
+          title={copy.workstation}
+          onlineLabel={copy.online}
+          offlineLabel={copy.offline}
+          goOnlineLabel={copy.goOnline}
+          goOfflineLabel={copy.goOffline}
+          online={currentOnline}
+          isPending={workstation.isPending}
+          onToggle={() =>
+            workstation.mutate(undefined, {
+              onSuccess: () => setOnline((value) => !value),
+            })
           }
-        }}
+        />
+        <BarberTravelCard
+          title={copy.travel}
+          travelRadius={profile.data?.travelRadius}
+          unavailableLabel={dictionary.common.status.unavailable}
+        />
+        <BarberPortfolioCard
+          title={copy.portfolio}
+          noPortfolioLabel={copy.noPortfolio}
+          photos={portfolio.data}
+        />
+      </div>
+      <BarberAppointmentsSection
+        title={copy.appointments}
+        isPending={appointments.isPending}
+        loadingLabel={dictionary.common.status.loading}
+        appointmentLabel={dictionary.operations.appointment}
+        acceptLabel={copy.transition.accept}
+        cancelLabel={copy.cancellation}
+        appointments={appointments.data?.items}
+        onAccept={(id) => transition.mutate({ id, action: "accept" })}
+        onCancelRequest={setCancellingId}
+      />
+      <BarberCancelBookingDialog
         labels={dictionary.common.dialog}
-      >
-        <DialogHeader>
-          <DialogTitle>{dictionary.barberWorkspace.cancellation}</DialogTitle>
-        </DialogHeader>
-        <form
-          onSubmit={cancelForm.handleSubmit((value) =>
-            cancel.mutate(value, {
-              onSuccess: () => {
-                cancelForm.reset();
-                setCancellingId(null);
-              },
-            }),
-          )}
-        >
-          <DialogBody>
-            <label className="grid gap-2 text-sm text-text-100">
-              {dictionary.barberWorkspace.cancellationReason}
-              <Input
-                {...cancelForm.register("cancellationReason")}
-                placeholder={dictionary.barberWorkspace.cancellationPlaceholder}
-                state={
-                  cancelForm.formState.errors.cancellationReason
-                    ? "error"
-                    : "default"
-                }
-              />
-            </label>
-          </DialogBody>
-          <DialogFooter>
-            <Button
-              type="button"
-              appearance="outline"
-              onPress={() => {
-                setCancellingId(null);
-                cancelForm.reset();
-              }}
-            >
-              {dictionary.common.actions.cancel}
-            </Button>
-            <Button
-              type="submit"
-              variant="danger"
-              isDisabled={cancel.isPending}
-            >
-              {dictionary.barberWorkspace.confirmCancellation}
-            </Button>
-          </DialogFooter>
-        </form>
-      </Dialog>
+        isOpen={cancellingId !== null}
+        onClose={closeCancelDialog}
+        form={cancelForm}
+        onSubmit={(value) =>
+          cancel.mutate(value, { onSuccess: closeCancelDialog })
+        }
+        isPending={cancel.isPending}
+        titleLabel={copy.cancellation}
+        reasonLabel={copy.cancellationReason}
+        reasonPlaceholder={copy.cancellationPlaceholder}
+        cancelLabel={dictionary.common.actions.cancel}
+        confirmLabel={copy.confirmCancellation}
+      />
     </section>
   );
 }
