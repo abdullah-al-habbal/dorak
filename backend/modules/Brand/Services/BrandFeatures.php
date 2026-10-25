@@ -23,12 +23,12 @@ use Modules\Chair\Models\ChairModel;
  */
 final class BrandFeatures
 {
-    public const string MULTI_BRANCH = 'multi_branch';
+    public const MULTI_BRANCH = 'multi_branch';
 
-    public const string JOB_BOARD = 'job_board';
+    public const JOB_BOARD = 'job_board';
 
     /** @var array<string, class-string> */
-    private const array FEATURES = [
+    private const FEATURES = [
         self::MULTI_BRANCH => MultiBranchFeature::class,
         self::JOB_BOARD => JobBoardFeature::class,
     ];

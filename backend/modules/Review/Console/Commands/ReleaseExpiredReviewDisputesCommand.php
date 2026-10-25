@@ -11,15 +11,11 @@ use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
 use Modules\Review\Services\SubjectRatingRefresher;
 
-/**
- * L4: a dispute holds a review for at most 48 hours. Disputes no admin decided
- * in that window are re-published.
- */
 #[Signature('reviews:release-expired-disputes')]
 #[Description('Re-publish reviews whose dispute was not resolved within 48 hours')]
 final class ReleaseExpiredReviewDisputesCommand extends Command
 {
-    public const int WINDOW_HOURS = 48;
+    public const WINDOW_HOURS = 48;
 
     public function handle(SubjectRatingRefresher $ratings): int
     {
@@ -35,7 +31,6 @@ final class ReleaseExpiredReviewDisputesCommand extends Command
             'updated_at' => now(),
         ]);
 
-        // The bulk update bypasses the model observer, so refresh the ratings here.
         foreach ($subjects as $subject) {
             $ratings->refresh((string) $subject->getAttribute('subject_type'), (string) $subject->getAttribute('subject_id'));
         }

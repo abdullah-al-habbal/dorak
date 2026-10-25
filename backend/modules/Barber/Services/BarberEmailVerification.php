@@ -11,19 +11,12 @@ use Illuminate\Support\Facades\Mail;
 use Modules\Barber\Mail\BarberEmailVerificationCode;
 use Modules\Barber\Models\BarberModel;
 
-/**
- * Email verification for barbers, mirroring the client flow: a 6-digit code
- * cached (hashed) for 10 minutes, discarded after five wrong attempts.
- */
 final class BarberEmailVerification
 {
-    public const int MAX_ATTEMPTS = 5;
+    public const MAX_ATTEMPTS = 5;
 
-    private const int TTL_MINUTES = 10;
+    private const TTL_MINUTES = 10;
 
-    /**
-     * Sends a fresh code. Returns false when the email is already verified.
-     */
     public function send(BarberModel $barber): bool
     {
         if ($barber->getAttribute('email_verified_at') !== null) {
@@ -33,9 +26,6 @@ final class BarberEmailVerification
         $code = (string) random_int(100000, 999999);
         $barberId = (string) $barber->getKey();
 
-        // DEVELOPMENT ONLY. Lets local testing read the code without opening
-        // Mailtrap. Gated on the `local` environment so staging and production
-        // never reach it, and never a substitute for real delivery testing.
         if (app()->environment('local')) {
             Log::debug('Development OTP generated', [
                 'type' => 'barber_email_verification',
@@ -52,10 +42,6 @@ final class BarberEmailVerification
         return true;
     }
 
-    /**
-     * Marks the email verified when the code matches. A wrong code counts
-     * against the attempt budget.
-     */
     public function verify(BarberModel $barber, string $code): bool
     {
         $barberId = (string) $barber->getKey();

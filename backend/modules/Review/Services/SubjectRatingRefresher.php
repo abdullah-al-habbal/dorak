@@ -18,7 +18,7 @@ use Modules\Review\Models\ReviewModel;
 final class SubjectRatingRefresher
 {
     /** @var array<string, class-string<BranchModel|BarberModel>> */
-    private const array RATED_SUBJECTS = [
+    private const RATED_SUBJECTS = [
         'branch' => BranchModel::class,
         'barber' => BarberModel::class,
     ];

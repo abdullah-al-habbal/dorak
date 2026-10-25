@@ -10,11 +10,11 @@ use RuntimeException;
 
 final class DashboardSessionClaim
 {
-    private const string Algorithm = 'HS256';
+    private const Algorithm = 'HS256';
 
-    private const string Issuer = 'dorak-backend';
+    private const Issuer = 'dorak-backend';
 
-    private const int DefaultTtlSeconds = 28800;
+    private const DefaultTtlSeconds = 28800;
 
     public function issue(DashboardActor $actor): string
     {

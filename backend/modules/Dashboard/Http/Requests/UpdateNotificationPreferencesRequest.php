@@ -9,7 +9,7 @@ use Modules\Dashboard\CQRS\Command\UpdateNotificationPreferencesCommand;
 
 final class UpdateNotificationPreferencesRequest extends BaseApiFormRequest
 {
-    private const array Keys = ['email_enabled', 'push_enabled', 'booking_enabled', 'system_enabled'];
+    private const Keys = ['email_enabled', 'push_enabled', 'booking_enabled', 'system_enabled'];
 
     public function rules(): array
     {

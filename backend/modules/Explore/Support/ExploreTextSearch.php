@@ -8,19 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
 
-/**
- * Keyword search for discovery (Task 43): a case-insensitive substring match
- * over every locale of translatable JSON columns, plus catalog tag filters.
- *
- * Each locale is read with the grammar's JSON path (`json_unquote(json_extract())`
- * on MySQL, `json_extract()` on SQLite), so Arabic matches on both engines, and
- * `lower()` on both sides keeps it case-insensitive regardless of the JSON
- * collation. `!` escapes LIKE wildcards in the user's text.
- */
 final class ExploreTextSearch
 {
-    /** @var list<string> */
-    public const array LOCALES = ['en', 'ar'];
+    public const LOCALES = ['en', 'ar'];
 
     public function pattern(string $term): string
     {
@@ -29,15 +19,6 @@ final class ExploreTextSearch
         return '%'.$escaped.'%';
     }
 
-    /**
-     * Adds `(col->en like ? or col->ar like ? ...)` for every column as one OR
-     * group to the given query.
-     *
-     * @template TModel of \Illuminate\Database\Eloquent\Model
-     *
-     * @param  Builder<TModel>|QueryBuilder  $query
-     * @param  list<string>  $columns
-     */
     public function orMatchTranslatable(Builder|QueryBuilder $query, array $columns, string $pattern): void
     {
         $grammar = $query instanceof Builder ? $query->getQuery()->getGrammar() : $query->getGrammar();
@@ -49,15 +30,6 @@ final class ExploreTextSearch
         }
     }
 
-    /**
-     * Adds `lower(col) like ?` for a JSON list of plain strings (branch tags,
-     * Task 51). The list is stored unescaped (`json:unicode`) so Arabic tags
-     * match too.
-     *
-     * @template TModel of \Illuminate\Database\Eloquent\Model
-     *
-     * @param  Builder<TModel>|QueryBuilder  $query
-     */
     public function orMatchJsonList(Builder|QueryBuilder $query, string $column, string $pattern): void
     {
         $grammar = $query instanceof Builder ? $query->getQuery()->getGrammar() : $query->getGrammar();
@@ -65,12 +37,6 @@ final class ExploreTextSearch
         $query->orWhereRaw('lower('.$grammar->wrap($column).") like ? escape '!'", [$pattern]);
     }
 
-    /**
-     * Restricts a catalog-item query (aliased to `service_catalog_items`) to
-     * items whose tags match the text or are in $tagIds.
-     *
-     * @param  list<string>|null  $tagIds
-     */
     public function tagExists(QueryBuilder $query, ?string $pattern, ?array $tagIds): void
     {
         $query->select(DB::raw(1))

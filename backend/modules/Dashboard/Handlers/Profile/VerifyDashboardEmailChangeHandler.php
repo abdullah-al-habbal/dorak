@@ -16,7 +16,7 @@ use Modules\Dashboard\Support\DashboardActor;
 
 final class VerifyDashboardEmailChangeHandler
 {
-    private const int MAX_ATTEMPTS = 5;
+    private const MAX_ATTEMPTS = 5;
 
     public function __construct(private readonly DashboardEmailChangeEloquentResolver $resolver) {}
 

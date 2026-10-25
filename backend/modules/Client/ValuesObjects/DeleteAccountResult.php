@@ -7,7 +7,7 @@ namespace Modules\Client\ValuesObjects;
 final readonly class DeleteAccountResult
 {
     /** Stable API error code for a deletion blocked by pending, confirmed, or in-progress bookings. */
-    public const string ACTIVE_BOOKINGS_CODE = 'ACCOUNT_HAS_ACTIVE_BOOKINGS';
+    public const ACTIVE_BOOKINGS_CODE = 'ACCOUNT_HAS_ACTIVE_BOOKINGS';
 
     public function __construct(
         public bool $success,

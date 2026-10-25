@@ -11,7 +11,7 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class AtHomeBookingRules
 {
-    private const float EARTH_RADIUS_KM = 6371.0;
+    private const EARTH_RADIUS_KM = 6371.0;
 
     /**
      * Affiliated barbers may work at home as well (Task 25 decision); schedule and

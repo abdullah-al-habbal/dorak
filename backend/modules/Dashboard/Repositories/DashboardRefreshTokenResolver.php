@@ -17,9 +17,9 @@ final class DashboardRefreshTokenResolver
         private readonly DashboardOwnerActorResolver $ownerActors,
     ) {}
 
-    private const int DefaultTtlSeconds = 2592000;
+    private const DefaultTtlSeconds = 2592000;
 
-    private const int MinimumTtlSeconds = 3600;
+    private const MinimumTtlSeconds = 3600;
 
     public function ttl(): int
     {

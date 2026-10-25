@@ -14,7 +14,7 @@ use Modules\ClientInteraction\Services\ClientInteractionRecorder;
 final class ExploreSearchLog
 {
     /** Request keys that make a plain map browse a search. */
-    private const array SEARCH_KEYS = ['q', 'tag_ids', 'catalog_item_ids', 'available_now', 'price_range', 'rating_min', 'face_shape_compatible', 'universe'];
+    private const SEARCH_KEYS = ['q', 'tag_ids', 'catalog_item_ids', 'available_now', 'price_range', 'rating_min', 'face_shape_compatible', 'universe'];
 
     public static function record(ClientInteractionRecorder $interactions, FormRequest $request, int $resultCount): void
     {

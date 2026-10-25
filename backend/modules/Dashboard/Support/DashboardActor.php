@@ -6,13 +6,13 @@ namespace Modules\Dashboard\Support;
 
 final readonly class DashboardActor
 {
-    public const string ADMIN = 'admin';
+    public const ADMIN = 'admin';
 
-    public const string BRANCH = 'branch';
+    public const BRANCH = 'branch';
 
-    public const string BARBER = 'barber';
+    public const BARBER = 'barber';
 
-    public const string OWNER = 'owner';
+    public const OWNER = 'owner';
 
     /**
      * @param  list<string>  $brandIds  brands a brand owner owns
