@@ -95,7 +95,10 @@ void main() {
       'upload polls pending then completed and loads recommendations',
       build: bloc,
       setUp: () {
-        face.profileStatuses = ['pending', 'completed'];
+        face.profileStatuses = [
+          FaceProfileAnalysisStatus.pending,
+          FaceProfileAnalysisStatus.completed,
+        ];
         face.recommendations = [testFaceAnalysis()];
       },
       act: (bloc) => bloc.add(const FaceAnalysisPhotoScanned('/tmp/face.jpg')),
@@ -111,7 +114,7 @@ void main() {
     blocTest<FaceAnalysisBloc, FaceAnalysisState>(
       'terminal analysis failure is retryable as a new scan',
       build: bloc,
-      setUp: () => face.profileStatuses = ['failed'],
+      setUp: () => face.profileStatuses = [FaceProfileAnalysisStatus.failed],
       act: (bloc) => bloc.add(const FaceAnalysisPhotoScanned('/tmp/face.jpg')),
       verify: (bloc) {
         expect(bloc.state.status, FaceAnalysisStatus.failed);

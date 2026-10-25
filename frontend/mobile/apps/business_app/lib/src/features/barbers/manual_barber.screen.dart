@@ -1,9 +1,9 @@
-import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
+import 'package:business_app/src/core/errors/api_error.entity.dart';
 import 'package:business_app/src/features/barbers/manual_barber.bloc.dart';
 import 'package:business_app/src/features/barbers/manual_barber.event.dart';
 import 'package:business_app/src/features/barbers/manual_barber.state.dart';
@@ -98,7 +98,13 @@ class _ManualBarberFormState extends State<_ManualBarberForm> {
         ),
         if (widget.state.error != null) ...[
           const SizedBox(height: DorakDimensions.spacingMedium),
-          StatusBanner(message: _errorMessage(l10n, widget.state.error!)),
+          StatusBanner(
+            message: ApiError.from(
+              widget.state.error!,
+              l10n,
+              fallbackMessage: l10n.managerBarberCreateError,
+            ).message,
+          ),
         ],
         const SizedBox(height: DorakDimensions.spacingLarge),
         PrimaryButton(
@@ -108,11 +114,6 @@ class _ManualBarberFormState extends State<_ManualBarberForm> {
         ),
       ],
     );
-  }
-
-  String _errorMessage(AppLocalizations l10n, Object error) {
-    if (error is NetworkException) return l10n.errorNetwork;
-    return l10n.managerBarberCreateError;
   }
 
   void _submit() {

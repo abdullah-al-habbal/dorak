@@ -55,7 +55,7 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
 
   Future<void> updateChairStatus(
     String id,
-    String status, {
+    ChairStatus status, {
     bool force = false,
   }) async {
     try {
@@ -93,14 +93,18 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
   Future<void> confirmChairMaintenance() async {
     final pending = state.pendingMaintenance;
     if (pending == null) return;
-    await updateChairStatus(pending.chairId, 'maintenance', force: true);
+    await updateChairStatus(
+      pending.chairId,
+      ChairStatus.maintenance,
+      force: true,
+    );
   }
 
   void dismissChairMaintenance() {
     emit(state.copyWith(clearPendingMaintenance: true));
   }
 
-  Future<void> updateBooking(String id, String status) async {
+  Future<void> updateBooking(String id, BookingStatus status) async {
     try {
       await _repository.updateBookingStatus(id, status);
       if (isClosed) return;

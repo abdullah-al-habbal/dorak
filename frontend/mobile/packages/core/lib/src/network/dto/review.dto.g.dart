@@ -13,7 +13,7 @@ ReviewDto _$ReviewDtoFromJson(Map<String, dynamic> json) => ReviewDto(
   rating: (json['rating'] as num).toInt(),
   comment: json['comment'] as String?,
   authorName: json['author_name'] as String?,
-  status: json['status'] as String?,
+  status: $enumDecodeNullable(_$ReviewStatusEnumMap, json['status']),
   disputedAt: json['disputed_at'] == null
       ? null
       : DateTime.parse(json['disputed_at'] as String),
@@ -22,3 +22,10 @@ ReviewDto _$ReviewDtoFromJson(Map<String, dynamic> json) => ReviewDto(
       : DateTime.parse(json['resolved_at'] as String),
   createdAt: DateTime.parse(json['created_at'] as String),
 );
+
+const _$ReviewStatusEnumMap = {
+  ReviewStatus.published: 'published',
+  ReviewStatus.disputed: 'disputed',
+  ReviewStatus.resolved: 'resolved',
+  ReviewStatus.hidden: 'hidden',
+};

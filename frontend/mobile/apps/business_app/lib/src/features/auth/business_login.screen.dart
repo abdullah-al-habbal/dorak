@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
+import 'package:business_app/src/core/errors/api_error.entity.dart';
+
 class BusinessLoginScreen extends StatefulWidget {
   const BusinessLoginScreen({
     super.key,
@@ -120,9 +122,11 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                     if (state.error != null) ...[
                       const SizedBox(height: DorakDimensions.spacingMedium),
                       StatusBanner(
-                        message: state.error is NetworkException
-                            ? l10n.errorNetwork
-                            : l10n.loginErrorInvalidCredentials,
+                        message: ApiError.from(
+                          state.error!,
+                          l10n,
+                          fallbackMessage: l10n.loginErrorInvalidCredentials,
+                        ).message,
                       ),
                     ],
                     const SizedBox(height: DorakDimensions.spacingLarge),

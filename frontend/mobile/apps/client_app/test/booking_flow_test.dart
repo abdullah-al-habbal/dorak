@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:core/core.dart';
+
 import 'package:client_app/src/core/navigation/app.router.dart';
 import 'package:client_app/src/core/navigation/app_routes.entity.dart';
 import 'package:client_app/src/features/booking/booking.bloc.dart';
@@ -77,7 +79,7 @@ void main() {
     tester,
   ) async {
     repository.firstPage = testBookingPage(
-      bookings: [testBooking(status: 'pending')],
+      bookings: [testBooking(status: BookingStatus.pending)],
     );
     await pumpBookings(tester);
 
@@ -87,7 +89,7 @@ void main() {
 
   testWidgets('tracker explains a pending booking', (tester) async {
     repository.firstPage = testBookingPage(
-      bookings: [testBooking(status: 'pending')],
+      bookings: [testBooking(status: BookingStatus.pending)],
     );
     await pumpBookings(tester);
 
@@ -104,7 +106,7 @@ void main() {
     tester,
   ) async {
     repository.firstPage = testBookingPage(
-      bookings: [testBooking(status: 'no_show')],
+      bookings: [testBooking(status: BookingStatus.noShow)],
     );
     await pumpBookings(tester);
 

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:core/src/network/chair_status.entity.dart';
 import 'package:core/src/network/dto/floor_chair_barber.dto.dart';
 
 part 'floor_chair.dto.g.dart';
@@ -8,8 +9,8 @@ part 'floor_chair.dto.g.dart';
 class FloorChairDto {
   final String id;
   final String? label;
-  final String status;
-  final String? availability;
+  final ChairStatus status;
+  final ChairStatus? availability;
   final String? floorZone;
   final Map<String, dynamic>? uiMetadata;
   final String? branchId;

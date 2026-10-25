@@ -1,6 +1,7 @@
 import 'package:business_app/src/features/operations/branch_operations.bloc.dart';
 import 'package:business_app/src/features/operations/booking_status_menu.widget.dart';
 import 'package:business_app/src/features/operations/branch_operations.state.dart';
+import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -173,20 +174,20 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                     subtitle: Text(
                       '${_chairStatus(l10n, chair.availability ?? chair.status)} · ${chair.barber?.name ?? l10n.businessUnassigned}',
                     ),
-                    trailing: PopupMenuButton<String>(
+                    trailing: PopupMenuButton<ChairStatus>(
                       onSelected: (status) =>
                           widget.bloc.updateChairStatus(chair.id, status),
                       itemBuilder: (_) => [
                         PopupMenuItem(
-                          value: 'available',
+                          value: ChairStatus.available,
                           child: Text(l10n.chairStatusAvailable),
                         ),
                         PopupMenuItem(
-                          value: 'occupied',
+                          value: ChairStatus.occupied,
                           child: Text(l10n.chairStatusOccupied),
                         ),
                         PopupMenuItem(
-                          value: 'maintenance',
+                          value: ChairStatus.maintenance,
                           child: Text(l10n.chairStatusMaintenance),
                         ),
                       ],
@@ -232,21 +233,20 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
     }
   }
 
-  String _bookingStatus(AppLocalizations l10n, String status) =>
+  String _bookingStatus(AppLocalizations l10n, BookingStatus status) =>
       switch (status) {
-        'pending' => l10n.bookingStatusPending,
-        'confirmed' => l10n.bookingStatusConfirmed,
-        'in_progress' => l10n.bookingStatusInProgress,
-        'completed' => l10n.bookingStatusCompleted,
-        'canceled' || 'cancelled' => l10n.bookingStatusCanceled,
-        'no_show' => l10n.bookingStatusNoShow,
-        _ => l10n.bookingStatusUnknown,
+        BookingStatus.pending => l10n.bookingStatusPending,
+        BookingStatus.confirmed => l10n.bookingStatusConfirmed,
+        BookingStatus.inProgress => l10n.bookingStatusInProgress,
+        BookingStatus.completed => l10n.bookingStatusCompleted,
+        BookingStatus.canceled => l10n.bookingStatusCanceled,
+        BookingStatus.noShow => l10n.bookingStatusNoShow,
       };
 
-  String _chairStatus(AppLocalizations l10n, String status) => switch (status) {
-    'available' => l10n.chairStatusAvailable,
-    'occupied' => l10n.chairStatusOccupied,
-    'maintenance' => l10n.chairStatusMaintenance,
-    _ => l10n.chairStatusUnknown,
-  };
+  String _chairStatus(AppLocalizations l10n, ChairStatus status) =>
+      switch (status) {
+        ChairStatus.available => l10n.chairStatusAvailable,
+        ChairStatus.occupied => l10n.chairStatusOccupied,
+        ChairStatus.maintenance => l10n.chairStatusMaintenance,
+      };
 }

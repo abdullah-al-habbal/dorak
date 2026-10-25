@@ -77,15 +77,14 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         : '${service.name} · ${details.join(' · ')}';
   }
 
-  String _statusLabel(AppLocalizations l10n, String status) {
+  String _statusLabel(AppLocalizations l10n, BookingStatus status) {
     return switch (status) {
-      'confirmed' => l10n.bookingStatusConfirmed,
-      'pending' => l10n.bookingStatusPending,
-      'in_progress' => l10n.bookingStatusInProgress,
-      'completed' => l10n.bookingStatusCompleted,
-      'no_show' => l10n.bookingStatusNoShow,
-      'canceled' || 'cancelled' => l10n.bookingStatusCanceled,
-      _ => l10n.bookingStatusUnknown,
+      BookingStatus.confirmed => l10n.bookingStatusConfirmed,
+      BookingStatus.pending => l10n.bookingStatusPending,
+      BookingStatus.inProgress => l10n.bookingStatusInProgress,
+      BookingStatus.completed => l10n.bookingStatusCompleted,
+      BookingStatus.noShow => l10n.bookingStatusNoShow,
+      BookingStatus.canceled => l10n.bookingStatusCanceled,
     };
   }
 }
@@ -100,7 +99,8 @@ class _BookingDetailsBody extends StatelessWidget {
   final BookingDto booking;
   final String Function(BookingServiceDto service, String localeCode)
   serviceLine;
-  final String Function(AppLocalizations l10n, String status) statusLabel;
+  final String Function(AppLocalizations l10n, BookingStatus status)
+  statusLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class _BookingSummarySection extends StatelessWidget {
   final BookingDto booking;
   final AppLocalizations l10n;
   final String localeCode;
-  final String Function(AppLocalizations, String) statusLabel;
+  final String Function(AppLocalizations, BookingStatus) statusLabel;
   @override
   Widget build(BuildContext context) => BookingDetailsSection(
     title: l10n.bookingSummaryTitle,

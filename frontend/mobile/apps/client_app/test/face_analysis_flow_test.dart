@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:core/core.dart';
+
 import 'package:client_app/src/core/navigation/app_routes.entity.dart';
 import 'package:client_app/src/features/profile/avatar.bloc.dart';
 import 'package:client_app/src/features/profile/face_analysis.bloc.dart';
@@ -84,11 +86,11 @@ void main() {
 
       faceRepository.recommendations = [testFaceAnalysis()];
       faceRepository.profileStatuses = [
-        'pending',
-        'pending',
-        'pending',
-        'pending',
-        'completed',
+        FaceProfileAnalysisStatus.pending,
+        FaceProfileAnalysisStatus.pending,
+        FaceProfileAnalysisStatus.pending,
+        FaceProfileAnalysisStatus.pending,
+        FaceProfileAnalysisStatus.completed,
       ];
       await tester.tap(find.text('Check again'));
       await tester.pumpAndSettle();

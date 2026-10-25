@@ -327,6 +327,12 @@ class FakeAuthRepository implements AuthRepository {
     final error = changePasswordError;
     if (error != null) throw error;
   }
+
+  @override
+  Future<void> socialLogin({
+    required SocialAuthProvider provider,
+    required String accessToken,
+  }) async {}
 }
 
 class FakeOnboardingConfigRepository implements OnboardingConfigRepository {
@@ -602,7 +608,7 @@ class FakeFeedCache implements FeedCache {
 
 BookingDto testBooking({
   String id = 'booking-1',
-  String status = 'confirmed',
+  BookingStatus status = BookingStatus.confirmed,
   bool? cancellationEligible = true,
 }) => BookingDto(
   id: id,
@@ -834,8 +840,8 @@ FloorPlanDto testFloorPlan() => const FloorPlanDto(
   branchId: '1',
   branchName: 'Branch 1',
   chairs: [
-    FloorChairDto(id: 'chair-1', label: 'A', status: 'available'),
-    FloorChairDto(id: 'chair-2', label: 'B', status: 'occupied'),
+    FloorChairDto(id: 'chair-1', label: 'A', status: ChairStatus.available),
+    FloorChairDto(id: 'chair-2', label: 'B', status: ChairStatus.occupied),
   ],
 );
 
@@ -1031,7 +1037,9 @@ class FakeFaceProfileRepository implements FaceProfileRepository {
   List<FaceAnalysisResultDto> recommendations = const [];
   Object? uploadError;
   Object? recommendationsError;
-  List<String?> profileStatuses = const ['pending'];
+  List<FaceProfileAnalysisStatus?> profileStatuses = const [
+    FaceProfileAnalysisStatus.pending,
+  ];
   Object? profileError;
   int profileCalls = 0;
 
@@ -1323,7 +1331,7 @@ ReviewDto testReview({
   int rating = 5,
   String? comment = 'Great fade',
   String? authorName = 'Karim',
-  String? status = 'published',
+  ReviewStatus? status = ReviewStatus.published,
   DateTime? disputedAt,
   DateTime? resolvedAt,
 }) => ReviewDto(

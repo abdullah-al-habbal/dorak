@@ -49,7 +49,7 @@ void main() {
       expect(page.data, hasLength(1));
       final item = page.data.first;
       expect(item.id, 'booking-1');
-      expect(item.status, 'confirmed');
+      expect(item.status, BookingStatus.confirmed);
       expect(item.paymentMethod, 'pay_at_salon');
       expect(item.paymentStatus, 'unpaid_in_person');
       expect(item.timeSlot, DateTime.parse('2026-09-10T14:30:00.000Z'));

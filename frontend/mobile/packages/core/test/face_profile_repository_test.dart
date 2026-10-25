@@ -173,7 +173,7 @@ void main() {
 
       expect(captured.path, FaceProfileEndpoints.profile('face-3'));
       expect(captured.method, 'GET');
-      expect(profile.analysisStatus, 'pending');
+      expect(profile.analysisStatus, FaceProfileAnalysisStatus.pending);
     });
   });
 }

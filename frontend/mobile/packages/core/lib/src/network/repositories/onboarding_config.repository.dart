@@ -1,6 +1,4 @@
-import 'package:core/src/network/api.client.dart';
-import 'package:core/src/network/dto/onboarding_config.dto.dart';
-import 'package:core/src/network/endpoints/app.endpoints.dart';
+import 'package:core/core.dart';
 
 abstract class OnboardingConfigRepository {
   Future<OnboardingConfigDto> fetchOnboardingConfig({String? locale});
@@ -19,7 +17,7 @@ class DioOnboardingConfigRepository implements OnboardingConfigRepository {
     if (cached != null) return cached;
 
     final config = await _client.get(
-      AppEndpoints.onboardingConfig,
+      ApiEndpoints.app.onboardingConfig,
       parser: (json) =>
           OnboardingConfigDto.fromJson(json as Map<String, dynamic>),
     );

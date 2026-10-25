@@ -23,7 +23,7 @@ void main() {
       await expectLater(
         DioBranchOperationsRepository(
           clientWith(fake),
-        ).updateBookingStatus('booking-1', 'completed'),
+        ).updateBookingStatus('booking-1', BookingStatus.completed),
         throwsA(
           isA<ApiException>().having(
             (error) => error.statusCode,
@@ -86,12 +86,12 @@ void main() {
 
       final chair = await DioBranchOperationsRepository(
         clientWith(fake),
-      ).updateChairStatus('chair-1', 'maintenance');
+      ).updateChairStatus('chair-1', ChairStatus.maintenance);
 
       expect(captured!.method, 'PATCH');
       expect(captured!.path, '/branch/chairs/chair-1/status');
       expect(captured!.data, {'status': 'maintenance'});
-      expect(chair.status, 'maintenance');
+      expect(chair.status, ChairStatus.maintenance);
     },
   );
 
@@ -113,7 +113,7 @@ void main() {
 
       await DioBranchOperationsRepository(
         clientWith(fake),
-      ).updateChairStatus('chair-1', 'maintenance', force: true);
+      ).updateChairStatus('chair-1', ChairStatus.maintenance, force: true);
 
       expect(captured!.data, {'status': 'maintenance', 'force': true});
     },
@@ -141,7 +141,7 @@ void main() {
       await expectLater(
         DioBranchOperationsRepository(
           clientWith(fake),
-        ).updateChairStatus('chair-1', 'maintenance'),
+        ).updateChairStatus('chair-1', ChairStatus.maintenance),
         throwsA(
           isA<ChairHasActiveBookingsException>()
               .having((e) => e.statusCode, 'statusCode', 409)

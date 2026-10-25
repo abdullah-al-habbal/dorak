@@ -1,9 +1,9 @@
-import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
+import 'package:stylist_app/src/core/errors/api_error.entity.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.bloc.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.state.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up_step.entity.dart';
@@ -66,14 +66,10 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
   }
 
   String _errorMessage(Object error, AppLocalizations l10n) {
-    if (error is NetworkException) return l10n.errorNetwork;
-    if (error is ValidationException) {
-      if (error.errors.containsKey('email')) {
-        return l10n.stylistSignUpEmailTaken;
-      }
-      if (error.errors.containsKey('code')) return l10n.verifyErrorInvalid;
-    }
-    return l10n.errorGeneric;
+    final apiError = ApiError.from(error, l10n);
+    if (apiError.errorsFor('email') != null) return l10n.stylistSignUpEmailTaken;
+    if (apiError.errorsFor('code') != null) return l10n.verifyErrorInvalid;
+    return apiError.message;
   }
 
   @override

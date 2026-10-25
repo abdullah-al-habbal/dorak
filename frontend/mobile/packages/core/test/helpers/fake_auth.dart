@@ -195,6 +195,12 @@ class FakeAuthRepository implements AuthRepository {
     required String password,
     required String passwordConfirmation,
   }) async {}
+
+  @override
+  Future<void> socialLogin({
+    required SocialAuthProvider provider,
+    required String accessToken,
+  }) async {}
 }
 
 ApiException unauthorized() => const ApiException(

@@ -56,7 +56,7 @@ class StylistBloc extends Cubit<StylistState> {
     }
   }
 
-  Future<void> transitionBooking(String id, String action) async {
+  Future<void> transitionBooking(String id, BarberBookingAction action) async {
     if (state.updatingBookingId != null) return;
     emit(state.copyWith(updatingBookingId: id, clearError: true));
     try {

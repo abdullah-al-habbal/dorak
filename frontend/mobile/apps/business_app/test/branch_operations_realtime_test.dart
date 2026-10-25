@@ -86,13 +86,13 @@ class _CountingRepository implements BranchOperationsRepository {
       const PaginatedData(data: [], meta: _meta);
 
   @override
-  Future<BookingDto> updateBookingStatus(String id, String status) =>
+  Future<BookingDto> updateBookingStatus(String id, BookingStatus status) =>
       throw UnimplementedError();
 
   @override
   Future<FloorChairDto> updateChairStatus(
     String id,
-    String status, {
+    ChairStatus status, {
     bool force = false,
   }) => throw UnimplementedError();
 

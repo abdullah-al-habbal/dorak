@@ -46,9 +46,9 @@ void main() {
       expect(captured.queryParameters['duration'], 30);
       expect(plan.branchName, 'Branch 1');
       expect(plan.chairs, hasLength(2));
-      expect(plan.chairs.first.status, 'available');
+      expect(plan.chairs.first.status, ChairStatus.available);
       expect(plan.chairs.first.barber?.name, 'Karim');
-      expect(plan.chairs.last.status, 'occupied');
+      expect(plan.chairs.last.status, ChairStatus.occupied);
       expect(fake.callCount, 1);
     });
 

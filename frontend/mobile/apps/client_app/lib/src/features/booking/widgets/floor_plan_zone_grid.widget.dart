@@ -34,7 +34,7 @@ class FloorPlanZoneGrid extends StatelessWidget {
           itemBuilder: (context, index) {
             final chair = chairs[index];
             final selectable =
-                (chair.availability ?? chair.status) == 'available';
+                (chair.availability ?? chair.status) == ChairStatus.available;
             final selected = chair.id == selectedChairId;
             final background = selected
                 ? colors.primary

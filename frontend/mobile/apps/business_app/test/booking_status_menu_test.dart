@@ -1,4 +1,5 @@
 import 'package:business_app/src/features/operations/booking_status_menu.widget.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:localization/localization.dart';
@@ -13,14 +14,14 @@ void main() {
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: BookingStatusMenu(
-            currentStatus: 'confirmed',
+            currentStatus: BookingStatus.confirmed,
             onSelected: (_) {},
           ),
         ),
       ),
     );
 
-    await tester.tap(find.byType(PopupMenuButton<String>));
+    await tester.tap(find.byType(PopupMenuButton<BookingStatus>));
     await tester.pumpAndSettle();
 
     expect(find.text('Start'), findsOneWidget);

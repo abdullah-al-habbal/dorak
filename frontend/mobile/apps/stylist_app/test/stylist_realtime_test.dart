@@ -69,7 +69,7 @@ class _CountingRepository implements StylistOperationsRepository {
       throw UnimplementedError();
 
   @override
-  Future<BookingDto> transitionBooking(String id, String action) =>
+  Future<BookingDto> transitionBooking(String id, BarberBookingAction action) =>
       throw UnimplementedError();
 
   @override

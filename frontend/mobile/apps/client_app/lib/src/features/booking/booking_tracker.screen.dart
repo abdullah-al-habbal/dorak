@@ -61,24 +61,30 @@ class _BookingTrackerScreenState extends State<BookingTrackerScreen> {
         bloc: _refreshCubit,
         builder: (context, state) {
           final (icon, message) = switch (state.booking.status) {
-            'pending' => (
+            BookingStatus.pending => (
               Icons.hourglass_empty_outlined,
               l10n.bookingTrackerPending,
             ),
-            'confirmed' => (
+            BookingStatus.confirmed => (
               Icons.check_circle_outline,
               l10n.bookingTrackerConfirmed,
             ),
-            'in_progress' => (
+            BookingStatus.inProgress => (
               Icons.content_cut_outlined,
               l10n.bookingTrackerInProgress,
             ),
-            'completed' => (
+            BookingStatus.completed => (
               Icons.task_alt_outlined,
               l10n.bookingTrackerCompleted,
             ),
-            'no_show' => (Icons.person_off_outlined, l10n.bookingTrackerNoShow),
-            _ => (Icons.cancel_outlined, l10n.bookingTrackerCancelled),
+            BookingStatus.noShow => (
+              Icons.person_off_outlined,
+              l10n.bookingTrackerNoShow,
+            ),
+            BookingStatus.canceled => (
+              Icons.cancel_outlined,
+              l10n.bookingTrackerCancelled,
+            ),
           };
           return StatusView(
             icon: icon,

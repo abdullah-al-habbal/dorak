@@ -136,15 +136,15 @@ class StylistScreen extends StatelessWidget {
   }
 }
 
-String _bookingStatus(AppLocalizations l10n, String status) => switch (status) {
-  'pending' => l10n.bookingStatusPending,
-  'confirmed' => l10n.bookingStatusConfirmed,
-  'in_progress' => l10n.bookingStatusInProgress,
-  'completed' => l10n.bookingStatusCompleted,
-  'canceled' || 'cancelled' => l10n.bookingStatusCanceled,
-  'no_show' => l10n.bookingStatusNoShow,
-  _ => l10n.bookingStatusUnknown,
-};
+String _bookingStatus(AppLocalizations l10n, BookingStatus status) =>
+    switch (status) {
+      BookingStatus.pending => l10n.bookingStatusPending,
+      BookingStatus.confirmed => l10n.bookingStatusConfirmed,
+      BookingStatus.inProgress => l10n.bookingStatusInProgress,
+      BookingStatus.completed => l10n.bookingStatusCompleted,
+      BookingStatus.canceled => l10n.bookingStatusCanceled,
+      BookingStatus.noShow => l10n.bookingStatusNoShow,
+    };
 
 class _BookingActions extends StatelessWidget {
   const _BookingActions({
@@ -156,15 +156,24 @@ class _BookingActions extends StatelessWidget {
 
   final BookingDto booking;
   final bool isUpdating;
-  final ValueChanged<String> onAction;
+  final ValueChanged<BarberBookingAction> onAction;
   final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
     final action = switch (booking.status) {
-      'pending' => ('accept', l10n.stylistAcceptBooking),
-      'confirmed' => ('start', l10n.stylistStartSession),
-      'in_progress' => ('complete', l10n.stylistCompleteSession),
+      BookingStatus.pending => (
+        BarberBookingAction.accept,
+        l10n.stylistAcceptBooking,
+      ),
+      BookingStatus.confirmed => (
+        BarberBookingAction.start,
+        l10n.stylistStartSession,
+      ),
+      BookingStatus.inProgress => (
+        BarberBookingAction.complete,
+        l10n.stylistCompleteSession,
+      ),
       _ => null,
     };
     if (action == null) return const SizedBox.shrink();
@@ -175,9 +184,11 @@ class _BookingActions extends StatelessWidget {
           onPressed: isUpdating ? null : () => onAction(action.$1),
           child: Text(action.$2),
         ),
-        if (booking.status == 'in_progress')
+        if (booking.status == BookingStatus.inProgress)
           OutlinedButton(
-            onPressed: isUpdating ? null : () => onAction('no_show'),
+            onPressed: isUpdating
+                ? null
+                : () => onAction(BarberBookingAction.noShow),
             child: Text(l10n.stylistMarkNoShow),
           ),
       ],

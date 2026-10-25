@@ -1,7 +1,4 @@
-import 'package:core/src/network/api.client.dart';
-import 'package:core/src/network/dto/auth_response.dto.dart';
-import 'package:core/src/network/dto/token_response.dto.dart';
-import 'package:core/src/network/endpoints/auth.endpoints.dart';
+import 'package:core/core.dart';
 
 abstract class AuthRepository {
   Future<AuthResponseDto> login({
@@ -45,7 +42,7 @@ abstract class AuthRepository {
     required String passwordConfirmation,
   });
   Future<void> socialLogin({
-    required String provider,
+    required SocialAuthProvider provider,
     required String accessToken,
   });
   Future<void> deleteAccount(String password);
@@ -62,7 +59,7 @@ class DioAuthRepository implements AuthRepository {
     required String password,
   }) {
     return _client.post(
-      AuthEndpoints.login,
+      ApiEndpoints.auth.login,
       data: {'email': email, 'password': password},
       parser: (json) => AuthResponseDto.fromJson(json as Map<String, dynamic>),
     );
@@ -77,7 +74,7 @@ class DioAuthRepository implements AuthRepository {
     String? phone,
   }) {
     return _client.post(
-      AuthEndpoints.register,
+      ApiEndpoints.auth.register,
       data: {
         'name': name,
         'email': email,
@@ -91,13 +88,13 @@ class DioAuthRepository implements AuthRepository {
 
   @override
   Future<void> logout() {
-    return _client.post<void>(AuthEndpoints.logout, parser: _discardBody);
+    return _client.post<void>(ApiEndpoints.auth.logout, parser: _discardBody);
   }
 
   @override
   Future<String> refreshToken() async {
     final response = await _client.post(
-      AuthEndpoints.refreshToken,
+      ApiEndpoints.auth.refreshToken,
       parser: (json) => TokenResponseDto.fromJson(json as Map<String, dynamic>),
     );
     return response.token;
@@ -106,7 +103,7 @@ class DioAuthRepository implements AuthRepository {
   @override
   Future<void> sendEmailVerification() {
     return _client.post<void>(
-      AuthEndpoints.sendEmailVerification,
+      ApiEndpoints.auth.sendEmailVerification,
       parser: _discardBody,
     );
   }
@@ -114,7 +111,7 @@ class DioAuthRepository implements AuthRepository {
   @override
   Future<void> verifyEmail(String code) {
     return _client.post<void>(
-      AuthEndpoints.verifyEmail,
+      ApiEndpoints.auth.verifyEmail,
       data: {'code': code},
       parser: _discardBody,
     );
@@ -123,7 +120,7 @@ class DioAuthRepository implements AuthRepository {
   @override
   Future<void> forgotPassword(String email) {
     return _client.post<void>(
-      AuthEndpoints.forgotPassword,
+      ApiEndpoints.auth.forgotPassword,
       data: {'email': email},
       parser: _discardBody,
     );
@@ -132,7 +129,7 @@ class DioAuthRepository implements AuthRepository {
   @override
   Future<void> verifyResetCode({required String email, required String code}) {
     return _client.post<void>(
-      AuthEndpoints.verifyResetCode,
+      ApiEndpoints.auth.verifyResetCode,
       data: {'email': email, 'code': code},
       parser: _discardBody,
     );
@@ -146,7 +143,7 @@ class DioAuthRepository implements AuthRepository {
     required String passwordConfirmation,
   }) {
     return _client.post<void>(
-      AuthEndpoints.resetPassword,
+      ApiEndpoints.auth.resetPassword,
       data: {
         'email': email,
         'code': code,
@@ -164,7 +161,7 @@ class DioAuthRepository implements AuthRepository {
     required String passwordConfirmation,
   }) {
     return _client.patch<void>(
-      AuthEndpoints.changePassword,
+      ApiEndpoints.auth.changePassword,
       data: {
         'current_password': currentPassword,
         'password': password,
@@ -176,11 +173,11 @@ class DioAuthRepository implements AuthRepository {
 
   @override
   Future<void> socialLogin({
-    required String provider,
+    required SocialAuthProvider provider,
     required String accessToken,
   }) {
     return _client.post<void>(
-      AuthEndpoints.socialLogin(provider),
+      ApiEndpoints.auth.socialLogin(provider.value),
       data: {'access_token': accessToken},
       parser: _discardBody,
     );
@@ -188,7 +185,7 @@ class DioAuthRepository implements AuthRepository {
 
   @override
   Future<void> deleteAccount(String password) =>
-      _client.delete(AuthEndpoints.deleteAccount, data: {'password': password});
+      _client.delete(ApiEndpoints.auth.deleteAccount, data: {'password': password});
 
   static void _discardBody(dynamic _) {}
 }

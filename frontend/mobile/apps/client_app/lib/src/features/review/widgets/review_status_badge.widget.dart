@@ -14,9 +14,9 @@ class ReviewStatusBadge extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final colors = DorakColors.of(context);
     final (label, color) = switch (review.status) {
-      'disputed' => (l10n.reviewStatusUnderReview, colors.error),
-      'hidden' => (l10n.reviewStatusHidden, colors.outline),
-      'published' when review.resolved => (
+      ReviewStatus.disputed => (l10n.reviewStatusUnderReview, colors.error),
+      ReviewStatus.hidden => (l10n.reviewStatusHidden, colors.outline),
+      ReviewStatus.published when review.resolved => (
         l10n.reviewStatusResolved,
         colors.primary,
       ),

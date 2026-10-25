@@ -94,11 +94,11 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
         final profile = await _faceProfile.getProfile(profileId);
         if (emit.isDone) return;
         switch (profile.analysisStatus) {
-          case 'completed':
+          case FaceProfileAnalysisStatus.completed:
             emit(state.copyWith(awaitingAnalysis: false));
             await _load(emit);
             return;
-          case 'failed':
+          case FaceProfileAnalysisStatus.failed:
             emit(
               state.copyWith(
                 status: FaceAnalysisStatus.failed,
@@ -108,8 +108,8 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
               ),
             );
             return;
-          case 'pending':
-          default:
+          case FaceProfileAnalysisStatus.pending:
+          case null:
             emit(
               state.copyWith(
                 status: FaceAnalysisStatus.ready,

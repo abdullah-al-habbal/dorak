@@ -205,12 +205,13 @@ class _BookingsFeedState extends State<_BookingsFeed> {
                   DateTime.now().add(const Duration(hours: 2)),
                 );
             final cancelableStatus =
-                booking.status == 'pending' || booking.status == 'confirmed';
+                booking.status == BookingStatus.pending ||
+                booking.status == BookingStatus.confirmed;
             final cancellable =
                 state.filter == 'upcoming' &&
                 cancelableStatus &&
                 cancellationAllowed;
-            final rateable = booking.status == 'completed';
+            final rateable = booking.status == BookingStatus.completed;
             return Padding(
               padding: const EdgeInsets.only(
                 bottom: DorakDimensions.spacingMedium,
@@ -255,16 +256,15 @@ class _BookingsFeedState extends State<_BookingsFeed> {
     );
   }
 
-  String _statusLabel(BuildContext context, String status) {
+  String _statusLabel(BuildContext context, BookingStatus status) {
     final l10n = AppLocalizations.of(context)!;
     return switch (status) {
-      'confirmed' => l10n.bookingStatusConfirmed,
-      'pending' => l10n.bookingStatusPending,
-      'canceled' => l10n.bookingStatusCanceled,
-      'completed' => l10n.bookingStatusCompleted,
-      'in_progress' => l10n.bookingStatusInProgress,
-      'no_show' => l10n.bookingStatusNoShow,
-      _ => l10n.bookingStatusUnknown,
+      BookingStatus.confirmed => l10n.bookingStatusConfirmed,
+      BookingStatus.pending => l10n.bookingStatusPending,
+      BookingStatus.canceled => l10n.bookingStatusCanceled,
+      BookingStatus.completed => l10n.bookingStatusCompleted,
+      BookingStatus.inProgress => l10n.bookingStatusInProgress,
+      BookingStatus.noShow => l10n.bookingStatusNoShow,
     };
   }
 

@@ -1,6 +1,8 @@
-import 'package:business_app/src/features/operations/booking_status_transitions.entity.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
+
+import 'package:business_app/src/features/operations/booking_status_transitions.entity.dart';
 
 class BookingStatusMenu extends StatelessWidget {
   const BookingStatusMenu({
@@ -9,25 +11,25 @@ class BookingStatusMenu extends StatelessWidget {
     required this.onSelected,
   });
 
-  final String currentStatus;
-  final ValueChanged<String> onSelected;
+  final BookingStatus currentStatus;
+  final ValueChanged<BookingStatus> onSelected;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return PopupMenuButton<String>(
+    return PopupMenuButton<BookingStatus>(
       onSelected: onSelected,
       itemBuilder: (_) => BookingStatusTransitions.from(currentStatus)
           .map(
             (status) => PopupMenuItem(
               value: status,
               child: Text(switch (status) {
-                'confirmed' => l10n.businessConfirm,
-                'in_progress' => l10n.businessStart,
-                'completed' => l10n.businessComplete,
-                'no_show' => l10n.businessNoShow,
-                'canceled' => l10n.businessCancelBooking,
-                _ => l10n.bookingStatusUnknown,
+                BookingStatus.confirmed => l10n.businessConfirm,
+                BookingStatus.inProgress => l10n.businessStart,
+                BookingStatus.completed => l10n.businessComplete,
+                BookingStatus.noShow => l10n.businessNoShow,
+                BookingStatus.canceled => l10n.businessCancelBooking,
+                BookingStatus.pending => l10n.bookingStatusUnknown,
               }),
             ),
           )

@@ -133,7 +133,7 @@ void main() {
       expect(captured.method, 'POST');
       expect(captured.data, {'time_slot': '2026-09-20T09:00:00.000Z'});
       expect(created.id, 'booking-2');
-      expect(created.status, 'pending');
+      expect(created.status, BookingStatus.pending);
       expect(created.barber?.name, isNull);
     });
 

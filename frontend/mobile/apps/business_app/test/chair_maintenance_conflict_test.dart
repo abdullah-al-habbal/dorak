@@ -9,7 +9,7 @@ class _ConflictRepository implements BranchOperationsRepository {
   @override
   Future<FloorChairDto> updateChairStatus(
     String id,
-    String status, {
+    ChairStatus status, {
     bool force = false,
   }) async {
     forceFlags.add(force);
@@ -37,7 +37,7 @@ class _ConflictRepository implements BranchOperationsRepository {
       throw StateError('offline');
 
   @override
-  Future<BookingDto> updateBookingStatus(String id, String status) async =>
+  Future<BookingDto> updateBookingStatus(String id, BookingStatus status) async =>
       throw StateError('offline');
 
   @override
@@ -57,7 +57,7 @@ void main() {
     final repository = _ConflictRepository();
     final bloc = BranchOperationsBloc(repository);
 
-    await bloc.updateChairStatus('chair-1', 'maintenance');
+    await bloc.updateChairStatus('chair-1', ChairStatus.maintenance);
 
     expect(
       bloc.state.pendingMaintenance,
@@ -70,7 +70,7 @@ void main() {
   test('confirming resends with force and clears the prompt', () async {
     final repository = _ConflictRepository();
     final bloc = BranchOperationsBloc(repository);
-    await bloc.updateChairStatus('chair-1', 'maintenance');
+    await bloc.updateChairStatus('chair-1', ChairStatus.maintenance);
 
     await bloc.confirmChairMaintenance();
 
@@ -82,7 +82,7 @@ void main() {
   test('dismissing clears the prompt without resending', () async {
     final repository = _ConflictRepository();
     final bloc = BranchOperationsBloc(repository);
-    await bloc.updateChairStatus('chair-1', 'maintenance');
+    await bloc.updateChairStatus('chair-1', ChairStatus.maintenance);
 
     bloc.dismissChairMaintenance();
 

@@ -26,7 +26,7 @@ void main() {
 
   Future<void> pumpReview(
     WidgetTester tester, {
-    String status = 'completed',
+    BookingStatus status = BookingStatus.completed,
   }) async {
     tester.view.physicalSize = const Size(1290, 2796);
     tester.view.devicePixelRatio = 3.0;
@@ -88,7 +88,7 @@ void main() {
     tester,
   ) async {
     reviews.submittedReview = testReview(
-      status: 'disputed',
+      status: ReviewStatus.disputed,
       disputedAt: DateTime.utc(2026, 9, 29),
     );
     await pumpReview(tester);
@@ -105,7 +105,7 @@ void main() {
   testWidgets('review route is independent of the bookings branch state', (
     tester,
   ) async {
-    await pumpReview(tester, status: 'confirmed');
+    await pumpReview(tester, status: BookingStatus.confirmed);
 
     expect(find.byType(BookingsScreen), findsNothing);
     expect(find.text('Rate Your Experience'), findsOneWidget);

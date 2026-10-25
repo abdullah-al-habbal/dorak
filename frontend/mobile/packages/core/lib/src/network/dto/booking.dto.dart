@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:core/src/network/booking_status.entity.dart';
 import 'package:core/src/network/dto/at_home_location.dto.dart';
 import 'package:core/src/network/dto/booking_barber.dto.dart';
 import 'package:core/src/network/dto/booking_chair.dto.dart';
@@ -13,7 +14,7 @@ class BookingDto {
   final String id;
   final DateTime timeSlot;
   final DateTime? endsAt;
-  final String status;
+  final BookingStatus status;
   @JsonKey(defaultValue: 'pay_at_salon')
   final String paymentMethod;
   @JsonKey(defaultValue: 'unpaid_in_person')

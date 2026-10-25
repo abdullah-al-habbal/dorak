@@ -47,7 +47,7 @@ void main() {
           FloorChairDto(
             id: 'chair-1',
             label: 'A',
-            status: 'available',
+            status: ChairStatus.available,
             servicesSource: 'barber',
             barber: FloorChairBarberDto(
               id: 'barber-1',
@@ -81,7 +81,9 @@ void main() {
       ..plan = const FloorPlanDto(
         branchId: '1',
         branchName: 'Branch 1',
-        chairs: [FloorChairDto(id: 'chair-1', label: 'A', status: 'available')],
+        chairs: [
+          FloorChairDto(id: 'chair-1', label: 'A', status: ChairStatus.available),
+        ],
         branchServices: [BookingServiceDto(id: 's-9', name: 'Kids Cut')],
       );
     await pumpBranchDetail(tester, branches);

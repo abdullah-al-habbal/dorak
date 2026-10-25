@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
+import 'package:stylist_app/src/core/errors/api_error.entity.dart';
+
 class StylistLoginScreen extends StatefulWidget {
   const StylistLoginScreen({
     super.key,
@@ -43,14 +45,6 @@ class _StylistLoginScreenState extends State<StylistLoginScreen> {
     if (mounted && widget.session.state.isAuthenticated) {
       widget.onAuthenticated();
     }
-  }
-
-  String _errorMessage(Object error, AppLocalizations l10n) {
-    if (error is NetworkException) return l10n.errorNetwork;
-    if (error is ApiException && error.code == 'ACCOUNT_NOT_ACTIVE') {
-      return l10n.authAccountNotActive;
-    }
-    return l10n.loginErrorInvalidCredentials;
   }
 
   @override
@@ -129,7 +123,13 @@ class _StylistLoginScreenState extends State<StylistLoginScreen> {
                     ),
                     if (state.error != null) ...[
                       const SizedBox(height: DorakDimensions.spacingMedium),
-                      StatusBanner(message: _errorMessage(state.error!, l10n)),
+                      StatusBanner(
+                        message: ApiError.from(
+                          state.error!,
+                          l10n,
+                          fallbackMessage: l10n.loginErrorInvalidCredentials,
+                        ).message,
+                      ),
                     ],
                     const SizedBox(height: DorakDimensions.spacingLarge),
                     PrimaryButton(

@@ -1,12 +1,14 @@
-class AssignedBranchDto {
-  const AssignedBranchDto({required this.id, required this.name});
+import 'package:json_annotation/json_annotation.dart';
 
+part 'assigned_branch.dto.g.dart';
+
+@JsonSerializable(createToJson: false)
+class AssignedBranchDto {
   final String id;
   final String name;
 
-  factory AssignedBranchDto.fromJson(Map<String, Object?> json) =>
-      AssignedBranchDto(
-        id: json['id']?.toString() ?? '',
-        name: json['name']?.toString() ?? '',
-      );
+  const AssignedBranchDto({required this.id, required this.name});
+
+  factory AssignedBranchDto.fromJson(Map<String, dynamic> json) =>
+      _$AssignedBranchDtoFromJson(json);
 }
