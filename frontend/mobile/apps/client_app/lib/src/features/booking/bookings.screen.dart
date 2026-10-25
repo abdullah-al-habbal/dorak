@@ -9,6 +9,7 @@ import 'package:design_system/design_system.dart';
 
 import 'package:client_app/src/core/formatting/locale_formatters.entity.dart';
 import 'package:client_app/src/features/booking/booking.bloc.dart';
+import 'package:client_app/src/features/booking/booking_eligibility.entity.dart';
 import 'package:client_app/src/features/booking/booking.event.dart';
 import 'package:client_app/src/features/booking/booking.state.dart';
 import 'package:client_app/src/features/booking/widgets/booking_card.widget.dart';
@@ -199,19 +200,14 @@ class _BookingsFeedState extends State<_BookingsFeed> {
             if (index == 0) return _feedHeader(context);
             if (index == items.length + 1) return _feedFooter(context);
             final booking = items[index - 1];
+            final cancelableStatus = BookingEligibility.isCancelable(booking);
             final cancellationAllowed =
-                booking.cancellationEligible ??
-                booking.timeSlot.isAfter(
-                  DateTime.now().add(const Duration(hours: 2)),
-                );
-            final cancelableStatus =
-                booking.status == BookingStatus.pending ||
-                booking.status == BookingStatus.confirmed;
-            final cancellable =
-                state.filter == 'upcoming' &&
-                cancelableStatus &&
-                cancellationAllowed;
-            final rateable = booking.status == BookingStatus.completed;
+                BookingEligibility.isWithinCancellationWindow(booking);
+            final cancellable = BookingEligibility.canCancel(
+              booking,
+              state.filter,
+            );
+            final rateable = BookingEligibility.isRateable(booking);
             return Padding(
               padding: const EdgeInsets.only(
                 bottom: DorakDimensions.spacingMedium,
