@@ -178,7 +178,6 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
     resolver: zodResolver(schema) as never,
     defaultValues: defaultsFor(resource, session.branchId) as never,
   });
-  const [selectValues, setSelectValues] = useState<Record<string, string>>({});
   const existing = useDashboardEntityQuery(resource, editing ? id : undefined);
   useEffect(() => {
     const current = existing.data;
@@ -412,10 +411,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         (item) => [item.id, item.name.en ?? item.id] as const,
       );
     if (field === "serviceableId") {
-      const ownerType =
-        selectValues.serviceableType ??
-        existingSelectValues.serviceableType ??
-        defaultSelectValues.serviceableType;
+      const ownerType = form.watch("serviceableType") as string | undefined;
       if (ownerType === "brand")
         return (brands.data ?? []).map(
           (item) => [item.id, item.label] as const,
@@ -444,19 +440,6 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
       ];
     return null;
   };
-  const defaultSelectValues = Object.fromEntries(
-    Object.entries(
-      defaultsFor(resource, session.branchId) as Record<string, unknown>,
-    )
-      .filter(([, value]) => typeof value === "string")
-      .map(([key, value]) => [key, String(value)]),
-  );
-  const existingSelectValues = Object.fromEntries(
-    Object.entries((existing.data ?? {}) as Record<string, unknown>)
-      .filter(([, value]) => typeof value === "string" || value === null)
-      .map(([key, value]) => [key, value === null ? "" : String(value)]),
-  );
-
   if (editing && existing.isPending)
     return (
       <p className="text-text-secondary">{dictionary.operations.loading}</p>
@@ -475,18 +458,9 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
             <input type="checkbox" {...form.register("atHome" as never)} />
           ) : optionsFor(field) ? (
             <Select
-              value={
-                selectValues[field] ??
-                existingSelectValues[field] ??
-                defaultSelectValues[field] ??
-                ""
-              }
+              value={String(form.watch(field as never) ?? "")}
               onChange={(value) => {
                 const nextValue = String(value);
-                setSelectValues((current) => ({
-                  ...current,
-                  [field]: nextValue,
-                }));
                 form.setValue(
                   field as never,
                   (nextValue === "" ? null : nextValue) as never,
