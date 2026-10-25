@@ -9,6 +9,7 @@ import {
 } from "@/services/api/notification-inbox-mapper.util";
 import { isNotificationRouteAllowed } from "@/services/api/notification-inbox-path.util";
 import type { IBackendNotification } from "@/services/api/notification-inbox.types";
+import { API_ERROR_CODE } from "@/services/api/error-code.constant";
 import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import type { NextRequest } from "next/server";
@@ -35,10 +36,14 @@ async function proxyNotificationRequest(
   const { path = [] } = await context.params;
   const joined = path.join("/");
   if (!isNotificationRouteAllowed(request.method, joined))
-    return noStore(apiFailure(404, "resource_not_found", copy.notFound));
+    return noStore(
+      apiFailure(404, API_ERROR_CODE.RESOURCE_NOT_FOUND, copy.notFound),
+    );
   const token = readSessionCookies(request.cookies).accessToken;
   if (!token)
-    return noStore(apiFailure(401, "session_expired", copy.unauthorized));
+    return noStore(
+      apiFailure(401, API_ERROR_CODE.SESSION_EXPIRED, copy.unauthorized),
+    );
   const suffix = joined ? `/${joined}` : "";
   const result = await backendRequest<unknown>(
     `${ROUTES.api.notifications.root}${suffix}${request.nextUrl.search}`,
@@ -48,7 +53,7 @@ async function proxyNotificationRequest(
     return noStore(
       apiFailure(
         result.status || 502,
-        result.envelope?.code ?? "notification_request_failed",
+        result.envelope?.code ?? API_ERROR_CODE.NOTIFICATION_REQUEST_FAILED,
         copy.server,
         result.envelope?.errors,
       ),

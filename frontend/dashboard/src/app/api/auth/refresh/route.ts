@@ -6,6 +6,7 @@ import {
 } from "@/services/api/auth/cookies";
 import { refreshDashboardSession } from "@/services/api/auth/session.mutation";
 import { verifySessionClaim } from "@/services/api/auth/session.util";
+import { API_ERROR_CODE } from "@/services/api/error-code.constant";
 import { apiFailure, apiSuccess } from "@/services/api/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 
@@ -21,7 +22,11 @@ export async function POST(request: NextRequest) {
     ? await refreshDashboardSession(refreshToken, claim)
     : null;
   if (!refreshed) {
-    const response = apiFailure(401, "refresh_unauthorized", copy.unauthorized);
+    const response = apiFailure(
+      401,
+      API_ERROR_CODE.REFRESH_UNAUTHORIZED,
+      copy.unauthorized,
+    );
     clearSessionCookies(response);
 
     return response;

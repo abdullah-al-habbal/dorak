@@ -1,5 +1,6 @@
 import { ROUTES } from "@/config/routes.constant";
 import { backendRequest } from "@/services/api/auth/backend-client";
+import { API_ERROR_CODE } from "@/services/api/error-code.constant";
 import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 
@@ -11,7 +12,9 @@ export async function GET(request: Request = new Request("http://localhost")) {
   const result = await backendRequest(ROUTES.api.dashboard.health);
 
   if (result.status === 0 || result.status >= 500) {
-    return noStore(apiFailure(503, "backend_unavailable", copy.server));
+    return noStore(
+      apiFailure(503, API_ERROR_CODE.BACKEND_UNAVAILABLE, copy.server),
+    );
   }
 
   if (result.status >= 300 && result.status < 500) {

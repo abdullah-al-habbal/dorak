@@ -2,6 +2,7 @@ import { backendRequest } from "@/services/api/auth/backend-client";
 import { readSessionCookies } from "@/services/api/auth/cookies";
 import { verifySessionClaim } from "@/services/api/auth/session.util";
 import { bearerHeaders } from "@/services/api/http.util";
+import { API_ERROR_CODE } from "@/services/api/error-code.constant";
 import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import type { LookupOption, LookupResource } from "@/services/api/lookup.types";
@@ -50,11 +51,15 @@ export async function GET(
   const { accessToken, claim } = readSessionCookies(request.cookies);
   const session = await verifySessionClaim(claim);
   if (!accessToken || !session)
-    return noStore(apiFailure(401, "session_expired", copy.unauthorized));
+    return noStore(
+      apiFailure(401, API_ERROR_CODE.SESSION_EXPIRED, copy.unauthorized),
+    );
   if (session.actor_type === "barber")
-    return noStore(apiFailure(403, "forbidden", copy.forbidden));
+    return noStore(apiFailure(403, API_ERROR_CODE.FORBIDDEN, copy.forbidden));
   if (!isLookupResource(resource))
-    return noStore(apiFailure(404, "resource_not_found", copy.notFound));
+    return noStore(
+      apiFailure(404, API_ERROR_CODE.RESOURCE_NOT_FOUND, copy.notFound),
+    );
 
   const result = await backendRequest<unknown>(LOOKUP_PATHS[resource], {
     headers: bearerHeaders(accessToken),
@@ -63,7 +68,7 @@ export async function GET(
     return noStore(
       apiFailure(
         result.status || 502,
-        result.envelope?.code ?? "lookup_request_failed",
+        result.envelope?.code ?? API_ERROR_CODE.LOOKUP_REQUEST_FAILED,
         copy.server,
       ),
     );

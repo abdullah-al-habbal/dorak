@@ -5,6 +5,7 @@ import { applySessionCookies } from "@/services/api/auth/cookies";
 import { parseLoginBody } from "@/services/api/auth/login-body.util";
 import { sessionFromBackendLoginData } from "@/services/api/auth/session.util";
 import type { BackendLoginData } from "@/services/api/auth/auth.types";
+import { API_ERROR_CODE } from "@/services/api/error-code.constant";
 import { apiFailure, apiSuccess } from "@/services/api/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
   } catch {
     return apiFailure(
       400,
-      "invalid_request",
+      API_ERROR_CODE.INVALID_REQUEST,
       dictionary.common.apiError.validation,
     );
   }
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
   if (credentials === null) {
     return apiFailure(
       400,
-      "invalid_credentials",
+      API_ERROR_CODE.INVALID_CREDENTIALS,
       dictionary.auth.invalidCredentials,
     );
   }
@@ -47,7 +48,7 @@ export async function POST(request: Request) {
   if (!result.ok || !envelope?.data) {
     return apiFailure(
       result.status > 0 ? result.status : 502,
-      envelope?.code ?? "sign_in_failed",
+      envelope?.code ?? API_ERROR_CODE.SIGN_IN_FAILED,
       envelope?.code === "ACCOUNT_BANNED"
         ? envelope.message
         : dictionary.common.apiError.unauthorized,
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
   ) {
     return apiFailure(
       502,
-      "session_setup_failed",
+      API_ERROR_CODE.SESSION_SETUP_FAILED,
       dictionary.common.apiError.server,
     );
   }

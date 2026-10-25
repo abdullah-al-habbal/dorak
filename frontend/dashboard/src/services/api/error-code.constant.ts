@@ -1,0 +1,15 @@
+export const API_ERROR_CODE = {
+  RESOURCE_NOT_FOUND: "resource_not_found",
+  SESSION_EXPIRED: "session_expired",
+  FORBIDDEN: "forbidden",
+  DASHBOARD_REQUEST_FAILED: "dashboard_request_failed",
+  BARBER_REQUEST_FAILED: "barber_request_failed",
+  NOTIFICATION_REQUEST_FAILED: "notification_request_failed",
+  LOOKUP_REQUEST_FAILED: "lookup_request_failed",
+  BACKEND_UNAVAILABLE: "backend_unavailable",
+  REFRESH_UNAUTHORIZED: "refresh_unauthorized",
+  INVALID_REQUEST: "invalid_request",
+  INVALID_CREDENTIALS: "invalid_credentials",
+  SIGN_IN_FAILED: "sign_in_failed",
+  SESSION_SETUP_FAILED: "session_setup_failed",
+} as const;

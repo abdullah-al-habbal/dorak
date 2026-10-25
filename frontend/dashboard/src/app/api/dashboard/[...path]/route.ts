@@ -8,6 +8,7 @@ import {
   dashboardProfileResponseData,
 } from "@/services/api/dashboard/dashboard-profile-bff.util";
 import { isDashboardRouteAllowed } from "@/services/api/dashboard/dashboard-path.util";
+import { API_ERROR_CODE } from "@/services/api/error-code.constant";
 import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import type { NextRequest } from "next/server";
@@ -36,11 +37,15 @@ async function proxyDashboardRequest(request: NextRequest, context: Context) {
   const copy = getRequestDictionary(request).common.apiError;
   const { path } = await context.params;
   if (!isDashboardRouteAllowed(request.method, path))
-    return noStore(apiFailure(404, "resource_not_found", copy.notFound));
+    return noStore(
+      apiFailure(404, API_ERROR_CODE.RESOURCE_NOT_FOUND, copy.notFound),
+    );
 
   const { accessToken: token, claim } = readSessionCookies(request.cookies);
   if (!token)
-    return noStore(apiFailure(401, "session_expired", copy.unauthorized));
+    return noStore(
+      apiFailure(401, API_ERROR_CODE.SESSION_EXPIRED, copy.unauthorized),
+    );
 
   const rawBody =
     request.method === "GET" || request.method === "DELETE"
@@ -65,7 +70,7 @@ async function proxyDashboardRequest(request: NextRequest, context: Context) {
     return noStore(
       apiFailure(
         result.status || 502,
-        result.envelope?.code ?? "dashboard_request_failed",
+        result.envelope?.code ?? API_ERROR_CODE.DASHBOARD_REQUEST_FAILED,
         copy.server,
         result.envelope?.errors,
       ),
