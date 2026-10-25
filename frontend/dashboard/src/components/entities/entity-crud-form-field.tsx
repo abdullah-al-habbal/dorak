@@ -1,6 +1,7 @@
 "use client";
 
 import { fieldLabelKey } from "@/components/entities/entity-form-field.util";
+import { Checkbox } from "@/components/tailgrids/core/checkbox";
 import { Input } from "@/components/tailgrids/core/input";
 import {
   Select,
@@ -11,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/tailgrids/core/select";
 import type { IEntityCrudFormFieldProps } from "@/components/entities/entity-crud-form-field.types";
+import { Controller, useWatch } from "react-hook-form";
 
 /** One labeled input/select/checkbox row of the entity CRUD form. */
 export function EntityCrudFormField({
@@ -19,16 +21,26 @@ export function EntityCrudFormField({
   options,
   form,
 }: IEntityCrudFormFieldProps) {
+  const fieldValue = useWatch({ control: form.control, name: field as never });
   return (
     <label className="grid gap-2 text-sm text-text-100" key={field}>
       <span>
         {fieldCopy[fieldLabelKey(field) as keyof typeof fieldCopy] ?? field}
       </span>
       {field === "atHome" ? (
-        <input type="checkbox" {...form.register("atHome" as never)} />
+        <Controller
+          control={form.control}
+          name="atHome"
+          render={({ field: atHomeField }) => (
+            <Checkbox
+              isSelected={atHomeField.value === true}
+              onChange={atHomeField.onChange}
+            />
+          )}
+        />
       ) : options ? (
         <Select
-          value={String(form.watch(field as never) ?? "")}
+          value={String(fieldValue ?? "")}
           onChange={(value) => {
             const nextValue = String(value);
             form.setValue(

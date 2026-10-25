@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/tailgrids/core/button";
 import { Card } from "@/components/tailgrids/core/card";
+import { Checkbox } from "@/components/tailgrids/core/checkbox";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { getNotificationPreferences } from "@/services/api/dashboard/profile.query";
@@ -43,17 +44,13 @@ export function NotificationPreferences() {
           ["booking", values?.bookingEnabled, labels.booking],
           ["system", values?.systemEnabled, labels.system],
         ].map(([name, checked, label]) => (
-          <label
-            className="flex items-center gap-3 text-sm text-text-primary"
+          <Checkbox
             key={String(name)}
+            name={String(name)}
+            defaultSelected={Boolean(checked)}
           >
-            <input
-              type="checkbox"
-              name={String(name)}
-              defaultChecked={Boolean(checked)}
-            />
             {label}
-          </label>
+          </Checkbox>
         ))}
         <Button type="submit">{copy.title}</Button>
       </form>

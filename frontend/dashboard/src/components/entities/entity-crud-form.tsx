@@ -32,7 +32,7 @@ import { chairConflictBookingIds } from "@/services/api/dashboard/chair-maintena
 import { notifySuccess } from "@/services/api/notifications";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
   const dictionary = useDictionary();
@@ -127,7 +127,10 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
       currencies: currencies.data ?? [],
       catalogItems: catalogItems.data ?? [],
     },
-    serviceableType: form.watch("serviceableType") as string | undefined,
+    serviceableType: useWatch({
+      control: form.control,
+      name: "serviceableType" as never,
+    }) as unknown as string | undefined,
   };
   if (editing && existing.isPending)
     return (

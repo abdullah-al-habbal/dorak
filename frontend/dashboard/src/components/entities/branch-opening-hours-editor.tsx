@@ -1,9 +1,11 @@
 "use client";
 
+import { Checkbox } from "@/components/tailgrids/core/checkbox";
 import { Input } from "@/components/tailgrids/core/input";
 import type { IBranchOpeningHoursEditorProps } from "@/components/entities/branch-opening-hours-editor.types";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { BRANCH_WEEKDAYS } from "@/services/api/dashboard/branch-opening-hours.constant";
+import { Controller } from "react-hook-form";
 
 export function BranchOpeningHoursEditor({
   form,
@@ -47,13 +49,18 @@ export function BranchOpeningHoursEditor({
                 setValueAs: (value) => (value === "" ? null : value),
               })}
             />
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                {...form.register(`openingHours.${weekday}.isClosed`)}
-              />
-              {fieldCopy.closed}
-            </label>
+            <Controller
+              control={form.control}
+              name={`openingHours.${weekday}.isClosed`}
+              render={({ field }) => (
+                <Checkbox
+                  isSelected={field.value === true}
+                  onChange={field.onChange}
+                >
+                  {fieldCopy.closed}
+                </Checkbox>
+              )}
+            />
           </div>
         );
       })}

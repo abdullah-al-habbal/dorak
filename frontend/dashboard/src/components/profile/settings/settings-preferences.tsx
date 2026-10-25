@@ -11,6 +11,7 @@ import {
 } from "@/components/tailgrids/core/select";
 import { Button } from "@/components/tailgrids/core/button";
 import { Card } from "@/components/tailgrids/core/card";
+import { Checkbox } from "@/components/tailgrids/core/checkbox";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { apiErrorMessage } from "@/services/api/api-error-message.util";
@@ -21,7 +22,7 @@ import type { IUpdateSettingsInput } from "@/services/api/dashboard/iupdate-sett
 import { UpdateSettingsInputSchema } from "@/services/api/dashboard/schema/dashboard-profile.schema";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 export function SettingsPreferences() {
@@ -46,6 +47,19 @@ export function SettingsPreferences() {
   const save = useDashboardMutation("settings", (value: IUpdateSettingsInput) =>
     updateSettings(value),
   );
+  const preferredLanguage = useWatch({
+    control: form.control,
+    name: "preferredLanguage",
+  });
+  const displayCurrencyId = useWatch({
+    control: form.control,
+    name: "displayCurrencyId",
+  });
+  const theme = useWatch({ control: form.control, name: "theme" });
+  const priceDisplayMode = useWatch({
+    control: form.control,
+    name: "priceDisplayMode",
+  });
 
   return (
     <Card className="bg-transparent p-5">
@@ -62,7 +76,7 @@ export function SettingsPreferences() {
         <label className="grid gap-2 text-sm text-text-primary">
           <span>{labels.language}</span>
           <Select
-            value={form.watch("preferredLanguage") ?? ""}
+            value={preferredLanguage ?? ""}
             onChange={(selected) =>
               form.setValue(
                 "preferredLanguage",
@@ -84,7 +98,7 @@ export function SettingsPreferences() {
         <label className="grid gap-2 text-sm text-text-primary">
           <span>{labels.currency}</span>
           <Select
-            value={form.watch("displayCurrencyId") ?? ""}
+            value={displayCurrencyId ?? ""}
             onChange={(selected) =>
               form.setValue(
                 "displayCurrencyId",
@@ -109,7 +123,7 @@ export function SettingsPreferences() {
         <label className="grid gap-2 text-sm text-text-primary">
           <span>{labels.theme}</span>
           <Select
-            value={form.watch("theme") ?? ""}
+            value={theme ?? ""}
             onChange={(selected) =>
               form.setValue(
                 "theme",
@@ -131,7 +145,7 @@ export function SettingsPreferences() {
         <label className="grid gap-2 text-sm text-text-primary">
           <span>{labels.priceDisplayMode}</span>
           <Select
-            value={form.watch("priceDisplayMode") ?? ""}
+            value={priceDisplayMode ?? ""}
             onChange={(selected) =>
               form.setValue(
                 "priceDisplayMode",
@@ -154,16 +168,19 @@ export function SettingsPreferences() {
           </Select>
         </label>
 
-        <label className="flex items-center gap-3 text-sm text-text-primary sm:col-span-2">
-          <input
-            type="checkbox"
-            checked={form.watch("notificationEnabled") ?? true}
-            onChange={(event) =>
-              form.setValue("notificationEnabled", event.target.checked)
-            }
-          />
-          {labels.notificationEnabled}
-        </label>
+        <Controller
+          control={form.control}
+          name="notificationEnabled"
+          render={({ field }) => (
+            <Checkbox
+              className="sm:col-span-2"
+              isSelected={field.value ?? true}
+              onChange={field.onChange}
+            >
+              {labels.notificationEnabled}
+            </Checkbox>
+          )}
+        />
 
         <Button
           className="sm:col-span-2"

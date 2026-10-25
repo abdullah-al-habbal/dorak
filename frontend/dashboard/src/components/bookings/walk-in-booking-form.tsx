@@ -28,7 +28,7 @@ import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { ApiClientError } from "@/services/api/client-error";
 import { notifySuccess } from "@/services/api/notifications";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 export function WalkInBookingForm() {
@@ -50,9 +50,9 @@ export function WalkInBookingForm() {
       timeSlot: "",
     },
   });
-  const branchId = form.watch("branchId");
-  const chairId = form.watch("chairId");
-  const serviceIds = form.watch("serviceIds");
+  const branchId = useWatch({ control: form.control, name: "branchId" });
+  const chairId = useWatch({ control: form.control, name: "chairId" });
+  const serviceIds = useWatch({ control: form.control, name: "serviceIds" });
   const branches = useDashboardListOptions("branches", mapBranch, {
     page: 1,
     perPage: 100,

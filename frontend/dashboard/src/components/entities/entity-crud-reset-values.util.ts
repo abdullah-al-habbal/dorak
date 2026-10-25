@@ -6,29 +6,32 @@ import type { IChair } from "@/services/api/dashboard/ichair.types";
 import type { IService } from "@/services/api/dashboard/iservice.types";
 import type { IStylist } from "@/services/api/dashboard/istylist.types";
 
+function isDefined(data: unknown): data is Record<string, unknown> {
+  return typeof data === "object" && data !== null;
+}
 function isBranchData(
   resource: EditableDashboardResource,
   data: unknown,
 ): data is IBranch {
-  return resource === "branches";
+  return resource === "branches" && isDefined(data);
 }
 function isChairData(
   resource: EditableDashboardResource,
   data: unknown,
 ): data is IChair {
-  return resource === "chairs";
+  return resource === "chairs" && isDefined(data);
 }
 function isServiceData(
   resource: EditableDashboardResource,
   data: unknown,
 ): data is IService {
-  return resource === "services";
+  return resource === "services" && isDefined(data);
 }
 function isStylistData(
   resource: EditableDashboardResource,
   data: unknown,
 ): data is IStylist {
-  return resource === "stylists";
+  return resource === "stylists" && isDefined(data);
 }
 
 /** Form values to reset an edit-mode form to, mapped from the fetched entity. */

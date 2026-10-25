@@ -13,7 +13,7 @@ import {
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { bookingStatusSchema } from "@/services/api/dashboard/booking-status.schema";
 import { updateBookingStatus } from "@/services/api/dashboard/dashboard-workflow.mutation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import type { z } from "zod";
 
 interface IBookingStatusUpdateFormProps {
@@ -45,7 +45,7 @@ export function BookingStatusUpdateForm({
     resolver: zodResolver(bookingStatusSchema),
     defaultValues: { status: "confirmed" },
   });
-  const bookingStatus = form.watch("status");
+  const bookingStatus = useWatch({ control: form.control, name: "status" });
   const status = useDashboardMutation(
     "bookings",
     (value: z.input<typeof bookingStatusSchema>) =>

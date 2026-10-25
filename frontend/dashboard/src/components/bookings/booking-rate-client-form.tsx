@@ -18,7 +18,7 @@ import { ApiClientError } from "@/services/api/client-error";
 import { bookingClientReviewSchema } from "@/services/api/dashboard/booking-client-review.schema";
 import type { BookingClientReviewInput } from "@/services/api/dashboard/booking-client-review.types";
 import { rateBookingClient } from "@/services/api/dashboard/dashboard-workflow.mutation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 interface IBookingRateClientFormProps {
@@ -38,7 +38,7 @@ export function BookingRateClientForm({
     resolver: zodResolver(bookingClientReviewSchema),
     defaultValues: { rating: 5, comment: "" },
   });
-  const rating = String(form.watch("rating"));
+  const rating = String(useWatch({ control: form.control, name: "rating" }));
   const rate = useDashboardMutation(
     "bookings",
     (value: BookingClientReviewInput) =>
