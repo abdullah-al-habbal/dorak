@@ -4,8 +4,9 @@ import 'package:design_system/design_system.dart';
 import 'package:localization/localization.dart';
 
 import 'package:client_app/src/features/auth/auth_error.entity.dart';
-import 'package:client_app/src/features/auth/auth_validators.entity.dart';
-import 'package:client_app/src/features/auth/widgets/auth_text_field.widget.dart';
+import 'package:client_app/src/features/auth/widgets/sign_up_actions.widget.dart';
+import 'package:client_app/src/features/auth/widgets/sign_up_fields.widget.dart';
+import 'package:client_app/src/features/auth/widgets/sign_up_header.widget.dart';
 
 class SignUpContent extends StatefulWidget {
   final Animation<double> titleAnimation;
@@ -82,13 +83,13 @@ class _SignUpContentState extends State<SignUpContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _SignUpHeader(
+          SignUpHeader(
             animation: widget.titleAnimation,
             l10n: l10n,
             colors: colors,
           ),
           const SizedBox(height: 32),
-          _SignUpFields(
+          SignUpFields(
             animation: widget.formAnimation,
             l10n: l10n,
             isSubmitting: widget.isSubmitting,
@@ -100,7 +101,7 @@ class _SignUpContentState extends State<SignUpContent> {
             onSubmit: _submit,
           ),
           const SizedBox(height: 24),
-          _SignUpActions(
+          SignUpActions(
             animation: widget.actionsAnimation,
             l10n: l10n,
             colors: colors,
@@ -113,177 +114,4 @@ class _SignUpContentState extends State<SignUpContent> {
       ),
     );
   }
-}
-
-class _SignUpHeader extends StatelessWidget {
-  const _SignUpHeader({
-    required this.animation,
-    required this.l10n,
-    required this.colors,
-  });
-
-  final Animation<double> animation;
-  final AppLocalizations l10n;
-  final DorakColors colors;
-
-  @override
-  Widget build(BuildContext context) => FadeTransition(
-    opacity: animation,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.signUpTitle,
-          style: DorakTypography.headlineLgMobile.copyWith(
-            color: colors.onSurface,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          l10n.signUpSubtitle,
-          style: DorakTypography.bodyLg.copyWith(
-            color: colors.onSurfaceVariant,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-class _SignUpFields extends StatelessWidget {
-  const _SignUpFields({
-    required this.animation,
-    required this.l10n,
-    required this.isSubmitting,
-    required this.nameController,
-    required this.emailController,
-    required this.passwordController,
-    required this.confirmController,
-    required this.serverError,
-    required this.onSubmit,
-  });
-
-  final Animation<double> animation;
-  final AppLocalizations l10n;
-  final bool isSubmitting;
-  final TextEditingController nameController;
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final TextEditingController confirmController;
-  final String? Function(String field) serverError;
-  final VoidCallback onSubmit;
-
-  @override
-  Widget build(BuildContext context) => FadeTransition(
-    opacity: animation,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AuthTextField(
-          label: l10n.signUpFullNameLabel,
-          controller: nameController,
-          keyboardType: TextInputType.name,
-          enabled: !isSubmitting,
-          validator: (value) =>
-              AuthValidators.required(value, l10n) ?? serverError('name'),
-        ),
-        const SizedBox(height: 16),
-        AuthTextField(
-          label: l10n.signUpEmailLabel,
-          controller: emailController,
-          keyboardType: TextInputType.emailAddress,
-          enabled: !isSubmitting,
-          validator: (value) =>
-              AuthValidators.email(value, l10n) ?? serverError('email'),
-        ),
-        const SizedBox(height: 16),
-        AuthTextField(
-          label: l10n.signUpPasswordLabel,
-          controller: passwordController,
-          isPassword: true,
-          enabled: !isSubmitting,
-          helperText: l10n.signUpPasswordHint,
-          validator: (value) =>
-              AuthValidators.password(value, l10n) ?? serverError('password'),
-        ),
-        const SizedBox(height: 16),
-        AuthTextField(
-          label: l10n.signUpConfirmPasswordLabel,
-          controller: confirmController,
-          isPassword: true,
-          enabled: !isSubmitting,
-          textInputAction: TextInputAction.done,
-          onSubmitted: (_) => onSubmit(),
-          validator: (value) => AuthValidators.passwordConfirmation(
-            value,
-            passwordController.text,
-            l10n,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-class _SignUpActions extends StatelessWidget {
-  const _SignUpActions({
-    required this.animation,
-    required this.l10n,
-    required this.colors,
-    required this.error,
-    required this.isSubmitting,
-    required this.onSubmit,
-    required this.onLogInLink,
-  });
-
-  final Animation<double> animation;
-  final AppLocalizations l10n;
-  final DorakColors colors;
-  final AuthError? error;
-  final bool isSubmitting;
-  final VoidCallback onSubmit;
-  final VoidCallback onLogInLink;
-
-  @override
-  Widget build(BuildContext context) => FadeTransition(
-    opacity: animation,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (error != null) ...[
-          StatusBanner(message: error!.message),
-          const SizedBox(height: 12),
-        ],
-        PrimaryButton(
-          label: l10n.signUpButton,
-          onPressed: onSubmit,
-          isLoading: isSubmitting,
-        ),
-        const SizedBox(height: 16),
-        Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(
-              l10n.signUpAlreadyHaveAccount,
-              style: DorakTypography.bodyMd.copyWith(
-                color: colors.onSurfaceVariant,
-              ),
-            ),
-            TextButton(
-              onPressed: isSubmitting ? null : onLogInLink,
-              style: TextButton.styleFrom(
-                foregroundColor: colors.primary,
-                textStyle: DorakTypography.labelLg,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: Text(l10n.signUpLogInLink),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
 }

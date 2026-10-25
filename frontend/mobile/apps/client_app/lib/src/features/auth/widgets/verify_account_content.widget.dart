@@ -6,7 +6,9 @@ import 'package:design_system/design_system.dart';
 import 'package:localization/localization.dart';
 
 import 'package:client_app/src/features/auth/auth_error.entity.dart';
-import 'package:client_app/src/features/auth/widgets/otp_input_field.widget.dart';
+import 'package:client_app/src/features/auth/widgets/verification_actions.widget.dart';
+import 'package:client_app/src/features/auth/widgets/verification_code_fields.widget.dart';
+import 'package:client_app/src/features/auth/widgets/verification_header.widget.dart';
 
 class VerifyAccountContent extends StatefulWidget {
   static const int codeLength = 6;
@@ -148,13 +150,14 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _VerificationHeader(
+        VerificationHeader(
           destination: _maskedDestination,
           l10n: l10n,
           colors: colors,
         ),
         const SizedBox(height: 24),
-        _VerificationCodeFields(
+        VerificationCodeFields(
+          codeLength: VerifyAccountContent.codeLength,
           controllers: _controllers,
           focusNodes: _focusNodes,
           enabled: !busy,
@@ -163,7 +166,7 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
           onBackspaceWhenEmpty: _onBackspaceWhenEmpty,
         ),
         const SizedBox(height: 16),
-        _VerificationActions(
+        VerificationActions(
           error: _error,
           l10n: l10n,
           colors: colors,
@@ -176,142 +179,4 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
       ],
     );
   }
-}
-
-class _VerificationHeader extends StatelessWidget {
-  const _VerificationHeader({
-    required this.destination,
-    required this.l10n,
-    required this.colors,
-  });
-
-  final String destination;
-  final AppLocalizations l10n;
-  final DorakColors colors;
-
-  @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Icon(Icons.mark_email_read, size: 48, color: colors.primary),
-      const SizedBox(height: 16),
-      Text(
-        l10n.verifyTitle,
-        style: DorakTypography.headlineSm.copyWith(color: colors.onSurface),
-        textAlign: TextAlign.center,
-      ),
-      const SizedBox(height: 8),
-      Text(
-        l10n.verifySubtitle(destination),
-        style: DorakTypography.bodyMd.copyWith(color: colors.onSurfaceVariant),
-        textAlign: TextAlign.center,
-      ),
-    ],
-  );
-}
-
-class _VerificationCodeFields extends StatelessWidget {
-  const _VerificationCodeFields({
-    required this.controllers,
-    required this.focusNodes,
-    required this.enabled,
-    required this.hasError,
-    required this.onDigitChanged,
-    required this.onBackspaceWhenEmpty,
-  });
-
-  final List<TextEditingController> controllers;
-  final List<FocusNode> focusNodes;
-  final bool enabled;
-  final bool hasError;
-  final void Function(int index, String value) onDigitChanged;
-  final void Function(int index) onBackspaceWhenEmpty;
-
-  @override
-  Widget build(BuildContext context) => Row(
-    children: [
-      for (var i = 0; i < VerifyAccountContent.codeLength; i++) ...[
-        if (i > 0) const SizedBox(width: 8),
-        Expanded(
-          child: OtpInputField(
-            controller: controllers[i],
-            focusNode: focusNodes[i],
-            autofocus: i == 0,
-            enabled: enabled,
-            hasError: hasError,
-            onChanged: (value) => onDigitChanged(i, value),
-            onBackspaceWhenEmpty: () => onBackspaceWhenEmpty(i),
-          ),
-        ),
-      ],
-    ],
-  );
-}
-
-class _VerificationActions extends StatelessWidget {
-  const _VerificationActions({
-    required this.error,
-    required this.l10n,
-    required this.colors,
-    required this.busy,
-    required this.cooldown,
-    required this.onVerify,
-    required this.onResend,
-    required this.onSkip,
-  });
-
-  final AuthError? error;
-  final AppLocalizations l10n;
-  final DorakColors colors;
-  final bool busy;
-  final int cooldown;
-  final VoidCallback onVerify;
-  final VoidCallback onResend;
-  final VoidCallback onSkip;
-
-  @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      SizedBox(
-        height: 24,
-        child: error == null ? null : StatusBanner(message: error!.message),
-      ),
-      const SizedBox(height: 8),
-      PrimaryButton(
-        label: l10n.verifyButton,
-        onPressed: onVerify,
-        isLoading: busy,
-      ),
-      const SizedBox(height: 12),
-      Wrap(
-        alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          Text(
-            l10n.verifyDidNotReceive,
-            style: DorakTypography.bodyMd.copyWith(
-              color: colors.onSurfaceVariant,
-            ),
-          ),
-          TextButton(
-            onPressed: (cooldown > 0 || busy) ? null : onResend,
-            style: TextButton.styleFrom(
-              foregroundColor: colors.primary,
-              textStyle: DorakTypography.labelLg,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: Text(
-              cooldown > 0
-                  ? l10n.verifyResendDisabled(cooldown)
-                  : l10n.verifyResend,
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 4),
-      SkipButton(label: l10n.verifySkip, onPressed: onSkip, isDisabled: busy),
-    ],
-  );
 }

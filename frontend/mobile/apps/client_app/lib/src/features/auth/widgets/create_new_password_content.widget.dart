@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:design_system/design_system.dart';
-import 'package:localization/localization.dart';
-
 import 'package:client_app/src/features/auth/auth_error.entity.dart';
-import 'package:client_app/src/features/auth/auth_validators.entity.dart';
-import 'package:client_app/src/features/auth/widgets/auth_text_field.widget.dart';
+import 'package:client_app/src/features/auth/widgets/password_actions.widget.dart';
+import 'package:client_app/src/features/auth/widgets/password_fields.widget.dart';
+import 'package:client_app/src/features/auth/widgets/password_header.widget.dart';
 
 class CreateNewPasswordContent extends StatefulWidget {
   final Animation<double> titleAnimation;
@@ -66,9 +64,9 @@ class _CreateNewPasswordContentState extends State<CreateNewPasswordContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _PasswordHeader(animation: widget.titleAnimation),
+          PasswordHeader(animation: widget.titleAnimation),
           const SizedBox(height: 32),
-          _PasswordFields(
+          PasswordFields(
             animation: widget.formAnimation,
             passwordController: _passwordController,
             confirmController: _confirmController,
@@ -76,139 +74,13 @@ class _CreateNewPasswordContentState extends State<CreateNewPasswordContent> {
             onSubmit: _submit,
           ),
           const SizedBox(height: 8),
-          _PasswordActions(
+          PasswordActions(
             animation: widget.actionsAnimation,
             error: widget.error,
             isCodeRejected: widget.isCodeRejected,
             onReenterCode: widget.onReenterCode,
             isSubmitting: widget.isSubmitting,
             onSubmit: _submit,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PasswordHeader extends StatelessWidget {
-  const _PasswordHeader({required this.animation});
-  final Animation<double> animation;
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final colors = DorakColors.of(context);
-    return FadeTransition(
-      opacity: animation,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.recoveryNewPasswordTitle,
-            style: DorakTypography.headlineLgMobile.copyWith(
-              color: colors.onSurface,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.recoveryNewPasswordSubtitle,
-            style: DorakTypography.bodyLg.copyWith(
-              color: colors.onSurfaceVariant,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PasswordFields extends StatelessWidget {
-  const _PasswordFields({
-    required this.animation,
-    required this.passwordController,
-    required this.confirmController,
-    required this.isSubmitting,
-    required this.onSubmit,
-  });
-  final Animation<double> animation;
-  final TextEditingController passwordController;
-  final TextEditingController confirmController;
-  final bool isSubmitting;
-  final VoidCallback onSubmit;
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return FadeTransition(
-      opacity: animation,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AuthTextField(
-            label: l10n.recoveryNewPasswordLabel,
-            controller: passwordController,
-            isPassword: true,
-            enabled: !isSubmitting,
-            helperText: l10n.signUpPasswordHint,
-            validator: (value) => AuthValidators.password(value, l10n),
-          ),
-          const SizedBox(height: 16),
-          AuthTextField(
-            label: l10n.recoveryConfirmPasswordLabel,
-            controller: confirmController,
-            isPassword: true,
-            enabled: !isSubmitting,
-            textInputAction: TextInputAction.done,
-            onSubmitted: (_) => onSubmit(),
-            validator: (value) => AuthValidators.passwordConfirmation(
-              value,
-              passwordController.text,
-              l10n,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PasswordActions extends StatelessWidget {
-  const _PasswordActions({
-    required this.animation,
-    required this.error,
-    required this.isCodeRejected,
-    required this.onReenterCode,
-    required this.isSubmitting,
-    required this.onSubmit,
-  });
-  final Animation<double> animation;
-  final AuthError? error;
-  final bool isCodeRejected;
-  final VoidCallback onReenterCode;
-  final bool isSubmitting;
-  final VoidCallback onSubmit;
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return FadeTransition(
-      opacity: animation,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (isCodeRejected) ...[
-            const SizedBox(height: 8),
-            StatusBanner(
-              message: l10n.recoveryCodeRejected,
-              actionLabel: l10n.recoveryReenterCode,
-              onAction: onReenterCode,
-            ),
-          ] else if (error != null) ...[
-            const SizedBox(height: 8),
-            StatusBanner(message: error!.message),
-          ],
-          const SizedBox(height: 16),
-          PrimaryButton(
-            label: l10n.recoveryResetButton,
-            onPressed: onSubmit,
-            isLoading: isSubmitting,
           ),
         ],
       ),
