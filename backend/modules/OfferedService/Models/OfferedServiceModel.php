@@ -73,18 +73,14 @@ class OfferedServiceModel extends Model
     }
 
     /**
-     * Services owned by a shop: the branch itself or its brand.
+     * Services owned by a shop: D1, its brand (never the branch itself).
      *
      * @param  Builder<OfferedServiceModel>  $query
      * @return Builder<OfferedServiceModel>
      */
-    public function scopeOfferedAtShop(Builder $query, string $branchId, ?string $brandId): Builder
+    public function scopeOfferedAtShop(Builder $query, ?string $brandId): Builder
     {
-        return $query->where(fn (Builder $owner) => $owner
-            ->where(fn (Builder $own) => $own->where('serviceable_type', 'branch')->where('serviceable_id', $branchId))
-            ->when($brandId !== null, fn (Builder $either) => $either->orWhere(fn (Builder $brand) => $brand
-                ->where('serviceable_type', 'brand')
-                ->where('serviceable_id', $brandId))));
+        return $query->where('serviceable_type', 'brand')->where('serviceable_id', $brandId);
     }
 
     public function serviceable(): MorphTo

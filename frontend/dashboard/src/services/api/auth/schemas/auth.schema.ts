@@ -24,6 +24,7 @@ export const AuthSessionSchema = z.object({
   role: z.enum(DASHBOARD_ROLES),
   subject: z.string(),
   branchId: z.string().nullable(),
+  brandId: z.string().nullable(),
   brandIds: z.array(z.string()),
   displayName: z.string().nullable(),
   email: z.string().nullable(),

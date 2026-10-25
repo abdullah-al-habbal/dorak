@@ -100,7 +100,7 @@ export function mapService(wire: unknown): IService {
     serviceableId: string(item.serviceable_id),
     serviceableType: string(
       item.serviceable_type,
-      "branch",
+      "brand",
     ) as IService["serviceableType"],
   };
 }

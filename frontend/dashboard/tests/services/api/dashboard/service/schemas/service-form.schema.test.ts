@@ -13,7 +13,7 @@ const serviceInput = {
   active: true,
   atHome: false,
   serviceableId: "6f1c2d3e-4b5a-4c6d-8e7f-9a0b1c2d3e4f",
-  serviceableType: "branch",
+  serviceableType: "brand",
   catalogItemId,
 } as const;
 

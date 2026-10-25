@@ -401,3 +401,8 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - Dashboard management endpoints now explicitly reject barber actors; self-service session and profile endpoints remain available to each dashboard actor.
 - Branch managers can create, list, view, update, and delete branches within their current branch's brand; cross-brand access remains forbidden.
 - `POST /api/v1/dashboard/profile/email/change` creates a short-lived pending email change and sends a six-digit confirmation code. `POST /api/v1/dashboard/profile/email/verify` applies the email only after successful verification; the existing verified email remains active until then.
+
+### Barber Bio and Self-Service Barber Services (Task 54)
+- `barbers.bio` (translatable json) is editable via `PATCH /api/v1/barber/profile` (`bio.en`/`bio.ar`) and exposed on the barber profile and explore barber detail payloads.
+- `GET/POST /api/v1/barber/services`, `PUT/DELETE /api/v1/barber/services/{service}` — barber-scoped service CRUD; `serviceable_type`/`serviceable_id` are always forced server-side to the authenticated barber, never read from the request.
+- D1 enforced: a service is owned by a Brand or a Barber, never a Branch. `branch` was removed from the dashboard `serviceable_type` enum; existing branch-owned `offered_services` rows were migrated to their parent brand. Branch managers still manage services, now classified as their branch's brand.

@@ -43,7 +43,7 @@ final class GetFloorPlanAction extends BaseApiAction
             'branch_services' => MenuServiceResource::collection(
                 OfferedServiceModel::query()
                     ->bookable()
-                    ->offeredAtShop((string) $branchModel->getKey(), $branchModel->getAttribute('brand_id') === null ? null : (string) $branchModel->getAttribute('brand_id'))
+                    ->offeredAtShop($branchModel->getAttribute('brand_id') === null ? null : (string) $branchModel->getAttribute('brand_id'))
                     ->orderBy('price')
                     ->get(),
             )->resolve($request),

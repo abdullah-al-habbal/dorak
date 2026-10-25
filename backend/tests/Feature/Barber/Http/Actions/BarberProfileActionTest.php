@@ -36,6 +36,16 @@ it('updates profile fields', function () {
     expect($response->json('data.is_freelancer'))->toBeTrue();
 });
 
+it('persists a bilingual bio and exposes it on the profile', function () {
+    $response = $this->patchJson('/api/v1/barber/profile', [
+        'bio' => ['en' => 'Fade specialist', 'ar' => 'متخصص في التدريج'],
+    ]);
+
+    $response->assertOk();
+    expect($response->json('data.bio'))->toBe('Fade specialist');
+    expect($this->barber->fresh()->getTranslation('bio', 'ar'))->toBe('متخصص في التدريج');
+});
+
 it('validates email uniqueness on profile update', function () {
     BarberModel::factory()->create(['email' => 'taken@test.com']);
 

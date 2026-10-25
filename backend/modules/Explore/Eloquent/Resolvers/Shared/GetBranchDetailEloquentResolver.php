@@ -38,7 +38,7 @@ final class GetBranchDetailEloquentResolver
 
         $menu = OfferedServiceModel::query()
             ->bookable()
-            ->offeredAtShop((string) $branch->getKey(), $branch->getAttribute('brand_id') === null ? null : (string) $branch->getAttribute('brand_id'))
+            ->offeredAtShop($branch->getAttribute('brand_id') === null ? null : (string) $branch->getAttribute('brand_id'))
             ->orderBy('serviceable_type')
             ->orderBy('price')
             ->get()

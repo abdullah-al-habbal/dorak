@@ -6,7 +6,6 @@ namespace Modules\Dashboard\Http\Actions\Services;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\DestroyServiceCommand;
 use Modules\Dashboard\CQRS\Query\ShowServiceQuery;
@@ -17,7 +16,6 @@ use Modules\Dashboard\Support\DashboardActor;
 final class DestroyServiceAction extends BaseApiAction
 {
     public function __construct(
-        private readonly BrandFeatures $brandFeatures,
         private readonly ShowServiceHandler $showHandler,
         private readonly DestroyServiceHandler $destroyHandler,
     ) {}
@@ -28,11 +26,8 @@ final class DestroyServiceAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowServiceQuery(
             $service,
-            $actor->scopedBranchIds(),
+            $actor->scopedBrandIds(),
         ));
-        if ($model->serviceable_type === 'branch') {
-            $this->brandFeatures->ensureBranchManageable($model->serviceable_id);
-        }
         $this->destroyHandler->handle($model, new DestroyServiceCommand($service));
 
         return $this->deleted();

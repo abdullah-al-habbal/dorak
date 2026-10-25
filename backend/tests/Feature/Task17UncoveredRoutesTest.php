@@ -160,7 +160,7 @@ it('keeps dashboard branch and chair writes inside a branch manager tenant', fun
         ->assertNotFound();
     $this->patchJson('/api/v1/dashboard/bookings/'.BookingModel::factory()->create(['chair_id' => $ownChair->id])->id, [])->assertUnprocessable();
 
-    $service = OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $foreignBranch->id]);
+    $service = OfferedServiceModel::factory()->create(['serviceable_id' => $foreignBranch->brand_id]);
     $this->postJson('/api/v1/dashboard/bookings/walk-in', [
         'branch_id' => $foreignBranch->id,
         'chair_id' => $foreignChair->id,
@@ -180,7 +180,7 @@ it('exercises the dashboard walk-in route validation and authorization', functio
     $branch = BranchModel::factory()->create();
     $barber = BarberModel::factory()->create(['managed_by_branch_id' => $branch->id]);
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id]);
-    $service = OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $branch->id, 'duration' => 30]);
+    $service = OfferedServiceModel::factory()->create(['serviceable_id' => $branch->brand_id, 'duration' => 30]);
     $response = $this->postJson('/api/v1/dashboard/bookings/walk-in', [
         'branch_id' => $branch->id,
         'chair_id' => $chair->id,

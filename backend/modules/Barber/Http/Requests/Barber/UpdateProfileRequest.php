@@ -15,6 +15,9 @@ final class UpdateProfileRequest extends BaseApiFormRequest
     {
         return [
             'name' => ['nullable', 'array'],
+            'bio' => ['nullable', 'array'],
+            'bio.en' => ['sometimes', 'nullable', 'string', 'max:2000'],
+            'bio.ar' => ['sometimes', 'nullable', 'string', 'max:2000'],
             'email' => ['nullable', 'email', Rule::unique('barbers', 'email')->ignore($this->user()->id)],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'is_freelancer' => ['nullable', 'boolean'],
@@ -27,6 +30,7 @@ final class UpdateProfileRequest extends BaseApiFormRequest
         return new UpdateProfileCommand(
             barberId: (string) $this->user()->id,
             name: $this->validated('name'),
+            bio: $this->validated('bio'),
             email: $this->validated('email'),
             password: $this->validated('password'),
             isFreelancer: $this->validated('is_freelancer'),

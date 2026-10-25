@@ -11,6 +11,6 @@ export const serviceFormSchema = z.object({
   active: z.boolean(),
   atHome: z.boolean(),
   serviceableId: z.string().uuid(),
-  serviceableType: z.enum(["branch", "brand", "barber"]),
+  serviceableType: z.enum(["brand", "barber"]),
   catalogItemId: z.string().uuid().nullable(),
 });

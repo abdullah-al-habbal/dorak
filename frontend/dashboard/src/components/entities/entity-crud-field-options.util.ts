@@ -41,7 +41,6 @@ export function optionsFor(
     ];
   if (field === "serviceableType")
     return [
-      ["branch", fieldCopy.branch],
       ["brand", fieldCopy.brand],
       ["barber", fieldCopy.barber],
     ];
@@ -70,11 +69,9 @@ export function optionsFor(
   if (field === "branchId")
     return lookups.branches.map((item) => [item.id, item.name.en ?? item.id]);
   if (field === "serviceableId") {
-    if (serviceableType === "brand")
-      return lookups.brands.map((item) => [item.id, item.label]);
     if (serviceableType === "barber")
       return lookups.stylists.map((item) => [item.id, item.name.en ?? item.id]);
-    return lookups.branches.map((item) => [item.id, item.name.en ?? item.id]);
+    return lookups.brands.map((item) => [item.id, item.label]);
   }
   if (field === "barberId")
     return [

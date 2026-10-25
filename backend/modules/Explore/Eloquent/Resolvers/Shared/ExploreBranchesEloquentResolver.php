@@ -77,7 +77,7 @@ final class ExploreBranchesEloquentResolver
     private function applyFilters(Builder $query, ExploreBranchesQuery $payload): Builder
     {
         if ($payload->catalogItemIds !== null) {
-            $query->whereHas('offeredServices', fn ($q) => $q
+            $this->whereBrandServices($query, fn ($q) => $q
                 ->where('active', true)
                 ->whereIn('catalog_item_id', $payload->catalogItemIds)
                 ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
@@ -95,7 +95,7 @@ final class ExploreBranchesEloquentResolver
         }
 
         if ($payload->priceRangeMin !== null || $payload->priceRangeMax !== null) {
-            $query->whereHas('offeredServices', fn ($q) => $q
+            $this->whereBrandServices($query, fn ($q) => $q
                 ->where('active', true)
                 ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
                 ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price', '>=', $payload->priceRangeMin))
@@ -110,7 +110,7 @@ final class ExploreBranchesEloquentResolver
                 $this->search->orMatchJsonList($match, 'branches.tags', $pattern);
                 $match->orWhereHas('brand', fn (Builder $brand) => $brand->where(fn (Builder $names) => $this->search->orMatchTranslatable($names, ['name'], $pattern)));
 
-                $match->orWhereHas('offeredServices', fn (Builder $services) => $services
+                $match->orWhereHas('brand', fn (Builder $brand) => $brand->whereHas('services', fn (Builder $services) => $services
                     ->where('active', true)
                     ->where(function (Builder $service) use ($pattern): void {
                         $this->search->orMatchTranslatable($service, ['name'], $pattern);
@@ -120,12 +120,12 @@ final class ExploreBranchesEloquentResolver
                                 $this->search->orMatchTranslatable($catalog, ['name'], $pattern);
                                 $catalog->orWhereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, $pattern, null));
                             }));
-                    }));
+                    })));
             });
         }
 
         if ($payload->tagIds !== null) {
-            $query->whereHas('offeredServices', fn (Builder $services) => $services
+            $this->whereBrandServices($query, fn (Builder $services) => $services
                 ->where('active', true)
                 ->whereHas('catalogItem', fn (Builder $item) => $item
                     ->where('is_active', true)
@@ -134,7 +134,7 @@ final class ExploreBranchesEloquentResolver
 
         if ($payload->faceShapeCompatible !== null) {
             // An explicit face shape filters (REC-1); the client's own analysis only boosts.
-            $query->whereHas('offeredServices', fn (Builder $services) => $services
+            $this->whereBrandServices($query, fn (Builder $services) => $services
                 ->where('active', true)
                 ->whereHas('catalogItem', fn (Builder $item) => $item
                     ->where('is_active', true)
@@ -147,6 +147,18 @@ final class ExploreBranchesEloquentResolver
         }
 
         return $query;
+    }
+
+    /**
+     * D1: a branch never owns services itself — every service filter reaches
+     * them through the branch's brand.
+     *
+     * @param  Builder<BranchModel>  $query
+     * @param  callable(Builder<OfferedServiceModel>): Builder<OfferedServiceModel>  $constraint
+     */
+    private function whereBrandServices(Builder $query, callable $constraint): void
+    {
+        $query->whereHas('brand', fn (Builder $brand) => $brand->whereHas('services', $constraint));
     }
 
     /** @param Builder<BranchModel> $query */

@@ -77,6 +77,10 @@ class DioBranchOperationsRepository implements BranchOperationsRepository {
 
 abstract class StylistOperationsRepository {
   Future<BarberProfileDto> getProfile();
+
+  /// Updates the authenticated barber's own bio (Task 54); `bio` carries both
+  /// locales, e.g. `{'en': '...', 'ar': '...'}`.
+  Future<BarberProfileDto> updateProfile({Map<String, String>? bio});
   Future<PaginatedData<BookingDto>> getTodayAppointments();
   Future<bool> updateWorkstationStatus(bool online);
   Future<BookingDto> transitionBooking(String id, BarberBookingAction action);
@@ -88,6 +92,29 @@ abstract class StylistOperationsRepository {
     required int rating,
     String? comment,
   });
+
+  /// The authenticated barber's own services (Task 54; UI in Task 83).
+  Future<List<BarberServiceDto>> getServices();
+  Future<BarberServiceDto> createService({
+    required Map<String, String> name,
+    required double price,
+    required String currencyId,
+    int? duration,
+    bool atHome = false,
+    bool active = true,
+    String? catalogItemId,
+  });
+  Future<BarberServiceDto> updateService(
+    String id, {
+    required Map<String, String> name,
+    required double price,
+    required String currencyId,
+    int? duration,
+    bool atHome = false,
+    bool active = true,
+    String? catalogItemId,
+  });
+  Future<void> deleteService(String id);
 }
 
 class DioStylistOperationsRepository implements StylistOperationsRepository {
@@ -147,4 +174,89 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     data: {'rating': rating, 'comment': ?comment},
     parser: (json) => ReviewDto.fromJson(json as Map<String, dynamic>),
   );
+
+  @override
+  Future<BarberProfileDto> updateProfile({Map<String, String>? bio}) =>
+      _client.patch(
+        ApiEndpoints.operations.barberProfile,
+        data: {'bio': ?bio},
+        parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
+      );
+
+  @override
+  Future<List<BarberServiceDto>> getServices() => _client.get(
+    ApiEndpoints.operations.barberServices,
+    parser: (json) => (json as List<dynamic>)
+        .map((item) => BarberServiceDto.fromJson(item as Map<String, dynamic>))
+        .toList(),
+  );
+
+  @override
+  Future<BarberServiceDto> createService({
+    required Map<String, String> name,
+    required double price,
+    required String currencyId,
+    int? duration,
+    bool atHome = false,
+    bool active = true,
+    String? catalogItemId,
+  }) => _client.post(
+    ApiEndpoints.operations.barberServices,
+    data: _servicePayload(
+      name: name,
+      price: price,
+      currencyId: currencyId,
+      duration: duration,
+      atHome: atHome,
+      active: active,
+      catalogItemId: catalogItemId,
+    ),
+    parser: (json) => BarberServiceDto.fromJson(json as Map<String, dynamic>),
+  );
+
+  @override
+  Future<BarberServiceDto> updateService(
+    String id, {
+    required Map<String, String> name,
+    required double price,
+    required String currencyId,
+    int? duration,
+    bool atHome = false,
+    bool active = true,
+    String? catalogItemId,
+  }) => _client.put(
+    ApiEndpoints.operations.barberService(id),
+    data: _servicePayload(
+      name: name,
+      price: price,
+      currencyId: currencyId,
+      duration: duration,
+      atHome: atHome,
+      active: active,
+      catalogItemId: catalogItemId,
+    ),
+    parser: (json) => BarberServiceDto.fromJson(json as Map<String, dynamic>),
+  );
+
+  @override
+  Future<void> deleteService(String id) =>
+      _client.delete(ApiEndpoints.operations.barberService(id));
+
+  Map<String, dynamic> _servicePayload({
+    required Map<String, String> name,
+    required double price,
+    required String currencyId,
+    int? duration,
+    required bool atHome,
+    required bool active,
+    String? catalogItemId,
+  }) => {
+    'name': name,
+    'price': price,
+    'currency_id': currencyId,
+    'duration': ?duration,
+    'at_home': atHome,
+    'active': active,
+    'catalog_item_id': ?catalogItemId,
+  };
 }

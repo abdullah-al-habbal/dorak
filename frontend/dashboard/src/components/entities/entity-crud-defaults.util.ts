@@ -5,6 +5,7 @@ import type { EditableDashboardResource } from "@/services/api/dashboard/shared/
 export function defaultsFor(
   resource: EditableDashboardResource,
   branchId: string | null,
+  brandId: string | null,
 ): Record<string, unknown> {
   if (resource === "branches")
     return {
@@ -41,8 +42,8 @@ export function defaultsFor(
       currencyId: "",
       active: true,
       atHome: false,
-      serviceableId: branchId ?? "",
-      serviceableType: "branch",
+      serviceableId: brandId ?? "",
+      serviceableType: "brand",
       catalogItemId: null,
     };
   return {

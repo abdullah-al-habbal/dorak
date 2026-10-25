@@ -136,19 +136,19 @@ final class RecomputeClientVectorsCommand extends Command
                 $signals[] = "branch name: {$entity->name}";
             }
 
-            $services = $entity->offeredServices()->with('catalogItem')->get();
-            foreach ($services as $service) {
-                $catalogItem = $service->catalogItem;
-                if ($catalogItem) {
-                    $signals[] = "offers service: {$catalogItem->name}";
-                    if ($catalogItem->description) {
-                        $signals[] = "service description: {$catalogItem->description}";
-                    }
-                }
-            }
-
             if ($entity->brand) {
                 $signals[] = "brand: {$entity->brand->name}";
+
+                $services = $entity->brand->services()->with('catalogItem')->get();
+                foreach ($services as $service) {
+                    $catalogItem = $service->catalogItem;
+                    if ($catalogItem) {
+                        $signals[] = "offers service: {$catalogItem->name}";
+                        if ($catalogItem->description) {
+                            $signals[] = "service description: {$catalogItem->description}";
+                        }
+                    }
+                }
             }
         }
 

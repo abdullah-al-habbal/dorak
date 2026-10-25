@@ -10,6 +10,7 @@ BarberProfileDto _$BarberProfileDtoFromJson(Map<String, dynamic> json) =>
     BarberProfileDto(
       id: json['id'] as String,
       name: json['name'] as String,
+      bio: json['bio'] as String?,
       email: json['email'] as String,
       isFreelancer: json['is_freelancer'] as bool? ?? false,
       status: json['status'] as String? ?? '',

@@ -94,4 +94,17 @@ final readonly class DashboardActor
 
         return $this->isBrandOwner() && (is_string($brandId) || is_int($brandId)) && in_array((string) $brandId, $this->brandIds, true);
     }
+
+    /**
+     * D1 (Task 54): services are owned by a Brand. A branch manager may
+     * manage their own branch's brand services in addition to a brand owner.
+     */
+    public function canManageBrandServices(mixed $brandId): bool
+    {
+        if ($this->canManageBrand($brandId)) {
+            return true;
+        }
+
+        return $this->isBranchManager() && (is_string($brandId) || is_int($brandId)) && $this->brandId === (string) $brandId;
+    }
 }

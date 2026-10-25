@@ -15,6 +15,7 @@ final class UpdateProfileEloquentResolver
 
         $data = array_filter([
             'name' => $command->name,
+            'bio' => $command->bio,
             'email' => $command->email,
             'password' => $command->password,
             'is_freelancer' => $command->isFreelancer,

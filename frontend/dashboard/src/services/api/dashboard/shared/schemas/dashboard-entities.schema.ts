@@ -38,7 +38,7 @@ export const ServiceSchema = z.object({
   name: LocalizedNameSchema,
   price: z.number(),
   serviceableId: DashboardEntityIdSchema,
-  serviceableType: z.enum(["branch", "brand", "barber"]),
+  serviceableType: z.enum(["brand", "barber"]),
 });
 
 export const ChairSchema = z.object({

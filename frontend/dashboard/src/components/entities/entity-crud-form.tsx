@@ -43,7 +43,11 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
   const schema = schemaFor(resource, editing);
   const form = useForm<Record<string, unknown>>({
     resolver: zodResolver(schema) as never,
-    defaultValues: defaultsFor(resource, session.branchId) as never,
+    defaultValues: defaultsFor(
+      resource,
+      session.branchId,
+      session.brandId,
+    ) as never,
   });
   const existing = useDashboardEntityQuery(resource, editing ? id : undefined);
   useEffect(() => {

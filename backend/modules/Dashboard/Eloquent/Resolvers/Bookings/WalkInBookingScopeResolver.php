@@ -22,13 +22,8 @@ final class WalkInBookingScopeResolver
 
         $serviceCount = OfferedServiceModel::query()
             ->whereIn('id', $command->serviceIds)
-            ->where(function ($query) use ($branch): void {
-                $query->where(function ($service) use ($branch): void {
-                    $service->where('serviceable_type', 'branch')->where('serviceable_id', $branch->id);
-                })->orWhere(function ($service) use ($branch): void {
-                    $service->where('serviceable_type', 'brand')->where('serviceable_id', $branch->getAttribute('brand_id'));
-                });
-            })
+            ->where('serviceable_type', 'brand')
+            ->where('serviceable_id', $branch->getAttribute('brand_id'))
             ->count();
 
         if ($serviceCount !== count($command->serviceIds)) {

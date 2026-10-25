@@ -14,6 +14,7 @@ final class BarberResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'bio' => $this->bio,
             'email' => $this->email,
             'phone' => $this->offsetGet('phone'),
             'has_login' => $this->offsetGet('has_login'),

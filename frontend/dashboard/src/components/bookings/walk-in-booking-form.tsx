@@ -198,7 +198,15 @@ export function WalkInBookingForm() {
           </SelectTrigger>
           <SelectContent>
             {(services.data ?? [])
-              .filter((service) => service.serviceableId === branchId)
+              .filter((service) => {
+                const brandId = (branches.data ?? []).find(
+                  (branch) => branch.id === branchId,
+                )?.brandId;
+                return (
+                  service.serviceableType === "brand" &&
+                  service.serviceableId === brandId
+                );
+              })
               .map((service) => (
                 <SelectItem id={service.id} key={service.id}>
                   {service.name.en}

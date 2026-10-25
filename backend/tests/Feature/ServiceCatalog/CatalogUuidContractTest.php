@@ -53,8 +53,8 @@ it('links a dashboard service to a catalog item by UUID', function () {
     $this->authenticateDashboardActor(AdminModel::factory()->create());
 
     $response = $this->postJson('/api/v1/dashboard/services', [
-        'serviceable_id' => $branch->id,
-        'serviceable_type' => 'branch',
+        'serviceable_id' => $branch->brand_id,
+        'serviceable_type' => 'brand',
         'catalog_item_id' => $item->id,
         'currency_id' => $currency->id,
         'name' => ['en' => 'Haircut', 'ar' => 'قص شعر'],
@@ -69,12 +69,13 @@ it('links a dashboard service to a catalog item by UUID', function () {
 
 it('filters explore branches by catalog item UUID', function () {
     $brand = BrandModel::factory()->create(['universe' => 'men']);
+    $otherBrand = BrandModel::factory()->create(['universe' => 'men']);
     $item = ServiceCatalogItemModel::factory()->create();
     $otherItem = ServiceCatalogItemModel::factory()->create();
     $matching = BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'brand_id' => $brand->id]);
-    $other = BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'brand_id' => $brand->id]);
-    OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $matching->id, 'catalog_item_id' => $item->id, 'active' => true]);
-    OfferedServiceModel::factory()->branchService()->create(['serviceable_id' => $other->id, 'catalog_item_id' => $otherItem->id, 'active' => true]);
+    $other = BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'brand_id' => $otherBrand->id]);
+    OfferedServiceModel::factory()->create(['serviceable_id' => $brand->id, 'catalog_item_id' => $item->id, 'active' => true]);
+    OfferedServiceModel::factory()->create(['serviceable_id' => $otherBrand->id, 'catalog_item_id' => $otherItem->id, 'active' => true]);
 
     $this->getJson("/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=1000&universe=men&per_page=10&catalog_item_ids[]={$item->id}")
         ->assertOk()

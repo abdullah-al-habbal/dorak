@@ -11,6 +11,7 @@ final readonly class UpdateProfileCommand
     public function __construct(
         public string $barberId,
         public ?array $name,
+        public ?array $bio,
         public ?string $email,
         public ?string $password,
         public ?bool $isFreelancer,

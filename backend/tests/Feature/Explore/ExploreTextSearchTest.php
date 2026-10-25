@@ -54,8 +54,8 @@ it('matches Arabic names', function (): void {
 it('matches offered service and catalog tag names', function (): void {
     $withService = searchableBranch('Plain One');
     OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'branch',
-        'serviceable_id' => $withService->id,
+        'serviceable_type' => 'brand',
+        'serviceable_id' => $withService->brand_id,
         'name' => ['en' => 'Beard Sculpting', 'ar' => 'تشكيل اللحية'],
         'active' => true,
     ]);
@@ -65,8 +65,8 @@ it('matches offered service and catalog tag names', function (): void {
     $tag = ServiceCatalogItemTagModel::factory()->create(['name' => ['en' => 'Skin Fade', 'ar' => 'تدريج'], 'is_active' => true]);
     DB::table('service_catalog_item_tag_assignments')->insert(['id' => (string) Str::uuid7(), 'item_id' => $item->id, 'tag_id' => $tag->id, 'created_at' => now(), 'updated_at' => now()]);
     OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'branch',
-        'serviceable_id' => $withTag->id,
+        'serviceable_type' => 'brand',
+        'serviceable_id' => $withTag->brand_id,
         'catalog_item_id' => $item->id,
         'active' => true,
     ]);

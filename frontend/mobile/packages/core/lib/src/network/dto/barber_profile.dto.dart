@@ -9,6 +9,7 @@ part 'barber_profile.dto.g.dart';
 class BarberProfileDto {
   final String id;
   final String name;
+  final String? bio;
   final String email;
   final bool isFreelancer;
   final String status;
@@ -30,6 +31,7 @@ class BarberProfileDto {
   const BarberProfileDto({
     required this.id,
     required this.name,
+    this.bio,
     required this.email,
     this.isFreelancer = false,
     this.status = '',

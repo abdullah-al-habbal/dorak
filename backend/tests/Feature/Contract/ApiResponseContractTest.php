@@ -779,8 +779,8 @@ describe('Booking API', function () {
         it('returns BookingResource shape with nested chair/barber/services', function () {
             $chair = ChairModel::factory()->create();
             $service = OfferedServiceModel::factory()->create([
-                'serviceable_id' => $chair->branch_id,
-                'serviceable_type' => 'branch',
+                'serviceable_id' => $chair->branch->brand_id,
+                'serviceable_type' => 'brand',
             ]);
             $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 

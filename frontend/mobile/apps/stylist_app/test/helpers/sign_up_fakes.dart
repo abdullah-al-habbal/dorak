@@ -87,6 +87,39 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
     required int rating,
     String? comment,
   }) => throw UnimplementedError();
+
+  @override
+  Future<BarberProfileDto> updateProfile({Map<String, String>? bio}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<List<BarberServiceDto>> getServices() => throw UnimplementedError();
+
+  @override
+  Future<BarberServiceDto> createService({
+    required Map<String, String> name,
+    required double price,
+    required String currencyId,
+    int? duration,
+    bool atHome = false,
+    bool active = true,
+    String? catalogItemId,
+  }) => throw UnimplementedError();
+
+  @override
+  Future<BarberServiceDto> updateService(
+    String id, {
+    required Map<String, String> name,
+    required double price,
+    required String currencyId,
+    int? duration,
+    bool atHome = false,
+    bool active = true,
+    String? catalogItemId,
+  }) => throw UnimplementedError();
+
+  @override
+  Future<void> deleteService(String id) => throw UnimplementedError();
 }
 
 ValidationException fieldRejected(String field) => ValidationException(

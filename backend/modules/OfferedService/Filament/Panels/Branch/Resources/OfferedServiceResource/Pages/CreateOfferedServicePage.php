@@ -13,9 +13,9 @@ class CreateOfferedServicePage extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $branchId = filament()->auth()->id();
-        $data['serviceable_id'] = $branchId;
-        $data['serviceable_type'] = 'branch';
+        $branch = filament()->auth()->user();
+        $data['serviceable_id'] = $branch?->getAttribute('brand_id');
+        $data['serviceable_type'] = 'brand';
 
         return $data;
     }

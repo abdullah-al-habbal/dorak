@@ -25,6 +25,13 @@ class StylistProfileBody extends StatelessWidget {
       padding: const EdgeInsets.all(DorakDimensions.marginMobile),
       children: [
         StylistHeader(profile: profile, colors: colors, l10n: l10n),
+        if (profile.bio != null && profile.bio!.isNotEmpty) ...[
+          const SizedBox(height: DorakDimensions.spacingMedium),
+          Text(
+            profile.bio!,
+            style: DorakTypography.bodyMd.copyWith(color: colors.onSurface),
+          ),
+        ],
         const SizedBox(height: DorakDimensions.spacingLarge),
         if (profile.workplaces.isNotEmpty) ...[
           StylistWorkplaces(workplaces: profile.workplaces),

@@ -210,6 +210,8 @@ class _OperationsEndpoints {
   String barberBookingComplete(String bookingId) => OperationsEndpoints.barberBookingComplete.replaceFirst('{booking}', bookingId);
   String barberBookingNoShow(String bookingId) => OperationsEndpoints.barberBookingNoShow.replaceFirst('{booking}', bookingId);
   String barberBookingReview(String bookingId) => OperationsEndpoints.barberBookingReview.replaceFirst('{booking}', bookingId);
+  String get barberServices => OperationsEndpoints.barberServices;
+  String barberService(String serviceId) => OperationsEndpoints.barberService.replaceFirst('{service}', serviceId);
 }
 
 class _ProfileEndpoints {

@@ -22,16 +22,15 @@ function menuService(string $type, string $ownerId, array $overrides = []): Offe
 }
 
 describe('branch detail menu', function (): void {
-    it('lists brand and branch services even with no seated barbers', function (): void {
+    it('lists the brand\'s services even with no seated barbers', function (): void {
         $brand = BrandModel::factory()->create();
         $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
         $brandService = menuService('brand', $brand->id);
-        $branchService = menuService('branch', $branch->id);
 
         $services = $this->getJson("/api/v1/explore/branches/{$branch->id}")->assertOk()->json('data.services');
 
-        expect(collect($services)->pluck('id')->all())->toEqualCanonicalizing([$brandService->id, $branchService->id])
-            ->and(collect($services)->pluck('owner', 'id')->all())->toEqual([$brandService->id => 'brand', $branchService->id => 'branch']);
+        expect(collect($services)->pluck('id')->all())->toEqualCanonicalizing([$brandService->id])
+            ->and(collect($services)->pluck('owner', 'id')->all())->toEqual([$brandService->id => 'brand']);
     });
 
     it('adds seated barbers\' services tagged as barber', function (): void {
@@ -48,9 +47,9 @@ describe('branch detail menu', function (): void {
     it('never returns inactive services or services of an inactive catalog item', function (): void {
         $branch = BranchModel::factory()->create();
         $inactiveItem = ServiceCatalogItemModel::factory()->create(['is_active' => false]);
-        menuService('branch', $branch->id, ['active' => false]);
-        menuService('branch', $branch->id, ['catalog_item_id' => $inactiveItem->id]);
-        $freeText = menuService('branch', $branch->id);
+        menuService('brand', $branch->brand_id, ['active' => false]);
+        menuService('brand', $branch->brand_id, ['catalog_item_id' => $inactiveItem->id]);
+        $freeText = menuService('brand', $branch->brand_id);
 
         $ids = collect($this->getJson("/api/v1/explore/branches/{$branch->id}")->json('data.services'))->pluck('id')->all();
 
@@ -65,7 +64,7 @@ describe('floor plan chairs', function (): void {
         $seated = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id]);
         $empty = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
         $barberService = menuService('barber', $barber->id);
-        $shopService = menuService('branch', $branch->id);
+        $shopService = menuService('brand', $branch->brand_id);
 
         $startsAt = now()->addDay()->startOfHour()->utc()->format('Y-m-d\\TH:i:s\\Z');
         $data = $this->getJson("/api/v1/branches/{$branch->id}/floor-plan?starts_at={$startsAt}&duration=30")->assertOk()->json('data');

@@ -83,8 +83,8 @@ final class ScopePanelToCurrentUser
         OfferedServiceModel::addGlobalScope(
             'panel-scope',
             fn ($q) => $q
-                ->where('serviceable_id', $branchId)
-                ->where('serviceable_type', 'branch'),
+                ->where('serviceable_id', $branch->getAttribute('brand_id'))
+                ->where('serviceable_type', 'brand'),
         );
 
         BookingModel::addGlobalScope(

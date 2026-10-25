@@ -166,16 +166,18 @@ final class ExploreRanker
      */
     private function faceMatches(string $entityType, array $ids, string $faceShape): array
     {
-        $model = $entityType === 'branch' ? BranchModel::class : BarberModel::class;
-        $relation = $entityType === 'branch' ? 'offeredServices' : 'services';
+        $matchesServices = fn ($services) => $services
+            ->where('active', true)
+            ->whereHas('catalogItem', fn ($item) => $item
+                ->where('is_active', true)
+                ->whereJsonContains('face_shapes', $faceShape));
 
-        return $model::query()
+        $query = $entityType === 'branch'
+            ? BranchModel::query()->whereHas('brand', fn ($brand) => $brand->whereHas('services', $matchesServices))
+            : BarberModel::query()->whereHas('services', $matchesServices);
+
+        return $query
             ->whereKey($ids)
-            ->whereHas($relation, fn ($services) => $services
-                ->where('active', true)
-                ->whereHas('catalogItem', fn ($item) => $item
-                    ->where('is_active', true)
-                    ->whereJsonContains('face_shapes', $faceShape)))
             ->pluck('id')
             ->mapWithKeys(fn (mixed $id): array => [(string) $id => true])
             ->all();

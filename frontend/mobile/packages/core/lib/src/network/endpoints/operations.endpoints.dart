@@ -14,4 +14,6 @@ class OperationsEndpoints {
   static const barberBookingComplete = '/barber/bookings/{booking}/complete';
   static const barberBookingNoShow = '/barber/bookings/{booking}/no-show';
   static const barberBookingReview = '/barber/bookings/{booking}/review';
+  static const barberServices = '/barber/services';
+  static const barberService = '/barber/services/{service}';
 }

@@ -13,9 +13,9 @@ final class ShowServiceEloquentResolver
     {
         return OfferedServiceModel::query()
             ->whereKey($query->serviceId)
-            ->when($query->branchIds !== null, fn ($builder) => $builder
-                ->where('serviceable_type', 'branch')
-                ->whereIn('serviceable_id', $query->branchIds))
+            ->when($query->brandIds !== null, fn ($builder) => $builder
+                ->where('serviceable_type', 'brand')
+                ->whereIn('serviceable_id', $query->brandIds))
             ->firstOrFail();
     }
 }

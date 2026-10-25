@@ -44,8 +44,8 @@ function branchWithFaceShapeService(BranchModel $branch, string $shape): void
 {
     $item = ServiceCatalogItemModel::factory()->create(['is_active' => true, 'face_shapes' => [$shape]]);
     OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'branch',
-        'serviceable_id' => $branch->id,
+        'serviceable_type' => 'brand',
+        'serviceable_id' => $branch->brand_id,
         'catalog_item_id' => $item->id,
         'active' => true,
     ]);

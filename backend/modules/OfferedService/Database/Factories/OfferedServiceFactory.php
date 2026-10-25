@@ -41,11 +41,4 @@ class OfferedServiceFactory extends Factory
             'at_home' => true,
         ]);
     }
-
-    public function branchService(): static
-    {
-        return $this->state(fn (array $attrs) => [
-            'serviceable_type' => 'branch',
-        ]);
-    }
 }
