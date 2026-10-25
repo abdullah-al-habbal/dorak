@@ -35,7 +35,15 @@ export function Sheet(props: SheetProps) {
 export interface SheetTriggerProps extends AriaButtonProps {}
 
 export function SheetTrigger({ className, ...props }: SheetTriggerProps) {
-  return <AriaButton className={cn("outline-none", className)} {...props} />;
+  return (
+    <AriaButton
+      className={cn(
+        "outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 // Sheet Overlay
@@ -89,7 +97,7 @@ const sheetVariants = cva(
 );
 
 const sheetDialogVariants = cva(
-  "relative flex flex-col gap-4 bg-background-100 p-6 shadow-lg outline-none",
+  "relative flex flex-col gap-4 bg-background-100 p-6 shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500",
   {
     variants: {
       side: {
@@ -267,7 +275,10 @@ export function SheetClose({ className, labels, ...props }: SheetCloseProps) {
   return (
     <AriaButton
       slot="close"
-      className={cn("outline-none", className)}
+      className={cn(
+        "outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
+        className,
+      )}
       {...props}
     >
       {labels.close}

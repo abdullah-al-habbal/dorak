@@ -21,7 +21,15 @@ export function DropdownMenu(props: MenuTriggerProps) {
 }
 
 export function DropdownMenuTrigger({ className, ...props }: ButtonProps) {
-  return <Button className={cn("outline-none", className)} {...props} />;
+  return (
+    <Button
+      className={cn(
+        "outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 type DropdownContentProps = PopoverProps;

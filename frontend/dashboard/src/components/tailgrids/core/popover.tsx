@@ -14,7 +14,7 @@ export function Popover({ className, ...props }: PopoverProps) {
   return (
     <AriaPopover
       className={cn(
-        "rounded-xl border border-popover-border bg-background-100 p-5 pt-3 text-text-50 outline-0",
+        "rounded-xl border border-popover-border bg-background-100 p-5 pt-3 text-text-50 outline-0 focus-visible:ring-2 focus-visible:ring-primary-500",
         className,
       )}
       {...props}
