@@ -1,6 +1,6 @@
-import type { IDashboardPagination } from "@/services/api/dashboard/idashboard-pagination.types";
+import { z } from "zod";
+import type { DashboardPageSchema } from "@/services/api/dashboard/schema/dashboard-common.schema";
 
-export interface IDashboardPage<TItem> {
-  items: TItem[];
-  pagination: IDashboardPagination;
-}
+export type IDashboardPage<TItem> = z.infer<
+  ReturnType<typeof DashboardPageSchema<z.ZodType<TItem>>>
+>;

@@ -1,7 +1,4 @@
-export interface IUpdateSettingsInput {
-  preferredLanguage?: "en" | "ar" | null;
-  notificationEnabled?: boolean;
-  displayCurrencyId?: string | null;
-  theme?: "light" | "dark" | null;
-  priceDisplayMode?: "tax_inclusive" | "tax_exclusive" | null;
-}
+import { z } from "zod";
+import { UpdateSettingsInputSchema } from "@/services/api/dashboard/schema/dashboard-profile.schema";
+
+export type IUpdateSettingsInput = z.infer<typeof UpdateSettingsInputSchema>;

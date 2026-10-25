@@ -1,5 +1,4 @@
-export interface IUpdatePasswordInput {
-  currentPassword: string;
-  password: string;
-  passwordConfirmation: string;
-}
+import { z } from "zod";
+import { UpdatePasswordInputSchema } from "@/services/api/dashboard/schema/dashboard-profile.schema";
+
+export type IUpdatePasswordInput = z.infer<typeof UpdatePasswordInputSchema>;

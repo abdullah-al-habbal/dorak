@@ -1,6 +1,4 @@
-export interface IProfile {
-  displayName: string | null;
-  email: string | null;
-  phone: string | null;
-  pendingEmail: string | null;
-}
+import { z } from "zod";
+import { ProfileSchema } from "@/services/api/dashboard/schema/dashboard-profile.schema";
+
+export type IProfile = z.infer<typeof ProfileSchema>;

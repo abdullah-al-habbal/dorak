@@ -8,7 +8,7 @@ export const LocalizedNameSchema = z.object({
 export const DashboardEntityIdSchema = z.string();
 
 export const DashboardPaginationSchema = z.object({
-  page: z.number(),
+  currentPage: z.number(),
   perPage: z.number(),
   total: z.number(),
   totalPages: z.number(),

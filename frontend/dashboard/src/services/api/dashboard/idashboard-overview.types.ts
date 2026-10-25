@@ -1,9 +1,4 @@
-export interface IDashboardOverview {
-  activeChairsCount: number;
-  activeBranchesCount: number;
-  bookingsCount: number;
-  completedBookingsCount: number;
-  revenue: number;
-  stylistsCount: number;
-  todayBookingsCount: number;
-}
+import { z } from "zod";
+import { DashboardOverviewSchema } from "@/services/api/dashboard/schema/dashboard-profile.schema";
+
+export type IDashboardOverview = z.infer<typeof DashboardOverviewSchema>;

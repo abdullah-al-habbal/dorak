@@ -1,4 +1,4 @@
-import { apiRequest } from "@/services/api/client";
+import { api } from "@/services/api/client";
 import type { DashboardEntityId } from "@/services/api/dashboard/dashboard-entity-id.types";
 import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
 import type { IDashboardListParams } from "@/services/api/dashboard/idashboard-list-params.types";
@@ -28,9 +28,8 @@ export function getDashboardList<TItem>(
   resource: string,
   params?: IDashboardListParams,
 ) {
-  return apiRequest<IDashboardPage<TItem>>(
+  return api.get<IDashboardPage<TItem>>(
     `${DashboardEndpoints.resource(resource)}${queryString(params)}`,
-    { auth: "session" },
   );
 }
 
@@ -38,15 +37,11 @@ export function getDashboardEntity<TItem>(
   resource: string,
   id: DashboardEntityId,
 ) {
-  return apiRequest<TItem>(DashboardEndpoints.resourceById(resource, id), {
-    auth: "session",
-  });
+  return api.get<TItem>(DashboardEndpoints.resourceById(resource, id));
 }
 
 export async function getDashboardOverview(): Promise<IDashboardOverview> {
   return mapDashboardOverview(
-    await apiRequest<unknown>(DashboardEndpoints.overview, {
-      auth: "session",
-    }),
+    await api.get<unknown>(DashboardEndpoints.overview),
   );
 }

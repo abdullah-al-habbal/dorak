@@ -1,4 +1,4 @@
-const BASE = "/api/dashboard";
+const BASE = "/dashboard";
 
 export const DashboardEndpoints = {
   overview: `${BASE}/overview`,
