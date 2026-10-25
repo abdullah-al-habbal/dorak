@@ -6,6 +6,7 @@ import 'package:design_system/design_system.dart';
 
 import 'package:client_app/src/core/formatting/locale_formatters.entity.dart';
 import 'package:client_app/src/core/formatting/rating_label.entity.dart';
+import 'package:client_app/src/features/booking/branch_booking_error.entity.dart';
 import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.event.dart';
 import 'package:client_app/src/features/booking/branch_detail.state.dart';
@@ -87,27 +88,10 @@ class BranchDetailBody extends StatelessWidget {
     );
   }
 
-  String _submitMessage(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final error = state.submitError;
-    if (error is ApiException && error.code == 'booking_outside_schedule') {
-      return l10n.bookingOutsideScheduleMessage;
-    }
-    final atHomeMessage = _atHomeMessage(l10n, error);
-    if (atHomeMessage != null) return atHomeMessage;
-    if (error is ApiException && error.statusCode == 409) {
-      return l10n.bookingConflictMessage;
-    }
-    if (error is ValidationException) {
-      final fields = error.errors.values
-          .expand((messages) => messages)
-          .join('\n');
-      if (fields.isNotEmpty) return fields;
-    }
-    if (error is StateError) return l10n.bookingAtHomeLocationError;
-    if (error is NetworkException) return l10n.errorNetwork;
-    return l10n.errorGeneric;
-  }
+  String _submitMessage(BuildContext context) => BranchBookingError.submitMessage(
+    AppLocalizations.of(context)!,
+    state.submitError,
+  );
 
   Future<void> _pickDate(BuildContext context) async {
     final now = DateTime.now();
@@ -266,7 +250,8 @@ class _BookingSubmitSection extends StatelessWidget {
         const SizedBox(height: DorakDimensions.spacingSmall),
         if (state.isLoadingSlots)
           const Center(child: CircularProgressIndicator())
-        else if (_atHomeMessage(l10n, state.slotsError) case final message?)
+        else if (BranchBookingError.atHomeMessage(l10n, state.slotsError)
+            case final message?)
           StatusBanner(message: message)
         else if (state.slots.isEmpty)
           Text(l10n.bookingNoSlots, style: DorakTypography.bodyMd)
@@ -428,16 +413,4 @@ class _PaymentMethodSection extends StatelessWidget {
       Text(l10n.bookingPayAtSalonOnly, style: DorakTypography.bodyMd),
     ],
   );
-}
-
-String? _atHomeMessage(AppLocalizations l10n, Object? error) {
-  if (error is! ApiException) return null;
-  return switch (error.code) {
-    'at_home_barber_required' => l10n.bookingAtHomeBarberRequiredMessage,
-    'at_home_service_not_eligible' =>
-      l10n.bookingAtHomeServiceNotEligibleMessage,
-    'at_home_not_offered' => l10n.bookingAtHomeNotOfferedMessage,
-    'at_home_out_of_radius' => l10n.bookingAtHomeOutOfRadiusMessage,
-    _ => null,
-  };
 }
