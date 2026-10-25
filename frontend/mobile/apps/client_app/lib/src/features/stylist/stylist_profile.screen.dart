@@ -92,24 +92,39 @@ class _StylistProfileBody extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(DorakDimensions.marginMobile),
       children: [
-        _buildHeader(profile, colors, l10n),
+        _StylistHeader(profile: profile, colors: colors, l10n: l10n),
         const SizedBox(height: DorakDimensions.spacingLarge),
         if (profile.workplaces.isNotEmpty) ...[
           StylistWorkplaces(workplaces: profile.workplaces),
           const SizedBox(height: DorakDimensions.spacingLarge),
         ],
-        _buildStats(profile, colors, l10n),
+        _StylistStats(profile: profile, colors: colors, l10n: l10n),
         const SizedBox(height: DorakDimensions.spacingLarge),
-        _buildServices(profile, colors, l10n, localeCode),
+        _StylistServices(
+          profile: profile,
+          currencies: state.currencies,
+          colors: colors,
+          l10n: l10n,
+          localeCode: localeCode,
+        ),
       ],
     );
   }
+}
 
-  Widget _buildHeader(
-    BarberProfileDto profile,
-    DorakColors colors,
-    AppLocalizations l10n,
-  ) {
+class _StylistHeader extends StatelessWidget {
+  const _StylistHeader({
+    required this.profile,
+    required this.colors,
+    required this.l10n,
+  });
+
+  final BarberProfileDto profile;
+  final DorakColors colors;
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         CircleAvatar(
@@ -174,19 +189,26 @@ class _StylistProfileBody extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildStats(
-    BarberProfileDto profile,
-    DorakColors colors,
-    AppLocalizations l10n,
-  ) {
-    final stats = <StylistStatItem>[];
-    stats.add(
+class _StylistStats extends StatelessWidget {
+  const _StylistStats({
+    required this.profile,
+    required this.colors,
+    required this.l10n,
+  });
+
+  final BarberProfileDto profile;
+  final DorakColors colors;
+  final AppLocalizations l10n;
+
+  List<StylistStatItem> get _stats {
+    final stats = <StylistStatItem>[
       StylistStatItem(
         value: '${profile.services.length}',
         label: l10n.stylistStatServicesLabel,
       ),
-    );
+    ];
     if (profile.rank != null) {
       stats.add(
         StylistStatItem(
@@ -207,6 +229,12 @@ class _StylistProfileBody extends StatelessWidget {
         ),
       );
     }
+    return stats;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final stats = _stats;
     if (stats.isEmpty) return const SizedBox.shrink();
     return Row(
       children: [
@@ -235,48 +263,70 @@ class _StylistProfileBody extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildServices(
-    BarberProfileDto profile,
-    DorakColors colors,
-    AppLocalizations l10n,
-    String localeCode,
-  ) {
+class _StylistServices extends StatelessWidget {
+  const _StylistServices({
+    required this.profile,
+    required this.currencies,
+    required this.colors,
+    required this.l10n,
+    required this.localeCode,
+  });
+
+  final BarberProfileDto profile;
+  final List<CurrencyDto> currencies;
+  final DorakColors colors;
+  final AppLocalizations l10n;
+  final String localeCode;
+
+  @override
+  Widget build(BuildContext context) {
     if (profile.services.isEmpty) {
       return Text(
         l10n.stylistNoServicesMessage,
         style: DorakTypography.bodyMd.copyWith(color: colors.onSurfaceVariant),
       );
     }
-    final currencyById = <String, CurrencyDto>{};
-    for (final c in state.currencies) {
-      currencyById[c.id] = c;
-    }
+    final currencyById = <String, CurrencyDto>{
+      for (final currency in currencies) currency.id: currency,
+    };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(l10n.stylistServicesTitle, style: DorakTypography.titleLg),
         const SizedBox(height: DorakDimensions.spacingSmall),
         ...profile.services.map(
-          (service) => _buildServiceCard(
-            service,
-            currencyById,
-            colors,
-            l10n,
-            localeCode,
+          (service) => _StylistServiceCard(
+            service: service,
+            currencyById: currencyById,
+            colors: colors,
+            l10n: l10n,
+            localeCode: localeCode,
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildServiceCard(
-    BarberServiceDto service,
-    Map<String, CurrencyDto> currencyById,
-    DorakColors colors,
-    AppLocalizations l10n,
-    String localeCode,
-  ) {
+class _StylistServiceCard extends StatelessWidget {
+  const _StylistServiceCard({
+    required this.service,
+    required this.currencyById,
+    required this.colors,
+    required this.l10n,
+    required this.localeCode,
+  });
+
+  final BarberServiceDto service;
+  final Map<String, CurrencyDto> currencyById;
+  final DorakColors colors;
+  final AppLocalizations l10n;
+  final String localeCode;
+
+  @override
+  Widget build(BuildContext context) {
     final currencyCode = currencyById[service.currencyId]?.code ?? '';
     final formattedPrice = LocaleFormatters.decimal(service.price, localeCode);
     return Container(
