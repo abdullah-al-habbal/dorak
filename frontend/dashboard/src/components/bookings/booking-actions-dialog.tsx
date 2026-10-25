@@ -76,7 +76,6 @@ export function BookingActionsDialog({
     session.actor === "manager" || session.actor === "owner";
   const copy = dictionary.bookingActions;
   const rescheduleSchema = createBookingRescheduleSchema(dictionary.validation);
-  const [bookingStatus, setBookingStatus] = useState("confirmed");
   const rescheduleForm = useForm<BookingRescheduleInput>({
     resolver: zodResolver(rescheduleSchema),
     defaultValues: { timeSlot: "", endsAt: "" },
@@ -85,6 +84,7 @@ export function BookingActionsDialog({
     resolver: zodResolver(bookingStatusSchema),
     defaultValues: { status: "confirmed" },
   });
+  const bookingStatus = statusForm.watch("status");
   const cancel = useDashboardMutation("bookings", () =>
     cancelBooking(bookingId),
   );
@@ -180,7 +180,6 @@ export function BookingActionsDialog({
                 const nextValue = String(value) as z.input<
                   typeof bookingStatusSchema
                 >["status"];
-                setBookingStatus(nextValue);
                 statusForm.setValue("status", nextValue);
               }}
             >

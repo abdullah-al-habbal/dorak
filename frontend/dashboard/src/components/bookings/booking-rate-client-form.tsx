@@ -18,7 +18,6 @@ import { ApiClientError } from "@/services/api/client-error";
 import { bookingClientReviewSchema } from "@/services/api/dashboard/booking-client-review.schema";
 import type { BookingClientReviewInput } from "@/services/api/dashboard/booking-client-review.types";
 import { rateBookingClient } from "@/services/api/dashboard/dashboard-workflow.mutation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -35,11 +34,11 @@ export function BookingRateClientForm({
 }: IBookingRateClientFormProps) {
   const dictionary = useDictionary();
   const copy = dictionary.bookingActions;
-  const [rating, setRating] = useState("5");
   const form = useForm<BookingClientReviewInput>({
     resolver: zodResolver(bookingClientReviewSchema),
     defaultValues: { rating: 5, comment: "" },
   });
+  const rating = String(form.watch("rating"));
   const rate = useDashboardMutation(
     "bookings",
     (value: BookingClientReviewInput) =>
@@ -74,10 +73,7 @@ export function BookingRateClientForm({
       <Select
         aria-label={copy.clientRating}
         value={rating}
-        onChange={(value) => {
-          setRating(String(value));
-          form.setValue("rating", Number(value));
-        }}
+        onChange={(value) => form.setValue("rating", Number(value))}
       >
         <SelectTrigger>
           <SelectValue />

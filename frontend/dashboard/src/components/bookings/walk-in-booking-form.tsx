@@ -28,7 +28,6 @@ import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { ApiClientError } from "@/services/api/client-error";
 import { notifySuccess } from "@/services/api/notifications";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -51,9 +50,9 @@ export function WalkInBookingForm() {
       timeSlot: "",
     },
   });
-  const [branchId, setBranchId] = useState(session.branchId ?? "");
-  const [chairId, setChairId] = useState("");
-  const [serviceIds, setServiceIds] = useState<string[]>([]);
+  const branchId = form.watch("branchId");
+  const chairId = form.watch("chairId");
+  const serviceIds = form.watch("serviceIds");
   const branches = useDashboardListOptions("branches", mapBranch, {
     page: 1,
     perPage: 100,
@@ -110,8 +109,6 @@ export function WalkInBookingForm() {
             value={branchId}
             onChange={(value) => {
               const nextValue = String(value);
-              setBranchId(nextValue);
-              setChairId("");
               form.setValue("branchId", nextValue);
               form.setValue("chairId", "");
             }}
@@ -139,7 +136,6 @@ export function WalkInBookingForm() {
             const chair = (chairs.data ?? []).find(
               (item) => item.id === nextValue,
             );
-            setChairId(nextValue);
             form.setValue("chairId", nextValue);
             form.setValue("barberId", chair?.barberId ?? null);
           }}
@@ -193,7 +189,6 @@ export function WalkInBookingForm() {
           value={serviceIds}
           onChange={(value) => {
             const nextValue = Array.from(value as Iterable<string>).map(String);
-            setServiceIds(nextValue);
             form.setValue("serviceIds", nextValue);
           }}
         >
