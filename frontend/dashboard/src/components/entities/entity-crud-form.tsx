@@ -17,7 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/tailgrids/core/select";
+import { useDashboardEntityQuery } from "@/hooks/use-dashboard-entity-query";
+import { useDashboardListOptions } from "@/hooks/use-dashboard-list-options";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
+import { useLookupOptionsQuery } from "@/hooks/use-lookup-options-query";
 import { ApiClientError } from "@/services/api/client-error";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
@@ -41,10 +44,12 @@ import {
   createDashboardEntity,
   updateDashboardEntity,
 } from "@/services/api/dashboard/dashboard-workflow.mutation";
-import { getDashboardEntity } from "@/services/api/dashboard/dashboard.query";
-import { getDashboardList } from "@/services/api/dashboard/dashboard.query";
-import { getLookupOptions } from "@/services/api/lookup.query";
-import { mapDashboardEntity } from "@/services/api/dashboard/dashboard-entity.util";
+import {
+  mapBranch,
+  mapChair,
+  mapStylist,
+} from "@/services/api/dashboard/dashboard-mapper.util";
+import type { EditableDashboardResource } from "@/services/api/dashboard/editable-dashboard-resource.types";
 import {
   mapBranchPayload,
   mapChairPayload,
@@ -55,42 +60,39 @@ import { notifySuccess } from "@/services/api/notifications";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useQuery } from "@tanstack/react-query";
 import type { z } from "zod";
 
-type EditableResource = "branches" | "chairs" | "services" | "stylists";
-
 function isBranchData(
-  resource: EditableResource,
+  resource: EditableDashboardResource,
   data: unknown,
 ): data is IBranch {
   return resource === "branches";
 }
 function isChairData(
-  resource: EditableResource,
+  resource: EditableDashboardResource,
   data: unknown,
 ): data is IChair {
   return resource === "chairs";
 }
 function isServiceData(
-  resource: EditableResource,
+  resource: EditableDashboardResource,
   data: unknown,
 ): data is IService {
   return resource === "services";
 }
 function isStylistData(
-  resource: EditableResource,
+  resource: EditableDashboardResource,
   data: unknown,
 ): data is IStylist {
   return resource === "stylists";
 }
 
 interface IEntityCrudFormProps {
-  resource: EditableResource;
+  resource: EditableDashboardResource;
   id?: string;
 }
 
-function schemaFor(resource: EditableResource, editing: boolean) {
+function schemaFor(resource: EditableDashboardResource, editing: boolean) {
   if (resource === "branches")
     return editing ? branchEditSchema : branchCreateSchema;
   if (resource === "chairs") return chairFormSchema;
@@ -98,7 +100,10 @@ function schemaFor(resource: EditableResource, editing: boolean) {
   return editing ? stylistEditSchema : stylistCreateSchema;
 }
 
-function defaultsFor(resource: EditableResource, branchId: string | null) {
+function defaultsFor(
+  resource: EditableDashboardResource,
+  branchId: string | null,
+) {
   if (resource === "branches")
     return {
       name: { en: "", ar: "" },
@@ -148,7 +153,11 @@ function defaultsFor(resource: EditableResource, branchId: string | null) {
   };
 }
 
-function payloadFor(resource: EditableResource, value: unknown, force = false) {
+function payloadFor(
+  resource: EditableDashboardResource,
+  value: unknown,
+  force = false,
+) {
   if (resource === "branches")
     return mapBranchPayload(value as z.infer<typeof branchCreateSchema>);
   if (resource === "chairs")
@@ -170,15 +179,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
     defaultValues: defaultsFor(resource, session.branchId) as never,
   });
   const [selectValues, setSelectValues] = useState<Record<string, string>>({});
-  const existing = useQuery({
-    enabled: editing,
-    queryKey: ["dashboard", resource, id],
-    queryFn: async () =>
-      mapDashboardEntity(
-        resource,
-        await getDashboardEntity<unknown>(resource, id ?? ""),
-      ),
-  });
+  const existing = useDashboardEntityQuery(resource, editing ? id : undefined);
   useEffect(() => {
     const current = existing.data;
     if (!current) return;
@@ -275,33 +276,24 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
       },
     );
   };
-  const branches = useQuery({
-    queryKey: ["dashboard", "branches", "form-options"],
-    queryFn: () =>
-      getDashboardList<unknown>("branches", { page: 1, perPage: 100 }),
+  const branches = useDashboardListOptions("branches", mapBranch, {
+    page: 1,
+    perPage: 100,
+    keySuffix: "form-options",
   });
-  const chairs = useQuery({
-    queryKey: ["dashboard", "chairs", "form-options"],
-    queryFn: () =>
-      getDashboardList<unknown>("chairs", { page: 1, perPage: 100 }),
+  const chairs = useDashboardListOptions("chairs", mapChair, {
+    page: 1,
+    perPage: 100,
+    keySuffix: "form-options",
   });
-  const stylists = useQuery({
-    queryKey: ["dashboard", "stylists", "form-options"],
-    queryFn: () =>
-      getDashboardList<unknown>("stylists", { page: 1, perPage: 100 }),
+  const stylists = useDashboardListOptions("stylists", mapStylist, {
+    page: 1,
+    perPage: 100,
+    keySuffix: "form-options",
   });
-  const brands = useQuery({
-    queryKey: ["lookups", "brands"],
-    queryFn: () => getLookupOptions("brands"),
-  });
-  const currencies = useQuery({
-    queryKey: ["lookups", "currencies"],
-    queryFn: () => getLookupOptions("currencies"),
-  });
-  const catalogItems = useQuery({
-    queryKey: ["lookups", "service-catalog-items"],
-    queryFn: () => getLookupOptions("service-catalog-items"),
-  });
+  const brands = useLookupOptionsQuery("brands");
+  const currencies = useLookupOptionsQuery("currencies");
+  const catalogItems = useLookupOptionsQuery("service-catalog-items");
   const fields =
     resource === "branches"
       ? [
@@ -416,19 +408,8 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
         ),
       ];
     if (field === "branchId")
-      return (branches.data?.items ?? []).map(
-        (item) =>
-          [
-            String((item as Record<string, unknown>).id),
-            String(
-              (
-                (item as Record<string, unknown>).name as Record<
-                  string,
-                  unknown
-                >
-              )?.en ?? (item as Record<string, unknown>).id,
-            ),
-          ] as const,
+      return (branches.data ?? []).map(
+        (item) => [item.id, item.name.en ?? item.id] as const,
       );
     if (field === "serviceableId") {
       const ownerType =
@@ -440,65 +421,25 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
           (item) => [item.id, item.label] as const,
         );
       if (ownerType === "barber")
-        return (stylists.data?.items ?? []).map(
-          (item) =>
-            [
-              String((item as Record<string, unknown>).id),
-              String(
-                (
-                  (item as Record<string, unknown>).name as Record<
-                    string,
-                    unknown
-                  >
-                )?.en ?? (item as Record<string, unknown>).id,
-              ),
-            ] as const,
+        return (stylists.data ?? []).map(
+          (item) => [item.id, item.name.en ?? item.id] as const,
         );
-      return (branches.data?.items ?? []).map(
-        (item) =>
-          [
-            String((item as Record<string, unknown>).id),
-            String(
-              (
-                (item as Record<string, unknown>).name as Record<
-                  string,
-                  unknown
-                >
-              )?.en ?? (item as Record<string, unknown>).id,
-            ),
-          ] as const,
+      return (branches.data ?? []).map(
+        (item) => [item.id, item.name.en ?? item.id] as const,
       );
     }
     if (field === "barberId")
       return [
         ["", fieldCopy.unassigned],
-        ...(stylists.data?.items ?? []).map(
-          (item) =>
-            [
-              String((item as Record<string, unknown>).id),
-              String(
-                (
-                  (item as Record<string, unknown>).name as Record<
-                    string,
-                    unknown
-                  >
-                )?.en ?? (item as Record<string, unknown>).id,
-              ),
-            ] as const,
+        ...(stylists.data ?? []).map(
+          (item) => [item.id, item.name.en ?? item.id] as const,
         ),
       ];
     if (field === "chairId")
       return [
         ["", fieldCopy.unassigned],
-        ...(chairs.data?.items ?? []).map(
-          (item) =>
-            [
-              String((item as Record<string, unknown>).id),
-              String(
-                (item as Record<string, unknown>).label ??
-                  (item as Record<string, unknown>).id,
-              ),
-            ] as const,
+        ...(chairs.data ?? []).map(
+          (item) => [item.id, item.label ?? item.id] as const,
         ),
       ];
     return null;

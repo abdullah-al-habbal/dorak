@@ -11,19 +11,16 @@ import {
 import { Input } from "@/components/tailgrids/core/input";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
+import { useBarberAppointmentsQuery } from "@/hooks/use-barber-appointments-query";
 import { useBarberChannel } from "@/hooks/use-barber-channel";
+import { useBarberPortfolioQuery } from "@/hooks/use-barber-portfolio-query";
+import { useBarberWorkspaceProfileQuery } from "@/hooks/use-barber-workspace-profile-query";
 import { useSession } from "@/hooks/use-session";
 import {
   cancelBarberBooking,
   transitionBarberBooking,
   updateBarberWorkstation,
 } from "@/services/api/barber-workspace.mutation";
-import {
-  getBarberPortfolio,
-  getBarberTodayAppointments,
-  getBarberWorkspaceProfile,
-} from "@/services/api/barber-workspace.query";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -32,18 +29,9 @@ export function BarberWorkspace() {
   const session = useSession();
   useBarberChannel(session.subject);
   const [online, setOnline] = useState(false);
-  const appointments = useQuery({
-    queryKey: ["barber", "appointments", "today"],
-    queryFn: getBarberTodayAppointments,
-  });
-  const profile = useQuery({
-    queryKey: ["barber", "profile"],
-    queryFn: getBarberWorkspaceProfile,
-  });
-  const portfolio = useQuery({
-    queryKey: ["barber", "portfolio"],
-    queryFn: getBarberPortfolio,
-  });
+  const appointments = useBarberAppointmentsQuery();
+  const profile = useBarberWorkspaceProfileQuery();
+  const portfolio = useBarberPortfolioQuery();
   const workstation = useDashboardMutation("barber-workstation", () =>
     updateBarberWorkstation(!online),
   );

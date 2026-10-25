@@ -6,16 +6,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/tailgrids/core/card";
-import {
-  getDashboardList,
-  getDashboardOverview,
-} from "@/services/api/dashboard/dashboard.query";
+import { getDashboardOverview } from "@/services/api/dashboard/dashboard.query";
 import {
   mapBooking,
   mapChair,
 } from "@/services/api/dashboard/dashboard-mapper.util";
 import type { IBooking } from "@/services/api/dashboard/ibooking.types";
 import type { IChair } from "@/services/api/dashboard/ichair.types";
+import { useDashboardListOptions } from "@/hooks/use-dashboard-list-options";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useQuery } from "@tanstack/react-query";
 
@@ -29,27 +27,17 @@ export function OverviewDashboard() {
     queryKey: ["dashboard", "overview"],
     queryFn: getDashboardOverview,
   });
-  const chairs = useQuery({
-    queryKey: ["dashboard", "chairs", "overview"],
-    queryFn: async () => {
-      const page = await getDashboardList<unknown>("chairs", {
-        page: 1,
-        perPage: 100,
-      });
-      return page.items.map(mapChair);
-    },
+  const chairs = useDashboardListOptions("chairs", mapChair, {
+    page: 1,
+    perPage: 100,
+    keySuffix: "overview",
   });
-  const bookings = useQuery({
-    queryKey: ["dashboard", "bookings", "today"],
-    queryFn: async () => {
-      const page = await getDashboardList<unknown>("bookings", {
-        page: 1,
-        perPage: 100,
-        dateFrom: today(),
-        dateTo: today(),
-      });
-      return page.items.map(mapBooking);
-    },
+  const bookings = useDashboardListOptions("bookings", mapBooking, {
+    page: 1,
+    perPage: 100,
+    dateFrom: today(),
+    dateTo: today(),
+    keySuffix: "today",
   });
   const metric = overview.data;
 

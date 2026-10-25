@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/tailgrids/core/select";
+import { useDashboardListOptions } from "@/hooks/use-dashboard-list-options";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
@@ -20,14 +21,12 @@ import {
   mapService,
 } from "@/services/api/dashboard/dashboard-mapper.util";
 import { mapWalkInBookingPayload } from "@/services/api/dashboard/dashboard-payload-mapper.util";
-import { getDashboardList } from "@/services/api/dashboard/dashboard.query";
 import { createWalkInBooking } from "@/services/api/dashboard/dashboard-workflow.mutation";
 import { createWalkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
 import type { WalkInBookingInput } from "@/services/api/dashboard/walk-in-booking.types";
 import { apiErrorMessage } from "@/services/api/api-error-message.util";
 import { ApiClientError } from "@/services/api/client-error";
 import { notifySuccess } from "@/services/api/notifications";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -55,26 +54,20 @@ export function WalkInBookingForm() {
   const [branchId, setBranchId] = useState(session.branchId ?? "");
   const [chairId, setChairId] = useState("");
   const [serviceIds, setServiceIds] = useState<string[]>([]);
-  const branches = useQuery({
-    queryKey: ["dashboard", "branches", "booking-options"],
-    queryFn: async () =>
-      (
-        await getDashboardList<unknown>("branches", { page: 1, perPage: 100 })
-      ).items.map(mapBranch),
+  const branches = useDashboardListOptions("branches", mapBranch, {
+    page: 1,
+    perPage: 100,
+    keySuffix: "booking-options",
   });
-  const chairs = useQuery({
-    queryKey: ["dashboard", "chairs", "booking-options"],
-    queryFn: async () =>
-      (
-        await getDashboardList<unknown>("chairs", { page: 1, perPage: 100 })
-      ).items.map(mapChair),
+  const chairs = useDashboardListOptions("chairs", mapChair, {
+    page: 1,
+    perPage: 100,
+    keySuffix: "booking-options",
   });
-  const services = useQuery({
-    queryKey: ["dashboard", "services", "booking-options"],
-    queryFn: async () =>
-      (
-        await getDashboardList<unknown>("services", { page: 1, perPage: 100 })
-      ).items.map(mapService),
+  const services = useDashboardListOptions("services", mapService, {
+    page: 1,
+    perPage: 100,
+    keySuffix: "booking-options",
   });
   const mutation = useDashboardMutation(
     "bookings",
