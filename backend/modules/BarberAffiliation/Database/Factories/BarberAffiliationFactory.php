@@ -23,7 +23,7 @@ class BarberAffiliationFactory extends Factory
             'initiated_by_id' => BranchModel::factory(),
             'affiliable_id' => BranchModel::factory(),
             'affiliable_type' => AffiliableType::Branch->value,
-            'status' => AffiliationStatus::Accepted->value,
+            'status' => AffiliationStatus::Active->value,
             'commission_rate' => null,
             'invited_at' => now()->subDays(7),
             'accepted_at' => now()->subDays(6),

@@ -29,6 +29,11 @@ final class BarberAffiliationPolicy
         return $this->canDecide($actor, $affiliation);
     }
 
+    public function terminate(BarberModel $actor, BarberAffiliationModel $affiliation): bool
+    {
+        return $affiliation->barber()->is($actor);
+    }
+
     private function canDecide(BarberModel $actor, BarberAffiliationModel $affiliation): bool
     {
         $initiatedByType = $affiliation->getAttribute('initiated_by_type');

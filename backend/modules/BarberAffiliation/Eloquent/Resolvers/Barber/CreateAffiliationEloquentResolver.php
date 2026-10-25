@@ -16,7 +16,9 @@ final class CreateAffiliationEloquentResolver
         $barber = BarberModel::findOrFail($command->barberId);
 
         $existing = BarberAffiliationModel::where('barber_id', $barber->id)
-            ->where('status', AffiliationStatus::Accepted)
+            ->where('affiliable_id', $command->affiliableId)
+            ->where('affiliable_type', $command->affiliableType)
+            ->whereIn('status', [AffiliationStatus::Pending, AffiliationStatus::Active])
             ->exists();
 
         if ($existing) {

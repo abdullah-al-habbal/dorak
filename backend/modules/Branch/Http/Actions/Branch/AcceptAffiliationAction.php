@@ -7,6 +7,7 @@ namespace Modules\Branch\Http\Actions\Branch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
+use Modules\BarberAffiliation\Jobs\AffiliationParty;
 use Modules\BarberAffiliation\Jobs\AffiliationRespondedNotification;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Core\Enums\ErrorCodeEnum;
@@ -23,12 +24,16 @@ final class AcceptAffiliationAction extends BaseApiAction
             ->where('affiliable_type', 'branch')
             ->findOrFail($affiliation);
 
+        if (AffiliationParty::isBranch($affiliationModel->initiated_by_type) && $affiliationModel->initiated_by_id === $branch->id) {
+            return $this->businessError(ErrorCodeEnum::FORBIDDEN, message: __('barberaffiliation::messages.cannot_accept_own_invite'));
+        }
+
         if ($affiliationModel->status !== AffiliationStatus::Pending) {
             return $this->businessError(ErrorCodeEnum::BAD_REQUEST, message: __('branch::messages.affiliation_not_pending'));
         }
 
         $affiliationModel->update([
-            'status' => AffiliationStatus::Accepted,
+            'status' => AffiliationStatus::Active,
             'accepted_at' => now(),
         ]);
 

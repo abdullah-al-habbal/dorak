@@ -31,7 +31,7 @@ it('allows a barber with an accepted branch affiliation to be assigned', functio
         'barber_id' => $barber->id,
         'affiliable_id' => $branch->id,
         'affiliable_type' => 'branch',
-        'status' => AffiliationStatus::Accepted->value,
+        'status' => AffiliationStatus::Active->value,
     ]);
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
     $this->actingAs($branch, 'branch_api');
@@ -48,7 +48,7 @@ it('allows a barber with an accepted affiliation to the branch brand', function 
         'barber_id' => $barber->id,
         'affiliable_id' => $brand->id,
         'affiliable_type' => 'brand',
-        'status' => AffiliationStatus::Accepted->value,
+        'status' => AffiliationStatus::Active->value,
     ]);
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
     $this->actingAs($branch, 'branch_api');

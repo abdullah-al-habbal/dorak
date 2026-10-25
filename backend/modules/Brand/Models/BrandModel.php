@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Str;
+use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
@@ -46,6 +48,21 @@ class BrandModel extends Model
             }
 
             $brand->setAttribute('slug', self::uniqueSlug((string) $brand->getTranslation('name', 'en', false)));
+        });
+
+        static::deleting(function (BrandModel $brand): void {
+            $branchIds = $brand->branches()->pluck('id');
+
+            BarberAffiliationModel::query()
+                ->whereIn('status', [AffiliationStatus::Pending, AffiliationStatus::Active])
+                ->where(function ($query) use ($brand, $branchIds): void {
+                    $query->where(function ($brandQuery) use ($brand): void {
+                        $brandQuery->where('affiliable_type', AffiliableType::Brand)->where('affiliable_id', $brand->id);
+                    })->orWhere(function ($branchQuery) use ($branchIds): void {
+                        $branchQuery->where('affiliable_type', AffiliableType::Branch)->whereIn('affiliable_id', $branchIds);
+                    });
+                })
+                ->update(['status' => AffiliationStatus::Terminated, 'terminated_at' => now()]);
         });
     }
 

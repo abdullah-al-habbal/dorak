@@ -175,7 +175,7 @@ final class CreateBookingEloquentResolver
 
         $affiliated = $barberId !== null && BarberAffiliationModel::query()
             ->where('barber_id', $barberId)
-            ->where('status', AffiliationStatus::Accepted)
+            ->where('status', AffiliationStatus::Active)
             ->where(function ($query) use ($branchId, $brandId): void {
                 $query->where(fn ($branch) => $branch->where('affiliable_type', AffiliableType::Branch)->where('affiliable_id', $branchId))
                     ->orWhere(fn ($brand) => $brand->where('affiliable_type', AffiliableType::Brand)->where('affiliable_id', $brandId));

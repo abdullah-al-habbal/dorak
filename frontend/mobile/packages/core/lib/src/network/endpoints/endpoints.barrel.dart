@@ -1,3 +1,4 @@
+export 'package:core/src/network/endpoints/affiliation.endpoints.dart';
 export 'package:core/src/network/endpoints/api.endpoints.dart';
 export 'package:core/src/network/endpoints/app.endpoints.dart';
 export 'package:core/src/network/endpoints/auth.endpoints.dart';

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
@@ -48,7 +49,7 @@ it('accepts pending affiliation', function () {
     $response = $this->postJson("/api/v1/affiliations/{$affiliation->id}/accept");
 
     $response->assertOk();
-    expect($response->json('data.status'))->toBe('accepted');
+    expect($response->json('data.status'))->toBe('active');
     expect($response->json('data.accepted_at'))->not->toBeNull();
 });
 
@@ -113,13 +114,13 @@ it('requires barber authentication for create', function () {
     $response->assertUnauthorized();
 });
 
-it('enforces multi-shop constraint: barber cannot affiliate to multiple branches', function () {
+it('allows a barber with one active affiliation to create a second one to a different branch', function () {
     $branchA = BranchModel::factory()->create();
     $branchB = BranchModel::factory()->create();
 
     BarberAffiliationModel::factory()->create([
         'barber_id' => $this->barber->id,
-        'status' => AffiliationStatus::Accepted,
+        'status' => AffiliationStatus::Active,
         'affiliable_id' => $branchA->id,
         'affiliable_type' => 'branch',
     ]);
@@ -129,7 +130,34 @@ it('enforces multi-shop constraint: barber cannot affiliate to multiple branches
         'affiliable_type' => 'branch',
     ]);
 
+    $response->assertCreated();
+});
+
+it('rejects a duplicate pending/active affiliation to the same branch', function () {
+    $branch = BranchModel::factory()->create();
+
+    BarberAffiliationModel::factory()->create([
+        'barber_id' => $this->barber->id,
+        'status' => AffiliationStatus::Active,
+        'affiliable_id' => $branch->id,
+        'affiliable_type' => 'branch',
+    ]);
+
+    $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/affiliate", [
+        'affiliable_id' => $branch->id,
+        'affiliable_type' => 'branch',
+    ]);
+
     $response->assertStatus(409);
+});
+
+it('rejects affiliating to a branch that does not exist', function () {
+    $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/affiliate", [
+        'affiliable_id' => (string) Str::uuid(),
+        'affiliable_type' => 'branch',
+    ]);
+
+    $response->assertStatus(422);
 });
 
 it('requires barber authentication for accept', function () {

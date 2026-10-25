@@ -24,7 +24,7 @@ final class BarberAffiliationsTable
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'accepted' => 'success',
+                        'active' => 'success',
                         'terminated' => 'danger',
                         default => 'warning',
                     }),

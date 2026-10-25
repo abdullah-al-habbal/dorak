@@ -20,7 +20,7 @@ final class AcceptAffiliationEloquentResolver
         }
 
         $affiliation->update([
-            'status' => AffiliationStatus::Accepted,
+            'status' => AffiliationStatus::Active,
             'accepted_at' => now(),
         ]);
 

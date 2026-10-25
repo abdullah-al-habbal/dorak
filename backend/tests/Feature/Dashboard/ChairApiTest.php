@@ -73,7 +73,7 @@ describe('Dashboard Chair API', function (): void {
             'barber_id' => $barber->id,
             'affiliable_id' => $brand->id,
             'affiliable_type' => 'brand',
-            'status' => AffiliationStatus::Accepted->value,
+            'status' => AffiliationStatus::Active->value,
         ]);
         $this->authenticateDashboardActor($branch);
 

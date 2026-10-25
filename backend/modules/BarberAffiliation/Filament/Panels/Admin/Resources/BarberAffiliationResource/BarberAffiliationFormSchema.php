@@ -33,7 +33,7 @@ final class BarberAffiliationFormSchema
                     Select::make('status')
                         ->options([
                             'pending' => 'Pending',
-                            'accepted' => 'Accepted',
+                            'active' => 'Active',
                             'terminated' => 'Terminated',
                         ])
                         ->required(),

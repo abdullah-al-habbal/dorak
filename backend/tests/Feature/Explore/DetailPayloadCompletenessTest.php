@@ -84,8 +84,8 @@ describe('barber detail workplaces', function (): void {
         $branch = BranchModel::factory()->create();
         $brand = BrandModel::factory()->create();
         ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id, 'label' => 'Chair 4']);
-        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => $branch->id, 'status' => 'accepted']);
-        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'brand', 'affiliable_id' => $brand->id, 'status' => 'accepted']);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => $branch->id, 'status' => 'active']);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'brand', 'affiliable_id' => $brand->id, 'status' => 'active']);
         BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => BranchModel::factory()->create()->id, 'status' => 'pending']);
         BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => BranchModel::factory()->create()->id, 'status' => 'terminated']);
 

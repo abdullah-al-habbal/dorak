@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
+use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Models\BookingModel;
@@ -181,14 +183,14 @@ describe('Branch API', function () {
                 $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/accept");
 
                 $response->assertOk();
-                expect($response->json('data.status'))->toBe('accepted');
+                expect($response->json('data.status'))->toBe('active');
             });
 
             it('rejects accepting non-pending affiliation', function () {
                 $affiliation = BarberAffiliationModel::factory()->create([
                     'affiliable_id' => $this->branch->id,
                     'affiliable_type' => 'branch',
-                    'status' => AffiliationStatus::Accepted,
+                    'status' => AffiliationStatus::Active,
                 ]);
 
                 $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/accept");
@@ -222,12 +224,94 @@ describe('Branch API', function () {
                 $affiliation = BarberAffiliationModel::factory()->create([
                     'affiliable_id' => $this->branch->id,
                     'affiliable_type' => 'branch',
-                    'status' => AffiliationStatus::Accepted,
+                    'status' => AffiliationStatus::Active,
                 ]);
 
                 $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/reject");
 
                 $response->assertStatus(400);
+            });
+        });
+
+        describe('POST /api/v1/branch/affiliations', function () {
+            it('creates a pending invite for a barber', function () {
+                $barber = BarberModel::factory()->create();
+
+                $response = $this->postJson('/api/v1/branch/affiliations', [
+                    'barber_id' => $barber->id,
+                ]);
+
+                $response->assertCreated();
+                expect($response->json('data.status'))->toBe('pending');
+                expect($response->json('data.affiliable_id'))->toBe($this->branch->id);
+            });
+
+            it('rejects an invite for a barber that does not exist', function () {
+                $response = $this->postJson('/api/v1/branch/affiliations', [
+                    'barber_id' => (string) Str::uuid(),
+                ]);
+
+                $response->assertStatus(422);
+            });
+
+            it('the inviting branch cannot accept its own invite', function () {
+                $barber = BarberModel::factory()->create();
+                $invite = $this->postJson('/api/v1/branch/affiliations', ['barber_id' => $barber->id])->json('data');
+
+                $response = $this->postJson("/api/v1/branch/affiliations/{$invite['id']}/accept");
+
+                $response->assertForbidden();
+            });
+
+            it('the invited barber can accept the branch invite', function () {
+                $barber = BarberModel::factory()->create();
+                $invite = $this->postJson('/api/v1/branch/affiliations', ['barber_id' => $barber->id])->json('data');
+
+                $response = $this->actingAs($barber, 'barber')
+                    ->postJson("/api/v1/affiliations/{$invite['id']}/accept");
+
+                $response->assertOk();
+                expect($response->json('data.status'))->toBe('active');
+            });
+        });
+
+        describe('POST /api/v1/branch/affiliations/{affiliation}/terminate', function () {
+            it('terminates an active affiliation and unassigns the chair', function () {
+                $barber = BarberModel::factory()->create();
+                $affiliation = BarberAffiliationModel::factory()->create([
+                    'barber_id' => $barber->id,
+                    'affiliable_id' => $this->branch->id,
+                    'affiliable_type' => 'branch',
+                    'status' => AffiliationStatus::Active,
+                ]);
+                $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $barber->id]);
+
+                $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/terminate");
+
+                $response->assertOk();
+                expect($response->json('data.status'))->toBe('terminated');
+                $this->assertDatabaseHas('chairs', ['id' => $chair->id, 'barber_id' => null]);
+            });
+
+            it('rejects terminating a non-active affiliation', function () {
+                $affiliation = BarberAffiliationModel::factory()->pending()->create([
+                    'affiliable_id' => $this->branch->id,
+                    'affiliable_type' => 'branch',
+                ]);
+
+                $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/terminate");
+
+                $response->assertStatus(400);
+            });
+
+            it('returns 404 for a third-party branch terminating an affiliation', function () {
+                $affiliation = BarberAffiliationModel::factory()->create([
+                    'status' => AffiliationStatus::Active,
+                ]);
+
+                $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/terminate");
+
+                $response->assertNotFound();
             });
         });
 

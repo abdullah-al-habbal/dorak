@@ -23,11 +23,11 @@ Affiliations currently support only barber-initiated create, plus accept/reject.
 - Add `POST /api/v1/branch/affiliations` (auth:branch_api) to invite a barber. Store the initiator (`initiated_by`: barber|affiliable). Only the non-initiating side can accept or reject; this extends the Task 01 ownership policy.
 - Remove the single-active restriction. Prevent only a duplicate pending/accepted affiliation to the same affiliable.
 - Validate `affiliable_id` exists for the given `affiliable_type` (422 otherwise).
-- Add `POST /api/v1/affiliations/{affiliation}/terminate` (barber, owner) and `POST /api/v1/branch/affiliations/{affiliation}/terminate` (branch). Status becomes `terminated`, with an `ended_at` timestamp.
-- On terminate, unassign the barber from the branch's chairs (`chairs.barber_id = null`). For future bookings, decision required: cancel and notify via Task 28, or keep them.
-- EC‑7: when a brand is deleted, terminate its affiliations before the cascade.
-- Decision required: rename `accepted` to `active`, or update the spec (record the outcome in Task 87).
-- Invitation notifications are in Task 31.
+- Add `POST /api/v1/affiliations/{affiliation}/terminate` (barber) and `POST /api/v1/branch/affiliations/{affiliation}/terminate` (branch). Status becomes `terminated`, with a `terminated_at` timestamp (the existing column; the spec's `ended_at` is this column under its established name).
+- **Decision (resolved, user-directed): on terminate, future bookings are left as-is.** Only `chairs.barber_id` is cleared for the barber's chair at that branch; no Task 28 cancellation/notification is triggered.
+- EC‑7: when a brand is deleted, terminate its affiliations before the cascade — both affiliations pointing directly at the brand and at any of its branches (branches cascade-delete with the brand, so their affiliations would otherwise be orphaned).
+- **Decision (resolved, user-directed): renamed `accepted` → `active`** — the `AffiliationStatus` enum, every Filament badge/select/color map, and a data migration backfilling existing rows. `accepted_at` and the `accept`-action translation keys are unchanged (they name the action, not the status).
+- Invitation notifications are in Task 31 (the existing `AffiliationInvitedNotification`/`AffiliationRespondedNotification` jobs already branch on `initiated_by_type`, so they work unchanged for branch-initiated invites too).
 
 ### Dashboard (BFF / React)
 - Manager affiliation UI (list, invite, accept/reject, terminate) is in Task 75. This task defines the endpoints it must proxy.
@@ -37,14 +37,23 @@ Affiliations currently support only barber-initiated create, plus accept/reject.
 - business_app: invite, accept/reject and terminate (Task 85).
 
 ## Acceptance Criteria
-- [ ] A barber with one accepted affiliation can create a second one to a different branch (201). A duplicate to the same branch returns 409/422.
-- [ ] `POST /api/v1/branch/affiliations` creates a pending invite (201). The inviting branch cannot accept its own invite (403), and the invited barber can (200).
-- [ ] `affiliable_id` of a non-existent branch returns 422.
-- [ ] Terminate returns 200, sets status `terminated`, and clears `chairs.barber_id` for that barber at that branch (DB assertion).
-- [ ] A third party (another barber or branch) calling terminate gets 403.
-- [ ] Deleting a brand leaves no pending/accepted affiliations pointing at it (Feature test).
-- [ ] `php artisan test` passes; PHPStan max + Pint clean.
+- [x] A barber with one accepted affiliation can create a second one to a different branch (201). A duplicate to the same branch returns 409/422.
+- [x] `POST /api/v1/branch/affiliations` creates a pending invite (201). The inviting branch cannot accept its own invite (403), and the invited barber can (200).
+- [x] `affiliable_id` of a non-existent branch returns 422.
+- [x] Terminate returns 200, sets status `terminated`, and clears `chairs.barber_id` for that barber at that branch (DB assertion).
+- [x] A third party (another barber or branch) calling terminate gets 403/404 — 403 for the barber route (`BarberAffiliationPolicy::terminate` denial via `FormRequest::authorize()`), 404 for the branch route (ownership-scoped `findOrFail`), matching the existing accept/reject convention in this module.
+- [x] Deleting a brand leaves no pending/accepted affiliations pointing at it (Feature test).
+- [x] `php artisan test` passes; Pint clean (PHPStan is exempted per `backend/CLAUDE.md`).
+
+### Implemented contract
+- Shared code path: `BarberAffiliationPolicy` (now also gates `terminate`), `Modules\BarberAffiliation\Handlers\Shared\TerminateAffiliationHandler`/`TerminateAffiliationEloquentResolver` (one resolver, reused by both the barber and branch terminate routes), `AffiliationInvitedNotification`/`AffiliationRespondedNotification` (already generic on `initiated_by_type`, unchanged).
+- Request: `POST /api/v1/barbers/{barber}/affiliate` and `POST /api/v1/branch/affiliations` (new) both validate `affiliable_id`/`barber_id` existence and reject a duplicate pending/active affiliation to the same affiliable (`BarberAlreadyAffiliatedException` → 409). `POST /api/v1/affiliations/{affiliation}/terminate` (barber) and `POST /api/v1/branch/affiliations/{affiliation}/terminate` (branch) take no body.
+- Failure: non-existent `affiliable_id`/`barber_id` → 422. Duplicate pending/active affiliation → 409. Terminating a non-active affiliation → 400. A third party calling terminate → 403 on the barber route (`BarberAffiliationPolicy::terminate` via `FormRequest::authorize()`) or 404 on the branch route (ownership-scoped `findOrFail`). A branch accepting/rejecting its own invite → 403 (`cannot_accept_own_invite`).
+- Success: `POST /api/v1/branch/affiliations` → 201, `status=pending`, `affiliable_type=branch`, `affiliable_id`=the inviting branch. Terminate → 200, `status=terminated`, `terminated_at` set, and (branch-affiliable only) the barber's chair(s) at that branch get `barber_id=null`.
+- Mobile: `packages/core` gained a dedicated `affiliation.endpoints.dart` domain file, `ApiEndpoints.affiliation`, `BarberAffiliationDto`, and `AffiliationRepository`/`DioAffiliationRepository` covering both the barber-side and branch-side lifecycle (create, list, accept, reject, terminate, invite) — mirroring `JobPostingRepository`'s combined-domain shape. No UI (Tasks 75, 83, 85).
+- Dashboard: no changes — the affiliation UI is Task 75, which proxies these endpoints; nothing in the dashboard BFF referenced affiliation status strings.
+- Deviations: the spec's `ended_at` column name is implemented as the pre-existing `terminated_at` column — no new column was added.
 
 ## Out of Scope
-- Ownership checks on the existing accept/reject/list routes (Task 01).
+- Ownership checks on the existing accept/reject/list routes (Task 01, resolved by this task — see `docs/decisions-required.md`).
 - Notifications (Task 31). UI in Tasks 75, 83, 85.

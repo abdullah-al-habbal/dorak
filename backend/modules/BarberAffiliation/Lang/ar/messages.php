@@ -3,11 +3,15 @@
 declare(strict_types=1);
 
 return [
-    'already_affiliated' => 'الحلاق مرتبط بفرع بالفعل.',
+    'already_affiliated' => 'الحلاق لديه انتساب قيد الانتظار أو نشط مع هذا المتجر بالفعل.',
+    'affiliable_not_found' => 'affiliable_id المحدد غير موجود لـ affiliable_type المحدد.',
     'created' => 'تم إنشاء الانتساب بنجاح.',
     'not_pending' => 'الانتساب ليس قيد الانتظار.',
+    'not_active' => 'الانتساب غير نشط.',
     'accepted' => 'تم قبول الانتساب بنجاح.',
     'rejected' => 'تم رفض الانتساب بنجاح.',
+    'terminated' => 'تم إنهاء الانتساب بنجاح.',
+    'cannot_accept_own_invite' => 'لا يمكن للجهة الداعية قبول أو رفض دعوتها الخاصة.',
     'notification_invited_title' => 'طلب انتساب جديد',
     'notification_invited_branch_body' => 'طلب حلاق الانتساب إلى فرعك.',
     'notification_invited_barber_body' => 'دعاك أحد الفروع للانتساب إليه.',

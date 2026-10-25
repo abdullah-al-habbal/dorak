@@ -22,7 +22,7 @@ final class BarberAffiliationsTable
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
-                        'accepted' => 'success',
+                        'active' => 'success',
                         'rejected' => 'danger',
                         'terminated' => 'gray',
                         default => 'gray',
@@ -40,7 +40,7 @@ final class BarberAffiliationsTable
                     ->requiresConfirmation()
                     ->visible(fn ($record): bool => $record->status === AffiliationStatus::Pending)
                     ->action(fn ($record) => $record->update([
-                        'status' => AffiliationStatus::Accepted,
+                        'status' => AffiliationStatus::Active,
                         'accepted_at' => now(),
                     ])),
                 Action::make('reject')

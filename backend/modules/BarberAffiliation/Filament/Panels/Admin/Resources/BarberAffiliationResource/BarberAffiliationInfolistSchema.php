@@ -25,7 +25,7 @@ final class BarberAffiliationInfolistSchema
                     TextEntry::make('status')
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {
-                            'accepted' => 'success',
+                            'active' => 'success',
                             'terminated' => 'danger',
                             default => 'warning',
                         }),

@@ -42,7 +42,7 @@ final class GetBarberDetailEloquentResolver
     {
         $affiliations = BarberAffiliationModel::query()
             ->where('barber_id', $barber->getKey())
-            ->where('status', AffiliationStatus::Accepted)
+            ->where('status', AffiliationStatus::Active)
             ->get(['affiliable_type', 'affiliable_id']);
 
         $branchIds = $affiliations->filter(fn (BarberAffiliationModel $a): bool => $a->getAttribute('affiliable_type') === AffiliableType::Branch)->pluck('affiliable_id')->all();

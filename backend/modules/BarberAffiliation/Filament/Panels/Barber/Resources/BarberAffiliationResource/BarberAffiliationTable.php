@@ -21,7 +21,7 @@ final class BarberAffiliationTable
                     ->badge()
                     ->color(fn (AffiliationStatus $state): string => match ($state) {
                         AffiliationStatus::Pending => 'warning',
-                        AffiliationStatus::Accepted => 'success',
+                        AffiliationStatus::Active => 'success',
                         AffiliationStatus::Rejected => 'danger',
                         AffiliationStatus::Terminated => 'danger',
                     }),

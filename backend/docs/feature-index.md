@@ -406,3 +406,10 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - `barbers.bio` (translatable json) is editable via `PATCH /api/v1/barber/profile` (`bio.en`/`bio.ar`) and exposed on the barber profile and explore barber detail payloads.
 - `GET/POST /api/v1/barber/services`, `PUT/DELETE /api/v1/barber/services/{service}` — barber-scoped service CRUD; `serviceable_type`/`serviceable_id` are always forced server-side to the authenticated barber, never read from the request.
 - D1 enforced: a service is owned by a Brand or a Barber, never a Branch. `branch` was removed from the dashboard `serviceable_type` enum; existing branch-owned `offered_services` rows were migrated to their parent brand. Branch managers still manage services, now classified as their branch's brand.
+
+### Complete Affiliation Lifecycle (Task 55)
+- A barber may hold several simultaneous pending/active affiliations across different branches/brands; only a duplicate pending/active affiliation to the *same* affiliable is rejected (409). `affiliable_id` must exist for its `affiliable_type` (422 otherwise).
+- `POST /api/v1/branch/affiliations` lets a branch invite a barber directly (pending invite); the inviting branch cannot accept/reject its own invite (403).
+- `POST /api/v1/affiliations/{affiliation}/terminate` (barber) and `POST /api/v1/branch/affiliations/{affiliation}/terminate` (branch) end an active affiliation, clearing `chairs.barber_id` for that barber at that branch. Future bookings are left untouched.
+- Deleting a brand terminates every pending/active affiliation pointing at the brand or any of its branches before the cascade.
+- The affiliation status enum was renamed `accepted` → `active` (enum, Filament UI, and a backfill migration) to match the product spec's vocabulary.

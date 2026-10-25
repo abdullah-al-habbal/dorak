@@ -7,7 +7,7 @@ namespace Modules\BarberAffiliation\Enums;
 enum AffiliationStatus: string
 {
     case Pending = 'pending';
-    case Accepted = 'accepted';
+    case Active = 'active';
     case Rejected = 'rejected';
     case Terminated = 'terminated';
 

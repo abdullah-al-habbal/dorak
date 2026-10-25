@@ -74,7 +74,7 @@ it('allows the receiving barber to accept an affiliation initiated by a branch',
         ->postJson("/api/v1/affiliations/{$affiliation->id}/accept")
         ->assertOk();
 
-    expect($affiliation->refresh()->status)->toBe(AffiliationStatus::Accepted);
+    expect($affiliation->refresh()->status)->toBe(AffiliationStatus::Active);
 });
 
 it('allows the receiving barber to reject an affiliation initiated by a branch', function (): void {
@@ -90,4 +90,34 @@ it('allows the receiving barber to reject an affiliation initiated by a branch',
         ->assertOk();
 
     expect($affiliation->refresh()->status)->toBe(AffiliationStatus::Rejected);
+});
+
+it('forbids a third-party barber from terminating another barber affiliation', function (): void {
+    $owningBarber = BarberModel::factory()->create();
+    $affiliation = BarberAffiliationModel::factory()->create([
+        'barber_id' => $owningBarber->id,
+        'status' => AffiliationStatus::Active,
+    ]);
+    $thirdParty = BarberModel::factory()->create();
+
+    $this->actingAs($thirdParty, 'barber')
+        ->postJson("/api/v1/affiliations/{$affiliation->id}/terminate")
+        ->assertForbidden();
+
+    expect($affiliation->refresh()->status)->toBe(AffiliationStatus::Active);
+});
+
+it('allows the affiliated barber to terminate their own active affiliation', function (): void {
+    $barber = BarberModel::factory()->create();
+    $affiliation = BarberAffiliationModel::factory()->create([
+        'barber_id' => $barber->id,
+        'status' => AffiliationStatus::Active,
+    ]);
+
+    $this->actingAs($barber, 'barber')
+        ->postJson("/api/v1/affiliations/{$affiliation->id}/terminate")
+        ->assertOk();
+
+    expect($affiliation->refresh()->status)->toBe(AffiliationStatus::Terminated);
+    expect($affiliation->terminated_at)->not->toBeNull();
 });

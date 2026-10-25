@@ -1015,7 +1015,7 @@ describe('BarberAffiliation API', function () {
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data['status'])->toBe('accepted');
+            expect($data['status'])->toBe('active');
             expect($data)->toHaveKey('accepted_at');
         });
     });

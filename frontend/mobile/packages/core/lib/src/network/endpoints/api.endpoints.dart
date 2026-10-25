@@ -1,3 +1,4 @@
+import 'package:core/src/network/endpoints/affiliation.endpoints.dart';
 import 'package:core/src/network/endpoints/app.endpoints.dart';
 import 'package:core/src/network/endpoints/auth.endpoints.dart';
 import 'package:core/src/network/endpoints/barber_auth.endpoints.dart';
@@ -21,6 +22,9 @@ import 'package:core/src/network/endpoints/service_catalog.endpoints.dart';
 /// Provides namespaced access: [ApiEndpoints.auth.login], [ApiEndpoints.booking.bookings], etc.
 class ApiEndpoints {
   ApiEndpoints._();
+
+  /// Barber affiliation endpoints
+  static final affiliation = _AffiliationEndpoints();
 
   /// Application-level endpoints (health, onboarding config)
   static final app = _AppEndpoints();
@@ -186,6 +190,19 @@ class _JobPostingEndpoints {
   String branchJobPosting(String id) => JobPostingEndpoints.branchJobPosting(id);
   String branchApplications(String id) => JobPostingEndpoints.branchApplications(id);
   String branchApplicationStatus(String jobId, String applicationId) => JobPostingEndpoints.branchApplicationStatus(jobId, applicationId);
+}
+
+class _AffiliationEndpoints {
+  const _AffiliationEndpoints();
+  String barberAffiliate(String barberId) => AffiliationEndpoints.barberAffiliate.replaceFirst('{barber}', barberId);
+  String barberAffiliations(String barberId) => AffiliationEndpoints.barberAffiliations.replaceFirst('{barber}', barberId);
+  String affiliationAccept(String affiliationId) => AffiliationEndpoints.affiliationAccept.replaceFirst('{affiliation}', affiliationId);
+  String affiliationReject(String affiliationId) => AffiliationEndpoints.affiliationReject.replaceFirst('{affiliation}', affiliationId);
+  String affiliationTerminate(String affiliationId) => AffiliationEndpoints.affiliationTerminate.replaceFirst('{affiliation}', affiliationId);
+  String get branchAffiliations => AffiliationEndpoints.branchAffiliations;
+  String branchAffiliationAccept(String affiliationId) => AffiliationEndpoints.branchAffiliationAccept.replaceFirst('{affiliation}', affiliationId);
+  String branchAffiliationReject(String affiliationId) => AffiliationEndpoints.branchAffiliationReject.replaceFirst('{affiliation}', affiliationId);
+  String branchAffiliationTerminate(String affiliationId) => AffiliationEndpoints.branchAffiliationTerminate.replaceFirst('{affiliation}', affiliationId);
 }
 
 class _NotificationEndpoints {

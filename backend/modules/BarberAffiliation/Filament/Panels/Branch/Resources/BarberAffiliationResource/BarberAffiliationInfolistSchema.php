@@ -22,7 +22,7 @@ final class BarberAffiliationInfolistSchema
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {
                             'pending' => 'warning',
-                            'accepted' => 'success',
+                            'active' => 'success',
                             'rejected' => 'danger',
                             'terminated' => 'gray',
                             default => 'gray',

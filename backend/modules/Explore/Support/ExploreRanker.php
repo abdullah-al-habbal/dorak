@@ -18,27 +18,12 @@ use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 use Modules\ClientRecommendation\Services\ExploreRankingWeightsResolver;
 use Modules\ClientRecommendation\ValuesObjects\RecommendationFactorWeightsValueObject;
 
-/**
- * Composite discovery ranking (BE-17, REC-2, Task 46): scores the whole
- * candidate set, then orders and paginates it, so the best match overall is
- * first on page 1 and `rank` is contiguous across pages.
- *
- * score = geographic·w_geo + vector_similarity·α + edge_weight·β + face_match·γ
- *
- * α is dropped and redistributed (`withoutAlpha()`) when the client has no
- * preference vector or the target has no embedding.
- */
 final class ExploreRanker
 {
-    /** Nearest candidates scored per request; keeps the cost bounded. */
-    public const int CANDIDATE_CAP = 500;
+    public const CANDIDATE_CAP = 500;
 
     public function __construct(private readonly ExploreRankingWeightsResolver $weights) {}
 
-    /**
-     * The face shape used for the γ boost: the explicit filter value, else the
-     * signed-in client's latest face analysis.
-     */
     public function faceShapeFor(?string $explicit, ?string $clientId): ?string
     {
         if ($explicit !== null || $clientId === null) {
@@ -53,15 +38,6 @@ final class ExploreRanker
         return $shape instanceof BackedEnum ? (string) $shape->value : (is_string($shape) ? $shape : null);
     }
 
-    /**
-     * Sets `compatibility_score` on every candidate.
-     *
-     * @template TModel of BranchModel|BarberModel
-     *
-     * @param  Collection<int, TModel>  $candidates  models carrying a `distance` attribute (km, may be null)
-     * @param  'branch'|'barber'  $entityType
-     * @return Collection<int, TModel>
-     */
     public function score(Collection $candidates, string $entityType, ?string $clientId, ?string $faceShape, float $radius): Collection
     {
         if ($candidates->isEmpty()) {
@@ -106,15 +82,6 @@ final class ExploreRanker
         });
     }
 
-    /**
-     * Orders scored candidates (score desc, then nearest, then id), assigns a
-     * global `rank`, and returns the requested page.
-     *
-     * @template TModel of Model
-     *
-     * @param  Collection<int, TModel>  $scored
-     * @return LengthAwarePaginator<int, TModel>
-     */
     public function paginate(Collection $scored, int $perPage, ?int $page = null): LengthAwarePaginator
     {
         $page ??= Paginator::resolveCurrentPage();
@@ -129,12 +96,6 @@ final class ExploreRanker
         );
     }
 
-    /**
-     * @template TModel of Model
-     *
-     * @param  Collection<int, TModel>  $scored
-     * @return Collection<int, TModel>
-     */
     public function order(Collection $scored): Collection
     {
         $ordered = $scored->sort(function (Model $a, Model $b): int {
@@ -160,10 +121,6 @@ final class ExploreRanker
             + $face * $weights->gamma();
     }
 
-    /**
-     * @param  list<string>  $ids
-     * @return array<string, true>
-     */
     private function faceMatches(string $entityType, array $ids, string $faceShape): array
     {
         $matchesServices = fn ($services) => $services
@@ -183,10 +140,6 @@ final class ExploreRanker
             ->all();
     }
 
-    /**
-     * @param  array<int, float>  $a
-     * @param  array<int, float>  $b
-     */
     private function cosineSimilarity(array $a, array $b): float
     {
         $dot = 0.0;

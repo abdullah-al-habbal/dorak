@@ -24,7 +24,7 @@ class BarberAffiliationSeeder extends Seeder
             'barber_id' => $barber->id,
             'affiliable_id' => $branch->id,
             'affiliable_type' => 'branch',
-            'status' => AffiliationStatus::Accepted,
+            'status' => AffiliationStatus::Active,
             'invited_at' => now()->subDays(7),
             'accepted_at' => now()->subDays(6),
             'terminated_at' => null,

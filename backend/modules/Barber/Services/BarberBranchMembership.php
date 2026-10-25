@@ -25,7 +25,7 @@ final class BarberBranchMembership
 
         return BarberAffiliationModel::query()
             ->where('barber_id', $barberId)
-            ->where('status', AffiliationStatus::Accepted->value)
+            ->where('status', AffiliationStatus::Active->value)
             ->where(function ($query) use ($branch): void {
                 $query->where(function ($branchQuery) use ($branch): void {
                     $branchQuery->where('affiliable_type', 'branch')
