@@ -1,16 +1,20 @@
 import { ROUTES } from "@/config/routes.constant";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { readSessionCookies } from "@/services/api/auth/cookies";
-import { bearerHeaders } from "@/services/api/http.util";
+import { bearerHeaders } from "@/services/api/core/http.util";
 import {
   mapNotification,
   mapNotificationInbox,
   mapNotificationReadAll,
-} from "@/services/api/notification-inbox-mapper.util";
-import { isNotificationRouteAllowed } from "@/services/api/notification-inbox-path.util";
-import type { IBackendNotification } from "@/services/api/notification-inbox.types";
-import { API_ERROR_CODE } from "@/services/api/error-code.constant";
-import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
+} from "@/services/api/common/notification-inbox/notification-inbox-mapper.util";
+import { isNotificationRouteAllowed } from "@/services/api/common/notification-inbox/notification-inbox-path.util";
+import type { IBackendNotification } from "@/services/api/common/notification-inbox/types/notification-inbox.types";
+import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
+import {
+  apiFailure,
+  apiSuccess,
+  noStore,
+} from "@/services/api/core/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import type { NextRequest } from "next/server";
 

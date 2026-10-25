@@ -1,15 +1,19 @@
 import { ROUTES } from "@/config/routes.constant";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { readSessionCookies } from "@/services/api/auth/cookies";
-import { bearerHeaders } from "@/services/api/http.util";
-import { dashboardPage } from "@/services/api/dashboard/dashboard-page.util";
+import { bearerHeaders } from "@/services/api/core/http.util";
+import { dashboardPage } from "@/services/api/dashboard/shared/dashboard-page.util";
 import {
   dashboardProfileRequestBody,
   dashboardProfileResponseData,
-} from "@/services/api/dashboard/dashboard-profile-bff.util";
-import { isDashboardRouteAllowed } from "@/services/api/dashboard/dashboard-path.util";
-import { API_ERROR_CODE } from "@/services/api/error-code.constant";
-import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
+} from "@/services/api/dashboard/shared/dashboard-profile-bff.util";
+import { isDashboardRouteAllowed } from "@/services/api/dashboard/shared/dashboard-path.util";
+import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
+import {
+  apiFailure,
+  apiSuccess,
+  noStore,
+} from "@/services/api/core/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import type { NextRequest } from "next/server";
 

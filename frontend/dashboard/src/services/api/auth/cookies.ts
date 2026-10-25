@@ -1,6 +1,6 @@
 import type { NextResponse } from "next/server";
 import { ROUTES } from "@/config/routes.constant";
-import type { SessionCookiePayload } from "@/services/api/auth/auth.types";
+import type { SessionCookiePayload } from "@/services/api/auth/types/auth.types";
 import { COOKIE_NAMES } from "@/services/api/auth/cookies.constant";
 
 const baseCookieOptions = {

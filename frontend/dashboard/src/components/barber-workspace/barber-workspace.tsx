@@ -13,12 +13,12 @@ import { useBarberChannel } from "@/hooks/use-barber-channel";
 import { useBarberPortfolioQuery } from "@/hooks/use-barber-portfolio-query";
 import { useBarberWorkspaceProfileQuery } from "@/hooks/use-barber-workspace-profile-query";
 import { useSession } from "@/hooks/use-session";
-import { cancelBarberBookingFormSchema } from "@/services/api/barber-workspace/cancel-barber-booking-form.schema";
+import { cancelBarberBookingFormSchema } from "@/services/api/barber-workspace/schemas/cancel-barber-booking-form.schema";
 import {
   cancelBarberBooking,
   transitionBarberBooking,
   updateBarberWorkstation,
-} from "@/services/api/barber-workspace.mutation";
+} from "@/services/api/barber-workspace/barber-workspace.mutation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";

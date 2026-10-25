@@ -4,7 +4,7 @@ import { PageCard } from "@/components/common/layout/page-card";
 import { ROUTES } from "@/config/routes.constant";
 import { getPortalAuthTitle } from "@/config/routes.util";
 import { getServerI18n } from "@/i18n/server";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 
 interface LoginEntryPageProps {
   actor: AuthActor;

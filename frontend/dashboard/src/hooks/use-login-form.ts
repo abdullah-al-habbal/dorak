@@ -4,7 +4,7 @@ import { ROUTES } from "@/config/routes.constant";
 import { useLoginMutation } from "@/hooks/use-login-mutation";
 import { useReplaceAndRefresh } from "@/hooks/use-replace-and-refresh";
 import { isSafeCallback } from "@/services/api/auth/route-policy.util";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 import type { FormEvent } from "react";
 
 interface UseLoginFormOptions {

@@ -4,9 +4,9 @@ import { backendRequest } from "@/services/api/auth/backend-client";
 import { applySessionCookies } from "@/services/api/auth/cookies";
 import { parseLoginBody } from "@/services/api/auth/login-body.util";
 import { sessionFromBackendLoginData } from "@/services/api/auth/session.util";
-import type { BackendLoginData } from "@/services/api/auth/auth.types";
-import { API_ERROR_CODE } from "@/services/api/error-code.constant";
-import { apiFailure, apiSuccess } from "@/services/api/response.util";
+import type { BackendLoginData } from "@/services/api/auth/types/auth.types";
+import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
+import { apiFailure, apiSuccess } from "@/services/api/core/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 
 export async function POST(request: Request) {

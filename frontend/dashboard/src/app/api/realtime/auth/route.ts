@@ -1,7 +1,7 @@
 import { readSessionCookies } from "@/services/api/auth/cookies";
-import { bearerHeaders } from "@/services/api/http.util";
-import { API_ERROR_CODE } from "@/services/api/error-code.constant";
-import { apiFailure, noStore } from "@/services/api/response.util";
+import { bearerHeaders } from "@/services/api/core/http.util";
+import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
+import { apiFailure, noStore } from "@/services/api/core/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 import { NextResponse, type NextRequest } from "next/server";
 

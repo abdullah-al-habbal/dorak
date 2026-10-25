@@ -1,7 +1,7 @@
 "use client";
 
-import { getDashboardList } from "@/services/api/dashboard/dashboard.query";
-import type { IDashboardListParams } from "@/services/api/dashboard/idashboard-list-params.types";
+import { getDashboardList } from "@/services/api/dashboard/shared/dashboard.query";
+import type { IDashboardListParams } from "@/services/api/dashboard/shared/types/idashboard-list-params.types";
 import { useQuery } from "@tanstack/react-query";
 
 interface UseDashboardListOptionsParams extends IDashboardListParams {

@@ -1,10 +1,10 @@
 import { emptyToNull } from "@/components/entities/entity-form-field.util";
-import { fullWeek } from "@/services/api/dashboard/branch-opening-hours.util";
-import type { EditableDashboardResource } from "@/services/api/dashboard/editable-dashboard-resource.types";
-import type { IBranch } from "@/services/api/dashboard/ibranch.types";
-import type { IChair } from "@/services/api/dashboard/ichair.types";
-import type { IService } from "@/services/api/dashboard/iservice.types";
-import type { IStylist } from "@/services/api/dashboard/istylist.types";
+import { fullWeek } from "@/services/api/dashboard/branch/branch-opening-hours.util";
+import type { EditableDashboardResource } from "@/services/api/dashboard/shared/types/editable-dashboard-resource.types";
+import type { IBranch } from "@/services/api/dashboard/branch/types/ibranch.types";
+import type { IChair } from "@/services/api/dashboard/chair/types/ichair.types";
+import type { IService } from "@/services/api/dashboard/service/types/iservice.types";
+import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
 
 function isDefined(data: unknown): data is Record<string, unknown> {
   return typeof data === "object" && data !== null;

@@ -6,10 +6,10 @@ import { Card } from "@/components/tailgrids/core/card";
 import { Input } from "@/components/tailgrids/core/input";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
-import type { IUpdatePasswordInput } from "@/services/api/dashboard/iupdate-password-input.types";
-import { updatePassword } from "@/services/api/dashboard/profile.mutation";
-import { createUpdatePasswordFormSchema } from "@/services/api/dashboard/update-password-form.schema";
+import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
+import type { IUpdatePasswordInput } from "@/services/api/dashboard/profile/types/iupdate-password-input.types";
+import { updatePassword } from "@/services/api/dashboard/profile/profile.mutation";
+import { createUpdatePasswordFormSchema } from "@/services/api/dashboard/profile/schemas/update-password-form.schema";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 

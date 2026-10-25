@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/tailgrids/core/button";
-import type { BarberAppointment } from "@/services/api/barber-workspace.types";
+import type { BarberAppointment } from "@/services/api/barber-workspace/types/barber-workspace.types";
 
 interface IBarberAppointmentsSectionProps {
   title: string;

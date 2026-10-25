@@ -2,7 +2,7 @@
 
 import { SessionContext } from "@/components/auth/session-context";
 import { useSessionExpiryRedirect } from "@/hooks/use-session-expiry-redirect";
-import type { AuthSession } from "@/services/api/auth/auth.types";
+import type { AuthSession } from "@/services/api/auth/types/auth.types";
 
 interface SessionProviderProps {
   session: AuthSession;

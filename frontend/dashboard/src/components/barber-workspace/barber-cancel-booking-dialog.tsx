@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/tailgrids/core/dialog";
 import { Input } from "@/components/tailgrids/core/input";
-import type { cancelBarberBookingFormSchema } from "@/services/api/barber-workspace/cancel-barber-booking-form.schema";
+import type { cancelBarberBookingFormSchema } from "@/services/api/barber-workspace/schemas/cancel-barber-booking-form.schema";
 import type { ComponentProps } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { z } from "zod";

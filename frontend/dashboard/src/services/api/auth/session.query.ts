@@ -5,12 +5,12 @@ import { ACTOR_FROM_BACKEND } from "@/services/api/auth/actors.constant";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { readSessionCookies } from "@/services/api/auth/cookies";
 import { verifySessionClaim } from "@/services/api/auth/session.util";
-import { bearerHeaders } from "@/services/api/http.util";
+import { bearerHeaders } from "@/services/api/core/http.util";
 import type {
   AuthSession,
   BackendMeData,
   DashboardClaim,
-} from "@/services/api/auth/auth.types";
+} from "@/services/api/auth/types/auth.types";
 
 function isCanonicalIdentity(
   me: BackendMeData,

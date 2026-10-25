@@ -1,4 +1,4 @@
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 import { LoginEntryPage } from "@/components/auth/login-entry-page";
 
 interface LoginPageProps {

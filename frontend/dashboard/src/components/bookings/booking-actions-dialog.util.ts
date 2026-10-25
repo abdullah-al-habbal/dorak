@@ -1,5 +1,5 @@
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
-import { ApiClientError } from "@/services/api/client-error";
+import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
+import { ApiClientError } from "@/services/api/core/client-error";
 import type { Dictionary } from "@/i18n/dictionary.types";
 
 interface IBookingConflictCopy {

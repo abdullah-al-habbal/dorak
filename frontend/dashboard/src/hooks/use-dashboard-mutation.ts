@@ -1,6 +1,6 @@
 "use client";
 
-import { DASHBOARD_RESOURCES } from "@/services/api/dashboard/dashboard-resource.constant";
+import { DASHBOARD_RESOURCES } from "@/services/api/dashboard/shared/dashboard-resource.constant";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 /**

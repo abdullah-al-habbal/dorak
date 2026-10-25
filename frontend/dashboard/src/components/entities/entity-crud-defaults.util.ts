@@ -1,5 +1,5 @@
-import { fullWeek } from "@/services/api/dashboard/branch-opening-hours.util";
-import type { EditableDashboardResource } from "@/services/api/dashboard/editable-dashboard-resource.types";
+import { fullWeek } from "@/services/api/dashboard/branch/branch-opening-hours.util";
+import type { EditableDashboardResource } from "@/services/api/dashboard/shared/types/editable-dashboard-resource.types";
 
 /** Default (create-mode) form values for a resource. */
 export function defaultsFor(

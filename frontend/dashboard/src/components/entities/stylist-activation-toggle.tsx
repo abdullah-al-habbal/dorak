@@ -3,10 +3,10 @@
 import { Button } from "@/components/tailgrids/core/button";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { api } from "@/services/api/client";
+import { api } from "@/services/api/core/client";
 import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
-import type { IStylist } from "@/services/api/dashboard/istylist.types";
-import { notifySuccess } from "@/services/api/notifications";
+import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
+import { notifySuccess } from "@/services/api/core/notifications";
 
 interface StylistActivationToggleProps {
   id: string;

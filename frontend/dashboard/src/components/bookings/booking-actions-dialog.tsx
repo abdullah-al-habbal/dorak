@@ -15,7 +15,7 @@ import {
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
-import { cancelBooking } from "@/services/api/dashboard/dashboard-workflow.mutation";
+import { cancelBooking } from "@/services/api/dashboard/booking/booking.mutation";
 import { toast } from "sonner";
 import { useState } from "react";
 

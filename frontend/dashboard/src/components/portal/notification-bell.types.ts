@@ -1,4 +1,4 @@
-import type { INotificationItem } from "@/services/api/notification-inbox.types";
+import type { INotificationItem } from "@/services/api/common/notification-inbox/types/notification-inbox.types";
 
 export interface NotificationBellItemProps {
   notification: INotificationItem;

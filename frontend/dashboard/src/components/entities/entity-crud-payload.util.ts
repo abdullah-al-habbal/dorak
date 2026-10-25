@@ -1,14 +1,14 @@
-import { chairFormSchema } from "@/services/api/dashboard/chair-form.schema";
-import { branchCreateSchema } from "@/services/api/dashboard/branch-form.schema";
-import { serviceFormSchema } from "@/services/api/dashboard/service-form.schema";
-import { stylistCreateSchema } from "@/services/api/dashboard/stylist-form.schema";
+import { chairFormSchema } from "@/services/api/dashboard/chair/schemas/chair-form.schema";
+import { branchCreateSchema } from "@/services/api/dashboard/branch/schemas/branch-form.schema";
+import { serviceFormSchema } from "@/services/api/dashboard/service/schemas/service-form.schema";
+import { stylistCreateSchema } from "@/services/api/dashboard/stylist/schemas/stylist-form.schema";
 import {
   mapBranchPayload,
   mapChairPayload,
   mapServicePayload,
   mapStylistPayload,
-} from "@/services/api/dashboard/dashboard-payload-mapper.util";
-import type { EditableDashboardResource } from "@/services/api/dashboard/editable-dashboard-resource.types";
+} from "@/services/api/dashboard/shared/dashboard-payload-mapper.util";
+import type { EditableDashboardResource } from "@/services/api/dashboard/shared/types/editable-dashboard-resource.types";
 import type { z } from "zod";
 
 /** Maps validated form values to the API create/update payload for a resource. */

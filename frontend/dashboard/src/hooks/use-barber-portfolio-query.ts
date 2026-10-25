@@ -1,6 +1,6 @@
 "use client";
 
-import { getBarberPortfolio } from "@/services/api/barber-workspace.query";
+import { getBarberPortfolio } from "@/services/api/barber-workspace/barber-workspace.query";
 import { useQuery } from "@tanstack/react-query";
 
 export function useBarberPortfolioQuery() {

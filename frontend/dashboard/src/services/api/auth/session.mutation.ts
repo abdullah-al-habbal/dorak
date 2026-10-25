@@ -2,7 +2,7 @@ import { ROUTES } from "@/config/routes.constant";
 import type {
   BackendLoginData,
   RefreshedSession,
-} from "@/services/api/auth/auth.types";
+} from "@/services/api/auth/types/auth.types";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { sessionFromBackendLoginData } from "@/services/api/auth/session.util";
 

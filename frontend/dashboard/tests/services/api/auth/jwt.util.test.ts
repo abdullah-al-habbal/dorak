@@ -5,7 +5,7 @@ import {
   peekDashboardClaim,
   verifyDashboardClaim,
 } from "@/services/api/auth/jwt.util";
-import type { DashboardClaim } from "@/services/api/auth/auth.types";
+import type { DashboardClaim } from "@/services/api/auth/types/auth.types";
 
 const SECRET =
   "dashboard-session-secret-that-is-at-least-thirty-two-characters";

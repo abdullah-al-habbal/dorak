@@ -6,7 +6,7 @@ import {
 } from "@/config/routes.constant";
 import type { ActorHrefItem } from "@/config/routes.types";
 import type { Dictionary } from "@/i18n/dictionary.types";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 
 export function portalProfileFor(actor: AuthActor) {
   return ROUTES.portal[actor].profile;

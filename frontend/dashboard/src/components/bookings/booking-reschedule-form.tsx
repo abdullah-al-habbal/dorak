@@ -6,10 +6,10 @@ import { Button } from "@/components/tailgrids/core/button";
 import { Input } from "@/components/tailgrids/core/input";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { createBookingRescheduleSchema } from "@/services/api/dashboard/booking-reschedule.schema";
-import type { BookingRescheduleInput } from "@/services/api/dashboard/booking-reschedule.types";
-import { mapBookingReschedulePayload } from "@/services/api/dashboard/dashboard-payload-mapper.util";
-import { rescheduleBooking } from "@/services/api/dashboard/dashboard-workflow.mutation";
+import { createBookingRescheduleSchema } from "@/services/api/dashboard/booking/schemas/booking-reschedule.schema";
+import type { BookingRescheduleInput } from "@/services/api/dashboard/booking/types/booking-reschedule.types";
+import { mapBookingReschedulePayload } from "@/services/api/dashboard/shared/dashboard-payload-mapper.util";
+import { rescheduleBooking } from "@/services/api/dashboard/booking/booking.mutation";
 import { useForm } from "react-hook-form";
 
 interface IBookingRescheduleFormProps {

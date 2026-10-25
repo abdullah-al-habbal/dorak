@@ -3,7 +3,7 @@
 import type { Dictionary } from "@/i18n/dictionary.types";
 import { AppI18nProvider } from "@/i18n/i18n-provider";
 import type { Direction, Locale } from "@/i18n/locales.types";
-import { createQueryClient } from "@/services/api/query-client";
+import { createQueryClient } from "@/services/api/core/query-client";
 import { NetworkHealthBanner } from "@/components/network/network-health-banner";
 import { NetworkHealthProvider } from "@/components/network/network-health-provider";
 import { QueryClientProvider } from "@tanstack/react-query";

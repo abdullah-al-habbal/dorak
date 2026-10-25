@@ -6,13 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/tailgrids/core/card";
-import { getDashboardOverview } from "@/services/api/dashboard/dashboard.query";
+import { getDashboardOverview } from "@/services/api/dashboard/shared/dashboard.query";
 import {
   mapBooking,
   mapChair,
-} from "@/services/api/dashboard/dashboard-mapper.util";
-import type { IBooking } from "@/services/api/dashboard/ibooking.types";
-import type { IChair } from "@/services/api/dashboard/ichair.types";
+} from "@/services/api/dashboard/shared/dashboard-mapper.util";
+import type { IBooking } from "@/services/api/dashboard/booking/types/ibooking.types";
+import type { IChair } from "@/services/api/dashboard/chair/types/ichair.types";
 import { useDashboardListOptions } from "@/hooks/use-dashboard-list-options";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useQuery } from "@tanstack/react-query";

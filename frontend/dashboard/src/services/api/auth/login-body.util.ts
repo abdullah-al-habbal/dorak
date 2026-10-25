@@ -1,5 +1,5 @@
 import { AUTH_ACTORS } from "@/services/api/auth/actors.constant";
-import type { LoginCredentials } from "@/services/api/auth/auth.types";
+import type { LoginCredentials } from "@/services/api/auth/types/auth.types";
 import { isOneOf, isRecord } from "@/utils/guards.util";
 
 /** Narrow an untrusted BFF login payload to typed credentials, or null when malformed. */

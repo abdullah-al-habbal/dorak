@@ -7,7 +7,7 @@ import { Label } from "@/components/tailgrids/core/label";
 import { TextField } from "@/components/tailgrids/core/text-field";
 import { useLoginForm } from "@/hooks/use-login-form";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 
 interface LoginFormProps {
   actor: AuthActor;

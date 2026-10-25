@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { ROUTES } from "@/config/routes.constant";
 import { useReplaceAndRefresh } from "@/hooks/use-replace-and-refresh";
-import type { AuthActor } from "@/services/api/auth/auth.types";
-import { subscribeSessionExpiry } from "@/services/api/session-expiry";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
+import { subscribeSessionExpiry } from "@/services/api/core/session-expiry";
 
 /**
  * Sends the viewer to their portal login when a session-scoped request returns 401.

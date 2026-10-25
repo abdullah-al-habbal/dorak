@@ -11,8 +11,8 @@ import {
   SelectValue,
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
-import { bookingStatusSchema } from "@/services/api/dashboard/booking-status.schema";
-import { updateBookingStatus } from "@/services/api/dashboard/dashboard-workflow.mutation";
+import { bookingStatusSchema } from "@/services/api/dashboard/booking/schemas/booking-status.schema";
+import { updateBookingStatus } from "@/services/api/dashboard/booking/booking.mutation";
 import { useForm, useWatch } from "react-hook-form";
 import type { z } from "zod";
 

@@ -4,7 +4,7 @@ import { sessionFromBackendLoginData } from "@/services/api/auth/session.util";
 import type {
   BackendLoginData,
   DashboardClaim,
-} from "@/services/api/auth/auth.types";
+} from "@/services/api/auth/types/auth.types";
 
 const SECRET =
   "dashboard-session-secret-that-is-at-least-thirty-two-characters";

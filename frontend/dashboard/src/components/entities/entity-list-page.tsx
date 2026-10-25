@@ -12,10 +12,10 @@ import {
   TableRow,
 } from "@/components/tailgrids/core/table";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { getDashboardList } from "@/services/api/dashboard/dashboard.query";
-import { mapDashboardEntity } from "@/services/api/dashboard/dashboard-entity.util";
-import type { DashboardResource } from "@/services/api/dashboard/dashboard-resource.types";
-import type { IStylist } from "@/services/api/dashboard/istylist.types";
+import { getDashboardList } from "@/services/api/dashboard/shared/dashboard.query";
+import { mapDashboardEntity } from "@/services/api/dashboard/shared/dashboard-entity.util";
+import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
+import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BookingActionsDialog } from "@/components/bookings/booking-actions-dialog";
@@ -24,7 +24,7 @@ import { StylistActivationToggle } from "@/components/entities/stylist-activatio
 import { useSession } from "@/hooks/use-session";
 import { useBranchChannel } from "@/hooks/use-branch-channel";
 import Link from "next/link";
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
+import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
 
 interface EntityListPageProps {
   resource: Exclude<DashboardResource, "overview">;

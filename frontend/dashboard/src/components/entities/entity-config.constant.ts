@@ -1,10 +1,10 @@
 import type { EntityConfig } from "@/components/entities/entity-config.types";
-import type { DashboardResource } from "@/services/api/dashboard/dashboard-resource.types";
-import type { IBooking } from "@/services/api/dashboard/ibooking.types";
-import type { IBranch } from "@/services/api/dashboard/ibranch.types";
-import type { IChair } from "@/services/api/dashboard/ichair.types";
-import type { IService } from "@/services/api/dashboard/iservice.types";
-import type { IStylist } from "@/services/api/dashboard/istylist.types";
+import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
+import type { IBooking } from "@/services/api/dashboard/booking/types/ibooking.types";
+import type { IBranch } from "@/services/api/dashboard/branch/types/ibranch.types";
+import type { IChair } from "@/services/api/dashboard/chair/types/ichair.types";
+import type { IService } from "@/services/api/dashboard/service/types/iservice.types";
+import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
 
 export const ENTITY_CONFIGS = {
   branches: {

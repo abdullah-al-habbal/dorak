@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/tailgrids/core/checkbox";
 import { Input } from "@/components/tailgrids/core/input";
 import type { IBranchOpeningHoursEditorProps } from "@/components/entities/branch-opening-hours-editor.types";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { BRANCH_WEEKDAYS } from "@/services/api/dashboard/branch-opening-hours.constant";
+import { BRANCH_WEEKDAYS } from "@/services/api/dashboard/branch/branch-opening-hours.constant";
 import { Controller } from "react-hook-form";
 
 export function BranchOpeningHoursEditor({

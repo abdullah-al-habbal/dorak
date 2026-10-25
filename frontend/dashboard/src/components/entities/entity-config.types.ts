@@ -1,4 +1,4 @@
-import type { DashboardResource } from "@/services/api/dashboard/dashboard-resource.types";
+import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
 
 export interface EntityColumn<TEntity> {
   id: string;

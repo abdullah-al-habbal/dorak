@@ -3,7 +3,7 @@
 import { ROUTES } from "@/config/routes.constant";
 import { useReplaceAndRefresh } from "@/hooks/use-replace-and-refresh";
 import { useSignOutMutation } from "@/hooks/use-sign-out-mutation";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 
 export function useSignOut(actor: AuthActor) {
   const navigate = useReplaceAndRefresh();

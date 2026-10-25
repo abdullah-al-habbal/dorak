@@ -13,11 +13,11 @@ import {
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
-import { ApiClientError } from "@/services/api/client-error";
-import { bookingClientReviewSchema } from "@/services/api/dashboard/booking-client-review.schema";
-import type { BookingClientReviewInput } from "@/services/api/dashboard/booking-client-review.types";
-import { rateBookingClient } from "@/services/api/dashboard/dashboard-workflow.mutation";
+import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
+import { ApiClientError } from "@/services/api/core/client-error";
+import { bookingClientReviewSchema } from "@/services/api/dashboard/booking/schemas/booking-client-review.schema";
+import type { BookingClientReviewInput } from "@/services/api/dashboard/booking/types/booking-client-review.types";
+import { rateBookingClient } from "@/services/api/dashboard/booking/booking.mutation";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 

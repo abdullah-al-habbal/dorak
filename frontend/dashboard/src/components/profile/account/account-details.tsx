@@ -5,20 +5,20 @@ import { Card } from "@/components/tailgrids/core/card";
 import { useSession } from "@/hooks/use-session";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
+import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
 import { Input } from "@/components/tailgrids/core/input";
 import { Button } from "@/components/tailgrids/core/button";
 import {
   requestEmailChangeSchema,
   updateDisplayNameSchema,
   verifyEmailChangeSchema,
-} from "@/services/api/dashboard/account-details.schema";
-import { getProfile } from "@/services/api/dashboard/profile.query";
+} from "@/services/api/dashboard/profile/schemas/account-details.schema";
+import { getProfile } from "@/services/api/dashboard/profile/profile.query";
 import {
   requestEmailChange,
   updateProfile,
   verifyEmailChange,
-} from "@/services/api/dashboard/profile.mutation";
+} from "@/services/api/dashboard/profile/profile.mutation";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";

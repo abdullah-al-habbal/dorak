@@ -1,11 +1,18 @@
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { readSessionCookies } from "@/services/api/auth/cookies";
 import { verifySessionClaim } from "@/services/api/auth/session.util";
-import { bearerHeaders } from "@/services/api/http.util";
-import { API_ERROR_CODE } from "@/services/api/error-code.constant";
-import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
+import { bearerHeaders } from "@/services/api/core/http.util";
+import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
+import {
+  apiFailure,
+  apiSuccess,
+  noStore,
+} from "@/services/api/core/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
-import type { LookupOption, LookupResource } from "@/services/api/lookup.types";
+import type {
+  LookupOption,
+  LookupResource,
+} from "@/services/api/common/lookup/types/lookup.types";
 import type { NextRequest } from "next/server";
 
 const LOOKUP_PATHS: Record<LookupResource, string> = {

@@ -1,12 +1,12 @@
 import type {
   ApiEnvelope,
   BackendResult,
-} from "@/services/api/auth/auth.types";
+} from "@/services/api/auth/types/auth.types";
 import {
   isRedirectResponse,
   jsonRequestHeaders,
   readJson,
-} from "@/services/api/http.util";
+} from "@/services/api/core/http.util";
 import { devWarn } from "@/utils/dev-warn.util";
 import { hasFieldTypes } from "@/utils/guards.util";
 

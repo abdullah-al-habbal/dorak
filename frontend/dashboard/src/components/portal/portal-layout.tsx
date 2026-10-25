@@ -4,7 +4,7 @@ import { getServerI18n } from "@/i18n/server";
 import { ROUTES } from "@/config/routes.constant";
 import { getPortalTitle } from "@/config/routes.util";
 import { getServerSession } from "@/services/api/auth/session.query";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 import { redirect } from "next/navigation";
 
 interface PortalLayoutProps {

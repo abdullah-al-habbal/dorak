@@ -10,8 +10,8 @@ import {
 } from "@/components/tailgrids/core/dialog";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { mutateDashboardEntity } from "@/services/api/dashboard/dashboard.mutation";
-import { notifySuccess } from "@/services/api/notifications";
+import { mutateDashboardEntity } from "@/services/api/dashboard/shared/dashboard.mutation";
+import { notifySuccess } from "@/services/api/core/notifications";
 import { useState } from "react";
 
 interface EntityDeleteDialogProps {

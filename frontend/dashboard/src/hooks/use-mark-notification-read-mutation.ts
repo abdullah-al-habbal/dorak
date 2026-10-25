@@ -1,8 +1,8 @@
 "use client";
 
-import { markNotificationRead } from "@/services/api/notification-inbox.mutation";
-import { decrementUnread } from "@/services/api/notification-inbox-mapper.util";
-import type { INotificationInbox } from "@/services/api/notification-inbox.types";
+import { markNotificationRead } from "@/services/api/common/notification-inbox/notification-inbox.mutation";
+import { decrementUnread } from "@/services/api/common/notification-inbox/notification-inbox-mapper.util";
+import type { INotificationInbox } from "@/services/api/common/notification-inbox/types/notification-inbox.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useMarkNotificationReadMutation() {

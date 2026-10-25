@@ -1,5 +1,5 @@
 import type { Dictionary } from "@/i18n/dictionary.types";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 
 export interface PortalRouteConfig {
   root: string;

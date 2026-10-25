@@ -4,7 +4,7 @@ import {
   AUTH_ACTORS,
   DEFAULT_ACTOR,
 } from "@/services/api/auth/actors.constant";
-import type { AuthActor } from "@/services/api/auth/auth.types";
+import type { AuthActor } from "@/services/api/auth/types/auth.types";
 import { isOneOf } from "@/utils/guards.util";
 
 function segments(pathname: string): string[] {

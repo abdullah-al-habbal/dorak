@@ -6,8 +6,8 @@ import {
 } from "@/services/api/auth/cookies";
 import { refreshDashboardSession } from "@/services/api/auth/session.mutation";
 import { verifySessionClaim } from "@/services/api/auth/session.util";
-import { API_ERROR_CODE } from "@/services/api/error-code.constant";
-import { apiFailure, apiSuccess } from "@/services/api/response.util";
+import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
+import { apiFailure, apiSuccess } from "@/services/api/core/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 
 export async function POST(request: NextRequest) {

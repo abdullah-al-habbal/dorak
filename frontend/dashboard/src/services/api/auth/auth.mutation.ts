@@ -1,10 +1,10 @@
 import { AuthEndpoints } from "@/services/api/auth/endpoints/auth.endpoints";
-import { api } from "@/services/api/client";
+import { api } from "@/services/api/core/client";
 import type {
   LoginCredentials,
   LoginResponse,
   LogoutResponse,
-} from "@/services/api/auth/auth.types";
+} from "@/services/api/auth/types/auth.types";
 
 export function requestLogin(
   credentials: LoginCredentials,

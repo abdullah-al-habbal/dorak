@@ -1,12 +1,12 @@
 "use client";
 
 import { useDictionary } from "@/hooks/use-dictionary";
-import { getDashboardEntity } from "@/services/api/dashboard/dashboard.query";
-import type { OperationsActor } from "@/services/api/auth/auth.types";
-import type { DashboardResource } from "@/services/api/dashboard/dashboard-resource.types";
+import { getDashboardEntity } from "@/services/api/dashboard/shared/dashboard.query";
+import type { OperationsActor } from "@/services/api/auth/types/auth.types";
+import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
+import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
 
 interface EntityDetailPageProps {
   actor: OperationsActor;

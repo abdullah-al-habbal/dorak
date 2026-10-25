@@ -5,10 +5,10 @@ import { Card } from "@/components/tailgrids/core/card";
 import { Checkbox } from "@/components/tailgrids/core/checkbox";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
-import type { INotificationPreferences } from "@/services/api/dashboard/inotification-preferences.types";
-import { getNotificationPreferences } from "@/services/api/dashboard/profile.query";
-import { updateNotificationPreferences } from "@/services/api/dashboard/profile.mutation";
+import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
+import type { INotificationPreferences } from "@/services/api/dashboard/profile/types/inotification-preferences.types";
+import { getNotificationPreferences } from "@/services/api/dashboard/profile/profile.query";
+import { updateNotificationPreferences } from "@/services/api/dashboard/profile/profile.mutation";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 

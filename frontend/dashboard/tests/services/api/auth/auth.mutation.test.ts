@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AuthEndpoints } from "@/services/api/auth/endpoints/auth.endpoints";
 import { requestLogin, requestLogout } from "@/services/api/auth/auth.mutation";
-import { api } from "@/services/api/client";
+import { api } from "@/services/api/core/client";
 
-vi.mock("@/services/api/client", () => ({
+vi.mock("@/services/api/core/client", () => ({
   api: { post: vi.fn() },
 }));
 

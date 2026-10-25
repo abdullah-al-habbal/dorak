@@ -5,8 +5,8 @@ import {
   clearSessionCookies,
   readSessionCookies,
 } from "@/services/api/auth/cookies";
-import { bearerHeaders } from "@/services/api/http.util";
-import { apiSuccess } from "@/services/api/response.util";
+import { bearerHeaders } from "@/services/api/core/http.util";
+import { apiSuccess } from "@/services/api/core/response.util";
 
 export async function POST(request: NextRequest) {
   const { accessToken, refreshToken, claim } = readSessionCookies(

@@ -16,20 +16,20 @@ import { useDashboardEntityQuery } from "@/hooks/use-dashboard-entity-query";
 import { useDashboardListOptions } from "@/hooks/use-dashboard-list-options";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useLookupOptionsQuery } from "@/hooks/use-lookup-options-query";
-import { ApiClientError } from "@/services/api/client-error";
+import { ApiClientError } from "@/services/api/core/client-error";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
 import {
   createDashboardEntity,
   updateDashboardEntity,
-} from "@/services/api/dashboard/dashboard-workflow.mutation";
+} from "@/services/api/dashboard/shared/dashboard-workflow.mutation";
 import {
   mapBranch,
   mapChair,
   mapStylist,
-} from "@/services/api/dashboard/dashboard-mapper.util";
-import { chairConflictBookingIds } from "@/services/api/dashboard/chair-maintenance-conflict.util";
-import { notifySuccess } from "@/services/api/notifications";
+} from "@/services/api/dashboard/shared/dashboard-mapper.util";
+import { chairConflictBookingIds } from "@/services/api/dashboard/chair/chair-maintenance-conflict.util";
+import { notifySuccess } from "@/services/api/core/notifications";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";

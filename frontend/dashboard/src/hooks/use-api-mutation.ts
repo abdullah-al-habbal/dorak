@@ -2,8 +2,8 @@
 
 import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { ApiSuccessCopyKey } from "@/services/api/api-mutation.types";
-import { notifySuccess } from "@/services/api/notifications";
+import type { ApiSuccessCopyKey } from "@/services/api/core/types/api-mutation.types";
+import { notifySuccess } from "@/services/api/core/notifications";
 
 type ApiMutationOptions<TData, TVariables> = Omit<
   UseMutationOptions<TData, Error, TVariables>,

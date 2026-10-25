@@ -19,14 +19,14 @@ import {
   mapBranch,
   mapChair,
   mapService,
-} from "@/services/api/dashboard/dashboard-mapper.util";
-import { mapWalkInBookingPayload } from "@/services/api/dashboard/dashboard-payload-mapper.util";
-import { createWalkInBooking } from "@/services/api/dashboard/dashboard-workflow.mutation";
-import { createWalkInBookingSchema } from "@/services/api/dashboard/walk-in-booking.schema";
-import type { WalkInBookingInput } from "@/services/api/dashboard/walk-in-booking.types";
-import { apiErrorMessage } from "@/services/api/api-error-message.util";
-import { ApiClientError } from "@/services/api/client-error";
-import { notifySuccess } from "@/services/api/notifications";
+} from "@/services/api/dashboard/shared/dashboard-mapper.util";
+import { mapWalkInBookingPayload } from "@/services/api/dashboard/shared/dashboard-payload-mapper.util";
+import { createWalkInBooking } from "@/services/api/dashboard/booking/booking.mutation";
+import { createWalkInBookingSchema } from "@/services/api/dashboard/booking/schemas/walk-in-booking.schema";
+import type { WalkInBookingInput } from "@/services/api/dashboard/booking/types/walk-in-booking.types";
+import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
+import { ApiClientError } from "@/services/api/core/client-error";
+import { notifySuccess } from "@/services/api/core/notifications";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";

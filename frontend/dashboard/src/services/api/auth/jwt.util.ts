@@ -2,7 +2,7 @@ import {
   BACKEND_ACTOR_TYPES,
   DASHBOARD_ROLES,
 } from "@/services/api/auth/actors.constant";
-import type { DashboardClaim } from "@/services/api/auth/auth.types";
+import type { DashboardClaim } from "@/services/api/auth/types/auth.types";
 import { isOneOf, isRecord } from "@/utils/guards.util";
 
 const textEncoder = new TextEncoder();

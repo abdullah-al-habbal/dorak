@@ -4,9 +4,9 @@ import { en } from "@/i18n/messages/en.constant";
 import {
   markAllNotificationsRead,
   markNotificationRead,
-} from "@/services/api/notification-inbox.mutation";
-import { getNotificationInbox } from "@/services/api/notification-inbox.query";
-import type { INotificationInbox } from "@/services/api/notification-inbox.types";
+} from "@/services/api/common/notification-inbox/notification-inbox.mutation";
+import { getNotificationInbox } from "@/services/api/common/notification-inbox/notification-inbox.query";
+import type { INotificationInbox } from "@/services/api/common/notification-inbox/types/notification-inbox.types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -28,13 +28,19 @@ vi.mock("@/hooks/use-dictionary", async () => {
   >("@/i18n/messages/en.constant");
   return { useDictionary: () => dictionary };
 });
-vi.mock("@/services/api/notification-inbox.query", () => ({
-  getNotificationInbox: vi.fn(),
-}));
-vi.mock("@/services/api/notification-inbox.mutation", () => ({
-  markNotificationRead: vi.fn(),
-  markAllNotificationsRead: vi.fn(),
-}));
+vi.mock(
+  "@/services/api/common/notification-inbox/notification-inbox.query",
+  () => ({
+    getNotificationInbox: vi.fn(),
+  }),
+);
+vi.mock(
+  "@/services/api/common/notification-inbox/notification-inbox.mutation",
+  () => ({
+    markNotificationRead: vi.fn(),
+    markAllNotificationsRead: vi.fn(),
+  }),
+);
 
 const notification = (
   id: string,

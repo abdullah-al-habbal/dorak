@@ -1,4 +1,4 @@
-import type { EditableDashboardResource } from "@/services/api/dashboard/editable-dashboard-resource.types";
+import type { EditableDashboardResource } from "@/services/api/dashboard/shared/types/editable-dashboard-resource.types";
 
 export const ENTITY_CRUD_FIELDS: Record<EditableDashboardResource, string[]> = {
   branches: [

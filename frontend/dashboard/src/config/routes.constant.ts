@@ -9,7 +9,7 @@ import {
 import type {
   AuthActor,
   OperationsActor,
-} from "@/services/api/auth/auth.types";
+} from "@/services/api/auth/types/auth.types";
 import { mapRecord } from "@/utils/record.util";
 
 // Every actor portal shares one path shape and copy-key convention; the actor

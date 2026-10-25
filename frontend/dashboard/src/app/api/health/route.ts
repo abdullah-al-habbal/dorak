@@ -1,7 +1,11 @@
 import { ROUTES } from "@/config/routes.constant";
 import { backendRequest } from "@/services/api/auth/backend-client";
-import { API_ERROR_CODE } from "@/services/api/error-code.constant";
-import { apiFailure, apiSuccess, noStore } from "@/services/api/response.util";
+import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
+import {
+  apiFailure,
+  apiSuccess,
+  noStore,
+} from "@/services/api/core/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
 
 export const dynamic = "force-dynamic";

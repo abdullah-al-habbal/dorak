@@ -16,7 +16,7 @@ import { useMarkAllNotificationsReadMutation } from "@/hooks/use-mark-all-notifi
 import { useMarkNotificationReadMutation } from "@/hooks/use-mark-notification-read-mutation";
 import { useNotificationInboxQuery } from "@/hooks/use-notification-inbox-query";
 import { useSession } from "@/hooks/use-session";
-import { notificationHref } from "@/services/api/notification-link.util";
+import { notificationHref } from "@/services/api/common/notification-inbox/notification-link.util";
 import { cn } from "@/utils/cn.util";
 import { Bell1 } from "@tailgrids/icons";
 import { useRouter } from "next/navigation";

@@ -2,7 +2,7 @@ import type {
   BackendLoginData,
   DashboardClaim,
   RefreshedSession,
-} from "@/services/api/auth/auth.types";
+} from "@/services/api/auth/types/auth.types";
 import { verifyDashboardClaim } from "@/services/api/auth/jwt.util";
 import { getSessionSecrets } from "@/services/api/auth/session-secret.util";
 
