@@ -3,7 +3,9 @@ import 'package:core/core.dart';
 
 import 'package:design_system/design_system.dart';
 
-import 'package:client_app/src/core/formatting/locale_formatters.entity.dart';
+import 'package:client_app/src/features/booking/widgets/booking_card_actions.widget.dart';
+import 'package:client_app/src/features/booking/widgets/booking_card_cancel_action.widget.dart';
+import 'package:client_app/src/features/booking/widgets/booking_card_header.widget.dart';
 
 class BookingCard extends StatelessWidget {
   const BookingCard({
@@ -63,7 +65,7 @@ class BookingCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _BookingCardHeader(
+          BookingCardHeader(
             booking: booking,
             localeCode: localeCode,
             statusLabel: statusLabel,
@@ -78,7 +80,7 @@ class BookingCard extends StatelessWidget {
             ),
           ],
           if (cancel != null)
-            _BookingCardCancelAction(
+            BookingCardCancelAction(
               onCancel: cancel,
               isCancelling: isCancelling,
               label: cancelLabel,
@@ -90,7 +92,7 @@ class BookingCard extends StatelessWidget {
               style: DorakTypography.bodyMd.copyWith(color: colors.error),
             ),
           ],
-          _BookingCardActions(
+          BookingCardActions(
             actions: [
               if (onRate != null) (label: rateLabel!, onPressed: onRate!),
               if (onTrack != null) (label: trackerLabel!, onPressed: onTrack!),
@@ -102,88 +104,4 @@ class BookingCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class _BookingCardHeader extends StatelessWidget {
-  const _BookingCardHeader({
-    required this.booking,
-    required this.localeCode,
-    required this.statusLabel,
-  });
-  final BookingDto booking;
-  final String localeCode;
-  final String statusLabel;
-  @override
-  Widget build(BuildContext context) {
-    final colors = DorakColors.of(context);
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            LocaleFormatters.dateTime(booking.timeSlot.toLocal(), localeCode),
-            style: DorakTypography.titleLg,
-          ),
-        ),
-        Text(
-          statusLabel,
-          style: DorakTypography.labelLg.copyWith(color: colors.primary),
-        ),
-      ],
-    );
-  }
-}
-
-class _BookingCardCancelAction extends StatelessWidget {
-  const _BookingCardCancelAction({
-    required this.onCancel,
-    required this.isCancelling,
-    required this.label,
-  });
-  final VoidCallback onCancel;
-  final bool isCancelling;
-  final String label;
-  @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const SizedBox(height: DorakDimensions.spacingSmall),
-      if (isCancelling)
-        const AppLoader.inline()
-      else
-        TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: DorakColors.of(context).error,
-            padding: EdgeInsets.zero,
-            minimumSize: Size.zero,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          onPressed: onCancel,
-          child: Text(label),
-        ),
-    ],
-  );
-}
-
-class _BookingCardActions extends StatelessWidget {
-  const _BookingCardActions({required this.actions});
-  final List<({String label, VoidCallback onPressed})> actions;
-  @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      for (final action in actions) ...[
-        const SizedBox(height: DorakDimensions.spacingSmall),
-        TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: DorakColors.of(context).primary,
-            padding: EdgeInsets.zero,
-            minimumSize: Size.zero,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          onPressed: action.onPressed,
-          child: Text(action.label),
-        ),
-      ],
-    ],
-  );
 }

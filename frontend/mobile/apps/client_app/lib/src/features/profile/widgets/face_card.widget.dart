@@ -5,6 +5,7 @@ import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 
 import 'package:client_app/src/features/profile/face_analysis.state.dart';
+import 'package:client_app/src/features/profile/widgets/face_photo.widget.dart';
 
 class FaceCard extends StatelessWidget {
   const FaceCard({
@@ -165,7 +166,7 @@ class FaceCard extends StatelessWidget {
       color: colors.surfaceContainerHighest,
       child: Icon(Icons.face_outlined, color: colors.onSurfaceVariant),
     );
-    return _FacePhoto(url: url, placeholder: placeholder, onExpired: onExpired);
+    return FacePhoto(url: url, placeholder: placeholder, onExpired: onExpired);
   }
 
   String _shapeLabel(AppLocalizations l10n, String shape) {
@@ -187,45 +188,4 @@ class FaceCard extends StatelessWidget {
     }
     return shape;
   }
-}
-
-class _FacePhoto extends StatefulWidget {
-  const _FacePhoto({
-    required this.url,
-    required this.placeholder,
-    this.onExpired,
-  });
-
-  final String? url;
-  final Widget placeholder;
-  final VoidCallback? onExpired;
-
-  @override
-  State<_FacePhoto> createState() => _FacePhotoState();
-}
-
-class _FacePhotoState extends State<_FacePhoto> {
-  bool _refreshRequested = false;
-
-  @override
-  Widget build(BuildContext context) => ClipRRect(
-    borderRadius: DorakDimensions.radiusSm,
-    child: SizedBox(
-      width: 56,
-      height: 56,
-      child: widget.url == null
-          ? widget.placeholder
-          : Image.network(
-              widget.url!,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                if (!_refreshRequested) {
-                  _refreshRequested = true;
-                  widget.onExpired?.call();
-                }
-                return widget.placeholder;
-              },
-            ),
-    ),
-  );
 }

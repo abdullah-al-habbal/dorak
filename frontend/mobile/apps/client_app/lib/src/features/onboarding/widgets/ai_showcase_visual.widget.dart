@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:design_system/design_system.dart';
 import 'package:localization/localization.dart';
 
+import 'package:client_app/src/features/onboarding/widgets/ai_face_card.widget.dart';
+import 'package:client_app/src/features/onboarding/widgets/ai_orbit_background.widget.dart';
 import 'package:client_app/src/features/onboarding/widgets/recommendation_card.widget.dart';
 
 class AiShowcaseVisual extends StatefulWidget {
@@ -58,10 +60,10 @@ class _AiShowcaseVisualState extends State<AiShowcaseVisual>
       child: Stack(
         alignment: Alignment.center,
         children: [
-          _AiOrbitBackground(colors: colors),
+          AiOrbitBackground(colors: colors),
           FadeTransition(
             opacity: _staggeredAnimations[0],
-            child: _AiFaceCard(colors: colors, label: l10n.aiFaceShapeLabel),
+            child: AiFaceCard(colors: colors, label: l10n.aiFaceShapeLabel),
           ),
           Positioned(
             top: 12,
@@ -101,78 +103,4 @@ class _AiShowcaseVisualState extends State<AiShowcaseVisual>
       ),
     );
   }
-}
-
-class _AiOrbitBackground extends StatelessWidget {
-  const _AiOrbitBackground({required this.colors});
-  final DorakColors colors;
-  @override
-  Widget build(BuildContext context) => Stack(
-    alignment: Alignment.center,
-    children: [
-      Container(
-        width: 300,
-        height: 300,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: colors.tertiaryFixed.withValues(alpha: 0.4),
-          ),
-        ),
-      ),
-      Container(
-        width: 220,
-        height: 220,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: colors.primaryFixedDim.withValues(alpha: 0.3),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-class _AiFaceCard extends StatelessWidget {
-  const _AiFaceCard({required this.colors, required this.label});
-  final DorakColors colors;
-  final String label;
-  @override
-  Widget build(BuildContext context) => Container(
-    width: 128,
-    height: 128,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: colors.surfaceContainer,
-      border: Border.all(color: colors.tertiaryFixed),
-      boxShadow: [
-        BoxShadow(
-          color: colors.surfaceTint.withValues(alpha: 0.08),
-          blurRadius: 24,
-          offset: const Offset(0, 4),
-        ),
-      ],
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.face, color: colors.tertiaryContainer, size: 48),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(
-            color: colors.tertiaryFixed.withValues(alpha: 0.3),
-            borderRadius: DorakDimensions.radiusFull,
-          ),
-          child: Text(
-            label,
-            style: DorakTypography.labelMd.copyWith(
-              color: colors.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
 }
