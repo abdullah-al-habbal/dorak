@@ -1,5 +1,6 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/tailgrids/core/button";
 import {
   Dialog,
@@ -16,6 +17,7 @@ import { useBarberChannel } from "@/hooks/use-barber-channel";
 import { useBarberPortfolioQuery } from "@/hooks/use-barber-portfolio-query";
 import { useBarberWorkspaceProfileQuery } from "@/hooks/use-barber-workspace-profile-query";
 import { useSession } from "@/hooks/use-session";
+import { cancelBarberBookingFormSchema } from "@/services/api/barber-workspace/cancel-barber-booking-form.schema";
 import {
   cancelBarberBooking,
   transitionBarberBooking,
@@ -23,6 +25,8 @@ import {
 } from "@/services/api/barber-workspace.mutation";
 import Image from "next/image";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import type { z } from "zod";
 
 export function BarberWorkspace() {
   const dictionary = useDictionary();
@@ -47,9 +51,14 @@ export function BarberWorkspace() {
   );
   const currentOnline = profile.data?.workstationOnline ?? online;
   const [cancellingId, setCancellingId] = useState<string | null>(null);
-  const [cancellationReason, setCancellationReason] = useState("");
-  const cancel = useDashboardMutation("barber-appointments", () =>
-    cancelBarberBooking(cancellingId ?? "", cancellationReason),
+  const cancelForm = useForm<z.infer<typeof cancelBarberBookingFormSchema>>({
+    resolver: zodResolver(cancelBarberBookingFormSchema),
+    defaultValues: { cancellationReason: "" },
+  });
+  const cancel = useDashboardMutation(
+    "barber-appointments",
+    (value: z.infer<typeof cancelBarberBookingFormSchema>) =>
+      cancelBarberBooking(cancellingId ?? "", value.cancellationReason),
   );
 
   return (
@@ -170,42 +179,60 @@ export function BarberWorkspace() {
       <Dialog
         isOpen={cancellingId !== null}
         onOpenChange={(value) => {
-          if (!value) setCancellingId(null);
+          if (!value) {
+            setCancellingId(null);
+            cancelForm.reset();
+          }
         }}
         labels={dictionary.common.dialog}
       >
         <DialogHeader>
           <DialogTitle>{dictionary.barberWorkspace.cancellation}</DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          <label className="grid gap-2 text-sm text-text-100">
-            {dictionary.barberWorkspace.cancellationReason}
-            <Input
-              value={cancellationReason}
-              onChange={(event) => setCancellationReason(event.target.value)}
-              placeholder={dictionary.barberWorkspace.cancellationPlaceholder}
-            />
-          </label>
-        </DialogBody>
-        <DialogFooter>
-          <Button appearance="outline" onPress={() => setCancellingId(null)}>
-            {dictionary.common.actions.cancel}
-          </Button>
-          <Button
-            variant="danger"
-            isDisabled={!cancellationReason || cancel.isPending}
-            onPress={() =>
-              cancel.mutate(undefined, {
-                onSuccess: () => {
-                  setCancellationReason("");
-                  setCancellingId(null);
-                },
-              })
-            }
-          >
-            {dictionary.barberWorkspace.confirmCancellation}
-          </Button>
-        </DialogFooter>
+        <form
+          onSubmit={cancelForm.handleSubmit((value) =>
+            cancel.mutate(value, {
+              onSuccess: () => {
+                cancelForm.reset();
+                setCancellingId(null);
+              },
+            }),
+          )}
+        >
+          <DialogBody>
+            <label className="grid gap-2 text-sm text-text-100">
+              {dictionary.barberWorkspace.cancellationReason}
+              <Input
+                {...cancelForm.register("cancellationReason")}
+                placeholder={dictionary.barberWorkspace.cancellationPlaceholder}
+                state={
+                  cancelForm.formState.errors.cancellationReason
+                    ? "error"
+                    : "default"
+                }
+              />
+            </label>
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              type="button"
+              appearance="outline"
+              onPress={() => {
+                setCancellingId(null);
+                cancelForm.reset();
+              }}
+            >
+              {dictionary.common.actions.cancel}
+            </Button>
+            <Button
+              type="submit"
+              variant="danger"
+              isDisabled={cancel.isPending}
+            >
+              {dictionary.barberWorkspace.confirmCancellation}
+            </Button>
+          </DialogFooter>
+        </form>
       </Dialog>
     </section>
   );
