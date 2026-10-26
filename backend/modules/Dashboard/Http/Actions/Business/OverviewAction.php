@@ -32,6 +32,7 @@ final class OverviewAction extends BaseApiAction
         $activeChairs = ChairModel::query()->where('status', 'available')
             ->when($scope !== null, fn ($query) => $query->whereIn('branch_id', $scope ?? []));
         $completedBookings = (clone $bookings)->where('status', BookingStatus::Completed);
+        $completedToday = (clone $completedBookings)->whereBetween('time_slot', [now()->startOfDay(), now()->endOfDay()]);
 
         return $this->success([
             'active_chairs_count' => $activeChairs->count(),
@@ -39,7 +40,7 @@ final class OverviewAction extends BaseApiAction
             'completed_bookings_count' => (clone $completedBookings)->count(),
             'active_branches_count' => $branches->count(),
             'today_bookings_count' => $todayBookings->count(),
-            'revenue' => $this->completedBookingsRevenue($completedBookings),
+            'revenue' => $this->completedBookingsRevenue($completedToday),
             'revenue_currency' => $this->revenueCurrencyCode($scope),
             'stylists_count' => BarberModel::query()->when($scope !== null, fn ($query) => $query->whereIn('id', BookingModel::query()->forBranches($scope ?? [])->select('barber_id')))->count(),
         ]);

@@ -15,7 +15,7 @@ describe('Dashboard overview revenue', function (): void {
         $this->authenticateDashboardActor(AdminModel::factory()->create());
         $serviceA = OfferedServiceModel::factory()->create(['price' => 100]);
         $serviceB = OfferedServiceModel::factory()->create(['price' => 50]);
-        $completed = BookingModel::factory()->create(['status' => BookingStatus::Completed]);
+        $completed = BookingModel::factory()->create(['status' => BookingStatus::Completed, 'time_slot' => now()]);
         $completed->services()->attach([$serviceA->id, $serviceB->id]);
         $pending = BookingModel::factory()->create(['status' => BookingStatus::Pending]);
         $pending->services()->attach(OfferedServiceModel::factory()->create(['price' => 999])->id);
@@ -28,14 +28,24 @@ describe('Dashboard overview revenue', function (): void {
     it('scopes revenue to the manager branch', function (): void {
         $branch = BranchModel::factory()->create();
         $this->authenticateDashboardActor($branch);
-        $inBranch = BookingModel::factory()->create(['branch_id' => $branch->id, 'status' => BookingStatus::Completed]);
+        $inBranch = BookingModel::factory()->create(['branch_id' => $branch->id, 'status' => BookingStatus::Completed, 'time_slot' => now()]);
         $inBranch->services()->attach(OfferedServiceModel::factory()->create(['price' => 75])->id);
-        $otherBranch = BookingModel::factory()->create(['status' => BookingStatus::Completed]);
+        $otherBranch = BookingModel::factory()->create(['status' => BookingStatus::Completed, 'time_slot' => now()]);
         $otherBranch->services()->attach(OfferedServiceModel::factory()->create(['price' => 500])->id);
 
         $this->getJson('/api/v1/dashboard/overview')
             ->assertOk()
             ->assertJsonPath('data.revenue', 75);
+    });
+
+    it('excludes completed bookings outside today from revenue', function (): void {
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+        $yesterday = BookingModel::factory()->create(['status' => BookingStatus::Completed, 'time_slot' => now()->subDay()]);
+        $yesterday->services()->attach(OfferedServiceModel::factory()->create(['price' => 300])->id);
+
+        $this->getJson('/api/v1/dashboard/overview')
+            ->assertOk()
+            ->assertJsonPath('data.revenue', 0);
     });
 
     it('returns zero revenue when there are no completed bookings', function (): void {

@@ -30,6 +30,7 @@ The admin and manager portal roots render a generic placeholder, "Your protected
 - [x] `php artisan test` and `npm run test` pass; Pint is clean; eslint and tsc are clean. (PHPStan is out of gate scope per `backend/CLAUDE.md`.) Also ran `npm run build` — green.
 
 ### Implemented contract
+- Fresh audit (re-check): `revenue` was summing *all-time* completed bookings, contradicting the "today's window" requirement. Fixed — `OverviewAction` now sums only completed bookings whose `time_slot` is today; regression test `excludes completed bookings outside today from revenue` added, and the existing revenue tests pin `time_slot` to now.
 - Backend: `OverviewAction` gained `revenue_currency` (string or null) alongside the existing `revenue`. Resolution: one brand in scope → that brand's `base_currency`; otherwise → `CurrencyModel::where('is_default', true)`, falling back to any currency row if none is flagged default, or `null` if the database has no currency at all.
 - Dashboard: `DashboardOverviewSchema`/`mapDashboardOverview` carry the new field through to `IDashboardOverview.revenueCurrency`. The `PORTAL_NAVIGATION` "dashboard" entry is now barber-only (it pointed at the same destination as "overview" for every operations actor, which is no longer a stub).
 
