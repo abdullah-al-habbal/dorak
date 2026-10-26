@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   mapBooking,
+  mapBookingStatusLog,
   mapBranch,
 } from "@/services/api/dashboard/shared/dashboard-mapper.util";
 
@@ -13,6 +14,52 @@ const wireBooking = (client: unknown) => ({
   barber: null,
   services: [],
   client,
+});
+
+describe("mapBookingStatusLog", () => {
+  it("maps a transition entry", () => {
+    expect(
+      mapBookingStatusLog({
+        id: "log-1",
+        from_status: "pending",
+        to_status: "confirmed",
+        actor_type: "admin",
+        actor_id: "admin-1",
+        reason: null,
+        created_at: "2026-10-26T10:00:00+00:00",
+      }),
+    ).toEqual({
+      id: "log-1",
+      fromStatus: "pending",
+      toStatus: "confirmed",
+      actorType: "admin",
+      actorId: "admin-1",
+      reason: null,
+      createdAt: "2026-10-26T10:00:00+00:00",
+    });
+  });
+
+  it("keeps a creation entry's null from-status and a system actor's null id", () => {
+    expect(
+      mapBookingStatusLog({
+        id: "log-2",
+        from_status: null,
+        to_status: "pending",
+        actor_type: "system",
+        actor_id: null,
+        reason: "chair_maintenance",
+        created_at: null,
+      }),
+    ).toEqual({
+      id: "log-2",
+      fromStatus: null,
+      toStatus: "pending",
+      actorType: "system",
+      actorId: null,
+      reason: "chair_maintenance",
+      createdAt: null,
+    });
+  });
 });
 
 describe("mapBooking", () => {

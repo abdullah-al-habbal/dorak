@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Modules\Booking\Eloquent\Resolvers\Shared;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Audit\Enums\StatusChangeActorTypeEnum;
+use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
+use Modules\Audit\Services\StatusChangeLogger;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\CQRS\Command\Client\CancelBookingCommand;
 use Modules\Booking\Enums\BookingStatus;
@@ -16,12 +19,16 @@ use Modules\Chair\Models\ChairModel;
 
 final class BookingLifecycleEloquentResolver
 {
-    public function __construct(private readonly BookingTransitionNotifier $notifier) {}
+    public function __construct(
+        private readonly BookingTransitionNotifier $notifier,
+        private readonly StatusChangeLogger $statusChangeLogger,
+    ) {}
 
-    public function transitionForDashboard(string|int $bookingId, BookingStatus $target): BookingModel
+    public function transitionForDashboard(string|int $bookingId, BookingStatus $target, string $actorType, string $actorId): BookingModel
     {
-        return DB::transaction(function () use ($bookingId, $target): BookingModel {
+        return DB::transaction(function () use ($bookingId, $target, $actorType, $actorId): BookingModel {
             $booking = BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
+            $fromStatus = $booking->status;
             if (! $booking->status->canTransitionTo($target)) {
                 throw new InvalidBookingTransitionException;
             }
@@ -32,6 +39,7 @@ final class BookingLifecycleEloquentResolver
             $booking->update(['status' => $target]);
             $booking->refresh()->load(['chair.barber', 'barber', 'services']);
             $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
+            $this->logTransition($booking, $fromStatus, $target, StatusChangeActorTypeEnum::from($actorType), $actorId);
 
             return $booking;
         });
@@ -42,6 +50,7 @@ final class BookingLifecycleEloquentResolver
         return DB::transaction(function () use ($bookingId, $branchId, $target): BookingModel {
             $booking = BookingModel::query()->forBranch($branchId)
                 ->with('chair')->lockForUpdate()->findOrFail($bookingId);
+            $fromStatus = $booking->status;
             if (! in_array($target, [BookingStatus::Confirmed, BookingStatus::InProgress, BookingStatus::Completed, BookingStatus::NoShow, BookingStatus::Canceled], true)
                 || ! $booking->status->canTransitionTo($target)) {
                 throw new InvalidBookingTransitionException;
@@ -53,6 +62,7 @@ final class BookingLifecycleEloquentResolver
             $booking->update(['status' => $target]);
             $booking->refresh()->load(['chair.barber', 'barber', 'services']);
             $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
+            $this->logTransition($booking, $fromStatus, $target, StatusChangeActorTypeEnum::Branch, (string) $branchId);
 
             return $booking;
         });
@@ -62,6 +72,7 @@ final class BookingLifecycleEloquentResolver
     {
         return DB::transaction(function () use ($command): CancelBookingResult {
             $booking = BookingModel::query()->with(['chair.barber', 'barber', 'services'])->lockForUpdate()->findOrFail($command->bookingId);
+            $fromStatus = $booking->status;
             if ($booking->client_id !== $command->clientId) {
                 return CancelBookingResult::notOwnBooking();
             }
@@ -74,6 +85,7 @@ final class BookingLifecycleEloquentResolver
             $booking->update(['status' => BookingStatus::Canceled]);
             $booking->refresh();
             $this->notifier->statusChanged($booking, true, actorIsClient: true);
+            $this->logTransition($booking, $fromStatus, BookingStatus::Canceled, StatusChangeActorTypeEnum::Client, $command->clientId);
 
             return CancelBookingResult::success($booking);
         });
@@ -83,6 +95,7 @@ final class BookingLifecycleEloquentResolver
     {
         return DB::transaction(function () use ($bookingId, $barberId, $reason): BookingModel {
             $booking = BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
+            $fromStatus = $booking->status;
             if ($booking->barber_id !== $barberId && $booking->chair?->barber_id !== $barberId) {
                 throw new BookingNotAssignedException;
             }
@@ -95,6 +108,7 @@ final class BookingLifecycleEloquentResolver
             $booking->update(['status' => BookingStatus::Canceled, 'cancellation_reason' => $reason]);
             $booking->refresh()->load('chair');
             $this->notifier->statusChanged($booking, true);
+            $this->logTransition($booking, $fromStatus, BookingStatus::Canceled, StatusChangeActorTypeEnum::Barber, (string) $barberId, $reason);
 
             return $booking;
         });
@@ -104,6 +118,7 @@ final class BookingLifecycleEloquentResolver
     {
         return DB::transaction(function () use ($bookingId): BookingModel {
             $booking = BookingModel::query()->lockForUpdate()->findOrFail($bookingId);
+            $fromStatus = $booking->status;
             if (! $booking->status->canTransitionTo(BookingStatus::Canceled)) {
                 throw new InvalidBookingTransitionException;
             }
@@ -113,6 +128,7 @@ final class BookingLifecycleEloquentResolver
             ]);
             $booking->refresh();
             $this->notifier->statusChanged($booking, true);
+            $this->logTransition($booking, $fromStatus, BookingStatus::Canceled, StatusChangeActorTypeEnum::System, null, BookingModel::CANCELLATION_REASON_CHAIR_MAINTENANCE);
 
             return $booking;
         });
@@ -126,6 +142,7 @@ final class BookingLifecycleEloquentResolver
                 ->lockForUpdate()
                 ->findOrFail($bookingId);
 
+            $fromStatus = $booking->status;
             $isAssigned = $booking->barber_id === $barberId
                 || $booking->chair?->barber_id === $barberId;
 
@@ -145,9 +162,23 @@ final class BookingLifecycleEloquentResolver
             $booking->update(['status' => $target]);
             $booking->refresh()->load(['chair.barber', 'barber', 'services']);
             $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
+            $this->logTransition($booking, $fromStatus, $target, StatusChangeActorTypeEnum::Barber, (string) $barberId);
 
             return $booking;
         });
+    }
+
+    private function logTransition(BookingModel $booking, BookingStatus $fromStatus, BookingStatus $toStatus, StatusChangeActorTypeEnum $actorType, ?string $actorId, ?string $reason = null): void
+    {
+        $this->statusChangeLogger->log(
+            StatusChangeSubjectTypeEnum::Booking,
+            (string) $booking->id,
+            $fromStatus->value,
+            $toStatus->value,
+            $actorType,
+            $actorId,
+            $reason,
+        );
     }
 
     private function lockAssignedResources(BookingModel $booking): void

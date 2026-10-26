@@ -29,8 +29,12 @@ final class AcceptAffiliationRequest extends BaseApiFormRequest
 
     public function toCommand(string $affiliationId): AcceptAffiliationCommand
     {
+        /** @var BarberModel $barber */
+        $barber = $this->user('barber');
+
         return new AcceptAffiliationCommand(
             affiliationId: $affiliationId,
+            barberId: (string) $barber->id,
         );
     }
 }

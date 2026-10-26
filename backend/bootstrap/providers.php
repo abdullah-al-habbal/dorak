@@ -8,6 +8,7 @@ use Illuminate\Hashing\HashServiceProvider;
 use Illuminate\View\ViewServiceProvider;
 use Modules\Activation\Providers\ActivationServiceProvider;
 use Modules\Admin\Providers\AdminServiceProvider;
+use Modules\Audit\Providers\AuditServiceProvider;
 use Modules\Ban\Providers\BanServiceProvider;
 use Modules\Barber\Providers\BarberServiceProvider;
 use Modules\BarberAffiliation\Providers\BarberAffiliationServiceProvider;
@@ -71,4 +72,5 @@ return [
     MarketingServiceProvider::class,
     WebsiteServiceProvider::class,
     ExploreServiceProvider::class,
+    AuditServiceProvider::class,
 ];

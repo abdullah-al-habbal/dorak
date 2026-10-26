@@ -29,7 +29,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
         }
 
         try {
-            return $this->updated(new StaffBookingResource($this->resolver->transitionForDashboard($model->id, $status)));
+            return $this->updated(new StaffBookingResource($this->resolver->transitionForDashboard($model->id, $status, $actor->actorType, $actor->id)));
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }

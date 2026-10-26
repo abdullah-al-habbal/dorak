@@ -150,7 +150,11 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: stay on MySQL, formally drop the pgvector requirement (option b). CI (`backend-ci.yml`), `backend/README.md`, and `.env.example` all target MySQL only, and every migration in the repo is MySQL-shaped — BE-16's "PostgreSQL + pgvector active" claim was never actually built; the only trace of it was a dead `ALTER TABLE ... TYPE vector(1536)` on `entity_embeddings` that silently no-opped on every MySQL run via a swallowed `catch`. Removed that branch; both embedding tables stay plain `json`, with cosine similarity computed in PHP (`ExploreRanker`). Recommendation PRD §8 updated to record this and strike the pgvector steps as historical. `backend/docs/features/BE-16-ai-sdk-postgresql-setup.md` itself is corrected under Task 87.
 
 ## [Task 64: Add Status Change Audit Trail](tasks/task-64-status-audit-trail.md)
-- [ ] Decision required: retention period for audit rows (indefinite vs. N years).
+- [x] Decision resolved (retention): indefinite, no purge job. No retention/compliance policy
+  for audit-style logs exists anywhere in `docs/`; the only existing precedent, `activation_logs`
+  (Task 59), is likewise never purged. A self-purging dispute/audit trail defeats its purpose,
+  so the evidence-backed default is to keep rows indefinitely until a real compliance
+  requirement sets a window.
 
 ## [Task 65: Specify and Build Monetization and Analytics APIs](tasks/task-65-monetization-analytics-apis.md)
 - [ ] Decision required: payment provider (none, or a named PSP), and whether payments are online at booking time or offline.

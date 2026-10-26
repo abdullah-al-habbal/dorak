@@ -29,8 +29,12 @@ final class RejectAffiliationRequest extends BaseApiFormRequest
 
     public function toCommand(string $affiliationId): RejectAffiliationCommand
     {
+        /** @var BarberModel $barber */
+        $barber = $this->user('barber');
+
         return new RejectAffiliationCommand(
             affiliationId: $affiliationId,
+            barberId: (string) $barber->id,
         );
     }
 }

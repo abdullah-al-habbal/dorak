@@ -8,5 +8,6 @@ final readonly class AcceptAffiliationCommand
 {
     public function __construct(
         public string $affiliationId,
+        public string $barberId,
     ) {}
 }

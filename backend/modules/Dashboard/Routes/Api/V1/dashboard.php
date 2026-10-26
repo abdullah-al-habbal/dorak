@@ -36,6 +36,7 @@ use Modules\Dashboard\Http\Actions\Services\ShowServiceAction;
 use Modules\Dashboard\Http\Actions\Services\StoreServiceAction;
 use Modules\Dashboard\Http\Actions\Services\UpdateServiceAction;
 use Modules\Dashboard\Http\Actions\ShowBookingAction;
+use Modules\Dashboard\Http\Actions\ShowBookingHistoryAction;
 use Modules\Dashboard\Http\Actions\Stylists\ActivateStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\DeactivateStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\DestroyStylistAction;
@@ -69,6 +70,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/bookings', ListBookingsAction::class);
         Route::post('/bookings/walk-in', CreateWalkInBookingAction::class);
         Route::get('/bookings/{booking}', ShowBookingAction::class);
+        Route::get('/bookings/{booking}/history', ShowBookingHistoryAction::class);
         Route::patch('/bookings/{booking}', UpdateBookingStatusAction::class);
         Route::patch('/bookings/{booking}/cancel', CancelBookingAction::class);
         Route::patch('/bookings/{booking}/reschedule', RescheduleBookingAction::class);

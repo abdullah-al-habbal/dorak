@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\BarberAffiliation\Eloquent\Resolvers\Barber;
 
+use Illuminate\Support\Facades\DB;
+use Modules\Audit\Enums\StatusChangeActorTypeEnum;
+use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
+use Modules\Audit\Services\StatusChangeLogger;
 use Modules\BarberAffiliation\CQRS\Command\Barber\AcceptAffiliationCommand;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
@@ -11,19 +15,33 @@ use Modules\BarberAffiliation\ValuesObjects\AcceptAffiliationResult;
 
 final class AcceptAffiliationEloquentResolver
 {
+    public function __construct(private readonly StatusChangeLogger $statusChangeLogger) {}
+
     public function resolve(AcceptAffiliationCommand $command): AcceptAffiliationResult
     {
-        $affiliation = BarberAffiliationModel::findOrFail($command->affiliationId);
+        return DB::transaction(function () use ($command): AcceptAffiliationResult {
+            $affiliation = BarberAffiliationModel::findOrFail($command->affiliationId);
 
-        if ($affiliation->status !== AffiliationStatus::Pending) {
-            return AcceptAffiliationResult::invalidStatus();
-        }
+            if ($affiliation->status !== AffiliationStatus::Pending) {
+                return AcceptAffiliationResult::invalidStatus();
+            }
 
-        $affiliation->update([
-            'status' => AffiliationStatus::Active,
-            'accepted_at' => now(),
-        ]);
+            $fromStatus = $affiliation->status;
+            $affiliation->update([
+                'status' => AffiliationStatus::Active,
+                'accepted_at' => now(),
+            ]);
 
-        return AcceptAffiliationResult::success($affiliation);
+            $this->statusChangeLogger->log(
+                StatusChangeSubjectTypeEnum::Affiliation,
+                (string) $affiliation->id,
+                $fromStatus->value,
+                AffiliationStatus::Active->value,
+                StatusChangeActorTypeEnum::Barber,
+                $command->barberId,
+            );
+
+            return AcceptAffiliationResult::success($affiliation);
+        });
     }
 }

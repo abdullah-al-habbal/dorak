@@ -10,6 +10,7 @@ describe("isDashboardRouteAllowed", () => {
     ["PATCH", ["bookings", "booking-1"]],
     ["PATCH", ["bookings", "booking-1", "cancel"]],
     ["PATCH", ["bookings", "booking-1", "reschedule"]],
+    ["GET", ["bookings", "booking-1", "history"]],
     ["POST", ["bookings", "booking-1", "review"]],
     ...["branches", "chairs", "services", "stylists"].flatMap((root) => [
       ["GET", [root]],
@@ -44,6 +45,7 @@ describe("isDashboardRouteAllowed", () => {
     ["POST", ["settings"]],
     ["PUT", ["stylists", "stylist-1", "activate"]],
     ["PATCH", ["stylists", "stylist-1", "suspend"]],
+    ["POST", ["bookings", "booking-1", "history"]],
   ] as [string, readonly string[]][])("rejects %s %s", (method, path) => {
     expect(isDashboardRouteAllowed(method, path)).toBe(false);
   });

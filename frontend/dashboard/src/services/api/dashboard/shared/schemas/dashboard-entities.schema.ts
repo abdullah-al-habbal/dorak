@@ -89,3 +89,13 @@ export const BookingSchema = z.object({
   ]),
   timeSlot: z.string(),
 });
+
+export const BookingStatusLogSchema = z.object({
+  id: DashboardEntityIdSchema,
+  fromStatus: z.string().nullable(),
+  toStatus: z.string(),
+  actorType: z.enum(["client", "barber", "branch", "admin", "owner", "system"]),
+  actorId: z.string().nullable(),
+  reason: z.string().nullable(),
+  createdAt: z.string().nullable(),
+});

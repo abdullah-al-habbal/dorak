@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\BarberAffiliation\Http\Requests\Barber;
 
 use Illuminate\Support\Facades\Gate;
+use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\CQRS\Command\Shared\TerminateAffiliationCommand;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
@@ -29,8 +30,13 @@ final class TerminateAffiliationRequest extends BaseApiFormRequest
 
     public function toCommand(string $affiliationId): TerminateAffiliationCommand
     {
+        /** @var BarberModel $barber */
+        $barber = $this->user('barber');
+
         return new TerminateAffiliationCommand(
             affiliationId: $affiliationId,
+            actorType: StatusChangeActorTypeEnum::Barber->value,
+            actorId: (string) $barber->id,
         );
     }
 }

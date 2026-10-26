@@ -102,7 +102,7 @@ codeanchors:
 - [x] Task 63: Provision pgvector Storage for Preference Vectors -> [Spec](tasks/task-63-pgvector-storage.md)
 
 ## Phase 11 — Admin & Platform (P2–P3)
-- [ ] Task 64: Add Status Change Audit Trail -> [Spec](tasks/task-64-status-audit-trail.md)
+- [x] Task 64: Add Status Change Audit Trail -> [Spec](tasks/task-64-status-audit-trail.md)
 - [ ] Task 65: Specify and Build Monetization and Analytics APIs -> [Spec](tasks/task-65-monetization-analytics-apis.md)
 
 ## Phase 12 — Backend Hygiene (P3)

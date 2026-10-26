@@ -1,4 +1,5 @@
 import type { IBooking } from "@/services/api/dashboard/booking/types/ibooking.types";
+import type { IBookingStatusLog } from "@/services/api/dashboard/booking/types/ibooking-status-log.types";
 import type { IBranch } from "@/services/api/dashboard/branch/types/ibranch.types";
 import type { IChair } from "@/services/api/dashboard/chair/types/ichair.types";
 import type { IDashboardOverview } from "@/services/api/dashboard/shared/types/idashboard-overview.types";
@@ -156,6 +157,22 @@ export function mapBooking(wire: unknown): IBooking {
     services,
     status: string(item.status, "pending") as IBooking["status"],
     timeSlot: string(item.time_slot),
+  };
+}
+
+export function mapBookingStatusLog(wire: unknown): IBookingStatusLog {
+  const item = record(wire);
+  return {
+    id: string(item.id),
+    fromStatus: nullableString(item.from_status),
+    toStatus: string(item.to_status),
+    actorType: string(
+      item.actor_type,
+      "system",
+    ) as IBookingStatusLog["actorType"],
+    actorId: nullableString(item.actor_id),
+    reason: nullableString(item.reason),
+    createdAt: nullableString(item.created_at),
   };
 }
 

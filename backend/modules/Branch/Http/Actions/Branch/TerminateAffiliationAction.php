@@ -6,6 +6,7 @@ namespace Modules\Branch\Http\Actions\Branch;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\BarberAffiliation\CQRS\Command\Shared\TerminateAffiliationCommand;
 use Modules\BarberAffiliation\Handlers\Shared\TerminateAffiliationHandler;
 use Modules\BarberAffiliation\Http\Resources\Barber\BarberAffiliationResource;
@@ -27,7 +28,11 @@ final class TerminateAffiliationAction extends BaseApiAction
             ->where('affiliable_type', 'branch')
             ->findOrFail($affiliation);
 
-        $result = $this->handler->handle(new TerminateAffiliationCommand($affiliationModel->id));
+        $result = $this->handler->handle(new TerminateAffiliationCommand(
+            $affiliationModel->id,
+            StatusChangeActorTypeEnum::Branch->value,
+            (string) $branch->id,
+        ));
 
         if (! $result->success) {
             return $this->businessError(ErrorCodeEnum::BAD_REQUEST, message: __('barberaffiliation::messages.not_active'));
