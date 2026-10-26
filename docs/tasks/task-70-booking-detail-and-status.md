@@ -26,11 +26,25 @@ The booking detail page exists for admin and manager, but nothing links to it: b
 - None. The business app status menu is covered in Task 85.
 
 ## Acceptance Criteria
-- [ ] Every booking row on `/admin/bookings` and `/manager/bookings` has a link to `/{actor}/bookings/{id}`. RTL test.
-- [ ] The booking detail page renders no link to `/bookings/{id}/edit`. RTL test.
-- [ ] For a `confirmed` booking, the status selector offers exactly the transitions the backend allows. Selecting an illegal status is impossible, and if forced via the API the backend answers 422.
-- [ ] For a terminal booking, the status form is not rendered.
-- [ ] `npm run test`, `npm run lint` and `npm run typecheck` pass.
+- [x] Every booking row on `/admin/bookings` and `/manager/bookings` has a link to `/{actor}/bookings/{id}`. Added a Details link alongside `BookingActionsDialog` in `entity-list-page.tsx`'s bookings branch (shared by both actor routes, which both render `EntityListPage`). `tests/components/entities/entity-list-page.test.tsx` asserts the href.
+- [x] The booking detail page renders no link to `/bookings/{id}/edit`. Added `hasEditRoute: boolean` to `EntityConfig` (true for branches/chairs/services/stylists, false for bookings — the only resource with no `[id]/edit` route under `app/(portals)`), and `EntityDetailPage` now gates the Edit link on it. `tests/components/entities/entity-detail-page.test.tsx` asserts both the bookings case (no link) and a control case (branches still gets one).
+- [x] For a `confirmed` booking, the status selector offers exactly the transitions the backend allows. New `booking-status-transitions.util.ts` mirrors `BookingStatus::canTransitionTo` from `backend/modules/Booking/Enums/BookingStatus.php` (pending→confirmed/canceled, confirmed→in_progress/canceled/no_show, in_progress→completed/canceled/no_show, terminal→none) and `BookingStatusUpdateForm` now renders only those options instead of a fixed 5-item list. Selecting an illegal status is structurally impossible (not in the option list); the backend 422 path for a forced/direct API call was already covered by Task 18's own tests and is unchanged. `tests/components/bookings/booking-status-update-form.test.tsx` asserts the exact option set per current status.
+- [x] For a terminal booking, the status form is not rendered. `BookingStatusUpdateForm` returns `null` when `allowedNextBookingStatuses(currentStatus)` is empty; asserted for all three terminal statuses in the same test file.
+- [x] `npm run test`, `npm run lint` and `npm run typecheck` pass. Also ran `npm run build` (Dashboard gate set) — green.
+
+### Decision: allowed-transitions source (resolved: UI-side map, no backend change)
+The spec presented this as open ("Decision required") with a recommendation toward a backend
+`allowed_transitions` field on the booking resource. Chose the UI-side map instead:
+`booking-status-transitions.util.ts` is a pure, 6-line-per-status mirror of the backend enum's
+own `canTransitionTo` method, it has no state to drift independently of a request/response
+cycle, and the Full-Stack Scope section's own default statement for this task is "Backend:
+None beyond Task 18." Adding a resource field would touch `BookingResource`/`StaffBookingResource`,
+every consumer of those payloads (mobile DTOs included), and backend tests, for a rule that
+is small, stable, and already enforced authoritatively server-side (422 on violation) —
+disproportionate to what the three ACs that need this actually require. If the backend
+enum ever changes, this file and the backend enum both need updating; that coupling is
+documented in the file's own docblock rather than solved by shipping the rule twice over
+the wire.
 
 ## Out of Scope
 - The backend lifecycle itself (Task 18).

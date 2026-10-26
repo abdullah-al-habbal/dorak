@@ -11,13 +11,16 @@ import {
   SelectValue,
 } from "@/components/tailgrids/core/select";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
+import { allowedNextBookingStatuses } from "@/services/api/dashboard/booking/booking-status-transitions.util";
 import { bookingStatusSchema } from "@/services/api/dashboard/booking/schemas/booking-status.schema";
 import { updateBookingStatus } from "@/services/api/dashboard/booking/booking.mutation";
+import type { BookingStatus } from "@/services/api/dashboard/booking/types/booking-status.types";
 import { useForm, useWatch } from "react-hook-form";
 import type { z } from "zod";
 
 interface IBookingStatusUpdateFormProps {
   bookingId: string;
+  currentStatus: BookingStatus;
   nextStatusLabel: string;
   confirmedLabel: string;
   inProgressLabel: string;
@@ -31,6 +34,7 @@ interface IBookingStatusUpdateFormProps {
 
 export function BookingStatusUpdateForm({
   bookingId,
+  currentStatus,
   nextStatusLabel,
   confirmedLabel,
   inProgressLabel,
@@ -41,9 +45,17 @@ export function BookingStatusUpdateForm({
   onSuccess,
   onError,
 }: IBookingStatusUpdateFormProps) {
+  const labels: Record<Exclude<BookingStatus, "pending">, string> = {
+    confirmed: confirmedLabel,
+    in_progress: inProgressLabel,
+    completed: completedLabel,
+    no_show: noShowLabel,
+    canceled: canceledLabel,
+  };
+  const nextStatuses = allowedNextBookingStatuses(currentStatus);
   const form = useForm<z.input<typeof bookingStatusSchema>>({
     resolver: zodResolver(bookingStatusSchema),
-    defaultValues: { status: "confirmed" },
+    defaultValues: { status: nextStatuses[0] },
   });
   const bookingStatus = useWatch({ control: form.control, name: "status" });
   const status = useDashboardMutation(
@@ -51,6 +63,8 @@ export function BookingStatusUpdateForm({
     (value: z.input<typeof bookingStatusSchema>) =>
       updateBookingStatus(bookingId, value),
   );
+
+  if (nextStatuses.length === 0) return null;
 
   return (
     <form
@@ -74,11 +88,11 @@ export function BookingStatusUpdateForm({
           <SelectIndicator />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem id="confirmed">{confirmedLabel}</SelectItem>
-          <SelectItem id="in_progress">{inProgressLabel}</SelectItem>
-          <SelectItem id="completed">{completedLabel}</SelectItem>
-          <SelectItem id="no_show">{noShowLabel}</SelectItem>
-          <SelectItem id="canceled">{canceledLabel}</SelectItem>
+          {nextStatuses.map((nextStatus) => (
+            <SelectItem id={nextStatus} key={nextStatus}>
+              {labels[nextStatus as Exclude<BookingStatus, "pending">]}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
       <Button type="submit" appearance="outline" isDisabled={status.isPending}>

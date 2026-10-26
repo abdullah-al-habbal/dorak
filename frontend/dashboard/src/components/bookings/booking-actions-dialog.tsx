@@ -16,15 +16,18 @@ import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
 import { cancelBooking } from "@/services/api/dashboard/booking/booking.mutation";
+import type { BookingStatus } from "@/services/api/dashboard/booking/types/booking-status.types";
 import { toast } from "sonner";
 import { useState } from "react";
 
 interface IBookingActionsDialogProps {
   bookingId: string;
+  status: BookingStatus;
 }
 
 export function BookingActionsDialog({
   bookingId,
+  status: currentStatus,
 }: IBookingActionsDialogProps) {
   const [open, setOpen] = useState(false);
   const dictionary = useDictionary();
@@ -66,6 +69,7 @@ export function BookingActionsDialog({
           />
           <BookingStatusUpdateForm
             bookingId={bookingId}
+            currentStatus={currentStatus}
             nextStatusLabel={copy.nextStatus}
             confirmedLabel={copy.confirmed}
             inProgressLabel={copy.inProgress}

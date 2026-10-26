@@ -9,4 +9,6 @@ export interface EntityColumn<TEntity> {
 export interface EntityConfig<TEntity> {
   resource: Exclude<DashboardResource, "overview">;
   columns: EntityColumn<TEntity>[];
+  /** Whether `/{actor}/{resource}/{id}/edit` exists. Bookings has no edit route — only the actions dialog and the detail page. */
+  hasEditRoute: boolean;
 }

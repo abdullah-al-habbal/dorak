@@ -1,5 +1,6 @@
 "use client";
 
+import { ENTITY_CONFIGS } from "@/components/entities/entity-config.constant";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { getDashboardEntity } from "@/services/api/dashboard/shared/dashboard.query";
 import type { OperationsActor } from "@/services/api/auth/types/auth.types";
@@ -77,12 +78,14 @@ export function EntityDetailPage({
           </div>
         ))}
       </dl>
-      <Link
-        className="text-sm text-button-primary-outline-text underline"
-        href={`/${actor}/${resource}/${id}/edit`}
-      >
-        {dictionary.operations.edit}
-      </Link>
+      {ENTITY_CONFIGS[resource].hasEditRoute ? (
+        <Link
+          className="text-sm text-button-primary-outline-text underline"
+          href={`/${actor}/${resource}/${id}/edit`}
+        >
+          {dictionary.operations.edit}
+        </Link>
+      ) : null}
     </section>
   );
 }

@@ -166,7 +166,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [ ] Decision required: whether Core base classes and middleware are exempt from BE-18. If they are, document the exemption in BE-18.
 
 ## [Task 70: Wire Booking Detail Page and Full Status Set](tasks/task-70-booking-detail-and-status.md)
-- [ ] Decision required: expose the allowed next statuses per booking in the booking resource (e.g. `allowed_transitions`), or hard-code the transition map in the UI. Recommended: the backend field, so the UI never drifts from the lifecycle.
+- [x] Decision required: expose the allowed next statuses per booking in the booking resource (e.g. `allowed_transitions`), or hard-code the transition map in the UI. **Resolved: UI-side map** (`frontend/dashboard/src/services/api/dashboard/booking/booking-status-transitions.util.ts`), mirroring the backend's `BookingStatus::canTransitionTo`. See the task spec's decision note for the full reasoning (small, stable rule; backend already enforces it authoritatively; a resource field would ripple into every consumer, including mobile, for marginal benefit).
 
 ## [Task 71: Enable List Search and Filters](tasks/task-71-list-search-filters.md)
 - [ ] Bookings: keep the existing filters. Add `search` on client name/email only if the product wants it (Decision required).

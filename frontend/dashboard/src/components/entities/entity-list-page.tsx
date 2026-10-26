@@ -15,6 +15,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { getDashboardList } from "@/services/api/dashboard/shared/dashboard.query";
 import { mapDashboardEntity } from "@/services/api/dashboard/shared/dashboard-entity.util";
 import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
+import type { IBooking } from "@/services/api/dashboard/booking/types/ibooking.types";
 import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -137,7 +138,18 @@ export function EntityListPage({ resource }: EntityListPageProps) {
                   <TableCell>
                     <div className="flex flex-wrap gap-2">
                       {resource === "bookings" ? (
-                        <BookingActionsDialog bookingId={item.id} />
+                        <>
+                          <Link
+                            className="text-button-primary-outline-text underline"
+                            href={`/${session.actor}/bookings/${item.id}`}
+                          >
+                            {dictionary.operations.details}
+                          </Link>
+                          <BookingActionsDialog
+                            bookingId={item.id}
+                            status={(item as IBooking).status}
+                          />
+                        </>
                       ) : (
                         <>
                           <Link

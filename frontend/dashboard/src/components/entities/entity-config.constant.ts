@@ -9,6 +9,7 @@ import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.t
 export const ENTITY_CONFIGS = {
   branches: {
     resource: "branches",
+    hasEditRoute: true,
     columns: [
       { id: "name", label: "name", value: (item: IBranch) => item.name.en },
       { id: "email", label: "email", value: (item: IBranch) => item.email },
@@ -25,6 +26,7 @@ export const ENTITY_CONFIGS = {
   },
   chairs: {
     resource: "chairs",
+    hasEditRoute: true,
     columns: [
       {
         id: "label",
@@ -37,6 +39,7 @@ export const ENTITY_CONFIGS = {
   },
   services: {
     resource: "services",
+    hasEditRoute: true,
     columns: [
       { id: "name", label: "name", value: (item: IService) => item.name.en },
       { id: "price", label: "price", value: (item: IService) => item.price },
@@ -49,6 +52,7 @@ export const ENTITY_CONFIGS = {
   },
   stylists: {
     resource: "stylists",
+    hasEditRoute: true,
     columns: [
       { id: "name", label: "name", value: (item: IStylist) => item.name.en },
       { id: "email", label: "email", value: (item: IStylist) => item.email },
@@ -57,6 +61,7 @@ export const ENTITY_CONFIGS = {
   },
   bookings: {
     resource: "bookings",
+    hasEditRoute: false,
     columns: [
       {
         id: "time",
