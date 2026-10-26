@@ -36,6 +36,7 @@ use Spatie\Translatable\HasTranslations;
     'metadata',
     'is_active',
     'sort_order',
+    'default_duration_minutes',
 ])]
 #[Table('service_catalog_items')]
 #[Translatable([
@@ -57,6 +58,7 @@ class ServiceCatalogItemModel extends Model
             'hair_textures' => 'array',
             'metadata' => ServiceCatalogItemMetadataCast::class,
             'is_active' => 'boolean',
+            'default_duration_minutes' => 'integer',
         ];
     }
 

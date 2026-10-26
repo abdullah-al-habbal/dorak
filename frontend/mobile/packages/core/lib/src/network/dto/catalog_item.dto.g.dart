@@ -25,4 +25,16 @@ CatalogItemDto _$CatalogItemDtoFromJson(Map<String, dynamic> json) =>
           const [],
       stylePeriod: json['style_period'] as String?,
       isActive: json['is_active'] as bool? ?? true,
+      tags:
+          (json['tags'] as List<dynamic>?)
+              ?.map((e) => CatalogTagDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      media:
+          (json['media'] as List<dynamic>?)
+              ?.map((e) => CatalogMediumDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      defaultDurationMinutes: (json['default_duration_minutes'] as num?)
+          ?.toInt(),
     );

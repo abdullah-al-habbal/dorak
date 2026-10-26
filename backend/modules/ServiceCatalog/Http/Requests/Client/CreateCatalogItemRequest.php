@@ -7,7 +7,9 @@ namespace Modules\ServiceCatalog\Http\Requests\Client;
 use Illuminate\Validation\Rule;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\ServiceCatalog\CQRS\Command\Client\CreateCatalogItemCommand;
+use Modules\ServiceCatalog\Enums\FaceShapeEnum;
 use Modules\ServiceCatalog\Enums\FormalityEnum;
+use Modules\ServiceCatalog\Enums\HairTextureEnum;
 use Modules\ServiceCatalog\Enums\MaintenanceLevelEnum;
 use Modules\ServiceCatalog\Enums\StylePeriodEnum;
 
@@ -31,11 +33,14 @@ final class CreateCatalogItemRequest extends BaseApiFormRequest
             'style_period' => ['nullable', Rule::enum(StylePeriodEnum::class)],
             'formality' => ['nullable', Rule::enum(FormalityEnum::class)],
             'face_shapes' => ['nullable', 'array'],
-            'face_shapes.*' => ['string'],
+            'face_shapes.*' => [Rule::enum(FaceShapeEnum::class)],
             'hair_textures' => ['nullable', 'array'],
-            'hair_textures.*' => ['string'],
+            'hair_textures.*' => [Rule::enum(HairTextureEnum::class)],
             'metadata' => ['nullable', 'array'],
             'is_active' => ['required', 'boolean'],
+            'default_duration_minutes' => ['nullable', 'integer', 'min:1', 'max:1440'],
+            'tag_ids' => ['nullable', 'array'],
+            'tag_ids.*' => ['uuid', 'exists:service_catalog_item_tags,id'],
         ];
     }
 
@@ -57,6 +62,8 @@ final class CreateCatalogItemRequest extends BaseApiFormRequest
             hairTextures: $data['hair_textures'] ?? null,
             metadata: $data['metadata'] ?? null,
             isActive: (bool) $data['is_active'],
+            defaultDurationMinutes: $data['default_duration_minutes'] ?? null,
+            tagIds: $data['tag_ids'] ?? null,
         );
     }
 }

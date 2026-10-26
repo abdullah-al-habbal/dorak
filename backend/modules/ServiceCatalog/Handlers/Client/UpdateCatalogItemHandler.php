@@ -27,9 +27,14 @@ final class UpdateCatalogItemHandler
             'hair_textures' => $command->hairTextures,
             'metadata' => $command->metadata,
             'is_active' => $command->isActive,
+            'default_duration_minutes' => $command->defaultDurationMinutes,
         ], fn ($v) => $v !== null);
 
         $item->update($data);
+
+        if ($command->tagIds !== null) {
+            $item->tags()->sync($command->tagIds);
+        }
 
         return $item->fresh();
     }

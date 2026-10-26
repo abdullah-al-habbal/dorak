@@ -803,8 +803,10 @@ class FakeHistoryRepository implements HistoryRepository {
     required String historyId,
     required String photoPath,
     required String photoType,
-  }) async =>
-      HistoryMediaDto(id: 'media-1', photoUrl: 'https://example.com/$photoPath');
+  }) async => HistoryMediaDto(
+    id: 'media-1',
+    photoUrl: 'https://example.com/$photoPath',
+  );
 
   @override
   Future<ServiceHistoryDto> updateEntry({
@@ -1258,6 +1260,7 @@ class FakeProfileRepository implements ProfileRepository {
 
 class FakeServiceCatalogRepository implements ServiceCatalogRepository {
   PaginatedData<CatalogItemDto> page = testCatalogPage();
+  List<CatalogCategoryDto> categories = const [];
   Object? error;
 
   int calls = 0;
@@ -1267,6 +1270,11 @@ class FakeServiceCatalogRepository implements ServiceCatalogRepository {
   Future<PaginatedData<CatalogItemDto>> getCatalogItems({
     int page = 1,
     int perPage = 100,
+    String? categoryId,
+    String? search,
+    String? tag,
+    String? universe,
+    String? faceShape,
   }) async {
     calls++;
     lastPage = page;
@@ -1274,6 +1282,9 @@ class FakeServiceCatalogRepository implements ServiceCatalogRepository {
     if (failure != null) throw failure;
     return this.page;
   }
+
+  @override
+  Future<List<CatalogCategoryDto>> getCategories() async => categories;
 }
 
 FaceAnalysisBloc fakeFaceAnalysisBloc({

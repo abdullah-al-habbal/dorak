@@ -23,7 +23,7 @@ final class CreateCatalogItemAction extends BaseApiAction
         Gate::forUser($request->user())->authorize('create', ServiceCatalogItemModel::class);
         $item = $this->handler->handle($request->toCommand());
 
-        $item->load(['category', 'tags']);
+        $item->load(['category', 'tags', 'media']);
 
         return $this->created(
             data: new ServiceCatalogItemResource($item),

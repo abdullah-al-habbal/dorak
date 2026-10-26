@@ -38,13 +38,26 @@ The catalog supports item CRUD and a list filtered by category or search. Gaps:
 - `frontend/mobile/packages/core/lib/src/network/repositories/service_catalog.repository.dart` and `frontend/mobile/packages/core/lib/src/network/endpoints/service_catalog.endpoints.dart`: add categories plus tag, universe and face_shape filter params, and parse `tags`/`media`.
 
 ## Acceptance Criteria
-- [ ] `POST /api/v1/service-catalog/items` (admin) with `face_shapes: ["triangle-x"]` returns 422. Valid enum values return 201.
-- [ ] `tag_ids` persist rows in the assignment table, and `GET` returns a `tags` array.
-- [ ] A client `GET /api/v1/service-catalog/items` excludes items with `is_active=false`.
-- [ ] `?face_shape=oval`, `?tag=` and `?universe=` filters return only matching items (Feature tests).
-- [ ] `GET /api/v1/service-catalog/categories` returns 200.
-- [ ] Creating a service with an inactive `catalog_item_id` returns 422.
-- [ ] `php artisan test` passes; PHPStan max + Pint clean.
+- [x] `POST /api/v1/service-catalog/items` (admin) with `face_shapes: ["triangle-x"]` returns 422. Valid enum values return 201.
+- [x] `tag_ids` persist rows in the assignment table, and `GET` returns a `tags` array.
+- [x] A client `GET /api/v1/service-catalog/items` excludes items with `is_active=false`.
+- [x] `?face_shape=oval`, `?tag=` and `?universe=` filters return only matching items (Feature tests).
+- [x] `GET /api/v1/service-catalog/categories` returns 200.
+- [x] Creating a service with an inactive `catalog_item_id` returns 422.
+- [x] `php artisan test` passes; Pint clean. (PHPStan is explicitly exempted as a gate in this repo per `backend/CLAUDE.md`.)
+
+### Implemented contract
+- Enum validation: `CreateCatalogItemRequest`/`UpdateCatalogItemRequest` validate `face_shapes.*` with `Rule::enum(FaceShapeEnum::class)` and `hair_textures.*` with `Rule::enum(HairTextureEnum::class)`; an invalid value returns 422 with a `face_shapes.<n>`/`hair_textures.<n>` field error.
+- Tags: both requests accept `tag_ids[]` (`uuid`, `exists:service_catalog_item_tags,id`). `CreateCatalogItemHandler`/`UpdateCatalogItemHandler` call `$item->tags()->sync($command->tagIds)` through the existing `ServiceCatalogItemModel::tags()` `BelongsToMany` (pivot `service_catalog_item_tag_assignments`, already modeled by `ServiceCatalogItemTagAssignmentModel` from Task 14). `ServiceCatalogItemResource` exposes `tags` (id/name/slug/group) and `media` (id/type/path/alt/sort_order) via `whenLoaded`.
+- Visibility: `ListCatalogItemsEloquentResolver` filters `is_active = true` unless `ListCatalogItemsQuery::$includeInactive` is set; `ListCatalogItemsRequest::toQuery()` sets it from `$this->user('admin_api') !== null`, so only an authenticated admin sees inactive items in the list (the item-level `GET /items/{id}` show route is unchanged/out of scope here).
+- Filters: `ListCatalogItemsQuery` gained `tag` (matches `tags.slug`), `universe` (matches `category.universe`, validated against `Core\Enums\VenueUniverse`), and `faceShape` (`whereJsonContains('face_shapes', ...)`).
+- New fields: migration `2026_10_26_000001_add_duration_and_universe_to_service_catalog` adds `service_catalog_items.default_duration_minutes` (nullable `unsignedSmallInteger`) and `service_catalog_categories.universe` (`string(16)`, default `unisex`, indexed, cast to `VenueUniverse`).
+- Categories endpoint: `GET /api/v1/service-catalog/categories` (public, `ListCategoriesAction` → `ListCategoriesHandler` → `ListCategoriesEloquentResolver`) returns top-level categories (`whereNull('parent_id')`) with `children` eager-loaded, same active/admin visibility rule as items.
+- CAT-2: `Modules\Dashboard\Http\Requests\ServiceRequest` and `Modules\OfferedService\Http\Requests\Barber\BarberServiceRequest` both constrain `catalog_item_id`'s `Rule::exists('service_catalog_items', 'id')` with `->where('is_active', true)`, so linking a new dashboard or barber service to an inactive item now returns 422 on that field. Existing links to items later deactivated are untouched (only the create/update validation path is affected).
+- Dashboard: no code change. `frontend/dashboard/src/app/api/lookups/[resource]/route.ts` forwards the dashboard actor's own bearer token to the now-admin-aware `GET /service-catalog/items`; a manager/owner token never resolves through the `admin_api` guard, so the existing catalog picker already returns active-only items. (An admin actor hitting this same BFF lookup would see inactive items too, but that picker is only reachable from manager/owner service-creation screens today — not a regression, and the full admin catalog UI with explicit active/inactive handling is Task 77.)
+- Mobile: `ServiceCatalogRepository.getCatalogItems` gained `categoryId`/`search`/`tag`/`universe`/`faceShape` query params; a new `getCategories()` method hits `GET /service-catalog/categories`. New generated DTOs `CatalogCategoryDto`, `CatalogTagDto`, `CatalogMediumDto` (barrel-exported); `CatalogItemDto` gained `tags`, `media`, `defaultDurationMinutes`.
+- Fixed in passing: three `ServiceCatalog` factories (`ServiceCatalogItemFactory`, `ServiceCatalogCategoryFactory`, `ServiceCatalogItemTagFactory`) used an inline `\Str::slug()` FQCN, which violates the repo-wide "imports stay at the top" rule; replaced with a top-level `use Illuminate\Support\Str;` import.
+- No decisions needed beyond following established repo conventions.
 
 ## Out of Scope
 - Admin-only authorization (Task 04). ID type alignment (Task 14).

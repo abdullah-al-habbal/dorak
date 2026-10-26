@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:core/src/network/dto/catalog_medium.dto.dart';
 import 'package:core/src/network/dto/catalog_price_range.dto.dart';
+import 'package:core/src/network/dto/catalog_tag.dto.dart';
 
 part 'catalog_item.dto.g.dart';
 
@@ -21,6 +23,9 @@ class CatalogItemDto {
   final List<String> faceShapes;
   final String? stylePeriod;
   final bool isActive;
+  final List<CatalogTagDto> tags;
+  final List<CatalogMediumDto> media;
+  final int? defaultDurationMinutes;
 
   const CatalogItemDto({
     required this.id,
@@ -30,6 +35,9 @@ class CatalogItemDto {
     this.faceShapes = const [],
     this.stylePeriod,
     this.isActive = true,
+    this.tags = const [],
+    this.media = const [],
+    this.defaultDurationMinutes,
   });
 
   factory CatalogItemDto.fromJson(Map<String, dynamic> json) =>

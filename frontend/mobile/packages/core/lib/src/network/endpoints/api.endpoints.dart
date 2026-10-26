@@ -256,4 +256,5 @@ class _ReviewEndpoints {
 class _ServiceCatalogEndpoints {
   const _ServiceCatalogEndpoints();
   String get items => ServiceCatalogEndpoints.items;
+  String get categories => ServiceCatalogEndpoints.categories;
 }

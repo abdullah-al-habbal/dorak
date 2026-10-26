@@ -10,5 +10,9 @@ final readonly class ListCatalogItemsQuery
         public ?string $categoryId,
         public ?string $search,
         public int $perPage,
+        public bool $includeInactive = false,
+        public ?string $tag = null,
+        public ?string $universe = null,
+        public ?string $faceShape = null,
     ) {}
 }

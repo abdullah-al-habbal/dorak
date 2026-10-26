@@ -12,10 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Core\Enums\VenueUniverse;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'description', 'slug', 'parent_id', 'is_active', 'sort_order'])]
+#[Fillable(['name', 'description', 'slug', 'parent_id', 'is_active', 'sort_order', 'universe'])]
 #[Table('service_catalog_categories')]
 #[Translatable([
     'name',
@@ -29,6 +30,7 @@ class ServiceCatalogCategoryModel extends Model
     {
         return [
             'is_active' => 'boolean',
+            'universe' => VenueUniverse::class,
         ];
     }
 

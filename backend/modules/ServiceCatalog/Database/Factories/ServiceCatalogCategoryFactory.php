@@ -6,6 +6,7 @@ namespace Modules\ServiceCatalog\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 
 #[UseModel(ServiceCatalogCategoryModel::class)]
@@ -20,7 +21,7 @@ class ServiceCatalogCategoryFactory extends Factory
                 'en' => $name,
                 'ar' => fake('ar_SA')->word(),
             ],
-            'slug' => \Str::slug($name),
+            'slug' => Str::slug($name),
             'is_active' => true,
         ];
     }

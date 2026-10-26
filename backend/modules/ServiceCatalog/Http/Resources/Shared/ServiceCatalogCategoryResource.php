@@ -16,6 +16,7 @@ final class ServiceCatalogCategoryResource extends JsonResource
             'description' => $this->getTranslations('description'),
             'slug' => $this->slug,
             'parent_id' => $this->parent_id,
+            'universe' => $this->universe,
             'children' => self::collection($this->whenLoaded('children')),
             'items_count' => $this->whenLoaded('items', fn () => $this->items->count()),
             'is_active' => $this->is_active,

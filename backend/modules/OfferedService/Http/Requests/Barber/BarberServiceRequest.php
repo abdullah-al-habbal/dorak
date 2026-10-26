@@ -12,7 +12,7 @@ final class BarberServiceRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'catalog_item_id' => ['nullable', 'uuid', Rule::exists('service_catalog_items', 'id')],
+            'catalog_item_id' => ['nullable', 'uuid', Rule::exists('service_catalog_items', 'id')->where('is_active', true)],
             'currency_id' => ['required', 'uuid', Rule::exists('currencies', 'id')],
             'name' => ['required', 'array:en,ar'],
             'name.en' => ['required', 'string', 'max:120'],

@@ -24,5 +24,7 @@ final readonly class CreateCatalogItemCommand
         public ?array $hairTextures,
         public ?array $metadata,
         public bool $isActive,
+        public ?int $defaultDurationMinutes = null,
+        public ?array $tagIds = null,
     ) {}
 }

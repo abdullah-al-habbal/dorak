@@ -11,7 +11,7 @@ final class CreateCatalogItemHandler
 {
     public function handle(CreateCatalogItemCommand $command): ServiceCatalogItemModel
     {
-        return ServiceCatalogItemModel::create([
+        $item = ServiceCatalogItemModel::create([
             'category_id' => $command->categoryId,
             'name' => $command->name,
             'description' => $command->description,
@@ -25,6 +25,13 @@ final class CreateCatalogItemHandler
             'hair_textures' => $command->hairTextures,
             'metadata' => $command->metadata,
             'is_active' => $command->isActive,
+            'default_duration_minutes' => $command->defaultDurationMinutes,
         ]);
+
+        if ($command->tagIds !== null) {
+            $item->tags()->sync($command->tagIds);
+        }
+
+        return $item;
     }
 }

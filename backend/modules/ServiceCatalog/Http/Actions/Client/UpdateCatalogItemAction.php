@@ -24,6 +24,7 @@ final class UpdateCatalogItemAction extends BaseApiAction
         Gate::forUser($request->user())->authorize('update', $item);
         $command = $request->toCommand($id);
         $item = $this->handler->handle($command);
+        $item->load(['category', 'tags', 'media']);
 
         return $this->ok(
             data: new ServiceCatalogItemResource($item),
