@@ -27,4 +27,6 @@ final class RecommendationConstants
     public const EXPLORE_RANKING_VARIANT_DEFAULT = 'default';
 
     public const EXPLORE_RANKING_VARIANT_FACTOR_WEIGHTS_V2 = 'factor-weights-v2';
+
+    public const VECTOR_VERSION = 'v1';
 }

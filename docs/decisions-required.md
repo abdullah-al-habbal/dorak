@@ -144,7 +144,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved (INT-3): idempotent add via `firstOrCreate`, not a toggle. `POST /client/favorites` returns 201 with the new row when none existed, 200 with the existing row on a repeat call; the row count never grows past 1 per `(client_id, favorable_id, favorable_type)`. Removing a favorite stays the job of the existing `DELETE /client/favorites/{favorite}` endpoint. No follow-ups.
 
 ## [Task 62: Fix Recommendation Pipeline](tasks/task-62-recommendation-pipeline-fixes.md)
-- [ ] `rebuildEdges`: also rebuild `history` edges, and `visited` edges from interaction logs. Decision required: whether `face_matched` and `similar_client` ship now or are deferred (PRD marks some as later).
+- [x] Decision resolved (face_matched/similar_client): ship `face_matched` edges now (client → `catalog_item`, sourced from `ClientFaceAnalysisResultModel::recommended_catalog_item_ids`, which Task 15 already populates — no new infrastructure needed); defer `similar_client` until Task 63 provisions pgvector/ivfflat, since a brute-force pairwise-similarity computation today would be O(n²) over every client and nothing in the current ranking formula (`ExploreRanker`, Task 46) reads that edge type yet.
 
 ## [Task 63: Provision pgvector Storage for Preference Vectors](tasks/task-63-pgvector-storage.md)
 - [ ] Decision required: target production database. Either:

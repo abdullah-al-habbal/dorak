@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\ClientRecommendation\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Client\Models\ClientModel;
 use Modules\ClientRecommendation\Eloquent\Casts\EmbeddingCast;
 
+#[Fillable(['client_id', 'embedding', 'metadata', 'computed_at'])]
 #[Table('client_preference_vectors')]
 final class ClientPreferenceVectorModel extends Model
 {

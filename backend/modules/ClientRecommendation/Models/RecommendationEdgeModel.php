@@ -15,6 +15,7 @@ use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
     'source_type', 'source_id',
     'target_type', 'target_id',
     'edge_type', 'weight', 'context', 'expires_at',
+    'computed_at', 'vector_version',
 ])]
 #[Table('recommendation_edges')]
 final class RecommendationEdgeModel extends Model
@@ -28,6 +29,7 @@ final class RecommendationEdgeModel extends Model
             'weight' => 'float',
             'context' => 'array',
             'expires_at' => 'datetime',
+            'computed_at' => 'datetime',
         ];
     }
 

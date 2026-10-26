@@ -8,14 +8,13 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Laravel\Ai\Embeddings;
 use Modules\Barber\Models\BarberModel;
-use Modules\Booking\Enums\BookingStatus;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
-use Modules\ClientInteraction\Models\ClientFavoriteModel;
-use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
 use Modules\ClientRecommendation\Models\ClientPreferenceVectorModel;
 use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
+use Modules\ClientRecommendation\Services\ClientRecommendationEdgeRebuilder;
+use Modules\ClientRecommendation\Services\ClientRecommendationSignalGatherer;
 use Modules\ClientRecommendation\ValuesObjects\RecommendationFactorWeightsValueObject;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
@@ -36,50 +35,69 @@ final class RecomputeClientVectorsCommand extends Command
         $definition->setOptions($options);
     }
 
-    public function handle(): int
+    public function handle(ClientRecommendationSignalGatherer $gatherer, ClientRecommendationEdgeRebuilder $rebuilder): int
     {
         $clientId = $this->option('client-id');
+        $force = (bool) $this->option('force');
         $clientId !== null
             ? $this->info($this->cli('cli_recomputing_client', ['client_id' => $clientId]))
             : $this->info($this->cli('cli_recomputing_all_clients'));
 
         ClientModel::query()
             ->when($clientId, fn ($q, $id) => $q->where('id', $id))
-            ->chunk(100, function ($clients): void {
+            ->chunk(100, function ($clients) use ($force, $gatherer, $rebuilder): void {
                 foreach ($clients as $client) {
-                    $this->processClient($client);
+                    if (! $force && $this->isFresh($client, $gatherer)) {
+                        continue;
+                    }
+
+                    $this->processClient($client, $gatherer, $rebuilder);
                 }
             });
 
-        $this->recomputeEntityEmbeddings($clientId);
+        if ($clientId === null) {
+            $this->recomputeEntityEmbeddings();
+        }
+
+        $this->cleanupStaleData();
 
         $this->info($this->cli('cli_done'));
 
         return self::SUCCESS;
     }
 
-    private function recomputeEntityEmbeddings(?string $singleEntityId): void
+    private function isFresh(ClientModel $client, ClientRecommendationSignalGatherer $gatherer): bool
+    {
+        $vector = ClientPreferenceVectorModel::where('client_id', $client->id)->first();
+        if ($vector === null || $vector->computed_at === null) {
+            return false;
+        }
+
+        $latestSignalAt = $gatherer->latestSignalAt($client);
+
+        return $latestSignalAt !== null && $vector->computed_at->gte($latestSignalAt);
+    }
+
+    private function cleanupStaleData(): void
+    {
+        RecommendationEdgeModel::whereNotNull('expires_at')->where('expires_at', '<', now())->delete();
+
+        ClientPreferenceVectorModel::whereNotIn('client_id', ClientModel::withTrashed()->pluck('id'))->delete();
+    }
+
+    private function recomputeEntityEmbeddings(): void
     {
         $entityTypes = [
-            BranchModel::class => [
-                'type' => 'branch',
-                'query' => BranchModel::query()->when($singleEntityId, fn ($q, $id) => $q->where('id', $id)),
-                'label' => 'Branch',
-            ],
-            BarberModel::class => [
-                'type' => 'barber',
-                'query' => BarberModel::query()->when($singleEntityId, fn ($q, $id) => $q->where('id', $id)),
-                'label' => 'Barber',
-            ],
+            BranchModel::class => ['type' => 'branch', 'query' => BranchModel::query()],
+            BarberModel::class => ['type' => 'barber', 'query' => BarberModel::query()],
         ];
 
-        foreach ($entityTypes as $modelClass => $config) {
-            $config['query']
-                ->chunk(100, function ($entities) use ($config): void {
-                    foreach ($entities as $entity) {
-                        $this->processEntity($entity, $config);
-                    }
-                });
+        foreach ($entityTypes as $config) {
+            $config['query']->chunk(100, function ($entities) use ($config): void {
+                foreach ($entities as $entity) {
+                    $this->processEntity($entity, $config);
+                }
+            });
         }
     }
 
@@ -173,9 +191,9 @@ final class RecomputeClientVectorsCommand extends Command
         return $signals;
     }
 
-    private function processClient(ClientModel $client): void
+    private function processClient(ClientModel $client, ClientRecommendationSignalGatherer $gatherer, ClientRecommendationEdgeRebuilder $rebuilder): void
     {
-        $signals = $this->gatherSignals($client);
+        $signals = $gatherer->forClient($client);
 
         if (empty($signals)) {
             return;
@@ -208,54 +226,11 @@ final class RecomputeClientVectorsCommand extends Command
                 ]
             );
 
-            $this->rebuildEdges($client);
+            $rebuilder->rebuild($client);
 
             $this->info($this->cli('cli_client_vector_computed', ['client_id' => $client->id]));
         } catch (Throwable $e) {
             $this->error($this->cli('cli_client_vector_failed', ['client_id' => $client->id, 'reason' => $e->getMessage()]));
-        }
-    }
-
-    private function gatherSignals(ClientModel $client): array
-    {
-        $signals = [];
-
-        $favorites = ClientFavoriteModel::where('client_id', $client->id)->get();
-        foreach ($favorites as $favorite) {
-            $signals[] = "favorite:{$favorite->favorable_type->value}:{$favorite->favorable_id}";
-        }
-
-        $bookings = $client->bookings()
-            ->where('status', BookingStatus::Completed->value)
-            ->with('barber', 'services.catalogItem')
-            ->get();
-
-        foreach ($bookings as $booking) {
-            $barberName = $booking->barber?->name ?? 'unknown';
-            $serviceNames = $booking->services->map(
-                fn ($s) => $s->catalogItem?->name ?? $s->name ?? 'unknown service'
-            )->implode(', ');
-
-            $signals[] = "visited barber:{$barberName}, services:{$serviceNames}";
-        }
-
-        return $signals;
-    }
-
-    private function rebuildEdges(ClientModel $client): void
-    {
-        $favorites = ClientFavoriteModel::where('client_id', $client->id)->get();
-        foreach ($favorites as $favorite) {
-            RecommendationEdgeModel::updateOrCreate(
-                [
-                    'source_type' => 'client',
-                    'source_id' => $client->id,
-                    'target_type' => $favorite->favorable_type->value,
-                    'target_id' => $favorite->favorable_id,
-                    'edge_type' => EdgeTypeEnum::Favorite->value,
-                ],
-                ['weight' => 1.0]
-            );
         }
     }
 
