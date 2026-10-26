@@ -21,11 +21,14 @@ The BFF exposes `POST /api/auth/refresh`, but no client code calls it. Refresh h
 - None.
 
 ## Acceptance Criteria
-- [ ] With an expired access token and a valid refresh token, a client `apiRequest` succeeds transparently. Vitest with mocked fetch asserts the sequence 401 → refresh 200 → retry 200.
-- [ ] Three concurrent 401s trigger exactly one `POST /api/auth/refresh`. Vitest.
-- [ ] When the refresh returns 401, `reportSessionExpired` is called once and there is no retry loop. Vitest.
-- [ ] `ROUTES.api.auth.refresh` is referenced from `client.ts`.
-- [ ] `npm run test`, `npm run lint` and `npm run typecheck` pass.
+- [x] With an expired access token and a valid refresh token, a client `apiRequest` succeeds transparently. Vitest with mocked fetch asserts the sequence 401 → refresh 200 → retry 200.
+- [x] Three concurrent 401s trigger exactly one `POST /api/auth/refresh`. Vitest.
+- [x] When the refresh returns 401, `reportSessionExpired` is called once and there is no retry loop. Vitest.
+- [x] `ROUTES.api.auth.refresh` is referenced from `client.ts`.
+- [x] `npm run test`, `npm run lint` and `npm run typecheck` pass.
+
+### Implemented contract
+- `services/api/core/client.ts`: on a 401 for `auth: "session"`, `refreshSession()` (single-flight via a shared in-flight promise, direct `fetch` to `ROUTES.api.auth.refresh` so it is never itself retried) runs once, then the original request is retried once. `reportSessionExpired()` fires only if the request is still 401 afterwards. Public requests never refresh. Tests in `tests/services/api/core/client.test.ts`. Backend/mobile unchanged.
 
 ## Out of Scope
 - Session claim cookie/jti/rotation (Task 10).

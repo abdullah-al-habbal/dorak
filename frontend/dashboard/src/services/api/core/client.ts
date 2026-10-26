@@ -12,6 +12,7 @@ import {
 } from "@/services/api/core/http.util";
 import { reportApiFailure } from "@/services/api/common/network-health/network-health";
 import { reportSessionExpired } from "@/services/api/core/session-expiry";
+import { ROUTES } from "@/config/routes.constant";
 import { devWarn } from "@/utils/dev-warn.util";
 
 const REQUEST_TIMEOUT_MS = 15_000;
@@ -44,12 +45,32 @@ function reject(failure: ApiClientError): never {
   throw failure;
 }
 
-export async function apiRequest<TData>(
-  path: string,
-  options?: ApiRequestOptions,
-): Promise<TData> {
-  const { auth = "public", ...init } = options ?? {};
+let refreshInFlight: Promise<boolean> | null = null;
 
+/**
+ * Single-flight session refresh: concurrent 401s share one BFF refresh call.
+ * Uses fetch directly so the refresh request itself is never retried.
+ */
+function refreshSession(): Promise<boolean> {
+  refreshInFlight ??= fetch(ROUTES.api.auth.refresh, {
+    method: HTTP_METHOD.POST,
+    credentials: "same-origin",
+    redirect: "manual",
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  })
+    .then((response) => response.ok)
+    .catch(() => false)
+    .finally(() => {
+      refreshInFlight = null;
+    });
+
+  return refreshInFlight;
+}
+
+async function fetchOnce(
+  path: string,
+  init: Omit<ApiRequestOptions, "auth">,
+): Promise<Response> {
   let response: Response;
   try {
     response = await fetch(path, {
@@ -69,7 +90,21 @@ export async function apiRequest<TData>(
       clientFailure("Unexpected API redirect.", response.status, "redirect"),
     );
   }
-  if (auth === "session" && response.status === 401) reportSessionExpired();
+
+  return response;
+}
+
+export async function apiRequest<TData>(
+  path: string,
+  options?: ApiRequestOptions,
+): Promise<TData> {
+  const { auth = "public", ...init } = options ?? {};
+
+  let response = await fetchOnce(path, init);
+  if (auth === "session" && response.status === 401) {
+    if (await refreshSession()) response = await fetchOnce(path, init);
+    if (response.status === 401) reportSessionExpired();
+  }
 
   const payload = await readJson(response);
   if (!isApiResponse(payload)) {
