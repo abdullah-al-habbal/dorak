@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Preference\CQRS\Query\GetSettingsQuery;
 use Modules\Preference\Handlers\GetSettingsHandler;
-use Modules\Preference\Http\Resources\SettingsResource;
+use Modules\Preference\Http\Resources\Shared\SettingsResource;
 
 final class GetSettingsAction extends BaseApiAction
 {

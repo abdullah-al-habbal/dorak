@@ -7,7 +7,7 @@ namespace Modules\ClientInteraction\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\ClientInteraction\Handlers\ListFavoritesHandler;
 use Modules\ClientInteraction\Http\Requests\Client\ListFavoritesRequest;
-use Modules\ClientInteraction\Http\Resources\ClientFavoriteResource;
+use Modules\ClientInteraction\Http\Resources\Client\ClientFavoriteResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class ListFavoritesAction extends BaseApiAction

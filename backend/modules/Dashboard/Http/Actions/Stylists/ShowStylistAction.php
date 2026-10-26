@@ -6,7 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowStylistQuery;
 use Modules\Dashboard\Handlers\Stylists\ShowStylistHandler;

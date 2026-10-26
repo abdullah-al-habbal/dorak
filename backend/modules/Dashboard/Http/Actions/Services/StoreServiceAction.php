@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreServiceCommand;
 use Modules\Dashboard\Handlers\Services\StoreServiceHandler;
-use Modules\Dashboard\Http\Requests\ServiceRequest;
+use Modules\Dashboard\Http\Requests\Business\ServiceRequest;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 

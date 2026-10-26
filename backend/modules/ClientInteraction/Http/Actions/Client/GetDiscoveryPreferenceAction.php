@@ -6,7 +6,7 @@ namespace Modules\ClientInteraction\Http\Actions\Client;
 
 use Illuminate\Http\JsonResponse;
 use Modules\ClientInteraction\Handlers\GetDiscoveryPreferenceHandler;
-use Modules\ClientInteraction\Http\Resources\ClientDiscoveryPreferenceResource;
+use Modules\ClientInteraction\Http\Resources\Client\ClientDiscoveryPreferenceResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class GetDiscoveryPreferenceAction extends BaseApiAction

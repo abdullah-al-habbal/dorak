@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Modules\Barber\Handlers\Branch\CreateManagedBarberHandler;
 use Modules\Barber\Http\Requests\Branch\CreateManagedBarberRequest;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 

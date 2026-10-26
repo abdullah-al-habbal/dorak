@@ -10,7 +10,7 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Preference\CQRS\Query\GetSettingsQuery;
 use Modules\Preference\Handlers\GetSettingsHandler;
-use Modules\Preference\Http\Resources\SettingsResource;
+use Modules\Preference\Http\Resources\Shared\SettingsResource;
 use Modules\Preference\Support\DashboardOwnerResolver;
 
 final class GetSettingsAction extends BaseApiAction

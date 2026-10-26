@@ -10,7 +10,7 @@ use Modules\Dashboard\CQRS\Command\UpdateServiceCommand;
 use Modules\Dashboard\CQRS\Query\ShowServiceQuery;
 use Modules\Dashboard\Handlers\Services\ShowServiceHandler;
 use Modules\Dashboard\Handlers\Services\UpdateServiceHandler;
-use Modules\Dashboard\Http\Requests\ServiceRequest;
+use Modules\Dashboard\Http\Requests\Business\ServiceRequest;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 

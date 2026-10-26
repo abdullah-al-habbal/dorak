@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Barber\Handlers\Barber;
 
 use Modules\Barber\CQRS\Command\Barber\RegisterCommand;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Barber\Jobs\SendBarberEmailVerificationCodeJob;
 use Modules\Barber\Repositories\RegisterEloquentResolver;
 use Throwable;

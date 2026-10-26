@@ -7,7 +7,7 @@ namespace Modules\ClientFaceProfile\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Client\Models\ClientModel;
-use Modules\ClientFaceProfile\Http\Resources\ClientFaceProfileResource;
+use Modules\ClientFaceProfile\Http\Resources\Client\ClientFaceProfileResource;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 

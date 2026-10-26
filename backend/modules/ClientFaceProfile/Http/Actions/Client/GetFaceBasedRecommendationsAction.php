@@ -7,7 +7,7 @@ namespace Modules\ClientFaceProfile\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\ClientFaceProfile\Handlers\GetFaceBasedRecommendationsHandler;
 use Modules\ClientFaceProfile\Http\Requests\Client\GetFaceBasedRecommendationsRequest;
-use Modules\ClientFaceProfile\Http\Resources\ClientFaceAnalysisResultResource;
+use Modules\ClientFaceProfile\Http\Resources\Client\ClientFaceAnalysisResultResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class GetFaceBasedRecommendationsAction extends BaseApiAction

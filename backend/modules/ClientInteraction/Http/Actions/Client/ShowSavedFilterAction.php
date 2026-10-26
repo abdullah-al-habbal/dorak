@@ -7,7 +7,7 @@ namespace Modules\ClientInteraction\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\ClientInteraction\CQRS\Query\GetSavedFilterQuery;
 use Modules\ClientInteraction\Handlers\GetSavedFilterHandler;
-use Modules\ClientInteraction\Http\Resources\ClientSavedFilterResource;
+use Modules\ClientInteraction\Http\Resources\Client\ClientSavedFilterResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class ShowSavedFilterAction extends BaseApiAction

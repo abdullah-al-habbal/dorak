@@ -14,7 +14,7 @@ use Modules\Dashboard\CQRS\Query\ShowChairQuery;
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 use Modules\Dashboard\Handlers\Chairs\ShowChairHandler;
 use Modules\Dashboard\Handlers\Chairs\UpdateChairHandler;
-use Modules\Dashboard\Http\Requests\ChairRequest;
+use Modules\Dashboard\Http\Requests\Business\ChairRequest;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateChairAction extends BaseApiAction

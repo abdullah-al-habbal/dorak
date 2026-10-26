@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\UpdateStylistCommand;
 use Modules\Dashboard\CQRS\Query\ShowStylistQuery;
 use Modules\Dashboard\Handlers\Stylists\ShowStylistHandler;
 use Modules\Dashboard\Handlers\Stylists\UpdateStylistHandler;
-use Modules\Dashboard\Http\Requests\UpdateStylistRequest;
+use Modules\Dashboard\Http\Requests\Business\UpdateStylistRequest;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateStylistAction extends BaseApiAction

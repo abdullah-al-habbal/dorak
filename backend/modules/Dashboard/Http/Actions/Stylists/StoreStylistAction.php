@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreStylistCommand;
 use Modules\Dashboard\Handlers\Stylists\StoreStylistHandler;
-use Modules\Dashboard\Http\Requests\StoreStylistRequest;
+use Modules\Dashboard\Http\Requests\Business\StoreStylistRequest;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class StoreStylistAction extends BaseApiAction

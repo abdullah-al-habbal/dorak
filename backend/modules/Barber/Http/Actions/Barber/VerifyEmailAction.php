@@ -7,7 +7,7 @@ namespace Modules\Barber\Http\Actions\Barber;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Modules\Barber\Http\Requests\Barber\VerifyEmailRequest;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Barber\Models\BarberModel;
 use Modules\Barber\Services\BarberEmailVerification;
 use Modules\Core\Enums\ErrorCodeEnum;

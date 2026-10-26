@@ -7,7 +7,7 @@ namespace Modules\ClientHistory\Http\Actions\Barber;
 use Illuminate\Http\JsonResponse;
 use Modules\ClientHistory\Handlers\ListClientServiceHistoryHandler;
 use Modules\ClientHistory\Http\Requests\Barber\ListClientHistoryForBarberRequest;
-use Modules\ClientHistory\Http\Resources\ClientServiceHistoryResource;
+use Modules\ClientHistory\Http\Resources\Client\ClientServiceHistoryResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class ListClientHistoryForBarberAction extends BaseApiAction

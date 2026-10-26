@@ -11,7 +11,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Handlers\Profile\VerifyDashboardEmailChangeHandler;
-use Modules\Dashboard\Http\Requests\VerifyDashboardEmailChangeRequest;
+use Modules\Dashboard\Http\Requests\Business\VerifyDashboardEmailChangeRequest;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardProfileData;
 

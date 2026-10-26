@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\ClientInteraction\Enums\InteractableTypeEnum;
 use Modules\ClientInteraction\Handlers\AddFavoriteHandler;
 use Modules\ClientInteraction\Http\Requests\Client\AddFavoriteRequest;
-use Modules\ClientInteraction\Http\Resources\ClientFavoriteResource;
+use Modules\ClientInteraction\Http\Resources\Client\ClientFavoriteResource;
 use Modules\ClientInteraction\Services\ClientInteractionRecorder;
 use Modules\Core\Http\Actions\BaseApiAction;
 

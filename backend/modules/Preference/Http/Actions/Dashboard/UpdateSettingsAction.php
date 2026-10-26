@@ -9,8 +9,8 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Preference\CQRS\Command\UpdateSettingsCommand;
 use Modules\Preference\Handlers\UpdateSettingsHandler;
-use Modules\Preference\Http\Requests\UpdateSettingsRequest;
-use Modules\Preference\Http\Resources\SettingsResource;
+use Modules\Preference\Http\Requests\Shared\UpdateSettingsRequest;
+use Modules\Preference\Http\Resources\Shared\SettingsResource;
 use Modules\Preference\Support\DashboardOwnerResolver;
 
 final class UpdateSettingsAction extends BaseApiAction

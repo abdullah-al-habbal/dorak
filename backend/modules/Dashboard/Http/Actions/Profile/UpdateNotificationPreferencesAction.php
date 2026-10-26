@@ -7,7 +7,7 @@ namespace Modules\Dashboard\Http\Actions\Profile;
 use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Handlers\Profile\UpdateNotificationPreferencesHandler;
-use Modules\Dashboard\Http\Requests\UpdateNotificationPreferencesRequest;
+use Modules\Dashboard\Http\Requests\Business\UpdateNotificationPreferencesRequest;
 use Modules\Dashboard\Models\DashboardNotificationPreferenceModel;
 use Modules\Dashboard\Support\DashboardActor;
 

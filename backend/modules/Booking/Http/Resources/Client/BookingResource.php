@@ -6,7 +6,7 @@ namespace Modules\Booking\Http\Resources\Client;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Branch\Http\Resources\Shared\ChairResource;
 use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 

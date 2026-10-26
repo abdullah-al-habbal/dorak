@@ -7,7 +7,7 @@ namespace Modules\ClientFaceProfile\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\ClientFaceProfile\Handlers\SetPrimaryFaceProfilePhotoHandler;
 use Modules\ClientFaceProfile\Http\Requests\Client\SetPrimaryFaceProfilePhotoRequest;
-use Modules\ClientFaceProfile\Http\Resources\ClientFaceProfileResource;
+use Modules\ClientFaceProfile\Http\Resources\Client\ClientFaceProfileResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class SetPrimaryFaceProfilePhotoAction extends BaseApiAction

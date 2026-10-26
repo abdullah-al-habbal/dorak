@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Explore\Http\Actions\Shared;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\ClientInteraction\Services\ClientInteractionRecorder;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Explore\Handlers\Shared\ExploreBarbersHandler;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Branch\Http\Resources\Shared;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Chair\Models\ChairModel;
 
 final class ChairResource extends JsonResource

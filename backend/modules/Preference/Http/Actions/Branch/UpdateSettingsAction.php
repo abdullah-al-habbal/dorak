@@ -8,8 +8,8 @@ use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Preference\CQRS\Command\UpdateSettingsCommand;
 use Modules\Preference\Handlers\UpdateSettingsHandler;
-use Modules\Preference\Http\Requests\UpdateSettingsRequest;
-use Modules\Preference\Http\Resources\SettingsResource;
+use Modules\Preference\Http\Requests\Shared\UpdateSettingsRequest;
+use Modules\Preference\Http\Resources\Shared\SettingsResource;
 
 final class UpdateSettingsAction extends BaseApiAction
 {

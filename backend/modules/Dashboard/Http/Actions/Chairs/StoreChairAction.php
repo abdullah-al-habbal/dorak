@@ -10,7 +10,7 @@ use Modules\Chair\Http\Resources\Shared\ChairResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreChairCommand;
 use Modules\Dashboard\Handlers\Chairs\StoreChairHandler;
-use Modules\Dashboard\Http\Requests\ChairRequest;
+use Modules\Dashboard\Http\Requests\Business\ChairRequest;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class StoreChairAction extends BaseApiAction

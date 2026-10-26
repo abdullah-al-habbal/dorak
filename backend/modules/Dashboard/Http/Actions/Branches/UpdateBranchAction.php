@@ -13,7 +13,7 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\UpdateBranchCommand;
 use Modules\Dashboard\Eloquent\Resolvers\Branches\BranchLifecycleConflictException;
 use Modules\Dashboard\Handlers\Branches\UpdateBranchHandler;
-use Modules\Dashboard\Http\Requests\UpdateBranchRequest;
+use Modules\Dashboard\Http\Requests\Business\UpdateBranchRequest;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateBranchAction extends BaseApiAction

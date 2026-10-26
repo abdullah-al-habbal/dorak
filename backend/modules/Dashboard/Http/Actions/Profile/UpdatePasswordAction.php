@@ -11,7 +11,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Handlers\Profile\UpdateDashboardPasswordHandler;
-use Modules\Dashboard\Http\Requests\UpdateDashboardPasswordRequest;
+use Modules\Dashboard\Http\Requests\Business\UpdateDashboardPasswordRequest;
 
 final class UpdatePasswordAction extends BaseApiAction
 {

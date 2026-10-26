@@ -107,7 +107,7 @@ codeanchors:
 
 ## Phase 12 — Backend Hygiene (P3)
 - [x] Task 66: Remove Orphan Action Classes -> [Spec](tasks/task-66-orphan-actions-cleanup.md)
-- [ ] Task 67: Conform Modules to Context Namespacing -> [Spec](tasks/task-67-context-namespacing-conformance.md)
+- [x] Task 67: Conform Modules to Context Namespacing -> [Spec](tasks/task-67-context-namespacing-conformance.md)
 
 ## Phase 13 — Dashboard (P1–P2)
 - [ ] Task 68: Fix Barber Workspace Cache Invalidation and Toggle -> [Spec](tasks/task-68-barber-workspace-cache-fix.md)

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Explore\Eloquent\Resolvers\Shared;
 
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;

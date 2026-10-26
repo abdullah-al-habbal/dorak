@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Handlers\Profile\RequestDashboardEmailChangeHandler;
-use Modules\Dashboard\Http\Requests\RequestDashboardEmailChangeRequest;
+use Modules\Dashboard\Http\Requests\Business\RequestDashboardEmailChangeRequest;
 use Modules\Dashboard\Mail\SendDashboardEmailChangeCode;
 use Modules\Dashboard\Support\DashboardActor;
 

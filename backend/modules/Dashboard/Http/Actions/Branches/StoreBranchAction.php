@@ -9,7 +9,7 @@ use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreBranchCommand;
 use Modules\Dashboard\Handlers\Branches\StoreBranchHandler;
-use Modules\Dashboard\Http\Requests\StoreBranchRequest;
+use Modules\Dashboard\Http\Requests\Business\StoreBranchRequest;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class StoreBranchAction extends BaseApiAction

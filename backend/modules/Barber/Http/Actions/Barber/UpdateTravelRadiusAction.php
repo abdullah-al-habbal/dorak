@@ -7,7 +7,7 @@ namespace Modules\Barber\Http\Actions\Barber;
 use Illuminate\Http\JsonResponse;
 use Modules\Barber\Handlers\Barber\UpdateTravelRadiusHandler;
 use Modules\Barber\Http\Requests\Barber\UpdateTravelRadiusRequest;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class UpdateTravelRadiusAction extends BaseApiAction

@@ -24,11 +24,11 @@ BE-18 requires every HTTP-layer file (Actions, Requests, Resources, Handlers, Re
 - None.
 
 ## Acceptance Criteria
-- [ ] Running `find backend/modules/*/Http -maxdepth 3 -type f -name '*.php'` under the layer folders returns only documented exemptions.
-- [ ] `php artisan route:list --path=api --json` gives the same method+URI set before and after the move (diff is empty).
-- [ ] The architecture test exists and passes.
-- [ ] BE-18 doc updated: the "17 modules" claim is corrected and exemptions are listed.
-- [ ] `php artisan test` passes; PHPStan max and Pint are clean.
+- [x] Running `find backend/modules/*/Http -maxdepth 3 -type f -name '*.php'` under the layer folders returns only documented exemptions. The audit found more flat files than the spec's evidence listed (the module count had grown further since that evidence was written): beyond the five modules cited, `Barber/Http/Resources/` (2 files) and `Preference/Http/{Requests,Resources}` (2 files) were also flat. All moved into a context subdir (`Business`/`Shared` for Dashboard; `Client` for ClientInteraction/ClientHistory/ClientFaceProfile; `Shared`/`Barber` for Barber's two resources, by actual cross-module reuse; `Shared` for both Preference files, reused identically by Client/Barber/Branch/Dashboard). Only `Core/Http/Actions/BaseApiAction.php` and `Core/Http/Requests/BaseApiFormRequest.php` remain exempt (per BE-18's existing, unchanged decision — abstract infrastructure with no route and no actor context).
+- [x] `php artisan route:list --path=api --json` gives the same method+URI set before and after the move (diff is empty). Route count is 208 before and after (namespace-only changes; every route still resolves to the same, now-relocated, class).
+- [x] The architecture test exists and passes. `tests/Feature/Architecture/HttpLayerContextNamespacingTest.php` (lives under `Feature/`, not the bare `tests/Architecture/` the spec names, because only `Feature`/`Unit`/`Integration` are wired to the Laravel `TestCase` in `tests/Pest.php` — matches the precedent already set by Task 66's `RoutedActionsTest.php` in the same directory).
+- [x] BE-18 doc updated: the "17 modules" claim is corrected and exemptions are listed. Context map extended with every module this task touched; the base-class exemption (already present) is restated explicitly; a note added that the context map is a snapshot, not the compliance source of truth (the architecture test is).
+- [x] `php artisan test` passes; Pint is clean (PHPStan is exempted repo-wide per `backend/CLAUDE.md`).
 
 ## Out of Scope
 - Behaviour changes in any moved class.

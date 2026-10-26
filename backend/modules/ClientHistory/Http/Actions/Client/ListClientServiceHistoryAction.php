@@ -7,7 +7,7 @@ namespace Modules\ClientHistory\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\ClientHistory\Handlers\ListClientServiceHistoryHandler;
 use Modules\ClientHistory\Http\Requests\Client\ListClientServiceHistoryRequest;
-use Modules\ClientHistory\Http\Resources\ClientServiceHistoryResource;
+use Modules\ClientHistory\Http\Resources\Client\ClientServiceHistoryResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class ListClientServiceHistoryAction extends BaseApiAction

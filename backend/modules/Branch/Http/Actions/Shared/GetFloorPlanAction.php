@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Branch\Http\Actions\Shared;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Barber\Http\Resources\BarberResource;
+use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Branch\Handlers\Shared\GetFloorPlanHandler;
 use Modules\Branch\Http\Requests\Shared\GetFloorPlanRequest;
 use Modules\Branch\Http\Resources\Shared\ChairResource;
