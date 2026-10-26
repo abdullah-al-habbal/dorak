@@ -99,7 +99,7 @@ codeanchors:
 - [x] Task 60: Fix Favorites and Saved Filter Contracts -> [Spec](tasks/task-60-favorites-and-saved-filters-contract.md)
 - [x] Task 61: Complete Service Catalog Module -> [Spec](tasks/task-61-service-catalog-completion.md)
 - [x] Task 62: Fix Recommendation Pipeline -> [Spec](tasks/task-62-recommendation-pipeline-fixes.md)
-- [ ] Task 63: Provision pgvector Storage for Preference Vectors -> [Spec](tasks/task-63-pgvector-storage.md)
+- [x] Task 63: Provision pgvector Storage for Preference Vectors -> [Spec](tasks/task-63-pgvector-storage.md)
 
 ## Phase 11 — Admin & Platform (P2–P3)
 - [ ] Task 64: Add Status Change Audit Trail -> [Spec](tasks/task-64-status-audit-trail.md)

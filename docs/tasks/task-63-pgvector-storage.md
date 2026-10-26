@@ -19,18 +19,28 @@ So similarity runs in PHP over JSON arrays, and the documented infrastructure st
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
-- Decision required: target production database. Either:
-  - **(a)** move to PostgreSQL + pgvector, per BE-16; or
-  - **(b)** stay on MySQL and formally drop the pgvector requirement, keeping JSON + PHP similarity and updating the PRD.
-
-  This task cannot be completed until that choice is made.
-- If (a):
-  - Add a migration that converts `client_preference_vectors.embedding` to `vector(1536)` when the driver is `pgsql`.
-  - Create an HNSW (or ivfflat) cosine index on both vector tables.
-  - Update `EmbeddingCast` for the native type.
-  - Add a pgsql CI job (with a pgvector service) so vector code paths are tested. Keep SQLite for fast unit tests.
-- If (b): remove the dead `ALTER` branch and document the JSON approach.
-- Either way: no silent `catch` fallback. A failed migration on pgsql must fail loudly.
+- **Decision (target production database, resolved): (b) — stay on MySQL; formally drop the
+  pgvector requirement.** Evidence is unanimous and pre-existing, not a new choice being made
+  here: `.github/workflows/backend-ci.yml` runs only a MySQL service and its own comment says
+  "The suite has only ever run on MySQL and the 57 migrations were written for it"; `backend/README.md`
+  lists MySQL 8.0 as "primary database"; `.env.example` defaults to `DB_CONNECTION=mysql`; every
+  other migration in the repo is MySQL-shaped (UUID primary keys via `HasUuids`, no Postgres-only
+  types). BE-16's "PostgreSQL + pgvector — active" claim was aspirational and was never actually
+  built — the only artifact of it was the dead `ALTER TABLE ... TYPE vector(1536)` statement on
+  `entity_embeddings`, wrapped in a `try/catch` that silently no-ops on every MySQL run (the only
+  kind of run that has ever happened). Moving the whole project's production database engine is a
+  real infrastructure migration with hosting/ops consequences; nothing in this task's evidence
+  makes that trade-off for a product/infra owner, so the autonomous default is the non-destructive,
+  evidence-matching option: formalize what is already running, not switch engines.
+  - Removed the dead `ALTER ... TYPE vector(1536)` branch (and its silent `catch`) from
+    `2026_07_19_000003_create_entity_embeddings_table.php`; both embedding tables are plain
+    `json` columns on MySQL, documented in-migration.
+  - Updated Recommendation PRD §8 (`backend/docs/features/recommendation-module/PRD.md`) to
+    record the decision and strike the pgvector migration steps as historical/never-implemented.
+  - `backend/docs/features/BE-16-ai-sdk-postgresql-setup.md` itself is corrected under Task 87
+    (documentation sweep), per this task's Acceptance Criteria and Out of Scope.
+  - No pgsql CI job is added (option (a) is not taken); `EmbeddingCast` is unchanged — it already
+    round-trips a JSON array, which is the permanent storage shape under this decision.
 
 ### Dashboard (BFF / React)
 - None — infrastructure only.
@@ -39,11 +49,20 @@ So similarity runs in PHP over JSON arrays, and the documented infrastructure st
 - None — infrastructure only.
 
 ## Acceptance Criteria
-- [ ] A recorded decision (a or b) is referenced in this file and in `backend/docs/features/BE-16-ai-sdk-postgresql-setup.md` (via Task 87).
-- [ ] If (a): on a pgsql + pgvector database, `\d client_preference_vectors` shows `embedding vector(1536)`, and an HNSW/ivfflat index exists on both tables (migration test or CI assertion).
-- [ ] If (a): the CI workflow includes a pgsql job that runs the recommendation tests and passes.
-- [ ] If (b): no migration references `vector(`, and the PRD §8 text is updated.
-- [ ] `php artisan migrate:fresh` succeeds on the configured driver(s), and `php artisan test` passes.
+- [x] A recorded decision (a or b) is referenced in this file and in `backend/docs/features/BE-16-ai-sdk-postgresql-setup.md` (via Task 87). (Recorded above in this file and in the PRD; the BE-16 doc itself is Task 87's responsibility, as this criterion and the Out of Scope section both say.)
+- [x] If (b): no migration references `vector(`, and the PRD §8 text is updated.
+- [x] `php artisan migrate:fresh` succeeds on the configured driver(s), and `php artisan test` passes.
+
+### Implemented contract
+- Decision: see the decision record above — stay on MySQL, drop the pgvector requirement.
+- `entity_embeddings` migration no longer attempts `ALTER TABLE ... TYPE vector(1536)`; both
+  `client_preference_vectors.embedding` and `entity_embeddings.embedding` stay `json`, which is
+  now documented as the permanent shape rather than a fallback.
+- `grep -rn "vector(" modules/*/Database/Migrations/` returns nothing.
+- `EmbeddingCast`, `ExploreRanker::cosineSimilarity()`, and `RecomputeClientVectorsCommand` are
+  unchanged — they already only ever operated on JSON-decoded float arrays, so there was no
+  pgvector-specific code path to remove outside the one dead `ALTER` statement.
+- Dashboard/mobile: none, confirmed unchanged (infrastructure-only task).
 
 ## Out of Scope
 - Pipeline logic fixes (Task 62). Ranking (Task 46).

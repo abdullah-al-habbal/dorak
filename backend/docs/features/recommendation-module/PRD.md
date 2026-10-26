@@ -174,9 +174,18 @@ Batch size: 100 clients per chunk to avoid OOM.
 
 ## 8. Migration Steps
 
-1. `CREATE EXTENSION vector;` — run manually or via `php artisan pgsql:create-extension vector`
-2. `php artisan make:migration` for both tables
-3. Index: `CREATE INDEX idx_preference_vectors ON client_preference_vectors USING ivfflat (embedding vector_cosine_ops);` for approximate nearest-neighbor queries
+**Decision (Task 63, resolved): stay on MySQL; the pgvector/PostgreSQL plan below was never
+implemented and is formally dropped.** `client_preference_vectors.embedding` and
+`entity_embeddings.embedding` are plain `json` columns on MySQL — the project's only
+database engine (CI, `.env.example`, and all 57+ other migrations target MySQL; see
+`backend/docs/features/BE-16-ai-sdk-postgresql-setup.md`, corrected under Task 87).
+Similarity is computed in PHP (`Modules\Explore\Support\ExploreRanker::cosineSimilarity()`)
+over the decoded JSON arrays — no vector extension, no ivfflat/HNSW index. The steps below
+are the original plan, kept for history; they do not describe the running system.
+
+1. ~~`CREATE EXTENSION vector;` — run manually or via `php artisan pgsql:create-extension vector`~~
+2. ~~`php artisan make:migration` for both tables~~
+3. ~~Index: `CREATE INDEX idx_preference_vectors ON client_preference_vectors USING ivfflat (embedding vector_cosine_ops);` for approximate nearest-neighbor queries~~
 
 ## 9. Test Plan
 

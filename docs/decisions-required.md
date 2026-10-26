@@ -147,7 +147,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved (face_matched/similar_client): ship `face_matched` edges now (client → `catalog_item`, sourced from `ClientFaceAnalysisResultModel::recommended_catalog_item_ids`, which Task 15 already populates — no new infrastructure needed); defer `similar_client` until Task 63 provisions pgvector/ivfflat, since a brute-force pairwise-similarity computation today would be O(n²) over every client and nothing in the current ranking formula (`ExploreRanker`, Task 46) reads that edge type yet.
 
 ## [Task 63: Provision pgvector Storage for Preference Vectors](tasks/task-63-pgvector-storage.md)
-- [ ] Decision required: target production database. Either:
+- [x] Decision resolved: stay on MySQL, formally drop the pgvector requirement (option b). CI (`backend-ci.yml`), `backend/README.md`, and `.env.example` all target MySQL only, and every migration in the repo is MySQL-shaped — BE-16's "PostgreSQL + pgvector active" claim was never actually built; the only trace of it was a dead `ALTER TABLE ... TYPE vector(1536)` on `entity_embeddings` that silently no-opped on every MySQL run via a swallowed `catch`. Removed that branch; both embedding tables stay plain `json`, with cosine similarity computed in PHP (`ExploreRanker`). Recommendation PRD §8 updated to record this and strike the pgvector steps as historical. `backend/docs/features/BE-16-ai-sdk-postgresql-setup.md` itself is corrected under Task 87.
 
 ## [Task 64: Add Status Change Audit Trail](tasks/task-64-status-audit-trail.md)
 - [ ] Decision required: retention period for audit rows (indefinite vs. N years).
