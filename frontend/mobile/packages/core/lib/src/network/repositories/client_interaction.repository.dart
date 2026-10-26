@@ -2,10 +2,16 @@ import 'package:core/core.dart';
 
 abstract class ClientInteractionRepository {
   Future<List<SavedFilterDto>> getSavedFilters();
+  Future<SavedFilterDto> getSavedFilter(String id);
   Future<SavedFilterDto> saveFilter({
     required String name,
     required Map<String, dynamic> filterConfig,
     String? id,
+  });
+  Future<SavedFilterDto> updateSavedFilter({
+    required String id,
+    required String name,
+    required Map<String, dynamic> filterConfig,
   });
   Future<void> deleteSavedFilter(String id);
   Future<DiscoveryPreferenceDto> getDiscoveryPreferences();
@@ -23,6 +29,11 @@ class DioClientInteractionRepository implements ClientInteractionRepository {
     parser: (json) => (json as List)
         .map((item) => SavedFilterDto.fromJson(item as Map<String, dynamic>))
         .toList(),
+  );
+  @override
+  Future<SavedFilterDto> getSavedFilter(String id) => _client.get(
+    ApiEndpoints.clientInteraction.savedFilter(id),
+    parser: (json) => SavedFilterDto.fromJson(json as Map<String, dynamic>),
   );
   @override
   Future<SavedFilterDto> saveFilter({
@@ -44,6 +55,17 @@ class DioClientInteractionRepository implements ClientInteractionRepository {
       parser: (json) => SavedFilterDto.fromJson(json as Map<String, dynamic>),
     );
   }
+
+  @override
+  Future<SavedFilterDto> updateSavedFilter({
+    required String id,
+    required String name,
+    required Map<String, dynamic> filterConfig,
+  }) => _client.put(
+    ApiEndpoints.clientInteraction.savedFilter(id),
+    data: {'name': name, 'filter_config': filterConfig},
+    parser: (json) => SavedFilterDto.fromJson(json as Map<String, dynamic>),
+  );
 
   @override
   Future<void> deleteSavedFilter(String id) =>

@@ -7,6 +7,7 @@ namespace Modules\ClientInteraction\Http\Requests\Client;
 use Illuminate\Validation\Rule;
 use Modules\ClientInteraction\CQRS\Command\AddFavoriteCommand;
 use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Rules\FavorableExists;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class AddFavoriteRequest extends BaseApiFormRequest
@@ -14,7 +15,7 @@ final class AddFavoriteRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'favorable_id' => ['required', 'string'],
+            'favorable_id' => ['required', 'string', new FavorableExists($this->input('favorable_type'))],
             'favorable_type' => ['required', Rule::enum(FavorableTypeEnum::class)],
         ];
     }

@@ -11,7 +11,7 @@ final class AddFavoriteEloquentResolver
 {
     public function resolve(AddFavoriteCommand $command): ClientFavoriteModel
     {
-        return ClientFavoriteModel::create([
+        return ClientFavoriteModel::firstOrCreate([
             'client_id' => $command->clientId,
             'favorable_id' => $command->favorableId,
             'favorable_type' => $command->favorableType,

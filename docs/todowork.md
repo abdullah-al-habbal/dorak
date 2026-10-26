@@ -96,7 +96,7 @@ codeanchors:
 ## Phase 10 — Client Intelligence (P2)
 - [x] Task 58: Complete Client History -> [Spec](tasks/task-58-client-history-completion.md)
 - [x] Task 59: Enforce Face Profile Photo Lifecycle -> [Spec](tasks/task-59-face-profile-lifecycle.md)
-- [ ] Task 60: Fix Favorites and Saved Filter Contracts -> [Spec](tasks/task-60-favorites-and-saved-filters-contract.md)
+- [x] Task 60: Fix Favorites and Saved Filter Contracts -> [Spec](tasks/task-60-favorites-and-saved-filters-contract.md)
 - [ ] Task 61: Complete Service Catalog Module -> [Spec](tasks/task-61-service-catalog-completion.md)
 - [ ] Task 62: Fix Recommendation Pipeline -> [Spec](tasks/task-62-recommendation-pipeline-fixes.md)
 - [ ] Task 63: Provision pgvector Storage for Preference Vectors -> [Spec](tasks/task-63-pgvector-storage.md)

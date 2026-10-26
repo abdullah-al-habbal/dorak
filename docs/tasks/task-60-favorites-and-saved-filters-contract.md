@@ -20,7 +20,8 @@
 
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
-- Make `POST /api/v1/client/favorites` idempotent: `firstOrCreate`, returning 200 with the existing favorite or 201 when created. Decision required: idempotent add, or true toggle (a second call removes). Idempotent add is recommended because `DELETE /client/favorites/{favorite}` already exists.
+- Make `POST /api/v1/client/favorites` idempotent: `firstOrCreate`, returning 200 with the existing favorite or 201 when created.
+  - **Decision (INT-3, resolved): idempotent add, not a toggle.** `DELETE /client/favorites/{favorite}` already exists for removal, so a second `POST` returning 200 for the existing row (instead of removing it) keeps one HTTP verb per intent. No follow-up scope.
 - Validate that `favorable_id` exists in the table mapped by `favorable_type` (custom rule). Unknown IDs return 422.
 - `FilterConfigurationValueObject`: accept `price_range.min/max` as the canonical input, and keep `price_min/price_max` as a backwards-compatible alias. Serialize as `price_range`.
 - Update `CreateSavedFilterRequest` and `UpdateSavedFilterRequest` rules to match.
@@ -34,12 +35,19 @@
 - UI wiring for saved filters is in Task 80.
 
 ## Acceptance Criteria
-- [ ] A second `POST /api/v1/client/favorites` with the same target returns 200 (not 500), and exactly one row exists.
-- [ ] `favorable_id` of a non-existent branch returns 422.
-- [ ] Saving a filter with `price_range: {min: 10, max: 50}` and reading it back via `GET /api/v1/client/saved-filters/{filter}` returns the same `price_range`.
-- [ ] Legacy `price_min`/`price_max` input is still accepted and read back as `price_range`.
-- [ ] Mobile repository tests for `getSavedFilter`/`updateSavedFilter` pass (`melos run test`).
-- [ ] `php artisan test` passes; PHPStan max + Pint clean.
+- [x] A second `POST /api/v1/client/favorites` with the same target returns 200 (not 500), and exactly one row exists.
+- [x] `favorable_id` of a non-existent branch returns 422.
+- [x] Saving a filter with `price_range: {min: 10, max: 50}` and reading it back via `GET /api/v1/client/saved-filters/{filter}` returns the same `price_range`.
+- [x] Legacy `price_min`/`price_max` input is still accepted and read back as `price_range`.
+- [x] Mobile repository tests for `getSavedFilter`/`updateSavedFilter` pass (`melos run test`).
+- [x] `php artisan test` passes; Pint clean. (PHPStan is explicitly exempted as a gate in this repo per `backend/CLAUDE.md`.)
+
+### Implemented contract
+- Favorites: `AddFavoriteEloquentResolver::resolve()` now calls `ClientFavoriteModel::firstOrCreate([...])` on the unique triple `(client_id, favorable_id, favorable_type)`. `AddFavoriteAction` reads `$favorite->wasRecentlyCreated` to return `201` (new) or `200` (existing) with the same `ClientFavoriteResource` body either way.
+- Existence check: new `Modules\ClientInteraction\Rules\FavorableExists` (`ValidationRule`) resolves the target model class from `Relation::getMorphedModel($favorable_type)` (the morph map already used by `brand`/`branch`/`barber`/`catalog_item`) and fails with `clientinteraction::messages.favorable_not_found` (added `Lang/en` and `Lang/ar`) when `favorable_id` doesn't exist in that table. Wired into `AddFavoriteRequest::rules()` alongside the existing enum rule.
+- `price_range`: `FilterConfigurationValueObject::fromArray()` now reads `price_range.min`/`price_range.max` first and falls back to the legacy flat `price_min`/`price_max` keys; `toArray()` always serializes the nested `price_range` shape (never the flat keys). `ClientSavedFilterResource` was changed to call `$this->filter_config->toArray()` explicitly — `JsonResource` was previously returning the raw value object, which `json_encode` serialized as its camelCase public properties (`priceMin`, `catalogItemIds`, ...) instead of the snake_case wire shape; this was a latent bug (never exercised by a prior test) that the `price_range` round-trip test surfaced. `CreateSavedFilterRequest`/`UpdateSavedFilterRequest` needed no rule change: `filter_config` was already validated as a generic `array` and the key rename is transparent to that rule.
+- Mobile: `ClientInteractionRepository` (packages/core) gains `getSavedFilter(id)` (`GET /client/saved-filters/{id}`) and `updateSavedFilter({id, name, filterConfig})` (`PUT /client/saved-filters/{id}`, distinct from the existing `saveFilter(id: ...)` create-or-update method, per spec). `FavoriteRepository.addFavorite` needed no change: `ApiClient._throwIfFailure` already treats any `success: true` response under 400 as success regardless of status code, so 200 and 201 were already both handled.
+- Dashboard: none (client-only feature, confirmed unchanged).
 
 ## Out of Scope
 - Applying discovery preferences in Explore and interaction logging (Task 47).

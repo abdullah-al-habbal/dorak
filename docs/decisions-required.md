@@ -141,7 +141,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved: HIST-3 barber read qualifies on **any non-canceled booking** between the barber and client (past, active, or upcoming), matched via `booking.barber_id` or `booking.chair.barber_id`. Chosen over "upcoming/active only" because a barber preparing for an upcoming appointment needs to see the client's full grooming history, not just future bookings; `canceled` is excluded because a canceled booking never produced a real client relationship.
 
 ## [Task 60: Fix Favorites and Saved Filter Contracts](tasks/task-60-favorites-and-saved-filters-contract.md)
-- [ ] Make `POST /api/v1/client/favorites` idempotent: `firstOrCreate`, returning 200 with the existing favorite or 201 when created. Decision required: idempotent add, or true toggle (a second call removes). Idempotent add is recommended because `DELETE /client/favorites/{favorite}` already exists.
+- [x] Decision resolved (INT-3): idempotent add via `firstOrCreate`, not a toggle. `POST /client/favorites` returns 201 with the new row when none existed, 200 with the existing row on a repeat call; the row count never grows past 1 per `(client_id, favorable_id, favorable_type)`. Removing a favorite stays the job of the existing `DELETE /client/favorites/{favorite}` endpoint. No follow-ups.
 
 ## [Task 62: Fix Recommendation Pipeline](tasks/task-62-recommendation-pipeline-fixes.md)
 - [ ] `rebuildEdges`: also rebuild `history` edges, and `visited` edges from interaction logs. Decision required: whether `face_matched` and `similar_client` ship now or are deferred (PRD marks some as later).
