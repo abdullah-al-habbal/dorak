@@ -106,7 +106,7 @@ codeanchors:
 - [ ] Task 65: Specify and Build Monetization and Analytics APIs -> [Spec](tasks/task-65-monetization-analytics-apis.md) — [NEEDSHIL] spec drafted (`backend/docs/features/BE-20-monetization.md`), pending product-owner approval before Phase B; non-blocked AC (real `OverviewAction` revenue) shipped.
 
 ## Phase 12 — Backend Hygiene (P3)
-- [ ] Task 66: Remove Orphan Action Classes -> [Spec](tasks/task-66-orphan-actions-cleanup.md)
+- [x] Task 66: Remove Orphan Action Classes -> [Spec](tasks/task-66-orphan-actions-cleanup.md)
 - [ ] Task 67: Conform Modules to Context Namespacing -> [Spec](tasks/task-67-context-namespacing-conformance.md)
 
 ## Phase 13 — Dashboard (P1–P2)
