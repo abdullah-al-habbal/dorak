@@ -19,6 +19,9 @@ describe("isDashboardRouteAllowed", () => {
       ["PUT", [root, "item-1"]],
       ["DELETE", [root, "item-1"]],
     ]),
+    ["GET", ["branches", "branch-1", "floor-plan"]],
+    ["PATCH", ["branches", "branch-1", "floor-plan"]],
+    ["GET", ["branches", "branch-1", "reviews"]],
     ["GET", ["profile"]],
     ["PATCH", ["profile"]],
     ["POST", ["profile", "email", "change"]],
@@ -36,6 +39,10 @@ describe("isDashboardRouteAllowed", () => {
 
   it.each([
     ["DELETE", ["bookings", "booking-1"]],
+    ["PUT", ["branches", "branch-1", "floor-plan"]],
+    ["DELETE", ["branches", "branch-1", "floor-plan"]],
+    ["POST", ["branches", "branch-1", "reviews"]],
+    ["GET", ["branches", "branch-1", "secrets"]],
     ["PATCH", ["branches", "branch-1"]],
     ["GET", ["travel-radius"]],
     ["POST", ["profile"]],

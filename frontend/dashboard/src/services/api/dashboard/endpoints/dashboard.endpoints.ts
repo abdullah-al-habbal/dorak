@@ -14,6 +14,10 @@ export const DashboardEndpoints = {
     `${BASE}/${resource}/${encodeURIComponent(id)}`,
   resourceAction: (resource: string, id: string, action: string) =>
     `${BASE}/${resource}/${encodeURIComponent(id)}/${action}`,
+  branchFloorPlan: (id: string) =>
+    `${BASE}/branches/${encodeURIComponent(id)}/floor-plan`,
+  branchReviews: (id: string) =>
+    `${BASE}/branches/${encodeURIComponent(id)}/reviews`,
   bookingCancel: (id: string) =>
     `${BASE}/bookings/${encodeURIComponent(id)}/cancel`,
   bookingReschedule: (id: string) =>

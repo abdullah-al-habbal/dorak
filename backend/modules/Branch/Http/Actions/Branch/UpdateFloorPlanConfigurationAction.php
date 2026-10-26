@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Enums\FloorPlanPreset;
 use Modules\Branch\Http\Requests\Branch\UpdateFloorPlanConfigurationRequest;
+use Modules\Branch\Support\FloorPlanLayout;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 
@@ -37,9 +38,25 @@ final class UpdateFloorPlanConfigurationAction extends BaseApiAction
             return $this->unprocessable(errors: ['zones' => [__('branch::messages.unisex_layout_requires_both_zones')]]);
         }
 
-        $branch->update(['floor_plan_preset' => $preset, 'floor_plan_zones' => $zones]);
+        $branch->update([
+            'floor_plan_preset' => $preset,
+            'floor_plan_zones' => $zones,
+            ...$this->layoutAttributes($request->safe()->only(['canvas', 'decorations'])),
+        ]);
 
-        return $this->ok(data: ['preset' => $preset->value, 'zones' => $zones]);
+        return $this->ok(data: FloorPlanLayout::payload($branch->refresh()));
+    }
+
+    /**
+     * @param  array<string, mixed>  $layout
+     * @return array<string, mixed>
+     */
+    private function layoutAttributes(array $layout): array
+    {
+        return array_filter([
+            'floor_plan_canvas' => $layout['canvas'] ?? null,
+            'floor_plan_decorations' => $layout['decorations'] ?? null,
+        ], fn (mixed $value): bool => $value !== null);
     }
 
     /** @param iterable<mixed> $zones */

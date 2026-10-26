@@ -20,7 +20,7 @@ final class ListReviewsAction extends BaseApiAction
         Gate::forUser($branch)->authorize('manage', $branch);
 
         $reviews = ReviewModel::where('subject_id', $branch->id)
-            ->where('subject_type', BranchModel::class)
+            ->whereIn('subject_type', ['branch', BranchModel::class])
             ->with('author')
             ->orderByDesc('created_at')
             ->paginate($request->input('per_page', 15));

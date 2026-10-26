@@ -9,6 +9,7 @@ use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Branch\Handlers\Shared\GetFloorPlanHandler;
 use Modules\Branch\Http\Requests\Shared\GetFloorPlanRequest;
 use Modules\Branch\Http\Resources\Shared\ChairResource;
+use Modules\Branch\Support\FloorPlanLayout;
 use Modules\Chair\Models\ChairModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\OfferedService\Http\Resources\Shared\MenuServiceResource;
@@ -27,10 +28,7 @@ final class GetFloorPlanAction extends BaseApiAction
         return $this->ok([
             'branch_id' => $branchModel->id,
             'branch_name' => $branchModel->name,
-            'floor_plan' => [
-                'preset' => $branchModel->floor_plan_preset?->value,
-                'zones' => $branchModel->floor_plan_zones ?? [],
-            ],
+            'floor_plan' => FloorPlanLayout::payload($branchModel),
             'chairs' => $branchModel->chairs->map(fn (ChairModel $chair): array => [
                 ...ChairResource::make($chair)->resolve($request),
                 // A seated barber brings their own menu; an empty chair uses the shop's (Task 48).

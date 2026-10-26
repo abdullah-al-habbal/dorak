@@ -45,6 +45,8 @@ export const ROUTES = {
   portal: PORTAL_CONFIG,
   operations: {
     overview: (actor: OperationsActor) => `/${actor}/overview`,
+    floorPlan: (actor: OperationsActor) => `/${actor}/floor-plan`,
+    reviews: (actor: OperationsActor) => `/${actor}/reviews`,
     resource: (
       actor: OperationsActor,
       resource: "branches" | "chairs" | "services" | "stylists" | "bookings",
@@ -101,6 +103,18 @@ export const PORTAL_NAVIGATION: readonly PortalNavigationItem[] = [
     actors: OPERATIONS_ACTORS,
     href: (actor) =>
       ROUTES.operations.resource(actor as OperationsActor, "branches"),
+  },
+  {
+    key: "floorPlan",
+    icon: "home",
+    actors: OPERATIONS_ACTORS,
+    href: (actor) => ROUTES.operations.floorPlan(actor as OperationsActor),
+  },
+  {
+    key: "reviews",
+    icon: "home",
+    actors: OPERATIONS_ACTORS,
+    href: (actor) => ROUTES.operations.reviews(actor as OperationsActor),
   },
   {
     key: "bookings",

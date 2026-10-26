@@ -27,13 +27,20 @@ The backend exposes a full branch-manager API under `/api/v1/branch/*` (`auth:br
 - None. The business app equivalents are in Task 85.
 
 ## Acceptance Criteria
-- [ ] Manager can view and edit the branch profile. PATCH returns 200 and a reload shows the new values. A manager cannot edit another branch (403 or 404, feature test).
-- [ ] Floor plan page renders chairs from the API. Saving a layout sends PATCH and returns 200; an invalid payload shows the backend 422 field errors.
-- [ ] `GET /api/v1/branches/{branch}/floor-plan` returns `canvas` {width, height, unit} and a `decorations` array. A PATCH with an invalid canvas returns 422 (feature test). The editor renders the decorations and saves them.
-- [ ] Toggling a chair to maintenance while it has future bookings shows the Task 27 conflict response, and does not silently succeed.
-- [ ] Branch reviews page lists the reviews returned by the API, paginated.
-- [ ] BFF rejects any method/path not declared for these endpoints with 404 or 405. Vitest per route.
-- [ ] `php artisan test` and `npm run test` pass; eslint and tsc are clean.
+- [x] Manager can view and edit the branch profile. PATCH returns 200 and a reload shows the new values. A manager cannot edit another branch (403 or 404, feature test).
+- [x] Floor plan page renders chairs from the API. Saving a layout sends PATCH and returns 200; an invalid payload shows the backend 422 field errors.
+- [x] `GET /api/v1/branches/{branch}/floor-plan` returns `canvas` {width, height, unit} and a `decorations` array. A PATCH with an invalid canvas returns 422 (feature test). The editor renders the decorations and saves them.
+- [x] Toggling a chair to maintenance while it has future bookings shows the Task 27 conflict response, and does not silently succeed.
+- [x] Branch reviews page lists the reviews returned by the API, paginated.
+- [x] BFF rejects any method/path not declared for these endpoints with 404 or 405. Vitest per route.
+- [x] `php artisan test` and `npm run test` pass; eslint and tsc are clean.
+
+### Implemented contract & decisions
+- **Decision (b)** — dashboard-scoped endpoints (admin, owner and manager share one contract and scope check via `ShowBranchHandler`; out-of-scope branch → 404): `GET|PATCH /dashboard/branches/{branch}/floor-plan` and `GET /dashboard/branches/{branch}/reviews` (paginated). Branch profile edit and chair status changes (with the Task 27 `CHAIR_HAS_ACTIVE_BOOKINGS` 409 + force flow) already exist through `PUT branches/{id}` / `PUT chairs/{id}`; the floor-plan page links each chair to that form instead of duplicating a status endpoint. Booking status stays on the Task 18 lifecycle.
+- **Decision — canvas/decorations are persisted** on the branch (`floor_plan_canvas`, `floor_plan_decorations` JSON, migration `2026_10_26_000001`), validated by the shared `FloorPlanLayout::rules()` (canvas ≤1000, unit m|ft|px; ≤30 decorations of a fixed type enum, percent boxes). Both the branch-account `PATCH branch/floor-plan` and the dashboard PATCH accept them; absent keys keep stored values. `GET /branches/{branch}/floor-plan` now returns them inside `floor_plan` (`canvas` defaults to 20×15 m, `decorations` to `[]`).
+- Also fixed: branch review queries matched only `BranchModel::class` while new rows use the `branch` morph alias; both are matched now.
+- Dashboard: BFF allowlist entries (exact method+path; reviews responses are paged by the proxy), pages `/{admin,manager,owner}/floor-plan` and `/reviews` (branch chosen via `?branch=`, RHF + Zod form with field arrays, live preview, 422 field errors mapped onto fields), nav entries, EN+AR copy. Query keys `["dashboard","floor-plan",branchId]`, `["dashboard","branch-reviews",branchId,page]`; saving invalidates floor-plan and chairs.
+- Not done (deliberately): branch-hours *override* BFF/UI from the Task 51 note — tracked for Task 85 alongside the business app; mobile unchanged (additive response fields; melos verify green).
 
 ## Out of Scope
 - Affiliations, job postings and managed barbers (Task 75).

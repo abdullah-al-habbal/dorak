@@ -29,6 +29,8 @@ describe("route constants", () => {
     expect(ownerKeys).toEqual([
       "overview",
       "branches",
+      "floorPlan",
+      "reviews",
       "bookings",
       "services",
       "chairs",

@@ -17,6 +17,9 @@ const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
     { method: "PUT", path: new RegExp(`^${root}/[A-Za-z0-9-]+$`) },
     { method: "DELETE", path: new RegExp(`^${root}/[A-Za-z0-9-]+$`) },
   ]),
+  { method: "GET", path: /^branches\/[A-Za-z0-9-]+\/floor-plan$/ },
+  { method: "PATCH", path: /^branches\/[A-Za-z0-9-]+\/floor-plan$/ },
+  { method: "GET", path: /^branches\/[A-Za-z0-9-]+\/reviews$/ },
   {
     method: "PATCH",
     path: /^stylists\/[A-Za-z0-9-]+\/(activate|deactivate)$/,

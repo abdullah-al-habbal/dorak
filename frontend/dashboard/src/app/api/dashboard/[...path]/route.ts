@@ -82,7 +82,7 @@ async function proxyDashboardRequest(request: NextRequest, context: Context) {
   }
 
   const rawData =
-    path.length === 1 &&
+    (path.length === 1 || path[2] === "reviews") &&
     path[0] !== "overview" &&
     Array.isArray(result.envelope.data)
       ? dashboardPage(result.envelope.data, result.envelope.meta)

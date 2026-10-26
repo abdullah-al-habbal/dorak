@@ -34,7 +34,7 @@ use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'email', 'password', 'brand_id', 'latitude', 'longitude', 'status', 'floor_plan_preset', 'floor_plan_zones', 'universe', 'description', 'address', 'tags'])]
+#[Fillable(['name', 'email', 'password', 'brand_id', 'latitude', 'longitude', 'status', 'floor_plan_preset', 'floor_plan_zones', 'floor_plan_canvas', 'floor_plan_decorations', 'universe', 'description', 'address', 'tags'])]
 #[Hidden(['password', 'remember_token'])]
 #[Table('branches')]
 #[Translatable(['name', 'description', 'address'])]
@@ -155,6 +155,8 @@ class BranchModel extends Authenticatable implements FilamentUser
             'tags' => 'json:unicode',
             'floor_plan_preset' => FloorPlanPreset::class,
             'floor_plan_zones' => 'array',
+            'floor_plan_canvas' => 'array',
+            'floor_plan_decorations' => 'array',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'latitude' => 'decimal:8',
