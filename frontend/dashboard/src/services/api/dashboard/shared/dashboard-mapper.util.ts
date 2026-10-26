@@ -186,6 +186,7 @@ export function mapDashboardOverview(wire: unknown): IDashboardOverview {
     bookingsCount: count(item.bookings_count),
     completedBookingsCount: count(item.completed_bookings_count),
     revenue: count(item.revenue),
+    revenueCurrency: nullableString(item.revenue_currency),
     stylistsCount: count(item.stylists_count),
     todayBookingsCount: count(item.today_bookings_count),
   };

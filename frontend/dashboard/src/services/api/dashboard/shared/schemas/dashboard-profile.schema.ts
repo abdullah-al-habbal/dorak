@@ -59,6 +59,7 @@ export const DashboardOverviewSchema = z.object({
   bookingsCount: z.number(),
   completedBookingsCount: z.number(),
   revenue: z.number(),
+  revenueCurrency: z.string().nullable(),
   stylistsCount: z.number(),
   todayBookingsCount: z.number(),
 });

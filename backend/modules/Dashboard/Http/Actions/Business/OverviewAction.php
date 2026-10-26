@@ -12,8 +12,10 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Core\Http\Actions\BaseApiAction;
+use Modules\Currency\Models\CurrencyModel;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class OverviewAction extends BaseApiAction
@@ -38,8 +40,34 @@ final class OverviewAction extends BaseApiAction
             'active_branches_count' => $branches->count(),
             'today_bookings_count' => $todayBookings->count(),
             'revenue' => $this->completedBookingsRevenue($completedBookings),
+            'revenue_currency' => $this->revenueCurrencyCode($scope),
             'stylists_count' => BarberModel::query()->when($scope !== null, fn ($query) => $query->whereIn('id', BookingModel::query()->forBranches($scope ?? [])->select('barber_id')))->count(),
         ]);
+    }
+
+    /**
+     * The scoped actor's single brand currency when the scope resolves to
+     * exactly one brand (a branch manager, or a brand owner who owns one
+     * brand); otherwise (platform admin, or an owner spanning several
+     * brands with different currencies) the platform default currency.
+     * Revenue itself is not converted between currencies (see Task 72
+     * decision note) — only the reported code may differ from a given
+     * booking's own service currency.
+     */
+    private function revenueCurrencyCode(?array $branchIds): ?string
+    {
+        if ($branchIds !== null) {
+            $brandIds = BranchModel::query()->whereIn('id', $branchIds)->pluck('brand_id')->unique();
+            if ($brandIds->count() === 1) {
+                $code = BrandModel::query()->whereKey($brandIds->first())->with('baseCurrency')->first()?->baseCurrency?->code;
+                if ($code !== null) {
+                    return $code;
+                }
+            }
+        }
+
+        return CurrencyModel::query()->where('is_default', true)->value('code')
+            ?? CurrencyModel::query()->value('code');
     }
 
     /**

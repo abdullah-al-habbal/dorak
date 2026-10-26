@@ -27,7 +27,6 @@ describe("route constants", () => {
     ).map((item) => item.key);
 
     expect(ownerKeys).toEqual([
-      "dashboard",
       "overview",
       "branches",
       "bookings",

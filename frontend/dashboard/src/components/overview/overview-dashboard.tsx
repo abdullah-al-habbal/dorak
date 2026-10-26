@@ -63,10 +63,12 @@ export function OverviewDashboard() {
           title={dictionary.overviewDashboard.revenue}
           value={
             metric
-              ? new Intl.NumberFormat(undefined, {
-                  style: "currency",
-                  currency: "USD",
-                }).format(metric.revenue)
+              ? metric.revenueCurrency
+                ? new Intl.NumberFormat(undefined, {
+                    style: "currency",
+                    currency: metric.revenueCurrency,
+                  }).format(metric.revenue)
+                : metric.revenue
               : undefined
           }
         />

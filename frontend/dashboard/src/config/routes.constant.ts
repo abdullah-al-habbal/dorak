@@ -82,9 +82,11 @@ export const PORTAL_ACTORS: readonly AuthActor[] = AUTH_ACTORS;
 // New portal destinations belong here, never inside a shell component.
 export const PORTAL_NAVIGATION: readonly PortalNavigationItem[] = [
   {
+    // Operations actors (admin/manager/owner) use "overview" below instead —
+    // their portal root now redirects there, so this would be a duplicate.
     key: "dashboard",
     icon: "home",
-    actors: PORTAL_ACTORS,
+    actors: ["barber"],
     href: (actor) => ROUTES.portal[actor].root,
   },
   {

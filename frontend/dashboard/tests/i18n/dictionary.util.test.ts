@@ -59,4 +59,13 @@ describe("dictionary contract", () => {
     expect(en.profile.security.viewSessions).toBe("View sessions");
     expect(ar.profile.security.viewSessions).toBe("عرض الجلسات");
   });
+
+  it("drops the retired portal placeholder copy", () => {
+    expect(Object.keys(getDictionary("en").portal)).not.toContain(
+      "description",
+    );
+    expect(Object.keys(getDictionary("ar").portal)).not.toContain(
+      "description",
+    );
+  });
 });

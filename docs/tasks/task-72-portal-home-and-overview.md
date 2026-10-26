@@ -23,11 +23,15 @@ The admin and manager portal roots render a generic placeholder, "Your protected
 - None. The business app dashboard uses `GET branch/dashboard`; aligning its revenue figure with this computation is noted for Task 85.
 
 ## Acceptance Criteria
-- [ ] `GET /api/v1/dashboard/overview` returns a non-zero `revenue` when completed bookings exist today in scope, and `0` otherwise, plus a `revenue_currency` code. Feature test `DashboardOverviewRevenueTest`.
-- [ ] Visiting `/admin` or `/manager` never shows the placeholder string, which no longer appears in rendered output.
-- [ ] `overview-dashboard.tsx` contains no hard-coded `"USD"` and no inline English UI strings (eslint/i18n check or a grep-based vitest).
-- [ ] Arabic locale renders translated overview labels.
-- [ ] `php artisan test` and `npm run test` pass; PHPStan max and Pint are clean; eslint and tsc are clean.
+- [x] `GET /api/v1/dashboard/overview` returns a non-zero `revenue` when completed bookings exist today in scope, and `0` otherwise, plus a `revenue_currency` code. Feature test `DashboardOverviewRevenueTest` — the three original cases are unchanged, plus two new ones: a branch manager gets their brand's base currency, an admin gets the platform default.
+- [x] Visiting `/admin` or `/manager` never shows the placeholder string, which no longer appears in rendered output. `src/app/(portals)/{admin,manager,owner}/page.tsx` now call `redirect(ROUTES.operations.overview(actor))`; the placeholder component (`PortalEntryPage`/`createPortalPage`) and its dictionary string (`portal.description`) were dead code after the redirect, so both were deleted rather than left unreferenced. Covered by `tests/config/routes.util.test.ts` (asserts the redirect call is present, `createPortalPage` is not) and `tests/i18n/dictionary.util.test.ts` (asserts the key is gone from both locales).
+- [x] `overview-dashboard.tsx` contains no hard-coded `"USD"` and no inline English UI strings. The component already routed every label through the dictionary; only the `Intl.NumberFormat` call hard-coded `currency: "USD"` — it now uses `metric.revenueCurrency` from the API, falling back to the raw number when the API reports no currency (empty scope with no brand at all). Covered by `tests/components/overview/overview-dashboard.test.tsx`, including a static source-grep guard against the literal re-appearing.
+- [x] Arabic locale renders translated overview labels. Unchanged by this task (`overviewDashboard.*` keys already existed in both locales); `dictionary.util.test.ts`'s shape-parity check still passes.
+- [x] `php artisan test` and `npm run test` pass; Pint is clean; eslint and tsc are clean. (PHPStan is out of gate scope per `backend/CLAUDE.md`.) Also ran `npm run build` — green.
+
+### Implemented contract
+- Backend: `OverviewAction` gained `revenue_currency` (string or null) alongside the existing `revenue`. Resolution: one brand in scope → that brand's `base_currency`; otherwise → `CurrencyModel::where('is_default', true)`, falling back to any currency row if none is flagged default, or `null` if the database has no currency at all.
+- Dashboard: `DashboardOverviewSchema`/`mapDashboardOverview` carry the new field through to `IDashboardOverview.revenueCurrency`. The `PORTAL_NAVIGATION` "dashboard" entry is now barber-only (it pointed at the same destination as "overview" for every operations actor, which is no longer a stub).
 
 ## Out of Scope
 - Platform analytics, subscriptions and payouts (Task 65).

@@ -29,8 +29,6 @@ export const en = {
     managerTitle: "Manager workspace",
     ownerTitle: "Brand owner workspace",
     barberTitle: "Barber workspace",
-    description:
-      "Your protected portal shell is ready for authenticated features.",
     forbiddenTitle: "Access unavailable",
     forbiddenDescription: "You do not have permission to open this area.",
     signedInAs: "Signed in as",

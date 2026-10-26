@@ -6,6 +6,8 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Models\BrandModel;
+use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 describe('Dashboard overview revenue', function (): void {
@@ -44,5 +46,26 @@ describe('Dashboard overview revenue', function (): void {
         $this->getJson('/api/v1/dashboard/overview')
             ->assertOk()
             ->assertJsonPath('data.revenue', 0);
+    });
+
+    it('reports the branch brand currency for a branch manager', function (): void {
+        $currency = CurrencyModel::factory()->create(['code' => 'JOD']);
+        $brand = BrandModel::factory()->create(['base_currency_id' => $currency->id]);
+        $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
+        $this->authenticateDashboardActor($branch);
+
+        $this->getJson('/api/v1/dashboard/overview')
+            ->assertOk()
+            ->assertJsonPath('data.revenue_currency', 'JOD');
+    });
+
+    it('reports the platform default currency for an admin', function (): void {
+        $default = CurrencyModel::factory()->create(['code' => 'SYP', 'is_default' => true]);
+        CurrencyModel::factory()->create(['code' => 'USD', 'is_default' => false]);
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->getJson('/api/v1/dashboard/overview')
+            ->assertOk()
+            ->assertJsonPath('data.revenue_currency', $default->code);
     });
 });

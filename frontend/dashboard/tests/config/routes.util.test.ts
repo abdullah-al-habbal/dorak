@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { en } from "@/i18n/messages/en.constant";
 import { PORTAL_ACTORS, ROUTES } from "@/config/routes.constant";
@@ -11,17 +12,19 @@ import {
 } from "@/config/routes.util";
 
 describe("getPortalNavigation", () => {
-  it.each([
-    ["admin", ROUTES.portal.admin.root],
-    ["manager", ROUTES.portal.manager.root],
-    ["barber", ROUTES.portal.barber.root],
-  ] as const)(
-    "resolves %s dashboard from centralized routes",
-    (actor, expectedHome) => {
+  it("resolves the barber dashboard link from centralized routes", () => {
+    expect(
+      getPortalNavigation("barber", []).find((item) => item.key === "dashboard")
+        ?.href,
+    ).toBe(ROUTES.portal.barber.root);
+  });
+
+  it.each(["admin", "manager", "owner"] as const)(
+    "has no duplicate dashboard link for the %s operations actor (overview covers it)",
+    (actor) => {
       expect(
-        getPortalNavigation(actor, []).find((item) => item.key === "dashboard")
-          ?.href,
-      ).toBe(expectedHome);
+        getPortalNavigation(actor, []).some((item) => item.key === "dashboard"),
+      ).toBe(false);
     },
   );
 
@@ -54,4 +57,16 @@ describe("getPortalNavigation", () => {
       true,
     ]);
   });
+
+  it.each(["admin", "manager", "owner"] as const)(
+    "redirects the %s portal root to its overview route instead of a placeholder shell",
+    (actor) => {
+      const source = readFileSync(
+        `src/app/(portals)/${actor}/page.tsx`,
+        "utf-8",
+      );
+      expect(source).toContain(`ROUTES.operations.overview("${actor}")`);
+      expect(source).not.toContain("createPortalPage");
+    },
+  );
 });

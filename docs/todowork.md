@@ -114,7 +114,7 @@ codeanchors:
 - [x] Task 69: Complete Barber Workspace -> [Spec](tasks/task-69-barber-workspace-completion.md)
 - [x] Task 70: Wire Booking Detail Page and Full Status Set -> [Spec](tasks/task-70-booking-detail-and-status.md)
 - [x] Task 71: Enable List Search and Filters -> [Spec](tasks/task-71-list-search-filters.md)
-- [ ] Task 72: Replace Portal Home Placeholders and Fix Overview -> [Spec](tasks/task-72-portal-home-and-overview.md)
+- [x] Task 72: Replace Portal Home Placeholders and Fix Overview -> [Spec](tasks/task-72-portal-home-and-overview.md)
 - [ ] Task 73: Implement Dashboard Token Refresh Flow -> [Spec](tasks/task-73-dashboard-token-refresh.md)
 - [ ] Task 74: Add Branch Operations BFF and UI -> [Spec](tasks/task-74-branch-operations-bff-ui.md)
 - [ ] Task 75: Add Branch People BFF and UI (Affiliations, Jobs, Barbers) -> [Spec](tasks/task-75-branch-people-bff-ui.md)

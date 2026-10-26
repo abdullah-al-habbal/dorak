@@ -1,3 +1,6 @@
-import { createPortalPage } from "@/components/portal/create-portal-page";
+import { ROUTES } from "@/config/routes.constant";
+import { redirect } from "next/navigation";
 
-export default createPortalPage();
+export default function Page() {
+  redirect(ROUTES.operations.overview("owner"));
+}

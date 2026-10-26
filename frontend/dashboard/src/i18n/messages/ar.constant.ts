@@ -31,7 +31,6 @@ export const ar: Dictionary = {
     managerTitle: "مساحة عمل مدير الفرع",
     ownerTitle: "مساحة عمل مالك العلامة التجارية",
     barberTitle: "مساحة عمل الحلّاق",
-    description: "بوابتك المحمية جاهزة للميزات التي تتطلب مصادقة.",
     forbiddenTitle: "الوصول غير متاح",
     forbiddenDescription: "ليس لديك إذن لفتح هذه المنطقة.",
     signedInAs: "مسجَّل الدخول باسم",
