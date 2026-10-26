@@ -22,11 +22,11 @@ The barber workspace runs its mutations through `useDashboardMutation`, which on
 - None — the stylist app has its own implementation (Task 83).
 
 ## Acceptance Criteria
-- [ ] After a successful accept or cancel, `["barber","appointments","today"]` is invalidated. A vitest with a mocked `QueryClient` asserts `invalidateQueries` is called with `queryKey: ["barber","appointments"]`.
-- [ ] After a workstation toggle, `["barber","profile"]` is invalidated.
-- [ ] With `profile.data.workstationOnline === true`, pressing the toggle sends a PATCH body `{"online":false}`. A vitest asserts the request body.
-- [ ] No barber-workspace mutation uses `useDashboardMutation`.
-- [ ] `npm run test`, `npm run lint` and `npm run typecheck` pass.
+- [x] After a successful accept or cancel, `["barber","appointments","today"]` is invalidated. New `hooks/use-barber-mutation.ts` invalidates `["barber", resource]`, and `transition`/`cancel` in `barber-workspace.tsx` pass `"appointments"`, which is a valid-prefix match for `["barber","appointments","today"]` under TanStack Query's default partial-key invalidation. `tests/hooks/use-barber-mutation.test.ts` asserts `invalidateQueries` is called with `queryKey: ["barber","appointments"]`.
+- [x] After a workstation toggle, `["barber","profile"]` is invalidated. `workstation` passes `"profile"` to the new hook; asserted in the same test file.
+- [x] With `profile.data.workstationOnline === true`, pressing the toggle sends a PATCH body `{"online":false}`. Fixed the inversion bug: the mutation now reads `!currentOnline` (the server value) instead of `!online` (local state that always started `false`). `tests/components/barber-workspace/barber-workspace.test.tsx` renders the real component with a mocked profile query and asserts `updateBarberWorkstation` is called with `false` (online case) and `true` (offline case).
+- [x] No barber-workspace mutation uses `useDashboardMutation`. All three (`workstation`, `transition`, `cancel`) now use `useBarberMutation`; the now-redundant local `online` state (`useState`) was removed since `profile.data.workstationOnline`, refetched after every mutation, is the single source of truth.
+- [x] `npm run test`, `npm run lint` and `npm run typecheck` pass. Also ran `npm run build` (not explicitly required by this AC but required by the monorepo task executor's Dashboard gate set) — green.
 
 ## Out of Scope
 - New workspace features (start/complete/no-show buttons, schedule, portfolio): Task 69.

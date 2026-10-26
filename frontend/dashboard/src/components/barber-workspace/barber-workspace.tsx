@@ -7,7 +7,7 @@ import { BarberPortfolioCard } from "@/components/barber-workspace/barber-portfo
 import { BarberTravelCard } from "@/components/barber-workspace/barber-travel-card";
 import { BarberWorkstationCard } from "@/components/barber-workspace/barber-workstation-card";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
+import { useBarberMutation } from "@/hooks/use-barber-mutation";
 import { useBarberAppointmentsQuery } from "@/hooks/use-barber-appointments-query";
 import { useBarberChannel } from "@/hooks/use-barber-channel";
 import { useBarberPortfolioQuery } from "@/hooks/use-barber-portfolio-query";
@@ -28,15 +28,15 @@ export function BarberWorkspace() {
   const copy = dictionary.barberWorkspace;
   const session = useSession();
   useBarberChannel(session.subject);
-  const [online, setOnline] = useState(false);
   const appointments = useBarberAppointmentsQuery();
   const profile = useBarberWorkspaceProfileQuery();
   const portfolio = useBarberPortfolioQuery();
-  const workstation = useDashboardMutation("barber-workstation", () =>
-    updateBarberWorkstation(!online),
+  const currentOnline = profile.data?.workstationOnline ?? false;
+  const workstation = useBarberMutation("profile", () =>
+    updateBarberWorkstation(!currentOnline),
   );
-  const transition = useDashboardMutation(
-    "barber-appointments",
+  const transition = useBarberMutation(
+    "appointments",
     ({
       id,
       action,
@@ -45,14 +45,13 @@ export function BarberWorkspace() {
       action: "accept" | "start" | "complete" | "no-show";
     }) => transitionBarberBooking(id, action),
   );
-  const currentOnline = profile.data?.workstationOnline ?? online;
   const [cancellingId, setCancellingId] = useState<string | null>(null);
   const cancelForm = useForm<z.infer<typeof cancelBarberBookingFormSchema>>({
     resolver: zodResolver(cancelBarberBookingFormSchema),
     defaultValues: { cancellationReason: "" },
   });
-  const cancel = useDashboardMutation(
-    "barber-appointments",
+  const cancel = useBarberMutation(
+    "appointments",
     (value: z.infer<typeof cancelBarberBookingFormSchema>) =>
       cancelBarberBooking(cancellingId ?? "", value.cancellationReason),
   );
@@ -76,11 +75,7 @@ export function BarberWorkspace() {
           goOfflineLabel={copy.goOffline}
           online={currentOnline}
           isPending={workstation.isPending}
-          onToggle={() =>
-            workstation.mutate(undefined, {
-              onSuccess: () => setOnline((value) => !value),
-            })
-          }
+          onToggle={() => workstation.mutate(undefined)}
         />
         <BarberTravelCard
           title={copy.travel}
