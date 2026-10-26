@@ -17,6 +17,10 @@ final class ListStylistsEloquentResolver
                 'chairs',
                 fn ($chairs) => $chairs->whereIn('branch_id', $query->branchIds),
             ))
+            ->when($query->search !== null, fn ($builder) => $builder->where(
+                fn ($search) => $search->where('name->en', 'like', "%{$query->search}%")
+                    ->orWhere('name->ar', 'like', "%{$query->search}%")
+            ))
             ->paginate($query->perPage);
     }
 }

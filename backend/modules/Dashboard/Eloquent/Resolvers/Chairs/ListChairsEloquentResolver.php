@@ -25,6 +25,7 @@ final class ListChairsEloquentResolver
                 },
             ])
             ->when($query->branchIds !== null, fn ($builder) => $builder->whereIn('branch_id', $query->branchIds))
+            ->when($query->search !== null, fn ($builder) => $builder->where('label', 'like', "%{$query->search}%"))
             ->paginate($query->perPage);
     }
 }

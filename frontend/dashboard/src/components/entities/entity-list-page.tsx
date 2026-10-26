@@ -12,11 +12,15 @@ import {
   TableRow,
 } from "@/components/tailgrids/core/table";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { getDashboardList } from "@/services/api/dashboard/shared/dashboard.query";
 import { mapDashboardEntity } from "@/services/api/dashboard/shared/dashboard-entity.util";
+import { DASHBOARD_RESOURCE_SEARCH_SUPPORT } from "@/services/api/dashboard/shared/dashboard-resource.constant";
 import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
 import type { IBooking } from "@/services/api/dashboard/booking/types/ibooking.types";
 import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
+import { BookingListFilters } from "@/components/bookings/booking-list-filters";
+import type { IBookingListFiltersValue } from "@/components/bookings/booking-list-filters.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BookingActionsDialog } from "@/components/bookings/booking-actions-dialog";
@@ -31,6 +35,14 @@ interface EntityListPageProps {
   resource: Exclude<DashboardResource, "overview">;
 }
 
+const EMPTY_BOOKING_FILTERS: IBookingListFiltersValue = {
+  status: "",
+  dateFrom: "",
+  dateTo: "",
+  chairId: "",
+  stylistId: "",
+};
+
 export function EntityListPage({ resource }: EntityListPageProps) {
   const config = ENTITY_CONFIGS[resource];
   const dictionary = useDictionary();
@@ -40,14 +52,33 @@ export function EntityListPage({ resource }: EntityListPageProps) {
   useBranchChannel(session.branchId);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const supportsSearch = false;
+  const debouncedSearch = useDebouncedValue(search, 300);
+  const [bookingFilters, setBookingFilters] = useState(EMPTY_BOOKING_FILTERS);
+  const supportsSearch = DASHBOARD_RESOURCE_SEARCH_SUPPORT[resource];
   const query = useQuery({
-    queryKey: ["dashboard", resource, { page, search }],
+    queryKey: [
+      "dashboard",
+      resource,
+      {
+        page,
+        search: debouncedSearch,
+        ...(resource === "bookings" ? bookingFilters : {}),
+      },
+    ],
     queryFn: async () => {
-      const result = await getDashboardList<unknown>(
-        resource,
-        supportsSearch ? { page, search } : { page },
-      );
+      const result = await getDashboardList<unknown>(resource, {
+        page,
+        ...(supportsSearch ? { search: debouncedSearch } : {}),
+        ...(resource === "bookings"
+          ? {
+              status: bookingFilters.status || undefined,
+              dateFrom: bookingFilters.dateFrom || undefined,
+              dateTo: bookingFilters.dateTo || undefined,
+              chairId: bookingFilters.chairId || undefined,
+              stylistId: bookingFilters.stylistId || undefined,
+            }
+          : {}),
+      });
       return {
         ...result,
         items: result.items.map((item) => mapDashboardEntity(resource, item)),
@@ -95,6 +126,15 @@ export function EntityListPage({ resource }: EntityListPageProps) {
           )}
         </div>
       </div>
+      {resource === "bookings" ? (
+        <BookingListFilters
+          value={bookingFilters}
+          onChange={(value) => {
+            setBookingFilters(value);
+            setPage(1);
+          }}
+        />
+      ) : null}
       {query.isPending ? (
         <p className="text-text-secondary">
           {dictionary.common.status.loading}

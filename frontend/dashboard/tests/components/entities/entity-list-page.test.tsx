@@ -1,8 +1,10 @@
 // @vitest-environment jsdom
 import { EntityListPage } from "@/components/entities/entity-list-page";
 import { getDashboardList } from "@/services/api/dashboard/shared/dashboard.query";
+import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const session = { actor: "admin" as const, branchId: null };
@@ -18,13 +20,15 @@ vi.mock("@/services/api/dashboard/shared/dashboard.query", () => ({
   getDashboardList: vi.fn(),
 }));
 
-function renderList() {
+function renderList(
+  resource: Exclude<DashboardResource, "overview"> = "bookings",
+) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   });
   return render(
     <QueryClientProvider client={client}>
-      <EntityListPage resource="bookings" />
+      <EntityListPage resource={resource} />
     </QueryClientProvider>,
   );
 }
@@ -62,5 +66,54 @@ describe("EntityListPage (bookings)", () => {
     renderList();
 
     expect(await screen.findByRole("button", { name: "Manage" })).toBeTruthy();
+  });
+
+  it("sends the booking filters as query params once changed", async () => {
+    const user = userEvent.setup();
+    renderList();
+    await screen.findByRole("link", { name: "Details" });
+    vi.mocked(getDashboardList).mockClear();
+
+    await user.type(screen.getByLabelText("Chair ID"), "chair-1");
+
+    await screen.findByRole("link", { name: "Details" });
+    expect(getDashboardList).toHaveBeenLastCalledWith(
+      "bookings",
+      expect.objectContaining({ chairId: "chair-1" }),
+    );
+  });
+});
+
+describe("EntityListPage (branches search)", () => {
+  beforeEach(() => {
+    vi.mocked(getDashboardList)
+      .mockReset()
+      .mockResolvedValue({
+        items: [],
+        pagination: { currentPage: 1, totalPages: 1, total: 0, perPage: 30 },
+      });
+  });
+
+  it("debounces the search input to one request after 300ms", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const user = userEvent.setup({
+      advanceTimers: (ms) => vi.advanceTimersByTime(ms),
+    });
+    renderList("branches");
+    await vi.waitFor(() => expect(getDashboardList).toHaveBeenCalledTimes(1));
+    vi.mocked(getDashboardList).mockClear();
+
+    await user.type(screen.getByLabelText("Search records"), "sal");
+    expect(getDashboardList).not.toHaveBeenCalled();
+
+    await vi.advanceTimersByTimeAsync(300);
+    await vi.waitFor(() =>
+      expect(getDashboardList).toHaveBeenCalledWith(
+        "branches",
+        expect.objectContaining({ search: "sal" }),
+      ),
+    );
+    expect(getDashboardList).toHaveBeenCalledTimes(1);
+    vi.useRealTimers();
   });
 });

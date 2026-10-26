@@ -16,6 +16,10 @@ final class ListBranchesEloquentResolver
         return BranchModel::query()
             ->when($query->brandIds !== null, fn ($builder) => $builder->whereIn('brand_id', $query->brandIds))
             ->when($query->branchIds !== null, fn ($builder) => $builder->whereKey($query->branchIds))
+            ->when($query->search !== null, fn ($builder) => $builder->where(
+                fn ($search) => $search->where('name->en', 'like', "%{$query->search}%")
+                    ->orWhere('name->ar', 'like', "%{$query->search}%")
+            ))
             ->paginate($query->perPage);
     }
 }

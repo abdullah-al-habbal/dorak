@@ -169,7 +169,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision required: expose the allowed next statuses per booking in the booking resource (e.g. `allowed_transitions`), or hard-code the transition map in the UI. **Resolved: UI-side map** (`frontend/dashboard/src/services/api/dashboard/booking/booking-status-transitions.util.ts`), mirroring the backend's `BookingStatus::canTransitionTo`. See the task spec's decision note for the full reasoning (small, stable rule; backend already enforces it authoritatively; a resource field would ripple into every consumer, including mobile, for marginal benefit).
 
 ## [Task 71: Enable List Search and Filters](tasks/task-71-list-search-filters.md)
-- [ ] Bookings: keep the existing filters. Add `search` on client name/email only if the product wants it (Decision required).
+- [ ] [NEEDSHIL] Bookings: keep the existing filters only (status, date range, chair, stylist — now wired end to end). Free-text `search` on client name/email was left out: it is a genuine product choice (what to match on, and whether a manager should be able to search by a client's email) with no code or doc answering it, not something inferable from the spec or codebase.
 
 ## [Task 72: Replace Portal Home Placeholders and Fix Overview](tasks/task-72-portal-home-and-overview.md)
 - [ ] Decision required: an admin viewing several brands with different base currencies. Either convert to one platform currency (needs Task 57) or return revenue per currency.

@@ -23,11 +23,15 @@ Every dashboard entity list hard-codes `supportsSearch = false`, so the search i
 - None.
 
 ## Acceptance Criteria
-- [ ] `GET /api/v1/dashboard/branches?search=foo` returns only matching branches. A manager never sees branches outside their scope. Feature test `DashboardListSearchTest` per resource.
-- [ ] `search` longer than 100 characters returns 422.
-- [ ] The search input renders on every list with search capability. Typing triggers one request after the debounce. RTL test with fake timers.
-- [ ] Bookings list filters send `status`, `date_from`, `date_to`, `chair_id` and `stylist_id`, and the result updates. Vitest asserts the query string.
-- [ ] `php artisan test` and `npm run test` pass; PHPStan max and Pint are clean for touched backend files; eslint and tsc are clean.
+- [x] `GET /api/v1/dashboard/branches?search=foo` returns only matching branches. A manager never sees branches outside their scope. Feature test `DashboardListSearchTest` per resource. Implemented the same way for chairs (`label`), services and stylists (translated `name`) — `tests/Feature/Dashboard/DashboardListSearchTest.php` covers all four plus branch/stylist manager scoping.
+- [x] `search` longer than 100 characters returns 422. Each resource now has its own `List{Resource}Request` FormRequest (branches/chairs/services/stylists had none before — their Actions took a plain `Request` with zero validation) with `search` => `nullable|string|max:100`; asserted in the same test file.
+- [x] The search input renders on every list with search capability. Typing triggers one request after the debounce. New `DASHBOARD_RESOURCE_SEARCH_SUPPORT` capability map (`dashboard-resource.constant.ts`) replaces the `supportsSearch = false` constant; a new `useDebouncedValue` hook (300ms) feeds the query. RTL test with `vi.useFakeTimers` in `tests/components/entities/entity-list-page.test.tsx`.
+- [x] Bookings list filters send `status`, `date_from`, `date_to`, `chair_id` and `stylist_id`, and the result updates. New `BookingListFilters` component (status Select + two date inputs + two ID inputs) wired into `EntityListPage` for `resource === "bookings"`; Vitest asserts `getDashboardList` is called with the expected params object.
+- [x] `php artisan test` and `npm run test` pass; Pint is clean for touched backend files; eslint and tsc are clean. (PHPStan is out of gate scope for this repo per `backend/CLAUDE.md`.) Also ran `npm run build` — green.
+
+### Implemented contract
+- Backend: `ListBranchesQuery`/`ListChairsQuery`/`ListServicesQuery`/`ListStylistsQuery` each gained an `?string $search` parameter; the matching Eloquent resolvers add a `LIKE` filter (translated `name->en`/`name->ar` for branches/services/stylists, plain `label` for chairs — mirroring the existing precedent in `ServiceCatalog/Eloquent/Resolvers/Shared/ListCatalogItemsEloquentResolver.php`). Each of the four dashboard list Actions now type-hints a dedicated `Http/Requests/Business/List{Resource}Request` instead of a bare `Illuminate\Http\Request` (none existed before this task, so there was previously no `per_page`/`search` validation on these four endpoints at all).
+- Dashboard: bookings intentionally does not get the generic search box (no backend `search` support was added for bookings — see the decision below); it gets the dedicated filter row instead.
 
 ## Out of Scope
 - Explore/mobile text search (Task 43).
