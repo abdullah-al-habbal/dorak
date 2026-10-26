@@ -6,11 +6,19 @@ export function isRedirectResponse(response: Response): boolean {
   );
 }
 
-/** JSON request headers; `Content-Type` is only added when a body is sent and none was set. */
+/**
+ * JSON request headers; `Content-Type` is only added when a body is sent and
+ * none was set. A `FormData` body is left without an explicit `Content-Type`
+ * so `fetch` can set the multipart boundary itself.
+ */
 export function jsonRequestHeaders(init?: RequestInit): Headers {
   const headers = new Headers(init?.headers);
   headers.set("Accept", "application/json");
-  if (init?.body !== undefined && !headers.has("Content-Type")) {
+  if (
+    init?.body !== undefined &&
+    !(init.body instanceof FormData) &&
+    !headers.has("Content-Type")
+  ) {
     headers.set("Content-Type", "application/json");
   }
   return headers;

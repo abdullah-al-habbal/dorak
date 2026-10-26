@@ -6,6 +6,8 @@ export const BarberEndpoints = {
   profile: `${BASE}/profile`,
   schedule: `${BASE}/schedule`,
   portfolio: `${BASE}/portfolio`,
+  travelRadius: `${BASE}/travel-radius`,
+  portfolioPhoto: (id: string) => `${BASE}/portfolio/${encodeURIComponent(id)}`,
   bookingTransition: (id: string, transition: string) =>
     `${BASE}/bookings/${encodeURIComponent(id)}/${transition}`,
   bookingCancel: (id: string) =>

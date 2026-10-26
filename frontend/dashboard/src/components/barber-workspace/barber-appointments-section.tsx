@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@/components/tailgrids/core/button";
-import type { BarberAppointment } from "@/services/api/barber-workspace/types/barber-workspace.types";
+import type {
+  BarberAppointment,
+  BarberAppointmentAction,
+} from "@/services/api/barber-workspace/types/barber-workspace.types";
 
 interface IBarberAppointmentsSectionProps {
   title: string;
@@ -9,10 +12,30 @@ interface IBarberAppointmentsSectionProps {
   loadingLabel: string;
   appointmentLabel: string;
   acceptLabel: string;
+  startLabel: string;
+  completeLabel: string;
+  noShowLabel: string;
   cancelLabel: string;
   appointments: readonly BarberAppointment[] | undefined;
-  onAccept: (id: string) => void;
+  onTransition: (id: string, action: BarberAppointmentAction) => void;
   onCancelRequest: (id: string) => void;
+}
+
+function actionsForStatus(status: string): BarberAppointmentAction[] {
+  switch (status) {
+    case "pending":
+      return ["accept"];
+    case "confirmed":
+      return ["start"];
+    case "in_progress":
+      return ["complete", "no-show"];
+    default:
+      return [];
+  }
+}
+
+function canCancel(status: string): boolean {
+  return status === "pending" || status === "confirmed";
 }
 
 export function BarberAppointmentsSection({
@@ -21,11 +44,21 @@ export function BarberAppointmentsSection({
   loadingLabel,
   appointmentLabel,
   acceptLabel,
+  startLabel,
+  completeLabel,
+  noShowLabel,
   cancelLabel,
   appointments,
-  onAccept,
+  onTransition,
   onCancelRequest,
 }: IBarberAppointmentsSectionProps) {
+  const transitionLabels: Record<BarberAppointmentAction, string> = {
+    accept: acceptLabel,
+    start: startLabel,
+    complete: completeLabel,
+    "no-show": noShowLabel,
+  };
+
   return (
     <section className="rounded-xl border border-border-primary bg-card-primary p-5">
       <h2 className="font-semibold text-title-50">{title}</h2>
@@ -44,21 +77,26 @@ export function BarberAppointmentsSection({
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button
-              size="sm"
-              appearance="outline"
-              onPress={() => onAccept(appointment.id)}
-            >
-              {acceptLabel}
-            </Button>
-            <Button
-              size="sm"
-              variant="danger"
-              appearance="outline"
-              onPress={() => onCancelRequest(appointment.id)}
-            >
-              {cancelLabel}
-            </Button>
+            {actionsForStatus(appointment.status).map((action) => (
+              <Button
+                key={action}
+                size="sm"
+                appearance="outline"
+                onPress={() => onTransition(appointment.id, action)}
+              >
+                {transitionLabels[action]}
+              </Button>
+            ))}
+            {canCancel(appointment.status) ? (
+              <Button
+                size="sm"
+                variant="danger"
+                appearance="outline"
+                onPress={() => onCancelRequest(appointment.id)}
+              >
+                {cancelLabel}
+              </Button>
+            ) : null}
           </div>
         </article>
       ))}

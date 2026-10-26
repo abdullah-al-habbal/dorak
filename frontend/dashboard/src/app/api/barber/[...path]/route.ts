@@ -67,7 +67,15 @@ async function proxyBarberRequest(request: NextRequest, context: Context) {
     return noStore(
       apiFailure(401, API_ERROR_CODE.SESSION_EXPIRED, copy.unauthorized),
     );
-  const body = request.method === "GET" ? undefined : await request.text();
+  const isMultipart = (request.headers.get("content-type") ?? "").startsWith(
+    "multipart/form-data",
+  );
+  const body =
+    request.method === "GET"
+      ? undefined
+      : isMultipart
+        ? await request.formData()
+        : await request.text();
   const result = await backendRequest<unknown>(
     `${ROUTES.api.barber.root}/${joined}${request.nextUrl.search}`,
     {

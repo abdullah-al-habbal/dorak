@@ -111,7 +111,7 @@ codeanchors:
 
 ## Phase 13 — Dashboard (P1–P2)
 - [x] Task 68: Fix Barber Workspace Cache Invalidation and Toggle -> [Spec](tasks/task-68-barber-workspace-cache-fix.md)
-- [ ] Task 69: Complete Barber Workspace -> [Spec](tasks/task-69-barber-workspace-completion.md)
+- [x] Task 69: Complete Barber Workspace -> [Spec](tasks/task-69-barber-workspace-completion.md)
 - [ ] Task 70: Wire Booking Detail Page and Full Status Set -> [Spec](tasks/task-70-booking-detail-and-status.md)
 - [ ] Task 71: Enable List Search and Filters -> [Spec](tasks/task-71-list-search-filters.md)
 - [ ] Task 72: Replace Portal Home Placeholders and Fix Overview -> [Spec](tasks/task-72-portal-home-and-overview.md)

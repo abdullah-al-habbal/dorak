@@ -2,6 +2,7 @@ import { api } from "@/services/api/core/client";
 import { BarberEndpoints } from "@/services/api/barber-workspace/endpoints/barber-workspace.endpoints";
 import type {
   BarberAppointment,
+  BarberScheduleEntry,
   BarberWorkspaceProfile,
 } from "@/services/api/barber-workspace/types/barber-workspace.types";
 
@@ -11,6 +12,16 @@ function mapAppointment(value: Record<string, unknown>): BarberAppointment {
     status: String(value.status),
     timeSlot: String(value.time_slot),
     chair: value.chair as BarberAppointment["chair"],
+  };
+}
+
+function mapScheduleEntry(value: Record<string, unknown>): BarberScheduleEntry {
+  return {
+    id: String(value.id),
+    dayOfWeek: Number(value.day_of_week),
+    startTime: String(value.start_time).slice(0, 5),
+    endTime: String(value.end_time).slice(0, 5),
+    isActive: Boolean(value.is_active),
   };
 }
 
@@ -39,4 +50,11 @@ export function getBarberPortfolio() {
   return api.get<Array<{ id: string; url: string; sort_order: number }>>(
     BarberEndpoints.portfolio,
   );
+}
+
+export async function getBarberSchedule(): Promise<BarberScheduleEntry[]> {
+  const schedule = await api.get<Record<string, unknown>[]>(
+    BarberEndpoints.schedule,
+  );
+  return schedule.map(mapScheduleEntry);
 }

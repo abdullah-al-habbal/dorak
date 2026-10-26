@@ -32,3 +32,33 @@ export const TransitionBookingInputSchema = z.object({
 export const CancelBookingInputSchema = z.object({
   cancellation_reason: z.string(),
 });
+
+export const BarberScheduleEntrySchema = z.object({
+  id: z.string().optional(),
+  dayOfWeek: z.number().int().min(0).max(6),
+  startTime: z.string().regex(/^\d{2}:\d{2}$/),
+  endTime: z.string().regex(/^\d{2}:\d{2}$/),
+  isActive: z.boolean(),
+});
+
+export const UpdateScheduleFormSchema = z.object({
+  schedule: z
+    .array(
+      z.object({
+        dayOfWeek: z.number().int().min(0).max(6),
+        startTime: z.string().regex(/^\d{2}:\d{2}$/, "HH:mm"),
+        endTime: z.string().regex(/^\d{2}:\d{2}$/, "HH:mm"),
+        isActive: z.boolean(),
+      }),
+    )
+    .min(1),
+});
+
+export const UpdateTravelRadiusFormSchema = z.object({
+  travelRadius: z.number().min(0).max(100).nullable(),
+});
+
+export const UpdateBarberProfileFormSchema = z.object({
+  bioEn: z.string().max(2000).optional(),
+  bioAr: z.string().max(2000).optional(),
+});

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { apiRequest } from "@/services/api/core/client";
+import { api, apiRequest } from "@/services/api/core/client";
 
 function respond(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -75,5 +75,25 @@ describe("apiRequest status matrix", () => {
     await expect(apiRequest("/api/example")).rejects.toMatchObject({
       status: 0,
     });
+  });
+});
+
+describe("api.upload", () => {
+  it("sends the FormData body as-is without a JSON Content-Type", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        respond({ success: true, data: { id: "1" }, message: "" }),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+    const formData = new FormData();
+    formData.append("photo", new File(["x"], "x.jpg"));
+
+    await api.upload("/barber/portfolio", formData);
+
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(init.method).toBe("POST");
+    expect(init.body).toBe(formData);
+    expect((init.headers as Headers).has("Content-Type")).toBe(false);
   });
 });

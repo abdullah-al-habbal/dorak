@@ -2,7 +2,11 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type BarberMutationResource = "appointments" | "profile";
+type BarberMutationResource =
+  | "appointments"
+  | "profile"
+  | "schedule"
+  | "portfolio";
 
 export function useBarberMutation<TData, TVariables>(
   resource: BarberMutationResource,

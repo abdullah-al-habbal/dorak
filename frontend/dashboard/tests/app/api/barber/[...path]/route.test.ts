@@ -72,6 +72,34 @@ describe("barber BFF proxy", () => {
     expect(response.status).toBe(200);
   });
 
+  it("forwards a multipart portfolio upload as FormData instead of text", async () => {
+    backendRequest.mockResolvedValue({
+      ok: true,
+      status: 201,
+      envelope: { data: { id: "p-1" } },
+    });
+    const formData = new FormData();
+    formData.append(
+      "photo",
+      new File(["data"], "photo.jpg", { type: "image/jpeg" }),
+    );
+    const request = new NextRequest("http://localhost/api/barber/portfolio", {
+      method: "POST",
+      body: formData,
+    });
+
+    const response = await POST(request, context(["portfolio"]));
+
+    expect(backendRequest).toHaveBeenCalledWith(
+      "/api/v1/barber/portfolio",
+      expect.objectContaining({ method: "POST" }),
+    );
+    const forwardedBody = backendRequest.mock.calls[0]?.[1]?.body;
+    expect(forwardedBody).toBeInstanceOf(FormData);
+    expect((forwardedBody as FormData).get("photo")).toBeInstanceOf(File);
+    expect(response.status).toBe(200);
+  });
+
   it.each([
     { method: "GET", path: ["travel-radius"], handler: GET },
     { method: "POST", path: ["profile"], handler: POST },

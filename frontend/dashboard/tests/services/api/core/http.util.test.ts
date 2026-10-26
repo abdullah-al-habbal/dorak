@@ -27,6 +27,12 @@ describe("http helpers", () => {
     ).toBe("text/plain");
   });
 
+  it("leaves Content-Type unset for a FormData body so fetch can set the boundary", () => {
+    expect(
+      jsonRequestHeaders({ body: new FormData() }).has("Content-Type"),
+    ).toBe(false);
+  });
+
   it("builds bearer authorization headers", () => {
     expect(bearerHeaders("token")).toEqual({ Authorization: "Bearer token" });
   });

@@ -137,4 +137,18 @@ export const api = {
     send<TData>(HTTP_METHOD.PUT, path, body, options),
   delete: <TData>(path: string, options?: ApiCallOptions) =>
     send<TData>(HTTP_METHOD.DELETE, path, undefined, options),
+  /** Multipart upload: the body is sent as-is so `fetch` can set its own boundary. */
+  upload: <TData>(
+    path: string,
+    formData: FormData,
+    options?: ApiCallOptions,
+  ) => {
+    const { auth = "session", ...init } = options ?? {};
+    return apiRequest<TData>(`${API_BASE}${path}`, {
+      ...init,
+      auth,
+      method: HTTP_METHOD.POST,
+      body: formData,
+    });
+  },
 };
