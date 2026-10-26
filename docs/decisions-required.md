@@ -157,10 +157,10 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
   requirement sets a window.
 
 ## [Task 65: Specify and Build Monetization and Analytics APIs](tasks/task-65-monetization-analytics-apis.md)
-- [ ] Decision required: payment provider (none, or a named PSP), and whether payments are online at booking time or offline.
-- [ ] Decision required: subscription plans and how they map to the brand feature flags from Task 50 (`multi_branch`, `job_board`).
-- [ ] Decision required: commission model (percent or fixed; per booking or per period) and payout schedule.
-- [ ] `backend/docs/features/BE-20-monetization.md` exists, every "Decision required" above is answered, and it is marked approved by the product owner.
+- [ ] [NEEDSHIL] Decision required: payment provider (none, or a named PSP), and whether payments are online at booking time or offline. No code in the repo, no doc, and no prior session decision answers this — it is a real vendor/business choice, recorded as an open question in `backend/docs/features/BE-20-monetization.md` for the product owner.
+- [ ] [NEEDSHIL] Decision required: subscription plans and how they map to the brand feature flags from Task 50 (`multi_branch`, `job_board`). Same as above — pricing/plan design, not inferable from the codebase.
+- [ ] [NEEDSHIL] Decision required: commission model (percent or fixed; per booking or per period) and payout schedule. Same as above.
+- [ ] `backend/docs/features/BE-20-monetization.md` exists (drafted) and records all three decisions as open `[NEEDSHIL]` items; it is not yet marked approved by the product owner, so Phase B (migrations/modules/routes for subscriptions, commissions, payouts, analytics) has not been started — only the non-blocked AC (real revenue on `OverviewAction`, from completed-booking service prices) shipped.
 
 ## [Task 67: Conform Modules to Context Namespacing](tasks/task-67-context-namespacing-conformance.md)
 - [ ] Decision required: whether Core base classes and middleware are exempt from BE-18. If they are, document the exemption in BE-18.
