@@ -316,9 +316,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
         chairId: chairId,
         barberId: barberId,
         timeSlot: time,
-        serviceIds: state.selectedServiceIds.isEmpty
-            ? null
-            : state.selectedServiceIds,
+        serviceIds: state.selectedServiceIds,
         atHomeStreet: state.isAtHomeBooking ? state.atHomeStreet.trim() : null,
         atHomeBuilding: state.isAtHomeBooking
             ? state.atHomeBuilding.trim()

@@ -731,6 +731,10 @@
   "@bookingNoSlots": {
     "description": "Shown when the slot list for the selected date is empty"
   },
+  "bookingSelectServiceHint": "Select a service to continue",
+  "@bookingSelectServiceHint": {
+    "description": "Hint shown while the booking cannot be submitted because no service is selected"
+  },
   "bookingConfirmAction": "Confirm Booking",
   "@bookingConfirmAction": {
     "description": "Booking sheet confirm button label"

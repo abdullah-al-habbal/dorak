@@ -85,7 +85,10 @@ void main() {
 
       expect(captured.path, '/branches/branch-1/slots');
       expect(captured.queryParameters['date'], '2026-10-01');
-      expect(captured.queryParameters['service_ids'], ['service-1', 'service-2']);
+      expect(captured.queryParameters['service_ids'], [
+        'service-1',
+        'service-2',
+      ]);
       expect(captured.queryParameters['chair_id'], 'chair-1');
       expect(captured.queryParameters.containsKey('barber_id'), isFalse);
       expect(slots, hasLength(2));
@@ -144,9 +147,11 @@ void main() {
         await DioBranchRepository(
           branchApi,
         ).getFloorPlan('branch-1', timeSlot: timeSlot, durationMinutes: 30);
-        await DioBookingRepository(
-          bookingApi,
-        ).createBooking(chairId: 'chair-1', timeSlot: timeSlot);
+        await DioBookingRepository(bookingApi).createBooking(
+          chairId: 'chair-1',
+          timeSlot: timeSlot,
+          serviceIds: const ['service-1'],
+        );
 
         expect(
           floorPlanRequest.queryParameters['starts_at'],

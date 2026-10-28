@@ -27,13 +27,22 @@ The client booking flow has three defects. First, the submit gate does not requi
 - `app.router.dart` tracker and details routes: read `state.pathParameters['bookingId']`. When `extra` is absent or not a `BookingDto`, load the booking via `GET /bookings/{booking}` (the existing `ShowBookingAction` route) through the booking repository instead of force-casting.
 
 ## Acceptance Criteria
-- [ ] Bloc test: with no service selected, `canSubmit == false` and `BookingRepository.createBooking` is never called.
-- [ ] Repository test: the create-booking request body always contains a non-empty `service_ids` array.
-- [ ] Unit test: for a fixed `DateTime`, the floor-plan query `date`/`time_slot` and the booking `time_slot` represent the same instant under the Task 20 convention.
-- [ ] Router test: navigating to `/bookings/<id>/tracker` (and the details path) with no `extra` renders the screen after fetching by ID. No `TypeError` or null-check exception is thrown.
-- [ ] Existing `apps/client_app/test/branch_detail_bloc_test.dart` and `booking_flow_test.dart` are updated and pass.
-- [ ] `melos run analyze` and `melos run test` pass.
+- [x] Bloc test: with no service selected, `canSubmit == false` and `BookingRepository.createBooking` is never called.
+- [x] Repository test: the create-booking request body always contains a non-empty `service_ids` array.
+- [x] Unit test: for a fixed `DateTime`, the floor-plan query `date`/`time_slot` and the booking `time_slot` represent the same instant under the Task 20 convention.
+- [x] Router test: navigating to `/bookings/<id>/tracker` (and the details path) with no `extra` renders the screen after fetching by ID. No `TypeError` or null-check exception is thrown.
+- [x] Existing `apps/client_app/test/branch_detail_bloc_test.dart` and `booking_flow_test.dart` are updated and pass.
+- [x] `melos run analyze` and `melos run test` pass.
 
 ## Out of Scope
 - Slot-picker UI driven by the availability endpoint (Task 21 backend, then a follow-up in this flow).
 - Booking a barber without a chair (Task 24) and direct booking from the stylist profile (Task 79).
+
+## Implemented Contract
+- `BranchDetailState.hasSelectedService` gates `canSubmit`; the submit section shows `bookingSelectServiceHint` (EN/AR) while no service is selected.
+- `BookingRepository.createBooking` takes a required `serviceIds`; an empty list throws `ArgumentError` before any request, and `service_ids` is always sent.
+- Floor-plan `starts_at` and booking `time_slot` were already sent as the same UTC instant (Task 20 convention); regression-tested in `branch_repository_test.dart`.
+- Routes: tracker is now `/bookings/:bookingId/tracker` (`AppRoutes.bookingTracker(id)`); tracker and details routes resolve through `BookingRouteScreen`, which uses `extra` when it matches the path id and otherwise fetches `GET /bookings/{id}` with a retry state.
+
+## Decisions
+- Tracker path gained the booking id (previously `/bookings/tracker`) so deep links carry the id; no backend change.

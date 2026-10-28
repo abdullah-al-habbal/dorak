@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
@@ -116,6 +117,34 @@ void _noBarberSelected(String _) {}
 ApiClient fakeApiClient() {
   return ApiClient(
     baseUrl: 'https://api.example.com',
+    tokenProvider: () async => null,
+    enableLogging: false,
+  );
+}
+
+ApiClient bookingApiClient(BookingDto booking) {
+  final dio = Dio(BaseOptions(baseUrl: 'https://api.example.com'))
+    ..interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) => handler.resolve(
+          Response<dynamic>(
+            requestOptions: options,
+            statusCode: 200,
+            data: {
+              'success': true,
+              'statusCode': 200,
+              'code': 'SUCCESS',
+              'message': 'Success',
+              'timestamp': '2026-08-14T00:00:00.000Z',
+              'data': jsonDecode(jsonEncode(booking.toJson())),
+            },
+          ),
+        ),
+      ),
+    );
+  return ApiClient(
+    baseUrl: 'https://api.example.com',
+    dio: dio,
     tokenProvider: () async => null,
     enableLogging: false,
   );
@@ -690,7 +719,7 @@ class FakeBookingRepository implements BookingRepository {
     String? branchId,
     String? barberId,
     required DateTime timeSlot,
-    List<String>? serviceIds,
+    required List<String> serviceIds,
     String? atHomeStreet,
     String? atHomeBuilding,
     String? atHomeUnit,

@@ -6,6 +6,9 @@ import 'package:core/core.dart';
 import 'package:client_app/src/core/navigation/app.router.dart';
 import 'package:client_app/src/core/navigation/app_routes.entity.dart';
 import 'package:client_app/src/features/booking/booking.bloc.dart';
+import 'package:client_app/src/features/booking/booking_details.screen.dart';
+import 'package:client_app/src/features/booking/booking_route.screen.dart';
+import 'package:client_app/src/features/booking/booking_tracker.screen.dart';
 import 'package:client_app/src/features/booking/bookings.screen.dart';
 
 import 'helpers/fakes.dart';
@@ -22,7 +25,10 @@ void main() {
     storage = InMemoryTokenStorage('stored-token');
   });
 
-  Future<AppRouter> pumpBookings(WidgetTester tester) async {
+  Future<AppRouter> pumpBookings(
+    WidgetTester tester, {
+    ApiClient? apiClient,
+  }) async {
     tester.view.physicalSize = const Size(1290, 2796);
     tester.view.devicePixelRatio = 3.0;
     addTearDown(tester.view.reset);
@@ -36,7 +42,7 @@ void main() {
       auth: pair.auth,
       bookings: bookings,
       preferences: InMemoryAppPreferences(dontShowOnboarding: true),
-      apiClient: fakeApiClient(),
+      apiClient: apiClient ?? fakeApiClient(),
     );
     addTearDown(pair.coordinator.cancel);
     await tester.pumpWidget(routerHarness(router));
@@ -86,6 +92,26 @@ void main() {
     expect(find.text('Pending'), findsOneWidget);
     expect(find.text('Cancel Booking'), findsOneWidget);
   });
+
+  for (final (path, expected) in [
+    (AppRoutes.bookingTracker('booking-1'), BookingTrackerScreen),
+    (AppRoutes.bookingDetails('booking-1'), BookingDetailsScreen),
+  ]) {
+    testWidgets('deep link $path loads the booking by id', (tester) async {
+      final router = await pumpBookings(
+        tester,
+        apiClient: bookingApiClient(testBooking()),
+      );
+
+      router.router.go(path);
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.byType(BookingRouteScreen), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(find.byType(expected), findsOneWidget);
+    });
+  }
 
   testWidgets('tracker explains a pending booking', (tester) async {
     repository.firstPage = testBookingPage(

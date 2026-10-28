@@ -1136,6 +1136,12 @@ abstract class AppLocalizations {
   /// **'No available slots'**
   String get bookingNoSlots;
 
+  /// Hint shown while the booking cannot be submitted because no service is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Select a service to continue'**
+  String get bookingSelectServiceHint;
+
   /// Booking sheet confirm button label
   ///
   /// In en, this message translates to:

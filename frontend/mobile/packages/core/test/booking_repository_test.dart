@@ -180,6 +180,7 @@ void main() {
       await expectLater(
         repository.createBooking(
           chairId: 'chair-1',
+          serviceIds: const ['service-1'],
           timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
         ),
         throwsA(
@@ -225,6 +226,23 @@ void main() {
       },
     );
 
+    test('createBooking rejects an empty service list before any request', () {
+      final fake = fakeDio(
+        handler: (options) => jsonResponse(options, data: successEnvelope()),
+      );
+      final repository = DioBookingRepository(clientWith(fake));
+
+      expect(
+        () => repository.createBooking(
+          chairId: 'chair-1',
+          timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+          serviceIds: const [],
+        ),
+        throwsArgumentError,
+      );
+      expect(fake.callCount, 0);
+    });
+
     test('createBooking rejects a partial at-home address', () {
       final repository = DioBookingRepository(
         clientWith(
@@ -238,6 +256,7 @@ void main() {
       expect(
         () => repository.createBooking(
           timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+          serviceIds: const ['service-1'],
           atHomeLatitude: 33.8938,
         ),
         throwsArgumentError,

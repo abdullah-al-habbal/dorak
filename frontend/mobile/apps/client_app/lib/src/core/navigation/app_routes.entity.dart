@@ -34,7 +34,7 @@ class AppRoutes {
   static const String branchDetailSegment = 'branch/:branchId';
   static const String discoverBarberSegment = 'barber/:barberId';
   static const String reviewSegment = 'reviews/:bookingId';
-  static const String bookingTrackerSegment = 'tracker';
+  static const String bookingTrackerSegment = ':bookingId/tracker';
   static const String bookingDetailsSegment = 'details/:bookingId';
 
   static String branchDetail(String branchId) => '$discover/branch/$branchId';
@@ -43,7 +43,8 @@ class AppRoutes {
   static String reviewDetail(String bookingId) =>
       '$bookings/reviews/$bookingId';
 
-  static const String bookingTracker = '$bookings/tracker';
+  static String bookingTracker(String bookingId) =>
+      '$bookings/$bookingId/tracker';
   static String bookingDetails(String bookingId) =>
       '$bookings/details/$bookingId';
 

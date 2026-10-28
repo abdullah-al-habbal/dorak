@@ -58,8 +58,11 @@ class BranchDetailState extends Equatable {
   final Object? submitError;
   final bool succeeded;
 
+  bool get hasSelectedService => selectedServiceIds.isNotEmpty;
+
   bool get canSubmit {
     if (isSubmitting || isLocating || selectedTime == null) return false;
+    if (!hasSelectedService) return false;
     if (!slots.any((slot) => slot.startsAt.isAtSameMomentAs(selectedTime!))) {
       return false;
     }

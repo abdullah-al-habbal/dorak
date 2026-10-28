@@ -578,6 +578,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookingNoSlots => 'No available slots';
 
   @override
+  String get bookingSelectServiceHint => 'Select a service to continue';
+
+  @override
   String get bookingConfirmAction => 'Confirm Booking';
 
   @override

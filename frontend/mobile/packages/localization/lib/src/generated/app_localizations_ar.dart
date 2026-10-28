@@ -577,6 +577,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingNoSlots => 'لا توجد مواعيد متاحة';
 
   @override
+  String get bookingSelectServiceHint => 'اختر خدمة للمتابعة';
+
+  @override
   String get bookingConfirmAction => 'تأكيد الحجز';
 
   @override

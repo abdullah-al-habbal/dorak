@@ -64,6 +64,28 @@ void main() {
     );
   });
 
+  group('service gate', () {
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'without a service canSubmit is false and no booking is created',
+      build: bloc,
+      seed: () => BranchDetailState(
+        branchId: '1',
+        detail: testBranchDetail(),
+        plan: testFloorPlan(),
+        selectedDate: DateTime.utc(2026, 9, 10),
+        selectedChairId: 'chair-1',
+        slots: testSlots(),
+        selectedTime: testSlotStart(),
+      ),
+      act: (bloc) => bloc.add(const BranchDetailBookingSubmitted()),
+      verify: (bloc) {
+        expect(bloc.state.hasSelectedService, isFalse);
+        expect(bloc.state.canSubmit, isFalse);
+        expect(bookings.createCalls, 0);
+      },
+    );
+  });
+
   group('selection', () {
     BranchDetailState seeded() => BranchDetailState(
       branchId: '1',

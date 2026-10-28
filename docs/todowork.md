@@ -122,7 +122,7 @@ codeanchors:
 - [x] Task 77: Add Brand and Service Catalog Management UI -> [Spec](tasks/task-77-catalog-brand-management-ui.md)
 
 ## Phase 14 — Mobile (P1–P2)
-- [ ] Task 78: Fix Client Booking Flow Defects -> [Spec](tasks/task-78-client-booking-flow-fixes.md)
+- [x] Task 78: Fix Client Booking Flow Defects -> [Spec](tasks/task-78-client-booking-flow-fixes.md)
 - [ ] Task 79: Add Client Barber Discovery and Direct Booking -> [Spec](tasks/task-79-client-barber-discovery.md)
 - [ ] Task 80: Wire Unwired Client Features -> [Spec](tasks/task-80-client-unwired-features.md)
 - [ ] Task 81: Clean Up Client Auth Flows -> [Spec](tasks/task-81-client-auth-cleanup.md)

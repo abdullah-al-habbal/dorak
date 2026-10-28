@@ -76,6 +76,10 @@ class BookingSubmitSection extends StatelessWidget {
           StatusBanner(message: submitMessage),
           const SizedBox(height: DorakDimensions.spacingSmall),
         ],
+        if (!state.hasSelectedService) ...[
+          Text(l10n.bookingSelectServiceHint, style: DorakTypography.bodyMd),
+          const SizedBox(height: DorakDimensions.spacingSmall),
+        ],
         PrimaryButton(
           label: l10n.bookingConfirmAction,
           onPressed: onSubmit,

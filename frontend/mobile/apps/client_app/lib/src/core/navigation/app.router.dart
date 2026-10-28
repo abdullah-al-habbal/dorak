@@ -29,6 +29,7 @@ import 'package:client_app/src/features/booking/bookings.screen.dart';
 import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.screen.dart';
 import 'package:client_app/src/features/booking/booking_details.screen.dart';
+import 'package:client_app/src/features/booking/booking_route.screen.dart';
 import 'package:client_app/src/features/booking/booking_tracker.screen.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.screen.dart'
@@ -546,6 +547,20 @@ class AppRouter {
     ],
   );
 
+  Widget _bookingRoute(
+    GoRouterState state,
+    Widget Function(BookingDto booking, BookingRepository repository) build,
+  ) {
+    final repository = services.createBookingRepository();
+    final extra = state.extra;
+    return BookingRouteScreen(
+      bookingId: state.pathParameters['bookingId'] ?? '',
+      repository: repository,
+      initial: extra is BookingDto ? extra : null,
+      builder: (booking) => build(booking, repository),
+    );
+  }
+
   StatefulShellBranch _bookingsBranch() => StatefulShellBranch(
     routes: [
       GoRoute(
@@ -558,8 +573,10 @@ class AppRouter {
             onLocaleToggle: switchLocale,
             onRate: (bookingId) =>
                 router.push<void>(AppRoutes.reviewDetail(bookingId)),
-            onTrack: (booking) =>
-                router.push<void>(AppRoutes.bookingTracker, extra: booking),
+            onTrack: (booking) => router.push<void>(
+              AppRoutes.bookingTracker(booking.id),
+              extra: booking,
+            ),
             onDetails: (booking) => router.push<void>(
               AppRoutes.bookingDetails(booking.id),
               extra: booking,
@@ -584,18 +601,24 @@ class AppRouter {
           ),
           GoRoute(
             path: AppRoutes.bookingTrackerSegment,
-            builder: (context, state) => BookingTrackerScreen(
-              booking: state.extra! as BookingDto,
-              repository: services.createBookingRepository(),
-              realtime: realtime,
-              clientId: session.state.client?.id,
+            builder: (context, state) => _bookingRoute(
+              state,
+              (booking, repository) => BookingTrackerScreen(
+                booking: booking,
+                repository: repository,
+                realtime: realtime,
+                clientId: session.state.client?.id,
+              ),
             ),
           ),
           GoRoute(
             path: AppRoutes.bookingDetailsSegment,
-            builder: (context, state) => BookingDetailsScreen(
-              booking: state.extra! as BookingDto,
-              repository: services.createBookingRepository(),
+            builder: (context, state) => _bookingRoute(
+              state,
+              (booking, repository) => BookingDetailsScreen(
+                booking: booking,
+                repository: repository,
+              ),
             ),
           ),
         ],
