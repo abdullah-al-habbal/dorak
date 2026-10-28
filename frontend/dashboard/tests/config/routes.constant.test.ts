@@ -36,6 +36,7 @@ describe("route constants", () => {
       "bookings",
       "services",
       "chairs",
+      "brands",
       "stylists",
     ]);
     expect(ROUTES.operations.resource("owner", "branches")).toBe(
@@ -49,6 +50,9 @@ describe("route constants", () => {
       PORTAL_NAVIGATION.find((item) => item.key === key)?.actors;
 
     moderationKeys.forEach((key) => expect(actorsFor(key)).toEqual(["admin"]));
+    expect(actorsFor("catalogItems")).toEqual(["admin"]);
+    expect(actorsFor("brands")).toEqual(["admin", "owner"]);
+    expect(ROUTES.operations.brands("owner")).toBe("/owner/brands");
     expect(ROUTES.admin.disputedReviews).toBe("/admin/disputed-reviews");
     expect(ROUTES.admin.exchangeRates).toBe("/admin/exchange-rates");
   });

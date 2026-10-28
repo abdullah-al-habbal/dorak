@@ -41,6 +41,11 @@ export const DashboardEndpoints = {
   adminReviews: `${BASE}/admin/reviews`,
   adminReviewResolve: (id: string) =>
     `${BASE}/admin/reviews/${encodeURIComponent(id)}/resolve`,
+  catalogItems: `${BASE}/admin/catalog-items`,
+  catalogItem: (id: string) =>
+    `${BASE}/admin/catalog-items/${encodeURIComponent(id)}`,
+  catalogCategories: `${BASE}/admin/catalog-categories`,
+  catalogTags: `${BASE}/admin/catalog-tags`,
   adminExchangeRates: `${BASE}/admin/exchange-rates`,
   bookingCancel: (id: string) =>
     `${BASE}/bookings/${encodeURIComponent(id)}/cancel`,

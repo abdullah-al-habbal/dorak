@@ -182,7 +182,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision required: managed barber creation. **Resolved**: dashboard `stylists` create is the only path in the dashboard; `POST branch/barbers` stays mobile-only (Task 85). See the Task 75 spec. Use only the existing dashboard `stylists` create, or keep `POST branch/barbers`, but not both. If `stylists` covers it, `branch/barbers` becomes mobile-only (Task 85).
 
 ## [Task 77: Add Brand and Service Catalog Management UI](tasks/task-77-catalog-brand-management-ui.md)
-- [ ] Brands: Decision required. Either add admin brand management under `auth:admin_api`, or let the brand owner manage brands through the dashboard once the Brand Owner role exists (Task 38). This UI follows that decision.
+- [x] Brands: Decision resolved (best option): both, role-scoped — admins list/view/edit any brand, owners list/view/edit/create their own, managers and barbers get 403. Admins cannot create a brand because `brands.owner_id` must be a client account (ADR 0001). See the task spec's decision note.
 
 ## [Task 81: Clean Up Client Auth Flows](tasks/task-81-client-auth-cleanup.md)
 - [ ] Social login: add provider buttons in `login_content.widget.dart` behind a config flag. **Decision required:** which providers and SDKs (Google/Apple) ship in v1.

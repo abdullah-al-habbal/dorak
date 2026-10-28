@@ -22,11 +22,20 @@ The dashboard uses brands and service-catalog items only as dropdown lookups thr
 - None. The client app consumes the catalog read-only.
 
 ## Acceptance Criteria
-- [ ] Admin creates a catalog item: 201, it appears in the list, and it appears in the service form's catalog dropdown after `["lookups","service-catalog-items"]` is invalidated.
-- [ ] A manager session cannot create, update or delete catalog items: the UI hides the actions and the backend returns 403 (feature test from Task 04 re-asserted through the BFF).
-- [ ] Brand create and edit work for the role chosen in the decision, and return 403 for other roles.
-- [ ] Linking a dashboard service to a catalog item succeeds end to end (ID-type mismatch fixed by Task 14).
-- [ ] `php artisan test` and `npm run test` pass; eslint and tsc are clean.
+- [x] Admin creates a catalog item: 201, it appears in the list, and it appears in the service form's catalog dropdown after `["lookups","service-catalog-items"]` is invalidated.
+- [x] A manager session cannot create, update or delete catalog items: the UI hides the actions and the backend returns 403 (feature test from Task 04 re-asserted through the BFF).
+- [x] Brand create and edit work for the role chosen in the decision, and return 403 for other roles.
+- [x] Linking a dashboard service to a catalog item succeeds end to end (ID-type mismatch fixed by Task 14).
+- [x] `php artisan test` and `npm run test` pass; eslint and tsc are clean.
+
+### Decision (resolved, best option)
+Brands are managed through the dashboard by **both** roles, scoped by `DashboardActor`: a platform admin lists, views and edits any brand; a brand owner lists, views, edits and creates their own brands; branch managers and barbers get 403. An admin cannot *create* a brand because `brands.owner_id` must reference a client account (ADR 0001) — creation stays an owner action. A foreign brand is 404 on show and 403 on update. Rejected: admin-only (would leave the owner portal's brand switcher gap open) and owner-only (admins could never correct a brand).
+
+### Implemented contract
+- Backend (`dashboard/*`, reusing existing handlers): `GET|POST /brands`, `GET|PUT /brands/{brand}` behind `DashboardBrandAuthorizationMiddleware` (admin or owner); `CreateBrandRequest::toCommand` takes an optional owner id; `UpdateBrandRequest::authorize` defers to the dashboard actor when present. Admin-only: `/admin/catalog-items` (list, create, update, delete via the Task 04 actions; their Gate now authorizes the `admin_api` user explicitly), `/admin/catalog-categories`, `/admin/catalog-tags` (new tag list so the form can assign `tag_ids`).
+- Dashboard: `/admin/catalog-items` (search, paginated, create/edit form with category, names, slug, duration, face shapes, hair textures, tags, active; delete with confirmation) and `/admin/brands`, `/owner/brands` (search, edit, create for owners only). Mutations invalidate `["dashboard","catalog-items"]` + `["lookups","service-catalog-items"]` and `["dashboard","brands"]` + `["lookups","brands"]`. The lookup route stays read-only. Pages exist only under the permitted actor roots; managers are redirected by `proxy.ts` and get 403 from the BFF/backend.
+- Not included: price range, maintenance level, style period, formality and media on catalog items (accepted by the API, not required by this spec); optional `first_branch` on brand creation.
+- Mobile: unchanged; `melos verify` not run (no mobile or contract-breaking change).
 
 ## Out of Scope
 - Catalog domain rules such as inactive-item referencing and tag assignment (Task 61).

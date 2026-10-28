@@ -12,6 +12,10 @@ use Modules\Dashboard\Http\Actions\Branches\ShowBranchFloorPlanAction;
 use Modules\Dashboard\Http\Actions\Branches\StoreBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\UpdateBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\UpdateBranchFloorPlanAction;
+use Modules\Dashboard\Http\Actions\Brands\ListBrandsAction;
+use Modules\Dashboard\Http\Actions\Brands\ShowBrandAction;
+use Modules\Dashboard\Http\Actions\Brands\StoreBrandAction;
+use Modules\Dashboard\Http\Actions\Brands\UpdateBrandAction;
 use Modules\Dashboard\Http\Actions\Business\CancelBookingAction;
 use Modules\Dashboard\Http\Actions\Business\CreateWalkInBookingAction;
 use Modules\Dashboard\Http\Actions\Business\ListBookingsAction;
@@ -21,6 +25,7 @@ use Modules\Dashboard\Http\Actions\Business\ReviewBookingClientAction;
 use Modules\Dashboard\Http\Actions\Business\ShowBookingAction;
 use Modules\Dashboard\Http\Actions\Business\ShowBookingHistoryAction;
 use Modules\Dashboard\Http\Actions\Business\UpdateBookingStatusAction;
+use Modules\Dashboard\Http\Actions\Catalog\ListCatalogTagsAction;
 use Modules\Dashboard\Http\Actions\Chairs\DestroyChairAction;
 use Modules\Dashboard\Http\Actions\Chairs\ListChairsAction;
 use Modules\Dashboard\Http\Actions\Chairs\ShowChairAction;
@@ -61,10 +66,17 @@ use Modules\Dashboard\Http\Actions\Stylists\StoreStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\UpdateStylistAction;
 use Modules\Dashboard\Http\Middleware\DashboardAdminAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
+use Modules\Dashboard\Http\Middleware\DashboardBrandAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOperationsAuthorizationMiddleware;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 use Modules\Review\Http\Actions\Admin\ListAdminReviewsAction;
 use Modules\Review\Http\Actions\Admin\ResolveReviewDisputeAction;
+use Modules\ServiceCatalog\Http\Actions\Client\CreateCatalogItemAction;
+use Modules\ServiceCatalog\Http\Actions\Client\DeleteCatalogItemAction;
+use Modules\ServiceCatalog\Http\Actions\Client\UpdateCatalogItemAction;
+use Modules\ServiceCatalog\Http\Actions\Shared\ListCatalogItemsAction;
+use Modules\ServiceCatalog\Http\Actions\Shared\ListCategoriesAction;
+use Modules\ServiceCatalog\Http\Actions\Shared\ShowCatalogItemAction;
 
 Route::prefix('dashboard')->group(function (): void {
     Route::post('/login', DashboardLoginAction::class)->middleware('throttle:5,1');
@@ -86,6 +98,20 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/reviews', ListAdminReviewsAction::class);
         Route::patch('/reviews/{review}/resolve', ResolveReviewDisputeAction::class);
         Route::get('/exchange-rates', ListExchangeRatesAction::class);
+        Route::get('/catalog-items', ListCatalogItemsAction::class);
+        Route::post('/catalog-items', CreateCatalogItemAction::class);
+        Route::get('/catalog-items/{id}', ShowCatalogItemAction::class);
+        Route::put('/catalog-items/{id}', UpdateCatalogItemAction::class);
+        Route::delete('/catalog-items/{id}', DeleteCatalogItemAction::class);
+        Route::get('/catalog-categories', ListCategoriesAction::class);
+        Route::get('/catalog-tags', ListCatalogTagsAction::class);
+    });
+
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBrandAuthorizationMiddleware::class])->group(function (): void {
+        Route::get('/brands', ListBrandsAction::class);
+        Route::post('/brands', StoreBrandAction::class);
+        Route::get('/brands/{brand}', ShowBrandAction::class);
+        Route::put('/brands/{brand}', UpdateBrandAction::class);
     });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOperationsAuthorizationMiddleware::class])->group(function (): void {

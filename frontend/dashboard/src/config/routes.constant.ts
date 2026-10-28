@@ -49,6 +49,7 @@ export const ROUTES = {
     reviews: (actor: OperationsActor) => `/${actor}/reviews`,
     affiliations: (actor: OperationsActor) => `/${actor}/affiliations`,
     jobPostings: (actor: OperationsActor) => `/${actor}/job-postings`,
+    brands: (actor: "admin" | "owner") => `/${actor}/brands`,
     resource: (
       actor: OperationsActor,
       resource: "branches" | "chairs" | "services" | "stylists" | "bookings",
@@ -57,6 +58,7 @@ export const ROUTES = {
   admin: {
     disputedReviews: "/admin/disputed-reviews",
     exchangeRates: "/admin/exchange-rates",
+    catalogItems: "/admin/catalog-items",
   },
   api: {
     root: "/api",
@@ -154,6 +156,18 @@ export const PORTAL_NAVIGATION: readonly PortalNavigationItem[] = [
     actors: OPERATIONS_ACTORS,
     href: (actor) =>
       ROUTES.operations.resource(actor as OperationsActor, "chairs"),
+  },
+  {
+    key: "brands",
+    icon: "home",
+    actors: ["admin", "owner"],
+    href: (actor) => ROUTES.operations.brands(actor as "admin" | "owner"),
+  },
+  {
+    key: "catalogItems",
+    icon: "home",
+    actors: ["admin"],
+    href: () => ROUTES.admin.catalogItems,
   },
   {
     key: "disputedReviews",

@@ -15,6 +15,8 @@ return [
     'stylist_not_assigned_to_chair' => 'يجب تعيين الحلاق إلى الكرسي المحدد.',
     'services_unavailable_for_branch' => 'يجب أن تكون جميع الخدمات متاحة للفرع المحدد.',
     'admin_operation_only' => 'عملية لوحة التحكم هذه متاحة لمسؤولي المنصة فقط.',
+    'brand_operation_unavailable' => 'إدارة العلامات التجارية متاحة لمسؤولي المنصة ومالكي العلامات فقط.',
+    'brand_owner_only' => 'مالك العلامة التجارية فقط يمكنه إنشاء علامة تجارية.',
     'barber_operation_unavailable' => 'عملية لوحة التحكم هذه غير متاحة للحلاقين.',
     'refresh_ttl_invalid' => 'يجب ألا تقل قيمة DASHBOARD_REFRESH_TTL_SECONDS عن 3600 ثانية.',
     'session_secret_invalid' => 'يجب ألا يقل طول DASHBOARD_SESSION_SECRET عن 32 حرفًا.',

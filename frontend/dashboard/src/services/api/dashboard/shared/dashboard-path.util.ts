@@ -54,6 +54,15 @@ const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
     path: /^admin\/reviews\/[A-Za-z0-9-]+\/resolve$/,
   },
   { method: "GET", path: /^admin\/exchange-rates$/ },
+  { method: "GET", path: /^admin\/catalog-(categories|tags)$/ },
+  { method: "GET", path: /^admin\/catalog-items$/ },
+  { method: "POST", path: /^admin\/catalog-items$/ },
+  { method: "PUT", path: /^admin\/catalog-items\/[A-Za-z0-9-]+$/ },
+  { method: "DELETE", path: /^admin\/catalog-items\/[A-Za-z0-9-]+$/ },
+  { method: "GET", path: /^brands$/ },
+  { method: "POST", path: /^brands$/ },
+  { method: "GET", path: /^brands\/[A-Za-z0-9-]+$/ },
+  { method: "PUT", path: /^brands\/[A-Za-z0-9-]+$/ },
   { method: "GET", path: /^profile$/ },
   { method: "PATCH", path: /^profile$/ },
   { method: "POST", path: /^profile\/email\/(change|verify)$/ },
@@ -79,7 +88,11 @@ const PAGED_BRANCH_SUBRESOURCES = ["reviews", "affiliations", "job-postings"];
 /** Whether a proxied list response carries backend pagination meta. */
 export function isDashboardPagedPath(path: readonly string[]): boolean {
   if (path.length === 1) return path[0] !== "overview";
-  if (path[0] === "admin") return path.length === 2 && path[1] === "reviews";
+  if (path[0] === "admin")
+    return (
+      path.length === 2 &&
+      (path[1] === "reviews" || path[1] === "catalog-items")
+    );
   if (path[0] !== "branches") return false;
   if (path.length === 3)
     return PAGED_BRANCH_SUBRESOURCES.includes(path[2] ?? "");

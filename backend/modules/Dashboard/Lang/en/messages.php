@@ -15,6 +15,8 @@ return [
     'stylist_not_assigned_to_chair' => 'The stylist must be assigned to the selected chair.',
     'services_unavailable_for_branch' => 'Every service must be available to the selected branch.',
     'admin_operation_only' => 'This dashboard operation is available to platform administrators only.',
+    'brand_operation_unavailable' => 'Brand management is available to platform administrators and brand owners only.',
+    'brand_owner_only' => 'Only a brand owner can create a brand.',
     'barber_operation_unavailable' => 'This dashboard operation is not available to barbers.',
     'refresh_ttl_invalid' => 'DASHBOARD_REFRESH_TTL_SECONDS must be at least 3600 seconds.',
     'session_secret_invalid' => 'DASHBOARD_SESSION_SECRET must be at least 32 characters.',

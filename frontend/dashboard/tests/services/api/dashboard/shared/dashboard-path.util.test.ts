@@ -53,6 +53,13 @@ describe("isDashboardRouteAllowed", () => {
     ["GET", ["admin", "reviews"]],
     ["PATCH", ["admin", "reviews", "review-1", "resolve"]],
     ["GET", ["admin", "exchange-rates"]],
+    ["GET", ["admin", "catalog-items"]],
+    ["POST", ["admin", "catalog-items"]],
+    ["PUT", ["admin", "catalog-items", "item-1"]],
+    ["DELETE", ["admin", "catalog-items", "item-1"]],
+    ["GET", ["admin", "catalog-categories"]],
+    ["GET", ["admin", "catalog-tags"]],
+    ["PUT", ["brands", "brand-1"]],
   ] as [string, readonly string[]][])("allows %s %s", (method, path) => {
     expect(isDashboardRouteAllowed(method, path)).toBe(true);
   });
@@ -87,6 +94,9 @@ describe("isDashboardRouteAllowed", () => {
     ["PUT", ["admin", "exchange-rates"]],
     ["DELETE", ["admin", "reviews", "review-1"]],
     ["GET", ["admin", "brands"]],
+    ["PATCH", ["admin", "catalog-items", "item-1"]],
+    ["POST", ["admin", "catalog-tags"]],
+    ["DELETE", ["brands", "brand-1"]],
   ] as [string, readonly string[]][])("rejects %s %s", (method, path) => {
     expect(isDashboardRouteAllowed(method, path)).toBe(false);
   });
@@ -105,6 +115,8 @@ describe("isDashboardPagedPath", () => {
     [["profile", "notifications"], false],
     [["admin", "reviews"], true],
     [["admin", "exchange-rates"], false],
+    [["admin", "catalog-items"], true],
+    [["admin", "catalog-tags"], false],
   ] as [string[], boolean][])("%j -> %s", (path, expected) => {
     expect(isDashboardPagedPath(path)).toBe(expected);
   });

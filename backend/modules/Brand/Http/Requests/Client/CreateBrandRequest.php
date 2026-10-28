@@ -31,10 +31,11 @@ final class CreateBrandRequest extends BaseApiFormRequest
         ];
     }
 
-    public function toCommand(): CreateBrandCommand
+    /** @param string|null $ownerId defaults to the authenticated client */
+    public function toCommand(?string $ownerId = null): CreateBrandCommand
     {
         return new CreateBrandCommand(
-            ownerId: (string) $this->user()->getAuthIdentifier(),
+            ownerId: $ownerId ?? (string) $this->user()->getAuthIdentifier(),
             nameEn: $this->validated('name.en'),
             nameAr: $this->validated('name.ar'),
             baseCurrencyId: $this->validated('base_currency_id'),

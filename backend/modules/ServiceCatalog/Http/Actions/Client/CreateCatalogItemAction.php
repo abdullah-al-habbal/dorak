@@ -20,7 +20,7 @@ final class CreateCatalogItemAction extends BaseApiAction
 
     public function __invoke(CreateCatalogItemRequest $request): JsonResponse
     {
-        Gate::forUser($request->user())->authorize('create', ServiceCatalogItemModel::class);
+        Gate::forUser($request->user('admin_api'))->authorize('create', ServiceCatalogItemModel::class);
         $item = $this->handler->handle($request->toCommand());
 
         $item->load(['category', 'tags', 'media']);

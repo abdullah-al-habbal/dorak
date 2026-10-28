@@ -21,7 +21,7 @@ final class UpdateCatalogItemAction extends BaseApiAction
     public function __invoke(string $id, UpdateCatalogItemRequest $request): JsonResponse
     {
         $item = ServiceCatalogItemModel::query()->findOrFail($id);
-        Gate::forUser($request->user())->authorize('update', $item);
+        Gate::forUser($request->user('admin_api'))->authorize('update', $item);
         $command = $request->toCommand($id);
         $item = $this->handler->handle($command);
         $item->load(['category', 'tags', 'media']);

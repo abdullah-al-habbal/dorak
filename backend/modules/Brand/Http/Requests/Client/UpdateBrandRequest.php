@@ -9,13 +9,19 @@ use Modules\Brand\CQRS\Command\Client\UpdateBrandCommand;
 use Modules\Brand\Models\BrandModel;
 use Modules\Core\Enums\VenueUniverse;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateBrandRequest extends BaseApiFormRequest
 {
-    // todo: is better to make a middleware to resolve the current use and validate it.
     public function authorize(): bool
     {
         $brandId = $this->route('brand');
+        $actor = $this->attributes->get('dashboard_actor');
+        // Dashboard calls are scoped by the actor (admin: any brand; owner: owned brands).
+        if ($actor instanceof DashboardActor) {
+            return $actor->canManageBrand($brandId);
+        }
+
         $brand = BrandModel::findOrFail($brandId);
 
         return $brand->owner_id === $this->user()->getAuthIdentifier();
