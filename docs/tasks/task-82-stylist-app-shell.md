@@ -26,12 +26,17 @@
 - Add a login screen using `design_system` components and localization keys. Note (Task 37): `/login`, `/home` and `/signup` routes, `StaffSessionBloc` wiring and the login screen already exist in `stylist_app`; Task 37 added the self sign-up route (`StylistSignUpScreen`/`StylistSignUpBloc`) and its onboarding-token handling in `app.dart`. Audit the remaining shell items against the code before re-implementing them.
 
 ## Acceptance Criteria
-- [ ] Repository test: `login` sends `POST /barber/login` and the returned token is written to `SecureBarberTokenStorage`.
-- [ ] Router test: with no stored token the app lands on `/login`; with a token it lands on `/home`.
-- [ ] Session test: a 401 from any barber call clears the token and redirects to `/login`.
-- [ ] Push device-token registration (`/user/device-token`) is not called before login (bloc/service test).
-- [ ] `apps/stylist_app/test/` contains login bloc and router tests; `melos run analyze` and `melos run test` pass.
+- [x] Repository test: `login` sends `POST /barber/login` and the returned token is written to `SecureBarberTokenStorage`.
+- [x] Router test: with no stored token the app lands on `/login`; with a token it lands on `/home`.
+- [x] Session test: a 401 from any barber call clears the token and redirects to `/login`.
+- [x] Push device-token registration (`/user/device-token`) is not called before login (bloc/service test).
+- [x] `apps/stylist_app/test/` contains login bloc and router tests; `melos run analyze` and `melos run test` pass.
 
 ## Out of Scope
 - Barber features (schedule, portfolio, cancel and the rest) — Task 83.
 - Barber self sign-up UI. Add it once Task 37 defines the endpoint.
+
+## Implemented
+- **Audit result:** the shell (`/login`, `/signup`, `/home`, redirect guard, `StaffSessionBloc`, `DioStaffAuthRepository`, `BarberAuthEndpoints.login`, app-level `ApiClient`/realtime/push wiring in `app.dart`) already shipped with Task 37 and earlier work; no production code changed.
+- **Push gating:** `PushNotificationService.initialize()` (and so `/user/device-token`) is reachable only from `onAuthenticated`; `stylist_shell_flow_test.dart` asserts that callback never fires for a guest start or a rejected login. `PushNotificationService` uses static Firebase APIs, so the gate is tested at that seam rather than by faking the HTTP call.
+- **Tests added** (`apps/stylist_app/test/stylist_shell_flow_test.dart`): no token → `/login`; token → `/home`; guest blocked from `/home`; login writes the token and opens `/home`; rejected login stays; 401 clears the token and the login screen shows. Repository/session coverage lives in `packages/core/test/staff_auth_repository_test.dart` and `staff_session_bloc_test.dart`.
