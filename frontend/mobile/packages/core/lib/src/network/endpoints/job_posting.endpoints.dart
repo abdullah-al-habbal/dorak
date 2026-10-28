@@ -3,7 +3,6 @@ class JobPostingEndpoints {
   static const jobs = '/jobs';
   static const applications = '/applications';
   static const branchJobPostings = '/branch/job-postings';
-  static const branchFloorPlan = '/branch/floor-plan';
   static String job(String id) => '$jobs/$id';
   static String apply(String id) => '${job(id)}/apply';
   static String branchJobPosting(String id) => '$branchJobPostings/$id';

@@ -1549,4 +1549,169 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stylistApplicationStatusRejected => 'مرفوض';
+
+  @override
+  String get businessMenuJobs => 'الوظائف';
+
+  @override
+  String get businessMenuFloorPlan => 'مخطط الصالون';
+
+  @override
+  String get businessMenuAffiliations => 'الانتسابات';
+
+  @override
+  String get businessMenuProfile => 'ملف الفرع';
+
+  @override
+  String get businessMenuReviews => 'التقييمات';
+
+  @override
+  String get businessSave => 'حفظ';
+
+  @override
+  String get businessSaved => 'تم الحفظ';
+
+  @override
+  String get businessLoadFailed => 'تعذر التحميل. اسحب للمحاولة مجددًا.';
+
+  @override
+  String get businessUpdateFailed => 'تعذر الحفظ. حاول مرة أخرى.';
+
+  @override
+  String get businessFeatureNotEnabled =>
+      'هذه الميزة ليست ضمن باقتك الحالية. قم بالترقية لاستخدامها.';
+
+  @override
+  String get businessJobsTitle => 'الوظائف';
+
+  @override
+  String get businessJobsEmpty => 'لا توجد وظائف بعد.';
+
+  @override
+  String get businessJobAdd => 'إضافة وظيفة';
+
+  @override
+  String get businessJobNewTitle => 'وظيفة جديدة';
+
+  @override
+  String get businessJobEditTitle => 'تعديل الوظيفة';
+
+  @override
+  String get businessJobTitleEnglish => 'العنوان (الإنجليزية)';
+
+  @override
+  String get businessJobTitleArabic => 'العنوان (العربية)';
+
+  @override
+  String get businessJobDescriptionEnglish => 'الوصف (الإنجليزية)';
+
+  @override
+  String get businessJobDescriptionArabic => 'الوصف (العربية)';
+
+  @override
+  String get businessJobLocation => 'الموقع';
+
+  @override
+  String get businessJobType => 'النوع';
+
+  @override
+  String get businessJobFieldRequired => 'مطلوب';
+
+  @override
+  String get businessJobDelete => 'حذف';
+
+  @override
+  String get businessJobApplicants => 'المتقدمون';
+
+  @override
+  String get businessApplicantsEmpty => 'لا توجد طلبات بعد.';
+
+  @override
+  String get businessApplicantAccept => 'قبول';
+
+  @override
+  String get businessApplicantReject => 'رفض';
+
+  @override
+  String get businessApplicationStatusSubmitted => 'تم الإرسال';
+
+  @override
+  String get businessApplicationStatusSeen => 'تمت المشاهدة';
+
+  @override
+  String get businessApplicationStatusAccepted => 'مقبول';
+
+  @override
+  String get businessApplicationStatusRejected => 'مرفوض';
+
+  @override
+  String get businessFloorPlanTitle => 'مخطط الصالون';
+
+  @override
+  String get businessFloorPlanPresetStandard => 'قياسي';
+
+  @override
+  String get businessFloorPlanPresetCompact => 'مدمج';
+
+  @override
+  String get businessFloorPlanPresetUnisexZoned => 'مناطق مختلطة';
+
+  @override
+  String get businessAffiliationsTitle => 'الانتسابات';
+
+  @override
+  String get businessAffiliationsEmpty => 'لا توجد طلبات انتساب.';
+
+  @override
+  String get businessAffiliationsPending => 'الطلبات المعلقة';
+
+  @override
+  String get businessAffiliationsOthers => 'انتسابات أخرى';
+
+  @override
+  String get businessAffiliationAccept => 'قبول';
+
+  @override
+  String get businessAffiliationReject => 'رفض';
+
+  @override
+  String get businessAffiliationStatusPending => 'قيد الانتظار';
+
+  @override
+  String get businessAffiliationStatusActive => 'نشط';
+
+  @override
+  String get businessAffiliationStatusRejected => 'مرفوض';
+
+  @override
+  String get businessAffiliationStatusTerminated => 'منتهٍ';
+
+  @override
+  String get businessProfileTitle => 'ملف الفرع';
+
+  @override
+  String get businessProfileDescriptionEnglish => 'الوصف (الإنجليزية)';
+
+  @override
+  String get businessProfileDescriptionArabic => 'الوصف (العربية)';
+
+  @override
+  String get businessProfileAddressEnglish => 'العنوان (الإنجليزية)';
+
+  @override
+  String get businessProfileAddressArabic => 'العنوان (العربية)';
+
+  @override
+  String get businessProfileTags => 'الوسوم (مفصولة بفواصل)';
+
+  @override
+  String get businessReviewsTitle => 'التقييمات';
+
+  @override
+  String get businessReviewsEmpty => 'لا توجد تقييمات بعد.';
+
+  @override
+  String businessReviewRating(int rating) {
+    return '$rating / 5';
+  }
 }

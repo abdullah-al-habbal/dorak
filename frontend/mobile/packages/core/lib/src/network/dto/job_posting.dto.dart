@@ -11,6 +11,8 @@ class JobPostingDto {
     required this.status,
     required this.branchId,
     this.applicationsCount,
+    this.location,
+    this.type,
   });
   final String id;
   final Map<String, dynamic> title;
@@ -18,6 +20,8 @@ class JobPostingDto {
   final String status;
   final String branchId;
   final int? applicationsCount;
+  final String? location;
+  final String? type;
   factory JobPostingDto.fromJson(Map<String, dynamic> json) =>
       _$JobPostingDtoFromJson(json);
 }

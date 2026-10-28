@@ -1,4 +1,12 @@
 import 'package:business_app/src/core/navigation/app.router.dart';
+import 'package:business_app/src/core/navigation/app_routes.entity.dart';
+import 'package:business_app/src/features/affiliations/business_affiliations.screen.dart';
+import 'package:business_app/src/features/floor_plan/business_floor_plan.screen.dart';
+import 'package:business_app/src/features/jobs/business_applicants.screen.dart';
+import 'package:business_app/src/features/jobs/business_job_form.screen.dart';
+import 'package:business_app/src/features/jobs/business_jobs.screen.dart';
+import 'package:business_app/src/features/profile/business_profile.screen.dart';
+import 'package:business_app/src/features/reviews/business_reviews.screen.dart';
 import 'package:business_app/src/features/auth/business_login.screen.dart';
 import 'package:business_app/src/features/barbers/manual_barber.bloc.dart';
 import 'package:business_app/src/features/barbers/manual_barber.screen.dart';
@@ -9,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:localization/localization.dart';
+
+import 'helpers/business_fakes.dart';
 
 class _FakeStaffAuth implements StaffAuthRepository {
   @override
@@ -119,9 +129,12 @@ void main() {
     tester.view.devicePixelRatio = 3.0;
     addTearDown(tester.view.reset);
 
+    final features = featureBlocsFor();
+    addTearDown(features.close);
     late final BusinessAppRouter router;
     router = BusinessAppRouter(
       operations: operations,
+      features: features,
       barbers: barbers,
       session: session,
       onLocaleToggle: () {},
@@ -198,5 +211,35 @@ void main() {
 
     expect(storage.token, isNull);
     expect(find.byType(BusinessLoginScreen), findsOneWidget);
+  });
+
+  testWidgets('every feature route opens behind the session guard', (
+    tester,
+  ) async {
+    final router = await pumpApp(tester);
+    final routes = {
+      AppRoutes.jobs: BusinessJobsScreen,
+      AppRoutes.newJob: BusinessJobFormScreen,
+      AppRoutes.editJob('job-1'): BusinessJobFormScreen,
+      AppRoutes.applicants('job-1'): BusinessApplicantsScreen,
+      AppRoutes.floorPlan: BusinessFloorPlanScreen,
+      AppRoutes.affiliations: BusinessAffiliationsScreen,
+      AppRoutes.profile: BusinessProfileScreen,
+      AppRoutes.reviews: BusinessReviewsScreen,
+    };
+
+    for (final path in routes.keys) {
+      router.router.go(path);
+      await tester.pumpAndSettle();
+      expect(find.byType(BusinessLoginScreen), findsOneWidget, reason: path);
+    }
+
+    storage.token = 'stored-token';
+    await session.restore();
+    for (final entry in routes.entries) {
+      router.router.go(entry.key);
+      await tester.pumpAndSettle();
+      expect(find.byType(entry.value), findsOneWidget, reason: entry.key);
+    }
   });
 }

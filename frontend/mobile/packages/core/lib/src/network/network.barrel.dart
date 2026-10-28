@@ -109,6 +109,7 @@ export 'package:core/src/network/pagination_meta.dto.dart';
 export 'package:core/src/network/repositories/barber_registration.repository.dart';
 export 'package:core/src/network/repositories/booking.repository.dart';
 export 'package:core/src/network/repositories/branch.repository.dart';
+export 'package:core/src/network/repositories/branch_management.repository.dart';
 export 'package:core/src/network/repositories/currency.repository.dart';
 export 'package:core/src/network/repositories/explore.repository.dart';
 export 'package:core/src/network/repositories/face_profile.repository.dart';

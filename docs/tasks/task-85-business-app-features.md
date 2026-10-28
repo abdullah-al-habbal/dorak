@@ -33,12 +33,20 @@ The business app covers only the dashboard, the bookings list, the chairs list a
   - **Reviews:** a list.
 
 ## Acceptance Criteria
-- [ ] Unit test: for each `BookingStatus`, the menu offers exactly the backend-allowed next statuses (table-driven).
-- [ ] Repository tests assert method + path for every new call listed under Evidence.
-- [ ] Bloc test: a chair toggle that returns the Task 27 conflict response shows the conflict state and does not change the chair locally.
-- [ ] Widget tests: job posting create → appears in the list; affiliation accept → removed from pending.
-- [ ] No business-app code calls `job_posting.repository.dart` for floor-plan updates (grep).
-- [ ] `melos run analyze` and `melos run test` pass.
+- [x] Unit test: for each `BookingStatus`, the menu offers exactly the backend-allowed next statuses (table-driven).
+- [x] Repository tests assert method + path for every new call listed under Evidence.
+- [x] Bloc test: a chair toggle that returns the Task 27 conflict response shows the conflict state and does not change the chair locally.
+- [x] Widget tests: job posting create → appears in the list; affiliation accept → removed from pending.
+- [x] No business-app code calls `job_posting.repository.dart` for floor-plan updates (grep).
+- [x] `melos run analyze` and `melos run test` pass.
+
+### Implemented contract
+- Audit finding: the status menu (`BookingStatusTransitions`, table-driven test `booking_status_transitions_test.dart`) and the chair maintenance-conflict flow (`PendingChairMaintenance`, `chair_maintenance_conflict_test.dart`) already existed; they were verified, and the conflict test now also asserts the chair list is untouched.
+- Shared code path: `BranchManagementRepository` (floor plan `PATCH /branch/floor-plan`, `PATCH /branch/profile`, `GET /branch/reviews`); the existing `DioJobPostingRepository` branch methods and `DioAffiliationRepository` branch methods are used for job postings and affiliations. `updateBranchFloorPlan` and `JobPostingEndpoints.branchFloorPlan` were removed from the job-posting repository/endpoints.
+- Request: job posting `title`/`description` with `en`+`ar` required, optional `location`/`type`; application decision is `PATCH branch/job-postings/{job}/applications/{application}/status {status: accepted|rejected}`; floor plan `{preset: standard|compact|unisex_zoned, zones: []}`; profile sends only the filled `description`/`address` locales and `tags`.
+- Failure: backend errors surface in each bloc's `error`; `FeatureNotEnabledException` shows an upgrade message (Task 50 note); lists stay unchanged.
+- Mobile: `packages/core` (`branch_management.repository.dart`, `JobPostingDto.location/type`, branch endpoints), `packages/localization` (EN/AR), `apps/business_app` (jobs list/form/applicants, floor plan, affiliations inbox, branch profile, reviews, `AppRoutes`, `BusinessFeatureBlocs`, overflow menu on operations). Backend and dashboard: unchanged.
+- Deviations from the original spec text: the floor-plan screen offers the three presets only (zone rectangles need a visual editor; Task 86 decides the shared floor-plan package); the branch profile form is write-only because `GET branch/profile` translations are not modelled in `BranchDto` yet, so blank fields are left untouched; opening-hours editing (Task 51 note) is not part of this task's listed screens.
 
 ## Out of Scope
 - Login/router (Task 84).

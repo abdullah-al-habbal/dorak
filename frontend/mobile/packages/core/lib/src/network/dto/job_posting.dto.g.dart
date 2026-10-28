@@ -1,12 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'job_posting.dto.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
 
 JobPostingDto _$JobPostingDtoFromJson(Map<String, dynamic> json) =>
     JobPostingDto(
       id: json['id'] as String,
-      title: Map<String, dynamic>.from(json['title'] as Map),
-      description: Map<String, dynamic>.from(json['description'] as Map),
+      title: json['title'] as Map<String, dynamic>,
+      description: json['description'] as Map<String, dynamic>,
       status: json['status'] as String,
       branchId: json['branch_id'] as String,
       applicationsCount: (json['applications_count'] as num?)?.toInt(),
+      location: json['location'] as String?,
+      type: json['type'] as String?,
     );

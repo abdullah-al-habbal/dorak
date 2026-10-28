@@ -1556,4 +1556,169 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stylistApplicationStatusRejected => 'Rejected';
+
+  @override
+  String get businessMenuJobs => 'Job postings';
+
+  @override
+  String get businessMenuFloorPlan => 'Floor plan';
+
+  @override
+  String get businessMenuAffiliations => 'Affiliations';
+
+  @override
+  String get businessMenuProfile => 'Branch profile';
+
+  @override
+  String get businessMenuReviews => 'Reviews';
+
+  @override
+  String get businessSave => 'Save';
+
+  @override
+  String get businessSaved => 'Saved';
+
+  @override
+  String get businessLoadFailed => 'Could not load. Pull to retry.';
+
+  @override
+  String get businessUpdateFailed => 'Could not save. Please try again.';
+
+  @override
+  String get businessFeatureNotEnabled =>
+      'This feature is not part of your current plan. Upgrade to use it.';
+
+  @override
+  String get businessJobsTitle => 'Job postings';
+
+  @override
+  String get businessJobsEmpty => 'No job postings yet.';
+
+  @override
+  String get businessJobAdd => 'Add job posting';
+
+  @override
+  String get businessJobNewTitle => 'New job posting';
+
+  @override
+  String get businessJobEditTitle => 'Edit job posting';
+
+  @override
+  String get businessJobTitleEnglish => 'Title (English)';
+
+  @override
+  String get businessJobTitleArabic => 'Title (Arabic)';
+
+  @override
+  String get businessJobDescriptionEnglish => 'Description (English)';
+
+  @override
+  String get businessJobDescriptionArabic => 'Description (Arabic)';
+
+  @override
+  String get businessJobLocation => 'Location';
+
+  @override
+  String get businessJobType => 'Type';
+
+  @override
+  String get businessJobFieldRequired => 'Required';
+
+  @override
+  String get businessJobDelete => 'Delete';
+
+  @override
+  String get businessJobApplicants => 'Applicants';
+
+  @override
+  String get businessApplicantsEmpty => 'No applications yet.';
+
+  @override
+  String get businessApplicantAccept => 'Accept';
+
+  @override
+  String get businessApplicantReject => 'Reject';
+
+  @override
+  String get businessApplicationStatusSubmitted => 'Submitted';
+
+  @override
+  String get businessApplicationStatusSeen => 'Seen';
+
+  @override
+  String get businessApplicationStatusAccepted => 'Accepted';
+
+  @override
+  String get businessApplicationStatusRejected => 'Rejected';
+
+  @override
+  String get businessFloorPlanTitle => 'Floor plan';
+
+  @override
+  String get businessFloorPlanPresetStandard => 'Standard';
+
+  @override
+  String get businessFloorPlanPresetCompact => 'Compact';
+
+  @override
+  String get businessFloorPlanPresetUnisexZoned => 'Unisex zoned';
+
+  @override
+  String get businessAffiliationsTitle => 'Affiliations';
+
+  @override
+  String get businessAffiliationsEmpty => 'No affiliation requests.';
+
+  @override
+  String get businessAffiliationsPending => 'Pending requests';
+
+  @override
+  String get businessAffiliationsOthers => 'Other affiliations';
+
+  @override
+  String get businessAffiliationAccept => 'Accept';
+
+  @override
+  String get businessAffiliationReject => 'Reject';
+
+  @override
+  String get businessAffiliationStatusPending => 'Pending';
+
+  @override
+  String get businessAffiliationStatusActive => 'Active';
+
+  @override
+  String get businessAffiliationStatusRejected => 'Rejected';
+
+  @override
+  String get businessAffiliationStatusTerminated => 'Terminated';
+
+  @override
+  String get businessProfileTitle => 'Branch profile';
+
+  @override
+  String get businessProfileDescriptionEnglish => 'Description (English)';
+
+  @override
+  String get businessProfileDescriptionArabic => 'Description (Arabic)';
+
+  @override
+  String get businessProfileAddressEnglish => 'Address (English)';
+
+  @override
+  String get businessProfileAddressArabic => 'Address (Arabic)';
+
+  @override
+  String get businessProfileTags => 'Tags (comma separated)';
+
+  @override
+  String get businessReviewsTitle => 'Reviews';
+
+  @override
+  String get businessReviewsEmpty => 'No reviews yet.';
+
+  @override
+  String businessReviewRating(int rating) {
+    return '$rating / 5';
+  }
 }

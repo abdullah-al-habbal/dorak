@@ -129,7 +129,7 @@ codeanchors:
 - [x] Task 82: Build Stylist App Shell (Login, Router, Session) -> [Spec](tasks/task-82-stylist-app-shell.md)
 - [x] Task 83: Build Stylist App Features -> [Spec](tasks/task-83-stylist-app-features.md)
 - [x] Task 84: Build Business App Shell (Login, Router, Session) -> [Spec](tasks/task-84-business-app-shell.md)
-- [ ] Task 85: Build Business App Features -> [Spec](tasks/task-85-business-app-features.md)
+- [x] Task 85: Build Business App Features -> [Spec](tasks/task-85-business-app-features.md)
 - [ ] Task 86: Clean Up Shared Mobile Packages -> [Spec](tasks/task-86-mobile-shared-packages-cleanup.md)
 
 ## Phase 15 — Documentation (P3)

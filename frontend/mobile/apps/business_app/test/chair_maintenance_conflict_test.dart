@@ -56,9 +56,11 @@ void main() {
   test('conflict stores a pending maintenance prompt, not an error', () async {
     final repository = _ConflictRepository();
     final bloc = BranchOperationsBloc(repository);
+    final chairsBefore = bloc.state.chairs;
 
     await bloc.updateChairStatus('chair-1', ChairStatus.maintenance);
 
+    expect(bloc.state.chairs, chairsBefore);
     expect(
       bloc.state.pendingMaintenance,
       const PendingChairMaintenance(chairId: 'chair-1', bookingCount: 2),

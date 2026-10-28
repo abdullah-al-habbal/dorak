@@ -135,6 +135,8 @@ class _BranchEndpoints {
   String activateBarber(String barberId) => BranchEndpoints.activateBarber.replaceFirst('{barber}', barberId);
   String deactivateBarber(String barberId) => BranchEndpoints.deactivateBarber.replaceFirst('{barber}', barberId);
   String get profile => BranchEndpoints.profile;
+  String get floorPlanConfiguration => BranchEndpoints.floorPlanConfiguration;
+  String get reviews => BranchEndpoints.reviews;
   String chairStatus(String chairId) => BranchEndpoints.chairStatus.replaceFirst('{chair}', chairId);
 }
 
@@ -189,7 +191,6 @@ class _JobPostingEndpoints {
   String get jobs => JobPostingEndpoints.jobs;
   String get applications => JobPostingEndpoints.applications;
   String get branchJobPostings => JobPostingEndpoints.branchJobPostings;
-  String get branchFloorPlan => JobPostingEndpoints.branchFloorPlan;
   String job(String id) => JobPostingEndpoints.job(id);
   String apply(String id) => JobPostingEndpoints.apply(id);
   String branchJobPosting(String id) => JobPostingEndpoints.branchJobPosting(id);

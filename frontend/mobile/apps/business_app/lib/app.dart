@@ -8,7 +8,14 @@ import 'package:localization/localization.dart';
 
 import 'package:business_app/src/features/barbers/manual_barber.bloc.dart';
 import 'package:business_app/src/features/operations/branch_operations.bloc.dart';
+import 'package:business_app/src/core/business_feature_blocs.provider.dart';
 import 'package:business_app/src/core/navigation/app.router.dart';
+import 'package:business_app/src/core/navigation/app_routes.entity.dart';
+import 'package:business_app/src/features/affiliations/business_affiliations.bloc.dart';
+import 'package:business_app/src/features/floor_plan/business_floor_plan.bloc.dart';
+import 'package:business_app/src/features/jobs/business_jobs.bloc.dart';
+import 'package:business_app/src/features/profile/business_profile.bloc.dart';
+import 'package:business_app/src/features/reviews/business_reviews.bloc.dart';
 import 'package:business_app/src/core/navigation/notification_location.entity.dart';
 
 class DorakBusinessApp extends StatefulWidget {
@@ -27,6 +34,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   late final ApiClient _apiClient;
   late final ManualBarberBloc _barbers;
   late final BranchOperationsBloc _operations;
+  late final BusinessFeatureBlocs _features;
   late final RealtimeClient? _realtime;
   late final PushNotificationService _pushNotifications;
   late final BusinessAppRouter _router;
@@ -63,8 +71,19 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       DioBranchOperationsRepository(_apiClient),
       realtime: _realtime,
     );
+    final management = DioBranchManagementRepository(_apiClient);
+    _features = BusinessFeatureBlocs(
+      jobs: BusinessJobsBloc(DioJobPostingRepository(_apiClient)),
+      floorPlan: BusinessFloorPlanBloc(management),
+      affiliations: BusinessAffiliationsBloc(
+        DioAffiliationRepository(_apiClient),
+      ),
+      profile: BusinessProfileBloc(management),
+      reviews: BusinessReviewsBloc(management),
+    );
     _router = BusinessAppRouter(
       operations: _operations,
+      features: _features,
       barbers: _barbers,
       session: _session,
       onLocaleToggle: _toggleLocale,
@@ -78,6 +97,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   void dispose() {
     _barbers.close();
     _operations.close();
+    unawaited(_features.close());
     _router.dispose();
     _session.close();
     _unauthorizedSubscription.cancel();
@@ -132,7 +152,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     _apiClient.resetUnauthorizedSignal();
     unawaited(_initializePushNotifications());
     if (_realtime != null) unawaited(_realtime.connect());
-    _router.router.go('/operations');
+    _router.router.go(AppRoutes.operations);
   }
 
   Future<void> _initializePushNotifications() async {
@@ -150,7 +170,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     await _session.logout();
     await _pushNotifications.stop();
     await _realtime?.disconnectForLogout();
-    if (mounted) _router.router.go('/login');
+    if (mounted) _router.router.go(AppRoutes.login);
   }
 
   void _onUnauthorized() {
@@ -160,7 +180,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
         _pushNotifications.stop(),
         if (_realtime != null) _realtime.disconnectForLogout(),
       ]).then((_) {
-        if (mounted) _router.router.go('/login');
+        if (mounted) _router.router.go(AppRoutes.login);
       }),
     );
   }

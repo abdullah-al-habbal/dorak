@@ -17,10 +17,6 @@ abstract class JobPostingRepository {
     String applicationId,
     String status,
   );
-  Future<Map<String, dynamic>> updateBranchFloorPlan({
-    required String preset,
-    List<Map<String, dynamic>> zones = const [],
-  });
 }
 
 class DioJobPostingRepository implements JobPostingRepository {
@@ -99,14 +95,5 @@ class DioJobPostingRepository implements JobPostingRepository {
     ApiEndpoints.jobPosting.branchApplicationStatus(jobId, applicationId),
     data: {'status': status},
     parser: (json) => JobApplicationDto.fromJson(json as Map<String, dynamic>),
-  );
-  @override
-  Future<Map<String, dynamic>> updateBranchFloorPlan({
-    required String preset,
-    List<Map<String, dynamic>> zones = const [],
-  }) => _client.patch(
-    ApiEndpoints.jobPosting.branchFloorPlan,
-    data: {'preset': preset, 'zones': zones},
-    parser: (json) => Map<String, dynamic>.from(json as Map),
   );
 }

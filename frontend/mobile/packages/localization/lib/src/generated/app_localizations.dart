@@ -2881,6 +2881,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rejected'**
   String get stylistApplicationStatusRejected;
+
+  /// No description provided for @businessMenuJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Job postings'**
+  String get businessMenuJobs;
+
+  /// No description provided for @businessMenuFloorPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor plan'**
+  String get businessMenuFloorPlan;
+
+  /// No description provided for @businessMenuAffiliations.
+  ///
+  /// In en, this message translates to:
+  /// **'Affiliations'**
+  String get businessMenuAffiliations;
+
+  /// No description provided for @businessMenuProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch profile'**
+  String get businessMenuProfile;
+
+  /// No description provided for @businessMenuReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get businessMenuReviews;
+
+  /// No description provided for @businessSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get businessSave;
+
+  /// No description provided for @businessSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get businessSaved;
+
+  /// No description provided for @businessLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load. Pull to retry.'**
+  String get businessLoadFailed;
+
+  /// No description provided for @businessUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save. Please try again.'**
+  String get businessUpdateFailed;
+
+  /// No description provided for @businessFeatureNotEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is not part of your current plan. Upgrade to use it.'**
+  String get businessFeatureNotEnabled;
+
+  /// No description provided for @businessJobsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Job postings'**
+  String get businessJobsTitle;
+
+  /// No description provided for @businessJobsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No job postings yet.'**
+  String get businessJobsEmpty;
+
+  /// No description provided for @businessJobAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add job posting'**
+  String get businessJobAdd;
+
+  /// No description provided for @businessJobNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New job posting'**
+  String get businessJobNewTitle;
+
+  /// No description provided for @businessJobEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit job posting'**
+  String get businessJobEditTitle;
+
+  /// No description provided for @businessJobTitleEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Title (English)'**
+  String get businessJobTitleEnglish;
+
+  /// No description provided for @businessJobTitleArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Title (Arabic)'**
+  String get businessJobTitleArabic;
+
+  /// No description provided for @businessJobDescriptionEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (English)'**
+  String get businessJobDescriptionEnglish;
+
+  /// No description provided for @businessJobDescriptionArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (Arabic)'**
+  String get businessJobDescriptionArabic;
+
+  /// No description provided for @businessJobLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get businessJobLocation;
+
+  /// No description provided for @businessJobType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get businessJobType;
+
+  /// No description provided for @businessJobFieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get businessJobFieldRequired;
+
+  /// No description provided for @businessJobDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get businessJobDelete;
+
+  /// No description provided for @businessJobApplicants.
+  ///
+  /// In en, this message translates to:
+  /// **'Applicants'**
+  String get businessJobApplicants;
+
+  /// No description provided for @businessApplicantsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No applications yet.'**
+  String get businessApplicantsEmpty;
+
+  /// No description provided for @businessApplicantAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get businessApplicantAccept;
+
+  /// No description provided for @businessApplicantReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get businessApplicantReject;
+
+  /// No description provided for @businessApplicationStatusSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get businessApplicationStatusSubmitted;
+
+  /// No description provided for @businessApplicationStatusSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Seen'**
+  String get businessApplicationStatusSeen;
+
+  /// No description provided for @businessApplicationStatusAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get businessApplicationStatusAccepted;
+
+  /// No description provided for @businessApplicationStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get businessApplicationStatusRejected;
+
+  /// No description provided for @businessFloorPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor plan'**
+  String get businessFloorPlanTitle;
+
+  /// No description provided for @businessFloorPlanPresetStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get businessFloorPlanPresetStandard;
+
+  /// No description provided for @businessFloorPlanPresetCompact.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact'**
+  String get businessFloorPlanPresetCompact;
+
+  /// No description provided for @businessFloorPlanPresetUnisexZoned.
+  ///
+  /// In en, this message translates to:
+  /// **'Unisex zoned'**
+  String get businessFloorPlanPresetUnisexZoned;
+
+  /// No description provided for @businessAffiliationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Affiliations'**
+  String get businessAffiliationsTitle;
+
+  /// No description provided for @businessAffiliationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No affiliation requests.'**
+  String get businessAffiliationsEmpty;
+
+  /// No description provided for @businessAffiliationsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending requests'**
+  String get businessAffiliationsPending;
+
+  /// No description provided for @businessAffiliationsOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Other affiliations'**
+  String get businessAffiliationsOthers;
+
+  /// No description provided for @businessAffiliationAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get businessAffiliationAccept;
+
+  /// No description provided for @businessAffiliationReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get businessAffiliationReject;
+
+  /// No description provided for @businessAffiliationStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get businessAffiliationStatusPending;
+
+  /// No description provided for @businessAffiliationStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get businessAffiliationStatusActive;
+
+  /// No description provided for @businessAffiliationStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get businessAffiliationStatusRejected;
+
+  /// No description provided for @businessAffiliationStatusTerminated.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminated'**
+  String get businessAffiliationStatusTerminated;
+
+  /// No description provided for @businessProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch profile'**
+  String get businessProfileTitle;
+
+  /// No description provided for @businessProfileDescriptionEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (English)'**
+  String get businessProfileDescriptionEnglish;
+
+  /// No description provided for @businessProfileDescriptionArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (Arabic)'**
+  String get businessProfileDescriptionArabic;
+
+  /// No description provided for @businessProfileAddressEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Address (English)'**
+  String get businessProfileAddressEnglish;
+
+  /// No description provided for @businessProfileAddressArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Address (Arabic)'**
+  String get businessProfileAddressArabic;
+
+  /// No description provided for @businessProfileTags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags (comma separated)'**
+  String get businessProfileTags;
+
+  /// No description provided for @businessReviewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get businessReviewsTitle;
+
+  /// No description provided for @businessReviewsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet.'**
+  String get businessReviewsEmpty;
+
+  /// Review rating out of five
+  ///
+  /// In en, this message translates to:
+  /// **'{rating} / 5'**
+  String businessReviewRating(int rating);
 }
 
 class _AppLocalizationsDelegate
