@@ -25,11 +25,17 @@
 - Add a navigation entry from operations to "Add barber" so `ManualBarberScreen` becomes reachable.
 
 ## Acceptance Criteria
-- [ ] Repository test: `login` sends `POST /branch/login` and writes the token to `SecureBranchTokenStorage`.
-- [ ] Router test: with no token the app lands on `/login`; with a token it lands on `/operations`.
-- [ ] Widget test: from operations, tapping "Add barber" renders `ManualBarberScreen`.
-- [ ] Session test: a 401 clears the token and redirects to `/login`.
-- [ ] Existing `apps/business_app/test/manual_barber_screen_test.dart` still passes; `melos run analyze` and `melos run test` pass.
+- [x] Repository test: `login` sends `POST /branch/login` and writes the token to `SecureBranchTokenStorage`.
+- [x] Router test: with no token the app lands on `/login`; with a token it lands on `/operations`.
+- [x] Widget test: from operations, tapping "Add barber" renders `ManualBarberScreen`.
+- [x] Session test: a 401 clears the token and redirects to `/login`.
+- [x] Existing `apps/business_app/test/manual_barber_screen_test.dart` still passes; `melos run analyze` and `melos run test` pass.
+
+### Implemented contract
+- Audit finding: the shell described under Evidence already existed in code by the time this task ran (`BusinessAppRouter` with `/login`, `/operations`, `/barbers/new` and a session redirect guard; `BusinessLoginScreen`; `StaffSessionBloc` over `SecureBranchTokenStorage`; push registration only in `_onAuthenticated`; the operations app bar has an "Add barber" action). The Evidence line numbers were stale.
+- Gap closed: no test covered the shell. Added `apps/business_app/test/business_shell_flow_test.dart` (no token -> `/login`, token -> `/operations`, guest blocked from `/barbers/new`, "Add barber" opens `ManualBarberScreen`, 401 clears the token and returns to `/login`).
+- Login request and token write are covered by the existing `packages/core/test/staff_auth_repository_test.dart` (`POST /branch/login`) and `staff_session_bloc_test.dart` (token written to the injected `TokenStorage`, cleared on logout/401).
+- Backend, dashboard and production mobile code: unchanged.
 
 ## Out of Scope
 - Branch feature screens (job postings, floor plan, chair toggle, affiliations, profile, reviews) — Task 85.
