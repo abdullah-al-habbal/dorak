@@ -1394,4 +1394,166 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get branchAddressLabel => 'Address';
+
+  @override
+  String get stylistMenuSchedule => 'Schedule';
+
+  @override
+  String get stylistMenuPortfolio => 'Portfolio';
+
+  @override
+  String get stylistMenuProfile => 'Profile';
+
+  @override
+  String get stylistMenuAffiliations => 'Affiliations';
+
+  @override
+  String get stylistMenuJobs => 'Jobs';
+
+  @override
+  String get stylistCancelBooking => 'Cancel booking';
+
+  @override
+  String get stylistCancelReasonTitle => 'Why are you cancelling?';
+
+  @override
+  String get stylistCancelReasonLabel => 'Reason';
+
+  @override
+  String get stylistCancelReasonRequired => 'Enter a reason';
+
+  @override
+  String get stylistCancelKeep => 'Keep booking';
+
+  @override
+  String get stylistSave => 'Save';
+
+  @override
+  String get stylistSaved => 'Saved';
+
+  @override
+  String get stylistLoadFailed => 'Could not load. Pull to retry.';
+
+  @override
+  String get stylistScheduleTitle => 'Weekly hours';
+
+  @override
+  String get stylistScheduleStart => 'Start';
+
+  @override
+  String get stylistScheduleEnd => 'End';
+
+  @override
+  String get stylistScheduleInvalidRange => 'End time must be after start time';
+
+  @override
+  String get stylistScheduleEmpty => 'Turn on at least one working day';
+
+  @override
+  String get stylistWeekday0 => 'Sunday';
+
+  @override
+  String get stylistWeekday1 => 'Monday';
+
+  @override
+  String get stylistWeekday2 => 'Tuesday';
+
+  @override
+  String get stylistWeekday3 => 'Wednesday';
+
+  @override
+  String get stylistWeekday4 => 'Thursday';
+
+  @override
+  String get stylistWeekday5 => 'Friday';
+
+  @override
+  String get stylistWeekday6 => 'Saturday';
+
+  @override
+  String get stylistPortfolioTitle => 'Portfolio';
+
+  @override
+  String get stylistPortfolioEmpty => 'No photos yet. Add your best work.';
+
+  @override
+  String get stylistPortfolioAdd => 'Add photo';
+
+  @override
+  String get stylistPortfolioDelete => 'Delete photo';
+
+  @override
+  String get stylistProfileTitle => 'Profile';
+
+  @override
+  String get stylistProfileBioEnglish => 'Bio (English)';
+
+  @override
+  String get stylistProfileBioArabic => 'Bio (Arabic)';
+
+  @override
+  String get stylistTravelRadiusLabel => 'Travel radius';
+
+  @override
+  String stylistTravelRadiusValue(String kilometers) {
+    return '$kilometers km';
+  }
+
+  @override
+  String get stylistAffiliationsTitle => 'Affiliations';
+
+  @override
+  String get stylistAffiliationsEmpty => 'No affiliations yet.';
+
+  @override
+  String get stylistAffiliationAccept => 'Accept';
+
+  @override
+  String get stylistAffiliationReject => 'Reject';
+
+  @override
+  String get stylistAffiliationStatusPending => 'Pending';
+
+  @override
+  String get stylistAffiliationStatusActive => 'Active';
+
+  @override
+  String get stylistAffiliationStatusRejected => 'Rejected';
+
+  @override
+  String get stylistAffiliationStatusTerminated => 'Terminated';
+
+  @override
+  String get stylistJobsTitle => 'Jobs';
+
+  @override
+  String get stylistJobsEmpty => 'No open jobs right now.';
+
+  @override
+  String get stylistJobApply => 'Apply';
+
+  @override
+  String get stylistJobApplied => 'Application sent';
+
+  @override
+  String get stylistJobApplyRejected =>
+      'This job is closed or you already applied.';
+
+  @override
+  String get stylistMyApplications => 'My applications';
+
+  @override
+  String get stylistApplicationsEmpty => 'You have not applied to any job yet.';
+
+  @override
+  String get stylistApplicationStatusSubmitted => 'Submitted';
+
+  @override
+  String get stylistApplicationStatusSeen => 'Seen';
+
+  @override
+  String get stylistApplicationStatusAccepted => 'Accepted';
+
+  @override
+  String get stylistApplicationStatusRejected => 'Rejected';
 }

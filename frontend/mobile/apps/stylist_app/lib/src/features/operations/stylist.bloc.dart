@@ -76,6 +76,27 @@ class StylistBloc extends Cubit<StylistState> {
     }
   }
 
+  Future<void> cancelBooking(String id, String reason) async {
+    final trimmed = reason.trim();
+    if (trimmed.isEmpty || state.updatingBookingId != null) return;
+    emit(state.copyWith(updatingBookingId: id, clearError: true));
+    try {
+      await _repository.cancelBooking(id, reason: trimmed);
+      if (isClosed) return;
+      emit(
+        state.copyWith(
+          appointments: state.appointments
+              .where((booking) => booking.id != id)
+              .toList(growable: false),
+          clearUpdatingBooking: true,
+        ),
+      );
+    } catch (error) {
+      if (isClosed) return;
+      emit(state.copyWith(clearUpdatingBooking: true, error: error));
+    }
+  }
+
   void _onRealtime(String event, Map<String, dynamic> payload) {
     switch (event) {
       case 'booking.status.updated':

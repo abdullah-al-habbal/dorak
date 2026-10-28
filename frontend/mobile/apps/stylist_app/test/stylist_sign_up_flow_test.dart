@@ -11,6 +11,7 @@ import 'package:stylist_app/src/features/auth/stylist_sign_up.screen.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 
 import 'helpers/sign_up_fakes.dart';
+import 'helpers/stylist_fakes.dart';
 
 void main() {
   late FakeBarberRegistrationRepository registration;
@@ -35,10 +36,14 @@ void main() {
     tester.view.devicePixelRatio = 3.0;
     addTearDown(tester.view.reset);
 
-    final operations = StylistBloc(FakeStylistOperationsRepository());
+    final repository = FakeStylistOperationsRepository();
+    final operations = StylistBloc(repository);
     addTearDown(operations.close);
+    final features = featureBlocsFor(repository);
+    addTearDown(features.close);
     final router = StylistAppRouter(
       operations: operations,
+      features: features,
       session: session,
       signUp: signUp,
       onLocaleToggle: () {},

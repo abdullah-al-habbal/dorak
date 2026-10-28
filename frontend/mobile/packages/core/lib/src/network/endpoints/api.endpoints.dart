@@ -231,6 +231,11 @@ class _OperationsEndpoints {
   String barberBookingStart(String bookingId) => OperationsEndpoints.barberBookingStart.replaceFirst('{booking}', bookingId);
   String barberBookingComplete(String bookingId) => OperationsEndpoints.barberBookingComplete.replaceFirst('{booking}', bookingId);
   String barberBookingNoShow(String bookingId) => OperationsEndpoints.barberBookingNoShow.replaceFirst('{booking}', bookingId);
+  String barberBookingCancel(String bookingId) => OperationsEndpoints.barberBookingCancel.replaceFirst('{booking}', bookingId);
+  String get barberSchedule => OperationsEndpoints.barberSchedule;
+  String get barberPortfolio => OperationsEndpoints.barberPortfolio;
+  String barberPortfolioPhoto(String photoId) => OperationsEndpoints.barberPortfolioPhoto.replaceFirst('{photo}', photoId);
+  String get barberTravelRadius => OperationsEndpoints.barberTravelRadius;
   String barberBookingReview(String bookingId) => OperationsEndpoints.barberBookingReview.replaceFirst('{booking}', bookingId);
   String get barberServices => OperationsEndpoints.barberServices;
   String barberService(String serviceId) => OperationsEndpoints.barberService.replaceFirst('{service}', serviceId);

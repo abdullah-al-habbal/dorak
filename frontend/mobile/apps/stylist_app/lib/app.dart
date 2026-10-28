@@ -7,9 +7,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
 import 'package:stylist_app/src/core/navigation/app.router.dart';
+import 'package:stylist_app/src/core/navigation/app_routes.entity.dart';
+import 'package:stylist_app/src/core/stylist_feature_blocs.provider.dart';
+import 'package:stylist_app/src/features/affiliations/stylist_affiliations.bloc.dart';
 import 'package:stylist_app/src/core/navigation/notification_location.entity.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.bloc.dart';
+import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
+import 'package:stylist_app/src/features/portfolio/image_picker_photo_picker.provider.dart';
+import 'package:stylist_app/src/features/portfolio/stylist_portfolio.bloc.dart';
+import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
+import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
 
 class StylistApp extends StatefulWidget {
   const StylistApp({super.key});
@@ -22,6 +30,7 @@ class _StylistAppState extends State<StylistApp> {
   Locale _locale = const Locale('en');
   late final ApiClient _client;
   late final StylistBloc _bloc;
+  late final StylistFeatureBlocs _features;
   late final RealtimeClient? _realtime;
   late final PushNotificationService _pushNotifications;
   late final StylistAppRouter _router;
@@ -54,12 +63,24 @@ class _StylistAppState extends State<StylistApp> {
     _unauthorizedSubscription = _client.unauthorizedStream.listen(
       (_) => _onUnauthorized(),
     );
-    _bloc = StylistBloc(
-      DioStylistOperationsRepository(_client),
-      realtime: _realtime,
+    final operations = DioStylistOperationsRepository(_client);
+    _bloc = StylistBloc(operations, realtime: _realtime);
+    _features = StylistFeatureBlocs(
+      schedule: StylistScheduleBloc(operations),
+      portfolio: StylistPortfolioBloc(
+        operations,
+        const ImagePickerPhotoPicker(),
+      ),
+      profile: StylistProfileBloc(operations),
+      affiliations: StylistAffiliationsBloc(
+        DioAffiliationRepository(_client),
+        () => _bloc.state.profile?.id,
+      ),
+      jobs: StylistJobsBloc(DioJobPostingRepository(_client)),
     );
     _router = StylistAppRouter(
       operations: _bloc,
+      features: _features,
       session: _session,
       signUp: _signUp,
       onLocaleToggle: _toggleLocale,
@@ -77,6 +98,7 @@ class _StylistAppState extends State<StylistApp> {
     _unauthorizedSubscription.cancel();
     _notificationOpenSubscription.cancel();
     _bloc.close();
+    unawaited(_features.close());
     _realtime?.dispose();
     unawaited(_pushNotifications.dispose());
     _client.dispose();
@@ -127,7 +149,7 @@ class _StylistAppState extends State<StylistApp> {
     unawaited(_initializePushNotifications());
     if (_realtime != null) unawaited(_realtime.connect());
     unawaited(_bloc.load());
-    _router.router.go('/home');
+    _router.router.go(AppRoutes.home);
   }
 
   Future<void> _initializePushNotifications() async {
@@ -145,7 +167,7 @@ class _StylistAppState extends State<StylistApp> {
     await _session.logout();
     await _pushNotifications.stop();
     await _realtime?.disconnectForLogout();
-    if (mounted) _router.router.go('/login');
+    if (mounted) _router.router.go(AppRoutes.login);
   }
 
   void _onUnauthorized() {
@@ -155,7 +177,7 @@ class _StylistAppState extends State<StylistApp> {
         _pushNotifications.stop(),
         if (_realtime != null) _realtime.disconnectForLogout(),
       ]).then((_) {
-        if (mounted) _router.router.go('/login');
+        if (mounted) _router.router.go(AppRoutes.login);
       }),
     );
   }

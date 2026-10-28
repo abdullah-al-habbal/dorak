@@ -65,63 +65,6 @@ class InMemoryStaffTokenStorage implements TokenStorage {
   Future<void> write(String value) async => token = value;
 }
 
-class FakeStylistOperationsRepository implements StylistOperationsRepository {
-  @override
-  Future<BarberProfileDto> getProfile() => throw UnimplementedError();
-
-  @override
-  Future<PaginatedData<BookingDto>> getTodayAppointments() =>
-      throw UnimplementedError();
-
-  @override
-  Future<BookingDto> transitionBooking(String id, BarberBookingAction action) =>
-      throw UnimplementedError();
-
-  @override
-  Future<bool> updateWorkstationStatus(bool online) =>
-      throw UnimplementedError();
-
-  @override
-  Future<ReviewDto> rateClient(
-    String bookingId, {
-    required int rating,
-    String? comment,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<BarberProfileDto> updateProfile({Map<String, String>? bio}) =>
-      throw UnimplementedError();
-
-  @override
-  Future<List<BarberServiceDto>> getServices() => throw UnimplementedError();
-
-  @override
-  Future<BarberServiceDto> createService({
-    required Map<String, String> name,
-    required double price,
-    required String currencyId,
-    int? duration,
-    bool atHome = false,
-    bool active = true,
-    String? catalogItemId,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<BarberServiceDto> updateService(
-    String id, {
-    required Map<String, String> name,
-    required double price,
-    required String currencyId,
-    int? duration,
-    bool atHome = false,
-    bool active = true,
-    String? catalogItemId,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<void> deleteService(String id) => throw UnimplementedError();
-}
-
 ValidationException fieldRejected(String field) => ValidationException(
   statusCode: 422,
   code: 'VALIDATION_FAILED',

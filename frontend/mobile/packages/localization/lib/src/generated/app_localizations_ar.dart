@@ -1387,4 +1387,166 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get branchAddressLabel => 'العنوان';
+
+  @override
+  String get stylistMenuSchedule => 'الجدول';
+
+  @override
+  String get stylistMenuPortfolio => 'معرض الأعمال';
+
+  @override
+  String get stylistMenuProfile => 'الملف الشخصي';
+
+  @override
+  String get stylistMenuAffiliations => 'الانتسابات';
+
+  @override
+  String get stylistMenuJobs => 'الوظائف';
+
+  @override
+  String get stylistCancelBooking => 'إلغاء الحجز';
+
+  @override
+  String get stylistCancelReasonTitle => 'لماذا تلغي الحجز؟';
+
+  @override
+  String get stylistCancelReasonLabel => 'السبب';
+
+  @override
+  String get stylistCancelReasonRequired => 'أدخل السبب';
+
+  @override
+  String get stylistCancelKeep => 'إبقاء الحجز';
+
+  @override
+  String get stylistSave => 'حفظ';
+
+  @override
+  String get stylistSaved => 'تم الحفظ';
+
+  @override
+  String get stylistLoadFailed => 'تعذر التحميل. اسحب للمحاولة مجددًا.';
+
+  @override
+  String get stylistScheduleTitle => 'ساعات العمل الأسبوعية';
+
+  @override
+  String get stylistScheduleStart => 'البداية';
+
+  @override
+  String get stylistScheduleEnd => 'النهاية';
+
+  @override
+  String get stylistScheduleInvalidRange =>
+      'يجب أن يكون وقت النهاية بعد وقت البداية';
+
+  @override
+  String get stylistScheduleEmpty => 'فعّل يوم عمل واحدًا على الأقل';
+
+  @override
+  String get stylistWeekday0 => 'الأحد';
+
+  @override
+  String get stylistWeekday1 => 'الاثنين';
+
+  @override
+  String get stylistWeekday2 => 'الثلاثاء';
+
+  @override
+  String get stylistWeekday3 => 'الأربعاء';
+
+  @override
+  String get stylistWeekday4 => 'الخميس';
+
+  @override
+  String get stylistWeekday5 => 'الجمعة';
+
+  @override
+  String get stylistWeekday6 => 'السبت';
+
+  @override
+  String get stylistPortfolioTitle => 'معرض الأعمال';
+
+  @override
+  String get stylistPortfolioEmpty => 'لا توجد صور بعد. أضف أفضل أعمالك.';
+
+  @override
+  String get stylistPortfolioAdd => 'إضافة صورة';
+
+  @override
+  String get stylistPortfolioDelete => 'حذف الصورة';
+
+  @override
+  String get stylistProfileTitle => 'الملف الشخصي';
+
+  @override
+  String get stylistProfileBioEnglish => 'النبذة (الإنجليزية)';
+
+  @override
+  String get stylistProfileBioArabic => 'النبذة (العربية)';
+
+  @override
+  String get stylistTravelRadiusLabel => 'نطاق التنقل';
+
+  @override
+  String stylistTravelRadiusValue(String kilometers) {
+    return '$kilometers كم';
+  }
+
+  @override
+  String get stylistAffiliationsTitle => 'الانتسابات';
+
+  @override
+  String get stylistAffiliationsEmpty => 'لا توجد انتسابات بعد.';
+
+  @override
+  String get stylistAffiliationAccept => 'قبول';
+
+  @override
+  String get stylistAffiliationReject => 'رفض';
+
+  @override
+  String get stylistAffiliationStatusPending => 'قيد الانتظار';
+
+  @override
+  String get stylistAffiliationStatusActive => 'نشط';
+
+  @override
+  String get stylistAffiliationStatusRejected => 'مرفوض';
+
+  @override
+  String get stylistAffiliationStatusTerminated => 'منتهٍ';
+
+  @override
+  String get stylistJobsTitle => 'الوظائف';
+
+  @override
+  String get stylistJobsEmpty => 'لا توجد وظائف متاحة حاليًا.';
+
+  @override
+  String get stylistJobApply => 'تقديم';
+
+  @override
+  String get stylistJobApplied => 'تم إرسال الطلب';
+
+  @override
+  String get stylistJobApplyRejected => 'الوظيفة مغلقة أو قدّمت عليها مسبقًا.';
+
+  @override
+  String get stylistMyApplications => 'طلباتي';
+
+  @override
+  String get stylistApplicationsEmpty => 'لم تقدّم على أي وظيفة بعد.';
+
+  @override
+  String get stylistApplicationStatusSubmitted => 'تم الإرسال';
+
+  @override
+  String get stylistApplicationStatusSeen => 'تمت المشاهدة';
+
+  @override
+  String get stylistApplicationStatusAccepted => 'مقبول';
+
+  @override
+  String get stylistApplicationStatusRejected => 'مرفوض';
 }

@@ -200,7 +200,8 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [ ] [NEEDSHIL] Social login: add provider buttons in `login_content.widget.dart` behind a config flag. **Decision required:** which providers and SDKs (Google/Apple) ship in v1.
 
 ## [Task 83: Build Stylist App Features](tasks/task-83-stylist-app-features.md)
-- [ ] **Decision required:** whether barbers may self activate/deactivate (`barbers/{barber}/activate|deactivate`). Task 53 defines the semantics; do not build UI for it until then.
+- [x] Decision resolved (T83-1): the stylist app builds **no** self activate/deactivate UI, as the spec prescribes until Task 53 defines the semantics. Barbers go online/offline only through the existing workstation toggle. Follow-up: revisit once Task 53 lands.
+- [x] Decision resolved (T83-2): the cancel request field is `cancellation_reason` (backend `CancelBarberBookingRequest`), not the spec's `reason`; the backend contract wins. Reason is required and trimmed client-side; cancel is offered for `pending` and `confirmed` bookings only.
 
 ## [Task 86: Clean Up Shared Mobile Packages](tasks/task-86-mobile-shared-packages-cleanup.md)
 - [ ] **Decision required:** either (a) move the floor-plan widgets from `client_app` into `feature_floor_plan` so `business_app` can reuse them for floor-plan configuration (Task 85), or (b) delete the package and remove it from the `workspace:` list. Do not leave it empty.

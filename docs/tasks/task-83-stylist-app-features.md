@@ -22,7 +22,7 @@ The stylist app implements only today's appointments, the workstation toggle and
 ## Full-Stack Scope
 ### Backend (API / DB / Policies)
 - None new here. Ownership fixes (Task 01) must land before the affiliation UI. The application-status decision moves to branch managers (Task 06), so the stylist app must **not** expose `PUT applications/{application}/status`.
-- **Decision required:** whether barbers may self activate/deactivate (`barbers/{barber}/activate|deactivate`). Task 53 defines the semantics; do not build UI for it until then.
+- **Decision (T83-1, resolved): no self activate/deactivate UI.** The spec prescribes waiting for Task 53; the workstation toggle remains the only availability control.
 
 ### Dashboard (BFF / React)
 - None — the dashboard barber workspace is covered by Tasks 68/69.
@@ -39,12 +39,21 @@ The stylist app implements only today's appointments, the workstation toggle and
 - Instantiate `DioJobPostingRepository` in the stylist app services and use only the barber-facing methods.
 
 ## Acceptance Criteria
-- [ ] Repository tests assert the exact method + path for each new call (cancel = `POST`, schedule = `GET`/`PATCH`, portfolio = `GET`/`POST`/`DELETE`, travel radius = `PATCH`, affiliations, jobs).
-- [ ] Bloc test: cancel sends a non-empty `reason` and removes the booking from today's list on success.
-- [ ] Widget test: the portfolio grid adds a photo after a mocked upload and removes it after a mocked delete.
-- [ ] Bloc test: applying to a job twice surfaces the backend error and does not duplicate the local list.
-- [ ] No stylist-app code calls `PUT /applications/{application}/status` (grep).
-- [ ] `melos run analyze` and `melos run test` pass.
+- [x] Repository tests assert the exact method + path for each new call (cancel = `POST`, schedule = `GET`/`PATCH`, portfolio = `GET`/`POST`/`DELETE`, travel radius = `PATCH`, affiliations, jobs).
+- [x] Bloc test: cancel sends a non-empty `reason` and removes the booking from today's list on success.
+- [x] Widget test: the portfolio grid adds a photo after a mocked upload and removes it after a mocked delete.
+- [x] Bloc test: applying to a job twice surfaces the backend error and does not duplicate the local list.
+- [x] No stylist-app code calls `PUT /applications/{application}/status` (grep).
+- [x] `melos run analyze` and `melos run test` pass.
+
+### Implemented contract
+- Shared code path: `StylistOperationsRepository` (core) for cancel, schedule, portfolio and travel radius; the existing `DioAffiliationRepository` and `DioJobPostingRepository` for affiliations and jobs (barber-facing methods only).
+- Scope of the rule: cancel is offered for `pending` and `confirmed` bookings; schedule saves only active days (backend replaces the whole week and requires at least one entry).
+- Request: `POST barber/bookings/{id}/cancel {cancellation_reason}`; `GET|PATCH barber/schedule {schedule:[{day_of_week,start_time,end_time,is_active}]}`; `GET|POST(multipart photo) barber/portfolio`; `DELETE barber/portfolio/{photo}`; `PATCH barber/travel-radius {travel_radius}`; bio via `PATCH barber/profile`.
+- Failure: backend errors surface in the bloc state; lists are left unchanged (a second apply returns 422 and adds nothing).
+- Success: cancel removes the booking from today's list; upload appends and delete removes a portfolio photo.
+- Mobile: `packages/core` (endpoints, `BarberScheduleDayDto`, `PortfolioPhotoDto`, repository), `packages/localization` (EN/AR), `apps/stylist_app` (schedule, portfolio, profile, affiliations, jobs, cancel sheet, `AppRoutes`, `StylistFeatureBlocs`). Backend and dashboard: unchanged.
+- Deviations from the original spec text: request field is `cancellation_reason`, not `reason` (T83-2). No "request affiliation" UI: it needs a branch picker that no endpoint supports; the repository method exists. Bio is write-only (the profile exposes only the active locale), so blank locales are left untouched.
 
 ## Out of Scope
 - Stylist login/router (Task 82).

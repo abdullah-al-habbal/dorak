@@ -1,11 +1,14 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:localization/localization.dart';
 
+import 'package:stylist_app/src/core/navigation/app_routes.entity.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 import 'package:stylist_app/src/features/operations/stylist.state.dart';
 import 'package:stylist_app/src/features/operations/widgets/appointment_card.widget.dart';
+import 'package:stylist_app/src/features/operations/widgets/cancel_reason.sheet.dart';
 import 'package:stylist_app/src/features/operations/widgets/profile_services_section.widget.dart';
 
 class StylistScreen extends StatelessWidget {
@@ -19,6 +22,20 @@ class StylistScreen extends StatelessWidget {
   final StylistBloc bloc;
   final VoidCallback onLocaleToggle;
   final VoidCallback onLogout;
+
+  List<(String, String)> _menu(AppLocalizations l10n) => [
+    (l10n.stylistMenuSchedule, AppRoutes.schedule),
+    (l10n.stylistMenuPortfolio, AppRoutes.portfolio),
+    (l10n.stylistMenuProfile, AppRoutes.profile),
+    (l10n.stylistMenuAffiliations, AppRoutes.affiliations),
+    (l10n.stylistMenuJobs, AppRoutes.jobs),
+  ];
+
+  Future<void> _cancel(BuildContext context, String bookingId) async {
+    final reason = await CancelReasonSheet.show(context);
+    if (reason == null) return;
+    await bloc.cancelBooking(bookingId, reason);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +79,16 @@ class StylistScreen extends StatelessWidget {
                 if (state.profile != null)
                   ProfileServicesSection(profile: state.profile!, l10n: strings),
                 if (state.error != null) Text(strings.stylistUpdateFailed),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    for (final entry in _menu(strings))
+                      ActionChip(
+                        label: Text(entry.$1),
+                        onPressed: () => context.push(entry.$2),
+                      ),
+                  ],
+                ),
                 const SizedBox(height: 12),
                 Text(
                   strings.stylistTodayAppointments,
@@ -73,6 +100,7 @@ class StylistScreen extends StatelessWidget {
                     isUpdating: state.updatingBookingId == booking.id,
                     onAction: (action) =>
                         bloc.transitionBooking(booking.id, action),
+                    onCancel: () => _cancel(context, booking.id),
                     l10n: strings,
                   ),
                 ),

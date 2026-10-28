@@ -8,13 +8,19 @@ class BookingActions extends StatelessWidget {
     required this.booking,
     required this.isUpdating,
     required this.onAction,
+    required this.onCancel,
     required this.l10n,
   });
 
   final BookingDto booking;
   final bool isUpdating;
   final ValueChanged<BarberBookingAction> onAction;
+  final VoidCallback onCancel;
   final AppLocalizations l10n;
+
+  bool get _cancellable =>
+      booking.status == BookingStatus.pending ||
+      booking.status == BookingStatus.confirmed;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +53,11 @@ class BookingActions extends StatelessWidget {
                 ? null
                 : () => onAction(BarberBookingAction.noShow),
             child: Text(l10n.stylistMarkNoShow),
+          ),
+        if (_cancellable)
+          TextButton(
+            onPressed: isUpdating ? null : onCancel,
+            child: Text(l10n.stylistCancelBooking),
           ),
       ],
     );

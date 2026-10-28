@@ -13,6 +13,11 @@ class OperationsEndpoints {
   static const barberBookingStart = '/barber/bookings/{booking}/start';
   static const barberBookingComplete = '/barber/bookings/{booking}/complete';
   static const barberBookingNoShow = '/barber/bookings/{booking}/no-show';
+  static const barberBookingCancel = '/barber/bookings/{booking}/cancel';
+  static const barberSchedule = '/barber/schedule';
+  static const barberPortfolio = '/barber/portfolio';
+  static const barberPortfolioPhoto = '/barber/portfolio/{photo}';
+  static const barberTravelRadius = '/barber/travel-radius';
   static const barberBookingReview = '/barber/bookings/{booking}/review';
   static const barberServices = '/barber/services';
   static const barberService = '/barber/services/{service}';

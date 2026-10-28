@@ -46,6 +46,7 @@ dependencies:
   localization:
     path: ../../packages/localization
   go_router: ^17.5.0
+  image_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

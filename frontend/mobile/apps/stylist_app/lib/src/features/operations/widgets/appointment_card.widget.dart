@@ -10,12 +10,14 @@ class AppointmentCard extends StatelessWidget {
     required this.booking,
     required this.isUpdating,
     required this.onAction,
+    required this.onCancel,
     required this.l10n,
   });
 
   final BookingDto booking;
   final bool isUpdating;
   final ValueChanged<BarberBookingAction> onAction;
+  final VoidCallback onCancel;
   final AppLocalizations l10n;
 
   String get _statusLabel => switch (booking.status) {
@@ -51,6 +53,7 @@ class AppointmentCard extends StatelessWidget {
               booking: booking,
               isUpdating: isUpdating,
               onAction: onAction,
+              onCancel: onCancel,
               l10n: l10n,
             ),
           ],

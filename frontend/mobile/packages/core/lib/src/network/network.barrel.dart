@@ -8,6 +8,8 @@ export 'package:core/src/notifications/notification_target.entity.dart';
 export 'package:core/src/notifications/push_notification.client.dart';
 export 'package:core/src/network/dto/auth_response.dto.dart';
 export 'package:core/src/network/dto/barber_affiliation.dto.dart';
+export 'package:core/src/network/dto/barber_schedule_day.dto.dart';
+export 'package:core/src/network/dto/portfolio_photo.dto.dart';
 export 'package:core/src/network/dto/at_home_location.dto.dart';
 export 'package:core/src/network/dto/assigned_branch.dto.dart';
 export 'package:core/src/network/dto/avatar.dto.dart';

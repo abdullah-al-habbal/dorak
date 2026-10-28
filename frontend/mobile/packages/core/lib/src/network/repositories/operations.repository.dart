@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:dio/dio.dart';
 
 abstract class BranchOperationsRepository {
   Future<BranchDto> getProfile();
@@ -93,6 +94,21 @@ abstract class StylistOperationsRepository {
     String? comment,
   });
 
+  /// Cancels a booking assigned to this barber; [reason] is required by the
+  /// backend (`cancellation_reason`).
+  Future<BookingDto> cancelBooking(String id, {required String reason});
+
+  Future<List<BarberScheduleDayDto>> getSchedule();
+
+  /// Replaces the whole weekly schedule.
+  Future<List<BarberScheduleDayDto>> updateSchedule(
+    List<BarberScheduleDayDto> days,
+  );
+  Future<List<PortfolioPhotoDto>> getPortfolio();
+  Future<PortfolioPhotoDto> uploadPortfolioPhoto(String filePath);
+  Future<void> deletePortfolioPhoto(String id);
+  Future<BarberProfileDto> updateTravelRadius(double radiusKm);
+
   /// The authenticated barber's own services (Task 54; UI in Task 83).
   Future<List<BarberServiceDto>> getServices();
   Future<BarberServiceDto> createService({
@@ -182,6 +198,70 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
         data: {'bio': ?bio},
         parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
       );
+
+  @override
+  Future<BookingDto> cancelBooking(String id, {required String reason}) =>
+      _client.post(
+        ApiEndpoints.operations.barberBookingCancel(id),
+        data: {'cancellation_reason': reason},
+        parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
+      );
+
+  @override
+  Future<List<BarberScheduleDayDto>> getSchedule() => _client.get(
+    ApiEndpoints.operations.barberSchedule,
+    parser: _parseSchedule,
+  );
+
+  @override
+  Future<List<BarberScheduleDayDto>> updateSchedule(
+    List<BarberScheduleDayDto> days,
+  ) => _client.patch(
+    ApiEndpoints.operations.barberSchedule,
+    data: {'schedule': days.map((day) => day.toJson()).toList()},
+    parser: _parseSchedule,
+  );
+
+  @override
+  Future<List<PortfolioPhotoDto>> getPortfolio() => _client.get(
+    ApiEndpoints.operations.barberPortfolio,
+    parser: (json) => (json as List<dynamic>)
+        .map((item) => PortfolioPhotoDto.fromJson(item as Map<String, dynamic>))
+        .toList(),
+  );
+
+  @override
+  Future<PortfolioPhotoDto> uploadPortfolioPhoto(String filePath) async {
+    final form = FormData.fromMap({
+      'photo': await MultipartFile.fromFile(filePath),
+    });
+    return _client.post(
+      ApiEndpoints.operations.barberPortfolio,
+      data: form,
+      parser: (json) =>
+          PortfolioPhotoDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<void> deletePortfolioPhoto(String id) =>
+      _client.delete(ApiEndpoints.operations.barberPortfolioPhoto(id));
+
+  @override
+  Future<BarberProfileDto> updateTravelRadius(double radiusKm) =>
+      _client.patch(
+        ApiEndpoints.operations.barberTravelRadius,
+        data: {'travel_radius': radiusKm},
+        parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
+      );
+
+  static List<BarberScheduleDayDto> _parseSchedule(Object? json) =>
+      (json as List<dynamic>)
+          .map(
+            (item) =>
+                BarberScheduleDayDto.fromJson(item as Map<String, dynamic>),
+          )
+          .toList();
 
   @override
   Future<List<BarberServiceDto>> getServices() => _client.get(

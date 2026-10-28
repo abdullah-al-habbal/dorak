@@ -2,6 +2,8 @@ import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 
+import 'helpers/stylist_fakes.dart';
+
 class _FakeRealtime implements RealtimeClient {
   void Function(String event, Map<String, dynamic> payload)? barberListener;
 
@@ -42,7 +44,7 @@ class _FakeRealtime implements RealtimeClient {
   void dispose() {}
 }
 
-class _CountingRepository implements StylistOperationsRepository {
+class _CountingRepository extends FakeStylistOperationsRepository {
   int appointmentLoads = 0;
 
   @override
@@ -63,54 +65,6 @@ class _CountingRepository implements StylistOperationsRepository {
       ),
     );
   }
-
-  @override
-  Future<bool> updateWorkstationStatus(bool online) =>
-      throw UnimplementedError();
-
-  @override
-  Future<BookingDto> transitionBooking(String id, BarberBookingAction action) =>
-      throw UnimplementedError();
-
-  @override
-  Future<ReviewDto> rateClient(
-    String bookingId, {
-    required int rating,
-    String? comment,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<BarberProfileDto> updateProfile({Map<String, String>? bio}) =>
-      throw UnimplementedError();
-
-  @override
-  Future<List<BarberServiceDto>> getServices() => throw UnimplementedError();
-
-  @override
-  Future<BarberServiceDto> createService({
-    required Map<String, String> name,
-    required double price,
-    required String currencyId,
-    int? duration,
-    bool atHome = false,
-    bool active = true,
-    String? catalogItemId,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<BarberServiceDto> updateService(
-    String id, {
-    required Map<String, String> name,
-    required double price,
-    required String currencyId,
-    int? duration,
-    bool atHome = false,
-    bool active = true,
-    String? catalogItemId,
-  }) => throw UnimplementedError();
-
-  @override
-  Future<void> deleteService(String id) => throw UnimplementedError();
 }
 
 void main() {

@@ -2563,6 +2563,324 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Address'**
   String get branchAddressLabel;
+
+  /// No description provided for @stylistMenuSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get stylistMenuSchedule;
+
+  /// No description provided for @stylistMenuPortfolio.
+  ///
+  /// In en, this message translates to:
+  /// **'Portfolio'**
+  String get stylistMenuPortfolio;
+
+  /// No description provided for @stylistMenuProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get stylistMenuProfile;
+
+  /// No description provided for @stylistMenuAffiliations.
+  ///
+  /// In en, this message translates to:
+  /// **'Affiliations'**
+  String get stylistMenuAffiliations;
+
+  /// No description provided for @stylistMenuJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs'**
+  String get stylistMenuJobs;
+
+  /// No description provided for @stylistCancelBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel booking'**
+  String get stylistCancelBooking;
+
+  /// No description provided for @stylistCancelReasonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you cancelling?'**
+  String get stylistCancelReasonTitle;
+
+  /// No description provided for @stylistCancelReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get stylistCancelReasonLabel;
+
+  /// No description provided for @stylistCancelReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a reason'**
+  String get stylistCancelReasonRequired;
+
+  /// No description provided for @stylistCancelKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep booking'**
+  String get stylistCancelKeep;
+
+  /// No description provided for @stylistSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get stylistSave;
+
+  /// No description provided for @stylistSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get stylistSaved;
+
+  /// No description provided for @stylistLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load. Pull to retry.'**
+  String get stylistLoadFailed;
+
+  /// No description provided for @stylistScheduleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly hours'**
+  String get stylistScheduleTitle;
+
+  /// No description provided for @stylistScheduleStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get stylistScheduleStart;
+
+  /// No description provided for @stylistScheduleEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get stylistScheduleEnd;
+
+  /// No description provided for @stylistScheduleInvalidRange.
+  ///
+  /// In en, this message translates to:
+  /// **'End time must be after start time'**
+  String get stylistScheduleInvalidRange;
+
+  /// No description provided for @stylistScheduleEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on at least one working day'**
+  String get stylistScheduleEmpty;
+
+  /// No description provided for @stylistWeekday0.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get stylistWeekday0;
+
+  /// No description provided for @stylistWeekday1.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get stylistWeekday1;
+
+  /// No description provided for @stylistWeekday2.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get stylistWeekday2;
+
+  /// No description provided for @stylistWeekday3.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get stylistWeekday3;
+
+  /// No description provided for @stylistWeekday4.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get stylistWeekday4;
+
+  /// No description provided for @stylistWeekday5.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get stylistWeekday5;
+
+  /// No description provided for @stylistWeekday6.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get stylistWeekday6;
+
+  /// No description provided for @stylistPortfolioTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Portfolio'**
+  String get stylistPortfolioTitle;
+
+  /// No description provided for @stylistPortfolioEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos yet. Add your best work.'**
+  String get stylistPortfolioEmpty;
+
+  /// No description provided for @stylistPortfolioAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get stylistPortfolioAdd;
+
+  /// No description provided for @stylistPortfolioDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete photo'**
+  String get stylistPortfolioDelete;
+
+  /// No description provided for @stylistProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get stylistProfileTitle;
+
+  /// No description provided for @stylistProfileBioEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio (English)'**
+  String get stylistProfileBioEnglish;
+
+  /// No description provided for @stylistProfileBioArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio (Arabic)'**
+  String get stylistProfileBioArabic;
+
+  /// No description provided for @stylistTravelRadiusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel radius'**
+  String get stylistTravelRadiusLabel;
+
+  /// Travel radius in kilometers
+  ///
+  /// In en, this message translates to:
+  /// **'{kilometers} km'**
+  String stylistTravelRadiusValue(String kilometers);
+
+  /// No description provided for @stylistAffiliationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Affiliations'**
+  String get stylistAffiliationsTitle;
+
+  /// No description provided for @stylistAffiliationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No affiliations yet.'**
+  String get stylistAffiliationsEmpty;
+
+  /// No description provided for @stylistAffiliationAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get stylistAffiliationAccept;
+
+  /// No description provided for @stylistAffiliationReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get stylistAffiliationReject;
+
+  /// No description provided for @stylistAffiliationStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get stylistAffiliationStatusPending;
+
+  /// No description provided for @stylistAffiliationStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get stylistAffiliationStatusActive;
+
+  /// No description provided for @stylistAffiliationStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get stylistAffiliationStatusRejected;
+
+  /// No description provided for @stylistAffiliationStatusTerminated.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminated'**
+  String get stylistAffiliationStatusTerminated;
+
+  /// No description provided for @stylistJobsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs'**
+  String get stylistJobsTitle;
+
+  /// No description provided for @stylistJobsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No open jobs right now.'**
+  String get stylistJobsEmpty;
+
+  /// No description provided for @stylistJobApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get stylistJobApply;
+
+  /// No description provided for @stylistJobApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Application sent'**
+  String get stylistJobApplied;
+
+  /// No description provided for @stylistJobApplyRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'This job is closed or you already applied.'**
+  String get stylistJobApplyRejected;
+
+  /// No description provided for @stylistMyApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'My applications'**
+  String get stylistMyApplications;
+
+  /// No description provided for @stylistApplicationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not applied to any job yet.'**
+  String get stylistApplicationsEmpty;
+
+  /// No description provided for @stylistApplicationStatusSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get stylistApplicationStatusSubmitted;
+
+  /// No description provided for @stylistApplicationStatusSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Seen'**
+  String get stylistApplicationStatusSeen;
+
+  /// No description provided for @stylistApplicationStatusAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get stylistApplicationStatusAccepted;
+
+  /// No description provided for @stylistApplicationStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get stylistApplicationStatusRejected;
 }
 
 class _AppLocalizationsDelegate

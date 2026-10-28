@@ -5,12 +5,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:localization/localization.dart';
 
 import 'package:stylist_app/src/core/navigation/app.router.dart';
+import 'package:stylist_app/src/core/navigation/app_routes.entity.dart';
+import 'package:stylist_app/src/features/affiliations/stylist_affiliations.screen.dart';
+import 'package:stylist_app/src/features/jobs/stylist_applications.screen.dart';
+import 'package:stylist_app/src/features/jobs/stylist_job_detail.screen.dart';
+import 'package:stylist_app/src/features/jobs/stylist_jobs.screen.dart';
+import 'package:stylist_app/src/features/portfolio/stylist_portfolio.screen.dart';
+import 'package:stylist_app/src/features/profile/stylist_profile.screen.dart';
+import 'package:stylist_app/src/features/schedule/stylist_schedule.screen.dart';
 import 'package:stylist_app/src/features/auth/stylist_login.screen.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.bloc.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 import 'package:stylist_app/src/features/operations/stylist.screen.dart';
 
 import 'helpers/sign_up_fakes.dart';
+import 'helpers/stylist_fakes.dart';
 
 void main() {
   late FakeStaffAuthRepository staffAuth;
@@ -37,11 +46,15 @@ void main() {
     tester.view.devicePixelRatio = 3.0;
     addTearDown(tester.view.reset);
 
-    final operations = StylistBloc(FakeStylistOperationsRepository());
+    final repository = FakeStylistOperationsRepository();
+    final operations = StylistBloc(repository);
     addTearDown(operations.close);
+    final features = featureBlocsFor(repository);
+    addTearDown(features.close);
     late final StylistAppRouter router;
     router = StylistAppRouter(
       operations: operations,
+      features: features,
       session: session,
       signUp: signUp,
       onLocaleToggle: () {},
@@ -141,5 +154,34 @@ void main() {
 
     expect(storage.token, isNull);
     expect(find.byType(StylistLoginScreen), findsOneWidget);
+  });
+
+  testWidgets('every feature route opens behind the session guard', (
+    tester,
+  ) async {
+    final router = await pumpApp(tester);
+    final routes = {
+      AppRoutes.schedule: StylistScheduleScreen,
+      AppRoutes.portfolio: StylistPortfolioScreen,
+      AppRoutes.profile: StylistProfileScreen,
+      AppRoutes.affiliations: StylistAffiliationsScreen,
+      AppRoutes.jobs: StylistJobsScreen,
+      AppRoutes.applications: StylistApplicationsScreen,
+      AppRoutes.job('job-1'): StylistJobDetailScreen,
+    };
+
+    for (final path in routes.keys) {
+      router.router.go(path);
+      await tester.pumpAndSettle();
+      expect(find.byType(StylistLoginScreen), findsOneWidget, reason: path);
+    }
+
+    storage.token = 'stored-token';
+    await session.restore();
+    for (final entry in routes.entries) {
+      router.router.go(entry.key);
+      await tester.pumpAndSettle();
+      expect(find.byType(entry.value), findsOneWidget, reason: entry.key);
+    }
   });
 }
