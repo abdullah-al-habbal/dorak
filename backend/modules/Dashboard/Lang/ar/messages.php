@@ -14,6 +14,7 @@ return [
     'chair_has_active_bookings' => 'للكرسي حجوزات نشطة، لذلك لا يمكن تغييره أو حذفه.',
     'stylist_not_assigned_to_chair' => 'يجب تعيين الحلاق إلى الكرسي المحدد.',
     'services_unavailable_for_branch' => 'يجب أن تكون جميع الخدمات متاحة للفرع المحدد.',
+    'admin_operation_only' => 'عملية لوحة التحكم هذه متاحة لمسؤولي المنصة فقط.',
     'barber_operation_unavailable' => 'عملية لوحة التحكم هذه غير متاحة للحلاقين.',
     'refresh_ttl_invalid' => 'يجب ألا تقل قيمة DASHBOARD_REFRESH_TTL_SECONDS عن 3600 ثانية.',
     'session_secret_invalid' => 'يجب ألا يقل طول DASHBOARD_SESSION_SECRET عن 32 حرفًا.',

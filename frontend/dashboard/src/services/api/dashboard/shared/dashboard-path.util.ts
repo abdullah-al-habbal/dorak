@@ -48,6 +48,12 @@ const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
     method: "PATCH",
     path: /^stylists\/[A-Za-z0-9-]+\/(activate|deactivate)$/,
   },
+  { method: "GET", path: /^admin\/reviews$/ },
+  {
+    method: "PATCH",
+    path: /^admin\/reviews\/[A-Za-z0-9-]+\/resolve$/,
+  },
+  { method: "GET", path: /^admin\/exchange-rates$/ },
   { method: "GET", path: /^profile$/ },
   { method: "PATCH", path: /^profile$/ },
   { method: "POST", path: /^profile\/email\/(change|verify)$/ },
@@ -73,6 +79,7 @@ const PAGED_BRANCH_SUBRESOURCES = ["reviews", "affiliations", "job-postings"];
 /** Whether a proxied list response carries backend pagination meta. */
 export function isDashboardPagedPath(path: readonly string[]): boolean {
   if (path.length === 1) return path[0] !== "overview";
+  if (path[0] === "admin") return path.length === 2 && path[1] === "reviews";
   if (path[0] !== "branches") return false;
   if (path.length === 3)
     return PAGED_BRANCH_SUBRESOURCES.includes(path[2] ?? "");

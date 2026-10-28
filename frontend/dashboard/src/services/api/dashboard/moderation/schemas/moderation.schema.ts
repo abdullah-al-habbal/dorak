@@ -1,0 +1,34 @@
+import { z } from "zod";
+import {
+  ACTIVATION_REASON_MAX_LENGTH,
+  DISPUTE_NOTE_MAX_LENGTH,
+  DISPUTE_RESOLUTIONS,
+} from "@/services/api/dashboard/moderation/moderation.constant";
+
+export const DisputedReviewSchema = z.object({
+  id: z.string(),
+  rating: z.number(),
+  comment: z.string().nullable(),
+  authorName: z.string().nullable(),
+  subjectType: z.string().nullable(),
+  disputeReason: z.string().nullable(),
+  disputedAt: z.string().nullable(),
+  createdAt: z.string(),
+});
+
+export const ExchangeRateSchema = z.object({
+  id: z.string(),
+  fromCode: z.string(),
+  toCode: z.string(),
+  rate: z.number(),
+  effectiveAt: z.string().nullable(),
+});
+
+export const resolveDisputeFormSchema = z.object({
+  status: z.enum(DISPUTE_RESOLUTIONS),
+  note: z.string().max(DISPUTE_NOTE_MAX_LENGTH),
+});
+
+export const activationReasonFormSchema = z.object({
+  reason: z.string().max(ACTIVATION_REASON_MAX_LENGTH),
+});

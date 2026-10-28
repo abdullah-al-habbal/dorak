@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Modules\Currency\Http\Actions\Shared\ListExchangeRatesAction;
 use Modules\Dashboard\Http\Actions\Branches\DestroyBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchesAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchReviewsAction;
@@ -58,9 +59,12 @@ use Modules\Dashboard\Http\Actions\Stylists\ListStylistsAction;
 use Modules\Dashboard\Http\Actions\Stylists\ShowStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\StoreStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\UpdateStylistAction;
+use Modules\Dashboard\Http\Middleware\DashboardAdminAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOperationsAuthorizationMiddleware;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
+use Modules\Review\Http\Actions\Admin\ListAdminReviewsAction;
+use Modules\Review\Http\Actions\Admin\ResolveReviewDisputeAction;
 
 Route::prefix('dashboard')->group(function (): void {
     Route::post('/login', DashboardLoginAction::class)->middleware('throttle:5,1');
@@ -76,6 +80,12 @@ Route::prefix('dashboard')->group(function (): void {
         Route::put('/profile/password', UpdatePasswordAction::class);
         Route::get('/profile/notifications', GetNotificationPreferencesAction::class);
         Route::patch('/profile/notifications', UpdateNotificationPreferencesAction::class);
+    });
+
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardAdminAuthorizationMiddleware::class])->prefix('admin')->group(function (): void {
+        Route::get('/reviews', ListAdminReviewsAction::class);
+        Route::patch('/reviews/{review}/resolve', ResolveReviewDisputeAction::class);
+        Route::get('/exchange-rates', ListExchangeRatesAction::class);
     });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOperationsAuthorizationMiddleware::class])->group(function (): void {

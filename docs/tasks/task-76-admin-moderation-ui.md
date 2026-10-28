@@ -24,11 +24,17 @@ Admin-only backend actions have no dashboard surface: barber activation and deac
 - None — admin-only.
 
 ## Acceptance Criteria
-- [ ] Admin deactivates a barber: 200, and the barber is shown as disabled. A manager session cannot reach the page (redirect to `/forbidden`) and the BFF returns 403 for it.
-- [ ] `GET /api/v1/admin/reviews?status=disputed` returns only disputed reviews for `admin_api`, and 401/403 for other guards (feature test).
-- [ ] Resolving a dispute from the UI returns 200 and removes it from the disputed list without a reload.
-- [ ] Exchange rates page renders data from the backend through an admin token (proves the Task 03 guard fix end to end).
-- [ ] `php artisan test` and `npm run test` pass; eslint and tsc are clean.
+- [x] Admin deactivates a barber: 200, and the barber is shown as disabled. A manager session cannot reach the page (redirect to `/forbidden`) and the BFF returns 403 for it.
+- [x] `GET /api/v1/admin/reviews?status=disputed` returns only disputed reviews for `admin_api`, and 401/403 for other guards (feature test).
+- [x] Resolving a dispute from the UI returns 200 and removes it from the disputed list without a reload.
+- [x] Exchange rates page renders data from the backend through an admin token (proves the Task 03 guard fix end to end).
+- [x] `php artisan test` and `npm run test` pass; eslint and tsc are clean.
+
+### Implemented contract
+- Backend: `GET /api/v1/admin/reviews` (`auth:admin_api`, `status` defaults to `disputed`, paginated, `AdminReviewResource` adds `dispute_reason`, `resolution_note`). `PATCH admin/reviews/{review}/resolve` accepts an optional `note` (new nullable `reviews.resolution_note`) and now returns the admin resource. `ExchangeRateResource` gained additive `from_currency_code`/`to_currency_code`.
+- Dashboard BFF: `GET dashboard/admin/reviews`, `PATCH dashboard/admin/reviews/{id}/resolve`, `GET dashboard/admin/exchange-rates`, reusing the Review/Currency actions behind `DashboardAdminAuthorizationMiddleware` (403 for non-admins). Task 03/57 left the exchange-rate route public, so no guard change was needed.
+- UI: `/admin/disputed-reviews` (list, resolve dialog: uphold/remove + note) and `/admin/exchange-rates` (read-only; no write endpoint exists). Stylist activate/deactivate now opens a dialog with an optional reason. Pages exist only under `/admin`; a manager hitting them is redirected by `proxy.ts` to its own portal root (existing behaviour, not `/forbidden`) and the BFF returns 403.
+- Mobile: unchanged (additive API fields only); `melos verify` not run for that reason.
 
 ## Out of Scope
 - Review dispute business rules and the 48-hour window (Task 41).

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use Modules\Barber\Http\Middleware\EnsureBarberAccountAccess;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
+use Modules\Review\Http\Actions\Admin\ListAdminReviewsAction;
 use Modules\Review\Http\Actions\Admin\ResolveReviewDisputeAction;
 use Modules\Review\Http\Actions\Barber\FlagReviewDisputeAction as BarberFlagReviewDisputeAction;
 use Modules\Review\Http\Actions\Barber\ReviewClientAction as BarberReviewClientAction;
@@ -24,6 +25,7 @@ Route::middleware(['auth:barber', EnsureBarberAccountAccess::class])->post('/bar
 Route::middleware(['auth:barber', EnsureBarberAccountAccess::class])->post('/barber/reviews/{review}/dispute', BarberFlagReviewDisputeAction::class)->name('reviews.dispute.barber');
 
 Route::middleware('auth:admin_api')->group(function (): void {
+    Route::get('/admin/reviews', ListAdminReviewsAction::class)->name('reviews.admin.list');
     Route::patch('/admin/reviews/{review}/resolve', ResolveReviewDisputeAction::class)->name('reviews.resolve');
 });
 

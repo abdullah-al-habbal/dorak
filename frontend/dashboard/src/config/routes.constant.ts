@@ -54,6 +54,10 @@ export const ROUTES = {
       resource: "branches" | "chairs" | "services" | "stylists" | "bookings",
     ) => `/${actor}/${resource}`,
   },
+  admin: {
+    disputedReviews: "/admin/disputed-reviews",
+    exchangeRates: "/admin/exchange-rates",
+  },
   api: {
     root: "/api",
     health: "/api/health",
@@ -150,6 +154,18 @@ export const PORTAL_NAVIGATION: readonly PortalNavigationItem[] = [
     actors: OPERATIONS_ACTORS,
     href: (actor) =>
       ROUTES.operations.resource(actor as OperationsActor, "chairs"),
+  },
+  {
+    key: "disputedReviews",
+    icon: "home",
+    actors: ["admin"],
+    href: () => ROUTES.admin.disputedReviews,
+  },
+  {
+    key: "exchangeRates",
+    icon: "home",
+    actors: ["admin"],
+    href: () => ROUTES.admin.exchangeRates,
   },
   {
     key: "stylists",

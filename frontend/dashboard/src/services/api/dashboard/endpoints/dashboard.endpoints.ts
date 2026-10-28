@@ -38,6 +38,10 @@ export const DashboardEndpoints = {
     applicationId: string,
   ) =>
     `${BASE}/branches/${encodeURIComponent(id)}/job-postings/${encodeURIComponent(postingId)}/applications/${encodeURIComponent(applicationId)}/status`,
+  adminReviews: `${BASE}/admin/reviews`,
+  adminReviewResolve: (id: string) =>
+    `${BASE}/admin/reviews/${encodeURIComponent(id)}/resolve`,
+  adminExchangeRates: `${BASE}/admin/exchange-rates`,
   bookingCancel: (id: string) =>
     `${BASE}/bookings/${encodeURIComponent(id)}/cancel`,
   bookingReschedule: (id: string) =>

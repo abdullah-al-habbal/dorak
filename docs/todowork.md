@@ -118,7 +118,7 @@ codeanchors:
 - [x] Task 73: Implement Dashboard Token Refresh Flow -> [Spec](tasks/task-73-dashboard-token-refresh.md)
 - [x] Task 74: Add Branch Operations BFF and UI -> [Spec](tasks/task-74-branch-operations-bff-ui.md)
 - [x] Task 75: Add Branch People BFF and UI (Affiliations, Jobs, Barbers) -> [Spec](tasks/task-75-branch-people-bff-ui.md)
-- [ ] Task 76: Add Admin Moderation UI -> [Spec](tasks/task-76-admin-moderation-ui.md)
+- [x] Task 76: Add Admin Moderation UI -> [Spec](tasks/task-76-admin-moderation-ui.md)
 - [ ] Task 77: Add Brand and Service Catalog Management UI -> [Spec](tasks/task-77-catalog-brand-management-ui.md)
 
 ## Phase 14 — Mobile (P1–P2)

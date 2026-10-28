@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Review\Handlers\Admin\ResolveReviewDisputeHandler;
 use Modules\Review\Http\Requests\Admin\ResolveReviewDisputeRequest;
-use Modules\Review\Http\Resources\Shared\ReviewResource;
+use Modules\Review\Http\Resources\Admin\AdminReviewResource;
 
 final class ResolveReviewDisputeAction extends BaseApiAction
 {
@@ -22,6 +22,6 @@ final class ResolveReviewDisputeAction extends BaseApiAction
             return $this->error(message: __('review::messages.dispute_resolution_not_available'), status: 422);
         }
 
-        return $this->ok(data: new ReviewResource($result), message: __('review::messages.dispute_resolved'));
+        return $this->ok(data: new AdminReviewResource($result), message: __('review::messages.dispute_resolved'));
     }
 }

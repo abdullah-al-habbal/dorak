@@ -16,7 +16,10 @@ final class ResolveReviewDisputeRequest extends BaseApiFormRequest
     /** @return array<string, array<int, mixed>> */
     public function rules(): array
     {
-        return ['status' => ['required', new Enum(ReviewStatus::class), 'in:published,hidden']];
+        return [
+            'status' => ['required', new Enum(ReviewStatus::class), 'in:published,hidden'],
+            'note' => ['nullable', 'string', 'max:1000'],
+        ];
     }
 
     public function toCommand(string $reviewId): ResolveReviewDisputeCommand
@@ -38,6 +41,6 @@ final class ResolveReviewDisputeRequest extends BaseApiFormRequest
             throw new \LogicException('The authenticated admin ID must be a UUID string.');
         }
 
-        return new ResolveReviewDisputeCommand($reviewId, $adminId, $status);
+        return new ResolveReviewDisputeCommand($reviewId, $adminId, $status, $this->validated('note'));
     }
 }

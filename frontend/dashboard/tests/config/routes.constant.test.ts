@@ -43,6 +43,16 @@ describe("route constants", () => {
     );
   });
 
+  it("offers moderation destinations to platform admins only", () => {
+    const moderationKeys = ["disputedReviews", "exchangeRates"];
+    const actorsFor = (key: string) =>
+      PORTAL_NAVIGATION.find((item) => item.key === key)?.actors;
+
+    moderationKeys.forEach((key) => expect(actorsFor(key)).toEqual(["admin"]));
+    expect(ROUTES.admin.disputedReviews).toBe("/admin/disputed-reviews");
+    expect(ROUTES.admin.exchangeRates).toBe("/admin/exchange-rates");
+  });
+
   it("keeps the operations destinations away from barbers", () => {
     const barberKeys = PORTAL_NAVIGATION.filter((item) =>
       item.actors.includes("barber"),

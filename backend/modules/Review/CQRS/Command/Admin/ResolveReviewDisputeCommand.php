@@ -12,5 +12,6 @@ final readonly class ResolveReviewDisputeCommand
         public string $reviewId,
         public string $adminId,
         public ReviewStatus $status,
+        public ?string $note = null,
     ) {}
 }

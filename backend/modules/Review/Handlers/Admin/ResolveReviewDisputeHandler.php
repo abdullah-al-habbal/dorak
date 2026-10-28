@@ -24,7 +24,7 @@ final class ResolveReviewDisputeHandler
             return null;
         }
 
-        $review->update(['status' => $command->status, 'resolved_at' => now(), 'resolved_by' => $command->adminId]);
+        $review->update(['status' => $command->status, 'resolved_at' => now(), 'resolved_by' => $command->adminId, 'resolution_note' => $command->note]);
 
         return $review->fresh('author');
     }
