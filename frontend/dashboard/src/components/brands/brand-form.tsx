@@ -20,28 +20,17 @@ import {
   updateBrand,
 } from "@/services/api/dashboard/brands/brands.query";
 import { brandFormSchema } from "@/services/api/dashboard/brands/schemas/brands.schema";
-import type {
-  IBrand,
-  IBrandForm,
-} from "@/services/api/dashboard/brands/types/ibrands.types";
+import type { IBrand } from "@/services/api/dashboard/brands/types/ibrand.types";
+import type { IBrandForm } from "@/services/api/dashboard/brands/types/ibrand-form.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { BRAND_SERVER_FIELD_MAP } from "@/services/api/dashboard/brands/brands.constant";
 
 interface IBrandFormProps {
   /** When set, the form edits this brand instead of creating one. */
   brand?: IBrand;
   onDone: () => void;
 }
-
-const SERVER_FIELD_MAP: Record<string, keyof IBrandForm> = {
-  "name.en": "nameEn",
-  "name.ar": "nameAr",
-  "description.en": "descriptionEn",
-  "description.ar": "descriptionAr",
-  logo: "logo",
-  base_currency_id: "baseCurrencyId",
-  universe: "universe",
-};
 
 function defaultsFor(brand?: IBrand): IBrandForm {
   return {
@@ -81,7 +70,7 @@ export function BrandForm({ brand, onDone }: IBrandFormProps) {
     onError: (error) => {
       if (error instanceof ApiClientError && error.status === 422) {
         Object.entries(error.errors ?? {}).forEach(([key, messages]) => {
-          const field = SERVER_FIELD_MAP[key];
+          const field = BRAND_SERVER_FIELD_MAP[key];
           if (field)
             form.setError(field, { type: "server", message: messages[0] });
         });

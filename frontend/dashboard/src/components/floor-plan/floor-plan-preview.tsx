@@ -1,7 +1,7 @@
 "use client";
 
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { IFloorPlanLayoutInput } from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlanLayoutInput } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-layout-input.types";
 import { useWatch, type Control } from "react-hook-form";
 
 const DEFAULT_ASPECT = "4 / 3";

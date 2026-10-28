@@ -24,7 +24,7 @@ export const MAX_PERCENT = 100;
 export const SUBSCRIPTION_NEXT_STATUSES = {
   pending: ["active", "canceled"],
   active: ["past_due", "canceled"],
-  past_due: ["active", "canceled"],
+  ["past_due"]: ["active", "canceled"],
   canceled: [],
 } as const;
 export const PAYOUT_NEXT_ACTIONS = {

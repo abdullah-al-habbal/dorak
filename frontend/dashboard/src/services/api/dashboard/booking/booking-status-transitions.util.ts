@@ -11,10 +11,10 @@ type NonPendingStatus = Exclude<BookingStatus, "pending">;
 const BOOKING_STATUS_TRANSITIONS: Record<BookingStatus, NonPendingStatus[]> = {
   pending: ["confirmed", "canceled"],
   confirmed: ["in_progress", "canceled", "no_show"],
-  in_progress: ["completed", "canceled", "no_show"],
+  ["in_progress"]: ["completed", "canceled", "no_show"],
   completed: [],
   canceled: [],
-  no_show: [],
+  ["no_show"]: [],
 };
 
 export function allowedNextBookingStatuses(

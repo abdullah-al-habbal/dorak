@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  commissionRulePayload,
+  gatewayPayload,
+  planPayload,
   mapAnalytics,
   mapCommissionEntry,
   mapCommissionRule,
@@ -158,5 +161,87 @@ describe("monetization mappers", () => {
       completedBookings: 3,
     });
     expect(mapAnalytics(null).completedBookings).toBe(0);
+  });
+});
+
+describe("monetization payload builders", () => {
+  it("sends plans as snake_case with minor-unit prices", () => {
+    expect(
+      planPayload({
+        nameEn: "Pro",
+        nameAr: "محترف",
+        descriptionEn: "",
+        descriptionAr: "وصف",
+        price: 49,
+        currencyId: "c1",
+        intervalUnit: "month",
+        intervalCount: 1,
+        isActive: true,
+        featureKeys: ["job_board"],
+      }),
+    ).toEqual({
+      name: { en: "Pro", ar: "محترف" },
+      description: { en: null, ar: "وصف" },
+      price_minor: 4900,
+      currency_id: "c1",
+      interval_unit: "month",
+      interval_count: 1,
+      is_active: true,
+      feature_keys: ["job_board"],
+    });
+  });
+
+  it("omits gateway config when empty and parses it otherwise", () => {
+    const form = {
+      code: "wallet",
+      nameEn: "Wallet",
+      nameAr: "محفظة",
+      driver: "wallet",
+      isActive: true,
+      isDefault: false,
+      config: "",
+    };
+    expect(gatewayPayload(form)).not.toHaveProperty("config");
+    expect(gatewayPayload({ ...form, config: "merchant=m1" })).toMatchObject({
+      config: { merchant: "m1" },
+      is_default: false,
+    });
+  });
+
+  it("converts percent rules to basis points and flat rules to minor units", () => {
+    expect(
+      commissionRulePayload({
+        scope: "global",
+        scopeId: "ignored",
+        type: "percent",
+        value: 12.5,
+        currencyId: "ignored",
+        isActive: true,
+      }),
+    ).toEqual({
+      scope: "global",
+      scope_id: null,
+      type: "percent",
+      value: 1250,
+      currency_id: null,
+      is_active: true,
+    });
+    expect(
+      commissionRulePayload({
+        scope: "branch",
+        scopeId: "br1",
+        type: "flat",
+        value: 2.5,
+        currencyId: "c1",
+        isActive: false,
+      }),
+    ).toEqual({
+      scope: "branch",
+      scope_id: "br1",
+      type: "flat",
+      value: 250,
+      currency_id: "c1",
+      is_active: false,
+    });
   });
 });

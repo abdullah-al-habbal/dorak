@@ -16,7 +16,7 @@ import {
   deleteCatalogItem,
   getCatalogItems,
 } from "@/services/api/dashboard/catalog/catalog.query";
-import type { ICatalogItem } from "@/services/api/dashboard/catalog/types/icatalog.types";
+import type { ICatalogItem } from "@/services/api/dashboard/catalog/types/icatalog-item.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { FormEvent } from "react";

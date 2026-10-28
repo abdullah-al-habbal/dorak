@@ -16,11 +16,9 @@ import {
   updateJobPosting,
 } from "@/services/api/dashboard/people/people.query";
 import { jobPostingFormSchema } from "@/services/api/dashboard/people/schemas/people.schema";
-import type {
-  IJobPosting,
-  IJobPostingForm,
-  IJobPostingFormInput,
-} from "@/services/api/dashboard/people/types/ipeople.types";
+import type { IJobPosting } from "@/services/api/dashboard/people/types/ijob-posting.types";
+import type { IJobPostingForm } from "@/services/api/dashboard/people/types/ijob-posting-form.types";
+import type { IJobPostingFormInput } from "@/services/api/dashboard/people/types/ijob-posting-form-input.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 

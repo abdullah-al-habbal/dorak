@@ -19,7 +19,7 @@ import {
 import { DISPUTE_RESOLUTIONS } from "@/services/api/dashboard/moderation/moderation.constant";
 import { resolveDispute } from "@/services/api/dashboard/moderation/moderation.query";
 import { resolveDisputeFormSchema } from "@/services/api/dashboard/moderation/schemas/moderation.schema";
-import type { IResolveDisputeForm } from "@/services/api/dashboard/moderation/types/imoderation.types";
+import type { IResolveDisputeForm } from "@/services/api/dashboard/moderation/types/iresolve-dispute-form.types";
 import { MODERATION_QUERY_KEYS } from "@/services/api/dashboard/moderation/moderation.constant";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";

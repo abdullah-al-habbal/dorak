@@ -16,3 +16,11 @@ export const JOB_POSTING_STATUSES = ["open", "closed", "archived"] as const;
 export const APPLICATION_DECISIONS = ["accepted", "rejected"] as const;
 
 export const PEOPLE_PAGE_SIZE = 15;
+
+export const INVITE_SERVER_FIELD_MAP: Record<
+  string,
+  "barberId" | "commissionRate"
+> = {
+  barber_id: "barberId",
+  commission_rate: "commissionRate",
+};

@@ -16,11 +16,9 @@ import {
   fromMinorUnits,
 } from "@/services/api/dashboard/monetization/monetization.util";
 import { commissionRuleFormSchema } from "@/services/api/dashboard/monetization/schemas/monetization.schema";
-import type {
-  ICommissionRule,
-  ICommissionRuleForm,
-  ICommissionRuleFormInput,
-} from "@/services/api/dashboard/monetization/types/imonetization.types";
+import type { ICommissionRule } from "@/services/api/dashboard/monetization/types/icommission-rule.types";
+import type { ICommissionRuleForm } from "@/services/api/dashboard/monetization/types/icommission-rule-form.types";
+import type { ICommissionRuleFormInput } from "@/services/api/dashboard/monetization/types/icommission-rule-form-input.types";
 import { useForm } from "react-hook-form";
 
 interface ICommissionRuleFormProps {

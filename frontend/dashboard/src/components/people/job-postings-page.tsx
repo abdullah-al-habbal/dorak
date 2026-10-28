@@ -17,7 +17,7 @@ import {
   getJobPostings,
   jobPostingsQueryKey,
 } from "@/services/api/dashboard/people/people.query";
-import type { IJobPosting } from "@/services/api/dashboard/people/types/ipeople.types";
+import type { IJobPosting } from "@/services/api/dashboard/people/types/ijob-posting.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 

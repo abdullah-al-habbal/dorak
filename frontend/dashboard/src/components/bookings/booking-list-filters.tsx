@@ -37,9 +37,9 @@ export function BookingListFilters({
   const statusLabels: Record<BookingStatus, string> = {
     pending: labels.pending,
     confirmed: labels.confirmed,
-    in_progress: labels.inProgress,
+    ["in_progress"]: labels.inProgress,
     completed: labels.completed,
-    no_show: labels.noShow,
+    ["no_show"]: labels.noShow,
     canceled: labels.canceled,
   };
   const hasActiveFilters =

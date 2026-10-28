@@ -1,16 +1,15 @@
 import { api } from "@/services/api/core/client";
 import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
 import {
+  catalogItemPayload,
   mapCatalogCategory,
   mapCatalogItem,
   mapCatalogTag,
 } from "@/services/api/dashboard/catalog/catalog.mapper.util";
-import type {
-  ICatalogCategory,
-  ICatalogItem,
-  ICatalogItemForm,
-  ICatalogTag,
-} from "@/services/api/dashboard/catalog/types/icatalog.types";
+import type { ICatalogCategory } from "@/services/api/dashboard/catalog/types/icatalog-category.types";
+import type { ICatalogItem } from "@/services/api/dashboard/catalog/types/icatalog-item.types";
+import type { ICatalogItemForm } from "@/services/api/dashboard/catalog/types/icatalog-item-form.types";
+import type { ICatalogTag } from "@/services/api/dashboard/catalog/types/icatalog-tag.types";
 import type { IDashboardPage } from "@/services/api/dashboard/shared/types/idashboard-page.types";
 
 export const catalogItemsQueryKey = (search: string, page: number) =>
@@ -41,23 +40,6 @@ export async function getCatalogCategories(): Promise<ICatalogCategory[]> {
 export async function getCatalogTags(): Promise<ICatalogTag[]> {
   const result = await api.get<unknown[]>(DashboardEndpoints.catalogTags);
   return result.map(mapCatalogTag);
-}
-
-export function catalogItemPayload(form: ICatalogItemForm) {
-  return {
-    category_id: form.categoryId,
-    name: { en: form.nameEn, ar: form.nameAr },
-    description: {
-      en: form.descriptionEn === "" ? null : form.descriptionEn,
-      ar: form.descriptionAr === "" ? null : form.descriptionAr,
-    },
-    slug: form.slug,
-    is_active: form.isActive,
-    default_duration_minutes: form.durationMinutes,
-    face_shapes: form.faceShapes,
-    hair_textures: form.hairTextures,
-    tag_ids: form.tagIds,
-  };
 }
 
 export function createCatalogItem(form: ICatalogItemForm) {

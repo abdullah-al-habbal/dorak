@@ -4,10 +4,8 @@ import {
   FLOOR_PLAN_PRESETS,
   FLOOR_ZONES,
 } from "@/services/api/dashboard/floor-plan/floor-plan.constant";
-import type {
-  IFloorPlan,
-  IFloorPlanLayout,
-} from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlan } from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlanLayout } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-layout.types";
 import { isRecord } from "@/utils/guards.util";
 
 type Wire = Record<string, unknown>;

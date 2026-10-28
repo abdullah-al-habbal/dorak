@@ -3,7 +3,7 @@ import {
   branchCreateSchema,
   branchEditSchema,
 } from "@/services/api/dashboard/branch/schemas/branch-form.schema";
-import { openingHoursPayload } from "@/services/api/dashboard/branch/branch-opening-hours.util";
+import { openingHoursPayload } from "@/services/api/dashboard/branch/branch-opening-hours.mapper.util";
 import { chairFormSchema } from "@/services/api/dashboard/chair/schemas/chair-form.schema";
 import { serviceFormSchema } from "@/services/api/dashboard/service/schemas/service-form.schema";
 import {

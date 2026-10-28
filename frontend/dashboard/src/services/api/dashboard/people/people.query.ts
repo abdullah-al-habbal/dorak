@@ -1,17 +1,16 @@
 import { api } from "@/services/api/core/client";
 import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
 import {
+  invitePayload,
   mapAffiliation,
   mapApplication,
   mapJobPosting,
 } from "@/services/api/dashboard/people/people.mapper.util";
-import type {
-  IAffiliation,
-  IApplication,
-  IInviteAffiliation,
-  IJobPosting,
-  IJobPostingForm,
-} from "@/services/api/dashboard/people/types/ipeople.types";
+import type { IAffiliation } from "@/services/api/dashboard/people/types/iaffiliation.types";
+import type { IApplication } from "@/services/api/dashboard/people/types/iapplication.types";
+import type { IInviteAffiliation } from "@/services/api/dashboard/people/types/iinvite-affiliation.types";
+import type { IJobPosting } from "@/services/api/dashboard/people/types/ijob-posting.types";
+import type { IJobPostingForm } from "@/services/api/dashboard/people/types/ijob-posting-form.types";
 import type { IDashboardPage } from "@/services/api/dashboard/shared/types/idashboard-page.types";
 
 export const affiliationsQueryKey = (
@@ -56,12 +55,10 @@ export function respondToAffiliation(
 }
 
 export function inviteBarber(branchId: string, invite: IInviteAffiliation) {
-  return api.post<unknown>(DashboardEndpoints.branchAffiliations(branchId), {
-    barber_id: invite.barberId,
-    ...(invite.commissionRate === null
-      ? {}
-      : { commission_rate: invite.commissionRate }),
-  });
+  return api.post<unknown>(
+    DashboardEndpoints.branchAffiliations(branchId),
+    invitePayload(invite),
+  );
 }
 
 export function getJobPostings(

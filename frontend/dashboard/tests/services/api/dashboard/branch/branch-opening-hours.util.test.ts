@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
-import {
-  fullWeek,
-  openingHoursPayload,
-} from "@/services/api/dashboard/branch/branch-opening-hours.util";
+import { fullWeek } from "@/services/api/dashboard/branch/branch-opening-hours.util";
+import { openingHoursPayload } from "@/services/api/dashboard/branch/branch-opening-hours.mapper.util";
 
 describe("fullWeek", () => {
   it("fills unconfigured days with empty open rows", () => {

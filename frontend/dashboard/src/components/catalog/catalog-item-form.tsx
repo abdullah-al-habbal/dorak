@@ -24,29 +24,18 @@ import {
   updateCatalogItem,
 } from "@/services/api/dashboard/catalog/catalog.query";
 import { catalogItemFormSchema } from "@/services/api/dashboard/catalog/schemas/catalog.schema";
-import type {
-  ICatalogItem,
-  ICatalogItemForm,
-  ICatalogItemFormInput,
-} from "@/services/api/dashboard/catalog/types/icatalog.types";
+import type { ICatalogItem } from "@/services/api/dashboard/catalog/types/icatalog-item.types";
+import type { ICatalogItemForm } from "@/services/api/dashboard/catalog/types/icatalog-item-form.types";
+import type { ICatalogItemFormInput } from "@/services/api/dashboard/catalog/types/icatalog-item-form-input.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { CATALOG_SERVER_FIELD_MAP } from "@/services/api/dashboard/catalog/catalog.constant";
 
 interface ICatalogItemFormProps {
   /** When set, the form edits this item instead of creating one. */
   item?: ICatalogItem;
   onDone: () => void;
 }
-
-const SERVER_FIELD_MAP: Record<string, keyof ICatalogItemFormInput> = {
-  category_id: "categoryId",
-  "name.en": "nameEn",
-  "name.ar": "nameAr",
-  slug: "slug",
-  "description.en": "descriptionEn",
-  "description.ar": "descriptionAr",
-  default_duration_minutes: "durationMinutes",
-};
 
 function defaultsFor(item?: ICatalogItem): ICatalogItemFormInput {
   return {
@@ -100,7 +89,7 @@ export function CatalogItemForm({ item, onDone }: ICatalogItemFormProps) {
     onError: (error) => {
       if (error instanceof ApiClientError && error.status === 422) {
         Object.entries(error.errors ?? {}).forEach(([key, messages]) => {
-          const field = SERVER_FIELD_MAP[key];
+          const field = CATALOG_SERVER_FIELD_MAP[key];
           if (field)
             form.setError(field, { type: "server", message: messages[0] });
         });

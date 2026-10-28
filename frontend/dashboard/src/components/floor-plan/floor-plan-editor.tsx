@@ -26,11 +26,9 @@ import {
   updateBranchFloorPlan,
 } from "@/services/api/dashboard/floor-plan/floor-plan.query";
 import { floorPlanFormSchema } from "@/services/api/dashboard/floor-plan/schemas/floor-plan.schema";
-import type {
-  IFloorPlan,
-  IFloorPlanLayout,
-  IFloorPlanLayoutInput,
-} from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlan } from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlanLayout } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-layout.types";
+import type { IFloorPlanLayoutInput } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-layout-input.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFieldArray, useForm } from "react-hook-form";
 

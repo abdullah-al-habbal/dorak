@@ -14,7 +14,7 @@ import {
   getGateways,
   setGatewayActive,
 } from "@/services/api/dashboard/monetization/monetization.query";
-import type { IGateway } from "@/services/api/dashboard/monetization/types/imonetization.types";
+import type { IGateway } from "@/services/api/dashboard/monetization/types/igateway.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 

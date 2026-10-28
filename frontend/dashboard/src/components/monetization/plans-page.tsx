@@ -16,7 +16,7 @@ import {
   pagedQueryKey,
 } from "@/services/api/dashboard/monetization/monetization.query";
 import { formatMinorUnits } from "@/services/api/dashboard/monetization/monetization.util";
-import type { IPlan } from "@/services/api/dashboard/monetization/types/imonetization.types";
+import type { IPlan } from "@/services/api/dashboard/monetization/types/iplan.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 

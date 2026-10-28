@@ -13,7 +13,7 @@ import {
   brandsQueryKey,
   getBrands,
 } from "@/services/api/dashboard/brands/brands.query";
-import type { IBrand } from "@/services/api/dashboard/brands/types/ibrands.types";
+import type { IBrand } from "@/services/api/dashboard/brands/types/ibrand.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import type { FormEvent } from "react";

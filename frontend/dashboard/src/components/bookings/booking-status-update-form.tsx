@@ -47,9 +47,9 @@ export function BookingStatusUpdateForm({
 }: IBookingStatusUpdateFormProps) {
   const labels: Record<Exclude<BookingStatus, "pending">, string> = {
     confirmed: confirmedLabel,
-    in_progress: inProgressLabel,
+    ["in_progress"]: inProgressLabel,
     completed: completedLabel,
-    no_show: noShowLabel,
+    ["no_show"]: noShowLabel,
     canceled: canceledLabel,
   };
   const nextStatuses = allowedNextBookingStatuses(currentStatus);

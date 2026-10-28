@@ -8,10 +8,8 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useMonetizationMutation } from "@/hooks/use-monetization-mutation";
 import { saveGateway } from "@/services/api/dashboard/monetization/monetization.query";
 import { gatewayFormSchema } from "@/services/api/dashboard/monetization/schemas/monetization.schema";
-import type {
-  IGateway,
-  IGatewayForm,
-} from "@/services/api/dashboard/monetization/types/imonetization.types";
+import type { IGateway } from "@/services/api/dashboard/monetization/types/igateway.types";
+import type { IGatewayForm } from "@/services/api/dashboard/monetization/types/igateway-form.types";
 import { useForm } from "react-hook-form";
 
 interface IGatewayFormProps {

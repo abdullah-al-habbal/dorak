@@ -10,7 +10,7 @@ import {
   disputedReviewsQueryKey,
   getDisputedReviews,
 } from "@/services/api/dashboard/moderation/moderation.query";
-import type { IDisputedReview } from "@/services/api/dashboard/moderation/types/imoderation.types";
+import type { IDisputedReview } from "@/services/api/dashboard/moderation/types/idisputed-review.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 

@@ -11,7 +11,7 @@ import {
   getApplications,
   setApplicationStatus,
 } from "@/services/api/dashboard/people/people.query";
-import type { IApplication } from "@/services/api/dashboard/people/types/ipeople.types";
+import type { IApplication } from "@/services/api/dashboard/people/types/iapplication.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 

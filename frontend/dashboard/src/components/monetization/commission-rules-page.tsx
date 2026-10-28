@@ -20,7 +20,7 @@ import {
   basisPointsToPercent,
   formatMinorUnits,
 } from "@/services/api/dashboard/monetization/monetization.util";
-import type { ICommissionRule } from "@/services/api/dashboard/monetization/types/imonetization.types";
+import type { ICommissionRule } from "@/services/api/dashboard/monetization/types/icommission-rule.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 

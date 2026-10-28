@@ -1,10 +1,11 @@
 import { api } from "@/services/api/core/client";
 import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
-import { mapBrand } from "@/services/api/dashboard/brands/brands.mapper.util";
-import type {
-  IBrand,
-  IBrandForm,
-} from "@/services/api/dashboard/brands/types/ibrands.types";
+import {
+  brandPayload,
+  mapBrand,
+} from "@/services/api/dashboard/brands/brands.mapper.util";
+import type { IBrand } from "@/services/api/dashboard/brands/types/ibrand.types";
+import type { IBrandForm } from "@/services/api/dashboard/brands/types/ibrand-form.types";
 import type { IDashboardPage } from "@/services/api/dashboard/shared/types/idashboard-page.types";
 
 export const brandsQueryKey = (search: string, page: number) =>
@@ -20,19 +21,6 @@ export async function getBrands(
     `${DashboardEndpoints.resource("brands")}?${query}`,
   );
   return { ...result, items: result.items.map(mapBrand) };
-}
-
-export function brandPayload(form: IBrandForm) {
-  return {
-    name: { en: form.nameEn, ar: form.nameAr },
-    description: {
-      en: form.descriptionEn === "" ? null : form.descriptionEn,
-      ar: form.descriptionAr === "" ? null : form.descriptionAr,
-    },
-    logo: form.logo === "" ? null : form.logo,
-    base_currency_id: form.baseCurrencyId,
-    universe: form.universe,
-  };
 }
 
 export function createBrand(form: IBrandForm) {

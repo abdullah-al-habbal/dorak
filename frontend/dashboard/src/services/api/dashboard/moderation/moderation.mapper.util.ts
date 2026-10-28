@@ -2,10 +2,8 @@ import {
   DisputedReviewSchema,
   ExchangeRateSchema,
 } from "@/services/api/dashboard/moderation/schemas/moderation.schema";
-import type {
-  IDisputedReview,
-  IExchangeRate,
-} from "@/services/api/dashboard/moderation/types/imoderation.types";
+import type { IDisputedReview } from "@/services/api/dashboard/moderation/types/idisputed-review.types";
+import type { IExchangeRate } from "@/services/api/dashboard/moderation/types/iexchange-rate.types";
 import { isRecord } from "@/utils/guards.util";
 
 type Wire = Record<string, unknown>;

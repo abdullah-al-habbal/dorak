@@ -4,10 +4,8 @@ import {
   floorPlanPayload,
   mapFloorPlan,
 } from "@/services/api/dashboard/floor-plan/floor-plan.mapper.util";
-import type {
-  IFloorPlan,
-  IFloorPlanLayout,
-} from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlan } from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlanLayout } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-layout.types";
 
 export const floorPlanQueryKey = (branchId: string) =>
   ["dashboard", "floor-plan", branchId] as const;

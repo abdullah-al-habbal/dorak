@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { catalogItemPayload } from "@/services/api/dashboard/catalog/catalog.query";
+import { catalogItemPayload } from "@/services/api/dashboard/catalog/catalog.mapper.util";
 
 describe("catalogItemPayload", () => {
   it("sends snake_case fields and nulls empty descriptions", () => {

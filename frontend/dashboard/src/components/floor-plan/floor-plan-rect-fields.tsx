@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/tailgrids/core/input";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { IFloorPlanLayoutInput } from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlanLayoutInput } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-layout-input.types";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 
 const RECT_KEYS = ["x", "y", "width", "height"] as const;

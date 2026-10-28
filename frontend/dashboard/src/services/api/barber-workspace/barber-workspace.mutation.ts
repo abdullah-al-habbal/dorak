@@ -1,8 +1,12 @@
 import { api } from "@/services/api/core/client";
+import {
+  cancelPayload,
+  schedulePayload,
+  travelRadiusPayload,
+} from "@/services/api/barber-workspace/barber-workspace.mapper.util";
 import { BarberEndpoints } from "@/services/api/barber-workspace/endpoints/barber-workspace.endpoints";
 import type {
   TransitionBookingInput,
-  CancelBookingInput,
   UpdateScheduleFormInput,
   UpdateTravelRadiusFormInput,
   UpdateBarberProfileFormInput,
@@ -20,25 +24,21 @@ export function transitionBarberBooking(
 }
 
 export function cancelBarberBooking(id: string, cancellationReason: string) {
-  const input: CancelBookingInput = { cancellation_reason: cancellationReason };
-  return api.post<void>(BarberEndpoints.bookingCancel(id), input);
+  return api.post<void>(
+    BarberEndpoints.bookingCancel(id),
+    cancelPayload(cancellationReason),
+  );
 }
 
 export function updateBarberSchedule(input: UpdateScheduleFormInput) {
-  return api.patch<void>(BarberEndpoints.schedule, {
-    schedule: input.schedule.map((entry) => ({
-      day_of_week: entry.dayOfWeek,
-      start_time: entry.startTime,
-      end_time: entry.endTime,
-      is_active: entry.isActive,
-    })),
-  });
+  return api.patch<void>(BarberEndpoints.schedule, schedulePayload(input));
 }
 
 export function updateBarberTravelRadius(input: UpdateTravelRadiusFormInput) {
-  return api.patch<void>(BarberEndpoints.travelRadius, {
-    travel_radius: input.travelRadius,
-  });
+  return api.patch<void>(
+    BarberEndpoints.travelRadius,
+    travelRadiusPayload(input),
+  );
 }
 
 export function updateBarberProfile(input: UpdateBarberProfileFormInput) {

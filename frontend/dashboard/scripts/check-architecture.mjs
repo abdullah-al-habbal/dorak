@@ -30,16 +30,16 @@ function isDashboardTypeHome(path) {
   );
 }
 function isMapperBoundary(path) {
-  return (
-    path.endsWith("dashboard-mapper.util.ts") ||
-    path.endsWith("dashboard-payload-mapper.util.ts")
-  );
+  return /mapper\.util\.ts$/.test(path);
 }
 function isExternalContractBoundary(path) {
   return (
     isMapperBoundary(path) ||
     path.startsWith("src/services/api/auth/") ||
     path.startsWith("src/app/api/") ||
+    path.startsWith("src/i18n/messages/") ||
+    /^src\/services\/api\/.+\.constant\.ts$/.test(path) ||
+    /^src\/services\/api\/.+\/schemas\//.test(path) ||
     path.startsWith("src/components/tailgrids/core/") ||
     path.startsWith("tests/")
   );

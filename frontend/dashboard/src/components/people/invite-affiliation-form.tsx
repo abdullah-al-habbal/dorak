@@ -11,21 +11,15 @@ import {
 } from "@/services/api/core/notifications";
 import { inviteBarber } from "@/services/api/dashboard/people/people.query";
 import { inviteAffiliationFormSchema } from "@/services/api/dashboard/people/schemas/people.schema";
-import type {
-  IInviteAffiliation,
-  IInviteAffiliationInput,
-} from "@/services/api/dashboard/people/types/ipeople.types";
+import type { IInviteAffiliation } from "@/services/api/dashboard/people/types/iinvite-affiliation.types";
+import type { IInviteAffiliationInput } from "@/services/api/dashboard/people/types/iinvite-affiliation-input.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { INVITE_SERVER_FIELD_MAP } from "@/services/api/dashboard/people/people.constant";
 
 interface IInviteAffiliationFormProps {
   branchId: string;
 }
-
-const SERVER_FIELD_MAP: Record<string, "barberId" | "commissionRate"> = {
-  barber_id: "barberId",
-  commission_rate: "commissionRate",
-};
 
 export function InviteAffiliationForm({
   branchId,
@@ -51,7 +45,7 @@ export function InviteAffiliationForm({
     onError: (error) => {
       if (error instanceof ApiClientError && error.status === 422) {
         Object.entries(error.errors ?? {}).forEach(([key, messages]) => {
-          const field = SERVER_FIELD_MAP[key];
+          const field = INVITE_SERVER_FIELD_MAP[key];
           if (field)
             form.setError(field, { type: "server", message: messages[0] });
         });

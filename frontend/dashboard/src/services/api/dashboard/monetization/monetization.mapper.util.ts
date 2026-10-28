@@ -7,15 +7,22 @@ import {
   PlanSchema,
   SubscriptionSchema,
 } from "@/services/api/dashboard/monetization/schemas/monetization.schema";
-import type {
-  IAnalytics,
-  ICommissionEntry,
-  ICommissionRule,
-  IGateway,
-  IPayout,
-  IPlan,
-  ISubscription,
-} from "@/services/api/dashboard/monetization/types/imonetization.types";
+import {
+  parseConfigLines,
+  percentToBasisPoints,
+  toMinorUnits,
+} from "@/services/api/dashboard/monetization/monetization.util";
+import type { IAnalytics } from "@/services/api/dashboard/monetization/types/ianalytics.types";
+import type { ICommissionEntry } from "@/services/api/dashboard/monetization/types/icommission-entry.types";
+import type { ICommissionRule } from "@/services/api/dashboard/monetization/types/icommission-rule.types";
+import type { IAssignSubscriptionForm } from "@/services/api/dashboard/monetization/types/iassign-subscription-form.types";
+import type { ICommissionRuleForm } from "@/services/api/dashboard/monetization/types/icommission-rule-form.types";
+import type { IGatewayForm } from "@/services/api/dashboard/monetization/types/igateway-form.types";
+import type { IGateway } from "@/services/api/dashboard/monetization/types/igateway.types";
+import type { IPayout } from "@/services/api/dashboard/monetization/types/ipayout.types";
+import type { IPlan } from "@/services/api/dashboard/monetization/types/iplan.types";
+import type { IPlanForm } from "@/services/api/dashboard/monetization/types/iplan-form.types";
+import type { ISubscription } from "@/services/api/dashboard/monetization/types/isubscription.types";
 import { isRecord } from "@/utils/guards.util";
 
 type Wire = Record<string, unknown>;
@@ -158,3 +165,55 @@ export function mapAnalytics(wire: unknown): IAnalytics {
     completedBookings: num(item.completed_bookings),
   });
 }
+
+export function planPayload(form: IPlanForm) {
+  return {
+    name: { en: form.nameEn, ar: form.nameAr },
+    description: {
+      en: form.descriptionEn === "" ? null : form.descriptionEn,
+      ar: form.descriptionAr === "" ? null : form.descriptionAr,
+    },
+    price_minor: toMinorUnits(form.price),
+    currency_id: form.currencyId,
+    interval_unit: form.intervalUnit,
+    interval_count: form.intervalCount,
+    is_active: form.isActive,
+    feature_keys: form.featureKeys,
+  };
+}
+
+export function gatewayPayload(form: IGatewayForm) {
+  const config = parseConfigLines(form.config);
+  return {
+    code: form.code,
+    name: { en: form.nameEn, ar: form.nameAr },
+    driver: form.driver,
+    is_active: form.isActive,
+    is_default: form.isDefault,
+    // Omitted when empty so the stored (encrypted) config is kept.
+    ...(Object.keys(config).length > 0 ? { config } : {}),
+  };
+}
+
+export function commissionRulePayload(form: ICommissionRuleForm) {
+  return {
+    scope: form.scope,
+    scope_id: form.scope === "global" ? null : form.scopeId,
+    type: form.type,
+    value:
+      form.type === "percent"
+        ? percentToBasisPoints(form.value)
+        : toMinorUnits(form.value),
+    currency_id: form.type === "flat" ? form.currencyId : null,
+    is_active: form.isActive,
+  };
+}
+
+export const assignPayload = (form: IAssignSubscriptionForm) => ({
+  brand_id: form.brandId,
+  plan_id: form.planId,
+});
+
+export const gatewayActivePayload = (isActive: boolean) => ({
+  is_active: isActive,
+});

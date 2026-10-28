@@ -21,7 +21,7 @@ import {
   updateSubscriptionStatus,
 } from "@/services/api/dashboard/monetization/monetization.query";
 import { assignSubscriptionFormSchema } from "@/services/api/dashboard/monetization/schemas/monetization.schema";
-import type { IAssignSubscriptionForm } from "@/services/api/dashboard/monetization/types/imonetization.types";
+import type { IAssignSubscriptionForm } from "@/services/api/dashboard/monetization/types/iassign-subscription-form.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

@@ -1,5 +1,5 @@
 import { readSessionCookies } from "@/services/api/auth/cookies";
-import { bearerHeaders } from "@/services/api/core/http.util";
+import { authorizeBroadcastChannel } from "@/services/api/common/realtime/realtime-auth.proxy";
 import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
 import { apiFailure, noStore } from "@/services/api/core/response.util";
 import { getRequestDictionary } from "@/i18n/request-dictionary.util";
@@ -12,17 +12,9 @@ export async function POST(request: NextRequest) {
     return noStore(
       apiFailure(401, API_ERROR_CODE.SESSION_EXPIRED, copy.unauthorized),
     );
-  const response = await fetch(
-    `${(process.env.BACKEND_API_URL ?? "http://localhost:8000").replace(/\/+$/, "")}/api/v1/broadcasting/auth`,
-    {
-      method: "POST",
-      headers: bearerHeaders(token),
-      body: await request.text(),
-      cache: "no-store",
-    },
-  );
-  return new NextResponse(await response.text(), {
-    status: response.status,
+  const result = await authorizeBroadcastChannel(token, await request.text());
+  return new NextResponse(result.body, {
+    status: result.status,
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-store",

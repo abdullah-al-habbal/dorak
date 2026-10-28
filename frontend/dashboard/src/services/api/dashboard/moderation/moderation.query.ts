@@ -4,12 +4,10 @@ import {
   mapDisputedReview,
   mapExchangeRate,
 } from "@/services/api/dashboard/moderation/moderation.mapper.util";
-import type {
-  IActivationReasonForm,
-  IDisputedReview,
-  IExchangeRate,
-  IResolveDisputeForm,
-} from "@/services/api/dashboard/moderation/types/imoderation.types";
+import type { IActivationReasonForm } from "@/services/api/dashboard/moderation/types/iactivation-reason-form.types";
+import type { IDisputedReview } from "@/services/api/dashboard/moderation/types/idisputed-review.types";
+import type { IExchangeRate } from "@/services/api/dashboard/moderation/types/iexchange-rate.types";
+import type { IResolveDisputeForm } from "@/services/api/dashboard/moderation/types/iresolve-dispute-form.types";
 import type { IDashboardPage } from "@/services/api/dashboard/shared/types/idashboard-page.types";
 
 export const disputedReviewsQueryKey = (page: number) =>

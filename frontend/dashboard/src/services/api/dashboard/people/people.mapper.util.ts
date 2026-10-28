@@ -3,12 +3,11 @@ import {
   APPLICATION_STATUSES,
   JOB_POSTING_STATUSES,
 } from "@/services/api/dashboard/people/people.constant";
-import type {
-  IAffiliation,
-  IApplication,
-  IJobPosting,
-} from "@/services/api/dashboard/people/types/ipeople.types";
+import type { IAffiliation } from "@/services/api/dashboard/people/types/iaffiliation.types";
+import type { IApplication } from "@/services/api/dashboard/people/types/iapplication.types";
+import type { IJobPosting } from "@/services/api/dashboard/people/types/ijob-posting.types";
 import { isRecord } from "@/utils/guards.util";
+import type { IInviteAffiliation } from "@/services/api/dashboard/people/types/iinvite-affiliation.types";
 
 type Wire = Record<string, unknown>;
 
@@ -88,5 +87,14 @@ export function mapApplication(wire: unknown): IApplication {
       .filter((name): name is string => name !== null),
     portfolioCount: portfolio.length,
     createdAt: text(item.created_at),
+  };
+}
+
+export function invitePayload(invite: IInviteAffiliation) {
+  return {
+    barber_id: invite.barberId,
+    ...(invite.commissionRate === null
+      ? {}
+      : { commission_rate: invite.commissionRate }),
   };
 }

@@ -17,7 +17,7 @@ import { notifySuccess } from "@/services/api/core/notifications";
 import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
 import { activationBody } from "@/services/api/dashboard/moderation/moderation.query";
 import { activationReasonFormSchema } from "@/services/api/dashboard/moderation/schemas/moderation.schema";
-import type { IActivationReasonForm } from "@/services/api/dashboard/moderation/types/imoderation.types";
+import type { IActivationReasonForm } from "@/services/api/dashboard/moderation/types/iactivation-reason-form.types";
 import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

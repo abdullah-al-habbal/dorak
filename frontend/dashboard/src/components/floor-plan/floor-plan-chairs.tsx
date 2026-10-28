@@ -2,7 +2,7 @@
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
-import type { IFloorPlanChair } from "@/services/api/dashboard/floor-plan/types/ifloor-plan.types";
+import type { IFloorPlanChair } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-chair.types";
 import Link from "next/link";
 
 interface IFloorPlanChairsProps {

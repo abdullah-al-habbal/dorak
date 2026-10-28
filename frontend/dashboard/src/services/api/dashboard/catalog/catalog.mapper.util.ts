@@ -3,12 +3,11 @@ import {
   CatalogItemSchema,
   CatalogTagSchema,
 } from "@/services/api/dashboard/catalog/schemas/catalog.schema";
-import type {
-  ICatalogCategory,
-  ICatalogItem,
-  ICatalogTag,
-} from "@/services/api/dashboard/catalog/types/icatalog.types";
+import type { ICatalogCategory } from "@/services/api/dashboard/catalog/types/icatalog-category.types";
+import type { ICatalogItem } from "@/services/api/dashboard/catalog/types/icatalog-item.types";
+import type { ICatalogTag } from "@/services/api/dashboard/catalog/types/icatalog-tag.types";
 import { isRecord } from "@/utils/guards.util";
+import type { ICatalogItemForm } from "@/services/api/dashboard/catalog/types/icatalog-item-form.types";
 
 type Wire = Record<string, unknown>;
 
@@ -75,4 +74,21 @@ export function mapCatalogTag(wire: unknown): ICatalogTag {
     name: localized(item.name),
     group: text(item.group) || null,
   });
+}
+
+export function catalogItemPayload(form: ICatalogItemForm) {
+  return {
+    category_id: form.categoryId,
+    name: { en: form.nameEn, ar: form.nameAr },
+    description: {
+      en: form.descriptionEn === "" ? null : form.descriptionEn,
+      ar: form.descriptionAr === "" ? null : form.descriptionAr,
+    },
+    slug: form.slug,
+    is_active: form.isActive,
+    default_duration_minutes: form.durationMinutes,
+    face_shapes: form.faceShapes,
+    hair_textures: form.hairTextures,
+    tag_ids: form.tagIds,
+  };
 }

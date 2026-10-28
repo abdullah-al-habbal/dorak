@@ -16,11 +16,9 @@ import {
 } from "@/services/api/dashboard/monetization/monetization.constant";
 import { fromMinorUnits } from "@/services/api/dashboard/monetization/monetization.util";
 import { planFormSchema } from "@/services/api/dashboard/monetization/schemas/monetization.schema";
-import type {
-  IPlan,
-  IPlanForm,
-  IPlanFormInput,
-} from "@/services/api/dashboard/monetization/types/imonetization.types";
+import type { IPlan } from "@/services/api/dashboard/monetization/types/iplan.types";
+import type { IPlanForm } from "@/services/api/dashboard/monetization/types/iplan-form.types";
+import type { IPlanFormInput } from "@/services/api/dashboard/monetization/types/iplan-form-input.types";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
