@@ -3,7 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Modules\Commission\Http\Actions\Admin\DestroyCommissionRuleAction;
+use Modules\Commission\Http\Actions\Admin\ListCommissionEntriesAction;
+use Modules\Commission\Http\Actions\Admin\ListCommissionRulesAction;
+use Modules\Commission\Http\Actions\Admin\StoreCommissionRuleAction;
+use Modules\Commission\Http\Actions\Admin\UpdateCommissionRuleAction;
 use Modules\Currency\Http\Actions\Shared\ListExchangeRatesAction;
+use Modules\Dashboard\Http\Actions\Analytics\ShowPlatformAnalyticsAction;
 use Modules\Dashboard\Http\Actions\Branches\DestroyBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchesAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchReviewsAction;
@@ -68,6 +74,17 @@ use Modules\Dashboard\Http\Middleware\DashboardAdminAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardBrandAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOperationsAuthorizationMiddleware;
+use Modules\Payment\Http\Actions\Admin\DestroyPaymentGatewayAction;
+use Modules\Payment\Http\Actions\Admin\ListPaymentGatewaysAction;
+use Modules\Payment\Http\Actions\Admin\SetPaymentGatewayActiveAction;
+use Modules\Payment\Http\Actions\Admin\StorePaymentGatewayAction;
+use Modules\Payment\Http\Actions\Admin\UpdatePaymentGatewayAction;
+use Modules\Payout\Http\Actions\Admin\ApprovePayoutAction;
+use Modules\Payout\Http\Actions\Admin\CancelPayoutAction;
+use Modules\Payout\Http\Actions\Admin\GeneratePayoutsAction;
+use Modules\Payout\Http\Actions\Admin\ListPayoutsAction;
+use Modules\Payout\Http\Actions\Admin\MarkPaidPayoutAction;
+use Modules\Payout\Http\Actions\Admin\ShowPayoutAction;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 use Modules\Review\Http\Actions\Admin\ListAdminReviewsAction;
 use Modules\Review\Http\Actions\Admin\ResolveReviewDisputeAction;
@@ -77,6 +94,15 @@ use Modules\ServiceCatalog\Http\Actions\Client\UpdateCatalogItemAction;
 use Modules\ServiceCatalog\Http\Actions\Shared\ListCatalogItemsAction;
 use Modules\ServiceCatalog\Http\Actions\Shared\ListCategoriesAction;
 use Modules\ServiceCatalog\Http\Actions\Shared\ShowCatalogItemAction;
+use Modules\Subscription\Http\Actions\Admin\AssignBrandSubscriptionAction;
+use Modules\Subscription\Http\Actions\Admin\DestroySubscriptionPlanAction;
+use Modules\Subscription\Http\Actions\Admin\ListBrandSubscriptionsAction;
+use Modules\Subscription\Http\Actions\Admin\ListPlanFeatureKeysAction;
+use Modules\Subscription\Http\Actions\Admin\ListSubscriptionPlansAction;
+use Modules\Subscription\Http\Actions\Admin\ShowSubscriptionPlanAction;
+use Modules\Subscription\Http\Actions\Admin\StoreSubscriptionPlanAction;
+use Modules\Subscription\Http\Actions\Admin\UpdateBrandSubscriptionStatusAction;
+use Modules\Subscription\Http\Actions\Admin\UpdateSubscriptionPlanAction;
 
 Route::prefix('dashboard')->group(function (): void {
     Route::post('/login', DashboardLoginAction::class)->middleware('throttle:5,1');
@@ -105,6 +131,37 @@ Route::prefix('dashboard')->group(function (): void {
         Route::delete('/catalog-items/{id}', DeleteCatalogItemAction::class);
         Route::get('/catalog-categories', ListCategoriesAction::class);
         Route::get('/catalog-tags', ListCatalogTagsAction::class);
+
+        Route::get('/subscription-plans', ListSubscriptionPlansAction::class);
+        Route::post('/subscription-plans', StoreSubscriptionPlanAction::class);
+        Route::get('/subscription-plans/{plan}', ShowSubscriptionPlanAction::class);
+        Route::put('/subscription-plans/{plan}', UpdateSubscriptionPlanAction::class);
+        Route::delete('/subscription-plans/{plan}', DestroySubscriptionPlanAction::class);
+        Route::get('/plan-feature-keys', ListPlanFeatureKeysAction::class);
+        Route::get('/subscriptions', ListBrandSubscriptionsAction::class);
+        Route::post('/subscriptions', AssignBrandSubscriptionAction::class);
+        Route::patch('/subscriptions/{subscription}/status', UpdateBrandSubscriptionStatusAction::class);
+
+        Route::get('/payment-gateways', ListPaymentGatewaysAction::class);
+        Route::post('/payment-gateways', StorePaymentGatewayAction::class);
+        Route::put('/payment-gateways/{gateway}', UpdatePaymentGatewayAction::class);
+        Route::patch('/payment-gateways/{gateway}/active', SetPaymentGatewayActiveAction::class);
+        Route::delete('/payment-gateways/{gateway}', DestroyPaymentGatewayAction::class);
+
+        Route::get('/commission-rules', ListCommissionRulesAction::class);
+        Route::post('/commission-rules', StoreCommissionRuleAction::class);
+        Route::put('/commission-rules/{rule}', UpdateCommissionRuleAction::class);
+        Route::delete('/commission-rules/{rule}', DestroyCommissionRuleAction::class);
+        Route::get('/commission-entries', ListCommissionEntriesAction::class);
+
+        Route::get('/payouts', ListPayoutsAction::class);
+        Route::post('/payouts/generate', GeneratePayoutsAction::class);
+        Route::get('/payouts/{payout}', ShowPayoutAction::class);
+        Route::patch('/payouts/{payout}/approve', ApprovePayoutAction::class);
+        Route::patch('/payouts/{payout}/mark-paid', MarkPaidPayoutAction::class);
+        Route::patch('/payouts/{payout}/cancel', CancelPayoutAction::class);
+
+        Route::get('/analytics/overview', ShowPlatformAnalyticsAction::class);
     });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBrandAuthorizationMiddleware::class])->group(function (): void {

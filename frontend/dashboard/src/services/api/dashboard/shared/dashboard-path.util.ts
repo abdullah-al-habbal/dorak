@@ -59,6 +59,32 @@ const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
   { method: "POST", path: /^admin\/catalog-items$/ },
   { method: "PUT", path: /^admin\/catalog-items\/[A-Za-z0-9-]+$/ },
   { method: "DELETE", path: /^admin\/catalog-items\/[A-Za-z0-9-]+$/ },
+  {
+    method: "GET",
+    path: /^admin\/(subscription-plans|subscriptions|payment-gateways|commission-rules|commission-entries|payouts)$/,
+  },
+  {
+    method: "POST",
+    path: /^admin\/(subscription-plans|subscriptions|payment-gateways|commission-rules)$/,
+  },
+  { method: "GET", path: /^admin\/(plan-feature-keys|analytics\/overview)$/ },
+  { method: "POST", path: /^admin\/payouts\/generate$/ },
+  { method: "GET", path: /^admin\/payouts\/[A-Za-z0-9-]+$/ },
+  {
+    method: "PATCH",
+    path: /^admin\/payouts\/[A-Za-z0-9-]+\/(approve|mark-paid|cancel)$/,
+  },
+  { method: "PATCH", path: /^admin\/subscriptions\/[A-Za-z0-9-]+\/status$/ },
+  { method: "PATCH", path: /^admin\/payment-gateways\/[A-Za-z0-9-]+\/active$/ },
+  { method: "GET", path: /^admin\/subscription-plans\/[A-Za-z0-9-]+$/ },
+  {
+    method: "PUT",
+    path: /^admin\/(subscription-plans|payment-gateways|commission-rules)\/[A-Za-z0-9-]+$/,
+  },
+  {
+    method: "DELETE",
+    path: /^admin\/(subscription-plans|payment-gateways|commission-rules)\/[A-Za-z0-9-]+$/,
+  },
   { method: "GET", path: /^brands$/ },
   { method: "POST", path: /^brands$/ },
   { method: "GET", path: /^brands\/[A-Za-z0-9-]+$/ },
@@ -83,16 +109,22 @@ export function isDashboardRouteAllowed(
   );
 }
 
+const PAGED_ADMIN_LISTS = [
+  "reviews",
+  "catalog-items",
+  "subscription-plans",
+  "subscriptions",
+  "commission-rules",
+  "commission-entries",
+  "payouts",
+];
 const PAGED_BRANCH_SUBRESOURCES = ["reviews", "affiliations", "job-postings"];
 
 /** Whether a proxied list response carries backend pagination meta. */
 export function isDashboardPagedPath(path: readonly string[]): boolean {
   if (path.length === 1) return path[0] !== "overview";
   if (path[0] === "admin")
-    return (
-      path.length === 2 &&
-      (path[1] === "reviews" || path[1] === "catalog-items")
-    );
+    return path.length === 2 && PAGED_ADMIN_LISTS.includes(path[1] ?? "");
   if (path[0] !== "branches") return false;
   if (path.length === 3)
     return PAGED_BRANCH_SUBRESOURCES.includes(path[2] ?? "");

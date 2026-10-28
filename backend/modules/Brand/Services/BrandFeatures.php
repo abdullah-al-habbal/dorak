@@ -33,6 +33,12 @@ final class BrandFeatures
         self::JOB_BOARD => JobBoardFeature::class,
     ];
 
+    /** @return list<string> every flag a plan may switch on (single source: FEATURES). */
+    public static function keys(): array
+    {
+        return array_keys(self::FEATURES);
+    }
+
     public function enabled(BrandModel $brand, string $feature): bool
     {
         return Feature::for($brand)->active(self::FEATURES[$feature]);

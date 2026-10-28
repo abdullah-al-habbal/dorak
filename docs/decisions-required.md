@@ -157,10 +157,10 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
   requirement sets a window.
 
 ## [Task 65: Specify and Build Monetization and Analytics APIs](tasks/task-65-monetization-analytics-apis.md)
-- [ ] [NEEDSHIL] Decision required: payment provider (none, or a named PSP), and whether payments are online at booking time or offline. No code in the repo, no doc, and no prior session decision answers this — it is a real vendor/business choice, recorded as an open question in `backend/docs/features/BE-20-monetization.md` for the product owner.
-- [ ] [NEEDSHIL] Decision required: subscription plans and how they map to the brand feature flags from Task 50 (`multi_branch`, `job_board`). Same as above — pricing/plan design, not inferable from the codebase.
-- [ ] [NEEDSHIL] Decision required: commission model (percent or fixed; per booking or per period) and payout schedule. Same as above.
-- [ ] `backend/docs/features/BE-20-monetization.md` exists (drafted) and records all three decisions as open `[NEEDSHIL]` items; it is not yet marked approved by the product owner, so Phase B (migrations/modules/routes for subscriptions, commissions, payouts, analytics) has not been started — only the non-blocked AC (real revenue on `OverviewAction`, from completed-booking service prices) shipped.
+- [x] Decision resolved (payment provider and timing): pay-at-salon stays the default v1 flow, but as a row in a dynamic `payment_gateways` table (`is_active`, `is_default`, encrypted JSON `config`), so local wallets (Syriatel Cash, Cash Plus) and online PSPs can be added from the Admin Dashboard later without touching core logic. Booking creation is not wired to gateways yet and mobile is unchanged.
+- [x] Decision resolved (plans and feature flags): dynamic `subscription_plans` and `plan_features` tables; admins create, edit and delete plans, set price and interval, and map flags to any plan from the Admin UI. No static plan enums. The mappable flags are the code-defined registry `BrandFeatures::keys()` (`multi_branch`, `job_board`).
+- [x] Decision resolved (commission and payouts): a dynamic `commission_rules` engine (percent as basis points, or flat in minor units; global default with brand and branch overrides) plus `commission_entries` and `payouts` for settlement, managed manually or semi-automatically (drafts from `payouts:generate`, admin approval) in the Admin Dashboard.
+- [x] `backend/docs/features/BE-20-monetization.md` approved by the product owner on 2026-10-29 with the zero-hardcoding rule; Phase B built.
 
 ## [Task 67: Conform Modules to Context Namespacing](tasks/task-67-context-namespacing-conformance.md)
 - [ ] Decision required: whether Core base classes and middleware are exempt from BE-18. If they are, document the exemption in BE-18.

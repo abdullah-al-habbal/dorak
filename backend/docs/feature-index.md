@@ -413,3 +413,9 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - `POST /api/v1/affiliations/{affiliation}/terminate` (barber) and `POST /api/v1/branch/affiliations/{affiliation}/terminate` (branch) end an active affiliation, clearing `chairs.barber_id` for that barber at that branch. Future bookings are left untouched.
 - Deleting a brand terminates every pending/active affiliation pointing at the brand or any of its branches before the cascade.
 - The affiliation status enum was renamed `accepted` → `active` (enum, Filament UI, and a backfill migration) to match the product spec's vocabulary.
+
+### Dynamic Monetization (Task 65)
+- Tables: `subscription_plans`, `plan_features`, `brand_subscriptions`, `payment_gateways`, `commission_rules`, `commission_entries`, `payouts`. Money is integer minor units plus `currency_id`; statuses are Backed Enums.
+- Routes (dashboard `admin` group, platform admins only): `subscription-plans` CRUD, `plan-feature-keys`, `subscriptions` (list/assign/`PATCH {id}/status`), `payment-gateways` CRUD + `PATCH {id}/active`, `commission-rules` CRUD, `commission-entries`, `payouts` (list/show/`POST generate`/`PATCH {id}/approve|mark-paid|cancel`), `analytics/overview`.
+- Assigning a plan sets the brand's Pennant flags from `plan_features`; commission accrues when a booking completes; `php artisan payouts:generate` creates draft payouts.
+- Tests: `tests/Feature/Monetization/*`. Spec: `docs/features/BE-20-monetization.md`.

@@ -41,6 +41,27 @@ export const DashboardEndpoints = {
   adminReviews: `${BASE}/admin/reviews`,
   adminReviewResolve: (id: string) =>
     `${BASE}/admin/reviews/${encodeURIComponent(id)}/resolve`,
+  adminPlans: `${BASE}/admin/subscription-plans`,
+  adminPlan: (id: string) =>
+    `${BASE}/admin/subscription-plans/${encodeURIComponent(id)}`,
+  adminPlanFeatureKeys: `${BASE}/admin/plan-feature-keys`,
+  adminSubscriptions: `${BASE}/admin/subscriptions`,
+  adminSubscriptionStatus: (id: string) =>
+    `${BASE}/admin/subscriptions/${encodeURIComponent(id)}/status`,
+  adminGateways: `${BASE}/admin/payment-gateways`,
+  adminGateway: (id: string) =>
+    `${BASE}/admin/payment-gateways/${encodeURIComponent(id)}`,
+  adminGatewayActive: (id: string) =>
+    `${BASE}/admin/payment-gateways/${encodeURIComponent(id)}/active`,
+  adminCommissionRules: `${BASE}/admin/commission-rules`,
+  adminCommissionRule: (id: string) =>
+    `${BASE}/admin/commission-rules/${encodeURIComponent(id)}`,
+  adminCommissionEntries: `${BASE}/admin/commission-entries`,
+  adminPayouts: `${BASE}/admin/payouts`,
+  adminPayoutsGenerate: `${BASE}/admin/payouts/generate`,
+  adminPayoutAction: (id: string, action: string) =>
+    `${BASE}/admin/payouts/${encodeURIComponent(id)}/${action}`,
+  adminAnalytics: `${BASE}/admin/analytics/overview`,
   catalogItems: `${BASE}/admin/catalog-items`,
   catalogItem: (id: string) =>
     `${BASE}/admin/catalog-items/${encodeURIComponent(id)}`,

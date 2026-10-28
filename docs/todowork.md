@@ -103,7 +103,7 @@ codeanchors:
 
 ## Phase 11 — Admin & Platform (P2–P3)
 - [x] Task 64: Add Status Change Audit Trail -> [Spec](tasks/task-64-status-audit-trail.md)
-- [ ] Task 65: Specify and Build Monetization and Analytics APIs -> [Spec](tasks/task-65-monetization-analytics-apis.md) — [NEEDSHIL] spec drafted (`backend/docs/features/BE-20-monetization.md`), pending product-owner approval before Phase B; non-blocked AC (real `OverviewAction` revenue) shipped.
+- [x] Task 65: Specify and Build Monetization and Analytics APIs -> [Spec](tasks/task-65-monetization-analytics-apis.md) — approved with a dynamic zero-hardcoding model (plans, gateways, commission rules, payouts, analytics); backend modules, dashboard admin pages and tests shipped.
 
 ## Phase 12 — Backend Hygiene (P3)
 - [x] Task 66: Remove Orphan Action Classes -> [Spec](tasks/task-66-orphan-actions-cleanup.md)

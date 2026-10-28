@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Payment\Http\Requests\Admin;
+
+use Illuminate\Validation\Rule;
+use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Payment\CQRS\Command\SavePaymentGatewayCommand;
+
+final class SavePaymentGatewayRequest extends BaseApiFormRequest
+{
+    /** @return array<string, array<int, mixed>> */
+    public function rules(): array
+    {
+        $gateway = $this->route('gateway');
+
+        return [
+            'code' => ['required', 'string', 'max:64', 'regex:/^[a-z0-9_]+$/', Rule::unique('payment_gateways', 'code')->ignore($gateway)],
+            'name.en' => ['required', 'string', 'max:255'],
+            'name.ar' => ['required', 'string', 'max:255'],
+            'driver' => ['required', 'string', 'max:64'],
+            'is_active' => ['required', 'boolean'],
+            'is_default' => ['sometimes', 'boolean'],
+            'config' => ['sometimes', 'nullable', 'array'],
+            'sort_order' => ['sometimes', 'integer', 'min:0'],
+        ];
+    }
+
+    public function toCommand(): SavePaymentGatewayCommand
+    {
+        $data = $this->validated();
+
+        return new SavePaymentGatewayCommand(
+            code: $data['code'],
+            name: $data['name'],
+            driver: $data['driver'],
+            isActive: (bool) $data['is_active'],
+            isDefault: (bool) ($data['is_default'] ?? false),
+            config: $data['config'] ?? null,
+            sortOrder: (int) ($data['sort_order'] ?? 0),
+        );
+    }
+}

@@ -1,0 +1,178 @@
+<?php
+
+declare(strict_types=1);
+
+use Modules\Admin\Models\AdminModel;
+use Modules\Brand\Models\BrandModel;
+use Modules\Brand\Services\BrandFeatures;
+use Modules\Currency\Models\CurrencyModel;
+use Modules\Subscription\Enums\SubscriptionStatus;
+use Modules\Subscription\Models\BrandSubscriptionModel;
+use Modules\Subscription\Models\SubscriptionPlanModel;
+
+function planPayload(array $overrides = []): array
+{
+    return [
+        'name' => ['en' => 'Pro', 'ar' => 'محترف'],
+        'description' => ['en' => 'For growing brands', 'ar' => 'للعلامات النامية'],
+        'price_minor' => 4900,
+        'currency_id' => CurrencyModel::factory()->create()->id,
+        'interval_unit' => 'month',
+        'interval_count' => 1,
+        'is_active' => true,
+        'feature_keys' => [BrandFeatures::MULTI_BRANCH],
+        ...$overrides,
+    ];
+}
+
+describe('Subscription plans', function (): void {
+    beforeEach(function (): void {
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+    });
+
+    it('creates a plan with money as minor units and mapped features', function (): void {
+        $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload())
+            ->assertCreated()
+            ->assertJsonPath('data.price_minor', 4900)
+            ->assertJsonPath('data.interval_unit', 'month')
+            ->assertJsonPath('data.feature_keys', [BrandFeatures::MULTI_BRANCH]);
+
+        expect(SubscriptionPlanModel::query()->count())->toBe(1);
+        $this->assertDatabaseHas('plan_features', ['feature_key' => BrandFeatures::MULTI_BRANCH]);
+    });
+
+    it('validates fields, interval unit and unknown feature keys', function (): void {
+        $this->postJson('/api/v1/dashboard/admin/subscription-plans', [])->assertUnprocessable();
+        $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload(['interval_unit' => 'fortnight']))->assertUnprocessable();
+        $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload(['feature_keys' => ['teleport']]))->assertUnprocessable();
+        $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload(['price_minor' => -1]))->assertUnprocessable();
+    });
+
+    it('updates a plan and re-maps its features', function (): void {
+        $plan = SubscriptionPlanModel::factory()->create();
+        $plan->features()->create(['feature_key' => BrandFeatures::MULTI_BRANCH]);
+
+        $this->putJson("/api/v1/dashboard/admin/subscription-plans/{$plan->id}", planPayload([
+            'price_minor' => 9900,
+            'currency_id' => $plan->currency_id,
+            'feature_keys' => [BrandFeatures::JOB_BOARD],
+        ]))
+            ->assertOk()
+            ->assertJsonPath('data.price_minor', 9900)
+            ->assertJsonPath('data.feature_keys', [BrandFeatures::JOB_BOARD]);
+
+        $this->assertDatabaseMissing('plan_features', ['plan_id' => $plan->id, 'feature_key' => BrandFeatures::MULTI_BRANCH]);
+    });
+
+    it('lists and shows plans', function (): void {
+        $plan = SubscriptionPlanModel::factory()->create();
+
+        $this->getJson('/api/v1/dashboard/admin/subscription-plans')
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('meta.pagination.total', 1);
+        $this->getJson("/api/v1/dashboard/admin/subscription-plans/{$plan->id}")
+            ->assertOk()
+            ->assertJsonPath('data.id', $plan->id);
+    });
+
+    it('deletes an unused plan but keeps one with live subscriptions', function (): void {
+        $unused = SubscriptionPlanModel::factory()->create();
+        $used = SubscriptionPlanModel::factory()->create();
+        BrandSubscriptionModel::factory()->create(['plan_id' => $used->id]);
+
+        $this->deleteJson("/api/v1/dashboard/admin/subscription-plans/{$unused->id}")->assertOk();
+        $this->deleteJson("/api/v1/dashboard/admin/subscription-plans/{$used->id}")->assertConflict();
+
+        expect(SubscriptionPlanModel::query()->count())->toBe(1);
+    });
+
+    it('lists the feature keys a plan may map to', function (): void {
+        $this->getJson('/api/v1/dashboard/admin/plan-feature-keys')
+            ->assertOk()
+            ->assertJsonPath('data', BrandFeatures::keys());
+    });
+});
+
+describe('Brand subscriptions', function (): void {
+    beforeEach(function (): void {
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+    });
+
+    it('assigning a plan switches the mapped flags on and every other flag off', function (): void {
+        $brand = BrandModel::factory()->create();
+        app(BrandFeatures::class)->set($brand, [BrandFeatures::JOB_BOARD => true]);
+        $plan = SubscriptionPlanModel::factory()->create();
+        $plan->features()->create(['feature_key' => BrandFeatures::MULTI_BRANCH]);
+
+        $this->postJson('/api/v1/dashboard/admin/subscriptions', ['brand_id' => $brand->id, 'plan_id' => $plan->id])
+            ->assertCreated()
+            ->assertJsonPath('data.status', 'active');
+
+        expect(app(BrandFeatures::class)->all($brand))->toBe([
+            BrandFeatures::MULTI_BRANCH => true,
+            BrandFeatures::JOB_BOARD => false,
+        ]);
+    });
+
+    it('replaces the previous live subscription of the brand', function (): void {
+        $brand = BrandModel::factory()->create();
+        $old = BrandSubscriptionModel::factory()->create(['brand_id' => $brand->id]);
+        $plan = SubscriptionPlanModel::factory()->create();
+
+        $this->postJson('/api/v1/dashboard/admin/subscriptions', ['brand_id' => $brand->id, 'plan_id' => $plan->id])->assertCreated();
+
+        expect($old->fresh()->status)->toBe(SubscriptionStatus::Canceled);
+    });
+
+    it('refuses an inactive or deleted plan and unknown brand', function (): void {
+        $brand = BrandModel::factory()->create();
+        $inactive = SubscriptionPlanModel::factory()->create(['is_active' => false]);
+        $deleted = SubscriptionPlanModel::factory()->create();
+        $deleted->delete();
+
+        $this->postJson('/api/v1/dashboard/admin/subscriptions', ['brand_id' => $brand->id, 'plan_id' => $inactive->id])->assertUnprocessable();
+        $this->postJson('/api/v1/dashboard/admin/subscriptions', ['brand_id' => $brand->id, 'plan_id' => $deleted->id])->assertUnprocessable();
+        $this->postJson('/api/v1/dashboard/admin/subscriptions', ['brand_id' => fake()->uuid(), 'plan_id' => $inactive->id])->assertUnprocessable();
+    });
+
+    it('lists subscriptions, optionally by brand', function (): void {
+        $mine = BrandSubscriptionModel::factory()->create();
+        BrandSubscriptionModel::factory()->create();
+
+        $this->getJson('/api/v1/dashboard/admin/subscriptions')->assertOk()->assertJsonCount(2, 'data');
+        $this->getJson("/api/v1/dashboard/admin/subscriptions?brand_id={$mine->brand_id}")->assertOk()->assertJsonCount(1, 'data');
+    });
+
+    it('moves through the state machine and revokes features on cancel', function (): void {
+        $brand = BrandModel::factory()->create();
+        $plan = SubscriptionPlanModel::factory()->create();
+        $plan->features()->create(['feature_key' => BrandFeatures::MULTI_BRANCH]);
+        $subscription = BrandSubscriptionModel::factory()->create(['brand_id' => $brand->id, 'plan_id' => $plan->id]);
+        $url = "/api/v1/dashboard/admin/subscriptions/{$subscription->id}/status";
+
+        $this->patchJson($url, ['status' => 'past_due'])->assertOk()->assertJsonPath('data.status', 'past_due');
+        $this->patchJson($url, ['status' => 'active'])->assertOk();
+        $this->patchJson($url, ['status' => 'pending'])->assertConflict();
+        $this->patchJson($url, ['status' => 'bogus'])->assertUnprocessable();
+
+        app(BrandFeatures::class)->set($brand, [BrandFeatures::MULTI_BRANCH => true]);
+        $this->patchJson($url, ['status' => 'canceled'])->assertOk()->assertJsonPath('data.status', 'canceled');
+
+        expect(app(BrandFeatures::class)->enabled($brand, BrandFeatures::MULTI_BRANCH))->toBeFalse();
+        $this->patchJson($url, ['status' => 'active'])->assertConflict();
+    });
+
+    it('activates a pending subscription and grants its features', function (): void {
+        $brand = BrandModel::factory()->create();
+        $plan = SubscriptionPlanModel::factory()->create();
+        $plan->features()->create(['feature_key' => BrandFeatures::JOB_BOARD]);
+        $subscription = BrandSubscriptionModel::factory()->create([
+            'brand_id' => $brand->id, 'plan_id' => $plan->id, 'status' => SubscriptionStatus::Pending,
+        ]);
+
+        $this->patchJson("/api/v1/dashboard/admin/subscriptions/{$subscription->id}/status", ['status' => 'active'])->assertOk();
+
+        expect(app(BrandFeatures::class)->enabled($brand, BrandFeatures::JOB_BOARD))->toBeTrue();
+    });
+});

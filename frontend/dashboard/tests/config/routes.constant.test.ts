@@ -55,6 +55,20 @@ describe("route constants", () => {
     expect(ROUTES.operations.brands("owner")).toBe("/owner/brands");
     expect(ROUTES.admin.disputedReviews).toBe("/admin/disputed-reviews");
     expect(ROUTES.admin.exchangeRates).toBe("/admin/exchange-rates");
+    expect(ROUTES.admin.subscriptionPlans).toBe("/admin/subscription-plans");
+    expect(ROUTES.admin.subscriptions).toBe("/admin/subscriptions");
+    expect(ROUTES.admin.paymentGateways).toBe("/admin/payment-gateways");
+    expect(ROUTES.admin.commissionRules).toBe("/admin/commission-rules");
+    expect(ROUTES.admin.payouts).toBe("/admin/payouts");
+    expect(ROUTES.admin.analytics).toBe("/admin/analytics");
+    [
+      "subscriptionPlans",
+      "subscriptions",
+      "paymentGateways",
+      "commissionRules",
+      "payouts",
+      "platformAnalytics",
+    ].forEach((key) => expect(actorsFor(key as never)).toEqual(["admin"]));
   });
 
   it("keeps the operations destinations away from barbers", () => {

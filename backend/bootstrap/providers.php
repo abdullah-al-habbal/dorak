@@ -21,6 +21,7 @@ use Modules\ClientFaceProfile\Providers\ClientFaceProfileServiceProvider;
 use Modules\ClientHistory\Providers\ClientHistoryServiceProvider;
 use Modules\ClientInteraction\Providers\ClientInteractionServiceProvider;
 use Modules\ClientRecommendation\Providers\ClientRecommendationServiceProvider;
+use Modules\Commission\Providers\CommissionServiceProvider;
 use Modules\Core\Providers\ApplicationServiceProvider;
 use Modules\Core\Providers\Filament\AdminPanelProvider;
 use Modules\Core\Providers\Filament\BarberPanelProvider;
@@ -33,9 +34,12 @@ use Modules\Language\Providers\LanguageServiceProvider;
 use Modules\Marketing\Providers\MarketingServiceProvider;
 use Modules\OfferedService\Providers\OfferedServiceServiceProvider;
 use Modules\Onboarding\Providers\OnboardingServiceProvider;
+use Modules\Payment\Providers\PaymentServiceProvider;
+use Modules\Payout\Providers\PayoutServiceProvider;
 use Modules\Preference\Providers\PreferenceServiceProvider;
 use Modules\Review\Providers\ReviewServiceProvider;
 use Modules\ServiceCatalog\Providers\ServiceCatalogServiceProvider;
+use Modules\Subscription\Providers\SubscriptionServiceProvider;
 use Modules\Website\Providers\WebsiteServiceProvider;
 
 return [
@@ -73,4 +77,8 @@ return [
     WebsiteServiceProvider::class,
     ExploreServiceProvider::class,
     AuditServiceProvider::class,
+    SubscriptionServiceProvider::class,
+    PaymentServiceProvider::class,
+    CommissionServiceProvider::class,
+    PayoutServiceProvider::class,
 ];
