@@ -34,13 +34,19 @@ The client auth layer has local-only or dead paths:
 - Delete `home.screen.dart` (dead code), keeping the legacy redirect.
 
 ## Acceptance Criteria
-- [ ] Bloc test: a wrong recovery code yields a field error and no `codeAccepted` signal; a correct code yields `codeAccepted` after a mocked `200`.
-- [ ] `RecoveryRestarted` is either dispatched by a UI action (widget test) or removed (grep finds no references).
-- [ ] Session bloc test: cold-start restore produces a non-null `client` with name/phone from the mocked `GET client/profile`.
-- [ ] Profile bloc test: changing the phone triggers OTP send and does not call `PATCH client/profile` until verify succeeds.
-- [ ] `HomeScreen` is removed and `/home` still redirects to `/discover` (router test).
-- [ ] `melos run analyze` and `melos run test` pass.
+- [x] Bloc test: a wrong recovery code yields a field error and no `codeAccepted` signal; a correct code yields `codeAccepted` after a mocked `200`.
+- [x] `RecoveryRestarted` is either dispatched by a UI action (widget test) or removed (grep finds no references).
+- [x] Session bloc test: cold-start restore produces a non-null `client` with name/phone from the mocked `GET client/profile`.
+- [x] Profile bloc test: changing the phone triggers OTP send and does not call `PATCH client/profile` until verify succeeds.
+- [x] `HomeScreen` is removed and `/home` still redirects to `/discover` (router test).
+- [x] `melos run analyze` and `melos run test` pass.
 
 ## Out of Scope
 - Backend OTP and recovery endpoints (Tasks 34, 35).
 - Delete account UI (Task 80).
+
+## Implemented
+- **Already shipped by earlier tasks (verified, unchanged):** server-side recovery code check (`verifyResetCode`, Task 35), session restore fetching `GET client/profile` (Task 32), `AuthRepository.socialLogin`, and the phone OTP flow before persisting (Task 34; `profile_completion`/`profile_edit` blocs emit `phoneToVerify`).
+- **`RecoveryRestarted` removed** (event, handler, test) because "resend" already re-requests the code and no "start over" action exists. Stale mobile docs corrected.
+- **`HomeScreen` deleted**; `/home` still redirects to `/discover` (new router test in `app_gate_test.dart`).
+- **[NEEDSHIL] Social login buttons not built.** The repository method exists, but which providers/SDKs (Google/Apple) ship in v1 is an open product decision (`docs/decisions-required.md`).

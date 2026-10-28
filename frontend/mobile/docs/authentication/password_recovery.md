@@ -89,9 +89,8 @@ register and verify never use, against `state_management/conventions.md` rule 5.
 | Event | Effect |
 |---|---|
 | `RecoveryCodeRequested(email)` | `POST /client/forgot-password`; stores the email; `codeSent` |
-| `RecoveryCodeEntered(code)` | local only; stores the code; `codeAccepted` |
+| `RecoveryCodeEntered(code)` | `POST /client/forgot-password/verify`; stores the code; `codeAccepted` on 200, field error on 422 |
 | `RecoveryPasswordSubmitted(password, passwordConfirmation)` | `POST /client/reset-password` with the carried email + code; `passwordReset` |
-| `RecoveryRestarted()` | clears email and code — dispatched when the flow is entered from login |
 | `RecoverySignalAcknowledged()` | the router consumed the signal |
 
 `RecoverySignal` is one-shot (`none | codeSent | codeAccepted | passwordReset`),

@@ -197,7 +197,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [ ] [NEEDSHIL] History media: the client uploads with photo type `after`; a before/after/reference picker is a product choice.
 
 ## [Task 81: Clean Up Client Auth Flows](tasks/task-81-client-auth-cleanup.md)
-- [ ] Social login: add provider buttons in `login_content.widget.dart` behind a config flag. **Decision required:** which providers and SDKs (Google/Apple) ship in v1.
+- [ ] [NEEDSHIL] Social login: add provider buttons in `login_content.widget.dart` behind a config flag. **Decision required:** which providers and SDKs (Google/Apple) ship in v1.
 
 ## [Task 83: Build Stylist App Features](tasks/task-83-stylist-app-features.md)
 - [ ] **Decision required:** whether barbers may self activate/deactivate (`barbers/{barber}/activate|deactivate`). Task 53 defines the semantics; do not build UI for it until then.

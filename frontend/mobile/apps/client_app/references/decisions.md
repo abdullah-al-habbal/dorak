@@ -12,7 +12,7 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 | `_dismissForever` writes in `try`, navigates in `finally` | A failed preference write must not strand the user on the tour. |
 | `onSkipForNow: () => router.go(AppRoutes.home)` with no flag write | Deliberate: `Skip for now` ≠ `Don't show again`. |
 | Register never calls `sendEmailVerification()` | The backend owns the OTP lifecycle — registration dispatches `SendEmailVerificationCodeJob` (after commit, async), so the client has no post-register call to guard. Resend on the verify screen is the only client-side retry. |
-| `onForgotPassword` opens 011 and dispatches `RecoveryRestarted()` first | The parameter is still nullable so the link *can* be hidden, but 011–014 now exist. Restarting clears any email/code left from an abandoned attempt. |
+| `onForgotPassword` opens 011 | The parameter is still nullable so the link *can* be hidden. The unused `RecoveryRestarted` event was removed in Task 81; each `RecoveryCodeRequested` overwrites the carried email and code. |
 | A 422 from forgot-password advances anyway | `exists:clients,email` would otherwise leak which addresses have accounts. Neutral copy; only transport failures block. |
 | "Email", not the design's "Email or Phone" | The backend accepts email only — the design label would guarantee a 422. |
 | `AuthEntryBackground` reused by login and sign-up | Deliberately not duplicated into a second blobs widget. |

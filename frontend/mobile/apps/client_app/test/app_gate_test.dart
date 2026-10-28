@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:client_app/src/core/navigation/app_routes.entity.dart';
 import 'package:client_app/src/features/auth/auth_entry.screen.dart';
 import 'package:client_app/src/features/discovery/discovery.screen.dart'
     as discovery_feed;
@@ -148,6 +149,31 @@ void main() {
     );
 
     expect(storage.token, 'stored-token');
+    expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
+  });
+
+  testWidgets('legacy /home redirects to the discover tab', (tester) async {
+    final pair = sessionPair(repository, InMemoryTokenStorage('stored-token'));
+    final router = buildRouter(
+      session: pair.session,
+      auth: pair.auth,
+      preferences: InMemoryAppPreferences(),
+      apiClient: fakeApiClient(),
+    );
+    tester.view.physicalSize = const Size(1290, 2796);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(routerHarness(router));
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pumpAndSettle();
+    router.router.go(AppRoutes.home);
+    await tester.pumpAndSettle();
+
+    expect(
+      router.router.routeInformationProvider.value.uri.path,
+      AppRoutes.discover,
+    );
     expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
   });
 }

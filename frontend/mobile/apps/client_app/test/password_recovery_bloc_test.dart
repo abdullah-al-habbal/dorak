@@ -199,24 +199,6 @@ void main() {
 
   group('lifecycle', () {
     blocTest<PasswordRecoveryBloc, PasswordRecoveryState>(
-      'restarting discards the carried email and code',
-      build: bloc,
-      act: (bloc) async {
-        bloc.add(const RecoveryCodeRequested('sara@example.com'));
-        await pumpEventQueue();
-        bloc.add(const RecoveryCodeEntered('123456'));
-        await pumpEventQueue();
-        bloc.add(RecoveryRestarted());
-        await pumpEventQueue();
-      },
-      verify: (bloc) {
-        expect(bloc.state.email, isEmpty);
-        expect(bloc.state.code, isEmpty);
-        expect(bloc.state, PasswordRecoveryState());
-      },
-    );
-
-    blocTest<PasswordRecoveryBloc, PasswordRecoveryState>(
       'acknowledging clears the signal but keeps the carried values',
       build: bloc,
       act: (bloc) async {

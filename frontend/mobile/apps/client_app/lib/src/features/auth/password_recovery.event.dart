@@ -38,6 +38,4 @@ class RecoveryPasswordSubmitted extends PasswordRecoveryEvent {
   List<Object?> get props => [password, passwordConfirmation];
 }
 
-class RecoveryRestarted extends PasswordRecoveryEvent {}
-
 class RecoverySignalAcknowledged extends PasswordRecoveryEvent {}

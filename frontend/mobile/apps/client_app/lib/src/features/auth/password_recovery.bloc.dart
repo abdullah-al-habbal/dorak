@@ -11,7 +11,6 @@ class PasswordRecoveryBloc
     on<RecoveryCodeRequested>(_onCodeRequested);
     on<RecoveryCodeEntered>(_onCodeEntered);
     on<RecoveryPasswordSubmitted>(_onPasswordSubmitted);
-    on<RecoveryRestarted>(_onRestarted);
     on<RecoverySignalAcknowledged>(_onSignalAcknowledged);
   }
 
@@ -113,13 +112,6 @@ class PasswordRecoveryBloc
     emit(
       state.copyWith(isSubmitting: false, signal: RecoverySignal.passwordReset),
     );
-  }
-
-  void _onRestarted(
-    RecoveryRestarted event,
-    Emitter<PasswordRecoveryState> emit,
-  ) {
-    emit(PasswordRecoveryState());
   }
 
   void _onSignalAcknowledged(
