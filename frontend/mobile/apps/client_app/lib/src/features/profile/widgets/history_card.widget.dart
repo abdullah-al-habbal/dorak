@@ -15,6 +15,9 @@ class HistoryCard extends StatelessWidget {
     required this.rebookLabel,
     required this.isRebooking,
     required this.onRebook,
+    required this.attachLabel,
+    required this.isAttaching,
+    required this.onAttachPhoto,
   });
 
   final ServiceHistoryDto item;
@@ -23,6 +26,9 @@ class HistoryCard extends StatelessWidget {
   final String rebookLabel;
   final bool isRebooking;
   final VoidCallback onRebook;
+  final String attachLabel;
+  final bool isAttaching;
+  final VoidCallback onAttachPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +77,10 @@ class HistoryCard extends StatelessWidget {
                 ),
             ],
           ),
+          if (isAttaching)
+            const AppLoader.inline()
+          else
+            TextButton(onPressed: onAttachPhoto, child: Text(attachLabel)),
           if (metaLines.isNotEmpty) ...[
             const SizedBox(height: DorakDimensions.spacingSmall / 2),
             Text(

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class DiscoveryFilters extends Equatable {
   const DiscoveryFilters({
-    this.universe = 'men',
+    this.universe = defaultUniverse,
     this.radius = 10,
     this.perPage = 20,
     this.availableNow,
@@ -12,6 +12,8 @@ class DiscoveryFilters extends Equatable {
     this.catalogItemIds = const [],
     this.query = '',
   });
+
+  static const String defaultUniverse = 'men';
 
   final String universe;
   final double radius;

@@ -12,6 +12,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     on<HistoryRetryRequested>(_onRetry);
     on<HistoryRebookRequested>(_onRebook);
     on<HistoryRebookAcknowledged>(_onRebookAcknowledged);
+    on<HistoryMediaAttachRequested>(_onMediaAttach);
   }
 
   final HistoryRepository _repository;
@@ -74,6 +75,32 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     } catch (error) {
       if (emit.isDone) return;
       emit(state.copyWith(clearRebooking: true, rebookError: error));
+    }
+  }
+
+  Future<void> _onMediaAttach(
+    HistoryMediaAttachRequested event,
+    Emitter<HistoryState> emit,
+  ) async {
+    if (state.attachingId != null) return;
+    emit(
+      state.copyWith(
+        attachingId: event.id,
+        mediaAttached: false,
+        clearMediaError: true,
+      ),
+    );
+    try {
+      await _repository.attachMedia(
+        historyId: event.id,
+        photoPath: event.photoPath,
+        photoType: event.photoType,
+      );
+      if (emit.isDone) return;
+      emit(state.copyWith(clearAttaching: true, mediaAttached: true));
+    } catch (error) {
+      if (emit.isDone) return;
+      emit(state.copyWith(clearAttaching: true, mediaError: error));
     }
   }
 

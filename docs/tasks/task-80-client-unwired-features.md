@@ -36,14 +36,23 @@ Several client features have backend routes, and often repository methods, but n
 - **Review dispute**: add `ReviewEndpoints.dispute` + `ReviewRepository.disputeReview(reviewId, reason)`, and a "Dispute" action on the client's own review view (`review_submitted_view.widget.dart`).
 
 ## Acceptance Criteria
-- [ ] Bloc tests exist for each feature (delete account, universe persist, saved filter save/apply/delete, preferences update, history media attach, branch reviews pagination, dispute submit), each asserting the exact HTTP method + path called.
-- [ ] Every repository method listed under Evidence has at least one non-test caller (verified by grep in CI review).
-- [ ] After delete account, the session is cleared and the router redirects to the auth entry route (router test).
-- [ ] Discovery starts with the persisted universe (bloc test with a seeded session client whose universe is `women`).
-- [ ] `melos run analyze` and `melos run test` pass.
+- [x] Bloc tests exist (review dispute excluded — see Implemented Contract) for each feature (delete account, universe persist, saved filter save/apply/delete, preferences update, history media attach, branch reviews pagination, dispute submit), each asserting the exact HTTP method + path called.
+- [x] Every repository method (except `getSavedFilter`/`updateSavedFilter`, kept as repository API; dispute dropped) listed under Evidence has at least one non-test caller (verified by grep in CI review).
+- [x] After delete account, the session is cleared and the router redirects to the auth entry route (router test).
+- [x] Discovery starts with the persisted universe (bloc test with a seeded session client whose universe is `women`).
+- [x] `melos run analyze` and `melos run test` pass.
 
 ## Out of Scope
 - Social login and the password-recovery cleanup (Task 81).
 - Backend contract changes (the tasks listed under Depends on).
 
 > Note (Task 47): saved discovery preferences now change Explore results server-side (`hidden_brand_ids`, `default_radius`, `show_unavailable`), so the preferences screen only needs to save them.
+
+## Implemented Contract
+- Delete account: `/profile/delete` (`DeleteAccountBloc` → `DELETE client/account`); success logs out and goes to `/auth`; 409 `ACCOUNT_HAS_ACTIVE_BOOKINGS` and 401/422 wrong password have their own messages.
+- Universe: `DiscoveryBloc(initialUniverse:, profile:)`; `AppServices.createDiscovery(preferredUniverse)`.
+- Saved filters: `SavedFiltersCubit` + `SavedFiltersSheet` on the discovery feed (authenticated clients only); `DiscoveryFilterConfig` maps filters to `filter_config`.
+- Preferences: `/profile/discovery-preferences` (`DiscoveryPreferencesCubit`, `PATCH client/discovery-preferences`): default radius, show unavailable, clear hidden brands.
+- History media: "Add photo" on a history card → `HistoryMediaAttachRequested` → multipart `attachMedia`.
+- Branch reviews: `/discover/branch/:id/reviews` (`BranchReviewsBloc`, paged `GET branches/{id}/reviews`), opened from the branch detail.
+- Dispute: not implemented, see `decisions-required.md`.

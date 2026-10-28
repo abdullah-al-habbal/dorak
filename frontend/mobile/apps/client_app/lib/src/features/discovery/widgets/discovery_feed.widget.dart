@@ -10,6 +10,9 @@ import 'package:client_app/src/core/formatting/rating_label.entity.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.event.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
+import 'package:client_app/src/features/discovery/discovery_filter_config.entity.dart';
+import 'package:client_app/src/features/discovery/saved_filters.bloc.dart';
+import 'package:client_app/src/features/discovery/widgets/saved_filters_sheet.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_barber_card.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_filter_bar.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_result_card.widget.dart';
@@ -22,6 +25,8 @@ class DiscoveryFeed extends StatefulWidget {
     required this.onBookNow,
     required this.onViewDetails,
     this.onViewStylist,
+    this.savedFilters,
+    this.onPreferences,
   });
 
   final DiscoveryBloc bloc;
@@ -29,6 +34,8 @@ class DiscoveryFeed extends StatefulWidget {
   final VoidCallback onBookNow;
   final ValueChanged<String>? onViewDetails;
   final ValueChanged<String>? onViewStylist;
+  final SavedFiltersCubit? savedFilters;
+  final VoidCallback? onPreferences;
 
   @override
   State<DiscoveryFeed> createState() => _DiscoveryFeedState();
@@ -38,6 +45,27 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
   StreamSubscription<DiscoveryState>? _refreshSubscription;
 
   List<ExploreSearchItemDto> get _items => widget.state.page.items;
+
+  void _openSavedFilters(SavedFiltersCubit cubit) {
+    final filters = widget.state.filters;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) => SavedFiltersSheet(
+        cubit: cubit,
+        onApply: (saved) {
+          widget.bloc.add(
+            DiscoveryFiltersChanged(
+              DiscoveryFilterConfig.fromConfig(saved.filterConfig, filters),
+            ),
+          );
+          Navigator.of(sheetContext).pop();
+        },
+        onSaveCurrent: (name) =>
+            cubit.save(name, DiscoveryFilterConfig.toConfig(filters)),
+      ),
+    );
+  }
 
   Future<void> _refresh() async {
     await _refreshSubscription?.cancel();
@@ -179,6 +207,11 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
                 actionLabel: l10n.actionRetry,
                 onAction: () => bloc.add(const DiscoveryRetryRequested()),
               ),
+            ),
+          if (widget.savedFilters case final cubit?)
+            SecondaryButton(
+              label: l10n.savedFiltersTitle,
+              onPressed: () => _openSavedFilters(cubit),
             ),
           DiscoveryFilterBar(
             selectedUniverse: filters.universe,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,9 +13,17 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     this._locationProvider, {
     this._catalog,
     this._cache,
+    this._profile,
+    String? initialUniverse,
     DateTime Function()? clock,
   }) : _now = clock ?? DateTime.now,
-       super(DiscoveryState()) {
+       super(
+         DiscoveryState(
+           filters: DiscoveryFilters(
+             universe: initialUniverse ?? DiscoveryFilters.defaultUniverse,
+           ),
+         ),
+       ) {
     on<DiscoveryLocationRequested>(_onLocationRequested);
     on<DiscoveryUniverseChanged>(_onUniverseChanged);
     on<DiscoveryFiltersChanged>(_onFiltersChanged);
@@ -31,6 +41,7 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
   final LocationProvider _locationProvider;
   final FeedCache? _cache;
   final ServiceCatalogRepository? _catalog;
+  final ProfileRepository? _profile;
   final DateTime Function() _now;
 
   Future<void> _onLocationRequested(
@@ -88,7 +99,16 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
         isStale: false,
       ),
     );
+    unawaited(_persistUniverse(event.universe));
     await _loadFirst(emit);
+  }
+
+  Future<void> _persistUniverse(String universe) async {
+    final profile = _profile;
+    if (profile == null) return;
+    try {
+      await profile.updatePreferredUniverse(universe);
+    } catch (_) {}
   }
 
   Future<void> _onSearchChanged(

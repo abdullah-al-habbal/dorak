@@ -723,6 +723,88 @@ class AppLocalizationsAr extends AppLocalizations {
       'الحجز متاح للمصففين العاملين في صالون';
 
   @override
+  String get deleteAccountTitle => 'حذف الحساب';
+
+  @override
+  String get deleteAccountWarning =>
+      'حذف الحساب نهائي. أدخل كلمة المرور للتأكيد.';
+
+  @override
+  String get deleteAccountPassword => 'كلمة المرور';
+
+  @override
+  String get deleteAccountConfirm => 'احذف حسابي';
+
+  @override
+  String get deleteAccountWrongPassword => 'كلمة المرور غير صحيحة.';
+
+  @override
+  String get deleteAccountActiveBookings =>
+      'ألغِ حجوزاتك القادمة أو أنهها قبل حذف حسابك.';
+
+  @override
+  String get historyAttachPhotoAction => 'أضف صورة';
+
+  @override
+  String get historyAttachPhotoFailed => 'تعذّرت إضافة الصورة. حاول مرة أخرى.';
+
+  @override
+  String get branchReviewsTitle => 'التقييمات';
+
+  @override
+  String get branchReviewsEmptyTitle => 'لا توجد تقييمات بعد';
+
+  @override
+  String get branchReviewsEmptyMessage => 'ستظهر هنا تقييمات العملاء.';
+
+  @override
+  String get branchReviewsLoadMore => 'عرض المزيد';
+
+  @override
+  String get savedFiltersTitle => 'المرشحات المحفوظة';
+
+  @override
+  String get savedFiltersEmpty => 'لا توجد مرشحات محفوظة بعد.';
+
+  @override
+  String get savedFiltersDelete => 'حذف المرشح';
+
+  @override
+  String get savedFiltersNameLabel => 'اسم المرشح';
+
+  @override
+  String get savedFiltersSaveCurrent => 'احفظ المرشحات الحالية';
+
+  @override
+  String get discoveryPreferencesTitle => 'تفضيلات الاستكشاف';
+
+  @override
+  String get discoveryPreferencesShowUnavailable => 'إظهار النتائج غير المتاحة';
+
+  @override
+  String get discoveryPreferencesClearHidden => 'إظهار العلامات المخفية مجددًا';
+
+  @override
+  String discoveryPreferencesRadius(int km) {
+    return 'نطاق البحث الافتراضي: $km كم';
+  }
+
+  @override
+  String discoveryPreferencesHiddenBrands(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count علامة مخفية',
+      many: '$count علامة مخفية',
+      few: '$count علامات مخفية',
+      two: 'علامتان مخفيتان',
+      one: 'علامة واحدة مخفية',
+      zero: 'لا علامات مخفية',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get stylistNoServicesMessage => 'لا توجد خدمات بعد.';
 
   @override

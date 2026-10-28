@@ -727,6 +727,86 @@ class AppLocalizationsEn extends AppLocalizations {
       'Booking is available for stylists who work at a shop';
 
   @override
+  String get deleteAccountTitle => 'Delete account';
+
+  @override
+  String get deleteAccountWarning =>
+      'Deleting your account is permanent. Enter your password to confirm.';
+
+  @override
+  String get deleteAccountPassword => 'Password';
+
+  @override
+  String get deleteAccountConfirm => 'Delete my account';
+
+  @override
+  String get deleteAccountWrongPassword => 'The password is incorrect.';
+
+  @override
+  String get deleteAccountActiveBookings =>
+      'Cancel or finish your upcoming bookings before deleting your account.';
+
+  @override
+  String get historyAttachPhotoAction => 'Add photo';
+
+  @override
+  String get historyAttachPhotoFailed =>
+      'The photo could not be added. Try again.';
+
+  @override
+  String get branchReviewsTitle => 'Reviews';
+
+  @override
+  String get branchReviewsEmptyTitle => 'No reviews yet';
+
+  @override
+  String get branchReviewsEmptyMessage =>
+      'Reviews from clients will appear here.';
+
+  @override
+  String get branchReviewsLoadMore => 'Load more';
+
+  @override
+  String get savedFiltersTitle => 'Saved filters';
+
+  @override
+  String get savedFiltersEmpty => 'No saved filters yet.';
+
+  @override
+  String get savedFiltersDelete => 'Delete filter';
+
+  @override
+  String get savedFiltersNameLabel => 'Filter name';
+
+  @override
+  String get savedFiltersSaveCurrent => 'Save current filters';
+
+  @override
+  String get discoveryPreferencesTitle => 'Discovery preferences';
+
+  @override
+  String get discoveryPreferencesShowUnavailable => 'Show unavailable results';
+
+  @override
+  String get discoveryPreferencesClearHidden => 'Show hidden brands again';
+
+  @override
+  String discoveryPreferencesRadius(int km) {
+    return 'Default search radius: $km km';
+  }
+
+  @override
+  String discoveryPreferencesHiddenBrands(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hidden brands',
+      one: '1 hidden brand',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get stylistNoServicesMessage => 'No services listed yet.';
 
   @override

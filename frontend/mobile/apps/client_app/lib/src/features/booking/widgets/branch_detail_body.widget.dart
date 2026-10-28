@@ -23,11 +23,13 @@ class BranchDetailBody extends StatelessWidget {
     required this.state,
     required this.onBarberSelected,
     required this.onFavorite,
+    required this.onViewReviews,
   });
   final BranchDetailBloc bloc;
   final BranchDetailState state;
   final void Function(String barberId) onBarberSelected;
   final void Function(String favorableId, String favorableType) onFavorite;
+  final VoidCallback onViewReviews;
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +52,17 @@ class BranchDetailBody extends StatelessWidget {
           onFavorite: onFavorite,
         ),
         BranchStorefront(detail: detail),
+        SecondaryButton(
+          label: l10n.branchReviewsTitle,
+          onPressed: onViewReviews,
+        ),
         const SizedBox(height: DorakDimensions.spacingLarge),
-        BookingModeSection(bloc: bloc, state: state, l10n: l10n, colors: colors),
+        BookingModeSection(
+          bloc: bloc,
+          state: state,
+          l10n: l10n,
+          colors: colors,
+        ),
         if (detail.barbers.isNotEmpty)
           BarberSection(
             bloc: bloc,
@@ -83,10 +94,11 @@ class BranchDetailBody extends StatelessWidget {
     );
   }
 
-  String _submitMessage(BuildContext context) => BranchBookingError.submitMessage(
-    AppLocalizations.of(context)!,
-    state.submitError,
-  );
+  String _submitMessage(BuildContext context) =>
+      BranchBookingError.submitMessage(
+        AppLocalizations.of(context)!,
+        state.submitError,
+      );
 
   Future<void> _pickDate(BuildContext context) async {
     final now = DateTime.now();

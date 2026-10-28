@@ -1400,6 +1400,138 @@ abstract class AppLocalizations {
   /// **'Booking is available for stylists who work at a shop'**
   String get stylistBookUnavailableHint;
 
+  /// Title and entry button for deleting the client account
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccountTitle;
+
+  /// Warning shown above the password field when deleting the account
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account is permanent. Enter your password to confirm.'**
+  String get deleteAccountWarning;
+
+  /// Password field label on the delete account screen
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get deleteAccountPassword;
+
+  /// Confirm button on the delete account screen
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account'**
+  String get deleteAccountConfirm;
+
+  /// Shown when the password for account deletion is wrong
+  ///
+  /// In en, this message translates to:
+  /// **'The password is incorrect.'**
+  String get deleteAccountWrongPassword;
+
+  /// Shown when account deletion is blocked by active bookings
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel or finish your upcoming bookings before deleting your account.'**
+  String get deleteAccountActiveBookings;
+
+  /// Button on a history entry that attaches a photo of the result
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get historyAttachPhotoAction;
+
+  /// Shown when attaching a photo to a history entry fails
+  ///
+  /// In en, this message translates to:
+  /// **'The photo could not be added. Try again.'**
+  String get historyAttachPhotoFailed;
+
+  /// Title of the branch reviews screen and the button that opens it
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get branchReviewsTitle;
+
+  /// Title shown when a branch has no reviews
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get branchReviewsEmptyTitle;
+
+  /// Message shown when a branch has no reviews
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews from clients will appear here.'**
+  String get branchReviewsEmptyMessage;
+
+  /// Button that loads the next page of branch reviews
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get branchReviewsLoadMore;
+
+  /// Title of the saved filters sheet and the button that opens it
+  ///
+  /// In en, this message translates to:
+  /// **'Saved filters'**
+  String get savedFiltersTitle;
+
+  /// Shown when the client has no saved filters
+  ///
+  /// In en, this message translates to:
+  /// **'No saved filters yet.'**
+  String get savedFiltersEmpty;
+
+  /// Tooltip for deleting a saved filter
+  ///
+  /// In en, this message translates to:
+  /// **'Delete filter'**
+  String get savedFiltersDelete;
+
+  /// Label of the field naming a new saved filter
+  ///
+  /// In en, this message translates to:
+  /// **'Filter name'**
+  String get savedFiltersNameLabel;
+
+  /// Button that saves the active discovery filters
+  ///
+  /// In en, this message translates to:
+  /// **'Save current filters'**
+  String get savedFiltersSaveCurrent;
+
+  /// Title of the discovery preferences screen and its profile entry
+  ///
+  /// In en, this message translates to:
+  /// **'Discovery preferences'**
+  String get discoveryPreferencesTitle;
+
+  /// Switch that includes unavailable shops and barbers in discovery
+  ///
+  /// In en, this message translates to:
+  /// **'Show unavailable results'**
+  String get discoveryPreferencesShowUnavailable;
+
+  /// Button that clears the hidden brands list
+  ///
+  /// In en, this message translates to:
+  /// **'Show hidden brands again'**
+  String get discoveryPreferencesClearHidden;
+
+  /// Label above the default radius slider
+  ///
+  /// In en, this message translates to:
+  /// **'Default search radius: {km} km'**
+  String discoveryPreferencesRadius(int km);
+
+  /// Count of brands hidden from discovery
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 hidden brand} other{{count} hidden brands}}'**
+  String discoveryPreferencesHiddenBrands(int count);
+
   /// Shown when a stylist has no services
   ///
   /// In en, this message translates to:

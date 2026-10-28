@@ -5,9 +5,12 @@ import 'package:client_app/src/features/auth/password_recovery.bloc.dart';
 import 'package:client_app/src/features/booking/booking.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
+import 'package:client_app/src/features/discovery/saved_filters.bloc.dart';
+import 'package:client_app/src/features/profile/discovery_preferences.bloc.dart';
 import 'package:client_app/src/features/notifications/notifications.bloc.dart';
 import 'package:client_app/src/features/onboarding/onboarding_config.bloc.dart';
 import 'package:client_app/src/features/profile/avatar.bloc.dart';
+import 'package:client_app/src/features/profile/delete_account.bloc.dart';
 import 'package:client_app/src/features/profile/face_analysis.bloc.dart';
 import 'package:client_app/src/features/profile/favorites.bloc.dart';
 import 'package:client_app/src/features/profile/history.bloc.dart';
@@ -15,6 +18,7 @@ import 'package:client_app/src/features/profile/phone_verification.bloc.dart';
 import 'package:client_app/src/features/profile/profile_completion.bloc.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
 import 'package:client_app/src/features/review/review_submit.bloc.dart';
+import 'package:client_app/src/features/reviews/branch_reviews.bloc.dart';
 
 /// Injectable feature construction seam for [AppRouter].
 ///
@@ -28,6 +32,9 @@ class AppServices {
     required this.createPasswordRecovery,
     required this.createDiscovery,
     required this.createFavorites,
+    required this.createBranchReviews,
+    required this.createSavedFilters,
+    required this.createDiscoveryPreferences,
     required this.createBranchDetail,
     required this.createStylistProfile,
     required this.createBookings,
@@ -37,6 +44,7 @@ class AppServices {
     required this.createFaceAnalysis,
     required this.createAvatar,
     required this.createChangePassword,
+    required this.createDeleteAccount,
     required this.createProfileRepository,
     required this.createNotifications,
     required this.createCurrencyRepository,
@@ -55,13 +63,21 @@ class AppServices {
     createPhoneVerification: (phone) =>
         PhoneVerificationBloc(DioProfileRepository(apiClient), phone),
     createPasswordRecovery: () => PasswordRecoveryBloc(authRepository),
-    createDiscovery: () => DiscoveryBloc(
+    createDiscovery: (universe) => DiscoveryBloc(
       DioExploreRepository(apiClient),
       const GeolocatorLocationProvider(),
       cache: feedCache,
       catalog: DioServiceCatalogRepository(apiClient),
+      profile: DioProfileRepository(apiClient),
+      initialUniverse: universe,
     ),
     createFavorites: () => FavoritesBloc(DioFavoriteRepository(apiClient)),
+    createBranchReviews: () =>
+        BranchReviewsBloc(DioReviewRepository(apiClient)),
+    createSavedFilters: () =>
+        SavedFiltersCubit(DioClientInteractionRepository(apiClient)),
+    createDiscoveryPreferences: () =>
+        DiscoveryPreferencesCubit(DioClientInteractionRepository(apiClient)),
     createBranchDetail: () => BranchDetailBloc(
       DioExploreRepository(apiClient),
       DioBranchRepository(apiClient),
@@ -83,6 +99,7 @@ class AppServices {
     ),
     createAvatar: () => AvatarBloc(DioProfileRepository(apiClient)),
     createChangePassword: () => ChangePasswordBloc(authRepository),
+    createDeleteAccount: () => DeleteAccountBloc(authRepository),
     createProfileRepository: () => DioProfileRepository(apiClient),
     createNotifications: () =>
         NotificationsBloc(DioNotificationRepository(apiClient)),
@@ -93,8 +110,11 @@ class AppServices {
   final ProfileCompletionBloc Function() createProfileCompletion;
   final PhoneVerificationBloc Function(String phone) createPhoneVerification;
   final PasswordRecoveryBloc Function() createPasswordRecovery;
-  final DiscoveryBloc Function() createDiscovery;
+  final DiscoveryBloc Function(String? preferredUniverse) createDiscovery;
   final FavoritesBloc Function() createFavorites;
+  final BranchReviewsBloc Function() createBranchReviews;
+  final SavedFiltersCubit Function() createSavedFilters;
+  final DiscoveryPreferencesCubit Function() createDiscoveryPreferences;
   final BranchDetailBloc Function() createBranchDetail;
   final StylistProfileBloc Function() createStylistProfile;
   final BookingBloc Function() createBookings;
@@ -104,6 +124,7 @@ class AppServices {
   final FaceAnalysisBloc Function() createFaceAnalysis;
   final AvatarBloc Function() createAvatar;
   final ChangePasswordBloc Function() createChangePassword;
+  final DeleteAccountBloc Function() createDeleteAccount;
   final ProfileRepository Function() createProfileRepository;
   final NotificationsBloc Function() createNotifications;
   final CurrencyRepository Function() createCurrencyRepository;

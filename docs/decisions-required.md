@@ -189,6 +189,13 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Book from the stylist profile: **Resolved** — a shop barber opens the existing branch booking route pre-filled with `barberId` and `serviceIds` (query parameters), reusing `BranchDetailBloc`; the booking is barber-only (`branch_id` + `barber_id`, no chair).
 - [ ] [NEEDSHIL] Freelancer-only barbers (no branch workplace) have no booking entry yet: the CTA is disabled with a hint. Needs a product decision on a dedicated at-home booking screen for freelancers, since `BranchDetailBloc` requires a branch.
 
+## [Task 80: Wire Unwired Client Features](tasks/task-80-client-unwired-features.md)
+- [x] Review dispute: **Resolved** — dropped. Task 41 removed `POST client/reviews/{review}/dispute` (only the reviewed branch/barber disputes), so no client endpoint, repository method or UI is added (the spec's evidence row was stale).
+- [x] Universe: **Resolved** — `DiscoveryBloc` seeds from the session client's `preferred_universe` (default `men`) and persists a toggle best-effort through `PATCH client/preferred-universe`; a failed save never blocks the feed.
+- [x] Saved filters apply: **Resolved** — applying uses the listed `filter_config` directly (mapped by `DiscoveryFilterConfig`); `getSavedFilter`/`updateSavedFilter` stay as repository API without an app caller.
+- [ ] [NEEDSHIL] Preferences screen can clear hidden brands but cannot hide one: there is no brand-listing endpoint for clients to pick from. Needs a product/API decision on where a client hides a brand.
+- [ ] [NEEDSHIL] History media: the client uploads with photo type `after`; a before/after/reference picker is a product choice.
+
 ## [Task 81: Clean Up Client Auth Flows](tasks/task-81-client-auth-cleanup.md)
 - [ ] Social login: add provider buttons in `login_content.widget.dart` behind a config flag. **Decision required:** which providers and SDKs (Google/Apple) ship in v1.
 

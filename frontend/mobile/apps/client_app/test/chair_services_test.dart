@@ -30,6 +30,7 @@ void main() {
           onViewBookings: () {},
           onBarberSelected: (_) {},
           onFavorite: (_, _) {},
+          onViewReviews: (_) {},
         ),
       ),
     );

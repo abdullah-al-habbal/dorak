@@ -16,6 +16,7 @@ class BranchDetailScreen extends StatefulWidget {
     required this.branchId,
     required this.onLocaleToggle,
     required this.onViewBookings,
+    required this.onViewReviews,
     required this.onBarberSelected,
     required this.onFavorite,
     this.barberId,
@@ -28,6 +29,7 @@ class BranchDetailScreen extends StatefulWidget {
   final List<String> serviceIds;
   final VoidCallback onLocaleToggle;
   final VoidCallback onViewBookings;
+  final void Function(String branchId) onViewReviews;
   final void Function(String barberId) onBarberSelected;
   final void Function(String favorableId, String favorableType) onFavorite;
 
@@ -96,6 +98,7 @@ class _BranchDetailScreenState extends State<BranchDetailScreen> {
             state: state,
             onBarberSelected: widget.onBarberSelected,
             onFavorite: widget.onFavorite,
+            onViewReviews: () => widget.onViewReviews(widget.branchId),
           );
         },
       ),

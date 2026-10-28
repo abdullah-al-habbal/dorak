@@ -15,12 +15,14 @@ class HistoryFeed extends StatelessWidget {
     required this.localeCode,
     required this.onRetry,
     required this.onRebook,
+    required this.onAttachPhoto,
   });
 
   final HistoryState state;
   final String localeCode;
   final VoidCallback onRetry;
   final void Function(ServiceHistoryDto item) onRebook;
+  final void Function(ServiceHistoryDto item) onAttachPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +64,14 @@ class HistoryFeed extends StatelessWidget {
         ),
       );
     }
+    if (state.mediaError != null) {
+      children.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: DorakDimensions.spacingSmall),
+          child: StatusBanner(message: l10n.historyAttachPhotoFailed),
+        ),
+      );
+    }
     for (final item in state.page.items) {
       children.add(
         Padding(
@@ -76,6 +86,9 @@ class HistoryFeed extends StatelessWidget {
             rebookLabel: l10n.historyRebookAction,
             isRebooking: state.rebookingId == item.id,
             onRebook: () => onRebook(item),
+            attachLabel: l10n.historyAttachPhotoAction,
+            isAttaching: state.attachingId == item.id,
+            onAttachPhoto: () => onAttachPhoto(item),
           ),
         ),
       );
@@ -93,7 +106,9 @@ class HistoryFeed extends StatelessWidget {
     }
     if (state.page.hasFailedMore) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: DorakDimensions.spacingSmall),
+        padding: const EdgeInsets.symmetric(
+          vertical: DorakDimensions.spacingSmall,
+        ),
         child: StatusBanner(
           message: l10n.errorNetwork,
           actionLabel: l10n.actionRetry,

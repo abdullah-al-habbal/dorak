@@ -833,6 +833,94 @@
   "@stylistBookUnavailableHint": {
     "description": "Shown when a stylist has no shop workplace to book through"
   },
+  "deleteAccountTitle": "حذف الحساب",
+  "@deleteAccountTitle": {
+    "description": "Title and entry button for deleting the client account"
+  },
+  "deleteAccountWarning": "حذف الحساب نهائي. أدخل كلمة المرور للتأكيد.",
+  "@deleteAccountWarning": {
+    "description": "Warning shown above the password field when deleting the account"
+  },
+  "deleteAccountPassword": "كلمة المرور",
+  "@deleteAccountPassword": {
+    "description": "Password field label on the delete account screen"
+  },
+  "deleteAccountConfirm": "احذف حسابي",
+  "@deleteAccountConfirm": {
+    "description": "Confirm button on the delete account screen"
+  },
+  "deleteAccountWrongPassword": "كلمة المرور غير صحيحة.",
+  "@deleteAccountWrongPassword": {
+    "description": "Shown when the password for account deletion is wrong"
+  },
+  "deleteAccountActiveBookings": "ألغِ حجوزاتك القادمة أو أنهها قبل حذف حسابك.",
+  "@deleteAccountActiveBookings": {
+    "description": "Shown when account deletion is blocked by active bookings"
+  },
+  "historyAttachPhotoAction": "أضف صورة",
+  "@historyAttachPhotoAction": {
+    "description": "Button on a history entry that attaches a photo of the result"
+  },
+  "historyAttachPhotoFailed": "تعذّرت إضافة الصورة. حاول مرة أخرى.",
+  "@historyAttachPhotoFailed": {
+    "description": "Shown when attaching a photo to a history entry fails"
+  },
+  "branchReviewsTitle": "التقييمات",
+  "@branchReviewsTitle": {
+    "description": "Title of the branch reviews screen and the button that opens it"
+  },
+  "branchReviewsEmptyTitle": "لا توجد تقييمات بعد",
+  "@branchReviewsEmptyTitle": {
+    "description": "Title shown when a branch has no reviews"
+  },
+  "branchReviewsEmptyMessage": "ستظهر هنا تقييمات العملاء.",
+  "@branchReviewsEmptyMessage": {
+    "description": "Message shown when a branch has no reviews"
+  },
+  "branchReviewsLoadMore": "عرض المزيد",
+  "@branchReviewsLoadMore": {
+    "description": "Button that loads the next page of branch reviews"
+  },
+  "savedFiltersTitle": "المرشحات المحفوظة",
+  "@savedFiltersTitle": {
+    "description": "Title of the saved filters sheet and the button that opens it"
+  },
+  "savedFiltersEmpty": "لا توجد مرشحات محفوظة بعد.",
+  "@savedFiltersEmpty": {
+    "description": "Shown when the client has no saved filters"
+  },
+  "savedFiltersDelete": "حذف المرشح",
+  "@savedFiltersDelete": {
+    "description": "Tooltip for deleting a saved filter"
+  },
+  "savedFiltersNameLabel": "اسم المرشح",
+  "@savedFiltersNameLabel": {
+    "description": "Label of the field naming a new saved filter"
+  },
+  "savedFiltersSaveCurrent": "احفظ المرشحات الحالية",
+  "@savedFiltersSaveCurrent": {
+    "description": "Button that saves the active discovery filters"
+  },
+  "discoveryPreferencesTitle": "تفضيلات الاستكشاف",
+  "@discoveryPreferencesTitle": {
+    "description": "Title of the discovery preferences screen and its profile entry"
+  },
+  "discoveryPreferencesShowUnavailable": "إظهار النتائج غير المتاحة",
+  "@discoveryPreferencesShowUnavailable": {
+    "description": "Switch that includes unavailable shops and barbers in discovery"
+  },
+  "discoveryPreferencesClearHidden": "إظهار العلامات المخفية مجددًا",
+  "@discoveryPreferencesClearHidden": {
+    "description": "Button that clears the hidden brands list"
+  },
+  "discoveryPreferencesRadius": "نطاق البحث الافتراضي: {km} كم",
+  "@discoveryPreferencesRadius": {
+    "description": "Label above the default radius slider"
+  },
+  "discoveryPreferencesHiddenBrands": "{count, plural, =0{لا علامات مخفية} one{علامة واحدة مخفية} two{علامتان مخفيتان} few{{count} علامات مخفية} many{{count} علامة مخفية} other{{count} علامة مخفية}}",
+  "@discoveryPreferencesHiddenBrands": {
+    "description": "Count of brands hidden from discovery"
+  },
   "stylistNoServicesMessage": "لا توجد خدمات بعد.",
   "@stylistNoServicesMessage": {
     "description": "Shown when a stylist has no services"

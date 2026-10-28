@@ -4,6 +4,7 @@ import 'package:localization/localization.dart';
 
 import 'package:design_system/design_system.dart';
 
+import 'package:client_app/src/features/discovery/saved_filters.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.event.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
@@ -17,6 +18,8 @@ class DiscoveryView extends StatelessWidget {
     required this.onBookNow,
     required this.onViewDetails,
     this.onViewStylist,
+    this.savedFilters,
+    this.onPreferences,
   });
 
   final DiscoveryBloc bloc;
@@ -24,6 +27,8 @@ class DiscoveryView extends StatelessWidget {
   final VoidCallback onBookNow;
   final ValueChanged<String>? onViewDetails;
   final ValueChanged<String>? onViewStylist;
+  final SavedFiltersCubit? savedFilters;
+  final VoidCallback? onPreferences;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +81,8 @@ class DiscoveryView extends StatelessWidget {
             onBookNow: onBookNow,
             onViewDetails: onViewDetails,
             onViewStylist: onViewStylist,
+            savedFilters: savedFilters,
+            onPreferences: onPreferences,
           );
         },
       ),

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:client_app/src/features/profile/history.bloc.dart';
 import 'package:client_app/src/features/profile/history.event.dart';
 import 'package:client_app/src/features/profile/history.state.dart';
+import 'package:client_app/src/features/profile/history_media_type.entity.dart';
 
 import 'helpers/fakes.dart';
 
@@ -222,6 +223,46 @@ void main() {
       act: (bloc) => bloc.add(const HistoryRebookAcknowledged()),
       verify: (bloc) {
         expect(bloc.state.rebooked, isFalse);
+      },
+    );
+  });
+
+  group('HistoryMediaAttachRequested', () {
+    blocTest<HistoryBloc, HistoryState>(
+      'attaches the photo and reports success',
+      build: bloc,
+      act: (bloc) => bloc.add(
+        const HistoryMediaAttachRequested(
+          id: 'history-1',
+          photoPath: '/tmp/cut.jpg',
+          photoType: HistoryMediaType.after,
+        ),
+      ),
+      verify: (bloc) {
+        expect(repository.attachCalls, 1);
+        expect(repository.lastAttachId, 'history-1');
+        expect(repository.lastAttachPath, '/tmp/cut.jpg');
+        expect(repository.lastAttachType, 'after');
+        expect(bloc.state.mediaAttached, isTrue);
+        expect(bloc.state.attachingId, isNull);
+      },
+    );
+
+    blocTest<HistoryBloc, HistoryState>(
+      'a failed upload keeps the error and clears the busy flag',
+      build: bloc,
+      setUp: () => repository.attachError = offline(),
+      act: (bloc) => bloc.add(
+        const HistoryMediaAttachRequested(
+          id: 'history-1',
+          photoPath: '/tmp/cut.jpg',
+          photoType: HistoryMediaType.after,
+        ),
+      ),
+      verify: (bloc) {
+        expect(bloc.state.mediaError, isA<NetworkException>());
+        expect(bloc.state.mediaAttached, isFalse);
+        expect(bloc.state.attachingId, isNull);
       },
     );
   });

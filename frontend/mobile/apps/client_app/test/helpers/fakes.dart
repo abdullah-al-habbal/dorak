@@ -27,6 +27,7 @@ import 'package:client_app/src/features/profile/phone_verification.bloc.dart';
 import 'package:client_app/src/features/profile/profile_completion.bloc.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
 import 'package:client_app/src/features/review/review_submit.bloc.dart';
+import 'package:client_app/src/features/reviews/branch_reviews.bloc.dart';
 
 // todo: read this file, and I think is better to make a fakes folder and then move each block/class into a file for better code.
 Widget routerHarness(AppRouter appRouter) {
@@ -49,6 +50,7 @@ AppRouter buildRouter({
   AuthRepository? recoveryRepository,
   BookingBloc? bookings,
   BranchDetailBloc? branchDetail,
+  BranchReviewsBloc? branchReviews,
   ChangePasswordBloc? passwordChange,
   DiscoveryBloc? discovery,
   HistoryBloc? history,
@@ -76,6 +78,7 @@ AppRouter buildRouter({
     onboardingConfig: fakeOnboardingConfig(),
     bookings: bookings ?? fakeBookingBloc(),
     branchDetail: branchDetail ?? fakeBranchDetailBloc(),
+    branchReviews: branchReviews,
     passwordChange:
         passwordChange ??
         ChangePasswordBloc(recoveryRepository ?? FakeAuthRepository()),
@@ -239,7 +242,16 @@ class FakeAuthRepository implements AuthRepository {
   Map<String, String>? verifyResetCodePayload;
 
   @override
-  Future<void> deleteAccount(String password) async {}
+  Future<void> deleteAccount(String password) async {
+    deleteAccountCalls++;
+    lastDeletePassword = password;
+    final failure = deleteAccountError;
+    if (failure != null) throw failure;
+  }
+
+  Object? deleteAccountError;
+  int deleteAccountCalls = 0;
+  String? lastDeletePassword;
 
   /// Counts session re-probes. One `RestoreRequested` with a stored token calls
   /// `refreshToken` exactly once, so this is how a test observes a restore
@@ -868,10 +880,24 @@ class FakeHistoryRepository implements HistoryRepository {
     required String historyId,
     required String photoPath,
     required String photoType,
-  }) async => HistoryMediaDto(
-    id: 'media-1',
-    photoUrl: 'https://example.com/$photoPath',
-  );
+  }) async {
+    attachCalls++;
+    lastAttachId = historyId;
+    lastAttachPath = photoPath;
+    lastAttachType = photoType;
+    final failure = attachError;
+    if (failure != null) throw failure;
+    return HistoryMediaDto(
+      id: 'media-1',
+      photoUrl: 'https://example.com/$photoPath',
+    );
+  }
+
+  Object? attachError;
+  int attachCalls = 0;
+  String? lastAttachId;
+  String? lastAttachPath;
+  String? lastAttachType;
 
   @override
   Future<ServiceHistoryDto> updateEntry({
@@ -1204,6 +1230,7 @@ class FakeFaceProfileRepository implements FaceProfileRepository {
 class FakeProfileRepository implements ProfileRepository {
   Object? getProfileError;
   int getProfileCalls = 0;
+  String? lastUniverse;
 
   @override
   Future<ClientDto> getProfile() async {
@@ -1284,6 +1311,7 @@ class FakeProfileRepository implements ProfileRepository {
 
   @override
   Future<UniversePreferenceDto> updatePreferredUniverse(String universe) async {
+    lastUniverse = universe;
     return UniversePreferenceDto(preferredUniverse: universe);
   }
 
@@ -1453,6 +1481,18 @@ StylistProfileBloc fakeStylistProfileBloc({
   );
 }
 
+PaginatedData<ReviewDto> testReviewPage(List<ReviewDto> reviews) =>
+    PaginatedData(
+      data: reviews,
+      meta: PaginationMeta(
+        total: reviews.length,
+        count: reviews.length,
+        perPage: 20,
+        currentPage: 1,
+        totalPages: 1,
+      ),
+    );
+
 ReviewDto testReview({
   String id = 'review-1',
   int rating = 5,
@@ -1514,10 +1554,14 @@ class FakeReviewRepository implements ReviewRepository {
     int perPage = 20,
   }) async {
     reviewsCalls++;
+    lastReviewsPage = page;
     final failure = reviewsError;
     if (failure != null) throw failure;
-    return reviewsPage;
+    return page > 1 && moreReviewsPage != null ? moreReviewsPage! : reviewsPage;
   }
+
+  int lastReviewsPage = 0;
+  PaginatedData<ReviewDto>? moreReviewsPage;
 
   @override
   Future<PaginatedData<ReviewDto>> getBarberReviews(
@@ -1635,3 +1679,81 @@ class FakeNotificationRepository implements NotificationRepository {
 NotificationsBloc fakeNotificationsBloc([
   FakeNotificationRepository? repository,
 ]) => NotificationsBloc(repository ?? FakeNotificationRepository());
+
+class FakeClientInteractionRepository implements ClientInteractionRepository {
+  List<SavedFilterDto> filters = [];
+  DiscoveryPreferenceDto preferences = const DiscoveryPreferenceDto(
+    id: 'pref-1',
+    defaultRadius: 10,
+  );
+  Object? error;
+  String? lastSavedName;
+  Map<String, dynamic>? lastSavedConfig;
+  String? lastDeletedId;
+  Map<String, dynamic>? lastPreferenceValues;
+
+  @override
+  Future<List<SavedFilterDto>> getSavedFilters() async {
+    final failure = error;
+    if (failure != null) throw failure;
+    return filters;
+  }
+
+  @override
+  Future<SavedFilterDto> getSavedFilter(String id) async =>
+      filters.firstWhere((filter) => filter.id == id);
+
+  @override
+  Future<SavedFilterDto> saveFilter({
+    required String name,
+    required Map<String, dynamic> filterConfig,
+    String? id,
+  }) async {
+    final failure = error;
+    if (failure != null) throw failure;
+    lastSavedName = name;
+    lastSavedConfig = filterConfig;
+    return SavedFilterDto(
+      id: 'filter-${filters.length + 1}',
+      name: name,
+      filterConfig: filterConfig,
+    );
+  }
+
+  @override
+  Future<SavedFilterDto> updateSavedFilter({
+    required String id,
+    required String name,
+    required Map<String, dynamic> filterConfig,
+  }) => saveFilter(name: name, filterConfig: filterConfig, id: id);
+
+  @override
+  Future<void> deleteSavedFilter(String id) async {
+    final failure = error;
+    if (failure != null) throw failure;
+    lastDeletedId = id;
+  }
+
+  @override
+  Future<DiscoveryPreferenceDto> getDiscoveryPreferences() async {
+    final failure = error;
+    if (failure != null) throw failure;
+    return preferences;
+  }
+
+  @override
+  Future<DiscoveryPreferenceDto> updateDiscoveryPreferences(
+    Map<String, dynamic> values,
+  ) async {
+    final failure = error;
+    if (failure != null) throw failure;
+    lastPreferenceValues = values;
+    return DiscoveryPreferenceDto(
+      id: 'pref-1',
+      defaultRadius: (values['default_radius'] as num?)?.toDouble() ?? 10,
+      showUnavailable: values['show_unavailable'] as bool? ?? false,
+      hiddenBrandIds:
+          (values['hidden_brand_ids'] as List?)?.cast<String>() ?? const [],
+    );
+  }
+}

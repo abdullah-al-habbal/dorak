@@ -928,6 +928,104 @@
   "@stylistBookUnavailableHint": {
     "description": "Shown when a stylist has no shop workplace to book through"
   },
+  "deleteAccountTitle": "Delete account",
+  "@deleteAccountTitle": {
+    "description": "Title and entry button for deleting the client account"
+  },
+  "deleteAccountWarning": "Deleting your account is permanent. Enter your password to confirm.",
+  "@deleteAccountWarning": {
+    "description": "Warning shown above the password field when deleting the account"
+  },
+  "deleteAccountPassword": "Password",
+  "@deleteAccountPassword": {
+    "description": "Password field label on the delete account screen"
+  },
+  "deleteAccountConfirm": "Delete my account",
+  "@deleteAccountConfirm": {
+    "description": "Confirm button on the delete account screen"
+  },
+  "deleteAccountWrongPassword": "The password is incorrect.",
+  "@deleteAccountWrongPassword": {
+    "description": "Shown when the password for account deletion is wrong"
+  },
+  "deleteAccountActiveBookings": "Cancel or finish your upcoming bookings before deleting your account.",
+  "@deleteAccountActiveBookings": {
+    "description": "Shown when account deletion is blocked by active bookings"
+  },
+  "historyAttachPhotoAction": "Add photo",
+  "@historyAttachPhotoAction": {
+    "description": "Button on a history entry that attaches a photo of the result"
+  },
+  "historyAttachPhotoFailed": "The photo could not be added. Try again.",
+  "@historyAttachPhotoFailed": {
+    "description": "Shown when attaching a photo to a history entry fails"
+  },
+  "branchReviewsTitle": "Reviews",
+  "@branchReviewsTitle": {
+    "description": "Title of the branch reviews screen and the button that opens it"
+  },
+  "branchReviewsEmptyTitle": "No reviews yet",
+  "@branchReviewsEmptyTitle": {
+    "description": "Title shown when a branch has no reviews"
+  },
+  "branchReviewsEmptyMessage": "Reviews from clients will appear here.",
+  "@branchReviewsEmptyMessage": {
+    "description": "Message shown when a branch has no reviews"
+  },
+  "branchReviewsLoadMore": "Load more",
+  "@branchReviewsLoadMore": {
+    "description": "Button that loads the next page of branch reviews"
+  },
+  "savedFiltersTitle": "Saved filters",
+  "@savedFiltersTitle": {
+    "description": "Title of the saved filters sheet and the button that opens it"
+  },
+  "savedFiltersEmpty": "No saved filters yet.",
+  "@savedFiltersEmpty": {
+    "description": "Shown when the client has no saved filters"
+  },
+  "savedFiltersDelete": "Delete filter",
+  "@savedFiltersDelete": {
+    "description": "Tooltip for deleting a saved filter"
+  },
+  "savedFiltersNameLabel": "Filter name",
+  "@savedFiltersNameLabel": {
+    "description": "Label of the field naming a new saved filter"
+  },
+  "savedFiltersSaveCurrent": "Save current filters",
+  "@savedFiltersSaveCurrent": {
+    "description": "Button that saves the active discovery filters"
+  },
+  "discoveryPreferencesTitle": "Discovery preferences",
+  "@discoveryPreferencesTitle": {
+    "description": "Title of the discovery preferences screen and its profile entry"
+  },
+  "discoveryPreferencesShowUnavailable": "Show unavailable results",
+  "@discoveryPreferencesShowUnavailable": {
+    "description": "Switch that includes unavailable shops and barbers in discovery"
+  },
+  "discoveryPreferencesClearHidden": "Show hidden brands again",
+  "@discoveryPreferencesClearHidden": {
+    "description": "Button that clears the hidden brands list"
+  },
+  "discoveryPreferencesRadius": "Default search radius: {km} km",
+  "@discoveryPreferencesRadius": {
+    "description": "Label above the default radius slider",
+    "placeholders": {
+      "km": {
+        "type": "int"
+      }
+    }
+  },
+  "discoveryPreferencesHiddenBrands": "{count, plural, one{1 hidden brand} other{{count} hidden brands}}",
+  "@discoveryPreferencesHiddenBrands": {
+    "description": "Count of brands hidden from discovery",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "stylistNoServicesMessage": "No services listed yet.",
   "@stylistNoServicesMessage": {
     "description": "Shown when a stylist has no services"

@@ -22,6 +22,40 @@ void main() {
 
   DiscoveryBloc bloc() => DiscoveryBloc(repository, location, cache: cache);
 
+  group('preferred universe', () {
+    test('starts from the session client universe', () {
+      final seeded = DiscoveryBloc(
+        repository,
+        location,
+        initialUniverse: 'women',
+      );
+      addTearDown(seeded.close);
+
+      expect(seeded.state.filters.universe, 'women');
+    });
+
+    test('falls back to the default universe without a preference', () {
+      expect(bloc().state.filters.universe, DiscoveryFilters.defaultUniverse);
+    });
+
+    test('changing the universe persists it through the profile API', () async {
+      final profile = FakeProfileRepository();
+      final persisting = DiscoveryBloc(
+        repository,
+        location,
+        profile: profile,
+        initialUniverse: 'men',
+      );
+      addTearDown(persisting.close);
+
+      persisting.add(const DiscoveryUniverseChanged('women'));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+
+      expect(profile.lastUniverse, 'women');
+      expect(persisting.state.filters.universe, 'women');
+    });
+  });
+
   group('initial state', () {
     test('asks for location before anything else', () {
       expect(

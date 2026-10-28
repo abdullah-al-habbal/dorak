@@ -30,6 +30,13 @@ import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.screen.dart';
 import 'package:client_app/src/features/booking/booking_details.screen.dart';
 import 'package:client_app/src/features/booking/booking_route.screen.dart';
+import 'package:client_app/src/features/reviews/branch_reviews.bloc.dart';
+import 'package:client_app/src/features/reviews/branch_reviews.screen.dart';
+import 'package:client_app/src/features/discovery/saved_filters.bloc.dart';
+import 'package:client_app/src/features/profile/delete_account.bloc.dart';
+import 'package:client_app/src/features/profile/discovery_preferences.bloc.dart';
+import 'package:client_app/src/features/profile/discovery_preferences.screen.dart';
+import 'package:client_app/src/features/profile/delete_account.screen.dart';
 import 'package:client_app/src/features/booking/booking_tracker.screen.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.screen.dart'
@@ -75,9 +82,13 @@ class AppRouter {
   final BookingBloc? bookings;
   final BranchDetailBloc? branchDetail;
   final ChangePasswordBloc? passwordChange;
+  final DeleteAccountBloc? deleteAccount;
+  final DiscoveryPreferencesCubit? discoveryPreferences;
+  final SavedFiltersCubit? savedFilters;
   final DiscoveryBloc? discovery;
   final HistoryBloc? history;
   final FavoritesBloc? favorites;
+  final BranchReviewsBloc? branchReviews;
   final FaceAnalysisBloc? faceAnalysis;
   final AvatarBloc? avatar;
   final StylistProfileBloc? stylistProfile;
@@ -91,6 +102,8 @@ class AppRouter {
   final RealtimeClient? realtime;
 
   late final GoRouter router;
+  bool _savedFiltersCreated = false;
+  late final SavedFiltersCubit _savedFiltersCubit = _createSavedFilters();
   late final StreamSubscription<SessionState> _sessionSubscription;
   late final StreamSubscription<AuthState> _authSubscription;
 
@@ -107,9 +120,13 @@ class AppRouter {
     this.bookings,
     this.branchDetail,
     this.passwordChange,
+    this.deleteAccount,
+    this.discoveryPreferences,
+    this.savedFilters,
     this.discovery,
     this.history,
     this.favorites,
+    this.branchReviews,
     this.faceAnalysis,
     this.avatar,
     this.stylistProfile,
@@ -138,7 +155,15 @@ class AppRouter {
     _authSubscription = auth.stream.listen(_onAuthChanged);
   }
 
+  SavedFiltersCubit _createSavedFilters() {
+    _savedFiltersCreated = true;
+    return savedFilters ?? services.createSavedFilters();
+  }
+
   void dispose() {
+    if (savedFilters == null && _savedFiltersCreated) {
+      unawaited(_savedFiltersCubit.close());
+    }
     _sessionSubscription.cancel();
     _authSubscription.cancel();
     router.dispose();
@@ -195,6 +220,11 @@ class AppRouter {
           : AppRoutes.splash;
     }
     return null;
+  }
+
+  void _onAccountDeleted() {
+    session.add(LogoutRequested());
+    router.go(AppRoutes.authEntry);
   }
 
   void _leavePhoneVerification() {
@@ -496,7 +526,8 @@ class AppRouter {
         path: AppRoutes.discover,
         builder: (context, state) => _scope(
           discovery,
-          services.createDiscovery,
+          () =>
+              services.createDiscovery(session.state.client?.preferredUniverse),
           (bloc) => discovery_feed.DiscoveryScreen(
             bloc: bloc,
             onLocaleToggle: switchLocale,
@@ -505,6 +536,9 @@ class AppRouter {
                 router.push<void>(AppRoutes.branchDetail(branchId)),
             onViewStylist: (barberId) =>
                 router.push<void>(AppRoutes.barberDetail(barberId)),
+            savedFilters: session.state.isAuthenticated
+                ? _savedFiltersCubit
+                : null,
           ),
         ),
         routes: [
@@ -523,6 +557,8 @@ class AppRouter {
                   serviceIds: _serviceIdsFrom(state),
                   onLocaleToggle: switchLocale,
                   onViewBookings: () => router.go(AppRoutes.bookings),
+                  onViewReviews: (branchId) =>
+                      router.push<void>(AppRoutes.branchReviews(branchId)),
                   onBarberSelected: (barberId) =>
                       router.push<void>(AppRoutes.barberDetail(barberId)),
                   onFavorite: (id, type) => unawaited(
@@ -531,6 +567,19 @@ class AppRouter {
                 ),
               ),
             ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.branchReviewsSegment,
+                builder: (context, state) => _scope(
+                  branchReviews,
+                  services.createBranchReviews,
+                  (bloc) => BranchReviewsScreen(
+                    bloc: bloc,
+                    branchId: state.pathParameters['branchId'] ?? '',
+                  ),
+                ),
+              ),
+            ],
           ),
           GoRoute(
             path: AppRoutes.discoverBarberSegment,
@@ -689,10 +738,30 @@ class AppRouter {
               onNotifications: () =>
                   router.push<void>(AppRoutes.profileNotifications),
               onSettings: () => router.push<void>(AppRoutes.profileSettings),
+              onDeleteAccount: () => router.push<void>(AppRoutes.profileDelete),
+              onDiscoveryPreferences: () =>
+                  router.push<void>(AppRoutes.profileDiscoveryPreferences),
             ),
           ),
         ),
         routes: [
+          GoRoute(
+            path: AppRoutes.profileDiscoveryPreferencesSegment,
+            builder: (context, state) => _scope(
+              discoveryPreferences,
+              services.createDiscoveryPreferences,
+              (cubit) => DiscoveryPreferencesScreen(cubit: cubit),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.profileDeleteSegment,
+            builder: (context, state) => _scope(
+              deleteAccount,
+              services.createDeleteAccount,
+              (bloc) =>
+                  DeleteAccountScreen(bloc: bloc, onDeleted: _onAccountDeleted),
+            ),
+          ),
           GoRoute(
             path: AppRoutes.profilePasswordSegment,
             builder: (context, state) => _scope(

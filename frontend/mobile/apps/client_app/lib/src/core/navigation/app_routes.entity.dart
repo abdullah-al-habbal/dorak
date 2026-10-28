@@ -26,12 +26,16 @@ class AppRoutes {
   static const String favorites = '/favorites';
   static const String profile = '/profile';
   static const String profilePassword = '/profile/password';
+  static const String profileDelete = '/profile/delete';
+  static const String profileDiscoveryPreferences =
+      '/profile/discovery-preferences';
   static const String profileEdit = '/profile/edit';
   static const String profileAddresses = '/profile/addresses';
   static const String profileNotifications = '/profile/notifications';
   static const String profileSettings = '/profile/settings';
 
   static const String branchDetailSegment = 'branch/:branchId';
+  static const String branchReviewsSegment = 'reviews';
   static const String discoverBarberSegment = 'barber/:barberId';
   static const String reviewSegment = 'reviews/:bookingId';
   static const String bookingTrackerSegment = ':bookingId/tracker';
@@ -41,6 +45,8 @@ class AppRoutes {
   static const String servicesQueryKey = 'serviceIds';
 
   static String branchDetail(String branchId) => '$discover/branch/$branchId';
+  static String branchReviews(String branchId) =>
+      '${branchDetail(branchId)}/reviews';
   static String branchBooking(
     String branchId, {
     required String barberId,
@@ -77,6 +83,9 @@ class AppRoutes {
   static const String resetPasswordSegment = 'reset-password';
   static const String resetPasswordSuccessSegment = 'success';
   static const String profilePasswordSegment = 'password';
+  static const String profileDeleteSegment = 'delete';
+  static const String profileDiscoveryPreferencesSegment =
+      'discovery-preferences';
   static const String profileEditSegment = 'edit';
   static const String profileAddressesSegment = 'addresses';
   static const String profileNotificationsSegment = 'notifications';

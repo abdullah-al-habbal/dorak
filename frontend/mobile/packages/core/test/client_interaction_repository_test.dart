@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers/fake_dio.dart';
@@ -100,5 +101,70 @@ void main() {
       },
     ]);
     expect(filter.name, 'Updated');
+  });
+
+  test(
+    'deleteSavedFilter DELETEs the filter and saveFilter POSTs a new one',
+    () async {
+      final calls = <String>[];
+      final fake = fakeDio(
+        handler: (options) {
+          calls.add('${options.method} ${options.path}');
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: options.method == 'DELETE'
+                  ? null
+                  : {
+                      'id': 'filter-1',
+                      'name': 'Close by',
+                      'filter_config': {'radius': 5},
+                    },
+            ),
+          );
+        },
+      );
+      final repository = DioClientInteractionRepository(clientWith(fake));
+
+      await repository.saveFilter(
+        name: 'Close by',
+        filterConfig: {'radius': 5},
+      );
+      await repository.deleteSavedFilter('filter-1');
+
+      expect(calls, [
+        'POST /client/saved-filters',
+        'DELETE /client/saved-filters/filter-1',
+      ]);
+    },
+  );
+
+  test('updateDiscoveryPreferences PATCHes the preferences', () async {
+    late RequestOptions captured;
+    final fake = fakeDio(
+      handler: (options) {
+        captured = options;
+        return jsonResponse(
+          options,
+          data: successEnvelope(
+            data: {
+              'id': 'pref-1',
+              'default_radius': 12.0,
+              'hidden_brand_ids': [],
+            },
+          ),
+        );
+      },
+    );
+    final repository = DioClientInteractionRepository(clientWith(fake));
+
+    final preference = await repository.updateDiscoveryPreferences({
+      'default_radius': 12,
+    });
+
+    expect(captured.method, 'PATCH');
+    expect(captured.path, '/client/discovery-preferences');
+    expect(captured.data, {'default_radius': 12});
+    expect(preference.defaultRadius, 12.0);
   });
 }

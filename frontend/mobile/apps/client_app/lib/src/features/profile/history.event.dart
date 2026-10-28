@@ -36,3 +36,18 @@ class HistoryRebookRequested extends HistoryEvent {
 class HistoryRebookAcknowledged extends HistoryEvent {
   const HistoryRebookAcknowledged();
 }
+
+class HistoryMediaAttachRequested extends HistoryEvent {
+  const HistoryMediaAttachRequested({
+    required this.id,
+    required this.photoPath,
+    required this.photoType,
+  });
+
+  final String id;
+  final String photoPath;
+  final String photoType;
+
+  @override
+  List<Object?> get props => [id, photoPath, photoType];
+}

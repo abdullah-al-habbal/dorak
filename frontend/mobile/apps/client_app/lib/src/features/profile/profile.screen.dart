@@ -14,6 +14,7 @@ import 'package:client_app/src/features/profile/face_analysis.event.dart';
 import 'package:client_app/src/features/profile/face_analysis.state.dart';
 import 'package:client_app/src/features/profile/history.bloc.dart';
 import 'package:client_app/src/features/profile/history.event.dart';
+import 'package:client_app/src/features/profile/history_media_type.entity.dart';
 import 'package:client_app/src/features/profile/history.state.dart';
 import 'package:client_app/src/features/profile/photo_picker.provider.dart';
 import 'package:client_app/src/features/profile/widgets/curated_card.widget.dart';
@@ -35,6 +36,8 @@ class ProfileScreen extends StatefulWidget {
     required this.onSavedAddresses,
     required this.onNotifications,
     required this.onSettings,
+    required this.onDeleteAccount,
+    required this.onDiscoveryPreferences,
   });
 
   final HistoryBloc history;
@@ -48,6 +51,8 @@ class ProfileScreen extends StatefulWidget {
   final VoidCallback onSavedAddresses;
   final VoidCallback onNotifications;
   final VoidCallback onSettings;
+  final VoidCallback onDeleteAccount;
+  final VoidCallback onDiscoveryPreferences;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -72,6 +77,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
     widget.history.add(const HistoryRefreshRequested());
     await completion.future;
+  }
+
+  Future<void> _attachPhoto(ServiceHistoryDto item) async {
+    final path = await widget.photoPicker.pickPhoto();
+    if (path == null || !mounted) return;
+    widget.history.add(
+      HistoryMediaAttachRequested(
+        id: item.id,
+        photoPath: path,
+        photoType: HistoryMediaType.after,
+      ),
+    );
   }
 
   @override
@@ -158,6 +175,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onRetry: () =>
                           widget.history.add(const HistoryRetryRequested()),
                       onRebook: (item) => _pickRebookTime(context, item),
+                      onAttachPhoto: _attachPhoto,
+                    ),
+                    const SizedBox(height: DorakDimensions.spacingLarge),
+                    SecondaryButton(
+                      label: AppLocalizations.of(
+                        context,
+                      )!.discoveryPreferencesTitle,
+                      onPressed: widget.onDiscoveryPreferences,
+                    ),
+                    const SizedBox(height: DorakDimensions.spacingSmall),
+                    SecondaryButton(
+                      label: AppLocalizations.of(context)!.deleteAccountTitle,
+                      onPressed: widget.onDeleteAccount,
                     ),
                   ],
                 ),
