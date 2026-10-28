@@ -31,6 +31,8 @@ describe("route constants", () => {
       "branches",
       "floorPlan",
       "reviews",
+      "affiliations",
+      "jobPostings",
       "bookings",
       "services",
       "chairs",

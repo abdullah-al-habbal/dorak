@@ -18,6 +18,26 @@ export const DashboardEndpoints = {
     `${BASE}/branches/${encodeURIComponent(id)}/floor-plan`,
   branchReviews: (id: string) =>
     `${BASE}/branches/${encodeURIComponent(id)}/reviews`,
+  branchAffiliations: (id: string) =>
+    `${BASE}/branches/${encodeURIComponent(id)}/affiliations`,
+  branchAffiliationAction: (
+    id: string,
+    affiliationId: string,
+    action: "accept" | "reject" | "terminate",
+  ) =>
+    `${BASE}/branches/${encodeURIComponent(id)}/affiliations/${encodeURIComponent(affiliationId)}/${action}`,
+  branchJobPostings: (id: string) =>
+    `${BASE}/branches/${encodeURIComponent(id)}/job-postings`,
+  branchJobPosting: (id: string, postingId: string) =>
+    `${BASE}/branches/${encodeURIComponent(id)}/job-postings/${encodeURIComponent(postingId)}`,
+  branchApplications: (id: string, postingId: string) =>
+    `${BASE}/branches/${encodeURIComponent(id)}/job-postings/${encodeURIComponent(postingId)}/applications`,
+  branchApplicationStatus: (
+    id: string,
+    postingId: string,
+    applicationId: string,
+  ) =>
+    `${BASE}/branches/${encodeURIComponent(id)}/job-postings/${encodeURIComponent(postingId)}/applications/${encodeURIComponent(applicationId)}/status`,
   bookingCancel: (id: string) =>
     `${BASE}/bookings/${encodeURIComponent(id)}/cancel`,
   bookingReschedule: (id: string) =>

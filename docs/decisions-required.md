@@ -179,7 +179,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [ ] Floor-plan payload completeness (`backend/docs/06_entity-model-abstract.md:153-156`): the floor plan must carry a canvas size (width/height/unit) and static decoration components (waiting area, mirror, etc.) alongside chairs. Today `GET /branches/{branch}/floor-plan` returns only preset, zones and chairs. Extend `PATCH branch/floor-plan` to accept `canvas` and `decorations`, and extend the GET response. Decision required: whether these are persisted (e.g. in the branch's floor-plan configuration) or computed. The spec leaves it open.
 
 ## [Task 75: Add Branch People BFF and UI (Affiliations, Jobs, Barbers)](tasks/task-75-branch-people-bff-ui.md)
-- [ ] Decision required: managed barber creation. Use only the existing dashboard `stylists` create, or keep `POST branch/barbers`, but not both. If `stylists` covers it, `branch/barbers` becomes mobile-only (Task 85).
+- [x] Decision required: managed barber creation. **Resolved**: dashboard `stylists` create is the only path in the dashboard; `POST branch/barbers` stays mobile-only (Task 85). See the Task 75 spec. Use only the existing dashboard `stylists` create, or keep `POST branch/barbers`, but not both. If `stylists` covers it, `branch/barbers` becomes mobile-only (Task 85).
 
 ## [Task 77: Add Brand and Service Catalog Management UI](tasks/task-77-catalog-brand-management-ui.md)
 - [ ] Brands: Decision required. Either add admin brand management under `auth:admin_api`, or let the brand owner manage brands through the dashboard once the Brand Owner role exists (Task 38). This UI follows that decision.

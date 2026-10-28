@@ -388,7 +388,7 @@ describe('Branch API', function () {
                 $jobPosting = JobPostingModel::factory()->create();
 
                 $response = $this->putJson("/api/v1/branch/job-postings/{$jobPosting->id}", [
-                    'title' => ['en' => 'Test'],
+                    'title' => ['en' => 'Test', 'ar' => 'Test'],
                 ]);
 
                 $response->assertNotFound();

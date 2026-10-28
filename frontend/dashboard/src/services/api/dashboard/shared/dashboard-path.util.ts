@@ -20,6 +20,30 @@ const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
   { method: "GET", path: /^branches\/[A-Za-z0-9-]+\/floor-plan$/ },
   { method: "PATCH", path: /^branches\/[A-Za-z0-9-]+\/floor-plan$/ },
   { method: "GET", path: /^branches\/[A-Za-z0-9-]+\/reviews$/ },
+  { method: "GET", path: /^branches\/[A-Za-z0-9-]+\/affiliations$/ },
+  { method: "POST", path: /^branches\/[A-Za-z0-9-]+\/affiliations$/ },
+  {
+    method: "POST",
+    path: /^branches\/[A-Za-z0-9-]+\/affiliations\/[A-Za-z0-9-]+\/(accept|reject|terminate)$/,
+  },
+  { method: "GET", path: /^branches\/[A-Za-z0-9-]+\/job-postings$/ },
+  { method: "POST", path: /^branches\/[A-Za-z0-9-]+\/job-postings$/ },
+  {
+    method: "PUT",
+    path: /^branches\/[A-Za-z0-9-]+\/job-postings\/[A-Za-z0-9-]+$/,
+  },
+  {
+    method: "DELETE",
+    path: /^branches\/[A-Za-z0-9-]+\/job-postings\/[A-Za-z0-9-]+$/,
+  },
+  {
+    method: "GET",
+    path: /^branches\/[A-Za-z0-9-]+\/job-postings\/[A-Za-z0-9-]+\/applications$/,
+  },
+  {
+    method: "PATCH",
+    path: /^branches\/[A-Za-z0-9-]+\/job-postings\/[A-Za-z0-9-]+\/applications\/[A-Za-z0-9-]+\/status$/,
+  },
   {
     method: "PATCH",
     path: /^stylists\/[A-Za-z0-9-]+\/(activate|deactivate)$/,
@@ -42,4 +66,15 @@ export function isDashboardRouteAllowed(
   return DASHBOARD_ROUTE_RULES.some(
     (rule) => rule.method === method.toUpperCase() && rule.path.test(joined),
   );
+}
+
+const PAGED_BRANCH_SUBRESOURCES = ["reviews", "affiliations", "job-postings"];
+
+/** Whether a proxied list response carries backend pagination meta. */
+export function isDashboardPagedPath(path: readonly string[]): boolean {
+  if (path.length === 1) return path[0] !== "overview";
+  if (path[0] !== "branches") return false;
+  if (path.length === 3)
+    return PAGED_BRANCH_SUBRESOURCES.includes(path[2] ?? "");
+  return path.length === 5 && path[4] === "applications";
 }

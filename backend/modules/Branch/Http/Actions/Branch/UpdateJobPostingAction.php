@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Branch\Http\Actions\Branch;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Modules\Branch\Http\Requests\Branch\UpdateJobPostingRequest;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Enums\SuccessCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -15,25 +15,14 @@ final class UpdateJobPostingAction extends BaseApiAction
 {
     public function __construct(private readonly BrandFeatures $brandFeatures) {}
 
-    public function __invoke(Request $request, string $jobPosting): JsonResponse
+    public function __invoke(UpdateJobPostingRequest $request, string $jobPosting): JsonResponse
     {
         $branch = $request->user('branch_api');
         $this->brandFeatures->ensureJobBoard($branch?->getKey());
 
         $jobPostingModel = JobPostingModel::where('branch_id', $branch->id)->findOrFail($jobPosting);
 
-        $validated = $request->validate([
-            'title' => ['sometimes', 'array'],
-            'title.en' => ['required_with:title', 'string'],
-            'title.ar' => ['required_with:title', 'string'],
-            'description' => ['sometimes', 'array'],
-            'description.en' => ['required_with:description', 'string'],
-            'description.ar' => ['required_with:description', 'string'],
-            'requirements' => ['nullable', 'array'],
-            'location' => ['nullable', 'string'],
-            'type' => ['nullable', 'string'],
-            'status' => ['nullable', 'string', 'in:open,closed,archived'],
-        ]);
+        $validated = $request->validated();
 
         $jobPostingModel->update($validated);
 

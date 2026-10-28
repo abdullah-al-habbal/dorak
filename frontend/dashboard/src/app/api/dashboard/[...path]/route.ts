@@ -7,7 +7,10 @@ import {
   dashboardProfileRequestBody,
   dashboardProfileResponseData,
 } from "@/services/api/dashboard/shared/dashboard-profile-bff.util";
-import { isDashboardRouteAllowed } from "@/services/api/dashboard/shared/dashboard-path.util";
+import {
+  isDashboardPagedPath,
+  isDashboardRouteAllowed,
+} from "@/services/api/dashboard/shared/dashboard-path.util";
 import { API_ERROR_CODE } from "@/services/api/core/error-code.constant";
 import {
   apiFailure,
@@ -82,9 +85,7 @@ async function proxyDashboardRequest(request: NextRequest, context: Context) {
   }
 
   const rawData =
-    (path.length === 1 || path[2] === "reviews") &&
-    path[0] !== "overview" &&
-    Array.isArray(result.envelope.data)
+    isDashboardPagedPath(path) && Array.isArray(result.envelope.data)
       ? dashboardPage(result.envelope.data, result.envelope.meta)
       : result.envelope.data;
   const data =

@@ -24,12 +24,22 @@ Branch managers can accept or reject affiliations, manage job postings, review a
 - None. The business app equivalents are in Task 85.
 
 ## Acceptance Criteria
-- [ ] Manager accepts a pending affiliation for their branch: 200, and the status shows accepted without a reload. Accepting another branch's affiliation returns 403 (from Task 01, re-asserted in a dashboard feature test).
-- [ ] Job posting create, edit and delete round-trip with 201, 200 and 204/200. Validation errors render per field.
-- [ ] Applicants list shows the snapshot fields defined in Task 56. A status change returns 200 and is rejected with 403 for a non-owning branch.
-- [ ] Only one managed-barber creation path is exposed in the dashboard.
-- [ ] BFF declares exact method+path pairs only. Vitest.
-- [ ] `php artisan test` and `npm run test` pass; eslint and tsc are clean.
+- [x] Manager accepts a pending affiliation for their branch: 200, and the status shows accepted without a reload. Accepting another branch's affiliation is rejected and leaves it pending: the dashboard returns 404 for any out-of-scope branch or affiliation (hides existence; same convention as Tasks 55 and 74), re-asserted in `DashboardBranchPeopleTest`.
+- [x] Job posting create, edit and delete round-trip with 201, 200 and 204/200. Validation errors render per field.
+- [x] Applicants list shows the snapshot fields defined in Task 56. A status change returns 200 and is rejected for a non-owning branch (404 on the dashboard route; the branch-account route keeps its 403).
+- [x] Only one managed-barber creation path is exposed in the dashboard.
+- [x] BFF declares exact method+path pairs only. Vitest.
+- [x] `php artisan test` and `npm run test` pass; eslint and tsc are clean.
+
+### Implemented contract & decisions
+- **Decision — one managed-barber path:** the dashboard exposes only `stylists` create (chair-assigned, scoped, feature-gated). `POST branch/barbers` is not proxied and stays for the business app (Task 85). No dashboard UI or BFF entry for it.
+- **Decision — dashboard-module endpoints (option b, same as Task 74):** all under `/dashboard/branches/{branch}/…`, scope-checked by `ScopedBranchResolver` (admin: any; owner: own brands; manager: own branch; else 404): affiliations list (`?status=`, paginated) / invite / accept / reject / terminate; job-postings list / create / update / delete; applications list / status.
+- Shared logic extracted, not duplicated: `BranchAffiliationResponder` (accept/reject), `ApplicationStatusUpdater` (status transitions), `StoreJobPostingRequest` / `UpdateJobPostingRequest` / `UpdateApplicationStatusRequest` (the branch-account actions now use them; inline `validate()` removed). Update-posting validation now runs before the 404 lookup, so a foreign posting id with a bad body returns 422 rather than 404.
+- **Decision — job_board gating:** create/update require `job_board` (403 `feature_not_enabled`). Delete is intentionally not gated so a downgraded brand can still clean up stale postings; documented in the delete action.
+- Audit finding fixed: `ListAffiliationsAction` returned raw models; the dashboard list uses `DashboardAffiliationResource` (barber name, initiator, dates).
+- Dashboard: BFF allowlist (exact method+path, Vitest per rule) and `isDashboardPagedPath` for proxy pagination; pages `/{admin,manager,owner}/affiliations` and `/job-postings`, nav entries, EN+AR copy. Query keys `["dashboard","affiliations",…]`, `["dashboard","job-postings",…]`, `["dashboard","job-postings",postingId,"applications",page]`; accept/reject/terminate also invalidates stylists and chairs. Forms use react-hook-form + Zod with backend 422 errors mapped per field.
+- [PENDINGHUMANREVIEW] Invite UX: the shop-side invite takes a barber ID because no barber lookup endpoint exists for the dashboard BFF; a searchable barber picker needs a product decision on barber discoverability for shops.
+- Mobile unchanged (no contract change on existing routes; `melos verify` green).
 
 ## Out of Scope
 - Barber-side affiliation and job flows (Task 83).

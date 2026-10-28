@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { isDashboardRouteAllowed } from "@/services/api/dashboard/shared/dashboard-path.util";
+import {
+  isDashboardPagedPath,
+  isDashboardRouteAllowed,
+} from "@/services/api/dashboard/shared/dashboard-path.util";
 
 describe("isDashboardRouteAllowed", () => {
   it.each([
@@ -22,6 +25,20 @@ describe("isDashboardRouteAllowed", () => {
     ["GET", ["branches", "branch-1", "floor-plan"]],
     ["PATCH", ["branches", "branch-1", "floor-plan"]],
     ["GET", ["branches", "branch-1", "reviews"]],
+    ["GET", ["branches", "b", "affiliations"]],
+    ["POST", ["branches", "b", "affiliations"]],
+    ["POST", ["branches", "b", "affiliations", "a", "accept"]],
+    ["POST", ["branches", "b", "affiliations", "a", "reject"]],
+    ["POST", ["branches", "b", "affiliations", "a", "terminate"]],
+    ["GET", ["branches", "b", "job-postings"]],
+    ["POST", ["branches", "b", "job-postings"]],
+    ["PUT", ["branches", "b", "job-postings", "j"]],
+    ["DELETE", ["branches", "b", "job-postings", "j"]],
+    ["GET", ["branches", "b", "job-postings", "j", "applications"]],
+    [
+      "PATCH",
+      ["branches", "b", "job-postings", "j", "applications", "x", "status"],
+    ],
     ["GET", ["profile"]],
     ["PATCH", ["profile"]],
     ["POST", ["profile", "email", "change"]],
@@ -39,6 +56,16 @@ describe("isDashboardRouteAllowed", () => {
 
   it.each([
     ["DELETE", ["bookings", "booking-1"]],
+    ["PUT", ["branches", "b", "affiliations", "a"]],
+    ["DELETE", ["branches", "b", "affiliations", "a"]],
+    ["GET", ["branches", "b", "affiliations", "a", "accept"]],
+    ["POST", ["branches", "b", "affiliations", "a", "approve"]],
+    ["PATCH", ["branches", "b", "job-postings", "j"]],
+    ["POST", ["branches", "b", "job-postings", "j", "applications"]],
+    [
+      "PUT",
+      ["branches", "b", "job-postings", "j", "applications", "x", "status"],
+    ],
     ["PUT", ["branches", "branch-1", "floor-plan"]],
     ["DELETE", ["branches", "branch-1", "floor-plan"]],
     ["POST", ["branches", "branch-1", "reviews"]],
@@ -55,5 +82,21 @@ describe("isDashboardRouteAllowed", () => {
     ["POST", ["bookings", "booking-1", "history"]],
   ] as [string, readonly string[]][])("rejects %s %s", (method, path) => {
     expect(isDashboardRouteAllowed(method, path)).toBe(false);
+  });
+});
+
+describe("isDashboardPagedPath", () => {
+  it.each([
+    [["bookings"], true],
+    [["overview"], false],
+    [["branches", "b", "reviews"], true],
+    [["branches", "b", "affiliations"], true],
+    [["branches", "b", "job-postings"], true],
+    [["branches", "b", "job-postings", "j", "applications"], true],
+    [["branches", "b", "floor-plan"], false],
+    [["branches", "b"], false],
+    [["profile", "notifications"], false],
+  ] as [string[], boolean][])("%j -> %s", (path, expected) => {
+    expect(isDashboardPagedPath(path)).toBe(expected);
   });
 });
