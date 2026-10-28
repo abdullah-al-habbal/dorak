@@ -158,6 +158,86 @@ void main() {
       expect(detail.services.map((service) => service.price), [80.0]);
     });
 
+    test(
+      'getBarbers hits explore/barbers with the branch search params',
+      () async {
+        late RequestOptions captured;
+        final fake = fakeDio(
+          handler: (options) {
+            captured = options;
+            return jsonResponse(
+              options,
+              data: successEnvelope(
+                data: [
+                  {
+                    'id': 'barber-1',
+                    'name': 'Karim',
+                    'email': 'karim@example.com',
+                    'is_freelancer': true,
+                    'status': 'approved',
+                    'latitude': 24.7136,
+                    'longitude': 46.6753,
+                  },
+                ],
+                meta: {
+                  'pagination': {
+                    'total': 1,
+                    'count': 1,
+                    'per_page': 20,
+                    'current_page': 1,
+                    'total_pages': 1,
+                  },
+                },
+              ),
+            );
+          },
+        );
+        final repository = DioExploreRepository(clientWith(fake));
+
+        final page = await repository.getBarbers(
+          latitude: 24.7136,
+          longitude: 46.6753,
+          radius: 10,
+          universe: 'men',
+        );
+
+        expect(captured.path, '/explore/barbers');
+        expect(captured.queryParameters, {
+          'latitude': 24.7136,
+          'longitude': 46.6753,
+          'radius': 10.0,
+          'universe': 'men',
+          'page': 1,
+          'per_page': 20,
+        });
+        expect(page.data.single, isA<BarberProfileDto>());
+        expect(page.data.single.name, 'Karim');
+      },
+    );
+
+    test('getBarberServices lists the barber services', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: [
+                {'id': 'service-1', 'name': 'Fade', 'price': 80.0},
+              ],
+            ),
+          );
+        },
+      );
+      final repository = DioExploreRepository(clientWith(fake));
+
+      final services = await repository.getBarberServices('barber-1');
+
+      expect(captured.path, '/barbers/barber-1/services');
+      expect(services.single.id, 'service-1');
+    });
+
     test('getBarberDetail parses profile with services', () async {
       late RequestOptions captured;
       final fake = fakeDio(

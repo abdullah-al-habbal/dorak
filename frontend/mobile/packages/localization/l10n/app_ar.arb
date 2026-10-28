@@ -825,6 +825,14 @@
   "@stylistServicesTitle": {
     "description": "Stylist profile services section heading"
   },
+  "stylistBookAction": "احجز",
+  "@stylistBookAction": {
+    "description": "Button on the stylist profile that starts a booking with the selected services"
+  },
+  "stylistBookUnavailableHint": "الحجز متاح للمصففين العاملين في صالون",
+  "@stylistBookUnavailableHint": {
+    "description": "Shown when a stylist has no shop workplace to book through"
+  },
   "stylistNoServicesMessage": "لا توجد خدمات بعد.",
   "@stylistNoServicesMessage": {
     "description": "Shown when a stylist has no services"

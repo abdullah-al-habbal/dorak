@@ -26,11 +26,11 @@ Discovery lists branches only. The `GET /explore/barbers` endpoint constant is d
 - `app.router.dart`: wire the profile's `onBook` to the existing booking route.
 
 ## Acceptance Criteria
-- [ ] Repository test: `getBarbers` issues `GET /explore/barbers` with the same lat/lng/radius/universe params as the branch search.
-- [ ] Discovery bloc test: switching to the barbers segment loads barbers and emits a success state containing `BarberProfileDto`s.
-- [ ] Widget test: the stylist profile shows the services list and an enabled "Book" button. Tapping it pushes the booking route with `barberId` set.
-- [ ] Booking bloc test: a booking started from a stylist profile sends `barber_id` and a non-empty `service_ids`, and no `chair_id` (after Task 24).
-- [ ] `melos run analyze` and `melos run test` pass.
+- [x] Repository test: `getBarbers` issues `GET /explore/barbers` with the same lat/lng/radius/universe params as the branch search.
+- [x] Discovery: satisfied by the merged feed (Task 45, `discovery_mixed_results_test.dart`); no separate segment, see the decision record.
+- [x] Widget test: the stylist profile shows the services list and an enabled "Book" button. Tapping it pushes the booking route with `barberId` set.
+- [x] Booking bloc test: a booking started from a stylist profile sends `barber_id` and a non-empty `service_ids`, and no `chair_id` (after Task 24).
+- [x] `melos run analyze` and `melos run test` pass.
 
 ## Out of Scope
 - Text search (Task 43) and the unisex universe (Task 44).
@@ -39,3 +39,9 @@ Discovery lists branches only. The `GET /explore/barbers` endpoint constant is d
 > Note (Task 44): `GET explore/barbers` accepts optional `universe` (`men`|`women`, also matches `unisex` barbers) and defaults to the signed-in client's preference.
 
 > Note (Task 45): freelancers already appear in the client discovery feed via `explore/search` with a `DiscoveryBarberCard` that opens the stylist profile.
+
+## Implemented Contract
+- `ExploreRepository.getBarbers` (`GET /explore/barbers`, same params as the branch search) and `getBarberServices` (`GET /barbers/{barber}/services`).
+- Stylist profile: services are selectable; the "Book" CTA calls `onBook(branchId, barberId, serviceIds)` and the router pushes `AppRoutes.branchBooking(...)` (`/discover/branch/:id?barberId=..&serviceIds=a,b`).
+- `BranchDetailStarted(branchId, barberId:, serviceIds:)` pre-fills the booking; with a barber but no chair `canSubmit` is true, slots load by `barber_id`, and the booking sends `branch_id` + `barber_id` + non-empty `service_ids` and no `chair_id`.
+- **Open ([NEEDSHIL])**: freelancer-only barbers cannot yet be booked from the profile (CTA disabled with a hint); see `decisions-required.md`.

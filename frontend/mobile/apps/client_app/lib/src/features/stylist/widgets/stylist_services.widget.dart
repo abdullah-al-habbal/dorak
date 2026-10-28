@@ -13,6 +13,8 @@ class StylistServices extends StatelessWidget {
     required this.colors,
     required this.l10n,
     required this.localeCode,
+    required this.selectedServiceIds,
+    required this.onToggled,
   });
 
   final BarberProfileDto profile;
@@ -20,6 +22,8 @@ class StylistServices extends StatelessWidget {
   final DorakColors colors;
   final AppLocalizations l10n;
   final String localeCode;
+  final List<String> selectedServiceIds;
+  final void Function(String serviceId) onToggled;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,8 @@ class StylistServices extends StatelessWidget {
             colors: colors,
             l10n: l10n,
             localeCode: localeCode,
+            selected: selectedServiceIds.contains(service.id),
+            onToggled: () => onToggled(service.id),
           ),
         ),
       ],

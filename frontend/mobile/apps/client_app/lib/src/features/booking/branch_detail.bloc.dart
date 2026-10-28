@@ -39,7 +39,12 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
     Emitter<BranchDetailState> emit,
   ) async {
     emit(
-      BranchDetailState().copyWith(branchId: event.branchId, isLoading: true),
+      BranchDetailState().copyWith(
+        branchId: event.branchId,
+        isLoading: true,
+        preferredBarberId: event.barberId,
+        selectedServiceIds: event.serviceIds,
+      ),
     );
     try {
       final detail = await _explore.getBranchDetail(event.branchId);
@@ -264,7 +269,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
         );
       } else {
         final chairId = state.selectedChairId;
-        if (chairId == null) {
+        if (chairId == null && state.preferredBarberId == null) {
           emit(state.copyWith(slots: const [], isLoadingSlots: false));
           return;
         }
@@ -312,8 +317,10 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
       final barberId =
           state.preferredBarberId ??
           (chairId == null ? null : _barberForChair(state.plan, chairId));
+      final isBarberOnly = !state.isAtHomeBooking && chairId == null;
       await _bookings.createBooking(
         chairId: chairId,
+        branchId: isBarberOnly ? state.branchId : null,
         barberId: barberId,
         timeSlot: time,
         serviceIds: state.selectedServiceIds,
@@ -351,7 +358,14 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
   ) async {
     final branchId = state.branchId;
     if (branchId == null) return;
-    await _onStarted(BranchDetailStarted(branchId), emit);
+    await _onStarted(
+      BranchDetailStarted(
+        branchId,
+        barberId: state.preferredBarberId,
+        serviceIds: state.selectedServiceIds,
+      ),
+      emit,
+    );
   }
 
   String? _barberForChair(FloorPlanDto? plan, String chairId) {

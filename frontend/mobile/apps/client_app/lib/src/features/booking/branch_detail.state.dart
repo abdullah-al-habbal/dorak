@@ -66,7 +66,9 @@ class BranchDetailState extends Equatable {
     if (!slots.any((slot) => slot.startsAt.isAtSameMomentAs(selectedTime!))) {
       return false;
     }
-    if (!isAtHomeBooking) return selectedChairId != null;
+    if (!isAtHomeBooking) {
+      return selectedChairId != null || preferredBarberId != null;
+    }
     return preferredBarberId != null &&
         atHomeStreet.trim().isNotEmpty &&
         atHomeBuilding.trim().isNotEmpty &&

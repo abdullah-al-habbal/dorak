@@ -516,6 +516,34 @@ class FakeExploreRepository implements ExploreRepository {
     return (data: firstPage, rawItems: rawItems, rawMeta: rawMeta);
   }
 
+  int getBarbersCalls = 0;
+  PaginatedData<BarberProfileDto>? barbersPage;
+
+  @override
+  Future<PaginatedData<BarberProfileDto>> getBarbers({
+    required double latitude,
+    required double longitude,
+    required double radius,
+    required String universe,
+    int page = 1,
+    int perPage = 20,
+    List<int>? catalogItemIds,
+    bool? availableNow,
+    double? priceRangeMin,
+    double? priceRangeMax,
+    double? ratingMin,
+    String? query,
+  }) async {
+    getBarbersCalls++;
+    final failure = error;
+    if (failure != null) throw failure;
+    return barbersPage!;
+  }
+
+  @override
+  Future<List<BarberServiceDto>> getBarberServices(String barberId) async =>
+      const [];
+
   int searchPayloadCalls = 0;
 
   @override
@@ -727,6 +755,10 @@ class FakeBookingRepository implements BookingRepository {
     double? atHomeLongitude,
   }) async {
     createCalls++;
+    lastChairId = chairId;
+    lastBranchId = branchId;
+    lastBarberId = barberId;
+    lastServiceIds = serviceIds;
     lastAtHomeStreet = atHomeStreet;
     lastAtHomeBuilding = atHomeBuilding;
     lastAtHomeUnit = atHomeUnit;
@@ -740,6 +772,10 @@ class FakeBookingRepository implements BookingRepository {
   BookingDto? createdBooking;
   Object? createError;
   int createCalls = 0;
+  String? lastChairId;
+  String? lastBranchId;
+  String? lastBarberId;
+  List<String>? lastServiceIds;
 
   List<SlotDto> barberSlots = testSlots();
   Object? barberSlotsError;
@@ -1344,6 +1380,9 @@ BarberProfileDto testBarberProfile({
   int? rank = 3,
   DateTime? createdAt,
   List<BarberServiceDto>? services,
+  List<BarberWorkplaceDto> workplaces = const [
+    BarberWorkplaceDto(type: 'branch', id: 'branch-1', name: 'Branch 1'),
+  ],
 }) => BarberProfileDto(
   id: id,
   name: name,
@@ -1357,6 +1396,7 @@ BarberProfileDto testBarberProfile({
   compatibilityScore: compatibilityScore,
   rank: rank,
   createdAt: createdAt,
+  workplaces: workplaces,
   services:
       services ??
       const [

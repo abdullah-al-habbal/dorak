@@ -184,6 +184,11 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 ## [Task 77: Add Brand and Service Catalog Management UI](tasks/task-77-catalog-brand-management-ui.md)
 - [x] Brands: Decision resolved (best option): both, role-scoped — admins list/view/edit any brand, owners list/view/edit/create their own, managers and barbers get 403. Admins cannot create a brand because `brands.owner_id` must be a client account (ADR 0001). See the task spec's decision note.
 
+## [Task 79: Add Client Barber Discovery and Direct Booking](tasks/task-79-client-barber-discovery.md)
+- [x] Discovery segment: **Resolved** — keep the merged shops + freelancers feed from `explore/search` (Task 45) instead of adding a separate barbers segment; `getBarbers` is added to the repository for direct callers.
+- [x] Book from the stylist profile: **Resolved** — a shop barber opens the existing branch booking route pre-filled with `barberId` and `serviceIds` (query parameters), reusing `BranchDetailBloc`; the booking is barber-only (`branch_id` + `barber_id`, no chair).
+- [ ] [NEEDSHIL] Freelancer-only barbers (no branch workplace) have no booking entry yet: the CTA is disabled with a hint. Needs a product decision on a dedicated at-home booking screen for freelancers, since `BranchDetailBloc` requires a branch.
+
 ## [Task 81: Clean Up Client Auth Flows](tasks/task-81-client-auth-cleanup.md)
 - [ ] Social login: add provider buttons in `login_content.widget.dart` behind a config flag. **Decision required:** which providers and SDKs (Google/Apple) ship in v1.
 

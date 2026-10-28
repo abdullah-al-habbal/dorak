@@ -920,6 +920,14 @@
   "@stylistServicesTitle": {
     "description": "Stylist profile services section heading"
   },
+  "stylistBookAction": "Book",
+  "@stylistBookAction": {
+    "description": "Button on the stylist profile that starts a booking with the selected services"
+  },
+  "stylistBookUnavailableHint": "Booking is available for stylists who work at a shop",
+  "@stylistBookUnavailableHint": {
+    "description": "Shown when a stylist has no shop workplace to book through"
+  },
   "stylistNoServicesMessage": "No services listed yet.",
   "@stylistNoServicesMessage": {
     "description": "Shown when a stylist has no services"

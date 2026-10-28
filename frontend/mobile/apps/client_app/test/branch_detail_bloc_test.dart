@@ -64,6 +64,36 @@ void main() {
     );
   });
 
+  group('barber booking', () {
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'a barber-only booking sends barber_id, branch_id and services without a chair',
+      build: bloc,
+      act: (bloc) async {
+        bloc.add(
+          const BranchDetailStarted(
+            '1',
+            barberId: 'barber-1',
+            serviceIds: ['service-1'],
+          ),
+        );
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        bloc
+          ..add(BranchDetailDateChanged(DateTime.utc(2026, 9, 10)))
+          ..add(BranchDetailSlotSelected(testSlotStart()));
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        bloc.add(const BranchDetailBookingSubmitted());
+      },
+      wait: const Duration(milliseconds: 50),
+      verify: (bloc) {
+        expect(bookings.createCalls, 1);
+        expect(bookings.lastBarberId, 'barber-1');
+        expect(bookings.lastBranchId, '1');
+        expect(bookings.lastChairId, isNull);
+        expect(bookings.lastServiceIds, ['service-1']);
+      },
+    );
+  });
+
   group('service gate', () {
     blocTest<BranchDetailBloc, BranchDetailState>(
       'without a service canSubmit is false and no booking is created',

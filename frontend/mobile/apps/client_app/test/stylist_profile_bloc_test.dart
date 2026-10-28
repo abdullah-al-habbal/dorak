@@ -76,4 +76,35 @@ void main() {
       expect: () => [],
     );
   });
+
+  group('booking selection', () {
+    blocTest<StylistProfileBloc, StylistProfileState>(
+      'toggling services gates canBook on a shop workplace',
+      build: bloc,
+      act: (bloc) => bloc
+        ..add(const StylistProfileStarted('barber-1'))
+        ..add(const StylistProfileServiceToggled('svc-1')),
+      wait: const Duration(milliseconds: 50),
+      verify: (bloc) {
+        expect(bloc.state.selectedServiceIds, ['svc-1']);
+        expect(bloc.state.bookingBranchId, 'branch-1');
+        expect(bloc.state.canBook, isTrue);
+      },
+    );
+
+    blocTest<StylistProfileBloc, StylistProfileState>(
+      'a freelancer without a shop cannot book',
+      build: bloc,
+      setUp: () =>
+          explore.barberDetail = testBarberProfile(workplaces: const []),
+      act: (bloc) => bloc
+        ..add(const StylistProfileStarted('barber-1'))
+        ..add(const StylistProfileServiceToggled('svc-1')),
+      wait: const Duration(milliseconds: 50),
+      verify: (bloc) {
+        expect(bloc.state.bookingBranchId, isNull);
+        expect(bloc.state.canBook, isFalse);
+      },
+    );
+  });
 }

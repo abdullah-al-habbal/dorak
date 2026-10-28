@@ -123,7 +123,7 @@ codeanchors:
 
 ## Phase 14 — Mobile (P1–P2)
 - [x] Task 78: Fix Client Booking Flow Defects -> [Spec](tasks/task-78-client-booking-flow-fixes.md)
-- [ ] Task 79: Add Client Barber Discovery and Direct Booking -> [Spec](tasks/task-79-client-barber-discovery.md)
+- [x] Task 79: Add Client Barber Discovery and Direct Booking -> [Spec](tasks/task-79-client-barber-discovery.md) — [NEEDSHIL] freelancer-only booking entry pending a product decision
 - [ ] Task 80: Wire Unwired Client Features -> [Spec](tasks/task-80-client-unwired-features.md)
 - [ ] Task 81: Clean Up Client Auth Flows -> [Spec](tasks/task-81-client-auth-cleanup.md)
 - [ ] Task 82: Build Stylist App Shell (Login, Router, Session) -> [Spec](tasks/task-82-stylist-app-shell.md)

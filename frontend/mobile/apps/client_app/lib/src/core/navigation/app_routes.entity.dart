@@ -37,7 +37,21 @@ class AppRoutes {
   static const String bookingTrackerSegment = ':bookingId/tracker';
   static const String bookingDetailsSegment = 'details/:bookingId';
 
+  static const String barberQueryKey = 'barberId';
+  static const String servicesQueryKey = 'serviceIds';
+
   static String branchDetail(String branchId) => '$discover/branch/$branchId';
+  static String branchBooking(
+    String branchId, {
+    required String barberId,
+    required List<String> serviceIds,
+  }) => Uri(
+    path: branchDetail(branchId),
+    queryParameters: {
+      barberQueryKey: barberId,
+      servicesQueryKey: serviceIds.join(','),
+    },
+  ).toString();
   static String barberDetail(String barberId) => '$discover/barber/$barberId';
 
   static String reviewDetail(String bookingId) =>

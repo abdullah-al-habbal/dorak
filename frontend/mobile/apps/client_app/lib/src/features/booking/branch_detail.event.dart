@@ -9,12 +9,18 @@ sealed class BranchDetailEvent extends Equatable {
 }
 
 class BranchDetailStarted extends BranchDetailEvent {
-  const BranchDetailStarted(this.branchId);
+  const BranchDetailStarted(
+    this.branchId, {
+    this.barberId,
+    this.serviceIds = const [],
+  });
 
   final String branchId;
+  final String? barberId;
+  final List<String> serviceIds;
 
   @override
-  List<Object?> get props => [branchId];
+  List<Object?> get props => [branchId, barberId, serviceIds];
 }
 
 class BranchDetailChairSelected extends BranchDetailEvent {

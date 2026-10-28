@@ -1388,6 +1388,18 @@ abstract class AppLocalizations {
   /// **'Services'**
   String get stylistServicesTitle;
 
+  /// Button on the stylist profile that starts a booking with the selected services
+  ///
+  /// In en, this message translates to:
+  /// **'Book'**
+  String get stylistBookAction;
+
+  /// Shown when a stylist has no shop workplace to book through
+  ///
+  /// In en, this message translates to:
+  /// **'Booking is available for stylists who work at a shop'**
+  String get stylistBookUnavailableHint;
+
   /// Shown when a stylist has no services
   ///
   /// In en, this message translates to:

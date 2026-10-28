@@ -720,6 +720,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stylistServicesTitle => 'Services';
 
   @override
+  String get stylistBookAction => 'Book';
+
+  @override
+  String get stylistBookUnavailableHint =>
+      'Booking is available for stylists who work at a shop';
+
+  @override
   String get stylistNoServicesMessage => 'No services listed yet.';
 
   @override

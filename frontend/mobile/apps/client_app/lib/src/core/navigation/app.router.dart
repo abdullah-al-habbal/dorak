@@ -519,6 +519,8 @@ class AppRouter {
                 (bloc) => BranchDetailScreen(
                   bloc: bloc,
                   branchId: state.pathParameters['branchId'] ?? '',
+                  barberId: state.uri.queryParameters[AppRoutes.barberQueryKey],
+                  serviceIds: _serviceIdsFrom(state),
                   onLocaleToggle: switchLocale,
                   onViewBookings: () => router.go(AppRoutes.bookings),
                   onBarberSelected: (barberId) =>
@@ -539,6 +541,13 @@ class AppRouter {
                 bloc: bloc,
                 barberId: state.pathParameters['barberId'] ?? '',
                 onLocaleToggle: switchLocale,
+                onBook: (branchId, barberId, serviceIds) => router.push<void>(
+                  AppRoutes.branchBooking(
+                    branchId,
+                    barberId: barberId,
+                    serviceIds: serviceIds,
+                  ),
+                ),
               ),
             ),
           ),
@@ -546,6 +555,12 @@ class AppRouter {
       ),
     ],
   );
+
+  List<String> _serviceIdsFrom(GoRouterState state) {
+    final raw = state.uri.queryParameters[AppRoutes.servicesQueryKey];
+    if (raw == null || raw.isEmpty) return const [];
+    return raw.split(',');
+  }
 
   Widget _bookingRoute(
     GoRouterState state,

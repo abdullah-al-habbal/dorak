@@ -716,6 +716,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get stylistServicesTitle => 'الخدمات';
 
   @override
+  String get stylistBookAction => 'احجز';
+
+  @override
+  String get stylistBookUnavailableHint =>
+      'الحجز متاح للمصففين العاملين في صالون';
+
+  @override
   String get stylistNoServicesMessage => 'لا توجد خدمات بعد.';
 
   @override

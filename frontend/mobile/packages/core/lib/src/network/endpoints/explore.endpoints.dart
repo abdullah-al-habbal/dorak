@@ -5,5 +5,6 @@ class ExploreEndpoints {
   static const String branches = '/explore/branches';
   static const String barbers = '/explore/barbers';
   static const String branchDetail = '/explore/branches/{branch}';
+  static const String barberServices = '/barbers/{barber}/services';
   static const String barberDetail = '/explore/barbers/{barber}';
 }

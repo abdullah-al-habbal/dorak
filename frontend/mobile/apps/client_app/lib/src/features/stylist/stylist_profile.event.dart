@@ -19,3 +19,12 @@ class StylistProfileStarted extends StylistProfileEvent {
 class StylistProfileRetried extends StylistProfileEvent {
   const StylistProfileRetried();
 }
+
+class StylistProfileServiceToggled extends StylistProfileEvent {
+  const StylistProfileServiceToggled(this.serviceId);
+
+  final String serviceId;
+
+  @override
+  List<Object?> get props => [serviceId];
+}

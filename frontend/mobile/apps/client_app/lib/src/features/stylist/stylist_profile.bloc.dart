@@ -10,6 +10,7 @@ class StylistProfileBloc
     : super(StylistProfileState()) {
     on<StylistProfileStarted>(_onStarted);
     on<StylistProfileRetried>(_onRetried);
+    on<StylistProfileServiceToggled>(_onServiceToggled);
   }
 
   final ExploreRepository _explore;
@@ -45,6 +46,15 @@ class StylistProfileBloc
       if (emit.isDone) return;
       emit(state.copyWith(isLoading: false, error: error));
     }
+  }
+
+  void _onServiceToggled(
+    StylistProfileServiceToggled event,
+    Emitter<StylistProfileState> emit,
+  ) {
+    final selected = [...state.selectedServiceIds];
+    if (!selected.remove(event.serviceId)) selected.add(event.serviceId);
+    emit(state.copyWith(selectedServiceIds: selected));
   }
 
   Future<void> _onRetried(

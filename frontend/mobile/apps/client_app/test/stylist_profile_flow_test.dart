@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:client_app/src/core/navigation/app_routes.entity.dart';
+import 'package:client_app/src/features/booking/branch_detail.screen.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
 
 import 'helpers/fakes.dart';
@@ -46,6 +47,28 @@ void main() {
     router.router.go(AppRoutes.barberDetail('barber-1'));
     await tester.pumpAndSettle();
   }
+
+  group('stylist profile booking', () {
+    testWidgets('Book opens the branch booking route for the barber', (
+      tester,
+    ) async {
+      final bloc = StylistProfileBloc(exploreRepository, currencyRepository);
+      await loadBarberProfile(tester, bloc: bloc);
+
+      final book = find.widgetWithText(ElevatedButton, 'Book');
+      expect(tester.widget<ElevatedButton>(book).onPressed, isNull);
+
+      await tester.tap(find.byType(Checkbox).first);
+      await tester.pumpAndSettle();
+      expect(tester.widget<ElevatedButton>(book).onPressed, isNotNull);
+
+      await tester.ensureVisible(book);
+      await tester.tap(book);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BranchDetailScreen), findsOneWidget);
+    });
+  });
 
   group('stylist profile loaded', () {
     testWidgets('shows services, stats, at-home badge', (tester) async {

@@ -13,6 +13,8 @@ class StylistServiceCard extends StatelessWidget {
     required this.colors,
     required this.l10n,
     required this.localeCode,
+    required this.selected,
+    required this.onToggled,
   });
 
   final BarberServiceDto service;
@@ -20,6 +22,8 @@ class StylistServiceCard extends StatelessWidget {
   final DorakColors colors;
   final AppLocalizations l10n;
   final String localeCode;
+  final bool selected;
+  final VoidCallback onToggled;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,12 @@ class StylistServiceCard extends StatelessWidget {
       ),
       child: Row(
         children: [
+          Checkbox(
+            value: selected,
+            onChanged: (_) => onToggled(),
+            visualDensity: VisualDensity.compact,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

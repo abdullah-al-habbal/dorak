@@ -157,6 +157,7 @@ class _ExploreEndpoints {
   String get barbers => ExploreEndpoints.barbers;
   String branchDetail(String branchId) => ExploreEndpoints.branchDetail.replaceFirst('{branch}', branchId);
   String barberDetail(String barberId) => ExploreEndpoints.barberDetail.replaceFirst('{barber}', barberId);
+  String barberServices(String barberId) => ExploreEndpoints.barberServices.replaceFirst('{barber}', barberId);
 }
 
 class _FaceProfileEndpoints {

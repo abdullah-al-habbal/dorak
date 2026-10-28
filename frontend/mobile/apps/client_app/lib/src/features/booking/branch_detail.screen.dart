@@ -18,10 +18,14 @@ class BranchDetailScreen extends StatefulWidget {
     required this.onViewBookings,
     required this.onBarberSelected,
     required this.onFavorite,
+    this.barberId,
+    this.serviceIds = const [],
   });
 
   final BranchDetailBloc bloc;
   final String branchId;
+  final String? barberId;
+  final List<String> serviceIds;
   final VoidCallback onLocaleToggle;
   final VoidCallback onViewBookings;
   final void Function(String barberId) onBarberSelected;
@@ -35,7 +39,13 @@ class _BranchDetailScreenState extends State<BranchDetailScreen> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.add(BranchDetailStarted(widget.branchId));
+    widget.bloc.add(
+      BranchDetailStarted(
+        widget.branchId,
+        barberId: widget.barberId,
+        serviceIds: widget.serviceIds,
+      ),
+    );
   }
 
   @override

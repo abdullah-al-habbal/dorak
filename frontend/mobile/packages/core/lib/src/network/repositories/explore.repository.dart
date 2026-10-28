@@ -50,9 +50,26 @@ abstract class ExploreRepository {
     String? query,
   });
 
+  Future<PaginatedData<BarberProfileDto>> getBarbers({
+    required double latitude,
+    required double longitude,
+    required double radius,
+    required String universe,
+    int page = 1,
+    int perPage = 20,
+    List<int>? catalogItemIds,
+    bool? availableNow,
+    double? priceRangeMin,
+    double? priceRangeMax,
+    double? ratingMin,
+    String? query,
+  });
+
   Future<BranchDetailDto> getBranchDetail(String branchId);
 
   Future<BarberProfileDto> getBarberDetail(String barberId);
+
+  Future<List<BarberServiceDto>> getBarberServices(String barberId);
 }
 
 class DioExploreRepository implements ExploreRepository {
@@ -127,7 +144,7 @@ class DioExploreRepository implements ExploreRepository {
     );
   }
 
-  Future<RawPaginated<BranchDto>> _fetch({
+  Map<String, dynamic> _searchParams({
     required double latitude,
     required double longitude,
     required double radius,
@@ -174,6 +191,39 @@ class DioExploreRepository implements ExploreRepository {
     if (text != null && text.isNotEmpty) {
       params['q'] = text;
     }
+    return params;
+  }
+
+  Future<RawPaginated<BranchDto>> _fetch({
+    required double latitude,
+    required double longitude,
+    required double radius,
+    required String universe,
+    required int page,
+    required int perPage,
+    required List<int>? catalogItemIds,
+    required bool? availableNow,
+    required double? priceRangeMin,
+    required double? priceRangeMax,
+    required double? ratingMin,
+    required String? faceShapeCompatible,
+    required String? query,
+  }) {
+    final params = _searchParams(
+      latitude: latitude,
+      longitude: longitude,
+      radius: radius,
+      universe: universe,
+      page: page,
+      perPage: perPage,
+      catalogItemIds: catalogItemIds,
+      availableNow: availableNow,
+      priceRangeMin: priceRangeMin,
+      priceRangeMax: priceRangeMax,
+      ratingMin: ratingMin,
+      faceShapeCompatible: faceShapeCompatible,
+      query: query,
+    );
 
     return _apiClient.getRawPaginated<BranchDto>(
       ApiEndpoints.explore.branches,
@@ -224,6 +274,43 @@ class DioExploreRepository implements ExploreRepository {
   }
 
   @override
+  Future<PaginatedData<BarberProfileDto>> getBarbers({
+    required double latitude,
+    required double longitude,
+    required double radius,
+    required String universe,
+    int page = 1,
+    int perPage = 20,
+    List<int>? catalogItemIds,
+    bool? availableNow,
+    double? priceRangeMin,
+    double? priceRangeMax,
+    double? ratingMin,
+    String? query,
+  }) {
+    return _apiClient.getPaginated<BarberProfileDto>(
+      ApiEndpoints.explore.barbers,
+      queryParameters: _searchParams(
+        latitude: latitude,
+        longitude: longitude,
+        radius: radius,
+        universe: universe,
+        page: page,
+        perPage: perPage,
+        catalogItemIds: catalogItemIds,
+        availableNow: availableNow,
+        priceRangeMin: priceRangeMin,
+        priceRangeMax: priceRangeMax,
+        ratingMin: ratingMin,
+        faceShapeCompatible: null,
+        query: query,
+      ),
+      itemParser: (json) =>
+          BarberProfileDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
   Future<BranchDetailDto> getBranchDetail(String branchId) {
     return _apiClient.get<BranchDetailDto>(
       ApiEndpoints.explore.branchDetail(branchId),
@@ -236,6 +323,18 @@ class DioExploreRepository implements ExploreRepository {
     return _apiClient.get<BarberProfileDto>(
       ApiEndpoints.explore.barberDetail(barberId),
       parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  Future<List<BarberServiceDto>> getBarberServices(String barberId) {
+    return _apiClient.get<List<BarberServiceDto>>(
+      ApiEndpoints.explore.barberServices(barberId),
+      parser: (json) => (json as List<dynamic>)
+          .map(
+            (item) => BarberServiceDto.fromJson(item as Map<String, dynamic>),
+          )
+          .toList(),
     );
   }
 }

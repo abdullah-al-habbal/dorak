@@ -15,11 +15,14 @@ class StylistProfileScreen extends StatefulWidget {
     required this.bloc,
     required this.barberId,
     required this.onLocaleToggle,
+    required this.onBook,
   });
 
   final StylistProfileBloc bloc;
   final String barberId;
   final VoidCallback onLocaleToggle;
+  final void Function(String branchId, String barberId, List<String> serviceIds)
+  onBook;
 
   @override
   State<StylistProfileScreen> createState() => _StylistProfileScreenState();
@@ -66,7 +69,11 @@ class _StylistProfileScreenState extends State<StylistProfileScreen> {
           if (state.isLoading || state.profile == null) {
             return const AppLoader.page();
           }
-          return StylistProfileBody(bloc: widget.bloc, state: state);
+          return StylistProfileBody(
+            bloc: widget.bloc,
+            state: state,
+            onBook: widget.onBook,
+          );
         },
       ),
     );
