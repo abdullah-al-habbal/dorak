@@ -12,24 +12,14 @@ use Modules\Currency\Eloquent\Resolvers\Shared\ConvertCurrencyEloquentResolver;
 use Modules\Currency\ValuesObjects\DisplayPriceResult;
 use Modules\Preference\Models\PreferenceModel;
 
-/**
- * Converts a service/booking's base-currency price into the viewer's display
- * currency on the fly (D4), with dual-display and missing-rate (EC-15)
- * fallback handling. Never throws: a bad or unresolvable display currency
- * simply yields no conversion.
- */
 final readonly class PriceConverter
 {
-    public const string DISPLAY_CURRENCY_HEADER = 'X-Display-Currency';
+    public const DISPLAY_CURRENCY_HEADER = 'X-Display-Currency';
 
     public function __construct(
         private ConvertCurrencyEloquentResolver $resolver,
     ) {}
 
-    /**
-     * @return DisplayPriceResult|null null when the viewer has no resolvable
-     *                                 display currency, or it matches the base currency already.
-     */
     public function displayPriceFor(
         Request $request,
         float $basePrice,
