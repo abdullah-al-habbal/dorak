@@ -1,6 +1,6 @@
 ---
 nodeid: docs.remediation
-parentnode: docs.todowork
+parentnode: docs.graph
 childnodes:
   - docs.architecture
   - backend.docs
@@ -10,7 +10,7 @@ codeanchors:
 
 # MVP Alignment Remediation Plan
 
-> Planning snapshot: current task status and priority live in [`todowork.md`](todowork.md); use the [documentation graph](INDEX.md) to find current subsystem docs.
+> Planning snapshot: all tasks are complete; use the [documentation graph](INDEX.md) to find current subsystem docs.
 
 ## Phase 2: In-person payment policy
 

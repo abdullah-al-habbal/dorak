@@ -10,7 +10,7 @@ codeanchors:
 
 # Dorak Mobile — AI Execution Index
 
-Repository routes: [mobile guide](../AGENTS.md) · [documentation graph](../../../docs/INDEX.md) · [work tracker](../../../docs/todowork.md).
+Repository routes: [mobile guide](../AGENTS.md) · [documentation graph](../../../docs/INDEX.md).
 
 Repository: `dorak-mobile`
 Architecture contract: `/CLAUDE.md`
@@ -774,8 +774,7 @@ Verify:
 
 # 6. Current Execution Point
 
-**Mobile status (Task 87 sweep):** Tasks 78–86 are complete (see
-[`docs/todowork.md`](../../../docs/todowork.md)): client booking fixes, barber
+**Mobile status (Task 87 sweep):** Tasks 78–86 are complete: client booking fixes, barber
 discovery, wired client features and auth cleanup (78–81); stylist app shell and
 features — login, today list with cancel, schedule, portfolio, profile and
 travel radius, affiliations, jobs (82, 83); business app shell and features —

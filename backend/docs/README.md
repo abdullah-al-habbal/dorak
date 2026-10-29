@@ -9,7 +9,7 @@ codeanchors:
 
 # Dorak Backend — Product Documentation
 
-Repository routes: [backend guide](../AGENTS.md) · [documentation graph](../../docs/INDEX.md) · [work tracker](../../docs/todowork.md).
+Repository routes: [backend guide](../AGENTS.md) · [documentation graph](../../docs/INDEX.md).
 
 This folder is the **single source of truth** for the product *before any backend or database design begins*. It contains **no code, no SQL, and no real database ERD** — entities are described in **plain English as objects with attributes**, and an **abstract** relationship view is provided where diagrams help understanding.
 

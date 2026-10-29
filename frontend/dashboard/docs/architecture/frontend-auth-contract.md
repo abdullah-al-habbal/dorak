@@ -11,7 +11,7 @@ codeanchors:
 
 # Frontend authentication and portal contract
 
-Routes: [dashboard guide](../../AGENTS.md) · [documentation graph](../../../../docs/INDEX.md) · [work tracker](../../../../docs/todowork.md).
+Routes: [dashboard guide](../../AGENTS.md) · [documentation graph](../../../../docs/INDEX.md).
 
 ## Status
 

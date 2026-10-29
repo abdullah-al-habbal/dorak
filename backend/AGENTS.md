@@ -11,7 +11,7 @@ codeanchors:
 
 ## Quick start
 
-Documentation routes: [product documentation](docs/README.md) · [repository graph](../docs/INDEX.md) · [work tracker](../docs/todowork.md).
+Documentation routes: [product documentation](docs/README.md) · [repository graph](../docs/INDEX.md).
 
 ```bash
 composer setup          # install + .env + key:generate + migrate + npm

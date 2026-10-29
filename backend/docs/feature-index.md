@@ -150,7 +150,7 @@
 - Routes: jobs.php
 
 ### Frontend Consumption
-> ⚠️ **HISTORICAL:** the list below describes the pre-rebuild Flutter screens. The rebuilt apps (`client_app`, `business_app`, `stylist_app`) consume these endpoints through `packages/core` repositories; see `frontend/mobile/docs/index.md` and Tasks 78–86 in `docs/todowork.md` for the current screens.
+> ⚠️ **HISTORICAL:** the list below describes the pre-rebuild Flutter screens. The rebuilt apps (`client_app`, `business_app`, `stylist_app`) consume these endpoints through `packages/core` repositories; see `frontend/mobile/docs/index.md`for the current screens.
 - Brand list/detail screens (Flutter client app) — connected to Brand API (GET /brands, GET /brands/{id})
 - BarberAffiliation list/accept/reject screens (Flutter client app) — connected to BarberAffiliation API
 - JobPosting list/detail/apply screens (Flutter client app) — connected to JobPosting API
@@ -370,7 +370,7 @@ All backend features built, tested, and passing (343 tests, 0 failures).
 | BE-12 | ClientHistory Module (PRD Phase 2) | ✅ Complete | [BE-12](features/BE-12-client-history-module.md) |
 | BE-13 | ClientFaceProfile Module (PRD Phase 3) | ✅ Complete | [BE-13](features/BE-13-client-face-profile-module.md) |
 | BE-14 | ClientInteraction Module (PRD Phase 4) | ✅ Complete | [BE-14](features/BE-14-client-interaction-module.md) |
-| BE-15 | Recommendation Module (PRD Phase 5) | ✅ Complete (hardened by Tasks 46, 62; see `docs/todowork.md`) | [BE-15](features/BE-15-recommendation-module.md) |
+| BE-15 | Recommendation Module (PRD Phase 5) | ✅ Complete (hardened by Tasks 46, 62) | [BE-15](features/BE-15-recommendation-module.md) |
 | BE-16 | AI SDK & Embedding Storage (MySQL JSON; pgvector dropped, Task 63) | ✅ Complete | [BE-16](features/BE-16-ai-sdk-postgresql-setup.md) |
 | BE-17 | Explore Enhancements (Phase 5 Filters + Ranking) | ✅ Complete (global ranking: Task 46) | [BE-17](features/BE-17-explore-enhancements.md) |
 | BE-18 | Context-Driven Namespacing (Refactor) | ✅ Complete (conformance: Task 67) | [BE-18](features/BE-18-context-driven-namespacing.md) |

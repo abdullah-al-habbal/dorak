@@ -11,7 +11,7 @@ codeanchors:
 
 > Repo entry doc. Read `../AGENTS.md` first (skills, conventions, gaps).
 > State updated 2026-09-02 (Phase A complete), branch `dev`.
-> Historical backend work log. Current cross-repository status is tracked in [`docs/todowork.md`](../../docs/todowork.md); see the [documentation graph](../../docs/INDEX.md).
+> Historical backend work log. All planned tasks (1–87) are complete; see the [documentation graph](../../docs/INDEX.md).
 
 ## Phase A — Close the in-flight native-attribute refactor (P0) ✅ DONE 2026-09-02
 

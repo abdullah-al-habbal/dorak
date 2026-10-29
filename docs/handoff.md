@@ -7,12 +7,9 @@ make investigation fast and powerful without re-discovering the same facts.
 ## 1. Orient in this order
 
 1. `AGENTS.md` (repo root) — repo map, hard rules, doc index.
-2. The task spec under `docs/tasks/` (e.g.
-   `docs/tasks/task-21-slot-availability-endpoint.md`) — full scope and
-   acceptance criteria. This is the source of truth.
-3. `docs/todowork.md` — the work tracker, one checkbox per task.
-4. `docs/decisions-required.md` — open product decisions tagged by task.
-5. The relevant subsystem guide and its child guides:
+2. The user's request, with its scope and acceptance criteria, as the source of truth.
+3. `docs/decisions-required.md` — open product decisions tagged by task.
+4. The relevant subsystem guide and its child guides:
    - Backend: `backend/AGENTS.md` + `backend/CLAUDE.md`.
    - Dashboard: `frontend/dashboard/AGENTS.md` + `CLAUDE.md`.
    - Mobile: `frontend/mobile/AGENTS.md` + the unit's own `AGENTS.md`/`CLAUDE.md`.
@@ -43,7 +40,6 @@ Fixed sections, kept scannable:
 
 ```
 Task: 21 — done, commit 72548fa6, tree clean
-Spec: docs/tasks/task-21-slot-availability-endpoint.md
 Decisions: min lead time 0 (docs/decisions-required.md)
 Core files:
   backend/modules/Booking/Eloquent/Resolvers/Shared/ListSlotsEloquentResolver.php
@@ -103,9 +99,7 @@ Next: Task 22 — must re-check the slot endpoint against hours/schedule
 
 - Confirm every acceptance criterion and every applicable gate with real
   command output. Never claim a gate passed without seeing it exit 0.
-- Update the task checkbox in `docs/todowork.md` only after completion, and
-  record resolved decisions in both `docs/decisions-required.md` and the task
-  spec.
+- Record resolved decisions in `docs/decisions-required.md` once the work is complete.
 - Commit locally with a conventional message that includes the task number
   (e.g. `feat(booking): ... (Task 21)`). Never push, never use `--no-verify`,
   never stage unrelated work.

@@ -8,10 +8,8 @@ files in that area.
 ## Start here
 
 - Read [README.md](README.md) for the project map and local setup.
-- For planned work, read [the work tracker](docs/todowork.md), the complete
-  linked specification under `docs/tasks/`, and
-  [open decisions](docs/decisions-required.md). Update the relevant decision
-  record and task specification when a decision is resolved.
+- For planned work, read [open decisions](docs/decisions-required.md) and
+  update the relevant decision record when a decision is resolved.
 - Use [the documentation index](docs/INDEX.md) to find maintained product,
   architecture, and engineering documentation.
 - Before changing a subsystem, read its guide:
@@ -34,8 +32,8 @@ files in that area.
 - Preserve subsystem boundaries and existing API contracts. Do not invent
   endpoints or move application code into shared mobile packages.
 - Add focused regression coverage for changed behavior and run the checks
-  required by the subsystem guide and task specification. Mark a task complete
-  only after its acceptance criteria and required gates pass.
+  required by the subsystem guide. Mark work complete only after its
+  acceptance criteria and required gates pass.
 - Each subsystem guide carries its own security and code-quality governance
   (authorization/ownership checks, type-safety rules, file/method size limits,
   magic-literal and data-clump avoidance, UI performance rules) — read
@@ -56,8 +54,8 @@ files in that area.
 
 - Prefer the reusable
   [Dorak task executor](.claude/skills/monorepo-task-executor/SKILL.md) for
-  document-routed task work: audit the spec, implement the vertical slice, run
-  the applicable gates, then mark the task `[x]` in `docs/todowork.md` only on
+  engineering task work: audit the request, implement the vertical slice, run
+  the applicable gates, and call the work done only on
   evidence.
 - When the user types `/graphify`, invoke the Skill tool with
   `skill: "graphify"` before doing anything else.
@@ -67,4 +65,4 @@ files in that area.
 - `backend/` — Laravel modular monolith and API.
 - `frontend/dashboard/` — Next.js operations dashboard and backend-for-frontend.
 - `frontend/mobile/` — Flutter apps and shared Dart workspace packages.
-- `docs/` — cross-project task specifications, decisions, and architecture docs.
+- `docs/` — cross-project decisions and architecture docs.

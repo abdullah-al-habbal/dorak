@@ -1,6 +1,6 @@
 ---
 nodeid: docs.architecture
-parentnode: docs.todowork
+parentnode: docs.graph
 childnodes:
   - backend.docs
   - dashboard.guide
@@ -14,7 +14,7 @@ codeanchors:
 
 # Dorak MVP Architecture
 
-Routes: [documentation graph](INDEX.md) · [work tracker](todowork.md) · [deployment guide](DEPLOYMENT_GUIDE.md).
+Routes: [documentation graph](INDEX.md) · [deployment guide](DEPLOYMENT_GUIDE.md).
 
 ## E2E booking flow
 

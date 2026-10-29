@@ -6,7 +6,7 @@ Walk every row for every task. Change the layer, or write down why it needs no c
 | --- | --- |
 | Backend | Actions, requests, handlers, resolvers/services, models, policies, events, jobs, enums, lang files (en + ar), migrations, other routes reaching the same rule |
 | API contract | Payload fields, validation rules, status codes, error `code` strings, `errors`/`meta` shape, auth guard, idempotency |
-| Docs | Task spec (decision, implemented contract, ticked criteria), `docs/decisions-required.md`, `docs/todowork.md`, `backend/docs/feature-index.md`, specs of dependent tasks the work overtakes |
+| Docs | `docs/decisions-required.md`, `backend/docs/feature-index.md`, and any doc the work overtakes |
 | Dashboard | Zod schemas, payload mappers, forms/components, BFF pass-through, en + ar dictionaries, Vitest |
 | Mobile | `core` repositories/DTOs/exceptions, blocs/state, screens, `localization` ARBs + regenerated output, all three apps (`client_app`, `business_app`, `stylist_app`) and shared packages, tests |
 | Tests | Backend Pest (allowed, rejected, side effects), Dashboard Vitest/lint/typecheck/build, Mobile `melos verify` |

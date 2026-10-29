@@ -14,9 +14,7 @@ architecture is documented in
 [`docs/FRONTEND_ARCHITECTURE.md`](FRONTEND_ARCHITECTURE.md), implementation
 status lives in
 [`frontend/dashboard/EXECUTION_PLAN.md`](../frontend/dashboard/EXECUTION_PLAN.md),
-and cross-repository work status lives in
-[`docs/todowork.md`](todowork.md). Use the [documentation graph](INDEX.md) to
+and all planned tasks are complete. Use the [documentation graph](INDEX.md) to
 find other maintained documents.
 
-Status (Task 87): dashboard Tasks 68–77 are complete; their per-task status is
-in [`docs/todowork.md`](todowork.md).
+Status (Task 87): dashboard Tasks 68–77 are complete.

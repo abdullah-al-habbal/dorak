@@ -12,7 +12,7 @@ codeanchors:
 
 # Dorak Operations — AI Agent Rules
 
-Documentation routes: [execution plan](EXECUTION_PLAN.md) · [repository graph](../../docs/INDEX.md) · [work tracker](../../docs/todowork.md).
+Documentation routes: [execution plan](EXECUTION_PLAN.md) · [repository graph](../../docs/INDEX.md).
 
 > Multi-actor operations platform · Next.js · Tailwind CSS · React Aria · TanStack Query
 

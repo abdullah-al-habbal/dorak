@@ -7,10 +7,8 @@ specific; read it before changing files in that area.
 ## Start here
 
 - Read [README.md](README.md) for the project map and local setup.
-- For planned work, read [the work tracker](docs/todowork.md), the complete
-  linked specification under `docs/tasks/`, and
-  [open decisions](docs/decisions-required.md). Update the relevant decision
-  record and task specification when a decision is resolved.
+- For planned work, read [open decisions](docs/decisions-required.md) and
+  update the relevant decision record when a decision is resolved.
 - Use [the documentation index](docs/INDEX.md) to find maintained product,
   architecture, and engineering documentation.
 - Before changing a subsystem, read its guide:
@@ -33,12 +31,12 @@ specific; read it before changing files in that area.
 - Preserve subsystem boundaries and existing API contracts. Do not invent
   endpoints or move application code into shared mobile packages.
 - Add focused regression coverage for changed behavior and run the checks
-  required by the subsystem guide and task specification. Mark a task complete
-  only after its acceptance criteria and required gates pass.
+  required by the subsystem guide. Mark work complete only after its
+  acceptance criteria and required gates pass.
 - Preserve unrelated working-tree changes. Never use destructive Git commands.
   Do not push or change remotes unless the user explicitly requests it.
 - Prefer the reusable [Dorak task executor](.claude/skills/monorepo-task-executor/SKILL.md)
-  for document-routed task work.
+  for engineering task work.
 - When the user types `/graphify`, invoke the available Skill tool with
   `skill: "graphify"` before doing anything else.
 
@@ -47,4 +45,4 @@ specific; read it before changing files in that area.
 - `backend/` — Laravel modular monolith and API.
 - `frontend/dashboard/` — Next.js operations dashboard and backend-for-frontend.
 - `frontend/mobile/` — Flutter apps and shared Dart workspace packages.
-- `docs/` — cross-project task specifications, decisions, and architecture docs.
+- `docs/` — cross-project decisions and architecture docs.

@@ -11,7 +11,7 @@ codeanchors:
 
 > Repo entry doc. Read `../AGENTS.md` → `CLAUDE.md` → `docs/index.md` first.
 > Updated 2026-09-02 — Track 10 done, Discovery scoped. Branch `main`.
-> Historical mobile execution snapshot. Current cross-repository status is tracked in [`docs/todowork.md`](../../../docs/todowork.md); see the [documentation graph](../../../docs/INDEX.md).
+> Historical mobile execution snapshot. All planned tasks (1–87) are complete; see the [documentation graph](../../../docs/INDEX.md).
 
 ## Phase C — Re-baseline + pick next work ✅ BASELINED 2026-09-02
 

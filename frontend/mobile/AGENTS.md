@@ -19,7 +19,7 @@ The Dart source carries almost no comments by design. Rationale lives here. If
 you are about to "clean up" something that looks odd, check §9 first — most of
 it is deliberate.
 
-Documentation routes: [mobile documentation](docs/index.md) · [repository graph](../../docs/INDEX.md) · [work tracker](../../docs/todowork.md).
+Documentation routes: [mobile documentation](docs/index.md) · [repository graph](../../docs/INDEX.md).
 
 ## 1. Read order
 

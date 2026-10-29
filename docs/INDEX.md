@@ -1,6 +1,6 @@
 ---
 nodeid: docs.graph
-parentnode: docs.todowork
+parentnode: repo.root
 childnodes:
   - backend.guide
   - dashboard.guide
@@ -14,12 +14,11 @@ codeanchors:
 
 # Documentation Graph
 
-> Repository-wide documentation router. The canonical work queue and graph root is [`docs/todowork.md`](todowork.md).
+> Repository-wide documentation router. The graph root is the repository [`index.md`](../index.md).
 > Follow the folder node for a subsystem, then choose a document leaf. All maintained Markdown documents in this repository are listed below.
 
 ## Graph roots
 
-- [Work and task specifications](todowork.md) — root node, project status, and task routes.
 - [Repository rules](../index.md) — root-level orientation and subsystem entry points.
 - [Backend](../backend/README.md) — Laravel service and product docs.
 - [Dashboard](../frontend/dashboard/AGENTS.md) — Next.js application.
@@ -29,8 +28,7 @@ codeanchors:
 
 ```mermaid
 graph TD
-  root[docs/todowork.md] --> graph[docs/INDEX.md]
-  root --> tasks[docs/tasks/]
+  root[index.md] --> graph[docs/INDEX.md]
   graph --> repo[Repository-wide Markdown nodes]
   repo --> backend[backend/]
   repo --> dashboard[frontend/dashboard/]
@@ -234,186 +232,6 @@ Entries are grouped by their repository-relative folder. Each linked file is a l
 - [Mvp Gap Analysis And Monorepo Roadmap](mvp-gap-analysis-and-monorepo-roadmap.md)
 
 - [Remediation Plan](REMEDIATION_PLAN.md)
-
-### `docs/tasks/`
-
-- [Task 01 Affiliation Ownership](tasks/task-01-affiliation-ownership.md) · routed from [todowork](todowork.md)
-
-- [Task 02 Client History Ownership](tasks/task-02-client-history-ownership.md) · routed from [todowork](todowork.md)
-
-- [Task 03 Admin Api Guards](tasks/task-03-admin-api-guards.md) · routed from [todowork](todowork.md)
-
-- [Task 04 Service Catalog Authorization](tasks/task-04-service-catalog-authorization.md) · routed from [todowork](todowork.md)
-
-- [Task 05 Chair Barber Assignment Scope](tasks/task-05-chair-barber-assignment-scope.md) · routed from [todowork](todowork.md)
-
-- [Task 06 Job Application Status Authz](tasks/task-06-job-application-status-authz.md) · routed from [todowork](todowork.md)
-
-- [Task 07 Face Photo Privacy](tasks/task-07-face-photo-privacy.md) · routed from [todowork](todowork.md)
-
-- [Task 08 Ban Enforcement](tasks/task-08-ban-enforcement.md) · routed from [todowork](todowork.md)
-
-- [Task 09 Activation Status Visibility](tasks/task-09-activation-status-visibility.md) · routed from [todowork](todowork.md)
-
-- [Task 10 Dashboard Session Hardening](tasks/task-10-dashboard-session-hardening.md) · routed from [todowork](todowork.md)
-
-- [Task 11 Bff Proxy Method Allowlist](tasks/task-11-bff-proxy-method-allowlist.md) · routed from [todowork](todowork.md)
-
-- [Task 12 Branch Manager Scope](tasks/task-12-branch-manager-scope.md) · routed from [todowork](todowork.md)
-
-- [Task 13 Booking Completion Null Barber](tasks/task-13-booking-completion-null-barber.md) · routed from [todowork](todowork.md)
-
-- [Task 14 Catalog Id Contract](tasks/task-14-catalog-id-contract.md) · routed from [todowork](todowork.md)
-
-- [Task 15 Face Analysis Dispatch](tasks/task-15-face-analysis-dispatch.md) · routed from [todowork](todowork.md)
-
-- [Task 16 Fcm Http V1](tasks/task-16-fcm-http-v1.md) · routed from [todowork](todowork.md)
-
-- [Task 17 Backfill Feature Tests](tasks/task-17-backfill-feature-tests.md) · routed from [todowork](todowork.md)
-
-- [Task 18 Booking Lifecycle Service](tasks/task-18-booking-lifecycle-service.md) · routed from [todowork](todowork.md)
-
-- [Task 19 Rebook Via Booking Engine](tasks/task-19-rebook-via-booking-engine.md) · routed from [todowork](todowork.md)
-
-- [Task 20 Availability Semantics](tasks/task-20-availability-semantics.md) · routed from [todowork](todowork.md)
-
-- [Task 21 Slot Availability Endpoint](tasks/task-21-slot-availability-endpoint.md) · routed from [todowork](todowork.md)
-
-- [Task 22 Booking Hours Schedule Validation](tasks/task-22-booking-hours-schedule-validation.md) · routed from [todowork](todowork.md)
-
-- [Task 23 Booking Service Ownership](tasks/task-23-booking-service-ownership.md) · routed from [todowork](todowork.md)
-
-- [Task 24 Barber Booking Without Chair](tasks/task-24-barber-booking-without-chair.md) · routed from [todowork](todowork.md)
-
-- [Task 25 At Home Booking Rules](tasks/task-25-at-home-booking-rules.md) · routed from [todowork](todowork.md)
-
-- [Task 26 Client Booking List Statuses](tasks/task-26-client-booking-list-statuses.md) · routed from [todowork](todowork.md)
-
-- [Task 27 Chair Maintenance Conflicts](tasks/task-27-chair-maintenance-conflicts.md) · routed from [todowork](todowork.md)
-
-- [Task 28 Booking Notification Coverage](tasks/task-28-booking-notification-coverage.md) · routed from [todowork](todowork.md)
-
-- [Task 29 Client Realtime Channel](tasks/task-29-client-realtime-channel.md) · routed from [todowork](todowork.md)
-
-- [Task 30 Notification Delivery Records](tasks/task-30-notification-delivery-records.md) · routed from [todowork](todowork.md)
-
-- [Task 31 Domain Event Notifications](tasks/task-31-domain-event-notifications.md) · routed from [todowork](todowork.md)
-
-- [Task 32 Client Profile Endpoint](tasks/task-32-client-profile-endpoint.md) · routed from [todowork](todowork.md)
-
-- [Task 33 Auth Payload Email Reverification](tasks/task-33-auth-payload-email-reverification.md) · routed from [todowork](todowork.md)
-
-- [Task 34 Phone Otp Verification](tasks/task-34-phone-otp-verification.md) · routed from [todowork](todowork.md)
-
-- [Task 35 Password Recovery Code Verification](tasks/task-35-password-recovery-code-verification.md) · routed from [todowork](todowork.md)
-
-- [Task 36 Account Deletion Rules](tasks/task-36-account-deletion-rules.md) · routed from [todowork](todowork.md)
-
-- [Task 37 Barber Self Signup](tasks/task-37-barber-self-signup.md) · routed from [todowork](todowork.md)
-
-- [Task 38 Brand Owner Role](tasks/task-38-brand-owner-role.md) · routed from [todowork](todowork.md)
-
-- [Task 39 Review Subject Resolution](tasks/task-39-review-subject-resolution.md) · routed from [todowork](todowork.md)
-
-- [Task 40 Two Way Reviews Reputation](tasks/task-40-two-way-reviews-reputation.md) · routed from [todowork](todowork.md)
-
-- [Task 41 Review Dispute Workflow](tasks/task-41-review-dispute-workflow.md) · routed from [todowork](todowork.md)
-
-- [Task 42 Entity Rating Aggregates](tasks/task-42-entity-rating-aggregates.md) · routed from [todowork](todowork.md)
-
-- [Task 43 Explore Text Search](tasks/task-43-explore-text-search.md) · routed from [todowork](todowork.md)
-
-- [Task 44 Universe Unisex And Barber Filter](tasks/task-44-universe-unisex-and-barber-filter.md) · routed from [todowork](todowork.md)
-
-- [Task 45 Freelancers In Search](tasks/task-45-freelancers-in-search.md) · routed from [todowork](todowork.md)
-
-- [Task 46 Composite Ranking Ordering](tasks/task-46-composite-ranking-ordering.md) · routed from [todowork](todowork.md)
-
-- [Task 47 Discovery Preferences And Interaction Logging](tasks/task-47-discovery-preferences-and-interaction-logging.md) · routed from [todowork](todowork.md)
-
-- [Task 48 Branch Barber Detail Completeness](tasks/task-48-branch-barber-detail-completeness.md) · routed from [todowork](todowork.md)
-
-- [Task 49 Brand Creation Defaults](tasks/task-49-brand-creation-defaults.md) · routed from [todowork](todowork.md)
-
-- [Task 50 Brand Feature Flags](tasks/task-50-brand-feature-flags.md) · routed from [todowork](todowork.md)
-
-- [Task 51 Branch Storefront Fields](tasks/task-51-branch-storefront-fields.md) · routed from [todowork](todowork.md)
-
-- [Task 52 Settings Preferences Api](tasks/task-52-settings-preferences-api.md) · routed from [todowork](todowork.md)
-
-- [Task 53 Activation Management](tasks/task-53-activation-management.md) · routed from [todowork](todowork.md)
-
-- [Task 54 Barber Profile And Services Api](tasks/task-54-barber-profile-and-services-api.md) · routed from [todowork](todowork.md)
-
-- [Task 55 Affiliation Lifecycle](tasks/task-55-affiliation-lifecycle.md) · routed from [todowork](todowork.md)
-
-- [Task 56 Job Board Completion](tasks/task-56-job-board-completion.md) · routed from [todowork](todowork.md)
-
-- [Task 57 Currency Client Conversion](tasks/task-57-currency-client-conversion.md) · routed from [todowork](todowork.md)
-
-- [Task 58 Client History Completion](tasks/task-58-client-history-completion.md) · routed from [todowork](todowork.md)
-
-- [Task 59 Face Profile Lifecycle](tasks/task-59-face-profile-lifecycle.md) · routed from [todowork](todowork.md)
-
-- [Task 60 Favorites And Saved Filters Contract](tasks/task-60-favorites-and-saved-filters-contract.md) · routed from [todowork](todowork.md)
-
-- [Task 61 Service Catalog Completion](tasks/task-61-service-catalog-completion.md) · routed from [todowork](todowork.md)
-
-- [Task 62 Recommendation Pipeline Fixes](tasks/task-62-recommendation-pipeline-fixes.md) · routed from [todowork](todowork.md)
-
-- [Task 63 Pgvector Storage](tasks/task-63-pgvector-storage.md) · routed from [todowork](todowork.md)
-
-- [Task 64 Status Audit Trail](tasks/task-64-status-audit-trail.md) · routed from [todowork](todowork.md)
-
-- [Task 65 Monetization Analytics Apis](tasks/task-65-monetization-analytics-apis.md) · routed from [todowork](todowork.md)
-
-- [Task 66 Orphan Actions Cleanup](tasks/task-66-orphan-actions-cleanup.md) · routed from [todowork](todowork.md)
-
-- [Task 67 Context Namespacing Conformance](tasks/task-67-context-namespacing-conformance.md) · routed from [todowork](todowork.md)
-
-- [Task 68 Barber Workspace Cache Fix](tasks/task-68-barber-workspace-cache-fix.md) · routed from [todowork](todowork.md)
-
-- [Task 69 Barber Workspace Completion](tasks/task-69-barber-workspace-completion.md) · routed from [todowork](todowork.md)
-
-- [Task 70 Booking Detail And Status](tasks/task-70-booking-detail-and-status.md) · routed from [todowork](todowork.md)
-
-- [Task 71 List Search Filters](tasks/task-71-list-search-filters.md) · routed from [todowork](todowork.md)
-
-- [Task 72 Portal Home And Overview](tasks/task-72-portal-home-and-overview.md) · routed from [todowork](todowork.md)
-
-- [Task 73 Dashboard Token Refresh](tasks/task-73-dashboard-token-refresh.md) · routed from [todowork](todowork.md)
-
-- [Task 74 Branch Operations Bff Ui](tasks/task-74-branch-operations-bff-ui.md) · routed from [todowork](todowork.md)
-
-- [Task 75 Branch People Bff Ui](tasks/task-75-branch-people-bff-ui.md) · routed from [todowork](todowork.md)
-
-- [Task 76 Admin Moderation Ui](tasks/task-76-admin-moderation-ui.md) · routed from [todowork](todowork.md)
-
-- [Task 77 Catalog Brand Management Ui](tasks/task-77-catalog-brand-management-ui.md) · routed from [todowork](todowork.md)
-
-- [Task 78 Client Booking Flow Fixes](tasks/task-78-client-booking-flow-fixes.md) · routed from [todowork](todowork.md)
-
-- [Task 79 Client Barber Discovery](tasks/task-79-client-barber-discovery.md) · routed from [todowork](todowork.md)
-
-- [Task 80 Client Unwired Features](tasks/task-80-client-unwired-features.md) · routed from [todowork](todowork.md)
-
-- [Task 81 Client Auth Cleanup](tasks/task-81-client-auth-cleanup.md) · routed from [todowork](todowork.md)
-
-- [Task 82 Stylist App Shell](tasks/task-82-stylist-app-shell.md) · routed from [todowork](todowork.md)
-
-- [Task 83 Stylist App Features](tasks/task-83-stylist-app-features.md) · routed from [todowork](todowork.md)
-
-- [Task 84 Business App Shell](tasks/task-84-business-app-shell.md) · routed from [todowork](todowork.md)
-
-- [Task 85 Business App Features](tasks/task-85-business-app-features.md) · routed from [todowork](todowork.md)
-
-- [Task 86 Mobile Shared Packages Cleanup](tasks/task-86-mobile-shared-packages-cleanup.md) · routed from [todowork](todowork.md)
-
-- [Task 87 Docs Drift Reconciliation](tasks/task-87-docs-drift-reconciliation.md) · routed from [todowork](todowork.md)
-
-### `docs/`
-
-- [Todowork](todowork.md)
 
 ### `frontend/dashboard/`
 

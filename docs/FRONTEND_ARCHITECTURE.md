@@ -19,7 +19,7 @@ The implementation and its local contracts are the source of truth; this file
 routes contributors to those contracts rather than prescribing an unused
 directory blueprint.
 
-Routes: [dashboard guide](../frontend/dashboard/AGENTS.md) · [authentication contract](../frontend/dashboard/docs/architecture/frontend-auth-contract.md) · [documentation graph](INDEX.md) · [work tracker](todowork.md).
+Routes: [dashboard guide](../frontend/dashboard/AGENTS.md) · [authentication contract](../frontend/dashboard/docs/architecture/frontend-auth-contract.md) · [documentation graph](INDEX.md).
 
 ## Application structure
 
@@ -50,5 +50,4 @@ behavior stays consistent.
 Follow [frontend/dashboard/AGENTS.md](../frontend/dashboard/AGENTS.md) for
 current import, file taxonomy, styling, testing, and quality-gate requirements.
 The execution state is tracked in
-[`frontend/dashboard/EXECUTION_PLAN.md`](../frontend/dashboard/EXECUTION_PLAN.md)
-and the canonical repository tracker is [`docs/todowork.md`](todowork.md).
+[`frontend/dashboard/EXECUTION_PLAN.md`](../frontend/dashboard/EXECUTION_PLAN.md).

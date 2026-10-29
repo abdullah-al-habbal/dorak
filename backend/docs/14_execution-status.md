@@ -1,6 +1,6 @@
 # Dorak Platform — Execution Status
 
-> ⚠️ **HISTORICAL (updated 2026-09-02):** Frontend section superseded — Flutter frontend removed 2026-08-09, being rebuilt (new UI/UX). Backend test counts stale: actual = **500 passing** (was 463). The old completeness claim under "Remaining Work" was inaccurate and has been replaced by a pointer to `docs/todowork.md`.
+> ⚠️ **HISTORICAL (updated 2026-09-02):** Frontend section superseded — Flutter frontend removed 2026-08-09, being rebuilt (new UI/UX). Backend test counts stale: actual = **500 passing** (was 463). The old completeness claim under "Remaining Work" was inaccurate and has been replaced by a completion note.
 
 > **Last Updated:** 2026-07-25
 
@@ -115,8 +115,7 @@ Phase 3.4 (Business) ✅
 
 ## Remaining Work
 
-Historical snapshot (2026-07-25). Open and completed work is tracked in
-[`docs/todowork.md`](../../docs/todowork.md); this file no longer claims completeness.
+Historical snapshot (2026-07-25). All planned work (Tasks 1–87) is complete; this file no longer claims completeness.
 
 ### Optional Follow-ups
 1. Widget/integration tests (currently: entity unit tests only)

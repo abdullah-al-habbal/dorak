@@ -14,7 +14,7 @@ codeanchors:
 
 # Dorak Deployment and Handover Guide
 
-Routes: [documentation graph](INDEX.md) · [work tracker](todowork.md) · [architecture](ARCHITECTURE.md).
+Routes: [documentation graph](INDEX.md) · [architecture](ARCHITECTURE.md).
 
 ## Local startup
 

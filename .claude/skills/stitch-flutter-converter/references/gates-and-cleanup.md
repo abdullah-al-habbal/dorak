@@ -17,7 +17,7 @@ Run from `frontend/mobile/` (use `dart run melos run <script>`; `melos` is not o
 
 ## Docs to update
 - `docs/index.md` "Current Execution Point" and the track entry; `docs/feature-index.md`; `docs/navigation/routes.md` for new routes; the app/package `AGENTS.md` inventories and counts (ARB keys, widgets, tests).
-- Root `docs/` only if a backend contract or task spec changed (then use `monorepo-task-executor`).
+- Root `docs/` only if a backend contract changed.
 
 ## Cleanup (only after the gate is green)
 Delete the export folder (`DESIGN.md`, `plan.md`, `code.html`, `screen.png`) and any matching `.zip`. Order: verify, clean up, next export. Do not delete a folder whose screen is not integrated.

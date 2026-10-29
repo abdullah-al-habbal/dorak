@@ -1,4 +1,4 @@
-<!-- Append under the Full-Stack Scope of docs/tasks/task-NN-*.md -->
+<!-- Append under the Full-Stack Scope of the relevant doc -->
 ### Implemented contract
 - Shared code path: `<Class::method()>`, used by `<route/handler 1>`, `<route/handler 2>`, `<route/handler 3>`.
 - Scope of the rule: <predicate / statuses / when it applies and when it does not>.

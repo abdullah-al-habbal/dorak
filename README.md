@@ -11,9 +11,9 @@ workspace used by clients, branch teams, and stylists.
 | `backend/` | API, booking lifecycle, authorization, history, recommendations, and operations services | PHP 8.3+, Laravel 13, MySQL 8, Pest |
 | `frontend/dashboard/` | Admin, branch manager, and barber web portals; server-side API bridge | Next.js 16, React, TypeScript |
 | `frontend/mobile/` | Client, business, and stylist apps plus shared packages | Flutter, Dart, Melos |
-| `docs/` | Cross-project architecture, decisions, and task specifications | Markdown |
+| `docs/` | Cross-project architecture and decision records | Markdown |
 
-Start with [the task tracker](docs/todowork.md), [the documentation index](docs/INDEX.md),
+Start with [the documentation index](docs/INDEX.md),
 and the subsystem guides in each project directory.
 
 ## Architecture at a glance
@@ -121,8 +121,7 @@ workflow is documented in [the deployment guide](docs/DEPLOYMENT_GUIDE.md).
 
 Read [AGENTS.md](AGENTS.md) and the applicable subsystem guide before making
 changes. Follow the path/import rules there, preserve API and package
-boundaries, and update task and decision documentation when work changes their
-status. For tasks routed through `docs/tasks/`, use the reusable
-[monorepo task executor](.claude/skills/monorepo-task-executor/SKILL.md).
+boundaries, and update decision documentation when work changes their
+status.
 
 Keep local work local unless the user explicitly requests a remote Git action.

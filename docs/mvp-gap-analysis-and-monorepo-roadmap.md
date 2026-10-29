@@ -1,6 +1,6 @@
 ---
 nodeid: docs.gap_analysis
-parentnode: docs.todowork
+parentnode: docs.graph
 childnodes:
   - docs.architecture
   - docs.remediation
@@ -12,7 +12,7 @@ codeanchors:
 
 # MVP Gap Analysis and Monorepo Roadmap
 
-> Audit snapshot: the canonical current work queue is [`todowork.md`](todowork.md). Route to maintained project docs through the [documentation graph](INDEX.md).
+> Audit snapshot: all planned tasks (1–87) are complete. Route to maintained project docs through the [documentation graph](INDEX.md).
 
 ## Scope and audit status
 
