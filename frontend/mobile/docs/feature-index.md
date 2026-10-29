@@ -94,7 +94,6 @@
 - `src/core/navigation/app_gate.entity.dart` — post-splash decision (`AppGate.resolve`, a pure function called from `AppRouter._leaveSplash`): session first, onboarding flag second. See `docs/flows/app_launch.md`.
 
 ### Home
-- `home.screen.dart` — placeholder landing (`homeTitle`), real dashboard TBD. No logout affordance yet.
 
 ### Discovery Feed — Stitch 016 (CL-09) ✅ Complete
 - `DiscoveryBloc` + filter entity over `Paged<BranchDto>` + `FeedCache`; `DiscoveryScreen` with filter bar + result cards on the Discover tab; guest Book Now raises `RequireAuthentication`.

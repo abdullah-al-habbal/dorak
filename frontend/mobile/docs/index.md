@@ -77,8 +77,7 @@ frontend/mobile/
 ├── packages/
 │   ├── design_system/
 │   ├── localization/
-│   ├── core/
-│   └── feature_floor_plan/
+│   └── core/
 │
 ├── docs/
 └── CLAUDE.md

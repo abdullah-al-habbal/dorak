@@ -51,7 +51,7 @@ declare `shared_preferences` themselves.
 ### Session — `packages/core/lib/src/session/`
 
 **The canonical state contract is
-[`docs/state_management/conventions.md`](./docs/state_management/conventions.md)** —
+[`docs/state_management/conventions.md`](../../docs/state_management/conventions.md)** —
 Bloc/Event/State shape, `clearX` on every nullable field, loading vs submitting,
 retry, refresh, pagination, concurrency latches, repository boundaries, and the
 bloc/navigation separation. Read it before adding or changing any bloc.

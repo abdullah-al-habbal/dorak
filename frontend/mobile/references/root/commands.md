@@ -16,10 +16,9 @@ dart run melos run test        # flutter test, every package
 dart run melos run verify      # all five, in order — the gate
 ```
 
-`verify` must exit 0 before any work is called done. Current baseline
-(re-baselined 2026-09-14): 7 packages analyze clean, taxonomy passes,
-**288 tests pass** (121 core, 153 client_app, 14 design_system, 1 each for
-business_app, stylist_app, localization, feature_floor_plan).
+`verify` must exit 0 before any work is called done. All 6 workspace members (3 apps, 3 packages) analyze clean,
+taxonomy passes and every test passes. Test counts are not pinned here — read them
+from the latest `verify` run.
 
 After editing an ARB file run `generate`. After editing a DTO run `build`.
 

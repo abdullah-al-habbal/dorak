@@ -25,7 +25,6 @@ lib/src/features/
                                   + password_recovery bloc/event/state (011–014)
                                   + change_password bloc/event/state + screen (Track 17)
   onboarding/                     4 screens + 9 widgets + config bloc
-  home/                           home.screen.dart (superseded placeholder, unused)
   discovery/                      discovery.{bloc,event,state}.dart + filter entity + screen + 2 widgets (016 feed)
   booking/                        booking.{bloc,event,state}.dart + screen + card (017a list/cancel)
                                   branch_detail.{bloc,event,state}.dart + screen + FloorPlanGrid widget (017b detail/create)
@@ -52,9 +51,6 @@ assets/images/                    noise_overlay.png, onboarding_hero.jpg
 
 - Onboarding screens 002–005 lay out in a non-scrolling `Column` and clip on
   short viewports.
-- `HomeScreen` is a single `Text`, superseded by the Discovery feed on the
-  Discover tab — no app bar, no navigation, no account or logout affordance.
-  The file is unused.
 - `README.md` is untouched Flutter template boilerplate.
 - Locale toggle is in-memory and resets on restart.
 

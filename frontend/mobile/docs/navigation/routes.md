@@ -33,7 +33,7 @@ listener. **Routing lives in the router, never in a screen or a bloc.**
 /auth/forgot-password/otp        -> push /auth/reset-password on codeAccepted
 /auth/reset-password             (parent: /auth)  -> push .../success on passwordReset
 /auth/reset-password/success     -> go /auth/login  (go, so the stack is dropped)
-/home                            HomeScreen (placeholder)
+/home                            legacy alias -> redirects to the shell (Discover tab)
 ```
 
 Password recovery (Stitch 011–014) is driven by `RecoverySignal`, a third one-shot

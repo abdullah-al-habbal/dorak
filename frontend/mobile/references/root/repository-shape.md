@@ -7,13 +7,12 @@ Dart pub workspace + Melos. Everything lives under `frontend/mobile/`.
 ```
 apps/
   client_app/      end-user app — feature-rich reference application
-  business_app/    operations application shell; feature work remains open
-  stylist_app/     stylist application shell; feature work remains open
+  business_app/    branch operations, jobs, floor plan, affiliations, profile, reviews
+  stylist_app/     today list, cancel, schedule, portfolio, profile, affiliations, jobs
 packages/
   core/            networking, storage, session, DTOs, config
   design_system/   tokens, theme, shared widgets
   localization/    ARB + generated AppLocalizations (en, ar)
-  feature_floor_plan/  empty stub
 docs/              specs, flows, tracks, Stitch exports
 tool/              check_taxonomy.dart
 ```

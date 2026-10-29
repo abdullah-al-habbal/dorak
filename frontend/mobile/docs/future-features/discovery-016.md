@@ -52,7 +52,7 @@ contract as every other envelope endpoint.
 | Price display | No field | Price **filter** works server-side; price **display** does not (no field). Keep the filter; no display |
 | "Ranked by Distance" | True — `orderBy('distance')` | Label is truthful; show it |
 | Book Now | Booking feature = Stitch 017, not built | `authentication_required` for guests; destination missing for both → placeholder action, recorded dependency |
-| View Map | No map infrastructure anywhere (no location pkg in workspace; `feature_floor_plan` is an empty stub) | Not rendered in V1. Recorded dependency (Track 13/14) |
+| View Map | No map infrastructure anywhere (no location package in the workspace) | Not rendered in V1. Recorded dependency (Track 13/14) |
 | Top bar language + account | Locale-switcher exists; account/profile screen doesn't | Language → existing `LocaleSwitcher`. Account → profile destination (below) |
 | 4-tab bottom nav | Nothing | See §3 |
 

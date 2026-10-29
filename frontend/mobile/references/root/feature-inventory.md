@@ -48,8 +48,7 @@ Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 - Logout UI. `SessionBloc` handles `LogoutRequested`; no affordance calls it.
 - DI container. Wiring is manual construction in `DorakApp.initState`.
 - Locale persistence. The toggle is in-memory and resets on restart.
-- `business_app` / `stylist_app` feature coverage remains open (Tasks 82–85);
-  both applications already have their shells.
+- `business_app` / `stylist_app` feature coverage is shipped (Tasks 82–85). Not built: stylist "request affiliation" (no branch picker endpoint) and the business floor-plan zone editor.
 - Design-system inputs, cards, chips, dialogs, app bars. Session-expired and
   authentication-required flows exist (Track 06/11), and Track 12 added the
   loading/empty/error/offline/retry state widgets — **consumed only by auth

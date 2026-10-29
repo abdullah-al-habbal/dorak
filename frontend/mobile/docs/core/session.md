@@ -191,9 +191,11 @@ imports app code and never navigates.
 
 ## Not yet implemented
 
-Password recovery (`forgotPassword` / `resetPassword` exist on the repository
-but no screen calls them), social login, `changePassword`, and profile
-endpoints. Logout has a bloc handler but no UI affordance.
+Social login and profile-edit endpoints. Password recovery and change-password
+are built in `client_app` (`password_recovery` and `change_password` blocs).
+`client_app` has no logout affordance: `SessionBloc` handles `LogoutRequested`
+but no client screen dispatches it (`business_app` exposes logout on the
+operations screen).
 
 ## Verification
 

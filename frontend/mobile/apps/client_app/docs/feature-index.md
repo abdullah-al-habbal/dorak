@@ -61,7 +61,6 @@
 - `lib/src/core/navigation/app_gate.entity.dart` — `AppGate.resolve`, a pure function called from `AppRouter._leaveSplash` once `session.ready` completes (session first, onboarding flag second). It is deliberately **not** in the redirect — the splash must hold for its animation.
 
 ### Home
-- `lib/src/features/home/home.screen.dart` — placeholder (`homeTitle`). Real dashboard TBD; no logout affordance yet.
 
 ### Tests
 - `test/widget_test.dart` — real `DorakApp` bootstrap: splash → gate → auth entry.

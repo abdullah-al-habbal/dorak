@@ -2,11 +2,9 @@ Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 
 ## 12. Testing conventions
 
-**288 tests pass** (121 in `core`, 153 in `client_app`, 14 in `design_system` —
-the Track 12 state-component suite plus the `locale_switcher` tests — plus 1
-smoke test each in `business_app`, `stylist_app`, `localization`,
-`feature_floor_plan`). Re-baselined via `dart run melos run verify`
-2026-09-14.
+The suite is the `dart run melos run test` target of `dart run melos run verify`; every
+unit carries its own tests, and `verify` must exit 0. Test counts are not pinned here
+(they go stale) — read them from the latest `verify` run.
 
 | File | Covers |
 |---|---|
