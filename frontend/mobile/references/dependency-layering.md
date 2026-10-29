@@ -9,16 +9,16 @@ The dependency graph enforces a strict **bottom-up unidirectional flow**. Higher
                   │   apps/*        │ (client_app, business_app, stylist_app)
                   └────────┬────────┘
                            │
-             ┌─────────────┼─────────────┐
-             ▼             ▼             ▼
-  ┌──────────────────┐ ┌──────┐ ┌─────────────────┐
-  │feature_floor_plan│ │ core │ │ design_system   │
-  └──────────┬───────┘ └───┬──┘ └─────────────────┘
-             │             │
-             ▼             │
-      ┌──────────────┐     │
-      │ localization │◄────┘
-      └──────────────┘
+                  ┌────────┴────────┐
+                  ▼                 ▼
+              ┌──────┐       ┌─────────────────┐
+              │ core │       │ design_system   │
+              └───┬──┘       └─────────────────┘
+                  │
+                  ▼
+           ┌──────────────┐
+           │ localization │
+           └──────────────┘
 
 ```
 

@@ -665,16 +665,6 @@ Entries are grouped by their repository-relative folder. Each linked file is a l
 
 - [Readme](../frontend/mobile/packages/design_system/README.md)
 
-### `frontend/mobile/packages/feature_floor_plan/`
-
-- [Agents](../frontend/mobile/packages/feature_floor_plan/AGENTS.md)
-
-- [Changelog](../frontend/mobile/packages/feature_floor_plan/CHANGELOG.md)
-
-- [Claude](../frontend/mobile/packages/feature_floor_plan/CLAUDE.md)
-
-- [Readme](../frontend/mobile/packages/feature_floor_plan/README.md)
-
 ### `frontend/mobile/packages/localization/`
 
 - [Agents](../frontend/mobile/packages/localization/AGENTS.md)

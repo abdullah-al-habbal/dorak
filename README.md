@@ -26,8 +26,8 @@ and the subsystem guides in each project directory.
   portals. Its server-side API bridge handles backend communication and
   dashboard sessions.
 - The mobile workspace contains `client_app`, `business_app`, and
-  `stylist_app`, with shared `core`, `design_system`, `localization`, and
-  `feature_floor_plan` packages. Package boundaries and the Dart file taxonomy
+  `stylist_app`, with shared `core`, `design_system`, and `localization`
+  packages. Package boundaries and the Dart file taxonomy
   are described in `frontend/mobile/AGENTS.md`.
 
 ## Prerequisites

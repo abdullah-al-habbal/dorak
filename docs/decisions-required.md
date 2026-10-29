@@ -204,4 +204,4 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] Decision resolved (T83-2): the cancel request field is `cancellation_reason` (backend `CancelBarberBookingRequest`), not the spec's `reason`; the backend contract wins. Reason is required and trimmed client-side; cancel is offered for `pending` and `confirmed` bookings only.
 
 ## [Task 86: Clean Up Shared Mobile Packages](tasks/task-86-mobile-shared-packages-cleanup.md)
-- [ ] **Decision required:** either (a) move the floor-plan widgets from `client_app` into `feature_floor_plan` so `business_app` can reuse them for floor-plan configuration (Task 85), or (b) delete the package and remove it from the `workspace:` list. Do not leave it empty.
+- [x] Decision resolved (T86-1): option (b), delete `packages/feature_floor_plan` and its `workspace:` entry. The client floor-plan widgets stay in `client_app` (the repo rule keeps application code out of shared mobile packages), and the Task 85 floor-plan screen is preset-only, so nothing needs to share them. Revisit only if a visual zone editor is ever specced.

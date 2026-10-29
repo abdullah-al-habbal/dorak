@@ -130,7 +130,7 @@ codeanchors:
 - [x] Task 83: Build Stylist App Features -> [Spec](tasks/task-83-stylist-app-features.md)
 - [x] Task 84: Build Business App Shell (Login, Router, Session) -> [Spec](tasks/task-84-business-app-shell.md)
 - [x] Task 85: Build Business App Features -> [Spec](tasks/task-85-business-app-features.md)
-- [ ] Task 86: Clean Up Shared Mobile Packages -> [Spec](tasks/task-86-mobile-shared-packages-cleanup.md)
+- [x] Task 86: Clean Up Shared Mobile Packages -> [Spec](tasks/task-86-mobile-shared-packages-cleanup.md)
 
 ## Phase 15 — Documentation (P3)
 - [ ] Task 87: Reconcile Spec and Status Docs with Code -> [Spec](tasks/task-87-docs-drift-reconciliation.md)

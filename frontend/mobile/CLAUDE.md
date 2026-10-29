@@ -29,7 +29,6 @@ codeanchors:
 > | `packages/core` | [`CLAUDE`](./packages/core/CLAUDE.md) | [`AGENTS`](./packages/core/AGENTS.md) |
 > | `packages/design_system` | [`CLAUDE`](./packages/design_system/CLAUDE.md) | [`AGENTS`](./packages/design_system/AGENTS.md) |
 > | `packages/localization` | [`CLAUDE`](./packages/localization/CLAUDE.md) | [`AGENTS`](./packages/localization/AGENTS.md) |
-> | `packages/feature_floor_plan` | [`CLAUDE`](./packages/feature_floor_plan/CLAUDE.md) | [`AGENTS`](./packages/feature_floor_plan/AGENTS.md) |
 >
 > A child never relaxes a parent rule. Where it is silent, the parent applies.
 

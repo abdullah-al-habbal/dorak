@@ -22,7 +22,7 @@ Permitted: third-party packages, and `localization` if a genuine need arises
 Forbidden, without exception:
 
 - `design_system` — core must never know about colours, typography or widgets.
-- `feature_floor_plan` or any other feature package.
+- Any feature package.
 - **Any `apps/*` import.** If core needs something from an app, the design is
   wrong: invert it with a callback or an abstract contract.
 

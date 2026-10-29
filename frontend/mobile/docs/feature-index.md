@@ -47,9 +47,6 @@
 - `notification.repository.dart` — `NotificationRepository` + `DioNotificationRepository` (Task 30): paged inbox, mark one read, mark all read.
 - `notifications/notification_target.entity.dart` — `NotificationTarget.fromPayload(type:, data:)` resolves inbox or FCM payloads to `review|booking|invite|application|unknown` (never throws); `PushNotificationService.opened` / `takeInitialTarget()` expose tapped pushes (Task 31). stylist_app and business_app map them through their own `notification_location.entity.dart` to the landing screen until Tasks 83/85 add invite/application screens.
 
-### feature_floor_plan
-- Stub only — `feature_floor_plan.dart` barrel, no implementation yet.
-
 ---
 
 ## Client App (`apps/client_app`)
@@ -190,7 +187,7 @@ All Flutter features built, verified, and passing the gate (`melos run verify`: 
 | FE-09 | Onboarding — AI Showcase | client_app | ✅ Complete | Stitch 005 |
 | FE-10 | Onboarding Infrastructure (config fetch, skip sheet, flow) | client_app | ✅ Complete | — |
 | FE-11 | Home placeholder | client_app | ✅ Complete | — |
-| FE-12 | Floor Plan package | feature_floor_plan | ⏸ Stub | Track pending |
+| FE-12 | Floor Plan package | — | Removed (Task 86): client widgets stay in `client_app` | — |
 | FE-13 | Storage (secure token + preferences) | core | ✅ Complete | Track 05 |
 | FE-14 | Session management (`SessionBloc`) | core | ✅ Complete | Track 06 |
 | FE-15 | Auth repository (full endpoint surface) | core | ✅ Complete | Track 06 |

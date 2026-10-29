@@ -23,13 +23,19 @@ Two shared-package artifacts mislead contributors:
 - None.
 
 ### Mobile (Flutter / Repositories)
-- **Decision required:** either (a) move the floor-plan widgets from `client_app` into `feature_floor_plan` so `business_app` can reuse them for floor-plan configuration (Task 85), or (b) delete the package and remove it from the `workspace:` list. Do not leave it empty.
+- **Decision (T86-1, resolved): delete the package (option b).** Chosen by the product owner; recommended because Task 85 shipped a preset-only floor-plan screen and the repo rule keeps application code out of shared mobile packages.
 - Delete `endpoints.barrel.dart`, or make it complete and route `network.barrel.dart` through it. Keep exactly one export path for endpoints.
 
 ## Acceptance Criteria
-- [ ] Either `feature_floor_plan` contains the floor-plan widgets with tests and is a dependency of `client_app` (and `business_app` if used), or the directory and its workspace entry are removed.
-- [ ] Exactly one barrel exports all 15 endpoint files, verified by a test or script that compares the barrel exports against the `endpoints/` directory listing.
-- [ ] `melos run bootstrap`, `melos run analyze` and `melos run test` pass.
+- [x] Either `feature_floor_plan` contains the floor-plan widgets with tests and is a dependency of `client_app` (and `business_app` if used), or the directory and its workspace entry are removed.
+- [x] Exactly one barrel exports all 15 endpoint files, verified by a test or script that compares the barrel exports against the `endpoints/` directory listing.
+- [x] `melos run bootstrap`, `melos run analyze` and `melos run test` pass.
+
+### Implemented contract
+- Removed `frontend/mobile/packages/feature_floor_plan` and its `workspace:` entry; updated README, `docs/INDEX.md`, mobile `CLAUDE.md`, core/localization guides, `references/dependency-layering.md` and `docs/feature-index.md`.
+- The existing `endpoints.barrel.dart` was already complete for the current 20 endpoint files (the spec's "15" and "4 of 15" are stale); it is now the single export path: `network.barrel.dart` exports only the barrel instead of 20 duplicate lines.
+- `packages/core/test/endpoints_barrel_test.dart` compares the barrel exports with the `endpoints/` directory listing and asserts `network.barrel.dart` reaches endpoints only through the barrel.
+- Backend and dashboard: unchanged.
 
 ## Out of Scope
 - New floor-plan features (Task 85 configuration screen; Task 20 availability semantics).

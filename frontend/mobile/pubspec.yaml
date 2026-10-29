@@ -12,7 +12,6 @@ workspace:
   - packages/design_system
   - packages/core
   - packages/localization
-  - packages/feature_floor_plan
 
 melos:
   name: dorak_mobile

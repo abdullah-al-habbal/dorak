@@ -14,7 +14,7 @@ the generated `AppLocalizations` class.
 
 Permitted: `flutter`, `flutter_localizations`, `intl`. Nothing else.
 
-Forbidden: `core`, `design_system`, `feature_floor_plan`, any `apps/*` import.
+Forbidden: `core`, `design_system`, any `apps/*` import.
 This package must stay independently reusable — it is the leaf of the
 dependency graph.
 

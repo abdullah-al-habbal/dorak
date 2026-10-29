@@ -4,8 +4,9 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 - **`AuthInterceptor` only installs when `tokenProvider != null`.** Omitting it
   silently produces unauthenticated requests with no error.
-- **`endpoints.barrel.dart` is orphaned** — `network.barrel.dart` exports both
-  endpoint files directly. Do not rely on the barrel.
+- **`endpoints.barrel.dart` is the only export path for endpoint files** —
+  `network.barrel.dart` exports just the barrel. Add a new `*.endpoints.dart`
+  to the barrel or `test/endpoints_barrel_test.dart` fails.
 - **`register()` must send `password_confirmation`.** The backend applies
   Laravel's `confirmed` rule; omitting it 422s every signup.
 - **Logout and verify return no `data` key.** Use a parser that ignores its
