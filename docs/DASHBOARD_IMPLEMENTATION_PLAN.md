@@ -17,3 +17,6 @@ status lives in
 and cross-repository work status lives in
 [`docs/todowork.md`](todowork.md). Use the [documentation graph](INDEX.md) to
 find other maintained documents.
+
+Status (Task 87): dashboard Tasks 68–77 are complete; their per-task status is
+in [`docs/todowork.md`](todowork.md).

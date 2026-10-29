@@ -31,11 +31,16 @@ Status and spec documents claim completeness or contracts that the code does not
 - Update `frontend/mobile/docs/index.md` feature status to match Tasks 78–86.
 
 ## Acceptance Criteria
-- [ ] Every item listed under Evidence is corrected or explicitly marked historical, with a link to the relevant task in `docs/todowork.md`.
-- [ ] `grep -rn "Remaining Work" backend/docs` no longer returns "None".
-- [ ] No doc under `backend/docs/features/` claims `DB_CONNECTION=pgsql` unless `.env.example` matches.
-- [ ] Each "✅ Complete" row in `backend/docs/feature-index.md` maps to a task whose checkbox in `docs/todowork.md` is ticked.
-- [ ] Docs-only change: the backend test suite and `melos run analyze` are unaffected.
+- [x] Every item listed under Evidence is corrected or explicitly marked historical, with a link to the relevant task in `docs/todowork.md`.
+- [x] `grep -rn "Remaining Work" backend/docs` no longer returns "None".
+- [x] No doc under `backend/docs/features/` claims `DB_CONNECTION=pgsql` unless `.env.example` matches.
+- [x] Each "✅ Complete" row in `backend/docs/feature-index.md` maps to a task whose checkbox in `docs/todowork.md` is ticked.
+- [x] Docs-only change: the backend test suite and `melos run analyze` are unaffected.
+
+### Implemented contract
+- Corrected: `14_execution-status.md` (Remaining Work now points to `docs/todowork.md`), `feature-index.md` (guard list adds `branch_api`/`admin_api`; BE-15..19 rows reference Tasks 46/62/63/67/32/33; Frontend Consumption marked historical with pointers), `BE-01` guards, `BE-03` radius/universe required, `BE-16` (MySQL, pgvector dropped per Task 63), `BE-17` UUID catalog ids, `02_prd.md` (Task 14 note), `12_implementation-prd.md` B-column rows, `backend/docs/actionable-plan.md` B4, recommendation kanban note, dashboard `EXECUTION_PLAN.md` / `DASHBOARD_IMPLEMENTATION_PLAN.md`, mobile `docs/index.md`.
+- Already correct when audited (earlier tasks fixed them): review subject line (Task 39), BE-04 floor-plan query params (`starts_at`, `duration`), BE-18 module-count claim (Task 67), and the root `docs/actionable-plan.md` (no stub/A-B claim present).
+- Docs only: backend, dashboard and mobile code unchanged.
 
 ## Out of Scope
 - Code changes (Tasks 01–86).

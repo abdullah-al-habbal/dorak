@@ -34,8 +34,10 @@ Commit `3269f0c` (refactor) + `a43a45f` (skills) + `f8ad394` (docs).
       issues deliberately untouched). No closure needed. `docs/16` itself was
       extended with the production/main isolation decision (commit `f8ad394`)
 - [ ] B4: Genuine gaps — record only, do NOT start:
-      `modules/ClientFaceProfile/Jobs/AnalyzeFacePhotoJob.php` is an MVP stub,
-      A/B testing framework, Phase 3 "Power & Polish", ~8 open product
+      (updated by Task 87: the face-analysis pipeline exists —
+      `ClientFaceProfile/Services/FaceAnalysisService.php`, dispatched on upload since Task 15 —
+      and Pennant A/B exists in `ClientRecommendation/Features/ExploreRankingFeature.php`)
+      Phase 3 "Power & Polish", ~8 open product
       decisions (see `AGENTS.md` → `docs/02_prd.md` §5 + §8).
 
 ## Verification (each task)

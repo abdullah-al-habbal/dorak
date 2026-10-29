@@ -29,7 +29,7 @@
 | `radius` | float | yes | km, min: 0 |
 | `universe` | string | yes | `UniverseEnum` value |
 | `per_page` | integer | no | 1–100, default: 20 |
-| `catalog_item_ids[]` | array | no | integers, exists in `service_catalog_items` |
+| `catalog_item_ids[]` | array | no | UUID strings, exists in `service_catalog_items` (Task 14) |
 | `available_now` | boolean | no | filters branches with unbooked chairs |
 | `price_range.min` | numeric | no | min: 0 |
 | `price_range.max` | numeric | no | min: 0 |
@@ -101,7 +101,7 @@
 | `longitude` | float | yes | between -180, 180 |
 | `radius` | float | yes | km, min: 0 |
 | `per_page` | integer | no | 1–100, default: 20 |
-| `catalog_item_ids[]` | array | no | integers, exists in `service_catalog_items` |
+| `catalog_item_ids[]` | array | no | UUID strings, exists in `service_catalog_items` (Task 14) |
 | `available_now` | boolean | no | filters barbers without active bookings |
 | `price_range.min` | numeric | no | min: 0 |
 | `price_range.max` | numeric | no | min: 0 |

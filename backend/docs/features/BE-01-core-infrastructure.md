@@ -8,7 +8,7 @@
 - `ApiResponseBodyValueObject` — standard response envelope: `{success, statusCode, code, message, timestamp, data, meta?, errors?}`
 - `BaseApiAction` + `ApiResponseTrait` — paginated/ok/created/error/validation helpers
 - `BaseModuleServiceProvider` — auto-mounts `Routes/Api/V1/*.php` at `/api/v1` with `['api']` middleware
-- Auth guards: `client` (sanctum), `barber` (sanctum), `barber_dashboard` (session), `branch` (session), `admin` (session)
+- Auth guards: `client` (sanctum), `barber` (sanctum), `barber_dashboard` (session), `branch` (session), `branch_api` (sanctum), `admin` (session), `admin_api` (sanctum)
 
 ## API Endpoints
 | Method | Endpoint | Auth | Action |

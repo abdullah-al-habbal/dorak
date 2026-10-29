@@ -13,6 +13,8 @@
 
 ---
 
+> Task 87 note: the original 🟢 markers were optimistic; the gaps (α redistribution, global ranking, recompute fixes, PRD §9 tests) were closed by Tasks 46 and 62, so the markers are accurate as of the final sweep.
+
 ### I-1: `recommendation_edges` table + `EdgeTypeEnum` + morph relations 🟢
 
 **Priority:** P0 · **Blocked by:** none · **User stories:** US-08

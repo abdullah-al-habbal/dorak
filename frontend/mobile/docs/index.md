@@ -775,6 +775,15 @@ Verify:
 
 # 6. Current Execution Point
 
+**Mobile status (Task 87 sweep):** Tasks 78–86 are complete (see
+[`docs/todowork.md`](../../../docs/todowork.md)): client booking fixes, barber
+discovery, wired client features and auth cleanup (78–81); stylist app shell and
+features — login, today list with cancel, schedule, portfolio, profile and
+travel radius, affiliations, jobs (82, 83); business app shell and features —
+job postings, floor-plan presets, affiliations, branch profile, reviews (84,
+85); `feature_floor_plan` removed and one endpoints barrel (86). The older
+per-stitch notes below are a chronological log.
+
 **Current Track:** **Stitch 020 / Client Review & Rating DONE 2026-09-14.** Core:
 `ReviewEndpoints` (`POST /client/bookings/{booking}/review`, `GET
 /branches/{branch}/reviews`), `ReviewDto` / `SubmitReviewDto` (codegen),

@@ -34,7 +34,7 @@
 - `ApiResponseBodyValueObject` — standard response shape `{success, statusCode, code, message, timestamp, data, meta?, errors?}`
 - `BaseApiAction` + `ApiResponseTrait` — paginated/ok/created/error/validation helpers
 - `BaseModuleServiceProvider` — auto-mounts `Routes/Api/V1/*.php` at `/api/v1` with `['api']` middleware
-- Auth guards: `client` (sanctum), `barber` (sanctum), `barber_dashboard` (session), `branch` (session), `admin` (session)
+- Auth guards: `client` (sanctum), `barber` (sanctum), `barber_dashboard` (session), `branch` (session), `branch_api` (sanctum), `admin` (session), `admin_api` (sanctum)
 - Dashboard brand owner (Task 38, ADR 0001): `POST /api/v1/dashboard/login` with `actor_type = owner` authenticates a client that owns ≥1 brand (enabled, verified, not banned); the client Sanctum token carries the `dashboard` ability and the claim `brand_id` + `brand_ids`. Owners operate on every branch of their brands (branches CRUD, bookings, chairs, services, stylists, overview) via `DashboardActor::scopedBranchIds()/canAccessBranch()/canManageBrand()`; other brands → 404 (reads) / 403 (writes). `GET dashboard/me` exposes `brand_id`/`brand_ids`.
 - `FcmNotificationSender` — sends per-device notifications through FCM HTTP v1 using a cached OAuth2 service-account token; prunes unregistered device tokens and retries transient failures; persists inbox and delivery records (Task 30)
 
@@ -150,7 +150,7 @@
 - Routes: jobs.php
 
 ### Frontend Consumption
-> ⚠️ **HISTORICAL (2026-08-09):** Flutter frontend removed + being rebuilt. These API endpoints remain the stable contract for the new client.
+> ⚠️ **HISTORICAL:** the list below describes the pre-rebuild Flutter screens. The rebuilt apps (`client_app`, `business_app`, `stylist_app`) consume these endpoints through `packages/core` repositories; see `frontend/mobile/docs/index.md` and Tasks 78–86 in `docs/todowork.md` for the current screens.
 - Brand list/detail screens (Flutter client app) — connected to Brand API (GET /brands, GET /brands/{id})
 - BarberAffiliation list/accept/reject screens (Flutter client app) — connected to BarberAffiliation API
 - JobPosting list/detail/apply screens (Flutter client app) — connected to JobPosting API
@@ -370,11 +370,11 @@ All backend features built, tested, and passing (343 tests, 0 failures).
 | BE-12 | ClientHistory Module (PRD Phase 2) | ✅ Complete | [BE-12](features/BE-12-client-history-module.md) |
 | BE-13 | ClientFaceProfile Module (PRD Phase 3) | ✅ Complete | [BE-13](features/BE-13-client-face-profile-module.md) |
 | BE-14 | ClientInteraction Module (PRD Phase 4) | ✅ Complete | [BE-14](features/BE-14-client-interaction-module.md) |
-| BE-15 | Recommendation Module (PRD Phase 5) | ✅ Complete | [BE-15](features/BE-15-recommendation-module.md) |
-| BE-16 | AI SDK & PostgreSQL Setup | ✅ Complete | [BE-16](features/BE-16-ai-sdk-postgresql-setup.md) |
-| BE-17 | Explore Enhancements (Phase 5 Filters + Ranking) | ✅ Complete | [BE-17](features/BE-17-explore-enhancements.md) |
-| BE-18 | Context-Driven Namespacing (Refactor) | ✅ Complete | [BE-18](features/BE-18-context-driven-namespacing.md) |
-| BE-19 | Profile Expand (Phone, Avatar, Soft Delete) | ✅ Complete | [BE-19](features/BE-19-profile-expand.md) |
+| BE-15 | Recommendation Module (PRD Phase 5) | ✅ Complete (hardened by Tasks 46, 62; see `docs/todowork.md`) | [BE-15](features/BE-15-recommendation-module.md) |
+| BE-16 | AI SDK & Embedding Storage (MySQL JSON; pgvector dropped, Task 63) | ✅ Complete | [BE-16](features/BE-16-ai-sdk-postgresql-setup.md) |
+| BE-17 | Explore Enhancements (Phase 5 Filters + Ranking) | ✅ Complete (global ranking: Task 46) | [BE-17](features/BE-17-explore-enhancements.md) |
+| BE-18 | Context-Driven Namespacing (Refactor) | ✅ Complete (conformance: Task 67) | [BE-18](features/BE-18-context-driven-namespacing.md) |
+| BE-19 | Profile Expand (Phone, Avatar, Soft Delete) | ✅ Complete (Tasks 32, 33) | [BE-19](features/BE-19-profile-expand.md) |
 
 ### Barber Panel (Filament)
 - `ProfileResource` — barber self-service profile (edit name, email, password)

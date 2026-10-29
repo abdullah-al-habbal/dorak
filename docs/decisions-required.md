@@ -163,7 +163,7 @@ Routes: [work tracker](todowork.md) · [task specifications](INDEX.md#document-n
 - [x] `backend/docs/features/BE-20-monetization.md` approved by the product owner on 2026-10-29 with the zero-hardcoding rule; Phase B built.
 
 ## [Task 67: Conform Modules to Context Namespacing](tasks/task-67-context-namespacing-conformance.md)
-- [ ] Decision required: whether Core base classes and middleware are exempt from BE-18. If they are, document the exemption in BE-18.
+- [x] Decision resolved (Task 87 sweep): Core base classes and middleware are exempt from BE-18; the exemption is documented in BE-18 and enforced by `HttpLayerContextNamespacingTest`.
 
 ## [Task 70: Wire Booking Detail Page and Full Status Set](tasks/task-70-booking-detail-and-status.md)
 - [x] Decision required: expose the allowed next statuses per booking in the booking resource (e.g. `allowed_transitions`), or hard-code the transition map in the UI. **Resolved: UI-side map** (`frontend/dashboard/src/services/api/dashboard/booking/booking-status-transitions.util.ts`), mirroring the backend's `BookingStatus::canTransitionTo`. See the task spec's decision note for the full reasoning (small, stable rule; backend already enforces it authoritatively; a resource field would ripple into every consumer, including mobile, for marginal benefit).

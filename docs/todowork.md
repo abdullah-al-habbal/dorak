@@ -133,4 +133,4 @@ codeanchors:
 - [x] Task 86: Clean Up Shared Mobile Packages -> [Spec](tasks/task-86-mobile-shared-packages-cleanup.md)
 
 ## Phase 15 — Documentation (P3)
-- [ ] Task 87: Reconcile Spec and Status Docs with Code -> [Spec](tasks/task-87-docs-drift-reconciliation.md)
+- [x] Task 87: Reconcile Spec and Status Docs with Code -> [Spec](tasks/task-87-docs-drift-reconciliation.md)

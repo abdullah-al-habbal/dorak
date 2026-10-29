@@ -146,7 +146,7 @@ These were open during brainstorming and are now **✅ decided**.
 - **No double‑booking (hard guarantee).** Concurrent attempts on the same chair + slot must resolve so that **exactly one** succeeds; the loser sees a clear "this seat was just taken." (Implementation note for engineering — *not part of these docs* — is row‑locking inside a transaction; captured here only as a **requirement**.)
 - **Bilingual everywhere** with graceful fallback (never show an empty label).
 - **Multi‑tenant isolation:** one brand can never see or affect another brand's data.
-- **Stable identifiers:** entities use non‑guessable identifiers suitable for public URLs/APIs.
+- **Stable identifiers:** entities use non‑guessable identifiers suitable for public URLs/APIs. (Task 14: the service-catalog tables were migrated from bigint to UUID ids to meet this.)
 - **Performance for discovery:** proximity search must feel instant on a typical phone.
 - **Auditability of affiliations & bookings:** status changes (invite → active → terminated; booked → completed/cancelled) are traceable.
 - **Reasonable resilience** for MVP — but **offline mode is explicitly out** for now (🔭).

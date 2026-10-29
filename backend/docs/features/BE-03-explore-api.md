@@ -122,8 +122,8 @@
 |-------|------|---------|-------|
 | `latitude` | float | required | User latitude |
 | `longitude` | float | required | User longitude |
-| `radius` | int | 50 | km |
-| `universe` | string | — | men/women (branches only) |
+| `radius` | float | required | km, min 0 |
+| `universe` | string | required | men/women (branches) |
 | `page` | int | 1 | Pagination |
 | `catalog_item_ids[]` | uuid[] | — | Filter by catalog items |
 | `available_now` | bool | — | Excludes a barber or branch chair with a pending, confirmed, or in-progress booking overlapping the next 15 minutes |

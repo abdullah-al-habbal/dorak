@@ -21,6 +21,7 @@ codeanchors:
 - [x] Phase 6 — Providers and data-access hardening
 - [x] Phase 7 — Final clean-slate cleanup and branding
 - [x] Phase 8 — Verification gates
+- [x] Post-plan work, Tasks 68–77 (see [`docs/todowork.md`](../../docs/todowork.md)): barber workspace cache/toggle and completion (68, 69), booking detail and full status set (70), list search/filters (71), portal home and overview (72), token refresh (73), branch operations (74), branch people (75), admin moderation (76), brand and catalog management (77)
 
 ## Phase 0 — Lock architecture contracts
 

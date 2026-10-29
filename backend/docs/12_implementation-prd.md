@@ -29,13 +29,13 @@ Each module may need Track A, Track B, or both:
 | Branch | Admin + Branch panels | (Explore covers read) | A ✅; B partial |
 | Barber | Admin + Barber panels | (Explore covers read) | A ✅; B partial |
 | Brand | Standard CRUD | **Needed** | A ✅; B ✅ (list, show) |
-| Chair | Standard CRUD | **Needed** | A ✅; B missing |
-| OfferedService | Standard CRUD | **Needed** | A ✅; B missing |
-| Currency + ExchangeRate | Standard CRUD (2 resources) | **Needed** | A ✅; B missing |
+| Chair | Standard CRUD | list, show, update | A ✅; B ✅ |
+| OfferedService | Standard CRUD | barber services CRUD, public list | A ✅; B ✅ |
+| Currency + ExchangeRate | Standard CRUD (2 resources) | list, exchange rates, convert | A ✅; B ✅ |
 | JobPosting + Application | Standard CRUD | **Needed** | A ✅; B ✅ (list, show, apply) |
 | BarberAffiliation | Standard CRUD | **Needed** | A ✅; B ✅ (create, accept, reject, list) |
-| Activation | Read-only + ToggleAction | **Needed** | A ✅; B missing |
-| Ban | Standard CRUD | **Needed** | A ✅; B missing |
+| Activation | Read-only + ToggleAction | barber/branch activate and deactivate | A ✅; B ✅ |
+| Ban | Standard CRUD | client ban check | A ✅; B ✅ |
 | Admin | Standard CRUD | — | A ✅ only |
 | Language | Standard CRUD | — | A ✅ only |
 | Preference | Standard CRUD | — | A ✅ only |
