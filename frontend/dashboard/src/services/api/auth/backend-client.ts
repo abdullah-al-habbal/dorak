@@ -10,9 +10,9 @@ import {
 import { devWarn } from "@/utils/dev-warn.util";
 import { hasFieldTypes } from "@/utils/guards.util";
 
-const BACKEND_TIMEOUT_MS = 15_000;
+const BACKEND_CLIENT_TIMEOUT_MS = 15_000;
 
-const ENVELOPE_FIELDS = {
+const BACKEND_CLIENT_ENVELOPE_FIELDS = {
   success: "boolean",
   statusCode: "number",
   code: "string",
@@ -21,7 +21,7 @@ const ENVELOPE_FIELDS = {
 } as const;
 
 function isApiEnvelope<TData>(payload: unknown): payload is ApiEnvelope<TData> {
-  return hasFieldTypes(payload, ENVELOPE_FIELDS);
+  return hasFieldTypes(payload, BACKEND_CLIENT_ENVELOPE_FIELDS);
 }
 
 function backendBaseUrl(): string {
@@ -41,7 +41,7 @@ export async function backendRequest<TData>(
       headers: jsonRequestHeaders(init),
       cache: "no-store",
       redirect: "manual",
-      signal: init?.signal ?? AbortSignal.timeout(BACKEND_TIMEOUT_MS),
+      signal: init?.signal ?? AbortSignal.timeout(BACKEND_CLIENT_TIMEOUT_MS),
     });
 
     if (isRedirectResponse(response)) {

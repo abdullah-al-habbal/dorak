@@ -1,4 +1,4 @@
-const DASHBOARD_ROUTE_RULES: ReadonlyArray<{
+const DASHBOARD_PROXY_ROUTE_RULES: ReadonlyArray<{
   method: string;
   path: RegExp;
 }> = [
@@ -104,12 +104,12 @@ export function isDashboardRouteAllowed(
   path: readonly string[],
 ): boolean {
   const joined = path.join("/");
-  return DASHBOARD_ROUTE_RULES.some(
+  return DASHBOARD_PROXY_ROUTE_RULES.some(
     (rule) => rule.method === method.toUpperCase() && rule.path.test(joined),
   );
 }
 
-const PAGED_ADMIN_LISTS = [
+const DASHBOARD_PAGED_ADMIN_LISTS = [
   "reviews",
   "catalog-items",
   "subscription-plans",
@@ -118,15 +118,21 @@ const PAGED_ADMIN_LISTS = [
   "commission-entries",
   "payouts",
 ];
-const PAGED_BRANCH_SUBRESOURCES = ["reviews", "affiliations", "job-postings"];
+const DASHBOARD_PAGED_BRANCH_SUBRESOURCES = [
+  "reviews",
+  "affiliations",
+  "job-postings",
+];
 
 /** Whether a proxied list response carries backend pagination meta. */
 export function isDashboardPagedPath(path: readonly string[]): boolean {
   if (path.length === 1) return path[0] !== "overview";
   if (path[0] === "admin")
-    return path.length === 2 && PAGED_ADMIN_LISTS.includes(path[1] ?? "");
+    return (
+      path.length === 2 && DASHBOARD_PAGED_ADMIN_LISTS.includes(path[1] ?? "")
+    );
   if (path[0] !== "branches") return false;
   if (path.length === 3)
-    return PAGED_BRANCH_SUBRESOURCES.includes(path[2] ?? "");
+    return DASHBOARD_PAGED_BRANCH_SUBRESOURCES.includes(path[2] ?? "");
   return path.length === 5 && path[4] === "applications";
 }

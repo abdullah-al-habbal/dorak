@@ -19,12 +19,12 @@ final readonly class RecommendationFactorWeightsValueObject
 
     public static function defaults(): self
     {
-        return self::fromArray(RecommendationConstants::DEFAULT_WEIGHTS);
+        return self::fromArray(RecommendationConstants::RECOMMENDATION_DEFAULT_WEIGHTS);
     }
 
     public static function fromArray(array $data): self
     {
-        $defaults = RecommendationConstants::DEFAULT_WEIGHTS;
+        $defaults = RecommendationConstants::RECOMMENDATION_DEFAULT_WEIGHTS;
 
         $total = (float) ($data['alpha'] ?? $defaults['alpha'])
             + (float) ($data['beta'] ?? $defaults['beta'])

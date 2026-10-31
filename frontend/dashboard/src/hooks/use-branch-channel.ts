@@ -4,7 +4,7 @@ import { realtimeEcho } from "@/services/realtime/echo-client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-const BOOKING_EVENTS = [
+const BRANCH_CHANNEL_BOOKING_EVENTS = [
   ".booking.created",
   ".booking.status.updated",
   ".booking.cancelled",
@@ -23,7 +23,8 @@ export function useBranchChannel(branchId: string | null) {
       queryClient.invalidateQueries({ queryKey: ["dashboard", "overview"] });
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
     };
-    for (const event of BOOKING_EVENTS) channel.listen(event, refresh);
+    for (const event of BRANCH_CHANNEL_BOOKING_EVENTS)
+      channel.listen(event, refresh);
     return () => echo.leave(`private-branch.${branchId}`);
   }, [branchId, queryClient]);
 }

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Modules\Commission\Http\Requests\Admin;
 
 use Illuminate\Validation\Rule;
+use Modules\Commission\Constants\CommissionMoneyConstants;
 use Modules\Commission\CQRS\Command\SaveCommissionRuleCommand;
 use Modules\Commission\Enums\CommissionScope;
 use Modules\Commission\Enums\CommissionType;
-use Modules\Commission\Support\MinorUnits;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class SaveCommissionRuleRequest extends BaseApiFormRequest
@@ -31,7 +31,7 @@ final class SaveCommissionRuleRequest extends BaseApiFormRequest
             'type' => ['required', Rule::enum(CommissionType::class)],
             'value' => [
                 'required', 'integer', 'min:1',
-                Rule::when($this->input('type') === CommissionType::Percent->value, ['max:'.MinorUnits::BASIS_POINTS_DENOMINATOR]),
+                Rule::when($this->input('type') === CommissionType::Percent->value, ['max:'.CommissionMoneyConstants::COMMISSION_MONEY_BASIS_POINTS_DENOMINATOR]),
             ],
             'currency_id' => [
                 Rule::requiredIf($this->input('type') === CommissionType::Flat->value),

@@ -10,21 +10,20 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Dashboard\Constants\DashboardEmailChangeConstants;
 use Modules\Dashboard\CQRS\Command\VerifyDashboardEmailChangeCommand;
 use Modules\Dashboard\Eloquent\Resolvers\Profile\DashboardEmailChangeEloquentResolver;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class VerifyDashboardEmailChangeHandler
 {
-    private const MAX_ATTEMPTS = 5;
-
     public function __construct(private readonly DashboardEmailChangeEloquentResolver $resolver) {}
 
     public function handle(AdminModel|BranchModel|BarberModel|ClientModel $model, DashboardActor $actor, VerifyDashboardEmailChangeCommand $command): bool
     {
         return DB::transaction(function () use ($model, $actor, $command): bool {
             $change = $this->resolver->find($actor);
-            if ($change === null || $change->expires_at->isPast() || $change->attempts >= self::MAX_ATTEMPTS) {
+            if ($change === null || $change->expires_at->isPast() || $change->attempts >= DashboardEmailChangeConstants::DASHBOARD_EMAIL_CHANGE_MAX_ATTEMPTS) {
                 return false;
             }
 

@@ -9,18 +9,17 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientFaceProfile\Constants\FaceProfilePhotoConstants;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
 
 #[Signature('face-profile:purge')]
 #[Description('Delete face profile photos of clients soft-deleted more than 30 days ago (FACE-3)')]
 final class PurgeFaceProfilePhotosCommand extends Command
 {
-    public const RETENTION_DAYS = 30;
-
     public function handle(): int
     {
         $clientIds = ClientModel::onlyTrashed()
-            ->where('deleted_at', '<=', now()->subDays(self::RETENTION_DAYS))
+            ->where('deleted_at', '<=', now()->subDays(FaceProfilePhotoConstants::FACE_PROFILE_PHOTO_RETENTION_DAYS))
             ->pluck('id');
 
         $purged = 0;
@@ -37,7 +36,7 @@ final class PurgeFaceProfilePhotosCommand extends Command
                 }
             });
 
-        $this->info("Purged {$purged} face profile photo(s) for clients deleted over ".self::RETENTION_DAYS.' days ago.');
+        $this->info("Purged {$purged} face profile photo(s) for clients deleted over ".FaceProfilePhotoConstants::FACE_PROFILE_PHOTO_RETENTION_DAYS.' days ago.');
 
         return self::SUCCESS;
     }

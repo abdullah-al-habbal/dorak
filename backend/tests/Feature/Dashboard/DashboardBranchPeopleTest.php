@@ -7,6 +7,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\JobPosting\Enums\ApplicationStatus;
 use Modules\JobPosting\Models\ApplicationModel;
@@ -23,7 +24,7 @@ function pendingAffiliationFor(BranchModel $branch, array $overrides = []): Barb
 
 function enableJobBoard(BranchModel $branch): void
 {
-    app(BrandFeatures::class)->set($branch->brand, [BrandFeatures::JOB_BOARD => true]);
+    app(BrandFeatures::class)->set($branch->brand, [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD => true]);
 }
 
 $posting = ['title' => ['en' => 'Barber', 'ar' => 'حلاق'], 'description' => ['en' => 'Cut hair', 'ar' => 'قص الشعر']];

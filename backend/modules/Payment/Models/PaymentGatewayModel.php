@@ -32,8 +32,6 @@ class PaymentGatewayModel extends Model
 {
     use HasFactory, HasTranslations, HasUuids;
 
-    public const string DRIVER_OFFLINE = 'offline';
-
     protected function casts(): array
     {
         return [

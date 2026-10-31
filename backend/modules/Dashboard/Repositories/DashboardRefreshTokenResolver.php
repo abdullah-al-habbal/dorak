@@ -7,6 +7,8 @@ namespace Modules\Dashboard\Repositories;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Modules\Dashboard\Constants\DashboardActorConstants;
+use Modules\Dashboard\Constants\DashboardRefreshTokenConstants;
 use Modules\Dashboard\Models\DashboardRefreshTokenModel;
 use Modules\Dashboard\Support\DashboardActor;
 use RuntimeException;
@@ -17,14 +19,10 @@ final class DashboardRefreshTokenResolver
         private readonly DashboardOwnerActorResolver $ownerActors,
     ) {}
 
-    private const DefaultTtlSeconds = 2592000;
-
-    private const MinimumTtlSeconds = 3600;
-
     public function ttl(): int
     {
-        $ttl = config('dashboard.dashboard.refresh_ttl_seconds', self::DefaultTtlSeconds);
-        if (! is_int($ttl) || $ttl < self::MinimumTtlSeconds) {
+        $ttl = config('dashboard.dashboard.refresh_ttl_seconds', DashboardRefreshTokenConstants::DASHBOARD_REFRESH_TOKEN_DEFAULT_TTL_SECONDS);
+        if (! is_int($ttl) || $ttl < DashboardRefreshTokenConstants::DASHBOARD_REFRESH_TOKEN_MINIMUM_TTL_SECONDS) {
             throw new RuntimeException(__('dashboard::messages.refresh_ttl_invalid'));
         }
 
@@ -110,10 +108,10 @@ final class DashboardRefreshTokenResolver
     private function actorFromRecord(DashboardRefreshTokenModel $record): ?DashboardActor
     {
         return match ($record->actor_type) {
-            DashboardActor::ADMIN => new DashboardActor($record->actor_id, DashboardActor::ADMIN, 'platform_admin', null),
-            DashboardActor::BRANCH => new DashboardActor($record->actor_id, DashboardActor::BRANCH, 'branch_manager', $record->actor_id),
-            DashboardActor::BARBER => new DashboardActor($record->actor_id, DashboardActor::BARBER, 'barber', null),
-            DashboardActor::OWNER => $this->ownerActors->forClientId($record->actor_id),
+            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => new DashboardActor($record->actor_id, DashboardActorConstants::DASHBOARD_ACTOR_ADMIN, 'platform_admin', null),
+            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => new DashboardActor($record->actor_id, DashboardActorConstants::DASHBOARD_ACTOR_BRANCH, 'branch_manager', $record->actor_id),
+            DashboardActorConstants::DASHBOARD_ACTOR_BARBER => new DashboardActor($record->actor_id, DashboardActorConstants::DASHBOARD_ACTOR_BARBER, 'barber', null),
+            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => $this->ownerActors->forClientId($record->actor_id),
             default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $record->actor_type])),
         };
     }
@@ -121,10 +119,10 @@ final class DashboardRefreshTokenResolver
     private function guardFor(string $actorType): string
     {
         return match ($actorType) {
-            DashboardActor::ADMIN => 'admin_api',
-            DashboardActor::BRANCH => 'branch_api',
-            DashboardActor::BARBER => 'barber',
-            DashboardActor::OWNER => 'client',
+            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => 'admin_api',
+            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => 'branch_api',
+            DashboardActorConstants::DASHBOARD_ACTOR_BARBER => 'barber',
+            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => 'client',
             default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $actorType])),
         };
     }

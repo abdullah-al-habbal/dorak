@@ -22,7 +22,7 @@ abstract class FeedCache {
 }
 
 class SharedFeedCache implements FeedCache {
-  static const String _prefix = 'dorak_cache:v1:';
+  static const String _feedCacheKeyPrefix = 'dorak_cache:v1:';
 
   final SharedPreferences _prefs;
 
@@ -46,7 +46,7 @@ class SharedFeedCache implements FeedCache {
     final latitudeKey = _roundToThree(latitude);
     final longitudeKey = _roundToThree(longitude);
     final radiusBucket = (radius / 5).round() * 5;
-    return '$_prefix$universe:$latitudeKey:$longitudeKey:$radiusBucket:$perPage';
+    return '$_feedCacheKeyPrefix$universe:$latitudeKey:$longitudeKey:$radiusBucket:$perPage';
   }
 
   @override
@@ -82,7 +82,7 @@ class SharedFeedCache implements FeedCache {
   Future<void> clear() async {
     final keys = _prefs
         .getKeys()
-        .where((final key) => key.startsWith(_prefix))
+        .where((final key) => key.startsWith(_feedCacheKeyPrefix))
         .toList();
     for (final key in keys) {
       await _prefs.remove(key);

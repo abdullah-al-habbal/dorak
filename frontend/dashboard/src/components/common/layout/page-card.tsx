@@ -1,18 +1,18 @@
 import { cn } from "@/utils/cn.util";
 
-const PAGE_CARD_SIZES = {
+const LAYOUT_PAGE_CARD_SIZES = {
   md: { main: "", card: "max-w-md sm:p-8" },
   lg: { main: "lg:px-8", card: "max-w-4xl sm:p-10" },
 } as const;
 
 interface PageCardProps {
-  size: keyof typeof PAGE_CARD_SIZES;
+  size: keyof typeof LAYOUT_PAGE_CARD_SIZES;
   children: React.ReactNode;
 }
 
 /** Standalone (pre-portal) page: one centered surface card on the app background. */
 export function PageCard({ size, children }: PageCardProps) {
-  const classes = PAGE_CARD_SIZES[size];
+  const classes = LAYOUT_PAGE_CARD_SIZES[size];
 
   return (
     <main

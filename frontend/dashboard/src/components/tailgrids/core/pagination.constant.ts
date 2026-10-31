@@ -1,0 +1,1 @@
+export const PAGINATION_MAX_PAGES_SHOWN = 6;

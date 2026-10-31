@@ -4,11 +4,10 @@ import {
 } from "@/services/api/auth/actors.constant";
 import type { DashboardClaim } from "@/services/api/auth/types/auth.types";
 import { isOneOf, isRecord } from "@/utils/guards.util";
+import { AUTH_JWT_BACKEND_ISSUER } from "@/services/api/auth/jwt.constant";
 
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder("utf-8", { fatal: true });
-
-const BACKEND_ISSUER = "dorak-backend";
 
 function base64UrlToArrayBuffer(input: string): ArrayBuffer {
   if (!/^[A-Za-z0-9_-]+$/.test(input)) {
@@ -62,7 +61,7 @@ function hasExactDashboardClaimShape(claim: unknown): claim is DashboardClaim {
     !Number.isSafeInteger(issuedAt) ||
     !Number.isSafeInteger(expiresAt) ||
     expiresAt <= issuedAt ||
-    claim.iss !== BACKEND_ISSUER
+    claim.iss !== AUTH_JWT_BACKEND_ISSUER
   ) {
     return false;
   }

@@ -10,7 +10,7 @@ use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
 
 it('uses default weights ranking margin for explore barbers', function () {
-    Feature::define('explore-ranking', fn () => RecommendationConstants::EXPLORE_RANKING_VARIANT_DEFAULT);
+    Feature::define('explore-ranking', fn () => RecommendationConstants::RECOMMENDATION_EXPLORE_RANKING_VARIANT_DEFAULT);
 
     $client = ClientModel::factory()->create();
 
@@ -41,7 +41,7 @@ it('uses default weights ranking margin for explore barbers', function () {
 });
 
 it('applies factor-weights-v2 margin when feature is active for the client', function () {
-    Feature::define('explore-ranking', fn () => RecommendationConstants::EXPLORE_RANKING_VARIANT_FACTOR_WEIGHTS_V2);
+    Feature::define('explore-ranking', fn () => RecommendationConstants::RECOMMENDATION_EXPLORE_RANKING_VARIANT_FACTOR_WEIGHTS_V2);
 
     $client = ClientModel::factory()->create();
 

@@ -35,6 +35,9 @@ Before building, read `docs/02_prd.md` then `docs/feature-index.md` to see what 
   (already the convention — see `cqrs-pattern`).
 - No magic strings/numbers for statuses, codes, or thresholds — use a Backed Enum
   (`12StrictEnums`) or a named class constant.
+- Class constants live in `Modules\<Module>\Constants\<Domain>Constants` (shared values in
+  `Modules\Core\Constants`), never inside the consuming class. Name them `UPPER_SNAKE` with the
+  domain as prefix (`BRANCH_FLOOR_PLAN_MAX_CANVAS_SIZE`). Migration-local constants are the only exception.
 
 ## 🗺 Feature Index
 After adding a feature, append entry to `docs/feature-index.md`.

@@ -36,8 +36,14 @@ interface IFloorPlanEditorProps {
   floorPlan: IFloorPlan;
 }
 
-const NEW_ZONE = { zone: "shared", x: 0, y: 0, width: 50, height: 50 } as const;
-const NEW_DECORATION = {
+const FLOOR_PLAN_EDITOR_NEW_ZONE = {
+  zone: "shared",
+  x: 0,
+  y: 0,
+  width: 50,
+  height: 50,
+} as const;
+const FLOOR_PLAN_EDITOR_NEW_DECORATION = {
   type: "waiting_area",
   x: 0,
   y: 0,
@@ -160,7 +166,7 @@ export function FloorPlanEditor({ floorPlan }: IFloorPlanEditorProps) {
           type="button"
           appearance="outline"
           isDisabled={zones.fields.length >= FLOOR_PLAN_MAX_ZONES}
-          onPress={() => zones.append(NEW_ZONE)}
+          onPress={() => zones.append(FLOOR_PLAN_EDITOR_NEW_ZONE)}
         >
           {copy.addZone}
         </Button>
@@ -208,7 +214,7 @@ export function FloorPlanEditor({ floorPlan }: IFloorPlanEditorProps) {
           type="button"
           appearance="outline"
           isDisabled={decorations.fields.length >= FLOOR_PLAN_MAX_DECORATIONS}
-          onPress={() => decorations.append(NEW_DECORATION)}
+          onPress={() => decorations.append(FLOOR_PLAN_EDITOR_NEW_DECORATION)}
         >
           {copy.addDecoration}
         </Button>

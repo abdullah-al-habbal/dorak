@@ -91,7 +91,7 @@ final class ClientRecommendationEdgeRebuilder
             [
                 'weight' => $weight,
                 'computed_at' => now(),
-                'vector_version' => RecommendationConstants::VECTOR_VERSION,
+                'vector_version' => RecommendationConstants::RECOMMENDATION_VECTOR_VERSION,
             ]
         );
     }

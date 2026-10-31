@@ -33,9 +33,6 @@ class SubscriptionPlanModel extends Model
 {
     use HasFactory, HasTranslations, HasUuids, SoftDeletes;
 
-    /** @var list<string> */
-    public const array INTERVAL_UNITS = ['day', 'week', 'month', 'year'];
-
     protected function casts(): array
     {
         return [

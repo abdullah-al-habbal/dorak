@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
+use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Currency\Models\CurrencyModel;
@@ -20,7 +21,7 @@ function planPayload(array $overrides = []): array
         'interval_unit' => 'month',
         'interval_count' => 1,
         'is_active' => true,
-        'feature_keys' => [BrandFeatures::MULTI_BRANCH],
+        'feature_keys' => [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH],
         ...$overrides,
     ];
 }
@@ -35,10 +36,10 @@ describe('Subscription plans', function (): void {
             ->assertCreated()
             ->assertJsonPath('data.price_minor', 4900)
             ->assertJsonPath('data.interval_unit', 'month')
-            ->assertJsonPath('data.feature_keys', [BrandFeatures::MULTI_BRANCH]);
+            ->assertJsonPath('data.feature_keys', [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);
 
         expect(SubscriptionPlanModel::query()->count())->toBe(1);
-        $this->assertDatabaseHas('plan_features', ['feature_key' => BrandFeatures::MULTI_BRANCH]);
+        $this->assertDatabaseHas('plan_features', ['feature_key' => BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);
     });
 
     it('validates fields, interval unit and unknown feature keys', function (): void {
@@ -50,18 +51,18 @@ describe('Subscription plans', function (): void {
 
     it('updates a plan and re-maps its features', function (): void {
         $plan = SubscriptionPlanModel::factory()->create();
-        $plan->features()->create(['feature_key' => BrandFeatures::MULTI_BRANCH]);
+        $plan->features()->create(['feature_key' => BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);
 
         $this->putJson("/api/v1/dashboard/admin/subscription-plans/{$plan->id}", planPayload([
             'price_minor' => 9900,
             'currency_id' => $plan->currency_id,
-            'feature_keys' => [BrandFeatures::JOB_BOARD],
+            'feature_keys' => [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD],
         ]))
             ->assertOk()
             ->assertJsonPath('data.price_minor', 9900)
-            ->assertJsonPath('data.feature_keys', [BrandFeatures::JOB_BOARD]);
+            ->assertJsonPath('data.feature_keys', [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD]);
 
-        $this->assertDatabaseMissing('plan_features', ['plan_id' => $plan->id, 'feature_key' => BrandFeatures::MULTI_BRANCH]);
+        $this->assertDatabaseMissing('plan_features', ['plan_id' => $plan->id, 'feature_key' => BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);
     });
 
     it('lists and shows plans', function (): void {
@@ -101,17 +102,17 @@ describe('Brand subscriptions', function (): void {
 
     it('assigning a plan switches the mapped flags on and every other flag off', function (): void {
         $brand = BrandModel::factory()->create();
-        app(BrandFeatures::class)->set($brand, [BrandFeatures::JOB_BOARD => true]);
+        app(BrandFeatures::class)->set($brand, [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD => true]);
         $plan = SubscriptionPlanModel::factory()->create();
-        $plan->features()->create(['feature_key' => BrandFeatures::MULTI_BRANCH]);
+        $plan->features()->create(['feature_key' => BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);
 
         $this->postJson('/api/v1/dashboard/admin/subscriptions', ['brand_id' => $brand->id, 'plan_id' => $plan->id])
             ->assertCreated()
             ->assertJsonPath('data.status', 'active');
 
         expect(app(BrandFeatures::class)->all($brand))->toBe([
-            BrandFeatures::MULTI_BRANCH => true,
-            BrandFeatures::JOB_BOARD => false,
+            BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true,
+            BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD => false,
         ]);
     });
 
@@ -147,7 +148,7 @@ describe('Brand subscriptions', function (): void {
     it('moves through the state machine and revokes features on cancel', function (): void {
         $brand = BrandModel::factory()->create();
         $plan = SubscriptionPlanModel::factory()->create();
-        $plan->features()->create(['feature_key' => BrandFeatures::MULTI_BRANCH]);
+        $plan->features()->create(['feature_key' => BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);
         $subscription = BrandSubscriptionModel::factory()->create(['brand_id' => $brand->id, 'plan_id' => $plan->id]);
         $url = "/api/v1/dashboard/admin/subscriptions/{$subscription->id}/status";
 
@@ -156,23 +157,23 @@ describe('Brand subscriptions', function (): void {
         $this->patchJson($url, ['status' => 'pending'])->assertConflict();
         $this->patchJson($url, ['status' => 'bogus'])->assertUnprocessable();
 
-        app(BrandFeatures::class)->set($brand, [BrandFeatures::MULTI_BRANCH => true]);
+        app(BrandFeatures::class)->set($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true]);
         $this->patchJson($url, ['status' => 'canceled'])->assertOk()->assertJsonPath('data.status', 'canceled');
 
-        expect(app(BrandFeatures::class)->enabled($brand, BrandFeatures::MULTI_BRANCH))->toBeFalse();
+        expect(app(BrandFeatures::class)->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH))->toBeFalse();
         $this->patchJson($url, ['status' => 'active'])->assertConflict();
     });
 
     it('activates a pending subscription and grants its features', function (): void {
         $brand = BrandModel::factory()->create();
         $plan = SubscriptionPlanModel::factory()->create();
-        $plan->features()->create(['feature_key' => BrandFeatures::JOB_BOARD]);
+        $plan->features()->create(['feature_key' => BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD]);
         $subscription = BrandSubscriptionModel::factory()->create([
             'brand_id' => $brand->id, 'plan_id' => $plan->id, 'status' => SubscriptionStatus::Pending,
         ]);
 
         $this->patchJson("/api/v1/dashboard/admin/subscriptions/{$subscription->id}/status", ['status' => 'active'])->assertOk();
 
-        expect(app(BrandFeatures::class)->enabled($brand, BrandFeatures::JOB_BOARD))->toBeTrue();
+        expect(app(BrandFeatures::class)->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD))->toBeTrue();
     });
 });

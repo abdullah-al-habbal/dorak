@@ -4,6 +4,7 @@ import { cn } from "@/utils/cn.util";
 import { ArrowLeft, ArrowRight } from "@tailgrids/icons";
 import { cva } from "class-variance-authority";
 import { Button } from "@/components/tailgrids/core/button";
+import { PAGINATION_MAX_PAGES_SHOWN } from "@/components/tailgrids/core/pagination.constant";
 
 export interface PaginationLabels {
   label: string;
@@ -54,8 +55,6 @@ type PropsType = {
   labels: PaginationLabels;
 };
 
-const MAX_PAGES_SHOWN = 6;
-
 export function Pagination({
   currentPage,
   totalPages,
@@ -104,7 +103,7 @@ export function Pagination({
           const isActive = currentPage === index + 1;
           const page = index + 1;
 
-          if (totalPages > MAX_PAGES_SHOWN) {
+          if (totalPages > PAGINATION_MAX_PAGES_SHOWN) {
             if (currentPage > 3) {
               if (index + 1 < currentPage) {
                 return null;

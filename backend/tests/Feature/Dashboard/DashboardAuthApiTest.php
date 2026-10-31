@@ -8,6 +8,7 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Dashboard\Constants\DashboardActorConstants;
 use Modules\Dashboard\Models\DashboardRefreshTokenModel;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardSessionClaim;
@@ -81,7 +82,7 @@ describe('Dashboard auth API', function (): void {
         ]);
         $claimService = app(DashboardSessionClaim::class);
         $admin = AdminModel::factory()->create();
-        $actor = new DashboardActor((string) $admin->id, DashboardActor::ADMIN, 'platform_admin', null);
+        $actor = new DashboardActor((string) $admin->id, DashboardActorConstants::DASHBOARD_ACTOR_ADMIN, 'platform_admin', null);
         $oldClaim = $claimService->issue($actor);
         $token = $admin->createToken('dashboard-session', ['dashboard'])->plainTextToken;
 

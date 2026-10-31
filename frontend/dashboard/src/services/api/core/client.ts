@@ -14,9 +14,10 @@ import { reportApiFailure } from "@/services/api/common/network-health/network-h
 import { reportSessionExpired } from "@/services/api/core/session-expiry";
 import { ROUTES } from "@/config/routes.constant";
 import { devWarn } from "@/utils/dev-warn.util";
-
-const REQUEST_TIMEOUT_MS = 15_000;
-const API_BASE = "/api";
+import {
+  API_CLIENT_BASE_PATH,
+  API_CLIENT_REQUEST_TIMEOUT_MS,
+} from "@/services/api/core/api-client.constant";
 
 function clientFailure(
   message: string,
@@ -56,7 +57,7 @@ function refreshSession(): Promise<boolean> {
     method: HTTP_METHOD.POST,
     credentials: "same-origin",
     redirect: "manual",
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    signal: AbortSignal.timeout(API_CLIENT_REQUEST_TIMEOUT_MS),
   })
     .then((response) => response.ok)
     .catch(() => false)
@@ -78,7 +79,7 @@ async function fetchOnce(
       credentials: "same-origin",
       headers: jsonRequestHeaders(init),
       redirect: "manual",
-      signal: init.signal ?? AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      signal: init.signal ?? AbortSignal.timeout(API_CLIENT_REQUEST_TIMEOUT_MS),
     });
   } catch (error) {
     return reject(networkFailure(error));
@@ -149,7 +150,7 @@ function send<TData>(
   options?: ApiCallOptions,
 ): Promise<TData> {
   const { auth = "session", ...init } = options ?? {};
-  return apiRequest<TData>(`${API_BASE}${path}`, {
+  return apiRequest<TData>(`${API_CLIENT_BASE_PATH}${path}`, {
     ...init,
     auth,
     method,
@@ -179,7 +180,7 @@ export const api = {
     options?: ApiCallOptions,
   ) => {
     const { auth = "session", ...init } = options ?? {};
-    return apiRequest<TData>(`${API_BASE}${path}`, {
+    return apiRequest<TData>(`${API_CLIENT_BASE_PATH}${path}`, {
       ...init,
       auth,
       method: HTTP_METHOD.POST,

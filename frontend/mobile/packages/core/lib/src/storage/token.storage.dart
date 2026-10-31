@@ -9,7 +9,7 @@ abstract class TokenStorage {
 }
 
 class SecureTokenStorage implements TokenStorage {
-  static const String _tokenKey = 'dorak_client_token';
+  static const String _clientSessionTokenStorageKey = 'dorak_client_token';
 
   final FlutterSecureStorage _storage;
 
@@ -18,7 +18,7 @@ class SecureTokenStorage implements TokenStorage {
 
   @override
   Future<String?> read() async {
-    final token = await _storage.read(key: _tokenKey);
+    final token = await _storage.read(key: _clientSessionTokenStorageKey);
     if (token == null || token.isEmpty) {
       return null;
     }
@@ -27,14 +27,14 @@ class SecureTokenStorage implements TokenStorage {
 
   @override
   Future<void> write(String token) =>
-      _storage.write(key: _tokenKey, value: token);
+      _storage.write(key: _clientSessionTokenStorageKey, value: token);
 
   @override
-  Future<void> clear() => _storage.delete(key: _tokenKey);
+  Future<void> clear() => _storage.delete(key: _clientSessionTokenStorageKey);
 }
 
 class SecureBranchTokenStorage implements TokenStorage {
-  static const String _tokenKey = 'dorak_branch_token';
+  static const String _branchSessionTokenStorageKey = 'dorak_branch_token';
 
   final FlutterSecureStorage _storage;
 
@@ -43,21 +43,21 @@ class SecureBranchTokenStorage implements TokenStorage {
 
   @override
   Future<String?> read() async {
-    final token = await _storage.read(key: _tokenKey);
+    final token = await _storage.read(key: _branchSessionTokenStorageKey);
     if (token == null || token.isEmpty) return null;
     return token;
   }
 
   @override
   Future<void> write(String token) =>
-      _storage.write(key: _tokenKey, value: token);
+      _storage.write(key: _branchSessionTokenStorageKey, value: token);
 
   @override
-  Future<void> clear() => _storage.delete(key: _tokenKey);
+  Future<void> clear() => _storage.delete(key: _branchSessionTokenStorageKey);
 }
 
 class SecureBarberTokenStorage implements TokenStorage {
-  static const String _tokenKey = 'dorak_barber_token';
+  static const String _barberSessionTokenStorageKey = 'dorak_barber_token';
 
   final FlutterSecureStorage _storage;
 
@@ -66,15 +66,15 @@ class SecureBarberTokenStorage implements TokenStorage {
 
   @override
   Future<String?> read() async {
-    final token = await _storage.read(key: _tokenKey);
+    final token = await _storage.read(key: _barberSessionTokenStorageKey);
     if (token == null || token.isEmpty) return null;
     return token;
   }
 
   @override
   Future<void> write(String token) =>
-      _storage.write(key: _tokenKey, value: token);
+      _storage.write(key: _barberSessionTokenStorageKey, value: token);
 
   @override
-  Future<void> clear() => _storage.delete(key: _tokenKey);
+  Future<void> clear() => _storage.delete(key: _barberSessionTokenStorageKey);
 }

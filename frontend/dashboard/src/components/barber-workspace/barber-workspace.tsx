@@ -39,7 +39,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 
-const WEEK_LENGTH = 7;
+const BARBER_WORKSPACE_WEEK_LENGTH_DAYS = 7;
 
 export function BarberWorkspace() {
   const dictionary = useDictionary();
@@ -85,15 +85,18 @@ export function BarberWorkspace() {
       schedule.data.map((entry) => [entry.dayOfWeek, entry]),
     );
     scheduleForm.reset({
-      schedule: Array.from({ length: WEEK_LENGTH }, (_, dayOfWeek) => {
-        const existing = byDay.get(dayOfWeek);
-        return {
-          dayOfWeek,
-          startTime: existing?.startTime ?? "09:00",
-          endTime: existing?.endTime ?? "17:00",
-          isActive: existing?.isActive ?? false,
-        };
-      }),
+      schedule: Array.from(
+        { length: BARBER_WORKSPACE_WEEK_LENGTH_DAYS },
+        (_, dayOfWeek) => {
+          const existing = byDay.get(dayOfWeek);
+          return {
+            dayOfWeek,
+            startTime: existing?.startTime ?? "09:00",
+            endTime: existing?.endTime ?? "17:00",
+            isActive: existing?.isActive ?? false,
+          };
+        },
+      ),
     });
   }, [schedule.data, scheduleForm]);
   const saveSchedule = useBarberMutation(

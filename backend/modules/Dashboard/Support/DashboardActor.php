@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Support;
 
+use Modules\Dashboard\Constants\DashboardActorConstants;
+
 final readonly class DashboardActor
 {
-    public const ADMIN = 'admin';
-
-    public const BRANCH = 'branch';
-
-    public const BARBER = 'barber';
-
-    public const OWNER = 'owner';
-
     /**
      * @param  list<string>  $brandIds  brands a brand owner owns
      * @param  list<string>  $branchIds  branches of those brands (brand owners only)
@@ -30,22 +24,22 @@ final readonly class DashboardActor
 
     public function isPlatformAdmin(): bool
     {
-        return $this->actorType === self::ADMIN;
+        return $this->actorType === DashboardActorConstants::DASHBOARD_ACTOR_ADMIN;
     }
 
     public function isBarber(): bool
     {
-        return $this->actorType === self::BARBER;
+        return $this->actorType === DashboardActorConstants::DASHBOARD_ACTOR_BARBER;
     }
 
     public function isBranchManager(): bool
     {
-        return $this->actorType === self::BRANCH;
+        return $this->actorType === DashboardActorConstants::DASHBOARD_ACTOR_BRANCH;
     }
 
     public function isBrandOwner(): bool
     {
-        return $this->actorType === self::OWNER;
+        return $this->actorType === DashboardActorConstants::DASHBOARD_ACTOR_OWNER;
     }
 
     /**
@@ -57,9 +51,9 @@ final readonly class DashboardActor
     public function scopedBranchIds(): ?array
     {
         return match ($this->actorType) {
-            self::ADMIN => null,
-            self::BRANCH => $this->branchId === null ? [] : [$this->branchId],
-            self::OWNER => $this->branchIds,
+            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => null,
+            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => $this->branchId === null ? [] : [$this->branchId],
+            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => $this->branchIds,
             default => [],
         };
     }
@@ -72,9 +66,9 @@ final readonly class DashboardActor
     public function scopedBrandIds(): ?array
     {
         return match ($this->actorType) {
-            self::ADMIN => null,
-            self::BRANCH => $this->brandId === null ? [] : [$this->brandId],
-            self::OWNER => $this->brandIds,
+            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => null,
+            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => $this->brandId === null ? [] : [$this->brandId],
+            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => $this->brandIds,
             default => [],
         };
     }

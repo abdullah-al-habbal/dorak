@@ -9,14 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
+use Modules\Core\Constants\PaginationConstants;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Http\Resources\Shared\DashboardAffiliationResource;
 use Modules\Dashboard\Support\ScopedBranchResolver;
 
 final class ListBranchAffiliationsAction extends BaseApiAction
 {
-    private const int PER_PAGE = 15;
-
     public function __construct(private readonly ScopedBranchResolver $branches) {}
 
     public function __invoke(Request $request, string $branch): JsonResponse
@@ -30,7 +29,7 @@ final class ListBranchAffiliationsAction extends BaseApiAction
             ->when($filters['status'] ?? null, fn ($query, string $status) => $query->where('status', $status))
             ->with('barber')
             ->latest()
-            ->paginate(self::PER_PAGE);
+            ->paginate(PaginationConstants::PAGINATION_DEFAULT_PER_PAGE);
 
         return $this->paginated($affiliations, DashboardAffiliationResource::class);
     }

@@ -9,6 +9,7 @@ use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Audit\Services\StatusChangeLogger;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Constants\BookingConstants;
 use Modules\Booking\CQRS\Command\Client\CancelBookingCommand;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
@@ -124,11 +125,11 @@ final class BookingLifecycleEloquentResolver
             }
             $booking->update([
                 'status' => BookingStatus::Canceled,
-                'cancellation_reason' => BookingModel::CANCELLATION_REASON_CHAIR_MAINTENANCE,
+                'cancellation_reason' => BookingConstants::BOOKING_CANCELLATION_REASON_CHAIR_MAINTENANCE,
             ]);
             $booking->refresh();
             $this->notifier->statusChanged($booking, true);
-            $this->logTransition($booking, $fromStatus, BookingStatus::Canceled, StatusChangeActorTypeEnum::System, null, BookingModel::CANCELLATION_REASON_CHAIR_MAINTENANCE);
+            $this->logTransition($booking, $fromStatus, BookingStatus::Canceled, StatusChangeActorTypeEnum::System, null, BookingConstants::BOOKING_CANCELLATION_REASON_CHAIR_MAINTENANCE);
 
             return $booking;
         });

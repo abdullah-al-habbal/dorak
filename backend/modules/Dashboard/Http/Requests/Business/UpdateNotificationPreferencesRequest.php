@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Requests\Business;
 
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Dashboard\Constants\DashboardNotificationPreferenceConstants;
 use Modules\Dashboard\CQRS\Command\UpdateNotificationPreferencesCommand;
 
 final class UpdateNotificationPreferencesRequest extends BaseApiFormRequest
 {
-    private const Keys = ['email_enabled', 'push_enabled', 'booking_enabled', 'system_enabled'];
-
     public function rules(): array
     {
         return [
@@ -25,7 +24,7 @@ final class UpdateNotificationPreferencesRequest extends BaseApiFormRequest
     {
         $values = $this->validated();
         $preferences = [];
-        foreach (self::Keys as $key) {
+        foreach (DashboardNotificationPreferenceConstants::DASHBOARD_NOTIFICATION_PREFERENCE_KEYS as $key) {
             $preferences[$key] = (bool) $values[$key];
         }
 

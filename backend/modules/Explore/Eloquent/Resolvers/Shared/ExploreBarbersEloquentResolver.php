@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Barber\Models\BarberModel;
-use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Constants\BookingConstants;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Core\Enums\VenueUniverse;
+use Modules\Explore\Constants\ExploreRankingConstants;
 use Modules\Explore\CQRS\Query\Shared\ExploreBarbersQuery;
 use Modules\Explore\Support\ExploreRanker;
 use Modules\Explore\Support\ExploreTextSearch;
@@ -84,7 +85,7 @@ final class ExploreBarbersEloquentResolver
 
     public function resolve(ExploreBarbersQuery $payload): LengthAwarePaginator
     {
-        $candidates = $this->candidates($payload)->limit(ExploreRanker::CANDIDATE_CAP)->get();
+        $candidates = $this->candidates($payload)->limit(ExploreRankingConstants::EXPLORE_RANKING_CANDIDATE_CAP)->get();
         $faceShape = $this->ranker->faceShapeFor($payload->faceShapeCompatible, $payload->clientId);
 
         return $this->ranker->paginate(
@@ -109,7 +110,7 @@ final class ExploreBarbersEloquentResolver
 
         if ($payload->availableNow !== null && $payload->availableNow) {
             $startsAt = now();
-            $endsAt = $startsAt->copy()->addMinutes(BookingModel::MINIMUM_SERVICE_DURATION_MINUTES);
+            $endsAt = $startsAt->copy()->addMinutes(BookingConstants::BOOKING_MINIMUM_SERVICE_DURATION_MINUTES);
             $query->whereDoesntHave('bookings', function ($bookingQuery) use ($startsAt, $endsAt): void {
                 BookingAvailability::apply($bookingQuery, $startsAt, $endsAt);
             });

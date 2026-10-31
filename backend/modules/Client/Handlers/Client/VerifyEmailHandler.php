@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Modules\Client\Handlers\Client;
 
 use Illuminate\Support\Facades\Cache;
+use Modules\Client\Constants\ClientEmailVerificationConstants;
 use Modules\Client\CQRS\Command\Client\VerifyEmailCommand;
 use Modules\Client\Eloquent\Resolvers\Client\VerifyEmailEloquentResolver;
 use Modules\Client\ValuesObjects\VerifyEmailResult;
 
 final class VerifyEmailHandler
 {
-    private const MAX_ATTEMPTS = 5;
-
     public function __construct(
         private readonly VerifyEmailEloquentResolver $resolver,
     ) {}
@@ -53,7 +52,7 @@ final class VerifyEmailHandler
             $attempts = 1;
         }
 
-        if ($attempts >= self::MAX_ATTEMPTS) {
+        if ($attempts >= ClientEmailVerificationConstants::CLIENT_EMAIL_VERIFICATION_MAX_ATTEMPTS) {
             Cache::forget("email_verify_{$clientId}");
         }
     }

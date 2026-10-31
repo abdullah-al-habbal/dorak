@@ -7,11 +7,10 @@ namespace Modules\Explore\Support;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
+use Modules\Explore\Constants\ExploreSearchConstants;
 
 final class ExploreTextSearch
 {
-    public const LOCALES = ['en', 'ar'];
-
     public function pattern(string $term): string
     {
         $escaped = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower(trim($term)));
@@ -24,7 +23,7 @@ final class ExploreTextSearch
         $grammar = $query instanceof Builder ? $query->getQuery()->getGrammar() : $query->getGrammar();
 
         foreach ($columns as $column) {
-            foreach (self::LOCALES as $locale) {
+            foreach (ExploreSearchConstants::EXPLORE_SEARCH_TEXT_LOCALES as $locale) {
                 $query->orWhereRaw('lower('.$grammar->wrap("{$column}->{$locale}").") like ? escape '!'", [$pattern]);
             }
         }

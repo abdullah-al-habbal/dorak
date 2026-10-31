@@ -6,9 +6,8 @@ namespace Modules\Brand\Services;
 
 use Laravel\Pennant\Feature;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Exceptions\FeatureNotEnabledException;
-use Modules\Brand\Features\JobBoardFeature;
-use Modules\Brand\Features\MultiBranchFeature;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 
@@ -23,33 +22,23 @@ use Modules\Chair\Models\ChairModel;
  */
 final class BrandFeatures
 {
-    public const MULTI_BRANCH = 'multi_branch';
-
-    public const JOB_BOARD = 'job_board';
-
-    /** @var array<string, class-string> */
-    private const FEATURES = [
-        self::MULTI_BRANCH => MultiBranchFeature::class,
-        self::JOB_BOARD => JobBoardFeature::class,
-    ];
-
     /** @return list<string> every flag a plan may switch on (single source: FEATURES). */
     public static function keys(): array
     {
-        return array_keys(self::FEATURES);
+        return array_keys(BrandFeatureConstants::BRAND_FEATURE_CLASS_BY_KEY);
     }
 
     public function enabled(BrandModel $brand, string $feature): bool
     {
-        return Feature::for($brand)->active(self::FEATURES[$feature]);
+        return Feature::for($brand)->active(BrandFeatureConstants::BRAND_FEATURE_CLASS_BY_KEY[$feature]);
     }
 
     /** @return array{multi_branch: bool, job_board: bool} */
     public function all(BrandModel $brand): array
     {
         return [
-            self::MULTI_BRANCH => $this->enabled($brand, self::MULTI_BRANCH),
-            self::JOB_BOARD => $this->enabled($brand, self::JOB_BOARD),
+            BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => $this->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH),
+            BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD => $this->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD),
         ];
     }
 
@@ -57,7 +46,7 @@ final class BrandFeatures
     public function set(BrandModel $brand, array $flags): void
     {
         foreach ($flags as $feature => $on) {
-            $class = self::FEATURES[$feature] ?? null;
+            $class = BrandFeatureConstants::BRAND_FEATURE_CLASS_BY_KEY[$feature] ?? null;
             if ($class === null) {
                 continue;
             }
@@ -73,8 +62,8 @@ final class BrandFeatures
             return;
         }
 
-        if (! $this->enabled($brand, self::MULTI_BRANCH)) {
-            throw new FeatureNotEnabledException(self::MULTI_BRANCH);
+        if (! $this->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH)) {
+            throw new FeatureNotEnabledException(BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH);
         }
     }
 
@@ -82,8 +71,8 @@ final class BrandFeatures
     public function ensureJobBoard(mixed $branchId): void
     {
         $brand = BranchModel::query()->find($branchId)?->brand;
-        if ($brand instanceof BrandModel && ! $this->enabled($brand, self::JOB_BOARD)) {
-            throw new FeatureNotEnabledException(self::JOB_BOARD);
+        if ($brand instanceof BrandModel && ! $this->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD)) {
+            throw new FeatureNotEnabledException(BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD);
         }
     }
 
@@ -102,13 +91,13 @@ final class BrandFeatures
     {
         $branch = BranchModel::query()->find($branchId);
         $brand = $branch?->brand;
-        if (! $branch instanceof BranchModel || ! $brand instanceof BrandModel || $this->enabled($brand, self::MULTI_BRANCH)) {
+        if (! $branch instanceof BranchModel || ! $brand instanceof BrandModel || $this->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH)) {
             return;
         }
 
         $originalId = $brand->branches()->orderBy('created_at')->orderBy('id')->value('id');
         if ((string) $originalId !== (string) $branch->getKey()) {
-            throw new FeatureNotEnabledException(self::MULTI_BRANCH);
+            throw new FeatureNotEnabledException(BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH);
         }
     }
 }

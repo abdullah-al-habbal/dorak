@@ -8,22 +8,19 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Brand\Http\Resources\Shared\BrandResource;
 use Modules\Brand\Models\BrandModel;
+use Modules\Core\Constants\PaginationConstants;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class ListBrandsAction extends BaseApiAction
 {
-    private const int DEFAULT_PER_PAGE = 15;
-
-    private const int MAX_PER_PAGE = 100;
-
     public function __invoke(Request $request): JsonResponse
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $scope = $actor->scopedBrandIds();
         $search = trim($request->string('search')->toString());
-        $perPage = min(max($request->integer('per_page', self::DEFAULT_PER_PAGE), 1), self::MAX_PER_PAGE);
+        $perPage = min(max($request->integer('per_page', PaginationConstants::PAGINATION_DEFAULT_PER_PAGE), 1), PaginationConstants::PAGINATION_MAX_PER_PAGE);
 
         $brands = BrandModel::query()
             ->with(['owner', 'baseCurrency'])

@@ -7,6 +7,7 @@ namespace Modules\Explore\Eloquent\Resolvers\Shared;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Barber\Models\BarberModel;
+use Modules\Explore\Constants\ExploreRankingConstants;
 use Modules\Explore\CQRS\Query\Shared\ExploreSearchQuery;
 use Modules\Explore\Support\ExploreRanker;
 
@@ -34,13 +35,13 @@ final class ExploreSearchEloquentResolver
         $radius = $query->branches->radius;
 
         $located = $this->ranker->order(collect()
-            ->concat($this->ranker->score($this->branches->candidates($query->branches)->limit(ExploreRanker::CANDIDATE_CAP)->get(), 'branch', $clientId, $faceShape, $radius))
-            ->concat($this->ranker->score($this->barbers->candidates($query->barbers)->limit(ExploreRanker::CANDIDATE_CAP)->get(), 'barber', $clientId, $faceShape, $radius)));
+            ->concat($this->ranker->score($this->branches->candidates($query->branches)->limit(ExploreRankingConstants::EXPLORE_RANKING_CANDIDATE_CAP)->get(), 'branch', $clientId, $faceShape, $radius))
+            ->concat($this->ranker->score($this->barbers->candidates($query->barbers)->limit(ExploreRankingConstants::EXPLORE_RANKING_CANDIDATE_CAP)->get(), 'barber', $clientId, $faceShape, $radius)));
 
         $locationless = $this->barbers->locationlessTextMatches($query->barbers);
         $unlocated = $locationless === null
             ? collect()
-            : $this->ranker->order($this->ranker->score($locationless->orderBy('barbers.id')->limit(ExploreRanker::CANDIDATE_CAP)->get(), 'barber', $clientId, $faceShape, $radius));
+            : $this->ranker->order($this->ranker->score($locationless->orderBy('barbers.id')->limit(ExploreRankingConstants::EXPLORE_RANKING_CANDIDATE_CAP)->get(), 'barber', $clientId, $faceShape, $radius));
 
         $all = $located->concat($unlocated)->values();
         $all->each(fn (Model $model, int $index) => $model->setAttribute('rank', $index + 1));

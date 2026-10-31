@@ -7,6 +7,7 @@ namespace Modules\Review\Console\Commands;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Modules\Review\Constants\ReviewDisputeConstants;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
 use Modules\Review\Services\SubjectRatingRefresher;
@@ -15,13 +16,11 @@ use Modules\Review\Services\SubjectRatingRefresher;
 #[Description('Re-publish reviews whose dispute was not resolved within 48 hours')]
 final class ReleaseExpiredReviewDisputesCommand extends Command
 {
-    public const WINDOW_HOURS = 48;
-
     public function handle(SubjectRatingRefresher $ratings): int
     {
         $expired = ReviewModel::query()
             ->where('status', ReviewStatus::Disputed)
-            ->where('disputed_at', '<=', now()->subHours(self::WINDOW_HOURS));
+            ->where('disputed_at', '<=', now()->subHours(ReviewDisputeConstants::REVIEW_DISPUTE_RELEASE_WINDOW_HOURS));
         $subjects = (clone $expired)->select(['subject_type', 'subject_id'])->distinct()->get();
 
         $released = $expired->update([

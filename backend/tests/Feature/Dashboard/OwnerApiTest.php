@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Modules\Ban\Models\BanModel;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Models\ChairModel;
@@ -21,7 +22,7 @@ function ownerWithBrand(): array
 {
     $owner = ClientModel::factory()->create(['email' => 'owner@example.test', 'password' => Hash::make('owner-password')]);
     $brand = BrandModel::factory()->create(['owner_id' => $owner->id]);
-    app(BrandFeatures::class)->set($brand, [BrandFeatures::MULTI_BRANCH => true]);
+    app(BrandFeatures::class)->set($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true]);
     $branches = BranchModel::factory()->count(2)->create(['brand_id' => $brand->id]);
     $otherBranch = BranchModel::factory()->create();
 

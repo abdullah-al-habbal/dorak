@@ -5,7 +5,7 @@ import {
   JOB_POSTING_STATUSES,
 } from "@/services/api/dashboard/people/people.constant";
 
-const MAX_COMMISSION_RATE = 100;
+const PEOPLE_MAX_COMMISSION_RATE = 100;
 
 export const AffiliationSchema = z.object({
   id: z.string(),
@@ -43,7 +43,7 @@ export const inviteAffiliationFormSchema = z.object({
   barberId: z.string().uuid(),
   commissionRate: z.preprocess(
     (value) => (value === "" ? null : value),
-    z.coerce.number().min(0).max(MAX_COMMISSION_RATE).nullable(),
+    z.coerce.number().min(0).max(PEOPLE_MAX_COMMISSION_RATE).nullable(),
   ),
 });
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Preference\Support;
 
+use Modules\Dashboard\Constants\DashboardActorConstants;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class DashboardOwnerResolver
@@ -12,10 +13,10 @@ final class DashboardOwnerResolver
     public static function resolve(DashboardActor $actor): array
     {
         $ownerType = match ($actor->actorType) {
-            DashboardActor::ADMIN => 'admin',
-            DashboardActor::BRANCH => 'branch',
-            DashboardActor::BARBER => 'barber',
-            DashboardActor::OWNER => 'client',
+            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => 'admin',
+            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => 'branch',
+            DashboardActorConstants::DASHBOARD_ACTOR_BARBER => 'barber',
+            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => 'client',
             default => $actor->actorType,
         };
 

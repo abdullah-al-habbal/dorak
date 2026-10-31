@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Modules\Core\Constants\NotificationDeliveryConstants;
 use Modules\Core\Enums\NotificationDeliveryStatusEnum;
 
 /**
@@ -30,8 +31,6 @@ final class NotificationDeliveryModel extends Model
     use HasUuids;
     use MassPrunable;
 
-    public const RETENTION_DAYS = 90;
-
     protected function casts(): array
     {
         return [
@@ -49,6 +48,6 @@ final class NotificationDeliveryModel extends Model
     /** @return Builder<self> */
     public function prunable(): Builder
     {
-        return self::query()->where('attempted_at', '<', Carbon::now()->subDays(self::RETENTION_DAYS));
+        return self::query()->where('attempted_at', '<', Carbon::now()->subDays(NotificationDeliveryConstants::NOTIFICATION_DELIVERY_RETENTION_DAYS));
     }
 }

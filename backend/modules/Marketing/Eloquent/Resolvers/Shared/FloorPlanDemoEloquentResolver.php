@@ -10,14 +10,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\Marketing\Constants\MarketingFloorPlanDemoConstants;
 
 final class FloorPlanDemoEloquentResolver
 {
-    private const DEMO_BRANCH_EMAIL = 'demo@dorak.sy';
-
     public function getDemoFloorPlan(): ?array
     {
-        $branch = BranchModel::query()->where('email', self::DEMO_BRANCH_EMAIL)->first();
+        $branch = BranchModel::query()->where('email', MarketingFloorPlanDemoConstants::MARKETING_FLOOR_PLAN_DEMO_BRANCH_EMAIL)->first();
 
         if ($branch === null) {
             return null;

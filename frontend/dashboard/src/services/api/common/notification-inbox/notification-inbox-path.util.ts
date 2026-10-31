@@ -1,4 +1,4 @@
-const NOTIFICATION_ROUTE_RULES: ReadonlyArray<{
+const NOTIFICATION_INBOX_ROUTE_RULES: ReadonlyArray<{
   method: string;
   path: RegExp;
 }> = [
@@ -14,7 +14,7 @@ export function isNotificationRouteAllowed(
   method: string,
   path: string,
 ): boolean {
-  return NOTIFICATION_ROUTE_RULES.some(
+  return NOTIFICATION_INBOX_ROUTE_RULES.some(
     (rule) => rule.method === method && rule.path.test(path),
   );
 }

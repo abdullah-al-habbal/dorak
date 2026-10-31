@@ -26,7 +26,7 @@ interface IBookingRateClientFormProps {
   onRated: () => void;
 }
 
-const RATINGS = ["5", "4", "3", "2", "1"] as const;
+const BOOKING_RATE_CLIENT_RATING_VALUES = ["5", "4", "3", "2", "1"] as const;
 
 export function BookingRateClientForm({
   bookingId,
@@ -80,7 +80,7 @@ export function BookingRateClientForm({
           <SelectIndicator />
         </SelectTrigger>
         <SelectContent>
-          {RATINGS.map((rating) => (
+          {BOOKING_RATE_CLIENT_RATING_VALUES.map((rating) => (
             <SelectItem key={rating} id={rating}>
               {"★".repeat(Number(rating))}
             </SelectItem>

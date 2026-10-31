@@ -15,11 +15,11 @@ final class ExploreRankingFeature
     public function resolve(?string $clientId): string
     {
         if ($clientId === null) {
-            return RecommendationConstants::EXPLORE_RANKING_VARIANT_DEFAULT;
+            return RecommendationConstants::RECOMMENDATION_EXPLORE_RANKING_VARIANT_DEFAULT;
         }
 
         $bucket = (int) hexdec(substr(md5($clientId), 0, 8));
 
-        return $bucket % 2 === 0 ? RecommendationConstants::EXPLORE_RANKING_VARIANT_FACTOR_WEIGHTS_V2 : RecommendationConstants::EXPLORE_RANKING_VARIANT_DEFAULT;
+        return $bucket % 2 === 0 ? RecommendationConstants::RECOMMENDATION_EXPLORE_RANKING_VARIANT_FACTOR_WEIGHTS_V2 : RecommendationConstants::RECOMMENDATION_EXPLORE_RANKING_VARIANT_DEFAULT;
     }
 }

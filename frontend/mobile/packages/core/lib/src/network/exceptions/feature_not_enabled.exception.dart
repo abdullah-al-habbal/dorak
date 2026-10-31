@@ -10,7 +10,7 @@ class FeatureNotEnabledException extends ApiException {
     required this.feature,
   });
 
-  static const errorCode = 'feature_not_enabled';
+  static const featureNotEnabledErrorCode = 'feature_not_enabled';
 
   /// The feature that is required, when the server named it.
   final String? feature;

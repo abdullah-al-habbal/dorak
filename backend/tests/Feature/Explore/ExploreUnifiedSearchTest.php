@@ -89,7 +89,7 @@ it('validates the location parameters', function (): void {
 });
 
 it('ranks shops and freelancers together for a signed-in client', function (): void {
-    Feature::define('explore-ranking', fn () => RecommendationConstants::EXPLORE_RANKING_VARIANT_DEFAULT);
+    Feature::define('explore-ranking', fn () => RecommendationConstants::RECOMMENDATION_EXPLORE_RANKING_VARIANT_DEFAULT);
     $nearBranch = BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3]);
     $favourite = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.7, 'longitude' => 36.3]);
     $client = ClientModel::factory()->create();

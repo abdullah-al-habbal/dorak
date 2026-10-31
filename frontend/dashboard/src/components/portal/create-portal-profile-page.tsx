@@ -5,7 +5,7 @@ import { SettingsPreferences } from "@/components/profile/settings/settings-pref
 import type { ProfilePageKey } from "@/config/profile-ui.types";
 
 // Keyed by the same tab union as `PROFILE_TABS`, so a new tab cannot ship without its page.
-const PROFILE_PAGES = {
+const PORTAL_PROFILE_PAGES = {
   account: AccountDetails,
   security: SecuritySettings,
   notification: NotificationPreferences,
@@ -13,7 +13,7 @@ const PROFILE_PAGES = {
 } as const satisfies Record<ProfilePageKey, () => React.JSX.Element>;
 
 export function createPortalProfilePage(page: ProfilePageKey) {
-  const ProfilePageComponent = PROFILE_PAGES[page];
+  const ProfilePageComponent = PORTAL_PROFILE_PAGES[page];
 
   return function PortalProfilePage() {
     return <ProfilePageComponent />;

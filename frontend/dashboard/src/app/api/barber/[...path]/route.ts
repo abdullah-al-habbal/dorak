@@ -14,7 +14,7 @@ import type { NextRequest } from "next/server";
 interface Context {
   params: Promise<{ path: string[] }>;
 }
-const BARBER_ROUTE_RULES: ReadonlyArray<{
+const BARBER_PROXY_ROUTE_RULES: ReadonlyArray<{
   method: string;
   path: RegExp;
 }> = [
@@ -55,7 +55,7 @@ async function proxyBarberRequest(request: NextRequest, context: Context) {
   const copy = getRequestDictionary(request).common.apiError;
   const { path } = await context.params;
   const joined = path.join("/");
-  const isAllowed = BARBER_ROUTE_RULES.some(
+  const isAllowed = BARBER_PROXY_ROUTE_RULES.some(
     (rule) => rule.method === request.method && rule.path.test(joined),
   );
   if (!isAllowed)

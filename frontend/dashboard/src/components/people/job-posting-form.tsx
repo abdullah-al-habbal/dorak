@@ -29,7 +29,10 @@ interface IJobPostingFormProps {
   onDone: () => void;
 }
 
-const SERVER_FIELD_MAP: Record<string, keyof IJobPostingFormInput> = {
+const JOB_POSTING_FORM_SERVER_FIELD_MAP: Record<
+  string,
+  keyof IJobPostingFormInput
+> = {
   "title.en": "titleEn",
   "title.ar": "titleAr",
   "description.en": "descriptionEn",
@@ -81,7 +84,7 @@ export function JobPostingForm({
     onError: (error) => {
       if (error instanceof ApiClientError && error.status === 422) {
         Object.entries(error.errors ?? {}).forEach(([key, messages]) => {
-          const field = SERVER_FIELD_MAP[key];
+          const field = JOB_POSTING_FORM_SERVER_FIELD_MAP[key];
           if (field)
             form.setError(field, { type: "server", message: messages[0] });
         });

@@ -7,8 +7,8 @@ namespace Modules\Subscription\Http\Requests\Admin;
 use Illuminate\Validation\Rule;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Subscription\Constants\SubscriptionPlanConstants;
 use Modules\Subscription\CQRS\Command\SavePlanCommand;
-use Modules\Subscription\Models\SubscriptionPlanModel;
 
 final class SavePlanRequest extends BaseApiFormRequest
 {
@@ -22,7 +22,7 @@ final class SavePlanRequest extends BaseApiFormRequest
             'description.ar' => ['nullable', 'string', 'max:2000'],
             'price_minor' => ['required', 'integer', 'min:0'],
             'currency_id' => ['required', 'uuid', 'exists:currencies,id'],
-            'interval_unit' => ['required', Rule::in(SubscriptionPlanModel::INTERVAL_UNITS)],
+            'interval_unit' => ['required', Rule::in(SubscriptionPlanConstants::SUBSCRIPTION_PLAN_INTERVAL_UNITS)],
             'interval_count' => ['required', 'integer', 'min:1', 'max:120'],
             'is_active' => ['required', 'boolean'],
             'sort_order' => ['sometimes', 'integer', 'min:0'],

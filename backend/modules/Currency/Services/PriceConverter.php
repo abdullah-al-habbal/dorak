@@ -7,6 +7,7 @@ namespace Modules\Currency\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Modules\Client\Models\ClientModel;
+use Modules\Currency\Constants\CurrencyDisplayConstants;
 use Modules\Currency\CQRS\Query\Shared\ConvertCurrencyQuery;
 use Modules\Currency\Eloquent\Resolvers\Shared\ConvertCurrencyEloquentResolver;
 use Modules\Currency\ValuesObjects\DisplayPriceResult;
@@ -14,8 +15,6 @@ use Modules\Preference\Models\PreferenceModel;
 
 final readonly class PriceConverter
 {
-    public const DISPLAY_CURRENCY_HEADER = 'X-Display-Currency';
-
     public function __construct(
         private ConvertCurrencyEloquentResolver $resolver,
     ) {}
@@ -58,7 +57,7 @@ final readonly class PriceConverter
             return $preference?->displayCurrency?->code;
         }
 
-        $header = $request->header(self::DISPLAY_CURRENCY_HEADER);
+        $header = $request->header(CurrencyDisplayConstants::CURRENCY_DISPLAY_HEADER);
 
         return is_string($header) && $header !== '' ? strtoupper($header) : null;
     }

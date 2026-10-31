@@ -6,14 +6,13 @@ namespace Modules\Client\Handlers\Client;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Modules\Client\Constants\ClientPhoneOtpConstants;
 use Modules\Client\CQRS\Command\Client\VerifyPhoneOtpCommand;
 use Modules\Client\Eloquent\Resolvers\Client\PhoneOtpEloquentResolver;
 use Modules\Client\ValuesObjects\VerifyPhoneOtpResult;
 
 final class VerifyPhoneOtpHandler
 {
-    private const MAX_ATTEMPTS = 5;
-
     public function __construct(
         private readonly PhoneOtpEloquentResolver $resolver,
     ) {}
@@ -52,7 +51,7 @@ final class VerifyPhoneOtpHandler
             $attempts = 1;
         }
 
-        if ($attempts >= self::MAX_ATTEMPTS) {
+        if ($attempts >= ClientPhoneOtpConstants::CLIENT_PHONE_OTP_MAX_ATTEMPTS) {
             Cache::forget("phone_otp_{$clientId}");
         }
     }

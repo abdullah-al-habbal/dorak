@@ -15,14 +15,14 @@ import type {
 } from "@/services/api/common/lookup/types/lookup.types";
 import type { NextRequest } from "next/server";
 
-const LOOKUP_PATHS: Record<LookupResource, string> = {
+const LOOKUP_PROXY_PATHS: Record<LookupResource, string> = {
   brands: "/api/v1/brands",
   currencies: "/api/v1/currencies",
   "service-catalog-items": "/api/v1/service-catalog/items",
 };
 
 function isLookupResource(value: string): value is LookupResource {
-  return value in LOOKUP_PATHS;
+  return value in LOOKUP_PROXY_PATHS;
 }
 
 function lookupLabel(
@@ -68,7 +68,7 @@ export async function GET(
       apiFailure(404, API_ERROR_CODE.RESOURCE_NOT_FOUND, copy.notFound),
     );
 
-  const result = await backendRequest<unknown>(LOOKUP_PATHS[resource], {
+  const result = await backendRequest<unknown>(LOOKUP_PROXY_PATHS[resource], {
     headers: bearerHeaders(accessToken),
   });
   if (!result.ok || !Array.isArray(result.envelope?.data))

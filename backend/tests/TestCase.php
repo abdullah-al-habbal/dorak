@@ -11,6 +11,7 @@ use LogicException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Dashboard\Constants\DashboardActorConstants;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardSessionClaim;
@@ -24,10 +25,10 @@ abstract class TestCase extends BaseTestCase
         config(['dashboard.dashboard.session_secret' => 'dashboard-session-secret-that-is-at-least-thirty-two-characters']);
         $id = (string) $model->getKey();
         $actor = match (true) {
-            $model instanceof AdminModel => new DashboardActor($id, DashboardActor::ADMIN, 'platform_admin'),
+            $model instanceof AdminModel => new DashboardActor($id, DashboardActorConstants::DASHBOARD_ACTOR_ADMIN, 'platform_admin'),
             $model instanceof ClientModel => app(DashboardOwnerActorResolver::class)->forClient($model)
                 ?? throw new LogicException('The client owns no brand.'),
-            default => new DashboardActor($id, DashboardActor::BRANCH, 'branch_manager', $id, (string) $model->getAttribute('brand_id')),
+            default => new DashboardActor($id, DashboardActorConstants::DASHBOARD_ACTOR_BRANCH, 'branch_manager', $id, (string) $model->getAttribute('brand_id')),
         };
 
         return $this

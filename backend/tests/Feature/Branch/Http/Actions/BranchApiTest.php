@@ -9,6 +9,7 @@ use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Events\ChairStatusUpdated;
@@ -343,7 +344,7 @@ describe('Branch API', function () {
         });
 
         describe('POST /api/v1/branch/job-postings', function () {
-            beforeEach(fn () => app(BrandFeatures::class)->set($this->branch->brand, [BrandFeatures::JOB_BOARD => true]));
+            beforeEach(fn () => app(BrandFeatures::class)->set($this->branch->brand, [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD => true]));
 
             it('creates a job posting', function () {
                 $response = $this->postJson('/api/v1/branch/job-postings', [
@@ -369,7 +370,7 @@ describe('Branch API', function () {
         });
 
         describe('PUT /api/v1/branch/job-postings/{jobPosting}', function () {
-            beforeEach(fn () => app(BrandFeatures::class)->set($this->branch->brand, [BrandFeatures::JOB_BOARD => true]));
+            beforeEach(fn () => app(BrandFeatures::class)->set($this->branch->brand, [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD => true]));
 
             it('updates a job posting', function () {
                 $jobPosting = JobPostingModel::factory()->create(['branch_id' => $this->branch->id]);

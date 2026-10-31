@@ -46,17 +46,17 @@ export function mapCatalogItem(wire: unknown): ICatalogItem {
   });
 }
 
-const FACE_SHAPE_SET: ReadonlySet<string> = new Set(
+const CATALOG_FACE_SHAPE_SET: ReadonlySet<string> = new Set(
   CatalogItemSchema.shape.faceShapes.element.options,
 );
-const HAIR_TEXTURE_SET: ReadonlySet<string> = new Set(
+const CATALOG_HAIR_TEXTURE_SET: ReadonlySet<string> = new Set(
   CatalogItemSchema.shape.hairTextures.element.options,
 );
 function isFaceShape(value: string) {
-  return FACE_SHAPE_SET.has(value);
+  return CATALOG_FACE_SHAPE_SET.has(value);
 }
 function isHairTexture(value: string) {
-  return HAIR_TEXTURE_SET.has(value);
+  return CATALOG_HAIR_TEXTURE_SET.has(value);
 }
 
 export function mapCatalogCategory(wire: unknown): ICatalogCategory {

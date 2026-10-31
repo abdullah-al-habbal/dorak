@@ -28,7 +28,7 @@ import type { IAffiliation } from "@/services/api/dashboard/people/types/iaffili
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-const ALL_STATUSES = "all";
+const AFFILIATION_FILTER_ALL_STATUSES = "all";
 type Action = "accept" | "reject" | "terminate";
 
 export function AffiliationsPage() {
@@ -37,9 +37,9 @@ export function AffiliationsPage() {
   const queryClient = useQueryClient();
   const { branches, branchId, selectBranch, isLoading } =
     useSelectedBranch("affiliations");
-  const [status, setStatus] = useState(ALL_STATUSES);
+  const [status, setStatus] = useState(AFFILIATION_FILTER_ALL_STATUSES);
   const [page, setPage] = useState(1);
-  const statusFilter = status === ALL_STATUSES ? "" : status;
+  const statusFilter = status === AFFILIATION_FILTER_ALL_STATUSES ? "" : status;
   const list = useQuery({
     enabled: branchId !== undefined,
     queryKey: affiliationsQueryKey(branchId ?? "", statusFilter, page),
@@ -90,7 +90,9 @@ export function AffiliationsPage() {
             <SelectIndicator />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem id={ALL_STATUSES}>{copy.allStatuses}</SelectItem>
+            <SelectItem id={AFFILIATION_FILTER_ALL_STATUSES}>
+              {copy.allStatuses}
+            </SelectItem>
             {AFFILIATION_STATUSES.map((value) => (
               <SelectItem id={value} key={value}>
                 {copy.statuses[value]}

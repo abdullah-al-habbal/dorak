@@ -35,7 +35,7 @@ interface EntityListPageProps {
   resource: Exclude<DashboardResource, "overview">;
 }
 
-const EMPTY_BOOKING_FILTERS: IBookingListFiltersValue = {
+const ENTITY_LIST_EMPTY_BOOKING_FILTERS: IBookingListFiltersValue = {
   status: "",
   dateFrom: "",
   dateTo: "",
@@ -53,7 +53,9 @@ export function EntityListPage({ resource }: EntityListPageProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedValue(search, 300);
-  const [bookingFilters, setBookingFilters] = useState(EMPTY_BOOKING_FILTERS);
+  const [bookingFilters, setBookingFilters] = useState(
+    ENTITY_LIST_EMPTY_BOOKING_FILTERS,
+  );
   const supportsSearch = DASHBOARD_RESOURCE_SEARCH_SUPPORT[resource];
   const query = useQuery({
     queryKey: [

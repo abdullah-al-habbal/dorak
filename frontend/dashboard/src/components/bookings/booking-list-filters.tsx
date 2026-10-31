@@ -19,7 +19,7 @@ interface IBookingListFiltersProps {
   onChange: (value: IBookingListFiltersValue) => void;
 }
 
-const BOOKING_STATUSES: BookingStatus[] = [
+const BOOKING_LIST_FILTER_STATUSES: BookingStatus[] = [
   "pending",
   "confirmed",
   "in_progress",
@@ -68,7 +68,7 @@ export function BookingListFilters({
         </SelectTrigger>
         <SelectContent>
           <SelectItem id="all">{labels.allStatuses}</SelectItem>
-          {BOOKING_STATUSES.map((status) => (
+          {BOOKING_LIST_FILTER_STATUSES.map((status) => (
             <SelectItem id={status} key={status}>
               {statusLabels[status]}
             </SelectItem>

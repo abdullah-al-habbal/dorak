@@ -8,7 +8,7 @@ class ChairHasActiveBookingsException extends ApiException {
     required this.bookingIds,
   });
 
-  static const errorCode = 'CHAIR_HAS_ACTIVE_BOOKINGS';
+  static const chairHasActiveBookingsErrorCode = 'CHAIR_HAS_ACTIVE_BOOKINGS';
 
   final List<String> bookingIds;
 }

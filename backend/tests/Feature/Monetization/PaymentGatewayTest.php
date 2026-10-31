@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\DB;
 use Modules\Admin\Models\AdminModel;
+use Modules\Payment\Constants\PaymentGatewayConstants;
 use Modules\Payment\Database\Seeders\PaymentGatewaySeeder;
 use Modules\Payment\Models\PaymentGatewayModel;
 
@@ -31,7 +32,7 @@ describe('Payment gateways', function (): void {
         $gateway = PaymentGatewayModel::query()->where('code', 'pay_at_salon')->sole();
         expect($gateway->is_default)->toBeTrue()
             ->and($gateway->is_active)->toBeTrue()
-            ->and($gateway->driver)->toBe(PaymentGatewayModel::DRIVER_OFFLINE);
+            ->and($gateway->driver)->toBe(PaymentGatewayConstants::PAYMENT_GATEWAY_DRIVER_OFFLINE);
     });
 
     it('creates a gateway, stores config encrypted and never returns its values', function (): void {

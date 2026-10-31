@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Models\ChairModel;
@@ -45,7 +46,7 @@ describe('multi_branch (A3)', function (): void {
             ->assertJsonPath('code', 'feature_not_enabled')
             ->assertJsonPath('errors.feature.0', 'multi_branch');
 
-        flags($brand, [BrandFeatures::MULTI_BRANCH => true]);
+        flags($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true]);
 
         $this->authenticateDashboardActor($admin)
             ->postJson('/api/v1/dashboard/branches', dashboardBranchPayload($brand, 'second@example.test'))
@@ -54,9 +55,9 @@ describe('multi_branch (A3)', function (): void {
 
     it('keeps every branch after a downgrade but blocks adding another', function (): void {
         $brand = BrandModel::factory()->create();
-        flags($brand, [BrandFeatures::MULTI_BRANCH => true]);
+        flags($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true]);
         BranchModel::factory()->count(3)->create(['brand_id' => $brand->id]);
-        flags($brand, [BrandFeatures::MULTI_BRANCH => false]);
+        flags($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => false]);
 
         $this->authenticateDashboardActor(AdminModel::factory()->create())
             ->postJson('/api/v1/dashboard/branches', dashboardBranchPayload($brand, 'fourth@example.test'))
@@ -68,10 +69,10 @@ describe('multi_branch (A3)', function (): void {
 
     it('makes extra branches read-only after a downgrade but keeps the original manageable', function (): void {
         $brand = BrandModel::factory()->create();
-        flags($brand, [BrandFeatures::MULTI_BRANCH => true]);
+        flags($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true]);
         $original = BranchModel::factory()->create(['brand_id' => $brand->id, 'created_at' => now()->subDays(2)]);
         $extra = BranchModel::factory()->create(['brand_id' => $brand->id, 'created_at' => now()->subDay()]);
-        flags($brand, [BrandFeatures::MULTI_BRANCH => false]);
+        flags($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => false]);
         $admin = AdminModel::factory()->create();
         $chair = fn (BranchModel $branch): array => [
             'branch_id' => $branch->id, 'label' => 'C1', 'floor_zone' => 'shared', 'status' => 'available',
@@ -104,7 +105,7 @@ describe('job_board (G1)', function (): void {
             ->assertJsonPath('code', 'feature_not_enabled')
             ->assertJsonPath('errors.feature.0', 'job_board');
 
-        flags($branch->brand, [BrandFeatures::JOB_BOARD => true]);
+        flags($branch->brand, [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD => true]);
 
         $this->postJson('/api/v1/branch/job-postings', jobPayload())->assertCreated();
     });
@@ -127,7 +128,7 @@ describe('admin feature API (H6)', function (): void {
             ->assertJsonPath('data.job_board', true)
             ->assertJsonPath('data.multi_branch', false);
 
-        expect(app(BrandFeatures::class)->enabled($brand, BrandFeatures::JOB_BOARD))->toBeTrue();
+        expect(app(BrandFeatures::class)->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD))->toBeTrue();
 
         $this->withToken($admin->createToken('t2')->plainTextToken)
             ->getJson("/api/v1/admin/brands/{$brand->id}/features")
@@ -137,7 +138,7 @@ describe('admin feature API (H6)', function (): void {
 
     it('exposes the flags on the brand resource', function (): void {
         $brand = BrandModel::factory()->create();
-        flags($brand, [BrandFeatures::MULTI_BRANCH => true]);
+        flags($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true]);
 
         $this->getJson("/api/v1/brands/{$brand->id}")
             ->assertOk()

@@ -14,7 +14,7 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
 beforeEach(function (): void {
-    Feature::define('explore-ranking', fn () => RecommendationConstants::EXPLORE_RANKING_VARIANT_DEFAULT);
+    Feature::define('explore-ranking', fn () => RecommendationConstants::RECOMMENDATION_EXPLORE_RANKING_VARIANT_DEFAULT);
 });
 
 const RANKING_URL = '/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=100&per_page=3';

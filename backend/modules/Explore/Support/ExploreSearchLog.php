@@ -6,6 +6,7 @@ namespace Modules\Explore\Support;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\ClientInteraction\Services\ClientInteractionRecorder;
+use Modules\Explore\Constants\ExploreSearchConstants;
 
 /**
  * Logs an explore request as a `search` interaction when the client typed a
@@ -13,13 +14,10 @@ use Modules\ClientInteraction\Services\ClientInteractionRecorder;
  */
 final class ExploreSearchLog
 {
-    /** Request keys that make a plain map browse a search. */
-    private const SEARCH_KEYS = ['q', 'tag_ids', 'catalog_item_ids', 'available_now', 'price_range', 'rating_min', 'face_shape_compatible', 'universe'];
-
     public static function record(ClientInteractionRecorder $interactions, FormRequest $request, int $resultCount): void
     {
         $validated = $request->validated();
-        $filters = array_intersect_key($validated, array_flip(self::SEARCH_KEYS));
+        $filters = array_intersect_key($validated, array_flip(ExploreSearchConstants::EXPLORE_SEARCH_LOG_KEYS));
         $query = isset($filters['q']) && is_string($filters['q']) && trim($filters['q']) !== '' ? trim($filters['q']) : null;
         unset($filters['q']);
         $filters = array_filter($filters, fn (mixed $value): bool => $value !== null && $value !== []);

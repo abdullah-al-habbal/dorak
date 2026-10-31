@@ -16,7 +16,7 @@ class _ConflictRepository implements BranchOperationsRepository {
     if (!force) {
       throw const ChairHasActiveBookingsException(
         statusCode: 409,
-        code: ChairHasActiveBookingsException.errorCode,
+        code: ChairHasActiveBookingsException.chairHasActiveBookingsErrorCode,
         message: 'conflict',
         bookingIds: ['booking-1', 'booking-2'],
       );

@@ -38,10 +38,6 @@ use Modules\Review\Models\ReviewModel;
 #[Table('bookings')]
 class BookingModel extends Model
 {
-    public const MINIMUM_SERVICE_DURATION_MINUTES = 15;
-
-    public const CANCELLATION_REASON_CHAIR_MAINTENANCE = 'chair_maintenance';
-
     use HasFactory;
     use HasUuids;
 

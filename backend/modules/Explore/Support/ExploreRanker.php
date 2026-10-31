@@ -20,8 +20,6 @@ use Modules\ClientRecommendation\ValuesObjects\RecommendationFactorWeightsValueO
 
 final class ExploreRanker
 {
-    public const CANDIDATE_CAP = 500;
-
     public function __construct(private readonly ExploreRankingWeightsResolver $weights) {}
 
     public function faceShapeFor(?string $explicit, ?string $clientId): ?string

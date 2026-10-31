@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Modules\Core\Constants\FcmNotificationConstants;
 use Modules\Core\Enums\NotificationDeliveryStatusEnum;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
@@ -21,10 +22,6 @@ use Throwable;
 
 final class FcmNotificationSender
 {
-    private const GOOGLE_OAUTH_TOKEN_URL = 'https://oauth2.googleapis.com/token';
-
-    private const FCM_SCOPE = 'https://www.googleapis.com/auth/firebase.messaging';
-
     private bool $missingCredentialsWarningLogged = false;
 
     public function __construct(
@@ -189,13 +186,13 @@ final class FcmNotificationSender
         $now = time();
         $assertion = $this->signedJwt([
             'iss' => $credentials['client_email'],
-            'scope' => self::FCM_SCOPE,
-            'aud' => self::GOOGLE_OAUTH_TOKEN_URL,
+            'scope' => FcmNotificationConstants::FCM_NOTIFICATION_OAUTH_SCOPE,
+            'aud' => FcmNotificationConstants::FCM_NOTIFICATION_GOOGLE_OAUTH_TOKEN_URL,
             'iat' => $now,
             'exp' => $now + 3600,
         ], $credentials['private_key']);
 
-        $response = Http::asForm()->post(self::GOOGLE_OAUTH_TOKEN_URL, [
+        $response = Http::asForm()->post(FcmNotificationConstants::FCM_NOTIFICATION_GOOGLE_OAUTH_TOKEN_URL, [
             'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
             'assertion' => $assertion,
         ])->throw();

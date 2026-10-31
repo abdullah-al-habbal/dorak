@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Modules\Review\Services;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Modules\Barber\Models\BarberModel;
-use Modules\Branch\Models\BranchModel;
+use Modules\Review\Constants\ReviewRatingConstants;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
 
@@ -17,12 +16,6 @@ use Modules\Review\Models\ReviewModel;
  */
 final class SubjectRatingRefresher
 {
-    /** @var array<string, class-string<BranchModel|BarberModel>> */
-    private const RATED_SUBJECTS = [
-        'branch' => BranchModel::class,
-        'barber' => BarberModel::class,
-    ];
-
     /** @return list<ReviewStatus> */
     public static function countedStatuses(): array
     {
@@ -36,7 +29,7 @@ final class SubjectRatingRefresher
         }
 
         $alias = Relation::getMorphAlias($subjectType);
-        $modelClass = self::RATED_SUBJECTS[$alias] ?? null;
+        $modelClass = ReviewRatingConstants::REVIEW_RATING_RATED_SUBJECTS[$alias] ?? null;
         if ($modelClass === null) {
             return;
         }
@@ -58,7 +51,7 @@ final class SubjectRatingRefresher
     public function refreshAll(): int
     {
         $refreshed = 0;
-        foreach (self::RATED_SUBJECTS as $alias => $modelClass) {
+        foreach (ReviewRatingConstants::REVIEW_RATING_RATED_SUBJECTS as $alias => $modelClass) {
             $modelClass::query()->select('id')->chunkById(500, function ($subjects) use ($alias, &$refreshed): void {
                 foreach ($subjects as $subject) {
                     $this->refresh($alias, (string) $subject->getKey());

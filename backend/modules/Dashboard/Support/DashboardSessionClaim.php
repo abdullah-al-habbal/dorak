@@ -6,16 +6,11 @@ namespace Modules\Dashboard\Support;
 
 use Illuminate\Support\Str;
 use JsonException;
+use Modules\Dashboard\Constants\DashboardSessionConstants;
 use RuntimeException;
 
 final class DashboardSessionClaim
 {
-    private const Algorithm = 'HS256';
-
-    private const Issuer = 'dorak-backend';
-
-    private const DefaultTtlSeconds = 28800;
-
     public function issue(DashboardActor $actor): string
     {
         [$kid, $secret] = $this->activeSecret();
@@ -27,14 +22,14 @@ final class DashboardSessionClaim
             'actor_type' => $actor->actorType,
             'exp' => $issuedAt + $ttl,
             'iat' => $issuedAt,
-            'iss' => self::Issuer,
+            'iss' => DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_ISSUER,
             'jti' => (string) Str::uuid(),
             'role' => $actor->role,
             'sub' => $actor->id,
             ...($actor->branchId === null ? [] : ['branch_id' => $actor->branchId]),
             ...($actor->isBrandOwner() ? ['brand_id' => $actor->brandId, 'brand_ids' => $actor->brandIds] : []),
         ];
-        $encodedHeader = $this->encode(['alg' => self::Algorithm, 'kid' => $kid, 'typ' => 'JWT']);
+        $encodedHeader = $this->encode(['alg' => DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_ALGORITHM, 'kid' => $kid, 'typ' => 'JWT']);
         $encodedPayload = $this->encode($payload);
         $signature = hash_hmac('sha256', $encodedHeader.'.'.$encodedPayload, $secret, true);
 
@@ -146,8 +141,8 @@ final class DashboardSessionClaim
             return false;
         }
 
-        if (! is_array($header) || ($header['alg'] ?? null) !== self::Algorithm
-            || ! is_array($payload) || ($payload['iss'] ?? null) !== self::Issuer
+        if (! is_array($header) || ($header['alg'] ?? null) !== DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_ALGORITHM
+            || ! is_array($payload) || ($payload['iss'] ?? null) !== DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_ISSUER
             || ! is_string($header['kid'] ?? null) || ! is_string($payload['jti'] ?? null)
             || ! is_int($payload['exp'] ?? null) || $payload['exp'] <= time()) {
             return false;
@@ -165,7 +160,7 @@ final class DashboardSessionClaim
 
     public function expiresIn(): int
     {
-        $ttl = config('dashboard.dashboard.claim_ttl_seconds', self::DefaultTtlSeconds);
+        $ttl = config('dashboard.dashboard.claim_ttl_seconds', DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_DEFAULT_TTL_SECONDS);
         if (! is_int($ttl) || $ttl < 60) {
             throw new RuntimeException(__('dashboard::messages.claim_ttl_invalid'));
         }

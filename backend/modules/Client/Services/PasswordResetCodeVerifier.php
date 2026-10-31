@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace Modules\Client\Services;
 
 use Illuminate\Support\Facades\Cache;
+use Modules\Client\Constants\ClientPasswordResetConstants;
 
 final class PasswordResetCodeVerifier
 {
-    public const MAX_ATTEMPTS = 5;
-
-    private const TTL_MINUTES = 10;
-
     public function issue(string $clientId, string $code): void
     {
-        Cache::put($this->codeKey($clientId), $code, now()->addMinutes(self::TTL_MINUTES));
+        Cache::put($this->codeKey($clientId), $code, now()->addMinutes(ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_TTL_MINUTES));
         Cache::forget($this->attemptsKey($clientId));
     }
 
@@ -48,12 +45,12 @@ final class PasswordResetCodeVerifier
         $attempts = Cache::increment($key, 1);
 
         if ($attempts === false) {
-            Cache::add($key, 1, now()->addMinutes(self::TTL_MINUTES));
+            Cache::add($key, 1, now()->addMinutes(ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_TTL_MINUTES));
 
             $attempts = 1;
         }
 
-        if ($attempts >= self::MAX_ATTEMPTS) {
+        if ($attempts >= ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_MAX_ATTEMPTS) {
             $this->consume($clientId);
         }
     }

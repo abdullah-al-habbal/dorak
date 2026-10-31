@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Modules\Client\Models\ClientModel;
-use Modules\ClientFaceProfile\Eloquent\Resolvers\UploadFaceProfilePhotoEloquentResolver;
+use Modules\ClientFaceProfile\Constants\FaceProfilePhotoConstants;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
 
 beforeEach(function () {
@@ -26,7 +26,7 @@ function uploadFacePhoto(ClientModel $client, bool $isPrimary = false)
 }
 
 it('rejects a 6th photo with 422 face_photo_limit_reached and keeps the row count at 5', function () {
-    for ($i = 0; $i < UploadFaceProfilePhotoEloquentResolver::MAX_PHOTOS_PER_CLIENT; $i++) {
+    for ($i = 0; $i < FaceProfilePhotoConstants::FACE_PROFILE_PHOTO_MAX_PHOTOS_PER_CLIENT; $i++) {
         uploadFacePhoto($this->client)->assertCreated();
     }
 

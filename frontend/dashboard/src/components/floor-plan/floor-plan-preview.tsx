@@ -4,7 +4,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import type { IFloorPlanLayoutInput } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-layout-input.types";
 import { useWatch, type Control } from "react-hook-form";
 
-const DEFAULT_ASPECT = "4 / 3";
+const FLOOR_PLAN_PREVIEW_DEFAULT_ASPECT = "4 / 3";
 
 interface IFloorPlanPreviewProps {
   control: Control<IFloorPlanLayoutInput>;
@@ -24,7 +24,9 @@ export function FloorPlanPreview({ control }: IFloorPlanPreviewProps) {
   const width = Number(layout.canvas?.width);
   const height = Number(layout.canvas?.height);
   const aspect =
-    width > 0 && height > 0 ? `${width} / ${height}` : DEFAULT_ASPECT;
+    width > 0 && height > 0
+      ? `${width} / ${height}`
+      : FLOOR_PLAN_PREVIEW_DEFAULT_ASPECT;
 
   return (
     <div

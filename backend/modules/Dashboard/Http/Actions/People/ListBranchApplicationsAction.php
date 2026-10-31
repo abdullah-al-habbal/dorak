@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\People;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Core\Constants\PaginationConstants;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\ScopedBranchResolver;
 use Modules\JobPosting\Enums\ApplicationStatus;
@@ -15,8 +16,6 @@ use Modules\JobPosting\Models\JobPostingModel;
 
 final class ListBranchApplicationsAction extends BaseApiAction
 {
-    private const int PER_PAGE = 15;
-
     public function __construct(private readonly ScopedBranchResolver $branches) {}
 
     public function __invoke(Request $request, string $branch, string $jobPosting): JsonResponse
@@ -29,7 +28,7 @@ final class ListBranchApplicationsAction extends BaseApiAction
             ->update(['status' => ApplicationStatus::Seen]);
 
         return $this->paginated(
-            ApplicationModel::where('job_posting_id', $posting->getKey())->orderByDesc('created_at')->paginate(self::PER_PAGE),
+            ApplicationModel::where('job_posting_id', $posting->getKey())->orderByDesc('created_at')->paginate(PaginationConstants::PAGINATION_DEFAULT_PER_PAGE),
             ApplicationResource::class,
         );
     }

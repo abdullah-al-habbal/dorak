@@ -6,6 +6,7 @@ namespace Modules\Commission\Services;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Booking\Models\BookingModel;
+use Modules\Commission\Constants\CommissionMoneyConstants;
 use Modules\Commission\Enums\CommissionType;
 use Modules\Commission\Models\CommissionEntryModel;
 use Modules\Commission\Models\CommissionRuleModel;
@@ -55,7 +56,7 @@ final class CommissionRecorder
     private function amount(CommissionRuleModel $rule, int $base): int
     {
         return match ($rule->type) {
-            CommissionType::Percent => (int) round($base * $rule->value / MinorUnits::BASIS_POINTS_DENOMINATOR),
+            CommissionType::Percent => (int) round($base * $rule->value / CommissionMoneyConstants::COMMISSION_MONEY_BASIS_POINTS_DENOMINATOR),
             CommissionType::Flat => $rule->value,
         };
     }

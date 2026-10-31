@@ -23,8 +23,8 @@ typedef RawPaginated<T> = ({
 });
 
 class ApiClient {
-  static const Duration defaultConnectTimeout = Duration(seconds: 15);
-  static const Duration defaultReceiveTimeout = Duration(seconds: 30);
+  static const Duration defaultApiConnectTimeout = Duration(seconds: 15);
+  static const Duration defaultApiReceiveTimeout = Duration(seconds: 30);
 
   final Dio dio;
   final StreamController<void> _unauthorizedController =
@@ -51,8 +51,8 @@ class ApiClient {
            Dio(
              BaseOptions(
                baseUrl: baseUrl,
-               connectTimeout: defaultConnectTimeout,
-               receiveTimeout: defaultReceiveTimeout,
+               connectTimeout: defaultApiConnectTimeout,
+               receiveTimeout: defaultApiReceiveTimeout,
              ),
            ) {
     this.dio.interceptors
@@ -268,7 +268,7 @@ class ApiClient {
       );
     }
 
-    if (code == ChairHasActiveBookingsException.errorCode) {
+    if (code == ChairHasActiveBookingsException.chairHasActiveBookingsErrorCode) {
       final rawErrors = body['errors'];
       final rawIds = rawErrors is Map<String, dynamic>
           ? rawErrors['booking_ids']
@@ -283,7 +283,7 @@ class ApiClient {
       );
     }
 
-    if (code == FeatureNotEnabledException.errorCode) {
+    if (code == FeatureNotEnabledException.featureNotEnabledErrorCode) {
       final rawErrors = body['errors'];
       final rawFeature = rawErrors is Map<String, dynamic>
           ? rawErrors['feature']
