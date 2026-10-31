@@ -410,6 +410,7 @@ export const en = {
       booking: "Booking and reviews",
       search: "Search and pagination",
       floor_plan: "Floor plan",
+      billing: "Billing",
     },
     keys: {
       upload_portfolio_max_kb: "Portfolio photo max size (KB)",
@@ -440,6 +441,7 @@ export const en = {
       floor_plan_max_decorations: "Floor plan max decorations",
       floor_plan_max_canvas_size: "Floor plan max canvas size",
       floor_plan_max_label_length: "Floor plan max label length",
+      subscription_grace_days: "Subscription grace period (days)",
     },
   },
   monetization: {

@@ -17,6 +17,7 @@ import 'package:client_app/src/features/discovery/discovery.screen.dart'
     as discovery_feed;
 
 import 'helpers/fakes.dart';
+import 'package:client_app/src/features/auth/auth_shell_constants.entity.dart';
 
 void main() {
   late FakeAuthRepository repository;
@@ -289,7 +290,7 @@ void main() {
       final gapAbove = content.top - viewport.top;
       final gapBelow = viewport.bottom - content.bottom;
 
-      expect(gapAbove, greaterThan(AuthShell.verticalMargin));
+      expect(gapAbove, greaterThan(AuthShellConstants.verticalMargin));
       expect(
         (gapAbove - gapBelow).abs(),
         lessThan(2),
@@ -336,7 +337,7 @@ void main() {
 
       expect(
         gapAbove,
-        greaterThan(AuthShell.verticalMargin),
+        greaterThan(AuthShellConstants.verticalMargin),
         reason:
             'a 667pt device used to top-align purely because it fell under a '
             '840pt breakpoint — centring must follow the content, not the device',
@@ -357,7 +358,7 @@ void main() {
       if (scroll.position.maxScrollExtent > 0) {
         expect(
           content.top - viewport.top,
-          closeTo(AuthShell.verticalMargin, 1),
+          closeTo(AuthShellConstants.verticalMargin, 1),
           reason:
               'content taller than the viewport must start at the top so the '
               'first field is reachable, not centred off-screen',
@@ -365,7 +366,7 @@ void main() {
       } else {
         expect(
           content.top - viewport.top,
-          greaterThanOrEqualTo(AuthShell.verticalMargin),
+          greaterThanOrEqualTo(AuthShellConstants.verticalMargin),
         );
       }
 
@@ -438,7 +439,10 @@ void main() {
 
       expect(
         tester.getSize(find.byType(LoginContent)).width,
-        closeTo(compactPhone.width - AuthShell.horizontalMargin * 2, 1),
+        closeTo(
+          compactPhone.width - AuthShellConstants.horizontalMargin * 2,
+          1,
+        ),
         reason: 'below the cap the form fills the width minus its margins',
       );
     });
@@ -451,7 +455,7 @@ void main() {
 
       expect(
         tester.getSize(find.byType(LoginContent)).width,
-        closeTo(AuthShell.maxContentWidth, 1),
+        closeTo(AuthShellConstants.maxContentWidth, 1),
         reason: '900pt wide must not stretch the form across the whole screen',
       );
     });

@@ -7,11 +7,10 @@ import 'package:stylist_app/src/features/portfolio/stylist_portfolio.state.dart'
 import 'package:stylist_app/src/features/portfolio/widgets/portfolio_photo_tile.widget.dart';
 import 'package:stylist_app/src/features/shared/feature_error.widget.dart';
 import 'package:stylist_app/src/features/shared/load_on_init.widget.dart';
+import 'package:stylist_app/src/features/portfolio/stylist_portfolio_constants.entity.dart';
 
 class StylistPortfolioScreen extends StatelessWidget {
   const StylistPortfolioScreen({super.key, required this.bloc});
-
-  static const _columns = 3;
 
   final StylistPortfolioBloc bloc;
 
@@ -47,7 +46,7 @@ class StylistPortfolioScreen extends StatelessWidget {
                   ),
                 Expanded(
                   child: GridView.count(
-                    crossAxisCount: _columns,
+                    crossAxisCount: StylistPortfolioConstants.columns,
                     padding: const EdgeInsets.all(8),
                     mainAxisSpacing: 8,
                     crossAxisSpacing: 8,

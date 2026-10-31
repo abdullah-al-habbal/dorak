@@ -8,6 +8,7 @@ import 'package:client_app/src/features/discovery/discovery.state.dart';
 import 'package:client_app/src/features/discovery/discovery_filter.entity.dart';
 
 import 'helpers/fakes.dart';
+import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
 
 void main() {
   late FakeExploreRepository repository;
@@ -427,7 +428,8 @@ void main() {
           reason: 'nothing is requested while the user is still typing',
         );
         await Future<void>.delayed(
-          DiscoveryBloc.searchDebounce + const Duration(milliseconds: 50),
+          DiscoveryFilterConstants.searchDebounce +
+              const Duration(milliseconds: 50),
         );
         await pumpEventQueue();
         expect(repository.searchPayloadCalls, callsAfterLocation + 1);
@@ -449,7 +451,9 @@ void main() {
         filters: const DiscoveryFilters(query: 'royal'),
       ),
       act: (bloc) => bloc.add(const DiscoverySearchChanged('royal')),
-      wait: DiscoveryBloc.searchDebounce + const Duration(milliseconds: 50),
+      wait:
+          DiscoveryFilterConstants.searchDebounce +
+          const Duration(milliseconds: 50),
       verify: (_) => expect(repository.searchPayloadCalls, 0),
     );
   });

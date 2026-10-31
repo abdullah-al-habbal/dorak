@@ -89,28 +89,3 @@ it('requires authentication before issuing a photo URL', function () {
         'photo' => UploadedFile::fake()->image('face.jpg'),
     ])->assertUnauthorized();
 });
-
-it('moves legacy public files to private storage and removes public copies', function () {
-    $profile = ClientFaceProfileModel::create([
-        'client_id' => $this->client->id,
-        'image_path' => 'face-profiles/legacy.jpg',
-        'image_hash' => 'hash',
-        'is_primary' => true,
-        'uploaded_at' => now(),
-    ]);
-    Storage::disk('local')->put($profile->image_path, 'legacy-image-bytes');
-
-    $migration = require base_path('modules/ClientFaceProfile/Database/Migrations/2026_10_12_000001_move_client_face_photos_to_private_storage.php');
-    $migration->down();
-
-    $legacyUrlPath = parse_url($profile->fresh()->image_url, PHP_URL_PATH);
-    $legacyPath = (string) preg_replace('#^/storage/#', '', $legacyUrlPath);
-    Storage::disk('public')->assertExists($legacyPath);
-
-    $migration->up();
-
-    $profile->refresh();
-    expect($profile->image_path)->toBe("face-profiles/{$this->client->id}/legacy.jpg");
-    Storage::disk('local')->assertExists($profile->image_path);
-    Storage::disk('public')->assertMissing($legacyPath);
-});

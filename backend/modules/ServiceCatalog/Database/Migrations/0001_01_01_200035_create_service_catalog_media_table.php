@@ -11,8 +11,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('service_catalog_media', function (Blueprint $table) {
-            $table->id();
-            $table->morphs('mediable');
+            $table->uuid('id')->primary();
+            $table->uuidMorphs('mediable');
             $table->string('type')->default('image');
             $table->string('path');
             $table->string('alt')->nullable();

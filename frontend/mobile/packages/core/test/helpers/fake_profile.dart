@@ -1,14 +1,8 @@
 import 'package:core/core.dart';
+import 'client_fixtures.dart';
 
 class FakeProfileRepository implements ProfileRepository {
-  static const ClientDto defaultClient = ClientDto(
-    id: 'uuid-1',
-    name: 'Sara',
-    email: 'sara@example.com',
-    phone: '+966500000001',
-  );
-
-  ClientDto profile = defaultClient;
+  ClientDto profile = ClientFixtures.profileClient;
   Object? getProfileError;
   int getProfileCalls = 0;
 

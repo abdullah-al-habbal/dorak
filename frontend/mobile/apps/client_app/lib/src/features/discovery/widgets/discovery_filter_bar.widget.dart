@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:design_system/design_system.dart';
+import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
 
 class DiscoveryFilterBar extends StatelessWidget {
   const DiscoveryFilterBar({
@@ -21,8 +22,6 @@ class DiscoveryFilterBar extends StatelessWidget {
     required this.ratingLabel,
     required this.rankedByDistanceLabel,
   });
-
-  static const double maxPrice = 500;
 
   final String selectedUniverse;
   final String menLabel;
@@ -66,13 +65,16 @@ class DiscoveryFilterBar extends StatelessWidget {
           onChanged: (value) => onAvailableNowChanged(value ? true : null),
         ),
         Text(
-          '$priceLabel: ${(priceMin ?? 0).round()} - ${(priceMax ?? maxPrice).round()}',
+          '$priceLabel: ${(priceMin ?? 0).round()} - ${(priceMax ?? DiscoveryFilterConstants.maxPrice).round()}',
           style: DorakTypography.labelLg,
         ),
         RangeSlider(
-          values: RangeValues(priceMin ?? 0, priceMax ?? maxPrice),
+          values: RangeValues(
+            priceMin ?? 0,
+            priceMax ?? DiscoveryFilterConstants.maxPrice,
+          ),
           min: 0,
-          max: maxPrice,
+          max: DiscoveryFilterConstants.maxPrice,
           divisions: 50,
           activeColor: colors.primary,
           onChanged: onPriceChanged,

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('serviceable_id');
             $table->string('serviceable_type');
+            $table->foreignUuid('catalog_item_id')->nullable()->constrained('service_catalog_items')->nullOnDelete();
             $table->json('name');
             $table->json('description')->nullable();
             $table->decimal('price', 10, 2);

@@ -20,7 +20,15 @@ return new class extends Migration
             $table->string('subject_type');
             $table->unsignedTinyInteger('rating');
             $table->text('comment')->nullable();
+            $table->string('status')->default('published')->index();
+            $table->text('dispute_reason')->nullable();
+            $table->timestamp('disputed_at')->nullable();
+            $table->timestamp('resolved_at')->nullable();
+            $table->foreignUuid('resolved_by')->nullable()->constrained('admins')->nullOnDelete();
+            $table->text('resolution_note')->nullable();
             $table->timestamps();
+
+            $table->unique(['booking_id', 'author_type', 'subject_type'], 'reviews_booking_author_subject_unique');
         });
     }
 

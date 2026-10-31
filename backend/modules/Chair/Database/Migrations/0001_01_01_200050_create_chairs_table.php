@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('branch_id')->constrained('branches')->cascadeOnDelete();
             $table->foreignUuid('barber_id')->nullable()->constrained('barbers')->nullOnDelete();
             $table->string('label')->nullable();
+            $table->string('floor_zone')->nullable()->index();
             $table->json('ui_metadata');
             $table->string('status');
             $table->timestamps();

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('barber_affiliations', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('barber_id')->constrained('barbers')->cascadeOnDelete();
+            $table->string('initiated_by_type')->nullable();
+            $table->uuid('initiated_by_id')->nullable();
             $table->uuid('affiliable_id');
             $table->string('affiliable_type');
             $table->string('status');

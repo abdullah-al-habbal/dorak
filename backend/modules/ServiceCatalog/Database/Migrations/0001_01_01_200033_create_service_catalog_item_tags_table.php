@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('service_catalog_item_tags', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->json('name');
             $table->string('slug')->unique();
             $table->string('group')->nullable()->index();

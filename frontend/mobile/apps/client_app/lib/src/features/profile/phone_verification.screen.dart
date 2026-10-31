@@ -10,6 +10,7 @@ import 'package:client_app/src/features/profile/phone_verification.bloc.dart';
 import 'package:client_app/src/features/profile/phone_verification.event.dart';
 import 'package:client_app/src/features/profile/phone_verification.state.dart';
 import 'package:client_app/src/features/profile/phone_verification_status.entity.dart';
+import 'package:client_app/src/features/auth/auth_code_constants.entity.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   const PhoneVerificationScreen({
@@ -18,8 +19,6 @@ class PhoneVerificationScreen extends StatefulWidget {
     required this.onVerified,
     required this.onSkip,
   });
-
-  static const int codeLength = 6;
 
   final PhoneVerificationBloc bloc;
   final ValueChanged<ClientDto> onVerified;
@@ -48,7 +47,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
 
   void _submit(AppLocalizations l10n) {
     final code = _code.text.trim();
-    if (code.length != PhoneVerificationScreen.codeLength) {
+    if (code.length != AuthCodeConstants.codeLength) {
       setState(() => _incomplete = l10n.phoneVerifyIncomplete);
       return;
     }

@@ -6,6 +6,7 @@ import 'package:localization/localization.dart';
 
 import 'package:client_app/src/features/profile/discovery_preferences.bloc.dart';
 import 'package:client_app/src/features/profile/discovery_preferences.state.dart';
+import 'package:client_app/src/features/profile/discovery_preferences_constants.entity.dart';
 
 class DiscoveryPreferencesScreen extends StatefulWidget {
   const DiscoveryPreferencesScreen({super.key, required this.cubit});
@@ -19,10 +20,6 @@ class DiscoveryPreferencesScreen extends StatefulWidget {
 
 class _DiscoveryPreferencesScreenState
     extends State<DiscoveryPreferencesScreen> {
-  static const double minRadius = 1;
-  static const double maxRadius = 100;
-  static const double fallbackRadius = 10;
-
   double? _draftRadius;
 
   @override
@@ -54,8 +51,13 @@ class _DiscoveryPreferencesScreenState
             );
           }
           final radius =
-              (_draftRadius ?? preferences.defaultRadius ?? fallbackRadius)
-                  .clamp(minRadius, maxRadius);
+              (_draftRadius ??
+                      preferences.defaultRadius ??
+                      DiscoveryPreferencesConstants.fallbackRadius)
+                  .clamp(
+                    DiscoveryPreferencesConstants.minRadius,
+                    DiscoveryPreferencesConstants.maxRadius,
+                  );
           return ListView(
             padding: const EdgeInsets.all(DorakDimensions.marginMobile),
             children: [
@@ -66,9 +68,12 @@ class _DiscoveryPreferencesScreenState
               ),
               Slider(
                 value: radius,
-                min: minRadius,
-                max: maxRadius,
-                divisions: (maxRadius - minRadius).round(),
+                min: DiscoveryPreferencesConstants.minRadius,
+                max: DiscoveryPreferencesConstants.maxRadius,
+                divisions:
+                    (DiscoveryPreferencesConstants.maxRadius -
+                            DiscoveryPreferencesConstants.minRadius)
+                        .round(),
                 onChanged: (value) => setState(() => _draftRadius = value),
                 onChangeEnd: (value) {
                   setState(() => _draftRadius = null);

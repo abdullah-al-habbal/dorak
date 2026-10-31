@@ -11,13 +11,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('service_catalog_items', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('category_id')->constrained('service_catalog_categories')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('category_id')->constrained('service_catalog_categories')->cascadeOnDelete();
             $table->json('name');
             $table->json('description')->nullable();
             $table->string('slug')->unique();
             $table->string('sku')->unique()->nullable();
             $table->json('price_range')->nullable();
+            $table->unsignedSmallInteger('default_duration_minutes')->nullable();
             $table->string('maintenance_level')->nullable();
             $table->string('style_period')->nullable();
             $table->string('formality')->nullable();

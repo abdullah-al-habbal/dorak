@@ -217,7 +217,7 @@
 - `12StrictEnums/SKILL.md` — Backed Enum patterns, model casts, Rule::enum, comparison rules, AND Flutter `@JsonSerializable`/`@JsonKey`/`@JsonEnum` mandate
 
 ### JobPostingDto Full Alignment
-- Migration `2026_07_16_000001_add_fields_to_job_postings_table` — adds `requirements` (json), `location` (string), `type` (string)
+- `create_job_postings_table` migration — includes `requirements` (json), `location` (string), `type` (string)
 - `JobPostingModel` — updated fillable + `array` cast for `requirements`
 - `JobPostingResource` — exposes `requirements`, `location`, `type` in API response
 - `JobPostingFactory` — seeds new fields
@@ -424,5 +424,6 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - Table `platform_settings` (`key` unique, integer `value`); a missing row means the `SettingKey` default from `Modules\Settings\Constants\SettingsConstants` applies. `SettingsService::int(SettingKey)` is the single read path (overrides cached as one map, cleared on write).
 - Routes (dashboard `admin` group, platform admins only, `PlatformSettingPolicy`): `GET /api/v1/dashboard/admin/settings` lists every key with value, default, min, max and group; `PATCH` takes `{settings: {key: int}}` validated against each key's bounds.
 - Settings: upload sizes (portfolio, face photo), face photos per client, face-photo and notification retention, verification attempts and code TTLs (client email/phone/password reset, barber email, dashboard email change), dashboard session and refresh TTLs, minimum service duration, review dispute window, explore candidate cap, default/max page size, floor-plan limits. The old `DASHBOARD_CLAIM_TTL_SECONDS` / `DASHBOARD_REFRESH_TTL_SECONDS` env vars and `dashboard.dashboard.*_ttl_seconds` config keys are removed.
-- Not dynamic by design: protocol/identity values (JWT algorithm and issuer, FCM URLs, header names, actor ids, basis-point denominator, earth radius). There is no subscription grace-days rule in the code (only the `past_due` status), so none was added.
+- Not dynamic by design: protocol/identity values (JWT algorithm and issuer, FCM URLs, header names, actor ids, basis-point denominator, earth radius). The subscription grace period is the `subscription_grace_days` setting (billing group): `brand_subscriptions.past_due_at` is stamped on `past_due`, `graceEndsAt()`/`isGraceExpired()` expose the window (also `grace_ends_at` in the admin resource), and the hourly `subscriptions:expire-past-due` command cancels expired subscriptions and revokes features.
+- Migrations are flattened: every table has a single definitive `create_*_table` migration (no alter/backfill migrations); barbers and the service catalog creates were re-timestamped so their foreign-key targets exist first.
 - Tests: `tests/Feature/Settings/*`. Dashboard: `/admin/settings` page (`components/platform-settings`).

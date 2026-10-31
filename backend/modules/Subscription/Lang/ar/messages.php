@@ -10,4 +10,5 @@ return [
     'subscription_assigned' => 'تم إسناد الاشتراك.',
     'subscription_updated' => 'تم تحديث الاشتراك.',
     'invalid_transition' => 'لا يمكن تحويل اشتراك :from إلى :to.',
+    'grace_expired' => 'تم إلغاء :count اشتراك متأخر السداد بعد انتهاء فترة السماح.',
 ];

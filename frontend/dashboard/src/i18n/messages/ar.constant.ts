@@ -406,6 +406,7 @@ export const ar: Dictionary = {
       booking: "الحجوزات والتقييمات",
       search: "البحث والتصفح",
       floor_plan: "مخطط الصالون",
+      billing: "الفوترة",
     },
     keys: {
       upload_portfolio_max_kb: "الحد الأقصى لحجم صورة المعرض (كيلوبايت)",
@@ -432,6 +433,7 @@ export const ar: Dictionary = {
       floor_plan_max_decorations: "الحد الأقصى لعناصر الديكور في المخطط",
       floor_plan_max_canvas_size: "الحد الأقصى لأبعاد المخطط",
       floor_plan_max_label_length: "الحد الأقصى لطول تسمية المخطط",
+      subscription_grace_days: "فترة سماح الاشتراك (أيام)",
     },
   },
   monetization: {

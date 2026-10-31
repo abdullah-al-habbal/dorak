@@ -18,6 +18,8 @@ return new class extends Migration
             $table->float('weight')->default(0.5);
             $table->json('context')->nullable();
             $table->timestamp('expires_at')->nullable();
+            $table->timestamp('computed_at')->nullable();
+            $table->string('vector_version')->nullable();
             $table->timestamps();
 
             $table->index(['source_type', 'source_id', 'edge_type']);

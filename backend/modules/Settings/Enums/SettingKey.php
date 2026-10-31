@@ -31,6 +31,7 @@ enum SettingKey: string
     case FloorPlanMaxDecorations = 'floor_plan_max_decorations';
     case FloorPlanMaxCanvasSize = 'floor_plan_max_canvas_size';
     case FloorPlanMaxLabelLength = 'floor_plan_max_label_length';
+    case SubscriptionGraceDays = 'subscription_grace_days';
 
     public function group(): SettingGroup
     {
@@ -57,6 +58,7 @@ enum SettingKey: string
             self::FloorPlanMaxDecorations => SettingGroup::FloorPlan,
             self::FloorPlanMaxCanvasSize => SettingGroup::FloorPlan,
             self::FloorPlanMaxLabelLength => SettingGroup::FloorPlan,
+            self::SubscriptionGraceDays => SettingGroup::Billing,
         };
     }
 
@@ -85,6 +87,7 @@ enum SettingKey: string
             self::FloorPlanMaxDecorations => SettingsConstants::SETTING_FLOOR_PLAN_MAX_DECORATIONS_DEFAULT,
             self::FloorPlanMaxCanvasSize => SettingsConstants::SETTING_FLOOR_PLAN_MAX_CANVAS_SIZE_DEFAULT,
             self::FloorPlanMaxLabelLength => SettingsConstants::SETTING_FLOOR_PLAN_MAX_LABEL_LENGTH_DEFAULT,
+            self::SubscriptionGraceDays => SettingsConstants::SETTING_SUBSCRIPTION_GRACE_DAYS_DEFAULT,
         };
     }
 
@@ -113,6 +116,7 @@ enum SettingKey: string
             self::FloorPlanMaxDecorations => SettingsConstants::SETTING_FLOOR_PLAN_MAX_DECORATIONS_MIN,
             self::FloorPlanMaxCanvasSize => SettingsConstants::SETTING_FLOOR_PLAN_MAX_CANVAS_SIZE_MIN,
             self::FloorPlanMaxLabelLength => SettingsConstants::SETTING_FLOOR_PLAN_MAX_LABEL_LENGTH_MIN,
+            self::SubscriptionGraceDays => SettingsConstants::SETTING_SUBSCRIPTION_GRACE_DAYS_MIN,
         };
     }
 
@@ -141,6 +145,7 @@ enum SettingKey: string
             self::FloorPlanMaxDecorations => SettingsConstants::SETTING_FLOOR_PLAN_MAX_DECORATIONS_MAX,
             self::FloorPlanMaxCanvasSize => SettingsConstants::SETTING_FLOOR_PLAN_MAX_CANVAS_SIZE_MAX,
             self::FloorPlanMaxLabelLength => SettingsConstants::SETTING_FLOOR_PLAN_MAX_LABEL_LENGTH_MAX,
+            self::SubscriptionGraceDays => SettingsConstants::SETTING_SUBSCRIPTION_GRACE_DAYS_MAX,
         };
     }
 }

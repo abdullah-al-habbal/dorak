@@ -15,11 +15,20 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained('clients')->cascadeOnDelete();
             $table->foreignUuid('chair_id')->nullable()->constrained('chairs')->nullOnDelete();
+            $table->foreignUuid('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->foreignUuid('barber_id')->nullable()->constrained('barbers')->nullOnDelete();
             $table->dateTime('time_slot');
+            $table->dateTime('ends_at');
             $table->string('status');
+            $table->string('cancellation_reason', 500)->nullable();
+            $table->string('payment_method')->default('pay_at_salon');
+            $table->string('payment_status')->default('unpaid_in_person');
             $table->json('at_home_location')->nullable();
             $table->timestamps();
+
+            $table->index(['chair_id', 'time_slot', 'ends_at', 'status']);
+            $table->index(['barber_id', 'time_slot', 'ends_at', 'status']);
+            $table->index(['branch_id', 'time_slot']);
         });
     }
 

@@ -2,14 +2,10 @@ import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:stylist_app/src/features/schedule/stylist_schedule.state.dart';
+import 'package:stylist_app/src/features/schedule/stylist_schedule_constants.entity.dart';
 
 class StylistScheduleBloc extends Cubit<StylistScheduleState> {
   StylistScheduleBloc(this._repository) : super(StylistScheduleState());
-
-  static const daysInWeek = 7;
-  static const _defaultStart = '09:00';
-  static const _defaultEnd = '17:00';
-  static const _timeLength = 5;
 
   final StylistOperationsRepository _repository;
 
@@ -53,9 +49,7 @@ class StylistScheduleBloc extends Cubit<StylistScheduleState> {
     try {
       final stored = await _repository.updateSchedule(active);
       if (isClosed) return;
-      emit(
-        state.copyWith(saving: false, saved: true, days: _fillWeek(stored)),
-      );
+      emit(state.copyWith(saving: false, saved: true, days: _fillWeek(stored)));
     } catch (error) {
       if (isClosed) return;
       emit(state.copyWith(saving: false, error: error));
@@ -64,7 +58,9 @@ class StylistScheduleBloc extends Cubit<StylistScheduleState> {
 
   ScheduleIssue _validate(List<BarberScheduleDayDto> active) {
     if (active.isEmpty) return ScheduleIssue.noActiveDay;
-    final invalid = active.any((day) => day.endTime.compareTo(day.startTime) <= 0);
+    final invalid = active.any(
+      (day) => day.endTime.compareTo(day.startTime) <= 0,
+    );
     return invalid ? ScheduleIssue.invalidRange : ScheduleIssue.none;
   }
 
@@ -95,7 +91,11 @@ class StylistScheduleBloc extends Cubit<StylistScheduleState> {
   );
 
   List<BarberScheduleDayDto> _fillWeek(List<BarberScheduleDayDto> stored) => [
-    for (var weekday = 0; weekday < daysInWeek; weekday++)
+    for (
+      var weekday = 0;
+      weekday < StylistScheduleConstants.daysInWeek;
+      weekday++
+    )
       _normalized(stored, weekday),
   ];
 
@@ -107,16 +107,19 @@ class StylistScheduleBloc extends Cubit<StylistScheduleState> {
     if (match.isEmpty) {
       return BarberScheduleDayDto(
         dayOfWeek: weekday,
-        startTime: _defaultStart,
-        endTime: _defaultEnd,
+        startTime: StylistScheduleConstants.defaultStart,
+        endTime: StylistScheduleConstants.defaultEnd,
         isActive: false,
       );
     }
     final day = match.first;
     return BarberScheduleDayDto(
       dayOfWeek: weekday,
-      startTime: day.startTime.substring(0, _timeLength),
-      endTime: day.endTime.substring(0, _timeLength),
+      startTime: day.startTime.substring(
+        0,
+        StylistScheduleConstants.timeLength,
+      ),
+      endTime: day.endTime.substring(0, StylistScheduleConstants.timeLength),
       isActive: day.isActive,
     );
   }

@@ -3,6 +3,7 @@ import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers/fake_auth.dart';
+import 'helpers/client_fixtures.dart';
 
 void main() {
   late FakeAuthRepository repository;
@@ -25,7 +26,7 @@ void main() {
       expect: () => [
         const AuthState(isSubmitting: true),
         const AuthState(
-          client: FakeAuthRepository.defaultClient,
+          client: ClientFixtures.authClient,
           signal: AuthSignal.loginSucceeded,
         ),
       ],
@@ -70,7 +71,7 @@ void main() {
       expect: () => [
         const AuthState(isSubmitting: true),
         const AuthState(
-          client: FakeAuthRepository.defaultClient,
+          client: ClientFixtures.authClient,
           signal: AuthSignal.registrationSucceeded,
         ),
       ],
@@ -168,7 +169,7 @@ void main() {
       expect: () => [
         const AuthState(isSubmitting: true),
         const AuthState(
-          client: FakeAuthRepository.defaultClient,
+          client: ClientFixtures.authClient,
           signal: AuthSignal.registrationSucceeded,
         ),
       ],
@@ -199,7 +200,7 @@ void main() {
       expect: () => [
         const AuthState(isSubmitting: true),
         const AuthState(
-          client: FakeAuthRepository.defaultClient,
+          client: ClientFixtures.authClient,
           signal: AuthSignal.registrationSucceeded,
         ),
         const AuthState(),

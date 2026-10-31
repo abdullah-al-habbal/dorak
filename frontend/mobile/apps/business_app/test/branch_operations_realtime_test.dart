@@ -1,6 +1,7 @@
 import 'package:business_app/src/features/operations/branch_operations.bloc.dart';
 import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'helpers/pagination_fixtures.dart';
 
 class _FakeRealtime implements RealtimeClient {
   void Function(String event, Map<String, dynamic> payload)? branchListener;
@@ -45,14 +46,6 @@ class _FakeRealtime implements RealtimeClient {
 class _CountingRepository implements BranchOperationsRepository {
   int bookingLoads = 0;
 
-  static const _meta = PaginationMeta(
-    total: 0,
-    count: 0,
-    perPage: 15,
-    currentPage: 1,
-    totalPages: 1,
-  );
-
   @override
   Future<BranchDto> getProfile() async => const BranchDto(
     id: 'branch-1',
@@ -78,12 +71,12 @@ class _CountingRepository implements BranchOperationsRepository {
   @override
   Future<PaginatedData<BookingDto>> getBookings() async {
     bookingLoads++;
-    return const PaginatedData(data: [], meta: _meta);
+    return const PaginatedData(data: [], meta: PaginationFixtures.emptyPage);
   }
 
   @override
   Future<PaginatedData<FloorChairDto>> getChairs() async =>
-      const PaginatedData(data: [], meta: _meta);
+      const PaginatedData(data: [], meta: PaginationFixtures.emptyPage);
 
   @override
   Future<BookingDto> updateBookingStatus(String id, BookingStatus status) =>

@@ -16,6 +16,7 @@ import 'package:client_app/src/features/discovery/widgets/saved_filters_sheet.wi
 import 'package:client_app/src/features/discovery/widgets/discovery_barber_card.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_filter_bar.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_result_card.widget.dart';
+import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
 
 class DiscoveryFeed extends StatefulWidget {
   const DiscoveryFeed({
@@ -232,7 +233,8 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
             priceMax: filters.priceRangeMax,
             onPriceChanged: (range) => bloc.add(
               DiscoveryFiltersChanged(
-                range.start <= 0 && range.end >= DiscoveryFilterBar.maxPrice
+                range.start <= 0 &&
+                        range.end >= DiscoveryFilterConstants.maxPrice
                     ? filters.copyWith(clearPriceRange: true)
                     : filters.copyWith(
                         priceRangeMin: range.start,

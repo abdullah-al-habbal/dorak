@@ -7,11 +7,9 @@ import 'package:localization/localization.dart';
 
 import 'package:client_app/src/features/auth/auth_error.entity.dart';
 import 'package:client_app/src/features/auth/widgets/otp_input_field.widget.dart';
+import 'package:client_app/src/features/auth/auth_code_constants.entity.dart';
 
 class RecoveryOtpContent extends StatefulWidget {
-  static const int codeLength = 6;
-  static const int resendCooldownSeconds = 60;
-
   final String destination;
   final void Function(String code) onContinue;
   final VoidCallback onResend;
@@ -36,18 +34,18 @@ class _RecoveryOtpContentState extends State<RecoveryOtpContent> {
   late final List<FocusNode> _focusNodes;
 
   Timer? _cooldownTimer;
-  int _cooldown = RecoveryOtpContent.resendCooldownSeconds;
+  int _cooldown = AuthCodeConstants.resendCooldownSeconds;
   String? _localError;
 
   @override
   void initState() {
     super.initState();
     _controllers = List.generate(
-      RecoveryOtpContent.codeLength,
+      AuthCodeConstants.codeLength,
       (_) => TextEditingController(),
     );
     _focusNodes = List.generate(
-      RecoveryOtpContent.codeLength,
+      AuthCodeConstants.codeLength,
       (_) => FocusNode(),
     );
     _startCooldown();
@@ -67,7 +65,7 @@ class _RecoveryOtpContentState extends State<RecoveryOtpContent> {
 
   void _startCooldown() {
     _cooldownTimer?.cancel();
-    setState(() => _cooldown = RecoveryOtpContent.resendCooldownSeconds);
+    setState(() => _cooldown = AuthCodeConstants.resendCooldownSeconds);
     _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) {
         timer.cancel();
@@ -95,7 +93,7 @@ class _RecoveryOtpContentState extends State<RecoveryOtpContent> {
   void _onDigitChanged(int index, String value) {
     setState(() => _localError = null);
 
-    if (value.isNotEmpty && index < RecoveryOtpContent.codeLength - 1) {
+    if (value.isNotEmpty && index < AuthCodeConstants.codeLength - 1) {
       _focusNodes[index + 1].requestFocus();
     } else if (value.isNotEmpty) {
       _focusNodes[index].unfocus();
@@ -113,7 +111,7 @@ class _RecoveryOtpContentState extends State<RecoveryOtpContent> {
   void _continue() {
     final l10n = AppLocalizations.of(context)!;
     final code = _code;
-    if (code.length < RecoveryOtpContent.codeLength) {
+    if (code.length < AuthCodeConstants.codeLength) {
       setState(() => _localError = l10n.recoveryOtpIncomplete);
       return;
     }
@@ -157,7 +155,7 @@ class _RecoveryOtpContentState extends State<RecoveryOtpContent> {
         const SizedBox(height: 24),
         Row(
           children: [
-            for (var i = 0; i < RecoveryOtpContent.codeLength; i++) ...[
+            for (var i = 0; i < AuthCodeConstants.codeLength; i++) ...[
               if (i > 0) const SizedBox(width: 8),
               Expanded(
                 child: OtpInputField(

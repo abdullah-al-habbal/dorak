@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client_app/src/features/profile/face_analysis.event.dart';
 import 'package:client_app/src/features/profile/face_analysis.state.dart';
+import 'package:client_app/src/features/profile/face_analysis_constants.entity.dart';
 
 class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
   FaceAnalysisBloc(
@@ -17,13 +18,6 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
     on<FaceAnalysisPhotoDeleted>(_onPhotoDeleted);
     on<FaceAnalysisPhotoSetPrimary>(_onPhotoSetPrimary);
   }
-
-  static const int _maxCatalogPages = 5;
-  static const List<Duration> _analysisPollDelays = [
-    Duration(seconds: 1),
-    Duration(seconds: 2),
-    Duration(seconds: 4),
-  ];
 
   final FaceProfileRepository _faceProfile;
   final ServiceCatalogRepository _catalog;
@@ -155,8 +149,14 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
     Emitter<FaceAnalysisState> emit,
   ) async {
     try {
-      for (var attempt = 0; attempt <= _analysisPollDelays.length; attempt++) {
-        if (attempt > 0) await _wait(_analysisPollDelays[attempt - 1]);
+      for (
+        var attempt = 0;
+        attempt <= FaceAnalysisConstants.analysisPollDelays.length;
+        attempt++
+      ) {
+        if (attempt > 0) {
+          await _wait(FaceAnalysisConstants.analysisPollDelays[attempt - 1]);
+        }
         final profile = await _faceProfile.getProfile(profileId);
         if (emit.isDone) return;
         switch (profile.analysisStatus) {
@@ -247,7 +247,8 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
     try {
       for (
         var page = 1;
-        page <= _maxCatalogPages && found.length < wanted.length;
+        page <= FaceAnalysisConstants.maxCatalogPages &&
+            found.length < wanted.length;
         page++
       ) {
         final result = await _catalog.getCatalogItems(page: page, perPage: 100);

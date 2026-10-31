@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'helpers/fake_auth.dart';
 import 'helpers/fake_profile.dart';
+import 'helpers/client_fixtures.dart';
 
 void main() {
   late FakeAuthRepository repository;
@@ -42,7 +43,7 @@ void main() {
         const SessionState(isLoading: true),
         const SessionState(
           status: AuthStatus.authenticated,
-          client: FakeProfileRepository.defaultClient,
+          client: ClientFixtures.profileClient,
         ),
       ],
       verify: (_) {
@@ -62,7 +63,7 @@ void main() {
         const SessionState(isLoading: true),
         const SessionState(
           status: AuthStatus.authenticated,
-          client: FakeProfileRepository.defaultClient,
+          client: ClientFixtures.profileClient,
         ),
       ],
       verify: (bloc) {
@@ -250,7 +251,7 @@ void main() {
         const SessionState(isLoading: true),
         const SessionState(
           status: AuthStatus.authenticated,
-          client: FakeProfileRepository.defaultClient,
+          client: ClientFixtures.profileClient,
         ),
       ],
       verify: (_) => expect(repository.refreshTokenCalls, 1),
@@ -261,12 +262,11 @@ void main() {
     blocTest<SessionBloc, SessionState>(
       'marks the session authenticated with the given client',
       build: bloc,
-      act: (bloc) =>
-          bloc.add(SessionAuthenticated(FakeAuthRepository.defaultClient)),
+      act: (bloc) => bloc.add(SessionAuthenticated(ClientFixtures.authClient)),
       expect: () => [
         const SessionState(
           status: AuthStatus.authenticated,
-          client: FakeAuthRepository.defaultClient,
+          client: ClientFixtures.authClient,
         ),
       ],
       verify: (bloc) {
@@ -279,18 +279,18 @@ void main() {
       'duplicate SessionAuthenticated for the same client is a no-op',
       build: bloc,
       act: (bloc) async {
-        bloc.add(SessionAuthenticated(FakeAuthRepository.defaultClient));
-        bloc.add(SessionAuthenticated(FakeAuthRepository.defaultClient));
+        bloc.add(SessionAuthenticated(ClientFixtures.authClient));
+        bloc.add(SessionAuthenticated(ClientFixtures.authClient));
       },
       expect: () => [
         const SessionState(
           status: AuthStatus.authenticated,
-          client: FakeAuthRepository.defaultClient,
+          client: ClientFixtures.authClient,
         ),
       ],
       verify: (bloc) {
         expect(bloc.state.status, AuthStatus.authenticated);
-        expect(bloc.state.client, FakeAuthRepository.defaultClient);
+        expect(bloc.state.client, ClientFixtures.authClient);
       },
     );
   });
@@ -346,7 +346,7 @@ void main() {
         const SessionState(isLoading: true),
         const SessionState(
           status: AuthStatus.authenticated,
-          client: FakeProfileRepository.defaultClient,
+          client: ClientFixtures.profileClient,
         ),
         const SessionState(
           status: AuthStatus.guest,
@@ -375,7 +375,7 @@ void main() {
         const SessionState(isLoading: true),
         const SessionState(
           status: AuthStatus.authenticated,
-          client: FakeProfileRepository.defaultClient,
+          client: ClientFixtures.profileClient,
         ),
         const SessionState(
           status: AuthStatus.guest,
@@ -402,7 +402,7 @@ void main() {
         const SessionState(isLoading: true),
         const SessionState(
           status: AuthStatus.authenticated,
-          client: FakeProfileRepository.defaultClient,
+          client: ClientFixtures.profileClient,
         ),
         const SessionState(
           status: AuthStatus.guest,
@@ -451,7 +451,7 @@ void main() {
       },
       act: (bloc) async {
         await bloc.ready;
-        bloc.add(const SessionAuthenticated(FakeAuthRepository.defaultClient));
+        bloc.add(const SessionAuthenticated(ClientFixtures.authClient));
         await pumpEventQueue();
         bloc.add(UnauthorizedDetected());
       },
@@ -478,7 +478,7 @@ void main() {
         await bloc.ready;
         bloc.add(UnauthorizedDetected());
         await pumpEventQueue();
-        bloc.add(const SessionAuthenticated(FakeAuthRepository.defaultClient));
+        bloc.add(const SessionAuthenticated(ClientFixtures.authClient));
         await pumpEventQueue();
       },
       verify: (bloc) {

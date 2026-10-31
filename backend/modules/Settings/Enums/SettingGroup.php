@@ -11,4 +11,5 @@ enum SettingGroup: string
     case Booking = 'booking';
     case Search = 'search';
     case FloorPlan = 'floor_plan';
+    case Billing = 'billing';
 }

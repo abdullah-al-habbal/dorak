@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('job_postings', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('branch_id')->constrained('branches')->cascadeOnDelete();
+            $table->foreignUuid('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->json('title');
             $table->json('description');
+            $table->json('requirements')->nullable();
+            $table->string('location')->nullable();
+            $table->string('type')->nullable();
             $table->string('status');
             $table->timestamps();
         });

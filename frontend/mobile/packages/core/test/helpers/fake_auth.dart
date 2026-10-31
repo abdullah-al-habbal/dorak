@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:dio/dio.dart';
+import 'client_fixtures.dart';
 
 // todo: move the InMemoryTokenStorage, InMemoryAppPreferences into its own files
 class InMemoryTokenStorage implements TokenStorage {
@@ -79,13 +80,6 @@ class InMemoryAppPreferences implements AppPreferences {
 }
 
 class FakeAuthRepository implements AuthRepository {
-  static const ClientDto defaultClient = ClientDto(
-    id: 'uuid-1',
-    name: 'Sara',
-    email: 'sara@example.com',
-    phone: null,
-  );
-
   Object? refreshTokenError;
   String refreshedToken = 'rotated-token';
 
@@ -97,11 +91,11 @@ class FakeAuthRepository implements AuthRepository {
 
   AuthResponseDto loginResponse = const AuthResponseDto(
     token: 'login-token',
-    client: defaultClient,
+    client: ClientFixtures.authClient,
   );
   AuthResponseDto registerResponse = const AuthResponseDto(
     token: 'register-token',
-    client: defaultClient,
+    client: ClientFixtures.authClient,
   );
 
   int refreshTokenCalls = 0;

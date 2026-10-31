@@ -9,11 +9,9 @@ import 'package:client_app/src/features/auth/auth_error.entity.dart';
 import 'package:client_app/src/features/auth/widgets/verification_actions.widget.dart';
 import 'package:client_app/src/features/auth/widgets/verification_code_fields.widget.dart';
 import 'package:client_app/src/features/auth/widgets/verification_header.widget.dart';
+import 'package:client_app/src/features/auth/auth_code_constants.entity.dart';
 
 class VerifyAccountContent extends StatefulWidget {
-  static const int codeLength = 6;
-  static const int resendCooldownSeconds = 60;
-
   final String destination;
   final void Function(String code) onVerify;
   final void Function() onResend;
@@ -40,18 +38,18 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
   late final List<FocusNode> _focusNodes;
 
   Timer? _cooldownTimer;
-  int _cooldown = VerifyAccountContent.resendCooldownSeconds;
+  int _cooldown = AuthCodeConstants.resendCooldownSeconds;
   AuthError? _error;
 
   @override
   void initState() {
     super.initState();
     _controllers = List.generate(
-      VerifyAccountContent.codeLength,
+      AuthCodeConstants.codeLength,
       (_) => TextEditingController(),
     );
     _focusNodes = List.generate(
-      VerifyAccountContent.codeLength,
+      AuthCodeConstants.codeLength,
       (_) => FocusNode(),
     );
     _error = widget.error;
@@ -80,7 +78,7 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
 
   void _startCooldown() {
     _cooldownTimer?.cancel();
-    setState(() => _cooldown = VerifyAccountContent.resendCooldownSeconds);
+    setState(() => _cooldown = AuthCodeConstants.resendCooldownSeconds);
     _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) {
         timer.cancel();
@@ -108,7 +106,7 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
   void _onDigitChanged(int index, String value) {
     setState(() => _error = null);
 
-    if (value.isNotEmpty && index < VerifyAccountContent.codeLength - 1) {
+    if (value.isNotEmpty && index < AuthCodeConstants.codeLength - 1) {
       _focusNodes[index + 1].requestFocus();
     } else if (value.isNotEmpty) {
       _focusNodes[index].unfocus();
@@ -126,7 +124,7 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
   void _verify() {
     final l10n = AppLocalizations.of(context)!;
     final code = _code;
-    if (code.length < VerifyAccountContent.codeLength) {
+    if (code.length < AuthCodeConstants.codeLength) {
       setState(() => _error = AuthError(message: l10n.verifyErrorInvalid));
       return;
     }
@@ -157,7 +155,7 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
         ),
         const SizedBox(height: 24),
         VerificationCodeFields(
-          codeLength: VerifyAccountContent.codeLength,
+          codeLength: AuthCodeConstants.codeLength,
           controllers: _controllers,
           focusNodes: _focusNodes,
           enabled: !busy,

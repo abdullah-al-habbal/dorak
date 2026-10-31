@@ -23,6 +23,10 @@ final class UpdateSubscriptionStatusHandler
         return DB::transaction(function () use ($subscription, $next): BrandSubscriptionModel {
             $subscription->update([
                 'status' => $next,
+                'past_due_at' => match ($next) {
+                    SubscriptionStatus::PastDue => now(),
+                    default => null,
+                },
                 'canceled_at' => $next === SubscriptionStatus::Canceled ? now() : $subscription->canceled_at,
             ]);
 

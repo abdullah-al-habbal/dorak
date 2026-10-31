@@ -110,4 +110,10 @@ final class SettingsConstants
     public const int SETTING_FLOOR_PLAN_MAX_LABEL_LENGTH_MIN = 10;
 
     public const int SETTING_FLOOR_PLAN_MAX_LABEL_LENGTH_MAX = 255;
+
+    public const int SETTING_SUBSCRIPTION_GRACE_DAYS_DEFAULT = 7;
+
+    public const int SETTING_SUBSCRIPTION_GRACE_DAYS_MIN = 0;
+
+    public const int SETTING_SUBSCRIPTION_GRACE_DAYS_MAX = 90;
 }

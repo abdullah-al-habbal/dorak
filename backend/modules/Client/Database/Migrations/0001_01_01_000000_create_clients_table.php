@@ -18,7 +18,12 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('preferred_universe', 10)->default('men');
+            $table->string('phone')->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('status', 20)->default('enabled');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

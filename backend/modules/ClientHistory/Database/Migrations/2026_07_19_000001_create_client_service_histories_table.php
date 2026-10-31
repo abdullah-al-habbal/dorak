@@ -12,12 +12,12 @@ return new class extends Migration
     {
         Schema::create('client_service_histories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('client_id')->constrained('clients')->cascadeOnDelete();
+            $table->foreignUuid('client_id')->nullable()->constrained('clients')->nullOnDelete();
             $table->foreignUuid('booking_id')->nullable()->constrained('bookings')->nullOnDelete();
-            $table->foreignUuid('barber_id')->constrained('barbers')->cascadeOnDelete();
+            $table->foreignUuid('barber_id')->nullable()->constrained('barbers')->nullOnDelete();
             $table->foreignUuid('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->foreignUuid('offered_service_id')->nullable()->constrained('offered_services')->nullOnDelete();
-            $table->foreignId('catalog_item_id')->nullable()->constrained('service_catalog_items')->nullOnDelete();
+            $table->foreignUuid('catalog_item_id')->nullable()->constrained('service_catalog_items')->nullOnDelete();
             $table->timestamp('performed_at');
             $table->unsignedTinyInteger('client_rating')->nullable();
             $table->text('client_notes')->nullable();

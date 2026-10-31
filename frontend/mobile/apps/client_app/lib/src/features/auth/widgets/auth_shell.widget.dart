@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:client_app/src/features/auth/auth_shell_constants.entity.dart';
 
 // todo: this file must only have the AuthShell widget, we must create two spearted files one for the AuthShell and one for the _ResponsiveAuthContent
 class AuthShell extends StatelessWidget {
@@ -16,10 +17,6 @@ class AuthShell extends StatelessWidget {
     required this.child,
     this.pinnedHeader = false,
   });
-
-  static const double horizontalMargin = 20;
-  static const double verticalMargin = 24;
-  static const double maxContentWidth = 480;
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +54,21 @@ class _ResponsiveAuthContent extends StatelessWidget {
         final available = constraints.maxHeight.isFinite
             ? math.max(
                 0.0,
-                constraints.maxHeight - AuthShell.verticalMargin * 2,
+                constraints.maxHeight - AuthShellConstants.verticalMargin * 2,
               )
             : 0.0;
 
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
-            horizontal: AuthShell.horizontalMargin,
-            vertical: AuthShell.verticalMargin,
+            horizontal: AuthShellConstants.horizontalMargin,
+            vertical: AuthShellConstants.verticalMargin,
           ),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: available),
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
-                  maxWidth: AuthShell.maxContentWidth,
+                  maxWidth: AuthShellConstants.maxContentWidth,
                 ),
                 child: body,
               ),

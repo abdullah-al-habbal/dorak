@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignUuid('display_currency_id')->nullable()->constrained('currencies')->nullOnDelete();
             $table->string('theme')->nullable();
             $table->string('price_display_mode')->nullable();
+            $table->boolean('dual_price_display')->default(false);
             $table->timestamps();
         });
     }

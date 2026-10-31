@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:core/core.dart';
+import 'package:client_app/src/features/profile/face_analysis_constants.entity.dart';
 
 // todo: we must rename the enum of FaceAnalysisStatus into FaceAnalysisStatusEnum and update all the references to it in the codebase.
 enum FaceAnalysisStatus { initial, loading, ready, degraded, uploading, failed }
@@ -20,8 +21,6 @@ class FaceAnalysisState extends Equatable {
   }) : curated = List.unmodifiable(curated),
        photos = List.unmodifiable(photos);
 
-  static const int maxPhotos = 5;
-
   final FaceAnalysisStatus status;
   final FaceAnalysisResultDto? latest;
   final String? uploadedPhotoUrl;
@@ -34,7 +33,7 @@ class FaceAnalysisState extends Equatable {
   final List<FacePhotoDto> photos;
   final bool photoLimitReached;
 
-  bool get atPhotoLimit => photos.length >= maxPhotos;
+  bool get atPhotoLimit => photos.length >= FaceAnalysisConstants.maxPhotos;
 
   FaceAnalysisState copyWith({
     FaceAnalysisStatus? status,

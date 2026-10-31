@@ -19,6 +19,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:localization/localization.dart';
 
 import 'helpers/business_fakes.dart';
+import 'helpers/pagination_fixtures.dart';
 
 class _FakeStaffAuth implements StaffAuthRepository {
   @override
@@ -42,14 +43,6 @@ class _MemoryTokenStorage implements TokenStorage {
 }
 
 class _IdleOperationsRepository implements BranchOperationsRepository {
-  static const _meta = PaginationMeta(
-    total: 0,
-    count: 0,
-    perPage: 15,
-    currentPage: 1,
-    totalPages: 1,
-  );
-
   @override
   Future<BranchDto> getProfile() async => const BranchDto(
     id: 'branch-1',
@@ -74,11 +67,11 @@ class _IdleOperationsRepository implements BranchOperationsRepository {
 
   @override
   Future<PaginatedData<BookingDto>> getBookings() async =>
-      const PaginatedData(data: [], meta: _meta);
+      const PaginatedData(data: [], meta: PaginationFixtures.emptyPage);
 
   @override
   Future<PaginatedData<FloorChairDto>> getChairs() async =>
-      const PaginatedData(data: [], meta: _meta);
+      const PaginatedData(data: [], meta: PaginationFixtures.emptyPage);
 
   @override
   Future<BookingDto> updateBookingStatus(String id, BookingStatus status) =>

@@ -2,14 +2,11 @@ import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:client_app/src/features/profile/discovery_preferences.state.dart';
+import 'package:client_app/src/features/profile/discovery_preferences_constants.entity.dart';
 
 class DiscoveryPreferencesCubit extends Cubit<DiscoveryPreferencesState> {
   DiscoveryPreferencesCubit(this._repository)
     : super(const DiscoveryPreferencesState());
-
-  static const String defaultRadiusKey = 'default_radius';
-  static const String hiddenBrandIdsKey = 'hidden_brand_ids';
-  static const String showUnavailableKey = 'show_unavailable';
 
   final ClientInteractionRepository _repository;
 
@@ -30,9 +27,9 @@ class DiscoveryPreferencesCubit extends Cubit<DiscoveryPreferencesState> {
   }) async {
     if (state.isSaving) return;
     final values = <String, dynamic>{
-      defaultRadiusKey: ?defaultRadius,
-      showUnavailableKey: ?showUnavailable,
-      hiddenBrandIdsKey: ?hiddenBrandIds,
+      DiscoveryPreferencesConstants.defaultRadiusKey: ?defaultRadius,
+      DiscoveryPreferencesConstants.showUnavailableKey: ?showUnavailable,
+      DiscoveryPreferencesConstants.hiddenBrandIdsKey: ?hiddenBrandIds,
     };
     if (values.isEmpty) return;
     emit(

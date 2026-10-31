@@ -13,9 +13,10 @@ return new class extends Migration
         Schema::create('client_face_profiles', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained('clients')->cascadeOnDelete();
-            $table->string('image_url');
+            $table->string('image_path')->nullable();
             $table->string('image_hash', 64);
             $table->boolean('is_primary')->default(false);
+            $table->string('analysis_status')->default('pending');
             $table->timestamp('uploaded_at');
             $table->timestamps();
         });

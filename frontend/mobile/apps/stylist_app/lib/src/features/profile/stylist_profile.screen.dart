@@ -6,6 +6,7 @@ import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
 import 'package:stylist_app/src/features/profile/stylist_profile.state.dart';
 import 'package:stylist_app/src/features/shared/feature_error.widget.dart';
 import 'package:stylist_app/src/features/shared/load_on_init.widget.dart';
+import 'package:stylist_app/src/features/profile/stylist_profile_constants.entity.dart';
 
 class StylistProfileScreen extends StatefulWidget {
   const StylistProfileScreen({super.key, required this.bloc});
@@ -71,8 +72,8 @@ class _StylistProfileScreenState extends State<StylistProfileScreen> {
                 ),
                 Slider(
                   value: state.travelRadius,
-                  max: StylistProfileBloc.maxTravelRadiusKm,
-                  divisions: StylistProfileBloc.maxTravelRadiusKm.round(),
+                  max: StylistProfileConstants.maxTravelRadiusKm,
+                  divisions: StylistProfileConstants.maxTravelRadiusKm.round(),
                   onChanged: widget.bloc.setTravelRadius,
                 ),
                 if (state.error != null) FeatureError(error: state.error!),

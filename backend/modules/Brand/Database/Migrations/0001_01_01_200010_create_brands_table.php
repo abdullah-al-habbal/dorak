@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('owner_id')->constrained('clients')->cascadeOnDelete();
             $table->json('name');
+            $table->string('slug', 160)->nullable()->unique();
             $table->json('description')->nullable();
             $table->string('logo')->nullable();
             $table->foreignUuid('base_currency_id')->constrained('currencies');

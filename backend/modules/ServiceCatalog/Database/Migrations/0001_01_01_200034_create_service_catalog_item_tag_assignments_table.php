@@ -11,9 +11,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('service_catalog_item_tag_assignments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('item_id')->constrained('service_catalog_items')->cascadeOnDelete();
-            $table->foreignId('tag_id')->constrained('service_catalog_item_tags')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('item_id')->constrained('service_catalog_items')->cascadeOnDelete();
+            $table->foreignUuid('tag_id')->constrained('service_catalog_item_tags')->cascadeOnDelete();
             $table->timestamps();
 
             $table->unique(['item_id', 'tag_id']);

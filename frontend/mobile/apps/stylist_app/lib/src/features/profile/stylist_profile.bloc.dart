@@ -6,8 +6,6 @@ import 'package:stylist_app/src/features/profile/stylist_profile.state.dart';
 class StylistProfileBloc extends Cubit<StylistProfileState> {
   StylistProfileBloc(this._repository) : super(const StylistProfileState());
 
-  static const maxTravelRadiusKm = 100.0;
-
   final StylistOperationsRepository _repository;
 
   Future<void> load() async {

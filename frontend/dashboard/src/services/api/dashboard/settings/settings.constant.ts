@@ -9,6 +9,7 @@ export const PLATFORM_SETTING_GROUPS = [
   "booking",
   "search",
   "floor_plan",
+  "billing",
 ] as const;
 
 export const PLATFORM_SETTING_KEYS = [
@@ -34,4 +35,5 @@ export const PLATFORM_SETTING_KEYS = [
   "floor_plan_max_decorations",
   "floor_plan_max_canvas_size",
   "floor_plan_max_label_length",
+  "subscription_grace_days",
 ] as const;

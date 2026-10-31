@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.event.dart';
 import 'package:client_app/src/features/discovery/discovery_filter.entity.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
+import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
 
 class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
   DiscoveryBloc(
@@ -32,8 +33,6 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
     on<DiscoveryRetryRequested>(_onRetry);
     on<DiscoverySearchChanged>(_onSearchChanged);
   }
-
-  static const Duration searchDebounce = Duration(milliseconds: 400);
 
   int _searchGeneration = 0;
 
@@ -117,7 +116,7 @@ class DiscoveryBloc extends Bloc<DiscoveryEvent, DiscoveryState> {
   ) async {
     final generation = ++_searchGeneration;
     emit(state.copyWith(searchQuery: event.query));
-    await Future<void>.delayed(searchDebounce);
+    await Future<void>.delayed(DiscoveryFilterConstants.searchDebounce);
     if (emit.isDone || generation != _searchGeneration) return;
     final query = event.query.trim();
     if (query == state.filters.query) return;
