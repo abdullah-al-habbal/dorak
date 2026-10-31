@@ -204,3 +204,8 @@ Routes: [documentation graph](INDEX.md).
 
 ## Task 86: Clean Up Shared Mobile Packages
 - [x] Decision resolved (T86-1): option (b), delete `packages/feature_floor_plan` and its `workspace:` entry. The client floor-plan widgets stay in `client_app` (the repo rule keeps application code out of shared mobile packages), and the Task 85 floor-plan screen is preset-only, so nothing needs to share them. Revisit only if a visual zone editor is ever specced.
+
+## Constants and platform settings
+- [x] Decision resolved (CS-1): `const` is allowed only inside dedicated `*Constants` classes/files (`Modules\<Module>\Constants`, `tests/Support/Constants`, `*.constant.ts`, role-suffixed Dart entity classes). The frozen service-catalog UUID migration keeps its private constants because `scripts/check_migrations.php` forbids editing shipped migrations. Dart design tokens, `AppRoutes`, endpoint constants and feature-local `static const` in apps remain where they are.
+- [x] Decision resolved (CS-2): tunable limits live in `platform_settings` (integer values with bounds), edited at `/admin/settings`. Protocol and identity values stay constants.
+- [ ] Decision required: should a subscription grace period (days a `past_due` brand keeps its features) exist as a business rule? Today `past_due` simply keeps features on; if yes, add a `subscription_grace_days` setting and enforcement.

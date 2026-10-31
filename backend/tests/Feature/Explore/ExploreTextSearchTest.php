@@ -10,8 +10,7 @@ use Modules\Brand\Models\BrandModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemTagModel;
-
-const SEARCH_URL = '/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=1000&universe=men';
+use Tests\Support\Constants\ExploreTestConstants;
 
 function searchableBranch(string $en, string $ar = 'فرع', ?BrandModel $brand = null): BranchModel
 {
@@ -25,7 +24,7 @@ function searchableBranch(string $en, string $ar = 'فرع', ?BrandModel $brand 
 
 function branchSearchIds(string $query): array
 {
-    return test()->getJson(SEARCH_URL.'&q='.urlencode($query))->assertOk()->json('data.*.id');
+    return test()->getJson(ExploreTestConstants::EXPLORE_TEST_SEARCH_URL.'&q='.urlencode($query))->assertOk()->json('data.*.id');
 }
 
 it('matches a fragment of the branch name, case-insensitively', function (): void {
@@ -74,7 +73,7 @@ it('matches offered service and catalog tag names', function (): void {
     expect(branchSearchIds('sculpt'))->toBe([$withService->id])
         ->and(branchSearchIds('skin fade'))->toBe([$withTag->id]);
 
-    $byTagId = $this->getJson(SEARCH_URL.'&tag_ids[]='.$tag->id)->assertOk()->json('data.*.id');
+    $byTagId = $this->getJson(ExploreTestConstants::EXPLORE_TEST_SEARCH_URL.'&tag_ids[]='.$tag->id)->assertOk()->json('data.*.id');
     expect($byTagId)->toBe([$withTag->id]);
 });
 
@@ -86,7 +85,7 @@ it('treats LIKE wildcards in the query literally', function (): void {
 });
 
 it('rejects a query longer than 100 characters', function (): void {
-    $this->getJson(SEARCH_URL.'&q='.str_repeat('a', 101))
+    $this->getJson(ExploreTestConstants::EXPLORE_TEST_SEARCH_URL.'&q='.str_repeat('a', 101))
         ->assertStatus(422)
         ->assertJsonValidationErrors(['q']);
 });

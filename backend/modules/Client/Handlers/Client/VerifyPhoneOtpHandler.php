@@ -6,10 +6,11 @@ namespace Modules\Client\Handlers\Client;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Modules\Client\Constants\ClientPhoneOtpConstants;
 use Modules\Client\CQRS\Command\Client\VerifyPhoneOtpCommand;
 use Modules\Client\Eloquent\Resolvers\Client\PhoneOtpEloquentResolver;
 use Modules\Client\ValuesObjects\VerifyPhoneOtpResult;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class VerifyPhoneOtpHandler
 {
@@ -51,7 +52,7 @@ final class VerifyPhoneOtpHandler
             $attempts = 1;
         }
 
-        if ($attempts >= ClientPhoneOtpConstants::CLIENT_PHONE_OTP_MAX_ATTEMPTS) {
+        if ($attempts >= app(SettingsService::class)->int(SettingKey::ClientPhoneOtpMaxAttempts)) {
             Cache::forget("phone_otp_{$clientId}");
         }
     }

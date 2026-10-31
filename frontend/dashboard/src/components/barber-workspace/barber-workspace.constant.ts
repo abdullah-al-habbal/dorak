@@ -1,0 +1,1 @@
+export const BARBER_WORKSPACE_WEEK_LENGTH_DAYS = 7;

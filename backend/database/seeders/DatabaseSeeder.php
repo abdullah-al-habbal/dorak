@@ -26,6 +26,7 @@ use Modules\Onboarding\Database\Seeders\OnboardingConfigSeeder;
 use Modules\Payment\Database\Seeders\PaymentGatewaySeeder;
 use Modules\Preference\Database\Seeders\PreferenceSeeder;
 use Modules\Review\Database\Seeders\ReviewSeeder;
+use Modules\Settings\Database\Seeders\PlatformSettingSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,6 +36,7 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             CurrencySeeder::class,
             PaymentGatewaySeeder::class,
+            PlatformSettingSeeder::class,
             OnboardingConfigSeeder::class,
             AdminSeeder::class,
             BarberSeeder::class,

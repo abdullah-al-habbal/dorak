@@ -1,0 +1,113 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Settings\Constants;
+
+/** Fallback defaults and admin-editable bounds for every platform setting. */
+final class SettingsConstants
+{
+    public const string SETTINGS_CACHE_KEY = 'platform_settings.overrides';
+
+    public const int SETTING_UPLOAD_PORTFOLIO_MAX_KB_DEFAULT = 5120;
+
+    public const int SETTING_UPLOAD_PORTFOLIO_MAX_KB_MIN = 256;
+
+    public const int SETTING_UPLOAD_PORTFOLIO_MAX_KB_MAX = 20480;
+
+    public const int SETTING_UPLOAD_FACE_PHOTO_MAX_KB_DEFAULT = 5120;
+
+    public const int SETTING_UPLOAD_FACE_PHOTO_MAX_KB_MIN = 256;
+
+    public const int SETTING_UPLOAD_FACE_PHOTO_MAX_KB_MAX = 20480;
+
+    public const int SETTING_FACE_PROFILE_MAX_PHOTOS_DEFAULT = 5;
+
+    public const int SETTING_FACE_PROFILE_MAX_PHOTOS_MIN = 1;
+
+    public const int SETTING_FACE_PROFILE_MAX_PHOTOS_MAX = 20;
+
+    public const int SETTING_FACE_PROFILE_RETENTION_DAYS_DEFAULT = 30;
+
+    public const int SETTING_FACE_PROFILE_RETENTION_DAYS_MIN = 1;
+
+    public const int SETTING_FACE_PROFILE_RETENTION_DAYS_MAX = 365;
+
+    public const int SETTING_NOTIFICATION_RETENTION_DAYS_DEFAULT = 90;
+
+    public const int SETTING_NOTIFICATION_RETENTION_DAYS_MIN = 1;
+
+    public const int SETTING_NOTIFICATION_RETENTION_DAYS_MAX = 730;
+
+    public const int SETTING_VERIFICATION_MAX_ATTEMPTS_DEFAULT = 5;
+
+    public const int SETTING_VERIFICATION_MAX_ATTEMPTS_MIN = 1;
+
+    public const int SETTING_VERIFICATION_MAX_ATTEMPTS_MAX = 20;
+
+    public const int SETTING_VERIFICATION_CODE_TTL_MINUTES_DEFAULT = 10;
+
+    public const int SETTING_VERIFICATION_CODE_TTL_MINUTES_MIN = 1;
+
+    public const int SETTING_VERIFICATION_CODE_TTL_MINUTES_MAX = 1440;
+
+    public const int SETTING_DASHBOARD_SESSION_TTL_SECONDS_DEFAULT = 28800;
+
+    public const int SETTING_DASHBOARD_SESSION_TTL_SECONDS_MIN = 900;
+
+    public const int SETTING_DASHBOARD_SESSION_TTL_SECONDS_MAX = 604800;
+
+    public const int SETTING_DASHBOARD_REFRESH_TTL_SECONDS_DEFAULT = 2592000;
+
+    public const int SETTING_DASHBOARD_REFRESH_TTL_SECONDS_MIN = 3600;
+
+    public const int SETTING_DASHBOARD_REFRESH_TTL_SECONDS_MAX = 7776000;
+
+    public const int SETTING_BOOKING_MIN_SERVICE_DURATION_MINUTES_DEFAULT = 15;
+
+    public const int SETTING_BOOKING_MIN_SERVICE_DURATION_MINUTES_MIN = 5;
+
+    public const int SETTING_BOOKING_MIN_SERVICE_DURATION_MINUTES_MAX = 240;
+
+    public const int SETTING_REVIEW_DISPUTE_WINDOW_HOURS_DEFAULT = 48;
+
+    public const int SETTING_REVIEW_DISPUTE_WINDOW_HOURS_MIN = 1;
+
+    public const int SETTING_REVIEW_DISPUTE_WINDOW_HOURS_MAX = 720;
+
+    public const int SETTING_EXPLORE_CANDIDATE_CAP_DEFAULT = 500;
+
+    public const int SETTING_EXPLORE_CANDIDATE_CAP_MIN = 50;
+
+    public const int SETTING_EXPLORE_CANDIDATE_CAP_MAX = 5000;
+
+    public const int SETTING_PAGINATION_DEFAULT_PER_PAGE_DEFAULT = 15;
+
+    public const int SETTING_PAGINATION_DEFAULT_PER_PAGE_MIN = 5;
+
+    public const int SETTING_PAGINATION_DEFAULT_PER_PAGE_MAX = 100;
+
+    public const int SETTING_PAGINATION_MAX_PER_PAGE_DEFAULT = 100;
+
+    public const int SETTING_PAGINATION_MAX_PER_PAGE_MIN = 10;
+
+    public const int SETTING_PAGINATION_MAX_PER_PAGE_MAX = 500;
+
+    public const int SETTING_FLOOR_PLAN_MAX_DECORATIONS_DEFAULT = 30;
+
+    public const int SETTING_FLOOR_PLAN_MAX_DECORATIONS_MIN = 0;
+
+    public const int SETTING_FLOOR_PLAN_MAX_DECORATIONS_MAX = 200;
+
+    public const int SETTING_FLOOR_PLAN_MAX_CANVAS_SIZE_DEFAULT = 1000;
+
+    public const int SETTING_FLOOR_PLAN_MAX_CANVAS_SIZE_MIN = 100;
+
+    public const int SETTING_FLOOR_PLAN_MAX_CANVAS_SIZE_MAX = 5000;
+
+    public const int SETTING_FLOOR_PLAN_MAX_LABEL_LENGTH_DEFAULT = 60;
+
+    public const int SETTING_FLOOR_PLAN_MAX_LABEL_LENGTH_MIN = 10;
+
+    public const int SETTING_FLOOR_PLAN_MAX_LABEL_LENGTH_MAX = 255;
+}

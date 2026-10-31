@@ -1,9 +1,5 @@
 import { cn } from "@/utils/cn.util";
-
-const LAYOUT_PAGE_CARD_SIZES = {
-  md: { main: "", card: "max-w-md sm:p-8" },
-  lg: { main: "lg:px-8", card: "max-w-4xl sm:p-10" },
-} as const;
+import { LAYOUT_PAGE_CARD_SIZES } from "@/components/common/layout/page-card.constant";
 
 interface PageCardProps {
   size: keyof typeof LAYOUT_PAGE_CARD_SIZES;

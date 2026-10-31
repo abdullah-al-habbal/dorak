@@ -9,16 +9,10 @@ import {
 } from "@/services/api/core/http.util";
 import { devWarn } from "@/utils/dev-warn.util";
 import { hasFieldTypes } from "@/utils/guards.util";
-
-const BACKEND_CLIENT_TIMEOUT_MS = 15_000;
-
-const BACKEND_CLIENT_ENVELOPE_FIELDS = {
-  success: "boolean",
-  statusCode: "number",
-  code: "string",
-  message: "string",
-  timestamp: "string",
-} as const;
+import {
+  BACKEND_CLIENT_TIMEOUT_MS,
+  BACKEND_CLIENT_ENVELOPE_FIELDS,
+} from "@/services/api/auth/backend-client.constant";
 
 function isApiEnvelope<TData>(payload: unknown): payload is ApiEnvelope<TData> {
   return hasFieldTypes(payload, BACKEND_CLIENT_ENVELOPE_FIELDS);

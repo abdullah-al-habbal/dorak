@@ -14,6 +14,8 @@ use Modules\Client\Models\ClientModel;
 use Modules\Dashboard\Constants\DashboardActorConstants;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class DashboardLoginHandler
 {
@@ -119,8 +121,6 @@ final class DashboardLoginHandler
 
     private function accessTtl(): int
     {
-        $ttl = config('dashboard.dashboard.claim_ttl_seconds', 28800);
-
-        return is_int($ttl) ? $ttl : 28800;
+        return app(SettingsService::class)->int(SettingKey::DashboardSessionTtlSeconds);
     }
 }

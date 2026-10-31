@@ -9,8 +9,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
-
-const DISPUTE_REASON = 'This review was submitted against the wrong appointment.';
+use Tests\Support\Constants\ReviewDisputeTestConstants;
 
 it('lets the reviewed branch dispute a published review', function () {
     $branch = BranchModel::factory()->create();
@@ -21,13 +20,13 @@ it('lets the reviewed branch dispute a published review', function () {
     ]);
 
     $this->actingAs($branch, 'branch_api')
-        ->postJson("/api/v1/branch/reviews/{$review->id}/dispute", ['reason' => DISPUTE_REASON])
+        ->postJson("/api/v1/branch/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
         ->assertOk()
         ->assertJsonPath('data.status', ReviewStatus::Disputed->value);
 
     $fresh = $review->fresh();
     expect($fresh->status)->toBe(ReviewStatus::Disputed)
-        ->and($fresh->dispute_reason)->toBe(DISPUTE_REASON)
+        ->and($fresh->dispute_reason)->toBe(ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON)
         ->and($fresh->disputed_at)->not->toBeNull();
 });
 
@@ -38,7 +37,7 @@ it('refuses a branch disputing another branch\'s review with 403', function () {
     ]);
 
     $this->actingAs(BranchModel::factory()->create(), 'branch_api')
-        ->postJson("/api/v1/branch/reviews/{$review->id}/dispute", ['reason' => DISPUTE_REASON])
+        ->postJson("/api/v1/branch/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
         ->assertForbidden();
 
     expect($review->fresh()->status)->toBe(ReviewStatus::Published);
@@ -49,11 +48,11 @@ it('lets the reviewed barber dispute a barber review', function () {
     $review = ReviewModel::factory()->create(['subject_id' => $barber->id, 'subject_type' => 'barber']);
 
     $this->actingAs($barber, 'barber')
-        ->postJson("/api/v1/barber/reviews/{$review->id}/dispute", ['reason' => DISPUTE_REASON])
+        ->postJson("/api/v1/barber/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
         ->assertOk();
 
     $this->actingAs($barber, 'barber')
-        ->postJson("/api/v1/barber/reviews/{$review->id}/dispute", ['reason' => DISPUTE_REASON])
+        ->postJson("/api/v1/barber/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
         ->assertStatus(422);
 });
 
@@ -62,7 +61,7 @@ it('does not let a branch dispute a barber review about one of its barbers', fun
     $review = ReviewModel::factory()->create(['subject_id' => BarberModel::factory()->create()->id, 'subject_type' => 'barber']);
 
     $this->actingAs($branch, 'branch_api')
-        ->postJson("/api/v1/branch/reviews/{$review->id}/dispute", ['reason' => DISPUTE_REASON])
+        ->postJson("/api/v1/branch/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
         ->assertForbidden();
 });
 
@@ -71,7 +70,7 @@ it('has no client dispute route', function () {
     $review = ReviewModel::factory()->create(['author_id' => $client->id, 'author_type' => 'client']);
 
     $this->actingAs($client, 'client')
-        ->postJson("/api/v1/client/reviews/{$review->id}/dispute", ['reason' => DISPUTE_REASON])
+        ->postJson("/api/v1/client/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
         ->assertNotFound();
 });
 

@@ -108,3 +108,4 @@ export 'package:core/src/network/repositories/affiliation.repository.dart';
 export 'package:core/src/network/repositories/operations.repository.dart';
 export 'package:core/src/network/repositories/client_interaction.repository.dart';
 export 'package:core/src/network/repositories/job_posting.repository.dart';
+export 'package:core/src/network/exceptions/api_error_code_constants.entity.dart';

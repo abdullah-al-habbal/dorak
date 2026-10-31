@@ -8,8 +8,7 @@ use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\Universe;
 use Modules\Core\Enums\VenueUniverse;
-
-const UNIVERSE_URL = '/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=1000';
+use Tests\Support\Constants\ExploreTestConstants;
 
 function venue(string $universe): BranchModel
 {
@@ -18,7 +17,7 @@ function venue(string $universe): BranchModel
 
 function universeIds(string $query = ''): array
 {
-    return test()->getJson(UNIVERSE_URL.$query)->assertOk()->json('data.*.id');
+    return test()->getJson(ExploreTestConstants::EXPLORE_TEST_UNIVERSE_URL.$query)->assertOk()->json('data.*.id');
 }
 
 it('lists a unisex branch in both the men and women universes', function (): void {
@@ -50,7 +49,7 @@ it('defaults to the signed-in client preferred universe', function (): void {
     $client = ClientModel::factory()->create(['preferred_universe' => Universe::Women]);
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
-    $ids = $this->withToken($token)->getJson(UNIVERSE_URL)->assertOk()->json('data.*.id');
+    $ids = $this->withToken($token)->getJson(ExploreTestConstants::EXPLORE_TEST_UNIVERSE_URL)->assertOk()->json('data.*.id');
 
     expect($ids)->toEqualCanonicalizing([$women->id, $unisex->id])->not->toContain($men->id);
 });
@@ -60,7 +59,7 @@ it('lets an explicit universe override the client preference', function (): void
     $client = ClientModel::factory()->create(['preferred_universe' => Universe::Women]);
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
-    expect($this->withToken($token)->getJson(UNIVERSE_URL.'&universe=men')->json('data.*.id'))->toBe([$men->id]);
+    expect($this->withToken($token)->getJson(ExploreTestConstants::EXPLORE_TEST_UNIVERSE_URL.'&universe=men')->json('data.*.id'))->toBe([$men->id]);
 });
 
 it('rejects an unknown universe value', function (string $path): void {

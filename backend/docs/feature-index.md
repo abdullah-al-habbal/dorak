@@ -419,3 +419,10 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - Routes (dashboard `admin` group, platform admins only): `subscription-plans` CRUD, `plan-feature-keys`, `subscriptions` (list/assign/`PATCH {id}/status`), `payment-gateways` CRUD + `PATCH {id}/active`, `commission-rules` CRUD, `commission-entries`, `payouts` (list/show/`POST generate`/`PATCH {id}/approve|mark-paid|cancel`), `analytics/overview`.
 - Assigning a plan sets the brand's Pennant flags from `plan_features`; commission accrues when a booking completes; `php artisan payouts:generate` creates draft payouts.
 - Tests: `tests/Feature/Monetization/*`. Spec: `docs/features/BE-20-monetization.md`.
+
+### Platform Settings (admin-editable limits)
+- Table `platform_settings` (`key` unique, integer `value`); a missing row means the `SettingKey` default from `Modules\Settings\Constants\SettingsConstants` applies. `SettingsService::int(SettingKey)` is the single read path (overrides cached as one map, cleared on write).
+- Routes (dashboard `admin` group, platform admins only, `PlatformSettingPolicy`): `GET /api/v1/dashboard/admin/settings` lists every key with value, default, min, max and group; `PATCH` takes `{settings: {key: int}}` validated against each key's bounds.
+- Settings: upload sizes (portfolio, face photo), face photos per client, face-photo and notification retention, verification attempts and code TTLs (client email/phone/password reset, barber email, dashboard email change), dashboard session and refresh TTLs, minimum service duration, review dispute window, explore candidate cap, default/max page size, floor-plan limits. The old `DASHBOARD_CLAIM_TTL_SECONDS` / `DASHBOARD_REFRESH_TTL_SECONDS` env vars and `dashboard.dashboard.*_ttl_seconds` config keys are removed.
+- Not dynamic by design: protocol/identity values (JWT algorithm and issuer, FCM URLs, header names, actor ids, basis-point denominator, earth radius). There is no subscription grace-days rule in the code (only the `past_due` status), so none was added.
+- Tests: `tests/Feature/Settings/*`. Dashboard: `/admin/settings` page (`components/platform-settings`).

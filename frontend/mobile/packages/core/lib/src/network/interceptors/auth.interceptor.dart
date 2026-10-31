@@ -1,23 +1,8 @@
 import 'package:dio/dio.dart';
 
-import 'package:core/src/network/endpoints/auth.endpoints.dart';
+import 'package:core/src/network/interceptors/auth_interceptor_constants.entity.dart';
 
 class AuthInterceptor extends Interceptor {
-  static const String _socialPrefix = '/client/social/';
-
-  static const Set<String> _authLifecyclePaths = {
-    AuthEndpoints.login,
-    AuthEndpoints.register,
-    AuthEndpoints.logout,
-    AuthEndpoints.refreshToken,
-    AuthEndpoints.forgotPassword,
-    AuthEndpoints.verifyResetCode,
-    AuthEndpoints.resetPassword,
-    AuthEndpoints.verifyEmail,
-    AuthEndpoints.sendEmailVerification,
-    AuthEndpoints.changePassword,
-  };
-
   final Future<String?> Function() tokenProvider;
   final void Function() reportUnauthorized;
   final void Function() reportAccountBanned;
@@ -50,7 +35,10 @@ class AuthInterceptor extends Interceptor {
         ) ??
         false;
     final isAuthLifecycle =
-        _authLifecyclePaths.contains(path) || path.startsWith(_socialPrefix);
+        AuthInterceptorConstants.authInterceptorLifecyclePaths.contains(path) ||
+        path.startsWith(
+          AuthInterceptorConstants.authInterceptorSocialPathPrefix,
+        );
 
     if (carriedBearer && !isAuthLifecycle && (status == 401 || status == 403)) {
       final body = err.response?.data;

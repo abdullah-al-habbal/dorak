@@ -9,6 +9,4 @@ final class DashboardSessionConstants
     public const string DASHBOARD_SESSION_CLAIM_ALGORITHM = 'HS256';
 
     public const string DASHBOARD_SESSION_CLAIM_ISSUER = 'dorak-backend';
-
-    public const int DASHBOARD_SESSION_CLAIM_DEFAULT_TTL_SECONDS = 28800;
 }

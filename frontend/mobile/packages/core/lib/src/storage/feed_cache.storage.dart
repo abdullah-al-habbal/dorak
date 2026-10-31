@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:core/src/storage/feed_cache_entry.entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:core/src/storage/feed_cache_constants.entity.dart';
 
 abstract class FeedCache {
   String keyFor({
@@ -22,8 +23,6 @@ abstract class FeedCache {
 }
 
 class SharedFeedCache implements FeedCache {
-  static const String _feedCacheKeyPrefix = 'dorak_cache:v1:';
-
   final SharedPreferences _prefs;
 
   SharedFeedCache(this._prefs);
@@ -46,7 +45,7 @@ class SharedFeedCache implements FeedCache {
     final latitudeKey = _roundToThree(latitude);
     final longitudeKey = _roundToThree(longitude);
     final radiusBucket = (radius / 5).round() * 5;
-    return '$_feedCacheKeyPrefix$universe:$latitudeKey:$longitudeKey:$radiusBucket:$perPage';
+    return '${FeedCacheConstants.feedCacheKeyPrefix}$universe:$latitudeKey:$longitudeKey:$radiusBucket:$perPage';
   }
 
   @override
@@ -82,7 +81,9 @@ class SharedFeedCache implements FeedCache {
   Future<void> clear() async {
     final keys = _prefs
         .getKeys()
-        .where((final key) => key.startsWith(_feedCacheKeyPrefix))
+        .where(
+          (final key) => key.startsWith(FeedCacheConstants.feedCacheKeyPrefix),
+        )
         .toList();
     for (final key in keys) {
       await _prefs.remove(key);

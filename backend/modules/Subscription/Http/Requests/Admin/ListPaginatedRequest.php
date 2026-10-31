@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Subscription\Http\Requests\Admin;
 
-use Modules\Core\Constants\PaginationConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class ListPaginatedRequest extends BaseApiFormRequest
 {
@@ -13,13 +14,13 @@ final class ListPaginatedRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.PaginationConstants::PAGINATION_MAX_PER_PAGE],
+            'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.app(SettingsService::class)->int(SettingKey::PaginationMaxPerPage)],
             'brand_id' => ['sometimes', 'uuid'],
         ];
     }
 
     public function perPage(): int
     {
-        return $this->integer('per_page', PaginationConstants::PAGINATION_DEFAULT_PER_PAGE);
+        return $this->integer('per_page', app(SettingsService::class)->int(SettingKey::PaginationDefaultPerPage));
     }
 }

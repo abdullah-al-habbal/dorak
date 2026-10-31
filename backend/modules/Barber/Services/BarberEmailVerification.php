@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Modules\Barber\Constants\BarberEmailVerificationConstants;
 use Modules\Barber\Mail\BarberEmailVerificationCode;
 use Modules\Barber\Models\BarberModel;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class BarberEmailVerification
 {
@@ -31,7 +32,7 @@ final class BarberEmailVerification
             ]);
         }
 
-        Cache::put($this->codeKey($barberId), Hash::make($code), now()->addMinutes(BarberEmailVerificationConstants::BARBER_EMAIL_VERIFICATION_TTL_MINUTES));
+        Cache::put($this->codeKey($barberId), Hash::make($code), now()->addMinutes(app(SettingsService::class)->int(SettingKey::BarberEmailVerificationTtlMinutes)));
         Cache::forget($this->attemptsKey($barberId));
 
         Mail::to((string) $barber->getAttribute('email'))->send(new BarberEmailVerificationCode($code));
@@ -65,12 +66,12 @@ final class BarberEmailVerification
         $attempts = Cache::increment($key, 1);
 
         if ($attempts === false) {
-            Cache::add($key, 1, now()->addMinutes(BarberEmailVerificationConstants::BARBER_EMAIL_VERIFICATION_TTL_MINUTES));
+            Cache::add($key, 1, now()->addMinutes(app(SettingsService::class)->int(SettingKey::BarberEmailVerificationTtlMinutes)));
 
             $attempts = 1;
         }
 
-        if ($attempts >= BarberEmailVerificationConstants::BARBER_EMAIL_VERIFICATION_MAX_ATTEMPTS) {
+        if ($attempts >= app(SettingsService::class)->int(SettingKey::BarberEmailVerificationMaxAttempts)) {
             Cache::forget($this->codeKey($barberId));
             Cache::forget($key);
         }

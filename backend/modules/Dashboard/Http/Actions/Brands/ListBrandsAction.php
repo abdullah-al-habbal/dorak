@@ -8,9 +8,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Brand\Http\Resources\Shared\BrandResource;
 use Modules\Brand\Models\BrandModel;
-use Modules\Core\Constants\PaginationConstants;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class ListBrandsAction extends BaseApiAction
 {
@@ -20,7 +21,7 @@ final class ListBrandsAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $scope = $actor->scopedBrandIds();
         $search = trim($request->string('search')->toString());
-        $perPage = min(max($request->integer('per_page', PaginationConstants::PAGINATION_DEFAULT_PER_PAGE), 1), PaginationConstants::PAGINATION_MAX_PER_PAGE);
+        $perPage = min(max($request->integer('per_page', app(SettingsService::class)->int(SettingKey::PaginationDefaultPerPage)), 1), app(SettingsService::class)->int(SettingKey::PaginationMaxPerPage));
 
         $brands = BrandModel::query()
             ->with(['owner', 'baseCurrency'])

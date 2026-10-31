@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Modules\Client\Services;
 
 use Illuminate\Support\Facades\Cache;
-use Modules\Client\Constants\ClientPasswordResetConstants;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class PasswordResetCodeVerifier
 {
     public function issue(string $clientId, string $code): void
     {
-        Cache::put($this->codeKey($clientId), $code, now()->addMinutes(ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_TTL_MINUTES));
+        Cache::put($this->codeKey($clientId), $code, now()->addMinutes(app(SettingsService::class)->int(SettingKey::ClientPasswordResetTtlMinutes)));
         Cache::forget($this->attemptsKey($clientId));
     }
 
@@ -45,12 +46,12 @@ final class PasswordResetCodeVerifier
         $attempts = Cache::increment($key, 1);
 
         if ($attempts === false) {
-            Cache::add($key, 1, now()->addMinutes(ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_TTL_MINUTES));
+            Cache::add($key, 1, now()->addMinutes(app(SettingsService::class)->int(SettingKey::ClientPasswordResetTtlMinutes)));
 
             $attempts = 1;
         }
 
-        if ($attempts >= ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_MAX_ATTEMPTS) {
+        if ($attempts >= app(SettingsService::class)->int(SettingKey::ClientPasswordResetMaxAttempts)) {
             $this->consume($clientId);
         }
     }

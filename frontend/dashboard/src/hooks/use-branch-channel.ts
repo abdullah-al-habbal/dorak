@@ -3,13 +3,7 @@
 import { realtimeEcho } from "@/services/realtime/echo-client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-
-const BRANCH_CHANNEL_BOOKING_EVENTS = [
-  ".booking.created",
-  ".booking.status.updated",
-  ".booking.cancelled",
-  ".booking.rescheduled",
-];
+import { BRANCH_CHANNEL_BOOKING_EVENTS } from "@/config/branch-channel.constant";
 
 export function useBranchChannel(branchId: string | null) {
   const queryClient = useQueryClient();

@@ -7,8 +7,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Modules\Client\Models\ClientModel;
-use Modules\ClientFaceProfile\Constants\FaceProfilePhotoConstants;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
@@ -26,14 +27,14 @@ function uploadFacePhoto(ClientModel $client, bool $isPrimary = false)
 }
 
 it('rejects a 6th photo with 422 face_photo_limit_reached and keeps the row count at 5', function () {
-    for ($i = 0; $i < FaceProfilePhotoConstants::FACE_PROFILE_PHOTO_MAX_PHOTOS_PER_CLIENT; $i++) {
+    for ($i = 0; $i < app(SettingsService::class)->int(SettingKey::FaceProfileMaxPhotos); $i++) {
         uploadFacePhoto($this->client)->assertCreated();
     }
 
     $response = uploadFacePhoto($this->client);
 
     $response->assertStatus(422)->assertJsonPath('code', 'face_photo_limit_reached');
-    expect(ClientFaceProfileModel::query()->where('client_id', $this->client->id)->count())->toBe(5);
+    expect(ClientFaceProfileModel::query()->where('client_id', $this->client->id)->count())->toBe(app(SettingsService::class)->int(SettingKey::FaceProfileMaxPhotos));
 });
 
 it('leaves exactly one primary row when uploading with is_primary true', function () {

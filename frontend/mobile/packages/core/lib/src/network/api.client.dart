@@ -13,6 +13,8 @@ import 'package:core/src/network/interceptors/logging.interceptor.dart';
 import 'package:core/src/network/interceptors/retry.interceptor.dart';
 import 'package:core/src/network/paginated_data.dto.dart';
 import 'package:core/src/network/pagination_meta.dto.dart';
+import 'package:core/src/network/api_client_constants.entity.dart';
+import 'package:core/src/network/exceptions/api_error_code_constants.entity.dart';
 
 typedef JsonParser<T> = T Function(dynamic json);
 
@@ -23,9 +25,6 @@ typedef RawPaginated<T> = ({
 });
 
 class ApiClient {
-  static const Duration defaultApiConnectTimeout = Duration(seconds: 15);
-  static const Duration defaultApiReceiveTimeout = Duration(seconds: 30);
-
   final Dio dio;
   final StreamController<void> _unauthorizedController =
       StreamController<void>.broadcast();
@@ -51,8 +50,10 @@ class ApiClient {
            Dio(
              BaseOptions(
                baseUrl: baseUrl,
-               connectTimeout: defaultApiConnectTimeout,
-               receiveTimeout: defaultApiReceiveTimeout,
+               connectTimeout:
+                   ApiClientConstants.apiClientDefaultConnectTimeout,
+               receiveTimeout:
+                   ApiClientConstants.apiClientDefaultReceiveTimeout,
              ),
            ) {
     this.dio.interceptors
@@ -268,7 +269,7 @@ class ApiClient {
       );
     }
 
-    if (code == ChairHasActiveBookingsException.chairHasActiveBookingsErrorCode) {
+    if (code == ApiErrorCodeConstants.apiErrorCodeChairHasActiveBookings) {
       final rawErrors = body['errors'];
       final rawIds = rawErrors is Map<String, dynamic>
           ? rawErrors['booking_ids']
@@ -283,7 +284,7 @@ class ApiClient {
       );
     }
 
-    if (code == FeatureNotEnabledException.featureNotEnabledErrorCode) {
+    if (code == ApiErrorCodeConstants.apiErrorCodeFeatureNotEnabled) {
       final rawErrors = body['errors'];
       final rawFeature = rawErrors is Map<String, dynamic>
           ? rawErrors['feature']

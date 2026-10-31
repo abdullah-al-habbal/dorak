@@ -1,5 +1,4 @@
-const BARBER_WORKSPACE_API_BASE_PATH = "/barber";
-
+import { BARBER_WORKSPACE_API_BASE_PATH } from "@/services/api/barber-workspace/endpoints/barber-workspace.endpoints.constant";
 export const BarberEndpoints = {
   workstationStatus: `${BARBER_WORKSPACE_API_BASE_PATH}/workstation-status`,
   appointmentsToday: `${BARBER_WORKSPACE_API_BASE_PATH}/appointments/today`,

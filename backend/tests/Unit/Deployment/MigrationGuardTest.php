@@ -31,6 +31,7 @@ function runGuard(array $migrations, array $args = ['--all'], ?callable $setup =
     mkdir($migDir, 0o777, true);
     mkdir($root.'/scripts', 0o777, true);
     copy(guardScript(), $root.'/scripts/check_migrations.php');
+    copy(base_path('scripts/MigrationGuardConstants.php'), $root.'/scripts/MigrationGuardConstants.php');
 
     foreach ($migrations as $name => $up) {
         file_put_contents($migDir.'/'.$name, migrationSource($up));
@@ -184,6 +185,7 @@ it('detects an edited shipped migration against the parent commit', function () 
     mkdir($migDir, 0o777, true);
     mkdir($root.'/scripts', 0o777, true);
     copy(guardScript(), $root.'/scripts/check_migrations.php');
+    copy(base_path('scripts/MigrationGuardConstants.php'), $root.'/scripts/MigrationGuardConstants.php');
 
     $file = $migDir.'/2030_01_01_000009_shipped.php';
     file_put_contents($file, migrationSource(<<<'UP'

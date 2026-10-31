@@ -3,8 +3,7 @@
 import { useDictionary } from "@/hooks/use-dictionary";
 import type { IFloorPlanLayoutInput } from "@/services/api/dashboard/floor-plan/types/ifloor-plan-layout-input.types";
 import { useWatch, type Control } from "react-hook-form";
-
-const FLOOR_PLAN_PREVIEW_DEFAULT_ASPECT = "4 / 3";
+import { FLOOR_PLAN_PREVIEW_DEFAULT_ASPECT } from "@/components/floor-plan/floor-plan-preview.constant";
 
 interface IFloorPlanPreviewProps {
   control: Control<IFloorPlanLayoutInput>;

@@ -1,6 +1,5 @@
 import { bearerHeaders } from "@/services/api/core/http.util";
-
-const REALTIME_BROADCAST_AUTH_PATH = "/api/v1/broadcasting/auth";
+import { REALTIME_BROADCAST_AUTH_PATH } from "@/services/api/common/realtime/realtime-auth.proxy.constant";
 
 function backendBaseUrl(): string {
   return (process.env.BACKEND_API_URL ?? "http://localhost:8000").replace(

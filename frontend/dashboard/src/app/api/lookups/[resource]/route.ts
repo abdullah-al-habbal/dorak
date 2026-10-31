@@ -14,12 +14,7 @@ import type {
   LookupResource,
 } from "@/services/api/common/lookup/types/lookup.types";
 import type { NextRequest } from "next/server";
-
-const LOOKUP_PROXY_PATHS: Record<LookupResource, string> = {
-  brands: "/api/v1/brands",
-  currencies: "/api/v1/currencies",
-  "service-catalog-items": "/api/v1/service-catalog/items",
-};
+import { LOOKUP_PROXY_PATHS } from "@/app/api/lookups/[resource]/route.constant";
 
 function isLookupResource(value: string): value is LookupResource {
   return value in LOOKUP_PROXY_PATHS;

@@ -16,7 +16,7 @@ class _ConflictRepository implements BranchOperationsRepository {
     if (!force) {
       throw const ChairHasActiveBookingsException(
         statusCode: 409,
-        code: ChairHasActiveBookingsException.chairHasActiveBookingsErrorCode,
+        code: ApiErrorCodeConstants.apiErrorCodeChairHasActiveBookings,
         message: 'conflict',
         bookingIds: ['booking-1', 'booking-2'],
       );
@@ -37,8 +37,10 @@ class _ConflictRepository implements BranchOperationsRepository {
       throw StateError('offline');
 
   @override
-  Future<BookingDto> updateBookingStatus(String id, BookingStatus status) async =>
-      throw StateError('offline');
+  Future<BookingDto> updateBookingStatus(
+    String id,
+    BookingStatus status,
+  ) async => throw StateError('offline');
 
   @override
   Future<PaginatedData<FloorChairDto>> getChairs() async =>

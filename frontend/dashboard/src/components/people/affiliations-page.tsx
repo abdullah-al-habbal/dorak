@@ -27,8 +27,8 @@ import {
 import type { IAffiliation } from "@/services/api/dashboard/people/types/iaffiliation.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { AFFILIATION_FILTER_ALL_STATUSES } from "@/components/people/affiliations-page.constant";
 
-const AFFILIATION_FILTER_ALL_STATUSES = "all";
 type Action = "accept" | "reject" | "terminate";
 
 export function AffiliationsPage() {

@@ -94,6 +94,8 @@ use Modules\ServiceCatalog\Http\Actions\Client\UpdateCatalogItemAction;
 use Modules\ServiceCatalog\Http\Actions\Shared\ListCatalogItemsAction;
 use Modules\ServiceCatalog\Http\Actions\Shared\ListCategoriesAction;
 use Modules\ServiceCatalog\Http\Actions\Shared\ShowCatalogItemAction;
+use Modules\Settings\Http\Actions\Admin\ListPlatformSettingsAction;
+use Modules\Settings\Http\Actions\Admin\UpdatePlatformSettingsAction;
 use Modules\Subscription\Http\Actions\Admin\AssignBrandSubscriptionAction;
 use Modules\Subscription\Http\Actions\Admin\DestroySubscriptionPlanAction;
 use Modules\Subscription\Http\Actions\Admin\ListBrandSubscriptionsAction;
@@ -141,6 +143,9 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/subscriptions', ListBrandSubscriptionsAction::class);
         Route::post('/subscriptions', AssignBrandSubscriptionAction::class);
         Route::patch('/subscriptions/{subscription}/status', UpdateBrandSubscriptionStatusAction::class);
+
+        Route::get('/settings', ListPlatformSettingsAction::class);
+        Route::patch('/settings', UpdatePlatformSettingsAction::class);
 
         Route::get('/payment-gateways', ListPaymentGatewaysAction::class);
         Route::post('/payment-gateways', StorePaymentGatewayAction::class);

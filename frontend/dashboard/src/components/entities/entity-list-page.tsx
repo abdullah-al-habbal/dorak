@@ -20,7 +20,6 @@ import type { DashboardResource } from "@/services/api/dashboard/shared/types/da
 import type { IBooking } from "@/services/api/dashboard/booking/types/ibooking.types";
 import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
 import { BookingListFilters } from "@/components/bookings/booking-list-filters";
-import type { IBookingListFiltersValue } from "@/components/bookings/booking-list-filters.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BookingActionsDialog } from "@/components/bookings/booking-actions-dialog";
@@ -30,18 +29,11 @@ import { useSession } from "@/hooks/use-session";
 import { useBranchChannel } from "@/hooks/use-branch-channel";
 import Link from "next/link";
 import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
+import { ENTITY_LIST_EMPTY_BOOKING_FILTERS } from "@/components/entities/entity-list-page.constant";
 
 interface EntityListPageProps {
   resource: Exclude<DashboardResource, "overview">;
 }
-
-const ENTITY_LIST_EMPTY_BOOKING_FILTERS: IBookingListFiltersValue = {
-  status: "",
-  dateFrom: "",
-  dateTo: "",
-  chairId: "",
-  stylistId: "",
-};
 
 export function EntityListPage({ resource }: EntityListPageProps) {
   const config = ENTITY_CONFIGS[resource];

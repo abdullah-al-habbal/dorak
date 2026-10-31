@@ -21,6 +21,7 @@ import type { IJobPostingForm } from "@/services/api/dashboard/people/types/ijob
 import type { IJobPostingFormInput } from "@/services/api/dashboard/people/types/ijob-posting-form-input.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { JOB_POSTING_FORM_SERVER_FIELD_MAP } from "@/components/people/job-posting-form.constant";
 
 interface IJobPostingFormProps {
   branchId: string;
@@ -28,19 +29,6 @@ interface IJobPostingFormProps {
   posting?: IJobPosting;
   onDone: () => void;
 }
-
-const JOB_POSTING_FORM_SERVER_FIELD_MAP: Record<
-  string,
-  keyof IJobPostingFormInput
-> = {
-  "title.en": "titleEn",
-  "title.ar": "titleAr",
-  "description.en": "descriptionEn",
-  "description.ar": "descriptionAr",
-  location: "location",
-  type: "type",
-  status: "status",
-};
 
 function defaultsFor(posting?: IJobPosting): IJobPostingFormInput {
   return {

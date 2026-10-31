@@ -6,10 +6,11 @@ namespace Modules\ClientFaceProfile\Eloquent\Resolvers;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Client\Models\ClientModel;
-use Modules\ClientFaceProfile\Constants\FaceProfilePhotoConstants;
 use Modules\ClientFaceProfile\CQRS\Command\UploadFaceProfilePhotoCommand;
 use Modules\ClientFaceProfile\Enums\FaceAnalysisStatusEnum;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class UploadFaceProfilePhotoEloquentResolver
 {
@@ -23,7 +24,7 @@ final class UploadFaceProfilePhotoEloquentResolver
                 ->lockForUpdate()
                 ->count();
 
-            if ($existing >= FaceProfilePhotoConstants::FACE_PROFILE_PHOTO_MAX_PHOTOS_PER_CLIENT) {
+            if ($existing >= app(SettingsService::class)->int(SettingKey::FaceProfileMaxPhotos)) {
                 throw new FacePhotoLimitReachedException;
             }
 

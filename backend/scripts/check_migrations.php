@@ -32,43 +32,7 @@ declare(strict_types=1);
  *   --base=<ref>  compare against this ref (default: origin/dev)
  *   --all         scan every migration in the repo instead of a diff
  */
-const EXIT_OK = 0;
-const EXIT_VIOLATION = 1;
-const EXIT_USAGE = 2;
-
-const MIGRATION_GLOBS = [
-    'modules/*/Database/Migrations/*.php',
-    'database/migrations/*.php',
-];
-
-/** Destructive schema operations. Safe in down(); never in up() without opt-out. */
-const DESTRUCTIVE = [
-    'dropColumn' => 'drops a column',
-    'dropForeign' => 'drops a foreign key',
-    'dropIndex' => 'drops an index',
-    'dropUnique' => 'drops a unique constraint',
-    'dropPrimary' => 'drops a primary key',
-    'dropConstrainedForeignId' => 'drops a constrained foreign id',
-    'renameColumn' => 'renames a column',
-    '->change()' => 'alters an existing column (type/nullability)',
-    'Schema::rename' => 'renames a table',
-    'Schema::drop(' => 'drops a table',
-];
-
-const OPT_OUT = '@contract-migration:';
-
-/** Blueprint calls that are not real columns, or are inherently nullable. */
-const NON_COLUMN_CALLS = [
-    'softDeletes', 'timestamps', 'rememberToken', 'index', 'unique', 'primary',
-    'foreign', 'references', 'on', 'onDelete', 'onUpdate', 'constrained',
-    'nullOnDelete', 'cascadeOnDelete', 'restrictOnDelete', 'comment', 'after',
-    'change', 'spatialIndex', 'fullText', 'rawIndex',
-    // Removals and renames are reported by the DESTRUCTIVE scan. Without these
-    // here, `dropColumn('phone')` also gets misreported as a NOT NULL addition.
-    'dropColumn', 'dropForeign', 'dropIndex', 'dropUnique', 'dropPrimary',
-    'dropConstrainedForeignId', 'dropSoftDeletes', 'dropTimestamps',
-    'dropRememberToken', 'dropMorphs', 'renameColumn', 'renameIndex',
-];
+require_once __DIR__.'/MigrationGuardConstants.php';
 
 function fail(string $msg): void
 {
@@ -78,7 +42,7 @@ function fail(string $msg): void
 function migrationFiles(): array
 {
     $out = [];
-    foreach (MIGRATION_GLOBS as $glob) {
+    foreach (MigrationGuardConstants::MIGRATION_GUARD_MIGRATION_GLOBS as $glob) {
         foreach (glob($glob) ?: [] as $f) {
             $out[] = $f;
         }
@@ -142,7 +106,7 @@ function notNullAdditions(string $up): array
                 continue;
             }
             [$_, $call, $col] = $m;
-            if (in_array($call, NON_COLUMN_CALLS, true)) {
+            if (in_array($call, MigrationGuardConstants::MIGRATION_GUARD_NON_COLUMN_CALLS, true)) {
                 continue;
             }
             // `->change()` modifies an existing column rather than adding one;
@@ -171,7 +135,7 @@ function scan(string $file): array
     }
 
     $optOut = null;
-    if (preg_match('/'.preg_quote(OPT_OUT, '/').'\s*(.+)/', $src, $m)) {
+    if (preg_match('/'.preg_quote(MigrationGuardConstants::MIGRATION_GUARD_OPT_OUT, '/').'\s*(.+)/', $src, $m)) {
         $optOut = trim($m[1]);
     }
 
@@ -181,7 +145,7 @@ function scan(string $file): array
     }
 
     $problems = [];
-    foreach (DESTRUCTIVE as $needle => $desc) {
+    foreach (MigrationGuardConstants::MIGRATION_GUARD_DESTRUCTIVE as $needle => $desc) {
         if (str_contains($up, $needle)) {
             $problems[] = "{$desc} — `{$needle}` in up()";
         }
@@ -203,10 +167,10 @@ foreach (array_slice($argv, 1) as $arg) {
         $all = true;
     } elseif ($arg === '-h' || $arg === '--help') {
         fwrite(STDOUT, "Usage: php scripts/check_migrations.php [--base=<ref>] [--all]\n");
-        exit(EXIT_OK);
+        exit(MigrationGuardConstants::MIGRATION_GUARD_EXIT_OK);
     } else {
         fail("Unknown argument: {$arg}");
-        exit(EXIT_USAGE);
+        exit(MigrationGuardConstants::MIGRATION_GUARD_EXIT_USAGE);
     }
 }
 
@@ -262,7 +226,7 @@ foreach ($modified as $file) {
     fail('     `migrate` never re-runs an applied migration, so this changes fresh');
     fail('     installs only — existing databases keep the old schema, silently and');
     fail('     permanently. Add a NEW migration instead.');
-    fail('     Deliberate? add:  // '.OPT_OUT.' <reason>');
+    fail('     Deliberate? add:  // '.MigrationGuardConstants::MIGRATION_GUARD_OPT_OUT.' <reason>');
     $violations++;
 }
 
@@ -289,7 +253,7 @@ foreach ($added as $file) {
     fail('     Migrations run BEFORE the atomic swap, so the previous release serves');
     fail('     traffic against this schema. Contract operations must ship in a later');
     fail('     release, after no running code references what is being removed.');
-    fail('     Deliberate? add:  // '.OPT_OUT.' <reason>');
+    fail('     Deliberate? add:  // '.MigrationGuardConstants::MIGRATION_GUARD_OPT_OUT.' <reason>');
     $violations++;
 }
 
@@ -297,9 +261,9 @@ echo "\n";
 if ($violations > 0) {
     fail("❌ Migration guard: {$violations} violation(s)".($waived ? ", {$waived} waived" : '').'.');
     fail('   Policy: docs/16_deployment-operations.md');
-    exit(EXIT_VIOLATION);
+    exit(MigrationGuardConstants::MIGRATION_GUARD_EXIT_VIOLATION);
 }
 
 $scanned = count($added) + count($modified);
 echo '✅ Migration guard passed'.($scanned ? " ({$scanned} migration(s) checked".($waived ? ", {$waived} waived" : '').')' : ' (no migrations changed)').".\n";
-exit(EXIT_OK);
+exit(MigrationGuardConstants::MIGRATION_GUARD_EXIT_OK);

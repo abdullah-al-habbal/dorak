@@ -1,4 +1,5 @@
 import type { BookingStatus } from "@/services/api/dashboard/booking/types/booking-status.types";
+import { BOOKING_STATUS_TRANSITIONS } from "@/services/api/dashboard/booking/booking-status-transitions.constant";
 
 type NonPendingStatus = Exclude<BookingStatus, "pending">;
 
@@ -8,15 +9,6 @@ type NonPendingStatus = Exclude<BookingStatus, "pending">;
  * never offers a transition the backend would reject with 422. No booking
  * can be set back to `pending` from the dashboard, so it never appears here.
  */
-const BOOKING_STATUS_TRANSITIONS: Record<BookingStatus, NonPendingStatus[]> = {
-  pending: ["confirmed", "canceled"],
-  confirmed: ["in_progress", "canceled", "no_show"],
-  ["in_progress"]: ["completed", "canceled", "no_show"],
-  completed: [],
-  canceled: [],
-  ["no_show"]: [],
-};
-
 export function allowedNextBookingStatuses(
   status: BookingStatus,
 ): NonPendingStatus[] {

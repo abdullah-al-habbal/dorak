@@ -1,0 +1,1 @@
+export const PEOPLE_MAX_COMMISSION_RATE = 100;

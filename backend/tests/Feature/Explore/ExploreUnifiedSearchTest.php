@@ -9,12 +9,11 @@ use Modules\Client\Models\ClientModel;
 use Modules\ClientRecommendation\Constants\RecommendationConstants;
 use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
-
-const UNIFIED_URL = '/api/v1/explore/search?latitude=33.5&longitude=36.3&radius=50';
+use Tests\Support\Constants\ExploreTestConstants;
 
 function unifiedSearch(string $query = ''): array
 {
-    return test()->getJson(UNIFIED_URL.$query)->assertOk()->json('data');
+    return test()->getJson(ExploreTestConstants::EXPLORE_TEST_UNIFIED_URL.$query)->assertOk()->json('data');
 }
 
 it('returns branches and freelancers in one list, nearest first', function (): void {
@@ -75,7 +74,7 @@ it('paginates the merged list', function (): void {
         BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5 + $i / 1000 + 0.0005, 'longitude' => 36.3]);
     }
 
-    $response = $this->getJson(UNIFIED_URL.'&per_page=4&page=2')->assertOk();
+    $response = $this->getJson(ExploreTestConstants::EXPLORE_TEST_UNIFIED_URL.'&per_page=4&page=2')->assertOk();
 
     expect($response->json('data'))->toHaveCount(2)
         ->and($response->json('meta.pagination.total'))->toBe(6)
@@ -99,7 +98,7 @@ it('ranks shops and freelancers together for a signed-in client', function (): v
         'edge_type' => EdgeTypeEnum::Favorite, 'weight' => 1.0,
     ]);
 
-    $items = $this->actingAs($client, 'client')->getJson(UNIFIED_URL)->assertOk()->json('data');
+    $items = $this->actingAs($client, 'client')->getJson(ExploreTestConstants::EXPLORE_TEST_UNIFIED_URL)->assertOk()->json('data');
 
     expect(array_map(fn (array $item) => $item['entity']['id'], $items))->toBe([$favourite->id, $nearBranch->id])
         ->and($items[0]['entity']['rank'])->toBe(1);

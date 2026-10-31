@@ -1,6 +1,5 @@
 import { ApiClientError } from "@/services/api/core/client-error";
-
-const CHAIR_MAINTENANCE_CONFLICT_CODE = "CHAIR_HAS_ACTIVE_BOOKINGS";
+import { CHAIR_MAINTENANCE_CONFLICT_CODE } from "@/services/api/dashboard/chair/chair-maintenance-conflict.constant";
 
 export function chairConflictBookingIds(error: unknown): string[] | null {
   if (

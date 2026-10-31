@@ -62,6 +62,7 @@ export const ROUTES = {
     subscriptionPlans: "/admin/subscription-plans",
     subscriptions: "/admin/subscriptions",
     paymentGateways: "/admin/payment-gateways",
+    platformSettings: "/admin/settings",
     commissionRules: "/admin/commission-rules",
     payouts: "/admin/payouts",
     analytics: "/admin/analytics",
@@ -222,6 +223,12 @@ export const PORTAL_NAVIGATION: readonly PortalNavigationItem[] = [
     icon: "home",
     actors: ["admin"],
     href: () => ROUTES.admin.analytics,
+  },
+  {
+    key: "platformSettings",
+    icon: "home",
+    actors: ["admin"],
+    href: () => ROUTES.admin.platformSettings,
   },
   {
     key: "stylists",

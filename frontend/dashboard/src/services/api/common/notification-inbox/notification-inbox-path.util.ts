@@ -1,15 +1,4 @@
-const NOTIFICATION_INBOX_ROUTE_RULES: ReadonlyArray<{
-  method: string;
-  path: RegExp;
-}> = [
-  { method: "GET", path: /^$/ },
-  { method: "POST", path: /^read-all$/ },
-  {
-    method: "PATCH",
-    path: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/read$/i,
-  },
-];
-
+import { NOTIFICATION_INBOX_ROUTE_RULES } from "@/services/api/common/notification-inbox/notification-inbox-path.constant";
 export function isNotificationRouteAllowed(
   method: string,
   path: string,

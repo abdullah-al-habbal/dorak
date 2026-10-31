@@ -1,4 +1,4 @@
-const Duration feedCacheTtl = Duration(minutes: 30);
+import 'package:core/src/storage/feed_cache_constants.entity.dart';
 
 class FeedCacheEntry {
   final List<Object?> items;
@@ -11,6 +11,8 @@ class FeedCacheEntry {
     required this.storedAt,
   });
 
-  bool isStale(DateTime now, [Duration ttl = feedCacheTtl]) =>
-      now.difference(storedAt) > ttl;
+  bool isStale(
+    DateTime now, [
+    Duration ttl = FeedCacheConstants.feedCacheDefaultTtl,
+  ]) => now.difference(storedAt) > ttl;
 }

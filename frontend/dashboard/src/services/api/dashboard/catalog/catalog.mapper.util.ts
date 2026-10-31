@@ -8,6 +8,10 @@ import type { ICatalogItem } from "@/services/api/dashboard/catalog/types/icatal
 import type { ICatalogTag } from "@/services/api/dashboard/catalog/types/icatalog-tag.types";
 import { isRecord } from "@/utils/guards.util";
 import type { ICatalogItemForm } from "@/services/api/dashboard/catalog/types/icatalog-item-form.types";
+import {
+  CATALOG_FACE_SHAPE_SET,
+  CATALOG_HAIR_TEXTURE_SET,
+} from "@/services/api/dashboard/catalog/catalog-mapper.constant";
 
 type Wire = Record<string, unknown>;
 
@@ -46,12 +50,6 @@ export function mapCatalogItem(wire: unknown): ICatalogItem {
   });
 }
 
-const CATALOG_FACE_SHAPE_SET: ReadonlySet<string> = new Set(
-  CatalogItemSchema.shape.faceShapes.element.options,
-);
-const CATALOG_HAIR_TEXTURE_SET: ReadonlySet<string> = new Set(
-  CatalogItemSchema.shape.hairTextures.element.options,
-);
 function isFaceShape(value: string) {
   return CATALOG_FACE_SHAPE_SET.has(value);
 }

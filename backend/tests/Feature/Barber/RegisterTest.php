@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Modules\Admin\Models\AdminModel;
-use Modules\Barber\Constants\BarberEmailVerificationConstants;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Mail\BarberEmailVerificationCode;
 use Modules\Barber\Models\BarberModel;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 beforeEach(function (): void {
     $this->withoutMiddleware(ThrottleRequests::class);
@@ -188,7 +189,7 @@ describe('barber email verification', function (): void {
         [$token, $barber] = registerBarber();
         seedBarberEmailCode($barber);
 
-        foreach (range(1, BarberEmailVerificationConstants::BARBER_EMAIL_VERIFICATION_MAX_ATTEMPTS) as $_) {
+        foreach (range(1, app(SettingsService::class)->int(SettingKey::BarberEmailVerificationMaxAttempts)) as $_) {
             $this->withToken($token)->postJson('/api/v1/barber/email/verify', ['code' => '000000'])->assertStatus(422);
         }
 

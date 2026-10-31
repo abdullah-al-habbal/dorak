@@ -13,20 +13,12 @@ import {
 import { useDictionary } from "@/hooks/use-dictionary";
 import type { IBookingListFiltersValue } from "@/components/bookings/booking-list-filters.types";
 import type { BookingStatus } from "@/services/api/dashboard/booking/types/booking-status.types";
+import { BOOKING_LIST_FILTER_STATUSES } from "@/components/bookings/booking-list-filters.constant";
 
 interface IBookingListFiltersProps {
   value: IBookingListFiltersValue;
   onChange: (value: IBookingListFiltersValue) => void;
 }
-
-const BOOKING_LIST_FILTER_STATUSES: BookingStatus[] = [
-  "pending",
-  "confirmed",
-  "in_progress",
-  "completed",
-  "no_show",
-  "canceled",
-];
 
 export function BookingListFilters({
   value,

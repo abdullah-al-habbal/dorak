@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Modules\Payout\Http\Requests\Admin;
 
 use Illuminate\Validation\Rule;
-use Modules\Core\Constants\PaginationConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Payout\Enums\PayoutStatus;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class ListPayoutsRequest extends BaseApiFormRequest
 {
@@ -17,12 +18,12 @@ final class ListPayoutsRequest extends BaseApiFormRequest
         return [
             'status' => ['sometimes', Rule::enum(PayoutStatus::class)],
             'brand_id' => ['sometimes', 'uuid'],
-            'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.PaginationConstants::PAGINATION_MAX_PER_PAGE],
+            'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.app(SettingsService::class)->int(SettingKey::PaginationMaxPerPage)],
         ];
     }
 
     public function perPage(): int
     {
-        return $this->integer('per_page', PaginationConstants::PAGINATION_DEFAULT_PER_PAGE);
+        return $this->integer('per_page', app(SettingsService::class)->int(SettingKey::PaginationDefaultPerPage));
     }
 }

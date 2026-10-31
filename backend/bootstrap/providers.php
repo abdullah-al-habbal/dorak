@@ -39,6 +39,7 @@ use Modules\Payout\Providers\PayoutServiceProvider;
 use Modules\Preference\Providers\PreferenceServiceProvider;
 use Modules\Review\Providers\ReviewServiceProvider;
 use Modules\ServiceCatalog\Providers\ServiceCatalogServiceProvider;
+use Modules\Settings\Providers\SettingsServiceProvider;
 use Modules\Subscription\Providers\SubscriptionServiceProvider;
 use Modules\Website\Providers\WebsiteServiceProvider;
 
@@ -79,6 +80,7 @@ return [
     AuditServiceProvider::class,
     SubscriptionServiceProvider::class,
     PaymentServiceProvider::class,
+    SettingsServiceProvider::class,
     CommissionServiceProvider::class,
     PayoutServiceProvider::class,
 ];

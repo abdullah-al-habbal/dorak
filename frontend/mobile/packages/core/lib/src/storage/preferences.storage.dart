@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:core/src/storage/preferences_storage_keys.entity.dart';
 
 class SavedAddress {
   const SavedAddress({
@@ -70,10 +71,6 @@ abstract class AppPreferences {
 }
 
 class SharedAppPreferences implements AppPreferences {
-  static const String _dontShowOnboardingKey = 'dont_show_onboarding';
-  static const String _profileCompletedKey = 'profile_completed';
-  static const String _savedAddressesKey = 'saved_addresses';
-
   final SharedPreferences _prefs;
 
   const SharedAppPreferences(this._prefs);
@@ -84,14 +81,19 @@ class SharedAppPreferences implements AppPreferences {
 
   @override
   bool get dontShowOnboarding =>
-      _prefs.getBool(_dontShowOnboardingKey) ?? false;
+      _prefs.getBool(PreferencesStorageKeys.preferencesDontShowOnboardingKey) ??
+      false;
 
   @override
-  bool get profileCompleted => _prefs.getBool(_profileCompletedKey) ?? false;
+  bool get profileCompleted =>
+      _prefs.getBool(PreferencesStorageKeys.preferencesProfileCompletedKey) ??
+      false;
 
   @override
   List<SavedAddress> get savedAddresses {
-    final raw = _prefs.getString(_savedAddressesKey);
+    final raw = _prefs.getString(
+      PreferencesStorageKeys.preferencesSavedAddressesKey,
+    );
     if (raw == null) return const [];
     try {
       final decoded = jsonDecode(raw);
@@ -106,18 +108,22 @@ class SharedAppPreferences implements AppPreferences {
   }
 
   @override
-  Future<void> setDontShowOnboarding(bool value) =>
-      _prefs.setBool(_dontShowOnboardingKey, value);
+  Future<void> setDontShowOnboarding(bool value) => _prefs.setBool(
+    PreferencesStorageKeys.preferencesDontShowOnboardingKey,
+    value,
+  );
 
   @override
-  Future<void> setProfileCompleted(bool value) =>
-      _prefs.setBool(_profileCompletedKey, value);
+  Future<void> setProfileCompleted(bool value) => _prefs.setBool(
+    PreferencesStorageKeys.preferencesProfileCompletedKey,
+    value,
+  );
 
   @override
   Future<void> saveAddress(SavedAddress address) async {
     final saved = savedAddresses.where((item) => item.label != address.label);
     await _prefs.setString(
-      _savedAddressesKey,
+      PreferencesStorageKeys.preferencesSavedAddressesKey,
       jsonEncode([address.toJson(), ...saved.map((item) => item.toJson())]),
     );
   }
@@ -137,7 +143,7 @@ class SharedAppPreferences implements AppPreferences {
 
   Future<void> _writeAddresses(Iterable<SavedAddress> addresses) =>
       _prefs.setString(
-        _savedAddressesKey,
+        PreferencesStorageKeys.preferencesSavedAddressesKey,
         jsonEncode(addresses.map((item) => item.toJson()).toList()),
       );
 }

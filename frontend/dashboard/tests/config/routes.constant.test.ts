@@ -58,6 +58,7 @@ describe("route constants", () => {
     expect(ROUTES.admin.subscriptionPlans).toBe("/admin/subscription-plans");
     expect(ROUTES.admin.subscriptions).toBe("/admin/subscriptions");
     expect(ROUTES.admin.paymentGateways).toBe("/admin/payment-gateways");
+    expect(ROUTES.admin.platformSettings).toBe("/admin/settings");
     expect(ROUTES.admin.commissionRules).toBe("/admin/commission-rules");
     expect(ROUTES.admin.payouts).toBe("/admin/payouts");
     expect(ROUTES.admin.analytics).toBe("/admin/analytics");
@@ -65,6 +66,7 @@ describe("route constants", () => {
       "subscriptionPlans",
       "subscriptions",
       "paymentGateways",
+      "platformSettings",
       "commissionRules",
       "payouts",
       "platformAnalytics",

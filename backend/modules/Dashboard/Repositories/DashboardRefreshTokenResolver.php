@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Modules\Dashboard\Constants\DashboardActorConstants;
-use Modules\Dashboard\Constants\DashboardRefreshTokenConstants;
 use Modules\Dashboard\Models\DashboardRefreshTokenModel;
 use Modules\Dashboard\Support\DashboardActor;
-use RuntimeException;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class DashboardRefreshTokenResolver
 {
@@ -21,12 +21,7 @@ final class DashboardRefreshTokenResolver
 
     public function ttl(): int
     {
-        $ttl = config('dashboard.dashboard.refresh_ttl_seconds', DashboardRefreshTokenConstants::DASHBOARD_REFRESH_TOKEN_DEFAULT_TTL_SECONDS);
-        if (! is_int($ttl) || $ttl < DashboardRefreshTokenConstants::DASHBOARD_REFRESH_TOKEN_MINIMUM_TTL_SECONDS) {
-            throw new RuntimeException(__('dashboard::messages.refresh_ttl_invalid'));
-        }
-
-        return $ttl;
+        return app(SettingsService::class)->int(SettingKey::DashboardRefreshTtlSeconds);
     }
 
     public function issue(DashboardActor $actor): string

@@ -20,13 +20,12 @@ import type { BookingClientReviewInput } from "@/services/api/dashboard/booking/
 import { rateBookingClient } from "@/services/api/dashboard/booking/booking.mutation";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import { BOOKING_RATE_CLIENT_RATING_VALUES } from "@/components/bookings/booking-rate-client-form.constant";
 
 interface IBookingRateClientFormProps {
   bookingId: string;
   onRated: () => void;
 }
-
-const BOOKING_RATE_CLIENT_RATING_VALUES = ["5", "4", "3", "2", "1"] as const;
 
 export function BookingRateClientForm({
   bookingId,

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Modules\Review\Http\Requests\Admin;
 
 use Illuminate\Validation\Rules\Enum;
-use Modules\Core\Constants\PaginationConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class ListAdminReviewsRequest extends BaseApiFormRequest
 {
@@ -16,7 +17,7 @@ final class ListAdminReviewsRequest extends BaseApiFormRequest
     {
         return [
             'status' => ['sometimes', new Enum(ReviewStatus::class)],
-            'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.PaginationConstants::PAGINATION_MAX_PER_PAGE],
+            'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.app(SettingsService::class)->int(SettingKey::PaginationMaxPerPage)],
         ];
     }
 
@@ -28,6 +29,6 @@ final class ListAdminReviewsRequest extends BaseApiFormRequest
 
     public function perPage(): int
     {
-        return $this->integer('per_page', PaginationConstants::PAGINATION_DEFAULT_PER_PAGE);
+        return $this->integer('per_page', app(SettingsService::class)->int(SettingKey::PaginationDefaultPerPage));
     }
 }

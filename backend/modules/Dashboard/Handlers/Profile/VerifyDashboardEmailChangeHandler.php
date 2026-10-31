@@ -10,10 +10,11 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
-use Modules\Dashboard\Constants\DashboardEmailChangeConstants;
 use Modules\Dashboard\CQRS\Command\VerifyDashboardEmailChangeCommand;
 use Modules\Dashboard\Eloquent\Resolvers\Profile\DashboardEmailChangeEloquentResolver;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class VerifyDashboardEmailChangeHandler
 {
@@ -23,7 +24,7 @@ final class VerifyDashboardEmailChangeHandler
     {
         return DB::transaction(function () use ($model, $actor, $command): bool {
             $change = $this->resolver->find($actor);
-            if ($change === null || $change->expires_at->isPast() || $change->attempts >= DashboardEmailChangeConstants::DASHBOARD_EMAIL_CHANGE_MAX_ATTEMPTS) {
+            if ($change === null || $change->expires_at->isPast() || $change->attempts >= app(SettingsService::class)->int(SettingKey::DashboardEmailChangeMaxAttempts)) {
                 return false;
             }
 

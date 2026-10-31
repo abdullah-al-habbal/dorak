@@ -7,6 +7,8 @@ namespace Modules\Dashboard\Support;
 use Illuminate\Support\Str;
 use JsonException;
 use Modules\Dashboard\Constants\DashboardSessionConstants;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 use RuntimeException;
 
 final class DashboardSessionClaim
@@ -160,12 +162,7 @@ final class DashboardSessionClaim
 
     public function expiresIn(): int
     {
-        $ttl = config('dashboard.dashboard.claim_ttl_seconds', DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_DEFAULT_TTL_SECONDS);
-        if (! is_int($ttl) || $ttl < 60) {
-            throw new RuntimeException(__('dashboard::messages.claim_ttl_invalid'));
-        }
-
-        return $ttl;
+        return app(SettingsService::class)->int(SettingKey::DashboardSessionTtlSeconds);
     }
 
     /** @param array<string, int|string|list<string>|null> $value */

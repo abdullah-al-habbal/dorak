@@ -4,8 +4,7 @@ import {
   APPLICATION_STATUSES,
   JOB_POSTING_STATUSES,
 } from "@/services/api/dashboard/people/people.constant";
-
-const PEOPLE_MAX_COMMISSION_RATE = 100;
+import { PEOPLE_MAX_COMMISSION_RATE } from "@/services/api/dashboard/people/schemas/people.schema.constant";
 
 export const AffiliationSchema = z.object({
   id: z.string(),

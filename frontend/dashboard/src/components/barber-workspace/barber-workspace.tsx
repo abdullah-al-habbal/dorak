@@ -38,8 +38,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-
-const BARBER_WORKSPACE_WEEK_LENGTH_DAYS = 7;
+import { BARBER_WORKSPACE_WEEK_LENGTH_DAYS } from "@/components/barber-workspace/barber-workspace.constant";
 
 export function BarberWorkspace() {
   const dictionary = useDictionary();

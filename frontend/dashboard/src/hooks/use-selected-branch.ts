@@ -3,9 +3,10 @@
 import { useDashboardListOptions } from "@/hooks/use-dashboard-list-options";
 import { mapBranch } from "@/services/api/dashboard/shared/dashboard-mapper.util";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
-const SELECTED_BRANCH_QUERY_PARAM = "branch";
-const SELECTED_BRANCH_OPTIONS_PAGE_SIZE = 100;
+import {
+  SELECTED_BRANCH_QUERY_PARAM,
+  SELECTED_BRANCH_OPTIONS_PAGE_SIZE,
+} from "@/config/selected-branch.constant";
 
 /**
  * Branch scope for per-branch pages. The choice lives in the URL

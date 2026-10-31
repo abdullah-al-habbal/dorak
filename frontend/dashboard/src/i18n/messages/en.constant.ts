@@ -66,6 +66,7 @@ export const en = {
       subscriptionPlans: "Subscription plans",
       subscriptions: "Brand subscriptions",
       paymentGateways: "Payment gateways",
+      platformSettings: "Platform settings",
       commissionRules: "Commission rules",
       payouts: "Payouts",
       platformAnalytics: "Platform analytics",
@@ -392,6 +393,53 @@ export const en = {
       updatedAt: "Last updated",
       endsAt: "End time",
       services: "Services",
+    },
+  },
+  platformSettings: {
+    title: "Platform settings",
+    description:
+      "Changes apply immediately to new requests. Values outside the allowed range are rejected.",
+    save: "Save settings",
+    saved: "Settings saved.",
+    loading: "Loading…",
+    range: "Allowed range",
+    defaultValue: "Default",
+    groups: {
+      media: "Media and retention",
+      auth: "Authentication and verification",
+      booking: "Booking and reviews",
+      search: "Search and pagination",
+      floor_plan: "Floor plan",
+    },
+    keys: {
+      upload_portfolio_max_kb: "Portfolio photo max size (KB)",
+      upload_face_photo_max_kb: "Face photo max size (KB)",
+      face_profile_max_photos: "Face photos per client",
+      face_profile_retention_days: "Face photo retention after deletion (days)",
+      notification_retention_days: "Notification delivery retention (days)",
+      client_email_verification_max_attempts:
+        "Client email verification attempts",
+      client_phone_otp_max_attempts: "Client phone OTP attempts",
+      client_password_reset_max_attempts: "Client password reset attempts",
+      client_password_reset_ttl_minutes:
+        "Client password reset code lifetime (minutes)",
+      barber_email_verification_max_attempts:
+        "Barber email verification attempts",
+      barber_email_verification_ttl_minutes:
+        "Barber email code lifetime (minutes)",
+      dashboard_email_change_max_attempts: "Dashboard email change attempts",
+      dashboard_session_ttl_seconds: "Dashboard session lifetime (seconds)",
+      dashboard_refresh_ttl_seconds:
+        "Dashboard refresh token lifetime (seconds)",
+      booking_min_service_duration_minutes:
+        "Minimum service duration (minutes)",
+      review_dispute_window_hours: "Review dispute window (hours)",
+      explore_candidate_cap: "Explore candidate cap",
+      pagination_default_per_page: "Default page size",
+      pagination_max_per_page: "Maximum page size",
+      floor_plan_max_decorations: "Floor plan max decorations",
+      floor_plan_max_canvas_size: "Floor plan max canvas size",
+      floor_plan_max_label_length: "Floor plan max label length",
     },
   },
   monetization: {

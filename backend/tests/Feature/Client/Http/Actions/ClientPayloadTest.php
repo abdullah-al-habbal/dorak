@@ -8,12 +8,11 @@ use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as SocialUser;
 use Modules\Client\Mail\SendEmailVerificationCode;
 use Modules\Client\Models\ClientModel;
-
-const CLIENT_PAYLOAD_KEYS = ['id', 'name', 'email', 'phone', 'phone_verified_at', 'avatar', 'preferred_universe', 'email_verified_at', 'created_at'];
+use Tests\Support\Constants\ClientPayloadTestConstants;
 
 function clientPayloadKeys(): array
 {
-    return CLIENT_PAYLOAD_KEYS;
+    return ClientPayloadTestConstants::CLIENT_PAYLOAD_TEST_KEYS;
 }
 
 it('returns the same 9-key client object from login, register, social login and profile', function (): void {

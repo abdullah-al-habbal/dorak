@@ -1,0 +1,1 @@
+export const FLOOR_PLAN_PREVIEW_DEFAULT_ASPECT = "4 / 3";

@@ -68,6 +68,8 @@ describe("isDashboardRouteAllowed", () => {
     ["GET", ["admin", "subscriptions"]],
     ["POST", ["admin", "subscriptions"]],
     ["PATCH", ["admin", "subscriptions", "sub-1", "status"]],
+    ["GET", ["admin", "settings"]],
+    ["PATCH", ["admin", "settings"]],
     ["GET", ["admin", "payment-gateways"]],
     ["POST", ["admin", "payment-gateways"]],
     ["PUT", ["admin", "payment-gateways", "gw-1"]],

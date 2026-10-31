@@ -6,10 +6,11 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Modules\Client\Constants\ClientPasswordResetConstants;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Services\PasswordResetCodeVerifier;
 use Modules\Core\Services\TranslatorHandlerService;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 beforeEach(function (): void {
     // The attempt budget is the behaviour under test; the per-IP route
@@ -98,7 +99,7 @@ describe('shared reset-code attempt budget', function (): void {
         $client = ClientModel::factory()->create();
         issueResetCode($client);
 
-        foreach (range(1, ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_MAX_ATTEMPTS) as $_) {
+        foreach (range(1, app(SettingsService::class)->int(SettingKey::ClientPasswordResetMaxAttempts)) as $_) {
             $this->postJson('/api/v1/client/forgot-password/verify', ['email' => $client->email, 'code' => '000000'])
                 ->assertStatus(422);
         }
@@ -133,7 +134,7 @@ describe('shared reset-code attempt budget', function (): void {
         $client = ClientModel::factory()->create();
         issueResetCode($client);
 
-        foreach (range(1, ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_MAX_ATTEMPTS - 1) as $_) {
+        foreach (range(1, app(SettingsService::class)->int(SettingKey::ClientPasswordResetMaxAttempts) - 1) as $_) {
             $this->postJson('/api/v1/client/forgot-password/verify', ['email' => $client->email, 'code' => '000000'])
                 ->assertStatus(422);
         }
@@ -146,7 +147,7 @@ describe('shared reset-code attempt budget', function (): void {
         $client = ClientModel::factory()->create();
         issueResetCode($client);
 
-        foreach (range(1, ClientPasswordResetConstants::CLIENT_PASSWORD_RESET_MAX_ATTEMPTS - 1) as $_) {
+        foreach (range(1, app(SettingsService::class)->int(SettingKey::ClientPasswordResetMaxAttempts) - 1) as $_) {
             $this->postJson('/api/v1/client/forgot-password/verify', ['email' => $client->email, 'code' => '000000'])
                 ->assertStatus(422);
         }

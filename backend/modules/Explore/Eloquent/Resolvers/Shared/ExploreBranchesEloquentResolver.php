@@ -7,14 +7,14 @@ namespace Modules\Explore\Eloquent\Resolvers\Shared;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Modules\Booking\Constants\BookingConstants;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\VenueUniverse;
-use Modules\Explore\Constants\ExploreRankingConstants;
 use Modules\Explore\CQRS\Query\Shared\ExploreBranchesQuery;
 use Modules\Explore\Support\ExploreRanker;
 use Modules\Explore\Support\ExploreTextSearch;
+use Modules\Settings\Enums\SettingKey;
+use Modules\Settings\Services\SettingsService;
 
 final class ExploreBranchesEloquentResolver
 {
@@ -62,7 +62,7 @@ final class ExploreBranchesEloquentResolver
 
     public function resolve(ExploreBranchesQuery $payload): LengthAwarePaginator
     {
-        $candidates = $this->candidates($payload)->limit(ExploreRankingConstants::EXPLORE_RANKING_CANDIDATE_CAP)->get();
+        $candidates = $this->candidates($payload)->limit(app(SettingsService::class)->int(SettingKey::ExploreCandidateCap))->get();
         $faceShape = $this->ranker->faceShapeFor($payload->faceShapeCompatible, $payload->clientId);
 
         return $this->ranker->paginate(
@@ -87,7 +87,7 @@ final class ExploreBranchesEloquentResolver
 
         if ($payload->availableNow !== null && $payload->availableNow) {
             $startsAt = now();
-            $endsAt = $startsAt->copy()->addMinutes(BookingConstants::BOOKING_MINIMUM_SERVICE_DURATION_MINUTES);
+            $endsAt = $startsAt->copy()->addMinutes(app(SettingsService::class)->int(SettingKey::BookingMinServiceDurationMinutes));
             $query->whereHas('chairs', function ($q) use ($startsAt, $endsAt): void {
                 $q->whereDoesntHave('bookings', function ($bookingQuery) use ($startsAt, $endsAt): void {
                     BookingAvailability::apply($bookingQuery, $startsAt, $endsAt);

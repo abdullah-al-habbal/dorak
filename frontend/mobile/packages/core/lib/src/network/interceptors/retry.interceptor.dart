@@ -1,14 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:core/src/network/interceptors/retry_interceptor_constants.entity.dart';
 
 class RetryInterceptor extends Interceptor {
-  static const String _retryCountKey = 'retry_count';
-  static const Set<String> _idempotentMethods = {
-    'GET',
-    'PUT',
-    'PATCH',
-    'DELETE',
-  };
-
   final Dio dio;
   final int maxRetries;
   final Duration Function(int attempt) backoffFor;
@@ -49,18 +42,27 @@ class RetryInterceptor extends Interceptor {
     }
 
     final method = err.requestOptions.method.toUpperCase();
-    if (!_idempotentMethods.contains(method) || !isRetryable(err)) {
+    if (!RetryInterceptorConstants.retryInterceptorIdempotentMethods.contains(
+          method,
+        ) ||
+        !isRetryable(err)) {
       handler.next(err);
       return;
     }
 
-    final retried = (err.requestOptions.extra[_retryCountKey] as int?) ?? 0;
+    final retried =
+        (err.requestOptions.extra[RetryInterceptorConstants
+                .retryInterceptorCountKey]
+            as int?) ??
+        0;
     if (retried >= maxRetries) {
       handler.next(err);
       return;
     }
 
-    err.requestOptions.extra[_retryCountKey] = retried + 1;
+    err.requestOptions.extra[RetryInterceptorConstants
+            .retryInterceptorCountKey] =
+        retried + 1;
     await Future<void>.delayed(backoffFor(retried + 1));
 
     try {
