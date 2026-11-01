@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Modules\Branch\Http\Actions\Branch;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Modules\Branch\Http\Requests\Branch\ToggleChairStatusRequest;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Events\ChairStatusUpdated;
 use Modules\Chair\Exceptions\ChairHasActiveBookingsException;
@@ -19,18 +19,13 @@ final class ToggleChairStatusAction extends BaseApiAction
 {
     public function __construct(private readonly ChairStatusService $chairStatus) {}
 
-    public function __invoke(Request $request, string $chair): JsonResponse
+    public function __invoke(ToggleChairStatusRequest $request, string $chair): JsonResponse
     {
         $branch = $request->user('branch_api');
         Gate::forUser($branch)->authorize('manage', $branch);
         $chairModel = ChairModel::where('branch_id', $branch->id)->findOrFail($chair);
 
-        $validated = $request->validate([
-            'status' => ['required', 'string', 'in:available,occupied,maintenance'],
-            'force' => ['sometimes', 'boolean'],
-        ]);
-
-        $status = ChairStatus::from($validated['status']);
+        $status = ChairStatus::from($request->validated('status'));
 
         try {
             $result = $this->chairStatus->update($chairModel, ['status' => $status->value], $request->boolean('force'));

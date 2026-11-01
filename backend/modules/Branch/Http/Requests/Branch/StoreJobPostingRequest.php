@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Branch\Http\Requests\Branch;
 
+use Illuminate\Validation\Rule;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\JobPosting\Enums\JobPostingTypeEnum;
 
 final class StoreJobPostingRequest extends BaseApiFormRequest
 {
@@ -20,7 +22,7 @@ final class StoreJobPostingRequest extends BaseApiFormRequest
             'description.ar' => ['required', 'string'],
             'requirements' => ['nullable', 'array'],
             'location' => ['nullable', 'string'],
-            'type' => ['nullable', 'string'],
+            'type' => ['nullable', Rule::enum(JobPostingTypeEnum::class)],
         ];
     }
 }
