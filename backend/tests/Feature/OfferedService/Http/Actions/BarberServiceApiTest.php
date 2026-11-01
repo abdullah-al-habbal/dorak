@@ -17,7 +17,7 @@ function barberServicePayload(CurrencyModel $currency, array $overrides = []): a
 {
     return array_replace([
         'catalog_item_id' => null,
-        'currency_id' => $currency->id,
+        'currency_code' => $currency->code,
         'name' => ['en' => 'Beard Trim', 'ar' => 'تهذيب اللحية'],
         'price' => 15,
         'duration' => 20,

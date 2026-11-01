@@ -87,7 +87,7 @@ describe("monetization requests", () => {
       descriptionEn: "",
       descriptionAr: "",
       price: 1,
-      currencyId: "c",
+      currencyCode: "c",
       intervalUnit: "month" as const,
       intervalCount: 1,
       isActive: true,
@@ -120,7 +120,7 @@ describe("monetization requests", () => {
       scopeId: "",
       type: "percent" as const,
       value: 1,
-      currencyId: "",
+      currencyCode: "",
       isActive: true,
     };
     await saveCommissionRule(rule);

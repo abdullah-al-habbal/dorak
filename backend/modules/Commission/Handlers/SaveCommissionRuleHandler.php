@@ -16,7 +16,7 @@ final class SaveCommissionRuleHandler
             'scope_id' => $command->scopeId,
             'type' => $command->type,
             'value' => $command->value,
-            'currency_id' => $command->currencyId,
+            'currency_code' => $command->currencyCode,
             'is_active' => $command->isActive,
             'notes' => $command->notes,
         ];

@@ -47,7 +47,7 @@ it('gives a brand created in the admin panel its first branch', function () {
         ->fillForm([
             'name' => ['en' => 'Panel Brand', 'ar' => 'علامة اللوحة'],
             'owner_id' => $owner->id,
-            'base_currency_id' => $currency->id,
+            'base_currency_code' => $currency->code,
         ])
         ->call('create')
         ->assertHasNoFormErrors();

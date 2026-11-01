@@ -39,7 +39,7 @@ function defaultsFor(brand?: IBrand): IBrandForm {
     descriptionEn: brand?.description.en ?? "",
     descriptionAr: brand?.description.ar ?? "",
     logo: brand?.logo ?? "",
-    baseCurrencyId: brand?.baseCurrencyId ?? "",
+    baseCurrencyCode: brand?.baseCurrencyCode ?? "",
     universe: brand?.universe ?? "unisex",
   };
 }
@@ -118,7 +118,7 @@ export function BrandForm({ brand, onDone }: IBrandFormProps) {
         <span>{copy.baseCurrency}</span>
         <select
           className="rounded-lg border border-card-border bg-input-background px-4 py-2.5"
-          {...form.register("baseCurrencyId")}
+          {...form.register("baseCurrencyCode")}
         >
           <option value="">{copy.selectCurrency}</option>
           {currencies.data?.map((currency) => (
@@ -127,7 +127,7 @@ export function BrandForm({ brand, onDone }: IBrandFormProps) {
             </option>
           ))}
         </select>
-        {serverError("baseCurrencyId")}
+        {serverError("baseCurrencyCode")}
       </label>
       <label className="grid gap-1 text-sm text-text-100">
         <span>{copy.universe}</span>

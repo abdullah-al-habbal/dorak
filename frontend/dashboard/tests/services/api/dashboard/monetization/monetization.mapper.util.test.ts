@@ -19,7 +19,7 @@ describe("monetization mappers", () => {
         id: "p1",
         name: { en: "Pro", ar: "محترف" },
         description: { en: "x", ar: "y" },
-        price_minor: 4900,
+        price_amount_minor: 4900,
         currency: { id: "c1", code: "JOD" },
         interval_unit: "month",
         interval_count: 1,
@@ -105,8 +105,8 @@ describe("monetization mappers", () => {
       mapCommissionEntry({
         id: "e1",
         booking_id: "bk",
-        base_minor: 15050,
-        commission_minor: 1505,
+        base_amount_minor: 15050,
+        commission_amount_minor: 1505,
         currency: { id: "c1", code: "JOD" },
         payout_id: "po",
       }),
@@ -126,7 +126,7 @@ describe("monetization mappers", () => {
         id: "po1",
         status: "approved",
         brand: { id: "b", name: { en: "Brand", ar: "" } },
-        total_minor: 900,
+        total_amount_minor: 900,
         currency: { id: "c", code: "JOD" },
         reference: null,
       }),
@@ -145,14 +145,19 @@ describe("monetization mappers", () => {
       mapAnalytics({
         subscriptions: {
           by_plan: [{ plan_id: "p1", subscriptions: 2 }],
-          recurring_revenue: [{ currency: "JOD", total_minor: 10000 }],
+          recurring_revenue: [{ currency: "JOD", total_amount_minor: 10000 }],
         },
         commission: {
-          pending: [{ currency: "JOD", total_minor: 400 }],
-          settled: [{ currency: "JOD", total_minor: 900 }],
+          pending: [{ currency: "JOD", total_amount_minor: 400 }],
+          settled: [{ currency: "JOD", total_amount_minor: 900 }],
         },
         payouts: [
-          { status: "paid", currency: "JOD", payouts: 1, total_minor: 900 },
+          {
+            status: "paid",
+            currency: "JOD",
+            payouts: 1,
+            total_amount_minor: 900,
+          },
         ],
         completed_bookings: 3,
       }),
@@ -179,7 +184,7 @@ describe("monetization payload builders", () => {
         descriptionEn: "",
         descriptionAr: "وصف",
         price: 49,
-        currencyId: "c1",
+        currencyCode: "c1",
         intervalUnit: "month",
         intervalCount: 1,
         isActive: true,
@@ -188,8 +193,8 @@ describe("monetization payload builders", () => {
     ).toEqual({
       name: { en: "Pro", ar: "محترف" },
       description: { en: null, ar: "وصف" },
-      price_minor: 4900,
-      currency_id: "c1",
+      price_amount_minor: 4900,
+      currency_code: "c1",
       interval_unit: "month",
       interval_count: 1,
       is_active: true,
@@ -221,7 +226,7 @@ describe("monetization payload builders", () => {
         scopeId: "ignored",
         type: "percent",
         value: 12.5,
-        currencyId: "ignored",
+        currencyCode: "ignored",
         isActive: true,
       }),
     ).toEqual({
@@ -229,7 +234,7 @@ describe("monetization payload builders", () => {
       scope_id: null,
       type: "percent",
       value: 1250,
-      currency_id: null,
+      currency_code: null,
       is_active: true,
     });
     expect(
@@ -238,7 +243,7 @@ describe("monetization payload builders", () => {
         scopeId: "br1",
         type: "flat",
         value: 2.5,
-        currencyId: "c1",
+        currencyCode: "c1",
         isActive: false,
       }),
     ).toEqual({
@@ -246,7 +251,7 @@ describe("monetization payload builders", () => {
       scope_id: "br1",
       type: "flat",
       value: 250,
-      currency_id: "c1",
+      currency_code: "c1",
       is_active: false,
     });
   });

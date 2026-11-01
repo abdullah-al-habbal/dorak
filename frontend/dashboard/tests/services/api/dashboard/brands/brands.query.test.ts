@@ -10,14 +10,14 @@ describe("brandPayload", () => {
         descriptionEn: "",
         descriptionAr: "",
         logo: "",
-        baseCurrencyId: "cur1",
+        baseCurrencyCode: "cur1",
         universe: "men",
       }),
     ).toEqual({
       name: { en: "Cuts", ar: "قص" },
       description: { en: null, ar: null },
       logo: null,
-      base_currency_id: "cur1",
+      base_currency_code: "cur1",
       universe: "men",
     });
   });

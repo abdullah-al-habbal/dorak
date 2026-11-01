@@ -1335,7 +1335,7 @@ class FakeProfileRepository implements ProfileRepository {
   Future<SettingsDto> updateSettings({
     String? preferredLanguage,
     bool? isNotificationEnabled,
-    String? displayCurrencyId,
+    String? displayCurrencyCode,
     String? theme,
     String? priceDisplayMode,
   }) async {
@@ -1346,7 +1346,7 @@ class FakeProfileRepository implements ProfileRepository {
       preferredLanguage: preferredLanguage ?? settings.preferredLanguage,
       isNotificationEnabled:
           isNotificationEnabled ?? settings.isNotificationEnabled,
-      displayCurrencyId: displayCurrencyId ?? settings.displayCurrencyId,
+      displayCurrencyCode: displayCurrencyCode ?? settings.displayCurrencyCode,
       theme: theme ?? settings.theme,
       priceDisplayMode: priceDisplayMode ?? settings.priceDisplayMode,
     );
@@ -1436,7 +1436,7 @@ BarberProfileDto testBarberProfile({
           name: 'Fade',
           description: 'Classic fade cut',
           price: 80,
-          currencyId: 'curr-1',
+          currencyCode: 'SAR',
           duration: 30,
           isAtHome: false,
           active: true,
@@ -1445,7 +1445,7 @@ BarberProfileDto testBarberProfile({
           id: 'svc-2',
           name: 'Beard Trim',
           price: 30,
-          currencyId: 'curr-1',
+          currencyCode: 'SAR',
           duration: 15,
           isAtHome: true,
           active: true,

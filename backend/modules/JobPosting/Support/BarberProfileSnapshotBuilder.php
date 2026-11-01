@@ -36,7 +36,7 @@ final class BarberProfileSnapshotBuilder
                 'id' => $service->id,
                 'name' => $service->name,
                 'price' => (float) $service->price,
-                'currency_id' => $service->currency_id,
+                'currency_code' => $service->currency_code,
                 'duration' => $service->duration,
             ])->all(),
         ];

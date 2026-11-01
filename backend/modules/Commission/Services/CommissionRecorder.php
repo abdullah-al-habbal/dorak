@@ -29,15 +29,15 @@ final class CommissionRecorder
         $services = DB::table('booking_offered_service')
             ->join('offered_services', 'offered_services.id', '=', 'booking_offered_service.offered_service_id')
             ->where('booking_offered_service.booking_id', $booking->getKey())
-            ->get(['offered_services.price', 'offered_services.currency_id']);
+            ->get(['offered_services.price', 'offered_services.currency_code']);
 
         if ($brandId === null || $services->isEmpty()) {
             return null;
         }
 
-        $currencyId = (string) $services->first()->currency_id;
-        $base = MinorUnits::fromDecimal($services->where('currency_id', $currencyId)->sum('price'));
-        $rule = $this->rules->resolve($branchId, (string) $brandId, $currencyId);
+        $currencyCode = (string) $services->first()->currency_code;
+        $base = MinorUnits::fromDecimal($services->where('currency_code', $currencyCode)->sum('price'));
+        $rule = $this->rules->resolve($branchId, (string) $brandId, $currencyCode);
         if ($rule === null) {
             return null;
         }
@@ -47,9 +47,9 @@ final class CommissionRecorder
             'branch_id' => $branchId,
             'commission_rule_id' => $rule->getKey(),
             'rule_snapshot' => ['scope' => $rule->scope->value, 'type' => $rule->type->value, 'value' => $rule->value],
-            'base_minor' => $base,
-            'commission_minor' => $this->amount($rule, $base),
-            'currency_id' => $currencyId,
+            'base_amount_minor' => $base,
+            'commission_amount_minor' => $this->amount($rule, $base),
+            'currency_code' => $currencyCode,
         ]);
     }
 

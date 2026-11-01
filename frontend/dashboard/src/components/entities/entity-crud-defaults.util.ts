@@ -40,7 +40,7 @@ export function defaultsFor(
       name: { en: "", ar: "" },
       price: 0,
       duration: null,
-      currencyId: "",
+      currencyCode: "",
       isActive: true,
       isAtHome: false,
       serviceableId: brandId ?? "",

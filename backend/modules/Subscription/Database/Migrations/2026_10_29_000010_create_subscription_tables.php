@@ -14,8 +14,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->json('name');
             $table->json('description')->nullable();
-            $table->unsignedBigInteger('price_minor');
-            $table->foreignUuid('currency_id')->constrained('currencies');
+            $table->unsignedBigInteger('price_amount_minor');
+            $table->string('currency_code', 10);
+            $table->foreign('currency_code')->references('code')->on('currencies');
             $table->string('interval_unit', 10);
             $table->unsignedSmallInteger('interval_count')->default(1);
             $table->boolean('is_active')->default(true);

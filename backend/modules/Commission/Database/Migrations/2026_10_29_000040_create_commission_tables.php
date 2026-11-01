@@ -16,7 +16,8 @@ return new class extends Migration
             $table->uuid('scope_id')->nullable();
             $table->string('type', 16);
             $table->unsignedBigInteger('value');
-            $table->foreignUuid('currency_id')->nullable()->constrained('currencies');
+            $table->string('currency_code', 10)->nullable();
+            $table->foreign('currency_code')->references('code')->on('currencies');
             $table->boolean('is_active')->default(true);
             $table->text('notes')->nullable();
             $table->timestamps();
@@ -30,9 +31,10 @@ return new class extends Migration
             $table->uuid('branch_id')->nullable();
             $table->uuid('commission_rule_id')->nullable();
             $table->json('rule_snapshot');
-            $table->unsignedBigInteger('base_minor');
-            $table->unsignedBigInteger('commission_minor');
-            $table->foreignUuid('currency_id')->constrained('currencies');
+            $table->unsignedBigInteger('base_amount_minor');
+            $table->unsignedBigInteger('commission_amount_minor');
+            $table->string('currency_code', 10);
+            $table->foreign('currency_code')->references('code')->on('currencies');
             $table->foreignUuid('payout_id')->nullable()->constrained('payouts')->nullOnDelete();
             $table->timestamps();
             $table->index(['brand_id', 'payout_id']);

@@ -351,7 +351,7 @@ export const ar: Dictionary = {
       rotation: "الدوران",
       price: "السعر",
       duration: "المدة (بالدقائق)",
-      currencyId: "العملة",
+      currencyCode: "العملة",
       active: "نشط",
       inactive: "غير نشط",
       serviceableId: "مالك الخدمة",

@@ -11,7 +11,7 @@ use Modules\Commission\Models\CommissionRuleModel;
 /** Picks the rule that applies: branch beats brand beats global; newest wins a tie. */
 final class CommissionRuleResolver
 {
-    public function resolve(?string $branchId, string $brandId, string $currencyId): ?CommissionRuleModel
+    public function resolve(?string $branchId, string $brandId, string $currencyCode): ?CommissionRuleModel
     {
         return CommissionRuleModel::query()
             ->where('is_active', true)
@@ -21,7 +21,7 @@ final class CommissionRuleResolver
                     ->orWhere(fn ($q) => $q->where('scope', CommissionScope::Branch)->where('scope_id', $branchId));
             })
             ->get()
-            ->filter(fn (CommissionRuleModel $rule): bool => $rule->type === CommissionType::Percent || $rule->currency_id === $currencyId)
+            ->filter(fn (CommissionRuleModel $rule): bool => $rule->type === CommissionType::Percent || $rule->currency_code === $currencyCode)
             ->sortBy([
                 fn (CommissionRuleModel $a, CommissionRuleModel $b): int => $a->scope->precedence() <=> $b->scope->precedence(),
                 fn (CommissionRuleModel $a, CommissionRuleModel $b): int => $b->created_at <=> $a->created_at,

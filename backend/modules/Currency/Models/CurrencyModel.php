@@ -29,11 +29,11 @@ class CurrencyModel extends Model
 
     public function exchangeRatesFrom(): HasMany
     {
-        return $this->hasMany(ExchangeRateModel::class, 'from_currency_id');
+        return $this->hasMany(ExchangeRateModel::class, 'from_currency_code', 'code');
     }
 
     public function exchangeRatesTo(): HasMany
     {
-        return $this->hasMany(ExchangeRateModel::class, 'to_currency_id');
+        return $this->hasMany(ExchangeRateModel::class, 'to_currency_code', 'code');
     }
 }

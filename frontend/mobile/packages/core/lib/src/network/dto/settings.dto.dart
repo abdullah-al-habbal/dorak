@@ -6,14 +6,14 @@ part 'settings.dto.g.dart';
 class SettingsDto {
   final String? preferredLanguage;
   final bool isNotificationEnabled;
-  final String? displayCurrencyId;
+  final String? displayCurrencyCode;
   final String? theme;
   final String? priceDisplayMode;
 
   const SettingsDto({
     this.preferredLanguage,
     required this.isNotificationEnabled,
-    this.displayCurrencyId,
+    this.displayCurrencyCode,
     this.theme,
     this.priceDisplayMode,
   });

@@ -45,23 +45,23 @@ it('updates only provided fields', function () {
     expect($response->json('data.name.ar'))->toBe('Original AR');
 });
 
-it('updates base_currency_id', function () {
+it('updates base_currency_code', function () {
     $brand = BrandModel::factory()->create(['owner_id' => $this->client->id]);
     $newCurrency = CurrencyModel::factory()->create();
 
     $response = $this->putJson("/api/v1/brands/{$brand->id}", [
-        'base_currency_id' => $newCurrency->id,
+        'base_currency_code' => $newCurrency->code,
     ]);
 
     $response->assertOk();
     expect($response->json('data.base_currency.id'))->toBe($newCurrency->id);
 });
 
-it('rejects update with invalid base_currency_id', function () {
+it('rejects update with invalid base_currency_code', function () {
     $brand = BrandModel::factory()->create(['owner_id' => $this->client->id]);
 
     $response = $this->putJson("/api/v1/brands/{$brand->id}", [
-        'base_currency_id' => '00000000-0000-0000-0000-000000000000',
+        'base_currency_code' => '00000000-0000-0000-0000-000000000000',
     ]);
 
     $response->assertStatus(422);

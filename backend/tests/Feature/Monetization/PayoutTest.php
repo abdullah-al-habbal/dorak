@@ -19,17 +19,17 @@ describe('Payout generation', function (): void {
         $brand = BrandModel::factory()->create();
         $other = BrandModel::factory()->create();
         $currency = CurrencyModel::factory()->create();
-        CommissionEntryModel::factory()->count(2)->create(['brand_id' => $brand->id, 'currency_id' => $currency->id, 'commission_minor' => 700]);
-        CommissionEntryModel::factory()->create(['brand_id' => $other->id, 'currency_id' => $currency->id, 'commission_minor' => 300]);
+        CommissionEntryModel::factory()->count(2)->create(['brand_id' => $brand->id, 'currency_code' => $currency->code, 'commission_amount_minor' => 700]);
+        CommissionEntryModel::factory()->create(['brand_id' => $other->id, 'currency_code' => $currency->code, 'commission_amount_minor' => 300]);
         $settled = CommissionEntryModel::factory()->create([
-            'brand_id' => $brand->id, 'currency_id' => $currency->id, 'payout_id' => PayoutModel::factory()->create()->id,
+            'brand_id' => $brand->id, 'currency_code' => $currency->code, 'payout_id' => PayoutModel::factory()->create()->id,
         ]);
 
         $response = $this->postJson('/api/v1/dashboard/admin/payouts/generate')->assertCreated();
 
         expect($response->json('data'))->toHaveCount(2);
-        $payout = PayoutModel::query()->where('brand_id', $brand->id)->where('currency_id', $currency->id)->sole();
-        expect($payout->total_minor)->toBe(1400)
+        $payout = PayoutModel::query()->where('brand_id', $brand->id)->where('currency_code', $currency->code)->sole();
+        expect($payout->total_amount_minor)->toBe(1400)
             ->and($payout->status)->toBe(PayoutStatus::Draft)
             ->and($payout->entries()->count())->toBe(2)
             ->and($settled->fresh()->payout_id)->not->toBe($payout->id);
@@ -71,7 +71,7 @@ describe('Payout lifecycle', function (): void {
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/approve", ['notes' => 'ok'])
             ->assertOk()
             ->assertJsonPath('data.status', PayoutStatus::Approved->value);
-        expect($payout->fresh()->approved_by)->toBe($this->admin->id);
+        expect($payout->fresh()->approved_by_id)->toBe($this->admin->id);
 
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/mark-paid", ['reference' => 'TX-9'])
             ->assertOk()
@@ -94,7 +94,7 @@ describe('Payout lifecycle', function (): void {
 
     it('canceling releases the entries so the next run picks them up again', function (): void {
         $payout = PayoutModel::factory()->create();
-        $entry = CommissionEntryModel::factory()->create(['payout_id' => $payout->id, 'brand_id' => $payout->brand_id, 'currency_id' => $payout->currency_id]);
+        $entry = CommissionEntryModel::factory()->create(['payout_id' => $payout->id, 'brand_id' => $payout->brand_id, 'currency_code' => $payout->currency_code]);
 
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/cancel")->assertOk()->assertJsonPath('data.status', PayoutStatus::Canceled->value);
 

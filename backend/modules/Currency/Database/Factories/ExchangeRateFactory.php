@@ -16,8 +16,8 @@ class ExchangeRateFactory extends Factory
     public function definition(): array
     {
         return [
-            'from_currency_id' => CurrencyModel::factory(),
-            'to_currency_id' => CurrencyModel::factory(),
+            'from_currency_code' => fn () => CurrencyModel::factory()->create()->code,
+            'to_currency_code' => fn () => CurrencyModel::factory()->create()->code,
             'rate' => fake()->randomFloat(6, 0.5, 100),
             'effective_at' => now(),
         ];

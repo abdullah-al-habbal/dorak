@@ -19,12 +19,12 @@ class PayoutFactory extends Factory
     {
         return [
             'brand_id' => BrandModel::factory(),
-            'currency_id' => CurrencyModel::factory(),
+            'currency_code' => fn () => CurrencyModel::factory()->create()->code,
             'direction' => PayoutDirection::BrandToPlatform,
             'status' => PayoutStatus::Draft,
-            'total_minor' => 1000,
-            'period_start' => now()->subMonth(),
-            'period_end' => now(),
+            'total_amount_minor' => 1000,
+            'period_started_at' => now()->subMonth(),
+            'period_ended_at' => now(),
         ];
     }
 }

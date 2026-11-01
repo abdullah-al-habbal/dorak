@@ -27,7 +27,7 @@ final class OfferedServiceFormSchema
                     TextInput::make('price')
                         ->numeric()
                         ->required(),
-                    Select::make('currency_id')
+                    Select::make('currency_code')
                         ->relationship('currency', 'code')
                         ->required(),
                     TextInput::make('duration')

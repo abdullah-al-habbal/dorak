@@ -23,7 +23,7 @@ use Modules\Preference\Enums\ThemeEnum;
     'preferenceable_type',
     'preferred_language',
     'is_notification_enabled',
-    'display_currency_id',
+    'display_currency_code',
     'theme',
     'price_display_mode',
     'is_dual_price_display_enabled',
@@ -53,6 +53,6 @@ class PreferenceModel extends Model
 
     public function displayCurrency(): BelongsTo
     {
-        return $this->belongsTo(CurrencyModel::class, 'display_currency_id');
+        return $this->belongsTo(CurrencyModel::class, 'display_currency_code', 'code');
     }
 }

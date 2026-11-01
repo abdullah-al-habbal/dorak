@@ -57,7 +57,7 @@ export function mapServicePayload(input: z.infer<typeof serviceFormSchema>) {
     is_active: input.isActive,
     is_at_home: input.isAtHome,
     catalog_item_id: input.catalogItemId,
-    currency_id: input.currencyId,
+    currency_code: input.currencyCode,
     duration: input.duration,
     name: input.name,
     price: input.price,

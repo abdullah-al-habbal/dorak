@@ -16,7 +16,7 @@ class ExchangeRateResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-arrows-right-left';
 
-    protected static ?string $recordTitleAttribute = 'from_currency_id';
+    protected static ?string $recordTitleAttribute = 'from_currency_code';
 
     protected static ?string $slug = 'exchange-rates';
 

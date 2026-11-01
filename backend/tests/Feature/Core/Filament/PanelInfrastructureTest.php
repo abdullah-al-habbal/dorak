@@ -175,8 +175,8 @@ it('admin can access exchange rate resource', function () {
     $admin = AdminModel::factory()->create();
     $currency = CurrencyModel::factory()->create();
     ExchangeRateModel::factory()->create([
-        'from_currency_id' => $currency->id,
-        'to_currency_id' => $currency->id,
+        'from_currency_code' => $currency->code,
+        'to_currency_code' => $currency->code,
     ]);
     $this->actingAs($admin, 'admin');
 

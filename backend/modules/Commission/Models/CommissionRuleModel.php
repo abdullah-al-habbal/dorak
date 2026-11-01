@@ -20,9 +20,9 @@ use Modules\Currency\Models\CurrencyModel;
  * @property string|null $scope_id
  * @property CommissionType $type
  * @property int $value
- * @property string|null $currency_id
+ * @property string|null $currency_code
  */
-#[Fillable(['scope', 'scope_id', 'type', 'value', 'currency_id', 'is_active', 'notes'])]
+#[Fillable(['scope', 'scope_id', 'type', 'value', 'currency_code', 'is_active', 'notes'])]
 #[Table('commission_rules')]
 class CommissionRuleModel extends Model
 {
@@ -41,6 +41,6 @@ class CommissionRuleModel extends Model
     /** @return BelongsTo<CurrencyModel, $this> */
     public function currency(): BelongsTo
     {
-        return $this->belongsTo(CurrencyModel::class, 'currency_id');
+        return $this->belongsTo(CurrencyModel::class, 'currency_code', 'code');
     }
 }

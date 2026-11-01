@@ -73,7 +73,7 @@ describe('Dashboard service catalog management', function (): void {
             'serviceable_id' => $brand->id,
             'serviceable_type' => ServiceableTypeEnum::Brand,
             'catalog_item_id' => $item->id,
-            'currency_id' => CurrencyModel::factory()->create()->id,
+            'currency_code' => CurrencyModel::factory()->create()->code,
             'name' => ['en' => 'Fade', 'ar' => 'فيد'],
             'price' => 20,
         ])->assertCreated()->assertJsonPath('data.catalog_item_id', $item->id);
@@ -97,7 +97,7 @@ describe('Dashboard brand management', function (): void {
 
         $this->postJson('/api/v1/dashboard/brands', [
             'name' => ['en' => 'New', 'ar' => 'جديد'],
-            'base_currency_id' => CurrencyModel::factory()->create()->id,
+            'base_currency_code' => CurrencyModel::factory()->create()->code,
         ])->assertCreated()->assertJsonPath('data.owner.id', $owner->id);
     });
 
@@ -110,7 +110,7 @@ describe('Dashboard brand management', function (): void {
         expect($brand->fresh()->getTranslation('name', 'en'))->toBe('Admin edit');
         $this->postJson('/api/v1/dashboard/brands', [
             'name' => ['en' => 'X', 'ar' => 'س'],
-            'base_currency_id' => CurrencyModel::factory()->create()->id,
+            'base_currency_code' => CurrencyModel::factory()->create()->code,
         ])->assertForbidden();
     });
 

@@ -355,7 +355,7 @@ export const en = {
       rotation: "Rotation",
       price: "Price",
       duration: "Duration (minutes)",
-      currencyId: "Currency",
+      currencyCode: "Currency",
       active: "Active",
       inactive: "Inactive",
       serviceableId: "Service owner",

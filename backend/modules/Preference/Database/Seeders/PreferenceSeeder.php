@@ -16,7 +16,7 @@ class PreferenceSeeder extends Seeder
             'preferenceable_type' => null,
             'preferred_language' => 'ar',
             'is_notification_enabled' => true,
-            'display_currency_id' => null,
+            'display_currency_code' => null,
             'theme' => 'light',
             'price_display_mode' => 'tax_inclusive',
         ]);

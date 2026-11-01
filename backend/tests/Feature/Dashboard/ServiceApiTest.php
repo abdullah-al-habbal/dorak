@@ -91,7 +91,7 @@ function servicePayload(string $brandId, CurrencyModel $currency, array $overrid
         'serviceable_id' => $brandId,
         'serviceable_type' => ServiceableTypeEnum::Brand,
         'catalog_item_id' => null,
-        'currency_id' => $currency->id,
+        'currency_code' => $currency->code,
         'name' => ['en' => 'Haircut', 'ar' => 'قص شعر'],
         'price' => 25,
         'duration' => 30,

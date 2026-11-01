@@ -32,7 +32,7 @@ final class UpdateBrandRequest extends BaseApiFormRequest
         return [
             'name.en' => ['sometimes', 'string', 'max:255'],
             'name.ar' => ['sometimes', 'string', 'max:255'],
-            'base_currency_id' => ['sometimes', 'string', 'exists:currencies,id'],
+            'base_currency_code' => ['sometimes', 'string', 'exists:currencies,code'],
             'logo' => ['nullable', 'url', 'max:2048'],
             'description.en' => ['nullable', 'string', 'max:5000'],
             'description.ar' => ['nullable', 'string', 'max:5000'],
@@ -49,7 +49,7 @@ final class UpdateBrandRequest extends BaseApiFormRequest
             nameEn: $data['name']['en'] ?? null,
             nameAr: $data['name']['ar'] ?? null,
             ownerId: null,
-            baseCurrencyId: $data['base_currency_id'] ?? null,
+            baseCurrencyCode: $data['base_currency_code'] ?? null,
             logo: $data['logo'] ?? null,
             descriptionEn: $data['description']['en'] ?? null,
             descriptionAr: $data['description']['ar'] ?? null,

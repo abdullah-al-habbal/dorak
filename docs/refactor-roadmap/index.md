@@ -18,6 +18,7 @@ listed in the story pass before the local commit. Never push.
 | F | [Barber and Client enums](batch-f-barber-client-enums.md) | Barber and Client backend, dashboard, mobile | Done |
 | G | [Catalog, Subscription, Payment enums](batch-g-catalog-payment-enums.md) | Payment driver enum; catalog mobile enums | Done |
 | H | [Final cleanup](batch-h-final-cleanup.md) | Deferred items, mobile core sync | Done |
+| I | [Money and currency](batch-i-money-currency.md) | Currency code FKs, `*_amount_minor`, payout names | Partly done (see Deferred in story) |
 
 ## Deferred
 

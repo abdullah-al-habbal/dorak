@@ -47,7 +47,7 @@ export function optionsFor(
         locked,
       ];
     });
-  if (field === "currencyId")
+  if (field === "currencyCode")
     return lookups.currencies.map((item) => [item.id, item.label]);
   if (field === "catalogItemId")
     return [

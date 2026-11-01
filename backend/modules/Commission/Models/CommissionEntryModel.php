@@ -19,11 +19,11 @@ use Modules\Currency\Models\CurrencyModel;
  *
  * @property string $id
  * @property string $brand_id
- * @property string $currency_id
- * @property int $commission_minor
+ * @property string $currency_code
+ * @property int $commission_amount_minor
  * @property string|null $payout_id
  */
-#[Fillable(['booking_id', 'brand_id', 'branch_id', 'commission_rule_id', 'rule_snapshot', 'base_minor', 'commission_minor', 'currency_id', 'payout_id'])]
+#[Fillable(['booking_id', 'brand_id', 'branch_id', 'commission_rule_id', 'rule_snapshot', 'base_amount_minor', 'commission_amount_minor', 'currency_code', 'payout_id'])]
 #[Table('commission_entries')]
 class CommissionEntryModel extends Model
 {
@@ -33,8 +33,8 @@ class CommissionEntryModel extends Model
     {
         return [
             'rule_snapshot' => 'array',
-            'base_minor' => 'integer',
-            'commission_minor' => 'integer',
+            'base_amount_minor' => 'integer',
+            'commission_amount_minor' => 'integer',
         ];
     }
 
@@ -53,6 +53,6 @@ class CommissionEntryModel extends Model
     /** @return BelongsTo<CurrencyModel, $this> */
     public function currency(): BelongsTo
     {
-        return $this->belongsTo(CurrencyModel::class, 'currency_id');
+        return $this->belongsTo(CurrencyModel::class, 'currency_code', 'code');
     }
 }

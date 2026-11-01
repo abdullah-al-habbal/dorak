@@ -12,7 +12,7 @@ const plan = {
   descriptionEn: "",
   descriptionAr: "",
   price: "49",
-  currencyId: "c1",
+  currencyCode: "c1",
   intervalUnit: "month",
   intervalCount: "1",
   isActive: true,
@@ -88,7 +88,7 @@ describe("commissionRuleFormSchema", () => {
     scopeId: "",
     type: "percent",
     value: "10",
-    currencyId: "",
+    currencyCode: "",
     isActive: true,
   };
 
@@ -117,7 +117,7 @@ describe("commissionRuleFormSchema", () => {
       commissionRuleFormSchema.safeParse({
         ...rule,
         type: "flat",
-        currencyId: "c",
+        currencyCode: "c",
       }).success,
     ).toBe(true);
     expect(

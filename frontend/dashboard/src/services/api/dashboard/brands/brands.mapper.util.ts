@@ -33,7 +33,6 @@ export function mapBrand(wire: unknown): IBrand {
     logo: nullableText(item.logo),
     slug: nullableText(item.slug),
     universe: universe(item.universe),
-    baseCurrencyId: nullableText(currency.id),
     baseCurrencyCode: nullableText(currency.code),
     branchesCount:
       typeof item.branches_count === "number" ? item.branches_count : 0,
@@ -48,7 +47,7 @@ export function brandPayload(form: IBrandForm) {
       ar: form.descriptionAr === "" ? null : form.descriptionAr,
     },
     logo: form.logo === "" ? null : form.logo,
-    base_currency_id: form.baseCurrencyId,
+    base_currency_code: form.baseCurrencyCode,
     universe: form.universe,
   };
 }

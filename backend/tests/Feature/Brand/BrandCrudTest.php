@@ -40,7 +40,7 @@ it('creates brand with translatable name', function () {
 
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'New Brand', 'ar' => 'ماركة جديدة'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
     ]);
 
     $response->assertCreated();

@@ -37,10 +37,10 @@ final class PlatformAnalyticsQuery
                 ->map(fn ($row): array => ['plan_id' => $row->plan_id, 'subscriptions' => (int) $row->subscriptions])
                 ->all(),
             'recurring_revenue' => (clone $base)
-                ->join('currencies', 'currencies.id', '=', 'subscription_plans.currency_id')
+                ->join('currencies', 'currencies.code', '=', 'subscription_plans.currency_code')
                 ->groupBy('currencies.code')
-                ->get(['currencies.code as currency', DB::raw('sum(subscription_plans.price_minor) as total_minor')])
-                ->map(fn ($row): array => ['currency' => $row->currency, 'total_minor' => (int) $row->total_minor])
+                ->get(['currencies.code as currency', DB::raw('sum(subscription_plans.price_amount_minor) as total_amount_minor')])
+                ->map(fn ($row): array => ['currency' => $row->currency, 'total_amount_minor' => (int) $row->total_amount_minor])
                 ->all(),
         ];
     }
@@ -49,11 +49,11 @@ final class PlatformAnalyticsQuery
     private function commission(): array
     {
         $totals = fn (bool $settled): array => DB::table('commission_entries')
-            ->join('currencies', 'currencies.id', '=', 'commission_entries.currency_id')
+            ->join('currencies', 'currencies.code', '=', 'commission_entries.currency_code')
             ->when($settled, fn ($q) => $q->whereNotNull('payout_id'), fn ($q) => $q->whereNull('payout_id'))
             ->groupBy('currencies.code')
-            ->get(['currencies.code as currency', DB::raw('sum(commission_minor) as total_minor')])
-            ->map(fn ($row): array => ['currency' => $row->currency, 'total_minor' => (int) $row->total_minor])
+            ->get(['currencies.code as currency', DB::raw('sum(commission_amount_minor) as total_amount_minor')])
+            ->map(fn ($row): array => ['currency' => $row->currency, 'total_amount_minor' => (int) $row->total_amount_minor])
             ->all();
 
         return ['pending' => $totals(false), 'settled' => $totals(true)];
@@ -63,14 +63,14 @@ final class PlatformAnalyticsQuery
     private function payouts(): array
     {
         return DB::table('payouts')
-            ->join('currencies', 'currencies.id', '=', 'payouts.currency_id')
+            ->join('currencies', 'currencies.code', '=', 'payouts.currency_code')
             ->groupBy('payouts.status', 'currencies.code')
-            ->get(['payouts.status', 'currencies.code as currency', DB::raw('count(*) as payouts'), DB::raw('sum(total_minor) as total_minor')])
+            ->get(['payouts.status', 'currencies.code as currency', DB::raw('count(*) as payouts'), DB::raw('sum(total_amount_minor) as total_amount_minor')])
             ->map(fn ($row): array => [
                 'status' => $row->status,
                 'currency' => $row->currency,
                 'payouts' => (int) $row->payouts,
-                'total_minor' => (int) $row->total_minor,
+                'total_amount_minor' => (int) $row->total_amount_minor,
             ])
             ->all();
     }

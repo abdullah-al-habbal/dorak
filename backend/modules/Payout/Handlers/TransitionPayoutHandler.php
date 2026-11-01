@@ -25,7 +25,7 @@ final class TransitionPayoutHandler
                 'reference' => $command->reference ?? $payout->reference,
                 'notes' => $command->notes ?? $payout->notes,
                 ...match ($command->next) {
-                    PayoutStatus::Approved => ['approved_by' => $command->adminId, 'approved_at' => now()],
+                    PayoutStatus::Approved => ['approved_by_id' => $command->adminId, 'approved_at' => now()],
                     PayoutStatus::Paid => ['paid_at' => now()],
                     default => [],
                 },

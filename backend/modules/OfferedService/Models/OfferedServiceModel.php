@@ -29,7 +29,7 @@ use Spatie\Translatable\HasTranslations;
     'name',
     'description',
     'price',
-    'currency_id',
+    'currency_code',
     'duration',
     'is_at_home',
     'is_active',
@@ -95,7 +95,7 @@ class OfferedServiceModel extends Model
 
     public function currency(): BelongsTo
     {
-        return $this->belongsTo(CurrencyModel::class, 'currency_id');
+        return $this->belongsTo(CurrencyModel::class, 'currency_code', 'code');
     }
 
     /** @return BelongsTo<ServiceCatalogItemModel, $this> */

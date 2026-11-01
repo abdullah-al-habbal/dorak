@@ -99,7 +99,7 @@ export const planFormSchema = z.object({
   descriptionEn: z.string().max(2000),
   descriptionAr: z.string().max(2000),
   price: amount,
-  currencyId: z.string().min(1),
+  currencyCode: z.string().min(1),
   intervalUnit: z.enum(INTERVAL_UNITS),
   intervalCount: z.coerce.number().int().min(1).max(120),
   isActive: z.boolean(),
@@ -141,14 +141,14 @@ export const commissionRuleFormSchema = z
     scopeId: z.string(),
     type: z.enum(COMMISSION_TYPES),
     value: z.coerce.number().positive(),
-    currencyId: z.string(),
+    currencyCode: z.string(),
     isActive: z.boolean(),
   })
   .refine((form) => form.scope === "global" || form.scopeId !== "", {
     path: ["scopeId"],
   })
-  .refine((form) => form.type === "percent" || form.currencyId !== "", {
-    path: ["currencyId"],
+  .refine((form) => form.type === "percent" || form.currencyCode !== "", {
+    path: ["currencyCode"],
   })
   .refine((form) => form.type !== "percent" || form.value <= MAX_PERCENT, {
     path: ["value"],

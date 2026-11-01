@@ -603,7 +603,7 @@ describe('OfferedService API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             expect($data)->toHaveLength(2);
-            expect($data[0])->toHaveKeys(['id', 'name', 'description', 'price', 'currency_id', 'duration', 'is_at_home', 'is_active', 'created_at']);
+            expect($data[0])->toHaveKeys(['id', 'name', 'description', 'price', 'currency_code', 'duration', 'is_at_home', 'is_active', 'created_at']);
         });
 
         it('returns empty array for barber with no services', function () {
@@ -936,7 +936,7 @@ describe('Brand API', function () {
             $currency = CurrencyModel::factory()->create();
             $brand = BrandModel::factory()->create([
                 'owner_id' => $client->id,
-                'base_currency_id' => $currency->id,
+                'base_currency_code' => $currency->code,
             ]);
 
             $response = $this->getJson("/api/v1/brands/{$brand->id}");
@@ -959,7 +959,7 @@ describe('Brand API', function () {
                 'name' => ['en' => 'Test Brand', 'ar' => 'ماركة اختبار'],
                 'description' => ['en' => 'Description', 'ar' => 'وصف'],
                 'owner_id' => $client->id,
-                'base_currency_id' => $currency->id,
+                'base_currency_code' => $currency->code,
             ]);
 
             assertApiEnvelope($response, 201);
@@ -1219,8 +1219,8 @@ describe('Currency API', function () {
             $from = CurrencyModel::factory()->create(['code' => 'USD']);
             $to = CurrencyModel::factory()->create(['code' => 'EUR']);
             ExchangeRateModel::factory()->create([
-                'from_currency_id' => $from->id,
-                'to_currency_id' => $to->id,
+                'from_currency_code' => $from->code,
+                'to_currency_code' => $to->code,
                 'rate' => 0.85,
             ]);
 
@@ -1230,7 +1230,7 @@ describe('Currency API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             if (count($data) > 0) {
-                expect($data[0])->toHaveKeys(['id', 'from_currency_id', 'to_currency_id', 'rate']);
+                expect($data[0])->toHaveKeys(['id', 'from_currency_code', 'to_currency_code', 'rate']);
                 expect($data[0]['rate'])->toBeNumeric();
             }
         });
@@ -1241,8 +1241,8 @@ describe('Currency API', function () {
             $from = CurrencyModel::factory()->create(['code' => 'USD']);
             $to = CurrencyModel::factory()->create(['code' => 'EUR']);
             ExchangeRateModel::factory()->create([
-                'from_currency_id' => $from->id,
-                'to_currency_id' => $to->id,
+                'from_currency_code' => $from->code,
+                'to_currency_code' => $to->code,
                 'rate' => 0.85,
             ]);
 

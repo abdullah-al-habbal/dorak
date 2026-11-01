@@ -20,6 +20,13 @@ function isLookupResource(value: string): value is LookupResource {
   return value in LOOKUP_PROXY_PATHS;
 }
 
+function lookupId(
+  resource: LookupResource,
+  item: Record<string, unknown>,
+): string {
+  return resource === "currencies" ? String(item.code) : (item.id as string);
+}
+
 function lookupLabel(
   resource: LookupResource,
   item: Record<string, unknown>,
@@ -91,7 +98,7 @@ export async function GET(
       (item) => ownedBrandIds === null || ownedBrandIds.has(item.id as string),
     )
     .map((item) => ({
-      id: item.id as string,
+      id: lookupId(resource, item),
       label: lookupLabel(resource, item),
       ...(resource === "brands"
         ? { branchLimitReached: brandBranchLimitReached(item) }

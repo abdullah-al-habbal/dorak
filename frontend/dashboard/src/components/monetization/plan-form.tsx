@@ -35,7 +35,7 @@ function defaultsFor(plan?: IPlan): IPlanFormInput {
     descriptionEn: plan?.description.en ?? "",
     descriptionAr: plan?.description.ar ?? "",
     price: plan ? fromMinorUnits(plan.priceMinor) : 0,
-    currencyId: plan?.currency?.id ?? "",
+    currencyCode: plan?.currency?.code ?? "",
     intervalUnit: plan?.intervalUnit ?? DEFAULT_INTERVAL_UNIT,
     intervalCount: plan?.intervalCount ?? 1,
     isActive: plan?.isActive ?? true,
@@ -98,7 +98,7 @@ export function PlanForm({ plan, onDone }: IPlanFormProps) {
         <span>{copy.plans.currency}</span>
         <select
           className="rounded-lg border border-card-border bg-input-background px-4 py-2.5"
-          {...form.register("currencyId")}
+          {...form.register("currencyCode")}
         >
           <option value="">{copy.plans.selectCurrency}</option>
           {currencies.data?.map((currency) => (

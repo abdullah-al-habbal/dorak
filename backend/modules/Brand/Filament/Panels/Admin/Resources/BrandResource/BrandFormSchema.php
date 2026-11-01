@@ -27,7 +27,7 @@ final class BrandFormSchema
                     Select::make('owner_id')
                         ->relationship('owner', 'email')
                         ->required(),
-                    Select::make('base_currency_id')
+                    Select::make('base_currency_code')
                         ->relationship('baseCurrency', 'code')
                         ->required(),
                     TextInput::make('logo')

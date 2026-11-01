@@ -24,7 +24,7 @@ function completeBookingWithPrice(float $price, ?BranchModel $branch = null, ?Cu
     );
     $service = OfferedServiceModel::factory()->create(array_filter([
         'price' => $price,
-        'currency_id' => $currency?->id,
+        'currency_code' => $currency?->code,
     ]));
     $booking->services()->attach($service->id);
     $booking->update(['status' => BookingStatus::Completed]);
@@ -56,7 +56,7 @@ describe('Commission rules API', function (): void {
         ])->assertCreated();
         $this->postJson('/api/v1/dashboard/admin/commission-rules', [
             'scope' => 'branch', 'scope_id' => $branch->id, 'type' => 'flat', 'value' => 300,
-            'currency_id' => $currency->id, 'is_active' => true,
+            'currency_code' => $currency->code, 'is_active' => true,
         ])->assertCreated()->assertJsonPath('data.currency.code', $currency->code);
     });
 
@@ -109,7 +109,7 @@ describe('Commission resolution', function (): void {
         $currency = CurrencyModel::factory()->create();
         CommissionRuleModel::factory()->create(['scope' => CommissionScope::Brand, 'scope_id' => BrandModel::factory()->create()->id]);
         CommissionRuleModel::factory()->create([
-            'type' => CommissionType::Flat, 'value' => 500, 'currency_id' => CurrencyModel::factory()->create()->id,
+            'type' => CommissionType::Flat, 'value' => 500, 'currency_code' => CurrencyModel::factory()->create()->code,
         ]);
 
         expect(app(CommissionRuleResolver::class)->resolve($branch->id, $branch->brand_id, $currency->id))->toBeNull();
@@ -129,8 +129,8 @@ describe('Commission accrual on completed bookings', function (): void {
 
         $entry = CommissionEntryModel::query()->sole();
         expect($entry->booking_id)->toBe($booking->id)
-            ->and($entry->base_minor)->toBe(15050)
-            ->and($entry->commission_minor)->toBe(1505)
+            ->and($entry->base_amount_minor)->toBe(15050)
+            ->and($entry->commission_amount_minor)->toBe(1505)
             ->and($entry->rule_snapshot)->toMatchArray(['scope' => 'global', 'type' => 'percent', 'value' => 1000]);
 
         $booking->touch();
@@ -144,12 +144,12 @@ describe('Commission accrual on completed bookings', function (): void {
         CommissionRuleModel::factory()->create(['value' => 1000]);
         CommissionRuleModel::factory()->create([
             'scope' => CommissionScope::Branch, 'scope_id' => $branch->id,
-            'type' => CommissionType::Flat, 'value' => 250, 'currency_id' => $currency->id,
+            'type' => CommissionType::Flat, 'value' => 250, 'currency_code' => $currency->code,
         ]);
 
         completeBookingWithPrice(40, $branch, $currency);
 
-        expect(CommissionEntryModel::query()->sole()->commission_minor)->toBe(250);
+        expect(CommissionEntryModel::query()->sole()->commission_amount_minor)->toBe(250);
     });
 
     it('accrues nothing without a rule, or for a booking that is not completed', function (): void {

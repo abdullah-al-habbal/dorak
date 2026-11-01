@@ -91,7 +91,7 @@ describe('multi_branch (A3)', function (): void {
 
     it('never gates a brand\'s first branch', function (): void {
         $this->actingAs(ClientModel::factory()->create(), 'client')
-            ->postJson('/api/v1/brands', ['name' => ['en' => 'Solo', 'ar' => 'سولو'], 'base_currency_id' => CurrencyModel::factory()->create()->id])
+            ->postJson('/api/v1/brands', ['name' => ['en' => 'Solo', 'ar' => 'سولو'], 'base_currency_code' => CurrencyModel::factory()->create()->code])
             ->assertCreated();
     });
 });

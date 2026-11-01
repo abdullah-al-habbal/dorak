@@ -51,9 +51,9 @@ export function SettingsPreferences() {
     control: form.control,
     name: "preferredLanguage",
   });
-  const displayCurrencyId = useWatch({
+  const displayCurrencyCode = useWatch({
     control: form.control,
-    name: "displayCurrencyId",
+    name: "displayCurrencyCode",
   });
   const theme = useWatch({ control: form.control, name: "theme" });
   const priceDisplayMode = useWatch({
@@ -98,10 +98,10 @@ export function SettingsPreferences() {
         <label className="grid gap-2 text-sm text-text-primary">
           <span>{labels.currency}</span>
           <Select
-            value={displayCurrencyId ?? ""}
+            value={displayCurrencyCode ?? ""}
             onChange={(selected) =>
               form.setValue(
-                "displayCurrencyId",
+                "displayCurrencyCode",
                 (selected || null) as string | null,
               )
             }

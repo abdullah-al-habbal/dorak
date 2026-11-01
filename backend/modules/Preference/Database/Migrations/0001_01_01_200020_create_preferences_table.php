@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('preferenceable_type')->nullable();
             $table->string('preferred_language', 10)->nullable();
             $table->boolean('is_notification_enabled')->default(true);
-            $table->foreignUuid('display_currency_id')->nullable()->constrained('currencies')->nullOnDelete();
+            $table->string('display_currency_code', 10)->nullable();
+            $table->foreign('display_currency_code')->references('code')->on('currencies')->nullOnDelete();
             $table->string('theme')->nullable();
             $table->string('price_display_mode')->nullable();
             $table->boolean('is_dual_price_display_enabled')->default(false);

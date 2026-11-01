@@ -85,20 +85,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       const SizedBox(height: DorakDimensions.spacingMedium),
                       DropdownButtonFormField<String>(
                         key: const Key('settings-currency'),
-                        initialValue: settings.displayCurrencyId,
+                        initialValue: settings.displayCurrencyCode,
                         decoration: InputDecoration(
                           labelText: l10n.profileSettingsCurrencyLabel,
                         ),
                         items: _currencies
                             .map(
                               (currency) => DropdownMenuItem(
-                                value: currency.id,
+                                value: currency.code,
                                 child: Text(currency.code),
                               ),
                             )
                             .toList(growable: false),
                         onChanged: (value) =>
-                            _cubit.save(displayCurrencyId: value),
+                            _cubit.save(displayCurrencyCode: value),
                       ),
                       const SizedBox(height: DorakDimensions.spacingMedium),
                       DropdownButtonFormField<String>(

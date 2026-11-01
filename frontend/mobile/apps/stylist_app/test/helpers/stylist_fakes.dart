@@ -118,7 +118,7 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
   Future<BarberServiceDto> createService({
     required Map<String, String> name,
     required double price,
-    required String currencyId,
+    required String currencyCode,
     int? duration,
     bool isAtHome = false,
     bool active = true,
@@ -130,7 +130,7 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
     String id, {
     required Map<String, String> name,
     required double price,
-    required String currencyId,
+    required String currencyCode,
     int? duration,
     bool isAtHome = false,
     bool active = true,

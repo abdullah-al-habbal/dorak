@@ -15,8 +15,8 @@ final class CommissionEntryResource extends JsonResource
             'booking_id' => $this->booking_id,
             'brand_id' => $this->brand_id,
             'branch_id' => $this->branch_id,
-            'base_minor' => $this->base_minor,
-            'commission_minor' => $this->commission_minor,
+            'base_amount_minor' => $this->base_amount_minor,
+            'commission_amount_minor' => $this->commission_amount_minor,
             'currency' => $this->whenLoaded('currency', fn () => [
                 'id' => $this->currency->id,
                 'code' => $this->currency->code,

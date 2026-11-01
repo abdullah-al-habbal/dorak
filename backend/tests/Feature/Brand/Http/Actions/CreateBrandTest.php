@@ -16,7 +16,7 @@ it('creates a brand with valid data', function () {
 
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Barber Shop EN', 'ar' => 'Barber Shop AR'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
         'logo' => 'https://example.com/logo.png',
         'description' => ['en' => 'A great shop', 'ar' => 'محل رائع'],
     ]);
@@ -41,7 +41,7 @@ it('creates a brand with only required fields', function () {
 
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Minimal Brand', 'ar' => 'علامة تجارية'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
     ]);
 
     $response->assertCreated();
@@ -53,7 +53,7 @@ it('auto-sets owner_id from authenticated client', function () {
 
     $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'My Brand', 'ar' => 'علامتي'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
     ]);
 
     $brand = BrandModel::where('owner_id', $this->client->id)->first();
@@ -62,7 +62,7 @@ it('auto-sets owner_id from authenticated client', function () {
 
 it('rejects create with missing name', function () {
     $response = $this->postJson('/api/v1/brands', [
-        'base_currency_id' => '00000000-0000-0000-0000-000000000000',
+        'base_currency_code' => '00000000-0000-0000-0000-000000000000',
     ]);
 
     $response->assertStatus(422);
@@ -73,13 +73,13 @@ it('rejects create with missing name.en', function () {
 
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['ar' => 'فقط عربي'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
     ]);
 
     $response->assertStatus(422);
 });
 
-it('rejects create with missing base_currency_id', function () {
+it('rejects create with missing base_currency_code', function () {
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Brand', 'ar' => 'علامة'],
     ]);
@@ -87,10 +87,10 @@ it('rejects create with missing base_currency_id', function () {
     $response->assertStatus(422);
 });
 
-it('rejects create with invalid base_currency_id', function () {
+it('rejects create with invalid base_currency_code', function () {
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Brand', 'ar' => 'علامة'],
-        'base_currency_id' => '00000000-0000-0000-0000-000000000000',
+        'base_currency_code' => '00000000-0000-0000-0000-000000000000',
     ]);
 
     $response->assertStatus(422);
@@ -101,7 +101,7 @@ it('rejects create with invalid logo url', function () {
 
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Brand', 'ar' => 'علامة'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
         'logo' => 'not-a-url',
     ]);
 
@@ -114,7 +114,7 @@ it('rejects unauthorized brand create', function () {
 
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Test', 'ar' => 'Test'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
     ]);
 
     $response->assertUnauthorized();

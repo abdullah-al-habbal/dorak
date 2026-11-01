@@ -24,18 +24,18 @@ final class GeneratePayoutsHandler
         return DB::transaction(function (): Collection {
             $entries = CommissionEntryModel::query()->whereNull('payout_id')->lockForUpdate()->get();
 
-            return $entries->groupBy(fn (CommissionEntryModel $entry): string => $entry->brand_id.'|'.$entry->currency_id)
+            return $entries->groupBy(fn (CommissionEntryModel $entry): string => $entry->brand_id.'|'.$entry->currency_code)
                 ->map(function (Collection $group): PayoutModel {
                     /** @var CommissionEntryModel $first */
                     $first = $group->first();
                     $payout = PayoutModel::create([
                         'brand_id' => $first->brand_id,
-                        'currency_id' => $first->currency_id,
+                        'currency_code' => $first->currency_code,
                         'direction' => PayoutDirection::BrandToPlatform,
                         'status' => PayoutStatus::Draft,
-                        'total_minor' => (int) $group->sum('commission_minor'),
-                        'period_start' => $group->min('created_at'),
-                        'period_end' => $group->max('created_at'),
+                        'total_amount_minor' => (int) $group->sum('commission_amount_minor'),
+                        'period_started_at' => $group->min('created_at'),
+                        'period_ended_at' => $group->max('created_at'),
                     ]);
                     CommissionEntryModel::query()->whereIn('id', $group->modelKeys())->update(['payout_id' => $payout->getKey()]);
 

@@ -20,7 +20,7 @@ class CommissionRuleFactory extends Factory
             'scope_id' => null,
             'type' => CommissionType::Percent,
             'value' => 1000,
-            'currency_id' => null,
+            'currency_code' => null,
             'is_active' => true,
         ];
     }

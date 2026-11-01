@@ -58,7 +58,7 @@ it('links a dashboard service to a catalog item by UUID', function () {
         'serviceable_id' => $branch->brand_id,
         'serviceable_type' => ServiceableTypeEnum::Brand,
         'catalog_item_id' => $item->id,
-        'currency_id' => $currency->id,
+        'currency_code' => $currency->code,
         'name' => ['en' => 'Haircut', 'ar' => 'قص شعر'],
         'price' => 25,
         'duration' => 30,

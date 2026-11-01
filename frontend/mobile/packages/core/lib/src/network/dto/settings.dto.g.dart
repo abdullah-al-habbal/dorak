@@ -9,7 +9,7 @@ part of 'settings.dto.dart';
 SettingsDto _$SettingsDtoFromJson(Map<String, dynamic> json) => SettingsDto(
   preferredLanguage: json['preferred_language'] as String?,
   isNotificationEnabled: json['is_notification_enabled'] as bool,
-  displayCurrencyId: json['display_currency_id'] as String?,
+  displayCurrencyCode: json['display_currency_code'] as String?,
   theme: json['theme'] as String?,
   priceDisplayMode: json['price_display_mode'] as String?,
 );

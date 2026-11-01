@@ -36,7 +36,7 @@ function defaultsFor(rule?: ICommissionRule): ICommissionRuleFormInput {
         ? basisPointsToPercent(rule.value)
         : fromMinorUnits(rule.value)
       : 10,
-    currencyId: rule?.currency?.id ?? "",
+    currencyCode: rule?.currency?.code ?? "",
     isActive: rule?.isActive ?? true,
   };
 }
@@ -103,7 +103,7 @@ export function CommissionRuleForm({ rule, onDone }: ICommissionRuleFormProps) {
       </label>
       <label className="grid gap-1 text-sm text-text-100">
         <span>{copy.rules.currency}</span>
-        <select className={selectClass} {...form.register("currencyId")}>
+        <select className={selectClass} {...form.register("currencyCode")}>
           <option value="">{copy.rules.selectCurrency}</option>
           {currencies.data?.map((currency) => (
             <option key={currency.id} value={currency.id}>
@@ -111,7 +111,7 @@ export function CommissionRuleForm({ rule, onDone }: ICommissionRuleFormProps) {
             </option>
           ))}
         </select>
-        {errors.currencyId ? (
+        {errors.currencyCode ? (
           <span className="text-input-error-focus-border" role="alert">
             {copy.rules.selectCurrency}
           </span>

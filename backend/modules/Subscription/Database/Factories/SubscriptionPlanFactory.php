@@ -18,8 +18,8 @@ class SubscriptionPlanFactory extends Factory
         return [
             'name' => ['en' => fake()->unique()->word(), 'ar' => fake('ar_SA')->word()],
             'description' => ['en' => fake()->sentence(), 'ar' => fake('ar_SA')->sentence()],
-            'price_minor' => 2500,
-            'currency_id' => CurrencyModel::factory(),
+            'price_amount_minor' => 2500,
+            'currency_code' => fn () => CurrencyModel::factory()->create()->code,
             'interval_unit' => SubscriptionIntervalUnitEnum::Month,
             'interval_count' => 1,
             'is_active' => true,

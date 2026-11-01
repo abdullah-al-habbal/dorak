@@ -9,8 +9,8 @@ it('converts between currencies without authentication', function () {
     $usd = CurrencyModel::factory()->create(['code' => 'USD']);
     $eur = CurrencyModel::factory()->create(['code' => 'EUR']);
     ExchangeRateModel::factory()->create([
-        'from_currency_id' => $usd->id,
-        'to_currency_id' => $eur->id,
+        'from_currency_code' => $usd->code,
+        'to_currency_code' => $eur->code,
         'rate' => 0.85,
     ]);
 

@@ -23,9 +23,9 @@ use Modules\Payout\Enums\PayoutStatus;
  *
  * @property string $id
  * @property PayoutStatus $status
- * @property int $total_minor
+ * @property int $total_amount_minor
  */
-#[Fillable(['brand_id', 'currency_id', 'direction', 'status', 'total_minor', 'period_start', 'period_end', 'approved_by', 'approved_at', 'paid_at', 'reference', 'notes'])]
+#[Fillable(['brand_id', 'currency_code', 'direction', 'status', 'total_amount_minor', 'period_started_at', 'period_ended_at', 'approved_by_id', 'approved_at', 'paid_at', 'reference', 'notes'])]
 #[Table('payouts')]
 class PayoutModel extends Model
 {
@@ -36,9 +36,9 @@ class PayoutModel extends Model
         return [
             'direction' => PayoutDirection::class,
             'status' => PayoutStatus::class,
-            'total_minor' => 'integer',
-            'period_start' => 'datetime',
-            'period_end' => 'datetime',
+            'total_amount_minor' => 'integer',
+            'period_started_at' => 'datetime',
+            'period_ended_at' => 'datetime',
             'approved_at' => 'datetime',
             'paid_at' => 'datetime',
         ];
@@ -53,13 +53,13 @@ class PayoutModel extends Model
     /** @return BelongsTo<CurrencyModel, $this> */
     public function currency(): BelongsTo
     {
-        return $this->belongsTo(CurrencyModel::class, 'currency_id');
+        return $this->belongsTo(CurrencyModel::class, 'currency_code', 'code');
     }
 
     /** @return BelongsTo<AdminModel, $this> */
     public function approver(): BelongsTo
     {
-        return $this->belongsTo(AdminModel::class, 'approved_by');
+        return $this->belongsTo(AdminModel::class, 'approved_by_id');
     }
 
     /** @return HasMany<CommissionEntryModel, $this> */

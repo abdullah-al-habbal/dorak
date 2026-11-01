@@ -18,11 +18,11 @@ final class ExchangeRateFormSchema
             Section::make()
                 ->columns(2)
                 ->schema([
-                    Select::make('from_currency_id')
+                    Select::make('from_currency_code')
                         ->label(__('currency::ui.from_currency'))
                         ->relationship('fromCurrency', 'code')
                         ->required(),
-                    Select::make('to_currency_id')
+                    Select::make('to_currency_code')
                         ->label(__('currency::ui.to_currency'))
                         ->relationship('toCurrency', 'code')
                         ->required(),

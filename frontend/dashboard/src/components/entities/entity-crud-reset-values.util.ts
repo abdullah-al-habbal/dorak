@@ -71,7 +71,7 @@ export function resetValuesFor(
       name: current.name,
       price: current.price,
       duration: current.duration,
-      currencyId: current.currencyId,
+      currencyCode: current.currencyCode,
       isActive: current.isActive,
       isAtHome: current.isAtHome,
       serviceableId: current.serviceableId,

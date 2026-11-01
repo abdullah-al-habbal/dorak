@@ -265,7 +265,7 @@ void main() {
                     'name': 'Fade',
                     'description': 'A clean fade.',
                     'price': 80.0,
-                    'currency_id': 'SAR',
+                    'currency_code': 'SAR',
                     'duration': 45,
                     'is_at_home': true,
                     'active': true,
@@ -297,7 +297,7 @@ void main() {
       expect(service.id, 'service-1');
       expect(service.name, 'Fade');
       expect(service.price, 80.0);
-      expect(service.currencyId, 'SAR');
+      expect(service.currencyCode, 'SAR');
       expect(service.duration, 45);
       expect(service.isAtHome, isTrue);
       expect(service.active, isTrue);

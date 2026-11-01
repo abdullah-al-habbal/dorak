@@ -17,14 +17,14 @@ it('lists barber services', function () {
         'serviceable_id' => $barber->id,
         'serviceable_type' => ServiceableTypeEnum::Barber,
         'catalog_item_id' => $item->id,
-        'currency_id' => $currency->id,
+        'currency_code' => $currency->code,
     ]);
 
     $response = $this->getJson("/api/v1/barbers/{$barber->id}/services");
 
     $response->assertOk();
     expect($response->json('data'))->toHaveCount(3);
-    expect($response->json('data.0'))->toHaveKeys(['id', 'name', 'price', 'currency_id', 'duration']);
+    expect($response->json('data.0'))->toHaveKeys(['id', 'name', 'price', 'currency_code', 'duration']);
 });
 
 it('returns empty list when barber has no services', function () {

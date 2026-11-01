@@ -7,7 +7,7 @@ const valid = {
   descriptionEn: "",
   descriptionAr: "",
   logo: "",
-  baseCurrencyId: "cur1",
+  baseCurrencyCode: "cur1",
   universe: "unisex",
 };
 
@@ -25,7 +25,7 @@ describe("brandFormSchema", () => {
       false,
     );
     expect(
-      brandFormSchema.safeParse({ ...valid, baseCurrencyId: "" }).success,
+      brandFormSchema.safeParse({ ...valid, baseCurrencyCode: "" }).success,
     ).toBe(false);
     expect(
       brandFormSchema.safeParse({ ...valid, universe: "kids" }).success,

@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('exchange_rates', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('from_currency_id')->constrained('currencies')->cascadeOnDelete();
-            $table->foreignUuid('to_currency_id')->constrained('currencies')->cascadeOnDelete();
+            $table->string('from_currency_code', 10);
+            $table->foreign('from_currency_code')->references('code')->on('currencies')->cascadeOnDelete();
+            $table->string('to_currency_code', 10);
+            $table->foreign('to_currency_code')->references('code')->on('currencies')->cascadeOnDelete();
             $table->decimal('rate', 20, 6);
             $table->timestamp('effective_at');
             $table->timestamps();

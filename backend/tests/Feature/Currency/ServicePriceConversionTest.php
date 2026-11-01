@@ -16,7 +16,7 @@ function createBrandService(BrandModel $brand, CurrencyModel $currency, float $p
     return OfferedServiceModel::factory()->create([
         'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $brand->id,
-        'currency_id' => $currency->id,
+        'currency_code' => $currency->code,
         'price' => $price,
         'catalog_item_id' => null,
         'is_active' => true,
@@ -31,7 +31,7 @@ function clientBearerToken(ClientModel $client): string
 it('populates display_price for a client whose display currency differs from the base currency', function () {
     $usd = CurrencyModel::factory()->create(['code' => 'USD']);
     $eur = CurrencyModel::factory()->create(['code' => 'EUR']);
-    ExchangeRateModel::factory()->create(['from_currency_id' => $usd->id, 'to_currency_id' => $eur->id, 'rate' => 0.9]);
+    ExchangeRateModel::factory()->create(['from_currency_code' => $usd->code, 'to_currency_code' => $eur->code, 'rate' => 0.9]);
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
@@ -41,7 +41,7 @@ it('populates display_price for a client whose display currency differs from the
     PreferenceModel::factory()->create([
         'preferenceable_type' => 'client',
         'preferenceable_id' => $client->id,
-        'display_currency_id' => $eur->id,
+        'display_currency_code' => $eur->code,
     ]);
 
     $services = $this->withToken(clientBearerToken($client))
@@ -68,7 +68,7 @@ it('falls back to the base price with conversion_unavailable when no rate exists
     PreferenceModel::factory()->create([
         'preferenceable_type' => 'client',
         'preferenceable_id' => $client->id,
-        'display_currency_id' => $eur->id,
+        'display_currency_code' => $eur->code,
     ]);
 
     $payload = collect(
@@ -86,7 +86,7 @@ it('falls back to the base price with conversion_unavailable when no rate exists
 it('reports dual_price_display true when the owning brand enables dual display', function () {
     $usd = CurrencyModel::factory()->create(['code' => 'USD']);
     $eur = CurrencyModel::factory()->create(['code' => 'EUR']);
-    ExchangeRateModel::factory()->create(['from_currency_id' => $usd->id, 'to_currency_id' => $eur->id, 'rate' => 0.9]);
+    ExchangeRateModel::factory()->create(['from_currency_code' => $usd->code, 'to_currency_code' => $eur->code, 'rate' => 0.9]);
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
@@ -101,7 +101,7 @@ it('reports dual_price_display true when the owning brand enables dual display',
     PreferenceModel::factory()->create([
         'preferenceable_type' => 'client',
         'preferenceable_id' => $client->id,
-        'display_currency_id' => $eur->id,
+        'display_currency_code' => $eur->code,
     ]);
 
     $payload = collect(
@@ -119,7 +119,7 @@ it('reports dual_price_display true when the owning brand enables dual display',
 it('reports dual_price_display false (converted only) by default', function () {
     $usd = CurrencyModel::factory()->create(['code' => 'USD']);
     $eur = CurrencyModel::factory()->create(['code' => 'EUR']);
-    ExchangeRateModel::factory()->create(['from_currency_id' => $usd->id, 'to_currency_id' => $eur->id, 'rate' => 0.9]);
+    ExchangeRateModel::factory()->create(['from_currency_code' => $usd->code, 'to_currency_code' => $eur->code, 'rate' => 0.9]);
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
@@ -129,7 +129,7 @@ it('reports dual_price_display false (converted only) by default', function () {
     PreferenceModel::factory()->create([
         'preferenceable_type' => 'client',
         'preferenceable_id' => $client->id,
-        'display_currency_id' => $eur->id,
+        'display_currency_code' => $eur->code,
     ]);
 
     $payload = collect(
@@ -145,7 +145,7 @@ it('reports dual_price_display false (converted only) by default', function () {
 it('converts for a guest using the X-Display-Currency header', function () {
     $usd = CurrencyModel::factory()->create(['code' => 'USD']);
     $eur = CurrencyModel::factory()->create(['code' => 'EUR']);
-    ExchangeRateModel::factory()->create(['from_currency_id' => $usd->id, 'to_currency_id' => $eur->id, 'rate' => 0.9]);
+    ExchangeRateModel::factory()->create(['from_currency_code' => $usd->code, 'to_currency_code' => $eur->code, 'rate' => 0.9]);
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);

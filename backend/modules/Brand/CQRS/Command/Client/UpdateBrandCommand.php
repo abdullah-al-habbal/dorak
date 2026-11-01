@@ -13,7 +13,7 @@ final readonly class UpdateBrandCommand
         public ?string $nameEn,
         public ?string $nameAr,
         public ?string $ownerId,
-        public ?string $baseCurrencyId,
+        public ?string $baseCurrencyCode,
         public ?string $logo,
         public ?string $descriptionEn,
         public ?string $descriptionAr,

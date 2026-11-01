@@ -16,8 +16,8 @@ function planPayload(array $overrides = []): array
     return [
         'name' => ['en' => 'Pro', 'ar' => 'محترف'],
         'description' => ['en' => 'For growing brands', 'ar' => 'للعلامات النامية'],
-        'price_minor' => 4900,
-        'currency_id' => CurrencyModel::factory()->create()->id,
+        'price_amount_minor' => 4900,
+        'currency_code' => CurrencyModel::factory()->create()->code,
         'interval_unit' => 'month',
         'interval_count' => 1,
         'is_active' => true,
@@ -34,7 +34,7 @@ describe('Subscription plans', function (): void {
     it('creates a plan with money as minor units and mapped features', function (): void {
         $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload())
             ->assertCreated()
-            ->assertJsonPath('data.price_minor', 4900)
+            ->assertJsonPath('data.price_amount_minor', 4900)
             ->assertJsonPath('data.interval_unit', 'month')
             ->assertJsonPath('data.feature_keys', [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);
 
@@ -46,7 +46,7 @@ describe('Subscription plans', function (): void {
         $this->postJson('/api/v1/dashboard/admin/subscription-plans', [])->assertUnprocessable();
         $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload(['interval_unit' => 'fortnight']))->assertUnprocessable();
         $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload(['feature_keys' => ['teleport']]))->assertUnprocessable();
-        $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload(['price_minor' => -1]))->assertUnprocessable();
+        $this->postJson('/api/v1/dashboard/admin/subscription-plans', planPayload(['price_amount_minor' => -1]))->assertUnprocessable();
     });
 
     it('updates a plan and re-maps its features', function (): void {
@@ -54,12 +54,12 @@ describe('Subscription plans', function (): void {
         $plan->features()->create(['feature_key' => BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);
 
         $this->putJson("/api/v1/dashboard/admin/subscription-plans/{$plan->id}", planPayload([
-            'price_minor' => 9900,
-            'currency_id' => $plan->currency_id,
+            'price_amount_minor' => 9900,
+            'currency_code' => $plan->currency_code,
             'feature_keys' => [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD],
         ]))
             ->assertOk()
-            ->assertJsonPath('data.price_minor', 9900)
+            ->assertJsonPath('data.price_amount_minor', 9900)
             ->assertJsonPath('data.feature_keys', [BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD]);
 
         $this->assertDatabaseMissing('plan_features', ['plan_id' => $plan->id, 'feature_key' => BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH]);

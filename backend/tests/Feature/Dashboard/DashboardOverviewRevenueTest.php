@@ -60,7 +60,7 @@ describe('Dashboard overview revenue', function (): void {
 
     it('reports the branch brand currency for a branch manager', function (): void {
         $currency = CurrencyModel::factory()->create(['code' => 'JOD']);
-        $brand = BrandModel::factory()->create(['base_currency_id' => $currency->id]);
+        $brand = BrandModel::factory()->create(['base_currency_code' => $currency->code]);
         $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
         $this->authenticateDashboardActor($branch);
 

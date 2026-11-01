@@ -16,7 +16,7 @@ final class CreateBrandRequest extends BaseApiFormRequest
         return [
             'name.en' => ['required', 'string', 'max:255'],
             'name.ar' => ['required', 'string', 'max:255'],
-            'base_currency_id' => ['required', 'string', 'exists:currencies,id'],
+            'base_currency_code' => ['required', 'string', 'exists:currencies,code'],
             'logo' => ['nullable', 'url', 'max:2048'],
             'description.en' => ['nullable', 'string', 'max:5000'],
             'description.ar' => ['nullable', 'string', 'max:5000'],
@@ -38,7 +38,7 @@ final class CreateBrandRequest extends BaseApiFormRequest
             ownerId: $ownerId ?? (string) $this->user()->getAuthIdentifier(),
             nameEn: $this->validated('name.en'),
             nameAr: $this->validated('name.ar'),
-            baseCurrencyId: $this->validated('base_currency_id'),
+            baseCurrencyCode: $this->validated('base_currency_code'),
             logo: $this->validated('logo'),
             descriptionEn: $this->validated('description.en'),
             descriptionAr: $this->validated('description.ar'),

@@ -14,6 +14,6 @@ export const BRAND_SERVER_FIELD_MAP: Record<string, keyof IBrandForm> = {
   "description.en": "descriptionEn",
   "description.ar": "descriptionAr",
   logo: "logo",
-  base_currency_id: "baseCurrencyId",
+  base_currency_code: "baseCurrencyCode",
   universe: "universe",
 };

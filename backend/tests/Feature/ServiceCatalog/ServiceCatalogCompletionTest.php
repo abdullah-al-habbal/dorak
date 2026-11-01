@@ -114,7 +114,7 @@ it('rejects a dashboard service referencing an inactive catalog item with 422', 
         'serviceable_id' => $branch->brand_id,
         'serviceable_type' => ServiceableTypeEnum::Brand,
         'catalog_item_id' => $inactiveItem->id,
-        'currency_id' => $currency->id,
+        'currency_code' => $currency->code,
         'name' => ['en' => 'Haircut', 'ar' => 'قص الشعر'],
         'price' => 50,
     ]);
@@ -130,7 +130,7 @@ it('rejects a barber service referencing an inactive catalog item with 422', fun
     $response = $this->actingAs($barber, 'barber')
         ->postJson('/api/v1/barber/services', [
             'catalog_item_id' => $inactiveItem->id,
-            'currency_id' => $currency->id,
+            'currency_code' => $currency->code,
             'name' => ['en' => 'Haircut', 'ar' => 'قص الشعر'],
             'price' => 50,
         ]);

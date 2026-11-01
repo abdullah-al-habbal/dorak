@@ -14,7 +14,7 @@ final class SubscriptionPlanResource extends JsonResource
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
             'description' => $this->getTranslations('description'),
-            'price_minor' => $this->price_minor,
+            'price_amount_minor' => $this->price_amount_minor,
             'currency' => $this->whenLoaded('currency', fn () => [
                 'id' => $this->currency->id,
                 'code' => $this->currency->code,

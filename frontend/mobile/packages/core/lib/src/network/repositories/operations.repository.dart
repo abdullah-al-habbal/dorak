@@ -114,7 +114,7 @@ abstract class StylistOperationsRepository {
   Future<BarberServiceDto> createService({
     required Map<String, String> name,
     required double price,
-    required String currencyId,
+    required String currencyCode,
     int? duration,
     bool isAtHome = false,
     bool active = true,
@@ -124,7 +124,7 @@ abstract class StylistOperationsRepository {
     String id, {
     required Map<String, String> name,
     required double price,
-    required String currencyId,
+    required String currencyCode,
     int? duration,
     bool isAtHome = false,
     bool active = true,
@@ -273,7 +273,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
   Future<BarberServiceDto> createService({
     required Map<String, String> name,
     required double price,
-    required String currencyId,
+    required String currencyCode,
     int? duration,
     bool isAtHome = false,
     bool active = true,
@@ -283,7 +283,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     data: _servicePayload(
       name: name,
       price: price,
-      currencyId: currencyId,
+      currencyCode: currencyCode,
       duration: duration,
       isAtHome: isAtHome,
       active: active,
@@ -297,7 +297,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     String id, {
     required Map<String, String> name,
     required double price,
-    required String currencyId,
+    required String currencyCode,
     int? duration,
     bool isAtHome = false,
     bool active = true,
@@ -307,7 +307,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     data: _servicePayload(
       name: name,
       price: price,
-      currencyId: currencyId,
+      currencyCode: currencyCode,
       duration: duration,
       isAtHome: isAtHome,
       active: active,
@@ -323,7 +323,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
   Map<String, dynamic> _servicePayload({
     required Map<String, String> name,
     required double price,
-    required String currencyId,
+    required String currencyCode,
     int? duration,
     required bool isAtHome,
     required bool active,
@@ -331,7 +331,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
   }) => {
     'name': name,
     'price': price,
-    'currency_id': currencyId,
+    'currency_code': currencyCode,
     'duration': ?duration,
     'is_at_home': isAtHome,
     'active': active,

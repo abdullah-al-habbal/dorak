@@ -34,7 +34,7 @@ it('creates brand', function () {
 
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Test Brand EN', 'ar' => 'Test Brand AR'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
     ]);
 
     $response->assertCreated();
@@ -55,7 +55,7 @@ it('updates own brand', function () {
 
 it('rejects create with missing name', function () {
     $response = $this->postJson('/api/v1/brands', [
-        'base_currency_id' => '00000000-0000-0000-0000-000000000000',
+        'base_currency_code' => '00000000-0000-0000-0000-000000000000',
     ]);
 
     $response->assertStatus(422);
@@ -67,7 +67,7 @@ it('rejects unauthorized brand create', function () {
 
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Test', 'ar' => 'Test'],
-        'base_currency_id' => $currency->id,
+        'base_currency_code' => $currency->code,
     ]);
 
     $response->assertUnauthorized();

@@ -63,7 +63,10 @@ function displayName(value: unknown): string {
 function totals(value: unknown) {
   return list(value).map((entry) => {
     const item = record(entry);
-    return { currency: text(item.currency), totalMinor: num(item.total_minor) };
+    return {
+      currency: text(item.currency),
+      totalMinor: num(item.total_amount_minor),
+    };
   });
 }
 
@@ -73,7 +76,7 @@ export function mapPlan(wire: unknown): IPlan {
     id: text(item.id),
     name: localized(item.name),
     description: localized(item.description),
-    priceMinor: num(item.price_minor),
+    priceMinor: num(item.price_amount_minor),
     currency: currency(item.currency),
     intervalUnit: text(item.interval_unit),
     intervalCount: num(item.interval_count),
@@ -139,8 +142,8 @@ export function mapCommissionEntry(wire: unknown): ICommissionEntry {
   return CommissionEntrySchema.parse({
     id: text(item.id),
     bookingId: text(item.booking_id),
-    baseMinor: num(item.base_minor),
-    commissionMinor: num(item.commission_minor),
+    baseMinor: num(item.base_amount_minor),
+    commissionMinor: num(item.commission_amount_minor),
     currencyCode: text(record(item.currency).code),
     settled: typeof item.payout_id === "string",
   });
@@ -152,7 +155,7 @@ export function mapPayout(wire: unknown): IPayout {
     id: text(item.id),
     status: text(item.status),
     brandName: displayName(record(item.brand).name),
-    totalMinor: num(item.total_minor),
+    totalMinor: num(item.total_amount_minor),
     currencyCode: text(record(item.currency).code),
     reference: nullableText(item.reference),
   });
@@ -174,7 +177,7 @@ export function mapAnalytics(wire: unknown): IAnalytics {
       status: text(record(entry).status),
       currency: text(record(entry).currency),
       payouts: num(record(entry).payouts),
-      totalMinor: num(record(entry).total_minor),
+      totalMinor: num(record(entry).total_amount_minor),
     })),
     completedBookings: num(item.completed_bookings),
   });
@@ -187,8 +190,8 @@ export function planPayload(form: IPlanForm) {
       en: form.descriptionEn === "" ? null : form.descriptionEn,
       ar: form.descriptionAr === "" ? null : form.descriptionAr,
     },
-    price_minor: toMinorUnits(form.price),
-    currency_id: form.currencyId,
+    price_amount_minor: toMinorUnits(form.price),
+    currency_code: form.currencyCode,
     interval_unit: form.intervalUnit,
     interval_count: form.intervalCount,
     is_active: form.isActive,
@@ -218,7 +221,7 @@ export function commissionRulePayload(form: ICommissionRuleForm) {
       form.type === "percent"
         ? percentToBasisPoints(form.value)
         : toMinorUnits(form.value),
-    currency_id: form.type === "flat" ? form.currencyId : null,
+    currency_code: form.type === "flat" ? form.currencyCode : null,
     is_active: form.isActive,
   };
 }

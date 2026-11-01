@@ -16,8 +16,8 @@ final class SavePlanHandler
             $attributes = [
                 'name' => $command->name,
                 'description' => $command->description,
-                'price_minor' => $command->priceMinor,
-                'currency_id' => $command->currencyId,
+                'price_amount_minor' => $command->priceMinor,
+                'currency_code' => $command->currencyCode,
                 'interval_unit' => $command->intervalUnit,
                 'interval_count' => $command->intervalCount,
                 'is_active' => $command->isActive,

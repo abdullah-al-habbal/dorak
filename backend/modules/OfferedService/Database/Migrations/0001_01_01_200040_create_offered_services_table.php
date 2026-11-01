@@ -19,7 +19,8 @@ return new class extends Migration
             $table->json('name');
             $table->json('description')->nullable();
             $table->decimal('price', 10, 2);
-            $table->foreignUuid('currency_id')->constrained('currencies');
+            $table->string('currency_code', 10);
+            $table->foreign('currency_code')->references('code')->on('currencies');
             $table->unsignedInteger('duration')->nullable();
             $table->boolean('is_at_home')->default(false);
             $table->boolean('is_active')->default(true);

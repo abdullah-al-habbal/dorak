@@ -21,7 +21,7 @@ function brandPayload(array $overrides = []): array
 {
     return array_replace_recursive([
         'name' => ['en' => 'Royal Cuts', 'ar' => 'رويال كتس'],
-        'base_currency_id' => test()->currency->id,
+        'base_currency_code' => test()->currency->code,
     ], $overrides);
 }
 

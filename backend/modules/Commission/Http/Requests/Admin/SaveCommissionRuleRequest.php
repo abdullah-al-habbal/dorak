@@ -33,9 +33,9 @@ final class SaveCommissionRuleRequest extends BaseApiFormRequest
                 'required', 'integer', 'min:1',
                 Rule::when($this->input('type') === CommissionType::Percent->value, ['max:'.CommissionMoneyConstants::COMMISSION_MONEY_BASIS_POINTS_DENOMINATOR]),
             ],
-            'currency_id' => [
+            'currency_code' => [
                 Rule::requiredIf($this->input('type') === CommissionType::Flat->value),
-                'nullable', 'uuid', 'exists:currencies,id',
+                'nullable', 'exists:currencies,code',
             ],
             'is_active' => ['required', 'boolean'],
             'notes' => ['sometimes', 'nullable', 'string', 'max:2000'],
@@ -51,7 +51,7 @@ final class SaveCommissionRuleRequest extends BaseApiFormRequest
             scopeId: $data['scope_id'] ?? null,
             type: CommissionType::from($data['type']),
             value: (int) $data['value'],
-            currencyId: $data['currency_id'] ?? null,
+            currencyCode: $data['currency_code'] ?? null,
             isActive: (bool) $data['is_active'],
             notes: $data['notes'] ?? null,
         );

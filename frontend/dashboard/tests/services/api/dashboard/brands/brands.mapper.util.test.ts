@@ -21,7 +21,6 @@ describe("mapBrand", () => {
       logo: "https://x.test/l.png",
       slug: "cuts",
       universe: "men",
-      baseCurrencyId: "cur1",
       baseCurrencyCode: "SAR",
       branchesCount: 3,
     });

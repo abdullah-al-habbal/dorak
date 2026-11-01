@@ -34,12 +34,12 @@ it('rejects an unknown display currency with 422', function (): void {
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
     $this->withToken($token)->patchJson('/api/v1/client/settings', [
-        'display_currency_id' => (string) Str::uuid(),
+        'display_currency_code' => (string) Str::uuid(),
     ])
         ->assertUnprocessable()
-        ->assertJsonValidationErrors('display_currency_id');
+        ->assertJsonValidationErrors('display_currency_code');
 
-    expect(PreferenceModel::query()->where('preferenceable_id', $client->id)->first()?->display_currency_id)->toBeNull();
+    expect(PreferenceModel::query()->where('preferenceable_id', $client->id)->first()?->display_currency_code)->toBeNull();
 });
 
 it('persists a valid settings update for a client', function (): void {
@@ -50,14 +50,14 @@ it('persists a valid settings update for a client', function (): void {
     $this->withToken($token)->patchJson('/api/v1/client/settings', [
         'preferred_language' => Locale::Ar,
         'is_notification_enabled' => false,
-        'display_currency_id' => $currency->id,
+        'display_currency_code' => $currency->code,
         'theme' => ThemeEnum::Dark,
         'price_display_mode' => PriceDisplayModeEnum::TaxExclusive,
     ])
         ->assertOk()
         ->assertJsonPath('data.preferred_language', 'ar')
         ->assertJsonPath('data.is_notification_enabled', false)
-        ->assertJsonPath('data.display_currency_id', $currency->id)
+        ->assertJsonPath('data.display_currency_code', $currency->code)
         ->assertJsonPath('data.theme', 'dark')
         ->assertJsonPath('data.price_display_mode', 'tax_exclusive');
 });

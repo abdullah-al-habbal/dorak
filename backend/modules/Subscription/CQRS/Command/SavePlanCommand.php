@@ -17,7 +17,7 @@ final readonly class SavePlanCommand
         public array $name,
         public ?array $description,
         public int $priceMinor,
-        public string $currencyId,
+        public string $currencyCode,
         public SubscriptionIntervalUnitEnum $intervalUnit,
         public int $intervalCount,
         public bool $isActive,

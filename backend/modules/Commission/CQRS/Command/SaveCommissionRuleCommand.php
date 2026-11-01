@@ -14,7 +14,7 @@ final readonly class SaveCommissionRuleCommand
         public ?string $scopeId,
         public CommissionType $type,
         public int $value,
-        public ?string $currencyId,
+        public ?string $currencyCode,
         public bool $isActive,
         public ?string $notes,
     ) {}

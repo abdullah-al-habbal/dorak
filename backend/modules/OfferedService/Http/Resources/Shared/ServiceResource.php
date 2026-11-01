@@ -29,7 +29,7 @@ final class ServiceResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'price' => (float) $this->price,
-            'currency_id' => $this->currency_id,
+            'currency_code' => $this->currency_code,
             'duration' => $this->duration,
             'is_at_home' => (bool) $this->is_at_home,
             'is_active' => (bool) $this->is_active,

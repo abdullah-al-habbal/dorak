@@ -211,7 +211,7 @@ void main() {
               data: {
                 'preferred_language': 'ar',
                 'is_notification_enabled': true,
-                'display_currency_id': 'currency-1',
+                'display_currency_code': 'currency-1',
                 'theme': 'dark',
                 'price_display_mode': 'tax_inclusive',
               },
@@ -227,7 +227,7 @@ void main() {
       expect(captured.method, 'GET');
       expect(settings.preferredLanguage, 'ar');
       expect(settings.isNotificationEnabled, isTrue);
-      expect(settings.displayCurrencyId, 'currency-1');
+      expect(settings.displayCurrencyCode, 'currency-1');
       expect(settings.theme, 'dark');
       expect(settings.priceDisplayMode, 'tax_inclusive');
     });
@@ -245,7 +245,7 @@ void main() {
                 data: {
                   'preferred_language': 'en',
                   'is_notification_enabled': false,
-                  'display_currency_id': null,
+                  'display_currency_code': null,
                   'theme': null,
                   'price_display_mode': null,
                 },

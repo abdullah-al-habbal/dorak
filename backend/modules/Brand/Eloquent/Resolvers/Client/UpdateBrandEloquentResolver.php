@@ -33,8 +33,8 @@ final class UpdateBrandEloquentResolver
             $data['owner_id'] = $command->ownerId;
         }
 
-        if ($command->baseCurrencyId !== null) {
-            $data['base_currency_id'] = $command->baseCurrencyId;
+        if ($command->baseCurrencyCode !== null) {
+            $data['base_currency_code'] = $command->baseCurrencyCode;
         }
 
         if ($command->universe !== null) {

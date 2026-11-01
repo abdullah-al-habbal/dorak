@@ -33,8 +33,8 @@ class StylistServices extends StatelessWidget {
         style: DorakTypography.bodyMd.copyWith(color: colors.onSurfaceVariant),
       );
     }
-    final currencyById = <String, CurrencyDto>{
-      for (final currency in currencies) currency.id: currency,
+    final currencyByCode = <String, CurrencyDto>{
+      for (final currency in currencies) currency.code: currency,
     };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +44,7 @@ class StylistServices extends StatelessWidget {
         ...profile.services.map(
           (service) => StylistServiceCard(
             service: service,
-            currencyById: currencyById,
+            currencyByCode: currencyByCode,
             colors: colors,
             l10n: l10n,
             localeCode: localeCode,

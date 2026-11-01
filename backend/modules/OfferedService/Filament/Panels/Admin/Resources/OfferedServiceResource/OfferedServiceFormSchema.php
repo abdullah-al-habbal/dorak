@@ -34,7 +34,7 @@ final class OfferedServiceFormSchema
                                 ->titleAttribute('name.en'),
                         ])
                         ->required(),
-                    Select::make('currency_id')
+                    Select::make('currency_code')
                         ->relationship('currency', 'code')
                         ->required(),
                     TextInput::make('price')

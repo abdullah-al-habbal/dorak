@@ -7,7 +7,7 @@ export const serviceFormSchema = z.object({
   }),
   price: z.coerce.number().nonnegative(),
   duration: z.coerce.number().int().min(1).max(1440).nullable(),
-  currencyId: z.string().uuid(),
+  currencyCode: z.string().min(1),
   isActive: z.boolean(),
   isAtHome: z.boolean(),
   serviceableId: z.string().uuid(),

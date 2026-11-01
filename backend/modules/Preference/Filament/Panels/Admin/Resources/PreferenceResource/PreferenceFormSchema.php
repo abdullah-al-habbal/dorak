@@ -28,7 +28,7 @@ final class PreferenceFormSchema
                         ->required(),
                     Select::make('preferred_language')
                         ->relationship('language', 'name.en'),
-                    Select::make('display_currency_id')
+                    Select::make('display_currency_code')
                         ->relationship('displayCurrency', 'code'),
                     Toggle::make('is_notification_enabled'),
                     Select::make('theme')

@@ -7,7 +7,7 @@ void main() {
       'id': 'svc-1',
       'name': 'Haircut',
       'price': 100,
-      'currency_id': 'cur-1',
+      'currency_code': 'cur-1',
       'display_price': {'amount': 90.0, 'currency_code': 'EUR'},
       'conversion_unavailable': false,
       'is_dual_price_display_enabled': true,
@@ -26,7 +26,7 @@ void main() {
         'id': 'svc-1',
         'name': 'Haircut',
         'price': 100,
-        'currency_id': 'cur-1',
+        'currency_code': 'cur-1',
       });
 
       expect(service.displayPrice, isNull);
@@ -40,7 +40,7 @@ void main() {
       'id': 'svc-1',
       'name': 'Haircut',
       'price': 100,
-      'currency_id': 'cur-1',
+      'currency_code': 'cur-1',
       'display_price': null,
       'conversion_unavailable': true,
     });

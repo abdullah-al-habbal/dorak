@@ -98,7 +98,7 @@ export function mapService(wire: unknown): IService {
     isActive: item.is_active === true,
     isAtHome: item.is_at_home === true,
     catalogItemId: nullableString(item.catalog_item_id),
-    currencyId: string(item.currency_id),
+    currencyCode: string(item.currency_code),
     duration: typeof item.duration === "number" ? item.duration : null,
     name: localized(item.name),
     price:

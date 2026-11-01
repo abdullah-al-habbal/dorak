@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['from_currency_id', 'to_currency_id', 'rate', 'effective_at'])]
+#[Fillable(['from_currency_code', 'to_currency_code', 'rate', 'effective_at'])]
 #[Table('exchange_rates')]
 class ExchangeRateModel extends Model
 {
@@ -29,11 +29,11 @@ class ExchangeRateModel extends Model
 
     public function fromCurrency(): BelongsTo
     {
-        return $this->belongsTo(CurrencyModel::class, 'from_currency_id');
+        return $this->belongsTo(CurrencyModel::class, 'from_currency_code', 'code');
     }
 
     public function toCurrency(): BelongsTo
     {
-        return $this->belongsTo(CurrencyModel::class, 'to_currency_id');
+        return $this->belongsTo(CurrencyModel::class, 'to_currency_code', 'code');
     }
 }

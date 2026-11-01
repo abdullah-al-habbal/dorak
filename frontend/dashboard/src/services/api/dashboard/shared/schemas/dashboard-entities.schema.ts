@@ -36,7 +36,7 @@ export const ServiceSchema = z.object({
   isActive: z.boolean(),
   isAtHome: z.boolean(),
   catalogItemId: z.string().nullable(),
-  currencyId: DashboardEntityIdSchema,
+  currencyCode: DashboardEntityIdSchema,
   duration: z.number().nullable(),
   name: LocalizedNameSchema,
   price: z.number(),

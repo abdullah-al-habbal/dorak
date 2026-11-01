@@ -9,7 +9,7 @@ class StylistServiceCard extends StatelessWidget {
   const StylistServiceCard({
     super.key,
     required this.service,
-    required this.currencyById,
+    required this.currencyByCode,
     required this.colors,
     required this.l10n,
     required this.localeCode,
@@ -18,7 +18,7 @@ class StylistServiceCard extends StatelessWidget {
   });
 
   final BarberServiceDto service;
-  final Map<String, CurrencyDto> currencyById;
+  final Map<String, CurrencyDto> currencyByCode;
   final DorakColors colors;
   final AppLocalizations l10n;
   final String localeCode;
@@ -27,7 +27,7 @@ class StylistServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyCode = currencyById[service.currencyId]?.code ?? '';
+    final currencyCode = currencyByCode[service.currencyCode]?.code ?? '';
     return Container(
       margin: const EdgeInsets.only(bottom: DorakDimensions.spacingSmall),
       padding: const EdgeInsets.all(DorakDimensions.spacingSmall),

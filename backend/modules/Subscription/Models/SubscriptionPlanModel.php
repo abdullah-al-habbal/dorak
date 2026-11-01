@@ -22,12 +22,12 @@ use Spatie\Translatable\HasTranslations;
  * flags are rows in `plan_features` (Task 65).
  *
  * @property string $id
- * @property int $price_minor
- * @property string $currency_id
+ * @property int $price_amount_minor
+ * @property string $currency_code
  * @property SubscriptionIntervalUnitEnum $interval_unit
  * @property int $interval_count
  */
-#[Fillable(['name', 'description', 'price_minor', 'currency_id', 'interval_unit', 'interval_count', 'is_active', 'sort_order'])]
+#[Fillable(['name', 'description', 'price_amount_minor', 'currency_code', 'interval_unit', 'interval_count', 'is_active', 'sort_order'])]
 #[Table('subscription_plans')]
 #[Translatable(['name', 'description'])]
 class SubscriptionPlanModel extends Model
@@ -38,7 +38,7 @@ class SubscriptionPlanModel extends Model
     {
         return [
             'interval_unit' => SubscriptionIntervalUnitEnum::class,
-            'price_minor' => 'integer',
+            'price_amount_minor' => 'integer',
             'interval_count' => 'integer',
             'is_active' => 'boolean',
             'sort_order' => 'integer',
@@ -48,7 +48,7 @@ class SubscriptionPlanModel extends Model
     /** @return BelongsTo<CurrencyModel, $this> */
     public function currency(): BelongsTo
     {
-        return $this->belongsTo(CurrencyModel::class, 'currency_id');
+        return $this->belongsTo(CurrencyModel::class, 'currency_code', 'code');
     }
 
     /** @return HasMany<PlanFeatureModel, $this> */

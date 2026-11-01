@@ -16,7 +16,7 @@ final class ConvertCurrencyEloquentResolver
         $fromCurrency = CurrencyModel::where('code', $query->from)->firstOrFail();
         $toCurrency = CurrencyModel::where('code', $query->to)->firstOrFail();
 
-        if ($fromCurrency->id === $toCurrency->id) {
+        if ($fromCurrency->code === $toCurrency->code) {
             return new ConvertCurrencyResult(
                 from: $query->from,
                 to: $query->to,
@@ -26,8 +26,8 @@ final class ConvertCurrencyEloquentResolver
             );
         }
 
-        $rate = ExchangeRateModel::where('from_currency_id', $fromCurrency->id)
-            ->where('to_currency_id', $toCurrency->id)
+        $rate = ExchangeRateModel::where('from_currency_code', $fromCurrency->code)
+            ->where('to_currency_code', $toCurrency->code)
             ->where('effective_at', '<=', now())
             ->orderByDesc('effective_at')
             ->first();

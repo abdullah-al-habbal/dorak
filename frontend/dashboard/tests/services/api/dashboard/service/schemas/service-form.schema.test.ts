@@ -9,7 +9,7 @@ const serviceInput = {
   name: { en: "Haircut", ar: "قص شعر" },
   price: 25,
   duration: 30,
-  currencyId: "b4e18cf2-6c48-41bb-857d-6db23f2cbaab",
+  currencyCode: "SAR",
   isActive: true,
   isAtHome: false,
   serviceableId: "6f1c2d3e-4b5a-4c6d-8e7f-9a0b1c2d3e4f",

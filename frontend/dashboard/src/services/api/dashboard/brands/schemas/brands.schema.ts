@@ -10,7 +10,6 @@ export const BrandSchema = z.object({
   logo: z.string().nullable(),
   slug: z.string().nullable(),
   universe: z.enum(BRAND_UNIVERSES),
-  baseCurrencyId: z.string().nullable(),
   baseCurrencyCode: z.string().nullable(),
   branchesCount: z.number(),
 });
@@ -21,6 +20,6 @@ export const brandFormSchema = z.object({
   descriptionEn: z.string().max(5000),
   descriptionAr: z.string().max(5000),
   logo: z.union([z.literal(""), z.string().url().max(2048)]),
-  baseCurrencyId: z.string().min(1),
+  baseCurrencyCode: z.string().min(1),
   universe: z.enum(BRAND_UNIVERSES),
 });
