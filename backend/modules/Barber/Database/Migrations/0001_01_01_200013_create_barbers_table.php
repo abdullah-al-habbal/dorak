@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Barber\Enums\BarberStatusEnum;
+use Modules\Core\Enums\VenueUniverse;
 
 return new class extends Migration
 {
@@ -20,7 +22,7 @@ return new class extends Migration
             $table->boolean('has_login')->default(true);
             $table->rememberToken();
             $table->boolean('is_freelancer')->default(false);
-            $table->string('status')->default('pending');
+            $table->string('status')->default(BarberStatusEnum::Pending->value);
             $table->boolean('is_workstation_online')->default(false);
             $table->uuid('client_id')->nullable()->index();
             $table->foreignUuid('managed_by_branch_id')->nullable()->constrained('branches')->nullOnDelete();
@@ -30,7 +32,7 @@ return new class extends Migration
             $table->json('bio')->nullable();
             $table->decimal('rating_avg', 3, 2)->nullable()->index();
             $table->unsignedInteger('rating_count')->default(0);
-            $table->string('universe', 16)->default('unisex')->index();
+            $table->string('universe', 16)->default(VenueUniverse::Unisex->value)->index();
             $table->timestamps();
         });
     }

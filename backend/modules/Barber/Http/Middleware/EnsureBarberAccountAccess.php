@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
+use Modules\Core\Enums\AccountAccessScope;
 
 /**
  * Gates barber-token routes on the barber's current status, so a token issued
@@ -22,7 +23,7 @@ use Modules\Barber\Models\BarberModel;
  */
 final class EnsureBarberAccountAccess
 {
-    public function handle(Request $request, Closure $next, string $scope = 'active'): mixed
+    public function handle(Request $request, Closure $next, string $scope = AccountAccessScope::Active->value): mixed
     {
         $barber = Auth::guard('barber')->user();
 
@@ -32,9 +33,9 @@ final class EnsureBarberAccountAccess
 
         $status = $barber->getAttribute('status');
 
-        $allowed = match ($scope) {
-            'onboarding' => in_array($status, [BarberStatusEnum::Pending, BarberStatusEnum::Enabled], true),
-            'approved' => $status !== BarberStatusEnum::Pending,
+        $allowed = match (AccountAccessScope::fromParameter($scope)) {
+            AccountAccessScope::Onboarding => in_array($status, [BarberStatusEnum::Pending, BarberStatusEnum::Enabled], true),
+            AccountAccessScope::Approved => $status !== BarberStatusEnum::Pending,
             default => $status === BarberStatusEnum::Enabled,
         };
 

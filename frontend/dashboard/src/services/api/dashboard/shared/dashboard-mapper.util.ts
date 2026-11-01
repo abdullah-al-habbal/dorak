@@ -4,6 +4,11 @@ import type { IBranch } from "@/services/api/dashboard/branch/types/ibranch.type
 import type { IChair } from "@/services/api/dashboard/chair/types/ichair.types";
 import type { IDashboardOverview } from "@/services/api/dashboard/shared/types/idashboard-overview.types";
 import type { IService } from "@/services/api/dashboard/service/types/iservice.types";
+import {
+  STYLIST_STATUS,
+  STYLIST_STATUSES,
+} from "@/services/api/dashboard/stylist/stylist.constant";
+import { isOneOf } from "@/utils/guards.util";
 import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
 
 type WireRecord = Record<string, unknown>;
@@ -114,7 +119,9 @@ export function mapStylist(wire: unknown): IStylist {
     email: string(item.email),
     name: localized(item.name),
     phone: nullableString(item.phone),
-    status: string(item.status, "pending") as IStylist["status"],
+    status: isOneOf(STYLIST_STATUSES, item.status)
+      ? item.status
+      : STYLIST_STATUS.pending,
   };
 }
 

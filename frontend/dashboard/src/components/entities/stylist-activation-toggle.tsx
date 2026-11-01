@@ -18,6 +18,7 @@ import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard
 import { activationBody } from "@/services/api/dashboard/moderation/moderation.query";
 import { activationReasonFormSchema } from "@/services/api/dashboard/moderation/schemas/moderation.schema";
 import type { IActivationReasonForm } from "@/services/api/dashboard/moderation/types/iactivation-reason-form.types";
+import { STYLIST_STATUS } from "@/services/api/dashboard/stylist/stylist.constant";
 import type { IStylist } from "@/services/api/dashboard/stylist/types/istylist.types";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -34,7 +35,7 @@ export function StylistActivationToggle({
   const dictionary = useDictionary();
   const copy = dictionary.moderation.activation;
   const [open, setOpen] = useState(false);
-  const isEnabled = status === "enabled";
+  const isEnabled = status === STYLIST_STATUS.enabled;
   const action = isEnabled ? "deactivate" : "activate";
   const form = useForm<IActivationReasonForm>({
     resolver: zodResolver(activationReasonFormSchema),

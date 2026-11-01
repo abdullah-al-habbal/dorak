@@ -92,7 +92,7 @@ void main() {
         expect(captured.method, 'PATCH');
         expect(captured.data, {'name': 'Ahmad'});
         expect(client.name, 'Ahmad');
-        expect(client.preferredUniverse, 'men');
+        expect(client.preferredUniverse, ClientUniverse.men);
       },
     );
 
@@ -196,44 +196,41 @@ void main() {
         expect(captured.path, ProfileEndpoints.universe);
         expect(captured.method, 'PATCH');
         expect(captured.data, {'preferred_universe': 'women'});
-        expect(preference.preferredUniverse, 'women');
+        expect(preference.preferredUniverse, ClientUniverse.women);
       },
     );
 
-    test(
-      'getSettings reads the authenticated owner settings',
-      () async {
-        late RequestOptions captured;
-        final fake = fakeDio(
-          handler: (options) {
-            captured = options;
-            return jsonResponse(
-              options,
-              data: successEnvelope(
-                data: {
-                  'preferred_language': 'ar',
-                  'is_notification_enabled': true,
-                  'display_currency_id': 'currency-1',
-                  'theme': 'dark',
-                  'price_display_mode': 'tax_inclusive',
-                },
-              ),
-            );
-          },
-        );
-        final repository = DioProfileRepository(clientWith(fake));
+    test('getSettings reads the authenticated owner settings', () async {
+      late RequestOptions captured;
+      final fake = fakeDio(
+        handler: (options) {
+          captured = options;
+          return jsonResponse(
+            options,
+            data: successEnvelope(
+              data: {
+                'preferred_language': 'ar',
+                'is_notification_enabled': true,
+                'display_currency_id': 'currency-1',
+                'theme': 'dark',
+                'price_display_mode': 'tax_inclusive',
+              },
+            ),
+          );
+        },
+      );
+      final repository = DioProfileRepository(clientWith(fake));
 
-        final settings = await repository.getSettings();
+      final settings = await repository.getSettings();
 
-        expect(captured.path, ProfileEndpoints.settings);
-        expect(captured.method, 'GET');
-        expect(settings.preferredLanguage, 'ar');
-        expect(settings.isNotificationEnabled, isTrue);
-        expect(settings.displayCurrencyId, 'currency-1');
-        expect(settings.theme, 'dark');
-        expect(settings.priceDisplayMode, 'tax_inclusive');
-      },
-    );
+      expect(captured.path, ProfileEndpoints.settings);
+      expect(captured.method, 'GET');
+      expect(settings.preferredLanguage, 'ar');
+      expect(settings.isNotificationEnabled, isTrue);
+      expect(settings.displayCurrencyId, 'currency-1');
+      expect(settings.theme, 'dark');
+      expect(settings.priceDisplayMode, 'tax_inclusive');
+    });
 
     test(
       'updateSettings sends only the provided fields and parses settings',

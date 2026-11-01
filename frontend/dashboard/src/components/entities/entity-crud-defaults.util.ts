@@ -1,4 +1,5 @@
 import { fullWeek } from "@/services/api/dashboard/branch/branch-opening-hours.util";
+import { STYLIST_STATUS } from "@/services/api/dashboard/stylist/stylist.constant";
 import type { EditableDashboardResource } from "@/services/api/dashboard/shared/types/editable-dashboard-resource.types";
 
 /** Default (create-mode) form values for a resource. */
@@ -52,6 +53,6 @@ export function defaultsFor(
     phone: null,
     password: "",
     chairId: null,
-    status: "pending",
+    status: STYLIST_STATUS.pending,
   };
 }

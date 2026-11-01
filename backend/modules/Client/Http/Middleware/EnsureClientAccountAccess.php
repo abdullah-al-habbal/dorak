@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\AccountAccessScope;
 
 final class EnsureClientAccountAccess
 {
-    public function handle(Request $request, Closure $next, string $scope = 'active'): mixed
+    public function handle(Request $request, Closure $next, string $scope = AccountAccessScope::Active->value): mixed
     {
         $client = Auth::guard('client')->user();
 
@@ -23,7 +24,7 @@ final class EnsureClientAccountAccess
         $status = $client->getAttribute('status');
         $emailVerifiedAt = $client->getAttribute('email_verified_at');
         $active = $status === ClientStatusEnum::Enabled && $emailVerifiedAt !== null;
-        $verificationOnly = $scope === 'verification'
+        $verificationOnly = AccountAccessScope::fromParameter($scope) === AccountAccessScope::Verification
             && in_array($status, [ClientStatusEnum::Pending, ClientStatusEnum::Enabled], true)
             && $emailVerifiedAt === null;
 

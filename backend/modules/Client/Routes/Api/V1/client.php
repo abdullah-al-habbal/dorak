@@ -22,6 +22,7 @@ use Modules\Client\Http\Actions\Client\VerifyEmailAction;
 use Modules\Client\Http\Actions\Client\VerifyPhoneOtpAction;
 use Modules\Client\Http\Actions\Client\VerifyResetCodeAction;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
+use Modules\Core\Enums\AccountAccessScope;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
 Route::prefix('client')->name('client.')->group(function (): void {
@@ -32,7 +33,7 @@ Route::prefix('client')->name('client.')->group(function (): void {
     Route::post('/forgot-password/verify', VerifyResetCodeAction::class)->name('forgot-password.verify')->middleware('throttle:5,1');
     Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password')->middleware('throttle:5,1');
 
-    Route::middleware(['auth:client', EnsureClientAccountAccess::class.':verification', ApplyPreferredLocaleMiddleware::class.':client'])->group(function (): void {
+    Route::middleware(['auth:client', EnsureClientAccountAccess::class.':'.AccountAccessScope::Verification->value, ApplyPreferredLocaleMiddleware::class.':client'])->group(function (): void {
         Route::post('/logout', LogoutAction::class)->name('logout');
         Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
         Route::get('/profile', GetProfileAction::class)->name('profile.show');

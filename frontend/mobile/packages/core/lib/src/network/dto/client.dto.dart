@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:core/src/network/client_universe.entity.dart';
+
 part 'client.dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
@@ -14,7 +16,8 @@ class ClientDto extends Equatable {
   final String? phone;
   final DateTime? phoneVerifiedAt;
   final String? avatar;
-  final String? preferredUniverse;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  final ClientUniverse? preferredUniverse;
   final DateTime? emailVerifiedAt;
   final DateTime? createdAt;
 

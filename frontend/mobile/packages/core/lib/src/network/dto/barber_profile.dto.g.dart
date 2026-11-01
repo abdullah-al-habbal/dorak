@@ -13,8 +13,18 @@ BarberProfileDto _$BarberProfileDtoFromJson(Map<String, dynamic> json) =>
       bio: json['bio'] as String?,
       email: json['email'] as String,
       isFreelancer: json['is_freelancer'] as bool? ?? false,
-      status: json['status'] as String? ?? '',
-      universe: json['universe'] as String?,
+      status:
+          $enumDecodeNullable(
+            _$BarberStatusEnumMap,
+            json['status'],
+            unknownValue: BarberStatus.pending,
+          ) ??
+          BarberStatus.pending,
+      universe: $enumDecodeNullable(
+        _$VenueUniverseEnumMap,
+        json['universe'],
+        unknownValue: JsonKey.nullForUndefinedEnumValue,
+      ),
       ratingAvg: (json['rating_avg'] as num?)?.toDouble(),
       ratingCount: (json['rating_count'] as num?)?.toInt() ?? 0,
       isWorkstationOnline: json['is_workstation_online'] as bool? ?? false,
@@ -40,3 +50,15 @@ BarberProfileDto _$BarberProfileDtoFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
     );
+
+const _$BarberStatusEnumMap = {
+  BarberStatus.pending: 'pending',
+  BarberStatus.enabled: 'enabled',
+  BarberStatus.disabled: 'disabled',
+};
+
+const _$VenueUniverseEnumMap = {
+  VenueUniverse.men: 'men',
+  VenueUniverse.women: 'women',
+  VenueUniverse.unisex: 'unisex',
+};

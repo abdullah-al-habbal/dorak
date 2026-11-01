@@ -1,4 +1,5 @@
 import { BRANCH_STATUSES } from "@/services/api/dashboard/branch/branch.constant";
+import { STYLIST_STATUSES } from "@/services/api/dashboard/stylist/stylist.constant";
 import { VENUE_UNIVERSES } from "@/services/api/dashboard/shared/venue-universe.constant";
 import type {
   EntityFormFieldOptions,
@@ -20,11 +21,7 @@ export function optionsFor(
       ["maintenance", fieldCopy.maintenance],
     ];
   if (field === "status" && resource === "stylists")
-    return [
-      ["pending", fieldCopy.pending],
-      ["enabled", fieldCopy.enabled],
-      ["disabled", fieldCopy.disabled],
-    ];
+    return STYLIST_STATUSES.map((status) => [status, fieldCopy[status]]);
   if (field === "universe")
     return VENUE_UNIVERSES.map((universe) => [universe, fieldCopy[universe]]);
   if (field === "floorZone")

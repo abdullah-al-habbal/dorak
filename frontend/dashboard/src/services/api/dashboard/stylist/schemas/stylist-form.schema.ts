@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { STYLIST_STATUSES } from "@/services/api/dashboard/stylist/stylist.constant";
 
 const baseSchema = z.object({
   name: z.object({
@@ -8,7 +9,7 @@ const baseSchema = z.object({
   email: z.string().email().max(255),
   phone: z.string().min(7).max(30).nullable(),
   chairId: z.string().uuid().nullable(),
-  status: z.enum(["pending", "enabled", "disabled"]),
+  status: z.enum(STYLIST_STATUSES),
 });
 
 export const stylistCreateSchema = baseSchema.extend({

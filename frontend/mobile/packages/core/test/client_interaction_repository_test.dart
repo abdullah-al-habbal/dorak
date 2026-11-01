@@ -31,7 +31,7 @@ void main() {
         ClientInteractionEndpoints.savedFilters,
         ClientInteractionEndpoints.discoveryPreferences,
       ]);
-      expect(preference.preferredUniverse, 'men');
+      expect(preference.preferredUniverse, ClientUniverse.men);
     },
   );
 

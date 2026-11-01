@@ -21,14 +21,13 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\Client\Enums\UniverseEnum;
 use Modules\Client\Mail\SendEmailVerificationCode;
 use Modules\Client\Mail\SendPasswordResetCode;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
 use Modules\ClientHistory\Enums\HistoryMediaType;
 use Modules\ClientInteraction\Enums\FavorableTypeEnum;
-use Modules\Core\Enums\Universe;
-use Modules\Core\Enums\VenueUniverse;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\Currency\Models\ExchangeRateModel;
 use Modules\JobPosting\Enums\ApplicationStatus;
@@ -237,13 +236,13 @@ describe('Client API', function () {
 
             $response = $this->withToken($token)
                 ->patchJson('/api/v1/client/preferences/universe', [
-                    'universe' => VenueUniverse::Men,
+                    'universe' => UniverseEnum::Men,
                 ]);
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
             expect($data)->toHaveKey('preferred_universe');
-            expect($data['preferred_universe'])->toBe(Universe::Men->value);
+            expect($data['preferred_universe'])->toBe(UniverseEnum::Men->value);
         });
     });
 });

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { BRANCH_STATUSES } from "@/services/api/dashboard/branch/branch.constant";
+import { STYLIST_STATUSES } from "@/services/api/dashboard/stylist/stylist.constant";
 import { VENUE_UNIVERSES } from "@/services/api/dashboard/shared/venue-universe.constant";
 import {
   LocalizedNameSchema,
@@ -63,7 +64,7 @@ export const StylistSchema = z.object({
   chairId: DashboardEntityIdSchema.nullable(),
   name: LocalizedNameSchema,
   phone: z.string().nullable(),
-  status: z.enum(["pending", "enabled", "disabled"]),
+  status: z.enum(STYLIST_STATUSES),
 });
 
 export const BookingSchema = z.object({

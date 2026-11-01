@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  barberClientEnumTests();
   group('ClientDto', () {
     test('parses all nine client payload fields', () {
       final client = ClientDto.fromJson({
@@ -21,7 +22,7 @@ void main() {
       expect(client.email, 'ahmad@example.com');
       expect(client.phone, '+966500000001');
       expect(client.avatar, 'https://cdn.example.com/avatars/a.jpg');
-      expect(client.preferredUniverse, 'women');
+      expect(client.preferredUniverse, ClientUniverse.women);
       expect(client.emailVerifiedAt, DateTime.utc(2026, 9, 1, 9, 30));
       expect(client.createdAt, DateTime.utc(2026, 8, 1, 8));
       expect(client.emailVerified, isTrue);
@@ -47,6 +48,46 @@ void main() {
       expect(client.phone, isNull);
       expect(client.phoneVerifiedAt, isNull);
       expect(client.phoneVerified, isFalse);
+    });
+  });
+}
+
+void barberClientEnumTests() {
+  group('barber and client enums', () {
+    test(
+      'ClientDto decodes the preferred universe and ignores unknown ones',
+      () {
+        expect(
+          ClientDto.fromJson({'preferred_universe': 'women'}).preferredUniverse,
+          ClientUniverse.women,
+        );
+        expect(
+          ClientDto.fromJson({'preferred_universe': 'all'}).preferredUniverse,
+          isNull,
+        );
+      },
+    );
+
+    test('BarberProfileDto maps status and universe with safe fallbacks', () {
+      final known = BarberProfileDto.fromJson({
+        'id': 'b',
+        'name': 'B',
+        'email': 'b@x.com',
+        'status': 'disabled',
+        'universe': 'unisex',
+      });
+      expect(known.status, BarberStatus.disabled);
+      expect(known.universe, VenueUniverse.unisex);
+
+      final unknown = BarberProfileDto.fromJson({
+        'id': 'b',
+        'name': 'B',
+        'email': 'b@x.com',
+        'status': 'banned',
+        'universe': 'kids',
+      });
+      expect(unknown.status, BarberStatus.pending);
+      expect(unknown.universe, isNull);
     });
   });
 }

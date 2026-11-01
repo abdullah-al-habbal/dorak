@@ -1312,7 +1312,9 @@ class FakeProfileRepository implements ProfileRepository {
   @override
   Future<UniversePreferenceDto> updatePreferredUniverse(String universe) async {
     lastUniverse = universe;
-    return UniversePreferenceDto(preferredUniverse: universe);
+    return UniversePreferenceDto(
+      preferredUniverse: ClientUniverse.fromValue(universe),
+    );
   }
 
   SettingsDto settings = const SettingsDto(isNotificationEnabled: true);
@@ -1342,7 +1344,8 @@ class FakeProfileRepository implements ProfileRepository {
     if (failure != null) throw failure;
     settings = SettingsDto(
       preferredLanguage: preferredLanguage ?? settings.preferredLanguage,
-      isNotificationEnabled: isNotificationEnabled ?? settings.isNotificationEnabled,
+      isNotificationEnabled:
+          isNotificationEnabled ?? settings.isNotificationEnabled,
       displayCurrencyId: displayCurrencyId ?? settings.displayCurrencyId,
       theme: theme ?? settings.theme,
       priceDisplayMode: priceDisplayMode ?? settings.priceDisplayMode,
@@ -1399,7 +1402,7 @@ BarberProfileDto testBarberProfile({
   String name = 'Karim',
   String email = 'karim@example.com',
   bool isFreelancer = false,
-  String status = 'active',
+  BarberStatus status = BarberStatus.enabled,
   double? travelRadius,
   double latitude = 24.7136,
   double longitude = 46.6753,

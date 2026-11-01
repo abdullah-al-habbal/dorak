@@ -8,7 +8,7 @@ Map<String, Object> branch({int id = 1}) => {
   'id': '$id',
   'name': 'Branch $id',
   'email': 'branch$id@example.com',
-  'status': 'approved',
+  'status': 'enabled',
   'latitude': 24.7136,
   'longitude': 46.6753,
   'brand_id': '1',
@@ -131,7 +131,7 @@ void main() {
                 'id': '1',
                 'name': 'Branch 1',
                 'email': 'branch1@example.com',
-                'status': 'approved',
+                'status': 'enabled',
                 'latitude': 24.7136,
                 'longitude': 46.6753,
                 'brand_id': '7',
@@ -174,7 +174,7 @@ void main() {
                     'name': 'Karim',
                     'email': 'karim@example.com',
                     'is_freelancer': true,
-                    'status': 'approved',
+                    'status': 'enabled',
                     'latitude': 24.7136,
                     'longitude': 46.6753,
                   },
@@ -251,7 +251,7 @@ void main() {
                 'name': 'Karim',
                 'email': 'karim@example.com',
                 'is_freelancer': true,
-                'status': 'approved',
+                'status': 'enabled',
                 'travel_radius': 15.0,
                 'latitude': 24.7136,
                 'longitude': 46.6753,
@@ -285,7 +285,7 @@ void main() {
       expect(detail.name, 'Karim');
       expect(detail.email, 'karim@example.com');
       expect(detail.isFreelancer, isTrue);
-      expect(detail.status, 'approved');
+      expect(detail.status, BarberStatus.enabled);
       expect(detail.travelRadius, 15.0);
       expect(detail.latitude, 24.7136);
       expect(detail.longitude, 46.6753);

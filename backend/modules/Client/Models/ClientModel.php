@@ -23,7 +23,7 @@ use Modules\Ban\Models\BanModel;
 use Modules\Booking\Models\BookingModel;
 use Modules\Client\Database\Factories\ClientFactory;
 use Modules\Client\Enums\ClientStatusEnum;
-use Modules\Core\Enums\Universe;
+use Modules\Client\Enums\UniverseEnum;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
@@ -116,7 +116,7 @@ class ClientModel extends Authenticatable implements FilamentUser
             'phone_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => ClientStatusEnum::class,
-            'preferred_universe' => Universe::class,
+            'preferred_universe' => UniverseEnum::class,
             'deleted_at' => 'datetime',
         ];
     }

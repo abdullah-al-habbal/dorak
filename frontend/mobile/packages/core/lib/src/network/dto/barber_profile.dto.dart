@@ -1,7 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:core/src/network/barber_status.entity.dart';
 import 'package:core/src/network/dto/barber_service.dto.dart';
 import 'package:core/src/network/dto/barber_workplace.dto.dart';
+import 'package:core/src/network/venue_universe.entity.dart';
 
 part 'barber_profile.dto.g.dart';
 
@@ -12,8 +14,13 @@ class BarberProfileDto {
   final String? bio;
   final String email;
   final bool isFreelancer;
-  final String status;
-  final String? universe;
+  @JsonKey(
+    defaultValue: BarberStatus.pending,
+    unknownEnumValue: BarberStatus.pending,
+  )
+  final BarberStatus status;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  final VenueUniverse? universe;
   final double? ratingAvg;
   @JsonKey(defaultValue: 0)
   final int ratingCount;
@@ -34,7 +41,7 @@ class BarberProfileDto {
     this.bio,
     required this.email,
     this.isFreelancer = false,
-    this.status = '',
+    this.status = BarberStatus.pending,
     this.universe,
     this.ratingAvg,
     this.ratingCount = 0,

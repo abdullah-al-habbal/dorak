@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:core/src/network/client_universe.entity.dart';
+
 part 'discovery_preference.dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
@@ -12,7 +14,8 @@ class DiscoveryPreferenceDto {
     this.showUnavailable = false,
   });
   final String id;
-  final String? preferredUniverse;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  final ClientUniverse? preferredUniverse;
   final double? defaultRadius;
   final List<String> hiddenBrandIds;
   final bool showUnavailable;

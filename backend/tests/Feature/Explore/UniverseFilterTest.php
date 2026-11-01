@@ -5,8 +5,8 @@ declare(strict_types=1);
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
+use Modules\Client\Enums\UniverseEnum;
 use Modules\Client\Models\ClientModel;
-use Modules\Core\Enums\Universe;
 use Modules\Core\Enums\VenueUniverse;
 use Tests\Support\Constants\ExploreTestConstants;
 
@@ -46,7 +46,7 @@ it('defaults to the signed-in client preferred universe', function (): void {
     $men = venue('men');
     $women = venue('women');
     $unisex = venue('unisex');
-    $client = ClientModel::factory()->create(['preferred_universe' => Universe::Women]);
+    $client = ClientModel::factory()->create(['preferred_universe' => UniverseEnum::Women]);
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
     $ids = $this->withToken($token)->getJson(ExploreTestConstants::EXPLORE_TEST_UNIVERSE_URL)->assertOk()->json('data.*.id');
@@ -56,7 +56,7 @@ it('defaults to the signed-in client preferred universe', function (): void {
 
 it('lets an explicit universe override the client preference', function (): void {
     $men = venue('men');
-    $client = ClientModel::factory()->create(['preferred_universe' => Universe::Women]);
+    $client = ClientModel::factory()->create(['preferred_universe' => UniverseEnum::Women]);
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
     expect($this->withToken($token)->getJson(ExploreTestConstants::EXPLORE_TEST_UNIVERSE_URL.'&universe=men')->json('data.*.id'))->toBe([$men->id]);

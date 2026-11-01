@@ -526,8 +526,9 @@ class AppRouter {
         path: AppRoutes.discover,
         builder: (context, state) => _scope(
           discovery,
-          () =>
-              services.createDiscovery(session.state.client?.preferredUniverse),
+          () => services.createDiscovery(
+            session.state.client?.preferredUniverse?.value,
+          ),
           (bloc) => discovery_feed.DiscoveryScreen(
             bloc: bloc,
             onLocaleToggle: switchLocale,
