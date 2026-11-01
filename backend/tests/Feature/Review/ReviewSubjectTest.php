@@ -124,16 +124,16 @@ describe('review subject resolution', function (): void {
 describe('GET /api/v1/barbers/{barber}/reviews', function (): void {
     it('lists only published reviews of the barber, paginated', function (): void {
         $barber = BarberModel::factory()->create();
-        ReviewModel::factory()->count(3)->create(['subject_id' => $barber->id, 'subject_type' => 'barber']);
-        ReviewModel::factory()->create(['subject_id' => $barber->id, 'subject_type' => 'barber', 'status' => ReviewStatus::Hidden]);
-        ReviewModel::factory()->create(['subject_id' => $barber->id, 'subject_type' => 'barber', 'status' => ReviewStatus::Disputed]);
-        ReviewModel::factory()->create(['subject_id' => BarberModel::factory()->create()->id, 'subject_type' => 'barber']);
+        ReviewModel::factory()->count(3)->create(['subject_id' => $barber->id, 'subject_type' => ReviewSubjectTypeEnum::Barber]);
+        ReviewModel::factory()->create(['subject_id' => $barber->id, 'subject_type' => ReviewSubjectTypeEnum::Barber, 'status' => ReviewStatus::Hidden]);
+        ReviewModel::factory()->create(['subject_id' => $barber->id, 'subject_type' => ReviewSubjectTypeEnum::Barber, 'status' => ReviewStatus::Disputed]);
+        ReviewModel::factory()->create(['subject_id' => BarberModel::factory()->create()->id, 'subject_type' => ReviewSubjectTypeEnum::Barber]);
 
         $this->getJson("/api/v1/barbers/{$barber->id}/reviews?per_page=2")
             ->assertOk()
             ->assertJsonCount(2, 'data')
             ->assertJsonPath('meta.pagination.total', 3)
-            ->assertJsonPath('data.0.subject_type', 'barber');
+            ->assertJsonPath('data.0.subject_type', ReviewSubjectTypeEnum::Barber->value);
     });
 
     it('returns 404 for an unknown barber', function (): void {

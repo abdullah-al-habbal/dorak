@@ -59,8 +59,8 @@ describe('POST /api/v1/branch/bookings/{booking}/review', function (): void {
             ->postJson("/api/v1/branch/bookings/{$booking->id}/review", ['rating' => 4])
             ->assertCreated();
 
-        expect(ReviewModel::query()->where('booking_id', $booking->id)->where('author_type', 'client')->count())->toBe(2)
-            ->and(ReviewModel::query()->where('booking_id', $booking->id)->where('author_type', 'branch')->count())->toBe(1);
+        expect(ReviewModel::query()->where('booking_id', $booking->id)->where('author_type', ReviewAuthorTypeEnum::Client)->count())->toBe(2)
+            ->and(ReviewModel::query()->where('booking_id', $booking->id)->where('author_type', ReviewAuthorTypeEnum::Branch)->count())->toBe(1);
     });
 
     it('rejects a second branch review of the same booking with 409', function (): void {
@@ -144,9 +144,9 @@ describe('client reputation', function (): void {
         $booking = finishedBooking(['client_id' => $client->id]);
         $branch = branchOf($booking);
         foreach ([4, 2] as $rating) {
-            ReviewModel::factory()->create(['subject_type' => 'client', 'subject_id' => $client->id, 'rating' => $rating]);
+            ReviewModel::factory()->create(['subject_type' => ReviewSubjectTypeEnum::Client, 'subject_id' => $client->id, 'rating' => $rating]);
         }
-        ReviewModel::factory()->create(['subject_type' => 'client', 'subject_id' => $client->id, 'rating' => 5, 'status' => ReviewStatus::Hidden]);
+        ReviewModel::factory()->create(['subject_type' => ReviewSubjectTypeEnum::Client, 'subject_id' => $client->id, 'rating' => 5, 'status' => ReviewStatus::Hidden]);
 
         $this->actingAs($branch, 'branch_api')
             ->getJson('/api/v1/branch/bookings')
@@ -213,7 +213,7 @@ describe('dashboard client review', function (): void {
 
     it('returns the client reputation in dashboard booking details', function (): void {
         $booking = finishedBooking();
-        ReviewModel::factory()->create(['subject_type' => 'client', 'subject_id' => $booking->client_id, 'rating' => 4]);
+        ReviewModel::factory()->create(['subject_type' => ReviewSubjectTypeEnum::Client, 'subject_id' => $booking->client_id, 'rating' => 4]);
 
         $this->authenticateDashboardActor(branchOf($booking))
             ->getJson("/api/v1/dashboard/bookings/{$booking->id}")

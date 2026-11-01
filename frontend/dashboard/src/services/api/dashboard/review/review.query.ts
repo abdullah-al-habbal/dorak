@@ -1,5 +1,6 @@
 import { api } from "@/services/api/core/client";
 import { DashboardEndpoints } from "@/services/api/dashboard/endpoints/dashboard.endpoints";
+import { parseReviewStatus } from "@/services/api/dashboard/review/review-enum.util";
 import type { IBranchReview } from "@/services/api/dashboard/review/types/ireview.types";
 import type { IDashboardPage } from "@/services/api/dashboard/shared/types/idashboard-page.types";
 import { isRecord } from "@/utils/guards.util";
@@ -16,7 +17,7 @@ export function mapBranchReview(wire: unknown): IBranchReview {
     rating: typeof item.rating === "number" ? item.rating : 0,
     comment: nullableText(item.comment),
     authorName: nullableText(item.author_name),
-    status: nullableText(item.status),
+    status: parseReviewStatus(item.status),
     createdAt: String(item.created_at ?? ""),
   };
 }

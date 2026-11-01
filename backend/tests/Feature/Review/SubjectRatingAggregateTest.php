@@ -8,11 +8,12 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 function rateBranch(BranchModel $branch, int $rating, ReviewStatus $status = ReviewStatus::Published): ReviewModel
 {
-    return ReviewModel::factory()->create(['subject_type' => 'branch', 'subject_id' => $branch->id, 'rating' => $rating, 'status' => $status]);
+    return ReviewModel::factory()->create(['subject_type' => ReviewSubjectTypeEnum::Branch, 'subject_id' => $branch->id, 'rating' => $rating, 'status' => $status]);
 }
 
 it('updates the subject aggregate when a client submits a review', function (): void {
@@ -97,9 +98,9 @@ it('filters barbers by their stored barber rating', function (): void {
     $great = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3]);
     $poor = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3]);
     $unrated = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3]);
-    ReviewModel::factory()->create(['subject_type' => 'barber', 'subject_id' => $great->id, 'rating' => 5]);
-    ReviewModel::factory()->create(['subject_type' => 'barber', 'subject_id' => $great->id, 'rating' => 4]);
-    ReviewModel::factory()->create(['subject_type' => 'barber', 'subject_id' => $poor->id, 'rating' => 3]);
+    ReviewModel::factory()->create(['subject_type' => ReviewSubjectTypeEnum::Barber, 'subject_id' => $great->id, 'rating' => 5]);
+    ReviewModel::factory()->create(['subject_type' => ReviewSubjectTypeEnum::Barber, 'subject_id' => $great->id, 'rating' => 4]);
+    ReviewModel::factory()->create(['subject_type' => ReviewSubjectTypeEnum::Barber, 'subject_id' => $poor->id, 'rating' => 3]);
 
     $response = $this->getJson('/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000&rating_min=4')->assertOk();
 
@@ -111,7 +112,7 @@ it('filters barbers by their stored barber rating', function (): void {
 
 it('exposes the rating on the barber detail', function (): void {
     $barber = BarberModel::factory()->create(['is_freelancer' => true]);
-    ReviewModel::factory()->create(['subject_type' => 'barber', 'subject_id' => $barber->id, 'rating' => 3]);
+    ReviewModel::factory()->create(['subject_type' => ReviewSubjectTypeEnum::Barber, 'subject_id' => $barber->id, 'rating' => 3]);
 
     $this->getJson("/api/v1/explore/barbers/{$barber->id}")
         ->assertOk()

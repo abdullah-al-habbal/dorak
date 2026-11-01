@@ -1,17 +1,20 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:core/src/network/review_status.entity.dart';
+import 'package:core/src/network/review_subject_type.entity.dart';
 
 part 'review.dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class ReviewDto {
   final String id;
-  final String? subjectType;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  final ReviewSubjectType? subjectType;
   final String? subjectId;
   final int rating;
   final String? comment;
   final String? authorName;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final ReviewStatus? status;
   final DateTime? disputedAt;
   final DateTime? resolvedAt;
@@ -30,8 +33,8 @@ class ReviewDto {
     required this.createdAt,
   });
 
-  bool get isBarberReview => subjectType == 'barber';
-  bool get isBranchReview => subjectType == 'branch';
+  bool get isBarberReview => subjectType == ReviewSubjectType.barber;
+  bool get isBranchReview => subjectType == ReviewSubjectType.branch;
 
   bool get published => status == ReviewStatus.published;
   bool get disputed => status == ReviewStatus.disputed;

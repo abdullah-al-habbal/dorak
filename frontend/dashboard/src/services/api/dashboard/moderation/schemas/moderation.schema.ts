@@ -4,13 +4,14 @@ import {
   DISPUTE_NOTE_MAX_LENGTH,
   DISPUTE_RESOLUTIONS,
 } from "@/services/api/dashboard/moderation/moderation.constant";
+import { REVIEW_SUBJECT_TYPES } from "@/services/api/dashboard/review/review.constant";
 
 export const DisputedReviewSchema = z.object({
   id: z.string(),
   rating: z.number(),
   comment: z.string().nullable(),
   authorName: z.string().nullable(),
-  subjectType: z.string().nullable(),
+  subjectType: z.enum(REVIEW_SUBJECT_TYPES).nullable(),
   disputeReason: z.string().nullable(),
   disputedAt: z.string().nullable(),
   createdAt: z.string(),

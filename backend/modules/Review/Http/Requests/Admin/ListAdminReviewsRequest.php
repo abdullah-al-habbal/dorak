@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Review\Http\Requests\Admin;
 
-use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rule;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Settings\Enums\SettingKey;
@@ -16,7 +16,7 @@ final class ListAdminReviewsRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'status' => ['sometimes', new Enum(ReviewStatus::class)],
+            'status' => ['sometimes', Rule::enum(ReviewStatus::class)],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.app(SettingsService::class)->int(SettingKey::PaginationMaxPerPage)],
         ];
     }

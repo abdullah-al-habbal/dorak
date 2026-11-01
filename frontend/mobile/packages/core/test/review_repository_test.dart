@@ -19,6 +19,7 @@ Map<String, dynamic> review({
 };
 
 void main() {
+  reviewEnumFallbackTests();
   group('DioReviewRepository', () {
     test(
       'submitReview posts rating and comment to the booking review route',
@@ -242,7 +243,7 @@ void main() {
       );
 
       expect(captured.data, {'rating': 5, 'barber_rating': 3});
-      expect(result.subjectType, 'branch');
+      expect(result.subjectType, ReviewSubjectType.branch);
       expect(result.subjectId, 'branch-1');
       expect(result.isBranchReview, isTrue);
     });
@@ -287,6 +288,37 @@ void main() {
       expect(captured.queryParameters, {'page': 2, 'per_page': 10});
       expect(page.data.single.isBarberReview, isTrue);
       expect(page.data.single.subjectId, 'barber-1');
+    });
+  });
+}
+
+void reviewEnumFallbackTests() {
+  group('ReviewDto enum decoding', () {
+    final base = {
+      'id': 'r1',
+      'rating': 4,
+      'created_at': '2026-10-22T10:00:00.000Z',
+    };
+
+    test('decodes known status and subject type', () {
+      final dto = ReviewDto.fromJson({
+        ...base,
+        'status': 'disputed',
+        'subject_type': 'barber',
+      });
+      expect(dto.status, ReviewStatus.disputed);
+      expect(dto.subjectType, ReviewSubjectType.barber);
+    });
+
+    test('falls back to null for unknown values instead of throwing', () {
+      final dto = ReviewDto.fromJson({
+        ...base,
+        'status': 'archived',
+        'subject_type': 'salon',
+      });
+      expect(dto.status, isNull);
+      expect(dto.subjectType, isNull);
+      expect(dto.isBarberReview, isFalse);
     });
   });
 }

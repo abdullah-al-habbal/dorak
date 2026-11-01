@@ -85,6 +85,7 @@ export 'package:core/src/network/branch_status.entity.dart';
 export 'package:core/src/network/venue_universe.entity.dart';
 export 'package:core/src/network/chair_status.entity.dart';
 export 'package:core/src/network/review_status.entity.dart';
+export 'package:core/src/network/review_subject_type.entity.dart';
 export 'package:core/src/network/face_profile_analysis_status.entity.dart';
 export 'package:core/src/network/social_auth_provider.entity.dart';
 export 'package:core/src/network/paged.entity.dart';

@@ -16,6 +16,7 @@ import {
   notifyApiError,
   notifySuccess,
 } from "@/services/api/core/notifications";
+import { REVIEW_STATUS } from "@/services/api/dashboard/review/review.constant";
 import { DISPUTE_RESOLUTIONS } from "@/services/api/dashboard/moderation/moderation.constant";
 import { resolveDispute } from "@/services/api/dashboard/moderation/moderation.query";
 import { resolveDisputeFormSchema } from "@/services/api/dashboard/moderation/schemas/moderation.schema";
@@ -36,7 +37,7 @@ export function ResolveDisputeDialog({ reviewId }: IResolveDisputeDialogProps) {
   const [open, setOpen] = useState(false);
   const form = useForm<IResolveDisputeForm>({
     resolver: zodResolver(resolveDisputeFormSchema),
-    defaultValues: { status: "published", note: "" },
+    defaultValues: { status: REVIEW_STATUS.published, note: "" },
   });
   const resolve = useMutation({
     mutationFn: (value: IResolveDisputeForm) => resolveDispute(reviewId, value),

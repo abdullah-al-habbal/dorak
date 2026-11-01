@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 /// Mirrors the backend `Modules\Review\Enums\ReviewStatus` PHP enum.
+@JsonEnum()
 enum ReviewStatus {
   @JsonValue('published')
   published,

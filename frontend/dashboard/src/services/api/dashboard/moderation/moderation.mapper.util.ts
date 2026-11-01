@@ -2,6 +2,7 @@ import {
   DisputedReviewSchema,
   ExchangeRateSchema,
 } from "@/services/api/dashboard/moderation/schemas/moderation.schema";
+import { parseReviewSubjectType } from "@/services/api/dashboard/review/review-enum.util";
 import type { IDisputedReview } from "@/services/api/dashboard/moderation/types/idisputed-review.types";
 import type { IExchangeRate } from "@/services/api/dashboard/moderation/types/iexchange-rate.types";
 import { isRecord } from "@/utils/guards.util";
@@ -29,7 +30,7 @@ export function mapDisputedReview(wire: unknown): IDisputedReview {
     rating: numeric(item.rating),
     comment: nullableText(item.comment),
     authorName: nullableText(item.author_name),
-    subjectType: nullableText(item.subject_type),
+    subjectType: parseReviewSubjectType(item.subject_type),
     disputeReason: nullableText(item.dispute_reason),
     disputedAt: nullableText(item.disputed_at),
     createdAt: text(item.created_at),

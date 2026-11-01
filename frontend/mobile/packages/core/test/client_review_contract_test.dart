@@ -37,7 +37,7 @@ void main() {
     expect(captured.method, 'POST');
     expect(captured.path, '/branch/bookings/booking-1/review');
     expect(captured.data, {'rating': 2, 'comment': 'Late'});
-    expect(review.subjectType, 'client');
+    expect(review.subjectType, ReviewSubjectType.client);
   });
 
   test('a barber rates a client on the barber review route', () async {

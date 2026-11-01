@@ -14,6 +14,7 @@ listed in the story pass before the local commit. Never push.
 | B | [Branch hours source](batch-b-branch-hours-source.md) | Backend + mobile (+ dashboard check) | Done |
 | C | [Dashboard and mobile enums](batch-c-dashboard-mobile-enums.md) | Branch status/universe literals | Done |
 | D | [Chair and JobPosting rules](batch-d-chair-jobposting-rules.md) | Raw `in:` validation rules | Done |
+| E | [Review enums](batch-e-review-enums.md) | Review backend, dashboard, mobile | Done |
 
 ## Deferred (needs a decision)
 

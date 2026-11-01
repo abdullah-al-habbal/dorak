@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Review\Http\Requests\Admin;
 
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rule;
 use Modules\Admin\Models\AdminModel;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Review\CQRS\Command\Admin\ResolveReviewDisputeCommand;
@@ -17,7 +17,7 @@ final class ResolveReviewDisputeRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', new Enum(ReviewStatus::class), 'in:published,hidden'],
+            'status' => ['required', Rule::enum(ReviewStatus::class)->only(ReviewStatus::resolutionOutcomes())],
             'note' => ['nullable', 'string', 'max:1000'],
         ];
     }

@@ -7,7 +7,9 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 use Tests\Support\Constants\ReviewDisputeTestConstants;
 
@@ -15,7 +17,7 @@ it('lets the reviewed branch dispute a published review', function () {
     $branch = BranchModel::factory()->create();
     $review = ReviewModel::factory()->create([
         'subject_id' => $branch->id,
-        'subject_type' => 'branch',
+        'subject_type' => ReviewSubjectTypeEnum::Branch,
         'status' => ReviewStatus::Published,
     ]);
 
@@ -33,7 +35,7 @@ it('lets the reviewed branch dispute a published review', function () {
 it('refuses a branch disputing another branch\'s review with 403', function () {
     $review = ReviewModel::factory()->create([
         'subject_id' => BranchModel::factory()->create()->id,
-        'subject_type' => 'branch',
+        'subject_type' => ReviewSubjectTypeEnum::Branch,
     ]);
 
     $this->actingAs(BranchModel::factory()->create(), 'branch_api')
@@ -45,7 +47,7 @@ it('refuses a branch disputing another branch\'s review with 403', function () {
 
 it('lets the reviewed barber dispute a barber review', function () {
     $barber = BarberModel::factory()->create(['has_login' => true]);
-    $review = ReviewModel::factory()->create(['subject_id' => $barber->id, 'subject_type' => 'barber']);
+    $review = ReviewModel::factory()->create(['subject_id' => $barber->id, 'subject_type' => ReviewSubjectTypeEnum::Barber]);
 
     $this->actingAs($barber, 'barber')
         ->postJson("/api/v1/barber/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
@@ -58,7 +60,7 @@ it('lets the reviewed barber dispute a barber review', function () {
 
 it('does not let a branch dispute a barber review about one of its barbers', function () {
     $branch = BranchModel::factory()->create();
-    $review = ReviewModel::factory()->create(['subject_id' => BarberModel::factory()->create()->id, 'subject_type' => 'barber']);
+    $review = ReviewModel::factory()->create(['subject_id' => BarberModel::factory()->create()->id, 'subject_type' => ReviewSubjectTypeEnum::Barber]);
 
     $this->actingAs($branch, 'branch_api')
         ->postJson("/api/v1/branch/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
@@ -67,7 +69,7 @@ it('does not let a branch dispute a barber review about one of its barbers', fun
 
 it('has no client dispute route', function () {
     $client = ClientModel::factory()->create();
-    $review = ReviewModel::factory()->create(['author_id' => $client->id, 'author_type' => 'client']);
+    $review = ReviewModel::factory()->create(['author_id' => $client->id, 'author_type' => ReviewAuthorTypeEnum::Client]);
 
     $this->actingAs($client, 'client')
         ->postJson("/api/v1/client/reviews/{$review->id}/dispute", ['reason' => ReviewDisputeTestConstants::REVIEW_DISPUTE_TEST_REASON])
@@ -76,7 +78,7 @@ it('has no client dispute route', function () {
 
 it('requires a dispute reason of at least 10 characters', function () {
     $branch = BranchModel::factory()->create();
-    $review = ReviewModel::factory()->create(['subject_id' => $branch->id, 'subject_type' => 'branch']);
+    $review = ReviewModel::factory()->create(['subject_id' => $branch->id, 'subject_type' => ReviewSubjectTypeEnum::Branch]);
 
     $this->actingAs($branch, 'branch_api')
         ->postJson("/api/v1/branch/reviews/{$review->id}/dispute", ['reason' => 'short'])
@@ -171,4 +173,29 @@ it('rejects client, barber, and branch bearer tokens when resolving a dispute', 
 
         $response->assertUnauthorized();
     }
+});
+
+it('rejects a resolution status outside the allowed outcomes', function (string $status) {
+    $review = ReviewModel::factory()->create(['status' => ReviewStatus::Disputed, 'disputed_at' => now()]);
+    $admin = AdminModel::factory()->create();
+
+    $this->withToken($admin->createToken('test')->plainTextToken)
+        ->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", ['status' => $status])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('status');
+
+    expect($review->fresh()->status)->toBe(ReviewStatus::Disputed);
+})->with([
+    'disputed' => ReviewStatus::Disputed->value,
+    'resolved' => ReviewStatus::Resolved->value,
+    'unknown' => 'archived',
+]);
+
+it('rejects an unknown status filter on the admin review list', function () {
+    $admin = AdminModel::factory()->create();
+
+    $this->withToken($admin->createToken('test')->plainTextToken)
+        ->getJson('/api/v1/admin/reviews?status=archived')
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors('status');
 });
