@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:design_system/design_system.dart';
@@ -12,9 +13,9 @@ class BookingSummary extends StatelessWidget {
     final selected = state.detail!.services
         .where((service) => state.selectedServiceIds.contains(service.id))
         .toList(growable: false);
-    final price = selected.fold<double>(
+    final price = selected.fold<int>(
       0,
-      (total, service) => total + (service.price ?? 0),
+      (total, service) => total + (service.priceAmountMinor ?? 0),
     );
     final duration = selected.fold<int>(
       0,
@@ -30,12 +31,12 @@ class BookingSummary extends StatelessWidget {
             const SizedBox(height: DorakDimensions.spacingSmall),
             ...selected.map(
               (service) => Text(
-                '${service.name} · ${service.price?.toStringAsFixed(2) ?? '—'}',
+                '${service.name} · ${service.priceAmountMinor == null ? '—' : MinorUnits.toMajor(service.priceAmountMinor!).toStringAsFixed(2)}',
                 style: DorakTypography.bodyMd,
               ),
             ),
             const SizedBox(height: DorakDimensions.spacingSmall),
-            Text(l10n.bookingTotalPrice(price.toStringAsFixed(2))),
+            Text(l10n.bookingTotalPrice(MinorUnits.toMajor(price).toStringAsFixed(2))),
             Text(l10n.bookingTotalDuration(duration)),
           ],
         ),

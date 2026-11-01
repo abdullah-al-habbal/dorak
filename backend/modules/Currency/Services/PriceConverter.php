@@ -22,7 +22,7 @@ final readonly class PriceConverter
 
     public function displayPriceFor(
         Request $request,
-        float $basePrice,
+        int $basePriceAmountMinor,
         string $baseCurrencyCode,
         PreferenceableTypeEnum $ownerType,
         string $ownerId,
@@ -33,11 +33,11 @@ final readonly class PriceConverter
             return null;
         }
 
-        $converted = $this->convert($basePrice, $baseCurrencyCode, $displayCurrencyCode);
+        $converted = $this->convert($basePriceAmountMinor, $baseCurrencyCode, $displayCurrencyCode);
         $dualDisplay = $this->dualDisplayFor($ownerType, $ownerId);
 
         return new DisplayPriceResult(
-            amount: $converted,
+            amountMinor: $converted,
             currencyCode: $displayCurrencyCode,
             conversionUnavailable: $converted === null,
             isDualPriceDisplayEnabled: $dualDisplay,
@@ -71,14 +71,14 @@ final readonly class PriceConverter
             ->value('is_dual_price_display_enabled');
     }
 
-    private function convert(float $amount, string $fromCode, string $toCode): ?float
+    private function convert(int $amountMinor, string $fromCode, string $toCode): ?int
     {
         try {
-            $result = $this->resolver->resolve(new ConvertCurrencyQuery($fromCode, $toCode, $amount));
+            $result = $this->resolver->resolve(new ConvertCurrencyQuery($fromCode, $toCode, 1.0));
         } catch (ModelNotFoundException) {
             return null;
         }
 
-        return $result?->result;
+        return $result === null ? null : (int) round($amountMinor * $result->rate);
     }
 }

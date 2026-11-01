@@ -330,7 +330,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     String? catalogItemId,
   }) => {
     'name': name,
-    'price': price,
+    'price_amount_minor': MinorUnits.fromMajor(price),
     'currency_code': currencyCode,
     'duration': ?duration,
     'is_at_home': isAtHome,

@@ -19,8 +19,8 @@ class DiscoveryFilters extends Equatable {
   final double radius;
   final int perPage;
   final bool? availableNow;
-  final double? priceRangeMin;
-  final double? priceRangeMax;
+  final int? priceRangeMin;
+  final int? priceRangeMax;
   final double? ratingMin;
   final List<int> catalogItemIds;
   final String query;
@@ -31,8 +31,8 @@ class DiscoveryFilters extends Equatable {
     int? perPage,
     bool? availableNow,
     bool clearAvailableNow = false,
-    double? priceRangeMin,
-    double? priceRangeMax,
+    int? priceRangeMin,
+    int? priceRangeMax,
     bool clearPriceRange = false,
     double? ratingMin,
     bool clearRatingMin = false,

@@ -229,16 +229,16 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
               ),
             ),
             availableNowLabel: l10n.availableNow,
-            priceMin: filters.priceRangeMin,
-            priceMax: filters.priceRangeMax,
+            priceMin: MinorUnits.toMajorOrNull(filters.priceRangeMin),
+            priceMax: MinorUnits.toMajorOrNull(filters.priceRangeMax),
             onPriceChanged: (range) => bloc.add(
               DiscoveryFiltersChanged(
                 range.start <= 0 &&
                         range.end >= DiscoveryFilterConstants.maxPrice
                     ? filters.copyWith(clearPriceRange: true)
                     : filters.copyWith(
-                        priceRangeMin: range.start,
-                        priceRangeMax: range.end,
+                        priceRangeMin: MinorUnits.fromMajor(range.start),
+                        priceRangeMax: MinorUnits.fromMajor(range.end),
                       ),
               ),
             ),

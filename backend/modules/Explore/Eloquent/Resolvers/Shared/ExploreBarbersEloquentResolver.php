@@ -120,8 +120,8 @@ final class ExploreBarbersEloquentResolver
             $query->whereHas('services', fn ($q) => $q
                 ->where('is_active', true)
                 ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
-                ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price', '>=', $payload->priceRangeMin))
-                ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price', '<=', $payload->priceRangeMax))
+                ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price_amount_minor', '>=', $payload->priceRangeMin))
+                ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price_amount_minor', '<=', $payload->priceRangeMax))
             );
         }
 

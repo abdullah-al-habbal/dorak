@@ -21,7 +21,7 @@ final class OfferedServiceInfolistSchema
                         ->label(__('offeredservice::ui.name_english')),
                     TextEntry::make('name.ar')
                         ->label(__('offeredservice::ui.name_arabic')),
-                    TextEntry::make('price')
+                    TextEntry::make('price_amount_minor')
                         ->money(fn (OfferedServiceModel $record): string => $record->currency->code ?? 'USD'),
                     TextEntry::make('duration')
                         ->label(__('offeredservice::ui.duration_minutes')),

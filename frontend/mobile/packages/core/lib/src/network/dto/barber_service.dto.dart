@@ -9,7 +9,7 @@ class BarberServiceDto {
   final String id;
   final String name;
   final String? description;
-  final double price;
+  final int priceAmountMinor;
   final String? currencyCode;
   final int? duration;
   final bool isAtHome;
@@ -25,7 +25,7 @@ class BarberServiceDto {
     required this.id,
     required this.name,
     this.description,
-    this.price = 0,
+    this.priceAmountMinor = 0,
     this.currencyCode,
     this.duration,
     this.isAtHome = false,

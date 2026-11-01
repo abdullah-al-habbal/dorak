@@ -8,7 +8,7 @@ part 'booking_service.dto.g.dart';
 class BookingServiceDto {
   final String id;
   final String name;
-  final double? price;
+  final int? priceAmountMinor;
   final int? duration;
 
   /// Who offers it on a menu (`brand` | `branch` | `barber`), when known.
@@ -23,7 +23,7 @@ class BookingServiceDto {
   const BookingServiceDto({
     required this.id,
     required this.name,
-    this.price,
+    this.priceAmountMinor,
     this.duration,
     this.owner,
     this.displayPrice,

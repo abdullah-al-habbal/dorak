@@ -6,14 +6,14 @@ void main() {
     final service = BarberServiceDto.fromJson({
       'id': 'svc-1',
       'name': 'Haircut',
-      'price': 100,
+      'price_amount_minor': 10000,
       'currency_code': 'cur-1',
-      'display_price': {'amount': 90.0, 'currency_code': 'EUR'},
+      'display_price': {'amount_minor': 9000, 'currency_code': 'EUR'},
       'conversion_unavailable': false,
       'is_dual_price_display_enabled': true,
     });
 
-    expect(service.displayPrice?.amount, 90.0);
+    expect(service.displayPrice?.amountMinor, 9000);
     expect(service.displayPrice?.currencyCode, 'EUR');
     expect(service.conversionUnavailable, isFalse);
     expect(service.isDualPriceDisplayEnabled, isTrue);
@@ -25,7 +25,7 @@ void main() {
       final service = BarberServiceDto.fromJson({
         'id': 'svc-1',
         'name': 'Haircut',
-        'price': 100,
+        'price_amount_minor': 10000,
         'currency_code': 'cur-1',
       });
 
@@ -39,7 +39,7 @@ void main() {
     final service = BarberServiceDto.fromJson({
       'id': 'svc-1',
       'name': 'Haircut',
-      'price': 100,
+      'price_amount_minor': 10000,
       'currency_code': 'cur-1',
       'display_price': null,
       'conversion_unavailable': true,
@@ -53,13 +53,13 @@ void main() {
     final service = BookingServiceDto.fromJson({
       'id': 'svc-1',
       'name': 'Haircut',
-      'price': 100,
+      'price_amount_minor': 10000,
       'owner': 'brand',
-      'display_price': {'amount': 90.0, 'currency_code': 'EUR'},
+      'display_price': {'amount_minor': 9000, 'currency_code': 'EUR'},
       'is_dual_price_display_enabled': false,
     });
 
-    expect(service.displayPrice?.amount, 90.0);
+    expect(service.displayPrice?.amountMinor, 9000);
     expect(service.displayPrice?.currencyCode, 'EUR');
     expect(service.isDualPriceDisplayEnabled, isFalse);
   });

@@ -116,7 +116,7 @@ it('rejects a dashboard service referencing an inactive catalog item with 422', 
         'catalog_item_id' => $inactiveItem->id,
         'currency_code' => $currency->code,
         'name' => ['en' => 'Haircut', 'ar' => 'قص الشعر'],
-        'price' => 50,
+        'price_amount_minor' => 5000,
     ]);
 
     $response->assertStatus(422)->assertJsonValidationErrors(['catalog_item_id']);
@@ -132,7 +132,7 @@ it('rejects a barber service referencing an inactive catalog item with 422', fun
             'catalog_item_id' => $inactiveItem->id,
             'currency_code' => $currency->code,
             'name' => ['en' => 'Haircut', 'ar' => 'قص الشعر'],
-            'price' => 50,
+            'price_amount_minor' => 5000,
         ]);
 
     $response->assertStatus(422)->assertJsonValidationErrors(['catalog_item_id']);

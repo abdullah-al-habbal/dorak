@@ -43,8 +43,8 @@ class DiscoveryFilterConfig {
       perPage: base.perPage,
       query: base.query,
       availableNow: config[availableNowKey] as bool?,
-      priceRangeMin: (priceMap[priceMinKey] as num?)?.toDouble(),
-      priceRangeMax: (priceMap[priceMaxKey] as num?)?.toDouble(),
+      priceRangeMin: (priceMap[priceMinKey] as num?)?.toInt(),
+      priceRangeMax: (priceMap[priceMaxKey] as num?)?.toInt(),
       ratingMin: (config[ratingMinKey] as num?)?.toDouble(),
       catalogItemIds: ids is List
           ? ids.whereType<num>().map((id) => id.toInt()).toList()

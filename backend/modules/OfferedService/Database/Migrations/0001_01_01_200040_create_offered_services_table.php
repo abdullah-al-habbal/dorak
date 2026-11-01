@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignUuid('catalog_item_id')->nullable()->constrained('service_catalog_items')->nullOnDelete();
             $table->json('name');
             $table->json('description')->nullable();
-            $table->decimal('price', 10, 2);
+            $table->unsignedBigInteger('price_amount_minor');
             $table->string('currency_code', 10);
             $table->foreign('currency_code')->references('code')->on('currencies');
             $table->unsignedInteger('duration')->nullable();

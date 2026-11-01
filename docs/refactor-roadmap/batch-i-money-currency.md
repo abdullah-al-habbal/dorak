@@ -14,8 +14,8 @@ Status: [x] Done (money and currency slice); remaining Batch I items are listed 
 - [x] `payouts.reference` to `external_reference` (request, resource, dashboard `externalReference`).
 - [x] `commission_rules.value` split (decision: split columns) into `value_bps` (percent rules) and `value_amount_minor` (flat rules). Requests require exactly the column matching `type` and prohibit the other; `rule_snapshot` stores both keys; the dashboard form still takes one input and sends the matching key.
 
-## Deferred (same batch, not yet done)
-- `offered_services.price` (decimal) to `price_amount_minor` (integer) and `CommissionRecorder` input.
+- [x] `offered_services.price` (decimal) becomes `price_amount_minor` (unsigned integer). API: services send and accept `price_amount_minor`; `display_price` is `{amount_minor, currency_code}` (`PriceConverter` multiplies minor units by the stored rate and rounds); explore `price_range.min` / `price_range.max` (and saved-filter `price_range`) are integer minor units. Dashboard revenue aggregates keep their major-unit decimal wire values via `Modules\Currency\Support\MinorUnits::toMajor` (replaces `Commission\Support\MinorUnits::fromDecimal`). Dashboard service form still edits major units and converts at the payload boundary; mobile adds `core` `MinorUnits` and DTO fields `priceAmountMinor` / `amountMinor`, with the discovery filter state held in minor units and the slider converting for display.
+- Out of scope here: `service_catalog_items.price_range` (JSON catalog hint) is unchanged and left to Batch M.
 
 ## Verification
-`php artisan migrate:fresh --seed`, `vendor/bin/pint --test`, `composer test` (1331 passed); dashboard `npm run lint`, `npm run test` (506 passed), `npm run build`; mobile `dart run melos run verify`.
+`php artisan migrate:fresh --seed`, `vendor/bin/pint --test`, `composer test` (1331 passed); final run after the price change: backend 1331, dashboard 508, mobile melos verify green; dashboard `npm run lint`, `npm run test` (506 passed), `npm run build`; mobile `dart run melos run verify`.

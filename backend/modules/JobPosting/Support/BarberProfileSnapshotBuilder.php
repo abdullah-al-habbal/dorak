@@ -35,7 +35,7 @@ final class BarberProfileSnapshotBuilder
             'services' => $barber->services->map(fn (OfferedServiceModel $service): array => [
                 'id' => $service->id,
                 'name' => $service->name,
-                'price' => (float) $service->price,
+                'price_amount_minor' => (int) $service->price_amount_minor,
                 'currency_code' => $service->currency_code,
                 'duration' => $service->duration,
             ])->all(),

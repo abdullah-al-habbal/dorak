@@ -13,12 +13,12 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 describe('Dashboard overview revenue', function (): void {
     it('sums the price of every service on a completed booking', function (): void {
         $this->authenticateDashboardActor(AdminModel::factory()->create());
-        $serviceA = OfferedServiceModel::factory()->create(['price' => 100]);
-        $serviceB = OfferedServiceModel::factory()->create(['price' => 50]);
+        $serviceA = OfferedServiceModel::factory()->create(['price_amount_minor' => 10000]);
+        $serviceB = OfferedServiceModel::factory()->create(['price_amount_minor' => 5000]);
         $completed = BookingModel::factory()->create(['status' => BookingStatus::Completed, 'time_slot' => now()]);
         $completed->services()->attach([$serviceA->id, $serviceB->id]);
         $pending = BookingModel::factory()->create(['status' => BookingStatus::Pending]);
-        $pending->services()->attach(OfferedServiceModel::factory()->create(['price' => 999])->id);
+        $pending->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 99900])->id);
 
         $this->getJson('/api/v1/dashboard/overview')
             ->assertOk()
@@ -29,9 +29,9 @@ describe('Dashboard overview revenue', function (): void {
         $branch = BranchModel::factory()->create();
         $this->authenticateDashboardActor($branch);
         $inBranch = BookingModel::factory()->create(['branch_id' => $branch->id, 'status' => BookingStatus::Completed, 'time_slot' => now()]);
-        $inBranch->services()->attach(OfferedServiceModel::factory()->create(['price' => 75])->id);
+        $inBranch->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 7500])->id);
         $otherBranch = BookingModel::factory()->create(['status' => BookingStatus::Completed, 'time_slot' => now()]);
-        $otherBranch->services()->attach(OfferedServiceModel::factory()->create(['price' => 500])->id);
+        $otherBranch->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 50000])->id);
 
         $this->getJson('/api/v1/dashboard/overview')
             ->assertOk()
@@ -41,7 +41,7 @@ describe('Dashboard overview revenue', function (): void {
     it('excludes completed bookings outside today from revenue', function (): void {
         $this->authenticateDashboardActor(AdminModel::factory()->create());
         $yesterday = BookingModel::factory()->create(['status' => BookingStatus::Completed, 'time_slot' => now()->subDay()]);
-        $yesterday->services()->attach(OfferedServiceModel::factory()->create(['price' => 300])->id);
+        $yesterday->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 30000])->id);
 
         $this->getJson('/api/v1/dashboard/overview')
             ->assertOk()
@@ -51,7 +51,7 @@ describe('Dashboard overview revenue', function (): void {
     it('returns zero revenue when there are no completed bookings', function (): void {
         $this->authenticateDashboardActor(AdminModel::factory()->create());
         $pending = BookingModel::factory()->create(['status' => BookingStatus::Pending]);
-        $pending->services()->attach(OfferedServiceModel::factory()->create(['price' => 999])->id);
+        $pending->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 99900])->id);
 
         $this->getJson('/api/v1/dashboard/overview')
             ->assertOk()

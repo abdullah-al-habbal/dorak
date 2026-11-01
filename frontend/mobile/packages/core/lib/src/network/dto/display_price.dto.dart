@@ -4,10 +4,10 @@ part 'display_price.dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: true)
 class DisplayPriceDto {
-  final double amount;
+  final int amountMinor;
   final String currencyCode;
 
-  const DisplayPriceDto({required this.amount, required this.currencyCode});
+  const DisplayPriceDto({required this.amountMinor, required this.currencyCode});
 
   factory DisplayPriceDto.fromJson(Map<String, dynamic> json) =>
       _$DisplayPriceDtoFromJson(json);

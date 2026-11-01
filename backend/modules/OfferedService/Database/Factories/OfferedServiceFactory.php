@@ -28,7 +28,7 @@ class OfferedServiceFactory extends Factory
                 'en' => fake()->sentence(),
                 'ar' => fake('ar_SA')->sentence(),
             ],
-            'price' => fake()->randomFloat(2, 10, 500),
+            'price_amount_minor' => fake()->numberBetween(1000, 50000),
             'currency_code' => fn () => CurrencyModel::factory()->create()->code,
             'duration' => fake()->randomElement([15, 30, 45, 60]),
             'is_at_home' => false,

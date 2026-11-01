@@ -1,3 +1,4 @@
+import { fromMinorUnits } from "@/services/api/dashboard/monetization/monetization.util";
 import { emptyToNull } from "@/components/entities/entity-form-field.util";
 import { fullWeek } from "@/services/api/dashboard/branch/branch-opening-hours.util";
 import type { EditableDashboardResource } from "@/services/api/dashboard/shared/types/editable-dashboard-resource.types";
@@ -69,7 +70,7 @@ export function resetValuesFor(
   if (isServiceData(resource, current))
     return {
       name: current.name,
-      price: current.price,
+      price: fromMinorUnits(current.priceAmountMinor),
       duration: current.duration,
       currencyCode: current.currencyCode,
       isActive: current.isActive,

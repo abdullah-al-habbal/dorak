@@ -20,8 +20,7 @@ final class OfferedServiceInfolistSchema
                         ->label(__('offeredservice::ui.name_english')),
                     TextEntry::make('name.ar')
                         ->label(__('offeredservice::ui.name_arabic')),
-                    TextEntry::make('price')
-                        ->money(),
+                    TextEntry::make('price_amount_minor'),
                     TextEntry::make('currency.code')
                         ->label(__('offeredservice::ui.currency')),
                     TextEntry::make('duration')

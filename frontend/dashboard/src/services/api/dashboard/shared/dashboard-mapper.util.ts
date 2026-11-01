@@ -101,8 +101,8 @@ export function mapService(wire: unknown): IService {
     currencyCode: string(item.currency_code),
     duration: typeof item.duration === "number" ? item.duration : null,
     name: localized(item.name),
-    price:
-      typeof item.price === "number" ? item.price : Number(item.price ?? 0),
+    priceAmountMinor:
+      typeof item.price_amount_minor === "number" ? item.price_amount_minor : 0,
     serviceableId: string(item.serviceable_id),
     serviceableType: string(
       item.serviceable_type,

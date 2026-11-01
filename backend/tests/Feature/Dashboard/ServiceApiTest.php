@@ -48,9 +48,9 @@ describe('Dashboard Service API', function (): void {
         $this->authenticateDashboardActor($this->admin);
         $currency = CurrencyModel::factory()->create();
 
-        $this->putJson("/api/v1/dashboard/services/{$service->id}", servicePayload($this->branch->brand_id, $currency, ['price' => 31]))
+        $this->putJson("/api/v1/dashboard/services/{$service->id}", servicePayload($this->branch->brand_id, $currency, ['price_amount_minor' => 3100]))
             ->assertOk()
-            ->assertJsonPath('data.price', 31);
+            ->assertJsonPath('data.price_amount_minor', 3100);
         $this->deleteJson("/api/v1/dashboard/services/{$service->id}")->assertOk();
         $this->getJson("/api/v1/dashboard/services/{$service->id}")->assertNotFound();
     });
@@ -93,7 +93,7 @@ function servicePayload(string $brandId, CurrencyModel $currency, array $overrid
         'catalog_item_id' => null,
         'currency_code' => $currency->code,
         'name' => ['en' => 'Haircut', 'ar' => 'قص شعر'],
-        'price' => 25,
+        'price_amount_minor' => 2500,
         'duration' => 30,
         'is_active' => true,
     ], $overrides);

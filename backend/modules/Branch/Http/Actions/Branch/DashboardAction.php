@@ -16,6 +16,7 @@ use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 use Modules\Core\Enums\SuccessCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
+use Modules\Currency\Support\MinorUnits;
 
 final class DashboardAction extends BaseApiAction
 {
@@ -34,20 +35,20 @@ final class DashboardAction extends BaseApiAction
             'total_chairs' => ChairModel::where('branch_id', $branch->id)->count(),
             'pending_affiliations' => BarberAffiliationModel::where('affiliable_id', $branch->id)
                 ->where('affiliable_type', AffiliableType::Branch)->where('status', AffiliationStatus::Pending)->count(),
-            'today_revenue' => (float) BookingModel::query()
+            'today_revenue' => MinorUnits::toMajor(BookingModel::query()
                 ->forBranch($branch->id)
                 ->where('status', BookingStatus::Completed)
                 ->whereDate('time_slot', today())
                 ->join('booking_offered_service', 'bookings.id', '=', 'booking_offered_service.booking_id')
                 ->join('offered_services', 'booking_offered_service.offered_service_id', '=', 'offered_services.id')
-                ->sum('offered_services.price'),
-            'monthly_revenue' => (float) BookingModel::query()
+                ->sum('offered_services.price_amount_minor')),
+            'monthly_revenue' => MinorUnits::toMajor(BookingModel::query()
                 ->forBranch($branch->id)
                 ->where('status', BookingStatus::Completed)
                 ->whereBetween('time_slot', [now()->startOfMonth(), now()->endOfMonth()])
                 ->join('booking_offered_service', 'bookings.id', '=', 'booking_offered_service.booking_id')
                 ->join('offered_services', 'booking_offered_service.offered_service_id', '=', 'offered_services.id')
-                ->sum('offered_services.price'),
+                ->sum('offered_services.price_amount_minor')),
             'chair_status_counts' => ChairModel::query()->where('branch_id', $branch->id)
                 ->selectRaw('status, count(*) as count')->groupBy('status')->pluck('count', 'status'),
             'assigned_branches' => [['id' => $branch->id, 'name' => $branch->getAttribute('name')]],

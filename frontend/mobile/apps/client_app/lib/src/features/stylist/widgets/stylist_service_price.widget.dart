@@ -24,7 +24,10 @@ class StylistServicePrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final basePriceText = l10n.servicePrice(
-      LocaleFormatters.decimal(service.price, localeCode),
+      LocaleFormatters.decimal(
+        MinorUnits.toMajor(service.priceAmountMinor),
+        localeCode,
+      ),
       currencyCode,
     );
     final displayPrice = service.displayPrice;
@@ -36,7 +39,10 @@ class StylistServicePrice extends StatelessWidget {
     }
 
     final convertedPriceText = l10n.servicePrice(
-      LocaleFormatters.decimal(displayPrice.amount, localeCode),
+      LocaleFormatters.decimal(
+        MinorUnits.toMajor(displayPrice.amountMinor),
+        localeCode,
+      ),
       displayPrice.currencyCode,
     );
     if (!service.isDualPriceDisplayEnabled) {

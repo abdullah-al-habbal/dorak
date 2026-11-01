@@ -39,7 +39,7 @@ export const ServiceSchema = z.object({
   currencyCode: DashboardEntityIdSchema,
   duration: z.number().nullable(),
   name: LocalizedNameSchema,
-  price: z.number(),
+  priceAmountMinor: z.number(),
   serviceableId: DashboardEntityIdSchema,
   serviceableType: z.enum(["brand", "barber"]),
 });

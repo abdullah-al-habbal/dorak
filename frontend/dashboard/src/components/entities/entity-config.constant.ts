@@ -1,3 +1,4 @@
+import { fromMinorUnits } from "@/services/api/dashboard/monetization/monetization.util";
 import type { EntityConfig } from "@/components/entities/entity-config.types";
 import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
 import type { IBooking } from "@/services/api/dashboard/booking/types/ibooking.types";
@@ -42,7 +43,11 @@ export const ENTITY_CONFIGS = {
     hasEditRoute: true,
     columns: [
       { id: "name", label: "name", value: (item: IService) => item.name.en },
-      { id: "price", label: "price", value: (item: IService) => item.price },
+      {
+        id: "price",
+        label: "price",
+        value: (item: IService) => fromMinorUnits(item.priceAmountMinor),
+      },
       {
         id: "active",
         label: "active",

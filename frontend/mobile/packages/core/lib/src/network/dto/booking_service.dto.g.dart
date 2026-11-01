@@ -10,7 +10,7 @@ BookingServiceDto _$BookingServiceDtoFromJson(Map<String, dynamic> json) =>
     BookingServiceDto(
       id: json['id'] as String,
       name: json['name'] as String,
-      price: (json['price'] as num?)?.toDouble(),
+      priceAmountMinor: (json['price_amount_minor'] as num?)?.toInt(),
       duration: (json['duration'] as num?)?.toInt(),
       owner: json['owner'] as String?,
       displayPrice: json['display_price'] == null
@@ -27,7 +27,7 @@ Map<String, dynamic> _$BookingServiceDtoToJson(BookingServiceDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'price': instance.price,
+      'price_amount_minor': instance.priceAmountMinor,
       'duration': instance.duration,
       'owner': instance.owner,
       'display_price': instance.displayPrice,

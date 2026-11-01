@@ -15,7 +15,7 @@ final class ServiceResource extends JsonResource
     {
         $displayPrice = app(PriceConverter::class)->displayPriceFor(
             request: $request,
-            basePrice: (float) $this->price,
+            basePriceAmountMinor: (int) $this->price_amount_minor,
             baseCurrencyCode: $this->currency?->code ?? '',
             ownerType: PreferenceableTypeEnum::from($this->serviceable_type->value),
             ownerId: (string) $this->serviceable_id,
@@ -28,7 +28,7 @@ final class ServiceResource extends JsonResource
             'catalog_item_id' => $this->catalog_item_id,
             'name' => $this->name,
             'description' => $this->description,
-            'price' => (float) $this->price,
+            'price_amount_minor' => (int) $this->price_amount_minor,
             'currency_code' => $this->currency_code,
             'duration' => $this->duration,
             'is_at_home' => (bool) $this->is_at_home,

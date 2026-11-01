@@ -13,8 +13,8 @@ final readonly class FilterConfigurationValueObject
         public ?float $longitude = null,
         public ?array $catalogItemIds = null,
         public ?bool $availableNow = null,
-        public ?float $priceMin = null,
-        public ?float $priceMax = null,
+        public ?int $priceMin = null,
+        public ?int $priceMax = null,
         public ?float $ratingMin = null,
         public ?string $faceShape = null,
         public ?string $sortBy = null,
@@ -31,8 +31,8 @@ final readonly class FilterConfigurationValueObject
             longitude: isset($data['longitude']) ? (float) $data['longitude'] : null,
             catalogItemIds: $data['catalog_item_ids'] ?? null,
             availableNow: $data['available_now'] ?? null,
-            priceMin: self::firstFloat($priceRange['min'] ?? null, $data['price_min'] ?? null),
-            priceMax: self::firstFloat($priceRange['max'] ?? null, $data['price_max'] ?? null),
+            priceMin: self::firstInt($priceRange['min'] ?? null, $data['price_min'] ?? null),
+            priceMax: self::firstInt($priceRange['max'] ?? null, $data['price_max'] ?? null),
             ratingMin: isset($data['rating_min']) ? (float) $data['rating_min'] : null,
             faceShape: $data['face_shape'] ?? null,
             sortBy: $data['sort_by'] ?? null,
@@ -60,11 +60,11 @@ final readonly class FilterConfigurationValueObject
         ], fn ($v) => $v !== null);
     }
 
-    private static function firstFloat(mixed ...$candidates): ?float
+    private static function firstInt(mixed ...$candidates): ?int
     {
         foreach ($candidates as $candidate) {
             if ($candidate !== null) {
-                return (float) $candidate;
+                return (int) $candidate;
             }
         }
 

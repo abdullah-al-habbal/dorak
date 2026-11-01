@@ -40,7 +40,7 @@ final class GetBranchDetailEloquentResolver
             ->bookable()
             ->offeredAtShop($branch->getAttribute('brand_id') === null ? null : (string) $branch->getAttribute('brand_id'))
             ->orderBy('serviceable_type')
-            ->orderBy('price')
+            ->orderBy('price_amount_minor')
             ->get()
             ->concat($barbers->flatMap(fn (BarberModel $barber) => $barber->services))
             ->unique('id')

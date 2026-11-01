@@ -75,7 +75,7 @@ describe('Dashboard service catalog management', function (): void {
             'catalog_item_id' => $item->id,
             'currency_code' => CurrencyModel::factory()->create()->code,
             'name' => ['en' => 'Fade', 'ar' => 'فيد'],
-            'price' => 20,
+            'price_amount_minor' => 2000,
         ])->assertCreated()->assertJsonPath('data.catalog_item_id', $item->id);
     });
 });

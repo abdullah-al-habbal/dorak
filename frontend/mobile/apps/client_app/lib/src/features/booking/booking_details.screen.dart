@@ -67,8 +67,11 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     final details = [
       if (service.duration != null)
         l10n.serviceDurationLabel(service.duration!),
-      if (service.price != null)
-        LocaleFormatters.decimal(service.price!, localeCode),
+      if (service.priceAmountMinor != null)
+        LocaleFormatters.decimal(
+          MinorUnits.toMajor(service.priceAmountMinor!),
+          localeCode,
+        ),
     ];
     return details.isEmpty
         ? service.name

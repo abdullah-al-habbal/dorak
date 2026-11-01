@@ -54,3 +54,19 @@ describe("serviceFormSchema at-home flag", () => {
     expect(mapService({ id: "s1", is_at_home: true }).isAtHome).toBe(true);
   });
 });
+
+describe("service price minor units", () => {
+  it("sends the form price as integer minor units", () => {
+    const parsed = serviceFormSchema.safeParse(serviceInput);
+    expect(
+      parsed.success && mapServicePayload(parsed.data).price_amount_minor,
+    ).toBe(2500);
+  });
+
+  it("reads the wire price_amount_minor and defaults a missing one to zero", () => {
+    expect(
+      mapService({ id: "s1", price_amount_minor: 4900 }).priceAmountMinor,
+    ).toBe(4900);
+    expect(mapService({ id: "s1" }).priceAmountMinor).toBe(0);
+  });
+});

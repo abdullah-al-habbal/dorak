@@ -12,18 +12,17 @@ use Modules\Commission\Enums\CommissionType;
 use Modules\Commission\Models\CommissionEntryModel;
 use Modules\Commission\Models\CommissionRuleModel;
 use Modules\Commission\Services\CommissionRuleResolver;
-use Modules\Commission\Support\MinorUnits;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Payout\Models\PayoutModel;
 
-function completeBookingWithPrice(float $price, ?BranchModel $branch = null, ?CurrencyModel $currency = null): BookingModel
+function completeBookingWithPrice(int $priceAmountMinor, ?BranchModel $branch = null, ?CurrencyModel $currency = null): BookingModel
 {
     $booking = BookingModel::factory()->create(
         $branch === null ? [] : ['branch_id' => $branch->id],
     );
     $service = OfferedServiceModel::factory()->create(array_filter([
-        'price' => $price,
+        'price_amount_minor' => $priceAmountMinor,
         'currency_code' => $currency?->code,
     ]));
     $booking->services()->attach($service->id);
@@ -115,17 +114,12 @@ describe('Commission resolution', function (): void {
         expect(app(CommissionRuleResolver::class)->resolve($branch->id, $branch->brand_id, $currency->id))->toBeNull();
     });
 
-    it('converts decimal prices to minor units', function (): void {
-        expect(MinorUnits::fromDecimal(12.5))->toBe(1250)
-            ->and(MinorUnits::fromDecimal('0.07'))->toBe(7)
-            ->and(MinorUnits::fromDecimal(100))->toBe(10000);
-    });
 });
 
 describe('Commission accrual on completed bookings', function (): void {
     it('records a percent commission once per completed booking', function (): void {
         CommissionRuleModel::factory()->create(['value_bps' => 1000]);
-        $booking = completeBookingWithPrice(150.50);
+        $booking = completeBookingWithPrice(15050);
 
         $entry = CommissionEntryModel::query()->sole();
         expect($entry->booking_id)->toBe($booking->id)
@@ -147,18 +141,18 @@ describe('Commission accrual on completed bookings', function (): void {
             'type' => CommissionType::Flat, 'value_bps' => null, 'value_amount_minor' => 250, 'currency_code' => $currency->code,
         ]);
 
-        completeBookingWithPrice(40, $branch, $currency);
+        completeBookingWithPrice(4000, $branch, $currency);
 
         expect(CommissionEntryModel::query()->sole()->commission_amount_minor)->toBe(250);
     });
 
     it('accrues nothing without a rule, or for a booking that is not completed', function (): void {
-        completeBookingWithPrice(100);
+        completeBookingWithPrice(10000);
         expect(CommissionEntryModel::query()->count())->toBe(0);
 
         CommissionRuleModel::factory()->create();
         $pending = BookingModel::factory()->create();
-        $pending->services()->attach(OfferedServiceModel::factory()->create(['price' => 100])->id);
+        $pending->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 10000])->id);
         $pending->update(['status' => BookingStatus::InProgress]);
 
         expect(CommissionEntryModel::query()->count())->toBe(0);
@@ -170,7 +164,7 @@ describe('Commission accrual on completed bookings', function (): void {
         $empty->update(['status' => BookingStatus::Completed]);
 
         $freelance = BookingModel::factory()->create(['chair_id' => null, 'branch_id' => null]);
-        $freelance->services()->attach(OfferedServiceModel::factory()->create(['price' => 100])->id);
+        $freelance->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 10000])->id);
         $freelance->update(['status' => BookingStatus::Completed]);
 
         expect(CommissionEntryModel::query()->count())->toBe(0);

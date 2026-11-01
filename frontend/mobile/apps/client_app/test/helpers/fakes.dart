@@ -485,8 +485,8 @@ class FakeExploreRepository implements ExploreRepository {
     int perPage = 20,
     List<int>? catalogItemIds,
     bool? availableNow,
-    double? priceRangeMin,
-    double? priceRangeMax,
+    int? priceRangeMin,
+    int? priceRangeMax,
     double? ratingMin,
     String? faceShapeCompatible,
     String? query,
@@ -512,8 +512,8 @@ class FakeExploreRepository implements ExploreRepository {
     int perPage = 20,
     List<int>? catalogItemIds,
     bool? availableNow,
-    double? priceRangeMin,
-    double? priceRangeMax,
+    int? priceRangeMin,
+    int? priceRangeMax,
     double? ratingMin,
     String? faceShapeCompatible,
     String? query,
@@ -541,8 +541,8 @@ class FakeExploreRepository implements ExploreRepository {
     int perPage = 20,
     List<int>? catalogItemIds,
     bool? availableNow,
-    double? priceRangeMin,
-    double? priceRangeMax,
+    int? priceRangeMin,
+    int? priceRangeMax,
     double? ratingMin,
     String? query,
   }) async {
@@ -568,8 +568,8 @@ class FakeExploreRepository implements ExploreRepository {
     int perPage = 20,
     List<int>? catalogItemIds,
     bool? availableNow,
-    double? priceRangeMin,
-    double? priceRangeMax,
+    int? priceRangeMin,
+    int? priceRangeMax,
     double? ratingMin,
     String? query,
   }) async {
@@ -620,7 +620,7 @@ BranchDetailDto testBranchDetail() => const BranchDetailDto(
   brandId: '7',
   chairsCount: 2,
   barbers: [BookingBarberDto(id: 'barber-1', name: 'Karim')],
-  services: [BookingServiceDto(id: 'service-1', name: 'Fade', price: 80)],
+  services: [BookingServiceDto(id: 'service-1', name: 'Fade', priceAmountMinor: 8000)],
 );
 
 class FakeLocationProvider implements LocationProvider {
@@ -687,7 +687,7 @@ BookingDto testBooking({
   cancellationEligible: cancellationEligible,
   chair: const BookingChairDto(id: 'chair-1', label: 'Chair A'),
   barber: const BookingBarberDto(id: 'barber-1', name: 'Karim'),
-  services: const [BookingServiceDto(id: 'service-1', name: 'Fade', price: 80)],
+  services: const [BookingServiceDto(id: 'service-1', name: 'Fade', priceAmountMinor: 8000)],
   createdAt: DateTime.utc(2026, 9, 2, 10),
 );
 
@@ -1435,7 +1435,7 @@ BarberProfileDto testBarberProfile({
           id: 'svc-1',
           name: 'Fade',
           description: 'Classic fade cut',
-          price: 80,
+          priceAmountMinor: 8000,
           currencyCode: 'SAR',
           duration: 30,
           isAtHome: false,
@@ -1444,7 +1444,7 @@ BarberProfileDto testBarberProfile({
         BarberServiceDto(
           id: 'svc-2',
           name: 'Beard Trim',
-          price: 30,
+          priceAmountMinor: 3000,
           currencyCode: 'SAR',
           duration: 15,
           isAtHome: true,

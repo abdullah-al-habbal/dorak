@@ -11,13 +11,13 @@ use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Preference\Models\PreferenceModel;
 
-function createBrandService(BrandModel $brand, CurrencyModel $currency, float $price = 100.0): OfferedServiceModel
+function createBrandService(BrandModel $brand, CurrencyModel $currency, int $priceAmountMinor = 10000): OfferedServiceModel
 {
     return OfferedServiceModel::factory()->create([
         'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $brand->id,
         'currency_code' => $currency->code,
-        'price' => $price,
+        'price_amount_minor' => $priceAmountMinor,
         'catalog_item_id' => null,
         'is_active' => true,
     ]);
@@ -35,7 +35,7 @@ it('populates display_price for a client whose display currency differs from the
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
-    $service = createBrandService($brand, $usd, 100);
+    $service = createBrandService($brand, $usd, 10000);
 
     $client = ClientModel::factory()->create();
     PreferenceModel::factory()->create([
@@ -51,9 +51,9 @@ it('populates display_price for a client whose display currency differs from the
 
     $payload = collect($services)->firstWhere('id', $service->id);
 
-    expect($payload['display_price'])->toEqual(['amount' => 90.0, 'currency_code' => 'EUR'])
+    expect($payload['display_price'])->toEqual(['amount_minor' => 9000, 'currency_code' => 'EUR'])
         ->and($payload['conversion_unavailable'])->toBeFalse()
-        ->and($payload['price'])->toEqual(100.0);
+        ->and($payload['price_amount_minor'])->toBe(10000);
 });
 
 it('falls back to the base price with conversion_unavailable when no rate exists', function () {
@@ -62,7 +62,7 @@ it('falls back to the base price with conversion_unavailable when no rate exists
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
-    $service = createBrandService($brand, $usd, 100);
+    $service = createBrandService($brand, $usd, 10000);
 
     $client = ClientModel::factory()->create();
     PreferenceModel::factory()->create([
@@ -80,7 +80,7 @@ it('falls back to the base price with conversion_unavailable when no rate exists
 
     expect($payload['conversion_unavailable'])->toBeTrue()
         ->and($payload['display_price'])->toBeNull()
-        ->and($payload['price'])->toEqual(100.0);
+        ->and($payload['price_amount_minor'])->toBe(10000);
 });
 
 it('reports dual_price_display true when the owning brand enables dual display', function () {
@@ -90,7 +90,7 @@ it('reports dual_price_display true when the owning brand enables dual display',
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
-    $service = createBrandService($brand, $usd, 100);
+    $service = createBrandService($brand, $usd, 10000);
     PreferenceModel::factory()->create([
         'preferenceable_type' => 'brand',
         'preferenceable_id' => $brand->id,
@@ -112,8 +112,8 @@ it('reports dual_price_display true when the owning brand enables dual display',
     )->firstWhere('id', $service->id);
 
     expect($payload['is_dual_price_display_enabled'])->toBeTrue()
-        ->and($payload['price'])->toEqual(100.0)
-        ->and($payload['display_price'])->toEqual(['amount' => 90.0, 'currency_code' => 'EUR']);
+        ->and($payload['price_amount_minor'])->toBe(10000)
+        ->and($payload['display_price'])->toEqual(['amount_minor' => 9000, 'currency_code' => 'EUR']);
 });
 
 it('reports dual_price_display false (converted only) by default', function () {
@@ -123,7 +123,7 @@ it('reports dual_price_display false (converted only) by default', function () {
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
-    $service = createBrandService($brand, $usd, 100);
+    $service = createBrandService($brand, $usd, 10000);
 
     $client = ClientModel::factory()->create();
     PreferenceModel::factory()->create([
@@ -149,7 +149,7 @@ it('converts for a guest using the X-Display-Currency header', function () {
 
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
-    $service = createBrandService($brand, $usd, 100);
+    $service = createBrandService($brand, $usd, 10000);
 
     $payload = collect(
         $this->withHeader('X-Display-Currency', 'eur')
@@ -158,14 +158,14 @@ it('converts for a guest using the X-Display-Currency header', function () {
             ->json('data.services')
     )->firstWhere('id', $service->id);
 
-    expect($payload['display_price'])->toEqual(['amount' => 90.0, 'currency_code' => 'EUR']);
+    expect($payload['display_price'])->toEqual(['amount_minor' => 9000, 'currency_code' => 'EUR']);
 });
 
 it('omits display_price fields for a guest with no display currency', function () {
     $usd = CurrencyModel::factory()->create(['code' => 'USD']);
     $brand = BrandModel::factory()->create();
     $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
-    $service = createBrandService($brand, $usd, 100);
+    $service = createBrandService($brand, $usd, 10000);
 
     $payload = collect(
         $this->getJson("/api/v1/explore/branches/{$branch->id}")
@@ -175,5 +175,5 @@ it('omits display_price fields for a guest with no display currency', function (
 
     expect($payload)->not->toHaveKey('display_price')
         ->and($payload)->not->toHaveKey('conversion_unavailable')
-        ->and($payload['price'])->toEqual(100.0);
+        ->and($payload['price_amount_minor'])->toBe(10000);
 });

@@ -10,7 +10,6 @@ use Modules\Commission\Constants\CommissionMoneyConstants;
 use Modules\Commission\Enums\CommissionType;
 use Modules\Commission\Models\CommissionEntryModel;
 use Modules\Commission\Models\CommissionRuleModel;
-use Modules\Commission\Support\MinorUnits;
 
 final class CommissionRecorder
 {
@@ -29,14 +28,14 @@ final class CommissionRecorder
         $services = DB::table('booking_offered_service')
             ->join('offered_services', 'offered_services.id', '=', 'booking_offered_service.offered_service_id')
             ->where('booking_offered_service.booking_id', $booking->getKey())
-            ->get(['offered_services.price', 'offered_services.currency_code']);
+            ->get(['offered_services.price_amount_minor', 'offered_services.currency_code']);
 
         if ($brandId === null || $services->isEmpty()) {
             return null;
         }
 
         $currencyCode = (string) $services->first()->currency_code;
-        $base = MinorUnits::fromDecimal($services->where('currency_code', $currencyCode)->sum('price'));
+        $base = (int) $services->where('currency_code', $currencyCode)->sum('price_amount_minor');
         $rule = $this->rules->resolve($branchId, (string) $brandId, $currencyCode);
         if ($rule === null) {
             return null;

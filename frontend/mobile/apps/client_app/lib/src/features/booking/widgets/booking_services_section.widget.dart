@@ -21,9 +21,9 @@ class BookingServicesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalPrice = booking.services.fold<double>(
+    final totalPrice = booking.services.fold<int>(
       0,
-      (total, service) => total + (service.price ?? 0),
+      (total, service) => total + (service.priceAmountMinor ?? 0),
     );
     final totalDuration = booking.services.fold<int>(
       0,
@@ -38,7 +38,7 @@ class BookingServicesSection extends StatelessWidget {
           const Divider(),
           BookingDetailLine(
             value: l10n.bookingTotalPrice(
-              LocaleFormatters.decimal(totalPrice, localeCode),
+              LocaleFormatters.decimal(MinorUnits.toMajor(totalPrice), localeCode),
             ),
           ),
           BookingDetailLine(value: l10n.bookingTotalDuration(totalDuration)),

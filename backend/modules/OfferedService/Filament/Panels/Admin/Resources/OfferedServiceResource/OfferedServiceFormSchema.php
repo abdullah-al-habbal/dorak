@@ -37,10 +37,10 @@ final class OfferedServiceFormSchema
                     Select::make('currency_code')
                         ->relationship('currency', 'code')
                         ->required(),
-                    TextInput::make('price')
+                    TextInput::make('price_amount_minor')
                         ->numeric()
-                        ->required()
-                        ->step('0.01'),
+                        ->integer()
+                        ->required(),
                     TextInput::make('duration')
                         ->numeric()
                         ->required()

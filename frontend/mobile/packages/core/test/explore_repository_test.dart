@@ -140,7 +140,7 @@ void main() {
                   {'id': 'barber-1', 'name': 'Karim'},
                 ],
                 'services': [
-                  {'id': 'service-1', 'name': 'Fade', 'price': 80.0},
+                  {'id': 'service-1', 'name': 'Fade', 'price_amount_minor': 8000},
                 ],
               },
             ),
@@ -155,7 +155,7 @@ void main() {
       expect(detail.name, 'Branch 1');
       expect(detail.chairsCount, 2);
       expect(detail.barbers.map((barber) => barber.name), ['Karim']);
-      expect(detail.services.map((service) => service.price), [80.0]);
+      expect(detail.services.map((service) => service.priceAmountMinor), [8000]);
     });
 
     test(
@@ -224,7 +224,7 @@ void main() {
             options,
             data: successEnvelope(
               data: [
-                {'id': 'service-1', 'name': 'Fade', 'price': 80.0},
+                {'id': 'service-1', 'name': 'Fade', 'price_amount_minor': 8000},
               ],
             ),
           );
@@ -264,7 +264,7 @@ void main() {
                     'id': 'service-1',
                     'name': 'Fade',
                     'description': 'A clean fade.',
-                    'price': 80.0,
+                    'price_amount_minor': 8000,
                     'currency_code': 'SAR',
                     'duration': 45,
                     'is_at_home': true,
@@ -296,7 +296,7 @@ void main() {
       final service = detail.services.single;
       expect(service.id, 'service-1');
       expect(service.name, 'Fade');
-      expect(service.price, 80.0);
+      expect(service.priceAmountMinor, 8000);
       expect(service.currencyCode, 'SAR');
       expect(service.duration, 45);
       expect(service.isAtHome, isTrue);

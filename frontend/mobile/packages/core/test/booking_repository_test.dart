@@ -17,7 +17,7 @@ Map<String, Object?> booking({
   'chair': {'id': 'chair-1', 'label': 'Chair A', 'status': 'available'},
   'barber': {'id': 'barber-1', 'name': 'Karim'},
   'services': [
-    {'id': 'service-1', 'name': 'Fade', 'price': 80.0},
+    {'id': 'service-1', 'name': 'Fade', 'price_amount_minor': 8000},
   ],
   'created_at': '2026-09-02T10:00:00.000Z',
 };

@@ -25,7 +25,7 @@ final class OfferedServiceInfolistSchema
                         ->label(__('offeredservice::ui.entity_type')),
                     TextEntry::make('currency.code')
                         ->label(__('offeredservice::ui.currency')),
-                    TextEntry::make('price'),
+                    TextEntry::make('price_amount_minor'),
                     TextEntry::make('duration')
                         ->suffix(' min'),
                     IconEntry::make('is_at_home')

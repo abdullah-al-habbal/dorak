@@ -514,7 +514,7 @@ describe('Explore API', function () {
                 'latitude' => 33.5, 'longitude' => 36.3, 'brand_id' => $brand->id,
             ]);
 
-            $response = $this->getJson('/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=1000&universe=men&available_now=1&rating_min=3&price_range[min]=10&price_range[max]=100');
+            $response = $this->getJson('/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=1000&universe=men&available_now=1&rating_min=3&price_range[min]=1000&price_range[max]=10000');
 
             assertApiEnvelope($response, 200);
             assertPaginationMeta($response);
@@ -603,7 +603,7 @@ describe('OfferedService API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             expect($data)->toHaveLength(2);
-            expect($data[0])->toHaveKeys(['id', 'name', 'description', 'price', 'currency_code', 'duration', 'is_at_home', 'is_active', 'created_at']);
+            expect($data[0])->toHaveKeys(['id', 'name', 'description', 'price_amount_minor', 'currency_code', 'duration', 'is_at_home', 'is_active', 'created_at']);
         });
 
         it('returns empty array for barber with no services', function () {

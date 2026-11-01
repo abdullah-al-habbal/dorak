@@ -6,14 +6,14 @@ part 'application_snapshot_service.dto.g.dart';
 class ApplicationSnapshotServiceDto {
   final String id;
   final String name;
-  final double price;
+  final int priceAmountMinor;
   final String? currencyCode;
   final int? duration;
 
   const ApplicationSnapshotServiceDto({
     required this.id,
     required this.name,
-    required this.price,
+    required this.priceAmountMinor,
     this.currencyCode,
     this.duration,
   });

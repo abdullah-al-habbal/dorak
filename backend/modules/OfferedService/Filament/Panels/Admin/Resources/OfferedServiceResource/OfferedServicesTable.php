@@ -22,7 +22,7 @@ final class OfferedServicesTable
                     ->searchable(),
                 TextColumn::make('serviceable_type')
                     ->label(__('offeredservice::ui.entity')),
-                TextColumn::make('price')
+                TextColumn::make('price_amount_minor')
                     ->sortable(),
                 TextColumn::make('duration')
                     ->suffix(' min'),

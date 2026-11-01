@@ -24,8 +24,9 @@ final class OfferedServiceFormSchema
                     TextInput::make('name.ar')
                         ->label(__('offeredservice::ui.name_arabic'))
                         ->required(),
-                    TextInput::make('price')
+                    TextInput::make('price_amount_minor')
                         ->numeric()
+                        ->integer()
                         ->required(),
                     Select::make('currency_code')
                         ->relationship('currency', 'code')

@@ -11,7 +11,7 @@ ApplicationSnapshotServiceDto _$ApplicationSnapshotServiceDtoFromJson(
 ) => ApplicationSnapshotServiceDto(
   id: json['id'] as String,
   name: json['name'] as String,
-  price: (json['price'] as num).toDouble(),
+  priceAmountMinor: (json['price_amount_minor'] as num).toInt(),
   currencyCode: json['currency_code'] as String?,
   duration: (json['duration'] as num?)?.toInt(),
 );

@@ -18,7 +18,7 @@ final class OfferedServicesTable
             ->columns([
                 TextColumn::make('name.en')
                     ->label(__('offeredservice::ui.name')),
-                TextColumn::make('price')
+                TextColumn::make('price_amount_minor')
                     ->money(fn ($record): string => $record->currency->code ?? 'USD'),
                 TextColumn::make('duration')
                     ->label(__('offeredservice::ui.minutes')),

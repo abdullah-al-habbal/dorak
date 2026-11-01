@@ -19,7 +19,7 @@ function barberServicePayload(CurrencyModel $currency, array $overrides = []): a
         'catalog_item_id' => null,
         'currency_code' => $currency->code,
         'name' => ['en' => 'Beard Trim', 'ar' => 'تهذيب اللحية'],
-        'price' => 15,
+        'price_amount_minor' => 1500,
         'duration' => 20,
         'is_active' => true,
     ], $overrides);
@@ -76,9 +76,9 @@ it('updates and deletes its own service', function (): void {
     $currency = CurrencyModel::factory()->create();
     $service = OfferedServiceModel::factory()->create(['serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $this->barber->id]);
 
-    $this->putJson("/api/v1/barber/services/{$service->id}", barberServicePayload($currency, ['price' => 40]))
+    $this->putJson("/api/v1/barber/services/{$service->id}", barberServicePayload($currency, ['price_amount_minor' => 4000]))
         ->assertOk()
-        ->assertJsonPath('data.price', 40);
+        ->assertJsonPath('data.price_amount_minor', 4000);
     $this->deleteJson("/api/v1/barber/services/{$service->id}")->assertOk();
     $this->assertDatabaseMissing('offered_services', ['id' => $service->id]);
 });

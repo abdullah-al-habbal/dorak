@@ -1,4 +1,5 @@
 import type { z } from "zod";
+import { toMinorUnits } from "@/services/api/dashboard/monetization/monetization.util";
 import {
   branchCreateSchema,
   branchEditSchema,
@@ -60,7 +61,7 @@ export function mapServicePayload(input: z.infer<typeof serviceFormSchema>) {
     currency_code: input.currencyCode,
     duration: input.duration,
     name: input.name,
-    price: input.price,
+    price_amount_minor: toMinorUnits(input.price),
     serviceable_id: input.serviceableId,
     serviceable_type: input.serviceableType,
   };

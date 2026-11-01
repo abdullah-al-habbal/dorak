@@ -42,7 +42,7 @@ final class GetFloorPlanAction extends BaseApiAction
                 OfferedServiceModel::query()
                     ->bookable()
                     ->offeredAtShop($branchModel->getAttribute('brand_id') === null ? null : (string) $branchModel->getAttribute('brand_id'))
-                    ->orderBy('price')
+                    ->orderBy('price_amount_minor')
                     ->get(),
             )->resolve($request),
         ]);

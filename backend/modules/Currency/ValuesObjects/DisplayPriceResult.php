@@ -7,17 +7,17 @@ namespace Modules\Currency\ValuesObjects;
 final readonly class DisplayPriceResult
 {
     public function __construct(
-        public ?float $amount,
+        public ?int $amountMinor,
         public string $currencyCode,
         public bool $conversionUnavailable,
         public bool $isDualPriceDisplayEnabled,
     ) {}
 
-    /** @return array{amount: float|null, currency_code: string} */
+    /** @return array{amount_minor: int|null, currency_code: string} */
     public function toArray(): array
     {
         return [
-            'amount' => $this->amount,
+            'amount_minor' => $this->amountMinor,
             'currency_code' => $this->currencyCode,
         ];
     }

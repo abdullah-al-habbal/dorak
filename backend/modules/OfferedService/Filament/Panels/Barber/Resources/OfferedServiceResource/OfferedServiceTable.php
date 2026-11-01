@@ -19,8 +19,7 @@ final class OfferedServiceTable
             ->columns([
                 TextColumn::make('name.en')
                     ->label(__('offeredservice::ui.name')),
-                TextColumn::make('price')
-                    ->money(),
+                TextColumn::make('price_amount_minor'),
                 TextColumn::make('duration')
                     ->label(__('offeredservice::ui.duration_min')),
                 IconColumn::make('is_at_home')

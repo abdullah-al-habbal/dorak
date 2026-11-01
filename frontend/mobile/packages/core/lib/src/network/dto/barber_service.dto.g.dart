@@ -11,7 +11,7 @@ BarberServiceDto _$BarberServiceDtoFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
-      price: (json['price'] as num?)?.toDouble() ?? 0,
+      priceAmountMinor: (json['price_amount_minor'] as num?)?.toInt() ?? 0,
       currencyCode: json['currency_code'] as String?,
       duration: (json['duration'] as num?)?.toInt(),
       isAtHome: json['is_at_home'] as bool? ?? false,
