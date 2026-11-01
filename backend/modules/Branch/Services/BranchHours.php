@@ -6,6 +6,7 @@ namespace Modules\Branch\Services;
 
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\DB;
+use Modules\Branch\Enums\BranchHoursSource;
 use Modules\Branch\Models\BranchHoursOverrideModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Models\BranchOpeningHourModel;
@@ -66,7 +67,7 @@ final class BranchHours
     /**
      * The hours for one date, or null when the branch configured none.
      *
-     * @return array{date: string, is_closed: bool, opens_at: ?string, closes_at: ?string, source: string}|null
+     * @return array{date: string, is_closed: bool, opens_at: ?string, closes_at: ?string, source: BranchHoursSource}|null
      */
     public function forDate(string $branchId, CarbonInterface $date): ?array
     {
@@ -75,7 +76,7 @@ final class BranchHours
             ->whereDate('date', $date->toDateString())
             ->first();
         if ($override instanceof BranchHoursOverrideModel) {
-            return ['date' => $date->toDateString(), ...$this->present($override), 'source' => 'override'];
+            return ['date' => $date->toDateString(), ...$this->present($override), 'source' => BranchHoursSource::Override];
         }
 
         $weekly = BranchOpeningHourModel::query()
@@ -84,7 +85,7 @@ final class BranchHours
             ->first();
 
         return $weekly instanceof BranchOpeningHourModel
-            ? ['date' => $date->toDateString(), ...$this->present($weekly), 'source' => 'weekly']
+            ? ['date' => $date->toDateString(), ...$this->present($weekly), 'source' => BranchHoursSource::Weekly]
             : null;
     }
 

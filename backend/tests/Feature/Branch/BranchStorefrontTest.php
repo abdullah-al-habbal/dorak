@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Modules\Barber\Models\BarberModel;
+use Modules\Branch\Enums\BranchHoursSource;
 use Modules\Branch\Models\BranchHoursOverrideModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Models\BranchOpeningHourModel;
@@ -60,7 +61,7 @@ describe('PATCH /api/v1/branch/profile', function (): void {
             ->assertOk()
             ->assertJsonPath('data.opening_hours.0.opens_at', '10:00')
             ->assertJsonPath('data.today_hours.closes_at', '18:00')
-            ->assertJsonPath('data.today_hours.source', 'weekly');
+            ->assertJsonPath('data.today_hours.source', BranchHoursSource::Weekly->value);
     });
 });
 
@@ -117,14 +118,14 @@ describe('PUT /api/v1/branch/hours-overrides/{date}', function (): void {
         $this->actingAs($branch, 'branch_api')
             ->putJson('/api/v1/branch/hours-overrides/'.now()->toDateString(), ['opens_at' => '12:00', 'closes_at' => '16:00'])
             ->assertOk()
-            ->assertJsonPath('data.today_hours.source', 'override');
+            ->assertJsonPath('data.today_hours.source', BranchHoursSource::Override->value);
 
         $this->getJson("/api/v1/explore/branches/{$branch->id}")
             ->assertOk()
             ->assertJsonPath('data.today_hours.date', now()->toDateString())
             ->assertJsonPath('data.today_hours.opens_at', '12:00')
             ->assertJsonPath('data.today_hours.closes_at', '16:00')
-            ->assertJsonPath('data.today_hours.source', 'override')
+            ->assertJsonPath('data.today_hours.source', BranchHoursSource::Override->value)
             ->assertJsonCount(7, 'data.opening_hours');
     });
 

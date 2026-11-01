@@ -80,6 +80,7 @@ export 'package:core/src/network/page_status.entity.dart';
 export 'package:core/src/network/page_trigger.entity.dart';
 export 'package:core/src/network/barber_booking_action.entity.dart';
 export 'package:core/src/network/booking_status.entity.dart';
+export 'package:core/src/network/branch_hours_source.entity.dart';
 export 'package:core/src/network/chair_status.entity.dart';
 export 'package:core/src/network/review_status.entity.dart';
 export 'package:core/src/network/face_profile_analysis_status.entity.dart';

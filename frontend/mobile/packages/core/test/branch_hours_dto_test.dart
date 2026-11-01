@@ -33,7 +33,7 @@ void main() {
     expect(detail.tags, ['kids']);
     expect(detail.openingHours.single.isClosed, isTrue);
     expect(detail.todayHours?.opensAt, '12:00');
-    expect(detail.todayHours?.source, 'override');
+    expect(detail.todayHours?.source, BranchHoursSource.override);
   });
 
   test('missing storefront fields default to empty', () {

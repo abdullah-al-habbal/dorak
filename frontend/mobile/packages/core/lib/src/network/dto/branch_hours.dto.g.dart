@@ -13,5 +13,14 @@ BranchHoursDto _$BranchHoursDtoFromJson(Map<String, dynamic> json) =>
       isClosed: json['is_closed'] as bool? ?? false,
       opensAt: json['opens_at'] as String?,
       closesAt: json['closes_at'] as String?,
-      source: json['source'] as String?,
+      source: $enumDecodeNullable(
+        _$BranchHoursSourceEnumMap,
+        json['source'],
+        unknownValue: JsonKey.nullForUndefinedEnumValue,
+      ),
     );
+
+const _$BranchHoursSourceEnumMap = {
+  BranchHoursSource.weekly: 'weekly',
+  BranchHoursSource.override: 'override',
+};

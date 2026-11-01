@@ -1,3 +1,4 @@
+import 'package:core/src/network/branch_hours_source.entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'branch_hours.dto.g.dart';
@@ -10,7 +11,8 @@ class BranchHoursDto {
   final bool isClosed;
   final String? opensAt;
   final String? closesAt;
-  final String? source;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  final BranchHoursSource? source;
 
   const BranchHoursDto({
     this.weekday,

@@ -40,7 +40,7 @@ void main() {
               date: '2026-10-24',
               opensAt: '09:00',
               closesAt: '21:00',
-              source: 'weekly',
+              source: BranchHoursSource.weekly,
             ),
           ),
         ),
@@ -59,7 +59,7 @@ void main() {
       _host(
         BranchStorefront(
           detail: _storefrontDetail(
-            today: const BranchHoursDto(isClosed: true, source: 'override'),
+            today: const BranchHoursDto(isClosed: true, source: BranchHoursSource.override),
           ),
         ),
         locale: const Locale('ar'),
