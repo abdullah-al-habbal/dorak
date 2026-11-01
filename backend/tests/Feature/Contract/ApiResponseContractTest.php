@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
+use Modules\Activation\Enums\ActivationStatusEnum;
 use Modules\Ban\Models\BanModel;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
@@ -22,10 +25,18 @@ use Modules\Client\Mail\SendEmailVerificationCode;
 use Modules\Client\Mail\SendPasswordResetCode;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
+use Modules\ClientHistory\Enums\HistoryMediaType;
+use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\Core\Enums\Universe;
+use Modules\Core\Enums\VenueUniverse;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\Currency\Models\ExchangeRateModel;
+use Modules\JobPosting\Enums\ApplicationStatus;
+use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Models\JobPostingModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 function assertApiEnvelope(mixed $response, int $statusCode, bool $hasData = true): void
@@ -226,13 +237,13 @@ describe('Client API', function () {
 
             $response = $this->withToken($token)
                 ->patchJson('/api/v1/client/preferences/universe', [
-                    'universe' => 'men',
+                    'universe' => VenueUniverse::Men,
                 ]);
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
             expect($data)->toHaveKey('preferred_universe');
-            expect($data['preferred_universe'])->toBe('men');
+            expect($data['preferred_universe'])->toBe(Universe::Men->value);
         });
     });
 });
@@ -584,7 +595,7 @@ describe('OfferedService API', function () {
             $barber = BarberModel::factory()->create();
             OfferedServiceModel::factory()->count(2)->create([
                 'serviceable_id' => $barber->id,
-                'serviceable_type' => 'barber',
+                'serviceable_type' => ServiceableTypeEnum::Barber,
             ]);
 
             $response = $this->getJson("/api/v1/barbers/{$barber->id}/services");
@@ -593,7 +604,7 @@ describe('OfferedService API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             expect($data)->toHaveLength(2);
-            expect($data[0])->toHaveKeys(['id', 'name', 'description', 'price', 'currency_id', 'duration', 'at_home', 'active', 'created_at']);
+            expect($data[0])->toHaveKeys(['id', 'name', 'description', 'price', 'currency_id', 'duration', 'is_at_home', 'is_active', 'created_at']);
         });
 
         it('returns empty array for barber with no services', function () {
@@ -780,7 +791,7 @@ describe('Booking API', function () {
             $chair = ChairModel::factory()->create();
             $service = OfferedServiceModel::factory()->create([
                 'serviceable_id' => $chair->branch->brand_id,
-                'serviceable_type' => 'brand',
+                'serviceable_type' => ServiceableTypeEnum::Brand,
             ]);
             $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
@@ -793,7 +804,7 @@ describe('Booking API', function () {
             assertApiEnvelope($response, 201);
             $data = $response->json('data');
             expect($data)->toHaveKeys(['id', 'time_slot', 'status', 'chair', 'services', 'created_at']);
-            expect($data['status'])->toBe('pending');
+            expect($data['status'])->toBe(BookingStatus::Pending->value);
             expect($data['chair'])->toHaveKeys(['id', 'label', 'status']);
         });
     });
@@ -836,14 +847,14 @@ describe('Booking API', function () {
             $booking = BookingModel::factory()->create([
                 'client_id' => $this->client->id,
                 'chair_id' => $chair->id,
-                'status' => 'confirmed',
+                'status' => BookingStatus::Confirmed,
             ]);
 
             $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel");
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data['status'])->toBe('canceled');
+            expect($data['status'])->toBe(BookingStatus::Canceled->value);
         });
     });
 });
@@ -860,7 +871,7 @@ describe('Review API', function () {
             $this->actingAs($client, 'client');
             $booking = BookingModel::factory()->create([
                 'client_id' => $client->id,
-                'status' => 'completed',
+                'status' => BookingStatus::Completed,
             ]);
 
             $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
@@ -882,7 +893,7 @@ describe('Review API', function () {
             $branch = BranchModel::factory()->create(['brand_id' => $brand->id]);
             ReviewModel::factory()->count(2)->create([
                 'subject_id' => $branch->id,
-                'subject_type' => BranchModel::class,
+                'subject_type' => ReviewSubjectTypeEnum::Branch,
             ]);
 
             $response = $this->getJson("/api/v1/branches/{$branch->id}/reviews");
@@ -993,13 +1004,13 @@ describe('BarberAffiliation API', function () {
 
             $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/affiliate", [
                 'affiliable_id' => $branch->id,
-                'affiliable_type' => 'branch',
+                'affiliable_type' => AffiliableType::Branch,
             ]);
 
             assertApiEnvelope($response, 201);
             $data = $response->json('data');
             expect($data)->toHaveKeys(['id', 'barber_id', 'affiliable_id', 'affiliable_type', 'status', 'commission_rate', 'created_at']);
-            expect($data['status'])->toBe('pending');
+            expect($data['status'])->toBe(AffiliationStatus::Pending->value);
         });
     });
 
@@ -1008,14 +1019,14 @@ describe('BarberAffiliation API', function () {
             $branch = BranchModel::factory()->create();
             $affiliation = BarberAffiliationModel::factory()->create([
                 'barber_id' => $this->barber->id,
-                'status' => 'pending',
+                'status' => AffiliationStatus::Pending,
             ]);
 
             $response = $this->postJson("/api/v1/affiliations/{$affiliation->id}/accept");
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data['status'])->toBe('active');
+            expect($data['status'])->toBe(AffiliationStatus::Active->value);
             expect($data)->toHaveKey('accepted_at');
         });
     });
@@ -1025,14 +1036,14 @@ describe('BarberAffiliation API', function () {
             $branch = BranchModel::factory()->create();
             $affiliation = BarberAffiliationModel::factory()->create([
                 'barber_id' => $this->barber->id,
-                'status' => 'pending',
+                'status' => AffiliationStatus::Pending,
             ]);
 
             $response = $this->postJson("/api/v1/affiliations/{$affiliation->id}/reject");
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data['status'])->toBe('rejected');
+            expect($data['status'])->toBe(AffiliationStatus::Rejected->value);
         });
     });
 
@@ -1065,7 +1076,7 @@ describe('JobPosting API', function () {
             $branch = BranchModel::factory()->create();
             JobPostingModel::factory()->create([
                 'branch_id' => $branch->id,
-                'status' => 'open',
+                'status' => JobPostingStatusEnum::Open,
             ]);
 
             $response = $this->getJson('/api/v1/jobs');
@@ -1086,7 +1097,7 @@ describe('JobPosting API', function () {
 
     describe('GET /api/v1/jobs/{job}', function () {
         it('returns job detail', function () {
-            $job = JobPostingModel::factory()->create(['status' => 'open']);
+            $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
 
             $response = $this->getJson("/api/v1/jobs/{$job->id}");
 
@@ -1094,7 +1105,7 @@ describe('JobPosting API', function () {
             $data = $response->json('data');
             assertTranslatableField($data, 'title');
             assertTranslatableField($data, 'description');
-            expect($data['status'])->toBe('open');
+            expect($data['status'])->toBe(JobPostingStatusEnum::Open->value);
         });
     });
 
@@ -1102,14 +1113,14 @@ describe('JobPosting API', function () {
         it('returns ApplicationResource shape', function () {
             $barber = BarberModel::factory()->create();
             $this->actingAs($barber, 'barber');
-            $job = JobPostingModel::factory()->create(['status' => 'open']);
+            $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
 
             $response = $this->postJson("/api/v1/jobs/{$job->id}/apply");
 
             assertApiEnvelope($response, 201);
             $data = $response->json('data');
             expect($data)->toHaveKeys(['id', 'job_posting_id', 'barber_id', 'profile_snapshot', 'status', 'created_at']);
-            expect($data['status'])->toBe('submitted');
+            expect($data['status'])->toBe(ApplicationStatus::Submitted->value);
             expect($data['profile_snapshot'])->toHaveKeys(['name', 'email', 'is_freelancer']);
         });
     });
@@ -1267,7 +1278,7 @@ describe('Activation API', function () {
             assertApiEnvelope($response, 201);
             $data = $response->json('data');
             expect($data)->toHaveKeys(['id', 'activable_id', 'activable_type', 'status', 'reason', 'activated_at', 'created_at']);
-            expect($data['status'])->toBe('enabled');
+            expect($data['status'])->toBe(ActivationStatusEnum::Enabled->value);
             expect($data['reason'])->toBe('Approved after review');
         });
     });
@@ -1283,7 +1294,7 @@ describe('Activation API', function () {
 
             assertApiEnvelope($response, 201);
             $data = $response->json('data');
-            expect($data['status'])->toBe('disabled');
+            expect($data['status'])->toBe(ActivationStatusEnum::Disabled->value);
             expect($data['reason'])->toBe('Violation of terms');
         });
     });
@@ -1301,7 +1312,7 @@ describe('ClientHistory API', function () {
         $barber = BarberModel::factory()->create();
         $service = OfferedServiceModel::factory()->create([
             'serviceable_id' => $barber->id,
-            'serviceable_type' => 'barber',
+            'serviceable_type' => ServiceableTypeEnum::Barber,
         ]);
         $booking = BookingModel::factory()->create([
             'client_id' => $client->id,
@@ -1348,20 +1359,20 @@ describe('ClientHistory API', function () {
             $mediaResponse = $this->actingAs($ctx['client'], 'client')
                 ->postJson("/api/v1/client/history/{$historyId}/media", [
                     'photo' => UploadedFile::fake()->image('photo.jpg'),
-                    'photo_type' => 'after',
+                    'photo_type' => HistoryMediaType::After,
                 ]);
 
             assertApiEnvelope($mediaResponse, 201);
             $data = $mediaResponse->json('data');
             expect($data)->toHaveKeys(['id', 'photo_url', 'photo_type', 'uploaded_at']);
-            expect($data['photo_type'])->toBe('after');
+            expect($data['photo_type'])->toBe(HistoryMediaType::After->value);
         });
 
         it('returns 401 without auth', function () {
             Storage::fake('local');
             $response = $this->postJson('/api/v1/client/history/some-id/media', [
                 'photo' => UploadedFile::fake()->image('photo.jpg'),
-                'photo_type' => 'after',
+                'photo_type' => HistoryMediaType::After,
             ]);
             expect($response->status())->toBe(401);
         });
@@ -1385,7 +1396,7 @@ describe('ClientHistory API', function () {
             assertApiEnvelope($rebookResponse, 201);
             $data = $rebookResponse->json('data');
             expect($data)->toHaveKeys(['id', 'time_slot', 'status', 'barber', 'services', 'payment_method', 'payment_status']);
-            expect($data['status'])->toBe('pending');
+            expect($data['status'])->toBe(BookingStatus::Pending->value);
         });
 
         it('returns 401 without auth', function () {
@@ -1479,13 +1490,13 @@ describe('ClientInteraction API', function () {
             $response = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/favorites', [
                     'favorable_id' => $brand->id,
-                    'favorable_type' => 'brand',
+                    'favorable_type' => FavorableTypeEnum::Brand,
                 ]);
 
             expect($response->status())->toBe(201);
             $data = $response->json('data');
             expect($data)->toHaveKeys(['id', 'favorable_id', 'favorable_type', 'created_at']);
-            expect($data['favorable_type'])->toBe('brand');
+            expect($data['favorable_type'])->toBe(FavorableTypeEnum::Brand->value);
         });
 
         it('returns 422 for invalid favorable_type', function () {
@@ -1506,7 +1517,7 @@ describe('ClientInteraction API', function () {
             $fav = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/favorites', [
                     'favorable_id' => $brand->id,
-                    'favorable_type' => 'brand',
+                    'favorable_type' => FavorableTypeEnum::Brand,
                 ])->json('data');
 
             $response = $this->actingAs($client, 'client')

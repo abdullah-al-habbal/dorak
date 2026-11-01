@@ -6,6 +6,7 @@ namespace Modules\Ban\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Admin\Models\AdminModel;
+use Modules\Ban\Enums\BannableTypeEnum;
 use Modules\Ban\Models\BanModel;
 use Modules\Client\Models\ClientModel;
 
@@ -18,7 +19,7 @@ class BanSeeder extends Seeder
 
         BanModel::create([
             'bannable_id' => $client->id,
-            'bannable_type' => 'client',
+            'bannable_type' => BannableTypeEnum::Client,
             'reason' => 'Demo ban — repeated no-shows',
             'banned_from' => now()->subDay(),
             'banned_until' => now()->addDays(7),

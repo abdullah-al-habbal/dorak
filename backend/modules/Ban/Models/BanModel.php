@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Admin\Models\AdminModel;
+use Modules\Ban\Enums\BannableTypeEnum;
 
 #[Fillable([
     'bannable_id',
@@ -33,6 +34,7 @@ class BanModel extends Model
     protected function casts(): array
     {
         return [
+            'bannable_type' => BannableTypeEnum::class,
             'banned_from' => 'datetime',
             'banned_until' => 'datetime',
         ];

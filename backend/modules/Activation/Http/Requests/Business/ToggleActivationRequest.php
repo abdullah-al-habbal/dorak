@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Activation\Http\Requests\Business;
 
 use Modules\Activation\CQRS\Command\Business\ToggleActivationCommand;
+use Modules\Activation\Enums\ActivableTypeEnum;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class ToggleActivationRequest extends BaseApiFormRequest
@@ -16,7 +17,7 @@ final class ToggleActivationRequest extends BaseApiFormRequest
         ];
     }
 
-    public function toActivateCommand(string $activableId, string $activableType = 'barber'): ToggleActivationCommand
+    public function toActivateCommand(string $activableId, ActivableTypeEnum $activableType = ActivableTypeEnum::Barber): ToggleActivationCommand
     {
         return new ToggleActivationCommand(
             activableId: $activableId,
@@ -26,7 +27,7 @@ final class ToggleActivationRequest extends BaseApiFormRequest
         );
     }
 
-    public function toDeactivateCommand(string $activableId, string $activableType = 'barber'): ToggleActivationCommand
+    public function toDeactivateCommand(string $activableId, ActivableTypeEnum $activableType = ActivableTypeEnum::Barber): ToggleActivationCommand
     {
         return new ToggleActivationCommand(
             activableId: $activableId,

@@ -10,7 +10,7 @@ final readonly class DisplayPriceResult
         public ?float $amount,
         public string $currencyCode,
         public bool $conversionUnavailable,
-        public bool $dualPriceDisplay,
+        public bool $isDualPriceDisplayEnabled,
     ) {}
 
     /** @return array{amount: float|null, currency_code: string} */

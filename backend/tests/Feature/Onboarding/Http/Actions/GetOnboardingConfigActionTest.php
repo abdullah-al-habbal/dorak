@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Modules\Onboarding\Enums\Season;
 use Modules\Onboarding\Models\OnboardingConfigurationModel;
 
 function seedOnboardingRow(array $overrides = []): void
@@ -26,7 +27,7 @@ it('returns the seasonal config for the requested locale', function () {
         'success', 'statusCode', 'code', 'message', 'timestamp',
         'data' => ['hero_image_url', 'season', 'locale'],
     ]);
-    expect($response->json('data.season'))->toBe('summer');
+    expect($response->json('data.season'))->toBe(Season::Summer->value);
     expect($response->json('data.locale'))->toBe('en');
 });
 

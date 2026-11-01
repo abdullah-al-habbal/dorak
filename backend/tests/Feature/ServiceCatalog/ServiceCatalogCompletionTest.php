@@ -5,7 +5,9 @@ declare(strict_types=1);
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Core\Enums\VenueUniverse;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemTagModel;
@@ -70,7 +72,7 @@ it('excludes inactive items from the client list but includes them for an admin'
 
 it('filters by face_shape, tag and universe', function () {
     $tag = ServiceCatalogItemTagModel::factory()->create();
-    $menCategory = ServiceCatalogCategoryModel::factory()->create(['universe' => 'men']);
+    $menCategory = ServiceCatalogCategoryModel::factory()->create(['universe' => VenueUniverse::Men]);
 
     $matching = ServiceCatalogItemModel::factory()->create([
         'category_id' => $menCategory->id,
@@ -110,7 +112,7 @@ it('rejects a dashboard service referencing an inactive catalog item with 422', 
 
     $response = $this->postJson('/api/v1/dashboard/services', [
         'serviceable_id' => $branch->brand_id,
-        'serviceable_type' => 'brand',
+        'serviceable_type' => ServiceableTypeEnum::Brand,
         'catalog_item_id' => $inactiveItem->id,
         'currency_id' => $currency->id,
         'name' => ['en' => 'Haircut', 'ar' => 'قص الشعر'],

@@ -8,6 +8,7 @@ use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function (): void {
@@ -17,7 +18,7 @@ beforeEach(function (): void {
         'travel_radius' => 10,
     ]);
     $this->service = OfferedServiceModel::factory()->atHome()->create([
-        'serviceable_type' => 'barber',
+        'serviceable_type' => ServiceableTypeEnum::Barber,
         'serviceable_id' => $this->barber->id,
         'duration' => 30,
     ]);
@@ -51,10 +52,10 @@ it('requires a barber', function (): void {
 
 it('rejects a service that is not flagged at home', function (): void {
     $service = OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'barber',
+        'serviceable_type' => ServiceableTypeEnum::Barber,
         'serviceable_id' => $this->barber->id,
         'duration' => 30,
-        'at_home' => false,
+        'is_at_home' => false,
     ]);
 
     ($this->book)(['service_ids' => [$service->id]])
@@ -64,7 +65,7 @@ it('rejects a service that is not flagged at home', function (): void {
 
 it('rejects an at-home service owned by someone else', function (): void {
     $service = OfferedServiceModel::factory()->atHome()->create([
-        'serviceable_type' => 'barber',
+        'serviceable_type' => ServiceableTypeEnum::Barber,
         'serviceable_id' => BarberModel::factory()->create()->id,
         'duration' => 30,
     ]);
@@ -107,7 +108,7 @@ it('applies the same rules to the barber slot endpoint', function (): void {
     $query = fn (array $extra): string => '/api/v1/barbers/'.$this->barber->id.'/slots?'.http_build_query(array_merge([
         'date' => $this->slot->format('Y-m-d'),
         'service_ids' => [$this->service->id],
-        'at_home' => 1,
+        'is_at_home' => 1,
     ], $extra));
 
     $this->getJson($query(['latitude' => 33.51, 'longitude' => 36.31]))->assertOk();

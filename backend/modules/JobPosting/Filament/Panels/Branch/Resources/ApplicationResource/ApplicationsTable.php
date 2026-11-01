@@ -19,14 +19,7 @@ final class ApplicationsTable
                 TextColumn::make('jobPosting.title.en')
                     ->label(__('jobposting::ui.job_title')),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'submitted' => 'warning',
-                        'seen' => 'info',
-                        'accepted' => 'success',
-                        'rejected' => 'danger',
-                        default => 'gray',
-                    }),
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->label(__('jobposting::ui.applied')),

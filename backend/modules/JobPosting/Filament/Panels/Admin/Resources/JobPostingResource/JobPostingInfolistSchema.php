@@ -23,8 +23,7 @@ final class JobPostingInfolistSchema
                     TextEntry::make('branch.name.en')
                         ->label(__('jobposting::ui.branch')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => $state === 'open' ? 'success' : 'danger'),
+                        ->badge(),
                     TextEntry::make('description.en')
                         ->label(__('jobposting::ui.description'))
                         ->html(),

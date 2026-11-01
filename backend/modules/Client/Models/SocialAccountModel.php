@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Client\Enums\SocialProviderEnum;
 
 #[Fillable([
     'client_id',
@@ -27,6 +28,7 @@ class SocialAccountModel extends Model
     protected function casts(): array
     {
         return [
+            'provider' => SocialProviderEnum::class,
             'metadata' => 'array',
         ];
     }

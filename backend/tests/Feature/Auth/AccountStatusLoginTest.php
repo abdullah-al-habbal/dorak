@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
 
 it('rejects disabled clients before issuing tokens', function (): void {
-    $client = ClientModel::factory()->create(['status' => 'disabled']);
+    $client = ClientModel::factory()->create(['status' => ClientStatusEnum::Disabled]);
 
     $this->postJson('/api/v1/client/login', [
         'email' => $client->email,
@@ -21,7 +22,7 @@ it('rejects disabled clients before issuing tokens', function (): void {
 });
 
 it('issues a verification-only login token to pending clients', function (): void {
-    $client = ClientModel::factory()->create(['status' => 'pending', 'email_verified_at' => null]);
+    $client = ClientModel::factory()->create(['status' => ClientStatusEnum::Pending, 'email_verified_at' => null]);
     Mail::fake();
 
     $response = $this->postJson('/api/v1/client/login', [
@@ -45,13 +46,13 @@ it('issues a verification-only login token to pending clients', function (): voi
 });
 
 it('activates a pending client after email verification', function (): void {
-    $client = ClientModel::factory()->create(['status' => 'pending', 'email_verified_at' => null]);
+    $client = ClientModel::factory()->create(['status' => ClientStatusEnum::Pending, 'email_verified_at' => null]);
     $token = $client->createToken('verify', ['email-verification'])->plainTextToken;
     Cache::put("email_verify_{$client->id}", '123456', now()->addMinutes(10));
 
     $this->withToken($token)->postJson('/api/v1/client/email/verify', ['code' => '123456'])->assertOk();
 
-    expect($client->fresh()->status->value)->toBe('enabled')
+    expect($client->fresh()->status->value)->toBe(ClientStatusEnum::Enabled->value)
         ->and($client->fresh()->email_verified_at)->not->toBeNull();
 
     expect($client->tokens()->firstOrFail()->abilities)->toBe(['client-active']);

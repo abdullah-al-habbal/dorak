@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
@@ -31,7 +33,7 @@ it('submits review for completed booking', function () {
 it('rejects review for non-completed booking', function () {
     $booking = BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => 'confirmed',
+        'status' => BookingStatus::Confirmed,
     ]);
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
@@ -102,7 +104,7 @@ it('reviews the barber of an at-home booking without chair (Task 39)', function 
         'rating' => 5,
     ]);
 
-    $response->assertCreated()->assertJsonPath('data.subject_type', 'barber');
+    $response->assertCreated()->assertJsonPath('data.subject_type', ReviewSubjectTypeEnum::Barber->value);
 });
 
 it('rejects review for an at-home booking with no barber', function () {

@@ -56,15 +56,15 @@ it('returns 404 for non-existent chair', function () {
 describe('update chair', function () {
     it('updates chair status', function () {
         $branch = BranchModel::factory()->create();
-        $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'status' => 'available']);
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'status' => ChairStatus::Available]);
         $this->actingAs($branch, 'branch_api');
 
         $response = $this->patchJson("/api/v1/chairs/{$chair->id}", [
-            'status' => 'occupied',
+            'status' => ChairStatus::Occupied,
         ]);
 
         $response->assertOk();
-        expect($response->json('data.status'))->toBe('occupied');
+        expect($response->json('data.status'))->toBe(ChairStatus::Occupied->value);
         expect($chair->fresh()->status)->toBe(ChairStatus::Occupied);
     });
 
@@ -114,7 +114,7 @@ describe('update chair', function () {
         $this->actingAs($client, 'client');
 
         $response = $this->patchJson("/api/v1/chairs/{$chair->id}", [
-            'status' => 'occupied',
+            'status' => ChairStatus::Occupied,
         ]);
 
         $response->assertForbidden();
@@ -126,7 +126,7 @@ describe('update chair', function () {
         $this->actingAs($manager, 'branch_api');
 
         $response = $this->patchJson("/api/v1/chairs/{$chair->id}", [
-            'status' => 'occupied',
+            'status' => ChairStatus::Occupied,
         ]);
 
         $response->assertForbidden();
@@ -138,7 +138,7 @@ describe('update chair', function () {
         $this->actingAs($admin, 'admin_api');
 
         $response = $this->patchJson("/api/v1/chairs/{$chair->id}", [
-            'status' => 'occupied',
+            'status' => ChairStatus::Occupied,
         ]);
 
         $response->assertOk();
@@ -148,7 +148,7 @@ describe('update chair', function () {
         $chair = ChairModel::factory()->create();
 
         $response = $this->patchJson("/api/v1/chairs/{$chair->id}", [
-            'status' => 'occupied',
+            'status' => ChairStatus::Occupied,
         ]);
 
         $response->assertUnauthorized();

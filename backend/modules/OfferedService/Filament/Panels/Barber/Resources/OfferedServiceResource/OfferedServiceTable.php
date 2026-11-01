@@ -23,9 +23,9 @@ final class OfferedServiceTable
                     ->money(),
                 TextColumn::make('duration')
                     ->label(__('offeredservice::ui.duration_min')),
-                IconColumn::make('at_home')
+                IconColumn::make('is_at_home')
                     ->boolean(),
-                IconColumn::make('active')
+                IconColumn::make('is_active')
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime(),

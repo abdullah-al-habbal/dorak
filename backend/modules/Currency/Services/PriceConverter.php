@@ -11,6 +11,7 @@ use Modules\Currency\Constants\CurrencyDisplayConstants;
 use Modules\Currency\CQRS\Query\Shared\ConvertCurrencyQuery;
 use Modules\Currency\Eloquent\Resolvers\Shared\ConvertCurrencyEloquentResolver;
 use Modules\Currency\ValuesObjects\DisplayPriceResult;
+use Modules\Preference\Enums\PreferenceableTypeEnum;
 use Modules\Preference\Models\PreferenceModel;
 
 final readonly class PriceConverter
@@ -23,7 +24,7 @@ final readonly class PriceConverter
         Request $request,
         float $basePrice,
         string $baseCurrencyCode,
-        string $ownerType,
+        PreferenceableTypeEnum $ownerType,
         string $ownerId,
     ): ?DisplayPriceResult {
         $displayCurrencyCode = $this->viewerCurrencyCode($request);
@@ -39,7 +40,7 @@ final readonly class PriceConverter
             amount: $converted,
             currencyCode: $displayCurrencyCode,
             conversionUnavailable: $converted === null,
-            dualPriceDisplay: $dualDisplay,
+            isDualPriceDisplayEnabled: $dualDisplay,
         );
     }
 
@@ -49,7 +50,7 @@ final readonly class PriceConverter
 
         if ($client instanceof ClientModel) {
             $preference = PreferenceModel::query()
-                ->where('preferenceable_type', 'client')
+                ->where('preferenceable_type', PreferenceableTypeEnum::Client)
                 ->where('preferenceable_id', $client->getKey())
                 ->with('displayCurrency')
                 ->first();
@@ -62,12 +63,12 @@ final readonly class PriceConverter
         return is_string($header) && $header !== '' ? strtoupper($header) : null;
     }
 
-    private function dualDisplayFor(string $ownerType, string $ownerId): bool
+    private function dualDisplayFor(PreferenceableTypeEnum $ownerType, string $ownerId): bool
     {
         return (bool) PreferenceModel::query()
             ->where('preferenceable_type', $ownerType)
             ->where('preferenceable_id', $ownerId)
-            ->value('dual_price_display');
+            ->value('is_dual_price_display_enabled');
     }
 
     private function convert(float $amount, string $fromCode, string $toCode): ?float

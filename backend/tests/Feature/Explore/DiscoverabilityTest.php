@@ -2,19 +2,23 @@
 
 declare(strict_types=1);
 
+use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Models\BookingModel;
+use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\VenueUniverse;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 it('excludes inactive and banned branches from explore and brand listings', function (): void {
-    $brand = BrandModel::factory()->create(['universe' => 'men']);
-    $active = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => 'enabled', 'latitude' => 33.5, 'longitude' => 36.3]);
-    $disabled = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => 'disabled', 'latitude' => 33.5, 'longitude' => 36.3]);
-    $banned = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => 'enabled', 'latitude' => 33.5, 'longitude' => 36.3]);
+    $brand = BrandModel::factory()->create(['universe' => VenueUniverse::Men]);
+    $active = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => BranchStatusEnum::Enabled, 'latitude' => 33.5, 'longitude' => 36.3]);
+    $disabled = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => BranchStatusEnum::Disabled, 'latitude' => 33.5, 'longitude' => 36.3]);
+    $banned = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => BranchStatusEnum::Enabled, 'latitude' => 33.5, 'longitude' => 36.3]);
     $banned->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
 
     $this->getJson('/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=1000&universe=men')
@@ -25,9 +29,9 @@ it('excludes inactive and banned branches from explore and brand listings', func
 });
 
 it('excludes inactive and banned barbers from explore and detail', function (): void {
-    $active = BarberModel::factory()->freelancer()->create(['status' => 'enabled', 'latitude' => 33.5, 'longitude' => 36.3]);
-    BarberModel::factory()->freelancer()->create(['status' => 'disabled', 'latitude' => 33.5, 'longitude' => 36.3]);
-    $banned = BarberModel::factory()->freelancer()->create(['status' => 'enabled', 'latitude' => 33.5, 'longitude' => 36.3]);
+    $active = BarberModel::factory()->freelancer()->create(['status' => BarberStatusEnum::Enabled, 'latitude' => 33.5, 'longitude' => 36.3]);
+    BarberModel::factory()->freelancer()->create(['status' => BarberStatusEnum::Disabled, 'latitude' => 33.5, 'longitude' => 36.3]);
+    $banned = BarberModel::factory()->freelancer()->create(['status' => BarberStatusEnum::Enabled, 'latitude' => 33.5, 'longitude' => 36.3]);
     $banned->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
 
     $this->getJson('/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000')
@@ -39,8 +43,8 @@ it('rejects booking a chair in an inactive branch with 422', function (): void {
     $client = ClientModel::factory()->create();
     $token = $client->createToken('booking-test', ['client-active'])->plainTextToken;
     $chair = ChairModel::factory()->create();
-    $chair->branch->update(['status' => 'disabled']);
-    $service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $chair->branch->brand_id]);
+    $chair->branch->update(['status' => BranchStatusEnum::Disabled]);
+    $service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $chair->branch->brand_id]);
 
     $this->withToken($token)->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -52,7 +56,7 @@ it('rejects booking a chair in an inactive branch with 422', function (): void {
 });
 
 it('hides an inactive branch floor plan', function (): void {
-    $branch = BranchModel::factory()->create(['status' => 'disabled']);
+    $branch = BranchModel::factory()->create(['status' => BranchStatusEnum::Disabled]);
 
     $this->getJson('/api/v1/branches/'.$branch->id.'/floor-plan?'.http_build_query([
         'starts_at' => now()->addDay()->toIso8601ZuluString(),

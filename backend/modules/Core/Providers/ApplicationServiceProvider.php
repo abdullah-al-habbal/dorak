@@ -11,16 +11,10 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
-use Modules\Admin\Models\AdminModel;
-use Modules\Barber\Models\BarberModel;
-use Modules\Branch\Models\BranchModel;
-use Modules\Brand\Models\BrandModel;
-use Modules\Client\Models\ClientModel;
+use Modules\Core\Constants\MorphMapConstants;
 use Modules\Core\Contracts\SmsSender;
 use Modules\Core\Models\NotificationDeliveryModel;
 use Modules\Core\Services\Sms\LogSmsSender;
-use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
-use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
 final class ApplicationServiceProvider extends BaseModuleServiceProvider
 {
@@ -82,22 +76,18 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
 
     private function registerMorphMap(): void
     {
-        Relation::enforceMorphMap([
-            'admin' => AdminModel::class,
-            'brand' => BrandModel::class,
-            'branch' => BranchModel::class,
-            'barber' => BarberModel::class,
-            'client' => ClientModel::class,
-            'catalog_item' => ServiceCatalogItemModel::class,
-            'catalog_category' => ServiceCatalogCategoryModel::class,
-            // Keep existing rows that were persisted before aliases were
-            // enforced readable while all new writes use the stable aliases.
-            AdminModel::class => AdminModel::class,
-            BrandModel::class => BrandModel::class,
-            BranchModel::class => BranchModel::class,
-            BarberModel::class => BarberModel::class,
-            ClientModel::class => ClientModel::class,
-        ]);
+        $map = [];
+
+        foreach (MorphMapConstants::MORPH_ALIAS_ENUMS as $enum) {
+            foreach ($enum::cases() as $case) {
+                $map[$case->value] = $case->modelClass();
+            }
+        }
+
+        // Unmapped models raise ClassMorphViolationException instead of
+        // silently persisting a fully-qualified class name.
+        Relation::requireMorphMap();
+        Relation::morphMap($map);
     }
 
     private function registerFactoryResolution(): void

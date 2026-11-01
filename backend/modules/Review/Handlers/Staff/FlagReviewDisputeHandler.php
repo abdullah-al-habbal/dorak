@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Review\Handlers\Staff;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 use Modules\Review\CQRS\Command\Staff\FlagReviewDisputeCommand;
 use Modules\Review\Enums\ReviewStatus;
@@ -22,10 +21,7 @@ final class FlagReviewDisputeHandler
     {
         return DB::transaction(function () use ($command): FlagReviewDisputeResult {
             $review = ReviewModel::query()->lockForUpdate()->findOrFail($command->reviewId);
-            $subjectType = $review->getAttribute('subject_type');
-            $subjectAlias = is_string($subjectType) ? Relation::getMorphAlias($subjectType) : null;
-
-            if ($subjectAlias !== $command->subjectType || $review->getAttribute('subject_id') !== $command->subjectId) {
+            if ($review->getAttribute('subject_type') !== $command->subjectType || $review->getAttribute('subject_id') !== $command->subjectId) {
                 return FlagReviewDisputeResult::notReviewedParty();
             }
 

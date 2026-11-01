@@ -57,7 +57,7 @@ it('drops a disputed review from the aggregate and restores it on resolution', f
 
     $admin = AdminModel::factory()->create();
     $this->withToken($admin->createToken('test')->plainTextToken)
-        ->patchJson("/api/v1/admin/reviews/{$disputed->id}/resolve", ['status' => 'published'])
+        ->patchJson("/api/v1/admin/reviews/{$disputed->id}/resolve", ['status' => ReviewStatus::Published])
         ->assertOk();
     expect((float) $branch->fresh()->rating_avg)->toBe(3.0)
         ->and($branch->fresh()->rating_count)->toBe(2);

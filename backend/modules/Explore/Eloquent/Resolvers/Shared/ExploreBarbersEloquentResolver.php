@@ -102,7 +102,7 @@ final class ExploreBarbersEloquentResolver
     {
         if ($payload->catalogItemIds !== null) {
             $query->whereHas('services', fn ($q) => $q
-                ->where('active', true)
+                ->where('is_active', true)
                 ->whereIn('catalog_item_id', $payload->catalogItemIds)
                 ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
             );
@@ -118,7 +118,7 @@ final class ExploreBarbersEloquentResolver
 
         if ($payload->priceRangeMin !== null || $payload->priceRangeMax !== null) {
             $query->whereHas('services', fn ($q) => $q
-                ->where('active', true)
+                ->where('is_active', true)
                 ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
                 ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price', '>=', $payload->priceRangeMin))
                 ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price', '<=', $payload->priceRangeMax))
@@ -130,7 +130,7 @@ final class ExploreBarbersEloquentResolver
             $query->where(function (Builder $match) use ($pattern): void {
                 $this->search->orMatchTranslatable($match, ['name'], $pattern);
                 $match->orWhereHas('services', fn (Builder $services) => $services
-                    ->where('active', true)
+                    ->where('is_active', true)
                     ->where(function (Builder $service) use ($pattern): void {
                         $this->search->orMatchTranslatable($service, ['name'], $pattern);
                         $service->orWhereHas('catalogItem', fn (Builder $item) => $item
@@ -145,7 +145,7 @@ final class ExploreBarbersEloquentResolver
 
         if ($payload->tagIds !== null) {
             $query->whereHas('services', fn (Builder $services) => $services
-                ->where('active', true)
+                ->where('is_active', true)
                 ->whereHas('catalogItem', fn (Builder $item) => $item
                     ->where('is_active', true)
                     ->whereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, null, $payload->tagIds))));
@@ -154,7 +154,7 @@ final class ExploreBarbersEloquentResolver
         if ($payload->faceShapeCompatible !== null) {
             // An explicit face shape filters (REC-1); the client's own analysis only boosts.
             $query->whereHas('services', fn (Builder $services) => $services
-                ->where('active', true)
+                ->where('is_active', true)
                 ->whereHas('catalogItem', fn (Builder $item) => $item
                     ->where('is_active', true)
                     ->whereJsonContains('face_shapes', $payload->faceShapeCompatible)));

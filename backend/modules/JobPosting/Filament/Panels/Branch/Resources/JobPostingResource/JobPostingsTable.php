@@ -18,13 +18,7 @@ final class JobPostingsTable
                 TextColumn::make('title.en')
                     ->label(__('jobposting::ui.title')),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'open' => 'success',
-                        'closed' => 'danger',
-                        'archived' => 'gray',
-                        default => 'gray',
-                    }),
+                    ->badge(),
                 TextColumn::make('applications_count')
                     ->counts('applications')
                     ->label(__('jobposting::ui.applications')),

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Database\Factories\BarberAffiliationFactory;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
@@ -30,7 +31,7 @@ it('allows a barber with an accepted branch affiliation to be assigned', functio
     BarberAffiliationFactory::new()->create([
         'barber_id' => $barber->id,
         'affiliable_id' => $branch->id,
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
         'status' => AffiliationStatus::Active->value,
     ]);
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
@@ -47,7 +48,7 @@ it('allows a barber with an accepted affiliation to the branch brand', function 
     BarberAffiliationFactory::new()->create([
         'barber_id' => $barber->id,
         'affiliable_id' => $brand->id,
-        'affiliable_type' => 'brand',
+        'affiliable_type' => AffiliableType::Brand,
         'status' => AffiliationStatus::Active->value,
     ]);
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);

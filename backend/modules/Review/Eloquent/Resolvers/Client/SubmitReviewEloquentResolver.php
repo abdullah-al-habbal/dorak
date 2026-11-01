@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Review\Eloquent\Resolvers\Client;
 
 use Modules\Booking\Models\BookingModel;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
 
@@ -16,7 +17,7 @@ final class SubmitReviewEloquentResolver
         return BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
     }
 
-    public function authorHasReviewed(BookingModel $booking, string $authorId, string $authorType): bool
+    public function authorHasReviewed(BookingModel $booking, string $authorId, ReviewAuthorTypeEnum $authorType): bool
     {
         return $booking->reviews()
             ->where('author_id', $authorId)

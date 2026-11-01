@@ -7,7 +7,6 @@ namespace Modules\JobPosting\Filament\Panels\Barber\Resources\ApplicationResourc
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Modules\JobPosting\Enums\ApplicationStatus;
 
 final class ApplicationTable
 {
@@ -18,13 +17,7 @@ final class ApplicationTable
                 TextColumn::make('jobPosting.title.en')
                     ->label(__('jobposting::ui.job_title')),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (ApplicationStatus $state): string => match ($state) {
-                        ApplicationStatus::Submitted => 'warning',
-                        ApplicationStatus::Seen => 'info',
-                        ApplicationStatus::Accepted => 'success',
-                        ApplicationStatus::Rejected => 'danger',
-                    }),
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->label(__('jobposting::ui.applied')),

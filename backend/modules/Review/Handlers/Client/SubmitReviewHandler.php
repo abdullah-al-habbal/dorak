@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Modules\Review\Handlers\Client;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
-use Modules\Branch\Models\BranchModel;
 use Modules\Review\CQRS\Command\Client\SubmitReviewCommand;
 use Modules\Review\Eloquent\Resolvers\Client\SubmitReviewEloquentResolver;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\ValuesObjects\SubmitReviewResult;
 
 /**
@@ -54,7 +53,7 @@ final class SubmitReviewHandler
             $barberReview = $barberId === null ? null : $this->resolver->createReview([
                 ...$this->baseAttributes($booking, $command),
                 'subject_id' => $barberId,
-                'subject_type' => (new BarberModel)->getMorphClass(),
+                'subject_type' => ReviewSubjectTypeEnum::Barber,
                 'rating' => $branchId === null ? $command->rating : ($command->barberRating ?? $command->rating),
             ]);
 
@@ -65,7 +64,7 @@ final class SubmitReviewHandler
             $branchReview = $this->resolver->createReview([
                 ...$this->baseAttributes($booking, $command),
                 'subject_id' => $branchId,
-                'subject_type' => (new BranchModel)->getMorphClass(),
+                'subject_type' => ReviewSubjectTypeEnum::Branch,
                 'rating' => $command->rating,
             ]);
 

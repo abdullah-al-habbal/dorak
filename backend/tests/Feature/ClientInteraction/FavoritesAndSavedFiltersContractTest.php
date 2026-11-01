@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Str;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientInteraction\Enums\FavorableTypeEnum;
 use Modules\ClientInteraction\Models\ClientFavoriteModel;
 
 beforeEach(function () {
@@ -15,9 +16,9 @@ it('is idempotent when the same favorite is added twice, returning 200 on the se
     $branch = BranchModel::factory()->create();
 
     $first = $this->actingAs($this->client, 'client')
-        ->postJson('/api/v1/client/favorites', ['favorable_id' => $branch->id, 'favorable_type' => 'branch']);
+        ->postJson('/api/v1/client/favorites', ['favorable_id' => $branch->id, 'favorable_type' => FavorableTypeEnum::Branch]);
     $second = $this->actingAs($this->client, 'client')
-        ->postJson('/api/v1/client/favorites', ['favorable_id' => $branch->id, 'favorable_type' => 'branch']);
+        ->postJson('/api/v1/client/favorites', ['favorable_id' => $branch->id, 'favorable_type' => FavorableTypeEnum::Branch]);
 
     $first->assertCreated();
     $second->assertOk();
@@ -26,7 +27,7 @@ it('is idempotent when the same favorite is added twice, returning 200 on the se
 
 it('rejects a favorable_id that does not exist for its type with a 422', function () {
     $response = $this->actingAs($this->client, 'client')
-        ->postJson('/api/v1/client/favorites', ['favorable_id' => (string) Str::uuid(), 'favorable_type' => 'branch']);
+        ->postJson('/api/v1/client/favorites', ['favorable_id' => (string) Str::uuid(), 'favorable_type' => FavorableTypeEnum::Branch]);
 
     $response->assertStatus(422)->assertJsonValidationErrors('favorable_id');
 });

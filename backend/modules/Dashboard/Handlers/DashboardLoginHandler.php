@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Handlers;
 
 use Illuminate\Support\Facades\Hash;
-use InvalidArgumentException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
-use Modules\Dashboard\Constants\DashboardActorConstants;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Settings\Enums\SettingKey;
@@ -23,13 +22,13 @@ final class DashboardLoginHandler
         private readonly DashboardOwnerActorResolver $ownerActors,
     ) {}
 
-    public function authenticate(string $actorType, string $email, string $password): ?DashboardActor
+    public function authenticate(DashboardActorTypeEnum $actorType, string $email, string $password): ?DashboardActor
     {
         return match ($actorType) {
-            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => $this->authenticateAdmin($email, $password),
-            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => $this->authenticateBranch($email, $password),
-            DashboardActorConstants::DASHBOARD_ACTOR_BARBER => $this->authenticateBarber($email, $password),
-            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => $this->authenticateOwner($email, $password),
+            DashboardActorTypeEnum::Admin => $this->authenticateAdmin($email, $password),
+            DashboardActorTypeEnum::Branch => $this->authenticateBranch($email, $password),
+            DashboardActorTypeEnum::Barber => $this->authenticateBarber($email, $password),
+            DashboardActorTypeEnum::Owner => $this->authenticateOwner($email, $password),
             default => null,
         };
     }
@@ -51,7 +50,7 @@ final class DashboardLoginHandler
         $storedPassword = $admin?->getAttribute('password');
         $adminId = $admin?->getAuthIdentifier();
         if ($admin instanceof AdminModel && is_string($storedPassword) && is_string($adminId) && Hash::check($password, $storedPassword)) {
-            return new DashboardActor($adminId, DashboardActorConstants::DASHBOARD_ACTOR_ADMIN, 'platform_admin', null);
+            return new DashboardActor($adminId, DashboardActorTypeEnum::Admin, 'platform_admin', null);
         }
 
         return null;
@@ -63,7 +62,7 @@ final class DashboardLoginHandler
         $storedPassword = $branch?->getAttribute('password');
         $branchId = $branch?->getAuthIdentifier();
         if ($branch instanceof BranchModel && is_string($storedPassword) && is_string($branchId) && Hash::check($password, $storedPassword)) {
-            return new DashboardActor($branchId, DashboardActorConstants::DASHBOARD_ACTOR_BRANCH, 'branch_manager', $branchId);
+            return new DashboardActor($branchId, DashboardActorTypeEnum::Branch, 'branch_manager', $branchId);
         }
 
         return null;
@@ -90,7 +89,7 @@ final class DashboardLoginHandler
             return null;
         }
 
-        return new DashboardActor($barberId, DashboardActorConstants::DASHBOARD_ACTOR_BARBER, 'barber', null);
+        return new DashboardActor($barberId, DashboardActorTypeEnum::Barber, 'barber', null);
     }
 
     private function authenticateOwner(string $email, string $password): ?DashboardActor
@@ -111,11 +110,10 @@ final class DashboardLoginHandler
     private function resolveModel(DashboardActor $actor): AdminModel|BranchModel|BarberModel|ClientModel
     {
         return match ($actor->actorType) {
-            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => AdminModel::query()->findOrFail($actor->id),
-            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => BranchModel::query()->findOrFail($actor->id),
-            DashboardActorConstants::DASHBOARD_ACTOR_BARBER => BarberModel::query()->findOrFail($actor->id),
-            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => ClientModel::query()->findOrFail($actor->id),
-            default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $actor->actorType])),
+            DashboardActorTypeEnum::Admin => AdminModel::query()->findOrFail($actor->id),
+            DashboardActorTypeEnum::Branch => BranchModel::query()->findOrFail($actor->id),
+            DashboardActorTypeEnum::Barber => BarberModel::query()->findOrFail($actor->id),
+            DashboardActorTypeEnum::Owner => ClientModel::query()->findOrFail($actor->id),
         };
     }
 

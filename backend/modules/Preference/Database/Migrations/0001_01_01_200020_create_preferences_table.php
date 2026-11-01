@@ -16,11 +16,11 @@ return new class extends Migration
             $table->uuid('preferenceable_id')->nullable();
             $table->string('preferenceable_type')->nullable();
             $table->string('preferred_language', 10)->nullable();
-            $table->boolean('notification_enabled')->default(true);
+            $table->boolean('is_notification_enabled')->default(true);
             $table->foreignUuid('display_currency_id')->nullable()->constrained('currencies')->nullOnDelete();
             $table->string('theme')->nullable();
             $table->string('price_display_mode')->nullable();
-            $table->boolean('dual_price_display')->default(false);
+            $table->boolean('is_dual_price_display_enabled')->default(false);
             $table->timestamps();
         });
     }

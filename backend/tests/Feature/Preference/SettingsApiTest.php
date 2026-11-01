@@ -7,7 +7,10 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\Locale;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\Preference\Enums\PriceDisplayModeEnum;
+use Modules\Preference\Enums\ThemeEnum;
 use Modules\Preference\Models\PreferenceModel;
 use Tests\TestCase;
 
@@ -17,7 +20,7 @@ it('returns defaults for a client with no settings row and creates exactly one r
 
     $this->withToken($token)->getJson('/api/v1/client/settings')
         ->assertOk()
-        ->assertJsonPath('data.notification_enabled', true)
+        ->assertJsonPath('data.is_notification_enabled', true)
         ->assertJsonPath('data.preferred_language', null);
 
     expect(PreferenceModel::query()->where('preferenceable_type', 'client')->where('preferenceable_id', $client->id)->count())->toBe(1);
@@ -45,15 +48,15 @@ it('persists a valid settings update for a client', function (): void {
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
     $this->withToken($token)->patchJson('/api/v1/client/settings', [
-        'preferred_language' => 'ar',
-        'notification_enabled' => false,
+        'preferred_language' => Locale::Ar,
+        'is_notification_enabled' => false,
         'display_currency_id' => $currency->id,
-        'theme' => 'dark',
-        'price_display_mode' => 'tax_exclusive',
+        'theme' => ThemeEnum::Dark,
+        'price_display_mode' => PriceDisplayModeEnum::TaxExclusive,
     ])
         ->assertOk()
         ->assertJsonPath('data.preferred_language', 'ar')
-        ->assertJsonPath('data.notification_enabled', false)
+        ->assertJsonPath('data.is_notification_enabled', false)
         ->assertJsonPath('data.display_currency_id', $currency->id)
         ->assertJsonPath('data.theme', 'dark')
         ->assertJsonPath('data.price_display_mode', 'tax_exclusive');
@@ -64,7 +67,7 @@ it('scopes settings to the authenticated client only', function (): void {
     $other = ClientModel::factory()->create();
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
-    $this->withToken($token)->patchJson('/api/v1/client/settings', ['preferred_language' => 'en']);
+    $this->withToken($token)->patchJson('/api/v1/client/settings', ['preferred_language' => Locale::En]);
 
     $this->app['auth']->forgetGuards();
     $this->withToken($other->createToken('client-app', $other->accessTokenAbilities())->plainTextToken)
@@ -81,9 +84,9 @@ it('returns defaults and persists settings for a barber', function (): void {
 
     $this->withToken($token)->getJson('/api/v1/barber/settings')
         ->assertOk()
-        ->assertJsonPath('data.notification_enabled', true);
+        ->assertJsonPath('data.is_notification_enabled', true);
 
-    $this->withToken($token)->patchJson('/api/v1/barber/settings', ['theme' => 'dark'])
+    $this->withToken($token)->patchJson('/api/v1/barber/settings', ['theme' => ThemeEnum::Dark])
         ->assertOk()
         ->assertJsonPath('data.theme', 'dark');
 
@@ -96,9 +99,9 @@ it('returns defaults and persists settings for a branch', function (): void {
 
     $this->withToken($token)->getJson('/api/v1/branch/settings')
         ->assertOk()
-        ->assertJsonPath('data.notification_enabled', true);
+        ->assertJsonPath('data.is_notification_enabled', true);
 
-    $this->withToken($token)->patchJson('/api/v1/branch/settings', ['preferred_language' => 'ar'])
+    $this->withToken($token)->patchJson('/api/v1/branch/settings', ['preferred_language' => Locale::Ar])
         ->assertOk()
         ->assertJsonPath('data.preferred_language', 'ar');
 
@@ -112,10 +115,10 @@ it('returns and persists settings for a dashboard admin actor', function (): voi
     $this->withHeader('Authorization', 'Bearer '.$token)
         ->getJson('/api/v1/dashboard/settings')
         ->assertOk()
-        ->assertJsonPath('data.notification_enabled', true);
+        ->assertJsonPath('data.is_notification_enabled', true);
 
     $this->withHeader('Authorization', 'Bearer '.$token)
-        ->patchJson('/api/v1/dashboard/settings', ['theme' => 'dark'])
+        ->patchJson('/api/v1/dashboard/settings', ['theme' => ThemeEnum::Dark])
         ->assertOk()
         ->assertJsonPath('data.theme', 'dark');
 
@@ -126,7 +129,7 @@ it('responds with translated resources once a barber sets an Arabic preferred la
     $barber = BarberModel::factory()->create(['name' => ['en' => 'John Doe', 'ar' => 'جون دو']]);
     $token = $barber->createToken('barber-app')->plainTextToken;
 
-    $this->withToken($token)->patchJson('/api/v1/barber/settings', ['preferred_language' => 'ar'])->assertOk();
+    $this->withToken($token)->patchJson('/api/v1/barber/settings', ['preferred_language' => Locale::Ar])->assertOk();
 
     $this->withToken($token)->getJson('/api/v1/barber/profile')
         ->assertOk()

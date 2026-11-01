@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\JobPosting\Enums\ApplicationStatus;
+use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Models\ApplicationModel;
 use Modules\JobPosting\Models\JobPostingModel;
 
@@ -17,7 +19,7 @@ function pendingAffiliationFor(BranchModel $branch, array $overrides = []): Barb
 {
     return BarberAffiliationModel::factory()->pending()->create([
         'affiliable_id' => $branch->id,
-        'initiated_by_type' => 'barber',
+        'initiated_by_type' => AffiliationInitiatorTypeEnum::Barber,
         ...$overrides,
     ]);
 }
@@ -37,7 +39,7 @@ describe('Dashboard branch affiliations', function (): void {
 
         $this->postJson("/api/v1/dashboard/branches/{$branch->id}/affiliations/{$affiliation->id}/accept")
             ->assertOk()
-            ->assertJsonPath('data.status', 'active');
+            ->assertJsonPath('data.status', AffiliationStatus::Active->value);
 
         $this->getJson("/api/v1/dashboard/branches/{$branch->id}/affiliations?status=active")
             ->assertOk()
@@ -54,7 +56,7 @@ describe('Dashboard branch affiliations', function (): void {
 
         $this->postJson("/api/v1/dashboard/branches/{$branch->id}/affiliations/{$affiliation->id}/reject")
             ->assertOk()
-            ->assertJsonPath('data.status', 'rejected');
+            ->assertJsonPath('data.status', AffiliationStatus::Rejected->value);
     });
 
     it('keeps another branch affiliations out of reach', function (): void {
@@ -70,7 +72,7 @@ describe('Dashboard branch affiliations', function (): void {
 
     it('refuses to accept an invite the branch sent itself', function (): void {
         $branch = BranchModel::factory()->create();
-        $own = pendingAffiliationFor($branch, ['initiated_by_type' => 'branch', 'initiated_by_id' => $branch->id]);
+        $own = pendingAffiliationFor($branch, ['initiated_by_type' => AffiliationInitiatorTypeEnum::Branch, 'initiated_by_id' => $branch->id]);
         $this->authenticateDashboardActor($branch);
 
         $this->postJson("/api/v1/dashboard/branches/{$branch->id}/affiliations/{$own->id}/accept")->assertForbidden();
@@ -83,14 +85,14 @@ describe('Dashboard branch affiliations', function (): void {
 
         $created = $this->postJson("/api/v1/dashboard/branches/{$branch->id}/affiliations", ['barber_id' => $barber->id])
             ->assertCreated()
-            ->assertJsonPath('data.status', 'pending');
+            ->assertJsonPath('data.status', AffiliationStatus::Pending->value);
         $this->postJson("/api/v1/dashboard/branches/{$branch->id}/affiliations", ['barber_id' => $barber->id])->assertStatus(409);
         $this->postJson("/api/v1/dashboard/branches/{$branch->id}/affiliations", ['barber_id' => 'missing'])->assertUnprocessable();
 
         $active = BarberAffiliationModel::factory()->create(['affiliable_id' => $branch->id]);
         $this->postJson("/api/v1/dashboard/branches/{$branch->id}/affiliations/{$active->id}/terminate")
             ->assertOk()
-            ->assertJsonPath('data.status', 'terminated');
+            ->assertJsonPath('data.status', AffiliationStatus::Terminated->value);
         expect($created->json('data.id'))->not->toBeNull();
     });
 
@@ -112,9 +114,9 @@ describe('Dashboard branch job postings', function () use ($posting): void {
         $id = $this->postJson("/api/v1/dashboard/branches/{$branch->id}/job-postings", $posting)
             ->assertCreated()
             ->json('data.id');
-        $this->putJson("/api/v1/dashboard/branches/{$branch->id}/job-postings/{$id}", ['status' => 'closed'])
+        $this->putJson("/api/v1/dashboard/branches/{$branch->id}/job-postings/{$id}", ['status' => JobPostingStatusEnum::Closed])
             ->assertOk()
-            ->assertJsonPath('data.status', 'closed');
+            ->assertJsonPath('data.status', JobPostingStatusEnum::Closed->value);
         $this->deleteJson("/api/v1/dashboard/branches/{$branch->id}/job-postings/{$id}")->assertOk();
         expect(JobPostingModel::find($id))->toBeNull();
     });
@@ -163,8 +165,8 @@ describe('Dashboard branch applications', function (): void {
             ->assertJsonPath('data.0.status', 'seen');
 
         $path = "/api/v1/dashboard/branches/{$branch->id}/job-postings/{$job->id}/applications/{$application->id}/status";
-        $this->patchJson($path, ['status' => 'accepted'])->assertOk()->assertJsonPath('data.status', 'accepted');
-        $this->patchJson($path, ['status' => 'rejected'])->assertUnprocessable();
+        $this->patchJson($path, ['status' => ApplicationStatus::Accepted])->assertOk()->assertJsonPath('data.status', ApplicationStatus::Accepted->value);
+        $this->patchJson($path, ['status' => AffiliationStatus::Rejected])->assertUnprocessable();
         expect($application->fresh()->status)->toBe(ApplicationStatus::Accepted);
     });
 
@@ -174,9 +176,9 @@ describe('Dashboard branch applications', function (): void {
         $application = ApplicationModel::factory()->create(['job_posting_id' => $job->id]);
         $this->authenticateDashboardActor($branch);
 
-        $this->patchJson("/api/v1/dashboard/branches/{$branch->id}/job-postings/{$job->id}/applications/{$application->id}/status", ['status' => 'accepted'])
+        $this->patchJson("/api/v1/dashboard/branches/{$branch->id}/job-postings/{$job->id}/applications/{$application->id}/status", ['status' => ApplicationStatus::Accepted])
             ->assertNotFound();
-        $this->patchJson("/api/v1/dashboard/branches/{$job->branch_id}/job-postings/{$job->id}/applications/{$application->id}/status", ['status' => 'accepted'])
+        $this->patchJson("/api/v1/dashboard/branches/{$job->branch_id}/job-postings/{$job->id}/applications/{$application->id}/status", ['status' => ApplicationStatus::Accepted])
             ->assertNotFound();
         expect($application->fresh()->status)->toBe(ApplicationStatus::Submitted);
     });

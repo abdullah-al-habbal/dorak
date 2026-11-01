@@ -6,6 +6,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientInteraction\Enums\FavorableTypeEnum;
 use Modules\ClientInteraction\Enums\InteractionTypeEnum;
 use Modules\ClientInteraction\Models\ClientDiscoveryPreferenceModel;
 use Modules\ClientInteraction\Models\ClientInteractionLogModel;
@@ -134,7 +135,7 @@ describe('interaction logging', function (): void {
         $client = preferringClient();
 
         $this->actingAs($client, 'client')
-            ->postJson('/api/v1/client/favorites', ['favorable_id' => $branch->id, 'favorable_type' => 'branch'])
+            ->postJson('/api/v1/client/favorites', ['favorable_id' => $branch->id, 'favorable_type' => FavorableTypeEnum::Branch])
             ->assertCreated();
 
         $log = ClientInteractionLogModel::query()->sole();

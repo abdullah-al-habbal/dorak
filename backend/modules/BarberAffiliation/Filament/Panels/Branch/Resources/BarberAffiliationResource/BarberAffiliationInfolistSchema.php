@@ -19,14 +19,7 @@ final class BarberAffiliationInfolistSchema
                     TextEntry::make('barber.name.en')
                         ->label(__('barberaffiliation::ui.barber')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'pending' => 'warning',
-                            'active' => 'success',
-                            'rejected' => 'danger',
-                            'terminated' => 'gray',
-                            default => 'gray',
-                        }),
+                        ->badge(),
                     TextEntry::make('commission_rate')
                         ->label(__('barberaffiliation::ui.commission_rate')),
                     TextEntry::make('invited_at')

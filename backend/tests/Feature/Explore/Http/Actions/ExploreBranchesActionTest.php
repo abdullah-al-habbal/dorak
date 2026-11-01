@@ -6,9 +6,10 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\Core\Enums\VenueUniverse;
 
 beforeEach(function () {
-    $this->brand = BrandModel::factory()->create(['universe' => 'men']);
+    $this->brand = BrandModel::factory()->create(['universe' => VenueUniverse::Men]);
 });
 
 it('lists branches within radius with distance', function () {
@@ -72,7 +73,7 @@ it('orders branches by distance ascending', function () {
 });
 
 it('filters branches by universe', function () {
-    $women = BrandModel::factory()->create(['universe' => 'women']);
+    $women = BrandModel::factory()->create(['universe' => VenueUniverse::Women]);
     BranchModel::factory()->create([
         'latitude' => 33.5,
         'longitude' => 36.3,

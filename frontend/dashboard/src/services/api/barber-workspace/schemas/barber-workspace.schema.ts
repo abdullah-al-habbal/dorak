@@ -8,7 +8,7 @@ export const BarberAppointmentSchema = z.object({
 });
 
 export const BarberWorkspaceProfileSchema = z.object({
-  workstationOnline: z.boolean().optional(),
+  isWorkstationOnline: z.boolean().optional(),
   travelRadius: z.number().nullable().optional(),
   portfolio: z
     .array(

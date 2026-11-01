@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Brand\Models\BrandModel;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 #[UseModel(OfferedServiceModel::class)]
@@ -18,7 +19,7 @@ class OfferedServiceFactory extends Factory
     {
         return [
             'serviceable_id' => BrandModel::factory(),
-            'serviceable_type' => 'brand',
+            'serviceable_type' => ServiceableTypeEnum::Brand,
             'name' => [
                 'en' => fake()->word(),
                 'ar' => fake('ar_SA')->word(),
@@ -30,15 +31,15 @@ class OfferedServiceFactory extends Factory
             'price' => fake()->randomFloat(2, 10, 500),
             'currency_id' => CurrencyModel::factory(),
             'duration' => fake()->randomElement([15, 30, 45, 60]),
-            'at_home' => false,
-            'active' => true,
+            'is_at_home' => false,
+            'is_active' => true,
         ];
     }
 
     public function atHome(): static
     {
         return $this->state(fn (array $attrs) => [
-            'at_home' => true,
+            'is_at_home' => true,
         ]);
     }
 }

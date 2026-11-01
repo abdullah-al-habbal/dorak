@@ -8,6 +8,7 @@ use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Modules\JobPosting\Enums\ApplicationStatus;
 
 final class ApplicationFormSchema
 {
@@ -24,12 +25,7 @@ final class ApplicationFormSchema
                         ->relationship('barber', 'email')
                         ->required(),
                     Select::make('status')
-                        ->options([
-                            'pending' => 'Pending',
-                            'seen' => 'Seen',
-                            'accepted' => 'Accepted',
-                            'rejected' => 'Rejected',
-                        ])
+                        ->options(ApplicationStatus::class)
                         ->required(),
                     KeyValue::make('profile_snapshot'),
                 ]),

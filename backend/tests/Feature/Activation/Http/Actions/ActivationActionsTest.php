@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Modules\Activation\Enums\ActivationStatusEnum;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 
@@ -16,7 +17,7 @@ it('activates a barber', function () {
     ]);
 
     $response->assertCreated();
-    expect($response->json('data.status'))->toBe('enabled');
+    expect($response->json('data.status'))->toBe(ActivationStatusEnum::Enabled->value);
     expect($response->json('data.activable_id'))->toBe($this->barber->id);
 });
 
@@ -26,14 +27,14 @@ it('deactivates a barber', function () {
     ]);
 
     $response->assertCreated();
-    expect($response->json('data.status'))->toBe('disabled');
+    expect($response->json('data.status'))->toBe(ActivationStatusEnum::Disabled->value);
 });
 
 it('activates without reason', function () {
     $response = $this->postJson("/api/v1/admin/barbers/{$this->barber->id}/activate");
 
     $response->assertCreated();
-    expect($response->json('data.status'))->toBe('enabled');
+    expect($response->json('data.status'))->toBe(ActivationStatusEnum::Enabled->value);
 });
 
 it('returns 404 for non-existent barber activation', function () {

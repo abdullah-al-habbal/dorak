@@ -6,6 +6,7 @@ namespace Modules\Review\Http\Actions\Branch;
 
 use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Actions\BaseApiAction;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Handlers\Staff\FlagReviewDisputeHandler;
 use Modules\Review\Http\Requests\Staff\FlagReviewDisputeRequest;
 use Modules\Review\Http\Resources\Shared\ReviewResource;
@@ -17,7 +18,7 @@ final class FlagReviewDisputeAction extends BaseApiAction
     public function __invoke(FlagReviewDisputeRequest $request, string $review): JsonResponse
     {
         $subjectId = (string) $request->user('branch_api')?->getKey();
-        $result = $this->handler->handle($request->toCommand($review, 'branch', $subjectId));
+        $result = $this->handler->handle($request->toCommand($review, ReviewSubjectTypeEnum::Branch, $subjectId));
 
         if ($result->review === null) {
             return $this->error(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Activation\Http\Actions\Admin;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Activation\Enums\ActivableTypeEnum;
 use Modules\Activation\Handlers\Business\ToggleActivationHandler;
 use Modules\Activation\Http\Requests\Business\ToggleActivationRequest;
 use Modules\Activation\Http\Resources\Business\ActivationLogResource;
@@ -19,7 +20,7 @@ final class DeactivateBranchAction extends BaseApiAction
     public function __invoke(ToggleActivationRequest $request, string $branch): JsonResponse
     {
         $log = $this->handler->handle(
-            $request->toDeactivateCommand($branch, 'branch'),
+            $request->toDeactivateCommand($branch, ActivableTypeEnum::Branch),
         );
 
         return $this->created(

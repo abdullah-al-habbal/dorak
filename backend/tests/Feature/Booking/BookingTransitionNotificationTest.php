@@ -15,6 +15,7 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
 use Modules\Core\Services\FcmNotificationSender;
 
@@ -70,7 +71,7 @@ it('notifies once on dashboard status update, cancel and reschedule', function (
     $this->authenticateDashboardActor($branch);
 
     $update = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
-    $this->patchJson("/api/v1/dashboard/bookings/{$update->id}", ['status' => 'confirmed'])->assertOk();
+    $this->patchJson("/api/v1/dashboard/bookings/{$update->id}", ['status' => BookingStatus::Confirmed])->assertOk();
     assertNotifiedOnce(BookingStatusUpdatedEvent::class);
 
     Queue::fake();
@@ -93,7 +94,7 @@ it('notifies once on branch status update', function (): void {
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
     $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
 
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'confirmed'])->assertOk();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Confirmed])->assertOk();
 
     assertNotifiedOnce(BookingStatusUpdatedEvent::class);
 });
@@ -104,7 +105,7 @@ it('dispatches nothing when a transition is rejected', function (): void {
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
     $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Completed]);
 
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'in_progress'])->assertUnprocessable();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::InProgress])->assertUnprocessable();
 
     Queue::assertNotPushed(SendBookingStatusNotificationJob::class);
     Event::assertNotDispatched(BookingStatusUpdatedEvent::class);
@@ -154,7 +155,7 @@ it('does not push the cancelling client but pushes the barber and branch', funct
         'https://oauth2.googleapis.com/token' => Http::response(['access_token' => 't', 'expires_in' => 3600]),
         'https://fcm.googleapis.com/*' => Http::response(['name' => 'm']),
     ]);
-    foreach ([[ClientModel::class, $client->id, 'client-token'], [BarberModel::class, $barber->id, 'barber-token'], [BranchModel::class, $branch->id, 'branch-token']] as [$type, $id, $token]) {
+    foreach ([[DeviceTokenUserTypeEnum::Client, $client->id, 'client-token'], [DeviceTokenUserTypeEnum::Barber, $barber->id, 'barber-token'], [DeviceTokenUserTypeEnum::Branch, $branch->id, 'branch-token']] as [$type, $id, $token]) {
         DeviceTokenModel::query()->create(['user_id' => $id, 'user_type' => $type, 'token' => $token, 'platform' => 'android', 'last_used_at' => now()]);
     }
 

@@ -7,6 +7,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
@@ -70,7 +71,7 @@ describe('Dashboard service catalog management', function (): void {
 
         $this->postJson('/api/v1/dashboard/services', [
             'serviceable_id' => $brand->id,
-            'serviceable_type' => 'brand',
+            'serviceable_type' => ServiceableTypeEnum::Brand,
             'catalog_item_id' => $item->id,
             'currency_id' => CurrencyModel::factory()->create()->id,
             'name' => ['en' => 'Fade', 'ar' => 'فيد'],

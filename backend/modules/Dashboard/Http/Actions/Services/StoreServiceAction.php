@@ -10,6 +10,7 @@ use Modules\Dashboard\CQRS\Command\StoreServiceCommand;
 use Modules\Dashboard\Handlers\Services\StoreServiceHandler;
 use Modules\Dashboard\Http\Requests\Business\ServiceRequest;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 
 final class StoreServiceAction extends BaseApiAction
@@ -22,7 +23,7 @@ final class StoreServiceAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $attributes = $request->validated();
 
-        if (! $actor->isPlatformAdmin() && ($attributes['serviceable_type'] !== 'brand' || ! $actor->canManageBrandServices($attributes['serviceable_id']))) {
+        if (! $actor->isPlatformAdmin() && ($attributes['serviceable_type'] !== ServiceableTypeEnum::Brand->value || ! $actor->canManageBrandServices($attributes['serviceable_id']))) {
             return $this->forbidden();
         }
 

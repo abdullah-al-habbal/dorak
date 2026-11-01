@@ -7,7 +7,6 @@ namespace Modules\BarberAffiliation\Filament\Panels\Barber\Resources\BarberAffil
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
-use Modules\BarberAffiliation\Enums\AffiliationStatus;
 
 final class BarberAffiliationInfolistSchema
 {
@@ -20,13 +19,7 @@ final class BarberAffiliationInfolistSchema
                     TextEntry::make('affiliable')
                         ->label(__('barberaffiliation::ui.branch_brand')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (AffiliationStatus $state): string => match ($state) {
-                            AffiliationStatus::Pending => 'warning',
-                            AffiliationStatus::Active => 'success',
-                            AffiliationStatus::Rejected => 'danger',
-                            AffiliationStatus::Terminated => 'danger',
-                        }),
+                        ->badge(),
                     TextEntry::make('commission_rate')
                         ->label(__('barberaffiliation::ui.commission_rate')),
                     TextEntry::make('invited_at')

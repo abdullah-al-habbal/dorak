@@ -6,8 +6,7 @@ namespace Modules\Dashboard\Repositories;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
-use Modules\Dashboard\Constants\DashboardActorConstants;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Models\DashboardRefreshTokenModel;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Settings\Enums\SettingKey;
@@ -92,7 +91,7 @@ final class DashboardRefreshTokenResolver
         $record = DashboardRefreshTokenModel::query()->create([
             'actor_type' => $actor->actorType,
             'actor_id' => $actor->id,
-            'guard' => $this->guardFor($actor->actorType),
+            'guard' => $actor->actorType->guard(),
             'token_hash' => $this->hash($plainText),
             'expires_at' => now()->addSeconds($this->ttl()),
         ]);
@@ -103,22 +102,10 @@ final class DashboardRefreshTokenResolver
     private function actorFromRecord(DashboardRefreshTokenModel $record): ?DashboardActor
     {
         return match ($record->actor_type) {
-            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => new DashboardActor($record->actor_id, DashboardActorConstants::DASHBOARD_ACTOR_ADMIN, 'platform_admin', null),
-            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => new DashboardActor($record->actor_id, DashboardActorConstants::DASHBOARD_ACTOR_BRANCH, 'branch_manager', $record->actor_id),
-            DashboardActorConstants::DASHBOARD_ACTOR_BARBER => new DashboardActor($record->actor_id, DashboardActorConstants::DASHBOARD_ACTOR_BARBER, 'barber', null),
-            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => $this->ownerActors->forClientId($record->actor_id),
-            default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $record->actor_type])),
-        };
-    }
-
-    private function guardFor(string $actorType): string
-    {
-        return match ($actorType) {
-            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => 'admin_api',
-            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => 'branch_api',
-            DashboardActorConstants::DASHBOARD_ACTOR_BARBER => 'barber',
-            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => 'client',
-            default => throw new InvalidArgumentException(__('dashboard::messages.actor_type_unsupported', ['actor_type' => $actorType])),
+            DashboardActorTypeEnum::Admin => new DashboardActor($record->actor_id, DashboardActorTypeEnum::Admin, 'platform_admin', null),
+            DashboardActorTypeEnum::Branch => new DashboardActor($record->actor_id, DashboardActorTypeEnum::Branch, 'branch_manager', $record->actor_id),
+            DashboardActorTypeEnum::Barber => new DashboardActor($record->actor_id, DashboardActorTypeEnum::Barber, 'barber', null),
+            DashboardActorTypeEnum::Owner => $this->ownerActors->forClientId($record->actor_id),
         };
     }
 

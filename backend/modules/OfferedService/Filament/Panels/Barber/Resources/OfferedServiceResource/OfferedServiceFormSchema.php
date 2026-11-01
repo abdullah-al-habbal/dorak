@@ -34,9 +34,9 @@ final class OfferedServiceFormSchema
                         ->numeric()
                         ->label(__('offeredservice::ui.duration_minutes'))
                         ->required(),
-                    Toggle::make('at_home')
+                    Toggle::make('is_at_home')
                         ->label(__('offeredservice::ui.available_at_home')),
-                    Toggle::make('active')
+                    Toggle::make('is_active')
                         ->label(__('offeredservice::ui.active'))
                         ->default(true),
                 ]),

@@ -20,13 +20,7 @@ final class ChairsTable
                     ->label(__('chair::ui.barber'))
                     ->placeholder(__('chair::ui.unassigned')),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'available' => 'success',
-                        'occupied' => 'warning',
-                        'maintenance' => 'danger',
-                        default => 'gray',
-                    }),
+                    ->badge(),
                 TextColumn::make('updated_at')
                     ->dateTime(),
             ])

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Onboarding\Enums\Season;
 
 /**
  * @property string $locale
@@ -25,6 +26,7 @@ class OnboardingConfigurationModel extends Model
     protected function casts(): array
     {
         return [
+            'season' => Season::class,
             'is_active' => 'boolean',
         ];
     }

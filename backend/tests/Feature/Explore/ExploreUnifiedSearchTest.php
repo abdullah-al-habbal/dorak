@@ -9,6 +9,7 @@ use Modules\Client\Models\ClientModel;
 use Modules\ClientRecommendation\Constants\RecommendationConstants;
 use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
+use Modules\Core\Enums\VenueUniverse;
 use Tests\Support\Constants\ExploreTestConstants;
 
 function unifiedSearch(string $query = ''): array
@@ -59,9 +60,9 @@ it('keeps location-less freelancers out of a purely geographic search', function
 });
 
 it('applies the shared filters to both result types', function (): void {
-    BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'universe' => 'men']);
-    $womenBranch = BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'universe' => 'women']);
-    BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3, 'universe' => 'men']);
+    BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'universe' => VenueUniverse::Men]);
+    $womenBranch = BranchModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'universe' => VenueUniverse::Women]);
+    BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3, 'universe' => VenueUniverse::Men]);
 
     $ids = array_map(fn (array $item) => $item['entity']['id'], unifiedSearch('&universe=women'));
 

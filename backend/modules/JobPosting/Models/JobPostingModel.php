@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Branch\Models\BranchModel;
 use Modules\JobPosting\Enums\JobPostingStatusEnum;
+use Modules\JobPosting\Enums\JobPostingTypeEnum;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
@@ -32,6 +33,7 @@ class JobPostingModel extends Model
     protected function casts(): array
     {
         return [
+            'type' => JobPostingTypeEnum::class,
             'status' => JobPostingStatusEnum::class,
             'title' => 'array',
             'description' => 'array',

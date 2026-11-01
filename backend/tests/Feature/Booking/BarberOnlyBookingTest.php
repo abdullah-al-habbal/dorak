@@ -8,6 +8,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function (): void {
@@ -18,7 +19,7 @@ beforeEach(function (): void {
         'affiliable_id' => $this->branch->id,
     ]);
     $this->service = OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'brand',
+        'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $this->branch->brand_id,
         'duration' => 30,
     ]);

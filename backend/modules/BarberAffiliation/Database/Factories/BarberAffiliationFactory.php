@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
@@ -19,11 +20,11 @@ class BarberAffiliationFactory extends Factory
     {
         return [
             'barber_id' => BarberModel::factory(),
-            'initiated_by_type' => BranchModel::class,
+            'initiated_by_type' => AffiliationInitiatorTypeEnum::Branch,
             'initiated_by_id' => BranchModel::factory(),
             'affiliable_id' => BranchModel::factory(),
-            'affiliable_type' => AffiliableType::Branch->value,
-            'status' => AffiliationStatus::Active->value,
+            'affiliable_type' => AffiliableType::Branch,
+            'status' => AffiliationStatus::Active,
             'commission_rate' => null,
             'invited_at' => now()->subDays(7),
             'accepted_at' => now()->subDays(6),

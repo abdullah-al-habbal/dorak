@@ -116,7 +116,7 @@ abstract class StylistOperationsRepository {
     required double price,
     required String currencyId,
     int? duration,
-    bool atHome = false,
+    bool isAtHome = false,
     bool active = true,
     String? catalogItemId,
   });
@@ -126,7 +126,7 @@ abstract class StylistOperationsRepository {
     required double price,
     required String currencyId,
     int? duration,
-    bool atHome = false,
+    bool isAtHome = false,
     bool active = true,
     String? catalogItemId,
   });
@@ -153,7 +153,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     ApiEndpoints.operations.barberWorkstationStatus,
     data: {'online': online},
     parser: (json) =>
-        (json as Map<String, dynamic>)['workstation_online'] as bool,
+        (json as Map<String, dynamic>)['is_workstation_online'] as bool,
   );
 
   @override
@@ -277,7 +277,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     required double price,
     required String currencyId,
     int? duration,
-    bool atHome = false,
+    bool isAtHome = false,
     bool active = true,
     String? catalogItemId,
   }) => _client.post(
@@ -287,7 +287,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
       price: price,
       currencyId: currencyId,
       duration: duration,
-      atHome: atHome,
+      isAtHome: isAtHome,
       active: active,
       catalogItemId: catalogItemId,
     ),
@@ -301,7 +301,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     required double price,
     required String currencyId,
     int? duration,
-    bool atHome = false,
+    bool isAtHome = false,
     bool active = true,
     String? catalogItemId,
   }) => _client.put(
@@ -311,7 +311,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
       price: price,
       currencyId: currencyId,
       duration: duration,
-      atHome: atHome,
+      isAtHome: isAtHome,
       active: active,
       catalogItemId: catalogItemId,
     ),
@@ -327,7 +327,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     required double price,
     required String currencyId,
     int? duration,
-    required bool atHome,
+    required bool isAtHome,
     required bool active,
     String? catalogItemId,
   }) => {
@@ -335,7 +335,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     'price': price,
     'currency_id': currencyId,
     'duration': ?duration,
-    'at_home': atHome,
+    'is_at_home': isAtHome,
     'active': active,
     'catalog_item_id': ?catalogItemId,
   };

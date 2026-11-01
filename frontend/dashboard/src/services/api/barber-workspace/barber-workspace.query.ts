@@ -37,9 +37,9 @@ export async function getBarberWorkspaceProfile(): Promise<BarberWorkspaceProfil
     BarberEndpoints.profile,
   );
   return {
-    workstationOnline:
-      typeof profile.workstation_online === "boolean"
-        ? profile.workstation_online
+    isWorkstationOnline:
+      typeof profile.is_workstation_online === "boolean"
+        ? profile.is_workstation_online
         : undefined,
     travelRadius:
       typeof profile.travel_radius === "number" ? profile.travel_radius : null,

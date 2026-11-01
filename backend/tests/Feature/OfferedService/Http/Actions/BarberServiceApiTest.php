@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function (): void {
@@ -20,7 +21,7 @@ function barberServicePayload(CurrencyModel $currency, array $overrides = []): a
         'name' => ['en' => 'Beard Trim', 'ar' => 'تهذيب اللحية'],
         'price' => 15,
         'duration' => 20,
-        'active' => true,
+        'is_active' => true,
     ], $overrides);
 }
 
@@ -30,26 +31,26 @@ it('creates a service forced to the authenticated barber regardless of payload',
     $this->postJson('/api/v1/barber/services', barberServicePayload($currency))
         ->assertCreated()
         ->assertJsonPath('data.serviceable_id', $this->barber->id)
-        ->assertJsonPath('data.serviceable_type', 'barber');
+        ->assertJsonPath('data.serviceable_type', ServiceableTypeEnum::Barber->value);
 });
 
 it('persists at_home on a barber-owned service', function (): void {
     $currency = CurrencyModel::factory()->create();
 
-    $this->postJson('/api/v1/barber/services', barberServicePayload($currency, ['at_home' => true]))
+    $this->postJson('/api/v1/barber/services', barberServicePayload($currency, ['is_at_home' => true]))
         ->assertCreated()
-        ->assertJsonPath('data.at_home', true);
+        ->assertJsonPath('data.is_at_home', true);
     $this->assertDatabaseHas('offered_services', [
         'serviceable_id' => $this->barber->id,
-        'serviceable_type' => 'barber',
-        'at_home' => true,
+        'serviceable_type' => ServiceableTypeEnum::Barber,
+        'is_at_home' => true,
     ]);
 });
 
 it('lists only the authenticated barber\'s own services', function (): void {
     $currency = CurrencyModel::factory()->create();
-    $own = OfferedServiceModel::factory()->create(['serviceable_type' => 'barber', 'serviceable_id' => $this->barber->id]);
-    OfferedServiceModel::factory()->create(['serviceable_type' => 'barber', 'serviceable_id' => $this->other->id]);
+    $own = OfferedServiceModel::factory()->create(['serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $this->barber->id]);
+    OfferedServiceModel::factory()->create(['serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $this->other->id]);
 
     $this->getJson('/api/v1/barber/services')
         ->assertOk()
@@ -59,21 +60,21 @@ it('lists only the authenticated barber\'s own services', function (): void {
 
 it('forbids updating another barber\'s service', function (): void {
     $currency = CurrencyModel::factory()->create();
-    $service = OfferedServiceModel::factory()->create(['serviceable_type' => 'barber', 'serviceable_id' => $this->other->id]);
+    $service = OfferedServiceModel::factory()->create(['serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $this->other->id]);
 
     $this->putJson("/api/v1/barber/services/{$service->id}", barberServicePayload($currency))
         ->assertNotFound();
 });
 
 it('forbids deleting another barber\'s service', function (): void {
-    $service = OfferedServiceModel::factory()->create(['serviceable_type' => 'barber', 'serviceable_id' => $this->other->id]);
+    $service = OfferedServiceModel::factory()->create(['serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $this->other->id]);
 
     $this->deleteJson("/api/v1/barber/services/{$service->id}")->assertNotFound();
 });
 
 it('updates and deletes its own service', function (): void {
     $currency = CurrencyModel::factory()->create();
-    $service = OfferedServiceModel::factory()->create(['serviceable_type' => 'barber', 'serviceable_id' => $this->barber->id]);
+    $service = OfferedServiceModel::factory()->create(['serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $this->barber->id]);
 
     $this->putJson("/api/v1/barber/services/{$service->id}", barberServicePayload($currency, ['price' => 40]))
         ->assertOk()

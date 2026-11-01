@@ -25,12 +25,7 @@ final class ChairsTable
                     ->label(__('chair::ui.barber'))
                     ->searchable(),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active' => 'success',
-                        'occupied' => 'warning',
-                        default => 'gray',
-                    }),
+                    ->badge(),
             ])
             ->actions([
                 ViewAction::make(),

@@ -7,6 +7,7 @@ namespace Modules\OfferedService\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Modules\Brand\Models\BrandModel;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 class OfferedServiceSeeder extends Seeder
@@ -21,26 +22,26 @@ class OfferedServiceSeeder extends Seeder
 
         OfferedServiceModel::create([
             'serviceable_id' => $brand->id,
-            'serviceable_type' => 'brand',
+            'serviceable_type' => ServiceableTypeEnum::Brand,
             'name' => ['en' => 'Haircut', 'ar' => 'قص شعر'],
             'description' => ['en' => 'Classic haircut', 'ar' => 'قص شعر كلاسيكي'],
             'price' => 25000,
             'currency_id' => $syp->id,
             'duration' => 30,
-            'at_home' => false,
-            'active' => true,
+            'is_at_home' => false,
+            'is_active' => true,
         ]);
 
         OfferedServiceModel::create([
             'serviceable_id' => $brand->id,
-            'serviceable_type' => 'brand',
+            'serviceable_type' => ServiceableTypeEnum::Brand,
             'name' => ['en' => 'Beard Trim', 'ar' => 'تهذيب لحية'],
             'description' => ['en' => 'Beard shaping and trim', 'ar' => 'تشذيب وتشكيل اللحية'],
             'price' => 15000,
             'currency_id' => $syp->id,
             'duration' => 20,
-            'at_home' => false,
-            'active' => true,
+            'is_at_home' => false,
+            'is_active' => true,
         ]);
     }
 }

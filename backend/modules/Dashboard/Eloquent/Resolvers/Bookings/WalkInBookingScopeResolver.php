@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Eloquent\Resolvers\Bookings;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\CQRS\Command\CreateWalkInBookingCommand;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class WalkInBookingScopeResolver
@@ -22,7 +23,7 @@ final class WalkInBookingScopeResolver
 
         $serviceCount = OfferedServiceModel::query()
             ->whereIn('id', $command->serviceIds)
-            ->where('serviceable_type', 'brand')
+            ->where('serviceable_type', ServiceableTypeEnum::Brand)
             ->where('serviceable_id', $branch->getAttribute('brand_id'))
             ->count();
 

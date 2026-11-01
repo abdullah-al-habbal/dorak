@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Client\Models\ClientModel;
 
@@ -40,7 +41,7 @@ it('does not list other users bookings', function () {
 it('filters upcoming bookings', function () {
     BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => 'confirmed',
+        'status' => BookingStatus::Confirmed,
         'time_slot' => now()->addWeek(),
         'ends_at' => now()->addWeek()->addMinutes(30),
     ]);
@@ -52,7 +53,7 @@ it('filters upcoming bookings', function () {
     $response = $this->getJson('/api/v1/bookings?status=upcoming&per_page=10');
 
     expect($response->json('data'))->toHaveCount(1);
-    expect($response->json('data.0.status'))->toBe('confirmed');
+    expect($response->json('data.0.status'))->toBe(BookingStatus::Confirmed->value);
 });
 
 it('filters past bookings', function () {
@@ -62,7 +63,7 @@ it('filters past bookings', function () {
     ]);
     BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => 'confirmed',
+        'status' => BookingStatus::Confirmed,
         'time_slot' => now()->addWeek(),
         'ends_at' => now()->addWeek()->addMinutes(30),
     ]);

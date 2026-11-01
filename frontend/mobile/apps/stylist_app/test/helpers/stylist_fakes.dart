@@ -120,7 +120,7 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
     required double price,
     required String currencyId,
     int? duration,
-    bool atHome = false,
+    bool isAtHome = false,
     bool active = true,
     String? catalogItemId,
   }) => throw UnimplementedError();
@@ -132,7 +132,7 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
     required double price,
     required String currencyId,
     int? duration,
-    bool atHome = false,
+    bool isAtHome = false,
     bool active = true,
     String? catalogItemId,
   }) => throw UnimplementedError();

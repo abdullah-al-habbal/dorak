@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Review\Constants;
 
-use Modules\Barber\Models\BarberModel;
-use Modules\Branch\Models\BranchModel;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 
 final class ReviewRatingConstants
 {
-    /** @var array<string, class-string<BranchModel|BarberModel>> */
+    /** @var list<ReviewSubjectTypeEnum> */
     public const array REVIEW_RATING_RATED_SUBJECTS = [
-        'branch' => BranchModel::class,
-        'barber' => BarberModel::class,
+        ReviewSubjectTypeEnum::Branch,
+        ReviewSubjectTypeEnum::Barber,
     ];
 }

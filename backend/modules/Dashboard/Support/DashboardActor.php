@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Support;
 
-use Modules\Dashboard\Constants\DashboardActorConstants;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 
 final readonly class DashboardActor
 {
@@ -14,7 +14,7 @@ final readonly class DashboardActor
      */
     public function __construct(
         public string $id,
-        public string $actorType,
+        public DashboardActorTypeEnum $actorType,
         public string $role,
         public ?string $branchId = null,
         public ?string $brandId = null,
@@ -24,22 +24,22 @@ final readonly class DashboardActor
 
     public function isPlatformAdmin(): bool
     {
-        return $this->actorType === DashboardActorConstants::DASHBOARD_ACTOR_ADMIN;
+        return $this->actorType === DashboardActorTypeEnum::Admin;
     }
 
     public function isBarber(): bool
     {
-        return $this->actorType === DashboardActorConstants::DASHBOARD_ACTOR_BARBER;
+        return $this->actorType === DashboardActorTypeEnum::Barber;
     }
 
     public function isBranchManager(): bool
     {
-        return $this->actorType === DashboardActorConstants::DASHBOARD_ACTOR_BRANCH;
+        return $this->actorType === DashboardActorTypeEnum::Branch;
     }
 
     public function isBrandOwner(): bool
     {
-        return $this->actorType === DashboardActorConstants::DASHBOARD_ACTOR_OWNER;
+        return $this->actorType === DashboardActorTypeEnum::Owner;
     }
 
     /**
@@ -51,9 +51,9 @@ final readonly class DashboardActor
     public function scopedBranchIds(): ?array
     {
         return match ($this->actorType) {
-            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => null,
-            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => $this->branchId === null ? [] : [$this->branchId],
-            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => $this->branchIds,
+            DashboardActorTypeEnum::Admin => null,
+            DashboardActorTypeEnum::Branch => $this->branchId === null ? [] : [$this->branchId],
+            DashboardActorTypeEnum::Owner => $this->branchIds,
             default => [],
         };
     }
@@ -66,9 +66,9 @@ final readonly class DashboardActor
     public function scopedBrandIds(): ?array
     {
         return match ($this->actorType) {
-            DashboardActorConstants::DASHBOARD_ACTOR_ADMIN => null,
-            DashboardActorConstants::DASHBOARD_ACTOR_BRANCH => $this->brandId === null ? [] : [$this->brandId],
-            DashboardActorConstants::DASHBOARD_ACTOR_OWNER => $this->brandIds,
+            DashboardActorTypeEnum::Admin => null,
+            DashboardActorTypeEnum::Branch => $this->brandId === null ? [] : [$this->brandId],
+            DashboardActorTypeEnum::Owner => $this->brandIds,
             default => [],
         };
     }

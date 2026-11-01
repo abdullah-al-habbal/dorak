@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 use Carbon\Carbon;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Enums\BookingPaymentMethod;
+use Modules\Booking\Enums\BookingPaymentStatus;
+use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
     $this->branch = BranchModel::factory()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
+    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $this->actingAs($this->client, 'client');
 });
 
@@ -32,9 +37,9 @@ it('creates a booking with chair_id', function () {
         'success',
         'data' => ['id', 'time_slot', 'status', 'payment_method', 'payment_status', 'chair'],
     ]);
-    expect($response->json('data.status'))->toBe('pending');
-    expect($response->json('data.payment_method'))->toBe('pay_at_salon');
-    expect($response->json('data.payment_status'))->toBe('unpaid_in_person');
+    expect($response->json('data.status'))->toBe(BookingStatus::Pending->value);
+    expect($response->json('data.payment_method'))->toBe(BookingPaymentMethod::PayAtSalon->value);
+    expect($response->json('data.payment_status'))->toBe(BookingPaymentStatus::UnpaidInPerson->value);
 });
 
 it('rejects payment gateway payloads for in-person bookings', function () {
@@ -72,7 +77,7 @@ it('rejects double booking on same chair and time_slot', function () {
 
 it('rejects booking on unavailable chair', function () {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
-    $chair->update(['status' => 'maintenance']);
+    $chair->update(['status' => ChairStatus::Maintenance]);
     $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $response = $this->postJson('/api/v1/bookings', [
@@ -100,7 +105,7 @@ it('rejects booking with past time_slot', function () {
 it('creates at-home booking without chair_id', function () {
     $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
     $barber = BarberModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'travel_radius' => 10]);
-    $service = OfferedServiceModel::factory()->atHome()->create(['duration' => 30, 'serviceable_type' => 'barber', 'serviceable_id' => $barber->id]);
+    $service = OfferedServiceModel::factory()->atHome()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $barber->id]);
 
     $response = $this->postJson('/api/v1/bookings', [
         'at_home_location' => [
@@ -116,7 +121,7 @@ it('creates at-home booking without chair_id', function () {
     ]);
 
     $response->assertCreated();
-    expect($response->json('data.status'))->toBe('pending');
+    expect($response->json('data.status'))->toBe(BookingStatus::Pending->value);
 });
 
 it('rejects booking with both chair_id and at_home_location', function () {
@@ -173,7 +178,7 @@ it('allows booking after a cancelled booking on same chair+slot', function () {
 
     // Cancel the booking
     $booking = BookingModel::first();
-    $booking->update(['status' => 'canceled']);
+    $booking->update(['status' => BookingStatus::Canceled]);
 
     // Now booking the same slot should succeed
     $this->postJson('/api/v1/bookings', [
@@ -214,7 +219,7 @@ it('prevents race condition: concurrent booking for same chair+slot', function (
         'chair_id' => $chair->id,
         'time_slot' => $timeSlot,
         'ends_at' => Carbon::parse($timeSlot)->addMinutes(30),
-        'status' => 'confirmed',
+        'status' => BookingStatus::Confirmed,
     ]);
 
     $this->postJson('/api/v1/bookings', [
@@ -238,7 +243,7 @@ it('requires authentication', function () {
 
 it('derives the booking end time from the selected service durations', function () {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
-    $service = OfferedServiceModel::factory()->create(['duration' => 45, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
+    $service = OfferedServiceModel::factory()->create(['duration' => 45, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $timeSlot = Carbon::tomorrow()->setTime(10, 0);
 
     $response = $this->postJson('/api/v1/bookings', [
@@ -253,7 +258,7 @@ it('derives the booking end time from the selected service durations', function 
 
 it('rejects an overlapping booking for the same chair', function () {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
-    $service = OfferedServiceModel::factory()->create(['duration' => 60, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
+    $service = OfferedServiceModel::factory()->create(['duration' => 60, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $timeSlot = Carbon::tomorrow()->setTime(10, 0);
 
     $this->postJson('/api/v1/bookings', [
@@ -273,7 +278,7 @@ it('rejects an overlapping booking for the same barber on another chair', functi
     $barber = BarberModel::factory()->create();
     $chairA = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $barber->id]);
     $chairB = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $barber->id]);
-    $service = OfferedServiceModel::factory()->create(['duration' => 60, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
+    $service = OfferedServiceModel::factory()->create(['duration' => 60, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $timeSlot = Carbon::tomorrow()->setTime(10, 0);
 
     $this->postJson('/api/v1/bookings', [

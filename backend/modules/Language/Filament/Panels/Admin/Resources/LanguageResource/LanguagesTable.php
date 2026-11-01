@@ -23,8 +23,7 @@ final class LanguagesTable
                     ->label(__('language::ui.name'))
                     ->searchable(),
                 TextColumn::make('direction')
-                    ->badge()
-                    ->color(fn (string $state): string => $state === 'rtl' ? 'info' : 'gray'),
+                    ->badge(),
                 IconColumn::make('is_default')
                     ->boolean(),
             ])

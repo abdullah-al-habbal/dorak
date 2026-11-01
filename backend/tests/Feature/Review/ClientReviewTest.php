@@ -9,7 +9,9 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 function finishedBooking(array $overrides = []): BookingModel
@@ -29,12 +31,12 @@ describe('POST /api/v1/branch/bookings/{booking}/review', function (): void {
         $this->actingAs(branchOf($booking), 'branch_api')
             ->postJson("/api/v1/branch/bookings/{$booking->id}/review", ['rating' => 2, 'comment' => 'Arrived 30 minutes late'])
             ->assertCreated()
-            ->assertJsonPath('data.subject_type', 'client')
+            ->assertJsonPath('data.subject_type', ReviewSubjectTypeEnum::Client->value)
             ->assertJsonPath('data.subject_id', $booking->client_id)
             ->assertJsonPath('data.rating', 2);
 
         $review = ReviewModel::query()->sole();
-        expect($review->author_type)->toBe('branch')
+        expect($review->author_type)->toBe(ReviewAuthorTypeEnum::Branch)
             ->and($review->author_id)->toBe($booking->branch_id)
             ->and($review->status)->toBe(ReviewStatus::Published);
     });
@@ -113,9 +115,9 @@ describe('POST /api/v1/barber/bookings/{booking}/review', function (): void {
         $this->actingAs($barber, 'barber')
             ->postJson("/api/v1/barber/bookings/{$booking->id}/review", ['rating' => 5])
             ->assertCreated()
-            ->assertJsonPath('data.subject_type', 'client');
+            ->assertJsonPath('data.subject_type', ReviewSubjectTypeEnum::Client->value);
 
-        expect(ReviewModel::query()->sole()->author_type)->toBe('barber');
+        expect(ReviewModel::query()->sole()->author_type)->toBe(ReviewAuthorTypeEnum::Barber);
     });
 
     it('leaves in-shop bookings to the branch', function (): void {

@@ -27,14 +27,7 @@ final class BookingsTable
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'confirmed' => 'success',
-                        'completed' => 'info',
-                        'cancelled' => 'danger',
-                        'in_progress' => 'warning',
-                        default => 'gray',
-                    }),
+                    ->badge(),
             ])
             ->defaultSort('time_slot', 'desc')
             ->actions([

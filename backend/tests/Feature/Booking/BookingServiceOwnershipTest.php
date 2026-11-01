@@ -8,6 +8,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function (): void {
@@ -17,7 +18,7 @@ beforeEach(function (): void {
     $this->chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $this->barber->id]);
     $this->slot = Carbon::tomorrow()->startOfDay()->addHours(10);
     $this->actingAs(ClientModel::factory()->create(), 'client');
-    $this->serviceFor = fn (string $type, string $id) => OfferedServiceModel::factory()->create([
+    $this->serviceFor = fn (ServiceableTypeEnum $type, string $id) => OfferedServiceModel::factory()->create([
         'serviceable_type' => $type,
         'serviceable_id' => $id,
         'duration' => 30,
@@ -28,11 +29,10 @@ beforeEach(function (): void {
     ], $overrides));
 });
 
-it('accepts brand, branch and chair-barber services', function (): void {
+it('accepts brand and chair-barber services', function (): void {
     $ids = [
-        ($this->serviceFor)('brand', $this->brand->id)->id,
-        ($this->serviceFor)('branch', $this->branch->id)->id,
-        ($this->serviceFor)('barber', $this->barber->id)->id,
+        ($this->serviceFor)(ServiceableTypeEnum::Brand, $this->brand->id)->id,
+        ($this->serviceFor)(ServiceableTypeEnum::Barber, $this->barber->id)->id,
     ];
 
     ($this->book)(['service_ids' => $ids])->assertCreated();
@@ -41,25 +41,23 @@ it('accepts brand, branch and chair-barber services', function (): void {
 });
 
 it('rejects a service owned by an unrelated brand', function (): void {
-    $foreign = ($this->serviceFor)('brand', BrandModel::factory()->create()->id);
+    $foreign = ($this->serviceFor)(ServiceableTypeEnum::Brand, BrandModel::factory()->create()->id);
 
     ($this->book)(['service_ids' => [$foreign->id]])->assertUnprocessable();
 
     $this->assertDatabaseCount('bookings', 0);
 });
 
-it('rejects a service owned by another branch or another barber', function (): void {
-    $otherBranch = ($this->serviceFor)('branch', BranchModel::factory()->create()->id);
-    $otherBarber = ($this->serviceFor)('barber', BarberModel::factory()->create()->id);
+it('rejects a service owned by another barber', function (): void {
+    $otherBarber = ($this->serviceFor)(ServiceableTypeEnum::Barber, BarberModel::factory()->create()->id);
 
-    ($this->book)(['service_ids' => [$otherBranch->id]])->assertUnprocessable();
     ($this->book)(['service_ids' => [$otherBarber->id]])->assertUnprocessable();
 
     $this->assertDatabaseCount('bookings', 0);
 });
 
 it('stores the chair barber when barber_id is omitted', function (): void {
-    $service = ($this->serviceFor)('brand', $this->brand->id);
+    $service = ($this->serviceFor)(ServiceableTypeEnum::Brand, $this->brand->id);
 
     ($this->book)(['service_ids' => [$service->id]])
         ->assertCreated()
@@ -69,7 +67,7 @@ it('stores the chair barber when barber_id is omitted', function (): void {
 });
 
 it('returns 409 for the same barber on another chair at an overlapping time', function (): void {
-    $service = ($this->serviceFor)('brand', $this->brand->id);
+    $service = ($this->serviceFor)(ServiceableTypeEnum::Brand, $this->brand->id);
     $otherChair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $this->barber->id]);
 
     ($this->book)(['service_ids' => [$service->id]])->assertCreated();
@@ -79,7 +77,7 @@ it('returns 409 for the same barber on another chair at an overlapping time', fu
 });
 
 it('rejects a barber_id that differs from the chair barber', function (): void {
-    $service = ($this->serviceFor)('brand', $this->brand->id);
+    $service = ($this->serviceFor)(ServiceableTypeEnum::Brand, $this->brand->id);
 
     ($this->book)([
         'barber_id' => BarberModel::factory()->create()->id,

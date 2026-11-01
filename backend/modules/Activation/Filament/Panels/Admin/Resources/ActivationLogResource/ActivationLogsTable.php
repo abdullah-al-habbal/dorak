@@ -22,7 +22,6 @@ final class ActivationLogsTable
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn ($state): string => $state?->value === 'enabled' ? 'success' : 'danger')
                     ->formatStateUsing(fn ($state): string => $state?->value ?? 'unknown'),
                 TextColumn::make('admin.email')
                     ->label(__('activation::ui.admin')),

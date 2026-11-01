@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Review\CQRS\Command\Staff;
 
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
+
 final readonly class ReviewClientCommand
 {
     /**
-     * @param  'branch'|'barber'  $authorSide  who rates the client
      * @param  list<string>|null  $branchScope  branches the acting branch-side actor may rate for; null = any (unused today)
      */
     public function __construct(
         public string $bookingId,
-        public string $authorSide,
+        public ReviewAuthorTypeEnum $authorSide,
         public ?string $barberId,
         public ?array $branchScope,
         public int $rating,

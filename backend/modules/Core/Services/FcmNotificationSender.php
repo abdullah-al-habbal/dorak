@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Core\Services;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
@@ -63,7 +62,7 @@ final class FcmNotificationSender
         $deliveredTokenIds = $this->writer->deliveredTokenIds($notification);
 
         DeviceTokenModel::query()
-            ->whereIn('user_type', array_unique([$userType, $alias, Relation::getMorphedModel($alias) ?? $userType]))
+            ->where('user_type', $alias)
             ->where('user_id', $userId)
             ->whereNotIn('id', $deliveredTokenIds)
             ->get()

@@ -45,8 +45,8 @@ final class OfferedServiceFormSchema
                         ->numeric()
                         ->required()
                         ->suffix('min'),
-                    Toggle::make('at_home'),
-                    Toggle::make('active')
+                    Toggle::make('is_at_home'),
+                    Toggle::make('is_active')
                         ->default(true),
                 ]),
             Section::make(__('offeredservice::ui.description'))

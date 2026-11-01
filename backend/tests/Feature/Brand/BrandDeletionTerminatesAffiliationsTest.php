@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
@@ -15,18 +16,18 @@ it('terminates pending and active affiliations pointing at a deleted brand', fun
     $brandAffiliation = BarberAffiliationModel::factory()->create([
         'barber_id' => BarberModel::factory()->create()->id,
         'affiliable_id' => $brand->id,
-        'affiliable_type' => 'brand',
+        'affiliable_type' => AffiliableType::Brand,
         'status' => AffiliationStatus::Active,
     ]);
     $branchAffiliation = BarberAffiliationModel::factory()->pending()->create([
         'barber_id' => BarberModel::factory()->create()->id,
         'affiliable_id' => $branch->id,
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
     ]);
     $rejectedAffiliation = BarberAffiliationModel::factory()->create([
         'barber_id' => BarberModel::factory()->create()->id,
         'affiliable_id' => $brand->id,
-        'affiliable_type' => 'brand',
+        'affiliable_type' => AffiliableType::Brand,
         'status' => AffiliationStatus::Rejected,
     ]);
 

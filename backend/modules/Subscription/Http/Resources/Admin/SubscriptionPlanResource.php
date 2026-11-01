@@ -19,7 +19,7 @@ final class SubscriptionPlanResource extends JsonResource
                 'id' => $this->currency->id,
                 'code' => $this->currency->code,
             ]),
-            'interval_unit' => $this->interval_unit,
+            'interval_unit' => $this->interval_unit->value,
             'interval_count' => $this->interval_count,
             'is_active' => $this->is_active,
             'sort_order' => $this->sort_order,

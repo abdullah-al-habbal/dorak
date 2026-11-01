@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Modules\ServiceCatalog\Enums\MediableTypeEnum;
+use Modules\ServiceCatalog\Enums\MediaTypeEnum;
 
 #[Fillable(['type', 'path', 'alt', 'sort_order'])]
 #[Table('service_catalog_media')]
@@ -19,6 +21,8 @@ class ServiceCatalogMediumModel extends Model
     protected function casts(): array
     {
         return [
+            'type' => MediaTypeEnum::class,
+            'mediable_type' => MediableTypeEnum::class,
             'sort_order' => 'integer',
         ];
     }

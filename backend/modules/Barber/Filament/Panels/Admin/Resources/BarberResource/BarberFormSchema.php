@@ -10,6 +10,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Modules\Barber\Enums\BarberStatusEnum;
 
 final class BarberFormSchema
 {
@@ -42,11 +43,7 @@ final class BarberFormSchema
             Section::make(__('barber::ui.status'))
                 ->schema([
                     Select::make('status')
-                        ->options([
-                            'pending' => 'Pending',
-                            'enabled' => 'Enabled',
-                            'disabled' => 'Disabled',
-                        ])
+                        ->options(BarberStatusEnum::class)
                         ->required(),
                 ]),
         ]);

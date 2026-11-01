@@ -14,6 +14,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\JobPosting\Models\ApplicationModel;
 use Modules\JobPosting\Models\JobPostingModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Review\Models\ReviewModel;
 
@@ -50,7 +51,7 @@ final class ScopePanelToCurrentUser
             'panel-scope',
             fn ($q) => $q
                 ->where('serviceable_id', $barberId)
-                ->where('serviceable_type', 'barber'),
+                ->where('serviceable_type', ServiceableTypeEnum::Barber),
         );
 
         ReviewModel::addGlobalScope(
@@ -84,7 +85,7 @@ final class ScopePanelToCurrentUser
             'panel-scope',
             fn ($q) => $q
                 ->where('serviceable_id', $branch->getAttribute('brand_id'))
-                ->where('serviceable_type', 'brand'),
+                ->where('serviceable_type', ServiceableTypeEnum::Brand),
         );
 
         BookingModel::addGlobalScope(

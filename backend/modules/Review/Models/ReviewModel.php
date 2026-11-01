@@ -13,7 +13,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Booking\Models\BookingModel;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 
 #[Fillable(['booking_id', 'author_id', 'author_type', 'subject_id', 'subject_type', 'rating', 'comment', 'status', 'dispute_reason', 'disputed_at', 'resolved_at', 'resolved_by', 'resolution_note'])]
 #[Table('reviews')]
@@ -25,6 +27,8 @@ class ReviewModel extends Model
     protected function casts(): array
     {
         return [
+            'author_type' => ReviewAuthorTypeEnum::class,
+            'subject_type' => ReviewSubjectTypeEnum::class,
             'rating' => 'integer',
             'status' => ReviewStatus::class,
             'disputed_at' => 'datetime',

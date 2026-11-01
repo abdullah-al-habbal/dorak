@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Core\Enums\Locale;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\Preference\Enums\PreferenceableTypeEnum;
 use Modules\Preference\Enums\PriceDisplayModeEnum;
 use Modules\Preference\Enums\ThemeEnum;
 
@@ -21,11 +22,11 @@ use Modules\Preference\Enums\ThemeEnum;
     'preferenceable_id',
     'preferenceable_type',
     'preferred_language',
-    'notification_enabled',
+    'is_notification_enabled',
     'display_currency_id',
     'theme',
     'price_display_mode',
-    'dual_price_display',
+    'is_dual_price_display_enabled',
 ])]
 #[Table('preferences')]
 class PreferenceModel extends Model
@@ -36,11 +37,12 @@ class PreferenceModel extends Model
     protected function casts(): array
     {
         return [
+            'preferenceable_type' => PreferenceableTypeEnum::class,
             'preferred_language' => Locale::class,
-            'notification_enabled' => 'boolean',
+            'is_notification_enabled' => 'boolean',
             'theme' => ThemeEnum::class,
             'price_display_mode' => PriceDisplayModeEnum::class,
-            'dual_price_display' => 'boolean',
+            'is_dual_price_display_enabled' => 'boolean',
         ];
     }
 

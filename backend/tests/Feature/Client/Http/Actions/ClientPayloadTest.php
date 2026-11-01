@@ -8,6 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as SocialUser;
 use Modules\Client\Mail\SendEmailVerificationCode;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\Universe;
 use Tests\Support\Constants\ClientPayloadTestConstants;
 
 function clientPayloadKeys(): array
@@ -49,7 +50,7 @@ it('returns the same 9-key client object from login, register, social login and 
         ->assertJsonPath('data.preferred_universe', 'men');
 
     expect($register->json('data.client'))->toHaveKeys(clientPayloadKeys())->toHaveCount(9);
-    expect($register->json('data.client.preferred_universe'))->toBe('men');
+    expect($register->json('data.client.preferred_universe'))->toBe(Universe::Men->value);
     expect($register->json('data.client.created_at'))->not->toBeNull();
     expect($socialResponse->json('data.client'))->toHaveCount(9);
     expect($login->json('data.client'))->toHaveCount(9);

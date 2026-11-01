@@ -38,7 +38,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   Future<void> save({
     String? preferredLanguage,
-    bool? notificationEnabled,
+    bool? isNotificationEnabled,
     String? displayCurrencyId,
     String? theme,
     String? priceDisplayMode,
@@ -48,7 +48,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     try {
       final settings = await _repository.updateSettings(
         preferredLanguage: preferredLanguage,
-        notificationEnabled: notificationEnabled,
+        isNotificationEnabled: isNotificationEnabled,
         displayCurrencyId: displayCurrencyId,
         theme: theme,
         priceDisplayMode: priceDisplayMode,

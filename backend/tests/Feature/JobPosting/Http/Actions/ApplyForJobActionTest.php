@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
 use Modules\Barber\Models\BarberPortfolioPhotoModel;
+use Modules\JobPosting\Enums\ApplicationStatus;
+use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Models\ApplicationModel;
 use Modules\JobPosting\Models\JobPostingModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function () {
@@ -14,7 +17,7 @@ beforeEach(function () {
 });
 
 it('applies for open job', function () {
-    $job = JobPostingModel::factory()->create(['status' => 'open']);
+    $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
 
     $response = $this->postJson("/api/v1/jobs/{$job->id}/apply");
 
@@ -23,14 +26,14 @@ it('applies for open job', function () {
         'success',
         'data' => ['id', 'job_posting_id', 'barber_id', 'status'],
     ]);
-    expect($response->json('data.status'))->toBe('submitted');
+    expect($response->json('data.status'))->toBe(ApplicationStatus::Submitted->value);
 });
 
 it('stores a profile snapshot with services, portfolio and bio', function () {
     $this->barber->update(['bio' => ['en' => 'Fades and tapers.', 'ar' => 'فيدات وتيبرات.']]);
-    OfferedServiceModel::factory()->create(['serviceable_id' => $this->barber->id, 'serviceable_type' => 'barber']);
+    OfferedServiceModel::factory()->create(['serviceable_id' => $this->barber->id, 'serviceable_type' => ServiceableTypeEnum::Barber]);
     BarberPortfolioPhotoModel::factory()->create(['barber_id' => $this->barber->id]);
-    $job = JobPostingModel::factory()->create(['status' => 'open']);
+    $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
 
     $this->postJson("/api/v1/jobs/{$job->id}/apply")->assertCreated();
 
@@ -43,7 +46,7 @@ it('stores a profile snapshot with services, portfolio and bio', function () {
 
 it('keeps the stored snapshot unchanged after the profile is edited', function () {
     $this->barber->update(['bio' => ['en' => 'Original bio.', 'ar' => 'نص أصلي.']]);
-    $job = JobPostingModel::factory()->create(['status' => 'open']);
+    $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
 
     $this->postJson("/api/v1/jobs/{$job->id}/apply")->assertCreated();
 
@@ -54,7 +57,7 @@ it('keeps the stored snapshot unchanged after the profile is edited', function (
 });
 
 it('rejects application for closed job', function () {
-    $job = JobPostingModel::factory()->create(['status' => 'closed']);
+    $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Closed]);
 
     $response = $this->postJson("/api/v1/jobs/{$job->id}/apply");
 
@@ -62,7 +65,7 @@ it('rejects application for closed job', function () {
 });
 
 it('rejects duplicate application', function () {
-    $job = JobPostingModel::factory()->create(['status' => 'open']);
+    $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
 
     $this->postJson("/api/v1/jobs/{$job->id}/apply");
     $response = $this->postJson("/api/v1/jobs/{$job->id}/apply");
@@ -72,7 +75,7 @@ it('rejects duplicate application', function () {
 
 it('requires barber authentication', function () {
     $this->app->get('auth')->forgetGuards();
-    $job = JobPostingModel::factory()->create(['status' => 'open']);
+    $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
 
     $response = $this->postJson("/api/v1/jobs/{$job->id}/apply");
 

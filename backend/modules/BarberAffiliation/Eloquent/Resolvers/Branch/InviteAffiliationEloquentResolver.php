@@ -12,6 +12,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\CQRS\Command\Branch\InviteAffiliationCommand;
 use Modules\BarberAffiliation\Eloquent\Resolvers\Barber\BarberAlreadyAffiliatedException;
 use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
@@ -38,7 +39,7 @@ final class InviteAffiliationEloquentResolver
 
             $affiliation = BarberAffiliationModel::create([
                 'barber_id' => $barber->id,
-                'initiated_by_type' => BranchModel::class,
+                'initiated_by_type' => AffiliationInitiatorTypeEnum::Branch,
                 'initiated_by_id' => $branch->id,
                 'affiliable_id' => $branch->id,
                 'affiliable_type' => AffiliableType::Branch,

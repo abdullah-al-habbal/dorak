@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Http\Actions\Business;
 use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Handlers\Staff\ReviewClientHandler;
 use Modules\Review\Http\Requests\Staff\ReviewClientRequest;
 use Modules\Review\Http\Resources\Shared\ReviewResource;
@@ -27,7 +28,7 @@ final class ReviewBookingClientAction extends BaseApiAction
             return $this->forbidden();
         }
 
-        $result = $this->handler->handle($request->toCommand($booking, 'branch', null, $actor->scopedBranchIds() ?? []));
+        $result = $this->handler->handle($request->toCommand($booking, ReviewAuthorTypeEnum::Branch, null, $actor->scopedBranchIds() ?? []));
 
         if ($result->review === null) {
             return $this->error(

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Modules\Activation\Enums\ActivableTypeEnum;
 use Modules\Activation\Enums\ActivationStatusEnum;
 use Modules\Admin\Models\AdminModel;
 
@@ -33,6 +34,7 @@ class ActivationLogModel extends Model
     protected function casts(): array
     {
         return [
+            'activable_type' => ActivableTypeEnum::class,
             'status' => ActivationStatusEnum::class,
             'activated_at' => 'datetime',
             'expires_at' => 'datetime',

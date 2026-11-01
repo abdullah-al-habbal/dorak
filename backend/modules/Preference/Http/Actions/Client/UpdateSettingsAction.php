@@ -7,6 +7,7 @@ namespace Modules\Preference\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Preference\CQRS\Command\UpdateSettingsCommand;
+use Modules\Preference\Enums\PreferenceableTypeEnum;
 use Modules\Preference\Handlers\UpdateSettingsHandler;
 use Modules\Preference\Http\Requests\Shared\UpdateSettingsRequest;
 use Modules\Preference\Http\Resources\Shared\SettingsResource;
@@ -18,7 +19,7 @@ final class UpdateSettingsAction extends BaseApiAction
     public function __invoke(UpdateSettingsRequest $request): JsonResponse
     {
         $settings = $this->handler->handle(new UpdateSettingsCommand(
-            ownerType: 'client',
+            ownerType: PreferenceableTypeEnum::Client,
             ownerId: (string) $request->user()->getAuthIdentifier(),
             attributes: $request->toAttributes(),
         ));

@@ -148,7 +148,7 @@ describe('Dashboard profile API', function (): void {
 
             expect(DashboardEmailChangeModel::query()->pluck('actor_id')->all())->toContain($model->id);
             $change = DashboardEmailChangeModel::query()->where('actor_id', $model->id)->firstOrFail();
-            expect($change->actor_type)->toBe($actorType);
+            expect($change->actor_type->value)->toBe($actorType);
             $change->forceFill(['code_hash' => Hash::make('123456')])->save();
 
             app('auth')->forgetGuards();

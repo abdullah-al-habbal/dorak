@@ -8,7 +8,7 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
-use Modules\Dashboard\Constants\DashboardActorConstants;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Models\DashboardRefreshTokenModel;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardSessionClaim;
@@ -54,7 +54,7 @@ describe('Dashboard auth API', function (): void {
         $this->withHeader('Authorization', 'Bearer '.$response->json('data.token'))
             ->getJson('/api/v1/dashboard/me')
             ->assertOk()
-            ->assertJsonPath('data.actor_type', 'barber')
+            ->assertJsonPath('data.actor_type', DashboardActorTypeEnum::Barber->value)
             ->assertJsonPath('data.role', 'barber');
     });
 
@@ -82,7 +82,7 @@ describe('Dashboard auth API', function (): void {
         ]);
         $claimService = app(DashboardSessionClaim::class);
         $admin = AdminModel::factory()->create();
-        $actor = new DashboardActor((string) $admin->id, DashboardActorConstants::DASHBOARD_ACTOR_ADMIN, 'platform_admin', null);
+        $actor = new DashboardActor((string) $admin->id, DashboardActorTypeEnum::Admin, 'platform_admin', null);
         $oldClaim = $claimService->issue($actor);
         $token = $admin->createToken('dashboard-session', ['dashboard'])->plainTextToken;
 
@@ -117,7 +117,7 @@ describe('Dashboard auth API', function (): void {
         $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/v1/dashboard/me')
             ->assertOk()
-            ->assertJsonPath('data.actor_type', 'admin')
+            ->assertJsonPath('data.actor_type', DashboardActorTypeEnum::Admin->value)
             ->assertJsonPath('data.role', 'platform_admin')
             ->assertJsonPath('data.branch_id', null)
             ->assertJsonPath('data.email', $admin->email)
@@ -139,7 +139,7 @@ describe('Dashboard auth API', function (): void {
         $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/v1/dashboard/me')
             ->assertOk()
-            ->assertJsonPath('data.actor_type', 'branch')
+            ->assertJsonPath('data.actor_type', DashboardActorTypeEnum::Branch->value)
             ->assertJsonPath('data.role', 'branch_manager')
             ->assertJsonPath('data.branch_id', $branch->id);
     });

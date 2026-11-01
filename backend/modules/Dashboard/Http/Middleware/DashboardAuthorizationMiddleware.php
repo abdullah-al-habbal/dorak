@@ -12,7 +12,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Helpers\ApiResponseTrait;
-use Modules\Dashboard\Constants\DashboardActorConstants;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardSessionClaim;
@@ -71,13 +71,13 @@ final class DashboardAuthorizationMiddleware
     private function actorFor(string $guard, AdminModel|BranchModel|BarberModel|ClientModel $model): ?DashboardActor
     {
         if ($guard === 'admin_api' && $model instanceof AdminModel) {
-            return new DashboardActor($this->idFor($model), DashboardActorConstants::DASHBOARD_ACTOR_ADMIN, 'platform_admin', null);
+            return new DashboardActor($this->idFor($model), DashboardActorTypeEnum::Admin, 'platform_admin', null);
         }
         if ($guard === 'branch_api' && $model instanceof BranchModel) {
             return $this->branchActor($model);
         }
         if ($guard === 'barber' && $model instanceof BarberModel) {
-            return new DashboardActor($this->idFor($model), DashboardActorConstants::DASHBOARD_ACTOR_BARBER, 'barber', null);
+            return new DashboardActor($this->idFor($model), DashboardActorTypeEnum::Barber, 'barber', null);
         }
         if ($guard === 'client' && $model instanceof ClientModel) {
             return $this->ownerActors->forClient($model);
@@ -93,7 +93,7 @@ final class DashboardAuthorizationMiddleware
 
         $id = $this->idFor($model);
 
-        return new DashboardActor($id, DashboardActorConstants::DASHBOARD_ACTOR_BRANCH, 'branch_manager', $id, $brandId);
+        return new DashboardActor($id, DashboardActorTypeEnum::Branch, 'branch_manager', $id, $brandId);
     }
 
     private function idFor(AdminModel|BranchModel|BarberModel $model): string

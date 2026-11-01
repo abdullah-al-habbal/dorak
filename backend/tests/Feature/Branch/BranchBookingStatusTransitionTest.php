@@ -16,15 +16,15 @@ it('confirms a pending booking in the branch', function (): void {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
 
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'confirmed'])
-        ->assertOk()->assertJsonPath('data.status', 'confirmed');
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Confirmed])
+        ->assertOk()->assertJsonPath('data.status', BookingStatus::Confirmed->value);
 });
 
 it('rejects transitions from terminal bookings without changing their status', function (): void {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Completed]);
 
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'in_progress'])->assertUnprocessable();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::InProgress])->assertUnprocessable();
     expect($booking->fresh()->status)->toBe(BookingStatus::Completed);
 });
 
@@ -32,13 +32,13 @@ it('hides bookings outside the branch scope', function (): void {
     $chair = ChairModel::factory()->create();
     $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
 
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'confirmed'])->assertNotFound();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Confirmed])->assertNotFound();
 });
 
 it('allows a confirmed booking to become a no-show', function (): void {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Confirmed]);
 
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'no_show'])
-        ->assertOk()->assertJsonPath('data.status', 'no_show');
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::NoShow])
+        ->assertOk()->assertJsonPath('data.status', BookingStatus::NoShow->value);
 });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
@@ -18,11 +19,11 @@ it('creates affiliation', function () {
 
     $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/affiliate", [
         'affiliable_id' => $branch->id,
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
     ]);
 
     $response->assertCreated();
-    expect($response->json('data.status'))->toBe('pending');
+    expect($response->json('data.status'))->toBe(AffiliationStatus::Pending->value);
     expect($response->json('data.barber_id'))->toBe($this->barber->id);
 });
 
@@ -49,7 +50,7 @@ it('accepts pending affiliation', function () {
     $response = $this->postJson("/api/v1/affiliations/{$affiliation->id}/accept");
 
     $response->assertOk();
-    expect($response->json('data.status'))->toBe('active');
+    expect($response->json('data.status'))->toBe(AffiliationStatus::Active->value);
     expect($response->json('data.accepted_at'))->not->toBeNull();
 });
 
@@ -71,7 +72,7 @@ it('rejects pending affiliation', function () {
     $response = $this->postJson("/api/v1/affiliations/{$affiliation->id}/reject");
 
     $response->assertOk();
-    expect($response->json('data.status'))->toBe('rejected');
+    expect($response->json('data.status'))->toBe(AffiliationStatus::Rejected->value);
 });
 
 it('rejects rejecting non-pending affiliation', function () {
@@ -108,7 +109,7 @@ it('requires barber authentication for create', function () {
 
     $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/affiliate", [
         'affiliable_id' => $branch->id,
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
     ]);
 
     $response->assertUnauthorized();
@@ -122,12 +123,12 @@ it('allows a barber with one active affiliation to create a second one to a diff
         'barber_id' => $this->barber->id,
         'status' => AffiliationStatus::Active,
         'affiliable_id' => $branchA->id,
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
     ]);
 
     $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/affiliate", [
         'affiliable_id' => $branchB->id,
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
     ]);
 
     $response->assertCreated();
@@ -140,12 +141,12 @@ it('rejects a duplicate pending/active affiliation to the same branch', function
         'barber_id' => $this->barber->id,
         'status' => AffiliationStatus::Active,
         'affiliable_id' => $branch->id,
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
     ]);
 
     $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/affiliate", [
         'affiliable_id' => $branch->id,
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
     ]);
 
     $response->assertStatus(409);
@@ -154,7 +155,7 @@ it('rejects a duplicate pending/active affiliation to the same branch', function
 it('rejects affiliating to a branch that does not exist', function () {
     $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/affiliate", [
         'affiliable_id' => (string) Str::uuid(),
-        'affiliable_type' => 'branch',
+        'affiliable_type' => AffiliableType::Branch,
     ]);
 
     $response->assertStatus(422);

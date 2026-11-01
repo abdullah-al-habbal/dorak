@@ -9,6 +9,7 @@ use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Modules\Booking\Enums\BookingStatus;
 
 final class BookingFormSchema
 {
@@ -30,13 +31,7 @@ final class BookingFormSchema
                     DateTimePicker::make('time_slot')
                         ->required(),
                     Select::make('status')
-                        ->options([
-                            'pending' => 'Pending',
-                            'confirmed' => 'Confirmed',
-                            'in_progress' => 'In Progress',
-                            'completed' => 'Completed',
-                            'cancelled' => 'Cancelled',
-                        ])
+                        ->options(BookingStatus::class)
                         ->required(),
                     KeyValue::make('at_home_location'),
                 ]),

@@ -27,13 +27,7 @@ final class JobPostingInfolistSchema
                         ->label(__('jobposting::ui.description_arabic'))
                         ->columnSpanFull(),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'open' => 'success',
-                            'closed' => 'danger',
-                            'archived' => 'gray',
-                            default => 'gray',
-                        }),
+                        ->badge(),
                     TextEntry::make('applications_count')
                         ->counts('applications')
                         ->label(__('jobposting::ui.applications')),

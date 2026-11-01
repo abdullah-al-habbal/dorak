@@ -6,6 +6,7 @@ namespace Modules\Activation\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Activation\Enums\ActivableTypeEnum;
 use Modules\Activation\Enums\ActivationStatusEnum;
 use Modules\Activation\Models\ActivationLogModel;
 use Modules\Admin\Models\AdminModel;
@@ -18,7 +19,7 @@ class ActivationLogFactory extends Factory
     {
         return [
             'activable_id' => BarberModel::factory(),
-            'activable_type' => BarberModel::class,
+            'activable_type' => ActivableTypeEnum::Barber,
             'status' => ActivationStatusEnum::Pending->value,
             'admin_id' => AdminModel::factory(),
             'activated_at' => now(),

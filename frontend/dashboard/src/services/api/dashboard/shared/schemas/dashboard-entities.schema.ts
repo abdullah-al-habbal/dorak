@@ -30,8 +30,8 @@ export const BranchSchema = z.object({
 
 export const ServiceSchema = z.object({
   id: DashboardEntityIdSchema,
-  active: z.boolean(),
-  atHome: z.boolean(),
+  isActive: z.boolean(),
+  isAtHome: z.boolean(),
   catalogItemId: z.string().nullable(),
   currencyId: DashboardEntityIdSchema,
   duration: z.number().nullable(),

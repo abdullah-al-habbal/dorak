@@ -37,7 +37,7 @@ final class GetOnboardingConfigAction extends BaseApiAction
 
         return $this->ok(data: [
             'hero_image_url' => Storage::disk('public')->url($config->hero_image_path),
-            'season' => $config->season,
+            'season' => $config->season?->value,
             'locale' => $config->locale,
         ]);
     }

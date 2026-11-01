@@ -22,9 +22,9 @@ final class OfferedServicesTable
                     ->money(fn ($record): string => $record->currency->code ?? 'USD'),
                 TextColumn::make('duration')
                     ->label(__('offeredservice::ui.minutes')),
-                IconColumn::make('at_home')
+                IconColumn::make('is_at_home')
                     ->boolean(),
-                IconColumn::make('active')
+                IconColumn::make('is_active')
                     ->boolean(),
             ])
             ->actions([

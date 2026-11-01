@@ -1315,7 +1315,7 @@ class FakeProfileRepository implements ProfileRepository {
     return UniversePreferenceDto(preferredUniverse: universe);
   }
 
-  SettingsDto settings = const SettingsDto(notificationEnabled: true);
+  SettingsDto settings = const SettingsDto(isNotificationEnabled: true);
   Object? getSettingsError;
   Object? updateSettingsError;
   int getSettingsCalls = 0;
@@ -1332,7 +1332,7 @@ class FakeProfileRepository implements ProfileRepository {
   @override
   Future<SettingsDto> updateSettings({
     String? preferredLanguage,
-    bool? notificationEnabled,
+    bool? isNotificationEnabled,
     String? displayCurrencyId,
     String? theme,
     String? priceDisplayMode,
@@ -1342,7 +1342,7 @@ class FakeProfileRepository implements ProfileRepository {
     if (failure != null) throw failure;
     settings = SettingsDto(
       preferredLanguage: preferredLanguage ?? settings.preferredLanguage,
-      notificationEnabled: notificationEnabled ?? settings.notificationEnabled,
+      isNotificationEnabled: isNotificationEnabled ?? settings.isNotificationEnabled,
       displayCurrencyId: displayCurrencyId ?? settings.displayCurrencyId,
       theme: theme ?? settings.theme,
       priceDisplayMode: priceDisplayMode ?? settings.priceDisplayMode,
@@ -1435,7 +1435,7 @@ BarberProfileDto testBarberProfile({
           price: 80,
           currencyId: 'curr-1',
           duration: 30,
-          atHome: false,
+          isAtHome: false,
           active: true,
         ),
         BarberServiceDto(
@@ -1444,7 +1444,7 @@ BarberProfileDto testBarberProfile({
           price: 30,
           currencyId: 'curr-1',
           duration: 15,
-          atHome: true,
+          isAtHome: true,
           active: true,
         ),
       ],

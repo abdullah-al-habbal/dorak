@@ -62,7 +62,7 @@ describe('Payout lifecycle', function (): void {
         $this->getJson('/api/v1/dashboard/admin/payouts?status=draft')->assertOk()->assertJsonCount(1, 'data');
         $this->getJson("/api/v1/dashboard/admin/payouts?brand_id={$draft->brand_id}")->assertOk()->assertJsonCount(1, 'data');
         $this->getJson('/api/v1/dashboard/admin/payouts?status=bogus')->assertUnprocessable();
-        $this->getJson("/api/v1/dashboard/admin/payouts/{$draft->id}")->assertOk()->assertJsonPath('data.status', 'draft');
+        $this->getJson("/api/v1/dashboard/admin/payouts/{$draft->id}")->assertOk()->assertJsonPath('data.status', PayoutStatus::Draft->value);
     });
 
     it('approves then pays a payout, recording the approver and reference', function (): void {
@@ -70,12 +70,12 @@ describe('Payout lifecycle', function (): void {
 
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/approve", ['notes' => 'ok'])
             ->assertOk()
-            ->assertJsonPath('data.status', 'approved');
+            ->assertJsonPath('data.status', PayoutStatus::Approved->value);
         expect($payout->fresh()->approved_by)->toBe($this->admin->id);
 
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/mark-paid", ['reference' => 'TX-9'])
             ->assertOk()
-            ->assertJsonPath('data.status', 'paid')
+            ->assertJsonPath('data.status', PayoutStatus::Paid->value)
             ->assertJsonPath('data.reference', 'TX-9');
         expect($payout->fresh()->paid_at)->not->toBeNull();
     });
@@ -96,7 +96,7 @@ describe('Payout lifecycle', function (): void {
         $payout = PayoutModel::factory()->create();
         $entry = CommissionEntryModel::factory()->create(['payout_id' => $payout->id, 'brand_id' => $payout->brand_id, 'currency_id' => $payout->currency_id]);
 
-        $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/cancel")->assertOk()->assertJsonPath('data.status', 'canceled');
+        $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/cancel")->assertOk()->assertJsonPath('data.status', PayoutStatus::Canceled->value);
 
         expect($entry->fresh()->payout_id)->toBeNull();
         $this->postJson('/api/v1/dashboard/admin/payouts/generate')->assertCreated()->assertJsonCount(1, 'data');

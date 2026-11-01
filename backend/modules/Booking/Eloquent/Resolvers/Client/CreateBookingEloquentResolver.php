@@ -29,6 +29,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Services\BranchHours;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class CreateBookingEloquentResolver
@@ -65,7 +66,7 @@ final class CreateBookingEloquentResolver
 
         $services = OfferedServiceModel::query()
             ->whereIn('id', $command->serviceIds)
-            ->where('active', true)
+            ->where('is_active', true)
             ->lockForUpdate()
             ->get();
 
@@ -192,9 +193,8 @@ final class CreateBookingEloquentResolver
         $ownerId = $service->getAttribute('serviceable_id');
 
         return match ($service->getAttribute('serviceable_type')) {
-            'barber' => $barberId !== null && $ownerId === $barberId,
-            'branch' => $branchId !== null && $ownerId === $branchId,
-            'brand' => $branchId !== null && $ownerId === BranchModel::query()->whereKey($branchId)->value('brand_id'),
+            ServiceableTypeEnum::Barber => $barberId !== null && $ownerId === $barberId,
+            ServiceableTypeEnum::Brand => $branchId !== null && $ownerId === BranchModel::query()->whereKey($branchId)->value('brand_id'),
             default => false,
         };
     }

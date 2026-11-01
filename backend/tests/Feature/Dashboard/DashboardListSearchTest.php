@@ -7,6 +7,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 describe('Dashboard list search', function (): void {
@@ -52,12 +53,12 @@ describe('Dashboard list search', function (): void {
     it('searches services by translated name', function (): void {
         $brand = BrandModel::factory()->create();
         OfferedServiceModel::factory()->create([
-            'serviceable_type' => 'brand',
+            'serviceable_type' => ServiceableTypeEnum::Brand,
             'serviceable_id' => $brand->id,
             'name' => ['en' => 'Classic Haircut', 'ar' => 'قص كلاسيكي'],
         ]);
         OfferedServiceModel::factory()->create([
-            'serviceable_type' => 'brand',
+            'serviceable_type' => ServiceableTypeEnum::Brand,
             'serviceable_id' => $brand->id,
             'name' => ['en' => 'Beard Trim', 'ar' => 'تهذيب اللحية'],
         ]);

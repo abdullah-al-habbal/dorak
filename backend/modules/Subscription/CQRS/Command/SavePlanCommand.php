@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Subscription\CQRS\Command;
 
+use Modules\Subscription\Enums\SubscriptionIntervalUnitEnum;
+
 final readonly class SavePlanCommand
 {
     /**
@@ -16,7 +18,7 @@ final readonly class SavePlanCommand
         public ?array $description,
         public int $priceMinor,
         public string $currencyId,
-        public string $intervalUnit,
+        public SubscriptionIntervalUnitEnum $intervalUnit,
         public int $intervalCount,
         public bool $isActive,
         public int $sortOrder,

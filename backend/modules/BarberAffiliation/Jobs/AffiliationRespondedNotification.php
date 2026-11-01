@@ -13,6 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\NotificationTypeEnum;
@@ -42,9 +43,9 @@ final class AffiliationRespondedNotification implements ShouldQueue
             return;
         }
 
-        $userType = match (true) {
-            AffiliationParty::isBarber($affiliation->initiated_by_type) => BarberModel::class,
-            AffiliationParty::isBranch($affiliation->initiated_by_type) => BranchModel::class,
+        $userType = match ($affiliation->initiated_by_type) {
+            AffiliationInitiatorTypeEnum::Barber => BarberModel::class,
+            AffiliationInitiatorTypeEnum::Branch => BranchModel::class,
             default => null,
         };
         if ($userType === null || $affiliation->initiated_by_id === null) {

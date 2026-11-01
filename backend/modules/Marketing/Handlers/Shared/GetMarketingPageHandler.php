@@ -6,6 +6,8 @@ namespace Modules\Marketing\Handlers\Shared;
 
 use Modules\Marketing\Eloquent\Resolvers\Shared\MarketingPageEloquentResolver;
 use Modules\Marketing\Eloquent\Resolvers\Shared\SectionEloquentResolver;
+use Modules\Marketing\Enums\SectionTypeEnum;
+use Modules\Marketing\Enums\UniverseVisibilityEnum;
 
 final class GetMarketingPageHandler
 {
@@ -14,7 +16,7 @@ final class GetMarketingPageHandler
         private readonly SectionEloquentResolver $sectionResolver,
     ) {}
 
-    public function handle(string $slug, string $locale, string $universe): ?array
+    public function handle(string $slug, string $locale, UniverseVisibilityEnum $universe): ?array
     {
         $page = $this->pageResolver->findBySlug($slug);
 
@@ -34,13 +36,13 @@ final class GetMarketingPageHandler
             'sections' => $sections->map(function (mixed $section) use ($locale): array {
                 $data = [
                     'id' => $section->id,
-                    'type' => $section->type,
+                    'type' => $section->type->value,
                     'sort_order' => $section->sort_order,
-                    'universe_visibility' => $section->universe_visibility,
+                    'universe_visibility' => $section->universe_visibility->value,
                     'content' => $section->getTranslation('content', $locale),
                 ];
 
-                if ($section->type === 'testimonials') {
+                if ($section->type === SectionTypeEnum::Testimonials) {
                     $section->load('testimonials');
                     $data['testimonials'] = $section->testimonials->map(fn (mixed $t): array => [
                         'id' => $t->id,

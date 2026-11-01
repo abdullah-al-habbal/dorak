@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Marketing\Database\Factories\SectionFactory;
+use Modules\Marketing\Enums\SectionTypeEnum;
+use Modules\Marketing\Enums\UniverseVisibilityEnum;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
@@ -40,6 +42,8 @@ final class SectionModel extends Model
     protected function casts(): array
     {
         return [
+            'type' => SectionTypeEnum::class,
+            'universe_visibility' => UniverseVisibilityEnum::class,
             'content' => 'array',
             'title' => 'array',
             'subtitle' => 'array',

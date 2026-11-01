@@ -26,9 +26,9 @@ final class OfferedServicesTable
                     ->sortable(),
                 TextColumn::make('duration')
                     ->suffix(' min'),
-                IconColumn::make('at_home')
+                IconColumn::make('is_at_home')
                     ->boolean(),
-                IconColumn::make('active')
+                IconColumn::make('is_active')
                     ->boolean(),
             ])
             ->actions([

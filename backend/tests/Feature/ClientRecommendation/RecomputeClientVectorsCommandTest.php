@@ -6,12 +6,18 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Str;
 use Laravel\Ai\Embeddings;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientFaceProfile\Enums\AnalysisSourceEnum;
+use Modules\ClientFaceProfile\Enums\DetectedFaceShapeEnum;
+use Modules\ClientFaceProfile\Enums\FaceAnalysisStatusEnum;
 use Modules\ClientFaceProfile\Models\ClientFaceAnalysisResultModel;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
+use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\InteractionTypeEnum;
 use Modules\ClientInteraction\Models\ClientFavoriteModel;
 use Modules\ClientInteraction\Models\ClientInteractionLogModel;
 use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
@@ -27,7 +33,7 @@ beforeEach(function () {
 it('recomputes only the given clients vector and never filters entities by the client uuid', function () {
     $client = ClientModel::factory()->create();
     $brand = BrandModel::factory()->create();
-    ClientFavoriteModel::create(['client_id' => $client->id, 'favorable_id' => $brand->id, 'favorable_type' => 'brand']);
+    ClientFavoriteModel::create(['client_id' => $client->id, 'favorable_id' => $brand->id, 'favorable_type' => FavorableTypeEnum::Brand]);
     BranchModel::factory()->create();
     BarberModel::factory()->create();
 
@@ -41,7 +47,7 @@ it('recomputes only the given clients vector and never filters entities by the c
 it('skips a client with no new signals since the last run unless forced', function () {
     $client = ClientModel::factory()->create();
     $brand = BrandModel::factory()->create();
-    ClientFavoriteModel::create(['client_id' => $client->id, 'favorable_id' => $brand->id, 'favorable_type' => 'brand']);
+    ClientFavoriteModel::create(['client_id' => $client->id, 'favorable_id' => $brand->id, 'favorable_type' => FavorableTypeEnum::Brand]);
 
     $this->artisan('recommend:recompute-vectors', ['--client-id' => $client->id, '--force' => true])->assertExitCode(0);
     $firstRunAt = ClientPreferenceVectorModel::where('client_id', $client->id)->first()->updated_at;
@@ -80,7 +86,7 @@ it('removes expired edges and vectors of clients that no longer exist on every r
 
 it('builds a history edge from a completed booking after a recompute', function () {
     $booking = BookingModel::factory()->create();
-    BookingModel::withoutEvents(fn () => $booking->update(['status' => 'completed']));
+    BookingModel::withoutEvents(fn () => $booking->update(['status' => BookingStatus::Completed]));
 
     expect(RecommendationEdgeModel::where('source_id', $booking->client_id)->where('edge_type', EdgeTypeEnum::History->value)->exists())->toBeFalse();
 
@@ -104,7 +110,7 @@ it('builds a visited edge from an interaction log view after a recompute', funct
     $branch = BranchModel::factory()->create();
     ClientInteractionLogModel::create([
         'client_id' => $client->id,
-        'interaction_type' => 'view',
+        'interaction_type' => InteractionTypeEnum::View,
         'interactable_id' => $branch->id,
         'interactable_type' => 'branch',
     ]);
@@ -129,15 +135,15 @@ it('builds face_matched edges from the latest face analysis recommended catalog 
         'image_path' => 'face-profiles/test.jpg',
         'image_hash' => 'hash',
         'is_primary' => true,
-        'analysis_status' => 'completed',
+        'analysis_status' => FaceAnalysisStatusEnum::Completed,
         'uploaded_at' => now(),
     ]);
     ClientFaceAnalysisResultModel::create([
         'client_id' => $client->id,
         'face_profile_id' => $profile->id,
         'analysis_version' => 'v1',
-        'analysis_source' => 'third_party_api',
-        'detected_face_shape' => 'oval',
+        'analysis_source' => AnalysisSourceEnum::ThirdPartyApi,
+        'detected_face_shape' => DetectedFaceShapeEnum::Oval,
         'confidence_score' => 0.9,
         'detected_features' => ['forehead_width' => 1, 'jaw_angle' => 1, 'cheekbone_prominence' => 'medium'],
         'recommended_catalog_item_ids' => ['ids' => [$catalogItem->id]],

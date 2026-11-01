@@ -21,8 +21,8 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->foreignUuid('currency_id')->constrained('currencies');
             $table->unsignedInteger('duration')->nullable();
-            $table->boolean('at_home')->default(false);
-            $table->boolean('active')->default(true);
+            $table->boolean('is_at_home')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

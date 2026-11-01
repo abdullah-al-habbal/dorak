@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
@@ -30,8 +31,8 @@ use Spatie\Translatable\HasTranslations;
     'price',
     'currency_id',
     'duration',
-    'at_home',
-    'active',
+    'is_at_home',
+    'is_active',
     'catalog_item_id',
 ])]
 #[Table('offered_services')]
@@ -51,11 +52,12 @@ class OfferedServiceModel extends Model
     protected function casts(): array
     {
         return [
+            'serviceable_type' => ServiceableTypeEnum::class,
             'name' => 'array',
             'description' => 'array',
             'price' => 'decimal:2',
-            'at_home' => 'boolean',
-            'active' => 'boolean',
+            'is_at_home' => 'boolean',
+            'is_active' => 'boolean',
             'duration' => 'integer',
         ];
     }
@@ -69,7 +71,7 @@ class OfferedServiceModel extends Model
      */
     public function scopeBookable(Builder $query): Builder
     {
-        return $query->where('active', true)
+        return $query->where('is_active', true)
             ->where(fn (Builder $catalog) => $catalog
                 ->whereNull('catalog_item_id')
                 ->orWhereHas('catalogItem', fn (Builder $item) => $item->where('is_active', true)));
@@ -83,7 +85,7 @@ class OfferedServiceModel extends Model
      */
     public function scopeOfferedAtShop(Builder $query, ?string $brandId): Builder
     {
-        return $query->where('serviceable_type', 'brand')->where('serviceable_id', $brandId);
+        return $query->where('serviceable_type', ServiceableTypeEnum::Brand)->where('serviceable_id', $brandId);
     }
 
     public function serviceable(): MorphTo

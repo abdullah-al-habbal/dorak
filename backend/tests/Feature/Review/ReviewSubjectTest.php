@@ -7,6 +7,7 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 beforeEach(function (): void {
@@ -26,13 +27,13 @@ describe('review subject resolution', function (): void {
 
         $this->postJson("/api/v1/client/bookings/{$booking->id}/review", ['rating' => 4, 'comment' => 'Great fade'])
             ->assertCreated()
-            ->assertJsonPath('data.subject_type', 'barber')
+            ->assertJsonPath('data.subject_type', ReviewSubjectTypeEnum::Barber->value)
             ->assertJsonPath('data.subject_id', $barber->id)
             ->assertJsonMissingPath('meta.barber_review');
 
         $reviews = ReviewModel::query()->where('booking_id', $booking->id)->get();
         expect($reviews)->toHaveCount(1)
-            ->and($reviews->first()->subject_type)->toBe('barber')
+            ->and($reviews->first()->subject_type)->toBe(ReviewSubjectTypeEnum::Barber)
             ->and($reviews->first()->subject_id)->toBe($barber->id)
             ->and($reviews->first()->rating)->toBe(4);
     });
@@ -43,10 +44,10 @@ describe('review subject resolution', function (): void {
 
         $this->postJson("/api/v1/client/bookings/{$booking->id}/review", ['rating' => 5, 'barber_rating' => 3])
             ->assertCreated()
-            ->assertJsonPath('data.subject_type', 'branch')
+            ->assertJsonPath('data.subject_type', ReviewSubjectTypeEnum::Branch->value)
             ->assertJsonPath('data.subject_id', $branchId)
             ->assertJsonPath('data.rating', 5)
-            ->assertJsonPath('meta.barber_review.subject_type', 'barber')
+            ->assertJsonPath('meta.barber_review.subject_type', ReviewSubjectTypeEnum::Barber->value)
             ->assertJsonPath('meta.barber_review.subject_id', $booking->barber_id)
             ->assertJsonPath('meta.barber_review.rating', 3);
 
@@ -66,7 +67,7 @@ describe('review subject resolution', function (): void {
 
         $this->postJson("/api/v1/client/bookings/{$booking->id}/review", ['rating' => 5])
             ->assertCreated()
-            ->assertJsonPath('data.subject_type', 'branch')
+            ->assertJsonPath('data.subject_type', ReviewSubjectTypeEnum::Branch->value)
             ->assertJsonMissingPath('meta.barber_review');
 
         expect(ReviewModel::query()->where('booking_id', $booking->id)->count())->toBe(1);

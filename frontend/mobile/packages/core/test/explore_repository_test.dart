@@ -267,7 +267,7 @@ void main() {
                     'price': 80.0,
                     'currency_id': 'SAR',
                     'duration': 45,
-                    'at_home': true,
+                    'is_at_home': true,
                     'active': true,
                     'created_at': '2026-01-15T10:00:00.000Z',
                   },
@@ -299,7 +299,7 @@ void main() {
       expect(service.price, 80.0);
       expect(service.currencyId, 'SAR');
       expect(service.duration, 45);
-      expect(service.atHome, isTrue);
+      expect(service.isAtHome, isTrue);
       expect(service.active, isTrue);
       expect(service.createdAt, isNotNull);
     });

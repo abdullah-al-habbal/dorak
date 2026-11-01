@@ -10,11 +10,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Task 63: this project runs on MySQL only (CI, .env.example, and all
-        // other migrations target it) — there is no pgvector/PostgreSQL
-        // deployment. Embeddings are stored as a JSON array and similarity is
-        // computed in PHP (Modules\Explore\Support\ExploreRanker). See
-        // docs/decisions-required.md and the Recommendation module PRD §8.
         Schema::create('entity_embeddings', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('entity_type');

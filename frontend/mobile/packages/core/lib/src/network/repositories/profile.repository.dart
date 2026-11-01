@@ -19,7 +19,7 @@ abstract class ProfileRepository {
 
   Future<SettingsDto> updateSettings({
     String? preferredLanguage,
-    bool? notificationEnabled,
+    bool? isNotificationEnabled,
     String? displayCurrencyId,
     String? theme,
     String? priceDisplayMode,
@@ -100,14 +100,14 @@ class DioProfileRepository implements ProfileRepository {
   @override
   Future<SettingsDto> updateSettings({
     String? preferredLanguage,
-    bool? notificationEnabled,
+    bool? isNotificationEnabled,
     String? displayCurrencyId,
     String? theme,
     String? priceDisplayMode,
   }) {
     final data = <String, dynamic>{
       'preferred_language': ?preferredLanguage,
-      'notification_enabled': ?notificationEnabled,
+      'is_notification_enabled': ?isNotificationEnabled,
       'display_currency_id': ?displayCurrencyId,
       'theme': ?theme,
       'price_display_mode': ?priceDisplayMode,

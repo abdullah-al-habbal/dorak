@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Modules\Review\Http\Resources\Shared;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 
 final class ReviewResource extends JsonResource
 {
@@ -19,7 +19,7 @@ final class ReviewResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'subject_type' => is_string($subjectType = $this->offsetGet('subject_type')) ? Relation::getMorphAlias($subjectType) : null,
+            'subject_type' => ($subjectType = $this->offsetGet('subject_type')) instanceof ReviewSubjectTypeEnum ? $subjectType->value : null,
             'subject_id' => $this->offsetGet('subject_id'),
             'rating' => $this->rating,
             'comment' => $this->comment,

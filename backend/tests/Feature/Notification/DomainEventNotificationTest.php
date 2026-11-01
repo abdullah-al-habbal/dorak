@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Queue;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Jobs\AffiliationInvitedNotification;
 use Modules\BarberAffiliation\Jobs\AffiliationRespondedNotification;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
@@ -15,6 +17,8 @@ use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Models\NotificationModel;
 use Modules\Core\Services\FcmNotificationSender;
+use Modules\JobPosting\Enums\ApplicationStatus;
+use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Jobs\JobApplicationReceivedNotification;
 use Modules\JobPosting\Jobs\JobApplicationStatusChangedNotification;
 use Modules\JobPosting\Models\ApplicationModel;
@@ -30,7 +34,7 @@ it('queues one invitation to the branch when a barber requests to affiliate', fu
     $branch = BranchModel::factory()->create();
     $this->actingAs($barber, 'barber');
 
-    $this->postJson("/api/v1/barbers/{$barber->id}/affiliate", ['affiliable_id' => $branch->id, 'affiliable_type' => 'branch'])->assertCreated();
+    $this->postJson("/api/v1/barbers/{$barber->id}/affiliate", ['affiliable_id' => $branch->id, 'affiliable_type' => AffiliableType::Branch])->assertCreated();
 
     Queue::assertPushed(AffiliationInvitedNotification::class, 1);
 });
@@ -40,7 +44,7 @@ it('queues no invitation when the affiliation request is invalid or forbidden', 
     $this->actingAs($barber, 'barber');
 
     $this->postJson("/api/v1/barbers/{$barber->id}/affiliate", [])->assertUnprocessable();
-    $this->postJson('/api/v1/barbers/'.BarberModel::factory()->create()->id.'/affiliate', ['affiliable_id' => BranchModel::factory()->create()->id, 'affiliable_type' => 'branch'])->assertForbidden();
+    $this->postJson('/api/v1/barbers/'.BarberModel::factory()->create()->id.'/affiliate', ['affiliable_id' => BranchModel::factory()->create()->id, 'affiliable_type' => AffiliableType::Branch])->assertForbidden();
 
     Queue::assertNothingPushed();
 });
@@ -77,7 +81,7 @@ it('queues no response for a non-pending affiliation', function (): void {
 
 it('queues one application notification for the posting branch', function (): void {
     $barber = BarberModel::factory()->create();
-    $job = JobPostingModel::factory()->create(['status' => 'open']);
+    $job = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
     $this->actingAs($barber, 'barber');
 
     $this->postJson("/api/v1/jobs/{$job->id}/apply")->assertCreated();
@@ -87,8 +91,8 @@ it('queues one application notification for the posting branch', function (): vo
 
 it('queues no application notification for closed jobs or duplicates', function (): void {
     $this->actingAs(BarberModel::factory()->create(), 'barber');
-    $closed = JobPostingModel::factory()->create(['status' => 'closed']);
-    $open = JobPostingModel::factory()->create(['status' => 'open']);
+    $closed = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Closed]);
+    $open = JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
 
     $this->postJson("/api/v1/jobs/{$closed->id}/apply")->assertUnprocessable();
     Queue::assertNothingPushed();
@@ -108,8 +112,8 @@ it('queues one status notification for the applying barber and none on failure',
     $this->patchJson($url, ['status' => 'bogus'])->assertUnprocessable();
     Queue::assertNothingPushed();
 
-    $this->patchJson($url, ['status' => 'accepted'])->assertOk();
-    $this->patchJson($url, ['status' => 'rejected'])->assertUnprocessable();
+    $this->patchJson($url, ['status' => ApplicationStatus::Accepted])->assertOk();
+    $this->patchJson($url, ['status' => ApplicationStatus::Rejected])->assertUnprocessable();
     Queue::assertPushed(JobApplicationStatusChangedNotification::class, 1);
 });
 
@@ -118,7 +122,7 @@ it('queues no status notification for another branch', function (): void {
     $application = ApplicationModel::factory()->create(['job_posting_id' => $posting->id]);
     $this->actingAs(BranchModel::factory()->create(), 'branch_api');
 
-    $this->patchJson("/api/v1/branch/job-postings/{$posting->id}/applications/{$application->id}/status", ['status' => 'accepted'])->assertForbidden();
+    $this->patchJson("/api/v1/branch/job-postings/{$posting->id}/applications/{$application->id}/status", ['status' => ApplicationStatus::Accepted])->assertForbidden();
 
     Queue::assertNothingPushed();
 });
@@ -152,7 +156,7 @@ it('writes an inbox row with an id-only payload for each notification', function
 
     $branchAffiliation = BarberAffiliationModel::factory()->pending()->create([
         'barber_id' => $barber->id,
-        'initiated_by_type' => BarberModel::class,
+        'initiated_by_type' => AffiliationInitiatorTypeEnum::Barber,
         'initiated_by_id' => $barber->id,
         'affiliable_id' => $branch->id,
     ]);

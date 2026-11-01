@@ -212,7 +212,7 @@ void main() {
               data: successEnvelope(
                 data: {
                   'preferred_language': 'ar',
-                  'notification_enabled': true,
+                  'is_notification_enabled': true,
                   'display_currency_id': 'currency-1',
                   'theme': 'dark',
                   'price_display_mode': 'tax_inclusive',
@@ -228,7 +228,7 @@ void main() {
         expect(captured.path, ProfileEndpoints.settings);
         expect(captured.method, 'GET');
         expect(settings.preferredLanguage, 'ar');
-        expect(settings.notificationEnabled, isTrue);
+        expect(settings.isNotificationEnabled, isTrue);
         expect(settings.displayCurrencyId, 'currency-1');
         expect(settings.theme, 'dark');
         expect(settings.priceDisplayMode, 'tax_inclusive');
@@ -247,7 +247,7 @@ void main() {
               data: successEnvelope(
                 data: {
                   'preferred_language': 'en',
-                  'notification_enabled': false,
+                  'is_notification_enabled': false,
                   'display_currency_id': null,
                   'theme': null,
                   'price_display_mode': null,
@@ -260,17 +260,17 @@ void main() {
 
         final settings = await repository.updateSettings(
           preferredLanguage: 'en',
-          notificationEnabled: false,
+          isNotificationEnabled: false,
         );
 
         expect(captured.path, ProfileEndpoints.settings);
         expect(captured.method, 'PATCH');
         expect(captured.data, {
           'preferred_language': 'en',
-          'notification_enabled': false,
+          'is_notification_enabled': false,
         });
         expect(settings.preferredLanguage, 'en');
-        expect(settings.notificationEnabled, isFalse);
+        expect(settings.isNotificationEnabled, isFalse);
       },
     );
   });

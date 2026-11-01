@@ -136,7 +136,7 @@ class DioBookingRepository implements BookingRepository {
     final query = <String, dynamic>{
       'date': date.toUtc().toIso8601String().split('T').first,
       'service_ids': serviceIds,
-      if (isAtHome) 'at_home': 1,
+      if (isAtHome) 'is_at_home': 1,
       if (isAtHome) 'latitude': atHomeLatitude,
       if (isAtHome) 'longitude': atHomeLongitude,
     };

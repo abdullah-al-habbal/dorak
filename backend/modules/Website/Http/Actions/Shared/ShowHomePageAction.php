@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Website\Http\Actions\Shared;
 
 use Illuminate\Contracts\View\View;
+use Modules\Marketing\Enums\UniverseVisibilityEnum;
 use Modules\Marketing\Handlers\Shared\GetMarketingPageHandler;
 
 final class ShowHomePageAction
@@ -16,7 +17,7 @@ final class ShowHomePageAction
     public function __invoke(): View
     {
         $locale = app()->getLocale();
-        $page = $this->handler->handle('home', $locale, 'all');
+        $page = $this->handler->handle('home', $locale, UniverseVisibilityEnum::All);
 
         return view('website::pages.home', [
             'page' => $page,

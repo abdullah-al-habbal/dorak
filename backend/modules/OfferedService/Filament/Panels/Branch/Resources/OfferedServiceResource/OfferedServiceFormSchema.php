@@ -34,9 +34,9 @@ final class OfferedServiceFormSchema
                         ->label(__('offeredservice::ui.duration_minutes'))
                         ->numeric()
                         ->required(),
-                    Checkbox::make('at_home')
+                    Checkbox::make('is_at_home')
                         ->label(__('offeredservice::ui.available_at_home')),
-                    Checkbox::make('active')
+                    Checkbox::make('is_active')
                         ->label(__('offeredservice::ui.active'))
                         ->default(true),
                 ]),

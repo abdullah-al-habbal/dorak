@@ -25,12 +25,7 @@ final class BarbersTable
                 TextColumn::make('email')
                     ->searchable(),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'enabled' => 'success',
-                        'disabled' => 'danger',
-                        default => 'warning',
-                    }),
+                    ->badge(),
                 IconColumn::make('is_freelancer')
                     ->boolean(),
                 TextColumn::make('created_at')

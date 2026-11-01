@@ -7,18 +7,19 @@ use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\Currency\Models\ExchangeRateModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Preference\Models\PreferenceModel;
 
 function createBrandService(BrandModel $brand, CurrencyModel $currency, float $price = 100.0): OfferedServiceModel
 {
     return OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'brand',
+        'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $brand->id,
         'currency_id' => $currency->id,
         'price' => $price,
         'catalog_item_id' => null,
-        'active' => true,
+        'is_active' => true,
     ]);
 }
 
@@ -93,7 +94,7 @@ it('reports dual_price_display true when the owning brand enables dual display',
     PreferenceModel::factory()->create([
         'preferenceable_type' => 'brand',
         'preferenceable_id' => $brand->id,
-        'dual_price_display' => true,
+        'is_dual_price_display_enabled' => true,
     ]);
 
     $client = ClientModel::factory()->create();
@@ -110,7 +111,7 @@ it('reports dual_price_display true when the owning brand enables dual display',
             ->json('data.services')
     )->firstWhere('id', $service->id);
 
-    expect($payload['dual_price_display'])->toBeTrue()
+    expect($payload['is_dual_price_display_enabled'])->toBeTrue()
         ->and($payload['price'])->toEqual(100.0)
         ->and($payload['display_price'])->toEqual(['amount' => 90.0, 'currency_code' => 'EUR']);
 });
@@ -138,7 +139,7 @@ it('reports dual_price_display false (converted only) by default', function () {
             ->json('data.services')
     )->firstWhere('id', $service->id);
 
-    expect($payload['dual_price_display'])->toBeFalse();
+    expect($payload['is_dual_price_display_enabled'])->toBeFalse();
 });
 
 it('converts for a guest using the X-Display-Currency header', function () {

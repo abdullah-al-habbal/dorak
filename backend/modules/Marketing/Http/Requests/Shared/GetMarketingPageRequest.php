@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Modules\Marketing\Http\Requests\Shared;
 
 use Illuminate\Validation\Rules\Enum;
-use Modules\Core\Enums\Universe;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Marketing\Enums\UniverseVisibilityEnum;
 
 final class GetMarketingPageRequest extends BaseApiFormRequest
 {
     public function rules(): array
     {
         return [
-            'universe' => ['sometimes', 'string', new Enum(Universe::class)],
+            'universe' => ['sometimes', 'string', new Enum(UniverseVisibilityEnum::class)],
         ];
     }
 
@@ -22,8 +22,8 @@ final class GetMarketingPageRequest extends BaseApiFormRequest
         return $this->getPreferredLanguage(['en', 'ar']) ?? (string) app()->getLocale();
     }
 
-    public function getUniverse(): string
+    public function getUniverse(): UniverseVisibilityEnum
     {
-        return $this->input('universe', 'all');
+        return UniverseVisibilityEnum::tryFrom((string) $this->input('universe')) ?? UniverseVisibilityEnum::All;
     }
 }

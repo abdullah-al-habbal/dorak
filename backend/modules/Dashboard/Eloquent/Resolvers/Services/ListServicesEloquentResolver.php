@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Eloquent\Resolvers\Services;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Dashboard\CQRS\Query\ListServicesQuery;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class ListServicesEloquentResolver
@@ -14,7 +15,7 @@ final class ListServicesEloquentResolver
     {
         return OfferedServiceModel::query()
             ->when($query->brandIds !== null, fn ($builder) => $builder
-                ->where('serviceable_type', 'brand')
+                ->where('serviceable_type', ServiceableTypeEnum::Brand)
                 ->whereIn('serviceable_id', $query->brandIds))
             ->when($query->search !== null, fn ($builder) => $builder->where(
                 fn ($search) => $search->where('name->en', 'like', "%{$query->search}%")

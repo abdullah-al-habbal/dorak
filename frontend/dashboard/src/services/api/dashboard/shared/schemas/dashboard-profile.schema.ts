@@ -16,7 +16,7 @@ export const NotificationPreferencesSchema = z.object({
 
 export const SettingsSchema = z.object({
   preferredLanguage: z.enum(["en", "ar"]).nullable(),
-  notificationEnabled: z.boolean(),
+  isNotificationEnabled: z.boolean(),
   displayCurrencyId: z.string().nullable(),
   theme: z.enum(["light", "dark"]).nullable(),
   priceDisplayMode: z.enum(["tax_inclusive", "tax_exclusive"]).nullable(),
@@ -35,7 +35,7 @@ export const UpdatePasswordInputSchema = z.object({
 
 export const UpdateSettingsInputSchema = z.object({
   preferredLanguage: z.enum(["en", "ar"]).nullable().optional(),
-  notificationEnabled: z.boolean().optional(),
+  isNotificationEnabled: z.boolean().optional(),
   displayCurrencyId: z.string().nullable().optional(),
   theme: z.enum(["light", "dark"]).nullable().optional(),
   priceDisplayMode: z

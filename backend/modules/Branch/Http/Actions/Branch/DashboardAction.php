@@ -6,6 +6,8 @@ namespace Modules\Branch\Http\Actions\Branch;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
@@ -31,7 +33,7 @@ final class DashboardAction extends BaseApiAction
             'active_chairs' => ChairModel::where('branch_id', $branch->id)->where('status', ChairStatus::Available)->count(),
             'total_chairs' => ChairModel::where('branch_id', $branch->id)->count(),
             'pending_affiliations' => BarberAffiliationModel::where('affiliable_id', $branch->id)
-                ->where('affiliable_type', 'branch')->where('status', 'pending')->count(),
+                ->where('affiliable_type', AffiliableType::Branch)->where('status', AffiliationStatus::Pending)->count(),
             'today_revenue' => (float) BookingModel::query()
                 ->forBranch($branch->id)
                 ->where('status', BookingStatus::Completed)

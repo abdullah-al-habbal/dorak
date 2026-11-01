@@ -9,12 +9,13 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function (): void {
     $this->client = ClientModel::factory()->create();
     $this->branch = BranchModel::factory()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
+    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $this->chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $this->actingAs($this->client, 'client');
 });

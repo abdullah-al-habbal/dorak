@@ -19,9 +19,9 @@ final class UpdateWorkstationStatusAction extends BaseApiAction
         if (! $barber instanceof BarberModel) {
             return $this->unauthorized();
         }
-        $barber->update(['workstation_online' => $request->boolean('online')]);
-        event(new WorkstationStatusToggledEvent($barber->id, (bool) $barber->getAttribute('workstation_online')));
+        $barber->update(['is_workstation_online' => $request->boolean('online')]);
+        event(new WorkstationStatusToggledEvent($barber->id, (bool) $barber->getAttribute('is_workstation_online')));
 
-        return $this->ok(data: ['workstation_online' => (bool) $barber->getAttribute('workstation_online')]);
+        return $this->ok(data: ['is_workstation_online' => (bool) $barber->getAttribute('is_workstation_online')]);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientFaceProfile\Enums\FaceAnalysisStatusEnum;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
@@ -71,7 +72,7 @@ it('returns the authenticated client face profile analysis status', function () 
     $this->actingAs($this->client, 'client')
         ->getJson("/api/v1/client/face-profile/{$profileId}")
         ->assertOk()
-        ->assertJsonPath('data.analysis_status', 'pending');
+        ->assertJsonPath('data.analysis_status', FaceAnalysisStatusEnum::Pending->value);
 });
 
 it('does not expose another clients face profile status', function () {

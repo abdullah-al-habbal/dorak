@@ -32,7 +32,7 @@ class ProfileServicesSection extends StatelessWidget {
             [
               if (service.duration != null)
                 l10n.serviceDurationLabel(service.duration!),
-              if (service.atHome) l10n.serviceAtHomeLabel,
+              if (service.isAtHome) l10n.serviceAtHomeLabel,
             ].join(' · '),
           ),
         ),

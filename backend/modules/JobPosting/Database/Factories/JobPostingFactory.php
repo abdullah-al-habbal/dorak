@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Branch\Models\BranchModel;
 use Modules\JobPosting\Enums\JobPostingStatusEnum;
+use Modules\JobPosting\Enums\JobPostingTypeEnum;
 use Modules\JobPosting\Models\JobPostingModel;
 
 #[UseModel(JobPostingModel::class)]
@@ -31,7 +32,7 @@ class JobPostingFactory extends Factory
                 'ar' => fake('ar_SA')->sentence(),
             ],
             'location' => fake()->city(),
-            'type' => fake()->randomElement(['full-time', 'part-time', 'contract']),
+            'type' => fake()->randomElement(JobPostingTypeEnum::cases()),
         ];
     }
 }

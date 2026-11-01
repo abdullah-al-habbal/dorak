@@ -24,12 +24,7 @@ final class BarberInfolistSchema
                         ->label(__('barber::ui.name_arabic')),
                     TextEntry::make('email'),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'enabled' => 'success',
-                            'disabled' => 'danger',
-                            default => 'warning',
-                        }),
+                        ->badge(),
                     IconEntry::make('is_freelancer')
                         ->boolean(),
                     IconEntry::make('is_enabled')

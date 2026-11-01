@@ -19,14 +19,7 @@ final class BarberAffiliationsTable
                 TextColumn::make('barber.name.en')
                     ->label(__('barberaffiliation::ui.barber')),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'pending' => 'warning',
-                        'active' => 'success',
-                        'rejected' => 'danger',
-                        'terminated' => 'gray',
-                        default => 'gray',
-                    }),
+                    ->badge(),
                 TextColumn::make('invited_at')
                     ->dateTime()
                     ->label(__('barberaffiliation::ui.affiliated')),

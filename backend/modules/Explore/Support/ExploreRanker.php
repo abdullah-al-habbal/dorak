@@ -122,7 +122,7 @@ final class ExploreRanker
     private function faceMatches(string $entityType, array $ids, string $faceShape): array
     {
         $matchesServices = fn ($services) => $services
-            ->where('active', true)
+            ->where('is_active', true)
             ->whereHas('catalogItem', fn ($item) => $item
                 ->where('is_active', true)
                 ->whereJsonContains('face_shapes', $faceShape));

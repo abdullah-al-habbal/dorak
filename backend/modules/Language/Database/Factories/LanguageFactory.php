@@ -7,6 +7,7 @@ namespace Modules\Language\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Language\Enums\TextDirectionEnum;
 use Modules\Language\Models\LanguageModel;
 
 #[UseModel(LanguageModel::class)]
@@ -20,7 +21,7 @@ class LanguageFactory extends Factory
                 'en' => fake()->word(),
                 'ar' => fake('ar_SA')->word(),
             ],
-            'direction' => 'ltr',
+            'direction' => TextDirectionEnum::Ltr,
             'is_default' => false,
         ];
     }

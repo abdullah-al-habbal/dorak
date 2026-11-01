@@ -24,13 +24,7 @@ final class BookingsTable
                 TextColumn::make('time_slot')
                     ->dateTime(),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'confirmed' => 'success',
-                        'completed' => 'info',
-                        'canceled' => 'danger',
-                        default => 'gray',
-                    }),
+                    ->badge(),
             ])
             ->actions([
                 ViewAction::make(),

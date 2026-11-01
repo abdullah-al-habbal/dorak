@@ -9,6 +9,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Modules\Chair\Enums\ChairStatus;
 
 final class ChairFormSchema
 {
@@ -27,11 +28,7 @@ final class ChairFormSchema
                     TextInput::make('label')
                         ->required(),
                     Select::make('status')
-                        ->options([
-                            'active' => 'Active',
-                            'inactive' => 'Inactive',
-                            'occupied' => 'Occupied',
-                        ])
+                        ->options(ChairStatus::class)
                         ->required(),
                     KeyValue::make('ui_metadata'),
                 ]),

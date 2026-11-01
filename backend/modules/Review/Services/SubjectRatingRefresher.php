@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Review\Services;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Modules\Review\Constants\ReviewRatingConstants;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 /**
@@ -22,21 +22,21 @@ final class SubjectRatingRefresher
         return [ReviewStatus::Published, ReviewStatus::Resolved];
     }
 
-    public function refresh(?string $subjectType, ?string $subjectId): void
+    public function refresh(?ReviewSubjectTypeEnum $subjectType, ?string $subjectId): void
     {
         if ($subjectType === null || $subjectId === null) {
             return;
         }
 
-        $alias = Relation::getMorphAlias($subjectType);
-        $modelClass = ReviewRatingConstants::REVIEW_RATING_RATED_SUBJECTS[$alias] ?? null;
-        if ($modelClass === null) {
+        if (! in_array($subjectType, ReviewRatingConstants::REVIEW_RATING_RATED_SUBJECTS, true)) {
             return;
         }
 
+        $modelClass = $subjectType->modelClass();
+
         $reviews = ReviewModel::query()
             ->where('subject_id', $subjectId)
-            ->whereIn('subject_type', [$alias, $modelClass])
+            ->where('subject_type', $subjectType)
             ->whereIn('status', self::countedStatuses());
 
         $count = (clone $reviews)->count();
@@ -51,10 +51,10 @@ final class SubjectRatingRefresher
     public function refreshAll(): int
     {
         $refreshed = 0;
-        foreach (ReviewRatingConstants::REVIEW_RATING_RATED_SUBJECTS as $alias => $modelClass) {
-            $modelClass::query()->select('id')->chunkById(500, function ($subjects) use ($alias, &$refreshed): void {
+        foreach (ReviewRatingConstants::REVIEW_RATING_RATED_SUBJECTS as $subjectType) {
+            $subjectType->modelClass()::query()->select('id')->chunkById(500, function ($subjects) use ($subjectType, &$refreshed): void {
                 foreach ($subjects as $subject) {
-                    $this->refresh($alias, (string) $subject->getKey());
+                    $this->refresh($subjectType, (string) $subject->getKey());
                     $refreshed++;
                 }
             });

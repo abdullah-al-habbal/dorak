@@ -21,7 +21,7 @@ final class DashboardSessionClaim
 
         $issuedAt = time();
         $payload = [
-            'actor_type' => $actor->actorType,
+            'actor_type' => $actor->actorType->value,
             'exp' => $issuedAt + $ttl,
             'iat' => $issuedAt,
             'iss' => DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_ISSUER,

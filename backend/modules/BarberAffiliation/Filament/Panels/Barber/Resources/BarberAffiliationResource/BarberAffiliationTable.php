@@ -7,7 +7,6 @@ namespace Modules\BarberAffiliation\Filament\Panels\Barber\Resources\BarberAffil
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Modules\BarberAffiliation\Enums\AffiliationStatus;
 
 final class BarberAffiliationTable
 {
@@ -18,13 +17,7 @@ final class BarberAffiliationTable
                 TextColumn::make('affiliable')
                     ->label(__('barberaffiliation::ui.branch_brand')),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (AffiliationStatus $state): string => match ($state) {
-                        AffiliationStatus::Pending => 'warning',
-                        AffiliationStatus::Active => 'success',
-                        AffiliationStatus::Rejected => 'danger',
-                        AffiliationStatus::Terminated => 'danger',
-                    }),
+                    ->badge(),
                 TextColumn::make('commission_rate')
                     ->label(__('barberaffiliation::ui.commission')),
                 TextColumn::make('invited_at')

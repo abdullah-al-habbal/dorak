@@ -9,6 +9,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Modules\Language\Enums\TextDirectionEnum;
 
 final class LanguageFormSchema
 {
@@ -29,10 +30,7 @@ final class LanguageFormSchema
                         ->label(__('language::ui.name_arabic'))
                         ->required(),
                     Select::make('direction')
-                        ->options([
-                            'ltr' => 'Left to Right',
-                            'rtl' => 'Right to Left',
-                        ])
+                        ->options(TextDirectionEnum::class)
                         ->required(),
                     Toggle::make('is_default'),
                 ]),

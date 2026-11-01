@@ -25,7 +25,7 @@ final class BookingLifecycleEloquentResolver
         private readonly StatusChangeLogger $statusChangeLogger,
     ) {}
 
-    public function transitionForDashboard(string|int $bookingId, BookingStatus $target, string $actorType, string $actorId): BookingModel
+    public function transitionForDashboard(string|int $bookingId, BookingStatus $target, StatusChangeActorTypeEnum $actorType, string $actorId): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $target, $actorType, $actorId): BookingModel {
             $booking = BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
@@ -40,7 +40,7 @@ final class BookingLifecycleEloquentResolver
             $booking->update(['status' => $target]);
             $booking->refresh()->load(['chair.barber', 'barber', 'services']);
             $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
-            $this->logTransition($booking, $fromStatus, $target, StatusChangeActorTypeEnum::from($actorType), $actorId);
+            $this->logTransition($booking, $fromStatus, $target, $actorType, $actorId);
 
             return $booking;
         });

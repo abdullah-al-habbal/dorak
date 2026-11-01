@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Constants\BookingAtHomeConstants;
 use Modules\Booking\Eloquent\Resolvers\Shared\AtHomeBookingRuleException;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class AtHomeBookingRules
@@ -27,8 +28,8 @@ final class AtHomeBookingRules
         }
 
         foreach ($services as $service) {
-            if ($service->getAttribute('at_home') !== true
-                || $service->getAttribute('serviceable_type') !== 'barber'
+            if ($service->getAttribute('is_at_home') !== true
+                || $service->getAttribute('serviceable_type') !== ServiceableTypeEnum::Barber
                 || $service->getAttribute('serviceable_id') !== $barberId) {
                 throw new AtHomeBookingRuleException('at_home_service_not_eligible');
             }

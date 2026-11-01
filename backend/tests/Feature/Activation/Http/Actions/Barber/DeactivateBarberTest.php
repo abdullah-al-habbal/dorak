@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Modules\Activation\Enums\ActivationStatusEnum;
 use Modules\Activation\Models\ActivationLogModel;
 use Modules\Barber\Models\BarberModel;
 
@@ -14,7 +15,7 @@ it('deactivates a barber', function () {
     $response = $this->postJson("/api/v1/barbers/{$this->barber->id}/deactivate");
 
     $response->assertCreated();
-    expect($response->json('data.status'))->toBe('disabled');
+    expect($response->json('data.status'))->toBe(ActivationStatusEnum::Disabled->value);
     expect($response->json('data.activable_id'))->toBe($this->barber->id);
     expect(ActivationLogModel::where('activable_id', $this->barber->id)->count())->toBe(1);
 });
@@ -25,7 +26,7 @@ it('deactivates a barber with reason', function () {
     ]);
 
     $response->assertCreated();
-    expect($response->json('data.status'))->toBe('disabled');
+    expect($response->json('data.status'))->toBe(ActivationStatusEnum::Disabled->value);
 });
 
 it('returns 401 without authentication', function () {

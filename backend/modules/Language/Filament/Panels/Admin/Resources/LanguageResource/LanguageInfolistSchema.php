@@ -23,8 +23,7 @@ final class LanguageInfolistSchema
                     TextEntry::make('name.ar')
                         ->label(__('language::ui.name_arabic')),
                     TextEntry::make('direction')
-                        ->badge()
-                        ->color(fn (string $state): string => $state === 'rtl' ? 'info' : 'gray'),
+                        ->badge(),
                     IconEntry::make('is_default')
                         ->boolean(),
                 ]),

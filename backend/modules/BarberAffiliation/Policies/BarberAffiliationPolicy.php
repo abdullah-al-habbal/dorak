@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\BarberAffiliation\Policies;
 
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 
 final class BarberAffiliationPolicy
@@ -40,10 +41,10 @@ final class BarberAffiliationPolicy
         $initiatedById = $affiliation->getAttribute('initiated_by_id');
 
         return $affiliation->barber()->is($actor)
-            && is_string($initiatedByType)
+            && $initiatedByType instanceof AffiliationInitiatorTypeEnum
             && is_string($initiatedById)
             && ! (
-                $initiatedByType === BarberModel::class
+                $initiatedByType === AffiliationInitiatorTypeEnum::Barber
                 && $initiatedById === $actor->getKey()
             );
     }

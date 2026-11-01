@@ -22,13 +22,7 @@ final class ApplicationsTable
                     ->label(__('jobposting::ui.barber'))
                     ->searchable(),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'accepted' => 'success',
-                        'rejected' => 'danger',
-                        'seen' => 'info',
-                        default => 'warning',
-                    }),
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

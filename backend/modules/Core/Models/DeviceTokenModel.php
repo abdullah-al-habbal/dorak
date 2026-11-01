@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Enums\DevicePlatformEnum;
+use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 
 /**
  * @property string $id
@@ -21,6 +23,10 @@ final class DeviceTokenModel extends Model
 
     protected function casts(): array
     {
-        return ['last_used_at' => 'datetime'];
+        return [
+            'user_type' => DeviceTokenUserTypeEnum::class,
+            'platform' => DevicePlatformEnum::class,
+            'last_used_at' => 'datetime',
+        ];
     }
 }

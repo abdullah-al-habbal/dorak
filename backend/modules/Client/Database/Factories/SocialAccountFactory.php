@@ -6,6 +6,7 @@ namespace Modules\Client\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Client\Enums\SocialProviderEnum;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
 
@@ -16,7 +17,7 @@ class SocialAccountFactory extends Factory
     {
         return [
             'client_id' => ClientModel::factory(),
-            'provider' => 'google',
+            'provider' => SocialProviderEnum::Google,
             'provider_id' => $this->faker->uuid(),
         ];
     }

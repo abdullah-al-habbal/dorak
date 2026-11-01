@@ -310,7 +310,7 @@ void main() {
       expect(captured.queryParameters['service_ids'], ['service-1']);
       expect(slots, hasLength(1));
       expect(slots.first.startsAt, DateTime.utc(2026, 10, 1, 12));
-      expect(captured.queryParameters.containsKey('at_home'), isFalse);
+      expect(captured.queryParameters.containsKey('is_at_home'), isFalse);
     });
 
     test('getBarberSlots sends at_home with coordinates', () async {
@@ -331,7 +331,7 @@ void main() {
         atHomeLongitude: 36.3,
       );
 
-      expect(captured.queryParameters['at_home'], 1);
+      expect(captured.queryParameters['is_at_home'], 1);
       expect(captured.queryParameters['latitude'], 33.5);
       expect(captured.queryParameters['longitude'], 36.3);
     });

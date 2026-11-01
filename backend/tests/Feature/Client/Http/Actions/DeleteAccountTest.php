@@ -17,8 +17,10 @@ use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Filament\Panels\Admin\Resources\ClientResource\Pages\ListClientsPage;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
+use Modules\ClientHistory\Enums\HistoryMediaType;
 use Modules\ClientHistory\Models\ClientServiceHistoryMediaModel;
 use Modules\ClientHistory\Models\ClientServiceHistoryModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 function deletableClient(): ClientModel
@@ -42,7 +44,7 @@ function historyForDeletedClient(ClientModel $client, ?BookingModel $booking = n
     $barber = BarberModel::factory()->create();
     $service = OfferedServiceModel::factory()->create([
         'serviceable_id' => $barber->id,
-        'serviceable_type' => 'barber',
+        'serviceable_type' => ServiceableTypeEnum::Barber,
     ]);
 
     return ClientServiceHistoryModel::query()->create([
@@ -133,7 +135,7 @@ describe('DELETE /api/v1/client/account when allowed', function (): void {
         ClientServiceHistoryMediaModel::query()->create([
             'history_id' => $history->id,
             'photo_url' => 'https://cdn.example.com/sara-after.jpg',
-            'photo_type' => 'after',
+            'photo_type' => HistoryMediaType::After,
             'uploaded_at' => now(),
         ]);
         $otherClient = ClientModel::factory()->create();

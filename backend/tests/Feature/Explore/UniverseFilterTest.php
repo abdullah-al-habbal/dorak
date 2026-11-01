@@ -72,8 +72,8 @@ it('rejects an unknown universe value', function (string $path): void {
 ]);
 
 it('filters barbers by the universe they serve', function (): void {
-    $women = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3, 'universe' => 'women']);
-    $men = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3, 'universe' => 'men']);
+    $women = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3, 'universe' => VenueUniverse::Women]);
+    $men = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3, 'universe' => VenueUniverse::Men]);
     $everyone = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3]);
 
     $ids = $this->getJson('/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000&universe=women')
@@ -85,10 +85,10 @@ it('filters barbers by the universe they serve', function (): void {
 });
 
 it('gives a new branch its brand universe unless one is set', function (): void {
-    $womenBrand = BrandModel::factory()->create(['universe' => 'women']);
+    $womenBrand = BrandModel::factory()->create(['universe' => VenueUniverse::Women]);
 
     $inherited = BranchModel::factory()->create(['brand_id' => $womenBrand->id]);
-    $explicit = BranchModel::factory()->create(['brand_id' => $womenBrand->id, 'universe' => 'unisex']);
+    $explicit = BranchModel::factory()->create(['brand_id' => $womenBrand->id, 'universe' => VenueUniverse::Unisex]);
 
     expect($inherited->fresh()->universe)->toBe(VenueUniverse::Women)
         ->and($explicit->fresh()->universe)->toBe(VenueUniverse::Unisex);
@@ -98,7 +98,7 @@ it('lets a barber set the universe they serve', function (): void {
     $barber = BarberModel::factory()->create(['has_login' => true]);
 
     $this->actingAs($barber, 'barber')
-        ->patchJson('/api/v1/barber/profile', ['universe' => 'women'])
+        ->patchJson('/api/v1/barber/profile', ['universe' => VenueUniverse::Women])
         ->assertOk();
 
     expect($barber->fresh()->universe)->toBe(VenueUniverse::Women);

@@ -32,7 +32,7 @@ final class ReleaseExpiredReviewDisputesCommand extends Command
         ]);
 
         foreach ($subjects as $subject) {
-            $ratings->refresh((string) $subject->getAttribute('subject_type'), (string) $subject->getAttribute('subject_id'));
+            $ratings->refresh($subject->getAttribute('subject_type'), (string) $subject->getAttribute('subject_id'));
         }
 
         $this->info(trans('review::messages.disputes_released', ['count' => $released], 'en'));

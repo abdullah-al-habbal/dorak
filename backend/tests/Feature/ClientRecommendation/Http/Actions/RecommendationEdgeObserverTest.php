@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientInteraction\Enums\FavorableTypeEnum;
 use Modules\ClientInteraction\Models\ClientFavoriteModel;
 use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
@@ -16,7 +18,7 @@ it('creates recommendation edge when favorite is added', function () {
     $this->actingAs($client, 'client')
         ->postJson('/api/v1/client/favorites', [
             'favorable_id' => $brand->id,
-            'favorable_type' => 'brand',
+            'favorable_type' => FavorableTypeEnum::Brand,
         ]);
 
     $edge = RecommendationEdgeModel::where('source_type', 'client')
@@ -37,7 +39,7 @@ it('removes recommendation edge when favorite is removed', function () {
     $this->actingAs($client, 'client')
         ->postJson('/api/v1/client/favorites', [
             'favorable_id' => $brand->id,
-            'favorable_type' => 'brand',
+            'favorable_type' => FavorableTypeEnum::Brand,
         ]);
 
     $fav = ClientFavoriteModel::where('client_id', $client->id)->first();
@@ -55,7 +57,7 @@ it('removes recommendation edge when favorite is removed', function () {
 
 it('creates history edge on booking completion', function () {
     $booking = BookingModel::factory()->create();
-    $booking->update(['status' => 'completed']);
+    $booking->update(['status' => BookingStatus::Completed]);
 
     $edge = RecommendationEdgeModel::where('source_type', 'client')
         ->where('source_id', $booking->client_id)
@@ -75,7 +77,7 @@ it('can run recompute command on client with signals', function () {
     $this->actingAs($client, 'client')
         ->postJson('/api/v1/client/favorites', [
             'favorable_id' => $brand->id,
-            'favorable_type' => 'brand',
+            'favorable_type' => FavorableTypeEnum::Brand,
         ]);
 
     $this->artisan('recommend:recompute-vectors', [

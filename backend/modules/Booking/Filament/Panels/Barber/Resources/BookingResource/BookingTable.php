@@ -8,7 +8,6 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Modules\Booking\Enums\BookingStatus;
 
 final class BookingTable
 {
@@ -23,14 +22,7 @@ final class BookingTable
                 TextColumn::make('time_slot')
                     ->dateTime(),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (BookingStatus $state): string => match ($state) {
-                        BookingStatus::Confirmed => 'success',
-                        BookingStatus::InProgress => 'warning',
-                        BookingStatus::Completed => 'info',
-                        BookingStatus::NoShow => 'gray',
-                        BookingStatus::Canceled => 'danger',
-                    }),
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime(),
             ])

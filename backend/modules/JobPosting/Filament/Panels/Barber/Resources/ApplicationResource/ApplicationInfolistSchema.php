@@ -7,7 +7,6 @@ namespace Modules\JobPosting\Filament\Panels\Barber\Resources\ApplicationResourc
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
-use Modules\JobPosting\Enums\ApplicationStatus;
 
 final class ApplicationInfolistSchema
 {
@@ -20,13 +19,7 @@ final class ApplicationInfolistSchema
                     TextEntry::make('jobPosting.title.en')
                         ->label(__('jobposting::ui.job_posting')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (ApplicationStatus $state): string => match ($state) {
-                            ApplicationStatus::Submitted => 'warning',
-                            ApplicationStatus::Seen => 'info',
-                            ApplicationStatus::Accepted => 'success',
-                            ApplicationStatus::Rejected => 'danger',
-                        }),
+                        ->badge(),
                     TextEntry::make('profile_snapshot')
                         ->label(__('jobposting::ui.profile_snapshot')),
                     TextEntry::make('created_at')

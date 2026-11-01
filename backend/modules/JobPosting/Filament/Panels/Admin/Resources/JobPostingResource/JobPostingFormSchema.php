@@ -9,6 +9,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Modules\JobPosting\Enums\JobPostingStatusEnum;
 
 final class JobPostingFormSchema
 {
@@ -28,10 +29,7 @@ final class JobPostingFormSchema
                         ->relationship('branch', 'name.en')
                         ->required(),
                     Select::make('status')
-                        ->options([
-                            'open' => 'Open',
-                            'closed' => 'Closed',
-                        ])
+                        ->options(JobPostingStatusEnum::class)
                         ->required(),
                 ]),
             Section::make(__('jobposting::ui.description'))

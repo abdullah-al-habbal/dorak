@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\Subscription\Enums\SubscriptionIntervalUnitEnum;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
@@ -23,7 +24,7 @@ use Spatie\Translatable\HasTranslations;
  * @property string $id
  * @property int $price_minor
  * @property string $currency_id
- * @property string $interval_unit
+ * @property SubscriptionIntervalUnitEnum $interval_unit
  * @property int $interval_count
  */
 #[Fillable(['name', 'description', 'price_minor', 'currency_id', 'interval_unit', 'interval_count', 'is_active', 'sort_order'])]
@@ -36,6 +37,7 @@ class SubscriptionPlanModel extends Model
     protected function casts(): array
     {
         return [
+            'interval_unit' => SubscriptionIntervalUnitEnum::class,
             'price_minor' => 'integer',
             'interval_count' => 'integer',
             'is_active' => 'boolean',

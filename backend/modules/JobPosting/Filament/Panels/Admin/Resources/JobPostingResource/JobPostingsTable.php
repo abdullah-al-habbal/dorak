@@ -23,8 +23,7 @@ final class JobPostingsTable
                     ->label(__('jobposting::ui.branch'))
                     ->searchable(),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => $state === 'open' ? 'success' : 'danger'),
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

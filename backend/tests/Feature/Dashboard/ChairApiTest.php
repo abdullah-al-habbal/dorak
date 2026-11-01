@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Queue;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Database\Factories\BarberAffiliationFactory;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
@@ -72,7 +73,7 @@ describe('Dashboard Chair API', function (): void {
         BarberAffiliationFactory::new()->create([
             'barber_id' => $barber->id,
             'affiliable_id' => $brand->id,
-            'affiliable_type' => 'brand',
+            'affiliable_type' => AffiliableType::Brand,
             'status' => AffiliationStatus::Active->value,
         ]);
         $this->authenticateDashboardActor($branch);

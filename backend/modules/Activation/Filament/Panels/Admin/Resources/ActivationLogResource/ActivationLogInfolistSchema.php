@@ -21,8 +21,7 @@ final class ActivationLogInfolistSchema
                     TextEntry::make('activable_id')
                         ->label(__('activation::ui.entity_id')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => $state === 'enabled' ? 'success' : 'danger'),
+                        ->badge(),
                     TextEntry::make('reason'),
                     TextEntry::make('admin.email')
                         ->label(__('activation::ui.admin')),

@@ -21,13 +21,7 @@ final class ApplicationInfolistSchema
                     TextEntry::make('barber.email')
                         ->label(__('jobposting::ui.barber')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'accepted' => 'success',
-                            'rejected' => 'danger',
-                            'seen' => 'info',
-                            default => 'warning',
-                        }),
+                        ->badge(),
                 ]),
         ]);
     }

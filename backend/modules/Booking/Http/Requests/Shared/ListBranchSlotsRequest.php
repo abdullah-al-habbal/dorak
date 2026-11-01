@@ -22,7 +22,7 @@ final class ListBranchSlotsRequest extends BaseApiFormRequest
             'service_ids.*' => [
                 'string',
                 'distinct',
-                Rule::exists('offered_services', 'id')->where('active', true),
+                Rule::exists('offered_services', 'id')->where('is_active', true),
             ],
             'chair_id' => ['nullable', 'string', 'exists:chairs,id', 'required_without:barber_id'],
             'barber_id' => ['nullable', 'string', 'exists:barbers,id', 'required_without:chair_id'],

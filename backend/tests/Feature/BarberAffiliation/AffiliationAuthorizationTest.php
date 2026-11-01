@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
@@ -15,7 +17,7 @@ it('forbids creating an affiliation for another barber', function (): void {
     $this->actingAs($actor, 'barber')
         ->postJson("/api/v1/barbers/{$otherBarber->id}/affiliate", [
             'affiliable_id' => $branch->id,
-            'affiliable_type' => 'branch',
+            'affiliable_type' => AffiliableType::Branch,
         ])
         ->assertForbidden();
 
@@ -35,7 +37,7 @@ it('forbids an unrelated barber from accepting an affiliation', function (): voi
     $receivingBarber = BarberModel::factory()->create();
     $affiliation = BarberAffiliationModel::factory()->pending()->create([
         'barber_id' => $receivingBarber->id,
-        'initiated_by_type' => BranchModel::class,
+        'initiated_by_type' => AffiliationInitiatorTypeEnum::Branch,
         'initiated_by_id' => BranchModel::factory()->create()->id,
     ]);
     $unrelatedBarber = BarberModel::factory()->create();
@@ -51,7 +53,7 @@ it('forbids an initiating barber from accepting their own affiliation request', 
     $barber = BarberModel::factory()->create();
     $affiliation = BarberAffiliationModel::factory()->pending()->create([
         'barber_id' => $barber->id,
-        'initiated_by_type' => BarberModel::class,
+        'initiated_by_type' => AffiliationInitiatorTypeEnum::Barber,
         'initiated_by_id' => $barber->id,
     ]);
 
@@ -66,7 +68,7 @@ it('allows the receiving barber to accept an affiliation initiated by a branch',
     $barber = BarberModel::factory()->create();
     $affiliation = BarberAffiliationModel::factory()->pending()->create([
         'barber_id' => $barber->id,
-        'initiated_by_type' => BranchModel::class,
+        'initiated_by_type' => AffiliationInitiatorTypeEnum::Branch,
         'initiated_by_id' => BranchModel::factory()->create()->id,
     ]);
 
@@ -81,7 +83,7 @@ it('allows the receiving barber to reject an affiliation initiated by a branch',
     $barber = BarberModel::factory()->create();
     $affiliation = BarberAffiliationModel::factory()->pending()->create([
         'barber_id' => $barber->id,
-        'initiated_by_type' => BranchModel::class,
+        'initiated_by_type' => AffiliationInitiatorTypeEnum::Branch,
         'initiated_by_id' => BranchModel::factory()->create()->id,
     ]);
 

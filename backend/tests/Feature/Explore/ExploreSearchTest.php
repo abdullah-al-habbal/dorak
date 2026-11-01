@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
+use Modules\Core\Enums\VenueUniverse;
 
 beforeEach(function () {
-    $this->brand = BrandModel::factory()->create(['universe' => 'men']);
+    $this->brand = BrandModel::factory()->create(['universe' => VenueUniverse::Men]);
 });
 
 it('returns branches within Haversine radius', function () {
@@ -38,7 +39,7 @@ it('excludes branches outside radius', function () {
 });
 
 it('filters by universe and excludes mismatched', function () {
-    $womenBrand = BrandModel::factory()->create(['universe' => 'women']);
+    $womenBrand = BrandModel::factory()->create(['universe' => VenueUniverse::Women]);
     BranchModel::factory()->create([
         'latitude' => 33.5,
         'longitude' => 36.3,

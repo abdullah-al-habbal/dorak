@@ -7,9 +7,10 @@ namespace Modules\Review\Handlers\Staff;
 use Illuminate\Support\Facades\DB;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
-use Modules\Client\Models\ClientModel;
 use Modules\Review\CQRS\Command\Staff\ReviewClientCommand;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 use Modules\Review\ValuesObjects\ReviewClientResult;
 
@@ -33,11 +34,11 @@ final class ReviewClientHandler
             $branchId = $booking->getAttribute('branch_id') ?? $booking->chair?->getAttribute('branch_id');
             $branchId = is_string($branchId) && $branchId !== '' ? $branchId : null;
 
-            if ($command->authorSide === 'branch') {
+            if ($command->authorSide === ReviewAuthorTypeEnum::Branch) {
                 if ($branchId === null || ($command->branchScope !== null && ! in_array($branchId, $command->branchScope, true))) {
                     return ReviewClientResult::failure('not_own_booking');
                 }
-                $authorType = 'branch';
+                $authorType = ReviewAuthorTypeEnum::Branch;
                 $authorId = $branchId;
             } else {
                 if ($command->barberId === null || $booking->getAttribute('barber_id') !== $command->barberId) {
@@ -46,7 +47,7 @@ final class ReviewClientHandler
                 if ($branchId !== null) {
                     return ReviewClientResult::failure('branch_rates_client');
                 }
-                $authorType = 'barber';
+                $authorType = ReviewAuthorTypeEnum::Barber;
                 $authorId = $command->barberId;
             }
 
@@ -54,10 +55,9 @@ final class ReviewClientHandler
                 return ReviewClientResult::failure('booking_not_finished');
             }
 
-            $clientMorph = (new ClientModel)->getMorphClass();
             $alreadyReviewed = $booking->reviews()
                 ->where('author_type', $authorType)
-                ->whereIn('subject_type', [$clientMorph, ClientModel::class])
+                ->where('subject_type', ReviewSubjectTypeEnum::Client)
                 ->exists();
             if ($alreadyReviewed) {
                 return ReviewClientResult::failure('already_reviewed');
@@ -68,7 +68,7 @@ final class ReviewClientHandler
                 'author_id' => $authorId,
                 'author_type' => $authorType,
                 'subject_id' => $booking->client_id,
-                'subject_type' => $clientMorph,
+                'subject_type' => ReviewSubjectTypeEnum::Client,
                 'rating' => $command->rating,
                 'comment' => $command->comment,
                 'status' => ReviewStatus::Published,

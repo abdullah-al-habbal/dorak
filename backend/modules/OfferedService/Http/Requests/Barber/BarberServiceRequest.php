@@ -19,8 +19,8 @@ final class BarberServiceRequest extends BaseApiFormRequest
             'name.ar' => ['required', 'string', 'max:120'],
             'price' => ['required', 'numeric', 'min:0'],
             'duration' => ['nullable', 'integer', 'min:1', 'max:1440'],
-            'active' => ['sometimes', 'boolean'],
-            'at_home' => ['sometimes', 'boolean'],
+            'is_active' => ['sometimes', 'boolean'],
+            'is_at_home' => ['sometimes', 'boolean'],
         ];
     }
 }

@@ -23,12 +23,7 @@ final class BarberAffiliationInfolistSchema
                     TextEntry::make('affiliable_id')
                         ->label(__('barberaffiliation::ui.entity_id')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'active' => 'success',
-                            'terminated' => 'danger',
-                            default => 'warning',
-                        }),
+                        ->badge(),
                     TextEntry::make('commission_rate'),
                     TextEntry::make('invited_at')
                         ->dateTime(),

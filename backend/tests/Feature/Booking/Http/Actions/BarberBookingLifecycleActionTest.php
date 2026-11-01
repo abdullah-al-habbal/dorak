@@ -18,9 +18,9 @@ it('moves an assigned booking through the barber lifecycle', function () {
         'status' => BookingStatus::Pending,
     ]);
 
-    $this->patchJson("/api/v1/barber/bookings/{$booking->id}/accept")->assertOk()->assertJsonPath('data.status', 'confirmed');
-    $this->patchJson("/api/v1/barber/bookings/{$booking->id}/start")->assertOk()->assertJsonPath('data.status', 'in_progress');
-    $this->patchJson("/api/v1/barber/bookings/{$booking->id}/complete")->assertOk()->assertJsonPath('data.status', 'completed');
+    $this->patchJson("/api/v1/barber/bookings/{$booking->id}/accept")->assertOk()->assertJsonPath('data.status', BookingStatus::Confirmed->value);
+    $this->patchJson("/api/v1/barber/bookings/{$booking->id}/start")->assertOk()->assertJsonPath('data.status', BookingStatus::InProgress->value);
+    $this->patchJson("/api/v1/barber/bookings/{$booking->id}/complete")->assertOk()->assertJsonPath('data.status', BookingStatus::Completed->value);
 });
 
 it('rejects an invalid or terminal status jump', function () {
@@ -31,7 +31,7 @@ it('rejects an invalid or terminal status jump', function () {
 
     $this->patchJson("/api/v1/barber/bookings/{$booking->id}/complete")->assertUnprocessable();
     $this->patchJson("/api/v1/barber/bookings/{$booking->id}/start")->assertOk();
-    $this->patchJson("/api/v1/barber/bookings/{$booking->id}/no-show")->assertOk()->assertJsonPath('data.status', 'no_show');
+    $this->patchJson("/api/v1/barber/bookings/{$booking->id}/no-show")->assertOk()->assertJsonPath('data.status', BookingStatus::NoShow->value);
     $this->patchJson("/api/v1/barber/bookings/{$booking->id}/start")->assertUnprocessable();
 });
 

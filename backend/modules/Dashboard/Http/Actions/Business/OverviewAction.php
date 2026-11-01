@@ -13,6 +13,7 @@ use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
+use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Currency\Models\CurrencyModel;
@@ -29,7 +30,7 @@ final class OverviewAction extends BaseApiAction
         $branches = BranchModel::query()->when($scope !== null, fn ($query) => $query->whereKey($scope ?? []));
 
         $todayBookings = (clone $bookings)->whereBetween('time_slot', [now()->startOfDay(), now()->endOfDay()]);
-        $activeChairs = ChairModel::query()->where('status', 'available')
+        $activeChairs = ChairModel::query()->where('status', ChairStatus::Available)
             ->when($scope !== null, fn ($query) => $query->whereIn('branch_id', $scope ?? []));
         $completedBookings = (clone $bookings)->where('status', BookingStatus::Completed);
         $completedToday = (clone $completedBookings)->whereBetween('time_slot', [now()->startOfDay(), now()->endOfDay()]);

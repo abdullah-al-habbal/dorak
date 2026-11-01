@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 
 #[Fillable([
@@ -37,6 +38,7 @@ class BarberAffiliationModel extends Model
     protected function casts(): array
     {
         return [
+            'initiated_by_type' => AffiliationInitiatorTypeEnum::class,
             'status' => AffiliationStatus::class,
             'affiliable_type' => AffiliableType::class,
             'commission_rate' => 'decimal:2',

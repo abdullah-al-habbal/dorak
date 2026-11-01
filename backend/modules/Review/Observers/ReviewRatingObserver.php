@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Review\Observers;
 
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 use Modules\Review\Services\SubjectRatingRefresher;
 
@@ -29,7 +30,7 @@ final class ReviewRatingObserver
 
         if ($review->wasChanged(['subject_id', 'subject_type'])) {
             $this->refresher->refresh(
-                $this->stringOrNull($review->getOriginal('subject_type')),
+                $this->subjectTypeOrNull($review->getOriginal('subject_type')),
                 $this->stringOrNull($review->getOriginal('subject_id')),
             );
         }
@@ -45,9 +46,18 @@ final class ReviewRatingObserver
     private function refreshCurrent(ReviewModel $review): void
     {
         $this->refresher->refresh(
-            $this->stringOrNull($review->getAttribute('subject_type')),
+            $this->subjectTypeOrNull($review->getAttribute('subject_type')),
             $this->stringOrNull($review->getAttribute('subject_id')),
         );
+    }
+
+    private function subjectTypeOrNull(mixed $value): ?ReviewSubjectTypeEnum
+    {
+        return match (true) {
+            $value instanceof ReviewSubjectTypeEnum => $value,
+            is_string($value) => ReviewSubjectTypeEnum::tryFrom($value),
+            default => null,
+        };
     }
 
     private function stringOrNull(mixed $value): ?string

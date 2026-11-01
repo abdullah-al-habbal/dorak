@@ -7,8 +7,9 @@ namespace Modules\Ban\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Admin\Models\AdminModel;
+use Modules\Ban\Enums\BannableTypeEnum;
 use Modules\Ban\Models\BanModel;
+use Modules\Client\Models\ClientModel;
 
 #[UseModel(BanModel::class)]
 class BanFactory extends Factory
@@ -16,8 +17,8 @@ class BanFactory extends Factory
     public function definition(): array
     {
         return [
-            'bannable_id' => AdminModel::factory(),
-            'bannable_type' => 'admin',
+            'bannable_id' => ClientModel::factory(),
+            'bannable_type' => BannableTypeEnum::Client,
             'reason' => fake()->sentence(),
             'banned_from' => now()->subDay(),
         ];

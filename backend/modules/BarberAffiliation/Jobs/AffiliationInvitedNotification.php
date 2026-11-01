@@ -14,6 +14,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\NotificationTypeEnum;
@@ -45,7 +46,7 @@ final class AffiliationInvitedNotification implements ShouldQueue
         $data = ['type' => NotificationTypeEnum::Invite->value, 'event' => 'affiliation_invited', 'affiliation_id' => $affiliation->id];
         $title = trans('barberaffiliation::messages.notification_invited_title', [], $this->locale);
 
-        if (AffiliationParty::isBarber($affiliation->initiated_by_type)) {
+        if ($affiliation->initiated_by_type === AffiliationInitiatorTypeEnum::Barber) {
             // The barber asked to join; only branches can receive the request.
             if ($affiliation->affiliable_type !== AffiliableType::Branch) {
                 return;

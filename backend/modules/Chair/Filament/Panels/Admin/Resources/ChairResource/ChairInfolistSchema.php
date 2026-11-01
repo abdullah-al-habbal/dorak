@@ -22,12 +22,7 @@ final class ChairInfolistSchema
                     TextEntry::make('barber.email')
                         ->label(__('chair::ui.barber')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'active' => 'success',
-                            'occupied' => 'warning',
-                            default => 'gray',
-                        }),
+                        ->badge(),
                 ]),
         ]);
     }

@@ -63,7 +63,7 @@ it('rolls the brand back when the first branch cannot be created', function (): 
 });
 
 it('persists the universe and rejects invalid values', function (): void {
-    $id = $this->postJson('/api/v1/brands', brandPayload(['universe' => 'women']))->assertCreated()->json('data.id');
+    $id = $this->postJson('/api/v1/brands', brandPayload(['universe' => VenueUniverse::Women]))->assertCreated()->json('data.id');
 
     expect(BrandModel::query()->findOrFail($id)->universe)->toBe(VenueUniverse::Women)
         ->and(BranchModel::query()->where('brand_id', $id)->sole()->universe)->toBe(VenueUniverse::Women);

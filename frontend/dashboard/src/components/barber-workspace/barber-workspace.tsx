@@ -49,7 +49,7 @@ export function BarberWorkspace() {
   const profile = useBarberWorkspaceProfileQuery();
   const portfolio = useBarberPortfolioQuery();
   const schedule = useBarberScheduleQuery();
-  const currentOnline = profile.data?.workstationOnline ?? false;
+  const currentOnline = profile.data?.isWorkstationOnline ?? false;
 
   const workstation = useBarberMutation("profile", () =>
     updateBarberWorkstation(!currentOnline),

@@ -32,7 +32,7 @@ it('dispatches analysis job on photo upload with queue fake', function () {
     $response->assertCreated();
     $profileId = $response->json('data.id');
     expect($profileId)->not->toBeNull();
-    expect($response->json('data.analysis_status'))->toBe('pending');
+    expect($response->json('data.analysis_status'))->toBe(FaceAnalysisStatusEnum::Pending->value);
 
     $profile = ClientFaceProfileModel::query()->findOrFail($profileId);
     expect($profile->analysis_status)->toBe(FaceAnalysisStatusEnum::Pending);
@@ -58,7 +58,7 @@ it('running job stores result and recommendations become non-empty', function ()
         'image_path' => $path,
         'image_hash' => md5($file->get()),
         'is_primary' => true,
-        'analysis_status' => 'pending',
+        'analysis_status' => FaceAnalysisStatusEnum::Pending,
         'uploaded_at' => now(),
     ]);
 
@@ -108,7 +108,7 @@ it('job failure sets analysis status to failed and upload still succeeds', funct
     $response->assertCreated();
     $profileId = $response->json('data.id');
     expect($profileId)->not->toBeNull();
-    expect($response->json('data.analysis_status'))->toBe('pending');
+    expect($response->json('data.analysis_status'))->toBe(FaceAnalysisStatusEnum::Pending->value);
 
     $profile = ClientFaceProfileModel::query()->findOrFail($profileId);
     expect($profile->analysis_status)->toBe(FaceAnalysisStatusEnum::Pending);
@@ -120,6 +120,6 @@ it('job failure sets analysis status to failed and upload still succeeds', funct
     $this->actingAs($this->client, 'client')
         ->getJson("/api/v1/client/face-profile/{$profileId}")
         ->assertOk()
-        ->assertJsonPath('data.analysis_status', 'failed');
+        ->assertJsonPath('data.analysis_status', FaceAnalysisStatusEnum::Failed->value);
     Queue::assertPushed(AnalyzeFacePhotoJob::class, 1);
 });

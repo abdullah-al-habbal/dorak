@@ -10,6 +10,7 @@ use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Audit\Services\StatusChangeLogger;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\CQRS\Command\Barber\CreateAffiliationCommand;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 
@@ -34,7 +35,7 @@ final class CreateAffiliationEloquentResolver
 
             $affiliation = BarberAffiliationModel::create([
                 'barber_id' => $barber->id,
-                'initiated_by_type' => BarberModel::class,
+                'initiated_by_type' => AffiliationInitiatorTypeEnum::Barber,
                 'initiated_by_id' => $barber->id,
                 'affiliable_id' => $command->affiliableId,
                 'affiliable_type' => $command->affiliableType,

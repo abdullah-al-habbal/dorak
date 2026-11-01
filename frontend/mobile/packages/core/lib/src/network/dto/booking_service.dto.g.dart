@@ -19,7 +19,8 @@ BookingServiceDto _$BookingServiceDtoFromJson(Map<String, dynamic> json) =>
               json['display_price'] as Map<String, dynamic>,
             ),
       conversionUnavailable: json['conversion_unavailable'] as bool? ?? false,
-      dualPriceDisplay: json['dual_price_display'] as bool? ?? false,
+      isDualPriceDisplayEnabled:
+          json['is_dual_price_display_enabled'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$BookingServiceDtoToJson(BookingServiceDto instance) =>
@@ -31,5 +32,5 @@ Map<String, dynamic> _$BookingServiceDtoToJson(BookingServiceDto instance) =>
       'owner': instance.owner,
       'display_price': instance.displayPrice,
       'conversion_unavailable': instance.conversionUnavailable,
-      'dual_price_display': instance.dualPriceDisplay,
+      'is_dual_price_display_enabled': instance.isDualPriceDisplayEnabled,
     };

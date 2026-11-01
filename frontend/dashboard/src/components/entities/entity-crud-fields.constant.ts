@@ -37,7 +37,7 @@ export const ENTITY_CRUD_FIELDS: Record<EditableDashboardResource, string[]> = {
     "serviceableId",
     "serviceableType",
     "catalogItemId",
-    "atHome",
+    "isAtHome",
   ],
   stylists: [
     "name.en",

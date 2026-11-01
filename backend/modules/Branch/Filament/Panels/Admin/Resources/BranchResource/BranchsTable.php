@@ -24,12 +24,7 @@ final class BranchsTable
                     ->searchable(),
                 TextColumn::make('phone'),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'enabled' => 'success',
-                        'disabled' => 'danger',
-                        default => 'warning',
-                    }),
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
+use Modules\JobPosting\Enums\ApplicationStatus;
 use Modules\JobPosting\Models\ApplicationModel;
 
 beforeEach(function () {
@@ -40,18 +41,18 @@ it('returns paginated response structure', function () {
 it('filters applications by status', function () {
     ApplicationModel::factory()->create([
         'barber_id' => $this->barber->id,
-        'status' => 'submitted',
+        'status' => ApplicationStatus::Submitted,
     ]);
     ApplicationModel::factory()->create([
         'barber_id' => $this->barber->id,
-        'status' => 'accepted',
+        'status' => ApplicationStatus::Accepted,
     ]);
 
     $response = $this->getJson('/api/v1/applications?status=accepted');
 
     $response->assertOk();
     expect($response->json('data'))->toHaveCount(1);
-    expect($response->json('data.0.status'))->toBe('accepted');
+    expect($response->json('data.0.status'))->toBe(ApplicationStatus::Accepted->value);
 });
 
 it('does not return other barbers applications', function () {

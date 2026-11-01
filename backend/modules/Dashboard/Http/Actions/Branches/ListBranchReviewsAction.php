@@ -11,6 +11,7 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowBranchQuery;
 use Modules\Dashboard\Handlers\Branches\ShowBranchHandler;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Http\Resources\Shared\ReviewResource;
 use Modules\Review\Models\ReviewModel;
 use Modules\Settings\Enums\SettingKey;
@@ -30,7 +31,7 @@ final class ListBranchReviewsAction extends BaseApiAction
 
         $reviews = ReviewModel::query()
             ->where('subject_id', $model->getKey())
-            ->whereIn('subject_type', ['branch', BranchModel::class])
+            ->where('subject_type', ReviewSubjectTypeEnum::Branch)
             ->with('author')
             ->orderByDesc('created_at')
             ->paginate($perPage);

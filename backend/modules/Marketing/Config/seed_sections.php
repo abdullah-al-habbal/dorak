@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+use Modules\Marketing\Enums\SectionTypeEnum;
+use Modules\Marketing\Enums\UniverseVisibilityEnum;
+
 return [
     // Home page sections -------------------------------------------------
     [
-        'page_slug' => 'home', 'type' => 'hero',
+        'page_slug' => 'home', 'type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -23,10 +26,10 @@ return [
                 'image' => '/images/hero-neutral.jpg',
             ],
         ],
-        'media_url' => '/images/hero-neutral.jpg', 'sort_order' => 0, 'universe_visibility' => 'all',
+        'media_url' => '/images/hero-neutral.jpg', 'sort_order' => 0, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => 'feature_list',
+        'page_slug' => 'home', 'type' => SectionTypeEnum::FeatureList->value,
         'title' => ['en' => 'Why Dorak?', 'ar' => 'لماذا دورك؟'],
         'subtitle' => null,
         'content' => [
@@ -47,20 +50,20 @@ return [
                 ],
             ],
         ],
-        'media_url' => null, 'sort_order' => 1, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 1, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => 'testimonials',
+        'page_slug' => 'home', 'type' => SectionTypeEnum::Testimonials->value,
         'title' => ['en' => 'What Our Users Say', 'ar' => 'ماذا يقول مستخدمونا'],
         'subtitle' => null,
         'content' => [
             'en' => ['heading' => 'What Our Users Say'],
             'ar' => ['heading' => 'ماذا يقول مستخدمونا'],
         ],
-        'media_url' => null, 'sort_order' => 2, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 2, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => 'floor_plan_demo',
+        'page_slug' => 'home', 'type' => SectionTypeEnum::FloorPlanDemo->value,
         'title' => ['en' => 'See It In Action', 'ar' => 'شاهدها في العمل'],
         'subtitle' => null,
         'content' => [
@@ -73,10 +76,10 @@ return [
                 'description' => 'انقر على كرسي لترى كيف أصبح الحجز سهلاً. هذه هي نفس الواجهة التي سيراها عملاؤك.',
             ],
         ],
-        'media_url' => null, 'sort_order' => 3, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 3, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => 'pricing',
+        'page_slug' => 'home', 'type' => SectionTypeEnum::Pricing->value,
         'title' => ['en' => 'Simple Pricing', 'ar' => 'أسعار بسيطة'],
         'subtitle' => null,
         'content' => [
@@ -95,10 +98,10 @@ return [
                 ],
             ],
         ],
-        'media_url' => null, 'sort_order' => 4, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 4, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => 'cta',
+        'page_slug' => 'home', 'type' => SectionTypeEnum::Cta->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -114,12 +117,12 @@ return [
                 'cta_url' => '/register',
             ],
         ],
-        'media_url' => null, 'sort_order' => 5, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 5, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
 
     // Features page sections --------------------------------------------
     [
-        'page_slug' => 'features', 'type' => 'hero',
+        'page_slug' => 'features', 'type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -135,10 +138,10 @@ return [
                 'cta_url' => '/pricing',
             ],
         ],
-        'media_url' => null, 'sort_order' => 0, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 0, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'features', 'type' => 'feature_list',
+        'page_slug' => 'features', 'type' => SectionTypeEnum::FeatureList->value,
         'title' => ['en' => 'Everything You Need', 'ar' => 'كل ما تحتاجه'],
         'subtitle' => null,
         'content' => [
@@ -161,12 +164,12 @@ return [
                 ],
             ],
         ],
-        'media_url' => null, 'sort_order' => 1, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 1, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
 
     // Pricing page sections ---------------------------------------------
     [
-        'page_slug' => 'pricing', 'type' => 'hero',
+        'page_slug' => 'pricing', 'type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -178,10 +181,10 @@ return [
                 'subheading' => 'لا رسوم مخفية. لا مفاجآت. فرعك الأول مجاني دائماً.',
             ],
         ],
-        'media_url' => null, 'sort_order' => 0, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 0, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'pricing', 'type' => 'pricing',
+        'page_slug' => 'pricing', 'type' => SectionTypeEnum::Pricing->value,
         'title' => ['en' => 'Choose Your Plan', 'ar' => 'اختر خطتك'],
         'subtitle' => null,
         'content' => [
@@ -200,10 +203,10 @@ return [
                 ],
             ],
         ],
-        'media_url' => null, 'sort_order' => 1, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 1, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'pricing', 'type' => 'cta',
+        'page_slug' => 'pricing', 'type' => SectionTypeEnum::Cta->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -219,6 +222,6 @@ return [
                 'cta_url' => '/contact',
             ],
         ],
-        'media_url' => null, 'sort_order' => 2, 'universe_visibility' => 'all',
+        'media_url' => null, 'sort_order' => 2, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
 ];

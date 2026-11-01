@@ -54,8 +54,8 @@ export function mapChairPayload(
 }
 export function mapServicePayload(input: z.infer<typeof serviceFormSchema>) {
   return {
-    active: input.active,
-    at_home: input.atHome,
+    is_active: input.isActive,
+    is_at_home: input.isAtHome,
     catalog_item_id: input.catalogItemId,
     currency_id: input.currencyId,
     duration: input.duration,

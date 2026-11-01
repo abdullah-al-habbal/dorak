@@ -46,7 +46,7 @@ describe('POST /api/v1/barber/register', function (): void {
             ->assertCreated()
             ->assertJsonPath('success', true)
             ->assertJsonPath('data.barber.email', 'omar@example.com')
-            ->assertJsonPath('data.barber.status', 'pending')
+            ->assertJsonPath('data.barber.status', BarberStatusEnum::Pending->value)
             ->assertJsonPath('data.barber.is_freelancer', true)
             ->assertJsonPath('data.barber.email_verified_at', null);
 
@@ -107,7 +107,7 @@ describe('the sign-up token of a pending barber', function (): void {
             ->getJson('/api/v1/barber/profile')
             ->assertOk()
             ->assertJsonPath('data.email', 'omar@example.com')
-            ->assertJsonPath('data.status', 'pending');
+            ->assertJsonPath('data.status', BarberStatusEnum::Pending->value);
     });
 
     it('cannot reach operational routes or activate itself', function (string $method, string $path): void {

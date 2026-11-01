@@ -25,14 +25,7 @@ final class BookingInfolistSchema
                     TextEntry::make('time_slot')
                         ->dateTime(),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'confirmed' => 'success',
-                            'completed' => 'info',
-                            'cancelled' => 'danger',
-                            'in_progress' => 'warning',
-                            default => 'gray',
-                        }),
+                        ->badge(),
                     TextEntry::make('created_at')
                         ->dateTime(),
                 ]),

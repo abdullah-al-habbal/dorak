@@ -30,7 +30,7 @@ final class PreferenceFormSchema
                         ->relationship('language', 'name.en'),
                     Select::make('display_currency_id')
                         ->relationship('displayCurrency', 'code'),
-                    Toggle::make('notification_enabled'),
+                    Toggle::make('is_notification_enabled'),
                     Select::make('theme')
                         ->options([
                             'light' => 'Light',

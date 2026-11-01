@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 beforeEach(function () {
@@ -33,7 +35,7 @@ it('submits review for completed booking', function () {
 it('rejects review for non-completed booking', function () {
     $booking = BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => 'confirmed',
+        'status' => BookingStatus::Confirmed,
     ]);
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
@@ -63,7 +65,7 @@ it('lists reviews by branch with pagination', function () {
     $branch = BranchModel::factory()->create();
     ReviewModel::factory()->count(15)->create([
         'subject_id' => $branch->id,
-        'subject_type' => BranchModel::class,
+        'subject_type' => ReviewSubjectTypeEnum::Branch,
     ]);
 
     $response = $this->getJson("/api/v1/branches/{$branch->id}/reviews?per_page=10");

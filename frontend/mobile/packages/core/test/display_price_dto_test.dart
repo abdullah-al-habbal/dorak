@@ -10,13 +10,13 @@ void main() {
       'currency_id': 'cur-1',
       'display_price': {'amount': 90.0, 'currency_code': 'EUR'},
       'conversion_unavailable': false,
-      'dual_price_display': true,
+      'is_dual_price_display_enabled': true,
     });
 
     expect(service.displayPrice?.amount, 90.0);
     expect(service.displayPrice?.currencyCode, 'EUR');
     expect(service.conversionUnavailable, isFalse);
-    expect(service.dualPriceDisplay, isTrue);
+    expect(service.isDualPriceDisplayEnabled, isTrue);
   });
 
   test(
@@ -31,7 +31,7 @@ void main() {
 
       expect(service.displayPrice, isNull);
       expect(service.conversionUnavailable, isFalse);
-      expect(service.dualPriceDisplay, isFalse);
+      expect(service.isDualPriceDisplayEnabled, isFalse);
     },
   );
 
@@ -56,11 +56,11 @@ void main() {
       'price': 100,
       'owner': 'brand',
       'display_price': {'amount': 90.0, 'currency_code': 'EUR'},
-      'dual_price_display': false,
+      'is_dual_price_display_enabled': false,
     });
 
     expect(service.displayPrice?.amount, 90.0);
     expect(service.displayPrice?.currencyCode, 'EUR');
-    expect(service.dualPriceDisplay, isFalse);
+    expect(service.isDualPriceDisplayEnabled, isFalse);
   });
 }

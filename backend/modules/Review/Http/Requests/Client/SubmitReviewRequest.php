@@ -6,6 +6,7 @@ namespace Modules\Review\Http\Requests\Client;
 
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Review\CQRS\Command\Client\SubmitReviewCommand;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 
 final class SubmitReviewRequest extends BaseApiFormRequest
 {
@@ -23,7 +24,7 @@ final class SubmitReviewRequest extends BaseApiFormRequest
         return new SubmitReviewCommand(
             bookingId: $bookingId,
             authorId: (string) $this->user()->id,
-            authorType: $this->user()->getMorphClass(),
+            authorType: ReviewAuthorTypeEnum::from($this->user()->getMorphClass()),
             rating: (int) $this->validated('rating'),
             comment: $this->validated('comment'),
             barberRating: $this->validated('barber_rating') === null ? null : (int) $this->validated('barber_rating'),

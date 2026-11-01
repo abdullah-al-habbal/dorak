@@ -24,7 +24,7 @@ final class SocialLoginHandler
     public function handle(SocialLoginCommand $command): SocialLoginResult
     {
         try {
-            $socialUser = Socialite::driver($command->provider)->stateless()->userFromToken($command->accessToken);
+            $socialUser = Socialite::driver($command->provider->value)->stateless()->userFromToken($command->accessToken);
         } catch (Exception) {
             return SocialLoginResult::invalidToken();
         }

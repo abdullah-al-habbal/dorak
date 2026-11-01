@@ -75,7 +75,7 @@ final class ListSlotsEloquentResolver
     {
         $services = OfferedServiceModel::query()
             ->whereIn('id', $query->serviceIds)
-            ->where('active', true)
+            ->where('is_active', true)
             ->get();
 
         if ($services->count() !== count($query->serviceIds)) {

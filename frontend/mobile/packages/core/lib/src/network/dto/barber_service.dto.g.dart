@@ -14,7 +14,7 @@ BarberServiceDto _$BarberServiceDtoFromJson(Map<String, dynamic> json) =>
       price: (json['price'] as num?)?.toDouble() ?? 0,
       currencyId: json['currency_id'] as String?,
       duration: (json['duration'] as num?)?.toInt(),
-      atHome: json['at_home'] as bool? ?? false,
+      isAtHome: json['is_at_home'] as bool? ?? false,
       active: json['active'] as bool? ?? true,
       createdAt: json['created_at'] == null
           ? null
@@ -25,5 +25,6 @@ BarberServiceDto _$BarberServiceDtoFromJson(Map<String, dynamic> json) =>
               json['display_price'] as Map<String, dynamic>,
             ),
       conversionUnavailable: json['conversion_unavailable'] as bool? ?? false,
-      dualPriceDisplay: json['dual_price_display'] as bool? ?? false,
+      isDualPriceDisplayEnabled:
+          json['is_dual_price_display_enabled'] as bool? ?? false,
     );

@@ -58,7 +58,7 @@ class StylistServiceCard extends StatelessWidget {
                     ),
                   ),
                 ],
-                if (service.atHome) ...[
+                if (service.isAtHome) ...[
                   const SizedBox(height: 8),
                   Row(
                     children: [

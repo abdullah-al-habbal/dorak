@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Preference\CQRS\Query\GetSettingsQuery;
+use Modules\Preference\Enums\PreferenceableTypeEnum;
 use Modules\Preference\Handlers\GetSettingsHandler;
 use Modules\Preference\Http\Resources\Shared\SettingsResource;
 
@@ -17,7 +18,7 @@ final class GetSettingsAction extends BaseApiAction
 
     public function __invoke(Request $request): JsonResponse
     {
-        $settings = $this->handler->handle(new GetSettingsQuery('client', (string) $request->user()->getAuthIdentifier()));
+        $settings = $this->handler->handle(new GetSettingsQuery(PreferenceableTypeEnum::Client, (string) $request->user()->getAuthIdentifier()));
 
         return $this->ok(SettingsResource::make($settings)->resolve());
     }

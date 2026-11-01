@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\OfferedService\Eloquent\Resolvers\Barber;
 
 use Modules\OfferedService\CQRS\Command\Barber\StoreBarberServiceCommand;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 final class StoreBarberServiceEloquentResolver
@@ -14,7 +15,7 @@ final class StoreBarberServiceEloquentResolver
         return OfferedServiceModel::query()->create([
             ...$command->attributes,
             'serviceable_id' => $command->barberId,
-            'serviceable_type' => 'barber',
+            'serviceable_type' => ServiceableTypeEnum::Barber,
         ]);
     }
 }

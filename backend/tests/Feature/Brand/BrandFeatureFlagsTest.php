@@ -7,6 +7,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\BrandFeatures;
+use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
@@ -75,7 +76,7 @@ describe('multi_branch (A3)', function (): void {
         flags($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => false]);
         $admin = AdminModel::factory()->create();
         $chair = fn (BranchModel $branch): array => [
-            'branch_id' => $branch->id, 'label' => 'C1', 'floor_zone' => 'shared', 'status' => 'available',
+            'branch_id' => $branch->id, 'label' => 'C1', 'floor_zone' => 'shared', 'status' => ChairStatus::Available,
             'ui_metadata' => ['position_x' => 0, 'position_y' => 0, 'width' => 1, 'height' => 1],
         ];
 

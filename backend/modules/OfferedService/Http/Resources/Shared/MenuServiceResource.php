@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\OfferedService\Http\Resources\Shared;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 
 /**
  * A service on a client-facing menu (branch detail, floor plan, barber detail):
@@ -21,7 +21,7 @@ final class MenuServiceResource extends JsonResource
 
         return [
             ...ServiceResource::make($this->resource)->resolve($request),
-            'owner' => is_string($type) ? Relation::getMorphAlias($type) : null,
+            'owner' => $type instanceof ServiceableTypeEnum ? $type->value : null,
         ];
     }
 }

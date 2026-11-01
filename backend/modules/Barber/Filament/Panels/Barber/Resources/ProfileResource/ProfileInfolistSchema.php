@@ -22,12 +22,7 @@ final class ProfileInfolistSchema
                         ->label(__('barber::ui.name_arabic')),
                     TextEntry::make('email'),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'enabled' => 'success',
-                            'disabled' => 'danger',
-                            default => 'warning',
-                        }),
+                        ->badge(),
                     TextEntry::make('created_at')
                         ->dateTime(),
                 ]),

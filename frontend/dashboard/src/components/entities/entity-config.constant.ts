@@ -46,7 +46,7 @@ export const ENTITY_CONFIGS = {
       {
         id: "active",
         label: "active",
-        value: (item: IService) => (item.active ? "active" : "inactive"),
+        value: (item: IService) => (item.isActive ? "active" : "inactive"),
       },
     ],
   },

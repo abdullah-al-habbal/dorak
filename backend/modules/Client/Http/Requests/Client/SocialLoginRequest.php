@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Client\Http\Requests\Client;
 
 use Modules\Client\CQRS\Command\Client\SocialLoginCommand;
+use Modules\Client\Enums\SocialProviderEnum;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class SocialLoginRequest extends BaseApiFormRequest
@@ -16,7 +17,7 @@ final class SocialLoginRequest extends BaseApiFormRequest
         ];
     }
 
-    public function toCommand(string $provider): SocialLoginCommand
+    public function toCommand(SocialProviderEnum $provider): SocialLoginCommand
     {
         return new SocialLoginCommand(
             provider: $provider,

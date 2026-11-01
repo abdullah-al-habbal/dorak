@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
+use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
 
@@ -67,7 +68,7 @@ it('creates new client via social login', function () {
 it('issues a verification-only token to a pending client on social login', function () {
     $client = ClientModel::factory()->create([
         'email' => 'pending-social@example.com',
-        'status' => 'pending',
+        'status' => ClientStatusEnum::Pending,
         'email_verified_at' => null,
     ]);
     SocialAccountModel::factory()->create([

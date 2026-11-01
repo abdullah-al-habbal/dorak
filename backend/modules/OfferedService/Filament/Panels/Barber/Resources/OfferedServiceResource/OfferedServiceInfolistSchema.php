@@ -26,10 +26,10 @@ final class OfferedServiceInfolistSchema
                         ->label(__('offeredservice::ui.currency')),
                     TextEntry::make('duration')
                         ->label(__('offeredservice::ui.duration_minutes')),
-                    TextEntry::make('at_home')
+                    TextEntry::make('is_at_home')
                         ->label(__('offeredservice::ui.available_at_home'))
                         ->boolean(),
-                    TextEntry::make('active')
+                    TextEntry::make('is_active')
                         ->boolean(),
                     TextEntry::make('created_at')
                         ->dateTime(),

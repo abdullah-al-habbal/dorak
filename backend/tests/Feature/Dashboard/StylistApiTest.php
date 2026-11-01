@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
@@ -65,10 +66,10 @@ describe('Dashboard Stylist API', function (): void {
 
         $this->patchJson("/api/v1/dashboard/stylists/{$stylist->id}/deactivate")
             ->assertOk()
-            ->assertJsonPath('data.status', 'disabled');
+            ->assertJsonPath('data.status', BarberStatusEnum::Disabled->value);
         $this->patchJson("/api/v1/dashboard/stylists/{$stylist->id}/activate")
             ->assertOk()
-            ->assertJsonPath('data.status', 'enabled');
+            ->assertJsonPath('data.status', BarberStatusEnum::Enabled->value);
     });
 
     it('does not let a branch manager activate a stylist outside their branch', function (): void {

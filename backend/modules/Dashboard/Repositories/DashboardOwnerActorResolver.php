@@ -8,7 +8,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
-use Modules\Dashboard\Constants\DashboardActorConstants;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Support\DashboardActor;
 
 /**
@@ -52,7 +52,7 @@ final class DashboardOwnerActorResolver
 
         return new DashboardActor(
             id: $clientId,
-            actorType: DashboardActorConstants::DASHBOARD_ACTOR_OWNER,
+            actorType: DashboardActorTypeEnum::Owner,
             role: 'brand_owner',
             branchId: null,
             brandId: $brandIds[0],

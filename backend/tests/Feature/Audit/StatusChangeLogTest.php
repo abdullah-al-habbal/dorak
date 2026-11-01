@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Queue;
 use Modules\Admin\Models\AdminModel;
+use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Audit\Models\StatusChangeLogModel;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
+use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
@@ -14,6 +18,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 
 function latestStatusLog(string $subjectType, string $subjectId): ?StatusChangeLogModel
 {
@@ -35,13 +40,13 @@ describe('booking transitions', function (): void {
         $chair = ChairModel::factory()->create();
         $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
 
-        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => 'confirmed'])->assertOk();
+        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => BookingStatus::Confirmed])->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
         expect($log)->not->toBeNull();
-        expect($log->from_status)->toBe('pending');
-        expect($log->to_status)->toBe('confirmed');
-        expect($log->actor_type->value)->toBe('admin');
+        expect($log->from_status)->toBe(BookingStatus::Pending->value);
+        expect($log->to_status)->toBe(BookingStatus::Confirmed->value);
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Admin->value);
         expect($log->actor_id)->toBe((string) $admin->id);
     });
 
@@ -51,12 +56,12 @@ describe('booking transitions', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
         $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
 
-        $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'confirmed'])->assertOk();
+        $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Confirmed])->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
-        expect($log->actor_type->value)->toBe('branch');
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Branch->value);
         expect($log->actor_id)->toBe((string) $branch->id);
-        expect($log->to_status)->toBe('confirmed');
+        expect($log->to_status)->toBe(BookingStatus::Confirmed->value);
     });
 
     it('logs a client cancellation', function (): void {
@@ -67,9 +72,9 @@ describe('booking transitions', function (): void {
         $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel")->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
-        expect($log->actor_type->value)->toBe('client');
+        expect($log->actor_type->value)->toBe(StatusChangeActorTypeEnum::Client->value);
         expect($log->actor_id)->toBe((string) $client->id);
-        expect($log->to_status)->toBe('canceled');
+        expect($log->to_status)->toBe(BookingStatus::Canceled->value);
     });
 
     it('logs a barber cancellation with the reason', function (): void {
@@ -80,7 +85,7 @@ describe('booking transitions', function (): void {
         $this->postJson("/api/v1/barber/bookings/{$booking->id}/cancel", ['cancellation_reason' => 'sick'])->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
-        expect($log->actor_type->value)->toBe('barber');
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Barber->value);
         expect($log->actor_id)->toBe((string) $barber->id);
         expect($log->reason)->toBe('sick');
     });
@@ -93,8 +98,8 @@ describe('booking transitions', function (): void {
         $this->patchJson("/api/v1/barber/bookings/{$booking->id}/accept")->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
-        expect($log->actor_type->value)->toBe('barber');
-        expect($log->to_status)->toBe('confirmed');
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Barber->value);
+        expect($log->to_status)->toBe(BookingStatus::Confirmed->value);
     });
 
     it('logs a system cancellation from forced chair maintenance', function (): void {
@@ -108,10 +113,10 @@ describe('booking transitions', function (): void {
             'ends_at' => now()->addDay()->addMinutes(30),
         ]);
 
-        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => 'maintenance', 'force' => true])->assertOk();
+        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => ChairStatus::Maintenance, 'force' => true])->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
-        expect($log->actor_type->value)->toBe('system');
+        expect($log->actor_type->value)->toBe(StatusChangeActorTypeEnum::System->value);
         expect($log->actor_id)->toBeNull();
         expect($log->reason)->toBe('chair_maintenance');
     });
@@ -122,7 +127,7 @@ describe('booking transitions', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
         $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Completed]);
 
-        $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => 'in_progress'])->assertUnprocessable();
+        $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::InProgress])->assertUnprocessable();
 
         expect(latestStatusLog('booking', (string) $booking->id))->toBeNull();
         Queue::assertNotPushed(SendBookingStatusNotificationJob::class);
@@ -135,13 +140,13 @@ describe('affiliation lifecycle', function (): void {
         $this->actingAs($barber, 'barber');
         $branch = BranchModel::factory()->create();
 
-        $this->postJson("/api/v1/barbers/{$barber->id}/affiliate", ['affiliable_id' => $branch->id, 'affiliable_type' => 'branch'])->assertCreated();
+        $this->postJson("/api/v1/barbers/{$barber->id}/affiliate", ['affiliable_id' => $branch->id, 'affiliable_type' => AffiliableType::Branch])->assertCreated();
 
         $affiliation = BarberAffiliationModel::where('barber_id', $barber->id)->first();
         $log = latestStatusLog('affiliation', (string) $affiliation->id);
         expect($log->from_status)->toBeNull();
-        expect($log->to_status)->toBe('pending');
-        expect($log->actor_type->value)->toBe('barber');
+        expect($log->to_status)->toBe(AffiliationStatus::Pending->value);
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Barber->value);
         expect($log->actor_id)->toBe((string) $barber->id);
     });
 
@@ -155,7 +160,7 @@ describe('affiliation lifecycle', function (): void {
         $affiliation = BarberAffiliationModel::where('barber_id', $barber->id)->first();
         $log = latestStatusLog('affiliation', (string) $affiliation->id);
         expect($log->from_status)->toBeNull();
-        expect($log->actor_type->value)->toBe('branch');
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Branch->value);
         expect($log->actor_id)->toBe((string) $branch->id);
     });
 
@@ -165,19 +170,19 @@ describe('affiliation lifecycle', function (): void {
         $affiliation = BarberAffiliationModel::factory()->create([
             'barber_id' => $barber->id,
             'affiliable_id' => $branch->id,
-            'affiliable_type' => 'branch',
-            'initiated_by_type' => BranchModel::class,
+            'affiliable_type' => AffiliableType::Branch,
+            'initiated_by_type' => AffiliationInitiatorTypeEnum::Branch,
             'initiated_by_id' => $branch->id,
-            'status' => 'pending',
+            'status' => AffiliationStatus::Pending,
         ]);
         $this->actingAs($barber, 'barber');
 
         $this->postJson("/api/v1/affiliations/{$affiliation->id}/accept")->assertOk();
 
         $log = latestStatusLog('affiliation', (string) $affiliation->id);
-        expect($log->from_status)->toBe('pending');
-        expect($log->to_status)->toBe('active');
-        expect($log->actor_type->value)->toBe('barber');
+        expect($log->from_status)->toBe(AffiliationStatus::Pending->value);
+        expect($log->to_status)->toBe(AffiliationStatus::Active->value);
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Barber->value);
         expect($log->actor_id)->toBe((string) $barber->id);
     });
 
@@ -187,18 +192,18 @@ describe('affiliation lifecycle', function (): void {
         $affiliation = BarberAffiliationModel::factory()->create([
             'barber_id' => $barber->id,
             'affiliable_id' => $branch->id,
-            'affiliable_type' => 'branch',
-            'initiated_by_type' => BarberModel::class,
+            'affiliable_type' => AffiliableType::Branch,
+            'initiated_by_type' => AffiliationInitiatorTypeEnum::Barber,
             'initiated_by_id' => $barber->id,
-            'status' => 'pending',
+            'status' => AffiliationStatus::Pending,
         ]);
         $this->actingAs($branch, 'branch_api');
 
         $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/accept")->assertOk();
 
         $log = latestStatusLog('affiliation', (string) $affiliation->id);
-        expect($log->to_status)->toBe('active');
-        expect($log->actor_type->value)->toBe('branch');
+        expect($log->to_status)->toBe(AffiliationStatus::Active->value);
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Branch->value);
         expect($log->actor_id)->toBe((string) $branch->id);
     });
 
@@ -208,18 +213,18 @@ describe('affiliation lifecycle', function (): void {
         $affiliation = BarberAffiliationModel::factory()->create([
             'barber_id' => $barber->id,
             'affiliable_id' => $branch->id,
-            'affiliable_type' => 'branch',
-            'initiated_by_type' => BranchModel::class,
+            'affiliable_type' => AffiliableType::Branch,
+            'initiated_by_type' => AffiliationInitiatorTypeEnum::Branch,
             'initiated_by_id' => $branch->id,
-            'status' => 'pending',
+            'status' => AffiliationStatus::Pending,
         ]);
         $this->actingAs($barber, 'barber');
 
         $this->postJson("/api/v1/affiliations/{$affiliation->id}/reject")->assertOk();
 
         $log = latestStatusLog('affiliation', (string) $affiliation->id);
-        expect($log->to_status)->toBe('rejected');
-        expect($log->actor_type->value)->toBe('barber');
+        expect($log->to_status)->toBe(AffiliationStatus::Rejected->value);
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Barber->value);
     });
 
     it('logs a barber terminating their own affiliation', function (): void {
@@ -228,16 +233,16 @@ describe('affiliation lifecycle', function (): void {
         $affiliation = BarberAffiliationModel::factory()->create([
             'barber_id' => $barber->id,
             'affiliable_id' => $branch->id,
-            'affiliable_type' => 'branch',
-            'status' => 'active',
+            'affiliable_type' => AffiliableType::Branch,
+            'status' => AffiliationStatus::Active,
         ]);
         $this->actingAs($barber, 'barber');
 
         $this->postJson("/api/v1/affiliations/{$affiliation->id}/terminate")->assertOk();
 
         $log = latestStatusLog('affiliation', (string) $affiliation->id);
-        expect($log->to_status)->toBe('terminated');
-        expect($log->actor_type->value)->toBe('barber');
+        expect($log->to_status)->toBe(AffiliationStatus::Terminated->value);
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Barber->value);
         expect($log->actor_id)->toBe((string) $barber->id);
     });
 
@@ -247,16 +252,16 @@ describe('affiliation lifecycle', function (): void {
         $affiliation = BarberAffiliationModel::factory()->create([
             'barber_id' => $barber->id,
             'affiliable_id' => $branch->id,
-            'affiliable_type' => 'branch',
-            'status' => 'active',
+            'affiliable_type' => AffiliableType::Branch,
+            'status' => AffiliationStatus::Active,
         ]);
         $this->actingAs($branch, 'branch_api');
 
         $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/terminate")->assertOk();
 
         $log = latestStatusLog('affiliation', (string) $affiliation->id);
-        expect($log->to_status)->toBe('terminated');
-        expect($log->actor_type->value)->toBe('branch');
+        expect($log->to_status)->toBe(AffiliationStatus::Terminated->value);
+        expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Branch->value);
         expect($log->actor_id)->toBe((string) $branch->id);
     });
 
@@ -266,8 +271,8 @@ describe('affiliation lifecycle', function (): void {
         $affiliation = BarberAffiliationModel::factory()->create([
             'barber_id' => $barber->id,
             'affiliable_id' => $branch->id,
-            'affiliable_type' => 'branch',
-            'status' => 'rejected',
+            'affiliable_type' => AffiliableType::Branch,
+            'status' => AffiliationStatus::Rejected,
         ]);
         $this->actingAs($barber, 'barber');
 
@@ -285,7 +290,7 @@ describe('GET /api/v1/dashboard/bookings/{booking}/history', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
         $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
 
-        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => 'confirmed'])->assertOk();
+        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => BookingStatus::Confirmed])->assertOk();
 
         $this->getJson("/api/v1/dashboard/bookings/{$booking->id}/history")
             ->assertOk()

@@ -24,12 +24,12 @@ export function EntityCrudFormField({
   const fieldValue = useWatch({ control: form.control, name: field as never });
   const fieldLabel =
     fieldCopy[fieldLabelKey(field) as keyof typeof fieldCopy] ?? field;
-  if (field === "atHome")
+  if (field === "isAtHome")
     return (
       <div className="grid gap-2 text-sm text-text-100">
         <Controller
           control={form.control}
-          name="atHome"
+          name="isAtHome"
           render={({ field: atHomeField }) => (
             <Checkbox
               isSelected={atHomeField.value === true}

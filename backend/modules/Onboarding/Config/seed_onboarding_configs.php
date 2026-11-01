@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Modules\Onboarding\Enums\Season;
+
 return [
     // English default
     [
@@ -22,28 +24,28 @@ return [
     // English seasonal
     [
         'locale' => 'en',
-        'season' => 'spring',
+        'season' => Season::Spring->value,
         'source_path' => database_path('seeders/assets/onboarding/hero_spring_en.jpg'),
         'is_active' => true,
         'sort_order' => 1,
     ],
     [
         'locale' => 'en',
-        'season' => 'summer',
+        'season' => Season::Summer->value,
         'source_path' => database_path('seeders/assets/onboarding/hero_summer_en.jpg'),
         'is_active' => true,
         'sort_order' => 1,
     ],
     [
         'locale' => 'en',
-        'season' => 'autumn',
+        'season' => Season::Autumn->value,
         'source_path' => database_path('seeders/assets/onboarding/hero_autumn_en.jpg'),
         'is_active' => true,
         'sort_order' => 1,
     ],
     [
         'locale' => 'en',
-        'season' => 'winter',
+        'season' => Season::Winter->value,
         'source_path' => database_path('seeders/assets/onboarding/hero_winter_en.jpg'),
         'is_active' => true,
         'sort_order' => 1,
@@ -51,28 +53,28 @@ return [
     // Arabic seasonal
     [
         'locale' => 'ar',
-        'season' => 'spring',
+        'season' => Season::Spring->value,
         'source_path' => database_path('seeders/assets/onboarding/hero_spring_ar.jpg'),
         'is_active' => true,
         'sort_order' => 1,
     ],
     [
         'locale' => 'ar',
-        'season' => 'summer',
+        'season' => Season::Summer->value,
         'source_path' => database_path('seeders/assets/onboarding/hero_summer_ar.jpg'),
         'is_active' => true,
         'sort_order' => 1,
     ],
     [
         'locale' => 'ar',
-        'season' => 'autumn',
+        'season' => Season::Autumn->value,
         'source_path' => database_path('seeders/assets/onboarding/hero_autumn_ar.jpg'),
         'is_active' => true,
         'sort_order' => 1,
     ],
     [
         'locale' => 'ar',
-        'season' => 'winter',
+        'season' => Season::Winter->value,
         'source_path' => database_path('seeders/assets/onboarding/hero_winter_ar.jpg'),
         'is_active' => true,
         'sort_order' => 1,

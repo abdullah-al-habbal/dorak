@@ -3,16 +3,18 @@
 declare(strict_types=1);
 
 use Carbon\Carbon;
+use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
     $this->branch = BranchModel::factory()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
+    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $this->actingAs($this->client, 'client');
 });
 
@@ -68,7 +70,7 @@ it('handles race condition: direct DB insert then API attempt', function () {
         'chair_id' => $chair->id,
         'time_slot' => $timeSlot,
         'ends_at' => Carbon::parse($timeSlot)->addMinutes(30),
-        'status' => 'confirmed',
+        'status' => BookingStatus::Confirmed,
     ]);
 
     $response = $this->postJson('/api/v1/bookings', [
@@ -91,7 +93,7 @@ it('allows re-booking after cancellation on same chair+slot', function () {
     ])->assertCreated();
 
     $booking = BookingModel::first();
-    $booking->update(['status' => 'canceled']);
+    $booking->update(['status' => BookingStatus::Canceled]);
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Models\BookingModel;
@@ -14,8 +15,11 @@ use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Events\ChairStatusUpdated;
 use Modules\Chair\Models\ChairModel;
+use Modules\JobPosting\Enums\ApplicationStatus;
+use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Models\ApplicationModel;
 use Modules\JobPosting\Models\JobPostingModel;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 function createAuthenticatedBranch(): BranchModel
@@ -120,12 +124,12 @@ describe('Branch API', function () {
                 Event::fake();
 
                 $response = $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", [
-                    'status' => 'maintenance',
+                    'status' => ChairStatus::Maintenance,
                 ]);
 
                 $response->assertOk();
                 $data = $response->json('data');
-                expect($data['status'])->toBe('maintenance');
+                expect($data['status'])->toBe(ChairStatus::Maintenance->value);
 
                 Event::assertDispatched(ChairStatusUpdated::class);
             });
@@ -134,7 +138,7 @@ describe('Branch API', function () {
                 $chair = ChairModel::factory()->create();
 
                 $response = $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", [
-                    'status' => 'maintenance',
+                    'status' => ChairStatus::Maintenance,
                 ]);
 
                 $response->assertNotFound();
@@ -157,7 +161,7 @@ describe('Branch API', function () {
             it('lists affiliations for branch', function () {
                 BarberAffiliationModel::factory()->count(2)->create([
                     'affiliable_id' => $this->branch->id,
-                    'affiliable_type' => 'branch',
+                    'affiliable_type' => AffiliableType::Branch,
                 ]);
 
                 $response = $this->getJson('/api/v1/branch/affiliations');
@@ -178,19 +182,19 @@ describe('Branch API', function () {
             it('accepts pending affiliation', function () {
                 $affiliation = BarberAffiliationModel::factory()->pending()->create([
                     'affiliable_id' => $this->branch->id,
-                    'affiliable_type' => 'branch',
+                    'affiliable_type' => AffiliableType::Branch,
                 ]);
 
                 $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/accept");
 
                 $response->assertOk();
-                expect($response->json('data.status'))->toBe('active');
+                expect($response->json('data.status'))->toBe(AffiliationStatus::Active->value);
             });
 
             it('rejects accepting non-pending affiliation', function () {
                 $affiliation = BarberAffiliationModel::factory()->create([
                     'affiliable_id' => $this->branch->id,
-                    'affiliable_type' => 'branch',
+                    'affiliable_type' => AffiliableType::Branch,
                     'status' => AffiliationStatus::Active,
                 ]);
 
@@ -212,19 +216,19 @@ describe('Branch API', function () {
             it('rejects pending affiliation', function () {
                 $affiliation = BarberAffiliationModel::factory()->pending()->create([
                     'affiliable_id' => $this->branch->id,
-                    'affiliable_type' => 'branch',
+                    'affiliable_type' => AffiliableType::Branch,
                 ]);
 
                 $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/reject");
 
                 $response->assertOk();
-                expect($response->json('data.status'))->toBe('rejected');
+                expect($response->json('data.status'))->toBe(AffiliationStatus::Rejected->value);
             });
 
             it('rejects rejecting non-pending affiliation', function () {
                 $affiliation = BarberAffiliationModel::factory()->create([
                     'affiliable_id' => $this->branch->id,
-                    'affiliable_type' => 'branch',
+                    'affiliable_type' => AffiliableType::Branch,
                     'status' => AffiliationStatus::Active,
                 ]);
 
@@ -243,7 +247,7 @@ describe('Branch API', function () {
                 ]);
 
                 $response->assertCreated();
-                expect($response->json('data.status'))->toBe('pending');
+                expect($response->json('data.status'))->toBe(AffiliationStatus::Pending->value);
                 expect($response->json('data.affiliable_id'))->toBe($this->branch->id);
             });
 
@@ -272,7 +276,7 @@ describe('Branch API', function () {
                     ->postJson("/api/v1/affiliations/{$invite['id']}/accept");
 
                 $response->assertOk();
-                expect($response->json('data.status'))->toBe('active');
+                expect($response->json('data.status'))->toBe(AffiliationStatus::Active->value);
             });
         });
 
@@ -282,7 +286,7 @@ describe('Branch API', function () {
                 $affiliation = BarberAffiliationModel::factory()->create([
                     'barber_id' => $barber->id,
                     'affiliable_id' => $this->branch->id,
-                    'affiliable_type' => 'branch',
+                    'affiliable_type' => AffiliableType::Branch,
                     'status' => AffiliationStatus::Active,
                 ]);
                 $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $barber->id]);
@@ -290,14 +294,14 @@ describe('Branch API', function () {
                 $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/terminate");
 
                 $response->assertOk();
-                expect($response->json('data.status'))->toBe('terminated');
+                expect($response->json('data.status'))->toBe(AffiliationStatus::Terminated->value);
                 $this->assertDatabaseHas('chairs', ['id' => $chair->id, 'barber_id' => null]);
             });
 
             it('rejects terminating a non-active affiliation', function () {
                 $affiliation = BarberAffiliationModel::factory()->pending()->create([
                     'affiliable_id' => $this->branch->id,
-                    'affiliable_type' => 'branch',
+                    'affiliable_type' => AffiliableType::Branch,
                 ]);
 
                 $response = $this->postJson("/api/v1/branch/affiliations/{$affiliation->id}/terminate");
@@ -377,7 +381,7 @@ describe('Branch API', function () {
 
                 $response = $this->putJson("/api/v1/branch/job-postings/{$jobPosting->id}", [
                     'title' => ['en' => 'Updated Title', 'ar' => 'عنوان محدث'],
-                    'status' => 'closed',
+                    'status' => JobPostingStatusEnum::Closed,
                 ]);
 
                 $response->assertOk();
@@ -432,12 +436,12 @@ describe('Branch API', function () {
                 $jobPosting = JobPostingModel::factory()->create(['branch_id' => $this->branch->id]);
                 $application = ApplicationModel::factory()->create([
                     'job_posting_id' => $jobPosting->id,
-                    'status' => 'submitted',
+                    'status' => ApplicationStatus::Submitted,
                 ]);
 
                 $this->getJson("/api/v1/branch/job-postings/{$jobPosting->id}/applications")->assertOk();
 
-                expect($application->fresh()->status->value)->toBe('seen');
+                expect($application->fresh()->status->value)->toBe(ApplicationStatus::Seen->value);
             });
         });
 
@@ -445,7 +449,7 @@ describe('Branch API', function () {
             it('lists reviews for branch', function () {
                 ReviewModel::factory()->count(2)->create([
                     'subject_id' => $this->branch->id,
-                    'subject_type' => BranchModel::class,
+                    'subject_type' => ReviewSubjectTypeEnum::Branch,
                 ]);
 
                 $response = $this->getJson('/api/v1/branch/reviews');

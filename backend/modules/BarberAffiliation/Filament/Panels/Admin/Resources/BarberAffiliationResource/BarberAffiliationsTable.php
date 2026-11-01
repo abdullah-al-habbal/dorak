@@ -22,12 +22,7 @@ final class BarberAffiliationsTable
                 TextColumn::make('affiliable_type')
                     ->label(__('barberaffiliation::ui.entity_type')),
                 TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active' => 'success',
-                        'terminated' => 'danger',
-                        default => 'warning',
-                    }),
+                    ->badge(),
                 TextColumn::make('commission_rate')
                     ->suffix('%'),
                 TextColumn::make('created_at')

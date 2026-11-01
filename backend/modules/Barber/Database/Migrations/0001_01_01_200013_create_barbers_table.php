@@ -21,7 +21,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->boolean('is_freelancer')->default(false);
             $table->string('status')->default('pending');
-            $table->boolean('workstation_online')->default(false);
+            $table->boolean('is_workstation_online')->default(false);
             $table->uuid('client_id')->nullable()->index();
             $table->foreignUuid('managed_by_branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->decimal('latitude', 10, 8)->nullable();

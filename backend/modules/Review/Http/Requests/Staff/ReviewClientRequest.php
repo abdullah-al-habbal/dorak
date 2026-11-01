@@ -6,6 +6,7 @@ namespace Modules\Review\Http\Requests\Staff;
 
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Review\CQRS\Command\Staff\ReviewClientCommand;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 
 final class ReviewClientRequest extends BaseApiFormRequest
 {
@@ -18,10 +19,9 @@ final class ReviewClientRequest extends BaseApiFormRequest
     }
 
     /**
-     * @param  'branch'|'barber'  $authorSide
      * @param  list<string>|null  $branchScope
      */
-    public function toCommand(string $bookingId, string $authorSide, ?string $barberId, ?array $branchScope): ReviewClientCommand
+    public function toCommand(string $bookingId, ReviewAuthorTypeEnum $authorSide, ?string $barberId, ?array $branchScope): ReviewClientCommand
     {
         $comment = $this->validated('comment');
 

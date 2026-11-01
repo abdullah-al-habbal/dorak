@@ -108,7 +108,7 @@ describe('Brand subscriptions', function (): void {
 
         $this->postJson('/api/v1/dashboard/admin/subscriptions', ['brand_id' => $brand->id, 'plan_id' => $plan->id])
             ->assertCreated()
-            ->assertJsonPath('data.status', 'active');
+            ->assertJsonPath('data.status', SubscriptionStatus::Active->value);
 
         expect(app(BrandFeatures::class)->all($brand))->toBe([
             BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true,
@@ -152,16 +152,16 @@ describe('Brand subscriptions', function (): void {
         $subscription = BrandSubscriptionModel::factory()->create(['brand_id' => $brand->id, 'plan_id' => $plan->id]);
         $url = "/api/v1/dashboard/admin/subscriptions/{$subscription->id}/status";
 
-        $this->patchJson($url, ['status' => 'past_due'])->assertOk()->assertJsonPath('data.status', 'past_due');
-        $this->patchJson($url, ['status' => 'active'])->assertOk();
-        $this->patchJson($url, ['status' => 'pending'])->assertConflict();
+        $this->patchJson($url, ['status' => SubscriptionStatus::PastDue])->assertOk()->assertJsonPath('data.status', SubscriptionStatus::PastDue->value);
+        $this->patchJson($url, ['status' => SubscriptionStatus::Active])->assertOk();
+        $this->patchJson($url, ['status' => SubscriptionStatus::Pending])->assertConflict();
         $this->patchJson($url, ['status' => 'bogus'])->assertUnprocessable();
 
         app(BrandFeatures::class)->set($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true]);
-        $this->patchJson($url, ['status' => 'canceled'])->assertOk()->assertJsonPath('data.status', 'canceled');
+        $this->patchJson($url, ['status' => SubscriptionStatus::Canceled])->assertOk()->assertJsonPath('data.status', SubscriptionStatus::Canceled->value);
 
         expect(app(BrandFeatures::class)->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH))->toBeFalse();
-        $this->patchJson($url, ['status' => 'active'])->assertConflict();
+        $this->patchJson($url, ['status' => SubscriptionStatus::Active])->assertConflict();
     });
 
     it('activates a pending subscription and grants its features', function (): void {
@@ -172,7 +172,7 @@ describe('Brand subscriptions', function (): void {
             'brand_id' => $brand->id, 'plan_id' => $plan->id, 'status' => SubscriptionStatus::Pending,
         ]);
 
-        $this->patchJson("/api/v1/dashboard/admin/subscriptions/{$subscription->id}/status", ['status' => 'active'])->assertOk();
+        $this->patchJson("/api/v1/dashboard/admin/subscriptions/{$subscription->id}/status", ['status' => SubscriptionStatus::Active])->assertOk();
 
         expect(app(BrandFeatures::class)->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_JOB_BOARD))->toBeTrue();
     });

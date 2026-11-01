@@ -34,7 +34,7 @@ final class AssignSubscriptionHandler
                 'plan_id' => $plan->getKey(),
                 'status' => SubscriptionStatus::Active,
                 'starts_at' => $start,
-                'ends_at' => $start->copy()->add($plan->interval_unit, $plan->interval_count),
+                'ends_at' => $start->copy()->add($plan->interval_unit->value, $plan->interval_count),
             ]);
 
             $this->syncer->grant($brand, $plan);

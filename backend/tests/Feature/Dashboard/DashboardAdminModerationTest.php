@@ -61,9 +61,9 @@ describe('Dashboard admin moderation', function (): void {
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.id', $review->id);
 
-        $this->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => 'hidden', 'note' => 'Confirmed mismatch.'])
+        $this->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => ReviewStatus::Hidden, 'note' => 'Confirmed mismatch.'])
             ->assertOk()
-            ->assertJsonPath('data.status', 'hidden')
+            ->assertJsonPath('data.status', ReviewStatus::Hidden->value)
             ->assertJsonPath('data.resolution_note', 'Confirmed mismatch.');
 
         $this->getJson('/api/v1/dashboard/admin/reviews')->assertOk()->assertJsonCount(0, 'data');
@@ -76,7 +76,7 @@ describe('Dashboard admin moderation', function (): void {
         $review = disputedReview();
         $this->authenticateDashboardActor(AdminModel::factory()->create());
 
-        $this->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => 'disputed'])
+        $this->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => ReviewStatus::Disputed])
             ->assertUnprocessable();
         expect($review->fresh()->status)->toBe(ReviewStatus::Disputed);
     });
@@ -98,7 +98,7 @@ describe('Dashboard admin moderation', function (): void {
         $this->authenticateDashboardActor(BranchModel::factory()->create());
 
         $this->getJson('/api/v1/dashboard/admin/reviews')->assertForbidden();
-        $this->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => 'hidden'])->assertForbidden();
+        $this->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => ReviewStatus::Hidden])->assertForbidden();
         $this->getJson('/api/v1/dashboard/admin/exchange-rates')->assertForbidden();
         expect($review->fresh()->status)->toBe(ReviewStatus::Disputed);
     });

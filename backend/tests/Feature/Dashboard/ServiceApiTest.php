@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 describe('Dashboard Service API', function (): void {
@@ -21,7 +22,7 @@ describe('Dashboard Service API', function (): void {
         $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency))
             ->assertCreated()
             ->assertJsonPath('data.serviceable_id', $this->branch->brand_id)
-            ->assertJsonPath('data.serviceable_type', 'brand');
+            ->assertJsonPath('data.serviceable_type', ServiceableTypeEnum::Brand->value);
     });
 
     it('rejects a branch serviceable_type (D1: owned by brand or barber, never branch)', function (): void {
@@ -36,10 +37,10 @@ describe('Dashboard Service API', function (): void {
         $this->authenticateDashboardActor($this->admin);
         $currency = CurrencyModel::factory()->create();
 
-        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency, ['at_home' => true]))
+        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency, ['is_at_home' => true]))
             ->assertCreated()
-            ->assertJsonPath('data.at_home', true);
-        $this->assertDatabaseHas('offered_services', ['at_home' => true, 'serviceable_id' => $this->branch->brand_id]);
+            ->assertJsonPath('data.is_at_home', true);
+        $this->assertDatabaseHas('offered_services', ['is_at_home' => true, 'serviceable_id' => $this->branch->brand_id]);
     });
 
     it('lets an admin update and delete a service', function (): void {
@@ -88,12 +89,12 @@ function servicePayload(string $brandId, CurrencyModel $currency, array $overrid
 {
     return array_replace([
         'serviceable_id' => $brandId,
-        'serviceable_type' => 'brand',
+        'serviceable_type' => ServiceableTypeEnum::Brand,
         'catalog_item_id' => null,
         'currency_id' => $currency->id,
         'name' => ['en' => 'Haircut', 'ar' => 'قص شعر'],
         'price' => 25,
         'duration' => 30,
-        'active' => true,
+        'is_active' => true,
     ], $overrides);
 }

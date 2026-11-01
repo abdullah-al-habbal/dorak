@@ -6,6 +6,7 @@ namespace Modules\Marketing\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Marketing\Enums\UniverseVisibilityEnum;
 use Modules\Marketing\Models\SectionModel;
 
 #[UseModel(SectionModel::class)]
@@ -41,7 +42,7 @@ final class SectionFactory extends Factory
             ],
             'media_url' => $this->faker->imageUrl(),
             'sort_order' => 0,
-            'universe_visibility' => 'all',
+            'universe_visibility' => UniverseVisibilityEnum::All,
         ];
     }
 

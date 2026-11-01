@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
 
 it('registers and refreshes the authenticated client device token', function () {
@@ -18,7 +19,7 @@ it('registers and refreshes the authenticated client device token', function () 
     $this->assertDatabaseHas('device_tokens', [
         'token' => 'mobile-device-token',
         'user_id' => $client->id,
-        'user_type' => ClientModel::class,
+        'user_type' => DeviceTokenUserTypeEnum::Client,
         'platform' => 'android',
     ]);
 

@@ -18,13 +18,14 @@ use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\ClientHistory\Models\ClientServiceHistoryModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 function rebookHistory(ClientModel $client, BarberModel $barber, ?string $branchId = null): ClientServiceHistoryModel
 {
     $service = OfferedServiceModel::factory()->create([
         'serviceable_id' => $barber->id,
-        'serviceable_type' => 'barber',
+        'serviceable_type' => ServiceableTypeEnum::Barber,
     ]);
 
     return ClientServiceHistoryModel::query()->create([
@@ -156,7 +157,7 @@ it('rejects a rebook for a service that is no longer active', function (): void 
     $history = rebookHistory($client, $barber);
     OfferedServiceModel::query()
         ->whereKey($history->offered_service_id)
-        ->update(['active' => false]);
+        ->update(['is_active' => false]);
 
     rebookAt($client, $history, now()->addDays(3)->startOfDay()->addHours(10))
         ->assertUnprocessable();
@@ -179,7 +180,7 @@ it('rejects a rebook when the original chair is unavailable', function (): void 
     ]);
     $service = OfferedServiceModel::factory()->create([
         'serviceable_id' => $barber->id,
-        'serviceable_type' => 'barber',
+        'serviceable_type' => ServiceableTypeEnum::Barber,
     ]);
     $sourceBooking->services()->attach($service->id);
     $history = ClientServiceHistoryModel::query()->create([

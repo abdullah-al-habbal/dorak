@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Review\CQRS\Command\Staff;
 
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
+
 final readonly class FlagReviewDisputeCommand
 {
-    /** @param 'branch'|'barber' $subjectType the reviewed party raising the dispute */
     public function __construct(
         public string $reviewId,
-        public string $subjectType,
+        public ReviewSubjectTypeEnum $subjectType,
         public string $subjectId,
         public string $reason,
     ) {}

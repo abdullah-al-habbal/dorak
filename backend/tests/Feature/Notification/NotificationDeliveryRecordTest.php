@@ -12,6 +12,7 @@ use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
 use Modules\Booking\Models\BookingModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 use Modules\Core\Enums\NotificationDeliveryStatusEnum;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
@@ -29,7 +30,7 @@ function configureDeliveryRecordFcm(): void
     ]);
 }
 
-function deliveryRecordToken(string $userType, string $userId, string $token): DeviceTokenModel
+function deliveryRecordToken(DeviceTokenUserTypeEnum $userType, string $userId, string $token): DeviceTokenModel
 {
     return DeviceTokenModel::query()->create(['user_id' => $userId, 'user_type' => $userType, 'token' => $token, 'platform' => 'android', 'last_used_at' => now()]);
 }
@@ -57,8 +58,8 @@ it('writes one notification and one sent delivery per device token on a booking 
     fakeDeliveryRecordFcm(fn (Request $request) => Http::response(['name' => 'projects/dorak-test-project/messages/'.$request['message']['token']]));
     $client = ClientModel::factory()->create();
     $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed]);
-    $phone = deliveryRecordToken(ClientModel::class, $client->id, 'phone-token');
-    $tablet = deliveryRecordToken(ClientModel::class, $client->id, 'tablet-token');
+    $phone = deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'phone-token');
+    $tablet = deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'tablet-token');
 
     (new SendBookingStatusNotificationJob((string) $booking->id, false))->handle(app(FcmNotificationSender::class));
 
@@ -85,7 +86,7 @@ it('records a failed delivery and still completes the booking transition when FC
     $client = ClientModel::factory()->create();
     $barber = BarberModel::factory()->create();
     $booking = BookingModel::factory()->create(['client_id' => $client->id, 'barber_id' => $barber->id, 'status' => BookingStatus::Pending]);
-    deliveryRecordToken(ClientModel::class, $client->id, 'client-token');
+    deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'client-token');
     $this->actingAs($barber, 'barber');
 
     $this->patchJson("/api/v1/barber/bookings/{$booking->id}/accept")->assertOk();
@@ -105,7 +106,7 @@ it('keeps the failed delivery row when an unregistered token is pruned', functio
         'details' => [['@type' => 'type.googleapis.com/google.firebase.fcm.v1.FcmError', 'errorCode' => 'UNREGISTERED']],
     ]], 404));
     $client = ClientModel::factory()->create();
-    $token = deliveryRecordToken(ClientModel::class, $client->id, 'stale-token');
+    $token = deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'stale-token');
 
     app(FcmNotificationSender::class)->sendTo(ClientModel::class, $client->id, NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);
 
@@ -126,8 +127,8 @@ it('does not duplicate the notification or re-push delivered devices when the jo
     });
     $client = ClientModel::factory()->create();
     $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed]);
-    deliveryRecordToken(ClientModel::class, $client->id, 'steady-token');
-    deliveryRecordToken(ClientModel::class, $client->id, 'flaky-token');
+    deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'steady-token');
+    deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'flaky-token');
     $job = new SendBookingStatusNotificationJob((string) $booking->id, false);
 
     expect(fn () => $job->handle(app(FcmNotificationSender::class)))->toThrow(RequestException::class);
@@ -145,7 +146,7 @@ it('still writes the inbox notification when FCM is not configured or no device 
     Http::fake();
     $client = ClientModel::factory()->create();
     $barber = BarberModel::factory()->create();
-    deliveryRecordToken(ClientModel::class, $client->id, 'client-token');
+    deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'client-token');
     $sender = app(FcmNotificationSender::class);
 
     $sender->sendTo(ClientModel::class, $client->id, NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);

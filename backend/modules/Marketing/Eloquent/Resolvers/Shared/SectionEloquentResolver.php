@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Marketing\Eloquent\Resolvers\Shared;
 
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Marketing\Enums\UniverseVisibilityEnum;
 use Modules\Marketing\Models\SectionModel;
 
 final class SectionEloquentResolver
@@ -17,11 +18,11 @@ final class SectionEloquentResolver
             ->get();
     }
 
-    public function findByPageIdAndUniverse(string $pageId, string $universe): Collection
+    public function findByPageIdAndUniverse(string $pageId, UniverseVisibilityEnum $universe): Collection
     {
         return SectionModel::query()
             ->where('page_id', $pageId)
-            ->whereIn('universe_visibility', ['all', $universe])
+            ->whereIn('universe_visibility', [UniverseVisibilityEnum::All, $universe])
             ->orderBy('sort_order')
             ->get();
     }

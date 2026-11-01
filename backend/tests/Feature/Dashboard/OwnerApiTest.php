@@ -9,9 +9,11 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\BrandFeatures;
+use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 
 beforeEach(function (): void {
     config(['dashboard.dashboard.session_secret' => 'dashboard-session-secret-that-is-at-least-thirty-two-characters']);
@@ -70,7 +72,7 @@ describe('owner dashboard login', function (): void {
             ->withHeader('X-Dashboard-Session', (string) $response->json('data.claim'))
             ->getJson('/api/v1/dashboard/me')
             ->assertOk()
-            ->assertJsonPath('data.actor_type', 'owner')
+            ->assertJsonPath('data.actor_type', DashboardActorTypeEnum::Owner->value)
             ->assertJsonPath('data.role', 'brand_owner');
     });
 
@@ -120,7 +122,7 @@ describe('owner dashboard login', function (): void {
 
         $refreshed = $this->postJson('/api/v1/dashboard/refresh', ['refresh_token' => $login->json('data.refresh_token')])
             ->assertOk();
-        expect(ownerClaimPayload((string) $refreshed->json('data.claim'))['actor_type'])->toBe('owner');
+        expect(ownerClaimPayload((string) $refreshed->json('data.claim'))['actor_type'])->toBe(DashboardActorTypeEnum::Owner->value);
 
         $brand->forceFill(['owner_id' => ClientModel::factory()->create()->id])->save();
 
@@ -234,7 +236,7 @@ describe('owner bookings and operations', function (): void {
             'branch_id' => $branchId,
             'label' => 'Chair 9',
             'floor_zone' => 'shared',
-            'status' => 'available',
+            'status' => ChairStatus::Available,
             'ui_metadata' => ['position_x' => 1, 'position_y' => 1, 'width' => 1, 'height' => 1],
         ];
 

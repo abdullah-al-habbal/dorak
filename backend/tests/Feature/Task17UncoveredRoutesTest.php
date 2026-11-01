@@ -9,6 +9,7 @@ use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Enums\FloorPlanPreset;
 use Modules\Branch\Models\BranchModel;
+use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
@@ -54,12 +55,12 @@ it('requires a barber token and scopes today appointments to that barber', funct
 it('updates only the authenticated barber workstation status', function (): void {
     $this->patchJson('/api/v1/barber/workstation-status', ['online' => true])->assertUnauthorized();
 
-    $barber = BarberModel::factory()->create(['workstation_online' => false]);
+    $barber = BarberModel::factory()->create(['is_workstation_online' => false]);
     $this->actingAs($barber, 'barber')
         ->patchJson('/api/v1/barber/workstation-status', ['online' => true])
         ->assertOk()
-        ->assertJsonPath('data.workstation_online', true);
-    expect($barber->fresh()->workstation_online)->toBeTrue();
+        ->assertJsonPath('data.is_workstation_online', true);
+    expect($barber->fresh()->is_workstation_online)->toBeTrue();
     $this->patchJson('/api/v1/barber/workstation-status', ['online' => 'invalid'])->assertUnprocessable();
 });
 
@@ -89,15 +90,15 @@ it('lists branch chairs and saves a valid floor plan only for the signed-in bran
 });
 
 it('records the current branch booking status behavior pending Task 18 transition rules', function (): void {
-    $this->patchJson('/api/v1/branch/bookings/missing/status', ['status' => 'in_progress'])->assertUnauthorized();
+    $this->patchJson('/api/v1/branch/bookings/missing/status', ['status' => BookingStatus::InProgress])->assertUnauthorized();
     $branch = BranchModel::factory()->create();
     $other = BranchModel::factory()->create();
     $own = BookingModel::factory()->create(['chair_id' => ChairModel::factory()->create(['branch_id' => $branch->id])->id]);
     $foreign = BookingModel::factory()->create(['chair_id' => ChairModel::factory()->create(['branch_id' => $other->id])->id]);
     $this->actingAs($branch, 'branch_api');
 
-    $this->patchJson("/api/v1/branch/bookings/{$foreign->id}/status", ['status' => 'in_progress'])->assertNotFound();
-    $this->patchJson("/api/v1/branch/bookings/{$own->id}/status", ['status' => 'in_progress'])
+    $this->patchJson("/api/v1/branch/bookings/{$foreign->id}/status", ['status' => BookingStatus::InProgress])->assertNotFound();
+    $this->patchJson("/api/v1/branch/bookings/{$own->id}/status", ['status' => BookingStatus::InProgress])
         ->assertOk()
         ->assertJsonPath('data.status', BookingStatus::InProgress->value);
     expect($own->fresh()->status)->toBe(BookingStatus::InProgress);
@@ -125,7 +126,7 @@ it('serves dashboard profile, booking status, branch update, and chair create ro
         'branch_id' => $branch->id,
         'label' => 'C-17',
         'floor_zone' => 'shared',
-        'status' => 'available',
+        'status' => ChairStatus::Available,
         'ui_metadata' => ['position_x' => 1, 'position_y' => 2, 'width' => 50, 'height' => 50],
     ])->assertCreated();
     $createdChair = ChairModel::query()->where('label', 'C-17')->firstOrFail();
@@ -149,7 +150,7 @@ it('keeps dashboard branch and chair writes inside a branch manager tenant', fun
         'branch_id' => $foreignBranch->id,
         'label' => 'Foreign Chair',
         'floor_zone' => 'shared',
-        'status' => 'available',
+        'status' => ChairStatus::Available,
         'ui_metadata' => ['position_x' => 1, 'position_y' => 2, 'width' => 50, 'height' => 50],
     ])->assertForbidden();
 

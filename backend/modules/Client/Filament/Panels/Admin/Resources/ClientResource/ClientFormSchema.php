@@ -8,6 +8,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Modules\Client\Enums\ClientStatusEnum;
 
 final class ClientFormSchema
 {
@@ -41,11 +42,7 @@ final class ClientFormSchema
             Section::make(__('client::ui.status'))
                 ->schema([
                     Select::make('status')
-                        ->options([
-                            'pending' => 'Pending',
-                            'enabled' => 'Enabled',
-                            'disabled' => 'Disabled',
-                        ])
+                        ->options(ClientStatusEnum::class)
                         ->required(),
                 ]),
         ]);

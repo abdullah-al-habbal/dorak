@@ -38,7 +38,7 @@ final class ServiceCatalogItemResource extends JsonResource
             ])),
             'media' => $this->whenLoaded('media', fn () => $this->media->map(fn ($medium) => [
                 'id' => $medium->id,
-                'type' => $medium->type,
+                'type' => $medium->type->value,
                 'path' => $medium->path,
                 'alt' => $medium->alt,
                 'sort_order' => $medium->sort_order,

@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Audit\Services\StatusChangeLogger;
+use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
-use Modules\BarberAffiliation\Jobs\AffiliationParty;
 use Modules\BarberAffiliation\Jobs\AffiliationRespondedNotification;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Exceptions\AffiliationResponseException;
@@ -25,7 +25,7 @@ final readonly class BranchAffiliationResponder
     {
         $affiliation = $this->findForBranch($branch, $affiliationId);
 
-        if (AffiliationParty::isBranch($affiliation->initiated_by_type) && $affiliation->initiated_by_id === $branch->id) {
+        if ($affiliation->initiated_by_type === AffiliationInitiatorTypeEnum::Branch && $affiliation->initiated_by_id === $branch->id) {
             throw AffiliationResponseException::ownInvite();
         }
 

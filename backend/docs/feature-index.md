@@ -22,7 +22,7 @@
 - `GET /api/v1/branch/chairs` — branch-authenticated chair list, scoped to the manager's branch.
 - `GET /api/v1/branch/dashboard` — daily/monthly completed-service revenue, booking/chair metrics, and the authenticated branch switcher payload.
 - `GET /api/v1/barber/appointments/today` — barber-authenticated, barber-scoped appointments for today.
-- `PATCH /api/v1/barber/workstation-status` — barber-authenticated online/offline workstation presence; persisted as `barbers.workstation_online`.
+- `PATCH /api/v1/barber/workstation-status` — barber-authenticated online/offline workstation presence; persisted as `barbers.is_workstation_online`.
 - `POST /api/v1/barber/register` — public, `throttle:5,1`; barber self sign-up (`name`, `email` unique in barbers, `password` + confirmation, optional `is_freelancer` default true, optional `phone`). Creates a `pending` barber with `has_login`, queues the email code, returns 201 `{token, barber}` (`BarberResource`, now incl. `email_verified_at`). Pending barbers cannot log in (403 `ACCOUNT_NOT_ACTIVE`) until an admin activates them (Task 37).
 - `POST /api/v1/barber/email/verify/send` (`throttle:3,1`), `POST /api/v1/barber/email/verify` (`code`, `throttle:5,1`) — barber email verification; hashed 6-digit code, 10-minute TTL, 5-attempt lockout; wrong code 422 `VALIDATION_FAILED` + `errors.code`; success returns the barber.
 - `EnsureBarberAccountAccess` (Task 37) gates every barber-token route on current status: `onboarding` (pending/enabled: profile read, email verification), `approved` (not pending: self activate/deactivate), default `active` (enabled: all other barber routes, including affiliations and job applications). Otherwise 403 `ACCOUNT_NOT_ACTIVE`.
@@ -61,7 +61,7 @@
 - `BarberModel` — `activationLogs()`, `bans()`, `services()`. Accessor: `is_enabled`
 - `BranchModel` — `activationLogs()`, `brand()`, accessor `is_enabled`
 - `BrandModel` — `owner()` (→ClientModel), `baseCurrency()`, `branches()`, `affiliations()`, `services()`, `preference()`
-- `PreferenceModel` — polymorphic `preferenceable()` (MorphTo). Fields: preferred_language, notification_enabled, display_currency_id, theme, price_display_mode
+- `PreferenceModel` — polymorphic `preferenceable()` (MorphTo). Fields: preferred_language, is_notification_enabled, display_currency_id, theme, price_display_mode
 - `BanModel` — polymorphic `bannable()` (MorphTo). Scope: `active` (banned_from ≤ now AND banned_until null OR > now)
 
 ### Ban Enforcement (Task 08)
@@ -427,3 +427,7 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - Not dynamic by design: protocol/identity values (JWT algorithm and issuer, FCM URLs, header names, actor ids, basis-point denominator, earth radius). The subscription grace period is the `subscription_grace_days` setting (billing group): `brand_subscriptions.past_due_at` is stamped on `past_due`, `graceEndsAt()`/`isGraceExpired()` expose the window (also `grace_ends_at` in the admin resource), and the hourly `subscriptions:expire-past-due` command cancels expired subscriptions and revokes features.
 - Migrations are flattened: every table has a single definitive `create_*_table` migration (no alter/backfill migrations); barbers and the service catalog creates were re-timestamped so their foreign-key targets exist first.
 - Tests: `tests/Feature/Settings/*`. Dashboard: `/admin/settings` page (`components/platform-settings`).
+
+## Strict enums, morph map & boolean naming
+- `Relation::requireMorphMap()` is on; aliases come from enums implementing `Core\Contracts\MorphAliasEnum`, listed in `Core\Constants\MorphMapConstants::MORPH_ALIAS_ENUMS`. Every polymorphic `*_type` column is cast to its enum.
+- Booleans renamed: `offered_services.is_active`/`is_at_home`, `barbers.is_workstation_online`, `preferences.is_notification_enabled`/`is_dual_price_display_enabled` (API keys, dashboard and mobile DTOs follow).

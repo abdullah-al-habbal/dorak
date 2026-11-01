@@ -28,9 +28,9 @@ final class OfferedServiceInfolistSchema
                     TextEntry::make('price'),
                     TextEntry::make('duration')
                         ->suffix(' min'),
-                    IconEntry::make('at_home')
+                    IconEntry::make('is_at_home')
                         ->boolean(),
-                    IconEntry::make('active')
+                    IconEntry::make('is_active')
                         ->boolean(),
                     TextEntry::make('description.en')
                         ->label(__('offeredservice::ui.description'))

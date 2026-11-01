@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
+use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Models\JobPostingModel;
 
 it('lists open job postings', function () {
-    JobPostingModel::factory()->count(3)->create(['status' => 'open']);
+    JobPostingModel::factory()->count(3)->create(['status' => JobPostingStatusEnum::Open]);
 
     $response = $this->getJson('/api/v1/jobs');
 
@@ -19,8 +20,8 @@ it('lists open job postings', function () {
 });
 
 it('does not include closed jobs', function () {
-    JobPostingModel::factory()->create(['status' => 'open']);
-    JobPostingModel::factory()->create(['status' => 'closed']);
+    JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Open]);
+    JobPostingModel::factory()->create(['status' => JobPostingStatusEnum::Closed]);
 
     $response = $this->getJson('/api/v1/jobs');
 

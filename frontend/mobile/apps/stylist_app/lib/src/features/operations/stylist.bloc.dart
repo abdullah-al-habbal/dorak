@@ -33,7 +33,7 @@ class StylistBloc extends Cubit<StylistState> {
           loading: false,
           profile: profile,
           appointments: page.data,
-          online: profile.workstationOnline,
+          online: profile.isWorkstationOnline,
         ),
       );
       _subscription ??= _realtime?.subscribeToBarber(profile.id, _onRealtime);

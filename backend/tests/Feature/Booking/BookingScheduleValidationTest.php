@@ -8,6 +8,7 @@ use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 function bookingScheduleFor(BarberModel $barber, int $dayOfWeek, string $start, string $end, bool $active = true): BarberScheduleModel
@@ -29,7 +30,7 @@ beforeEach(function (): void {
         'branch_id' => $this->branch->id,
         'barber_id' => $this->barber->id,
     ]);
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
+    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $this->actingAs($this->client, 'client');
     $this->bookAt = fn (Carbon $timeSlot) => $this->postJson('/api/v1/bookings', [
         'chair_id' => $this->chair->id,

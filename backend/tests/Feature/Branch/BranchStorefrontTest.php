@@ -10,6 +10,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Models\BranchOpeningHourModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 function storefrontWeek(string $opens = '09:00', string $closes = '21:00'): array
@@ -208,7 +209,7 @@ describe('booking against branch hours', function (): void {
         $this->branch = BranchModel::factory()->create();
         $this->barber = BarberModel::factory()->create();
         $this->chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $this->barber->id]);
-        $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => 'brand', 'serviceable_id' => $this->branch->brand_id]);
+        $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
         $this->slot = Carbon::tomorrow()->startOfDay();
         BranchOpeningHourModel::query()->create(['branch_id' => $this->branch->id, 'weekday' => $this->slot->dayOfWeek, 'opens_at' => '09:00', 'closes_at' => '17:00']);
         $this->bookAt = fn (Carbon $timeSlot) => $this->actingAs(ClientModel::factory()->create(), 'client')->postJson('/api/v1/bookings', [

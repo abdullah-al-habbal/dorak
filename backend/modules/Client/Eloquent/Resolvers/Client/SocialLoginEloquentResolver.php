@@ -7,12 +7,13 @@ namespace Modules\Client\Eloquent\Resolvers\Client;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Modules\Client\Enums\ClientStatusEnum;
+use Modules\Client\Enums\SocialProviderEnum;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
 
 final class SocialLoginEloquentResolver
 {
-    public function findSocialAccount(string $provider, string $providerId): ?SocialAccountModel
+    public function findSocialAccount(SocialProviderEnum $provider, string $providerId): ?SocialAccountModel
     {
         return SocialAccountModel::where('provider', $provider)
             ->where('provider_id', $providerId)
@@ -37,7 +38,7 @@ final class SocialLoginEloquentResolver
 
     public function createSocialAccount(
         ClientModel $client,
-        string $provider,
+        SocialProviderEnum $provider,
         string $providerId,
         ?string $avatar,
     ): SocialAccountModel {

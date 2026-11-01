@@ -6,10 +6,13 @@ use Laravel\Pennant\Feature;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientFaceProfile\Enums\AnalysisSourceEnum;
+use Modules\ClientFaceProfile\Enums\DetectedFaceShapeEnum;
 use Modules\ClientFaceProfile\Models\ClientFaceAnalysisResultModel;
 use Modules\ClientRecommendation\Constants\RecommendationConstants;
 use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 use Tests\Support\Constants\ExploreTestConstants;
@@ -43,10 +46,10 @@ function branchWithFaceShapeService(BranchModel $branch, string $shape): void
 {
     $item = ServiceCatalogItemModel::factory()->create(['is_active' => true, 'face_shapes' => [$shape]]);
     OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'brand',
+        'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $branch->brand_id,
         'catalog_item_id' => $item->id,
-        'active' => true,
+        'is_active' => true,
     ]);
 }
 
@@ -98,8 +101,8 @@ it('boosts, without filtering, by the client\'s own face analysis', function ():
     ClientFaceAnalysisResultModel::query()->create([
         'client_id' => $client->id,
         'analysis_version' => 'v1',
-        'analysis_source' => 'third_party_api',
-        'detected_face_shape' => 'oval',
+        'analysis_source' => AnalysisSourceEnum::ThirdPartyApi,
+        'detected_face_shape' => DetectedFaceShapeEnum::Oval,
         'confidence_score' => 0.9,
         'computed_at' => now(),
     ]);

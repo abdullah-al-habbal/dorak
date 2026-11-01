@@ -21,13 +21,7 @@ final class ChairInfolistSchema
                         ->label(__('chair::ui.barber'))
                         ->placeholder(__('chair::ui.unassigned')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'available' => 'success',
-                            'occupied' => 'warning',
-                            'maintenance' => 'danger',
-                            default => 'gray',
-                        }),
+                        ->badge(),
                     TextEntry::make('updated_at')
                         ->dateTime(),
                 ]),

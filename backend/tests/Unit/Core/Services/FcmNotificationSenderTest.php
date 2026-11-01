@@ -7,6 +7,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
 use Modules\Core\Services\FcmNotificationSender;
@@ -31,7 +32,7 @@ function registerFcmToken(string $token): DeviceTokenModel
 {
     return DeviceTokenModel::query()->create([
         'user_id' => '00000000-0000-4000-8000-000000000001',
-        'user_type' => 'client',
+        'user_type' => DeviceTokenUserTypeEnum::Client,
         'token' => $token,
         'platform' => 'android',
         'last_used_at' => now(),

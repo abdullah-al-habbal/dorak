@@ -9,6 +9,7 @@ use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientHistory\Enums\HistoryMediaType;
 use Modules\ClientHistory\Models\ClientServiceHistoryModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
@@ -105,7 +106,7 @@ describe('POST /client/history/{history}/media', function () {
         $response = $this->actingAs($client, 'client')
             ->postJson("/api/v1/client/history/{$history->id}/media", [
                 'photo' => UploadedFile::fake()->image('after.jpg'),
-                'photo_type' => 'after',
+                'photo_type' => HistoryMediaType::After,
             ]);
 
         $response->assertCreated();
@@ -125,7 +126,7 @@ describe('POST /client/history/{history}/media', function () {
         $this->actingAs($client, 'client')
             ->postJson("/api/v1/client/history/{$history->id}/media", [
                 'photo' => UploadedFile::fake()->create('note.txt', 10),
-                'photo_type' => 'after',
+                'photo_type' => HistoryMediaType::After,
             ])
             ->assertStatus(422);
     });

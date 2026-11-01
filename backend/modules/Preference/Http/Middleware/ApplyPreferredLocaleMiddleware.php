@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\Preference\Enums\PreferenceableTypeEnum;
 use Modules\Preference\Models\PreferenceModel;
 use Modules\Preference\Support\DashboardOwnerResolver;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,7 @@ final class ApplyPreferredLocaleMiddleware
         return $next($request);
     }
 
-    /** @return array{0: ?string, 1: ?string} */
+    /** @return array{0: ?PreferenceableTypeEnum, 1: ?string} */
     private function resolveOwner(Request $request, ?string $guard): array
     {
         if ($guard === null) {
@@ -45,8 +46,8 @@ final class ApplyPreferredLocaleMiddleware
         }
 
         $ownerType = match ($guard) {
-            'branch_api' => 'branch',
-            default => $guard,
+            'branch_api' => PreferenceableTypeEnum::Branch,
+            default => PreferenceableTypeEnum::tryFrom($guard),
         };
 
         $user = Auth::guard($guard)->user();

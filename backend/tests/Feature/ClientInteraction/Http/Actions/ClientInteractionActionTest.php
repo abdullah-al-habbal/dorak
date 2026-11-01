@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientInteraction\Enums\FavorableTypeEnum;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
@@ -24,12 +25,12 @@ it('adds a favorite', function () {
 
     $response = $this->postJson('/api/v1/client/favorites', [
         'favorable_id' => $brand->id,
-        'favorable_type' => 'brand',
+        'favorable_type' => FavorableTypeEnum::Brand,
     ]);
 
     $response->assertCreated();
     expect($response->json('data'))->toHaveKeys(['id', 'favorable_id', 'favorable_type', 'created_at']);
-    expect($response->json('data.favorable_type'))->toBe('brand');
+    expect($response->json('data.favorable_type'))->toBe(FavorableTypeEnum::Brand->value);
 });
 
 it('returns 422 for invalid favorable_type', function () {
@@ -46,7 +47,7 @@ it('removes a favorite', function () {
 
     $fav = $this->postJson('/api/v1/client/favorites', [
         'favorable_id' => $brand->id,
-        'favorable_type' => 'brand',
+        'favorable_type' => FavorableTypeEnum::Brand,
     ])->json('data');
 
     $response = $this->deleteJson("/api/v1/client/favorites/{$fav['id']}");

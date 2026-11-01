@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
+use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
@@ -16,7 +18,7 @@ function menuService(string $type, string $ownerId, array $overrides = []): Offe
         'serviceable_type' => $type,
         'serviceable_id' => $ownerId,
         'catalog_item_id' => null,
-        'active' => true,
+        'is_active' => true,
         ...$overrides,
     ]);
 }
@@ -47,7 +49,7 @@ describe('branch detail menu', function (): void {
     it('never returns inactive services or services of an inactive catalog item', function (): void {
         $branch = BranchModel::factory()->create();
         $inactiveItem = ServiceCatalogItemModel::factory()->create(['is_active' => false]);
-        menuService('brand', $branch->brand_id, ['active' => false]);
+        menuService('brand', $branch->brand_id, ['is_active' => false]);
         menuService('brand', $branch->brand_id, ['catalog_item_id' => $inactiveItem->id]);
         $freeText = menuService('brand', $branch->brand_id);
 
@@ -84,10 +86,10 @@ describe('barber detail workplaces', function (): void {
         $branch = BranchModel::factory()->create();
         $brand = BrandModel::factory()->create();
         ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id, 'label' => 'Chair 4']);
-        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => $branch->id, 'status' => 'active']);
-        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'brand', 'affiliable_id' => $brand->id, 'status' => 'active']);
-        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => BranchModel::factory()->create()->id, 'status' => 'pending']);
-        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => 'branch', 'affiliable_id' => BranchModel::factory()->create()->id, 'status' => 'terminated']);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => AffiliableType::Branch, 'affiliable_id' => $branch->id, 'status' => AffiliationStatus::Active]);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => AffiliableType::Brand, 'affiliable_id' => $brand->id, 'status' => AffiliationStatus::Active]);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => AffiliableType::Branch, 'affiliable_id' => BranchModel::factory()->create()->id, 'status' => AffiliationStatus::Pending]);
+        BarberAffiliationModel::factory()->create(['barber_id' => $barber->id, 'affiliable_type' => AffiliableType::Branch, 'affiliable_id' => BranchModel::factory()->create()->id, 'status' => AffiliationStatus::Terminated]);
 
         $data = $this->getJson("/api/v1/explore/barbers/{$barber->id}")->assertOk()->json('data');
 

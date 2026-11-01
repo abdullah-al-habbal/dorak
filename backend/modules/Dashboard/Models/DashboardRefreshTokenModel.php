@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 
 #[Fillable([
     'actor_type',
@@ -23,6 +24,7 @@ class DashboardRefreshTokenModel extends Model
     protected function casts(): array
     {
         return [
+            'actor_type' => DashboardActorTypeEnum::class,
             'expires_at' => 'datetime',
             'revoked_at' => 'datetime',
         ];

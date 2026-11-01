@@ -12,6 +12,7 @@ use Modules\Dashboard\Handlers\Services\ShowServiceHandler;
 use Modules\Dashboard\Handlers\Services\UpdateServiceHandler;
 use Modules\Dashboard\Http\Requests\Business\ServiceRequest;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 
 final class UpdateServiceAction extends BaseApiAction
@@ -29,7 +30,7 @@ final class UpdateServiceAction extends BaseApiAction
         $model = $this->showHandler->handle(new ShowServiceQuery($service, $scope));
         $attributes = $request->validated();
 
-        if (! $actor->isPlatformAdmin() && ($attributes['serviceable_type'] !== 'brand' || ! $actor->canManageBrandServices($attributes['serviceable_id']))) {
+        if (! $actor->isPlatformAdmin() && ($attributes['serviceable_type'] !== ServiceableTypeEnum::Brand->value || ! $actor->canManageBrandServices($attributes['serviceable_id']))) {
             return $this->forbidden();
         }
 

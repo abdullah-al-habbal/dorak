@@ -79,7 +79,7 @@ final class ExploreBranchesEloquentResolver
     {
         if ($payload->catalogItemIds !== null) {
             $this->whereBrandServices($query, fn ($q) => $q
-                ->where('active', true)
+                ->where('is_active', true)
                 ->whereIn('catalog_item_id', $payload->catalogItemIds)
                 ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
             );
@@ -97,7 +97,7 @@ final class ExploreBranchesEloquentResolver
 
         if ($payload->priceRangeMin !== null || $payload->priceRangeMax !== null) {
             $this->whereBrandServices($query, fn ($q) => $q
-                ->where('active', true)
+                ->where('is_active', true)
                 ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
                 ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price', '>=', $payload->priceRangeMin))
                 ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price', '<=', $payload->priceRangeMax))
@@ -112,7 +112,7 @@ final class ExploreBranchesEloquentResolver
                 $match->orWhereHas('brand', fn (Builder $brand) => $brand->where(fn (Builder $names) => $this->search->orMatchTranslatable($names, ['name'], $pattern)));
 
                 $match->orWhereHas('brand', fn (Builder $brand) => $brand->whereHas('services', fn (Builder $services) => $services
-                    ->where('active', true)
+                    ->where('is_active', true)
                     ->where(function (Builder $service) use ($pattern): void {
                         $this->search->orMatchTranslatable($service, ['name'], $pattern);
                         $service->orWhereHas('catalogItem', fn (Builder $item) => $item
@@ -127,7 +127,7 @@ final class ExploreBranchesEloquentResolver
 
         if ($payload->tagIds !== null) {
             $this->whereBrandServices($query, fn (Builder $services) => $services
-                ->where('active', true)
+                ->where('is_active', true)
                 ->whereHas('catalogItem', fn (Builder $item) => $item
                     ->where('is_active', true)
                     ->whereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, null, $payload->tagIds))));
@@ -136,7 +136,7 @@ final class ExploreBranchesEloquentResolver
         if ($payload->faceShapeCompatible !== null) {
             // An explicit face shape filters (REC-1); the client's own analysis only boosts.
             $this->whereBrandServices($query, fn (Builder $services) => $services
-                ->where('active', true)
+                ->where('is_active', true)
                 ->whereHas('catalogItem', fn (Builder $item) => $item
                     ->where('is_active', true)
                     ->whereJsonContains('face_shapes', $payload->faceShapeCompatible)));

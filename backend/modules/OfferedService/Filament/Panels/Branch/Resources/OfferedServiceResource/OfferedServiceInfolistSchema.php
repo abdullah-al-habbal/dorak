@@ -25,10 +25,10 @@ final class OfferedServiceInfolistSchema
                         ->money(fn (OfferedServiceModel $record): string => $record->currency->code ?? 'USD'),
                     TextEntry::make('duration')
                         ->label(__('offeredservice::ui.duration_minutes')),
-                    TextEntry::make('at_home')
+                    TextEntry::make('is_at_home')
                         ->label(__('offeredservice::ui.at_home'))
                         ->boolean(),
-                    TextEntry::make('active')
+                    TextEntry::make('is_active')
                         ->boolean(),
                 ]),
         ]);

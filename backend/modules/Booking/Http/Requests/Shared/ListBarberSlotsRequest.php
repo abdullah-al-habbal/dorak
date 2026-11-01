@@ -22,11 +22,11 @@ final class ListBarberSlotsRequest extends BaseApiFormRequest
             'service_ids.*' => [
                 'string',
                 'distinct',
-                Rule::exists('offered_services', 'id')->where('active', true),
+                Rule::exists('offered_services', 'id')->where('is_active', true),
             ],
-            'at_home' => ['sometimes', 'boolean'],
-            'latitude' => ['required_if_accepted:at_home', 'numeric', 'between:-90,90'],
-            'longitude' => ['required_if_accepted:at_home', 'numeric', 'between:-180,180'],
+            'is_at_home' => ['sometimes', 'boolean'],
+            'latitude' => ['required_if_accepted:is_at_home', 'numeric', 'between:-90,90'],
+            'longitude' => ['required_if_accepted:is_at_home', 'numeric', 'between:-180,180'],
         ];
     }
 
@@ -36,8 +36,8 @@ final class ListBarberSlotsRequest extends BaseApiFormRequest
             date: Carbon::parse($this->string('date')->toString())->utc(),
             serviceIds: $this->stringList('service_ids'),
             barberId: $barberId,
-            atHomeLatitude: $this->boolean('at_home') ? $this->float('latitude') : null,
-            atHomeLongitude: $this->boolean('at_home') ? $this->float('longitude') : null,
+            atHomeLatitude: $this->boolean('is_at_home') ? $this->float('latitude') : null,
+            atHomeLongitude: $this->boolean('is_at_home') ? $this->float('longitude') : null,
         );
     }
 

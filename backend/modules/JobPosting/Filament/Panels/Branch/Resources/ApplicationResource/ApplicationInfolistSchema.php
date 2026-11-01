@@ -21,14 +21,7 @@ final class ApplicationInfolistSchema
                     TextEntry::make('jobPosting.title.en')
                         ->label(__('jobposting::ui.job_title')),
                     TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'submitted' => 'warning',
-                            'seen' => 'info',
-                            'accepted' => 'success',
-                            'rejected' => 'danger',
-                            default => 'gray',
-                        }),
+                        ->badge(),
                     TextEntry::make('created_at')
                         ->dateTime()
                         ->label(__('jobposting::ui.applied')),

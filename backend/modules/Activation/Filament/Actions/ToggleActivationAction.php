@@ -7,6 +7,7 @@ namespace Modules\Activation\Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Activation\Enums\ActivableTypeEnum;
 use Modules\Activation\Enums\ActivationStatusEnum;
 use Modules\Activation\Models\ActivationLogModel;
 
@@ -26,8 +27,8 @@ final class ToggleActivationAction
 
                 ActivationLogModel::create([
                     'activable_id' => $record->getKey(),
-                    'activable_type' => $record->getMorphClass(),
-                    'status' => $newStatus->value,
+                    'activable_type' => ActivableTypeEnum::from($record->getMorphClass()),
+                    'status' => $newStatus,
                     'admin_id' => auth('admin')->id(),
                     'activated_at' => now(),
                 ]);

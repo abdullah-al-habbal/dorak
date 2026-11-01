@@ -9,6 +9,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Modules\Branch\Enums\BranchStatusEnum;
 
 final class BranchFormSchema
 {
@@ -42,11 +43,7 @@ final class BranchFormSchema
             Section::make(__('branch::ui.status'))
                 ->schema([
                     Select::make('status')
-                        ->options([
-                            'pending' => 'Pending',
-                            'enabled' => 'Enabled',
-                            'disabled' => 'Disabled',
-                        ])
+                        ->options(BranchStatusEnum::class)
                         ->required(),
                     Toggle::make('is_activated'),
                 ]),

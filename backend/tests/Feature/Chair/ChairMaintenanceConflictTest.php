@@ -33,7 +33,7 @@ describe('branch toggle', function (): void {
         Queue::fake();
         [$chair, $booking] = maintenanceChairWithBooking($this->branch);
 
-        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => 'maintenance'])
+        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => ChairStatus::Maintenance])
             ->assertConflict()
             ->assertJsonPath('code', 'CHAIR_HAS_ACTIVE_BOOKINGS')
             ->assertJsonPath('errors.booking_ids', [$booking->id]);
@@ -54,9 +54,9 @@ describe('branch toggle', function (): void {
         ]);
         $past = BookingModel::factory()->completed()->create(['chair_id' => $chair->id]);
 
-        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => 'maintenance', 'force' => true])
+        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => ChairStatus::Maintenance, 'force' => true])
             ->assertOk()
-            ->assertJsonPath('data.status', 'maintenance')
+            ->assertJsonPath('data.status', ChairStatus::Maintenance->value)
             ->assertJsonCount(2, 'meta.canceled_booking_ids');
 
         expect($chair->fresh()->status)->toBe(ChairStatus::Maintenance);
@@ -73,22 +73,22 @@ describe('branch toggle', function (): void {
         Queue::fake();
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
 
-        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => 'maintenance'])
+        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => ChairStatus::Maintenance])
             ->assertOk()
-            ->assertJsonPath('data.status', 'maintenance');
+            ->assertJsonPath('data.status', ChairStatus::Maintenance->value);
         Queue::assertNotPushed(SendBookingStatusNotificationJob::class);
     });
 
     it('does not block marking a chair occupied while a booking exists', function (): void {
         [$chair] = maintenanceChairWithBooking($this->branch, BookingStatus::InProgress);
 
-        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => 'occupied'])->assertOk();
+        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => ChairStatus::Occupied])->assertOk();
     });
 
     it('rejects a non-boolean force flag', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
 
-        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => 'maintenance', 'force' => 'maybe'])
+        $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => ChairStatus::Maintenance, 'force' => 'maybe'])
             ->assertUnprocessable();
     });
 });
@@ -100,12 +100,12 @@ describe('shared chair update', function (): void {
         $this->actingAs($branch, 'branch_api');
         [$chair, $booking] = maintenanceChairWithBooking($branch);
 
-        $this->patchJson("/api/v1/chairs/{$chair->id}", ['status' => 'maintenance'])
+        $this->patchJson("/api/v1/chairs/{$chair->id}", ['status' => ChairStatus::Maintenance])
             ->assertConflict()
             ->assertJsonPath('code', 'CHAIR_HAS_ACTIVE_BOOKINGS');
         expect($chair->fresh()->status)->toBe(ChairStatus::Available);
 
-        $this->patchJson("/api/v1/chairs/{$chair->id}", ['status' => 'maintenance', 'force' => true])
+        $this->patchJson("/api/v1/chairs/{$chair->id}", ['status' => ChairStatus::Maintenance, 'force' => true])
             ->assertOk()
             ->assertJsonPath('meta.canceled_booking_ids', [$booking->id]);
         expect($booking->fresh()->status)->toBe(BookingStatus::Canceled);

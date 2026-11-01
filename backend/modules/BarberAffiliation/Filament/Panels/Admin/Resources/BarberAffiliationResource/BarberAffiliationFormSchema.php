@@ -10,6 +10,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\Brand\Models\BrandModel;
 
 final class BarberAffiliationFormSchema
@@ -31,11 +32,7 @@ final class BarberAffiliationFormSchema
                         ])
                         ->required(),
                     Select::make('status')
-                        ->options([
-                            'pending' => 'Pending',
-                            'active' => 'Active',
-                            'terminated' => 'Terminated',
-                        ])
+                        ->options(AffiliationStatus::class)
                         ->required(),
                     TextInput::make('commission_rate')
                         ->numeric()

@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
+use Modules\Core\Enums\VenueUniverse;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemTagModel;
@@ -18,7 +20,7 @@ function searchableBranch(string $en, string $ar = 'فرع', ?BrandModel $brand 
         'name' => ['en' => $en, 'ar' => $ar],
         'latitude' => 33.5,
         'longitude' => 36.3,
-        'brand_id' => ($brand ?? BrandModel::factory()->create(['universe' => 'men', 'name' => ['en' => 'Generic Brand', 'ar' => 'علامة']]))->id,
+        'brand_id' => ($brand ?? BrandModel::factory()->create(['universe' => VenueUniverse::Men, 'name' => ['en' => 'Generic Brand', 'ar' => 'علامة']]))->id,
     ]);
 }
 
@@ -35,7 +37,7 @@ it('matches a fragment of the branch name, case-insensitively', function (): voi
 });
 
 it('matches the brand name', function (): void {
-    $brand = BrandModel::factory()->create(['universe' => 'men', 'name' => ['en' => 'Gentlemen Club', 'ar' => 'نادي السادة']]);
+    $brand = BrandModel::factory()->create(['universe' => VenueUniverse::Men, 'name' => ['en' => 'Gentlemen Club', 'ar' => 'نادي السادة']]);
     $first = searchableBranch('Downtown', 'وسط البلد', $brand);
     $second = searchableBranch('Uptown', 'أعلى البلد', $brand);
     searchableBranch('Elsewhere');
@@ -53,10 +55,10 @@ it('matches Arabic names', function (): void {
 it('matches offered service and catalog tag names', function (): void {
     $withService = searchableBranch('Plain One');
     OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'brand',
+        'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $withService->brand_id,
         'name' => ['en' => 'Beard Sculpting', 'ar' => 'تشكيل اللحية'],
-        'active' => true,
+        'is_active' => true,
     ]);
 
     $withTag = searchableBranch('Plain Two');
@@ -64,10 +66,10 @@ it('matches offered service and catalog tag names', function (): void {
     $tag = ServiceCatalogItemTagModel::factory()->create(['name' => ['en' => 'Skin Fade', 'ar' => 'تدريج'], 'is_active' => true]);
     DB::table('service_catalog_item_tag_assignments')->insert(['id' => (string) Str::uuid7(), 'item_id' => $item->id, 'tag_id' => $tag->id, 'created_at' => now(), 'updated_at' => now()]);
     OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'brand',
+        'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $withTag->brand_id,
         'catalog_item_id' => $item->id,
-        'active' => true,
+        'is_active' => true,
     ]);
 
     expect(branchSearchIds('sculpt'))->toBe([$withService->id])
@@ -94,10 +96,10 @@ it('searches barbers by name and service', function (): void {
     $karim = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3, 'name' => ['en' => 'Karim Fades', 'ar' => 'كريم']]);
     $omar = BarberModel::factory()->create(['is_freelancer' => true, 'latitude' => 33.5, 'longitude' => 36.3, 'name' => ['en' => 'Omar', 'ar' => 'عمر']]);
     OfferedServiceModel::factory()->create([
-        'serviceable_type' => 'barber',
+        'serviceable_type' => ServiceableTypeEnum::Barber,
         'serviceable_id' => $omar->id,
         'name' => ['en' => 'Hot Towel Shave', 'ar' => 'حلاقة بالمنشفة الساخنة'],
-        'active' => true,
+        'is_active' => true,
     ]);
 
     $url = '/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000&q=';

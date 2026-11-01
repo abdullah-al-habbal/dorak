@@ -3,13 +3,14 @@
 declare(strict_types=1);
 
 use Modules\Branch\Models\BranchModel;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 it('lists reviews for branch', function () {
     $branch = BranchModel::factory()->create();
     ReviewModel::factory()->count(3)->create([
         'subject_id' => $branch->id,
-        'subject_type' => BranchModel::class,
+        'subject_type' => ReviewSubjectTypeEnum::Branch,
     ]);
 
     $response = $this->getJson("/api/v1/branches/{$branch->id}/reviews");
@@ -35,7 +36,7 @@ it('paginates reviews for branch', function () {
     $branch = BranchModel::factory()->create();
     ReviewModel::factory()->count(25)->create([
         'subject_id' => $branch->id,
-        'subject_type' => BranchModel::class,
+        'subject_type' => ReviewSubjectTypeEnum::Branch,
     ]);
 
     $response = $this->getJson("/api/v1/branches/{$branch->id}/reviews?per_page=10");

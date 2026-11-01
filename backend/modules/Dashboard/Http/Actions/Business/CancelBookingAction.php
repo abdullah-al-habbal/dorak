@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Business;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
@@ -25,7 +26,7 @@ final class CancelBookingAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()));
         try {
-            return $this->updated(new StaffBookingResource($this->lifecycle->transitionForDashboard($model->id, BookingStatus::Canceled, $actor->actorType, $actor->id)));
+            return $this->updated(new StaffBookingResource($this->lifecycle->transitionForDashboard($model->id, BookingStatus::Canceled, StatusChangeActorTypeEnum::from($actor->actorType->value), $actor->id)));
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }

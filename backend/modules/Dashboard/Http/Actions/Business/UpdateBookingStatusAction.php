@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Business;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
@@ -29,7 +30,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
         }
 
         try {
-            return $this->updated(new StaffBookingResource($this->resolver->transitionForDashboard($model->id, $status, $actor->actorType, $actor->id)));
+            return $this->updated(new StaffBookingResource($this->resolver->transitionForDashboard($model->id, $status, StatusChangeActorTypeEnum::from($actor->actorType->value), $actor->id)));
         } catch (InvalidBookingTransitionException) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }

@@ -7,6 +7,7 @@ namespace Modules\OfferedService\Http\Resources\Shared;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Currency\Services\PriceConverter;
+use Modules\Preference\Enums\PreferenceableTypeEnum;
 
 final class ServiceResource extends JsonResource
 {
@@ -16,27 +17,27 @@ final class ServiceResource extends JsonResource
             request: $request,
             basePrice: (float) $this->price,
             baseCurrencyCode: $this->currency?->code ?? '',
-            ownerType: (string) $this->serviceable_type,
+            ownerType: PreferenceableTypeEnum::from($this->serviceable_type->value),
             ownerId: (string) $this->serviceable_id,
         );
 
         return [
             'id' => $this->id,
             'serviceable_id' => $this->serviceable_id,
-            'serviceable_type' => $this->serviceable_type,
+            'serviceable_type' => $this->serviceable_type->value,
             'catalog_item_id' => $this->catalog_item_id,
             'name' => $this->name,
             'description' => $this->description,
             'price' => (float) $this->price,
             'currency_id' => $this->currency_id,
             'duration' => $this->duration,
-            'at_home' => (bool) $this->at_home,
-            'active' => (bool) $this->active,
+            'is_at_home' => (bool) $this->is_at_home,
+            'is_active' => (bool) $this->is_active,
             'created_at' => $this->created_at?->toIso8601String(),
             ...($displayPrice === null ? [] : [
                 'display_price' => $displayPrice->conversionUnavailable ? null : $displayPrice->toArray(),
                 'conversion_unavailable' => $displayPrice->conversionUnavailable,
-                'dual_price_display' => $displayPrice->dualPriceDisplay,
+                'is_dual_price_display_enabled' => $displayPrice->isDualPriceDisplayEnabled,
             ]),
         ];
     }

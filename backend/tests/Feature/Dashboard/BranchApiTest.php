@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
 use Modules\Booking\Models\BookingModel;
+use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
@@ -82,11 +83,11 @@ describe('Dashboard Branch API', function (): void {
             'brand_id' => $this->branch->brand_id,
             'name' => ['en' => 'Disabled Branch', 'ar' => 'فرع معطل'],
             'email' => $this->branch->email,
-            'status' => 'disabled',
+            'status' => BranchStatusEnum::Disabled,
         ];
 
         $this->putJson("/api/v1/dashboard/branches/{$this->branch->id}", $payload)->assertStatus(409);
-        expect($this->branch->fresh()->status->value)->toBe('enabled');
+        expect($this->branch->fresh()->status->value)->toBe(BranchStatusEnum::Enabled->value);
     });
 
     it('requires a password when an admin creates a branch', function (): void {

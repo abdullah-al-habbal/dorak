@@ -25,7 +25,7 @@ final class MeAction extends BaseApiAction
 
         return $this->success(data: [
             'id' => $actor->id,
-            'actor_type' => $actor->actorType,
+            'actor_type' => $actor->actorType->value,
             'role' => $actor->role,
             'branch_id' => $actor->branchId,
             'brand_id' => $actor->brandId,

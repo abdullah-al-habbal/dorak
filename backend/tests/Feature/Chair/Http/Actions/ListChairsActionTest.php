@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Models\ChairModel;
 
 it('lists chairs', function () {
@@ -39,5 +40,5 @@ it('filters chairs by status', function () {
 
     $response->assertOk();
     expect($response->json('data'))->toHaveCount(1);
-    expect($response->json('data.0.status'))->toBe('maintenance');
+    expect($response->json('data.0.status'))->toBe(ChairStatus::Maintenance->value);
 });

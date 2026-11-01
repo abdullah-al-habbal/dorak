@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Modules\Barber\Models\BarberModel;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
@@ -14,7 +15,7 @@ it('lists barber services', function () {
 
     OfferedServiceModel::factory()->count(3)->create([
         'serviceable_id' => $barber->id,
-        'serviceable_type' => 'barber',
+        'serviceable_type' => ServiceableTypeEnum::Barber,
         'catalog_item_id' => $item->id,
         'currency_id' => $currency->id,
     ]);

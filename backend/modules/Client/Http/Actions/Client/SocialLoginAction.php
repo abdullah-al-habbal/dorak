@@ -7,6 +7,7 @@ namespace Modules\Client\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
+use Modules\Client\Enums\SocialProviderEnum;
 use Modules\Client\Handlers\Client\SocialLoginHandler;
 use Modules\Client\Http\Requests\Client\SocialLoginRequest;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -17,7 +18,7 @@ final class SocialLoginAction extends BaseApiAction
         private readonly SocialLoginHandler $handler,
     ) {}
 
-    public function __invoke(string $provider, SocialLoginRequest $request): JsonResponse
+    public function __invoke(SocialProviderEnum $provider, SocialLoginRequest $request): JsonResponse
     {
         try {
             $result = $this->handler->handle($request->toCommand($provider));
