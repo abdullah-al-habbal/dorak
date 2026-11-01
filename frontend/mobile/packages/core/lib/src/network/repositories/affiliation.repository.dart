@@ -43,16 +43,16 @@ class DioAffiliationRepository implements AffiliationRepository {
   );
 
   @override
-  Future<List<BarberAffiliationDto>> getBarberAffiliations(
-    String barberId,
-  ) => _client.get(
-    ApiEndpoints.affiliation.barberAffiliations(barberId),
-    parser: (json) => (json as List<dynamic>)
-        .map(
-          (item) => BarberAffiliationDto.fromJson(item as Map<String, dynamic>),
-        )
-        .toList(),
-  );
+  Future<List<BarberAffiliationDto>> getBarberAffiliations(String barberId) =>
+      _client.get(
+        ApiEndpoints.affiliation.barberAffiliations(barberId),
+        parser: (json) => (json as List<dynamic>)
+            .map(
+              (item) =>
+                  BarberAffiliationDto.fromJson(item as Map<String, dynamic>),
+            )
+            .toList(),
+      );
 
   @override
   Future<BarberAffiliationDto> acceptAffiliation(String affiliationId) =>
@@ -100,22 +100,20 @@ class DioAffiliationRepository implements AffiliationRepository {
   );
 
   @override
-  Future<BarberAffiliationDto> acceptBranchAffiliation(
-    String affiliationId,
-  ) => _client.post(
-    ApiEndpoints.affiliation.branchAffiliationAccept(affiliationId),
-    parser: (json) =>
-        BarberAffiliationDto.fromJson(json as Map<String, dynamic>),
-  );
+  Future<BarberAffiliationDto> acceptBranchAffiliation(String affiliationId) =>
+      _client.post(
+        ApiEndpoints.affiliation.branchAffiliationAccept(affiliationId),
+        parser: (json) =>
+            BarberAffiliationDto.fromJson(json as Map<String, dynamic>),
+      );
 
   @override
-  Future<BarberAffiliationDto> rejectBranchAffiliation(
-    String affiliationId,
-  ) => _client.post(
-    ApiEndpoints.affiliation.branchAffiliationReject(affiliationId),
-    parser: (json) =>
-        BarberAffiliationDto.fromJson(json as Map<String, dynamic>),
-  );
+  Future<BarberAffiliationDto> rejectBranchAffiliation(String affiliationId) =>
+      _client.post(
+        ApiEndpoints.affiliation.branchAffiliationReject(affiliationId),
+        parser: (json) =>
+            BarberAffiliationDto.fromJson(json as Map<String, dynamic>),
+      );
 
   @override
   Future<BarberAffiliationDto> terminateBranchAffiliation(

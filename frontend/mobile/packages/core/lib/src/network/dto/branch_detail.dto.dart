@@ -15,8 +15,8 @@ class BranchDetailDto {
   final String email;
   @JsonKey(unknownEnumValue: BranchStatus.pending)
   final BranchStatus status;
-  final double latitude;
-  final double longitude;
+  final double? latitude;
+  final double? longitude;
   final String brandId;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final VenueUniverse? universe;
@@ -43,8 +43,8 @@ class BranchDetailDto {
     required this.name,
     required this.email,
     required this.status,
-    required this.latitude,
-    required this.longitude,
+    this.latitude,
+    this.longitude,
     required this.brandId,
     this.universe,
     this.ratingAvg,

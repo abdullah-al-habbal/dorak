@@ -229,10 +229,7 @@ void main() {
       final fake = fakeDio(
         handler: (options) {
           captured = options;
-          return jsonResponse(
-            options,
-            data: successEnvelope(data: history()),
-          );
+          return jsonResponse(options, data: successEnvelope(data: history()));
         },
       );
       final repository = DioHistoryRepository(clientWith(fake));

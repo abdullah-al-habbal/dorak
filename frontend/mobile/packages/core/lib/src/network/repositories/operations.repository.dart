@@ -157,10 +157,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
   );
 
   @override
-  Future<BookingDto> transitionBooking(
-    String id,
-    BarberBookingAction action,
-  ) {
+  Future<BookingDto> transitionBooking(String id, BarberBookingAction action) {
     final endpoint = switch (action) {
       BarberBookingAction.accept => ApiEndpoints.operations.barberBookingAccept(
         id,
@@ -170,8 +167,9 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
       ),
       BarberBookingAction.complete =>
         ApiEndpoints.operations.barberBookingComplete(id),
-      BarberBookingAction.noShow =>
-        ApiEndpoints.operations.barberBookingNoShow(id),
+      BarberBookingAction.noShow => ApiEndpoints.operations.barberBookingNoShow(
+        id,
+      ),
     };
 
     return _client.patch(
@@ -196,7 +194,8 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
       _client.patch(
         ApiEndpoints.operations.barberProfile,
         data: {'bio': ?bio},
-        parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
+        parser: (json) =>
+            BarberProfileDto.fromJson(json as Map<String, dynamic>),
       );
 
   @override
@@ -248,12 +247,11 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
       _client.delete(ApiEndpoints.operations.barberPortfolioPhoto(id));
 
   @override
-  Future<BarberProfileDto> updateTravelRadius(double radiusKm) =>
-      _client.patch(
-        ApiEndpoints.operations.barberTravelRadius,
-        data: {'travel_radius': radiusKm},
-        parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
-      );
+  Future<BarberProfileDto> updateTravelRadius(double radiusKm) => _client.patch(
+    ApiEndpoints.operations.barberTravelRadius,
+    data: {'travel_radius': radiusKm},
+    parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
+  );
 
   static List<BarberScheduleDayDto> _parseSchedule(Object? json) =>
       (json as List<dynamic>)

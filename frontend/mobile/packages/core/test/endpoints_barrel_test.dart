@@ -4,7 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 const _barrel = 'endpoints.barrel.dart';
 const _directory = 'lib/src/network/endpoints';
-final _exportPattern = RegExp(r"export 'package:core/src/network/endpoints/(.+)';");
+final _exportPattern = RegExp(
+  r"export 'package:core/src/network/endpoints/(.+)';",
+);
 
 void main() {
   test('endpoints.barrel.dart exports every endpoint file exactly once', () {
@@ -25,12 +27,17 @@ void main() {
     expect(exported.toList()..sort(), files);
   });
 
-  test('network.barrel.dart reaches endpoints only through the endpoints barrel', () {
-    final exports = _exportPattern
-        .allMatches(File('lib/src/network/network.barrel.dart').readAsStringSync())
-        .map((match) => match.group(1)!)
-        .toList();
+  test(
+    'network.barrel.dart reaches endpoints only through the endpoints barrel',
+    () {
+      final exports = _exportPattern
+          .allMatches(
+            File('lib/src/network/network.barrel.dart').readAsStringSync(),
+          )
+          .map((match) => match.group(1)!)
+          .toList();
 
-    expect(exports, [_barrel]);
-  });
+      expect(exports, [_barrel]);
+    },
+  );
 }

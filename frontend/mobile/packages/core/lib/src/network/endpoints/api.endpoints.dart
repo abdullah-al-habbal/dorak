@@ -122,28 +122,37 @@ class _BranchAuthEndpoints {
 class _BookingEndpoints {
   const _BookingEndpoints();
   String get bookings => BookingEndpoints.bookings;
-  String bookingDetail(String id) => BookingEndpoints.bookingDetail.replaceFirst('{booking}', id);
-  String cancelBooking(String id) => BookingEndpoints.cancelBooking.replaceFirst('{booking}', id);
-  String barberSlots(String barberId) => BookingEndpoints.barberSlots.replaceFirst('{barber}', barberId);
+  String bookingDetail(String id) =>
+      BookingEndpoints.bookingDetail.replaceFirst('{booking}', id);
+  String cancelBooking(String id) =>
+      BookingEndpoints.cancelBooking.replaceFirst('{booking}', id);
+  String barberSlots(String barberId) =>
+      BookingEndpoints.barberSlots.replaceFirst('{barber}', barberId);
 }
 
 class _BranchEndpoints {
   const _BranchEndpoints();
-  String floorPlan(String branchId) => BranchEndpoints.floorPlan.replaceFirst('{branch}', branchId);
-  String slots(String branchId) => BranchEndpoints.slots.replaceFirst('{branch}', branchId);
+  String floorPlan(String branchId) =>
+      BranchEndpoints.floorPlan.replaceFirst('{branch}', branchId);
+  String slots(String branchId) =>
+      BranchEndpoints.slots.replaceFirst('{branch}', branchId);
   String get managedBarbers => BranchEndpoints.managedBarbers;
-  String activateBarber(String barberId) => BranchEndpoints.activateBarber.replaceFirst('{barber}', barberId);
-  String deactivateBarber(String barberId) => BranchEndpoints.deactivateBarber.replaceFirst('{barber}', barberId);
+  String activateBarber(String barberId) =>
+      BranchEndpoints.activateBarber.replaceFirst('{barber}', barberId);
+  String deactivateBarber(String barberId) =>
+      BranchEndpoints.deactivateBarber.replaceFirst('{barber}', barberId);
   String get profile => BranchEndpoints.profile;
   String get floorPlanConfiguration => BranchEndpoints.floorPlanConfiguration;
   String get reviews => BranchEndpoints.reviews;
-  String chairStatus(String chairId) => BranchEndpoints.chairStatus.replaceFirst('{chair}', chairId);
+  String chairStatus(String chairId) =>
+      BranchEndpoints.chairStatus.replaceFirst('{chair}', chairId);
 }
 
 class _ClientInteractionEndpoints {
   const _ClientInteractionEndpoints();
   String get savedFilters => ClientInteractionEndpoints.savedFilters;
-  String get discoveryPreferences => ClientInteractionEndpoints.discoveryPreferences;
+  String get discoveryPreferences =>
+      ClientInteractionEndpoints.discoveryPreferences;
   String savedFilter(String id) => ClientInteractionEndpoints.savedFilter(id);
 }
 
@@ -157,9 +166,12 @@ class _ExploreEndpoints {
   String get search => ExploreEndpoints.search;
   String get branches => ExploreEndpoints.branches;
   String get barbers => ExploreEndpoints.barbers;
-  String branchDetail(String branchId) => ExploreEndpoints.branchDetail.replaceFirst('{branch}', branchId);
-  String barberDetail(String barberId) => ExploreEndpoints.barberDetail.replaceFirst('{barber}', barberId);
-  String barberServices(String barberId) => ExploreEndpoints.barberServices.replaceFirst('{barber}', barberId);
+  String branchDetail(String branchId) =>
+      ExploreEndpoints.branchDetail.replaceFirst('{branch}', branchId);
+  String barberDetail(String barberId) =>
+      ExploreEndpoints.barberDetail.replaceFirst('{barber}', barberId);
+  String barberServices(String barberId) =>
+      ExploreEndpoints.barberServices.replaceFirst('{barber}', barberId);
 }
 
 class _FaceProfileEndpoints {
@@ -175,15 +187,19 @@ class _FaceProfileEndpoints {
 class _FavoriteEndpoints {
   const _FavoriteEndpoints();
   String get favorites => FavoriteEndpoints.favorites;
-  String favoriteDetail(String id) => FavoriteEndpoints.favoriteDetail.replaceFirst('{favorite}', id);
+  String favoriteDetail(String id) =>
+      FavoriteEndpoints.favoriteDetail.replaceFirst('{favorite}', id);
 }
 
 class _HistoryEndpoints {
   const _HistoryEndpoints();
   String get history => HistoryEndpoints.history;
-  String updateEntry(String historyId) => HistoryEndpoints.updateEntry.replaceFirst('{history}', historyId);
-  String rebookFromHistory(String historyId) => HistoryEndpoints.rebookFromHistory.replaceFirst('{history}', historyId);
-  String attachMedia(String historyId) => HistoryEndpoints.attachMedia.replaceFirst('{history}', historyId);
+  String updateEntry(String historyId) =>
+      HistoryEndpoints.updateEntry.replaceFirst('{history}', historyId);
+  String rebookFromHistory(String historyId) =>
+      HistoryEndpoints.rebookFromHistory.replaceFirst('{history}', historyId);
+  String attachMedia(String historyId) =>
+      HistoryEndpoints.attachMedia.replaceFirst('{history}', historyId);
 }
 
 class _JobPostingEndpoints {
@@ -193,28 +209,49 @@ class _JobPostingEndpoints {
   String get branchJobPostings => JobPostingEndpoints.branchJobPostings;
   String job(String id) => JobPostingEndpoints.job(id);
   String apply(String id) => JobPostingEndpoints.apply(id);
-  String branchJobPosting(String id) => JobPostingEndpoints.branchJobPosting(id);
-  String branchApplications(String id) => JobPostingEndpoints.branchApplications(id);
-  String branchApplicationStatus(String jobId, String applicationId) => JobPostingEndpoints.branchApplicationStatus(jobId, applicationId);
+  String branchJobPosting(String id) =>
+      JobPostingEndpoints.branchJobPosting(id);
+  String branchApplications(String id) =>
+      JobPostingEndpoints.branchApplications(id);
+  String branchApplicationStatus(String jobId, String applicationId) =>
+      JobPostingEndpoints.branchApplicationStatus(jobId, applicationId);
 }
 
 class _AffiliationEndpoints {
   const _AffiliationEndpoints();
-  String barberAffiliate(String barberId) => AffiliationEndpoints.barberAffiliate.replaceFirst('{barber}', barberId);
-  String barberAffiliations(String barberId) => AffiliationEndpoints.barberAffiliations.replaceFirst('{barber}', barberId);
-  String affiliationAccept(String affiliationId) => AffiliationEndpoints.affiliationAccept.replaceFirst('{affiliation}', affiliationId);
-  String affiliationReject(String affiliationId) => AffiliationEndpoints.affiliationReject.replaceFirst('{affiliation}', affiliationId);
-  String affiliationTerminate(String affiliationId) => AffiliationEndpoints.affiliationTerminate.replaceFirst('{affiliation}', affiliationId);
+  String barberAffiliate(String barberId) =>
+      AffiliationEndpoints.barberAffiliate.replaceFirst('{barber}', barberId);
+  String barberAffiliations(String barberId) => AffiliationEndpoints
+      .barberAffiliations
+      .replaceFirst('{barber}', barberId);
+  String affiliationAccept(String affiliationId) => AffiliationEndpoints
+      .affiliationAccept
+      .replaceFirst('{affiliation}', affiliationId);
+  String affiliationReject(String affiliationId) => AffiliationEndpoints
+      .affiliationReject
+      .replaceFirst('{affiliation}', affiliationId);
+  String affiliationTerminate(String affiliationId) => AffiliationEndpoints
+      .affiliationTerminate
+      .replaceFirst('{affiliation}', affiliationId);
   String get branchAffiliations => AffiliationEndpoints.branchAffiliations;
-  String branchAffiliationAccept(String affiliationId) => AffiliationEndpoints.branchAffiliationAccept.replaceFirst('{affiliation}', affiliationId);
-  String branchAffiliationReject(String affiliationId) => AffiliationEndpoints.branchAffiliationReject.replaceFirst('{affiliation}', affiliationId);
-  String branchAffiliationTerminate(String affiliationId) => AffiliationEndpoints.branchAffiliationTerminate.replaceFirst('{affiliation}', affiliationId);
+  String branchAffiliationAccept(String affiliationId) => AffiliationEndpoints
+      .branchAffiliationAccept
+      .replaceFirst('{affiliation}', affiliationId);
+  String branchAffiliationReject(String affiliationId) => AffiliationEndpoints
+      .branchAffiliationReject
+      .replaceFirst('{affiliation}', affiliationId);
+  String branchAffiliationTerminate(String affiliationId) =>
+      AffiliationEndpoints.branchAffiliationTerminate.replaceFirst(
+        '{affiliation}',
+        affiliationId,
+      );
 }
 
 class _NotificationEndpoints {
   const _NotificationEndpoints();
   String get notifications => NotificationEndpoints.notifications;
-  String markRead(String notificationId) => NotificationEndpoints.markRead.replaceFirst('{notification}', notificationId);
+  String markRead(String notificationId) => NotificationEndpoints.markRead
+      .replaceFirst('{notification}', notificationId);
   String get markAllRead => NotificationEndpoints.markAllRead;
 }
 
@@ -222,24 +259,44 @@ class _OperationsEndpoints {
   const _OperationsEndpoints();
   String get branchDashboard => OperationsEndpoints.branchDashboard;
   String get branchBookings => OperationsEndpoints.branchBookings;
-  String branchBookingStatus(String bookingId) => OperationsEndpoints.branchBookingStatus.replaceFirst('{booking}', bookingId);
-  String branchBookingReview(String bookingId) => OperationsEndpoints.branchBookingReview.replaceFirst('{booking}', bookingId);
+  String branchBookingStatus(String bookingId) => OperationsEndpoints
+      .branchBookingStatus
+      .replaceFirst('{booking}', bookingId);
+  String branchBookingReview(String bookingId) => OperationsEndpoints
+      .branchBookingReview
+      .replaceFirst('{booking}', bookingId);
   String get branchChairs => OperationsEndpoints.branchChairs;
-  String get barberTodayAppointments => OperationsEndpoints.barberTodayAppointments;
+  String get barberTodayAppointments =>
+      OperationsEndpoints.barberTodayAppointments;
   String get barberProfile => OperationsEndpoints.barberProfile;
-  String get barberWorkstationStatus => OperationsEndpoints.barberWorkstationStatus;
-  String barberBookingAccept(String bookingId) => OperationsEndpoints.barberBookingAccept.replaceFirst('{booking}', bookingId);
-  String barberBookingStart(String bookingId) => OperationsEndpoints.barberBookingStart.replaceFirst('{booking}', bookingId);
-  String barberBookingComplete(String bookingId) => OperationsEndpoints.barberBookingComplete.replaceFirst('{booking}', bookingId);
-  String barberBookingNoShow(String bookingId) => OperationsEndpoints.barberBookingNoShow.replaceFirst('{booking}', bookingId);
-  String barberBookingCancel(String bookingId) => OperationsEndpoints.barberBookingCancel.replaceFirst('{booking}', bookingId);
+  String get barberWorkstationStatus =>
+      OperationsEndpoints.barberWorkstationStatus;
+  String barberBookingAccept(String bookingId) => OperationsEndpoints
+      .barberBookingAccept
+      .replaceFirst('{booking}', bookingId);
+  String barberBookingStart(String bookingId) => OperationsEndpoints
+      .barberBookingStart
+      .replaceFirst('{booking}', bookingId);
+  String barberBookingComplete(String bookingId) => OperationsEndpoints
+      .barberBookingComplete
+      .replaceFirst('{booking}', bookingId);
+  String barberBookingNoShow(String bookingId) => OperationsEndpoints
+      .barberBookingNoShow
+      .replaceFirst('{booking}', bookingId);
+  String barberBookingCancel(String bookingId) => OperationsEndpoints
+      .barberBookingCancel
+      .replaceFirst('{booking}', bookingId);
   String get barberSchedule => OperationsEndpoints.barberSchedule;
   String get barberPortfolio => OperationsEndpoints.barberPortfolio;
-  String barberPortfolioPhoto(String photoId) => OperationsEndpoints.barberPortfolioPhoto.replaceFirst('{photo}', photoId);
+  String barberPortfolioPhoto(String photoId) =>
+      OperationsEndpoints.barberPortfolioPhoto.replaceFirst('{photo}', photoId);
   String get barberTravelRadius => OperationsEndpoints.barberTravelRadius;
-  String barberBookingReview(String bookingId) => OperationsEndpoints.barberBookingReview.replaceFirst('{booking}', bookingId);
+  String barberBookingReview(String bookingId) => OperationsEndpoints
+      .barberBookingReview
+      .replaceFirst('{booking}', bookingId);
   String get barberServices => OperationsEndpoints.barberServices;
-  String barberService(String serviceId) => OperationsEndpoints.barberService.replaceFirst('{service}', serviceId);
+  String barberService(String serviceId) =>
+      OperationsEndpoints.barberService.replaceFirst('{service}', serviceId);
 }
 
 class _ProfileEndpoints {
@@ -255,9 +312,12 @@ class _ProfileEndpoints {
 
 class _ReviewEndpoints {
   const _ReviewEndpoints();
-  String submitReview(String bookingId) => ReviewEndpoints.submitReview.replaceFirst('{booking}', bookingId);
-  String branchReviews(String branchId) => ReviewEndpoints.branchReviews.replaceFirst('{branch}', branchId);
-  String barberReviews(String barberId) => ReviewEndpoints.barberReviews.replaceFirst('{barber}', barberId);
+  String submitReview(String bookingId) =>
+      ReviewEndpoints.submitReview.replaceFirst('{booking}', bookingId);
+  String branchReviews(String branchId) =>
+      ReviewEndpoints.branchReviews.replaceFirst('{branch}', branchId);
+  String barberReviews(String barberId) =>
+      ReviewEndpoints.barberReviews.replaceFirst('{barber}', barberId);
 }
 
 class _ServiceCatalogEndpoints {

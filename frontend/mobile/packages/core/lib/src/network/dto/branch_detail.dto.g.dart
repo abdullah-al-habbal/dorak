@@ -17,8 +17,8 @@ BranchDetailDto _$BranchDetailDtoFromJson(
     json['status'],
     unknownValue: BranchStatus.pending,
   ),
-  latitude: (json['latitude'] as num).toDouble(),
-  longitude: (json['longitude'] as num).toDouble(),
+  latitude: (json['latitude'] as num?)?.toDouble(),
+  longitude: (json['longitude'] as num?)?.toDouble(),
   brandId: json['brand_id'] as String,
   universe: $enumDecodeNullable(
     _$VenueUniverseEnumMap,

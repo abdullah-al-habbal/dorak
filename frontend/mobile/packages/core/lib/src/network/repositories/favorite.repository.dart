@@ -41,7 +41,6 @@ class DioFavoriteRepository implements FavoriteRepository {
   );
 
   @override
-  Future<void> removeFavorite(String favoriteId) => _apiClient.delete(
-    ApiEndpoints.favorite.favoriteDetail(favoriteId),
-  );
+  Future<void> removeFavorite(String favoriteId) =>
+      _apiClient.delete(ApiEndpoints.favorite.favoriteDetail(favoriteId));
 }

@@ -7,7 +7,10 @@ class AffiliationEndpoints {
   static const affiliationReject = '/affiliations/{affiliation}/reject';
   static const affiliationTerminate = '/affiliations/{affiliation}/terminate';
   static const branchAffiliations = '/branch/affiliations';
-  static const branchAffiliationAccept = '/branch/affiliations/{affiliation}/accept';
-  static const branchAffiliationReject = '/branch/affiliations/{affiliation}/reject';
-  static const branchAffiliationTerminate = '/branch/affiliations/{affiliation}/terminate';
+  static const branchAffiliationAccept =
+      '/branch/affiliations/{affiliation}/accept';
+  static const branchAffiliationReject =
+      '/branch/affiliations/{affiliation}/reject';
+  static const branchAffiliationTerminate =
+      '/branch/affiliations/{affiliation}/terminate';
 }

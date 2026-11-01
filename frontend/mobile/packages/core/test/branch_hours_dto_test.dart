@@ -85,4 +85,31 @@ void main() {
     expect(branch.status, BranchStatus.pending);
     expect(branch.universe, isNull);
   });
+
+  test('branch DTOs accept a branch without coordinates', () {
+    const base = {
+      'id': 'b2',
+      'name': 'No pin',
+      'email': 'nopin@example.com',
+      'status': 'enabled',
+      'brand_id': 'brand-1',
+    };
+
+    final branch = BranchDto.fromJson({
+      ...base,
+      'latitude': null,
+      'longitude': null,
+    });
+    final detail = BranchDetailDto.fromJson({
+      ...base,
+      'chairs_count': 0,
+      'barbers': <dynamic>[],
+      'services': <dynamic>[],
+    });
+
+    expect(branch.latitude, isNull);
+    expect(branch.longitude, isNull);
+    expect(detail.latitude, isNull);
+    expect(detail.longitude, isNull);
+  });
 }

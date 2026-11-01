@@ -9,5 +9,6 @@ class SlotDto {
 
   const SlotDto({required this.startsAt, required this.endsAt});
 
-  factory SlotDto.fromJson(Map<String, dynamic> json) => _$SlotDtoFromJson(json);
+  factory SlotDto.fromJson(Map<String, dynamic> json) =>
+      _$SlotDtoFromJson(json);
 }

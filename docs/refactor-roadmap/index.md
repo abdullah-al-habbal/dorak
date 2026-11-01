@@ -17,12 +17,11 @@ listed in the story pass before the local commit. Never push.
 | E | [Review enums](batch-e-review-enums.md) | Review backend, dashboard, mobile | Done |
 | F | [Barber and Client enums](batch-f-barber-client-enums.md) | Barber and Client backend, dashboard, mobile | Done |
 | G | [Catalog, Subscription, Payment enums](batch-g-catalog-payment-enums.md) | Payment driver enum; catalog mobile enums | Done |
+| H | [Final cleanup](batch-h-final-cleanup.md) | Deferred items, mobile core sync | Done |
 
-## Deferred (needs a decision)
+## Deferred
 
-- `branch_opening_hours.weekday` int enum: low value, kept as an integer 0 to 6.
-- Mobile `BranchDto.latitude` / `longitude` are non-null but the DB columns are
-  nullable. Decide: make the DTO nullable or enforce non-null coordinates.
+None. The weekday and branch coordinate items were resolved in [Batch H](batch-h-final-cleanup.md).
 
 ## Verification commands (real scripts)
 

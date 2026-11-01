@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Branch\Support;
 
+use Modules\Core\Constants\WeekdayConstants;
+
 /**
  * Validation for a list of weekly opening-hour entries (Task 51), shared by the
  * branch-account and dashboard endpoints. Times are `H:i`; a day that is not
@@ -15,8 +17,8 @@ final class OpeningHoursRules
     public static function week(string $prefix, bool $required = true): array
     {
         return [
-            $prefix => [$required ? 'required' : 'sometimes', 'array', 'min:1', 'max:7'],
-            "{$prefix}.*.weekday" => ['required', 'integer', 'between:0,6', 'distinct'],
+            $prefix => [$required ? 'required' : 'sometimes', 'array', 'min:1', 'max:'.WeekdayConstants::WEEKDAY_DAYS_IN_WEEK],
+            "{$prefix}.*.weekday" => ['required', 'integer', WeekdayConstants::betweenRule(), 'distinct'],
             ...self::day("{$prefix}.*."),
         ];
     }

@@ -66,7 +66,10 @@ void main() {
 
     final log = await repository.activateBarber('barber-1');
 
-    expect(captured.path, BranchEndpoints.activateBarber.replaceFirst('{barber}', 'barber-1'));
+    expect(
+      captured.path,
+      BranchEndpoints.activateBarber.replaceFirst('{barber}', 'barber-1'),
+    );
     expect(log.status, 'enabled');
   });
 
@@ -95,7 +98,10 @@ void main() {
 
     final log = await repository.deactivateBarber('barber-1');
 
-    expect(captured.path, BranchEndpoints.deactivateBarber.replaceFirst('{barber}', 'barber-1'));
+    expect(
+      captured.path,
+      BranchEndpoints.deactivateBarber.replaceFirst('{barber}', 'barber-1'),
+    );
     expect(log.status, 'disabled');
   });
 }

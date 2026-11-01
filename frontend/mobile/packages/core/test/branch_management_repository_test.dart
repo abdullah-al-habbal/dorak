@@ -31,7 +31,8 @@ void main() {
   late List<RequestOptions> requests;
   late ApiClient client;
 
-  String route(int index) => '${requests[index].method} ${requests[index].path}';
+  String route(int index) =>
+      '${requests[index].method} ${requests[index].path}';
 
   setUp(() {
     requests = [];
@@ -72,7 +73,10 @@ void main() {
     final repository = DioBranchManagementRepository(client);
 
     await repository.updateFloorPlan(preset: 'compact');
-    await repository.updateProfile(description: {'en': 'Hello'}, tags: ['fade']);
+    await repository.updateProfile(
+      description: {'en': 'Hello'},
+      tags: ['fade'],
+    );
     final reviews = await repository.getReviews();
 
     expect(route(0), 'PATCH /branch/floor-plan');
@@ -96,14 +100,17 @@ void main() {
     await repository.getBranchApplications('j1');
     await repository.updateBranchApplicationStatus('j1', 'app1', 'accepted');
 
-    expect([for (var i = 0; i < requests.length; i++) route(i)], [
-      'GET /branch/job-postings',
-      'POST /branch/job-postings',
-      'PUT /branch/job-postings/j1',
-      'DELETE /branch/job-postings/j1',
-      'GET /branch/job-postings/j1/applications',
-      'PATCH /branch/job-postings/j1/applications/app1/status',
-    ]);
+    expect(
+      [for (var i = 0; i < requests.length; i++) route(i)],
+      [
+        'GET /branch/job-postings',
+        'POST /branch/job-postings',
+        'PUT /branch/job-postings/j1',
+        'DELETE /branch/job-postings/j1',
+        'GET /branch/job-postings/j1/applications',
+        'PATCH /branch/job-postings/j1/applications/app1/status',
+      ],
+    );
   });
 
   test('branch affiliation calls map to the branch routes', () async {
@@ -115,13 +122,16 @@ void main() {
     await repository.terminateBranchAffiliation('a1');
     await repository.inviteBarber('b1');
 
-    expect([for (var i = 0; i < requests.length; i++) route(i)], [
-      'GET /branch/affiliations',
-      'POST /branch/affiliations/a1/accept',
-      'POST /branch/affiliations/a1/reject',
-      'POST /branch/affiliations/a1/terminate',
-      'POST /branch/affiliations',
-    ]);
+    expect(
+      [for (var i = 0; i < requests.length; i++) route(i)],
+      [
+        'GET /branch/affiliations',
+        'POST /branch/affiliations/a1/accept',
+        'POST /branch/affiliations/a1/reject',
+        'POST /branch/affiliations/a1/terminate',
+        'POST /branch/affiliations',
+      ],
+    );
   });
 
   test('chair status is a PATCH on the branch chair route', () async {
@@ -130,9 +140,7 @@ void main() {
         requests.add(options);
         return jsonResponse(
           options,
-          data: successEnvelope(
-            data: {'id': 'c1', 'status': 'available'},
-          ),
+          data: successEnvelope(data: {'id': 'c1', 'status': 'available'}),
         );
       },
     );
