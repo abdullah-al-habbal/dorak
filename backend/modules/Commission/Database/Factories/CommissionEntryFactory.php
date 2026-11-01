@@ -19,7 +19,7 @@ class CommissionEntryFactory extends Factory
         return [
             'booking_id' => BookingModel::factory(),
             'brand_id' => BrandModel::factory(),
-            'rule_snapshot' => ['scope' => 'global', 'type' => 'percent', 'value' => 1000],
+            'rule_snapshot' => ['scope' => 'global', 'type' => 'percent', 'value_bps' => 1000],
             'base_amount_minor' => 10000,
             'commission_amount_minor' => 1000,
             'currency_code' => fn () => CurrencyModel::factory()->create()->code,

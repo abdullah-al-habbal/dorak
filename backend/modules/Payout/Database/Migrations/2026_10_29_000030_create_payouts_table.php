@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignUuid('approved_by_id')->nullable()->constrained('admins')->nullOnDelete();
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('paid_at')->nullable();
-            $table->string('reference')->nullable();
+            $table->string('external_reference')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
             $table->index(['brand_id', 'status']);

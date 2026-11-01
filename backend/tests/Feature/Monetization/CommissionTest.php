@@ -39,11 +39,11 @@ describe('Commission rules API', function (): void {
 
     it('creates a global percent rule', function (): void {
         $this->postJson('/api/v1/dashboard/admin/commission-rules', [
-            'scope' => 'global', 'type' => 'percent', 'value' => 1250, 'is_active' => true,
+            'scope' => 'global', 'type' => 'percent', 'value_bps' => 1250, 'is_active' => true,
         ])
             ->assertCreated()
             ->assertJsonPath('data.scope', 'global')
-            ->assertJsonPath('data.value', 1250);
+            ->assertJsonPath('data.value_bps', 1250);
     });
 
     it('creates brand and branch overrides and a flat fee with a currency', function (): void {
@@ -52,24 +52,24 @@ describe('Commission rules API', function (): void {
         $currency = CurrencyModel::factory()->create();
 
         $this->postJson('/api/v1/dashboard/admin/commission-rules', [
-            'scope' => 'brand', 'scope_id' => $brand->id, 'type' => 'percent', 'value' => 500, 'is_active' => true,
+            'scope' => 'brand', 'scope_id' => $brand->id, 'type' => 'percent', 'value_bps' => 500, 'is_active' => true,
         ])->assertCreated();
         $this->postJson('/api/v1/dashboard/admin/commission-rules', [
-            'scope' => 'branch', 'scope_id' => $branch->id, 'type' => 'flat', 'value' => 300,
+            'scope' => 'branch', 'scope_id' => $branch->id, 'type' => 'flat', 'value_amount_minor' => 300,
             'currency_code' => $currency->code, 'is_active' => true,
         ])->assertCreated()->assertJsonPath('data.currency.code', $currency->code);
     });
 
     it('validates scope, ids, percent bounds and flat currency', function (): void {
         $url = '/api/v1/dashboard/admin/commission-rules';
-        $ok = ['scope' => 'global', 'type' => 'percent', 'value' => 100, 'is_active' => true];
+        $ok = ['scope' => 'global', 'type' => 'percent', 'value_bps' => 100, 'is_active' => true];
 
         $this->postJson($url, [])->assertUnprocessable();
         $this->postJson($url, [...$ok, 'scope' => 'brand'])->assertUnprocessable();
         $this->postJson($url, [...$ok, 'scope' => 'brand', 'scope_id' => fake()->uuid()])->assertUnprocessable();
         $this->postJson($url, [...$ok, 'scope_id' => fake()->uuid()])->assertUnprocessable();
-        $this->postJson($url, [...$ok, 'value' => 10001])->assertUnprocessable();
-        $this->postJson($url, [...$ok, 'value' => 0])->assertUnprocessable();
+        $this->postJson($url, [...$ok, 'value_bps' => 10001])->assertUnprocessable();
+        $this->postJson($url, [...$ok, 'value_bps' => 0])->assertUnprocessable();
         $this->postJson($url, [...$ok, 'type' => 'flat'])->assertUnprocessable();
     });
 
@@ -78,8 +78,8 @@ describe('Commission rules API', function (): void {
 
         $this->getJson('/api/v1/dashboard/admin/commission-rules')->assertOk()->assertJsonCount(1, 'data');
         $this->putJson("/api/v1/dashboard/admin/commission-rules/{$rule->id}", [
-            'scope' => 'global', 'type' => 'percent', 'value' => 2000, 'is_active' => false, 'notes' => 'paused',
-        ])->assertOk()->assertJsonPath('data.value', 2000)->assertJsonPath('data.is_active', false);
+            'scope' => 'global', 'type' => 'percent', 'value_bps' => 2000, 'is_active' => false, 'notes' => 'paused',
+        ])->assertOk()->assertJsonPath('data.value_bps', 2000)->assertJsonPath('data.is_active', false);
         $this->deleteJson("/api/v1/dashboard/admin/commission-rules/{$rule->id}")->assertOk();
 
         expect(CommissionRuleModel::query()->count())->toBe(0);
@@ -90,13 +90,13 @@ describe('Commission resolution', function (): void {
     it('prefers branch over brand over global', function (): void {
         $branch = BranchModel::factory()->create();
         $currency = CurrencyModel::factory()->create();
-        $global = CommissionRuleModel::factory()->create(['value' => 100]);
-        $brand = CommissionRuleModel::factory()->create(['scope' => CommissionScope::Brand, 'scope_id' => $branch->brand_id, 'value' => 200]);
+        $global = CommissionRuleModel::factory()->create(['value_bps' => 100]);
+        $brand = CommissionRuleModel::factory()->create(['scope' => CommissionScope::Brand, 'scope_id' => $branch->brand_id, 'value_bps' => 200]);
         $resolver = app(CommissionRuleResolver::class);
 
         expect($resolver->resolve($branch->id, $branch->brand_id, $currency->id)->id)->toBe($brand->id);
 
-        $branchRule = CommissionRuleModel::factory()->create(['scope' => CommissionScope::Branch, 'scope_id' => $branch->id, 'value' => 300]);
+        $branchRule = CommissionRuleModel::factory()->create(['scope' => CommissionScope::Branch, 'scope_id' => $branch->id, 'value_bps' => 300]);
         expect($resolver->resolve($branch->id, $branch->brand_id, $currency->id)->id)->toBe($branchRule->id);
 
         $branchRule->update(['is_active' => false]);
@@ -109,7 +109,7 @@ describe('Commission resolution', function (): void {
         $currency = CurrencyModel::factory()->create();
         CommissionRuleModel::factory()->create(['scope' => CommissionScope::Brand, 'scope_id' => BrandModel::factory()->create()->id]);
         CommissionRuleModel::factory()->create([
-            'type' => CommissionType::Flat, 'value' => 500, 'currency_code' => CurrencyModel::factory()->create()->code,
+            'type' => CommissionType::Flat, 'value_bps' => null, 'value_amount_minor' => 500, 'currency_code' => CurrencyModel::factory()->create()->code,
         ]);
 
         expect(app(CommissionRuleResolver::class)->resolve($branch->id, $branch->brand_id, $currency->id))->toBeNull();
@@ -124,14 +124,14 @@ describe('Commission resolution', function (): void {
 
 describe('Commission accrual on completed bookings', function (): void {
     it('records a percent commission once per completed booking', function (): void {
-        CommissionRuleModel::factory()->create(['value' => 1000]);
+        CommissionRuleModel::factory()->create(['value_bps' => 1000]);
         $booking = completeBookingWithPrice(150.50);
 
         $entry = CommissionEntryModel::query()->sole();
         expect($entry->booking_id)->toBe($booking->id)
             ->and($entry->base_amount_minor)->toBe(15050)
             ->and($entry->commission_amount_minor)->toBe(1505)
-            ->and($entry->rule_snapshot)->toMatchArray(['scope' => 'global', 'type' => 'percent', 'value' => 1000]);
+            ->and($entry->rule_snapshot)->toMatchArray(['scope' => 'global', 'type' => 'percent', 'value_bps' => 1000]);
 
         $booking->touch();
         $booking->update(['status' => BookingStatus::Completed]);
@@ -141,10 +141,10 @@ describe('Commission accrual on completed bookings', function (): void {
     it('records a flat fee from a branch override', function (): void {
         $branch = BranchModel::factory()->create();
         $currency = CurrencyModel::factory()->create();
-        CommissionRuleModel::factory()->create(['value' => 1000]);
+        CommissionRuleModel::factory()->create(['value_bps' => 1000]);
         CommissionRuleModel::factory()->create([
             'scope' => CommissionScope::Branch, 'scope_id' => $branch->id,
-            'type' => CommissionType::Flat, 'value' => 250, 'currency_code' => $currency->code,
+            'type' => CommissionType::Flat, 'value_bps' => null, 'value_amount_minor' => 250, 'currency_code' => $currency->code,
         ]);
 
         completeBookingWithPrice(40, $branch, $currency);

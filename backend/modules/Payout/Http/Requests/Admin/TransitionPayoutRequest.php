@@ -14,7 +14,7 @@ final class TransitionPayoutRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'reference' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'external_reference' => ['sometimes', 'nullable', 'string', 'max:255'],
             'notes' => ['sometimes', 'nullable', 'string', 'max:2000'],
         ];
     }
@@ -26,7 +26,7 @@ final class TransitionPayoutRequest extends BaseApiFormRequest
         return new TransitionPayoutCommand(
             next: $next,
             adminId: (string) $this->user('admin_api')->getKey(),
-            reference: $data['reference'] ?? null,
+            externalReference: $data['external_reference'] ?? null,
             notes: $data['notes'] ?? null,
         );
     }

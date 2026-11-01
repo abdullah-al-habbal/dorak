@@ -15,7 +15,8 @@ final class CommissionRuleResource extends JsonResource
             'scope' => $this->scope->value,
             'scope_id' => $this->scope_id,
             'type' => $this->type->value,
-            'value' => $this->value,
+            'value_bps' => $this->value_bps,
+            'value_amount_minor' => $this->value_amount_minor,
             'currency' => $this->whenLoaded('currency', fn () => $this->currency === null ? null : [
                 'id' => $this->currency->id,
                 'code' => $this->currency->code,

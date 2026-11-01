@@ -14,7 +14,7 @@ final class ExchangeRateResource extends JsonResource
             'id' => $this->id,
             'from_currency_code' => $this->from_currency_code,
             'to_currency_code' => $this->to_currency_code,
-            'rate' => $this->rate,
+            'rate_ratio' => $this->rate_ratio,
             'effective_at' => $this->effective_at?->toIso8601String(),
         ];
     }

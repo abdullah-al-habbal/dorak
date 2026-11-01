@@ -43,6 +43,9 @@ function text(value: unknown): string {
 function nullableText(value: unknown): string | null {
   return typeof value === "string" ? value : null;
 }
+function nullableNum(value: unknown): number | null {
+  return typeof value === "number" ? value : null;
+}
 function num(value: unknown): number {
   return typeof value === "number" ? value : 0;
 }
@@ -131,7 +134,8 @@ export function mapCommissionRule(wire: unknown): ICommissionRule {
     scope: text(item.scope),
     scopeId: nullableText(item.scope_id),
     type: text(item.type),
-    value: num(item.value),
+    valueBps: nullableNum(item.value_bps),
+    valueAmountMinor: nullableNum(item.value_amount_minor),
     currency: currency(item.currency),
     isActive: item.is_active === true,
   });
@@ -157,7 +161,7 @@ export function mapPayout(wire: unknown): IPayout {
     brandName: displayName(record(item.brand).name),
     totalMinor: num(item.total_amount_minor),
     currencyCode: text(record(item.currency).code),
-    reference: nullableText(item.reference),
+    externalReference: nullableText(item.external_reference),
   });
 }
 
@@ -217,10 +221,9 @@ export function commissionRulePayload(form: ICommissionRuleForm) {
     scope: form.scope,
     scope_id: form.scope === "global" ? null : form.scopeId,
     type: form.type,
-    value:
-      form.type === "percent"
-        ? percentToBasisPoints(form.value)
-        : toMinorUnits(form.value),
+    ...(form.type === "percent"
+      ? { value_bps: percentToBasisPoints(form.value) }
+      : { value_amount_minor: toMinorUnits(form.value) }),
     currency_code: form.type === "flat" ? form.currencyCode : null,
     is_active: form.isActive,
   };

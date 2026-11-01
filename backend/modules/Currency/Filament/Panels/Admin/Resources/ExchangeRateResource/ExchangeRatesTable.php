@@ -22,7 +22,7 @@ final class ExchangeRatesTable
                 TextColumn::make('toCurrency.code')
                     ->label(__('currency::ui.to'))
                     ->searchable(),
-                TextColumn::make('rate')
+                TextColumn::make('rate_ratio')
                     ->sortable(),
                 TextColumn::make('effective_at')
                     ->dateTime()

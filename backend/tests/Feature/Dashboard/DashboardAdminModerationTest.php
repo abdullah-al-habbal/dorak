@@ -84,7 +84,7 @@ describe('Dashboard admin moderation', function (): void {
     it('lists exchange rates with currency codes for an admin', function (): void {
         $from = CurrencyModel::factory()->create(['code' => 'USD']);
         $to = CurrencyModel::factory()->create(['code' => 'SAR']);
-        ExchangeRateModel::factory()->create(['from_currency_code' => $from->code, 'to_currency_code' => $to->code, 'rate' => 3.75]);
+        ExchangeRateModel::factory()->create(['from_currency_code' => $from->code, 'to_currency_code' => $to->code, 'rate_ratio' => 3.75]);
         $this->authenticateDashboardActor(AdminModel::factory()->create());
 
         $this->getJson('/api/v1/dashboard/admin/exchange-rates')

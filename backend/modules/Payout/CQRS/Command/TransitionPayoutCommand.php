@@ -11,7 +11,7 @@ final readonly class TransitionPayoutCommand
     public function __construct(
         public PayoutStatus $next,
         public string $adminId,
-        public ?string $reference = null,
+        public ?string $externalReference = null,
         public ?string $notes = null,
     ) {}
 }

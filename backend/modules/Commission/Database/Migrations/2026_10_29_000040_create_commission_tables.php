@@ -15,7 +15,8 @@ return new class extends Migration
             $table->string('scope', 16);
             $table->uuid('scope_id')->nullable();
             $table->string('type', 16);
-            $table->unsignedBigInteger('value');
+            $table->unsignedInteger('value_bps')->nullable();
+            $table->unsignedBigInteger('value_amount_minor')->nullable();
             $table->string('currency_code', 10)->nullable();
             $table->foreign('currency_code')->references('code')->on('currencies');
             $table->boolean('is_active')->default(true);

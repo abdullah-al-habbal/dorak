@@ -43,7 +43,7 @@ export function mapExchangeRate(wire: unknown): IExchangeRate {
     id: text(item.id),
     fromCode: text(item.from_currency_code),
     toCode: text(item.to_currency_code),
-    rate: numeric(item.rate),
+    rateRatio: numeric(item.rate_ratio),
     effectiveAt: nullableText(item.effective_at),
   });
 }

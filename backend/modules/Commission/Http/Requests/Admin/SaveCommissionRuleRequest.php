@@ -17,6 +17,7 @@ final class SaveCommissionRuleRequest extends BaseApiFormRequest
     public function rules(): array
     {
         $scope = $this->input('scope');
+        $isPercent = $this->input('type') === CommissionType::Percent->value;
 
         return [
             'scope' => ['required', Rule::enum(CommissionScope::class)],
@@ -29,10 +30,12 @@ final class SaveCommissionRuleRequest extends BaseApiFormRequest
                 Rule::when($scope === CommissionScope::Global->value, ['prohibited']),
             ],
             'type' => ['required', Rule::enum(CommissionType::class)],
-            'value' => [
-                'required', 'integer', 'min:1',
-                Rule::when($this->input('type') === CommissionType::Percent->value, ['max:'.CommissionMoneyConstants::COMMISSION_MONEY_BASIS_POINTS_DENOMINATOR]),
-            ],
+            'value_bps' => $isPercent
+                ? ['required', 'integer', 'min:1', 'max:'.CommissionMoneyConstants::COMMISSION_MONEY_BASIS_POINTS_DENOMINATOR]
+                : ['prohibited'],
+            'value_amount_minor' => $isPercent
+                ? ['prohibited']
+                : ['required', 'integer', 'min:1'],
             'currency_code' => [
                 Rule::requiredIf($this->input('type') === CommissionType::Flat->value),
                 'nullable', 'exists:currencies,code',
@@ -50,7 +53,8 @@ final class SaveCommissionRuleRequest extends BaseApiFormRequest
             scope: CommissionScope::from($data['scope']),
             scopeId: $data['scope_id'] ?? null,
             type: CommissionType::from($data['type']),
-            value: (int) $data['value'],
+            valueBps: isset($data['value_bps']) ? (int) $data['value_bps'] : null,
+            valueAmountMinor: isset($data['value_amount_minor']) ? (int) $data['value_amount_minor'] : null,
             currencyCode: $data['currency_code'] ?? null,
             isActive: (bool) $data['is_active'],
             notes: $data['notes'] ?? null,

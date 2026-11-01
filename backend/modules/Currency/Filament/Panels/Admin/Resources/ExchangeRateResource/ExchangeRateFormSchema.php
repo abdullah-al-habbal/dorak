@@ -26,7 +26,7 @@ final class ExchangeRateFormSchema
                         ->label(__('currency::ui.to_currency'))
                         ->relationship('toCurrency', 'code')
                         ->required(),
-                    TextInput::make('rate')
+                    TextInput::make('rate_ratio')
                         ->numeric()
                         ->required()
                         ->step('0.000001'),

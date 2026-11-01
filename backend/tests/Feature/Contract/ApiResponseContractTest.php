@@ -1221,7 +1221,7 @@ describe('Currency API', function () {
             ExchangeRateModel::factory()->create([
                 'from_currency_code' => $from->code,
                 'to_currency_code' => $to->code,
-                'rate' => 0.85,
+                'rate_ratio' => 0.85,
             ]);
 
             $response = $this->getJson('/api/v1/exchange-rates');
@@ -1230,8 +1230,8 @@ describe('Currency API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             if (count($data) > 0) {
-                expect($data[0])->toHaveKeys(['id', 'from_currency_code', 'to_currency_code', 'rate']);
-                expect($data[0]['rate'])->toBeNumeric();
+                expect($data[0])->toHaveKeys(['id', 'from_currency_code', 'to_currency_code', 'rate_ratio']);
+                expect($data[0]['rate_ratio'])->toBeNumeric();
             }
         });
     });
@@ -1243,7 +1243,7 @@ describe('Currency API', function () {
             ExchangeRateModel::factory()->create([
                 'from_currency_code' => $from->code,
                 'to_currency_code' => $to->code,
-                'rate' => 0.85,
+                'rate_ratio' => 0.85,
             ]);
 
             $response = $this->getJson('/api/v1/currency/convert?from=USD&to=EUR&amount=100');

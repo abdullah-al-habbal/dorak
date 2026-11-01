@@ -22,7 +22,7 @@ final class TransitionPayoutHandler
         return DB::transaction(function () use ($payout, $command): PayoutModel {
             $payout->update([
                 'status' => $command->next,
-                'reference' => $command->reference ?? $payout->reference,
+                'external_reference' => $command->externalReference ?? $payout->external_reference,
                 'notes' => $command->notes ?? $payout->notes,
                 ...match ($command->next) {
                     PayoutStatus::Approved => ['approved_by_id' => $command->adminId, 'approved_at' => now()],

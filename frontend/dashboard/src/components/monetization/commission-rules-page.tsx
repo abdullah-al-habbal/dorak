@@ -18,6 +18,7 @@ import {
 } from "@/services/api/dashboard/monetization/monetization.query";
 import {
   basisPointsToPercent,
+  commissionRuleStoredValue,
   formatMinorUnits,
 } from "@/services/api/dashboard/monetization/monetization.util";
 import type { ICommissionRule } from "@/services/api/dashboard/monetization/types/icommission-rule.types";
@@ -26,8 +27,11 @@ import { useState } from "react";
 
 function ruleValue(rule: ICommissionRule): string {
   return rule.type === "percent"
-    ? `${basisPointsToPercent(rule.value)}%`
-    : formatMinorUnits(rule.value, rule.currency?.code ?? "");
+    ? `${basisPointsToPercent(commissionRuleStoredValue(rule))}%`
+    : formatMinorUnits(
+        commissionRuleStoredValue(rule),
+        rule.currency?.code ?? "",
+      );
 }
 
 export function CommissionRulesPage() {

@@ -68,8 +68,8 @@ export function PayoutsPage() {
                   <p className="text-text-secondary">
                     {copy.payouts.total}:{" "}
                     {formatMinorUnits(payout.totalMinor, payout.currencyCode)}
-                    {payout.reference
-                      ? ` · ${copy.payouts.reference}: ${payout.reference}`
+                    {payout.externalReference
+                      ? ` · ${copy.payouts.reference}: ${payout.externalReference}`
                       : ""}
                   </p>
                 </div>

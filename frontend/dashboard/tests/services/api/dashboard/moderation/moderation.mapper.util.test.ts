@@ -42,14 +42,14 @@ describe("moderation mappers", () => {
         id: "x1",
         from_currency_code: "USD",
         to_currency_code: "SAR",
-        rate: "3.7500",
+        rate_ratio: "3.7500",
         effective_at: null,
       }),
     ).toEqual({
       id: "x1",
       fromCode: "USD",
       toCode: "SAR",
-      rate: 3.75,
+      rateRatio: 3.75,
       effectiveAt: null,
     });
   });

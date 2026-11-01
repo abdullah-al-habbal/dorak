@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['from_currency_code', 'to_currency_code', 'rate', 'effective_at'])]
+#[Fillable(['from_currency_code', 'to_currency_code', 'rate_ratio', 'effective_at'])]
 #[Table('exchange_rates')]
 class ExchangeRateModel extends Model
 {
@@ -22,7 +22,7 @@ class ExchangeRateModel extends Model
     protected function casts(): array
     {
         return [
-            'rate' => 'decimal:6',
+            'rate_ratio' => 'decimal:6',
             'effective_at' => 'datetime',
         ];
     }

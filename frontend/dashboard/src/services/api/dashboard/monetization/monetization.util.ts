@@ -2,6 +2,7 @@ import {
   BASIS_POINTS_PER_PERCENT,
   MINOR_UNITS_PER_MAJOR,
 } from "@/services/api/dashboard/monetization/monetization.constant";
+import type { ICommissionRule } from "@/services/api/dashboard/monetization/types/icommission-rule.types";
 
 export function toMinorUnits(major: number): number {
   return Math.round(major * MINOR_UNITS_PER_MAJOR);
@@ -17,6 +18,11 @@ export function formatMinorUnits(minor: number, currencyCode: string): string {
 
 export function percentToBasisPoints(percent: number): number {
   return Math.round(percent * BASIS_POINTS_PER_PERCENT);
+}
+
+/** The stored rule value for its type: basis points for percent, minor units for flat. */
+export function commissionRuleStoredValue(rule: ICommissionRule): number {
+  return (rule.type === "percent" ? rule.valueBps : rule.valueAmountMinor) ?? 0;
 }
 
 export function basisPointsToPercent(basisPoints: number): number {

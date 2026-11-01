@@ -29,7 +29,7 @@ class CurrencySeeder extends Seeder
         ExchangeRateModel::create([
             'from_currency_code' => $syp->code,
             'to_currency_code' => $usd->code,
-            'rate' => 0.000067,
+            'rate_ratio' => 0.000067,
             'effective_at' => now(),
         ]);
     }

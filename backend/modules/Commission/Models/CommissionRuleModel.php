@@ -19,10 +19,11 @@ use Modules\Currency\Models\CurrencyModel;
  * @property CommissionScope $scope
  * @property string|null $scope_id
  * @property CommissionType $type
- * @property int $value
+ * @property int|null $value_bps
+ * @property int|null $value_amount_minor
  * @property string|null $currency_code
  */
-#[Fillable(['scope', 'scope_id', 'type', 'value', 'currency_code', 'is_active', 'notes'])]
+#[Fillable(['scope', 'scope_id', 'type', 'value_bps', 'value_amount_minor', 'currency_code', 'is_active', 'notes'])]
 #[Table('commission_rules')]
 class CommissionRuleModel extends Model
 {
@@ -33,7 +34,8 @@ class CommissionRuleModel extends Model
         return [
             'scope' => CommissionScope::class,
             'type' => CommissionType::class,
-            'value' => 'integer',
+            'value_bps' => 'integer',
+            'value_amount_minor' => 'integer',
             'is_active' => 'boolean',
         ];
     }

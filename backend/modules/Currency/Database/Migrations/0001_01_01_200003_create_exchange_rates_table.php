@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('from_currency_code')->references('code')->on('currencies')->cascadeOnDelete();
             $table->string('to_currency_code', 10);
             $table->foreign('to_currency_code')->references('code')->on('currencies')->cascadeOnDelete();
-            $table->decimal('rate', 20, 6);
+            $table->decimal('rate_ratio', 20, 6);
             $table->timestamp('effective_at');
             $table->timestamps();
         });

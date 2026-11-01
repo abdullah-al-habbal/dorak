@@ -48,7 +48,8 @@ export const CommissionRuleSchema = z.object({
   scope: z.enum(COMMISSION_SCOPES),
   scopeId: z.string().nullable(),
   type: z.enum(COMMISSION_TYPES),
-  value: z.number(),
+  valueBps: z.number().nullable(),
+  valueAmountMinor: z.number().nullable(),
   currency: currency.nullable(),
   isActive: z.boolean(),
 });
@@ -68,7 +69,7 @@ export const PayoutSchema = z.object({
   brandName: z.string(),
   totalMinor: z.number(),
   currencyCode: z.string(),
-  reference: z.string().nullable(),
+  externalReference: z.string().nullable(),
 });
 
 const moneyTotal = z.object({ currency: z.string(), totalMinor: z.number() });

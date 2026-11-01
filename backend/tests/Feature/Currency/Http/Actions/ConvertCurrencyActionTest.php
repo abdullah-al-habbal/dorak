@@ -11,7 +11,7 @@ it('converts between currencies without authentication', function () {
     ExchangeRateModel::factory()->create([
         'from_currency_code' => $usd->code,
         'to_currency_code' => $eur->code,
-        'rate' => 0.85,
+        'rate_ratio' => 0.85,
     ]);
 
     $response = $this->getJson('/api/v1/currency/convert?from=USD&to=EUR&amount=100');

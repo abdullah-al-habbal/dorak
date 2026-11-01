@@ -13,6 +13,7 @@ import {
 import { saveCommissionRule } from "@/services/api/dashboard/monetization/monetization.query";
 import {
   basisPointsToPercent,
+  commissionRuleStoredValue,
   fromMinorUnits,
 } from "@/services/api/dashboard/monetization/monetization.util";
 import { commissionRuleFormSchema } from "@/services/api/dashboard/monetization/schemas/monetization.schema";
@@ -33,8 +34,8 @@ function defaultsFor(rule?: ICommissionRule): ICommissionRuleFormInput {
     type: rule?.type ?? "percent",
     value: rule
       ? rule.type === "percent"
-        ? basisPointsToPercent(rule.value)
-        : fromMinorUnits(rule.value)
+        ? basisPointsToPercent(commissionRuleStoredValue(rule))
+        : fromMinorUnits(commissionRuleStoredValue(rule))
       : 10,
     currencyCode: rule?.currency?.code ?? "",
     isActive: rule?.isActive ?? true,

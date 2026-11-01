@@ -21,7 +21,7 @@ export const ExchangeRateSchema = z.object({
   id: z.string(),
   fromCode: z.string(),
   toCode: z.string(),
-  rate: z.number(),
+  rateRatio: z.number(),
   effectiveAt: z.string().nullable(),
 });
 

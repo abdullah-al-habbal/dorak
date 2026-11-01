@@ -10,11 +10,12 @@ Status: [x] Done (money and currency slice); remaining Batch I items are listed 
 - [x] Mobile: `currencyCode` / `displayCurrencyCode` DTO fields, regenerated `*.g.dart`, settings dropdown values, fixtures.
 - [x] Schema edited in place (pre-release precedent, `migrate:fresh --seed`).
 
+- [x] `exchange_rates.rate` to `rate_ratio` (wire key `rate_ratio`; the currency-convert response keeps its computed `rate`).
+- [x] `payouts.reference` to `external_reference` (request, resource, dashboard `externalReference`).
+- [x] `commission_rules.value` split (decision: split columns) into `value_bps` (percent rules) and `value_amount_minor` (flat rules). Requests require exactly the column matching `type` and prohibit the other; `rule_snapshot` stores both keys; the dashboard form still takes one input and sends the matching key.
+
 ## Deferred (same batch, not yet done)
 - `offered_services.price` (decimal) to `price_amount_minor` (integer) and `CommissionRecorder` input.
-- `exchange_rates.rate` to `rate_ratio`.
-- `commission_rules.value` is polymorphic (basis points or flat minor units); split or rename needs a design decision.
-- `payouts.reference` to `external_reference`.
 
 ## Verification
 `php artisan migrate:fresh --seed`, `vendor/bin/pint --test`, `composer test` (1331 passed); dashboard `npm run lint`, `npm run test` (506 passed), `npm run build`; mobile `dart run melos run verify`.

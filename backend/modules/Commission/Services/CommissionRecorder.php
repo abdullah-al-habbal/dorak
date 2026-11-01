@@ -46,7 +46,7 @@ final class CommissionRecorder
             'brand_id' => $brandId,
             'branch_id' => $branchId,
             'commission_rule_id' => $rule->getKey(),
-            'rule_snapshot' => ['scope' => $rule->scope->value, 'type' => $rule->type->value, 'value' => $rule->value],
+            'rule_snapshot' => ['scope' => $rule->scope->value, 'type' => $rule->type->value, 'value_bps' => $rule->value_bps, 'value_amount_minor' => $rule->value_amount_minor],
             'base_amount_minor' => $base,
             'commission_amount_minor' => $this->amount($rule, $base),
             'currency_code' => $currencyCode,
@@ -56,8 +56,8 @@ final class CommissionRecorder
     private function amount(CommissionRuleModel $rule, int $base): int
     {
         return match ($rule->type) {
-            CommissionType::Percent => (int) round($base * $rule->value / CommissionMoneyConstants::COMMISSION_MONEY_BASIS_POINTS_DENOMINATOR),
-            CommissionType::Flat => $rule->value,
+            CommissionType::Percent => (int) round($base * (int) $rule->value_bps / CommissionMoneyConstants::COMMISSION_MONEY_BASIS_POINTS_DENOMINATOR),
+            CommissionType::Flat => (int) $rule->value_amount_minor,
         };
     }
 }

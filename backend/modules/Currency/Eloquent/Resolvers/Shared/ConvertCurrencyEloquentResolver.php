@@ -40,8 +40,8 @@ final class ConvertCurrencyEloquentResolver
             from: $query->from,
             to: $query->to,
             amount: $query->amount,
-            result: round($query->amount * (float) $rate->rate, 2),
-            rate: (float) $rate->rate,
+            result: round($query->amount * (float) $rate->rate_ratio, 2),
+            rate: (float) $rate->rate_ratio,
         );
     }
 }

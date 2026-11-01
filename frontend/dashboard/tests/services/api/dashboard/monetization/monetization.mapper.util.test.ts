@@ -91,14 +91,15 @@ describe("monetization mappers", () => {
         scope: "brand",
         scope_id: "b1",
         type: "flat",
-        value: 250,
+        value_amount_minor: 250,
         currency: { id: "c1", code: "JOD" },
         is_active: false,
       }),
     ).toMatchObject({
       scope: "brand",
       scopeId: "b1",
-      value: 250,
+      valueBps: null,
+      valueAmountMinor: 250,
       isActive: false,
     });
     expect(
@@ -128,7 +129,7 @@ describe("monetization mappers", () => {
         brand: { id: "b", name: { en: "Brand", ar: "" } },
         total_amount_minor: 900,
         currency: { id: "c", code: "JOD" },
-        reference: null,
+        external_reference: null,
       }),
     ).toEqual({
       id: "po1",
@@ -136,7 +137,7 @@ describe("monetization mappers", () => {
       brandName: "Brand",
       totalMinor: 900,
       currencyCode: "JOD",
-      reference: null,
+      externalReference: null,
     });
   });
 
@@ -233,7 +234,7 @@ describe("monetization payload builders", () => {
       scope: "global",
       scope_id: null,
       type: "percent",
-      value: 1250,
+      value_bps: 1250,
       currency_code: null,
       is_active: true,
     });
@@ -250,7 +251,7 @@ describe("monetization payload builders", () => {
       scope: "branch",
       scope_id: "br1",
       type: "flat",
-      value: 250,
+      value_amount_minor: 250,
       currency_code: "c1",
       is_active: false,
     });

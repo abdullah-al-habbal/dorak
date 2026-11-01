@@ -27,7 +27,7 @@ final class PayoutResource extends JsonResource
             'period_ended_at' => $this->period_ended_at?->toIso8601String(),
             'approved_at' => $this->approved_at?->toIso8601String(),
             'paid_at' => $this->paid_at?->toIso8601String(),
-            'reference' => $this->reference,
+            'external_reference' => $this->external_reference,
             'notes' => $this->notes,
             'created_at' => $this->created_at->toIso8601String(),
         ];

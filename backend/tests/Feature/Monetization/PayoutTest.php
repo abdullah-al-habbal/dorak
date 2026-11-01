@@ -73,10 +73,10 @@ describe('Payout lifecycle', function (): void {
             ->assertJsonPath('data.status', PayoutStatus::Approved->value);
         expect($payout->fresh()->approved_by_id)->toBe($this->admin->id);
 
-        $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/mark-paid", ['reference' => 'TX-9'])
+        $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/mark-paid", ['external_reference' => 'TX-9'])
             ->assertOk()
             ->assertJsonPath('data.status', PayoutStatus::Paid->value)
-            ->assertJsonPath('data.reference', 'TX-9');
+            ->assertJsonPath('data.external_reference', 'TX-9');
         expect($payout->fresh()->paid_at)->not->toBeNull();
     });
 
@@ -89,7 +89,7 @@ describe('Payout lifecycle', function (): void {
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$paid->id}/cancel")->assertConflict();
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$paid->id}/approve")->assertConflict();
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$canceled->id}/approve")->assertConflict();
-        $this->patchJson("/api/v1/dashboard/admin/payouts/{$draft->id}/approve", ['reference' => str_repeat('x', 300)])->assertUnprocessable();
+        $this->patchJson("/api/v1/dashboard/admin/payouts/{$draft->id}/approve", ['external_reference' => str_repeat('x', 300)])->assertUnprocessable();
     });
 
     it('canceling releases the entries so the next run picks them up again', function (): void {

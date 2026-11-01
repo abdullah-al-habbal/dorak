@@ -19,7 +19,8 @@ class CommissionRuleFactory extends Factory
             'scope' => CommissionScope::Global,
             'scope_id' => null,
             'type' => CommissionType::Percent,
-            'value' => 1000,
+            'value_bps' => 1000,
+            'value_amount_minor' => null,
             'currency_code' => null,
             'is_active' => true,
         ];

@@ -51,7 +51,7 @@ export function ExchangeRatesPage() {
               <TableRow key={rate.id}>
                 <TableCell>{rate.fromCode}</TableCell>
                 <TableCell>{rate.toCode}</TableCell>
-                <TableCell>{rate.rate}</TableCell>
+                <TableCell>{rate.rateRatio}</TableCell>
                 <TableCell>{rate.effectiveAt ?? "—"}</TableCell>
               </TableRow>
             ))}

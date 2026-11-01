@@ -20,7 +20,7 @@ final class ExchangeRateInfolistSchema
                         ->label(__('currency::ui.from_currency')),
                     TextEntry::make('toCurrency.code')
                         ->label(__('currency::ui.to_currency')),
-                    TextEntry::make('rate'),
+                    TextEntry::make('rate_ratio'),
                     TextEntry::make('effective_at')
                         ->dateTime(),
                 ]),

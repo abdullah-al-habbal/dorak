@@ -13,7 +13,7 @@ it('lists all exchange rates without authentication', function () {
     $response->assertJsonStructure([
         'success',
         'code',
-        'data' => ['*' => ['id', 'from_currency_code', 'to_currency_code', 'rate', 'effective_at']],
+        'data' => ['*' => ['id', 'from_currency_code', 'to_currency_code', 'rate_ratio', 'effective_at']],
     ]);
     expect($response->json('data'))->toHaveCount(3);
 });
