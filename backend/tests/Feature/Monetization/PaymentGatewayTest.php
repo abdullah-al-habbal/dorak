@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\DB;
 use Modules\Admin\Models\AdminModel;
-use Modules\Payment\Constants\PaymentGatewayConstants;
 use Modules\Payment\Database\Seeders\PaymentGatewaySeeder;
+use Modules\Payment\Enums\PaymentGatewayDriver;
 use Modules\Payment\Models\PaymentGatewayModel;
 
 function gatewayPayload(array $overrides = []): array
@@ -13,7 +13,7 @@ function gatewayPayload(array $overrides = []): array
     return [
         'code' => 'syriatel_cash',
         'name' => ['en' => 'Syriatel Cash', 'ar' => 'سيريتل كاش'],
-        'driver' => 'wallet',
+        'driver' => PaymentGatewayDriver::Offline->value,
         'is_active' => true,
         'config' => ['merchant_id' => 'm-1', 'secret' => 's3cret'],
         ...$overrides,
@@ -32,7 +32,7 @@ describe('Payment gateways', function (): void {
         $gateway = PaymentGatewayModel::query()->where('code', 'pay_at_salon')->sole();
         expect($gateway->is_default)->toBeTrue()
             ->and($gateway->is_active)->toBeTrue()
-            ->and($gateway->driver)->toBe(PaymentGatewayConstants::PAYMENT_GATEWAY_DRIVER_OFFLINE);
+            ->and($gateway->driver)->toBe(PaymentGatewayDriver::Offline);
     });
 
     it('creates a gateway, stores config encrypted and never returns its values', function (): void {
@@ -54,6 +54,13 @@ describe('Payment gateways', function (): void {
         $this->postJson('/api/v1/dashboard/admin/payment-gateways', [])->assertUnprocessable();
     });
 
+    it('rejects a driver outside the PaymentGatewayDriver enum', function (): void {
+        $this->postJson('/api/v1/dashboard/admin/payment-gateways', gatewayPayload(['driver' => 'wallet']))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['driver']);
+        expect(PaymentGatewayModel::query()->count())->toBe(0);
+    });
+
     it('lists gateways', function (): void {
         PaymentGatewayModel::factory()->count(2)->create();
 
@@ -71,12 +78,13 @@ describe('Payment gateways', function (): void {
 
     it('updates a gateway and keeps its stored config when none is sent', function (): void {
         $gateway = PaymentGatewayModel::factory()->create(['code' => 'old', 'config' => ['k' => 'v']]);
-        $payload = gatewayPayload(['code' => 'old', 'driver' => 'psp']);
+        $payload = gatewayPayload(['code' => 'old', 'name' => ['en' => 'Renamed', 'ar' => 'جديد']]);
         unset($payload['config']);
 
         $this->putJson("/api/v1/dashboard/admin/payment-gateways/{$gateway->id}", $payload)
             ->assertOk()
-            ->assertJsonPath('data.driver', 'psp')
+            ->assertJsonPath('data.driver', 'offline')
+            ->assertJsonPath('data.name.en', 'Renamed')
             ->assertJsonPath('data.config_keys', ['k']);
     });
 

@@ -23,6 +23,10 @@ import type { IPayout } from "@/services/api/dashboard/monetization/types/ipayou
 import type { IPlan } from "@/services/api/dashboard/monetization/types/iplan.types";
 import type { IPlanForm } from "@/services/api/dashboard/monetization/types/iplan-form.types";
 import type { ISubscription } from "@/services/api/dashboard/monetization/types/isubscription.types";
+import {
+  DEFAULT_PAYMENT_GATEWAY_DRIVER,
+  PAYMENT_GATEWAY_DRIVERS,
+} from "@/services/api/dashboard/monetization/monetization.constant";
 import { isRecord } from "@/utils/guards.util";
 
 type Wire = Record<string, unknown>;
@@ -92,13 +96,23 @@ export function mapSubscription(wire: unknown): ISubscription {
   });
 }
 
+/** Unknown drivers fall back to the default so one stale row cannot break the list. */
+function gatewayDriver(
+  value: unknown,
+): (typeof PAYMENT_GATEWAY_DRIVERS)[number] {
+  return (
+    PAYMENT_GATEWAY_DRIVERS.find((driver) => driver === value) ??
+    DEFAULT_PAYMENT_GATEWAY_DRIVER
+  );
+}
+
 export function mapGateway(wire: unknown): IGateway {
   const item = record(wire);
   return GatewaySchema.parse({
     id: text(item.id),
     code: text(item.code),
     name: localized(item.name),
-    driver: text(item.driver),
+    driver: gatewayDriver(item.driver),
     isActive: item.is_active === true,
     isDefault: item.is_default === true,
     configKeys: list(item.config_keys).filter(

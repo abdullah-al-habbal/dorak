@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Payment\Enums\PaymentGatewayDriver;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
@@ -19,7 +20,7 @@ use Spatie\Translatable\HasTranslations;
  *
  * @property string $id
  * @property string $code
- * @property string $driver
+ * @property PaymentGatewayDriver $driver
  * @property bool $is_active
  * @property bool $is_default
  * @property array<string, mixed>|null $config
@@ -35,6 +36,7 @@ class PaymentGatewayModel extends Model
     protected function casts(): array
     {
         return [
+            'driver' => PaymentGatewayDriver::class,
             'config' => 'encrypted:array',
             'is_active' => 'boolean',
             'is_default' => 'boolean',

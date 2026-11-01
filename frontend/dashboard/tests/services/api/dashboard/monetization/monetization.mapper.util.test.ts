@@ -63,6 +63,12 @@ describe("monetization mappers", () => {
     });
   });
 
+  it("falls back to the offline driver for an unknown gateway driver", () => {
+    expect(mapGateway({ id: "g2", code: "x", driver: "wallet" }).driver).toBe(
+      "offline",
+    );
+  });
+
   it("maps gateways without ever reading config values", () => {
     const gateway = mapGateway({
       id: "g1",
@@ -196,7 +202,7 @@ describe("monetization payload builders", () => {
       code: "wallet",
       nameEn: "Wallet",
       nameAr: "محفظة",
-      driver: "wallet",
+      driver: "offline" as const,
       isActive: true,
       isDefault: false,
       config: "",

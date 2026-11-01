@@ -6,6 +6,10 @@ import { Input } from "@/components/tailgrids/core/input";
 import { TextArea } from "@/components/tailgrids/core/text-area";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useMonetizationMutation } from "@/hooks/use-monetization-mutation";
+import {
+  DEFAULT_PAYMENT_GATEWAY_DRIVER,
+  PAYMENT_GATEWAY_DRIVERS,
+} from "@/services/api/dashboard/monetization/monetization.constant";
 import { saveGateway } from "@/services/api/dashboard/monetization/monetization.query";
 import { gatewayFormSchema } from "@/services/api/dashboard/monetization/schemas/monetization.schema";
 import type { IGateway } from "@/services/api/dashboard/monetization/types/igateway.types";
@@ -22,7 +26,7 @@ function defaultsFor(gateway?: IGateway): IGatewayForm {
     code: gateway?.code ?? "",
     nameEn: gateway?.name.en ?? "",
     nameAr: gateway?.name.ar ?? "",
-    driver: gateway?.driver ?? "",
+    driver: gateway?.driver ?? DEFAULT_PAYMENT_GATEWAY_DRIVER,
     isActive: gateway?.isActive ?? true,
     isDefault: gateway?.isDefault ?? false,
     config: "",
@@ -46,10 +50,7 @@ export function GatewayForm({ gateway, onDone }: IGatewayFormProps) {
       },
     },
   );
-  const field = (
-    name: "code" | "nameEn" | "nameAr" | "driver",
-    label: string,
-  ) => (
+  const field = (name: "code" | "nameEn" | "nameAr", label: string) => (
     <label className="grid gap-1 text-sm text-text-100">
       <span>{label}</span>
       <Input
@@ -65,7 +66,19 @@ export function GatewayForm({ gateway, onDone }: IGatewayFormProps) {
       onSubmit={form.handleSubmit((value) => save.mutate(value))}
     >
       {field("code", copy.gateways.code)}
-      {field("driver", copy.gateways.driver)}
+      <label className="grid gap-1 text-sm text-text-100">
+        <span>{copy.gateways.driver}</span>
+        <select
+          className="rounded-lg border border-card-border bg-input-background px-4 py-2.5"
+          {...form.register("driver")}
+        >
+          {PAYMENT_GATEWAY_DRIVERS.map((driver) => (
+            <option key={driver} value={driver}>
+              {copy.gateways.drivers[driver]}
+            </option>
+          ))}
+        </select>
+      </label>
       {field("nameEn", copy.nameEn)}
       {field("nameAr", copy.nameAr)}
       <label className="grid gap-1 text-sm text-text-100 sm:col-span-2">

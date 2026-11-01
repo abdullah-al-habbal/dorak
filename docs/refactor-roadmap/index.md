@@ -16,6 +16,7 @@ listed in the story pass before the local commit. Never push.
 | D | [Chair and JobPosting rules](batch-d-chair-jobposting-rules.md) | Raw `in:` validation rules | Done |
 | E | [Review enums](batch-e-review-enums.md) | Review backend, dashboard, mobile | Done |
 | F | [Barber and Client enums](batch-f-barber-client-enums.md) | Barber and Client backend, dashboard, mobile | Done |
+| G | [Catalog, Subscription, Payment enums](batch-g-catalog-payment-enums.md) | Payment driver enum; catalog mobile enums | Done |
 
 ## Deferred (needs a decision)
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Payment\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Payment\Constants\PaymentGatewayConstants;
+use Modules\Payment\Enums\PaymentGatewayDriver;
 use Modules\Payment\Models\PaymentGatewayModel;
 
 /** Pay at salon is a gateway row, not code: admins can add or switch gateways later. */
@@ -15,7 +15,7 @@ final class PaymentGatewaySeeder extends Seeder
     {
         PaymentGatewayModel::query()->firstOrCreate(['code' => 'pay_at_salon'], [
             'name' => ['en' => 'Pay at salon', 'ar' => 'الدفع في الصالون'],
-            'driver' => PaymentGatewayConstants::PAYMENT_GATEWAY_DRIVER_OFFLINE,
+            'driver' => PaymentGatewayDriver::Offline,
             'is_active' => true,
             'is_default' => true,
         ]);

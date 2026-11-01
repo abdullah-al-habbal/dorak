@@ -15,7 +15,7 @@ final class PaymentGatewayResource extends JsonResource
             'id' => $this->id,
             'code' => $this->code,
             'name' => $this->getTranslations('name'),
-            'driver' => $this->driver,
+            'driver' => $this->driver->value,
             'is_active' => $this->is_active,
             'is_default' => $this->is_default,
             'config_keys' => array_keys($this->config ?? []),

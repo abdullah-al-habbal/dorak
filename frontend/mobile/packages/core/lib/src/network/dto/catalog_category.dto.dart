@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:core/src/network/venue_universe.entity.dart';
+
 part 'catalog_category.dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
@@ -8,7 +10,8 @@ class CatalogCategoryDto {
   final Map<String, String> name;
   final String slug;
   final String? parentId;
-  final String? universe;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  final VenueUniverse? universe;
   final bool isActive;
 
   const CatalogCategoryDto({

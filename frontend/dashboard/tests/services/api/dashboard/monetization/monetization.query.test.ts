@@ -108,7 +108,7 @@ describe("monetization requests", () => {
       code: "a",
       nameEn: "a",
       nameAr: "b",
-      driver: "d",
+      driver: "offline" as const,
       isActive: true,
       isDefault: false,
       config: "",

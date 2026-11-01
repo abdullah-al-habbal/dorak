@@ -11,6 +11,7 @@ import {
   savePlan,
 } from "@/services/api/dashboard/monetization/monetization.query";
 import {
+  DEFAULT_INTERVAL_UNIT,
   INTERVAL_UNITS,
   MONETIZATION_QUERY_KEYS,
 } from "@/services/api/dashboard/monetization/monetization.constant";
@@ -35,7 +36,7 @@ function defaultsFor(plan?: IPlan): IPlanFormInput {
     descriptionAr: plan?.description.ar ?? "",
     price: plan ? fromMinorUnits(plan.priceMinor) : 0,
     currencyId: plan?.currency?.id ?? "",
-    intervalUnit: plan?.intervalUnit ?? "month",
+    intervalUnit: plan?.intervalUnit ?? DEFAULT_INTERVAL_UNIT,
     intervalCount: plan?.intervalCount ?? 1,
     isActive: plan?.isActive ?? true,
     featureKeys: plan?.featureKeys ?? [],

@@ -62,7 +62,7 @@ describe("gatewayFormSchema", () => {
     code: "syriatel_cash",
     nameEn: "Cash",
     nameAr: "كاش",
-    driver: "wallet",
+    driver: "offline",
     isActive: true,
     isDefault: false,
     config: "",
@@ -72,6 +72,12 @@ describe("gatewayFormSchema", () => {
     expect(gatewayFormSchema.safeParse(gateway).success).toBe(true);
     expect(
       gatewayFormSchema.safeParse({ ...gateway, code: "Bad Code" }).success,
+    ).toBe(false);
+  });
+
+  it("rejects a driver the backend enum does not define", () => {
+    expect(
+      gatewayFormSchema.safeParse({ ...gateway, driver: "wallet" }).success,
     ).toBe(false);
   });
 });

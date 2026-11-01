@@ -19,7 +19,7 @@ Map<String, dynamic> catalogItem({
   'sku': 'SVC-1',
   'price_range': {'min': 45.0, 'max': 60.0, 'currency': 'SAR'},
   'maintenance_level': 'low',
-  'style_period': 'timeless',
+  'style_period': 'classic',
   'formality': 'casual',
   'face_shapes': faceShapes,
   'hair_textures': ['straight'],
@@ -309,8 +309,8 @@ void main() {
         expect(item.name['en'], 'Classic Fade');
         expect(item.priceRange?.min, 45);
         expect(item.priceRange?.currency, 'SAR');
-        expect(item.faceShapes, ['oval', 'round']);
-        expect(item.stylePeriod, 'timeless');
+        expect(item.faceShapes, [FaceShape.oval, FaceShape.round]);
+        expect(item.stylePeriod, StylePeriod.classic);
         expect(item.isActive, isTrue);
       },
     );

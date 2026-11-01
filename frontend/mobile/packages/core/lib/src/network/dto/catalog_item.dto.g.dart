@@ -18,12 +18,14 @@ CatalogItemDto _$CatalogItemDtoFromJson(Map<String, dynamic> json) =>
           : CatalogPriceRangeDto.fromJson(
               json['price_range'] as Map<String, dynamic>,
             ),
-      faceShapes:
-          (json['face_shapes'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const [],
-      stylePeriod: json['style_period'] as String?,
+      faceShapes: json['face_shapes'] == null
+          ? const []
+          : _faceShapesFromJson(json['face_shapes']),
+      stylePeriod: $enumDecodeNullable(
+        _$StylePeriodEnumMap,
+        json['style_period'],
+        unknownValue: JsonKey.nullForUndefinedEnumValue,
+      ),
       isActive: json['is_active'] as bool? ?? true,
       tags:
           (json['tags'] as List<dynamic>?)
@@ -38,3 +40,8 @@ CatalogItemDto _$CatalogItemDtoFromJson(Map<String, dynamic> json) =>
       defaultDurationMinutes: (json['default_duration_minutes'] as num?)
           ?.toInt(),
     );
+
+const _$StylePeriodEnumMap = {
+  StylePeriod.classic: 'classic',
+  StylePeriod.modern: 'modern',
+};

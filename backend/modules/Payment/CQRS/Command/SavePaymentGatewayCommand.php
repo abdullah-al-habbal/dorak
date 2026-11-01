@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Payment\CQRS\Command;
 
+use Modules\Payment\Enums\PaymentGatewayDriver;
+
 final readonly class SavePaymentGatewayCommand
 {
     /**
@@ -13,7 +15,7 @@ final readonly class SavePaymentGatewayCommand
     public function __construct(
         public string $code,
         public array $name,
-        public string $driver,
+        public PaymentGatewayDriver $driver,
         public bool $isActive,
         public bool $isDefault,
         public ?array $config,

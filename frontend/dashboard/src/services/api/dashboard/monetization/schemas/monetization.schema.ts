@@ -4,6 +4,7 @@ import {
   COMMISSION_TYPES,
   INTERVAL_UNITS,
   MAX_PERCENT,
+  PAYMENT_GATEWAY_DRIVERS,
   PAYOUT_STATUSES,
   SUBSCRIPTION_STATUSES,
 } from "@/services/api/dashboard/monetization/monetization.constant";
@@ -36,7 +37,7 @@ export const GatewaySchema = z.object({
   id: z.string(),
   code: z.string(),
   name: localized,
-  driver: z.string(),
+  driver: z.enum(PAYMENT_GATEWAY_DRIVERS),
   isActive: z.boolean(),
   isDefault: z.boolean(),
   configKeys: z.array(z.string()),
@@ -127,7 +128,7 @@ export const gatewayFormSchema = z.object({
     .regex(/^[a-z0-9_]+$/),
   nameEn: requiredText,
   nameAr: requiredText,
-  driver: requiredText,
+  driver: z.enum(PAYMENT_GATEWAY_DRIVERS),
   isActive: z.boolean(),
   isDefault: z.boolean(),
   /** One `key=value` per line; empty keeps the stored config. */

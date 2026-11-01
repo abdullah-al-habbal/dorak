@@ -1100,12 +1100,12 @@ CatalogItemDto testCatalogItem({
   num min = 50,
   num max = 90,
   String currency = 'SAR',
-  String? stylePeriod = 'Modern',
+  StylePeriod? stylePeriod = StylePeriod.modern,
 }) => CatalogItemDto(
   id: id,
   name: {'en': name},
   priceRange: CatalogPriceRangeDto(min: min, max: max, currency: currency),
-  faceShapes: const ['oval'],
+  faceShapes: const [FaceShape.oval],
   stylePeriod: stylePeriod,
 );
 

@@ -6,7 +6,7 @@ namespace Modules\Payment\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Payment\Constants\PaymentGatewayConstants;
+use Modules\Payment\Enums\PaymentGatewayDriver;
 use Modules\Payment\Models\PaymentGatewayModel;
 
 #[UseModel(PaymentGatewayModel::class)]
@@ -17,7 +17,7 @@ class PaymentGatewayFactory extends Factory
         return [
             'code' => fake()->unique()->slug(2),
             'name' => ['en' => fake()->word(), 'ar' => fake('ar_SA')->word()],
-            'driver' => PaymentGatewayConstants::PAYMENT_GATEWAY_DRIVER_OFFLINE,
+            'driver' => PaymentGatewayDriver::Offline,
             'is_active' => true,
             'is_default' => false,
             'config' => null,

@@ -503,6 +503,7 @@ export const en = {
       editTitle: "Edit gateway",
       code: "Code",
       driver: "Driver",
+      drivers: { offline: "Offline (pay at salon)" },
       config: "Configuration (one key=value per line)",
       configHint: "Leave empty to keep the stored configuration.",
       configKeys: "Stored keys",

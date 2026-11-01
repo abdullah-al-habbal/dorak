@@ -46,8 +46,42 @@ void main() {
       expect(dto.id, _itemId);
       expect(dto.name['en'], 'Classic Fade');
       expect(dto.priceRange?.currency, 'SAR');
-      expect(dto.faceShapes, ['oval', 'square']);
+      expect(dto.faceShapes, [FaceShape.oval, FaceShape.square]);
       expect(dto.isActive, isTrue);
+    });
+
+    test('falls back safely for enum values this app does not know', () {
+      final dto = CatalogItemDto.fromJson({
+        ..._catalogItemPayload(),
+        'face_shapes': ['oval', 'hexagon'],
+        'style_period': 'futuristic',
+        'media': [
+          {'id': 'm1', 'type': 'hologram', 'path': 'a.png', 'sort_order': 0},
+          {'id': 'm2', 'type': 'video', 'path': 'b.mp4', 'sort_order': 1},
+        ],
+      });
+
+      expect(dto.faceShapes, [FaceShape.oval]);
+      expect(dto.stylePeriod, isNull);
+      expect(dto.media.first.type, CatalogMediaType.image);
+      expect(dto.media.last.type, CatalogMediaType.video);
+    });
+
+    test('parses a catalog category universe and ignores unknown values', () {
+      final base = {
+        'id': 'c1',
+        'name': {'en': 'Cuts'},
+        'slug': 'cuts',
+        'is_active': true,
+      };
+      expect(
+        CatalogCategoryDto.fromJson({...base, 'universe': 'unisex'}).universe,
+        VenueUniverse.unisex,
+      );
+      expect(
+        CatalogCategoryDto.fromJson({...base, 'universe': 'kids'}).universe,
+        isNull,
+      );
     });
 
     test('rejects a legacy integer id instead of coercing it', () {

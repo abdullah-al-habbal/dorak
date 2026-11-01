@@ -490,6 +490,7 @@ export const ar: Dictionary = {
       editTitle: "تعديل البوابة",
       code: "الرمز",
       driver: "المشغّل",
+      drivers: { offline: "غير متصل (الدفع في الصالون)" },
       config: "الإعدادات (key=value في كل سطر)",
       configHint: "اتركه فارغًا للإبقاء على الإعدادات المحفوظة.",
       configKeys: "المفاتيح المحفوظة",
