@@ -7,7 +7,6 @@ namespace Modules\Branch\Filament\Panels\Admin\Resources\BranchResource;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Modules\Branch\Enums\BranchStatusEnum;
 
@@ -37,15 +36,12 @@ final class BranchFormSchema
                         ->password()
                         ->dehydrated(fn (?string $state): bool => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create'),
-                    TextInput::make('phone')
-                        ->tel(),
                 ]),
             Section::make(__('branch::ui.status'))
                 ->schema([
                     Select::make('status')
                         ->options(BranchStatusEnum::class)
                         ->required(),
-                    Toggle::make('is_activated'),
                 ]),
         ]);
     }

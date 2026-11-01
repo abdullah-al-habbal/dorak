@@ -20,7 +20,7 @@ final class UpdateBranchEloquentResolver
         unset($attributes['opening_hours']);
 
         DB::transaction(function () use ($branch, $attributes, $week): void {
-            if (($attributes['status'] ?? null) === BranchStatusEnum::Disabled->value
+            if (BranchStatusEnum::tryFrom((string) ($attributes['status'] ?? '')) === BranchStatusEnum::Disabled
                 && $branch->getAttribute('status') === BranchStatusEnum::Enabled) {
                 $branch->brand()->lockForUpdate()->first();
                 $activeBranches = BranchModel::query()

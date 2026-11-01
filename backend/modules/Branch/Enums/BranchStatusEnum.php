@@ -6,7 +6,6 @@ namespace Modules\Branch\Enums;
 
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
-use Illuminate\Support\Str;
 
 enum BranchStatusEnum: string implements HasColor, HasLabel
 {
@@ -16,11 +15,7 @@ enum BranchStatusEnum: string implements HasColor, HasLabel
 
     public function label(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Enabled => 'Enabled',
-            self::Disabled => 'Disabled',
-        };
+        return __('branch::enums.status.'.$this->value);
     }
 
     public function isEnabled(): bool
@@ -30,7 +25,7 @@ enum BranchStatusEnum: string implements HasColor, HasLabel
 
     public function getLabel(): ?string
     {
-        return Str::headline($this->value);
+        return $this->label();
     }
 
     public function getColor(): string

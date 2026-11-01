@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->string('status')->default('pending');
+            $table->string('status')->default('pending')->index();
             $table->string('floor_plan_preset')->default('standard');
             $table->json('floor_plan_zones')->nullable();
             $table->json('floor_plan_canvas')->nullable();
