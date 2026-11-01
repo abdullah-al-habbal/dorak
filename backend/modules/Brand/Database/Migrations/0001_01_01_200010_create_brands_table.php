@@ -6,6 +6,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Enums\VenueUniverse;
 
 return new class extends Migration
 {
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->json('description')->nullable();
             $table->string('logo')->nullable();
             $table->foreignUuid('base_currency_id')->constrained('currencies');
-            $table->string('universe', 10)->default('men');
+            $table->string('universe', 10)->default(VenueUniverse::Men->value);
             $table->timestamps();
         });
     }

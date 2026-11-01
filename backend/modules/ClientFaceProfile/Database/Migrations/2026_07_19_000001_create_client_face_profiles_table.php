@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\ClientFaceProfile\Enums\FaceAnalysisStatusEnum;
 
 return new class extends Migration
 {
@@ -16,7 +17,7 @@ return new class extends Migration
             $table->string('image_path')->nullable();
             $table->string('image_hash', 64);
             $table->boolean('is_primary')->default(false);
-            $table->string('analysis_status')->default('pending');
+            $table->string('analysis_status')->default(FaceAnalysisStatusEnum::Pending->value);
             $table->timestamp('uploaded_at');
             $table->timestamps();
         });

@@ -6,6 +6,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Activation\Enums\ActivationStatusEnum;
 
 return new class extends Migration
 {
@@ -15,7 +16,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('activable_id');
             $table->string('activable_type');
-            $table->string('status')->default('pending');
+            $table->string('status')->default(ActivationStatusEnum::Pending->value);
             $table->text('reason')->nullable();
             $table->foreignUuid('admin_id')->nullable()->constrained('admins')->nullOnDelete();
             $table->timestamp('activated_at')->useCurrent();

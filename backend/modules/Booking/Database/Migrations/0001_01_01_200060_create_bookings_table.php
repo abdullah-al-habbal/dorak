@@ -6,6 +6,8 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Booking\Enums\BookingPaymentMethod;
+use Modules\Booking\Enums\BookingPaymentStatus;
 
 return new class extends Migration
 {
@@ -21,8 +23,8 @@ return new class extends Migration
             $table->dateTime('ends_at');
             $table->string('status');
             $table->string('cancellation_reason', 500)->nullable();
-            $table->string('payment_method')->default('pay_at_salon');
-            $table->string('payment_status')->default('unpaid_in_person');
+            $table->string('payment_method')->default(BookingPaymentMethod::PayAtSalon->value);
+            $table->string('payment_status')->default(BookingPaymentStatus::UnpaidInPerson->value);
             $table->json('at_home_location')->nullable();
             $table->timestamps();
 
