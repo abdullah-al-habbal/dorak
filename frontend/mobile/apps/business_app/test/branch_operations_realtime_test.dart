@@ -51,7 +51,7 @@ class _CountingRepository implements BranchOperationsRepository {
     id: 'branch-1',
     name: 'Branch',
     email: 'branch@example.com',
-    status: 'active',
+    status: BranchStatus.enabled,
     latitude: 0,
     longitude: 0,
     brandId: 'brand-1',

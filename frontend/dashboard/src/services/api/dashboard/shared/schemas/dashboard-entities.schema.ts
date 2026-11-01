@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { BRANCH_STATUSES } from "@/services/api/dashboard/branch/branch.constant";
+import { VENUE_UNIVERSES } from "@/services/api/dashboard/shared/venue-universe.constant";
 import {
   LocalizedNameSchema,
   DashboardEntityIdSchema,
@@ -24,8 +26,8 @@ export const BranchSchema = z.object({
   openingHours: z.array(BranchOpeningDaySchema),
   ratingAvg: z.number().nullable(),
   ratingCount: z.number(),
-  status: z.enum(["pending", "enabled", "disabled"]),
-  universe: z.enum(["men", "women", "unisex"]),
+  status: z.enum(BRANCH_STATUSES),
+  universe: z.enum(VENUE_UNIVERSES),
 });
 
 export const ServiceSchema = z.object({

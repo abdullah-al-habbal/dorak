@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { BRANCH_STATUSES } from "@/services/api/dashboard/branch/branch.constant";
+import { VENUE_UNIVERSES } from "@/services/api/dashboard/shared/venue-universe.constant";
 
 const localizedName = z.object({
   en: z.string().min(2).max(120),
@@ -43,8 +45,8 @@ export const branchCreateSchema = z.object({
   password: z.string().min(12).max(255),
   latitude: coordinate.min(-90).max(90).nullable(),
   longitude: coordinate.min(-180).max(180).nullable(),
-  status: z.enum(["pending", "enabled", "disabled"]),
-  universe: z.enum(["men", "women", "unisex"]),
+  status: z.enum(BRANCH_STATUSES),
+  universe: z.enum(VENUE_UNIVERSES),
   description: localizedText(2000),
   address: localizedText(255),
   openingHours: z.array(openingDay).length(7).optional(),

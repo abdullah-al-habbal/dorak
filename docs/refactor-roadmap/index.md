@@ -12,7 +12,7 @@ listed in the story pass before the local commit. Never push.
 | --- | --- | --- | --- |
 | A | Branch enum and schema hygiene (commit `4bda6261`) | Branch backend | Done |
 | B | [Branch hours source](batch-b-branch-hours-source.md) | Backend + mobile (+ dashboard check) | Done |
-| C | [Dashboard and mobile enums](batch-c-dashboard-mobile-enums.md) | Branch status/universe literals | Todo |
+| C | [Dashboard and mobile enums](batch-c-dashboard-mobile-enums.md) | Branch status/universe literals | Done |
 | D | [Chair and JobPosting rules](batch-d-chair-jobposting-rules.md) | Raw `in:` validation rules | Todo |
 
 ## Deferred (needs a decision)

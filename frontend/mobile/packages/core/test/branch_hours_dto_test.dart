@@ -54,4 +54,35 @@ void main() {
     expect(detail.openingHours, isEmpty);
     expect(detail.todayHours, isNull);
   });
+
+  const base = {
+    'id': 'b1',
+    'name': 'Main',
+    'email': 'main@example.com',
+    'latitude': 33.5,
+    'longitude': 36.3,
+    'brand_id': 'brand-1',
+  };
+
+  test('branch status and universe parse to enums', () {
+    final branch = BranchDto.fromJson({
+      ...base,
+      'status': 'enabled',
+      'universe': 'women',
+    });
+
+    expect(branch.status, BranchStatus.enabled);
+    expect(branch.universe, VenueUniverse.women);
+  });
+
+  test('unknown status falls back to pending and unknown universe to null', () {
+    final branch = BranchDto.fromJson({
+      ...base,
+      'status': 'archived',
+      'universe': 'kids',
+    });
+
+    expect(branch.status, BranchStatus.pending);
+    expect(branch.universe, isNull);
+  });
 }

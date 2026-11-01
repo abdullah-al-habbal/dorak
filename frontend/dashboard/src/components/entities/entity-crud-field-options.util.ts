@@ -1,3 +1,5 @@
+import { BRANCH_STATUSES } from "@/services/api/dashboard/branch/branch.constant";
+import { VENUE_UNIVERSES } from "@/services/api/dashboard/shared/venue-universe.constant";
 import type {
   EntityFormFieldOptions,
   IEntityFormOptionsContext,
@@ -10,11 +12,7 @@ export function optionsFor(
 ): EntityFormFieldOptions {
   const { resource, editing, fieldCopy, lookups, serviceableType } = context;
   if (field === "status" && resource === "branches")
-    return [
-      ["pending", fieldCopy.pending],
-      ["enabled", fieldCopy.enabled],
-      ["disabled", fieldCopy.disabled],
-    ];
+    return BRANCH_STATUSES.map((status) => [status, fieldCopy[status]]);
   if (field === "status" && resource === "chairs")
     return [
       ["available", fieldCopy.available],
@@ -28,11 +26,7 @@ export function optionsFor(
       ["disabled", fieldCopy.disabled],
     ];
   if (field === "universe")
-    return [
-      ["men", fieldCopy.men],
-      ["women", fieldCopy.women],
-      ["unisex", fieldCopy.unisex],
-    ];
+    return VENUE_UNIVERSES.map((universe) => [universe, fieldCopy[universe]]);
   if (field === "floorZone")
     return [
       ["men", fieldCopy.men],

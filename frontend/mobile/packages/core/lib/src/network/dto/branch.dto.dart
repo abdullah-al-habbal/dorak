@@ -1,3 +1,5 @@
+import 'package:core/src/network/branch_status.entity.dart';
+import 'package:core/src/network/venue_universe.entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'branch.dto.g.dart';
@@ -7,11 +9,13 @@ class BranchDto {
   final String id;
   final String name;
   final String email;
-  final String status;
+  @JsonKey(unknownEnumValue: BranchStatus.pending)
+  final BranchStatus status;
   final double latitude;
   final double longitude;
   final String brandId;
-  final String? universe;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  final VenueUniverse? universe;
   final double? ratingAvg;
   @JsonKey(defaultValue: 0)
   final int ratingCount;

@@ -22,7 +22,7 @@ void main() {
     expect(branch.brandId, '01a1647f-a5d1-7017-8546-000000000001');
     expect(branch.ratingAvg, 4.33);
     expect(branch.ratingCount, 3);
-    expect(branch.universe, 'unisex');
+    expect(branch.universe, VenueUniverse.unisex);
   });
 
   test('branch detail and barber profile default to unrated', () {

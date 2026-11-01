@@ -12,7 +12,7 @@ BranchDetailDto _storefrontDetail({BranchHoursDto? today}) => BranchDetailDto(
   id: '1',
   name: 'Branch 1',
   email: 'branch1@example.com',
-  status: 'enabled',
+  status: BranchStatus.enabled,
   latitude: 33.5,
   longitude: 36.3,
   brandId: '7',
