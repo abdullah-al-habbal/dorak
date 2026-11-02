@@ -8,7 +8,6 @@ childnodes:
   - dashboard.references.component-and-styling-rules
   - dashboard.references.file-taxonomy
   - dashboard.references.type-safety
-  - skills.dashboard
   - dashboard.guide.part-2
 codeanchors:
   - frontend/dashboard/src/
