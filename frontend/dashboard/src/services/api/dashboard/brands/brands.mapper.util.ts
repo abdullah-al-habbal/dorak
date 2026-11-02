@@ -30,7 +30,7 @@ export function mapBrand(wire: unknown): IBrand {
     id: text(item.id),
     name: localized(item.name),
     description: localized(item.description),
-    logo: nullableText(item.logo),
+    logoUrl: nullableText(item.logo_url),
     slug: nullableText(item.slug),
     universe: universe(item.universe),
     baseCurrencyCode: nullableText(currency.code),
@@ -46,7 +46,7 @@ export function brandPayload(form: IBrandForm) {
       en: form.descriptionEn === "" ? null : form.descriptionEn,
       ar: form.descriptionAr === "" ? null : form.descriptionAr,
     },
-    logo: form.logo === "" ? null : form.logo,
+    logo_url: form.logoUrl === "" ? null : form.logoUrl,
     base_currency_code: form.baseCurrencyCode,
     universe: form.universe,
   };

@@ -29,7 +29,7 @@ use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'email', 'email_verified_at', 'password', 'preferred_universe', 'phone', 'phone_verified_at', 'avatar', 'status'])]
+#[Fillable(['name', 'email', 'email_verified_at', 'password', 'preferred_universe', 'phone', 'phone_verified_at', 'avatar_path', 'status'])]
 #[Hidden(['password', 'remember_token'])]
 #[Table('clients')]
 #[Translatable(['name'])]

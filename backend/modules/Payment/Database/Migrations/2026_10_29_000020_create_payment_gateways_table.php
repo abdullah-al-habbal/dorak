@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('driver', 64);
             $table->boolean('is_active')->default(false);
             $table->boolean('is_default')->default(false);
-            $table->text('config')->nullable();
+            $table->text('gateway_settings')->nullable();
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
         });

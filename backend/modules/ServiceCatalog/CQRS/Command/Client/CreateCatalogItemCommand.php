@@ -22,7 +22,7 @@ final readonly class CreateCatalogItemCommand
         public ?FormalityEnum $formalityLevel,
         public ?array $faceShapes,
         public ?array $hairTextures,
-        public ?array $metadata,
+        public ?array $stylingDetails,
         public bool $isActive,
         public ?int $defaultDurationMinutes = null,
         public ?array $tagIds = null,

@@ -17,7 +17,7 @@ final class UpdateSavedFilterEloquentResolver
 
         $filter->update([
             'name' => $command->name,
-            'filter_config' => $command->filterConfig,
+            'filter_criteria' => $command->filterCriteria,
         ]);
 
         return $filter;

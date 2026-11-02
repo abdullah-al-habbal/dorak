@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('entity_type');
             $table->uuid('entity_id');
             $table->json('embedding')->nullable();
-            $table->json('metadata')->nullable();
+            $table->json('embedding_metadata')->nullable();
             $table->timestamp('computed_at')->nullable();
             $table->timestamps();
 

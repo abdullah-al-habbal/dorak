@@ -10,10 +10,10 @@
         $ctaSection = collect($sections)->firstWhere('section_type', 'cta');
     @endphp
 
-    <x-website::hero :content="$heroSection['content'] ?? null" />
-    <x-website::features :content="$featureSection['content'] ?? null" />
-    <x-website::testimonials :content="$testimonialSection['content'] ?? null" :testimonials="$testimonialSection['testimonials'] ?? []" />
-    <x-website::floor-plan-demo :content="$floorPlanSection['content'] ?? null" />
-    <x-website::pricing :content="$pricingSection['content'] ?? null" />
-    <x-website::cta :content="$ctaSection['content'] ?? null" />
+    <x-website::hero :content="$heroSection['body'] ?? null" />
+    <x-website::features :content="$featureSection['body'] ?? null" />
+    <x-website::testimonials :content="$testimonialSection['body'] ?? null" :testimonials="$testimonialSection['testimonials'] ?? []" />
+    <x-website::floor-plan-demo :content="$floorPlanSection['body'] ?? null" />
+    <x-website::pricing :content="$pricingSection['body'] ?? null" />
+    <x-website::cta :content="$ctaSection['body'] ?? null" />
 </x-website::layouts.app>

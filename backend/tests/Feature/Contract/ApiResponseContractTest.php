@@ -875,12 +875,12 @@ describe('Review API', function () {
 
             $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
                 'rating' => 5,
-                'comment' => 'Great service!',
+                'body' => 'Great service!',
             ]);
 
             assertApiEnvelope($response, 201);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'rating', 'comment', 'author_name', 'created_at']);
+            expect($data)->toHaveKeys(['id', 'rating', 'body', 'author_name', 'created_at']);
             expect($data['rating'])->toBeInt();
             expect($data['rating'])->toBe(5);
         });
@@ -902,7 +902,7 @@ describe('Review API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             if (count($data) > 0) {
-                expect($data[0])->toHaveKeys(['id', 'rating', 'comment', 'author_name', 'created_at']);
+                expect($data[0])->toHaveKeys(['id', 'rating', 'body', 'author_name', 'created_at']);
             }
         });
     });
@@ -1538,11 +1538,11 @@ describe('ClientInteraction API', function () {
             $createResponse = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/saved-filters', [
                     'name' => 'Nearby Men',
-                    'filter_config' => ['universe' => 'men', 'radius' => 10],
+                    'filter_criteria' => ['universe' => 'men', 'radius' => 10],
                 ]);
 
             expect($createResponse->status())->toBe(201);
-            expect($createResponse->json('data'))->toHaveKeys(['id', 'name', 'filter_config']);
+            expect($createResponse->json('data'))->toHaveKeys(['id', 'name', 'filter_criteria']);
 
             $listResponse = $this->actingAs($client, 'client')
                 ->getJson('/api/v1/client/saved-filters');
@@ -1556,7 +1556,7 @@ describe('ClientInteraction API', function () {
             $created = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/saved-filters', [
                     'name' => 'Test Filter',
-                    'filter_config' => ['universe' => 'women'],
+                    'filter_criteria' => ['universe' => 'women'],
                 ])->json('data');
 
             $response = $this->actingAs($client, 'client')
@@ -1571,13 +1571,13 @@ describe('ClientInteraction API', function () {
             $created = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/saved-filters', [
                     'name' => 'Original',
-                    'filter_config' => ['universe' => 'men'],
+                    'filter_criteria' => ['universe' => 'men'],
                 ])->json('data');
 
             $response = $this->actingAs($client, 'client')
                 ->putJson("/api/v1/client/saved-filters/{$created['id']}", [
                     'name' => 'Updated',
-                    'filter_config' => ['universe' => 'women'],
+                    'filter_criteria' => ['universe' => 'women'],
                 ]);
 
             assertApiEnvelope($response, 200);
@@ -1589,7 +1589,7 @@ describe('ClientInteraction API', function () {
             $created = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/saved-filters', [
                     'name' => 'Delete Me',
-                    'filter_config' => ['universe' => 'men'],
+                    'filter_criteria' => ['universe' => 'men'],
                 ])->json('data');
 
             $response = $this->actingAs($client, 'client')
@@ -1603,7 +1603,7 @@ describe('ClientInteraction API', function () {
 
             $response = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/saved-filters', [
-                    'filter_config' => ['universe' => 'men'],
+                    'filter_criteria' => ['universe' => 'men'],
                 ]);
 
             expect($response->status())->toBe(422);

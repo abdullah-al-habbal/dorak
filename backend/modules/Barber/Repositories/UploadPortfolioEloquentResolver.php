@@ -21,7 +21,7 @@ final class UploadPortfolioEloquentResolver
 
         return BarberPortfolioPhotoModel::create([
             'barber_id' => $barber->id,
-            'path' => $path,
+            'image_path' => $path,
             'sort_order' => $maxOrder + 1,
         ]);
     }

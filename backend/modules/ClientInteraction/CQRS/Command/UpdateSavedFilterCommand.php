@@ -12,6 +12,6 @@ final readonly class UpdateSavedFilterCommand
         public string $filterId,
         public string $clientId,
         public string $name,
-        public FilterConfigurationValueObject $filterConfig,
+        public FilterConfigurationValueObject $filterCriteria,
     ) {}
 }

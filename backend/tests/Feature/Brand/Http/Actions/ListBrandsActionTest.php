@@ -13,7 +13,7 @@ it('lists brands', function () {
     $response->assertJsonStructure([
         'success',
         'data' => [
-            '*' => ['id', 'name', 'logo', 'created_at'],
+            '*' => ['id', 'name', 'logo_url', 'created_at'],
         ],
         'meta' => ['pagination'],
     ]);

@@ -25,7 +25,7 @@ class BookingDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final localeCode = Localizations.localeOf(context).languageCode;
-    final atHomeLocation = booking.atHomeLocation;
+    final atHomeLocation = booking.homeAddress;
     return ListView(
       padding: const EdgeInsets.all(DorakDimensions.marginMobile),
       children: [

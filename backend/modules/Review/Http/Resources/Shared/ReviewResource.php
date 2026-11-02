@@ -22,7 +22,7 @@ final class ReviewResource extends JsonResource
             'subject_type' => ($subjectType = $this->offsetGet('subject_type')) instanceof ReviewSubjectTypeEnum ? $subjectType->value : null,
             'subject_id' => $this->offsetGet('subject_id'),
             'rating' => $this->rating,
-            'comment' => $this->comment,
+            'body' => $this->body,
             'status' => $status instanceof ReviewStatus ? $status->value : null,
             'disputed_at' => $disputedAt instanceof Carbon ? $disputedAt->toIso8601String() : null,
             'resolved_at' => $resolvedAt instanceof Carbon ? $resolvedAt->toIso8601String() : null,

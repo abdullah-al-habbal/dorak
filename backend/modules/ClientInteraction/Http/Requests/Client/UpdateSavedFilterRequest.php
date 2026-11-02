@@ -14,7 +14,7 @@ final class UpdateSavedFilterRequest extends BaseApiFormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'filter_config' => ['required', 'array'],
+            'filter_criteria' => ['required', 'array'],
         ];
     }
 
@@ -24,7 +24,7 @@ final class UpdateSavedFilterRequest extends BaseApiFormRequest
             filterId: $filterId,
             clientId: (string) $this->user()->id,
             name: $this->validated('name'),
-            filterConfig: FilterConfigurationValueObject::fromArray($this->validated('filter_config')),
+            filterCriteria: FilterConfigurationValueObject::fromArray($this->validated('filter_criteria')),
         );
     }
 }

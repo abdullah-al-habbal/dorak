@@ -215,7 +215,7 @@ void main() {
           atHomeLongitude: 35.5018,
         );
 
-        expect(captured.data['at_home_location'], {
+        expect(captured.data['home_address'], {
           'street': 'Al Hamra Street',
           'building': '12',
           'unit': '4B',

@@ -7,13 +7,13 @@ import 'helpers/fake_dio.dart';
 Map<String, dynamic> review({
   String id = 'review-1',
   int rating = 5,
-  String? comment = 'Great fade',
+  String? body = 'Great fade',
   String? authorName = 'Karim',
   String createdAt = '2026-09-10T12:00:00.000Z',
 }) => {
   'id': id,
   'rating': rating,
-  'comment': comment,
+  'body': body,
   'author_name': authorName,
   'created_at': createdAt,
 };
@@ -44,15 +44,15 @@ void main() {
         final result = await repository.submitReview(
           'booking-1',
           rating: 4,
-          comment: 'Nice cut',
+          body: 'Nice cut',
         );
 
         expect(captured.path, '/client/bookings/booking-1/review');
         expect(captured.method, 'POST');
-        expect(captured.data, {'rating': 4, 'comment': 'Nice cut'});
+        expect(captured.data, {'rating': 4, 'body': 'Nice cut'});
         expect(result.id, 'review-1');
         expect(result.rating, 5);
-        expect(result.comment, 'Great fade');
+        expect(result.body, 'Great fade');
         expect(result.authorName, 'Karim');
         expect(result.createdAt, DateTime.parse('2026-09-10T12:00:00.000Z'));
       },
@@ -69,7 +69,7 @@ void main() {
             data: successEnvelope(
               statusCode: 201,
               code: 'CREATED',
-              data: review(comment: null, authorName: null),
+              data: review(body: null, authorName: null),
             ),
           );
         },
@@ -155,7 +155,7 @@ void main() {
             data: successEnvelope(
               data: [
                 review(id: 'r1', rating: 5),
-                review(id: 'r2', rating: 3, comment: null, authorName: null),
+                review(id: 'r2', rating: 3, body: null, authorName: null),
               ],
               meta: {
                 'pagination': {
@@ -181,7 +181,7 @@ void main() {
       expect(page.data.first.rating, 5);
       expect(page.data.first.authorName, 'Karim');
       expect(page.data.last.rating, 3);
-      expect(page.data.last.comment, isNull);
+      expect(page.data.last.body, isNull);
       expect(page.data.last.authorName, isNull);
     });
 

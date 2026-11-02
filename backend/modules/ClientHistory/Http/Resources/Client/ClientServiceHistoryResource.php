@@ -23,7 +23,7 @@ final class ClientServiceHistoryResource extends JsonResource
             'client_rating' => $this->client_rating,
             'client_notes' => $this->client_notes,
             'barber_notes' => $this->barber_notes,
-            'metadata' => $this->metadata?->toArray(),
+            'service_details' => $this->service_details?->toArray(),
             'barber' => $this->whenLoaded('barber', fn () => $this->barber === null ? null : [
                 'id' => $this->barber->id,
                 'name' => $this->barber->name,

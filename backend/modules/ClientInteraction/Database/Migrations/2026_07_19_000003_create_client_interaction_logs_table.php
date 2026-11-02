@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignUuid('client_id')->constrained('clients')->cascadeOnDelete();
             $table->string('interaction_type');
             $table->nullableUuidMorphs('interactable');
-            $table->json('context')->nullable();
+            $table->json('interaction_context')->nullable();
             $table->timestamps();
 
             $table->index(['client_id', 'interaction_type']);

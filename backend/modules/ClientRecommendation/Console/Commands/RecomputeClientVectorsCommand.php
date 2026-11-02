@@ -131,7 +131,7 @@ final class RecomputeClientVectorsCommand extends Command
                 ],
                 [
                     'embedding' => $embedding,
-                    'metadata' => [
+                    'embedding_metadata' => [
                         'name' => $entity->name ?? $entity->id,
                         'signal_count' => count($signals),
                     ],
@@ -218,7 +218,7 @@ final class RecomputeClientVectorsCommand extends Command
                 ['client_id' => $client->id],
                 [
                     'embedding' => $embedding,
-                    'metadata' => [
+                    'embedding_metadata' => [
                         'signal_count' => count($signals),
                         'weights' => RecommendationFactorWeightsValueObject::defaults()->toArray(),
                     ],

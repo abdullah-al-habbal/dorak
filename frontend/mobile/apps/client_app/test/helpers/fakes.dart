@@ -1499,7 +1499,7 @@ PaginatedData<ReviewDto> testReviewPage(List<ReviewDto> reviews) =>
 ReviewDto testReview({
   String id = 'review-1',
   int rating = 5,
-  String? comment = 'Great fade',
+  String? body = 'Great fade',
   String? authorName = 'Karim',
   ReviewStatus? status = ReviewStatus.published,
   DateTime? disputedAt,
@@ -1507,7 +1507,7 @@ ReviewDto testReview({
 }) => ReviewDto(
   id: id,
   rating: rating,
-  comment: comment,
+  body: body,
   authorName: authorName,
   status: status,
   disputedAt: disputedAt,
@@ -1537,17 +1537,17 @@ class FakeReviewRepository implements ReviewRepository {
   Future<ReviewDto> submitReview(
     String bookingId, {
     required int rating,
-    String? comment,
+    String? body,
     int? barberRating,
   }) async {
     submitCalls++;
     lastBarberRating = barberRating;
     lastBookingId = bookingId;
     lastRating = rating;
-    lastComment = comment;
+    lastComment = body;
     final failure = submitError;
     if (failure != null) throw failure;
-    return submittedReview ?? testReview(rating: rating, comment: comment);
+    return submittedReview ?? testReview(rating: rating, body: body);
   }
 
   @override
@@ -1709,17 +1709,17 @@ class FakeClientInteractionRepository implements ClientInteractionRepository {
   @override
   Future<SavedFilterDto> saveFilter({
     required String name,
-    required Map<String, dynamic> filterConfig,
+    required Map<String, dynamic> filterCriteria,
     String? id,
   }) async {
     final failure = error;
     if (failure != null) throw failure;
     lastSavedName = name;
-    lastSavedConfig = filterConfig;
+    lastSavedConfig = filterCriteria;
     return SavedFilterDto(
       id: 'filter-${filters.length + 1}',
       name: name,
-      filterConfig: filterConfig,
+      filterCriteria: filterCriteria,
     );
   }
 
@@ -1727,8 +1727,8 @@ class FakeClientInteractionRepository implements ClientInteractionRepository {
   Future<SavedFilterDto> updateSavedFilter({
     required String id,
     required String name,
-    required Map<String, dynamic> filterConfig,
-  }) => saveFilter(name: name, filterConfig: filterConfig, id: id);
+    required Map<String, dynamic> filterCriteria,
+  }) => saveFilter(name: name, filterCriteria: filterCriteria, id: id);
 
   @override
   Future<void> deleteSavedFilter(String id) async {

@@ -33,7 +33,7 @@ use Spatie\Translatable\HasTranslations;
     'formality_level',
     'face_shapes',
     'hair_textures',
-    'metadata',
+    'styling_details',
     'is_active',
     'sort_order',
     'default_duration_minutes',
@@ -56,7 +56,7 @@ class ServiceCatalogItemModel extends Model
             'formality_level' => FormalityEnum::class,
             'face_shapes' => 'array',
             'hair_textures' => 'array',
-            'metadata' => ServiceCatalogItemMetadataCast::class,
+            'styling_details' => ServiceCatalogItemMetadataCast::class,
             'is_active' => 'boolean',
             'default_duration_minutes' => 'integer',
         ];

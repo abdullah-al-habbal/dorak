@@ -237,7 +237,7 @@ describe('owner bookings and operations', function (): void {
             'label' => 'Chair 9',
             'floor_zone' => 'shared',
             'status' => ChairStatus::Available,
-            'ui_metadata' => ['position_x' => 1, 'position_y' => 1, 'width' => 1, 'height' => 1],
+            'layout_settings' => ['position_x' => 1, 'position_y' => 1, 'width' => 1, 'height' => 1],
         ];
 
         $this->authenticateDashboardActor($owner)->postJson('/api/v1/dashboard/chairs', $payload($branches[1]->id))->assertCreated();

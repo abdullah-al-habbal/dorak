@@ -14,7 +14,7 @@ use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
 #[Fillable([
     'source_type', 'source_id',
     'target_type', 'target_id',
-    'edge_type', 'weight_ratio', 'context', 'expires_at',
+    'edge_type', 'weight_ratio', 'edge_context', 'expires_at',
     'computed_at', 'vector_version',
 ])]
 #[Table('recommendation_edges')]
@@ -27,7 +27,7 @@ final class RecommendationEdgeModel extends Model
         return [
             'edge_type' => EdgeTypeEnum::class,
             'weight_ratio' => 'float',
-            'context' => 'array',
+            'edge_context' => 'array',
             'expires_at' => 'datetime',
             'computed_at' => 'datetime',
         ];

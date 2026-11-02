@@ -5,9 +5,9 @@ import {
 } from "@/services/api/dashboard/settings/settings.constant";
 
 export const PlatformSettingSchema = z.object({
-  key: z.enum(PLATFORM_SETTING_KEYS),
+  settingKey: z.enum(PLATFORM_SETTING_KEYS),
   group: z.enum(PLATFORM_SETTING_GROUPS),
-  value: z.number(),
+  valueInteger: z.number(),
   default: z.number(),
   min: z.number(),
   max: z.number(),

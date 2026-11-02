@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\ClientInteraction\Enums\InteractableTypeEnum;
 use Modules\ClientInteraction\Enums\InteractionTypeEnum;
 
-#[Fillable(['client_id', 'interaction_type', 'interactable_id', 'interactable_type', 'context'])]
+#[Fillable(['client_id', 'interaction_type', 'interactable_id', 'interactable_type', 'interaction_context'])]
 #[Table('client_interaction_logs')]
 final class ClientInteractionLogModel extends Model
 {
@@ -23,7 +23,7 @@ final class ClientInteractionLogModel extends Model
         return [
             'interaction_type' => InteractionTypeEnum::class,
             'interactable_type' => InteractableTypeEnum::class,
-            'context' => 'array',
+            'interaction_context' => 'array',
         ];
     }
 

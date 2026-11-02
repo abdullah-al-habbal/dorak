@@ -32,7 +32,7 @@ final readonly class CreateWalkInBookingHandler
                 clientId: $client->id,
                 startsAt: $command->startsAt,
                 serviceIds: $command->serviceIds,
-                atHomeLocation: null,
+                homeAddress: null,
             ));
         });
     }

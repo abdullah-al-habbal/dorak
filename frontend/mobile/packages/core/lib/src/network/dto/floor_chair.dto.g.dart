@@ -14,7 +14,7 @@ FloorChairDto _$FloorChairDtoFromJson(
   status: $enumDecode(_$ChairStatusEnumMap, json['status']),
   availability: $enumDecodeNullable(_$ChairStatusEnumMap, json['availability']),
   floorZone: json['floor_zone'] as String?,
-  uiMetadata: json['ui_metadata'] as Map<String, dynamic>?,
+  layoutSettings: json['layout_settings'] as Map<String, dynamic>?,
   branchId: json['branch_id'] as String?,
   barber: json['barber'] == null
       ? null

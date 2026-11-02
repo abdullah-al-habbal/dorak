@@ -9,14 +9,14 @@ describe("brandPayload", () => {
         nameAr: "قص",
         descriptionEn: "",
         descriptionAr: "",
-        logo: "",
+        logoUrl: "",
         baseCurrencyCode: "cur1",
         universe: "men",
       }),
     ).toEqual({
       name: { en: "Cuts", ar: "قص" },
       description: { en: null, ar: null },
-      logo: null,
+      logo_url: null,
       base_currency_code: "cur1",
       universe: "men",
     });

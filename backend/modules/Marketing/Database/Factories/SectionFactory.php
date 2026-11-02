@@ -24,7 +24,7 @@ final class SectionFactory extends Factory
                 'en' => $this->faker->sentence(5),
                 'ar' => 'نص فرعي',
             ],
-            'content' => [
+            'body' => [
                 'en' => [
                     'heading' => $this->faker->sentence(4),
                     'subheading' => $this->faker->sentence(8),

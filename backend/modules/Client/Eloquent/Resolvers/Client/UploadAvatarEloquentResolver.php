@@ -18,7 +18,7 @@ final class UploadAvatarEloquentResolver
             Storage::disk('public')->delete($command->oldAvatarPath);
         }
 
-        $client->update(['avatar' => $command->filePath]);
+        $client->update(['avatar_path' => $command->filePath]);
 
         return $client->fresh();
     }

@@ -104,7 +104,7 @@ class DioBookingRepository implements BookingRepository {
         'starts_at': formatted,
         'service_ids': serviceIds,
         if (hasAtHomeLocation)
-          'at_home_location': {
+          'home_address': {
             'street': atHomeStreet!,
             'building': atHomeBuilding!,
             'unit': atHomeUnit!,

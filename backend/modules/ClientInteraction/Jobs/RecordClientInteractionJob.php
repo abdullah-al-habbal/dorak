@@ -39,7 +39,7 @@ class RecordClientInteractionJob implements ShouldQueue
             'interaction_type' => $this->interactionType,
             'interactable_type' => $this->interactableType,
             'interactable_id' => $this->interactableId,
-            'context' => $this->context,
+            'interaction_context' => $this->context,
         ]);
     }
 }

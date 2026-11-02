@@ -34,7 +34,7 @@ final class ReviewFormSchema
                         ->minValue(1)
                         ->maxValue(5)
                         ->required(),
-                    Textarea::make('comment')
+                    Textarea::make('body')
                         ->columnSpanFull(),
                 ]),
         ]);

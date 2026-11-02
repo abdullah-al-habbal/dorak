@@ -26,7 +26,7 @@ class BrandFactory extends Factory
                 'en' => fake()->sentence(),
                 'ar' => fake('ar_SA')->sentence(),
             ],
-            'logo' => null,
+            'logo_url' => null,
             'base_currency_code' => fn () => CurrencyModel::factory()->create()->code,
         ];
     }

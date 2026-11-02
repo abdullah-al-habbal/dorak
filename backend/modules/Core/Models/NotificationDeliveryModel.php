@@ -22,10 +22,10 @@ use Modules\Settings\Services\SettingsService;
  * @property string|null $device_token_id
  * @property NotificationDeliveryStatusEnum $status
  * @property string|null $provider_message_id
- * @property string|null $error
+ * @property string|null $error_message
  * @property Carbon $attempted_at
  */
-#[Fillable(['notification_id', 'device_token_id', 'status', 'provider_message_id', 'error', 'attempted_at'])]
+#[Fillable(['notification_id', 'device_token_id', 'status', 'provider_message_id', 'error_message', 'attempted_at'])]
 #[Table('notification_deliveries')]
 final class NotificationDeliveryModel extends Model
 {

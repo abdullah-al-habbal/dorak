@@ -14,9 +14,9 @@ final class ShowHistoryMediaPhotoAction
     {
         $historyMedia = ClientServiceHistoryMediaModel::query()->findOrFail($media);
 
-        abort_unless($historyMedia->photo_path && Storage::disk('local')->exists($historyMedia->photo_path), 404);
+        abort_unless($historyMedia->image_path && Storage::disk('local')->exists($historyMedia->image_path), 404);
 
-        return Storage::disk('local')->response($historyMedia->photo_path, headers: [
+        return Storage::disk('local')->response($historyMedia->image_path, headers: [
             'Cache-Control' => 'private, no-store, max-age=0',
             'X-Content-Type-Options' => 'nosniff',
         ]);

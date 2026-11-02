@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUuid('device_token_id')->nullable()->constrained('device_tokens')->nullOnDelete();
             $table->string('status', 16);
             $table->string('provider_message_id')->nullable();
-            $table->text('error')->nullable();
+            $table->text('error_message')->nullable();
             $table->timestamp('attempted_at')->index();
             $table->timestamps();
         });

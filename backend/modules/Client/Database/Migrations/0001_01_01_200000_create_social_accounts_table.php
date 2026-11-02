@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('provider');
             $table->string('provider_id');
             $table->string('avatar_url')->nullable();
-            $table->json('metadata')->nullable();
+            $table->json('provider_profile')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients')->cascadeOnDelete();

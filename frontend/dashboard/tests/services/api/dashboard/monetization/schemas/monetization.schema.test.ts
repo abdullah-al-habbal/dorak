@@ -65,7 +65,7 @@ describe("gatewayFormSchema", () => {
     driver: "offline",
     isActive: true,
     isDefault: false,
-    config: "",
+    gatewaySettings: "",
   };
 
   it("accepts a snake_case code and rejects anything else", () => {

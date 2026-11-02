@@ -12,8 +12,8 @@ return new class extends Migration
     {
         Schema::create('platform_settings', function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->string('key', 96)->unique();
-            $table->unsignedBigInteger('value');
+            $table->string('setting_key', 96)->unique();
+            $table->unsignedBigInteger('value_integer');
             $table->timestamps();
         });
     }

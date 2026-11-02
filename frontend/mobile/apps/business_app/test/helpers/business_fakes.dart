@@ -149,7 +149,7 @@ class FakeBranchManagementRepository implements BranchManagementRepository {
         ReviewDto(
           id: 'r1',
           rating: 4,
-          comment: 'Great',
+          body: 'Great',
           createdAt: DateTime.utc(2026, 10, 29),
         ),
       ]);

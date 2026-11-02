@@ -29,7 +29,7 @@ class ReviewSeeder extends Seeder
             'subject_id' => $booking->chair->branch_id,
             'subject_type' => ReviewSubjectTypeEnum::Branch,
             'rating' => 5,
-            'comment' => 'Great service!',
+            'body' => 'Great service!',
         ]);
     }
 }

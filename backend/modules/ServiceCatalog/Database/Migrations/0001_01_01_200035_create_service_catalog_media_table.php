@@ -15,8 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuidMorphs('mediable');
             $table->string('media_type')->default(MediaTypeEnum::Image->value);
-            $table->string('path');
-            $table->string('alt')->nullable();
+            $table->string('image_path');
+            $table->string('alt_text')->nullable();
             $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();
         });

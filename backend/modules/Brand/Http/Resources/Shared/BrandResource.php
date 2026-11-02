@@ -15,7 +15,7 @@ final class BrandResource extends JsonResource
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
             'description' => $this->getTranslations('description'),
-            'logo' => $this->logo,
+            'logo_url' => $this->logo_url,
             'owner' => $this->whenLoaded('owner', fn () => [
                 'id' => $this->owner->id,
                 'email' => $this->owner->email,

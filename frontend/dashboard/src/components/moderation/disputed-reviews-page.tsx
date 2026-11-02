@@ -65,7 +65,7 @@ function DisputedReviewRow({ review }: { review: IDisputedReview }) {
             <strong>{review.authorName ?? copy.unnamedAuthor}</strong>
             <Badge>{review.rating} / 5</Badge>
           </div>
-          <p>{review.comment ?? copy.noComment}</p>
+          <p>{review.body ?? copy.noComment}</p>
           <p className="text-text-secondary">
             {copy.disputeReason}: {review.disputeReason ?? copy.noReason}
           </p>

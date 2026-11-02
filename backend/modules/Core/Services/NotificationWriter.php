@@ -71,7 +71,7 @@ final class NotificationWriter
             'device_token_id' => $deviceTokenId,
             'status' => $status,
             'provider_message_id' => $providerMessageId,
-            'error' => $error,
+            'error_message' => $error,
             'attempted_at' => Carbon::now(),
         ]);
     }

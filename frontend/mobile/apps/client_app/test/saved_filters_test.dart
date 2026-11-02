@@ -16,7 +16,7 @@ void main() {
         const SavedFilterDto(
           id: 'filter-1',
           name: 'Close',
-          filterConfig: {'radius': 3},
+          filterCriteria: {'radius': 3},
         ),
       ];
   });

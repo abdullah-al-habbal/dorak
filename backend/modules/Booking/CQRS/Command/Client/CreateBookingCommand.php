@@ -14,7 +14,7 @@ final readonly class CreateBookingCommand
         public string $clientId,
         public Carbon $startsAt,
         public array $serviceIds,
-        public ?array $atHomeLocation,
+        public ?array $homeAddress,
         public ?string $branchId = null,
     ) {}
 }

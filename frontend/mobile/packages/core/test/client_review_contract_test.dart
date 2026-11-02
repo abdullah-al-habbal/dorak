@@ -9,7 +9,7 @@ Map<String, dynamic> clientReview() => {
   'subject_type': 'client',
   'subject_id': 'client-1',
   'rating': 2,
-  'comment': 'Late',
+  'body': 'Late',
   'status': 'published',
   'created_at': '2026-10-22T10:00:00.000Z',
 };
@@ -32,11 +32,11 @@ void main() {
 
     final review = await DioBranchOperationsRepository(
       clientWith(fake),
-    ).rateClient('booking-1', rating: 2, comment: 'Late');
+    ).rateClient('booking-1', rating: 2, body: 'Late');
 
     expect(captured.method, 'POST');
     expect(captured.path, '/branch/bookings/booking-1/review');
-    expect(captured.data, {'rating': 2, 'comment': 'Late'});
+    expect(captured.data, {'rating': 2, 'body': 'Late'});
     expect(review.subjectType, ReviewSubjectType.client);
   });
 

@@ -38,7 +38,7 @@ function defaultsFor(brand?: IBrand): IBrandForm {
     nameAr: brand?.name.ar ?? "",
     descriptionEn: brand?.description.en ?? "",
     descriptionAr: brand?.description.ar ?? "",
-    logo: brand?.logo ?? "",
+    logoUrl: brand?.logoUrl ?? "",
     baseCurrencyCode: brand?.baseCurrencyCode ?? "",
     universe: brand?.universe ?? "unisex",
   };
@@ -86,7 +86,7 @@ export function BrandForm({ brand, onDone }: IBrandFormProps) {
         {errors[name]?.message}
       </span>
     ) : null;
-  const text = (name: "nameEn" | "nameAr" | "logo", label: string) => (
+  const text = (name: "nameEn" | "nameAr" | "logoUrl", label: string) => (
     <label className="grid gap-1 text-sm text-text-100">
       <span>{label}</span>
       <Input
@@ -113,7 +113,7 @@ export function BrandForm({ brand, onDone }: IBrandFormProps) {
       {text("nameAr", copy.nameAr)}
       {area("descriptionEn", copy.descriptionEn)}
       {area("descriptionAr", copy.descriptionAr)}
-      {text("logo", copy.logo)}
+      {text("logoUrl", copy.logo)}
       <label className="grid gap-1 text-sm text-text-100">
         <span>{copy.baseCurrency}</span>
         <select

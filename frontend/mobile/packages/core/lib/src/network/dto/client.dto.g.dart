@@ -14,7 +14,7 @@ ClientDto _$ClientDtoFromJson(Map<String, dynamic> json) => ClientDto(
   phoneVerifiedAt: json['phone_verified_at'] == null
       ? null
       : DateTime.parse(json['phone_verified_at'] as String),
-  avatar: json['avatar'] as String?,
+  avatarUrl: json['avatar_url'] as String?,
   preferredUniverse: $enumDecodeNullable(
     _$ClientUniverseEnumMap,
     json['preferred_universe'],

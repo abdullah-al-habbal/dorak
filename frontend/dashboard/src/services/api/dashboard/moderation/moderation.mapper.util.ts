@@ -28,7 +28,7 @@ export function mapDisputedReview(wire: unknown): IDisputedReview {
   return DisputedReviewSchema.parse({
     id: text(item.id),
     rating: numeric(item.rating),
-    comment: nullableText(item.comment),
+    body: nullableText(item.body),
     authorName: nullableText(item.author_name),
     subjectType: parseReviewSubjectType(item.subject_type),
     disputeReason: nullableText(item.dispute_reason),

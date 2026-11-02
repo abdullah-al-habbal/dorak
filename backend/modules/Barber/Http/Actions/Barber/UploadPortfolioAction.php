@@ -22,8 +22,8 @@ final class UploadPortfolioAction extends BaseApiAction
 
         return $this->created(data: [
             'id' => $photo->id,
-            'path' => $photo->path,
-            'url' => Storage::disk('public')->url($photo->path),
+            'image_path' => $photo->image_path,
+            'url' => Storage::disk('public')->url($photo->image_path),
             'sort_order' => $photo->sort_order,
         ]);
     }

@@ -35,7 +35,7 @@ export function BookingRateClientForm({
   const copy = dictionary.bookingActions;
   const form = useForm<BookingClientReviewInput>({
     resolver: zodResolver(bookingClientReviewSchema),
-    defaultValues: { rating: 5, comment: "" },
+    defaultValues: { rating: 5, body: "" },
   });
   const rating = String(useWatch({ control: form.control, name: "rating" }));
   const rate = useDashboardMutation(
@@ -89,7 +89,7 @@ export function BookingRateClientForm({
       <Input
         aria-label={copy.clientComment}
         placeholder={copy.clientComment}
-        {...form.register("comment")}
+        {...form.register("body")}
       />
       <Button type="submit" appearance="outline" isDisabled={rate.isPending}>
         {copy.rateClient}

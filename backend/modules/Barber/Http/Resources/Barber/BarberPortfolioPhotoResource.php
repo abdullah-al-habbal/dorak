@@ -14,7 +14,7 @@ final class BarberPortfolioPhotoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'url' => Storage::disk('public')->url($this->path),
+            'url' => Storage::disk('public')->url($this->image_path),
             'sort_order' => $this->sort_order,
         ];
     }

@@ -19,7 +19,7 @@ final class TestimonialFactory extends Factory
                 'en' => $this->faker->randomElement(['Owner', 'Client', 'Barber']),
                 'ar' => 'مستخدم',
             ],
-            'quote' => [
+            'body' => [
                 'en' => $this->faker->sentence(10),
                 'ar' => 'نص الشهادة بالعربية',
             ],

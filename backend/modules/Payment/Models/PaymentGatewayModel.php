@@ -16,17 +16,17 @@ use Spatie\Translatable\HasTranslations;
 
 /**
  * An admin-managed payment gateway. `driver` names the integration (offline
- * for pay at salon); `config` holds its credentials, encrypted at rest (Task 65).
+ * for pay at salon); `gateway_settings` holds its credentials, encrypted at rest (Task 65).
  *
  * @property string $id
  * @property string $code
  * @property PaymentGatewayDriver $driver
  * @property bool $is_active
  * @property bool $is_default
- * @property array<string, mixed>|null $config
+ * @property array<string, mixed>|null $gateway_settings
  */
-#[Fillable(['code', 'name', 'driver', 'is_active', 'is_default', 'config', 'sort_order'])]
-#[Hidden(['config'])]
+#[Fillable(['code', 'name', 'driver', 'is_active', 'is_default', 'gateway_settings', 'sort_order'])]
+#[Hidden(['gateway_settings'])]
 #[Table('payment_gateways')]
 #[Translatable(['name'])]
 class PaymentGatewayModel extends Model
@@ -37,7 +37,7 @@ class PaymentGatewayModel extends Model
     {
         return [
             'driver' => PaymentGatewayDriver::class,
-            'config' => 'encrypted:array',
+            'gateway_settings' => 'encrypted:array',
             'is_active' => 'boolean',
             'is_default' => 'boolean',
             'sort_order' => 'integer',

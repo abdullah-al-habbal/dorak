@@ -17,7 +17,7 @@ use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Enums\ReviewSubjectTypeEnum;
 
-#[Fillable(['booking_id', 'author_id', 'author_type', 'subject_id', 'subject_type', 'rating', 'comment', 'status', 'dispute_reason', 'disputed_at', 'resolved_at', 'resolved_by_id', 'resolution_note'])]
+#[Fillable(['booking_id', 'author_id', 'author_type', 'subject_id', 'subject_type', 'rating', 'body', 'status', 'dispute_reason', 'disputed_at', 'resolved_at', 'resolved_by_id', 'resolution_note'])]
 #[Table('reviews')]
 class ReviewModel extends Model
 {

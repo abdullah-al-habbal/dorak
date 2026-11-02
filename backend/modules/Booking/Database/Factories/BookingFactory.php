@@ -29,7 +29,7 @@ class BookingFactory extends Factory
             'booking_status' => BookingStatus::Confirmed->value,
             'payment_method' => BookingPaymentMethod::PayAtSalon->value,
             'payment_status' => BookingPaymentStatus::UnpaidInPerson->value,
-            'at_home_location' => null,
+            'home_address' => null,
         ];
     }
 
@@ -50,7 +50,7 @@ class BookingFactory extends Factory
     public function atHome(): static
     {
         return $this->state(fn (array $attrs) => [
-            'at_home_location' => [
+            'home_address' => [
                 'latitude' => fake()->latitude(),
                 'longitude' => fake()->longitude(),
                 'street' => fake()->streetName(),

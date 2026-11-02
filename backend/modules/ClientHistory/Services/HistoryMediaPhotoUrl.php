@@ -11,7 +11,7 @@ final class HistoryMediaPhotoUrl
 {
     public static function for(ClientServiceHistoryMediaModel $media): ?string
     {
-        if ($media->photo_path === null) {
+        if ($media->image_path === null) {
             return null;
         }
 

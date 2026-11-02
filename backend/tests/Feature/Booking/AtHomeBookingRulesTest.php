@@ -26,7 +26,7 @@ beforeEach(function (): void {
     $this->actingAs(ClientModel::factory()->create(), 'client');
     $this->book = fn (array $overrides = [], array $location = []) => $this->postJson('/api/v1/bookings', array_merge([
         'barber_id' => $this->barber->id,
-        'at_home_location' => array_merge([
+        'home_address' => array_merge([
             'latitude' => 33.51,
             'longitude' => 36.31,
             'street' => 'Al Hamra Street',

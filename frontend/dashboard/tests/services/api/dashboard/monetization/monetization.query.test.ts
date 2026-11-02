@@ -111,7 +111,7 @@ describe("monetization requests", () => {
       driver: "offline" as const,
       isActive: true,
       isDefault: false,
-      config: "",
+      gatewaySettings: "",
     };
     await saveGateway(gateway);
     await saveGateway(gateway, "g1");

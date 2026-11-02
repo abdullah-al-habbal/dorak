@@ -57,10 +57,10 @@ it('returns the same 9-key client object from login, register, social login and 
 });
 
 it('exposes the avatar as a public url', function (): void {
-    $client = ClientModel::factory()->create(['avatar' => 'avatars/me.jpg']);
+    $client = ClientModel::factory()->create(['avatar_path' => 'avatars/me.jpg']);
     $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
-    $avatar = $this->withToken($token)->getJson('/api/v1/client/profile')->assertOk()->json('data.avatar');
+    $avatar = $this->withToken($token)->getJson('/api/v1/client/profile')->assertOk()->json('data.avatar_url');
 
     expect($avatar)->toEndWith('avatars/me.jpg');
 });

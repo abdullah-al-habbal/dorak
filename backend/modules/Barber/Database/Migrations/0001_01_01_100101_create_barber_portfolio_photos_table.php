@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create('barber_portfolio_photos', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('barber_id')->index();
-            $table->string('path');
+            $table->string('image_path');
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
         });

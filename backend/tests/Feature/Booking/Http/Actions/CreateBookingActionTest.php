@@ -108,7 +108,7 @@ it('creates at-home booking without chair_id', function () {
     $service = OfferedServiceModel::factory()->atHome()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $barber->id]);
 
     $response = $this->postJson('/api/v1/bookings', [
-        'at_home_location' => [
+        'home_address' => [
             'latitude' => 33.5,
             'longitude' => 36.3,
             'street' => 'Al Hamra Street',
@@ -124,13 +124,13 @@ it('creates at-home booking without chair_id', function () {
     expect($response->json('data.booking_status'))->toBe(BookingStatus::Pending->value);
 });
 
-it('rejects booking with both chair_id and at_home_location', function () {
+it('rejects booking with both chair_id and home_address', function () {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $startsAt = Carbon::now()->addDay()->toIso8601ZuluString();
 
     $response = $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'at_home_location' => [
+        'home_address' => [
             'latitude' => 33.5,
             'longitude' => 36.3,
             'street' => 'Al Hamra Street',
@@ -298,7 +298,7 @@ it('rejects an overlapping booking for the same barber on another chair', functi
 
 it('requires a full address for at-home bookings', function () {
     $response = $this->postJson('/api/v1/bookings', [
-        'at_home_location' => [
+        'home_address' => [
             'latitude' => 33.5,
             'longitude' => 36.3,
             'street' => 'Al Hamra Street',
@@ -309,7 +309,7 @@ it('requires a full address for at-home bookings', function () {
 
     $response->assertStatus(422);
     $response->assertJsonValidationErrors([
-        'at_home_location.building',
-        'at_home_location.unit',
+        'home_address.building',
+        'home_address.unit',
     ]);
 });

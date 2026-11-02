@@ -70,7 +70,7 @@ final class ReviewClientHandler
                 'subject_id' => $booking->client_id,
                 'subject_type' => ReviewSubjectTypeEnum::Client,
                 'rating' => $command->rating,
-                'comment' => $command->comment,
+                'body' => $command->body,
                 'status' => ReviewStatus::Published,
             ]);
 

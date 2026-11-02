@@ -31,7 +31,7 @@ final class ReviewInfolistSchema
                             $state >= 3 => 'warning',
                             default => 'danger',
                         }),
-                    TextEntry::make('comment')
+                    TextEntry::make('body')
                         ->columnSpanFull(),
                     TextEntry::make('created_at')
                         ->dateTime(),

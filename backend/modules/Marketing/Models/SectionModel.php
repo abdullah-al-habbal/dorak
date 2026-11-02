@@ -22,14 +22,14 @@ use Spatie\Translatable\HasTranslations;
     'section_type',
     'title',
     'subtitle',
-    'content',
+    'body',
     'media_url',
     'sort_order',
     'universe_visibility',
 ])]
 #[Table('sections')]
 #[Translatable([
-    'content',
+    'body',
     'title',
     'subtitle',
 ])]
@@ -44,7 +44,7 @@ final class SectionModel extends Model
         return [
             'section_type' => SectionTypeEnum::class,
             'universe_visibility' => UniverseVisibilityEnum::class,
-            'content' => 'array',
+            'body' => 'array',
             'title' => 'array',
             'subtitle' => 'array',
             'sort_order' => 'integer',

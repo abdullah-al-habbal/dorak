@@ -101,7 +101,7 @@ describe('interaction logging', function (): void {
 
         $views = ClientInteractionLogModel::query()->where('client_id', $client->id)->where('interaction_type', InteractionTypeEnum::View)->get();
         expect($views)->toHaveCount(2)
-            ->and($views->firstWhere('interactable_id', $branch->id)?->context['screen'])->toBe('branch_detail')
+            ->and($views->firstWhere('interactable_id', $branch->id)?->interaction_context['screen'])->toBe('branch_detail')
             ->and($views->firstWhere('interactable_id', $barber->id)?->interactable_type?->value)->toBe('barber');
     });
 
@@ -116,10 +116,10 @@ describe('interaction logging', function (): void {
         $log = ClientInteractionLogModel::query()->sole();
         expect($log->interaction_type)->toBe(InteractionTypeEnum::Search)
             ->and($log->interactable_id)->toBeNull()
-            ->and($log->context['query'])->toBe('royal')
-            ->and($log->context['universe'])->toBe('women')
-            ->and($log->context['filters'])->toMatchArray(['rating_min' => '3'])
-            ->and($log->context)->toHaveKey('result_count');
+            ->and($log->interaction_context['query'])->toBe('royal')
+            ->and($log->interaction_context['universe'])->toBe('women')
+            ->and($log->interaction_context['filters'])->toMatchArray(['rating_min' => '3'])
+            ->and($log->interaction_context)->toHaveKey('result_count');
     });
 
     it('does not log a plain map browse', function (): void {

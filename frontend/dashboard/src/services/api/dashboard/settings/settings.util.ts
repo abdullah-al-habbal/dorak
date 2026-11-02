@@ -8,7 +8,7 @@ export function buildPlatformSettingsFormSchema(
 ): z.ZodObject<Record<string, z.ZodString>> {
   const shape = Object.fromEntries(
     settings.map((setting) => [
-      setting.key,
+      setting.settingKey,
       z
         .string()
         .regex(/^\d+$/)
@@ -25,7 +25,10 @@ export function platformSettingsFormDefaults(
   settings: IPlatformSetting[],
 ): IPlatformSettingsForm {
   return Object.fromEntries(
-    settings.map((setting) => [setting.key, String(setting.value)]),
+    settings.map((setting) => [
+      setting.settingKey,
+      String(setting.valueInteger),
+    ]),
   );
 }
 
@@ -35,11 +38,14 @@ export function platformSettingsPayload(
   settings: IPlatformSetting[],
 ): { settings: Record<string, number> } {
   const changed = settings.filter(
-    (setting) => Number(form[setting.key]) !== setting.value,
+    (setting) => Number(form[setting.settingKey]) !== setting.valueInteger,
   );
   return {
     settings: Object.fromEntries(
-      changed.map((setting) => [setting.key, Number(form[setting.key])]),
+      changed.map((setting) => [
+        setting.settingKey,
+        Number(form[setting.settingKey]),
+      ]),
     ),
   };
 }

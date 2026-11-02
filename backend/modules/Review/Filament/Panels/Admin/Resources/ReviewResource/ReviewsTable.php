@@ -24,7 +24,7 @@ final class ReviewsTable
                     ->label(__('review::ui.author_type')),
                 TextColumn::make('rating')
                     ->sortable(),
-                TextColumn::make('comment')
+                TextColumn::make('body')
                     ->limit(50),
                 TextColumn::make('created_at')
                     ->dateTime()

@@ -77,10 +77,10 @@ describe("monetization mappers", () => {
       driver: "offline",
       is_active: true,
       is_default: true,
-      config_keys: ["merchant_id"],
-      config: { secret: "x" },
+      gateway_setting_keys: ["merchant_id"],
+      gateway_settings: { secret: "x" },
     });
-    expect(gateway.configKeys).toEqual(["merchant_id"]);
+    expect(gateway.gatewaySettingKeys).toEqual(["merchant_id"]);
     expect(JSON.stringify(gateway)).not.toContain("secret");
   });
 
@@ -211,11 +211,13 @@ describe("monetization payload builders", () => {
       driver: "offline" as const,
       isActive: true,
       isDefault: false,
-      config: "",
+      gatewaySettings: "",
     };
-    expect(gatewayPayload(form)).not.toHaveProperty("config");
-    expect(gatewayPayload({ ...form, config: "merchant=m1" })).toMatchObject({
-      config: { merchant: "m1" },
+    expect(gatewayPayload(form)).not.toHaveProperty("gateway_settings");
+    expect(
+      gatewayPayload({ ...form, gatewaySettings: "merchant=m1" }),
+    ).toMatchObject({
+      gateway_settings: { merchant: "m1" },
       is_default: false,
     });
   });

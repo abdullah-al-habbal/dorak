@@ -10,7 +10,7 @@ final readonly class SavePaymentGatewayCommand
 {
     /**
      * @param  array<string, string>  $name
-     * @param  array<string, mixed>|null  $config  null keeps the stored config on update
+     * @param  array<string, mixed>|null  $gatewaySettings  null keeps the stored settings on update
      */
     public function __construct(
         public string $code,
@@ -18,7 +18,7 @@ final readonly class SavePaymentGatewayCommand
         public PaymentGatewayDriver $driver,
         public bool $isActive,
         public bool $isDefault,
-        public ?array $config,
+        public ?array $gatewaySettings,
         public int $sortOrder,
     ) {}
 }

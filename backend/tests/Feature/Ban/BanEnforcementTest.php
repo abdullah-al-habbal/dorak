@@ -93,7 +93,7 @@ it('rejects a banned client booking without creating a booking row', function ()
     $bookingCount = BookingModel::query()->count();
 
     $this->postJson('/api/v1/bookings', [
-        'at_home_location' => [
+        'home_address' => [
             'latitude' => 33.5,
             'longitude' => 36.3,
             'street' => 'Al Hamra Street',

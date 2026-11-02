@@ -36,7 +36,7 @@ final class SettingsService
     public function update(array $values): void
     {
         foreach ($values as $key => $value) {
-            PlatformSettingModel::query()->updateOrCreate(['key' => $key], ['value' => $value]);
+            PlatformSettingModel::query()->updateOrCreate(['setting_key' => $key], ['value_integer' => $value]);
         }
 
         Cache::forget(SettingsConstants::SETTINGS_CACHE_KEY);
@@ -48,7 +48,7 @@ final class SettingsService
         try {
             return Cache::rememberForever(
                 SettingsConstants::SETTINGS_CACHE_KEY,
-                fn (): array => PlatformSettingModel::query()->pluck('value', 'key')->map(fn ($value): int => (int) $value)->all(),
+                fn (): array => PlatformSettingModel::query()->pluck('value_integer', 'setting_key')->map(fn ($value): int => (int) $value)->all(),
             );
         } catch (QueryException) {
             return [];

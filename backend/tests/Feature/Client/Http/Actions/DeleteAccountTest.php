@@ -87,7 +87,7 @@ describe('DELETE /api/v1/client/account when allowed', function (): void {
         Storage::fake('public');
         $client = deletableClient();
         $avatar = UploadedFile::fake()->image('me.jpg')->store('avatars', 'public');
-        $client->forceFill(['avatar' => $avatar])->save();
+        $client->forceFill(['avatar_path' => $avatar])->save();
         $client->createToken('second-device');
         SocialAccountModel::factory()->create(['client_id' => $client->id]);
 
@@ -108,7 +108,7 @@ describe('DELETE /api/v1/client/account when allowed', function (): void {
             ->and($deleted->phone)->toBeNull()
             ->and($deleted->phone_verified_at)->toBeNull()
             ->and($deleted->email_verified_at)->toBeNull()
-            ->and($deleted->avatar)->toBeNull()
+            ->and($deleted->avatar_path)->toBeNull()
             ->and($deleted->status)->toBe(ClientStatusEnum::Disabled)
             ->and(Hash::check('password123', $deleted->password))->toBeFalse();
         Storage::disk('public')->assertMissing($avatar);
@@ -134,7 +134,6 @@ describe('DELETE /api/v1/client/account when allowed', function (): void {
         $history = historyForDeletedClient($client, $booking);
         ClientServiceHistoryMediaModel::query()->create([
             'client_service_history_id' => $history->id,
-            'photo_url' => 'https://cdn.example.com/sara-after.jpg',
             'photo_type' => HistoryMediaType::After,
             'uploaded_at' => now(),
         ]);

@@ -19,13 +19,13 @@ it('submits review for completed booking', function () {
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
         'rating' => 5,
-        'comment' => 'Great service!',
+        'body' => 'Great service!',
     ]);
 
     $response->assertCreated();
     $response->assertJsonStructure([
         'success',
-        'data' => ['id', 'rating', 'comment'],
+        'data' => ['id', 'rating', 'body'],
     ]);
     expect($response->json('data.rating'))->toBe(5);
 });
@@ -88,7 +88,7 @@ it('includes author_name in review response', function () {
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
         'rating' => 5,
-        'comment' => 'Great!',
+        'body' => 'Great!',
     ]);
 
     $response->assertCreated();

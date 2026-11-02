@@ -26,7 +26,7 @@ final class BookingResource extends JsonResource
             'chair' => ChairResource::make($this->whenLoaded('chair')),
             'barber' => BarberResource::make($this->whenLoaded('barber')),
             'services' => ServiceResource::collection($this->whenLoaded('services')),
-            'at_home_location' => $this->at_home_location,
+            'home_address' => $this->home_address,
             'created_at' => $this->created_at->toIso8601String(),
         ];
     }

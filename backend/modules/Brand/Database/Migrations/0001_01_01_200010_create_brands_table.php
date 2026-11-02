@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('name');
             $table->string('slug', 160)->nullable()->unique();
             $table->json('description')->nullable();
-            $table->string('logo')->nullable();
+            $table->string('logo_url')->nullable();
             $table->string('base_currency_code', 10);
             $table->foreign('base_currency_code')->references('code')->on('currencies');
             $table->string('universe', 10)->default(VenueUniverse::Men->value);

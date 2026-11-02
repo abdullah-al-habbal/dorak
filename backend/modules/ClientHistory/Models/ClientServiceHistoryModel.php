@@ -29,7 +29,7 @@ use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
     'client_rating',
     'client_notes',
     'barber_notes',
-    'metadata',
+    'service_details',
 ])]
 #[Table('client_service_histories')]
 class ClientServiceHistoryModel extends Model
@@ -41,7 +41,7 @@ class ClientServiceHistoryModel extends Model
         return [
             'performed_at' => 'datetime',
             'client_rating' => 'integer',
-            'metadata' => ServiceHistoryMetadataCast::class,
+            'service_details' => ServiceHistoryMetadataCast::class,
         ];
     }
 

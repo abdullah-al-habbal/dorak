@@ -8,17 +8,17 @@ import type { IPlatformSetting } from "@/services/api/dashboard/settings/types/i
 
 const SETTINGS: IPlatformSetting[] = [
   {
-    key: "pagination_max_per_page",
+    settingKey: "pagination_max_per_page",
     group: "search",
-    value: 100,
+    valueInteger: 100,
     default: 100,
     min: 10,
     max: 500,
   },
   {
-    key: "face_profile_max_photos",
+    settingKey: "face_profile_max_photos",
     group: "media",
-    value: 5,
+    valueInteger: 5,
     default: 5,
     min: 1,
     max: 20,

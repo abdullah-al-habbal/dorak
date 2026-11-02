@@ -29,7 +29,7 @@ class ChairSeeder extends Seeder
                 'branch_id' => $branch->id,
                 'barber_id' => null,
                 'label' => (string) ($i + 1),
-                'ui_metadata' => [
+                'layout_settings' => [
                     'shape' => 'rectangle',
                     'position_x' => $pos['x'],
                     'position_y' => $pos['y'],

@@ -108,7 +108,7 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
   Future<ReviewDto> rateClient(
     String bookingId, {
     required int rating,
-    String? comment,
+    String? body,
   }) => throw UnimplementedError();
 
   @override

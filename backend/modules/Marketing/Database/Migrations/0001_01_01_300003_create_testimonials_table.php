@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('section_id')->nullable();
             $table->string('author_name');
             $table->json('author_title')->nullable();
-            $table->json('quote');
+            $table->json('body');
             $table->string('avatar_url')->nullable();
             $table->integer('rating')->default(5);
             $table->integer('sort_order')->default(0);

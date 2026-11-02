@@ -24,7 +24,7 @@ final class UploadAvatarRequest extends BaseApiFormRequest
         return new UploadAvatarCommand(
             clientId: (string) $client->id,
             filePath: $path,
-            oldAvatarPath: $client->avatar,
+            oldAvatarPath: $client->avatar_path,
         );
     }
 }

@@ -28,7 +28,7 @@ describe('Platform settings', function (): void {
 
         $this->getJson('/api/v1/dashboard/admin/settings')
             ->assertOk()
-            ->assertJsonFragment(['key' => $key->value, 'value' => $key->default(), 'default' => $key->default()]);
+            ->assertJsonFragment(['setting_key' => $key->value, 'value_integer' => $key->default(), 'default' => $key->default()]);
 
         $this->patchJson('/api/v1/dashboard/admin/settings', ['settings' => [$key->value => $key->max()]])
             ->assertOk()

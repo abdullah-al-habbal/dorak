@@ -12,7 +12,7 @@ class FloorChairDto {
   final ChairStatus status;
   final ChairStatus? availability;
   final String? floorZone;
-  final Map<String, dynamic>? uiMetadata;
+  final Map<String, dynamic>? layoutSettings;
   final String? branchId;
   final FloorChairBarberDto? barber;
   @JsonKey(defaultValue: 'branch')
@@ -24,7 +24,7 @@ class FloorChairDto {
     required this.status,
     this.availability,
     this.floorZone,
-    this.uiMetadata,
+    this.layoutSettings,
     this.branchId,
     this.barber,
     this.servicesSource = 'branch',

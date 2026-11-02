@@ -6,6 +6,6 @@ return [
     'barber' => 'الحلاق',
     'branch' => 'الفرع',
     'chair' => 'الكرسي',
-    'ui_metadata' => 'بيانات واجهة المستخدم',
+    'layout_settings' => 'بيانات واجهة المستخدم',
     'unassigned' => 'غير معيّن',
 ];

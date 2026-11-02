@@ -22,7 +22,7 @@ use Modules\Chair\Enums\FloorZone;
  * @property string $branch_id
  * @property string|null $barber_id
  */
-#[Fillable(['branch_id', 'barber_id', 'label', 'floor_zone', 'ui_metadata', 'status'])]
+#[Fillable(['branch_id', 'barber_id', 'label', 'floor_zone', 'layout_settings', 'status'])]
 #[Table('chairs')]
 class ChairModel extends Model
 {
@@ -34,7 +34,7 @@ class ChairModel extends Model
         return [
             'status' => ChairStatus::class,
             'floor_zone' => FloorZone::class,
-            'ui_metadata' => 'array',
+            'layout_settings' => 'array',
         ];
     }
 

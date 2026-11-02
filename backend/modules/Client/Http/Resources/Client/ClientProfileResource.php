@@ -14,7 +14,7 @@ final class ClientProfileResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $avatar = $this->getAttribute('avatar');
+        $avatar = $this->getAttribute('avatar_path');
 
         return [
             'id' => $this->id,
@@ -22,7 +22,7 @@ final class ClientProfileResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'phone_verified_at' => $this->phone_verified_at?->toISOString(),
-            'avatar' => $avatar === null ? null : Storage::disk('public')->url($avatar),
+            'avatar_url' => $avatar === null ? null : Storage::disk('public')->url($avatar),
             'preferred_universe' => $this->preferred_universe?->value,
             'email_verified_at' => $this->email_verified_at?->toISOString(),
             'created_at' => $this->created_at?->toISOString(),

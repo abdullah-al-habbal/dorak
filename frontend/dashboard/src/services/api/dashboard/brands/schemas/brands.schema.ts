@@ -7,7 +7,7 @@ export const BrandSchema = z.object({
   id: z.string(),
   name: localized,
   description: localized,
-  logo: z.string().nullable(),
+  logoUrl: z.string().nullable(),
   slug: z.string().nullable(),
   universe: z.enum(BRAND_UNIVERSES),
   baseCurrencyCode: z.string().nullable(),
@@ -19,7 +19,7 @@ export const brandFormSchema = z.object({
   nameAr: z.string().min(1).max(255),
   descriptionEn: z.string().max(5000),
   descriptionAr: z.string().max(5000),
-  logo: z.union([z.literal(""), z.string().url().max(2048)]),
+  logoUrl: z.union([z.literal(""), z.string().url().max(2048)]),
   baseCurrencyCode: z.string().min(1),
   universe: z.enum(BRAND_UNIVERSES),
 });

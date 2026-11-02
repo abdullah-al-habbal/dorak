@@ -111,8 +111,8 @@ describe('POST /client/history/{history}/media', function () {
 
         $response->assertCreated();
         $media = $history->media()->sole();
-        expect($media->photo_path)->toStartWith("history-media/{$history->id}/");
-        Storage::disk('local')->assertExists($media->photo_path);
+        expect($media->image_path)->toStartWith("history-media/{$history->id}/");
+        Storage::disk('local')->assertExists($media->image_path);
 
         $url = $response->json('data.photo_url');
         expect($url)->toContain('signature=')->toContain('expires=');

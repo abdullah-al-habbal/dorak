@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Client\Models\ClientModel;
 use Modules\ClientRecommendation\Eloquent\Casts\EmbeddingCast;
 
-#[Fillable(['client_id', 'embedding', 'metadata', 'computed_at'])]
+#[Fillable(['client_id', 'embedding', 'embedding_metadata', 'computed_at'])]
 #[Table('client_preference_vectors')]
 final class ClientPreferenceVectorModel extends Model
 {
@@ -22,7 +22,7 @@ final class ClientPreferenceVectorModel extends Model
     {
         return [
             'embedding' => EmbeddingCast::class,
-            'metadata' => 'array',
+            'embedding_metadata' => 'array',
             'computed_at' => 'datetime',
         ];
     }

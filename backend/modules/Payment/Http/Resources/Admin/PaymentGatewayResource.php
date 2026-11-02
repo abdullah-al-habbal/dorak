@@ -18,7 +18,7 @@ final class PaymentGatewayResource extends JsonResource
             'driver' => $this->driver->value,
             'is_active' => $this->is_active,
             'is_default' => $this->is_default,
-            'config_keys' => array_keys($this->config ?? []),
+            'gateway_setting_keys' => array_keys($this->gateway_settings ?? []),
             'sort_order' => $this->sort_order,
         ];
     }

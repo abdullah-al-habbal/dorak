@@ -18,7 +18,7 @@ it('lists reviews for branch', function () {
     $response->assertOk();
     $response->assertJsonStructure([
         'success',
-        'data' => ['*' => ['id', 'rating', 'comment']],
+        'data' => ['*' => ['id', 'rating', 'body']],
         'meta' => ['pagination'],
     ]);
     expect($response->json('data'))->toHaveCount(3);

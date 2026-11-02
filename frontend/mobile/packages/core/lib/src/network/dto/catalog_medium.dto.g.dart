@@ -16,8 +16,8 @@ CatalogMediumDto _$CatalogMediumDtoFromJson(Map<String, dynamic> json) =>
             unknownValue: CatalogMediaType.image,
           ) ??
           CatalogMediaType.image,
-      path: json['path'] as String,
-      alt: json['alt'] as String?,
+      imagePath: json['image_path'] as String,
+      altText: json['alt_text'] as String?,
       sortOrder: (json['sort_order'] as num?)?.toInt() ?? 0,
     );
 

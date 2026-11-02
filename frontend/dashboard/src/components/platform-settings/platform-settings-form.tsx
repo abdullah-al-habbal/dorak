@@ -61,14 +61,14 @@ export function PlatformSettingsForm({ settings }: IPlatformSettingsFormProps) {
             .filter((setting) => setting.group === group)
             .map((setting) => (
               <label
-                key={setting.key}
+                key={setting.settingKey}
                 className="grid gap-1 text-sm text-text-100"
               >
-                <span>{copy.keys[setting.key]}</span>
+                <span>{copy.keys[setting.settingKey]}</span>
                 <Input
                   inputMode="numeric"
-                  state={errors[setting.key] ? "error" : "default"}
-                  {...form.register(setting.key)}
+                  state={errors[setting.settingKey] ? "error" : "default"}
+                  {...form.register(setting.settingKey)}
                 />
                 <span className="text-xs text-text-60">
                   {copy.range}: {setting.min}–{setting.max} ·{" "}

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignUuid('barber_id')->nullable()->constrained('barbers')->nullOnDelete();
             $table->string('label')->nullable();
             $table->string('floor_zone')->nullable()->index();
-            $table->json('ui_metadata');
+            $table->json('layout_settings');
             $table->string('status');
             $table->timestamps();
 

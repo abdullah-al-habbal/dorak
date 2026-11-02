@@ -14,7 +14,7 @@ void main() {
     addTearDown(tester.view.reset);
 
     final reviews = FakeReviewRepository()
-      ..reviewsPage = testReviewPage([testReview(comment: 'Sharp fade')]);
+      ..reviewsPage = testReviewPage([testReview(body: 'Sharp fade')]);
     final bloc = BranchReviewsBloc(reviews);
     addTearDown(bloc.close);
     final pair = sessionPair(

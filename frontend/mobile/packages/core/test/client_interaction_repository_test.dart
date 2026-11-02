@@ -44,7 +44,7 @@ void main() {
             data: {
               'id': 'filter-1',
               'name': 'Nearby cheap',
-              'filter_config': {
+              'filter_criteria': {
                 'price_range': {'min': 10, 'max': 50},
               },
             },
@@ -57,7 +57,7 @@ void main() {
     final filter = await repository.getSavedFilter('filter-1');
 
     expect(filter.id, 'filter-1');
-    expect(filter.filterConfig['price_range'], {'min': 10, 'max': 50});
+    expect(filter.filterCriteria['price_range'], {'min': 10, 'max': 50});
   });
 
   test('updateSavedFilter PUTs the filter by id with the new values', () async {
@@ -73,7 +73,7 @@ void main() {
             data: {
               'id': 'filter-1',
               'name': 'Updated',
-              'filter_config': {
+              'filter_criteria': {
                 'price_range': {'min': 5, 'max': 20},
               },
             },
@@ -86,7 +86,7 @@ void main() {
     final filter = await repository.updateSavedFilter(
       id: 'filter-1',
       name: 'Updated',
-      filterConfig: {
+      filterCriteria: {
         'price_range': {'min': 5, 'max': 20},
       },
     );
@@ -95,7 +95,7 @@ void main() {
     expect(bodies, [
       {
         'name': 'Updated',
-        'filter_config': {
+        'filter_criteria': {
           'price_range': {'min': 5, 'max': 20},
         },
       },
@@ -118,7 +118,7 @@ void main() {
                   : {
                       'id': 'filter-1',
                       'name': 'Close by',
-                      'filter_config': {'radius': 5},
+                      'filter_criteria': {'radius': 5},
                     },
             ),
           );
@@ -128,7 +128,7 @@ void main() {
 
       await repository.saveFilter(
         name: 'Close by',
-        filterConfig: {'radius': 5},
+        filterCriteria: {'radius': 5},
       );
       await repository.deleteSavedFilter('filter-1');
 

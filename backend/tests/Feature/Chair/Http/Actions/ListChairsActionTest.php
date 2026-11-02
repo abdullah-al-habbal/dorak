@@ -14,7 +14,7 @@ it('lists chairs', function () {
     $response->assertJsonStructure([
         'success',
         'data' => [
-            '*' => ['id', 'label', 'status', 'ui_metadata', 'branch_id', 'created_at'],
+            '*' => ['id', 'label', 'status', 'layout_settings', 'branch_id', 'created_at'],
         ],
         'meta' => ['pagination'],
     ]);

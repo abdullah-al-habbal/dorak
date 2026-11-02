@@ -14,7 +14,7 @@ final class PlatformSettingSeeder extends Seeder
     public function run(): void
     {
         foreach (SettingKey::cases() as $key) {
-            PlatformSettingModel::query()->firstOrCreate(['key' => $key->value], ['value' => $key->default()]);
+            PlatformSettingModel::query()->firstOrCreate(['setting_key' => $key->value], ['value_integer' => $key->default()]);
         }
     }
 }

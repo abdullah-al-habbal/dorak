@@ -37,7 +37,7 @@ class BookingSeeder extends Seeder
             'starts_at' => $startsAt,
             'ends_at' => $startsAt->copy()->addMinutes($service->duration_minutes ?? 30),
             'booking_status' => BookingStatus::Completed->value,
-            'at_home_location' => null,
+            'home_address' => null,
         ]);
 
         $booking->services()->attach($service->id);

@@ -74,10 +74,10 @@ it('rejects a request with none of chair, barber plus branch, or at-home', funct
     ($this->book)(['barber_id' => null])->assertUnprocessable();
 });
 
-it('still rejects chair_id combined with at_home_location', function (): void {
+it('still rejects chair_id combined with home_address', function (): void {
     $this->postJson('/api/v1/bookings', [
         'chair_id' => (string) Str::uuid(),
-        'at_home_location' => ['latitude' => 33.5, 'longitude' => 36.3, 'street' => 's', 'building' => '1', 'unit' => '1'],
+        'home_address' => ['latitude' => 33.5, 'longitude' => 36.3, 'street' => 's', 'building' => '1', 'unit' => '1'],
         'starts_at' => $this->slot->toIso8601String(),
         'service_ids' => [$this->service->id],
     ])->assertUnprocessable();

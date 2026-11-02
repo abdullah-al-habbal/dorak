@@ -21,7 +21,7 @@ final class UploadAvatarAction extends BaseApiAction
         $client = $this->handler->handle($request->toCommand());
 
         return $this->ok(data: [
-            'avatar_url' => Storage::disk('public')->url($client->avatar),
+            'avatar_url' => Storage::disk('public')->url($client->avatar_path),
         ]);
     }
 }

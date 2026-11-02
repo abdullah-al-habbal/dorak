@@ -23,7 +23,7 @@ final class SavePaymentGatewayRequest extends BaseApiFormRequest
             'driver' => ['required', Rule::enum(PaymentGatewayDriver::class)],
             'is_active' => ['required', 'boolean'],
             'is_default' => ['sometimes', 'boolean'],
-            'config' => ['sometimes', 'nullable', 'array'],
+            'gateway_settings' => ['sometimes', 'nullable', 'array'],
             'sort_order' => ['sometimes', 'integer', 'min:0'],
         ];
     }
@@ -38,7 +38,7 @@ final class SavePaymentGatewayRequest extends BaseApiFormRequest
             driver: PaymentGatewayDriver::from($data['driver']),
             isActive: (bool) $data['is_active'],
             isDefault: (bool) ($data['is_default'] ?? false),
-            config: $data['config'] ?? null,
+            gatewaySettings: $data['gateway_settings'] ?? null,
             sortOrder: (int) ($data['sort_order'] ?? 0),
         );
     }

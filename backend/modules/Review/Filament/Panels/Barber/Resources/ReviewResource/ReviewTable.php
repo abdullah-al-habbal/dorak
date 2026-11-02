@@ -18,7 +18,7 @@ final class ReviewTable
                     ->label(__('review::ui.client')),
                 TextColumn::make('rating')
                     ->badge(),
-                TextColumn::make('comment')
+                TextColumn::make('body')
                     ->limit(50),
                 TextColumn::make('created_at')
                     ->dateTime(),

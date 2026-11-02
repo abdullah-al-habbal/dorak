@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('client_rating')->nullable();
             $table->text('client_notes')->nullable();
             $table->text('barber_notes')->nullable();
-            $table->json('metadata')->nullable();
+            $table->json('service_details')->nullable();
             $table->timestamps();
         });
     }

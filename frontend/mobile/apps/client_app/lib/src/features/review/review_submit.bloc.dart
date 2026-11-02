@@ -28,7 +28,7 @@ class ReviewSubmitBloc extends Bloc<ReviewSubmitEvent, ReviewSubmitState> {
       final review = await _reviews.submitReview(
         event.bookingId,
         rating: event.rating,
-        comment: event.comment,
+        body: event.comment,
       );
       if (emit.isDone) return;
       emit(

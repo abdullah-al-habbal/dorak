@@ -11,7 +11,7 @@ abstract class BranchOperationsRepository {
   Future<ReviewDto> rateClient(
     String bookingId, {
     required int rating,
-    String? comment,
+    String? body,
   });
   Future<PaginatedData<FloorChairDto>> getChairs();
   Future<FloorChairDto> updateChairStatus(
@@ -51,10 +51,10 @@ class DioBranchOperationsRepository implements BranchOperationsRepository {
   Future<ReviewDto> rateClient(
     String bookingId, {
     required int rating,
-    String? comment,
+    String? body,
   }) => _client.post(
     ApiEndpoints.operations.branchBookingReview(bookingId),
-    data: {'rating': rating, 'comment': ?comment},
+    data: {'rating': rating, 'body': ?body},
     parser: (json) => ReviewDto.fromJson(json as Map<String, dynamic>),
   );
 
@@ -91,7 +91,7 @@ abstract class StylistOperationsRepository {
   Future<ReviewDto> rateClient(
     String bookingId, {
     required int rating,
-    String? comment,
+    String? body,
   });
 
   /// Cancels a booking assigned to this barber; [reason] is required by the
@@ -182,10 +182,10 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
   Future<ReviewDto> rateClient(
     String bookingId, {
     required int rating,
-    String? comment,
+    String? body,
   }) => _client.post(
     ApiEndpoints.operations.barberBookingReview(bookingId),
-    data: {'rating': rating, 'comment': ?comment},
+    data: {'rating': rating, 'body': ?body},
     parser: (json) => ReviewDto.fromJson(json as Map<String, dynamic>),
   );
 

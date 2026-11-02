@@ -44,7 +44,7 @@ class BusinessReviewsScreen extends StatelessWidget {
                       subtitle: Text(
                         [
                           if (review.authorName != null) review.authorName!,
-                          if (review.comment != null) review.comment!,
+                          if (review.body != null) review.body!,
                         ].join(' · '),
                       ),
                     ),

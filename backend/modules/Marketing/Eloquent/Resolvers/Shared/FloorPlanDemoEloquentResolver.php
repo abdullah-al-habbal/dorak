@@ -40,7 +40,7 @@ final class FloorPlanDemoEloquentResolver
                 'id' => $chair->id,
                 'label' => $chair->label,
                 'status' => $chair->status,
-                'ui_metadata' => $chair->ui_metadata,
+                'layout_settings' => $chair->layout_settings,
             ])->toArray(),
         ];
     }

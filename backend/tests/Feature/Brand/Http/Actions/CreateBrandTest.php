@@ -17,18 +17,18 @@ it('creates a brand with valid data', function () {
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Barber Shop EN', 'ar' => 'Barber Shop AR'],
         'base_currency_code' => $currency->code,
-        'logo' => 'https://example.com/logo.png',
+        'logo_url' => 'https://example.com/logo.png',
         'description' => ['en' => 'A great shop', 'ar' => 'محل رائع'],
     ]);
 
     $response->assertCreated();
     $response->assertJsonStructure([
         'success',
-        'data' => ['id', 'name', 'description', 'logo', 'owner', 'base_currency', 'created_at'],
+        'data' => ['id', 'name', 'description', 'logo_url', 'owner', 'base_currency', 'created_at'],
     ]);
     expect($response->json('data.name.en'))->toBe('Barber Shop EN');
     expect($response->json('data.name.ar'))->toBe('Barber Shop AR');
-    expect($response->json('data.logo'))->toBe('https://example.com/logo.png');
+    expect($response->json('data.logo_url'))->toBe('https://example.com/logo.png');
     expect($response->json('data.owner.id'))->toBe($this->client->id);
 
     $this->assertDatabaseHas('brands', [
@@ -102,7 +102,7 @@ it('rejects create with invalid logo url', function () {
     $response = $this->postJson('/api/v1/brands', [
         'name' => ['en' => 'Brand', 'ar' => 'علامة'],
         'base_currency_code' => $currency->code,
-        'logo' => 'not-a-url',
+        'logo_url' => 'not-a-url',
     ]);
 
     $response->assertStatus(422);

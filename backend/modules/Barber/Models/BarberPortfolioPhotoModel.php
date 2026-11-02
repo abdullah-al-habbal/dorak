@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Barber\Database\Factories\BarberPortfolioPhotoFactory;
 
-#[Fillable(['barber_id', 'path', 'sort_order'])]
+#[Fillable(['barber_id', 'image_path', 'sort_order'])]
 #[Table('barber_portfolio_photos')]
 final class BarberPortfolioPhotoModel extends Model
 {

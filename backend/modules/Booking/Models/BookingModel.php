@@ -34,7 +34,7 @@ use Modules\Review\Models\ReviewModel;
  * @property Carbon $ends_at
  * @property BookingStatus $booking_status
  */
-#[Fillable(['client_id', 'chair_id', 'branch_id', 'barber_id', 'starts_at', 'ends_at', 'booking_status', 'cancellation_reason', 'payment_method', 'payment_status', 'at_home_location'])]
+#[Fillable(['client_id', 'chair_id', 'branch_id', 'barber_id', 'starts_at', 'ends_at', 'booking_status', 'cancellation_reason', 'payment_method', 'payment_status', 'home_address'])]
 #[Table('bookings')]
 class BookingModel extends Model
 {
@@ -49,7 +49,7 @@ class BookingModel extends Model
             'payment_status' => BookingPaymentStatus::class,
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
-            'at_home_location' => 'array',
+            'home_address' => 'array',
         ];
     }
 

@@ -12,7 +12,7 @@ class ReviewDto {
   final ReviewSubjectType? subjectType;
   final String? subjectId;
   final int rating;
-  final String? comment;
+  final String? body;
   final String? authorName;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final ReviewStatus? status;
@@ -25,7 +25,7 @@ class ReviewDto {
     this.subjectType,
     this.subjectId,
     required this.rating,
-    this.comment,
+    this.body,
     this.authorName,
     this.status,
     this.disputedAt,

@@ -48,6 +48,8 @@ Earlier batches A-H (enums, branch hours, weekday constants) are listed in `inde
 
 **Batch J part 1 (complete)**: `*_radius_km`, `commission_percent`, `confidence_ratio`, `weight_ratio`, `attempts_count`. **Batch J part 2 (complete)**: `rating_average`, `duration_minutes`, `allows_*` booleans, `favorited_*`. Batch J is finished; next is Batch K.
 
+**Batch K (complete)**: time, lifecycle and booking names, see `batch-k-time-lifecycle-bookings.md`. **Batch L (complete)**: type, category and mode names, see `batch-l-type-category-mode.md`. **Batch M (complete)**: content, file and JSON names, see `batch-m-content-files-json.md`. Next is the Final guardrail batch.
+
 ## 4. Full roadmap (remaining work)
 
 ### Batch I remainder

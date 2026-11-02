@@ -30,7 +30,7 @@ final class BarberProfileSnapshotBuilder
             ],
             'portfolio' => $barber->portfolioPhotos->map(fn (BarberPortfolioPhotoModel $photo): array => [
                 'id' => $photo->id,
-                'url' => Storage::disk('public')->url($photo->path),
+                'url' => Storage::disk('public')->url($photo->image_path),
             ])->all(),
             'services' => $barber->services->map(fn (OfferedServiceModel $service): array => [
                 'id' => $service->id,

@@ -21,9 +21,9 @@ final class ListPlatformSettingsAction extends BaseApiAction
         Gate::forUser($request->user('admin_api'))->authorize('viewAny', PlatformSettingModel::class);
 
         return $this->ok(data: array_map(fn (SettingKey $key): array => [
-            'key' => $key->value,
+            'setting_key' => $key->value,
             'group' => $key->group()->value,
-            'value' => $this->settings->int($key),
+            'value_integer' => $this->settings->int($key),
             'default' => $key->default(),
             'min' => $key->min(),
             'max' => $key->max(),

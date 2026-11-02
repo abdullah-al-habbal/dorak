@@ -13,7 +13,7 @@ final readonly class SubmitReviewCommand
         public string $authorId,
         public ReviewAuthorTypeEnum $authorType,
         public int $rating,
-        public ?string $comment,
+        public ?string $body,
         public ?int $barberRating = null,
     ) {}
 }

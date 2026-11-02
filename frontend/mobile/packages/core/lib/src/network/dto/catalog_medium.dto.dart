@@ -12,15 +12,15 @@ class CatalogMediumDto {
     unknownEnumValue: CatalogMediaType.image,
   )
   final CatalogMediaType mediaType;
-  final String path;
-  final String? alt;
+  final String imagePath;
+  final String? altText;
   final int sortOrder;
 
   const CatalogMediumDto({
     required this.id,
     this.mediaType = CatalogMediaType.image,
-    required this.path,
-    this.alt,
+    required this.imagePath,
+    this.altText,
     this.sortOrder = 0,
   });
 

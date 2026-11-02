@@ -23,7 +23,7 @@ class BrandSeeder extends Seeder
             'owner_id' => $client->id,
             'name' => ['en' => 'Dorak Demo', 'ar' => 'دوراك التجريبي'],
             'description' => ['en' => 'Demo brand for development', 'ar' => 'علامة تجريبية للتطوير'],
-            'logo' => null,
+            'logo_url' => null,
             'base_currency_code' => $syp->code,
         ]);
     }

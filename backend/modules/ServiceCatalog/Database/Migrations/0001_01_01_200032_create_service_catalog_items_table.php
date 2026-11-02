@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('formality_level')->nullable();
             $table->json('face_shapes')->nullable();
             $table->json('hair_textures')->nullable();
-            $table->json('metadata')->nullable();
+            $table->json('styling_details')->nullable();
             $table->boolean('is_active')->default(true);
             $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();

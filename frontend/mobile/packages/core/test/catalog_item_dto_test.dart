@@ -16,10 +16,10 @@ Map<String, dynamic> _catalogItemPayload() => {
   'price_range': {'min': 10, 'max': 25.5, 'currency': 'SAR'},
   'maintenance_level': 'low',
   'style_period_type': 'modern',
-  'formality': null,
+  'formality_level': null,
   'face_shapes': ['oval', 'square'],
   'hair_textures': null,
-  'metadata': null,
+  'styling_details': null,
   'category': {
     'id': _categoryId,
     'name': {'en': 'Hair'},
@@ -56,8 +56,8 @@ void main() {
         'face_shapes': ['oval', 'hexagon'],
         'style_period_type': 'futuristic',
         'media': [
-          {'id': 'm1', 'media_type': 'hologram', 'path': 'a.png', 'sort_order': 0},
-          {'id': 'm2', 'media_type': 'video', 'path': 'b.mp4', 'sort_order': 1},
+          {'id': 'm1', 'media_type': 'hologram', 'image_path': 'a.png', 'sort_order': 0},
+          {'id': 'm2', 'media_type': 'video', 'image_path': 'b.mp4', 'sort_order': 1},
         ],
       });
 

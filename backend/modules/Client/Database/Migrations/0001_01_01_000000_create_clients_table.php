@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('preferred_universe', 10)->default(UniverseEnum::Men->value);
             $table->string('phone')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
-            $table->string('avatar')->nullable();
+            $table->string('avatar_path')->nullable();
             $table->string('status', 20)->default(ClientStatusEnum::Enabled->value);
             $table->timestamps();
             $table->softDeletes();

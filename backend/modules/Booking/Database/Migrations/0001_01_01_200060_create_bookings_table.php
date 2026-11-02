@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('cancellation_reason', 500)->nullable();
             $table->string('payment_method')->default(BookingPaymentMethod::PayAtSalon->value);
             $table->string('payment_status')->default(BookingPaymentStatus::UnpaidInPerson->value);
-            $table->json('at_home_location')->nullable();
+            $table->json('home_address')->nullable();
             $table->timestamps();
 
             $table->index(['chair_id', 'starts_at', 'ends_at', 'booking_status']);

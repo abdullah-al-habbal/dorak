@@ -27,7 +27,7 @@ use Modules\Preference\Models\PreferenceModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['owner_id', 'name', 'slug', 'universe', 'description', 'logo', 'base_currency_code'])]
+#[Fillable(['owner_id', 'name', 'slug', 'universe', 'description', 'logo_url', 'base_currency_code'])]
 #[Table('brands')]
 #[Translatable([
     'name',

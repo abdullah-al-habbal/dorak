@@ -10,7 +10,7 @@ describe("moderation mappers", () => {
       mapDisputedReview({
         id: "r1",
         rating: 2,
-        comment: "Rude",
+        body: "Rude",
         author_name: "Sam",
         subject_type: "branch",
         dispute_reason: "Wrong appointment",
@@ -20,7 +20,7 @@ describe("moderation mappers", () => {
     ).toEqual({
       id: "r1",
       rating: 2,
-      comment: "Rude",
+      body: "Rude",
       authorName: "Sam",
       subjectType: "branch",
       disputeReason: "Wrong appointment",
@@ -31,7 +31,7 @@ describe("moderation mappers", () => {
 
   it("tolerates a sparse review payload", () => {
     const review = mapDisputedReview({ id: "r2" });
-    expect(review.comment).toBeNull();
+    expect(review.body).toBeNull();
     expect(review.disputeReason).toBeNull();
     expect(review.rating).toBe(0);
   });

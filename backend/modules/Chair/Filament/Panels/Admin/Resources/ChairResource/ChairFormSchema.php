@@ -30,7 +30,7 @@ final class ChairFormSchema
                     Select::make('status')
                         ->options(ChairStatus::class)
                         ->required(),
-                    KeyValue::make('ui_metadata'),
+                    KeyValue::make('layout_settings'),
                 ]),
         ]);
     }

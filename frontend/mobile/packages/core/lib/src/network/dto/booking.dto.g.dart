@@ -33,10 +33,10 @@ BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
           ?.map((e) => BookingServiceDto.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  atHomeLocation: json['at_home_location'] == null
+  homeAddress: json['home_address'] == null
       ? null
       : AtHomeLocationDto.fromJson(
-          json['at_home_location'] as Map<String, dynamic>,
+          json['home_address'] as Map<String, dynamic>,
         ),
   createdAt: json['created_at'] == null
       ? null
@@ -58,7 +58,7 @@ Map<String, dynamic> _$BookingDtoToJson(
   'barber': instance.barber,
   'client': instance.client,
   'services': instance.services,
-  'at_home_location': instance.atHomeLocation,
+  'home_address': instance.homeAddress,
   'created_at': instance.createdAt?.toIso8601String(),
 };
 

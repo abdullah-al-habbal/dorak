@@ -31,8 +31,8 @@ final class ChairFormSchema
                         ->options(ChairStatus::class)
                         ->required()
                         ->default(ChairStatus::Available),
-                    JSONInput::make('ui_metadata')
-                        ->label(__('chair::ui.ui_metadata'))
+                    JSONInput::make('layout_settings')
+                        ->label(__('chair::ui.layout_settings'))
                         ->nullable(),
                 ]),
         ]);

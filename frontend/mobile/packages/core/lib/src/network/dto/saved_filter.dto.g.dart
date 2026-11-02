@@ -10,5 +10,5 @@ SavedFilterDto _$SavedFilterDtoFromJson(Map<String, dynamic> json) =>
     SavedFilterDto(
       id: json['id'] as String,
       name: json['name'] as String,
-      filterConfig: json['filter_config'] as Map<String, dynamic>,
+      filterCriteria: json['filter_criteria'] as Map<String, dynamic>,
     );

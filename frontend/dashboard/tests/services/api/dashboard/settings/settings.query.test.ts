@@ -9,9 +9,9 @@ import {
 } from "@/services/api/dashboard/settings/settings.query";
 
 const WIRE = {
-  key: "explore_candidate_cap",
+  settingKey: "explore_candidate_cap",
   group: "search",
-  value: 500,
+  valueInteger: 500,
   default: 500,
   min: 50,
   max: 5000,
@@ -27,7 +27,7 @@ describe("platform settings queries", () => {
   });
 
   it("rejects a malformed settings payload", async () => {
-    get.mockResolvedValue([{ ...WIRE, key: "unknown_key" }]);
+    get.mockResolvedValue([{ ...WIRE, settingKey: "unknown_key" }]);
     await expect(getPlatformSettings()).rejects.toThrow();
   });
 
@@ -37,7 +37,7 @@ describe("platform settings queries", () => {
       settings: [
         {
           ...WIRE,
-          key: "explore_candidate_cap" as const,
+          settingKey: "explore_candidate_cap" as const,
           group: "search" as const,
         },
       ],

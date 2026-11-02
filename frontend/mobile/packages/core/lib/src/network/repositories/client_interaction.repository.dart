@@ -5,13 +5,13 @@ abstract class ClientInteractionRepository {
   Future<SavedFilterDto> getSavedFilter(String id);
   Future<SavedFilterDto> saveFilter({
     required String name,
-    required Map<String, dynamic> filterConfig,
+    required Map<String, dynamic> filterCriteria,
     String? id,
   });
   Future<SavedFilterDto> updateSavedFilter({
     required String id,
     required String name,
-    required Map<String, dynamic> filterConfig,
+    required Map<String, dynamic> filterCriteria,
   });
   Future<void> deleteSavedFilter(String id);
   Future<DiscoveryPreferenceDto> getDiscoveryPreferences();
@@ -38,10 +38,10 @@ class DioClientInteractionRepository implements ClientInteractionRepository {
   @override
   Future<SavedFilterDto> saveFilter({
     required String name,
-    required Map<String, dynamic> filterConfig,
+    required Map<String, dynamic> filterCriteria,
     String? id,
   }) {
-    final data = {'name': name, 'filter_config': filterConfig};
+    final data = {'name': name, 'filter_criteria': filterCriteria};
     if (id == null) {
       return _client.post(
         ApiEndpoints.clientInteraction.savedFilters,
@@ -60,10 +60,10 @@ class DioClientInteractionRepository implements ClientInteractionRepository {
   Future<SavedFilterDto> updateSavedFilter({
     required String id,
     required String name,
-    required Map<String, dynamic> filterConfig,
+    required Map<String, dynamic> filterCriteria,
   }) => _client.put(
     ApiEndpoints.clientInteraction.savedFilter(id),
-    data: {'name': name, 'filter_config': filterConfig},
+    data: {'name': name, 'filter_criteria': filterCriteria},
     parser: (json) => SavedFilterDto.fromJson(json as Map<String, dynamic>),
   );
 

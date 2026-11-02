@@ -96,7 +96,7 @@ Relationships:
 | Handler | Input | Output | Logic |
 |---------|-------|--------|-------|
 | `GetMarketingPageHandler` | `(string $slug, string $locale, string $universe)` | array{page, sections} | Resolves page by slug, filters sections by universe, loads testimonials for testimonial-type sections, translates content to locale |
-| `GetFloorPlanDemoHandler` | `(string $locale)` | array{branch, canvas, chairs} | Fetches a seeded "Demo Branch", loads its chairs with ui_metadata, formats into canvas dimensions + chair positions |
+| `GetFloorPlanDemoHandler` | `(string $locale)` | array{branch, canvas, chairs} | Fetches a seeded "Demo Branch", loads its chairs with layout_settings, formats into canvas dimensions + chair positions |
 
 ### 3.5 Actions
 
@@ -251,7 +251,7 @@ document.addEventListener('alpine:init', () => {
 
 ### 4.9 Floor Plan Demo Rendering
 
-Alpine component iterates over `floorPlan.chairs`, renders SVG `<rect>` or `<circle>` elements positioned by `ui_metadata.position_x` / `position_y`, colored by status (`available`=green, `occupied`=red, `maintenance`=yellow).
+Alpine component iterates over `floorPlan.chairs`, renders SVG `<rect>` or `<circle>` elements positioned by `layout_settings.position_x` / `position_y`, colored by status (`available`=green, `occupied`=red, `maintenance`=yellow).
 
 ---
 
@@ -283,7 +283,7 @@ return [
 
 `FloorPlanDemoSeeder` seeds (or uses existing seeders from Chair module):
 - 1 "Demo Branch" with 5 chairs at varied positions
-- Each chair has `ui_metadata` with shape, position_x/y, width, height
+- Each chair has `layout_settings` with shape, position_x/y, width, height
 
 ---
 

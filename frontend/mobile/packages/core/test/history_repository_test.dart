@@ -21,7 +21,7 @@ Map<String, Object?> history({
   'client_rating': 5,
   'client_notes': 'Great fade',
   'barber_notes': null,
-  'metadata': null,
+  'service_details': null,
   'barber': {'id': 'barber-1', 'name': 'Karim'},
   'branch': {'id': branchId, 'name': 'Riyadh Downtown'},
   'catalog_item': {

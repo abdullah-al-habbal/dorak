@@ -15,7 +15,7 @@ function gatewayPayload(array $overrides = []): array
         'name' => ['en' => 'Syriatel Cash', 'ar' => 'سيريتل كاش'],
         'driver' => PaymentGatewayDriver::Offline->value,
         'is_active' => true,
-        'config' => ['merchant_id' => 'm-1', 'secret' => 's3cret'],
+        'gateway_settings' => ['merchant_id' => 'm-1', 'secret' => 's3cret'],
         ...$overrides,
     ];
 }
@@ -38,12 +38,12 @@ describe('Payment gateways', function (): void {
     it('creates a gateway, stores config encrypted and never returns its values', function (): void {
         $response = $this->postJson('/api/v1/dashboard/admin/payment-gateways', gatewayPayload())
             ->assertCreated()
-            ->assertJsonPath('data.config_keys', ['merchant_id', 'secret']);
+            ->assertJsonPath('data.gateway_setting_keys', ['merchant_id', 'secret']);
 
         expect(json_encode($response->json()))->not->toContain('s3cret');
-        $raw = DB::table('payment_gateways')->where('code', 'syriatel_cash')->value('config');
+        $raw = DB::table('payment_gateways')->where('code', 'syriatel_cash')->value('gateway_settings');
         expect($raw)->not->toContain('s3cret');
-        expect(PaymentGatewayModel::query()->where('code', 'syriatel_cash')->sole()->config['secret'])->toBe('s3cret');
+        expect(PaymentGatewayModel::query()->where('code', 'syriatel_cash')->sole()->gateway_settings['secret'])->toBe('s3cret');
     });
 
     it('validates code format and uniqueness', function (): void {
@@ -77,15 +77,15 @@ describe('Payment gateways', function (): void {
     });
 
     it('updates a gateway and keeps its stored config when none is sent', function (): void {
-        $gateway = PaymentGatewayModel::factory()->create(['code' => 'old', 'config' => ['k' => 'v']]);
+        $gateway = PaymentGatewayModel::factory()->create(['code' => 'old', 'gateway_settings' => ['k' => 'v']]);
         $payload = gatewayPayload(['code' => 'old', 'name' => ['en' => 'Renamed', 'ar' => 'جديد']]);
-        unset($payload['config']);
+        unset($payload['gateway_settings']);
 
         $this->putJson("/api/v1/dashboard/admin/payment-gateways/{$gateway->id}", $payload)
             ->assertOk()
             ->assertJsonPath('data.driver', 'offline')
             ->assertJsonPath('data.name.en', 'Renamed')
-            ->assertJsonPath('data.config_keys', ['k']);
+            ->assertJsonPath('data.gateway_setting_keys', ['k']);
     });
 
     it('toggles a gateway but protects the default and the last active one', function (): void {

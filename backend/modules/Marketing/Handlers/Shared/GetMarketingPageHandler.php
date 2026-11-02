@@ -39,7 +39,7 @@ final class GetMarketingPageHandler
                     'section_type' => $section->section_type->value,
                     'sort_order' => $section->sort_order,
                     'universe_visibility' => $section->universe_visibility->value,
-                    'content' => $section->getTranslation('content', $locale),
+                    'body' => $section->getTranslation('body', $locale),
                 ];
 
                 if ($section->section_type === SectionTypeEnum::Testimonials) {
@@ -48,7 +48,7 @@ final class GetMarketingPageHandler
                         'id' => $t->id,
                         'author_name' => $t->author_name,
                         'author_title' => $t->author_title,
-                        'quote' => $t->getTranslation('quote', $locale),
+                        'body' => $t->getTranslation('body', $locale),
                         'rating' => $t->rating,
                     ])->toArray();
                 }

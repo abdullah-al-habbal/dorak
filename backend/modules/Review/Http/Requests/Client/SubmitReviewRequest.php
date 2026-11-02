@@ -14,7 +14,7 @@ final class SubmitReviewRequest extends BaseApiFormRequest
     {
         return [
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
-            'comment' => ['nullable', 'string', 'max:1000'],
+            'body' => ['nullable', 'string', 'max:1000'],
             'barber_rating' => ['sometimes', 'nullable', 'integer', 'min:1', 'max:5'],
         ];
     }
@@ -26,7 +26,7 @@ final class SubmitReviewRequest extends BaseApiFormRequest
             authorId: (string) $this->user()->id,
             authorType: ReviewAuthorTypeEnum::from($this->user()->getMorphClass()),
             rating: (int) $this->validated('rating'),
-            comment: $this->validated('comment'),
+            body: $this->validated('body'),
             barberRating: $this->validated('barber_rating') === null ? null : (int) $this->validated('barber_rating'),
         );
     }

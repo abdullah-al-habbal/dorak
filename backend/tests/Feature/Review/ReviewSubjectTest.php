@@ -25,7 +25,7 @@ describe('review subject resolution', function (): void {
             'branch_id' => null,
         ]);
 
-        $this->postJson("/api/v1/client/bookings/{$booking->id}/review", ['rating' => 4, 'comment' => 'Great fade'])
+        $this->postJson("/api/v1/client/bookings/{$booking->id}/review", ['rating' => 4, 'body' => 'Great fade'])
             ->assertCreated()
             ->assertJsonPath('data.subject_type', ReviewSubjectTypeEnum::Barber->value)
             ->assertJsonPath('data.subject_id', $barber->id)

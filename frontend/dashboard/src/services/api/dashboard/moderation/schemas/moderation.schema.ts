@@ -9,7 +9,7 @@ import { REVIEW_SUBJECT_TYPES } from "@/services/api/dashboard/review/review.con
 export const DisputedReviewSchema = z.object({
   id: z.string(),
   rating: z.number(),
-  comment: z.string().nullable(),
+  body: z.string().nullable(),
   authorName: z.string().nullable(),
   subjectType: z.enum(REVIEW_SUBJECT_TYPES).nullable(),
   disputeReason: z.string().nullable(),

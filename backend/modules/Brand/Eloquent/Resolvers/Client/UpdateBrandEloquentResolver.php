@@ -41,8 +41,8 @@ final class UpdateBrandEloquentResolver
             $data['universe'] = $command->universe;
         }
 
-        if ($command->logo !== null) {
-            $data['logo'] = $command->logo;
+        if ($command->logoUrl !== null) {
+            $data['logo_url'] = $command->logoUrl;
         }
 
         $brand->update($data);

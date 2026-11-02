@@ -61,7 +61,7 @@ modules/Marketing/
 │       └── GetFloorPlanDemoAction.php
 
 database/seeders/
-└── FloorPlanDemoSeeder.php                                     # seeds demo branch + 5 chairs with ui_metadata
+└── FloorPlanDemoSeeder.php                                     # seeds demo branch + 5 chairs with layout_settings
 ```
 
 ---

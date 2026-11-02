@@ -77,7 +77,7 @@ describe('multi_branch (A3)', function (): void {
         $admin = AdminModel::factory()->create();
         $chair = fn (BranchModel $branch): array => [
             'branch_id' => $branch->id, 'label' => 'C1', 'floor_zone' => 'shared', 'status' => ChairStatus::Available,
-            'ui_metadata' => ['position_x' => 0, 'position_y' => 0, 'width' => 1, 'height' => 1],
+            'layout_settings' => ['position_x' => 0, 'position_y' => 0, 'width' => 1, 'height' => 1],
         ];
 
         $this->authenticateDashboardActor($admin)->postJson('/api/v1/dashboard/chairs', $chair($extra))

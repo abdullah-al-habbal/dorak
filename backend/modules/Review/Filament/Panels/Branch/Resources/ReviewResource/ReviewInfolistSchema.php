@@ -27,7 +27,7 @@ final class ReviewInfolistSchema
                     TextEntry::make('created_at')
                         ->dateTime()
                         ->label(__('review::ui.date')),
-                    TextEntry::make('comment')
+                    TextEntry::make('body')
                         ->label(__('review::ui.comment'))
                         ->columnSpanFull(),
                 ]),

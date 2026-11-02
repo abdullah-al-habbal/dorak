@@ -17,17 +17,17 @@ it('updates own brand with valid data', function () {
     $response = $this->putJson("/api/v1/brands/{$brand->id}", [
         'name' => ['en' => 'Updated EN', 'ar' => 'Updated AR'],
         'description' => ['en' => 'New desc'],
-        'logo' => 'https://example.com/new-logo.png',
+        'logo_url' => 'https://example.com/new-logo.png',
     ]);
 
     $response->assertOk();
     $response->assertJsonStructure([
         'success',
-        'data' => ['id', 'name', 'description', 'logo', 'owner', 'base_currency', 'created_at'],
+        'data' => ['id', 'name', 'description', 'logo_url', 'owner', 'base_currency', 'created_at'],
     ]);
     expect($response->json('data.name.en'))->toBe('Updated EN');
     expect($response->json('data.name.ar'))->toBe('Updated AR');
-    expect($response->json('data.logo'))->toBe('https://example.com/new-logo.png');
+    expect($response->json('data.logo_url'))->toBe('https://example.com/new-logo.png');
 });
 
 it('updates only provided fields', function () {
@@ -71,7 +71,7 @@ it('rejects update with invalid logo url', function () {
     $brand = BrandModel::factory()->create(['owner_id' => $this->client->id]);
 
     $response = $this->putJson("/api/v1/brands/{$brand->id}", [
-        'logo' => 'not-a-url',
+        'logo_url' => 'not-a-url',
     ]);
 
     $response->assertStatus(422);

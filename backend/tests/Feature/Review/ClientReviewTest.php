@@ -29,7 +29,7 @@ describe('POST /api/v1/branch/bookings/{booking}/review', function (): void {
         $booking = finishedBooking();
 
         $this->actingAs(branchOf($booking), 'branch_api')
-            ->postJson("/api/v1/branch/bookings/{$booking->id}/review", ['rating' => 2, 'comment' => 'Arrived 30 minutes late'])
+            ->postJson("/api/v1/branch/bookings/{$booking->id}/review", ['rating' => 2, 'body' => 'Arrived 30 minutes late'])
             ->assertCreated()
             ->assertJsonPath('data.subject_type', ReviewSubjectTypeEnum::Client->value)
             ->assertJsonPath('data.subject_id', $booking->client_id)

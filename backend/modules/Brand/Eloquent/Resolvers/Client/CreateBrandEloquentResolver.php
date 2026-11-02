@@ -28,7 +28,7 @@ final class CreateBrandEloquentResolver
                 ],
                 'owner_id' => $command->ownerId,
                 'base_currency_code' => $command->baseCurrencyCode,
-                'logo' => $command->logo,
+                'logo_url' => $command->logoUrl,
                 'universe' => $command->universe,
             ]);
 

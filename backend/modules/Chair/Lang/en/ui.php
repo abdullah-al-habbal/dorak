@@ -6,6 +6,6 @@ return [
     'barber' => 'Barber',
     'branch' => 'Branch',
     'chair' => 'Chair',
-    'ui_metadata' => 'UI Metadata',
+    'layout_settings' => 'UI Metadata',
     'unassigned' => 'Unassigned',
 ];

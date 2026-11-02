@@ -14,10 +14,10 @@ use Illuminate\Database\Eloquent\Model;
  * the SettingKey default applies.
  *
  * @property string $id
- * @property string $key
- * @property int $value
+ * @property string $setting_key
+ * @property int $value_integer
  */
-#[Fillable(['key', 'value'])]
+#[Fillable(['setting_key', 'value_integer'])]
 #[Table('platform_settings')]
 class PlatformSettingModel extends Model
 {
@@ -25,6 +25,6 @@ class PlatformSettingModel extends Model
 
     protected function casts(): array
     {
-        return ['value' => 'integer'];
+        return ['value_integer' => 'integer'];
     }
 }

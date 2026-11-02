@@ -61,7 +61,7 @@ export function BranchReviewsPage() {
                     {copy.rating}: {review.rating}/5
                   </span>
                 </div>
-                {review.comment ? <p>{review.comment}</p> : null}
+                {review.body ? <p>{review.body}</p> : null}
                 <time
                   className="text-text-secondary"
                   dateTime={review.createdAt}

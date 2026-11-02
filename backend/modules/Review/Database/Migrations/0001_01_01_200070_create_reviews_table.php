@@ -20,7 +20,7 @@ return new class extends Migration
             $table->uuid('subject_id');
             $table->string('subject_type');
             $table->unsignedTinyInteger('rating');
-            $table->text('comment')->nullable();
+            $table->text('body')->nullable();
             $table->string('status')->default(ReviewStatus::Published->value)->index();
             $table->text('dispute_reason')->nullable();
             $table->timestamp('disputed_at')->nullable();

@@ -15,7 +15,7 @@ export function mapBranchReview(wire: unknown): IBranchReview {
   return {
     id: String(item.id ?? ""),
     rating: typeof item.rating === "number" ? item.rating : 0,
-    comment: nullableText(item.comment),
+    body: nullableText(item.body),
     authorName: nullableText(item.author_name),
     status: parseReviewStatus(item.status),
     createdAt: String(item.created_at ?? ""),

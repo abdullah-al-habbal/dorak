@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Modules\ClientRecommendation\Eloquent\Casts\EmbeddingCast;
 
-#[Fillable(['entity_type', 'entity_id', 'embedding', 'metadata', 'computed_at'])]
+#[Fillable(['entity_type', 'entity_id', 'embedding', 'embedding_metadata', 'computed_at'])]
 #[Table('entity_embeddings')]
 final class EntityEmbeddingModel extends Model
 {
@@ -20,7 +20,7 @@ final class EntityEmbeddingModel extends Model
     {
         return [
             'embedding' => EmbeddingCast::class,
-            'metadata' => 'array',
+            'embedding_metadata' => 'array',
             'computed_at' => 'datetime',
         ];
     }

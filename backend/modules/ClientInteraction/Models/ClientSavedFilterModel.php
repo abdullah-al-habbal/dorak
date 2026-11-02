@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Modules\ClientInteraction\Eloquent\Casts\FilterConfigurationCast;
 
-#[Fillable(['client_id', 'name', 'filter_config'])]
+#[Fillable(['client_id', 'name', 'filter_criteria'])]
 #[Table('client_saved_filters')]
 final class ClientSavedFilterModel extends Model
 {
@@ -19,7 +19,7 @@ final class ClientSavedFilterModel extends Model
     protected function casts(): array
     {
         return [
-            'filter_config' => FilterConfigurationCast::class,
+            'filter_criteria' => FilterConfigurationCast::class,
         ];
     }
 }

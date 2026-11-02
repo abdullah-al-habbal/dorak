@@ -21,13 +21,13 @@ it('submits review for completed booking', function () {
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
         'rating' => 5,
-        'comment' => 'Excellent!',
+        'body' => 'Excellent!',
     ]);
 
     $response->assertCreated();
     $response->assertJsonStructure([
         'success',
-        'data' => ['id', 'rating', 'comment'],
+        'data' => ['id', 'rating', 'body'],
     ]);
     expect($response->json('data.rating'))->toBe(5);
 });

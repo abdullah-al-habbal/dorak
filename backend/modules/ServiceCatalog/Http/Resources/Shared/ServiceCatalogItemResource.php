@@ -23,7 +23,7 @@ final class ServiceCatalogItemResource extends JsonResource
             'formality_level' => $this->formalityLevel,
             'face_shapes' => $this->face_shapes,
             'hair_textures' => $this->hair_textures,
-            'metadata' => $this->metadata?->toArray(),
+            'styling_details' => $this->styling_details?->toArray(),
             'default_duration_minutes' => $this->default_duration_minutes,
             'category' => $this->whenLoaded('category', fn () => [
                 'id' => $this->category->id,
@@ -39,8 +39,8 @@ final class ServiceCatalogItemResource extends JsonResource
             'media' => $this->whenLoaded('media', fn () => $this->media->map(fn ($medium) => [
                 'id' => $medium->id,
                 'media_type' => $medium->media_type->value,
-                'path' => $medium->path,
-                'alt' => $medium->alt,
+                'image_path' => $medium->image_path,
+                'alt_text' => $medium->alt_text,
                 'sort_order' => $medium->sort_order,
             ])),
             'is_active' => $this->is_active,

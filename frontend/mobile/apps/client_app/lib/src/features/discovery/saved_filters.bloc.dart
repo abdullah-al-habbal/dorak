@@ -26,7 +26,7 @@ class SavedFiltersCubit extends Cubit<SavedFiltersState> {
     try {
       final saved = await _repository.saveFilter(
         name: trimmed,
-        filterConfig: config,
+        filterCriteria: config,
       );
       if (isClosed) return;
       emit(state.copyWith(filters: [...state.filters, saved], isSaving: false));

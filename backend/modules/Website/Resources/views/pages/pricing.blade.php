@@ -6,7 +6,7 @@
         $ctaSection = collect($sections)->firstWhere('section_type', 'cta');
     @endphp
 
-    <x-website::hero :content="$heroSection['content'] ?? null" />
-    <x-website::pricing :content="$pricingSection['content'] ?? null" />
-    <x-website::cta :content="$ctaSection['content'] ?? null" />
+    <x-website::hero :content="$heroSection['body'] ?? null" />
+    <x-website::pricing :content="$pricingSection['body'] ?? null" />
+    <x-website::cta :content="$ctaSection['body'] ?? null" />
 </x-website::layouts.app>

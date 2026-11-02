@@ -34,7 +34,7 @@ final class RebookFromHistoryEloquentResolver
 
         $chairId = $sourceBooking?->getAttribute('chair_id');
         $barberId = $history->getAttribute('barber_id');
-        $atHomeLocation = $sourceBooking?->getAttribute('at_home_location');
+        $homeAddress = $sourceBooking?->getAttribute('home_address');
         $branchId = $history->getAttribute('branch_id');
 
         $booking = $this->createBookingHandler->handle(new CreateBookingCommand(
@@ -43,7 +43,7 @@ final class RebookFromHistoryEloquentResolver
             clientId: $command->clientId,
             startsAt: $command->startsAt,
             serviceIds: $serviceIds,
-            atHomeLocation: is_array($atHomeLocation) ? $atHomeLocation : null,
+            homeAddress: is_array($homeAddress) ? $homeAddress : null,
         ))->booking;
 
         $bookingId = $booking->getKey();

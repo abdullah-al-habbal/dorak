@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\ServiceCatalog\Enums\MediableTypeEnum;
 use Modules\ServiceCatalog\Enums\MediaTypeEnum;
 
-#[Fillable(['media_type', 'path', 'alt', 'sort_order'])]
+#[Fillable(['media_type', 'image_path', 'alt_text', 'sort_order'])]
 #[Table('service_catalog_media')]
 class ServiceCatalogMediumModel extends Model
 {

@@ -20,7 +20,7 @@ class PaymentGatewayFactory extends Factory
             'driver' => PaymentGatewayDriver::Offline,
             'is_active' => true,
             'is_default' => false,
-            'config' => null,
+            'gateway_settings' => null,
             'sort_order' => 0,
         ];
     }

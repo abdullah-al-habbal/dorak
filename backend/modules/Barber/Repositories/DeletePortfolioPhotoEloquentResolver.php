@@ -15,7 +15,7 @@ final class DeletePortfolioPhotoEloquentResolver
         $photo = BarberPortfolioPhotoModel::where('barber_id', $command->barberId)
             ->findOrFail($command->photoId);
 
-        Storage::disk('public')->delete($photo->path);
+        Storage::disk('public')->delete($photo->image_path);
         $photo->delete();
     }
 }

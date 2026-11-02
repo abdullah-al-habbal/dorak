@@ -7,11 +7,11 @@ class SavedFilterDto {
   const SavedFilterDto({
     required this.id,
     required this.name,
-    required this.filterConfig,
+    required this.filterCriteria,
   });
   final String id;
   final String name;
-  final Map<String, dynamic> filterConfig;
+  final Map<String, dynamic> filterCriteria;
   factory SavedFilterDto.fromJson(Map<String, dynamic> json) =>
       _$SavedFilterDtoFromJson(json);
 }

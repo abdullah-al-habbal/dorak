@@ -14,7 +14,7 @@ final class CreateSavedFilterEloquentResolver
         return ClientSavedFilterModel::create([
             'client_id' => $command->clientId,
             'name' => $command->name,
-            'filter_config' => $command->filterConfig,
+            'filter_criteria' => $command->filterCriteria,
         ]);
     }
 }

@@ -25,7 +25,7 @@ final class UpdateCatalogItemHandler
             'formality_level' => $command->formalityLevel,
             'face_shapes' => $command->faceShapes,
             'hair_textures' => $command->hairTextures,
-            'metadata' => $command->metadata,
+            'styling_details' => $command->stylingDetails,
             'is_active' => $command->isActive,
             'default_duration_minutes' => $command->defaultDurationMinutes,
         ], fn ($v) => $v !== null);

@@ -8,7 +8,7 @@ abstract class ReviewRepository {
   Future<ReviewDto> submitReview(
     String bookingId, {
     required int rating,
-    String? comment,
+    String? body,
     int? barberRating,
   });
 
@@ -34,12 +34,12 @@ class DioReviewRepository implements ReviewRepository {
   Future<ReviewDto> submitReview(
     String bookingId, {
     required int rating,
-    String? comment,
+    String? body,
     int? barberRating,
   }) {
     final data = <String, dynamic>{'rating': rating};
-    if (comment != null) {
-      data['comment'] = comment;
+    if (body != null) {
+      data['body'] = body;
     }
     if (barberRating != null) {
       data['barber_rating'] = barberRating;

@@ -26,7 +26,7 @@ class ReviewFactory extends Factory
             'subject_id' => ClientModel::factory(),
             'subject_type' => ReviewSubjectTypeEnum::Client,
             'rating' => fake()->numberBetween(1, 5),
-            'comment' => fake()->sentence(),
+            'body' => fake()->sentence(),
             'status' => ReviewStatus::Published,
         ];
     }

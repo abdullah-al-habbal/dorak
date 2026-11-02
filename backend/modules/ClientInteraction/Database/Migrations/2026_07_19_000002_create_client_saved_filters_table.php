@@ -14,7 +14,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained('clients')->cascadeOnDelete();
             $table->string('name');
-            $table->json('filter_config');
+            $table->json('filter_criteria');
             $table->timestamps();
         });
     }

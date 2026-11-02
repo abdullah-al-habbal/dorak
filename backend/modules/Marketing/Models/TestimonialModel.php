@@ -18,14 +18,14 @@ use Spatie\Translatable\HasTranslations;
     'section_id',
     'author_name',
     'author_title',
-    'quote',
+    'body',
     'avatar_url',
     'rating',
     'sort_order',
 ])]
 #[Table('testimonials')]
 #[Translatable([
-    'quote',
+    'body',
     'author_title',
 ])]
 final class TestimonialModel extends Model
@@ -37,7 +37,7 @@ final class TestimonialModel extends Model
     protected function casts(): array
     {
         return [
-            'quote' => 'array',
+            'body' => 'array',
             'author_title' => 'array',
             'rating' => 'integer',
             'sort_order' => 'integer',

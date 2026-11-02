@@ -24,7 +24,7 @@
                 <template x-for="chair in floorPlan.chairs" :key="chair.id">
                     <div @click="selectedChair = selectedChair?.id === chair.id ? null : chair"
                          class="absolute flex cursor-pointer items-center justify-center rounded-full border-2 text-xs font-bold shadow-sm transition hover:scale-110"
-                         :style="`left: ${chair.ui_metadata.position_x}px; top: ${chair.ui_metadata.position_y}px; width: ${chair.ui_metadata.width}px; height: ${chair.ui_metadata.height}px; background: ${statusColor(chair.status)}; border-color: ${statusBorder(chair.status)}`"
+                         :style="`left: ${chair.layout_settings.position_x}px; top: ${chair.layout_settings.position_y}px; width: ${chair.layout_settings.width}px; height: ${chair.layout_settings.height}px; background: ${statusColor(chair.status)}; border-color: ${statusBorder(chair.status)}`"
                          :class="{ 'ring-2 ring-accent ring-offset-2': selectedChair?.id === chair.id }">
                         <span x-text="chair.label" class="text-white drop-shadow-sm"></span>
                     </div>

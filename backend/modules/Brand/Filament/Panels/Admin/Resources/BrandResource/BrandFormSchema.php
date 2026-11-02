@@ -30,7 +30,7 @@ final class BrandFormSchema
                     Select::make('base_currency_code')
                         ->relationship('baseCurrency', 'code')
                         ->required(),
-                    TextInput::make('logo')
+                    TextInput::make('logo_url')
                         ->url(),
                 ]),
             Section::make(__('brand::ui.description'))

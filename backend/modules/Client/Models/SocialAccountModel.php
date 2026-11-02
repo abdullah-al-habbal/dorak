@@ -17,7 +17,7 @@ use Modules\Client\Enums\SocialProviderEnum;
     'provider',
     'provider_id',
     'avatar_url',
-    'metadata',
+    'provider_profile',
 ])]
 #[Table('social_accounts')]
 class SocialAccountModel extends Model
@@ -29,7 +29,7 @@ class SocialAccountModel extends Model
     {
         return [
             'provider' => SocialProviderEnum::class,
-            'metadata' => 'array',
+            'provider_profile' => 'array',
         ];
     }
 

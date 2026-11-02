@@ -15,7 +15,7 @@ ReviewDto _$ReviewDtoFromJson(Map<String, dynamic> json) => ReviewDto(
   ),
   subjectId: json['subject_id'] as String?,
   rating: (json['rating'] as num).toInt(),
-  comment: json['comment'] as String?,
+  body: json['body'] as String?,
   authorName: json['author_name'] as String?,
   status: $enumDecodeNullable(
     _$ReviewStatusEnumMap,

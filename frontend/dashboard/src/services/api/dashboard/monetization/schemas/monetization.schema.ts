@@ -40,7 +40,7 @@ export const GatewaySchema = z.object({
   driver: z.enum(PAYMENT_GATEWAY_DRIVERS),
   isActive: z.boolean(),
   isDefault: z.boolean(),
-  configKeys: z.array(z.string()),
+  gatewaySettingKeys: z.array(z.string()),
 });
 
 export const CommissionRuleSchema = z.object({
@@ -133,7 +133,7 @@ export const gatewayFormSchema = z.object({
   isActive: z.boolean(),
   isDefault: z.boolean(),
   /** One `key=value` per line; empty keeps the stored config. */
-  config: z.string().max(5000),
+  gatewaySettings: z.string().max(5000),
 });
 
 export const commissionRuleFormSchema = z

@@ -42,7 +42,7 @@ final class ClientAccountDeletion
                 return false;
             }
 
-            $avatar = $locked->getAttribute('avatar');
+            $avatar = $locked->getAttribute('avatar_path');
 
             $locked->tokens()->delete();
             $locked->socialAccounts()->delete();
@@ -56,7 +56,7 @@ final class ClientAccountDeletion
                 'email_verified_at' => null,
                 'phone' => null,
                 'phone_verified_at' => null,
-                'avatar' => null,
+                'avatar_path' => null,
                 'password' => Hash::make(Str::random(64)),
                 'remember_token' => null,
                 'status' => ClientStatusEnum::Disabled,

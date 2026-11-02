@@ -22,7 +22,7 @@ it('uploads a portfolio photo', function () {
 
     $response->assertCreated();
     expect($response->json('data.id'))->toBeString();
-    expect($response->json('data.path'))->toContain('portfolio/');
+    expect($response->json('data.image_path'))->toContain('portfolio/');
     expect($response->json('data.url'))->toContain('portfolio/');
     expect($response->json('data.sort_order'))->toBe(1);
 });
@@ -78,7 +78,7 @@ it('requires authentication for upload', function () {
 it('deletes a portfolio photo', function () {
     $photo = BarberPortfolioPhotoModel::factory()->create([
         'barber_id' => $this->barber->id,
-        'path' => 'portfolio/'.$this->barber->id.'/test.jpg',
+        'image_path' => 'portfolio/'.$this->barber->id.'/test.jpg',
     ]);
 
     $response = $this->deleteJson("/api/v1/barber/portfolio/{$photo->id}");

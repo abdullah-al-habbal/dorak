@@ -14,7 +14,7 @@ final readonly class UpdateBrandCommand
         public ?string $nameAr,
         public ?string $ownerId,
         public ?string $baseCurrencyCode,
-        public ?string $logo,
+        public ?string $logoUrl,
         public ?string $descriptionEn,
         public ?string $descriptionAr,
         public ?VenueUniverse $universe = null,

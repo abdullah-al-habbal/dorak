@@ -13,12 +13,12 @@ beforeEach(function (): void {
 it('lists only the authenticated barber portfolio media in sort order', function (): void {
     $firstPhoto = BarberPortfolioPhotoModel::factory()->create([
         'barber_id' => $this->barber->id,
-        'path' => 'portfolio/'.$this->barber->id.'/first.jpg',
+        'image_path' => 'portfolio/'.$this->barber->id.'/first.jpg',
         'sort_order' => 1,
     ]);
     $secondPhoto = BarberPortfolioPhotoModel::factory()->create([
         'barber_id' => $this->barber->id,
-        'path' => 'portfolio/'.$this->barber->id.'/second.jpg',
+        'image_path' => 'portfolio/'.$this->barber->id.'/second.jpg',
         'sort_order' => 2,
     ]);
     BarberPortfolioPhotoModel::factory()->create([

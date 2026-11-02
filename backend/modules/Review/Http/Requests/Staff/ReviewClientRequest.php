@@ -14,7 +14,7 @@ final class ReviewClientRequest extends BaseApiFormRequest
     {
         return [
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
-            'comment' => ['nullable', 'string', 'max:1000'],
+            'body' => ['nullable', 'string', 'max:1000'],
         ];
     }
 
@@ -23,7 +23,7 @@ final class ReviewClientRequest extends BaseApiFormRequest
      */
     public function toCommand(string $bookingId, ReviewAuthorTypeEnum $authorSide, ?string $barberId, ?array $branchScope): ReviewClientCommand
     {
-        $comment = $this->validated('comment');
+        $comment = $this->validated('body');
 
         return new ReviewClientCommand(
             bookingId: $bookingId,
@@ -31,7 +31,7 @@ final class ReviewClientRequest extends BaseApiFormRequest
             barberId: $barberId,
             branchScope: $branchScope,
             rating: (int) $this->validated('rating'),
-            comment: is_string($comment) ? $comment : null,
+            body: is_string($comment) ? $comment : null,
         );
     }
 }

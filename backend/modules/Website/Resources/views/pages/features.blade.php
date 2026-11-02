@@ -6,6 +6,6 @@
         $featureSection = collect($sections)->firstWhere('section_type', 'feature_list');
     @endphp
 
-    <x-website::hero :content="$heroSection['content'] ?? null" />
-    <x-website::features :content="$featureSection['content'] ?? null" />
+    <x-website::hero :content="$heroSection['body'] ?? null" />
+    <x-website::features :content="$featureSection['body'] ?? null" />
 </x-website::layouts.app>

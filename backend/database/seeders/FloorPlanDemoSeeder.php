@@ -40,7 +40,7 @@ final class FloorPlanDemoSeeder extends Seeder
                 'branch_id' => $branch->id,
                 'label' => $chair['label'],
                 'status' => $chair['status']->value,
-                'ui_metadata' => json_encode([
+                'layout_settings' => json_encode([
                     'shape' => 'circle',
                     'position_x' => $chair['position_x'],
                     'position_y' => $chair['position_y'],
@@ -56,7 +56,7 @@ final class FloorPlanDemoSeeder extends Seeder
         ChairModel::query()->upsert(
             $chairData,
             ['branch_id', 'label'],
-            ['status', 'ui_metadata', 'updated_at'],
+            ['status', 'layout_settings', 'updated_at'],
         );
     }
 }

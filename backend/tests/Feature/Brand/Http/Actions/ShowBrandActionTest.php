@@ -12,7 +12,7 @@ it('shows a brand', function () {
     $response->assertOk();
     $response->assertJsonStructure([
         'success',
-        'data' => ['id', 'name', 'description', 'logo', 'owner', 'base_currency', 'created_at'],
+        'data' => ['id', 'name', 'description', 'logo_url', 'owner', 'base_currency', 'created_at'],
     ]);
     expect($response->json('data.id'))->toBe($brand->id);
 });

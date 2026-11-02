@@ -20,7 +20,7 @@ final class ChairResource extends JsonResource
             'status' => $chair?->currentAvailability()->value,
             'availability' => $chair?->currentAvailability()->value,
             'floor_zone' => $chair?->getAttribute('floor_zone')?->value,
-            'ui_metadata' => $this->ui_metadata,
+            'layout_settings' => $this->layout_settings,
             'branch_id' => $this->branch_id,
             'barber' => BarberResource::make($this->whenLoaded('barber')),
             'created_at' => $this->created_at->toIso8601String(),

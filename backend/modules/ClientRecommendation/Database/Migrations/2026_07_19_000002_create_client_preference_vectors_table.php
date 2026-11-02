@@ -14,7 +14,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained('clients')->cascadeOnDelete()->unique();
             $table->json('embedding')->nullable();
-            $table->json('metadata')->nullable();
+            $table->json('embedding_metadata')->nullable();
             $table->timestamp('computed_at');
             $table->timestamps();
         });

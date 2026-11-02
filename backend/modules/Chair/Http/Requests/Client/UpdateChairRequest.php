@@ -22,13 +22,13 @@ final class UpdateChairRequest extends BaseApiFormRequest
             'force' => ['sometimes', 'boolean'],
             'barber_id' => ['sometimes', 'nullable', 'string', 'exists:barbers,id', new BarberBelongsToBranch($this->route('chair')?->branch_id)],
             'floor_zone' => ['nullable', 'string', new Enum(FloorZone::class)],
-            'ui_metadata' => ['nullable', 'array'],
-            'ui_metadata.position_x' => ['nullable', 'numeric'],
-            'ui_metadata.position_y' => ['nullable', 'numeric'],
-            'ui_metadata.width' => ['nullable', 'numeric'],
-            'ui_metadata.height' => ['nullable', 'numeric'],
-            'ui_metadata.rotation' => ['nullable', 'numeric'],
-            'ui_metadata.shape' => ['nullable', 'string', new Enum(ChairShape::class)],
+            'layout_settings' => ['nullable', 'array'],
+            'layout_settings.position_x' => ['nullable', 'numeric'],
+            'layout_settings.position_y' => ['nullable', 'numeric'],
+            'layout_settings.width' => ['nullable', 'numeric'],
+            'layout_settings.height' => ['nullable', 'numeric'],
+            'layout_settings.rotation' => ['nullable', 'numeric'],
+            'layout_settings.shape' => ['nullable', 'string', new Enum(ChairShape::class)],
         ];
     }
 
@@ -41,7 +41,7 @@ final class UpdateChairRequest extends BaseApiFormRequest
             barberId: $this->validated('barber_id'),
             barberIdProvided: $this->exists('barber_id'),
             floorZone: $this->enum('floor_zone', FloorZone::class),
-            uiMetadata: $this->validated('ui_metadata'),
+            layoutSettings: $this->validated('layout_settings'),
             force: $this->boolean('force'),
         );
     }

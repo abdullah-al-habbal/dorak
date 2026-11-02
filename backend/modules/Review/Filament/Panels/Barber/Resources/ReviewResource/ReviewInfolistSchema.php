@@ -20,7 +20,7 @@ final class ReviewInfolistSchema
                         ->label(__('review::ui.client')),
                     TextEntry::make('rating')
                         ->badge(),
-                    TextEntry::make('comment'),
+                    TextEntry::make('body'),
                     TextEntry::make('created_at')
                         ->dateTime(),
                 ]),

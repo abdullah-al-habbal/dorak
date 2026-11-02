@@ -17,6 +17,6 @@ final readonly class ReviewClientCommand
         public ?string $barberId,
         public ?array $branchScope,
         public int $rating,
-        public ?string $comment,
+        public ?string $body,
     ) {}
 }

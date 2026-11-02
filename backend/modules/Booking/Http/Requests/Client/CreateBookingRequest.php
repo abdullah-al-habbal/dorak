@@ -13,18 +13,18 @@ final class CreateBookingRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'chair_id' => ['nullable', 'string', 'exists:chairs,id', 'required_without_all:at_home_location,branch_id', 'prohibits:at_home_location', 'prohibits:branch_id'],
-            'branch_id' => ['nullable', 'string', 'exists:branches,id', 'required_without_all:chair_id,at_home_location', 'prohibits:at_home_location'],
+            'chair_id' => ['nullable', 'string', 'exists:chairs,id', 'required_without_all:home_address,branch_id', 'prohibits:home_address', 'prohibits:branch_id'],
+            'branch_id' => ['nullable', 'string', 'exists:branches,id', 'required_without_all:chair_id,home_address', 'prohibits:home_address'],
             'barber_id' => ['nullable', 'string', 'exists:barbers,id', 'required_with:branch_id'],
             'starts_at' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
             'service_ids' => ['required', 'array', 'min:1'],
             'service_ids.*' => ['string', 'distinct', 'exists:offered_services,id'],
-            'at_home_location' => ['nullable', 'array', 'required_without_all:chair_id,branch_id', 'prohibits:chair_id'],
-            'at_home_location.latitude' => ['required_with:at_home_location', 'numeric', 'between:-90,90'],
-            'at_home_location.longitude' => ['required_with:at_home_location', 'numeric', 'between:-180,180'],
-            'at_home_location.street' => ['required_with:at_home_location', 'string', 'max:255'],
-            'at_home_location.building' => ['required_with:at_home_location', 'string', 'max:100'],
-            'at_home_location.unit' => ['required_with:at_home_location', 'string', 'max:100'],
+            'home_address' => ['nullable', 'array', 'required_without_all:chair_id,branch_id', 'prohibits:chair_id'],
+            'home_address.latitude' => ['required_with:home_address', 'numeric', 'between:-90,90'],
+            'home_address.longitude' => ['required_with:home_address', 'numeric', 'between:-180,180'],
+            'home_address.street' => ['required_with:home_address', 'string', 'max:255'],
+            'home_address.building' => ['required_with:home_address', 'string', 'max:100'],
+            'home_address.unit' => ['required_with:home_address', 'string', 'max:100'],
             'payment_method' => ['prohibited'],
             'payment_status' => ['prohibited'],
             'payment_intent' => ['prohibited'],
@@ -42,7 +42,7 @@ final class CreateBookingRequest extends BaseApiFormRequest
             clientId: $this->user()->id,
             startsAt: Carbon::parse($this->validated('starts_at'))->utc(),
             serviceIds: $this->validated('service_ids'),
-            atHomeLocation: $this->validated('at_home_location'),
+            homeAddress: $this->validated('home_address'),
             branchId: is_string($branchId) ? $branchId : null,
         );
     }

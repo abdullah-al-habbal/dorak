@@ -36,24 +36,24 @@ it('saves and reads back a price_range filter unchanged', function () {
     $create = $this->actingAs($this->client, 'client')
         ->postJson('/api/v1/client/saved-filters', [
             'name' => 'Nearby cheap',
-            'filter_config' => ['price_range' => ['min' => 10, 'max' => 50]],
+            'filter_criteria' => ['price_range' => ['min' => 10, 'max' => 50]],
         ]);
-    $create->assertCreated()->assertJsonPath('data.filter_config.price_range', ['min' => 10, 'max' => 50]);
+    $create->assertCreated()->assertJsonPath('data.filter_criteria.price_range', ['min' => 10, 'max' => 50]);
 
     $filterId = $create->json('data.id');
 
     $show = $this->actingAs($this->client, 'client')->getJson("/api/v1/client/saved-filters/{$filterId}");
 
-    $show->assertOk()->assertJsonPath('data.filter_config.price_range', ['min' => 10, 'max' => 50]);
+    $show->assertOk()->assertJsonPath('data.filter_criteria.price_range', ['min' => 10, 'max' => 50]);
 });
 
 it('still accepts legacy price_min/price_max and reads it back as price_range', function () {
     $create = $this->actingAs($this->client, 'client')
         ->postJson('/api/v1/client/saved-filters', [
             'name' => 'Legacy filter',
-            'filter_config' => ['price_min' => 5, 'price_max' => 20],
+            'filter_criteria' => ['price_min' => 5, 'price_max' => 20],
         ]);
 
-    $create->assertCreated()->assertJsonPath('data.filter_config.price_range', ['min' => 5, 'max' => 20]);
-    $create->assertJsonMissingPath('data.filter_config.price_min');
+    $create->assertCreated()->assertJsonPath('data.filter_criteria.price_range', ['min' => 5, 'max' => 20]);
+    $create->assertJsonMissingPath('data.filter_criteria.price_min');
 });

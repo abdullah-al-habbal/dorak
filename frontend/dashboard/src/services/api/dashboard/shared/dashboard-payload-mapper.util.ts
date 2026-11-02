@@ -44,7 +44,7 @@ export function mapChairPayload(
     floor_zone: input.floorZone,
     label: input.label,
     status: input.status,
-    ui_metadata: {
+    layout_settings: {
       height: input.height,
       position_x: input.positionX,
       position_y: input.positionY,

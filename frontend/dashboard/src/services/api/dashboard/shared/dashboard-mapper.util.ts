@@ -71,7 +71,7 @@ export function mapBranch(wire: unknown): IBranch {
 export function mapChair(wire: unknown): IChair {
   const item = record(wire);
   const barber = record(item.barber);
-  const uiMetadata = record(item.ui_metadata);
+  const layoutSettings = record(item.layout_settings);
   return {
     id: string(item.id),
     barberId: nullableString(barber.id),
@@ -82,12 +82,14 @@ export function mapChair(wire: unknown): IChair {
       item.availability ?? item.status,
       "available",
     ) as IChair["status"],
-    positionX: Number(uiMetadata.position_x ?? 0),
-    positionY: Number(uiMetadata.position_y ?? 0),
-    width: Number(uiMetadata.width ?? 1),
-    height: Number(uiMetadata.height ?? 1),
+    positionX: Number(layoutSettings.position_x ?? 0),
+    positionY: Number(layoutSettings.position_y ?? 0),
+    width: Number(layoutSettings.width ?? 1),
+    height: Number(layoutSettings.height ?? 1),
     rotation:
-      typeof uiMetadata.rotation === "number" ? uiMetadata.rotation : null,
+      typeof layoutSettings.rotation === "number"
+        ? layoutSettings.rotation
+        : null,
   };
 }
 

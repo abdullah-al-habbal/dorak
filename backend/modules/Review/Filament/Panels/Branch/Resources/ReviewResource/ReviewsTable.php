@@ -20,7 +20,7 @@ final class ReviewsTable
                     ->label(__('review::ui.rating'))
                     ->icon('heroicon-m-star')
                     ->iconColor('warning'),
-                TextColumn::make('comment')
+                TextColumn::make('body')
                     ->limit(50),
                 TextColumn::make('booking.id')
                     ->label(__('review::ui.booking'))

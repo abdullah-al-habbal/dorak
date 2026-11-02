@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('section_type');
             $table->json('title')->nullable();
             $table->json('subtitle')->nullable();
-            $table->json('content');
+            $table->json('body');
             $table->string('media_url')->nullable();
             $table->integer('sort_order')->default(0);
             $table->string('universe_visibility')->default(UniverseVisibilityEnum::All->value);

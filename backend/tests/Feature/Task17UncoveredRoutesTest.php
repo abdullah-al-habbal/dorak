@@ -127,7 +127,7 @@ it('serves dashboard profile, booking status, branch update, and chair create ro
         'label' => 'C-17',
         'floor_zone' => 'shared',
         'status' => ChairStatus::Available,
-        'ui_metadata' => ['position_x' => 1, 'position_y' => 2, 'width' => 50, 'height' => 50],
+        'layout_settings' => ['position_x' => 1, 'position_y' => 2, 'width' => 50, 'height' => 50],
     ])->assertCreated();
     $createdChair = ChairModel::query()->where('label', 'C-17')->firstOrFail();
     $booking = BookingModel::factory()->create(['chair_id' => $createdChair->id]);
@@ -151,7 +151,7 @@ it('keeps dashboard branch and chair writes inside a branch manager tenant', fun
         'label' => 'Foreign Chair',
         'floor_zone' => 'shared',
         'status' => ChairStatus::Available,
-        'ui_metadata' => ['position_x' => 1, 'position_y' => 2, 'width' => 50, 'height' => 50],
+        'layout_settings' => ['position_x' => 1, 'position_y' => 2, 'width' => 50, 'height' => 50],
     ])->assertForbidden();
 
     $ownChair = ChairModel::factory()->create(['branch_id' => $branch->id]);

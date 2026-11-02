@@ -67,7 +67,7 @@ it('fails favorites without auth', function () {
 it('creates and lists saved filters', function () {
     $this->postJson('/api/v1/client/saved-filters', [
         'name' => 'My Filter',
-        'filter_config' => ['universe' => 'men', 'radius' => 10],
+        'filter_criteria' => ['universe' => 'men', 'radius' => 10],
     ])->assertCreated();
 
     $response = $this->getJson('/api/v1/client/saved-filters');
@@ -80,7 +80,7 @@ it('creates and lists saved filters', function () {
 it('shows a saved filter', function () {
     $created = $this->postJson('/api/v1/client/saved-filters', [
         'name' => 'My Filter',
-        'filter_config' => ['universe' => 'men'],
+        'filter_criteria' => ['universe' => 'men'],
     ])->json('data');
 
     $response = $this->getJson("/api/v1/client/saved-filters/{$created['id']}");
@@ -92,12 +92,12 @@ it('shows a saved filter', function () {
 it('updates a saved filter', function () {
     $created = $this->postJson('/api/v1/client/saved-filters', [
         'name' => 'My Filter',
-        'filter_config' => ['universe' => 'men'],
+        'filter_criteria' => ['universe' => 'men'],
     ])->json('data');
 
     $response = $this->putJson("/api/v1/client/saved-filters/{$created['id']}", [
         'name' => 'Updated Filter',
-        'filter_config' => ['universe' => 'women'],
+        'filter_criteria' => ['universe' => 'women'],
     ]);
 
     $response->assertOk();
@@ -107,7 +107,7 @@ it('updates a saved filter', function () {
 it('deletes a saved filter', function () {
     $created = $this->postJson('/api/v1/client/saved-filters', [
         'name' => 'My Filter',
-        'filter_config' => ['universe' => 'men'],
+        'filter_criteria' => ['universe' => 'men'],
     ])->json('data');
 
     $response = $this->deleteJson("/api/v1/client/saved-filters/{$created['id']}");
@@ -117,7 +117,7 @@ it('deletes a saved filter', function () {
 
 it('returns 422 creating saved filter without name', function () {
     $response = $this->postJson('/api/v1/client/saved-filters', [
-        'filter_config' => ['universe' => 'men'],
+        'filter_criteria' => ['universe' => 'men'],
     ]);
 
     $response->assertStatus(422);

@@ -11,6 +11,6 @@ final readonly class CreateSavedFilterCommand
     public function __construct(
         public string $clientId,
         public string $name,
-        public FilterConfigurationValueObject $filterConfig,
+        public FilterConfigurationValueObject $filterCriteria,
     ) {}
 }

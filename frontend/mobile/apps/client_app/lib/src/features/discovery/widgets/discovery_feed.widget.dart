@@ -57,7 +57,7 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
         onApply: (saved) {
           widget.bloc.add(
             DiscoveryFiltersChanged(
-              DiscoveryFilterConfig.fromConfig(saved.filterConfig, filters),
+              DiscoveryFilterConfig.fromConfig(saved.filterCriteria, filters),
             ),
           );
           Navigator.of(sheetContext).pop();

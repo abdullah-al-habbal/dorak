@@ -26,7 +26,7 @@ class BookingDto {
   final BookingBarberDto? barber;
   final BookingClientDto? client;
   final List<BookingServiceDto> services;
-  final AtHomeLocationDto? atHomeLocation;
+  final AtHomeLocationDto? homeAddress;
   final DateTime? createdAt;
 
   const BookingDto({
@@ -42,7 +42,7 @@ class BookingDto {
     this.barber,
     this.client,
     this.services = const [],
-    this.atHomeLocation,
+    this.homeAddress,
     this.createdAt,
   });
 

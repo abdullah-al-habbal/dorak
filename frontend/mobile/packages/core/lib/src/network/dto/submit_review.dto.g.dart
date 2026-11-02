@@ -9,5 +9,5 @@ part of 'submit_review.dto.dart';
 SubmitReviewDto _$SubmitReviewDtoFromJson(Map<String, dynamic> json) =>
     SubmitReviewDto(
       rating: (json['rating'] as num).toInt(),
-      comment: json['comment'] as String?,
+      body: json['body'] as String?,
     );

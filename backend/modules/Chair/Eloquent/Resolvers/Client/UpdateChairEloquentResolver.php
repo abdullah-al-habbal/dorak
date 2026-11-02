@@ -35,8 +35,8 @@ final class UpdateChairEloquentResolver
             $data['floor_zone'] = $command->floorZone;
         }
 
-        if ($command->uiMetadata !== null) {
-            $data['ui_metadata'] = $command->uiMetadata;
+        if ($command->layoutSettings !== null) {
+            $data['layout_settings'] = $command->layoutSettings;
         }
 
         $result = $this->chairStatus->update($chair, $data, $command->force);

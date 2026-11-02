@@ -29,7 +29,7 @@ function defaultsFor(gateway?: IGateway): IGatewayForm {
     driver: gateway?.driver ?? DEFAULT_PAYMENT_GATEWAY_DRIVER,
     isActive: gateway?.isActive ?? true,
     isDefault: gateway?.isDefault ?? false,
-    config: "",
+    gatewaySettings: "",
   };
 }
 
@@ -83,11 +83,11 @@ export function GatewayForm({ gateway, onDone }: IGatewayFormProps) {
       {field("nameAr", copy.nameAr)}
       <label className="grid gap-1 text-sm text-text-100 sm:col-span-2">
         <span>{copy.gateways.config}</span>
-        <TextArea {...form.register("config")} />
+        <TextArea {...form.register("gatewaySettings")} />
         <span className="text-text-secondary">
           {copy.gateways.configHint}
-          {gateway && gateway.configKeys.length > 0
-            ? ` ${copy.gateways.configKeys}: ${gateway.configKeys.join(", ")}`
+          {gateway && gateway.gatewaySettingKeys.length > 0
+            ? ` ${copy.gateways.configKeys}: ${gateway.gatewaySettingKeys.join(", ")}`
             : ""}
         </span>
       </label>

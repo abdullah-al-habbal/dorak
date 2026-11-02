@@ -74,12 +74,12 @@ final class CreateBookingEloquentResolver
             throw new InvalidBookingServicesException;
         }
 
-        if ($command->atHomeLocation !== null) {
+        if ($command->homeAddress !== null) {
             AtHomeBookingRules::ensure(
                 $barberId,
                 $services,
-                $this->coordinate($command->atHomeLocation['latitude'] ?? null),
-                $this->coordinate($command->atHomeLocation['longitude'] ?? null),
+                $this->coordinate($command->homeAddress['latitude'] ?? null),
+                $this->coordinate($command->homeAddress['longitude'] ?? null),
             );
         }
 
@@ -152,8 +152,8 @@ final class CreateBookingEloquentResolver
             $bookingData['chair_id'] = $command->chairId;
         }
 
-        if ($command->atHomeLocation !== null) {
-            $bookingData['at_home_location'] = $command->atHomeLocation;
+        if ($command->homeAddress !== null) {
+            $bookingData['home_address'] = $command->homeAddress;
         }
 
         $booking = BookingModel::create($bookingData);

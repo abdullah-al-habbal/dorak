@@ -22,8 +22,8 @@ final class SavePaymentGatewayHandler
                 'is_default' => $command->isDefault,
                 'sort_order' => $command->sortOrder,
             ];
-            if ($command->config !== null) {
-                $attributes['config'] = $command->config;
+            if ($command->gatewaySettings !== null) {
+                $attributes['gateway_settings'] = $command->gatewaySettings;
             }
 
             $gateway === null ? $gateway = PaymentGatewayModel::create($attributes) : $gateway->update($attributes);

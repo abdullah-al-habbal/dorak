@@ -7,8 +7,8 @@ describe("bookingClientReviewSchema", () => {
       rating: 4,
     });
     expect(
-      bookingClientReviewSchema.parse({ rating: 1, comment: " Late " }),
-    ).toEqual({ rating: 1, comment: "Late" });
+      bookingClientReviewSchema.parse({ rating: 1, body: " Late " }),
+    ).toEqual({ rating: 1, body: "Late" });
   });
 
   it.each([0, 6, 2.5])("rejects the rating %s", (rating) => {

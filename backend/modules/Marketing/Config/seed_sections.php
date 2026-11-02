@@ -10,7 +10,7 @@ return [
     [
         'page_slug' => 'home', 'section_type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Manage Your Salon. Grow Your Business.',
                 'subheading' => 'Dorak is the all-in-one platform for salons, barbershops, and freelance barbers. One dashboard, endless possibilities.',
@@ -32,7 +32,7 @@ return [
         'page_slug' => 'home', 'section_type' => SectionTypeEnum::FeatureList->value,
         'title' => ['en' => 'Why Dorak?', 'ar' => 'لماذا دورك؟'],
         'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Why Dorak?',
                 'features' => [
@@ -56,7 +56,7 @@ return [
         'page_slug' => 'home', 'section_type' => SectionTypeEnum::Testimonials->value,
         'title' => ['en' => 'What Our Users Say', 'ar' => 'ماذا يقول مستخدمونا'],
         'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => ['heading' => 'What Our Users Say'],
             'ar' => ['heading' => 'ماذا يقول مستخدمونا'],
         ],
@@ -66,7 +66,7 @@ return [
         'page_slug' => 'home', 'section_type' => SectionTypeEnum::FloorPlanDemo->value,
         'title' => ['en' => 'See It In Action', 'ar' => 'شاهدها في العمل'],
         'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'See It In Action',
                 'description' => 'Click a chair to see how easy booking is. This is the exact same interface your clients will see.',
@@ -82,7 +82,7 @@ return [
         'page_slug' => 'home', 'section_type' => SectionTypeEnum::Pricing->value,
         'title' => ['en' => 'Simple Pricing', 'ar' => 'أسعار بسيطة'],
         'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Simple Pricing',
                 'plans' => [
@@ -103,7 +103,7 @@ return [
     [
         'page_slug' => 'home', 'section_type' => SectionTypeEnum::Cta->value,
         'title' => null, 'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Ready to Transform Your Salon?',
                 'subheading' => 'Join hundreds of salon owners who trust Dorak.',
@@ -124,7 +124,7 @@ return [
     [
         'page_slug' => 'features', 'section_type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Built for Salons, Barbershops, and Freelancers',
                 'subheading' => 'Every feature is designed around how the grooming industry actually works.',
@@ -144,7 +144,7 @@ return [
         'page_slug' => 'features', 'section_type' => SectionTypeEnum::FeatureList->value,
         'title' => ['en' => 'Everything You Need', 'ar' => 'كل ما تحتاجه'],
         'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Everything You Need',
                 'features' => [
@@ -171,7 +171,7 @@ return [
     [
         'page_slug' => 'pricing', 'section_type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Start Free. Scale When You Need.',
                 'subheading' => 'No hidden fees. No surprises. Your first branch is always free.',
@@ -187,7 +187,7 @@ return [
         'page_slug' => 'pricing', 'section_type' => SectionTypeEnum::Pricing->value,
         'title' => ['en' => 'Choose Your Plan', 'ar' => 'اختر خطتك'],
         'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Choose Your Plan',
                 'plans' => [
@@ -208,7 +208,7 @@ return [
     [
         'page_slug' => 'pricing', 'section_type' => SectionTypeEnum::Cta->value,
         'title' => null, 'subtitle' => null,
-        'content' => [
+        'body' => [
             'en' => [
                 'heading' => 'Still Have Questions?',
                 'subheading' => 'Contact our sales team for a personalized demo.',

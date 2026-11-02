@@ -95,7 +95,7 @@ it('records a failed delivery and still completes the booking transition when FC
     $notification = NotificationModel::query()->where('notifiable_id', $client->id)->sole();
     $delivery = NotificationDeliveryModel::query()->where('notification_id', $notification->id)->sole();
     expect($delivery->status)->toBe(NotificationDeliveryStatusEnum::Failed)
-        ->and($delivery->error)->toBe('HTTP 403 PERMISSION_DENIED: Sender mismatch')
+        ->and($delivery->error_message)->toBe('HTTP 403 PERMISSION_DENIED: Sender mismatch')
         ->and($delivery->provider_message_id)->toBeNull();
 });
 
@@ -114,7 +114,7 @@ it('keeps the failed delivery row when an unregistered token is pruned', functio
     $delivery = NotificationDeliveryModel::query()->sole();
     expect($delivery->status)->toBe(NotificationDeliveryStatusEnum::Failed)
         ->and($delivery->device_token_id)->toBeNull()
-        ->and($delivery->error)->toStartWith('HTTP 404 NOT_FOUND');
+        ->and($delivery->error_message)->toStartWith('HTTP 404 NOT_FOUND');
 });
 
 it('does not duplicate the notification or re-push delivered devices when the job retries', function (): void {

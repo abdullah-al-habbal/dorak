@@ -121,7 +121,7 @@ export function mapGateway(wire: unknown): IGateway {
     driver: gatewayDriver(item.driver),
     isActive: item.is_active === true,
     isDefault: item.is_default === true,
-    configKeys: list(item.config_keys).filter(
+    gatewaySettingKeys: list(item.gateway_setting_keys).filter(
       (key): key is string => typeof key === "string",
     ),
   });
@@ -204,7 +204,7 @@ export function planPayload(form: IPlanForm) {
 }
 
 export function gatewayPayload(form: IGatewayForm) {
-  const config = parseConfigLines(form.config);
+  const gatewaySettings = parseConfigLines(form.gatewaySettings);
   return {
     code: form.code,
     name: { en: form.nameEn, ar: form.nameAr },
@@ -212,7 +212,9 @@ export function gatewayPayload(form: IGatewayForm) {
     is_active: form.isActive,
     is_default: form.isDefault,
     // Omitted when empty so the stored (encrypted) config is kept.
-    ...(Object.keys(config).length > 0 ? { config } : {}),
+    ...(Object.keys(gatewaySettings).length > 0
+      ? { gateway_settings: gatewaySettings }
+      : {}),
   };
 }
 

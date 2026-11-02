@@ -86,7 +86,7 @@ final class SubmitReviewHandler
             'booking_id' => $booking->id,
             'author_id' => $command->authorId,
             'author_type' => $command->authorType,
-            'comment' => $command->comment,
+            'body' => $command->body,
         ];
     }
 }

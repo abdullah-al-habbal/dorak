@@ -8,14 +8,14 @@ final readonly class ClientPreferenceVectorDataValueObject
 {
     private function __construct(
         private array $vector,
-        private array $metadata,
+        private array $embeddingMetadata,
     ) {}
 
     public static function fromArray(array $data): self
     {
         return new self(
             vector: (array) ($data['vector'] ?? []),
-            metadata: (array) ($data['metadata'] ?? []),
+            embeddingMetadata: (array) ($data['embedding_metadata'] ?? []),
         );
     }
 
@@ -23,7 +23,7 @@ final readonly class ClientPreferenceVectorDataValueObject
     {
         return [
             'vector' => $this->vector,
-            'metadata' => $this->metadata,
+            'embedding_metadata' => $this->embeddingMetadata,
         ];
     }
 
@@ -32,8 +32,8 @@ final readonly class ClientPreferenceVectorDataValueObject
         return $this->vector;
     }
 
-    public function metadata(): array
+    public function embeddingMetadata(): array
     {
-        return $this->metadata;
+        return $this->embeddingMetadata;
     }
 }

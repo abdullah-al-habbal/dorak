@@ -13,7 +13,7 @@ class ReviewTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = DorakColors.of(context);
-    final comment = review.comment;
+    final comment = review.body;
     return Container(
       padding: const EdgeInsets.all(DorakDimensions.spacingMedium),
       decoration: BoxDecoration(

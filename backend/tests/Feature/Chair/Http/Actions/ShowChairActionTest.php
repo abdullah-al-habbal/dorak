@@ -12,7 +12,7 @@ it('shows a chair', function () {
     $response->assertOk();
     $response->assertJsonStructure([
         'success',
-        'data' => ['id', 'label', 'status', 'ui_metadata', 'branch_id', 'created_at'],
+        'data' => ['id', 'label', 'status', 'layout_settings', 'branch_id', 'created_at'],
     ]);
     expect($response->json('data.id'))->toBe($chair->id);
 });

@@ -14,7 +14,7 @@ final class ClientSavedFilterResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'filter_config' => $this->filter_config->toArray(),
+            'filter_criteria' => $this->filter_criteria->toArray(),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

@@ -15,7 +15,7 @@ class ClientDto extends Equatable {
   final String email;
   final String? phone;
   final DateTime? phoneVerifiedAt;
-  final String? avatar;
+  final String? avatarUrl;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final ClientUniverse? preferredUniverse;
   final DateTime? emailVerifiedAt;
@@ -27,7 +27,7 @@ class ClientDto extends Equatable {
     required this.email,
     this.phone,
     this.phoneVerifiedAt,
-    this.avatar,
+    this.avatarUrl,
     this.preferredUniverse,
     this.emailVerifiedAt,
     this.createdAt,
@@ -47,7 +47,7 @@ class ClientDto extends Equatable {
     email,
     phone,
     phoneVerifiedAt,
-    avatar,
+    avatarUrl,
     preferredUniverse,
     emailVerifiedAt,
     createdAt,

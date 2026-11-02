@@ -15,7 +15,7 @@ it('returns a localized marketing page with its visible sections', function () {
     SectionModel::factory()->create([
         'page_id' => $page->id,
         'universe_visibility' => 'all',
-        'content' => ['en' => ['heading' => 'Run your shop'], 'ar' => ['heading' => 'أدر صالونك']],
+        'body' => ['en' => ['heading' => 'Run your shop'], 'ar' => ['heading' => 'أدر صالونك']],
     ]);
 
     $response = $this->getJson('/api/v1/marketing/pages/barber-tools?universe=all', [
@@ -26,7 +26,7 @@ it('returns a localized marketing page with its visible sections', function () {
         ->assertJsonPath('data.page.slug', 'barber-tools')
         ->assertJsonPath('data.page.title', 'Barber tools')
         ->assertJsonCount(1, 'data.sections')
-        ->assertJsonPath('data.sections.0.content.heading', 'Run your shop');
+        ->assertJsonPath('data.sections.0.body.heading', 'Run your shop');
 });
 
 it('returns the configured floor plan demo and its chairs', function () {

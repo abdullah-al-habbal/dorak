@@ -33,7 +33,7 @@ final class BookingFormSchema
                     Select::make('booking_status')
                         ->options(BookingStatus::class)
                         ->required(),
-                    KeyValue::make('at_home_location'),
+                    KeyValue::make('home_address'),
                 ]),
         ]);
     }

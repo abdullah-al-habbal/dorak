@@ -21,7 +21,7 @@ class ChairFactory extends Factory
             'branch_id' => BranchModel::factory(),
             'barber_id' => null,
             'label' => (string) (++self::$labelSequence),
-            'ui_metadata' => [
+            'layout_settings' => [
                 'shape' => 'rectangle',
                 'position_x' => fake()->numberBetween(10, 500),
                 'position_y' => fake()->numberBetween(10, 500),

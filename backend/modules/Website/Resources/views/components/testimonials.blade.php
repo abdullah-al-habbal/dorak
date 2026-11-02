@@ -17,7 +17,7 @@
                             </svg>
                         @endfor
                     </div>
-                    <p class="text-sm leading-6 text-slate-600">"{{ $testimonial['quote'] }}"</p>
+                    <p class="text-sm leading-6 text-slate-600">"{{ $testimonial['body'] }}"</p>
                     <div class="mt-4 border-t border-slate-100 pt-4">
                         <p class="text-sm font-semibold text-slate-900">{{ $testimonial['author_name'] }}</p>
                         <p class="text-xs text-slate-500">{{ $testimonial['author_title'] }}</p>
