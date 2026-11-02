@@ -86,7 +86,7 @@ it('removes expired edges and vectors of clients that no longer exist on every r
 
 it('builds a history edge from a completed booking after a recompute', function () {
     $booking = BookingModel::factory()->create();
-    BookingModel::withoutEvents(fn () => $booking->update(['status' => BookingStatus::Completed]));
+    BookingModel::withoutEvents(fn () => $booking->update(['booking_status' => BookingStatus::Completed]));
 
     expect(RecommendationEdgeModel::where('source_id', $booking->client_id)->where('edge_type', EdgeTypeEnum::History->value)->exists())->toBeFalse();
 

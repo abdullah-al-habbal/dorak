@@ -57,7 +57,7 @@ final class DashboardRefreshTokenResolver
 
             $record->forceFill([
                 'revoked_at' => now(),
-                'replaced_by_id' => $newRecord->getKey(),
+                'replaced_by_token_id' => $newRecord->getKey(),
             ])->save();
 
             return ['actor' => $actor, 'token' => $newPlainText];

@@ -24,7 +24,7 @@ class ActivationSeeder extends Seeder
                 'activable_id' => $barber->id,
                 'activable_type' => ActivableTypeEnum::Barber,
                 'status' => ActivationStatusEnum::Enabled->value,
-                'admin_id' => $admin->id,
+                'activated_by_id' => $admin->id,
                 'activated_at' => now(),
             ]);
         }
@@ -35,7 +35,7 @@ class ActivationSeeder extends Seeder
                 'activable_id' => $branch->id,
                 'activable_type' => ActivableTypeEnum::Branch,
                 'status' => ActivationStatusEnum::Enabled->value,
-                'admin_id' => $admin->id,
+                'activated_by_id' => $admin->id,
                 'activated_at' => now(),
             ]);
         }

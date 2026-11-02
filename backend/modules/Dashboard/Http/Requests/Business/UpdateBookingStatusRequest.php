@@ -12,6 +12,6 @@ final class UpdateBookingStatusRequest extends BaseApiFormRequest
 {
     public function rules(): array
     {
-        return ['status' => ['required', Rule::enum(BookingStatus::class)]];
+        return ['booking_status' => ['required', Rule::enum(BookingStatus::class)]];
     }
 }

@@ -19,9 +19,9 @@ final class BookingTable
                     ->label(__('booking::ui.client')),
                 TextColumn::make('chair.name')
                     ->label(__('booking::ui.chair')),
-                TextColumn::make('time_slot')
+                TextColumn::make('starts_at')
                     ->dateTime(),
-                TextColumn::make('status')
+                TextColumn::make('booking_status')
                     ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime(),

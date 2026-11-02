@@ -116,8 +116,8 @@ void main() {
               code: 'CREATED',
               data: {
                 'id': 'booking-2',
-                'time_slot': '2026-09-20T09:00:00.000Z',
-                'status': 'pending',
+                'starts_at': '2026-09-20T09:00:00.000Z',
+                'booking_status': 'pending',
                 'barber_id': 'barber-1',
               },
             ),
@@ -133,7 +133,7 @@ void main() {
 
       expect(captured.path, '/client/history/history-1/rebook');
       expect(captured.method, 'POST');
-      expect(captured.data, {'time_slot': '2026-09-20T09:00:00.000Z'});
+      expect(captured.data, {'starts_at': '2026-09-20T09:00:00.000Z'});
       expect(created.id, 'booking-2');
       expect(created.status, BookingStatus.pending);
       expect(created.barber?.name, isNull);

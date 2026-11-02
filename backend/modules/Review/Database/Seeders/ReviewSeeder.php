@@ -16,7 +16,7 @@ class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        $booking = BookingModel::where('status', BookingStatus::Completed)->first()
+        $booking = BookingModel::where('booking_status', BookingStatus::Completed)->first()
             ?? BookingModel::factory()->completed()->create();
 
         $client = ClientModel::where('email', 'admin@dorak.sy')->first()

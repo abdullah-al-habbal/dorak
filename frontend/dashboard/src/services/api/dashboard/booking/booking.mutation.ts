@@ -26,10 +26,9 @@ export function rateBookingClient<TData>(
 
 export function updateBookingStatus<TData>(
   id: DashboardEntityId,
-  payload: unknown,
+  payload: { status: string },
 ) {
-  return api.patch<TData>(
-    DashboardEndpoints.resourceById("bookings", id),
-    payload,
-  );
+  return api.patch<TData>(DashboardEndpoints.resourceById("bookings", id), {
+    booking_status: payload.status,
+  });
 }

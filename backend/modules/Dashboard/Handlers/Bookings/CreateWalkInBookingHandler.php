@@ -30,7 +30,7 @@ final readonly class CreateWalkInBookingHandler
                 chairId: $command->chairId,
                 barberId: $command->barberId,
                 clientId: $client->id,
-                timeSlot: $command->timeSlot,
+                startsAt: $command->startsAt,
                 serviceIds: $command->serviceIds,
                 atHomeLocation: null,
             ));

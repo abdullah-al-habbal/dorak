@@ -14,7 +14,7 @@ return [
         ],
         'avatar_url' => null,
         'rating' => 5,
-        'display_order' => 0,
+        'sort_order' => 0,
     ],
     [
         'page_slug' => 'home',
@@ -27,7 +27,7 @@ return [
         ],
         'avatar_url' => null,
         'rating' => 5,
-        'display_order' => 1,
+        'sort_order' => 1,
     ],
     [
         'page_slug' => 'home',
@@ -40,6 +40,6 @@ return [
         ],
         'avatar_url' => null,
         'rating' => 4,
-        'display_order' => 2,
+        'sort_order' => 2,
     ],
 ];

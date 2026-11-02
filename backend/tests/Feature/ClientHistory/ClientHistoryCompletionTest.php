@@ -140,7 +140,7 @@ describe('GET /barber/clients/{client}/history', function () {
         BookingModel::factory()->create([
             'client_id' => $client->id,
             'barber_id' => $barber->id,
-            'status' => BookingStatus::Completed,
+            'booking_status' => BookingStatus::Completed,
         ]);
 
         $this->actingAs($barber, 'barber')
@@ -156,7 +156,7 @@ describe('GET /barber/clients/{client}/history', function () {
             'client_id' => $client->id,
             'barber_id' => null,
             'chair_id' => $chair->id,
-            'status' => BookingStatus::Confirmed,
+            'booking_status' => BookingStatus::Confirmed,
         ]);
 
         $this->actingAs($barber, 'barber')
@@ -173,13 +173,13 @@ describe('GET /barber/clients/{client}/history', function () {
             ->assertForbidden();
     });
 
-    it('forbids a barber whose only booking with the client was canceled', function () {
+    it('forbids a barber whose only booking with the client was cancelled', function () {
         $barber = BarberModel::factory()->create();
         $client = ClientModel::factory()->create();
         BookingModel::factory()->create([
             'client_id' => $client->id,
             'barber_id' => $barber->id,
-            'status' => BookingStatus::Canceled,
+            'booking_status' => BookingStatus::Cancelled,
         ]);
 
         $this->actingAs($barber, 'barber')

@@ -23,13 +23,13 @@ final class BookingsTable
                     ->searchable(),
                 TextColumn::make('chair.label')
                     ->label(__('booking::ui.chair')),
-                TextColumn::make('time_slot')
+                TextColumn::make('starts_at')
                     ->dateTime()
                     ->sortable(),
-                TextColumn::make('status')
+                TextColumn::make('booking_status')
                     ->badge(),
             ])
-            ->defaultSort('time_slot', 'desc')
+            ->defaultSort('starts_at', 'desc')
             ->actions([
                 ViewAction::make(),
                 EditAction::make(),

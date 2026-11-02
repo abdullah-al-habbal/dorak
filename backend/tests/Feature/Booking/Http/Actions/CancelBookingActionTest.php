@@ -14,18 +14,18 @@ beforeEach(function () {
 it('cancels own confirmed booking', function () {
     $booking = BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => BookingStatus::Confirmed,
-        'time_slot' => now()->addHours(3),
+        'booking_status' => BookingStatus::Confirmed,
+        'starts_at' => now()->addHours(3),
     ]);
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel");
 
     $response->assertOk();
-    expect($response->json('data.status'))->toBe(BookingStatus::Canceled->value);
+    expect($response->json('data.booking_status'))->toBe(BookingStatus::Cancelled->value);
 });
 
 it('returns 403 when cancelling other users booking', function () {
-    $booking = BookingModel::factory()->create(['status' => BookingStatus::Confirmed]);
+    $booking = BookingModel::factory()->create(['booking_status' => BookingStatus::Confirmed]);
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel");
 
@@ -45,8 +45,8 @@ it('returns 422 when cancelling non-confirmed booking', function () {
 it('rejects cancellation two hours or less before the appointment', function () {
     $booking = BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => BookingStatus::Confirmed,
-        'time_slot' => now()->addHours(2),
+        'booking_status' => BookingStatus::Confirmed,
+        'starts_at' => now()->addHours(2),
     ]);
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel");

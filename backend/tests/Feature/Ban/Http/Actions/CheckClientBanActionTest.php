@@ -22,8 +22,8 @@ it('returns banned true when client has active ban', function () {
     BanModel::factory()->create([
         'bannable_id' => $this->client->id,
         'bannable_type' => 'client',
-        'banned_from' => now()->subDay(),
-        'banned_until' => now()->addDay(),
+        'banned_at' => now()->subDay(),
+        'expires_at' => now()->addDay(),
     ]);
 
     $response = $this->getJson("/api/v1/clients/{$this->client->id}/bans/check");
@@ -37,8 +37,8 @@ it('returns banned false when ban has expired', function () {
     BanModel::factory()->create([
         'bannable_id' => $this->client->id,
         'bannable_type' => 'client',
-        'banned_from' => now()->subDays(10),
-        'banned_until' => now()->subDay(),
+        'banned_at' => now()->subDays(10),
+        'expires_at' => now()->subDay(),
     ]);
 
     $response = $this->getJson("/api/v1/clients/{$this->client->id}/bans/check");

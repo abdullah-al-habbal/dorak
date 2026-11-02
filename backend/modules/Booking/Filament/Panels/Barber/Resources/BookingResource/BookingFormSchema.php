@@ -17,7 +17,7 @@ final class BookingFormSchema
         return $form->schema([
             Section::make(__('booking::ui.booking_details'))
                 ->schema([
-                    Select::make('status')
+                    Select::make('booking_status')
                         ->options(collect(BookingStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->label()]))
                         ->required(),
                     Textarea::make('notes')

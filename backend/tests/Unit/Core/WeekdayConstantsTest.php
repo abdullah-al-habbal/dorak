@@ -13,7 +13,7 @@ describe('WeekdayConstants', function (): void {
     });
 
     it('applies the shared range to opening hours', function (): void {
-        $entry = fn (int $weekday): array => ['hours' => [['weekday' => $weekday, 'is_closed' => true]]];
+        $entry = fn (int $weekday): array => ['hours' => [['day_of_week' => $weekday, 'is_closed' => true]]];
         $rules = OpeningHoursRules::week('hours');
 
         expect(Validator::make($entry(6), $rules)->passes())->toBeTrue()

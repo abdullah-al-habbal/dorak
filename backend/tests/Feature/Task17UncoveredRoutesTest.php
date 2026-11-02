@@ -36,12 +36,12 @@ it('requires a barber token and scopes today appointments to that barber', funct
     $own = BookingModel::factory()->create([
         'barber_id' => $barber->id,
         'chair_id' => $chair->id,
-        'time_slot' => today()->setTime(12, 0),
+        'starts_at' => today()->setTime(12, 0),
         'ends_at' => today()->setTime(12, 30),
     ]);
     BookingModel::factory()->create([
         'barber_id' => $other->id,
-        'time_slot' => today()->setTime(13, 0),
+        'starts_at' => today()->setTime(13, 0),
         'ends_at' => today()->setTime(13, 30),
     ]);
 
@@ -90,18 +90,18 @@ it('lists branch chairs and saves a valid floor plan only for the signed-in bran
 });
 
 it('records the current branch booking status behavior pending Task 18 transition rules', function (): void {
-    $this->patchJson('/api/v1/branch/bookings/missing/status', ['status' => BookingStatus::InProgress])->assertUnauthorized();
+    $this->patchJson('/api/v1/branch/bookings/missing/status', ['booking_status' => BookingStatus::InProgress])->assertUnauthorized();
     $branch = BranchModel::factory()->create();
     $other = BranchModel::factory()->create();
     $own = BookingModel::factory()->create(['chair_id' => ChairModel::factory()->create(['branch_id' => $branch->id])->id]);
     $foreign = BookingModel::factory()->create(['chair_id' => ChairModel::factory()->create(['branch_id' => $other->id])->id]);
     $this->actingAs($branch, 'branch_api');
 
-    $this->patchJson("/api/v1/branch/bookings/{$foreign->id}/status", ['status' => BookingStatus::InProgress])->assertNotFound();
-    $this->patchJson("/api/v1/branch/bookings/{$own->id}/status", ['status' => BookingStatus::InProgress])
+    $this->patchJson("/api/v1/branch/bookings/{$foreign->id}/status", ['booking_status' => BookingStatus::InProgress])->assertNotFound();
+    $this->patchJson("/api/v1/branch/bookings/{$own->id}/status", ['booking_status' => BookingStatus::InProgress])
         ->assertOk()
-        ->assertJsonPath('data.status', BookingStatus::InProgress->value);
-    expect($own->fresh()->status)->toBe(BookingStatus::InProgress);
+        ->assertJsonPath('data.booking_status', BookingStatus::InProgress->value);
+    expect($own->fresh()->booking_status)->toBe(BookingStatus::InProgress);
 })->group('known-defect');
 
 it('serves dashboard profile, booking status, branch update, and chair create routes', function (): void {
@@ -131,9 +131,9 @@ it('serves dashboard profile, booking status, branch update, and chair create ro
     ])->assertCreated();
     $createdChair = ChairModel::query()->where('label', 'C-17')->firstOrFail();
     $booking = BookingModel::factory()->create(['chair_id' => $createdChair->id]);
-    $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => BookingStatus::Canceled->value])
-        ->assertOk()->assertJsonPath('data.status', BookingStatus::Canceled->value);
-    expect($booking->fresh()->status)->toBe(BookingStatus::Canceled);
+    $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['booking_status' => BookingStatus::Cancelled->value])
+        ->assertOk()->assertJsonPath('data.booking_status', BookingStatus::Cancelled->value);
+    expect($booking->fresh()->booking_status)->toBe(BookingStatus::Cancelled);
 });
 
 it('keeps dashboard branch and chair writes inside a branch manager tenant', function (): void {
@@ -157,7 +157,7 @@ it('keeps dashboard branch and chair writes inside a branch manager tenant', fun
     $ownChair = ChairModel::factory()->create(['branch_id' => $branch->id]);
     $foreignChair = ChairModel::factory()->create(['branch_id' => $foreignBranch->id]);
     $foreignBooking = BookingModel::factory()->create(['chair_id' => $foreignChair->id]);
-    $this->patchJson("/api/v1/dashboard/bookings/{$foreignBooking->id}", ['status' => BookingStatus::Canceled->value])
+    $this->patchJson("/api/v1/dashboard/bookings/{$foreignBooking->id}", ['booking_status' => BookingStatus::Cancelled->value])
         ->assertNotFound();
     $this->patchJson('/api/v1/dashboard/bookings/'.BookingModel::factory()->create(['chair_id' => $ownChair->id])->id, [])->assertUnprocessable();
 
@@ -168,7 +168,7 @@ it('keeps dashboard branch and chair writes inside a branch manager tenant', fun
         'customer_name' => 'Tenant Boundary',
         'customer_email' => 'tenant-boundary@example.test',
         'service_ids' => [$service->id],
-        'time_slot' => now()->addDay()->toIso8601String(),
+        'starts_at' => now()->addDay()->toIso8601String(),
     ])->assertForbidden();
 });
 
@@ -189,7 +189,7 @@ it('exercises the dashboard walk-in route validation and authorization', functio
         'customer_name' => 'Walk In Customer',
         'customer_email' => 'walk-in@example.test',
         'service_ids' => [$service->id],
-        'time_slot' => now()->addDay()->toIso8601String(),
+        'starts_at' => now()->addDay()->toIso8601String(),
     ])->assertCreated()->assertJsonPath('success', true);
     $this->assertDatabaseHas('bookings', ['id' => $response->json('data.id'), 'chair_id' => $chair->id]);
 });

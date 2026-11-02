@@ -33,7 +33,7 @@ function assertNotifiedOnce(string $event): void
 it('notifies once when a client cancels', function (): void {
     $client = ClientModel::factory()->create();
     $this->actingAs($client, 'client');
-    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed, 'time_slot' => now()->addHours(5)]);
+    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Confirmed, 'starts_at' => now()->addHours(5)]);
 
     $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel")->assertOk();
 
@@ -43,7 +43,7 @@ it('notifies once when a client cancels', function (): void {
 it('notifies once when a barber cancels', function (): void {
     $barber = BarberModel::factory()->create();
     $this->actingAs($barber, 'barber');
-    $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'status' => BookingStatus::Confirmed, 'time_slot' => now()->addHours(5)]);
+    $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'booking_status' => BookingStatus::Confirmed, 'starts_at' => now()->addHours(5)]);
 
     $this->postJson("/api/v1/barber/bookings/{$booking->id}/cancel", ['cancellation_reason' => 'sick'])->assertOk();
 
@@ -53,7 +53,7 @@ it('notifies once when a barber cancels', function (): void {
 it('notifies once for each barber lifecycle action', function (string $path, BookingStatus $from): void {
     $barber = BarberModel::factory()->create();
     $this->actingAs($barber, 'barber');
-    $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'status' => $from]);
+    $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'booking_status' => $from]);
 
     $this->patchJson("/api/v1/barber/bookings/{$booking->id}/{$path}")->assertOk();
 
@@ -70,19 +70,19 @@ it('notifies once on dashboard status update, cancel and reschedule', function (
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
     $this->authenticateDashboardActor($branch);
 
-    $update = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
-    $this->patchJson("/api/v1/dashboard/bookings/{$update->id}", ['status' => BookingStatus::Confirmed])->assertOk();
+    $update = BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Pending]);
+    $this->patchJson("/api/v1/dashboard/bookings/{$update->id}", ['booking_status' => BookingStatus::Confirmed])->assertOk();
     assertNotifiedOnce(BookingStatusUpdatedEvent::class);
 
     Queue::fake();
-    $cancel = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
+    $cancel = BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Pending]);
     $this->patchJson("/api/v1/dashboard/bookings/{$cancel->id}/cancel")->assertOk();
     assertNotifiedOnce(BookingCancelledEvent::class);
 
     Queue::fake();
-    $move = BookingModel::factory()->create(['chair_id' => $chair->id, 'time_slot' => now()->addDay(), 'ends_at' => now()->addDay()->addMinutes(30)]);
+    $move = BookingModel::factory()->create(['chair_id' => $chair->id, 'starts_at' => now()->addDay(), 'ends_at' => now()->addDay()->addMinutes(30)]);
     $this->patchJson("/api/v1/dashboard/bookings/{$move->id}/reschedule", [
-        'time_slot' => now()->addDays(3)->toIso8601String(),
+        'starts_at' => now()->addDays(3)->toIso8601String(),
         'ends_at' => now()->addDays(3)->addMinutes(30)->toIso8601String(),
     ])->assertOk();
     assertNotifiedOnce(BookingRescheduledEvent::class);
@@ -92,9 +92,9 @@ it('notifies once on branch status update', function (): void {
     $branch = BranchModel::factory()->create();
     $this->actingAs($branch, 'branch_api');
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
-    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
+    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Pending]);
 
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Confirmed])->assertOk();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['booking_status' => BookingStatus::Confirmed])->assertOk();
 
     assertNotifiedOnce(BookingStatusUpdatedEvent::class);
 });
@@ -103,9 +103,9 @@ it('dispatches nothing when a transition is rejected', function (): void {
     $branch = BranchModel::factory()->create();
     $this->actingAs($branch, 'branch_api');
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
-    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Completed]);
+    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Completed]);
 
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::InProgress])->assertUnprocessable();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['booking_status' => BookingStatus::InProgress])->assertUnprocessable();
 
     Queue::assertNotPushed(SendBookingStatusNotificationJob::class);
     Event::assertNotDispatched(BookingStatusUpdatedEvent::class);
@@ -129,7 +129,7 @@ it('never dispatches the notification job from an http action', function (): voi
 it('tells the barber and branch, not the client, when the client cancels', function (): void {
     $client = ClientModel::factory()->create();
     $this->actingAs($client, 'client');
-    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed, 'time_slot' => now()->addHours(5)]);
+    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Confirmed, 'starts_at' => now()->addHours(5)]);
 
     $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel")->assertOk();
 
@@ -143,7 +143,7 @@ it('does not push the cancelling client but pushes the barber and branch', funct
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
     $booking = BookingModel::factory()->create([
         'client_id' => $client->id, 'barber_id' => $barber->id, 'chair_id' => $chair->id,
-        'status' => BookingStatus::Canceled,
+        'booking_status' => BookingStatus::Cancelled,
     ]);
     $key = openssl_pkey_new(['private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);
     openssl_pkey_export($key, $privateKey);

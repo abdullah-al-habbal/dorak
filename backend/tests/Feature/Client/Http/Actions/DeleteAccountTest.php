@@ -62,7 +62,7 @@ function historyForDeletedClient(ClientModel $client, ?BookingModel $booking = n
 describe('DELETE /api/v1/client/account blocking bookings', function (): void {
     it('returns 409 and leaves the account untouched while a booking is :dataset', function (BookingStatus $status): void {
         $client = deletableClient();
-        BookingModel::factory()->create(['client_id' => $client->id, 'status' => $status]);
+        BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => $status]);
 
         deleteAccountAs($client)
             ->assertStatus(409)
@@ -91,8 +91,8 @@ describe('DELETE /api/v1/client/account when allowed', function (): void {
         $client->createToken('second-device');
         SocialAccountModel::factory()->create(['client_id' => $client->id]);
 
-        foreach ([BookingStatus::Completed, BookingStatus::Canceled, BookingStatus::NoShow] as $status) {
-            BookingModel::factory()->create(['client_id' => $client->id, 'status' => $status]);
+        foreach ([BookingStatus::Completed, BookingStatus::Cancelled, BookingStatus::NoShow] as $status) {
+            BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => $status]);
         }
 
         deleteAccountAs($client)->assertOk();
@@ -130,10 +130,10 @@ describe('DELETE /api/v1/client/account when allowed', function (): void {
 
     it('anonymizes service history but keeps the rows for aggregates', function (): void {
         $client = deletableClient();
-        $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Completed]);
+        $booking = BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Completed]);
         $history = historyForDeletedClient($client, $booking);
         ClientServiceHistoryMediaModel::query()->create([
-            'history_id' => $history->id,
+            'client_service_history_id' => $history->id,
             'photo_url' => 'https://cdn.example.com/sara-after.jpg',
             'photo_type' => HistoryMediaType::After,
             'uploaded_at' => now(),
@@ -151,7 +151,7 @@ describe('DELETE /api/v1/client/account when allowed', function (): void {
             ->and($row->barber_id)->toBe($history->barber_id)
             ->and($row->offered_service_id)->toBe($history->offered_service_id)
             ->and($row->client_rating)->toBe(5)
-            ->and(ClientServiceHistoryMediaModel::query()->where('history_id', $history->id)->exists())->toBeFalse();
+            ->and(ClientServiceHistoryMediaModel::query()->where('client_service_history_id', $history->id)->exists())->toBeFalse();
 
         $serialized = json_encode($row->getAttributes(), JSON_THROW_ON_ERROR);
         expect($serialized)->not->toContain($client->id)
@@ -194,7 +194,7 @@ describe('admin panel client deletion', function (): void {
 
     it('is blocked while the client has an active booking', function (): void {
         $client = deletableClient();
-        BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed]);
+        BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Confirmed]);
 
         Livewire::test(ListClientsPage::class)
             ->callTableAction(DeleteAction::class, $client)

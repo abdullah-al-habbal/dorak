@@ -24,16 +24,31 @@ describe("dashboard payload mappers", () => {
     const payload = mapBranchPayload({
       ...branchInput,
       openingHours: [
-        { weekday: 0, isClosed: false, opensAt: "09:00", closesAt: "17:00" },
-        { weekday: 1, isClosed: false, opensAt: null, closesAt: null },
-        { weekday: 5, isClosed: true, opensAt: "09:00", closesAt: "12:00" },
+        {
+          dayOfWeek: 0,
+          isClosed: false,
+          opensTime: "09:00",
+          closesTime: "17:00",
+        },
+        { dayOfWeek: 1, isClosed: false, opensTime: null, closesTime: null },
+        {
+          dayOfWeek: 5,
+          isClosed: true,
+          opensTime: "09:00",
+          closesTime: "12:00",
+        },
       ],
     });
 
     expect(payload.description).toEqual({ en: "Downtown", ar: null });
     expect(payload.opening_hours).toEqual([
-      { weekday: 0, is_closed: false, opens_at: "09:00", closes_at: "17:00" },
-      { weekday: 5, is_closed: true, opens_at: null, closes_at: null },
+      {
+        day_of_week: 0,
+        is_closed: false,
+        opens_time: "09:00",
+        closes_time: "17:00",
+      },
+      { day_of_week: 5, is_closed: true, opens_time: null, closes_time: null },
     ]);
   });
 
@@ -85,7 +100,7 @@ describe("dashboard payload mappers", () => {
         customerEmail: "customer@example.com",
         customerPhone: undefined,
         serviceIds: ["service"],
-        timeSlot: "2026-01-01T12:00:00.000Z",
+        startsAt: "2026-01-01T12:00:00.000Z",
       }),
     ).toEqual({
       branch_id: "branch",
@@ -93,18 +108,18 @@ describe("dashboard payload mappers", () => {
       customer_email: "customer@example.com",
       customer_name: "Customer",
       service_ids: ["service"],
-      time_slot: "2026-01-01T12:00:00.000Z",
+      starts_at: "2026-01-01T12:00:00.000Z",
     });
   });
 
   it("maps reschedule values to backend wire names", () => {
     expect(
       mapBookingReschedulePayload({
-        timeSlot: "2026-01-01T12:00:00.000Z",
+        startsAt: "2026-01-01T12:00:00.000Z",
         endsAt: "2026-01-01T13:00:00.000Z",
       }),
     ).toEqual({
-      time_slot: "2026-01-01T12:00:00.000Z",
+      starts_at: "2026-01-01T12:00:00.000Z",
       ends_at: "2026-01-01T13:00:00.000Z",
     });
   });

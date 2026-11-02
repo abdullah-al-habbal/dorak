@@ -6,6 +6,6 @@ export const bookingStatusSchema = z.object({
     "in_progress",
     "completed",
     "no_show",
-    "canceled",
+    "cancelled",
   ]),
 });

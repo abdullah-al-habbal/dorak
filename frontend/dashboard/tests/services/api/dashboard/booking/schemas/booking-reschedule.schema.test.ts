@@ -7,7 +7,7 @@ describe("bookingRescheduleSchema", () => {
   it("rejects a time range that ends before it starts", () => {
     expect(
       schema.safeParse({
-        timeSlot: "2026-01-01T12:00",
+        startsAt: "2026-01-01T12:00",
         endsAt: "2026-01-01T11:00",
       }).success,
     ).toBe(false);

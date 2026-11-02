@@ -29,7 +29,7 @@ final class ClientRecommendationSignalGatherer
     {
         return collect([
             ClientFavoriteModel::where('client_id', $client->id)->max('created_at'),
-            $client->bookings()->where('status', BookingStatus::Completed->value)->max('updated_at'),
+            $client->bookings()->where('booking_status', BookingStatus::Completed->value)->max('updated_at'),
             ClientFaceAnalysisResultModel::where('client_id', $client->id)->max('computed_at'),
             ClientInteractionLogModel::where('client_id', $client->id)->max('created_at'),
         ])
@@ -52,7 +52,7 @@ final class ClientRecommendationSignalGatherer
     private function historySignals(ClientModel $client): array
     {
         return $client->bookings()
-            ->where('status', BookingStatus::Completed->value)
+            ->where('booking_status', BookingStatus::Completed->value)
             ->with('barber', 'services.catalogItem')
             ->get()
             ->map(function ($booking): string {

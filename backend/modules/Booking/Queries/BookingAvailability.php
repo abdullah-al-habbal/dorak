@@ -19,8 +19,8 @@ final class BookingAvailability
      */
     public static function apply(Builder $query, Carbon $startsAt, Carbon $endsAt): Builder
     {
-        return $query->whereIn('status', BookingStatus::reservationBlockingValues())
-            ->where('time_slot', '<', $endsAt)
+        return $query->whereIn('booking_status', BookingStatus::reservationBlockingValues())
+            ->where('starts_at', '<', $endsAt)
             ->where('ends_at', '>', $startsAt);
     }
 }

@@ -26,7 +26,7 @@ function completeBookingWithPrice(int $priceAmountMinor, ?BranchModel $branch = 
         'currency_code' => $currency?->code,
     ]));
     $booking->services()->attach($service->id);
-    $booking->update(['status' => BookingStatus::Completed]);
+    $booking->update(['booking_status' => BookingStatus::Completed]);
 
     return $booking;
 }
@@ -128,7 +128,7 @@ describe('Commission accrual on completed bookings', function (): void {
             ->and($entry->rule_snapshot)->toMatchArray(['scope' => 'global', 'type' => 'percent', 'value_bps' => 1000]);
 
         $booking->touch();
-        $booking->update(['status' => BookingStatus::Completed]);
+        $booking->update(['booking_status' => BookingStatus::Completed]);
         expect(CommissionEntryModel::query()->count())->toBe(1);
     });
 
@@ -153,7 +153,7 @@ describe('Commission accrual on completed bookings', function (): void {
         CommissionRuleModel::factory()->create();
         $pending = BookingModel::factory()->create();
         $pending->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 10000])->id);
-        $pending->update(['status' => BookingStatus::InProgress]);
+        $pending->update(['booking_status' => BookingStatus::InProgress]);
 
         expect(CommissionEntryModel::query()->count())->toBe(0);
     });
@@ -161,11 +161,11 @@ describe('Commission accrual on completed bookings', function (): void {
     it('accrues nothing for a booking without services or without a branch', function (): void {
         CommissionRuleModel::factory()->create();
         $empty = BookingModel::factory()->create();
-        $empty->update(['status' => BookingStatus::Completed]);
+        $empty->update(['booking_status' => BookingStatus::Completed]);
 
         $freelance = BookingModel::factory()->create(['chair_id' => null, 'branch_id' => null]);
         $freelance->services()->attach(OfferedServiceModel::factory()->create(['price_amount_minor' => 10000])->id);
-        $freelance->update(['status' => BookingStatus::Completed]);
+        $freelance->update(['booking_status' => BookingStatus::Completed]);
 
         expect(CommissionEntryModel::query()->count())->toBe(0);
     });

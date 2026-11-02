@@ -15,8 +15,8 @@ function maintenanceChairWithBooking(BranchModel $branch, BookingStatus $status 
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'status' => ChairStatus::Available]);
     $booking = BookingModel::factory()->create([
         'chair_id' => $chair->id,
-        'status' => $status->value,
-        'time_slot' => now()->addDay(),
+        'booking_status' => $status->value,
+        'starts_at' => now()->addDay(),
         'ends_at' => now()->addDay()->addMinutes(30),
     ]);
 
@@ -39,7 +39,7 @@ describe('branch toggle', function (): void {
             ->assertJsonPath('errors.booking_ids', [$booking->id]);
 
         expect($chair->fresh()->status)->toBe(ChairStatus::Available);
-        expect($booking->fresh()->status)->toBe(BookingStatus::Confirmed);
+        expect($booking->fresh()->booking_status)->toBe(BookingStatus::Confirmed);
         Queue::assertNotPushed(SendBookingStatusNotificationJob::class);
     });
 
@@ -48,8 +48,8 @@ describe('branch toggle', function (): void {
         [$chair, $first] = maintenanceChairWithBooking($this->branch);
         $second = BookingModel::factory()->create([
             'chair_id' => $chair->id,
-            'status' => BookingStatus::Pending->value,
-            'time_slot' => now()->addDays(2),
+            'booking_status' => BookingStatus::Pending->value,
+            'starts_at' => now()->addDays(2),
             'ends_at' => now()->addDays(2)->addMinutes(30),
         ]);
         $past = BookingModel::factory()->completed()->create(['chair_id' => $chair->id]);
@@ -62,10 +62,10 @@ describe('branch toggle', function (): void {
         expect($chair->fresh()->status)->toBe(ChairStatus::Maintenance);
         foreach ([$first, $second] as $booking) {
             $fresh = $booking->fresh();
-            expect($fresh->status)->toBe(BookingStatus::Canceled);
+            expect($fresh->booking_status)->toBe(BookingStatus::Cancelled);
             expect($fresh->cancellation_reason)->toBe('chair_maintenance');
         }
-        expect($past->fresh()->status)->toBe(BookingStatus::Completed);
+        expect($past->fresh()->booking_status)->toBe(BookingStatus::Completed);
         Queue::assertPushed(SendBookingStatusNotificationJob::class, 2);
     });
 
@@ -108,7 +108,7 @@ describe('shared chair update', function (): void {
         $this->patchJson("/api/v1/chairs/{$chair->id}", ['status' => ChairStatus::Maintenance, 'force' => true])
             ->assertOk()
             ->assertJsonPath('meta.canceled_booking_ids', [$booking->id]);
-        expect($booking->fresh()->status)->toBe(BookingStatus::Canceled);
+        expect($booking->fresh()->booking_status)->toBe(BookingStatus::Cancelled);
         Queue::assertPushed(SendBookingStatusNotificationJob::class, 1);
     });
 });

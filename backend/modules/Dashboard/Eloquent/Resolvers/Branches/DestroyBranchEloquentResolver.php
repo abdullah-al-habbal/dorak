@@ -34,8 +34,8 @@ final class DestroyBranchEloquentResolver
             }
 
             $hasUpcomingBookings = BookingModel::query()
-                ->whereIn('status', BookingStatus::reservationBlockingValues())
-                ->where('time_slot', '>', now())
+                ->whereIn('booking_status', BookingStatus::reservationBlockingValues())
+                ->where('starts_at', '>', now())
                 ->whereHas('chair', fn ($chairs) => $chairs->where('branch_id', (string) $branchId))
                 ->exists();
 

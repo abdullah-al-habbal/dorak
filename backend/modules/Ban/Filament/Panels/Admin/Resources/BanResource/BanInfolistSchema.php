@@ -21,9 +21,9 @@ final class BanInfolistSchema
                     TextEntry::make('bannable_id')
                         ->label(__('ban::ui.entity_id')),
                     TextEntry::make('reason'),
-                    TextEntry::make('banned_from')
+                    TextEntry::make('banned_at')
                         ->dateTime(),
-                    TextEntry::make('banned_until')
+                    TextEntry::make('expires_at')
                         ->dateTime()
                         ->default('Permanent'),
                     TextEntry::make('admin.email')

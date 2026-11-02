@@ -29,7 +29,7 @@ final class ToggleActivationAction
                     'activable_id' => $record->getKey(),
                     'activable_type' => ActivableTypeEnum::from($record->getMorphClass()),
                     'status' => $newStatus,
-                    'admin_id' => auth('admin')->id(),
+                    'activated_by_id' => auth('admin')->id(),
                     'activated_at' => now(),
                 ]);
 

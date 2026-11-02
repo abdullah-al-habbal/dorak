@@ -33,7 +33,7 @@ beforeEach(function (): void {
             'building' => '12',
             'unit' => '4B',
         ], $location),
-        'time_slot' => $this->slot->toIso8601String(),
+        'starts_at' => $this->slot->toIso8601String(),
         'service_ids' => [$this->service->id],
     ], $overrides));
 });

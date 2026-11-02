@@ -18,9 +18,9 @@ final class BookingResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'time_slot' => $this->time_slot->toIso8601String(),
+            'starts_at' => $this->starts_at->toIso8601String(),
             'ends_at' => $endsAt instanceof Carbon ? $endsAt->toIso8601String() : null,
-            'status' => $this->status,
+            'booking_status' => $this->booking_status,
             'payment_method' => $this->payment_method,
             'payment_status' => $this->payment_status,
             'chair' => ChairResource::make($this->whenLoaded('chair')),

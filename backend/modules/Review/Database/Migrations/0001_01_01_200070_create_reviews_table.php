@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('dispute_reason')->nullable();
             $table->timestamp('disputed_at')->nullable();
             $table->timestamp('resolved_at')->nullable();
-            $table->foreignUuid('resolved_by')->nullable()->constrained('admins')->nullOnDelete();
+            $table->foreignUuid('resolved_by_id')->nullable()->constrained('admins')->nullOnDelete();
             $table->text('resolution_note')->nullable();
             $table->timestamps();
 

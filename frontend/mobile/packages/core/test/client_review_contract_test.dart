@@ -60,8 +60,8 @@ void main() {
   test('staff booking payloads carry the client reputation', () {
     final booking = BookingDto.fromJson({
       'id': 'booking-1',
-      'time_slot': '2026-10-22T10:00:00.000Z',
-      'status': 'completed',
+      'starts_at': '2026-10-22T10:00:00.000Z',
+      'booking_status': 'completed',
       'services': <dynamic>[],
       'client': {
         'id': 'client-1',
@@ -80,8 +80,8 @@ void main() {
   test('client booking payloads have no client and unrated means null', () {
     final own = BookingDto.fromJson({
       'id': 'booking-1',
-      'time_slot': '2026-10-22T10:00:00.000Z',
-      'status': 'completed',
+      'starts_at': '2026-10-22T10:00:00.000Z',
+      'booking_status': 'completed',
       'services': <dynamic>[],
     });
     final unrated = BookingClientDto.fromJson({

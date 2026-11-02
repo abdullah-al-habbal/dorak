@@ -681,7 +681,7 @@ BookingDto testBooking({
   bool? cancellationEligible = true,
 }) => BookingDto(
   id: id,
-  timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+  startsAt: DateTime.utc(2026, 9, 10, 14, 30),
   endsAt: DateTime.utc(2026, 9, 10, 15),
   status: status,
   cancellationEligible: cancellationEligible,
@@ -758,7 +758,7 @@ class FakeBookingRepository implements BookingRepository {
     String? chairId,
     String? branchId,
     String? barberId,
-    required DateTime timeSlot,
+    required DateTime startsAt,
     required List<String> serviceIds,
     String? atHomeStreet,
     String? atHomeBuilding,
@@ -922,11 +922,11 @@ class FakeHistoryRepository implements HistoryRepository {
   @override
   Future<BookingDto> rebookFromHistory(
     String historyId,
-    DateTime timeSlot,
+    DateTime startsAt,
   ) async {
     rebookCalls++;
     lastRebookedId = historyId;
-    lastRebookSlot = timeSlot;
+    lastRebookSlot = startsAt;
     final failure = rebookError;
     if (failure != null) throw failure;
     return testBooking(id: 'booking-2');
@@ -977,7 +977,7 @@ class FakeBranchRepository implements BranchRepository {
   @override
   Future<FloorPlanDto> getFloorPlan(
     String branchId, {
-    required DateTime timeSlot,
+    required DateTime startsAt,
     required int durationMinutes,
   }) async {
     getFloorPlanCalls++;

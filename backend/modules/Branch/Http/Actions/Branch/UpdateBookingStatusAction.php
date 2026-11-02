@@ -25,7 +25,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
             return $this->unauthorized();
         }
         Gate::forUser($branch)->authorize('manage', $branch);
-        $value = $request->input('status');
+        $value = $request->input('booking_status');
         if (! is_string($value)) {
             return $this->unprocessable(message: __('branch::messages.invalid_booking_status'));
         }

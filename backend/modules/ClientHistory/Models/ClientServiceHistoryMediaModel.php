@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\ClientHistory\Enums\HistoryMediaType;
 
-#[Fillable(['history_id', 'photo_path', 'photo_type', 'uploaded_at'])]
+#[Fillable(['client_service_history_id', 'photo_path', 'photo_type', 'uploaded_at'])]
 #[Table('client_service_history_media')]
 class ClientServiceHistoryMediaModel extends Model
 {
@@ -27,6 +27,6 @@ class ClientServiceHistoryMediaModel extends Model
 
     public function history(): BelongsTo
     {
-        return $this->belongsTo(ClientServiceHistoryModel::class, 'history_id');
+        return $this->belongsTo(ClientServiceHistoryModel::class, 'client_service_history_id');
     }
 }

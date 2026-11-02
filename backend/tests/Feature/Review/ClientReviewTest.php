@@ -42,7 +42,7 @@ describe('POST /api/v1/branch/bookings/{booking}/review', function (): void {
     });
 
     it('also accepts a no-show booking', function (): void {
-        $booking = BookingModel::factory()->create(['status' => BookingStatus::NoShow]);
+        $booking = BookingModel::factory()->create(['booking_status' => BookingStatus::NoShow]);
 
         $this->actingAs(branchOf($booking), 'branch_api')
             ->postJson("/api/v1/branch/bookings/{$booking->id}/review", ['rating' => 1])
@@ -84,7 +84,7 @@ describe('POST /api/v1/branch/bookings/{booking}/review', function (): void {
     });
 
     it('rejects a booking that is not completed or no-show with 422', function (BookingStatus $status): void {
-        $booking = BookingModel::factory()->create(['status' => $status]);
+        $booking = BookingModel::factory()->create(['booking_status' => $status]);
 
         $this->actingAs(branchOf($booking), 'branch_api')
             ->postJson("/api/v1/branch/bookings/{$booking->id}/review", ['rating' => 4])
@@ -94,7 +94,7 @@ describe('POST /api/v1/branch/bookings/{booking}/review', function (): void {
         'pending' => [BookingStatus::Pending],
         'confirmed' => [BookingStatus::Confirmed],
         'in progress' => [BookingStatus::InProgress],
-        'canceled' => [BookingStatus::Canceled],
+        'cancelled' => [BookingStatus::Cancelled],
     ]);
 
     it('validates the rating', function (): void {

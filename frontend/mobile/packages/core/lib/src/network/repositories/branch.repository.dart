@@ -3,7 +3,7 @@ import 'package:core/core.dart';
 abstract class BranchRepository {
   Future<FloorPlanDto> getFloorPlan(
     String branchId, {
-    required DateTime timeSlot,
+    required DateTime startsAt,
     required int durationMinutes,
   });
 
@@ -24,13 +24,16 @@ class DioBranchRepository implements BranchRepository {
   @override
   Future<FloorPlanDto> getFloorPlan(
     String branchId, {
-    required DateTime timeSlot,
+    required DateTime startsAt,
     required int durationMinutes,
   }) {
-    final startsAt = timeSlot.toUtc().toIso8601String();
+    final startsAtIso = startsAt.toUtc().toIso8601String();
     return _apiClient.get<FloorPlanDto>(
       ApiEndpoints.branch.floorPlan(branchId),
-      queryParameters: {'starts_at': startsAt, 'duration_minutes': durationMinutes},
+      queryParameters: {
+        'starts_at': startsAtIso,
+        'duration_minutes': durationMinutes,
+      },
       parser: (json) => FloorPlanDto.fromJson(json as Map<String, dynamic>),
     );
   }

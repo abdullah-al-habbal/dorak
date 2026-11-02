@@ -81,7 +81,7 @@ class _BookingTrackerScreenState extends State<BookingTrackerScreen> {
               Icons.person_off_outlined,
               l10n.bookingTrackerNoShow,
             ),
-            BookingStatus.canceled => (
+            BookingStatus.cancelled => (
               Icons.cancel_outlined,
               l10n.bookingTrackerCancelled,
             ),

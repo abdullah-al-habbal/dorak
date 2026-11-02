@@ -83,12 +83,12 @@ describe('Payout lifecycle', function (): void {
     it('rejects illegal transitions', function (): void {
         $draft = PayoutModel::factory()->create();
         $paid = PayoutModel::factory()->create(['status' => PayoutStatus::Paid]);
-        $canceled = PayoutModel::factory()->create(['status' => PayoutStatus::Canceled]);
+        $cancelled = PayoutModel::factory()->create(['status' => PayoutStatus::Cancelled]);
 
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$draft->id}/mark-paid")->assertConflict();
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$paid->id}/cancel")->assertConflict();
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$paid->id}/approve")->assertConflict();
-        $this->patchJson("/api/v1/dashboard/admin/payouts/{$canceled->id}/approve")->assertConflict();
+        $this->patchJson("/api/v1/dashboard/admin/payouts/{$cancelled->id}/approve")->assertConflict();
         $this->patchJson("/api/v1/dashboard/admin/payouts/{$draft->id}/approve", ['external_reference' => str_repeat('x', 300)])->assertUnprocessable();
     });
 
@@ -96,7 +96,7 @@ describe('Payout lifecycle', function (): void {
         $payout = PayoutModel::factory()->create();
         $entry = CommissionEntryModel::factory()->create(['payout_id' => $payout->id, 'brand_id' => $payout->brand_id, 'currency_code' => $payout->currency_code]);
 
-        $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/cancel")->assertOk()->assertJsonPath('data.status', PayoutStatus::Canceled->value);
+        $this->patchJson("/api/v1/dashboard/admin/payouts/{$payout->id}/cancel")->assertOk()->assertJsonPath('data.status', PayoutStatus::Cancelled->value);
 
         expect($entry->fresh()->payout_id)->toBeNull();
         $this->postJson('/api/v1/dashboard/admin/payouts/generate')->assertCreated()->assertJsonCount(1, 'data');

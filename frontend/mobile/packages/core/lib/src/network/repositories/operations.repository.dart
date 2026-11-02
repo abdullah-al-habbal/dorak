@@ -44,7 +44,7 @@ class DioBranchOperationsRepository implements BranchOperationsRepository {
   Future<BookingDto> updateBookingStatus(String id, BookingStatus status) =>
       _client.patch(
         ApiEndpoints.operations.branchBookingStatus(id),
-        data: {'status': status.value},
+        data: {'booking_status': status.value},
         parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
       );
   @override

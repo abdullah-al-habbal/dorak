@@ -11,7 +11,7 @@ export function createWalkInBookingSchema(copy: {
     customerEmail: z.string().email().max(255),
     customerPhone: z.string().max(30).optional(),
     serviceIds: z.array(z.string().uuid()).min(1),
-    timeSlot: z
+    startsAt: z
       .string()
       .min(1)
       .refine(

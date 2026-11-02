@@ -12,8 +12,9 @@ part 'booking.dto.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: true)
 class BookingDto {
   final String id;
-  final DateTime timeSlot;
+  final DateTime startsAt;
   final DateTime? endsAt;
+  @JsonKey(name: 'booking_status')
   final BookingStatus status;
   @JsonKey(defaultValue: 'pay_at_salon')
   final String paymentMethod;
@@ -30,7 +31,7 @@ class BookingDto {
 
   const BookingDto({
     required this.id,
-    required this.timeSlot,
+    required this.startsAt,
     this.endsAt,
     required this.status,
     this.paymentMethod = 'pay_at_salon',

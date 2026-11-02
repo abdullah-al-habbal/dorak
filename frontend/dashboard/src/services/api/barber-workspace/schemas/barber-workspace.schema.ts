@@ -3,7 +3,7 @@ import { z } from "zod";
 export const BarberAppointmentSchema = z.object({
   id: z.string(),
   status: z.string(),
-  timeSlot: z.string(),
+  startsAt: z.string(),
   chair: z.object({ label: z.string().nullable() }).nullable().optional(),
 });
 

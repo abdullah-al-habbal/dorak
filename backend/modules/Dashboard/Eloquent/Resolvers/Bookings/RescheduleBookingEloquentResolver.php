@@ -25,23 +25,23 @@ final class RescheduleBookingEloquentResolver
         private readonly BranchHours $branchHours,
     ) {}
 
-    public function resolve(string|int $bookingId, Carbon $timeSlot, Carbon $endsAt): BookingModel
+    public function resolve(string|int $bookingId, Carbon $startsAt, Carbon $endsAt): BookingModel
     {
-        return DB::transaction(function () use ($bookingId, $timeSlot, $endsAt): BookingModel {
+        return DB::transaction(function () use ($bookingId, $startsAt, $endsAt): BookingModel {
             $booking = BookingModel::query()->lockForUpdate()->findOrFail($bookingId);
-            if (! in_array($booking->status, [BookingStatus::Pending, BookingStatus::Confirmed], true)) {
+            if (! in_array($booking->booking_status, [BookingStatus::Pending, BookingStatus::Confirmed], true)) {
                 throw new InvalidBookingTransitionException;
             }
             if ($booking->chair_id !== null) {
                 ChairModel::query()->lockForUpdate()->findOrFail($booking->chair_id);
             }
-            if (! $this->branchHours->covers($booking->branch_id, $timeSlot, $endsAt)) {
+            if (! $this->branchHours->covers($booking->branch_id, $startsAt, $endsAt)) {
                 throw new BookingOutsideScheduleException;
             }
             if ($booking->barber_id !== null) {
                 BarberModel::query()->lockForUpdate()->findOrFail($booking->barber_id);
 
-                if (! BarberScheduleAvailability::covers($booking->barber_id, $timeSlot, $endsAt)) {
+                if (! BarberScheduleAvailability::covers($booking->barber_id, $startsAt, $endsAt)) {
                     throw new BookingOutsideScheduleException;
                 }
             }
@@ -51,13 +51,13 @@ final class RescheduleBookingEloquentResolver
                     continue;
                 }
                 $query = BookingModel::query()->where($column, $resourceId)->whereKeyNot($booking->id);
-                BookingAvailability::apply($query, $timeSlot, $endsAt);
+                BookingAvailability::apply($query, $startsAt, $endsAt);
                 $collision = $query->lockForUpdate()->exists();
                 if ($collision) {
                     throw new ChairHasActiveBookingsException(__('dashboard::messages.booking_time_overlap'));
                 }
             }
-            $booking->update(['time_slot' => $timeSlot, 'ends_at' => $endsAt]);
+            $booking->update(['starts_at' => $startsAt, 'ends_at' => $endsAt]);
 
             $booking->refresh()->load(['chair', 'barber', 'client' => fn ($query) => $query->withReputation(), 'services']);
             $this->notifier->rescheduled($booking);

@@ -9,7 +9,7 @@ use Modules\Booking\Models\BookingModel;
 
 /**
  * HIST-3: a barber may read a client's history once they share any
- * non-canceled booking (past, active, or upcoming) — direct barber
+ * non-cancelled booking (past, active, or upcoming) — direct barber
  * assignment or via the chair the barber was seated at.
  */
 final class BarberClientRelationshipEloquentResolver
@@ -18,7 +18,7 @@ final class BarberClientRelationshipEloquentResolver
     {
         return BookingModel::query()
             ->where('client_id', $clientId)
-            ->where('status', '!=', BookingStatus::Canceled->value)
+            ->where('booking_status', '!=', BookingStatus::Cancelled->value)
             ->where(fn ($query) => $query
                 ->where('barber_id', $barberId)
                 ->orWhereHas('chair', fn ($chair) => $chair->where('barber_id', $barberId)))

@@ -50,12 +50,12 @@ describe("branchCreateSchema", () => {
       universe: "unisex",
     };
     const week = (overrides: Record<number, object> = {}) =>
-      [0, 1, 2, 3, 4, 5, 6].map((weekday) => ({
-        weekday,
+      [0, 1, 2, 3, 4, 5, 6].map((dayOfWeek) => ({
+        dayOfWeek,
         isClosed: false,
-        opensAt: "09:00",
-        closesAt: "21:00",
-        ...overrides[weekday],
+        opensTime: "09:00",
+        closesTime: "21:00",
+        ...overrides[dayOfWeek],
       }));
 
     it("accepts translated description, address and a full week", () => {
@@ -64,7 +64,7 @@ describe("branchCreateSchema", () => {
         description: { en: "Downtown", ar: "وسط البلد" },
         address: { en: "Main St", ar: null },
         openingHours: week({
-          5: { isClosed: true, opensAt: null, closesAt: null },
+          5: { isClosed: true, opensTime: null, closesTime: null },
         }),
       });
 
@@ -80,10 +80,10 @@ describe("branchCreateSchema", () => {
 
     it("rejects closing at or before opening and half-filled days", () => {
       for (const day of [
-        { opensAt: "10:00", closesAt: "10:00" },
-        { opensAt: "18:00", closesAt: "09:00" },
-        { opensAt: "09:00", closesAt: null },
-        { opensAt: "9am", closesAt: "21:00" },
+        { opensTime: "10:00", closesTime: "10:00" },
+        { opensTime: "18:00", closesTime: "09:00" },
+        { opensTime: "09:00", closesTime: null },
+        { opensTime: "9am", closesTime: "21:00" },
       ])
         expect(
           branchCreateSchema.safeParse({

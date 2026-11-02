@@ -50,7 +50,7 @@ export function BookingStatusUpdateForm({
     ["in_progress"]: inProgressLabel,
     completed: completedLabel,
     ["no_show"]: noShowLabel,
-    canceled: canceledLabel,
+    cancelled: canceledLabel,
   };
   const nextStatuses = allowedNextBookingStatuses(currentStatus);
   const form = useForm<z.input<typeof bookingStatusSchema>>({

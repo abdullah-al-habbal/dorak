@@ -166,7 +166,7 @@ function TodayBookings({
               booking.chair?.label ??
               appointmentLabel}
           </span>
-          <span>{booking.timeSlot}</span>
+          <span>{booking.startsAt}</span>
         </li>
       ))}
     </ol>

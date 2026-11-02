@@ -19,18 +19,18 @@ return new class extends Migration
             $table->foreignUuid('chair_id')->nullable()->constrained('chairs')->nullOnDelete();
             $table->foreignUuid('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->foreignUuid('barber_id')->nullable()->constrained('barbers')->nullOnDelete();
-            $table->dateTime('time_slot');
+            $table->dateTime('starts_at');
             $table->dateTime('ends_at');
-            $table->string('status');
+            $table->string('booking_status');
             $table->string('cancellation_reason', 500)->nullable();
             $table->string('payment_method')->default(BookingPaymentMethod::PayAtSalon->value);
             $table->string('payment_status')->default(BookingPaymentStatus::UnpaidInPerson->value);
             $table->json('at_home_location')->nullable();
             $table->timestamps();
 
-            $table->index(['chair_id', 'time_slot', 'ends_at', 'status']);
-            $table->index(['barber_id', 'time_slot', 'ends_at', 'status']);
-            $table->index(['branch_id', 'time_slot']);
+            $table->index(['chair_id', 'starts_at', 'ends_at', 'booking_status']);
+            $table->index(['barber_id', 'starts_at', 'ends_at', 'booking_status']);
+            $table->index(['branch_id', 'starts_at']);
         });
     }
 

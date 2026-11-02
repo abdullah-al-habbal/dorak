@@ -30,11 +30,11 @@ final class OverviewAction extends BaseApiAction
         $bookings = BookingModel::query()->when($scope !== null, fn ($query) => $query->forBranches($scope ?? []));
         $branches = BranchModel::query()->when($scope !== null, fn ($query) => $query->whereKey($scope ?? []));
 
-        $todayBookings = (clone $bookings)->whereBetween('time_slot', [now()->startOfDay(), now()->endOfDay()]);
+        $todayBookings = (clone $bookings)->whereBetween('starts_at', [now()->startOfDay(), now()->endOfDay()]);
         $activeChairs = ChairModel::query()->where('status', ChairStatus::Available)
             ->when($scope !== null, fn ($query) => $query->whereIn('branch_id', $scope ?? []));
-        $completedBookings = (clone $bookings)->where('status', BookingStatus::Completed);
-        $completedToday = (clone $completedBookings)->whereBetween('time_slot', [now()->startOfDay(), now()->endOfDay()]);
+        $completedBookings = (clone $bookings)->where('booking_status', BookingStatus::Completed);
+        $completedToday = (clone $completedBookings)->whereBetween('starts_at', [now()->startOfDay(), now()->endOfDay()]);
 
         return $this->success([
             'active_chairs_count' => $activeChairs->count(),

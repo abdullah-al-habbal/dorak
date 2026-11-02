@@ -8,7 +8,7 @@ abstract class HistoryRepository {
     int perPage = 15,
   });
 
-  Future<BookingDto> rebookFromHistory(String historyId, DateTime timeSlot);
+  Future<BookingDto> rebookFromHistory(String historyId, DateTime startsAt);
 
   Future<HistoryMediaDto> attachMedia({
     required String historyId,
@@ -42,11 +42,11 @@ class DioHistoryRepository implements HistoryRepository {
   }
 
   @override
-  Future<BookingDto> rebookFromHistory(String historyId, DateTime timeSlot) {
-    final formatted = timeSlot.toUtc().toIso8601String();
+  Future<BookingDto> rebookFromHistory(String historyId, DateTime startsAt) {
+    final formatted = startsAt.toUtc().toIso8601String();
     return _apiClient.post<BookingDto>(
       ApiEndpoints.history.rebookFromHistory(historyId),
-      data: {'time_slot': formatted},
+      data: {'starts_at': formatted},
       parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
   }

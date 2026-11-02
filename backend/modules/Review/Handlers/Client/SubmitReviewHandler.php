@@ -34,7 +34,7 @@ final class SubmitReviewHandler
                 return SubmitReviewResult::notOwnBooking();
             }
 
-            if ($booking->status !== BookingStatus::Completed) {
+            if ($booking->booking_status !== BookingStatus::Completed) {
                 return SubmitReviewResult::bookingNotCompleted();
             }
 

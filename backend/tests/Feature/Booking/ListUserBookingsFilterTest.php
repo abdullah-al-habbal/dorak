@@ -17,8 +17,8 @@ function seedBooking(ClientModel $client, BookingStatus $status, bool $future): 
 
     return BookingModel::factory()->create([
         'client_id' => $client->id,
-        'status' => $status->value,
-        'time_slot' => $start,
+        'booking_status' => $status->value,
+        'starts_at' => $start,
         'ends_at' => $start->copy()->addMinutes(30),
     ]);
 }
@@ -74,13 +74,13 @@ it('lists every status in exactly one bucket', function () {
 
 it('sorts upcoming ascending and past descending', function () {
     $later = seedBooking($this->client, BookingStatus::Confirmed, true);
-    $later->update(['time_slot' => now()->addDays(3), 'ends_at' => now()->addDays(3)->addHour()]);
+    $later->update(['starts_at' => now()->addDays(3), 'ends_at' => now()->addDays(3)->addHour()]);
     $sooner = seedBooking($this->client, BookingStatus::Confirmed, true);
 
     expect(listedIds('upcoming'))->toBe([$sooner->id, $later->id]);
 
     $old = seedBooking($this->client, BookingStatus::Completed, false);
-    $old->update(['time_slot' => now()->subDays(5), 'ends_at' => now()->subDays(5)->addHour()]);
+    $old->update(['starts_at' => now()->subDays(5), 'ends_at' => now()->subDays(5)->addHour()]);
     $recent = seedBooking($this->client, BookingStatus::Completed, false);
 
     expect(listedIds('past'))->toBe([$recent->id, $old->id]);

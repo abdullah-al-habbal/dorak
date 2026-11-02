@@ -18,25 +18,25 @@ return new class extends Migration
         Schema::create('branch_opening_hours', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->foreignUuid('branch_id')->constrained('branches')->cascadeOnDelete();
-            $table->unsignedTinyInteger('weekday');
-            $table->time('opens_at')->nullable();
-            $table->time('closes_at')->nullable();
+            $table->unsignedTinyInteger('day_of_week');
+            $table->time('opens_time')->nullable();
+            $table->time('closes_time')->nullable();
             $table->boolean('is_closed')->default(false);
             $table->timestamps();
 
-            $table->unique(['branch_id', 'weekday']);
+            $table->unique(['branch_id', 'day_of_week']);
         });
 
         Schema::create('branch_hours_overrides', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->foreignUuid('branch_id')->constrained('branches')->cascadeOnDelete();
-            $table->date('date');
-            $table->time('opens_at')->nullable();
-            $table->time('closes_at')->nullable();
+            $table->date('override_date');
+            $table->time('opens_time')->nullable();
+            $table->time('closes_time')->nullable();
             $table->boolean('is_closed')->default(false);
             $table->timestamps();
 
-            $table->unique(['branch_id', 'date']);
+            $table->unique(['branch_id', 'override_date']);
         });
     }
 

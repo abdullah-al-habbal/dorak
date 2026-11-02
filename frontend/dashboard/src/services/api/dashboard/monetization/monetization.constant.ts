@@ -11,13 +11,13 @@ export const SUBSCRIPTION_STATUSES = [
   "pending",
   "active",
   "past_due",
-  "canceled",
+  "cancelled",
 ] as const;
 export const PAYOUT_STATUSES = [
   "draft",
   "approved",
   "paid",
-  "canceled",
+  "cancelled",
 ] as const;
 
 /** Basis points in 100%: percent rules are entered as a percentage and sent as bp. */
@@ -28,16 +28,16 @@ export const MAX_PERCENT = 100;
 
 /** Next statuses the UI offers; the backend state machine stays authoritative. */
 export const SUBSCRIPTION_NEXT_STATUSES = {
-  pending: ["active", "canceled"],
-  active: ["past_due", "canceled"],
-  ["past_due"]: ["active", "canceled"],
-  canceled: [],
+  pending: ["active", "cancelled"],
+  active: ["past_due", "cancelled"],
+  ["past_due"]: ["active", "cancelled"],
+  cancelled: [],
 } as const;
 export const PAYOUT_NEXT_ACTIONS = {
   draft: ["approve", "cancel"],
   approved: ["mark-paid", "cancel"],
   paid: [],
-  canceled: [],
+  cancelled: [],
 } as const;
 
 export const MONETIZATION_QUERY_KEYS = {

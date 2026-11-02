@@ -35,9 +35,9 @@ it('excludes slots overlapping a pending booking on the barber', function (): vo
 
     BookingModel::factory()->atHome()->create([
         'barber_id' => $this->barber->id,
-        'time_slot' => $startsAt,
+        'starts_at' => $startsAt,
         'ends_at' => $startsAt->copy()->addMinutes(30),
-        'status' => BookingStatus::Pending,
+        'booking_status' => BookingStatus::Pending,
     ]);
 
     $starts = collect(

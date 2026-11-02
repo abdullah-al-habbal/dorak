@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'booking_created' => 'تم إنشاء طلب الحجز بنجاح.',
     'not_own_booking' => 'يمكنك عرض حجوزاتك فقط.',
-    'canceled' => 'تم إلغاء الحجز بنجاح.',
+    'cancelled' => 'تم إلغاء الحجز بنجاح.',
     'chair_not_available' => 'هذا الكرسي غير متاح للحجز.',
     'double_booking' => 'هذا المقعد تم حجزه للتو. الرجاء اختيار وقت أو كرسي آخر.',
     'invalid_booking_services' => 'اختر خدمات نشطة ذات مدة صالحة.',

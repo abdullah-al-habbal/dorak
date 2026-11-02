@@ -69,7 +69,7 @@ describe('Dashboard Branch API', function (): void {
     it('blocks deletion while a branch has an upcoming booking', function (): void {
         $secondBranch = BranchModel::factory()->create(['brand_id' => $this->branch->brand_id]);
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
-        BookingModel::factory()->create(['chair_id' => $chair->id, 'time_slot' => now()->addDay()]);
+        BookingModel::factory()->create(['chair_id' => $chair->id, 'starts_at' => now()->addDay()]);
         $this->authenticateDashboardActor($this->admin);
 
         $this->deleteJson("/api/v1/dashboard/branches/{$this->branch->id}")->assertStatus(409);

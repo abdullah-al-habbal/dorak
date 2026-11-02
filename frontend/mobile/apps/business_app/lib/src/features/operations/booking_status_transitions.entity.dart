@@ -2,19 +2,19 @@ import 'package:core/core.dart';
 
 class BookingStatusTransitions {
   static const Map<BookingStatus, List<BookingStatus>> allowedTargets = {
-    BookingStatus.pending: [BookingStatus.confirmed, BookingStatus.canceled],
+    BookingStatus.pending: [BookingStatus.confirmed, BookingStatus.cancelled],
     BookingStatus.confirmed: [
       BookingStatus.inProgress,
-      BookingStatus.canceled,
+      BookingStatus.cancelled,
       BookingStatus.noShow,
     ],
     BookingStatus.inProgress: [
       BookingStatus.completed,
-      BookingStatus.canceled,
+      BookingStatus.cancelled,
       BookingStatus.noShow,
     ],
     BookingStatus.completed: [],
-    BookingStatus.canceled: [],
+    BookingStatus.cancelled: [],
     BookingStatus.noShow: [],
   };
 

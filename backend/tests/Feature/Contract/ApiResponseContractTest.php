@@ -280,7 +280,7 @@ describe('DELETE /api/v1/client/account', function () {
 
         BookingModel::factory()->create([
             'client_id' => $client->id,
-            'status' => BookingStatus::Confirmed,
+            'booking_status' => BookingStatus::Confirmed,
         ]);
 
         $response = $this->withToken($token)
@@ -292,13 +292,13 @@ describe('DELETE /api/v1/client/account', function () {
         $this->assertNotSoftDeleted('clients', ['id' => $client->id]);
     });
 
-    it('allows deletion when client has only canceled/completed bookings', function () {
+    it('allows deletion when client has only cancelled/completed bookings', function () {
         $client = ClientModel::factory()->create(['password' => Hash::make('password123')]);
         $token = $client->createToken('client-app')->plainTextToken;
 
         BookingModel::factory()->create([
             'client_id' => $client->id,
-            'status' => BookingStatus::Canceled,
+            'booking_status' => BookingStatus::Cancelled,
         ]);
 
         $response = $this->withToken($token)
@@ -645,8 +645,8 @@ describe('Ban API', function () {
             BanModel::factory()->create([
                 'bannable_id' => $client->id,
                 'bannable_type' => 'client',
-                'banned_from' => now()->subDay(),
-                'banned_until' => null,
+                'banned_at' => now()->subDay(),
+                'expires_at' => null,
             ]);
 
             $response = $this->getJson("/api/v1/clients/{$client->id}/bans/check");
@@ -661,8 +661,8 @@ describe('Ban API', function () {
             BanModel::factory()->create([
                 'bannable_id' => $client->id,
                 'bannable_type' => 'client',
-                'banned_from' => now()->subDays(10),
-                'banned_until' => now()->subDay(),
+                'banned_at' => now()->subDays(10),
+                'expires_at' => now()->subDay(),
             ]);
 
             $response = $this->getJson("/api/v1/clients/{$client->id}/bans/check");
@@ -792,18 +792,18 @@ describe('Booking API', function () {
                 'serviceable_id' => $chair->branch->brand_id,
                 'serviceable_type' => ServiceableTypeEnum::Brand,
             ]);
-            $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
+            $startsAt = Carbon::now()->addDay()->toIso8601ZuluString();
 
             $response = $this->postJson('/api/v1/bookings', [
                 'chair_id' => $chair->id,
-                'time_slot' => $timeSlot,
+                'starts_at' => $startsAt,
                 'service_ids' => [$service->id],
             ]);
 
             assertApiEnvelope($response, 201);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'time_slot', 'status', 'chair', 'services', 'created_at']);
-            expect($data['status'])->toBe(BookingStatus::Pending->value);
+            expect($data)->toHaveKeys(['id', 'starts_at', 'booking_status', 'chair', 'services', 'created_at']);
+            expect($data['booking_status'])->toBe(BookingStatus::Pending->value);
             expect($data['chair'])->toHaveKeys(['id', 'label', 'status']);
         });
     });
@@ -820,7 +820,7 @@ describe('Booking API', function () {
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'time_slot', 'status', 'created_at']);
+            expect($data)->toHaveKeys(['id', 'starts_at', 'booking_status', 'created_at']);
         });
     });
 
@@ -841,19 +841,19 @@ describe('Booking API', function () {
     });
 
     describe('POST /api/v1/client/bookings/{booking}/cancel', function () {
-        it('returns BookingResource with status canceled', function () {
+        it('returns BookingResource with status cancelled', function () {
             $chair = ChairModel::factory()->create();
             $booking = BookingModel::factory()->create([
                 'client_id' => $this->client->id,
                 'chair_id' => $chair->id,
-                'status' => BookingStatus::Confirmed,
+                'booking_status' => BookingStatus::Confirmed,
             ]);
 
             $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel");
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data['status'])->toBe(BookingStatus::Canceled->value);
+            expect($data['booking_status'])->toBe(BookingStatus::Cancelled->value);
         });
     });
 });
@@ -870,7 +870,7 @@ describe('Review API', function () {
             $this->actingAs($client, 'client');
             $booking = BookingModel::factory()->create([
                 'client_id' => $client->id,
-                'status' => BookingStatus::Completed,
+                'booking_status' => BookingStatus::Completed,
             ]);
 
             $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [
@@ -1316,11 +1316,11 @@ describe('ClientHistory API', function () {
         $booking = BookingModel::factory()->create([
             'client_id' => $client->id,
             'barber_id' => $barber->id,
-            'status' => BookingStatus::Confirmed,
+            'booking_status' => BookingStatus::Confirmed,
         ]);
         $booking->services()->attach($service->id);
 
-        $booking->update(['status' => BookingStatus::Completed]);
+        $booking->update(['booking_status' => BookingStatus::Completed]);
 
         return ['client' => $client, 'barber' => $barber, 'booking' => $booking];
     }
@@ -1389,18 +1389,18 @@ describe('ClientHistory API', function () {
 
             $rebookResponse = $this->actingAs($ctx['client'], 'client')
                 ->postJson("/api/v1/client/history/{$historyId}/rebook", [
-                    'time_slot' => $futureSlot,
+                    'starts_at' => $futureSlot,
                 ]);
 
             assertApiEnvelope($rebookResponse, 201);
             $data = $rebookResponse->json('data');
-            expect($data)->toHaveKeys(['id', 'time_slot', 'status', 'barber', 'services', 'payment_method', 'payment_status']);
-            expect($data['status'])->toBe(BookingStatus::Pending->value);
+            expect($data)->toHaveKeys(['id', 'starts_at', 'booking_status', 'barber', 'services', 'payment_method', 'payment_status']);
+            expect($data['booking_status'])->toBe(BookingStatus::Pending->value);
         });
 
         it('returns 401 without auth', function () {
             $response = $this->postJson('/api/v1/client/history/some-id/rebook', [
-                'time_slot' => Carbon::now()->addDay()->toIso8601String(),
+                'starts_at' => Carbon::now()->addDay()->toIso8601String(),
             ]);
             expect($response->status())->toBe(401);
         });

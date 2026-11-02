@@ -7,7 +7,7 @@ abstract final class BookingEligibility {
 
   static bool isWithinCancellationWindow(BookingDto booking) =>
       booking.cancellationEligible ??
-      booking.timeSlot.isAfter(DateTime.now().add(const Duration(hours: 2)));
+      booking.startsAt.isAfter(DateTime.now().add(const Duration(hours: 2)));
 
   static bool canCancel(BookingDto booking, String filter) =>
       filter == 'upcoming' &&

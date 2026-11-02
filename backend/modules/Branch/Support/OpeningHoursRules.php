@@ -18,7 +18,7 @@ final class OpeningHoursRules
     {
         return [
             $prefix => [$required ? 'required' : 'sometimes', 'array', 'min:1', 'max:'.WeekdayConstants::WEEKDAY_DAYS_IN_WEEK],
-            "{$prefix}.*.weekday" => ['required', 'integer', WeekdayConstants::betweenRule(), 'distinct'],
+            "{$prefix}.*.day_of_week" => ['required', 'integer', WeekdayConstants::betweenRule(), 'distinct'],
             ...self::day("{$prefix}.*."),
         ];
     }
@@ -28,8 +28,8 @@ final class OpeningHoursRules
     {
         return [
             "{$prefix}is_closed" => ['sometimes', 'boolean'],
-            "{$prefix}opens_at" => ["exclude_if:{$prefix}is_closed,true", 'required', 'date_format:H:i'],
-            "{$prefix}closes_at" => ["exclude_if:{$prefix}is_closed,true", 'required', 'date_format:H:i', "after:{$prefix}opens_at"],
+            "{$prefix}opens_time" => ["exclude_if:{$prefix}is_closed,true", 'required', 'date_format:H:i'],
+            "{$prefix}closes_time" => ["exclude_if:{$prefix}is_closed,true", 'required', 'date_format:H:i', "after:{$prefix}opens_time"],
         ];
     }
 }

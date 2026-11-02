@@ -45,7 +45,7 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
             return;
         }
 
-        $data = ['type' => 'booking_status', 'booking_id' => $booking->id, 'status' => $booking->status->value];
+        $data = ['type' => 'booking_status', 'booking_id' => $booking->id, 'status' => $booking->booking_status->value];
         if ($this->created) {
             if ($booking->barber_id !== null) {
                 $sender->sendTo(BarberModel::class, $booking->barber_id, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_new_request_title', [], $this->locale), trans('booking::messages.notification_barber_request_body', [], $this->locale), $data, $this->dispatchKey);
@@ -63,12 +63,12 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
             return;
         }
         if ($this->rescheduled) {
-            $data = ['type' => 'booking_rescheduled', 'booking_id' => $booking->id, 'status' => $booking->status->value, 'time_slot' => $booking->time_slot->toIso8601String()];
-            $sender->sendTo(ClientModel::class, $booking->client_id, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_rescheduled_title', [], $this->locale), trans('booking::messages.notification_rescheduled_body', ['time' => $booking->time_slot->toDateTimeString()], $this->locale), $data, $this->dispatchKey);
+            $data = ['type' => 'booking_rescheduled', 'booking_id' => $booking->id, 'status' => $booking->booking_status->value, 'starts_at' => $booking->starts_at->toIso8601String()];
+            $sender->sendTo(ClientModel::class, $booking->client_id, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_rescheduled_title', [], $this->locale), trans('booking::messages.notification_rescheduled_body', ['time' => $booking->starts_at->toDateTimeString()], $this->locale), $data, $this->dispatchKey);
 
             return;
         }
-        $sender->sendTo(ClientModel::class, $booking->client_id, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_status_title', [], $this->locale), trans('booking::messages.notification_status_body', ['status' => $booking->status->value], $this->locale), $data, $this->dispatchKey);
+        $sender->sendTo(ClientModel::class, $booking->client_id, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_status_title', [], $this->locale), trans('booking::messages.notification_status_body', ['status' => $booking->booking_status->value], $this->locale), $data, $this->dispatchKey);
     }
 
     /**
@@ -80,7 +80,7 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
     private function notifyStaff(FcmNotificationSender $sender, BookingModel $booking, array $data): void
     {
         $title = trans('booking::messages.notification_status_title', [], $this->locale);
-        $body = trans('booking::messages.notification_client_changed_body', ['status' => $booking->status->value], $this->locale);
+        $body = trans('booking::messages.notification_client_changed_body', ['status' => $booking->booking_status->value], $this->locale);
         if ($booking->barber_id !== null) {
             $sender->sendTo(BarberModel::class, $booking->barber_id, NotificationTypeEnum::BookingUpdate, $title, $body, $data, $this->dispatchKey);
         }

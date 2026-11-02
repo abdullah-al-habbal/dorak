@@ -6,20 +6,20 @@ void main() {
   test('exposes only legal targets for each booking status', () {
     expect(BookingStatusTransitions.from(BookingStatus.pending), [
       BookingStatus.confirmed,
-      BookingStatus.canceled,
+      BookingStatus.cancelled,
     ]);
     expect(BookingStatusTransitions.from(BookingStatus.confirmed), [
       BookingStatus.inProgress,
-      BookingStatus.canceled,
+      BookingStatus.cancelled,
       BookingStatus.noShow,
     ]);
     expect(BookingStatusTransitions.from(BookingStatus.inProgress), [
       BookingStatus.completed,
-      BookingStatus.canceled,
+      BookingStatus.cancelled,
       BookingStatus.noShow,
     ]);
     expect(BookingStatusTransitions.from(BookingStatus.completed), isEmpty);
-    expect(BookingStatusTransitions.from(BookingStatus.canceled), isEmpty);
+    expect(BookingStatusTransitions.from(BookingStatus.cancelled), isEmpty);
     expect(BookingStatusTransitions.from(BookingStatus.noShow), isEmpty);
   });
 }

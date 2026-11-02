@@ -21,7 +21,7 @@ use Modules\Admin\Models\AdminModel;
     'activable_type',
     'status',
     'reason',
-    'admin_id',
+    'activated_by_id',
     'activated_at',
     'expires_at',
 ])]
@@ -48,6 +48,6 @@ class ActivationLogModel extends Model
 
     public function admin(): BelongsTo
     {
-        return $this->belongsTo(AdminModel::class, 'admin_id');
+        return $this->belongsTo(AdminModel::class, 'activated_by_id');
     }
 }

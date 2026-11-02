@@ -34,7 +34,7 @@ final class FlagReviewDisputeHandler
                 'dispute_reason' => $command->reason,
                 'disputed_at' => now(),
                 'resolved_at' => null,
-                'resolved_by' => null,
+                'resolved_by_id' => null,
             ]);
 
             return FlagReviewDisputeResult::success($review->fresh('author'));

@@ -33,7 +33,7 @@ it('submits review for completed booking', function () {
 it('rejects review for non-completed booking', function () {
     $booking = BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => BookingStatus::Confirmed,
+        'booking_status' => BookingStatus::Confirmed,
     ]);
 
     $response = $this->postJson("/api/v1/client/bookings/{$booking->id}/review", [

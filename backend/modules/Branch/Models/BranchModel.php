@@ -70,17 +70,17 @@ class BranchModel extends Authenticatable implements FilamentUser
     {
         return $query->where('status', BranchStatusEnum::Enabled->value)
             ->whereDoesntHave('bans', fn ($bans) => $bans
-                ->where('banned_from', '<=', now())
+                ->where('banned_at', '<=', now())
                 ->where(fn ($activeBans) => $activeBans
-                    ->whereNull('banned_until')
-                    ->orWhere('banned_until', '>', now())
+                    ->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now())
                 ));
     }
 
     /** @return HasMany<BranchOpeningHourModel, $this> */
     public function openingHours(): HasMany
     {
-        return $this->hasMany(BranchOpeningHourModel::class, 'branch_id')->orderBy('weekday');
+        return $this->hasMany(BranchOpeningHourModel::class, 'branch_id')->orderBy('day_of_week');
     }
 
     /** @return HasMany<BranchHoursOverrideModel, $this> */

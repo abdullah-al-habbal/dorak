@@ -7,7 +7,7 @@ export function createBookingRescheduleSchema(copy: {
 }) {
   return z
     .object({
-      timeSlot: z
+      startsAt: z
         .string()
         .min(1)
         .refine(
@@ -22,7 +22,7 @@ export function createBookingRescheduleSchema(copy: {
           copy.invalidEndTime,
         ),
     })
-    .refine((input) => new Date(input.endsAt) > new Date(input.timeSlot), {
+    .refine((input) => new Date(input.endsAt) > new Date(input.startsAt), {
       message: copy.endAfterStart,
       path: ["endsAt"],
     });

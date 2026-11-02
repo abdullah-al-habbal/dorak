@@ -7,7 +7,7 @@ import {
 
 const wireBooking = (client: unknown) => ({
   id: "booking-1",
-  time_slot: "2026-10-22T10:00:00+00:00",
+  starts_at: "2026-10-22T10:00:00+00:00",
   ends_at: null,
   status: "completed",
   chair: null,
@@ -63,6 +63,16 @@ describe("mapBookingStatusLog", () => {
 });
 
 describe("mapBooking", () => {
+  it("reads booking_status and starts_at from the wire", () => {
+    const booking = mapBooking({
+      id: "b1",
+      booking_status: "cancelled",
+      starts_at: "2026-11-02T10:00:00Z",
+    });
+    expect(booking.status).toBe("cancelled");
+    expect(booking.startsAt).toBe("2026-11-02T10:00:00Z");
+  });
+
   it("maps the client and their reputation", () => {
     expect(
       mapBooking(
@@ -123,12 +133,17 @@ describe("mapBranch", () => {
         tags: ["kids"],
         opening_hours: [
           {
-            weekday: 1,
-            opens_at: "09:00:00",
-            closes_at: "17:30:00",
+            day_of_week: 1,
+            opens_time: "09:00:00",
+            closes_time: "17:30:00",
             is_closed: false,
           },
-          { weekday: 5, opens_at: null, closes_at: null, is_closed: true },
+          {
+            day_of_week: 5,
+            opens_time: null,
+            closes_time: null,
+            is_closed: true,
+          },
         ],
       }),
     );
@@ -137,8 +152,13 @@ describe("mapBranch", () => {
     expect(branch.address.en).toBe("Main St");
     expect(branch.tags).toEqual(["kids"]);
     expect(branch.openingHours).toEqual([
-      { weekday: 1, isClosed: false, opensAt: "09:00", closesAt: "17:30" },
-      { weekday: 5, isClosed: true, opensAt: null, closesAt: null },
+      {
+        dayOfWeek: 1,
+        isClosed: false,
+        opensTime: "09:00",
+        closesTime: "17:30",
+      },
+      { dayOfWeek: 5, isClosed: true, opensTime: null, closesTime: null },
     ]);
   });
 

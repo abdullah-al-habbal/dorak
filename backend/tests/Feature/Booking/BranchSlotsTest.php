@@ -44,7 +44,7 @@ it('books a returned slot with the same chair and services', function (): void {
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $this->chair->id,
-        'time_slot' => $slots[0]['starts_at'],
+        'starts_at' => $slots[0]['starts_at'],
         'service_ids' => [$this->service->id],
     ])->assertCreated();
 });
@@ -56,9 +56,9 @@ it('excludes slots overlapping a pending booking on the requested chair', functi
     BookingModel::factory()->create([
         'chair_id' => $this->chair->id,
         'barber_id' => null,
-        'time_slot' => $startsAt,
+        'starts_at' => $startsAt,
         'ends_at' => $startsAt->copy()->addMinutes(30),
-        'status' => BookingStatus::Pending,
+        'booking_status' => BookingStatus::Pending,
     ]);
 
     $starts = collect(
@@ -78,7 +78,7 @@ it('drops a slot once it has been booked', function (): void {
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $this->chair->id,
-        'time_slot' => $start,
+        'starts_at' => $start,
         'service_ids' => [$this->service->id],
     ])->assertCreated();
 

@@ -37,11 +37,11 @@ function rebookHistory(ClientModel $client, BarberModel $barber, ?string $branch
     ]);
 }
 
-function rebookAt(ClientModel $client, ClientServiceHistoryModel $history, $timeSlot)
+function rebookAt(ClientModel $client, ClientServiceHistoryModel $history, $startsAt)
 {
     return test()->actingAs($client, 'client')
         ->postJson("/api/v1/client/history/{$history->id}/rebook", [
-            'time_slot' => $timeSlot->toIso8601String(),
+            'starts_at' => $startsAt->toIso8601String(),
         ]);
 }
 
@@ -56,14 +56,14 @@ it('creates a pending booking through the booking engine and dispatches its side
 
     rebookAt($client, $history, $slot)
         ->assertCreated()
-        ->assertJsonPath('data.status', BookingStatus::Pending->value)
+        ->assertJsonPath('data.booking_status', BookingStatus::Pending->value)
         ->assertJsonPath('data.payment_method', BookingPaymentMethod::PayAtSalon->value)
         ->assertJsonPath('data.payment_status', BookingPaymentStatus::UnpaidInPerson->value);
 
     $this->assertDatabaseHas('bookings', [
         'client_id' => $client->id,
         'barber_id' => $barber->id,
-        'status' => BookingStatus::Pending->value,
+        'booking_status' => BookingStatus::Pending->value,
         'payment_method' => BookingPaymentMethod::PayAtSalon->value,
         'payment_status' => BookingPaymentStatus::UnpaidInPerson->value,
     ]);
@@ -79,9 +79,9 @@ it('rejects an overlapping rebook without creating another booking', function (B
     BookingModel::factory()->create([
         'barber_id' => $barber->id,
         'chair_id' => null,
-        'time_slot' => $slot,
+        'starts_at' => $slot,
         'ends_at' => $slot->copy()->addHour(),
-        'status' => $status,
+        'booking_status' => $status,
     ]);
 
     rebookAt($client, $history, $slot)
@@ -116,12 +116,12 @@ it('rejects a rebook when the client or barber has an active ban', function (str
             'bannable_id' => $client->id,
             'bannable_type' => 'client',
             'reason' => 'test',
-            'banned_from' => now()->subMinute(),
+            'banned_at' => now()->subMinute(),
         ]);
     } else {
         $barber->bans()->create([
             'reason' => 'test',
-            'banned_from' => now()->subMinute(),
+            'banned_at' => now()->subMinute(),
         ]);
     }
 

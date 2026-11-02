@@ -41,7 +41,7 @@ final class RebookFromHistoryEloquentResolver
             chairId: is_string($chairId) ? $chairId : null,
             barberId: is_string($barberId) ? $barberId : null,
             clientId: $command->clientId,
-            timeSlot: $command->timeSlot,
+            startsAt: $command->startsAt,
             serviceIds: $serviceIds,
             atHomeLocation: is_array($atHomeLocation) ? $atHomeLocation : null,
         ))->booking;

@@ -65,8 +65,8 @@ class BranchStorefront extends StatelessWidget {
   String? _hoursLine(AppLocalizations l10n, BranchHoursDto? today) {
     if (today == null) return null;
     if (today.isClosed) return l10n.branchClosedToday;
-    final opens = today.opensAt;
-    final closes = today.closesAt;
+    final opens = today.opensTime;
+    final closes = today.closesTime;
     if (opens == null || closes == null) return null;
     return l10n.branchTodayHours(opens, closes);
   }

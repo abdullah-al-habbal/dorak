@@ -51,7 +51,7 @@ final class ReviewClientHandler
                 $authorId = $command->barberId;
             }
 
-            if (! in_array($booking->status, [BookingStatus::Completed, BookingStatus::NoShow], true)) {
+            if (! in_array($booking->booking_status, [BookingStatus::Completed, BookingStatus::NoShow], true)) {
                 return ReviewClientResult::failure('booking_not_finished');
             }
 

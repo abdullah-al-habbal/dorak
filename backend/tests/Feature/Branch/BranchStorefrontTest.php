@@ -17,18 +17,18 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 function storefrontWeek(string $opens = '09:00', string $closes = '21:00'): array
 {
     return array_map(fn (int $weekday): array => [
-        'weekday' => $weekday,
+        'day_of_week' => $weekday,
         'is_closed' => $weekday === 5,
-        'opens_at' => $weekday === 5 ? null : $opens,
-        'closes_at' => $weekday === 5 ? null : $closes,
+        'opens_time' => $weekday === 5 ? null : $opens,
+        'closes_time' => $weekday === 5 ? null : $closes,
     ], range(0, 6));
 }
 
 describe('storefront schema', function (): void {
     it('adds the storefront columns and hours tables', function (): void {
         expect(Schema::hasColumns('branches', ['description', 'address', 'tags']))->toBeTrue()
-            ->and(Schema::hasColumns('branch_opening_hours', ['branch_id', 'weekday', 'opens_at', 'closes_at', 'is_closed']))->toBeTrue()
-            ->and(Schema::hasColumns('branch_hours_overrides', ['branch_id', 'date', 'opens_at', 'closes_at', 'is_closed']))->toBeTrue();
+            ->and(Schema::hasColumns('branch_opening_hours', ['branch_id', 'day_of_week', 'opens_time', 'closes_time', 'is_closed']))->toBeTrue()
+            ->and(Schema::hasColumns('branch_hours_overrides', ['branch_id', 'override_date', 'opens_time', 'closes_time', 'is_closed']))->toBeTrue();
     });
 });
 
@@ -54,13 +54,13 @@ describe('PATCH /api/v1/branch/profile', function (): void {
 
     it('returns the hours on GET branch/profile', function (): void {
         $branch = BranchModel::factory()->create();
-        BranchOpeningHourModel::query()->create(['branch_id' => $branch->id, 'weekday' => now()->dayOfWeek, 'opens_at' => '10:00', 'closes_at' => '18:00']);
+        BranchOpeningHourModel::query()->create(['branch_id' => $branch->id, 'day_of_week' => now()->dayOfWeek, 'opens_time' => '10:00', 'closes_time' => '18:00']);
 
         $this->actingAs($branch, 'branch_api')
             ->getJson('/api/v1/branch/profile')
             ->assertOk()
-            ->assertJsonPath('data.opening_hours.0.opens_at', '10:00')
-            ->assertJsonPath('data.today_hours.closes_at', '18:00')
+            ->assertJsonPath('data.opening_hours.0.opens_time', '10:00')
+            ->assertJsonPath('data.today_hours.closes_time', '18:00')
             ->assertJsonPath('data.today_hours.source', BranchHoursSource::Weekly->value);
     });
 });
@@ -74,7 +74,7 @@ describe('PUT /api/v1/branch/opening-hours', function (): void {
             ->assertOk()
             ->assertJsonCount(7, 'data.opening_hours')
             ->assertJsonPath('data.opening_hours.5.is_closed', true)
-            ->assertJsonPath('data.opening_hours.5.opens_at', null);
+            ->assertJsonPath('data.opening_hours.5.opens_time', null);
 
         expect(BranchOpeningHourModel::query()->where('branch_id', $branch->id)->count())->toBe(7);
     });
@@ -85,24 +85,24 @@ describe('PUT /api/v1/branch/opening-hours', function (): void {
         $this->actingAs($branch, 'branch_api')->putJson('/api/v1/branch/opening-hours', ['hours' => storefrontWeek('08:00', '20:00')])->assertOk();
 
         expect(BranchOpeningHourModel::query()->where('branch_id', $branch->id)->count())->toBe(7)
-            ->and(BranchOpeningHourModel::query()->where('branch_id', $branch->id)->where('weekday', 0)->value('opens_at'))->toStartWith('08:00');
+            ->and(BranchOpeningHourModel::query()->where('branch_id', $branch->id)->where('day_of_week', 0)->value('opens_time'))->toStartWith('08:00');
     });
 
     it('rejects closing at or before opening with 422', function (string $closes): void {
         $this->actingAs(BranchModel::factory()->create(), 'branch_api')
-            ->putJson('/api/v1/branch/opening-hours', ['hours' => [['weekday' => 1, 'opens_at' => '10:00', 'closes_at' => $closes]]])
+            ->putJson('/api/v1/branch/opening-hours', ['hours' => [['day_of_week' => 1, 'opens_time' => '10:00', 'closes_time' => $closes]]])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors(['hours.0.closes_at']);
+            ->assertJsonValidationErrors(['hours.0.closes_time']);
     })->with(['equal' => ['10:00'], 'before' => ['09:00']]);
 
     it('rejects duplicate weekdays and missing times on open days', function (): void {
         $this->actingAs(BranchModel::factory()->create(), 'branch_api')
             ->putJson('/api/v1/branch/opening-hours', ['hours' => [
-                ['weekday' => 1, 'opens_at' => '10:00', 'closes_at' => '18:00'],
-                ['weekday' => 1, 'opens_at' => '10:00'],
+                ['day_of_week' => 1, 'opens_time' => '10:00', 'closes_time' => '18:00'],
+                ['day_of_week' => 1, 'opens_time' => '10:00'],
             ]])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors(['hours.0.weekday', 'hours.1.closes_at']);
+            ->assertJsonValidationErrors(['hours.0.day_of_week', 'hours.1.closes_time']);
     });
 
     it('requires the branch guard', function (): void {
@@ -116,15 +116,15 @@ describe('PUT /api/v1/branch/hours-overrides/{date}', function (): void {
         $this->actingAs($branch, 'branch_api')->putJson('/api/v1/branch/opening-hours', ['hours' => storefrontWeek()])->assertOk();
 
         $this->actingAs($branch, 'branch_api')
-            ->putJson('/api/v1/branch/hours-overrides/'.now()->toDateString(), ['opens_at' => '12:00', 'closes_at' => '16:00'])
+            ->putJson('/api/v1/branch/hours-overrides/'.now()->toDateString(), ['opens_time' => '12:00', 'closes_time' => '16:00'])
             ->assertOk()
             ->assertJsonPath('data.today_hours.source', BranchHoursSource::Override->value);
 
         $this->getJson("/api/v1/explore/branches/{$branch->id}")
             ->assertOk()
             ->assertJsonPath('data.today_hours.date', now()->toDateString())
-            ->assertJsonPath('data.today_hours.opens_at', '12:00')
-            ->assertJsonPath('data.today_hours.closes_at', '16:00')
+            ->assertJsonPath('data.today_hours.opens_time', '12:00')
+            ->assertJsonPath('data.today_hours.closes_time', '16:00')
             ->assertJsonPath('data.today_hours.source', BranchHoursSource::Override->value)
             ->assertJsonCount(7, 'data.opening_hours');
     });
@@ -143,10 +143,10 @@ describe('PUT /api/v1/branch/hours-overrides/{date}', function (): void {
     it('rejects an invalid date or inverted hours', function (): void {
         $branch = BranchModel::factory()->create();
 
-        $this->actingAs($branch, 'branch_api')->putJson('/api/v1/branch/hours-overrides/2026-13-40', ['opens_at' => '10:00', 'closes_at' => '12:00'])
+        $this->actingAs($branch, 'branch_api')->putJson('/api/v1/branch/hours-overrides/2026-13-40', ['opens_time' => '10:00', 'closes_time' => '12:00'])
             ->assertUnprocessable()->assertJsonValidationErrors(['date']);
-        $this->actingAs($branch, 'branch_api')->putJson('/api/v1/branch/hours-overrides/2026-12-01', ['opens_at' => '12:00', 'closes_at' => '10:00'])
-            ->assertUnprocessable()->assertJsonValidationErrors(['closes_at']);
+        $this->actingAs($branch, 'branch_api')->putJson('/api/v1/branch/hours-overrides/2026-12-01', ['opens_time' => '12:00', 'closes_time' => '10:00'])
+            ->assertUnprocessable()->assertJsonValidationErrors(['closes_time']);
     });
 });
 
@@ -198,10 +198,10 @@ describe('dashboard branch storefront', function (): void {
                 'brand_id' => $branch->brand_id,
                 'name' => ['en' => 'Main', 'ar' => 'الرئيسي'],
                 'email' => $branch->email,
-                'opening_hours' => [['weekday' => 2, 'opens_at' => '18:00', 'closes_at' => '09:00']],
+                'opening_hours' => [['day_of_week' => 2, 'opens_time' => '18:00', 'closes_time' => '09:00']],
             ])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors(['opening_hours.0.closes_at']);
+            ->assertJsonValidationErrors(['opening_hours.0.closes_time']);
     });
 });
 
@@ -212,10 +212,10 @@ describe('booking against branch hours', function (): void {
         $this->chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $this->barber->id]);
         $this->service = OfferedServiceModel::factory()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
         $this->slot = Carbon::tomorrow()->startOfDay();
-        BranchOpeningHourModel::query()->create(['branch_id' => $this->branch->id, 'weekday' => $this->slot->dayOfWeek, 'opens_at' => '09:00', 'closes_at' => '17:00']);
-        $this->bookAt = fn (Carbon $timeSlot) => $this->actingAs(ClientModel::factory()->create(), 'client')->postJson('/api/v1/bookings', [
+        BranchOpeningHourModel::query()->create(['branch_id' => $this->branch->id, 'day_of_week' => $this->slot->dayOfWeek, 'opens_time' => '09:00', 'closes_time' => '17:00']);
+        $this->bookAt = fn (Carbon $startsAt) => $this->actingAs(ClientModel::factory()->create(), 'client')->postJson('/api/v1/bookings', [
             'chair_id' => $this->chair->id,
-            'time_slot' => $timeSlot->toIso8601String(),
+            'starts_at' => $startsAt->toIso8601String(),
             'service_ids' => [$this->service->id],
         ]);
     });
@@ -231,7 +231,7 @@ describe('booking against branch hours', function (): void {
     })->with(['before opening' => [8], 'running past closing' => [17]]);
 
     it('rejects a booking on a day closed by an override', function (): void {
-        BranchHoursOverrideModel::query()->create(['branch_id' => $this->branch->id, 'date' => $this->slot->toDateString(), 'is_closed' => true]);
+        BranchHoursOverrideModel::query()->create(['branch_id' => $this->branch->id, 'override_date' => $this->slot->toDateString(), 'is_closed' => true]);
 
         ($this->bookAt)($this->slot->copy()->addHours(10))->assertUnprocessable();
     });

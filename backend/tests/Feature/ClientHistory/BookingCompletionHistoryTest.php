@@ -18,11 +18,11 @@ it('records a null-barber booking service and a branch history edge', function (
     $booking = BookingModel::factory()->create([
         'chair_id' => $chair->id,
         'barber_id' => null,
-        'status' => BookingStatus::Confirmed,
+        'booking_status' => BookingStatus::Confirmed,
     ]);
     $service = OfferedServiceModel::factory()->create();
     $booking->services()->attach($service->id);
-    $booking->update(['status' => BookingStatus::Completed]);
+    $booking->update(['booking_status' => BookingStatus::Completed]);
 
     $history = ClientServiceHistoryModel::query()->where('booking_id', $booking->id)->sole();
     expect($history->barber_id)->toBeNull()
@@ -48,10 +48,10 @@ it('uses the chair barber when the booking barber is null', function (): void {
     $booking = BookingModel::factory()->create([
         'chair_id' => $chair->id,
         'barber_id' => null,
-        'status' => BookingStatus::Confirmed,
+        'booking_status' => BookingStatus::Confirmed,
     ]);
     $booking->services()->attach(OfferedServiceModel::factory()->create()->id);
-    $booking->update(['status' => BookingStatus::Completed]);
+    $booking->update(['booking_status' => BookingStatus::Completed]);
 
     expect(ClientServiceHistoryModel::query()->where('booking_id', $booking->id)->sole()->barber_id)->toBe($barber->id);
     expect(RecommendationEdgeModel::query()
@@ -63,10 +63,10 @@ it('uses the chair barber when the booking barber is null', function (): void {
 });
 
 it('writes one history row for every booked service', function (): void {
-    $booking = BookingModel::factory()->create(['status' => BookingStatus::Confirmed]);
+    $booking = BookingModel::factory()->create(['booking_status' => BookingStatus::Confirmed]);
     $services = OfferedServiceModel::factory()->count(2)->create();
     $booking->services()->attach($services->modelKeys());
-    $booking->update(['status' => BookingStatus::Completed]);
+    $booking->update(['booking_status' => BookingStatus::Completed]);
 
     expect(ClientServiceHistoryModel::query()->where('booking_id', $booking->id)->count())->toBe(2)
         ->and(ClientServiceHistoryModel::query()->where('booking_id', $booking->id)->pluck('offered_service_id')->all())
@@ -79,15 +79,15 @@ it('completes an unassigned booking through the branch endpoint', function (): v
     $booking = BookingModel::factory()->create([
         'chair_id' => $chair->id,
         'barber_id' => null,
-        'status' => BookingStatus::Pending,
+        'booking_status' => BookingStatus::Pending,
     ]);
     $this->actingAs($branch, 'branch_api');
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Confirmed->value])->assertOk();
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::InProgress->value])->assertOk();
-    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Completed->value])
-        ->assertOk()->assertJsonPath('data.status', BookingStatus::Completed->value);
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['booking_status' => BookingStatus::Confirmed->value])->assertOk();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['booking_status' => BookingStatus::InProgress->value])->assertOk();
+    $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['booking_status' => BookingStatus::Completed->value])
+        ->assertOk()->assertJsonPath('data.booking_status', BookingStatus::Completed->value);
 
-    expect($booking->fresh()->status)->toBe(BookingStatus::Completed);
+    expect($booking->fresh()->booking_status)->toBe(BookingStatus::Completed);
 });
 
 it('completes an unassigned booking through the dashboard endpoint', function (): void {
@@ -95,13 +95,13 @@ it('completes an unassigned booking through the dashboard endpoint', function ()
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => null]);
     $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'barber_id' => null]);
     $this->authenticateDashboardActor($branch)
-        ->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => BookingStatus::InProgress->value])
+        ->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['booking_status' => BookingStatus::InProgress->value])
         ->assertOk();
-    $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => BookingStatus::Completed->value])
+    $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['booking_status' => BookingStatus::Completed->value])
         ->assertOk()
-        ->assertJsonPath('data.status', BookingStatus::Completed->value);
+        ->assertJsonPath('data.booking_status', BookingStatus::Completed->value);
 
-    expect($booking->fresh()->status)->toBe(BookingStatus::Completed);
+    expect($booking->fresh()->booking_status)->toBe(BookingStatus::Completed);
 });
 
 it('keeps the barber completion endpoint scoped to assigned bookings', function (): void {
@@ -110,12 +110,12 @@ it('keeps the barber completion endpoint scoped to assigned bookings', function 
     $booking = BookingModel::factory()->create([
         'chair_id' => $chair->id,
         'barber_id' => null,
-        'status' => BookingStatus::InProgress,
+        'booking_status' => BookingStatus::InProgress,
     ]);
 
     $this->actingAs($barber, 'barber')
         ->patchJson("/api/v1/barber/bookings/{$booking->id}/complete")
         ->assertForbidden();
 
-    expect($booking->fresh()->status)->toBe(BookingStatus::InProgress);
+    expect($booking->fresh()->booking_status)->toBe(BookingStatus::InProgress);
 });

@@ -10,5 +10,5 @@ return [
     'subscription_assigned' => 'Subscription assigned.',
     'subscription_updated' => 'Subscription updated.',
     'invalid_transition' => 'A :from subscription cannot become :to.',
-    'grace_expired' => ':count past-due subscription(s) passed the grace period and were canceled.',
+    'grace_expired' => ':count past-due subscription(s) passed the grace period and were cancelled.',
 ];

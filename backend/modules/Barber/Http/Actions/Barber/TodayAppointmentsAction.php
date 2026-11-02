@@ -15,7 +15,7 @@ final class TodayAppointmentsAction extends BaseApiAction
     public function __invoke(): JsonResponse
     {
         $appointments = BookingModel::query()->where('barber_id', Auth::guard('barber')->id())
-            ->whereDate('time_slot', today())->with(['chair', 'client' => fn ($query) => $query->withReputation(), 'services'])->orderBy('time_slot')->paginate(30);
+            ->whereDate('starts_at', today())->with(['chair', 'client' => fn ($query) => $query->withReputation(), 'services'])->orderBy('starts_at')->paginate(30);
 
         return $this->paginated(paginator: $appointments, resourceClass: StaffBookingResource::class);
     }

@@ -21,9 +21,9 @@ class BanSeeder extends Seeder
             'bannable_id' => $client->id,
             'bannable_type' => BannableTypeEnum::Client,
             'reason' => 'Demo ban — repeated no-shows',
-            'banned_from' => now()->subDay(),
-            'banned_until' => now()->addDays(7),
-            'admin_id' => $admin->id,
+            'banned_at' => now()->subDay(),
+            'expires_at' => now()->addDays(7),
+            'banned_by_id' => $admin->id,
         ]);
     }
 }

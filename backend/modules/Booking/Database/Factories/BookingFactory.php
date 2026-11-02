@@ -24,9 +24,9 @@ class BookingFactory extends Factory
             'chair_id' => ChairModel::factory(),
             'branch_id' => fn (array $attrs) => ChairModel::query()->whereKey($attrs['chair_id'])->value('branch_id'),
             'barber_id' => BarberModel::factory(),
-            'time_slot' => $timeSlot = fake()->dateTimeBetween('+1 day', '+1 week'),
-            'ends_at' => (clone $timeSlot)->modify('+30 minutes'),
-            'status' => BookingStatus::Confirmed->value,
+            'starts_at' => $startsAt = fake()->dateTimeBetween('+1 day', '+1 week'),
+            'ends_at' => (clone $startsAt)->modify('+30 minutes'),
+            'booking_status' => BookingStatus::Confirmed->value,
             'payment_method' => BookingPaymentMethod::PayAtSalon->value,
             'payment_status' => BookingPaymentStatus::UnpaidInPerson->value,
             'at_home_location' => null,
@@ -36,14 +36,14 @@ class BookingFactory extends Factory
     public function completed(): static
     {
         return $this->state(fn (array $attrs) => [
-            'status' => BookingStatus::Completed->value,
+            'booking_status' => BookingStatus::Completed->value,
         ]);
     }
 
     public function cancelled(): static
     {
         return $this->state(fn (array $attrs) => [
-            'status' => BookingStatus::Canceled->value,
+            'booking_status' => BookingStatus::Cancelled->value,
         ]);
     }
 

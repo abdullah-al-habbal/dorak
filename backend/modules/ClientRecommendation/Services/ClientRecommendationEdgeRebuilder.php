@@ -37,7 +37,7 @@ final class ClientRecommendationEdgeRebuilder
     private function rebuildHistoryEdges(ClientModel $client): void
     {
         $bookings = $client->bookings()
-            ->where('status', BookingStatus::Completed->value)
+            ->where('booking_status', BookingStatus::Completed->value)
             ->with('chair')
             ->get();
 

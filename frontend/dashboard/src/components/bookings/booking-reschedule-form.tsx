@@ -33,7 +33,7 @@ export function BookingRescheduleForm({
   const schema = createBookingRescheduleSchema(dictionary.validation);
   const form = useForm<BookingRescheduleInput>({
     resolver: zodResolver(schema),
-    defaultValues: { timeSlot: "", endsAt: "" },
+    defaultValues: { startsAt: "", endsAt: "" },
   });
   const reschedule = useDashboardMutation(
     "bookings",
@@ -41,7 +41,7 @@ export function BookingRescheduleForm({
       rescheduleBooking(
         bookingId,
         mapBookingReschedulePayload({
-          timeSlot: toIsoDateTime(value.timeSlot),
+          startsAt: toIsoDateTime(value.startsAt),
           endsAt: toIsoDateTime(value.endsAt),
         }),
       ),
@@ -58,8 +58,8 @@ export function BookingRescheduleForm({
         {startLabel}
         <Input
           type="datetime-local"
-          {...form.register("timeSlot")}
-          state={form.formState.errors.timeSlot ? "error" : "default"}
+          {...form.register("startsAt")}
+          state={form.formState.errors.startsAt ? "error" : "default"}
         />
       </label>
       <label className="grid gap-1 text-sm">

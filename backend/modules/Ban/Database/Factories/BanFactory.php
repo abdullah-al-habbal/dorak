@@ -20,19 +20,19 @@ class BanFactory extends Factory
             'bannable_id' => ClientModel::factory(),
             'bannable_type' => BannableTypeEnum::Client,
             'reason' => fake()->sentence(),
-            'banned_from' => now()->subDay(),
+            'banned_at' => now()->subDay(),
         ];
     }
 
     public function permanent(): static
     {
-        return $this->state(fn (array $attrs) => ['banned_until' => null]);
+        return $this->state(fn (array $attrs) => ['expires_at' => null]);
     }
 
     public function temporary(): static
     {
         return $this->state(fn (array $attrs) => [
-            'banned_until' => now()->addDays(7),
+            'expires_at' => now()->addDays(7),
         ]);
     }
 }

@@ -66,10 +66,10 @@ class BarberModel extends Authenticatable implements FilamentUser
     public function isBanned(): bool
     {
         return $this->bans()
-            ->where('banned_from', '<=', now())
+            ->where('banned_at', '<=', now())
             ->where(fn (Builder $query): Builder => $query
-                ->whereNull('banned_until')
-                ->orWhere('banned_until', '>', now())
+                ->whereNull('expires_at')
+                ->orWhere('expires_at', '>', now())
             )
             ->exists();
     }
@@ -82,10 +82,10 @@ class BarberModel extends Authenticatable implements FilamentUser
     {
         return $query->where('status', BarberStatusEnum::Enabled->value)
             ->whereDoesntHave('bans', fn ($bans) => $bans
-                ->where('banned_from', '<=', now())
+                ->where('banned_at', '<=', now())
                 ->where(fn ($activeBans) => $activeBans
-                    ->whereNull('banned_until')
-                    ->orWhere('banned_until', '>', now())
+                    ->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now())
                 ));
     }
 

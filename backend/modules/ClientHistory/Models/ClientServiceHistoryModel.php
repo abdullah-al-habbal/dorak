@@ -77,6 +77,6 @@ class ClientServiceHistoryModel extends Model
 
     public function media(): HasMany
     {
-        return $this->hasMany(ClientServiceHistoryMediaModel::class, 'history_id');
+        return $this->hasMany(ClientServiceHistoryMediaModel::class, 'client_service_history_id');
     }
 }

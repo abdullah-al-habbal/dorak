@@ -28,7 +28,7 @@ beforeEach(function (): void {
     $this->book = fn (array $overrides = []) => $this->postJson('/api/v1/bookings', array_merge([
         'barber_id' => $this->barber->id,
         'branch_id' => $this->branch->id,
-        'time_slot' => $this->slot->toIso8601String(),
+        'starts_at' => $this->slot->toIso8601String(),
         'service_ids' => [$this->service->id],
     ], $overrides));
 });
@@ -66,7 +66,7 @@ it('rejects a pending affiliation', function (): void {
 
 it('rejects a request with none of chair, barber plus branch, or at-home', function (): void {
     $this->postJson('/api/v1/bookings', [
-        'time_slot' => $this->slot->toIso8601String(),
+        'starts_at' => $this->slot->toIso8601String(),
         'service_ids' => [$this->service->id],
     ])->assertUnprocessable();
 
@@ -78,7 +78,7 @@ it('still rejects chair_id combined with at_home_location', function (): void {
     $this->postJson('/api/v1/bookings', [
         'chair_id' => (string) Str::uuid(),
         'at_home_location' => ['latitude' => 33.5, 'longitude' => 36.3, 'street' => 's', 'building' => '1', 'unit' => '1'],
-        'time_slot' => $this->slot->toIso8601String(),
+        'starts_at' => $this->slot->toIso8601String(),
         'service_ids' => [$this->service->id],
     ])->assertUnprocessable();
 });

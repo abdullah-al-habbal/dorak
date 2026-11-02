@@ -18,13 +18,13 @@ void main() {
       'address': 'Main St',
       'tags': ['kids'],
       'opening_hours': [
-        {'weekday': 5, 'is_closed': true, 'opens_at': null, 'closes_at': null},
+        {'day_of_week': 5, 'is_closed': true, 'opens_time': null, 'closes_time': null},
       ],
       'today_hours': {
         'date': '2026-10-24',
         'is_closed': false,
-        'opens_at': '12:00',
-        'closes_at': '16:00',
+        'opens_time': '12:00',
+        'closes_time': '16:00',
         'source': 'override',
       },
     });
@@ -32,7 +32,7 @@ void main() {
     expect(detail.address, 'Main St');
     expect(detail.tags, ['kids']);
     expect(detail.openingHours.single.isClosed, isTrue);
-    expect(detail.todayHours?.opensAt, '12:00');
+    expect(detail.todayHours?.opensTime, '12:00');
     expect(detail.todayHours?.source, BranchHoursSource.override);
   });
 

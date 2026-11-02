@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   Map<String, dynamic> bookingJson(Map<String, dynamic> extra) => {
     'id': 'b1',
-    'time_slot': '2026-11-01T10:00:00Z',
-    'status': 'completed',
+    'starts_at': '2026-11-01T10:00:00Z',
+    'booking_status': 'completed',
     ...extra,
   };
 

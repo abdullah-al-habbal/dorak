@@ -71,7 +71,7 @@ export const ENTITY_CONFIGS = {
       {
         id: "time",
         label: "appointment",
-        value: (item: IBooking) => item.timeSlot,
+        value: (item: IBooking) => item.startsAt,
       },
       { id: "status", label: "status", value: (item: IBooking) => item.status },
       {

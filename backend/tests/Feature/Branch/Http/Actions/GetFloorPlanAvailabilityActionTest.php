@@ -15,9 +15,9 @@ it('reports chair availability for the requested future interval', function () {
 
     BookingModel::factory()->create([
         'chair_id' => $chair->id,
-        'time_slot' => $startsAt,
+        'starts_at' => $startsAt,
         'ends_at' => $startsAt->copy()->addMinutes(30),
-        'status' => BookingStatus::Confirmed,
+        'booking_status' => BookingStatus::Confirmed,
     ]);
 
     $response = $this->getJson('/api/v1/branches/'.$branch->id.'/floor-plan?'.http_build_query([
@@ -36,9 +36,9 @@ it('does not mark a chair occupied outside the requested future interval', funct
 
     BookingModel::factory()->create([
         'chair_id' => $chair->id,
-        'time_slot' => $startsAt,
+        'starts_at' => $startsAt,
         'ends_at' => $startsAt->copy()->addMinutes(30),
-        'status' => BookingStatus::InProgress,
+        'booking_status' => BookingStatus::InProgress,
     ]);
 
     $response = $this->getJson('/api/v1/branches/'.$branch->id.'/floor-plan?'.http_build_query([

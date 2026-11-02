@@ -21,7 +21,7 @@ use Spatie\Translatable\HasTranslations;
     'quote',
     'avatar_url',
     'rating',
-    'display_order',
+    'sort_order',
 ])]
 #[Table('testimonials')]
 #[Translatable([
@@ -40,7 +40,7 @@ final class TestimonialModel extends Model
             'quote' => 'array',
             'author_title' => 'array',
             'rating' => 'integer',
-            'display_order' => 'integer',
+            'sort_order' => 'integer',
         ];
     }
 

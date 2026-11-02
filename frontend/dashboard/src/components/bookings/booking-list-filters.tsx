@@ -32,7 +32,7 @@ export function BookingListFilters({
     ["in_progress"]: labels.inProgress,
     completed: labels.completed,
     ["no_show"]: labels.noShow,
-    canceled: labels.canceled,
+    cancelled: labels.cancelled,
   };
   const hasActiveFilters =
     value.status !== "" ||

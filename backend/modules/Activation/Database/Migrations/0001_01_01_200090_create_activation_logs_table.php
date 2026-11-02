@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('activable_type');
             $table->string('status')->default(ActivationStatusEnum::Pending->value);
             $table->text('reason')->nullable();
-            $table->foreignUuid('admin_id')->nullable()->constrained('admins')->nullOnDelete();
+            $table->foreignUuid('activated_by_id')->nullable()->constrained('admins')->nullOnDelete();
             $table->timestamp('activated_at')->useCurrent();
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();

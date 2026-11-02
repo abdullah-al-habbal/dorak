@@ -54,7 +54,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
       try {
         plan = await _branches.getFloorPlan(
           event.branchId,
-          timeSlot: _defaultAvailabilityTime(),
+          startsAt: _defaultAvailabilityTime(),
           durationMinutes: 30,
         );
       } catch (_) {
@@ -230,7 +230,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
     try {
       final plan = await _branches.getFloorPlan(
         branchId,
-        timeSlot: startsAt,
+        startsAt: startsAt,
         durationMinutes: _selectedDuration(),
       );
       if (emit.isDone) return;
@@ -322,7 +322,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
         chairId: chairId,
         branchId: isBarberOnly ? state.branchId : null,
         barberId: barberId,
-        timeSlot: time,
+        startsAt: time,
         serviceIds: state.selectedServiceIds,
         atHomeStreet: state.isAtHomeBooking ? state.atHomeStreet.trim() : null,
         atHomeBuilding: state.isAtHomeBooking

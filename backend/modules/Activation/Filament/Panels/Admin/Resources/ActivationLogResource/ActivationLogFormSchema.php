@@ -29,7 +29,7 @@ final class ActivationLogFormSchema
                         ->required(),
                     Textarea::make('reason')
                         ->columnSpanFull(),
-                    Select::make('admin_id')
+                    Select::make('activated_by_id')
                         ->relationship('admin', 'email')
                         ->nullable(),
                     DateTimePicker::make('activated_at')

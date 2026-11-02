@@ -73,7 +73,7 @@ export function BarberAppointmentsSection({
           <div>
             <p className="font-medium text-text-100">{appointmentLabel}</p>
             <p className="text-sm text-text-secondary">
-              {appointment.timeSlot}
+              {appointment.startsAt}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

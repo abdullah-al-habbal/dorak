@@ -8,11 +8,11 @@ part of 'booking.dto.dart';
 
 BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
   id: json['id'] as String,
-  timeSlot: DateTime.parse(json['time_slot'] as String),
+  startsAt: DateTime.parse(json['starts_at'] as String),
   endsAt: json['ends_at'] == null
       ? null
       : DateTime.parse(json['ends_at'] as String),
-  status: $enumDecode(_$BookingStatusEnumMap, json['status']),
+  status: $enumDecode(_$BookingStatusEnumMap, json['booking_status']),
   paymentMethod: json['payment_method'] as String? ?? 'pay_at_salon',
   paymentStatus: json['payment_status'] as String? ?? 'unpaid_in_person',
   cancellationEligible: json['cancellation_eligible'] as bool?,
@@ -47,9 +47,9 @@ Map<String, dynamic> _$BookingDtoToJson(
   BookingDto instance,
 ) => <String, dynamic>{
   'id': instance.id,
-  'time_slot': instance.timeSlot.toIso8601String(),
+  'starts_at': instance.startsAt.toIso8601String(),
   'ends_at': instance.endsAt?.toIso8601String(),
-  'status': _$BookingStatusEnumMap[instance.status]!,
+  'booking_status': _$BookingStatusEnumMap[instance.status]!,
   'payment_method': instance.paymentMethod,
   'payment_status': instance.paymentStatus,
   'cancellation_eligible': instance.cancellationEligible,
@@ -66,7 +66,7 @@ const _$BookingStatusEnumMap = {
   BookingStatus.pending: 'pending',
   BookingStatus.confirmed: 'confirmed',
   BookingStatus.inProgress: 'in_progress',
-  BookingStatus.canceled: 'canceled',
+  BookingStatus.cancelled: 'cancelled',
   BookingStatus.completed: 'completed',
   BookingStatus.noShow: 'no_show',
 };

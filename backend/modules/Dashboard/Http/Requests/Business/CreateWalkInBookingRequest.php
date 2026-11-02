@@ -24,7 +24,7 @@ final class CreateWalkInBookingRequest extends BaseApiFormRequest
             'customer_phone' => ['nullable', 'string', 'max:30'],
             'service_ids' => ['required', 'array', 'min:1'],
             'service_ids.*' => ['uuid', 'distinct', Rule::exists('offered_services', 'id')],
-            'time_slot' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
+            'starts_at' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
         ];
     }
 
@@ -42,7 +42,7 @@ final class CreateWalkInBookingRequest extends BaseApiFormRequest
             customerName: $this->string('customer_name')->toString(),
             customerEmail: $this->string('customer_email')->toString(),
             customerPhone: is_string($customerPhone) ? $customerPhone : null,
-            timeSlot: Carbon::parse($this->string('time_slot')->toString())->utc(),
+            startsAt: Carbon::parse($this->string('starts_at')->toString())->utc(),
             serviceIds: $this->array('service_ids'),
         );
     }

@@ -6,11 +6,11 @@ use Modules\Booking\Enums\BookingStatus;
 
 it('matches the complete booking transition matrix', function (): void {
     $matrix = [
-        BookingStatus::Pending->value => [BookingStatus::Confirmed, BookingStatus::Canceled],
-        BookingStatus::Confirmed->value => [BookingStatus::InProgress, BookingStatus::Canceled, BookingStatus::NoShow],
-        BookingStatus::InProgress->value => [BookingStatus::Completed, BookingStatus::Canceled, BookingStatus::NoShow],
+        BookingStatus::Pending->value => [BookingStatus::Confirmed, BookingStatus::Cancelled],
+        BookingStatus::Confirmed->value => [BookingStatus::InProgress, BookingStatus::Cancelled, BookingStatus::NoShow],
+        BookingStatus::InProgress->value => [BookingStatus::Completed, BookingStatus::Cancelled, BookingStatus::NoShow],
         BookingStatus::Completed->value => [],
-        BookingStatus::Canceled->value => [],
+        BookingStatus::Cancelled->value => [],
         BookingStatus::NoShow->value => [],
     ];
 

@@ -21,7 +21,7 @@ it('lists user bookings', function () {
     $response->assertOk();
     $response->assertJsonStructure([
         'success',
-        'data' => ['*' => ['id', 'time_slot', 'status']],
+        'data' => ['*' => ['id', 'starts_at', 'booking_status']],
         'meta' => ['pagination'],
     ]);
     expect($response->json('data'))->toHaveCount(3);
@@ -41,30 +41,30 @@ it('does not list other users bookings', function () {
 it('filters upcoming bookings', function () {
     BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => BookingStatus::Confirmed,
-        'time_slot' => now()->addWeek(),
+        'booking_status' => BookingStatus::Confirmed,
+        'starts_at' => now()->addWeek(),
         'ends_at' => now()->addWeek()->addMinutes(30),
     ]);
     BookingModel::factory()->completed()->create([
         'client_id' => $this->client->id,
-        'time_slot' => now()->subWeek(),
+        'starts_at' => now()->subWeek(),
     ]);
 
     $response = $this->getJson('/api/v1/bookings?status=upcoming&per_page=10');
 
     expect($response->json('data'))->toHaveCount(1);
-    expect($response->json('data.0.status'))->toBe(BookingStatus::Confirmed->value);
+    expect($response->json('data.0.booking_status'))->toBe(BookingStatus::Confirmed->value);
 });
 
 it('filters past bookings', function () {
     BookingModel::factory()->completed()->create([
         'client_id' => $this->client->id,
-        'time_slot' => now()->subWeek(),
+        'starts_at' => now()->subWeek(),
     ]);
     BookingModel::factory()->create([
         'client_id' => $this->client->id,
-        'status' => BookingStatus::Confirmed,
-        'time_slot' => now()->addWeek(),
+        'booking_status' => BookingStatus::Confirmed,
+        'starts_at' => now()->addWeek(),
         'ends_at' => now()->addWeek()->addMinutes(30),
     ]);
 

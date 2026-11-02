@@ -18,7 +18,7 @@ final class BookingCompletedCommissionObserver
 
     public function updated(BookingModel $booking): void
     {
-        if (! $booking->wasChanged('status') || $booking->status !== BookingStatus::Completed) {
+        if (! $booking->wasChanged('booking_status') || $booking->booking_status !== BookingStatus::Completed) {
             return;
         }
 

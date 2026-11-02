@@ -57,7 +57,7 @@ it('removes recommendation edge when favorite is removed', function () {
 
 it('creates history edge on booking completion', function () {
     $booking = BookingModel::factory()->create();
-    $booking->update(['status' => BookingStatus::Completed]);
+    $booking->update(['booking_status' => BookingStatus::Completed]);
 
     $edge = RecommendationEdgeModel::where('source_type', 'client')
         ->where('source_id', $booking->client_id)

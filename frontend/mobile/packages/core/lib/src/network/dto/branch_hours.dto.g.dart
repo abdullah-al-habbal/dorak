@@ -8,11 +8,11 @@ part of 'branch_hours.dto.dart';
 
 BranchHoursDto _$BranchHoursDtoFromJson(Map<String, dynamic> json) =>
     BranchHoursDto(
-      weekday: (json['weekday'] as num?)?.toInt(),
+      dayOfWeek: (json['day_of_week'] as num?)?.toInt(),
       date: json['date'] as String?,
       isClosed: json['is_closed'] as bool? ?? false,
-      opensAt: json['opens_at'] as String?,
-      closesAt: json['closes_at'] as String?,
+      opensTime: json['opens_time'] as String?,
+      closesTime: json['closes_time'] as String?,
       source: $enumDecodeNullable(
         _$BranchHoursSourceEnumMap,
         json['source'],

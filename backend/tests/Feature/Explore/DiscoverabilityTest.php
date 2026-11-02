@@ -19,7 +19,7 @@ it('excludes inactive and banned branches from explore and brand listings', func
     $active = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => BranchStatusEnum::Enabled, 'latitude' => 33.5, 'longitude' => 36.3]);
     $disabled = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => BranchStatusEnum::Disabled, 'latitude' => 33.5, 'longitude' => 36.3]);
     $banned = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => BranchStatusEnum::Enabled, 'latitude' => 33.5, 'longitude' => 36.3]);
-    $banned->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $banned->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
 
     $this->getJson('/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=1000&universe=men')
         ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $active->id);
@@ -32,7 +32,7 @@ it('excludes inactive and banned barbers from explore and detail', function (): 
     $active = BarberModel::factory()->freelancer()->create(['status' => BarberStatusEnum::Enabled, 'latitude' => 33.5, 'longitude' => 36.3]);
     BarberModel::factory()->freelancer()->create(['status' => BarberStatusEnum::Disabled, 'latitude' => 33.5, 'longitude' => 36.3]);
     $banned = BarberModel::factory()->freelancer()->create(['status' => BarberStatusEnum::Enabled, 'latitude' => 33.5, 'longitude' => 36.3]);
-    $banned->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $banned->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
 
     $this->getJson('/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000')
         ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $active->id);
@@ -48,7 +48,7 @@ it('rejects booking a chair in an inactive branch with 422', function (): void {
 
     $this->withToken($token)->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'time_slot' => now()->addDay()->toIso8601ZuluString(),
+        'starts_at' => now()->addDay()->toIso8601ZuluString(),
         'service_ids' => [$service->id],
     ])->assertUnprocessable()->assertJsonPath('code', 'ENTITY_NOT_DISCOVERABLE');
 

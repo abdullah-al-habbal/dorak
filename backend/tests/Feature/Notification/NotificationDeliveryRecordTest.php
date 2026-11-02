@@ -57,7 +57,7 @@ it('writes one notification and one sent delivery per device token on a booking 
     configureDeliveryRecordFcm();
     fakeDeliveryRecordFcm(fn (Request $request) => Http::response(['name' => 'projects/dorak-test-project/messages/'.$request['message']['token']]));
     $client = ClientModel::factory()->create();
-    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed]);
+    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Confirmed]);
     $phone = deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'phone-token');
     $tablet = deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'tablet-token');
 
@@ -85,13 +85,13 @@ it('records a failed delivery and still completes the booking transition when FC
     fakeDeliveryRecordFcm(fn () => Http::response(['error' => ['status' => 'PERMISSION_DENIED', 'message' => 'Sender mismatch']], 403));
     $client = ClientModel::factory()->create();
     $barber = BarberModel::factory()->create();
-    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'barber_id' => $barber->id, 'status' => BookingStatus::Pending]);
+    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'barber_id' => $barber->id, 'booking_status' => BookingStatus::Pending]);
     deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'client-token');
     $this->actingAs($barber, 'barber');
 
     $this->patchJson("/api/v1/barber/bookings/{$booking->id}/accept")->assertOk();
 
-    expect($booking->refresh()->status)->toBe(BookingStatus::Confirmed);
+    expect($booking->refresh()->booking_status)->toBe(BookingStatus::Confirmed);
     $notification = NotificationModel::query()->where('notifiable_id', $client->id)->sole();
     $delivery = NotificationDeliveryModel::query()->where('notification_id', $notification->id)->sole();
     expect($delivery->status)->toBe(NotificationDeliveryStatusEnum::Failed)
@@ -126,7 +126,7 @@ it('does not duplicate the notification or re-push delivered devices when the jo
             : Http::response(['name' => 'projects/dorak-test-project/messages/ok']);
     });
     $client = ClientModel::factory()->create();
-    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed]);
+    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Confirmed]);
     deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'steady-token');
     deliveryRecordToken(DeviceTokenUserTypeEnum::Client, $client->id, 'flaky-token');
     $job = new SendBookingStatusNotificationJob((string) $booking->id, false);

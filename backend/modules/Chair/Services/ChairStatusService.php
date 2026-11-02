@@ -27,17 +27,17 @@ final class ChairStatusService
     {
         $enteringMaintenance = ($attributes['status'] ?? null) === ChairStatus::Maintenance->value;
 
-        /** @var list<BookingModel> $canceled */
-        $canceled = [];
-        $updated = DB::transaction(function () use ($chair, $attributes, $force, $enteringMaintenance, &$canceled): ChairModel {
+        /** @var list<BookingModel> $cancelled */
+        $cancelled = [];
+        $updated = DB::transaction(function () use ($chair, $attributes, $force, $enteringMaintenance, &$cancelled): ChairModel {
             $locked = ChairModel::query()->lockForUpdate()->findOrFail($chair->id);
 
             if ($enteringMaintenance) {
                 $affected = BookingModel::query()
                     ->where('chair_id', $locked->id)
-                    ->whereIn('status', BookingStatus::reservationBlockingValues())
+                    ->whereIn('booking_status', BookingStatus::reservationBlockingValues())
                     ->where('ends_at', '>', now())
-                    ->orderBy('time_slot')
+                    ->orderBy('starts_at')
                     ->lockForUpdate()
                     ->get();
 
@@ -46,7 +46,7 @@ final class ChairStatusService
                 }
 
                 foreach ($affected as $booking) {
-                    $canceled[] = $this->lifecycle->cancelForChairMaintenance($booking->id);
+                    $cancelled[] = $this->lifecycle->cancelForChairMaintenance($booking->id);
                 }
             }
 
@@ -55,6 +55,6 @@ final class ChairStatusService
             return $locked->refresh()->load('barber');
         });
 
-        return new ChairStatusChangeResult($updated, array_map(fn (BookingModel $booking): string => (string) $booking->id, $canceled));
+        return new ChairStatusChangeResult($updated, array_map(fn (BookingModel $booking): string => (string) $booking->id, $cancelled));
     }
 }

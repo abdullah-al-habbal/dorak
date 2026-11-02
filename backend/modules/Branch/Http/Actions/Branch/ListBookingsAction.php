@@ -20,7 +20,7 @@ final class ListBookingsAction extends BaseApiAction
 
         $bookings = BookingModel::query()->forBranch($branch->id)
             ->with(['chair', 'client' => fn ($query) => $query->withReputation(), 'services'])
-            ->orderByDesc('time_slot')
+            ->orderByDesc('starts_at')
             ->paginate($request->input('per_page', 15));
 
         return $this->paginated($bookings, StaffBookingResource::class);

@@ -21,7 +21,7 @@ class ActivationLogFactory extends Factory
             'activable_id' => BarberModel::factory(),
             'activable_type' => ActivableTypeEnum::Barber,
             'status' => ActivationStatusEnum::Pending->value,
-            'admin_id' => AdminModel::factory(),
+            'activated_by_id' => AdminModel::factory(),
             'activated_at' => now(),
         ];
     }

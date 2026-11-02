@@ -8,10 +8,10 @@ import {
 } from "@/services/api/dashboard/shared/schemas/dashboard-common.schema";
 
 export const BranchOpeningDaySchema = z.object({
-  weekday: z.number(),
+  dayOfWeek: z.number(),
   isClosed: z.boolean(),
-  opensAt: z.string().nullable(),
-  closesAt: z.string().nullable(),
+  opensTime: z.string().nullable(),
+  closesTime: z.string().nullable(),
 });
 
 export const BranchSchema = z.object({
@@ -87,10 +87,10 @@ export const BookingSchema = z.object({
     "confirmed",
     "in_progress",
     "completed",
-    "canceled",
+    "cancelled",
     "no_show",
   ]),
-  timeSlot: z.string(),
+  startsAt: z.string(),
 });
 
 export const BookingStatusLogSchema = z.object({

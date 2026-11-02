@@ -14,15 +14,15 @@ beforeEach(function (): void {
     $this->actingAs($this->barber, 'barber');
 });
 
-function barberBookingForCancellation(BarberModel $barber, string $timeSlot): BookingModel
+function barberBookingForCancellation(BarberModel $barber, string $startsAt): BookingModel
 {
     $chair = ChairModel::factory()->create(['barber_id' => $barber->id]);
 
     return BookingModel::factory()->create([
         'barber_id' => $barber->id,
         'chair_id' => $chair->id,
-        'status' => BookingStatus::Confirmed->value,
-        'time_slot' => $timeSlot,
+        'booking_status' => BookingStatus::Confirmed->value,
+        'starts_at' => $startsAt,
     ]);
 }
 
@@ -43,7 +43,7 @@ it('rejects cancellation two hours or less before the appointment', function ():
 
     $this->assertDatabaseHas('bookings', [
         'id' => $booking->id,
-        'status' => BookingStatus::Confirmed->value,
+        'booking_status' => BookingStatus::Confirmed->value,
     ]);
 });
 
@@ -55,12 +55,12 @@ it('locks, cancels, persists the reason, and broadcasts the cancellation', funct
         'cancellation_reason' => 'Unable to attend.',
     ])->assertOk()
         ->assertJsonPath('data.id', $booking->id)
-        ->assertJsonPath('data.status', BookingStatus::Canceled->value);
+        ->assertJsonPath('data.booking_status', BookingStatus::Cancelled->value);
 
     expect(file_get_contents(base_path('modules/Booking/Eloquent/Resolvers/Shared/BookingLifecycleEloquentResolver.php')))->toContain('lockForUpdate()');
     $this->assertDatabaseHas('bookings', [
         'id' => $booking->id,
-        'status' => BookingStatus::Canceled->value,
+        'booking_status' => BookingStatus::Cancelled->value,
         'cancellation_reason' => 'Unable to attend.',
     ]);
     Event::assertDispatched(BookingCancelledEvent::class, function (BookingCancelledEvent $event) use ($booking): bool {

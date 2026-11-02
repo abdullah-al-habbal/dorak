@@ -38,8 +38,8 @@ void main() {
           detail: _storefrontDetail(
             today: const BranchHoursDto(
               date: '2026-10-24',
-              opensAt: '09:00',
-              closesAt: '21:00',
+              opensTime: '09:00',
+              closesTime: '21:00',
               source: BranchHoursSource.weekly,
             ),
           ),
@@ -86,7 +86,7 @@ void main() {
     addTearDown(tester.view.reset);
     final explore = FakeExploreRepository()
       ..detail = _storefrontDetail(
-        today: const BranchHoursDto(opensAt: '10:00', closesAt: '18:00'),
+        today: const BranchHoursDto(opensTime: '10:00', closesTime: '18:00'),
       );
     final bloc = fakeBranchDetailBloc(explore: explore);
     addTearDown(bloc.close);

@@ -24,7 +24,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $model = BookingModel::query()->when($actor->scopedBranchIds() !== null, fn ($query) => $query->forBranches($actor->scopedBranchIds() ?? []))->findOrFail($booking);
-        $status = $request->enum('status', BookingStatus::class);
+        $status = $request->enum('booking_status', BookingStatus::class);
         if (! $status instanceof BookingStatus) {
             return $this->unprocessable(message: __('dashboard::messages.invalid_booking_status'));
         }

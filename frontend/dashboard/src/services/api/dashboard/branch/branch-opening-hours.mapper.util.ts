@@ -8,12 +8,13 @@ import type { IBranchOpeningDay } from "@/services/api/dashboard/branch/types/ib
 export function openingHoursPayload(days: IBranchOpeningDay[] = []) {
   return days
     .filter(
-      (day) => day.isClosed || (day.opensAt !== null && day.closesAt !== null),
+      (day) =>
+        day.isClosed || (day.opensTime !== null && day.closesTime !== null),
     )
     .map((day) => ({
-      weekday: day.weekday,
+      day_of_week: day.dayOfWeek,
       is_closed: day.isClosed,
-      opens_at: day.isClosed ? null : day.opensAt,
-      closes_at: day.isClosed ? null : day.closesAt,
+      opens_time: day.isClosed ? null : day.opensTime,
+      closes_time: day.isClosed ? null : day.closesTime,
     }));
 }

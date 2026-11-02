@@ -38,9 +38,9 @@ describe('booking transitions', function (): void {
         $admin = AdminModel::factory()->create();
         $this->authenticateDashboardActor($admin);
         $chair = ChairModel::factory()->create();
-        $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
+        $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Pending]);
 
-        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => BookingStatus::Confirmed])->assertOk();
+        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['booking_status' => BookingStatus::Confirmed])->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
         expect($log)->not->toBeNull();
@@ -54,9 +54,9 @@ describe('booking transitions', function (): void {
         $branch = BranchModel::factory()->create();
         $this->actingAs($branch, 'branch_api');
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
-        $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
+        $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Pending]);
 
-        $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::Confirmed])->assertOk();
+        $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['booking_status' => BookingStatus::Confirmed])->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
         expect($log->actor_type->value)->toBe(DashboardActorTypeEnum::Branch->value);
@@ -67,20 +67,20 @@ describe('booking transitions', function (): void {
     it('logs a client cancellation', function (): void {
         $client = ClientModel::factory()->create();
         $this->actingAs($client, 'client');
-        $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed, 'time_slot' => now()->addHours(5)]);
+        $booking = BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Confirmed, 'starts_at' => now()->addHours(5)]);
 
         $this->postJson("/api/v1/client/bookings/{$booking->id}/cancel")->assertOk();
 
         $log = latestStatusLog('booking', (string) $booking->id);
         expect($log->actor_type->value)->toBe(StatusChangeActorTypeEnum::Client->value);
         expect($log->actor_id)->toBe((string) $client->id);
-        expect($log->to_status)->toBe(BookingStatus::Canceled->value);
+        expect($log->to_status)->toBe(BookingStatus::Cancelled->value);
     });
 
     it('logs a barber cancellation with the reason', function (): void {
         $barber = BarberModel::factory()->create();
         $this->actingAs($barber, 'barber');
-        $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'status' => BookingStatus::Confirmed, 'time_slot' => now()->addHours(5)]);
+        $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'booking_status' => BookingStatus::Confirmed, 'starts_at' => now()->addHours(5)]);
 
         $this->postJson("/api/v1/barber/bookings/{$booking->id}/cancel", ['cancellation_reason' => 'sick'])->assertOk();
 
@@ -93,7 +93,7 @@ describe('booking transitions', function (): void {
     it('logs a barber lifecycle transition', function (): void {
         $barber = BarberModel::factory()->create();
         $this->actingAs($barber, 'barber');
-        $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'status' => BookingStatus::Pending]);
+        $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'booking_status' => BookingStatus::Pending]);
 
         $this->patchJson("/api/v1/barber/bookings/{$booking->id}/accept")->assertOk();
 
@@ -108,8 +108,8 @@ describe('booking transitions', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'status' => ChairStatus::Available]);
         $booking = BookingModel::factory()->create([
             'chair_id' => $chair->id,
-            'status' => BookingStatus::Confirmed,
-            'time_slot' => now()->addDay(),
+            'booking_status' => BookingStatus::Confirmed,
+            'starts_at' => now()->addDay(),
             'ends_at' => now()->addDay()->addMinutes(30),
         ]);
 
@@ -125,9 +125,9 @@ describe('booking transitions', function (): void {
         $branch = BranchModel::factory()->create();
         $this->actingAs($branch, 'branch_api');
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
-        $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Completed]);
+        $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Completed]);
 
-        $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['status' => BookingStatus::InProgress])->assertUnprocessable();
+        $this->patchJson("/api/v1/branch/bookings/{$booking->id}/status", ['booking_status' => BookingStatus::InProgress])->assertUnprocessable();
 
         expect(latestStatusLog('booking', (string) $booking->id))->toBeNull();
         Queue::assertNotPushed(SendBookingStatusNotificationJob::class);
@@ -288,9 +288,9 @@ describe('GET /api/v1/dashboard/bookings/{booking}/history', function (): void {
         $this->authenticateDashboardActor($admin);
         $branch = BranchModel::factory()->create();
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
-        $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'status' => BookingStatus::Pending]);
+        $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Pending]);
 
-        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['status' => BookingStatus::Confirmed])->assertOk();
+        $this->patchJson("/api/v1/dashboard/bookings/{$booking->id}", ['booking_status' => BookingStatus::Confirmed])->assertOk();
 
         $this->getJson("/api/v1/dashboard/bookings/{$booking->id}/history")
             ->assertOk()

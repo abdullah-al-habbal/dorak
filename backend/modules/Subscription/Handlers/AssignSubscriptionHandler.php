@@ -26,7 +26,7 @@ final class AssignSubscriptionHandler
             BrandSubscriptionModel::query()
                 ->where('brand_id', $brand->getKey())
                 ->whereIn('status', SubscriptionStatus::live())
-                ->update(['status' => SubscriptionStatus::Canceled, 'canceled_at' => now()]);
+                ->update(['status' => SubscriptionStatus::Cancelled, 'cancelled_at' => now()]);
 
             $start = now();
             $subscription = BrandSubscriptionModel::create([

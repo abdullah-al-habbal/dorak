@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('quote');
             $table->string('avatar_url')->nullable();
             $table->integer('rating')->default(5);
-            $table->integer('display_order')->default(0);
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
 
             $table->foreign('section_id')->references('id')->on('sections')->nullOnDelete();

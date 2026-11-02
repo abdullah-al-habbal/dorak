@@ -135,10 +135,10 @@ describe("monetization requests", () => {
       brand_id: "b1",
       plan_id: "p1",
     });
-    await updateSubscriptionStatus({ id: "s1", status: "canceled" });
+    await updateSubscriptionStatus({ id: "s1", status: "cancelled" });
     expect(patch).toHaveBeenLastCalledWith(
       "/dashboard/admin/subscriptions/s1/status",
-      { status: "canceled" },
+      { status: "cancelled" },
     );
     await setGatewayActive({ id: "g1", isActive: false });
     expect(patch).toHaveBeenLastCalledWith(

@@ -20,22 +20,23 @@ const time = z
   .nullable();
 const openingDay = z
   .object({
-    weekday: z.number().int().min(0).max(6),
+    dayOfWeek: z.number().int().min(0).max(6),
     isClosed: z.boolean(),
-    opensAt: time,
-    closesAt: time,
+    opensTime: time,
+    closesTime: time,
   })
   .refine(
-    (day) => day.isClosed || (day.opensAt === null) === (day.closesAt === null),
-    { path: ["closesAt"] },
+    (day) =>
+      day.isClosed || (day.opensTime === null) === (day.closesTime === null),
+    { path: ["closesTime"] },
   )
   .refine(
     (day) =>
       day.isClosed ||
-      day.opensAt === null ||
-      day.closesAt === null ||
-      day.closesAt > day.opensAt,
-    { path: ["closesAt"] },
+      day.opensTime === null ||
+      day.closesTime === null ||
+      day.closesTime > day.opensTime,
+    { path: ["closesTime"] },
   );
 
 export const branchCreateSchema = z.object({

@@ -69,7 +69,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     if (state.rebookingId != null) return;
     emit(state.copyWith(rebookingId: event.id));
     try {
-      await _repository.rebookFromHistory(event.id, event.timeSlot);
+      await _repository.rebookFromHistory(event.id, event.startsAt);
       if (emit.isDone) return;
       emit(state.copyWith(clearRebooking: true, rebooked: true));
     } catch (error) {

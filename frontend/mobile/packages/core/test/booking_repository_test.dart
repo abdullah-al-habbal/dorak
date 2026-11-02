@@ -9,9 +9,9 @@ Map<String, Object?> booking({
   String status = 'confirmed',
 }) => {
   'id': id,
-  'time_slot': '2026-09-10T14:30:00.000Z',
+  'starts_at': '2026-09-10T14:30:00.000Z',
   'ends_at': '2026-09-10T15:00:00.000Z',
-  'status': status,
+  'booking_status': status,
   'payment_method': 'pay_at_salon',
   'payment_status': 'unpaid_in_person',
   'chair': {'id': 'chair-1', 'label': 'Chair A', 'status': 'available'},
@@ -52,7 +52,7 @@ void main() {
       expect(item.status, BookingStatus.confirmed);
       expect(item.paymentMethod, 'pay_at_salon');
       expect(item.paymentStatus, 'unpaid_in_person');
-      expect(item.timeSlot, DateTime.parse('2026-09-10T14:30:00.000Z'));
+      expect(item.startsAt, DateTime.parse('2026-09-10T14:30:00.000Z'));
       expect(item.endsAt, DateTime.parse('2026-09-10T15:00:00.000Z'));
       expect(item.chair?.label, 'Chair A');
       expect(item.barber?.name, 'Karim');
@@ -114,7 +114,7 @@ void main() {
       final created = await repository.createBooking(
         chairId: 'chair-1',
         barberId: 'barber-1',
-        timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+        startsAt: DateTime.utc(2026, 9, 10, 14, 30),
         serviceIds: const ['service-1'],
       );
 
@@ -123,7 +123,7 @@ void main() {
       expect(captured.data, {
         'chair_id': 'chair-1',
         'barber_id': 'barber-1',
-        'time_slot': '2026-09-10T14:30:00.000Z',
+        'starts_at': '2026-09-10T14:30:00.000Z',
         'service_ids': ['service-1'],
       });
       expect(created.id, 'booking-1');
@@ -150,14 +150,14 @@ void main() {
       final created = await repository.createBooking(
         branchId: 'branch-1',
         barberId: 'barber-1',
-        timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+        startsAt: DateTime.utc(2026, 9, 10, 14, 30),
         serviceIds: const ['service-1'],
       );
 
       expect(captured.data, {
         'branch_id': 'branch-1',
         'barber_id': 'barber-1',
-        'time_slot': '2026-09-10T14:30:00.000Z',
+        'starts_at': '2026-09-10T14:30:00.000Z',
         'service_ids': ['service-1'],
       });
       expect(created.chair, isNull);
@@ -181,7 +181,7 @@ void main() {
         repository.createBooking(
           chairId: 'chair-1',
           serviceIds: const ['service-1'],
-          timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+          startsAt: DateTime.utc(2026, 9, 10, 14, 30),
         ),
         throwsA(
           isA<ApiException>().having((e) => e.statusCode, 'statusCode', 409),
@@ -206,7 +206,7 @@ void main() {
         final repository = DioBookingRepository(clientWith(fake));
 
         await repository.createBooking(
-          timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+          startsAt: DateTime.utc(2026, 9, 10, 14, 30),
           serviceIds: const ['service-1'],
           atHomeStreet: 'Al Hamra Street',
           atHomeBuilding: '12',
@@ -235,7 +235,7 @@ void main() {
       expect(
         () => repository.createBooking(
           chairId: 'chair-1',
-          timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+          startsAt: DateTime.utc(2026, 9, 10, 14, 30),
           serviceIds: const [],
         ),
         throwsArgumentError,
@@ -255,7 +255,7 @@ void main() {
 
       expect(
         () => repository.createBooking(
-          timeSlot: DateTime.utc(2026, 9, 10, 14, 30),
+          startsAt: DateTime.utc(2026, 9, 10, 14, 30),
           serviceIds: const ['service-1'],
           atHomeLatitude: 33.8938,
         ),

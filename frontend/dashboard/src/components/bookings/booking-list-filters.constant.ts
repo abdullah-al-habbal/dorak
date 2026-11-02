@@ -6,5 +6,5 @@ export const BOOKING_LIST_FILTER_STATUSES: BookingStatus[] = [
   "in_progress",
   "completed",
   "no_show",
-  "canceled",
+  "cancelled",
 ];

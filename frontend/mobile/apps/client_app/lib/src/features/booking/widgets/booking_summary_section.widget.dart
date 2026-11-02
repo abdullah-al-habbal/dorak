@@ -25,7 +25,7 @@ class BookingSummarySection extends StatelessWidget {
     children: [
       BookingDetailLine(
         value: LocaleFormatters.dateTime(
-          booking.timeSlot.toLocal(),
+          booking.startsAt.toLocal(),
           localeCode,
         ),
       ),

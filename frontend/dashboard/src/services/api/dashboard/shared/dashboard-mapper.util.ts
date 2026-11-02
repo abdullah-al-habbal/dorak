@@ -55,10 +55,10 @@ export function mapBranch(wire: unknown): IBranch {
       const time = (value: unknown) =>
         typeof value === "string" && value !== "" ? value.slice(0, 5) : null;
       return {
-        weekday: Number(row.weekday),
+        dayOfWeek: Number(row.day_of_week),
         isClosed: row.is_closed === true || row.is_closed === 1,
-        opensAt: time(row.opens_at),
-        closesAt: time(row.closes_at),
+        opensTime: time(row.opens_time),
+        closesTime: time(row.closes_time),
       };
     }),
     ratingAverage: number(item.rating_average),
@@ -163,8 +163,8 @@ export function mapBooking(wire: unknown): IBooking {
     client: mapBookingClient(item.client),
     endsAt: nullableString(item.ends_at),
     services,
-    status: string(item.status, "pending") as IBooking["status"],
-    timeSlot: string(item.time_slot),
+    status: string(item.booking_status, "pending") as IBooking["status"],
+    startsAt: string(item.starts_at),
   };
 }
 

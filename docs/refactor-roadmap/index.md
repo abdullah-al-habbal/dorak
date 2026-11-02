@@ -21,6 +21,7 @@ listed in the story pass before the local commit. Never push.
 | I | [Money and currency](batch-i-money-currency.md) | Currency code FKs, `*_amount_minor`, payout names | Done |
 | J1 | [Units, rates, counts](batch-j-units-rates-counts.md) | Radius km, percent/ratio, attempts count | Done |
 | J2 | [Ratings, durations, state booleans](batch-j-ratings-durations-booleans.md) | `rating_average`, `duration_minutes`, `allows_*`, `favorited_*` | Done |
+| K | [Time, lifecycle, bookings](batch-k-time-lifecycle-bookings.md) | `booking_status`, `starts_at`, `cancelled`, hours, bans, FK ids | Done |
 
 ## Deferred
 

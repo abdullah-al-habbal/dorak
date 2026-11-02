@@ -25,13 +25,13 @@ final class RescheduleBookingAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()));
-        $timeSlot = $request->date('time_slot');
+        $startsAt = $request->date('starts_at');
         $endsAt = $request->date('ends_at');
-        if ($timeSlot === null || $endsAt === null) {
+        if ($startsAt === null || $endsAt === null) {
             return $this->unprocessable(message: __('booking::messages.invalid_booking_transition'));
         }
         try {
-            return $this->updated(new StaffBookingResource($this->resolver->resolve((string) $model->id, $timeSlot, $endsAt)));
+            return $this->updated(new StaffBookingResource($this->resolver->resolve((string) $model->id, $startsAt, $endsAt)));
         } catch (ChairHasActiveBookingsException) {
             return $this->error('BOOKING_SLOT_CONFLICT', __('dashboard::messages.booking_slot_conflict'), 409);
         } catch (BookingOutsideScheduleException) {

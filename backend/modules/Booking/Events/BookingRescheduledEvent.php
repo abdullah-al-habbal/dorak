@@ -14,7 +14,7 @@ final class BookingRescheduledEvent implements ShouldBroadcast, ShouldDispatchAf
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public string $bookingId, public string $branchId, public ?string $barberId, public string $timeSlot, private ?string $clientId = null) {}
+    public function __construct(public string $bookingId, public string $branchId, public ?string $barberId, public string $startsAt, private ?string $clientId = null) {}
 
     public function broadcastOn(): array
     {

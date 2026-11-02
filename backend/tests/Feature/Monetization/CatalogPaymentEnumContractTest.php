@@ -13,7 +13,7 @@ use Modules\Subscription\Models\SubscriptionPlanModel;
 describe('Catalog, subscription and payment enum contract', function (): void {
     it('pins the serialized wire values the dashboard and mobile apps depend on', function (): void {
         expect(array_column(PaymentGatewayDriver::cases(), 'value'))->toBe(['offline'])
-            ->and(array_column(SubscriptionStatus::cases(), 'value'))->toBe(['pending', 'active', 'past_due', 'canceled'])
+            ->and(array_column(SubscriptionStatus::cases(), 'value'))->toBe(['pending', 'active', 'past_due', 'cancelled'])
             ->and(array_column(SubscriptionIntervalUnitEnum::cases(), 'value'))->toBe(['day', 'week', 'month', 'year'])
             ->and(array_column(MediaTypeEnum::cases(), 'value'))->toBe(['image', 'video']);
     });

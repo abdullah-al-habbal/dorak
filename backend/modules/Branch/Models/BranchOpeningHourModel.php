@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['branch_id', 'weekday', 'opens_at', 'closes_at', 'is_closed'])]
+#[Fillable(['branch_id', 'day_of_week', 'opens_time', 'closes_time', 'is_closed'])]
 #[Table('branch_opening_hours')]
 final class BranchOpeningHourModel extends Model
 {
@@ -19,7 +19,7 @@ final class BranchOpeningHourModel extends Model
     protected function casts(): array
     {
         return [
-            'weekday' => 'integer',
+            'day_of_week' => 'integer',
             'is_closed' => 'boolean',
         ];
     }

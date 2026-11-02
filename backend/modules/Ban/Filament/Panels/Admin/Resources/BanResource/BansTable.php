@@ -24,10 +24,10 @@ final class BansTable
                     ->searchable(),
                 TextColumn::make('reason')
                     ->limit(30),
-                TextColumn::make('banned_from')
+                TextColumn::make('banned_at')
                     ->dateTime()
                     ->sortable(),
-                TextColumn::make('banned_until')
+                TextColumn::make('expires_at')
                     ->dateTime()
                     ->placeholder(__('ban::ui.permanent')),
                 TextColumn::make('admin.email')

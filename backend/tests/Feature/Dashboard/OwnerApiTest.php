@@ -101,8 +101,8 @@ describe('owner dashboard login', function (): void {
         BanModel::factory()->create([
             'bannable_type' => $owner->getMorphClass(),
             'bannable_id' => $owner->id,
-            'banned_from' => now()->subDay(),
-            'banned_until' => null,
+            'banned_at' => now()->subDay(),
+            'expires_at' => null,
         ]);
 
         $this->postJson('/api/v1/dashboard/login', [

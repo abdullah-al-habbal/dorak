@@ -107,7 +107,7 @@ it('excludes barbers with an in-progress confirmed booking when filtering availa
 
     BookingModel::factory()->create([
         'barber_id' => $barber->id,
-        'time_slot' => now()->subMinutes(30),
+        'starts_at' => now()->subMinutes(30),
     ]);
 
     $response = $this->getJson('/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000&available_now=1');
@@ -124,7 +124,7 @@ it('includes barbers with only future confirmed bookings when filtering availabl
 
     BookingModel::factory()->create([
         'barber_id' => $barber->id,
-        'time_slot' => now()->addHour(),
+        'starts_at' => now()->addHour(),
     ]);
 
     $response = $this->getJson('/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000&available_now=1');

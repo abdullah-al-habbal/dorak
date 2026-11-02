@@ -25,7 +25,7 @@ final class TestimonialFactory extends Factory
             ],
             'avatar_url' => $this->faker->imageUrl(100, 100, 'people'),
             'rating' => $this->faker->numberBetween(3, 5),
-            'display_order' => $this->faker->numberBetween(0, 10),
+            'sort_order' => $this->faker->numberBetween(0, 10),
         ];
     }
 

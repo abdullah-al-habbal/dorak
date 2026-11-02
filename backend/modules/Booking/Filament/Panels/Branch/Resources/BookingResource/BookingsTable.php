@@ -21,9 +21,9 @@ final class BookingsTable
                     ->label(__('booking::ui.barber')),
                 TextColumn::make('chair.label')
                     ->label(__('booking::ui.chair')),
-                TextColumn::make('time_slot')
+                TextColumn::make('starts_at')
                     ->dateTime(),
-                TextColumn::make('status')
+                TextColumn::make('booking_status')
                     ->badge(),
             ])
             ->actions([

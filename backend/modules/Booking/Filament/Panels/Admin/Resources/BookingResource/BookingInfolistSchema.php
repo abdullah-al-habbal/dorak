@@ -22,9 +22,9 @@ final class BookingInfolistSchema
                         ->label(__('booking::ui.chair')),
                     TextEntry::make('barber.email')
                         ->label(__('booking::ui.barber')),
-                    TextEntry::make('time_slot')
+                    TextEntry::make('starts_at')
                         ->dateTime(),
-                    TextEntry::make('status')
+                    TextEntry::make('booking_status')
                         ->badge(),
                     TextEntry::make('created_at')
                         ->dateTime(),

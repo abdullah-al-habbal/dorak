@@ -13,7 +13,7 @@ abstract class BookingRepository {
     String? chairId,
     String? branchId,
     String? barberId,
-    required DateTime timeSlot,
+    required DateTime startsAt,
     required List<String> serviceIds,
     String? atHomeStreet,
     String? atHomeBuilding,
@@ -64,7 +64,7 @@ class DioBookingRepository implements BookingRepository {
     String? chairId,
     String? branchId,
     String? barberId,
-    required DateTime timeSlot,
+    required DateTime startsAt,
     required List<String> serviceIds,
     String? atHomeStreet,
     String? atHomeBuilding,
@@ -94,14 +94,14 @@ class DioBookingRepository implements BookingRepository {
     if (serviceIds.isEmpty) {
       throw ArgumentError('Bookings require at least one service.');
     }
-    final formatted = timeSlot.toUtc().toIso8601String();
+    final formatted = startsAt.toUtc().toIso8601String();
     return _apiClient.post<BookingDto>(
       ApiEndpoints.booking.bookings,
       data: {
         'chair_id': ?chairId,
         'branch_id': ?branchId,
         'barber_id': ?barberId,
-        'time_slot': formatted,
+        'starts_at': formatted,
         'service_ids': serviceIds,
         if (hasAtHomeLocation)
           'at_home_location': {

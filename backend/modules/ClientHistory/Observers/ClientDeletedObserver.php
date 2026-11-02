@@ -21,7 +21,7 @@ final class ClientDeletedObserver
         $histories = ClientServiceHistoryModel::query()->where('client_id', $client->getKey());
 
         ClientServiceHistoryMediaModel::query()
-            ->whereIn('history_id', (clone $histories)->select('id'))
+            ->whereIn('client_service_history_id', (clone $histories)->select('id'))
             ->delete();
 
         $histories->update([

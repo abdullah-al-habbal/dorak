@@ -16,7 +16,7 @@ final readonly class CreateWalkInBookingCommand
         public string $customerName,
         public string $customerEmail,
         public ?string $customerPhone,
-        public Carbon $timeSlot,
+        public Carbon $startsAt,
         public array $serviceIds,
     ) {}
 }

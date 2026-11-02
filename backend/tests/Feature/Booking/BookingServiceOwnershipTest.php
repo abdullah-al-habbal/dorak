@@ -25,7 +25,7 @@ beforeEach(function (): void {
     ]);
     $this->book = fn (array $overrides = []) => $this->postJson('/api/v1/bookings', array_merge([
         'chair_id' => $this->chair->id,
-        'time_slot' => $this->slot->toIso8601String(),
+        'starts_at' => $this->slot->toIso8601String(),
     ], $overrides));
 });
 

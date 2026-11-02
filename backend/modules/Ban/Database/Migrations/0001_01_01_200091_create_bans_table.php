@@ -16,9 +16,9 @@ return new class extends Migration
             $table->uuid('bannable_id');
             $table->string('bannable_type');
             $table->text('reason')->nullable();
-            $table->timestamp('banned_from')->useCurrent();
-            $table->timestamp('banned_until')->nullable();
-            $table->foreignUuid('admin_id')->nullable()->constrained('admins')->nullOnDelete();
+            $table->timestamp('banned_at')->useCurrent();
+            $table->timestamp('expires_at')->nullable();
+            $table->foreignUuid('banned_by_id')->nullable()->constrained('admins')->nullOnDelete();
             $table->timestamps();
 
             $table->index(['bannable_id', 'bannable_type']);

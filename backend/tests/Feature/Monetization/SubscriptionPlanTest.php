@@ -123,7 +123,7 @@ describe('Brand subscriptions', function (): void {
 
         $this->postJson('/api/v1/dashboard/admin/subscriptions', ['brand_id' => $brand->id, 'plan_id' => $plan->id])->assertCreated();
 
-        expect($old->fresh()->status)->toBe(SubscriptionStatus::Canceled);
+        expect($old->fresh()->status)->toBe(SubscriptionStatus::Cancelled);
     });
 
     it('refuses an inactive or deleted plan and unknown brand', function (): void {
@@ -158,7 +158,7 @@ describe('Brand subscriptions', function (): void {
         $this->patchJson($url, ['status' => 'bogus'])->assertUnprocessable();
 
         app(BrandFeatures::class)->set($brand, [BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH => true]);
-        $this->patchJson($url, ['status' => SubscriptionStatus::Canceled])->assertOk()->assertJsonPath('data.status', SubscriptionStatus::Canceled->value);
+        $this->patchJson($url, ['status' => SubscriptionStatus::Cancelled])->assertOk()->assertJsonPath('data.status', SubscriptionStatus::Cancelled->value);
 
         expect(app(BrandFeatures::class)->enabled($brand, BrandFeatureConstants::BRAND_FEATURE_MULTI_BRANCH))->toBeFalse();
         $this->patchJson($url, ['status' => SubscriptionStatus::Active])->assertConflict();

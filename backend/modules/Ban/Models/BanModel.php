@@ -21,9 +21,9 @@ use Modules\Ban\Enums\BannableTypeEnum;
     'bannable_id',
     'bannable_type',
     'reason',
-    'banned_from',
-    'banned_until',
-    'admin_id',
+    'banned_at',
+    'expires_at',
+    'banned_by_id',
 ])]
 #[Table('bans')]
 class BanModel extends Model
@@ -35,8 +35,8 @@ class BanModel extends Model
     {
         return [
             'bannable_type' => BannableTypeEnum::class,
-            'banned_from' => 'datetime',
-            'banned_until' => 'datetime',
+            'banned_at' => 'datetime',
+            'expires_at' => 'datetime',
         ];
     }
 
@@ -47,7 +47,7 @@ class BanModel extends Model
 
     public function admin(): BelongsTo
     {
-        return $this->belongsTo(AdminModel::class, 'admin_id');
+        return $this->belongsTo(AdminModel::class, 'banned_by_id');
     }
 
     /**
@@ -58,10 +58,10 @@ class BanModel extends Model
     protected function active(Builder $query): Builder
     {
         return $query
-            ->where('banned_from', '<=', now())
+            ->where('banned_at', '<=', now())
             ->where(fn (Builder $q) => $q
-                ->whereNull('banned_until')
-                ->orWhere('banned_until', '>', now())
+                ->whereNull('expires_at')
+                ->orWhere('expires_at', '>', now())
             );
     }
 }

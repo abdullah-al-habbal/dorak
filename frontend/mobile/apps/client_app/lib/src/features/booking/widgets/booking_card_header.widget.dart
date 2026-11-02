@@ -22,7 +22,7 @@ class BookingCardHeader extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            LocaleFormatters.dateTime(booking.timeSlot.toLocal(), localeCode),
+            LocaleFormatters.dateTime(booking.startsAt.toLocal(), localeCode),
             style: DorakTypography.titleLg,
           ),
         ),

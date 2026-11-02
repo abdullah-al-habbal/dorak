@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::create('client_service_history_media', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('history_id')->constrained('client_service_histories')->cascadeOnDelete();
+            $table->foreignUuid('client_service_history_id')->constrained('client_service_histories')->cascadeOnDelete();
             $table->string('photo_path')->nullable();
             $table->string('photo_url')->nullable();
             $table->string('photo_type'); // before, after, reference

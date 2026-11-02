@@ -6,10 +6,10 @@ export const BOOKING_STATUS_TRANSITIONS: Record<
   BookingStatus,
   NonPendingStatus[]
 > = {
-  pending: ["confirmed", "canceled"],
-  confirmed: ["in_progress", "canceled", "no_show"],
-  ["in_progress"]: ["completed", "canceled", "no_show"],
+  pending: ["confirmed", "cancelled"],
+  confirmed: ["in_progress", "cancelled", "no_show"],
+  ["in_progress"]: ["completed", "cancelled", "no_show"],
   completed: [],
-  canceled: [],
+  cancelled: [],
   ["no_show"]: [],
 };

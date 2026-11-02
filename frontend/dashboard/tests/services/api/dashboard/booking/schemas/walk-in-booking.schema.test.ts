@@ -13,7 +13,7 @@ describe("walkInBookingSchema", () => {
         customerName: "Customer",
         customerEmail: "customer@example.com",
         serviceIds: [],
-        timeSlot: "2026-01-01T12:00",
+        startsAt: "2026-01-01T12:00",
       }).success,
     ).toBe(false);
   });

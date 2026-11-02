@@ -18,7 +18,7 @@ final class BookingFormSchema
             Section::make(__('booking::ui.booking'))
                 ->columns(2)
                 ->schema([
-                    Select::make('status')
+                    Select::make('booking_status')
                         ->options(BookingStatus::class)
                         ->required(),
                     Textarea::make('notes')

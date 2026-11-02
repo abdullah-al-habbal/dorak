@@ -6,7 +6,7 @@ namespace Modules\Core\Constants;
 
 /**
  * Weekdays travel as integers 0 (Sunday) to 6 (Saturday), matching Carbon's
- * `dayOfWeek`. `branch_opening_hours.weekday` and `barber_schedules.day_of_week`
+ * `dayOfWeek`. `branch_opening_hours.day_of_week` and `barber_schedules.day_of_week`
  * share this range.
  */
 final class WeekdayConstants

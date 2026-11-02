@@ -16,7 +16,7 @@ const LABELS = {
   inProgressLabel: "In progress",
   completedLabel: "Completed",
   noShowLabel: "No-show",
-  canceledLabel: "Canceled",
+  canceledLabel: "Cancelled",
   updateStatusLabel: "Update status",
 };
 
@@ -47,27 +47,27 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("BookingStatusUpdateForm", () => {
-  it("offers exactly confirmed and canceled for a pending booking", () => {
-    expect(renderedOptionValues("pending")).toEqual(["confirmed", "canceled"]);
+  it("offers exactly confirmed and cancelled for a pending booking", () => {
+    expect(renderedOptionValues("pending")).toEqual(["confirmed", "cancelled"]);
   });
 
-  it("offers exactly in_progress, canceled and no_show for a confirmed booking", () => {
+  it("offers exactly in_progress, cancelled and no_show for a confirmed booking", () => {
     expect(renderedOptionValues("confirmed")).toEqual([
       "in_progress",
-      "canceled",
+      "cancelled",
       "no_show",
     ]);
   });
 
-  it("offers exactly completed, canceled and no_show for an in-progress booking", () => {
+  it("offers exactly completed, cancelled and no_show for an in-progress booking", () => {
     expect(renderedOptionValues("in_progress")).toEqual([
       "completed",
-      "canceled",
+      "cancelled",
       "no_show",
     ]);
   });
 
-  it.each(["completed", "canceled", "no_show"] as const)(
+  it.each(["completed", "cancelled", "no_show"] as const)(
     "renders no status form for the terminal status %s",
     (status) => {
       const client = new QueryClient({

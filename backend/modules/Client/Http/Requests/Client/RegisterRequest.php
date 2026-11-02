@@ -17,10 +17,10 @@ final class RegisterRequest extends BaseApiFormRequest
         $bannedClient = ClientModel::query()
             ->where('email', $this->input('email'))
             ->whereHas('bans', fn ($query) => $query
-                ->where('banned_from', '<=', now())
+                ->where('banned_at', '<=', now())
                 ->where(fn ($activeQuery) => $activeQuery
-                    ->whereNull('banned_until')
-                    ->orWhere('banned_until', '>', now())
+                    ->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now())
                 )
             )
             ->first();

@@ -25,7 +25,7 @@ final class ClientAccountDeletion
     public function hasBlockingBookings(ClientModel $client): bool
     {
         return $client->bookings()
-            ->whereIn('status', BookingStatus::reservationBlockingValues())
+            ->whereIn('booking_status', BookingStatus::reservationBlockingValues())
             ->exists();
     }
 

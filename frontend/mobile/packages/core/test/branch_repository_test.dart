@@ -35,14 +35,13 @@ void main() {
 
       final plan = await repository.getFloorPlan(
         'branch-1',
-        timeSlot: DateTime(2026, 10, 1, 15),
+        startsAt: DateTime(2026, 10, 1, 15),
         durationMinutes: 30,
       );
 
       expect(captured.path, '/branches/branch-1/floor-plan');
       expect(captured.queryParameters['starts_at'], '2026-10-01T12:00:00.000Z');
       expect(captured.queryParameters.containsKey('date'), isFalse);
-      expect(captured.queryParameters.containsKey('time_slot'), isFalse);
       expect(captured.queryParameters['duration_minutes'], 30);
       expect(plan.branchName, 'Branch 1');
       expect(plan.chairs, hasLength(2));
@@ -101,7 +100,7 @@ void main() {
       () async {
         late RequestOptions floorPlanRequest;
         late RequestOptions bookingRequest;
-        final timeSlot = DateTime.parse('2026-10-01T18:00:00+03:00');
+        final startsAt = DateTime.parse('2026-10-01T18:00:00+03:00');
         final branchApi = clientWith(
           fakeDio(
             handler: (options) {
@@ -130,9 +129,9 @@ void main() {
                   statusCode: 201,
                   data: {
                     'id': 'booking-1',
-                    'time_slot': '2026-10-01T15:00:00.000Z',
+                    'starts_at': '2026-10-01T15:00:00.000Z',
                     'ends_at': '2026-10-01T15:30:00.000Z',
-                    'status': 'pending',
+                    'booking_status': 'pending',
                     'payment_method': 'pay_at_salon',
                     'payment_status': 'unpaid_in_person',
                     'services': [],
@@ -146,16 +145,16 @@ void main() {
 
         await DioBranchRepository(
           branchApi,
-        ).getFloorPlan('branch-1', timeSlot: timeSlot, durationMinutes: 30);
+        ).getFloorPlan('branch-1', startsAt: startsAt, durationMinutes: 30);
         await DioBookingRepository(bookingApi).createBooking(
           chairId: 'chair-1',
-          timeSlot: timeSlot,
+          startsAt: startsAt,
           serviceIds: const ['service-1'],
         );
 
         expect(
           floorPlanRequest.queryParameters['starts_at'],
-          bookingRequest.data['time_slot'],
+          bookingRequest.data['starts_at'],
         );
         expect(
           floorPlanRequest.queryParameters['starts_at'],

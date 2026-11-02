@@ -41,7 +41,7 @@ return new class extends Migration
             $table->timestamp('starts_at')->nullable();
             $table->timestamp('ends_at')->nullable();
             $table->timestamp('past_due_at')->nullable();
-            $table->timestamp('canceled_at')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
             $table->timestamps();
             $table->index(['brand_id', 'status']);
         });

@@ -29,7 +29,7 @@ describe('Platform analytics overview', function (): void {
         $currency = CurrencyModel::factory()->create();
         $plan = SubscriptionPlanModel::factory()->create(['price_amount_minor' => 5000, 'currency_code' => $currency->code]);
         BrandSubscriptionModel::factory()->count(2)->create(['plan_id' => $plan->id]);
-        BrandSubscriptionModel::factory()->create(['plan_id' => $plan->id, 'status' => SubscriptionStatus::Canceled]);
+        BrandSubscriptionModel::factory()->create(['plan_id' => $plan->id, 'status' => SubscriptionStatus::Cancelled]);
         CommissionEntryModel::factory()->create(['currency_code' => $currency->code, 'commission_amount_minor' => 400]);
         $payout = PayoutModel::factory()->create(['currency_code' => $currency->code, 'total_amount_minor' => 900, 'status' => PayoutStatus::Paid]);
         CommissionEntryModel::factory()->create(['currency_code' => $currency->code, 'commission_amount_minor' => 900, 'payout_id' => $payout->id]);

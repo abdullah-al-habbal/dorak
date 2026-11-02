@@ -149,7 +149,7 @@ it('lets an admin resolve a dispute after the window as well', function () {
     $this->assertDatabaseHas('reviews', [
         'id' => $review->id,
         'status' => ReviewStatus::Hidden->value,
-        'resolved_by' => $admin->id,
+        'resolved_by_id' => $admin->id,
     ]);
 });
 

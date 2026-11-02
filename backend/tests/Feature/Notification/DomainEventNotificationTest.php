@@ -109,7 +109,7 @@ it('queues one status notification for the applying barber and none on failure',
     $url = "/api/v1/branch/job-postings/{$posting->id}/applications/{$application->id}/status";
     $this->actingAs($branch, 'branch_api');
 
-    $this->patchJson($url, ['status' => 'bogus'])->assertUnprocessable();
+    $this->patchJson($url, ['booking_status' => 'bogus'])->assertUnprocessable();
     Queue::assertNothingPushed();
 
     $this->patchJson($url, ['status' => ApplicationStatus::Accepted])->assertOk();
@@ -129,7 +129,7 @@ it('queues no status notification for another branch', function (): void {
 
 it('queues one review request when a booking completes', function (): void {
     $barber = BarberModel::factory()->create();
-    $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'status' => BookingStatus::InProgress]);
+    $booking = BookingModel::factory()->create(['barber_id' => $barber->id, 'booking_status' => BookingStatus::InProgress]);
     $this->actingAs($barber, 'barber');
 
     $this->patchJson("/api/v1/barber/bookings/{$booking->id}/complete")->assertOk();
@@ -139,8 +139,8 @@ it('queues one review request when a booking completes', function (): void {
 
 it('queues no review request for other transitions or rejected completion', function (): void {
     $barber = BarberModel::factory()->create();
-    $started = BookingModel::factory()->create(['barber_id' => $barber->id, 'status' => BookingStatus::Confirmed]);
-    $pending = BookingModel::factory()->create(['barber_id' => $barber->id, 'status' => BookingStatus::Pending]);
+    $started = BookingModel::factory()->create(['barber_id' => $barber->id, 'booking_status' => BookingStatus::Confirmed]);
+    $pending = BookingModel::factory()->create(['barber_id' => $barber->id, 'booking_status' => BookingStatus::Pending]);
     $this->actingAs($barber, 'barber');
 
     $this->patchJson("/api/v1/barber/bookings/{$started->id}/start")->assertOk();
@@ -170,7 +170,7 @@ it('writes an inbox row with an id-only payload for each notification', function
 
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
     $client = ClientModel::factory()->create();
-    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'client_id' => $client->id, 'status' => BookingStatus::Completed]);
+    $booking = BookingModel::factory()->create(['chair_id' => $chair->id, 'client_id' => $client->id, 'booking_status' => BookingStatus::Completed]);
     (new ReviewRequestNotification($booking->id))->handle($sender);
 
     $forBranch = NotificationModel::query()->where('notifiable_type', $branch->getMorphClass())->where('notifiable_id', $branch->id)->get();
@@ -187,7 +187,7 @@ it('writes an inbox row with an id-only payload for each notification', function
 
 it('does not send a review request for a booking with neither a branch nor a barber', function (): void {
     $client = ClientModel::factory()->create();
-    $booking = BookingModel::factory()->create(['chair_id' => null, 'branch_id' => null, 'barber_id' => null, 'client_id' => $client->id, 'status' => BookingStatus::Completed]);
+    $booking = BookingModel::factory()->create(['chair_id' => null, 'branch_id' => null, 'barber_id' => null, 'client_id' => $client->id, 'booking_status' => BookingStatus::Completed]);
 
     (new ReviewRequestNotification($booking->id))->handle(app(FcmNotificationSender::class));
 
@@ -196,7 +196,7 @@ it('does not send a review request for a booking with neither a branch nor a bar
 
 it('sends a review request for a completed at-home booking with a barber', function (): void {
     $client = ClientModel::factory()->create();
-    $booking = BookingModel::factory()->atHome()->create(['branch_id' => null, 'client_id' => $client->id, 'status' => BookingStatus::Completed]);
+    $booking = BookingModel::factory()->atHome()->create(['branch_id' => null, 'client_id' => $client->id, 'booking_status' => BookingStatus::Completed]);
 
     (new ReviewRequestNotification($booking->id))->handle(app(FcmNotificationSender::class));
 
@@ -205,7 +205,7 @@ it('sends a review request for a completed at-home booking with a barber', funct
 
 it('keeps skipping review requests for unfinished bookings', function (): void {
     $client = ClientModel::factory()->create();
-    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'status' => BookingStatus::Confirmed]);
+    $booking = BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Confirmed]);
 
     (new ReviewRequestNotification($booking->id))->handle(app(FcmNotificationSender::class));
 

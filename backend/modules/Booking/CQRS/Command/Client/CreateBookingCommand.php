@@ -12,7 +12,7 @@ final readonly class CreateBookingCommand
         public ?string $chairId,
         public ?string $barberId,
         public string $clientId,
-        public Carbon $timeSlot,
+        public Carbon $startsAt,
         public array $serviceIds,
         public ?array $atHomeLocation,
         public ?string $branchId = null,

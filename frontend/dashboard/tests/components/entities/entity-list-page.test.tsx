@@ -41,7 +41,7 @@ beforeEach(() => {
         {
           id: "b-1",
           status: "pending",
-          time_slot: "2026-10-26T09:00:00Z",
+          starts_at: "2026-10-26T09:00:00Z",
           barber: null,
           chair: null,
           client: null,

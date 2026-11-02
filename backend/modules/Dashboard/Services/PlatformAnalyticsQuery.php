@@ -18,7 +18,7 @@ final class PlatformAnalyticsQuery
             'subscriptions' => $this->subscriptions(),
             'commission' => $this->commission(),
             'payouts' => $this->payouts(),
-            'completed_bookings' => DB::table('bookings')->where('status', BookingStatus::Completed->value)->count(),
+            'completed_bookings' => DB::table('bookings')->where('booking_status', BookingStatus::Completed->value)->count(),
         ];
     }
 

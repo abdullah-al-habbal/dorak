@@ -25,7 +25,7 @@ final class BrandSubscriptionResource extends JsonResource
             'ends_at' => $this->ends_at?->toIso8601String(),
             'past_due_at' => $this->past_due_at?->toIso8601String(),
             'grace_ends_at' => $this->graceEndsAt()?->toIso8601String(),
-            'canceled_at' => $this->canceled_at?->toIso8601String(),
+            'cancelled_at' => $this->cancelled_at?->toIso8601String(),
         ];
     }
 }

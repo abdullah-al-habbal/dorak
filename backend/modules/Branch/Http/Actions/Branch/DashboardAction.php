@@ -30,22 +30,22 @@ final class DashboardAction extends BaseApiAction
 
         $stats = [
             'today_bookings' => BookingModel::query()->forBranch($branch->id)
-                ->where('time_slot', '>=', $today)->count(),
+                ->where('starts_at', '>=', $today)->count(),
             'active_chairs' => ChairModel::where('branch_id', $branch->id)->where('status', ChairStatus::Available)->count(),
             'total_chairs' => ChairModel::where('branch_id', $branch->id)->count(),
             'pending_affiliations' => BarberAffiliationModel::where('affiliable_id', $branch->id)
                 ->where('affiliable_type', AffiliableType::Branch)->where('status', AffiliationStatus::Pending)->count(),
             'today_revenue' => MinorUnits::toMajor(BookingModel::query()
                 ->forBranch($branch->id)
-                ->where('status', BookingStatus::Completed)
-                ->whereDate('time_slot', today())
+                ->where('booking_status', BookingStatus::Completed)
+                ->whereDate('starts_at', today())
                 ->join('booking_offered_service', 'bookings.id', '=', 'booking_offered_service.booking_id')
                 ->join('offered_services', 'booking_offered_service.offered_service_id', '=', 'offered_services.id')
                 ->sum('offered_services.price_amount_minor')),
             'monthly_revenue' => MinorUnits::toMajor(BookingModel::query()
                 ->forBranch($branch->id)
-                ->where('status', BookingStatus::Completed)
-                ->whereBetween('time_slot', [now()->startOfMonth(), now()->endOfMonth()])
+                ->where('booking_status', BookingStatus::Completed)
+                ->whereBetween('starts_at', [now()->startOfMonth(), now()->endOfMonth()])
                 ->join('booking_offered_service', 'bookings.id', '=', 'booking_offered_service.booking_id')
                 ->join('offered_services', 'booking_offered_service.offered_service_id', '=', 'offered_services.id')
                 ->sum('offered_services.price_amount_minor')),

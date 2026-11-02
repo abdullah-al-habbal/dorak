@@ -9,15 +9,15 @@ enum SubscriptionStatus: string
     case Pending = 'pending';
     case Active = 'active';
     case PastDue = 'past_due';
-    case Canceled = 'canceled';
+    case Cancelled = 'cancelled';
 
     public function canTransitionTo(self $next): bool
     {
         return match ($this) {
-            self::Pending => in_array($next, [self::Active, self::Canceled], true),
-            self::Active => in_array($next, [self::PastDue, self::Canceled], true),
-            self::PastDue => in_array($next, [self::Active, self::Canceled], true),
-            self::Canceled => false,
+            self::Pending => in_array($next, [self::Active, self::Cancelled], true),
+            self::Active => in_array($next, [self::PastDue, self::Cancelled], true),
+            self::PastDue => in_array($next, [self::Active, self::Cancelled], true),
+            self::Cancelled => false,
         };
     }
 

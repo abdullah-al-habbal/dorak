@@ -24,11 +24,11 @@ final class CancelPayoutAction extends BaseApiAction
         Gate::forUser($request->user('admin_api'))->authorize('update', $model);
 
         $from = $model->status->value;
-        $updated = $this->handler->handle($model, $request->toCommand(PayoutStatus::Canceled));
+        $updated = $this->handler->handle($model, $request->toCommand(PayoutStatus::Cancelled));
         if ($updated === null) {
             return $this->businessError(
                 ErrorCodeEnum::CONFLICT,
-                __('payout::messages.invalid_transition', ['from' => $from, 'to' => PayoutStatus::Canceled->value]),
+                __('payout::messages.invalid_transition', ['from' => $from, 'to' => PayoutStatus::Cancelled->value]),
             );
         }
 

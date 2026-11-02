@@ -11,7 +11,7 @@ final class ChairConflictResolver
 {
     public function ensureNoBlockingBookings(string $chairId): void
     {
-        $blocked = BookingModel::query()->where('chair_id', $chairId)->whereIn('status', BookingStatus::reservationBlockingValues())->where('ends_at', '>', now())->exists();
+        $blocked = BookingModel::query()->where('chair_id', $chairId)->whereIn('booking_status', BookingStatus::reservationBlockingValues())->where('ends_at', '>', now())->exists();
         if ($blocked) {
             throw new ChairHasActiveBookingsException(__('dashboard::messages.chair_has_active_or_future_bookings'));
         }

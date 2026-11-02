@@ -16,7 +16,7 @@ use Modules\Dashboard\Enums\DashboardActorTypeEnum;
     'token_hash',
     'expires_at',
     'revoked_at',
-    'replaced_by_id',
+    'replaced_by_token_id',
 ])]
 #[Table('dashboard_refresh_tokens')]
 class DashboardRefreshTokenModel extends Model

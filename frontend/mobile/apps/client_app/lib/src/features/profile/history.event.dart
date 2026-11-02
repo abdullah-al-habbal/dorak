@@ -24,13 +24,13 @@ class HistoryRetryRequested extends HistoryEvent {
 }
 
 class HistoryRebookRequested extends HistoryEvent {
-  const HistoryRebookRequested(this.id, this.timeSlot);
+  const HistoryRebookRequested(this.id, this.startsAt);
 
   final String id;
-  final DateTime timeSlot;
+  final DateTime startsAt;
 
   @override
-  List<Object?> get props => [id, timeSlot];
+  List<Object?> get props => [id, startsAt];
 }
 
 class HistoryRebookAcknowledged extends HistoryEvent {

@@ -20,17 +20,17 @@ final class ExpirePastDueSubscriptionsHandler
     public function handle(): int
     {
         $cutoff = now()->subDays($this->settings->int(SettingKey::SubscriptionGraceDays));
-        $canceled = 0;
+        $cancelled = 0;
 
         BrandSubscriptionModel::query()
             ->where('status', SubscriptionStatus::PastDue)
             ->where('past_due_at', '<=', $cutoff)
-            ->each(function (BrandSubscriptionModel $subscription) use (&$canceled): void {
-                if ($this->transition->handle($subscription, SubscriptionStatus::Canceled) !== null) {
-                    $canceled++;
+            ->each(function (BrandSubscriptionModel $subscription) use (&$cancelled): void {
+                if ($this->transition->handle($subscription, SubscriptionStatus::Cancelled) !== null) {
+                    $cancelled++;
                 }
             });
 
-        return $canceled;
+        return $cancelled;
     }
 }

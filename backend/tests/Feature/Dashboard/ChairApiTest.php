@@ -100,7 +100,7 @@ describe('Dashboard Chair API', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
         BookingModel::factory()->create([
             'chair_id' => $chair->id,
-            'status' => BookingStatus::Pending->value,
+            'booking_status' => BookingStatus::Pending->value,
             'ends_at' => now()->addHour(),
         ]);
         $this->authenticateDashboardActor($this->branch);
@@ -115,8 +115,8 @@ describe('Dashboard Chair API', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
         $booking = BookingModel::factory()->create([
             'chair_id' => $chair->id,
-            'status' => BookingStatus::Confirmed->value,
-            'time_slot' => now()->addHour(),
+            'booking_status' => BookingStatus::Confirmed->value,
+            'starts_at' => now()->addHour(),
             'ends_at' => now()->addHours(2),
         ]);
         $this->authenticateDashboardActor($this->branch);
@@ -132,7 +132,7 @@ describe('Dashboard Chair API', function (): void {
         ]))->assertOk()->assertJsonPath('meta.canceled_booking_ids', [$booking->id]);
 
         expect($chair->fresh()->status)->toBe(ChairStatus::Maintenance);
-        expect($booking->fresh()->status)->toBe(BookingStatus::Canceled);
+        expect($booking->fresh()->booking_status)->toBe(BookingStatus::Cancelled);
         expect($booking->fresh()->cancellation_reason)->toBe('chair_maintenance');
         Queue::assertPushed(SendBookingStatusNotificationJob::class, 1);
     });
@@ -141,7 +141,7 @@ describe('Dashboard Chair API', function (): void {
         $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
         BookingModel::factory()->create([
             'chair_id' => $chair->id,
-            'status' => BookingStatus::Confirmed->value,
+            'booking_status' => BookingStatus::Confirmed->value,
             'ends_at' => now()->addHour(),
         ]);
         $this->authenticateDashboardActor($this->branch);

@@ -19,19 +19,19 @@ use Modules\Review\Jobs\ReviewRequestNotification;
  */
 final class BookingTransitionNotifier
 {
-    public function statusChanged(BookingModel $booking, bool $canceled, bool $actorIsClient = false): void
+    public function statusChanged(BookingModel $booking, bool $cancelled, bool $actorIsClient = false): void
     {
         $bookingId = (string) $booking->id;
         $branchId = (string) ($booking->branch_id ?? $booking->chair?->branch_id);
         $barberId = $booking->barber_id ?? $booking->chair?->barber_id;
         $clientId = (string) $booking->client_id;
 
-        event($canceled
+        event($cancelled
             ? new BookingCancelledEvent($bookingId, $branchId, $barberId, $clientId)
-            : new BookingStatusUpdatedEvent($bookingId, $branchId, $barberId, $booking->status->value, $clientId));
+            : new BookingStatusUpdatedEvent($bookingId, $branchId, $barberId, $booking->booking_status->value, $clientId));
         SendBookingStatusNotificationJob::dispatch($bookingId, false, app()->getLocale(), false, $actorIsClient)->afterCommit();
 
-        if ($booking->status === BookingStatus::Completed && ! $actorIsClient) {
+        if ($booking->booking_status === BookingStatus::Completed && ! $actorIsClient) {
             ReviewRequestNotification::dispatch($bookingId, app()->getLocale())->afterCommit();
         }
     }
@@ -41,7 +41,7 @@ final class BookingTransitionNotifier
         $bookingId = (string) $booking->id;
         $barberId = $booking->barber_id ?? $booking->chair?->barber_id;
 
-        event(new BookingRescheduledEvent($bookingId, (string) ($booking->branch_id ?? $booking->chair?->branch_id), $barberId, $booking->time_slot->toIso8601String(), (string) $booking->client_id));
+        event(new BookingRescheduledEvent($bookingId, (string) ($booking->branch_id ?? $booking->chair?->branch_id), $barberId, $booking->starts_at->toIso8601String(), (string) $booking->client_id));
         SendBookingStatusNotificationJob::dispatch($bookingId, false, app()->getLocale(), true)->afterCommit();
     }
 }

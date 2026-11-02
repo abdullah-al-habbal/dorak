@@ -9,8 +9,8 @@ import type {
 function mapAppointment(value: Record<string, unknown>): BarberAppointment {
   return {
     id: String(value.id),
-    status: String(value.status),
-    timeSlot: String(value.time_slot),
+    status: String(value.booking_status),
+    startsAt: String(value.starts_at),
     chair: value.chair as BarberAppointment["chair"],
   };
 }

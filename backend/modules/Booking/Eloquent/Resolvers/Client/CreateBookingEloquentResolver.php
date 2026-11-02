@@ -99,7 +99,7 @@ final class CreateBookingEloquentResolver
             $totalDuration += $duration;
         }
 
-        $endsAt = $command->timeSlot->copy()->addMinutes($totalDuration);
+        $endsAt = $command->startsAt->copy()->addMinutes($totalDuration);
 
         if ($branchId !== null) {
             if (! BranchModel::query()->discoverable()->whereKey($branchId)->exists()) {
@@ -113,10 +113,10 @@ final class CreateBookingEloquentResolver
                 throw new ChairNotAvailableException;
             }
 
-            $this->ensureNoOverlap('chair_id', $command->chairId, $command->timeSlot, $endsAt);
+            $this->ensureNoOverlap('chair_id', $command->chairId, $command->startsAt, $endsAt);
         }
 
-        if (! $this->branchHours->covers($branchId, $command->timeSlot, $endsAt)) {
+        if (! $this->branchHours->covers($branchId, $command->startsAt, $endsAt)) {
             throw new BookingOutsideScheduleException;
         }
 
@@ -130,20 +130,20 @@ final class CreateBookingEloquentResolver
                 throw new NonDiscoverableBookingEntityException;
             }
 
-            if (! BarberScheduleAvailability::covers($barberId, $command->timeSlot, $endsAt)) {
+            if (! BarberScheduleAvailability::covers($barberId, $command->startsAt, $endsAt)) {
                 throw new BookingOutsideScheduleException;
             }
 
-            $this->ensureNoOverlap('barber_id', $barberId, $command->timeSlot, $endsAt);
+            $this->ensureNoOverlap('barber_id', $barberId, $command->startsAt, $endsAt);
         }
 
         $bookingData = [
             'client_id' => $command->clientId,
             'barber_id' => $barberId,
             'branch_id' => $branchId,
-            'time_slot' => $command->timeSlot,
+            'starts_at' => $command->startsAt,
             'ends_at' => $endsAt,
-            'status' => BookingStatus::Pending,
+            'booking_status' => BookingStatus::Pending,
             'payment_method' => BookingPaymentMethod::PayAtSalon,
             'payment_status' => BookingPaymentStatus::UnpaidInPerson,
         ];

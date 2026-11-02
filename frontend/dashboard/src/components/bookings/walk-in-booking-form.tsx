@@ -47,7 +47,7 @@ export function WalkInBookingForm() {
       customerEmail: "",
       customerPhone: "",
       serviceIds: [],
-      timeSlot: "",
+      startsAt: "",
     },
   });
   const branchId = useWatch({ control: form.control, name: "branchId" });
@@ -74,7 +74,7 @@ export function WalkInBookingForm() {
       createWalkInBooking(
         mapWalkInBookingPayload({
           ...value,
-          timeSlot: new Date(value.timeSlot).toISOString(),
+          startsAt: new Date(value.startsAt).toISOString(),
         }),
       ),
   );
@@ -178,8 +178,8 @@ export function WalkInBookingForm() {
         {copy.appointmentTime}
         <Input
           type="datetime-local"
-          {...form.register("timeSlot")}
-          state={form.formState.errors.timeSlot ? "error" : "default"}
+          {...form.register("startsAt")}
+          state={form.formState.errors.startsAt ? "error" : "default"}
         />
       </label>
       <label className="grid gap-1 sm:col-span-2">

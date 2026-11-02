@@ -13,7 +13,7 @@ enum BookingStatus: string implements HasColor, HasLabel
     case Pending = 'pending';
     case Confirmed = 'confirmed';
     case InProgress = 'in_progress';
-    case Canceled = 'canceled';
+    case Cancelled = 'cancelled';
     case Completed = 'completed';
     case NoShow = 'no_show';
 
@@ -25,10 +25,10 @@ enum BookingStatus: string implements HasColor, HasLabel
     public function canTransitionTo(self $target): bool
     {
         return match ($this) {
-            self::Pending => in_array($target, [self::Confirmed, self::Canceled], true),
-            self::Confirmed => in_array($target, [self::InProgress, self::Canceled, self::NoShow], true),
-            self::InProgress => in_array($target, [self::Completed, self::Canceled, self::NoShow], true),
-            self::Completed, self::Canceled, self::NoShow => false,
+            self::Pending => in_array($target, [self::Confirmed, self::Cancelled], true),
+            self::Confirmed => in_array($target, [self::InProgress, self::Cancelled, self::NoShow], true),
+            self::InProgress => in_array($target, [self::Completed, self::Cancelled, self::NoShow], true),
+            self::Completed, self::Cancelled, self::NoShow => false,
         };
     }
 
@@ -49,7 +49,7 @@ enum BookingStatus: string implements HasColor, HasLabel
             self::Pending => 'gray',
             self::Confirmed => 'success',
             self::InProgress => 'warning',
-            self::Canceled => 'danger',
+            self::Cancelled => 'danger',
             self::Completed => 'info',
             self::NoShow => 'gray',
         };

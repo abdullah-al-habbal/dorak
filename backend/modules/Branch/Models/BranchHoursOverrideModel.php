@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['branch_id', 'date', 'opens_at', 'closes_at', 'is_closed'])]
+#[Fillable(['branch_id', 'override_date', 'opens_time', 'closes_time', 'is_closed'])]
 #[Table('branch_hours_overrides')]
 final class BranchHoursOverrideModel extends Model
 {
@@ -19,7 +19,7 @@ final class BranchHoursOverrideModel extends Model
     protected function casts(): array
     {
         return [
-            'date' => 'date:Y-m-d',
+            'override_date' => 'date:Y-m-d',
             'is_closed' => 'boolean',
         ];
     }

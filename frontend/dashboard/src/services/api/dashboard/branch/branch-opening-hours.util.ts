@@ -4,12 +4,12 @@ import type { IBranchOpeningDay } from "@/services/api/dashboard/branch/types/ib
 /** Seven rows (Sunday = 0), filling days the branch has not configured. */
 export function fullWeek(days: IBranchOpeningDay[] = []): IBranchOpeningDay[] {
   return BRANCH_WEEKDAYS.map(
-    (weekday) =>
-      days.find((day) => day.weekday === weekday) ?? {
-        weekday,
+    (dayOfWeek) =>
+      days.find((day) => day.dayOfWeek === dayOfWeek) ?? {
+        dayOfWeek,
         isClosed: false,
-        opensAt: null,
-        closesAt: null,
+        opensTime: null,
+        closesTime: null,
       },
   );
 }

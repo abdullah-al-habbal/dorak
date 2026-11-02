@@ -8,8 +8,8 @@ import 'helpers/fake_dio.dart';
 
 const _booking = {
   'id': 'booking-1',
-  'time_slot': '2026-10-29T10:00:00Z',
-  'status': 'canceled',
+  'starts_at': '2026-10-29T10:00:00Z',
+  'booking_status': 'cancelled',
 };
 
 Object _dataFor(RequestOptions options) {

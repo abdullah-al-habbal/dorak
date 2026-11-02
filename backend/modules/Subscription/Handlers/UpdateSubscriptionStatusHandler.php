@@ -27,11 +27,11 @@ final class UpdateSubscriptionStatusHandler
                     SubscriptionStatus::PastDue => now(),
                     default => null,
                 },
-                'canceled_at' => $next === SubscriptionStatus::Canceled ? now() : $subscription->canceled_at,
+                'cancelled_at' => $next === SubscriptionStatus::Cancelled ? now() : $subscription->cancelled_at,
             ]);
 
             $subscription->loadMissing(['brand', 'plan']);
-            $next === SubscriptionStatus::Canceled
+            $next === SubscriptionStatus::Cancelled
                 ? $this->syncer->revoke($subscription->brand)
                 : $this->syncer->grant($subscription->brand, $subscription->plan);
 

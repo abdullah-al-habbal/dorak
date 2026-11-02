@@ -28,7 +28,7 @@ class BookingStatusMenu extends StatelessWidget {
                 BookingStatus.inProgress => l10n.businessStart,
                 BookingStatus.completed => l10n.businessComplete,
                 BookingStatus.noShow => l10n.businessNoShow,
-                BookingStatus.canceled => l10n.businessCancelBooking,
+                BookingStatus.cancelled => l10n.businessCancelBooking,
                 BookingStatus.pending => l10n.bookingStatusUnknown,
               }),
             ),

@@ -29,17 +29,17 @@ final class BookingLifecycleEloquentResolver
     {
         return DB::transaction(function () use ($bookingId, $target, $actorType, $actorId): BookingModel {
             $booking = BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
-            $fromStatus = $booking->status;
-            if (! $booking->status->canTransitionTo($target)) {
+            $fromStatus = $booking->booking_status;
+            if (! $booking->booking_status->canTransitionTo($target)) {
                 throw new InvalidBookingTransitionException;
             }
             if ($target === BookingStatus::Confirmed) {
                 $this->lockAssignedResources($booking);
                 $this->ensureNoActiveOverlap($booking);
             }
-            $booking->update(['status' => $target]);
+            $booking->update(['booking_status' => $target]);
             $booking->refresh()->load(['chair.barber', 'barber', 'services']);
-            $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
+            $this->notifier->statusChanged($booking, $target === BookingStatus::Cancelled);
             $this->logTransition($booking, $fromStatus, $target, $actorType, $actorId);
 
             return $booking;
@@ -51,18 +51,18 @@ final class BookingLifecycleEloquentResolver
         return DB::transaction(function () use ($bookingId, $branchId, $target): BookingModel {
             $booking = BookingModel::query()->forBranch($branchId)
                 ->with('chair')->lockForUpdate()->findOrFail($bookingId);
-            $fromStatus = $booking->status;
-            if (! in_array($target, [BookingStatus::Confirmed, BookingStatus::InProgress, BookingStatus::Completed, BookingStatus::NoShow, BookingStatus::Canceled], true)
-                || ! $booking->status->canTransitionTo($target)) {
+            $fromStatus = $booking->booking_status;
+            if (! in_array($target, [BookingStatus::Confirmed, BookingStatus::InProgress, BookingStatus::Completed, BookingStatus::NoShow, BookingStatus::Cancelled], true)
+                || ! $booking->booking_status->canTransitionTo($target)) {
                 throw new InvalidBookingTransitionException;
             }
             if ($target === BookingStatus::Confirmed) {
                 $this->lockAssignedResources($booking);
                 $this->ensureNoActiveOverlap($booking);
             }
-            $booking->update(['status' => $target]);
+            $booking->update(['booking_status' => $target]);
             $booking->refresh()->load(['chair.barber', 'barber', 'services']);
-            $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
+            $this->notifier->statusChanged($booking, $target === BookingStatus::Cancelled);
             $this->logTransition($booking, $fromStatus, $target, StatusChangeActorTypeEnum::Branch, (string) $branchId);
 
             return $booking;
@@ -73,20 +73,20 @@ final class BookingLifecycleEloquentResolver
     {
         return DB::transaction(function () use ($command): CancelBookingResult {
             $booking = BookingModel::query()->with(['chair.barber', 'barber', 'services'])->lockForUpdate()->findOrFail($command->bookingId);
-            $fromStatus = $booking->status;
+            $fromStatus = $booking->booking_status;
             if ($booking->client_id !== $command->clientId) {
                 return CancelBookingResult::notOwnBooking();
             }
-            if (! $booking->status->canTransitionTo(BookingStatus::Canceled)) {
+            if (! $booking->booking_status->canTransitionTo(BookingStatus::Cancelled)) {
                 return CancelBookingResult::invalidStatus();
             }
-            if ($booking->time_slot->lessThanOrEqualTo(now()->addHours(2))) {
+            if ($booking->starts_at->lessThanOrEqualTo(now()->addHours(2))) {
                 return CancelBookingResult::tooLate();
             }
-            $booking->update(['status' => BookingStatus::Canceled]);
+            $booking->update(['booking_status' => BookingStatus::Cancelled]);
             $booking->refresh();
             $this->notifier->statusChanged($booking, true, actorIsClient: true);
-            $this->logTransition($booking, $fromStatus, BookingStatus::Canceled, StatusChangeActorTypeEnum::Client, $command->clientId);
+            $this->logTransition($booking, $fromStatus, BookingStatus::Cancelled, StatusChangeActorTypeEnum::Client, $command->clientId);
 
             return CancelBookingResult::success($booking);
         });
@@ -96,20 +96,20 @@ final class BookingLifecycleEloquentResolver
     {
         return DB::transaction(function () use ($bookingId, $barberId, $reason): BookingModel {
             $booking = BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
-            $fromStatus = $booking->status;
+            $fromStatus = $booking->booking_status;
             if ($booking->barber_id !== $barberId && $booking->chair?->barber_id !== $barberId) {
                 throw new BookingNotAssignedException;
             }
-            if (! $booking->status->canTransitionTo(BookingStatus::Canceled)) {
+            if (! $booking->booking_status->canTransitionTo(BookingStatus::Cancelled)) {
                 throw new InvalidBookingTransitionException;
             }
-            if ($booking->time_slot->lessThanOrEqualTo(now()->addHours(2))) {
+            if ($booking->starts_at->lessThanOrEqualTo(now()->addHours(2))) {
                 throw new BookingCancellationTooLateException;
             }
-            $booking->update(['status' => BookingStatus::Canceled, 'cancellation_reason' => $reason]);
+            $booking->update(['booking_status' => BookingStatus::Cancelled, 'cancellation_reason' => $reason]);
             $booking->refresh()->load('chair');
             $this->notifier->statusChanged($booking, true);
-            $this->logTransition($booking, $fromStatus, BookingStatus::Canceled, StatusChangeActorTypeEnum::Barber, (string) $barberId, $reason);
+            $this->logTransition($booking, $fromStatus, BookingStatus::Cancelled, StatusChangeActorTypeEnum::Barber, (string) $barberId, $reason);
 
             return $booking;
         });
@@ -119,17 +119,17 @@ final class BookingLifecycleEloquentResolver
     {
         return DB::transaction(function () use ($bookingId): BookingModel {
             $booking = BookingModel::query()->lockForUpdate()->findOrFail($bookingId);
-            $fromStatus = $booking->status;
-            if (! $booking->status->canTransitionTo(BookingStatus::Canceled)) {
+            $fromStatus = $booking->booking_status;
+            if (! $booking->booking_status->canTransitionTo(BookingStatus::Cancelled)) {
                 throw new InvalidBookingTransitionException;
             }
             $booking->update([
-                'status' => BookingStatus::Canceled,
+                'booking_status' => BookingStatus::Cancelled,
                 'cancellation_reason' => BookingConstants::BOOKING_CANCELLATION_REASON_CHAIR_MAINTENANCE,
             ]);
             $booking->refresh();
             $this->notifier->statusChanged($booking, true);
-            $this->logTransition($booking, $fromStatus, BookingStatus::Canceled, StatusChangeActorTypeEnum::System, null, BookingConstants::BOOKING_CANCELLATION_REASON_CHAIR_MAINTENANCE);
+            $this->logTransition($booking, $fromStatus, BookingStatus::Cancelled, StatusChangeActorTypeEnum::System, null, BookingConstants::BOOKING_CANCELLATION_REASON_CHAIR_MAINTENANCE);
 
             return $booking;
         });
@@ -143,7 +143,7 @@ final class BookingLifecycleEloquentResolver
                 ->lockForUpdate()
                 ->findOrFail($bookingId);
 
-            $fromStatus = $booking->status;
+            $fromStatus = $booking->booking_status;
             $isAssigned = $booking->barber_id === $barberId
                 || $booking->chair?->barber_id === $barberId;
 
@@ -151,7 +151,7 @@ final class BookingLifecycleEloquentResolver
                 throw new BookingNotAssignedException;
             }
 
-            if (! $booking->status->canTransitionTo($target)) {
+            if (! $booking->booking_status->canTransitionTo($target)) {
                 throw new InvalidBookingTransitionException;
             }
 
@@ -160,9 +160,9 @@ final class BookingLifecycleEloquentResolver
                 $this->ensureNoActiveOverlap($booking);
             }
 
-            $booking->update(['status' => $target]);
+            $booking->update(['booking_status' => $target]);
             $booking->refresh()->load(['chair.barber', 'barber', 'services']);
-            $this->notifier->statusChanged($booking, $target === BookingStatus::Canceled);
+            $this->notifier->statusChanged($booking, $target === BookingStatus::Cancelled);
             $this->logTransition($booking, $fromStatus, $target, StatusChangeActorTypeEnum::Barber, (string) $barberId);
 
             return $booking;
@@ -205,7 +205,7 @@ final class BookingLifecycleEloquentResolver
             $query = BookingModel::query()
                 ->where($column, $resourceId)
                 ->whereKeyNot($booking->getKey());
-            BookingAvailability::apply($query, $booking->time_slot, $booking->ends_at);
+            BookingAvailability::apply($query, $booking->starts_at, $booking->ends_at);
             $conflict = $query->lockForUpdate()->exists();
 
             if ($conflict) {

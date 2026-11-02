@@ -5,21 +5,21 @@ part 'branch_hours.dto.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class BranchHoursDto {
-  final int? weekday;
+  final int? dayOfWeek;
   final String? date;
   @JsonKey(defaultValue: false)
   final bool isClosed;
-  final String? opensAt;
-  final String? closesAt;
+  final String? opensTime;
+  final String? closesTime;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final BranchHoursSource? source;
 
   const BranchHoursDto({
-    this.weekday,
+    this.dayOfWeek,
     this.date,
     this.isClosed = false,
-    this.opensAt,
-    this.closesAt,
+    this.opensTime,
+    this.closesTime,
     this.source,
   });
 

@@ -11,6 +11,6 @@ final readonly class RebookFromHistoryCommand
     public function __construct(
         public string $historyId,
         public string $clientId,
-        public Carbon $timeSlot,
+        public Carbon $startsAt,
     ) {}
 }

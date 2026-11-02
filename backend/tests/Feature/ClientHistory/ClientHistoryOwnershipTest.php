@@ -37,7 +37,7 @@ it('forbids rebooking another client history and creates no booking', function (
 
     $this->actingAs($actor, 'client')
         ->postJson("/api/v1/client/history/{$history->id}/rebook", [
-            'time_slot' => now()->addDay()->toIso8601String(),
+            'starts_at' => now()->addDay()->toIso8601String(),
         ])
         ->assertForbidden();
 
@@ -62,7 +62,7 @@ it('returns not found for a missing history record on rebook', function (): void
     $client = ClientModel::factory()->create();
 
     $this->actingAs($client, 'client')
-        ->postJson('/api/v1/client/history/missing-history/rebook', ['time_slot' => now()->addDay()->toIso8601String()])
+        ->postJson('/api/v1/client/history/missing-history/rebook', ['starts_at' => now()->addDay()->toIso8601String()])
         ->assertNotFound();
 });
 
@@ -83,7 +83,7 @@ it('allows an owner to rebook and attach media to their history', function (): v
 
     $this->actingAs($client, 'client')
         ->postJson("/api/v1/client/history/{$history->id}/rebook", [
-            'time_slot' => now()->addDay()->toIso8601String(),
+            'starts_at' => now()->addDay()->toIso8601String(),
         ])
         ->assertCreated();
 

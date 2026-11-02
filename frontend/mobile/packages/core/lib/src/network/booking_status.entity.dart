@@ -8,8 +8,8 @@ enum BookingStatus {
   confirmed,
   @JsonValue('in_progress')
   inProgress,
-  @JsonValue('canceled')
-  canceled,
+  @JsonValue('cancelled')
+  cancelled,
   @JsonValue('completed')
   completed,
   @JsonValue('no_show')
@@ -19,7 +19,7 @@ enum BookingStatus {
     'pending' => BookingStatus.pending,
     'confirmed' => BookingStatus.confirmed,
     'in_progress' => BookingStatus.inProgress,
-    'canceled' || 'cancelled' => BookingStatus.canceled,
+    'cancelled' => BookingStatus.cancelled,
     'completed' => BookingStatus.completed,
     'no_show' => BookingStatus.noShow,
     _ => throw ArgumentError('Unknown booking status: $value'),
@@ -29,7 +29,7 @@ enum BookingStatus {
     BookingStatus.pending => 'pending',
     BookingStatus.confirmed => 'confirmed',
     BookingStatus.inProgress => 'in_progress',
-    BookingStatus.canceled => 'canceled',
+    BookingStatus.cancelled => 'cancelled',
     BookingStatus.completed => 'completed',
     BookingStatus.noShow => 'no_show',
   };

@@ -34,10 +34,10 @@ final class BanFormSchema
                         ->required(),
                     Textarea::make('reason')
                         ->rows(3),
-                    DateTimePicker::make('banned_from')
+                    DateTimePicker::make('banned_at')
                         ->required()
                         ->default(now()),
-                    DateTimePicker::make('banned_until')
+                    DateTimePicker::make('expires_at')
                         ->helperText(__('ban::ui.leave_empty_for_permanent_ban')),
                 ]),
         ]);

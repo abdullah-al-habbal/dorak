@@ -85,8 +85,8 @@ describe('Subscription grace period', function (): void {
         $this->artisan('subscriptions:expire-past-due')->assertSuccessful();
 
         $fresh = $subscription->fresh();
-        expect($fresh->status)->toBe(SubscriptionStatus::Canceled)
-            ->and($fresh->canceled_at)->not->toBeNull()
+        expect($fresh->status)->toBe(SubscriptionStatus::Cancelled)
+            ->and($fresh->cancelled_at)->not->toBeNull()
             ->and(multiBranchEnabled($subscription))->toBeFalse();
     });
 
@@ -98,7 +98,7 @@ describe('Subscription grace period', function (): void {
 
         setGraceDays(5);
         $this->artisan('subscriptions:expire-past-due')->assertSuccessful();
-        expect($subscription->fresh()->status)->toBe(SubscriptionStatus::Canceled);
+        expect($subscription->fresh()->status)->toBe(SubscriptionStatus::Cancelled);
     });
 
     it('revokes immediately when the grace period is zero', function (): void {
@@ -107,18 +107,18 @@ describe('Subscription grace period', function (): void {
 
         $this->artisan('subscriptions:expire-past-due')->assertSuccessful();
 
-        expect($subscription->fresh()->status)->toBe(SubscriptionStatus::Canceled)
+        expect($subscription->fresh()->status)->toBe(SubscriptionStatus::Cancelled)
             ->and(multiBranchEnabled($subscription))->toBeFalse();
     });
 
-    it('never touches active or already canceled subscriptions', function (): void {
+    it('never touches active or already cancelled subscriptions', function (): void {
         setGraceDays(SettingKey::SubscriptionGraceDays->min());
         $active = BrandSubscriptionModel::factory()->create();
-        $canceled = BrandSubscriptionModel::factory()->create(['status' => SubscriptionStatus::Canceled]);
+        $cancelled = BrandSubscriptionModel::factory()->create(['status' => SubscriptionStatus::Cancelled]);
 
         $this->artisan('subscriptions:expire-past-due')->assertSuccessful();
 
         expect($active->fresh()->status)->toBe(SubscriptionStatus::Active)
-            ->and($canceled->fresh()->status)->toBe(SubscriptionStatus::Canceled);
+            ->and($cancelled->fresh()->status)->toBe(SubscriptionStatus::Cancelled);
     });
 });

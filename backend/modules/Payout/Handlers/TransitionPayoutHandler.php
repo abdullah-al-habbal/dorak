@@ -31,7 +31,7 @@ final class TransitionPayoutHandler
                 },
             ]);
 
-            if ($command->next === PayoutStatus::Canceled) {
+            if ($command->next === PayoutStatus::Cancelled) {
                 CommissionEntryModel::query()->where('payout_id', $payout->getKey())->update(['payout_id' => null]);
             }
 

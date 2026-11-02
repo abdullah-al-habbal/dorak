@@ -23,7 +23,7 @@ beforeEach(function (): void {
 
 it('rejects banned clients at login without issuing a token', function (): void {
     $client = ClientModel::factory()->create(['email' => 'banned-client@example.test']);
-    $client->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $client->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
 
     $response = $this->postJson('/api/v1/client/login', [
         'email' => $client->email,
@@ -36,7 +36,7 @@ it('rejects banned clients at login without issuing a token', function (): void 
 
 it('rejects banned clients from registration and social login', function (): void {
     $client = ClientModel::factory()->create(['email' => 'banned-signup@example.test']);
-    $client->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $client->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
 
     $this->postJson('/api/v1/client/register', [
         'name' => 'Banned Account',
@@ -69,7 +69,7 @@ it('rejects banned clients from registration and social login', function (): voi
 it('blocks an authenticated banned client from reading bookings', function (): void {
     $client = ClientModel::factory()->create();
     $this->actingAs($client, 'client');
-    $client->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $client->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
 
     $this->getJson('/api/v1/bookings')
         ->assertForbidden()
@@ -79,7 +79,7 @@ it('blocks an authenticated banned client from reading bookings', function (): v
 it('rejects client token refresh while a ban is active', function (): void {
     $client = ClientModel::factory()->create();
     $this->actingAs($client, 'client');
-    $client->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $client->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
 
     $this->postJson('/api/v1/client/refresh-token')
         ->assertForbidden()
@@ -89,7 +89,7 @@ it('rejects client token refresh while a ban is active', function (): void {
 it('rejects a banned client booking without creating a booking row', function (): void {
     $client = ClientModel::factory()->create();
     $this->actingAs($client, 'client');
-    $client->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $client->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
     $bookingCount = BookingModel::query()->count();
 
     $this->postJson('/api/v1/bookings', [
@@ -100,7 +100,7 @@ it('rejects a banned client booking without creating a booking row', function ()
             'building' => '12',
             'unit' => '4B',
         ],
-        'time_slot' => now()->addDay()->toIso8601ZuluString(),
+        'starts_at' => now()->addDay()->toIso8601ZuluString(),
         'service_ids' => [],
     ])->assertForbidden()->assertJsonPath('code', 'ACCOUNT_BANNED');
 
@@ -111,13 +111,13 @@ it('rejects a chair booking when its assigned barber is banned', function (): vo
     $client = ClientModel::factory()->create();
     $this->actingAs($client, 'client');
     $barber = BarberModel::factory()->create();
-    $barber->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $barber->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
     $chair = ChairModel::factory()->create(['barber_id' => $barber->id]);
     $service = OfferedServiceModel::factory()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $chair->branch->brand_id]);
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
-        'time_slot' => now()->addDay()->toIso8601ZuluString(),
+        'starts_at' => now()->addDay()->toIso8601ZuluString(),
         'service_ids' => [$service->id],
     ])->assertForbidden()->assertJsonPath('code', 'ACCOUNT_BANNED');
 
@@ -131,7 +131,7 @@ it('rejects banned barbers from mobile and dashboard login', function (): void {
         'has_login' => true,
         'status' => BarberStatusEnum::Enabled,
     ]);
-    $barber->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $barber->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
 
     $this->postJson('/api/v1/barber/login', [
         'email' => $barber->email,
@@ -151,8 +151,8 @@ it('allows a client login after a ban expires', function (): void {
         'bannable_id' => $client->id,
         'bannable_type' => $client->getMorphClass(),
         'reason' => 'expired',
-        'banned_from' => now()->subDays(2),
-        'banned_until' => now()->subDay(),
+        'banned_at' => now()->subDays(2),
+        'expires_at' => now()->subDay(),
     ]);
 
     $this->postJson('/api/v1/client/login', [
@@ -165,7 +165,7 @@ it('revokes existing Sanctum tokens when an active ban is created', function ():
     $client = ClientModel::factory()->create();
     $client->createToken('test-token');
 
-    $client->bans()->create(['reason' => 'policy', 'banned_from' => now()->subMinute()]);
+    $client->bans()->create(['reason' => 'policy', 'banned_at' => now()->subMinute()]);
 
     expect($client->tokens()->count())->toBe(0);
 });

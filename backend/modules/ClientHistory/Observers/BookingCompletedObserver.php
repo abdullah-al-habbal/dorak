@@ -21,11 +21,11 @@ final class BookingCompletedObserver
 
     public function updated(BookingModel $booking): void
     {
-        if (! $booking->wasChanged('status')) {
+        if (! $booking->wasChanged('booking_status')) {
             return;
         }
 
-        if ($booking->status !== BookingStatus::Completed) {
+        if ($booking->booking_status !== BookingStatus::Completed) {
             return;
         }
 
@@ -41,7 +41,7 @@ final class BookingCompletedObserver
                     branchId: $booking->chair?->branch_id,
                     offeredServiceId: $service->id,
                     catalogItemId: $service->catalog_item_id,
-                    performedAt: $booking->time_slot,
+                    performedAt: $booking->starts_at,
                 ));
             }
         } catch (Throwable $exception) {

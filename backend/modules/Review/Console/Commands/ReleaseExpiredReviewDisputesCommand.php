@@ -27,7 +27,7 @@ final class ReleaseExpiredReviewDisputesCommand extends Command
         $released = $expired->update([
             'status' => ReviewStatus::Published,
             'resolved_at' => now(),
-            'resolved_by' => null,
+            'resolved_by_id' => null,
             'updated_at' => now(),
         ]);
 

@@ -10,7 +10,7 @@ import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
 
 BookingDto bookingFixture(String id, {BookingStatus? status}) => BookingDto(
   id: id,
-  timeSlot: DateTime.utc(2026, 10, 29, 10),
+  startsAt: DateTime.utc(2026, 10, 29, 10),
   status: status ?? BookingStatus.pending,
 );
 
@@ -53,7 +53,7 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
     if (error != null) throw error;
     cancelledId = id;
     cancelReason = reason;
-    return bookingFixture(id, status: BookingStatus.canceled);
+    return bookingFixture(id, status: BookingStatus.cancelled);
   }
 
   @override

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->char('token_hash', 64)->unique();
             $table->timestamp('expires_at');
             $table->timestamp('revoked_at')->nullable();
-            $table->unsignedBigInteger('replaced_by_id')->nullable();
+            $table->unsignedBigInteger('replaced_by_token_id')->nullable();
             $table->timestamps();
 
             $table->index(['actor_type', 'actor_id']);

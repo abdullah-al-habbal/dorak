@@ -31,14 +31,14 @@ it('reports free exactly when a booking can be created for the interval', functi
 
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $this->chair->id,
-        'time_slot' => $startsAt->toIso8601ZuluString(),
+        'starts_at' => $startsAt->toIso8601ZuluString(),
         'service_ids' => [$this->service->id],
     ])->assertCreated();
 
     $this->getJson($floorPlanUrl())->assertOk()->assertJsonPath('data.chairs.0.availability', 'occupied');
     $this->postJson('/api/v1/bookings', [
         'chair_id' => $this->chair->id,
-        'time_slot' => $startsAt->toIso8601ZuluString(),
+        'starts_at' => $startsAt->toIso8601ZuluString(),
         'service_ids' => [$this->service->id],
     ])->assertStatus(409);
 });
@@ -47,9 +47,9 @@ it('counts pending bookings as unavailable in floor plans and chair listings', f
     $startsAt = Carbon::now()->addDay()->startOfMinute();
     BookingModel::factory()->create([
         'chair_id' => $this->chair->id,
-        'time_slot' => $startsAt,
+        'starts_at' => $startsAt,
         'ends_at' => $startsAt->copy()->addMinutes(30),
-        'status' => BookingStatus::Pending,
+        'booking_status' => BookingStatus::Pending,
     ]);
 
     $this->getJson('/api/v1/branches/'.$this->branch->id.'/floor-plan?'.http_build_query([
@@ -77,15 +77,15 @@ it('uses active interval overlap for explore available_now barbers', function ()
 
     BookingModel::factory()->create([
         'barber_id' => $busy->id,
-        'time_slot' => $now->copy()->subMinutes(10),
+        'starts_at' => $now->copy()->subMinutes(10),
         'ends_at' => $now->copy()->addMinutes(20),
-        'status' => BookingStatus::InProgress,
+        'booking_status' => BookingStatus::InProgress,
     ]);
     BookingModel::factory()->create([
         'barber_id' => $free->id,
-        'time_slot' => $now->copy()->subMinutes(40),
+        'starts_at' => $now->copy()->subMinutes(40),
         'ends_at' => $now->copy()->subMinutes(10),
-        'status' => BookingStatus::Confirmed,
+        'booking_status' => BookingStatus::Confirmed,
     ]);
 
     $this->getJson('/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000&available_now=1')

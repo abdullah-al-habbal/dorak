@@ -34,7 +34,7 @@ final class CancelBookingAction extends BaseApiAction
 
         return $this->ok(
             data: new BookingResource($result->booking),
-            message: __('booking::messages.canceled'),
+            message: __('booking::messages.cancelled'),
         );
     }
 }

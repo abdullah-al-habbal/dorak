@@ -6,13 +6,16 @@ import type { IDashboardPage } from "@/services/api/dashboard/shared/types/idash
 import type { IDashboardOverview } from "@/services/api/dashboard/shared/types/idashboard-overview.types";
 import { mapDashboardOverview } from "@/services/api/dashboard/shared/dashboard-mapper.util";
 
-function queryString(params: IDashboardListParams = {}): string {
+function queryString(
+  params: IDashboardListParams = {},
+  statusKey = "status",
+): string {
   const query = new URLSearchParams();
   const values: Array<[string, string | number | undefined]> = [
     ["page", params.page],
     ["per_page", params.perPage],
     ["search", params.search],
-    ["status", params.status],
+    [statusKey, params.status],
     ["date_from", params.dateFrom],
     ["date_to", params.dateTo],
     ["chair_id", params.chairId],
@@ -29,7 +32,7 @@ export function getDashboardList<TItem>(
   params?: IDashboardListParams,
 ) {
   return api.get<IDashboardPage<TItem>>(
-    `${DashboardEndpoints.resource(resource)}${queryString(params)}`,
+    `${DashboardEndpoints.resource(resource)}${queryString(params, resource === "bookings" ? "booking_status" : "status")}`,
   );
 }
 

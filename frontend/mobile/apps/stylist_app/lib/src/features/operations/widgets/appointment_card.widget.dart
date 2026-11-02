@@ -25,14 +25,14 @@ class AppointmentCard extends StatelessWidget {
     BookingStatus.confirmed => l10n.bookingStatusConfirmed,
     BookingStatus.inProgress => l10n.bookingStatusInProgress,
     BookingStatus.completed => l10n.bookingStatusCompleted,
-    BookingStatus.canceled => l10n.bookingStatusCanceled,
+    BookingStatus.cancelled => l10n.bookingStatusCanceled,
     BookingStatus.noShow => l10n.bookingStatusNoShow,
   };
 
   @override
   Widget build(BuildContext context) {
     final materialL10n = MaterialLocalizations.of(context);
-    final timeSlot = booking.timeSlot.toLocal();
+    final startsAt = booking.startsAt.toLocal();
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -41,8 +41,8 @@ class AppointmentCard extends StatelessWidget {
           children: [
             Text(
               l10n.stylistAppointmentDateTime(
-                materialL10n.formatMediumDate(timeSlot),
-                materialL10n.formatTimeOfDay(TimeOfDay.fromDateTime(timeSlot)),
+                materialL10n.formatMediumDate(startsAt),
+                materialL10n.formatTimeOfDay(TimeOfDay.fromDateTime(startsAt)),
               ),
             ),
             Text(

@@ -19,8 +19,8 @@ final class ShowBrandAction extends BaseApiAction
         $brand = BrandModel::with(['owner', 'baseCurrency', 'branches'])->findOrFail($brand);
         $brand->setRelation('branches', $brand->branches
             ->filter(fn (BranchModel $branch): bool => $branch->isEnabled && ! $branch->bans()
-                ->where('banned_from', '<=', now())
-                ->where(fn (Builder $query) => $query->whereNull('banned_until')->orWhere('banned_until', '>', now()))
+                ->where('banned_at', '<=', now())
+                ->where(fn (Builder $query) => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()))
                 ->exists())
             ->values());
 

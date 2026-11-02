@@ -23,7 +23,7 @@ use Modules\Subscription\Enums\SubscriptionStatus;
  * @property SubscriptionStatus $status
  * @property CarbonInterface|null $past_due_at
  */
-#[Fillable(['brand_id', 'plan_id', 'status', 'starts_at', 'ends_at', 'past_due_at', 'canceled_at'])]
+#[Fillable(['brand_id', 'plan_id', 'status', 'starts_at', 'ends_at', 'past_due_at', 'cancelled_at'])]
 #[Table('brand_subscriptions')]
 class BrandSubscriptionModel extends Model
 {
@@ -36,7 +36,7 @@ class BrandSubscriptionModel extends Model
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
             'past_due_at' => 'datetime',
-            'canceled_at' => 'datetime',
+            'cancelled_at' => 'datetime',
         ];
     }
 

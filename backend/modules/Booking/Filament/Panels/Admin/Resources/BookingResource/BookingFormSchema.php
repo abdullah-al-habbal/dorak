@@ -28,9 +28,9 @@ final class BookingFormSchema
                     Select::make('barber_id')
                         ->relationship('barber', 'email')
                         ->required(),
-                    DateTimePicker::make('time_slot')
+                    DateTimePicker::make('starts_at')
                         ->required(),
-                    Select::make('status')
+                    Select::make('booking_status')
                         ->options(BookingStatus::class)
                         ->required(),
                     KeyValue::make('at_home_location'),

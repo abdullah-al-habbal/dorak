@@ -25,7 +25,7 @@ final class RebookFromHistoryRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'time_slot' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
+            'starts_at' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
         ];
     }
 
@@ -34,7 +34,7 @@ final class RebookFromHistoryRequest extends BaseApiFormRequest
         return new RebookFromHistoryCommand(
             historyId: $historyId,
             clientId: (string) $this->user()->id,
-            timeSlot: (new Carbon((string) $this->validated('time_slot')))->utc(),
+            startsAt: (new Carbon((string) $this->validated('starts_at')))->utc(),
         );
     }
 }

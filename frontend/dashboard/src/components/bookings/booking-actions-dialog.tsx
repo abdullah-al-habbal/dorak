@@ -75,7 +75,7 @@ export function BookingActionsDialog({
             inProgressLabel={copy.inProgress}
             completedLabel={copy.completed}
             noShowLabel={copy.noShow}
-            canceledLabel={copy.canceled}
+            canceledLabel={copy.cancelled}
             updateStatusLabel={copy.updateStatus}
             onSuccess={closeOnSuccess}
             onError={failed}

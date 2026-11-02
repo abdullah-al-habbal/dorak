@@ -89,9 +89,9 @@ export function mapWalkInBookingPayload(input: WalkInBookingInput) {
     customer_name: input.customerName,
     ...(input.customerPhone ? { customer_phone: input.customerPhone } : {}),
     service_ids: input.serviceIds,
-    time_slot: input.timeSlot,
+    starts_at: input.startsAt,
   };
 }
 export function mapBookingReschedulePayload(input: BookingRescheduleInput) {
-  return { ends_at: input.endsAt, time_slot: input.timeSlot };
+  return { ends_at: input.endsAt, starts_at: input.startsAt };
 }

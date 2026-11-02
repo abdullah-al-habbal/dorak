@@ -21,7 +21,7 @@ function renderSection(
       completeLabel="Complete"
       noShowLabel="No-show"
       cancelLabel="Cancel"
-      appointments={[{ id: "b-1", status, timeSlot: "2026-10-26T09:00:00Z" }]}
+      appointments={[{ id: "b-1", status, startsAt: "2026-10-26T09:00:00Z" }]}
       onTransition={onTransition}
       onCancelRequest={onCancelRequest}
     />,

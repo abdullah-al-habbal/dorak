@@ -144,7 +144,7 @@ class _BookingsFeedState extends State<BookingsFeed> {
     return switch (status) {
       BookingStatus.confirmed => l10n.bookingStatusConfirmed,
       BookingStatus.pending => l10n.bookingStatusPending,
-      BookingStatus.canceled => l10n.bookingStatusCanceled,
+      BookingStatus.cancelled => l10n.bookingStatusCanceled,
       BookingStatus.completed => l10n.bookingStatusCompleted,
       BookingStatus.inProgress => l10n.bookingStatusInProgress,
       BookingStatus.noShow => l10n.bookingStatusNoShow,

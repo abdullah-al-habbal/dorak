@@ -28,15 +28,15 @@ class BookingSeeder extends Seeder
         $service = OfferedServiceModel::first()
             ?? OfferedServiceModel::factory()->create();
 
-        $timeSlot = now()->addDay()->setHour(10)->setMinute(0);
+        $startsAt = now()->addDay()->setHour(10)->setMinute(0);
 
         $booking = BookingModel::create([
             'client_id' => $client->id,
             'chair_id' => $chair->id,
             'barber_id' => $barber->id,
-            'time_slot' => $timeSlot,
-            'ends_at' => $timeSlot->copy()->addMinutes($service->duration_minutes ?? 30),
-            'status' => BookingStatus::Completed->value,
+            'starts_at' => $startsAt,
+            'ends_at' => $startsAt->copy()->addMinutes($service->duration_minutes ?? 30),
+            'booking_status' => BookingStatus::Completed->value,
             'at_home_location' => null,
         ]);
 

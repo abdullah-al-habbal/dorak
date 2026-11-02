@@ -69,7 +69,7 @@ describe('Dashboard admin moderation', function (): void {
         $this->getJson('/api/v1/dashboard/admin/reviews')->assertOk()->assertJsonCount(0, 'data');
         expect($review->fresh())
             ->status->toBe(ReviewStatus::Hidden)
-            ->resolved_by->toBe($admin->id);
+            ->resolved_by_id->toBe($admin->id);
     });
 
     it('rejects an invalid resolution status', function (): void {
