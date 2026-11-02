@@ -52,5 +52,5 @@ and the subsystem guides in each project directory.
 
 ## Continued in
 
-- [Part 2: Local setup](docs/readme-part-2.md)
-- [Part 3: Mobile workspace](docs/readme-part-3.md)
+- [Part 2: Local setup](docs/repo-guides/readme-part-2.md)
+- [Part 3: Mobile workspace](docs/repo-guides/readme-part-3.md)

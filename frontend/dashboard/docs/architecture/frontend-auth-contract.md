@@ -18,7 +18,11 @@ Routes: [dashboard guide](../../AGENTS.md) · [documentation graph](../../../../
 
 Implemented in Phase 2 against the real backend. This document is the source of
 truth for the frontend/backend auth boundary. Backend additions that make this
-contract possible are recorded in `backend-additions.md`.
+contract possible are 
+The active actor is derived from the signed claim, never from the URL. A request
+to another actor's portal redirects to the active actor's portal.
+
+recorded in `backend-additions.md`.
 
 ## Actors and portal mapping
 
@@ -28,11 +32,6 @@ contract possible are recorded in `backend-additions.md`.
 | `branch`           | `branch_api`  | `manager`      | `/manager`       | `/manager/login` |
 | `barber`           | `barber`      | `barber`       | `/barber`        | `/barber/login`  |
 | `owner`            | `client`      | `owner`        | `/owner`         | `/owner/login`   |
-
-A brand owner is a client account referenced by `brands.owner_id` (ADR
-[0001](../../../../docs/adr/0001-brand-owner-as-client.md), Task 38). Its
-dashboard token is a client Sanctum token with the `dashboard` ability; mobile
-client tokens never pass the dashboard middleware.
 
 The active actor is derived from the signed claim, never from the URL. A request
 to another actor's portal redirects to the active actor's portal.

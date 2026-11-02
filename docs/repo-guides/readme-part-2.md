@@ -8,7 +8,7 @@ codeanchors:
   - frontend/mobile/
 ---
 
-Part 2 of 3 · [Dorak Operations Monorepo](../README.md) · [Previous](../README.md) · [Next](readme-part-3.md)
+Part 2 of 3 · [Dorak Operations Monorepo](../../README.md) · [Previous](../../README.md) · [Next](readme-part-3.md)
 
 ## Local setup
 
@@ -36,7 +36,7 @@ php artisan test
 ```
 
 Backend architecture, environment, and coding rules are in
-[`backend/AGENTS.md`](../backend/AGENTS.md) and [`backend/README.md`](../backend/README.md).
+[`backend/AGENTS.md`](../../backend/AGENTS.md) and [`backend/README.md`](../../backend/README.md).
 
 ### Dashboard
 

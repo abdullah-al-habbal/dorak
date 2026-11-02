@@ -9,7 +9,7 @@ codeanchors:
 
 # MVP Alignment Policies
 
-> Permanent reference for the in-person payment, authorization, availability, and lifecycle policies decided during MVP remediation. All remediation tasks are complete; use the [documentation graph](index.md) to find current subsystem docs.
+> Permanent reference for the in-person payment, authorization, availability, and lifecycle policies decided during MVP remediation. All remediation tasks are complete; use the [documentation graph](../index.md) to find current subsystem docs.
 
 ## Phase 2: In-person payment policy
 

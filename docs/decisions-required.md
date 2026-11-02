@@ -13,8 +13,6 @@ codeanchors:
 
 Routes: [documentation graph](index.md).
 
-> Only unresolved product decisions are kept here. Resolved decisions were removed once implemented and documented in the owning subsystem docs (history remains in git); the one standing architecture record is [ADR 0001: brand owner as client](adr/0001-brand-owner-as-client.md). Record new decisions here and delete them when resolved.
-
 ## Task 04: Restrict Service Catalog Mutations to Admins
 - [ ] Decision required: whether branches may **propose** catalog items for admin approval. If yes, this becomes a separate endpoint and is out of scope here.
 

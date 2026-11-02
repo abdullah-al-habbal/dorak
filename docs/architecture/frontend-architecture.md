@@ -16,7 +16,7 @@ The implementation and its local contracts are the source of truth; this file
 routes contributors to those contracts rather than prescribing an unused
 directory blueprint.
 
-Routes: [dashboard guide](../frontend/dashboard/AGENTS.md) · [authentication contract](../frontend/dashboard/docs/architecture/frontend-auth-contract.md) · [documentation graph](index.md).
+Routes: [dashboard guide](../../frontend/dashboard/AGENTS.md) · [authentication contract](../../frontend/dashboard/docs/architecture/frontend-auth-contract.md) · [documentation graph](../index.md).
 
 ## Application structure
 
@@ -34,8 +34,8 @@ Routes: [dashboard guide](../frontend/dashboard/AGENTS.md) · [authentication co
 Portal layouts validate actor and session context. Browser requests use the
 server managed session contract and the dashboard API bridge; sensitive backend
 operations remain authorized by Laravel. Read the
-[frontend authentication contract](../frontend/dashboard/docs/architecture/frontend-auth-contract.md)
-and [backend additions](../frontend/dashboard/docs/architecture/backend-additions.md)
+[frontend authentication contract](../../frontend/dashboard/docs/architecture/frontend-auth-contract.md)
+and [backend additions](../../frontend/dashboard/docs/architecture/backend-additions.md)
 before changing that boundary.
 
 Keep backend calls in the typed API services. Route handlers and server
@@ -44,7 +44,7 @@ behavior stays consistent.
 
 ## Conventions and verification
 
-Follow [frontend/dashboard/AGENTS.md](../frontend/dashboard/AGENTS.md) for
+Follow [frontend/dashboard/AGENTS.md](../../frontend/dashboard/AGENTS.md) for
 current import, file taxonomy, styling, testing, and quality-gate requirements.
 All planned dashboard tasks (1–87) are complete; open work is tracked in
-[open decisions](decisions-required.md).
+[open decisions](../decisions-required.md).

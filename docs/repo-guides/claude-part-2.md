@@ -8,12 +8,12 @@ codeanchors:
   - frontend/mobile/
 ---
 
-Part 2 of 2 · [Dorak Monorepo — Claude Guide](../CLAUDE.md) · [Previous](../CLAUDE.md)
+Part 2 of 2 · [Dorak Monorepo — Claude Guide](../../CLAUDE.md) · [Previous](../../CLAUDE.md)
 
 ## Task execution
 
 - Prefer the reusable
-  [Dorak task executor](../.claude/skills/monorepo-task-executor/SKILL.md) for
+  [Dorak task executor](../../.claude/skills/monorepo-task-executor/SKILL.md) for
   engineering task work: audit the request, implement the vertical slice, run
   the applicable gates, and call the work done only on
   evidence.

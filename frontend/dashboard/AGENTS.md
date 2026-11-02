@@ -17,7 +17,7 @@ codeanchors:
 
 # Dorak Operations — AI Agent Rules
 
-Documentation routes: [dashboard architecture](../../docs/frontend-architecture.md) · [repository graph](../../docs/index.md).
+Documentation routes: [dashboard architecture](../../docs/architecture/frontend-architecture.md) · [repository graph](../../docs/index.md).
 
 > Multi-actor operations platform · Next.js · Tailwind CSS · React Aria · TanStack Query
 

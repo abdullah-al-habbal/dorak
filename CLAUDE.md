@@ -63,4 +63,4 @@ files in that area.
 
 ## Continued in
 
-- [Part 2: Task execution](docs/claude-part-2.md)
+- [Part 2: Task execution](docs/repo-guides/claude-part-2.md)

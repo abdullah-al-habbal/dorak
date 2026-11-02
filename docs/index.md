@@ -19,12 +19,12 @@ codeanchors:
 
 # Documentation Graph
 
-> Repository-wide documentation router. The graph root is the repository [`docs/repo-index.md`](repo-index.md).
+> Repository-wide documentation router. The graph root is the repository [`docs/graph/repo-index.md`](graph/repo-index.md).
 > Follow the folder node for a subsystem, then choose a document leaf. All maintained Markdown documents in this repository are listed below.
 
 ## Graph roots
 
-- [Repository rules](repo-index.md) — root-level orientation and subsystem entry points.
+- [Repository rules](graph/repo-index.md) — root-level orientation and subsystem entry points.
 - [Backend](../backend/README.md) — Laravel service and product docs.
 - [Dashboard](../frontend/dashboard/AGENTS.md) — Next.js application.
 - [Mobile](../frontend/mobile/AGENTS.md) — Flutter workspace.
@@ -33,7 +33,7 @@ codeanchors:
 
 ```mermaid
 graph TD
-  root[docs/repo-index.md] --> graph[docs/index.md]
+  root[docs/graph/repo-index.md] --> graph[docs/index.md]
   graph --> repo[Repository-wide Markdown nodes]
   repo --> backend[backend/]
   repo --> dashboard[frontend/dashboard/]
@@ -50,7 +50,7 @@ Entries are grouped by repository-relative folder. Every listed file is reachabl
 - [Agents](../AGENTS.md)
 - [Claude](../CLAUDE.md)
 - [Readme](../README.md)
-- [Index](repo-index.md)
+- [Index](graph/repo-index.md)
 
 ### `backend/`
 
@@ -60,8 +60,8 @@ Entries are grouped by repository-relative folder. Every listed file is reachabl
 
 ## Continued in
 
-- [Part 2: backend/docs/](index-part-2.md)
-- [Part 3: docs/](index-part-3.md)
-- [Part 4: frontend/mobile/apps/client_app/docs/](index-part-4.md)
-- [Part 5: frontend/mobile/docs/core/](index-part-5.md)
-- [Part 6: frontend/mobile/docs/realtime/](index-part-6.md)
+- [Part 2: backend/docs/](graph/index-part-2.md)
+- [Part 3: docs/](graph/index-part-3.md)
+- [Part 4: frontend/mobile/apps/client_app/docs/](graph/index-part-4.md)
+- [Part 5: frontend/mobile/docs/core/](graph/index-part-5.md)
+- [Part 6: frontend/mobile/docs/realtime/](graph/index-part-6.md)

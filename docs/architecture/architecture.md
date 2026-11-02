@@ -11,7 +11,7 @@ codeanchors:
 
 # Dorak MVP Architecture
 
-Routes: [documentation graph](index.md) · [deployment guide](deployment-guide.md).
+Routes: [documentation graph](../index.md) · [deployment guide](../deployment/deployment-guide.md).
 
 ## E2E booking flow
 

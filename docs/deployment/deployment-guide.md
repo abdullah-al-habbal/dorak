@@ -13,7 +13,7 @@ codeanchors:
 
 # Dorak Deployment and Handover Guide
 
-Routes: [documentation graph](index.md) · [architecture](architecture.md).
+Routes: [documentation graph](../index.md) · [architecture](../architecture/architecture.md).
 
 ## Local startup
 

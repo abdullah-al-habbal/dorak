@@ -8,7 +8,7 @@ codeanchors:
   - frontend/mobile/
 ---
 
-Part 3 of 3 · [Dorak Operations Monorepo](../README.md) · [Previous](readme-part-2.md)
+Part 3 of 3 · [Dorak Operations Monorepo](../../README.md) · [Previous](readme-part-2.md)
 
 ### Mobile workspace
 
@@ -46,11 +46,11 @@ Run checks for the project you changed:
 Backend migration changes must also satisfy `php scripts/check_migrations.php`
 from `backend/`. The backend CI workflow runs against MySQL; see
 `.github/workflows/backend-ci.yml` for its setup. The production deployment
-workflow is documented in [the deployment guide](deployment-guide.md).
+workflow is documented in [the deployment guide](../deployment/deployment-guide.md).
 
 ## Contributing and agent guidance
 
-Read [AGENTS.md](../AGENTS.md) and the applicable subsystem guide before making
+Read [AGENTS.md](../../AGENTS.md) and the applicable subsystem guide before making
 changes. Follow the path/import rules there, preserve API and package
 boundaries, and update decision documentation when work changes their
 status.
