@@ -1,6 +1,11 @@
 ---
 name: feature-flags
 description: Feature flag strategy via laravel/pennant for freemium gating. Use when gating multi-branch or job-board features behind subscription tiers.
+nodeid: skills.backend.feature-flags
+parentnode: skills.backend
+childnodes: []
+codeanchors:
+  - backend/modules/
 ---
 
 # Feature flags

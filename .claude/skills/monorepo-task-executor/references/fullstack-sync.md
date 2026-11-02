@@ -1,3 +1,13 @@
+---
+nodeid: skills.repo.monorepo-task-executor.references.fullstack-sync
+parentnode: skills.repo.monorepo-task-executor
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Full-stack sync matrix
 
 Walk every row for every task. Change the layer, or write down why it needs no change. Zero stale state, unmapped statuses or codes, missing translations, or half-wired UI.

@@ -1,13 +1,20 @@
 ---
 name: crescent
 description: Run the 7-phase CRESCENT state machine (Idea → Research → Prototype → PRD → Kanban → Ralph Loop → QA) to ship a feature, bug fix, or refactor end-to-end. Dispatches deterministically to the matching phase skill. Use when the user wants to start CRESCENT, ship a feature with the full process, or says "crescent", "start the state machine", "full process this feature", "7 phases".
+nodeid: skills.backend.crescent
+parentnode: skills.backend
+childnodes:
+  - skills.backend.crescent.dorak-context
+  - skills.backend.crescent.part-2
+codeanchors:
+  - backend/docs/
 ---
 
 # CRESCENT — 7-Phase Feature Delivery State Machine
 
 CRESCENT is a strict state machine. You enter at Phase 1 and advance one phase at a time. You do NOT skip, reorder, or merge phases. Each phase has an entry artifact on disk, an exit artifact on disk, and a single dispatch target.
 
-Before any work, load [DORAK-CONTEXT.md](./DORAK-CONTEXT.md) — it carries Zad team naming, paths, and tooling rules that every phase obeys.
+Before any work, load [dorak-context.md](dorak-context.md) — it carries Zad team naming, paths, and tooling rules that every phase obeys.
 
 ## State Machine Law
 
@@ -54,30 +61,6 @@ When invoked:
 
 (verbatim copy of the user's prompt; do not paraphrase)
 
-## What this changes for users
+## Continued in
 
-One short paragraph.
-
-## Open questions
-
-A short list. These get answered during Research, Prototype, and PRD — not now.
-</idea-template>
-
-## Phase preconditions (the gate that prevents skipping)
-
-Before dispatching any phase N ≥ 2, the orchestrator verifies — by reading the disk, not memory:
-
-<preconditions>
-- Phase 2 (Research):   IDEA.md exists at the canonical path
-- Phase 3 (Prototype):  IDEA.md exists; research.md exists OR IDEA.md records `Research skipped: no externals`
-- Phase 4 (PRD):        Phase 3 exit (`prototype/NOTES.md` answering the prototype's question) exists
-- Phase 5 (Kanban):     PRD.md exists AND has a non-empty `## User Stories` section
-- Phase 6 (Ralph Loop): kanban.md exists AND lists at least one GitLab issue ID at `gitlab.zadapps.info`
-- Phase 7 (QA):         kanban.md shows zero open issues
-</preconditions>
-
-If a precondition fails, do NOT dispatch. State the missing artifact and return to the phase that produces it.
-
-## Exit
-
-When Phase 7 produces zero new gaps AND the human walks the QA plan to all-PASS, announce `[CRESCENT · COMPLETE] — <JIRA-ID>/<feature-slug>` and stop. Do not auto-restart.
+- [Part 2: What this changes for users](references/skill-part-2.md)

@@ -1,7 +1,8 @@
 ---
 nodeid: mobile.apps.client-app.readme
 parentnode: mobile.apps.client-app
-childnodes: []
+childnodes:
+  - mobile.apps.client-app.ios-launch-image
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

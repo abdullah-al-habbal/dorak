@@ -1,6 +1,12 @@
 ---
 name: coding-standards
-description: Mandatory PHP coding conventions for this project: strict_types, final classes, PHP 8 attributes, naming suffixes, env() rules. Use whenever writing or reviewing any PHP file — these override generic Laravel defaults.
+description: "Mandatory PHP coding conventions for this project: strict_types, final classes, PHP 8 attributes, naming suffixes, env() rules. Use whenever writing or reviewing any PHP file — these override generic Laravel defaults."
+nodeid: skills.backend.coding-standards
+parentnode: skills.backend
+childnodes:
+  - skills.backend.coding-standards.part-2
+codeanchors:
+  - backend/modules/
 ---
 
 # Coding standards
@@ -36,46 +42,6 @@ class ClientModel extends Authenticatable
 - `#[Translatable([...])]` (spatie) replaces `public array $translatable`. Import from `Spatie\Translatable\Attributes\Translatable` alongside `HasTranslations`.
 - Same value, same behaviour — attributes resolve lazily through `Model::resolveClassAttribute()` in the constructor, so runtime is identical.
 
-## Naming
+## Continued in
 
-- No `Controller` suffix — use invokable action classes: `ListAllBookingsAction`.
-- Actions in `Http/Actions/`, handlers in `Handlers/`, resolvers in `Eloquent/Resolvers/`.
-- Command/Query objects in `CQRS/Command/` and `CQRS/Query/`.
-- PascalCase for class names and module names.
-- snake_case for table columns and config keys.
-
-### Mandatory class-name suffixes
-
-Every class **must** carry a suffix matching its layer/role. No bare names like `User` or `Booking`.
-
-| Layer / Role            | Suffix           | Example                                    |
-|-------------------------|------------------|--------------------------------------------|
-| Eloquent Model          | `Model`          | `ClientModel`, `BookingModel`                |
-| Enum                    | `Enum`           | `ErrorCodeEnum`, `SuccessCodeEnum`         |
-| Invocable Action        | `Action`         | `ListAllBookingsAction`, `CreateBookingAction` |
-| Business Handler        | `Handler`        | `ListAllBookingsHandler`, `CreateBookingHandler` |
-| Data Resolver           | `Resolver`       | `ListAllBookingsEloquentResolver`          |
-| CQRS Command payload    | `Command`        | `CreateBookingCommand`                     |
-| CQRS Query payload      | `Query`          | `FindAvailableChairsQuery`                 |
-| Form Request            | `Request`        | `CreateBookingRequest`                     |
-| API Resource / Presenter| `Presenter`      | `BookingPresenter`                         |
-| Middleware              | `Middleware`     | `AssignRequestUuidMiddleware`              |
-| Event                   | `Event`          | `BookingCreatedEvent`                      |
-| Listener                | `Listener`       | `SendBookingConfirmationListener`          |
-| Service (infrastructure)| `Service`        | `LoggerService`, `TranslatorHandlerService` |
-| Service Provider        | `ServiceProvider`| `ApplicationServiceProvider`               |
-| Trait                   | `Trait`          | `ApiResponseTrait`                         |
-| Seeder                  | `Seeder`         | `ClientSeeder`                               |
-| Factory                 | `Factory`        | `ClientFactory`                              |
-| Console Command         | `Command`        | `SyncBookingsCommand`                      |
-| Exception               | `Exception`      | `ChairAlreadyBookedException`              |
-| Job                     | `Job`            | `SendReminderJob`                          |
-| Notification            | `Notification`   | `BookingConfirmationNotification`          |
-| Value Object            | `ValueObject`    | `ApiResponseBodyValueObject`               |
-| Filament Resource       | `Resource`       | `BookingResource`                          |
-| Filament Page           | `Page`           | `FloorPlanPage`                            |
-| Filament Widget         | `Widget`         | `BookingsOverviewWidget`                   |
-
-## Autoloading
-
-PSR-4: `Modules\` → `modules/`, `Database\Seeders\` → `database/seeders/`, `Tests\` → `tests/`.
+- [Part 2: Naming](references/skill-part-2.md)

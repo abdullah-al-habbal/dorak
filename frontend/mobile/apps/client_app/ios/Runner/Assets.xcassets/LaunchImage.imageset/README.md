@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.ios-launch-image
+parentnode: mobile.apps.client-app.readme
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/ios/
+---
+
 # Launch Screen Assets
 
 You can customize the launch screen with your own desired assets by replacing the image files in this directory.

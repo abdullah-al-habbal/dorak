@@ -1,7 +1,9 @@
 ---
 nodeid: backend.08-edge-cases
 parentnode: backend.docs
-childnodes: []
+childnodes:
+  - backend.08-edge-cases.part-2
+  - backend.08-edge-cases.part-3
 codeanchors:
   - backend/modules/
 ---
@@ -48,86 +50,7 @@ codeanchors:
 
 ---
 
-## Standalone barbers & affiliations
+## Continued in
 
-### EC‑8 — Barber affiliated with several shops at once ✅
-**Scenario:** A popular barber works for two brands and freelances at home.
-**Behavior:** Multiple **active affiliations** coexist `[C4]`, plus independent at‑home work. Each affiliation is its own link with its own status.
-
-### EC‑9 — Schedule conflict across affiliations 🟡
-**Scenario:** The same barber is double‑booked across **two different shops** (or a shop + at‑home) for overlapping times.
-**Behavior:** The system should prevent a barber from being committed to two places at once. 🟡 *whether MVP enforces a unified barber calendar across affiliations, or treats each shop's calendar separately, is an Open Decision (relates to `02-prd.md` §8 #5).*
-
-### EC‑10 — Barber leaves a shop ✅
-**Scenario:** An affiliation is **terminated**.
-**Behavior:** The barber's **profile, portfolio, and personal services stay** `[C5]`; the chair they used becomes **unassigned**; their future shop bookings are handled like EC‑2. The barber keeps freelancing if they wish.
-
-### EC‑11 — Freelancer with no fixed location in search ✅
-**Scenario:** An at‑home‑only barber has no building/coordinates.
-**Behavior:** They still appear in **search** by name/service (the unified search surfaces freelancers), and booking uses the **client's** location, not the barber's `[E4]`. They simply don't anchor to the proximity map the way branches do.
-
----
-
-## Universes & unisex
-
-### EC‑12 — Unisex shop and the universe filter ✅
-**Scenario:** A unisex salon should reach both audiences.
-**Behavior:** It appears in **both** the Men's Grooming and Women's Beauty universes `[J5]`.
-
-### EC‑13 — Separate men's/women's sections in one unisex shop ✅
-**Scenario:** A unisex shop physically has distinct men's and women's areas.
-**Behavior:** One unified floor plan represents the sections as designated zones.
-
----
-
-## Money
-
-### EC‑14 — Exchange rate changes between viewing and paying ✅(principle)
-**Scenario:** A client sees a converted price, then books moments later after the rate moved.
-**Behavior:** Prices are **computed on the fly from the current rate** `[D4]`; the displayed converted value is **indicative**. The **base‑currency price is the source of truth**. 🟡 *whether to "freeze" a quoted rate at booking time is a future refinement.*
-
-### EC‑15 — Missing exchange rate for a currency pair ✅(policy)
-**Scenario:** No rate exists to convert into the client's display currency.
-**Behavior:** Fall back to showing the **base‑currency price** (never show a wrong or blank price).
-
----
-
-## Language
-
-### EC‑16 — Missing translation for a name/description ✅
-**Scenario:** A shop filled Arabic but not English (or vice‑versa).
-**Behavior:** Show the **available language as fallback** `[J2]` — a label is **never empty**.
-
----
-
-## Chairs, jobs, and reviews
-
-### EC‑17 — Branch with zero chairs ✅
-**Scenario:** A storefront exists but no chairs are defined yet.
-**Behavior:** The branch is **visible** but **not chair‑bookable** `[B6]` (an at‑home affiliated barber could still be booked by barber/location).
-
-### EC‑18 — Reviewing without a completed appointment ✅
-**Scenario:** Someone tries to review a shop they never actually visited.
-**Behavior:** **Not allowed** — reviews require a **completed** booking `[F2]`.
-
-### EC‑19 — Duplicate or similar brand/branch names ✅(principle)
-**Scenario:** Several "Royal Barber" branches exist across cities.
-**Behavior:** Search matches **branch + brand + tags** and ranks by **proximity**, so the client distinguishes by **distance and details**, not by name alone `[search]`.
-
-### EC‑20 — Job posted on a branch that later closes/deletes 🟡
-**Scenario:** A job's branch is removed while the job is open.
-**Behavior:** Open jobs for a removed branch should be **closed automatically**; existing applications remain visible to the owner. 🟡 *confirm desired handling.*
-
----
-
-## Identity
-
-### EC‑21 — One person is both a Client and a Barber ✅
-**Scenario:** A barber also books appointments as a client elsewhere.
-**Behavior:** One phone number may carry both profiles. Managers may also add a Barber by name and phone before that barber creates an app account.
-
----
-
-## Summary of what's still open 🟡
-
-EC‑6 (downgrade lock UX), EC‑9 (cross-affiliation calendar), EC‑14 (rate freezing), and EC‑20 (job on deleted branch) remain open. The cancellation, unisex-sectioning, and dual-profile identity rules are locked in `02-prd.md` §8.
+- [Part 2: Standalone barbers & affiliations](08-edge-cases-part-2.md)
+- [Part 3: Language](08-edge-cases-part-3.md)

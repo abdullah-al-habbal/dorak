@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.laravel-attributes.references.eloquent-attributes
+parentnode: skills.backend.laravel-attributes
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 Referenced from [`../SKILL.md`](../SKILL.md).
 
 ## Eloquent model attributes

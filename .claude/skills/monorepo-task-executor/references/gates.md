@@ -1,3 +1,13 @@
+---
+nodeid: skills.repo.monorepo-task-executor.references.gates
+parentnode: skills.repo.monorepo-task-executor
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Quality gates
 
 Run each from the stated directory. Never claim a gate passed unless the command completed and you saw the result.

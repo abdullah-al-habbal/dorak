@@ -1,3 +1,12 @@
+---
+nodeid: skills.backend.laravel-native-abstractions.references.anti-patterns-and-decision-tree
+parentnode: skills.backend.laravel-native-abstractions
+childnodes:
+  - skills.backend.laravel-native-abstractions.references.anti-patterns-and-decision-tree.part-2
+codeanchors:
+  - backend/modules/
+---
+
 Referenced from [`../SKILL.md`](../SKILL.md).
 
 ## Anti-pattern detector
@@ -41,25 +50,6 @@ A trigger to **investigate**, not a mechanical rewrite rule.
 | `new SomeService(config(...))` in business code | container / constructor injection |
 | hand-rolled fakes for framework integrations | `Http::fake()`, `Queue::fake()`, `Event::fake()`, … |
 
+## Continued in
 
-## Decision tree
-
-```text
-Does Laravel already model this concept?
-│
-├─ Yes
-│  ├─ Is there a dedicated semantic method/attribute?
-│  │    └─ Use it.
-│  ├─ Is there only a broader builder/facade API?
-│  │    └─ Use the broader API rather than custom infrastructure.
-│  └─ Is the behaviour reusable domain logic?
-│       └─ Encode it in the model / policy / rule / Handler layer.
-│
-└─ No
-   ├─ Is this a database-engine-specific requirement?
-   │    └─ Use Query Builder / raw SQL deliberately, with a comment.
-   ├─ Is this genuine domain behaviour?
-   │    └─ Implement it in the module (Action → Handler → Resolver).
-   └─ Is this infrastructure?
-        └─ First check whether a Laravel contract or installed package already covers it.
-```
+- [Part 2: Decision tree](anti-patterns-and-decision-tree-part-2.md)

@@ -1,7 +1,10 @@
 ---
 nodeid: mobile.apps.client-app.feature-index
 parentnode: mobile.apps.client-app
-childnodes: []
+childnodes:
+  - mobile.apps.client-app.feature-index.part-2
+  - mobile.apps.client-app.feature-index.part-3
+  - mobile.apps.client-app.feature-index.part-4
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
@@ -53,132 +56,8 @@ codeanchors:
 - `lib/src/features/auth/auth_validators.entity.dart` — email / min-8 / confirmation-match, mirroring the backend rules.
 - `lib/src/features/auth/auth_error.entity.dart` — maps exceptions to local ARB strings. The backend's own `message` is an untranslated key and must never be rendered.
 
-### Password Recovery — Stitch 011–014
-- `lib/src/features/auth/password_recovery.bloc.dart` (+ `.event.dart`, `.state.dart`) and `recovery_signal.entity.dart` — app-layer bloc over the core `AuthRepository`; carries `email` and `code` across the four steps.
-- `forgot_password.screen.dart` (011) + `widgets/forgot_password_content.widget.dart` — email field, `AuthValidators.email`, "Send Code".
-- `recovery_otp.screen.dart` (012) + `widgets/recovery_otp_content.widget.dart` — six reused `OtpInputField`s, masked destination, 60 s resend cooldown. **Cannot validate the code** — no such endpoint exists.
-- `create_new_password.screen.dart` (013) + `widgets/create_new_password_content.widget.dart` — new + confirm password. **This is where a rejected code surfaces**, with a "Re-enter code" action back to 012.
-- `password_reset_success.screen.dart` (014) — a thin `StatusView` wrapper; the first production consumer of that Track 12 component. Exits with `router.go`, so the recovery stack is dropped.
-- Constraints and the enumeration mitigation: `docs/authentication/password-recovery.md`.
+## Continued in
 
-### Bootstrap & Navigation
-- `lib/main.dart` — binding init, dotenv, `SharedAppPreferences.create()`, then `DorakApp`.
-- `lib/app.dart` — builds secure storage → `ApiClient` (with `tokenProvider`) → `DioAuthRepository` → `AuthBloc` → `SessionBloc(repository, storage)` → `OnboardingConfigBloc` → `LocaleBloc`; starts `session.ready` unawaited so restore overlaps the splash; subscribes the auth stream → `SessionAuthenticated`, the unauthorized stream → `UnauthorizedDetected`, and locale → config reload. Test seams: `tokenStorage`, `authRepository`.
-- `lib/src/core/navigation/app.router.dart` — `AppRouter` (go_router); three stream listeners (session + auth + recovery) re-run the redirect and react to `SessionSignal` / `AuthSignal` / `RecoverySignal` before acknowledging; `router.go(AppRoutes.home)` clears the stack.
-- `lib/src/core/navigation/app_routes.entity.dart` — `AppRoutes` path constants.
-- `lib/src/core/navigation/app_gate.entity.dart` — `AppGate.resolve`, a pure function called from `AppRouter._leaveSplash` once `session.ready` completes (session first, onboarding flag second). It is deliberately **not** in the redirect — the splash must hold for its animation.
-
-### Home
-
-### Tests
-- `test/widget_test.dart` — real `DorakApp` bootstrap: splash → gate → auth entry.
-- `test/app_gate_test.dart` — all six launch-gate branches.
-- `test/auth_flow_test.dart` — login, validation, sign-up → verify, OTP success/failure, skip, resend cooldown.
-- `test/password_recovery_bloc_test.dart` — recovery transitions, the enumeration mitigation, the carried code, the rejected code.
-- `test/password_recovery_flow_test.dart` — 011→014 route walk; an unregistered email still advances; a rejected code routes back to 012; 014 drops the stack.
-- `test/onboarding_config_bloc_test.dart` — config load, retry after a failure, locale refetch.
-- `test/locale_switcher_flow_test.dart` — shared `LocaleSwitcher` across the auth screens, EN↔AR round trip, RTL flip.
-- `test/session_expired_test.dart` — 401 mid-session → session-expired signal → auth redirect.
-- `test/onboarding_skip_test.dart` — Skip vs Don't show again vs Cancel, full four-step walk, empty back-stack.
-- `test/helpers/fakes.dart` — router harness + in-memory storage/preferences/auth fakes.
-
-### Discovery Feed — Stitch 016 (CL-09)
-- `lib/src/features/discovery/discovery.{bloc,event,state}.dart` + `discovery_filter.entity.dart` — location-gated feed over `Paged<BranchDto>` + `FeedCache` (stale label, revalidate, evict-on-filter-change).
-- `lib/src/features/discovery/discovery.screen.dart` — location-required / error / loading / empty / feed states, pull-to-refresh, infinite scroll.
-- `lib/src/features/discovery/widgets/discovery_filter_bar.widget.dart` — universe segmented control, available-now switch, price range, rating slider.
-- `lib/src/features/discovery/widgets/discovery_result_card.widget.dart` — rank/compatibility/distance badges, Book Now, optional View Details.
-- `test/discovery_bloc_test.dart` — 15 bloc cases; `test/helpers/fakes.dart` gains `FakeExploreRepository`, `FakeLocationProvider`, `FakeFeedCache`, `testPosition`/`testBranch`/`testBranchPage`, `fakeDiscoveryBloc`.
-
-### Authenticated Password Change — Track 17
-- `lib/src/features/auth/change_password.{bloc,event,state}.dart` — submit over `AuthRepository.changePassword`, `succeeded` flag, typed error.
-- `lib/src/features/auth/change_password.screen.dart` + `widgets/change_password_content.widget.dart` — `AuthShell` form (current/new/confirm), `AuthValidators`, 422 field errors in the banner, success `StatusView` with Done pop.
-- Entered from the Profile tab (`SecondaryButton`), nested `/profile/password` route.
-- `test/change_password_bloc_test.dart` + `test/change_password_flow_test.dart`.
-
-### My Bookings — Stitch 017a (CL-10a)
-- `lib/src/features/booking/booking.{bloc,event,state}.dart` — upcoming/past filter, refresh, load-more, cancel-then-reload over `Paged<BookingDto>`.
-- `lib/src/features/booking/bookings.screen.dart` — filter + list + cancel confirm dialog; filter renders in the empty state.
-- `lib/src/features/booking/widgets/booking_card.widget.dart` — locale-aware time, status badge, barber/chair/services, cancel affordance.
-- `test/booking_bloc_test.dart` + `test/booking_flow_test.dart`; `FakeBookingRepository`, `testBooking`/`testBookingPage`, `fakeBookingBloc` in fakes.
-
-### Branch Floor Plan & Booking Creation — Stitch 017b (CL-10b)
-- `lib/src/features/booking/branch_detail.{bloc,event,state}.dart` — parallel detail + floor-plan load (plan failure tolerated), chair/services/date/slot selection, submit (`canSubmit` = chair + time ∈ offered slots), 409 conflict, retry. `_loadSlots` (Task 21) calls `BranchRepository.getBranchSlots` or `BookingRepository.getBarberSlots` once services (and a chair, or an at-home barber) are chosen, guarded by a synchronous request-id latch against stale responses.
-- `lib/src/features/booking/branch_detail.screen.dart` — floor plan grid, barbers, services checklist, date picker + slot `ChoiceChip` list (free time picker removed), confirm, success `StatusView` → My Bookings.
-- `lib/src/features/booking/widgets/floor_plan_grid.widget.dart` — legend + tappable available chairs.
-- Nested `/discover/branch/:branchId` route; "View Details" on result cards; `BranchDetailBloc` built in `app.dart`.
-- `test/branch_detail_bloc_test.dart` (incl. "cannot submit a time that was not offered by the slot list"); `FakeBranchRepository`/`FakeBookingRepository` slot methods, `testSlots`/`testSlotStart`, `testFloorPlan`, `testBranchDetail`, fake `createBooking` in fakes.
-
-### Service History & Rebook — Stitch 018a (CL-11a)
-- `lib/src/features/profile/history.{bloc,event,state}.dart` — `HistoryBloc` over `Paged<ServiceHistoryDto>` (start/refresh/load-more/retry) + rebook submit → `rebooked` flag, `HistoryRebookRequested` resets via `HistoryRebookAcknowledged`.
-- `lib/src/features/profile/profile.screen.dart` — rebuilt into the 018 profile tab: client-name header card (fallback `profileMemberLabel`), Change Password entry kept, Service History section (per-entry rebook via Material date + time pickers, per-card `rebookingId` loader, 409 → `bookingConflictMessage`, success `StatusView` → My Bookings), RefreshIndicator + scroll load-more + retry + first-load/empty/error states.
-- `test/history_bloc_test.dart` (8 cases) + `test/history_flow_test.dart`; `FakeHistoryRepository`, `testServiceHistory`/`testHistoryPage`, `fakeHistoryBloc`, `buildRouter` `history` param in fakes.
-
-### Face Analysis & AI Style — Stitch 018b (CL-11b)
-- `lib/src/features/profile/face_analysis.{bloc,event,state}.dart` — `FaceAnalysisBloc` over core `FaceProfileRepository` + `ServiceCatalogRepository`: start loads recommendations, scan uploads then polls the owned face profile's `analysis_status` with bounded backoff, terminal failure can be retried with a new scan, and `recommended_catalog_item_ids` are resolved into `CatalogItemDto`s by paging the catalog (per_page 100, cap 5 pages, catalog failure tolerated).
-- `lib/src/features/profile/phone_verification.{bloc,event,state,screen}.dart` + `phone_verification_status.entity.dart` — `PhoneVerificationBloc` over core `ProfileRepository.requestPhoneOtp/verifyPhoneOtp`; route `AppRoutes.phoneVerify` (`/profile/phone-verify`, phone passed as `extra`). Profile edit (`ProfileEditCubit.phoneToVerify`) and profile completion (`ProfileCompletionState.phoneToVerify`) no longer PATCH the phone; the router pushes this screen, and a verified client is forwarded as `SessionAuthenticated`. Tests: `phone_verification_bloc_test.dart`, `phone_verification_screen_test.dart`, plus updated profile edit/completion tests.
-- `lib/src/features/profile/avatar.{bloc,event,state}.dart` — `AvatarBloc` over core `ProfileRepository.uploadAvatar` → `avatarUrl`.
-- `lib/src/features/profile/{photo_picker,image_picker_photo_picker}.provider.dart` — `PhotoPicker` seam + `ImagePickerPhotoPicker` (`image_picker` dep, hidden so tests never hit the platform).
-- `lib/src/features/profile/profile.screen.dart` — avatar header (tap to upload, in-flight loader, fallback initial + camera badge), Face Analysis card (empty / pending / result with shape + confidence + photo / error-with-retry), Curated For You section (item name `[localeCode] ?? ['en']`, price range, style period).
-- `test/face_analysis_bloc_test.dart` (9 cases) + `test/avatar_bloc_test.dart` (2) + `test/face_analysis_flow_test.dart` (4); `FakeFaceProfileRepository`, `FakeProfileRepository`, `FakeServiceCatalogRepository`, `FakePhotoPicker`, `testFaceAnalysis`/`testCatalogItem`/`testCatalogPage`, `fakeFaceAnalysisBloc`/`fakeAvatarBloc`, `buildRouter` params in fakes.
-
-### Stylist Profile — Stitch 019 (CL-12)
-- `lib/src/features/stylist/stylist_profile.{bloc,event,state}.dart` — `StylistProfileBloc` over core `ExploreRepository.getBarberDetail` + `CurrencyRepository.getCurrencies` (parallel detail + currencies load, currency failure tolerated, retry).
-- `lib/src/features/stylist/stylist_profile.screen.dart` — avatar header, stats row mapping `rank`/`compatibility_score` onto `discoverRankBadge`/`discoverCompatibilityBadge` localizations, services list with price/currency/duration/at-home flag.
-- Branch-detail barbers → tappable rows navigating to `/discover/barber/:barberId`.
-- `test/stylist_profile_bloc_test.dart` + `test/stylist_profile_flow_test.dart`.
-
-### Notification Inbox (Task 30)
-- `lib/src/features/notifications/notifications.{bloc,event,state}.dart` — `NotificationsBloc` over `Paged<NotificationDto>`: start/refresh/load-more/retry, mark one read (`markingId`), mark all read (`isMarkingAll`); each mark reloads page 1 so server ordering (unread first) stays authoritative.
-- `lib/src/features/notifications/notifications.screen.dart` + `widgets/notification_tile.widget.dart` — inbox at `/profile/notifications` (nested profile route via `_scope`), entered from the Profile tab's Notifications button; tap marks an unread row read; app-bar "Mark all as read" while anything is unread.
-- Wiring: `AppServices.createNotifications`, `AppRouter.notifications` test seam, `buildRouter(notifications:)` + `FakeNotificationRepository` in `test/helpers/fakes.dart`.
-
-### Notification Tap Routing (Task 31)
-- `lib/src/core/navigation/notification_location.entity.dart` — maps a core `NotificationTarget` to a route: `review_request` → `/bookings/reviews/:bookingId`, `booking_update` → `/bookings`; invite/application/unknown → none.
-- Inbox rows now navigate (read rows too) after marking an unread row read; `DorakApp` opens pushed notifications (`PushNotificationService.opened` + `takeInitialTarget()`), holding the location until the session is authenticated.
-- Tests: `test/notification_location_test.dart`, `test/notifications_flow_test.dart`.
-
-### Empty Scaffolds (no files yet)
-- `lib/src/features/profile/` (password entry button only)
-- `lib/src/core/{di,theme}/`
-
-### Review & Rating — Stitch 020 (CL-13)
-
-- `lib/src/features/review/review_submit.event.dart` — `ReviewSubmitStarted(bookingId, {rating, comment})`, `ReviewSubmitRetried`.
-- `lib/src/features/review/review_submit.state.dart` — `bookingId`, `rating`, `comment`, `isSubmitting`, `submitted`, `error`.
-- `lib/src/features/review/review_submit.bloc.dart` — `ReviewSubmitBloc` over `ReviewRepository.submitReview`; retry re-submits from stored rating.
-- `lib/src/features/review/review_submit.screen.dart` — `ReviewSubmitScreen`: star rating row (1–5), comment field (max 1000, 4 rows), submit `PrimaryButton` (`isLoading`/`isDisabled`), success `StatusView` ("Review submitted" → View Bookings).
-- `lib/src/core/navigation/app_routes.entity.dart` — `reviewSegment`, `reviewDetail(bookingId)`.
-- `lib/src/core/navigation/app.router.dart` — `/reviews/:bookingId` route nested under the Bookings shell branch.
-- `lib/src/features/booking/widgets/booking_card.widget.dart` — `rateLabel`/`onRate` params; "Rate" button shown when `status == 'completed'`.
-- `lib/src/features/booking/bookings.screen.dart` — `onRate` callback → `router.push(reviewDetail(bookingId))`.
-- `lib/app.dart` — `DioReviewRepository` + `ReviewSubmitBloc` DI, closed in `dispose()`.
-- `test/helpers/fakes.dart` — `FakeReviewRepository`, `testReview()`, `fakeReviewSubmitBloc()`, `reviewSubmit` param on `buildRouter`.
-
-### Assets
-- `assets/images/noise_overlay.png` — generated noise texture (replaces SVG).
-- `assets/images/onboarding_hero.jpg` — hero image, local-first.
-
----
-
-## Client Feature Registry
-
-| # | Feature | Status | Source |
-|---|---------|--------|--------|
-| CL-01 | Splash | ✅ Complete | Stitch 001 |
-| CL-02 | Onboarding Welcome | ✅ Complete | Stitch 002 |
-| CL-03 | Onboarding Discovery | ✅ Complete | Stitch 003 |
-| CL-04 | Onboarding Booking | ✅ Complete | Stitch 004 |
-| CL-05 | Onboarding AI Showcase | ✅ Complete | Stitch 005 |
-| CL-06 | Onboarding Infrastructure (config, skip sheet, flow) | ✅ Complete | — |
-| CL-07 | Home placeholder | ✅ Complete | — |
-| CL-08 | Auth flow — entry / login / register / verify | ✅ Complete | Stitch 006–009 |
-| CL-08c | Locale switcher on all pre-Home screens (onboarding header + auth entry/login/register/verify via shared `LocaleSwitcher`) | ✅ Complete | — |
-| CL-08b | Password recovery — forgot / code / new password / success | ✅ Complete | Stitch 011–014 |
-| CL-14 | Launch gate + go_router route table | ✅ Complete | Tracks 10–11 |
-| CL-09 | Discovery Feed | ✅ Complete | Stitch 016 |
-| CL-17 | Authenticated password change | ✅ Complete | Track 17 |
-| CL-10a | My Bookings (list/filter/cancel) | ✅ Complete | Stitch 017a |
-| CL-10b | Branch Floor Plan & Booking creation | ✅ Complete | Stitch 017b |
-| CL-11 | Personalised Profile & AI Style — 018a Service History + Rebook; 018b Face Analysis + AI recs | ✅ Complete | Stitch 018 |
-| CL-12 | Stylist Profile | ✅ Complete | Stitch 019 |
-| CL-13 | Review & Rating | ✅ Complete | Stitch 020 |
+- [Part 2: Password Recovery — Stitch 011–014](feature-index-part-2.md)
+- [Part 3: My Bookings — Stitch 017a (CL-10a)](feature-index-part-3.md)
+- [Part 4: Empty Scaffolds (no files yet)](feature-index-part-4.md)

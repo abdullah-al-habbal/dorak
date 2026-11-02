@@ -11,6 +11,7 @@ childnodes:
   - mobile.apps.client-app.references.tests
   - mobile.apps.client-app.references.verification
   - mobile.apps.client-app.runtime.app-lifecycle
+  - mobile.apps.client-app.part-2
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
@@ -55,31 +56,6 @@ lib/src/core/di/ theme/           empty
 assets/images/                    noise_overlay.png, onboarding_hero.jpg
 ```
 
-## More
+## Continued in
 
-| Topic | Read |
-| --- | --- |
-| Bootstrap, launch gate, auth flow (006–014), onboarding flow (002–005) | [`references/bootstrap-and-flows.md`](references/bootstrap-and-flows.md) |
-| Feature status — built vs not built | [`references/feature-status.md`](references/feature-status.md) |
-| Decisions that are not in the code (§7) | [`references/decisions.md`](references/decisions.md) |
-| Tests — 145, in `test/` | [`references/tests.md`](references/tests.md) |
-
-## 9. Known limitations
-
-- Onboarding screens 002–005 lay out in a non-scrolling `Column` and clip on
-  short viewports.
-- `README.md` is untouched Flutter template boilerplate.
-- Locale toggle is in-memory and resets on restart.
-
-## 10. Commands
-
-```bash
-cd apps/client_app
-flutter run
-flutter test
-
-cd frontend/mobile && dart run melos run verify
-```
-
-Base URL comes from `.env` (gitignored, `.env.example` committed) and points at
-`https://dev-dorak-backend.io/api/v1`. There is no local-dev profile.
+- [Part 2: More](agents-part-2.md)

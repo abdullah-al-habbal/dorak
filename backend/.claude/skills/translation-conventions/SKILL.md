@@ -1,6 +1,11 @@
 ---
 name: translation-conventions
 description: Translation file structure, key naming, retrieval via TranslatorHandlerService, and enum-integrated messages. Use whenever adding or retrieving user-facing strings.
+nodeid: skills.backend.translation-conventions
+parentnode: skills.backend
+childnodes: []
+codeanchors:
+  - backend/modules/
 ---
 
 # Translation conventions

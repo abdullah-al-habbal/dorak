@@ -1,7 +1,9 @@
 ---
 nodeid: mobile.packages.localization.references.keys
 parentnode: mobile.packages.localization
-childnodes: []
+childnodes:
+  - mobile.packages.localization.references.keys.part-2
+  - mobile.packages.localization.references.keys.part-3
 codeanchors:
   - frontend/mobile/packages/localization/lib/
 ---
@@ -58,66 +60,7 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 `discoverStaleLabel` `discoverTabLabel` `discoverDistanceLabel`
 `discoverRankBadge` `discoverCompatibilityBadge`
 
-**Change password (Track 17)** — `changePasswordTitle` `changePasswordSubtitle`
-`changePasswordCurrentLabel` `changePasswordNewLabel`
-`changePasswordConfirmLabel` `changePasswordSubmit`
-`changePasswordSuccessTitle` `changePasswordSuccessMessage`
-`changePasswordDone`
+## Continued in
 
-**My Bookings (017a)** — `bookingsTabLabel` `bookingFilterUpcoming`
-`bookingFilterPast` `bookingStatusConfirmed` `bookingStatusCancelled`
-`bookingStatusCompleted` `bookingWithBarber` `bookingChairLabel`
-`bookingCancelAction` `bookingCancelConfirmTitle`
-`bookingCancelConfirmMessage` `bookingCancelConfirm`
-
-**Branch detail + booking creation (017b)** — `branchChairsCount`
-`branchAvailableLabel` `branchOccupiedLabel` `branchMaintenanceLabel`
-`branchBarbersTitle` `branchServicesTitle` `bookingSelectChair`
-`bookingSelectServices` `bookingSelectTime` `bookingConfirmAction`
-`bookingSuccessTitle` `bookingSuccessMessage` `bookingViewBookings`
-`bookingConflictMessage`
-
-**Service History + Rebook (018a)** — `historyTitle` `historyEmptyTitle`
-`historyEmptyMessage` `historyRebookAction` `historyRebookTitle`
-`historyRebookMessage` `historyRebookSuccessTitle`
-`historyRebookSuccessMessage` `profileMemberLabel`
-
-**Face Analysis + AI Style (018b)** — `profileAvatarFallbackInitial`
-`profileUploadingAvatar` `faceAnalysisTitle` `faceAnalysisSubtitle`
-`faceAnalysisScanAction` `faceAnalysisCheckAgainAction`
-`faceAnalysisNoPhotoMessage` `faceAnalysisNoPhotoAction` `faceAnalysisPendingTitle`
-`faceAnalysisPendingMessage` `faceAnalysisDetectedShapeLabel` `faceShapeOval`
-`faceShapeRound` `faceShapeSquare` `faceShapeHeart` `faceShapeDiamond`
-`faceShapeOblong` `faceShapeTriangle` `faceAnalysisUploadError`
-`faceAnalysisResultsError` `curatedForYouTitle` `curatedForYouSubtitle`
-`curatedPriceRange`
-
-## 4. Parameterised keys
-
-Ten, and they generate **methods**, not getters:
-
-```dart
-String verifySubtitle(String email);        // "…code we sent to {email}"
-String verifyResendDisabled(int seconds);   // "Resend Code ({seconds}s)"
-String discoverDistanceLabel(double km);    // "{km} km"
-String discoverRankBadge(int rank);         // "#{rank}"
-String discoverCompatibilityBadge(int percent); // "{percent}%"
-String branchChairsCount(int count);        // "{count} chairs"
-String historyRebookMessage(String item);   // "Rebook {item}?"
-String curatedPriceRange(num min, num max, String currency); // "{min}–{max} {currency}"
-String serviceDurationLabel(int minutes);   // "{minutes} min"
-String servicePrice(String displayPrice, String currency); // "{displayPrice} {currency}"
-```
-
-ARB form:
-
-```json
-"verifyResendDisabled": "Resend Code ({seconds}s)",
-"@verifyResendDisabled": {
-  "description": "Verify account resend action during cooldown",
-  "placeholders": { "seconds": { "type": "int" } }
-}
-```
-
-Everything else is a plain getter. There are no plurals or `select` messages
-yet — adding one is fine, but declare the placeholder type.
+- [Part 2: continued](keys-part-2.md)
+- [Part 3: 4. Parameterised keys](keys-part-3.md)

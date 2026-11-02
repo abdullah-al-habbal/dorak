@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.references.localization-assets
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 # Localization, assets, fonts
 
 ## Localization

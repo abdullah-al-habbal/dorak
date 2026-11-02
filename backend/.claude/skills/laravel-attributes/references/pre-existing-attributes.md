@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.laravel-attributes.references.pre-existing-attributes
+parentnode: skills.backend.laravel-attributes
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 Referenced from [`../SKILL.md`](../SKILL.md).
 
 ## Pre-existing attributes (Laravel 11-12, still valid)
@@ -58,4 +66,3 @@ class PaymentService
 - `#[Bind]` — new instance per resolution
 - `#[Singleton]` — one shared instance
 - `#[Scoped]` — one instance per request scope
-

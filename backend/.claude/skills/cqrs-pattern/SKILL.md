@@ -1,6 +1,13 @@
 ---
 name: cqrs-pattern
 description: CQRS pattern implementation with Command/Query objects flowing through Action -> Handler -> EloquentResolver. Use whenever building a read or write endpoint — actions build command/query objects, handlers contain logic, resolvers access data.
+nodeid: skills.backend.cqrs-pattern
+parentnode: skills.backend
+childnodes:
+  - skills.backend.cqrs-pattern.references.read-example
+  - skills.backend.cqrs-pattern.references.write-example
+codeanchors:
+  - backend/modules/
 ---
 
 # CQRS pattern

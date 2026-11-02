@@ -6,6 +6,7 @@ childnodes:
   - mobile.state-management.conventions
   - mobile.state-management.pagination
   - mobile.state-management.refresh
+  - mobile.state-management.part-2
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---
@@ -44,41 +45,6 @@ Everything else on this page elaborates one part of it.
 - Errors are state, not exceptions to rethrow. The UI localizes them; a backend
   `message` is never rendered.
 
-## Current blocs
+## Continued in
 
-| Bloc | Location | State |
-|---|---|---|
-| `SessionBloc` | `packages/core/lib/src/session/` | `SessionState` + `SessionSignal` |
-| `AuthBloc` | `packages/core/lib/src/session/` | `AuthState` + `AuthSignal` |
-| `LocaleBloc` | `apps/client_app/lib/src/core/locale/` | `Locale` — see the exemption below |
-| `OnboardingConfigBloc` | `apps/client_app/lib/src/features/onboarding/` | `OnboardingConfigState` |
-
-### The single-value-state exemption
-
-`LocaleBloc` is `Bloc<LocaleEvent, Locale>` and has no `.state.dart`. This is
-sanctioned, not an oversight: a bloc whose entire state is one value-equal type
-may use that type directly. The `.bloc`/`.event`/`.state` triple names files
-that exist; it is not a mandate to create wrapper classes. Full rule and the
-conversion trigger: [`conventions.md`](./conventions.md) §1a.
-
-## Why `background_operations.md` is empty
-
-Nothing in Dorak performs background work — no upload queue, no scheduler, no
-isolate, no background fetch. Writing a contract for it would be fiction, and a
-future agent would follow it. The file stays empty until Track 13 (File & Media
-Infrastructure) creates something real to describe.
-
-## Open items
-
-| Item | Status |
-|---|---|
-| Pagination contract validated by a real feature | **pending** — `Paged<T>` exists and is tested, but has no consumer until Discovery (016) |
-| `bloc_concurrency` for cancellation (`restartable()`) | **pending a consumer** — added with the first search field, not before |
-| Global loading / empty / error / offline / retry **widgets** | Track 12 — this track defines state, not UI components |
-
-## Verification
-
-```bash
-cd frontend/mobile
-dart run melos run verify
-```
+- [Part 2: Current blocs](index-part-2.md)

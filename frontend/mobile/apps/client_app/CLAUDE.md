@@ -1,7 +1,8 @@
 ---
 nodeid: mobile.apps.client-app.claude
 parentnode: mobile.apps.client-app
-childnodes: []
+childnodes:
+  - mobile.apps.client-app.claude.part-2
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
@@ -42,54 +43,6 @@ lib/src/features/<feature>/      <name>.screen.dart + widgets/ + entities + <nam
 Files at `lib/` root are exempt from the taxonomy checker; everything under
 `lib/src/` is not.
 
-## 4. Hard rules
+## Continued in
 
-1. **Screens are dumb.** A `.screen.dart` receives callbacks and renders. It
-   must not call a repository, touch storage, or decide where to navigate next.
-2. **Flow logic lives in `AppRouter`** (`app.router.dart`), never inside a
-   screen or a bloc. Screens receive callbacks wired by the router. The router
-   owns the two stream listeners (session + auth): it re-runs the redirect on
-   every state change and reacts to `SessionSignal` (auth/home/verify
-   navigation), then acknowledges each signal — session signals via
-   `SignalAcknowledged`, auth signals via `AuthSignalAcknowledged`.
-3. **Navigation is go_router through `AppRouter`** — `router.push/go`, or
-   `context.push/pop/go` inside screens. A local `context.pop()` to dismiss the
-   current route or sheet is the established idiom. Bloc never navigates.
-4. **No hardcoded strings.** `AppLocalizations.of(context)!` for everything
-   user-visible; add keys to both ARB files first.
-5. **No raw colours or text styles.** `DorakColors.of(context)`,
-   `DorakTypography.*`, `DorakDimensions.*`. A `Color(0xFF…)` here is a defect.
-6. **No second HTTP, state or routing stack.** `ApiClient` from `core`;
-   **Bloc** state (`flutter_bloc` at the app layer, pure `bloc` in core);
-   **go_router** routing. No Riverpod, Provider or GetIt. `ChangeNotifier` is
-   not used — do not add it. The canonical state contract is
-   [`docs/state-management/conventions.md`](../../docs/state-management/conventions.md).
-   `LocaleBloc` uses `Locale` directly as its state and has no `.state.dart` —
-   that is a sanctioned exemption (§1a there), not an oversight.
-   `bloc_concurrency` is deliberately **not** a dependency yet; it is added with
-   the first feature that needs `restartable()` cancellation.
-7. **DI is constructor wiring in `DorakApp.initState`.** There is no container.
-   Add a field there and thread it down; do not introduce a service locator.
-8. **Test seams stay optional.** `DorakApp`'s `tokenStorage` and
-   `authRepository` parameters exist for tests and must default to null in
-   production.
-9. **Feature-local widgets stay local.** Promote to `design_system` when a
-   widget has a genuine shared consumer across apps, **or** when it is a
-   Track 12 global UI-state component (loading, empty, error, offline, retry,
-   session states) that other features render. Do not pre-emptively hoist
-   feature inputs like `AuthTextField` or `OtpInputField`.
-10. **Never render a backend `message`.** The API returns untranslated keys
-    (`core::messages.*`). Map exceptions to local ARB strings — see
-    `auth_error.entity.dart`.
-11. **The code carries no comments.** Rationale goes in `AGENTS.md` §"Decisions
-    that are not in the code", not inline.
-
-## 5. Assets
-
-`assets/images/` and `.env` are declared in `pubspec.yaml`. Local assets only —
-no `Image.network` for critical UI. Never ship an SVG for `Image.asset`;
-Flutter cannot decode it.
-
-## 6. Verification
-
-@references/verification.md
+- [Part 2: 4. Hard rules](claude-part-2.md)

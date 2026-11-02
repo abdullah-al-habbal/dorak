@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.references.principles
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 # Dorak principles for a Stitch conversion
 
 All paths are relative to `frontend/mobile/` (the Melos workspace root). Authority, in order: `CLAUDE.md` (taxonomy + layering), `AGENTS.md` (inventory + decisions), the target app/package `CLAUDE.md`, then `docs/index.md` (tracks, Current Execution Point). If this file disagrees with those, they win; report the drift.

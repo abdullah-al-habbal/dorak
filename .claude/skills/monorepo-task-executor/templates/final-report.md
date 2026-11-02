@@ -1,3 +1,13 @@
+---
+nodeid: skills.repo.monorepo-task-executor.templates.final-report
+parentnode: skills.repo.monorepo-task-executor
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 **<Task NN> is done and committed locally as `<sha>`.** Nothing was pushed.
 
 **Decisions / inconsistencies**

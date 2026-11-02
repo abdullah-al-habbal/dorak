@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.laravel-native-abstractions.references.verification-and-ownership
+parentnode: skills.backend.laravel-native-abstractions
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 Referenced from [`../SKILL.md`](../SKILL.md).
 
 ## Version and source verification

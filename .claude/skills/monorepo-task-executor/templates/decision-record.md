@@ -1,3 +1,13 @@
+---
+nodeid: skills.repo.monorepo-task-executor.templates.decision-record
+parentnode: skills.repo.monorepo-task-executor
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 <!-- docs/decisions-required.md: replace the open line under the task heading -->
 - [x] Decision resolved (<ID, e.g. EC-2>): <choice>. <Observable behaviour: statuses, codes, side effects>. <What is deliberately not done and why>. <Follow-ups>.
 

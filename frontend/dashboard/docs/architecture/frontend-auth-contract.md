@@ -3,6 +3,8 @@ nodeid: dashboard.auth_contract
 parentnode: dashboard.guide
 childnodes:
   - dashboard.backend_additions
+  - dashboard.auth_contract.part-2
+  - dashboard.auth_contract.part-3
 codeanchors:
   - frontend/dashboard/src/proxy.ts
   - frontend/dashboard/src/services/api/
@@ -53,88 +55,7 @@ to another actor's portal redirects to the active actor's portal.
 - No secret is ever exposed to the browser: there is no `NEXT_PUBLIC_` auth
   variable. `DASHBOARD_SESSION_SECRET` and `BACKEND_API_URL` are server-only.
 
-## Backend endpoints used
+## Continued in
 
-| Endpoint                    | Method | Auth                            | Purpose                                 |
-| --------------------------- | ------ | ------------------------------- | --------------------------------------- |
-| `/api/v1/dashboard/login`   | POST   | none (throttle 5/min)           | Issue claim + access + refresh tokens   |
-| `/api/v1/dashboard/refresh` | POST   | refresh token (throttle 10/min) | Rotate refresh + issue new claim/access |
-| `/api/v1/dashboard/me`      | GET    | `dashboard` ability             | Canonical identity + permissions        |
-| `/api/v1/dashboard/logout`  | POST   | `dashboard` ability             | Revoke access + refresh tokens          |
-| `/health`                   | GET    | none                            | Public backend availability probe       |
-
-Login body: `{ actor_type: "admin" | "branch" | "barber" | "owner", email, password }`.
-The shared response envelope is `{ success, statusCode, code, message, timestamp, data, ... }`.
-
-## Claim
-
-`proxy.ts` verifies the claim locally with `crypto.subtle` (HS256, shared
-`DASHBOARD_SESSION_SECRET`), no third-party JWT library. Payload:
-
-```json
-{
-  "actor_type": "admin | branch | barber | owner",
-  "role": "platform_admin | branch_manager | barber | brand_owner",
-  "sub": "<actor uuid>",
-  "branch_id": "<branch uuid, omitted for admin/barber/owner>",
-  "brand_id": "<owner only: first owned brand>",
-  "brand_ids": ["<owner only: every owned brand>"],
-  "iat": 0,
-  "exp": 0,
-  "iss": "dorak-backend"
-}
-```
-
-## Session shape
-
-`GET /dashboard/me` is the canonical identity source. `permissions` are the
-Sanctum token abilities (there are no spatie roles on the dashboard actors).
-
-| Field                          | Purpose                                                    |
-| ------------------------------ | ---------------------------------------------------------- |
-| `subject`                      | Stable authenticated principal ID                          |
-| `actor` / `actorType` / `role` | Active actor and backend role                              |
-| `branchId`                     | Branch scope for `branch_manager` actors, otherwise `null` |
-| `brandIds`                     | Owned brands for `brand_owner` actors, otherwise `[]`      |
-| `permissions`                  | Token abilities for presentation and server authorization  |
-| `displayName` / `email`        | Header/profile presentation                                |
-| `claimExpiresAt`               | Expiry derived from the verified claim                     |
-
-## Route behavior
-
-| Route            | Requirement                        | Behavior                            |
-| ---------------- | ---------------------------------- | ----------------------------------- |
-| `/`              | Public                             | Landing page                        |
-| `/{actor}/login` | Public (redirects in if signed in) | Sign-in entry                       |
-| `/admin/*`       | `admin` session                    | Redirect to active portal otherwise |
-| `/manager/*`     | `manager` session                  | Redirect to active portal otherwise |
-| `/barber/*`      | `barber` session                   | Redirect to active portal otherwise |
-| `/owner/*`       | `owner` session                    | Redirect to active portal otherwise |
-| `/profile/*`     | Any valid session                  | Accessible to every actor           |
-| `/forbidden`     | Public                             | Access-denied explanation           |
-
-## Proxy responsibilities (`src/proxy.ts`)
-
-1. Bypass `/api/*` and public paths.
-2. Verify the claim cookie locally.
-3. On missing/expired claim, attempt a single refresh via
-   `/dashboard/refresh`; on success set the new cookies and redirect to the
-   same URL so the next request carries them.
-4. Redirect unauthenticated protected requests to the actor login with a
-   validated `callbackUrl`.
-5. Redirect signed-in users away from login routes, and cross-portal requests
-   back to their own portal.
-6. Fail closed: an unreachable backend or invalid claim is treated as no
-   session.
-
-## Login callbacks
-
-`callbackUrl` is accepted only when it is a single-slash-local path, contains no
-scheme or backslash, and lives under the actor's portal or `/profile`.
-
-## Deliberate limitation
-
-Verifying the claim in `proxy.ts` requires the shared HS256 secret to be present
-in the Next.js server environment; the Next server can therefore forge claims.
-This is accepted for Phase 2. The authoritative identity is still fetched from
-`/dashboard/me` with the access token in protected server renders.
+- [Part 2: Backend endpoints used](frontend-auth-contract-part-2.md)
+- [Part 3: Route behavior](frontend-auth-contract-part-3.md)

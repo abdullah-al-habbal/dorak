@@ -1,3 +1,12 @@
+---
+nodeid: skills.backend.laravel-attributes.references.routing-form-resource-factory-testing
+parentnode: skills.backend.laravel-attributes
+childnodes:
+  - skills.backend.laravel-attributes.references.routing-form-resource-factory-testing.part-2
+codeanchors:
+  - backend/modules/
+---
+
 Referenced from [`../SKILL.md`](../SKILL.md).
 
 ## Routing / controller attributes
@@ -43,28 +52,6 @@ Import from `Illuminate\Http\Resources\Attributes`.
 |---|---|
 | `#[UseModel(Post::class)]` from `Illuminate\Database\Eloquent\Factories\Attributes\UseModel` | `protected $model` |
 
-## Testing attributes
+## Continued in
 
-Import from `Illuminate\Foundation\Testing\Attributes`.
-
-| Attribute | Replaces |
-|---|---|
-| `#[Seed]` (marker) | `protected $seed = true` |
-| `#[Seeder(RoleAndPermissionSeeder::class)]` | `protected $seeder` |
-| `#[SetUp]` on a method | `protected function setUp()` |
-| `#[TearDown]` on a method | `protected function tearDown()` |
-
-```php
-use Illuminate\Foundation\Testing\Attributes\SetUp;
-
-class OrderTest extends TestCase
-{
-    private User $user;
-
-    #[SetUp]
-    public function createUser(): void
-    {
-        $this->user = User::factory()->create();
-    }
-}
-```
+- [Part 2: Testing attributes](routing-form-resource-factory-testing-part-2.md)

@@ -1,3 +1,13 @@
+---
+nodeid: skills.repo.monorepo-task-executor.references.audit-directive
+parentnode: skills.repo.monorepo-task-executor
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Audit directive (read before writing any code)
 
 ## Sources, in order

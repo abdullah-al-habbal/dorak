@@ -1,7 +1,8 @@
 ---
 nodeid: mobile.references.root.testing-conventions
 parentnode: mobile.guide
-childnodes: []
+childnodes:
+  - mobile.references.root.testing-conventions.part-2
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/
@@ -53,26 +54,6 @@ unit carries its own tests, and `verify` must exit 0. Test counts are not pinned
 | `client_app/test/stylist_profile_bloc_test.dart` | detail + currencies parallel load, currency failure tolerated, retry |
 | `client_app/test/stylist_profile_flow_test.dart` | avatar header, stats row, services list, branch-detail barbers → tappable rows |
 
-Rules:
+## Continued in
 
-- Use the fakes in `client_app/test/helpers/fakes.dart` and
-  `core/test/helpers/{fake_dio,fake_auth}.dart`. Never hit a real plugin or a
-  real network.
-- **Construct `Bloc`s inside the `testWidgets` body, never in `setUp`.** A bloc
-  built in `setUp` lives outside the FakeAsync zone, so its event stream never
-  delivers and `await session.ready` hangs. Build it in the body (or in a
-  helper called from the body), then drive it with `pump`/`pumpAndSettle`.
-- `DorakApp` takes optional `tokenStorage` and `authRepository` **purely as
-  test seams**. Leave them null in production.
-- `routerHarness(AppRouter)` builds a real `go_router`-driven
-  `MaterialApp.router` so flows can be driven without booting `DorakApp`.
-- **Set a phone viewport** for onboarding/auth widget tests:
-  `tester.view.physicalSize = const Size(1290, 2796)` with
-  `devicePixelRatio = 3.0` and `addTearDown(tester.view.reset)`. The 800×600
-  default overflows these screens.
-- The test fallback font renders every glyph at full em width, roughly **twice**
-  IBM Plex. A `RenderFlex overflowed` in a test is not proof of a device bug —
-  measure before "fixing" layout.
-
----
-
+- [Part 2: continued](testing-conventions-part-2.md)

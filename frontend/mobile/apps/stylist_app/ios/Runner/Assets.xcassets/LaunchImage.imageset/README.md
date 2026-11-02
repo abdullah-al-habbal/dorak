@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.stylist-app.ios-launch-image
+parentnode: mobile.apps.stylist-app.readme
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/stylist_app/ios/
+---
+
 # Launch Screen Assets
 
 You can customize the launch screen with your own desired assets by replacing the image files in this directory.

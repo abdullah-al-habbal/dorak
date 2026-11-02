@@ -9,6 +9,7 @@ childnodes:
   - repo.agents
   - repo.claude
   - repo.readme
+  - skills.repo
 codeanchors:
   - backend/
   - frontend/dashboard/

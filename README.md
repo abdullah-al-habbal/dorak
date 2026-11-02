@@ -1,7 +1,9 @@
 ---
 nodeid: repo.readme
 parentnode: repo.root
-childnodes: []
+childnodes:
+  - repo.readme.part-2
+  - repo.readme.part-3
 codeanchors:
   - backend/
   - frontend/dashboard/
@@ -48,90 +50,7 @@ and the subsystem guides in each project directory.
 - Flutter and Dart compatible with the SDK constraints in
   `frontend/mobile/pubspec.yaml`.
 
-## Local setup
+## Continued in
 
-### Backend
-
-```bash
-cd backend
-cp .env.example .env
-# Set the local database and service values in .env.
-composer install
-php artisan key:generate
-php artisan migrate --seed
-```
-
-Create the configured MySQL database before migrating. Start the backend
-development processes with `composer dev`, or run `php artisan serve` and
-`php artisan queue:work` in separate terminals. Queue processing is needed for
-queued notifications.
-
-Run the backend suite with:
-
-```bash
-cd backend
-php artisan test
-```
-
-Backend architecture, environment, and coding rules are in
-[`backend/AGENTS.md`](backend/AGENTS.md) and [`backend/README.md`](backend/README.md).
-
-### Dashboard
-
-```bash
-cd frontend/dashboard
-cp .env.example .env.local
-# Set BACKEND_API_URL for the local Laravel API.
-npm ci
-npm run dev
-```
-
-The dashboard development server uses Next.js's default port. Its local checks
-are `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build`.
-
-### Mobile workspace
-
-```bash
-cd frontend/mobile
-dart pub get
-```
-
-Copy the relevant app's `.env.example` to `.env`, configure its API URLs, and
-run `flutter run` from that app directory. The workspace contains
-`apps/client_app`, `apps/business_app`, and `apps/stylist_app`.
-
-Run the complete mobile verification gate from the workspace root:
-
-```bash
-cd frontend/mobile
-dart run melos run verify
-```
-
-## Quality checks
-
-Run checks for the project you changed:
-
-```bash
-# Backend
-(cd backend && php artisan test)
-
-# Dashboard
-(cd frontend/dashboard && npm run lint && npm run typecheck && npm test && npm run build)
-
-# Mobile
-(cd frontend/mobile && dart run melos run verify)
-```
-
-Backend migration changes must also satisfy `php scripts/check_migrations.php`
-from `backend/`. The backend CI workflow runs against MySQL; see
-`.github/workflows/backend-ci.yml` for its setup. The production deployment
-workflow is documented in [the deployment guide](docs/deployment-guide.md).
-
-## Contributing and agent guidance
-
-Read [AGENTS.md](AGENTS.md) and the applicable subsystem guide before making
-changes. Follow the path/import rules there, preserve API and package
-boundaries, and update decision documentation when work changes their
-status.
-
-Keep local work local unless the user explicitly requests a remote Git action.
+- [Part 2: Local setup](readme-part-2.md)
+- [Part 3: Mobile workspace](readme-part-3.md)

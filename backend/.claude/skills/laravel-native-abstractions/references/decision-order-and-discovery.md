@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.laravel-native-abstractions.references.decision-order-and-discovery
+parentnode: skills.backend.laravel-native-abstractions
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 Referenced from [`../SKILL.md`](../SKILL.md).
 
 ## Required decision order
@@ -51,4 +59,3 @@ path.
 If Laravel Boost is ever installed here, use its version-aware documentation search in Step 2
 before relying on model memory. It is not installed today — vendor source is the fallback and
 the final authority.
-

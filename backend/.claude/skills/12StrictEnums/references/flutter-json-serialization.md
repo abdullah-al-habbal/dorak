@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.12-strict-enums.references.flutter-json-serialization
+parentnode: skills.backend.12-strict-enums
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # Flutter: json_serializable & JsonEnum
 
 Referenced from [`../SKILL.md`](../SKILL.md) §6–8.

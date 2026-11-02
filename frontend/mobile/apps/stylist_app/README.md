@@ -1,7 +1,8 @@
 ---
 nodeid: mobile.apps.stylist-app.readme
 parentnode: mobile.apps.stylist-app
-childnodes: []
+childnodes:
+  - mobile.apps.stylist-app.ios-launch-image
 codeanchors:
   - frontend/mobile/apps/stylist_app/lib/
 ---

@@ -1,3 +1,13 @@
+---
+nodeid: skills.repo.monorepo-task-executor.templates.implemented-contract
+parentnode: skills.repo.monorepo-task-executor
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 <!-- Append under the Full-Stack Scope of the relevant doc -->
 ### Implemented contract
 - Shared code path: `<Class::method()>`, used by `<route/handler 1>`, `<route/handler 2>`, `<route/handler 3>`.

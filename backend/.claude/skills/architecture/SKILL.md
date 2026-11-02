@@ -1,6 +1,12 @@
 ---
 name: architecture
 description: High-level module structure, bootstrap flow, PSR-4 mapping, and dependency direction. Use whenever deciding module placement, understanding the bootstrap order, or checking naming conventions.
+nodeid: skills.backend.architecture
+parentnode: skills.backend
+childnodes:
+  - skills.backend.architecture.part-2
+codeanchors:
+  - backend/modules/
 ---
 
 # Architecture
@@ -55,18 +61,6 @@ modules/Core/
 3. `ApplicationServiceProvider::register()` → `loadConfig()` — manually `require`s every file in `Config/*.php`, sets config key = filename
 4. `ApplicationServiceProvider::boot()` — loads migrations from `Database/Migrations/`, translations from `lang/` under `core::` namespace, routes from `Routes/Api/V1/`
 
-## Naming conventions
+## Continued in
 
-Every class **must** carry a suffix identifying its layer/role (e.g. `ClientModel`, `CreateBookingAction`, `TranslatorHandlerService`). See [coding-standards](../coding-standards/SKILL.md) for the full suffix table.
-
-## PSR-4 mapping
-
-| Namespace | Path |
-|-----------|------|
-| `Modules\` | `modules/` |
-| `Database\Seeders\` | `database/seeders/` |
-| `Tests\` | `tests/` |
-
-## Dependency direction
-
-All future modules depend on Core. Core has no dependencies on other modules.
+- [Part 2: Naming conventions](references/skill-part-2.md)

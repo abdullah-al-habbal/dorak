@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.laravel-native-abstractions.references.repo-facts
+parentnode: skills.backend.laravel-native-abstractions
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 Referenced from [`../SKILL.md`](../SKILL.md).
 
 ## Repo-specific facts you must not get wrong
@@ -36,4 +44,3 @@ despite `CLAUDE.md` naming one.
 **Resolvers live in two places.** 19 `modules/*/Eloquent/Resolvers/` directories (the
 convention) plus 17 legacy `modules/Barber/Repositories/*EloquentResolver.php` files. New
 code goes in `Eloquent/Resolvers/`.
-

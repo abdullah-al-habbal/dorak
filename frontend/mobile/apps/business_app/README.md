@@ -1,7 +1,8 @@
 ---
 nodeid: mobile.apps.business-app.readme
 parentnode: mobile.apps.business-app
-childnodes: []
+childnodes:
+  - mobile.apps.business-app.ios-launch-image
 codeanchors:
   - frontend/mobile/apps/business_app/lib/
 ---

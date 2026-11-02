@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.references.design-system-extraction
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 # Design-system extraction
 
 A piece goes to `packages/design_system/lib/src/widgets/` ONLY when reused across screens or across apps. Otherwise it stays in the feature's `widgets/` folder.

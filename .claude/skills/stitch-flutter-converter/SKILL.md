@@ -1,6 +1,21 @@
 ---
 name: stitch-flutter-converter
 description: Converts a Stitch design export (docs/stitch/exports/NNN_name) into a production-ready, atomic Flutter implementation in the Dorak mobile workspace, with plan-vs-code-vs-backend audit, tokens/localization/design-system/Bloc/go_router conventions, EN+AR parity, full melos verify gate, doc updates, export cleanup, and a local-only commit. Use when asked to convert, implement, integrate, verify, or clean up a Stitch export or screen such as "Stitch 016". The skill name plus an export ID is a sufficient request.
+nodeid: skills.repo.stitch-flutter-converter
+parentnode: skills.repo
+childnodes:
+  - skills.repo.stitch-flutter-converter.references.design-system-extraction
+  - skills.repo.stitch-flutter-converter.references.export-mapping
+  - skills.repo.stitch-flutter-converter.references.gates-and-cleanup
+  - skills.repo.stitch-flutter-converter.references.gotchas
+  - skills.repo.stitch-flutter-converter.references.localization-assets
+  - skills.repo.stitch-flutter-converter.references.onboarding-flow
+  - skills.repo.stitch-flutter-converter.references.principles
+  - skills.repo.stitch-flutter-converter.templates.data-screen-scaffold
+  - skills.repo.stitch-flutter-converter.templates.final-report
+  - skills.repo.stitch-flutter-converter.templates.onboarding-scaffold
+codeanchors:
+  - frontend/mobile/
 ---
 
 # Stitch Export → Flutter Atomic Converter

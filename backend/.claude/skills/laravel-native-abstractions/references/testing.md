@@ -1,3 +1,13 @@
+---
+nodeid: skills.backend.laravel-native-abstractions.references.testing
+parentnode: skills.backend.laravel-native-abstractions
+childnodes:
+  - skills.backend.laravel-native-abstractions.references.testing.part-2
+  - skills.backend.laravel-native-abstractions.references.testing.part-3
+codeanchors:
+  - backend/modules/
+---
+
 # Testing Laravel Abstractions
 
 Test structure, suites, and commands are owned by `testing/SKILL.md` and
@@ -35,69 +45,7 @@ unrelated framework events still fire.
 
 ---
 
-## Database assertions
+## Continued in
 
-```php
-$this->assertDatabaseHas('bookings', [
-    'id' => $booking->id,
-    'status' => BookingStatusEnum::Confirmed->value,
-]);
-
-$this->assertDatabaseMissing('bookings', ['id' => $stale->id]);
-$this->assertDatabaseCount('bookings', 3);
-$this->assertModelExists($booking);
-$this->assertModelMissing($deleted);
-$this->assertSoftDeleted($booking);
-$this->assertNotSoftDeleted($booking);
-```
-
-Do not hand-write `DB::select(...)` and compare rows. Note the `->value` on enum columns —
-these assertions compare raw database values, not casts.
-
----
-
-## HTTP / feature assertions
-
-Use the response assertion API rather than decoding JSON by hand:
-
-```php
-$this->postJson('/api/v1/bookings', $payload)
-    ->assertCreated()
-    ->assertJsonPath('data.status', BookingStatusEnum::Pending->value)
-    ->assertJsonStructure(['success', 'statusCode', 'code', 'message', 'data'])
-    ->assertJsonCount(2, 'data.items');
-```
-
-`assertOk()`, `assertCreated()`, `assertUnprocessable()`, `assertForbidden()`,
-`assertUnauthorized()`, `assertNotFound()`, `assertJsonValidationErrors()`,
-`assertJsonMissingPath()`. The envelope shape itself is owned by `api-response-standard`.
-
----
-
-## What to assert
-
-- Assert **observable behaviour and contracts**: response shape, persisted state, dispatched
-  jobs/events, external calls made.
-- Do not assert implementation details unless the detail *is* the contract (e.g. "this job must
-  land on the `notifications` queue" is a contract; "this Handler calls that private method" is
-  not).
-- Assert the **rejection** path too: validation failures, 403s, rate limits, uniqueness
-  violations, lock contention.
-- Query counts matter here because strict mode is off — `DB::listen()` or
-  `$this->expectsDatabaseQueryCount()` catch N+1 regressions the framework will not.
-- The no-double-booking concurrency test and the tenancy-isolation test are mandatory gates —
-  see `laravel-testing-baseline`.
-
----
-
-## Commands
-
-```bash
-composer test                       # config:clear + Pest against dorak_test
-php artisan test --filter Booking
-vendor/bin/pint --test              # formatting gate (also runs in CI + pre-push)
-vendor/bin/phpstan analyse           # larastan; config in phpstan.neon
-```
-
-There is no `composer analyse` script in `composer.json` despite `CLAUDE.md` naming one — call
-`vendor/bin/phpstan analyse` directly.
+- [Part 2: Database assertions](testing-part-2.md)
+- [Part 3: What to assert](testing-part-3.md)

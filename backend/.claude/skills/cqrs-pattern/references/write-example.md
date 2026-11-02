@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.cqrs-pattern.references.write-example
+parentnode: skills.backend.cqrs-pattern
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 Referenced from [`../SKILL.md`](../SKILL.md).
 
 ## Write example: Create booking
@@ -51,4 +59,3 @@ final class CreateBookingRequest extends BaseApiFormRequest
 ```
 
 The request builds the Command/Query object explicitly. The Action calls `$request->toCommand()`.
-

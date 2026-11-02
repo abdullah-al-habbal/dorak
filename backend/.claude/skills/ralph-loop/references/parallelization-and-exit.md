@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.ralph-loop.references.parallelization-and-exit
+parentnode: skills.backend.ralph-loop
+childnodes: []
+codeanchors:
+  - backend/docs/
+---
+
 # Parallelization, exit, and anti-patterns
 
 Referenced from [`SKILL.md`](../SKILL.md).

@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.references.onboarding-flow
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 # Onboarding-specific conventions (apply only to onboarding screens)
 
 - Flow is wired in `AppRouter`; Skip / "Don't show again" go to the post-onboarding route; the locale toggle threads through every screen. Navigation never lives in a screen body or a Bloc.

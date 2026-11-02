@@ -1,3 +1,11 @@
+---
+nodeid: skills.backend.crescent.dorak-context
+parentnode: skills.backend.crescent
+childnodes: []
+codeanchors:
+  - backend/docs/
+---
+
 # Dorak Context for CRESCENT
 
 ## Repository Structure

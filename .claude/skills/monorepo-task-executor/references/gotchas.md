@@ -1,3 +1,13 @@
+---
+nodeid: skills.repo.monorepo-task-executor.references.gotchas
+parentnode: skills.repo.monorepo-task-executor
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Gotchas learned from past tasks
 
 - Broadcast events are queued: under `Queue::fake()` assert the specific job (`assertPushed(Job::class, n)`, `assertNotPushed(Job::class)`), not `assertNothingPushed()`.

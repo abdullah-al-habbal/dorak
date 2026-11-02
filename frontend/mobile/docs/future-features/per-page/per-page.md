@@ -1,7 +1,9 @@
 ---
 nodeid: mobile.future-features.per-page.per-page
 parentnode: mobile.docs
-childnodes: []
+childnodes:
+  - mobile.future-features.per-page.per-page.part-2
+  - mobile.future-features.per-page.per-page.part-3
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
@@ -51,85 +53,7 @@ Enforce `key` uniqueness at the database level.
 
 Creates `application_settings` with the columns above + timestamps.
 
-### Seeder
+## Continued in
 
-`modules/ApplicationSetting/Database/Seeders/ApplicationSettingSeeder.php`
-
-Seeds the default page size so the endpoint always has a value:
-
-```php
-['key' => 'pagination.per_page', 'value' => 15, 'group' => 'pagination', 'is_public' => true, 'is_active' => true]
-```
-
-### Endpoint
-
-`GET /api/v1/app/settings` — public, same style as
-`Modules\Onboarding\Routes\Api\V1\onboarding-config.php`.
-
-Behavior:
-
-* Optional `?keys[]=pagination.per_page` filter — client requests only the
-  keys it needs. No filter → return all `is_public` && `is_active` keys.
-* Response envelope: `{success, data: {settings: [{key, value}]}}`.
-* Unknown/inactive keys are silently omitted (never 404 the whole call).
-* `per_page` must be an integer ≥ 1; the server clamps invalid stored values.
-
-Caching: file/database cache per key with a short TTL (e.g. 5 min); the
-settings endpoint is hot on app cold-start.
-
-## Client — `packages/core` + `apps/client_app`
-
-### Fetch on app start
-
-* New `AppSettingsRepository` + `DioAppSettingsRepository` in
-  `packages/core` (dot-suffix `.repository.dart`), endpoint in
-  `app.endpoints.dart` (`appSettings`).
-* New `SettingsBloc` (pure `bloc`, `.bloc.dart`/`.event.dart`/`.state.dart`)
-  constructed at bootstrap in `apps/client_app/lib/main.dart` (mirror of
-  `OnboardingConfigBloc`). Requests only needed keys, e.g.
-  `['pagination.per_page']`.
-* Default `perPage`: `pagination.per_page` from settings, falling back to
-  `15` while loading or on failure (never blocks startup).
-
-### Wire into pagination
-
-> The legacy pagination `ChangeNotifier`s were deleted (see
-> `state-management/pagination.md`). The `perPage` default belongs on the
-> feature's pagination Bloc.
-
-* The feature pagination Bloc keeps an optional `perPage` parameter (explicit
-  callers still override), but defaults it from the settings bloc instead of a
-  literal:
-
-```dart
-final pager = FeedBloc(
-  fetch: repository.fetchBranches,
-  perPage: appSettings.paginationPerPage, // default 15 while unknown
-);
-```
-
-* No change to `ApiClient.getPaginated` — it already forwards
-  `queryParameters` including `per_page`.
-
-## Acceptance Criteria
-
-1. `pagination.per_page` seeded in backend; endpoint returns it.
-2. App fetches settings once at startup; pagination uses server `per_page`.
-3. Server value change (e.g. 15 → 20) takes effect after next app start with
-   no client release.
-4. Settings fetch failure → client falls back to 15, feature degrades
-   gracefully.
-
-## Out of Scope
-
-* Admin UI for editing settings (Filament resource or settings page) — can be
-  a follow-up; seeding suffices initially.
-* Additional keys beyond `pagination.per_page`.
-
-## Verification (when implemented)
-
-```bash
-melos run verify
-```
-
-plus backend tests for the settings endpoint (filter, clamping, public-only).
+- [Part 2: Seeder](per-page-part-2.md)
+- [Part 3: Client — packages/core + apps/client_app](per-page-part-3.md)

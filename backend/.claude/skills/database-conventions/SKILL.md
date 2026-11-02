@@ -1,6 +1,11 @@
 ---
 name: database-conventions
-description: Database migration, factory, and seeder conventions: module-owned migrations, Hash::make in factories, Eloquent-only queries. Use whenever creating migrations, factories, or seeders.
+description: "Database migration, factory, and seeder conventions: module-owned migrations, Hash::make in factories, Eloquent-only queries. Use whenever creating migrations, factories, or seeders."
+nodeid: skills.backend.database-conventions
+parentnode: skills.backend
+childnodes: []
+codeanchors:
+  - backend/modules/
 ---
 
 # Database conventions

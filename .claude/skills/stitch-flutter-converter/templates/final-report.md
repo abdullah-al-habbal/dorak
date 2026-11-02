@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.templates.final-report
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 **Stitch <NNN> <name> is <integrated | verified already integrated> and committed locally as `<sha>`.** Nothing was pushed.
 
 **Audit findings**

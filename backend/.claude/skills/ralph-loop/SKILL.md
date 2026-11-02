@@ -1,6 +1,13 @@
 ---
 name: ralph-loop
 description: Execute a kanban of GitLab issues against the codebase in a Ralph loop — sequentially by default, parallel for non-blocking AFK tickets via git worktrees. Each iteration picks the next issue, implements it, runs the project verification gate, commits, opens an MR, and only then advances. Use when the user wants to start execution, run the Ralph loop, work through the kanban AFK, or says "ralph this", "run the loop", "execute the tickets", "start phase 6".
+nodeid: skills.backend.ralph-loop
+parentnode: skills.backend
+childnodes:
+  - skills.backend.ralph-loop.references.parallelization-and-exit
+  - skills.backend.ralph-loop.part-2
+codeanchors:
+  - backend/docs/
 ---
 
 # Ralph Loop
@@ -38,48 +45,6 @@ end
 
 **Reload `kanban.md` from disk every iteration.** Earlier iterations or the user may have edited it. Trusting an in-memory copy is the most common Ralph-loop failure mode.
 
-## Verification gate per iteration
+## Continued in
 
-A green local run is required before opening the MR. CI green is required before advancing to the next issue.
-
-Per `wp-cms/CLAUDE.md`:
-
-- `./sites/site/vendor/bin/phpcs` (always)
-- `./sites/site/vendor/bin/phpunit --bootstrap=tests/bootstrap.php --testsuite=unit tests/unit` (always)
-- Integration suite if the touched plugin has integration tests
-- Plus whatever the issue's acceptance criteria checklist demands
-
-For monorepo work outside `wp-cms/`:
-
-- Pulumi: `npx vitest` or `npx jest` per `pulumi/CLAUDE.md`
-- AI engine: bun-based runner per `ai/engine/CLAUDE.md`
-- Frontends: pnpm per `frontends/nextjs/CLAUDE.md`
-
-## Commit format
-
-```
-<type>(<area>): <imperative summary, ≤72 chars>
-
-<body — what changed and why, wrap at 80>
-
-Closes <JIRA-ID>
-Refs https://gitlab.zadapps.info/<group>/<repo>/-/issues/<N>
-```
-
-`<type>` ∈ `feat | fix | refactor | test | docs | chore`. `<area>` is the plugin or component touched (e.g. `zad-islamqa-core`, `pulumi/components/db`).
-
-## MR format
-
-`glab mr create` with:
-
-- **Title:** `[<JIRA-ID>] <imperative summary>`
-- **Description must include:**
-  - A link to `docs/<JIRA-ID>/<feature-slug>/`
-  - `Closes #N` for the GitLab issue
-  - A reference to the Jira epic
-
-## More
-
-| Topic | Read |
-| --- | --- |
-| Parallel worktrees, loop exit, anti-patterns | [`references/parallelization-and-exit.md`](references/parallelization-and-exit.md) |
+- [Part 2: Verification gate per iteration](references/skill-part-2.md)

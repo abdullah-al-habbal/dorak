@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.references.gotchas
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 # Gotchas
 
 1. Unused constructor params fail `flutter analyze`; pass only what the screen uses.

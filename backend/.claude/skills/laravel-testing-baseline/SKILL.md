@@ -1,6 +1,13 @@
 ---
 name: laravel-testing-baseline
 description: Project standard for testing the salon/barbershop platform. Use whenever writing or reviewing tests, defining a ticket's Definition of Done, or running QA. Enforces the core rule that EVERY house rule in docs/04 becomes at least one test, EVERY edge case in docs/08 becomes a test, and EVERY user flow in docs/07 becomes a feature test - including the flagship no-double-booking concurrency test (rule E1 / EC-1) and the tenancy-isolation test (rule H7). Always consult this skill before marking any ticket Done; "done" is defined by these tests, not by vibes.
+nodeid: skills.backend.laravel-testing-baseline
+parentnode: skills.backend
+childnodes:
+  - skills.backend.laravel-testing-baseline.part-2
+codeanchors:
+  - backend/modules/
+  - backend/tests/
 ---
 
 # Testing — baseline standard
@@ -53,23 +60,6 @@ Showing the pattern for a few rules; apply the same translation to all cited rul
 | **G4** | an invited barber can accept or reject; only accept activates the affiliation |
 | **F2** | a review cannot be created without a completed booking |
 
-## Per-ticket checklist
+## Continued in
 
-- [ ] a test exists for **each** house rule the ticket cites
-- [ ] a test exists for **each** edge case the ticket cites
-- [ ] a feature test exists for the cited flow's happy path
-- [ ] factories exist for every entity the ticket touches
-- [ ] the relevant flagship test(s) above are present and passing
-- [ ] full suite is green (no regression in unrelated areas)
-- [ ] tests are deterministic (no order dependence, no real external calls)
-
-## Boundaries
-
-- **Don't** write tests for 🟡 *Open* behavior (`02` §8) — that work is Blocked until the human decides. Test only the ✅ *Decided* half (mirrors how tickets split at the 🟡 boundary).
-- **Don't** assert implementation details the docs don't fix (e.g., whether the floor plan is stored vs computed — `06`/`10` leave that open).
-
-## When this skill applies in the loop
-
-Phase 6 **Test / Review / Verify**, and all of phase 7 **QA**. It defines the stopping conditions the loop checks before marking a ticket Done.
-
-> Want the concrete Pest/PHPUnit patterns (the parallel-request concurrency harness, factory setups, the tenancy-isolation helper)? Ask and they'll be added as `references/patterns.md` in this skill.
+- [Part 2: Per-ticket checklist](references/skill-part-2.md)

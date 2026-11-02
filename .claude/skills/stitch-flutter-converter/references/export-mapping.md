@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.references.export-mapping
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 # Stitch export mapping
 
 Exports live in `docs/stitch/exports/<NNN_name>/`. Run `scripts/preflight.sh` to list what is left; do not trust a hard-coded list (AGENTS.md says which are outstanding, and the folders are deleted as screens ship).

@@ -1,6 +1,12 @@
 ---
 name: laravel-module-architecture-baseline
 description: The mandatory backend architecture standard for this salon/barbershop platform. Use this whenever creating or editing ANY backend class - a new module, an action, a handler, an Eloquent resolver, a presenter, a form request, a model, a service provider, or a Filament resource/page - and whenever deciding WHERE a piece of code should live. Enforces the modular-by-domain layout under modules/{Name}/ and the strict Action -> Handler -> EloquentResolver flow (no controllers, no service layer, no repositories; each layer is a single-method final class named by action). Always consult this skill before writing backend code; it overrides default Laravel conventions. Mirrors docs/11.
+nodeid: skills.backend.laravel-module-architecture-baseline
+parentnode: skills.backend
+childnodes:
+  - skills.backend.laravel-module-architecture-baseline.part-2
+codeanchors:
+  - backend/modules/
 ---
 
 # Module Architecture — baseline standard
@@ -50,21 +56,6 @@ modules/{Name}/
 └── Resources/views/
 ```
 
-## Per‑task checklist
+## Continued in
 
-- [ ] code is inside the correct `modules/{Name}/` (not `app/`)
-- [ ] new behavior = a new **Action + Handler + EloquentResolver** triad, named by action
-- [ ] **no** Controller / Service / Repository class created
-- [ ] Action is invokable and thin; Handler has only `handle()`; Resolver has one Eloquent‑only method
-- [ ] every class is `final`; no `implements`, no `extends` of a project base
-- [ ] resolver uses constructor‑injected model + `newQuery()`
-- [ ] Filament resources call resolver/presenter, never raw Eloquent
-- [ ] provider added to `bootstrap/providers.php`; `register()` empty; `boot()` guarded with `File::exists`
-- [ ] both `lang/en` and `lang/ar` present; no hardcoded strings
-- [ ] names follow the `docs/11` §6 convention table
-
-## When this skill applies in the loop
-
-CRESCENT phase 6 **Plan/Act** — it dictates *where* code goes and *what classes* to create before any line is written. Pair with **migrations** (module‑owned tables + cascades), **validations** (the form requests), **testing** (one test per cited rule), **type‑safety** (enums/DTOs), and the recommended **rbac / tenancy‑isolation / api‑resources / concurrency‑safety** skills.
-
-> Want the concrete code patterns (an Action + Handler + EloquentResolver triad, a `final` model with Spatie translatable casts, a guarded service provider, a panel provider scanner)? Ask and they'll be added as `references/patterns.md` here.
+- [Part 2: Per‑task checklist](references/skill-part-2.md)

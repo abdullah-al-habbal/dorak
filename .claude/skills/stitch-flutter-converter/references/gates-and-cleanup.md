@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.references.gates-and-cleanup
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 # Gates, docs, cleanup, commit
 
 Run from `frontend/mobile/` (use `dart run melos run <script>`; `melos` is not on PATH).

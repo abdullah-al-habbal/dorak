@@ -1,3 +1,11 @@
+---
+nodeid: skills.repo.stitch-flutter-converter.templates.onboarding-scaffold
+parentnode: skills.repo.stitch-flutter-converter
+childnodes: []
+codeanchors:
+  - frontend/mobile/
+---
+
 # Onboarding screen scaffold (static, no backend data)
 
 ```dart

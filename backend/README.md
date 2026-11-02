@@ -1,7 +1,9 @@
 ---
 nodeid: backend.readme
 parentnode: backend.guide
-childnodes: []
+childnodes:
+  - backend.readme.part-2
+  - backend.readme.part-3
 codeanchors:
   - backend/modules/
 ---
@@ -51,89 +53,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
-### 4. Development
+## Continued in
 
-```bash
-composer dev      # Starts server, queue, logs, Vite concurrently
-composer test     # Runs PHPUnit/Pest tests
-composer analyze  # Runs Larastan (PHPStan) at max level
-```
-
-## Project Architecture
-
-Dorak Backend follows a **modular monolith** approach. All code lives under `modules/`.  
-The `Core` module provides the foundation: configuration, translations, base HTTP classes, CQRS primitives, and the user identity system. Future domain modules (Booking, Barber, Salon, etc.) depend one‑way on `Core`.
-
-```
-modules/
-└── Core/
-    ├── Config/                  # All Laravel config files (loaded manually)
-    ├── Console/Commands/
-    ├── CQRS/                    # Command & Query payloads
-    ├── Database/
-    │   ├── Factories/
-    │   ├── Migrations/
-    │   └── Seeders/
-    ├── Eloquent/Resolvers/      # Data access layer (single responsibility)
-    ├── Enums/
-    ├── Handlers/                # Business logic (one handle() method)
-    ├── Helpers/                 # ApiResponseTrait
-    ├── Http/
-    │   ├── Actions/             # Invocable API actions
-    │   ├── Middleware/
-    │   └── Requests/            # Form requests → Command/Query
-    ├── Models/
-    ├── Providers/
-    ├── Routes/
-    ├── Services/
-    ├── ValuesObjects/
-    └── lang/                    # ar/ & en/ translation files
-```
-
-**Key invariants:**
-
-- **No `app/` or `config/` directories** – everything has been moved into modules.
-- **`env()` only in config files** – nowhere else.
-- **CQRS everywhere** – Requests build Command/Query objects, Actions dispatch to Handlers, Handlers use Resolvers.
-- **Suffix conventions** – `Model`, `Enum`, `Action`, `Handler`, `Resolver`, `Command`, `Query`, `Request`, `Middleware`, `Service`, `Presenter`, etc.
-- **All classes `final`** unless intentionally extensible.
-- **`declare(strict_types=1)`** on every file.
-- **Translations** under `lang/` with `core::messages.*` keys.
-
-## AI Agent Guidance
-
-AI coding agents (like Claude Code, OpenCode) should read:
-
-- `AGENTS.md` – concise overview and conventions.
-- `.claude/skills/` – detailed skill files for architecture, coding standards, CQRS, testing, naming, etc.
-- `docs/` – product requirements, C4 diagrams, house rules, and more (see `docs/README.md`).
-
-These files are the **source of truth** for any future development.
-
-## Testing
-
-Tests live in the root `tests/` directory under `Unit`, `Integration`, and `Feature` subdirectories.  
-Integration and feature tests use a real MySQL database (defined in `.env.testing`) and the `RefreshDatabase` trait.
-
-```bash
-php artisan test                 # all tests
-php artisan test --filter Core   # only Core-related tests
-```
-
-## Deployment
-
-- The application is ready for shared hosting (Hostinger, etc.) or any PHP‑capable server.
-- Run `php artisan optimize` before deploying.
-- Ensure all `.env` variables are set in production, especially `APP_KEY`, database credentials, and social login secrets.
-
-## Contributing
-
-1. Read `AGENTS.md` and the `.claude/skills/` files.
-2. Create a new branch per feature.
-3. Follow the established naming conventions and code rules.
-4. Write tests in the `tests/` directory.
-5. Ensure `composer test` passes before pushing.
-
-## License
-
-Proprietary – all rights reserved.
+- [Part 2: 4. Development](readme-part-2.md)
+- [Part 3: AI Agent Guidance](readme-part-3.md)

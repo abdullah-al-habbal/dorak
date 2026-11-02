@@ -1,7 +1,8 @@
 ---
 nodeid: repo.claude
 parentnode: repo.root
-childnodes: []
+childnodes:
+  - repo.claude.part-2
 codeanchors:
   - backend/
   - frontend/dashboard/
@@ -60,19 +61,6 @@ files in that area.
 - Never run `git push`, add or change remotes, or alter remote tracking unless
   the user explicitly requests it.
 
-## Task execution
+## Continued in
 
-- Prefer the reusable
-  [Dorak task executor](.claude/skills/monorepo-task-executor/SKILL.md) for
-  engineering task work: audit the request, implement the vertical slice, run
-  the applicable gates, and call the work done only on
-  evidence.
-- When the user types `/graphify`, invoke the Skill tool with
-  `skill: "graphify"` before doing anything else.
-
-## Main areas
-
-- `backend/` — Laravel modular monolith and API.
-- `frontend/dashboard/` — Next.js operations dashboard and backend-for-frontend.
-- `frontend/mobile/` — Flutter apps and shared Dart workspace packages.
-- `docs/` — cross-project decisions and architecture docs.
+- [Part 2: Task execution](claude-part-2.md)

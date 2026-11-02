@@ -1,3 +1,14 @@
+---
+name: filament-module-structure
+description: "Filament resource and page placement per module: panels, providers and module structure."
+nodeid: skills.backend.filament-module-structure
+parentnode: skills.backend
+childnodes:
+  - skills.backend.filament-module-structure.part-2
+codeanchors:
+  - backend/modules/
+---
+
 # Filament Module Structure
 
 ## Panels
@@ -48,38 +59,6 @@ modules/{Module}/
 - Show `status` column with badges (pending/enabled/disabled for activatable entities)
 - Show `isBanned()` indicator on ClientResource
 
-## Barber panel resources
-- Scoped via `ScopePanelToCurrentUser` middleware — all queries automatically filter to the authenticated barber
-- Resources are typically read-only (profile view, own services, own bookings, own reviews)
-- Override `getEloquentQuery()` only if middleware scoping is insufficient
+## Continued in
 
-## Branch panel resources
-- Scoped via same middleware — queries filter to the authenticated branch
-- Branch-specific resources: chairs, services, affiliations, bookings, jobs, applications
-- Same middleware patterns as barber panel
-
-## Activation action
-`ToggleActivationAction` lives in `modules/Activation/Filament/Actions/ToggleActivationAction.php`.
-Use from any resource:
-```php
-ToggleActivationAction::make('toggle')
-```
-It creates an `ActivationLogModel` record and triggers the observer to sync entity status.
-
-## Scoping middleware behavior
-
-Registered only on Barber and Branch panels (not Admin).
-
-**Barber panel scopes:**
-- `BarberModel` → `whereKey(auth()->id())`
-- `BookingModel` → `where('barber_id', auth()->id())`
-- `OfferedServiceModel` → `where('serviceable_id', auth()->id())->where('serviceable_type', 'barber')`
-- `ReviewModel` → `whereHas('booking', fn => where('barber_id', auth()->id()))`
-
-**Branch panel scopes:**
-- `BranchModel` → `whereKey(auth()->id())`
-- `ChairModel` → `where('branch_id', auth()->id())`
-- `BookingModel` → `whereHas('chair', fn => where('branch_id', auth()->id()))`
-- `OfferedServiceModel` → `where('serviceable_id', auth()->id())->where('serviceable_type', 'branch')`
-- `JobPostingModel` → `where('branch_id', auth()->id())`
-- `ReviewModel` → `whereHas('booking.chair', fn => where('branch_id', auth()->id()))`
+- [Part 2: Barber panel resources](references/skill-part-2.md)

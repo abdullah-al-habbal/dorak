@@ -1,0 +1,63 @@
+---
+nodeid: mobile.apps.business-app.part-2
+parentnode: mobile.apps.business-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/business_app/lib/
+---
+
+Part 2 of 2 · [AGENTS.md — apps/business_app](AGENTS.md) · [Previous](AGENTS.md)
+
+## 2. What it is meant to become
+
+The business-owner app: branch and brand management, staff, bookings, reports
+(per its own feature index). None of it is specced — there are no Stitch
+exports for business screens, and no mobile-reviewed backend contract.
+
+`dorak-backend` has `/barber` and `/branch` route groups, both with a
+`GET /profile` that the client module lacks, but nothing has been mapped for
+this app.
+
+## 3. Bringing it into the monorepo
+
+Do this before any feature work, and copy `client_app` rather than improvising:
+
+1. **Add the workspace dependencies** (`core`, `design_system`, `localization`,
+   `flutter_localizations`) — see [`CLAUDE.md`](./CLAUDE.md) §2.
+2. **Replace the scaffolding.** Delete `MyApp` / `MyHomePage` / `_counter`.
+   Split bootstrap into `lib/main.dart` + `lib/app.dart` exactly as `client_app`
+   does: binding init → dotenv → `SharedAppPreferences.create()` → root widget.
+3. **Wire `ApiClient` with `tokenProvider`**, or `AuthInterceptor` never
+   installs and every request goes out unauthenticated with no error.
+4. **Set up localization** — `localizationsDelegates`, `supportedLocales`, and
+   `DorakTheme.forLocale(locale, brightness)`. All three apps share one ARB
+   pair; add business keys there.
+5. **Rewrite `test/widget_test.dart`.** It still asserts the counter increments
+   and will fail the moment the scaffolding goes.
+6. **Decide the auth story.** The backend's client session layer
+   (`SessionBloc`, `/client/*` routes) is customer-specific. A business
+   user is a different guard (`barber` / `branch_api`) — do not reuse
+   `SessionBloc` without checking the contract.
+
+## 4. Constraints
+
+- Everything under `lib/src/` must carry a valid role suffix — `.screen.dart`,
+  `.widget.dart`, `.navigator.dart` and so on. Files at `lib/` root are exempt,
+  which is why the current `main.dart` passes.
+- `.screen.dart` is permitted here (apps only). `.navigator.dart` is still
+  accepted for this stub but is **deprecated** — when work starts, mirror
+  `client_app`'s go_router layout (`app.router.dart`), and use `.router.dart`,
+  `.bloc.dart`, `.event.dart`, `.state.dart` roles. `.token.dart`, `.theme.dart`
+  and `.storage.dart` are not.
+- Track 19 (`docs/index.md`) governs business screens and is `PENDING` behind
+  several foundation tracks. Check the current execution point before starting.
+
+## 5. Commands
+
+```bash
+cd apps/business_app
+flutter run
+flutter test
+
+cd frontend/mobile && dart run melos run verify
+```
