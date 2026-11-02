@@ -26,11 +26,11 @@ strings (`localization`) and picks the component from bloc state.
 ## Filled state docs
 
 - [`states/empty.md`](./states/empty.md)
-- [`states/network_error.md`](./states/network_error.md)
+- [`states/network-error.md`](./states/network-error.md)
 - [`states/offline.md`](./states/offline.md)
 - [`states/retry.md`](./states/retry.md)
-- [`states/session_expired.md`](./states/session_expired.md)
-- [`states/authentication_required.md`](./states/authentication_required.md)
+- [`states/session-expired.md`](./states/session-expired.md)
+- [`states/authentication-required.md`](./states/authentication-required.md)
 - [`components/loading/fullscreen.md`](./components/loading/fullscreen.md)
 - [`components/loading/inline.md`](./components/loading/inline.md)
 - [`components/loading/button.md`](./components/loading/button.md)

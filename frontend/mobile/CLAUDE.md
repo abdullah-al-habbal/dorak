@@ -1,8 +1,7 @@
 ---
 nodeid: mobile.claude
 parentnode: mobile.guide
-childnodes:
-  - mobile.docs
+childnodes: []
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/

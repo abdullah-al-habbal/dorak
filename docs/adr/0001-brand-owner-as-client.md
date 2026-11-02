@@ -1,3 +1,11 @@
+---
+nodeid: docs.adr_0001
+parentnode: docs.decisions
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # ADR 0001 — The brand owner is a client account with a dashboard capability
 
 Status: `ACCEPTED` (Task 38, 2026-10-22)

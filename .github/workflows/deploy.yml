@@ -197,7 +197,7 @@ jobs:
                   echo "⚠️"
                   echo "⚠️  Recover by: inspecting 'artisan migrate:status' against the"
                   echo "⚠️  restored code, then rolling FORWARD with a corrective migration,"
-                  echo "⚠️  or restoring from backup. See docs/16_deployment-operations.md."
+                  echo "⚠️  or restoring from backup. See docs/16-deployment-operations.md."
                   echo "⚠️  ═══════════════════════════════════════════════════════════"
                 fi
               fi

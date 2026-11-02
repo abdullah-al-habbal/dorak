@@ -58,7 +58,7 @@ Do not retry blindly.
 
 - Retry transient failures only: connection errors, timeouts, `429`, `502`, `503`, `504`.
 - Never auto-retry a non-idempotent write without an idempotency key. See
-  `docs/13_technical-concepts.md` for this repo's idempotency-key convention.
+  `docs/13-technical-concepts.md` for this repo's idempotency-key convention.
 - Use the `$when` callback to scope retries:
 
 ```php

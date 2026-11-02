@@ -1,8 +1,7 @@
 ---
 nodeid: dashboard.backend_additions
 parentnode: dashboard.auth_contract
-childnodes:
-  - backend.docs
+childnodes: []
 codeanchors:
   - backend/modules/Dashboard/
   - backend/modules/Core/
@@ -10,7 +9,7 @@ codeanchors:
 
 # Backend additions for the dashboard auth bridge
 
-Routes: [dashboard auth contract](frontend-auth-contract.md) · [documentation graph](../../../../docs/INDEX.md).
+Routes: [dashboard auth contract](frontend-auth-contract.md) · [documentation graph](../../../../docs/index.md).
 
 Phase 2 added a small, additive surface to the backend to support three
 first-class dashboard actors (admin, branch manager, barber) with refreshable

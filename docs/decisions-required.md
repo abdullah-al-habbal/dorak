@@ -1,7 +1,8 @@
 ---
 nodeid: docs.decisions
 parentnode: docs.graph
-childnodes: []
+childnodes:
+  - docs.adr_0001
 codeanchors:
   - backend/modules/
   - frontend/dashboard/src/
@@ -10,7 +11,7 @@ codeanchors:
 
 # Open Product Decisions
 
-Routes: [documentation graph](INDEX.md).
+Routes: [documentation graph](index.md).
 
 > Record of every product decision raised while building Tasks 1–87, with its resolution. The task specifications were removed once all tasks shipped; the originals remain in git history. Record new decisions here and tick them when resolved.
 
@@ -146,7 +147,7 @@ Routes: [documentation graph](INDEX.md).
 - [x] Decision resolved (face_matched/similar_client): ship `face_matched` edges now (client → `catalog_item`, sourced from `ClientFaceAnalysisResultModel::recommended_catalog_item_ids`, which Task 15 already populates — no new infrastructure needed); defer `similar_client` until Task 63 provisions pgvector/ivfflat, since a brute-force pairwise-similarity computation today would be O(n²) over every client and nothing in the current ranking formula (`ExploreRanker`, Task 46) reads that edge type yet.
 
 ## Task 63: Provision pgvector Storage for Preference Vectors
-- [x] Decision resolved: stay on MySQL, formally drop the pgvector requirement (option b). CI (`backend-ci.yml`), `backend/README.md`, and `.env.example` all target MySQL only, and every migration in the repo is MySQL-shaped — BE-16's "PostgreSQL + pgvector active" claim was never actually built; the only trace of it was a dead `ALTER TABLE ... TYPE vector(1536)` on `entity_embeddings` that silently no-opped on every MySQL run via a swallowed `catch`. Removed that branch; both embedding tables stay plain `json`, with cosine similarity computed in PHP (`ExploreRanker`). Recommendation PRD §8 updated to record this and strike the pgvector steps as historical. `backend/docs/features/BE-16-ai-sdk-postgresql-setup.md` itself is corrected under Task 87.
+- [x] Decision resolved: stay on MySQL, formally drop the pgvector requirement (option b). CI (`backend-ci.yml`), `backend/README.md`, and `.env.example` all target MySQL only, and every migration in the repo is MySQL-shaped — BE-16's "PostgreSQL + pgvector active" claim was never actually built; the only trace of it was a dead `ALTER TABLE ... TYPE vector(1536)` on `entity_embeddings` that silently no-opped on every MySQL run via a swallowed `catch`. Removed that branch; both embedding tables stay plain `json`, with cosine similarity computed in PHP (`ExploreRanker`). Recommendation PRD §8 updated to record this and strike the pgvector steps as historical. `backend/docs/features/be-16-ai-sdk-postgresql-setup.md` itself is corrected under Task 87.
 
 ## Task 64: Add Status Change Audit Trail
 - [x] Decision resolved (retention): indefinite, no purge job. No retention/compliance policy
@@ -159,7 +160,7 @@ Routes: [documentation graph](INDEX.md).
 - [x] Decision resolved (payment provider and timing): pay-at-salon stays the default v1 flow, but as a row in a dynamic `payment_gateways` table (`is_active`, `is_default`, encrypted JSON `config`), so local wallets (Syriatel Cash, Cash Plus) and online PSPs can be added from the Admin Dashboard later without touching core logic. Booking creation is not wired to gateways yet and mobile is unchanged.
 - [x] Decision resolved (plans and feature flags): dynamic `subscription_plans` and `plan_features` tables; admins create, edit and delete plans, set price and interval, and map flags to any plan from the Admin UI. No static plan enums. The mappable flags are the code-defined registry `BrandFeatures::keys()` (`multi_branch`, `job_board`).
 - [x] Decision resolved (commission and payouts): a dynamic `commission_rules` engine (percent as basis points, or flat in minor units; global default with brand and branch overrides) plus `commission_entries` and `payouts` for settlement, managed manually or semi-automatically (drafts from `payouts:generate`, admin approval) in the Admin Dashboard.
-- [x] `backend/docs/features/BE-20-monetization.md` approved by the product owner on 2026-10-29 with the zero-hardcoding rule; Phase B built.
+- [x] `backend/docs/features/be-20-monetization.md` approved by the product owner on 2026-10-29 with the zero-hardcoding rule; Phase B built.
 
 ## Task 67: Conform Modules to Context Namespacing
 - [x] Decision resolved (Task 87 sweep): Core base classes and middleware are exempt from BE-18; the exemption is documented in BE-18 and enforced by `HttpLayerContextNamespacingTest`.
@@ -175,7 +176,7 @@ Routes: [documentation graph](INDEX.md).
 
 ## Task 74: Add Branch Operations BFF and UI
 - [ ] Decision required: **(a)** proxy `/api/v1/branch/*` directly with the manager's dashboard token (Sanctum, branch provider), or **(b)** add equivalent endpoints to the `Dashboard` module behind `DashboardOperationsAuthorizationMiddleware` so that admins can also use them for any branch. Recommended: (b) for floor plan, profile and reviews, so admin and manager share one contract and one policy. Whichever is chosen, a feature test must prove the token or guard works end to end.
-- [ ] Floor-plan payload completeness (`backend/docs/06_entity-model-abstract.md:153-156`): the floor plan must carry a canvas size (width/height/unit) and static decoration components (waiting area, mirror, etc.) alongside chairs. Today `GET /branches/{branch}/floor-plan` returns only preset, zones and chairs. Extend `PATCH branch/floor-plan` to accept `canvas` and `decorations`, and extend the GET response. Decision required: whether these are persisted (e.g. in the branch's floor-plan configuration) or computed. The spec leaves it open.
+- [ ] Floor-plan payload completeness (`backend/docs/06-entity-model-abstract.md:153-156`): the floor plan must carry a canvas size (width/height/unit) and static decoration components (waiting area, mirror, etc.) alongside chairs. Today `GET /branches/{branch}/floor-plan` returns only preset, zones and chairs. Extend `PATCH branch/floor-plan` to accept `canvas` and `decorations`, and extend the GET response. Decision required: whether these are persisted (e.g. in the branch's floor-plan configuration) or computed. The spec leaves it open.
 
 ## Task 75: Add Branch People BFF and UI (Affiliations, Jobs, Barbers)
 - [x] Decision required: managed barber creation. **Resolved**: dashboard `stylists` create is the only path in the dashboard; `POST branch/barbers` stays mobile-only (Task 85). See the Task 75 spec. Use only the existing dashboard `stylists` create, or keep `POST branch/barbers`, but not both. If `stylists` covers it, `branch/barbers` becomes mobile-only (Task 85).

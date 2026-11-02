@@ -2,8 +2,8 @@
 nodeid: mobile.guide
 parentnode: repo.root
 childnodes:
-  - mobile.docs
   - mobile.claude
+  - mobile.docs
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/
@@ -19,7 +19,7 @@ The Dart source carries almost no comments by design. Rationale lives here. If
 you are about to "clean up" something that looks odd, check §9 first — most of
 it is deliberate.
 
-Documentation routes: [mobile documentation](docs/index.md) · [repository graph](../../docs/INDEX.md).
+Documentation routes: [mobile documentation](docs/index.md) · [repository graph](../../docs/index.md).
 
 ## 1. Read order
 

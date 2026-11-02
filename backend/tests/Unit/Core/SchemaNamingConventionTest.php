@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Architectural guardrail: scans every module and framework migration and fails
  * when a column name breaks the schema naming contract documented in
- * docs/refactor-roadmap/handover-schema-audit.md.
+ * the `database-conventions` skill and `backend/docs/04-house-rules.md`.
  */
 const SCHEMA_COLUMN_CALL_PATTERN = '/\$table->(?<method>[A-Za-z]+)\(\s*[\'"](?<column>[A-Za-z0-9_]+)[\'"]/';
 const SCHEMA_FOREIGN_METHODS = ['foreignUuid', 'foreignId', 'foreign'];

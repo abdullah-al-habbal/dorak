@@ -16,7 +16,7 @@ use Symfony\Component\Process\Process;
  * restored release no longer contains the new migration file, and Laravel's
  * Migrator skips it ("Migration not found", Migrator.php:333) while rolling
  * back the rest of the batch and exiting 0. Testing down() would imply it is a
- * usable recovery mechanism. It is not. See docs/16_deployment-operations.md.
+ * usable recovery mechanism. It is not. See docs/16-deployment-operations.md.
  */
 function guardScript(): string
 {

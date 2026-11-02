@@ -40,7 +40,7 @@ Password recovery (Stitch 011–014) is driven by `RecoverySignal`, a third one-
 signal alongside `SessionSignal` and `AuthSignal`. Its wrinkle is worth knowing
 before touching it: the backend has no verify-reset-code endpoint, so the OTP screen
 cannot validate the code and a rejected code surfaces on `/auth/reset-password`. See
-`authentication/password_recovery.md`.
+`authentication/password-recovery.md`.
 
 Flow wiring lives in `AppRouter._routes()`: each `GoRoute` receives callbacks
 (`onNext`, `onSkipForNow`, `onLogin`, ...) that the router implements with
@@ -54,7 +54,7 @@ Guard logic is split across three places, deliberately:
 | Mechanism | Owns |
 | --- | --- |
 | `AppRouter._redirect` | holds the app on `/splash` while `SessionState.status` is `unknown`, and nothing else |
-| `AppRouter._leaveSplash` | awaits `session.ready`, then `router.go(AppGate.resolve(...))` — the launch gate (see `flows/app_launch.md`) |
+| `AppRouter._leaveSplash` | awaits `session.ready`, then `router.go(AppGate.resolve(...))` — the launch gate (see `flows/app-launch.md`) |
 | `AppRouter._onSessionChanged` / `_onAuthChanged` / `_onRecoveryChanged` | `router.refresh()` on every session change, then react to `SessionSignal` / `AuthSignal` / `RecoverySignal` |
 
 The launch gate is **not** in `_redirect`: the splash must hold for its 2500 ms

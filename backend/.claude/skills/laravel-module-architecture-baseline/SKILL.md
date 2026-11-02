@@ -5,7 +5,7 @@ description: The mandatory backend architecture standard for this salon/barbersh
 
 # Module Architecture — baseline standard
 
-The non‑optional shape of the backend. It overrides default Laravel habits (no `BookingController@index`, no `BookingService`, no `BookingRepository`). Full rationale + folder tour: `docs/11_backend-architecture.md`. This skill is **conventions + a checklist**, not code — *ask to have the concrete Laravel code patterns added as `references/patterns.md`.*
+The non‑optional shape of the backend. It overrides default Laravel habits (no `BookingController@index`, no `BookingService`, no `BookingRepository`). Full rationale + folder tour: `docs/11-backend-architecture.md`. This skill is **conventions + a checklist**, not code — *ask to have the concrete Laravel code patterns added as `references/patterns.md`.*
 
 ## The hard rules
 

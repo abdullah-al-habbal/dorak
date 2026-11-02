@@ -66,7 +66,7 @@ jobs:
       # migrations are safe there. This also rejects edits to already-shipped
       # migrations, which `migrate` never re-runs — the divergence that commit
       # 8a07a89 introduced on the preferred_universe default.
-      # Policy: docs/16_deployment-operations.md
+      # Policy: docs/16-deployment-operations.md
       - name: Migration expand/contract guard
         shell: bash
         run: |

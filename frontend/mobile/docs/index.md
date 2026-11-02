@@ -1,8 +1,7 @@
 ---
 nodeid: mobile.docs
 parentnode: mobile.guide
-childnodes:
-  - mobile.claude
+childnodes: []
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/
@@ -10,7 +9,7 @@ codeanchors:
 
 # Dorak Mobile — AI Execution Index
 
-Repository routes: [mobile guide](../AGENTS.md) · [documentation graph](../../../docs/INDEX.md).
+Repository routes: [mobile guide](../AGENTS.md) · [documentation graph](../../../docs/index.md).
 
 Repository: `dorak-mobile`
 Architecture contract: `/CLAUDE.md`
@@ -112,15 +111,15 @@ See:
 
 ## 4. Documentation Map
 
-The repository-wide [documentation graph](../../../docs/INDEX.md) catalogs every
+The repository-wide [documentation graph](../../../docs/index.md) catalogs every
 maintained Markdown document by folder. This mobile index routes into the
 current topic docs; it does not list planned files that have not been created.
 
-- Architecture: [coding conventions](architecture/coding_conventions.md) and [architecture decisions](architecture/decisions/0001-bloc-in-core.md).
-- Core runtime: [networking](core/networking.md), [session](core/session.md), [runtime lifecycle](runtime/app_lifecycle.md), and [realtime](realtime/reverb.md).
+- Architecture: [coding conventions](architecture/coding-conventions.md) and [architecture decisions](architecture/decisions/0001-bloc-in-core.md).
+- Core runtime: [networking](core/networking.md), [session](core/session.md), [runtime lifecycle](runtime/app-lifecycle.md), and [realtime](realtime/reverb.md).
 - State and navigation: [state management](state_management/index.md), [routes](navigation/routes.md), and [guards](navigation/guards.md).
-- Product flows: [authentication](authentication/auth_flow.md), [onboarding](flows/onboarding.md), and [guest access](flows/guest_access.md).
-- Design: [design-system index](design_system/index.md) and [password recovery screen](screens/authentication/forgot_password.md).
+- Product flows: [authentication](authentication/auth-flow.md), [onboarding](flows/onboarding.md), and [guest access](flows/guest-access.md).
+- Design: [design-system index](design_system/index.md) and [password recovery screen](screens/authentication/forgot-password.md).
 - Verification: use the package and app verification instructions in [mobile guide](../AGENTS.md).
 
 ---
@@ -392,7 +391,7 @@ Objectives:
 * Establish one canonical state-management architecture. — `DONE` (Pure Bloc;
   `packages/core` uses pure `bloc` by ADR 0001, `apps/*` use `flutter_bloc`)
 * Async state conventions. — `DONE` (`docs/state_management/conventions.md`,
-  `async_state.md`)
+  `async-state.md`)
 * Loading. — `DONE` (`isLoading` = reading, `isSubmitting` = user-initiated
   write; initial ≠ loading ≠ empty)
 * Success. — `DONE` (absence of `error` plus data; no separate flag)
@@ -439,7 +438,7 @@ packages/feature_*
 Objectives:
 
 * Application bootstrap. — `DONE` for `client_app` (`main.dart` + `app.dart`;
-  see `docs/flows/app_launch.md`). `business_app` / `stylist_app` untouched
+  see `docs/flows/app-launch.md`). `business_app` / `stylist_app` untouched
   (skeletons, out of scope for this track).
 * Dependency registration. — **Closed as `PARTIAL`-by-design.** Wiring is manual
   construction in `DorakApp.initState` with constructor seams for tests; no DI
@@ -451,7 +450,7 @@ Objectives:
   onboarding config)
 * Application lifecycle. — `DONE`. `AppLifecycleListener(onResume: …)` in
   `DorakApp` re-probes the session on resume; guards the `unknown` status and
-  in-flight restores. See `docs/runtime/app_lifecycle.md`.
+  in-flight restores. See `docs/runtime/app-lifecycle.md`.
 
 **Evidence.** 5 lifecycle tests in `apps/client_app/test/widget_test.dart`
 (resume re-probes once per resume; rebuilds do not re-probe; `unknown` raced;
@@ -511,7 +510,7 @@ Implement reusable:
 * Button loading. — `DONE` (`PrimaryButton.isLoading` — was already implemented and used by every auth form; the earlier `PENDING` status was a recording error. `SecondaryButton` deliberately has no `isLoading` — no consumer needs it)
 * Shimmer. — `DONE` (`ShimmerBox`, hand-rolled, no package — `docs/design_system/components/shimmer/text.md`)
 * Empty. — `DONE` (`StatusView` — `docs/design_system/states/empty.md`)
-* Error. — `DONE` (`StatusView` full-page, `StatusBanner` inline; `AuthError.from` stays in the app — `docs/design_system/states/network_error.md`)
+* Error. — `DONE` (`StatusView` full-page, `StatusBanner` inline; `AuthError.from` stays in the app — `docs/design_system/states/network-error.md`)
 * Offline. — `DONE` (presentation variant of error; no connectivity package — `docs/design_system/states/offline.md`)
 * Retry. — `DONE` (an action on `StatusView`/`StatusBanner`, not a widget — `docs/design_system/states/retry.md`)
 * Session expired. — `DONE` (401/403 on an authenticated request →
@@ -655,9 +654,9 @@ Password Recovery           DONE  (Stitch 011–014, live backend)
 Session Restoration         DONE  (see Track 06)
 ```
 
-Documentation: `docs/authentication/auth_flow.md`,
-`docs/authentication/password_recovery.md`, `docs/flows/app_launch.md`,
-`docs/flows/onboarding.md`, `docs/flows/guest_access.md`,
+Documentation: `docs/authentication/auth-flow.md`,
+`docs/authentication/password-recovery.md`, `docs/flows/app-launch.md`,
+`docs/flows/onboarding.md`, `docs/flows/guest-access.md`,
 `docs/screens/authentication/`.
 
 **Evidence.** 157 tests, `dart run melos run verify` exit 0 (re-baselined
@@ -667,7 +666,7 @@ four skeleton/package units).
 cover the flow, the account-enumeration mitigation, and the rejected-code path.
 
 Three backend constraints shaped the recovery flow and are recorded in
-`docs/authentication/password_recovery.md` so they are not re-derived: there is no
+`docs/authentication/password-recovery.md` so they are not re-derived: there is no
 verify-reset-code endpoint (so a bad code surfaces on screen 013, not 012), the code
 lives in the cache for 10 minutes, and `exists:clients,email` is an enumeration
 oracle that the client deliberately does not surface. Recovery resend is

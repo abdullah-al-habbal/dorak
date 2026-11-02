@@ -1,15 +1,14 @@
 ---
 nodeid: backend.docs
 parentnode: backend.guide
-childnodes:
-  - backend.claude
+childnodes: []
 codeanchors:
   - backend/modules/
 ---
 
 # Dorak Backend — Product Documentation
 
-Repository routes: [backend guide](../AGENTS.md) · [documentation graph](../../docs/INDEX.md).
+Repository routes: [backend guide](../AGENTS.md) · [documentation graph](../../docs/index.md).
 
 This folder is the **single source of truth** for the product *before any backend or database design begins*. It contains **no code, no SQL, and no real database ERD** — entities are described in **plain English as objects with attributes**, and an **abstract** relationship view is provided where diagrams help understanding.
 
@@ -33,20 +32,20 @@ The documents move from **"What problem are we solving?"** → **"Who does what?
 | # | File | Purpose | Audience |
 |---|---|---|---|
 | — | [`README.md`](./README.md) | This index | Everyone |
-| 01 | [`01_vision-and-scope.md`](./01_vision-and-scope.md) | Vision, problem, MVP boundary, what we will **not** build now | Everyone |
-| 02 | [`02_prd.md`](./02_prd.md) | **Master document.** Goals, scope, features, locked implementation decisions, metrics, risks | Product, Eng, Stakeholders |
-| 03 | [`03_persona-journeys.md`](./03_persona-journeys.md) | Day‑in‑the‑life stories for each persona | Product, Design |
-| 04 | [`04_house-rules.md`](./04_house-rules.md) | The unshakeable business laws as simple If / Then statements | Everyone |
-| 05 | [`05_domain-glossary.md`](./05_domain-glossary.md) | The bounded vocabulary — one agreed meaning per term | Everyone |
-| 06 | [`06_entity-model-abstract.md`](./06_entity-model-abstract.md) | Entities as plain‑English objects + abstract relationships + **build priority order** | Eng, Product |
-| 07 | [`07_user-flows.md`](./07_user-flows.md) | Step‑by‑step interaction flows (diagrams) | Eng, Design |
-| 08 | [`08_edge-cases.md`](./08_edge-cases.md) | The hard situations and how the product behaves | Eng, QA, Product |
-| 09 | [`09_c4-context.md`](./09_c4-context.md) | C4 Level 1 — the system as one box and who/what touches it | Eng, Stakeholders |
-| 10 | [`10_c4-containers.md`](./10_c4-containers.md) | C4 Level 2 — the major moving parts inside the system | Eng |
-| 11 | [`11_backend-architecture.md`](./11_backend-architecture.md) | C4 Level 3 — module layout + the **Action → Handler → EloquentResolver** pattern + coding conventions + Architecture-Aligned PRD (v2.0) | Eng |
-| — | [`05_recommendation-prd.md`](./05_recommendation-prd.md) | Phase 5 Recommendation Module — data model, architecture, ranking formula, nightly batch, filters, test plan | Eng |
+| 01 | [`01-vision-and-scope.md`](./01-vision-and-scope.md) | Vision, problem, MVP boundary, what we will **not** build now | Everyone |
+| 02 | [`02-prd.md`](./02-prd.md) | **Master document.** Goals, scope, features, locked implementation decisions, metrics, risks | Product, Eng, Stakeholders |
+| 03 | [`03-persona-journeys.md`](./03-persona-journeys.md) | Day‑in‑the‑life stories for each persona | Product, Design |
+| 04 | [`04-house-rules.md`](./04-house-rules.md) | The unshakeable business laws as simple If / Then statements | Everyone |
+| 05 | [`05-domain-glossary.md`](./05-domain-glossary.md) | The bounded vocabulary — one agreed meaning per term | Everyone |
+| 06 | [`06-entity-model-abstract.md`](./06-entity-model-abstract.md) | Entities as plain‑English objects + abstract relationships + **build priority order** | Eng, Product |
+| 07 | [`07-user-flows.md`](./07-user-flows.md) | Step‑by‑step interaction flows (diagrams) | Eng, Design |
+| 08 | [`08-edge-cases.md`](./08-edge-cases.md) | The hard situations and how the product behaves | Eng, QA, Product |
+| 09 | [`09-c4-context.md`](./09-c4-context.md) | C4 Level 1 — the system as one box and who/what touches it | Eng, Stakeholders |
+| 10 | [`10-c4-containers.md`](./10-c4-containers.md) | C4 Level 2 — the major moving parts inside the system | Eng |
+| 11 | [`11-backend-architecture.md`](./11-backend-architecture.md) | C4 Level 3 — module layout + the **Action → Handler → EloquentResolver** pattern + coding conventions + Architecture-Aligned PRD (v2.0) | Eng |
+| — | [`05-recommendation-prd.md`](./05-recommendation-prd.md) | Phase 5 Recommendation Module — data model, architecture, ranking formula, nightly batch, filters, test plan | Eng |
 | — | [`feature-index.md`](./feature-index.md) | **Chronological map of built features** — append after each new feature | AI Agents |
-| — | [`marketing/`](./marketing/) | Marketing strategy & brand docs (Arabic/English) | Marketing, Product, Stakeholders |
+| — | [`marketing/`](./marketing) | Marketing strategy & brand docs (Arabic/English) | Marketing, Product, Stakeholders |
 
 The **PRD (02)** is the master. Everything else supports and expands it.
 
@@ -71,14 +70,14 @@ The `marketing/` subfolder contains brand strategy, platform setup, content stra
 
 | # | File | Purpose |
 |---|------|---------|
-| 01 | [`01_brand-dna.md`](./marketing/01_brand-dna.md) | Brand DNA — Elevator Pitch, Founder Story, Audience, Tone, Competitive Edge (Bilingual EN/AR) |
-| 02 | [`02_platform-setup.md`](./marketing/02_platform-setup.md) | Platform Setup — Naming, Bios, Visual Identity, Link Routing, SEO Keywords (Bilingual EN/AR) |
-| 03 | [`03_content-strategy.md`](./marketing/03_content-strategy.md) | Content Strategy — Pillars, B2B/B2C Tactics, Cadence & Distribution (Bilingual EN/AR) |
-| 04 | [`04_launch-campaign.md`](./marketing/04_launch-campaign.md) | Launch Campaign — Teaser, Soft Launch, Hard Launch, Retention & Referral (Bilingual EN/AR) |
-| 05 | [`05_metadata-and-seo.md`](./marketing/05_metadata-and-seo.md) | Metadata & SEO — Global Keywords, Platform Meta Descriptions (Bilingual EN/AR) |
-| 06 | [`06_teaser-content-plan.md`](./marketing/06_teaser-content-plan.md) | Teaser Content Plan — Pre-Launch Themes & Content Calendar (Bilingual EN/AR) |
-| 07 | [`07_conversion-assets.md`](./marketing/07_conversion-assets.md) | Conversion Assets — Landing Page Copy, CTAs, Lead Capture (Bilingual EN/AR) |
-| 08 | [`08_visual-assets-inventory.md`](./marketing/08_visual-assets-inventory.md) | Visual Assets — Logo, Color Palette, Typography, Generation Prompt (Bilingual EN/AR) |
+| 01 | [`01-brand-dna.md`](./marketing/01-brand-dna.md) | Brand DNA — Elevator Pitch, Founder Story, Audience, Tone, Competitive Edge (Bilingual EN/AR) |
+| 02 | [`02-platform-setup.md`](./marketing/02-platform-setup.md) | Platform Setup — Naming, Bios, Visual Identity, Link Routing, SEO Keywords (Bilingual EN/AR) |
+| 03 | [`03-content-strategy.md`](./marketing/03-content-strategy.md) | Content Strategy — Pillars, B2B/B2C Tactics, Cadence & Distribution (Bilingual EN/AR) |
+| 04 | [`04-launch-campaign.md`](./marketing/04-launch-campaign.md) | Launch Campaign — Teaser, Soft Launch, Hard Launch, Retention & Referral (Bilingual EN/AR) |
+| 05 | [`05-metadata-and-seo.md`](./marketing/05-metadata-and-seo.md) | Metadata & SEO — Global Keywords, Platform Meta Descriptions (Bilingual EN/AR) |
+| 06 | [`06-teaser-content-plan.md`](./marketing/06-teaser-content-plan.md) | Teaser Content Plan — Pre-Launch Themes & Content Calendar (Bilingual EN/AR) |
+| 07 | [`07-conversion-assets.md`](./marketing/07-conversion-assets.md) | Conversion Assets — Landing Page Copy, CTAs, Lead Capture (Bilingual EN/AR) |
+| 08 | [`08-visual-assets-inventory.md`](./marketing/08-visual-assets-inventory.md) | Visual Assets — Logo, Color Palette, Typography, Generation Prompt (Bilingual EN/AR) |
 
 ---
 
@@ -92,4 +91,4 @@ The `marketing/` subfolder contains brand strategy, platform setup, content stra
 
 ## A note on scope discipline
 
-Several capabilities raised during brainstorming are **intentionally postponed** so the MVP stays shippable: **offline‑first mode, map provider localization, SMS/WhatsApp gateway engineering, advanced analytics, complex staff shifts, and the paid‑vs‑unpaid job distinction.** They are recorded as 🔭 **Later** and revisited *after* the core engine is live. See [`01_vision-and-scope.md`](./01_vision-and-scope.md).
+Several capabilities raised during brainstorming are **intentionally postponed** so the MVP stays shippable: **offline‑first mode, map provider localization, SMS/WhatsApp gateway engineering, advanced analytics, complex staff shifts, and the paid‑vs‑unpaid job distinction.** They are recorded as 🔭 **Later** and revisited *after* the core engine is live. See [`01-vision-and-scope.md`](./01-vision-and-scope.md).

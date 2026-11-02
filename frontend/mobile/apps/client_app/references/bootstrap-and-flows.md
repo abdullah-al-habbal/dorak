@@ -63,7 +63,7 @@ Recovery is the only branch that ends at **Login**, not Home — the user signs 
 with the new password. It has three backend-imposed quirks (no verify-reset-code
 endpoint, so a bad code surfaces on 013; a 10-minute code TTL; and an enumeration
 oracle the client refuses to surface). All three are in
-`docs/authentication/password_recovery.md` — read it before touching the flow.
+`docs/authentication/password-recovery.md` — read it before touching the flow.
 
 Wiring: `app.router.dart`. Every success ends in `router.go(AppRoutes.home)`,
 which clears the stack. Logging in **bypasses the tour**; "Continue as Guest" is

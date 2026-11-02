@@ -6,7 +6,7 @@ Status: `IN_PROGRESS` — the launch gate exists; per-route guards do not.
 
 `AppGate.resolve` is the only guard in the app. It runs once, after the splash,
 and picks the first real screen from two checks in strict order — session first,
-onboarding flag second. Full table in `flows/app_launch.md`.
+onboarding flag second. Full table in `flows/app-launch.md`.
 
 `AppGate.resolve` is a **pure function** (`app_gate.entity.dart`) called from
 `AppRouter._leaveSplash` once `session.ready` completes. It is deliberately not

@@ -277,7 +277,6 @@
 - `Api/V1/` prefix dropped from file paths (versioning at route layer)
 - `scripts/migrate_context.php` — migration tool (note: does NOT auto-update `tests/`)
 - 282 tests pass, full cleanup verified
-- See `docs/refactor/context-namespacing/RESULT.md` for full details
 
 ### AI SDK & PostgreSQL Setup
 - **Database**: PostgreSQL + pgvector — `DB_CONNECTION=pgsql` active, HNSW indexes supported
@@ -356,25 +355,25 @@ All backend features built, tested, and passing (343 tests, 0 failures).
 
 | # | Feature | Status | Spec |
 |---|---------|--------|------|
-| BE-01 | Core Infrastructure | ✅ Complete | [BE-01](features/BE-01-core-infrastructure.md) |
-| BE-02 | Client Auth Module | ✅ Complete | [BE-02](features/BE-02-client-auth.md) |
-| BE-03 | Explore API | ✅ Complete | [BE-03](features/BE-03-explore-api.md) |
-| BE-04 | Floor Plan & Booking Engine | ✅ Complete | [BE-04](features/BE-04-floor-plan-booking.md) |
-| BE-05 | Review API | ✅ Complete | [BE-05](features/BE-05-review-api.md) |
-| BE-06 | Brand API | ✅ Complete | [BE-06](features/BE-06-brand-api.md) |
-| BE-07 | BarberAffiliation API | ✅ Complete | [BE-07](features/BE-07-barber-affiliation-api.md) |
-| BE-08 | JobPosting API | ✅ Complete | [BE-08](features/BE-08-job-posting-api.md) |
-| BE-09 | Admin Activation API | ✅ Complete | [BE-09](features/BE-09-admin-activation-api.md) |
-| BE-10 | Chair API | ✅ Complete | [BE-10](features/BE-10-chair-api.md) |
-| BE-11 | ServiceCatalog Module (PRD Phase 1) | ✅ Complete | [BE-11](features/BE-11-service-catalog-module.md) |
-| BE-12 | ClientHistory Module (PRD Phase 2) | ✅ Complete | [BE-12](features/BE-12-client-history-module.md) |
-| BE-13 | ClientFaceProfile Module (PRD Phase 3) | ✅ Complete | [BE-13](features/BE-13-client-face-profile-module.md) |
-| BE-14 | ClientInteraction Module (PRD Phase 4) | ✅ Complete | [BE-14](features/BE-14-client-interaction-module.md) |
-| BE-15 | Recommendation Module (PRD Phase 5) | ✅ Complete (hardened by Tasks 46, 62) | [BE-15](features/BE-15-recommendation-module.md) |
-| BE-16 | AI SDK & Embedding Storage (MySQL JSON; pgvector dropped, Task 63) | ✅ Complete | [BE-16](features/BE-16-ai-sdk-postgresql-setup.md) |
-| BE-17 | Explore Enhancements (Phase 5 Filters + Ranking) | ✅ Complete (global ranking: Task 46) | [BE-17](features/BE-17-explore-enhancements.md) |
-| BE-18 | Context-Driven Namespacing (Refactor) | ✅ Complete (conformance: Task 67) | [BE-18](features/BE-18-context-driven-namespacing.md) |
-| BE-19 | Profile Expand (Phone, Avatar, Soft Delete) | ✅ Complete (Tasks 32, 33) | [BE-19](features/BE-19-profile-expand.md) |
+| BE-01 | Core Infrastructure | ✅ Complete | [BE-01](features/be-01-core-infrastructure.md) |
+| BE-02 | Client Auth Module | ✅ Complete | [BE-02](features/be-02-client-auth.md) |
+| BE-03 | Explore API | ✅ Complete | [BE-03](features/be-03-explore-api.md) |
+| BE-04 | Floor Plan & Booking Engine | ✅ Complete | [BE-04](features/be-04-floor-plan-booking.md) |
+| BE-05 | Review API | ✅ Complete | [BE-05](features/be-05-review-api.md) |
+| BE-06 | Brand API | ✅ Complete | [BE-06](features/be-06-brand-api.md) |
+| BE-07 | BarberAffiliation API | ✅ Complete | [BE-07](features/be-07-barber-affiliation-api.md) |
+| BE-08 | JobPosting API | ✅ Complete | [BE-08](features/be-08-job-posting-api.md) |
+| BE-09 | Admin Activation API | ✅ Complete | [BE-09](features/be-09-admin-activation-api.md) |
+| BE-10 | Chair API | ✅ Complete | [BE-10](features/be-10-chair-api.md) |
+| BE-11 | ServiceCatalog Module (PRD Phase 1) | ✅ Complete | [BE-11](features/be-11-service-catalog-module.md) |
+| BE-12 | ClientHistory Module (PRD Phase 2) | ✅ Complete | [BE-12](features/be-12-client-history-module.md) |
+| BE-13 | ClientFaceProfile Module (PRD Phase 3) | ✅ Complete | [BE-13](features/be-13-client-face-profile-module.md) |
+| BE-14 | ClientInteraction Module (PRD Phase 4) | ✅ Complete | [BE-14](features/be-14-client-interaction-module.md) |
+| BE-15 | Recommendation Module (PRD Phase 5) | ✅ Complete (hardened by Tasks 46, 62) | [BE-15](features/be-15-recommendation-module.md) |
+| BE-16 | AI SDK & Embedding Storage (MySQL JSON; pgvector dropped, Task 63) | ✅ Complete | [BE-16](features/be-16-ai-sdk-postgresql-setup.md) |
+| BE-17 | Explore Enhancements (Phase 5 Filters + Ranking) | ✅ Complete (global ranking: Task 46) | [BE-17](features/be-17-explore-enhancements.md) |
+| BE-18 | Context-Driven Namespacing (Refactor) | ✅ Complete (conformance: Task 67) | [BE-18](features/be-18-context-driven-namespacing.md) |
+| BE-19 | Profile Expand (Phone, Avatar, Soft Delete) | ✅ Complete (Tasks 32, 33) | [BE-19](features/be-19-profile-expand.md) |
 
 ### Barber Panel (Filament)
 - `ProfileResource` — barber self-service profile (edit name, email, password)
@@ -386,7 +385,7 @@ All backend features built, tested, and passing (343 tests, 0 failures).
 - `ScopePanelToCurrentUser` middleware — global scopes: BarberModel, BookingModel, OfferedServiceModel, ReviewModel, BarberAffiliationModel, ApplicationModel
 
 ### Future Phases (not started)
-See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decisions) for remaining scope.
+See `docs/02-prd.md` §5 (phase roadmap) and §8 (locked implementation decisions) for remaining scope.
 
 ### Booking Engine Hardening (PRD §8 — Phase 1)
 - Booking requests now require at least one active, duration-bearing service. The server derives and persists `ends_at`; chair and barber booking intervals are transactionally locked and may not overlap.
@@ -418,7 +417,7 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - Tables: `subscription_plans`, `plan_features`, `brand_subscriptions`, `payment_gateways`, `commission_rules`, `commission_entries`, `payouts`. Money is integer minor units plus `currency_code`; statuses are Backed Enums.
 - Routes (dashboard `admin` group, platform admins only): `subscription-plans` CRUD, `plan-feature-keys`, `subscriptions` (list/assign/`PATCH {id}/status`), `payment-gateways` CRUD + `PATCH {id}/active`, `commission-rules` CRUD, `commission-entries`, `payouts` (list/show/`POST generate`/`PATCH {id}/approve|mark-paid|cancel`), `analytics/overview`.
 - Assigning a plan sets the brand's Pennant flags from `plan_features`; commission accrues when a booking completes; `php artisan payouts:generate` creates draft payouts.
-- Tests: `tests/Feature/Monetization/*`. Spec: `docs/features/BE-20-monetization.md`.
+- Tests: `tests/Feature/Monetization/*`. Spec: `docs/features/be-20-monetization.md`.
 
 ### Platform Settings (admin-editable limits)
 - Table `platform_settings` (`key` unique, integer `value`); a missing row means the `SettingKey` default from `Modules\Settings\Constants\SettingsConstants` applies. `SettingsService::int(SettingKey)` is the single read path (overrides cached as one map, cleared on write).

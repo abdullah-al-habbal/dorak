@@ -243,7 +243,7 @@ Potentially authenticated:
 The exact guest restrictions must come from:
 
 ```text id="2baj0b"
-docs/flows/guest_access.md
+docs/flows/guest-access.md
 ```
 
 and the current navigation/guard architecture.
@@ -1452,7 +1452,7 @@ app.router.dart
 app_routes.entity.dart
 app_gate.entity.dart
 existing navigation routes/docs
-guest_access.md
+guest-access.md
 ```
 
 Determine destinations for:

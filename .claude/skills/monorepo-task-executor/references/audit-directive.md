@@ -1,7 +1,7 @@
 # Audit directive (read before writing any code)
 
 ## Sources, in order
-1. `README.md`, root `AGENTS.md`, root `CLAUDE.md`, `docs/INDEX.md`.
+1. `README.md`, root `AGENTS.md`, root `CLAUDE.md`, `docs/index.md`.
 2. The user's request and `docs/decisions-required.md`.
 3. Nested guides for every subsystem touched (run `scripts/preflight.sh <n>` for the list), plus the app/package guide.
 4. The code itself. Nested guides can be stale (one still calls `business_app` a stub); trust the code and record the drift.

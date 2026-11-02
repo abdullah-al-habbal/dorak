@@ -5,7 +5,7 @@ description: Project standard for writing Laravel database migrations for this s
 
 # Migrations — baseline standard
 
-Schema is where the **entities** (`docs/06_entity-model-abstract.md`) and the **cascade laws** (`docs/04_house-rules.md`) become real. Get the cascades wrong and you violate the product's core promises (a deleted brand must not delete barbers; a leaving barber must not lose their data). This skill is **conventions + a checklist**, not code — *ask if you want the concrete Laravel patterns filled in*.
+Schema is where the **entities** (`docs/06-entity-model-abstract.md`) and the **cascade laws** (`docs/04-house-rules.md`) become real. Get the cascades wrong and you violate the product's core promises (a deleted brand must not delete barbers; a leaving barber must not lose their data). This skill is **conventions + a checklist**, not code — *ask if you want the concrete Laravel patterns filled in*.
 
 ## Non-negotiables
 
@@ -19,7 +19,7 @@ Schema is where the **entities** (`docs/06_entity-model-abstract.md`) and the **
 
 ## Cascade & relationship rules (the critical part)
 
-Derived directly from `docs/04_house-rules.md`. **These must hold or the product breaks its promises.**
+Derived directly from `docs/04-house-rules.md`. **These must hold or the product breaks its promises.**
 
 | Relationship | Rule | Required behavior |
 |---|---|---|

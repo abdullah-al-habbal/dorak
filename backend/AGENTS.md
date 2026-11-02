@@ -2,8 +2,8 @@
 nodeid: backend.guide
 parentnode: repo.root
 childnodes:
-  - backend.docs
   - backend.claude
+  - backend.docs
 codeanchors:
   - backend/modules/
   - backend/bootstrap/
@@ -11,7 +11,7 @@ codeanchors:
 
 ## Quick start
 
-Documentation routes: [product documentation](docs/README.md) · [repository graph](../docs/INDEX.md).
+Documentation routes: [product documentation](docs/README.md) · [repository graph](../docs/index.md).
 
 ```bash
 composer setup          # install + .env + key:generate + migrate + npm
@@ -41,7 +41,7 @@ composer test           # config:clear + pest/phpunit (MySQL dorak_test via .env
 
 ## Technical Concepts
 
-Before implementing any feature, read `docs/13_technical-concepts.md` — mandatory CRUD patterns (optimistic/pessimistic updates, version locking, idempotency keys, soft delete, PATCH vs PUT, race conditions, batch operations, retry backoff, consistency models, field projection) and Flutter/Laravel integration patterns.
+Before implementing any feature, read `docs/13-technical-concepts.md` — mandatory CRUD patterns (optimistic/pessimistic updates, version locking, idempotency keys, soft delete, PATCH vs PUT, race conditions, batch operations, retry backoff, consistency models, field projection) and Flutter/Laravel integration patterns.
 
 ## Code conventions
 
@@ -52,13 +52,13 @@ Before implementing any feature, read `docs/13_technical-concepts.md` — mandat
 - PSR-4: `Modules\\` → `modules/`, `Database\\Seeders\\` → `database/seeders/`, `Tests\\` → `tests/`
 - Test config targets a dedicated MySQL/MariaDB test DB via gitignored `.env.testing` (DB `dorak_test`), array cache/session/mail, sync queue
 
-## Remaining Gaps (from `docs/02_prd.md` §5 + §8)
+## Remaining Gaps (from `docs/02-prd.md` §5 + §8)
 
 All original backend gaps resolved — Application, OfferedService, Ban, Social Login APIs all built and contract-tested.
 
-Genuine remaining gaps (not in code): A/B testing framework, real AI face analysis (`modules/ClientFaceProfile/Jobs/AnalyzeFacePhotoJob.php` is an MVP stub), Phase 3 "Power & Polish", ~8 open product decisions. See `docs/14_execution-status.md` (head note) and `docs/actionable-plan.md` Phase B4.
+Genuine remaining gaps (not in code): A/B testing framework, real AI face analysis (`modules/ClientFaceProfile/Jobs/AnalyzeFacePhotoJob.php` is an MVP stub), Phase 3 "Power & Polish", ~8 open product decisions. See `docs/14-execution-status.md`.
 
-> **Frontend (2026-08-09):** Flutter apps removed from this repo — moved to `~/dorak-frontend`, being rebuilt from scratch (new UI/UX). Backend docs referencing `dorak-frontend/apps/...` paths are historical; the API contract sections (`docs/feature-index.md`, `docs/13_technical-concepts.md`) remain the stable contract for the rebuild.
+> **Frontend (2026-08-09):** Flutter apps removed from this repo — moved to `~/dorak-frontend`, being rebuilt from scratch (new UI/UX). Backend docs referencing `dorak-frontend/apps/...` paths are historical; the API contract sections (`docs/feature-index.md`, `docs/13-technical-concepts.md`) remain the stable contract for the rebuild.
 
 ## Framework
 

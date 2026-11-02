@@ -2,7 +2,6 @@
 nodeid: dashboard.guide
 parentnode: repo.root
 childnodes:
-  - dashboard.execution
   - dashboard.architecture
   - dashboard.auth_contract
 codeanchors:
@@ -12,7 +11,7 @@ codeanchors:
 
 # Dorak Operations — AI Agent Rules
 
-Documentation routes: [execution plan](EXECUTION_PLAN.md) · [repository graph](../../docs/INDEX.md).
+Documentation routes: [dashboard architecture](../../docs/frontend-architecture.md) · [repository graph](../../docs/index.md).
 
 > Multi-actor operations platform · Next.js · Tailwind CSS · React Aria · TanStack Query
 

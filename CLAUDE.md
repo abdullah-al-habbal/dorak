@@ -10,7 +10,7 @@ files in that area.
 - Read [README.md](README.md) for the project map and local setup.
 - For planned work, read [open decisions](docs/decisions-required.md) and
   update the relevant decision record when a decision is resolved.
-- Use [the documentation index](docs/INDEX.md) to find maintained product,
+- Use [the documentation index](docs/index.md) to find maintained product,
   architecture, and engineering documentation.
 - Before changing a subsystem, read its guide:
   - Backend: [backend/AGENTS.md](backend/AGENTS.md) and

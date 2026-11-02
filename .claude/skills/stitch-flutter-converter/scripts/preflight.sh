@@ -44,7 +44,7 @@ grep -n "Current Track" docs/index.md | head -3
 echo
 echo "== guides to read =="
 for g in CLAUDE.md AGENTS.md docs/index.md docs/navigation/routes.md docs/state_management/conventions.md \
-  docs/architecture/coding_conventions.md packages/design_system/AGENTS.md packages/localization/AGENTS.md; do
+  docs/architecture/coding-conventions.md packages/design_system/AGENTS.md packages/localization/AGENTS.md; do
   [ -f "$g" ] && echo "frontend/mobile/$g"
 done
 echo "plus the target app's CLAUDE.md/AGENTS.md and the existing screens in the same feature folder"

@@ -13,7 +13,7 @@ workspace used by clients, branch teams, and stylists.
 | `frontend/mobile/` | Client, business, and stylist apps plus shared packages | Flutter, Dart, Melos |
 | `docs/` | Cross-project architecture and decision records | Markdown |
 
-Start with [the documentation index](docs/INDEX.md),
+Start with [the documentation index](docs/index.md),
 and the subsystem guides in each project directory.
 
 ## Architecture at a glance
@@ -115,7 +115,7 @@ Run checks for the project you changed:
 Backend migration changes must also satisfy `php scripts/check_migrations.php`
 from `backend/`. The backend CI workflow runs against MySQL; see
 `.github/workflows/backend-ci.yml` for its setup. The production deployment
-workflow is documented in [the deployment guide](docs/DEPLOYMENT_GUIDE.md).
+workflow is documented in [the deployment guide](docs/deployment-guide.md).
 
 ## Contributing and agent guidance
 

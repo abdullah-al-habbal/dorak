@@ -21,7 +21,7 @@ Read the child for the unit you are touching **before** editing it. If you touch
 two units, read both.
 
 The former zero-byte placeholders under `docs/` have been removed. Use the
-[repository documentation graph](../../../../docs/INDEX.md) for the current file
+[repository documentation graph](../../../../docs/index.md) for the current file
 inventory; a roadmap mention does not mean a document currently exists.
 
 `docs/stitch/exports/` holds the remaining unimplemented screen designs

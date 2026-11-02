@@ -1,8 +1,7 @@
 ---
 nodeid: backend.claude
 parentnode: backend.guide
-childnodes:
-  - backend.docs
+childnodes: []
 codeanchors:
   - backend/modules/
 ---
@@ -10,7 +9,7 @@ codeanchors:
 # Dorak Backend — AI Agent Orchestra (.CLAUDE.md)
 
 ## 📚 Source of Truth
-Before building, read `docs/02_prd.md` then `docs/feature-index.md` to see what exists.
+Before building, read `docs/02-prd.md` then `docs/feature-index.md` to see what exists.
 
 ## 🛑 Rules
 - **Before writing ANY new code, READ `.claude/skills/laravel-attributes/SKILL.md`** and use PHP class attributes (`#[Fillable]`, `#[Table]`, `#[Signature]`, ...) instead of class properties — mandatory for models, jobs, commands, requests, resources, factories, tests, DI.
@@ -50,7 +49,7 @@ Key skills under `.claude/skills/`:
 | **Strict Backend Architecture** (`10StrictBackendArchitecture`) | Writing Actions, Resources, Requests, or Handlers. Enforces FormRequests, Command objects, strict imports, Resource composition. |
 
 ## 🚀 Protocol
-1. Read `docs/02_prd.md` + `docs/feature-index.md`
+1. Read `docs/02-prd.md` + `docs/feature-index.md`
 2. Read relevant `.claude/skills/*/SKILL.md`
 3. Implement → `vendor/bin/pint --test` + `composer test` (Pest, MySQL `dorak_test`)
 

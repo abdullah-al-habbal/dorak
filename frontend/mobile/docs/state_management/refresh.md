@@ -66,7 +66,7 @@ pull again. Queueing would need cancellation semantics, which is
 ## Non-paginated refresh
 
 A bloc without pagination re-dispatches its load event. The retry guard must not
-block it — see [`async_state.md`](./async_state.md). `OnboardingConfigBloc`
+block it — see [`async-state.md`](./async-state.md). `OnboardingConfigBloc`
 refetches when the locale changes, which is the same mechanism.
 
 ## Verification

@@ -12,7 +12,7 @@ Everything else on this page elaborates one part of it.
 | Document | Covers |
 |---|---|
 | [`conventions.md`](./conventions.md) | **The contract.** Bloc/Event/State, loading, success, empty, error, retry, refresh, pagination, concurrency, repository boundaries, UI rules, navigation separation, testing |
-| [`async_state.md`](./async_state.md) | The five async conditions, `isLoading` vs `isSubmitting`, the `_run` idiom, error mapping, the retry-guard trap |
+| [`async-state.md`](./async-state.md) | The five async conditions, `isLoading` vs `isSubmitting`, the `_run` idiom, error mapping, the retry-guard trap |
 | [`refresh.md`](./refresh.md) | First-load vs load-more vs refresh; refresh vs filter change; failed refresh |
 | [`pagination.md`](./pagination.md) | The `Paged<T>` contract, the real backend envelope, the UI decision matrix |
 | `background_operations.md` | **Intentionally empty** — see below |

@@ -86,12 +86,12 @@
 - `password_recovery.bloc.dart` (`.event.dart`/`.state.dart`) + `recovery_signal.entity.dart` — app-layer bloc over the core `AuthRepository`; carries email + code across the flow.
 - `forgot_password.screen.dart` (011), `recovery_otp.screen.dart` (012), `create_new_password.screen.dart` (013), `password_reset_success.screen.dart` (014 — the first `StatusView` consumer).
 - Content widgets: `forgot_password_content`, `recovery_otp_content`, `create_new_password_content`.
-- **Three backend constraints** drive the design: no verify-reset-code endpoint (a bad code surfaces on 013, not 012), a 10-minute cache TTL, and `exists:clients,email` as an enumeration oracle the client deliberately does not surface. Resend calls `forgotPassword`, not `sendEmailVerification`. See `docs/authentication/password_recovery.md`.
+- **Three backend constraints** drive the design: no verify-reset-code endpoint (a bad code surfaces on 013, not 012), a 10-minute cache TTL, and `exists:clients,email` as an enumeration oracle the client deliberately does not surface. Resend calls `forgotPassword`, not `sendEmailVerification`. See `docs/authentication/password-recovery.md`.
 
 ### Navigation & Launch Gate
 - `src/core/navigation/app.router.dart` — `AppRouter` (go_router): route table + redirects; success paths use `router.go('/home')`, which clears the stack.
 - `src/core/navigation/app_routes.entity.dart` — `AppRoutes` path constants.
-- `src/core/navigation/app_gate.entity.dart` — post-splash decision (`AppGate.resolve`, a pure function called from `AppRouter._leaveSplash`): session first, onboarding flag second. See `docs/flows/app_launch.md`.
+- `src/core/navigation/app_gate.entity.dart` — post-splash decision (`AppGate.resolve`, a pure function called from `AppRouter._leaveSplash`): session first, onboarding flag second. See `docs/flows/app-launch.md`.
 
 ### Home
 

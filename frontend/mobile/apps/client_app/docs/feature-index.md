@@ -51,7 +51,7 @@
 - `recovery_otp.screen.dart` (012) + `widgets/recovery_otp_content.widget.dart` — six reused `OtpInputField`s, masked destination, 60 s resend cooldown. **Cannot validate the code** — no such endpoint exists.
 - `create_new_password.screen.dart` (013) + `widgets/create_new_password_content.widget.dart` — new + confirm password. **This is where a rejected code surfaces**, with a "Re-enter code" action back to 012.
 - `password_reset_success.screen.dart` (014) — a thin `StatusView` wrapper; the first production consumer of that Track 12 component. Exits with `router.go`, so the recovery stack is dropped.
-- Constraints and the enumeration mitigation: `docs/authentication/password_recovery.md`.
+- Constraints and the enumeration mitigation: `docs/authentication/password-recovery.md`.
 
 ### Bootstrap & Navigation
 - `lib/main.dart` — binding init, dotenv, `SharedAppPreferences.create()`, then `DorakApp`.

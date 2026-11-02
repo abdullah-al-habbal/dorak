@@ -260,7 +260,7 @@ foreach ($added as $file) {
 echo "\n";
 if ($violations > 0) {
     fail("❌ Migration guard: {$violations} violation(s)".($waived ? ", {$waived} waived" : '').'.');
-    fail('   Policy: docs/16_deployment-operations.md');
+    fail('   Policy: docs/16-deployment-operations.md');
     exit(MigrationGuardConstants::MIGRATION_GUARD_EXIT_VIOLATION);
 }
 
