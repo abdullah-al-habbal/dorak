@@ -146,7 +146,7 @@ app/Providers/Filament/
 
 ## 7. Translation‑first
 
-Every module ships **both** `lang/en/` and `lang/ar/` from day one. `SpatieTranslatable` handles translatable model attributes (e.g. name, description — the "translatable" fields in `06`); the `LanguageSwitch` plugin toggles `en`/`ar` inside panels. **No hardcoded UI strings** — always translation keys, e.g. `__('booking::labels.time_slot')`.
+Every module ships **both** `lang/en/` and `lang/ar/` from day one. `SpatieTranslatable` handles translatable model attributes (e.g. name, description — the "translatable" fields in `06`); the `LanguageSwitch` plugin toggles `en`/`ar` inside panels. **No hardcoded UI strings** — always translation keys, e.g. `__('booking::labels.starts_at')`.
 
 This is the code‑level enforcement of `04` **J1/J2** (always show the user's language; fall back, never empty) and the bilingual attributes in `06`.
 
@@ -255,7 +255,7 @@ All Value Objects are `final readonly` classes with typed properties, living in 
 | Value Object | Module | Properties | Stored In |
 |-------------|--------|------------|-----------|
 | `ServiceCatalogItemMetadataValueObject` | `ServiceCatalog` | `suitableFaceShapes: array<FaceShapeEnum>`, `suitableHairTextures: array<HairTextureEnum>`, `maintenanceLevel: MaintenanceLevelEnum`, `stylePeriod: StylePeriodEnum`, `formality: FormalityEnum` | `service_catalog_items.metadata` |
-| `PriceRangeValueObject` | `ServiceCatalog` | `min: int`, `max: int`, `currencyId: string` | `service_catalog_items.typical_price_range` |
+| `PriceRangeValueObject` | `ServiceCatalog` | `min: int`, `max: int`, `currencyCode: string` | `service_catalog_items.typical_price_range` |
 | `ServiceHistoryMetadataValueObject` | `ClientHistory` | `productsUsed: array<string>`, `lengthSettings: array<string>`, `colorCodes: array<string>` | `client_service_histories.metadata` |
 | `FaceAnalysisFeaturesValueObject` | `ClientFaceProfile` | `foreheadWidth: int`, `jawAngle: int`, `cheekboneProminence: string` | `client_face_analysis_results.detected_features` |
 | `RecommendedCatalogItemIdsValueObject` | `ClientFaceProfile` | `ids: array<string>` (UUIDs) | `client_face_analysis_results.recommended_catalog_item_ids` |
@@ -664,7 +664,7 @@ Schema::create('service_catalog_items', function (Blueprint $table) {
     $table->string('sku')->unique()->nullable();
     $table->json('price_range')->nullable();   // PriceRangeValueObject cast
     $table->string('maintenance_level')->nullable();
-    $table->string('style_period')->nullable();
+    $table->string('style_period_type')->nullable();
     $table->string('formality')->nullable();
     $table->json('face_shapes')->nullable();
     $table->json('hair_textures')->nullable();
@@ -715,7 +715,7 @@ Schema::create('client_face_analysis_results', function (Blueprint $table) {
     $table->string('analysis_version');
     $table->string('analysis_source');        // enum backed
     $table->string('detected_face_shape');     // enum backed: oval/round/square/heart/diamond/oblong/triangle
-    $table->decimal('confidence_score', 4, 2);
+    $table->decimal('confidence_ratio', 4, 2);
     $table->json('detected_features');         // FaceAnalysisFeaturesValueObject cast
     $table->json('recommended_catalog_item_ids'); // RecommendedCatalogItemIdsValueObject cast
     $table->timestamp('computed_at');

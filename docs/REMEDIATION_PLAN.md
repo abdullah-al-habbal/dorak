@@ -43,15 +43,15 @@ does not depend on a local MySQL `dorak_test` database.
 
 ## Phase 4: Availability and booking lifecycle
 
-`GET /branches/{branch}/floor-plan` requires `date` (`Y-m-d`), `time_slot`
+`GET /branches/{branch}/floor-plan` requires `date` (`Y-m-d`), `starts_at`
 (`HH:mm`), and `duration` (minutes). Chair availability is calculated for the
 requested half-open interval: a chair is occupied only when a `confirmed` or
 `in_progress` booking overlaps it (`booking.start < requested.end` and
 `booking.end > requested.start`).
 
 New bookings begin as `pending`. The only permitted lifecycle is `pending` to
-`confirmed` or `canceled`, `confirmed` to `in_progress` or `canceled`, and
-`in_progress` to `completed`, `canceled`, or `no_show`. Terminal bookings
+`confirmed` or `cancelled`, `confirmed` to `in_progress` or `cancelled`, and
+`in_progress` to `completed`, `cancelled`, or `no_show`. Terminal bookings
 cannot be changed. Creation and confirmation lock the chair/barber and the
 overlapping reservation rows in one database transaction. Pending reservations
 also block duplicate creation; only confirmed/in-progress reservations occupy

@@ -17,8 +17,8 @@
 - `NotificationDeliveryModel` is `MassPrunable` after 90 days; `model:prune` scheduled daily at 03:00 by `ApplicationServiceProvider`.
 
 ### Manager & Stylist Mobile Operations
-- `PATCH /api/v1/branch/bookings/{booking}/status` — branch-authenticated booking transition to `in_progress`, `completed`, `no_show`, or `canceled`, scoped to the manager's branch.
-- `PATCH /api/v1/branch/chairs/{chair}/status`, `PUT /api/v1/dashboard/chairs/{chair}`, `PATCH /api/v1/chairs/{chair}` — moving a chair to `maintenance` returns 409 `CHAIR_HAS_ACTIVE_BOOKINGS` (`errors.booking_ids`) while future reservation-blocking bookings exist; `force=true` cancels them (`cancellation_reason = chair_maintenance`), notifies each client and lists `meta.canceled_booking_ids`. Shared `ChairStatusService`.
+- `PATCH /api/v1/branch/bookings/{booking}/status` — branch-authenticated booking transition to `in_progress`, `completed`, `no_show`, or `cancelled`, scoped to the manager's branch.
+- `PATCH /api/v1/branch/chairs/{chair}/status`, `PUT /api/v1/dashboard/chairs/{chair}`, `PATCH /api/v1/chairs/{chair}` — moving a chair to `maintenance` returns 409 `CHAIR_HAS_ACTIVE_BOOKINGS` (`errors.booking_ids`) while future reservation-blocking bookings exist; `force=true` cancels them (`cancellation_reason = chair_maintenance`), notifies each client and lists `meta.cancelled_booking_ids`. Shared `ChairStatusService`.
 - `GET /api/v1/branch/chairs` — branch-authenticated chair list, scoped to the manager's branch.
 - `GET /api/v1/branch/dashboard` — daily/monthly completed-service revenue, booking/chair metrics, and the authenticated branch switcher payload.
 - `GET /api/v1/barber/appointments/today` — barber-authenticated, barber-scoped appointments for today.
@@ -53,7 +53,7 @@
 - `BarberResource` — id, name, email, is_freelancer, status, latitude, longitude, distance?, created_at
 - `BranchModel` — fillable: name, email, password, brand_id, latitude, longitude. `BranchModel::brand()` BelongsTo BrandModel
 - `BarberModel` — fillable: name, email, password. `BarberModel::services()` morphMany
-- `BrandModel` — fillable: owner_id, name, description, logo, base_currency_id. `universe` field
+- `BrandModel` — fillable: owner_id, name, description, logo_url, base_currency_code. `universe` field
 - Migration: branches.brand_id FK + latitude/longitude, barbers.latitude/longitude, brands.universe, clients.preferred_universe
 
 ### Models
@@ -61,8 +61,8 @@
 - `BarberModel` — `activationLogs()`, `bans()`, `services()`. Accessor: `is_enabled`
 - `BranchModel` — `activationLogs()`, `brand()`, accessor `is_enabled`
 - `BrandModel` — `owner()` (→ClientModel), `baseCurrency()`, `branches()`, `affiliations()`, `services()`, `preference()`
-- `PreferenceModel` — polymorphic `preferenceable()` (MorphTo). Fields: preferred_language, is_notification_enabled, display_currency_id, theme, price_display_mode
-- `BanModel` — polymorphic `bannable()` (MorphTo). Scope: `active` (banned_from ≤ now AND banned_until null OR > now)
+- `PreferenceModel` — polymorphic `preferenceable()` (MorphTo). Fields: preferred_language, allows_notifications, display_currency_code, theme_mode, price_display_mode
+- `BanModel` — polymorphic `bannable()` (MorphTo). Scope: `active` (banned_at ≤ now AND expires_at null OR > now)
 
 ### Ban Enforcement (Task 08)
 - Client, barber, and dashboard-barber login return 403 `ACCOUNT_BANNED` for active bans; client social login, registration for an already-banned email, and token refresh apply the same check.
@@ -71,15 +71,15 @@
 
 ### Floor Plan & Booking Engine
 - `GetFloorPlanAction` [GET /api/v1/branches/{branch}/floor-plan] — returns chairs with barber, no auth
-- `ChairResource` — id, label, status, ui_metadata, barber (via BarberResource::make)
+- `ChairResource` — id, label, status, layout_settings, barber (via BarberResource::make)
 - `BranchModel.chairs()` — HasMany to ChairModel
 - `CreateBookingAction` [POST /api/v1/bookings] — accepts CreateBookingRequest (FormRequest), builds CreateBookingCommand, double-booking check (409), at-home booking support, returns BookingResource (201)
 - `ListUserBookingsAction` [GET /api/v1/bookings] — auth client's paginated bookings
-- `BookingResource` — id, time_slot, status, chair (ChairResource::make), barber (BarberResource::make), services (ServiceResource::collection), at_home_location
+- `BookingResource` — id, starts_at, booking_status, chair (ChairResource::make), barber (BarberResource::make), services (ServiceResource::collection), home_address
 - `ServiceResource` — id, name, price
-- `CreateBookingRequest` — extends BaseApiFormRequest, validates chair_id/barber_id/time_slot/service_ids. Mutually exclusive validation: chair_id XOR at_home_location. at_home_location.latitude/longitude with required_with/prohibited_with
+- `CreateBookingRequest` — extends BaseApiFormRequest, validates chair_id/barber_id/starts_at/service_ids. Mutually exclusive validation: chair_id XOR home_address. home_address.latitude/longitude with required_with/prohibited_with
 - `CreateBookingCommand` — readonly value object with PascalCase properties (ChairId, BarberId, ClientId, TimeSlot, ServiceIds, AtHomeLocation). ChairId nullable
-- `BookingModel` — fillable: client_id, chair_id, barber_id, time_slot, status, at_home_location. HasUuids, HasFactory. at_home_location cast to array
+- `BookingModel` — fillable: client_id, chair_id, barber_id, starts_at, booking_status, home_address. HasUuids, HasFactory. home_address cast to array
 - Routes: bookings.php (auth:client), floor-plan.php (no auth)
 
 ### CI / Code Quality
@@ -100,12 +100,12 @@
 - Brand feature flags (Task 50): Pennant `multi-branch` / `job-board` per brand (default off) via `BrandFeatures`; 403 `feature_not_enabled` for a second branch, job postings, and configuration writes on non-original branches after a downgrade; admin `GET/PATCH /api/v1/admin/brands/{brand}/features`; `BrandResource.features`.
 - Brand creation defaults (Task 49): `POST /api/v1/brands` creates the brand and exactly one `pending` first branch in one transaction (`FirstBranchProvisioner`, also used by the admin panel); optional `universe` (default unisex) and `first_branch{name, latitude, longitude, email, password}`; unique `slug`; `branches_count` on brand payloads.
 - Detail payloads (Task 48): branch detail lists the full bookable menu (branch + brand + seated barbers, `owner`-tagged); the floor plan gives each chair `barber.services` and `services_source` plus `branch_services`; barber detail adds `workplaces` (accepted affiliations). Shared `OfferedServiceModel::bookable()`/`offeredAtShop()`.
-- Discovery preferences + interaction logs (Task 47): explore honours a signed-in client's `hidden_brand_ids`, `default_radius` (when `radius` is omitted) and `show_unavailable`; `view` (detail), `search` (`q`/filters) and `favorite` interactions are logged by `ClientInteractionRecorder` through a queued job (`context`: screen, universe, query, filters, result_count). Guests are never logged.
+- Discovery preferences + interaction logs (Task 47): explore honours a signed-in client's `hidden_brand_ids`, `default_radius_km` (when `radius` is omitted) and `allows_unavailable_results`; `view` (detail), `search` (`q`/filters) and `favorite` interactions are logged by `ClientInteractionRecorder` through a queued job (`context`: screen, universe, query, filters, result_count). Guests are never logged.
 - Composite ranking (Task 46): explore lists are scored over the whole candidate set (nearest 500) by `ExploreRanker` before pagination; `rank` is global; α is redistributed when vectors are missing; explicit `face_shape_compatible` filters while the client's own face analysis only boosts.
 - Unified discovery (Task 45): `GET /api/v1/explore/search` returns `{type: branch|barber, distance, entity}` items — shops and freelancers merged nearest first with the shared filters; freelancers without coordinates appear only for `q` (distance null). `explore/branches` and `explore/barbers` are unchanged.
 - Venue universe (Task 44): `branches.universe` / `barbers.universe` (`men`|`women`|`unisex`); explore `universe` is optional (explicit → client `preferred_universe` → none) and `men`/`women` also match `unisex`. New branches inherit the brand universe.
 - Explore text search (Task 43): `q` (≤100) on `explore/branches` (branch, brand, service, catalog item and tag names) and `explore/barbers` (barber, service, catalog item and tag names), en+ar, case-insensitive substring via `ExploreTextSearch`; `tag_ids[]` filters by catalog tags.
-- Rating aggregates (Task 42): `branches`/`barbers` store `rating_avg` + `rating_count` (published/resolved reviews only), kept current by `ReviewRatingObserver` via `SubjectRatingRefresher`; `reviews:refresh-ratings` recomputes all. Exposed on `BranchResource`/`BarberResource` (explore lists and details); `rating_min` filters the stored column.
+- Rating aggregates (Task 42): `branches`/`barbers` store `rating_average` + `rating_count` (published/resolved reviews only), kept current by `ReviewRatingObserver` via `SubjectRatingRefresher`; `reviews:refresh-ratings` recomputes all. Exposed on `BranchResource`/`BarberResource` (explore lists and details); `rating_min` filters the stored column.
 - Review disputes (Task 41): the reviewed party disputes — `POST /api/v1/branch/reviews/{review}/dispute` (branch subject) and `POST /api/v1/barber/reviews/{review}/dispute` (barber subject), `reason` 10–1000; 403 for anyone else. Admin `PATCH /api/v1/admin/reviews/{review}/resolve` works any time while disputed; `reviews:release-expired-disputes` (hourly) re-publishes disputes older than 48 h. The client dispute route was removed. `rating_min` counts published reviews only.
 - Client reviews (Task 40): `POST /api/v1/branch/bookings/{booking}/review` (auth:branch_api), `POST /api/v1/barber/bookings/{booking}/review` (auth:barber, branchless bookings only), `POST /api/v1/dashboard/bookings/{booking}/review` (manager/owner) — rate the client of a completed/no-show booking; one per `(booking, author_type, subject_type)`. Staff booking payloads (`StaffBookingResource`) include `client.reputation {average, count}`; client payloads never do.
 - `GetBarberReviewsAction` [GET /api/v1/barbers/{barber}/reviews] — paginated published reviews for a barber (Task 39). No auth
@@ -114,7 +114,7 @@
 - Routes: reviews.php
 
 ### Booking Cancel & Show
-- `CancelBookingAction` [POST /api/v1/client/bookings/{booking}/cancel] — validates ownership + confirmed status → canceled. Auth:client
+- `CancelBookingAction` [POST /api/v1/client/bookings/{booking}/cancel] — validates ownership + confirmed status → cancelled. Auth:client
 - `ShowBookingAction` [GET /api/v1/bookings/{booking}] — validates ownership, returns booking resource. Auth:client
 
 ### Profile Read
@@ -160,7 +160,7 @@
 
 ### Strict Enums (Phase 4-7 of master plan)
 - 9 Backed Enum files across 5 modules: ChairStatus, BookingStatus, ApplicationStatus, AffiliationStatus, AffiliableType, ChairShape, Locale, Universe, ActivationStatusEnum
-- Model casts on ChairModel.status, BookingModel.status, ApplicationModel.status, BarberAffiliationModel.status+affiliable_type, ClientModel.preferred_universe
+- Model casts on ChairModel.status, BookingModel.booking_status, ApplicationModel.status, BarberAffiliationModel.status+affiliable_type, ClientModel.preferred_universe
 - Validation `in:` → `Rule::enum` in UpdateChairRequest, GetMarketingPageRequest, UpdateApplicationStatusRequest, CreateAffiliationRequest
 - 6 actions fixed: strict enum comparisons instead of string
 - Factories/seeders use enum values
@@ -308,7 +308,7 @@
   - `GET /api/v1/client/history` — paginated timeline with barber/branch/catalogItem/media relations
   - `POST /api/v1/client/history/{history}/media` — attach before/after/reference photo
   - `POST /api/v1/client/history/{history}/rebook` — rebook with same barber+service
-- `BookingCompletedObserver` — auto-creates history record when BookingModel status transitions to `completed`
+- `BookingCompletedObserver` — auto-creates history record when BookingModel booking_status transitions to `completed`
 - Registered in `bootstrap/providers.php`
 
 ### PRD Phase 3 — ClientFaceProfile Module (Complete)
@@ -391,7 +391,7 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 ### Booking Engine Hardening (PRD §8 — Phase 1)
 - Booking requests now require at least one active, duration-bearing service. The server derives and persists `ends_at`; chair and barber booking intervals are transactionally locked and may not overlap.
 - At-home checkout requires GPS coordinates plus street, building, and unit text.
-- Confirmed bookings may be canceled only more than two hours before their start time.
+- Confirmed bookings may be cancelled only more than two hours before their start time.
 
 ### Dashboard Walk-in Operations
 - `POST /api/v1/dashboard/bookings/walk-in` — dashboard-authenticated walk-in booking creation. It scopes the branch, chair, assigned stylist, and offered services before reusing the transactional booking overlap guard; a customer is found or created by email and the standard `BookingResource` contract is returned.
@@ -415,7 +415,7 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - The affiliation status enum was renamed `accepted` → `active` (enum, Filament UI, and a backfill migration) to match the product spec's vocabulary.
 
 ### Dynamic Monetization (Task 65)
-- Tables: `subscription_plans`, `plan_features`, `brand_subscriptions`, `payment_gateways`, `commission_rules`, `commission_entries`, `payouts`. Money is integer minor units plus `currency_id`; statuses are Backed Enums.
+- Tables: `subscription_plans`, `plan_features`, `brand_subscriptions`, `payment_gateways`, `commission_rules`, `commission_entries`, `payouts`. Money is integer minor units plus `currency_code`; statuses are Backed Enums.
 - Routes (dashboard `admin` group, platform admins only): `subscription-plans` CRUD, `plan-feature-keys`, `subscriptions` (list/assign/`PATCH {id}/status`), `payment-gateways` CRUD + `PATCH {id}/active`, `commission-rules` CRUD, `commission-entries`, `payouts` (list/show/`POST generate`/`PATCH {id}/approve|mark-paid|cancel`), `analytics/overview`.
 - Assigning a plan sets the brand's Pennant flags from `plan_features`; commission accrues when a booking completes; `php artisan payouts:generate` creates draft payouts.
 - Tests: `tests/Feature/Monetization/*`. Spec: `docs/features/BE-20-monetization.md`.
@@ -430,4 +430,4 @@ See `docs/02_prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 
 ## Strict enums, morph map & boolean naming
 - `Relation::requireMorphMap()` is on; aliases come from enums implementing `Core\Contracts\MorphAliasEnum`, listed in `Core\Constants\MorphMapConstants::MORPH_ALIAS_ENUMS`. Every polymorphic `*_type` column is cast to its enum.
-- Booleans renamed: `offered_services.is_active`/`is_at_home`, `barbers.is_workstation_online`, `preferences.is_notification_enabled`/`is_dual_price_display_enabled` (API keys, dashboard and mobile DTOs follow).
+- Booleans renamed: `offered_services.is_active`/`is_at_home`, `barbers.is_workstation_online`, `preferences.allows_notifications`/`allows_dual_price_display` (API keys, dashboard and mobile DTOs follow).

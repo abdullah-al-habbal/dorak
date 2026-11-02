@@ -52,7 +52,7 @@ dispatch fails; terminal job failure updates the status to `failed`.
       "analysis_version": "1.0",
       "analysis_source": "ai_pipeline",
       "detected_face_shape": "oval|round|square|heart|oblong",
-      "confidence_score": 0.92,
+      "confidence_ratio": 0.92,
       "detected_features": {
         "jawline": "defined",
         "forehead": "average",

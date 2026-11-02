@@ -57,7 +57,7 @@ describe('branch toggle', function (): void {
         $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", ['status' => ChairStatus::Maintenance, 'force' => true])
             ->assertOk()
             ->assertJsonPath('data.status', ChairStatus::Maintenance->value)
-            ->assertJsonCount(2, 'meta.canceled_booking_ids');
+            ->assertJsonCount(2, 'meta.cancelled_booking_ids');
 
         expect($chair->fresh()->status)->toBe(ChairStatus::Maintenance);
         foreach ([$first, $second] as $booking) {
@@ -107,7 +107,7 @@ describe('shared chair update', function (): void {
 
         $this->patchJson("/api/v1/chairs/{$chair->id}", ['status' => ChairStatus::Maintenance, 'force' => true])
             ->assertOk()
-            ->assertJsonPath('meta.canceled_booking_ids', [$booking->id]);
+            ->assertJsonPath('meta.cancelled_booking_ids', [$booking->id]);
         expect($booking->fresh()->booking_status)->toBe(BookingStatus::Cancelled);
         Queue::assertPushed(SendBookingStatusNotificationJob::class, 1);
     });

@@ -57,7 +57,7 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 `changePasswordDone`
 
 **My Bookings (017a)** — `bookingsTabLabel` `bookingFilterUpcoming`
-`bookingFilterPast` `bookingStatusConfirmed` `bookingStatusCanceled`
+`bookingFilterPast` `bookingStatusConfirmed` `bookingStatusCancelled`
 `bookingStatusCompleted` `bookingWithBarber` `bookingChairLabel`
 `bookingCancelAction` `bookingCancelConfirmTitle`
 `bookingCancelConfirmMessage` `bookingCancelConfirm`

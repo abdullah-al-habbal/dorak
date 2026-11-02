@@ -34,6 +34,6 @@ final class UpdateChairAction extends BaseApiAction
             );
         }
 
-        return $this->updated(data: new ChairResource($result->chair), meta: ['canceled_booking_ids' => $result->canceledBookingIds]);
+        return $this->updated(data: new ChairResource($result->chair), meta: ['cancelled_booking_ids' => $result->cancelledBookingIds]);
     }
 }

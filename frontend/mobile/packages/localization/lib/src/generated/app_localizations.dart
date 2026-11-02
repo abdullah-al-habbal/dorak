@@ -992,11 +992,11 @@ abstract class AppLocalizations {
   /// **'Confirmed'**
   String get bookingStatusConfirmed;
 
-  /// Booking status badge for canceled bookings
+  /// Booking status badge for cancelled bookings
   ///
   /// In en, this message translates to:
-  /// **'Canceled'**
-  String get bookingStatusCanceled;
+  /// **'Cancelled'**
+  String get bookingStatusCancelled;
 
   /// Booking status badge for completed bookings
   ///

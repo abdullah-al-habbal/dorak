@@ -32,8 +32,8 @@
   "data": [
     {
       "id": "uuid",
-      "favorable_id": "uuid",
-      "favorable_type": "App\\Models\\Branch|App\\Models\\Barber|App\\Models\\Brand",
+      "favorited_id": "uuid",
+      "favorited_type": "App\\Models\\Branch|App\\Models\\Barber|App\\Models\\Brand",
       "favorable": { "..." },
       "created_at": "2026-07-24T12:00:00Z"
     }
@@ -48,7 +48,7 @@
     {
       "id": "uuid",
       "name": "My Favorites",
-      "filter_config": {
+      "filter_criteria": {
         "universe": "men",
         "radius": 5.0,
         "catalog_item_ids": [1, 2],
@@ -67,9 +67,9 @@
   "data": {
     "id": "uuid",
     "preferred_universe": "men",
-    "default_radius": 10.0,
+    "default_radius_km": 10.0,
     "hidden_brand_ids": ["uuid1"],
-    "show_unavailable": false,
+    "allows_unavailable_results": false,
     "created_at": "2026-07-24T12:00:00Z",
     "updated_at": "2026-07-24T12:00:00Z"
   }

@@ -630,9 +630,9 @@
   "@bookingStatusConfirmed": {
     "description": "Booking status badge for confirmed bookings"
   },
-  "bookingStatusCanceled": "Canceled",
-  "@bookingStatusCanceled": {
-    "description": "Booking status badge for canceled bookings"
+  "bookingStatusCancelled": "Cancelled",
+  "@bookingStatusCancelled": {
+    "description": "Booking status badge for cancelled bookings"
   },
   "bookingStatusCompleted": "Completed",
   "@bookingStatusCompleted": {

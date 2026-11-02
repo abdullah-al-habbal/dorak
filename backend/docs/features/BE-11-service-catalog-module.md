@@ -36,7 +36,7 @@
       "sku": "SC-001",
       "price_range": { "min": 5000, "max": 15000, "currency": "SYP" },
       "maintenance_level": "low|medium|high",
-      "style_period": "classic|modern|trendy",
+      "style_period_type": "classic|modern|trendy",
       "formality": "casual|business|formal",
       "face_shapes": ["oval", "round", "square"],
       "hair_textures": ["straight", "wavy", "curly"],

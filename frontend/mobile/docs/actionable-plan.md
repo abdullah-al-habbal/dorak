@@ -200,7 +200,7 @@ placeholders).**
       with status available|occupied|maintenance), `GET
       /explore/branches/{branch}` (detail + barbers + services + chairs_count),
       `POST /bookings` (chair_id `required_without`/`prohibits`
-      at_home_location, 201 → BookingResource, 409 on
+      home_address, 201 → BookingResource, 409 on
       `chair_not_available`/`double_booking`).
 - [x] L2: Core — `BranchEndpoints` + `BranchRepository.getFloorPlan`;
       `ExploreRepository.getBranchDetail`; `BookingRepository.createBooking`
@@ -230,8 +230,8 @@ placeholders).**
 
 - [x] M1: Recon — `GET /client/history` (auth:client, paged, per_page ≤ 50,
       nested barber/branch/catalogItem({name translations})/media), `POST
-      /client/history/{history}/rebook` (`{time_slot}` `after:now`, 201 →
-      BookingResource-shaped `{id, time_slot, status, barber_id}`).
+      /client/history/{history}/rebook` (`{starts_at}` `after:now`, 201 →
+      BookingResource-shaped `{id, starts_at, status, barber_id}`).
 - [x] M2: Core — `HistoryEndpoints` + `HistoryRepository`/
       `DioHistoryRepository` (`getHistory` paged, `rebookFromHistory` slot
       `yyyy-MM-dd HH:mm:ss` UTC); DTOs `ServiceHistoryDto` +
@@ -265,7 +265,7 @@ Stylist Profile (019) / Review (020) — see `docs/index.md` §6.**
       dispatched by the unwired `RequestFaceAnalysisHandler`) → client needs
       pending + re-check UX. `GET /client/face-profile/recommendations`
       (latest-`computed_at` first; `detected_face_shape`,
-      `confidence_score`, `recommended_catalog_item_ids?`, nested
+      `confidence_ratio`, `recommended_catalog_item_ids?`, nested
       `face_profile`). `PATCH /client/profile` (+`preferred_universe`),
       `POST /client/avatar`, `PATCH /client/preferences/universe`.
       `GET /service-catalog/items` (shared, paged, no ids/face_shape filter)

@@ -540,9 +540,9 @@
   "@bookingStatusConfirmed": {
     "description": "Booking status badge for confirmed bookings"
   },
-  "bookingStatusCanceled": "ملغي",
-  "@bookingStatusCanceled": {
-    "description": "Booking status badge for canceled bookings"
+  "bookingStatusCancelled": "ملغي",
+  "@bookingStatusCancelled": {
+    "description": "Booking status badge for cancelled bookings"
   },
   "bookingStatusCompleted": "مكتمل",
   "@bookingStatusCompleted": {

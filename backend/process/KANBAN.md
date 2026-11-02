@@ -468,7 +468,7 @@ Each becomes a full ticket (template above) when it moves from Backlog → Ready
   - [ ] full suite green
 
 - Blockers:  none (depends on INFRA-01)
-- Notes: date-window bans; permanent = banned_until null.
+- Notes: date-window bans; permanent = expires_at null.
 ```
 
 ---

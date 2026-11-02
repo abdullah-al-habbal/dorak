@@ -80,7 +80,7 @@ Backend contract verified in `backend/modules/Review/`. No code written yet.
 - Response (`ReviewResource`): `{id, rating, comment, author_name?, created_at}`.
 - Ordered `created_at` desc; `author_name` present (author loaded).
 
-**Booking statuses:** `confirmed`, `canceled`, `completed`.
+**Booking statuses:** `confirmed`, `cancelled`, `completed`.
 
 ### Design → Real mapping (like 019)
 
@@ -95,7 +95,7 @@ Backend contract verified in `backend/modules/Review/`. No code written yet.
 
 - From **My Bookings** tab (017a): completed bookings get a "Rate" action/button.
 - `POST /client/bookings/{booking}/review` takes `{booking}` from URL param — booking context determines the subject (branch). No branch/barber ID needed in the payload.
-- Bookings list filter: `upcoming` / `past`. **Open question:** does the `past` filter surface `completed` status bookings? (Past bookings include `time_slot` in the past; `completed` status is set separately by the barber/admin. A booking could be past + confirmed, or past + completed.) `BookingDto.status` is surfaced in the client (String), but the client UI currently has no per-status affordance.
+- Bookings list filter: `upcoming` / `past`. **Open question:** does the `past` filter surface `completed` status bookings? (Past bookings include `starts_at` in the past; `completed` status is set separately by the barber/admin. A booking could be past + confirmed, or past + completed.) `BookingDto.status` is surfaced in the client (String), but the client UI currently has no per-status affordance.
 - After submission: navigate to the reviewed booking (or back to bookings list) with a success `StatusView`.
 
 ---

@@ -26,7 +26,7 @@ interface IBookingStatusUpdateFormProps {
   inProgressLabel: string;
   completedLabel: string;
   noShowLabel: string;
-  canceledLabel: string;
+  cancelledLabel: string;
   updateStatusLabel: string;
   onSuccess: () => void;
   onError: (error: unknown) => void;
@@ -40,7 +40,7 @@ export function BookingStatusUpdateForm({
   inProgressLabel,
   completedLabel,
   noShowLabel,
-  canceledLabel,
+  cancelledLabel,
   updateStatusLabel,
   onSuccess,
   onError,
@@ -50,7 +50,7 @@ export function BookingStatusUpdateForm({
     ["in_progress"]: inProgressLabel,
     completed: completedLabel,
     ["no_show"]: noShowLabel,
-    cancelled: canceledLabel,
+    cancelled: cancelledLabel,
   };
   const nextStatuses = allowedNextBookingStatuses(currentStatus);
   const form = useForm<z.input<typeof bookingStatusSchema>>({

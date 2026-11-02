@@ -51,6 +51,6 @@ final class UpdateChairAction extends BaseApiAction
 
         return $updated === null
             ? $this->forbidden(__('dashboard::messages.barber_other_branch'))
-            : $this->updated(ChairResource::make($updated->chair), meta: ['canceled_booking_ids' => $updated->canceledBookingIds]);
+            : $this->updated(ChairResource::make($updated->chair), meta: ['cancelled_booking_ids' => $updated->cancelledBookingIds]);
     }
 }

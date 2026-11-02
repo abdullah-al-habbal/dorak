@@ -43,7 +43,7 @@ Routes: [documentation graph](INDEX.md).
 
 ## Task 22: Validate Bookings Against Branch Hours and Barber Schedule
 - [x] Decision resolved: schedule times are compared in the timestamp's timezone. The API contract is UTC, so schedule checks run against UTC until a barber/branch timezone column exists; no new column is added by this task.
-- [x] Decision resolved: a barber with no schedule rows stays bookable (backward compatible). Once any rows exist, only an active row that fully contains the booking interval `[time_slot, ends_at)` on the start weekday is bookable.
+- [x] Decision resolved: a barber with no schedule rows stays bookable (backward compatible). Once any rows exist, only an active row that fully contains the booking interval `[starts_at, ends_at)` on the start weekday is bookable.
 
 ## Task 23: Validate Service Ownership and Resolve Chair Barber on Booking
 - [x] Decision resolved (EC-9): one barber calendar across all affiliations. The overlap check runs on `bookings.barber_id` regardless of chair or shop, so a barber cannot be double-booked across chairs or shops.
@@ -56,7 +56,7 @@ Routes: [documentation graph](INDEX.md).
 - [x] Decision resolved: affiliated barbers ARE allowed to take at-home bookings, so there is no `is_freelancer` check. The booking must still respect the barber's schedule and the single barber calendar (EC-9 overlap on `bookings.barber_id`), so it cannot conflict with shop bookings.
 
 ## Task 27: Handle Chair Maintenance Conflicts with Existing Bookings
-- [x] Decision resolved (EC-2): cancel-and-notify. Moving a chair to maintenance is rejected with 409 `CHAIR_HAS_ACTIVE_BOOKINGS` while reservation-blocking bookings (`pending`/`confirmed`/`in_progress`, ending in the future) exist. With an explicit `force=true`, those bookings are canceled through the lifecycle with `cancellation_reason = chair_maintenance` and each client receives one status notification. Automatic reassignment to another free chair is not done; client rebooking UX is a follow-up.
+- [x] Decision resolved (EC-2): cancel-and-notify. Moving a chair to maintenance is rejected with 409 `CHAIR_HAS_ACTIVE_BOOKINGS` while reservation-blocking bookings (`pending`/`confirmed`/`in_progress`, ending in the future) exist. With an explicit `force=true`, those bookings are cancelled through the lifecycle with `cancellation_reason = chair_maintenance` and each client receives one status notification. Automatic reassignment to another free chair is not done; client rebooking UX is a follow-up.
 
 ## Task 30: Persist Notification Delivery Records
 - [x] Decision resolved (retention): `notification_deliveries` rows are kept 90 days. `NotificationDeliveryModel` is `MassPrunable` on `attempted_at < now − 90 days`, and `model:prune` runs daily at 03:00. `notifications` (inbox) rows are not pruned; an inbox retention policy is a follow-up if the table grows.
@@ -137,7 +137,7 @@ Routes: [documentation graph](INDEX.md).
 
 ## Task 58: Complete Client History
 - [x] Decision resolved (already implemented, stale evidence): HIST-1's "one row per service" was already the live behavior — `OfferedServiceModel`'s single `offered_service_id` FK column settled this before this task, and `BookingCompletedObserver` already loops `$booking->services` (not `->first()`) and tolerates a null `barber_id` (nullable column + nullable command field, migration `2026_10_13_000001`). No code change was needed; see the existing `tests/Feature/ClientHistory/BookingCompletionHistoryTest.php::'it writes one history row for every booked service'`.
-- [x] Decision resolved: HIST-3 barber read qualifies on **any non-canceled booking** between the barber and client (past, active, or upcoming), matched via `booking.barber_id` or `booking.chair.barber_id`. Chosen over "upcoming/active only" because a barber preparing for an upcoming appointment needs to see the client's full grooming history, not just future bookings; `canceled` is excluded because a canceled booking never produced a real client relationship.
+- [x] Decision resolved: HIST-3 barber read qualifies on **any non-cancelled booking** between the barber and client (past, active, or upcoming), matched via `booking.barber_id` or `booking.chair.barber_id`. Chosen over "upcoming/active only" because a barber preparing for an upcoming appointment needs to see the client's full grooming history, not just future bookings; `cancelled` is excluded because a cancelled booking never produced a real client relationship.
 
 ## Task 60: Fix Favorites and Saved Filter Contracts
 - [x] Decision resolved (INT-3): idempotent add via `firstOrCreate`, not a toggle. `POST /client/favorites` returns 201 with the new row when none existed, 200 with the existing row on a repeat call; the row count never grows past 1 per `(client_id, favorited_id, favorited_type)`. Removing a favorite stays the job of the existing `DELETE /client/favorites/{favorite}` endpoint. No follow-ups.
@@ -191,7 +191,7 @@ Routes: [documentation graph](INDEX.md).
 ## Task 80: Wire Unwired Client Features
 - [x] Review dispute: **Resolved** — dropped. Task 41 removed `POST client/reviews/{review}/dispute` (only the reviewed branch/barber disputes), so no client endpoint, repository method or UI is added (the spec's evidence row was stale).
 - [x] Universe: **Resolved** — `DiscoveryBloc` seeds from the session client's `preferred_universe` (default `men`) and persists a toggle best-effort through `PATCH client/preferred-universe`; a failed save never blocks the feed.
-- [x] Saved filters apply: **Resolved** — applying uses the listed `filter_config` directly (mapped by `DiscoveryFilterConfig`); `getSavedFilter`/`updateSavedFilter` stay as repository API without an app caller.
+- [x] Saved filters apply: **Resolved** — applying uses the listed `filter_criteria` directly (mapped by `DiscoveryFilterConfig`); `getSavedFilter`/`updateSavedFilter` stay as repository API without an app caller.
 - [ ] [NEEDSHIL] Preferences screen can clear hidden brands but cannot hide one: there is no brand-listing endpoint for clients to pick from. Needs a product/API decision on where a client hides a brand.
 - [ ] [NEEDSHIL] History media: the client uploads with photo type `after`; a before/after/reference picker is a product choice.
 

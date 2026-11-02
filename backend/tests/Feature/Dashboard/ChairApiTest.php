@@ -129,7 +129,7 @@ describe('Dashboard Chair API', function (): void {
         $this->putJson("/api/v1/dashboard/chairs/{$chair->id}", chairPayload($chair, [
             'status' => ChairStatus::Maintenance->value,
             'force' => true,
-        ]))->assertOk()->assertJsonPath('meta.canceled_booking_ids', [$booking->id]);
+        ]))->assertOk()->assertJsonPath('meta.cancelled_booking_ids', [$booking->id]);
 
         expect($chair->fresh()->status)->toBe(ChairStatus::Maintenance);
         expect($booking->fresh()->booking_status)->toBe(BookingStatus::Cancelled);

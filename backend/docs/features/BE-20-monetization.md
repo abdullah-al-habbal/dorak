@@ -47,27 +47,27 @@ to repoint at it (`Modules\Dashboard\Http\Actions\OverviewAction::completedBooki
 
 ## Entities, state machines and money representation
 
-Every money column is an integer in **minor units** (2 fraction digits, `Commission\Support\MinorUnits`) next to a `currency_id`. Percent rates are **basis points** (100 = 1%). Statuses are Backed Enums.
+Every money column is an integer in **minor units** (2 fraction digits, `Commission\Support\MinorUnits`) next to a `currency_code`. Percent rates are **basis points** (100 = 1%). Statuses are Backed Enums.
 
 | Table | Key columns |
 | --- | --- |
-| `subscription_plans` | translatable `name`/`description`, `price_minor`, `currency_id`, `interval_unit` (`day\|week\|month\|year`) + `interval_count`, `is_active`, `sort_order`, soft deletes |
+| `subscription_plans` | translatable `name`/`description`, `price_amount_minor`, `currency_code`, `interval_unit` (`day\|week\|month\|year`) + `interval_count`, `is_active`, `sort_order`, soft deletes |
 | `plan_features` | `plan_id`, `feature_key` (unique pair; must be in `BrandFeatures::keys()`) |
-| `brand_subscriptions` | `brand_id`, `plan_id`, `status`, `starts_at`, `ends_at`, `canceled_at` |
-| `payment_gateways` | unique `code`, translatable `name`, `driver`, `is_active`, `is_default`, encrypted `config`, `sort_order` |
-| `commission_rules` | `scope` (`global\|brand\|branch`), `scope_id`, `type` (`percent\|flat`), `value`, `currency_id` (flat only), `is_active` |
-| `commission_entries` | unique `booking_id`, `brand_id`, `branch_id`, `rule_snapshot`, `base_minor`, `commission_minor`, `currency_id`, `payout_id` |
-| `payouts` | `brand_id`, `currency_id`, `direction`, `status`, `total_minor`, period, `approved_by/at`, `paid_at`, `reference`, `notes` |
+| `brand_subscriptions` | `brand_id`, `plan_id`, `status`, `starts_at`, `ends_at`, `cancelled_at` |
+| `payment_gateways` | unique `code`, translatable `name`, `driver`, `is_active`, `is_default`, encrypted `gateway_settings`, `sort_order` |
+| `commission_rules` | `scope` (`global\|brand\|branch`), `scope_id`, `type` (`percent\|flat`), `value_bps` (percent) or `value_amount_minor` (flat), `currency_code` (flat only), `is_active` |
+| `commission_entries` | unique `booking_id`, `brand_id`, `branch_id`, `rule_snapshot`, `base_amount_minor`, `commission_amount_minor`, `currency_code`, `payout_id` |
+| `payouts` | `brand_id`, `currency_code`, `direction_type`, `status`, `total_amount_minor`, `period_started_at`/`period_ended_at`, `approved_by_id`, `approved_at`, `paid_at`, `external_reference`, `notes` |
 
 **State machines** (`canTransitionTo` on the enum; illegal moves answer 409):
-- Subscription: `pending → active | canceled`; `active → past_due | canceled`; `past_due → active | canceled`; `canceled` is final. `past_due` is the grace period (features stay on); `canceled` revokes every flag.
-- Payout: `draft → approved | canceled`; `approved → paid | canceled`; `paid` and `canceled` are final. Canceling releases the entries for the next run.
+- Subscription: `pending → active | cancelled`; `active → past_due | cancelled`; `past_due → active | cancelled`; `cancelled` is final. `past_due` is the grace period (features stay on); `cancelled` revokes every flag.
+- Payout: `draft → approved | cancelled`; `approved → paid | cancelled`; `paid` and `cancelled` are final. Cancelling releases the entries for the next run.
 
 **Rules.**
 - Assigning a plan cancels the brand's live subscription and sets every registry flag on or off to match the plan (`PlanFeatureSyncer`). Flags are only touched on a subscription change, so manual overrides survive in between.
 - A plan with live subscriptions cannot be deleted (409). The default gateway and the last active gateway cannot be deleted or deactivated (409). Gateway config values are never returned, only their keys.
 - Commission resolution: branch beats brand beats global, newest wins a tie, inactive rules are skipped, and a flat rule only applies in its own currency. A booking's base is the sum of its services' prices in the first service's currency. No applicable rule, no branch (freelance), or no services means no entry. Entries are idempotent per booking.
-- `payouts.direction` is `brand_to_platform` (pay-at-salon: the brand owes the platform its commission); `platform_to_brand` is reserved for online gateways.
+- `payouts.direction_type` is `brand_to_platform` (pay-at-salon: the brand owes the platform its commission); `platform_to_brand` is reserved for online gateways.
 
 ## API (all under the dashboard `admin` group, platform admins only, authorized by Policies)
 `subscription-plans` (CRUD), `plan-feature-keys`, `subscriptions` (list, assign, `PATCH {id}/status`), `payment-gateways` (CRUD + `PATCH {id}/active`), `commission-rules` (CRUD), `commission-entries`, `payouts` (list, show, `POST generate`, `PATCH {id}/approve|mark-paid|cancel`), `analytics/overview`. Tests: `backend/tests/Feature/Monetization/`.

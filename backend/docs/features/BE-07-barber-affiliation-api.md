@@ -26,7 +26,7 @@
       "affiliable_id": "uuid",
       "affiliable_type": "Modules\\\\Brand\\\\Models\\\\BrandModel|Modules\\\\Branch\\\\Models\\\\BranchModel",
       "status": "pending|active|terminated",
-      "commission_rate": null,
+      "commission_percent": null,
       "invited_at": "2026-07-24T12:00:00Z",
       "accepted_at": null,
       "terminated_at": null,

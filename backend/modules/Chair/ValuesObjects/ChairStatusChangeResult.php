@@ -8,6 +8,6 @@ use Modules\Chair\Models\ChairModel;
 
 final readonly class ChairStatusChangeResult
 {
-    /** @param list<string> $canceledBookingIds */
-    public function __construct(public ChairModel $chair, public array $canceledBookingIds) {}
+    /** @param list<string> $cancelledBookingIds */
+    public function __construct(public ChairModel $chair, public array $cancelledBookingIds) {}
 }

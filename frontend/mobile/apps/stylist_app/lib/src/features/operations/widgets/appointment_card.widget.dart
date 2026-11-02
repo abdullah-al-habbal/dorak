@@ -25,7 +25,7 @@ class AppointmentCard extends StatelessWidget {
     BookingStatus.confirmed => l10n.bookingStatusConfirmed,
     BookingStatus.inProgress => l10n.bookingStatusInProgress,
     BookingStatus.completed => l10n.bookingStatusCompleted,
-    BookingStatus.cancelled => l10n.bookingStatusCanceled,
+    BookingStatus.cancelled => l10n.bookingStatusCancelled,
     BookingStatus.noShow => l10n.bookingStatusNoShow,
   };
 

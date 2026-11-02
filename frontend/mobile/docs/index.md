@@ -875,7 +875,7 @@ creation (CL-10) (2026-09-02).** Core: `BranchEndpoints` +
 `BranchRepository.getFloorPlan` (`GET /branches/{branch}/floor-plan`),
 `ExploreRepository.getBranchDetail` (`GET /explore/branches/{branch}`),
 `BookingRepository.createBooking` (`POST /bookings`, slot formatted
-`yyyy-MM-dd HH:mm:ss` UTC, `at_home_location` only when both coords given) +
+`yyyy-MM-dd HH:mm:ss` UTC, `home_address` only when both coords given) +
 `BranchDetailDto` / `FloorPlanDto` / `FloorChairDto` (codegen). App:
 `BranchDetailBloc` (detail + floor plan in parallel, plan failure tolerated
 via `planFailed`, chair/services/time selection, submit requires chair +

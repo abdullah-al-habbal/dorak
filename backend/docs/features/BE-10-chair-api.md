@@ -23,7 +23,7 @@
     "id": "uuid",
     "label": "Chair 1",
     "status": "available|occupied|maintenance",
-    "ui_metadata": {
+    "layout_settings": {
       "position_x": 100,
       "position_y": 200,
       "width": 60,

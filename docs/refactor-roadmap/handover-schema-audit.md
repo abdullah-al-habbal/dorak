@@ -48,9 +48,11 @@ Earlier batches A-H (enums, branch hours, weekday constants) are listed in `inde
 
 **Batch J part 1 (complete)**: `*_radius_km`, `commission_percent`, `confidence_ratio`, `weight_ratio`, `attempts_count`. **Batch J part 2 (complete)**: `rating_average`, `duration_minutes`, `allows_*` booleans, `favorited_*`. Batch J is finished; next is Batch K.
 
-**Batch K (complete)**: time, lifecycle and booking names, see `batch-k-time-lifecycle-bookings.md`. **Batch L (complete)**: type, category and mode names, see `batch-l-type-category-mode.md`. **Batch M (complete)**: content, file and JSON names, see `batch-m-content-files-json.md`. Next is the Final guardrail batch.
+**Batch K (complete)**: time, lifecycle and booking names, see `batch-k-time-lifecycle-bookings.md`. **Batch L (complete)**: type, category and mode names, see `batch-l-type-category-mode.md`. **Batch M (complete)**: content, file and JSON names, see `batch-m-content-files-json.md`. **Final guardrail batch (complete)**: `backend/tests/Unit/Core/SchemaNamingConventionTest.php` plus the repo-wide sweep, see `batch-final-guardrails.md`.
 
-## 4. Full roadmap (remaining work)
+**Status: the whole roadmap (Batches A to M and Final) is complete.** No remaining work; new columns are held to the contract by the schema-lint test.
+
+## 4. Full roadmap (all batches done; kept for reference)
 
 ### Batch I remainder
 Done; see section 3.
@@ -67,7 +69,7 @@ Done; see section 3.
 ### Batch M: content, files, JSON
 `reviews.comment` to `body`; `testimonials.quote` to `body`; `brands.logo` to `logo_url`; `clients.avatar` to `avatar_path`; `*.path` to `image_path`; `alt` to `alt_text`; dedupe `photo_path` / `photo_url`; `payment_gateways.config` to `gateway_settings`; `chairs.ui_metadata` to `layout_settings`; generic `metadata` / `context` columns to business names (`styling_details`, `service_details`, `provider_profile`, `embedding_metadata`, `interaction_context`, `edge_context`); `filter_config` to `filter_criteria`; `sections.content` to `body`; `bookings.at_home_location` to `home_address`; `notification_deliveries.error` to `error_message`; platform settings `key` / `value` to `setting_key` / `value_integer`.
 
-### Final batch: guardrails and sweep
+### Final batch: guardrails and sweep (done)
 - Add a Pest schema-lint test scanning migrations: no `*_minor` without `_amount_minor`, no `*_enabled`, no bare `*_by`, no `canceled`, no `currency_id`.
 - Repo-wide `rg` sweep for every old name (code, docs, `backend/docs/features/*`, i18n keys), then update `docs/refactor-roadmap/index.md` and `docs/decisions-required.md` as needed.
 - Run the full gate set once more.

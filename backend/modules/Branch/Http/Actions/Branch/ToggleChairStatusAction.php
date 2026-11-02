@@ -51,7 +51,7 @@ final class ToggleChairStatusAction extends BaseApiAction
                 'status' => $status->value,
             ],
             code: SuccessCodeEnum::UPDATED,
-            meta: ['canceled_booking_ids' => $result->canceledBookingIds],
+            meta: ['cancelled_booking_ids' => $result->cancelledBookingIds],
         );
     }
 }

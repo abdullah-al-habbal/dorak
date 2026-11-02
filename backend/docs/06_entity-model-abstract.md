@@ -46,7 +46,7 @@ Build bottom‑up: foundations first, then the things that depend on them. Featu
 
 **Language**
 - identifier (e.g., `ar`, `en`)
-- name, direction (right‑to‑left / left‑to‑right)
+- name, text_direction (right‑to‑left / left‑to‑right)
 - whether it's the default
 > The app ships **Arabic + English**; translatable fields resolve against this.
 
@@ -68,7 +68,7 @@ Build bottom‑up: foundations first, then the things that depend on them. Featu
 **Brand** *(the tenant)*
 - identifier
 - **link**: Owner (a Client)
-- name (**translatable**), logo, description (translatable)
+- name (**translatable**), logo_url, description (translatable)
 - **link**: base Currency
 - **feature flags** (e.g., multi‑branch, job board, floor‑plan designer — on/off)
 - a **Settings** record
@@ -315,7 +315,7 @@ These omissions are intentional: the model stays small enough to ship and flexib
     "suitable_face_shapes": ["oval", "round", "square"],
     "suitable_hair_textures": ["straight", "wavy", "curly", "coily"],
     "maintenance_level": "low",
-    "style_period": "modern",
+    "style_period_type": "modern",
     "formality": "casual"
   }
   ```
@@ -356,8 +356,8 @@ These omissions are intentional: the model stays small enough to ship and flexib
 
 **ClientServiceHistoryMediaModel** — *Before/after photos linked to a history entry.*
 - `id` (UUID)
-- `history_id` (FK)
-- `photo_url` (string)
+- `client_service_history_id` (FK)
+- `image_path` (string; the API serves it as a signed `photo_url`)
 - `photo_type` (enum: `before` / `after` / `reference`)
 - `uploaded_at` (datetime)
 
@@ -378,7 +378,7 @@ These omissions are intentional: the model stays small enough to ship and flexib
 - `analysis_version` (string) — model version or API version
 - `analysis_source` (enum: `third_party_api` / `internal_python_service`)
 - `detected_face_shape` (enum: `oval`, `round`, `square`, `heart`, `diamond`, `oblong`, `triangle`)
-- `confidence_score` (decimal, 0.00–1.00)
+- `confidence_ratio` (decimal, 0.00–1.00)
 - `detected_features` (JSON) — cast to `FaceAnalysisFeaturesValueObject`
 - `recommended_catalog_item_ids` (JSON array of UUIDs) — cast to `RecommendedCatalogItemIdsValueObject`
 - `computed_at` (datetime)

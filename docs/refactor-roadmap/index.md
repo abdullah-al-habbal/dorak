@@ -24,6 +24,7 @@ listed in the story pass before the local commit. Never push.
 | K | [Time, lifecycle, bookings](batch-k-time-lifecycle-bookings.md) | `booking_status`, `starts_at`, `cancelled`, hours, bans, FK ids | Done |
 | L | [Types, categories, modes](batch-l-type-category-mode.md) | `employment_type`, `section_type`, `media_type`, `platform_type`, `theme_mode`, `group_name` | Done |
 | M | [Content, files, JSON settings](batch-m-content-files-json.md) | `body`, `logo_url`, `avatar_path`, `image_path`, `gateway_settings`, `layout_settings`, `filter_criteria`, `home_address`, `setting_key` | Done |
+| Final | [Guardrails and sweep](batch-final-guardrails.md) | `SchemaNamingConventionTest`, repo-wide old-name sweep | Done |
 
 ## Deferred
 

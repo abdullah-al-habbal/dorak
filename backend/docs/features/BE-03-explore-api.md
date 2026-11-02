@@ -82,11 +82,11 @@
         "id": "uuid",
         "name": "string",
         "description": "string",
-        "price": 5000.0,
-        "currency_id": "uuid",
-        "duration": 30,
-        "at_home": false,
-        "active": true,
+        "price_amount_minor": 500000,
+        "currency_code": "SAR",
+        "duration_minutes": 30,
+        "is_at_home": false,
+        "is_active": true,
         "created_at": "datetime"
       }
     ],

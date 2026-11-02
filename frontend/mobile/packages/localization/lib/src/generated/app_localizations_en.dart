@@ -494,7 +494,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookingStatusConfirmed => 'Confirmed';
 
   @override
-  String get bookingStatusCanceled => 'Canceled';
+  String get bookingStatusCancelled => 'Cancelled';
 
   @override
   String get bookingStatusCompleted => 'Completed';

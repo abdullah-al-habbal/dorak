@@ -16,7 +16,7 @@ const LABELS = {
   inProgressLabel: "In progress",
   completedLabel: "Completed",
   noShowLabel: "No-show",
-  canceledLabel: "Cancelled",
+  cancelledLabel: "Cancelled",
   updateStatusLabel: "Update status",
 };
 

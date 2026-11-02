@@ -25,7 +25,7 @@
 ### GET /api/v1/branches/{branch}/floor-plan → 200
 Query parameters: `starts_at` (required ISO-8601 UTC timestamp, such as
 `2026-07-25T14:00:00Z`) and `duration` (minutes). Booking create, walk-in,
-reschedule, and rebook `time_slot` values use the same UTC timestamp contract.
+reschedule, and rebook `starts_at` values use the same UTC timestamp contract.
 Floor-plan and booking checks share half-open interval overlap semantics and
 consider pending, confirmed, and in-progress bookings as blocking.
 
@@ -37,7 +37,7 @@ consider pending, confirmed, and in-progress bookings as blocking.
         "id": "uuid",
         "label": "Chair 1",
         "status": "available|occupied|maintenance",
-        "ui_metadata": {
+        "layout_settings": {
           "position_x": 100,
           "position_y": 200,
           "width": 60,
@@ -69,14 +69,14 @@ consider pending, confirmed, and in-progress bookings as blocking.
 {
   "data": {
     "id": "uuid",
-    "time_slot": "2026-07-25T14:00:00Z",
-    "status": "booked",
-    "chair": { "id": "uuid", "label": "Chair 1", "status": "occupied", "ui_metadata": {}, "barber": null },
+    "starts_at": "2026-07-25T14:00:00Z",
+    "booking_status": "pending",
+    "chair": { "id": "uuid", "label": "Chair 1", "status": "occupied", "layout_settings": {}, "barber": null },
     "barber": { "..." },
     "services": [
-      { "id": "uuid", "name": "Fade Haircut", "description": "...", "price": 5000.0, "currency_id": "uuid", "duration": 30, "at_home": false, "active": true, "created_at": "datetime" }
+      { "id": "uuid", "name": "Fade Haircut", "description": "...", "price_amount_minor": 500000, "currency_code": "SAR", "duration_minutes": 30, "is_at_home": false, "is_active": true, "created_at": "datetime" }
     ],
-    "at_home_location": null,
+    "home_address": null,
     "created_at": "datetime"
   }
 }
@@ -87,7 +87,7 @@ consider pending, confirmed, and in-progress bookings as blocking.
 {
   "data": {
     "id": "uuid",
-    "status": "canceled",
+    "booking_status": "cancelled",
     "..."
   }
 }
