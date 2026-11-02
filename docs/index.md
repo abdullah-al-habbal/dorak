@@ -19,12 +19,12 @@ codeanchors:
 
 # Documentation Graph
 
-> Repository-wide documentation router. The graph root is the repository [`index.md`](../index.md).
+> Repository-wide documentation router. The graph root is the repository [`docs/repo-index.md`](repo-index.md).
 > Follow the folder node for a subsystem, then choose a document leaf. All maintained Markdown documents in this repository are listed below.
 
 ## Graph roots
 
-- [Repository rules](../index.md) — root-level orientation and subsystem entry points.
+- [Repository rules](repo-index.md) — root-level orientation and subsystem entry points.
 - [Backend](../backend/README.md) — Laravel service and product docs.
 - [Dashboard](../frontend/dashboard/AGENTS.md) — Next.js application.
 - [Mobile](../frontend/mobile/AGENTS.md) — Flutter workspace.
@@ -33,7 +33,7 @@ codeanchors:
 
 ```mermaid
 graph TD
-  root[index.md] --> graph[docs/index.md]
+  root[docs/repo-index.md] --> graph[docs/index.md]
   graph --> repo[Repository-wide Markdown nodes]
   repo --> backend[backend/]
   repo --> dashboard[frontend/dashboard/]
@@ -50,7 +50,7 @@ Entries are grouped by repository-relative folder. Every listed file is reachabl
 - [Agents](../AGENTS.md)
 - [Claude](../CLAUDE.md)
 - [Readme](../README.md)
-- [Index](../index.md)
+- [Index](repo-index.md)
 
 ### `backend/`
 
