@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.04-house-rules
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 04 — Website House Rules (The UI/UX Laws)
 > The unshakeable laws of how the Dorak Website operates.
 

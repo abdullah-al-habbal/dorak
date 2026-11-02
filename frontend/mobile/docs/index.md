@@ -1,7 +1,32 @@
 ---
 nodeid: mobile.docs
 parentnode: mobile.guide
-childnodes: []
+childnodes:
+  - mobile.architecture
+  - mobile.authentication.auth-flow
+  - mobile.authentication.password-recovery
+  - mobile.core.background-tasks
+  - mobile.core.exceptions
+  - mobile.core.interceptors
+  - mobile.core.networking
+  - mobile.core.result-state
+  - mobile.core.session
+  - mobile.core.storage
+  - mobile.design-system
+  - mobile.feature-index
+  - mobile.flows.app-launch
+  - mobile.flows.guest-access
+  - mobile.flows.onboarding
+  - mobile.future-features.per-page.per-page
+  - mobile.navigation.guards
+  - mobile.navigation.routes
+  - mobile.realtime.reverb
+  - mobile.runtime.app-lifecycle
+  - mobile.screens.authentication.create-new-password
+  - mobile.screens.authentication.forgot-password
+  - mobile.screens.authentication.password-reset-success
+  - mobile.screens.authentication.recovery-otp
+  - mobile.state-management
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/
@@ -117,145 +142,16 @@ current topic docs; it does not list planned files that have not been created.
 
 - Architecture: [coding conventions](architecture/coding-conventions.md) and [architecture decisions](architecture/decisions/0001-bloc-in-core.md).
 - Core runtime: [networking](core/networking.md), [session](core/session.md), [runtime lifecycle](runtime/app-lifecycle.md), and [realtime](realtime/reverb.md).
-- State and navigation: [state management](state_management/index.md), [routes](navigation/routes.md), and [guards](navigation/guards.md).
+- State and navigation: [state management](state-management/index.md), [routes](navigation/routes.md), and [guards](navigation/guards.md).
 - Product flows: [authentication](authentication/auth-flow.md), [onboarding](flows/onboarding.md), and [guest access](flows/guest-access.md).
-- Design: [design-system index](design_system/index.md) and [password recovery screen](screens/authentication/forgot-password.md).
+- Design: [design-system index](design-system/index.md) and [password recovery screen](screens/authentication/forgot-password.md).
 - Verification: use the package and app verification instructions in [mobile guide](../AGENTS.md).
 
 ---
 
 # 5. Implementation Tracks
 
-Tracks MUST be executed in order unless an Architecture Decision Record explicitly changes the dependency.
-
-## Track 00 — Repository & Architecture Audit
-
-**Status:** `DONE`
-
-Objectives:
-
-* Verify the repository structure.
-* Verify package dependencies.
-* Verify implementation against `CLAUDE.md`.
-* Identify architectural inconsistencies.
-* Establish the documentation baseline.
-
-Required documentation:
-
-* `docs/agent/`
-* `docs/architecture/`
-* `docs/engineering/`
-
-Verification:
-
-```bash
-flutter analyze
-flutter test
-```
-
----
-
-## Track 01 — Design Tokens
-
-**Status:** `DONE`
-
-Objectives:
-
-* Extract canonical visual tokens from Stitch.
-* Colors.
-* Typography.
-* Spacing.
-* Radii.
-* Elevation.
-* Dimensions.
-* Borders.
-* Opacity.
-* Icons.
-* Motion.
-* Breakpoints.
-
-Source pipeline:
-
-```text
-Stitch
-   ↓
-docs/stitch/exports/
-   ↓
-docs/design_system/tokens/
-```
-
-Implementation target:
-
-```text
-packages/design_system
-```
-
-Required documentation:
-
-```text
-docs/design_system/tokens/
-```
-
----
-
-## Track 02 — Themes & Semantics
-
-**Status:** `DONE`
-
-Objectives:
-
-* Map raw tokens to semantic tokens.
-* Define theme architecture.
-* Integrate tokens with Flutter `ThemeData`.
-* Define semantic colors and text styles.
-* Preserve future RTL/theme support.
-
-Implementation target:
-
-```text
-packages/design_system
-```
-
----
-
-## Track 03 — Localization Foundation
-
-**Status:** `DONE`
-
-Objectives:
-
-* English-first implementation.
-* Translation-key architecture.
-* Arabic/RTL readiness.
-* Locale switching.
-* Fallback behavior.
-
-Implementation target:
-
-```text
-packages/localization
-```
-
----
-
-## Track 04 — Result, Error & State Contracts
-
-**Status:** `DONE`
-
-Objectives:
-
-* Define application result contracts.
-* Define exception taxonomy.
-* Define transport-to-application error mapping.
-* Prevent raw transport exceptions from reaching UI.
-
-Implementation target:
-
-```text
-packages/core
-```
-
----
+Only open tracks are listed; completed tracks (00–04, 06–08, 10, 16) are shipped and recorded in git history and [the feature index](feature-index.md). Track 05 keeps its single open item.
 
 ## Track 05 — Storage
 
@@ -279,8 +175,7 @@ staleness against an injected clock; corrupt payload → null). Full gate:
 `dart run melos run verify` exit 0, **168 tests** (core 72 → 83,
 re-baselined 2026-09-02).
 
-The cache's first consumer is the Discovery 016 feed (`docs/future-features/
-discovery-016.md` §5) — the wait-for-consumer caveat that kept this track
+The cache's first consumer is the Discovery feed — the wait-for-consumer caveat that kept this track
 deferred is resolved: the envelope it stores was derived from the real backend
 `/explore/branches` contract, and Discovery (Track 18) reads it.
 
@@ -290,86 +185,6 @@ Implementation target:
 
 ```text
 packages/core
-```
-
----
-
-## Track 06 — Session Management
-
-**Status:** `DONE`
-
-Objectives:
-
-* Session restoration. — `DONE` (`SessionBloc` `RestoreRequested`, probed via
-  `POST /client/refresh-token`; the backend has no `GET /client/me`).
-  A storage read failure fails safe to `guest` and always resolves `ready`, so
-  the splash cannot hang.
-* Session expiration. — `DONE`. A dead token is detected on cold start;
-  mid-session revocation is caught by `AuthInterceptor` and redirected to auth
-  (`docs/core/session.md`, `docs/core/interceptors.md`). One 401 burst produces
-  exactly one expiration and one redirect, and clears the cached client.
-* Logout. — `DONE` (`SessionBloc` `LogoutRequested`; no UI affordance yet)
-* Authentication state. — `DONE` (`AuthStatus` + `SessionSignal`)
-* Token lifecycle. — `DONE` (issue, rotate on restore, clear on 401/logout)
-
-**Evidence.** 72 tests in `packages/core` and 67 in `apps/client_app`
-(re-baselined 2026-09-02);
-`session_bloc_test.dart` covers the full restore matrix (no token / valid /
-401 / 403 / offline / server error / unreadable storage), the expiry and burst
-paths, client discard, and the anti-resurrection guard.
-`session_expired_test.dart` covers the end-to-end replace-vs-push contract and
-that a failed sign-in after expiry leaves the session `guest`.
-`dart run melos run verify` exits 0.
-
-Documentation: `docs/core/session.md`, `docs/navigation/guards.md`.
-
-Implementation target:
-
-```text
-packages/core
-```
-
----
-
-## Track 07 — Networking
-
-**Status:** `DONE`
-
-Objectives:
-
-* HTTP client.
-* Environment configuration.
-* Base URL configuration.
-* Headers.
-* Serialization.
-* Timeout handling.
-* Retry boundaries.
-
-Implementation target:
-
-```text
-packages/core
-```
-
----
-
-## Track 08 — Interceptors & API Infrastructure
-
-**Status:** `DONE`
-
-Objectives:
-
-* Authentication interceptor.
-* Logging/observability interceptor.
-* Error interceptor.
-* Request metadata.
-* Domain-split API endpoints.
-* DTO mapping.
-
-Implementation target:
-
-```text
-packages/core/network
 ```
 
 ---
@@ -390,7 +205,7 @@ Objectives:
 
 * Establish one canonical state-management architecture. — `DONE` (Pure Bloc;
   `packages/core` uses pure `bloc` by ADR 0001, `apps/*` use `flutter_bloc`)
-* Async state conventions. — `DONE` (`docs/state_management/conventions.md`,
+* Async state conventions. — `DONE` (`docs/state-management/conventions.md`,
   `async-state.md`)
 * Loading. — `DONE` (`isLoading` = reading, `isSubmitting` = user-initiated
   write; initial ≠ loading ≠ empty)
@@ -398,7 +213,7 @@ Objectives:
 * Empty. — `DONE` (`success && data.isEmpty`, never rendered as an error)
 * Error. — `DONE`. Failures land in `state.error`; blocs never rethrow; the app
   localizes via `AuthError.from` — a backend `message` is never rendered.
-* Refresh. — `DONE` (`docs/state_management/refresh.md`; first-load vs
+* Refresh. — `DONE` (`docs/state-management/refresh.md`; first-load vs
   load-more vs refresh, and refresh vs filter change)
 * Pagination. — `IN_PROGRESS`. The `Paged<T>` contract exists in
   `packages/core/lib/src/network/` and is covered by `paged_test.dart`, but
@@ -407,7 +222,7 @@ Objectives:
   working around it.
 * Background operations. — `PENDING`, deliberately undocumented. Nothing in
   Dorak performs background work; writing a contract for it would be fiction.
-  `docs/state_management/background_operations.md` stays empty until Track 13
+  `docs/state-management/background_operations.md` stays empty until Track 13
   creates something real.
 
 Also carried by this track:
@@ -427,40 +242,6 @@ Implementation targets:
 ```text
 apps/*
 packages/feature_*
-```
-
----
-
-## Track 10 — Dependency Injection & Bootstrap
-
-**Status:** `DONE` (2026-09-02)
-
-Objectives:
-
-* Application bootstrap. — `DONE` for `client_app` (`main.dart` + `app.dart`;
-  see `docs/flows/app-launch.md`). `business_app` / `stylist_app` untouched
-  (skeletons, out of scope for this track).
-* Dependency registration. — **Closed as `PARTIAL`-by-design.** Wiring is manual
-  construction in `DorakApp.initState` with constructor seams for tests; no DI
-  container. This is the recorded architecture (see `AGENTS.md` §7 — a
-  container was never mandated; the blob free of packages does the wiring by
-  construction). Not unfinished work.
-* Environment initialization. — `DONE` (dotenv + `ConfigProvider`)
-* Core service initialization. — `DONE` (storage, `ApiClient`, session,
-  onboarding config)
-* Application lifecycle. — `DONE`. `AppLifecycleListener(onResume: …)` in
-  `DorakApp` re-probes the session on resume; guards the `unknown` status and
-  in-flight restores. See `docs/runtime/app-lifecycle.md`.
-
-**Evidence.** 5 lifecycle tests in `apps/client_app/test/widget_test.dart`
-(resume re-probes once per resume; rebuilds do not re-probe; `unknown` raced;
-revoked token → guest). Full gate: `dart run melos run verify` exit 0,
-**157 tests** (re-baselined 2026-09-02).
-
-Implementation target:
-
-```text
-apps/*
 ```
 
 ---
@@ -505,14 +286,14 @@ Objectives:
 
 Implement reusable:
 
-* Full-page loading. — `DONE` (`AppLoader.page()` — `docs/design_system/components/loading/fullscreen.md`)
-* Inline loading. — `DONE` (`AppLoader.inline()` — `docs/design_system/components/loading/inline.md`)
+* Full-page loading. — `DONE` (`AppLoader.page()` — `docs/design-system/components/loading/fullscreen.md`)
+* Inline loading. — `DONE` (`AppLoader.inline()` — `docs/design-system/components/loading/inline.md`)
 * Button loading. — `DONE` (`PrimaryButton.isLoading` — was already implemented and used by every auth form; the earlier `PENDING` status was a recording error. `SecondaryButton` deliberately has no `isLoading` — no consumer needs it)
-* Shimmer. — `DONE` (`ShimmerBox`, hand-rolled, no package — `docs/design_system/components/shimmer/text.md`)
-* Empty. — `DONE` (`StatusView` — `docs/design_system/states/empty.md`)
-* Error. — `DONE` (`StatusView` full-page, `StatusBanner` inline; `AuthError.from` stays in the app — `docs/design_system/states/network-error.md`)
-* Offline. — `DONE` (presentation variant of error; no connectivity package — `docs/design_system/states/offline.md`)
-* Retry. — `DONE` (an action on `StatusView`/`StatusBanner`, not a widget — `docs/design_system/states/retry.md`)
+* Shimmer. — `DONE` (`ShimmerBox`, hand-rolled, no package — `docs/design-system/components/shimmer/text.md`)
+* Empty. — `DONE` (`StatusView` — `docs/design-system/states/empty.md`)
+* Error. — `DONE` (`StatusView` full-page, `StatusBanner` inline; `AuthError.from` stays in the app — `docs/design-system/states/network-error.md`)
+* Offline. — `DONE` (presentation variant of error; no connectivity package — `docs/design-system/states/offline.md`)
+* Retry. — `DONE` (an action on `StatusView`/`StatusBanner`, not a widget — `docs/design-system/states/retry.md`)
 * Session expired. — `DONE` (401/403 on an authenticated request →
   `ApiClient.unauthorizedStream` → `SessionBloc.add(UnauthorizedDetected())` →
   auth entry)
@@ -522,7 +303,7 @@ Implement reusable:
 * Permission required. — `PENDING` **deferred deliberately**: no permission
   mechanism exists in the workspace (no `permission_handler`, `geolocator`, or
   `connectivity_plus`) and there is no consumer. Ownership is open between
-  Tracks 13/14 (see `docs/stitch/exports/016_discovery_feed/plan.md` §22);
+  Tracks 13/14 ;
   016's location-permission needs will trigger it. Do not build a permission
   visual without a mechanism.
 
@@ -534,7 +315,6 @@ apps/*            # AppRouter listener redirects to /auth on sessionExpired
 packages/design_system
 ```
 
-Order change: Track 12 runs before Tracks 05 and 10 — [ADR 0003](./architecture/decisions/0003-track-12-before-05-and-10.md).
 
 ---
 
@@ -627,50 +407,6 @@ Global States
 ```
 
 Every implemented component MUST map to its corresponding Markdown specification and Stitch source.
-
----
-
-## Track 16 — Authentication
-
-**Status:** `DONE`
-
-Implementation order:
-
-```text
-Splash                      DONE  (Stitch 001)
-↓
-Application Initialization  DONE  (main.dart + app.dart + AppGate)
-↓
-Onboarding                  DONE  (Stitch 002–005; Skip ≠ Don't show again)
-↓
-Authentication Entry        DONE  (Stitch 006, now reachable)
-↓
-Login / Register            DONE  (Stitch 007–008, live backend)
-↓
-Verification                DONE  (Stitch 009, non-blocking)
-↓
-Password Recovery           DONE  (Stitch 011–014, live backend)
-↓
-Session Restoration         DONE  (see Track 06)
-```
-
-Documentation: `docs/authentication/auth-flow.md`,
-`docs/authentication/password-recovery.md`, `docs/flows/app-launch.md`,
-`docs/flows/onboarding.md`, `docs/flows/guest-access.md`,
-`docs/screens/authentication/`.
-
-**Evidence.** 157 tests, `dart run melos run verify` exit 0 (re-baselined
-2026-09-02; suite = 72 core + 67 client_app + 14 design_system + 1 each in the
-four skeleton/package units).
-`password_recovery_bloc_test.dart` (8) and `password_recovery_flow_test.dart` (6)
-cover the flow, the account-enumeration mitigation, and the rejected-code path.
-
-Three backend constraints shaped the recovery flow and are recorded in
-`docs/authentication/password-recovery.md` so they are not re-derived: there is no
-verify-reset-code endpoint (so a bad code surfaces on screen 013, not 012), the code
-lives in the cache for 10 minutes, and `exists:clients,email` is an enumeration
-oracle that the client deliberately does not surface. Recovery resend is
-`forgotPassword`, **not** `sendEmailVerification`.
 
 ---
 
@@ -773,169 +509,7 @@ Verify:
 
 # 6. Current Execution Point
 
-**Mobile status (Task 87 sweep):** Tasks 78–86 are complete: client booking fixes, barber
-discovery, wired client features and auth cleanup (78–81); stylist app shell and
-features — login, today list with cancel, schedule, portfolio, profile and
-travel radius, affiliations, jobs (82, 83); business app shell and features —
-job postings, floor-plan presets, affiliations, branch profile, reviews (84,
-85); `feature_floor_plan` removed and one endpoints barrel (86). The older
-per-stitch notes below are a chronological log.
-
-**Current Track:** **Stitch 020 / Client Review & Rating DONE 2026-09-14.** Core:
-`ReviewEndpoints` (`POST /client/bookings/{booking}/review`, `GET
-/branches/{branch}/reviews`), `ReviewDto` / `SubmitReviewDto` (codegen),
-`ReviewRepository` / `DioReviewRepository` (`submitReview` → 201
-`ReviewDto`; `getBranchReviews` → `Paged<ReviewDto>`). App: `ReviewSubmitBloc`
-(`ReviewSubmitStarted(bookingId, rating, comment)` → tracks `isSubmitting`,
-`submitted`, `error`; `ReviewSubmitRetried` re-submits from stored rating),
-`ReviewSubmitScreen` (star row 1–5, comment field max 1000, submit
-`PrimaryButton` with `isLoading`/`isDisabled` guard, success `StatusView`),
-route `/reviews/:bookingId` under the Bookings shell branch, "Rate" button on
-`BookingCard` when `status == 'completed'`, `app.dart` DI + dispose.
-`melos verify` exit 0, **288 tests** (core 121, client_app 153, design_system 14,
-1×4), **211 ARB keys** (EN+AR parity).
-
-**Just completed — Stitch 019 / Stylist Profile (CL-12) (2026-09-10).** Core:
-`ExploreRepository.getBarberDetail` (`GET /explore/barbers/{barber}`,
-returns `{...BarberResource, services}`), `CurrencyRepository`
-(`GET /currencies` public), DTOs `BarberProfileDto` / `BarberServiceDto` /
-`CurrencyDto` (codegen). App: `StylistProfileBloc` (parallel detail +
-currencies, currency failure tolerated, retry), `StylistProfileScreen`
-(avatar header, stats row mapping `rank`/`compatibility_score` onto
-`discoverRankBadge`/`discoverCompatibilityBadge`, services list with
-price/currency/duration/at-home), branch-detail barbers → tappable rows,
-route `/discover/barber/:barberId`. `melos verify` exit 0, **277 tests**
-(core 114, client_app 145, design_system 14, 1×4), **200 ARB keys**
-(EN+AR parity).
-
-**Just completed — Stitch 018a / Service History + Rebook (CL-11)
-(2026-09-10).** `HistoryEndpoints` +
-`HistoryRepository`/`DioHistoryRepository` (`GET /client/history` paged,
-`POST /client/history/{history}/rebook` with UTC `yyyy-MM-dd HH:mm:ss`
-slot) + `ServiceHistoryDto` with nested `HistoryBarberDto` /
-`HistoryBranchDto` / `HistoryCatalogItemDto` (translations map) /
-`HistoryMediaDto` (codegen). App: `HistoryBloc` over `Paged<ServiceHistoryDto>`
-(refresh, load-more, retry, rebook submit → `rebooked` flag + ack),
-`ProfileScreen` rebuilt as the 018 profile tab (client-name header card,
-Change Password entry, Service History section, per-entry rebook via Material
-date + time pickers, 409 → conflict message, success `StatusView` → My
-Bookings). `melos verify` exit 0, **241 tests** (core 101, client_app 122,
-design_system 14, 1×4), **172 ARB keys** (EN+AR parity).
-
-**Just completed — Track 11 Navigation (2026-09-02).** Four-tab
-`StatefulShellRoute.indexedStack` with bottom `NavigationBar`:
-Discover (replaces Home), Bookings, Favorites, Profile placeholders.
-`_MainShell` widget with localized labels + active icons. `AppGate.resolve`
-routes to `/discover` for authenticated/onboarded guests. Legacy `/home`
-redirects to `/discover`. `SessionSignal.sessionExpired` correctly goes to
-Auth Entry (verified by `session_expired_test.dart`). `melos verify` exit 0,
-**170 tests** (core 83, client_app 67, design_system 14, 1×4), **114 ARB
-keys** (EN+AR).
-
-Then **Track 18 prep (2026-09-02)** — core infra for Discovery:
-`LocationProvider`/`GeolocatorLocationProvider`, `ExploreEndpoints`/`ExploreRepository`,
-`BranchDto`, `FeedCache`/`SharedFeedCache` all in `packages/core`. `melos verify`
-exit 0, **170 tests** (core 83, client_app 67, design_system 14, 1×4).
-
-**Just completed — Track 18 / Discovery 016 (CL-09) (2026-09-02).**
-`DiscoveryBloc` (location → cache → network, `Paged<BranchDto>`,
-`FeedCache` read/stale-label/revalidate, universe + available-now + price +
-rating wired to `/explore/branches`), `DiscoveryScreen` (location-required /
-error / loading / empty / feed with `DiscoveryFilterBar` +
-`DiscoveryResultCard`, pull-to-refresh, infinite scroll, stale + refresh-failure
-banners), Discover tab replaces `HomeScreen` (guest Book Now →
-`RequireAuthentication`). Core: `ApiClient.getRawPaginated` +
-`ExploreRepository.getBranchesPayload` (parsed + raw for cache writes),
-repo merged into one file, `page` param added. `melos verify` exit 0,
-**188 tests** (core 88, client_app 82, design_system 14, 1×4), **128 ARB
-keys** (EN+AR, parity verified).
-
-**Just completed — Track 17 / Authenticated password change (2026-09-02).**
-`AuthRepository.changePassword` (`PATCH /client/password`,
-`current_password` + confirmed `password`), `ChangePasswordBloc` + form screen
-(`ChangePasswordContent` over `AuthTextField`/`AuthValidators`/`AuthError`,
-wrong-current-password 422 shown per-field), Profile tab entry button,
-`/profile/password` nested route.
-
-**Just completed — Stitch 017a / My Bookings (CL-10) (2026-09-02).**
-`BookingEndpoints` + `BookingRepository`/`DioBookingRepository`
-(`GET /bookings` with status/page/per_page, `POST
-/client/bookings/{booking}/cancel`) + `BookingDto` with nested
-chair/barber/service DTOs (codegen). `BookingBloc` over `Paged<BookingDto>`
-(filterUpcoming/past, refresh, load-more, cancel-then-reload with
-per-card spinner). `BookingsScreen` (filter visible in empty state too),
-`BookingCard` (locale-aware time, status badge, barber/chair/services),
-cancel confirmation `AlertDialog`. `melos verify` exit 0, **214 tests**
-(core 94, client_app 102, design_system 14, 1×4), **149 ARB keys** (EN+AR
-parity).
-
-**Just completed — Stitch 017b / Branch floor-plan detail + booking
-creation (CL-10) (2026-09-02).** Core: `BranchEndpoints` +
-`BranchRepository.getFloorPlan` (`GET /branches/{branch}/floor-plan`),
-`ExploreRepository.getBranchDetail` (`GET /explore/branches/{branch}`),
-`BookingRepository.createBooking` (`POST /bookings`, slot formatted
-`yyyy-MM-dd HH:mm:ss` UTC, `home_address` only when both coords given) +
-`BranchDetailDto` / `FloorPlanDto` / `FloorChairDto` (codegen). App:
-`BranchDetailBloc` (detail + floor plan in parallel, plan failure tolerated
-via `planFailed`, chair/services/time selection, submit requires chair +
-time, barber resolved from the chair, 409 → `bookingConflictMessage`),
-`BranchDetailScreen` (`FloorPlanGrid` with available tappable chairs,
-services `CheckboxListTile`s, date + time pickers, `PrimaryButton`
-`isDisabled: !canSubmit`, success `StatusView`), Discover-tab nested
-`/discover/branch/:branchId` route + "View Details" from result cards.
-`melos verify` exit 0, **226 tests** (core 98, client_app 110,
-design_system 14, 1×4), **163 ARB keys** (EN+AR parity).
-
-**Just completed — Stitch 018a / Service History + Rebook (CL-11)
-(2026-09-10).** Core: `HistoryEndpoints` +
-`HistoryRepository`/`DioHistoryRepository` (`GET /client/history`
-status/page pagination, `POST /client/history/{history}/rebook` with the
-shared UTC `yyyy-MM-dd HH:mm:ss` slot format) + `ServiceHistoryDto` and
-nested `HistoryBarberDto`/`HistoryBranchDto`/`HistoryCatalogItemDto`
-(locale `name` translations map)/`HistoryMediaDto` (codegen). App:
-`HistoryBloc` over `Paged<ServiceHistoryDto>` (start/refresh/load-more/
-retry + rebook submit → `rebooked` flag + ack reset), `ProfileScreen`
-rebuilt from the placeholder into the 018 profile tab: client-name header
-card (fallback `profileMemberLabel` when name unknown after restore),
-locale-aware service-history feed with rebook per entry (Material date +
-time pickers, `rebookingId` per-card loader, 409 → `bookingConflictMessage`,
-success `StatusView` → My Bookings). `melos verify` exit 0,
-**241 tests** (core 101, client_app 122, design_system 14, 1×4),
-**172 ARB keys** (EN+AR parity).
-
-**Track statuses.** `DONE`: 00–05, 06, 07, 08, 10, 11, 16, 17, 18 / Discovery
-Feed (CL-09), Stitch 017 (CL-10), Stitch 018a–018b (CL-11), Stitch 019 (CL-12,
-Stylist Profile), Stitch 020 (CL-13, Client Review & Rating).
-`IN_PROGRESS`: 09, 12 (both consumed). `PENDING`: 13, 14, 15, 21.
-
-**Next candidate:**
-
-* 010 profile completion and 015–016 design-system work remain at Track level.
-
-Architecture deviations are recorded as
-[ADR 0001](./architecture/decisions/0001-bloc-in-core.md),
-[ADR 0002](./architecture/decisions/0002-design-system-go-router.md) and
-[ADR 0003](./architecture/decisions/0003-track-12-before-05-and-10.md).
-
-Architecture deviations are recorded as
-[ADR 0001](./architecture/decisions/0001-bloc-in-core.md),
-[ADR 0002](./architecture/decisions/0002-design-system-go-router.md) and
-[ADR 0003](./architecture/decisions/0003-track-12-before-05-and-10.md).
-
-The agent MUST NOT skip directly to feature implementation, and MUST NOT begin
-Stitch 010 or 015–020 — those `plan.md` files stay untouched until their Track
-opens.
-
----
-
-# 6b. Phase 2 Reconciliation Note
-
-Post-Phase-2 the repository is aligned on the locked architecture: **Pure Bloc**
-state (flutter_bloc) and **go_router** navigation (no Navigator 1.0, no
-`AppNavigator`). The session/unauthorized layer is fully Bloc + Stream since
-Phase 4: `SessionBloc` + `ApiClient.unauthorizedStream`; the pagination
-`ChangeNotifier`s were deleted. Do not add new `ChangeNotifier` state and do not
-reintroduce `.navigator.dart`.
+`IN_PROGRESS`: 09, 11, 12. `PENDING`: 13, 14, 15, 17–21. See each track below.
 
 ---
 

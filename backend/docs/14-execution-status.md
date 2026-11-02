@@ -1,3 +1,11 @@
+---
+nodeid: backend.14-execution-status
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # Dorak Platform — Remaining Work
 
 > Pruned 2026-11-02. All planned tasks (1–87) are complete and the completed

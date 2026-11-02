@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.08-edge-cases
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 08 — Website Edge Cases
 
 ## EC-W1: Missing Translation for Marketing Content ✅

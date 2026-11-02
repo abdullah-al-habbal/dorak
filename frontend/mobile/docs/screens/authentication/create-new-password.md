@@ -1,3 +1,11 @@
+---
+nodeid: mobile.screens.authentication.create-new-password
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Create New Password (Stitch 013)
 
 Route: `/auth/reset-password` · Screen: `create_new_password.screen.dart`

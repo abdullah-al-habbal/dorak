@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.runtime.app-lifecycle
+parentnode: mobile.apps.client-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Application Lifecycle — Dorak Client App (`apps/client_app`)
 
 Track 10 — *Application lifecycle*. Monorepo track index:

@@ -1,3 +1,11 @@
+---
+nodeid: backend.marketing.04-launch-campaign
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/Marketing/
+---
+
 # Dorak Go-To-Market & Launch Campaign
 # خطة إطلاق دورك وحملة دخول السوق
 

@@ -1,3 +1,11 @@
+---
+nodeid: mobile.screens.authentication.password-reset-success
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Password Reset Success (Stitch 014)
 
 Route: `/auth/reset-password/success` · Screen: `password_reset_success.screen.dart`

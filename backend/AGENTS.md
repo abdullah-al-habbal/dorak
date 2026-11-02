@@ -4,6 +4,9 @@ parentnode: repo.root
 childnodes:
   - backend.claude
   - backend.docs
+  - backend.process
+  - backend.readme
+  - backend.website
 codeanchors:
   - backend/modules/
   - backend/bootstrap/

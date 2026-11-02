@@ -1,3 +1,11 @@
+---
+nodeid: backend.12-implementation-prd
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 12 — Implementation PRD: From Current State to MVP
 
 > ⚠️ **HISTORICAL (updated 2026-08-09):** All Track A + Track B gaps resolved. The Flutter frontend was removed on 2026-08-09 and is being rebuilt from scratch (new UI/UX). Sections referencing `dorak_client_app` screens (§1 Track B consumer, §4) are superseded — treat API endpoints as the stable contract.

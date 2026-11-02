@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.core.claude
+parentnode: mobile.packages.core
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # CLAUDE.md — `packages/core`
 
 Scoped rules for this package. Inherits everything in

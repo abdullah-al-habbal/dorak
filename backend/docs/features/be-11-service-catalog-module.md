@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-11-service-catalog-module
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-11 — ServiceCatalog Module (PRD Phase 1)
 
 ## Status: ✅ Complete

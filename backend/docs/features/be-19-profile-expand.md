@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-19-profile-expand
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-19 — Profile Expand (Phone, Avatar, Soft Delete, Password Mgmt)
 
 ## Status: ✅ Complete

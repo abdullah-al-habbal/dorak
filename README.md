@@ -1,3 +1,13 @@
+---
+nodeid: repo.readme
+parentnode: repo.root
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Dorak Operations Monorepo
 
 Dorak Operations is a salon and barber operations platform. This repository

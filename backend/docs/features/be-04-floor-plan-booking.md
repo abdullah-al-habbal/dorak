@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-04-floor-plan-booking
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-04 — Floor Plan & Booking Engine
 
 ## Status: ✅ Complete

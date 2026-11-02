@@ -1,3 +1,11 @@
+---
+nodeid: backend.01-vision-and-scope
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 01 — Vision & Scope
 
 > **Project name:** _Dorak_ (دورك) — "your turn".

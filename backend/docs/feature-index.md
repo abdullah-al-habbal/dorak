@@ -1,3 +1,31 @@
+---
+nodeid: backend.feature-index
+parentnode: backend.docs
+childnodes:
+  - backend.features.be-01-core-infrastructure
+  - backend.features.be-02-client-auth
+  - backend.features.be-03-explore-api
+  - backend.features.be-04-floor-plan-booking
+  - backend.features.be-05-review-api
+  - backend.features.be-06-brand-api
+  - backend.features.be-07-barber-affiliation-api
+  - backend.features.be-08-job-posting-api
+  - backend.features.be-09-admin-activation-api
+  - backend.features.be-10-chair-api
+  - backend.features.be-11-service-catalog-module
+  - backend.features.be-12-client-history-module
+  - backend.features.be-13-client-face-profile-module
+  - backend.features.be-14-client-interaction-module
+  - backend.features.be-15-recommendation-module
+  - backend.features.be-16-ai-sdk-postgresql-setup
+  - backend.features.be-17-explore-enhancements
+  - backend.features.be-18-context-driven-namespacing
+  - backend.features.be-19-profile-expand
+  - backend.features.be-20-monetization
+codeanchors:
+  - backend/modules/
+---
+
 # Feature Index — Dorak Backend
 
 > **Append entry after adding each feature.** This is the chronological map of every feature built.

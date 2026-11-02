@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.07-user-flows
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 07 — Website User Flows
 
 ## 1. Owner Discovery & Signup Flow

@@ -1,3 +1,11 @@
+---
+nodeid: mobile.architecture.decisions.0002-design-system-go-router
+parentnode: mobile.architecture
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # ADR 0002 — `design_system` may depend on `go_router`
 
 Status: `ACCEPTED`

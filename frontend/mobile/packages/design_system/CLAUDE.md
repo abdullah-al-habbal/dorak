@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.design-system.claude
+parentnode: mobile.packages.design-system
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/design_system/lib/
+---
+
 # CLAUDE.md — `packages/design_system`
 
 Scoped rules for this package. Inherits [`../../CLAUDE.md`](../../CLAUDE.md).

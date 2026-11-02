@@ -1,3 +1,11 @@
+---
+nodeid: backend.marketing.03-content-strategy
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/Marketing/
+---
+
 # Dorak Content Strategy & Pillars
 # استراتيجية ومحاور المحتوى لدورك
 

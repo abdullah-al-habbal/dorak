@@ -1,3 +1,11 @@
+---
+nodeid: mobile.navigation.routes
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Routes
 
 Status: `IN_PROGRESS` — go_router route table in place; deep links and nested

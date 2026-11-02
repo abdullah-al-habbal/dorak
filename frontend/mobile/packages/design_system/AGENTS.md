@@ -1,3 +1,14 @@
+---
+nodeid: mobile.packages.design-system
+parentnode: mobile.guide
+childnodes:
+  - mobile.packages.design-system.changelog
+  - mobile.packages.design-system.claude
+  - mobile.packages.design-system.readme
+codeanchors:
+  - frontend/mobile/packages/design_system/lib/
+---
+
 # AGENTS.md — `packages/design_system`
 
 Tokens, theme, fonts, and cross-app widgets. No strings, no logic, no `core`.

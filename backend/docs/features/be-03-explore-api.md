@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-03-explore-api
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-03 — Explore API
 
 ## Status: ✅ Complete

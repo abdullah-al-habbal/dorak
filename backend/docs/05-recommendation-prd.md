@@ -1,3 +1,11 @@
+---
+nodeid: backend.05-recommendation-prd
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # PRD Phase 5 — Recommendation Module
 
 ## 1. Objective

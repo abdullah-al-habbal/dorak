@@ -1,3 +1,11 @@
+---
+nodeid: backend.marketing.06-teaser-content-plan
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/Marketing/
+---
+
 # Teaser Content Plan (Pre-Launch)
 # خطة المحتوى التشويقي (ما قبل الإطلاق)
 

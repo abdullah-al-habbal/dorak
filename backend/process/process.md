@@ -1,3 +1,12 @@
+---
+nodeid: backend.process
+parentnode: backend.guide
+childnodes:
+  - backend.process.kanban
+codeanchors:
+  - backend/modules/
+---
+
 # PROCESS — How CRESCENT, the Loop, and the Laravel Baseline Skills plug into the docs
 
 > **The gap this fills.** The `docs/` folder is a *specification* — it says **what** to build and **why**, and freezes the **laws**. It does not say **how to execute** that spec reliably with an AI agent. Your three new ideas supply exactly the three missing pieces:

@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.stylist-app.feature-index
+parentnode: mobile.apps.stylist-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/stylist_app/lib/
+---
+
 # Feature Index — Dorak Stylist App (`apps/stylist_app`)
 
 > **Append entry after adding each feature.** Monorepo-wide index: [`docs/feature-index.md`](../../../docs/feature-index.md).

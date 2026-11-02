@@ -1,3 +1,11 @@
+---
+nodeid: mobile.feature-index
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Feature Index — Dorak Mobile (Flutter Monorepo)
 
 > **Append entry after adding each feature.** This is the chronological map of every feature built across the monorepo. Per-app indexes: [`apps/client_app/docs/feature-index.md`](../apps/client_app/docs/feature-index.md), [`apps/business_app/docs/feature-index.md`](../apps/business_app/docs/feature-index.md), [`apps/stylist_app/docs/feature-index.md`](../apps/stylist_app/docs/feature-index.md).
@@ -37,7 +45,7 @@
 - `ConfigProvider` — `.env` via dotenv (`app_config.entity.dart`, `config.provider.dart`).
 - `ApiClient` — Dio-based (`api.client.dart`).
 - Interceptors: `auth.interceptor.dart`, `locale.interceptor.dart`, `logging.interceptor.dart`, `retry.interceptor.dart`.
-- Contracts: `ApiResponse<T>` / `api_response.dto.dart`, `PaginatedData<T>`, `PaginationMeta`, exceptions (`ApiException`, `NetworkException`, `ValidationException`). Paging **state** is app-layer Bloc work — the legacy pagination notifiers were deleted (see `docs/state_management/pagination.md`).
+- Contracts: `ApiResponse<T>` / `api_response.dto.dart`, `PaginatedData<T>`, `PaginationMeta`, exceptions (`ApiException`, `NetworkException`, `ValidationException`). Paging **state** is app-layer Bloc work — the legacy pagination notifiers were deleted (see `docs/state-management/pagination.md`).
 - `endpoints/app.endpoints.dart`, `endpoints/auth.endpoints.dart` — domain-split endpoint declarations.
 - `onboarding_config.repository.dart` — `OnboardingConfigRepository` + `OnboardingConfigDto` (GET /api/v1/app/onboarding-config).
 - `auth.repository.dart` — `AuthRepository` + `DioAuthRepository`: login, register (sends `password_confirmation`), logout, refreshToken, sendEmailVerification, verifyEmail, forgotPassword, resetPassword, changePassword (`PATCH /client/password`). DTOs `AuthResponseDto`, `ClientDto`, `TokenResponseDto`.
@@ -214,4 +222,4 @@ Recorded so nobody re-derives them from the Stitch HTML or invents a route.
 Paginated collections all return the same envelope
 (`meta.pagination.{total,count,per_page,current_page,total_pages}`) and are
 consumed through `ApiClient.getPaginated` → `PaginatedData<T>` → `Paged<T>`.
-See `docs/state_management/pagination.md`.
+See `docs/state-management/pagination.md`.

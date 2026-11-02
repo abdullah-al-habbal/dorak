@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.09-c4-context
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 09 — C4 Context (Level 1)
 > **The website as one box**, and everyone/everything that touches it.
 

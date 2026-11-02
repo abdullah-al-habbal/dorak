@@ -1,3 +1,11 @@
+---
+nodeid: mobile.runtime.app-lifecycle
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Application Lifecycle
 
 Status: `DONE`
@@ -53,7 +61,7 @@ some later request happens to return a 401.
 
 Only `resumed` is of interest today. Adding per-event behavior (e.g. suspending
 uploads on `paused`) is Track 13/14 work — see
-`docs/state_management/background_operations.md`.
+`docs/state-management/background_operations.md`.
 
 The listener is created **once in `initState`**, never in `build`, so ordinary
 rebuilds do not attach duplicate observers (guarded by a test).

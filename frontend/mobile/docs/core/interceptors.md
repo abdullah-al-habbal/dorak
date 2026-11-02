@@ -1,3 +1,11 @@
+---
+nodeid: mobile.core.interceptors
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # Interceptors & API Infrastructure
 
 Status: `DONE`

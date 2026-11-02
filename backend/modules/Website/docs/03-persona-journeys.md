@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.03-persona-journeys
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 03 — Website Persona Journeys
 > These stories focus strictly on the visitor's experience on the **public website**, not the app.
 

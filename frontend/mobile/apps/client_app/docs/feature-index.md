@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.feature-index
+parentnode: mobile.apps.client-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Feature Index — Dorak Client App (`apps/client_app`)
 
 > **Append entry after adding each feature.** Chronological map of features built in the client (end-user) app. Monorepo-wide index: [`docs/feature-index.md`](../../../docs/feature-index.md).

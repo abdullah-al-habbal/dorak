@@ -1,3 +1,11 @@
+---
+nodeid: mobile.screens.authentication.recovery-otp
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Recovery Code (Stitch 012)
 
 Route: `/auth/forgot-password/otp` · Screen: `recovery_otp.screen.dart`

@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.01-vision-and-scope
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 01 — Website Vision & Scope
 > **Project:** Dorak (دورك) Public Website
 > **One Line:** The premium, bilingual digital storefront for the Dorak SaaS, designed to convert salon owners and attract clients across both the Men's Grooming and Women's Beauty universes without discrimination.

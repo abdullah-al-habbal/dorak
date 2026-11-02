@@ -1,3 +1,11 @@
+---
+nodeid: mobile.authentication.password-recovery
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Password Recovery
 
 Status: `DONE` — Stitch 011–014, four routes, live backend.
@@ -84,7 +92,7 @@ of code.
 `OnboardingConfigBloc` — an app-layer bloc over a core repository.
 
 Extending `AuthBloc` was rejected: it would carry `email`/`code` fields that login,
-register and verify never use, against `state_management/conventions.md` rule 5.
+register and verify never use, against `state-management/conventions.md` rule 5.
 
 | Event | Effect |
 |---|---|

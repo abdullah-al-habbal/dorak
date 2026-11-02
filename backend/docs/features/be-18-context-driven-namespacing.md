@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-18-context-driven-namespacing
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-18 — Context-Driven Namespacing (Refactor)
 
 ## Status: ✅ Complete

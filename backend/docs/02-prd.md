@@ -1,3 +1,11 @@
+---
+nodeid: backend.02-prd
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 02 — Product Requirements Document (PRD)
 
 > **This is the master document.** All other files support and expand it.

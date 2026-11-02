@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-15-recommendation-module
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-15 — Recommendation Module (PRD Phase 5)
 
 ## Status: ✅ Complete

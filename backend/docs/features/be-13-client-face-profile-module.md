@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-13-client-face-profile-module
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-13 — ClientFaceProfile Module (PRD Phase 3)
 
 ## Status: ✅ Complete

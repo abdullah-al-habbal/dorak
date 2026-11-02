@@ -1,3 +1,11 @@
+---
+nodeid: backend.marketing.02-platform-setup
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/Marketing/
+---
+
 # Dorak Platform Setup & Social Architecture
 # إعداد المنصات وهيكلية حسابات التواصل الاجتماعي لدورك
 

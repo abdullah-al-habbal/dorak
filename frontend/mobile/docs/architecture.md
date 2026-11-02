@@ -1,3 +1,14 @@
+---
+nodeid: mobile.architecture
+parentnode: mobile.docs
+childnodes:
+  - mobile.architecture.coding-conventions
+  - mobile.architecture.decisions.0001-bloc-in-core
+  - mobile.architecture.decisions.0002-design-system-go-router
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Architectural Standards & Best Practices
 
 ## State management

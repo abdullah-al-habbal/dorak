@@ -1,3 +1,15 @@
+---
+nodeid: mobile.apps.client-app
+parentnode: mobile.guide
+childnodes:
+  - mobile.apps.client-app.claude
+  - mobile.apps.client-app.feature-index
+  - mobile.apps.client-app.readme
+  - mobile.apps.client-app.runtime.app-lifecycle
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # AGENTS.md — `apps/client_app`
 
 The end-user app. Splash → launch gate → auth or onboarding → Home.

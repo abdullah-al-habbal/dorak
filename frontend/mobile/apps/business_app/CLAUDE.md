@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.business-app.claude
+parentnode: mobile.apps.business-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/business_app/lib/
+---
+
 # CLAUDE.md — `apps/business_app`
 
 Scoped rules for this app. Inherits [`../../CLAUDE.md`](../../CLAUDE.md).

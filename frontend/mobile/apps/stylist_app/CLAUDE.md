@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.stylist-app.claude
+parentnode: mobile.apps.stylist-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/stylist_app/lib/
+---
+
 # CLAUDE.md — `apps/stylist_app`
 
 Scoped rules for this app. Inherits [`../../CLAUDE.md`](../../CLAUDE.md).

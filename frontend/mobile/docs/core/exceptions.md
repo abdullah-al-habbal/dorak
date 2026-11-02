@@ -1,3 +1,11 @@
+---
+nodeid: mobile.core.exceptions
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # Exceptions
 
 Status: `DONE`

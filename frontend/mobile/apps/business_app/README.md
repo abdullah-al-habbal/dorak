@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.business-app.readme
+parentnode: mobile.apps.business-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/business_app/lib/
+---
+
 # business_app
 
 Dorak business mobile app for branch managers and staff: operations, jobs, floor plan, affiliations, profile and reviews.

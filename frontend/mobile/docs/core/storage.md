@@ -1,3 +1,11 @@
+---
+nodeid: mobile.core.storage
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # Storage
 
 Status: `DONE`
@@ -78,7 +86,7 @@ Key `dont_show_onboarding`, default `false`. Semantics are defined in
 
 `FeedCache` / `SharedFeedCache` (`feed_cache.storage.dart`) is the cache
 strategy. Its first consumer is Discovery 016
-(`docs/future-features/discovery-016.md` §5); nothing else reads it yet.
+(the Discovery feed); nothing else reads it yet.
 
 Design:
 

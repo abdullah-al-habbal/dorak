@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-01-core-infrastructure
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-01 — Core Infrastructure
 
 ## Status: ✅ Complete

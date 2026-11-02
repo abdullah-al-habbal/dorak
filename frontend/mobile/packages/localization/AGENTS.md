@@ -1,3 +1,14 @@
+---
+nodeid: mobile.packages.localization
+parentnode: mobile.guide
+childnodes:
+  - mobile.packages.localization.changelog
+  - mobile.packages.localization.claude
+  - mobile.packages.localization.readme
+codeanchors:
+  - frontend/mobile/packages/localization/lib/
+---
+
 # AGENTS.md — `packages/localization`
 
 Every user-visible string, EN + AR, via generated `AppLocalizations`.

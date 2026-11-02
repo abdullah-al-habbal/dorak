@@ -1,3 +1,11 @@
+---
+nodeid: mobile.flows.onboarding
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Onboarding Flow
 
 Status: `DONE`

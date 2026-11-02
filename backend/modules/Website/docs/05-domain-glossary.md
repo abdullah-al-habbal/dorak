@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.05-domain-glossary
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 05 — Website Domain Glossary
 > The bounded vocabulary for the public website.
 

@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-16-ai-sdk-postgresql-setup
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-16 — AI SDK & PostgreSQL Setup
 
 ## Status: ✅ Complete

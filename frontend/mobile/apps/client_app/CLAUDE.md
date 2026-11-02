@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.claude
+parentnode: mobile.apps.client-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # CLAUDE.md — `apps/client_app`
 
 Scoped rules for this app. Inherits [`../../CLAUDE.md`](../../CLAUDE.md).
@@ -55,7 +63,7 @@ Files at `lib/` root are exempt from the taxonomy checker; everything under
    **Bloc** state (`flutter_bloc` at the app layer, pure `bloc` in core);
    **go_router** routing. No Riverpod, Provider or GetIt. `ChangeNotifier` is
    not used — do not add it. The canonical state contract is
-   [`docs/state_management/conventions.md`](../../docs/state_management/conventions.md).
+   [`docs/state-management/conventions.md`](../../docs/state-management/conventions.md).
    `LocaleBloc` uses `Locale` directly as its state and has no `.state.dart` —
    that is a sanctioned exemption (§1a there), not an oversight.
    `bloc_concurrency` is deliberately **not** a dependency yet; it is added with

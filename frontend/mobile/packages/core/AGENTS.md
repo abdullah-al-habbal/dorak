@@ -1,3 +1,14 @@
+---
+nodeid: mobile.packages.core
+parentnode: mobile.guide
+childnodes:
+  - mobile.packages.core.changelog
+  - mobile.packages.core.claude
+  - mobile.packages.core.readme
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # AGENTS.md — `packages/core`
 
 Infrastructure package: HTTP, config, storage, session, DTOs, exceptions.

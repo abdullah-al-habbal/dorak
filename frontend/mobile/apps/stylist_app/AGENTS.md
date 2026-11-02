@@ -1,3 +1,14 @@
+---
+nodeid: mobile.apps.stylist-app
+parentnode: mobile.guide
+childnodes:
+  - mobile.apps.stylist-app.claude
+  - mobile.apps.stylist-app.feature-index
+  - mobile.apps.stylist-app.readme
+codeanchors:
+  - frontend/mobile/apps/stylist_app/lib/
+---
+
 # AGENTS.md — `apps/stylist_app`
 
 **Status (2026-10-22): login, session, today/operations screen and barber self

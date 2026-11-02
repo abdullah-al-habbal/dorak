@@ -1,3 +1,14 @@
+---
+nodeid: mobile.apps.business-app
+parentnode: mobile.guide
+childnodes:
+  - mobile.apps.business-app.claude
+  - mobile.apps.business-app.feature-index
+  - mobile.apps.business-app.readme
+codeanchors:
+  - frontend/mobile/apps/business_app/lib/
+---
+
 # AGENTS.md — `apps/business_app`
 
 **Status: `flutter create` counter stub. No Dorak features exist.**

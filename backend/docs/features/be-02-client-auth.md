@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-02-client-auth
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-02 — Client Auth Module
 
 ## Status: ✅ Complete

@@ -1,3 +1,11 @@
+---
+nodeid: backend.06-entity-model-abstract
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 06 — Entity Model (Abstract)
 
 > **No database schema, no SQL, no real ERD.** Entities are described as **plain‑English objects with attributes**, followed by an **abstract relationship view**. This is the *vocabulary of things*, deliberately kept above implementation so nothing gets locked in too early.

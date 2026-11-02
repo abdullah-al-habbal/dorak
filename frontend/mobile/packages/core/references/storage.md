@@ -14,8 +14,7 @@ gate branches on it with no await. Build it once with
 `await SharedAppPreferences.create()`; that factory exists so apps never
 declare `shared_preferences` themselves.
 
-**Feed cache strategy (Track 05, consumer = Discovery 016 — see
-`frontend/mobile/docs/future-features/discovery-016.md` §5):**
+**Feed cache strategy (Track 05, consumer = Discovery feed):**
 
 * Stores the **raw JSON response payload** (item maps + pagination meta), not
   parsed DTOs — `*.dto.dart` uses `createToJson: false`, so wire payloads are

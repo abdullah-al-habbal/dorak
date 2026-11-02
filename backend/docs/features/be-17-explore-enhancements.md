@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-17-explore-enhancements
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-17 — Explore Enhancements (Phase 5 Filters + Ranking)
 
 ## Status: ✅ Complete

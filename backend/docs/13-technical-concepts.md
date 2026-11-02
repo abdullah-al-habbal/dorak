@@ -1,3 +1,11 @@
+---
+nodeid: backend.13-technical-concepts
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 13 — Technical Concepts: Mandatory Reference
 
 > **Status:** Active

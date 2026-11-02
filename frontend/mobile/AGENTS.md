@@ -2,8 +2,14 @@
 nodeid: mobile.guide
 parentnode: repo.root
 childnodes:
+  - mobile.apps.business-app
+  - mobile.apps.client-app
+  - mobile.apps.stylist-app
   - mobile.claude
   - mobile.docs
+  - mobile.packages.core
+  - mobile.packages.design-system
+  - mobile.packages.localization
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/

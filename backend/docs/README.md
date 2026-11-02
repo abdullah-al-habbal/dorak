@@ -1,7 +1,32 @@
 ---
 nodeid: backend.docs
 parentnode: backend.guide
-childnodes: []
+childnodes:
+  - backend.01-vision-and-scope
+  - backend.02-prd
+  - backend.03-persona-journeys
+  - backend.04-house-rules
+  - backend.05-domain-glossary
+  - backend.05-recommendation-prd
+  - backend.06-entity-model-abstract
+  - backend.07-user-flows
+  - backend.08-edge-cases
+  - backend.09-c4-context
+  - backend.10-c4-containers
+  - backend.11-backend-architecture
+  - backend.12-implementation-prd
+  - backend.13-technical-concepts
+  - backend.14-execution-status
+  - backend.16-deployment-operations
+  - backend.feature-index
+  - backend.marketing.01-brand-dna
+  - backend.marketing.02-platform-setup
+  - backend.marketing.03-content-strategy
+  - backend.marketing.04-launch-campaign
+  - backend.marketing.05-metadata-and-seo
+  - backend.marketing.06-teaser-content-plan
+  - backend.marketing.07-conversion-assets
+  - backend.marketing.08-visual-assets-inventory
 codeanchors:
   - backend/modules/
 ---

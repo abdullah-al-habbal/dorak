@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-10-chair-api
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-10 — Chair API
 
 ## Status: ✅ Complete

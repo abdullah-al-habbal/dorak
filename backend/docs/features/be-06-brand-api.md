@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-06-brand-api
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-06 — Brand API
 
 ## Status: ✅ Complete

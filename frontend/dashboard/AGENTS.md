@@ -4,6 +4,7 @@ parentnode: repo.root
 childnodes:
   - dashboard.architecture
   - dashboard.auth_contract
+  - dashboard.claude
 codeanchors:
   - frontend/dashboard/src/
   - frontend/dashboard/tests/

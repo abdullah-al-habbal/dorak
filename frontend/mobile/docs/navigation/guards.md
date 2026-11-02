@@ -1,3 +1,11 @@
+---
+nodeid: mobile.navigation.guards
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Guards
 
 Status: `IN_PROGRESS` — the launch gate exists; per-route guards do not.

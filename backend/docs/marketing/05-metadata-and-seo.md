@@ -1,3 +1,11 @@
+---
+nodeid: backend.marketing.05-metadata-and-seo
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/Marketing/
+---
+
 # Dorak Metadata & SEO Master-List
 # القائمة المرجعية للبيانات الوصفية والـ SEO
 

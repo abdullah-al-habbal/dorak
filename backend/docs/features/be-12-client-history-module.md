@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-12-client-history-module
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-12 — ClientHistory Module (PRD Phase 2)
 
 ## Status: ✅ Complete

@@ -1,3 +1,11 @@
+---
+nodeid: backend.07-user-flows
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 07 — User Flows
 
 > **Step‑by‑step interaction flows.** Where stories in `03-persona-journeys.md` show *why*, these show *what happens, step by step*. Diagrams are abstract (flow/sequence), not code. Rules referenced as `[E1]` etc. point to `04-house-rules.md`.

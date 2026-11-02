@@ -1,3 +1,11 @@
+---
+nodeid: backend.16-deployment-operations
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 16 — Deployment Operations & Known Limitations
 
 Scope: the atomic-release deployment in `.github/workflows/deploy.yml` and the

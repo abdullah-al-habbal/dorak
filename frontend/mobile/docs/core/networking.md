@@ -1,3 +1,11 @@
+---
+nodeid: mobile.core.networking
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # Networking
 
 Status: `DONE`
@@ -88,7 +96,7 @@ state meaningful.
 
 Paging **state** is app-layer Bloc work over the `Paged<T>` contract — the
 legacy `PagePaginationNotifier` / `ScrollPaginationNotifier` `ChangeNotifier`s
-were deleted in Phase 4 (see `state_management/pagination.md`).
+were deleted in Phase 4 (see `state-management/pagination.md`).
 
 ## Repositories
 

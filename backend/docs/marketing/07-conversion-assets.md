@@ -1,3 +1,11 @@
+---
+nodeid: backend.marketing.07-conversion-assets
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/Marketing/
+---
+
 # Conversion Assets & Copywriting
 # أصول التحويل وكتابة النصوص الإعلانية
 

@@ -1,3 +1,11 @@
+---
+nodeid: mobile.architecture.coding-conventions
+parentnode: mobile.architecture
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Coding Conventions
 
 ## Code Generation (DTOs & Models)

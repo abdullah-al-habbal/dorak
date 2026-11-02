@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-07-barber-affiliation-api
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-07 — Barber Affiliation API
 
 ## Status: ✅ Complete

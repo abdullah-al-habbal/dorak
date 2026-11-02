@@ -9,7 +9,7 @@ permission mechanism in the workspace and Track 12 defers it (owner: Tracks
 13/14, triggered by 016). No precision skeleton compositions for card/list/
 profile shimmer — those are compositions of `ShimmerBox`.
 
-`docs/design_system/components/**` contains ~125 markdown specs for these —
+`docs/design-system/components/**` contains ~125 markdown specs for these —
 **all 0 bytes**. They are Track 15 placeholders, not designs.
 
 

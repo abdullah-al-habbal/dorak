@@ -1,3 +1,11 @@
+---
+nodeid: backend.08-edge-cases
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 08 — Edge Cases
 
 > The hard situations. Each one states the **scenario**, the **desired behavior**, and whether it's ✅ decided or 🟡 open. Rules referenced as `[E1]` point to `04-house-rules.md`.

@@ -1,3 +1,11 @@
+---
+nodeid: backend.readme
+parentnode: backend.guide
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # Dorak Backend (دورك)
 
 A modular, multi‑tenant Laravel backend for the **Dorak** salon and barber shop community platform in Syria.  

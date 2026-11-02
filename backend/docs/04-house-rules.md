@@ -1,3 +1,11 @@
+---
+nodeid: backend.04-house-rules
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 04 — House Rules (The Business Laws)
 
 > The **unshakeable laws** of how Dorak operates, written as simple **If / Then** statements. The test: *if a child can understand the rule, it's written correctly.*

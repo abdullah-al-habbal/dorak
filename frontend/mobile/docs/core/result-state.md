@@ -1,3 +1,11 @@
+---
+nodeid: mobile.core.result-state
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # Result, Error & State Contracts
 
 Status: `DONE`
@@ -27,13 +35,13 @@ Rules:
 
 ## State Contracts
 
-**`docs/state_management/conventions.md` is the canonical state contract.** This
+**`docs/state-management/conventions.md` is the canonical state contract.** This
 page covers only the transport-to-application error boundary; everything about
 how a bloc represents loading, success, empty, error, retry, refresh and
 pagination lives there.
 
 * Async UI state is expressed with explicit loading/error/data (see
-  `state_management/async-state.md`, and `state_management/pagination.md` for
+  `state-management/async-state.md`, and `state-management/pagination.md` for
   the paging story).
 * `OnboardingConfigBloc` (`apps/client_app/.../onboarding_config.bloc.dart`,
   pure `bloc` over an `OnboardingConfigRepository`) holds config + `isLoading`

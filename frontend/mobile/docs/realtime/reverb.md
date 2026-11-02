@@ -1,3 +1,11 @@
+---
+nodeid: mobile.realtime.reverb
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Mobile Reverb contract
 
 Status: `DONE` for the mobile client integration. A live environment walkthrough

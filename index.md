@@ -2,10 +2,13 @@
 nodeid: repo.root
 parentnode: null
 childnodes:
-  - docs.graph
   - backend.guide
   - dashboard.guide
+  - docs.graph
   - mobile.guide
+  - repo.agents
+  - repo.claude
+  - repo.readme
 codeanchors:
   - backend/
   - frontend/dashboard/

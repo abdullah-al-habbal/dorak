@@ -22,7 +22,7 @@ in `state.error` — screens map via `AuthError.from` (app layer). No Riverpod,
 Provider or GetIt anywhere.
 
 **The canonical contract is
-[`docs/state_management/conventions.md`](../../../docs/state_management/conventions.md)** —
+[`docs/state-management/conventions.md`](../../../docs/state-management/conventions.md)** —
 Bloc/Event/State shape, `clearX` flags on every nullable field, loading vs
 submitting, retry, refresh, concurrency latches, and testing. Read it before
 adding or changing a bloc here.
@@ -30,4 +30,4 @@ adding or changing a bloc here.
 Pagination state uses `Paged<T>`
 (`lib/src/network/paged.entity.dart`) — an immutable value object with named
 transitions and **no public `copyWith`**. There is no generic `PaginationBloc`.
-See [`docs/state_management/pagination.md`](../../../docs/state_management/pagination.md).
+See [`docs/state-management/pagination.md`](../../../docs/state-management/pagination.md).

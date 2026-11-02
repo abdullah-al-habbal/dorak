@@ -1,3 +1,13 @@
+---
+nodeid: repo.claude
+parentnode: repo.root
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Dorak Monorepo — Claude Guide
 
 These instructions apply across the repository and mirror

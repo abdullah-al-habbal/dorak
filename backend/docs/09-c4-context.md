@@ -1,3 +1,11 @@
+---
+nodeid: backend.09-c4-context
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 09 — C4 Context (Level 1)
 
 > **The system as one box**, and everyone/everything that touches it. No internals here — that's `10-c4-containers.md`. This follows the **C4 model** (Context → Containers). Diagram is abstract; **no code**.

@@ -1,3 +1,13 @@
+---
+nodeid: repo.agents
+parentnode: repo.root
+childnodes: []
+codeanchors:
+  - backend/
+  - frontend/dashboard/
+  - frontend/mobile/
+---
+
 # Dorak Monorepo Agent Guide
 
 These instructions apply across the repository. A nested `AGENTS.md` or

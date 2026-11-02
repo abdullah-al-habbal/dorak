@@ -1,3 +1,11 @@
+---
+nodeid: mobile.architecture.decisions.0001-bloc-in-core
+parentnode: mobile.architecture
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # ADR 0001 — Blocs are allowed in `packages/core`
 
 Status: `ACCEPTED`

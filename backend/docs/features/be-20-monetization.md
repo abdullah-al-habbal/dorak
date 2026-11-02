@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-20-monetization
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-20 — Monetization and Platform Analytics
 
 ## Status: ✅ Approved (Task 65) — all three decisions answered by the product owner with a **zero-hardcoding** rule: everything below is data an admin manages from the dashboard, not constants or enums in code.

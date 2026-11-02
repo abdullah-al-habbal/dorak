@@ -1,3 +1,11 @@
+---
+nodeid: mobile.authentication.auth-flow
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Authentication Flow
 
 Status: `DONE` — login, registration, email verification and password recovery

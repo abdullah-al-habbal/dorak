@@ -1,3 +1,11 @@
+---
+nodeid: backend.process.kanban
+parentnode: backend.process
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 > **Reference only.** Open work is not tracked on this board; all Phase 1 tickets
 > (INFRA, AUTH, FOUND, CORE, TRAN) shipped — see `docs/14-execution-status.md`.
 > Kept for the ticket template and the no-double-booking worked example (BK-01),

@@ -1,3 +1,11 @@
+---
+nodeid: backend.marketing.01-brand-dna
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/Marketing/
+---
+
 # Dorak Brand DNA & Core Strategy
 # هوية العلامة التجارية والاستراتيجية الأساسية لدورك
 

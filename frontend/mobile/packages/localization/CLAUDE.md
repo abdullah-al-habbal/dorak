@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.localization.claude
+parentnode: mobile.packages.localization
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/localization/lib/
+---
+
 # CLAUDE.md — `packages/localization`
 
 Scoped rules for this package. Inherits [`../../CLAUDE.md`](../../CLAUDE.md).

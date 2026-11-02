@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.11-frontend-architecture
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 11 — Frontend Architecture (Level 3)
 > How the website is structured internally. No code, just structural conventions.
 

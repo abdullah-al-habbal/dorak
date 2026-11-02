@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-09-admin-activation-api
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-09 — Admin Activation API
 
 ## Status: ✅ Complete

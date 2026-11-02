@@ -1,3 +1,11 @@
+---
+nodeid: backend.05-domain-glossary
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 05 — Domain Glossary (The Bounded Vocabulary)
 
 > One agreed meaning per term. When anyone says these words — in docs, in meetings, in the product — they mean **exactly** this. Treat it as the project's shared dictionary.

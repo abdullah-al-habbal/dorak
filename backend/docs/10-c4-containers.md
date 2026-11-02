@@ -1,3 +1,11 @@
+---
+nodeid: backend.10-c4-containers
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 10 — C4 Containers (Level 2)
 
 > **Inside the one box.** The major moving parts (the "containers" in C4 terms) and how they talk. This records the **intended technical context** for shared understanding — but contains **no code, no schema, no configuration.** Versions/tools are the owner's choices and should be confirmed at build time.

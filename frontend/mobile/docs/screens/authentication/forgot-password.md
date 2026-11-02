@@ -1,3 +1,11 @@
+---
+nodeid: mobile.screens.authentication.forgot-password
+parentnode: mobile.docs
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Forgot Password (Stitch 011)
 
 Route: `/auth/forgot-password` · Screen: `forgot_password.screen.dart`

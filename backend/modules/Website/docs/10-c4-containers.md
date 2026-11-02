@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.10-c4-containers
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 10 — C4 Containers (Level 2)
 > **Inside the website box.** The major moving parts and how they talk.
 

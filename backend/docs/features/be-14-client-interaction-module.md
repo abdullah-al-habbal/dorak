@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-14-client-interaction-module
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-14 — ClientInteraction Module (PRD Phase 4)
 
 ## Status: ✅ Complete

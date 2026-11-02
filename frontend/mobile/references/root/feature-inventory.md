@@ -31,7 +31,7 @@ Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 ### Not built — do not assume these exist
 
 - Profile completion (Stitch 010), Review (020).
-  Discovery Feed (016) is **built** per `docs/future-features/discovery-016.md`;
+  Discovery Feed (016) is **built**;
   My Bookings list/filter/cancel (017a), branch floor-plan detail + booking
   creation (017b), Service History + Rebook (018a), and Face Analysis + AI
   Style (018b) are **built**.

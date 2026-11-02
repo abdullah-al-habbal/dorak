@@ -1,3 +1,11 @@
+---
+nodeid: backend.website.06-content-and-ui-model-abstract
+parentnode: backend.website
+childnodes: []
+codeanchors:
+  - backend/modules/Website/
+---
+
 # 06 — Content & UI Model (Abstract)
 > **No database schema.** Entities are described as plain-English objects. This defines what the backend manages and serves to the website.
 

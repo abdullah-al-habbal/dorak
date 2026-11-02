@@ -1,3 +1,11 @@
+---
+nodeid: backend.03-persona-journeys
+parentnode: backend.docs
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # 03 — Persona Journeys (Day‑in‑the‑Life Stories)
 
 > These are **real‑life stories**, not feature lists. They show how each person actually moves through their day and where Dorak fits. Names are illustrative.

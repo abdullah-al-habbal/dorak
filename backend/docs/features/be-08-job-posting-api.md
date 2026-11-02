@@ -1,3 +1,11 @@
+---
+nodeid: backend.features.be-08-job-posting-api
+parentnode: backend.feature-index
+childnodes: []
+codeanchors:
+  - backend/modules/
+---
+
 # BE-08 — Job Posting API
 
 ## Status: ✅ Complete
