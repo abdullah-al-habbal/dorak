@@ -15,7 +15,7 @@ DiscoveryPreferenceDto _$DiscoveryPreferenceDtoFromJson(
     json['preferred_universe'],
     unknownValue: JsonKey.nullForUndefinedEnumValue,
   ),
-  defaultRadius: (json['default_radius'] as num?)?.toDouble(),
+  defaultRadiusKm: (json['default_radius_km'] as num?)?.toDouble(),
   hiddenBrandIds:
       (json['hidden_brand_ids'] as List<dynamic>?)
           ?.map((e) => e as String)

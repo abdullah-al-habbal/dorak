@@ -9,6 +9,6 @@ final readonly class InviteAffiliationCommand
     public function __construct(
         public string $branchId,
         public string $barberId,
-        public ?float $commissionRate,
+        public ?float $commissionPercent,
     ) {}
 }

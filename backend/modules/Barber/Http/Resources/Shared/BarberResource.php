@@ -25,7 +25,7 @@ final class BarberResource extends JsonResource
             'rating_count' => (int) ($this->offsetGet('rating_count') ?? 0),
             'email_verified_at' => $this->offsetGet('email_verified_at'),
             'is_workstation_online' => (bool) $this->offsetGet('is_workstation_online'),
-            'travel_radius' => $this->travel_radius,
+            'travel_radius_km' => $this->travel_radius_km,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'distance' => $this->distance ?? null,

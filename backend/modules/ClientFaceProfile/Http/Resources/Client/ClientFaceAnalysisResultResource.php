@@ -20,7 +20,7 @@ final class ClientFaceAnalysisResultResource extends JsonResource
             'analysis_version' => $this->analysis_version,
             'analysis_source' => $this->analysis_source->value,
             'detected_face_shape' => $this->detected_face_shape->value,
-            'confidence_score' => $this->confidence_score,
+            'confidence_ratio' => $this->confidence_ratio,
             'detected_features' => $this->detected_features?->toArray(),
             'recommended_catalog_item_ids' => $this->recommended_catalog_item_ids?->ids(),
             'computed_at' => $this->computed_at->toIso8601String(),

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained('clients')->cascadeOnDelete();
             $table->string('preferred_universe')->nullable();
-            $table->float('default_radius')->default(50.0);
+            $table->float('default_radius_km')->default(50.0);
             $table->json('hidden_brand_ids')->nullable();
             $table->boolean('show_unavailable')->default(true);
             $table->timestamps();

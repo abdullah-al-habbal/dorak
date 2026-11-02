@@ -15,7 +15,7 @@ final class InviteAffiliationRequest extends BaseApiFormRequest
     {
         return [
             'barber_id' => ['required', 'string', Rule::exists('barbers', 'id')],
-            'commission_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'commission_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }
 
@@ -24,7 +24,7 @@ final class InviteAffiliationRequest extends BaseApiFormRequest
         return new InviteAffiliationCommand(
             branchId: $branchId,
             barberId: (string) $this->validated('barber_id'),
-            commissionRate: $this->validated('commission_rate') !== null ? (float) $this->validated('commission_rate') : null,
+            commissionPercent: $this->validated('commission_percent') !== null ? (float) $this->validated('commission_percent') : null,
         );
     }
 }

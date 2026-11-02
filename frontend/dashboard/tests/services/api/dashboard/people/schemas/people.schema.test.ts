@@ -9,8 +9,8 @@ describe("inviteAffiliationFormSchema", () => {
 
   it("accepts a uuid and treats a blank commission as null", () => {
     expect(
-      inviteAffiliationFormSchema.parse({ barberId, commissionRate: "" }),
-    ).toEqual({ barberId, commissionRate: null });
+      inviteAffiliationFormSchema.parse({ barberId, commissionPercent: "" }),
+    ).toEqual({ barberId, commissionPercent: null });
   });
 
   it("rejects a bad id and an out-of-range commission", () => {
@@ -18,8 +18,10 @@ describe("inviteAffiliationFormSchema", () => {
       inviteAffiliationFormSchema.safeParse({ barberId: "x" }).success,
     ).toBe(false);
     expect(
-      inviteAffiliationFormSchema.safeParse({ barberId, commissionRate: "101" })
-        .success,
+      inviteAffiliationFormSchema.safeParse({
+        barberId,
+        commissionPercent: "101",
+      }).success,
     ).toBe(false);
   });
 });

@@ -18,7 +18,7 @@ it('parses a valid analysis payload', function () {
     ]));
 
     expect($outcome->detectedFaceShape)->toBe(DetectedFaceShapeEnum::Oval);
-    expect($outcome->confidenceScore)->toBe(0.92);
+    expect($outcome->confidenceRatio)->toBe(0.92);
     expect($outcome->analysisSource)->toBe(AnalysisSourceEnum::ThirdPartyApi);
     expect($outcome->analysisVersion)->toBe('openai-vision-v1');
     expect($outcome->detectedFeatures->foreheadWidth())->toBe(110);
@@ -36,7 +36,7 @@ it('parses data-wrapped payloads', function () {
     ]));
 
     expect($outcome->detectedFaceShape)->toBe(DetectedFaceShapeEnum::Round);
-    expect($outcome->confidenceScore)->toBe(0.84);
+    expect($outcome->confidenceRatio)->toBe(0.84);
 });
 
 it('clamps confidence to the 0..1 range', function () {
@@ -50,8 +50,8 @@ it('clamps confidence to the 0..1 range', function () {
         'confidence' => -0.3,
     ]));
 
-    expect($high->confidenceScore)->toBe(1.0);
-    expect($low->confidenceScore)->toBe(0.0);
+    expect($high->confidenceRatio)->toBe(1.0);
+    expect($low->confidenceRatio)->toBe(0.0);
 });
 
 it('defaults missing features to safe values', function () {

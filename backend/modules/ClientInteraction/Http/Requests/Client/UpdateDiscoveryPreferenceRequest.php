@@ -15,7 +15,7 @@ final class UpdateDiscoveryPreferenceRequest extends BaseApiFormRequest
     {
         return [
             'preferred_universe' => ['sometimes', Rule::enum(UniverseEnum::class)],
-            'default_radius' => ['sometimes', 'numeric', 'min:1', 'max:1000'],
+            'default_radius_km' => ['sometimes', 'numeric', 'min:1', 'max:1000'],
             'hidden_brand_ids' => ['sometimes', 'array'],
             'hidden_brand_ids.*' => ['string'],
             'show_unavailable' => ['sometimes', 'boolean'],
@@ -29,7 +29,7 @@ final class UpdateDiscoveryPreferenceRequest extends BaseApiFormRequest
         return new UpdateDiscoveryPreferenceCommand(
             clientId: (string) $this->user()->id,
             preferredUniverse: isset($data['preferred_universe']) ? UniverseEnum::from($data['preferred_universe']) : null,
-            defaultRadius: isset($data['default_radius']) ? (float) $data['default_radius'] : null,
+            defaultRadiusKm: isset($data['default_radius_km']) ? (float) $data['default_radius_km'] : null,
             hiddenBrandIds: $data['hidden_brand_ids'] ?? null,
             showUnavailable: $data['show_unavailable'] ?? null,
         );

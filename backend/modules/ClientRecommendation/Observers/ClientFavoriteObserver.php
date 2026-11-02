@@ -18,7 +18,7 @@ final class ClientFavoriteObserver
             'target_type' => $favorite->favorable_type->value,
             'target_id' => $favorite->favorable_id,
             'edge_type' => EdgeTypeEnum::Favorite->value,
-            'weight' => 1.0,
+            'weight_ratio' => 1.0,
         ]);
     }
 

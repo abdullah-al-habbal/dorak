@@ -682,7 +682,7 @@ export const ar: Dictionary = {
       confirmBody: "سيتم إشعار الحلاق بقرارك.",
       invite: "دعوة حلاق",
       barberId: "معرّف الحلاق",
-      commissionRate: "نسبة العمولة (٪)",
+      commissionPercent: "نسبة العمولة (٪)",
       sendInvite: "إرسال الدعوة",
       invited: "تم إرسال الدعوة.",
       updated: "تم تحديث الارتباط.",

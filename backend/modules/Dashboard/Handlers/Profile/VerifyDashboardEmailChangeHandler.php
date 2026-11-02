@@ -24,12 +24,12 @@ final class VerifyDashboardEmailChangeHandler
     {
         return DB::transaction(function () use ($model, $actor, $command): bool {
             $change = $this->resolver->find($actor);
-            if ($change === null || $change->expires_at->isPast() || $change->attempts >= app(SettingsService::class)->int(SettingKey::DashboardEmailChangeMaxAttempts)) {
+            if ($change === null || $change->expires_at->isPast() || $change->attempts_count >= app(SettingsService::class)->int(SettingKey::DashboardEmailChangeMaxAttempts)) {
                 return false;
             }
 
             if (! Hash::check($command->code, $change->code_hash)) {
-                $change->increment('attempts');
+                $change->increment('attempts_count');
 
                 return false;
             }

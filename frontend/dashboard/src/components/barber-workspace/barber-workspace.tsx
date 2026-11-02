@@ -106,11 +106,11 @@ export function BarberWorkspace() {
 
   const travelForm = useForm<z.infer<typeof UpdateTravelRadiusFormSchema>>({
     resolver: zodResolver(UpdateTravelRadiusFormSchema),
-    defaultValues: { travelRadius: null },
+    defaultValues: { travelRadiusKm: null },
   });
   useEffect(() => {
     if (profile.data) {
-      travelForm.reset({ travelRadius: profile.data.travelRadius ?? null });
+      travelForm.reset({ travelRadiusKm: profile.data.travelRadiusKm ?? null });
     }
   }, [profile.data, travelForm]);
   const saveTravelRadius = useBarberMutation(

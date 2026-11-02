@@ -5,7 +5,7 @@ abstract class AffiliationRepository {
     String barberId, {
     required String affiliableId,
     required String affiliableType,
-    double? commissionRate,
+    double? commissionPercent,
   });
   Future<List<BarberAffiliationDto>> getBarberAffiliations(String barberId);
   Future<BarberAffiliationDto> acceptAffiliation(String affiliationId);
@@ -13,7 +13,7 @@ abstract class AffiliationRepository {
   Future<BarberAffiliationDto> terminateAffiliation(String affiliationId);
   Future<BarberAffiliationDto> inviteBarber(
     String barberId, {
-    double? commissionRate,
+    double? commissionPercent,
   });
   Future<List<BarberAffiliationDto>> getBranchAffiliations();
   Future<BarberAffiliationDto> acceptBranchAffiliation(String affiliationId);
@@ -30,13 +30,13 @@ class DioAffiliationRepository implements AffiliationRepository {
     String barberId, {
     required String affiliableId,
     required String affiliableType,
-    double? commissionRate,
+    double? commissionPercent,
   }) => _client.post(
     ApiEndpoints.affiliation.barberAffiliate(barberId),
     data: {
       'affiliable_id': affiliableId,
       'affiliable_type': affiliableType,
-      'commission_rate': ?commissionRate,
+      'commission_percent': ?commissionPercent,
     },
     parser: (json) =>
         BarberAffiliationDto.fromJson(json as Map<String, dynamic>),
@@ -81,10 +81,10 @@ class DioAffiliationRepository implements AffiliationRepository {
   @override
   Future<BarberAffiliationDto> inviteBarber(
     String barberId, {
-    double? commissionRate,
+    double? commissionPercent,
   }) => _client.post(
     ApiEndpoints.affiliation.branchAffiliations,
-    data: {'barber_id': barberId, 'commission_rate': ?commissionRate},
+    data: {'barber_id': barberId, 'commission_percent': ?commissionPercent},
     parser: (json) =>
         BarberAffiliationDto.fromJson(json as Map<String, dynamic>),
   );

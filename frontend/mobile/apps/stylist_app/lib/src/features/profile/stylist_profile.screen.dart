@@ -68,10 +68,10 @@ class _StylistProfileScreenState extends State<StylistProfileScreen> {
                 const SizedBox(height: 16),
                 Text(
                   '${l10n.stylistTravelRadiusLabel}: '
-                  '${l10n.stylistTravelRadiusValue(state.travelRadius.round().toString())}',
+                  '${l10n.stylistTravelRadiusValue(state.travelRadiusKm.round().toString())}',
                 ),
                 Slider(
-                  value: state.travelRadius,
+                  value: state.travelRadiusKm,
                   max: StylistProfileConstants.maxTravelRadiusKm,
                   divisions: StylistProfileConstants.maxTravelRadiusKm.round(),
                   onChanged: widget.bloc.setTravelRadius,

@@ -13,7 +13,7 @@ class ApplicationProfileSnapshotDto {
   final String email;
   final String? bio;
   final bool isFreelancer;
-  final double? travelRadius;
+  final double? travelRadiusKm;
   final ApplicationSnapshotRatingDto? rating;
   final List<ApplicationSnapshotPhotoDto> portfolio;
   final List<ApplicationSnapshotServiceDto> services;
@@ -23,7 +23,7 @@ class ApplicationProfileSnapshotDto {
     required this.email,
     this.bio,
     this.isFreelancer = false,
-    this.travelRadius,
+    this.travelRadiusKm,
     this.rating,
     this.portfolio = const [],
     this.services = const [],

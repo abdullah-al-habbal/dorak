@@ -29,7 +29,7 @@ export function InviteAffiliationForm({
   const queryClient = useQueryClient();
   const form = useForm<IInviteAffiliationInput, unknown, IInviteAffiliation>({
     resolver: zodResolver(inviteAffiliationFormSchema),
-    defaultValues: { barberId: "", commissionRate: "" },
+    defaultValues: { barberId: "", commissionPercent: "" },
   });
   const { errors } = form.formState;
 
@@ -73,11 +73,11 @@ export function InviteAffiliationForm({
         ) : null}
       </label>
       <label className="grid gap-1 text-sm text-text-100">
-        <span>{copy.commissionRate}</span>
+        <span>{copy.commissionPercent}</span>
         <Input
           inputMode="decimal"
-          state={errors.commissionRate ? "error" : "default"}
-          {...form.register("commissionRate")}
+          state={errors.commissionPercent ? "error" : "default"}
+          {...form.register("commissionPercent")}
         />
       </label>
       <Button type="submit" isDisabled={invite.isPending}>

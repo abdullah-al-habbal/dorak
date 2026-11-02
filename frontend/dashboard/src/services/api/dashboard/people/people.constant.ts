@@ -19,8 +19,8 @@ export const PEOPLE_PAGE_SIZE = 15;
 
 export const INVITE_SERVER_FIELD_MAP: Record<
   string,
-  "barberId" | "commissionRate"
+  "barberId" | "commissionPercent"
 > = {
   barber_id: "barberId",
-  commission_rate: "commissionRate",
+  commission_percent: "commissionPercent",
 };

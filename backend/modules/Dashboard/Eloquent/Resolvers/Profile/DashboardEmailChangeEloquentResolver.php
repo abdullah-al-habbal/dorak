@@ -25,7 +25,7 @@ final class DashboardEmailChangeEloquentResolver
     {
         return DashboardEmailChangeModel::query()->updateOrCreate(
             ['actor_type' => $actor->actorType, 'actor_id' => $actor->id],
-            ['email' => $email, 'code_hash' => $codeHash, 'attempts' => 0, 'expires_at' => now()->addMinutes(10)],
+            ['email' => $email, 'code_hash' => $codeHash, 'attempts_count' => 0, 'expires_at' => now()->addMinutes(10)],
         );
     }
 

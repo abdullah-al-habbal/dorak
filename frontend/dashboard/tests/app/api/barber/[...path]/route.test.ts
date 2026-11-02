@@ -53,11 +53,11 @@ describe("barber BFF proxy", () => {
     backendRequest.mockResolvedValue({
       ok: true,
       status: 200,
-      envelope: { data: { travel_radius: 12 } },
+      envelope: { data: { travel_radius_km: 12 } },
     });
     const request = new NextRequest(
       "http://localhost/api/barber/travel-radius",
-      { method: "PATCH", body: '{"travel_radius":12}' },
+      { method: "PATCH", body: '{"travel_radius_km":12}' },
     );
 
     const response = await PATCH(request, context(["travel-radius"]));
@@ -66,7 +66,7 @@ describe("barber BFF proxy", () => {
       "/api/v1/barber/travel-radius",
       expect.objectContaining({
         method: "PATCH",
-        body: '{"travel_radius":12}',
+        body: '{"travel_radius_km":12}',
       }),
     );
     expect(response.status).toBe(200);

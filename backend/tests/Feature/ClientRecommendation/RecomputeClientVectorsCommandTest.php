@@ -70,7 +70,7 @@ it('removes expired edges and vectors of clients that no longer exist on every r
         'target_type' => 'brand',
         'target_id' => (string) Str::uuid(),
         'edge_type' => EdgeTypeEnum::Favorite->value,
-        'weight' => 1.0,
+        'weight_ratio' => 1.0,
         'expires_at' => now()->subDay(),
     ]);
 
@@ -100,7 +100,7 @@ it('builds a history edge from a completed booking after a recompute', function 
         ->first();
 
     expect($edge)->not->toBeNull();
-    expect((float) $edge->weight)->toBe(0.7);
+    expect((float) $edge->weight_ratio)->toBe(0.7);
     expect($edge->computed_at)->not->toBeNull();
     expect($edge->vector_version)->toBe('v1');
 });
@@ -144,7 +144,7 @@ it('builds face_matched edges from the latest face analysis recommended catalog 
         'analysis_version' => 'v1',
         'analysis_source' => AnalysisSourceEnum::ThirdPartyApi,
         'detected_face_shape' => DetectedFaceShapeEnum::Oval,
-        'confidence_score' => 0.9,
+        'confidence_ratio' => 0.9,
         'detected_features' => ['forehead_width' => 1, 'jaw_angle' => 1, 'cheekbone_prominence' => 'medium'],
         'recommended_catalog_item_ids' => ['ids' => [$catalogItem->id]],
         'computed_at' => now(),

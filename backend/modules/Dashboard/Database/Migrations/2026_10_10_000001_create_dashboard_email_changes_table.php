@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('actor_id');
             $table->string('email')->unique();
             $table->string('code_hash');
-            $table->unsignedTinyInteger('attempts')->default(0);
+            $table->unsignedTinyInteger('attempts_count')->default(0);
             $table->timestamp('expires_at');
             $table->timestamps();
             $table->unique(['actor_type', 'actor_id']);

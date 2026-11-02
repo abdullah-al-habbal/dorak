@@ -11,7 +11,7 @@ return [
     'barber' => 'Barber',
     'branch_brand' => 'Branch/Brand',
     'commission' => 'Commission',
-    'commission_rate' => 'Commission Rate',
+    'commission_percent' => 'Commission Rate',
     'entity' => 'Entity',
     'entity_id' => 'Entity ID',
     'entity_type' => 'Entity Type',

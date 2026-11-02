@@ -29,7 +29,7 @@ it('creates recommendation edge when favorite is added', function () {
 
     expect($edge)->not->toBeNull();
     expect($edge->edge_type)->toBe(EdgeTypeEnum::Favorite);
-    expect($edge->weight)->toBe(1.0);
+    expect($edge->weight_ratio)->toBe(1.0);
 });
 
 it('removes recommendation edge when favorite is removed', function () {
@@ -67,7 +67,7 @@ it('creates history edge on booking completion', function () {
         ->first();
 
     expect($edge)->not->toBeNull();
-    expect((float) $edge->weight)->toBe(0.7);
+    expect((float) $edge->weight_ratio)->toBe(0.7);
 });
 
 it('can run recompute command on client with signals', function () {

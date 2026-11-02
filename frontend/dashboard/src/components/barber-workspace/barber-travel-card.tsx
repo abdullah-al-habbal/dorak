@@ -33,7 +33,7 @@ export function BarberTravelCard({
             type="number"
             min={0}
             max={100}
-            {...form.register("travelRadius", { valueAsNumber: true })}
+            {...form.register("travelRadiusKm", { valueAsNumber: true })}
           />
         </label>
         <Button type="submit" size="sm" isDisabled={isPending}>

@@ -30,7 +30,7 @@ final class CreateAffiliationRequest extends BaseApiFormRequest
         return [
             'affiliable_id' => ['required', 'string', $this->affiliableExistsRule()],
             'affiliable_type' => ['required', Rule::enum(AffiliableType::class)],
-            'commission_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'commission_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }
 
@@ -60,7 +60,7 @@ final class CreateAffiliationRequest extends BaseApiFormRequest
             barberId: $barber,
             affiliableId: (string) $this->validated('affiliable_id'),
             affiliableType: AffiliableType::from((string) $this->validated('affiliable_type')),
-            commissionRate: $this->validated('commission_rate') !== null ? (float) $this->validated('commission_rate') : null,
+            commissionPercent: $this->validated('commission_percent') !== null ? (float) $this->validated('commission_percent') : null,
         );
     }
 }

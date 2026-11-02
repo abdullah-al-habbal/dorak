@@ -12,7 +12,7 @@ export const AffiliationSchema = z.object({
   barberName: z.string().nullable(),
   status: z.enum(AFFILIATION_STATUSES),
   initiatedByBranch: z.boolean(),
-  commissionRate: z.number().nullable(),
+  commissionPercent: z.number().nullable(),
   createdAt: z.string(),
 });
 
@@ -40,7 +40,7 @@ export const ApplicationSchema = z.object({
 
 export const inviteAffiliationFormSchema = z.object({
   barberId: z.string().uuid(),
-  commissionRate: z.preprocess(
+  commissionPercent: z.preprocess(
     (value) => (value === "" ? null : value),
     z.coerce.number().min(0).max(PEOPLE_MAX_COMMISSION_RATE).nullable(),
   ),

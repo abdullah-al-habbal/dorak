@@ -9,7 +9,7 @@ class BarberAffiliationDto {
   final String affiliableId;
   final String affiliableType;
   final String status;
-  final double? commissionRate;
+  final double? commissionPercent;
   final DateTime? invitedAt;
   final DateTime? acceptedAt;
   final DateTime? terminatedAt;
@@ -20,7 +20,7 @@ class BarberAffiliationDto {
     required this.affiliableId,
     required this.affiliableType,
     required this.status,
-    this.commissionRate,
+    this.commissionPercent,
     this.invitedAt,
     this.acceptedAt,
     this.terminatedAt,

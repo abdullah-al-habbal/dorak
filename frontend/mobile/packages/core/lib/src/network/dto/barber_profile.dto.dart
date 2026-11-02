@@ -25,7 +25,7 @@ class BarberProfileDto {
   @JsonKey(defaultValue: 0)
   final int ratingCount;
   final bool isWorkstationOnline;
-  final double? travelRadius;
+  final double? travelRadiusKm;
   final double latitude;
   final double longitude;
   final double? distance;
@@ -46,7 +46,7 @@ class BarberProfileDto {
     this.ratingAvg,
     this.ratingCount = 0,
     this.isWorkstationOnline = false,
-    this.travelRadius,
+    this.travelRadiusKm,
     this.latitude = 0,
     this.longitude = 0,
     this.distance,

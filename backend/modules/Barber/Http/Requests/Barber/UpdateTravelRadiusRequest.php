@@ -12,7 +12,7 @@ final class UpdateTravelRadiusRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'travel_radius' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'travel_radius_km' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
         ];
@@ -22,7 +22,7 @@ final class UpdateTravelRadiusRequest extends BaseApiFormRequest
     {
         return new UpdateTravelRadiusCommand(
             barberId: (string) $this->user()->id,
-            travelRadius: $this->validated('travel_radius') !== null ? (float) $this->validated('travel_radius') : null,
+            travelRadiusKm: $this->validated('travel_radius_km') !== null ? (float) $this->validated('travel_radius_km') : null,
             latitude: $this->validated('latitude') !== null ? (float) $this->validated('latitude') : null,
             longitude: $this->validated('longitude') !== null ? (float) $this->validated('longitude') : null,
         );

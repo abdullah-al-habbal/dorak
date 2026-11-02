@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuidMorphs('source');
             $table->uuidMorphs('target');
             $table->string('edge_type');
-            $table->float('weight')->default(0.5);
+            $table->float('weight_ratio')->default(0.5);
             $table->json('context')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('computed_at')->nullable();

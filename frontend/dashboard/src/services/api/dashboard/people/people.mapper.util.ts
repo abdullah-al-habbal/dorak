@@ -51,7 +51,7 @@ export function mapAffiliation(wire: unknown): IAffiliation {
     initiatedByBranch: text(item.initiated_by_type)
       .toLowerCase()
       .includes("branch"),
-    commissionRate: numeric(item.commission_rate),
+    commissionPercent: numeric(item.commission_percent),
     createdAt: text(item.created_at),
   };
 }
@@ -93,8 +93,8 @@ export function mapApplication(wire: unknown): IApplication {
 export function invitePayload(invite: IInviteAffiliation) {
   return {
     barber_id: invite.barberId,
-    ...(invite.commissionRate === null
+    ...(invite.commissionPercent === null
       ? {}
-      : { commission_rate: invite.commissionRate }),
+      : { commission_percent: invite.commissionPercent }),
   };
 }

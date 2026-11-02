@@ -19,7 +19,7 @@ return new class extends Migration
             $table->uuid('affiliable_id');
             $table->string('affiliable_type');
             $table->string('status');
-            $table->decimal('commission_rate', 5, 2)->nullable();
+            $table->decimal('commission_percent', 5, 2)->nullable();
             $table->timestamp('invited_at')->nullable();
             $table->timestamp('accepted_at')->nullable();
             $table->timestamp('terminated_at')->nullable();

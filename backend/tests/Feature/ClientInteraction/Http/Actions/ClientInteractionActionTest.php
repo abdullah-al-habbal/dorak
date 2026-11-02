@@ -128,16 +128,16 @@ it('returns default discovery preferences', function () {
     $response = $this->getJson('/api/v1/client/discovery-preferences');
 
     $response->assertOk();
-    expect($response->json('data'))->toHaveKeys(['id', 'preferred_universe', 'default_radius', 'hidden_brand_ids', 'show_unavailable']);
+    expect($response->json('data'))->toHaveKeys(['id', 'preferred_universe', 'default_radius_km', 'hidden_brand_ids', 'show_unavailable']);
 });
 
 it('updates discovery preferences', function () {
     $response = $this->patchJson('/api/v1/client/discovery-preferences', [
-        'default_radius' => 50,
+        'default_radius_km' => 50,
     ]);
 
     $response->assertOk();
-    expect((int) $response->json('data.default_radius'))->toBe(50);
+    expect((int) $response->json('data.default_radius_km'))->toBe(50);
 });
 
 it('blocks saved filters without auth', function () {

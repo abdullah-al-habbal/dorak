@@ -36,7 +36,7 @@ final class AtHomeBookingRules
         }
 
         $barber = BarberModel::query()->findOrFail($barberId);
-        $radius = $barber->getAttribute('travel_radius');
+        $radius = $barber->getAttribute('travel_radius_km');
         $barberLatitude = $barber->getAttribute('latitude');
         $barberLongitude = $barber->getAttribute('longitude');
 

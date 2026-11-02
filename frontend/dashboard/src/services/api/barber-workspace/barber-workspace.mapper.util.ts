@@ -20,5 +20,5 @@ export function schedulePayload(input: UpdateScheduleFormInput) {
 }
 
 export function travelRadiusPayload(input: UpdateTravelRadiusFormInput) {
-  return { travel_radius: input.travelRadius };
+  return { travel_radius_km: input.travelRadiusKm };
 }

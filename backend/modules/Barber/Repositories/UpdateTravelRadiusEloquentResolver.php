@@ -14,7 +14,7 @@ final class UpdateTravelRadiusEloquentResolver
         $barber = BarberModel::findOrFail($command->barberId);
 
         $barber->update([
-            'travel_radius' => $command->travelRadius,
+            'travel_radius_km' => $command->travelRadiusKm,
             'latitude' => $command->latitude,
             'longitude' => $command->longitude,
         ]);

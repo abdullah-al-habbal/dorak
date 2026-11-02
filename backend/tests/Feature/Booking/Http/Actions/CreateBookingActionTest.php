@@ -104,7 +104,7 @@ it('rejects booking with past time_slot', function () {
 
 it('creates at-home booking without chair_id', function () {
     $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
-    $barber = BarberModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'travel_radius' => 10]);
+    $barber = BarberModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'travel_radius_km' => 10]);
     $service = OfferedServiceModel::factory()->atHome()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $barber->id]);
 
     $response = $this->postJson('/api/v1/bookings', [

@@ -16,7 +16,7 @@ final class BarberAffiliationResource extends JsonResource
             'affiliable_id' => $this->affiliable_id,
             'affiliable_type' => $this->affiliable_type,
             'status' => $this->status,
-            'commission_rate' => $this->commission_rate,
+            'commission_percent' => $this->commission_percent,
             'invited_at' => $this->invited_at?->toIso8601String(),
             'accepted_at' => $this->accepted_at?->toIso8601String(),
             'terminated_at' => $this->terminated_at?->toIso8601String(),

@@ -47,10 +47,10 @@ describe("updateBarberSchedule", () => {
 
 describe("updateBarberTravelRadius", () => {
   it("sends the travel radius as snake_case", () => {
-    updateBarberTravelRadius({ travelRadius: 25 });
+    updateBarberTravelRadius({ travelRadiusKm: 25 });
 
     expect(api.patch).toHaveBeenCalledWith("/barber/travel-radius", {
-      travel_radius: 25,
+      travel_radius_km: 25,
     });
   });
 });

@@ -100,7 +100,7 @@ class FaceCard extends StatelessWidget {
                   const SizedBox(height: DorakDimensions.spacingSmall / 2),
                   Text(
                     '${l10n.faceAnalysisConfidence}: '
-                    '${(latest.confidenceScore * 100).round()}%',
+                    '${(latest.confidenceRatio * 100).round()}%',
                     style: DorakTypography.bodyMd.copyWith(
                       color: DorakColors.of(context).onSurfaceVariant,
                     ),

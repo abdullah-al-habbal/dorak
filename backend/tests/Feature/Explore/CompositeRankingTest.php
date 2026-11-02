@@ -38,7 +38,7 @@ function favour(ClientModel $client, BranchModel $branch): void
         'target_type' => 'branch',
         'target_id' => $branch->id,
         'edge_type' => EdgeTypeEnum::Favorite,
-        'weight' => 1.0,
+        'weight_ratio' => 1.0,
     ]);
 }
 
@@ -103,7 +103,7 @@ it('boosts, without filtering, by the client\'s own face analysis', function ():
         'analysis_version' => 'v1',
         'analysis_source' => AnalysisSourceEnum::ThirdPartyApi,
         'detected_face_shape' => DetectedFaceShapeEnum::Oval,
-        'confidence_score' => 0.9,
+        'confidence_ratio' => 0.9,
         'computed_at' => now(),
     ]);
 
@@ -119,7 +119,7 @@ it('ranks freelancers the same way', function (): void {
     RecommendationEdgeModel::create([
         'source_type' => 'client', 'source_id' => $client->id,
         'target_type' => 'barber', 'target_id' => $favourite->id,
-        'edge_type' => EdgeTypeEnum::Favorite, 'weight' => 1.0,
+        'edge_type' => EdgeTypeEnum::Favorite, 'weight_ratio' => 1.0,
     ]);
 
     $ids = $this->actingAs($client, 'client')

@@ -18,7 +18,7 @@ Map<String, dynamic> analysis({
   'analysis_version': '1.0.0',
   'analysis_source': 'third_party_api',
   'detected_face_shape': shape,
-  'confidence_score': confidence,
+  'confidence_ratio': confidence,
   'detected_features': {
     'forehead_width': 4,
     'jaw_angle': 3,
@@ -133,7 +133,7 @@ void main() {
         expect(captured.method, 'GET');
         expect(results, hasLength(2));
         expect(results.first.detectedFaceShape, 'square');
-        expect(results.first.confidenceScore, 0.91);
+        expect(results.first.confidenceRatio, 0.91);
         expect(results.first.recommendedCatalogItemIds, [
           'catalog-1',
           'catalog-2',

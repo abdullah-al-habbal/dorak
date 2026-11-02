@@ -18,7 +18,7 @@ final class BarberAffiliationTable
                     ->label(__('barberaffiliation::ui.branch_brand')),
                 TextColumn::make('status')
                     ->badge(),
-                TextColumn::make('commission_rate')
+                TextColumn::make('commission_percent')
                     ->label(__('barberaffiliation::ui.commission')),
                 TextColumn::make('invited_at')
                     ->dateTime(),

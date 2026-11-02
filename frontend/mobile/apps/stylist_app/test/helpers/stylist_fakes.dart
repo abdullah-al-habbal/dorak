@@ -86,7 +86,7 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
       id: 'barber-1',
       name: 'Barber',
       email: 'b@x.com',
-      travelRadius: radiusKm,
+      travelRadiusKm: radiusKm,
     );
   }
 

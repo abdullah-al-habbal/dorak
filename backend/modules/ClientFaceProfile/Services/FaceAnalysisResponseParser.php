@@ -30,7 +30,7 @@ final class FaceAnalysisResponseParser
             analysisVersion: 'openai-vision-v1',
             analysisSource: AnalysisSourceEnum::ThirdPartyApi,
             detectedFaceShape: $shape,
-            confidenceScore: $confidence,
+            confidenceRatio: $confidence,
             detectedFeatures: FaceAnalysisFeaturesValueObject::fromArray($data['features'] ?? []),
         );
     }

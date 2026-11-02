@@ -17,7 +17,7 @@ final class UpdateDiscoveryPreferenceEloquentResolver
 
         $update = array_filter([
             'preferred_universe' => $command->preferredUniverse,
-            'default_radius' => $command->defaultRadius,
+            'default_radius_km' => $command->defaultRadiusKm,
             'hidden_brand_ids' => $command->hiddenBrandIds,
             'show_unavailable' => $command->showUnavailable,
         ], fn ($v) => $v !== null);

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 
-#[Fillable(['actor_type', 'actor_id', 'email', 'code_hash', 'attempts', 'expires_at'])]
+#[Fillable(['actor_type', 'actor_id', 'email', 'code_hash', 'attempts_count', 'expires_at'])]
 #[Table('dashboard_email_changes')]
 final class DashboardEmailChangeModel extends Model
 {

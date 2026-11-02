@@ -249,7 +249,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
   @override
   Future<BarberProfileDto> updateTravelRadius(double radiusKm) => _client.patch(
     ApiEndpoints.operations.barberTravelRadius,
-    data: {'travel_radius': radiusKm},
+    data: {'travel_radius_km': radiusKm},
     parser: (json) => BarberProfileDto.fromJson(json as Map<String, dynamic>),
   );
 

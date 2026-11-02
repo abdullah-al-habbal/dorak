@@ -17,7 +17,7 @@ final class StoreFaceAnalysisResultEloquentResolver
             'analysis_version' => $command->analysisVersion,
             'analysis_source' => $command->analysisSource,
             'detected_face_shape' => $command->detectedFaceShape,
-            'confidence_score' => $command->confidenceScore,
+            'confidence_ratio' => $command->confidenceRatio,
             'detected_features' => $command->detectedFeatures,
             'recommended_catalog_item_ids' => $command->recommendedCatalogItemIds,
             'computed_at' => now(),

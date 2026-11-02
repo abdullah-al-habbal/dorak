@@ -59,7 +59,7 @@ describe('discovery preferences', function (): void {
     it('uses the saved default radius when radius is omitted', function (): void {
         $near = nearbyBranch();
         BranchModel::factory()->create(['latitude' => 34.5, 'longitude' => 36.3]);
-        $client = preferringClient(['default_radius' => 5]);
+        $client = preferringClient(['default_radius_km' => 5]);
 
         $this->actingAs($client, 'client')
             ->getJson('/api/v1/explore/branches?latitude=33.5&longitude=36.3')

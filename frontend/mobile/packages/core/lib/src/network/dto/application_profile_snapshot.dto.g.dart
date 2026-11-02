@@ -13,7 +13,7 @@ ApplicationProfileSnapshotDto _$ApplicationProfileSnapshotDtoFromJson(
   email: json['email'] as String,
   bio: json['bio'] as String?,
   isFreelancer: json['is_freelancer'] as bool? ?? false,
-  travelRadius: (json['travel_radius'] as num?)?.toDouble(),
+  travelRadiusKm: (json['travel_radius_km'] as num?)?.toDouble(),
   rating: json['rating'] == null
       ? null
       : ApplicationSnapshotRatingDto.fromJson(

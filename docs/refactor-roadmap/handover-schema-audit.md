@@ -46,6 +46,8 @@ Earlier batches A-H (enums, branch hours, weekday constants) are listed in `inde
 
 **Batch I (complete)**, commits `c096dc42` (rate_ratio, external_reference, commission value split into `value_bps` / `value_amount_minor`) and the service price commit (`offered_services.price_amount_minor`, integer minor units across backend, dashboard and mobile; explore `price_range` is minor units).
 
+**Batch J part 1 (complete)**: `*_radius_km`, `commission_percent`, `confidence_ratio`, `weight_ratio`, `attempts_count`. Remaining in J: `rating_average`, `duration_minutes`, `allows_*` booleans, `show_unavailable`, `favorited_*`.
+
 ## 4. Full roadmap (remaining work)
 
 ### Batch I remainder

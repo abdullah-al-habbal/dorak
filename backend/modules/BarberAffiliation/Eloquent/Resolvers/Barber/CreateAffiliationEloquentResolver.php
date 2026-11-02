@@ -39,7 +39,7 @@ final class CreateAffiliationEloquentResolver
                 'initiated_by_id' => $barber->id,
                 'affiliable_id' => $command->affiliableId,
                 'affiliable_type' => $command->affiliableType,
-                'commission_rate' => $command->commissionRate,
+                'commission_percent' => $command->commissionPercent,
                 'status' => AffiliationStatus::Pending,
                 'invited_at' => now(),
             ]);

@@ -17,7 +17,7 @@ class StylistProfileBloc extends Cubit<StylistProfileState> {
         state.copyWith(
           loading: false,
           profile: profile,
-          travelRadius: profile.travelRadius ?? 0,
+          travelRadiusKm: profile.travelRadiusKm ?? 0,
         ),
       );
     } catch (error) {
@@ -27,7 +27,7 @@ class StylistProfileBloc extends Cubit<StylistProfileState> {
   }
 
   void setTravelRadius(double value) =>
-      emit(state.copyWith(travelRadius: value, saved: false));
+      emit(state.copyWith(travelRadiusKm: value, saved: false));
 
   /// Saves the radius and any non-empty bio locale; a blank locale is left
   /// untouched on the backend rather than cleared.
@@ -40,7 +40,7 @@ class StylistProfileBloc extends Cubit<StylistProfileState> {
         if (bioArabic.trim().isNotEmpty) 'ar': bioArabic.trim(),
       };
       if (bio.isNotEmpty) await _repository.updateProfile(bio: bio);
-      final profile = await _repository.updateTravelRadius(state.travelRadius);
+      final profile = await _repository.updateTravelRadius(state.travelRadiusKm);
       if (isClosed) return;
       emit(state.copyWith(saving: false, saved: true, profile: profile));
     } catch (error) {

@@ -18,16 +18,16 @@ void main() {
   test('load reads the stored preferences', () async {
     await cubit.load();
 
-    expect(cubit.state.preferences?.defaultRadius, 10);
+    expect(cubit.state.preferences?.defaultRadiusKm, 10);
   });
 
   test('save sends only the changed preference values', () async {
     await cubit.load();
 
-    await cubit.save(defaultRadius: 25);
+    await cubit.save(defaultRadiusKm: 25);
 
-    expect(repository.lastPreferenceValues, {'default_radius': 25.0});
-    expect(cubit.state.preferences?.defaultRadius, 25);
+    expect(repository.lastPreferenceValues, {'default_radius_km': 25.0});
+    expect(cubit.state.preferences?.defaultRadiusKm, 25);
     expect(cubit.state.saved, isTrue);
   });
 

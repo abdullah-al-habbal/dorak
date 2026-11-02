@@ -20,8 +20,8 @@ final class BarberAffiliationInfolistSchema
                         ->label(__('barberaffiliation::ui.barber')),
                     TextEntry::make('status')
                         ->badge(),
-                    TextEntry::make('commission_rate')
-                        ->label(__('barberaffiliation::ui.commission_rate')),
+                    TextEntry::make('commission_percent')
+                        ->label(__('barberaffiliation::ui.commission_percent')),
                     TextEntry::make('invited_at')
                         ->dateTime()
                         ->label(__('barberaffiliation::ui.invited')),

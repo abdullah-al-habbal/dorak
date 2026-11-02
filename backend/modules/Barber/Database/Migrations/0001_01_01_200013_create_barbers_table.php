@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreignUuid('managed_by_branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
-            $table->decimal('travel_radius', 5, 2)->nullable();
+            $table->decimal('travel_radius_km', 5, 2)->nullable();
             $table->json('bio')->nullable();
             $table->decimal('rating_avg', 3, 2)->nullable()->index();
             $table->unsignedInteger('rating_count')->default(0);

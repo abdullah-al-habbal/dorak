@@ -23,7 +23,7 @@ it('uses default weights ranking margin for explore barbers', function () {
         'target_type' => 'barber',
         'target_id' => $fav->id,
         'edge_type' => EdgeTypeEnum::Favorite,
-        'weight' => 1.0,
+        'weight_ratio' => 1.0,
     ]);
 
     $response = $this->actingAs($client, 'client')
@@ -54,7 +54,7 @@ it('applies factor-weights-v2 margin when feature is active for the client', fun
         'target_type' => 'barber',
         'target_id' => $fav->id,
         'edge_type' => EdgeTypeEnum::Favorite,
-        'weight' => 1.0,
+        'weight_ratio' => 1.0,
     ]);
 
     $response = $this->actingAs($client, 'client')

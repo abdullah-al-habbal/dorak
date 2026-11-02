@@ -12,7 +12,7 @@ FaceAnalysisResultDto _$FaceAnalysisResultDtoFromJson(
   id: json['id'] as String,
   faceProfileId: json['face_profile_id'] as String,
   detectedFaceShape: json['detected_face_shape'] as String,
-  confidenceScore: (json['confidence_score'] as num?)?.toDouble() ?? 0,
+  confidenceRatio: (json['confidence_ratio'] as num?)?.toDouble() ?? 0,
   recommendedCatalogItemIds:
       (json['recommended_catalog_item_ids'] as List<dynamic>?)
           ?.map((e) => e as String)

@@ -24,7 +24,7 @@ use Modules\ClientFaceProfile\ValuesObjects\RecommendedCatalogItemIdsValueObject
  * @property string $analysis_version
  * @property AnalysisSourceEnum $analysis_source
  * @property DetectedFaceShapeEnum $detected_face_shape
- * @property string $confidence_score
+ * @property string $confidence_ratio
  * @property FaceAnalysisFeaturesValueObject|null $detected_features
  * @property RecommendedCatalogItemIdsValueObject|null $recommended_catalog_item_ids
  * @property Carbon $computed_at
@@ -33,7 +33,7 @@ use Modules\ClientFaceProfile\ValuesObjects\RecommendedCatalogItemIdsValueObject
  */
 #[Fillable([
     'client_id', 'face_profile_id', 'analysis_version', 'analysis_source',
-    'detected_face_shape', 'confidence_score', 'detected_features',
+    'detected_face_shape', 'confidence_ratio', 'detected_features',
     'recommended_catalog_item_ids', 'computed_at',
 ])]
 #[Table('client_face_analysis_results')]
@@ -46,7 +46,7 @@ class ClientFaceAnalysisResultModel extends Model
         return [
             'detected_face_shape' => DetectedFaceShapeEnum::class,
             'analysis_source' => AnalysisSourceEnum::class,
-            'confidence_score' => 'decimal:2',
+            'confidence_ratio' => 'decimal:2',
             'detected_features' => FaceAnalysisFeaturesCast::class,
             'recommended_catalog_item_ids' => RecommendedCatalogItemIdsCast::class,
             'computed_at' => 'datetime',

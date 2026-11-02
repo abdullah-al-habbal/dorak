@@ -43,7 +43,7 @@ final class InviteAffiliationEloquentResolver
                 'initiated_by_id' => $branch->id,
                 'affiliable_id' => $branch->id,
                 'affiliable_type' => AffiliableType::Branch,
-                'commission_rate' => $command->commissionRate,
+                'commission_percent' => $command->commissionPercent,
                 'status' => AffiliationStatus::Pending,
                 'invited_at' => now(),
             ]);

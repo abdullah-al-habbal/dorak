@@ -45,7 +45,7 @@ final class BookingCompletedObserver
                     'target_type' => $target['type'],
                     'target_id' => $target['id'],
                     'edge_type' => EdgeTypeEnum::History->value,
-                    'weight' => 0.7,
+                    'weight_ratio' => 0.7,
                 ]);
             }
         } catch (Throwable $exception) {

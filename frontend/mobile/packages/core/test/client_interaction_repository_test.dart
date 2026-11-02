@@ -149,7 +149,7 @@ void main() {
           data: successEnvelope(
             data: {
               'id': 'pref-1',
-              'default_radius': 12.0,
+              'default_radius_km': 12.0,
               'hidden_brand_ids': [],
             },
           ),
@@ -159,12 +159,12 @@ void main() {
     final repository = DioClientInteractionRepository(clientWith(fake));
 
     final preference = await repository.updateDiscoveryPreferences({
-      'default_radius': 12,
+      'default_radius_km': 12,
     });
 
     expect(captured.method, 'PATCH');
     expect(captured.path, '/client/discovery-preferences');
-    expect(captured.data, {'default_radius': 12});
-    expect(preference.defaultRadius, 12.0);
+    expect(captured.data, {'default_radius_km': 12});
+    expect(preference.defaultRadiusKm, 12.0);
   });
 }

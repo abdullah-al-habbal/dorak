@@ -8,7 +8,7 @@ use Modules\ClientInteraction\Services\ClientDiscoveryPreferences;
 
 /**
  * Applies a signed-in client's saved discovery preferences to an explore
- * request (Task 47): a missing `radius` falls back to `default_radius`, and
+ * request (Task 47): a missing `radius` falls back to `default_radius_km`, and
  * `show_unavailable = false` means `available_now` unless the request says
  * otherwise. `hidden_brand_ids` is read by the branch query.
  */
@@ -19,8 +19,8 @@ trait AppliesDiscoveryPreferences
     protected function prepareForValidation(): void
     {
         $preferences = $this->discoveryPreferences();
-        if (! $this->filled('radius') && $preferences->defaultRadius !== null) {
-            $this->merge(['radius' => $preferences->defaultRadius]);
+        if (! $this->filled('radius') && $preferences->defaultRadiusKm !== null) {
+            $this->merge(['radius' => $preferences->defaultRadiusKm]);
         }
     }
 

@@ -7,7 +7,7 @@ class StylistProfileState extends Equatable {
     this.saving = false,
     this.saved = false,
     this.profile,
-    this.travelRadius = 0,
+    this.travelRadiusKm = 0,
     this.error,
   });
 
@@ -15,7 +15,7 @@ class StylistProfileState extends Equatable {
   final bool saving;
   final bool saved;
   final BarberProfileDto? profile;
-  final double travelRadius;
+  final double travelRadiusKm;
   final Object? error;
 
   StylistProfileState copyWith({
@@ -23,7 +23,7 @@ class StylistProfileState extends Equatable {
     bool? saving,
     bool? saved,
     BarberProfileDto? profile,
-    double? travelRadius,
+    double? travelRadiusKm,
     Object? error,
     bool clearError = false,
   }) => StylistProfileState(
@@ -31,7 +31,7 @@ class StylistProfileState extends Equatable {
     saving: saving ?? this.saving,
     saved: saved ?? this.saved,
     profile: profile ?? this.profile,
-    travelRadius: travelRadius ?? this.travelRadius,
+    travelRadiusKm: travelRadiusKm ?? this.travelRadiusKm,
     error: clearError ? null : error ?? this.error,
   );
 
@@ -41,7 +41,7 @@ class StylistProfileState extends Equatable {
     saving,
     saved,
     profile,
-    travelRadius,
+    travelRadiusKm,
     error,
   ];
 }

@@ -17,7 +17,7 @@ final readonly class StoreFaceAnalysisResultCommand
         public string $analysisVersion,
         public AnalysisSourceEnum $analysisSource,
         public DetectedFaceShapeEnum $detectedFaceShape,
-        public float $confidenceScore,
+        public float $confidenceRatio,
         public FaceAnalysisFeaturesValueObject $detectedFeatures,
         public RecommendedCatalogItemIdsValueObject $recommendedCatalogItemIds,
     ) {}

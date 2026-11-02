@@ -15,7 +15,7 @@ beforeEach(function (): void {
     $this->barber = BarberModel::factory()->create([
         'latitude' => 33.5,
         'longitude' => 36.3,
-        'travel_radius' => 10,
+        'travel_radius_km' => 10,
     ]);
     $this->service = OfferedServiceModel::factory()->atHome()->create([
         'serviceable_type' => ServiceableTypeEnum::Barber,
@@ -84,7 +84,7 @@ it('rejects a client outside the travel radius', function (): void {
 });
 
 it('treats a null travel radius as not offering at home', function (): void {
-    $this->barber->update(['travel_radius' => null]);
+    $this->barber->update(['travel_radius_km' => null]);
 
     ($this->book)()->assertUnprocessable()->assertJsonPath('code', 'at_home_not_offered');
 });

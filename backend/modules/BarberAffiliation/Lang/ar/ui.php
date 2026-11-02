@@ -11,7 +11,7 @@ return [
     'barber' => 'الحلاق',
     'branch_brand' => 'الفرع/العلامة التجارية',
     'commission' => 'العمولة',
-    'commission_rate' => 'نسبة العمولة',
+    'commission_percent' => 'نسبة العمولة',
     'entity' => 'الكيان',
     'entity_id' => 'معرّف الكيان',
     'entity_type' => 'نوع الكيان',

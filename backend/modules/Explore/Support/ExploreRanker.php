@@ -52,7 +52,7 @@ final class ExploreRanker
             ->where('source_id', $clientId)
             ->where('target_type', $entityType)
             ->whereIn('target_id', $ids)
-            ->pluck('weight', 'target_id');
+            ->pluck('weight_ratio', 'target_id');
 
         $embeddings = $clientEmbedding === null ? collect() : EntityEmbeddingModel::query()
             ->where('entity_type', $entityType)

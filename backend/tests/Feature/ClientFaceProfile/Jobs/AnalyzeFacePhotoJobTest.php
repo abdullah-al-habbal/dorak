@@ -64,7 +64,7 @@ it('analyzes a face photo and stores the result', function () {
     expect($result)->not->toBeNull();
     expect($result->client_id)->toBe($this->client->id);
     expect($result->detected_face_shape)->toBe(DetectedFaceShapeEnum::Oval);
-    expect((float) $result->confidence_score)->toBe(0.91);
+    expect((float) $result->confidence_ratio)->toBe(0.91);
     expect($result->analysis_source)->toBe(AnalysisSourceEnum::ThirdPartyApi);
     expect($result->analysis_version)->toBe('openai-vision-v1');
     expect($result->detected_features->foreheadWidth())->toBe(110);

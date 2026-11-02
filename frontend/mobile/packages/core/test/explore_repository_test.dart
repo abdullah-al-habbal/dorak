@@ -252,7 +252,7 @@ void main() {
                 'email': 'karim@example.com',
                 'is_freelancer': true,
                 'status': 'enabled',
-                'travel_radius': 15.0,
+                'travel_radius_km': 15.0,
                 'latitude': 24.7136,
                 'longitude': 46.6753,
                 'distance': 2.1,
@@ -286,7 +286,7 @@ void main() {
       expect(detail.email, 'karim@example.com');
       expect(detail.isFreelancer, isTrue);
       expect(detail.status, BarberStatus.enabled);
-      expect(detail.travelRadius, 15.0);
+      expect(detail.travelRadiusKm, 15.0);
       expect(detail.latitude, 24.7136);
       expect(detail.longitude, 46.6753);
       expect(detail.distance, 2.1);

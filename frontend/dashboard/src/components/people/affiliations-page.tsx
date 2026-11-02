@@ -163,9 +163,9 @@ function AffiliationRow({
             {affiliation.initiatedByBranch
               ? copy.invitedByShop
               : copy.invitedByBarber}
-            {affiliation.commissionRate === null
+            {affiliation.commissionPercent === null
               ? ""
-              : ` · ${copy.commission}: ${affiliation.commissionRate}%`}
+              : ` · ${copy.commission}: ${affiliation.commissionPercent}%`}
           </p>
         </div>
         <div className="flex items-center gap-2">

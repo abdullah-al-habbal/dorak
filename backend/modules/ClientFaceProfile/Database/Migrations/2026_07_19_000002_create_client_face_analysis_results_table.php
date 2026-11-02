@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('analysis_version');
             $table->string('analysis_source');
             $table->string('detected_face_shape');
-            $table->decimal('confidence_score', 4, 2);
+            $table->decimal('confidence_ratio', 4, 2);
             $table->json('detected_features')->nullable();
             $table->json('recommended_catalog_item_ids')->nullable();
             $table->timestamp('computed_at');

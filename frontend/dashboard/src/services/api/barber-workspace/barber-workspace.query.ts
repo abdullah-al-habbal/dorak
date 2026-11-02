@@ -41,8 +41,10 @@ export async function getBarberWorkspaceProfile(): Promise<BarberWorkspaceProfil
       typeof profile.is_workstation_online === "boolean"
         ? profile.is_workstation_online
         : undefined,
-    travelRadius:
-      typeof profile.travel_radius === "number" ? profile.travel_radius : null,
+    travelRadiusKm:
+      typeof profile.travel_radius_km === "number"
+        ? profile.travel_radius_km
+        : null,
   };
 }
 

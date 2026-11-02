@@ -14,7 +14,7 @@ final class ClientDiscoveryPreferenceResource extends JsonResource
         return [
             'id' => $this->id,
             'preferred_universe' => $this->preferred_universe,
-            'default_radius' => $this->default_radius,
+            'default_radius_km' => $this->default_radius_km,
             'hidden_brand_ids' => $this->hidden_brand_ids ?? [],
             'show_unavailable' => $this->show_unavailable,
             'created_at' => $this->created_at?->toIso8601String(),

@@ -89,7 +89,7 @@ final class ClientRecommendationEdgeRebuilder
                 'edge_type' => $edgeType->value,
             ],
             [
-                'weight' => $weight,
+                'weight_ratio' => $weight,
                 'computed_at' => now(),
                 'vector_version' => RecommendationConstants::RECOMMENDATION_VECTOR_VERSION,
             ]

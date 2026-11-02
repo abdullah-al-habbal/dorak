@@ -695,7 +695,7 @@ export const en = {
       confirmBody: "The barber is notified of your decision.",
       invite: "Invite a barber",
       barberId: "Barber ID",
-      commissionRate: "Commission rate (%)",
+      commissionPercent: "Commission rate (%)",
       sendInvite: "Send invite",
       invited: "Invite sent.",
       updated: "Affiliation updated.",

@@ -96,7 +96,7 @@ it('ranks shops and freelancers together for a signed-in client', function (): v
     RecommendationEdgeModel::create([
         'source_type' => 'client', 'source_id' => $client->id,
         'target_type' => 'barber', 'target_id' => $favourite->id,
-        'edge_type' => EdgeTypeEnum::Favorite, 'weight' => 1.0,
+        'edge_type' => EdgeTypeEnum::Favorite, 'weight_ratio' => 1.0,
     ]);
 
     $items = $this->actingAs($client, 'client')->getJson(ExploreTestConstants::EXPLORE_TEST_UNIFIED_URL)->assertOk()->json('data');

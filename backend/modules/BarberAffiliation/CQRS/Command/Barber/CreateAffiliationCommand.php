@@ -12,6 +12,6 @@ final readonly class CreateAffiliationCommand
         public string $barberId,
         public string $affiliableId,
         public AffiliableType $affiliableType,
-        public ?float $commissionRate,
+        public ?float $commissionPercent,
     ) {}
 }

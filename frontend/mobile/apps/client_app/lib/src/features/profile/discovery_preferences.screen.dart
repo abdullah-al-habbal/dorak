@@ -52,7 +52,7 @@ class _DiscoveryPreferencesScreenState
           }
           final radius =
               (_draftRadius ??
-                      preferences.defaultRadius ??
+                      preferences.defaultRadiusKm ??
                       DiscoveryPreferencesConstants.fallbackRadius)
                   .clamp(
                     DiscoveryPreferencesConstants.minRadius,
@@ -77,7 +77,7 @@ class _DiscoveryPreferencesScreenState
                 onChanged: (value) => setState(() => _draftRadius = value),
                 onChangeEnd: (value) {
                   setState(() => _draftRadius = null);
-                  widget.cubit.save(defaultRadius: value);
+                  widget.cubit.save(defaultRadiusKm: value);
                 },
               ),
               SwitchListTile(

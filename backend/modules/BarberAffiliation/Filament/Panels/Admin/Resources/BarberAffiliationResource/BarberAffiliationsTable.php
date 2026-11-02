@@ -23,7 +23,7 @@ final class BarberAffiliationsTable
                     ->label(__('barberaffiliation::ui.entity_type')),
                 TextColumn::make('status')
                     ->badge(),
-                TextColumn::make('commission_rate')
+                TextColumn::make('commission_percent')
                     ->suffix('%'),
                 TextColumn::make('created_at')
                     ->dateTime()

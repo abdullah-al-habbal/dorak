@@ -1080,7 +1080,7 @@ FaceAnalysisResultDto testFaceAnalysis({
   id: id,
   faceProfileId: 'photo-1',
   detectedFaceShape: shape,
-  confidenceScore: confidence,
+  confidenceRatio: confidence,
   recommendedCatalogItemIds: recommendedIds,
   computedAt: DateTime.utc(2026, 9, 10, 11),
   faceProfile: photoUrl == null
@@ -1403,7 +1403,7 @@ BarberProfileDto testBarberProfile({
   String email = 'karim@example.com',
   bool isFreelancer = false,
   BarberStatus status = BarberStatus.enabled,
-  double? travelRadius,
+  double? travelRadiusKm,
   double latitude = 24.7136,
   double longitude = 46.6753,
   double? distance,
@@ -1420,7 +1420,7 @@ BarberProfileDto testBarberProfile({
   email: email,
   isFreelancer: isFreelancer,
   status: status,
-  travelRadius: travelRadius,
+  travelRadiusKm: travelRadiusKm,
   latitude: latitude,
   longitude: longitude,
   distance: distance,
@@ -1687,7 +1687,7 @@ class FakeClientInteractionRepository implements ClientInteractionRepository {
   List<SavedFilterDto> filters = [];
   DiscoveryPreferenceDto preferences = const DiscoveryPreferenceDto(
     id: 'pref-1',
-    defaultRadius: 10,
+    defaultRadiusKm: 10,
   );
   Object? error;
   String? lastSavedName;
@@ -1753,7 +1753,7 @@ class FakeClientInteractionRepository implements ClientInteractionRepository {
     lastPreferenceValues = values;
     return DiscoveryPreferenceDto(
       id: 'pref-1',
-      defaultRadius: (values['default_radius'] as num?)?.toDouble() ?? 10,
+      defaultRadiusKm: (values['default_radius_km'] as num?)?.toDouble() ?? 10,
       showUnavailable: values['show_unavailable'] as bool? ?? false,
       hiddenBrandIds:
           (values['hidden_brand_ids'] as List?)?.cast<String>() ?? const [],

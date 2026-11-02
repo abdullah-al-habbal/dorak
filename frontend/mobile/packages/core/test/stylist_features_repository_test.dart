@@ -37,7 +37,7 @@ Object _dataFor(RequestOptions options) {
       'id': 'b1',
       'name': 'Barber',
       'email': 'b@example.com',
-      'travel_radius': 12.5,
+      'travel_radius_km': 12.5,
     };
   }
   return {};
@@ -111,12 +111,12 @@ void main() {
     expect(requests[2].path, '/barber/portfolio/p1');
   });
 
-  test('travel radius is a PATCH of travel_radius', () async {
+  test('travel radius is a PATCH of travel_radius_km', () async {
     final profile = await repository.updateTravelRadius(12.5);
 
     expect(requests.single.method, 'PATCH');
     expect(requests.single.path, '/barber/travel-radius');
-    expect(requests.single.data, {'travel_radius': 12.5});
-    expect(profile.travelRadius, 12.5);
+    expect(requests.single.data, {'travel_radius_km': 12.5});
+    expect(profile.travelRadiusKm, 12.5);
   });
 }

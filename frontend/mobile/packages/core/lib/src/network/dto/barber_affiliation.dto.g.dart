@@ -14,7 +14,7 @@ BarberAffiliationDto _$BarberAffiliationDtoFromJson(
   affiliableId: json['affiliable_id'] as String,
   affiliableType: json['affiliable_type'] as String,
   status: json['status'] as String,
-  commissionRate: (json['commission_rate'] as num?)?.toDouble(),
+  commissionPercent: (json['commission_percent'] as num?)?.toDouble(),
   invitedAt: json['invited_at'] == null
       ? null
       : DateTime.parse(json['invited_at'] as String),

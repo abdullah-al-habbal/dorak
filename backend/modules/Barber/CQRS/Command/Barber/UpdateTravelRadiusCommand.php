@@ -8,7 +8,7 @@ final readonly class UpdateTravelRadiusCommand
 {
     public function __construct(
         public string $barberId,
-        public ?float $travelRadius,
+        public ?float $travelRadiusKm,
         public ?float $latitude,
         public ?float $longitude,
     ) {}

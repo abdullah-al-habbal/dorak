@@ -9,7 +9,7 @@ export const BarberAppointmentSchema = z.object({
 
 export const BarberWorkspaceProfileSchema = z.object({
   isWorkstationOnline: z.boolean().optional(),
-  travelRadius: z.number().nullable().optional(),
+  travelRadiusKm: z.number().nullable().optional(),
   portfolio: z
     .array(
       z.object({
@@ -55,7 +55,7 @@ export const UpdateScheduleFormSchema = z.object({
 });
 
 export const UpdateTravelRadiusFormSchema = z.object({
-  travelRadius: z.number().min(0).max(100).nullable(),
+  travelRadiusKm: z.number().min(0).max(100).nullable(),
 });
 
 export const UpdateBarberProfileFormSchema = z.object({

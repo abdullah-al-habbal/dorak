@@ -23,7 +23,7 @@ final class BarberProfileSnapshotBuilder
             'email' => $barber->email,
             'bio' => $barber->bio,
             'is_freelancer' => (bool) $barber->is_freelancer,
-            'travel_radius' => $barber->travel_radius !== null ? (float) $barber->travel_radius : null,
+            'travel_radius_km' => $barber->travel_radius_km !== null ? (float) $barber->travel_radius_km : null,
             'rating' => [
                 'average' => $barber->rating_avg !== null ? (float) $barber->rating_avg : null,
                 'count' => (int) ($barber->rating_count ?? 0),

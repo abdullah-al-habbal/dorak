@@ -1008,7 +1008,7 @@ describe('BarberAffiliation API', function () {
 
             assertApiEnvelope($response, 201);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'barber_id', 'affiliable_id', 'affiliable_type', 'status', 'commission_rate', 'created_at']);
+            expect($data)->toHaveKeys(['id', 'barber_id', 'affiliable_id', 'affiliable_type', 'status', 'commission_percent', 'created_at']);
             expect($data['status'])->toBe(AffiliationStatus::Pending->value);
         });
     });
@@ -1624,8 +1624,8 @@ describe('ClientInteraction API', function () {
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'preferred_universe', 'default_radius', 'hidden_brand_ids', 'show_unavailable']);
-            expect($data['default_radius'])->toBe(50);
+            expect($data)->toHaveKeys(['id', 'preferred_universe', 'default_radius_km', 'hidden_brand_ids', 'show_unavailable']);
+            expect($data['default_radius_km'])->toBe(50);
             expect($data['show_unavailable'])->toBeTrue();
         });
 
@@ -1634,12 +1634,12 @@ describe('ClientInteraction API', function () {
 
             $response = $this->actingAs($client, 'client')
                 ->patchJson('/api/v1/client/discovery-preferences', [
-                    'default_radius' => 25,
+                    'default_radius_km' => 25,
                     'show_unavailable' => false,
                 ]);
 
             assertApiEnvelope($response, 200);
-            expect($response->json('data.default_radius'))->toEqual(25.0);
+            expect($response->json('data.default_radius_km'))->toEqual(25.0);
             expect($response->json('data.show_unavailable'))->toBeFalse();
         });
 

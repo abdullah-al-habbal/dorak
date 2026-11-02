@@ -11,7 +11,7 @@ final readonly class UpdateDiscoveryPreferenceCommand
     public function __construct(
         public string $clientId,
         public ?UniverseEnum $preferredUniverse = null,
-        public ?float $defaultRadius = null,
+        public ?float $defaultRadiusKm = null,
         public ?array $hiddenBrandIds = null,
         public ?bool $showUnavailable = null,
     ) {}

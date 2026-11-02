@@ -13,7 +13,7 @@ describe("people mappers", () => {
       barber_name: { en: "Sam", ar: "سام" },
       status: "pending",
       initiated_by_type: "Modules\\Branch\\Models\\BranchModel",
-      commission_rate: "12.5",
+      commission_percent: "12.5",
       created_at: "2026-10-28T00:00:00Z",
     });
 
@@ -21,7 +21,7 @@ describe("people mappers", () => {
       barberName: "Sam",
       status: "pending",
       initiatedByBranch: true,
-      commissionRate: 12.5,
+      commissionPercent: 12.5,
     });
     expect(
       mapAffiliation({ initiated_by_type: "barber" }).initiatedByBranch,

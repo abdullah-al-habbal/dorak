@@ -89,7 +89,7 @@ beforeEach(() => {
     isPending: false,
   } as never);
   vi.mocked(useBarberWorkspaceProfileQuery).mockReturnValue({
-    data: { isWorkstationOnline: false, travelRadius: 10 },
+    data: { isWorkstationOnline: false, travelRadiusKm: 10 },
     isPending: false,
   } as never);
   vi.mocked(updateBarberWorkstation).mockResolvedValue(undefined);
@@ -111,7 +111,7 @@ afterEach(cleanup);
 describe("BarberWorkspace", () => {
   it("sends online:false when the barber is currently online", async () => {
     vi.mocked(useBarberWorkspaceProfileQuery).mockReturnValue({
-      data: { isWorkstationOnline: true, travelRadius: 10 },
+      data: { isWorkstationOnline: true, travelRadiusKm: 10 },
       isPending: false,
     } as never);
     const user = userEvent.setup();
@@ -148,7 +148,7 @@ describe("BarberWorkspace", () => {
 
     await waitFor(() =>
       expect(updateBarberTravelRadius).toHaveBeenCalledWith({
-        travelRadius: 40,
+        travelRadiusKm: 40,
       }),
     );
   });

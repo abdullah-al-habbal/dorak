@@ -34,7 +34,7 @@ final class BarberAffiliationFormSchema
                     Select::make('status')
                         ->options(AffiliationStatus::class)
                         ->required(),
-                    TextInput::make('commission_rate')
+                    TextInput::make('commission_percent')
                         ->numeric()
                         ->step('0.01')
                         ->suffix('%'),

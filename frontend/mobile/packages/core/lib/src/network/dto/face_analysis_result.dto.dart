@@ -10,7 +10,7 @@ class FaceAnalysisResultDto extends Equatable {
   final String id;
   final String faceProfileId;
   final String detectedFaceShape;
-  final double confidenceScore;
+  final double confidenceRatio;
   final List<String>? recommendedCatalogItemIds;
   final DateTime? computedAt;
   final FacePhotoDto? faceProfile;
@@ -20,7 +20,7 @@ class FaceAnalysisResultDto extends Equatable {
     required this.id,
     required this.faceProfileId,
     required this.detectedFaceShape,
-    this.confidenceScore = 0,
+    this.confidenceRatio = 0,
     this.recommendedCatalogItemIds,
     this.computedAt,
     this.faceProfile,
@@ -35,7 +35,7 @@ class FaceAnalysisResultDto extends Equatable {
     id,
     faceProfileId,
     detectedFaceShape,
-    confidenceScore,
+    confidenceRatio,
     recommendedCatalogItemIds,
     computedAt,
     faceProfile,

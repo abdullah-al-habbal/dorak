@@ -59,7 +59,7 @@ class AnalyzeFacePhotoJob implements ShouldQueue
             analysisVersion: $outcome->analysisVersion,
             analysisSource: $outcome->analysisSource,
             detectedFaceShape: $outcome->detectedFaceShape,
-            confidenceScore: $outcome->confidenceScore,
+            confidenceRatio: $outcome->confidenceRatio,
             detectedFeatures: $outcome->detectedFeatures,
             recommendedCatalogItemIds: RecommendedCatalogItemIdsValueObject::fromArray([
                 'ids' => $recommendedCatalogItemIds,
