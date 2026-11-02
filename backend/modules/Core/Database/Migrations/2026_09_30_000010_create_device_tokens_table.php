@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->string('user_type');
             $table->string('token')->unique();
-            $table->string('platform', 20);
+            $table->string('platform_type', 20);
             $table->timestamp('last_used_at');
             $table->timestamps();
             $table->index(['user_type', 'user_id']);

@@ -15,5 +15,5 @@ JobPostingDto _$JobPostingDtoFromJson(Map<String, dynamic> json) =>
       branchId: json['branch_id'] as String,
       applicationsCount: (json['applications_count'] as num?)?.toInt(),
       location: json['location'] as String?,
-      type: json['type'] as String?,
+      employmentType: json['employment_type'] as String?,
     );

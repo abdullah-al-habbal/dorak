@@ -31,7 +31,7 @@ final class GeneratePayoutsHandler
                     $payout = PayoutModel::create([
                         'brand_id' => $first->brand_id,
                         'currency_code' => $first->currency_code,
-                        'direction' => PayoutDirection::BrandToPlatform,
+                        'direction_type' => PayoutDirection::BrandToPlatform,
                         'status' => PayoutStatus::Draft,
                         'total_amount_minor' => (int) $group->sum('commission_amount_minor'),
                         'period_started_at' => $group->min('created_at'),

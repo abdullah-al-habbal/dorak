@@ -40,7 +40,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     String? preferredLanguage,
     bool? allowsNotifications,
     String? displayCurrencyCode,
-    String? theme,
+    String? themeMode,
     String? priceDisplayMode,
   }) async {
     if (state.isSaving) return;
@@ -50,7 +50,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         preferredLanguage: preferredLanguage,
         allowsNotifications: allowsNotifications,
         displayCurrencyCode: displayCurrencyCode,
-        theme: theme,
+        themeMode: themeMode,
         priceDisplayMode: priceDisplayMode,
       );
       if (!isClosed) emit(SettingsState(settings: settings, saved: true));

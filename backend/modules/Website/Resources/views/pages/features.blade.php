@@ -2,8 +2,8 @@
 <x-website::layouts.app :page="$page" :locale="$locale">
     @php
         $sections = $page['sections'] ?? [];
-        $heroSection = collect($sections)->firstWhere('type', 'hero');
-        $featureSection = collect($sections)->firstWhere('type', 'feature_list');
+        $heroSection = collect($sections)->firstWhere('section_type', 'hero');
+        $featureSection = collect($sections)->firstWhere('section_type', 'feature_list');
     @endphp
 
     <x-website::hero :content="$heroSection['content'] ?? null" />

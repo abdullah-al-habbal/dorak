@@ -37,7 +37,7 @@ function defaultsFor(posting?: IJobPosting): IJobPostingFormInput {
     descriptionEn: posting?.description.en ?? "",
     descriptionAr: posting?.description.ar ?? "",
     location: posting?.location ?? "",
-    type: posting?.type ?? "",
+    employmentType: posting?.employmentType ?? "",
     status: posting?.status ?? "open",
   };
 }
@@ -83,7 +83,7 @@ export function JobPostingForm({
   });
 
   const text = (
-    name: "titleEn" | "titleAr" | "location" | "type",
+    name: "titleEn" | "titleAr" | "location" | "employmentType",
     label: string,
   ) => (
     <label className="grid gap-1 text-sm text-text-100">
@@ -121,7 +121,7 @@ export function JobPostingForm({
       {area("descriptionEn", copy.descriptionEn)}
       {area("descriptionAr", copy.descriptionAr)}
       {text("location", copy.location)}
-      {text("type", copy.type)}
+      {text("employmentType", copy.type)}
       {posting ? (
         <label className="grid gap-1 text-sm text-text-100">
           <span>{copy.status}</span>

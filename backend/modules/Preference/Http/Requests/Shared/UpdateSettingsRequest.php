@@ -18,7 +18,7 @@ final class UpdateSettingsRequest extends BaseApiFormRequest
             'preferred_language' => ['sometimes', 'nullable', Rule::enum(Locale::class)],
             'allows_notifications' => ['sometimes', 'boolean'],
             'display_currency_code' => ['sometimes', 'nullable', 'exists:currencies,code'],
-            'theme' => ['sometimes', 'nullable', Rule::enum(ThemeEnum::class)],
+            'theme_mode' => ['sometimes', 'nullable', Rule::enum(ThemeEnum::class)],
             'price_display_mode' => ['sometimes', 'nullable', Rule::enum(PriceDisplayModeEnum::class)],
         ];
     }

@@ -24,7 +24,7 @@ use Modules\Preference\Enums\ThemeEnum;
     'preferred_language',
     'allows_notifications',
     'display_currency_code',
-    'theme',
+    'theme_mode',
     'price_display_mode',
     'allows_dual_price_display',
 ])]
@@ -40,7 +40,7 @@ class PreferenceModel extends Model
             'preferenceable_type' => PreferenceableTypeEnum::class,
             'preferred_language' => Locale::class,
             'allows_notifications' => 'boolean',
-            'theme' => ThemeEnum::class,
+            'theme_mode' => ThemeEnum::class,
             'price_display_mode' => PriceDisplayModeEnum::class,
             'allows_dual_price_display' => 'boolean',
         ];

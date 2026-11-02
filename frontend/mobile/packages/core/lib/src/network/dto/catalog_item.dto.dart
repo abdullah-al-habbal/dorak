@@ -33,7 +33,7 @@ class CatalogItemDto {
   @JsonKey(fromJson: _faceShapesFromJson)
   final List<FaceShape> faceShapes;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
-  final StylePeriod? stylePeriod;
+  final StylePeriod? stylePeriodType;
   final bool isActive;
   final List<CatalogTagDto> tags;
   final List<CatalogMediumDto> media;
@@ -45,7 +45,7 @@ class CatalogItemDto {
     this.description = const {},
     this.priceRange,
     this.faceShapes = const [],
-    this.stylePeriod,
+    this.stylePeriodType,
     this.isActive = true,
     this.tags = const [],
     this.media = const [],

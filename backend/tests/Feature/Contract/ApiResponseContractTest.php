@@ -1089,7 +1089,7 @@ describe('JobPosting API', function () {
                 assertTranslatableField($data[0], 'description');
                 expect($data[0])->toHaveKey('applications_count');
                 expect($data[0])->toHaveKey('location');
-                expect($data[0])->toHaveKey('type');
+                expect($data[0])->toHaveKey('employment_type');
             }
         });
     });

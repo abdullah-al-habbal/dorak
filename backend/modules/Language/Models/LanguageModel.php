@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Language\Enums\TextDirectionEnum;
 
-#[Fillable(['code', 'name', 'direction', 'is_default'])]
+#[Fillable(['code', 'name', 'text_direction', 'is_default'])]
 #[Table('languages')]
 class LanguageModel extends Model
 {
@@ -22,7 +22,7 @@ class LanguageModel extends Model
     protected function casts(): array
     {
         return [
-            'direction' => TextDirectionEnum::class,
+            'text_direction' => TextDirectionEnum::class,
             'name' => 'array',
             'is_default' => 'boolean',
         ];

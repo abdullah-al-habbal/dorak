@@ -52,7 +52,7 @@ class PushNotificationService {
 
   Future<void> _register(String token) => _client.post<void>(
     '/user/device-token',
-    data: {'token': token, 'platform': 'android'},
+    data: {'token': token, 'platform_type': 'android'},
     parser: (_) {},
   );
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('service_catalog_media', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuidMorphs('mediable');
-            $table->string('type')->default(MediaTypeEnum::Image->value);
+            $table->string('media_type')->default(MediaTypeEnum::Image->value);
             $table->string('path');
             $table->string('alt')->nullable();
             $table->unsignedSmallInteger('sort_order')->default(0);

@@ -55,7 +55,7 @@ export function SettingsPreferences() {
     control: form.control,
     name: "displayCurrencyCode",
   });
-  const theme = useWatch({ control: form.control, name: "theme" });
+  const theme = useWatch({ control: form.control, name: "themeMode" });
   const priceDisplayMode = useWatch({
     control: form.control,
     name: "priceDisplayMode",
@@ -126,7 +126,7 @@ export function SettingsPreferences() {
             value={theme ?? ""}
             onChange={(selected) =>
               form.setValue(
-                "theme",
+                "themeMode",
                 (selected || null) as "light" | "dark" | null,
               )
             }

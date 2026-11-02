@@ -16,7 +16,7 @@ final class SettingsResource extends JsonResource
             'preferred_language' => $this->preferred_language?->value,
             'allows_notifications' => $this->allows_notifications,
             'display_currency_code' => $this->display_currency_code,
-            'theme' => $this->theme?->value,
+            'theme_mode' => $this->theme_mode?->value,
             'price_display_mode' => $this->price_display_mode?->value,
         ];
     }

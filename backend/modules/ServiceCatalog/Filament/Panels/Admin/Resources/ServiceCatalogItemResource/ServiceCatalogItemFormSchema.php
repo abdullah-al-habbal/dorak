@@ -37,9 +37,9 @@ final class ServiceCatalogItemFormSchema
                         ->required(),
                     Select::make('maintenance_level')
                         ->options(MaintenanceLevelEnum::class),
-                    Select::make('style_period')
+                    Select::make('style_period_type')
                         ->options(StylePeriodEnum::class),
-                    Select::make('formality')
+                    Select::make('formality_level')
                         ->options(FormalityEnum::class),
                     Toggle::make('is_active')
                         ->default(true),

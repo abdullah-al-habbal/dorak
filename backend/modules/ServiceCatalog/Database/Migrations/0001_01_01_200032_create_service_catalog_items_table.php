@@ -20,8 +20,8 @@ return new class extends Migration
             $table->json('price_range')->nullable();
             $table->unsignedSmallInteger('default_duration_minutes')->nullable();
             $table->string('maintenance_level')->nullable();
-            $table->string('style_period')->nullable();
-            $table->string('formality')->nullable();
+            $table->string('style_period_type')->nullable();
+            $table->string('formality_level')->nullable();
             $table->json('face_shapes')->nullable();
             $table->json('hair_textures')->nullable();
             $table->json('metadata')->nullable();

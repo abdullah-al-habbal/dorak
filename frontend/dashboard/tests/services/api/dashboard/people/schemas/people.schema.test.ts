@@ -33,7 +33,7 @@ describe("jobPostingFormSchema", () => {
     descriptionEn: "c",
     descriptionAr: "د",
     location: "",
-    type: "",
+    employmentType: "",
     status: "open",
   };
 

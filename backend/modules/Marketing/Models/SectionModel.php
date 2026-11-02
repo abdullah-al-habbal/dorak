@@ -19,7 +19,7 @@ use Spatie\Translatable\HasTranslations;
 
 #[Fillable([
     'page_id',
-    'type',
+    'section_type',
     'title',
     'subtitle',
     'content',
@@ -42,7 +42,7 @@ final class SectionModel extends Model
     protected function casts(): array
     {
         return [
-            'type' => SectionTypeEnum::class,
+            'section_type' => SectionTypeEnum::class,
             'universe_visibility' => UniverseVisibilityEnum::class,
             'content' => 'array',
             'title' => 'array',

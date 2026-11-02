@@ -22,7 +22,7 @@ final class ServiceCatalogItemTagsTable
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
-                TextColumn::make('group'),
+                TextColumn::make('group_name'),
                 ToggleColumn::make('is_active'),
                 TextColumn::make('created_at')
                     ->dateTime()

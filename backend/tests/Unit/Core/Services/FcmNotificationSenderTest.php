@@ -34,7 +34,7 @@ function registerFcmToken(string $token): DeviceTokenModel
         'user_id' => '00000000-0000-4000-8000-000000000001',
         'user_type' => DeviceTokenUserTypeEnum::Client,
         'token' => $token,
-        'platform' => 'android',
+        'platform_type' => 'android',
         'last_used_at' => now(),
     ]);
 }

@@ -17,7 +17,7 @@ final class TestimonialSeeder extends Seeder
         $sectionIds = DB::table('sections')
             ->join('marketing_pages', 'sections.page_id', '=', 'marketing_pages.id')
             ->whereIn('marketing_pages.slug', ['home'])
-            ->where('sections.type', 'testimonials')
+            ->where('sections.section_type', 'testimonials')
             ->pluck('sections.id', 'marketing_pages.slug');
 
         $rows = array_map(function (array $testimonial) use ($sectionIds): array {

@@ -18,7 +18,7 @@ export const SettingsSchema = z.object({
   preferredLanguage: z.enum(["en", "ar"]).nullable(),
   allowsNotifications: z.boolean(),
   displayCurrencyCode: z.string().nullable(),
-  theme: z.enum(["light", "dark"]).nullable(),
+  themeMode: z.enum(["light", "dark"]).nullable(),
   priceDisplayMode: z.enum(["tax_inclusive", "tax_exclusive"]).nullable(),
 });
 
@@ -37,7 +37,7 @@ export const UpdateSettingsInputSchema = z.object({
   preferredLanguage: z.enum(["en", "ar"]).nullable().optional(),
   allowsNotifications: z.boolean().optional(),
   displayCurrencyCode: z.string().nullable().optional(),
-  theme: z.enum(["light", "dark"]).nullable().optional(),
+  themeMode: z.enum(["light", "dark"]).nullable().optional(),
   priceDisplayMode: z
     .enum(["tax_inclusive", "tax_exclusive"])
     .nullable()

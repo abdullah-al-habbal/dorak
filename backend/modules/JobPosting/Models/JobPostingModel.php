@@ -18,7 +18,7 @@ use Modules\JobPosting\Enums\JobPostingTypeEnum;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['branch_id', 'title', 'description', 'status', 'requirements', 'location', 'type'])]
+#[Fillable(['branch_id', 'title', 'description', 'status', 'requirements', 'location', 'employment_type'])]
 #[Table('job_postings')]
 #[Translatable([
     'title',
@@ -33,7 +33,7 @@ class JobPostingModel extends Model
     protected function casts(): array
     {
         return [
-            'type' => JobPostingTypeEnum::class,
+            'employment_type' => JobPostingTypeEnum::class,
             'status' => JobPostingStatusEnum::class,
             'title' => 'array',
             'description' => 'array',

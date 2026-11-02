@@ -64,7 +64,7 @@ export function mapJobPosting(wire: unknown): IJobPosting {
     description: localized(item.description),
     status: oneOf(JOB_POSTING_STATUSES, item.status, "open"),
     location: nullableText(item.location),
-    type: nullableText(item.type),
+    employmentType: nullableText(item.employment_type),
     applicationsCount: numeric(item.applications_count) ?? 0,
   };
 }

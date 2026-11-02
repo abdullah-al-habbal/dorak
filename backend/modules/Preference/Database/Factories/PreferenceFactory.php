@@ -20,7 +20,7 @@ class PreferenceFactory extends Factory
             'preferred_language' => 'ar',
             'allows_notifications' => true,
             'display_currency_code' => null,
-            'theme' => 'light',
+            'theme_mode' => 'light',
             'price_display_mode' => 'tax_inclusive',
             'allows_dual_price_display' => false,
         ];

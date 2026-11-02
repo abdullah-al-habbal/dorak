@@ -15,7 +15,7 @@ Map<String, dynamic> _catalogItemPayload() => {
   'sku': null,
   'price_range': {'min': 10, 'max': 25.5, 'currency': 'SAR'},
   'maintenance_level': 'low',
-  'style_period': 'modern',
+  'style_period_type': 'modern',
   'formality': null,
   'face_shapes': ['oval', 'square'],
   'hair_textures': null,
@@ -30,7 +30,7 @@ Map<String, dynamic> _catalogItemPayload() => {
       'id': _tagId,
       'name': {'en': 'Classic'},
       'slug': 'classic',
-      'group': null,
+      'group_name': null,
     },
   ],
   'is_active': true,
@@ -54,17 +54,17 @@ void main() {
       final dto = CatalogItemDto.fromJson({
         ..._catalogItemPayload(),
         'face_shapes': ['oval', 'hexagon'],
-        'style_period': 'futuristic',
+        'style_period_type': 'futuristic',
         'media': [
-          {'id': 'm1', 'type': 'hologram', 'path': 'a.png', 'sort_order': 0},
-          {'id': 'm2', 'type': 'video', 'path': 'b.mp4', 'sort_order': 1},
+          {'id': 'm1', 'media_type': 'hologram', 'path': 'a.png', 'sort_order': 0},
+          {'id': 'm2', 'media_type': 'video', 'path': 'b.mp4', 'sort_order': 1},
         ],
       });
 
       expect(dto.faceShapes, [FaceShape.oval]);
-      expect(dto.stylePeriod, isNull);
-      expect(dto.media.first.type, CatalogMediaType.image);
-      expect(dto.media.last.type, CatalogMediaType.video);
+      expect(dto.stylePeriodType, isNull);
+      expect(dto.media.first.mediaType, CatalogMediaType.image);
+      expect(dto.media.last.mediaType, CatalogMediaType.video);
     });
 
     test('parses a catalog category universe and ignores unknown values', () {

@@ -26,7 +26,7 @@ final class ServiceCatalogItemTagFormSchema
                     TextInput::make('slug')
                         ->required()
                         ->unique(ignoreRecord: true),
-                    TextInput::make('group'),
+                    TextInput::make('group_name'),
                     Toggle::make('is_active')
                         ->default(true),
                 ]),

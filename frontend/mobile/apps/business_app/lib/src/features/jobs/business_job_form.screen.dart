@@ -39,7 +39,7 @@ class _BusinessJobFormScreenState extends State<BusinessJobFormScreen> {
     _descriptionEn.text = '${job.description['en'] ?? ''}';
     _descriptionAr.text = '${job.description['ar'] ?? ''}';
     _location.text = job.location ?? '';
-    _type.text = job.type ?? '';
+    _type.text = job.employmentType ?? '';
   }
 
   @override
@@ -62,7 +62,7 @@ class _BusinessJobFormScreenState extends State<BusinessJobFormScreen> {
         'ar': _descriptionAr.text.trim(),
       },
       if (_location.text.trim().isNotEmpty) 'location': _location.text.trim(),
-      if (_type.text.trim().isNotEmpty) 'type': _type.text.trim(),
+      if (_type.text.trim().isNotEmpty) 'employment_type': _type.text.trim(),
     }, id: widget.jobId);
     if (mounted && widget.bloc.state.error == null) context.pop();
   }

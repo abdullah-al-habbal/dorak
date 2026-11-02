@@ -14,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->string('actor_type', 16);
             $table->uuid('actor_id');
-            $table->string('guard', 32);
+            $table->string('guard_name', 32);
             $table->char('token_hash', 64)->unique();
             $table->timestamp('expires_at');
             $table->timestamp('revoked_at')->nullable();

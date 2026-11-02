@@ -25,8 +25,8 @@ final class ServiceCatalogItemInfolistSchema
                     TextEntry::make('slug'),
                     TextEntry::make('sku'),
                     TextEntry::make('maintenance_level'),
-                    TextEntry::make('style_period'),
-                    TextEntry::make('formality'),
+                    TextEntry::make('style_period_type'),
+                    TextEntry::make('formality_level'),
                     TextEntry::make('is_active')
                         ->label(__('servicecatalog::ui.active')),
                     TextEntry::make('created_at')

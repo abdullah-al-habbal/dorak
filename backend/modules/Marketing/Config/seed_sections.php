@@ -8,7 +8,7 @@ use Modules\Marketing\Enums\UniverseVisibilityEnum;
 return [
     // Home page sections -------------------------------------------------
     [
-        'page_slug' => 'home', 'type' => SectionTypeEnum::Hero->value,
+        'page_slug' => 'home', 'section_type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -29,7 +29,7 @@ return [
         'media_url' => '/images/hero-neutral.jpg', 'sort_order' => 0, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => SectionTypeEnum::FeatureList->value,
+        'page_slug' => 'home', 'section_type' => SectionTypeEnum::FeatureList->value,
         'title' => ['en' => 'Why Dorak?', 'ar' => 'لماذا دورك؟'],
         'subtitle' => null,
         'content' => [
@@ -53,7 +53,7 @@ return [
         'media_url' => null, 'sort_order' => 1, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => SectionTypeEnum::Testimonials->value,
+        'page_slug' => 'home', 'section_type' => SectionTypeEnum::Testimonials->value,
         'title' => ['en' => 'What Our Users Say', 'ar' => 'ماذا يقول مستخدمونا'],
         'subtitle' => null,
         'content' => [
@@ -63,7 +63,7 @@ return [
         'media_url' => null, 'sort_order' => 2, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => SectionTypeEnum::FloorPlanDemo->value,
+        'page_slug' => 'home', 'section_type' => SectionTypeEnum::FloorPlanDemo->value,
         'title' => ['en' => 'See It In Action', 'ar' => 'شاهدها في العمل'],
         'subtitle' => null,
         'content' => [
@@ -79,7 +79,7 @@ return [
         'media_url' => null, 'sort_order' => 3, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => SectionTypeEnum::Pricing->value,
+        'page_slug' => 'home', 'section_type' => SectionTypeEnum::Pricing->value,
         'title' => ['en' => 'Simple Pricing', 'ar' => 'أسعار بسيطة'],
         'subtitle' => null,
         'content' => [
@@ -101,7 +101,7 @@ return [
         'media_url' => null, 'sort_order' => 4, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'home', 'type' => SectionTypeEnum::Cta->value,
+        'page_slug' => 'home', 'section_type' => SectionTypeEnum::Cta->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -122,7 +122,7 @@ return [
 
     // Features page sections --------------------------------------------
     [
-        'page_slug' => 'features', 'type' => SectionTypeEnum::Hero->value,
+        'page_slug' => 'features', 'section_type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -141,7 +141,7 @@ return [
         'media_url' => null, 'sort_order' => 0, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'features', 'type' => SectionTypeEnum::FeatureList->value,
+        'page_slug' => 'features', 'section_type' => SectionTypeEnum::FeatureList->value,
         'title' => ['en' => 'Everything You Need', 'ar' => 'كل ما تحتاجه'],
         'subtitle' => null,
         'content' => [
@@ -169,7 +169,7 @@ return [
 
     // Pricing page sections ---------------------------------------------
     [
-        'page_slug' => 'pricing', 'type' => SectionTypeEnum::Hero->value,
+        'page_slug' => 'pricing', 'section_type' => SectionTypeEnum::Hero->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [
@@ -184,7 +184,7 @@ return [
         'media_url' => null, 'sort_order' => 0, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'pricing', 'type' => SectionTypeEnum::Pricing->value,
+        'page_slug' => 'pricing', 'section_type' => SectionTypeEnum::Pricing->value,
         'title' => ['en' => 'Choose Your Plan', 'ar' => 'اختر خطتك'],
         'subtitle' => null,
         'content' => [
@@ -206,7 +206,7 @@ return [
         'media_url' => null, 'sort_order' => 1, 'universe_visibility' => UniverseVisibilityEnum::All->value,
     ],
     [
-        'page_slug' => 'pricing', 'type' => SectionTypeEnum::Cta->value,
+        'page_slug' => 'pricing', 'section_type' => SectionTypeEnum::Cta->value,
         'title' => null, 'subtitle' => null,
         'content' => [
             'en' => [

@@ -91,7 +91,7 @@ final class DashboardRefreshTokenResolver
         $record = DashboardRefreshTokenModel::query()->create([
             'actor_type' => $actor->actorType,
             'actor_id' => $actor->id,
-            'guard' => $actor->actorType->guard(),
+            'guard_name' => $actor->actorType->guard(),
             'token_hash' => $this->hash($plainText),
             'expires_at' => now()->addSeconds($this->ttl()),
         ]);

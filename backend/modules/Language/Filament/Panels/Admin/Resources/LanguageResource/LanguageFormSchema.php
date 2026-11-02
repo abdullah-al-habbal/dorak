@@ -29,7 +29,7 @@ final class LanguageFormSchema
                     TextInput::make('name.ar')
                         ->label(__('language::ui.name_arabic'))
                         ->required(),
-                    Select::make('direction')
+                    Select::make('text_direction')
                         ->options(TextDirectionEnum::class)
                         ->required(),
                     Toggle::make('is_default'),

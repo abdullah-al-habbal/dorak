@@ -22,7 +22,7 @@ final class RegisterDeviceTokenAction extends BaseApiAction
             [
                 'user_id' => $actor->getAuthIdentifier(),
                 'user_type' => DeviceTokenUserTypeEnum::from($actor->getMorphClass()),
-                'platform' => DevicePlatformEnum::from($request->string('platform')->toString()),
+                'platform_type' => DevicePlatformEnum::from($request->string('platform_type')->toString()),
                 'last_used_at' => now(),
             ],
         );

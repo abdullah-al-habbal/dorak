@@ -19,7 +19,7 @@ class CuratedCard extends StatelessWidget {
     final lines = <String>[
       if (price?.min != null && price?.max != null)
         l10n.curatedPriceRange(price!.min!, price.max!, price.currency ?? ''),
-      if (item.stylePeriod != null) item.stylePeriod!.value,
+      if (item.stylePeriodType != null) item.stylePeriodType!.value,
     ];
     return Container(
       padding: const EdgeInsets.all(DorakDimensions.spacingMedium),

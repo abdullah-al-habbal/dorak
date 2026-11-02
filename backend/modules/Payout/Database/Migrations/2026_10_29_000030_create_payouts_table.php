@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignUuid('brand_id')->constrained('brands')->cascadeOnDelete();
             $table->string('currency_code', 10);
             $table->foreign('currency_code')->references('code')->on('currencies');
-            $table->string('direction', 24);
+            $table->string('direction_type', 24);
             $table->string('status', 16);
             $table->bigInteger('total_amount_minor');
             $table->timestamp('period_started_at')->nullable();

@@ -9,6 +9,6 @@ export const JOB_POSTING_FORM_SERVER_FIELD_MAP: Record<
   "description.en": "descriptionEn",
   "description.ar": "descriptionAr",
   location: "location",
-  type: "type",
+  employment_type: "employmentType",
   status: "status",
 };

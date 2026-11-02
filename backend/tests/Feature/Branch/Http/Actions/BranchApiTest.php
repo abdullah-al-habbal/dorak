@@ -355,7 +355,7 @@ describe('Branch API', function () {
                     'title' => ['en' => 'Barber Wanted', 'ar' => 'حلاق مطلوب'],
                     'description' => ['en' => 'We need a barber', 'ar' => 'نحتاج حلاق'],
                     'location' => 'Damascus',
-                    'type' => 'full-time',
+                    'employment_type' => 'full-time',
                 ]);
 
                 $response->assertStatus(201);

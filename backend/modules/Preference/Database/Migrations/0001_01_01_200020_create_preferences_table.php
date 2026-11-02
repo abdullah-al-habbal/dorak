@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('allows_notifications')->default(true);
             $table->string('display_currency_code', 10)->nullable();
             $table->foreign('display_currency_code')->references('code')->on('currencies')->nullOnDelete();
-            $table->string('theme')->nullable();
+            $table->string('theme_mode')->nullable();
             $table->string('price_display_mode')->nullable();
             $table->boolean('allows_dual_price_display')->default(false);
             $table->timestamps();

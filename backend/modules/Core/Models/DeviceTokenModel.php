@@ -15,7 +15,7 @@ use Modules\Core\Enums\DeviceTokenUserTypeEnum;
  * @property string $id
  * @property string $token
  */
-#[Fillable(['user_id', 'user_type', 'token', 'platform', 'last_used_at'])]
+#[Fillable(['user_id', 'user_type', 'token', 'platform_type', 'last_used_at'])]
 #[Table('device_tokens')]
 final class DeviceTokenModel extends Model
 {
@@ -25,7 +25,7 @@ final class DeviceTokenModel extends Model
     {
         return [
             'user_type' => DeviceTokenUserTypeEnum::class,
-            'platform' => DevicePlatformEnum::class,
+            'platform_type' => DevicePlatformEnum::class,
             'last_used_at' => 'datetime',
         ];
     }

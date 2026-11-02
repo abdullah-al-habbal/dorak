@@ -11,14 +11,14 @@ class CatalogMediumDto {
     defaultValue: CatalogMediaType.image,
     unknownEnumValue: CatalogMediaType.image,
   )
-  final CatalogMediaType type;
+  final CatalogMediaType mediaType;
   final String path;
   final String? alt;
   final int sortOrder;
 
   const CatalogMediumDto({
     required this.id,
-    this.type = CatalogMediaType.image,
+    this.mediaType = CatalogMediaType.image,
     required this.path,
     this.alt,
     this.sortOrder = 0,

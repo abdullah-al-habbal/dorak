@@ -9,10 +9,10 @@ part of 'catalog_medium.dto.dart';
 CatalogMediumDto _$CatalogMediumDtoFromJson(Map<String, dynamic> json) =>
     CatalogMediumDto(
       id: json['id'] as String,
-      type:
+      mediaType:
           $enumDecodeNullable(
             _$CatalogMediaTypeEnumMap,
-            json['type'],
+            json['media_type'],
             unknownValue: CatalogMediaType.image,
           ) ??
           CatalogMediaType.image,

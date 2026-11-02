@@ -7,13 +7,13 @@ class CatalogTagDto {
   final String id;
   final Map<String, String> name;
   final String slug;
-  final String? group;
+  final String? groupName;
 
   const CatalogTagDto({
     required this.id,
     required this.name,
     required this.slug,
-    this.group,
+    this.groupName,
   });
 
   factory CatalogTagDto.fromJson(Map<String, dynamic> json) =>

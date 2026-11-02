@@ -37,7 +37,7 @@ it('issues a verification-only login token to pending clients', function (): voi
         ->postJson('/api/v1/client/email/verify/send')
         ->assertOk();
     $this->withToken($response->json('data.token'))
-        ->postJson('/api/v1/user/device-token', ['token' => 'pending-device', 'platform' => 'ios'])
+        ->postJson('/api/v1/user/device-token', ['token' => 'pending-device', 'platform_type' => 'ios'])
         ->assertForbidden()
         ->assertJsonPath('code', 'ACCOUNT_NOT_ACTIVE');
     $this->withToken($response->json('data.token'))

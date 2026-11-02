@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'slug', 'group', 'is_active'])]
+#[Fillable(['name', 'slug', 'group_name', 'is_active'])]
 #[Table('service_catalog_item_tags')]
 #[Translatable(['name'])]
 class ServiceCatalogItemTagModel extends Model

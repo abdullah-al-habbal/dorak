@@ -12,11 +12,11 @@ final class ListCatalogTagsAction extends BaseApiAction
 {
     public function __invoke(): JsonResponse
     {
-        $tags = ServiceCatalogItemTagModel::query()->orderBy('group')->orderBy('slug')->get()
+        $tags = ServiceCatalogItemTagModel::query()->orderBy('group_name')->orderBy('slug')->get()
             ->map(fn (ServiceCatalogItemTagModel $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->getTranslations('name'),
-                'group' => $tag->group,
+                'group_name' => $tag->group_name,
             ])->all();
 
         return $this->ok($tags);

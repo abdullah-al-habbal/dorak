@@ -26,7 +26,7 @@ final class PreferenceInfolistSchema
                         ->label(__('preference::ui.display_currency')),
                     IconEntry::make('allows_notifications')
                         ->boolean(),
-                    TextEntry::make('theme')
+                    TextEntry::make('theme_mode')
                         ->badge(),
                     TextEntry::make('price_display_mode')
                         ->badge(),

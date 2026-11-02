@@ -36,13 +36,13 @@ final class GetMarketingPageHandler
             'sections' => $sections->map(function (mixed $section) use ($locale): array {
                 $data = [
                     'id' => $section->id,
-                    'type' => $section->type->value,
+                    'section_type' => $section->section_type->value,
                     'sort_order' => $section->sort_order,
                     'universe_visibility' => $section->universe_visibility->value,
                     'content' => $section->getTranslation('content', $locale),
                 ];
 
-                if ($section->type === SectionTypeEnum::Testimonials) {
+                if ($section->section_type === SectionTypeEnum::Testimonials) {
                     $section->load('testimonials');
                     $data['testimonials'] = $section->testimonials->map(fn (mixed $t): array => [
                         'id' => $t->id,

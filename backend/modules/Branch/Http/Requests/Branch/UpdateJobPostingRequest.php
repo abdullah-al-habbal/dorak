@@ -23,7 +23,7 @@ final class UpdateJobPostingRequest extends BaseApiFormRequest
             'description.ar' => ['required_with:description', 'string'],
             'requirements' => ['nullable', 'array'],
             'location' => ['nullable', 'string'],
-            'type' => ['nullable', Rule::enum(JobPostingTypeEnum::class)],
+            'employment_type' => ['nullable', Rule::enum(JobPostingTypeEnum::class)],
             'status' => ['nullable', Rule::enum(JobPostingStatusEnum::class)],
         ];
     }

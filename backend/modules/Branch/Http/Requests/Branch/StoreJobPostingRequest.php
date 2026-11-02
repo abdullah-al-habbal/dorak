@@ -22,7 +22,7 @@ final class StoreJobPostingRequest extends BaseApiFormRequest
             'description.ar' => ['required', 'string'],
             'requirements' => ['nullable', 'array'],
             'location' => ['nullable', 'string'],
-            'type' => ['nullable', Rule::enum(JobPostingTypeEnum::class)],
+            'employment_type' => ['nullable', Rule::enum(JobPostingTypeEnum::class)],
         ];
     }
 }

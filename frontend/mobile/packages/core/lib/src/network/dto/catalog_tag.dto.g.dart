@@ -11,5 +11,5 @@ CatalogTagDto _$CatalogTagDtoFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: Map<String, String>.from(json['name'] as Map),
       slug: json['slug'] as String,
-      group: json['group'] as String?,
+      groupName: json['group_name'] as String?,
     );

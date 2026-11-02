@@ -32,7 +32,7 @@ function configureDeliveryRecordFcm(): void
 
 function deliveryRecordToken(DeviceTokenUserTypeEnum $userType, string $userId, string $token): DeviceTokenModel
 {
-    return DeviceTokenModel::query()->create(['user_id' => $userId, 'user_type' => $userType, 'token' => $token, 'platform' => 'android', 'last_used_at' => now()]);
+    return DeviceTokenModel::query()->create(['user_id' => $userId, 'user_type' => $userType, 'token' => $token, 'platform_type' => 'android', 'last_used_at' => now()]);
 }
 
 /**

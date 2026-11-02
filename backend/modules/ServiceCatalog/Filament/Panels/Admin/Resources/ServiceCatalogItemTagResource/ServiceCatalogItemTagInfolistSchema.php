@@ -21,7 +21,7 @@ final class ServiceCatalogItemTagInfolistSchema
                     TextEntry::make('name.ar')
                         ->label(__('servicecatalog::ui.name_arabic')),
                     TextEntry::make('slug'),
-                    TextEntry::make('group'),
+                    TextEntry::make('group_name'),
                     TextEntry::make('is_active')
                         ->label(__('servicecatalog::ui.active')),
                     TextEntry::make('created_at')

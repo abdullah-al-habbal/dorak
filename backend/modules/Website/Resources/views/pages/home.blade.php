@@ -2,12 +2,12 @@
 <x-website::layouts.app :page="$page" :locale="$locale">
     @php
         $sections = $page['sections'] ?? [];
-        $heroSection = collect($sections)->firstWhere('type', 'hero');
-        $featureSection = collect($sections)->firstWhere('type', 'feature_list');
-        $testimonialSection = collect($sections)->firstWhere('type', 'testimonials');
-        $floorPlanSection = collect($sections)->firstWhere('type', 'floor_plan_demo');
-        $pricingSection = collect($sections)->firstWhere('type', 'pricing');
-        $ctaSection = collect($sections)->firstWhere('type', 'cta');
+        $heroSection = collect($sections)->firstWhere('section_type', 'hero');
+        $featureSection = collect($sections)->firstWhere('section_type', 'feature_list');
+        $testimonialSection = collect($sections)->firstWhere('section_type', 'testimonials');
+        $floorPlanSection = collect($sections)->firstWhere('section_type', 'floor_plan_demo');
+        $pricingSection = collect($sections)->firstWhere('section_type', 'pricing');
+        $ctaSection = collect($sections)->firstWhere('section_type', 'cta');
     @endphp
 
     <x-website::hero :content="$heroSection['content'] ?? null" />

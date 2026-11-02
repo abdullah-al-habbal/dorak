@@ -28,7 +28,7 @@ export const CatalogCategorySchema = z.object({
 export const CatalogTagSchema = z.object({
   id: z.string(),
   name: localized,
-  group: z.string().nullable(),
+  groupName: z.string().nullable(),
 });
 
 /** A lone checkbox registers as boolean/string rather than an array. */

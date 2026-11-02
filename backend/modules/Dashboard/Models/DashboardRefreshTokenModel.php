@@ -12,7 +12,7 @@ use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 #[Fillable([
     'actor_type',
     'actor_id',
-    'guard',
+    'guard_name',
     'token_hash',
     'expires_at',
     'revoked_at',

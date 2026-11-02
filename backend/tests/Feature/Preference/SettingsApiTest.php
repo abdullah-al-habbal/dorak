@@ -51,14 +51,14 @@ it('persists a valid settings update for a client', function (): void {
         'preferred_language' => Locale::Ar,
         'allows_notifications' => false,
         'display_currency_code' => $currency->code,
-        'theme' => ThemeEnum::Dark,
+        'theme_mode' => ThemeEnum::Dark,
         'price_display_mode' => PriceDisplayModeEnum::TaxExclusive,
     ])
         ->assertOk()
         ->assertJsonPath('data.preferred_language', 'ar')
         ->assertJsonPath('data.allows_notifications', false)
         ->assertJsonPath('data.display_currency_code', $currency->code)
-        ->assertJsonPath('data.theme', 'dark')
+        ->assertJsonPath('data.theme_mode', 'dark')
         ->assertJsonPath('data.price_display_mode', 'tax_exclusive');
 });
 
@@ -86,9 +86,9 @@ it('returns defaults and persists settings for a barber', function (): void {
         ->assertOk()
         ->assertJsonPath('data.allows_notifications', true);
 
-    $this->withToken($token)->patchJson('/api/v1/barber/settings', ['theme' => ThemeEnum::Dark])
+    $this->withToken($token)->patchJson('/api/v1/barber/settings', ['theme_mode' => ThemeEnum::Dark])
         ->assertOk()
-        ->assertJsonPath('data.theme', 'dark');
+        ->assertJsonPath('data.theme_mode', 'dark');
 
     expect(PreferenceModel::query()->where('preferenceable_type', 'barber')->where('preferenceable_id', $barber->id)->count())->toBe(1);
 });
@@ -118,9 +118,9 @@ it('returns and persists settings for a dashboard admin actor', function (): voi
         ->assertJsonPath('data.allows_notifications', true);
 
     $this->withHeader('Authorization', 'Bearer '.$token)
-        ->patchJson('/api/v1/dashboard/settings', ['theme' => ThemeEnum::Dark])
+        ->patchJson('/api/v1/dashboard/settings', ['theme_mode' => ThemeEnum::Dark])
         ->assertOk()
-        ->assertJsonPath('data.theme', 'dark');
+        ->assertJsonPath('data.theme_mode', 'dark');
 
     expect(PreferenceModel::query()->where('preferenceable_type', 'admin')->where('preferenceable_id', $admin->id)->count())->toBe(1);
 });

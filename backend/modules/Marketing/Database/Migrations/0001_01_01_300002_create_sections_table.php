@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('page_id');
-            $table->string('type');
+            $table->string('section_type');
             $table->json('title')->nullable();
             $table->json('subtitle')->nullable();
             $table->json('content');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('page_id')->references('id')->on('marketing_pages')->cascadeOnDelete();
-            $table->unique(['page_id', 'type']);
+            $table->unique(['page_id', 'section_type']);
         });
     }
 

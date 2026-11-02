@@ -47,7 +47,8 @@ describe("catalog mappers", () => {
       name: { en: "Cuts", ar: "" },
     });
     expect(
-      mapCatalogTag({ id: "t", name: { en: "Classic" }, group: "style" }).group,
+      mapCatalogTag({ id: "t", name: { en: "Classic" }, group_name: "style" })
+        .groupName,
     ).toBe("style");
   });
 });

@@ -19,7 +19,7 @@ Map<String, dynamic> catalogItem({
   'sku': 'SVC-1',
   'price_range': {'min': 45.0, 'max': 60.0, 'currency': 'SAR'},
   'maintenance_level': 'low',
-  'style_period': 'classic',
+  'style_period_type': 'classic',
   'formality': 'casual',
   'face_shapes': faceShapes,
   'hair_textures': ['straight'],
@@ -212,7 +212,7 @@ void main() {
                 'preferred_language': 'ar',
                 'allows_notifications': true,
                 'display_currency_code': 'currency-1',
-                'theme': 'dark',
+                'theme_mode': 'dark',
                 'price_display_mode': 'tax_inclusive',
               },
             ),
@@ -228,7 +228,7 @@ void main() {
       expect(settings.preferredLanguage, 'ar');
       expect(settings.allowsNotifications, isTrue);
       expect(settings.displayCurrencyCode, 'currency-1');
-      expect(settings.theme, 'dark');
+      expect(settings.themeMode, 'dark');
       expect(settings.priceDisplayMode, 'tax_inclusive');
     });
 
@@ -246,7 +246,7 @@ void main() {
                   'preferred_language': 'en',
                   'allows_notifications': false,
                   'display_currency_code': null,
-                  'theme': null,
+                  'theme_mode': null,
                   'price_display_mode': null,
                 },
               ),
@@ -310,7 +310,7 @@ void main() {
         expect(item.priceRange?.min, 45);
         expect(item.priceRange?.currency, 'SAR');
         expect(item.faceShapes, [FaceShape.oval, FaceShape.round]);
-        expect(item.stylePeriod, StylePeriod.classic);
+        expect(item.stylePeriodType, StylePeriod.classic);
         expect(item.isActive, isTrue);
       },
     );

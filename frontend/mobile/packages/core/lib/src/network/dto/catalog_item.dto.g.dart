@@ -21,9 +21,9 @@ CatalogItemDto _$CatalogItemDtoFromJson(Map<String, dynamic> json) =>
       faceShapes: json['face_shapes'] == null
           ? const []
           : _faceShapesFromJson(json['face_shapes']),
-      stylePeriod: $enumDecodeNullable(
+      stylePeriodType: $enumDecodeNullable(
         _$StylePeriodEnumMap,
-        json['style_period'],
+        json['style_period_type'],
         unknownValue: JsonKey.nullForUndefinedEnumValue,
       ),
       isActive: json['is_active'] as bool? ?? true,

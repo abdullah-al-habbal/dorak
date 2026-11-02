@@ -14,7 +14,7 @@ final class RegisterDeviceTokenRequest extends BaseApiFormRequest
     {
         return [
             'token' => ['required', 'string', 'max:4096'],
-            'platform' => ['required', Rule::enum(DevicePlatformEnum::class)],
+            'platform_type' => ['required', Rule::enum(DevicePlatformEnum::class)],
         ];
     }
 }

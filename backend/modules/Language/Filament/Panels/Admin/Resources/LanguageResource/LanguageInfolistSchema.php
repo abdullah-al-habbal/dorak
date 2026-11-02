@@ -22,7 +22,7 @@ final class LanguageInfolistSchema
                         ->label(__('language::ui.name_english')),
                     TextEntry::make('name.ar')
                         ->label(__('language::ui.name_arabic')),
-                    TextEntry::make('direction')
+                    TextEntry::make('text_direction')
                         ->badge(),
                     IconEntry::make('is_default')
                         ->boolean(),

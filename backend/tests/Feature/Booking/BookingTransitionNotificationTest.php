@@ -156,7 +156,7 @@ it('does not push the cancelling client but pushes the barber and branch', funct
         'https://fcm.googleapis.com/*' => Http::response(['name' => 'm']),
     ]);
     foreach ([[DeviceTokenUserTypeEnum::Client, $client->id, 'client-token'], [DeviceTokenUserTypeEnum::Barber, $barber->id, 'barber-token'], [DeviceTokenUserTypeEnum::Branch, $branch->id, 'branch-token']] as [$type, $id, $token]) {
-        DeviceTokenModel::query()->create(['user_id' => $id, 'user_type' => $type, 'token' => $token, 'platform' => 'android', 'last_used_at' => now()]);
+        DeviceTokenModel::query()->create(['user_id' => $id, 'user_type' => $type, 'token' => $token, 'platform_type' => 'android', 'last_used_at' => now()]);
     }
 
     (new SendBookingStatusNotificationJob((string) $booking->id, false, 'en', false, true))->handle(app(FcmNotificationSender::class));

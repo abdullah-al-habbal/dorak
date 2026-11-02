@@ -22,6 +22,7 @@ listed in the story pass before the local commit. Never push.
 | J1 | [Units, rates, counts](batch-j-units-rates-counts.md) | Radius km, percent/ratio, attempts count | Done |
 | J2 | [Ratings, durations, state booleans](batch-j-ratings-durations-booleans.md) | `rating_average`, `duration_minutes`, `allows_*`, `favorited_*` | Done |
 | K | [Time, lifecycle, bookings](batch-k-time-lifecycle-bookings.md) | `booking_status`, `starts_at`, `cancelled`, hours, bans, FK ids | Done |
+| L | [Types, categories, modes](batch-l-type-category-mode.md) | `employment_type`, `section_type`, `media_type`, `platform_type`, `theme_mode`, `group_name` | Done |
 
 ## Deferred
 

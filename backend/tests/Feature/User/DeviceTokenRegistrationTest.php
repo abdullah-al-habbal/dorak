@@ -12,7 +12,7 @@ it('registers and refreshes the authenticated client device token', function () 
 
     $response = $this->postJson('/api/v1/user/device-token', [
         'token' => 'mobile-device-token',
-        'platform' => 'android',
+        'platform_type' => 'android',
     ]);
 
     $response->assertOk()->assertJsonStructure(['data' => ['id']]);
@@ -20,14 +20,14 @@ it('registers and refreshes the authenticated client device token', function () 
         'token' => 'mobile-device-token',
         'user_id' => $client->id,
         'user_type' => DeviceTokenUserTypeEnum::Client,
-        'platform' => 'android',
+        'platform_type' => 'android',
     ]);
 
     $this->postJson('/api/v1/user/device-token', [
         'token' => 'mobile-device-token',
-        'platform' => 'ios',
+        'platform_type' => 'ios',
     ])->assertOk();
 
     expect(DeviceTokenModel::query()->where('token', 'mobile-device-token')->count())->toBe(1);
-    $this->assertDatabaseHas('device_tokens', ['token' => 'mobile-device-token', 'platform' => 'ios']);
+    $this->assertDatabaseHas('device_tokens', ['token' => 'mobile-device-token', 'platform_type' => 'ios']);
 });

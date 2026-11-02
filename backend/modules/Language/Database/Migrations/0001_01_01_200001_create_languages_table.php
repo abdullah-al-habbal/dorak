@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('code', 10)->unique();
             $table->json('name');
-            $table->string('direction', 3);
+            $table->string('text_direction', 3);
             $table->boolean('is_default')->default(false);
             $table->timestamps();
         });

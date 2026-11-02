@@ -44,8 +44,14 @@ describe("people mappers", () => {
         description: { en: "d", ar: "و" },
         status: "closed",
         applications_count: 3,
+        employment_type: "full-time",
       }),
-    ).toMatchObject({ status: "closed", applicationsCount: 3, location: null });
+    ).toMatchObject({
+      status: "closed",
+      applicationsCount: 3,
+      location: null,
+      employmentType: "full-time",
+    });
   });
 
   it("maps the Task 56 snapshot fields of an application", () => {

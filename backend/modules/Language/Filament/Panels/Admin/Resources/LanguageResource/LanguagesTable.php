@@ -22,7 +22,7 @@ final class LanguagesTable
                 TextColumn::make('name.en')
                     ->label(__('language::ui.name'))
                     ->searchable(),
-                TextColumn::make('direction')
+                TextColumn::make('text_direction')
                     ->badge(),
                 IconColumn::make('is_default')
                     ->boolean(),

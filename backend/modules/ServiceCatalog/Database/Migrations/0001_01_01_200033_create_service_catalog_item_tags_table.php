@@ -14,7 +14,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->json('name');
             $table->string('slug')->unique();
-            $table->string('group')->nullable()->index();
+            $table->string('group_name')->nullable()->index();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

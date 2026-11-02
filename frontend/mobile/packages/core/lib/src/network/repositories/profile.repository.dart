@@ -21,7 +21,7 @@ abstract class ProfileRepository {
     String? preferredLanguage,
     bool? allowsNotifications,
     String? displayCurrencyCode,
-    String? theme,
+    String? themeMode,
     String? priceDisplayMode,
   });
 }
@@ -102,14 +102,14 @@ class DioProfileRepository implements ProfileRepository {
     String? preferredLanguage,
     bool? allowsNotifications,
     String? displayCurrencyCode,
-    String? theme,
+    String? themeMode,
     String? priceDisplayMode,
   }) {
     final data = <String, dynamic>{
       'preferred_language': ?preferredLanguage,
       'allows_notifications': ?allowsNotifications,
       'display_currency_code': ?displayCurrencyCode,
-      'theme': ?theme,
+      'theme_mode': ?themeMode,
       'price_display_mode': ?priceDisplayMode,
     };
     return _apiClient.patch<SettingsDto>(

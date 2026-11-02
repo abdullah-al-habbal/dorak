@@ -15,14 +15,14 @@ class LanguageSeeder extends Seeder
         LanguageModel::create([
             'code' => 'en',
             'name' => ['en' => 'English', 'ar' => 'الإنجليزية'],
-            'direction' => TextDirectionEnum::Ltr,
+            'text_direction' => TextDirectionEnum::Ltr,
             'is_default' => true,
         ]);
 
         LanguageModel::create([
             'code' => 'ar',
             'name' => ['en' => 'Arabic', 'ar' => 'العربية'],
-            'direction' => TextDirectionEnum::Rtl,
+            'text_direction' => TextDirectionEnum::Rtl,
             'is_default' => false,
         ]);
     }

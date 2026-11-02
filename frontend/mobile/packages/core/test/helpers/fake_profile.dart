@@ -49,7 +49,7 @@ class FakeProfileRepository implements ProfileRepository {
     String? preferredLanguage,
     bool? allowsNotifications,
     String? displayCurrencyCode,
-    String? theme,
+    String? themeMode,
     String? priceDisplayMode,
   }) {
     throw UnimplementedError();

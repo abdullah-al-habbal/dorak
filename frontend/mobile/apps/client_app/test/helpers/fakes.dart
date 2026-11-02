@@ -1100,13 +1100,13 @@ CatalogItemDto testCatalogItem({
   num min = 50,
   num max = 90,
   String currency = 'SAR',
-  StylePeriod? stylePeriod = StylePeriod.modern,
+  StylePeriod? stylePeriodType = StylePeriod.modern,
 }) => CatalogItemDto(
   id: id,
   name: {'en': name},
   priceRange: CatalogPriceRangeDto(min: min, max: max, currency: currency),
   faceShapes: const [FaceShape.oval],
-  stylePeriod: stylePeriod,
+  stylePeriodType: stylePeriodType,
 );
 
 PaginatedData<CatalogItemDto> testCatalogPage({List<CatalogItemDto>? items}) {
@@ -1336,7 +1336,7 @@ class FakeProfileRepository implements ProfileRepository {
     String? preferredLanguage,
     bool? allowsNotifications,
     String? displayCurrencyCode,
-    String? theme,
+    String? themeMode,
     String? priceDisplayMode,
   }) async {
     updateSettingsCalls++;
@@ -1347,7 +1347,7 @@ class FakeProfileRepository implements ProfileRepository {
       allowsNotifications:
           allowsNotifications ?? settings.allowsNotifications,
       displayCurrencyCode: displayCurrencyCode ?? settings.displayCurrencyCode,
-      theme: theme ?? settings.theme,
+      themeMode: themeMode ?? settings.themeMode,
       priceDisplayMode: priceDisplayMode ?? settings.priceDisplayMode,
     );
     return settings;

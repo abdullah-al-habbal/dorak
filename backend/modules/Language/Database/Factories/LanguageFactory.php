@@ -21,7 +21,7 @@ class LanguageFactory extends Factory
                 'en' => fake()->word(),
                 'ar' => fake('ar_SA')->word(),
             ],
-            'direction' => TextDirectionEnum::Ltr,
+            'text_direction' => TextDirectionEnum::Ltr,
             'is_default' => false,
         ];
     }

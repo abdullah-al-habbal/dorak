@@ -25,7 +25,7 @@ use Modules\Payout\Enums\PayoutStatus;
  * @property PayoutStatus $status
  * @property int $total_amount_minor
  */
-#[Fillable(['brand_id', 'currency_code', 'direction', 'status', 'total_amount_minor', 'period_started_at', 'period_ended_at', 'approved_by_id', 'approved_at', 'paid_at', 'external_reference', 'notes'])]
+#[Fillable(['brand_id', 'currency_code', 'direction_type', 'status', 'total_amount_minor', 'period_started_at', 'period_ended_at', 'approved_by_id', 'approved_at', 'paid_at', 'external_reference', 'notes'])]
 #[Table('payouts')]
 class PayoutModel extends Model
 {
@@ -34,7 +34,7 @@ class PayoutModel extends Model
     protected function casts(): array
     {
         return [
-            'direction' => PayoutDirection::class,
+            'direction_type' => PayoutDirection::class,
             'status' => PayoutStatus::class,
             'total_amount_minor' => 'integer',
             'period_started_at' => 'datetime',

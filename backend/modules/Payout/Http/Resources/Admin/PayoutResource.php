@@ -13,7 +13,7 @@ final class PayoutResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status->value,
-            'direction' => $this->direction->value,
+            'direction_type' => $this->direction_type->value,
             'total_amount_minor' => $this->total_amount_minor,
             'currency' => $this->whenLoaded('currency', fn () => [
                 'id' => $this->currency->id,

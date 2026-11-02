@@ -70,7 +70,7 @@ export function mapCatalogTag(wire: unknown): ICatalogTag {
   return CatalogTagSchema.parse({
     id: text(item.id),
     name: localized(item.name),
-    group: text(item.group) || null,
+    groupName: text(item.group_name) || null,
   });
 }
 

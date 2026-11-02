@@ -18,7 +18,7 @@ final class JobPostingResource extends JsonResource
             'branch_id' => $this->branch_id,
             'requirements' => $this->requirements,
             'location' => $this->location,
-            'type' => $this->type?->value,
+            'employment_type' => $this->employment_type?->value,
             'applications_count' => $this->whenCounted('applications'),
             'created_at' => $this->created_at->toIso8601String(),
         ];

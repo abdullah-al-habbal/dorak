@@ -32,7 +32,7 @@ class JobPostingFactory extends Factory
                 'ar' => fake('ar_SA')->sentence(),
             ],
             'location' => fake()->city(),
-            'type' => fake()->randomElement(JobPostingTypeEnum::cases()),
+            'employment_type' => fake()->randomElement(JobPostingTypeEnum::cases()),
         ];
     }
 }

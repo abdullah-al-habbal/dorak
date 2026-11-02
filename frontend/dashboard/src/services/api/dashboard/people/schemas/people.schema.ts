@@ -22,7 +22,7 @@ export const JobPostingSchema = z.object({
   description: z.object({ en: z.string(), ar: z.string() }),
   status: z.enum(JOB_POSTING_STATUSES),
   location: z.string().nullable(),
-  type: z.string().nullable(),
+  employmentType: z.string().nullable(),
   applicationsCount: z.number(),
 });
 
@@ -52,6 +52,6 @@ export const jobPostingFormSchema = z.object({
   descriptionEn: z.string().min(1),
   descriptionAr: z.string().min(1),
   location: z.string(),
-  type: z.string(),
+  employmentType: z.string(),
   status: z.enum(JOB_POSTING_STATUSES),
 });

@@ -15,7 +15,7 @@ final class SectionFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => 'hero',
+            'section_type' => 'hero',
             'title' => [
                 'en' => $this->faker->sentence(3),
                 'ar' => 'عنوان القسم',
@@ -49,7 +49,7 @@ final class SectionFactory extends Factory
     public function hero(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => 'hero',
+            'section_type' => 'hero',
             'sort_order' => 0,
         ]);
     }
@@ -57,7 +57,7 @@ final class SectionFactory extends Factory
     public function featureList(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => 'feature_list',
+            'section_type' => 'feature_list',
             'sort_order' => 1,
         ]);
     }
@@ -65,7 +65,7 @@ final class SectionFactory extends Factory
     public function testimonials(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => 'testimonials',
+            'section_type' => 'testimonials',
             'sort_order' => 2,
         ]);
     }
@@ -73,7 +73,7 @@ final class SectionFactory extends Factory
     public function floorPlanDemo(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => 'floor_plan_demo',
+            'section_type' => 'floor_plan_demo',
             'sort_order' => 3,
         ]);
     }
@@ -81,7 +81,7 @@ final class SectionFactory extends Factory
     public function pricing(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => 'pricing',
+            'section_type' => 'pricing',
             'sort_order' => 4,
         ]);
     }
@@ -89,7 +89,7 @@ final class SectionFactory extends Factory
     public function cta(): static
     {
         return $this->state(fn (array $attributes): array => [
-            'type' => 'cta',
+            'section_type' => 'cta',
             'sort_order' => 5,
         ]);
     }

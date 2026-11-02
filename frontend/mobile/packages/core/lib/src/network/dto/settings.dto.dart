@@ -7,14 +7,14 @@ class SettingsDto {
   final String? preferredLanguage;
   final bool allowsNotifications;
   final String? displayCurrencyCode;
-  final String? theme;
+  final String? themeMode;
   final String? priceDisplayMode;
 
   const SettingsDto({
     this.preferredLanguage,
     required this.allowsNotifications,
     this.displayCurrencyCode,
-    this.theme,
+    this.themeMode,
     this.priceDisplayMode,
   });
 

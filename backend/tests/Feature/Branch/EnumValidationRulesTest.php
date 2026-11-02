@@ -37,14 +37,14 @@ it('rejects an unknown job posting status or type on update', function (array $p
     $this->putJson('/api/v1/branch/job-postings/'.Str::uuid(), $payload)->assertUnprocessable();
 })->with([
     'status' => [['status' => 'paused']],
-    'type' => [['type' => 'freelance']],
+    'employment_type' => [['employment_type' => 'freelance']],
 ]);
 
 it('rejects an unknown job posting type on create', function (): void {
     $this->postJson('/api/v1/branch/job-postings', [
         'title' => ['en' => 'Barber', 'ar' => 'حلاق'],
         'description' => ['en' => 'Cuts', 'ar' => 'قص'],
-        'type' => 'freelance',
+        'employment_type' => 'freelance',
     ])->assertUnprocessable();
 });
 

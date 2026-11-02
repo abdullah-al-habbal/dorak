@@ -76,7 +76,7 @@ export function jobPostingPayload(form: IJobPostingForm) {
     title: { en: form.titleEn, ar: form.titleAr },
     description: { en: form.descriptionEn, ar: form.descriptionAr },
     location: form.location === "" ? null : form.location,
-    type: form.type === "" ? null : form.type,
+    employment_type: form.employmentType === "" ? null : form.employmentType,
   };
 }
 
