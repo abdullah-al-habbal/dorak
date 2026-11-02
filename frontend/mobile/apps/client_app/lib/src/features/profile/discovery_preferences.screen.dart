@@ -7,6 +7,7 @@ import 'package:localization/localization.dart';
 import 'package:client_app/src/features/profile/discovery_preferences.bloc.dart';
 import 'package:client_app/src/features/profile/discovery_preferences.state.dart';
 import 'package:client_app/src/features/profile/discovery_preferences_constants.entity.dart';
+import 'package:client_app/src/features/profile/widgets/brand_visibility_sheet.widget.dart';
 
 class DiscoveryPreferencesScreen extends StatefulWidget {
   const DiscoveryPreferencesScreen({super.key, required this.cubit});
@@ -26,6 +27,14 @@ class _DiscoveryPreferencesScreenState
   void initState() {
     super.initState();
     widget.cubit.load();
+  }
+
+  void _showBrandSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => BrandVisibilitySheet(cubit: widget.cubit),
+    );
   }
 
   @override
@@ -86,7 +95,12 @@ class _DiscoveryPreferencesScreenState
                 value: preferences.allowsUnavailableResults,
                 onChanged: state.isSaving
                     ? null
-                    : (value) => widget.cubit.save(allowsUnavailableResults: value),
+                    : (value) =>
+                          widget.cubit.save(allowsUnavailableResults: value),
+              ),
+              SecondaryButton(
+                label: l10n.discoveryPreferencesChooseBrands,
+                onPressed: _showBrandSheet,
               ),
               if (preferences.hiddenBrandIds.isNotEmpty) ...[
                 Text(

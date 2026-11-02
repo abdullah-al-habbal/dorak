@@ -76,8 +76,10 @@ class AppServices {
         BranchReviewsBloc(DioReviewRepository(apiClient)),
     createSavedFilters: () =>
         SavedFiltersCubit(DioClientInteractionRepository(apiClient)),
-    createDiscoveryPreferences: () =>
-        DiscoveryPreferencesCubit(DioClientInteractionRepository(apiClient)),
+    createDiscoveryPreferences: () => DiscoveryPreferencesCubit(
+      DioClientInteractionRepository(apiClient),
+      DioBrandRepository(apiClient),
+    ),
     createBranchDetail: () => BranchDetailBloc(
       DioExploreRepository(apiClient),
       DioBranchRepository(apiClient),

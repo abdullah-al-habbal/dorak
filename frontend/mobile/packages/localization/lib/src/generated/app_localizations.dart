@@ -1532,6 +1532,24 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{1 hidden brand} other{{count} hidden brands}}'**
   String discoveryPreferencesHiddenBrands(int count);
 
+  /// Button that opens the list of brands the client can hide
+  ///
+  /// In en, this message translates to:
+  /// **'Choose brands to hide'**
+  String get discoveryPreferencesChooseBrands;
+
+  /// Title of the sheet listing brands the client can hide
+  ///
+  /// In en, this message translates to:
+  /// **'Hide brands from discovery'**
+  String get brandVisibilityTitle;
+
+  /// Shown when the brand list is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No brands available.'**
+  String get brandVisibilityEmpty;
+
   /// Shown when a stylist has no services
   ///
   /// In en, this message translates to:

@@ -807,6 +807,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get discoveryPreferencesChooseBrands => 'Choose brands to hide';
+
+  @override
+  String get brandVisibilityTitle => 'Hide brands from discovery';
+
+  @override
+  String get brandVisibilityEmpty => 'No brands available.';
+
+  @override
   String get stylistNoServicesMessage => 'No services listed yet.';
 
   @override

@@ -921,6 +921,18 @@
   "@discoveryPreferencesHiddenBrands": {
     "description": "Count of brands hidden from discovery"
   },
+  "discoveryPreferencesChooseBrands": "اختيار العلامات لإخفائها",
+  "@discoveryPreferencesChooseBrands": {
+    "description": "Button that opens the list of brands the client can hide"
+  },
+  "brandVisibilityTitle": "إخفاء العلامات من الاستكشاف",
+  "@brandVisibilityTitle": {
+    "description": "Title of the sheet listing brands the client can hide"
+  },
+  "brandVisibilityEmpty": "لا توجد علامات متاحة.",
+  "@brandVisibilityEmpty": {
+    "description": "Shown when the brand list is empty"
+  },
   "stylistNoServicesMessage": "لا توجد خدمات بعد.",
   "@stylistNoServicesMessage": {
     "description": "Shown when a stylist has no services"

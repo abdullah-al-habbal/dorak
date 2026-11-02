@@ -620,7 +620,9 @@ BranchDetailDto testBranchDetail() => const BranchDetailDto(
   brandId: '7',
   chairsCount: 2,
   barbers: [BookingBarberDto(id: 'barber-1', name: 'Karim')],
-  services: [BookingServiceDto(id: 'service-1', name: 'Fade', priceAmountMinor: 8000)],
+  services: [
+    BookingServiceDto(id: 'service-1', name: 'Fade', priceAmountMinor: 8000),
+  ],
 );
 
 class FakeLocationProvider implements LocationProvider {
@@ -687,7 +689,9 @@ BookingDto testBooking({
   cancellationEligible: cancellationEligible,
   chair: const BookingChairDto(id: 'chair-1', label: 'Chair A'),
   barber: const BookingBarberDto(id: 'barber-1', name: 'Karim'),
-  services: const [BookingServiceDto(id: 'service-1', name: 'Fade', priceAmountMinor: 8000)],
+  services: const [
+    BookingServiceDto(id: 'service-1', name: 'Fade', priceAmountMinor: 8000),
+  ],
   createdAt: DateTime.utc(2026, 9, 2, 10),
 );
 
@@ -1344,8 +1348,7 @@ class FakeProfileRepository implements ProfileRepository {
     if (failure != null) throw failure;
     settings = SettingsDto(
       preferredLanguage: preferredLanguage ?? settings.preferredLanguage,
-      allowsNotifications:
-          allowsNotifications ?? settings.allowsNotifications,
+      allowsNotifications: allowsNotifications ?? settings.allowsNotifications,
       displayCurrencyCode: displayCurrencyCode ?? settings.displayCurrencyCode,
       themeMode: themeMode ?? settings.themeMode,
       priceDisplayMode: priceDisplayMode ?? settings.priceDisplayMode,
@@ -1754,9 +1757,39 @@ class FakeClientInteractionRepository implements ClientInteractionRepository {
     return DiscoveryPreferenceDto(
       id: 'pref-1',
       defaultRadiusKm: (values['default_radius_km'] as num?)?.toDouble() ?? 10,
-      allowsUnavailableResults: values['allows_unavailable_results'] as bool? ?? false,
+      allowsUnavailableResults:
+          values['allows_unavailable_results'] as bool? ?? false,
       hiddenBrandIds:
           (values['hidden_brand_ids'] as List?)?.cast<String>() ?? const [],
+    );
+  }
+}
+
+class FakeBrandRepository implements BrandRepository {
+  List<BrandDto> brands = const [
+    BrandDto(id: 'brand-1', name: {'en': 'Fade Lab'}),
+    BrandDto(id: 'brand-2', name: {'en': 'Razor Co'}),
+  ];
+  Object? error;
+  int? lastPerPage;
+
+  @override
+  Future<PaginatedData<BrandDto>> getBrands({
+    int page = 1,
+    int perPage = 100,
+  }) async {
+    final failure = error;
+    if (failure != null) throw failure;
+    lastPerPage = perPage;
+    return PaginatedData(
+      data: brands,
+      meta: PaginationMeta(
+        total: brands.length,
+        count: brands.length,
+        perPage: perPage,
+        currentPage: page,
+        totalPages: 1,
+      ),
     );
   }
 }

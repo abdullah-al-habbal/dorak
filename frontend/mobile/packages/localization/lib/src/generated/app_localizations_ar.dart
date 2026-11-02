@@ -805,6 +805,15 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get discoveryPreferencesChooseBrands => 'اختيار العلامات لإخفائها';
+
+  @override
+  String get brandVisibilityTitle => 'إخفاء العلامات من الاستكشاف';
+
+  @override
+  String get brandVisibilityEmpty => 'لا توجد علامات متاحة.';
+
+  @override
   String get stylistNoServicesMessage => 'لا توجد خدمات بعد.';
 
   @override

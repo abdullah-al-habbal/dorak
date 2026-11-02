@@ -5,6 +5,7 @@ import 'package:core/src/network/endpoints/barber_auth.endpoints.dart';
 import 'package:core/src/network/endpoints/branch.endpoints.dart';
 import 'package:core/src/network/endpoints/branch_auth.endpoints.dart';
 import 'package:core/src/network/endpoints/booking.endpoints.dart';
+import 'package:core/src/network/endpoints/brand.endpoints.dart';
 import 'package:core/src/network/endpoints/client_interaction.endpoints.dart';
 import 'package:core/src/network/endpoints/currency.endpoints.dart';
 import 'package:core/src/network/endpoints/explore.endpoints.dart';
@@ -40,6 +41,9 @@ class ApiEndpoints {
 
   /// Booking endpoints
   static final booking = _BookingEndpoints();
+
+  /// Brand endpoints
+  static final brand = _BrandEndpoints();
 
   /// Branch endpoints
   static final branch = _BranchEndpoints();
@@ -182,6 +186,11 @@ class _FaceProfileEndpoints {
   String get recommendations => FaceProfileEndpoints.recommendations;
   String delete(String id) => FaceProfileEndpoints.delete(id);
   String setPrimary(String id) => FaceProfileEndpoints.setPrimary(id);
+}
+
+class _BrandEndpoints {
+  const _BrandEndpoints();
+  String get brands => BrandEndpoints.brands;
 }
 
 class _FavoriteEndpoints {
