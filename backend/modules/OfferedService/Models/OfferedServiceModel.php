@@ -30,7 +30,7 @@ use Spatie\Translatable\HasTranslations;
     'description',
     'price_amount_minor',
     'currency_code',
-    'duration',
+    'duration_minutes',
     'is_at_home',
     'is_active',
     'catalog_item_id',
@@ -58,7 +58,7 @@ class OfferedServiceModel extends Model
             'price_amount_minor' => 'integer',
             'is_at_home' => 'boolean',
             'is_active' => 'boolean',
-            'duration' => 'integer',
+            'duration_minutes' => 'integer',
         ];
     }
 

@@ -26,7 +26,7 @@ void main() {
           name: 'Karim Mobile',
           email: 'karim@example.com',
           isFreelancer: true,
-          ratingAvg: 4.5,
+          ratingAverage: 4.5,
           ratingCount: 2,
         ),
       ];

@@ -383,7 +383,7 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
             .where((service) => selectedIds.contains(service.id))
             .fold<int>(
               0,
-              (total, service) => total + (service.duration ?? 0),
+              (total, service) => total + (service.durationMinutes ?? 0),
             ) ??
         0;
     return duration > 0 ? duration : 30;

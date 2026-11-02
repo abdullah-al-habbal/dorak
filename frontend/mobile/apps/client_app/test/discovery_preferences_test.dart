@@ -51,7 +51,7 @@ void main() {
     await cubit.load();
     repository.error = Exception('offline');
 
-    await cubit.save(showUnavailable: true);
+    await cubit.save(allowsUnavailableResults: true);
 
     expect(cubit.state.error, isNotNull);
     expect(cubit.state.preferences, isNotNull);

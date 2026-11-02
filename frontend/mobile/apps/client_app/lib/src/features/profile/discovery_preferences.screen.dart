@@ -83,10 +83,10 @@ class _DiscoveryPreferencesScreenState
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(l10n.discoveryPreferencesShowUnavailable),
-                value: preferences.showUnavailable,
+                value: preferences.allowsUnavailableResults,
                 onChanged: state.isSaving
                     ? null
-                    : (value) => widget.cubit.save(showUnavailable: value),
+                    : (value) => widget.cubit.save(allowsUnavailableResults: value),
               ),
               if (preferences.hiddenBrandIds.isNotEmpty) ...[
                 Text(

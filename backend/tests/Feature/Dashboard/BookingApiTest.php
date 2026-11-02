@@ -93,7 +93,7 @@ describe('Dashboard Booking API', function (): void {
         $branch = BranchModel::factory()->create();
         $barber = BarberModel::factory()->create(['managed_by_branch_id' => $branch->id]);
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id]);
-        $service = OfferedServiceModel::factory()->create(['serviceable_id' => $branch->brand_id, 'duration' => 30]);
+        $service = OfferedServiceModel::factory()->create(['serviceable_id' => $branch->brand_id, 'duration_minutes' => 30]);
         $target = now()->addDays(3)->startOfDay()->addHours(18);
         BarberScheduleModel::factory()->create([
             'barber_id' => $barber->id,

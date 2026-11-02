@@ -6,7 +6,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 use Modules\ClientInteraction\Enums\InteractionTypeEnum;
 use Modules\ClientInteraction\Models\ClientDiscoveryPreferenceModel;
 use Modules\ClientInteraction\Models\ClientInteractionLogModel;
@@ -67,9 +67,9 @@ describe('discovery preferences', function (): void {
             ->assertJsonPath('data.*.id', [$near->id]);
     });
 
-    it('hides currently unavailable branches when the client turned show_unavailable off', function (): void {
+    it('hides currently unavailable branches when the client turned allows_unavailable_results off', function (): void {
         $withoutChairs = nearbyBranch();
-        $client = preferringClient(['show_unavailable' => false]);
+        $client = preferringClient(['allows_unavailable_results' => false]);
 
         $hiding = $this->actingAs($client, 'client')->getJson('/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=10')->json('data.*.id');
         $explicit = $this->actingAs($client, 'client')->getJson('/api/v1/explore/branches?latitude=33.5&longitude=36.3&radius=10&available_now=0')->json('data.*.id');
@@ -135,7 +135,7 @@ describe('interaction logging', function (): void {
         $client = preferringClient();
 
         $this->actingAs($client, 'client')
-            ->postJson('/api/v1/client/favorites', ['favorable_id' => $branch->id, 'favorable_type' => FavorableTypeEnum::Branch])
+            ->postJson('/api/v1/client/favorites', ['favorited_id' => $branch->id, 'favorited_type' => FavoritedTypeEnum::Branch])
             ->assertCreated();
 
         $log = ClientInteractionLogModel::query()->sole();

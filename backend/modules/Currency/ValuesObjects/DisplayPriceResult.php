@@ -10,7 +10,7 @@ final readonly class DisplayPriceResult
         public ?int $amountMinor,
         public string $currencyCode,
         public bool $conversionUnavailable,
-        public bool $isDualPriceDisplayEnabled,
+        public bool $allowsDualPriceDisplay,
     ) {}
 
     /** @return array{amount_minor: int|null, currency_code: string} */

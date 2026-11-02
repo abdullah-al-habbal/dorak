@@ -6,7 +6,7 @@ export const serviceFormSchema = z.object({
     ar: z.string().min(2).max(120),
   }),
   price: z.coerce.number().nonnegative(),
-  duration: z.coerce.number().int().min(1).max(1440).nullable(),
+  durationMinutes: z.coerce.number().int().min(1).max(1440).nullable(),
   currencyCode: z.string().min(1),
   isActive: z.boolean(),
   isAtHome: z.boolean(),

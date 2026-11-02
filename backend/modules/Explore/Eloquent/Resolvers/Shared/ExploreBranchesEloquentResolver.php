@@ -144,7 +144,7 @@ final class ExploreBranchesEloquentResolver
 
         if ($payload->ratingMin !== null) {
             // Stored aggregate of published/resolved reviews (Task 42).
-            $query->where('rating_avg', '>=', $payload->ratingMin);
+            $query->where('rating_average', '>=', $payload->ratingMin);
         }
 
         return $query;

@@ -23,7 +23,7 @@ final class OfferedServiceInfolistSchema
                     TextEntry::make('price_amount_minor'),
                     TextEntry::make('currency.code')
                         ->label(__('offeredservice::ui.currency')),
-                    TextEntry::make('duration')
+                    TextEntry::make('duration_minutes')
                         ->label(__('offeredservice::ui.duration_minutes')),
                     TextEntry::make('is_at_home')
                         ->label(__('offeredservice::ui.available_at_home'))

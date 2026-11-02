@@ -16,7 +16,7 @@ use Modules\ClientFaceProfile\Enums\DetectedFaceShapeEnum;
 use Modules\ClientFaceProfile\Enums\FaceAnalysisStatusEnum;
 use Modules\ClientFaceProfile\Models\ClientFaceAnalysisResultModel;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 use Modules\ClientInteraction\Enums\InteractionTypeEnum;
 use Modules\ClientInteraction\Models\ClientFavoriteModel;
 use Modules\ClientInteraction\Models\ClientInteractionLogModel;
@@ -33,7 +33,7 @@ beforeEach(function () {
 it('recomputes only the given clients vector and never filters entities by the client uuid', function () {
     $client = ClientModel::factory()->create();
     $brand = BrandModel::factory()->create();
-    ClientFavoriteModel::create(['client_id' => $client->id, 'favorable_id' => $brand->id, 'favorable_type' => FavorableTypeEnum::Brand]);
+    ClientFavoriteModel::create(['client_id' => $client->id, 'favorited_id' => $brand->id, 'favorited_type' => FavoritedTypeEnum::Brand]);
     BranchModel::factory()->create();
     BarberModel::factory()->create();
 
@@ -47,7 +47,7 @@ it('recomputes only the given clients vector and never filters entities by the c
 it('skips a client with no new signals since the last run unless forced', function () {
     $client = ClientModel::factory()->create();
     $brand = BrandModel::factory()->create();
-    ClientFavoriteModel::create(['client_id' => $client->id, 'favorable_id' => $brand->id, 'favorable_type' => FavorableTypeEnum::Brand]);
+    ClientFavoriteModel::create(['client_id' => $client->id, 'favorited_id' => $brand->id, 'favorited_type' => FavoritedTypeEnum::Brand]);
 
     $this->artisan('recommend:recompute-vectors', ['--client-id' => $client->id, '--force' => true])->assertExitCode(0);
     $firstRunAt = ClientPreferenceVectorModel::where('client_id', $client->id)->first()->updated_at;

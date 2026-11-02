@@ -61,7 +61,7 @@ export function mapBranch(wire: unknown): IBranch {
         closesAt: time(row.closes_at),
       };
     }),
-    ratingAvg: number(item.rating_avg),
+    ratingAverage: number(item.rating_average),
     ratingCount: number(item.rating_count) ?? 0,
     status: string(item.status, "pending") as IBranch["status"],
     universe: string(item.universe, "unisex") as IBranch["universe"],
@@ -99,7 +99,8 @@ export function mapService(wire: unknown): IService {
     isAtHome: item.is_at_home === true,
     catalogItemId: nullableString(item.catalog_item_id),
     currencyCode: string(item.currency_code),
-    duration: typeof item.duration === "number" ? item.duration : null,
+    durationMinutes:
+      typeof item.duration_minutes === "number" ? item.duration_minutes : null,
     name: localized(item.name),
     priceAmountMinor:
       typeof item.price_amount_minor === "number" ? item.price_amount_minor : 0,

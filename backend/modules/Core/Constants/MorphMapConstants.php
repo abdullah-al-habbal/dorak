@@ -9,7 +9,7 @@ use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Ban\Enums\BannableTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 use Modules\ClientInteraction\Enums\InteractableTypeEnum;
 use Modules\Core\Contracts\MorphAliasEnum;
 use Modules\Core\Enums\DeviceTokenUserTypeEnum;
@@ -33,7 +33,7 @@ final class MorphMapConstants
         AffiliationInitiatorTypeEnum::class,
         BannableTypeEnum::class,
         DeviceTokenUserTypeEnum::class,
-        FavorableTypeEnum::class,
+        FavoritedTypeEnum::class,
         InteractableTypeEnum::class,
         MediableTypeEnum::class,
         PreferenceableTypeEnum::class,

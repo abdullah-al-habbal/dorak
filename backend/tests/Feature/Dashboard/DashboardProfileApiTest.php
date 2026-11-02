@@ -74,25 +74,25 @@ describe('Dashboard profile API', function (): void {
         $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/v1/dashboard/profile/notifications')
             ->assertOk()
-            ->assertJsonPath('data.email_enabled', true)
-            ->assertJsonPath('data.push_enabled', true);
+            ->assertJsonPath('data.allows_email_notifications', true)
+            ->assertJsonPath('data.allows_push_notifications', true);
 
         $this->withHeader('Authorization', 'Bearer '.$token)
             ->patchJson('/api/v1/dashboard/profile/notifications', [
-                'email_enabled' => false,
-                'push_enabled' => true,
-                'booking_enabled' => false,
-                'system_enabled' => true,
+                'allows_email_notifications' => false,
+                'allows_push_notifications' => true,
+                'allows_booking_notifications' => false,
+                'allows_system_notifications' => true,
             ])
             ->assertOk()
-            ->assertJsonPath('data.email_enabled', false)
-            ->assertJsonPath('data.booking_enabled', false);
+            ->assertJsonPath('data.allows_email_notifications', false)
+            ->assertJsonPath('data.allows_booking_notifications', false);
 
         $this->assertDatabaseHas('dashboard_notification_preferences', [
             'actor_type' => 'admin',
             'actor_id' => $admin->id,
-            'email_enabled' => false,
-            'booking_enabled' => false,
+            'allows_email_notifications' => false,
+            'allows_booking_notifications' => false,
         ]);
         expect(DashboardNotificationPreferenceModel::query()->count())->toBe(1);
     });

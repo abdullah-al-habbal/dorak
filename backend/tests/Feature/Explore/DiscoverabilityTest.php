@@ -44,7 +44,7 @@ it('rejects booking a chair in an inactive branch with 422', function (): void {
     $token = $client->createToken('booking-test', ['client-active'])->plainTextToken;
     $chair = ChairModel::factory()->create();
     $chair->branch->update(['status' => BranchStatusEnum::Disabled]);
-    $service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $chair->branch->brand_id]);
+    $service = OfferedServiceModel::factory()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $chair->branch->brand_id]);
 
     $this->withToken($token)->postJson('/api/v1/bookings', [
         'chair_id' => $chair->id,
@@ -60,7 +60,7 @@ it('hides an inactive branch floor plan', function (): void {
 
     $this->getJson('/api/v1/branches/'.$branch->id.'/floor-plan?'.http_build_query([
         'starts_at' => now()->addDay()->toIso8601ZuluString(),
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]))
         ->assertNotFound();
 });

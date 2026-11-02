@@ -5,14 +5,14 @@ part 'settings.dto.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class SettingsDto {
   final String? preferredLanguage;
-  final bool isNotificationEnabled;
+  final bool allowsNotifications;
   final String? displayCurrencyCode;
   final String? theme;
   final String? priceDisplayMode;
 
   const SettingsDto({
     this.preferredLanguage,
-    required this.isNotificationEnabled,
+    required this.allowsNotifications,
     this.displayCurrencyCode,
     this.theme,
     this.priceDisplayMode,

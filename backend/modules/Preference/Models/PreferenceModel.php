@@ -22,11 +22,11 @@ use Modules\Preference\Enums\ThemeEnum;
     'preferenceable_id',
     'preferenceable_type',
     'preferred_language',
-    'is_notification_enabled',
+    'allows_notifications',
     'display_currency_code',
     'theme',
     'price_display_mode',
-    'is_dual_price_display_enabled',
+    'allows_dual_price_display',
 ])]
 #[Table('preferences')]
 class PreferenceModel extends Model
@@ -39,10 +39,10 @@ class PreferenceModel extends Model
         return [
             'preferenceable_type' => PreferenceableTypeEnum::class,
             'preferred_language' => Locale::class,
-            'is_notification_enabled' => 'boolean',
+            'allows_notifications' => 'boolean',
             'theme' => ThemeEnum::class,
             'price_display_mode' => PriceDisplayModeEnum::class,
-            'is_dual_price_display_enabled' => 'boolean',
+            'allows_dual_price_display' => 'boolean',
         ];
     }
 

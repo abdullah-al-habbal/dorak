@@ -28,7 +28,7 @@ class BranchDetailBody extends StatelessWidget {
   final BranchDetailBloc bloc;
   final BranchDetailState state;
   final void Function(String barberId) onBarberSelected;
-  final void Function(String favorableId, String favorableType) onFavorite;
+  final void Function(String favoritedId, String favoritedType) onFavorite;
   final VoidCallback onViewReviews;
 
   @override
@@ -45,7 +45,7 @@ class BranchDetailBody extends StatelessWidget {
           chairsLabel: l10n.branchChairsCount(detail.chairsCount),
           ratingLabel: RatingLabel.of(
             l10n,
-            average: detail.ratingAvg,
+            average: detail.ratingAverage,
             count: detail.ratingCount,
             localeCode: Localizations.localeOf(context).languageCode,
           ),

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\ClientInteraction\CQRS\Command;
 
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 
 final readonly class AddFavoriteCommand
 {
     public function __construct(
         public string $clientId,
-        public string $favorableId,
-        public FavorableTypeEnum $favorableType,
+        public string $favoritedId,
+        public FavoritedTypeEnum $favoritedType,
     ) {}
 }

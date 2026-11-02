@@ -22,13 +22,13 @@ class DiscoveryPreferencesCubit extends Cubit<DiscoveryPreferencesState> {
 
   Future<void> save({
     double? defaultRadiusKm,
-    bool? showUnavailable,
+    bool? allowsUnavailableResults,
     List<String>? hiddenBrandIds,
   }) async {
     if (state.isSaving) return;
     final values = <String, dynamic>{
       DiscoveryPreferencesConstants.defaultRadiusKey: ?defaultRadiusKm,
-      DiscoveryPreferencesConstants.showUnavailableKey: ?showUnavailable,
+      DiscoveryPreferencesConstants.showUnavailableKey: ?allowsUnavailableResults,
       DiscoveryPreferencesConstants.hiddenBrandIdsKey: ?hiddenBrandIds,
     };
     if (values.isEmpty) return;

@@ -65,8 +65,8 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
     AppLocalizations l10n,
   ) {
     final details = [
-      if (service.duration != null)
-        l10n.serviceDurationLabel(service.duration!),
+      if (service.durationMinutes != null)
+        l10n.serviceDurationLabel(service.durationMinutes!),
       if (service.priceAmountMinor != null)
         LocaleFormatters.decimal(
           MinorUnits.toMajor(service.priceAmountMinor!),

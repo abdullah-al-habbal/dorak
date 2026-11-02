@@ -20,7 +20,7 @@ it('returns defaults for a client with no settings row and creates exactly one r
 
     $this->withToken($token)->getJson('/api/v1/client/settings')
         ->assertOk()
-        ->assertJsonPath('data.is_notification_enabled', true)
+        ->assertJsonPath('data.allows_notifications', true)
         ->assertJsonPath('data.preferred_language', null);
 
     expect(PreferenceModel::query()->where('preferenceable_type', 'client')->where('preferenceable_id', $client->id)->count())->toBe(1);
@@ -49,14 +49,14 @@ it('persists a valid settings update for a client', function (): void {
 
     $this->withToken($token)->patchJson('/api/v1/client/settings', [
         'preferred_language' => Locale::Ar,
-        'is_notification_enabled' => false,
+        'allows_notifications' => false,
         'display_currency_code' => $currency->code,
         'theme' => ThemeEnum::Dark,
         'price_display_mode' => PriceDisplayModeEnum::TaxExclusive,
     ])
         ->assertOk()
         ->assertJsonPath('data.preferred_language', 'ar')
-        ->assertJsonPath('data.is_notification_enabled', false)
+        ->assertJsonPath('data.allows_notifications', false)
         ->assertJsonPath('data.display_currency_code', $currency->code)
         ->assertJsonPath('data.theme', 'dark')
         ->assertJsonPath('data.price_display_mode', 'tax_exclusive');
@@ -84,7 +84,7 @@ it('returns defaults and persists settings for a barber', function (): void {
 
     $this->withToken($token)->getJson('/api/v1/barber/settings')
         ->assertOk()
-        ->assertJsonPath('data.is_notification_enabled', true);
+        ->assertJsonPath('data.allows_notifications', true);
 
     $this->withToken($token)->patchJson('/api/v1/barber/settings', ['theme' => ThemeEnum::Dark])
         ->assertOk()
@@ -99,7 +99,7 @@ it('returns defaults and persists settings for a branch', function (): void {
 
     $this->withToken($token)->getJson('/api/v1/branch/settings')
         ->assertOk()
-        ->assertJsonPath('data.is_notification_enabled', true);
+        ->assertJsonPath('data.allows_notifications', true);
 
     $this->withToken($token)->patchJson('/api/v1/branch/settings', ['preferred_language' => Locale::Ar])
         ->assertOk()
@@ -115,7 +115,7 @@ it('returns and persists settings for a dashboard admin actor', function (): voi
     $this->withHeader('Authorization', 'Bearer '.$token)
         ->getJson('/api/v1/dashboard/settings')
         ->assertOk()
-        ->assertJsonPath('data.is_notification_enabled', true);
+        ->assertJsonPath('data.allows_notifications', true);
 
     $this->withHeader('Authorization', 'Bearer '.$token)
         ->patchJson('/api/v1/dashboard/settings', ['theme' => ThemeEnum::Dark])

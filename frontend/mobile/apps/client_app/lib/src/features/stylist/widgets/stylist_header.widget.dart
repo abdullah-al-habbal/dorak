@@ -46,7 +46,7 @@ class StylistHeader extends StatelessWidget {
               Text(
                 RatingLabel.of(
                   l10n,
-                  average: profile.ratingAvg,
+                  average: profile.ratingAverage,
                   count: profile.ratingCount,
                   localeCode: l10n.localeName,
                 ),

@@ -21,7 +21,7 @@ class BarberProfileDto {
   final BarberStatus status;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final VenueUniverse? universe;
-  final double? ratingAvg;
+  final double? ratingAverage;
   @JsonKey(defaultValue: 0)
   final int ratingCount;
   final bool isWorkstationOnline;
@@ -43,7 +43,7 @@ class BarberProfileDto {
     this.isFreelancer = false,
     this.status = BarberStatus.pending,
     this.universe,
-    this.ratingAvg,
+    this.ratingAverage,
     this.ratingCount = 0,
     this.isWorkstationOnline = false,
     this.travelRadiusKm,

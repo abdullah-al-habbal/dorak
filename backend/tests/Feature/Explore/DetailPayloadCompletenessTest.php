@@ -69,7 +69,7 @@ describe('floor plan chairs', function (): void {
         $shopService = menuService('brand', $branch->brand_id);
 
         $startsAt = now()->addDay()->startOfHour()->utc()->format('Y-m-d\\TH:i:s\\Z');
-        $data = $this->getJson("/api/v1/branches/{$branch->id}/floor-plan?starts_at={$startsAt}&duration=30")->assertOk()->json('data');
+        $data = $this->getJson("/api/v1/branches/{$branch->id}/floor-plan?starts_at={$startsAt}&duration_minutes=30")->assertOk()->json('data');
         $chairs = collect($data['chairs'])->keyBy('id');
 
         expect($chairs[$seated->id]['services_source'])->toBe('barber')
@@ -96,6 +96,6 @@ describe('barber detail workplaces', function (): void {
         expect($data['workplaces'])->toHaveCount(2)
             ->and(collect($data['workplaces'])->firstWhere('type', 'branch'))->toMatchArray(['id' => $branch->id, 'chair_label' => 'Chair 4'])
             ->and(collect($data['workplaces'])->firstWhere('type', 'brand'))->toMatchArray(['id' => $brand->id, 'chair_label' => null])
-            ->and($data)->toHaveKeys(['rating_avg', 'rating_count']);
+            ->and($data)->toHaveKeys(['rating_average', 'rating_count']);
     });
 });

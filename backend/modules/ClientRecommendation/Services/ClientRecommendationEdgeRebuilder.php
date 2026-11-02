@@ -30,7 +30,7 @@ final class ClientRecommendationEdgeRebuilder
     private function rebuildFavoriteEdges(ClientModel $client): void
     {
         foreach (ClientFavoriteModel::where('client_id', $client->id)->get() as $favorite) {
-            $this->upsert($client->id, $favorite->favorable_type->value, $favorite->favorable_id, EdgeTypeEnum::Favorite, 1.0);
+            $this->upsert($client->id, $favorite->favorited_type->value, $favorite->favorited_id, EdgeTypeEnum::Favorite, 1.0);
         }
     }
 

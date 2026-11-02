@@ -11,7 +11,7 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function (): void {
     $this->barber = BarberModel::factory()->freelancer()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30]);
+    $this->service = OfferedServiceModel::factory()->create(['duration_minutes' => 30]);
     $this->slotsUrl = fn (Carbon $date): string => '/api/v1/barbers/'.$this->barber->id.'/slots?'.http_build_query([
         'date' => $date->format('Y-m-d'),
         'service_ids' => [$this->service->id],

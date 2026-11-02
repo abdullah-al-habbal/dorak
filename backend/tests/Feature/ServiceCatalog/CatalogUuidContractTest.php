@@ -61,7 +61,7 @@ it('links a dashboard service to a catalog item by UUID', function () {
         'currency_code' => $currency->code,
         'name' => ['en' => 'Haircut', 'ar' => 'قص شعر'],
         'price_amount_minor' => 2500,
-        'duration' => 30,
+        'duration_minutes' => 30,
         'is_active' => true,
     ]);
 

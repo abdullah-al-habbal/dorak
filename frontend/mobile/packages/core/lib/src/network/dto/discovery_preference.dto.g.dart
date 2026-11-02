@@ -21,7 +21,8 @@ DiscoveryPreferenceDto _$DiscoveryPreferenceDtoFromJson(
           ?.map((e) => e as String)
           .toList() ??
       const [],
-  showUnavailable: json['show_unavailable'] as bool? ?? false,
+  allowsUnavailableResults:
+      json['allows_unavailable_results'] as bool? ?? false,
 );
 
 const _$ClientUniverseEnumMap = {

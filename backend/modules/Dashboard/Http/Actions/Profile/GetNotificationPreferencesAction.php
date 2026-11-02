@@ -25,14 +25,14 @@ final class GetNotificationPreferencesAction extends BaseApiAction
         return $this->ok($this->data($preference));
     }
 
-    /** @return array{email_enabled: bool, push_enabled: bool, booking_enabled: bool, system_enabled: bool} */
+    /** @return array{allows_email_notifications: bool, allows_push_notifications: bool, allows_booking_notifications: bool, allows_system_notifications: bool} */
     private function data(?DashboardNotificationPreferenceModel $preference): array
     {
         return [
-            'email_enabled' => $preference?->email_enabled ?? true,
-            'push_enabled' => $preference?->push_enabled ?? true,
-            'booking_enabled' => $preference?->booking_enabled ?? true,
-            'system_enabled' => $preference?->system_enabled ?? true,
+            'allows_email_notifications' => $preference?->allows_email_notifications ?? true,
+            'allows_push_notifications' => $preference?->allows_push_notifications ?? true,
+            'allows_booking_notifications' => $preference?->allows_booking_notifications ?? true,
+            'allows_system_notifications' => $preference?->allows_system_notifications ?? true,
         ];
     }
 }

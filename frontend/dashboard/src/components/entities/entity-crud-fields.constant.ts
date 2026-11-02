@@ -32,7 +32,7 @@ export const ENTITY_CRUD_FIELDS: Record<EditableDashboardResource, string[]> = {
     "name.en",
     "name.ar",
     "price",
-    "duration",
+    "durationMinutes",
     "currencyCode",
     "serviceableId",
     "serviceableType",

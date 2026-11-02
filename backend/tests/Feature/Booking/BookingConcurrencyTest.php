@@ -14,7 +14,7 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
     $this->branch = BranchModel::factory()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
+    $this->service = OfferedServiceModel::factory()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $this->actingAs($this->client, 'client');
 });
 

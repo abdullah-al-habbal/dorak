@@ -6,16 +6,16 @@ part 'client_favorite.dto.g.dart';
 class ClientFavoriteDto {
   const ClientFavoriteDto({
     required this.id,
-    required this.favorableId,
-    required this.favorableType,
-    this.favorable,
+    required this.favoritedId,
+    required this.favoritedType,
+    this.favorited,
     this.createdAt,
   });
 
   final String id;
-  final String favorableId;
-  final String favorableType;
-  final Map<String, dynamic>? favorable;
+  final String favoritedId;
+  final String favoritedType;
+  final Map<String, dynamic>? favorited;
   final DateTime? createdAt;
 
   factory ClientFavoriteDto.fromJson(Map<String, dynamic> json) =>

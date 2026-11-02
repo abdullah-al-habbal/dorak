@@ -3296,13 +3296,13 @@ parameters:
 			path: modules/ClientInteraction/Http/Requests/Client/AddFavoriteRequest.php
 
 		-
-			message: '#^Parameter \#1 \$value of static method Modules\\ClientInteraction\\Enums\\FavorableTypeEnum\:\:from\(\) expects int\|string, mixed given\.$#'
+			message: '#^Parameter \#1 \$value of static method Modules\\ClientInteraction\\Enums\\FavoritedTypeEnum\:\:from\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: modules/ClientInteraction/Http/Requests/Client/AddFavoriteRequest.php
 
 		-
-			message: '#^Parameter \$favorableId of class Modules\\ClientInteraction\\CQRS\\Command\\AddFavoriteCommand constructor expects string, mixed given\.$#'
+			message: '#^Parameter \$favoritedId of class Modules\\ClientInteraction\\CQRS\\Command\\AddFavoriteCommand constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: modules/ClientInteraction/Http/Requests/Client/AddFavoriteRequest.php
@@ -3350,7 +3350,7 @@ parameters:
 			path: modules/ClientInteraction/Http/Requests/Client/ListFavoritesRequest.php
 
 		-
-			message: '#^Parameter \#1 \$value of static method Modules\\ClientInteraction\\Enums\\FavorableTypeEnum\:\:from\(\) expects int\|string, mixed given\.$#'
+			message: '#^Parameter \#1 \$value of static method Modules\\ClientInteraction\\Enums\\FavoritedTypeEnum\:\:from\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: modules/ClientInteraction/Http/Requests/Client/ListFavoritesRequest.php
@@ -3476,13 +3476,13 @@ parameters:
 			path: modules/ClientInteraction/Http/Resources/ClientFavoriteResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\ClientInteraction\\Http\\Resources\\ClientFavoriteResource\:\:\$favorable_id\.$#'
+			message: '#^Access to an undefined property Modules\\ClientInteraction\\Http\\Resources\\ClientFavoriteResource\:\:\$favorited_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: modules/ClientInteraction/Http/Resources/ClientFavoriteResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\ClientInteraction\\Http\\Resources\\ClientFavoriteResource\:\:\$favorable_type\.$#'
+			message: '#^Access to an undefined property Modules\\ClientInteraction\\Http\\Resources\\ClientFavoriteResource\:\:\$favorited_type\.$#'
 			identifier: property.notFound
 			count: 1
 			path: modules/ClientInteraction/Http/Resources/ClientFavoriteResource.php
@@ -3662,13 +3662,13 @@ parameters:
 			path: modules/ClientRecommendation/Console/Commands/RecomputeClientVectorsCommand.php
 
 		-
-			message: '#^Access to an undefined property Modules\\ClientInteraction\\Models\\ClientFavoriteModel\:\:\$favorable_id\.$#'
+			message: '#^Access to an undefined property Modules\\ClientInteraction\\Models\\ClientFavoriteModel\:\:\$favorited_id\.$#'
 			identifier: property.notFound
 			count: 2
 			path: modules/ClientRecommendation/Console/Commands/RecomputeClientVectorsCommand.php
 
 		-
-			message: '#^Access to an undefined property Modules\\ClientInteraction\\Models\\ClientFavoriteModel\:\:\$favorable_type\.$#'
+			message: '#^Access to an undefined property Modules\\ClientInteraction\\Models\\ClientFavoriteModel\:\:\$favorited_type\.$#'
 			identifier: property.notFound
 			count: 2
 			path: modules/ClientRecommendation/Console/Commands/RecomputeClientVectorsCommand.php
@@ -3848,13 +3848,13 @@ parameters:
 			path: modules/ClientRecommendation/Console/Commands/RecomputeClientVectorsCommand.php
 
 		-
-			message: '#^Part \$favorite\-\>favorable_id \(mixed\) of encapsed string cannot be cast to string\.$#'
+			message: '#^Part \$favorite\-\>favorited_id \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
 			count: 1
 			path: modules/ClientRecommendation/Console/Commands/RecomputeClientVectorsCommand.php
 
 		-
-			message: '#^Part \$favorite\-\>favorable_type\-\>value \(mixed\) of encapsed string cannot be cast to string\.$#'
+			message: '#^Part \$favorite\-\>favorited_type\-\>value \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
 			count: 1
 			path: modules/ClientRecommendation/Console/Commands/RecomputeClientVectorsCommand.php
@@ -3938,13 +3938,13 @@ parameters:
 			path: modules/ClientRecommendation/Observers/ClientFavoriteObserver.php
 
 		-
-			message: '#^Access to an undefined property Modules\\ClientInteraction\\Models\\ClientFavoriteModel\:\:\$favorable_id\.$#'
+			message: '#^Access to an undefined property Modules\\ClientInteraction\\Models\\ClientFavoriteModel\:\:\$favorited_id\.$#'
 			identifier: property.notFound
 			count: 2
 			path: modules/ClientRecommendation/Observers/ClientFavoriteObserver.php
 
 		-
-			message: '#^Access to an undefined property Modules\\ClientInteraction\\Models\\ClientFavoriteModel\:\:\$favorable_type\.$#'
+			message: '#^Access to an undefined property Modules\\ClientInteraction\\Models\\ClientFavoriteModel\:\:\$favorited_type\.$#'
 			identifier: property.notFound
 			count: 2
 			path: modules/ClientRecommendation/Observers/ClientFavoriteObserver.php

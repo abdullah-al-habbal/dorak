@@ -13,6 +13,6 @@ final readonly class UpdateDiscoveryPreferenceCommand
         public ?UniverseEnum $preferredUniverse = null,
         public ?float $defaultRadiusKm = null,
         public ?array $hiddenBrandIds = null,
-        public ?bool $showUnavailable = null,
+        public ?bool $allowsUnavailableResults = null,
     ) {}
 }

@@ -30,7 +30,7 @@ return new class extends Migration
             $table->decimal('longitude', 11, 8)->nullable();
             $table->decimal('travel_radius_km', 5, 2)->nullable();
             $table->json('bio')->nullable();
-            $table->decimal('rating_avg', 3, 2)->nullable()->index();
+            $table->decimal('rating_average', 3, 2)->nullable()->index();
             $table->unsignedInteger('rating_count')->default(0);
             $table->string('universe', 16)->default(VenueUniverse::Unisex->value)->index();
             $table->timestamps();

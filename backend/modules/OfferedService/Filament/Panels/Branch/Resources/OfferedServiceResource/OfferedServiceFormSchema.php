@@ -31,7 +31,7 @@ final class OfferedServiceFormSchema
                     Select::make('currency_code')
                         ->relationship('currency', 'code')
                         ->required(),
-                    TextInput::make('duration')
+                    TextInput::make('duration_minutes')
                         ->label(__('offeredservice::ui.duration_minutes'))
                         ->numeric()
                         ->required(),

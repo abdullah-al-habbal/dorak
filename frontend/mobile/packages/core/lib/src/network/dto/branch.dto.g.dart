@@ -23,7 +23,7 @@ BranchDto _$BranchDtoFromJson(Map<String, dynamic> json) => BranchDto(
     json['universe'],
     unknownValue: JsonKey.nullForUndefinedEnumValue,
   ),
-  ratingAvg: (json['rating_avg'] as num?)?.toDouble(),
+  ratingAverage: (json['rating_average'] as num?)?.toDouble(),
   ratingCount: (json['rating_count'] as num?)?.toInt() ?? 0,
   distance: (json['distance'] as num?)?.toDouble(),
   compatibilityScore: (json['compatibility_score'] as num?)?.toDouble(),

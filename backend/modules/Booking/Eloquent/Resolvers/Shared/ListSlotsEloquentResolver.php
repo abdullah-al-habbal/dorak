@@ -89,7 +89,7 @@ final class ListSlotsEloquentResolver
         $total = 0;
 
         foreach ($services as $service) {
-            $duration = $service->getAttribute('duration');
+            $duration = $service->getAttribute('duration_minutes');
 
             if (! is_int($duration) || $duration < 1) {
                 throw new InvalidBookingServicesException;

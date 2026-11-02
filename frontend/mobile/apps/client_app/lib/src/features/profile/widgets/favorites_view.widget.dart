@@ -40,13 +40,13 @@ class FavoritesView extends StatelessWidget {
                 const SizedBox(height: DorakDimensions.spacingSmall),
             itemBuilder: (context, index) {
               final favorite = state.items[index];
-              final favorable = favorite.favorable;
+              final favorited = favorite.favorited;
               final name =
-                  favorable?['name'] as String? ?? favorite.favorableId;
+                  favorited?['name'] as String? ?? favorite.favoritedId;
               return ListTile(
                 leading: Icon(Icons.favorite, color: colors.primary),
                 title: Text(name),
-                subtitle: Text(favorite.favorableType),
+                subtitle: Text(favorite.favoritedType),
                 trailing: IconButton(
                   icon: const Icon(Icons.favorite),
                   onPressed: () => bloc.remove(favorite.id),

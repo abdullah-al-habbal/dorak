@@ -1023,8 +1023,8 @@ FavoritesBloc fakeFavoritesBloc() => FavoritesBloc(FakeFavoriteRepository());
 class FakeFavoriteRepository implements FavoriteRepository {
   @override
   Future<ClientFavoriteDto> addFavorite({
-    required String favorableId,
-    required String favorableType,
+    required String favoritedId,
+    required String favoritedType,
   }) => throw UnimplementedError();
 
   @override
@@ -1317,7 +1317,7 @@ class FakeProfileRepository implements ProfileRepository {
     );
   }
 
-  SettingsDto settings = const SettingsDto(isNotificationEnabled: true);
+  SettingsDto settings = const SettingsDto(allowsNotifications: true);
   Object? getSettingsError;
   Object? updateSettingsError;
   int getSettingsCalls = 0;
@@ -1334,7 +1334,7 @@ class FakeProfileRepository implements ProfileRepository {
   @override
   Future<SettingsDto> updateSettings({
     String? preferredLanguage,
-    bool? isNotificationEnabled,
+    bool? allowsNotifications,
     String? displayCurrencyCode,
     String? theme,
     String? priceDisplayMode,
@@ -1344,8 +1344,8 @@ class FakeProfileRepository implements ProfileRepository {
     if (failure != null) throw failure;
     settings = SettingsDto(
       preferredLanguage: preferredLanguage ?? settings.preferredLanguage,
-      isNotificationEnabled:
-          isNotificationEnabled ?? settings.isNotificationEnabled,
+      allowsNotifications:
+          allowsNotifications ?? settings.allowsNotifications,
       displayCurrencyCode: displayCurrencyCode ?? settings.displayCurrencyCode,
       theme: theme ?? settings.theme,
       priceDisplayMode: priceDisplayMode ?? settings.priceDisplayMode,
@@ -1437,7 +1437,7 @@ BarberProfileDto testBarberProfile({
           description: 'Classic fade cut',
           priceAmountMinor: 8000,
           currencyCode: 'SAR',
-          duration: 30,
+          durationMinutes: 30,
           isAtHome: false,
           active: true,
         ),
@@ -1446,7 +1446,7 @@ BarberProfileDto testBarberProfile({
           name: 'Beard Trim',
           priceAmountMinor: 3000,
           currencyCode: 'SAR',
-          duration: 15,
+          durationMinutes: 15,
           isAtHome: true,
           active: true,
         ),
@@ -1754,7 +1754,7 @@ class FakeClientInteractionRepository implements ClientInteractionRepository {
     return DiscoveryPreferenceDto(
       id: 'pref-1',
       defaultRadiusKm: (values['default_radius_km'] as num?)?.toDouble() ?? 10,
-      showUnavailable: values['show_unavailable'] as bool? ?? false,
+      allowsUnavailableResults: values['allows_unavailable_results'] as bool? ?? false,
       hiddenBrandIds:
           (values['hidden_brand_ids'] as List?)?.cast<String>() ?? const [],
     );

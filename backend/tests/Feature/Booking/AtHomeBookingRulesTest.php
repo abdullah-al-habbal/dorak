@@ -20,7 +20,7 @@ beforeEach(function (): void {
     $this->service = OfferedServiceModel::factory()->atHome()->create([
         'serviceable_type' => ServiceableTypeEnum::Barber,
         'serviceable_id' => $this->barber->id,
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]);
     $this->slot = Carbon::tomorrow()->startOfDay()->addHours(10);
     $this->actingAs(ClientModel::factory()->create(), 'client');
@@ -54,7 +54,7 @@ it('rejects a service that is not flagged at home', function (): void {
     $service = OfferedServiceModel::factory()->create([
         'serviceable_type' => ServiceableTypeEnum::Barber,
         'serviceable_id' => $this->barber->id,
-        'duration' => 30,
+        'duration_minutes' => 30,
         'is_at_home' => false,
     ]);
 
@@ -67,7 +67,7 @@ it('rejects an at-home service owned by someone else', function (): void {
     $service = OfferedServiceModel::factory()->atHome()->create([
         'serviceable_type' => ServiceableTypeEnum::Barber,
         'serviceable_id' => BarberModel::factory()->create()->id,
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]);
 
     ($this->book)(['service_ids' => [$service->id]])

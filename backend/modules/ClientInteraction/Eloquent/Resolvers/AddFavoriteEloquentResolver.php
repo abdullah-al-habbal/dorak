@@ -13,8 +13,8 @@ final class AddFavoriteEloquentResolver
     {
         return ClientFavoriteModel::firstOrCreate([
             'client_id' => $command->clientId,
-            'favorable_id' => $command->favorableId,
-            'favorable_type' => $command->favorableType,
+            'favorited_id' => $command->favoritedId,
+            'favorited_type' => $command->favoritedType,
         ]);
     }
 }

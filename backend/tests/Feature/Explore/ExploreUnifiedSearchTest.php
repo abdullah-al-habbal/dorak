@@ -31,7 +31,7 @@ it('returns branches and freelancers in one list, nearest first', function (): v
         ['branch', $farBranch->id],
     ]);
     expect($items[0]['distance'])->toBeLessThan($items[1]['distance'])
-        ->and($items[1]['entity'])->toHaveKeys(['name', 'is_freelancer', 'rating_avg']);
+        ->and($items[1]['entity'])->toHaveKeys(['name', 'is_freelancer', 'rating_average']);
 });
 
 it('never lists shop-employed barbers as standalone results', function (): void {

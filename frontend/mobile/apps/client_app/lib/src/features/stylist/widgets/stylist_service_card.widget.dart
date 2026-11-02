@@ -91,10 +91,10 @@ class StylistServiceCard extends StatelessWidget {
                 l10n: l10n,
                 localeCode: localeCode,
               ),
-              if (service.duration != null) ...[
+              if (service.durationMinutes != null) ...[
                 const SizedBox(height: 4),
                 Text(
-                  l10n.serviceDurationLabel(service.duration!),
+                  l10n.serviceDurationLabel(service.durationMinutes!),
                   style: DorakTypography.labelMd.copyWith(
                     color: colors.onSurfaceVariant,
                   ),

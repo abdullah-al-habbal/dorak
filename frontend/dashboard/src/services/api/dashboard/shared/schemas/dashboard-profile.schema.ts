@@ -8,15 +8,15 @@ export const ProfileSchema = z.object({
 });
 
 export const NotificationPreferencesSchema = z.object({
-  emailEnabled: z.boolean(),
-  pushEnabled: z.boolean(),
-  bookingEnabled: z.boolean(),
-  systemEnabled: z.boolean(),
+  allowsEmailNotifications: z.boolean(),
+  allowsPushNotifications: z.boolean(),
+  allowsBookingNotifications: z.boolean(),
+  allowsSystemNotifications: z.boolean(),
 });
 
 export const SettingsSchema = z.object({
   preferredLanguage: z.enum(["en", "ar"]).nullable(),
-  isNotificationEnabled: z.boolean(),
+  allowsNotifications: z.boolean(),
   displayCurrencyCode: z.string().nullable(),
   theme: z.enum(["light", "dark"]).nullable(),
   priceDisplayMode: z.enum(["tax_inclusive", "tax_exclusive"]).nullable(),
@@ -35,7 +35,7 @@ export const UpdatePasswordInputSchema = z.object({
 
 export const UpdateSettingsInputSchema = z.object({
   preferredLanguage: z.enum(["en", "ar"]).nullable().optional(),
-  isNotificationEnabled: z.boolean().optional(),
+  allowsNotifications: z.boolean().optional(),
   displayCurrencyCode: z.string().nullable().optional(),
   theme: z.enum(["light", "dark"]).nullable().optional(),
   priceDisplayMode: z

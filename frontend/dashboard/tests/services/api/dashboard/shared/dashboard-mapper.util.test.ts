@@ -106,12 +106,12 @@ describe("mapBranch", () => {
 
   it("maps the stored rating aggregate and universe", () => {
     const branch = mapBranch(
-      wireBranch({ rating_avg: 4.33, rating_count: 3, universe: "women" }),
+      wireBranch({ rating_average: 4.33, rating_count: 3, universe: "women" }),
     );
 
     expect(branch.universe).toBe("women");
 
-    expect(branch.ratingAvg).toBe(4.33);
+    expect(branch.ratingAverage).toBe(4.33);
     expect(branch.ratingCount).toBe(3);
   });
 
@@ -143,9 +143,11 @@ describe("mapBranch", () => {
   });
 
   it("maps an unrated branch to a null average and zero count", () => {
-    const branch = mapBranch(wireBranch({ rating_avg: null, rating_count: 0 }));
+    const branch = mapBranch(
+      wireBranch({ rating_average: null, rating_count: 0 }),
+    );
 
-    expect(branch.ratingAvg).toBeNull();
+    expect(branch.ratingAverage).toBeNull();
     expect(branch.ratingCount).toBe(0);
   });
 });

@@ -27,7 +27,7 @@ use Modules\Client\Mail\SendPasswordResetCode;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
 use Modules\ClientHistory\Enums\HistoryMediaType;
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\Currency\Models\ExchangeRateModel;
 use Modules\JobPosting\Enums\ApplicationStatus;
@@ -504,7 +504,7 @@ describe('Explore API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             if (count($data) > 0) {
-                expect($data[0])->toHaveKeys(['id', 'name', 'email', 'status', 'latitude', 'longitude', 'brand_id', 'rating_avg', 'rating_count', 'distance', 'compatibility_score', 'rank', 'created_at']);
+                expect($data[0])->toHaveKeys(['id', 'name', 'email', 'status', 'latitude', 'longitude', 'brand_id', 'rating_average', 'rating_count', 'distance', 'compatibility_score', 'rank', 'created_at']);
             }
         });
 
@@ -531,7 +531,7 @@ describe('Explore API', function () {
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'name', 'rating_avg', 'rating_count', 'chairs_count', 'barbers', 'services', 'created_at']);
+            expect($data)->toHaveKeys(['id', 'name', 'rating_average', 'rating_count', 'chairs_count', 'barbers', 'services', 'created_at']);
             expect($data['barbers'])->toBeArray();
             expect($data['services'])->toBeArray();
         });
@@ -603,7 +603,7 @@ describe('OfferedService API', function () {
             $data = $response->json('data');
             expect($data)->toBeArray();
             expect($data)->toHaveLength(2);
-            expect($data[0])->toHaveKeys(['id', 'name', 'description', 'price_amount_minor', 'currency_code', 'duration', 'is_at_home', 'is_active', 'created_at']);
+            expect($data[0])->toHaveKeys(['id', 'name', 'description', 'price_amount_minor', 'currency_code', 'duration_minutes', 'is_at_home', 'is_active', 'created_at']);
         });
 
         it('returns empty array for barber with no services', function () {
@@ -1488,23 +1488,23 @@ describe('ClientInteraction API', function () {
 
             $response = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/favorites', [
-                    'favorable_id' => $brand->id,
-                    'favorable_type' => FavorableTypeEnum::Brand,
+                    'favorited_id' => $brand->id,
+                    'favorited_type' => FavoritedTypeEnum::Brand,
                 ]);
 
             expect($response->status())->toBe(201);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'favorable_id', 'favorable_type', 'created_at']);
-            expect($data['favorable_type'])->toBe(FavorableTypeEnum::Brand->value);
+            expect($data)->toHaveKeys(['id', 'favorited_id', 'favorited_type', 'created_at']);
+            expect($data['favorited_type'])->toBe(FavoritedTypeEnum::Brand->value);
         });
 
-        it('returns 422 for invalid favorable_type', function () {
+        it('returns 422 for invalid favorited_type', function () {
             $client = ClientModel::factory()->create();
 
             $response = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/favorites', [
-                    'favorable_id' => 'some-id',
-                    'favorable_type' => 'invalid_type',
+                    'favorited_id' => 'some-id',
+                    'favorited_type' => 'invalid_type',
                 ]);
 
             expect($response->status())->toBe(422);
@@ -1515,8 +1515,8 @@ describe('ClientInteraction API', function () {
             $brand = BrandModel::factory()->create();
             $fav = $this->actingAs($client, 'client')
                 ->postJson('/api/v1/client/favorites', [
-                    'favorable_id' => $brand->id,
-                    'favorable_type' => FavorableTypeEnum::Brand,
+                    'favorited_id' => $brand->id,
+                    'favorited_type' => FavoritedTypeEnum::Brand,
                 ])->json('data');
 
             $response = $this->actingAs($client, 'client')
@@ -1624,9 +1624,9 @@ describe('ClientInteraction API', function () {
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'preferred_universe', 'default_radius_km', 'hidden_brand_ids', 'show_unavailable']);
+            expect($data)->toHaveKeys(['id', 'preferred_universe', 'default_radius_km', 'hidden_brand_ids', 'allows_unavailable_results']);
             expect($data['default_radius_km'])->toBe(50);
-            expect($data['show_unavailable'])->toBeTrue();
+            expect($data['allows_unavailable_results'])->toBeTrue();
         });
 
         it('updates discovery preferences', function () {
@@ -1635,12 +1635,12 @@ describe('ClientInteraction API', function () {
             $response = $this->actingAs($client, 'client')
                 ->patchJson('/api/v1/client/discovery-preferences', [
                     'default_radius_km' => 25,
-                    'show_unavailable' => false,
+                    'allows_unavailable_results' => false,
                 ]);
 
             assertApiEnvelope($response, 200);
             expect($response->json('data.default_radius_km'))->toEqual(25.0);
-            expect($response->json('data.show_unavailable'))->toBeFalse();
+            expect($response->json('data.allows_unavailable_results'))->toBeFalse();
         });
 
         it('returns 401 without auth', function () {

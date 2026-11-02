@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('price_amount_minor');
             $table->string('currency_code', 10);
             $table->foreign('currency_code')->references('code')->on('currencies');
-            $table->unsignedInteger('duration')->nullable();
+            $table->unsignedInteger('duration_minutes')->nullable();
             $table->boolean('is_at_home')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

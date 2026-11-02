@@ -26,13 +26,13 @@ class FavoritesBloc extends Cubit<Paged<ClientFavoriteDto>> {
   }
 
   Future<void> add({
-    required String favorableId,
-    required String favorableType,
+    required String favoritedId,
+    required String favoritedType,
   }) async {
     try {
       await _repository.addFavorite(
-        favorableId: favorableId,
-        favorableType: favorableType,
+        favoritedId: favoritedId,
+        favoritedType: favoritedType,
       );
       if (!isClosed) await load();
     } catch (error) {

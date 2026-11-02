@@ -13,9 +13,9 @@ final class ClientFavoriteResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'favorable_id' => $this->favorable_id,
-            'favorable_type' => $this->favorable_type,
-            'favorable' => $this->whenLoaded('favorable', fn () => $this->favorable),
+            'favorited_id' => $this->favorited_id,
+            'favorited_type' => $this->favorited_type,
+            'favorited' => $this->whenLoaded('favorited', fn () => $this->favorited),
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

@@ -29,10 +29,10 @@ export function NotificationPreferences() {
     const form = new FormData(event.currentTarget);
     save.mutate(
       {
-        emailEnabled: form.has("email"),
-        pushEnabled: form.has("push"),
-        bookingEnabled: form.has("booking"),
-        systemEnabled: form.has("system"),
+        allowsEmailNotifications: form.has("email"),
+        allowsPushNotifications: form.has("push"),
+        allowsBookingNotifications: form.has("booking"),
+        allowsSystemNotifications: form.has("system"),
       },
       {
         onSuccess: () => toast.success(copy.title),
@@ -46,10 +46,10 @@ export function NotificationPreferences() {
       <h2 className="text-xl font-semibold text-text-primary">{copy.title}</h2>
       <form className="mt-6 grid gap-3" onSubmit={submit}>
         {[
-          ["email", values?.emailEnabled, labels.email],
-          ["push", values?.pushEnabled, labels.push],
-          ["booking", values?.bookingEnabled, labels.booking],
-          ["system", values?.systemEnabled, labels.system],
+          ["email", values?.allowsEmailNotifications, labels.email],
+          ["push", values?.allowsPushNotifications, labels.push],
+          ["booking", values?.allowsBookingNotifications, labels.booking],
+          ["system", values?.allowsSystemNotifications, labels.system],
         ].map(([name, checked, label]) => (
           <Checkbox
             key={String(name)}

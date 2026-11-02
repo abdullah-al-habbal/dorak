@@ -39,7 +39,7 @@ export function defaultsFor(
     return {
       name: { en: "", ar: "" },
       price: 0,
-      duration: null,
+      durationMinutes: null,
       currencyCode: "",
       isActive: true,
       isAtHome: false,

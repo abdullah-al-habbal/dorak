@@ -11,14 +11,14 @@ class DiscoveryPreferenceDto {
     this.preferredUniverse,
     this.defaultRadiusKm,
     this.hiddenBrandIds = const [],
-    this.showUnavailable = false,
+    this.allowsUnavailableResults = false,
   });
   final String id;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final ClientUniverse? preferredUniverse;
   final double? defaultRadiusKm;
   final List<String> hiddenBrandIds;
-  final bool showUnavailable;
+  final bool allowsUnavailableResults;
   factory DiscoveryPreferenceDto.fromJson(Map<String, dynamic> json) =>
       _$DiscoveryPreferenceDtoFromJson(json);
 }

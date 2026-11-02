@@ -41,7 +41,7 @@ final class OfferedServiceFormSchema
                         ->numeric()
                         ->integer()
                         ->required(),
-                    TextInput::make('duration')
+                    TextInput::make('duration_minutes')
                         ->numeric()
                         ->required()
                         ->suffix('min'),

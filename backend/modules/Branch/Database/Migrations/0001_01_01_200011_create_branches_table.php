@@ -31,7 +31,7 @@ return new class extends Migration
             $table->json('floor_plan_decorations')->nullable();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
-            $table->decimal('rating_avg', 3, 2)->nullable()->index();
+            $table->decimal('rating_average', 3, 2)->nullable()->index();
             $table->unsignedInteger('rating_count')->default(0);
             $table->string('universe', 16)->default(VenueUniverse::Unisex->value)->index();
             $table->timestamps();

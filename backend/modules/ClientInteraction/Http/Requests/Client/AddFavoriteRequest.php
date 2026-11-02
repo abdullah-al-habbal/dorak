@@ -6,8 +6,8 @@ namespace Modules\ClientInteraction\Http\Requests\Client;
 
 use Illuminate\Validation\Rule;
 use Modules\ClientInteraction\CQRS\Command\AddFavoriteCommand;
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
-use Modules\ClientInteraction\Rules\FavorableExists;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
+use Modules\ClientInteraction\Rules\FavoritedExists;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class AddFavoriteRequest extends BaseApiFormRequest
@@ -15,8 +15,8 @@ final class AddFavoriteRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'favorable_id' => ['required', 'string', new FavorableExists($this->input('favorable_type'))],
-            'favorable_type' => ['required', Rule::enum(FavorableTypeEnum::class)],
+            'favorited_id' => ['required', 'string', new FavoritedExists($this->input('favorited_type'))],
+            'favorited_type' => ['required', Rule::enum(FavoritedTypeEnum::class)],
         ];
     }
 
@@ -24,8 +24,8 @@ final class AddFavoriteRequest extends BaseApiFormRequest
     {
         return new AddFavoriteCommand(
             clientId: (string) $this->user()->id,
-            favorableId: $this->validated('favorable_id'),
-            favorableType: FavorableTypeEnum::from($this->validated('favorable_type')),
+            favoritedId: $this->validated('favorited_id'),
+            favoritedType: FavoritedTypeEnum::from($this->validated('favorited_type')),
         );
     }
 }

@@ -13,10 +13,10 @@ final class UpdateNotificationPreferencesRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'email_enabled' => ['required', 'boolean'],
-            'push_enabled' => ['required', 'boolean'],
-            'booking_enabled' => ['required', 'boolean'],
-            'system_enabled' => ['required', 'boolean'],
+            'allows_email_notifications' => ['required', 'boolean'],
+            'allows_push_notifications' => ['required', 'boolean'],
+            'allows_booking_notifications' => ['required', 'boolean'],
+            'allows_system_notifications' => ['required', 'boolean'],
         ];
     }
 

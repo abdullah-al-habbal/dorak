@@ -35,7 +35,7 @@ class BookingSeeder extends Seeder
             'chair_id' => $chair->id,
             'barber_id' => $barber->id,
             'time_slot' => $timeSlot,
-            'ends_at' => $timeSlot->copy()->addMinutes($service->duration ?? 30),
+            'ends_at' => $timeSlot->copy()->addMinutes($service->duration_minutes ?? 30),
             'status' => BookingStatus::Completed->value,
             'at_home_location' => null,
         ]);

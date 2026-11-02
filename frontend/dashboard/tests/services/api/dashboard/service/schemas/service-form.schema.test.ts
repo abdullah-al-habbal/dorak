@@ -8,7 +8,7 @@ const catalogItemId = "0199d9a4-3c1e-7c2a-9f1b-6a2d4e8b1c3f";
 const serviceInput = {
   name: { en: "Haircut", ar: "قص شعر" },
   price: 25,
-  duration: 30,
+  durationMinutes: 30,
   currencyCode: "SAR",
   isActive: true,
   isAtHome: false,
@@ -68,5 +68,15 @@ describe("service price minor units", () => {
       mapService({ id: "s1", price_amount_minor: 4900 }).priceAmountMinor,
     ).toBe(4900);
     expect(mapService({ id: "s1" }).priceAmountMinor).toBe(0);
+  });
+
+  it("maps duration_minutes both ways", () => {
+    const parsed = serviceFormSchema.safeParse(serviceInput);
+    expect(
+      parsed.success && mapServicePayload(parsed.data).duration_minutes,
+    ).toBe(30);
+    expect(mapService({ id: "s1", duration_minutes: 45 }).durationMinutes).toBe(
+      45,
+    );
   });
 });

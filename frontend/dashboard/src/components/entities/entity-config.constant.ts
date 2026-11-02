@@ -19,9 +19,9 @@ export const ENTITY_CONFIGS = {
         id: "rating",
         label: "rating",
         value: (item: IBranch) =>
-          item.ratingAvg === null
+          item.ratingAverage === null
             ? "—"
-            : `★ ${item.ratingAvg} (${item.ratingCount})`,
+            : `★ ${item.ratingAverage} (${item.ratingCount})`,
       },
     ],
   },

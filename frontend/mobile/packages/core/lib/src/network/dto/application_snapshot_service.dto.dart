@@ -8,14 +8,14 @@ class ApplicationSnapshotServiceDto {
   final String name;
   final int priceAmountMinor;
   final String? currencyCode;
-  final int? duration;
+  final int? durationMinutes;
 
   const ApplicationSnapshotServiceDto({
     required this.id,
     required this.name,
     required this.priceAmountMinor,
     this.currencyCode,
-    this.duration,
+    this.durationMinutes,
   });
 
   factory ApplicationSnapshotServiceDto.fromJson(Map<String, dynamic> json) =>

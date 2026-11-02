@@ -10,7 +10,7 @@ use Modules\Brand\Models\BrandModel;
 use Modules\Core\Contracts\MorphAliasEnum;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
-enum FavorableTypeEnum: string implements MorphAliasEnum
+enum FavoritedTypeEnum: string implements MorphAliasEnum
 {
     case Brand = 'brand';
     case Branch = 'branch';

@@ -19,7 +19,7 @@ class BookingSummary extends StatelessWidget {
     );
     final duration = selected.fold<int>(
       0,
-      (total, service) => total + (service.duration ?? 0),
+      (total, service) => total + (service.durationMinutes ?? 0),
     );
     return Card(
       child: Padding(

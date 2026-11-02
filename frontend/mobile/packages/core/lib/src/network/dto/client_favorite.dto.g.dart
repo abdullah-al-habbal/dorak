@@ -9,9 +9,9 @@ part of 'client_favorite.dto.dart';
 ClientFavoriteDto _$ClientFavoriteDtoFromJson(Map<String, dynamic> json) =>
     ClientFavoriteDto(
       id: json['id'] as String,
-      favorableId: json['favorable_id'] as String,
-      favorableType: json['favorable_type'] as String,
-      favorable: json['favorable'] as Map<String, dynamic>?,
+      favoritedId: json['favorited_id'] as String,
+      favoritedType: json['favorited_type'] as String,
+      favorited: json['favorited'] as Map<String, dynamic>?,
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),

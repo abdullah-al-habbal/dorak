@@ -13,10 +13,10 @@ return new class extends Migration
         Schema::create('client_favorites', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('client_id')->constrained('clients')->cascadeOnDelete();
-            $table->uuidMorphs('favorable');
+            $table->uuidMorphs('favorited');
             $table->timestamps();
 
-            $table->unique(['client_id', 'favorable_id', 'favorable_type']);
+            $table->unique(['client_id', 'favorited_id', 'favorited_type']);
         });
     }
 

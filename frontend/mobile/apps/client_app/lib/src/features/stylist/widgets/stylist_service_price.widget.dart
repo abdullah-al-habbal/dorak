@@ -45,7 +45,7 @@ class StylistServicePrice extends StatelessWidget {
       ),
       displayPrice.currencyCode,
     );
-    if (!service.isDualPriceDisplayEnabled) {
+    if (!service.allowsDualPriceDisplay) {
       return Text(
         convertedPriceText,
         style: DorakTypography.labelLg.copyWith(color: colors.primary),

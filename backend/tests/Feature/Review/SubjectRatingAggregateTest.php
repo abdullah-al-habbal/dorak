@@ -25,9 +25,9 @@ it('updates the subject aggregate when a client submits a review', function (): 
 
     $branch = BranchModel::query()->findOrFail($booking->branch_id);
     $barber = BarberModel::query()->findOrFail($booking->barber_id);
-    expect((float) $branch->rating_avg)->toBe(4.0)
+    expect((float) $branch->rating_average)->toBe(4.0)
         ->and($branch->rating_count)->toBe(1)
-        ->and((float) $barber->rating_avg)->toBe(2.0)
+        ->and((float) $barber->rating_average)->toBe(2.0)
         ->and($barber->rating_count)->toBe(1);
 });
 
@@ -40,7 +40,7 @@ it('averages only published reviews and rounds to two decimals', function (): vo
     rateBranch($branch, 1, ReviewStatus::Disputed);
 
     $branch->refresh();
-    expect((float) $branch->rating_avg)->toBe(4.33)
+    expect((float) $branch->rating_average)->toBe(4.33)
         ->and($branch->rating_count)->toBe(3);
 });
 
@@ -48,19 +48,19 @@ it('drops a disputed review from the aggregate and restores it on resolution', f
     $branch = BranchModel::factory()->create();
     rateBranch($branch, 5);
     $disputed = rateBranch($branch, 1);
-    expect((float) $branch->fresh()->rating_avg)->toBe(3.0);
+    expect((float) $branch->fresh()->rating_average)->toBe(3.0);
 
     $this->actingAs($branch, 'branch_api')
         ->postJson("/api/v1/branch/reviews/{$disputed->id}/dispute", ['reason' => 'Wrong appointment entirely.'])
         ->assertOk();
-    expect((float) $branch->fresh()->rating_avg)->toBe(5.0)
+    expect((float) $branch->fresh()->rating_average)->toBe(5.0)
         ->and($branch->fresh()->rating_count)->toBe(1);
 
     $admin = AdminModel::factory()->create();
     $this->withToken($admin->createToken('test')->plainTextToken)
         ->patchJson("/api/v1/admin/reviews/{$disputed->id}/resolve", ['status' => ReviewStatus::Published])
         ->assertOk();
-    expect((float) $branch->fresh()->rating_avg)->toBe(3.0)
+    expect((float) $branch->fresh()->rating_average)->toBe(3.0)
         ->and($branch->fresh()->rating_count)->toBe(2);
 });
 
@@ -73,25 +73,25 @@ it('restores the aggregate when an expired dispute is auto-released', function (
     $this->artisan('reviews:release-expired-disputes')->assertSuccessful();
 
     expect($branch->fresh()->rating_count)->toBe(2)
-        ->and((float) $branch->fresh()->rating_avg)->toBe(3.0);
+        ->and((float) $branch->fresh()->rating_average)->toBe(3.0);
 });
 
 it('clears the aggregate when the last counted review is deleted', function (): void {
     $branch = BranchModel::factory()->create();
     rateBranch($branch, 4)->delete();
 
-    expect($branch->fresh()->rating_avg)->toBeNull()
+    expect($branch->fresh()->rating_average)->toBeNull()
         ->and($branch->fresh()->rating_count)->toBe(0);
 });
 
 it('recomputes every aggregate on demand', function (): void {
     $branch = BranchModel::factory()->create();
     rateBranch($branch, 4);
-    BranchModel::query()->whereKey($branch->id)->update(['rating_avg' => null, 'rating_count' => 0]);
+    BranchModel::query()->whereKey($branch->id)->update(['rating_average' => null, 'rating_count' => 0]);
 
     $this->artisan('reviews:refresh-ratings')->assertSuccessful();
 
-    expect((float) $branch->fresh()->rating_avg)->toBe(4.0);
+    expect((float) $branch->fresh()->rating_average)->toBe(4.0);
 });
 
 it('filters barbers by their stored barber rating', function (): void {
@@ -105,7 +105,7 @@ it('filters barbers by their stored barber rating', function (): void {
     $response = $this->getJson('/api/v1/explore/barbers?latitude=33.5&longitude=36.3&radius=1000&rating_min=4')->assertOk();
 
     expect($response->json('data.*.id'))->toBe([$great->id])
-        ->and($response->json('data.0.rating_avg'))->toBe(4.5)
+        ->and($response->json('data.0.rating_average'))->toBe(4.5)
         ->and($response->json('data.0.rating_count'))->toBe(2);
     expect($unrated->fresh()->rating_count)->toBe(0);
 });
@@ -116,6 +116,6 @@ it('exposes the rating on the barber detail', function (): void {
 
     $this->getJson("/api/v1/explore/barbers/{$barber->id}")
         ->assertOk()
-        ->assertJsonPath('data.rating_avg', 3)
+        ->assertJsonPath('data.rating_average', 3)
         ->assertJsonPath('data.rating_count', 1);
 });

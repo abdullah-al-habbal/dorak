@@ -170,14 +170,14 @@ export function SettingsPreferences() {
 
         <Controller
           control={form.control}
-          name="isNotificationEnabled"
+          name="allowsNotifications"
           render={({ field }) => (
             <Checkbox
               className="sm:col-span-2"
               isSelected={field.value ?? true}
               onChange={field.onChange}
             >
-              {labels.isNotificationEnabled}
+              {labels.allowsNotifications}
             </Checkbox>
           )}
         />

@@ -21,7 +21,7 @@ beforeEach(function (): void {
     $this->serviceFor = fn (ServiceableTypeEnum $type, string $id) => OfferedServiceModel::factory()->create([
         'serviceable_type' => $type,
         'serviceable_id' => $id,
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]);
     $this->book = fn (array $overrides = []) => $this->postJson('/api/v1/bookings', array_merge([
         'chair_id' => $this->chair->id,

@@ -266,7 +266,7 @@ void main() {
                     'description': 'A clean fade.',
                     'price_amount_minor': 8000,
                     'currency_code': 'SAR',
-                    'duration': 45,
+                    'duration_minutes': 45,
                     'is_at_home': true,
                     'active': true,
                     'created_at': '2026-01-15T10:00:00.000Z',
@@ -298,7 +298,7 @@ void main() {
       expect(service.name, 'Fade');
       expect(service.priceAmountMinor, 8000);
       expect(service.currencyCode, 'SAR');
-      expect(service.duration, 45);
+      expect(service.durationMinutes, 45);
       expect(service.isAtHome, isTrue);
       expect(service.active, isTrue);
       expect(service.createdAt, isNotNull);

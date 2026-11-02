@@ -18,7 +18,7 @@ final readonly class ClientDiscoveryPreferences
     private function __construct(
         public ?float $defaultRadiusKm,
         public array $hiddenBrandIds,
-        public bool $showUnavailable,
+        public bool $allowsUnavailableResults,
     ) {}
 
     public static function for(mixed $user): self
@@ -37,7 +37,7 @@ final readonly class ClientDiscoveryPreferences
         return new self(
             defaultRadiusKm: is_numeric($radius) && (float) $radius > 0 ? (float) $radius : null,
             hiddenBrandIds: is_array($hidden) ? array_values(array_map('strval', array_filter($hidden, 'is_scalar'))) : [],
-            showUnavailable: $preference->getAttribute('show_unavailable') !== false,
+            allowsUnavailableResults: $preference->getAttribute('allows_unavailable_results') !== false,
         );
     }
 }

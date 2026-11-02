@@ -22,7 +22,7 @@ it('reports chair availability for the requested future interval', function () {
 
     $response = $this->getJson('/api/v1/branches/'.$branch->id.'/floor-plan?'.http_build_query([
         'starts_at' => $startsAt->copy()->addMinutes(15)->toIso8601ZuluString(),
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]));
 
     $response->assertOk();
@@ -43,7 +43,7 @@ it('does not mark a chair occupied outside the requested future interval', funct
 
     $response = $this->getJson('/api/v1/branches/'.$branch->id.'/floor-plan?'.http_build_query([
         'starts_at' => $startsAt->copy()->setTime(16, 0)->toIso8601ZuluString(),
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]));
 
     $response->assertOk();

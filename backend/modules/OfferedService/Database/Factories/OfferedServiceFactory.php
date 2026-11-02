@@ -30,7 +30,7 @@ class OfferedServiceFactory extends Factory
             ],
             'price_amount_minor' => fake()->numberBetween(1000, 50000),
             'currency_code' => fn () => CurrencyModel::factory()->create()->code,
-            'duration' => fake()->randomElement([15, 30, 45, 60]),
+            'duration_minutes' => fake()->randomElement([15, 30, 45, 60]),
             'is_at_home' => false,
             'is_active' => true,
         ];

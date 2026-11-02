@@ -40,7 +40,7 @@ final readonly class PriceConverter
             amountMinor: $converted,
             currencyCode: $displayCurrencyCode,
             conversionUnavailable: $converted === null,
-            isDualPriceDisplayEnabled: $dualDisplay,
+            allowsDualPriceDisplay: $dualDisplay,
         );
     }
 
@@ -68,7 +68,7 @@ final readonly class PriceConverter
         return (bool) PreferenceModel::query()
             ->where('preferenceable_type', $ownerType)
             ->where('preferenceable_id', $ownerId)
-            ->value('is_dual_price_display_enabled');
+            ->value('allows_dual_price_display');
     }
 
     private function convert(int $amountMinor, string $fromCode, string $toCode): ?int

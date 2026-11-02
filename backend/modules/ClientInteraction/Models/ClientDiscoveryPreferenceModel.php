@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Client\Enums\UniverseEnum;
 
-#[Fillable(['client_id', 'preferred_universe', 'default_radius_km', 'hidden_brand_ids', 'show_unavailable'])]
+#[Fillable(['client_id', 'preferred_universe', 'default_radius_km', 'hidden_brand_ids', 'allows_unavailable_results'])]
 #[Table('client_discovery_preferences')]
 final class ClientDiscoveryPreferenceModel extends Model
 {
@@ -22,7 +22,7 @@ final class ClientDiscoveryPreferenceModel extends Model
             'preferred_universe' => UniverseEnum::class,
             'default_radius_km' => 'float',
             'hidden_brand_ids' => 'array',
-            'show_unavailable' => 'boolean',
+            'allows_unavailable_results' => 'boolean',
         ];
     }
 }

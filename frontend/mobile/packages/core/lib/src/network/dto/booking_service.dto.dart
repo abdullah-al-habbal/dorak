@@ -9,7 +9,7 @@ class BookingServiceDto {
   final String id;
   final String name;
   final int? priceAmountMinor;
-  final int? duration;
+  final int? durationMinutes;
 
   /// Who offers it on a menu (`brand` | `branch` | `barber`), when known.
   final String? owner;
@@ -18,17 +18,17 @@ class BookingServiceDto {
   @JsonKey(defaultValue: false)
   final bool conversionUnavailable;
   @JsonKey(defaultValue: false)
-  final bool isDualPriceDisplayEnabled;
+  final bool allowsDualPriceDisplay;
 
   const BookingServiceDto({
     required this.id,
     required this.name,
     this.priceAmountMinor,
-    this.duration,
+    this.durationMinutes,
     this.owner,
     this.displayPrice,
     this.conversionUnavailable = false,
-    this.isDualPriceDisplayEnabled = false,
+    this.allowsDualPriceDisplay = false,
   });
 
   factory BookingServiceDto.fromJson(Map<String, dynamic> json) =>

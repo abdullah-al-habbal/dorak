@@ -6,5 +6,5 @@ namespace Modules\Dashboard\Constants;
 
 final class DashboardNotificationPreferenceConstants
 {
-    public const array DASHBOARD_NOTIFICATION_PREFERENCE_KEYS = ['email_enabled', 'push_enabled', 'booking_enabled', 'system_enabled'];
+    public const array DASHBOARD_NOTIFICATION_PREFERENCE_KEYS = ['allows_email_notifications', 'allows_push_notifications', 'allows_booking_notifications', 'allows_system_notifications'];
 }

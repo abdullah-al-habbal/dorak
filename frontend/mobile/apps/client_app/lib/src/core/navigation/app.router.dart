@@ -563,7 +563,7 @@ class AppRouter {
                   onBarberSelected: (barberId) =>
                       router.push<void>(AppRoutes.barberDetail(barberId)),
                   onFavorite: (id, type) => unawaited(
-                    favoritesBloc.add(favorableId: id, favorableType: type),
+                    favoritesBloc.add(favoritedId: id, favoritedType: type),
                   ),
                 ),
               ),

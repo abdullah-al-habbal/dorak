@@ -25,7 +25,7 @@ final class PreferencesTable
                 TextColumn::make('preferred_language'),
                 TextColumn::make('displayCurrency.code')
                     ->label(__('preference::ui.currency')),
-                IconColumn::make('is_notification_enabled')
+                IconColumn::make('allows_notifications')
                     ->boolean(),
             ])
             ->actions([

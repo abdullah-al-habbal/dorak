@@ -129,7 +129,7 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
                       barber: barber,
                       ratingLabel: RatingLabel.of(
                         l10n,
-                        average: barber.ratingAvg,
+                        average: barber.ratingAverage,
                         count: barber.ratingCount,
                         localeCode: localeCode,
                       ),
@@ -148,7 +148,7 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
                       branch: branch,
                       ratingLabel: RatingLabel.of(
                         l10n,
-                        average: branch.ratingAvg,
+                        average: branch.ratingAverage,
                         count: branch.ratingCount,
                         localeCode: localeCode,
                       ),

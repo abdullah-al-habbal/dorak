@@ -21,7 +21,7 @@ describe('Floor plan canvas and decorations', function (): void {
 
         $this->getJson("/api/v1/branches/{$branch->id}/floor-plan?".http_build_query([
             'starts_at' => now()->addDay()->toIso8601ZuluString(),
-            'duration' => 30,
+            'duration_minutes' => 30,
         ]))->assertOk()
             ->assertJsonPath('data.floor_plan.canvas.unit', 'm')
             ->assertJsonPath('data.floor_plan.decorations.0.label', 'Lounge');
@@ -32,7 +32,7 @@ describe('Floor plan canvas and decorations', function (): void {
 
         $this->getJson("/api/v1/branches/{$branch->id}/floor-plan?".http_build_query([
             'starts_at' => now()->addDay()->toIso8601ZuluString(),
-            'duration' => 30,
+            'duration_minutes' => 30,
         ]))->assertOk()
             ->assertJsonPath('data.floor_plan.canvas.unit', 'm')
             ->assertJsonPath('data.floor_plan.decorations', []);

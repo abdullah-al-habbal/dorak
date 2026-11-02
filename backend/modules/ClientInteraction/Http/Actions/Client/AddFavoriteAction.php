@@ -23,7 +23,7 @@ final class AddFavoriteAction extends BaseApiAction
     {
         $command = $request->toCommand();
         $favorite = $this->handler->handle($command);
-        $this->interactions->favorite($request, InteractableTypeEnum::from($command->favorableType->value), $command->favorableId);
+        $this->interactions->favorite($request, InteractableTypeEnum::from($command->favoritedType->value), $command->favoritedId);
 
         $resource = ClientFavoriteResource::make($favorite)->resolve($request);
 

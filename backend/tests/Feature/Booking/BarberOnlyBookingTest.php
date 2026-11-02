@@ -21,7 +21,7 @@ beforeEach(function (): void {
     $this->service = OfferedServiceModel::factory()->create([
         'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $this->branch->brand_id,
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]);
     $this->slot = Carbon::tomorrow()->startOfDay()->addHours(10);
     $this->actingAs(ClientModel::factory()->create(), 'client');

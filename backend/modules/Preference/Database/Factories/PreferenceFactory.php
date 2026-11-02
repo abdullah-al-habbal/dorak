@@ -18,11 +18,11 @@ class PreferenceFactory extends Factory
             'preferenceable_id' => null,
             'preferenceable_type' => null,
             'preferred_language' => 'ar',
-            'is_notification_enabled' => true,
+            'allows_notifications' => true,
             'display_currency_code' => null,
             'theme' => 'light',
             'price_display_mode' => 'tax_inclusive',
-            'is_dual_price_display_enabled' => false,
+            'allows_dual_price_display' => false,
         ];
     }
 }

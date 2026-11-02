@@ -27,7 +27,7 @@ class OfferedServiceSeeder extends Seeder
             'description' => ['en' => 'Classic haircut', 'ar' => 'قص شعر كلاسيكي'],
             'price_amount_minor' => 2500000,
             'currency_code' => $syp->code,
-            'duration' => 30,
+            'duration_minutes' => 30,
             'is_at_home' => false,
             'is_active' => true,
         ]);
@@ -39,7 +39,7 @@ class OfferedServiceSeeder extends Seeder
             'description' => ['en' => 'Beard shaping and trim', 'ar' => 'تشذيب وتشكيل اللحية'],
             'price_amount_minor' => 1500000,
             'currency_code' => $syp->code,
-            'duration' => 20,
+            'duration_minutes' => 20,
             'is_at_home' => false,
             'is_active' => true,
         ]);

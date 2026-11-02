@@ -16,7 +16,7 @@ class BranchDto {
   final String brandId;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final VenueUniverse? universe;
-  final double? ratingAvg;
+  final double? ratingAverage;
   @JsonKey(defaultValue: 0)
   final int ratingCount;
   final double? distance;
@@ -33,7 +33,7 @@ class BranchDto {
     this.longitude,
     required this.brandId,
     this.universe,
-    this.ratingAvg,
+    this.ratingAverage,
     this.ratingCount = 0,
     this.distance,
     this.compatibilityScore,

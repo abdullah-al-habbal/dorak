@@ -94,7 +94,7 @@ it('reports dual_price_display true when the owning brand enables dual display',
     PreferenceModel::factory()->create([
         'preferenceable_type' => 'brand',
         'preferenceable_id' => $brand->id,
-        'is_dual_price_display_enabled' => true,
+        'allows_dual_price_display' => true,
     ]);
 
     $client = ClientModel::factory()->create();
@@ -111,7 +111,7 @@ it('reports dual_price_display true when the owning brand enables dual display',
             ->json('data.services')
     )->firstWhere('id', $service->id);
 
-    expect($payload['is_dual_price_display_enabled'])->toBeTrue()
+    expect($payload['allows_dual_price_display'])->toBeTrue()
         ->and($payload['price_amount_minor'])->toBe(10000)
         ->and($payload['display_price'])->toEqual(['amount_minor' => 9000, 'currency_code' => 'EUR']);
 });
@@ -139,7 +139,7 @@ it('reports dual_price_display false (converted only) by default', function () {
             ->json('data.services')
     )->firstWhere('id', $service->id);
 
-    expect($payload['is_dual_price_display_enabled'])->toBeFalse();
+    expect($payload['allows_dual_price_display'])->toBeFalse();
 });
 
 it('converts for a guest using the X-Display-Currency header', function () {

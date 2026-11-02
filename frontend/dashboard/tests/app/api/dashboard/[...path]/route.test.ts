@@ -43,7 +43,7 @@ it("converts settings request and response bodies between camelCase and snake_ca
     ok: true,
     status: 200,
     envelope: {
-      data: { preferred_language: "ar", is_notification_enabled: true },
+      data: { preferred_language: "ar", allows_notifications: true },
     },
   });
   const request = new NextRequest("http://localhost/api/dashboard/settings", {
@@ -64,7 +64,7 @@ it("converts settings request and response bodies between camelCase and snake_ca
   );
   await expect(response.json()).resolves.toMatchObject({
     success: true,
-    data: { preferredLanguage: "ar", isNotificationEnabled: true },
+    data: { preferredLanguage: "ar", allowsNotifications: true },
   });
 });
 

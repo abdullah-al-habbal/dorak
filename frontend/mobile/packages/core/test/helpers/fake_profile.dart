@@ -47,7 +47,7 @@ class FakeProfileRepository implements ProfileRepository {
   @override
   Future<SettingsDto> updateSettings({
     String? preferredLanguage,
-    bool? isNotificationEnabled,
+    bool? allowsNotifications,
     String? displayCurrencyCode,
     String? theme,
     String? priceDisplayMode,

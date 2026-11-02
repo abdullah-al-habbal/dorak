@@ -43,7 +43,7 @@ void main() {
       expect(captured.queryParameters['starts_at'], '2026-10-01T12:00:00.000Z');
       expect(captured.queryParameters.containsKey('date'), isFalse);
       expect(captured.queryParameters.containsKey('time_slot'), isFalse);
-      expect(captured.queryParameters['duration'], 30);
+      expect(captured.queryParameters['duration_minutes'], 30);
       expect(plan.branchName, 'Branch 1');
       expect(plan.chairs, hasLength(2));
       expect(plan.chairs.first.status, ChairStatus.available);

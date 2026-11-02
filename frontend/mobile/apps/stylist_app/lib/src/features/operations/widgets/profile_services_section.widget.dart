@@ -30,8 +30,8 @@ class ProfileServicesSection extends StatelessWidget {
           title: Text(service.name),
           subtitle: Text(
             [
-              if (service.duration != null)
-                l10n.serviceDurationLabel(service.duration!),
+              if (service.durationMinutes != null)
+                l10n.serviceDurationLabel(service.durationMinutes!),
               if (service.isAtHome) l10n.serviceAtHomeLabel,
             ].join(' · '),
           ),

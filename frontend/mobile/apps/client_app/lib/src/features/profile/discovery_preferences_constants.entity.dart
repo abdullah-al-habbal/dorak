@@ -7,5 +7,5 @@ class DiscoveryPreferencesConstants {
   static const double fallbackRadius = 10;
   static const String defaultRadiusKey = 'default_radius_km';
   static const String hiddenBrandIdsKey = 'hidden_brand_ids';
-  static const String showUnavailableKey = 'show_unavailable';
+  static const String showUnavailableKey = 'allows_unavailable_results';
 }

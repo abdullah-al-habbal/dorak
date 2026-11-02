@@ -7,8 +7,8 @@ abstract class FavoriteRepository {
   });
 
   Future<ClientFavoriteDto> addFavorite({
-    required String favorableId,
-    required String favorableType,
+    required String favoritedId,
+    required String favoritedType,
   });
 
   Future<void> removeFavorite(String favoriteId);
@@ -32,11 +32,11 @@ class DioFavoriteRepository implements FavoriteRepository {
 
   @override
   Future<ClientFavoriteDto> addFavorite({
-    required String favorableId,
-    required String favorableType,
+    required String favoritedId,
+    required String favoritedType,
   }) => _apiClient.post<ClientFavoriteDto>(
     ApiEndpoints.favorite.favorites,
-    data: {'favorable_id': favorableId, 'favorable_type': favorableType},
+    data: {'favorited_id': favoritedId, 'favorited_type': favoritedType},
     parser: (json) => ClientFavoriteDto.fromJson(json as Map<String, dynamic>),
   );
 

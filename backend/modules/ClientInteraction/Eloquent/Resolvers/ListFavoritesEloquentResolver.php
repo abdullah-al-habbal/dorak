@@ -13,8 +13,8 @@ final class ListFavoritesEloquentResolver
     public function resolve(ListFavoritesQuery $query): LengthAwarePaginator
     {
         return ClientFavoriteModel::where('client_id', $query->clientId)
-            ->when($query->favorableType, fn ($q, $type) => $q->where('favorable_type', $type))
-            ->with('favorable')
+            ->when($query->favoritedType, fn ($q, $type) => $q->where('favorited_type', $type))
+            ->with('favorited')
             ->orderByDesc('created_at')
             ->paginate($query->perPage);
     }

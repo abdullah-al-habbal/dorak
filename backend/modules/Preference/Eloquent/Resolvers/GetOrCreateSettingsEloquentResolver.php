@@ -16,7 +16,7 @@ final class GetOrCreateSettingsEloquentResolver
                 'preferenceable_type' => $query->ownerType,
                 'preferenceable_id' => $query->ownerId,
             ],
-            ['is_notification_enabled' => true],
+            ['allows_notifications' => true],
         );
     }
 }

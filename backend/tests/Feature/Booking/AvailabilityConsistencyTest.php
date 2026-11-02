@@ -15,7 +15,7 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 beforeEach(function (): void {
     $this->client = ClientModel::factory()->create();
     $this->branch = BranchModel::factory()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
+    $this->service = OfferedServiceModel::factory()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $this->chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
     $this->actingAs($this->client, 'client');
 });
@@ -24,7 +24,7 @@ it('reports free exactly when a booking can be created for the interval', functi
     $startsAt = Carbon::now()->addDay()->startOfMinute();
     $floorPlanUrl = fn () => '/api/v1/branches/'.$this->branch->id.'/floor-plan?'.http_build_query([
         'starts_at' => $startsAt->toIso8601ZuluString(),
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]);
 
     $this->getJson($floorPlanUrl())->assertOk()->assertJsonPath('data.chairs.0.availability', 'available');
@@ -54,7 +54,7 @@ it('counts pending bookings as unavailable in floor plans and chair listings', f
 
     $this->getJson('/api/v1/branches/'.$this->branch->id.'/floor-plan?'.http_build_query([
         'starts_at' => $startsAt->toIso8601ZuluString(),
-        'duration' => 30,
+        'duration_minutes' => 30,
     ]))->assertOk()->assertJsonPath('data.chairs.0.availability', 'occupied');
 
     $this->travelTo($startsAt);

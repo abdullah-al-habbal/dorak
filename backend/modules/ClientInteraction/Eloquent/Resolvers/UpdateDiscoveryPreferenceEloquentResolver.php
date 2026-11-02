@@ -19,7 +19,7 @@ final class UpdateDiscoveryPreferenceEloquentResolver
             'preferred_universe' => $command->preferredUniverse,
             'default_radius_km' => $command->defaultRadiusKm,
             'hidden_brand_ids' => $command->hiddenBrandIds,
-            'show_unavailable' => $command->showUnavailable,
+            'allows_unavailable_results' => $command->allowsUnavailableResults,
         ], fn ($v) => $v !== null);
 
         if (! empty($update)) {

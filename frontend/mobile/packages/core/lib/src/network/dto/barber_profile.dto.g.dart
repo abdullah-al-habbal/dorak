@@ -25,7 +25,7 @@ BarberProfileDto _$BarberProfileDtoFromJson(Map<String, dynamic> json) =>
         json['universe'],
         unknownValue: JsonKey.nullForUndefinedEnumValue,
       ),
-      ratingAvg: (json['rating_avg'] as num?)?.toDouble(),
+      ratingAverage: (json['rating_average'] as num?)?.toDouble(),
       ratingCount: (json['rating_count'] as num?)?.toInt() ?? 0,
       isWorkstationOnline: json['is_workstation_online'] as bool? ?? false,
       travelRadiusKm: (json['travel_radius_km'] as num?)?.toDouble(),

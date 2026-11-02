@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 
-#[Fillable(['actor_type', 'actor_id', 'email_enabled', 'push_enabled', 'booking_enabled', 'system_enabled'])]
+#[Fillable(['actor_type', 'actor_id', 'allows_email_notifications', 'allows_push_notifications', 'allows_booking_notifications', 'allows_system_notifications'])]
 #[Table('dashboard_notification_preferences')]
 final class DashboardNotificationPreferenceModel extends Model
 {
@@ -20,10 +20,10 @@ final class DashboardNotificationPreferenceModel extends Model
     {
         return [
             'actor_type' => DashboardActorTypeEnum::class,
-            'email_enabled' => 'boolean',
-            'push_enabled' => 'boolean',
-            'booking_enabled' => 'boolean',
-            'system_enabled' => 'boolean',
+            'allows_email_notifications' => 'boolean',
+            'allows_push_notifications' => 'boolean',
+            'allows_booking_notifications' => 'boolean',
+            'allows_system_notifications' => 'boolean',
         ];
     }
 }

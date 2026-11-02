@@ -10,7 +10,7 @@ use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 
 /**
- * Keeps `rating_avg` / `rating_count` on branches and barbers equal to the
+ * Keeps `rating_average` / `rating_count` on branches and barbers equal to the
  * aggregate of their published or resolved reviews (Task 42). Disputed and
  * hidden reviews never count.
  */
@@ -43,7 +43,7 @@ final class SubjectRatingRefresher
         $average = $count === 0 ? null : round((float) (clone $reviews)->avg('rating'), 2);
 
         $modelClass::query()->whereKey($subjectId)->update([
-            'rating_avg' => $average,
+            'rating_average' => $average,
             'rating_count' => $count,
         ]);
     }

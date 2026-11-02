@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
@@ -24,19 +24,19 @@ it('adds a favorite', function () {
     $brand = BrandModel::factory()->create();
 
     $response = $this->postJson('/api/v1/client/favorites', [
-        'favorable_id' => $brand->id,
-        'favorable_type' => FavorableTypeEnum::Brand,
+        'favorited_id' => $brand->id,
+        'favorited_type' => FavoritedTypeEnum::Brand,
     ]);
 
     $response->assertCreated();
-    expect($response->json('data'))->toHaveKeys(['id', 'favorable_id', 'favorable_type', 'created_at']);
-    expect($response->json('data.favorable_type'))->toBe(FavorableTypeEnum::Brand->value);
+    expect($response->json('data'))->toHaveKeys(['id', 'favorited_id', 'favorited_type', 'created_at']);
+    expect($response->json('data.favorited_type'))->toBe(FavoritedTypeEnum::Brand->value);
 });
 
-it('returns 422 for invalid favorable_type', function () {
+it('returns 422 for invalid favorited_type', function () {
     $response = $this->postJson('/api/v1/client/favorites', [
-        'favorable_id' => 'some-id',
-        'favorable_type' => 'invalid_type',
+        'favorited_id' => 'some-id',
+        'favorited_type' => 'invalid_type',
     ]);
 
     $response->assertStatus(422);
@@ -46,8 +46,8 @@ it('removes a favorite', function () {
     $brand = BrandModel::factory()->create();
 
     $fav = $this->postJson('/api/v1/client/favorites', [
-        'favorable_id' => $brand->id,
-        'favorable_type' => FavorableTypeEnum::Brand,
+        'favorited_id' => $brand->id,
+        'favorited_type' => FavoritedTypeEnum::Brand,
     ])->json('data');
 
     $response = $this->deleteJson("/api/v1/client/favorites/{$fav['id']}");
@@ -128,7 +128,7 @@ it('returns default discovery preferences', function () {
     $response = $this->getJson('/api/v1/client/discovery-preferences');
 
     $response->assertOk();
-    expect($response->json('data'))->toHaveKeys(['id', 'preferred_universe', 'default_radius_km', 'hidden_brand_ids', 'show_unavailable']);
+    expect($response->json('data'))->toHaveKeys(['id', 'preferred_universe', 'default_radius_km', 'hidden_brand_ids', 'allows_unavailable_results']);
 });
 
 it('updates discovery preferences', function () {

@@ -31,7 +31,7 @@ class BranchDetailScreen extends StatefulWidget {
   final VoidCallback onViewBookings;
   final void Function(String branchId) onViewReviews;
   final void Function(String barberId) onBarberSelected;
-  final void Function(String favorableId, String favorableType) onFavorite;
+  final void Function(String favoritedId, String favoritedType) onFavorite;
 
   @override
   State<BranchDetailScreen> createState() => _BranchDetailScreenState();

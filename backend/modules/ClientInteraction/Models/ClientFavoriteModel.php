@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 
-#[Fillable(['client_id', 'favorable_id', 'favorable_type'])]
+#[Fillable(['client_id', 'favorited_id', 'favorited_type'])]
 #[Table('client_favorites')]
 final class ClientFavoriteModel extends Model
 {
@@ -20,11 +20,11 @@ final class ClientFavoriteModel extends Model
     protected function casts(): array
     {
         return [
-            'favorable_type' => FavorableTypeEnum::class,
+            'favorited_type' => FavoritedTypeEnum::class,
         ];
     }
 
-    public function favorable(): MorphTo
+    public function favorited(): MorphTo
     {
         return $this->morphTo();
     }

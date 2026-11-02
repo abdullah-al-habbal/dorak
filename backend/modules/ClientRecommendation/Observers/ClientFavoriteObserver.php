@@ -15,8 +15,8 @@ final class ClientFavoriteObserver
         RecommendationEdgeModel::create([
             'source_type' => 'client',
             'source_id' => $favorite->client_id,
-            'target_type' => $favorite->favorable_type->value,
-            'target_id' => $favorite->favorable_id,
+            'target_type' => $favorite->favorited_type->value,
+            'target_id' => $favorite->favorited_id,
             'edge_type' => EdgeTypeEnum::Favorite->value,
             'weight_ratio' => 1.0,
         ]);
@@ -26,8 +26,8 @@ final class ClientFavoriteObserver
     {
         RecommendationEdgeModel::where('source_type', 'client')
             ->where('source_id', $favorite->client_id)
-            ->where('target_type', $favorite->favorable_type)
-            ->where('target_id', $favorite->favorable_id)
+            ->where('target_type', $favorite->favorited_type)
+            ->where('target_id', $favorite->favorited_id)
             ->where('edge_type', EdgeTypeEnum::Favorite->value)
             ->delete();
     }

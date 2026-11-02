@@ -20,7 +20,7 @@ final class OfferedServicesTable
                     ->label(__('offeredservice::ui.name')),
                 TextColumn::make('price_amount_minor')
                     ->money(fn ($record): string => $record->currency->code ?? 'USD'),
-                TextColumn::make('duration')
+                TextColumn::make('duration_minutes')
                     ->label(__('offeredservice::ui.minutes')),
                 IconColumn::make('is_at_home')
                     ->boolean(),

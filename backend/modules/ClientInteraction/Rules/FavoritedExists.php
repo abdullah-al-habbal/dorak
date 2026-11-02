@@ -8,23 +8,23 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-final readonly class FavorableExists implements ValidationRule
+final readonly class FavoritedExists implements ValidationRule
 {
-    public function __construct(private ?string $favorableType) {}
+    public function __construct(private ?string $favoritedType) {}
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if ($this->favorableType === null) {
+        if ($this->favoritedType === null) {
             return;
         }
 
-        $modelClass = Relation::getMorphedModel($this->favorableType);
+        $modelClass = Relation::getMorphedModel($this->favoritedType);
         if ($modelClass === null || ! class_exists($modelClass)) {
             return;
         }
 
         if (! $modelClass::query()->whereKey($value)->exists()) {
-            $fail(__('clientinteraction::messages.favorable_not_found'));
+            $fail(__('clientinteraction::messages.favorited_not_found'));
         }
     }
 }

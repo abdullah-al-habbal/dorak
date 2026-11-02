@@ -24,7 +24,7 @@ final class OfferedServicesTable
                     ->label(__('offeredservice::ui.entity')),
                 TextColumn::make('price_amount_minor')
                     ->sortable(),
-                TextColumn::make('duration')
+                TextColumn::make('duration_minutes')
                     ->suffix(' min'),
                 IconColumn::make('is_at_home')
                     ->boolean(),

@@ -181,7 +181,7 @@ it('exercises the dashboard walk-in route validation and authorization', functio
     $branch = BranchModel::factory()->create();
     $barber = BarberModel::factory()->create(['managed_by_branch_id' => $branch->id]);
     $chair = ChairModel::factory()->create(['branch_id' => $branch->id, 'barber_id' => $barber->id]);
-    $service = OfferedServiceModel::factory()->create(['serviceable_id' => $branch->brand_id, 'duration' => 30]);
+    $service = OfferedServiceModel::factory()->create(['serviceable_id' => $branch->brand_id, 'duration_minutes' => 30]);
     $response = $this->postJson('/api/v1/dashboard/bookings/walk-in', [
         'branch_id' => $branch->id,
         'chair_id' => $chair->id,

@@ -30,7 +30,7 @@ class DioBranchRepository implements BranchRepository {
     final startsAt = timeSlot.toUtc().toIso8601String();
     return _apiClient.get<FloorPlanDto>(
       ApiEndpoints.branch.floorPlan(branchId),
-      queryParameters: {'starts_at': startsAt, 'duration': durationMinutes},
+      queryParameters: {'starts_at': startsAt, 'duration_minutes': durationMinutes},
       parser: (json) => FloorPlanDto.fromJson(json as Map<String, dynamic>),
     );
   }

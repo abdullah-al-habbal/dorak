@@ -20,7 +20,7 @@ function barberServicePayload(CurrencyModel $currency, array $overrides = []): a
         'currency_code' => $currency->code,
         'name' => ['en' => 'Beard Trim', 'ar' => 'تهذيب اللحية'],
         'price_amount_minor' => 1500,
-        'duration' => 20,
+        'duration_minutes' => 20,
         'is_active' => true,
     ], $overrides);
 }

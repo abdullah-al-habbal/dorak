@@ -44,7 +44,7 @@ final class ClientRecommendationSignalGatherer
     {
         return ClientFavoriteModel::where('client_id', $client->id)
             ->get()
-            ->map(fn (ClientFavoriteModel $favorite): string => "favorite:{$favorite->favorable_type->value}:{$favorite->favorable_id}")
+            ->map(fn (ClientFavoriteModel $favorite): string => "favorite:{$favorite->favorited_type->value}:{$favorite->favorited_id}")
             ->all();
     }
 

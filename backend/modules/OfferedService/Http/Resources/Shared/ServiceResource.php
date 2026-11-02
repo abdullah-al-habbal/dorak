@@ -30,14 +30,14 @@ final class ServiceResource extends JsonResource
             'description' => $this->description,
             'price_amount_minor' => (int) $this->price_amount_minor,
             'currency_code' => $this->currency_code,
-            'duration' => $this->duration,
+            'duration_minutes' => $this->duration_minutes,
             'is_at_home' => (bool) $this->is_at_home,
             'is_active' => (bool) $this->is_active,
             'created_at' => $this->created_at?->toIso8601String(),
             ...($displayPrice === null ? [] : [
                 'display_price' => $displayPrice->conversionUnavailable ? null : $displayPrice->toArray(),
                 'conversion_unavailable' => $displayPrice->conversionUnavailable,
-                'is_dual_price_display_enabled' => $displayPrice->isDualPriceDisplayEnabled,
+                'allows_dual_price_display' => $displayPrice->allowsDualPriceDisplay,
             ]),
         ];
     }

@@ -18,7 +18,7 @@ use Modules\OfferedService\Models\OfferedServiceModel;
 beforeEach(function () {
     $this->client = ClientModel::factory()->create();
     $this->branch = BranchModel::factory()->create();
-    $this->service = OfferedServiceModel::factory()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
+    $this->service = OfferedServiceModel::factory()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $this->actingAs($this->client, 'client');
 });
 
@@ -105,7 +105,7 @@ it('rejects booking with past time_slot', function () {
 it('creates at-home booking without chair_id', function () {
     $timeSlot = Carbon::now()->addDay()->toIso8601ZuluString();
     $barber = BarberModel::factory()->create(['latitude' => 33.5, 'longitude' => 36.3, 'travel_radius_km' => 10]);
-    $service = OfferedServiceModel::factory()->atHome()->create(['duration' => 30, 'serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $barber->id]);
+    $service = OfferedServiceModel::factory()->atHome()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Barber, 'serviceable_id' => $barber->id]);
 
     $response = $this->postJson('/api/v1/bookings', [
         'at_home_location' => [
@@ -243,7 +243,7 @@ it('requires authentication', function () {
 
 it('derives the booking end time from the selected service durations', function () {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
-    $service = OfferedServiceModel::factory()->create(['duration' => 45, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
+    $service = OfferedServiceModel::factory()->create(['duration_minutes' => 45, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $timeSlot = Carbon::tomorrow()->setTime(10, 0);
 
     $response = $this->postJson('/api/v1/bookings', [
@@ -258,7 +258,7 @@ it('derives the booking end time from the selected service durations', function 
 
 it('rejects an overlapping booking for the same chair', function () {
     $chair = ChairModel::factory()->create(['branch_id' => $this->branch->id]);
-    $service = OfferedServiceModel::factory()->create(['duration' => 60, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
+    $service = OfferedServiceModel::factory()->create(['duration_minutes' => 60, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $timeSlot = Carbon::tomorrow()->setTime(10, 0);
 
     $this->postJson('/api/v1/bookings', [
@@ -278,7 +278,7 @@ it('rejects an overlapping booking for the same barber on another chair', functi
     $barber = BarberModel::factory()->create();
     $chairA = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $barber->id]);
     $chairB = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $barber->id]);
-    $service = OfferedServiceModel::factory()->create(['duration' => 60, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
+    $service = OfferedServiceModel::factory()->create(['duration_minutes' => 60, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
     $timeSlot = Carbon::tomorrow()->setTime(10, 0);
 
     $this->postJson('/api/v1/bookings', [

@@ -25,7 +25,7 @@ final class BarberProfileSnapshotBuilder
             'is_freelancer' => (bool) $barber->is_freelancer,
             'travel_radius_km' => $barber->travel_radius_km !== null ? (float) $barber->travel_radius_km : null,
             'rating' => [
-                'average' => $barber->rating_avg !== null ? (float) $barber->rating_avg : null,
+                'average' => $barber->rating_average !== null ? (float) $barber->rating_average : null,
                 'count' => (int) ($barber->rating_count ?? 0),
             ],
             'portfolio' => $barber->portfolioPhotos->map(fn (BarberPortfolioPhotoModel $photo): array => [
@@ -37,7 +37,7 @@ final class BarberProfileSnapshotBuilder
                 'name' => $service->name,
                 'price_amount_minor' => (int) $service->price_amount_minor,
                 'currency_code' => $service->currency_code,
-                'duration' => $service->duration,
+                'duration_minutes' => $service->duration_minutes,
             ])->all(),
         ];
     }

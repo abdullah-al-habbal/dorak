@@ -71,7 +71,7 @@ export function resetValuesFor(
     return {
       name: current.name,
       price: fromMinorUnits(current.priceAmountMinor),
-      duration: current.duration,
+      durationMinutes: current.durationMinutes,
       currencyCode: current.currencyCode,
       isActive: current.isActive,
       isAtHome: current.isAtHome,

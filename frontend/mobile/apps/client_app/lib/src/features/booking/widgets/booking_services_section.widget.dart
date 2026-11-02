@@ -27,7 +27,7 @@ class BookingServicesSection extends StatelessWidget {
     );
     final totalDuration = booking.services.fold<int>(
       0,
-      (total, service) => total + (service.duration ?? 0),
+      (total, service) => total + (service.durationMinutes ?? 0),
     );
     return BookingDetailsSection(
       title: l10n.bookingSelectServices,

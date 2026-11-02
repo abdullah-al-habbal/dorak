@@ -24,7 +24,7 @@ it('lists barber services', function () {
 
     $response->assertOk();
     expect($response->json('data'))->toHaveCount(3);
-    expect($response->json('data.0'))->toHaveKeys(['id', 'name', 'price_amount_minor', 'currency_code', 'duration']);
+    expect($response->json('data.0'))->toHaveKeys(['id', 'name', 'price_amount_minor', 'currency_code', 'duration_minutes']);
 });
 
 it('returns empty list when barber has no services', function () {

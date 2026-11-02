@@ -12,7 +12,7 @@ final class GetDiscoveryPreferenceEloquentResolver
     {
         return ClientDiscoveryPreferenceModel::firstOrCreate(
             ['client_id' => $clientId],
-            ['default_radius_km' => 50.0, 'show_unavailable' => true],
+            ['default_radius_km' => 50.0, 'allows_unavailable_results' => true],
         );
     }
 }

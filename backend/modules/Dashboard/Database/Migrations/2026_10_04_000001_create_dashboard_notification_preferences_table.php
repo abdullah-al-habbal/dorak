@@ -14,10 +14,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('actor_type');
             $table->uuid('actor_id');
-            $table->boolean('email_enabled')->default(true);
-            $table->boolean('push_enabled')->default(true);
-            $table->boolean('booking_enabled')->default(true);
-            $table->boolean('system_enabled')->default(true);
+            $table->boolean('allows_email_notifications')->default(true);
+            $table->boolean('allows_push_notifications')->default(true);
+            $table->boolean('allows_booking_notifications')->default(true);
+            $table->boolean('allows_system_notifications')->default(true);
             $table->timestamps();
             $table->unique(['actor_type', 'actor_id']);
         });

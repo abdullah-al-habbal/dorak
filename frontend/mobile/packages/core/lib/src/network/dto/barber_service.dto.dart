@@ -11,7 +11,7 @@ class BarberServiceDto {
   final String? description;
   final int priceAmountMinor;
   final String? currencyCode;
-  final int? duration;
+  final int? durationMinutes;
   final bool isAtHome;
   final bool active;
   final DateTime? createdAt;
@@ -19,7 +19,7 @@ class BarberServiceDto {
   @JsonKey(defaultValue: false)
   final bool conversionUnavailable;
   @JsonKey(defaultValue: false)
-  final bool isDualPriceDisplayEnabled;
+  final bool allowsDualPriceDisplay;
 
   const BarberServiceDto({
     required this.id,
@@ -27,13 +27,13 @@ class BarberServiceDto {
     this.description,
     this.priceAmountMinor = 0,
     this.currencyCode,
-    this.duration,
+    this.durationMinutes,
     this.isAtHome = false,
     this.active = true,
     this.createdAt,
     this.displayPrice,
     this.conversionUnavailable = false,
-    this.isDualPriceDisplayEnabled = false,
+    this.allowsDualPriceDisplay = false,
   });
 
   factory BarberServiceDto.fromJson(Map<String, dynamic> json) =>

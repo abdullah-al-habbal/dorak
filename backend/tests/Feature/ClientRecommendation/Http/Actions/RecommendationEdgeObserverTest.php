@@ -6,7 +6,7 @@ use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
-use Modules\ClientInteraction\Enums\FavorableTypeEnum;
+use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 use Modules\ClientInteraction\Models\ClientFavoriteModel;
 use Modules\ClientRecommendation\Enums\EdgeTypeEnum;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
@@ -17,8 +17,8 @@ it('creates recommendation edge when favorite is added', function () {
 
     $this->actingAs($client, 'client')
         ->postJson('/api/v1/client/favorites', [
-            'favorable_id' => $brand->id,
-            'favorable_type' => FavorableTypeEnum::Brand,
+            'favorited_id' => $brand->id,
+            'favorited_type' => FavoritedTypeEnum::Brand,
         ]);
 
     $edge = RecommendationEdgeModel::where('source_type', 'client')
@@ -38,8 +38,8 @@ it('removes recommendation edge when favorite is removed', function () {
 
     $this->actingAs($client, 'client')
         ->postJson('/api/v1/client/favorites', [
-            'favorable_id' => $brand->id,
-            'favorable_type' => FavorableTypeEnum::Brand,
+            'favorited_id' => $brand->id,
+            'favorited_type' => FavoritedTypeEnum::Brand,
         ]);
 
     $fav = ClientFavoriteModel::where('client_id', $client->id)->first();
@@ -76,8 +76,8 @@ it('can run recompute command on client with signals', function () {
 
     $this->actingAs($client, 'client')
         ->postJson('/api/v1/client/favorites', [
-            'favorable_id' => $brand->id,
-            'favorable_type' => FavorableTypeEnum::Brand,
+            'favorited_id' => $brand->id,
+            'favorited_type' => FavoritedTypeEnum::Brand,
         ]);
 
     $this->artisan('recommend:recompute-vectors', [

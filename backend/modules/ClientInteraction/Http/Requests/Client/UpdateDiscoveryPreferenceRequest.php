@@ -18,7 +18,7 @@ final class UpdateDiscoveryPreferenceRequest extends BaseApiFormRequest
             'default_radius_km' => ['sometimes', 'numeric', 'min:1', 'max:1000'],
             'hidden_brand_ids' => ['sometimes', 'array'],
             'hidden_brand_ids.*' => ['string'],
-            'show_unavailable' => ['sometimes', 'boolean'],
+            'allows_unavailable_results' => ['sometimes', 'boolean'],
         ];
     }
 
@@ -31,7 +31,7 @@ final class UpdateDiscoveryPreferenceRequest extends BaseApiFormRequest
             preferredUniverse: isset($data['preferred_universe']) ? UniverseEnum::from($data['preferred_universe']) : null,
             defaultRadiusKm: isset($data['default_radius_km']) ? (float) $data['default_radius_km'] : null,
             hiddenBrandIds: $data['hidden_brand_ids'] ?? null,
-            showUnavailable: $data['show_unavailable'] ?? null,
+            allowsUnavailableResults: $data['allows_unavailable_results'] ?? null,
         );
     }
 }
