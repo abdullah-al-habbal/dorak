@@ -746,6 +746,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get historyAttachPhotoAction => 'أضف صورة';
 
   @override
+  String get historyMediaTypeTitle => 'ما نوع هذه الصورة؟';
+
+  @override
+  String get historyMediaTypeBefore => 'قبل';
+
+  @override
+  String get historyMediaTypeAfter => 'بعد';
+
+  @override
+  String get historyMediaTypeReference => 'مرجع';
+
+  @override
+  String get historyMediaTypeContinue => 'متابعة';
+
+  @override
   String get historyAttachPhotoFailed => 'تعذّرت إضافة الصورة. حاول مرة أخرى.';
 
   @override

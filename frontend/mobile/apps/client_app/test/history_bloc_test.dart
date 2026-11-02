@@ -229,6 +229,19 @@ void main() {
 
   group('HistoryMediaAttachRequested', () {
     blocTest<HistoryBloc, HistoryState>(
+      'forwards the photo type the client chose',
+      build: bloc,
+      act: (bloc) => bloc.add(
+        const HistoryMediaAttachRequested(
+          id: 'history-1',
+          photoPath: '/tmp/cut.jpg',
+          photoType: HistoryMediaType.before,
+        ),
+      ),
+      verify: (_) => expect(repository.lastAttachType, 'before'),
+    );
+
+    blocTest<HistoryBloc, HistoryState>(
       'attaches the photo and reports success',
       build: bloc,
       act: (bloc) => bloc.add(

@@ -750,6 +750,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyAttachPhotoAction => 'Add photo';
 
   @override
+  String get historyMediaTypeTitle => 'What kind of photo is this?';
+
+  @override
+  String get historyMediaTypeBefore => 'Before';
+
+  @override
+  String get historyMediaTypeAfter => 'After';
+
+  @override
+  String get historyMediaTypeReference => 'Reference';
+
+  @override
+  String get historyMediaTypeContinue => 'Continue';
+
+  @override
   String get historyAttachPhotoFailed =>
       'The photo could not be added. Try again.';
 

@@ -1442,6 +1442,36 @@ abstract class AppLocalizations {
   /// **'Add photo'**
   String get historyAttachPhotoAction;
 
+  /// Title of the sheet asking what kind of photo is being added
+  ///
+  /// In en, this message translates to:
+  /// **'What kind of photo is this?'**
+  String get historyMediaTypeTitle;
+
+  /// Photo type: taken before the service
+  ///
+  /// In en, this message translates to:
+  /// **'Before'**
+  String get historyMediaTypeBefore;
+
+  /// Photo type: the result after the service
+  ///
+  /// In en, this message translates to:
+  /// **'After'**
+  String get historyMediaTypeAfter;
+
+  /// Photo type: inspiration or reference image
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get historyMediaTypeReference;
+
+  /// Button that confirms the photo type and opens the photo picker
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get historyMediaTypeContinue;
+
   /// Shown when attaching a photo to a history entry fails
   ///
   /// In en, this message translates to:

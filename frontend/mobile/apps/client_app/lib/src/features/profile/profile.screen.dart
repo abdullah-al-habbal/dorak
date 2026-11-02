@@ -14,12 +14,12 @@ import 'package:client_app/src/features/profile/face_analysis.event.dart';
 import 'package:client_app/src/features/profile/face_analysis.state.dart';
 import 'package:client_app/src/features/profile/history.bloc.dart';
 import 'package:client_app/src/features/profile/history.event.dart';
-import 'package:client_app/src/features/profile/history_media_type.entity.dart';
 import 'package:client_app/src/features/profile/history.state.dart';
 import 'package:client_app/src/features/profile/photo_picker.provider.dart';
 import 'package:client_app/src/features/profile/widgets/curated_card.widget.dart';
 import 'package:client_app/src/features/profile/widgets/face_card.widget.dart';
 import 'package:client_app/src/features/profile/widgets/history_feed.widget.dart';
+import 'package:client_app/src/features/profile/widgets/history_media_type_sheet.widget.dart';
 import 'package:client_app/src/features/profile/widgets/profile_header.widget.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -80,13 +80,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _attachPhoto(ServiceHistoryDto item) async {
+    final photoType = await HistoryMediaTypeSheet.show(context);
+    if (photoType == null || !mounted) return;
     final path = await widget.photoPicker.pickPhoto();
     if (path == null || !mounted) return;
     widget.history.add(
       HistoryMediaAttachRequested(
         id: item.id,
         photoPath: path,
-        photoType: HistoryMediaType.after,
+        photoType: photoType,
       ),
     );
   }

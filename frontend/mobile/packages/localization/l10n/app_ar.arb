@@ -861,6 +861,26 @@
   "@historyAttachPhotoAction": {
     "description": "Button on a history entry that attaches a photo of the result"
   },
+  "historyMediaTypeTitle": "ما نوع هذه الصورة؟",
+  "@historyMediaTypeTitle": {
+    "description": "Title of the sheet asking what kind of photo is being added"
+  },
+  "historyMediaTypeBefore": "قبل",
+  "@historyMediaTypeBefore": {
+    "description": "Photo type: taken before the service"
+  },
+  "historyMediaTypeAfter": "بعد",
+  "@historyMediaTypeAfter": {
+    "description": "Photo type: the result after the service"
+  },
+  "historyMediaTypeReference": "مرجع",
+  "@historyMediaTypeReference": {
+    "description": "Photo type: inspiration or reference image"
+  },
+  "historyMediaTypeContinue": "متابعة",
+  "@historyMediaTypeContinue": {
+    "description": "Button that confirms the photo type and opens the photo picker"
+  },
   "historyAttachPhotoFailed": "تعذّرت إضافة الصورة. حاول مرة أخرى.",
   "@historyAttachPhotoFailed": {
     "description": "Shown when attaching a photo to a history entry fails"
