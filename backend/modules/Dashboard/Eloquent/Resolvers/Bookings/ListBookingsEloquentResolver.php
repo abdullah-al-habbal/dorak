@@ -21,6 +21,13 @@ final class ListBookingsEloquentResolver
             ->when(isset($filters['booking_status']), fn ($builder) => $builder->where('booking_status', $filters['booking_status']))
             ->when(isset($filters['date_from']), fn ($builder) => $builder->where('starts_at', '>=', $filters['date_from']))
             ->when(isset($filters['date_to']), fn ($builder) => $builder->where('starts_at', '<=', $filters['date_to']))
+            ->when(isset($filters['search']), fn ($builder) => $builder->whereHas(
+                'client',
+                fn ($client) => $client->where(
+                    fn ($name) => $name->where('name->en', 'like', "%{$filters['search']}%")
+                        ->orWhere('name->ar', 'like', "%{$filters['search']}%"),
+                ),
+            ))
             ->latest('starts_at')->paginate((int) ($filters['per_page'] ?? 15));
     }
 }

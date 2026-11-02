@@ -82,6 +82,22 @@ describe("EntityListPage (bookings)", () => {
       expect.objectContaining({ chairId: "chair-1" }),
     );
   });
+
+  it("sends the client-name search for bookings", async () => {
+    const user = userEvent.setup();
+    renderList();
+    await screen.findByRole("link", { name: "Details" });
+    vi.mocked(getDashboardList).mockClear();
+
+    await user.type(screen.getByLabelText("Search records"), "sara");
+
+    await vi.waitFor(() =>
+      expect(getDashboardList).toHaveBeenLastCalledWith(
+        "bookings",
+        expect.objectContaining({ search: "sara" }),
+      ),
+    );
+  });
 });
 
 describe("EntityListPage (branches search)", () => {

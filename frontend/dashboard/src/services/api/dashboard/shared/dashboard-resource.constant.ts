@@ -9,8 +9,8 @@ export const DASHBOARD_RESOURCES = [
 
 /**
  * Resources with free-text `search` support on the dashboard list endpoint.
- * Bookings has no free-text search; it gets dedicated status/date/chair/stylist
- * filters instead (see entity-list-page.tsx).
+ * Bookings search matches the client name only (not email); status/date/chair/
+ * stylist have dedicated filters (see entity-list-page.tsx).
  */
 export const DASHBOARD_RESOURCE_SEARCH_SUPPORT: Record<
   Exclude<(typeof DASHBOARD_RESOURCES)[number], "overview">,
@@ -20,7 +20,7 @@ export const DASHBOARD_RESOURCE_SEARCH_SUPPORT: Record<
   chairs: true,
   services: true,
   stylists: true,
-  bookings: false,
+  bookings: true,
 };
 
 /** Dashboard BFF route roots. Includes non-entity account endpoints. */

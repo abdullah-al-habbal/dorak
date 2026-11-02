@@ -18,9 +18,6 @@ Routes: [documentation graph](index.md).
 ## Task 04: Restrict Service Catalog Mutations to Admins
 - [ ] Decision required: whether branches may **propose** catalog items for admin approval. If yes, this becomes a separate endpoint and is out of scope here.
 
-## Task 71: Enable List Search and Filters
-- [ ] [NEEDSHIL] Bookings: keep the existing filters only (status, date range, chair, stylist — now wired end to end). Free-text `search` on client name/email was left out: it is a genuine product choice (what to match on, and whether a manager should be able to search by a client's email) with no code or doc answering it, not something inferable from the spec or codebase.
-
 ## Task 79: Add Client Barber Discovery and Direct Booking
 - [ ] [NEEDSHIL] Freelancer-only barbers (no branch workplace) have no booking entry yet: the CTA is disabled with a hint. Needs a product decision on a dedicated at-home booking screen for freelancers, since `BranchDetailBloc` requires a branch.
 

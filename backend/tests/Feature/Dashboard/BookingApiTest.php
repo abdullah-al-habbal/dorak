@@ -8,6 +8,7 @@ use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 describe('Dashboard Booking API', function (): void {
@@ -24,6 +25,24 @@ describe('Dashboard Booking API', function (): void {
         $this->getJson('/api/v1/dashboard/bookings?booking_status=pending&chair_id='.$ownChair->id)
             ->assertOk()
             ->assertJsonCount(1, 'data');
+    });
+
+    it('searches bookings by client name with partial and empty matches', function (): void {
+        $branch = BranchModel::factory()->create();
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
+        $otherChair = ChairModel::factory()->create(['branch_id' => BranchModel::factory()->create()->id]);
+        $sara = ClientModel::factory()->create(['name' => ['en' => 'Sara Ahmed', 'ar' => 'سارة أحمد']]);
+        $omar = ClientModel::factory()->create(['name' => ['en' => 'Omar Khaled', 'ar' => 'عمر خالد']]);
+        $outsider = ClientModel::factory()->create(['name' => ['en' => 'Sara Outside', 'ar' => 'سارة']]);
+        BookingModel::factory()->create(['chair_id' => $chair->id, 'client_id' => $sara->id]);
+        BookingModel::factory()->create(['chair_id' => $chair->id, 'client_id' => $omar->id]);
+        BookingModel::factory()->create(['chair_id' => $otherChair->id, 'client_id' => $outsider->id]);
+        $this->authenticateDashboardActor($branch);
+
+        $this->getJson('/api/v1/dashboard/bookings?search=Sara Ahmed')->assertOk()->assertJsonCount(1, 'data');
+        $this->getJson('/api/v1/dashboard/bookings?search=sar')->assertOk()->assertJsonCount(1, 'data');
+        $this->getJson('/api/v1/dashboard/bookings?search='.rawurlencode('عمر'))->assertOk()->assertJsonCount(1, 'data');
+        $this->getJson('/api/v1/dashboard/bookings?search=nobody')->assertOk()->assertJsonCount(0, 'data');
     });
 
     it('allows a manager to cancel only a booking in its branch', function (): void {

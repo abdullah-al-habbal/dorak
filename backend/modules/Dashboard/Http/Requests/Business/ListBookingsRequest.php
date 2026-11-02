@@ -18,6 +18,7 @@ final class ListBookingsRequest extends BaseApiFormRequest
             'date_to' => ['nullable', 'date', 'after_or_equal:date_from'],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
             'booking_status' => ['nullable', Rule::enum(BookingStatus::class)],
+            'search' => ['nullable', 'string', 'max:100'],
             'stylist_id' => ['nullable', 'uuid'],
         ];
     }
