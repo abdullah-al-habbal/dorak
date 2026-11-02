@@ -10,6 +10,8 @@ Part 2 of 2 · [AGENTS.md — apps/business_app](AGENTS.md) · [Previous](AGENTS
 
 ## 2. What it is meant to become
 
+> Historical: the app now exists (see [`AGENTS.md`](AGENTS.md)). Sections 2–3 predate it.
+
 The business-owner app: branch and brand management, staff, bookings, reports
 (per its own feature index). None of it is specced — there are no Stitch
 exports for business screens, and no mobile-reviewed backend contract.

@@ -18,24 +18,16 @@ Current state: [`AGENTS.md`](./AGENTS.md).
 
 The business-owner app: branch and brand management, staff, bookings, reports.
 
-**It is an untouched `flutter create` counter stub.** Nothing below describes
-existing code — it is the contract for when work starts.
+**It is a working app** (see [`AGENTS.md`](./AGENTS.md) for the current
+inventory). Sections 2–3 are the contract that code follows.
 
 ## 2. Dependency ceiling
 
 Permitted: `core`, `design_system`, `localization` as workspace path
 dependencies, plus third-party packages.
 
-**It currently declares none of them** — only `flutter`, `cupertino_icons` and
-`flutter_dotenv`. Add them when implementation begins:
-
-```yaml
-dependencies:
-  core: {path: ../../packages/core}
-  design_system: {path: ../../packages/design_system}
-  localization: {path: ../../packages/localization}
-  flutter_localizations: {sdk: flutter}
-```
+It declares all three as workspace path dependencies, plus
+`flutter_localizations`.
 
 Forbidden: importing `client_app` or `stylist_app`, and importing any package's
 `src/` directly — go through its barrel.

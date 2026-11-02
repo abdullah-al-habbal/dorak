@@ -12,7 +12,8 @@ codeanchors:
 
 # AGENTS.md — `apps/business_app`
 
-**Status: `flutter create` counter stub. No Dorak features exist.**
+**Status (2026-11-03): a working branch-manager app.** It signs in through
+`POST /branch/login` (`auth:branch_api`) and covers day-to-day operations.
 
 Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md)
 · Files: [`docs/feature-index.md`](./docs/feature-index.md)
@@ -22,38 +23,23 @@ Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md
 ## 1. What is actually here
 
 ```
-lib/main.dart                 67 lines — MyApp + MyHomePage + _counter
-test/widget_test.dart         the default counter test
-.env / .env.example           present, and dotenv IS loaded
-docs/feature-index.md         records "App is a skeleton"
+lib/main.dart                         bootstrap: dotenv, then DorakBusinessApp
+lib/app.dart                          DI, StaffSessionBloc, realtime, push
+lib/src/core/navigation/              go_router + app_routes.entity.dart
+lib/src/features/                     affiliations, auth, barbers, floor_plan,
+                                      jobs, operations, profile, reviews, shared
 ```
 
-That is the entire app. `main.dart` is the stock Flutter demo with exactly one
-edit — `main()` is `Future<void>` and awaits `dotenv.load()`:
+Routes: `/login`, `/operations` (dashboard, bookings, chairs), `/barbers/new`,
+`/floor-plan` (preset only), `/affiliations`, `/jobs` (+ `/new`, edit,
+applicants), `/profile`, `/reviews` (read only).
 
-```dart
-Future<void> main() async {
-  await dotenv.load();
-  runApp(const MyApp());
-}
-```
+It depends on `core`, `design_system` and `localization`.
 
-`.env` carries the same backend URLs as the other apps:
-
-```
-API_BASE_URL=https://dev-dorak-backend.io/api
-API_BASE_URL_V1=https://dev-dorak-backend.io/api/v1
-```
-
-...but nothing reads them — `ConfigProvider` lives in `core`, and this app does
-not depend on `core`.
-
-**Its `pubspec.yaml` declares no workspace packages**: no `core`, no
-`design_system`, no `localization`. It is in the Melos workspace and passes the
-gate only because it is untouched.
-
-> `docs/feature-index.md` claims `main.dart` boots `DorakApp`. It does not — it
-> boots `MyApp`. The doc is wrong.
+**Not built yet** (the backend routes mostly exist): opening hours and hours
+overrides, services and pricing, a staff list, review disputes, settings and
+the notification inbox. See the
+[product audit](../../../../docs/planning/product-audit-part-3.md), G10.
 
 ## Continued in
 

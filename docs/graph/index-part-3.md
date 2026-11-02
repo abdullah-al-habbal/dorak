@@ -27,6 +27,9 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 
 ### `docs/planning/`
 
+- [Product Audit](../planning/product-audit.md)
+- [Product Audit: Matrix](../planning/product-audit-part-2.md)
+- [Product Audit: Findings](../planning/product-audit-part-3.md)
 - [Remediation Plan](../planning/remediation-plan.md)
 
 ### `frontend/dashboard/`

@@ -13,10 +13,10 @@ codeanchors:
 ---
 
 ### Bootstrap
-- `lib/main.dart` — `DorakApp` entry point only.
+- `lib/main.dart` — bootstrap; `lib/app.dart` holds `StylistApp`.
 
 ### Features
-- None yet. App is a skeleton.
+- Auth and sign-up, today/operations, schedule, portfolio, profile, affiliations, jobs. See [`AGENTS.md`](../AGENTS.md).
 
 ---
 

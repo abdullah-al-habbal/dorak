@@ -12,9 +12,8 @@ codeanchors:
 
 # AGENTS.md — `apps/stylist_app`
 
-**Status (2026-10-22): login, session, today/operations screen and barber self
-sign-up exist. Sections 2–3 below predate that and are kept for history; audit
-against the code (Task 82/87).**
+**Status (2026-11-03): a working barber/stylist app.** Sections 2–3 below
+predate that and are kept for history.
 
 Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md)
 · Files: [`docs/feature-index.md`](./docs/feature-index.md)
@@ -25,13 +24,17 @@ Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md
 
 ```
 lib/main.dart                               bootstrap
-lib/app.dart                                StylistApp: ApiClient, StaffSessionBloc, StylistBloc,
-                                            StylistSignUpBloc, realtime, push (constructor DI)
-lib/src/core/navigation/app.router.dart     go_router: /login, /signup (public), /home
-lib/src/features/auth/                      stylist_login.screen, stylist_sign_up.{screen,bloc,state},
-                                            stylist_sign_up_step.entity
-lib/src/features/operations/                stylist.{screen,bloc,state} — today + workstation
+lib/app.dart                                StylistApp: ApiClient, session, blocs, realtime, push
+lib/src/core/navigation/app.router.dart     /login, /signup (public); /home and its children:
+                                            schedule, portfolio, profile, affiliations,
+                                            jobs (+ applications, :jobId)
+lib/src/features/                           affiliations, auth, jobs, operations, portfolio,
+                                            profile, schedule, shared
 ```
+
+**Not built yet:** history media upload, booking history beyond today, offered
+service editing, the notification inbox, settings and earnings. See the
+[product audit](../../../../docs/planning/product-audit-part-3.md), G1 and G11.
 
 ### Self sign-up (Task 37)
 
