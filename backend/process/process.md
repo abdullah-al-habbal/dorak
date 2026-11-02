@@ -1,8 +1,7 @@
 ---
 nodeid: backend.process
 parentnode: backend.guide
-childnodes:
-  - backend.process.kanban
+childnodes: []
 codeanchors:
   - backend/modules/
 ---
@@ -72,7 +71,7 @@ This is the operational heart. Each phase has clear **inputs** (docs it reads), 
 | 2 | **Research** | De‑risk unknowns (libraries, approaches, local constraints) | `02`, `08`, web | *research notes*; **new edge cases → `08`** | — |
 | 3 | **Prototype** | A throwaway spike to validate the riskiest assumption | `06`, `07` | a spike (then **archived**) | type‑safety (loose), archive‑file |
 | 4 | **PRD (slice)** | Freeze the *feature‑sized* spec | `01`,`02`,`04`,`06`,`07` | a **feature‑PRD slice**; update `02`/`04`/`06`/`07` as needed | — |
-| 5 | **Kanban** | Decompose the slice into small tickets | `02`,`04`,`07`,`08` | tickets in `process/kanban.md` with acceptance criteria | — |
+| 5 | **Kanban** | Decompose the slice into small tickets | `02`,`04`,`07`,`08` | tickets with acceptance criteria | — |
 | 6 | **Ralph Loop** | Build each ticket via the iteration engine | `06`,`04`,`07` + **all skills** | code, migrations, tests | **all baseline skills** |
 | 7 | **QA** | Verify the built feature against the spec | `04`,`08`,`07`, acceptance | QA report; move tickets → Done | testing, validations |
 
@@ -126,7 +125,7 @@ The skills are the **engineering harness**. They are not generic Laravel tips �
 
 ## 6. The Kanban — the bridge from spec to execution
 
-CRESCENT phase 5 produces the board; phase 6 consumes it; phase 7 closes it. Full board model + ticket template + a worked example live in `process/kanban.md`. The essential idea:
+CRESCENT phase 5 produces the board; phase 6 consumes it; phase 7 closes it. The essential idea:
 
 - A ticket is **small** (one loop pass should plausibly finish it).
 - A ticket **carries its doc IDs** — the entity it touches (`06`), the rules it must satisfy (`04`), the flow it implements (`07`), the edge cases it must cover (`08`).
@@ -147,7 +146,6 @@ repo-root/
 │   └── {Brand,Branch,Chair,Barber,Booking,...}/   # Action/Handler/EloquentResolver + Filament + lang
 ├── process/                       # CRESCENT process layer
 │   ├── process.md                 # this file — the wiring diagram
-│   └── kanban.md                  # board model + ticket template + example
 └── .claude/
     └── skills/
         ├── crescent/
@@ -185,4 +183,4 @@ Everything in the docs flagged 🟡 (`02-prd.md` §8) remains **off‑limits to 
 
 Your 11 docs are the **specification**. **CRESCENT** is the **sequence** that writes that spec down (Idea→Research→Prototype→PRD), turns it into work (Kanban), builds it (the Ralph **loop**), and checks it back against itself (QA). The **baseline Laravel skills** are the **standards** the loop must obey, and each one is anchored to a specific part of the spec — so house rules become tests, entities become schema, and flows become feature tests. The harness is everything the agent reads (docs + skills); the loop is the motor; CRESCENT is the gearbox that puts them in the right order.
 
-**See also:** `.claude/skills/crescent/SKILL.md` (the runnable orchestrator), `process/kanban.md` (the board + ticket template), `.claude/skills/laravel-baseline/README.md` (the standards index).
+**See also:** `.claude/skills/crescent/SKILL.md` (the runnable orchestrator), `.claude/skills/laravel-baseline/README.md` (the standards index).

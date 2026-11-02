@@ -5,6 +5,7 @@ childnodes:
   - mobile.packages.localization.changelog
   - mobile.packages.localization.claude
   - mobile.packages.localization.readme
+  - mobile.packages.localization.references.keys
 codeanchors:
   - frontend/mobile/packages/localization/lib/
 ---

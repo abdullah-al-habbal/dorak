@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.references.tests
+parentnode: mobile.apps.client-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 8. Tests — 145, in `test/`

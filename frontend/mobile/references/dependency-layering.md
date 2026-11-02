@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.dependency-layering
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../CLAUDE.md`](../CLAUDE.md).
 
 ## 2. Package Dependency & Layering Hierarchy

@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.core.references.state-management
+parentnode: mobile.packages.core
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # State management
 
 Referenced from [`../CLAUDE.md`](../CLAUDE.md) §5.

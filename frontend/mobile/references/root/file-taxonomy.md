@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.root.file-taxonomy
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 
 ## 4. File taxonomy

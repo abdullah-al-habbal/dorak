@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.references.decisions
+parentnode: mobile.apps.client-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 7. Decisions that are not in the code

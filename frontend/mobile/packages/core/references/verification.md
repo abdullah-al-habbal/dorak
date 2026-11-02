@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.core.references.verification
+parentnode: mobile.packages.core
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 # Verification
 
 Referenced from [`../CLAUDE.md`](../CLAUDE.md) §6.

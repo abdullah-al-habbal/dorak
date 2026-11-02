@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.root.design-system
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 
 ## 10. Design system — reuse, do not recreate

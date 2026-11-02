@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.localization.references.keys
+parentnode: mobile.packages.localization
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/localization/lib/
+---
+
 Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 3. The 200 keys

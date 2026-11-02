@@ -13,7 +13,7 @@ Tests are how the **specification becomes executable**. This skill turns the doc
 
 > **Every house rule (`docs/04`) → at least one test. Every edge case (`docs/08`) → a test. Every user flow (`docs/07`) → a feature test.**
 
-A ticket is **not Done** until every house rule and edge case it cites (`process/kanban.md`) has a passing test. QA (CRESCENT phase 7) is just confirming these exist and pass.
+A ticket is **not Done** until every house rule and edge case it cites has a passing test. QA (CRESCENT phase 7) is just confirming these exist and pass.
 
 ## What to test, by source doc
 
@@ -65,7 +65,7 @@ Showing the pattern for a few rules; apply the same translation to all cited rul
 
 ## Boundaries
 
-- **Don't** write tests for 🟡 *Open* behavior (`02` §8) — that work is Blocked until the human decides. Test only the ✅ *Decided* half (mirrors how tickets split at the 🟡 boundary, see `process/kanban.md` BK-01).
+- **Don't** write tests for 🟡 *Open* behavior (`02` §8) — that work is Blocked until the human decides. Test only the ✅ *Decided* half (mirrors how tickets split at the 🟡 boundary).
 - **Don't** assert implementation details the docs don't fix (e.g., whether the floor plan is stored vs computed — `06`/`10` leave that open).
 
 ## When this skill applies in the loop

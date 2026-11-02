@@ -5,6 +5,11 @@ childnodes:
   - mobile.apps.client-app.claude
   - mobile.apps.client-app.feature-index
   - mobile.apps.client-app.readme
+  - mobile.apps.client-app.references.bootstrap-and-flows
+  - mobile.apps.client-app.references.decisions
+  - mobile.apps.client-app.references.feature-status
+  - mobile.apps.client-app.references.tests
+  - mobile.apps.client-app.references.verification
   - mobile.apps.client-app.runtime.app-lifecycle
 codeanchors:
   - frontend/mobile/apps/client_app/lib/

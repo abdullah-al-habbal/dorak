@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.root.where-new-code-goes
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 
 ## 14. Where does new code go?

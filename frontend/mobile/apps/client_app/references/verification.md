@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.references.verification
+parentnode: mobile.apps.client-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 # Verification
 
 Referenced from [`../CLAUDE.md`](../CLAUDE.md) §6.

@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.root.backend-contract
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 
 ## 8. Backend contract and its known defects

@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.references.bootstrap-and-flows
+parentnode: mobile.apps.client-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 2. Bootstrap

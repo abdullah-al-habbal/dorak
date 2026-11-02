@@ -5,6 +5,14 @@ childnodes:
   - mobile.packages.core.changelog
   - mobile.packages.core.claude
   - mobile.packages.core.readme
+  - mobile.packages.core.references.gotchas
+  - mobile.packages.core.references.networking
+  - mobile.packages.core.references.repositories
+  - mobile.packages.core.references.session
+  - mobile.packages.core.references.state-management
+  - mobile.packages.core.references.storage
+  - mobile.packages.core.references.tests
+  - mobile.packages.core.references.verification
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

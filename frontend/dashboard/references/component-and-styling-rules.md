@@ -1,3 +1,11 @@
+---
+nodeid: dashboard.references.component-and-styling-rules
+parentnode: dashboard.guide
+childnodes: []
+codeanchors:
+  - frontend/dashboard/src/
+---
+
 # Styling & component rules
 
 Referenced from [`../AGENTS.md`](../AGENTS.md).

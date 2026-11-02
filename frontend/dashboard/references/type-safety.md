@@ -1,3 +1,11 @@
+---
+nodeid: dashboard.references.type-safety
+parentnode: dashboard.guide
+childnodes: []
+codeanchors:
+  - frontend/dashboard/src/
+---
+
 # Type safety & code quality
 
 Referenced from [`../AGENTS.md`](../AGENTS.md).

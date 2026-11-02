@@ -10,6 +10,26 @@ childnodes:
   - mobile.packages.core
   - mobile.packages.design-system
   - mobile.packages.localization
+  - mobile.references.codegen-policy
+  - mobile.references.commands
+  - mobile.references.dependency-layering
+  - mobile.references.file-taxonomy
+  - mobile.references.root.backend-contract
+  - mobile.references.root.commands
+  - mobile.references.root.core-architecture
+  - mobile.references.root.decisions
+  - mobile.references.root.design-system
+  - mobile.references.root.feature-inventory
+  - mobile.references.root.file-taxonomy
+  - mobile.references.root.known-limitations
+  - mobile.references.root.localization
+  - mobile.references.root.non-negotiable-rules
+  - mobile.references.root.per-unit-docs
+  - mobile.references.root.repository-shape
+  - mobile.references.root.testing-conventions
+  - mobile.references.root.where-new-code-goes
+  - mobile.references.state-and-navigation
+  - mobile.references.type-safety
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/

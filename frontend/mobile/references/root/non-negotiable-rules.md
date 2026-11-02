@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.root.non-negotiable-rules
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 
 ## 3. Non-negotiable rules

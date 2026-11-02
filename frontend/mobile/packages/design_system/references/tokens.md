@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.design-system.references.tokens
+parentnode: mobile.packages.design-system
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/design_system/lib/
+---
+
 Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 2. Tokens

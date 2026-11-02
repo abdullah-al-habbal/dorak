@@ -1,3 +1,11 @@
+---
+nodeid: dashboard.references.file-taxonomy
+parentnode: dashboard.guide
+childnodes: []
+codeanchors:
+  - frontend/dashboard/src/
+---
+
 # File taxonomy
 
 Referenced from [`../AGENTS.md`](../AGENTS.md).

@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.commands
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../CLAUDE.md`](../CLAUDE.md).
 
 ## 4. Development & Build Commands

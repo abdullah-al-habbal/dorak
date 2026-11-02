@@ -5,6 +5,9 @@ childnodes:
   - mobile.packages.design-system.changelog
   - mobile.packages.design-system.claude
   - mobile.packages.design-system.readme
+  - mobile.packages.design-system.references.gotchas-and-missing
+  - mobile.packages.design-system.references.tokens
+  - mobile.packages.design-system.references.widgets
 codeanchors:
   - frontend/mobile/packages/design_system/lib/
 ---

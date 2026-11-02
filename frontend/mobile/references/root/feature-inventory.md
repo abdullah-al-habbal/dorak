@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.root.feature-inventory
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 
 ## 7. Feature inventory

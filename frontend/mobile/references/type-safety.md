@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.type-safety
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../CLAUDE.md`](../CLAUDE.md).
 
 ## 3c. Type Safety & Quality Governance

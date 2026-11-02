@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.codegen-policy
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../CLAUDE.md`](../CLAUDE.md).
 
 ## 4b. Code Generation Policy (mandatory)

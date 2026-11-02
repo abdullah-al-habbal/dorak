@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.file-taxonomy
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../CLAUDE.md`](../CLAUDE.md).
 
 ### Mandatory Role Suffix Reference

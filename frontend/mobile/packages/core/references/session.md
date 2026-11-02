@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.core.references.session
+parentnode: mobile.packages.core
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 5. Session

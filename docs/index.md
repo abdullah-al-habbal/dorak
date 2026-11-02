@@ -38,7 +38,7 @@ graph TD
 
 ## Document nodes
 
-Entries are grouped by repository-relative folder. Every listed file is reachable from this index. Skill internals (`.claude/`), `references/` folders, and native platform asset READMEs are intentionally not listed.
+Entries are grouped by repository-relative folder. Every listed file is reachable from this index. Skill internals (`.claude/`), `references/` folders (linked from their parent guides), and native platform asset READMEs are intentionally not listed.
 
 ### `./`
 
@@ -74,29 +74,6 @@ Entries are grouped by repository-relative folder. Every listed file is reachabl
 - [Readme](../backend/docs/README.md)
 - [Feature Index](../backend/docs/feature-index.md)
 
-### `backend/docs/features/`
-
-- [Be 01 Core Infrastructure](../backend/docs/features/be-01-core-infrastructure.md)
-- [Be 02 Client Auth](../backend/docs/features/be-02-client-auth.md)
-- [Be 03 Explore Api](../backend/docs/features/be-03-explore-api.md)
-- [Be 04 Floor Plan Booking](../backend/docs/features/be-04-floor-plan-booking.md)
-- [Be 05 Review Api](../backend/docs/features/be-05-review-api.md)
-- [Be 06 Brand Api](../backend/docs/features/be-06-brand-api.md)
-- [Be 07 Barber Affiliation Api](../backend/docs/features/be-07-barber-affiliation-api.md)
-- [Be 08 Job Posting Api](../backend/docs/features/be-08-job-posting-api.md)
-- [Be 09 Admin Activation Api](../backend/docs/features/be-09-admin-activation-api.md)
-- [Be 10 Chair Api](../backend/docs/features/be-10-chair-api.md)
-- [Be 11 Service Catalog Module](../backend/docs/features/be-11-service-catalog-module.md)
-- [Be 12 Client History Module](../backend/docs/features/be-12-client-history-module.md)
-- [Be 13 Client Face Profile Module](../backend/docs/features/be-13-client-face-profile-module.md)
-- [Be 14 Client Interaction Module](../backend/docs/features/be-14-client-interaction-module.md)
-- [Be 15 Recommendation Module](../backend/docs/features/be-15-recommendation-module.md)
-- [Be 16 Ai Sdk Postgresql Setup](../backend/docs/features/be-16-ai-sdk-postgresql-setup.md)
-- [Be 17 Explore Enhancements](../backend/docs/features/be-17-explore-enhancements.md)
-- [Be 18 Context Driven Namespacing](../backend/docs/features/be-18-context-driven-namespacing.md)
-- [Be 19 Profile Expand](../backend/docs/features/be-19-profile-expand.md)
-- [Be 20 Monetization](../backend/docs/features/be-20-monetization.md)
-
 ### `backend/docs/marketing/`
 
 - [01 Brand Dna](../backend/docs/marketing/01-brand-dna.md)
@@ -125,7 +102,6 @@ Entries are grouped by repository-relative folder. Every listed file is reachabl
 
 ### `backend/process/`
 
-- [Kanban](../backend/process/kanban.md)
 - [Process](../backend/process/process.md)
 
 ### `docs/`

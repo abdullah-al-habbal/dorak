@@ -1,3 +1,11 @@
+---
+nodeid: mobile.apps.client-app.references.feature-status
+parentnode: mobile.apps.client-app
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/client_app/lib/
+---
+
 Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 6. Feature status

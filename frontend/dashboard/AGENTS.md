@@ -5,6 +5,9 @@ childnodes:
   - dashboard.architecture
   - dashboard.auth_contract
   - dashboard.claude
+  - dashboard.references.component-and-styling-rules
+  - dashboard.references.file-taxonomy
+  - dashboard.references.type-safety
 codeanchors:
   - frontend/dashboard/src/
   - frontend/dashboard/tests/

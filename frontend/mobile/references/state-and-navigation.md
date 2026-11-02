@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.state-and-navigation
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../CLAUDE.md`](../CLAUDE.md).
 
 ## 3b. State & Navigation Architecture (locked)

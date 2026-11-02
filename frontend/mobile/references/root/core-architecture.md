@@ -1,3 +1,12 @@
+---
+nodeid: mobile.references.root.core-architecture
+parentnode: mobile.guide
+childnodes: []
+codeanchors:
+  - frontend/mobile/apps/
+  - frontend/mobile/packages/
+---
+
 Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 
 ## 6. Core architecture

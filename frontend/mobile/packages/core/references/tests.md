@@ -1,3 +1,11 @@
+---
+nodeid: mobile.packages.core.references.tests
+parentnode: mobile.packages.core
+childnodes: []
+codeanchors:
+  - frontend/mobile/packages/core/lib/
+---
+
 Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 9. Tests
