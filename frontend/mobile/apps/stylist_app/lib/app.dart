@@ -17,6 +17,7 @@ import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 import 'package:stylist_app/src/features/portfolio/image_picker_photo_picker.provider.dart';
 import 'package:stylist_app/src/features/portfolio/stylist_portfolio.bloc.dart';
 import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
+import 'package:stylist_app/src/features/reviews/stylist_reviews.bloc.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
 
 class StylistApp extends StatefulWidget {
@@ -77,6 +78,11 @@ class _StylistAppState extends State<StylistApp> {
         () => _bloc.state.profile?.id,
       ),
       jobs: StylistJobsBloc(DioJobPostingRepository(_client)),
+      reviews: StylistReviewsBloc(
+        DioReviewRepository(_client),
+        DioBarberReviewDisputeRepository(_client),
+        () => _bloc.state.profile?.id,
+      ),
     );
     _router = StylistAppRouter(
       operations: _bloc,

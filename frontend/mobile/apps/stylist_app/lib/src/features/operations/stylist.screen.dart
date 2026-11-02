@@ -29,6 +29,7 @@ class StylistScreen extends StatelessWidget {
     (l10n.stylistMenuProfile, AppRoutes.profile),
     (l10n.stylistMenuAffiliations, AppRoutes.affiliations),
     (l10n.stylistMenuJobs, AppRoutes.jobs),
+    (l10n.stylistMenuReviews, AppRoutes.reviews),
   ];
 
   Future<void> _cancel(BuildContext context, String bookingId) async {
@@ -77,7 +78,10 @@ class StylistScreen extends StatelessWidget {
                   onChanged: bloc.setOnline,
                 ),
                 if (state.profile != null)
-                  ProfileServicesSection(profile: state.profile!, l10n: strings),
+                  ProfileServicesSection(
+                    profile: state.profile!,
+                    l10n: strings,
+                  ),
                 if (state.error != null) Text(strings.stylistUpdateFailed),
                 Wrap(
                   spacing: 8,

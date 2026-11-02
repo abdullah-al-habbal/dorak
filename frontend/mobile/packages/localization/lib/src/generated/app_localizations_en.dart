@@ -1745,4 +1745,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String businessReviewRating(int rating) {
     return '$rating / 5';
   }
+
+  @override
+  String get reviewDisputeAction => 'Dispute';
+
+  @override
+  String get reviewDisputeTitle => 'Dispute this review';
+
+  @override
+  String get reviewDisputeReasonLabel => 'Why is this review wrong?';
+
+  @override
+  String reviewDisputeReasonTooShort(int min) {
+    return 'Enter at least $min characters';
+  }
+
+  @override
+  String get reviewDisputeCancel => 'Cancel';
+
+  @override
+  String get reviewDisputeSubmit => 'Submit dispute';
+
+  @override
+  String get reviewDisputeUnderReview => 'Under admin review';
+
+  @override
+  String get reviewDisputeSent => 'Dispute sent. An admin will review it.';
+
+  @override
+  String get stylistMenuReviews => 'Reviews';
+
+  @override
+  String get stylistReviewsTitle => 'Reviews';
+
+  @override
+  String get stylistReviewsEmpty => 'No reviews yet.';
+
+  @override
+  String stylistReviewRating(int rating) {
+    return '$rating / 5';
+  }
 }

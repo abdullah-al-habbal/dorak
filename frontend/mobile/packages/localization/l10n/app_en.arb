@@ -1594,5 +1594,19 @@
   "businessReviewsTitle": "Reviews",
   "businessReviewsEmpty": "No reviews yet.",
   "businessReviewRating": "{rating} / 5",
-  "@businessReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}}
+  "@businessReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}},
+  "reviewDisputeAction": "Dispute",
+  "reviewDisputeTitle": "Dispute this review",
+  "reviewDisputeReasonLabel": "Why is this review wrong?",
+  "reviewDisputeReasonTooShort": "Enter at least {min} characters",
+  "@reviewDisputeReasonTooShort": {"description": "Dispute reason validation", "placeholders": {"min": {"type": "int"}}},
+  "reviewDisputeCancel": "Cancel",
+  "reviewDisputeSubmit": "Submit dispute",
+  "reviewDisputeUnderReview": "Under admin review",
+  "reviewDisputeSent": "Dispute sent. An admin will review it.",
+  "stylistMenuReviews": "Reviews",
+  "stylistReviewsTitle": "Reviews",
+  "stylistReviewsEmpty": "No reviews yet.",
+  "stylistReviewRating": "{rating} / 5",
+  "@stylistReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}}
 }

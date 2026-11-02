@@ -7,6 +7,7 @@ abstract final class AppRoutes {
   static const profile = '/home/profile';
   static const affiliations = '/home/affiliations';
   static const jobs = '/home/jobs';
+  static const reviews = '/home/reviews';
   static const applications = '/home/jobs/applications';
   static const jobIdParameter = 'jobId';
 

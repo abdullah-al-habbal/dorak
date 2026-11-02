@@ -14,6 +14,7 @@ import 'package:stylist_app/src/features/jobs/stylist_jobs.screen.dart';
 import 'package:stylist_app/src/features/operations/stylist.screen.dart';
 import 'package:stylist_app/src/features/portfolio/stylist_portfolio.screen.dart';
 import 'package:stylist_app/src/features/profile/stylist_profile.screen.dart';
+import 'package:stylist_app/src/features/reviews/stylist_reviews.screen.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.screen.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 
@@ -81,6 +82,11 @@ class StylistAppRouter {
               path: 'affiliations',
               builder: (context, state) =>
                   StylistAffiliationsScreen(bloc: features.affiliations),
+            ),
+            GoRoute(
+              path: 'reviews',
+              builder: (context, state) =>
+                  StylistReviewsScreen(bloc: features.reviews),
             ),
             GoRoute(
               path: 'jobs',

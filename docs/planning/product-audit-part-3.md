@@ -16,7 +16,7 @@ Part 3 of 3 · [Overview](product-audit.md) · [Matrix](product-audit-part-2.md)
 |---|---|---|
 | G1 | Major | Stylists cannot upload or tag history media; only `POST /client/history/{id}/media` exists. |
 | G2 | Major | Brands have no status; any verified client can create a brand and become an owner. |
-| G3 | Major | Branch and barber dispute routes have no UI anywhere, so the admin disputed-reviews page is always empty. |
+| G3 | Major | **Resolved.** business_app and stylist_app now list reviews and let a manager or stylist dispute a published one (reason 10–1000 characters); admins resolve in the dashboard. |
 | G4 | Major | Owner, manager and stylist cannot see plan limits, earnings or payouts; those APIs are admin-only. |
 | G5 | Major | Phone OTP uses the log-only SMS driver, so it is not launch-ready. |
 | G6 | Medium | Owners cannot set a barber's price or duration; non-admin writes are brand level. |

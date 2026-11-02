@@ -16,7 +16,7 @@ Part 2 of 3 · [Overview](product-audit.md) · [Findings](product-audit-part-3.m
 |---|---|---|---|---|
 | Admin | Catalog CRUD | OK | Dashboard | high |
 | Admin | Subscriptions, gateways, commissions, payouts, analytics, settings | OK | Dashboard | high |
-| Admin | Dispute resolution | OK | Page exists, nothing raises disputes (G3) | high |
+| Admin | Dispute resolution | OK | Page exists; managers and stylists raise disputes from the mobile apps (G3 resolved) | high |
 | Admin | Activate barber/branch, bans, clients | OK | Filament only | confirmed |
 | Admin | Brand verification | No status or route (G2) | Filament record only | confirmed |
 | Owner | Create brand, then branch | OK | Dashboard, client app | high |

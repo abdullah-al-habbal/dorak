@@ -79,7 +79,10 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
         DioAffiliationRepository(_apiClient),
       ),
       profile: BusinessProfileBloc(management),
-      reviews: BusinessReviewsBloc(management),
+      reviews: BusinessReviewsBloc(
+        management,
+        DioBranchReviewDisputeRepository(_apiClient),
+      ),
     );
     _router = BusinessAppRouter(
       operations: _operations,

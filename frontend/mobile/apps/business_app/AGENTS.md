@@ -32,12 +32,13 @@ lib/src/features/                     affiliations, auth, barbers, floor_plan,
 
 Routes: `/login`, `/operations` (dashboard, bookings, chairs), `/barbers/new`,
 `/floor-plan` (preset only), `/affiliations`, `/jobs` (+ `/new`, edit,
-applicants), `/profile`, `/reviews` (read only).
+applicants), `/profile`, `/reviews` (lists reviews; a manager can dispute a published
+one with a reason of 10–1000 characters via `POST /branch/reviews/{review}/dispute`).
 
 It depends on `core`, `design_system` and `localization`.
 
 **Not built yet** (the backend routes mostly exist): opening hours and hours
-overrides, services and pricing, a staff list, review disputes, settings and
+overrides, services and pricing, a staff list, settings and
 the notification inbox. See the
 [product audit](../../../../docs/planning/product-audit-part-3.md), G10.
 

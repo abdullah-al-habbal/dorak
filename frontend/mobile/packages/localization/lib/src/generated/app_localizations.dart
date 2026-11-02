@@ -3253,6 +3253,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{rating} / 5'**
   String businessReviewRating(int rating);
+
+  /// No description provided for @reviewDisputeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute'**
+  String get reviewDisputeAction;
+
+  /// No description provided for @reviewDisputeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute this review'**
+  String get reviewDisputeTitle;
+
+  /// No description provided for @reviewDisputeReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Why is this review wrong?'**
+  String get reviewDisputeReasonLabel;
+
+  /// Dispute reason validation
+  ///
+  /// In en, this message translates to:
+  /// **'Enter at least {min} characters'**
+  String reviewDisputeReasonTooShort(int min);
+
+  /// No description provided for @reviewDisputeCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get reviewDisputeCancel;
+
+  /// No description provided for @reviewDisputeSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit dispute'**
+  String get reviewDisputeSubmit;
+
+  /// No description provided for @reviewDisputeUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under admin review'**
+  String get reviewDisputeUnderReview;
+
+  /// No description provided for @reviewDisputeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute sent. An admin will review it.'**
+  String get reviewDisputeSent;
+
+  /// No description provided for @stylistMenuReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get stylistMenuReviews;
+
+  /// No description provided for @stylistReviewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get stylistReviewsTitle;
+
+  /// No description provided for @stylistReviewsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet.'**
+  String get stylistReviewsEmpty;
+
+  /// Review rating out of five
+  ///
+  /// In en, this message translates to:
+  /// **'{rating} / 5'**
+  String stylistReviewRating(int rating);
 }
 
 class _AppLocalizationsDelegate

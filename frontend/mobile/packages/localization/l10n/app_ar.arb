@@ -1457,5 +1457,19 @@
   "businessReviewsTitle": "التقييمات",
   "businessReviewsEmpty": "لا توجد تقييمات بعد.",
   "businessReviewRating": "{rating} / 5",
-  "@businessReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}}
+  "@businessReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}},
+  "reviewDisputeAction": "اعتراض",
+  "reviewDisputeTitle": "الاعتراض على هذا التقييم",
+  "reviewDisputeReasonLabel": "لماذا هذا التقييم غير صحيح؟",
+  "reviewDisputeReasonTooShort": "أدخل {min} أحرف على الأقل",
+  "@reviewDisputeReasonTooShort": {"description": "Dispute reason validation", "placeholders": {"min": {"type": "int"}}},
+  "reviewDisputeCancel": "إلغاء",
+  "reviewDisputeSubmit": "إرسال الاعتراض",
+  "reviewDisputeUnderReview": "قيد مراجعة الإدارة",
+  "reviewDisputeSent": "تم إرسال الاعتراض. ستراجعه الإدارة.",
+  "stylistMenuReviews": "التقييمات",
+  "stylistReviewsTitle": "التقييمات",
+  "stylistReviewsEmpty": "لا توجد تقييمات بعد.",
+  "stylistReviewRating": "{rating} / 5",
+  "@stylistReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}}
 }

@@ -150,15 +150,42 @@ class FakeBranchManagementRepository implements BranchManagementRepository {
           id: 'r1',
           rating: 4,
           body: 'Great',
+          status: ReviewStatus.published,
           createdAt: DateTime.utc(2026, 10, 29),
         ),
       ]);
+}
+
+class FakeReviewDisputeRepository implements ReviewDisputeRepository {
+  FakeReviewDisputeRepository({this.failure});
+
+  final Object? failure;
+  String? disputedId;
+  String? disputeReason;
+
+  @override
+  Future<ReviewDto> flagDispute(
+    String reviewId, {
+    required String reason,
+  }) async {
+    if (failure != null) throw failure!;
+    disputedId = reviewId;
+    disputeReason = reason;
+    return ReviewDto(
+      id: reviewId,
+      rating: 4,
+      status: ReviewStatus.disputed,
+      disputedAt: DateTime.utc(2026, 11, 3),
+      createdAt: DateTime.utc(2026, 10, 29),
+    );
+  }
 }
 
 BusinessFeatureBlocs featureBlocsFor({
   FakeJobPostingRepository? jobs,
   FakeAffiliationRepository? affiliations,
   FakeBranchManagementRepository? management,
+  FakeReviewDisputeRepository? disputes,
 }) {
   final branch = management ?? FakeBranchManagementRepository();
   return BusinessFeatureBlocs(
@@ -168,6 +195,9 @@ BusinessFeatureBlocs featureBlocsFor({
       affiliations ?? FakeAffiliationRepository(),
     ),
     profile: BusinessProfileBloc(branch),
-    reviews: BusinessReviewsBloc(branch),
+    reviews: BusinessReviewsBloc(
+      branch,
+      disputes ?? FakeReviewDisputeRepository(),
+    ),
   );
 }

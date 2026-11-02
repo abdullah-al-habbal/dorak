@@ -327,6 +327,10 @@ class _ReviewEndpoints {
       ReviewEndpoints.branchReviews.replaceFirst('{branch}', branchId);
   String barberReviews(String barberId) =>
       ReviewEndpoints.barberReviews.replaceFirst('{barber}', barberId);
+  String branchReviewDispute(String reviewId) =>
+      ReviewEndpoints.branchReviewDispute.replaceFirst('{review}', reviewId);
+  String barberReviewDispute(String reviewId) =>
+      ReviewEndpoints.barberReviewDispute.replaceFirst('{review}', reviewId);
 }
 
 class _ServiceCatalogEndpoints {

@@ -24,9 +24,6 @@ Source: [product audit](planning/product-audit-part-3.md). Launch-readiness item
 ## Audit G2: Brand Verification
 - [ ] [NEEDSHIL] Brands have no status, so any verified client becomes an owner at once. **Decision required:** does an admin approve brands before they operate?
 
-## Audit G3: Review Disputes
-- [ ] [NEEDSHIL] Branch and barber dispute routes exist but no UI raises a dispute, so the admin queue stays empty. **Decision required:** who raises disputes (manager, stylist, both) and from which app?
-
 ## Audit G4: Earnings and Plan Visibility
 - [ ] [NEEDSHIL] Owners, managers and stylists cannot see plan limits, earnings or payouts. **Decision required:** which roles see what, and in which app?
 

@@ -6,6 +6,7 @@ import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 import 'package:stylist_app/src/features/portfolio/photo_picker.provider.dart';
 import 'package:stylist_app/src/features/portfolio/stylist_portfolio.bloc.dart';
 import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
+import 'package:stylist_app/src/features/reviews/stylist_reviews.bloc.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
 
 BookingDto bookingFixture(String id, {BookingStatus? status}) => BookingDto(
@@ -237,6 +238,8 @@ StylistFeatureBlocs featureBlocsFor(
   PhotoPicker? picker,
   FakeAffiliationRepository? affiliations,
   FakeJobPostingRepository? jobs,
+  FakeReviewRepository? reviews,
+  FakeReviewDisputeRepository? disputes,
 }) => StylistFeatureBlocs(
   schedule: StylistScheduleBloc(operations),
   portfolio: StylistPortfolioBloc(operations, picker ?? FakePhotoPicker()),
@@ -246,4 +249,62 @@ StylistFeatureBlocs featureBlocsFor(
     () => 'barber-1',
   ),
   jobs: StylistJobsBloc(jobs ?? FakeJobPostingRepository()),
+  reviews: StylistReviewsBloc(
+    reviews ?? FakeReviewRepository(),
+    disputes ?? FakeReviewDisputeRepository(),
+    () => 'barber-1',
+  ),
 );
+
+class FakeReviewRepository implements ReviewRepository {
+  String? requestedBarberId;
+
+  @override
+  Future<PaginatedData<ReviewDto>> getBarberReviews(
+    String barberId, {
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    requestedBarberId = barberId;
+    return pageOf([
+      ReviewDto(
+        id: 'r1',
+        subjectType: ReviewSubjectType.barber,
+        subjectId: barberId,
+        rating: 2,
+        body: 'Late',
+        status: ReviewStatus.published,
+        createdAt: DateTime.utc(2026, 10, 29),
+      ),
+    ]);
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) =>
+      throw UnimplementedError(invocation.memberName.toString());
+}
+
+class FakeReviewDisputeRepository implements ReviewDisputeRepository {
+  FakeReviewDisputeRepository({this.failure});
+
+  final Object? failure;
+  String? disputedId;
+  String? disputeReason;
+
+  @override
+  Future<ReviewDto> flagDispute(
+    String reviewId, {
+    required String reason,
+  }) async {
+    if (failure != null) throw failure!;
+    disputedId = reviewId;
+    disputeReason = reason;
+    return ReviewDto(
+      id: reviewId,
+      rating: 2,
+      status: ReviewStatus.disputed,
+      disputedAt: DateTime.utc(2026, 11, 3),
+      createdAt: DateTime.utc(2026, 10, 29),
+    );
+  }
+}

@@ -1738,4 +1738,44 @@ class AppLocalizationsAr extends AppLocalizations {
   String businessReviewRating(int rating) {
     return '$rating / 5';
   }
+
+  @override
+  String get reviewDisputeAction => 'اعتراض';
+
+  @override
+  String get reviewDisputeTitle => 'الاعتراض على هذا التقييم';
+
+  @override
+  String get reviewDisputeReasonLabel => 'لماذا هذا التقييم غير صحيح؟';
+
+  @override
+  String reviewDisputeReasonTooShort(int min) {
+    return 'أدخل $min أحرف على الأقل';
+  }
+
+  @override
+  String get reviewDisputeCancel => 'إلغاء';
+
+  @override
+  String get reviewDisputeSubmit => 'إرسال الاعتراض';
+
+  @override
+  String get reviewDisputeUnderReview => 'قيد مراجعة الإدارة';
+
+  @override
+  String get reviewDisputeSent => 'تم إرسال الاعتراض. ستراجعه الإدارة.';
+
+  @override
+  String get stylistMenuReviews => 'التقييمات';
+
+  @override
+  String get stylistReviewsTitle => 'التقييمات';
+
+  @override
+  String get stylistReviewsEmpty => 'لا توجد تقييمات بعد.';
+
+  @override
+  String stylistReviewRating(int rating) {
+    return '$rating / 5';
+  }
 }

@@ -27,9 +27,9 @@ lib/main.dart                               bootstrap
 lib/app.dart                                StylistApp: ApiClient, session, blocs, realtime, push
 lib/src/core/navigation/app.router.dart     /login, /signup (public); /home and its children:
                                             schedule, portfolio, profile, affiliations,
-                                            jobs (+ applications, :jobId)
+                                            reviews, jobs (+ applications, :jobId)
 lib/src/features/                           affiliations, auth, jobs, operations, portfolio,
-                                            profile, schedule, shared
+                                            profile, reviews, schedule, shared
 ```
 
 **Not built yet:** history media upload, booking history beyond today, offered
