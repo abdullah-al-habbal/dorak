@@ -73,3 +73,9 @@ Barber and branch accounts: `POST /api/v1/{barber|branch}/forgot-password` (thro
 `/reset-password` (emailed 6-digit code via `Core\Services\StaffPasswordResetCodes`, scoped per account type, burns after
 use or too many attempts; revokes all tokens), `/logout` (current token) and `/refresh-token` (rotates the token; 403 when
 the account is deactivated or banned). Managed barbers without a login cannot reset.
+
+## Branch account gating (Gap G7)
+
+- `Modules\Branch\Http\Middleware\EnsureBranchAccountAccess` returns 403 `ACCOUNT_NOT_ACTIVE` when the authenticated branch is not `Enabled`. It is applied to every `auth:branch_api` route (branch, settings, reviews, activation, chairs, notifications, device token) except `POST /branch/logout`, and passes other account types through.
+- `EnsureBarberAccountAccess` (default `active` scope) also rejects a barber whose `managed_by_branch_id` branch is `Disabled`.
+- Tests: `tests/Feature/Auth/BranchGatingTest.php`.

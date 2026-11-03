@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Modules\Barber\Http\Middleware\EnsureBarberAccountAccess;
+use Modules\Branch\Http\Middleware\EnsureBranchAccountAccess;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
 use Modules\Review\Http\Actions\Admin\ListAdminReviewsAction;
 use Modules\Review\Http\Actions\Admin\ResolveReviewDisputeAction;
@@ -19,8 +20,8 @@ Route::middleware(['auth:client', EnsureClientAccountAccess::class])->group(func
     Route::post('/client/bookings/{booking}/review', SubmitReviewAction::class)->name('reviews.submit');
 });
 
-Route::middleware('auth:branch_api')->post('/branch/bookings/{booking}/review', BranchReviewClientAction::class)->name('reviews.client.branch');
-Route::middleware('auth:branch_api')->post('/branch/reviews/{review}/dispute', BranchFlagReviewDisputeAction::class)->name('reviews.dispute.branch');
+Route::middleware(['auth:branch_api', EnsureBranchAccountAccess::class])->post('/branch/bookings/{booking}/review', BranchReviewClientAction::class)->name('reviews.client.branch');
+Route::middleware(['auth:branch_api', EnsureBranchAccountAccess::class])->post('/branch/reviews/{review}/dispute', BranchFlagReviewDisputeAction::class)->name('reviews.dispute.branch');
 Route::middleware(['auth:barber', EnsureBarberAccountAccess::class])->post('/barber/bookings/{booking}/review', BarberReviewClientAction::class)->name('reviews.client.barber');
 Route::middleware(['auth:barber', EnsureBarberAccountAccess::class])->post('/barber/reviews/{review}/dispute', BarberFlagReviewDisputeAction::class)->name('reviews.dispute.barber');
 

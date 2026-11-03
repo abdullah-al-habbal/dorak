@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 use Modules\Barber\Http\Middleware\EnsureBarberAccountAccess;
+use Modules\Branch\Http\Middleware\EnsureBranchAccountAccess;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
 use Modules\Preference\Http\Actions\Barber\GetSettingsAction as BarberGetSettingsAction;
@@ -25,7 +26,7 @@ Route::middleware(['auth:barber', EnsureBarberAccountAccess::class])->group(func
     Route::patch('/barber/settings', BarberUpdateSettingsAction::class)->name('barber.settings.update');
 });
 
-Route::middleware('auth:branch_api')->group(function (): void {
+Route::middleware(['auth:branch_api', EnsureBranchAccountAccess::class])->group(function (): void {
     Route::get('/branch/settings', BranchGetSettingsAction::class)->name('branch.settings.show');
     Route::patch('/branch/settings', BranchUpdateSettingsAction::class)->name('branch.settings.update');
 });

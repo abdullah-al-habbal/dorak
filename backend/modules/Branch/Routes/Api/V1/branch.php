@@ -32,6 +32,7 @@ use Modules\Branch\Http\Actions\Branch\UpdateHoursOverrideAction;
 use Modules\Branch\Http\Actions\Branch\UpdateJobPostingAction;
 use Modules\Branch\Http\Actions\Branch\UpdateOpeningHoursAction;
 use Modules\Branch\Http\Actions\Branch\UpdateProfileAction;
+use Modules\Branch\Http\Middleware\EnsureBranchAccountAccess;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
 Route::prefix('branch')->name('branch.')->group(function (): void {
@@ -41,6 +42,9 @@ Route::prefix('branch')->name('branch.')->group(function (): void {
 
     Route::middleware(['auth:branch_api', ApplyPreferredLocaleMiddleware::class.':branch_api'])->group(function (): void {
         Route::post('/logout', LogoutAction::class)->name('logout');
+    });
+
+    Route::middleware(['auth:branch_api', EnsureBranchAccountAccess::class, ApplyPreferredLocaleMiddleware::class.':branch_api'])->group(function (): void {
         Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
         Route::get('/dashboard', DashboardAction::class)->name('dashboard');
         Route::get('/profile', GetProfileAction::class)->name('profile.get');

@@ -20,7 +20,7 @@ Part 3 of 3 · [Overview](product-audit.md) · [Matrix](product-audit-part-2.md)
 | G4 | Major | Owner, manager and stylist cannot see plan limits, earnings or payouts; those APIs are admin-only. |
 | G5 | Major | Phone OTP uses the log-only SMS driver, so it is not launch-ready. |
 | G6 | Medium | Owners cannot set a barber's price or duration; non-admin writes are brand level. |
-| G7 | Medium | A deactivated branch keeps working; there is no branch account-access middleware. |
+| G7 | Medium | **Resolved.** `EnsureBranchAccountAccess` returns 403 `ACCOUNT_NOT_ACTIVE` for any branch that is not enabled, on every `auth:branch_api` route except logout. `EnsureBarberAccountAccess` (active scope) also blocks a branch-managed barber while the managing branch is disabled. |
 | G8 | Medium | **Resolved.** `POST /barber|branch/forgot-password`, `/reset-password` (6-digit emailed code, 422 for wrong/expired/unknown, tokens revoked on reset), `/logout` (current token) and `/refresh-token` (rotates the token, 403 when deactivated). business_app and stylist_app have a forgot-password flow; logout revokes the server token; the session renews its token on start. |
 | G9 | Medium | Social login links an existing client by email without checking the provider's verified flag; latent while no credentials exist. |
 | G10 | Medium | business_app has no screens for services, opening hours, staff list, dispute or notifications. |

@@ -9,13 +9,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
+use Modules\Branch\Enums\BranchStatusEnum;
+use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\AccountAccessScope;
 
 /**
  * Gates barber-token routes on the barber's current status, so a token issued
  * before a status change cannot outlive it.
  *
- * - `active` (default): only enabled barbers — every operational route.
+ * - `active` (default): only enabled barbers — every operational route. A
+ *   branch-managed barber is also blocked while the managing branch is disabled.
  * - `onboarding`: pending or enabled — profile read and email verification,
  *   reachable with the token a self-registered (pending) barber receives.
  * - `approved`: anything but pending — self activation/deactivation, so a
@@ -36,7 +39,7 @@ final class EnsureBarberAccountAccess
         $allowed = match (AccountAccessScope::fromParameter($scope)) {
             AccountAccessScope::Onboarding => in_array($status, [BarberStatusEnum::Pending, BarberStatusEnum::Enabled], true),
             AccountAccessScope::Approved => $status !== BarberStatusEnum::Pending,
-            default => $status === BarberStatusEnum::Enabled,
+            default => $status === BarberStatusEnum::Enabled && ! $this->managingBranchDisabled($barber),
         };
 
         if (! $allowed) {
@@ -50,5 +53,16 @@ final class EnsureBarberAccountAccess
         }
 
         return $next($request);
+    }
+
+    private function managingBranchDisabled(BarberModel $barber): bool
+    {
+        $branchId = $barber->getAttribute('managed_by_branch_id');
+
+        return $branchId !== null
+            && BranchModel::query()
+                ->whereKey($branchId)
+                ->where('status', BranchStatusEnum::Disabled->value)
+                ->exists();
     }
 }
