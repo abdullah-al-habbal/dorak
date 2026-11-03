@@ -6,11 +6,13 @@ part 'history_media.dto.g.dart';
 class HistoryMediaDto {
   final String id;
   final String photoUrl;
+  final String? photoType;
   final DateTime? uploadedAt;
 
   const HistoryMediaDto({
     required this.id,
     required this.photoUrl,
+    this.photoType,
     this.uploadedAt,
   });
 

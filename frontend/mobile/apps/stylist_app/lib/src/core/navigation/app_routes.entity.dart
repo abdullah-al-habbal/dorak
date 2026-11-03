@@ -10,6 +10,10 @@ abstract final class AppRoutes {
   static const reviews = '/home/reviews';
   static const applications = '/home/jobs/applications';
   static const jobIdParameter = 'jobId';
+  static const clientIdParameter = 'clientId';
 
   static String job(String id) => '$jobs/$id';
+
+  static String clientHistory(String clientId) =>
+      '$home/clients/$clientId/history';
 }

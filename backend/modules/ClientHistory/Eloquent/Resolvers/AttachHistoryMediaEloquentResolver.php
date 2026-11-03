@@ -13,7 +13,6 @@ final class AttachHistoryMediaEloquentResolver
     public function resolve(AttachHistoryMediaCommand $command): ClientServiceHistoryMediaModel
     {
         ClientServiceHistoryModel::query()
-            ->where('client_id', $command->clientId)
             ->findOrFail($command->historyId);
 
         return ClientServiceHistoryMediaModel::create([

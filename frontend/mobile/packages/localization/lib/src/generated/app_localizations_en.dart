@@ -1785,4 +1785,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String stylistReviewRating(int rating) {
     return '$rating / 5';
   }
+
+  @override
+  String get stylistClientHistoryAction => 'Visit history';
+
+  @override
+  String get stylistClientHistoryTitle => 'Client history';
+
+  @override
+  String get stylistClientHistoryEmpty =>
+      'No visits recorded for this client yet.';
+
+  @override
+  String get stylistHistoryVisitFallback => 'Visit';
+
+  @override
+  String get stylistHistoryPhotoAdded => 'Photo added.';
 }

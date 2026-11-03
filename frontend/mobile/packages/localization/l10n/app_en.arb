@@ -1608,5 +1608,15 @@
   "stylistReviewsTitle": "Reviews",
   "stylistReviewsEmpty": "No reviews yet.",
   "stylistReviewRating": "{rating} / 5",
-  "@stylistReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}}
+  "@stylistReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}},
+  "stylistClientHistoryAction": "Visit history",
+  "@stylistClientHistoryAction": {"description": "Button on a completed appointment that opens the client's service history"},
+  "stylistClientHistoryTitle": "Client history",
+  "@stylistClientHistoryTitle": {"description": "Title of the screen listing a client's past visits"},
+  "stylistClientHistoryEmpty": "No visits recorded for this client yet.",
+  "@stylistClientHistoryEmpty": {"description": "Empty state of the client history screen"},
+  "stylistHistoryVisitFallback": "Visit",
+  "@stylistHistoryVisitFallback": {"description": "Visit title when the service name is unknown"},
+  "stylistHistoryPhotoAdded": "Photo added.",
+  "@stylistHistoryPhotoAdded": {"description": "Snackbar after a history photo is uploaded"}
 }

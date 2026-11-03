@@ -3325,6 +3325,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{rating} / 5'**
   String stylistReviewRating(int rating);
+
+  /// Button on a completed appointment that opens the client's service history
+  ///
+  /// In en, this message translates to:
+  /// **'Visit history'**
+  String get stylistClientHistoryAction;
+
+  /// Title of the screen listing a client's past visits
+  ///
+  /// In en, this message translates to:
+  /// **'Client history'**
+  String get stylistClientHistoryTitle;
+
+  /// Empty state of the client history screen
+  ///
+  /// In en, this message translates to:
+  /// **'No visits recorded for this client yet.'**
+  String get stylistClientHistoryEmpty;
+
+  /// Visit title when the service name is unknown
+  ///
+  /// In en, this message translates to:
+  /// **'Visit'**
+  String get stylistHistoryVisitFallback;
+
+  /// Snackbar after a history photo is uploaded
+  ///
+  /// In en, this message translates to:
+  /// **'Photo added.'**
+  String get stylistHistoryPhotoAdded;
 }
 
 class _AppLocalizationsDelegate

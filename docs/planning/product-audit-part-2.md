@@ -30,7 +30,7 @@ Part 2 of 3 · [Overview](product-audit.md) · [Findings](product-audit-part-3.m
 | Stylist | Login, signup, approval | OK | stylist_app | high |
 | Stylist | Schedule, today's appointments, lifecycle | OK | stylist_app | high |
 | Stylist | Portfolio, profile, jobs, affiliations | OK | stylist_app | high |
-| Stylist | History media before/after/reference | Client-only route (G1) | None | confirmed |
+| Stylist | History media before/after/reference | `POST /barber/history/{history}/media`; stylist_app client history screen (G1 resolved) | stylist_app | confirmed |
 | Stylist | Own services, price | OK | No screen (G11) | reported |
 | Stylist | Past appointments, earnings, inbox | Today only, no earnings (G11) | None | reported |
 | Client | Auth, discover, book (incl. at-home), cancel, review, favorites | OK | client_app | high |

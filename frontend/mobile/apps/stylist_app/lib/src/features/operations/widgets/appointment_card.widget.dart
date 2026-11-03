@@ -11,6 +11,7 @@ class AppointmentCard extends StatelessWidget {
     required this.isUpdating,
     required this.onAction,
     required this.onCancel,
+    required this.onViewHistory,
     required this.l10n,
   });
 
@@ -18,6 +19,7 @@ class AppointmentCard extends StatelessWidget {
   final bool isUpdating;
   final ValueChanged<BarberBookingAction> onAction;
   final VoidCallback onCancel;
+  final VoidCallback onViewHistory;
   final AppLocalizations l10n;
 
   String get _statusLabel => switch (booking.status) {
@@ -56,6 +58,13 @@ class AppointmentCard extends StatelessWidget {
               onCancel: onCancel,
               l10n: l10n,
             ),
+            if (booking.status == BookingStatus.completed &&
+                booking.client != null)
+              TextButton.icon(
+                onPressed: onViewHistory,
+                icon: const Icon(Icons.history),
+                label: Text(l10n.stylistClientHistoryAction),
+              ),
           ],
         ),
       ),

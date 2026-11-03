@@ -105,6 +105,9 @@ class StylistScreen extends StatelessWidget {
                     onAction: (action) =>
                         bloc.transitionBooking(booking.id, action),
                     onCancel: () => _cancel(context, booking.id),
+                    onViewHistory: () => context.push(
+                      AppRoutes.clientHistory(booking.client!.id),
+                    ),
                     l10n: strings,
                   ),
                 ),

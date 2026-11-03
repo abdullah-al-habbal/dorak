@@ -1,4 +1,5 @@
 import 'package:stylist_app/src/features/affiliations/stylist_affiliations.bloc.dart';
+import 'package:stylist_app/src/features/history/stylist_client_history.bloc.dart';
 import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 import 'package:stylist_app/src/features/portfolio/stylist_portfolio.bloc.dart';
 import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
@@ -13,6 +14,7 @@ class StylistFeatureBlocs {
     required this.affiliations,
     required this.jobs,
     required this.reviews,
+    required this.clientHistory,
   });
 
   final StylistScheduleBloc schedule;
@@ -21,6 +23,7 @@ class StylistFeatureBlocs {
   final StylistAffiliationsBloc affiliations;
   final StylistJobsBloc jobs;
   final StylistReviewsBloc reviews;
+  final StylistClientHistoryBloc clientHistory;
 
   Future<void> close() => Future.wait([
     schedule.close(),
@@ -29,5 +32,6 @@ class StylistFeatureBlocs {
     affiliations.close(),
     jobs.close(),
     reviews.close(),
+    clientHistory.close(),
   ]);
 }

@@ -35,7 +35,6 @@ final class AttachHistoryMediaRequest extends BaseApiFormRequest
     {
         return new AttachHistoryMediaCommand(
             historyId: $historyId,
-            clientId: (string) $this->user('client')->id,
             photoPath: $photoPath,
             photoType: HistoryMediaType::from($this->validated('photo_type')),
         );

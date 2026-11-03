@@ -10,7 +10,6 @@ final readonly class AttachHistoryMediaCommand
 {
     public function __construct(
         public string $historyId,
-        public string $clientId,
         public string $photoPath,
         public HistoryMediaType $photoType,
     ) {}

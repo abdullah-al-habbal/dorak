@@ -106,6 +106,7 @@ export 'package:core/src/network/repositories/currency.repository.dart';
 export 'package:core/src/network/repositories/explore.repository.dart';
 export 'package:core/src/network/repositories/face_profile.repository.dart';
 export 'package:core/src/network/repositories/favorite.repository.dart';
+export 'package:core/src/network/repositories/barber_history.repository.dart';
 export 'package:core/src/network/repositories/history.repository.dart';
 export 'package:core/src/network/repositories/notification.repository.dart';
 export 'package:core/src/network/repositories/managed_barber.repository.dart';

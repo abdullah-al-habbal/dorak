@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 
 import 'package:stylist_app/src/core/stylist_feature_blocs.provider.dart';
 import 'package:stylist_app/src/features/affiliations/stylist_affiliations.bloc.dart';
+import 'package:stylist_app/src/features/history/stylist_client_history.bloc.dart';
 import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 import 'package:stylist_app/src/features/portfolio/photo_picker.provider.dart';
 import 'package:stylist_app/src/features/portfolio/stylist_portfolio.bloc.dart';
@@ -240,6 +241,7 @@ StylistFeatureBlocs featureBlocsFor(
   FakeJobPostingRepository? jobs,
   FakeReviewRepository? reviews,
   FakeReviewDisputeRepository? disputes,
+  FakeBarberHistoryRepository? history,
 }) => StylistFeatureBlocs(
   schedule: StylistScheduleBloc(operations),
   portfolio: StylistPortfolioBloc(operations, picker ?? FakePhotoPicker()),
@@ -254,7 +256,67 @@ StylistFeatureBlocs featureBlocsFor(
     disputes ?? FakeReviewDisputeRepository(),
     () => 'barber-1',
   ),
+  clientHistory: StylistClientHistoryBloc(
+    history ?? FakeBarberHistoryRepository(),
+    picker ?? FakePhotoPicker(),
+    () => 'barber-1',
+  ),
 );
+
+ServiceHistoryDto visitFixture(
+  String id, {
+  String barberId = 'barber-1',
+  List<HistoryMediaDto> media = const [],
+}) => ServiceHistoryDto(
+  id: id,
+  performedAt: DateTime.utc(2026, 10, 29, 10),
+  barber: HistoryBarberDto(id: barberId, name: 'Barber'),
+  catalogItem: const HistoryCatalogItemDto(
+    id: 'c1',
+    name: {'en': 'Classic Fade', 'ar': 'فيض كلاسيكي'},
+  ),
+  media: media,
+);
+
+class FakeBarberHistoryRepository implements BarberHistoryRepository {
+  List<ServiceHistoryDto> visits = [
+    visitFixture('h1'),
+    visitFixture('h2', barberId: 'barber-2'),
+  ];
+  Object? attachError;
+  String? requestedClientId;
+  String? attachedHistoryId;
+  String? attachedPath;
+  String? attachedType;
+
+  @override
+  Future<PaginatedData<ServiceHistoryDto>> getClientHistory(
+    String clientId, {
+    int page = 1,
+    int perPage = 15,
+  }) async {
+    requestedClientId = clientId;
+    return pageOf(visits);
+  }
+
+  @override
+  Future<HistoryMediaDto> attachMedia({
+    required String historyId,
+    required String photoPath,
+    required String photoType,
+  }) async {
+    final error = attachError;
+    if (error != null) throw error;
+    attachedHistoryId = historyId;
+    attachedPath = photoPath;
+    attachedType = photoType;
+    return HistoryMediaDto(
+      id: 'm-new',
+      photoUrl: 'http://x/m.jpg',
+      photoType: photoType,
+    );
+  }
+}
 
 class FakeReviewRepository implements ReviewRepository {
   String? requestedBarberId;

@@ -14,7 +14,7 @@ Part 3 of 3 · [Overview](product-audit.md) · [Matrix](product-audit-part-2.md)
 
 | ID | Sev. | Finding |
 |---|---|---|
-| G1 | Major | Stylists cannot upload or tag history media; only `POST /client/history/{id}/media` exists. |
+| G1 | Major | **Resolved.** Stylists upload and tag (before/after/reference) history media on visits assigned to them via `POST /barber/history/{history}/media` (403 for anyone else's visit); stylist_app offers it from completed appointment cards and the client history screen. |
 | G2 | Major | Brands have no status; any verified client can create a brand and become an owner. |
 | G3 | Major | **Resolved.** business_app and stylist_app now list reviews and let a manager or stylist dispute a published one (reason 10–1000 characters); admins resolve in the dashboard. |
 | G4 | Major | Owner, manager and stylist cannot see plan limits, earnings or payouts; those APIs are admin-only. |

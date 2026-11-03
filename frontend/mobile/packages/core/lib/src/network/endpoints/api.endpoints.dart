@@ -209,6 +209,10 @@ class _HistoryEndpoints {
       HistoryEndpoints.rebookFromHistory.replaceFirst('{history}', historyId);
   String attachMedia(String historyId) =>
       HistoryEndpoints.attachMedia.replaceFirst('{history}', historyId);
+  String barberClientHistory(String clientId) =>
+      HistoryEndpoints.barberClientHistory.replaceFirst('{client}', clientId);
+  String barberAttachMedia(String historyId) =>
+      HistoryEndpoints.barberAttachMedia.replaceFirst('{history}', historyId);
 }
 
 class _JobPostingEndpoints {

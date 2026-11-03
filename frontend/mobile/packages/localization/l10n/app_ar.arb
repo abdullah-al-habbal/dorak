@@ -1471,5 +1471,10 @@
   "stylistReviewsTitle": "التقييمات",
   "stylistReviewsEmpty": "لا توجد تقييمات بعد.",
   "stylistReviewRating": "{rating} / 5",
-  "@stylistReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}}
+  "@stylistReviewRating": {"description": "Review rating out of five", "placeholders": {"rating": {"type": "int"}}},
+  "stylistClientHistoryAction": "سجل الزيارات",
+  "stylistClientHistoryTitle": "سجل العميل",
+  "stylistClientHistoryEmpty": "لا توجد زيارات مسجلة لهذا العميل بعد.",
+  "stylistHistoryVisitFallback": "زيارة",
+  "stylistHistoryPhotoAdded": "تمت إضافة الصورة."
 }

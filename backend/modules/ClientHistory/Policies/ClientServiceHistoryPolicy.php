@@ -24,4 +24,9 @@ final class ClientServiceHistoryPolicy
     {
         return $history->barber()->is($barber);
     }
+
+    public function attachMedia(BarberModel $barber, ClientServiceHistoryModel $history): bool
+    {
+        return $history->barber()->is($barber);
+    }
 }

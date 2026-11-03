@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use Modules\Barber\Http\Middleware\EnsureBarberAccountAccess;
 use Modules\Client\Http\Middleware\EnsureClientAccountAccess;
+use Modules\ClientHistory\Http\Actions\Barber\AttachBarberHistoryMediaAction;
 use Modules\ClientHistory\Http\Actions\Barber\ListClientHistoryForBarberAction;
 use Modules\ClientHistory\Http\Actions\Barber\UpdateHistoryNotesAction;
 use Modules\ClientHistory\Http\Actions\Client\AttachHistoryMediaAction;
@@ -26,5 +27,6 @@ Route::get('/client/history/media/{media}/photo', ShowHistoryMediaPhotoAction::c
 
 Route::middleware(['auth:barber', EnsureBarberAccountAccess::class])->group(function () {
     Route::get('/barber/clients/{client}/history', ListClientHistoryForBarberAction::class)->name('barber.clients.history');
+    Route::post('/barber/history/{history}/media', AttachBarberHistoryMediaAction::class)->name('barber.history.media.attach');
     Route::patch('/barber/history/{history}/notes', UpdateHistoryNotesAction::class)->name('barber.history.notes.update');
 });

@@ -62,3 +62,8 @@ codeanchors:
 - [Part 6: Password Change](feature-index-part-6.md)
 - [Part 7: PRD Phase 3 — ClientFaceProfile Module (Complete)](feature-index-part-7.md)
 - [Part 8: Feature Registry](feature-index-part-8.md)
+
+## Barber history media upload (Gap G1)
+`POST /api/v1/barber/history/{history}/media` (`auth:barber`) — the barber assigned to a visit
+(`ClientServiceHistoryPolicy::attachMedia`) uploads a before/after/reference photo; any other barber gets 403.
+Shares the handler and validation (jpeg/png, ≤5 MB) with the client upload.

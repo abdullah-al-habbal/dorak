@@ -12,6 +12,7 @@ import 'package:stylist_app/src/core/stylist_feature_blocs.provider.dart';
 import 'package:stylist_app/src/features/affiliations/stylist_affiliations.bloc.dart';
 import 'package:stylist_app/src/core/navigation/notification_location.entity.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.bloc.dart';
+import 'package:stylist_app/src/features/history/stylist_client_history.bloc.dart';
 import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 import 'package:stylist_app/src/features/portfolio/image_picker_photo_picker.provider.dart';
@@ -81,6 +82,11 @@ class _StylistAppState extends State<StylistApp> {
       reviews: StylistReviewsBloc(
         DioReviewRepository(_client),
         DioBarberReviewDisputeRepository(_client),
+        () => _bloc.state.profile?.id,
+      ),
+      clientHistory: StylistClientHistoryBloc(
+        DioBarberHistoryRepository(_client),
+        const ImagePickerPhotoPicker(),
         () => _bloc.state.profile?.id,
       ),
     );

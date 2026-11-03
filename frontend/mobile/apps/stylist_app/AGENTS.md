@@ -27,14 +27,15 @@ lib/main.dart                               bootstrap
 lib/app.dart                                StylistApp: ApiClient, session, blocs, realtime, push
 lib/src/core/navigation/app.router.dart     /login, /signup (public); /home and its children:
                                             schedule, portfolio, profile, affiliations,
-                                            reviews, jobs (+ applications, :jobId)
+                                            reviews, clients/:clientId/history,
+                                            jobs (+ applications, :jobId)
 lib/src/features/                           affiliations, auth, jobs, operations, portfolio,
-                                            profile, reviews, schedule, shared
+                                            history, profile, reviews, schedule, shared
 ```
 
-**Not built yet:** history media upload, booking history beyond today, offered
+**Not built yet:** booking history beyond today, offered
 service editing, the notification inbox, settings and earnings. See the
-[product audit](../../../../docs/planning/product-audit-part-3.md), G1 and G11.
+[product audit](../../../../docs/planning/product-audit-part-3.md), G11.
 
 ### Self sign-up (Task 37)
 

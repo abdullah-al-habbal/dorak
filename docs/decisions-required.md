@@ -18,9 +18,6 @@ Routes: [documentation graph](index.md).
 
 Source: [product audit](planning/product-audit-part-3.md). Launch-readiness items (G5 SMS driver, G7 branch gating, G8 staff password routes, G9 social-link check) need engineering, not a product call.
 
-## Audit G1: Stylist History Media
-- [ ] [NEEDSHIL] Only clients can upload and tag history photos. **Decision required:** may stylists upload before/after/reference photos too, or is it client-only?
-
 ## Audit G2: Brand Verification
 - [ ] [NEEDSHIL] Brands have no status, so any verified client becomes an owner at once. **Decision required:** does an admin approve brands before they operate?
 

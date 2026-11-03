@@ -8,6 +8,7 @@ import 'package:stylist_app/src/features/affiliations/stylist_affiliations.scree
 import 'package:stylist_app/src/features/auth/stylist_login.screen.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.bloc.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.screen.dart';
+import 'package:stylist_app/src/features/history/stylist_client_history.screen.dart';
 import 'package:stylist_app/src/features/jobs/stylist_applications.screen.dart';
 import 'package:stylist_app/src/features/jobs/stylist_job_detail.screen.dart';
 import 'package:stylist_app/src/features/jobs/stylist_jobs.screen.dart';
@@ -87,6 +88,13 @@ class StylistAppRouter {
               path: 'reviews',
               builder: (context, state) =>
                   StylistReviewsScreen(bloc: features.reviews),
+            ),
+            GoRoute(
+              path: 'clients/:${AppRoutes.clientIdParameter}/history',
+              builder: (context, state) => StylistClientHistoryScreen(
+                bloc: features.clientHistory,
+                clientId: state.pathParameters[AppRoutes.clientIdParameter]!,
+              ),
             ),
             GoRoute(
               path: 'jobs',

@@ -1778,4 +1778,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String stylistReviewRating(int rating) {
     return '$rating / 5';
   }
+
+  @override
+  String get stylistClientHistoryAction => 'سجل الزيارات';
+
+  @override
+  String get stylistClientHistoryTitle => 'سجل العميل';
+
+  @override
+  String get stylistClientHistoryEmpty =>
+      'لا توجد زيارات مسجلة لهذا العميل بعد.';
+
+  @override
+  String get stylistHistoryVisitFallback => 'زيارة';
+
+  @override
+  String get stylistHistoryPhotoAdded => 'تمت إضافة الصورة.';
 }
