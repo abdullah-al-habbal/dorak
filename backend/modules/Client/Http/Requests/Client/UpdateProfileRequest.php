@@ -7,6 +7,7 @@ namespace Modules\Client\Http\Requests\Client;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use Modules\Client\CQRS\Command\Client\UpdateProfileCommand;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Core\Support\PhoneNumberNormalizer;
 
@@ -17,7 +18,7 @@ final class UpdateProfileRequest extends BaseApiFormRequest
         return [
             'name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'email', Rule::unique('clients', 'email')->ignore($this->user()->id)],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'password' => ['nullable', 'string', 'min:8', ValidationLimitConstants::RULE_PASSWORD_MAX, 'confirmed'],
             'phone' => ['nullable', 'string', 'max:20'],
         ];
     }

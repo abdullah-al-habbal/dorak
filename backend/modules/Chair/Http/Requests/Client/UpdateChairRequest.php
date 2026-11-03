@@ -10,6 +10,7 @@ use Modules\Chair\CQRS\Command\Client\UpdateChairCommand;
 use Modules\Chair\Enums\ChairShape;
 use Modules\Chair\Enums\ChairStatus;
 use Modules\Chair\Enums\FloorZone;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class UpdateChairRequest extends BaseApiFormRequest
@@ -22,12 +23,12 @@ final class UpdateChairRequest extends BaseApiFormRequest
             'force' => ['sometimes', 'boolean'],
             'barber_id' => ['sometimes', 'nullable', 'string', 'exists:barbers,id', new BarberBelongsToBranch($this->route('chair')?->branch_id)],
             'floor_zone' => ['nullable', 'string', new Enum(FloorZone::class)],
-            'layout_settings' => ['nullable', 'array'],
-            'layout_settings.position_x' => ['nullable', 'numeric'],
-            'layout_settings.position_y' => ['nullable', 'numeric'],
-            'layout_settings.width' => ['nullable', 'numeric'],
-            'layout_settings.height' => ['nullable', 'numeric'],
-            'layout_settings.rotation' => ['nullable', 'numeric'],
+            'layout_settings' => ['nullable', 'array:position_x,position_y,width,height,rotation,shape'],
+            'layout_settings.position_x' => ['nullable', 'numeric', ValidationLimitConstants::RULE_LAYOUT_POSITION],
+            'layout_settings.position_y' => ['nullable', 'numeric', ValidationLimitConstants::RULE_LAYOUT_POSITION],
+            'layout_settings.width' => ['nullable', 'numeric', ValidationLimitConstants::RULE_LAYOUT_SIZE],
+            'layout_settings.height' => ['nullable', 'numeric', ValidationLimitConstants::RULE_LAYOUT_SIZE],
+            'layout_settings.rotation' => ['nullable', 'numeric', ValidationLimitConstants::RULE_LAYOUT_ROTATION],
             'layout_settings.shape' => ['nullable', 'string', new Enum(ChairShape::class)],
         ];
     }

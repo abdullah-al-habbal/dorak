@@ -7,6 +7,7 @@ namespace Modules\Client\Http\Requests\Client;
 use Illuminate\Validation\Rule;
 use Modules\Client\CQRS\Command\Client\RegisterCommand;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Core\Support\PhoneNumberNormalizer;
 
@@ -33,7 +34,7 @@ final class RegisterRequest extends BaseApiFormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', $emailUnique],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', ValidationLimitConstants::RULE_PASSWORD_MAX, 'confirmed'],
             'phone' => ['nullable', 'string', 'max:20'],
         ];
     }

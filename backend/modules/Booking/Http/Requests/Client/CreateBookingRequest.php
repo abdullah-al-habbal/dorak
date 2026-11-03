@@ -6,6 +6,7 @@ namespace Modules\Booking\Http\Requests\Client;
 
 use Carbon\Carbon;
 use Modules\Booking\CQRS\Command\Client\CreateBookingCommand;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class CreateBookingRequest extends BaseApiFormRequest
@@ -17,9 +18,9 @@ final class CreateBookingRequest extends BaseApiFormRequest
             'branch_id' => ['nullable', 'string', 'exists:branches,id', 'required_without_all:chair_id,home_address', 'prohibits:home_address'],
             'barber_id' => ['nullable', 'string', 'exists:barbers,id', 'required_with:branch_id'],
             'starts_at' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
-            'service_ids' => ['required', 'array', 'min:1'],
+            'service_ids' => ['required', 'array', 'min:1', ValidationLimitConstants::RULE_LIST_MAX],
             'service_ids.*' => ['string', 'distinct', 'exists:offered_services,id'],
-            'home_address' => ['nullable', 'array', 'required_without_all:chair_id,branch_id', 'prohibits:chair_id'],
+            'home_address' => ['nullable', 'array:latitude,longitude,street,building,unit', 'required_without_all:chair_id,branch_id', 'prohibits:chair_id'],
             'home_address.latitude' => ['required_with:home_address', 'numeric', 'between:-90,90'],
             'home_address.longitude' => ['required_with:home_address', 'numeric', 'between:-180,180'],
             'home_address.street' => ['required_with:home_address', 'string', 'max:255'],

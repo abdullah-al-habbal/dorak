@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Modules\ClientInteraction\CQRS\Command\AddFavoriteCommand;
 use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 use Modules\ClientInteraction\Rules\FavoritedExists;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class AddFavoriteRequest extends BaseApiFormRequest
@@ -15,7 +16,7 @@ final class AddFavoriteRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'favorited_id' => ['required', 'string', new FavoritedExists($this->input('favorited_type'))],
+            'favorited_id' => ['required', 'string', ValidationLimitConstants::RULE_ID_MAX, new FavoritedExists($this->input('favorited_type'))],
             'favorited_type' => ['required', Rule::enum(FavoritedTypeEnum::class)],
         ];
     }

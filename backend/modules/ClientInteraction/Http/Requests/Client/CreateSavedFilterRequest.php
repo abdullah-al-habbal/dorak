@@ -6,6 +6,7 @@ namespace Modules\ClientInteraction\Http\Requests\Client;
 
 use Modules\ClientInteraction\CQRS\Command\CreateSavedFilterCommand;
 use Modules\ClientInteraction\ValuesObjects\FilterConfigurationValueObject;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class CreateSavedFilterRequest extends BaseApiFormRequest
@@ -14,7 +15,7 @@ final class CreateSavedFilterRequest extends BaseApiFormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'filter_criteria' => ['required', 'array'],
+            'filter_criteria' => ['required', 'array', 'min:1', ValidationLimitConstants::RULE_LIST_MAX],
         ];
     }
 

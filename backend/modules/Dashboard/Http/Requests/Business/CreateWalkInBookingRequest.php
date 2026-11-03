@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Requests\Business;
 
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Dashboard\CQRS\Command\CreateWalkInBookingCommand;
 
@@ -22,7 +23,7 @@ final class CreateWalkInBookingRequest extends BaseApiFormRequest
             'customer_email' => ['required', 'email', 'max:255'],
             'customer_name' => ['required', 'string', 'max:120'],
             'customer_phone' => ['nullable', 'string', 'max:30'],
-            'service_ids' => ['required', 'array', 'min:1'],
+            'service_ids' => ['required', 'array', 'min:1', ValidationLimitConstants::RULE_LIST_MAX],
             'service_ids.*' => ['uuid', 'distinct', Rule::exists('offered_services', 'id')],
             'starts_at' => ['required', 'date', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$/', 'after:now'],
         ];

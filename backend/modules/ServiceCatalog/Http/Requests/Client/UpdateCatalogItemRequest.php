@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\ServiceCatalog\Http\Requests\Client;
 
 use Illuminate\Validation\Rule;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\ServiceCatalog\CQRS\Command\Client\UpdateCatalogItemCommand;
 use Modules\ServiceCatalog\Enums\FaceShapeEnum;
@@ -27,21 +28,21 @@ final class UpdateCatalogItemRequest extends BaseApiFormRequest
             'description.ar' => ['nullable', 'string', 'max:5000'],
             'slug' => ['sometimes', 'string', 'max:255', Rule::unique('service_catalog_items', 'slug')->ignore($id)],
             'sku' => ['nullable', 'string', 'max:100', Rule::unique('service_catalog_items', 'sku')->ignore($id)],
-            'price_range' => ['sometimes', 'array'],
-            'price_range.min' => ['required_with:price_range', 'numeric', 'min:0'],
-            'price_range.max' => ['required_with:price_range', 'numeric', 'min:0'],
+            'price_range' => ['sometimes', 'array:min,max,currency'],
+            'price_range.min' => ['required_with:price_range', 'numeric', 'min:0', 'max:'.ValidationLimitConstants::VALIDATION_PRICE_MINOR_MAX],
+            'price_range.max' => ['required_with:price_range', 'numeric', 'min:0', 'max:'.ValidationLimitConstants::VALIDATION_PRICE_MINOR_MAX],
             'price_range.currency' => ['required_with:price_range', 'string', 'size:3'],
             'maintenance_level' => ['nullable', Rule::enum(MaintenanceLevelEnum::class)],
             'style_period_type' => ['nullable', Rule::enum(StylePeriodEnum::class)],
             'formality_level' => ['nullable', Rule::enum(FormalityEnum::class)],
-            'face_shapes' => ['sometimes', 'array'],
+            'face_shapes' => ['sometimes', 'array', ValidationLimitConstants::RULE_LIST_MAX],
             'face_shapes.*' => [Rule::enum(FaceShapeEnum::class)],
-            'hair_textures' => ['sometimes', 'array'],
+            'hair_textures' => ['sometimes', 'array', ValidationLimitConstants::RULE_LIST_MAX],
             'hair_textures.*' => [Rule::enum(HairTextureEnum::class)],
-            'styling_details' => ['nullable', 'array'],
+            'styling_details' => ['nullable', 'array', ValidationLimitConstants::RULE_LIST_MAX],
             'is_active' => ['sometimes', 'boolean'],
             'default_duration_minutes' => ['nullable', 'integer', 'min:1', 'max:1440'],
-            'tag_ids' => ['sometimes', 'array'],
+            'tag_ids' => ['sometimes', 'array', ValidationLimitConstants::RULE_LIST_MAX],
             'tag_ids.*' => ['uuid', 'exists:service_catalog_item_tags,id'],
         ];
     }

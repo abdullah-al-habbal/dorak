@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Http\Requests\Business;
 
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Dashboard\CQRS\Command\UpdateDashboardPasswordCommand;
 
@@ -12,7 +13,7 @@ final class UpdateDashboardPasswordRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'current_password' => ['required', 'string'],
+            'current_password' => ['required', 'string', ValidationLimitConstants::RULE_PASSWORD_MAX],
             'password' => ['required', 'string', 'min:12', 'max:255', 'confirmed'],
         ];
     }

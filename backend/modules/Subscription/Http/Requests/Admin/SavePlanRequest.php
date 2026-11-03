@@ -6,6 +6,7 @@ namespace Modules\Subscription\Http\Requests\Admin;
 
 use Illuminate\Validation\Rule;
 use Modules\Brand\Services\BrandFeatures;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Subscription\CQRS\Command\SavePlanCommand;
 use Modules\Subscription\Enums\SubscriptionIntervalUnitEnum;
@@ -20,13 +21,13 @@ final class SavePlanRequest extends BaseApiFormRequest
             'name.ar' => ['required', 'string', 'max:255'],
             'description.en' => ['nullable', 'string', 'max:2000'],
             'description.ar' => ['nullable', 'string', 'max:2000'],
-            'price_amount_minor' => ['required', 'integer', 'min:0'],
+            'price_amount_minor' => ['required', 'integer', ValidationLimitConstants::RULE_PRICE_MINOR],
             'currency_code' => ['required', 'exists:currencies,code'],
             'interval_unit' => ['required', Rule::enum(SubscriptionIntervalUnitEnum::class)],
             'interval_count' => ['required', 'integer', 'min:1', 'max:120'],
             'is_active' => ['required', 'boolean'],
-            'sort_order' => ['sometimes', 'integer', 'min:0'],
-            'feature_keys' => ['sometimes', 'array'],
+            'sort_order' => ['sometimes', 'integer', 'between:0,100000'],
+            'feature_keys' => ['sometimes', 'array', ValidationLimitConstants::RULE_LIST_MAX],
             'feature_keys.*' => ['string', 'distinct', Rule::in(BrandFeatures::keys())],
         ];
     }

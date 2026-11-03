@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Payment\Http\Requests\Admin;
 
 use Illuminate\Validation\Rule;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Payment\CQRS\Command\SavePaymentGatewayCommand;
 use Modules\Payment\Enums\PaymentGatewayDriver;
@@ -23,8 +24,8 @@ final class SavePaymentGatewayRequest extends BaseApiFormRequest
             'driver' => ['required', Rule::enum(PaymentGatewayDriver::class)],
             'is_active' => ['required', 'boolean'],
             'is_default' => ['sometimes', 'boolean'],
-            'gateway_settings' => ['sometimes', 'nullable', 'array'],
-            'sort_order' => ['sometimes', 'integer', 'min:0'],
+            'gateway_settings' => ['sometimes', 'nullable', 'array', ValidationLimitConstants::RULE_LIST_MAX],
+            'sort_order' => ['sometimes', 'integer', 'between:0,100000'],
         ];
     }
 

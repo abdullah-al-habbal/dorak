@@ -7,6 +7,7 @@ namespace Modules\Booking\Http\Requests\Shared;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Modules\Booking\CQRS\Query\Shared\ListSlotsQuery;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class ListBranchSlotsRequest extends BaseApiFormRequest
@@ -18,7 +19,7 @@ final class ListBranchSlotsRequest extends BaseApiFormRequest
     {
         return [
             'date' => ['required', 'date_format:Y-m-d'],
-            'service_ids' => ['required', 'array', 'min:1'],
+            'service_ids' => ['required', 'array', 'min:1', ValidationLimitConstants::RULE_LIST_MAX],
             'service_ids.*' => [
                 'string',
                 'distinct',

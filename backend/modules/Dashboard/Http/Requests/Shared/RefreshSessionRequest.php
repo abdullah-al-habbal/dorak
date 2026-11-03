@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Http\Requests\Shared;
 
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class RefreshSessionRequest extends BaseApiFormRequest
@@ -12,8 +13,8 @@ final class RefreshSessionRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'refresh_token' => ['required', 'string', 'min:32'],
-            'claim' => ['sometimes', 'string'],
+            'refresh_token' => ['required', 'string', 'min:32', ValidationLimitConstants::RULE_TOKEN_MAX],
+            'claim' => ['sometimes', 'string', ValidationLimitConstants::RULE_TOKEN_MAX],
         ];
     }
 }

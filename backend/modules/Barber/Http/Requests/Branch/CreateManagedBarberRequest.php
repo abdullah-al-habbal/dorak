@@ -14,7 +14,7 @@ final class CreateManagedBarberRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'array'],
+            'name' => ['required', 'array:en,ar'],
             'name.en' => ['required', 'string', 'max:255'],
             'name.ar' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'regex:/^\+[1-9][0-9]{7,14}$/', 'unique:barbers,phone'],

@@ -13,6 +13,7 @@ use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class CreateAffiliationRequest extends BaseApiFormRequest
@@ -28,7 +29,7 @@ final class CreateAffiliationRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'affiliable_id' => ['required', 'string', $this->affiliableExistsRule()],
+            'affiliable_id' => ['required', 'string', ValidationLimitConstants::RULE_ID_MAX, $this->affiliableExistsRule()],
             'affiliable_type' => ['required', Rule::enum(AffiliableType::class)],
             'commission_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];

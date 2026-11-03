@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Barber\Http\Requests\Barber;
 
 use Modules\Barber\CQRS\Command\Barber\ResetPasswordCommand;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class ResetPasswordRequest extends BaseApiFormRequest
@@ -17,7 +18,7 @@ final class ResetPasswordRequest extends BaseApiFormRequest
         return [
             'email' => ['required', 'email'],
             'code' => ['required', 'string', 'size:6'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', ValidationLimitConstants::RULE_PASSWORD_MAX, 'confirmed'],
         ];
     }
 

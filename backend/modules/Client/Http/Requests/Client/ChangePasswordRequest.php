@@ -6,6 +6,7 @@ namespace Modules\Client\Http\Requests\Client;
 
 use Illuminate\Support\Facades\Hash;
 use Modules\Client\CQRS\Command\Client\ChangePasswordCommand;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class ChangePasswordRequest extends BaseApiFormRequest
@@ -13,8 +14,8 @@ final class ChangePasswordRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'current_password' => ['required', 'current_password:client'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'current_password' => ['required', 'string', ValidationLimitConstants::RULE_PASSWORD_MAX, 'current_password:client'],
+            'password' => ['required', 'string', 'min:8', ValidationLimitConstants::RULE_PASSWORD_MAX, 'confirmed'],
         ];
     }
 

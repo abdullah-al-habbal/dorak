@@ -7,6 +7,7 @@ namespace Modules\ClientInteraction\Http\Requests\Client;
 use Illuminate\Validation\Rule;
 use Modules\Client\Enums\UniverseEnum;
 use Modules\ClientInteraction\CQRS\Command\UpdateDiscoveryPreferenceCommand;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class UpdateDiscoveryPreferenceRequest extends BaseApiFormRequest
@@ -16,8 +17,8 @@ final class UpdateDiscoveryPreferenceRequest extends BaseApiFormRequest
         return [
             'preferred_universe' => ['sometimes', Rule::enum(UniverseEnum::class)],
             'default_radius_km' => ['sometimes', 'numeric', 'min:1', 'max:1000'],
-            'hidden_brand_ids' => ['sometimes', 'array'],
-            'hidden_brand_ids.*' => ['string'],
+            'hidden_brand_ids' => ['sometimes', 'array', ValidationLimitConstants::RULE_LIST_MAX],
+            'hidden_brand_ids.*' => ['string', ValidationLimitConstants::RULE_ID_MAX],
             'allows_unavailable_results' => ['sometimes', 'boolean'],
         ];
     }

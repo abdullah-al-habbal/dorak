@@ -6,6 +6,7 @@ namespace Modules\Explore\Http\Requests\Shared;
 
 use Illuminate\Validation\Rule;
 use Modules\Client\Enums\UniverseEnum;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Explore\CQRS\Query\Shared\ExploreBranchesQuery;
 use Modules\Explore\Support\ExploreUniverse;
@@ -19,20 +20,20 @@ final class ExploreBranchesRequest extends BaseApiFormRequest
         return [
             'latitude' => ['required', 'numeric', 'between:-90,90'],
             'longitude' => ['required', 'numeric', 'between:-180,180'],
-            'radius' => ['required', 'numeric', 'min:0'],
+            'radius' => ['required', 'numeric', ValidationLimitConstants::RULE_RADIUS_KM],
             'universe' => ['sometimes', 'nullable', Rule::enum(UniverseEnum::class)],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
-            'catalog_item_ids' => ['sometimes', 'array'],
+            'catalog_item_ids' => ['sometimes', 'array', ValidationLimitConstants::RULE_LIST_MAX],
             'catalog_item_ids.*' => ['uuid', 'exists:service_catalog_items,id'],
             'available_now' => ['sometimes', 'boolean'],
             'price_range' => ['sometimes', 'array:min,max'],
-            'price_range.min' => ['integer', 'min:0'],
-            'price_range.max' => ['integer', 'min:0'],
+            'price_range.min' => ['integer', ValidationLimitConstants::RULE_PRICE_MINOR],
+            'price_range.max' => ['integer', ValidationLimitConstants::RULE_PRICE_MINOR],
             'rating_min' => ['sometimes', 'numeric', 'min:0', 'max:5'],
             'q' => ['sometimes', 'nullable', 'string', 'max:100'],
-            'tag_ids' => ['sometimes', 'array'],
+            'tag_ids' => ['sometimes', 'array', ValidationLimitConstants::RULE_LIST_MAX],
             'tag_ids.*' => ['uuid', 'exists:service_catalog_item_tags,id'],
-            'face_shape_compatible' => ['sometimes', 'string'],
+            'face_shape_compatible' => ['sometimes', 'string', ValidationLimitConstants::RULE_SHORT_TEXT_MAX],
         ];
     }
 

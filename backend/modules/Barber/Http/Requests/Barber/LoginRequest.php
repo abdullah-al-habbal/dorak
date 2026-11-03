@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Barber\Http\Requests\Barber;
 
 use Modules\Barber\CQRS\Command\Barber\LoginCommand;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class LoginRequest extends BaseApiFormRequest
@@ -13,7 +14,7 @@ final class LoginRequest extends BaseApiFormRequest
     {
         return [
             'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
+            'password' => ['required', 'string', ValidationLimitConstants::RULE_PASSWORD_MAX],
         ];
     }
 

@@ -6,6 +6,7 @@ namespace Modules\Barber\Http\Requests\Barber;
 
 use Illuminate\Validation\Rule;
 use Modules\Barber\CQRS\Command\Barber\UpdateProfileCommand;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Enums\VenueUniverse;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
@@ -14,12 +15,14 @@ final class UpdateProfileRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'array'],
-            'bio' => ['nullable', 'array'],
+            'name' => ['nullable', 'array:en,ar'],
+            'name.en' => ['sometimes', 'string', ValidationLimitConstants::RULE_NAME_MAX],
+            'name.ar' => ['sometimes', 'string', ValidationLimitConstants::RULE_NAME_MAX],
+            'bio' => ['nullable', 'array:en,ar'],
             'bio.en' => ['sometimes', 'nullable', 'string', 'max:2000'],
             'bio.ar' => ['sometimes', 'nullable', 'string', 'max:2000'],
             'email' => ['nullable', 'email', Rule::unique('barbers', 'email')->ignore($this->user()->id)],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'password' => ['nullable', 'string', 'min:8', ValidationLimitConstants::RULE_PASSWORD_MAX, 'confirmed'],
             'is_freelancer' => ['nullable', 'boolean'],
             'universe' => ['nullable', Rule::enum(VenueUniverse::class)],
         ];

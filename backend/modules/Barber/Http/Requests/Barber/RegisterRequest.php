@@ -6,6 +6,7 @@ namespace Modules\Barber\Http\Requests\Barber;
 
 use Illuminate\Validation\Rule;
 use Modules\Barber\CQRS\Command\Barber\RegisterCommand;
+use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class RegisterRequest extends BaseApiFormRequest
@@ -15,7 +16,7 @@ final class RegisterRequest extends BaseApiFormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('barbers', 'email')],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', ValidationLimitConstants::RULE_PASSWORD_MAX, 'confirmed'],
             'is_freelancer' => ['sometimes', 'boolean'],
             'phone' => ['nullable', 'string', 'max:20'],
         ];
