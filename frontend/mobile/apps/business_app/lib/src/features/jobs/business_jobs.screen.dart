@@ -38,8 +38,7 @@ class BusinessJobsScreen extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  if (state.error != null)
-                    FeatureError(error: state.error!),
+                  if (state.error != null) FeatureError(error: state.error!),
                   if (state.jobs.isEmpty && state.error == null)
                     Text(l10n.businessJobsEmpty),
                   for (final job in state.jobs)

@@ -40,7 +40,9 @@ class StylistProfileBloc extends Cubit<StylistProfileState> {
         if (bioArabic.trim().isNotEmpty) 'ar': bioArabic.trim(),
       };
       if (bio.isNotEmpty) await _repository.updateProfile(bio: bio);
-      final profile = await _repository.updateTravelRadius(state.travelRadiusKm);
+      final profile = await _repository.updateTravelRadius(
+        state.travelRadiusKm,
+      );
       if (isClosed) return;
       emit(state.copyWith(saving: false, saved: true, profile: profile));
     } catch (error) {

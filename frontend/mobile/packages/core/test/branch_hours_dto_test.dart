@@ -18,7 +18,12 @@ void main() {
       'address': 'Main St',
       'tags': ['kids'],
       'opening_hours': [
-        {'day_of_week': 5, 'is_closed': true, 'opens_time': null, 'closes_time': null},
+        {
+          'day_of_week': 5,
+          'is_closed': true,
+          'opens_time': null,
+          'closes_time': null,
+        },
       ],
       'today_hours': {
         'date': '2026-10-24',

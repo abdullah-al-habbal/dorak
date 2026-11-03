@@ -44,5 +44,11 @@ class StylistJobsState extends Equatable {
   );
 
   @override
-  List<Object?> get props => [loading, applyingJobId, jobs, applications, error];
+  List<Object?> get props => [
+    loading,
+    applyingJobId,
+    jobs,
+    applications,
+    error,
+  ];
 }

@@ -140,7 +140,11 @@ void main() {
                   {'id': 'barber-1', 'name': 'Karim'},
                 ],
                 'services': [
-                  {'id': 'service-1', 'name': 'Fade', 'price_amount_minor': 8000},
+                  {
+                    'id': 'service-1',
+                    'name': 'Fade',
+                    'price_amount_minor': 8000,
+                  },
                 ],
               },
             ),
@@ -155,7 +159,9 @@ void main() {
       expect(detail.name, 'Branch 1');
       expect(detail.chairsCount, 2);
       expect(detail.barbers.map((barber) => barber.name), ['Karim']);
-      expect(detail.services.map((service) => service.priceAmountMinor), [8000]);
+      expect(detail.services.map((service) => service.priceAmountMinor), [
+        8000,
+      ]);
     });
 
     test(

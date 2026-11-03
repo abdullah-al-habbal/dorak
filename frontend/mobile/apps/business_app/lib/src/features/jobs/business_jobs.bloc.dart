@@ -64,9 +64,7 @@ class BusinessJobsBloc extends Cubit<BusinessJobsState> {
   }
 
   Future<void> loadApplicants(String jobId) async {
-    emit(
-      state.copyWith(loading: true, applicants: const [], clearError: true),
-    );
+    emit(state.copyWith(loading: true, applicants: const [], clearError: true));
     try {
       final page = await _repository.getBranchApplications(jobId);
       if (isClosed) return;

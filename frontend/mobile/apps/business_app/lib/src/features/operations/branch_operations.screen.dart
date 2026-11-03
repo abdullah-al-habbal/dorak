@@ -107,7 +107,8 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                     title: Text(state.profile!.name),
                     subtitle: Text(state.profile!.email),
                   ),
-                if (dashboard != null) DashboardCard(dashboard: dashboard, l10n: l10n),
+                if (dashboard != null)
+                  DashboardCard(dashboard: dashboard, l10n: l10n),
                 const SizedBox(height: 16),
                 Text(
                   l10n.businessAppointmentsTitle,

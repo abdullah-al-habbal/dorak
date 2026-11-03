@@ -31,8 +31,10 @@ class DashboardCard extends StatelessWidget {
             hint: Text(l10n.businessBranchHint),
             items: dashboard.assignedBranches
                 .map(
-                  (branch) =>
-                      DropdownMenuItem(value: branch.id, child: Text(branch.name)),
+                  (branch) => DropdownMenuItem(
+                    value: branch.id,
+                    child: Text(branch.name),
+                  ),
                 )
                 .toList(),
             onChanged: (_) {},

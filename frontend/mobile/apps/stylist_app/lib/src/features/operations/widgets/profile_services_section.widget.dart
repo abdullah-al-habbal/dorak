@@ -24,19 +24,21 @@ class ProfileServicesSection extends StatelessWidget {
       ),
       Text(l10n.stylistServicesTitle, style: DorakTypography.titleLg),
       if (profile.services.isEmpty) Text(l10n.stylistNoServicesMessage),
-      ...profile.services.where((service) => service.active).map(
-        (service) => ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: Text(service.name),
-          subtitle: Text(
-            [
-              if (service.durationMinutes != null)
-                l10n.serviceDurationLabel(service.durationMinutes!),
-              if (service.isAtHome) l10n.serviceAtHomeLabel,
-            ].join(' · '),
+      ...profile.services
+          .where((service) => service.active)
+          .map(
+            (service) => ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(service.name),
+              subtitle: Text(
+                [
+                  if (service.durationMinutes != null)
+                    l10n.serviceDurationLabel(service.durationMinutes!),
+                  if (service.isAtHome) l10n.serviceAtHomeLabel,
+                ].join(' · '),
+              ),
+            ),
           ),
-        ),
-      ),
     ],
   );
 }

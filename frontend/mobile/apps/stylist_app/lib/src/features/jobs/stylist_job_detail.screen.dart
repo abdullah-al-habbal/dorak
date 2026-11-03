@@ -46,7 +46,9 @@ class StylistJobDetailScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   LocalizedName.resolve(
-                    job.description.map((key, value) => MapEntry(key, '$value')),
+                    job.description.map(
+                      (key, value) => MapEntry(key, '$value'),
+                    ),
                     localeCode,
                   ),
                 ),
@@ -57,7 +59,8 @@ class StylistJobDetailScreen extends StatelessWidget {
                   ),
                 if (state.hasApplied(jobId)) Text(l10n.stylistJobApplied),
                 FilledButton(
-                  onPressed: state.applyingJobId != null || state.hasApplied(jobId)
+                  onPressed:
+                      state.applyingJobId != null || state.hasApplied(jobId)
                       ? null
                       : () => bloc.apply(jobId),
                   child: Text(l10n.stylistJobApply),

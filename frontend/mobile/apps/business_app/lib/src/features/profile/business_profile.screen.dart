@@ -32,12 +32,15 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     super.dispose();
   }
 
-  Widget _field(TextEditingController controller, String label, {int lines = 1}) =>
-      TextField(
-        controller: controller,
-        maxLines: lines,
-        decoration: InputDecoration(labelText: label),
-      );
+  Widget _field(
+    TextEditingController controller,
+    String label, {
+    int lines = 1,
+  }) => TextField(
+    controller: controller,
+    maxLines: lines,
+    decoration: InputDecoration(labelText: label),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +52,16 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
         builder: (context, state) => ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _field(_descriptionEn, l10n.businessProfileDescriptionEnglish, lines: 3),
-            _field(_descriptionAr, l10n.businessProfileDescriptionArabic, lines: 3),
+            _field(
+              _descriptionEn,
+              l10n.businessProfileDescriptionEnglish,
+              lines: 3,
+            ),
+            _field(
+              _descriptionAr,
+              l10n.businessProfileDescriptionArabic,
+              lines: 3,
+            ),
             _field(_addressEn, l10n.businessProfileAddressEnglish),
             _field(_addressAr, l10n.businessProfileAddressArabic),
             _field(_tags, l10n.businessProfileTags),

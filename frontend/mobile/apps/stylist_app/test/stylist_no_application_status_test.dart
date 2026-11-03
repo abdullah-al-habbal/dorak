@@ -9,7 +9,9 @@ void main() {
         .whereType<File>()
         .where(
           (file) =>
-              file.readAsStringSync().contains('updateBranchApplicationStatus') ||
+              file.readAsStringSync().contains(
+                'updateBranchApplicationStatus',
+              ) ||
               file.readAsStringSync().contains('/status'),
         )
         .map((file) => file.path);

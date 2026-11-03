@@ -31,9 +31,7 @@ class StylistPortfolioBloc extends Cubit<StylistPortfolioState> {
     try {
       final photo = await _repository.uploadPortfolioPhoto(path);
       if (isClosed) return;
-      emit(
-        state.copyWith(uploading: false, photos: [...state.photos, photo]),
-      );
+      emit(state.copyWith(uploading: false, photos: [...state.photos, photo]));
     } catch (error) {
       if (isClosed) return;
       emit(state.copyWith(uploading: false, error: error));

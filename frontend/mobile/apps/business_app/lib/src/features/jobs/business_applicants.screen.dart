@@ -54,7 +54,8 @@ class BusinessApplicantsScreen extends StatelessWidget {
                     key: ValueKey(application.id),
                     child: ListTile(
                       title: Text(
-                        application.profileSnapshot?.name ?? application.barberId,
+                        application.profileSnapshot?.name ??
+                            application.barberId,
                       ),
                       subtitle: Text(_statusLabel(l10n, application.status)),
                       trailing: _decided(application)

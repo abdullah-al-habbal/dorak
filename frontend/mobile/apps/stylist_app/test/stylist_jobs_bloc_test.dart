@@ -16,20 +16,23 @@ void main() {
 
   tearDown(() => bloc.close());
 
-  test('applying twice surfaces the backend error without duplicating', () async {
-    final rejected = ApiException(
-      statusCode: 422,
-      code: 'UNPROCESSABLE_ENTITY',
-      message: 'jobposting::messages.already_applied',
-    );
-    repository.secondApplyError = rejected;
+  test(
+    'applying twice surfaces the backend error without duplicating',
+    () async {
+      final rejected = ApiException(
+        statusCode: 422,
+        code: 'UNPROCESSABLE_ENTITY',
+        message: 'jobposting::messages.already_applied',
+      );
+      repository.secondApplyError = rejected;
 
-    await bloc.apply('job-1');
-    await bloc.apply('job-1');
+      await bloc.apply('job-1');
+      await bloc.apply('job-1');
 
-    expect(bloc.state.applications, hasLength(1));
-    expect(bloc.state.hasApplied('job-1'), isTrue);
-    expect(bloc.state.error, rejected);
-    expect(bloc.state.applyingJobId, isNull);
-  });
+      expect(bloc.state.applications, hasLength(1));
+      expect(bloc.state.hasApplied('job-1'), isTrue);
+      expect(bloc.state.error, rejected);
+      expect(bloc.state.applyingJobId, isNull);
+    },
+  );
 }

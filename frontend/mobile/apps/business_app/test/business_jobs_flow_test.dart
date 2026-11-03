@@ -58,19 +58,25 @@ void main() {
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 
-    expect(repository.savedValues!['title'], {'en': 'Senior barber', 'ar': 'حلاق'});
+    expect(repository.savedValues!['title'], {
+      'en': 'Senior barber',
+      'ar': 'حلاق',
+    });
     expect(find.text('Senior barber'), findsOneWidget);
     expect(find.text('No job postings yet.'), findsNothing);
   });
 
-  test('an applicant decision updates the row with the backend status', () async {
-    await bloc.loadApplicants('job-1');
+  test(
+    'an applicant decision updates the row with the backend status',
+    () async {
+      await bloc.loadApplicants('job-1');
 
-    await bloc.decide('job-1', 'app-1', ApplicationDecision.accepted);
+      await bloc.decide('job-1', 'app-1', ApplicationDecision.accepted);
 
-    expect(repository.decidedStatus, 'accepted');
-    expect(bloc.state.applicants.single.status, 'accepted');
-  });
+      expect(repository.decidedStatus, 'accepted');
+      expect(bloc.state.applicants.single.status, 'accepted');
+    },
+  );
 
   test('deleting removes the posting', () async {
     repository.jobs = [

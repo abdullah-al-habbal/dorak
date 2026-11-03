@@ -15,7 +15,11 @@ Map<String, dynamic> branchJson(Map<String, dynamic> extra) => {
 void main() {
   test('branch list items parse UUID ids and the stored rating', () {
     final branch = BranchDto.fromJson(
-      branchJson({'rating_average': 4.33, 'rating_count': 3, 'universe': 'unisex'}),
+      branchJson({
+        'rating_average': 4.33,
+        'rating_count': 3,
+        'universe': 'unisex',
+      }),
     );
 
     expect(branch.id, '01a1647f-a5d1-7017-8546-91692fff18ec');

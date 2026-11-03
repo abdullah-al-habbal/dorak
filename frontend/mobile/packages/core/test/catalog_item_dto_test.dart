@@ -56,8 +56,18 @@ void main() {
         'face_shapes': ['oval', 'hexagon'],
         'style_period_type': 'futuristic',
         'media': [
-          {'id': 'm1', 'media_type': 'hologram', 'image_path': 'a.png', 'sort_order': 0},
-          {'id': 'm2', 'media_type': 'video', 'image_path': 'b.mp4', 'sort_order': 1},
+          {
+            'id': 'm1',
+            'media_type': 'hologram',
+            'image_path': 'a.png',
+            'sort_order': 0,
+          },
+          {
+            'id': 'm2',
+            'media_type': 'video',
+            'image_path': 'b.mp4',
+            'sort_order': 1,
+          },
         ],
       });
 

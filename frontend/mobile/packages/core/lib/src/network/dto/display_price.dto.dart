@@ -7,7 +7,10 @@ class DisplayPriceDto {
   final int amountMinor;
   final String currencyCode;
 
-  const DisplayPriceDto({required this.amountMinor, required this.currencyCode});
+  const DisplayPriceDto({
+    required this.amountMinor,
+    required this.currencyCode,
+  });
 
   factory DisplayPriceDto.fromJson(Map<String, dynamic> json) =>
       _$DisplayPriceDtoFromJson(json);
