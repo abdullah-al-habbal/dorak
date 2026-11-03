@@ -16,7 +16,7 @@ BarberServiceDto _$BarberServiceDtoFromJson(
   currencyCode: json['currency_code'] as String?,
   durationMinutes: (json['duration_minutes'] as num?)?.toInt(),
   isAtHome: json['is_at_home'] as bool? ?? false,
-  active: json['active'] as bool? ?? true,
+  active: json['is_active'] as bool? ?? true,
   createdAt: json['created_at'] == null
       ? null
       : DateTime.parse(json['created_at'] as String),

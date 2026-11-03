@@ -13,6 +13,7 @@ class BarberServiceDto {
   final String? currencyCode;
   final int? durationMinutes;
   final bool isAtHome;
+  @JsonKey(name: 'is_active', defaultValue: true)
   final bool active;
   final DateTime? createdAt;
   final DisplayPriceDto? displayPrice;

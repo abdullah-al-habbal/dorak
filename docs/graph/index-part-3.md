@@ -25,6 +25,16 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 
 - [Deployment Guide](../deployment/deployment-guide.md)
 
+### `docs/mobile-audit-g10-g11/`
+
+- [Mobile Audit G10/G11: Index](../mobile-audit-g10-g11/index.md)
+- [01: DTO is_active bug](../mobile-audit-g10-g11/01-dto-is-active-bug.md)
+- [02: Token scope mismatch](../mobile-audit-g10-g11/02-token-scope-mismatch.md)
+- [03: Inbox scope definition](../mobile-audit-g10-g11/03-inbox-scope-definition.md)
+- [04: Navigation shell gap](../mobile-audit-g10-g11/04-navigation-shell-gap.md)
+- [05: Missing backend routes](../mobile-audit-g10-g11/05-missing-backend-routes.md)
+- [06: MVP scope decisions](../mobile-audit-g10-g11/06-mvp-scope-decisions.md)
+
 ### `docs/planning/`
 
 - [Product Audit](../planning/product-audit.md)

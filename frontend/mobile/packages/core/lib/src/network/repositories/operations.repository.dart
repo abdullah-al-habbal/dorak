@@ -334,7 +334,7 @@ class DioStylistOperationsRepository implements StylistOperationsRepository {
     'currency_code': currencyCode,
     'duration_minutes': ?durationMinutes,
     'is_at_home': isAtHome,
-    'active': active,
+    'is_active': active,
     'catalog_item_id': ?catalogItemId,
   };
 }
