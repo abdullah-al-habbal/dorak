@@ -30,6 +30,10 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Product Audit](../planning/product-audit.md)
 - [Product Audit: Matrix](../planning/product-audit-part-2.md)
 - [Product Audit: Findings](../planning/product-audit-part-3.md)
+- [Existing Frontend Audit](../planning/existing-frontend-audit.md)
+- [Existing Frontend Audit: Guards](../planning/existing-frontend-audit-part-2.md)
+- [Existing Frontend Audit: Endpoints and Models](../planning/existing-frontend-audit-part-3.md)
+- [Existing Frontend Audit: Forms, Workflows, Findings](../planning/existing-frontend-audit-part-4.md)
 - [Remediation Plan](../planning/remediation-plan.md)
 
 ### `frontend/dashboard/`

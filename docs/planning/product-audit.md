@@ -4,6 +4,7 @@ parentnode: docs.graph
 childnodes:
   - docs.audit.part-2
   - docs.audit.part-3
+  - docs.audit.frontend
 codeanchors:
   - backend/modules/
   - frontend/dashboard/src/
