@@ -55,6 +55,11 @@ export const ROUTES = {
       resource: "branches" | "chairs" | "services" | "stylists" | "bookings",
     ) => `/${actor}/${resource}`,
   },
+  earnings: (actor: "owner" | "manager" | "barber") => `/${actor}/earnings`,
+  owner: {
+    subscription: "/owner/subscription",
+    payouts: "/owner/payouts",
+  },
   admin: {
     disputedReviews: "/admin/disputed-reviews",
     exchangeRates: "/admin/exchange-rates",
@@ -169,6 +174,24 @@ export const PORTAL_NAVIGATION: readonly PortalNavigationItem[] = [
     icon: "home",
     actors: ["admin", "owner"],
     href: (actor) => ROUTES.operations.brands(actor as "admin" | "owner"),
+  },
+  {
+    key: "earnings",
+    icon: "home",
+    actors: ["owner", "manager", "barber"],
+    href: (actor) => ROUTES.earnings(actor as "owner" | "manager" | "barber"),
+  },
+  {
+    key: "mySubscription",
+    icon: "home",
+    actors: ["owner"],
+    href: () => ROUTES.owner.subscription,
+  },
+  {
+    key: "myPayouts",
+    icon: "home",
+    actors: ["owner"],
+    href: () => ROUTES.owner.payouts,
   },
   {
     key: "catalogItems",

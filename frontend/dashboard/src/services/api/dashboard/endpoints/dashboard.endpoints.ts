@@ -1,6 +1,9 @@
 import { DASHBOARD_API_BASE_PATH } from "@/services/api/dashboard/endpoints/dashboard.endpoints.constant";
 export const DashboardEndpoints = {
   overview: `${DASHBOARD_API_BASE_PATH}/overview`,
+  earnings: `${DASHBOARD_API_BASE_PATH}/earnings`,
+  ownerSubscription: `${DASHBOARD_API_BASE_PATH}/subscription`,
+  ownerPayouts: `${DASHBOARD_API_BASE_PATH}/payouts`,
   profile: `${DASHBOARD_API_BASE_PATH}/profile`,
   profileNotifications: `${DASHBOARD_API_BASE_PATH}/profile/notifications`,
   profilePassword: `${DASHBOARD_API_BASE_PATH}/profile/password`,

@@ -16,6 +16,8 @@ return [
     'services_unavailable_for_branch' => 'Every service must be available to the selected branch.',
     'admin_operation_only' => 'This dashboard operation is available to platform administrators only.',
     'brand_operation_unavailable' => 'Brand management is available to platform administrators and brand owners only.',
+    'earnings_operation_unavailable' => 'Earnings are available to brand owners, branch managers and stylists only.',
+    'owner_operation_only' => 'This dashboard operation is available to brand owners only.',
     'brand_owner_only' => 'Only a brand owner can create a brand.',
     'barber_operation_unavailable' => 'This dashboard operation is not available to barbers.',
     'session_secret_invalid' => 'DASHBOARD_SESSION_SECRET must be at least 32 characters.',

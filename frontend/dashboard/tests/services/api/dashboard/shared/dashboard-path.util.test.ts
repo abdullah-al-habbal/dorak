@@ -7,6 +7,9 @@ import {
 describe("isDashboardRouteAllowed", () => {
   it.each([
     ["GET", ["overview"]],
+    ["GET", ["earnings"]],
+    ["GET", ["subscription"]],
+    ["GET", ["payouts"]],
     ["GET", ["bookings"]],
     ["POST", ["bookings", "walk-in"]],
     ["GET", ["bookings", "booking-1"]],
@@ -125,6 +128,8 @@ describe("isDashboardRouteAllowed", () => {
     ["GET", ["admin", "brands"]],
     ["PATCH", ["admin", "catalog-items", "item-1"]],
     ["POST", ["admin", "catalog-tags"]],
+    ["POST", ["earnings"]],
+    ["PATCH", ["payouts", "po-1", "approve"]],
     ["DELETE", ["admin", "payouts", "po-1"]],
     ["PATCH", ["admin", "payouts", "po-1", "refund"]],
     ["POST", ["admin", "commission-entries"]],
@@ -140,6 +145,9 @@ describe("isDashboardPagedPath", () => {
   it.each([
     [["bookings"], true],
     [["overview"], false],
+    [["earnings"], false],
+    [["subscription"], false],
+    [["payouts"], true],
     [["branches", "b", "reviews"], true],
     [["branches", "b", "affiliations"], true],
     [["branches", "b", "job-postings"], true],

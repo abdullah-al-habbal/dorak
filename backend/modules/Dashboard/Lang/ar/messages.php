@@ -16,6 +16,8 @@ return [
     'services_unavailable_for_branch' => 'يجب أن تكون جميع الخدمات متاحة للفرع المحدد.',
     'admin_operation_only' => 'عملية لوحة التحكم هذه متاحة لمسؤولي المنصة فقط.',
     'brand_operation_unavailable' => 'إدارة العلامات التجارية متاحة لمسؤولي المنصة ومالكي العلامات فقط.',
+    'earnings_operation_unavailable' => 'الأرباح متاحة لمالكي العلامات ومديري الفروع والمصففين فقط.',
+    'owner_operation_only' => 'عملية لوحة التحكم هذه متاحة لمالكي العلامات فقط.',
     'brand_owner_only' => 'مالك العلامة التجارية فقط يمكنه إنشاء علامة تجارية.',
     'barber_operation_unavailable' => 'عملية لوحة التحكم هذه غير متاحة للحلاقين.',
     'session_secret_invalid' => 'يجب ألا يقل طول DASHBOARD_SESSION_SECRET عن 32 حرفًا.',

@@ -3,6 +3,7 @@ export const DASHBOARD_PROXY_ROUTE_RULES: ReadonlyArray<{
   path: RegExp;
 }> = [
   { method: "GET", path: /^overview$/ },
+  { method: "GET", path: /^(earnings|subscription|payouts)$/ },
   { method: "GET", path: /^bookings$/ },
   { method: "POST", path: /^bookings\/walk-in$/ },
   { method: "GET", path: /^bookings\/[A-Za-z0-9-]+$/ },
@@ -101,6 +102,9 @@ export const DASHBOARD_PROXY_ROUTE_RULES: ReadonlyArray<{
   { method: "GET", path: /^settings$/ },
   { method: "PATCH", path: /^settings$/ },
 ];
+
+/** Single-segment GET roots whose response is not a paginated list. */
+export const DASHBOARD_UNPAGED_ROOTS = ["overview", "earnings", "subscription"];
 
 export const DASHBOARD_PAGED_ADMIN_LISTS = [
   "reviews",

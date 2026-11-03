@@ -37,6 +37,9 @@ describe("route constants", () => {
       "services",
       "chairs",
       "brands",
+      "earnings",
+      "mySubscription",
+      "myPayouts",
       "stylists",
     ]);
     expect(ROUTES.operations.resource("owner", "branches")).toBe(
@@ -73,11 +76,22 @@ describe("route constants", () => {
     ].forEach((key) => expect(actorsFor(key as never)).toEqual(["admin"]));
   });
 
+  it("offers earnings to owners, managers and stylists but plan and payouts to owners only", () => {
+    const actorsFor = (key: string) =>
+      PORTAL_NAVIGATION.find((item) => item.key === key)?.actors;
+
+    expect(actorsFor("earnings")).toEqual(["owner", "manager", "barber"]);
+    expect(actorsFor("mySubscription")).toEqual(["owner"]);
+    expect(actorsFor("myPayouts")).toEqual(["owner"]);
+    expect(ROUTES.earnings("barber")).toBe("/barber/earnings");
+    expect(ROUTES.owner.subscription).toBe("/owner/subscription");
+  });
+
   it("keeps the operations destinations away from barbers", () => {
     const barberKeys = PORTAL_NAVIGATION.filter((item) =>
       item.actors.includes("barber"),
     ).map((item) => item.key);
 
-    expect(barberKeys).toEqual(["dashboard"]);
+    expect(barberKeys).toEqual(["dashboard", "earnings"]);
   });
 });

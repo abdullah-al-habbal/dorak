@@ -92,3 +92,13 @@ the account is deactivated or banned). Managed barbers without a login cannot re
 - Gate: public `GET /brands` and `/brands/{id}` list active brands only; `BranchModel::isOperational()` (enabled branch + active brand) backs branch login, refresh, `EnsureBranchAccountAccess` and `scopeDiscoverable`.
 - API resource `status` field; dashboard Brands page shows the status badge and an Approve button for admins; mobile `BrandDto.status`.
 - Tests: `tests/Feature/Brand/BrandApprovalTest.php`.
+
+## Role-based earnings, plan and payout visibility (Gap G4)
+
+Read-only dashboard endpoints (outside the admin group), scoped by `DashboardActor`:
+
+- `GET /dashboard/earnings?from=&to=` (owner, branch manager, stylist; admin 403): completed bookings grouped per currency. Owner = all owned brands, manager = own branch → `gross_minor`, `commission_minor` (platform commission from `commission_entries`), `net_minor`, `completed_bookings_count`. Stylist = own `barber_id` bookings → `gross_minor` and `net_minor`, which is gross less the affiliation `commission_percent` and is `null` unless every booking in that currency falls under an active branch/brand affiliation with a percent.
+- `GET /dashboard/subscription` (owner only): latest subscription of each owned brand with plan price, interval, feature keys, effective Pennant flags and `grace_ends_at`.
+- `GET /dashboard/payouts` (owner only): own brands' non-draft payouts, paginated, `?status=`; no admin notes.
+
+Authorization via `DashboardEarningsAuthorizationMiddleware` / `DashboardOwnerAuthorizationMiddleware`; brand and branch scope comes from the actor, never from the request. Dashboard pages: `/owner|manager|barber/earnings`, `/owner/subscription`, `/owner/payouts`. Mobile screens are deferred to G10/G11.

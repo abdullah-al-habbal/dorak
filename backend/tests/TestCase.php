@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use LogicException;
 use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
@@ -20,7 +21,7 @@ abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
 
-    protected function authenticateDashboardActor(AdminModel|BranchModel|ClientModel $model): static
+    protected function authenticateDashboardActor(AdminModel|BarberModel|BranchModel|ClientModel $model): static
     {
         config(['dashboard.dashboard.session_secret' => 'dashboard-session-secret-that-is-at-least-thirty-two-characters']);
         $id = (string) $model->getKey();
@@ -28,6 +29,7 @@ abstract class TestCase extends BaseTestCase
             $model instanceof AdminModel => new DashboardActor($id, DashboardActorTypeEnum::Admin, 'platform_admin'),
             $model instanceof ClientModel => app(DashboardOwnerActorResolver::class)->forClient($model)
                 ?? throw new LogicException('The client owns no brand.'),
+            $model instanceof BarberModel => new DashboardActor($id, DashboardActorTypeEnum::Barber, 'barber'),
             default => new DashboardActor($id, DashboardActorTypeEnum::Branch, 'branch_manager', $id, (string) $model->getAttribute('brand_id')),
         };
 

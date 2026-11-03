@@ -23,7 +23,7 @@ Part 2 of 3 · [Overview](product-audit.md) · [Findings](product-audit-part-3.m
 | Owner | Floor plan, chairs, stylists, affiliations, jobs | OK | Dashboard (floor plan is a form, not a canvas) | high |
 | Owner | Services, price, duration | Brand level only (G6) | Dashboard | high |
 | Owner | Bookings search and filter, reviews | OK | Dashboard | high |
-| Owner | Subscription, limits, earnings | No API (G4) | None | confirmed |
+| Owner | Subscription, features, earnings, payouts | `GET /dashboard/subscription`, `/earnings`, `/payouts` (G4 resolved) | Dashboard | confirmed |
 | Manager | Bookings, chairs, floor plan | OK | business_app, dashboard | high |
 | Manager | Opening hours | OK | No screen (G10) | reported |
 | Manager | Services, staff list, dispute, inbox | Dashboard only | No screen (G10) | reported |
@@ -32,7 +32,7 @@ Part 2 of 3 · [Overview](product-audit.md) · [Findings](product-audit-part-3.m
 | Stylist | Portfolio, profile, jobs, affiliations | OK | stylist_app | high |
 | Stylist | History media before/after/reference | `POST /barber/history/{history}/media`; stylist_app client history screen (G1 resolved) | stylist_app | confirmed |
 | Stylist | Own services, price | OK | No screen (G11) | reported |
-| Stylist | Past appointments, earnings, inbox | Today only, no earnings (G11) | None | reported |
+| Stylist | Past appointments, earnings, inbox | Earnings API `GET /dashboard/earnings` (G4); appointments today only, no mobile earnings screen (G11) | Dashboard (earnings) | reported |
 | Client | Auth, discover, book (incl. at-home), cancel, review, favorites | OK | client_app | high |
 | Client | Brand hiding, preferences, media type picker | OK | client_app | high |
 | Client | Phone verification | Log-only SMS (G5) | UI exists | confirmed |

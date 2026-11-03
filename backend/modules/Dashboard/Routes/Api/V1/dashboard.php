@@ -38,6 +38,7 @@ use Modules\Dashboard\Http\Actions\Chairs\ListChairsAction;
 use Modules\Dashboard\Http\Actions\Chairs\ShowChairAction;
 use Modules\Dashboard\Http\Actions\Chairs\StoreChairAction;
 use Modules\Dashboard\Http\Actions\Chairs\UpdateChairAction;
+use Modules\Dashboard\Http\Actions\Earnings\ShowEarningsAction;
 use Modules\Dashboard\Http\Actions\People\DestroyBranchJobPostingAction;
 use Modules\Dashboard\Http\Actions\People\InviteBranchAffiliationAction;
 use Modules\Dashboard\Http\Actions\People\ListBranchAffiliationsAction;
@@ -74,7 +75,9 @@ use Modules\Dashboard\Http\Actions\Stylists\UpdateStylistAction;
 use Modules\Dashboard\Http\Middleware\DashboardAdminAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardBrandAuthorizationMiddleware;
+use Modules\Dashboard\Http\Middleware\DashboardEarningsAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOperationsAuthorizationMiddleware;
+use Modules\Dashboard\Http\Middleware\DashboardOwnerAuthorizationMiddleware;
 use Modules\Payment\Http\Actions\Admin\DestroyPaymentGatewayAction;
 use Modules\Payment\Http\Actions\Admin\ListPaymentGatewaysAction;
 use Modules\Payment\Http\Actions\Admin\SetPaymentGatewayActiveAction;
@@ -86,6 +89,7 @@ use Modules\Payout\Http\Actions\Admin\GeneratePayoutsAction;
 use Modules\Payout\Http\Actions\Admin\ListPayoutsAction;
 use Modules\Payout\Http\Actions\Admin\MarkPaidPayoutAction;
 use Modules\Payout\Http\Actions\Admin\ShowPayoutAction;
+use Modules\Payout\Http\Actions\Owner\ListOwnerPayoutsAction;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 use Modules\Review\Http\Actions\Admin\ListAdminReviewsAction;
 use Modules\Review\Http\Actions\Admin\ResolveReviewDisputeAction;
@@ -106,6 +110,7 @@ use Modules\Subscription\Http\Actions\Admin\ShowSubscriptionPlanAction;
 use Modules\Subscription\Http\Actions\Admin\StoreSubscriptionPlanAction;
 use Modules\Subscription\Http\Actions\Admin\UpdateBrandSubscriptionStatusAction;
 use Modules\Subscription\Http\Actions\Admin\UpdateSubscriptionPlanAction;
+use Modules\Subscription\Http\Actions\Owner\ListOwnerSubscriptionsAction;
 
 Route::prefix('dashboard')->group(function (): void {
     Route::post('/login', DashboardLoginAction::class)->middleware('throttle:5,1');
@@ -169,6 +174,15 @@ Route::prefix('dashboard')->group(function (): void {
         Route::patch('/payouts/{payout}/cancel', CancelPayoutAction::class);
 
         Route::get('/analytics/overview', ShowPlatformAnalyticsAction::class);
+    });
+
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardEarningsAuthorizationMiddleware::class])->group(function (): void {
+        Route::get('/earnings', ShowEarningsAction::class);
+    });
+
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOwnerAuthorizationMiddleware::class])->group(function (): void {
+        Route::get('/subscription', ListOwnerSubscriptionsAction::class);
+        Route::get('/payouts', ListOwnerPayoutsAction::class);
     });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBrandAuthorizationMiddleware::class])->group(function (): void {

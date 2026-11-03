@@ -2,6 +2,7 @@ import {
   DASHBOARD_PAGED_ADMIN_LISTS,
   DASHBOARD_PAGED_BRANCH_SUBRESOURCES,
   DASHBOARD_PROXY_ROUTE_RULES,
+  DASHBOARD_UNPAGED_ROOTS,
 } from "@/services/api/dashboard/shared/dashboard-path.constant";
 
 export function isDashboardRouteAllowed(
@@ -16,7 +17,8 @@ export function isDashboardRouteAllowed(
 
 /** Whether a proxied list response carries backend pagination meta. */
 export function isDashboardPagedPath(path: readonly string[]): boolean {
-  if (path.length === 1) return path[0] !== "overview";
+  if (path.length === 1)
+    return !DASHBOARD_UNPAGED_ROOTS.includes(path[0] ?? "");
   if (path[0] === "admin")
     return (
       path.length === 2 && DASHBOARD_PAGED_ADMIN_LISTS.includes(path[1] ?? "")
