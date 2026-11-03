@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use Modules\Brand\Http\Actions\Admin\ApproveBrandAction;
 use Modules\Brand\Http\Actions\Admin\GetBrandFeaturesAction;
 use Modules\Brand\Http\Actions\Admin\UpdateBrandFeaturesAction;
 use Modules\Brand\Http\Actions\Client\CreateBrandAction;
@@ -21,7 +20,6 @@ Route::middleware(['auth:client', EnsureClientAccountAccess::class])->group(func
 });
 
 Route::middleware('auth:admin_api')->group(function (): void {
-    Route::post('/admin/brands/{brand}/approve', ApproveBrandAction::class)->name('admin.brands.approve');
     Route::get('/admin/brands/{brand}/features', GetBrandFeaturesAction::class)->name('admin.brands.features.show');
     Route::patch('/admin/brands/{brand}/features', UpdateBrandFeaturesAction::class)->name('admin.brands.features.update');
 });

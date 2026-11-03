@@ -65,9 +65,9 @@ it('keeps branches of pending brands out of discovery', function (): void {
 
 it('lets an admin approve a pending brand', function (): void {
     $brand = BrandModel::factory()->pending()->create();
-    Sanctum::actingAs(AdminModel::factory()->create(), ['*'], 'admin_api');
+    $this->authenticateDashboardActor(AdminModel::factory()->create());
 
-    $this->postJson("/api/v1/admin/brands/{$brand->id}/approve")
+    $this->patchJson("/api/v1/dashboard/admin/brands/{$brand->id}/approve")
         ->assertOk()
         ->assertJsonPath('data.status', 'active');
 
@@ -76,19 +76,17 @@ it('lets an admin approve a pending brand', function (): void {
 
 it('treats approving an active brand as a no-op and 404s for an unknown brand', function (): void {
     $brand = BrandModel::factory()->create();
-    Sanctum::actingAs(AdminModel::factory()->create(), ['*'], 'admin_api');
+    $this->authenticateDashboardActor(AdminModel::factory()->create());
 
-    $this->postJson("/api/v1/admin/brands/{$brand->id}/approve")->assertOk();
-    $this->postJson('/api/v1/admin/brands/'.fake()->uuid().'/approve')->assertNotFound();
+    $this->patchJson("/api/v1/dashboard/admin/brands/{$brand->id}/approve")->assertOk();
+    $this->patchJson('/api/v1/dashboard/admin/brands/'.fake()->uuid().'/approve')->assertNotFound();
 });
 
-it('forbids non-admins from approving', function (): void {
+it('no longer serves the superseded /admin/brands approve route', function (): void {
     $brand = BrandModel::factory()->pending()->create();
+    Sanctum::actingAs(AdminModel::factory()->create(), ['*'], 'admin_api');
 
-    $this->postJson("/api/v1/admin/brands/{$brand->id}/approve")->assertUnauthorized();
-
-    $this->actingAs($brand->owner, 'client');
-    $this->postJson("/api/v1/admin/brands/{$brand->id}/approve")->assertStatus(401);
+    $this->postJson("/api/v1/admin/brands/{$brand->id}/approve")->assertNotFound();
     expect($brand->refresh()->status)->toBe(BrandStatusEnum::Pending);
 });
 

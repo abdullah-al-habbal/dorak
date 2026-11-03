@@ -8,6 +8,7 @@ use Modules\Barber\CQRS\Command\Barber\RegisterCommand;
 use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Barber\Jobs\SendBarberEmailVerificationCodeJob;
 use Modules\Barber\Repositories\RegisterEloquentResolver;
+use Modules\Core\Enums\TokenAbility;
 use Throwable;
 
 final class RegisterHandler
@@ -27,7 +28,7 @@ final class RegisterHandler
     {
         $barber = $this->resolver->resolve($command);
 
-        $token = $barber->createToken('barber-app')->plainTextToken;
+        $token = $barber->createToken('barber-app', TokenAbility::forBarberApp())->plainTextToken;
 
         try {
             SendBarberEmailVerificationCodeJob::dispatch((string) $barber->id)->afterCommit();

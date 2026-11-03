@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Laravel\Sanctum\Sanctum;
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Currency\Models\CurrencyModel;
@@ -20,12 +21,12 @@ function disputedReview(array $overrides = []): ReviewModel
 }
 
 describe('Admin review listing', function (): void {
-    it('lists only disputed reviews for an admin token', function (): void {
+    it('lists only disputed reviews by default', function (): void {
         $disputed = disputedReview();
         ReviewModel::factory()->create(['status' => ReviewStatus::Published]);
-        $this->actingAs(AdminModel::factory()->create(), 'admin_api');
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
 
-        $this->getJson('/api/v1/admin/reviews?status=disputed')
+        $this->getJson('/api/v1/dashboard/admin/reviews?status=disputed')
             ->assertOk()
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.id', $disputed->id)
@@ -35,18 +36,27 @@ describe('Admin review listing', function (): void {
     it('defaults to the disputed queue and honours other statuses', function (): void {
         disputedReview();
         ReviewModel::factory()->create(['status' => ReviewStatus::Hidden]);
-        $this->actingAs(AdminModel::factory()->create(), 'admin_api');
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
 
-        $this->getJson('/api/v1/admin/reviews')->assertOk()->assertJsonCount(1, 'data');
-        $this->getJson('/api/v1/admin/reviews?status=hidden')->assertOk()->assertJsonCount(1, 'data');
-        $this->getJson('/api/v1/admin/reviews?status=bogus')->assertUnprocessable();
+        $this->getJson('/api/v1/dashboard/admin/reviews')->assertOk()->assertJsonCount(1, 'data');
+        $this->getJson('/api/v1/dashboard/admin/reviews?status=hidden')->assertOk()->assertJsonCount(1, 'data');
+        $this->getJson('/api/v1/dashboard/admin/reviews?status=bogus')->assertUnprocessable();
     });
 
     it('rejects anonymous and non-admin callers', function (): void {
-        $this->getJson('/api/v1/admin/reviews?status=disputed')->assertUnauthorized();
+        $this->getJson('/api/v1/dashboard/admin/reviews?status=disputed')->assertUnauthorized();
 
-        $this->actingAs(BranchModel::factory()->create(), 'branch_api');
-        $this->getJson('/api/v1/admin/reviews?status=disputed')->assertUnauthorized();
+        $this->authenticateDashboardActor(BranchModel::factory()->create());
+        $this->getJson('/api/v1/dashboard/admin/reviews?status=disputed')->assertForbidden();
+    });
+
+    it('no longer serves the superseded /admin/reviews routes', function (): void {
+        $review = disputedReview();
+        Sanctum::actingAs(AdminModel::factory()->create(), ['*'], 'admin_api');
+
+        $this->getJson('/api/v1/admin/reviews')->assertNotFound();
+        $this->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", ['status' => ReviewStatus::Hidden])->assertNotFound();
+        expect($review->fresh()->status)->toBe(ReviewStatus::Disputed);
     });
 });
 

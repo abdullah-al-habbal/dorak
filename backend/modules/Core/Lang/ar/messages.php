@@ -40,4 +40,5 @@ return [
     'admin_panel' => 'إدارة دوراك',
     'branch_panel' => 'فرع دوراك',
     'barber_panel' => 'حلاق دوراك',
+    'token_ability_missing' => 'لا يمكن استخدام هذا الرمز مع هذه الواجهة.',
 ];

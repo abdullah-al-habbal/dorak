@@ -26,22 +26,22 @@ it('rejects an invalid face_shapes value with 422 and accepts a valid one with 2
         'face_shapes' => ['triangle-x'],
     ];
 
-    $this->actingAs($this->admin, 'admin_api')
-        ->postJson('/api/v1/service-catalog/items', $payload)
+    $this->authenticateDashboardActor($this->admin)
+        ->postJson('/api/v1/dashboard/admin/catalog-items', $payload)
         ->assertStatus(422)
         ->assertJsonValidationErrors(['face_shapes.0']);
 
     $payload['face_shapes'] = ['oval'];
-    $this->actingAs($this->admin, 'admin_api')
-        ->postJson('/api/v1/service-catalog/items', $payload)
+    $this->authenticateDashboardActor($this->admin)
+        ->postJson('/api/v1/dashboard/admin/catalog-items', $payload)
         ->assertCreated();
 });
 
 it('persists tag_ids on create and returns a tags array', function () {
     $tag = ServiceCatalogItemTagModel::factory()->create();
 
-    $response = $this->actingAs($this->admin, 'admin_api')
-        ->postJson('/api/v1/service-catalog/items', [
+    $response = $this->authenticateDashboardActor($this->admin)
+        ->postJson('/api/v1/dashboard/admin/catalog-items', [
             'category_id' => $this->category->id,
             'name' => ['en' => 'Fade', 'ar' => 'فيد'],
             'slug' => 'fade',

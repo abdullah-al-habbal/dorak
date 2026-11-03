@@ -175,8 +175,8 @@ it('lets an admin resolve a dispute inside the 48-hour window', function () {
     ]);
     $admin = AdminModel::factory()->create();
 
-    $this->withToken($admin->createToken('test')->plainTextToken)
-        ->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", ['status' => ReviewStatus::Published->value])
+    $this->authenticateDashboardActor($admin)
+        ->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => ReviewStatus::Published->value])
         ->assertOk()
         ->assertJsonPath('data.status', ReviewStatus::Published->value);
 });
@@ -185,8 +185,8 @@ it('refuses to resolve a review that is not disputed', function () {
     $review = ReviewModel::factory()->create(['status' => ReviewStatus::Published]);
     $admin = AdminModel::factory()->create();
 
-    $this->withToken($admin->createToken('test')->plainTextToken)
-        ->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", ['status' => ReviewStatus::Hidden->value])
+    $this->authenticateDashboardActor($admin)
+        ->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => ReviewStatus::Hidden->value])
         ->assertStatus(422);
 });
 
@@ -222,8 +222,8 @@ it('lets an admin resolve a dispute after the window as well', function () {
     ]);
     $admin = AdminModel::factory()->create();
     $response = $this
-        ->withToken($admin->createToken('test')->plainTextToken)
-        ->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", [
+        ->authenticateDashboardActor($admin)
+        ->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", [
             'status' => ReviewStatus::Hidden->value,
         ]);
 
@@ -235,34 +235,28 @@ it('lets an admin resolve a dispute after the window as well', function () {
     ]);
 });
 
-it('rejects client, barber, and branch bearer tokens when resolving a dispute', function () {
+it('rejects barber and branch dashboard sessions when resolving a dispute', function () {
     $review = ReviewModel::factory()->create([
         'status' => ReviewStatus::Disputed,
     ]);
 
-    $actors = [
-        ClientModel::factory()->create(),
-        BarberModel::factory()->create(),
-        BranchModel::factory()->create(),
-    ];
-
-    foreach ($actors as $actor) {
-        $response = $this
-            ->withToken($actor->createToken('test')->plainTextToken)
-            ->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", [
+    foreach ([BarberModel::factory()->create(), BranchModel::factory()->create()] as $actor) {
+        $this->authenticateDashboardActor($actor)
+            ->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", [
                 'status' => ReviewStatus::Hidden->value,
-            ]);
-
-        $response->assertUnauthorized();
+            ])
+            ->assertForbidden();
     }
+
+    expect($review->fresh()->status)->toBe(ReviewStatus::Disputed);
 });
 
 it('rejects a resolution status outside the allowed outcomes', function (string $status) {
     $review = ReviewModel::factory()->create(['status' => ReviewStatus::Disputed, 'disputed_at' => now()]);
     $admin = AdminModel::factory()->create();
 
-    $this->withToken($admin->createToken('test')->plainTextToken)
-        ->patchJson("/api/v1/admin/reviews/{$review->id}/resolve", ['status' => $status])
+    $this->authenticateDashboardActor($admin)
+        ->patchJson("/api/v1/dashboard/admin/reviews/{$review->id}/resolve", ['status' => $status])
         ->assertUnprocessable()
         ->assertJsonValidationErrors('status');
 
@@ -276,8 +270,8 @@ it('rejects a resolution status outside the allowed outcomes', function (string 
 it('rejects an unknown status filter on the admin review list', function () {
     $admin = AdminModel::factory()->create();
 
-    $this->withToken($admin->createToken('test')->plainTextToken)
-        ->getJson('/api/v1/admin/reviews?status=archived')
+    $this->authenticateDashboardActor($admin)
+        ->getJson('/api/v1/dashboard/admin/reviews?status=archived')
         ->assertUnprocessable()
         ->assertJsonValidationErrors('status');
 });

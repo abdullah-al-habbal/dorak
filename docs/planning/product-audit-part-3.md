@@ -28,7 +28,7 @@ Part 3 of 3 · [Overview](product-audit.md) · [Matrix](product-audit-part-2.md)
 | G12 | Low | Unused client code: barber reviews, history update, `/explore/branches`, `/explore/barbers`, categories; saved addresses are local only. |
 | G13 | Low | Dashboard polish: all nav icons are `home`, `.name.en` shown in Arabic, nested fields dropped on detail pages. |
 | G14 | Low | `business_app` and `stylist_app` AGENTS.md were stale (fixed with this audit). |
-| G15 | Low | Duplicate endpoints; `PATCH /chairs/{id}` lists `auth:client` but the policy always denies it; Sanctum abilities are never checked. |
+| G15 | Low | **Resolved.** `PATCH /chairs/{chair}` now accepts only `branch_api` and `admin_api` (clients get 401; the dead client branch is gone from `ChairPolicy`). Removed superseded duplicates: `POST /admin/brands/{brand}/approve`, `GET /admin/reviews`, `PATCH /admin/reviews/{review}/resolve`, and the admin-only catalog writes under `/service-catalog/items` (use `/dashboard/admin/*`); public `GET /service-catalog/*` and `GET /exchange-rates` stay for mobile. Tokens carry explicit `TokenAbility` values (`dashboard`, `branch-app`, `barber-app`, `client-active`, `email-verification`); `EnforceTokenScope` returns 403 `TOKEN_ABILITY_MISSING` when a scoped token is used outside its surface (dashboard tokens only reach `/dashboard/*`, `/notifications` and `/broadcasting/auth`). Legacy wildcard tokens keep working. No dashboard or mobile change. |
 | G16 | Nit | About 20 localization keys are unused. |
 
 G5, G7, G8 and G9 are launch-readiness or security work and need no product call. The rest need the decisions listed in [open decisions](../decisions-required.md).

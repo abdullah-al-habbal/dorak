@@ -11,6 +11,7 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\TokenAbility;
 use Modules\Core\Helpers\ApiResponseTrait;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
@@ -42,7 +43,7 @@ final class DashboardAuthorizationMiddleware
             }
 
             $token = $model->currentAccessToken();
-            if (! $model->tokenCan('dashboard')) {
+            if (! $model->tokenCan(TokenAbility::Dashboard->value)) {
                 continue;
             }
 

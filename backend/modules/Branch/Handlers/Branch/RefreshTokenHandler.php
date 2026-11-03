@@ -6,6 +6,7 @@ namespace Modules\Branch\Handlers\Branch;
 
 use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Branch\Models\BranchModel;
+use Modules\Core\Enums\TokenAbility;
 
 final class RefreshTokenHandler
 {
@@ -20,6 +21,6 @@ final class RefreshTokenHandler
 
         $branch->currentAccessToken()->delete();
 
-        return $branch->createToken('branch-app')->plainTextToken;
+        return $branch->createToken('branch-app', TokenAbility::forBranchApp())->plainTextToken;
     }
 }

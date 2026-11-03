@@ -9,6 +9,7 @@ use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Branch\CQRS\Command\Branch\LoginCommand;
 use Modules\Branch\Repositories\BranchLoginEloquentResolver;
 use Modules\Branch\ValuesObjects\BranchLoginResult;
+use Modules\Core\Enums\TokenAbility;
 
 final class LoginHandler
 {
@@ -28,7 +29,7 @@ final class LoginHandler
             throw new AccountNotActiveException;
         }
 
-        $token = $branch->createToken('branch-app')->plainTextToken;
+        $token = $branch->createToken('branch-app', TokenAbility::forBranchApp())->plainTextToken;
 
         return BranchLoginResult::success(
             token: $token,

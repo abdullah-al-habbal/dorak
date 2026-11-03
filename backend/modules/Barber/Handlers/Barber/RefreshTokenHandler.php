@@ -8,6 +8,7 @@ use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
+use Modules\Core\Enums\TokenAbility;
 
 final class RefreshTokenHandler
 {
@@ -26,6 +27,6 @@ final class RefreshTokenHandler
 
         $barber->currentAccessToken()->delete();
 
-        return $barber->createToken('barber-app')->plainTextToken;
+        return $barber->createToken('barber-app', TokenAbility::forBarberApp())->plainTextToken;
     }
 }

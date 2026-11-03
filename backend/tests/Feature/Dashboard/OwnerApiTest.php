@@ -134,7 +134,9 @@ describe('owner dashboard login', function (): void {
         ['owner' => $owner] = ownerWithBrand();
         $mobileToken = $owner->createToken('client-app', $owner->accessTokenAbilities())->plainTextToken;
 
-        $this->withToken($mobileToken)->getJson('/api/v1/dashboard/branches')->assertUnauthorized();
+        $this->withToken($mobileToken)->getJson('/api/v1/dashboard/branches')
+            ->assertForbidden()
+            ->assertJsonPath('code', 'TOKEN_ABILITY_MISSING');
     });
 });
 

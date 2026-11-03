@@ -6,6 +6,7 @@ namespace Modules\Client\Eloquent\Resolvers\Client;
 
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\TokenAbility;
 
 final class VerifyEmailEloquentResolver
 {
@@ -24,7 +25,7 @@ final class VerifyEmailEloquentResolver
         ]);
 
         $client->tokens()->get()->each(function ($token) use ($client): void {
-            if ($token->can('email-verification')) {
+            if ($token->can(TokenAbility::EmailVerification->value)) {
                 $token->forceFill(['abilities' => $client->accessTokenAbilities()]);
                 $token->save();
             }

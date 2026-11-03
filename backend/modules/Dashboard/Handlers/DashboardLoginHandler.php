@@ -10,6 +10,7 @@ use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\TokenAbility;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
@@ -39,7 +40,7 @@ final class DashboardLoginHandler
 
         return $model->createToken(
             'dashboard-session',
-            ['dashboard'],
+            TokenAbility::forDashboard(),
             now()->addSeconds($this->accessTtl()),
         )->plainTextToken;
     }

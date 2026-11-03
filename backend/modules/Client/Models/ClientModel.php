@@ -24,6 +24,7 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Client\Database\Factories\ClientFactory;
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Enums\UniverseEnum;
+use Modules\Core\Enums\TokenAbility;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
@@ -105,8 +106,8 @@ class ClientModel extends Authenticatable implements FilamentUser
     {
         return $this->getAttribute('status') === ClientStatusEnum::Enabled
             && $this->getAttribute('email_verified_at') !== null
-            ? ['client-active']
-            : ['email-verification'];
+            ? [TokenAbility::ClientActive->value]
+            : [TokenAbility::EmailVerification->value];
     }
 
     protected function casts(): array

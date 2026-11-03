@@ -108,7 +108,7 @@ describe('update chair', function () {
         $response->assertStatus(422);
     });
 
-    it('returns forbidden when a client attempts a chair mutation', function () {
+    it('returns unauthorized when a client attempts a chair mutation', function () {
         $client = ClientModel::factory()->create();
         $chair = ChairModel::factory()->create();
         $this->actingAs($client, 'client');
@@ -117,7 +117,7 @@ describe('update chair', function () {
             'status' => ChairStatus::Occupied,
         ]);
 
-        $response->assertForbidden();
+        $response->assertUnauthorized();
     });
 
     it('rejects a branch manager updating another branch chair', function () {

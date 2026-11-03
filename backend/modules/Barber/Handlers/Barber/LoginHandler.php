@@ -11,6 +11,7 @@ use Modules\Barber\CQRS\Command\Barber\LoginCommand;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Repositories\LoginEloquentResolver;
 use Modules\Barber\ValuesObjects\LoginResult;
+use Modules\Core\Enums\TokenAbility;
 
 final class LoginHandler
 {
@@ -34,7 +35,7 @@ final class LoginHandler
             throw new AccountNotActiveException;
         }
 
-        $token = $barber->createToken('barber-app')->plainTextToken;
+        $token = $barber->createToken('barber-app', TokenAbility::forBarberApp())->plainTextToken;
 
         return LoginResult::success(
             token: $token,

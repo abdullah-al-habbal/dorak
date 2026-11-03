@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
-use Modules\Client\Models\ClientModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 
 beforeEach(function () {
@@ -13,7 +13,7 @@ beforeEach(function () {
 
 it('rejects a branch attempting to create a catalog item', function () {
     $branch = BranchModel::factory()->create();
-    $this->actingAs($branch, 'branch_api');
+    $this->authenticateDashboardActor($branch);
     $payload = [
         'category_id' => $this->category->id,
         'name' => ['en' => 'Classic Haircut', 'ar' => 'حلاقة كلاسيكية'],
@@ -21,16 +21,16 @@ it('rejects a branch attempting to create a catalog item', function () {
         'is_active' => true,
     ];
 
-    $response = $this->postJson('/api/v1/service-catalog/items', $payload);
+    $response = $this->postJson('/api/v1/dashboard/admin/catalog-items', $payload);
 
-    $response->assertUnauthorized();
+    $response->assertForbidden();
     $this->assertDatabaseMissing('service_catalog_items', ['slug' => 'classic-haircut']);
 });
 
 it('requires category_id', function () {
     $admin = AdminModel::factory()->create();
-    $this->actingAs($admin, 'admin_api');
-    $response = $this->postJson('/api/v1/service-catalog/items', [
+    $this->authenticateDashboardActor($admin);
+    $response = $this->postJson('/api/v1/dashboard/admin/catalog-items', [
         'name' => ['en' => 'Test', 'ar' => 'اختبار'],
         'slug' => 'test',
         'is_active' => true,
@@ -42,40 +42,40 @@ it('requires category_id', function () {
 
 it('requires unique slug', function () {
     $admin = AdminModel::factory()->create();
-    $this->actingAs($admin, 'admin_api');
+    $this->authenticateDashboardActor($admin);
     $payload = [
         'category_id' => $this->category->id,
         'name' => ['en' => 'First', 'ar' => 'الأول'],
         'slug' => 'duplicate',
         'is_active' => true,
     ];
-    $this->postJson('/api/v1/service-catalog/items', $payload);
+    $this->postJson('/api/v1/dashboard/admin/catalog-items', $payload);
 
-    $response = $this->postJson('/api/v1/service-catalog/items', $payload);
+    $response = $this->postJson('/api/v1/dashboard/admin/catalog-items', $payload);
     $response->assertStatus(422);
     $response->assertJsonValidationErrors(['slug']);
 });
 
-it('rejects a client attempting to create a catalog item', function () {
-    $client = ClientModel::factory()->create();
-    $this->actingAs($client, 'client');
+it('rejects a barber attempting to create a catalog item', function () {
+    $barber = BarberModel::factory()->create();
+    $this->authenticateDashboardActor($barber);
 
-    $response = $this->postJson('/api/v1/service-catalog/items', [
+    $response = $this->postJson('/api/v1/dashboard/admin/catalog-items', [
         'category_id' => $this->category->id,
         'name' => ['en' => 'Test', 'ar' => 'اختبار'],
         'slug' => 'test',
         'is_active' => true,
     ]);
 
-    $response->assertUnauthorized();
+    $response->assertForbidden();
     $this->assertDatabaseMissing('service_catalog_items', ['slug' => 'test']);
 });
 
 it('allows an admin to create a catalog item', function () {
     $admin = AdminModel::factory()->create();
-    $this->actingAs($admin, 'admin_api');
+    $this->authenticateDashboardActor($admin);
 
-    $response = $this->postJson('/api/v1/service-catalog/items', [
+    $response = $this->postJson('/api/v1/dashboard/admin/catalog-items', [
         'category_id' => $this->category->id,
         'name' => ['en' => 'Admin Service', 'ar' => 'خدمة المدير'],
         'slug' => 'admin-service',
@@ -86,7 +86,7 @@ it('allows an admin to create a catalog item', function () {
 });
 
 it('requires authentication', function () {
-    $response = $this->postJson('/api/v1/service-catalog/items', [
+    $response = $this->postJson('/api/v1/dashboard/admin/catalog-items', [
         'category_id' => $this->category->id,
         'name' => ['en' => 'Test', 'ar' => 'اختبار'],
         'slug' => 'test',
