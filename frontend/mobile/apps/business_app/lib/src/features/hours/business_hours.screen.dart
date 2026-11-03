@@ -8,6 +8,7 @@ import 'package:business_app/src/features/hours/business_hours.state.dart';
 import 'package:business_app/src/features/hours/widgets/hours_day_row.widget.dart';
 import 'package:business_app/src/features/shared/feature_error.widget.dart';
 import 'package:business_app/src/features/shared/load_on_init.widget.dart';
+import 'package:business_app/src/features/hours/hours_issue.entity.dart';
 
 class BusinessHoursScreen extends StatelessWidget {
   const BusinessHoursScreen({super.key, required this.bloc});

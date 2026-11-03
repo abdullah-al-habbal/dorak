@@ -1,7 +1,7 @@
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 
-enum EarningsRange { month, all }
+import 'package:stylist_app/src/features/earnings/earnings_range.entity.dart';
 
 class StylistEarningsState extends Equatable {
   const StylistEarningsState({

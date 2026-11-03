@@ -8,6 +8,7 @@ import 'package:business_app/src/features/services/business_service_draft.entity
 import 'package:business_app/src/features/services/business_services.bloc.dart';
 import 'package:business_app/src/features/services/business_services.state.dart';
 import 'package:business_app/src/features/shared/feature_error.widget.dart';
+import 'package:design_system/design_system.dart';
 
 /// Create (no [serviceId]) or edit a brand service. The service name is
 /// returned in one locale only, so both names are re-entered when editing.
@@ -148,7 +149,7 @@ class _BusinessServiceFormScreenState extends State<BusinessServiceFormScreen> {
         builder: (context, state) => Form(
           key: _formKey,
           child: ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(DorakDimensions.spacingMedium),
             children: [
               TextFormField(
                 controller: _nameEn,
@@ -204,7 +205,7 @@ class _BusinessServiceFormScreenState extends State<BusinessServiceFormScreen> {
                 onChanged: (value) => setState(() => _isActive = value),
               ),
               if (state.error != null) FeatureError(error: state.error!),
-              const SizedBox(height: 12),
+              const SizedBox(height: DorakDimensions.spacingMedium),
               FilledButton(
                 onPressed: state.saving ? null : _submit,
                 child: Text(l10n.staffServiceSave),

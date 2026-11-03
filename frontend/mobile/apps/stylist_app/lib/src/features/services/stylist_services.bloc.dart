@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:stylist_app/src/features/services/stylist_service_draft.entity.dart';
 import 'package:stylist_app/src/features/services/stylist_services.state.dart';
+import 'package:stylist_app/src/core/locale/app_locales.entity.dart';
 
 /// The stylist's own services and prices (`/barber/services`).
 class StylistServicesBloc extends Cubit<StylistServicesState> {
@@ -28,7 +29,10 @@ class StylistServicesBloc extends Cubit<StylistServicesState> {
     if (state.saving) return false;
     emit(state.copyWith(saving: true, clearError: true));
     try {
-      final name = {'en': draft.nameEn, 'ar': draft.nameAr};
+      final name = {
+        AppLocales.englishCode: draft.nameEn,
+        AppLocales.arabicCode: draft.nameAr,
+      };
       if (id == null) {
         await _repository.createService(
           name: name,

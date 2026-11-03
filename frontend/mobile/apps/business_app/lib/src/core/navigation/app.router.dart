@@ -10,6 +10,7 @@ import 'package:business_app/src/features/barbers/manual_barber.bloc.dart';
 import 'package:business_app/src/features/barbers/manual_barber.screen.dart';
 import 'package:business_app/src/core/navigation/widgets/business_shell.widget.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.screen.dart';
+import 'package:business_app/src/features/earnings/business_earnings.screen.dart';
 import 'package:business_app/src/features/hours/business_hours.screen.dart';
 import 'package:business_app/src/features/inbox/business_inbox.screen.dart';
 import 'package:business_app/src/features/more/business_more.screen.dart';
@@ -148,6 +149,11 @@ class BusinessAppRouter {
           path: AppRoutes.hours,
           builder: (context, state) =>
               BusinessHoursScreen(bloc: features.hours),
+        ),
+        GoRoute(
+          path: AppRoutes.earnings,
+          builder: (context, state) =>
+              BusinessEarningsScreen(bloc: features.earnings),
         ),
         GoRoute(
           path: AppRoutes.newBarber,

@@ -8,6 +8,7 @@ import 'package:stylist_app/src/features/earnings/stylist_earnings.bloc.dart';
 import 'package:stylist_app/src/features/earnings/stylist_earnings.state.dart';
 import 'package:stylist_app/src/features/shared/feature_error.widget.dart';
 import 'package:stylist_app/src/features/shared/load_on_init.widget.dart';
+import 'package:stylist_app/src/features/earnings/earnings_range.entity.dart';
 
 class StylistEarningsScreen extends StatelessWidget {
   const StylistEarningsScreen({super.key, required this.bloc});

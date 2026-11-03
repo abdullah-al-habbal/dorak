@@ -24,6 +24,7 @@ import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
 import 'package:stylist_app/src/features/reviews/stylist_reviews.bloc.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
 import 'package:stylist_app/src/features/services/stylist_services.bloc.dart';
+import 'package:stylist_app/src/core/locale/app_locales.entity.dart';
 
 class StylistApp extends StatefulWidget {
   const StylistApp({super.key});
@@ -33,7 +34,7 @@ class StylistApp extends StatefulWidget {
 }
 
 class _StylistAppState extends State<StylistApp> {
-  Locale _locale = const Locale('en');
+  Locale _locale = AppLocales.english;
   late final ApiClient _client;
   late final StylistBloc _bloc;
   late final StylistFeatureBlocs _features;
@@ -158,9 +159,9 @@ class _StylistAppState extends State<StylistApp> {
   );
 
   void _toggleLocale() => setState(
-    () => _locale = _locale.languageCode == 'en'
-        ? const Locale('ar')
-        : const Locale('en'),
+    () => _locale = _locale.languageCode == AppLocales.englishCode
+        ? AppLocales.arabic
+        : AppLocales.english,
   );
 
   Future<void> _restoreSession() async {

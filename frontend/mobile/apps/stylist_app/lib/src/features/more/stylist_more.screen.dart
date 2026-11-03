@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
 import 'package:stylist_app/src/core/navigation/app_routes.entity.dart';
+import 'package:stylist_app/src/core/locale/app_locales.entity.dart';
 
 /// Everything that does not earn a bottom-navigation tab.
 class StylistMoreScreen extends StatelessWidget {
@@ -55,7 +56,8 @@ class StylistMoreScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.language),
             title: Text(
-              Localizations.localeOf(context).languageCode == 'en'
+              Localizations.localeOf(context).languageCode ==
+                      AppLocales.englishCode
                   ? l10n.localeArabic
                   : l10n.localeEnglish,
             ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:business_app/src/features/services/business_service_draft.entity.dart';
 import 'package:business_app/src/features/services/business_services.state.dart';
+import 'package:business_app/src/core/locale/app_locales.entity.dart';
 
 class BusinessServicesBloc extends Cubit<BusinessServicesState> {
   BusinessServicesBloc(this._services, this._branch)
@@ -30,7 +31,10 @@ class BusinessServicesBloc extends Cubit<BusinessServicesState> {
     emit(state.copyWith(saving: true, clearError: true));
     try {
       final brandId = await _brandId();
-      final name = {'en': draft.nameEn, 'ar': draft.nameAr};
+      final name = {
+        AppLocales.englishCode: draft.nameEn,
+        AppLocales.arabicCode: draft.nameAr,
+      };
       if (id == null) {
         await _services.createService(
           brandId: brandId,

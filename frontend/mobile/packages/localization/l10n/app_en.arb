@@ -1623,6 +1623,8 @@
   "@businessTabServices": {"description": "businessTabServices"},
   "businessMenuHours": "Working hours",
   "@businessMenuHours": {"description": "businessMenuHours"},
+  "businessMenuEarnings": "Earnings",
+  "@businessMenuEarnings": {"description": "businessMenuEarnings"},
   "businessStaffTitle": "Staff",
   "@businessStaffTitle": {"description": "businessStaffTitle"},
   "businessStaffEmpty": "No stylists work at this branch yet.",

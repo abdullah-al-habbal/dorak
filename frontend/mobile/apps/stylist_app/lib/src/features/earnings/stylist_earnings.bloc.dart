@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:stylist_app/src/features/earnings/stylist_earnings.state.dart';
+import 'package:stylist_app/src/features/earnings/earnings_range.entity.dart';
 
 class StylistEarningsBloc extends Cubit<StylistEarningsState> {
   StylistEarningsBloc(this._repository, {DateTime Function()? clock})

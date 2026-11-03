@@ -13,6 +13,7 @@ abstract final class AppRoutes {
   static const services = '/services';
   static const newService = '/services/new';
   static const hours = '/hours';
+  static const earnings = '/earnings';
   static const inbox = '/inbox';
   static const more = '/more';
   static const serviceIdParameter = 'serviceId';

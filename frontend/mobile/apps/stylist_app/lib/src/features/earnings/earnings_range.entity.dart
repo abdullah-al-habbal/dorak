@@ -1,0 +1,1 @@
+enum EarningsRange { month, all }

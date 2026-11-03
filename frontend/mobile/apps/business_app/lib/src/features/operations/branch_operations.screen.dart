@@ -7,6 +7,7 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
+import 'package:business_app/src/core/locale/app_locales.entity.dart';
 
 class BranchOperationsScreen extends StatefulWidget {
   const BranchOperationsScreen({
@@ -51,7 +52,8 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
           TextButton(
             onPressed: widget.onLocaleToggle,
             child: Text(
-              Localizations.localeOf(context).languageCode == 'en'
+              Localizations.localeOf(context).languageCode ==
+                      AppLocales.englishCode
                   ? l10n.localeArabic
                   : l10n.localeEnglish,
             ),
@@ -81,7 +83,7 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
           return RefreshIndicator(
             onRefresh: widget.bloc.load,
             child: ListView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(DorakDimensions.spacingMedium),
               children: [
                 if (state.profile != null)
                   ListTile(
@@ -91,7 +93,7 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                   ),
                 if (dashboard != null)
                   DashboardCard(dashboard: dashboard, l10n: l10n),
-                const SizedBox(height: 16),
+                const SizedBox(height: DorakDimensions.spacingMedium),
                 Text(
                   l10n.businessAppointmentsTitle,
                   style: DorakTypography.titleLg,
@@ -104,7 +106,7 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                         widget.bloc.updateBooking(booking.id, status),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DorakDimensions.spacingMedium),
                 Text(l10n.businessChairsTitle, style: DorakTypography.titleLg),
                 ...state.chairs.map(
                   (chair) => ChairTile(

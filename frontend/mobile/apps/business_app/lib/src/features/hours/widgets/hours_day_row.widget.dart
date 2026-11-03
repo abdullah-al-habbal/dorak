@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
+import 'package:design_system/design_system.dart';
 
 class HoursDayRow extends StatelessWidget {
   const HoursDayRow({
@@ -61,7 +62,7 @@ class HoursDayRow extends StatelessWidget {
                   child: Text('${l10n.businessHoursOpens} $opens'),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: DorakDimensions.spacingSmall),
               Expanded(
                 child: OutlinedButton(
                   onPressed: () => _pick(context, closes, onClosesChanged),

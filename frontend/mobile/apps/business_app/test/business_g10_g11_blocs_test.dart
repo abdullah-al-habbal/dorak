@@ -2,13 +2,13 @@ import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:business_app/src/features/hours/business_hours.bloc.dart';
-import 'package:business_app/src/features/hours/business_hours.state.dart';
 import 'package:business_app/src/features/inbox/business_inbox.bloc.dart';
 import 'package:business_app/src/features/services/business_service_draft.entity.dart';
 import 'package:business_app/src/features/services/business_services.bloc.dart';
 import 'package:business_app/src/features/staff/business_staff.bloc.dart';
 
 import 'helpers/business_fakes.dart';
+import 'package:business_app/src/features/hours/hours_issue.entity.dart';
 
 const _draft = BusinessServiceDraft(
   nameEn: 'Cut',

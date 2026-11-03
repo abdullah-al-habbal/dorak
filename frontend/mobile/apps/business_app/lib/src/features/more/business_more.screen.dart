@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
 import 'package:business_app/src/core/navigation/app_routes.entity.dart';
+import 'package:business_app/src/core/locale/app_locales.entity.dart';
 
 /// Everything that does not earn a bottom-navigation tab.
 class BusinessMoreScreen extends StatelessWidget {
@@ -23,6 +24,7 @@ class BusinessMoreScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final destinations = [
       (Icons.schedule_outlined, l10n.businessMenuHours, AppRoutes.hours),
+      (Icons.payments_outlined, l10n.businessMenuEarnings, AppRoutes.earnings),
       (Icons.work_outline, l10n.businessMenuJobs, AppRoutes.jobs),
       (
         Icons.grid_view_outlined,
@@ -57,7 +59,8 @@ class BusinessMoreScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.language),
             title: Text(
-              Localizations.localeOf(context).languageCode == 'en'
+              Localizations.localeOf(context).languageCode ==
+                      AppLocales.englishCode
                   ? l10n.localeArabic
                   : l10n.localeEnglish,
             ),

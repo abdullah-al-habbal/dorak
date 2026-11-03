@@ -10,6 +10,7 @@ import 'package:stylist_app/src/features/operations/stylist.state.dart';
 import 'package:stylist_app/src/features/operations/widgets/appointment_card.widget.dart';
 import 'package:stylist_app/src/features/operations/widgets/cancel_reason.sheet.dart';
 import 'package:stylist_app/src/features/operations/widgets/profile_services_section.widget.dart';
+import 'package:stylist_app/src/core/locale/app_locales.entity.dart';
 
 class StylistScreen extends StatelessWidget {
   const StylistScreen({
@@ -44,7 +45,8 @@ class StylistScreen extends StatelessWidget {
           TextButton(
             onPressed: onLocaleToggle,
             child: Text(
-              Localizations.localeOf(context).languageCode == 'en'
+              Localizations.localeOf(context).languageCode ==
+                      AppLocales.englishCode
                   ? l10n.localeArabic
                   : l10n.localeEnglish,
             ),
@@ -61,7 +63,7 @@ class StylistScreen extends StatelessWidget {
           return RefreshIndicator(
             onRefresh: bloc.load,
             child: ListView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(DorakDimensions.spacingMedium),
               children: [
                 SwitchListTile(
                   title: Text(strings.stylistWorkstationOnline),
@@ -74,7 +76,7 @@ class StylistScreen extends StatelessWidget {
                     l10n: strings,
                   ),
                 if (state.error != null) Text(strings.stylistUpdateFailed),
-                const SizedBox(height: 12),
+                const SizedBox(height: DorakDimensions.spacingMedium),
                 Text(
                   strings.stylistTodayAppointments,
                   style: DorakTypography.titleLg,

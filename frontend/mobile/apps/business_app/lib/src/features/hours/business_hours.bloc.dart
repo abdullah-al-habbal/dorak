@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:business_app/src/features/hours/business_hours.state.dart';
 import 'package:business_app/src/features/hours/business_hours_constants.entity.dart';
+import 'package:business_app/src/features/hours/hours_issue.entity.dart';
 
 class BusinessHoursBloc extends Cubit<BusinessHoursState> {
   BusinessHoursBloc(this._repository) : super(BusinessHoursState());

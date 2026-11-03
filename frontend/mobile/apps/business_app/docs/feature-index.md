@@ -31,6 +31,7 @@ codeanchors:
 | BU-12 | Working hours (G10) | ✅ Complete | `features/hours/` |
 | BU-13 | Notification inbox (G10) | ✅ Complete | `features/inbox/` |
 | BU-14 | Bottom-navigation shell + More tab (G10) | ✅ Complete | `core/navigation/widgets/`, `features/more/` |
+| BU-15 | Branch earnings (G11) | ✅ Complete | `features/earnings/` |
 
 ### Not Started
 - Remaining business features (branch/brand management, bookings, staff, reports) — not yet specced or built.

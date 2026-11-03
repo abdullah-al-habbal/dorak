@@ -3,12 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:stylist_app/src/features/appointments/stylist_appointments.bloc.dart';
 import 'package:stylist_app/src/features/earnings/stylist_earnings.bloc.dart';
-import 'package:stylist_app/src/features/earnings/stylist_earnings.state.dart';
 import 'package:stylist_app/src/features/inbox/stylist_inbox.bloc.dart';
 import 'package:stylist_app/src/features/services/stylist_service_draft.entity.dart';
 import 'package:stylist_app/src/features/services/stylist_services.bloc.dart';
 
 import 'helpers/stylist_fakes.dart';
+import 'package:stylist_app/src/features/earnings/earnings_range.entity.dart';
 
 const _draft = StylistServiceDraft(
   nameEn: 'Cut',

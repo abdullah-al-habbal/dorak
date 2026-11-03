@@ -41,7 +41,7 @@ It depends on `core`, `design_system` and `localization`.
 
 `app.router.dart` uses a `StatefulShellRoute` with five tabs: `/operations`,
 `/staff`, `/services`, `/inbox` (unread badge) and `/more`. Everything else
-(`/hours`, `/jobs`, `/floor-plan`, `/affiliations`, `/profile`, `/reviews`,
+(`/hours`, `/earnings`, `/jobs`, `/floor-plan`, `/affiliations`, `/profile`, `/reviews`,
 `/services/new`, `/services/:id/edit`, `/barbers/new`) is a top-level route
 pushed over the shell. `refreshListenable` is core's `StaffSessionRefresh`, so a
 logout or expired token re-runs the redirect immediately.
@@ -55,8 +55,9 @@ logout or expired token re-runs the redirect immediately.
   /branch/opening-hours`). Hours overrides per date are not built.
 - **Inbox** is the notification feed (`/notifications`); there is no two-way
   messaging. Invite notifications open `/affiliations`, application ones `/jobs`.
-- `GET /branch/earnings` exists and core has `DioEarningsRepository.branch`,
-  but business_app has no earnings screen (not in the approved scope).
+- **Earnings** (`GET /branch/earnings` via `DioEarningsRepository.branch`):
+  per-currency gross, commission and net for this month or all time. Reached
+  from the More tab at `/earnings`.
 
 Decision record: [ADR 0002](../../../../docs/adr/0002-mvp-scope-deferrals.md).
 

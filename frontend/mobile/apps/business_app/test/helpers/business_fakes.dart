@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 
 import 'package:business_app/src/core/business_feature_blocs.provider.dart';
 import 'package:business_app/src/features/affiliations/business_affiliations.bloc.dart';
+import 'package:business_app/src/features/earnings/business_earnings.bloc.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.bloc.dart';
 import 'package:business_app/src/features/hours/business_hours.bloc.dart';
 import 'package:business_app/src/features/inbox/business_inbox.bloc.dart';
@@ -326,6 +327,19 @@ class FakeBranchHoursRepository implements BranchHoursRepository {
   }
 }
 
+class FakeEarningsRepository implements EarningsRepository {
+  EarningsDto earnings = const EarningsDto(scope: 'branch');
+  Object? failure;
+  final List<({DateTime? from, DateTime? to})> calls = [];
+
+  @override
+  Future<EarningsDto> getEarnings({DateTime? from, DateTime? to}) async {
+    calls.add((from: from, to: to));
+    if (failure != null) throw failure!;
+    return earnings;
+  }
+}
+
 class FakeNotificationRepository implements NotificationRepository {
   List<NotificationDto> items = [];
   final List<String> read = [];
@@ -382,6 +396,7 @@ BusinessFeatureBlocs featureBlocsFor({
   FakeBranchServiceRepository? services,
   FakeBranchHoursRepository? hours,
   FakeNotificationRepository? notifications,
+  FakeEarningsRepository? earnings,
 }) {
   final branch = management ?? FakeBranchManagementRepository();
   return BusinessFeatureBlocs(
@@ -405,5 +420,6 @@ BusinessFeatureBlocs featureBlocsFor({
     ),
     hours: BusinessHoursBloc(hours ?? FakeBranchHoursRepository()),
     inbox: BusinessInboxBloc(notifications ?? FakeNotificationRepository()),
+    earnings: BusinessEarningsBloc(earnings ?? FakeEarningsRepository()),
   );
 }

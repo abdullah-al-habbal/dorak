@@ -1865,6 +1865,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessMenuHours => 'Working hours';
 
   @override
+  String get businessMenuEarnings => 'Earnings';
+
+  @override
   String get businessStaffTitle => 'Staff';
 
   @override

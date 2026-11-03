@@ -1,7 +1,7 @@
 import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 
-enum HoursIssue { none, invalidRange }
+import 'package:business_app/src/features/hours/hours_issue.entity.dart';
 
 class BusinessHoursState extends Equatable {
   BusinessHoursState({

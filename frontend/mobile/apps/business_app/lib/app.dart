@@ -13,6 +13,7 @@ import 'package:business_app/src/core/navigation/app.router.dart';
 import 'package:business_app/src/core/navigation/app_routes.entity.dart';
 import 'package:business_app/src/features/affiliations/business_affiliations.bloc.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.bloc.dart';
+import 'package:business_app/src/features/earnings/business_earnings.bloc.dart';
 import 'package:business_app/src/features/hours/business_hours.bloc.dart';
 import 'package:business_app/src/features/inbox/business_inbox.bloc.dart';
 import 'package:business_app/src/features/jobs/business_jobs.bloc.dart';
@@ -21,6 +22,7 @@ import 'package:business_app/src/features/reviews/business_reviews.bloc.dart';
 import 'package:business_app/src/features/services/business_services.bloc.dart';
 import 'package:business_app/src/features/staff/business_staff.bloc.dart';
 import 'package:business_app/src/core/navigation/notification_location.entity.dart';
+import 'package:business_app/src/core/locale/app_locales.entity.dart';
 
 class DorakBusinessApp extends StatefulWidget {
   const DorakBusinessApp({super.key, this.tokenStorage, this.repository});
@@ -33,7 +35,7 @@ class DorakBusinessApp extends StatefulWidget {
 }
 
 class _DorakBusinessAppState extends State<DorakBusinessApp> {
-  Locale _locale = const Locale('en');
+  Locale _locale = AppLocales.english;
   late final TokenStorage _tokenStorage;
   late final ApiClient _apiClient;
   late final ManualBarberBloc _barbers;
@@ -100,6 +102,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       ),
       hours: BusinessHoursBloc(DioBranchHoursRepository(_apiClient)),
       inbox: BusinessInboxBloc(DioNotificationRepository(_apiClient)),
+      earnings: BusinessEarningsBloc(DioEarningsRepository.branch(_apiClient)),
     );
     _router = BusinessAppRouter(
       operations: _operations,
@@ -160,9 +163,9 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   }
 
   void _toggleLocale() => setState(
-    () => _locale = _locale.languageCode == 'en'
-        ? const Locale('ar')
-        : const Locale('en'),
+    () => _locale = _locale.languageCode == AppLocales.englishCode
+        ? AppLocales.arabic
+        : AppLocales.english,
   );
 
   Future<void> _restoreSession() async {

@@ -1858,6 +1858,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get businessMenuHours => 'ساعات العمل';
 
   @override
+  String get businessMenuEarnings => 'الأرباح';
+
+  @override
   String get businessStaffTitle => 'الفريق';
 
   @override

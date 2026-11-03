@@ -3476,6 +3476,12 @@ abstract class AppLocalizations {
   /// **'Working hours'**
   String get businessMenuHours;
 
+  /// businessMenuEarnings
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get businessMenuEarnings;
+
   /// businessStaffTitle
   ///
   /// In en, this message translates to:
