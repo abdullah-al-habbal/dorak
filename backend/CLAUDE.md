@@ -37,6 +37,9 @@ Before building, read `docs/02-prd.md` then `docs/feature-index.md` to see what 
 - Class constants live in `Modules\<Module>\Constants\<Domain>Constants` (shared values in
   `Modules\Core\Constants`), never inside the consuming class. Name them `UPPER_SNAKE` with the
   domain as prefix (`BRANCH_FLOOR_PLAN_MAX_CANVAS_SIZE`). Migration-local constants are the only exception.
+- SMS goes through the `SmsSender` strategy resolved by `SmsSenderFactory` — never call a
+  gateway or `Http` from a feature module. New gateways follow `docs/17-sms-delivery.md`;
+  failures throw `SmsDeliveryException` (no phone/code/secrets in the message, no retries).
 
 ## 🗺 Feature Index
 After adding a feature, append entry to `docs/feature-index.md`.

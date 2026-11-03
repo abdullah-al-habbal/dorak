@@ -18,6 +18,7 @@ childnodes:
   - backend.13-technical-concepts
   - backend.14-execution-status
   - backend.16-deployment-operations
+  - backend.17-sms-delivery
   - backend.feature-index
   - backend.marketing.01-brand-dna
   - backend.marketing.02-platform-setup
