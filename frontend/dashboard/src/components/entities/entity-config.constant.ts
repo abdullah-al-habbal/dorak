@@ -1,3 +1,4 @@
+import { localizedName } from "@/utils/localized-name.util";
 import { fromMinorUnits } from "@/services/api/dashboard/monetization/monetization.util";
 import type { EntityConfig } from "@/components/entities/entity-config.types";
 import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
@@ -12,7 +13,11 @@ export const ENTITY_CONFIGS = {
     resource: "branches",
     hasEditRoute: true,
     columns: [
-      { id: "name", label: "name", value: (item: IBranch) => item.name.en },
+      {
+        id: "name",
+        label: "name",
+        value: (item: IBranch, locale) => localizedName(item.name, locale),
+      },
       { id: "email", label: "email", value: (item: IBranch) => item.email },
       { id: "status", label: "status", value: (item: IBranch) => item.status },
       {
@@ -42,7 +47,11 @@ export const ENTITY_CONFIGS = {
     resource: "services",
     hasEditRoute: true,
     columns: [
-      { id: "name", label: "name", value: (item: IService) => item.name.en },
+      {
+        id: "name",
+        label: "name",
+        value: (item: IService, locale) => localizedName(item.name, locale),
+      },
       {
         id: "price",
         label: "price",
@@ -59,7 +68,11 @@ export const ENTITY_CONFIGS = {
     resource: "stylists",
     hasEditRoute: true,
     columns: [
-      { id: "name", label: "name", value: (item: IStylist) => item.name.en },
+      {
+        id: "name",
+        label: "name",
+        value: (item: IStylist, locale) => localizedName(item.name, locale),
+      },
       { id: "email", label: "email", value: (item: IStylist) => item.email },
       { id: "status", label: "status", value: (item: IStylist) => item.status },
     ],
@@ -82,7 +95,8 @@ export const ENTITY_CONFIGS = {
       {
         id: "stylist",
         label: "stylist",
-        value: (item: IBooking) => item.barber?.name.en ?? "—",
+        value: (item: IBooking, locale) =>
+          item.barber ? localizedName(item.barber.name, locale) : "—",
       },
       {
         id: "client",

@@ -467,90 +467,11 @@ class FakeExploreRepository implements ExploreRepository {
   Map<String, dynamic> rawMeta = const {};
   Object? error;
 
-  int getBranchesCalls = 0;
-  int getBranchesPayloadCalls = 0;
   String? lastQuery;
   final List<String?> queries = [];
   int lastPage = 1;
   String? lastUniverse;
   bool? lastAvailableNow;
-
-  @override
-  Future<PaginatedData<BranchDto>> getBranches({
-    required double latitude,
-    required double longitude,
-    required double radius,
-    required String universe,
-    int page = 1,
-    int perPage = 20,
-    List<int>? catalogItemIds,
-    bool? availableNow,
-    int? priceRangeMin,
-    int? priceRangeMax,
-    double? ratingMin,
-    String? faceShapeCompatible,
-    String? query,
-  }) async {
-    getBranchesCalls++;
-    lastQuery = query;
-    lastPage = page;
-    lastUniverse = universe;
-    lastAvailableNow = availableNow;
-    final failure = error;
-    if (failure != null) throw failure;
-    if (page > 1 && morePage != null) return morePage!;
-    return firstPage;
-  }
-
-  @override
-  Future<RawPaginated<BranchDto>> getBranchesPayload({
-    required double latitude,
-    required double longitude,
-    required double radius,
-    required String universe,
-    int page = 1,
-    int perPage = 20,
-    List<int>? catalogItemIds,
-    bool? availableNow,
-    int? priceRangeMin,
-    int? priceRangeMax,
-    double? ratingMin,
-    String? faceShapeCompatible,
-    String? query,
-  }) async {
-    getBranchesPayloadCalls++;
-    lastQuery = query;
-    queries.add(query);
-    lastUniverse = universe;
-    lastAvailableNow = availableNow;
-    final failure = error;
-    if (failure != null) throw failure;
-    return (data: firstPage, rawItems: rawItems, rawMeta: rawMeta);
-  }
-
-  int getBarbersCalls = 0;
-  PaginatedData<BarberProfileDto>? barbersPage;
-
-  @override
-  Future<PaginatedData<BarberProfileDto>> getBarbers({
-    required double latitude,
-    required double longitude,
-    required double radius,
-    required String universe,
-    int page = 1,
-    int perPage = 20,
-    List<int>? catalogItemIds,
-    bool? availableNow,
-    int? priceRangeMin,
-    int? priceRangeMax,
-    double? ratingMin,
-    String? query,
-  }) async {
-    getBarbersCalls++;
-    final failure = error;
-    if (failure != null) throw failure;
-    return barbersPage!;
-  }
 
   @override
   Future<List<BarberServiceDto>> getBarberServices(String barberId) async =>
@@ -902,13 +823,6 @@ class FakeHistoryRepository implements HistoryRepository {
   String? lastAttachId;
   String? lastAttachPath;
   String? lastAttachType;
-
-  @override
-  Future<ServiceHistoryDto> updateEntry({
-    required String historyId,
-    int? clientRating,
-    String? clientNotes,
-  }) async => firstPage.data.firstWhere((entry) => entry.id == historyId);
 
   @override
   Future<PaginatedData<ServiceHistoryDto>> getHistory({
@@ -1381,9 +1295,6 @@ class FakeServiceCatalogRepository implements ServiceCatalogRepository {
     if (failure != null) throw failure;
     return this.page;
   }
-
-  @override
-  Future<List<CatalogCategoryDto>> getCategories() async => categories;
 }
 
 FaceAnalysisBloc fakeFaceAnalysisBloc({

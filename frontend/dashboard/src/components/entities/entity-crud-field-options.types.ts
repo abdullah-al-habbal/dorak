@@ -1,4 +1,5 @@
 import type { EntityFormFieldOption } from "@/components/entities/entity-crud-form.types";
+import type { Locale } from "@/i18n/locales.types";
 import type { Dictionary } from "@/i18n/dictionary.types";
 import type { LookupOption } from "@/services/api/common/lookup/types/lookup.types";
 import type { EditableDashboardResource } from "@/services/api/dashboard/shared/types/editable-dashboard-resource.types";
@@ -21,6 +22,7 @@ export interface IEntityFormOptionsContext {
   fieldCopy: Dictionary["operations"]["field"];
   lookups: IEntityFormOptionLookups;
   serviceableType: string | undefined;
+  locale: Locale;
 }
 
 export type EntityFormFieldOptions = EntityFormFieldOption[] | null;

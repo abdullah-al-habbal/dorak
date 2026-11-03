@@ -10,8 +10,6 @@ abstract class ServiceCatalogRepository {
     String? universe,
     String? faceShape,
   });
-
-  Future<List<CatalogCategoryDto>> getCategories();
 }
 
 class DioServiceCatalogRepository implements ServiceCatalogRepository {
@@ -44,14 +42,4 @@ class DioServiceCatalogRepository implements ServiceCatalogRepository {
           CatalogItemDto.fromJson(json as Map<String, dynamic>),
     );
   }
-
-  @override
-  Future<List<CatalogCategoryDto>> getCategories() => _apiClient.get(
-    ApiEndpoints.serviceCatalog.categories,
-    parser: (json) => (json as List)
-        .map(
-          (item) => CatalogCategoryDto.fromJson(item as Map<String, dynamic>),
-        )
-        .toList(),
-  );
 }

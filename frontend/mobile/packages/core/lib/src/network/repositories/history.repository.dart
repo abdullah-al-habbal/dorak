@@ -15,12 +15,6 @@ abstract class HistoryRepository {
     required String photoPath,
     required String photoType,
   });
-
-  Future<ServiceHistoryDto> updateEntry({
-    required String historyId,
-    int? clientRating,
-    String? clientNotes,
-  });
 }
 
 class DioHistoryRepository implements HistoryRepository {
@@ -65,24 +59,6 @@ class DioHistoryRepository implements HistoryRepository {
       ApiEndpoints.history.attachMedia(historyId),
       data: formData,
       parser: (json) => HistoryMediaDto.fromJson(json as Map<String, dynamic>),
-    );
-  }
-
-  @override
-  Future<ServiceHistoryDto> updateEntry({
-    required String historyId,
-    int? clientRating,
-    String? clientNotes,
-  }) {
-    final data = <String, dynamic>{
-      'client_rating': ?clientRating,
-      'client_notes': ?clientNotes,
-    };
-    return _apiClient.patch<ServiceHistoryDto>(
-      ApiEndpoints.history.updateEntry(historyId),
-      data: data,
-      parser: (json) =>
-          ServiceHistoryDto.fromJson(json as Map<String, dynamic>),
     );
   }
 }

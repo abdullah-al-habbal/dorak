@@ -21,15 +21,15 @@ Part 2 of 3 · [keys](keys.md) · [Previous](keys.md) · [Next](keys-part-3.md)
 `bookingCancelConfirmMessage` `bookingCancelConfirm`
 
 **Branch detail + booking creation (017b)** — `branchChairsCount`
-`branchAvailableLabel` `branchOccupiedLabel` `branchMaintenanceLabel`
-`branchBarbersTitle` `branchServicesTitle` `bookingSelectChair`
+`branchAvailableLabel` `branchOccupiedLabel`
+`branchBarbersTitle`
 `bookingSelectServices` `bookingSelectTime` `bookingConfirmAction`
 `bookingSuccessTitle` `bookingSuccessMessage` `bookingViewBookings`
 `bookingConflictMessage`
 
 **Service History + Rebook (018a)** — `historyTitle` `historyEmptyTitle`
-`historyEmptyMessage` `historyRebookAction` `historyRebookTitle`
-`historyRebookMessage` `historyRebookSuccessTitle`
+`historyEmptyMessage` `historyRebookAction`
+`historyRebookSuccessTitle`
 `historyRebookSuccessMessage` `profileMemberLabel`
 
 **Face Analysis + AI Style (018b)** — `profileAvatarFallbackInitial`

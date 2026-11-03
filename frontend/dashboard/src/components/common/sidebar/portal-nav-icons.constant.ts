@@ -1,8 +1,45 @@
 import type { IconComponent } from "@/components/common/icon.types";
-import { HomeIcon, UserIcon } from "@/components/common/sidebar/icons";
+import {
+  BriefcaseIcon,
+  BuildingIcon,
+  CalendarNavIcon,
+  CardIcon,
+  ChartIcon,
+  FileIcon,
+  GearIcon,
+  GlobeIcon,
+  HomeIcon,
+  LayersIcon,
+  LayoutIcon,
+  MapIcon,
+  MessageIcon,
+  ShopIcon,
+  SlidersIcon,
+  StarNavIcon,
+  TeamIcon,
+  UserIcon,
+  WalletIcon,
+} from "@/components/common/sidebar/icons";
 import type { PortalNavigationIcon } from "@/config/routes.types";
 
 export const PORTAL_NAV_ICONS = {
   home: HomeIcon,
   user: UserIcon,
+  chart: ChartIcon,
+  building: BuildingIcon,
+  map: MapIcon,
+  star: StarNavIcon,
+  team: TeamIcon,
+  briefcase: BriefcaseIcon,
+  calendar: CalendarNavIcon,
+  layers: LayersIcon,
+  layout: LayoutIcon,
+  shop: ShopIcon,
+  wallet: WalletIcon,
+  card: CardIcon,
+  file: FileIcon,
+  message: MessageIcon,
+  globe: GlobeIcon,
+  sliders: SlidersIcon,
+  gear: GearIcon,
 } as const satisfies Record<PortalNavigationIcon, IconComponent>;

@@ -15,6 +15,8 @@ import type { IBooking } from "@/services/api/dashboard/booking/types/ibooking.t
 import type { IChair } from "@/services/api/dashboard/chair/types/ichair.types";
 import { useDashboardListOptions } from "@/hooks/use-dashboard-list-options";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useI18n } from "@/hooks/use-i18n";
+import { localizedName } from "@/utils/localized-name.util";
 import { useQuery } from "@tanstack/react-query";
 
 function today(): string {
@@ -152,6 +154,7 @@ function TodayBookings({
   emptyMessage: string;
   appointmentLabel: string;
 }) {
+  const { locale } = useI18n();
   return bookings.length === 0 ? (
     <p className="text-text-secondary">{emptyMessage}</p>
   ) : (
@@ -162,8 +165,10 @@ function TodayBookings({
           key={booking.id}
         >
           <span>
-            {booking.barber?.name.en ??
-              booking.chair?.label ??
+            {(booking.barber
+              ? localizedName(booking.barber.name, locale)
+              : "") ||
+              booking.chair?.label ||
               appointmentLabel}
           </span>
           <span>{booking.startsAt}</span>

@@ -18,6 +18,7 @@ import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useLookupOptionsQuery } from "@/hooks/use-lookup-options-query";
 import { ApiClientError } from "@/services/api/core/client-error";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useI18n } from "@/hooks/use-i18n";
 import { useSession } from "@/hooks/use-session";
 import {
   createDashboardEntity,
@@ -36,6 +37,7 @@ import { useForm, useWatch } from "react-hook-form";
 
 export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
   const dictionary = useDictionary();
+  const { locale } = useI18n();
   const fieldCopy = dictionary.operations.field;
   const session = useSession();
   const router = useRouter();
@@ -123,6 +125,7 @@ export function EntityCrudForm({ resource, id }: IEntityCrudFormProps) {
     resource,
     editing,
     fieldCopy,
+    locale,
     lookups: {
       branches: branches.data ?? [],
       chairs: chairs.data ?? [],

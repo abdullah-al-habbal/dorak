@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/tailgrids/core/table";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useI18n } from "@/hooks/use-i18n";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { getDashboardList } from "@/services/api/dashboard/shared/dashboard.query";
 import { mapDashboardEntity } from "@/services/api/dashboard/shared/dashboard-entity.util";
@@ -38,6 +39,7 @@ interface EntityListPageProps {
 export function EntityListPage({ resource }: EntityListPageProps) {
   const config = ENTITY_CONFIGS[resource];
   const dictionary = useDictionary();
+  const { locale } = useI18n();
   const session = useSession();
   const managerBranchList =
     resource === "branches" && session.actor === "manager";
@@ -160,7 +162,7 @@ export function EntityListPage({ resource }: EntityListPageProps) {
                   {config.columns.map((column) => (
                     <TableCell key={column.id}>
                       {(() => {
-                        const value = column.value(item as never);
+                        const value = column.value(item as never, locale);
                         const statusLabels = dictionary.operations.field;
                         return typeof value === "string" &&
                           value in statusLabels

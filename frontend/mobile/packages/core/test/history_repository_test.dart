@@ -223,26 +223,5 @@ void main() {
       expect(media.id, 'media-2');
       expect(media.photoUrl, 'https://dorak.test/signed/media-2');
     });
-
-    test('updateEntry patches only the provided rating and notes', () async {
-      late RequestOptions captured;
-      final fake = fakeDio(
-        handler: (options) {
-          captured = options;
-          return jsonResponse(options, data: successEnvelope(data: history()));
-        },
-      );
-      final repository = DioHistoryRepository(clientWith(fake));
-
-      final updated = await repository.updateEntry(
-        historyId: 'history-1',
-        clientRating: 5,
-      );
-
-      expect(captured.path, '/client/history/history-1');
-      expect(captured.method, 'PATCH');
-      expect(captured.data, {'client_rating': 5});
-      expect(updated.id, 'history-1');
-    });
   });
 }

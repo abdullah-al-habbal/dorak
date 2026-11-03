@@ -37,4 +37,4 @@ Part 2 of 3 · [Overview](product-audit.md) · [Findings](product-audit-part-3.m
 | Client | Brand hiding, preferences, media type picker | OK | client_app | high |
 | Client | Phone verification | Log-only SMS (G5) | UI exists | confirmed |
 | Client | Social login | Route live, no credentials | No UI | confirmed |
-| Client | Barber reviews, edit history entry | OK | No caller (G12) | reported |
+| Client | Barber reviews, edit history entry | Barber reviews used by stylist_app; client history edit endpoint kept, client code removed (G12 resolved) | stylist_app | confirmed |

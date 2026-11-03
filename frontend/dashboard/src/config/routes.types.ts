@@ -20,7 +20,26 @@ export interface PortalRouteConfig {
 
 export type PortalNavigationKey = keyof Dictionary["common"]["nav"];
 
-export type PortalNavigationIcon = "home" | "user";
+export type PortalNavigationIcon =
+  | "briefcase"
+  | "building"
+  | "calendar"
+  | "card"
+  | "chart"
+  | "file"
+  | "gear"
+  | "globe"
+  | "home"
+  | "layers"
+  | "layout"
+  | "map"
+  | "message"
+  | "shop"
+  | "sliders"
+  | "star"
+  | "team"
+  | "user"
+  | "wallet";
 
 /** Any navigation config entry whose destination depends on the viewing actor. */
 export interface ActorHrefItem {

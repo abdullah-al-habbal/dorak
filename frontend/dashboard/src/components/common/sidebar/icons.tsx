@@ -1,3 +1,23 @@
+import {
+  Briefcase4,
+  Buildings11,
+  Calendar,
+  CreditCard,
+  FileText,
+  Gear1,
+  Globe2,
+  Layers2,
+  Layout14,
+  MapMarker5,
+  Message1,
+  PieChart1,
+  Shop,
+  SlidersDoubleHorizontal,
+  StarFat,
+  UserMultiple1,
+  Wallet2,
+} from "@tailgrids/icons";
+
 export function HomeIcon() {
   return (
     <svg
@@ -54,4 +74,74 @@ export function UserIcon() {
       />
     </svg>
   );
+}
+
+const NAV_ICON_SIZE = 18;
+
+export function ChartIcon() {
+  return <PieChart1 size={NAV_ICON_SIZE} />;
+}
+
+export function BuildingIcon() {
+  return <Buildings11 size={NAV_ICON_SIZE} />;
+}
+
+export function MapIcon() {
+  return <MapMarker5 size={NAV_ICON_SIZE} />;
+}
+
+export function StarNavIcon() {
+  return <StarFat size={NAV_ICON_SIZE} />;
+}
+
+export function TeamIcon() {
+  return <UserMultiple1 size={NAV_ICON_SIZE} />;
+}
+
+export function BriefcaseIcon() {
+  return <Briefcase4 size={NAV_ICON_SIZE} />;
+}
+
+export function CalendarNavIcon() {
+  return <Calendar size={NAV_ICON_SIZE} />;
+}
+
+export function LayersIcon() {
+  return <Layers2 size={NAV_ICON_SIZE} />;
+}
+
+export function LayoutIcon() {
+  return <Layout14 size={NAV_ICON_SIZE} />;
+}
+
+export function ShopIcon() {
+  return <Shop size={NAV_ICON_SIZE} />;
+}
+
+export function WalletIcon() {
+  return <Wallet2 size={NAV_ICON_SIZE} />;
+}
+
+export function CardIcon() {
+  return <CreditCard size={NAV_ICON_SIZE} />;
+}
+
+export function FileIcon() {
+  return <FileText size={NAV_ICON_SIZE} />;
+}
+
+export function MessageIcon() {
+  return <Message1 size={NAV_ICON_SIZE} />;
+}
+
+export function GlobeIcon() {
+  return <Globe2 size={NAV_ICON_SIZE} />;
+}
+
+export function SlidersIcon() {
+  return <SlidersDoubleHorizontal size={NAV_ICON_SIZE} />;
+}
+
+export function GearIcon() {
+  return <Gear1 size={NAV_ICON_SIZE} />;
 }

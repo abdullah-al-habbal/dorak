@@ -65,9 +65,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get localeEnglish => 'English';
 
   @override
-  String get homeTitle => 'Home';
-
-  @override
   String get bookingTitle => 'Book when it works for you.';
 
   @override
@@ -355,9 +352,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your upcoming and past bookings will appear here.';
 
   @override
-  String get bookingsActionLabel => 'Discover';
-
-  @override
   String get favoritesTitle => 'No favorites yet';
 
   @override
@@ -366,13 +360,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favoritesActionLabel => 'Discover';
-
-  @override
-  String get profileTitle => 'Profile';
-
-  @override
-  String get profileSubtitle =>
-      'Your account and preferences will appear here.';
 
   @override
   String get profileActionLabel => 'Discover';
@@ -554,16 +541,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get branchOccupiedLabel => 'Occupied';
 
   @override
-  String get branchMaintenanceLabel => 'Maintenance';
-
-  @override
   String get branchBarbersTitle => 'Barbers';
-
-  @override
-  String get branchServicesTitle => 'Services';
-
-  @override
-  String get bookingSelectChair => 'Select a chair';
 
   @override
   String get bookingSelectServices => 'Select services';
@@ -635,14 +613,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyRebookAction => 'Book Again';
 
   @override
-  String get historyRebookTitle => 'Book Again';
-
-  @override
-  String historyRebookMessage(String item) {
-    return 'Pick a new time for $item.';
-  }
-
-  @override
   String get historyRebookSuccessTitle => 'Booked Again';
 
   @override
@@ -651,9 +621,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileMemberLabel => 'Member';
-
-  @override
-  String get avatarUpdateAction => 'Change Photo';
 
   @override
   String get faceAnalysisTitle => 'Face Analysis';
@@ -862,9 +829,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewStylistPrompt => 'How was your session?';
 
   @override
-  String get reviewCommentHint => 'Share more details... (optional)';
-
-  @override
   String get reviewSubmitButton => 'Submit Review';
 
   @override
@@ -879,14 +843,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reviewErrorGeneric => 'Could not submit your review';
-
-  @override
-  String reviewStarLabel(int stars) {
-    return '$stars out of 5 stars';
-  }
-
-  @override
-  String get reviewCommentsSection => 'Reviews';
 
   @override
   String get bookingRateAction => 'Rate';
@@ -1116,13 +1072,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSettingsPriceDisplayModeTaxExclusive => 'Tax exclusive';
 
   @override
-  String get profileSettingsSaveAction => 'Save settings';
-
-  @override
   String get profileSettingsSaved => 'Settings saved';
-
-  @override
-  String get profileSettingsError => 'Could not save your settings';
 
   @override
   String get savedAddressesTitle => 'Saved addresses';
@@ -1254,9 +1204,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chairMaintenanceConflictKeep => 'Keep chair available';
-
-  @override
-  String get chairStatusUnknown => 'Unknown status';
 
   @override
   String get businessRetry => 'Retry';
@@ -1397,9 +1344,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get phoneVerifyThrottled =>
       'Too many attempts. Please wait a minute and try again.';
-
-  @override
-  String get phoneVerifyVerified => 'Phone verified';
 
   @override
   String get profilePhoneVerifiedLabel => 'Verified';

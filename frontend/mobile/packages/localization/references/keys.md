@@ -12,7 +12,7 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 
 ## 3. The 200 keys
 
-**Common** — `splashTitle` `skip` `cancel` `next` `previous` `back` `homeTitle`
+**Common** — `splashTitle` `skip` `cancel` `next` `previous` `back`
 
 **Errors / validation** — `errorNetwork` `errorGeneric` `fieldRequired`
 `fieldInvalidEmail` `fieldPasswordTooShort` `fieldPasswordMismatch`

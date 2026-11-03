@@ -14,6 +14,8 @@ import {
 import { useDashboardListOptions } from "@/hooks/use-dashboard-list-options";
 import { useDashboardMutation } from "@/hooks/use-dashboard-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useI18n } from "@/hooks/use-i18n";
+import { localizedName } from "@/utils/localized-name.util";
 import { useSession } from "@/hooks/use-session";
 import {
   mapBranch,
@@ -33,6 +35,7 @@ import { toast } from "sonner";
 
 export function WalkInBookingForm() {
   const dictionary = useDictionary();
+  const { locale } = useI18n();
   const copy = dictionary.walkInBooking;
   const schema = createWalkInBookingSchema(dictionary.validation);
   const session = useSession();
@@ -120,7 +123,7 @@ export function WalkInBookingForm() {
             <SelectContent>
               {(branches.data ?? []).map((branch) => (
                 <SelectItem id={branch.id} key={branch.id}>
-                  {branch.name.en}
+                  {localizedName(branch.name, locale)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -209,7 +212,7 @@ export function WalkInBookingForm() {
               })
               .map((service) => (
                 <SelectItem id={service.id} key={service.id}>
-                  {service.name.en}
+                  {localizedName(service.name, locale)}
                 </SelectItem>
               ))}
           </SelectContent>

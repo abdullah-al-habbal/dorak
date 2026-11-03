@@ -206,12 +206,6 @@ abstract class AppLocalizations {
   /// **'English'**
   String get localeEnglish;
 
-  /// Home screen title
-  ///
-  /// In en, this message translates to:
-  /// **'Home'**
-  String get homeTitle;
-
   /// Booking innovation screen headline
   ///
   /// In en, this message translates to:
@@ -746,12 +740,6 @@ abstract class AppLocalizations {
   /// **'Your upcoming and past bookings will appear here.'**
   String get bookingsSubtitle;
 
-  /// Bookings empty state action button label
-  ///
-  /// In en, this message translates to:
-  /// **'Discover'**
-  String get bookingsActionLabel;
-
   /// Favorites screen empty state title
   ///
   /// In en, this message translates to:
@@ -769,18 +757,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Discover'**
   String get favoritesActionLabel;
-
-  /// Profile screen empty state title
-  ///
-  /// In en, this message translates to:
-  /// **'Profile'**
-  String get profileTitle;
-
-  /// Profile screen empty state subtitle
-  ///
-  /// In en, this message translates to:
-  /// **'Your account and preferences will appear here.'**
-  String get profileSubtitle;
 
   /// Profile empty state action button label
   ///
@@ -1088,29 +1064,11 @@ abstract class AppLocalizations {
   /// **'Occupied'**
   String get branchOccupiedLabel;
 
-  /// Floor plan label for chairs under maintenance
-  ///
-  /// In en, this message translates to:
-  /// **'Maintenance'**
-  String get branchMaintenanceLabel;
-
   /// Branch detail barbers section title
   ///
   /// In en, this message translates to:
   /// **'Barbers'**
   String get branchBarbersTitle;
-
-  /// Branch detail services section title
-  ///
-  /// In en, this message translates to:
-  /// **'Services'**
-  String get branchServicesTitle;
-
-  /// Booking sheet chair step title
-  ///
-  /// In en, this message translates to:
-  /// **'Select a chair'**
-  String get bookingSelectChair;
 
   /// Booking sheet services step title
   ///
@@ -1232,18 +1190,6 @@ abstract class AppLocalizations {
   /// **'Book Again'**
   String get historyRebookAction;
 
-  /// Rebook sheet title
-  ///
-  /// In en, this message translates to:
-  /// **'Book Again'**
-  String get historyRebookTitle;
-
-  /// Rebook sheet message naming the service
-  ///
-  /// In en, this message translates to:
-  /// **'Pick a new time for {item}.'**
-  String historyRebookMessage(String item);
-
   /// Rebook success title
   ///
   /// In en, this message translates to:
@@ -1261,12 +1207,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Member'**
   String get profileMemberLabel;
-
-  /// Avatar upload affordance on the profile header
-  ///
-  /// In en, this message translates to:
-  /// **'Change Photo'**
-  String get avatarUpdateAction;
 
   /// Face analysis module title
   ///
@@ -1634,12 +1574,6 @@ abstract class AppLocalizations {
   /// **'How was your session?'**
   String get reviewStylistPrompt;
 
-  /// Review submit screen comment field hint
-  ///
-  /// In en, this message translates to:
-  /// **'Share more details... (optional)'**
-  String get reviewCommentHint;
-
   /// Review submit button label
   ///
   /// In en, this message translates to:
@@ -1669,18 +1603,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not submit your review'**
   String get reviewErrorGeneric;
-
-  /// Screen-reader label for the star rating row
-  ///
-  /// In en, this message translates to:
-  /// **'{stars} out of 5 stars'**
-  String reviewStarLabel(int stars);
-
-  /// Branch detail reviews section heading
-  ///
-  /// In en, this message translates to:
-  /// **'Reviews'**
-  String get reviewCommentsSection;
 
   /// Rate action on a completed booking card
   ///
@@ -2096,23 +2018,11 @@ abstract class AppLocalizations {
   /// **'Tax exclusive'**
   String get profileSettingsPriceDisplayModeTaxExclusive;
 
-  /// Button that submits the settings form
-  ///
-  /// In en, this message translates to:
-  /// **'Save settings'**
-  String get profileSettingsSaveAction;
-
   /// Confirmation message shown after settings are saved
   ///
   /// In en, this message translates to:
   /// **'Settings saved'**
   String get profileSettingsSaved;
-
-  /// Error message shown when saving settings fails
-  ///
-  /// In en, this message translates to:
-  /// **'Could not save your settings'**
-  String get profileSettingsError;
 
   /// No description provided for @savedAddressesTitle.
   ///
@@ -2323,12 +2233,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep chair available'**
   String get chairMaintenanceConflictKeep;
-
-  /// Fallback chair status label
-  ///
-  /// In en, this message translates to:
-  /// **'Unknown status'**
-  String get chairStatusUnknown;
 
   /// No description provided for @businessRetry.
   ///
@@ -2575,12 +2479,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Too many attempts. Please wait a minute and try again.'**
   String get phoneVerifyThrottled;
-
-  /// Status shown after the phone is verified
-  ///
-  /// In en, this message translates to:
-  /// **'Phone verified'**
-  String get phoneVerifyVerified;
 
   /// Badge shown next to a verified phone number
   ///

@@ -72,10 +72,6 @@
   "@localeEnglish": {
     "description": "Locale toggle label to switch to English"
   },
-  "homeTitle": "Home",
-  "@homeTitle": {
-    "description": "Home screen title"
-  },
   "bookingTitle": "Book when it works for you.",
   "@bookingTitle": {
     "description": "Booking innovation screen headline"
@@ -452,10 +448,6 @@
   "@bookingsSubtitle": {
     "description": "Bookings screen empty state subtitle"
   },
-  "bookingsActionLabel": "Discover",
-  "@bookingsActionLabel": {
-    "description": "Bookings empty state action button label"
-  },
   "favoritesTitle": "No favorites yet",
   "@favoritesTitle": {
     "description": "Favorites screen empty state title"
@@ -467,14 +459,6 @@
   "favoritesActionLabel": "Discover",
   "@favoritesActionLabel": {
     "description": "Favorites empty state action button label"
-  },
-  "profileTitle": "Profile",
-  "@profileTitle": {
-    "description": "Profile screen empty state title"
-  },
-  "profileSubtitle": "Your account and preferences will appear here.",
-  "@profileSubtitle": {
-    "description": "Profile screen empty state subtitle"
   },
   "profileActionLabel": "Discover",
   "@profileActionLabel": {
@@ -699,21 +683,9 @@
   "@branchOccupiedLabel": {
     "description": "Floor plan legend for occupied chairs"
   },
-  "branchMaintenanceLabel": "Maintenance",
-  "@branchMaintenanceLabel": {
-    "description": "Floor plan label for chairs under maintenance"
-  },
   "branchBarbersTitle": "Barbers",
   "@branchBarbersTitle": {
     "description": "Branch detail barbers section title"
-  },
-  "branchServicesTitle": "Services",
-  "@branchServicesTitle": {
-    "description": "Branch detail services section title"
-  },
-  "bookingSelectChair": "Select a chair",
-  "@bookingSelectChair": {
-    "description": "Booking sheet chair step title"
   },
   "bookingSelectServices": "Select services",
   "@bookingSelectServices": {
@@ -800,19 +772,6 @@
   "@historyRebookAction": {
     "description": "Rebook action on a history entry"
   },
-  "historyRebookTitle": "Book Again",
-  "@historyRebookTitle": {
-    "description": "Rebook sheet title"
-  },
-  "historyRebookMessage": "Pick a new time for {item}.",
-  "@historyRebookMessage": {
-    "description": "Rebook sheet message naming the service",
-    "placeholders": {
-      "item": {
-        "type": "String"
-      }
-    }
-  },
   "historyRebookSuccessTitle": "Booked Again",
   "@historyRebookSuccessTitle": {
     "description": "Rebook success title"
@@ -824,10 +783,6 @@
   "profileMemberLabel": "Member",
   "@profileMemberLabel": {
     "description": "Profile header name fallback when the client name is unknown"
-  },
-  "avatarUpdateAction": "Change Photo",
-  "@avatarUpdateAction": {
-    "description": "Avatar upload affordance on the profile header"
   },
   "faceAnalysisTitle": "Face Analysis",
   "@faceAnalysisTitle": {
@@ -1107,10 +1062,6 @@
   "@reviewStylistPrompt": {
     "description": "Review submit screen rating prompt"
   },
-  "reviewCommentHint": "Share more details... (optional)",
-  "@reviewCommentHint": {
-    "description": "Review submit screen comment field hint"
-  },
   "reviewSubmitButton": "Submit Review",
   "@reviewSubmitButton": {
     "description": "Review submit button label"
@@ -1130,19 +1081,6 @@
   "reviewErrorGeneric": "Could not submit your review",
   "@reviewErrorGeneric": {
     "description": "Fallback review submit error message"
-  },
-  "reviewStarLabel": "{stars} out of 5 stars",
-  "@reviewStarLabel": {
-    "description": "Screen-reader label for the star rating row",
-    "placeholders": {
-      "stars": {
-        "type": "int"
-      }
-    }
-  },
-  "reviewCommentsSection": "Reviews",
-  "@reviewCommentsSection": {
-    "description": "Branch detail reviews section heading"
   },
   "bookingRateAction": "Rate",
   "@bookingRateAction": {
@@ -1336,12 +1274,8 @@
   "@profileSettingsPriceDisplayModeTaxInclusive": {"description": "Tax inclusive option in the price display mode selector"},
   "profileSettingsPriceDisplayModeTaxExclusive": "Tax exclusive",
   "@profileSettingsPriceDisplayModeTaxExclusive": {"description": "Tax exclusive option in the price display mode selector"},
-  "profileSettingsSaveAction": "Save settings",
-  "@profileSettingsSaveAction": {"description": "Button that submits the settings form"},
   "profileSettingsSaved": "Settings saved",
   "@profileSettingsSaved": {"description": "Confirmation message shown after settings are saved"},
-  "profileSettingsError": "Could not save your settings",
-  "@profileSettingsError": {"description": "Error message shown when saving settings fails"},
   "savedAddressesTitle": "Saved addresses",
   "savedAddressAddTitle": "Add address",
   "savedAddressEditTitle": "Edit address",
@@ -1406,8 +1340,6 @@
   "@chairMaintenanceConflictConfirm": {"placeholders": {"count": {"type": "int"}}},
   "chairMaintenanceConflictKeep": "Keep chair available",
   "@chairMaintenanceConflictKeep": {"description": "Dismiss the chair maintenance conflict dialog"},
-  "chairStatusUnknown": "Unknown status",
-  "@chairStatusUnknown": {"description": "Fallback chair status label"},
   "businessRetry": "Retry",
   "businessDashboardTitle": "Dashboard",
   "businessTodayRevenue": "Today revenue: {value}",
@@ -1474,8 +1406,6 @@
   "@phoneVerifyPhoneRejected": {"description": "Error when the phone number is rejected"},
   "phoneVerifyThrottled": "Too many attempts. Please wait a minute and try again.",
   "@phoneVerifyThrottled": {"description": "Error when phone code requests are rate limited"},
-  "phoneVerifyVerified": "Phone verified",
-  "@phoneVerifyVerified": {"description": "Status shown after the phone is verified"},
   "profilePhoneVerifiedLabel": "Verified",
   "@profilePhoneVerifiedLabel": {"description": "Badge shown next to a verified phone number"},
   "profilePhoneChangeHint": "Changing your phone sends a verification code",

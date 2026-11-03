@@ -17,9 +17,8 @@ Referenced from [`../../AGENTS.md`](../../AGENTS.md).
   `signUpPasswordHint`). Reuse existing keys before adding new ones.
 - Generated output `lib/src/generated/` is committed and excluded from the
   analyzer and taxonomy checker.
-- Six keys take ICU placeholders and generate functions, not getters:
+- Five keys take ICU placeholders and generate functions, not getters:
   `verifySubtitle(String email)`, `verifyResendDisabled(int seconds)`,
-  `historyRebookMessage(String item)`,
   `curatedPriceRange(num min, num max, String currency)`,
   `serviceDurationLabel(int minutes)`, `servicePrice(String displayPrice, String currency)`.
 - RTL is automatic from the locale. Use `Align` / `TextAlign.start` /

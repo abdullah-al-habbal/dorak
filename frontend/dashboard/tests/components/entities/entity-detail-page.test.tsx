@@ -8,6 +8,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("@/services/api/dashboard/shared/dashboard.query", () => ({
   getDashboardEntity: vi.fn(),
 }));
+vi.mock("@/hooks/use-i18n", () => ({
+  useI18n: () => ({ locale: "en" as const }),
+}));
 vi.mock("@/hooks/use-dictionary", async () => {
   const { en: dictionary } = await vi.importActual<
     typeof import("@/i18n/messages/en.constant")

@@ -1,3 +1,4 @@
+import { localizedName } from "@/utils/localized-name.util";
 import { BRANCH_STATUSES } from "@/services/api/dashboard/branch/branch.constant";
 import { STYLIST_STATUSES } from "@/services/api/dashboard/stylist/stylist.constant";
 import { VENUE_UNIVERSES } from "@/services/api/dashboard/shared/venue-universe.constant";
@@ -11,7 +12,8 @@ export function optionsFor(
   field: string,
   context: IEntityFormOptionsContext,
 ): EntityFormFieldOptions {
-  const { resource, editing, fieldCopy, lookups, serviceableType } = context;
+  const { resource, editing, fieldCopy, lookups, serviceableType, locale } =
+    context;
   if (field === "status" && resource === "branches")
     return BRANCH_STATUSES.map((status) => [status, fieldCopy[status]]);
   if (field === "status" && resource === "chairs")
@@ -58,10 +60,16 @@ export function optionsFor(
       ]),
     ];
   if (field === "branchId")
-    return lookups.branches.map((item) => [item.id, item.name.en ?? item.id]);
+    return lookups.branches.map((item) => [
+      item.id,
+      localizedName(item.name, locale) || item.id,
+    ]);
   if (field === "serviceableId") {
     if (serviceableType === "barber")
-      return lookups.stylists.map((item) => [item.id, item.name.en ?? item.id]);
+      return lookups.stylists.map((item) => [
+        item.id,
+        localizedName(item.name, locale) || item.id,
+      ]);
     return lookups.brands.map((item) => [item.id, item.label]);
   }
   if (field === "barberId")
@@ -69,7 +77,7 @@ export function optionsFor(
       ["", fieldCopy.unassigned],
       ...lookups.stylists.map((item): [string, string] => [
         item.id,
-        item.name.en ?? item.id,
+        localizedName(item.name, locale) || item.id,
       ]),
     ];
   if (field === "chairId")

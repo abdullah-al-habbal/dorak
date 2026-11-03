@@ -176,8 +176,6 @@ class _CurrencyEndpoints {
 class _ExploreEndpoints {
   const _ExploreEndpoints();
   String get search => ExploreEndpoints.search;
-  String get branches => ExploreEndpoints.branches;
-  String get barbers => ExploreEndpoints.barbers;
   String branchDetail(String branchId) =>
       ExploreEndpoints.branchDetail.replaceFirst('{branch}', branchId);
   String barberDetail(String barberId) =>
@@ -211,8 +209,6 @@ class _FavoriteEndpoints {
 class _HistoryEndpoints {
   const _HistoryEndpoints();
   String get history => HistoryEndpoints.history;
-  String updateEntry(String historyId) =>
-      HistoryEndpoints.updateEntry.replaceFirst('{history}', historyId);
   String rebookFromHistory(String historyId) =>
       HistoryEndpoints.rebookFromHistory.replaceFirst('{history}', historyId);
   String attachMedia(String historyId) =>
@@ -348,5 +344,4 @@ class _ReviewEndpoints {
 class _ServiceCatalogEndpoints {
   const _ServiceCatalogEndpoints();
   String get items => ServiceCatalogEndpoints.items;
-  String get categories => ServiceCatalogEndpoints.categories;
 }

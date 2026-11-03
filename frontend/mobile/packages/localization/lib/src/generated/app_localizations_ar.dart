@@ -65,9 +65,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get localeEnglish => 'English';
 
   @override
-  String get homeTitle => 'الرئيسية';
-
-  @override
   String get bookingTitle => 'احجز متى يناسبك.';
 
   @override
@@ -354,9 +351,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingsSubtitle => 'ستظهر حجوزاتك القادمة والسابقة هنا.';
 
   @override
-  String get bookingsActionLabel => 'اكتشف';
-
-  @override
   String get favoritesTitle => 'لا توجد مفضلات بعد';
 
   @override
@@ -364,12 +358,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get favoritesActionLabel => 'اكتشف';
-
-  @override
-  String get profileTitle => 'الملف الشخصي';
-
-  @override
-  String get profileSubtitle => 'سيظهر حسابك وتفضيلاتك هنا.';
 
   @override
   String get profileActionLabel => 'اكتشف';
@@ -553,16 +541,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get branchOccupiedLabel => 'مشغول';
 
   @override
-  String get branchMaintenanceLabel => 'صيانة';
-
-  @override
   String get branchBarbersTitle => 'الحلاقون';
-
-  @override
-  String get branchServicesTitle => 'الخدمات';
-
-  @override
-  String get bookingSelectChair => 'اختر الكرسي';
 
   @override
   String get bookingSelectServices => 'اختر الخدمات';
@@ -631,14 +610,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get historyRebookAction => 'إعادة الحجز';
 
   @override
-  String get historyRebookTitle => 'إعادة الحجز';
-
-  @override
-  String historyRebookMessage(String item) {
-    return 'اختر موعدًا جديدًا لـ$item.';
-  }
-
-  @override
   String get historyRebookSuccessTitle => 'تم إعادة الحجز';
 
   @override
@@ -647,9 +618,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileMemberLabel => 'عضو';
-
-  @override
-  String get avatarUpdateAction => 'تغيير الصورة';
 
   @override
   String get faceAnalysisTitle => 'تحليل الوجه';
@@ -860,9 +828,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reviewStylistPrompt => 'كيف كانت جلستك؟';
 
   @override
-  String get reviewCommentHint => 'شاركونا التفاصيل الإضافية (اختياري)';
-
-  @override
   String get reviewSubmitButton => 'رسل التقييم';
 
   @override
@@ -876,14 +841,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reviewErrorGeneric => 'لم نتمكنا من إرسال تقييمك';
-
-  @override
-  String reviewStarLabel(int stars) {
-    return '$stars من 5 نجوم';
-  }
-
-  @override
-  String get reviewCommentsSection => 'التقييمات';
 
   @override
   String get bookingRateAction => 'قيّم';
@@ -1107,13 +1064,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileSettingsPriceDisplayModeTaxExclusive => 'غير شامل الضريبة';
 
   @override
-  String get profileSettingsSaveAction => 'حفظ الإعدادات';
-
-  @override
   String get profileSettingsSaved => 'تم حفظ الإعدادات';
-
-  @override
-  String get profileSettingsError => 'تعذر حفظ الإعدادات';
 
   @override
   String get savedAddressesTitle => 'العناوين المحفوظة';
@@ -1248,9 +1199,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chairMaintenanceConflictKeep => 'إبقاء الكرسي متاحًا';
-
-  @override
-  String get chairStatusUnknown => 'حالة غير معروفة';
 
   @override
   String get businessRetry => 'إعادة المحاولة';
@@ -1391,9 +1339,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get phoneVerifyThrottled =>
       'محاولات كثيرة. انتظر دقيقة ثم حاول مجدداً.';
-
-  @override
-  String get phoneVerifyVerified => 'تم تأكيد الهاتف';
 
   @override
   String get profilePhoneVerifiedLabel => 'موثّق';

@@ -72,10 +72,6 @@
   "@localeEnglish": {
     "description": "Locale toggle label to switch to English"
   },
-  "homeTitle": "الرئيسية",
-  "@homeTitle": {
-    "description": "Home screen title"
-  },
   "bookingTitle": "احجز متى يناسبك.",
   "@bookingTitle": {
     "description": "Booking innovation screen headline"
@@ -373,10 +369,6 @@
   "@bookingsSubtitle": {
     "description": "Bookings screen empty state subtitle"
   },
-  "bookingsActionLabel": "اكتشف",
-  "@bookingsActionLabel": {
-    "description": "Bookings empty state action button label"
-  },
   "favoritesTitle": "لا توجد مفضلات بعد",
   "@favoritesTitle": {
     "description": "Favorites screen empty state title"
@@ -388,14 +380,6 @@
   "favoritesActionLabel": "اكتشف",
   "@favoritesActionLabel": {
     "description": "Favorites empty state action button label"
-  },
-  "profileTitle": "الملف الشخصي",
-  "@profileTitle": {
-    "description": "Profile screen empty state title"
-  },
-  "profileSubtitle": "سيظهر حسابك وتفضيلاتك هنا.",
-  "@profileSubtitle": {
-    "description": "Profile screen empty state subtitle"
   },
   "profileActionLabel": "اكتشف",
   "@profileActionLabel": {
@@ -604,21 +588,9 @@
   "@branchOccupiedLabel": {
     "description": "Floor plan legend for occupied chairs"
   },
-  "branchMaintenanceLabel": "صيانة",
-  "@branchMaintenanceLabel": {
-    "description": "Floor plan label for chairs under maintenance"
-  },
   "branchBarbersTitle": "الحلاقون",
   "@branchBarbersTitle": {
     "description": "Branch detail barbers section title"
-  },
-  "branchServicesTitle": "الخدمات",
-  "@branchServicesTitle": {
-    "description": "Branch detail services section title"
-  },
-  "bookingSelectChair": "اختر الكرسي",
-  "@bookingSelectChair": {
-    "description": "Booking sheet chair step title"
   },
   "bookingSelectServices": "اختر الخدمات",
   "@bookingSelectServices": {
@@ -705,19 +677,6 @@
   "@historyRebookAction": {
     "description": "Rebook action on a history entry"
   },
-  "historyRebookTitle": "إعادة الحجز",
-  "@historyRebookTitle": {
-    "description": "Rebook sheet title"
-  },
-  "historyRebookMessage": "اختر موعدًا جديدًا لـ{item}.",
-  "@historyRebookMessage": {
-    "description": "Rebook sheet message naming the service",
-    "placeholders": {
-      "item": {
-        "type": "String"
-      }
-    }
-  },
   "historyRebookSuccessTitle": "تم إعادة الحجز",
   "@historyRebookSuccessTitle": {
     "description": "Rebook success title"
@@ -729,10 +688,6 @@
   "profileMemberLabel": "عضو",
   "@profileMemberLabel": {
     "description": "Profile header name fallback when the client name is unknown"
-  },
-  "avatarUpdateAction": "تغيير الصورة",
-  "@avatarUpdateAction": {
-    "description": "Avatar upload affordance on the profile header"
   },
   "faceAnalysisTitle": "تحليل الوجه",
   "@faceAnalysisTitle": {
@@ -1002,10 +957,6 @@
   "@reviewStylistPrompt": {
     "description": "Review submit screen rating prompt"
   },
-  "reviewCommentHint": "شاركونا التفاصيل الإضافية (اختياري)",
-  "@reviewCommentHint": {
-    "description": "Review submit screen comment field hint"
-  },
   "reviewSubmitButton": "رسل التقييم",
   "@reviewSubmitButton": {
     "description": "Review submit button label"
@@ -1025,19 +976,6 @@
   "reviewErrorGeneric": "لم نتمكنا من إرسال تقييمك",
   "@reviewErrorGeneric": {
     "description": "Fallback review submit error message"
-  },
-  "reviewStarLabel": "{stars} من 5 نجوم",
-  "@reviewStarLabel": {
-    "description": "Screen-reader label for the star rating row",
-    "placeholders": {
-      "stars": {
-        "type": "int"
-      }
-    }
-  },
-  "reviewCommentsSection": "التقييمات",
-  "@reviewCommentsSection": {
-    "description": "Branch detail reviews section heading"
   },
   "bookingRateAction": "قيّم",
   "@bookingRateAction": {
@@ -1231,12 +1169,8 @@
   "@profileSettingsPriceDisplayModeTaxInclusive": {"description": "Tax inclusive option in the price display mode selector"},
   "profileSettingsPriceDisplayModeTaxExclusive": "غير شامل الضريبة",
   "@profileSettingsPriceDisplayModeTaxExclusive": {"description": "Tax exclusive option in the price display mode selector"},
-  "profileSettingsSaveAction": "حفظ الإعدادات",
-  "@profileSettingsSaveAction": {"description": "Button that submits the settings form"},
   "profileSettingsSaved": "تم حفظ الإعدادات",
   "@profileSettingsSaved": {"description": "Confirmation message shown after settings are saved"},
-  "profileSettingsError": "تعذر حفظ الإعدادات",
-  "@profileSettingsError": {"description": "Error message shown when saving settings fails"},
   "savedAddressesTitle": "العناوين المحفوظة",
   "savedAddressAddTitle": "إضافة عنوان",
   "savedAddressEditTitle": "تعديل العنوان",
@@ -1291,8 +1225,6 @@
   "@chairMaintenanceConflictConfirm": {"placeholders": {"count": {"type": "int"}}},
   "chairMaintenanceConflictKeep": "إبقاء الكرسي متاحًا",
   "@chairMaintenanceConflictKeep": {"description": "Dismiss the chair maintenance conflict dialog"},
-  "chairStatusUnknown": "حالة غير معروفة",
-  "@chairStatusUnknown": {"description": "Fallback chair status label"},
   "businessRetry": "إعادة المحاولة",
   "businessDashboardTitle": "لوحة المعلومات",
   "businessTodayRevenue": "إيرادات اليوم: {value}",
@@ -1343,7 +1275,6 @@
   "phoneVerifyInvalidCode": "الرمز غير صحيح أو منتهي الصلاحية.",
   "phoneVerifyPhoneRejected": "لا يمكن تأكيد رقم الهاتف هذا. تحقق منه أو استخدم رقماً آخر.",
   "phoneVerifyThrottled": "محاولات كثيرة. انتظر دقيقة ثم حاول مجدداً.",
-  "phoneVerifyVerified": "تم تأكيد الهاتف",
   "profilePhoneVerifiedLabel": "موثّق",
   "profilePhoneChangeHint": "تغيير الهاتف يرسل رمز تحقق",
   "branchTodayHours": "اليوم {opens}–{closes}",

@@ -9,6 +9,9 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+vi.mock("@/hooks/use-i18n", () => ({
+  useI18n: () => ({ locale: "en" as const }),
+}));
 vi.mock("@/hooks/use-dictionary", async () => {
   const { en: dictionary } = await vi.importActual<
     typeof import("@/i18n/messages/en.constant")

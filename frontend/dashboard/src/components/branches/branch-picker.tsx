@@ -8,7 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/tailgrids/core/select";
+import { useI18n } from "@/hooks/use-i18n";
 import type { IBranch } from "@/services/api/dashboard/branch/types/ibranch.types";
+import { localizedName } from "@/utils/localized-name.util";
 
 interface IBranchPickerProps {
   label: string;
@@ -23,6 +25,7 @@ export function BranchPicker({
   value,
   onChange,
 }: IBranchPickerProps) {
+  const { locale } = useI18n();
   return (
     <label className="grid max-w-sm gap-2 text-sm text-text-100">
       <span>{label}</span>
@@ -34,7 +37,7 @@ export function BranchPicker({
         <SelectContent>
           {branches.map((branch) => (
             <SelectItem id={branch.id} key={branch.id}>
-              {branch.name.en}
+              {localizedName(branch.name, locale)}
             </SelectItem>
           ))}
         </SelectContent>

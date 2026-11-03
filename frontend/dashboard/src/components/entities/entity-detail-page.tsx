@@ -1,7 +1,9 @@
 "use client";
 
 import { ENTITY_CONFIGS } from "@/components/entities/entity-config.constant";
+import { detailValues } from "@/components/entities/entity-detail-values.util";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useI18n } from "@/hooks/use-i18n";
 import { getDashboardEntity } from "@/services/api/dashboard/shared/dashboard.query";
 import type { OperationsActor } from "@/services/api/auth/types/auth.types";
 import type { DashboardResource } from "@/services/api/dashboard/shared/types/dashboard-resource.types";
@@ -22,6 +24,7 @@ export function EntityDetailPage({
   id,
 }: EntityDetailPageProps) {
   const dictionary = useDictionary();
+  const { locale } = useI18n();
   const query = useQuery({
     queryKey: ["dashboard", resource, id],
     queryFn: () => getDashboardEntity<Record<string, unknown>>(resource, id),
@@ -38,9 +41,7 @@ export function EntityDetailPage({
         {apiErrorMessage(query.error, dictionary)}
       </p>
     );
-  const values = Object.entries(query.data ?? {}).filter(
-    ([, value]) => value !== null && typeof value !== "object",
-  );
+  const values = detailValues(query.data ?? {}, locale);
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between gap-3">
@@ -71,21 +72,21 @@ export function EntityDetailPage({
         </div>
       </div>
       <dl className="grid gap-4 rounded-xl border border-border-primary bg-card-primary p-5 sm:grid-cols-2">
-        {values.map(([key, value]) => (
-          <div className="border-b border-border-primary pb-3" key={key}>
+        {values.map(({ path, key, value }) => (
+          <div className="border-b border-border-primary pb-3" key={path}>
             <dt className="text-xs font-medium uppercase tracking-wide text-text-secondary">
               {dictionary.operations.field[
                 key.replace(/_([a-z])/g, (_, letter: string) =>
                   letter.toUpperCase(),
                 ) as keyof typeof dictionary.operations.field
-              ] ?? dictionary.operations.details}
+              ] ?? path}
             </dt>
             <dd className="mt-1 text-sm text-text-100">
-              {typeof value === "string" && value in dictionary.operations.field
+              {value in dictionary.operations.field
                 ? dictionary.operations.field[
                     value as keyof typeof dictionary.operations.field
                   ]
-                : String(value)}
+                : value}
             </dd>
           </div>
         ))}
