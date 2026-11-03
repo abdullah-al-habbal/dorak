@@ -9,6 +9,7 @@ use Modules\Branch\Http\Actions\Branch\CreateManagedBarberAction;
 use Modules\Branch\Http\Actions\Branch\DashboardAction;
 use Modules\Branch\Http\Actions\Branch\DeleteHoursOverrideAction;
 use Modules\Branch\Http\Actions\Branch\DeleteJobPostingAction;
+use Modules\Branch\Http\Actions\Branch\ForgotPasswordAction;
 use Modules\Branch\Http\Actions\Branch\GetProfileAction;
 use Modules\Branch\Http\Actions\Branch\InviteAffiliationAction;
 use Modules\Branch\Http\Actions\Branch\ListAffiliationsAction;
@@ -18,7 +19,10 @@ use Modules\Branch\Http\Actions\Branch\ListBranchChairsAction;
 use Modules\Branch\Http\Actions\Branch\ListJobPostingsAction;
 use Modules\Branch\Http\Actions\Branch\ListReviewsAction;
 use Modules\Branch\Http\Actions\Branch\LoginAction;
+use Modules\Branch\Http\Actions\Branch\LogoutAction;
+use Modules\Branch\Http\Actions\Branch\RefreshTokenAction;
 use Modules\Branch\Http\Actions\Branch\RejectAffiliationAction;
+use Modules\Branch\Http\Actions\Branch\ResetPasswordAction;
 use Modules\Branch\Http\Actions\Branch\TerminateAffiliationAction;
 use Modules\Branch\Http\Actions\Branch\ToggleChairStatusAction;
 use Modules\Branch\Http\Actions\Branch\UpdateApplicationStatusAction;
@@ -32,8 +36,12 @@ use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
 Route::prefix('branch')->name('branch.')->group(function (): void {
     Route::post('/login', LoginAction::class)->name('login')->middleware('throttle:5,1');
+    Route::post('/forgot-password', ForgotPasswordAction::class)->name('forgot-password')->middleware('throttle:5,1');
+    Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password')->middleware('throttle:5,1');
 
     Route::middleware(['auth:branch_api', ApplyPreferredLocaleMiddleware::class.':branch_api'])->group(function (): void {
+        Route::post('/logout', LogoutAction::class)->name('logout');
+        Route::post('/refresh-token', RefreshTokenAction::class)->name('refresh-token')->middleware('throttle:5,1');
         Route::get('/dashboard', DashboardAction::class)->name('dashboard');
         Route::get('/profile', GetProfileAction::class)->name('profile.get');
         Route::patch('/profile', UpdateProfileAction::class)->name('profile.update');

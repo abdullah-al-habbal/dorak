@@ -37,6 +37,13 @@ lib/src/features/                           affiliations, auth, jobs, operations
 service editing, the notification inbox, settings and earnings. See the
 [product audit](../../../../docs/planning/product-audit-part-3.md), G11.
 
+### Password reset and session (Gap G8)
+
+`/forgot-password` (public, linked from login) runs core's `StaffPasswordResetBloc`:
+email → emailed 6-digit code + new password → done. `StaffSessionBloc.logout()` revokes
+the server token best-effort before clearing local storage, and `refresh()` swaps the
+stored token for a fresh one once after a restored session starts.
+
 ### Self sign-up (Task 37)
 
 `/signup` posts `POST barber/register`, then offers the emailed code

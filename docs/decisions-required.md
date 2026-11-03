@@ -19,13 +19,13 @@ Routes: [documentation graph](index.md).
 Source: [product audit](planning/product-audit-part-3.md). Launch-readiness items (G5 SMS driver, G7 branch gating, G8 staff password routes, G9 social-link check) need engineering, not a product call.
 
 ## Audit G2: Brand Verification
-- [ ] [NEEDSHIL] Brands have no status, so any verified client becomes an owner at once. **Decision required:** does an admin approve brands before they operate?
+- [x] Decided: admins approve brands (status gate pending → active). Remove this entry once implemented.
 
 ## Audit G4: Earnings and Plan Visibility
-- [ ] [NEEDSHIL] Owners, managers and stylists cannot see plan limits, earnings or payouts. **Decision required:** which roles see what, and in which app?
+- [x] Decided: the owner sees full plans and earnings, the manager sees branch earnings, the stylist sees personal earnings. Remove this entry once implemented.
 
 ## Audit G6: Owner-Set Barber Pricing
-- [ ] [NEEDSHIL] Owners can only price brand-level services, not a barber's. **Decision required:** may owners override a barber's price or duration?
+- [x] Decided: owners may override a barber's price and duration. Remove this entry once implemented.
 
 ## Audit G10 / G11: Business and Stylist App Scope
 - [ ] [NEEDSHIL] business_app lacks services, hours, staff list, disputes and inbox; stylist_app lacks past appointments, services, inbox and earnings. **Decision required:** which of these ship in the MVP?

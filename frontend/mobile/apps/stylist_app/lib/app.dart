@@ -38,6 +38,7 @@ class _StylistAppState extends State<StylistApp> {
   late final StylistAppRouter _router;
   late final StaffSessionBloc _session;
   late final StylistSignUpBloc _signUp;
+  late final StaffPasswordResetBloc _passwordReset;
   late final TokenStorage _tokenStorage;
   late final StreamSubscription<void> _unauthorizedSubscription;
   late final StreamSubscription<NotificationTarget>
@@ -57,10 +58,9 @@ class _StylistAppState extends State<StylistApp> {
     _notificationOpenSubscription = _pushNotifications.opened.listen(
       _openNotification,
     );
-    _session = StaffSessionBloc(
-      DioStaffAuthRepository(_client, ApiEndpoints.barberAuth.login),
-      _tokenStorage,
-    );
+    final staffAuth = DioStaffAuthRepository(_client, StaffAuthRoutes.barber());
+    _session = StaffSessionBloc(staffAuth, _tokenStorage);
+    _passwordReset = StaffPasswordResetBloc(staffAuth);
     _signUp = StylistSignUpBloc(DioBarberRegistrationRepository(_client));
     _unauthorizedSubscription = _client.unauthorizedStream.listen(
       (_) => _onUnauthorized(),
@@ -95,6 +95,7 @@ class _StylistAppState extends State<StylistApp> {
       features: _features,
       session: _session,
       signUp: _signUp,
+      passwordReset: _passwordReset,
       onLocaleToggle: _toggleLocale,
       onLogout: _logout,
       onAuthenticated: _onAuthenticated,
@@ -107,6 +108,7 @@ class _StylistAppState extends State<StylistApp> {
     _router.dispose();
     _session.close();
     _signUp.close();
+    _passwordReset.close();
     _unauthorizedSubscription.cancel();
     _notificationOpenSubscription.cancel();
     _bloc.close();
@@ -153,7 +155,9 @@ class _StylistAppState extends State<StylistApp> {
 
   Future<void> _restoreSession() async {
     await _session.restore();
-    if (mounted && _session.state.isAuthenticated) _onAuthenticated();
+    if (!mounted || !_session.state.isAuthenticated) return;
+    _onAuthenticated();
+    unawaited(_session.refresh());
   }
 
   void _onAuthenticated() {

@@ -1,5 +1,6 @@
 abstract final class AppRoutes {
   static const login = '/login';
+  static const forgotPassword = '/forgot-password';
   static const operations = '/operations';
   static const newBarber = '/barbers/new';
   static const jobs = '/jobs';

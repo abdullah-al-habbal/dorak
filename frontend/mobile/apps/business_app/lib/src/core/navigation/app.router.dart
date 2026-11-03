@@ -11,6 +11,7 @@ import 'package:business_app/src/features/barbers/manual_barber.screen.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.screen.dart';
 import 'package:business_app/src/features/jobs/business_applicants.screen.dart';
 import 'package:business_app/src/features/jobs/business_job_form.screen.dart';
+import 'package:business_app/src/features/auth/business_forgot_password.screen.dart';
 import 'package:business_app/src/features/jobs/business_jobs.screen.dart';
 import 'package:business_app/src/features/operations/branch_operations.bloc.dart';
 import 'package:business_app/src/features/operations/branch_operations.screen.dart';
@@ -23,6 +24,7 @@ class BusinessAppRouter {
     required ManualBarberBloc barbers,
     required BusinessFeatureBlocs features,
     required StaffSessionBloc session,
+    required StaffPasswordResetBloc passwordReset,
     required VoidCallback onLocaleToggle,
     required VoidCallback onLogout,
     required VoidCallback onAuthenticated,
@@ -31,8 +33,12 @@ class BusinessAppRouter {
       initialLocation: AppRoutes.login,
       redirect: (context, state) {
         final atLogin = state.matchedLocation == AppRoutes.login;
-        if (session.state.isAuthenticated && atLogin) return AppRoutes.operations;
-        if (!session.state.isAuthenticated && !atLogin) return AppRoutes.login;
+        final isPublic =
+            atLogin || state.matchedLocation == AppRoutes.forgotPassword;
+        if (session.state.isAuthenticated && isPublic) {
+          return AppRoutes.operations;
+        }
+        if (!session.state.isAuthenticated && !isPublic) return AppRoutes.login;
         return null;
       },
       routes: [
@@ -42,6 +48,14 @@ class BusinessAppRouter {
             session: session,
             onAuthenticated: onAuthenticated,
             onLocaleToggle: onLocaleToggle,
+            onForgotPassword: () => router.go(AppRoutes.forgotPassword),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.forgotPassword,
+          builder: (context, state) => BusinessForgotPasswordScreen(
+            bloc: passwordReset,
+            onBackToLogin: () => router.go(AppRoutes.login),
           ),
         ),
         GoRoute(

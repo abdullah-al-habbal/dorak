@@ -13,12 +13,14 @@ class StylistLoginScreen extends StatefulWidget {
     required this.onAuthenticated,
     required this.onLocaleToggle,
     required this.onSignUp,
+    required this.onForgotPassword,
   });
 
   final StaffSessionBloc session;
   final VoidCallback onAuthenticated;
   final VoidCallback onLocaleToggle;
   final VoidCallback onSignUp;
+  final VoidCallback onForgotPassword;
 
   @override
   State<StylistLoginScreen> createState() => _StylistLoginScreenState();
@@ -138,6 +140,10 @@ class _StylistLoginScreenState extends State<StylistLoginScreen> {
                       onPressed: _submit,
                     ),
                     const SizedBox(height: DorakDimensions.spacingSmall),
+                    TextButton(
+                      onPressed: widget.onForgotPassword,
+                      child: Text(l10n.loginForgotPassword),
+                    ),
                     TextButton(
                       onPressed: widget.onSignUp,
                       child: Text(l10n.stylistSignUpLink),

@@ -18,6 +18,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:localization/localization.dart';
 
+import 'package:business_app/src/features/auth/business_forgot_password.screen.dart';
+
 import 'helpers/business_fakes.dart';
 import 'helpers/pagination_fixtures.dart';
 
@@ -27,6 +29,23 @@ class _FakeStaffAuth implements StaffAuthRepository {
     required String email,
     required String password,
   }) async => 'branch-token';
+
+  @override
+  Future<void> logout() async {}
+
+  @override
+  Future<String> refreshToken() async => 'branch-token';
+
+  @override
+  Future<void> forgotPassword(String email) async {}
+
+  @override
+  Future<void> resetPassword({
+    required String email,
+    required String code,
+    required String password,
+    required String passwordConfirmation,
+  }) async {}
 }
 
 class _MemoryTokenStorage implements TokenStorage {
@@ -130,6 +149,7 @@ void main() {
       features: features,
       barbers: barbers,
       session: session,
+      passwordReset: StaffPasswordResetBloc(_FakeStaffAuth()),
       onLocaleToggle: () {},
       onLogout: () {},
       onAuthenticated: () => router.router.go('/operations'),
@@ -234,5 +254,25 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(entry.value), findsOneWidget, reason: entry.key);
     }
+  });
+
+  testWidgets('a guest can open the forgot-password screen from login', (
+    tester,
+  ) async {
+    final router = await pumpApp(tester);
+
+    await tester.tap(find.text('Forgot Password?'));
+    await tester.pumpAndSettle();
+    expect(find.byType(BusinessForgotPasswordScreen), findsOneWidget);
+    expect(router.router.state.matchedLocation, '/forgot-password');
+
+    await tester.enterText(find.byType(TextFormField), 'manager@example.com');
+    await tester.tap(find.text('Send Code'));
+    await tester.pumpAndSettle();
+    expect(find.text('Reset Password'), findsOneWidget);
+
+    await tester.tap(find.text('Resend Code'));
+    await tester.pumpAndSettle();
+    expect(find.text('Reset Password'), findsOneWidget);
   });
 }

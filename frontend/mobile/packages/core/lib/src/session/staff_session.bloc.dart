@@ -43,9 +43,26 @@ class StaffSessionBloc extends Cubit<StaffSessionState> {
     }
   }
 
+  /// Revokes the server token best-effort, then always drops the local one:
+  /// an unreachable server must never keep a stylist signed in.
   Future<void> logout() async {
+    try {
+      await _repository.logout();
+    } catch (_) {}
     await _tokenStorage.clear();
     emit(const StaffSessionState(status: StaffAuthStatus.guest));
+  }
+
+  /// Swaps the stored token for a fresh one. Returns whether it was renewed;
+  /// a failure keeps the current session untouched.
+  Future<bool> refresh() async {
+    if (!state.isAuthenticated) return false;
+    try {
+      await _tokenStorage.write(await _repository.refreshToken());
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   Future<void> unauthorized() async {

@@ -12,11 +12,13 @@ class BusinessLoginScreen extends StatefulWidget {
     required this.session,
     required this.onAuthenticated,
     required this.onLocaleToggle,
+    required this.onForgotPassword,
   });
 
   final StaffSessionBloc session;
   final VoidCallback onAuthenticated;
   final VoidCallback onLocaleToggle;
+  final VoidCallback onForgotPassword;
 
   @override
   State<BusinessLoginScreen> createState() => _BusinessLoginScreenState();
@@ -134,6 +136,10 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                       label: l10n.loginButton,
                       isLoading: state.isSubmitting,
                       onPressed: _submit,
+                    ),
+                    TextButton(
+                      onPressed: widget.onForgotPassword,
+                      child: Text(l10n.loginForgotPassword),
                     ),
                   ],
                 ),

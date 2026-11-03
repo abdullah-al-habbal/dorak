@@ -39,6 +39,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   late final PushNotificationService _pushNotifications;
   late final BusinessAppRouter _router;
   late final StaffSessionBloc _session;
+  late final StaffPasswordResetBloc _passwordReset;
   late final StreamSubscription<void> _unauthorizedSubscription;
   late final StreamSubscription<NotificationTarget>
   _notificationOpenSubscription;
@@ -57,10 +58,12 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     _notificationOpenSubscription = _pushNotifications.opened.listen(
       _openNotification,
     );
-    _session = StaffSessionBloc(
-      DioStaffAuthRepository(_apiClient, ApiEndpoints.branchAuth.login),
-      _tokenStorage,
+    final staffAuth = DioStaffAuthRepository(
+      _apiClient,
+      StaffAuthRoutes.branch(),
     );
+    _session = StaffSessionBloc(staffAuth, _tokenStorage);
+    _passwordReset = StaffPasswordResetBloc(staffAuth);
     _unauthorizedSubscription = _apiClient.unauthorizedStream.listen(
       (_) => _onUnauthorized(),
     );
@@ -89,6 +92,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       features: _features,
       barbers: _barbers,
       session: _session,
+      passwordReset: _passwordReset,
       onLocaleToggle: _toggleLocale,
       onLogout: _logout,
       onAuthenticated: _onAuthenticated,
@@ -103,6 +107,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     unawaited(_features.close());
     _router.dispose();
     _session.close();
+    _passwordReset.close();
     _unauthorizedSubscription.cancel();
     _notificationOpenSubscription.cancel();
     _realtime?.dispose();
@@ -148,7 +153,9 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
 
   Future<void> _restoreSession() async {
     await _session.restore();
-    if (mounted && _session.state.isAuthenticated) _onAuthenticated();
+    if (!mounted || !_session.state.isAuthenticated) return;
+    _onAuthenticated();
+    unawaited(_session.refresh());
   }
 
   void _onAuthenticated() {

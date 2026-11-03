@@ -114,6 +114,7 @@ export 'package:core/src/network/repositories/profile.repository.dart';
 export 'package:core/src/network/repositories/review.repository.dart';
 export 'package:core/src/network/repositories/review_dispute.repository.dart';
 export 'package:core/src/network/review_dispute_limits.entity.dart';
+export 'package:core/src/network/staff_auth_routes.entity.dart';
 export 'package:core/src/network/repositories/service_catalog.repository.dart';
 export 'package:core/src/network/repositories/auth.repository.dart';
 export 'package:core/src/network/repositories/staff_auth.repository.dart';

@@ -57,6 +57,7 @@ void main() {
       features: features,
       session: session,
       signUp: signUp,
+      passwordReset: StaffPasswordResetBloc(staffAuth),
       onLocaleToggle: () {},
       onLogout: () {},
       onAuthenticated: () {
@@ -183,5 +184,47 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(entry.value), findsOneWidget, reason: entry.key);
     }
+  });
+
+  testWidgets('a guest resets a forgotten password and returns to login', (
+    tester,
+  ) async {
+    final router = await pumpApp(tester);
+
+    await tester.tap(find.text('Forgot Password?'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextFormField), 'omar@example.com');
+    await tester.tap(find.text('Send Code'));
+    await tester.pumpAndSettle();
+    expect(staffAuth.forgotEmail, 'omar@example.com');
+
+    final fields = find.byType(TextFormField);
+    await tester.enterText(fields.at(0), '12345');
+    await tester.enterText(fields.at(1), 'new-password-2');
+    await tester.enterText(fields.at(2), 'new-password-2');
+    await tester.tap(find.text('Reset Password'));
+    await tester.pumpAndSettle();
+    expect(find.text('Enter all 6 digits'), findsOneWidget);
+    expect(staffAuth.resetCode, isNull);
+
+    await tester.enterText(fields.at(0), '123456');
+    await tester.tap(find.text('Reset Password'));
+    await tester.pumpAndSettle();
+    expect(staffAuth.resetCode, '123456');
+    expect(find.text('Password Updated'), findsOneWidget);
+
+    await tester.tap(find.text('Return to Log In'));
+    await tester.pumpAndSettle();
+    expect(router.router.state.matchedLocation, '/login');
+  });
+
+  testWidgets('logging out revokes the server token', (tester) async {
+    storage.token = 'stored-token';
+    await pumpApp(tester);
+
+    await session.logout();
+
+    expect(staffAuth.loggedOut, isTrue);
+    expect(storage.token, isNull);
   });
 }

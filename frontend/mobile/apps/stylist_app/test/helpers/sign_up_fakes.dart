@@ -50,6 +50,32 @@ class FakeStaffAuthRepository implements StaffAuthRepository {
     if (error != null) throw error;
     return 'staff-token';
   }
+
+  bool loggedOut = false;
+  String? forgotEmail;
+  String? resetCode;
+  Object? resetError;
+
+  @override
+  Future<void> logout() async => loggedOut = true;
+
+  @override
+  Future<String> refreshToken() async => 'refreshed-token';
+
+  @override
+  Future<void> forgotPassword(String email) async => forgotEmail = email;
+
+  @override
+  Future<void> resetPassword({
+    required String email,
+    required String code,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    final error = resetError;
+    if (error != null) throw error;
+    resetCode = code;
+  }
 }
 
 class InMemoryStaffTokenStorage implements TokenStorage {

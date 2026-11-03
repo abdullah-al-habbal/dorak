@@ -5,6 +5,7 @@ import 'package:core/core.dart';
 import 'package:stylist_app/src/core/navigation/app_routes.entity.dart';
 import 'package:stylist_app/src/core/stylist_feature_blocs.provider.dart';
 import 'package:stylist_app/src/features/affiliations/stylist_affiliations.screen.dart';
+import 'package:stylist_app/src/features/auth/stylist_forgot_password.screen.dart';
 import 'package:stylist_app/src/features/auth/stylist_login.screen.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.bloc.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.screen.dart';
@@ -25,6 +26,7 @@ class StylistAppRouter {
     required StylistFeatureBlocs features,
     required StaffSessionBloc session,
     required StylistSignUpBloc signUp,
+    required StaffPasswordResetBloc passwordReset,
     required VoidCallback onLocaleToggle,
     required VoidCallback onLogout,
     required VoidCallback onAuthenticated,
@@ -33,7 +35,10 @@ class StylistAppRouter {
       initialLocation: AppRoutes.login,
       redirect: (context, state) {
         final atLogin = state.matchedLocation == AppRoutes.login;
-        final isPublic = atLogin || state.matchedLocation == AppRoutes.signUp;
+        final isPublic =
+            atLogin ||
+            state.matchedLocation == AppRoutes.signUp ||
+            state.matchedLocation == AppRoutes.forgotPassword;
         if (session.state.isAuthenticated && isPublic) return AppRoutes.home;
         if (!session.state.isAuthenticated && !isPublic) return AppRoutes.login;
         return null;
@@ -46,6 +51,14 @@ class StylistAppRouter {
             onAuthenticated: onAuthenticated,
             onLocaleToggle: onLocaleToggle,
             onSignUp: () => router.go(AppRoutes.signUp),
+            onForgotPassword: () => router.go(AppRoutes.forgotPassword),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.forgotPassword,
+          builder: (context, state) => StylistForgotPasswordScreen(
+            bloc: passwordReset,
+            onBackToLogin: () => router.go(AppRoutes.login),
           ),
         ),
         GoRoute(

@@ -46,6 +46,7 @@ void main() {
       features: features,
       session: session,
       signUp: signUp,
+      passwordReset: StaffPasswordResetBloc(staffAuth),
       onLocaleToggle: () {},
       onLogout: () {},
       onAuthenticated: () {},

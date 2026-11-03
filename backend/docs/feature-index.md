@@ -67,3 +67,9 @@ codeanchors:
 `POST /api/v1/barber/history/{history}/media` (`auth:barber`) — the barber assigned to a visit
 (`ClientServiceHistoryPolicy::attachMedia`) uploads a before/after/reference photo; any other barber gets 403.
 Shares the handler and validation (jpeg/png, ≤5 MB) with the client upload.
+
+## Staff password reset, logout and refresh (Gap G8)
+Barber and branch accounts: `POST /api/v1/{barber|branch}/forgot-password` (throttled, never reveals whether an email exists),
+`/reset-password` (emailed 6-digit code via `Core\Services\StaffPasswordResetCodes`, scoped per account type, burns after
+use or too many attempts; revokes all tokens), `/logout` (current token) and `/refresh-token` (rotates the token; 403 when
+the account is deactivated or banned). Managed barbers without a login cannot reset.

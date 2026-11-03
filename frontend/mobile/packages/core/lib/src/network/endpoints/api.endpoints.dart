@@ -116,11 +116,19 @@ class _BarberAuthEndpoints {
   String get register => BarberAuthEndpoints.register;
   String get sendEmailVerification => BarberAuthEndpoints.sendEmailVerification;
   String get verifyEmail => BarberAuthEndpoints.verifyEmail;
+  String get logout => BarberAuthEndpoints.logout;
+  String get refreshToken => BarberAuthEndpoints.refreshToken;
+  String get forgotPassword => BarberAuthEndpoints.forgotPassword;
+  String get resetPassword => BarberAuthEndpoints.resetPassword;
 }
 
 class _BranchAuthEndpoints {
   const _BranchAuthEndpoints();
   String get login => BranchAuthEndpoints.login;
+  String get logout => BranchAuthEndpoints.logout;
+  String get refreshToken => BranchAuthEndpoints.refreshToken;
+  String get forgotPassword => BranchAuthEndpoints.forgotPassword;
+  String get resetPassword => BranchAuthEndpoints.resetPassword;
 }
 
 class _BookingEndpoints {

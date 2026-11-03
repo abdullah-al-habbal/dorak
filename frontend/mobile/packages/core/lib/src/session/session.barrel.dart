@@ -9,3 +9,5 @@ export 'package:core/src/session/session.state.dart';
 export 'package:core/src/session/session_signal.entity.dart';
 export 'package:core/src/session/staff_session.bloc.dart';
 export 'package:core/src/session/staff_session.state.dart';
+export 'package:core/src/session/staff_password_reset.bloc.dart';
+export 'package:core/src/session/staff_password_reset.state.dart';
