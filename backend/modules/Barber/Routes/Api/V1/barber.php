@@ -7,6 +7,7 @@ use Modules\Barber\Http\Actions\Barber\DeletePortfolioPhotoAction;
 use Modules\Barber\Http\Actions\Barber\ForgotPasswordAction;
 use Modules\Barber\Http\Actions\Barber\GetProfileAction;
 use Modules\Barber\Http\Actions\Barber\GetScheduleAction;
+use Modules\Barber\Http\Actions\Barber\ListAppointmentsAction;
 use Modules\Barber\Http\Actions\Barber\ListPortfolioAction;
 use Modules\Barber\Http\Actions\Barber\LoginAction;
 use Modules\Barber\Http\Actions\Barber\LogoutAction;
@@ -53,6 +54,7 @@ Route::prefix('barber')->name('barber.')->group(function (): void {
         Route::patch('/travel-radius', UpdateTravelRadiusAction::class)->name('travel-radius.update');
         Route::get('/schedule', GetScheduleAction::class)->name('schedule.show');
         Route::patch('/schedule', UpdateScheduleAction::class)->name('schedule.update');
+        Route::get('/appointments', ListAppointmentsAction::class)->name('appointments.list');
         Route::get('/appointments/today', TodayAppointmentsAction::class)->name('appointments.today');
         Route::patch('/workstation-status', UpdateWorkstationStatusAction::class)->name('workstation.status');
         Route::patch('/bookings/{booking}/accept', AcceptBookingAction::class)->name('bookings.accept');

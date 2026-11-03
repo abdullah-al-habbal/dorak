@@ -1,10 +1,14 @@
 import 'package:stylist_app/src/features/affiliations/stylist_affiliations.bloc.dart';
+import 'package:stylist_app/src/features/appointments/stylist_appointments.bloc.dart';
+import 'package:stylist_app/src/features/earnings/stylist_earnings.bloc.dart';
 import 'package:stylist_app/src/features/history/stylist_client_history.bloc.dart';
+import 'package:stylist_app/src/features/inbox/stylist_inbox.bloc.dart';
 import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 import 'package:stylist_app/src/features/portfolio/stylist_portfolio.bloc.dart';
 import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
 import 'package:stylist_app/src/features/reviews/stylist_reviews.bloc.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
+import 'package:stylist_app/src/features/services/stylist_services.bloc.dart';
 
 class StylistFeatureBlocs {
   const StylistFeatureBlocs({
@@ -15,6 +19,10 @@ class StylistFeatureBlocs {
     required this.jobs,
     required this.reviews,
     required this.clientHistory,
+    required this.appointments,
+    required this.earnings,
+    required this.services,
+    required this.inbox,
   });
 
   final StylistScheduleBloc schedule;
@@ -24,6 +32,10 @@ class StylistFeatureBlocs {
   final StylistJobsBloc jobs;
   final StylistReviewsBloc reviews;
   final StylistClientHistoryBloc clientHistory;
+  final StylistAppointmentsBloc appointments;
+  final StylistEarningsBloc earnings;
+  final StylistServicesBloc services;
+  final StylistInboxBloc inbox;
 
   Future<void> close() => Future.wait([
     schedule.close(),
@@ -33,5 +45,9 @@ class StylistFeatureBlocs {
     jobs.close(),
     reviews.close(),
     clientHistory.close(),
+    appointments.close(),
+    earnings.close(),
+    services.close(),
+    inbox.close(),
   ]);
 }

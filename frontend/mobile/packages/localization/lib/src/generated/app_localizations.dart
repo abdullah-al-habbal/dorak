@@ -3253,6 +3253,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Photo added.'**
   String get stylistHistoryPhotoAdded;
+
+  /// staffTabHome
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get staffTabHome;
+
+  /// staffTabInbox
+  ///
+  /// In en, this message translates to:
+  /// **'Inbox'**
+  String get staffTabInbox;
+
+  /// staffTabMore
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get staffTabMore;
+
+  /// staffMoreTitle
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get staffMoreTitle;
+
+  /// staffEarningsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get staffEarningsTitle;
+
+  /// staffEarningsEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No completed bookings in this period.'**
+  String get staffEarningsEmpty;
+
+  /// staffEarningsRangeMonth
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get staffEarningsRangeMonth;
+
+  /// staffEarningsRangeAll
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get staffEarningsRangeAll;
+
+  /// staffEarningsGross
+  ///
+  /// In en, this message translates to:
+  /// **'Gross'**
+  String get staffEarningsGross;
+
+  /// staffEarningsCommission
+  ///
+  /// In en, this message translates to:
+  /// **'Commission'**
+  String get staffEarningsCommission;
+
+  /// staffEarningsNet
+  ///
+  /// In en, this message translates to:
+  /// **'Net'**
+  String get staffEarningsNet;
+
+  /// staffEarningsNetUnavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get staffEarningsNetUnavailable;
+
+  /// staffEarningsBookings
+  ///
+  /// In en, this message translates to:
+  /// **'{count} completed bookings'**
+  String staffEarningsBookings(int count);
+
+  /// staffInboxTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Inbox'**
+  String get staffInboxTitle;
+
+  /// staffServiceNameEn
+  ///
+  /// In en, this message translates to:
+  /// **'Name (English)'**
+  String get staffServiceNameEn;
+
+  /// staffServiceNameAr
+  ///
+  /// In en, this message translates to:
+  /// **'Name (Arabic)'**
+  String get staffServiceNameAr;
+
+  /// staffServicePrice
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get staffServicePrice;
+
+  /// staffServiceCurrency
+  ///
+  /// In en, this message translates to:
+  /// **'Currency code'**
+  String get staffServiceCurrency;
+
+  /// staffServiceDuration
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (minutes)'**
+  String get staffServiceDuration;
+
+  /// staffServiceAtHome
+  ///
+  /// In en, this message translates to:
+  /// **'Offered at home'**
+  String get staffServiceAtHome;
+
+  /// staffServiceActive
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get staffServiceActive;
+
+  /// staffServiceInactive
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get staffServiceInactive;
+
+  /// staffServiceAdd
+  ///
+  /// In en, this message translates to:
+  /// **'Add service'**
+  String get staffServiceAdd;
+
+  /// staffServiceEditTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Edit service'**
+  String get staffServiceEditTitle;
+
+  /// staffServiceNewTitle
+  ///
+  /// In en, this message translates to:
+  /// **'New service'**
+  String get staffServiceNewTitle;
+
+  /// staffServiceSave
+  ///
+  /// In en, this message translates to:
+  /// **'Save service'**
+  String get staffServiceSave;
+
+  /// staffServiceDelete
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get staffServiceDelete;
+
+  /// staffServiceDeleteTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this service?'**
+  String get staffServiceDeleteTitle;
+
+  /// staffServiceDeleteMessage
+  ///
+  /// In en, this message translates to:
+  /// **'Clients will no longer be able to book it.'**
+  String get staffServiceDeleteMessage;
+
+  /// staffServiceCancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get staffServiceCancel;
+
+  /// staffServiceRequired
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get staffServiceRequired;
+
+  /// staffServiceInvalidNumber
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid number.'**
+  String get staffServiceInvalidNumber;
+
+  /// staffServiceMeta
+  ///
+  /// In en, this message translates to:
+  /// **'{price} {currency} · {minutes} min'**
+  String staffServiceMeta(String price, String currency, int minutes);
+
+  /// staffServiceMetaNoDuration
+  ///
+  /// In en, this message translates to:
+  /// **'{price} {currency}'**
+  String staffServiceMetaNoDuration(String price, String currency);
+
+  /// businessTabStaff
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get businessTabStaff;
+
+  /// businessTabServices
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get businessTabServices;
+
+  /// businessMenuHours
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours'**
+  String get businessMenuHours;
+
+  /// businessStaffTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get businessStaffTitle;
+
+  /// businessStaffEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No stylists work at this branch yet.'**
+  String get businessStaffEmpty;
+
+  /// businessStaffActivate
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get businessStaffActivate;
+
+  /// businessStaffDeactivate
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get businessStaffDeactivate;
+
+  /// businessStaffStatusEnabled
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get businessStaffStatusEnabled;
+
+  /// businessStaffStatusDisabled
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivated'**
+  String get businessStaffStatusDisabled;
+
+  /// businessStaffStatusPending
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get businessStaffStatusPending;
+
+  /// businessStaffRating
+  ///
+  /// In en, this message translates to:
+  /// **'{rating} ({count})'**
+  String businessStaffRating(String rating, int count);
+
+  /// businessServicesTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get businessServicesTitle;
+
+  /// businessServicesEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No services yet. Add your first one.'**
+  String get businessServicesEmpty;
+
+  /// businessHoursTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Working hours'**
+  String get businessHoursTitle;
+
+  /// businessHoursClosed
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get businessHoursClosed;
+
+  /// businessHoursOpens
+  ///
+  /// In en, this message translates to:
+  /// **'Opens'**
+  String get businessHoursOpens;
+
+  /// businessHoursCloses
+  ///
+  /// In en, this message translates to:
+  /// **'Closes'**
+  String get businessHoursCloses;
+
+  /// businessHoursInvalidRange
+  ///
+  /// In en, this message translates to:
+  /// **'Closing time must be after opening time.'**
+  String get businessHoursInvalidRange;
+
+  /// stylistTabHistory
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get stylistTabHistory;
+
+  /// stylistTabEarnings
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get stylistTabEarnings;
+
+  /// stylistMenuServices
+  ///
+  /// In en, this message translates to:
+  /// **'Services and pricing'**
+  String get stylistMenuServices;
+
+  /// stylistHistoryTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Past appointments'**
+  String get stylistHistoryTitle;
+
+  /// stylistHistoryEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No appointments match this filter.'**
+  String get stylistHistoryEmpty;
+
+  /// stylistHistoryFilterAll
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get stylistHistoryFilterAll;
+
+  /// stylistServicesEditorTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Services and pricing'**
+  String get stylistServicesEditorTitle;
+
+  /// stylistServicesEditorEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'You have no services yet. Add your first one.'**
+  String get stylistServicesEditorEmpty;
 }
 
 class _AppLocalizationsDelegate

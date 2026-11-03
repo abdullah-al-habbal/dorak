@@ -8,7 +8,11 @@ import 'package:business_app/src/features/affiliations/business_affiliations.scr
 import 'package:business_app/src/features/auth/business_login.screen.dart';
 import 'package:business_app/src/features/barbers/manual_barber.bloc.dart';
 import 'package:business_app/src/features/barbers/manual_barber.screen.dart';
+import 'package:business_app/src/core/navigation/widgets/business_shell.widget.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.screen.dart';
+import 'package:business_app/src/features/hours/business_hours.screen.dart';
+import 'package:business_app/src/features/inbox/business_inbox.screen.dart';
+import 'package:business_app/src/features/more/business_more.screen.dart';
 import 'package:business_app/src/features/jobs/business_applicants.screen.dart';
 import 'package:business_app/src/features/jobs/business_job_form.screen.dart';
 import 'package:business_app/src/features/auth/business_forgot_password.screen.dart';
@@ -17,6 +21,9 @@ import 'package:business_app/src/features/operations/branch_operations.bloc.dart
 import 'package:business_app/src/features/operations/branch_operations.screen.dart';
 import 'package:business_app/src/features/profile/business_profile.screen.dart';
 import 'package:business_app/src/features/reviews/business_reviews.screen.dart';
+import 'package:business_app/src/features/services/business_service_form.screen.dart';
+import 'package:business_app/src/features/services/business_services.screen.dart';
+import 'package:business_app/src/features/staff/business_staff.screen.dart';
 
 class BusinessAppRouter {
   BusinessAppRouter({
@@ -31,6 +38,7 @@ class BusinessAppRouter {
   }) {
     router = GoRouter(
       initialLocation: AppRoutes.login,
+      refreshListenable: _sessionRefresh = StaffSessionRefresh(session),
       redirect: (context, state) {
         final atLogin = state.matchedLocation == AppRoutes.login;
         final isPublic =
@@ -58,15 +66,88 @@ class BusinessAppRouter {
             onBackToLogin: () => router.go(AppRoutes.login),
           ),
         ),
-        GoRoute(
-          path: AppRoutes.operations,
-          builder: (context, state) => BranchOperationsScreen(
-            bloc: operations,
-            onLocaleToggle: onLocaleToggle,
-            onLogout: onLogout,
-            onAddBarber: () => context.push(AppRoutes.newBarber),
-            onNavigate: context.push,
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) => BusinessShell(
+            navigationShell: navigationShell,
+            inbox: features.inbox,
           ),
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: AppRoutes.operations,
+                  builder: (context, state) => BranchOperationsScreen(
+                    bloc: operations,
+                    onLocaleToggle: onLocaleToggle,
+                    onLogout: onLogout,
+                    onAddBarber: () => context.push(AppRoutes.newBarber),
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: AppRoutes.staff,
+                  builder: (context, state) =>
+                      BusinessStaffScreen(bloc: features.staff),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: AppRoutes.services,
+                  builder: (context, state) => BusinessServicesScreen(
+                    bloc: features.services,
+                    onAdd: () => context.push(AppRoutes.newService),
+                    onEdit: (id) => context.push(AppRoutes.editService(id)),
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: AppRoutes.inbox,
+                  builder: (context, state) => BusinessInboxScreen(
+                    bloc: features.inbox,
+                    onOpen: context.go,
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: AppRoutes.more,
+                  builder: (context, state) => BusinessMoreScreen(
+                    onNavigate: context.push,
+                    onAddBarber: () => context.push(AppRoutes.newBarber),
+                    onLocaleToggle: onLocaleToggle,
+                    onLogout: onLogout,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        GoRoute(
+          path: AppRoutes.newService,
+          builder: (context, state) =>
+              BusinessServiceFormScreen(bloc: features.services),
+        ),
+        GoRoute(
+          path: '${AppRoutes.services}/:${AppRoutes.serviceIdParameter}/edit',
+          builder: (context, state) => BusinessServiceFormScreen(
+            bloc: features.services,
+            serviceId: state.pathParameters[AppRoutes.serviceIdParameter],
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.hours,
+          builder: (context, state) =>
+              BusinessHoursScreen(bloc: features.hours),
         ),
         GoRoute(
           path: AppRoutes.newBarber,
@@ -120,6 +201,10 @@ class BusinessAppRouter {
   }
 
   late final GoRouter router;
+  late final StaffSessionRefresh _sessionRefresh;
 
-  void dispose() => router.dispose();
+  void dispose() {
+    router.dispose();
+    _sessionRefresh.dispose();
+  }
 }

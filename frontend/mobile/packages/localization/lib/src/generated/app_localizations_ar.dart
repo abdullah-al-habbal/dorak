@@ -1739,4 +1739,193 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stylistHistoryPhotoAdded => 'تمت إضافة الصورة.';
+
+  @override
+  String get staffTabHome => 'الرئيسية';
+
+  @override
+  String get staffTabInbox => 'الوارد';
+
+  @override
+  String get staffTabMore => 'المزيد';
+
+  @override
+  String get staffMoreTitle => 'المزيد';
+
+  @override
+  String get staffEarningsTitle => 'الأرباح';
+
+  @override
+  String get staffEarningsEmpty => 'لا توجد حجوزات مكتملة في هذه الفترة.';
+
+  @override
+  String get staffEarningsRangeMonth => 'هذا الشهر';
+
+  @override
+  String get staffEarningsRangeAll => 'كل الفترات';
+
+  @override
+  String get staffEarningsGross => 'الإجمالي';
+
+  @override
+  String get staffEarningsCommission => 'العمولة';
+
+  @override
+  String get staffEarningsNet => 'الصافي';
+
+  @override
+  String get staffEarningsNetUnavailable => 'غير متاح';
+
+  @override
+  String staffEarningsBookings(int count) {
+    return '$count حجوزات مكتملة';
+  }
+
+  @override
+  String get staffInboxTitle => 'الوارد';
+
+  @override
+  String get staffServiceNameEn => 'الاسم (بالإنجليزية)';
+
+  @override
+  String get staffServiceNameAr => 'الاسم (بالعربية)';
+
+  @override
+  String get staffServicePrice => 'السعر';
+
+  @override
+  String get staffServiceCurrency => 'رمز العملة';
+
+  @override
+  String get staffServiceDuration => 'المدة (بالدقائق)';
+
+  @override
+  String get staffServiceAtHome => 'متاحة في المنزل';
+
+  @override
+  String get staffServiceActive => 'مفعّلة';
+
+  @override
+  String get staffServiceInactive => 'غير مفعّلة';
+
+  @override
+  String get staffServiceAdd => 'إضافة خدمة';
+
+  @override
+  String get staffServiceEditTitle => 'تعديل الخدمة';
+
+  @override
+  String get staffServiceNewTitle => 'خدمة جديدة';
+
+  @override
+  String get staffServiceSave => 'حفظ الخدمة';
+
+  @override
+  String get staffServiceDelete => 'حذف';
+
+  @override
+  String get staffServiceDeleteTitle => 'حذف هذه الخدمة؟';
+
+  @override
+  String get staffServiceDeleteMessage => 'لن يتمكن العملاء من حجزها بعد الآن.';
+
+  @override
+  String get staffServiceCancel => 'إلغاء';
+
+  @override
+  String get staffServiceRequired => 'هذا الحقل مطلوب.';
+
+  @override
+  String get staffServiceInvalidNumber => 'أدخل رقماً صحيحاً.';
+
+  @override
+  String staffServiceMeta(String price, String currency, int minutes) {
+    return '$price $currency · $minutes د';
+  }
+
+  @override
+  String staffServiceMetaNoDuration(String price, String currency) {
+    return '$price $currency';
+  }
+
+  @override
+  String get businessTabStaff => 'الفريق';
+
+  @override
+  String get businessTabServices => 'الخدمات';
+
+  @override
+  String get businessMenuHours => 'ساعات العمل';
+
+  @override
+  String get businessStaffTitle => 'الفريق';
+
+  @override
+  String get businessStaffEmpty => 'لا يوجد مصففون في هذا الفرع بعد.';
+
+  @override
+  String get businessStaffActivate => 'تفعيل';
+
+  @override
+  String get businessStaffDeactivate => 'تعطيل';
+
+  @override
+  String get businessStaffStatusEnabled => 'مفعّل';
+
+  @override
+  String get businessStaffStatusDisabled => 'معطّل';
+
+  @override
+  String get businessStaffStatusPending => 'قيد المراجعة';
+
+  @override
+  String businessStaffRating(String rating, int count) {
+    return '$rating ($count)';
+  }
+
+  @override
+  String get businessServicesTitle => 'الخدمات';
+
+  @override
+  String get businessServicesEmpty => 'لا توجد خدمات بعد. أضف أول خدمة.';
+
+  @override
+  String get businessHoursTitle => 'ساعات العمل';
+
+  @override
+  String get businessHoursClosed => 'مغلق';
+
+  @override
+  String get businessHoursOpens => 'يفتح';
+
+  @override
+  String get businessHoursCloses => 'يغلق';
+
+  @override
+  String get businessHoursInvalidRange =>
+      'يجب أن يكون وقت الإغلاق بعد وقت الفتح.';
+
+  @override
+  String get stylistTabHistory => 'السجل';
+
+  @override
+  String get stylistTabEarnings => 'الأرباح';
+
+  @override
+  String get stylistMenuServices => 'الخدمات والأسعار';
+
+  @override
+  String get stylistHistoryTitle => 'المواعيد السابقة';
+
+  @override
+  String get stylistHistoryEmpty => 'لا توجد مواعيد مطابقة لهذا الفلتر.';
+
+  @override
+  String get stylistHistoryFilterAll => 'الكل';
+
+  @override
+  String get stylistServicesEditorTitle => 'الخدمات والأسعار';
+
+  @override
+  String get stylistServicesEditorEmpty => 'ليس لديك خدمات بعد. أضف أول خدمة.';
 }

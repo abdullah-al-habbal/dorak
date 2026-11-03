@@ -37,10 +37,28 @@ one with a reason of 10–1000 characters via `POST /branch/reviews/{review}/dis
 
 It depends on `core`, `design_system` and `localization`.
 
-**Not built yet** (the backend routes mostly exist): opening hours and hours
-overrides, services and pricing, a staff list, settings and
-the notification inbox. See the
-[product audit](../../../../docs/planning/product-audit-part-3.md), G10.
+### Navigation shell and G10 features (2026-11-03)
+
+`app.router.dart` uses a `StatefulShellRoute` with five tabs: `/operations`,
+`/staff`, `/services`, `/inbox` (unread badge) and `/more`. Everything else
+(`/hours`, `/jobs`, `/floor-plan`, `/affiliations`, `/profile`, `/reviews`,
+`/services/new`, `/services/:id/edit`, `/barbers/new`) is a top-level route
+pushed over the shell. `refreshListenable` is core's `StaffSessionRefresh`, so a
+logout or expired token re-runs the redirect immediately.
+
+- **Staff list** (`GET /branch/barbers`, activate/deactivate through
+  `ManagedBarberRepository`).
+- **Services CRUD** (`/branch/services`, brand-owned; the brand id comes from
+  `GET /branch/profile`). The backend returns the name in one locale, so the
+  form re-asks for both.
+- **Working hours** (`GET /branch/profile` `opening_hours`, `PUT
+  /branch/opening-hours`). Hours overrides per date are not built.
+- **Inbox** is the notification feed (`/notifications`); there is no two-way
+  messaging. Invite notifications open `/affiliations`, application ones `/jobs`.
+- `GET /branch/earnings` exists and core has `DioEarningsRepository.branch`,
+  but business_app has no earnings screen (not in the approved scope).
+
+Decision record: [ADR 0002](../../../../docs/adr/0002-mvp-scope-deferrals.md).
 
 ## Continued in
 

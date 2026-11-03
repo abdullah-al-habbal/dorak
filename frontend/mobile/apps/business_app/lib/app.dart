@@ -13,9 +13,13 @@ import 'package:business_app/src/core/navigation/app.router.dart';
 import 'package:business_app/src/core/navigation/app_routes.entity.dart';
 import 'package:business_app/src/features/affiliations/business_affiliations.bloc.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.bloc.dart';
+import 'package:business_app/src/features/hours/business_hours.bloc.dart';
+import 'package:business_app/src/features/inbox/business_inbox.bloc.dart';
 import 'package:business_app/src/features/jobs/business_jobs.bloc.dart';
 import 'package:business_app/src/features/profile/business_profile.bloc.dart';
 import 'package:business_app/src/features/reviews/business_reviews.bloc.dart';
+import 'package:business_app/src/features/services/business_services.bloc.dart';
+import 'package:business_app/src/features/staff/business_staff.bloc.dart';
 import 'package:business_app/src/core/navigation/notification_location.entity.dart';
 
 class DorakBusinessApp extends StatefulWidget {
@@ -86,6 +90,16 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
         management,
         DioBranchReviewDisputeRepository(_apiClient),
       ),
+      staff: BusinessStaffBloc(
+        DioBranchStaffRepository(_apiClient),
+        widget.repository ?? DioManagedBarberRepository(_apiClient),
+      ),
+      services: BusinessServicesBloc(
+        DioBranchServiceRepository(_apiClient),
+        DioBranchHoursRepository(_apiClient),
+      ),
+      hours: BusinessHoursBloc(DioBranchHoursRepository(_apiClient)),
+      inbox: BusinessInboxBloc(DioNotificationRepository(_apiClient)),
     );
     _router = BusinessAppRouter(
       operations: _operations,
@@ -160,6 +174,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
 
   void _onAuthenticated() {
     _apiClient.resetUnauthorizedSignal();
+    unawaited(_features.inbox.load());
     unawaited(_initializePushNotifications());
     if (_realtime != null) unawaited(_realtime.connect());
     _router.router.go(AppRoutes.operations);

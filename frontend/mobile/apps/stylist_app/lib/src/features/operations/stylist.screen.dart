@@ -23,15 +23,6 @@ class StylistScreen extends StatelessWidget {
   final VoidCallback onLocaleToggle;
   final VoidCallback onLogout;
 
-  List<(String, String)> _menu(AppLocalizations l10n) => [
-    (l10n.stylistMenuSchedule, AppRoutes.schedule),
-    (l10n.stylistMenuPortfolio, AppRoutes.portfolio),
-    (l10n.stylistMenuProfile, AppRoutes.profile),
-    (l10n.stylistMenuAffiliations, AppRoutes.affiliations),
-    (l10n.stylistMenuJobs, AppRoutes.jobs),
-    (l10n.stylistMenuReviews, AppRoutes.reviews),
-  ];
-
   Future<void> _cancel(BuildContext context, String bookingId) async {
     final reason = await CancelReasonSheet.show(context);
     if (reason == null) return;
@@ -83,16 +74,6 @@ class StylistScreen extends StatelessWidget {
                     l10n: strings,
                   ),
                 if (state.error != null) Text(strings.stylistUpdateFailed),
-                Wrap(
-                  spacing: 8,
-                  children: [
-                    for (final entry in _menu(strings))
-                      ActionChip(
-                        label: Text(entry.$1),
-                        onPressed: () => context.push(entry.$2),
-                      ),
-                  ],
-                ),
                 const SizedBox(height: 12),
                 Text(
                   strings.stylistTodayAppointments,

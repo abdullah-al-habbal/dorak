@@ -1745,4 +1745,195 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stylistHistoryPhotoAdded => 'Photo added.';
+
+  @override
+  String get staffTabHome => 'Home';
+
+  @override
+  String get staffTabInbox => 'Inbox';
+
+  @override
+  String get staffTabMore => 'More';
+
+  @override
+  String get staffMoreTitle => 'More';
+
+  @override
+  String get staffEarningsTitle => 'Earnings';
+
+  @override
+  String get staffEarningsEmpty => 'No completed bookings in this period.';
+
+  @override
+  String get staffEarningsRangeMonth => 'This month';
+
+  @override
+  String get staffEarningsRangeAll => 'All time';
+
+  @override
+  String get staffEarningsGross => 'Gross';
+
+  @override
+  String get staffEarningsCommission => 'Commission';
+
+  @override
+  String get staffEarningsNet => 'Net';
+
+  @override
+  String get staffEarningsNetUnavailable => 'Not available';
+
+  @override
+  String staffEarningsBookings(int count) {
+    return '$count completed bookings';
+  }
+
+  @override
+  String get staffInboxTitle => 'Inbox';
+
+  @override
+  String get staffServiceNameEn => 'Name (English)';
+
+  @override
+  String get staffServiceNameAr => 'Name (Arabic)';
+
+  @override
+  String get staffServicePrice => 'Price';
+
+  @override
+  String get staffServiceCurrency => 'Currency code';
+
+  @override
+  String get staffServiceDuration => 'Duration (minutes)';
+
+  @override
+  String get staffServiceAtHome => 'Offered at home';
+
+  @override
+  String get staffServiceActive => 'Active';
+
+  @override
+  String get staffServiceInactive => 'Inactive';
+
+  @override
+  String get staffServiceAdd => 'Add service';
+
+  @override
+  String get staffServiceEditTitle => 'Edit service';
+
+  @override
+  String get staffServiceNewTitle => 'New service';
+
+  @override
+  String get staffServiceSave => 'Save service';
+
+  @override
+  String get staffServiceDelete => 'Delete';
+
+  @override
+  String get staffServiceDeleteTitle => 'Delete this service?';
+
+  @override
+  String get staffServiceDeleteMessage =>
+      'Clients will no longer be able to book it.';
+
+  @override
+  String get staffServiceCancel => 'Cancel';
+
+  @override
+  String get staffServiceRequired => 'This field is required.';
+
+  @override
+  String get staffServiceInvalidNumber => 'Enter a valid number.';
+
+  @override
+  String staffServiceMeta(String price, String currency, int minutes) {
+    return '$price $currency · $minutes min';
+  }
+
+  @override
+  String staffServiceMetaNoDuration(String price, String currency) {
+    return '$price $currency';
+  }
+
+  @override
+  String get businessTabStaff => 'Staff';
+
+  @override
+  String get businessTabServices => 'Services';
+
+  @override
+  String get businessMenuHours => 'Working hours';
+
+  @override
+  String get businessStaffTitle => 'Staff';
+
+  @override
+  String get businessStaffEmpty => 'No stylists work at this branch yet.';
+
+  @override
+  String get businessStaffActivate => 'Activate';
+
+  @override
+  String get businessStaffDeactivate => 'Deactivate';
+
+  @override
+  String get businessStaffStatusEnabled => 'Active';
+
+  @override
+  String get businessStaffStatusDisabled => 'Deactivated';
+
+  @override
+  String get businessStaffStatusPending => 'Pending';
+
+  @override
+  String businessStaffRating(String rating, int count) {
+    return '$rating ($count)';
+  }
+
+  @override
+  String get businessServicesTitle => 'Services';
+
+  @override
+  String get businessServicesEmpty => 'No services yet. Add your first one.';
+
+  @override
+  String get businessHoursTitle => 'Working hours';
+
+  @override
+  String get businessHoursClosed => 'Closed';
+
+  @override
+  String get businessHoursOpens => 'Opens';
+
+  @override
+  String get businessHoursCloses => 'Closes';
+
+  @override
+  String get businessHoursInvalidRange =>
+      'Closing time must be after opening time.';
+
+  @override
+  String get stylistTabHistory => 'History';
+
+  @override
+  String get stylistTabEarnings => 'Earnings';
+
+  @override
+  String get stylistMenuServices => 'Services and pricing';
+
+  @override
+  String get stylistHistoryTitle => 'Past appointments';
+
+  @override
+  String get stylistHistoryEmpty => 'No appointments match this filter.';
+
+  @override
+  String get stylistHistoryFilterAll => 'All';
+
+  @override
+  String get stylistServicesEditorTitle => 'Services and pricing';
+
+  @override
+  String get stylistServicesEditorEmpty =>
+      'You have no services yet. Add your first one.';
 }

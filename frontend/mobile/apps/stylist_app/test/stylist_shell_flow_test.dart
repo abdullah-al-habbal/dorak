@@ -7,6 +7,12 @@ import 'package:localization/localization.dart';
 import 'package:stylist_app/src/core/navigation/app.router.dart';
 import 'package:stylist_app/src/core/navigation/app_routes.entity.dart';
 import 'package:stylist_app/src/features/affiliations/stylist_affiliations.screen.dart';
+import 'package:stylist_app/src/features/appointments/stylist_appointments.screen.dart';
+import 'package:stylist_app/src/features/earnings/stylist_earnings.screen.dart';
+import 'package:stylist_app/src/features/inbox/stylist_inbox.screen.dart';
+import 'package:stylist_app/src/features/more/stylist_more.screen.dart';
+import 'package:stylist_app/src/features/services/stylist_service_form.screen.dart';
+import 'package:stylist_app/src/features/services/stylist_services.screen.dart';
 import 'package:stylist_app/src/features/jobs/stylist_applications.screen.dart';
 import 'package:stylist_app/src/features/jobs/stylist_job_detail.screen.dart';
 import 'package:stylist_app/src/features/jobs/stylist_jobs.screen.dart';
@@ -169,6 +175,13 @@ void main() {
       AppRoutes.jobs: StylistJobsScreen,
       AppRoutes.applications: StylistApplicationsScreen,
       AppRoutes.job('job-1'): StylistJobDetailScreen,
+      AppRoutes.history: StylistAppointmentsScreen,
+      AppRoutes.earnings: StylistEarningsScreen,
+      AppRoutes.inbox: StylistInboxScreen,
+      AppRoutes.more: StylistMoreScreen,
+      AppRoutes.services: StylistServicesScreen,
+      AppRoutes.newService: StylistServiceFormScreen,
+      AppRoutes.editService('svc-1'): StylistServiceFormScreen,
     };
 
     for (final path in routes.keys) {

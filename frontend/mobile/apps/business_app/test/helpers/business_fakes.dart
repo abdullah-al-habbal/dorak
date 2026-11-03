@@ -3,9 +3,13 @@ import 'package:core/core.dart';
 import 'package:business_app/src/core/business_feature_blocs.provider.dart';
 import 'package:business_app/src/features/affiliations/business_affiliations.bloc.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.bloc.dart';
+import 'package:business_app/src/features/hours/business_hours.bloc.dart';
+import 'package:business_app/src/features/inbox/business_inbox.bloc.dart';
 import 'package:business_app/src/features/jobs/business_jobs.bloc.dart';
 import 'package:business_app/src/features/profile/business_profile.bloc.dart';
 import 'package:business_app/src/features/reviews/business_reviews.bloc.dart';
+import 'package:business_app/src/features/services/business_services.bloc.dart';
+import 'package:business_app/src/features/staff/business_staff.bloc.dart';
 
 PaginatedData<T> pageOf<T>(List<T> items) => PaginatedData(
   data: items,
@@ -181,11 +185,203 @@ class FakeReviewDisputeRepository implements ReviewDisputeRepository {
   }
 }
 
+class FakeBranchStaffRepository implements BranchStaffRepository {
+  FakeBranchStaffRepository({List<StaffMemberDto>? staff, this.failure})
+    : staff = staff ?? [];
+
+  List<StaffMemberDto> staff;
+  Object? failure;
+
+  @override
+  Future<PaginatedData<StaffMemberDto>> getStaff({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    if (failure != null) throw failure!;
+    return pageOf(staff);
+  }
+}
+
+class FakeActivationRepository implements ManagedBarberRepository {
+  final List<String> activated = [];
+  final List<String> deactivated = [];
+  Object? failure;
+
+  @override
+  Future<ActivationLogDto> activateBarber(String barberId) async {
+    if (failure != null) throw failure!;
+    activated.add(barberId);
+    return _log(barberId, 'enabled');
+  }
+
+  @override
+  Future<ActivationLogDto> deactivateBarber(String barberId) async {
+    if (failure != null) throw failure!;
+    deactivated.add(barberId);
+    return _log(barberId, 'disabled');
+  }
+
+  @override
+  Future<ManagedBarberDto> createManualBarber({
+    required String nameEn,
+    required String nameAr,
+    required String phone,
+    String? chairId,
+  }) async => ManagedBarberDto(id: 'new', name: {'en': nameEn, 'ar': nameAr});
+
+  ActivationLogDto _log(String barberId, String status) => ActivationLogDto(
+    id: 'log',
+    activableId: barberId,
+    activableType: 'barber',
+    status: status,
+  );
+}
+
+class FakeBranchServiceRepository implements BranchServiceRepository {
+  List<BusinessServiceDto> services = [];
+  Object? failure;
+  String? createdBrandId;
+  Map<String, String>? createdName;
+  String? updatedId;
+  String? deletedId;
+
+  @override
+  Future<PaginatedData<BusinessServiceDto>> getServices({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    if (failure != null) throw failure!;
+    return pageOf(services);
+  }
+
+  @override
+  Future<BusinessServiceDto> createService({
+    required String brandId,
+    required Map<String, String> name,
+    required double price,
+    required String currencyCode,
+    required int durationMinutes,
+    bool isAtHome = false,
+    bool isActive = true,
+  }) async {
+    if (failure != null) throw failure!;
+    createdBrandId = brandId;
+    createdName = name;
+    final created = BusinessServiceDto(
+      id: 'svc-${services.length + 1}',
+      serviceableId: brandId,
+      name: name['en']!,
+      priceAmountMinor: MinorUnits.fromMajor(price),
+      currencyCode: currencyCode,
+      durationMinutes: durationMinutes,
+    );
+    services = [...services, created];
+    return created;
+  }
+
+  @override
+  Future<BusinessServiceDto> updateService(
+    String id, {
+    required String brandId,
+    required Map<String, String> name,
+    required double price,
+    required String currencyCode,
+    required int durationMinutes,
+    bool isAtHome = false,
+    bool isActive = true,
+  }) async {
+    if (failure != null) throw failure!;
+    updatedId = id;
+    return services.firstWhere((service) => service.id == id);
+  }
+
+  @override
+  Future<void> deleteService(String id) async {
+    if (failure != null) throw failure!;
+    deletedId = id;
+    services = services.where((service) => service.id != id).toList();
+  }
+}
+
+class FakeBranchHoursRepository implements BranchHoursRepository {
+  List<BranchOpeningHourDto> hours = const [];
+  List<BranchOpeningHourDto>? saved;
+  Object? failure;
+
+  @override
+  Future<BranchProfileDto> getProfile() async {
+    if (failure != null) throw failure!;
+    return BranchProfileDto(
+      id: 'branch-1',
+      name: 'Main',
+      brandId: 'brand-1',
+      openingHours: hours,
+    );
+  }
+
+  @override
+  Future<void> updateOpeningHours(List<BranchOpeningHourDto> hours) async {
+    if (failure != null) throw failure!;
+    saved = hours;
+  }
+}
+
+class FakeNotificationRepository implements NotificationRepository {
+  List<NotificationDto> items = [];
+  final List<String> read = [];
+  bool allRead = false;
+
+  @override
+  Future<PaginatedData<NotificationDto>> getNotifications({
+    int page = 1,
+    int perPage = 20,
+  }) async => pageOf(items);
+
+  @override
+  Future<NotificationDto> markRead(String notificationId) async {
+    read.add(notificationId);
+    items = [
+      for (final item in items)
+        if (item.id == notificationId)
+          NotificationDto(
+            id: item.id,
+            type: item.type,
+            title: item.title,
+            body: item.body,
+            readAt: DateTime.utc(2026, 11, 3),
+          )
+        else
+          item,
+    ];
+    return items.firstWhere((item) => item.id == notificationId);
+  }
+
+  @override
+  Future<void> markAllRead() async {
+    allRead = true;
+    items = [
+      for (final item in items)
+        NotificationDto(
+          id: item.id,
+          type: item.type,
+          title: item.title,
+          body: item.body,
+          readAt: DateTime.utc(2026, 11, 3),
+        ),
+    ];
+  }
+}
+
 BusinessFeatureBlocs featureBlocsFor({
   FakeJobPostingRepository? jobs,
   FakeAffiliationRepository? affiliations,
   FakeBranchManagementRepository? management,
   FakeReviewDisputeRepository? disputes,
+  FakeBranchStaffRepository? staff,
+  FakeActivationRepository? activation,
+  FakeBranchServiceRepository? services,
+  FakeBranchHoursRepository? hours,
+  FakeNotificationRepository? notifications,
 }) {
   final branch = management ?? FakeBranchManagementRepository();
   return BusinessFeatureBlocs(
@@ -199,5 +395,15 @@ BusinessFeatureBlocs featureBlocsFor({
       branch,
       disputes ?? FakeReviewDisputeRepository(),
     ),
+    staff: BusinessStaffBloc(
+      staff ?? FakeBranchStaffRepository(),
+      activation ?? FakeActivationRepository(),
+    ),
+    services: BusinessServicesBloc(
+      services ?? FakeBranchServiceRepository(),
+      hours ?? FakeBranchHoursRepository(),
+    ),
+    hours: BusinessHoursBloc(hours ?? FakeBranchHoursRepository()),
+    inbox: BusinessInboxBloc(notifications ?? FakeNotificationRepository()),
   );
 }

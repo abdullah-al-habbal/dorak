@@ -158,6 +158,11 @@ class _BranchEndpoints {
   String get reviews => BranchEndpoints.reviews;
   String chairStatus(String chairId) =>
       BranchEndpoints.chairStatus.replaceFirst('{chair}', chairId);
+  String get openingHours => BranchEndpoints.openingHours;
+  String get services => BranchEndpoints.services;
+  String service(String serviceId) =>
+      BranchEndpoints.service.replaceFirst('{service}', serviceId);
+  String get earnings => BranchEndpoints.earnings;
 }
 
 class _ClientInteractionEndpoints {
@@ -314,6 +319,8 @@ class _OperationsEndpoints {
   String get barberServices => OperationsEndpoints.barberServices;
   String barberService(String serviceId) =>
       OperationsEndpoints.barberService.replaceFirst('{service}', serviceId);
+  String get barberAppointments => OperationsEndpoints.barberAppointments;
+  String get barberEarnings => OperationsEndpoints.barberEarnings;
 }
 
 class _ProfileEndpoints {

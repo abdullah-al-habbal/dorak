@@ -10,4 +10,8 @@ class BranchEndpoints {
   static const String floorPlanConfiguration = '/branch/floor-plan';
   static const String reviews = '/branch/reviews';
   static const String chairStatus = '/branch/chairs/{chair}/status';
+  static const String openingHours = '/branch/opening-hours';
+  static const String services = '/branch/services';
+  static const String service = '/branch/services/{service}';
+  static const String earnings = '/branch/earnings';
 }

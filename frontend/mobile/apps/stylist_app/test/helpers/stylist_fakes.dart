@@ -2,13 +2,17 @@ import 'package:core/core.dart';
 
 import 'package:stylist_app/src/core/stylist_feature_blocs.provider.dart';
 import 'package:stylist_app/src/features/affiliations/stylist_affiliations.bloc.dart';
+import 'package:stylist_app/src/features/appointments/stylist_appointments.bloc.dart';
+import 'package:stylist_app/src/features/earnings/stylist_earnings.bloc.dart';
 import 'package:stylist_app/src/features/history/stylist_client_history.bloc.dart';
+import 'package:stylist_app/src/features/inbox/stylist_inbox.bloc.dart';
 import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 import 'package:stylist_app/src/features/portfolio/photo_picker.provider.dart';
 import 'package:stylist_app/src/features/portfolio/stylist_portfolio.bloc.dart';
 import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
 import 'package:stylist_app/src/features/reviews/stylist_reviews.bloc.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
+import 'package:stylist_app/src/features/services/stylist_services.bloc.dart';
 
 BookingDto bookingFixture(String id, {BookingStatus? status}) => BookingDto(
   id: id,
@@ -40,6 +44,11 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
   String? deletedPhotoId;
   double? savedRadius;
   Map<String, String>? savedBio;
+  List<BarberServiceDto> services = [];
+  Object? serviceFailure;
+  Map<String, String>? createdServiceName;
+  String? updatedServiceId;
+  String? deletedServiceId;
 
   @override
   Future<BarberProfileDto> getProfile() async =>
@@ -114,7 +123,10 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
   }) => throw UnimplementedError();
 
   @override
-  Future<List<BarberServiceDto>> getServices() => throw UnimplementedError();
+  Future<List<BarberServiceDto>> getServices() async {
+    if (serviceFailure != null) throw serviceFailure!;
+    return services;
+  }
 
   @override
   Future<BarberServiceDto> createService({
@@ -125,7 +137,20 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
     bool isAtHome = false,
     bool active = true,
     String? catalogItemId,
-  }) => throw UnimplementedError();
+  }) async {
+    if (serviceFailure != null) throw serviceFailure!;
+    createdServiceName = name;
+    final created = BarberServiceDto(
+      id: 'svc-${services.length + 1}',
+      name: name['en']!,
+      priceAmountMinor: MinorUnits.fromMajor(price),
+      currencyCode: currencyCode,
+      durationMinutes: durationMinutes,
+      active: active,
+    );
+    services = [...services, created];
+    return created;
+  }
 
   @override
   Future<BarberServiceDto> updateService(
@@ -137,10 +162,89 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
     bool isAtHome = false,
     bool active = true,
     String? catalogItemId,
-  }) => throw UnimplementedError();
+  }) async {
+    if (serviceFailure != null) throw serviceFailure!;
+    updatedServiceId = id;
+    return services.firstWhere((service) => service.id == id);
+  }
 
   @override
-  Future<void> deleteService(String id) => throw UnimplementedError();
+  Future<void> deleteService(String id) async {
+    if (serviceFailure != null) throw serviceFailure!;
+    deletedServiceId = id;
+    services = services.where((service) => service.id != id).toList();
+  }
+}
+
+class FakeStylistAppointmentRepository implements StylistAppointmentRepository {
+  List<BookingDto> history = [];
+  final List<BookingStatus?> requestedStatuses = [];
+  Object? failure;
+
+  @override
+  Future<PaginatedData<BookingDto>> getAppointments({
+    BookingStatus? status,
+    DateTime? from,
+    DateTime? to,
+    int page = 1,
+    int perPage = 15,
+  }) async {
+    if (failure != null) throw failure!;
+    requestedStatuses.add(status);
+    return pageOf([
+      for (final booking in history)
+        if (status == null || booking.status == status) booking,
+    ]);
+  }
+}
+
+class FakeEarningsRepository implements EarningsRepository {
+  EarningsDto earnings = const EarningsDto(scope: 'barber');
+  final List<DateTime?> fromRequests = [];
+  Object? failure;
+
+  @override
+  Future<EarningsDto> getEarnings({DateTime? from, DateTime? to}) async {
+    if (failure != null) throw failure!;
+    fromRequests.add(from);
+    return earnings;
+  }
+}
+
+class FakeNotificationRepository implements NotificationRepository {
+  List<NotificationDto> items = [];
+  final List<String> read = [];
+  bool allRead = false;
+
+  NotificationDto _asRead(NotificationDto item) => NotificationDto(
+    id: item.id,
+    type: item.type,
+    title: item.title,
+    body: item.body,
+    readAt: DateTime.utc(2026, 11, 3),
+  );
+
+  @override
+  Future<PaginatedData<NotificationDto>> getNotifications({
+    int page = 1,
+    int perPage = 20,
+  }) async => pageOf(items);
+
+  @override
+  Future<NotificationDto> markRead(String notificationId) async {
+    read.add(notificationId);
+    items = [
+      for (final item in items)
+        item.id == notificationId ? _asRead(item) : item,
+    ];
+    return items.firstWhere((item) => item.id == notificationId);
+  }
+
+  @override
+  Future<void> markAllRead() async {
+    allRead = true;
+    items = [for (final item in items) _asRead(item)];
+  }
 }
 
 class FakePhotoPicker implements PhotoPicker {
@@ -242,6 +346,9 @@ StylistFeatureBlocs featureBlocsFor(
   FakeReviewRepository? reviews,
   FakeReviewDisputeRepository? disputes,
   FakeBarberHistoryRepository? history,
+  FakeStylistAppointmentRepository? appointments,
+  FakeEarningsRepository? earnings,
+  FakeNotificationRepository? notifications,
 }) => StylistFeatureBlocs(
   schedule: StylistScheduleBloc(operations),
   portfolio: StylistPortfolioBloc(operations, picker ?? FakePhotoPicker()),
@@ -261,6 +368,15 @@ StylistFeatureBlocs featureBlocsFor(
     picker ?? FakePhotoPicker(),
     () => 'barber-1',
   ),
+  appointments: StylistAppointmentsBloc(
+    appointments ?? FakeStylistAppointmentRepository(),
+  ),
+  earnings: StylistEarningsBloc(
+    earnings ?? FakeEarningsRepository(),
+    clock: () => DateTime(2026, 11, 15),
+  ),
+  services: StylistServicesBloc(operations),
+  inbox: StylistInboxBloc(notifications ?? FakeNotificationRepository()),
 );
 
 ServiceHistoryDto visitFixture(

@@ -2,6 +2,12 @@ import 'package:business_app/src/core/navigation/app.router.dart';
 import 'package:business_app/src/core/navigation/app_routes.entity.dart';
 import 'package:business_app/src/features/affiliations/business_affiliations.screen.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.screen.dart';
+import 'package:business_app/src/features/hours/business_hours.screen.dart';
+import 'package:business_app/src/features/inbox/business_inbox.screen.dart';
+import 'package:business_app/src/features/more/business_more.screen.dart';
+import 'package:business_app/src/features/services/business_service_form.screen.dart';
+import 'package:business_app/src/features/services/business_services.screen.dart';
+import 'package:business_app/src/features/staff/business_staff.screen.dart';
 import 'package:business_app/src/features/jobs/business_applicants.screen.dart';
 import 'package:business_app/src/features/jobs/business_job_form.screen.dart';
 import 'package:business_app/src/features/jobs/business_jobs.screen.dart';
@@ -239,6 +245,13 @@ void main() {
       AppRoutes.affiliations: BusinessAffiliationsScreen,
       AppRoutes.profile: BusinessProfileScreen,
       AppRoutes.reviews: BusinessReviewsScreen,
+      AppRoutes.staff: BusinessStaffScreen,
+      AppRoutes.services: BusinessServicesScreen,
+      AppRoutes.newService: BusinessServiceFormScreen,
+      AppRoutes.editService('svc-1'): BusinessServiceFormScreen,
+      AppRoutes.hours: BusinessHoursScreen,
+      AppRoutes.inbox: BusinessInboxScreen,
+      AppRoutes.more: BusinessMoreScreen,
     };
 
     for (final path in routes.keys) {

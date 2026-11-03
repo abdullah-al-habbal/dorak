@@ -1,4 +1,3 @@
-import 'package:business_app/src/core/navigation/app_routes.entity.dart';
 import 'package:business_app/src/features/operations/branch_operations.bloc.dart';
 import 'package:business_app/src/features/operations/branch_operations.state.dart';
 import 'package:business_app/src/features/operations/widgets/appointment_card.widget.dart';
@@ -16,13 +15,11 @@ class BranchOperationsScreen extends StatefulWidget {
     required this.onLocaleToggle,
     required this.onLogout,
     required this.onAddBarber,
-    required this.onNavigate,
   });
   final BranchOperationsBloc bloc;
   final VoidCallback onLocaleToggle;
   final VoidCallback onLogout;
   final VoidCallback onAddBarber;
-  final ValueChanged<String> onNavigate;
   @override
   State<BranchOperationsScreen> createState() => _BranchOperationsScreenState();
 }
@@ -33,14 +30,6 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
     super.initState();
     widget.bloc.load();
   }
-
-  List<(String, String)> _menu(AppLocalizations l10n) => [
-    (l10n.businessMenuJobs, AppRoutes.jobs),
-    (l10n.businessMenuFloorPlan, AppRoutes.floorPlan),
-    (l10n.businessMenuAffiliations, AppRoutes.affiliations),
-    (l10n.businessMenuProfile, AppRoutes.profile),
-    (l10n.businessMenuReviews, AppRoutes.reviews),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +47,6 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
             tooltip: l10n.managerManualBarberTitle,
             onPressed: widget.onAddBarber,
             icon: const Icon(Icons.person_add_alt_1_outlined),
-          ),
-          PopupMenuButton<String>(
-            onSelected: widget.onNavigate,
-            itemBuilder: (context) => [
-              for (final entry in _menu(l10n))
-                PopupMenuItem(value: entry.$2, child: Text(entry.$1)),
-            ],
           ),
           TextButton(
             onPressed: widget.onLocaleToggle,

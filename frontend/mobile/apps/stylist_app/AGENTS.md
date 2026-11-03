@@ -33,9 +33,26 @@ lib/src/features/                           affiliations, auth, jobs, operations
                                             history, profile, reviews, schedule, shared
 ```
 
-**Not built yet:** booking history beyond today, offered
-service editing, the notification inbox, settings and earnings. See the
-[product audit](../../../../docs/planning/product-audit-part-3.md), G11.
+### Navigation shell and G11 features (2026-11-03)
+
+`app.router.dart` uses a `StatefulShellRoute` with five tabs: `/home` (today),
+`/history` (past appointments), `/earnings`, `/inbox` (unread badge) and `/more`.
+The former `/home/*` children (`schedule`, `portfolio`, `profile`,
+`affiliations`, `reviews`, `jobs`, `clients/:id/history`) and the new
+`/home/services` editor are top-level routes pushed over the shell; their paths
+are unchanged. `refreshListenable` is core's `StaffSessionRefresh`.
+
+- **Past appointments**: `GET /barber/appointments` (newest first, status
+  filter, paged).
+- **Earnings**: `GET /barber/earnings`, per-currency gross and net (net is null
+  without a known commission). Range: this month or all time.
+- **Services and pricing editor**: `/barber/services` CRUD
+  (`StylistOperationsRepository`); the backend returns one locale, so both
+  names are re-entered.
+- **Inbox** is the notification feed. Invite notifications open
+  `/home/affiliations`, application ones `/home/jobs/applications`.
+
+Decision record: [ADR 0002](../../../../docs/adr/0002-mvp-scope-deferrals.md).
 
 ### Password reset and session (Gap G8)
 

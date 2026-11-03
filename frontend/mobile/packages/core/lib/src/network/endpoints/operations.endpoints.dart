@@ -21,4 +21,6 @@ class OperationsEndpoints {
   static const barberBookingReview = '/barber/bookings/{booking}/review';
   static const barberServices = '/barber/services';
   static const barberService = '/barber/services/{service}';
+  static const barberAppointments = '/barber/appointments';
+  static const barberEarnings = '/barber/earnings';
 }

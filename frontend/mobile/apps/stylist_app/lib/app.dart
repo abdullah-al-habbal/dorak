@@ -11,8 +11,11 @@ import 'package:stylist_app/src/core/navigation/app_routes.entity.dart';
 import 'package:stylist_app/src/core/stylist_feature_blocs.provider.dart';
 import 'package:stylist_app/src/features/affiliations/stylist_affiliations.bloc.dart';
 import 'package:stylist_app/src/core/navigation/notification_location.entity.dart';
+import 'package:stylist_app/src/features/appointments/stylist_appointments.bloc.dart';
 import 'package:stylist_app/src/features/auth/stylist_sign_up.bloc.dart';
+import 'package:stylist_app/src/features/earnings/stylist_earnings.bloc.dart';
 import 'package:stylist_app/src/features/history/stylist_client_history.bloc.dart';
+import 'package:stylist_app/src/features/inbox/stylist_inbox.bloc.dart';
 import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 import 'package:stylist_app/src/features/portfolio/image_picker_photo_picker.provider.dart';
@@ -20,6 +23,7 @@ import 'package:stylist_app/src/features/portfolio/stylist_portfolio.bloc.dart';
 import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
 import 'package:stylist_app/src/features/reviews/stylist_reviews.bloc.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
+import 'package:stylist_app/src/features/services/stylist_services.bloc.dart';
 
 class StylistApp extends StatefulWidget {
   const StylistApp({super.key});
@@ -89,6 +93,12 @@ class _StylistAppState extends State<StylistApp> {
         const ImagePickerPhotoPicker(),
         () => _bloc.state.profile?.id,
       ),
+      appointments: StylistAppointmentsBloc(
+        DioStylistAppointmentRepository(_client),
+      ),
+      earnings: StylistEarningsBloc(DioEarningsRepository.barber(_client)),
+      services: StylistServicesBloc(operations),
+      inbox: StylistInboxBloc(DioNotificationRepository(_client)),
     );
     _router = StylistAppRouter(
       operations: _bloc,
@@ -165,6 +175,7 @@ class _StylistAppState extends State<StylistApp> {
     unawaited(_initializePushNotifications());
     if (_realtime != null) unawaited(_realtime.connect());
     unawaited(_bloc.load());
+    unawaited(_features.inbox.load());
     _router.router.go(AppRoutes.home);
   }
 
