@@ -46,10 +46,10 @@ Part 5 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 - 5 contract tests for account deletion
 
 ### Phone OTP Verification
-- `RequestPhoneOtpAction` [POST /api/v1/client/phone/otp] — normalizes the phone, caches a hashed 6-digit code (10-min TTL) and sends one SMS through `Modules\Core\Contracts\SmsSender` (`services.sms.driver`, `log` driver). Auth:client (active), `throttle:3,1`
+- `RequestPhoneOtpAction` [POST /api/v1/client/phone/otp] — normalizes the phone, caches a hashed 6-digit code (10-min TTL) and sends one SMS through the `Modules\Core\Contracts\SmsSender` strategy resolved by `SmsSenderFactory` from `services.sms.driver` (`log` for local/testing, `generic_http` posts to a configurable gateway/WhatsApp webhook via `GenericHttpSmsSender`; env: `SMS_DRIVER`, `SMS_HTTP_URL`, `SMS_HTTP_FORMAT`, `SMS_HTTP_HEADERS`, `SMS_HTTP_PAYLOAD` with `{{phone}}`/`{{message}}` placeholders, `SMS_HTTP_TIMEOUT`). A gateway failure (`SmsDeliveryException`) purges the cached code and returns 503 `SERVICE_UNAVAILABLE`. Auth:client (active), `throttle:3,1`
 - `VerifyPhoneOtpAction` [POST /api/v1/client/phone/verify] — checks the hashed code (5-attempt lockout), sets `phone` + `phone_verified_at`, returns `ClientProfileResource`. Auth:client (active), `throttle:5,1`
 - `PATCH /api/v1/client/profile` returns 422 for a changed `phone`; the phone changes only through this flow
-- Tests: `tests/Feature/Client/Http/Actions/PhoneOtpTest.php`
+- Tests: `tests/Feature/Client/Http/Actions/PhoneOtpTest.php`, `PhoneOtpDeliveryTest.php`, `tests/Unit/Core/Services/Sms/`
 
 ### Email Verification
 - `SendEmailVerificationAction` [POST /api/v1/client/email/verify/send] — sends 6-digit code to client email, 10-min TTL cache. Auth:client

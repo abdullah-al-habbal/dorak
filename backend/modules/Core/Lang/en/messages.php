@@ -17,6 +17,8 @@ return [
     'conflict' => 'The request conflicts with the current resource state.',
     'too_many_requests' => 'Too many requests',
     'server_error' => 'Server error',
+    'service_unavailable' => 'Service temporarily unavailable',
+    'phone_otp_delivery_failed' => 'We could not send the verification code. Please try again shortly.',
     'invalid_credentials' => 'Invalid credentials',
     'invalid_social_token' => 'Invalid social token',
     'social_email_not_verified' => 'Your email address is not verified by the provider. Verify it and try again.',

@@ -6,10 +6,12 @@ namespace Modules\Client\Handlers\Client;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Modules\Client\CQRS\Command\Client\RequestPhoneOtpCommand;
 use Modules\Client\Eloquent\Resolvers\Client\PhoneOtpEloquentResolver;
 use Modules\Client\ValuesObjects\RequestPhoneOtpResult;
 use Modules\Core\Contracts\SmsSender;
+use Modules\Core\Exceptions\SmsDeliveryException;
 
 final class RequestPhoneOtpHandler
 {
@@ -32,7 +34,17 @@ final class RequestPhoneOtpHandler
         ], now()->addMinutes(10));
         Cache::forget("phone_otp_attempts_{$command->clientId}");
 
-        $this->sms->send($command->phone, __('client::messages.phone_otp_sms', ['code' => $code]));
+        try {
+            $this->sms->send($command->phone, __('client::messages.phone_otp_sms', ['code' => $code]));
+        } catch (SmsDeliveryException $exception) {
+            Cache::forget("phone_otp_{$command->clientId}");
+            Log::warning('Phone OTP SMS delivery failed.', [
+                'client_id' => $command->clientId,
+                'reason' => $exception->getMessage(),
+            ]);
+
+            return RequestPhoneOtpResult::deliveryFailed();
+        }
 
         return RequestPhoneOtpResult::sent();
     }

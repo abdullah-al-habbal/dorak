@@ -17,6 +17,7 @@ enum ErrorCodeEnum: string
     case UNPROCESSABLE_ENTITY = 'UNPROCESSABLE_ENTITY';
     case TOO_MANY_REQUESTS = 'TOO_MANY_REQUESTS';
     case SERVER_ERROR = 'SERVER_ERROR';
+    case SERVICE_UNAVAILABLE = 'SERVICE_UNAVAILABLE';
 
     public function getStatusCode(): int
     {
@@ -30,6 +31,7 @@ enum ErrorCodeEnum: string
             self::UNPROCESSABLE_ENTITY => Response::HTTP_UNPROCESSABLE_ENTITY,
             self::TOO_MANY_REQUESTS => Response::HTTP_TOO_MANY_REQUESTS,
             self::SERVER_ERROR => Response::HTTP_INTERNAL_SERVER_ERROR,
+            self::SERVICE_UNAVAILABLE => Response::HTTP_SERVICE_UNAVAILABLE,
         };
     }
 
@@ -45,6 +47,7 @@ enum ErrorCodeEnum: string
             self::UNPROCESSABLE_ENTITY => 'core::messages.unprocessable',
             self::TOO_MANY_REQUESTS => 'core::messages.too_many_requests',
             self::SERVER_ERROR => 'core::messages.server_error',
+            self::SERVICE_UNAVAILABLE => 'core::messages.service_unavailable',
         };
     }
 }

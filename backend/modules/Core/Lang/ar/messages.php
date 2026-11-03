@@ -17,6 +17,8 @@ return [
     'conflict' => 'يتعارض الطلب مع الحالة الحالية للمورد.',
     'too_many_requests' => 'طلبات كثيرة جدًا',
     'server_error' => 'خطأ في الخادم',
+    'service_unavailable' => 'الخدمة غير متاحة مؤقتًا',
+    'phone_otp_delivery_failed' => 'تعذّر إرسال رمز التحقق. يرجى المحاولة بعد قليل.',
     'invalid_credentials' => 'بيانات الاعتماد غير صحيحة',
     'invalid_social_token' => 'رمز تسجيل الدخول الاجتماعي غير صالح',
     'social_email_not_verified' => 'لم يتم التحقق من بريدك الإلكتروني لدى مزود الخدمة. تحقق منه ثم حاول مرة أخرى.',

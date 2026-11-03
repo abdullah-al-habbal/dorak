@@ -7,6 +7,7 @@ namespace Modules\Client\Http\Actions\Client;
 use Illuminate\Http\JsonResponse;
 use Modules\Client\Handlers\Client\RequestPhoneOtpHandler;
 use Modules\Client\Http\Requests\Client\RequestPhoneOtpRequest;
+use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class RequestPhoneOtpAction extends BaseApiAction
@@ -21,6 +22,10 @@ final class RequestPhoneOtpAction extends BaseApiAction
 
         if ($result->isPhoneInUse()) {
             return $this->unprocessable(message: $this->trans('core::messages.phone_already_in_use'));
+        }
+
+        if ($result->isDeliveryFailed()) {
+            return $this->error(ErrorCodeEnum::SERVICE_UNAVAILABLE, $this->trans('core::messages.phone_otp_delivery_failed'));
         }
 
         return $this->success(message: $this->trans('core::messages.phone_otp_sent'));

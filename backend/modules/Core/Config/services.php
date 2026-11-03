@@ -22,6 +22,13 @@ return [
     ],
     'sms' => [
         'driver' => env('SMS_DRIVER'),
+        'http' => [
+            'url' => env('SMS_HTTP_URL'),
+            'format' => env('SMS_HTTP_FORMAT'),
+            'headers' => env('SMS_HTTP_HEADERS'),
+            'payload' => env('SMS_HTTP_PAYLOAD'),
+            'timeout' => env('SMS_HTTP_TIMEOUT'),
+        ],
     ],
     'fcm' => [
         'project_id' => env('FCM_PROJECT_ID'),

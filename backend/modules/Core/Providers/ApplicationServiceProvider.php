@@ -10,11 +10,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
-use InvalidArgumentException;
 use Modules\Core\Constants\MorphMapConstants;
 use Modules\Core\Contracts\SmsSender;
 use Modules\Core\Models\NotificationDeliveryModel;
-use Modules\Core\Services\Sms\LogSmsSender;
+use Modules\Core\Services\Sms\SmsSenderFactory;
 
 final class ApplicationServiceProvider extends BaseModuleServiceProvider
 {
@@ -43,14 +42,7 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
 
     private function registerSmsSender(): void
     {
-        $this->app->bind(SmsSender::class, function ($app): SmsSender {
-            $driver = $app->make(ConfigRepository::class)->get('services.sms.driver');
-
-            return match ($driver) {
-                'log' => new LogSmsSender,
-                default => throw new InvalidArgumentException('Unsupported SMS driver.'),
-            };
-        });
+        $this->app->bind(SmsSender::class, fn ($app): SmsSender => $app->make(SmsSenderFactory::class)->make());
     }
 
     protected function loadRoutes(): void {}

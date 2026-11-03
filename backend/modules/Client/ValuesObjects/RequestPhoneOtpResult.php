@@ -20,6 +20,16 @@ final readonly class RequestPhoneOtpResult
         return new self(failureReason: 'phone_in_use');
     }
 
+    public static function deliveryFailed(): self
+    {
+        return new self(failureReason: 'delivery_failed');
+    }
+
+    public function isDeliveryFailed(): bool
+    {
+        return $this->failureReason === 'delivery_failed';
+    }
+
     public function isPhoneInUse(): bool
     {
         return $this->failureReason === 'phone_in_use';
