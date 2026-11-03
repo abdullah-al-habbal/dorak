@@ -52,6 +52,17 @@ files in that area.
   `frontend/mobile/CLAUDE.md` before writing code in that area; these rules
   apply in addition to, not instead of, the subsystem's existing skills.
 
+## UI/UX skills
+
+- For any dashboard or mobile UI work, use the shared skills in
+  [.claude/skills](.claude/skills/README.md): `frontend-design` for visual
+  direction, `interface-design` to record and reuse decisions in
+  `.interface-design/system.md`, and the `ui-ux-pro-max` plugin for palettes
+  and type. Do not duplicate them into subprojects.
+- Work in `frontend/web/new-dashboard` also uses its local `shadcn`,
+  `migrate-radix-to-base`, and `web-design-guidelines` skills; run
+  `web-design-guidelines` before shipping UI changes.
+
 ## Git workflow (local only)
 
 - Preserve unrelated working-tree changes and stage only the files a task

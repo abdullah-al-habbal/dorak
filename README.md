@@ -42,6 +42,14 @@ and the subsystem guides in each project directory.
   packages. Package boundaries and the Dart file taxonomy
   are described in `frontend/mobile/AGENTS.md`.
 
+## AI agent skills
+
+Repository skills live in [`.claude/skills/`](.claude/skills/README.md). Besides
+the task executor and the Stitch converter, it holds the shared UI/UX skills
+(`frontend-design`, `interface-design`, and the `ui-ux-pro-max` plugin) used by
+both the web dashboard and the mobile apps. Web-only skills (`shadcn`,
+`web-design-guidelines`) stay in `frontend/web/new-dashboard/.claude/skills/`.
+
 ## Prerequisites
 
 - PHP 8.3 or newer and Composer.

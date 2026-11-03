@@ -50,6 +50,17 @@ specific; read it before changing files in that area.
 - When the user types `/graphify`, invoke the available Skill tool with
   `skill: "graphify"` before doing anything else.
 
+## UI/UX skills
+
+- For any dashboard or mobile UI work, use the shared skills in
+  [.claude/skills](.claude/skills/README.md): `frontend-design` for visual
+  direction, `interface-design` to record and reuse decisions in
+  `.interface-design/system.md`, and the `ui-ux-pro-max` plugin for palettes
+  and type. Do not duplicate them into subprojects.
+- Work in `frontend/web/new-dashboard` also uses its local `shadcn`,
+  `migrate-radix-to-base`, and `web-design-guidelines` skills; run
+  `web-design-guidelines` before shipping UI changes.
+
 ## Main areas
 
 - `backend/` — Laravel modular monolith and API.
