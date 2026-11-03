@@ -19,6 +19,7 @@ return [
     'server_error' => 'Server error',
     'invalid_credentials' => 'Invalid credentials',
     'invalid_social_token' => 'Invalid social token',
+    'social_email_not_verified' => 'Your email address is not verified by the provider. Verify it and try again.',
     'active_bookings_block_deletion' => 'Finish or cancel your pending, confirmed, and in-progress bookings before deleting your account',
     'email_already_verified' => 'Email is already verified',
     'verification_code_sent' => 'Verification code sent to your email',

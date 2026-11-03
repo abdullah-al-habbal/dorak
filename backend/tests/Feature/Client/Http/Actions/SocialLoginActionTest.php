@@ -14,6 +14,7 @@ beforeEach(function () {
     $this->user->name = 'Test User';
     $this->user->email = 'social@example.com';
     $this->user->avatar = 'https://example.com/avatar.jpg';
+    $this->user->setRaw(['email_verified' => true]);
 });
 
 it('returns 422 without access_token', function () {
@@ -130,6 +131,7 @@ it('links social account to existing client by email', function () {
     $user->name = 'Link User';
     $user->email = 'linked@example.com';
     $user->avatar = null;
+    $user->setRaw(['email_verified' => true]);
 
     $stateless = Mockery::mock();
     $stateless->shouldReceive('userFromToken')->with('link-token')->andReturn($user);
@@ -146,4 +148,82 @@ it('links social account to existing client by email', function () {
     $response->assertStatus(200);
     expect($response->json('data.client.id'))->toBe($client->id);
     expect($client->socialAccounts()->count())->toBe(1);
+});
+
+function mockSocialUser(string $token, User $user): void
+{
+    $stateless = Mockery::mock();
+    $stateless->shouldReceive('userFromToken')->with($token)->andReturn($user);
+
+    $driver = Mockery::mock();
+    $driver->shouldReceive('stateless')->andReturn($stateless);
+
+    Socialite::shouldReceive('driver')->with('google')->andReturn($driver);
+}
+
+it('refuses to link an existing client when the provider does not verify the email', function (mixed $raw) {
+    $client = ClientModel::factory()->create(['email' => 'victim@example.com']);
+
+    $user = new User;
+    $user->id = 'attacker-uid';
+    $user->name = 'Attacker';
+    $user->email = 'victim@example.com';
+    $user->setRaw($raw);
+    mockSocialUser('unverified-token', $user);
+
+    $this->postJson('/api/v1/client/social/google', ['access_token' => 'unverified-token'])
+        ->assertForbidden()
+        ->assertJsonPath('code', 'SOCIAL_EMAIL_NOT_VERIFIED');
+
+    expect($client->socialAccounts()->count())->toBe(0);
+    $this->assertDatabaseMissing('social_accounts', ['provider_id' => 'attacker-uid']);
+})->with([
+    'flag false' => [['email_verified' => false]],
+    'flag string false' => [['email_verified' => 'false']],
+    'google v2 flag false' => [['verified_email' => false]],
+    'flag missing' => [[]],
+]);
+
+it('does not create a client from an unverified email', function () {
+    $user = new User;
+    $user->id = 'fresh-uid';
+    $user->name = 'Fresh';
+    $user->email = 'fresh@example.com';
+    $user->setRaw(['email_verified' => false]);
+    mockSocialUser('fresh-token', $user);
+
+    $this->postJson('/api/v1/client/social/google', ['access_token' => 'fresh-token'])->assertForbidden();
+
+    $this->assertDatabaseMissing('clients', ['email' => 'fresh@example.com']);
+});
+
+it('links when the provider verifies the email via Google verified_email or a string flag', function (array $raw) {
+    $client = ClientModel::factory()->create(['email' => 'ok@example.com']);
+
+    $user = new User;
+    $user->id = 'ok-uid';
+    $user->name = 'Ok';
+    $user->email = 'ok@example.com';
+    $user->setRaw($raw);
+    mockSocialUser('verified-ok-token', $user);
+
+    $this->postJson('/api/v1/client/social/google', ['access_token' => 'verified-ok-token'])
+        ->assertOk()
+        ->assertJsonPath('data.client.id', $client->id);
+})->with([
+    'google v2' => [['verified_email' => true]],
+    'string true' => [['email_verified' => 'true']],
+]);
+
+it('lets an already linked provider account sign in without re-checking email verification', function () {
+    $client = ClientModel::factory()->create(['email' => 'linked-old@example.com']);
+    SocialAccountModel::factory()->create(['client_id' => $client->id, 'provider' => 'google', 'provider_id' => 'known-uid']);
+
+    $user = new User;
+    $user->id = 'known-uid';
+    $user->name = 'Known';
+    $user->email = 'linked-old@example.com';
+    mockSocialUser('known-token', $user);
+
+    $this->postJson('/api/v1/client/social/google', ['access_token' => 'known-token'])->assertOk();
 });

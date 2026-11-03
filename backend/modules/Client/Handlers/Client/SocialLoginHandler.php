@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Client\Handlers\Client;
 
 use Exception;
+use Laravel\Socialite\AbstractUser as SocialUser;
 use Laravel\Socialite\Facades\Socialite;
 use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
@@ -40,6 +41,10 @@ final class SocialLoginHandler
             $client = $socialAccount->client;
             $isNew = false;
         } else {
+            if (! $this->providerVerifiedEmail($socialUser, $email)) {
+                return SocialLoginResult::emailNotVerified();
+            }
+
             $client = $this->resolver->findClientByEmail($email);
 
             if ($client === null) {
@@ -70,5 +75,27 @@ final class SocialLoginHandler
             clientData: ClientProfileResource::make($client->refresh())->resolve(),
             isNew: $isNew,
         );
+    }
+
+    /**
+     * An email may only link to or create an account when the provider vouches for it
+     * (`email_verified` for OIDC/Apple, `verified_email` for Google's v2 userinfo).
+     * A missing flag counts as unverified.
+     */
+    private function providerVerifiedEmail(SocialUser $socialUser, ?string $email): bool
+    {
+        if ($email === null || $email === '') {
+            return false;
+        }
+
+        $raw = $socialUser->getRaw() ?? [];
+
+        foreach (['email_verified', 'verified_email'] as $flag) {
+            if (array_key_exists($flag, $raw)) {
+                return filter_var($raw[$flag], FILTER_VALIDATE_BOOLEAN);
+            }
+        }
+
+        return false;
     }
 }

@@ -79,3 +79,8 @@ the account is deactivated or banned). Managed barbers without a login cannot re
 - `Modules\Branch\Http\Middleware\EnsureBranchAccountAccess` returns 403 `ACCOUNT_NOT_ACTIVE` when the authenticated branch is not `Enabled`. It is applied to every `auth:branch_api` route (branch, settings, reviews, activation, chairs, notifications, device token) except `POST /branch/logout`, and passes other account types through.
 - `EnsureBarberAccountAccess` (default `active` scope) also rejects a barber whose `managed_by_branch_id` branch is `Disabled`.
 - Tests: `tests/Feature/Auth/BranchGatingTest.php`.
+
+## Social login email verification (Gap G9)
+
+- `SocialLoginHandler` requires the provider's verified-email flag (`email_verified` / `verified_email`, bool or string) before linking an existing client by email or creating a new one. Failure returns 403 `SOCIAL_EMAIL_NOT_VERIFIED` (`core::messages.social_email_not_verified`, EN+AR). Providers already linked by id are unaffected.
+- Tests: `tests/Feature/Client/Http/Actions/SocialLoginActionTest.php`.

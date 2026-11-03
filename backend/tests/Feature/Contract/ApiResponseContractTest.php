@@ -693,6 +693,7 @@ describe('Social Login API', function () {
         $user->name = 'Google User';
         $user->email = 'google@example.com';
         $user->avatar = null;
+        $user->setRaw(['email_verified' => true]);
 
         $stateless = Mockery::mock();
         $stateless->shouldReceive('userFromToken')->with('valid-token')->andReturn($user);
@@ -725,6 +726,7 @@ describe('Social Login API', function () {
         $user->name = 'Existing User';
         $user->email = 'existing@example.com';
         $user->avatar = null;
+        $user->setRaw(['email_verified' => true]);
 
         $stateless = Mockery::mock();
         $stateless->shouldReceive('userFromToken')->with('token-456-google')->andReturn($user);
@@ -750,6 +752,7 @@ describe('Social Login API', function () {
         $user->name = 'Same Email';
         $user->email = 'same@example.com';
         $user->avatar = null;
+        $user->setRaw(['email_verified' => true]);
 
         $stateless = Mockery::mock();
         $stateless->shouldReceive('userFromToken')->with('token-789-google')->andReturn($user);

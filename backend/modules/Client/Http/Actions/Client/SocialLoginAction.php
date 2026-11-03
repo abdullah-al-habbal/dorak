@@ -28,6 +28,10 @@ final class SocialLoginAction extends BaseApiAction
             return $this->forbidden(message: $this->trans('activation::messages.account_not_active'), code: 'ACCOUNT_NOT_ACTIVE');
         }
 
+        if ($result->isEmailNotVerified()) {
+            return $this->forbidden(message: $this->trans('core::messages.social_email_not_verified'), code: 'SOCIAL_EMAIL_NOT_VERIFIED');
+        }
+
         if ($result->isInvalidToken()) {
             return $this->unauthorized(message: $this->trans('core::messages.invalid_social_token'));
         }

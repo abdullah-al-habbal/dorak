@@ -36,6 +36,22 @@ final readonly class SocialLoginResult
         );
     }
 
+    public static function emailNotVerified(): self
+    {
+        return new self(
+            success: false,
+            failureReason: 'email_not_verified',
+            token: null,
+            client: null,
+            isNew: null,
+        );
+    }
+
+    public function isEmailNotVerified(): bool
+    {
+        return $this->failureReason === 'email_not_verified';
+    }
+
     public function isInvalidToken(): bool
     {
         return $this->failureReason === 'invalid_token';

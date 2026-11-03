@@ -33,7 +33,7 @@ it('returns the same 9-key client object from login, register, social login and 
     ])->assertSuccessful()->assertJsonStructure(['data' => ['token', 'client' => clientPayloadKeys()]]);
 
     $social = SocialUser::class;
-    $user = (new $social)->map(['id' => 'g-1', 'name' => 'Social Person', 'email' => 'social@example.com', 'avatar' => null]);
+    $user = (new $social)->map(['id' => 'g-1', 'name' => 'Social Person', 'email' => 'social@example.com', 'avatar' => null])->setRaw(['email_verified' => true]);
     $stateless = Mockery::mock();
     $stateless->shouldReceive('userFromToken')->andReturn($user);
     $driver = Mockery::mock();
