@@ -53,6 +53,7 @@ export const DASHBOARD_PROXY_ROUTE_RULES: ReadonlyArray<{
     method: "PATCH",
     path: /^admin\/reviews\/[A-Za-z0-9-]+\/resolve$/,
   },
+  { method: "PATCH", path: /^admin\/brands\/[A-Za-z0-9-]+\/approve$/ },
   { method: "GET", path: /^admin\/exchange-rates$/ },
   { method: "GET", path: /^admin\/catalog-(categories|tags)$/ },
   { method: "GET", path: /^admin\/catalog-items$/ },

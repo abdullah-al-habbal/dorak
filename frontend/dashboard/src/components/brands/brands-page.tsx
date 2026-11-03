@@ -10,11 +10,17 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useSession } from "@/hooks/use-session";
 import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
 import {
+  notifyApiError,
+  notifySuccess,
+} from "@/services/api/core/notifications";
+import { BRAND_QUERY_KEYS } from "@/services/api/dashboard/brands/brands.constant";
+import {
+  approveBrand,
   brandsQueryKey,
   getBrands,
 } from "@/services/api/dashboard/brands/brands.query";
 import type { IBrand } from "@/services/api/dashboard/brands/types/ibrand.types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { FormEvent } from "react";
 
@@ -24,6 +30,16 @@ export function BrandsPage() {
   const session = useSession();
   // A brand belongs to a client account, so only an owner can start a new one.
   const canCreate = session.actor === "owner";
+  const canApprove = session.actor === "admin";
+  const queryClient = useQueryClient();
+  const approve = useMutation({
+    mutationFn: approveBrand,
+    onSuccess: async () => {
+      notifySuccess(copy.approved);
+      await queryClient.invalidateQueries({ queryKey: BRAND_QUERY_KEYS.list });
+    },
+    onError: (error) => notifyApiError(error, dictionary),
+  });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [editing, setEditing] = useState<IBrand | null>(null);
@@ -86,6 +102,16 @@ export function BrandsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge>{copy.universes[brand.universe]}</Badge>
+                  <Badge>{copy.statuses[brand.status]}</Badge>
+                  {canApprove && brand.status === "pending" ? (
+                    <Button
+                      size="sm"
+                      isDisabled={approve.isPending}
+                      onPress={() => approve.mutate(brand.id)}
+                    >
+                      {copy.approve}
+                    </Button>
+                  ) : null}
                   <Button
                     size="sm"
                     appearance="outline"

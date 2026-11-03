@@ -30,6 +30,12 @@ export function createBrand(form: IBrandForm) {
   );
 }
 
+export function approveBrand(id: string) {
+  return api.patch<unknown>(
+    DashboardEndpoints.resourceAction("admin/brands", id, "approve"),
+  );
+}
+
 export function updateBrand(id: string, form: IBrandForm) {
   return api.put<unknown>(
     DashboardEndpoints.resourceById("brands", id),

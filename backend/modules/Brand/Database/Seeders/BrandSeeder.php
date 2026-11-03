@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Brand\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
@@ -25,6 +26,7 @@ class BrandSeeder extends Seeder
             'description' => ['en' => 'Demo brand for development', 'ar' => 'علامة تجريبية للتطوير'],
             'logo_url' => null,
             'base_currency_code' => $syp->code,
+            'status' => BrandStatusEnum::Active,
         ]);
     }
 }

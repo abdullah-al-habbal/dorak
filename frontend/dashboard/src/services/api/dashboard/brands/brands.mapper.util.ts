@@ -1,4 +1,7 @@
-import { BRAND_UNIVERSES } from "@/services/api/dashboard/brands/brands.constant";
+import {
+  BRAND_STATUSES,
+  BRAND_UNIVERSES,
+} from "@/services/api/dashboard/brands/brands.constant";
 import { BrandSchema } from "@/services/api/dashboard/brands/schemas/brands.schema";
 import type { IBrand } from "@/services/api/dashboard/brands/types/ibrand.types";
 import { isRecord } from "@/utils/guards.util";
@@ -23,6 +26,11 @@ function universe(value: unknown) {
   return BRAND_UNIVERSES.find((option) => option === value) ?? "unisex";
 }
 
+function status(value: unknown) {
+  // Brands predating the approval gate are active.
+  return BRAND_STATUSES.find((option) => option === value) ?? "active";
+}
+
 export function mapBrand(wire: unknown): IBrand {
   const item = record(wire);
   const currency = record(item.base_currency);
@@ -33,6 +41,7 @@ export function mapBrand(wire: unknown): IBrand {
     logoUrl: nullableText(item.logo_url),
     slug: nullableText(item.slug),
     universe: universe(item.universe),
+    status: status(item.status),
     baseCurrencyCode: nullableText(currency.code),
     branchesCount:
       typeof item.branches_count === "number" ? item.branches_count : 0,

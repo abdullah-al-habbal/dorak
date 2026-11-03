@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Modules\Brand\Http\Actions\Admin\ApproveBrandAction;
 use Modules\Commission\Http\Actions\Admin\DestroyCommissionRuleAction;
 use Modules\Commission\Http\Actions\Admin\ListCommissionEntriesAction;
 use Modules\Commission\Http\Actions\Admin\ListCommissionRulesAction;
@@ -123,6 +124,7 @@ Route::prefix('dashboard')->group(function (): void {
     });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardAdminAuthorizationMiddleware::class])->prefix('admin')->group(function (): void {
+        Route::patch('/brands/{brand}/approve', ApproveBrandAction::class);
         Route::get('/reviews', ListAdminReviewsAction::class);
         Route::patch('/reviews/{review}/resolve', ResolveReviewDisputeAction::class);
         Route::get('/exchange-rates', ListExchangeRatesAction::class);

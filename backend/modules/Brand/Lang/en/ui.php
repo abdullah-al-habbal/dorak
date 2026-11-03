@@ -11,5 +11,7 @@ return [
     'name' => 'Name',
     'name_arabic' => 'Name (Arabic)',
     'name_english' => 'Name (English)',
+    'approve' => 'Approve',
     'owner' => 'Owner',
+    'status' => 'Status',
 ];

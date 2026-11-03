@@ -3,6 +3,8 @@ import type { IBrandForm } from "@/services/api/dashboard/brands/types/ibrand-fo
 
 export const BRAND_UNIVERSES = VENUE_UNIVERSES;
 
+export const BRAND_STATUSES = ["pending", "active"] as const;
+
 export const BRAND_QUERY_KEYS = {
   list: ["dashboard", "brands"],
   lookups: ["lookups", "brands"],

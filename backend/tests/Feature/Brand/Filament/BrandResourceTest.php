@@ -6,6 +6,7 @@ use Filament\Facades\Filament;
 use Livewire\Livewire;
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Filament\Panels\Admin\Resources\BrandResource\Pages\CreateBrandPage;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
@@ -54,5 +55,6 @@ it('gives a brand created in the admin panel its first branch', function () {
 
     $brand = BrandModel::query()->where('owner_id', $owner->id)->sole();
     expect(BranchModel::query()->where('brand_id', $brand->id)->count())->toBe(1)
-        ->and($brand->slug)->toBe('panel-brand');
+        ->and($brand->slug)->toBe('panel-brand')
+        ->and($brand->status)->toBe(BrandStatusEnum::Active);
 });

@@ -18,9 +18,6 @@ Routes: [documentation graph](index.md).
 
 Source: [product audit](planning/product-audit-part-3.md). Launch-readiness items (G5 SMS driver, G8 staff password routes) need engineering, not a product call.
 
-## Audit G2: Brand Verification
-- [x] Decided: admins approve brands (status gate pending → active). Remove this entry once implemented.
-
 ## Audit G4: Earnings and Plan Visibility
 - [x] Decided: the owner sees full plans and earnings, the manager sees branch earnings, the stylist sees personal earnings. Remove this entry once implemented.
 

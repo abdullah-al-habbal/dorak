@@ -16,7 +16,7 @@ final class ShowBrandAction extends BaseApiAction
 {
     public function __invoke(Request $request, string $brand): JsonResponse
     {
-        $brand = BrandModel::with(['owner', 'baseCurrency', 'branches'])->findOrFail($brand);
+        $brand = BrandModel::active()->with(['owner', 'baseCurrency', 'branches'])->findOrFail($brand);
         $brand->setRelation('branches', $brand->branches
             ->filter(fn (BranchModel $branch): bool => $branch->isEnabled && ! $branch->bans()
                 ->where('banned_at', '<=', now())

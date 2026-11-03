@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { BRAND_UNIVERSES } from "@/services/api/dashboard/brands/brands.constant";
+import {
+  BRAND_STATUSES,
+  BRAND_UNIVERSES,
+} from "@/services/api/dashboard/brands/brands.constant";
 
 const localized = z.object({ en: z.string(), ar: z.string() });
 
@@ -10,6 +13,7 @@ export const BrandSchema = z.object({
   logoUrl: z.string().nullable(),
   slug: z.string().nullable(),
   universe: z.enum(BRAND_UNIVERSES),
+  status: z.enum(BRAND_STATUSES),
   baseCurrencyCode: z.string().nullable(),
   branchesCount: z.number(),
 });

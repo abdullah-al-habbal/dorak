@@ -87,6 +87,7 @@ describe("isDashboardRouteAllowed", () => {
     ["PATCH", ["admin", "payouts", "po-1", "mark-paid"]],
     ["PATCH", ["admin", "payouts", "po-1", "cancel"]],
     ["GET", ["admin", "analytics", "overview"]],
+    ["PATCH", ["admin", "brands", "brand-1", "approve"]],
     ["PUT", ["brands", "brand-1"]],
   ] as [string, readonly string[]][])("allows %s %s", (method, path) => {
     expect(isDashboardRouteAllowed(method, path)).toBe(true);

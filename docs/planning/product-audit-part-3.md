@@ -15,7 +15,7 @@ Part 3 of 3 · [Overview](product-audit.md) · [Matrix](product-audit-part-2.md)
 | ID | Sev. | Finding |
 |---|---|---|
 | G1 | Major | **Resolved.** Stylists upload and tag (before/after/reference) history media on visits assigned to them via `POST /barber/history/{history}/media` (403 for anyone else's visit); stylist_app offers it from completed appointment cards and the client history screen. |
-| G2 | Major | Brands have no status; any verified client can create a brand and become an owner. |
+| G2 | Major | **Resolved.** Brands have a `status` (`pending` → `active`). A brand created through the API or dashboard starts `pending`; a platform admin approves it (`POST /admin/brands/{brand}/approve`, `PATCH /dashboard/admin/brands/{brand}/approve`, the dashboard Brands page, or the Filament Approve action). A pending brand is hidden from the public list/detail, and its branches cannot sign in, use the branch API or appear in discovery. Brands that existed before the gate were backfilled `active`. |
 | G3 | Major | **Resolved.** business_app and stylist_app now list reviews and let a manager or stylist dispute a published one (reason 10–1000 characters); admins resolve in the dashboard. |
 | G4 | Major | Owner, manager and stylist cannot see plan limits, earnings or payouts; those APIs are admin-only. |
 | G5 | Major | Phone OTP uses the log-only SMS driver, so it is not launch-ready. |

@@ -11,4 +11,5 @@ BrandDto _$BrandDtoFromJson(Map<String, dynamic> json) => BrandDto(
   name: Map<String, String>.from(json['name'] as Map),
   logoUrl: json['logo_url'] as String?,
   slug: json['slug'] as String?,
+  status: json['status'] as String?,
 );

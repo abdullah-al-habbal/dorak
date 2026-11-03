@@ -7,7 +7,6 @@ namespace Modules\Branch\Handlers\Branch;
 use Illuminate\Support\Facades\Hash;
 use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Branch\CQRS\Command\Branch\LoginCommand;
-use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Repositories\BranchLoginEloquentResolver;
 use Modules\Branch\ValuesObjects\BranchLoginResult;
 
@@ -25,7 +24,7 @@ final class LoginHandler
             return BranchLoginResult::invalidCredentials();
         }
 
-        if ($branch->getAttribute('status') !== BranchStatusEnum::Enabled) {
+        if (! $branch->isOperational()) {
             throw new AccountNotActiveException;
         }
 

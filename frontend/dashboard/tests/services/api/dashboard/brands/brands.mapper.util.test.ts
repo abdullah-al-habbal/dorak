@@ -11,6 +11,7 @@ describe("mapBrand", () => {
         logo_url: "https://x.test/l.png",
         slug: "cuts",
         universe: "men",
+        status: "pending",
         base_currency: { id: "cur1", code: "SAR" },
         branches_count: 3,
       }),
@@ -21,6 +22,7 @@ describe("mapBrand", () => {
       logoUrl: "https://x.test/l.png",
       slug: "cuts",
       universe: "men",
+      status: "pending",
       baseCurrencyCode: "SAR",
       branchesCount: 3,
     });
@@ -29,6 +31,7 @@ describe("mapBrand", () => {
   it("falls back for a sparse payload and unknown universe", () => {
     const brand = mapBrand({ id: "b2", universe: "robots" });
     expect(brand.universe).toBe("unisex");
+    expect(brand.status).toBe("active");
     expect(brand.baseCurrencyCode).toBeNull();
     expect(brand.branchesCount).toBe(0);
   });

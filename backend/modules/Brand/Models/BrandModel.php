@@ -7,6 +7,7 @@ namespace Modules\Brand\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,7 @@ use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\VenueUniverse;
 use Modules\Currency\Models\CurrencyModel;
@@ -27,7 +29,7 @@ use Modules\Preference\Models\PreferenceModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['owner_id', 'name', 'slug', 'universe', 'description', 'logo_url', 'base_currency_code'])]
+#[Fillable(['owner_id', 'name', 'slug', 'universe', 'description', 'logo_url', 'base_currency_code', 'status'])]
 #[Table('brands')]
 #[Translatable([
     'name',
@@ -81,9 +83,24 @@ class BrandModel extends Model
     {
         return [
             'universe' => VenueUniverse::class,
+            'status' => BrandStatusEnum::class,
             'description' => 'array',
             'name' => 'array',
         ];
+    }
+
+    public function isActive(): bool
+    {
+        return $this->getAttribute('status') === BrandStatusEnum::Active;
+    }
+
+    /**
+     * @param  Builder<BrandModel>  $query
+     * @return Builder<BrandModel>
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', BrandStatusEnum::Active->value);
     }
 
     public function owner(): BelongsTo

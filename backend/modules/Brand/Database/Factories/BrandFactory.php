@@ -7,6 +7,7 @@ namespace Modules\Brand\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
@@ -14,6 +15,11 @@ use Modules\Currency\Models\CurrencyModel;
 #[UseModel(BrandModel::class)]
 class BrandFactory extends Factory
 {
+    public function pending(): static
+    {
+        return $this->state(['status' => BrandStatusEnum::Pending]);
+    }
+
     public function definition(): array
     {
         return [
@@ -27,6 +33,7 @@ class BrandFactory extends Factory
                 'ar' => fake('ar_SA')->sentence(),
             ],
             'logo_url' => null,
+            'status' => BrandStatusEnum::Active,
             'base_currency_code' => fn () => CurrencyModel::factory()->create()->code,
         ];
     }

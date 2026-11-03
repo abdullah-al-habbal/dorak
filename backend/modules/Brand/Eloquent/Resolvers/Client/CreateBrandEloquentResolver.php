@@ -6,6 +6,7 @@ namespace Modules\Brand\Eloquent\Resolvers\Client;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Brand\CQRS\Command\Client\CreateBrandCommand;
+use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\FirstBranchProvisioner;
 
@@ -30,6 +31,7 @@ final class CreateBrandEloquentResolver
                 'base_currency_code' => $command->baseCurrencyCode,
                 'logo_url' => $command->logoUrl,
                 'universe' => $command->universe,
+                'status' => BrandStatusEnum::Pending,
             ]);
 
             $this->firstBranch->provision(

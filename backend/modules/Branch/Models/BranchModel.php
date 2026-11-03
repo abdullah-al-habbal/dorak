@@ -69,6 +69,7 @@ class BranchModel extends Authenticatable implements FilamentUser
     public function scopeDiscoverable(Builder $query): Builder
     {
         return $query->where('status', BranchStatusEnum::Enabled->value)
+            ->whereHas('brand', fn ($brand) => $brand->active())
             ->whereDoesntHave('bans', fn ($bans) => $bans
                 ->where('banned_at', '<=', now())
                 ->where(fn ($activeBans) => $activeBans
@@ -108,6 +109,18 @@ class BranchModel extends Authenticatable implements FilamentUser
     public function reviews(): MorphMany
     {
         return $this->morphMany(ReviewModel::class, 'subject');
+    }
+
+    /** Enabled, and its brand (if any) has been approved by a platform admin (G2). */
+    public function isOperational(): bool
+    {
+        if ($this->getAttribute('status') !== BranchStatusEnum::Enabled) {
+            return false;
+        }
+
+        $brand = $this->brand;
+
+        return $brand === null || $brand->isActive();
     }
 
     /** @return Attribute<bool, never> */

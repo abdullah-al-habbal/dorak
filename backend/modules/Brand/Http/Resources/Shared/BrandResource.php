@@ -26,6 +26,7 @@ final class BrandResource extends JsonResource
             ]),
             'slug' => $this->offsetGet('slug'),
             'universe' => $this->offsetGet('universe'),
+            'status' => $this->offsetGet('status'),
             'branches_count' => $this->offsetGet('branches_count') !== null
                 ? (int) $this->offsetGet('branches_count')
                 : $this->whenLoaded('branches', fn () => $this->branches->count()),

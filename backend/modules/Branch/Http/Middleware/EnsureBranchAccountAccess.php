@@ -7,7 +7,6 @@ namespace Modules\Branch\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 
 /**
@@ -25,7 +24,7 @@ final class EnsureBranchAccountAccess
             return $next($request);
         }
 
-        if ($branch->getAttribute('status') !== BranchStatusEnum::Enabled) {
+        if (! $branch->isOperational()) {
             return response()->json([
                 'success' => false,
                 'statusCode' => 403,

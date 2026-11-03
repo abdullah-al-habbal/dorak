@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Branch\Handlers\Branch;
 
 use Modules\Activation\Exceptions\AccountNotActiveException;
-use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 
 final class RefreshTokenHandler
@@ -15,7 +14,7 @@ final class RefreshTokenHandler
      */
     public function handle(BranchModel $branch): string
     {
-        if ($branch->getAttribute('status') !== BranchStatusEnum::Enabled) {
+        if (! $branch->isOperational()) {
             throw new AccountNotActiveException;
         }
 
