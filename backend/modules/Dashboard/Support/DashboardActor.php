@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Support;
 
+use Illuminate\Contracts\Auth\Access\Authorizable;
+use Illuminate\Support\Facades\Gate;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 
-final readonly class DashboardActor
+final readonly class DashboardActor implements Authorizable
 {
     /**
      * @param  list<string>  $brandIds  brands a brand owner owns
@@ -21,6 +23,12 @@ final readonly class DashboardActor
         public array $brandIds = [],
         public array $branchIds = [],
     ) {}
+
+    /** Lets policies authorize a dashboard actor through the Gate like any other user. */
+    public function can($abilities, $arguments = []): bool
+    {
+        return Gate::forUser($this)->check($abilities, $arguments);
+    }
 
     public function isPlatformAdmin(): bool
     {

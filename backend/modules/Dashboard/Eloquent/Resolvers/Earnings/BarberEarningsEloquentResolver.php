@@ -13,6 +13,7 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Dashboard\Constants\DashboardEarningsConstants;
 use Modules\Dashboard\CQRS\Query\ShowEarningsQuery;
+use Modules\OfferedService\Services\EffectiveServiceTerms;
 
 /**
  * A stylist's personal gross revenue from their own completed bookings, per
@@ -22,6 +23,8 @@ use Modules\Dashboard\CQRS\Query\ShowEarningsQuery;
  */
 final class BarberEarningsEloquentResolver
 {
+    public function __construct(private readonly EffectiveServiceTerms $serviceTerms) {}
+
     /** @return list<array{currency_code: string, gross_minor: int, net_minor: int|null, completed_bookings_count: int}> */
     public function resolve(ShowEarningsQuery $query): array
     {
@@ -34,13 +37,15 @@ final class BarberEarningsEloquentResolver
             ->get();
 
         $percentByBranch = $this->percentByBranch($query->actorId, $bookings);
+        $prices = $this->serviceTerms->priceOverridesFor($bookings);
         $totals = [];
 
         foreach ($bookings as $booking) {
-            $percent = $percentByBranch[(string) ($booking->branch_id ?? $booking->chair?->branch_id)] ?? null;
+            $branchId = (string) ($booking->branch_id ?? $booking->chair?->branch_id);
+            $percent = $percentByBranch[$branchId] ?? null;
 
             foreach ($booking->services->groupBy('currency_code') as $currency => $services) {
-                $gross = (int) $services->sum('price_amount_minor');
+                $gross = (int) $services->sum(fn ($service): int => $prices[$branchId][$service->getKey()] ?? (int) $service->price_amount_minor);
                 $row = $totals[$currency] ?? ['gross' => 0, 'net' => 0, 'covered' => true, 'ids' => []];
                 $row['gross'] += $gross;
                 $row['ids'][$booking->getKey()] = true;

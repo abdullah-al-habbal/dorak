@@ -31,10 +31,14 @@ use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\OfferedService\Services\EffectiveServiceTerms;
 
 final class CreateBookingEloquentResolver
 {
-    public function __construct(private readonly BranchHours $branchHours) {}
+    public function __construct(
+        private readonly BranchHours $branchHours,
+        private readonly EffectiveServiceTerms $serviceTerms,
+    ) {}
 
     public function resolve(CreateBookingCommand $command): BookingModel
     {
@@ -83,10 +87,12 @@ final class CreateBookingEloquentResolver
             );
         }
 
+        $brandId = $this->serviceTerms->brandIdForBranch($branchId);
+        $this->serviceTerms->attach($services, $brandId);
         $totalDuration = 0;
 
         foreach ($services as $service) {
-            $duration = $service->getAttribute('duration_minutes');
+            $duration = $service->effectiveDurationMinutes();
 
             if (! is_int($duration) || $duration < 1) {
                 throw new InvalidBookingServicesException;
@@ -194,7 +200,7 @@ final class CreateBookingEloquentResolver
 
         return match ($service->getAttribute('serviceable_type')) {
             ServiceableTypeEnum::Barber => $barberId !== null && $ownerId === $barberId,
-            ServiceableTypeEnum::Brand => $branchId !== null && $ownerId === BranchModel::query()->whereKey($branchId)->value('brand_id'),
+            ServiceableTypeEnum::Brand => $branchId !== null && $ownerId === $this->serviceTerms->brandIdForBranch($branchId),
             default => false,
         };
     }

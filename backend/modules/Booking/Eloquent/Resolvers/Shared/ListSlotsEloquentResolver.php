@@ -14,10 +14,14 @@ use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Services\BranchHours;
 use Modules\Chair\Models\ChairModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\OfferedService\Services\EffectiveServiceTerms;
 
 final class ListSlotsEloquentResolver
 {
-    public function __construct(private readonly BranchHours $branchHours) {}
+    public function __construct(
+        private readonly BranchHours $branchHours,
+        private readonly EffectiveServiceTerms $serviceTerms,
+    ) {}
 
     /**
      * @return list<array{starts_at: Carbon, ends_at: Carbon}>
@@ -86,10 +90,11 @@ final class ListSlotsEloquentResolver
             AtHomeBookingRules::ensure($query->barberId, $services, $query->atHomeLatitude, $query->atHomeLongitude);
         }
 
+        $this->serviceTerms->attach($services, $this->serviceTerms->brandIdForBranch($this->slotBranchId($query)));
         $total = 0;
 
         foreach ($services as $service) {
-            $duration = $service->getAttribute('duration_minutes');
+            $duration = $service->effectiveDurationMinutes();
 
             if (! is_int($duration) || $duration < 1) {
                 throw new InvalidBookingServicesException;

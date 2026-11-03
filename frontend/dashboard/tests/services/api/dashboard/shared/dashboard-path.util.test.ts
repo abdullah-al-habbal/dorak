@@ -25,6 +25,9 @@ describe("isDashboardRouteAllowed", () => {
       ["PUT", [root, "item-1"]],
       ["DELETE", [root, "item-1"]],
     ]),
+    ["GET", ["barbers", "barber-1", "services"]],
+    ["PUT", ["barbers", "barber-1", "services", "service-1", "override"]],
+    ["DELETE", ["barbers", "barber-1", "services", "service-1", "override"]],
     ["GET", ["branches", "branch-1", "floor-plan"]],
     ["PATCH", ["branches", "branch-1", "floor-plan"]],
     ["GET", ["branches", "branch-1", "reviews"]],
@@ -136,6 +139,11 @@ describe("isDashboardRouteAllowed", () => {
     ["PUT", ["admin", "subscriptions", "sub-1"]],
     ["POST", ["admin", "analytics", "overview"]],
     ["DELETE", ["brands", "brand-1"]],
+    ["POST", ["barbers", "barber-1", "services"]],
+    ["GET", ["barbers", "barber-1", "services", "service-1", "override"]],
+    ["POST", ["barbers", "barber-1", "services", "service-1", "override"]],
+    ["PATCH", ["barbers", "barber-1", "services", "service-1", "override"]],
+    ["GET", ["barbers", "barber-1"]],
   ] as [string, readonly string[]][])("rejects %s %s", (method, path) => {
     expect(isDashboardRouteAllowed(method, path)).toBe(false);
   });

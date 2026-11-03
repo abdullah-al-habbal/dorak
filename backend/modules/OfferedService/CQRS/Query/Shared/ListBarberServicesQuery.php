@@ -8,5 +8,6 @@ final readonly class ListBarberServicesQuery
 {
     public function __construct(
         public string $barberId,
+        public ?string $branchId = null,
     ) {}
 }

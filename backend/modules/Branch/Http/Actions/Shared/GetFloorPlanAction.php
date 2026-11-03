@@ -14,16 +14,23 @@ use Modules\Chair\Models\ChairModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\OfferedService\Http\Resources\Shared\MenuServiceResource;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\OfferedService\Services\EffectiveServiceTerms;
 
 final class GetFloorPlanAction extends BaseApiAction
 {
     public function __construct(
         private readonly GetFloorPlanHandler $handler,
+        private readonly EffectiveServiceTerms $serviceTerms,
     ) {}
 
     public function __invoke(GetFloorPlanRequest $request, string $branch): JsonResponse
     {
         $branchModel = $this->handler->handle($request->toQuery($branch));
+        $brandId = $branchModel->getAttribute('brand_id') === null ? null : (string) $branchModel->getAttribute('brand_id');
+        $this->serviceTerms->attach(
+            $branchModel->chairs->flatMap(fn (ChairModel $chair) => $chair->barber?->services ?? []),
+            $brandId,
+        );
 
         return $this->ok([
             'branch_id' => $branchModel->id,

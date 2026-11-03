@@ -18,8 +18,5 @@ Routes: [documentation graph](index.md).
 
 Source: [product audit](planning/product-audit-part-3.md). Launch-readiness items (G5 SMS driver, G8 staff password routes) need engineering, not a product call.
 
-## Audit G6: Owner-Set Barber Pricing
-- [x] Decided: owners may override a barber's price and duration. Remove this entry once implemented.
-
 ## Audit G10 / G11: Business and Stylist App Scope
 - [ ] [NEEDSHIL] business_app lacks services, hours, staff list, disputes and inbox; stylist_app lacks past appointments, services, inbox and earnings. **Decision required:** which of these ship in the MVP?

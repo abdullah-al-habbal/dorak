@@ -12,8 +12,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\OfferedService\Constants\ServiceOverrideConstants;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 use Spatie\Translatable\Attributes\Translatable;
@@ -96,6 +98,47 @@ class OfferedServiceModel extends Model
     public function currency(): BelongsTo
     {
         return $this->belongsTo(CurrencyModel::class, 'currency_code', 'code');
+    }
+
+    /** @return HasMany<BarberServiceOverrideModel, $this> */
+    public function overrides(): HasMany
+    {
+        return $this->hasMany(BarberServiceOverrideModel::class, 'offered_service_id');
+    }
+
+    /**
+     * Price in minor units after the brand override set through
+     * `EffectiveServiceTerms::attach()`, else the service's own default.
+     */
+    public function effectivePriceAmountMinor(): int
+    {
+        return $this->activeOverride()?->price_amount_minor ?? (int) $this->getAttribute('price_amount_minor');
+    }
+
+    public function effectiveDurationMinutes(): ?int
+    {
+        return $this->activeOverride()?->duration_minutes ?? $this->getAttribute('duration_minutes');
+    }
+
+    public function hasBrandOverride(): bool
+    {
+        return $this->activeOverride() !== null;
+    }
+
+    public function hasBrandContext(): bool
+    {
+        return $this->relationLoaded(ServiceOverrideConstants::SERVICE_OVERRIDE_ACTIVE_RELATION);
+    }
+
+    private function activeOverride(): ?BarberServiceOverrideModel
+    {
+        if (! $this->hasBrandContext()) {
+            return null;
+        }
+
+        $override = $this->getRelation(ServiceOverrideConstants::SERVICE_OVERRIDE_ACTIVE_RELATION);
+
+        return $override instanceof BarberServiceOverrideModel ? $override : null;
     }
 
     /** @return BelongsTo<ServiceCatalogItemModel, $this> */

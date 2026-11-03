@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Barber\Services;
 
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
@@ -38,6 +39,30 @@ final class BarberBranchMembership
                             ->where('affiliable_id', $branch->brand_id);
                     });
                 }
+            })
+            ->exists();
+    }
+
+    /** Whether a barber works for a brand: managed by one of its branches, or affiliated (Active) with the brand or one of its branches. */
+    public function belongsToBrand(string $barberId, string $brandId): bool
+    {
+        $branchIds = BranchModel::query()->where('brand_id', $brandId)->select('id');
+
+        $managedByBrand = BarberModel::query()
+            ->whereKey($barberId)
+            ->whereIn('managed_by_branch_id', $branchIds)
+            ->exists();
+
+        if ($managedByBrand) {
+            return true;
+        }
+
+        return BarberAffiliationModel::query()
+            ->where('barber_id', $barberId)
+            ->where('status', AffiliationStatus::Active->value)
+            ->where(function ($query) use ($brandId, $branchIds): void {
+                $query->where(fn ($brand) => $brand->where('affiliable_type', AffiliableType::Brand->value)->where('affiliable_id', $brandId))
+                    ->orWhere(fn ($branch) => $branch->where('affiliable_type', AffiliableType::Branch->value)->whereIn('affiliable_id', $branchIds));
             })
             ->exists();
     }

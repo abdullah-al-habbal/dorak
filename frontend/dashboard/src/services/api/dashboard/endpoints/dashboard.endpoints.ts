@@ -77,4 +77,12 @@ export const DashboardEndpoints = {
     `${DASHBOARD_API_BASE_PATH}/bookings/${encodeURIComponent(id)}/reschedule`,
   bookingReview: (id: string) =>
     `${DASHBOARD_API_BASE_PATH}/bookings/${encodeURIComponent(id)}/review`,
+  barberServices: (barberId: string, brandId: string) =>
+    `${DASHBOARD_API_BASE_PATH}/barbers/${encodeURIComponent(barberId)}/services?brand_id=${encodeURIComponent(brandId)}`,
+  barberServiceOverride: (
+    barberId: string,
+    serviceId: string,
+    brandId?: string,
+  ) =>
+    `${DASHBOARD_API_BASE_PATH}/barbers/${encodeURIComponent(barberId)}/services/${encodeURIComponent(serviceId)}/override${brandId === undefined ? "" : `?brand_id=${encodeURIComponent(brandId)}`}`,
 } as const;

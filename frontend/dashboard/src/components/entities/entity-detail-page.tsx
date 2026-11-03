@@ -8,6 +8,7 @@ import type { DashboardResource } from "@/services/api/dashboard/shared/types/da
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { apiErrorMessage } from "@/services/api/core/api-error-message.util";
+import { ROUTES } from "@/config/routes.constant";
 
 interface EntityDetailPageProps {
   actor: OperationsActor;
@@ -51,12 +52,23 @@ export function EntityDetailPage({
             {dictionary.common.nav[resource]}
           </p>
         </div>
-        <Link
-          className="rounded-lg border border-button-primary-outline-stroke px-4 py-2 text-sm text-button-primary-outline-text"
-          href={`/${actor}/${resource}`}
-        >
-          {dictionary.operations.backToList}
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          {resource === "stylists" &&
+          (actor === "owner" || actor === "admin") ? (
+            <Link
+              className="rounded-lg border border-button-primary-outline-stroke px-4 py-2 text-sm text-button-primary-outline-text"
+              href={ROUTES.operations.stylistPricing(actor, id)}
+            >
+              {dictionary.barberServiceTerms.pricingLink}
+            </Link>
+          ) : null}
+          <Link
+            className="rounded-lg border border-button-primary-outline-stroke px-4 py-2 text-sm text-button-primary-outline-text"
+            href={`/${actor}/${resource}`}
+          >
+            {dictionary.operations.backToList}
+          </Link>
+        </div>
       </div>
       <dl className="grid gap-4 rounded-xl border border-border-primary bg-card-primary p-5 sm:grid-cols-2">
         {values.map(([key, value]) => (

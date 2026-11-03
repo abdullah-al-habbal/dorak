@@ -21,7 +21,7 @@ Part 2 of 3 · [Overview](product-audit.md) · [Findings](product-audit-part-3.m
 | Admin | Brand verification | No status or route (G2) | Filament record only | confirmed |
 | Owner | Create brand, then branch | OK | Dashboard, client app | high |
 | Owner | Floor plan, chairs, stylists, affiliations, jobs | OK | Dashboard (floor plan is a form, not a canvas) | high |
-| Owner | Services, price, duration | Brand level only (G6) | Dashboard | high |
+| Owner | Services, price, duration | Brand level, plus per-brand override of a barber's price and duration (G6 resolved) | Dashboard | confirmed |
 | Owner | Bookings search and filter, reviews | OK | Dashboard | high |
 | Owner | Subscription, features, earnings, payouts | `GET /dashboard/subscription`, `/earnings`, `/payouts` (G4 resolved) | Dashboard | confirmed |
 | Manager | Bookings, chairs, floor plan | OK | business_app, dashboard | high |

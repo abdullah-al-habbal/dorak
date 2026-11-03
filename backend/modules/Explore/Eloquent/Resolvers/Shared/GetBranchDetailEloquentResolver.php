@@ -13,10 +13,14 @@ use Modules\Chair\Models\ChairModel;
 use Modules\Explore\CQRS\Query\Shared\GetBranchDetailQuery;
 use Modules\OfferedService\Http\Resources\Shared\MenuServiceResource;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\OfferedService\Services\EffectiveServiceTerms;
 
 final class GetBranchDetailEloquentResolver
 {
-    public function __construct(private readonly BranchHours $hours) {}
+    public function __construct(
+        private readonly BranchHours $hours,
+        private readonly EffectiveServiceTerms $serviceTerms,
+    ) {}
 
     /**
      * Branch detail (BE-03, Task 48): the branch, its seated barbers, and the
@@ -45,6 +49,8 @@ final class GetBranchDetailEloquentResolver
             ->concat($barbers->flatMap(fn (BarberModel $barber) => $barber->services))
             ->unique('id')
             ->values();
+
+        $this->serviceTerms->attach($menu, $branch->getAttribute('brand_id') === null ? null : (string) $branch->getAttribute('brand_id'));
 
         return array_merge(
             (new BranchResource($branch))->toArray(request()),

@@ -19,6 +19,8 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\Currency\Support\MinorUnits;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\OfferedService\Constants\ServiceOverrideConstants;
+use Modules\OfferedService\Queries\BookingServicePricing;
 
 final class OverviewAction extends BaseApiAction
 {
@@ -80,9 +82,7 @@ final class OverviewAction extends BaseApiAction
      */
     private function completedBookingsRevenue(Builder $completedBookings): float
     {
-        return MinorUnits::toMajor(DB::table('booking_offered_service')
-            ->join('offered_services', 'offered_services.id', '=', 'booking_offered_service.offered_service_id')
-            ->whereIn('booking_offered_service.booking_id', $completedBookings->select('bookings.id'))
-            ->sum('offered_services.price_amount_minor'));
+        return MinorUnits::toMajor(BookingServicePricing::lines($completedBookings->select('bookings.id'))
+            ->sum(DB::raw(ServiceOverrideConstants::SERVICE_OVERRIDE_EFFECTIVE_PRICE_SQL)));
     }
 }

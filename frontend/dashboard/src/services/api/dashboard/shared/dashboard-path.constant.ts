@@ -89,6 +89,15 @@ export const DASHBOARD_PROXY_ROUTE_RULES: ReadonlyArray<{
   },
   { method: "GET", path: /^admin\/settings$/ },
   { method: "PATCH", path: /^admin\/settings$/ },
+  { method: "GET", path: /^barbers\/[A-Za-z0-9-]+\/services$/ },
+  {
+    method: "PUT",
+    path: /^barbers\/[A-Za-z0-9-]+\/services\/[A-Za-z0-9-]+\/override$/,
+  },
+  {
+    method: "DELETE",
+    path: /^barbers\/[A-Za-z0-9-]+\/services\/[A-Za-z0-9-]+\/override$/,
+  },
   { method: "GET", path: /^brands$/ },
   { method: "POST", path: /^brands$/ },
   { method: "GET", path: /^brands\/[A-Za-z0-9-]+$/ },

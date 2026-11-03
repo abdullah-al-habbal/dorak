@@ -54,6 +54,8 @@ export const ROUTES = {
       actor: OperationsActor,
       resource: "branches" | "chairs" | "services" | "stylists" | "bookings",
     ) => `/${actor}/${resource}`,
+    stylistPricing: (actor: "admin" | "owner", stylistId: string) =>
+      `/${actor}/stylists/${encodeURIComponent(stylistId)}/pricing`,
   },
   earnings: (actor: "owner" | "manager" | "barber") => `/${actor}/earnings`,
   owner: {

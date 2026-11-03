@@ -11,6 +11,9 @@ use Modules\Commission\Http\Actions\Admin\StoreCommissionRuleAction;
 use Modules\Commission\Http\Actions\Admin\UpdateCommissionRuleAction;
 use Modules\Currency\Http\Actions\Shared\ListExchangeRatesAction;
 use Modules\Dashboard\Http\Actions\Analytics\ShowPlatformAnalyticsAction;
+use Modules\Dashboard\Http\Actions\Barbers\DestroyBarberServiceOverrideAction;
+use Modules\Dashboard\Http\Actions\Barbers\ListBarberServiceOverridesAction;
+use Modules\Dashboard\Http\Actions\Barbers\UpsertBarberServiceOverrideAction;
 use Modules\Dashboard\Http\Actions\Branches\DestroyBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchesAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchReviewsAction;
@@ -190,6 +193,9 @@ Route::prefix('dashboard')->group(function (): void {
         Route::post('/brands', StoreBrandAction::class);
         Route::get('/brands/{brand}', ShowBrandAction::class);
         Route::put('/brands/{brand}', UpdateBrandAction::class);
+        Route::get('/barbers/{barber}/services', ListBarberServiceOverridesAction::class);
+        Route::put('/barbers/{barber}/services/{service}/override', UpsertBarberServiceOverrideAction::class);
+        Route::delete('/barbers/{barber}/services/{service}/override', DestroyBarberServiceOverrideAction::class);
     });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOperationsAuthorizationMiddleware::class])->group(function (): void {

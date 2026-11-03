@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Modules\Commission\Services;
 
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use Modules\Booking\Models\BookingModel;
 use Modules\Commission\Constants\CommissionMoneyConstants;
 use Modules\Commission\Enums\CommissionType;
 use Modules\Commission\Models\CommissionEntryModel;
 use Modules\Commission\Models\CommissionRuleModel;
+use Modules\OfferedService\Constants\ServiceOverrideConstants;
 
 final class CommissionRecorder
 {
@@ -25,12 +27,21 @@ final class CommissionRecorder
     {
         $branchId = $booking->branch_id ?? $booking->chair?->branch_id;
         $brandId = $branchId === null ? null : DB::table('branches')->where('id', $branchId)->value('brand_id');
+
+        if ($brandId === null) {
+            return null;
+        }
+
         $services = DB::table('booking_offered_service')
             ->join('offered_services', 'offered_services.id', '=', 'booking_offered_service.offered_service_id')
+            ->leftJoin('barber_service_overrides', fn (JoinClause $join) => $join
+                ->on('barber_service_overrides.offered_service_id', '=', 'offered_services.id')
+                ->where('barber_service_overrides.brand_id', '=', $brandId))
             ->where('booking_offered_service.booking_id', $booking->getKey())
-            ->get(['offered_services.price_amount_minor', 'offered_services.currency_code']);
+            ->selectRaw(ServiceOverrideConstants::SERVICE_OVERRIDE_EFFECTIVE_PRICE_SQL.' as price_amount_minor, offered_services.currency_code')
+            ->get();
 
-        if ($brandId === null || $services->isEmpty()) {
+        if ($services->isEmpty()) {
             return null;
         }
 

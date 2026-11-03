@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Eloquent\Resolvers\Earnings;
 
-use Illuminate\Support\Facades\DB;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Commission\Models\CommissionEntryModel;
 use Modules\Dashboard\CQRS\Query\ShowEarningsQuery;
+use Modules\OfferedService\Constants\ServiceOverrideConstants;
+use Modules\OfferedService\Queries\BookingServicePricing;
 
 /** Gross revenue, platform commission and net revenue of completed bookings in a set of branches, per currency. */
 final class BranchEarningsEloquentResolver
@@ -23,11 +24,9 @@ final class BranchEarningsEloquentResolver
             ->when($query->to, fn ($bookings, $to) => $bookings->where('starts_at', '<=', $to))
             ->select('bookings.id');
 
-        $gross = DB::table('booking_offered_service')
-            ->join('offered_services', 'offered_services.id', '=', 'booking_offered_service.offered_service_id')
-            ->whereIn('booking_offered_service.booking_id', $bookingIds)
+        $gross = BookingServicePricing::lines($bookingIds)
             ->groupBy('offered_services.currency_code')
-            ->selectRaw('offered_services.currency_code as currency_code, SUM(offered_services.price_amount_minor) as gross, COUNT(DISTINCT booking_offered_service.booking_id) as bookings')
+            ->selectRaw('offered_services.currency_code as currency_code, SUM('.ServiceOverrideConstants::SERVICE_OVERRIDE_EFFECTIVE_PRICE_SQL.') as gross, COUNT(DISTINCT booking_offered_service.booking_id) as bookings')
             ->get();
 
         $commission = CommissionEntryModel::query()
