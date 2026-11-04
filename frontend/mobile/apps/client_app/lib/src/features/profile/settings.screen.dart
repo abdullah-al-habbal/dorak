@@ -47,9 +47,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       bloc: _cubit,
       listener: (context, state) {
         if (state.saved) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.profileSettingsSaved)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.profileSettingsSaved)));
         }
       },
       builder: (context, state) {

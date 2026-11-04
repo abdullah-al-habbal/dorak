@@ -36,7 +36,11 @@ class BookingSummary extends StatelessWidget {
               ),
             ),
             const SizedBox(height: DorakDimensions.spacingSmall),
-            Text(l10n.bookingTotalPrice(MinorUnits.toMajor(price).toStringAsFixed(2))),
+            Text(
+              l10n.bookingTotalPrice(
+                MinorUnits.toMajor(price).toStringAsFixed(2),
+              ),
+            ),
             Text(l10n.bookingTotalDuration(duration)),
           ],
         ),

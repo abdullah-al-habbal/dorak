@@ -83,7 +83,11 @@ void main() {
         branchId: '1',
         branchName: 'Branch 1',
         chairs: [
-          FloorChairDto(id: 'chair-1', label: 'A', status: ChairStatus.available),
+          FloorChairDto(
+            id: 'chair-1',
+            label: 'A',
+            status: ChairStatus.available,
+          ),
         ],
         branchServices: [BookingServiceDto(id: 's-9', name: 'Kids Cut')],
       );

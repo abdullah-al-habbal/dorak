@@ -45,7 +45,10 @@ class ProfileHeader extends StatelessWidget {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    AvatarThumbnail(avatarUrl: avatarState.avatarUrl, initial: initial),
+                    AvatarThumbnail(
+                      avatarUrl: avatarState.avatarUrl,
+                      initial: initial,
+                    ),
                     Positioned(
                       right: 0,
                       bottom: 0,

@@ -38,7 +38,10 @@ class BookingServicesSection extends StatelessWidget {
           const Divider(),
           BookingDetailLine(
             value: l10n.bookingTotalPrice(
-              LocaleFormatters.decimal(MinorUnits.toMajor(totalPrice), localeCode),
+              LocaleFormatters.decimal(
+                MinorUnits.toMajor(totalPrice),
+                localeCode,
+              ),
             ),
           ),
           BookingDetailLine(value: l10n.bookingTotalDuration(totalDuration)),

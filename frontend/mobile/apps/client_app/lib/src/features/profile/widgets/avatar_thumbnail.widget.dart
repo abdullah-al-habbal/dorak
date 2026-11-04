@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:design_system/design_system.dart';
 
 class AvatarThumbnail extends StatelessWidget {
-  const AvatarThumbnail({super.key, required this.avatarUrl, required this.initial});
+  const AvatarThumbnail({
+    super.key,
+    required this.avatarUrl,
+    required this.initial,
+  });
 
   final String? avatarUrl;
   final String initial;

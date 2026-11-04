@@ -59,7 +59,10 @@ void main() {
       _host(
         BranchStorefront(
           detail: _storefrontDetail(
-            today: const BranchHoursDto(isClosed: true, source: BranchHoursSource.override),
+            today: const BranchHoursDto(
+              isClosed: true,
+              source: BranchHoursSource.override,
+            ),
           ),
         ),
         locale: const Locale('ar'),

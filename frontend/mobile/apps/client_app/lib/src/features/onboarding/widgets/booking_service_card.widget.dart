@@ -5,7 +5,11 @@ import 'package:localization/localization.dart';
 import 'package:client_app/src/features/onboarding/widgets/glass_card.widget.dart';
 
 class BookingServiceCard extends StatelessWidget {
-  const BookingServiceCard({super.key, required this.colors, required this.l10n});
+  const BookingServiceCard({
+    super.key,
+    required this.colors,
+    required this.l10n,
+  });
   final DorakColors colors;
   final AppLocalizations l10n;
 

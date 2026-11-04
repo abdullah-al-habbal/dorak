@@ -121,7 +121,10 @@ void main() {
             durationMinutes: 30,
             isAtHome: false,
             active: true,
-            displayPrice: DisplayPriceDto(amountMinor: 9000, currencyCode: 'EUR'),
+            displayPrice: DisplayPriceDto(
+              amountMinor: 9000,
+              currencyCode: 'EUR',
+            ),
           ),
         ],
         rank: 3,
@@ -147,7 +150,10 @@ void main() {
             durationMinutes: 30,
             isAtHome: false,
             active: true,
-            displayPrice: DisplayPriceDto(amountMinor: 9000, currencyCode: 'EUR'),
+            displayPrice: DisplayPriceDto(
+              amountMinor: 9000,
+              currencyCode: 'EUR',
+            ),
             allowsDualPriceDisplay: true,
           ),
         ],

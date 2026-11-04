@@ -252,7 +252,10 @@ void main() {
       build: bloc,
       seed: () => FaceAnalysisState(
         status: FaceAnalysisStatus.ready,
-        photos: [testFacePhoto(id: 'photo-1'), testFacePhoto(id: 'photo-2')],
+        photos: [
+          testFacePhoto(id: 'photo-1'),
+          testFacePhoto(id: 'photo-2'),
+        ],
       ),
       act: (bloc) => bloc.add(const FaceAnalysisPhotoDeleted('photo-1')),
       verify: (bloc) {
@@ -266,7 +269,10 @@ void main() {
       build: bloc,
       seed: () => FaceAnalysisState(
         status: FaceAnalysisStatus.ready,
-        photos: [testFacePhoto(id: 'photo-1'), testFacePhoto(id: 'photo-2')],
+        photos: [
+          testFacePhoto(id: 'photo-1'),
+          testFacePhoto(id: 'photo-2'),
+        ],
       ),
       act: (bloc) => bloc.add(const FaceAnalysisPhotoSetPrimary('photo-2')),
       verify: (bloc) {
