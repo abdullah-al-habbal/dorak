@@ -3632,12 +3632,6 @@ abstract class AppLocalizations {
   /// **'Continue with Google'**
   String get socialLoginGoogle;
 
-  /// Apple sign-in button
-  ///
-  /// In en, this message translates to:
-  /// **'Continue with Apple'**
-  String get socialLoginApple;
-
   /// Shown when a social sign-in could not complete
   ///
   /// In en, this message translates to:

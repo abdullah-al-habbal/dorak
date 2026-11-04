@@ -67,22 +67,24 @@ void main() {
     expect(find.byType(discovery_feed.DiscoveryScreen), findsOneWidget);
   });
 
-  testWidgets('providers the platform does not support are not shown', (
-    tester,
-  ) async {
-    await pumpLogin(
-      tester,
-      FakeSocialCredentialProvider(supported: {SocialAuthProvider.google}),
-    );
+  testWidgets('only Google is offered by default', (tester) async {
+    await pumpLogin(tester, FakeSocialCredentialProvider());
 
     expect(find.text('Continue with Google'), findsOneWidget);
     expect(find.text('Continue with Apple'), findsNothing);
+    expect(find.text('Continue with Facebook'), findsNothing);
+  });
+
+  testWidgets('unsupported platforms hide the social section', (tester) async {
+    await pumpLogin(tester, FakeSocialCredentialProvider(supported: {}));
+
+    expect(find.text('Continue with Google'), findsNothing);
   });
 
   testWidgets('a dismissed sheet stays on login with no error', (tester) async {
     await pumpLogin(tester, FakeSocialCredentialProvider(token: null));
 
-    await tester.tap(find.text('Continue with Apple'));
+    await tester.tap(find.text('Continue with Google'));
     await tester.pumpAndSettle();
 
     expect(find.byType(LoginScreen), findsOneWidget);

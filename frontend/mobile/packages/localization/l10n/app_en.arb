@@ -1679,10 +1679,6 @@
   "@socialLoginGoogle": {
     "description": "Google sign-in button"
   },
-  "socialLoginApple": "Continue with Apple",
-  "@socialLoginApple": {
-    "description": "Apple sign-in button"
-  },
   "socialLoginFailed": "Sign-in failed. Please try again.",
   "@socialLoginFailed": {
     "description": "Shown when a social sign-in could not complete"

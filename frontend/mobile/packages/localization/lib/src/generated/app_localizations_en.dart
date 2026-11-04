@@ -1947,8 +1947,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get socialLoginGoogle => 'Continue with Google';
 
   @override
-  String get socialLoginApple => 'Continue with Apple';
-
-  @override
   String get socialLoginFailed => 'Sign-in failed. Please try again.';
 }

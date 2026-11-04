@@ -1718,10 +1718,7 @@ class FakeBrandRepository implements BrandRepository {
 
 class FakeSocialCredentialProvider implements SocialCredentialProvider {
   FakeSocialCredentialProvider({
-    this.supported = const {
-      SocialAuthProvider.google,
-      SocialAuthProvider.apple,
-    },
+    this.supported = const {SocialAuthProvider.google},
     this.token = 'provider-token-123',
     this.error,
   });

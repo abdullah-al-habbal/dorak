@@ -23,10 +23,11 @@ Status: `ACCEPTED` (Tasks 04, 79, 81, G10/G11, 2026-11-03)
   `BranchDetailBloc` requires a branch. A dedicated at-home booking screen is
   post-MVP.
 - **Task 81 — social login is deferred.** `POST /client/social/{provider}`
-  remains in the backend but is not exposed: the client app ships no
-  Google/Apple SDK or login buttons, and no provider credentials are
-  configured. Revisit with both providers together, since iOS requires Apple
-  sign-in when another social login is offered.
+  was later shipped as Google-only (Gap G9). Apple and Facebook sign-in are
+  intentionally unsupported because they are unavailable in the target region
+  (Syria); the provider seam stays generic so another provider can be added.
+  Note: App Store rule 4.8 requires an equivalent sign-in option when a
+  third-party login is offered on iOS, so review this before an iOS release.
 - **Gap G10/G11 — business and stylist apps ship full scope, no deferrals.**
   business_app: services CRUD, working hours, staff list with
   activate/deactivate, notification inbox. stylist_app: past appointments,

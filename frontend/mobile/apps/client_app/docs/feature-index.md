@@ -58,10 +58,14 @@ codeanchors:
 
 ### Social login (G9)
 - `lib/src/features/auth/social_login.{bloc,event,state}.dart` — obtains a provider credential through the `SocialCredentialProvider` seam and hands it back as state; `login.screen.dart` forwards a `credentialReady` state to core `AuthBloc` as `SocialLoginSubmitted`, which calls `POST /client/social/{provider}`, stores the Sanctum token and signals the router like a password login.
-- `lib/src/features/auth/social_credential.provider.dart` (seam) and `platform_social_credential.provider.dart` (`google_sign_in` access token; `sign_in_with_apple` identity token). Google is offered on Android and iOS, Apple on iOS and macOS only.
-- `lib/src/features/auth/widgets/social_login_buttons.widget.dart` — "Continue with Google / Apple" buttons under the login form; hidden for providers the platform does not support.
+- `lib/src/features/auth/social_credential.provider.dart` (seam) and `platform_social_credential.provider.dart` (`google_sign_in` access token). Google is offered on Android and iOS. Apple and Facebook are intentionally unsupported (regional availability); add a provider by extending `SocialAuthProvider` and the two `switch` statements.
+- `lib/src/features/auth/widgets/social_login_buttons.widget.dart` — "Continue with Google" button under the login form; hidden when the platform does not support it.
 - Tests: `test/social_login_bloc_test.dart`, `test/social_login_flow_test.dart`; core `AuthBloc` social cases in `packages/core/test/auth_bloc_test.dart`.
-- External setup: `GOOGLE_SERVER_CLIENT_ID` (web/server OAuth client ID, required on Android) and `GOOGLE_CLIENT_ID` (iOS client ID) in `.env`; iOS URL scheme (reversed iOS client ID) in `ios/Runner/Info.plist`; the Sign in with Apple capability on the iOS App ID. Backend: `APPLE_CLIENT_ID` (the iOS bundle ID the identity token is issued for) in `backend/.env`; Google needs no server-side secret because the backend validates the access token against Google's userinfo endpoint.
+- External setup (Google only; no backend secret, the backend validates the access token against Google's userinfo endpoint):
+  - In Google Cloud Console → APIs & Services → OAuth consent screen, configure the `email` and `profile` scopes.
+  - Credentials → Create OAuth client ID → **Web application**: put its ID in `GOOGLE_SERVER_CLIENT_ID` in `client_app/.env` (required on Android).
+  - Credentials → Create OAuth client ID → **iOS** (bundle ID): put its ID in `GOOGLE_CLIENT_ID`, and add the reversed ID as a URL scheme in `ios/Runner/Info.plist`.
+  - Credentials → Create OAuth client ID → **Android** (package name + debug/release SHA-1). It is not stored in `.env`.
 
 ## Continued in
 

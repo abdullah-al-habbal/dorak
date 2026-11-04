@@ -32,7 +32,7 @@ Read-only audit of `business_app`, `stylist_app` and `packages/core` against the
 | 05 | [Missing backend endpoints](05-missing-backend-routes.md) | High | Resolved (see backend feature index) |
 | 06 | [MVP scope decisions](06-mvp-scope-decisions.md) | Blocker | Resolved: full scope, zero deferrals (ADR 0002) |
 
-Related product-audit gaps: G4 (earnings, plan, payouts) is resolved on backend, dashboard and both mobile apps (stylist earnings and business earnings screens). G9 (social login) is resolved on the backend and in `client_app` (Google and Apple sign-in).
+Related product-audit gaps: G4 (earnings, plan, payouts) is resolved on backend, dashboard and both mobile apps (stylist earnings and business earnings screens). G9 (social login) is resolved on the backend and in `client_app` (Google sign-in only; Apple and Facebook are intentionally unsupported).
 
 ## Other findings (not yet split into their own notes)
 

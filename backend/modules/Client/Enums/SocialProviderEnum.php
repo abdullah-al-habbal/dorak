@@ -7,7 +7,6 @@ namespace Modules\Client\Enums;
 enum SocialProviderEnum: string
 {
     case Google = 'google';
-    case Apple = 'apple';
 
     public function label(): string
     {

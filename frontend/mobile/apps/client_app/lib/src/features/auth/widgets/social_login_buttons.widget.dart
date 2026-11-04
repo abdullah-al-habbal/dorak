@@ -48,7 +48,6 @@ class SocialLoginButtons extends StatelessWidget {
           SecondaryButton(
             label: switch (provider) {
               SocialAuthProvider.google => l10n.socialLoginGoogle,
-              SocialAuthProvider.apple => l10n.socialLoginApple,
             },
             isDisabled: isBusy,
             onPressed: () => onPressed(provider),

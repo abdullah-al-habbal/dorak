@@ -32,15 +32,15 @@ void main() {
       'a dismissed sheet is cancelled, not failed',
       build: () => SocialLoginBloc(FakeSocialCredentialProvider(token: null)),
       act: (bloc) =>
-          bloc.add(const SocialLoginStarted(SocialAuthProvider.apple)),
+          bloc.add(const SocialLoginStarted(SocialAuthProvider.google)),
       expect: () => const [
         SocialLoginState(
           status: SocialLoginStatus.authenticating,
-          provider: SocialAuthProvider.apple,
+          provider: SocialAuthProvider.google,
         ),
         SocialLoginState(
           status: SocialLoginStatus.cancelled,
-          provider: SocialAuthProvider.apple,
+          provider: SocialAuthProvider.google,
         ),
       ],
     );
@@ -49,15 +49,15 @@ void main() {
       'an empty token is a failure',
       build: () => SocialLoginBloc(FakeSocialCredentialProvider(token: '')),
       act: (bloc) =>
-          bloc.add(const SocialLoginStarted(SocialAuthProvider.apple)),
+          bloc.add(const SocialLoginStarted(SocialAuthProvider.google)),
       expect: () => const [
         SocialLoginState(
           status: SocialLoginStatus.authenticating,
-          provider: SocialAuthProvider.apple,
+          provider: SocialAuthProvider.google,
         ),
         SocialLoginState(
           status: SocialLoginStatus.failed,
-          provider: SocialAuthProvider.apple,
+          provider: SocialAuthProvider.google,
         ),
       ],
     );
@@ -83,15 +83,13 @@ void main() {
 
     blocTest<SocialLoginBloc, SocialLoginState>(
       'an unsupported provider fails without calling the SDK',
-      build: () => SocialLoginBloc(
-        FakeSocialCredentialProvider(supported: {SocialAuthProvider.google}),
-      ),
+      build: () => SocialLoginBloc(FakeSocialCredentialProvider(supported: {})),
       act: (bloc) =>
-          bloc.add(const SocialLoginStarted(SocialAuthProvider.apple)),
+          bloc.add(const SocialLoginStarted(SocialAuthProvider.google)),
       expect: () => const [
         SocialLoginState(
           status: SocialLoginStatus.failed,
-          provider: SocialAuthProvider.apple,
+          provider: SocialAuthProvider.google,
         ),
       ],
     );

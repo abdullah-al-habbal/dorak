@@ -30,9 +30,6 @@ return [
             'timeout' => env('SMS_HTTP_TIMEOUT'),
         ],
     ],
-    'apple' => [
-        'client_id' => env('APPLE_CLIENT_ID'),
-    ],
     'fcm' => [
         'project_id' => env('FCM_PROJECT_ID'),
         'credentials' => env('FCM_CREDENTIALS'),

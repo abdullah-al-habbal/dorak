@@ -1939,8 +1939,5 @@ class AppLocalizationsAr extends AppLocalizations {
   String get socialLoginGoogle => 'المتابعة باستخدام Google';
 
   @override
-  String get socialLoginApple => 'المتابعة باستخدام Apple';
-
-  @override
   String get socialLoginFailed => 'فشل تسجيل الدخول. حاول مرة أخرى.';
 }

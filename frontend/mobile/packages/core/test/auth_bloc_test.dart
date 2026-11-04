@@ -44,8 +44,8 @@ void main() {
       },
       act: (bloc) => bloc.add(
         const SocialLoginSubmitted(
-          provider: SocialAuthProvider.apple,
-          token: 'apple-identity-token',
+          provider: SocialAuthProvider.google,
+          token: 'google-access-token',
         ),
       ),
       expect: () => [
@@ -84,7 +84,7 @@ void main() {
       },
       act: (bloc) => bloc.add(
         const SocialLoginSubmitted(
-          provider: SocialAuthProvider.apple,
+          provider: SocialAuthProvider.google,
           token: 'provider-token-123',
         ),
       ),

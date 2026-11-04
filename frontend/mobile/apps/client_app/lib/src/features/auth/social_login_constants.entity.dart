@@ -1,4 +1,4 @@
-/// Keys and scopes for the Google and Apple sign-in SDKs.
+/// Keys and scopes for the Google sign-in SDK.
 class SocialLoginConstants {
   const SocialLoginConstants._();
 
