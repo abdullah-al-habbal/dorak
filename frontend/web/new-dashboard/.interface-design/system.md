@@ -27,3 +27,5 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - Sidebar: 264px expanded, 68px collapsed, pole-stripe indicator on the active item. Pages not built yet show a "Soon" tag.
 - Header: 64px, blurred background, breadcrumbs left, language / theme / notifications / account right.
 - Forms: label above, inline error under the field, form-level error in a `role="alert"` banner.
+- Overlays: every dialog or sheet opens through `useOverlay().open(...)`, never local `open` state. Confirm dialogs lock while pending, use the destructive button for destructive actions, and stay open if the action fails. Forms up to about six fields use a dialog; longer ones a sheet; under 640px all overlays anchor to the bottom.
+- Sidebar state: desktop collapse is cookie-seeded on the server; the mobile sheet closes on navigation.

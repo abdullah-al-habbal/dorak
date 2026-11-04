@@ -2,11 +2,14 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { OverlayProvider } from "@/components/overlays/overlay-provider";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { SessionHydrator } from "@/components/providers/session-hydrator";
+import { SidebarProvider } from "@/components/providers/sidebar-provider";
 import { SIDEBAR_COOKIE } from "@/config/cookies.constant";
 import { loginRoute, portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
+import { parseSidebarCookie } from "@/lib/sidebar.util";
 import { getServerSession } from "@/services/api/auth/server-session";
 
 /** Reads the session at request time, so it must render behind a Suspense boundary. */
@@ -15,11 +18,15 @@ export async function PortalSession({ guard, children }: { guard: AuthActor; chi
   if (!session) redirect(loginRoute(guard));
   if (session.actor !== guard) redirect(portalRoot(session.actor));
 
-  const collapsed = (await cookies()).get(SIDEBAR_COOKIE)?.value === "1";
+  const collapsed = parseSidebarCookie((await cookies()).get(SIDEBAR_COOKIE)?.value);
   return (
-    <PortalShell actor={guard} profile={session.profile}>
-      <SessionHydrator actor={guard} profile={session.profile} sidebarCollapsed={collapsed} />
-      {children}
-    </PortalShell>
+    <SidebarProvider initialCollapsed={collapsed}>
+      <OverlayProvider>
+        <PortalShell actor={guard} profile={session.profile}>
+          <SessionHydrator actor={guard} profile={session.profile} />
+          {children}
+        </PortalShell>
+      </OverlayProvider>
+    </SidebarProvider>
   );
 }

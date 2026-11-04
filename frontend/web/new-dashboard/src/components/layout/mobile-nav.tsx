@@ -8,12 +8,11 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { TextDirection } from "@/enums/text-direction.enum";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useI18n } from "@/hooks/use-i18n";
-import { useSidebarStore } from "@/store/sidebar.store";
+import { useSidebar } from "@/hooks/use-sidebar";
 
 export function MobileNav({ actor }: { actor: AuthActor }) {
   const { dictionary, direction } = useI18n();
-  const open = useSidebarStore((state) => state.mobileOpen);
-  const setOpen = useSidebarStore((state) => state.setMobileOpen);
+  const { mobileOpen: open, setMobileOpen: setOpen } = useSidebar();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

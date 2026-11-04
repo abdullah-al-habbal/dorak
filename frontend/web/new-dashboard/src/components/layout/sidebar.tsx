@@ -6,13 +6,12 @@ import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { Button } from "@/components/ui/button";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useSidebar } from "@/hooks/use-sidebar";
 import { cn } from "@/lib/utils";
-import { useSidebarStore } from "@/store/sidebar.store";
 
 export function Sidebar({ actor }: { actor: AuthActor }) {
   const { common, shell, auth } = useDictionary();
-  const collapsed = useSidebarStore((state) => state.collapsed);
-  const setCollapsed = useSidebarStore((state) => state.setCollapsed);
+  const { collapsed, setCollapsed } = useSidebar();
 
   return (
     <aside
