@@ -32,6 +32,8 @@ Read-only audit of `business_app`, `stylist_app` and `packages/core` against the
 | 05 | [Missing backend endpoints](05-missing-backend-routes.md) | High | Resolved (see backend feature index) |
 | 06 | [MVP scope decisions](06-mvp-scope-decisions.md) | Blocker | Resolved: full scope, zero deferrals (ADR 0002) |
 
+Related product-audit gaps: G4 (earnings, plan, payouts) is resolved on backend, dashboard and both mobile apps (stylist earnings and business earnings screens). G9 (social login) is resolved on the backend and in `client_app` (Google and Apple sign-in).
+
 ## Other findings (not yet split into their own notes)
 
 - Notification deep links for invites and applications land on `/operations` (business_app) or `/home` (stylist_app) instead of the existing `/affiliations` and `/jobs/:id/applicants` screens.
@@ -51,5 +53,5 @@ Read-only audit of `business_app`, `stylist_app` and `packages/core` against the
 6. Business staff list and `GET /branch/barbers` ([05](05-missing-backend-routes.md)). **Done.**
 7. Stylist services and pricing editor. **Done.**
 8. Stylist past appointments and `GET /barber/appointments`. **Done.**
-9. Stylist earnings and business services through mobile-scoped routes ([02](02-token-scope-mismatch.md)). **Done.** Business earnings has a route and a core repository but no screen.
-10. Convention cleanup and doc refresh. **Open**: the "Other findings" list above is untouched except the notification deep links, which now open the affiliations and application screens.
+9. Stylist earnings and business services through mobile-scoped routes ([02](02-token-scope-mismatch.md)). **Done.** Stylist earnings and business earnings both have a screen, a bloc, a core repository and tests; business services CRUD runs through the mobile-scoped routes.
+10. Convention cleanup and doc refresh. **Done** for the shared-widget spacing literals (`DorakDimensions.spacingCozy` added) and the stale feature indexes and audit notes. The remaining items in "Other findings" are tracked there.

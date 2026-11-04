@@ -28,6 +28,7 @@ class DorakDimensions {
 
   static const double spacingUnit = unit;
   static const double spacingSmall = unit;
+  static const double spacingCozy = unit * 1.5;
   static const double spacingMedium = unit * 2;
   static const double spacingLarge = unit * 3;
   static const double spacingXLarge = unit * 4;

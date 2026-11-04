@@ -31,7 +31,9 @@ class PrimaryButton extends StatelessWidget {
           foregroundColor: colors.onPrimary,
           disabledBackgroundColor: colors.outlineVariant,
           disabledForegroundColor: colors.onSurfaceVariant,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(
+            vertical: DorakDimensions.spacingMedium,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: DorakDimensions.radiusFull,
           ),

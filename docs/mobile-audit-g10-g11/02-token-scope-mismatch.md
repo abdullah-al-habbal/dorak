@@ -12,7 +12,7 @@ codeanchors:
 
 Routes: [index](index.md).
 
-**Status:** Open: needs a product and architecture decision.
+**Status:** Resolved: mobile-scoped routes (ADR 0002). Stylist earnings, business earnings and business services all use `barber-app` / `branch-app` routes and are implemented in the apps.
 
 ## Problem
 Mobile logins issue tokens with the `branch-app` or `barber-app` ability (`backend/modules/Core/Enums/TokenAbility.php`; `Branch/Handlers/Branch/LoginHandler.php`, `Barber/Handlers/Barber/LoginHandler.php`). `EnforceTokenScope` blocks `api/v1/dashboard/*` unless the token carries the `dashboard` ability. Only `/notifications` and `/broadcasting/auth` are shared.

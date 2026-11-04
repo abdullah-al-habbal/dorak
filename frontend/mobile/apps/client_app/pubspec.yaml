@@ -61,6 +61,8 @@ dependencies:
     path: ../../packages/design_system
   localization:
     path: ../../packages/localization
+  google_sign_in: ^7.2.0
+  sign_in_with_apple: ^8.2.0
 
 dev_dependencies:
   # Test-only: NetworkException carries a DioExceptionType, so constructing one

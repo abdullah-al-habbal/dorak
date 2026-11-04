@@ -12,7 +12,7 @@ codeanchors:
 
 Routes: [index](index.md).
 
-**Status:** Open.
+**Status:** Resolved. Every gap below has a mobile-scoped backend route and a shipped screen, including business earnings.
 
 | Need | Existing route | Gap | Notes |
 |---|---|---|---|
@@ -25,7 +25,7 @@ Routes: [index](index.md).
 
 ## Mobile core gaps
 - No endpoint constants or DTOs for opening hours or hours overrides (read DTO only).
-- No earnings DTO or repository.
+- Earnings DTO and repository: added (`EarningsRepository`), used by the stylist and business earnings screens.
 - Branch affiliation invite mapping was not confirmed.
 
 Rule: only add mobile route constants for routes that exist in the backend.

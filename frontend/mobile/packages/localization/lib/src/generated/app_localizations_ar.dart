@@ -1931,4 +1931,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stylistServicesEditorEmpty => 'ليس لديك خدمات بعد. أضف أول خدمة.';
+
+  @override
+  String get socialLoginDivider => 'أو';
+
+  @override
+  String get socialLoginGoogle => 'المتابعة باستخدام Google';
+
+  @override
+  String get socialLoginApple => 'المتابعة باستخدام Apple';
+
+  @override
+  String get socialLoginFailed => 'فشل تسجيل الدخول. حاول مرة أخرى.';
 }

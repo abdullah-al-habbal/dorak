@@ -16,6 +16,86 @@ void main() {
 
   AuthBloc bloc() => AuthBloc(repository, storage);
 
+  group('social login', () {
+    blocTest<AuthBloc, AuthState>(
+      'stores the token and signals the router like a password login',
+      build: bloc,
+      act: (bloc) => bloc.add(
+        const SocialLoginSubmitted(
+          provider: SocialAuthProvider.google,
+          token: 'google-access-token',
+        ),
+      ),
+      expect: () => [
+        const AuthState(isSubmitting: true),
+        const AuthState(
+          client: ClientFixtures.authClient,
+          signal: AuthSignal.loginSucceeded,
+        ),
+      ],
+      verify: (_) => expect(storage.token, 'login-token'),
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'a rejected token surfaces in state and stores no token',
+      build: () {
+        repository.loginError = unauthorized();
+        return AuthBloc(repository, storage);
+      },
+      act: (bloc) => bloc.add(
+        const SocialLoginSubmitted(
+          provider: SocialAuthProvider.apple,
+          token: 'apple-identity-token',
+        ),
+      ),
+      expect: () => [
+        const AuthState(isSubmitting: true),
+        AuthState(isSubmitting: false, error: unauthorized()),
+      ],
+      verify: (_) => expect(storage.token, isNull),
+    );
+  });
+
+  group('social login', () {
+    blocTest<AuthBloc, AuthState>(
+      'stores the session token and signals the router',
+      build: bloc,
+      act: (bloc) => bloc.add(
+        const SocialLoginSubmitted(
+          provider: SocialAuthProvider.google,
+          token: 'provider-token-123',
+        ),
+      ),
+      expect: () => [
+        const AuthState(isSubmitting: true),
+        const AuthState(
+          client: ClientFixtures.authClient,
+          signal: AuthSignal.loginSucceeded,
+        ),
+      ],
+      verify: (_) => expect(storage.token, 'login-token'),
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'a rejection surfaces in state and stores no token',
+      build: () {
+        repository.loginError = unauthorized();
+        return AuthBloc(repository, storage);
+      },
+      act: (bloc) => bloc.add(
+        const SocialLoginSubmitted(
+          provider: SocialAuthProvider.apple,
+          token: 'provider-token-123',
+        ),
+      ),
+      expect: () => [
+        const AuthState(isSubmitting: true),
+        AuthState(error: unauthorized()),
+      ],
+      verify: (_) => expect(storage.token, isNull),
+    );
+  });
+
   group('login', () {
     blocTest<AuthBloc, AuthState>(
       'stores the token, exposes the client and signals the router',

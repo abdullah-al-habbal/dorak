@@ -38,5 +38,5 @@ codeanchors:
 | ST-12 | Notification inbox (G11) | ✅ Complete | `features/inbox/` |
 | ST-13 | Bottom-navigation shell + More tab (G11) | ✅ Complete | `core/navigation/widgets/`, `features/more/` |
 
-### Not Started
-- All stylist features (offered services, availability, schedule, reviews, job applications) — not yet specced or built.
+### G10/G11 status
+All G10/G11 stylist features (past appointments, earnings, services and pricing editor, inbox, bottom-navigation shell) are implemented and covered by `test/stylist_g10_g11_blocs_test.dart`, `stylist_g10_g11_screens_test.dart` and `stylist_services_screens_test.dart` (services list and service form).

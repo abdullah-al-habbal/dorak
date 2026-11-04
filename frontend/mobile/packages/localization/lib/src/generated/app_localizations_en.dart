@@ -1939,4 +1939,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get stylistServicesEditorEmpty =>
       'You have no services yet. Add your first one.';
+
+  @override
+  String get socialLoginDivider => 'or';
+
+  @override
+  String get socialLoginGoogle => 'Continue with Google';
+
+  @override
+  String get socialLoginApple => 'Continue with Apple';
+
+  @override
+  String get socialLoginFailed => 'Sign-in failed. Please try again.';
 }

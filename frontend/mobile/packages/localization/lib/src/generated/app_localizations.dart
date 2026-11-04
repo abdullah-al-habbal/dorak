@@ -3619,6 +3619,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have no services yet. Add your first one.'**
   String get stylistServicesEditorEmpty;
+
+  /// Divider between password login and social login buttons
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get socialLoginDivider;
+
+  /// Google sign-in button
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get socialLoginGoogle;
+
+  /// Apple sign-in button
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get socialLoginApple;
+
+  /// Shown when a social sign-in could not complete
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in failed. Please try again.'**
+  String get socialLoginFailed;
 }
 
 class _AppLocalizationsDelegate

@@ -13,6 +13,8 @@ import 'package:client_app/src/core/navigation/app.router.dart';
 import 'package:client_app/src/core/navigation/app_services.provider.dart';
 import 'package:client_app/src/core/navigation/notification_location.entity.dart';
 import 'package:client_app/src/core/session/auth_coordination.entity.dart';
+import 'package:client_app/src/features/auth/platform_social_credential.provider.dart';
+import 'package:client_app/src/features/auth/social_credential.provider.dart';
 import 'package:client_app/src/features/profile/image_picker_photo_picker.provider.dart';
 
 class DorakApp extends StatefulWidget {
@@ -21,6 +23,7 @@ class DorakApp extends StatefulWidget {
   final AuthRepository? authRepository;
   final ProfileRepository? profileRepository;
   final FeedCache? feedCache;
+  final SocialCredentialProvider? socialCredentials;
 
   const DorakApp({
     super.key,
@@ -29,6 +32,7 @@ class DorakApp extends StatefulWidget {
     this.authRepository,
     this.profileRepository,
     this.feedCache,
+    this.socialCredentials,
   });
 
   @override
@@ -110,6 +114,8 @@ class _DorakAppState extends State<DorakApp> {
         feedCache: widget.feedCache,
       ),
       photoPicker: const ImagePickerPhotoPicker(),
+      socialCredentials:
+          widget.socialCredentials ?? PlatformSocialCredentialProvider(),
       switchLocale: _switchLocale,
       apiClient: _apiClient,
       realtime: _realtime,

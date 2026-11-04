@@ -21,7 +21,10 @@ class LocaleSwitcher extends StatelessWidget {
       style: TextButton.styleFrom(
         foregroundColor: colors.primary,
         textStyle: DorakTypography.labelLg,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: DorakDimensions.spacingCozy,
+          vertical: DorakDimensions.spacingSmall,
+        ),
         minimumSize: Size.zero,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),

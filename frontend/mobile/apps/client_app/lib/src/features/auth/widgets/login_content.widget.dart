@@ -17,6 +17,7 @@ class LoginContent extends StatefulWidget {
 
   final VoidCallback? onForgotPassword;
   final VoidCallback onCreateAccount;
+  final Widget? socialSection;
 
   const LoginContent({
     super.key,
@@ -28,6 +29,7 @@ class LoginContent extends StatefulWidget {
     required this.isSubmitting,
     required this.onCreateAccount,
     this.onForgotPassword,
+    this.socialSection,
   });
 
   @override
@@ -107,6 +109,10 @@ class _LoginContentState extends State<LoginContent> {
                   onPressed: _submit,
                   isLoading: widget.isSubmitting,
                 ),
+                if (widget.socialSection != null) ...[
+                  const SizedBox(height: 16),
+                  widget.socialSection!,
+                ],
                 const SizedBox(height: 16),
                 Wrap(
                   alignment: WrapAlignment.center,

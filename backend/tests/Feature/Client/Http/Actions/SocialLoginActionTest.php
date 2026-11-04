@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User;
 use Modules\Client\Enums\ClientStatusEnum;
@@ -226,4 +229,96 @@ it('lets an already linked provider account sign in without re-checking email ve
     mockSocialUser('known-token', $user);
 
     $this->postJson('/api/v1/client/social/google', ['access_token' => 'known-token'])->assertOk();
+});
+
+describe('apple identity token', function () {
+    $audience = 'com.dorak.client';
+
+    $keyPair = static function (): array {
+        $resource = openssl_pkey_new(['private_key_type' => OPENSSL_KEYTYPE_RSA, 'private_key_bits' => 2048]);
+        openssl_pkey_export($resource, $privatePem);
+        $details = openssl_pkey_get_details($resource);
+
+        return [$privatePem, [
+            'kty' => 'RSA',
+            'kid' => 'test-key',
+            'use' => 'sig',
+            'alg' => 'RS256',
+            'n' => rtrim(strtr(base64_encode($details['rsa']['n']), '+/', '-_'), '='),
+            'e' => rtrim(strtr(base64_encode($details['rsa']['e']), '+/', '-_'), '='),
+        ]];
+    };
+
+    $token = static function (string $privatePem, array $overrides = []): string {
+        return JWT::encode(array_merge([
+            'iss' => 'https://appleid.apple.com',
+            'aud' => 'com.dorak.client',
+            'sub' => 'apple-uid-1',
+            'email' => 'apple@example.com',
+            'email_verified' => 'true',
+            'iat' => time() - 10,
+            'exp' => time() + 600,
+        ], $overrides), $privatePem, 'RS256', 'test-key');
+    };
+
+    beforeEach(function () use ($audience) {
+        config(['services.apple.client_id' => $audience]);
+        Cache::forget('social.apple.jwks');
+    });
+
+    it('signs in with a valid Apple identity token and names the client from the email', function () use ($keyPair, $token) {
+        [$privatePem, $jwk] = $keyPair();
+        Http::fake(['appleid.apple.com/auth/keys' => Http::response(['keys' => [$jwk]])]);
+
+        $response = $this->postJson('/api/v1/client/social/apple', ['access_token' => $token($privatePem)]);
+
+        $response->assertStatus(200);
+        expect($response->json('data.token'))->toBeString()->not->toBeEmpty();
+        expect($response->json('data.client.email'))->toBe('apple@example.com');
+        expect($response->json('data.client.name'))->toBe('apple');
+        expect(SocialAccountModel::query()->where('provider_id', 'apple-uid-1')->exists())->toBeTrue();
+    });
+
+    it('rejects a token signed by another key', function () use ($keyPair, $token) {
+        [, $jwk] = $keyPair();
+        [$otherPem] = $keyPair();
+        Http::fake(['appleid.apple.com/auth/keys' => Http::response(['keys' => [$jwk]])]);
+
+        $this->postJson('/api/v1/client/social/apple', ['access_token' => $token($otherPem)])->assertStatus(401);
+    });
+
+    it('rejects a token issued for another app', function () use ($keyPair, $token) {
+        [$privatePem, $jwk] = $keyPair();
+        Http::fake(['appleid.apple.com/auth/keys' => Http::response(['keys' => [$jwk]])]);
+
+        $this->postJson('/api/v1/client/social/apple', [
+            'access_token' => $token($privatePem, ['aud' => 'com.other.app']),
+        ])->assertStatus(401);
+    });
+
+    it('rejects an expired token', function () use ($keyPair, $token) {
+        [$privatePem, $jwk] = $keyPair();
+        Http::fake(['appleid.apple.com/auth/keys' => Http::response(['keys' => [$jwk]])]);
+
+        $this->postJson('/api/v1/client/social/apple', [
+            'access_token' => $token($privatePem, ['exp' => time() - 60]),
+        ])->assertStatus(401);
+    });
+
+    it('does not link by an unverified Apple email', function () use ($keyPair, $token) {
+        [$privatePem, $jwk] = $keyPair();
+        Http::fake(['appleid.apple.com/auth/keys' => Http::response(['keys' => [$jwk]])]);
+
+        $this->postJson('/api/v1/client/social/apple', [
+            'access_token' => $token($privatePem, ['email_verified' => 'false']),
+        ])->assertStatus(403)->assertJsonPath('code', 'SOCIAL_EMAIL_NOT_VERIFIED');
+    });
+
+    it('fails closed when APPLE_CLIENT_ID is not configured', function () use ($keyPair, $token) {
+        config(['services.apple.client_id' => null]);
+        [$privatePem, $jwk] = $keyPair();
+        Http::fake(['appleid.apple.com/auth/keys' => Http::response(['keys' => [$jwk]])]);
+
+        $this->postJson('/api/v1/client/social/apple', ['access_token' => $token($privatePem)])->assertStatus(401);
+    });
 });

@@ -38,7 +38,9 @@ class StatusBanner extends StatelessWidget {
             style: TextButton.styleFrom(
               foregroundColor: resolvedColor,
               textStyle: DorakTypography.labelLg.copyWith(color: resolvedColor),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: DorakDimensions.spacingSmall,
+              ),
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),

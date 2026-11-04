@@ -16,6 +16,8 @@ import 'package:client_app/src/features/auth/change_password.screen.dart';
 import 'package:client_app/src/features/auth/create_new_password.screen.dart';
 import 'package:client_app/src/features/auth/forgot_password.screen.dart';
 import 'package:client_app/src/features/auth/login.screen.dart';
+import 'package:client_app/src/features/auth/social_credential.provider.dart';
+import 'package:client_app/src/features/auth/social_login.bloc.dart';
 import 'package:client_app/src/features/auth/password_recovery.bloc.dart';
 import 'package:client_app/src/features/auth/password_recovery.event.dart';
 import 'package:client_app/src/features/auth/password_recovery.state.dart';
@@ -76,6 +78,7 @@ class AppRouter {
   final AuthRepository authRepository;
   final LocaleBloc locale;
   final FeedCache? feedCache;
+  final SocialCredentialProvider? socialCredentials;
   final AppServices services;
   final PasswordRecoveryBloc? recovery;
   final OnboardingConfigBloc? onboardingConfig;
@@ -102,6 +105,9 @@ class AppRouter {
   final RealtimeClient? realtime;
 
   late final GoRouter router;
+  late final SocialLoginBloc? _socialLogin = socialCredentials == null
+      ? null
+      : SocialLoginBloc(socialCredentials!);
   bool _savedFiltersCreated = false;
   late final SavedFiltersCubit _savedFiltersCubit = _createSavedFilters();
   late final StreamSubscription<SessionState> _sessionSubscription;
@@ -114,6 +120,7 @@ class AppRouter {
     required this.authRepository,
     required this.locale,
     this.feedCache,
+    this.socialCredentials,
     AppServices? services,
     this.recovery,
     this.onboardingConfig,
@@ -166,6 +173,7 @@ class AppRouter {
     }
     _sessionSubscription.cancel();
     _authSubscription.cancel();
+    unawaited(_socialLogin?.close());
     router.dispose();
   }
 
@@ -437,6 +445,8 @@ class AppRouter {
           onForgotPassword: () =>
               router.push<void>(AppRoutes.authForgotPassword),
           onLocaleToggle: switchLocale,
+          socialCredentials: socialCredentials,
+          social: _socialLogin,
         ),
       ),
       GoRoute(

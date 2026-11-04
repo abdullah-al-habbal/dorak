@@ -31,7 +31,9 @@ class SecondaryButton extends StatelessWidget {
               ? colors.outlineVariant
               : foregroundColor ?? colors.onSurfaceVariant,
           disabledForegroundColor: colors.outlineVariant,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(
+            vertical: DorakDimensions.spacingMedium,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: DorakDimensions.radiusFull,
           ),

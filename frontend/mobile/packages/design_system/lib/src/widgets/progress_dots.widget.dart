@@ -22,7 +22,9 @@ class ProgressDots extends StatelessWidget {
         count,
         (index) => AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
+          margin: const EdgeInsets.symmetric(
+            horizontal: DorakDimensions.spacingSmall / 2,
+          ),
           width: 8,
           height: 8,
           decoration: BoxDecoration(

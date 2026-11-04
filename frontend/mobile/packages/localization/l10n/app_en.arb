@@ -1670,5 +1670,21 @@
   "stylistServicesEditorTitle": "Services and pricing",
   "@stylistServicesEditorTitle": {"description": "stylistServicesEditorTitle"},
   "stylistServicesEditorEmpty": "You have no services yet. Add your first one.",
-  "@stylistServicesEditorEmpty": {"description": "stylistServicesEditorEmpty"}
+  "@stylistServicesEditorEmpty": {"description": "stylistServicesEditorEmpty"},
+  "socialLoginDivider": "or",
+  "@socialLoginDivider": {
+    "description": "Divider between password login and social login buttons"
+  },
+  "socialLoginGoogle": "Continue with Google",
+  "@socialLoginGoogle": {
+    "description": "Google sign-in button"
+  },
+  "socialLoginApple": "Continue with Apple",
+  "@socialLoginApple": {
+    "description": "Apple sign-in button"
+  },
+  "socialLoginFailed": "Sign-in failed. Please try again.",
+  "@socialLoginFailed": {
+    "description": "Shown when a social sign-in could not complete"
+  }
 }

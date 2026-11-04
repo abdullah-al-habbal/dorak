@@ -56,6 +56,13 @@ codeanchors:
 - `lib/src/features/auth/auth_validators.entity.dart` — email / min-8 / confirmation-match, mirroring the backend rules.
 - `lib/src/features/auth/auth_error.entity.dart` — maps exceptions to local ARB strings. The backend's own `message` is an untranslated key and must never be rendered.
 
+### Social login (G9)
+- `lib/src/features/auth/social_login.{bloc,event,state}.dart` — obtains a provider credential through the `SocialCredentialProvider` seam and hands it back as state; `login.screen.dart` forwards a `credentialReady` state to core `AuthBloc` as `SocialLoginSubmitted`, which calls `POST /client/social/{provider}`, stores the Sanctum token and signals the router like a password login.
+- `lib/src/features/auth/social_credential.provider.dart` (seam) and `platform_social_credential.provider.dart` (`google_sign_in` access token; `sign_in_with_apple` identity token). Google is offered on Android and iOS, Apple on iOS and macOS only.
+- `lib/src/features/auth/widgets/social_login_buttons.widget.dart` — "Continue with Google / Apple" buttons under the login form; hidden for providers the platform does not support.
+- Tests: `test/social_login_bloc_test.dart`, `test/social_login_flow_test.dart`; core `AuthBloc` social cases in `packages/core/test/auth_bloc_test.dart`.
+- External setup: `GOOGLE_SERVER_CLIENT_ID` (web/server OAuth client ID, required on Android) and `GOOGLE_CLIENT_ID` (iOS client ID) in `.env`; iOS URL scheme (reversed iOS client ID) in `ios/Runner/Info.plist`; the Sign in with Apple capability on the iOS App ID. Backend: `APPLE_CLIENT_ID` (the iOS bundle ID the identity token is issued for) in `backend/.env`; Google needs no server-side secret because the backend validates the access token against Google's userinfo endpoint.
+
 ## Continued in
 
 - [Part 2: Password Recovery — Stitch 011–014](feature-index-part-2.md)

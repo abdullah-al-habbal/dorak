@@ -29,7 +29,9 @@ Routes: [index](index.md) · [open decision](../decisions-required.md).
 | stylist_app | Inbox | Missing UI |
 | stylist_app | Earnings | Missing (mobile, and token-scope blocked) |
 
-## Recommendation (pending approval)
+> **Resolved:** the decision was full scope with zero deferrals (ADR 0002). Business services CRUD, stylist earnings and business earnings all shipped; the table below records the audit-time state.
+
+## Recommendation (superseded)
 **Ship:** working hours, staff list with activate and deactivate, notification inbox in both apps, stylist services and pricing editor, stylist past appointments.
 
 **Defer:** business services CRUD and stylist earnings, unless the mobile-scoped backend routes in [02](02-token-scope-mismatch.md) are accepted as part of the MVP.

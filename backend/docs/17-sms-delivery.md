@@ -35,6 +35,10 @@ codeanchors:
 | `SMS_HTTP_PAYLOAD` | Single-line JSON object template; `{{phone}}` and `{{message}}` are replaced in string values only. Empty = `{"to","message"}`. |
 | `SMS_HTTP_TIMEOUT` | Seconds, default 10 (connect timeout 3). |
 
+## Production requirement (G5)
+
+`SMS_DRIVER=generic_http` (with `SMS_HTTP_URL` and any `SMS_HTTP_HEADERS`) must be set in every production and staging environment. `backend/.env.example` defaults to `log` for local development only: with `log`, no SMS leaves the server, so client phone OTPs are never delivered and the code is written to the log. Verify after each deploy with `php artisan tinker` -> `config('services.sms.driver')` returning `generic_http`.
+
 ## Rules
 
 - Throw `SmsDeliveryException` on a connection failure or any non-2xx response. Its message may carry the HTTP status only: never the phone, the SMS body or credentials.

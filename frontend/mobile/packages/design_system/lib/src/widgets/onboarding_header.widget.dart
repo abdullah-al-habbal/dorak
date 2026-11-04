@@ -25,7 +25,10 @@ class OnboardingHeader extends StatelessWidget {
     final colors = DorakColors.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: DorakDimensions.marginMobile,
+        vertical: DorakDimensions.spacingCozy,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

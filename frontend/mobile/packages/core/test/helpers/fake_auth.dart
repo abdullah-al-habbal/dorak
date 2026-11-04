@@ -191,10 +191,14 @@ class FakeAuthRepository implements AuthRepository {
   }) async {}
 
   @override
-  Future<void> socialLogin({
+  Future<AuthResponseDto> socialLogin({
     required SocialAuthProvider provider,
     required String accessToken,
-  }) async {}
+  }) async {
+    final error = loginError;
+    if (error != null) throw error;
+    return loginResponse;
+  }
 }
 
 ApiException unauthorized() => const ApiException(

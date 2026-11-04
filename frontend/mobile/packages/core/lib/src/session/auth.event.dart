@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'package:core/src/network/social_auth_provider.entity.dart';
+
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
 
@@ -54,3 +56,13 @@ class VerifyEmailRequested extends AuthEvent {
 }
 
 class AuthSignalAcknowledged extends AuthEvent {}
+
+class SocialLoginSubmitted extends AuthEvent {
+  const SocialLoginSubmitted({required this.provider, required this.token});
+
+  final SocialAuthProvider provider;
+  final String token;
+
+  @override
+  List<Object?> get props => [provider, token];
+}

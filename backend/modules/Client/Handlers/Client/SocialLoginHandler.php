@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Client\Handlers\Client;
 
-use Exception;
+use Illuminate\Support\Str;
 use Laravel\Socialite\AbstractUser as SocialUser;
 use Laravel\Socialite\Facades\Socialite;
 use Modules\Activation\Exceptions\AccountNotActiveException;
@@ -12,21 +12,27 @@ use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Client\CQRS\Command\Client\SocialLoginCommand;
 use Modules\Client\Eloquent\Resolvers\Client\SocialLoginEloquentResolver;
 use Modules\Client\Enums\ClientStatusEnum;
+use Modules\Client\Enums\SocialProviderEnum;
 use Modules\Client\Http\Resources\Client\ClientProfileResource;
 use Modules\Client\Models\ClientModel;
+use Modules\Client\Services\AppleIdentityTokenVerifier;
 use Modules\Client\ValuesObjects\SocialLoginResult;
+use Throwable;
 
 final class SocialLoginHandler
 {
     public function __construct(
         private readonly SocialLoginEloquentResolver $resolver,
+        private readonly AppleIdentityTokenVerifier $appleVerifier,
     ) {}
 
     public function handle(SocialLoginCommand $command): SocialLoginResult
     {
         try {
-            $socialUser = Socialite::driver($command->provider->value)->stateless()->userFromToken($command->accessToken);
-        } catch (Exception) {
+            $socialUser = $command->provider === SocialProviderEnum::Apple
+                ? $this->appleVerifier->verify($command->accessToken)
+                : Socialite::driver($command->provider->value)->stateless()->userFromToken($command->accessToken);
+        } catch (Throwable) {
             return SocialLoginResult::invalidToken();
         }
 
@@ -48,7 +54,7 @@ final class SocialLoginHandler
             $client = $this->resolver->findClientByEmail($email);
 
             if ($client === null) {
-                $client = $this->resolver->createClient($name, $email);
+                $client = $this->resolver->createClient($name ?: Str::before($email, '@'), $email);
             }
 
             $this->resolver->createSocialAccount($client, $command->provider, $providerId, $avatar);

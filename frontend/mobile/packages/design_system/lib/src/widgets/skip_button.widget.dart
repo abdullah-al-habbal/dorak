@@ -27,7 +27,10 @@ class SkipButton extends StatelessWidget {
         textStyle: DorakTypography.labelLg.copyWith(
           color: isDisabled ? colors.outlineVariant : colors.onSurfaceVariant,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: DorakDimensions.spacingMedium,
+          vertical: DorakDimensions.spacingSmall,
+        ),
         minimumSize: Size.zero,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),

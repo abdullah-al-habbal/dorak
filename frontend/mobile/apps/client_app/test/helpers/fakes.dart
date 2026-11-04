@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:localization/localization.dart';
 
+import 'package:client_app/src/features/auth/social_credential.provider.dart';
 import 'package:client_app/src/core/navigation/app.router.dart';
 import 'package:client_app/src/core/locale/locale.bloc.dart';
 import 'package:client_app/src/core/session/auth_coordination.entity.dart';
@@ -63,12 +64,14 @@ AppRouter buildRouter({
   PhoneVerificationBloc? phoneVerification,
   NotificationsBloc? notifications,
   PhotoPicker? photoPicker,
+  SocialCredentialProvider? socialCredentials,
   VoidCallback switchLocale = _noSwitchLocale,
   void Function(String barberId) onBarberSelected = _noBarberSelected,
 }) {
   return AppRouter(
     session: session,
     auth: auth,
+    socialCredentials: socialCredentials,
     recovery:
         recovery ??
         PasswordRecoveryBloc(recoveryRepository ?? FakeAuthRepository()),
@@ -230,6 +233,9 @@ class FakeAuthRepository implements AuthRepository {
 
   Object? refreshTokenError;
   Object? loginError;
+  Object? socialLoginError;
+  final List<({SocialAuthProvider provider, String accessToken})>
+  socialLoginCalls = [];
   Object? registerError;
   Object? verifyEmailError;
   Object? forgotPasswordError;
@@ -370,10 +376,15 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> socialLogin({
+  Future<AuthResponseDto> socialLogin({
     required SocialAuthProvider provider,
     required String accessToken,
-  }) async {}
+  }) async {
+    socialLoginCalls.add((provider: provider, accessToken: accessToken));
+    final error = socialLoginError;
+    if (error != null) throw error;
+    return AuthResponseDto(token: 'social-token', client: _client);
+  }
 }
 
 class FakeOnboardingConfigRepository implements OnboardingConfigRepository {
@@ -1702,5 +1713,32 @@ class FakeBrandRepository implements BrandRepository {
         totalPages: 1,
       ),
     );
+  }
+}
+
+class FakeSocialCredentialProvider implements SocialCredentialProvider {
+  FakeSocialCredentialProvider({
+    this.supported = const {
+      SocialAuthProvider.google,
+      SocialAuthProvider.apple,
+    },
+    this.token = 'provider-token-123',
+    this.error,
+  });
+
+  final Set<SocialAuthProvider> supported;
+  final String? token;
+  final Object? error;
+  final List<SocialAuthProvider> requested = [];
+
+  @override
+  bool supports(SocialAuthProvider provider) => supported.contains(provider);
+
+  @override
+  Future<String?> obtainToken(SocialAuthProvider provider) async {
+    requested.add(provider);
+    final failure = error;
+    if (failure != null) throw failure;
+    return token;
   }
 }

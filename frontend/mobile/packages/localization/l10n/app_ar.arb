@@ -1468,5 +1468,9 @@
   "stylistHistoryEmpty": "لا توجد مواعيد مطابقة لهذا الفلتر.",
   "stylistHistoryFilterAll": "الكل",
   "stylistServicesEditorTitle": "الخدمات والأسعار",
-  "stylistServicesEditorEmpty": "ليس لديك خدمات بعد. أضف أول خدمة."
+  "stylistServicesEditorEmpty": "ليس لديك خدمات بعد. أضف أول خدمة.",
+  "socialLoginDivider": "أو",
+  "socialLoginGoogle": "المتابعة باستخدام Google",
+  "socialLoginApple": "المتابعة باستخدام Apple",
+  "socialLoginFailed": "فشل تسجيل الدخول. حاول مرة أخرى."
 }

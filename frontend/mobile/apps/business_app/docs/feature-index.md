@@ -33,5 +33,8 @@ codeanchors:
 | BU-14 | Bottom-navigation shell + More tab (G10) | ✅ Complete | `core/navigation/widgets/`, `features/more/` |
 | BU-15 | Branch earnings (G11) | ✅ Complete | `features/earnings/` |
 
+### G10/G11 status
+All G10/G11 business features (staff, services, working hours, inbox, bottom-navigation shell, earnings) are implemented and covered by bloc and widget tests: `test/business_g10_g11_blocs_test.dart`, `business_g10_g11_screens_test.dart` (earnings, More, inbox, staff), `business_hours_services_screens_test.dart` (hours, services list, service form) and `business_earnings_bloc_test.dart`.
+
 ### Not Started
-- Remaining business features (branch/brand management, bookings, staff, reports) — not yet specced or built.
+- Brand management, bookings and reports are outside the G10/G11 scope and not yet specced.

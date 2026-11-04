@@ -12,6 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this._repository, this._tokenStorage) : super(const AuthState()) {
     on<LoginRequested>(_onLogin);
     on<RegisterRequested>(_onRegister);
+    on<SocialLoginSubmitted>(_onSocialLogin);
     on<SendVerificationCodeRequested>(_onSendVerificationCode);
     on<VerifyEmailRequested>(_onVerifyEmail);
     on<AuthSignalAcknowledged>(_onSignalAcknowledged);
@@ -28,6 +29,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final response = await _repository.login(
           email: event.email,
           password: event.password,
+        );
+        client = await _acceptSession(response);
+      },
+      (state) => state.copyWith(client: client),
+      signal: AuthSignal.loginSucceeded,
+    );
+  }
+
+  Future<void> _onSocialLogin(
+    SocialLoginSubmitted event,
+    Emitter<AuthState> emit,
+  ) async {
+    ClientDto? client;
+    await _run(
+      emit,
+      () async {
+        final response = await _repository.socialLogin(
+          provider: event.provider,
+          accessToken: event.token,
         );
         client = await _acceptSession(response);
       },

@@ -56,12 +56,12 @@ class BottomSheetModal extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 8,
+                    horizontal: DorakDimensions.gutter,
+                    vertical: DorakDimensions.spacingSmall,
                   ),
                   child: child,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DorakDimensions.spacingMedium),
               ],
             ),
           ),

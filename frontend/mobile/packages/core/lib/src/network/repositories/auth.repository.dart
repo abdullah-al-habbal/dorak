@@ -41,7 +41,7 @@ abstract class AuthRepository {
     required String password,
     required String passwordConfirmation,
   });
-  Future<void> socialLogin({
+  Future<AuthResponseDto> socialLogin({
     required SocialAuthProvider provider,
     required String accessToken,
   });
@@ -172,14 +172,14 @@ class DioAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> socialLogin({
+  Future<AuthResponseDto> socialLogin({
     required SocialAuthProvider provider,
     required String accessToken,
   }) {
-    return _client.post<void>(
+    return _client.post(
       ApiEndpoints.auth.socialLogin(provider.value),
       data: {'access_token': accessToken},
-      parser: _discardBody,
+      parser: (json) => AuthResponseDto.fromJson(json as Map<String, dynamic>),
     );
   }
 
