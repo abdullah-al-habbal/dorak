@@ -13,6 +13,9 @@ export const API_ROUTE = {
   me: "/api/auth/me",
 } as const;
 
+/** Backend dashboard paths are used as-is behind this prefix; there is no renaming. */
+export const DASHBOARD_API = "/api/dashboard";
+
 export function portalRoot(actor: AuthActor): string {
   return `${ROUTE_ROOT}/${actor}`;
 }

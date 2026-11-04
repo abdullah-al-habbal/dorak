@@ -6,4 +6,5 @@ export interface BackendRequest {
   body?: unknown;
   accessToken?: string;
   claim?: string;
+  locale?: string;
 }

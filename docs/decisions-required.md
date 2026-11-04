@@ -24,8 +24,11 @@ Source: [product audit](planning/product-audit-part-3.md). Remaining launch-read
 
 Plan: [feature modules master plan](feature-modules-plan.md) (sections 4 and 12). The plan was checked against the backend routes and Form Requests; these items differ from the original brief and need an answer before the affected module starts.
 
-- [ ] Barber URL segment: the backend resource is `stylists` and the dashboard nav already uses `stylists`. Keep `/dashboard/[guard]/stylists` with the label "Barbers", or rename the segment to `barbers`.
-- [ ] Working hours have no endpoint of their own: they are `opening_hours` on `PUT /branches/{id}`, one interval per day, no split shifts. Confirm that a partial payload is accepted, or that the dashboard must send the whole branch.
-- [ ] Earnings response shape (splits, previous-period figure, paging) is not documented; confirm `GET /earnings` before building trend indicators.
-- [ ] Barbers are rejected by every Operations route, so the barber portal can only show earnings. Decide whether a barber-scoped bookings/schedule endpoint is wanted (backend work).
-- [ ] Approve or reject adding a chart library for earnings (none is installed).
+Resolved 2026-11-04 (session handover). Remove each entry once its module ships.
+
+- [x] **Barber URL segment:** the dashboard uses the backend name directly: `/dashboard/[guard]/stylists` calls `/stylists`. The UI label stays "Barbers". No path mapping exists in the proxy. The `/barbers/{barber}/services` override routes are a separate Brand-group resource for Module 3.
+- [x] **Working hours:** edited through `opening_hours` on `PUT /branches/{id}`. Verified in `BranchRequest`: `brand_id`, `name.en`, `name.ar` and `email` are required, so a partial payload is rejected. The editor loads the branch and sends the whole object with the changed hours. One interval per day, no split shifts.
+- [x] **Booking statuses:** audited against the backend; all six `BookingStatus` values are live (`pending`, `confirmed`, `in_progress`, `completed`, `cancelled`, `no_show`). Transitions: pending to confirmed or cancelled; confirmed to in_progress, cancelled or no_show; in_progress to completed, cancelled or no_show; the other three are terminal. `PATCH /bookings/{id}` rejects `pending` as a target, so the UI offers only graph-valid transitions.
+- [x] **Barber portal scope:** earnings only, because the Operations routes reject barbers. The "schedule" item stays marked "Soon" until a barber-scoped endpoint exists (backend work, not in this effort).
+- [x] **Earnings shape and CSV:** `GET /earnings` accepts only `from` and `to` and returns `{scope, totals[]}`, with no previous-period figure and no paging. Trends come from a second request for the equal preceding range. CSV export is generated client-side from loaded rows.
+- [ ] Approve or reject adding a chart library for earnings (none is installed). Still open: not covered by the handover brief.

@@ -47,6 +47,13 @@ function toError(status: number, body: unknown): ApiClientError {
 }
 
 export async function apiRequest<T>(path: string, options: ApiRequestOptions<T>): Promise<T> {
+  return (await apiRequestWithMeta(path, options)).data;
+}
+
+export async function apiRequestWithMeta<T>(
+  path: string,
+  options: ApiRequestOptions<T>,
+): Promise<{ data: T; meta: unknown }> {
   const method = options.method ?? HttpMethod.Get;
   let response = await send(path, method, options.body);
 
@@ -59,6 +66,6 @@ export async function apiRequest<T>(path: string, options: ApiRequestOptions<T>)
 
   const success = apiSuccessBodySchema.safeParse(body);
   const data = success.success ? options.schema.safeParse(success.data.data) : null;
-  if (!data?.success) throw new ApiClientError({ status: response.status, code: ApiErrorCode.Server, message: "" });
-  return data.data;
+  if (!success.success || !data?.success) throw new ApiClientError({ status: response.status, code: ApiErrorCode.Server, message: "" });
+  return { data: data.data, meta: success.data.meta };
 }

@@ -15,6 +15,7 @@ function buildHeaders(request: BackendRequest): Headers {
   const headers = new Headers({ Accept: "application/json", "Content-Type": "application/json" });
   if (request.accessToken) headers.set("Authorization", `Bearer ${request.accessToken}`);
   if (request.claim) headers.set(CLAIM_HEADER, request.claim);
+  if (request.locale) headers.set("Accept-Language", request.locale);
   return headers;
 }
 

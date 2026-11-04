@@ -149,10 +149,10 @@ Found by comparing the brief with the backend. These are the decisions that need
 
 | Brief | Backend reality | Plan |
 | --- | --- | --- |
-| `/barbers` endpoint | **No such route.** Barbers are `stylists` (`/stylists`, `activate`, `deactivate`). | The UI says "Barbers"; the URL segment stays `stylists` to match the existing nav, i18n keys and backend. Needs a product call if `/barbers` is wanted as the URL. |
+| `/barbers` endpoint | **No such route.** Barbers are `stylists` (`/stylists`, `activate`, `deactivate`). | Resolved: the URL segment and proxy path are `stylists`, with no mapping. The UI label stays "Barbers". |
 | `/working-hours` endpoint | **No such route.** Hours are `opening_hours` on the branch resource, written through `PUT /branches/{id}` (`BranchRequest`, `OpeningHoursRules`). | The editor saves via the branch update. The PUT requires the full branch payload (name, email, brand_id, ...), so the module loads the branch first and sends the whole object. Verify that a PUT with only `opening_hours` is accepted; if not, send the loaded values back unchanged. |
 | Split shifts / breaks in working hours | `opening_hours.*.day_of_week` must be `distinct`, at most 7 entries, one `opens_time` and `closes_time` per day (`H:i`, close after open). | One interval per day. No split shifts. Overnight hours are not representable. |
-| Statuses Pending / Confirmed / Completed / Cancelled | `BookingStatus` also has `in_progress` and `no_show`. | Six statuses. |
+| Statuses Pending / Confirmed / Completed / Cancelled | `BookingStatus` also has `in_progress` and `no_show`. | Six statuses, all live in the backend. Transitions follow `BookingStatus::canTransitionTo`; the UI offers only those, and never `pending` as a target. |
 | Commission rules on a barber | `StylistRequest` has no commission field. Rules are `admin/commission-rules` (platform admin only). | Barbers module shows commission read-only for admin; other guards do not see it. No commission editing in this module. |
 | Commission splits and trends in earnings | `ShowEarningsRequest` accepts only `from` and `to`. Whether the response has splits or a previous-period figure is **unverified**. | Verify the `ShowEarningsAction` response shape first. If there is no previous-period figure, the trend is computed by a second request for the equal preceding range; if that is not wanted, the indicator is hidden. |
 | CSV export | No export endpoint. | Client-side, from the loaded and filtered rows. |
@@ -290,6 +290,8 @@ Each step is a separate local commit with its own gates.
 - **Testing.** Vitest in the Node environment covers the pure logic (schemas, mappers, slot layout, CSV, proxy policy). Component behaviour is verified in the browser. Adding `jsdom` and Testing Library would allow component tests; that is a dependency decision for the maintainers.
 
 ## 12. Open questions
+
+Questions 1-3 and 5 were resolved on 2026-11-04; see [open decisions](decisions-required.md). Question 6 (chart library) is still open.
 
 1. URL segment: keep `stylists` (consistent with backend and nav) or rename to `barbers`?
 2. Does `PUT /branches/{id}` accept a partial payload, or must the whole branch be sent?

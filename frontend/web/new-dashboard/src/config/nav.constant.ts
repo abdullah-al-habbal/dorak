@@ -25,7 +25,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
   [AuthActor.Admin]: [
     overview,
     { key: "analytics", segment: "analytics", icon: BarChart3Icon, ready: false },
-    { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: false },
+    { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: true },
     { key: "brands", segment: "brands", icon: StoreIcon, ready: false },
     { key: "branches", segment: "branches", icon: BuildingIcon, ready: false },
     { key: "catalog", segment: "catalog", icon: LibraryIcon, ready: false },
@@ -34,7 +34,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
   ],
   [AuthActor.Manager]: [
     overview,
-    { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: false },
+    { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: true },
     { key: "chairs", segment: "chairs", icon: SofaIcon, ready: false },
     { key: "stylists", segment: "stylists", icon: UsersIcon, ready: false },
     { key: "services", segment: "services", icon: ScissorsIcon, ready: false },
@@ -48,7 +48,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
   ],
   [AuthActor.Owner]: [
     overview,
-    { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: false },
+    { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: true },
     { key: "branches", segment: "branches", icon: BuildingIcon, ready: false },
     { key: "stylists", segment: "stylists", icon: UsersIcon, ready: false },
     { key: "earnings", segment: "earnings", icon: BadgeDollarSignIcon, ready: false },
