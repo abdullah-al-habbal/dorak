@@ -1,0 +1,29 @@
+import { cookies } from "next/headers";
+
+import { CLAIM_COOKIE, REFRESH_COOKIE } from "@/config/cookies.constant";
+import { ApiErrorCode } from "@/enums/api-error-code.enum";
+import { apiFailure, apiSuccess } from "@/lib/api-response";
+import { getRequestDictionary } from "@/locales/get-request-dictionary";
+import { clearSessionCookies, setSessionCookies } from "@/services/api/auth/cookies";
+import { verifyClaim } from "@/services/api/auth/jwt.util";
+import { refreshSession } from "@/services/api/auth/refresh";
+
+const HTTP_UNAUTHORIZED = 401;
+
+export async function POST(request: Request) {
+  const store = await cookies();
+  const claim = store.get(CLAIM_COOKIE)?.value;
+  if (await verifyClaim(claim)) return apiSuccess({ refreshed: false });
+
+  const refreshToken = store.get(REFRESH_COOKIE)?.value;
+  const tokens = refreshToken ? await refreshSession(refreshToken, claim) : null;
+  if (!tokens) {
+    const dictionary = getRequestDictionary(request);
+    const failure = apiFailure(HTTP_UNAUTHORIZED, ApiErrorCode.RefreshUnauthorized, dictionary.errors.api.refresh_unauthorized);
+    clearSessionCookies(failure);
+    return failure;
+  }
+  const response = apiSuccess({ refreshed: true });
+  setSessionCookies(response, tokens);
+  return response;
+}

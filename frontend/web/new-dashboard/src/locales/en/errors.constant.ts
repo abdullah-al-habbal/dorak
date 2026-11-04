@@ -1,0 +1,19 @@
+export const enErrors = {
+  notFound: { title: "Page not found", body: "That page doesn't exist or has moved." },
+  generic: { title: "Something went wrong", body: "The page couldn't be shown. Try again." },
+  forbidden: { title: "Access denied", body: "Your role can't open this area." },
+  backToWorkspace: "Back to your workspace",
+  api: {
+    invalid_request: "The request couldn't be understood.",
+    invalid_credentials: "The email or password is incorrect.",
+    account_banned: "This account is suspended. Contact support.",
+    session_expired: "Your session ended. Sign in again.",
+    session_setup_failed: "We couldn't start your session. Try again.",
+    refresh_unauthorized: "Your session ended. Sign in again.",
+    forbidden: "You don't have access to this.",
+    resource_not_found: "We couldn't find that.",
+    too_many_requests: "Too many attempts. Wait a minute, then try again.",
+    network_error: "Can't reach the server. Check your connection.",
+    server_error: "Something went wrong on our side. Try again shortly.",
+  },
+} as const;

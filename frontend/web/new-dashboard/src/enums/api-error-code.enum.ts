@@ -1,0 +1,13 @@
+export enum ApiErrorCode {
+  InvalidRequest = "invalid_request",
+  InvalidCredentials = "invalid_credentials",
+  AccountBanned = "account_banned",
+  SessionExpired = "session_expired",
+  SessionSetupFailed = "session_setup_failed",
+  RefreshUnauthorized = "refresh_unauthorized",
+  Forbidden = "forbidden",
+  ResourceNotFound = "resource_not_found",
+  TooManyRequests = "too_many_requests",
+  Network = "network_error",
+  Server = "server_error",
+}

@@ -1,0 +1,46 @@
+import type { Dictionary } from "@/types/dictionary.type";
+
+export const arShell: Dictionary["shell"] = {
+  home: "الرئيسية",
+  openMenu: "فتح القائمة",
+  collapseSidebar: "طي الشريط الجانبي",
+  expandSidebar: "توسيع الشريط الجانبي",
+  soon: "قريبًا",
+  nav: {
+    overview: "نظرة عامة",
+    analytics: "التحليلات",
+    bookings: "الحجوزات",
+    branches: "الفروع",
+    brands: "العلامات التجارية",
+    chairs: "الكراسي",
+    stylists: "الحلاقون",
+    services: "الخدمات",
+    catalog: "الكتالوج",
+    earnings: "الأرباح",
+    payouts: "المدفوعات",
+    subscription: "الاشتراك",
+    reviews: "التقييمات",
+    settings: "الإعدادات",
+    schedule: "الجدول",
+  },
+  notifications: {
+    title: "الإشعارات",
+    empty: "لا جديد لديك.",
+    emptyHint: "ستظهر هنا الحجوزات والتنبيهات الجديدة.",
+    error: "تعذر تحميل الإشعارات.",
+  },
+  profile: {
+    menu: "قائمة الحساب",
+    account: "الحساب",
+    signedInAs: "مسجل الدخول باسم",
+  },
+  overview: {
+    greeting: "مرحبًا بعودتك",
+    shellNote: "مساحة العمل جاهزة. ستصل صفحات الميزات وحدة تلو الأخرى.",
+    sessionTitle: "جلستك",
+    role: "الدور",
+    scope: "الفرع",
+    permissions: "الصلاحيات",
+    none: "لا شيء",
+  },
+};

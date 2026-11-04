@@ -1,3 +1,7 @@
+import { redirect } from "next/navigation";
+
+import { ROUTE_ROOT } from "@/config/routes.constant";
+
 export default function HomePage() {
-  return null;
+  redirect(ROUTE_ROOT);
 }
