@@ -66,5 +66,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- Reversed iOS client ID (placeholder): replace with the real GOOGLE_CLIENT_ID reversed. -->
+				<string>com.googleusercontent.apps.000000000000-placeholder-ios-client-id</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
