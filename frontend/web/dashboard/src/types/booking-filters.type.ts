@@ -8,5 +8,6 @@ export interface BookingFilters {
   status?: BookingStatus;
   chairId?: string;
   search?: string;
+  hideCancelled?: boolean;
   page: number;
 }

@@ -11,4 +11,7 @@ export const BOOKING_TRANSITIONS: Record<BookingStatus, readonly BookingTarget[]
   [BookingStatus.NoShow]: [],
 };
 
+/** Mirrors RescheduleBookingEloquentResolver: only open bookings can move. */
+export const RESCHEDULABLE_STATUSES: readonly BookingStatus[] = [BookingStatus.Pending, BookingStatus.Confirmed];
+
 export const DESTRUCTIVE_TRANSITIONS: readonly BookingTarget[] = [BookingStatus.Cancelled, BookingStatus.NoShow];

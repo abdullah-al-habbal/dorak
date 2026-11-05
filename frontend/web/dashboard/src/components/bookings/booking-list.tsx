@@ -1,8 +1,13 @@
 "use client";
 
+import { useMemo } from "react";
+import type { JSX } from "react";
+
 import { BookingStatusBadge } from "@/components/bookings/booking-status-badge";
+import { DataTable } from "@/components/ui/table/data-table";
 import { useI18n } from "@/hooks/use-i18n";
 import { bookingTotal, formatDay, formatTime, localizedText, serviceSummary } from "@/lib/booking-format.util";
+import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
 import type { Booking } from "@/types/booking.type";
 
 interface BookingListProps {
@@ -10,40 +15,49 @@ interface BookingListProps {
   onSelect: (booking: Booking) => void;
 }
 
-const ROW = "grid items-center gap-x-4 gap-y-1 px-4 py-3 text-start md:grid-cols-[9rem_1.2fr_1.5fr_1fr_6rem_8.5rem_5.5rem]";
+const DASH = "-";
 
-export function BookingList({ bookings, onSelect }: BookingListProps) {
+function getBookingId(booking: Booking): string {
+  return booking.id;
+}
+
+export function BookingList({ bookings, onSelect }: BookingListProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { bookings: t } = dictionary;
 
+  const columns = useMemo<DataTableColumn<Booking>[]>(
+    () => [
+      {
+        id: "time",
+        header: t.columns.time,
+        primary: true,
+        cell: (booking) => (
+          <span className="tabular flex flex-col">
+            <span className="font-medium">{formatTime(booking.starts_at, locale)}</span>
+            <span className="text-xs text-muted-foreground">
+              {formatDay(new Date(booking.starts_at), locale, { weekday: "short", day: "numeric", month: "short" })}
+            </span>
+          </span>
+        ),
+      },
+      { id: "client", header: t.columns.client, cell: (booking) => <span className="font-medium">{booking.client?.name || t.unknownClient}</span> },
+      { id: "service", header: t.columns.service, cell: (booking) => <span className="text-muted-foreground">{serviceSummary(booking, locale) || DASH}</span> },
+      { id: "barber", header: t.columns.barber, cell: (booking) => <span className="text-muted-foreground">{booking.barber?.name || DASH}</span> },
+      { id: "chair", header: t.columns.chair, cell: (booking) => <span className="text-muted-foreground">{localizedText(booking.chair?.label, locale) || DASH}</span> },
+      { id: "status", header: t.columns.status, cell: (booking) => <BookingStatusBadge status={booking.booking_status} /> },
+      { id: "price", header: t.columns.price, align: "end", cell: (booking) => <span className="tabular text-muted-foreground">{bookingTotal(booking, locale) || DASH}</span> },
+    ],
+    [locale, t],
+  );
+
   return (
-    <div role="table" aria-label={t.title} className="overflow-hidden rounded-xl border border-border bg-card">
-      <div role="row" className={`${ROW} hidden border-b border-border bg-muted/40 text-xs font-medium text-muted-foreground md:grid`}>
-        {[t.columns.time, t.columns.client, t.columns.service, t.columns.barber, t.columns.chair, t.columns.status, t.columns.price].map((label) => (
-          <span key={label} role="columnheader">{label}</span>
-        ))}
-      </div>
-      <ul className="divide-y divide-border">
-        {bookings.map((booking) => {
-          const start = new Date(booking.starts_at);
-          return (
-            <li key={booking.id} role="row">
-              <button type="button" onClick={() => onSelect(booking)} className={`${ROW} w-full outline-none transition-colors hover:bg-muted/50 focus-visible:bg-muted/60 focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:ring-inset`}>
-                <span role="cell" className="tabular flex flex-col">
-                  <span className="font-medium">{formatTime(booking.starts_at, locale)}</span>
-                  <span className="text-xs text-muted-foreground">{formatDay(start, locale, { weekday: "short", day: "numeric", month: "short" })}</span>
-                </span>
-                <span role="cell" className="truncate font-medium">{booking.client?.name || t.unknownClient}</span>
-                <span role="cell" className="truncate text-muted-foreground">{serviceSummary(booking, locale) || "-"}</span>
-                <span role="cell" className="truncate text-muted-foreground">{booking.barber?.name || "-"}</span>
-                <span role="cell" className="truncate text-muted-foreground">{localizedText(booking.chair?.label, locale) || "-"}</span>
-                <span role="cell"><BookingStatusBadge status={booking.booking_status} /></span>
-                <span role="cell" className="tabular text-muted-foreground md:text-end">{bookingTotal(booking, locale) || "-"}</span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <DataTable
+      caption={t.title}
+      columns={columns}
+      rows={bookings}
+      getRowId={getBookingId}
+      onRowSelect={onSelect}
+      rowLabel={(booking) => `${booking.client?.name || t.unknownClient}, ${formatTime(booking.starts_at, locale)}`}
+    />
   );
 }

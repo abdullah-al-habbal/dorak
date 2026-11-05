@@ -11,7 +11,7 @@ codeanchors:
 
 Routes: [documentation graph](index.md), [ADR 0003](adr/0003-new-dashboard-foundation.md), [ADR 0004](adr/0004-archive-legacy-dashboard.md).
 
-Status: `IN PROGRESS`. `frontend/web/dashboard` is the only dashboard (the first one is archived, see ADR 0004). Built: layers 1-4 (API client, theme, i18n, auth, design system, shell), the allow-listed data proxy, and the core of Module 1 (Bookings: list, day and week grid, filters, status transitions). Not built: the Bookings walk-in, reschedule, history and chair filter, shared list primitives, and Modules 2-4. This document is the audited plan for everything on top of the foundation.
+Status: `IN PROGRESS`. `frontend/web/dashboard` is the only dashboard (the first one is archived, see ADR 0004). Built: layers 1-4 (API client, theme, i18n, auth, design system, shell), the allow-listed data proxy, and the core of Module 1 (Bookings: list, day and week grid, filters, status transitions). Module 1 is complete (walk-in, reschedule, history timeline, chair and hide-cancelled filters, shared list primitives under `components/ui/table` and `components/common`). Not built: Modules 2-4. This document is the audited plan for everything on top of the foundation.
 
 The plan was written against the backend routes (`php artisan route:list --path=api/v1/dashboard`), the Form Requests under `backend/modules/Dashboard/Http/Requests/Business/` and the middleware groups in `Routes/Api/V1/dashboard.php`. Where the original brief and the backend disagree, the backend wins and the difference is listed in [Contract mismatches](#contract-mismatches).
 
@@ -180,7 +180,7 @@ Found by comparing the brief with the backend. These are the decisions that need
 
 Route `/dashboard/[guard]/bookings`, guards admin, manager, owner (barber has no access, see section 4).
 
-Backend: `GET /bookings` (filters `chair_id, date_from, date_to, per_page, booking_status, search, stylist_id`), `GET /bookings/{id}`, `GET /bookings/{id}/history`, `PATCH /bookings/{id}` (`booking_status`), `PATCH .../cancel`, `PATCH .../reschedule`, `POST /bookings/walk-in`, `POST .../review`.
+Backend: `GET /bookings` (filters `chair_id, date_from, date_to, per_page, booking_status, hide_cancelled, search, stylist_id`), `GET /bookings/{id}`, `GET /bookings/{id}/history`, `PATCH /bookings/{id}` (`booking_status`), `PATCH .../cancel`, `PATCH .../reschedule`, `POST /bookings/walk-in`, `POST .../review`.
 
 Files (representative): `schemas/booking.zod.ts`, `schemas/booking-filters.zod.ts`, `schemas/walk-in-form.zod.ts`, `enums/booking-status.enum.ts`, `enums/booking-view.enum.ts`, `types/booking.type.ts`, `interfaces/booking-slot-layout.interface.ts`, `services/api/query/bookings.query.ts`, `services/api/mutation/{update-booking-status,cancel-booking,reschedule-booking,create-walk-in}.mutation.ts`, `lib/booking-keys.ts`, `lib/slot-layout.util.ts`, `components/bookings/*`, `hooks/use-booking-filters.ts`.
 

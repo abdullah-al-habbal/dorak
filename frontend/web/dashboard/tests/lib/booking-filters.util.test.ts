@@ -8,7 +8,7 @@ const TODAY = new Date(2026, 10, 4);
 
 describe("booking filters", () => {
   it("round-trips through the URL", () => {
-    const filters = { view: BookingView.Day, date: "2026-11-10", status: BookingStatus.NoShow, chairId: "c1", search: "ali", page: 3 };
+    const filters = { view: BookingView.Day, date: "2026-11-10", status: BookingStatus.NoShow, chairId: "c1", search: "ali", hideCancelled: true, page: 3 };
     expect(filtersFromParams(filtersToParams(filters, TODAY), TODAY)).toEqual(filters);
   });
 

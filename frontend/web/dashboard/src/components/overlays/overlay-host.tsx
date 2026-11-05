@@ -1,5 +1,7 @@
 "use client";
 
+import { RescheduleDialog } from "@/components/bookings/reschedule-dialog";
+import { WalkInDialog } from "@/components/bookings/walk-in-dialog";
 import { ConfirmOverlay } from "@/components/overlays/confirm-overlay";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import type { OverlayRequest } from "@/types/overlay-request.type";
@@ -15,9 +17,13 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
   switch (request.kind) {
     case OverlayKind.Confirm:
       return <ConfirmOverlay request={request} onClose={onClose} />;
+    case OverlayKind.WalkIn:
+      return <WalkInDialog onClose={onClose} />;
+    case OverlayKind.Reschedule:
+      return <RescheduleDialog booking={request.booking} onClose={onClose} />;
     default: {
-      const unhandled: never = request.kind;
-      throw new Error(`Unhandled overlay kind: ${String(unhandled)}`);
+      const unhandled: never = request;
+      throw new Error(`Unhandled overlay kind: ${JSON.stringify(unhandled)}`);
     }
   }
 }

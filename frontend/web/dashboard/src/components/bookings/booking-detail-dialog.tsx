@@ -2,8 +2,10 @@
 
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { BookingStatusBadge } from "@/components/bookings/booking-status-badge";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { BOOKING_TRANSITIONS, DESTRUCTIVE_TRANSITIONS } from "@/config/booking-transitions.constant";
+import { BookingHistoryTimeline } from "@/components/bookings/booking-history-timeline";
+import { BOOKING_TRANSITIONS, DESTRUCTIVE_TRANSITIONS, RESCHEDULABLE_STATUSES } from "@/config/booking-transitions.constant";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
@@ -44,11 +46,19 @@ export function BookingDetailDialog({ booking, onClose }: BookingDetailDialogPro
     });
   }
 
+  const canReschedule = booking !== null && RESCHEDULABLE_STATUSES.includes(booking.booking_status);
+
+  function reschedule() {
+    if (!booking) return;
+    onClose();
+    overlay.open({ kind: OverlayKind.Reschedule, booking });
+  }
+
   const next = booking ? BOOKING_TRANSITIONS[booking.booking_status] : [];
 
   return (
     <Dialog open={booking !== null} onOpenChange={(open) => (open ? undefined : onClose())}>
-      <DialogContent>
+      <DialogContent className="max-h-[90dvh] overflow-y-auto overscroll-contain">
         {booking ? (
           <>
             <DialogHeader>
@@ -92,8 +102,12 @@ export function BookingDetailDialog({ booking, onClose }: BookingDetailDialogPro
                     {t.action[target]}
                   </LoadingButton>
                 ))}
+                {canReschedule ? (
+                  <Button variant="outline" disabled={mutation.isPending} onClick={reschedule}>{t.reschedule.action}</Button>
+                ) : null}
               </div>
             </div>
+            <BookingHistoryTimeline bookingId={booking.id} />
           </>
         ) : null}
       </DialogContent>

@@ -27,6 +27,20 @@ describe('Dashboard Booking API', function (): void {
             ->assertJsonCount(1, 'data');
     });
 
+    it('hides cancelled bookings when asked', function (): void {
+        $branch = BranchModel::factory()->create();
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
+        BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Confirmed->value]);
+        BookingModel::factory()->create(['chair_id' => $chair->id, 'booking_status' => BookingStatus::Cancelled->value]);
+        $this->authenticateDashboardActor($branch);
+
+        $this->getJson('/api/v1/dashboard/bookings')->assertOk()->assertJsonCount(2, 'data');
+        $this->getJson('/api/v1/dashboard/bookings?hide_cancelled=1')
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.booking_status', BookingStatus::Confirmed->value);
+    });
+
     it('searches bookings by client name with partial and empty matches', function (): void {
         $branch = BranchModel::factory()->create();
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);

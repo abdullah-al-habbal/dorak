@@ -23,6 +23,7 @@ export function filtersFromParams(params: URLSearchParams, today: Date): Booking
     status: status && STATUSES.has(status) ? (status as BookingStatus) : undefined,
     chairId: params.get("chair") || undefined,
     search: params.get("search")?.slice(0, MAX_SEARCH) || undefined,
+    hideCancelled: params.get("hide_cancelled") === "1" ? true : undefined,
     page: Number.isInteger(page) && page > 0 ? page : 1,
   };
 }
@@ -35,6 +36,7 @@ export function filtersToParams(filters: BookingFilters, today: Date): URLSearch
   if (filters.status) params.set("status", filters.status);
   if (filters.chairId) params.set("chair", filters.chairId);
   if (filters.search) params.set("search", filters.search);
+  if (filters.hideCancelled) params.set("hide_cancelled", "1");
   if (filters.page > 1) params.set("page", String(filters.page));
   return params;
 }

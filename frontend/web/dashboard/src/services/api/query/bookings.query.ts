@@ -15,6 +15,7 @@ function queryString(filters: BookingFilters, weekStart: number, page: number): 
   const params = new URLSearchParams({ date_from: from, date_to: to, per_page: String(PER_PAGE), page: String(page) });
   if (filters.status) params.set("booking_status", filters.status);
   if (filters.chairId) params.set("chair_id", filters.chairId);
+  if (filters.hideCancelled) params.set("hide_cancelled", "1");
   if (filters.search) params.set("search", filters.search);
   return params.toString();
 }

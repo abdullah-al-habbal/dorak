@@ -7,6 +7,9 @@ export const arCommon: Dictionary["common"] = {
   retry: "حاول مرة أخرى",
   cancel: "إلغاء",
   close: "إغلاق",
+  pagination: { previous: "السابق", next: "التالي", page: "الصفحة {page} من {total}" },
+  filters: { active: "التصفية النشطة", remove: "إزالة التصفية {filter}", clearAll: "مسح الكل", on: "مفعّل" },
+  fields: { optional: "اختياري", required: "مطلوب" },
   skipToContent: "انتقل إلى المحتوى",
   language: "اللغة",
   theme: {

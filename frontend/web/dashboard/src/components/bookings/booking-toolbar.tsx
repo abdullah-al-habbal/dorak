@@ -1,17 +1,21 @@
 "use client";
 
-import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { BookingView } from "@/enums/booking-view.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { addDays, parseDateKey, toDateKey } from "@/lib/booking-date.util";
 import { formatDay } from "@/lib/booking-format.util";
+import { isBookingStatus } from "@/lib/booking-status-label.util";
+import { localizedText } from "@/lib/booking-format.util";
 import { windowFor } from "@/lib/booking-filters.util";
 import { cn } from "@/lib/utils";
+import type { ChairOption } from "@/types/chair-option.type";
 import type { BookingFilters } from "@/types/booking-filters.type";
 
 const SEARCH_DEBOUNCE_MS = 300;
@@ -21,10 +25,16 @@ const VIEWS = [BookingView.List, BookingView.Day, BookingView.Week] as const;
 interface BookingToolbarProps {
   filters: BookingFilters;
   weekStart: number;
+  chairs: readonly ChairOption[];
   onChange: (patch: Partial<BookingFilters>) => void;
+  onNewWalkIn: () => void;
 }
 
-export function BookingToolbar({ filters, weekStart, onChange }: BookingToolbarProps) {
+function parseStatus(value: string): BookingStatus | undefined {
+  return isBookingStatus(value) ? value : undefined;
+}
+
+export function BookingToolbar({ filters, weekStart, chairs, onChange, onNewWalkIn }: BookingToolbarProps) {
   const { locale, direction, dictionary } = useI18n();
   const { bookings: t } = dictionary;
   const [search, setSearch] = useState(filters.search ?? "");
@@ -84,26 +94,39 @@ export function BookingToolbar({ filters, weekStart, onChange }: BookingToolbarP
           </Button>
         </div>
         <p className="tabular text-sm font-medium" aria-live="polite">{label}</p>
+        <Button className="ms-auto" onClick={onNewWalkIn}>
+          <PlusIcon aria-hidden data-icon="inline-start" />
+          {t.newWalkIn}
+        </Button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div role="group" aria-label={t.filters.toolbar} className="flex flex-wrap items-center gap-2">
         <label className="relative w-full sm:w-72">
           <span className="sr-only">{t.filters.search}</span>
           <SearchIcon className="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground" aria-hidden />
           <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t.filters.search} maxLength={100} className="ps-9" />
         </label>
-        <label>
+        <label className="w-full sm:w-44">
           <span className="sr-only">{t.filters.status}</span>
-          <select
-            value={filters.status ?? ""}
-            onChange={(event) => onChange({ status: (event.target.value || undefined) as BookingStatus | undefined })}
-            className="h-10 rounded-lg border border-input bg-card px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40"
-          >
+          <NativeSelect value={filters.status ?? ""} onChange={(event) => onChange({ status: parseStatus(event.target.value) })}>
             <option value="">{t.filters.allStatuses}</option>
             {Object.values(BookingStatus).map((status) => (
               <option key={status} value={status}>{t.status[status]}</option>
             ))}
-          </select>
+          </NativeSelect>
+        </label>
+        <label className="w-full sm:w-44">
+          <span className="sr-only">{t.filters.chair}</span>
+          <NativeSelect value={filters.chairId ?? ""} onChange={(event) => onChange({ chairId: event.target.value || undefined })}>
+            <option value="">{t.filters.allChairs}</option>
+            {chairs.map((chair) => (
+              <option key={chair.id} value={chair.id}>{localizedText(chair.label, locale) || chair.id}</option>
+            ))}
+          </NativeSelect>
+        </label>
+        <label className="flex min-h-10 cursor-pointer items-center gap-2 text-sm">
+          <input type="checkbox" className="size-4 accent-primary" checked={Boolean(filters.hideCancelled)} onChange={(event) => onChange({ hideCancelled: event.target.checked || undefined })} />
+          {t.filters.hideCancelled}
         </label>
       </div>
     </div>

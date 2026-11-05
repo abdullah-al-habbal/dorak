@@ -29,3 +29,9 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - Forms: label above, inline error under the field, form-level error in a `role="alert"` banner.
 - Overlays: every dialog or sheet opens through `useOverlay().open(...)`, never local `open` state. Confirm dialogs lock while pending, use the destructive button for destructive actions, and stay open if the action fails. Forms up to about six fields use a dialog; longer ones a sheet; under 640px all overlays anchor to the bottom.
 - Sidebar state: desktop collapse is cookie-seeded on the server; the mobile sheet closes on navigation.
+
+## Lists and forms (bookings module)
+- Lists use `DataTable` (`components/ui/table`): a real `<table>` from `md`, stacked labelled cards below. Rows are a single button with a stretched hit area; never nest interactive elements in a row.
+- Every list wires `TableSkeleton`, `EmptyState` (empty / filtered / forbidden), `ErrorState`, `FilterChips` (removable, one "Clear all") and `PaginationBar` (URL `?page=`, or an `onPageChange` override).
+- Forms (walk-in, reschedule) are dialogs with react-hook-form + a Zod schema built from the dictionary. Backend 409/422 map to inline field errors (`mapBookingFormError`); anything unmapped goes to the `role="alert"` banner. Date-times use native `datetime-local` (local time in, UTC ISO out).
+- Logical properties only; shadcn close buttons and menu offsets were converted to `end-*` / `ms-*` / `ps-*`.
