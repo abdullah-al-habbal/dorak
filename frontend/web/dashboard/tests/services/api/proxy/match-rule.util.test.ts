@@ -8,6 +8,7 @@ describe("matchProxyRule", () => {
     expect(matchProxyRule(HttpMethod.Get, "stylists").kind).toBe("allowed");
     expect(matchProxyRule(HttpMethod.Patch, "bookings/12/cancel").kind).toBe("allowed");
     expect(matchProxyRule(HttpMethod.Post, "bookings/walk-in").kind).toBe("allowed");
+    expect(matchProxyRule(HttpMethod.Get, "currencies").kind).toBe("allowed");
   });
 
   it("has no barbers alias for stylists", () => {

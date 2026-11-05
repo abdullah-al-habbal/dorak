@@ -18,7 +18,8 @@ function cellAlign<T>(column: DataTableColumn<T>): string {
  */
 export function DataTable<T>({ caption, columns, rows, getRowId, onRowSelect, rowLabel }: DataTableProps<T>): JSX.Element {
   const primary = columns.find((column) => column.primary) ?? columns[0];
-  const secondary = columns.filter((column) => column !== primary);
+  const secondary = columns.filter((column) => column !== primary && !column.interactive);
+  const controls = columns.filter((column) => column.interactive);
 
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card">
@@ -51,7 +52,7 @@ export function DataTable<T>({ caption, columns, rows, getRowId, onRowSelect, ro
                       {column.cell(row)}
                     </button>
                   ) : (
-                    column.cell(row)
+                    column.interactive ? <div className="relative z-10 inline-flex">{column.cell(row)}</div> : column.cell(row)
                   )}
                 </td>
               ))}
@@ -84,6 +85,16 @@ export function DataTable<T>({ caption, columns, rows, getRowId, onRowSelect, ro
               ) : (
                 body
               )}
+              {controls.length > 0 ? (
+                <div className="flex flex-wrap items-center justify-end gap-3 px-4 pb-3">
+                  {controls.map((column) => (
+                    <div key={column.id} className="flex items-center gap-2 text-sm">
+                      <span className="text-xs text-muted-foreground">{column.header}</span>
+                      {column.cell(row)}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </li>
           );
         })}

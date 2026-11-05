@@ -35,3 +35,8 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - Every list wires `TableSkeleton`, `EmptyState` (empty / filtered / forbidden), `ErrorState`, `FilterChips` (removable, one "Clear all") and `PaginationBar` (URL `?page=`, or an `onPageChange` override).
 - Forms (walk-in, reschedule) are dialogs with react-hook-form + a Zod schema built from the dictionary. Backend 409/422 map to inline field errors (`mapBookingFormError`); anything unmapped goes to the `role="alert"` banner. Date-times use native `datetime-local` (local time in, UTC ISO out).
 - Logical properties only; shadcn close buttons and menu offsets were converted to `end-*` / `ms-*` / `ps-*`.
+
+## Toggles and grouped catalogs (stylists, services)
+- `Switch` (Base UI) is for an immediate on/off setting and always has an `aria-label` naming the row. On means enabled; a `pending` stylist reads off and can only be switched on. Turning something off goes through the confirm overlay; turning it on is instant. Updates are optimistic with rollback.
+- `DataTableColumn.interactive` marks a cell that holds its own control. In the table it sits above the row's stretched hit area (`z-10`); on narrow screens it renders beside the row button, never inside it.
+- Services are grouped by catalog category (alphabetical, "Other services" last), one `DataTable` per group under an `h2`. Prices of 0 read "Free"; no duration reads "Flexible".

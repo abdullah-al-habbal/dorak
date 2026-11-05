@@ -1,6 +1,8 @@
 "use client";
 
 import { RescheduleDialog } from "@/components/bookings/reschedule-dialog";
+import { ServiceFormDialog } from "@/components/services/service-form-dialog";
+import { StylistFormDialog } from "@/components/stylists/stylist-form-dialog";
 import { WalkInDialog } from "@/components/bookings/walk-in-dialog";
 import { ConfirmOverlay } from "@/components/overlays/confirm-overlay";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
@@ -21,6 +23,10 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <WalkInDialog onClose={onClose} />;
     case OverlayKind.Reschedule:
       return <RescheduleDialog booking={request.booking} onClose={onClose} />;
+    case OverlayKind.StylistForm:
+      return <StylistFormDialog stylist={request.stylist} onClose={onClose} />;
+    case OverlayKind.ServiceForm:
+      return <ServiceFormDialog service={request.service} brandId={request.brandId} onClose={onClose} />;
     default: {
       const unhandled: never = request;
       throw new Error(`Unhandled overlay kind: ${JSON.stringify(unhandled)}`);

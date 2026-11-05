@@ -11,7 +11,7 @@ codeanchors:
 
 Routes: [documentation graph](index.md), [ADR 0003](adr/0003-new-dashboard-foundation.md), [ADR 0004](adr/0004-archive-legacy-dashboard.md).
 
-Status: `IN PROGRESS`. `frontend/web/dashboard` is the only dashboard (the first one is archived, see ADR 0004). Built: layers 1-4 (API client, theme, i18n, auth, design system, shell), the allow-listed data proxy, and the core of Module 1 (Bookings: list, day and week grid, filters, status transitions). Module 1 is complete (walk-in, reschedule, history timeline, chair and hide-cancelled filters, shared list primitives under `components/ui/table` and `components/common`). Not built: Modules 2-4. This document is the audited plan for everything on top of the foundation.
+Status: `IN PROGRESS`. `frontend/web/dashboard` is the only dashboard (the first one is archived, see ADR 0004). Built: layers 1-4 (API client, theme, i18n, auth, design system, shell), the allow-listed data proxy, and the core of Module 1 (Bookings: list, day and week grid, filters, status transitions). Module 1 is complete (walk-in, reschedule, history timeline, chair and hide-cancelled filters, shared list primitives under `components/ui/table` and `components/common`). Stylists (directory, chair/status filters, optimistic activate/deactivate, create/edit/delete) and Services (category-grouped catalog, price in minor units, duration, active toggle, create/edit/delete) are also built; the backend now exposes `chair`, `name_translations` and `category` on those lists and `GET /currencies` (see `backend/docs/feature-index.md`). Not built: Earnings and branch working hours. This document is the audited plan for everything on top of the foundation.
 
 The plan was written against the backend routes (`php artisan route:list --path=api/v1/dashboard`), the Form Requests under `backend/modules/Dashboard/Http/Requests/Business/` and the middleware groups in `Routes/Api/V1/dashboard.php`. Where the original brief and the backend disagree, the backend wins and the difference is listed in [Contract mismatches](#contract-mismatches).
 
@@ -298,6 +298,6 @@ Questions 1-3 and 5 were resolved on 2026-11-04; see [open decisions](decisions-
 1. URL segment: keep `stylists` (consistent with backend and nav) or rename to `barbers`?
 2. Does `PUT /branches/{id}` accept a partial payload, or must the whole branch be sent?
 3. What does `GET /earnings` return (splits, previous period, paging)?
-4. Are service categories readable by non-admin guards?
+4. Are service categories readable by non-admin guards? (Resolved: the dashboard service response now carries `category`.)
 5. Does the barber guard get a booking/schedule endpoint, or does it stay earnings-only?
 6. Should a chart library be approved for the earnings module?

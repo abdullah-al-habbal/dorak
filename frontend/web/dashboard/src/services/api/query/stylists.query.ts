@@ -1,0 +1,23 @@
+import { DASHBOARD_API } from "@/config/routes.constant";
+import { pageInfoSchema } from "@/schemas/page-info.zod";
+import { stylistListSchema } from "@/schemas/stylist.zod";
+import { apiRequestWithMeta } from "@/services/api/core/client";
+import type { StylistFilters } from "@/types/stylist-filters.type";
+import type { StylistPage } from "@/types/stylist-page.type";
+
+const PER_PAGE = 20;
+
+function queryString(filters: StylistFilters): string {
+  const params = new URLSearchParams({ per_page: String(PER_PAGE), page: String(filters.page) });
+  if (filters.search) params.set("search", filters.search);
+  if (filters.chairId) params.set("chair_id", filters.chairId);
+  if (filters.status) params.set("status", filters.status);
+  return params.toString();
+}
+
+export async function fetchStylistPage(filters: StylistFilters): Promise<StylistPage> {
+  const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/stylists?${queryString(filters)}`, { schema: stylistListSchema });
+  const pagination = pageInfoSchema.safeParse((meta as { pagination?: unknown } | null)?.pagination);
+  const fallback = { total: data.length, per_page: PER_PAGE, current_page: filters.page, total_pages: 1 };
+  return { items: data, page: pagination.success ? pagination.data : fallback };
+}
