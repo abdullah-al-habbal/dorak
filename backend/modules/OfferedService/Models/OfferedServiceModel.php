@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Constants\ServiceOverrideConstants;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
+use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
@@ -24,6 +25,7 @@ use Spatie\Translatable\HasTranslations;
 /**
  * @property string $id
  * @property string|null $catalog_item_id
+ * @property string|null $category_id
  */
 #[Fillable([
     'serviceable_id',
@@ -36,6 +38,7 @@ use Spatie\Translatable\HasTranslations;
     'is_at_home',
     'is_active',
     'catalog_item_id',
+    'category_id',
 ])]
 #[Table('offered_services')]
 #[Translatable([
@@ -142,6 +145,11 @@ class OfferedServiceModel extends Model
     }
 
     /** @return BelongsTo<ServiceCatalogItemModel, $this> */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(ServiceCatalogCategoryModel::class, 'category_id');
+    }
+
     public function catalogItem(): BelongsTo
     {
         return $this->belongsTo(ServiceCatalogItemModel::class, 'catalog_item_id');

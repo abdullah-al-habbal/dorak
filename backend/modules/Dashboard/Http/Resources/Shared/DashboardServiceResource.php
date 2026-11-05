@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 
-/** The shared service payload plus the catalog category the dashboard groups by. */
+/** The shared service payload plus the category the dashboard groups by: the service's own category, else its catalog item's. */
 final class DashboardServiceResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $category = $this->resource->relationLoaded('catalogItem') ? $this->resource->catalogItem?->category : null;
+        $category = $this->resource->category ?? $this->resource->catalogItem?->category;
 
         return [
             ...(new ServiceResource($this->resource))->toArray($request),

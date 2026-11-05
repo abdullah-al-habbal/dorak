@@ -60,6 +60,8 @@ use Modules\Dashboard\Http\Actions\Profile\UpdateNotificationPreferencesAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdatePasswordAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdateProfileAction;
 use Modules\Dashboard\Http\Actions\Profile\VerifyEmailChangeAction;
+use Modules\Dashboard\Http\Actions\ServiceCategories\ListServiceCategoriesAction;
+use Modules\Dashboard\Http\Actions\ServiceCategories\StoreServiceCategoryAction;
 use Modules\Dashboard\Http\Actions\Services\DestroyServiceAction;
 use Modules\Dashboard\Http\Actions\Services\ListServicesAction;
 use Modules\Dashboard\Http\Actions\Services\ShowServiceAction;
@@ -234,6 +236,8 @@ Route::prefix('dashboard')->group(function (): void {
         Route::put('/services/{service}', UpdateServiceAction::class);
         Route::delete('/services/{service}', DestroyServiceAction::class);
         Route::get('/currencies', ListCurrenciesAction::class);
+        Route::get('/service-categories', ListServiceCategoriesAction::class);
+        Route::post('/service-categories', StoreServiceCategoryAction::class);
         Route::get('/chairs', ListChairsAction::class);
         Route::post('/chairs', StoreChairAction::class);
         Route::get('/chairs/{chair}', ShowChairAction::class);

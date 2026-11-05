@@ -9,9 +9,9 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreServiceCommand;
 use Modules\Dashboard\Handlers\Services\StoreServiceHandler;
 use Modules\Dashboard\Http\Requests\Business\ServiceRequest;
+use Modules\Dashboard\Http\Resources\Shared\DashboardServiceResource;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
-use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 
 final class StoreServiceAction extends BaseApiAction
 {
@@ -27,8 +27,8 @@ final class StoreServiceAction extends BaseApiAction
             return $this->forbidden();
         }
 
-        return $this->created(ServiceResource::make(
-            $this->handler->handle(new StoreServiceCommand($attributes)),
+        return $this->created(DashboardServiceResource::make(
+            $this->handler->handle(new StoreServiceCommand($attributes))->load(['category', 'catalogItem.category']),
         ));
     }
 }

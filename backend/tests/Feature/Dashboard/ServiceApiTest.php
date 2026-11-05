@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\ServiceCatalog\Database\Factories\ServiceCatalogCategoryFactory;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
@@ -82,6 +84,58 @@ describe('Dashboard Service API', function (): void {
         $this->getJson('/api/v1/dashboard/services')
             ->assertOk()
             ->assertJsonCount(1, 'data');
+    });
+
+    it('lists and creates service categories for a branch manager', function (): void {
+        $existing = ServiceCatalogCategoryFactory::new()->create();
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->getJson('/api/v1/dashboard/service-categories')
+            ->assertOk()
+            ->assertJsonFragment(['id' => $existing->id]);
+        $this->postJson('/api/v1/dashboard/service-categories', ['name' => ['en' => 'Bridal', 'ar' => 'عرائس']])
+            ->assertCreated()
+            ->assertJsonPath('data.name.en', 'Bridal');
+        $this->assertDatabaseHas('service_catalog_categories', ['is_active' => true, 'name->en' => 'Bridal']);
+    });
+
+    it('blocks barbers from the service category endpoints', function (): void {
+        $this->authenticateDashboardActor(BarberModel::factory()->create());
+
+        $this->getJson('/api/v1/dashboard/service-categories')->assertForbidden();
+        $this->postJson('/api/v1/dashboard/service-categories', ['name' => ['en' => 'Nails', 'ar' => 'أظافر']])->assertForbidden();
+    });
+
+    it('rejects a duplicate or incomplete category name', function (): void {
+        ServiceCatalogCategoryModel::factory()->create(['name' => ['en' => 'Bridal', 'ar' => 'عرائس']]);
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->postJson('/api/v1/dashboard/service-categories', ['name' => ['en' => 'Bridal', 'ar' => 'زفاف']])
+            ->assertUnprocessable();
+        $this->postJson('/api/v1/dashboard/service-categories', ['name' => ['en' => 'Nails']])
+            ->assertUnprocessable();
+    });
+
+    it('assigns a category directly to a service and prefers it over the catalog item category', function (): void {
+        $this->authenticateDashboardActor($this->branch);
+        $currency = CurrencyModel::factory()->create();
+        $direct = ServiceCatalogCategoryModel::factory()->create();
+        $viaItem = ServiceCatalogCategoryModel::factory()->create();
+        $item = ServiceCatalogItemModel::factory()->create(['category_id' => $viaItem->id]);
+
+        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency, ['category_id' => $direct->id, 'catalog_item_id' => $item->id]))
+            ->assertCreated()
+            ->assertJsonPath('data.category.id', $direct->id);
+        $this->getJson('/api/v1/dashboard/services')->assertJsonPath('data.0.category.id', $direct->id);
+    });
+
+    it('rejects an inactive or unknown service category', function (): void {
+        $this->authenticateDashboardActor($this->branch);
+        $currency = CurrencyModel::factory()->create();
+        $inactive = ServiceCatalogCategoryModel::factory()->inactive()->create();
+
+        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency, ['category_id' => $inactive->id]))
+            ->assertUnprocessable();
     });
 
     it('rejects a branch manager attempting to create a service for another brand', function (): void {

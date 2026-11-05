@@ -11,9 +11,9 @@ use Modules\Dashboard\CQRS\Query\ShowServiceQuery;
 use Modules\Dashboard\Handlers\Services\ShowServiceHandler;
 use Modules\Dashboard\Handlers\Services\UpdateServiceHandler;
 use Modules\Dashboard\Http\Requests\Business\ServiceRequest;
+use Modules\Dashboard\Http\Resources\Shared\DashboardServiceResource;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
-use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 
 final class UpdateServiceAction extends BaseApiAction
 {
@@ -34,8 +34,8 @@ final class UpdateServiceAction extends BaseApiAction
             return $this->forbidden();
         }
 
-        return $this->updated(ServiceResource::make(
-            $this->updateHandler->handle($model, new UpdateServiceCommand($attributes)),
+        return $this->updated(DashboardServiceResource::make(
+            $this->updateHandler->handle($model, new UpdateServiceCommand($attributes))->load(['category', 'catalogItem.category']),
         ));
     }
 }

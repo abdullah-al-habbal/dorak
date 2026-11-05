@@ -25,6 +25,6 @@ final class ShowServiceAction extends BaseApiAction
             $actor->scopedBrandIds(),
         ));
 
-        return $this->ok(DashboardServiceResource::make($model->loadMissing('catalogItem.category')));
+        return $this->ok(DashboardServiceResource::make($model->loadMissing(['category', 'catalogItem.category'])));
     }
 }
