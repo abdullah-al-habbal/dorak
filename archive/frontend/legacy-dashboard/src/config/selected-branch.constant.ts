@@ -1,3 +1,0 @@
-export const SELECTED_BRANCH_QUERY_PARAM = "branch";
-
-export const SELECTED_BRANCH_OPTIONS_PAGE_SIZE = 100;

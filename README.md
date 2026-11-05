@@ -61,8 +61,8 @@ both the web dashboard and the mobile apps. Web-only skills (`shadcn`,
 `migrate-radix-to-base`, `web-design-guidelines`) stay in
 `frontend/web/dashboard/.claude/skills/`.
 
-The first dashboard is archived in [`archive/`](archive/README.md); it is
-read-only history and part of no workflow.
+The first dashboard was removed from the working tree; its history stays in Git
+(see [ADR 0004](docs/adr/0004-archive-legacy-dashboard.md)).
 
 ## Prerequisites
 

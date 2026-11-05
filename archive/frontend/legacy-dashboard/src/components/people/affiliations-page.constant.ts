@@ -1,1 +1,0 @@
-export const AFFILIATION_FILTER_ALL_STATUSES = "all";

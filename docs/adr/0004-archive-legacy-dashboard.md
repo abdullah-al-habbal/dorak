@@ -3,14 +3,13 @@ nodeid: docs.adr_0004
 parentnode: docs.decisions
 childnodes: []
 codeanchors:
-  - archive/
   - frontend/web/dashboard/
   - .husky/
 ---
 
 # ADR 0004 — Archive the first dashboard; `frontend/web/dashboard` is the only dashboard (renamed from `new-dashboard` on 2026-11-05)
 
-Status: `ACCEPTED` (2026-11-05)
+Status: `ACCEPTED` (2026-11-05); the archive folder was deleted on 2026-11-05 (see Update)
 
 ## Decision
 
@@ -39,3 +38,10 @@ Status: `ACCEPTED` (2026-11-05)
   the archive commit. Nothing was deleted.
 - Links inside archived files that pointed at `../../docs/...` no longer resolve; that is
   accepted for read-only history.
+
+## Update: archive removed
+
+`archive/` was deleted from the working tree. Nothing else depended on it. Restore any
+file with `git show 797499f3:archive/<path>` (the last commit that still holds the folder).
+The historical planning documents keep their banner and now cite paths that exist only
+in Git history. The rollback above no longer applies as a folder move.

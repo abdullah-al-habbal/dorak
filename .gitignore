@@ -10,9 +10,5 @@
 /frontend/**/.next/
 /frontend/**/.agents/
 /frontend/**/tsconfig.tsbuildinfo
-/archive/**/node_modules/
-/archive/**/.next/
-/archive/**/.agents/
-/archive/**/tsconfig.tsbuildinfo
 /frontend/mobile/.dart_tool/
 /frontend/mobile/build/

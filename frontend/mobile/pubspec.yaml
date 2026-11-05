@@ -56,6 +56,12 @@ melos:
       run: dart run tool/check_taxonomy.dart
       description: Validate dot-suffix file taxonomy and architectural placement.
 
+    clean:
+      exec:
+        command: flutter clean
+        concurrency: 1
+      description: Remove build output and tool caches in every workspace package.
+
     verify:
       run: |
         dart run melos run generate &&

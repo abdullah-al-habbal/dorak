@@ -25,7 +25,7 @@ Run each from the stated directory. Never claim a gate passed unless the command
   query alone (`where('*_id', ...)`) does not satisfy this gate.
 
 ## Dashboard (`frontend/web/dashboard/`)
-Whenever dashboard code, copy, or contracts change, run from that directory: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`. `archive/` is read-only history and is never part of a gate.
+Whenever dashboard code, copy, or contracts change, run from that directory: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
 
 ## Mobile (`frontend/mobile/`)
 - Whenever `core`, `localization`, or any app changes: `dart run melos run verify`.
