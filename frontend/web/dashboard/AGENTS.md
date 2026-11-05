@@ -91,3 +91,12 @@ without asking the user.**
   route handlers; component tests need `jsdom` and Testing Library, which require approval.
 - Before closing any change, from this directory: `npm run lint`, `npm run typecheck`,
   `npm test`, `npm run build`.
+- **Playwright E2E** (`npm run test:e2e`, specs in `tests/e2e/`): runs desktop (1280), `mobile-390` and
+  `ultrawide-3440` projects on the cached Chromium (`npm run test:e2e:install` if missing). The config starts
+  its own Next dev server (port 3100, `.next-e2e`) against a stand-in API (`tests/e2e/support/fake-backend.mjs`,
+  port 4010), so it never touches the real backend or `npm run dev`. The stand-in mirrors the contract of the
+  endpoints under test; update it whenever a backend contract used by a spec changes. Specs cover login,
+  bookings, stylists, services, working hours and RTL (Arabic). `signIn` hides the dev-only Next issue badge,
+  which otherwise covers bottom-anchored controls on phones.
+- **Working hours** (`/dashboard/[guard]/working-hours`): reads and writes `GET|PUT /branches/{id}/opening-hours`
+  (up to four shifts per day). See `backend/docs/feature-index.md`.

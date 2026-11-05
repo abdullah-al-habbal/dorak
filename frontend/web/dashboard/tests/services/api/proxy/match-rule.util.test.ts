@@ -12,6 +12,9 @@ describe("matchProxyRule", () => {
     expect(matchProxyRule(HttpMethod.Get, "service-categories").kind).toBe("allowed");
     expect(matchProxyRule(HttpMethod.Post, "service-categories").kind).toBe("allowed");
     expect(matchProxyRule(HttpMethod.Delete, "service-categories").kind).not.toBe("allowed");
+    expect(matchProxyRule(HttpMethod.Get, "branches/b1/opening-hours").kind).toBe("allowed");
+    expect(matchProxyRule(HttpMethod.Put, "branches/b1/opening-hours").kind).toBe("allowed");
+    expect(matchProxyRule(HttpMethod.Delete, "branches/b1/opening-hours").kind).not.toBe("allowed");
   });
 
   it("has no barbers alias for stylists", () => {

@@ -20,6 +20,7 @@ export const enShell = {
     reviews: "Reviews",
     settings: "Settings",
     schedule: "Schedule",
+    workingHours: "Working hours",
   },
   notifications: {
     title: "Notifications",

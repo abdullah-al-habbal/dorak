@@ -1,0 +1,37 @@
+import type { Dictionary } from "@/types/dictionary.type";
+
+export const arWorkingHours: Dictionary["workingHours"] = {
+  title: "ساعات العمل",
+  description: "حدّد متى يستقبل هذا الفرع الحجوزات. قسّم اليوم إلى فترات إذا كان يغلق للاستراحة.",
+  branch: "الفرع",
+  open: "مفتوح",
+  closed: "مغلق",
+  openDay: "مفتوح يوم {day}",
+  shift: "الفترة {number}",
+  opensAt: "الفتح",
+  closesAt: "الإغلاق",
+  addShift: "إضافة فترة",
+  removeShift: "حذف الفترة {number} ليوم {day}",
+  maxShifts: "يمكن أن يضم اليوم حتى {count} فترات.",
+  copy: { action: "نسخ {day} إلى…", title: "نسخ {day} إلى", apply: "نسخ", selectAll: "كل الأيام الأخرى" },
+  unsaved: "لديك تغييرات غير محفوظة",
+  saved: "تم حفظ كل التغييرات",
+  save: "حفظ التغييرات",
+  discard: "تجاهل",
+  notConfigured: "لا توجد ساعات محفوظة لهذا الفرع بعد. إلى أن تحفظ جدولًا، يمكن للعملاء الحجز في أي وقت.",
+  issues: {
+    inverted: "يجب أن يكون وقت الإغلاق بعد وقت الفتح.",
+    overlap: "تبدأ هذه الفترة قبل انتهاء الفترة السابقة.",
+    summary: "صحّح الفترات المحددة قبل الحفظ.",
+  },
+  toast: { saved: "تم حفظ ساعات العمل." },
+  states: {
+    errorTitle: "تعذر تحميل ساعات العمل",
+    errorBody: "تحقق من اتصالك ثم حاول مرة أخرى.",
+    forbiddenTitle: "ساعات العمل غير متاحة لدورك",
+    forbiddenBody: "تُدار ساعات الفرع من قبل فرق الفرع والعلامة التجارية.",
+    noBranchTitle: "لا يوجد فرع لعرضه",
+    noBranchBody: "حسابك غير مرتبط بفرع بعد.",
+  },
+  errors: { generic: "تعذر حفظ ساعات العمل. حاول مرة أخرى." },
+};

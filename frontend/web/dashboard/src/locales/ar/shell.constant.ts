@@ -22,6 +22,7 @@ export const arShell: Dictionary["shell"] = {
     reviews: "التقييمات",
     settings: "الإعدادات",
     schedule: "الجدول",
+    workingHours: "ساعات العمل",
   },
   notifications: {
     title: "الإشعارات",

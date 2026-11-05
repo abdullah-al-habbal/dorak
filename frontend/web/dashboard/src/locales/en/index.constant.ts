@@ -5,6 +5,7 @@ import { enErrors } from "@/locales/en/errors.constant";
 import { enStylists } from "@/locales/en/stylists.constant";
 import { enServices } from "@/locales/en/services.constant";
 import { enShell } from "@/locales/en/shell.constant";
+import { enWorkingHours } from "@/locales/en/working-hours.constant";
 
 export const enDictionary = {
   common: enCommon,
@@ -13,5 +14,6 @@ export const enDictionary = {
   shell: enShell,
   stylists: enStylists,
   services: enServices,
+  workingHours: enWorkingHours,
   errors: enErrors,
 } as const;
