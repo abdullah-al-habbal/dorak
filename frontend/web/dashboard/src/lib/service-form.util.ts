@@ -7,7 +7,7 @@ import type { Service } from "@/types/service.type";
 const BRAND = "brand";
 
 export function emptyServiceForm(currencyCode: string): ServiceFormValues {
-  return { name_en: "", name_ar: "", price: "", currency_code: currencyCode, duration: "", is_at_home: false, is_active: true };
+  return { name_en: "", name_ar: "", price: "", currency_code: currencyCode, category_id: "", duration: "", is_at_home: false, is_active: true };
 }
 
 export function serviceToForm(service: Service): ServiceFormValues {
@@ -18,6 +18,7 @@ export function serviceToForm(service: Service): ServiceFormValues {
     name_ar: names.ar ?? "",
     price: minorUnitsToInput(service.price_amount_minor),
     currency_code: service.currency_code,
+    category_id: service.category?.id ?? "",
     duration: service.duration_minutes ? String(service.duration_minutes) : "",
     is_at_home: service.is_at_home,
     is_active: service.is_active,
@@ -29,6 +30,7 @@ export function formToServicePayload(values: ServiceFormValues, owner: Pick<Serv
   return {
     ...owner,
     currency_code: values.currency_code,
+    category_id: values.category_id || null,
     name: { en: values.name_en.trim(), ar: values.name_ar.trim() },
     price_amount_minor: parseMinorUnits(values.price) ?? 0,
     duration_minutes: parseDuration(values.duration) ?? null,
@@ -47,5 +49,7 @@ export function existingServiceOwner(service: Service): Pick<ServicePayload, "se
 
 /** The full payload of an existing service with one flag flipped, for the PUT-only active toggle. */
 export function activeTogglePayload(service: Service, active: boolean): ServicePayload {
-  return formToServicePayload({ ...serviceToForm(service), is_active: active }, existingServiceOwner(service));
+  const payload = formToServicePayload({ ...serviceToForm(service), is_active: active }, existingServiceOwner(service));
+  // Undefined is dropped from the JSON body, leaving the stored category untouched.
+  return { ...payload, category_id: undefined };
 }

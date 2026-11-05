@@ -14,6 +14,8 @@ export function createServiceSchema(messages: ServiceValidation) {
     name_ar: z.string().trim().min(1, messages.name).max(MAX_NAME, messages.name),
     price: z.string().refine((value) => parseMinorUnits(value) !== null, messages.price),
     currency_code: z.string().min(1, messages.currency),
+    /** Empty string means no category. */
+    category_id: z.string(),
     duration: z.string().refine((value) => parseDuration(value) !== undefined, messages.duration),
     is_at_home: z.boolean(),
     is_active: z.boolean(),

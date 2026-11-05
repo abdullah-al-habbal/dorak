@@ -23,4 +23,5 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^stylists/${ID}/(activate|deactivate)$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^(chairs|currencies)$/, guards: OPERATIONS },
+  { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^service-categories$/, guards: OPERATIONS },
 ];

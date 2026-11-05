@@ -3,11 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import type { JSX } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
+import { ServiceCategoryField } from "@/components/services/service-category-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -47,6 +48,7 @@ export function ServiceFormDialog({ service, brandId, onClose }: ServiceFormDial
   const form = useForm<ServiceFormValues>({ resolver: zodResolver(schema), defaultValues: service ? serviceToForm(service) : emptyServiceForm(defaultCurrency) });
   const { errors } = form.formState;
   const { getValues, setValue } = form;
+  const categoryId = useWatch({ control: form.control, name: "category_id" });
 
   // Currencies arrive after the form mounts; pick the default once, never overwrite a choice.
   useEffect(() => {
@@ -114,6 +116,7 @@ export function ServiceFormDialog({ service, brandId, onClose }: ServiceFormDial
               </NativeSelect>
             </FormField>
           </div>
+          <ServiceCategoryField value={categoryId} onChange={(id) => setValue("category_id", id, { shouldDirty: true })} />
           <FormField id="service-duration" label={f.duration} hint={f.durationHint} error={errors.duration?.message}>
             <Input id="service-duration" inputMode="numeric" dir="ltr" autoComplete="off" list="service-duration-presets" {...invalid("duration", "service-duration")} {...form.register("duration")} />
             <datalist id="service-duration-presets">
@@ -144,6 +147,7 @@ const SERVER_FIELD_TO_FORM: Record<string, keyof ServiceFormValues> = {
   name_ar: "name_ar",
   price_amount_minor: "price",
   currency_code: "currency_code",
+  category_id: "category_id",
   duration_minutes: "duration",
 };
 

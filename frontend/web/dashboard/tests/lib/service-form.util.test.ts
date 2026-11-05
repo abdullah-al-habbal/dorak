@@ -34,6 +34,15 @@ describe("service form", () => {
     expect(activeTogglePayload(SERVICE, false)).toMatchObject({ is_active: false, price_amount_minor: 2550, catalog_item_id: "c1", serviceable_id: "b1", is_at_home: true });
   });
 
+  it("sends the chosen category, or null for none, and leaves it out when only toggling", () => {
+    const owner = newServiceOwner("b1");
+    const base = { ...emptyServiceForm("USD"), name_en: "Cut", name_ar: "قص", price: "10" };
+    expect(formToServicePayload({ ...base, category_id: "cat1" }, owner).category_id).toBe("cat1");
+    expect(formToServicePayload(base, owner).category_id).toBeNull();
+    expect(serviceToForm({ ...SERVICE, category: { id: "cat9", name: "Hair" } }).category_id).toBe("cat9");
+    expect(JSON.parse(JSON.stringify(activeTogglePayload(SERVICE, false)))).not.toHaveProperty("category_id");
+  });
+
   it("flips the active flag in cached lists only for the matching service", () => {
     const next = withServiceActive([SERVICE, { ...SERVICE, id: "s2" }], "s2", false);
     expect(next?.map((service) => service.is_active)).toEqual([true, false]);
