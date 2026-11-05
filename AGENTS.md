@@ -4,7 +4,7 @@ parentnode: repo.root
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -24,8 +24,8 @@ specific; read it before changing files in that area.
 - Before changing a subsystem, read its guide:
   - Backend: [backend/AGENTS.md](backend/AGENTS.md) and
     [backend/CLAUDE.md](backend/CLAUDE.md).
-  - Dashboard: [frontend/web/new-dashboard/AGENTS.md](frontend/web/new-dashboard/AGENTS.md)
-    and [frontend/web/new-dashboard/CLAUDE.md](frontend/web/new-dashboard/CLAUDE.md).
+  - Dashboard: [frontend/web/dashboard/AGENTS.md](frontend/web/dashboard/AGENTS.md)
+    and [frontend/web/dashboard/CLAUDE.md](frontend/web/dashboard/CLAUDE.md).
   - Mobile: [frontend/mobile/AGENTS.md](frontend/mobile/AGENTS.md),
     [frontend/mobile/CLAUDE.md](frontend/mobile/CLAUDE.md), and the guides in
     the app or package being changed.
@@ -63,13 +63,13 @@ specific; read it before changing files in that area.
   `.interface-design/system.md`, and the `ui-ux-pro-max` plugin for palettes
   and type. Do not duplicate them into subprojects.
 - Dashboard work also uses the local `shadcn`, `migrate-radix-to-base`, and
-  `web-design-guidelines` skills in `frontend/web/new-dashboard/.claude/skills/`;
+  `web-design-guidelines` skills in `frontend/web/dashboard/.claude/skills/`;
   run `web-design-guidelines` before shipping UI changes.
 
 ## Main areas
 
 - `backend/` — Laravel modular monolith and API.
-- `frontend/web/new-dashboard/` — Next.js operations dashboard and backend-for-frontend (the only dashboard).
+- `frontend/web/dashboard/` — Next.js operations dashboard and backend-for-frontend (the only dashboard).
 - `frontend/mobile/` — Flutter apps and shared Dart workspace packages.
 - `docs/` — cross-project decisions and architecture docs.
 - `archive/` — read-only history (the first dashboard). Not part of any gate.

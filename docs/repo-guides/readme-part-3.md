@@ -4,7 +4,7 @@ parentnode: repo.readme
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -37,7 +37,7 @@ Run checks for the project you changed:
 (cd backend && php artisan test)
 
 # Dashboard
-(cd frontend/web/new-dashboard && npm run lint && npm run typecheck && npm test && npm run build)
+(cd frontend/web/dashboard && npm run lint && npm run typecheck && npm test && npm run build)
 
 # Mobile
 (cd frontend/mobile && dart run melos run verify)

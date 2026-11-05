@@ -3,7 +3,7 @@ nodeid: dashboard.claude
 parentnode: dashboard.guide
 childnodes: []
 codeanchors:
-  - frontend/web/new-dashboard/src/
+  - frontend/web/dashboard/src/
 ---
 
 @AGENTS.md

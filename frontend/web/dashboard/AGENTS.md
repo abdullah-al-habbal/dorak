@@ -5,8 +5,8 @@ childnodes:
   - dashboard.architecture
   - dashboard.claude
 codeanchors:
-  - frontend/web/new-dashboard/src/
-  - frontend/web/new-dashboard/tests/
+  - frontend/web/dashboard/src/
+  - frontend/web/dashboard/tests/
 ---
 
 # Dorak Dashboard - Agent Guide

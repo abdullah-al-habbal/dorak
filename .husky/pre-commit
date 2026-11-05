@@ -1,10 +1,10 @@
 # Checks the active dashboard only when one of its files is staged. No extra packages.
-staged=$(git diff --cached --name-only --diff-filter=ACMR -- 'frontend/web/new-dashboard/*')
+staged=$(git diff --cached --name-only --diff-filter=ACMR -- 'frontend/web/dashboard/*')
 [ -z "$staged" ] && exit 0
 
-cd frontend/web/new-dashboard || exit 1
+cd frontend/web/dashboard || exit 1
 
-lintable=$(printf '%s\n' "$staged" | sed 's#^frontend/web/new-dashboard/##' | grep -E '\.(ts|tsx|mjs)$' | grep -E '^(src|tests)/' || true)
+lintable=$(printf '%s\n' "$staged" | sed 's#^frontend/web/dashboard/##' | grep -E '\.(ts|tsx|mjs)$' | grep -E '^(src|tests)/' || true)
 if [ -n "$lintable" ]; then
   # shellcheck disable=SC2086
   npx eslint --max-warnings=0 $lintable || exit 1

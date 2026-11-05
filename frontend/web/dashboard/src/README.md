@@ -1,6 +1,6 @@
 # Source layout
 
-Architecture rules for `new-dashboard`. All imports use the `@/` alias; never `./` or `../`.
+Architecture rules for the dashboard. All imports use the `@/` alias; never `./` or `../`.
 
 | Folder | Rule |
 | --- | --- |

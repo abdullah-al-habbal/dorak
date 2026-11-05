@@ -4,7 +4,7 @@ parentnode: skills.repo.monorepo-task-executor
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 

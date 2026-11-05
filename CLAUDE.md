@@ -5,7 +5,7 @@ childnodes:
   - repo.claude.part-2
 codeanchors:
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -26,8 +26,8 @@ files in that area.
 - Before changing a subsystem, read its guide:
   - Backend: [backend/AGENTS.md](backend/AGENTS.md) and
     [backend/CLAUDE.md](backend/CLAUDE.md).
-  - Dashboard: [frontend/web/new-dashboard/AGENTS.md](frontend/web/new-dashboard/AGENTS.md)
-    and [frontend/web/new-dashboard/CLAUDE.md](frontend/web/new-dashboard/CLAUDE.md).
+  - Dashboard: [frontend/web/dashboard/AGENTS.md](frontend/web/dashboard/AGENTS.md)
+    and [frontend/web/dashboard/CLAUDE.md](frontend/web/dashboard/CLAUDE.md).
   - Mobile: [frontend/mobile/AGENTS.md](frontend/mobile/AGENTS.md),
     [frontend/mobile/CLAUDE.md](frontend/mobile/CLAUDE.md), and the guides in
     the app or package being changed.
@@ -53,7 +53,7 @@ files in that area.
 - Each subsystem guide carries its own security and code-quality governance
   (authorization/ownership checks, type-safety rules, file/method size limits,
   magic-literal and data-clump avoidance, UI performance rules) — read
-  `backend/CLAUDE.md`, `frontend/web/new-dashboard/AGENTS.md`, or
+  `backend/CLAUDE.md`, `frontend/web/dashboard/AGENTS.md`, or
   `frontend/mobile/CLAUDE.md` before writing code in that area; these rules
   apply in addition to, not instead of, the subsystem's existing skills.
 
@@ -65,7 +65,7 @@ files in that area.
   `.interface-design/system.md`, and the `ui-ux-pro-max` plugin for palettes
   and type. Do not duplicate them into subprojects.
 - Dashboard work also uses the local `shadcn`, `migrate-radix-to-base`, and
-  `web-design-guidelines` skills in `frontend/web/new-dashboard/.claude/skills/`;
+  `web-design-guidelines` skills in `frontend/web/dashboard/.claude/skills/`;
   run `web-design-guidelines` before shipping UI changes.
 
 ## Git workflow (local only)

@@ -12,7 +12,7 @@ codeanchors:
 
 > **Historical.** This document describes the first dashboard, archived at
 > `archive/frontend/legacy-dashboard/` (see [ADR 0004](../adr/0004-archive-legacy-dashboard.md)). The active
-> dashboard is `frontend/web/new-dashboard/`.
+> dashboard is `frontend/web/dashboard/`.
 
 # Existing Dashboard Frontend Audit
 

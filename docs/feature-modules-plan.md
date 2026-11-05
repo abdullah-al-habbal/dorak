@@ -3,7 +3,7 @@ nodeid: docs.feature_modules_plan
 parentnode: docs.decisions
 childnodes: []
 codeanchors:
-  - frontend/web/new-dashboard/src/
+  - frontend/web/dashboard/src/
   - backend/modules/Dashboard/Routes/Api/V1/dashboard.php
 ---
 
@@ -11,7 +11,7 @@ codeanchors:
 
 Routes: [documentation graph](index.md), [ADR 0003](adr/0003-new-dashboard-foundation.md), [ADR 0004](adr/0004-archive-legacy-dashboard.md).
 
-Status: `IN PROGRESS`. `frontend/web/new-dashboard` is the only dashboard (the first one is archived, see ADR 0004). Built: layers 1-4 (API client, theme, i18n, auth, design system, shell), the allow-listed data proxy, and the core of Module 1 (Bookings: list, day and week grid, filters, status transitions). Not built: the Bookings walk-in, reschedule, history and chair filter, shared list primitives, and Modules 2-4. This document is the audited plan for everything on top of the foundation.
+Status: `IN PROGRESS`. `frontend/web/dashboard` is the only dashboard (the first one is archived, see ADR 0004). Built: layers 1-4 (API client, theme, i18n, auth, design system, shell), the allow-listed data proxy, and the core of Module 1 (Bookings: list, day and week grid, filters, status transitions). Not built: the Bookings walk-in, reschedule, history and chair filter, shared list primitives, and Modules 2-4. This document is the audited plan for everything on top of the foundation.
 
 The plan was written against the backend routes (`php artisan route:list --path=api/v1/dashboard`), the Form Requests under `backend/modules/Dashboard/Http/Requests/Business/` and the middleware groups in `Routes/Api/V1/dashboard.php`. Where the original brief and the backend disagree, the backend wins and the difference is listed in [Contract mismatches](#contract-mismatches).
 

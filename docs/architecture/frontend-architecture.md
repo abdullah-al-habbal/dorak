@@ -3,19 +3,19 @@ nodeid: dashboard.architecture
 parentnode: dashboard.guide
 childnodes: []
 codeanchors:
-  - frontend/web/new-dashboard/src/app/
-  - frontend/web/new-dashboard/src/proxy.ts
-  - frontend/web/new-dashboard/src/services/api/
-  - frontend/web/new-dashboard/src/config/routes.constant.ts
+  - frontend/web/dashboard/src/app/
+  - frontend/web/dashboard/src/proxy.ts
+  - frontend/web/dashboard/src/services/api/
+  - frontend/web/dashboard/src/config/routes.constant.ts
 ---
 
 # Dashboard Frontend Architecture
 
-This guide records the architecture present in `frontend/web/new-dashboard/`, the only
+This guide records the architecture present in `frontend/web/dashboard/`, the only
 dashboard in the monorepo. The code and the decision records are the source of truth;
 this file routes contributors to them.
 
-Routes: [dashboard guide](../../frontend/web/new-dashboard/AGENTS.md) · [ADR 0003: foundation](../adr/0003-new-dashboard-foundation.md) · [feature modules plan](../feature-modules-plan.md) · [documentation graph](../index.md).
+Routes: [dashboard guide](../../frontend/web/dashboard/AGENTS.md) · [ADR 0003: foundation](../adr/0003-new-dashboard-foundation.md) · [feature modules plan](../feature-modules-plan.md) · [documentation graph](../index.md).
 
 ## Application structure
 
@@ -48,7 +48,7 @@ workarounds.
 
 ## Conventions and verification
 
-Follow the [dashboard guide](../../frontend/web/new-dashboard/AGENTS.md) and the
-[source layout rules](../../frontend/web/new-dashboard/src/README.md). Gates: `npm run lint`,
+Follow the [dashboard guide](../../frontend/web/dashboard/AGENTS.md) and the
+[source layout rules](../../frontend/web/dashboard/src/README.md). Gates: `npm run lint`,
 `npm run typecheck`, `npm test`, `npm run build`. Open work is tracked in the
 [feature modules plan](../feature-modules-plan.md) and [open decisions](../decisions-required.md).

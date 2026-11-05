@@ -4,7 +4,7 @@ parentnode: repo.readme
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -41,7 +41,7 @@ Backend architecture, environment, and coding rules are in
 ### Dashboard
 
 ```bash
-cd frontend/web/new-dashboard
+cd frontend/web/dashboard
 cp .env.example .env.local
 # Set BACKEND_API_URL for the local Laravel API and DASHBOARD_SESSION_SECRET to the backend's value.
 npm ci

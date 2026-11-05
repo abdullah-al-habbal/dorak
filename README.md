@@ -6,7 +6,7 @@ childnodes:
   - repo.readme.part-3
 codeanchors:
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -21,7 +21,7 @@ workspace used by clients, branch teams, and stylists.
 | Path | Project | Main technologies |
 | --- | --- | --- |
 | `backend/` | API, booking lifecycle, authorization, history, recommendations, and operations services | PHP 8.3+, Laravel 13, MySQL 8, Pest |
-| `frontend/web/new-dashboard/` | The dashboard: admin, branch manager, barber and brand-owner portals; server-side API bridge | Next.js 16, React 19, TypeScript, Tailwind 4, shadcn/ui |
+| `frontend/web/dashboard/` | The dashboard: admin, branch manager, barber and brand-owner portals; server-side API bridge | Next.js 16, React 19, TypeScript, Tailwind 4, shadcn/ui |
 | `frontend/mobile/` | Client, business, and stylist apps plus shared packages | Flutter, Dart, Melos |
 | `docs/` | Cross-project architecture and decision records | Markdown |
 
@@ -34,7 +34,7 @@ and the subsystem guides in each project directory.
   `backend/modules/`; `Modules\Core` supplies shared infrastructure. The
   backend is the authority for authentication, branch scope, booking state,
   and API contracts.
-- The Next.js dashboard (`frontend/web/new-dashboard/`) provides one workspace
+- The Next.js dashboard (`frontend/web/dashboard/`) provides one workspace
   per role at `/dashboard/admin`, `/dashboard/manager`, `/dashboard/barber` and
   `/dashboard/owner`. Its server-side API bridge handles backend communication and
   dashboard sessions.
@@ -59,7 +59,7 @@ the task executor and the Stitch converter, it holds the shared UI/UX skills
 (`frontend-design`, `interface-design`, and the `ui-ux-pro-max` plugin) used by
 both the web dashboard and the mobile apps. Web-only skills (`shadcn`,
 `migrate-radix-to-base`, `web-design-guidelines`) stay in
-`frontend/web/new-dashboard/.claude/skills/`.
+`frontend/web/dashboard/.claude/skills/`.
 
 The first dashboard is archived in [`archive/`](archive/README.md); it is
 read-only history and part of no workflow.

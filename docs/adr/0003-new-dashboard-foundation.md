@@ -3,13 +3,13 @@ nodeid: docs.adr_0003
 parentnode: docs.decisions
 childnodes: []
 codeanchors:
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - backend/modules/Dashboard/
 ---
 
 # ADR 0003 — Dashboard foundation: BFF sessions, fetch client, dictionary i18n
 
-Status: `ACCEPTED` (dashboard foundation, 2026-11-04). Superseding context: the first
+Status: `ACCEPTED` (dashboard foundation, 2026-11-04). The app was renamed from `new-dashboard` to `dashboard` on 2026-11-05 (this file keeps its original name so links stay valid). Superseding context: the first
 dashboard was archived on 2026-11-05, see [ADR 0004](0004-archive-legacy-dashboard.md).
 
 ## Decision

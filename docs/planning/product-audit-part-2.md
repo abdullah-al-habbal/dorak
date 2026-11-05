@@ -4,7 +4,7 @@ parentnode: docs.audit
 childnodes: []
 codeanchors:
   - backend/modules/
-  - frontend/web/new-dashboard/src/
+  - frontend/web/dashboard/src/
   - frontend/mobile/apps/
 ---
 

@@ -4,7 +4,7 @@ parentnode: skills.repo.monorepo-task-executor
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -24,7 +24,7 @@ Run each from the stated directory. Never claim a gate passed unless the command
   confirm a `*Policy` + `$this->authorize()`/`Gate::allows()`/`->can()` check exists — a scoped
   query alone (`where('*_id', ...)`) does not satisfy this gate.
 
-## Dashboard (`frontend/web/new-dashboard/`)
+## Dashboard (`frontend/web/dashboard/`)
 Whenever dashboard code, copy, or contracts change, run from that directory: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`. `archive/` is read-only history and is never part of a gate.
 
 ## Mobile (`frontend/mobile/`)

@@ -20,6 +20,6 @@ fi
 echo
 echo "== guides to read =="
 for g in README.md AGENTS.md CLAUDE.md docs/index.md backend/AGENTS.md backend/CLAUDE.md \
-  frontend/web/new-dashboard/AGENTS.md frontend/web/new-dashboard/CLAUDE.md frontend/mobile/AGENTS.md frontend/mobile/CLAUDE.md; do
+  frontend/web/dashboard/AGENTS.md frontend/web/dashboard/CLAUDE.md frontend/mobile/AGENTS.md frontend/mobile/CLAUDE.md; do
   [ -f "$g" ] && echo "$g"
 done

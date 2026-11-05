@@ -14,7 +14,7 @@ childnodes:
 codeanchors:
   - docs/
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -27,7 +27,7 @@ codeanchors:
 
 - [Repository rules](graph/repo-index.md) — root-level orientation and subsystem entry points.
 - [Backend](../backend/README.md) — Laravel service and product docs.
-- [Dashboard](../frontend/web/new-dashboard/AGENTS.md) — Next.js application (the only dashboard).
+- [Dashboard](../frontend/web/dashboard/AGENTS.md) — Next.js application (the only dashboard).
 - [Mobile](../frontend/mobile/AGENTS.md) — Flutter workspace.
 
 ## Folder graph
@@ -37,7 +37,7 @@ graph TD
   root[docs/graph/repo-index.md] --> graph[docs/index.md]
   graph --> repo[Repository-wide Markdown nodes]
   repo --> backend[backend/]
-  repo --> dashboard[frontend/web/new-dashboard/]
+  repo --> dashboard[frontend/web/dashboard/]
   repo --> mobile[frontend/mobile/]
   repo --> project[docs/ and root guides]
 ```

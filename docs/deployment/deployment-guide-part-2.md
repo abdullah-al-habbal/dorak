@@ -5,7 +5,7 @@ childnodes: []
 codeanchors:
   - .github/workflows/
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -55,7 +55,7 @@ API_BASE_V1_URL=https://api.example.com/api/v1
 Firebase native configuration supplies the platform-specific messaging values;
 do not place service-account secrets in mobile `.env` files.
 
-### Dashboard (`frontend/web/new-dashboard/.env.local`)
+### Dashboard (`frontend/web/dashboard/.env.local`)
 
 ```dotenv
 BACKEND_API_URL=https://api.example.com

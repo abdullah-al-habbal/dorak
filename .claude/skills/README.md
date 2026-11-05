@@ -6,7 +6,7 @@ childnodes:
   - skills.repo.stitch-flutter-converter
 codeanchors:
   - backend/
-  - frontend/web/new-dashboard/
+  - frontend/web/dashboard/
   - frontend/mobile/
 ---
 
@@ -35,5 +35,5 @@ the root `skills-lock.json`.
   `/plugin install ui-ux-pro-max@ui-ux-pro-max-skill`, choosing project scope.
 
 Web-only skills (`shadcn`, `migrate-radix-to-base`, `web-design-guidelines`)
-live in `frontend/web/new-dashboard/.claude/skills/` because they do not apply
+live in `frontend/web/dashboard/.claude/skills/` because they do not apply
 to Flutter or the backend.
