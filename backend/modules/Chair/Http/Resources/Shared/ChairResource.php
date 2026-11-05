@@ -18,6 +18,7 @@ final class ChairResource extends JsonResource
             'id' => $this->id,
             'label' => $this->label,
             'status' => $chair?->currentAvailability()->value,
+            'configured_status' => $chair?->getAttribute('status')?->value,
             'availability' => $chair?->currentAvailability()->value,
             'floor_zone' => $chair?->getAttribute('floor_zone')?->value,
             'layout_settings' => $this->layout_settings,

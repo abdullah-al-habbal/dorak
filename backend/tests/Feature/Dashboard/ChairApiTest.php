@@ -168,3 +168,60 @@ function chairPayload(ChairModel $chair, array $overrides = []): array
         ],
     ], $overrides);
 }
+
+describe('Dashboard chair list filters', function (): void {
+    beforeEach(function (): void {
+        $this->brand = BrandModel::factory()->create();
+        $this->first = BranchModel::factory()->create(['brand_id' => $this->brand->id]);
+        $this->second = BranchModel::factory()->create(['brand_id' => $this->brand->id]);
+    });
+
+    it('filters chairs by stored status and floor zone', function (): void {
+        $maintenance = ChairModel::factory()->create(['branch_id' => $this->first->id, 'status' => ChairStatus::Maintenance, 'floor_zone' => 'men']);
+        ChairModel::factory()->create(['branch_id' => $this->first->id, 'status' => ChairStatus::Available, 'floor_zone' => 'women']);
+        $this->authenticateDashboardActor($this->first);
+
+        $this->getJson('/api/v1/dashboard/chairs?status=maintenance')
+            ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $maintenance->id);
+        $this->getJson('/api/v1/dashboard/chairs?floor_zone=men')
+            ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $maintenance->id);
+        $this->getJson('/api/v1/dashboard/chairs?status=bogus')->assertUnprocessable();
+        $this->getJson('/api/v1/dashboard/chairs?floor_zone=bogus')->assertUnprocessable();
+    });
+
+    it('narrows an admin to one branch', function (): void {
+        $a = ChairModel::factory()->create(['branch_id' => $this->first->id]);
+        ChairModel::factory()->create(['branch_id' => $this->second->id]);
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->getJson("/api/v1/dashboard/chairs?branch_id={$this->first->id}")
+            ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $a->id);
+    });
+
+    it('never widens a manager scope through branch_id', function (): void {
+        ChairModel::factory()->create(['branch_id' => $this->first->id]);
+        ChairModel::factory()->create(['branch_id' => $this->second->id]);
+        $this->authenticateDashboardActor($this->second);
+
+        $this->getJson("/api/v1/dashboard/chairs?branch_id={$this->first->id}")
+            ->assertOk()->assertJsonCount(0, 'data');
+    });
+
+    it('exposes the stored status separately from the live availability', function (): void {
+        $chair = ChairModel::factory()->create(['branch_id' => $this->first->id, 'status' => ChairStatus::Available]);
+        $this->authenticateDashboardActor($this->first);
+
+        $this->getJson("/api/v1/dashboard/chairs/{$chair->id}")
+            ->assertOk()
+            ->assertJsonPath('data.configured_status', 'available')
+            ->assertJsonPath('data.availability', 'available');
+    });
+
+    it('rejects a barber on the dashboard chair and review routes', function (): void {
+        $barber = BarberModel::factory()->create();
+        $this->authenticateDashboardActor($barber);
+
+        $this->getJson('/api/v1/dashboard/chairs')->assertForbidden();
+        $this->getJson("/api/v1/dashboard/branches/{$this->first->id}/reviews")->assertForbidden();
+    });
+});

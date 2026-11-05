@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Chairs;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Chair\Enums\ChairStatus;
+use Modules\Chair\Enums\FloorZone;
 use Modules\Chair\Http\Resources\Shared\ChairResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ListChairsQuery;
@@ -24,6 +26,9 @@ final class ListChairsAction extends BaseApiAction
             $actor->scopedBranchIds(),
             $request->integer('per_page', 15),
             $request->validated('search'),
+            $request->validated('branch_id'),
+            $request->enum('status', ChairStatus::class),
+            $request->enum('floor_zone', FloorZone::class),
         ));
 
         return $this->paginated($chairs, ChairResource::class);
