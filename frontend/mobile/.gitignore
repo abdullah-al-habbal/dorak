@@ -1,0 +1,6 @@
+# Mobile secrets and signing material (never commit).
+**/GoogleService-Info.plist
+**/google-services.json
+**/*.jks
+**/*.keystore
+**/key.properties

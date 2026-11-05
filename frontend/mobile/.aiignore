@@ -10,7 +10,7 @@
 **/.dart_tool/
 **/.pub-cache/
 **/build/
-**.packages
+**/.packages
 **/pubspec.lock
 
 # IDE / OS noise.

@@ -2,6 +2,7 @@
 /.agents/
 /.claude/*
 !/.claude/skills/
+!/.claude/settings.json
 /.aiignore
 /*.bundle
 
@@ -12,3 +13,18 @@
 /frontend/**/tsconfig.tsbuildinfo
 /frontend/mobile/.dart_tool/
 /frontend/mobile/build/
+
+# OS, editor and tooling catch-alls (safety net for every subproject).
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+*.swp
+*.log
+coverage/
+graphify-out/
+
+# Environment files: never commit secrets, only the example templates.
+.env
+.env.*
+!.env.example

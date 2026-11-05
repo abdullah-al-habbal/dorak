@@ -1,12 +1,15 @@
 *.log
 .DS_Store
 .env
-.env.backup
-.env.production
-.env.testing
+.env.*
+!.env.example
 .phpactor.json
 .phpunit.result.cache
 /.codex
+/.pest
+/build
+/coverage
+/database/*.sqlite
 /.cursor/
 /.idea
 /.nova
@@ -25,4 +28,4 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
-laravel
+/laravel
