@@ -6,6 +6,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Core\Enums\VenueUniverse;
 
 return new class extends Migration
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->string('base_currency_code', 10);
             $table->foreign('base_currency_code')->references('code')->on('currencies');
             $table->string('universe', 10)->default(VenueUniverse::Men->value);
+            $table->string('status', 20)->default(BrandStatusEnum::Pending->value)->index();
             $table->timestamps();
         });
     }

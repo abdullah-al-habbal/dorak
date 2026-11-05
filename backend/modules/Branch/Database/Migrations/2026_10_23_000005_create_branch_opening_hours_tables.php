@@ -24,7 +24,8 @@ return new class extends Migration
             $table->boolean('is_closed')->default(false);
             $table->timestamps();
 
-            $table->unique(['branch_id', 'day_of_week']);
+            // A weekday may carry several shifts (a split day), so this is a lookup index, not unique.
+            $table->index(['branch_id', 'day_of_week'], 'branch_opening_hours_branch_day_index');
         });
 
         Schema::create('branch_hours_overrides', function (Blueprint $table): void {

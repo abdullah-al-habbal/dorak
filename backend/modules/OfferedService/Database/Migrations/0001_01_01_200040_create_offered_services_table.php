@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('serviceable_id');
             $table->string('serviceable_type');
             $table->foreignUuid('catalog_item_id')->nullable()->constrained('service_catalog_items')->nullOnDelete();
+            $table->foreignUuid('category_id')->nullable()->constrained('service_catalog_categories')->nullOnDelete();
             $table->json('name');
             $table->json('description')->nullable();
             $table->unsignedBigInteger('price_amount_minor');

@@ -28,4 +28,5 @@ return [
     'chair_has_active_or_future_bookings' => 'Chair has active or future bookings.',
     'branch_last_active' => 'A brand must keep at least one active branch.',
     'branch_has_upcoming_bookings' => 'A branch with upcoming bookings cannot be deleted.',
+    'shifts_overlap' => 'Shifts on the same day must not overlap.',
 ];
