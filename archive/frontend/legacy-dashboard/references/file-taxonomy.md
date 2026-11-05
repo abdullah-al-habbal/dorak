@@ -1,9 +1,9 @@
 ---
-nodeid: dashboard.references.file-taxonomy
-parentnode: dashboard.guide
+nodeid: archive.legacy_dashboard.references.file-taxonomy
+parentnode: archive.legacy_dashboard.guide
 childnodes: []
 codeanchors:
-  - frontend/dashboard/src/
+  - archive/frontend/legacy-dashboard/src/
 ---
 
 # File taxonomy

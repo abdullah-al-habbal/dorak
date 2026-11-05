@@ -1,1 +1,15 @@
-frontend/dashboard/node_modules/.bin/commitlint --config frontend/dashboard/.commitlintrc.json --edit "$1"
+# Conventional commit header: type(scope)?!?: subject (same types as config-conventional).
+header=$(sed -n '1p' "$1")
+pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z0-9._/-]+\))?!?: .+'
+case "$header" in
+  Merge\ *|Revert\ *|fixup!\ *|squash!\ *) exit 0 ;;
+esac
+if ! printf '%s' "$header" | grep -Eq "$pattern"; then
+  echo "Commit message must look like: type(scope): subject" >&2
+  echo "Types: build chore ci docs feat fix perf refactor revert style test" >&2
+  exit 1
+fi
+if [ "$(printf '%s' "$header" | wc -c)" -gt 100 ]; then
+  echo "Commit header must be 100 characters or fewer." >&2
+  exit 1
+fi

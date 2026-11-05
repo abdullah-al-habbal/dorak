@@ -5,7 +5,7 @@ childnodes: []
 codeanchors:
   - docs/
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 

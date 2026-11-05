@@ -5,7 +5,7 @@ childnodes: []
 codeanchors:
   - .github/workflows/
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 
@@ -55,11 +55,13 @@ API_BASE_V1_URL=https://api.example.com/api/v1
 Firebase native configuration supplies the platform-specific messaging values;
 do not place service-account secrets in mobile `.env` files.
 
-### Dashboard (`frontend/dashboard/.env.local`)
+### Dashboard (`frontend/web/new-dashboard/.env.local`)
 
 ```dotenv
-NEXT_PUBLIC_API_URL=https://api.example.com/api/v1
+BACKEND_API_URL=https://api.example.com
+DASHBOARD_SESSION_SECRET=<same value as the backend DASHBOARD_SESSION_SECRET, 32+ characters>
 ```
 
-Use HTTPS in production so Sanctum session cookies can be `Secure` and `SameSite`
-policies can be enforced.
+Only the Next.js server calls the API, so neither value is exposed to the browser.
+Use HTTPS in production: the dashboard session cookies are `HttpOnly`, `SameSite=Lax`
+and `Secure` outside development.

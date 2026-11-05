@@ -4,7 +4,7 @@ parentnode: skills.repo.monorepo-task-executor
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 
@@ -17,7 +17,7 @@ codeanchors:
 - Dashboard API tests need the real bearer token plus a signed `X-Dashboard-Session` (`authenticateDashboardActor`), not `actingAs` alone.
 - PHPStan collection generics do not prove `list<...>`; build lists with `array_values` / `array_map`.
 - Dart fakes: implement every abstract method explicitly. A `noSuchMethod` that returns a failed future produces unhandled async errors.
-- Pre-commit hooks run eslint/prettier/typecheck on staged dashboard files and may restage them; let them finish and never bypass.
+- The pre-commit hook runs eslint and typecheck when dashboard files are staged, and `commit-msg` enforces the conventional-commit header; let them finish and never bypass.
 - Stage task files only. Formatters and generators often touch unrelated files; revert those before committing.
 - Gateway/vendor integrations: use a strategy contract plus a factory, config-driven with fail-fast validation; no retries on non-idempotent sends; never put PII, codes or secrets in exception messages; purge any cached secret (e.g. OTP) when delivery fails.
 - Pint may fail on a file you did not touch (pre-existing working-tree edit). Run it on touched paths, report the unrelated failure, and never reformat or stage that file.

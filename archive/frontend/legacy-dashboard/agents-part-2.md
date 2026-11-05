@@ -1,10 +1,10 @@
 ---
-nodeid: dashboard.guide.part-2
-parentnode: dashboard.guide
+nodeid: archive.legacy_dashboard.guide.part-2
+parentnode: archive.legacy_dashboard.guide
 childnodes: []
 codeanchors:
-  - frontend/dashboard/src/
-  - frontend/dashboard/tests/
+  - archive/frontend/legacy-dashboard/src/
+  - archive/frontend/legacy-dashboard/tests/
 ---
 
 Part 2 of 2 · [Dorak Operations — AI Agent Rules](AGENTS.md) · [Previous](AGENTS.md)

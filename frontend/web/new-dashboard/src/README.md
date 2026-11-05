@@ -26,5 +26,5 @@ Paths are guard-segmented: `host/dashboard/<guardName>/...`, which maps to
 `src/app/dashboard/[guard]/...`.
 
 - `login/` is public. `(portal)/` is the signed-in shell and reads the session behind Suspense.
-- `app/api/auth/*` are the only route handlers that talk to the backend.
+- `app/api/auth/*` (session) and `app/api/dashboard/[...path]` (the allow-listed data forwarder) are the only route handlers that talk to the backend.
 - Guard names come from `AUTH_ACTORS` in `config/auth-actors.constant.ts`; never keep a second list.

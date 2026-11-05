@@ -3,48 +3,52 @@ nodeid: dashboard.architecture
 parentnode: dashboard.guide
 childnodes: []
 codeanchors:
-  - frontend/dashboard/src/app/
-  - frontend/dashboard/src/proxy.ts
-  - frontend/dashboard/src/services/api/
-  - frontend/dashboard/src/config/routes.constant.ts
+  - frontend/web/new-dashboard/src/app/
+  - frontend/web/new-dashboard/src/proxy.ts
+  - frontend/web/new-dashboard/src/services/api/
+  - frontend/web/new-dashboard/src/config/routes.constant.ts
 ---
 
 # Dashboard Frontend Architecture
 
-This guide records the architecture currently present in `frontend/dashboard/`.
-The implementation and its local contracts are the source of truth; this file
-routes contributors to those contracts rather than prescribing an unused
-directory blueprint.
+This guide records the architecture present in `frontend/web/new-dashboard/`, the only
+dashboard in the monorepo. The code and the decision records are the source of truth;
+this file routes contributors to them.
 
-Routes: [dashboard guide](../../frontend/dashboard/AGENTS.md) · [authentication contract](../../frontend/dashboard/docs/architecture/frontend-auth-contract.md) · [documentation graph](../index.md).
+Routes: [dashboard guide](../../frontend/web/new-dashboard/AGENTS.md) · [ADR 0003: foundation](../adr/0003-new-dashboard-foundation.md) · [feature modules plan](../feature-modules-plan.md) · [documentation graph](../index.md).
 
 ## Application structure
 
-- `src/app/` contains the Next.js App Router pages, layouts, and route handlers.
-- `src/proxy.ts` enforces public and protected route behavior and actor/session
-  checks for the Next.js 16 application.
-- `src/components/` contains portal shells and feature UI.
-- `src/services/api/` owns typed backend requests and API response handling.
-- `src/config/routes.constant.ts` and its companion utilities define canonical
-  application paths and navigation.
-- `tests/` mirrors source modules and contains the Vitest suites.
+- `src/app/` holds the App Router pages and layouts under `dashboard/[guard]/`
+  (`login/` is public, `(portal)/` is the signed-in shell) and the route handlers
+  under `api/`.
+- `src/proxy.ts` guards `/dashboard/**`: it verifies the signed session claim,
+  refreshes once, and redirects by guard.
+- `src/components/` holds `ui/` (shadcn on Base UI), layout, providers, overlays and
+  feature UI such as `bookings/`.
+- `src/services/api/` holds `auth/` (session, cookies, backend client), `core/` (browser
+  fetch client), `proxy/` (the data forwarder), and the `query/` and `mutation/` actions.
+- `src/config/` holds constants: actors, routes, cookies, nav, the proxy allow-list.
+- `src/locales/` holds typed EN and AR dictionaries; Arabic switches the page to RTL.
+- `tests/` mirrors `src/` and contains the Vitest suites.
 
 ## Authentication and data access
 
-Portal layouts validate actor and session context. Browser requests use the
-server managed session contract and the dashboard API bridge; sensitive backend
-operations remain authorized by Laravel. Read the
-[frontend authentication contract](../../frontend/dashboard/docs/architecture/frontend-auth-contract.md)
-and [backend additions](../../frontend/dashboard/docs/architecture/backend-additions.md)
-before changing that boundary.
+The browser never talks to Laravel. `app/api/auth/*` wraps the backend dashboard auth
+endpoints and keeps the token, signed claim and refresh token in HttpOnly cookies.
+`app/api/dashboard/[...path]` is a thin, default-deny forwarder: it checks the path, method
+and guard against `config/proxy-allow-list.constant.ts`, attaches the Bearer token, the
+session claim and `Accept-Language`, and returns the backend envelope unchanged. It never
+renames paths or reshapes data; Laravel stays the authority for authorization and branch
+scope. Read [ADR 0003](../adr/0003-new-dashboard-foundation.md) before changing this boundary.
 
-Keep backend calls in the typed API services. Route handlers and server
-components must use the existing request helpers so timeout, error, and session
-behavior stays consistent.
+When the UI needs a contract the backend does not provide, the backend is changed (see the
+backend contract policy in the root [README](../../README.md)) rather than adding frontend
+workarounds.
 
 ## Conventions and verification
 
-Follow [frontend/dashboard/AGENTS.md](../../frontend/dashboard/AGENTS.md) for
-current import, file taxonomy, styling, testing, and quality-gate requirements.
-All planned dashboard tasks (1–87) are complete; open work is tracked in
-[open decisions](../decisions-required.md).
+Follow the [dashboard guide](../../frontend/web/new-dashboard/AGENTS.md) and the
+[source layout rules](../../frontend/web/new-dashboard/src/README.md). Gates: `npm run lint`,
+`npm run typecheck`, `npm test`, `npm run build`. Open work is tracked in the
+[feature modules plan](../feature-modules-plan.md) and [open decisions](../decisions-required.md).

@@ -5,7 +5,7 @@ childnodes: []
 codeanchors:
   - docs/
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 
@@ -46,15 +46,11 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Existing Frontend Audit: Forms, Workflows, Findings](../planning/existing-frontend-audit-part-4.md)
 - [Remediation Plan](../planning/remediation-plan.md)
 
-### `frontend/dashboard/`
+### `frontend/web/new-dashboard/`
 
-- [Agents](../../frontend/dashboard/AGENTS.md)
-- [Claude](../../frontend/dashboard/CLAUDE.md)
-
-### `frontend/dashboard/docs/architecture/`
-
-- [Backend Additions](../../frontend/dashboard/docs/architecture/backend-additions.md)
-- [Frontend Auth Contract](../../frontend/dashboard/docs/architecture/frontend-auth-contract.md)
+- [Agents](../../frontend/web/new-dashboard/AGENTS.md)
+- [Claude](../../frontend/web/new-dashboard/CLAUDE.md)
+- [Readme](../../frontend/web/new-dashboard/README.md)
 
 ### `frontend/mobile/`
 

@@ -1,13 +1,13 @@
 ---
-nodeid: dashboard.auth_contract
-parentnode: dashboard.guide
+nodeid: archive.legacy_dashboard.auth_contract
+parentnode: archive.legacy_dashboard.guide
 childnodes:
-  - dashboard.backend_additions
-  - dashboard.auth_contract.part-2
-  - dashboard.auth_contract.part-3
+  - archive.legacy_dashboard.backend_additions
+  - archive.legacy_dashboard.auth_contract.part-2
+  - archive.legacy_dashboard.auth_contract.part-3
 codeanchors:
-  - frontend/dashboard/src/proxy.ts
-  - frontend/dashboard/src/services/api/
+  - archive/frontend/legacy-dashboard/src/proxy.ts
+  - archive/frontend/legacy-dashboard/src/services/api/
 ---
 
 # Frontend authentication and portal contract

@@ -7,15 +7,17 @@ codeanchors:
   - backend/modules/Dashboard/Routes/Api/V1/dashboard.php
 ---
 
-# New dashboard: feature modules master plan
+# Dashboard: feature modules master plan
 
-Routes: [documentation graph](index.md), [ADR 0003](adr/0003-new-dashboard-foundation.md).
+Routes: [documentation graph](index.md), [ADR 0003](adr/0003-new-dashboard-foundation.md), [ADR 0004](adr/0004-archive-legacy-dashboard.md).
 
-Status: `PLANNED`. Layers 1-4 (API client, theme, i18n, auth, design system, shell) ship in `frontend/web/new-dashboard`. This document is the audited plan for everything on top of them. Nothing below the "Providers" section is implemented yet.
+Status: `IN PROGRESS`. `frontend/web/new-dashboard` is the only dashboard (the first one is archived, see ADR 0004). Built: layers 1-4 (API client, theme, i18n, auth, design system, shell), the allow-listed data proxy, and the core of Module 1 (Bookings: list, day and week grid, filters, status transitions). Not built: the Bookings walk-in, reschedule, history and chair filter, shared list primitives, and Modules 2-4. This document is the audited plan for everything on top of the foundation.
 
 The plan was written against the backend routes (`php artisan route:list --path=api/v1/dashboard`), the Form Requests under `backend/modules/Dashboard/Http/Requests/Business/` and the middleware groups in `Routes/Api/V1/dashboard.php`. Where the original brief and the backend disagree, the backend wins and the difference is listed in [Contract mismatches](#contract-mismatches).
 
 ## 1. Scope and non-goals
+
+**Backend contract policy.** The backend is ours to change. When a module needs a field, filter or endpoint the backend lacks, the backend is changed (model, resource, request, action, with Pest tests and docs) instead of building a frontend workaround. The mobile apps share the API, so changes stay backward compatible or ship with the matching mobile change.
 
 In scope: the provider tree, the allow-listed data proxy, and four modules (Bookings, Earnings, Services with branch working hours, Barbers/Stylists).
 
@@ -118,19 +120,19 @@ Initial list (the real backend paths, see section 4):
 
 The guard column mirrors `DashboardOperationsAuthorizationMiddleware` (rejects barbers) and `DashboardEarningsAuthorizationMiddleware` (rejects platform admins). It must be re-verified against the route file when each module starts.
 
-### 3.3 Forwarding rules
+### 3.3 Forwarding rules (as built)
 
-- Only validated query keys are forwarded (per-pattern allow-list, e.g. bookings: `chair_id, date_from, date_to, per_page, page, booking_status, search, stylist_id`).
-- Request body: JSON only, capped (256 KiB), re-serialised after parsing. Hop-by-hop headers, `cookie` and `host` are dropped.
+- The forwarder is thin: the path, query string and JSON body are passed through unchanged. Laravel validates them. Nothing is renamed or reshaped.
+- Request body: JSON only, capped at 256 KiB, parsed and re-serialised. `cookie`, `host` and hop-by-hop headers are never forwarded.
 - Adds `Authorization: Bearer`, `X-Dashboard-Session`, `Accept-Language` (from the resolved locale) and `Accept: application/json`.
-- 15s timeout, `cache: no-store`, redirects treated as failures (reuses `backend-client.ts`).
-- One silent refresh per request via the existing single-flight refresh, then one retry. A second 401 clears the cookies and returns 401, which the browser client turns into a sign-out redirect.
-- The proxy returns the backend envelope unchanged on success so the browser parser stays the single source of truth.
+- 15s timeout, `cache: no-store`, redirects treated as failures (reuses `services/api/auth/backend-client.ts`).
+- Session refresh stays in the browser client (`services/api/core/client.ts`): on a 401 it refreshes once through `/api/auth/refresh` and retries. The forwarder itself answers 401 `session_expired` and does not refresh.
+- On success the backend `message`, `data` and `meta` come back unchanged. On failure, 422 becomes 400 `invalid_request` with `fields`, and 401, 403, 404 and 429 map to the dashboard error codes (`failure-map.util.ts`).
 
 ### 3.4 Envelope, pagination and errors
 
 - Success parsing is done once, in `services/api/core/client.ts`, with Zod: `{success, statusCode, code, message, timestamp, data, meta}`.
-- `meta.pagination` maps to `PageInfo { page, perPage, total, lastPage }` (one type, one mapper, tested). Lists are fetched with `placeholderData: keepPreviousData` so paging does not flash a skeleton.
+- `meta.pagination` is parsed into `PageInfo { total, per_page, current_page, total_pages }` (`schemas/page-info.zod.ts`, the backend's own field names; `apiRequestWithMeta` returns it). Lists are fetched with `placeholderData: keepPreviousData` so paging does not flash a skeleton.
 - Error mapping (`ApiClientError` carries `status`, `code`, `fieldErrors`, `retryAfter`):
 
 | Status | Behaviour |

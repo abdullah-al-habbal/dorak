@@ -1,9 +1,9 @@
 ---
-nodeid: dashboard.references.type-safety
-parentnode: dashboard.guide
+nodeid: archive.legacy_dashboard.references.type-safety
+parentnode: archive.legacy_dashboard.guide
 childnodes: []
 codeanchors:
-  - frontend/dashboard/src/
+  - archive/frontend/legacy-dashboard/src/
 ---
 
 # Type safety & code quality

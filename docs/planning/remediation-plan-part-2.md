@@ -26,7 +26,7 @@ environment and Firebase native configuration files remain deployment secrets.
 
 ## Phase 7: Dashboard scaffold
 
-`frontend/dashboard` contains a Next.js App Router scaffold with separate authentication,
+`frontend/dashboard` (since archived at `archive/frontend/legacy-dashboard`; the active dashboard is `frontend/web/new-dashboard`) contained a Next.js App Router scaffold with separate authentication,
 platform-admin, and branch-manager route groups. Its API client uses credentialed requests
 for the existing Sanctum/session contract and TanStack Query is provided at the app root.
 

@@ -7,9 +7,10 @@ codeanchors:
   - backend/modules/Dashboard/
 ---
 
-# ADR 0003 — New dashboard foundation: BFF sessions, fetch client, dictionary i18n
+# ADR 0003 — Dashboard foundation: BFF sessions, fetch client, dictionary i18n
 
-Status: `ACCEPTED` (new-dashboard foundation, 2026-11-04)
+Status: `ACCEPTED` (dashboard foundation, 2026-11-04). Superseding context: the first
+dashboard was archived on 2026-11-05, see [ADR 0004](0004-archive-legacy-dashboard.md).
 
 ## Decision
 
@@ -21,7 +22,7 @@ Status: `ACCEPTED` (new-dashboard foundation, 2026-11-04)
   browser-direct bearer auth would need backend changes and would expose
   tokens to XSS.
 - **HTTP client.** A typed `fetch` wrapper with a single-flight refresh and one
-  retry on 401. No axios, matching the legacy dashboard.
+  retry on 401. No axios.
 - **Localization.** Typed EN/AR dictionaries resolved from the `NEXT_LOCALE`
   cookie, then `Accept-Language`. No i18n library. `<html lang dir>` is set
   before paint from the cookie and corrected by the provider.

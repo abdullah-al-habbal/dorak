@@ -7,7 +7,7 @@ childnodes:
 codeanchors:
   - .github/workflows/
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 
@@ -47,7 +47,8 @@ Run each app from its directory, for example `flutter run` in
 ### Dashboard
 
 ```bash
-cd frontend/dashboard
+cd frontend/web/new-dashboard
+cp .env.example .env.local
 npm ci
 npm run build
 npm run dev

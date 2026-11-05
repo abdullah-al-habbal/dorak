@@ -3,10 +3,14 @@ nodeid: docs.audit.frontend.part-3
 parentnode: docs.audit.frontend
 childnodes: []
 codeanchors:
-  - frontend/dashboard/src/config/routes.constant.ts
-  - frontend/dashboard/src/services/api/dashboard/shared/dashboard-path.constant.ts
-  - frontend/dashboard/src/services/api/dashboard/shared/schemas/
+  - archive/frontend/legacy-dashboard/src/config/routes.constant.ts
+  - archive/frontend/legacy-dashboard/src/services/api/dashboard/shared/dashboard-path.constant.ts
+  - archive/frontend/legacy-dashboard/src/services/api/dashboard/shared/schemas/
 ---
+
+> **Historical.** This document describes the first dashboard, archived at
+> `archive/frontend/legacy-dashboard/` (see [ADR 0004](../adr/0004-archive-legacy-dashboard.md)). The active
+> dashboard is `frontend/web/new-dashboard/`.
 
 # Frontend Routes, Endpoints and Data Models
 

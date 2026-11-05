@@ -1,17 +1,17 @@
 ---
-nodeid: dashboard.guide
-parentnode: repo.root
+nodeid: archive.legacy_dashboard.guide
+parentnode: null
 childnodes:
-  - dashboard.architecture
-  - dashboard.auth_contract
-  - dashboard.claude
-  - dashboard.references.component-and-styling-rules
-  - dashboard.references.file-taxonomy
-  - dashboard.references.type-safety
-  - dashboard.guide.part-2
+  - archive.legacy_dashboard.architecture
+  - archive.legacy_dashboard.auth_contract
+  - archive.legacy_dashboard.claude
+  - archive.legacy_dashboard.references.component-and-styling-rules
+  - archive.legacy_dashboard.references.file-taxonomy
+  - archive.legacy_dashboard.references.type-safety
+  - archive.legacy_dashboard.guide.part-2
 codeanchors:
-  - frontend/dashboard/src/
-  - frontend/dashboard/tests/
+  - archive/frontend/legacy-dashboard/src/
+  - archive/frontend/legacy-dashboard/tests/
 ---
 
 # Dorak Operations — AI Agent Rules

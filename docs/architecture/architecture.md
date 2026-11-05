@@ -5,7 +5,7 @@ childnodes:
   - docs.deployment
 codeanchors:
   - backend/modules/Booking/
-  - frontend/dashboard/src/
+  - frontend/web/new-dashboard/src/
   - frontend/mobile/apps/
 ---
 

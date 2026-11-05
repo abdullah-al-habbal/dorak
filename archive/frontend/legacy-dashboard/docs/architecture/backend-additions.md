@@ -1,6 +1,6 @@
 ---
-nodeid: dashboard.backend_additions
-parentnode: dashboard.auth_contract
+nodeid: archive.legacy_dashboard.backend_additions
+parentnode: archive.legacy_dashboard.auth_contract
 childnodes: []
 codeanchors:
   - backend/modules/Dashboard/

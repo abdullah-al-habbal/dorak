@@ -6,13 +6,17 @@ childnodes:
   - docs.audit.frontend.part-3
   - docs.audit.frontend.part-4
 codeanchors:
-  - frontend/dashboard/src/
+  - archive/frontend/legacy-dashboard/src/
   - backend/modules/Dashboard/
 ---
 
+> **Historical.** This document describes the first dashboard, archived at
+> `archive/frontend/legacy-dashboard/` (see [ADR 0004](../adr/0004-archive-legacy-dashboard.md)). The active
+> dashboard is `frontend/web/new-dashboard/`.
+
 # Existing Dashboard Frontend Audit
 
-> Read-only inventory of `frontend/dashboard` and the backend guards it depends on, dated 2026-11-03. Input for the planned Next.js rebuild. No code was changed.
+> Read-only inventory of `frontend/dashboard` (now `archive/frontend/legacy-dashboard`) and the backend guards it depends on, dated 2026-11-03. Input for the planned Next.js rebuild. No code was changed.
 
 Part 1 of 4 · [Guards](existing-frontend-audit-part-2.md) · [Endpoints and models](existing-frontend-audit-part-3.md) · [Forms, workflows, findings](existing-frontend-audit-part-4.md)
 

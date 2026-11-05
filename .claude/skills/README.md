@@ -6,7 +6,7 @@ childnodes:
   - skills.repo.stitch-flutter-converter
 codeanchors:
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 

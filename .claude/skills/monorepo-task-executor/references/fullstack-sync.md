@@ -4,7 +4,7 @@ parentnode: skills.repo.monorepo-task-executor
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 
@@ -25,6 +25,6 @@ A client the spec says "needs no change" must still be verified, not assumed.
 
 ## Contract ripple
 If an API response or error shape changes, these change in the same task:
-- dashboard BFF mapping (`ApiClientError.errors` is `Record<string, string[]>`, so structured error data must fit that type) and the form that consumes it;
+- dashboard proxy and client mapping (`services/api/proxy/forward.ts`, `ApiClientError.fields` is `Record<string, string[]>`, so structured error data must fit that type), the Zod schema in `schemas/`, and the form or view that consumes it;
 - the Dart parser/exception in `packages/core` (`api.client.dart` `_exceptionFrom`) and the bloc/screen that reacts;
 - the docs listed above.

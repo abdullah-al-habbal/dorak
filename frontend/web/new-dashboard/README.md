@@ -1,7 +1,8 @@
-# Dorak Dashboard (new)
+# Dorak Dashboard
 
 Next.js 16 (App Router, Cache Components), React 19, Tailwind 4 and shadcn/ui on Base UI.
-One workspace per role at `/dashboard/<guard>`: `admin`, `manager`, `barber`, `owner`.
+The only dashboard in the monorepo (the first one is archived in `archive/`). One workspace per
+role at `/dashboard/<guard>`: `admin`, `manager`, `barber`, `owner`.
 
 ## Run it
 
@@ -34,6 +35,6 @@ npm run lint && npm run typecheck && npm test && npm run build
 
 Mounted in this order (outermost first): `LocaleBoundary` / `I18nProvider` (locale, direction, dictionary), `AppProviders` (TanStack Query, tooltips, Sonner toaster, theme sync), then inside the signed-in portal `SidebarProvider` (desktop collapse is cookie-seeded, the mobile sheet closes on navigation) and `OverlayProvider` (one typed dialog/sheet host, used through `useOverlay()`). There is no `ThemeProvider` component by design: the theme lives in a Zustand store and an inline pre-paint script. Details: [feature modules plan](../../../docs/feature-modules-plan.md#2-providers-and-state-architecture).
 
-## Feature modules roadmap
+## Feature modules
 
-Planned, not built yet: the allow-listed data proxy, then Barbers, Services with working hours, Bookings and Earnings. The audited plan, the backend contract mismatches and the open questions are in [docs/feature-modules-plan.md](../../../docs/feature-modules-plan.md).
+Built: the allow-listed data proxy (`src/app/api/dashboard/[...path]`) and the core of Bookings (list, day and week grid, filters, status transitions). Next: the rest of Bookings, shared list primitives, then Stylists, Services with working hours, and Earnings. Status, the backend contract mismatches and the open questions are in [docs/feature-modules-plan.md](../../../docs/feature-modules-plan.md). Agent and contributor rules: [AGENTS.md](AGENTS.md).

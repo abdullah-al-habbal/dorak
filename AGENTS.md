@@ -4,7 +4,7 @@ parentnode: repo.root
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 
@@ -24,8 +24,8 @@ specific; read it before changing files in that area.
 - Before changing a subsystem, read its guide:
   - Backend: [backend/AGENTS.md](backend/AGENTS.md) and
     [backend/CLAUDE.md](backend/CLAUDE.md).
-  - Dashboard: [frontend/dashboard/AGENTS.md](frontend/dashboard/AGENTS.md)
-    and [frontend/dashboard/CLAUDE.md](frontend/dashboard/CLAUDE.md).
+  - Dashboard: [frontend/web/new-dashboard/AGENTS.md](frontend/web/new-dashboard/AGENTS.md)
+    and [frontend/web/new-dashboard/CLAUDE.md](frontend/web/new-dashboard/CLAUDE.md).
   - Mobile: [frontend/mobile/AGENTS.md](frontend/mobile/AGENTS.md),
     [frontend/mobile/CLAUDE.md](frontend/mobile/CLAUDE.md), and the guides in
     the app or package being changed.
@@ -38,8 +38,13 @@ specific; read it before changing files in that area.
   fully-qualified class names inline; add a top-level import and use its name.
 - Keep backend PHP files on `declare(strict_types=1);` and follow the local
   framework patterns documented in `backend/AGENTS.md`.
-- Preserve subsystem boundaries and existing API contracts. Do not invent
-  endpoints or move application code into shared mobile packages.
+- Preserve subsystem boundaries and do not move application code into shared
+  mobile packages. Existing API contracts are kept stable for the mobile apps.
+  **Backend contract policy:** when the dashboard needs a field, filter,
+  resource or endpoint the backend lacks, change the backend (model, resource,
+  request, action) with Pest coverage and docs instead of building a frontend
+  workaround. Keep the change backward compatible or sync the mobile apps in
+  the same task.
 - Add focused regression coverage for changed behavior and run the checks
   required by the subsystem guide. Mark work complete only after its
   acceptance criteria and required gates pass.
@@ -57,13 +62,14 @@ specific; read it before changing files in that area.
   direction, `interface-design` to record and reuse decisions in
   `.interface-design/system.md`, and the `ui-ux-pro-max` plugin for palettes
   and type. Do not duplicate them into subprojects.
-- Work in `frontend/web/new-dashboard` also uses its local `shadcn`,
-  `migrate-radix-to-base`, and `web-design-guidelines` skills; run
-  `web-design-guidelines` before shipping UI changes.
+- Dashboard work also uses the local `shadcn`, `migrate-radix-to-base`, and
+  `web-design-guidelines` skills in `frontend/web/new-dashboard/.claude/skills/`;
+  run `web-design-guidelines` before shipping UI changes.
 
 ## Main areas
 
 - `backend/` — Laravel modular monolith and API.
-- `frontend/dashboard/` — Next.js operations dashboard and backend-for-frontend.
+- `frontend/web/new-dashboard/` — Next.js operations dashboard and backend-for-frontend (the only dashboard).
 - `frontend/mobile/` — Flutter apps and shared Dart workspace packages.
 - `docs/` — cross-project decisions and architecture docs.
+- `archive/` — read-only history (the first dashboard). Not part of any gate.

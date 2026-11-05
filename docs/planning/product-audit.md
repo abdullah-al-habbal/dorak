@@ -7,7 +7,7 @@ childnodes:
   - docs.audit.frontend
 codeanchors:
   - backend/modules/
-  - frontend/dashboard/src/
+  - frontend/web/new-dashboard/src/
   - frontend/mobile/apps/
 ---
 

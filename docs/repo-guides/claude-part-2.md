@@ -4,7 +4,7 @@ parentnode: repo.claude
 childnodes: []
 codeanchors:
   - backend/
-  - frontend/dashboard/
+  - frontend/web/new-dashboard/
   - frontend/mobile/
 ---
 
@@ -23,6 +23,6 @@ Part 2 of 2 · [Dorak Monorepo — Claude Guide](../../CLAUDE.md) · [Previous](
 ## Main areas
 
 - `backend/` — Laravel modular monolith and API.
-- `frontend/dashboard/` — Next.js operations dashboard and backend-for-frontend.
+- `frontend/web/new-dashboard/` — Next.js operations dashboard and backend-for-frontend.
 - `frontend/mobile/` — Flutter apps and shared Dart workspace packages.
 - `docs/` — cross-project decisions and architecture docs.
