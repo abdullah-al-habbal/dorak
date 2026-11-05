@@ -17,6 +17,7 @@ final class DashboardServiceResource extends JsonResource
 
         return [
             ...(new ServiceResource($this->resource))->toArray($request),
+            'name_translations' => $this->resource->getTranslations('name'),
             'category' => $category === null ? null : [
                 'id' => $category->id,
                 'name' => $category->getTranslations('name'),

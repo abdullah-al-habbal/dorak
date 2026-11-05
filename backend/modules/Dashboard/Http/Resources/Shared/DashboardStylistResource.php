@@ -17,6 +17,7 @@ final class DashboardStylistResource extends JsonResource
 
         return [
             ...(new BarberResource($this->resource))->toArray($request),
+            'name_translations' => $this->resource->getTranslations('name'),
             'chair' => $chair === null ? null : [
                 'id' => $chair->id,
                 'label' => $chair->label,

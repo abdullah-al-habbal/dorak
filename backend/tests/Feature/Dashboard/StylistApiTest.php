@@ -83,6 +83,7 @@ describe('Dashboard Stylist API', function (): void {
             ->assertOk()
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.chair.id', $firstChair->id)
+            ->assertJsonStructure(['data' => [['name_translations' => ['en', 'ar']]]])
             ->assertJsonPath('data.0.chair.branch_id', $this->branch->id);
         $this->getJson('/api/v1/dashboard/stylists?status='.BarberStatusEnum::Disabled->value)
             ->assertOk()
