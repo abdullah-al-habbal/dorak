@@ -100,6 +100,19 @@ describe("dashboard proxy", () => {
     expect((await expired.json()).error.code).toBe("session_expired");
   });
 
+  it("keeps the backend message for a 409 conflict and a rule-based 422", async () => {
+    await signIn();
+    vi.stubGlobal("fetch", backendReply(409, { code: "BOOKING_SLOT_CONFLICT", message: "Slot taken" }));
+    const conflict = await call(PATCH, ["bookings", "1", "reschedule"], { method: "PATCH", body: "{}" });
+    expect(conflict.status).toBe(409);
+    expect(await conflict.json()).toMatchObject({ error: { code: "conflict" }, message: "Slot taken" });
+
+    vi.stubGlobal("fetch", backendReply(422, { message: "Outside opening hours" }));
+    const rule = await call(PATCH, ["bookings", "1", "reschedule"], { method: "PATCH", body: "{}" });
+    expect(rule.status).toBe(400);
+    expect((await rule.json()).message).toBe("Outside opening hours");
+  });
+
   it("rejects malformed JSON", async () => {
     await signIn();
     vi.stubGlobal("fetch", backendReply(200, {}));

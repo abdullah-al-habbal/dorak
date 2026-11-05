@@ -14,6 +14,7 @@ export const arErrors: Dictionary["errors"] = {
     refresh_unauthorized: "انتهت جلستك. سجّل الدخول مرة أخرى.",
     forbidden: "ليست لديك صلاحية الوصول إلى هذا.",
     resource_not_found: "تعذر العثور على ذلك.",
+    conflict: "تم أخذ هذا الموعد أو تغييره للتو. أعد التحميل وحاول مرة أخرى.",
     too_many_requests: "محاولات كثيرة. انتظر دقيقة ثم حاول مجددًا.",
     network_error: "تعذر الوصول إلى الخادم. تحقق من اتصالك.",
     server_error: "حدث خطأ من جانبنا. حاول مجددًا بعد قليل.",

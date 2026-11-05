@@ -8,6 +8,7 @@ export enum ApiErrorCode {
   Forbidden = "forbidden",
   ResourceNotFound = "resource_not_found",
   TooManyRequests = "too_many_requests",
+  Conflict = "conflict",
   Network = "network_error",
   Server = "server_error",
 }

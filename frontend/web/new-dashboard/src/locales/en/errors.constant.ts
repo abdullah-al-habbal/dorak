@@ -13,6 +13,7 @@ export const enErrors = {
     forbidden: "You don't have access to this.",
     resource_not_found: "We couldn't find that.",
     too_many_requests: "Too many attempts. Wait a minute, then try again.",
+    conflict: "That time was just taken or changed. Reload and try again.",
     network_error: "Can't reach the server. Check your connection.",
     server_error: "Something went wrong on our side. Try again shortly.",
   },

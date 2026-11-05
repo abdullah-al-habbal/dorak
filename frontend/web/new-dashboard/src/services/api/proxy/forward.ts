@@ -19,6 +19,8 @@ const HTTP_NOT_FOUND = 404;
 const HTTP_METHOD_NOT_ALLOWED = 405;
 const HTTP_PAYLOAD_TOO_LARGE = 413;
 const HTTP_BAD_REQUEST = 400;
+const HTTP_CONFLICT = 409;
+const HTTP_UNPROCESSABLE = 422;
 const MAX_BODY_BYTES = 256 * 1024;
 const NO_STORE = { "Cache-Control": "no-store" };
 
@@ -84,6 +86,13 @@ export async function forwardDashboardRequest(
   }
   if (result.status === HTTP_NOT_FOUND) {
     return apiFailure(HTTP_NOT_FOUND, ApiErrorCode.ResourceNotFound, dictionary.errors.api.resource_not_found);
+  }
+  if (result.status === HTTP_CONFLICT) {
+    return apiFailure(HTTP_CONFLICT, ApiErrorCode.Conflict, result.envelope?.message || dictionary.errors.api.conflict);
+  }
+  if (result.status === HTTP_UNPROCESSABLE && result.envelope && !result.envelope.errors) {
+    // A business-rule rejection: the backend's own (localized) message is the useful one.
+    return apiFailure(HTTP_BAD_REQUEST, ApiErrorCode.InvalidRequest, result.envelope.message || dictionary.errors.api.invalid_request);
   }
   return failureFromBackend(result, dictionary);
 }
