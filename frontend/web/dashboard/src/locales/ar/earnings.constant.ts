@@ -1,0 +1,63 @@
+import type { Dictionary } from "@/types/dictionary.type";
+
+export const arEarnings: Dictionary["earnings"] = {
+  title: "الأرباح",
+  descriptions: {
+    branch: "إيرادات الحجوزات المكتملة في هذا الفرع.",
+    brand: "إيرادات الحجوزات المكتملة في جميع فروعك.",
+    barber: "إيرادات حجوزاتك المكتملة.",
+  },
+  range: {
+    label: "الفترة",
+    presets: { today: "اليوم", "7d": "٧ أيام", "30d": "٣٠ يومًا", month: "هذا الشهر", "last-month": "الشهر الماضي", custom: "مخصّصة" },
+    from: "من",
+    to: "إلى",
+    issues: {
+      inverted: "يجب أن يكون تاريخ النهاية في يوم البداية أو بعده.",
+      tooLong: "اختر فترة لا تتجاوز سنة.",
+      invalid: "أدخل تاريخًا صحيحًا.",
+    },
+    comparing: "مقارنة بالفترة من {from} إلى {to}",
+  },
+  currency: { label: "العملة" },
+  revenue: "الإيرادات",
+  bookings: "الحجوزات المكتملة",
+  averageTicket: "متوسط قيمة الحجز",
+  commission: "العمولة",
+  net: "صافي الإيرادات",
+  netUnavailable: "غير متاح",
+  netUnavailableHint: "يحتاج الصافي إلى اتفاقية عمولة فعّالة لكل حجز في هذه الفترة.",
+  none: "لا يوجد",
+  trend: {
+    up: "ارتفاع بنسبة {percent} عن الفترة السابقة",
+    down: "انخفاض بنسبة {percent} عن الفترة السابقة",
+    flat: "لا تغيير عن الفترة السابقة",
+    new: "جديد: لا إيرادات في الفترة السابقة",
+    newShort: "جديد",
+    flatShort: "لا تغيير",
+  },
+  chart: {
+    revenueTitle: "الإيرادات حسب {unit}",
+    bookingsTitle: "الحجوزات المكتملة حسب {unit}",
+    units: { day: "اليوم", week: "الأسبوع" },
+    summary: "{title}: الإجمالي {total} خلال {count} من الفترات، والأعلى {peak}",
+    bar: "{label}: {value}",
+    weekOf: "أسبوع {date}",
+  },
+  table: {
+    caption: "الأرباح حسب اليوم",
+    date: "التاريخ",
+    bookings: "الحجوزات",
+    revenue: "الإيرادات",
+    sortBy: "الترتيب حسب {column}",
+  },
+  export: { action: "تصدير CSV", date: "التاريخ", currency: "العملة", bookings: "الحجوزات", revenue: "الإيرادات", done: "تم تصدير الأرباح." },
+  states: {
+    emptyTitle: "لا أرباح في هذه الفترة",
+    emptyBody: "تُحتسب الحجوزات المكتملة فقط. جرّب فترة أطول.",
+    errorTitle: "تعذّر تحميل الأرباح",
+    errorBody: "تحقق من اتصالك ثم أعد المحاولة.",
+    forbiddenTitle: "الأرباح غير متاحة لمسؤولي المنصة",
+    forbiddenBody: "تُراجَع عمولة المنصة في منطقة الإدارة.",
+  },
+};

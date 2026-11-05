@@ -53,6 +53,12 @@ final class E2eDashboardSeeder extends Seeder
         BookingModel::query()->where('branch_id', $branch->id)->delete();
         $this->booking($chairs[0], $omar, $haircut, 'Sami Khoury', 'سامي خوري', 10, BookingStatus::Confirmed);
         $this->booking($chairs[1], $lina, $beard, 'Nadia Farah', 'نادية فرح', 14, BookingStatus::Pending);
+
+        // Completed history for the earnings screen: this month and the 30 days before it.
+        foreach ([1, 2, 4, 5, 8, 12, 20] as $daysAgo) {
+            $this->booking($chairs[0], $omar, $haircut, 'Past Client '.$daysAgo, 'عميل '.$daysAgo, 11, BookingStatus::Completed, $daysAgo);
+        }
+        $this->booking($chairs[1], $lina, $beard, 'Older Client', 'عميل قديم', 11, BookingStatus::Completed, 40);
     }
 
     private function branch(): BranchModel
@@ -117,10 +123,10 @@ final class E2eDashboardSeeder extends Seeder
         );
     }
 
-    private function booking(ChairModel $chair, BarberModel $barber, OfferedServiceModel $service, string $clientEn, string $clientAr, int $hour, BookingStatus $status): void
+    private function booking(ChairModel $chair, BarberModel $barber, OfferedServiceModel $service, string $clientEn, string $clientAr, int $hour, BookingStatus $status, int $daysAgo = 0): void
     {
         $client = ClientModel::factory()->create(['name' => ['en' => $clientEn, 'ar' => $clientAr]]);
-        $startsAt = now()->setTime($hour, 0);
+        $startsAt = now()->subDays($daysAgo)->setTime($hour, 0);
 
         $booking = BookingModel::factory()->create([
             'client_id' => $client->id,

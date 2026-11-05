@@ -150,3 +150,52 @@ describe('GET /dashboard/earnings', function (): void {
             ->assertUnprocessable();
     });
 });
+
+describe('GET /dashboard/earnings series and previous period', function (): void {
+    it('returns revenue and bookings per day plus the equal range before it', function (): void {
+        $branch = BranchModel::factory()->create();
+        completedBooking($branch, $this->currency->code, 3000, attributes: ['starts_at' => '2026-03-10 10:00:00']);
+        completedBooking($branch, $this->currency->code, 2000, attributes: ['starts_at' => '2026-03-10 15:00:00']);
+        completedBooking($branch, $this->currency->code, 4000, attributes: ['starts_at' => '2026-03-12 09:00:00']);
+        completedBooking($branch, $this->currency->code, 1000, attributes: ['starts_at' => '2026-03-07 09:00:00']);
+        completedBooking(BranchModel::factory()->create(), $this->currency->code, 99000, attributes: ['starts_at' => '2026-03-10 09:00:00']);
+        $this->authenticateDashboardActor($branch);
+
+        $response = $this->getJson('/api/v1/dashboard/earnings?from=2026-03-10&to=2026-03-12')->assertOk();
+
+        $response
+            ->assertJsonPath('data.totals.0.gross_minor', 9000)
+            ->assertJsonCount(2, 'data.series')
+            ->assertJsonPath('data.series.0', ['date' => '2026-03-10', 'currency_code' => $this->currency->code, 'gross_minor' => 5000, 'completed_bookings_count' => 2])
+            ->assertJsonPath('data.series.1.date', '2026-03-12')
+            ->assertJsonPath('data.previous_period', ['from' => '2026-03-07', 'to' => '2026-03-09'])
+            ->assertJsonPath('data.previous_totals.0.gross_minor', 1000)
+            ->assertJsonPath('data.previous_totals.0.completed_bookings_count', 1);
+    });
+
+    it('omits the previous period when the range is open and keeps totals unchanged', function (): void {
+        $branch = BranchModel::factory()->create();
+        completedBooking($branch, $this->currency->code, 3000);
+        $this->authenticateDashboardActor($branch);
+
+        $this->getJson('/api/v1/dashboard/earnings')
+            ->assertOk()
+            ->assertJsonPath('data.previous_period', null)
+            ->assertJsonPath('data.previous_totals', null)
+            ->assertJsonPath('data.totals.0.gross_minor', 3000)
+            ->assertJsonCount(1, 'data.series');
+    });
+
+    it('scopes a stylist series to their own bookings', function (): void {
+        $branch = BranchModel::factory()->create();
+        $mine = BarberModel::factory()->create();
+        completedBooking($branch, $this->currency->code, 3000, $mine, attributes: ['starts_at' => '2026-03-10 10:00:00']);
+        completedBooking($branch, $this->currency->code, 7000, BarberModel::factory()->create(), attributes: ['starts_at' => '2026-03-10 11:00:00']);
+        $this->authenticateDashboardActor($mine);
+
+        $this->getJson('/api/v1/dashboard/earnings?from=2026-03-10&to=2026-03-10')
+            ->assertOk()
+            ->assertJsonCount(1, 'data.series')
+            ->assertJsonPath('data.series.0.gross_minor', 3000);
+    });
+});

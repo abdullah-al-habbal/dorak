@@ -40,3 +40,10 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - `Switch` (Base UI) is for an immediate on/off setting and always has an `aria-label` naming the row. On means enabled; a `pending` stylist reads off and can only be switched on. Turning something off goes through the confirm overlay; turning it on is instant. Updates are optimistic with rollback.
 - `DataTableColumn.interactive` marks a cell that holds its own control. In the table it sits above the row's stretched hit area (`z-10`); on narrow screens it renders beside the row button, never inside it.
 - Services are grouped by catalog category (alphabetical, "Other services" last), one `DataTable` per group under an `h2`. Prices of 0 read "Free"; no duration reads "Flexible".
+
+## Earnings (reports)
+- Revenue is the focal element: display-size `font-heading` figure with a trend badge, and a quiet `dl` of supporting figures (bookings, average ticket, commission, net) beside it, not identical tiles. One currency at a time (`CurrencySwitch`); totals are never summed across currencies.
+- Trend badges always pair an icon with words; a zero base reads "New", never an infinite percent.
+- Charts are dependency-free flex-row bars (`bar-chart.tsx`): `role="img"` with a text summary, hover/touch readout, weekly buckets above 62 days. Bars use `bg-primary` (revenue) and `bg-chart-2` (bookings). The daily table carries the same numbers for keyboard and screen-reader users.
+- The period lives in the URL (`?from&to`); the default (last 30 days) keeps the URL clean. Presets are chips, custom dates are native fields validated before they reach the URL.
+- CSV: one row per day and currency, revenue in major units, formula-prefixed cells escaped, UTF-8 BOM.
