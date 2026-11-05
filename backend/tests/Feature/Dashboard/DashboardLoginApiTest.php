@@ -86,3 +86,16 @@ function dashboardClaimPayload(string $claim): array
 
     return $payload;
 }
+
+describe('Dashboard login throttle', function (): void {
+    it('allows five sign-in attempts per minute by default and then answers 429', function (): void {
+        expect(config('dashboard.dashboard.login_attempts_per_minute'))->toBe(5);
+
+        $payload = ['actor_type' => 'branch', 'email' => 'nobody@example.test', 'password' => 'wrong'];
+        foreach (range(1, 5) as $attempt) {
+            $this->postJson('/api/v1/dashboard/login', $payload)->assertStatus(401);
+        }
+
+        $this->postJson('/api/v1/dashboard/login', $payload)->assertStatus(429);
+    });
+});

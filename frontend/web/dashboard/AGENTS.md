@@ -91,12 +91,17 @@ without asking the user.**
   route handlers; component tests need `jsdom` and Testing Library, which require approval.
 - Before closing any change, from this directory: `npm run lint`, `npm run typecheck`,
   `npm test`, `npm run build`.
-- **Playwright E2E** (`npm run test:e2e`, specs in `tests/e2e/`): runs desktop (1280), `mobile-390` and
-  `ultrawide-3440` projects on the cached Chromium (`npm run test:e2e:install` if missing). The config starts
-  its own Next dev server (port 3100, `.next-e2e`) against a stand-in API (`tests/e2e/support/fake-backend.mjs`,
-  port 4010), so it never touches the real backend or `npm run dev`. The stand-in mirrors the contract of the
-  endpoints under test; update it whenever a backend contract used by a spec changes. Specs cover login,
-  bookings, stylists, services, working hours and RTL (Arabic). `signIn` hides the dev-only Next issue badge,
-  which otherwise covers bottom-anchored controls on phones.
+- **Playwright E2E** (`npm run test:e2e`, specs in `tests/e2e/`): runs against the **real stack**: Next.js on
+  3000 and the Laravel API on 8000. Each server is reused when already running, otherwise Playwright starts
+  `npm`'s `next dev` / `php artisan serve`. Projects: desktop 1440x900, `mobile-390`, `ultrawide-3440`
+  (cached Chromium; `npm run test:e2e:install` if missing).
+  `tests/e2e/support/global-setup.ts` runs `php artisan migrate:fresh --seed` plus
+  `backend/database/seeders/E2eDashboardSeeder.php` (**this wipes the dev database**), then signs the seeded
+  manager (`e2e-manager@dorak.test`) in once and saves the session to `tests/e2e/.auth/` (gitignored).
+  Specs reuse that session; auth specs start signed out. `resetBackend()` re-runs the E2E seeder, which restores
+  the baseline (no saved working hours, today's two bookings). When a spec needs other data, extend the seeder.
+  Backend `.env` must set `DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE` above the default 5 (the auth specs sign in
+  through the form). `signIn` hides the dev-only Next issue badge, which otherwise covers bottom-anchored
+  controls on phones.
 - **Working hours** (`/dashboard/[guard]/working-hours`): reads and writes `GET|PUT /branches/{id}/opening-hours`
   (up to four shifts per day). See `backend/docs/feature-index.md`.

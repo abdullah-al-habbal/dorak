@@ -4,7 +4,8 @@ import type { Page } from "@playwright/test";
 import { arDictionary } from "@/locales/ar/index.constant";
 import { enDictionary } from "@/locales/en/index.constant";
 import type { Dictionary } from "@/types/dictionary.type";
-import { E2E_APP_URL, E2E_BACKEND_URL, E2E_EMAIL, E2E_PASSWORD } from "@tests/e2e/support/e2e-env.constant";
+import { artisan } from "@tests/e2e/support/artisan";
+import { E2E_APP_URL, E2E_EMAIL, E2E_PASSWORD, E2E_SEEDER_CLASS } from "@tests/e2e/support/e2e-env.constant";
 
 export type E2ELocale = "en" | "ar";
 
@@ -12,9 +13,8 @@ export function dictionaryFor(locale: E2ELocale): Dictionary {
   return locale === "ar" ? arDictionary : enDictionary;
 }
 
-/** Signs a branch manager in through the real form and waits for the portal. */
+/** Opens the portal as the seeded manager. The session comes from the global setup's storage state. */
 export async function signIn(page: Page, locale: E2ELocale = "en"): Promise<void> {
-  const { auth } = dictionaryFor(locale);
   await page.context().addCookies([{ name: "NEXT_LOCALE", value: locale, url: E2E_APP_URL }]);
   // The dev-only Next issue badge floats over bottom-anchored controls (the save bar) and swallows clicks on phones.
   await page.addInitScript(() => {
@@ -24,6 +24,13 @@ export async function signIn(page: Page, locale: E2ELocale = "en"): Promise<void
       document.head.appendChild(style);
     });
   });
+  await page.goto("/dashboard/manager");
+  await expect(page).not.toHaveURL(/\/login/);
+}
+
+/** Fills the real sign-in form; only for specs that exercise the form itself (they run signed out). */
+export async function signInThroughForm(page: Page, locale: E2ELocale = "en"): Promise<void> {
+  const { auth } = dictionaryFor(locale);
   await page.goto("/dashboard/manager/login");
   await page.getByLabel(auth.email).fill(E2E_EMAIL);
   await page.getByLabel(auth.password, { exact: true }).fill(E2E_PASSWORD);
@@ -37,8 +44,7 @@ export async function expectNoHorizontalScroll(page: Page): Promise<void> {
   expect(overflow).toBeLessThanOrEqual(0);
 }
 
-/** Clears the stand-in backend's saved state so a test starts from a branch with no working hours. */
+/** Restores the seeded baseline in the real database (no saved working hours, today's two bookings). */
 export async function resetBackend(): Promise<void> {
-  const response = await fetch(`${E2E_BACKEND_URL}/api/v1/dashboard/__reset`, { method: "POST" });
-  expect(response.ok).toBe(true);
+  await artisan("db:seed", `--class=${E2E_SEEDER_CLASS}`);
 }

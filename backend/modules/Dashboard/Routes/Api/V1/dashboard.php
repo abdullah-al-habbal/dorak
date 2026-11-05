@@ -121,7 +121,7 @@ use Modules\Subscription\Http\Actions\Admin\UpdateSubscriptionPlanAction;
 use Modules\Subscription\Http\Actions\Owner\ListOwnerSubscriptionsAction;
 
 Route::prefix('dashboard')->group(function (): void {
-    Route::post('/login', DashboardLoginAction::class)->middleware('throttle:5,1');
+    Route::post('/login', DashboardLoginAction::class)->middleware('throttle:'.config('dashboard.dashboard.login_attempts_per_minute').',1');
     Route::post('/refresh', RefreshSessionAction::class)->middleware('throttle:10,1');
 
     Route::middleware([DashboardAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
