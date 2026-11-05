@@ -9,6 +9,7 @@ use Modules\Commission\Http\Actions\Admin\ListCommissionEntriesAction;
 use Modules\Commission\Http\Actions\Admin\ListCommissionRulesAction;
 use Modules\Commission\Http\Actions\Admin\StoreCommissionRuleAction;
 use Modules\Commission\Http\Actions\Admin\UpdateCommissionRuleAction;
+use Modules\Currency\Http\Actions\Shared\ListCurrenciesAction;
 use Modules\Currency\Http\Actions\Shared\ListExchangeRatesAction;
 use Modules\Dashboard\Http\Actions\Analytics\ShowPlatformAnalyticsAction;
 use Modules\Dashboard\Http\Actions\Barbers\DestroyBarberServiceOverrideAction;
@@ -232,6 +233,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/services/{service}', ShowServiceAction::class);
         Route::put('/services/{service}', UpdateServiceAction::class);
         Route::delete('/services/{service}', DestroyServiceAction::class);
+        Route::get('/currencies', ListCurrenciesAction::class);
         Route::get('/chairs', ListChairsAction::class);
         Route::post('/chairs', StoreChairAction::class);
         Route::get('/chairs/{chair}', ShowChairAction::class);

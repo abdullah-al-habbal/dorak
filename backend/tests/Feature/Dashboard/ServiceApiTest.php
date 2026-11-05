@@ -7,6 +7,8 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
+use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
 describe('Dashboard Service API', function (): void {
     beforeEach(function (): void {
@@ -23,6 +25,21 @@ describe('Dashboard Service API', function (): void {
             ->assertCreated()
             ->assertJsonPath('data.serviceable_id', $this->branch->brand_id)
             ->assertJsonPath('data.serviceable_type', ServiceableTypeEnum::Brand->value);
+    });
+
+    it('returns the catalog category on listed services and lists currencies', function (): void {
+        $this->authenticateDashboardActor($this->admin);
+        $currency = CurrencyModel::factory()->create();
+        $category = ServiceCatalogCategoryModel::factory()->create();
+        $item = ServiceCatalogItemModel::factory()->create(['category_id' => $category->id]);
+        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency, ['catalog_item_id' => $item->id]))->assertCreated();
+
+        $this->getJson('/api/v1/dashboard/services')
+            ->assertOk()
+            ->assertJsonPath('data.0.category.id', $category->id);
+        $this->getJson('/api/v1/dashboard/currencies')
+            ->assertOk()
+            ->assertJsonFragment(['code' => $currency->code]);
     });
 
     it('rejects a branch serviceable_type (D1: owned by brand or barber, never branch)', function (): void {

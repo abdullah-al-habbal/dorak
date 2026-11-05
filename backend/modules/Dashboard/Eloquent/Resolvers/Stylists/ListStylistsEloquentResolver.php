@@ -12,7 +12,9 @@ final class ListStylistsEloquentResolver
 {
     public function resolve(ListStylistsQuery $query): LengthAwarePaginator
     {
-        return BarberModel::query()
+        return BarberModel::query()->with('chairs')
+            ->when($query->chairId !== null, fn ($builder) => $builder->whereHas('chairs', fn ($chairs) => $chairs->whereKey($query->chairId)))
+            ->when($query->status !== null, fn ($builder) => $builder->where('status', $query->status))
             ->when($query->branchIds !== null, fn ($builder) => $builder->whereHas(
                 'chairs',
                 fn ($chairs) => $chairs->whereIn('branch_id', $query->branchIds),

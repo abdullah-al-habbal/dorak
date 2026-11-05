@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowServiceQuery;
 use Modules\Dashboard\Handlers\Services\ShowServiceHandler;
+use Modules\Dashboard\Http\Resources\Shared\DashboardServiceResource;
 use Modules\Dashboard\Support\DashboardActor;
-use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 
 final class ShowServiceAction extends BaseApiAction
 {
@@ -25,6 +25,6 @@ final class ShowServiceAction extends BaseApiAction
             $actor->scopedBrandIds(),
         ));
 
-        return $this->ok(ServiceResource::make($model));
+        return $this->ok(DashboardServiceResource::make($model->loadMissing('catalogItem.category')));
     }
 }

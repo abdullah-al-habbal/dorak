@@ -13,7 +13,7 @@ final class ListServicesEloquentResolver
 {
     public function resolve(ListServicesQuery $query): LengthAwarePaginator
     {
-        return OfferedServiceModel::query()
+        return OfferedServiceModel::query()->with('catalogItem.category')
             ->when($query->brandIds !== null, fn ($builder) => $builder
                 ->where('serviceable_type', ServiceableTypeEnum::Brand)
                 ->whereIn('serviceable_id', $query->brandIds))

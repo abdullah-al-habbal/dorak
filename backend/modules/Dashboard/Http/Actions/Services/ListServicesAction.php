@@ -9,8 +9,8 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ListServicesQuery;
 use Modules\Dashboard\Handlers\Services\ListServicesHandler;
 use Modules\Dashboard\Http\Requests\Business\ListServicesRequest;
+use Modules\Dashboard\Http\Resources\Shared\DashboardServiceResource;
 use Modules\Dashboard\Support\DashboardActor;
-use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 
 final class ListServicesAction extends BaseApiAction
 {
@@ -26,6 +26,6 @@ final class ListServicesAction extends BaseApiAction
             $request->validated('search'),
         ));
 
-        return $this->paginated($services, ServiceResource::class);
+        return $this->paginated($services, DashboardServiceResource::class);
     }
 }

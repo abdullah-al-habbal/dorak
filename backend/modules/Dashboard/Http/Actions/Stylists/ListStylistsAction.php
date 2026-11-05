@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ListStylistsQuery;
 use Modules\Dashboard\Handlers\Stylists\ListStylistsHandler;
 use Modules\Dashboard\Http\Requests\Business\ListStylistsRequest;
+use Modules\Dashboard\Http\Resources\Shared\DashboardStylistResource;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class ListStylistsAction extends BaseApiAction
@@ -24,8 +24,10 @@ final class ListStylistsAction extends BaseApiAction
             $actor->scopedBranchIds(),
             $request->integer('per_page', 15),
             $request->validated('search'),
+            $request->validated('chair_id'),
+            $request->validated('status'),
         ));
 
-        return $this->paginated($stylists, BarberResource::class);
+        return $this->paginated($stylists, DashboardStylistResource::class);
     }
 }

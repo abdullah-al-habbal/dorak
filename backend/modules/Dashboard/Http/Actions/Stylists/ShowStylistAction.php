@@ -6,10 +6,10 @@ namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowStylistQuery;
 use Modules\Dashboard\Handlers\Stylists\ShowStylistHandler;
+use Modules\Dashboard\Http\Resources\Shared\DashboardStylistResource;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class ShowStylistAction extends BaseApiAction
@@ -25,6 +25,6 @@ final class ShowStylistAction extends BaseApiAction
             $actor->scopedBranchIds(),
         ));
 
-        return $this->ok(BarberResource::make($model));
+        return $this->ok(DashboardStylistResource::make($model->loadMissing('chairs')));
     }
 }

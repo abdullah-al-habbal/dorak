@@ -72,6 +72,25 @@ describe('Dashboard Stylist API', function (): void {
             ->assertJsonPath('data.status', BarberStatusEnum::Enabled->value);
     });
 
+    it('filters stylists by chair and status and returns the assigned chair', function (): void {
+        $first = BarberModel::factory()->create(['status' => BarberStatusEnum::Enabled]);
+        $second = BarberModel::factory()->create(['status' => BarberStatusEnum::Disabled]);
+        $firstChair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $first->id]);
+        ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $second->id]);
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->getJson('/api/v1/dashboard/stylists?chair_id='.$firstChair->id)
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.chair.id', $firstChair->id)
+            ->assertJsonPath('data.0.chair.branch_id', $this->branch->id);
+        $this->getJson('/api/v1/dashboard/stylists?status='.BarberStatusEnum::Disabled->value)
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.id', $second->id);
+        $this->getJson('/api/v1/dashboard/stylists?status=nope')->assertUnprocessable();
+    });
+
     it('does not let a branch manager activate a stylist outside their branch', function (): void {
         $otherStylist = BarberModel::factory()->create();
         ChairModel::factory()->create(['branch_id' => $this->otherBranch->id, 'barber_id' => $otherStylist->id]);
