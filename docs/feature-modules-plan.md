@@ -283,6 +283,22 @@ Tests: form schema (both names required, email, password bounds on create vs upd
 
 Each step is a separate local commit with its own gates.
 
+## 10a. Module 5: Manager Chairs and Reviews
+
+Chosen 2026-11-05 as the next milestone: Modules 1-4 are built and the remaining sidebar items are Chairs and Reviews (manager), Schedule (barber), Branches, Payouts and Subscription (owner) and the admin areas. Chairs and Reviews have the smallest write surface and their backend routes already exist.
+
+Audit of the backend (`php artisan route:list --path=api/v1/dashboard`), both behind the Operations guard group (admin, manager, owner), scoped by `DashboardActor::scopedBranchIds()`:
+
+- Chairs: `GET|POST /chairs`, `GET|PUT|DELETE /chairs/{chair}`. `ChairRequest`: `branch_id` (required), `barber_id` (nullable, must belong to the branch), `label` (max 120), `floor_zone` (`men|women|shared`), `status` (`available|occupied|maintenance`), `layout_settings{position_x, position_y, width, height, rotation?}`, `force` (boolean). List filters: `search`, `per_page`. `ChairResource` returns `id, label, status, availability, floor_zone, layout_settings, branch_id, barber, created_at`.
+- Reviews: `GET /branches/{branch}/reviews` (`per_page`), newest first; `ReviewResource` returns `rating, body, status, disputed_at, resolved_at, author_name, created_at`. Dispute resolution is admin-only (`/admin/reviews`) and stays out of scope.
+
+Delivery, each a separate local commit with its own gates:
+
+1. Chairs: proxy allow-list for `chairs` CRUD, schemas, queries, mutations, directory (zone and status badges, search, paging), create/edit dialog with a barber select and numeric layout fields, delete through the confirm overlay, Vitest, Playwright.
+2. Reviews: proxy allow-list for `branches/{id}/reviews`, branch picker for multi-branch guards, rating summary, review list, Vitest, Playwright.
+
+Backend gaps are fixed in the backend (Pest plus docs) as they surface. Not in scope: a drag-and-drop floor-map editor and review dispute handling.
+
 ## 11. Cross-cutting concerns
 
 - **Security.** Authorization stays on the backend. The proxy allow-list, guard checks and body caps are defence in depth. No token is ever readable by the browser. CSV export neutralises formula injection. Server-provided strings are rendered as text, never as HTML.
