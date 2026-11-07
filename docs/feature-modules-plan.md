@@ -314,6 +314,24 @@ Delivery, each a separate local commit with its own gates:
 
 Backend gaps are fixed in the backend (Pest plus docs) as they surface. Not in scope: a drag-and-drop floor-map editor and review dispute handling.
 
+## 10b. Module 6: Owner Payouts and Subscription
+
+Chosen 2026-11-07 as the next milestone. Remaining "Soon" items: Branches (owner, admin), Payouts and Subscription (owner), Schedule (barber, needs a new barber-scoped endpoint) and the admin areas. Payouts and Subscription are read-only and their owner routes already exist behind `DashboardOwnerAuthorizationMiddleware`, scoped by `DashboardActor::scopedBrandIds()`, so they carry the smallest risk.
+
+Backend audit (no contract gap found, no backend behaviour change):
+
+- `GET /payouts?status&per_page&page`: the owner's own non-draft payouts, newest first, with `meta.pagination`. `OwnerPayoutResource` returns `id, status, direction_type, total_amount_minor, currency_code, brand{id,name}, period_started_at, period_ended_at, approved_at, paid_at, external_reference, created_at` and never admin notes or the approver. `status` is validated against `PayoutStatus`.
+- `GET /subscription`: the latest subscription of each owned brand (brands without one are omitted): `status, brand, plan{name, description, price_amount_minor, currency_code, interval_unit, interval_count, feature_keys}, features{multi_branch, job_board}, starts_at, ends_at, past_due_at, grace_ends_at, cancelled_at`.
+
+**Implemented (dashboard).**
+
+- `/dashboard/owner/payouts`: status filter (approved, paid, cancelled; drafts are never offered) and page live in the URL; table on wide screens, cards on narrow ones; amounts through `Intl`; status is icon plus text.
+- `/dashboard/owner/subscription`: one card per brand with plan, price per interval, status, a past-due notice with the grace end date, start and renewal dates, and the effective feature flags.
+- Other guards see the forbidden state; the proxy allow-list opens `GET payouts` and `GET subscription` to the owner guard only (the admin payout and plan routes stay closed).
+- Out of scope: approving, paying or cancelling payouts and changing plans (admin-only, `/admin/payouts`, `/admin/subscriptions`).
+- E2E: `E2eDashboardSeeder` now seeds an owner (`e2e-owner@dorak.test`) for the manager's brand, an active plan with the `multi_branch` feature, and four payouts (paid, approved, cancelled, plus a hidden draft). The global setup saves a second session (`tests/e2e/.auth/owner.json`); owner specs use `test.use({ storageState: E2E_OWNER_STORAGE_STATE })`.
+- Mobile: no impact. The mobile apps do not call these dashboard routes and no API contract changed.
+
 ## 11. Cross-cutting concerns
 
 - **Security.** Authorization stays on the backend. The proxy allow-list, guard checks and body caps are defence in depth. No token is ever readable by the browser. CSV export neutralises formula injection. Server-provided strings are rendered as text, never as HTML.

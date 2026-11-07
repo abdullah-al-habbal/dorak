@@ -1,0 +1,22 @@
+export const enPayouts = {
+  title: "Payouts",
+  description: "Settlements between your brands and the platform. Drafts are internal and never listed here.",
+  columns: { period: "Period", brand: "Brand", direction: "Direction", amount: "Amount", status: "Status", paid: "Paid" },
+  status: { draft: "Draft", approved: "Approved", paid: "Paid", cancelled: "Cancelled" },
+  direction: { brand_to_platform: "You pay the platform", platform_to_brand: "Platform pays you" },
+  periodRange: "{from} to {to}",
+  reference: "Ref. {reference}",
+  notPaid: "-",
+  filters: { toolbar: "Payout filters", status: "Status", allStatuses: "All statuses", clear: "Clear filter" },
+  states: {
+    emptyTitle: "No payouts yet",
+    emptyBody: "Approved and paid settlements for your brands will appear here.",
+    filteredTitle: "No payouts match this status",
+    filteredBody: "Try another status or clear the filter.",
+    errorTitle: "Payouts couldn't load",
+    errorBody: "Check your connection and try again.",
+    forbiddenTitle: "Payouts are for brand owners",
+    forbiddenBody: "Your account has no access to payouts. Ask the brand owner if you need a settlement.",
+    results: "{count} payouts",
+  },
+};

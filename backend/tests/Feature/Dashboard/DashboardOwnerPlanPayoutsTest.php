@@ -73,6 +73,30 @@ describe('GET /dashboard/payouts', function (): void {
             ->assertJsonPath('data.0.id', $paid->id);
     });
 
+    it('pages newest first with pagination meta and the brand name', function (): void {
+        [$owner, $brand] = ownerWithBrandOnly();
+        $older = PayoutModel::factory()->create(['brand_id' => $brand->id, 'status' => PayoutStatus::Paid, 'created_at' => now()->subDays(2)]);
+        $newer = PayoutModel::factory()->create(['brand_id' => $brand->id, 'status' => PayoutStatus::Approved, 'created_at' => now()->subDay()]);
+
+        $this->authenticateDashboardActor($owner)
+            ->getJson('/api/v1/dashboard/payouts?per_page=1')
+            ->assertOk()
+            ->assertJsonPath('data.0.id', $newer->id)
+            ->assertJsonPath('data.0.brand.id', $brand->id)
+            ->assertJsonPath('meta.pagination.total', 2)
+            ->assertJsonPath('meta.pagination.total_pages', 2);
+
+        $this->authenticateDashboardActor($owner)
+            ->getJson('/api/v1/dashboard/payouts?per_page=1&page=2')
+            ->assertJsonPath('data.0.id', $older->id);
+    });
+
+    it('rejects an unknown status filter', function (): void {
+        [$owner] = ownerWithBrandOnly();
+
+        $this->authenticateDashboardActor($owner)->getJson('/api/v1/dashboard/payouts?status=bogus')->assertUnprocessable();
+    });
+
     it('is forbidden to managers and stylists', function (): void {
         $this->getJson('/api/v1/dashboard/payouts')->assertUnauthorized();
         $this->authenticateDashboardActor(BranchModel::factory()->create())->getJson('/api/v1/dashboard/payouts')->assertForbidden();

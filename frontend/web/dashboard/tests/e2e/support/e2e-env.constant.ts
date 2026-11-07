@@ -11,3 +11,7 @@ export const E2E_PASSWORD = "e2e-password-123";
 export const E2E_SEEDER_CLASS = "Database\\Seeders\\E2eDashboardSeeder";
 /** Browser session saved by the global setup so specs do not hit the sign-in rate limit. */
 export const E2E_STORAGE_STATE = "tests/e2e/.auth/manager.json";
+/** The seeded brand owner (same seeder); owner-only specs reuse this session. */
+export const E2E_OWNER_EMAIL = "e2e-owner@dorak.test";
+export const E2E_OWNER_PASSWORD = "e2e-password-123";
+export const E2E_OWNER_STORAGE_STATE = "tests/e2e/.auth/owner.json";

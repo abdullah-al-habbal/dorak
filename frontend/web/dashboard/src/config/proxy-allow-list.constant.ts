@@ -4,6 +4,7 @@ import type { ProxyRule } from "@/interfaces/proxy-rule.interface";
 
 const OPERATIONS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner];
 const EARNINGS: readonly AuthActor[] = [AuthActor.Manager, AuthActor.Barber, AuthActor.Owner];
+const OWNER_ONLY: readonly AuthActor[] = [AuthActor.Owner];
 const ID = "[^/]+";
 
 // Default deny. Paths are the real backend dashboard paths, with no renaming.
@@ -17,6 +18,7 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Put], pattern: new RegExp(`^branches/${ID}$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get, HttpMethod.Put], pattern: new RegExp(`^branches/${ID}/opening-hours$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/reviews$`), guards: OPERATIONS },
+  { methods: [HttpMethod.Get], pattern: /^(payouts|subscription)$/, guards: OWNER_ONLY },
   { methods: [HttpMethod.Get], pattern: /^earnings$/, guards: EARNINGS },
   {
     methods: [HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete],

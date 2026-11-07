@@ -55,7 +55,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
     { key: "stylists", segment: "stylists", icon: UsersIcon, ready: true },
     { key: "workingHours", segment: "working-hours", icon: ClockIcon, ready: true },
     { key: "earnings", segment: "earnings", icon: BadgeDollarSignIcon, ready: true },
-    { key: "payouts", segment: "payouts", icon: WalletIcon, ready: false },
-    { key: "subscription", segment: "subscription", icon: CreditCardIcon, ready: false },
+    { key: "payouts", segment: "payouts", icon: WalletIcon, ready: true },
+    { key: "subscription", segment: "subscription", icon: CreditCardIcon, ready: true },
   ],
 };

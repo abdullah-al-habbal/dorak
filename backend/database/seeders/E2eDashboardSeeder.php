@@ -19,10 +19,16 @@ use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\Payout\Enums\PayoutStatus;
+use Modules\Payout\Models\PayoutModel;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
+use Modules\Subscription\Enums\SubscriptionStatus;
+use Modules\Subscription\Models\BrandSubscriptionModel;
+use Modules\Subscription\Models\PlanFeatureModel;
+use Modules\Subscription\Models\SubscriptionPlanModel;
 
 /**
  * Deterministic data for the dashboard Playwright suite (frontend/web/dashboard/tests/e2e).
@@ -34,6 +40,10 @@ final class E2eDashboardSeeder extends Seeder
     public const string MANAGER_EMAIL = 'e2e-manager@dorak.test';
 
     public const string MANAGER_PASSWORD = 'e2e-password-123';
+
+    public const string OWNER_EMAIL = 'e2e-owner@dorak.test';
+
+    public const string OWNER_PASSWORD = 'e2e-password-123';
 
     public function run(): void
     {
@@ -64,6 +74,7 @@ final class E2eDashboardSeeder extends Seeder
         $this->booking($chairs[1], $lina, $beard, 'Older Client', 'عميل قديم', 11, BookingStatus::Completed, 40);
 
         $this->reviews($branch);
+        $this->ownerBilling($branch->brand, $currency);
     }
 
     /** Three counted reviews (5, 4, 2 stars: average 3.67) and one disputed review that stays out of the summary. */
@@ -87,6 +98,38 @@ final class E2eDashboardSeeder extends Seeder
                 'rating' => $rating,
                 'body' => $body,
                 'status' => $status,
+            ]);
+        }
+    }
+
+    /** The brand owner (dashboard actor `owner`) with an active plan and payouts in every visible status plus one hidden draft. */
+    private function ownerBilling(BrandModel $brand, CurrencyModel $currency): void
+    {
+        $owner = ClientModel::query()->firstOrCreate(
+            ['email' => self::OWNER_EMAIL],
+            ClientModel::factory()->make(['email' => self::OWNER_EMAIL, 'name' => ['en' => 'E2E Owner', 'ar' => 'مالك الاختبار'], 'password' => Hash::make(self::OWNER_PASSWORD)])->getAttributes(),
+        );
+        $brand->update(['owner_id' => $owner->id]);
+
+        BrandSubscriptionModel::query()->where('brand_id', $brand->id)->delete();
+        $plan = SubscriptionPlanModel::query()->firstOrCreate(
+            ['price_amount_minor' => 4900, 'currency_code' => $currency->code, 'sort_order' => 99],
+            SubscriptionPlanModel::factory()->make(['name' => ['en' => 'E2E Growth', 'ar' => 'نمو الاختبار'], 'description' => ['en' => 'For growing brands.', 'ar' => 'للعلامات النامية.'], 'price_amount_minor' => 4900, 'currency_code' => $currency->code, 'sort_order' => 99])->getAttributes(),
+        );
+        PlanFeatureModel::query()->firstOrCreate(['plan_id' => $plan->id, 'feature_key' => 'multi_branch']);
+        BrandSubscriptionModel::factory()->create(['brand_id' => $brand->id, 'plan_id' => $plan->id, 'status' => SubscriptionStatus::Active]);
+
+        PayoutModel::query()->where('brand_id', $brand->id)->delete();
+        $rows = [[PayoutStatus::Paid, 125000, 3], [PayoutStatus::Approved, 84050, 2], [PayoutStatus::Cancelled, 20000, 1], [PayoutStatus::Draft, 99900, 0]];
+        foreach ($rows as [$status, $amount, $daysAgo]) {
+            PayoutModel::factory()->create([
+                'brand_id' => $brand->id,
+                'currency_code' => $currency->code,
+                'status' => $status,
+                'total_amount_minor' => $amount,
+                'paid_at' => $status === PayoutStatus::Paid ? now()->subDays($daysAgo) : null,
+                'external_reference' => $status === PayoutStatus::Paid ? 'E2E-REF-1' : null,
+                'created_at' => now()->subDays($daysAgo),
             ]);
         }
     }

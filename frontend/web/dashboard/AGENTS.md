@@ -97,7 +97,7 @@ without asking the user.**
   (cached Chromium; `npm run test:e2e:install` if missing).
   `tests/e2e/support/global-setup.ts` runs `php artisan migrate:fresh --seed` plus
   `backend/database/seeders/E2eDashboardSeeder.php` (**this wipes the dev database**), then signs the seeded
-  manager (`e2e-manager@dorak.test`) in once and saves the session to `tests/e2e/.auth/` (gitignored).
+  manager (`e2e-manager@dorak.test`) and the seeded brand owner (`e2e-owner@dorak.test`) in once and saves the sessions to `tests/e2e/.auth/` (gitignored). Owner-only specs use `test.use({ storageState: E2E_OWNER_STORAGE_STATE })` and `signIn(page, locale, "owner")`.
   Specs reuse that session; auth specs start signed out. `resetBackend()` re-runs the E2E seeder, which restores
   the baseline (no saved working hours, today's two bookings). When a spec needs other data, extend the seeder.
   Backend `.env` must set `DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE` above the default 5 (the auth specs sign in

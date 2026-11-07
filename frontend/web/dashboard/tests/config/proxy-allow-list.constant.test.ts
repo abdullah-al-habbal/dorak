@@ -34,3 +34,18 @@ describe("proxy allow-list: branch reviews", () => {
     expect(allowed(HttpMethod.Get, "branches/b1/reviews/r1", AuthActor.Manager)).toBe(false);
   });
 });
+
+describe("proxy allow-list: owner payouts and subscription", () => {
+  it.each(["payouts", "subscription"])("allows only the owner to read %s", (path) => {
+    expect(allowed(HttpMethod.Get, path, AuthActor.Owner)).toBe(true);
+    expect(allowed(HttpMethod.Get, path, AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Get, path, AuthActor.Barber)).toBe(false);
+    expect(allowed(HttpMethod.Get, path, AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Post, path, AuthActor.Owner)).toBe(false);
+  });
+
+  it("does not expose the admin payout or plan routes", () => {
+    expect(allowed(HttpMethod.Get, "admin/payouts", AuthActor.Owner)).toBe(false);
+    expect(allowed(HttpMethod.Get, "payouts/p1", AuthActor.Owner)).toBe(false);
+  });
+});
