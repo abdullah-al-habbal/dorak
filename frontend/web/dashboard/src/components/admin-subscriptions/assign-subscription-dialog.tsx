@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { HttpStatus } from "@/enums/http-status.enum";
 import { useAssignSubscription } from "@/hooks/use-assign-subscription";
 import { useBrandOptions } from "@/hooks/use-brand-options";
 import { useI18n } from "@/hooks/use-i18n";
@@ -19,7 +20,6 @@ import { localizedText } from "@/lib/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const LOADING_ROWS = 2;
-const HTTP_UNPROCESSABLE = 422;
 
 /** Assigns a plan to a brand. The backend replaces the brand's current live subscription. */
 export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): JSX.Element {
@@ -45,7 +45,7 @@ export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): 
       onClose();
     } catch (failure) {
       // A 422 carries the backend's reason (for example an inactive plan) in the request language.
-      setErrors({ form: failure instanceof ApiClientError && failure.status === HTTP_UNPROCESSABLE && failure.message ? failure.message : d.errors.generic });
+      setErrors({ form: failure instanceof ApiClientError && failure.status === HttpStatus.Unprocessable && failure.message ? failure.message : d.errors.generic });
     }
   }
 

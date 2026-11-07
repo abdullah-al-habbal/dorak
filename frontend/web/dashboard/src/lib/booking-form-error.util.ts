@@ -1,7 +1,6 @@
+import { HttpStatus } from "@/enums/http-status.enum";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
-const HTTP_CONFLICT = 409;
-const HTTP_UNPROCESSABLE = 422;
 const OUTSIDE_SCHEDULE_CODE = "booking_outside_schedule";
 
 export interface BookingFormErrorMessages {
@@ -23,9 +22,9 @@ export interface MappedFormError {
  */
 export function mapBookingFormError(error: unknown, messages: BookingFormErrorMessages, startField: string): MappedFormError {
   if (!(error instanceof ApiClientError)) return { fieldErrors: {}, formError: messages.generic };
-  if (error.status === HTTP_CONFLICT) return { fieldErrors: { [startField]: messages.conflict } };
+  if (error.status === HttpStatus.Conflict) return { fieldErrors: { [startField]: messages.conflict } };
   if (error.code === OUTSIDE_SCHEDULE_CODE) return { fieldErrors: { [startField]: messages.outsideSchedule } };
-  if (error.status === HTTP_UNPROCESSABLE && error.fields) {
+  if (error.status === HttpStatus.Unprocessable && error.fields) {
     const fieldErrors: Record<string, string> = {};
     for (const [name, list] of Object.entries(error.fields)) {
       const first = list[0];

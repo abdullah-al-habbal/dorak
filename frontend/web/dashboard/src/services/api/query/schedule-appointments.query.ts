@@ -1,8 +1,8 @@
 import { SCHEDULE_PER_PAGE } from "@/config/schedule.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { scheduleWindow } from "@/lib/schedule-filters.util";
+import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { bookingListSchema } from "@/schemas/booking.zod";
-import { pageInfoSchema } from "@/schemas/page-info.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { BookingPage } from "@/types/booking-page.type";
 import type { ScheduleFilters } from "@/types/schedule-filters.type";
@@ -14,7 +14,5 @@ export async function fetchScheduleAppointments(filters: ScheduleFilters, weekSt
   if (filters.status) params.set("booking_status", filters.status);
 
   const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/schedule/appointments?${params.toString()}`, { schema: bookingListSchema });
-  const pagination = pageInfoSchema.safeParse((meta as { pagination?: unknown } | null)?.pagination);
-  const fallback = { total: data.length, per_page: SCHEDULE_PER_PAGE, current_page: filters.page, total_pages: 1 };
-  return { items: data, page: pagination.success ? pagination.data : fallback };
+  return { items: data, page: resolvePageInfo(meta, data.length, SCHEDULE_PER_PAGE, filters.page) };
 }

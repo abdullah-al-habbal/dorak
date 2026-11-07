@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { windowFor } from "@/lib/booking-filters.util";
+import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { bookingListSchema } from "@/schemas/booking.zod";
-import { pageInfoSchema } from "@/schemas/page-info.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { Booking } from "@/types/booking.type";
 import type { BookingFilters } from "@/types/booking-filters.type";
@@ -24,9 +24,7 @@ export async function fetchBookingPage(filters: BookingFilters, weekStart: numbe
   const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/bookings?${queryString(filters, weekStart, page)}`, {
     schema: bookingListSchema,
   });
-  const pagination = pageInfoSchema.safeParse((meta as { pagination?: unknown } | null)?.pagination);
-  const fallback = { total: data.length, per_page: PER_PAGE, current_page: page, total_pages: 1 };
-  return { items: data, page: pagination.success ? pagination.data : fallback };
+  return { items: data, page: resolvePageInfo(meta, data.length, PER_PAGE, page) };
 }
 
 /** Follows the pagination metadata until the window is complete, for the grids. */

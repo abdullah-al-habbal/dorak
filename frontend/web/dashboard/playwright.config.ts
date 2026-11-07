@@ -5,6 +5,7 @@ import { E2E_APP_PORT, E2E_APP_URL, E2E_BACKEND_DIR, E2E_BACKEND_PORT, E2E_BACKE
 const MOBILE = { width: 390, height: 844 };
 const DESKTOP = { width: 1440, height: 900 };
 const ULTRAWIDE = { width: 3440, height: 1440 };
+const BUILD_AND_START_TIMEOUT_MS = 600_000;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -23,7 +24,7 @@ export default defineConfig({
     { name: "mobile-390", use: { ...devices["Desktop Chrome"], viewport: MOBILE, hasTouch: true } },
     { name: "ultrawide-3440", use: { ...devices["Desktop Chrome"], viewport: ULTRAWIDE } },
   ],
-  // Both servers are reused when already running (`php artisan serve`, `npm run dev`).
+  // Both servers are reused when already running (`php artisan serve`, `npm start`).
   webServer: [
     {
       command: `php artisan serve --host=127.0.0.1 --port=${E2E_BACKEND_PORT}`,
@@ -33,10 +34,11 @@ export default defineConfig({
       timeout: 60_000,
     },
     {
-      command: `npx next dev -p ${E2E_APP_PORT}`,
+      // A production build avoids the dev server's runtime Google Fonts fetch, so it also runs offline.
+      command: `npm run build && npm start -- -p ${E2E_APP_PORT}`,
       url: `${E2E_APP_URL}/dashboard/manager/login`,
       reuseExistingServer: true,
-      timeout: 180_000,
+      timeout: BUILD_AND_START_TIMEOUT_MS,
     },
   ],
 });

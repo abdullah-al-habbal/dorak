@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { pageInfoSchema } from "@/schemas/page-info.zod";
+import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { stylistListSchema } from "@/schemas/stylist.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { StylistFilters } from "@/types/stylist-filters.type";
@@ -17,7 +17,5 @@ function queryString(filters: StylistFilters): string {
 
 export async function fetchStylistPage(filters: StylistFilters): Promise<StylistPage> {
   const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/stylists?${queryString(filters)}`, { schema: stylistListSchema });
-  const pagination = pageInfoSchema.safeParse((meta as { pagination?: unknown } | null)?.pagination);
-  const fallback = { total: data.length, per_page: PER_PAGE, current_page: filters.page, total_pages: 1 };
-  return { items: data, page: pagination.success ? pagination.data : fallback };
+  return { items: data, page: resolvePageInfo(meta, data.length, PER_PAGE, filters.page) };
 }

@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PAYOUT_NOTES_MAX, PAYOUT_REFERENCE_MAX } from "@/config/payout.constant";
 import { PayoutAction } from "@/enums/payout-action.enum";
+import { HttpStatus } from "@/enums/http-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { useTransitionPayout } from "@/hooks/use-transition-payout";
 import { formatPrice, localizedText } from "@/lib/booking-format.util";
@@ -23,8 +24,6 @@ interface PayoutActionDialogProps {
   action: PayoutAction;
   onClose: () => void;
 }
-
-const HTTP_CONFLICT = 409;
 
 /** Approve, mark paid or cancel one payout. Only "mark paid" asks for the transfer reference; notes are always optional. */
 export function PayoutActionDialog({ payout, action, onClose }: PayoutActionDialogProps): JSX.Element {
@@ -50,7 +49,7 @@ export function PayoutActionDialog({ payout, action, onClose }: PayoutActionDial
       });
       onClose();
     } catch (failure) {
-      setError(failure instanceof ApiClientError && failure.status === HTTP_CONFLICT ? t.dialog.errors.conflict : t.dialog.errors.generic);
+      setError(failure instanceof ApiClientError && failure.status === HttpStatus.Conflict ? t.dialog.errors.conflict : t.dialog.errors.generic);
     }
   }
 

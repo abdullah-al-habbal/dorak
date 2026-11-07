@@ -1,14 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
+import { STALE_TIME } from "@/config/stale-time.constant";
+import { useReferenceQuery } from "@/hooks/use-reference-query";
 import { bookingKeys } from "@/lib/booking-keys";
 import { fetchChairs } from "@/services/api/query/chairs.query";
 import type { ChairOption } from "@/types/chair-option.type";
 
-const STALE_MS = 5 * 60_000;
-
 export function useChairOptions(): UseQueryResult<ChairOption[]> {
-  return useQuery({ queryKey: bookingKeys.chairs, queryFn: fetchChairs, staleTime: STALE_MS });
+  return useReferenceQuery(bookingKeys.chairs, fetchChairs, STALE_TIME.Reference);
 }

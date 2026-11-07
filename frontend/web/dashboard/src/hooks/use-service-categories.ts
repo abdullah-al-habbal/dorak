@@ -1,14 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
+import { STALE_TIME } from "@/config/stale-time.constant";
+import { useReferenceQuery } from "@/hooks/use-reference-query";
 import { serviceKeys } from "@/lib/service-keys";
 import { fetchServiceCategories } from "@/services/api/query/service-categories.query";
 import type { ServiceCategory } from "@/types/service-category.type";
 
-const STALE_MS = 5 * 60_000;
-
 export function useServiceCategories(): UseQueryResult<ServiceCategory[]> {
-  return useQuery({ queryKey: serviceKeys.categories, queryFn: fetchServiceCategories, staleTime: STALE_MS });
+  return useReferenceQuery(serviceKeys.categories, fetchServiceCategories, STALE_TIME.Reference);
 }
