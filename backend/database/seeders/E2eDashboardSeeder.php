@@ -19,6 +19,9 @@ use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
+use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Enums\ReviewSubjectTypeEnum;
+use Modules\Review\Models\ReviewModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 
 /**
@@ -59,6 +62,33 @@ final class E2eDashboardSeeder extends Seeder
             $this->booking($chairs[0], $omar, $haircut, 'Past Client '.$daysAgo, 'عميل '.$daysAgo, 11, BookingStatus::Completed, $daysAgo);
         }
         $this->booking($chairs[1], $lina, $beard, 'Older Client', 'عميل قديم', 11, BookingStatus::Completed, 40);
+
+        $this->reviews($branch);
+    }
+
+    /** Three counted reviews (5, 4, 2 stars: average 3.67) and one disputed review that stays out of the summary. */
+    private function reviews(BranchModel $branch): void
+    {
+        ReviewModel::query()->where('subject_id', $branch->id)->where('subject_type', ReviewSubjectTypeEnum::Branch)->delete();
+
+        $rows = [
+            [5, 'Excellent cut and a friendly team.', ReviewStatus::Published],
+            [4, 'Clean shop, short wait.', ReviewStatus::Published],
+            [2, 'Waited too long for my turn.', ReviewStatus::Published],
+            [1, 'Disputed by the branch.', ReviewStatus::Disputed],
+        ];
+        // Reuse the seeded completed bookings: the factory's own booking would create random currencies.
+        $bookingIds = BookingModel::query()->where('branch_id', $branch->id)->where('booking_status', BookingStatus::Completed)->orderBy('id')->pluck('id');
+        foreach ($rows as $index => [$rating, $body, $status]) {
+            ReviewModel::factory()->create([
+                'booking_id' => $bookingIds[$index],
+                'subject_type' => ReviewSubjectTypeEnum::Branch,
+                'subject_id' => $branch->id,
+                'rating' => $rating,
+                'body' => $body,
+                'status' => $status,
+            ]);
+        }
     }
 
     private function branch(): BranchModel

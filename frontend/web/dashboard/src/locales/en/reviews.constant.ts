@@ -1,0 +1,27 @@
+export const enReviews = {
+  title: "Reviews",
+  description: "What clients say about your branch. Only published and resolved reviews count toward the rating.",
+  branch: "Branch",
+  anonymous: "Client",
+  rating: "{rating} out of {max}",
+  status: { published: "Published", disputed: "Disputed", resolved: "Resolved", hidden: "Hidden" },
+  summary: {
+    title: "Rating summary",
+    average: "Average rating",
+    none: "-",
+    count: "{count} reviews",
+    distribution: "Reviews by rating",
+    stars: "{rating} stars",
+  },
+  states: {
+    emptyTitle: "No reviews yet",
+    emptyBody: "Reviews appear here after clients rate a completed booking.",
+    errorTitle: "Reviews couldn't load",
+    errorBody: "Check your connection, then try again.",
+    noBranchTitle: "No branch to show",
+    noBranchBody: "Reviews appear once your account has a branch.",
+    forbiddenTitle: "Reviews aren't available for your role",
+    forbiddenBody: "Branch reviews are for branch and brand teams.",
+    results: "{count} reviews",
+  },
+} as const;

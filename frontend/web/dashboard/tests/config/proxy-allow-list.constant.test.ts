@@ -25,3 +25,12 @@ describe("proxy allow-list: chairs", () => {
     expect(allowed(HttpMethod.Get, "chairs/abc/extra", AuthActor.Manager)).toBe(false);
   });
 });
+
+describe("proxy allow-list: branch reviews", () => {
+  it("allows reads for the manager only on the reviews path", () => {
+    expect(allowed(HttpMethod.Get, "branches/b1/reviews", AuthActor.Manager)).toBe(true);
+    expect(allowed(HttpMethod.Post, "branches/b1/reviews", AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Get, "branches/b1/reviews", AuthActor.Barber)).toBe(false);
+    expect(allowed(HttpMethod.Get, "branches/b1/reviews/r1", AuthActor.Manager)).toBe(false);
+  });
+});

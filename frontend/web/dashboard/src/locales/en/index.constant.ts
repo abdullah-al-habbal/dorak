@@ -6,6 +6,7 @@ import { enEarnings } from "@/locales/en/earnings.constant";
 import { enErrors } from "@/locales/en/errors.constant";
 import { enStylists } from "@/locales/en/stylists.constant";
 import { enServices } from "@/locales/en/services.constant";
+import { enReviews } from "@/locales/en/reviews.constant";
 import { enShell } from "@/locales/en/shell.constant";
 import { enWorkingHours } from "@/locales/en/working-hours.constant";
 
@@ -15,6 +16,7 @@ export const enDictionary = {
   bookings: enBookings,
   shell: enShell,
   chairs: enChairs,
+  reviews: enReviews,
   stylists: enStylists,
   services: enServices,
   workingHours: enWorkingHours,

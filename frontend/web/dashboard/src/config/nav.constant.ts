@@ -41,7 +41,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
     { key: "services", segment: "services", icon: ScissorsIcon, ready: true },
     { key: "workingHours", segment: "working-hours", icon: ClockIcon, ready: true },
     { key: "earnings", segment: "earnings", icon: BadgeDollarSignIcon, ready: true },
-    { key: "reviews", segment: "reviews", icon: StarIcon, ready: false },
+    { key: "reviews", segment: "reviews", icon: StarIcon, ready: true },
   ],
   [AuthActor.Barber]: [
     overview,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
 
 describe('Dashboard branch floor plan', function (): void {
@@ -75,5 +76,35 @@ describe('Dashboard branch reviews', function (): void {
             ->assertOk()
             ->assertJsonCount(2, 'data')
             ->assertJsonPath('meta.pagination.total', 3);
+    });
+
+    it('summarises the rating distribution of counted reviews only', function (): void {
+        $branch = BranchModel::factory()->create();
+        $other = ['subject_type' => 'branch', 'subject_id' => BranchModel::factory()->create()->id];
+        foreach ([5, 5, 4] as $rating) {
+            ReviewModel::factory()->create(['subject_type' => 'branch', 'subject_id' => $branch->id, 'rating' => $rating, 'status' => ReviewStatus::Published]);
+        }
+        ReviewModel::factory()->create(['subject_type' => 'branch', 'subject_id' => $branch->id, 'rating' => 2, 'status' => ReviewStatus::Resolved]);
+        ReviewModel::factory()->create(['subject_type' => 'branch', 'subject_id' => $branch->id, 'rating' => 1, 'status' => ReviewStatus::Disputed]);
+        ReviewModel::factory()->create(['subject_type' => 'branch', 'subject_id' => $branch->id, 'rating' => 1, 'status' => ReviewStatus::Hidden]);
+        ReviewModel::factory()->create([...$other, 'rating' => 3, 'status' => ReviewStatus::Published]);
+        $this->authenticateDashboardActor($branch);
+
+        $this->getJson("/api/v1/dashboard/branches/{$branch->id}/reviews")
+            ->assertOk()
+            ->assertJsonPath('meta.summary.count', 4)
+            ->assertJsonPath('meta.summary.average', 4)
+            ->assertJsonPath('meta.summary.distribution', ['1' => 0, '2' => 1, '3' => 0, '4' => 1, '5' => 2])
+            ->assertJsonPath('meta.pagination.total', 6);
+    });
+
+    it('returns an empty summary for a branch without reviews', function (): void {
+        $branch = BranchModel::factory()->create();
+        $this->authenticateDashboardActor($branch);
+
+        $this->getJson("/api/v1/dashboard/branches/{$branch->id}/reviews")
+            ->assertOk()
+            ->assertJsonPath('meta.summary.average', null)
+            ->assertJsonPath('meta.summary.count', 0);
     });
 });

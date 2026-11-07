@@ -14,12 +14,13 @@ use Modules\Dashboard\Support\DashboardActor;
 use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Http\Resources\Shared\ReviewResource;
 use Modules\Review\Models\ReviewModel;
+use Modules\Review\Services\BranchReviewSummary;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
 
 final class ListBranchReviewsAction extends BaseApiAction
 {
-    public function __construct(private readonly ShowBranchHandler $handler) {}
+    public function __construct(private readonly ShowBranchHandler $handler, private readonly BranchReviewSummary $summary) {}
 
     public function __invoke(Request $request, string $branch): JsonResponse
     {
@@ -36,6 +37,6 @@ final class ListBranchReviewsAction extends BaseApiAction
             ->orderByDesc('created_at')
             ->paginate($perPage);
 
-        return $this->paginated($reviews, ReviewResource::class);
+        return $this->paginated($reviews, ReviewResource::class, meta: ['summary' => $this->summary->for($model)]);
     }
 }

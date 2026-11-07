@@ -6,6 +6,7 @@ import { arEarnings } from "@/locales/ar/earnings.constant";
 import { arErrors } from "@/locales/ar/errors.constant";
 import { arStylists } from "@/locales/ar/stylists.constant";
 import { arServices } from "@/locales/ar/services.constant";
+import { arReviews } from "@/locales/ar/reviews.constant";
 import { arShell } from "@/locales/ar/shell.constant";
 import { arWorkingHours } from "@/locales/ar/working-hours.constant";
 import type { Dictionary } from "@/types/dictionary.type";
@@ -16,6 +17,7 @@ export const arDictionary: Dictionary = {
   bookings: arBookings,
   shell: arShell,
   chairs: arChairs,
+  reviews: arReviews,
   stylists: arStylists,
   services: arServices,
   workingHours: arWorkingHours,

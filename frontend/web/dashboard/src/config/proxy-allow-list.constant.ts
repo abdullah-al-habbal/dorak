@@ -16,6 +16,7 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches(/${ID})?$`), guards: OPERATIONS },
   { methods: [HttpMethod.Put], pattern: new RegExp(`^branches/${ID}$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get, HttpMethod.Put], pattern: new RegExp(`^branches/${ID}/opening-hours$`), guards: OPERATIONS },
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/reviews$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^earnings$/, guards: EARNINGS },
   {
     methods: [HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete],

@@ -305,6 +305,13 @@ Delivery, each a separate local commit with its own gates:
 - Maintenance: the switch sends a full PUT with `status=maintenance`. The backend answers 409 while future reservation-blocking bookings exist; the proxy reports every 409 as the `conflict` code, so the UI offers a confirm and retries with `force=true`, which cancels and notifies those bookings. This confirm path is covered by code review only, not E2E, because the seeded bookings are time-of-day dependent.
 - Deleting uses the confirm overlay; a chair with bookings is refused by the backend.
 
+**Implemented: Reviews (dashboard, step 2).** `/dashboard/[guard]/reviews` for admin, manager and owner (barbers see the forbidden state).
+
+- Backend gap fixed: `GET /dashboard/branches/{branch}/reviews` now returns `meta.summary {average, count, distribution{1..5}}` next to `meta.pagination`, computed by `BranchReviewSummary` over published and resolved reviews (the set behind the branch `rating_average`). Disputed and hidden reviews are still listed with a status badge but never counted. Additive for mobile, which does not call dashboard routes.
+- Proxy: `GET branches/{id}/reviews` for the Operations guards. The URL holds `branch` and `page`; a branch select shows only for accounts that are not tied to one branch.
+- UI: average and distribution cards (stars are decorative, the rating is also text), the review list (author, date via `Intl`, body as text) and paging. No rating filter: the backend has none and the plan does not call for one.
+- E2E data: `E2eDashboardSeeder` seeds three counted reviews (5, 4, 2 stars, average 3.7) and one disputed review on the seeded branch's completed bookings.
+
 Backend gaps are fixed in the backend (Pest plus docs) as they surface. Not in scope: a drag-and-drop floor-map editor and review dispute handling.
 
 ## 11. Cross-cutting concerns
