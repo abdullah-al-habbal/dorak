@@ -1,17 +1,17 @@
 import { z } from "zod";
 
+import { NAME_MAX_LENGTH } from "@/config/field-limit.constant";
 import { parseDuration } from "@/lib/duration.util";
 import { parseMinorUnits } from "@/lib/money.util";
+import { nameField } from "@/schemas/fields/name-field.zod";
 import type { Dictionary } from "@/types/dictionary.type";
-
-const MAX_NAME = 120;
 
 type ServiceValidation = Dictionary["services"]["form"]["validation"];
 
 export function createServiceSchema(messages: ServiceValidation) {
   return z.object({
-    name_en: z.string().trim().min(1, messages.name).max(MAX_NAME, messages.name),
-    name_ar: z.string().trim().min(1, messages.name).max(MAX_NAME, messages.name),
+    name_en: nameField(NAME_MAX_LENGTH, messages.name),
+    name_ar: nameField(NAME_MAX_LENGTH, messages.name),
     price: z.string().refine((value) => parseMinorUnits(value) !== null, messages.price),
     currency_code: z.string().min(1, messages.currency),
     /** Empty string means no category. */

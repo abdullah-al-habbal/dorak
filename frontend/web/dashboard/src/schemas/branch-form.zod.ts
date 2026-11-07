@@ -13,23 +13,21 @@ import {
 import { BranchStatus } from "@/enums/branch-status.enum";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { parseCoordinate } from "@/lib/coordinate.util";
+import { emailField } from "@/schemas/fields/email-field.zod";
+import { nameField } from "@/schemas/fields/name-field.zod";
+import { passwordField } from "@/schemas/fields/password-field.zod";
 import type { Dictionary } from "@/types/dictionary.type";
 
 type BranchValidation = Dictionary["branches"]["form"]["validation"];
-
-function passwordSchema(messages: BranchValidation, creating: boolean) {
-  const valid = (value: string): boolean => value.length >= BRANCH_MIN_PASSWORD && value.length <= BRANCH_MAX_PASSWORD;
-  return creating ? z.string().refine(valid, messages.password) : z.string().refine((value) => value === "" || valid(value), messages.password);
-}
 
 /** Mirrors `BranchRequest`; messages come from the dictionary so validation reads in the active locale. */
 export function createBranchSchema(messages: BranchValidation, creating: boolean) {
   return z.object({
     brand_id: z.string().min(1, messages.brand),
-    name_en: z.string().trim().min(1, messages.name).max(BRANCH_MAX_NAME, messages.name),
-    name_ar: z.string().trim().min(1, messages.name).max(BRANCH_MAX_NAME, messages.name),
-    email: z.string().trim().email(messages.email).max(BRANCH_MAX_EMAIL, messages.email),
-    password: passwordSchema(messages, creating),
+    name_en: nameField(BRANCH_MAX_NAME, messages.name),
+    name_ar: nameField(BRANCH_MAX_NAME, messages.name),
+    email: emailField(BRANCH_MAX_EMAIL, messages.email),
+    password: passwordField({ min: BRANCH_MIN_PASSWORD, max: BRANCH_MAX_PASSWORD, message: messages.password, required: creating }),
     status: z.enum(BranchStatus, messages.status),
     universe: z.enum(VenueUniverse, messages.universe),
     description_en: z.string().trim().max(BRANCH_MAX_DESCRIPTION, messages.description),

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { PLAN_MAX_DESCRIPTION, PLAN_MAX_INTERVAL_COUNT, PLAN_MAX_NAME, PLAN_MAX_SORT_ORDER } from "@/config/plan.constant";
 import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
 import { parseMinorUnits } from "@/lib/money.util";
+import { nameField } from "@/schemas/fields/name-field.zod";
 import type { Dictionary } from "@/types/dictionary.type";
 
 type PlanValidation = Dictionary["plans"]["form"]["validation"];
@@ -15,8 +16,8 @@ function integerInRange(text: string, min: number, max: number): boolean {
 /** Mirrors `SavePlanRequest`; messages come from the dictionary so validation reads in the active locale. */
 export function createPlanSchema(messages: PlanValidation) {
   return z.object({
-    name_en: z.string().trim().min(1, messages.name).max(PLAN_MAX_NAME, messages.name),
-    name_ar: z.string().trim().min(1, messages.name).max(PLAN_MAX_NAME, messages.name),
+    name_en: nameField(PLAN_MAX_NAME, messages.name),
+    name_ar: nameField(PLAN_MAX_NAME, messages.name),
     description_en: z.string().trim().max(PLAN_MAX_DESCRIPTION, messages.description),
     description_ar: z.string().trim().max(PLAN_MAX_DESCRIPTION, messages.description),
     price: z.string().refine((value) => parseMinorUnits(value) !== null, messages.price),

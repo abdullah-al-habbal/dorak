@@ -1,26 +1,28 @@
 import { z } from "zod";
 
+import {
+  EMAIL_MAX_LENGTH,
+  NAME_MAX_LENGTH,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  PHONE_MAX_LENGTH,
+} from "@/config/field-limit.constant";
+import { emailField } from "@/schemas/fields/email-field.zod";
+import { nameField } from "@/schemas/fields/name-field.zod";
+import { passwordField } from "@/schemas/fields/password-field.zod";
+import { phoneField } from "@/schemas/fields/phone-field.zod";
 import type { Dictionary } from "@/types/dictionary.type";
-
-const MAX_NAME = 120;
-const MAX_EMAIL = 255;
-const MAX_PHONE = 30;
-const MIN_PASSWORD = 12;
-const MAX_PASSWORD = 255;
 
 type StylistValidation = Dictionary["stylists"]["form"]["validation"];
 
 /** `creating` makes the password required, as the backend does. Messages come from the dictionary. */
 export function createStylistSchema(messages: StylistValidation, creating: boolean) {
-  const password = creating
-    ? z.string().min(MIN_PASSWORD, messages.password).max(MAX_PASSWORD, messages.password)
-    : z.string().max(MAX_PASSWORD, messages.password).refine((value) => value === "" || value.length >= MIN_PASSWORD, messages.password);
   return z.object({
-    name_en: z.string().trim().min(1, messages.name).max(MAX_NAME, messages.name),
-    name_ar: z.string().trim().min(1, messages.name).max(MAX_NAME, messages.name),
-    email: z.string().trim().max(MAX_EMAIL, messages.email).pipe(z.email(messages.email)),
-    phone: z.string().trim().max(MAX_PHONE),
-    password,
+    name_en: nameField(NAME_MAX_LENGTH, messages.name),
+    name_ar: nameField(NAME_MAX_LENGTH, messages.name),
+    email: emailField(EMAIL_MAX_LENGTH, messages.email),
+    phone: phoneField(PHONE_MAX_LENGTH),
+    password: passwordField({ min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH, message: messages.password, required: creating }),
     chair_id: z.string(),
   });
 }
