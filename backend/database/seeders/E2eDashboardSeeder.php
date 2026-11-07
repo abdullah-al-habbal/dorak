@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
+use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Enums\BranchStatusEnum;
@@ -47,6 +48,11 @@ final class E2eDashboardSeeder extends Seeder
 
     public const string OWNER_PASSWORD = 'e2e-password-123';
 
+    /** The enabled stylist who signs in to the barber portal (schedule spec). */
+    public const string BARBER_EMAIL = 'omar.e2e@dorak.test';
+
+    public const string BARBER_PASSWORD = 'e2e-password-123';
+
     public function run(): void
     {
         $currency = CurrencyModel::query()->firstOrCreate(
@@ -60,7 +66,8 @@ final class E2eDashboardSeeder extends Seeder
 
         DB::table('branch_opening_hours')->where('branch_id', $branch->id)->delete();
 
-        $omar = $this->stylist('omar.e2e@dorak.test', 'Omar Haddad', 'عمر حداد', BarberStatusEnum::Enabled, $chairs[0]);
+        $omar = $this->stylist(self::BARBER_EMAIL, 'Omar Haddad', 'عمر حداد', BarberStatusEnum::Enabled, $chairs[0]);
+        $this->barberHours($omar);
         $lina = $this->stylist('lina.e2e@dorak.test', 'Lina Saad', 'لينا سعد', BarberStatusEnum::Disabled, $chairs[1]);
 
         $haircut = $this->service($branch, $currency, 'Hair', 'الشعر', 'Classic haircut', 'قص كلاسيكي', 2500, 30);
@@ -78,6 +85,16 @@ final class E2eDashboardSeeder extends Seeder
 
         $this->reviews($branch);
         $this->ownerBilling($branch->brand, $currency);
+    }
+
+    /** One shift per weekday (unique key): Mon to Wed work, Thu is switched off, the rest are days off. Weekdays: 0 is Sunday. */
+    private function barberHours(BarberModel $barber): void
+    {
+        BarberScheduleModel::query()->where('barber_id', $barber->id)->delete();
+        $rows = [[1, '09:00', '13:00', true], [2, '10:00', '16:00', true], [3, '09:00', '17:00', true], [4, '09:00', '17:00', false]];
+        foreach ($rows as [$day, $start, $end, $active]) {
+            BarberScheduleModel::factory()->create(['barber_id' => $barber->id, 'day_of_week' => $day, 'start_time' => $start, 'end_time' => $end, 'is_active' => $active]);
+        }
     }
 
     /** Three counted reviews (5, 4, 2 stars: average 3.67) and one disputed review that stays out of the summary. */
@@ -176,7 +193,7 @@ final class E2eDashboardSeeder extends Seeder
     {
         $barber = BarberModel::query()->firstOrCreate(
             ['email' => $email],
-            BarberModel::factory()->make(['email' => $email, 'name' => ['en' => $en, 'ar' => $ar], 'status' => $status->value])->getAttributes(),
+            BarberModel::factory()->make(['email' => $email, 'name' => ['en' => $en, 'ar' => $ar], 'status' => $status->value, 'password' => Hash::make(self::BARBER_PASSWORD)])->getAttributes(),
         );
         $chair->update(['barber_id' => $barber->id]);
 

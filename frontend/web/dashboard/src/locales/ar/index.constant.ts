@@ -9,6 +9,7 @@ import { arStylists } from "@/locales/ar/stylists.constant";
 import { arServices } from "@/locales/ar/services.constant";
 import { arPayouts } from "@/locales/ar/payouts.constant";
 import { arReviews } from "@/locales/ar/reviews.constant";
+import { arSchedule } from "@/locales/ar/schedule.constant";
 import { arSubscription } from "@/locales/ar/subscription.constant";
 import { arShell } from "@/locales/ar/shell.constant";
 import { arWorkingHours } from "@/locales/ar/working-hours.constant";
@@ -23,6 +24,7 @@ export const arDictionary: Dictionary = {
   branches: arBranches,
   payouts: arPayouts,
   reviews: arReviews,
+  schedule: arSchedule,
   subscription: arSubscription,
   stylists: arStylists,
   services: arServices,

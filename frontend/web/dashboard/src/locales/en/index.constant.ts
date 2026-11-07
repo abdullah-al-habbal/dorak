@@ -9,6 +9,7 @@ import { enStylists } from "@/locales/en/stylists.constant";
 import { enServices } from "@/locales/en/services.constant";
 import { enPayouts } from "@/locales/en/payouts.constant";
 import { enReviews } from "@/locales/en/reviews.constant";
+import { enSchedule } from "@/locales/en/schedule.constant";
 import { enSubscription } from "@/locales/en/subscription.constant";
 import { enShell } from "@/locales/en/shell.constant";
 import { enWorkingHours } from "@/locales/en/working-hours.constant";
@@ -22,6 +23,7 @@ export const enDictionary = {
   branches: enBranches,
   payouts: enPayouts,
   reviews: enReviews,
+  schedule: enSchedule,
   subscription: enSubscription,
   stylists: enStylists,
   services: enServices,

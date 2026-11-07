@@ -13,8 +13,8 @@ export function dictionaryFor(locale: E2ELocale): Dictionary {
   return locale === "ar" ? arDictionary : enDictionary;
 }
 
-/** Opens the portal as the seeded manager (or owner). The session comes from the global setup's storage state. */
-export async function signIn(page: Page, locale: E2ELocale = "en", guard: "manager" | "owner" = "manager"): Promise<void> {
+/** Opens the portal as the seeded manager (or owner, or barber). The session comes from the global setup's storage state. */
+export async function signIn(page: Page, locale: E2ELocale = "en", guard: "manager" | "owner" | "barber" = "manager"): Promise<void> {
   await page.context().addCookies([{ name: "NEXT_LOCALE", value: locale, url: E2E_APP_URL }]);
   // The dev-only Next issue badge floats over bottom-anchored controls (the save bar) and swallows clicks on phones.
   await page.addInitScript(() => {

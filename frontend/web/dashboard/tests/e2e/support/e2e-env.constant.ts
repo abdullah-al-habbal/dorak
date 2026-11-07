@@ -15,3 +15,7 @@ export const E2E_STORAGE_STATE = "tests/e2e/.auth/manager.json";
 export const E2E_OWNER_EMAIL = "e2e-owner@dorak.test";
 export const E2E_OWNER_PASSWORD = "e2e-password-123";
 export const E2E_OWNER_STORAGE_STATE = "tests/e2e/.auth/owner.json";
+/** The seeded stylist (same seeder) who signs in to the barber portal; schedule specs reuse this session. */
+export const E2E_BARBER_EMAIL = "omar.e2e@dorak.test";
+export const E2E_BARBER_PASSWORD = "e2e-password-123";
+export const E2E_BARBER_STORAGE_STATE = "tests/e2e/.auth/barber.json";

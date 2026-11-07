@@ -160,7 +160,7 @@ Found by comparing the brief with the backend. These are the decisions that need
 | Commission rules on a barber | `StylistRequest` has no commission field. Rules are `admin/commission-rules` (platform admin only). | Barbers module shows commission read-only for admin; other guards do not see it. No commission editing in this module. |
 | Commission splits and trends in earnings | `ShowEarningsRequest` accepts only `from` and `to`. Whether the response has splits or a previous-period figure is **unverified**. | Verify the `ShowEarningsAction` response shape first. If there is no previous-period figure, the trend is computed by a second request for the equal preceding range; if that is not wanted, the indicator is hidden. |
 | CSV export | No export endpoint. | Client-side, from the loaded and filtered rows. |
-| Barber portal | Barbers are rejected by the Operations group (`/bookings`, `/overview`, `/stylists`, ...). Only `/earnings` and profile routes work. | The barber guard gets earnings only. The "schedule" nav item has no data source and stays marked "Soon" until a barber-scoped endpoint exists. Backend gap, not fixed here. |
+| Barber portal | Barbers are rejected by the Operations group (`/bookings`, `/overview`, `/stylists`, ...). Only `/earnings` and profile routes work. | Resolved 2026-11-07 (Module 8): the barber guard gets earnings and a read-only Schedule backed by the barber-scoped `GET /schedule/appointments` and `GET /schedule/hours` (see [Module 8](#10d-module-8-barber-schedule)). |
 | Booking list has no calendar-window parameter | `date_from`, `date_to` exist. | The grid requests exactly the visible window, with `per_page=100` and follows the pagination metadata until complete. |
 
 ## 5. Shared conventions for all modules
@@ -318,7 +318,7 @@ Backend gaps are fixed in the backend (Pest plus docs) as they surface. Not in s
 
 ## 10b. Module 6: Owner Payouts and Subscription
 
-Chosen 2026-11-07 as the next milestone. Remaining "Soon" items: Branches (owner, admin), Payouts and Subscription (owner), Schedule (barber, needs a new barber-scoped endpoint) and the admin areas. Payouts and Subscription are read-only and their owner routes already exist behind `DashboardOwnerAuthorizationMiddleware`, scoped by `DashboardActor::scopedBrandIds()`, so they carry the smallest risk.
+Chosen 2026-11-07 as the next milestone. Remaining "Soon" items: Branches (owner, admin), Payouts and Subscription (owner), Schedule (barber, needs a new barber-scoped endpoint; shipped as Module 8) and the admin areas. Payouts and Subscription are read-only and their owner routes already exist behind `DashboardOwnerAuthorizationMiddleware`, scoped by `DashboardActor::scopedBrandIds()`, so they carry the smallest risk.
 
 Backend audit (no contract gap found, no backend behaviour change):
 
@@ -336,7 +336,7 @@ Backend audit (no contract gap found, no backend behaviour change):
 
 ## 10c. Module 7: Owner and Admin Branches
 
-Chosen 2026-11-07 as the next milestone. Remaining "Soon" items after it: Brands, Catalog, Analytics and Settings (admin), Payouts (admin) and Schedule (barber, needs a new barber-scoped endpoint).
+Chosen 2026-11-07 as the next milestone. Remaining "Soon" items after it: Brands, Catalog, Analytics and Settings (admin), Payouts (admin) and Schedule (barber; shipped as Module 8).
 
 Backend audit (`php artisan route:list --path=api/v1/dashboard`), all behind the Operations guard group:
 
@@ -356,6 +356,21 @@ Backend audit (`php artisan route:list --path=api/v1/dashboard`), all behind the
 - E2E (owner session): list and filter, create, edit and delete, the last-branch refusal, and Arabic RTL. `E2eDashboardSeeder` now restores the seeded branch's name and status and deletes extra branches of the brand, so the specs can reset the real backend.
 - Mobile: no impact. None of the three apps or the shared packages call `/dashboard/*` (they use `/branch/*`, `/explore/*` and the public `/branches/{id}/...` routes), and no existing contract changed.
 
+## 10d. Module 8: Barber Schedule
+
+Chosen 2026-11-07 as the next milestone. The Operations routes reject barbers (`DashboardOperationsAuthorizationMiddleware`), so the barber portal needed its own endpoints. Read-only: accepting, starting or completing a booking and editing the weekly hours stay in the stylist app.
+
+Backend (new `DashboardBarberAuthorizationMiddleware` group, barbers only; managers, owners and admins get 403):
+
+- `GET /schedule/appointments?booking_status&date_from&date_to&per_page&page`: the signed-in barber's own bookings, earliest first, as `StaffBookingResource` (same payload as `/bookings`) with `meta.pagination`. Dates are `YYYY-MM-DD` and inclusive of the whole day; `per_page` max 50 (default 15). The barber id always comes from the session (`DashboardActor::id`), never the request.
+- `GET /schedule/hours`: the barber's weekly rows `{id, day_of_week (0 = Sunday), start_time, end_time, is_active}` (`HH:mm`), same field names as the mobile `/barber/schedule`. `barber_schedules` has a unique `(barber_id, day_of_week)`, so a day has at most one shift.
+- Authorization: `BarberSchedulePolicy::viewOwn` (Gate on the dashboard actor) in addition to the middleware.
+
+**Implemented (dashboard).** `/dashboard/barber/schedule`: appointment table (cards on phones) with `range` (today, this week, upcoming; default upcoming), `status` and `page` in the URL, a weekly hours card beside it (stacked below on narrow screens) with a day-off state, en and ar dictionaries, RTL and dark mode follow the shell. Other guards see the forbidden state; the proxy allow-list opens the two `GET` paths to the barber guard only. The nav item is no longer "Soon".
+
+- E2E: `E2eDashboardSeeder` gives the seeded stylist Omar a known password and weekly hours (Mon to Wed, Thu switched off); the global setup saves a barber session (`tests/e2e/.auth/barber.json`) and `schedule.spec.ts` uses it.
+- Mobile: no impact. The three apps and the shared packages never call `/dashboard/*` (the stylist app uses `/barber/schedule` and `/barber/appointments`), and no existing contract changed.
+
 ## 11. Cross-cutting concerns
 
 - **Security.** Authorization stays on the backend. The proxy allow-list, guard checks and body caps are defence in depth. No token is ever readable by the browser. CSV export neutralises formula injection. Server-provided strings are rendered as text, never as HTML.
@@ -372,5 +387,5 @@ Questions 1-3 and 5 were resolved on 2026-11-04; see [open decisions](decisions-
 2. Does `PUT /branches/{id}` accept a partial payload, or must the whole branch be sent?
 3. What does `GET /earnings` return (splits, previous period, paging)?
 4. Are service categories readable by non-admin guards? (Resolved: the dashboard service response now carries `category`.)
-5. Does the barber guard get a booking/schedule endpoint, or does it stay earnings-only?
+5. Does the barber guard get a booking/schedule endpoint, or does it stay earnings-only? (Resolved 2026-11-07: read-only schedule endpoints, Module 8.)
 6. Should a chart library be approved for the earnings module?

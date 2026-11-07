@@ -78,3 +78,20 @@ describe("proxy allow-list: branch management", () => {
     expect(allowed(HttpMethod.Get, "brands/b1", AuthActor.Owner)).toBe(false);
   });
 });
+
+describe("proxy allow-list: barber schedule", () => {
+  it.each(["schedule/appointments", "schedule/hours"])("lets only the barber read %s", (path) => {
+    expect(allowed(HttpMethod.Get, path, AuthActor.Barber)).toBe(true);
+    for (const guard of [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner]) {
+      expect(allowed(HttpMethod.Get, path, guard)).toBe(false);
+    }
+  });
+
+  it("is read-only and exact", () => {
+    expect(allowed(HttpMethod.Post, "schedule/hours", AuthActor.Barber)).toBe(false);
+    expect(allowed(HttpMethod.Patch, "schedule/appointments", AuthActor.Barber)).toBe(false);
+    expect(allowed(HttpMethod.Get, "schedule", AuthActor.Barber)).toBe(false);
+    expect(allowed(HttpMethod.Get, "schedule/appointments/extra", AuthActor.Barber)).toBe(false);
+    expect(allowed(HttpMethod.Get, "bookings", AuthActor.Barber)).toBe(false);
+  });
+});

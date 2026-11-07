@@ -62,6 +62,8 @@ use Modules\Dashboard\Http\Actions\Profile\UpdateNotificationPreferencesAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdatePasswordAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdateProfileAction;
 use Modules\Dashboard\Http\Actions\Profile\VerifyEmailChangeAction;
+use Modules\Dashboard\Http\Actions\Schedule\ListScheduleAppointmentsAction;
+use Modules\Dashboard\Http\Actions\Schedule\ListScheduleHoursAction;
 use Modules\Dashboard\Http\Actions\ServiceCategories\ListServiceCategoriesAction;
 use Modules\Dashboard\Http\Actions\ServiceCategories\StoreServiceCategoryAction;
 use Modules\Dashboard\Http\Actions\Services\DestroyServiceAction;
@@ -82,6 +84,7 @@ use Modules\Dashboard\Http\Actions\Stylists\StoreStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\UpdateStylistAction;
 use Modules\Dashboard\Http\Middleware\DashboardAdminAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
+use Modules\Dashboard\Http\Middleware\DashboardBarberAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardBrandAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardEarningsAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOperationsAuthorizationMiddleware;
@@ -186,6 +189,11 @@ Route::prefix('dashboard')->group(function (): void {
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardEarningsAuthorizationMiddleware::class])->group(function (): void {
         Route::get('/earnings', ShowEarningsAction::class);
+    });
+
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBarberAuthorizationMiddleware::class])->prefix('schedule')->group(function (): void {
+        Route::get('/appointments', ListScheduleAppointmentsAction::class);
+        Route::get('/hours', ListScheduleHoursAction::class);
     });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOwnerAuthorizationMiddleware::class])->group(function (): void {
