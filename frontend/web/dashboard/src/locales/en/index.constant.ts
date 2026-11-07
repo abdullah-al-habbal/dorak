@@ -1,3 +1,6 @@
+import { enAdminPayouts } from "@/locales/en/admin-payouts.constant";
+import { enAdminSubscriptions } from "@/locales/en/admin-subscriptions.constant";
+import { enPlans } from "@/locales/en/plans.constant";
 import { enAuth } from "@/locales/en/auth.constant";
 import { enBranches } from "@/locales/en/branches.constant";
 import { enBookings } from "@/locales/en/bookings.constant";
@@ -22,6 +25,9 @@ export const enDictionary = {
   chairs: enChairs,
   branches: enBranches,
   payouts: enPayouts,
+  adminPayouts: enAdminPayouts,
+  plans: enPlans,
+  adminSubscriptions: enAdminSubscriptions,
   reviews: enReviews,
   schedule: enSchedule,
   subscription: enSubscription,

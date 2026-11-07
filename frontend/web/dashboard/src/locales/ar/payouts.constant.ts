@@ -17,7 +17,7 @@ export const arPayouts: Dictionary["payouts"] = {
     filteredBody: "جرّب حالة أخرى أو امسح التصفية.",
     errorTitle: "تعذّر تحميل المدفوعات",
     errorBody: "تحقق من اتصالك وحاول مرة أخرى.",
-    forbiddenTitle: "المدفوعات لأصحاب العلامات التجارية",
+    forbiddenTitle: "المدفوعات غير متاحة لدورك",
     forbiddenBody: "حسابك لا يملك صلاحية الوصول إلى المدفوعات. اطلب من مالك العلامة إن احتجت إلى تسوية.",
     results: "{count} دفعات",
   },

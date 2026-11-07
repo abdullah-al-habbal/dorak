@@ -330,7 +330,7 @@ Backend audit (no contract gap found, no backend behaviour change):
 - `/dashboard/owner/payouts`: status filter (approved, paid, cancelled; drafts are never offered) and page live in the URL; table on wide screens, cards on narrow ones; amounts through `Intl`; status is icon plus text.
 - `/dashboard/owner/subscription`: one card per brand with plan, price per interval, status, a past-due notice with the grace end date, start and renewal dates, and the effective feature flags.
 - Other guards see the forbidden state; the proxy allow-list opens `GET payouts` and `GET subscription` to the owner guard only (the admin payout and plan routes stay closed).
-- Out of scope: approving, paying or cancelling payouts and changing plans (admin-only, `/admin/payouts`, `/admin/subscriptions`).
+- Out of scope here: approving, paying or cancelling payouts and changing plans (admin-only; shipped as Module 9).
 - E2E: `E2eDashboardSeeder` now seeds an owner (`e2e-owner@dorak.test`) for the manager's brand, an active plan with the `multi_branch` feature, and four payouts (paid, approved, cancelled, plus a hidden draft). The global setup saves a second session (`tests/e2e/.auth/owner.json`); owner specs use `test.use({ storageState: E2E_OWNER_STORAGE_STATE })`.
 - Mobile: no impact. The mobile apps do not call these dashboard routes and no API contract changed.
 
@@ -370,6 +370,29 @@ Backend (new `DashboardBarberAuthorizationMiddleware` group, barbers only; manag
 
 - E2E: `E2eDashboardSeeder` gives the seeded stylist Omar a known password and weekly hours (Mon to Wed, Thu switched off); the global setup saves a barber session (`tests/e2e/.auth/barber.json`) and `schedule.spec.ts` uses it.
 - Mobile: no impact. The three apps and the shared packages never call `/dashboard/*` (the stylist app uses `/barber/schedule` and `/barber/appointments`), and no existing contract changed.
+
+## 10e. Module 9: Admin Payout Approvals and Plan Management
+
+Chosen 2026-11-07 as the next milestone. The admin payout, plan and brand-subscription endpoints already existed behind `DashboardAdminAuthorizationMiddleware` with Pest coverage (`PayoutTest`, `SubscriptionPlanTest`), so the audit found no missing endpoint. Three gaps were closed in the backend; all are additive and the mobile apps never call these routes.
+
+Backend audit (`php artisan route:list --path=api/v1/dashboard/admin`):
+
+- `GET /admin/payouts?status&brand_id&per_page&page`, `GET /admin/payouts/{id}`, `POST /admin/payouts/generate`, `PATCH /admin/payouts/{id}/(approve|mark-paid|cancel)` with optional `external_reference` (max 255) and `notes` (max 2000). State machine: draft to approved or cancelled; approved to paid or cancelled; paid and cancelled are final (409 `CONFLICT` otherwise). Cancelling releases the payout's commission entries for the next generation run. `PayoutPolicy` allows admins only.
+- `GET|POST /admin/subscription-plans`, `GET|PUT|DELETE /admin/subscription-plans/{id}` (`SavePlanRequest`: bilingual name, price in minor units, `currency_code`, `interval_unit`, `interval_count` 1-120, `is_active`, `sort_order`, `feature_keys`), `GET /admin/plan-feature-keys`, `GET|POST /admin/subscriptions` (assigning replaces the brand's live subscription; an inactive plan is 422) and `PATCH /admin/subscriptions/{id}/status` (pending to active or cancelled; active to past_due or cancelled; past_due to active or cancelled; cancelled is final).
+- Gap 1: the payout and subscription status handlers checked the state machine on the loaded model before the transaction, so two admins acting at once could both pass. They now re-read the row with `lockForUpdate` inside the transaction (`TransitionPayoutHandler`, `UpdateSubscriptionStatusHandler`).
+- Gap 2: `GET /admin/subscriptions` gained a validated `status` filter (`ListBrandSubscriptionsRequest`, replacing the shared `ListPaginatedRequest`).
+- Gap 3: `GET /admin/subscription-plans` gained a validated `is_active` filter (`ListSubscriptionPlansRequest`).
+- Tests: `AdminBillingManagementTest` (admin-only access for every guard, the two filters, 404s, stale-model transitions refused).
+
+**Implemented (dashboard).** The admin nav gains Plans and Subscriptions and Payouts is no longer "Soon".
+
+- `/dashboard/admin/payouts` (same route the owner uses; the screen is chosen by guard): every status including drafts, URL-backed status filter and page, table on wide screens and cards on narrow ones. Each row offers only the moves the state machine allows; every move opens a dialog (optional notes; a transfer reference when marking paid) and shows the backend's conflict reason if another admin got there first. "Generate drafts" confirms first and reports when nothing is unsettled.
+- `/dashboard/admin/plans`: list with an active/inactive filter, create and edit in one dialog (both languages, price in major units converted to minor units, currency, billing interval, display order, active switch, feature checkboxes from `GET /admin/plan-feature-keys`), delete with a confirmation. Deleting a plan with live subscriptions shows the backend's 409 message.
+- `/dashboard/admin/subscriptions`: list with a status filter, per-row moves behind a confirmation (cancel is destructive), and an assign dialog (brand, active plan).
+- The proxy allow-list opens the thirteen admin billing paths to the admin guard only; other guards see the forbidden state.
+- E2E: the base `AdminSeeder` account (`admin@dorak.sy`) is saved as `tests/e2e/.auth/admin.json`; `E2eDashboardSeeder` adds an inactive plan and restores the two seeded plans on every reset; specs: `admin-payouts`, `admin-plans`, `admin-subscriptions`.
+- Out of scope: commission rules, payment gateways, platform settings and analytics (the other admin routes stay "Soon").
+- Mobile: no impact. The three apps and the shared packages never call `/dashboard/*` and no existing contract changed.
 
 ## 11. Cross-cutting concerns
 

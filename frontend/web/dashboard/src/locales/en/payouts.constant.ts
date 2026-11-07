@@ -15,7 +15,7 @@ export const enPayouts = {
     filteredBody: "Try another status or clear the filter.",
     errorTitle: "Payouts couldn't load",
     errorBody: "Check your connection and try again.",
-    forbiddenTitle: "Payouts are for brand owners",
+    forbiddenTitle: "Payouts aren't available for your role",
     forbiddenBody: "Your account has no access to payouts. Ask the brand owner if you need a settlement.",
     results: "{count} payouts",
   },

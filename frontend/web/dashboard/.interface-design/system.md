@@ -47,3 +47,10 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - Charts are dependency-free flex-row bars (`bar-chart.tsx`): `role="img"` with a text summary, hover/touch readout, weekly buckets above 62 days. Bars use `bg-primary` (revenue) and `bg-chart-2` (bookings). The daily table carries the same numbers for keyboard and screen-reader users.
 - The period lives in the URL (`?from&to`); the default (last 30 days) keeps the URL clean. Presets are chips, custom dates are native fields validated before they reach the URL.
 - CSV: one row per day and currency, revenue in major units, formula-prefixed cells escaped, UTF-8 BOM.
+
+## Admin billing (payouts, plans, subscriptions)
+- Money moves are a queue, not a form: each payout row shows only the buttons its status allows (draft: approve, cancel; approved: mark paid, cancel). Buttons sit in an `interactive` DataTable column, carry an `aria-label` naming the action, brand and period, and the destructive move uses the `destructive` variant.
+- Every status change opens a dialog that restates what will happen and who it affects (brand and amount in one line); only "mark paid" asks for a transfer reference. A 409 means someone else moved the row first: say so inline, then refresh the list.
+- Subscription moves and "generate drafts" use the shared confirm overlay; cancelling is destructive. Assigning a plan states that it replaces the current live subscription.
+- Plan prices are typed in major units (`49.00`, Arabic-Indic digits accepted) and sent as minor units. Feature flags are native checkboxes with a 44px row; the active flag is a `Switch` inside the form (saved with the form, unlike the immediate stylist toggle).
+- Admin screens reuse the filter pattern: native select, status and page in the URL, filtered-empty with a clear button.

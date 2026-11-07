@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import type { JSX } from "react";
 
+import { AdminPayoutsScreen } from "@/components/admin-payouts/admin-payouts-screen";
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { PayoutList } from "@/components/payouts/payout-list";
@@ -20,6 +21,7 @@ const FILTER_STATUSES: readonly PayoutStatus[] = [PayoutStatus.Approved, PayoutS
 
 export function PayoutsScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();
+  if (actor === AuthActor.Admin) return <AdminPayoutsScreen />;
   if (actor !== AuthActor.Owner) {
     const { states } = dictionary.payouts;
     return <EmptyState variant="forbidden" title={states.forbiddenTitle} body={states.forbiddenBody} />;

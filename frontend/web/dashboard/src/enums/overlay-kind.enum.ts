@@ -6,4 +6,7 @@ export enum OverlayKind {
   ServiceForm = "service-form",
   ChairForm = "chair-form",
   BranchForm = "branch-form",
+  PayoutAction = "payout-action",
+  PlanForm = "plan-form",
+  AssignSubscription = "assign-subscription",
 }

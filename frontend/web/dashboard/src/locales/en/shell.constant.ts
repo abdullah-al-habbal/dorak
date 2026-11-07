@@ -17,6 +17,8 @@ export const enShell = {
     earnings: "Earnings",
     payouts: "Payouts",
     subscription: "Subscription",
+    plans: "Plans",
+    subscriptions: "Subscriptions",
     reviews: "Reviews",
     settings: "Settings",
     schedule: "Schedule",

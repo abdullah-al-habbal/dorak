@@ -1,3 +1,6 @@
+import { arAdminPayouts } from "@/locales/ar/admin-payouts.constant";
+import { arAdminSubscriptions } from "@/locales/ar/admin-subscriptions.constant";
+import { arPlans } from "@/locales/ar/plans.constant";
 import { arAuth } from "@/locales/ar/auth.constant";
 import { arBranches } from "@/locales/ar/branches.constant";
 import { arBookings } from "@/locales/ar/bookings.constant";
@@ -23,6 +26,9 @@ export const arDictionary: Dictionary = {
   chairs: arChairs,
   branches: arBranches,
   payouts: arPayouts,
+  adminPayouts: arAdminPayouts,
+  plans: arPlans,
+  adminSubscriptions: arAdminSubscriptions,
   reviews: arReviews,
   schedule: arSchedule,
   subscription: arSubscription,

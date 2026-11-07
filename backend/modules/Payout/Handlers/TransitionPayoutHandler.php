@@ -15,11 +15,14 @@ final class TransitionPayoutHandler
     /** Returns null when the state machine forbids the move. */
     public function handle(PayoutModel $payout, TransitionPayoutCommand $command): ?PayoutModel
     {
-        if (! $payout->status->canTransitionTo($command->next)) {
-            return null;
-        }
+        return DB::transaction(function () use ($payout, $command): ?PayoutModel {
+            // Re-read under a row lock so two admins cannot approve or pay the same payout twice.
+            $payout = PayoutModel::query()->lockForUpdate()->findOrFail($payout->getKey());
 
-        return DB::transaction(function () use ($payout, $command): PayoutModel {
+            if (! $payout->status->canTransitionTo($command->next)) {
+                return null;
+            }
+
             $payout->update([
                 'status' => $command->next,
                 'external_reference' => $command->externalReference ?? $payout->external_reference,

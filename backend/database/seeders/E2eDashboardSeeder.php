@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Barber\Models\BarberScheduleModel;
@@ -27,6 +28,7 @@ use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
+use Modules\Subscription\Enums\SubscriptionIntervalUnitEnum;
 use Modules\Subscription\Enums\SubscriptionStatus;
 use Modules\Subscription\Models\BrandSubscriptionModel;
 use Modules\Subscription\Models\PlanFeatureModel;
@@ -52,6 +54,11 @@ final class E2eDashboardSeeder extends Seeder
     public const string BARBER_EMAIL = 'omar.e2e@dorak.test';
 
     public const string BARBER_PASSWORD = 'e2e-password-123';
+
+    /** Display orders that identify the two seeded plans: the active one the brand is on and an inactive one the plans spec edits. */
+    public const int GROWTH_PLAN_ORDER = 99;
+
+    public const int LEGACY_PLAN_ORDER = 100;
 
     public function run(): void
     {
@@ -132,10 +139,10 @@ final class E2eDashboardSeeder extends Seeder
         $brand->update(['owner_id' => $owner->id]);
 
         BrandSubscriptionModel::query()->where('brand_id', $brand->id)->delete();
-        $plan = SubscriptionPlanModel::query()->firstOrCreate(
-            ['price_amount_minor' => 4900, 'currency_code' => $currency->code, 'sort_order' => 99],
-            SubscriptionPlanModel::factory()->make(['name' => ['en' => 'E2E Growth', 'ar' => 'نمو الاختبار'], 'description' => ['en' => 'For growing brands.', 'ar' => 'للعلامات النامية.'], 'price_amount_minor' => 4900, 'currency_code' => $currency->code, 'sort_order' => 99])->getAttributes(),
-        );
+        $plan = $this->plan($currency, self::GROWTH_PLAN_ORDER, 4900, ['en' => 'E2E Growth', 'ar' => 'نمو الاختبار'], true);
+        $this->plan($currency, self::LEGACY_PLAN_ORDER, 2900, ['en' => 'E2E Legacy', 'ar' => 'الخطة القديمة'], false);
+        // The plans spec creates and edits plans; anything that is not one of the two seeded plans goes.
+        SubscriptionPlanModel::query()->whereNotIn('sort_order', [self::GROWTH_PLAN_ORDER, self::LEGACY_PLAN_ORDER])->forceDelete();
         PlanFeatureModel::query()->firstOrCreate(['plan_id' => $plan->id, 'feature_key' => 'multi_branch']);
         BrandSubscriptionModel::factory()->create(['brand_id' => $brand->id, 'plan_id' => $plan->id, 'status' => SubscriptionStatus::Active]);
         // A real subscription change syncs the plan's features to the brand's flags; the factory does not.
@@ -154,6 +161,24 @@ final class E2eDashboardSeeder extends Seeder
                 'created_at' => now()->subDays($daysAgo),
             ]);
         }
+    }
+
+    /** A seeded plan keyed by its display order; running the seeder again restores its name, price and active flag. */
+    private function plan(CurrencyModel $currency, int $order, int $price, array $name, bool $active): SubscriptionPlanModel
+    {
+        $plan = SubscriptionPlanModel::query()->withTrashed()->firstOrNew(['sort_order' => $order, 'currency_code' => $currency->code]);
+        $plan->fill([
+            'name' => $name,
+            'description' => ['en' => 'For growing brands.', 'ar' => 'للعلامات النامية.'],
+            'price_amount_minor' => $price,
+            'interval_unit' => SubscriptionIntervalUnitEnum::Month,
+            'interval_count' => 1,
+            'is_active' => $active,
+        ]);
+        $plan->save();
+        $plan->restore();
+
+        return $plan;
     }
 
     private function branch(): BranchModel
@@ -230,7 +255,12 @@ final class E2eDashboardSeeder extends Seeder
 
     private function booking(ChairModel $chair, BarberModel $barber, OfferedServiceModel $service, string $clientEn, string $clientAr, int $hour, BookingStatus $status, int $daysAgo = 0): void
     {
-        $client = ClientModel::factory()->create(['name' => ['en' => $clientEn, 'ar' => $clientAr]]);
+        // A fixed e-mail per client name: random factory e-mails collide once many reseeds have piled up.
+        $email = 'e2e-client-'.Str::slug($clientEn).'@dorak.test';
+        $client = ClientModel::query()->firstOrCreate(
+            ['email' => $email],
+            ClientModel::factory()->make(['email' => $email, 'name' => ['en' => $clientEn, 'ar' => $clientAr]])->getAttributes(),
+        );
         $startsAt = now()->subDays($daysAgo)->setTime($hour, 0);
 
         $booking = BookingModel::factory()->create([

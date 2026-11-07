@@ -6,6 +6,7 @@ import {
   CalendarClockIcon,
   ClockIcon,
   CreditCardIcon,
+  LayersIcon,
   LayoutDashboardIcon,
   LibraryIcon,
   ScissorsIcon,
@@ -30,7 +31,9 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
     { key: "brands", segment: "brands", icon: StoreIcon, ready: false },
     { key: "branches", segment: "branches", icon: BuildingIcon, ready: true },
     { key: "catalog", segment: "catalog", icon: LibraryIcon, ready: false },
-    { key: "payouts", segment: "payouts", icon: WalletIcon, ready: false },
+    { key: "payouts", segment: "payouts", icon: WalletIcon, ready: true },
+    { key: "plans", segment: "plans", icon: LayersIcon, ready: true },
+    { key: "subscriptions", segment: "subscriptions", icon: CreditCardIcon, ready: true },
     { key: "settings", segment: "settings", icon: SettingsIcon, ready: false },
   ],
   [AuthActor.Manager]: [

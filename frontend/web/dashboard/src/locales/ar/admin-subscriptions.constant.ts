@@ -1,0 +1,42 @@
+import type { Dictionary } from "@/types/dictionary.type";
+
+export const arAdminSubscriptions: Dictionary["adminSubscriptions"] = {
+  title: "الاشتراكات",
+  description: "الخطة التي تشترك فيها كل علامة تجارية. أسند خطة، أو انقل الاشتراك بين نشط ومتأخر الدفع وملغى.",
+  assign: "إسناد خطة",
+  columns: { brand: "العلامة", plan: "الخطة", status: "الحالة", dates: "التواريخ", actions: "الإجراءات" },
+  actions: { active: "تفعيل", past_due: "تحديد كمتأخر الدفع", cancelled: "إلغاء الاشتراك" },
+  rowAction: "{action}: {brand}",
+  dates: { started: "بدأ {date}", grace: "فترة السماح حتى {date}", cancelled: "أُلغي {date}", none: "-" },
+  confirm: {
+    active: { title: "تفعيل هذا الاشتراك؟", body: "تُفعَّل ميزات الخطة للعلامة التجارية.", confirm: "تفعيل" },
+    past_due: { title: "تحديد الاشتراك كمتأخر الدفع؟", body: "تبقى الميزات فعّالة خلال فترة السماح، ثم يُلغى الاشتراك تلقائيًا.", confirm: "تحديد كمتأخر الدفع" },
+    cancelled: { title: "إلغاء هذا الاشتراك؟", body: "تفقد العلامة ميزات الخطة فورًا. لا يمكن إعادة تفعيل اشتراك ملغى؛ أسند خطة من جديد بدلًا من ذلك.", confirm: "إلغاء الاشتراك" },
+  },
+  assignDialog: {
+    title: "إسناد خطة",
+    description: "يستبدل هذا اشتراك العلامة الحالي القائم ويحوّل ميزاتها إلى الخطة الجديدة.",
+    brand: "العلامة التجارية",
+    plan: "الخطة",
+    choose: "اختر…",
+    noPlans: "لا توجد خطط نشطة. أنشئ خطة أو فعّلها أولًا.",
+    submit: "إسناد الخطة",
+    back: "رجوع",
+    validation: { brand: "اختر علامة تجارية.", plan: "اختر خطة." },
+    errors: { generic: "تعذّر إسناد الخطة. حاول مرة أخرى." },
+  },
+  filters: { toolbar: "تصفية الاشتراكات", status: "الحالة", allStatuses: "كل الحالات", clear: "مسح التصفية" },
+  toast: { assigned: "تم إسناد الخطة.", updated: "تم تحديث الاشتراك.", updateFailed: "تعذّر تحديث الاشتراك." },
+  states: {
+    emptyTitle: "لا توجد اشتراكات بعد",
+    emptyBody: "أسند خطة لعلامة تجارية لبدء اشتراكها.",
+    filteredTitle: "لا توجد اشتراكات بهذه الحالة",
+    filteredBody: "جرّب حالة أخرى أو امسح التصفية.",
+    errorTitle: "تعذّر تحميل الاشتراكات",
+    errorBody: "تحقق من اتصالك وحاول مرة أخرى.",
+    formErrorTitle: "تعذّر تحميل النموذج",
+    forbiddenTitle: "الاشتراكات يديرها مسؤولو المنصة",
+    forbiddenBody: "حسابك لا يملك صلاحية الوصول إلى اشتراكات العلامات التجارية.",
+    results: "{count} اشتراكات",
+  },
+};

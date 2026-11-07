@@ -8,14 +8,14 @@ use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
 
-final class ListPaginatedRequest extends BaseApiFormRequest
+final class ListSubscriptionPlansRequest extends BaseApiFormRequest
 {
     /** @return array<string, array<int, mixed>> */
     public function rules(): array
     {
         return [
+            'is_active' => ['sometimes', 'boolean'],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.app(SettingsService::class)->int(SettingKey::PaginationMaxPerPage)],
-            'brand_id' => ['sometimes', 'uuid'],
         ];
     }
 

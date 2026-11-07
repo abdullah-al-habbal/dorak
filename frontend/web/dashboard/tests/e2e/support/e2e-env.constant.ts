@@ -19,3 +19,7 @@ export const E2E_OWNER_STORAGE_STATE = "tests/e2e/.auth/owner.json";
 export const E2E_BARBER_EMAIL = "omar.e2e@dorak.test";
 export const E2E_BARBER_PASSWORD = "e2e-password-123";
 export const E2E_BARBER_STORAGE_STATE = "tests/e2e/.auth/barber.json";
+/** The platform admin created by the base `AdminSeeder` (`migrate:fresh --seed`); admin specs reuse this session. */
+export const E2E_ADMIN_EMAIL = "admin@dorak.sy";
+export const E2E_ADMIN_PASSWORD = "password";
+export const E2E_ADMIN_STORAGE_STATE = "tests/e2e/.auth/admin.json";

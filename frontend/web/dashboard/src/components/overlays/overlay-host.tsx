@@ -1,5 +1,8 @@
 "use client";
 
+import { AssignSubscriptionDialog } from "@/components/admin-subscriptions/assign-subscription-dialog";
+import { PayoutActionDialog } from "@/components/admin-payouts/payout-action-dialog";
+import { PlanFormDialog } from "@/components/plans/plan-form-dialog";
 import { BranchFormDialog } from "@/components/branches/branch-form-dialog";
 import { ChairFormDialog } from "@/components/chairs/chair-form-dialog";
 import { RescheduleDialog } from "@/components/bookings/reschedule-dialog";
@@ -33,6 +36,12 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <ChairFormDialog chair={request.chair} onClose={onClose} />;
     case OverlayKind.BranchForm:
       return <BranchFormDialog branch={request.branch} onClose={onClose} />;
+    case OverlayKind.PayoutAction:
+      return <PayoutActionDialog payout={request.payout} action={request.action} onClose={onClose} />;
+    case OverlayKind.PlanForm:
+      return <PlanFormDialog plan={request.plan} onClose={onClose} />;
+    case OverlayKind.AssignSubscription:
+      return <AssignSubscriptionDialog onClose={onClose} />;
     default: {
       const unhandled: never = request;
       throw new Error(`Unhandled overlay kind: ${JSON.stringify(unhandled)}`);

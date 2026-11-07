@@ -16,11 +16,14 @@ final class UpdateSubscriptionStatusHandler
     /** Returns null when the state machine forbids the move. */
     public function handle(BrandSubscriptionModel $subscription, SubscriptionStatus $next): ?BrandSubscriptionModel
     {
-        if (! $subscription->status->canTransitionTo($next)) {
-            return null;
-        }
+        return DB::transaction(function () use ($subscription, $next): ?BrandSubscriptionModel {
+            // Re-read under a row lock so a concurrent change cannot slip past the state machine.
+            $subscription = BrandSubscriptionModel::query()->lockForUpdate()->findOrFail($subscription->getKey());
 
-        return DB::transaction(function () use ($subscription, $next): BrandSubscriptionModel {
+            if (! $subscription->status->canTransitionTo($next)) {
+                return null;
+            }
+
             $subscription->update([
                 'status' => $next,
                 'past_due_at' => match ($next) {

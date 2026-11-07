@@ -95,3 +95,33 @@ describe("proxy allow-list: barber schedule", () => {
     expect(allowed(HttpMethod.Get, "bookings", AuthActor.Barber)).toBe(false);
   });
 });
+
+describe("proxy allow-list: admin billing (Module 9)", () => {
+  it.each([
+    [HttpMethod.Get, "admin/payouts"],
+    [HttpMethod.Post, "admin/payouts/generate"],
+    [HttpMethod.Patch, "admin/payouts/p1/approve"],
+    [HttpMethod.Patch, "admin/payouts/p1/mark-paid"],
+    [HttpMethod.Patch, "admin/payouts/p1/cancel"],
+    [HttpMethod.Get, "admin/subscription-plans"],
+    [HttpMethod.Post, "admin/subscription-plans"],
+    [HttpMethod.Put, "admin/subscription-plans/pl1"],
+    [HttpMethod.Delete, "admin/subscription-plans/pl1"],
+    [HttpMethod.Get, "admin/plan-feature-keys"],
+    [HttpMethod.Get, "admin/subscriptions"],
+    [HttpMethod.Post, "admin/subscriptions"],
+    [HttpMethod.Patch, "admin/subscriptions/s1/status"],
+  ])("lets only the admin %s %s", (method, path) => {
+    expect(allowed(method, path, AuthActor.Admin)).toBe(true);
+    for (const actor of [AuthActor.Manager, AuthActor.Barber, AuthActor.Owner]) expect(allowed(method, path, actor)).toBe(false);
+  });
+
+  it("keeps everything else under admin closed", () => {
+    expect(allowed(HttpMethod.Delete, "admin/payouts/p1", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Put, "admin/payouts/p1/approve", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Patch, "admin/payouts/p1/refund", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Delete, "admin/subscriptions/s1", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Get, "admin/settings", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Get, "admin/payouts/p1", AuthActor.Admin)).toBe(false);
+  });
+});

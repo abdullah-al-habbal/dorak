@@ -6,6 +6,7 @@ const OPERATIONS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Manager, Au
 const EARNINGS: readonly AuthActor[] = [AuthActor.Manager, AuthActor.Barber, AuthActor.Owner];
 const BRANDS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];
 const BARBER_ONLY: readonly AuthActor[] = [AuthActor.Barber];
+const ADMIN_ONLY: readonly AuthActor[] = [AuthActor.Admin];
 const OWNER_ONLY: readonly AuthActor[] = [AuthActor.Owner];
 const ID = "[^/]+";
 
@@ -26,6 +27,12 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get, HttpMethod.Put], pattern: new RegExp(`^branches/${ID}/opening-hours$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/reviews$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^(payouts|subscription)$/, guards: OWNER_ONLY },
+  // Platform billing (Module 9): payout approvals, plans and brand subscriptions. Admin only; the backend re-checks.
+  { methods: [HttpMethod.Get], pattern: /^admin\/(payouts|subscription-plans|subscriptions|plan-feature-keys)$/, guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Post], pattern: /^admin\/(payouts\/generate|subscription-plans|subscriptions)$/, guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^admin/subscription-plans/${ID}$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/payouts/${ID}/(approve|mark-paid|cancel)$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/subscriptions/${ID}/status$`), guards: ADMIN_ONLY },
   // The barber portal: the Operations routes reject barbers, so these are their own read-only endpoints.
   { methods: [HttpMethod.Get], pattern: /^schedule\/(appointments|hours)$/, guards: BARBER_ONLY },
   { methods: [HttpMethod.Get], pattern: /^earnings$/, guards: EARNINGS },

@@ -7,18 +7,19 @@ namespace Modules\Subscription\Http\Actions\Admin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Modules\Core\Http\Actions\BaseApiAction;
-use Modules\Subscription\Http\Requests\Admin\ListPaginatedRequest;
+use Modules\Subscription\Http\Requests\Admin\ListSubscriptionPlansRequest;
 use Modules\Subscription\Http\Resources\Admin\SubscriptionPlanResource;
 use Modules\Subscription\Models\SubscriptionPlanModel;
 
 final class ListSubscriptionPlansAction extends BaseApiAction
 {
-    public function __invoke(ListPaginatedRequest $request): JsonResponse
+    public function __invoke(ListSubscriptionPlansRequest $request): JsonResponse
     {
         Gate::forUser($request->user('admin_api'))->authorize('viewAny', SubscriptionPlanModel::class);
 
         $plans = SubscriptionPlanModel::query()
             ->with(['currency', 'features'])
+            ->when($request->has('is_active'), fn ($query) => $query->where('is_active', $request->boolean('is_active')))
             ->orderBy('sort_order')
             ->orderBy('created_at')
             ->paginate($request->perPage());

@@ -1,0 +1,56 @@
+import type { Dictionary } from "@/types/dictionary.type";
+
+export const arAdminPayouts: Dictionary["adminPayouts"] = {
+  title: "المدفوعات",
+  description: "التسويات بين العلامات التجارية والمنصة. اعتمد المسودات وسجّل الدفعات، أو ألغِ دفعة لتحرير عمولتها.",
+  generate: "إنشاء مسودات",
+  columns: { period: "الفترة", brand: "العلامة", amount: "المبلغ", status: "الحالة", payment: "الدفع", actions: "الإجراءات" },
+  actions: { approve: "اعتماد", "mark-paid": "تسجيل كمدفوع", cancel: "إلغاء الدفعة" },
+  rowAction: "{action}: {brand}، {period}",
+  dialog: {
+    approve: {
+      title: "اعتماد هذه الدفعة؟",
+      body: "تصبح الدفعة معتمدة وجاهزة للدفع، ويُسجَّل حسابك كمعتمِد.",
+      confirm: "اعتماد",
+    },
+    "mark-paid": {
+      title: "تسجيل هذه الدفعة كمدفوعة؟",
+      body: "سجّل أن التحويل قد أُرسل. لا يمكن تعديل الدفعة المدفوعة بعد ذلك.",
+      confirm: "تسجيل كمدفوع",
+    },
+    cancel: {
+      title: "إلغاء هذه الدفعة؟",
+      body: "تُحرَّر قيود عمولتها وتُضاف في عملية الإنشاء التالية. لا يمكن إعادة فتح دفعة ملغاة.",
+      confirm: "إلغاء الدفعة",
+    },
+    summary: "{brand}: {amount}",
+    reference: "مرجع التحويل",
+    notes: "ملاحظات داخلية",
+    optional: "اختياري",
+    back: "رجوع",
+    errors: { generic: "تعذّر تحديث الدفعة. حاول مرة أخرى.", conflict: "غيّر شخص آخر هذه الدفعة. تم تحديث القائمة." },
+  },
+  generateConfirm: {
+    title: "إنشاء مسودات المدفوعات؟",
+    body: "تُجمَّع العمولات غير المسوّاة في مسودة واحدة لكل علامة وعملة. لا تتغير المدفوعات الموجودة.",
+    confirm: "إنشاء",
+  },
+  filters: { toolbar: "تصفية المدفوعات", status: "الحالة", allStatuses: "كل الحالات", clear: "مسح التصفية" },
+  toast: {
+    approve: "تم اعتماد الدفعة.",
+    "mark-paid": "تم تسجيل الدفعة كمدفوعة.",
+    cancel: "تم إلغاء الدفعة.",
+    generated: "تم إنشاء {count} مسودات دفعات.",
+    nothingToGenerate: "لا شيء للتسوية. كل العمولات مدرجة في دفعات.",
+    generateFailed: "تعذّر إنشاء الدفعات. حاول مرة أخرى.",
+  },
+  states: {
+    emptyTitle: "لا توجد مدفوعات بعد",
+    emptyBody: "أنشئ مسودات لتجميع العمولات غير المسوّاة في دفعات.",
+    filteredTitle: "لا توجد مدفوعات بهذه الحالة",
+    filteredBody: "جرّب حالة أخرى أو امسح التصفية.",
+    errorTitle: "تعذّر تحميل المدفوعات",
+    errorBody: "تحقق من اتصالك وحاول مرة أخرى.",
+    results: "{count} دفعات",
+  },
+};
