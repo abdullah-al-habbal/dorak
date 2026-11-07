@@ -27,6 +27,38 @@ describe('Dashboard Booking API', function (): void {
             ->assertJsonCount(1, 'data');
     });
 
+    it('includes bookings on the last day of a date range', function (): void {
+        $branch = BranchModel::factory()->create();
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
+        $make = fn (string $startsAt) => BookingModel::factory()->create(['chair_id' => $chair->id, 'starts_at' => $startsAt, 'ends_at' => date('Y-m-d H:i:s', strtotime($startsAt) + 1800)]);
+        $make('2026-11-06 23:30:00');
+        $make('2026-11-07 00:00:00');
+        $make('2026-11-07 14:00:00');
+        $make('2026-11-07 23:59:30');
+        $make('2026-11-08 00:00:00');
+        $this->authenticateDashboardActor($branch);
+
+        $this->getJson('/api/v1/dashboard/bookings?date_from=2026-11-07&date_to=2026-11-07')
+            ->assertOk()
+            ->assertJsonCount(3, 'data');
+        $this->getJson('/api/v1/dashboard/bookings?date_from=2026-11-01&date_to=2026-11-07')
+            ->assertOk()
+            ->assertJsonCount(4, 'data');
+    });
+
+    it('keeps the exact instant when date_to carries a time', function (): void {
+        $branch = BranchModel::factory()->create();
+        $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);
+        foreach (['2026-11-07 09:00:00', '2026-11-07 15:00:00'] as $startsAt) {
+            BookingModel::factory()->create(['chair_id' => $chair->id, 'starts_at' => $startsAt, 'ends_at' => date('Y-m-d H:i:s', strtotime($startsAt) + 1800)]);
+        }
+        $this->authenticateDashboardActor($branch);
+
+        $this->getJson('/api/v1/dashboard/bookings?date_to=2026-11-07T12:00:00')
+            ->assertOk()
+            ->assertJsonCount(1, 'data');
+    });
+
     it('hides cancelled bookings when asked', function (): void {
         $branch = BranchModel::factory()->create();
         $chair = ChairModel::factory()->create(['branch_id' => $branch->id]);

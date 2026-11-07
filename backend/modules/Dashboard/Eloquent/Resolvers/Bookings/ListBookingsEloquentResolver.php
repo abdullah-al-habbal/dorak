@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Eloquent\Resolvers\Bookings;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Dashboard\CQRS\Query\ListBookingsQuery;
 
 final class ListBookingsEloquentResolver
 {
+    private const string DATE_ONLY_PATTERN = '/^\d{4}-\d{2}-\d{2}$/';
+
     public function resolve(ListBookingsQuery $query): LengthAwarePaginator
     {
         $filters = $query->filters;
@@ -22,7 +25,7 @@ final class ListBookingsEloquentResolver
             ->when(isset($filters['booking_status']), fn ($builder) => $builder->where('booking_status', $filters['booking_status']))
             ->when(! empty($filters['hide_cancelled']), fn ($builder) => $builder->where('booking_status', '!=', BookingStatus::Cancelled->value))
             ->when(isset($filters['date_from']), fn ($builder) => $builder->where('starts_at', '>=', $filters['date_from']))
-            ->when(isset($filters['date_to']), fn ($builder) => $builder->where('starts_at', '<=', $filters['date_to']))
+            ->when(isset($filters['date_to']), fn ($builder) => $builder->where('starts_at', '<=', $this->upperBound((string) $filters['date_to'])))
             ->when(isset($filters['search']), fn ($builder) => $builder->whereHas(
                 'client',
                 fn ($client) => $client->where(
@@ -31,5 +34,13 @@ final class ListBookingsEloquentResolver
                 ),
             ))
             ->latest('starts_at')->paginate((int) ($filters['per_page'] ?? 15));
+    }
+
+    /** A date-only `date_to` includes that whole day; a value with a time keeps its exact instant. */
+    private function upperBound(string $dateTo): Carbon
+    {
+        $bound = Carbon::parse($dateTo);
+
+        return preg_match(self::DATE_ONLY_PATTERN, $dateTo) === 1 ? $bound->endOfDay() : $bound;
     }
 }
