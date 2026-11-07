@@ -336,7 +336,7 @@ Backend audit (no contract gap found, no backend behaviour change):
 
 ## 10c. Module 7: Owner and Admin Branches
 
-Chosen 2026-11-07 as the next milestone. Remaining "Soon" items after it: Brands, Catalog, Analytics and Settings (admin), Payouts (admin) and Schedule (barber; shipped as Module 8).
+Chosen 2026-11-07 as the next milestone. Remaining "Soon" items after it: Brands, Catalog, Analytics and Settings (admin; both shipped as Module 10), Payouts (admin) and Schedule (barber; shipped as Module 8).
 
 Backend audit (`php artisan route:list --path=api/v1/dashboard`), all behind the Operations guard group:
 
@@ -391,8 +391,25 @@ Backend audit (`php artisan route:list --path=api/v1/dashboard/admin`):
 - `/dashboard/admin/subscriptions`: list with a status filter, per-row moves behind a confirmation (cancel is destructive), and an assign dialog (brand, active plan).
 - The proxy allow-list opens the thirteen admin billing paths to the admin guard only; other guards see the forbidden state.
 - E2E: the base `AdminSeeder` account (`admin@dorak.sy`) is saved as `tests/e2e/.auth/admin.json`; `E2eDashboardSeeder` adds an inactive plan and restores the two seeded plans on every reset; specs: `admin-payouts`, `admin-plans`, `admin-subscriptions`.
-- Out of scope: commission rules, payment gateways, platform settings and analytics (the other admin routes stay "Soon").
+- Out of scope: commission rules and payment gateways (the other admin routes stay "Soon"); platform settings and analytics shipped as Module 10.
 - Mobile: no impact. The three apps and the shared packages never call `/dashboard/*` and no existing contract changed.
+
+## 10f. Module 10: Platform Analytics and Settings
+
+Chosen 2026-11-07 as the next milestone. Both admin routes already existed (`GET /admin/analytics/overview`, `GET|PATCH /admin/settings`) with Pest coverage; the audit found two gaps and one scope question.
+
+Backend audit (`php artisan route:list --path=api/v1/dashboard/admin`):
+
+- Analytics had no period, no plan names and no booking mix, so a screen could only show all-time totals. `GET /admin/analytics/overview?from&to` (dates, `to` on or after `from`) now narrows `completed_bookings`, `bookings_by_status`, `completed_bookings_series`, commission (by `created_at`) and payouts (by `created_at`). Subscriptions and `platform {brands, branches, barbers, clients}` are live. `by_plan` gains `plan_name`. Every old key is unchanged.
+- Settings bounds were checked per key only, so a default page size above the maximum, or a refresh lifetime below the session lifetime, could be saved. `UpdatePlatformSettingsRequest` now rejects both with a 422 on `settings.<key>`.
+- Owner analytics: no new endpoint. The owner's brand-scoped revenue, trend and chart are Earnings (`/earnings`, `/overview`), and the earnings middleware already sends platform admins to analytics. Analytics is therefore admin only.
+
+**Implemented (dashboard).** The admin nav enables Analytics and Settings; the proxy opens `GET admin/analytics/overview` and `GET|PATCH admin/settings` to the admin guard only.
+
+- `/dashboard/admin/analytics`: the Earnings period picker (presets and custom dates, in the URL), a completed-bookings-per-day bar chart (the Earnings `BarChart`, zero-filled days), a booking status mix, money per currency (recurring revenue, pending and paid-out commission, payouts by status), subscriptions by plan and live platform totals. Loading, error, empty-period and forbidden states; RTL, dark mode and phone widths follow the shell.
+- `/dashboard/admin/settings`: six groups (sign-in, bookings, billing, search, photos, floor plan), one numeric field per setting with its default and allowed range, a per-field "Default" reset, a save bar that is disabled until something changes, and a leave warning. Only changed settings are sent. Bounds and both cross-field rules are checked before the request and again from the backend's 422.
+- E2E: `admin-analytics` and `admin-settings` specs (admin session). `E2eDashboardSeeder` clears `platform_settings` on each reset.
+- Mobile: no impact. The three apps and the shared packages never call `/dashboard/*`, the analytics change is additive, and settings are only read server side.
 
 ## 11. Cross-cutting concerns
 

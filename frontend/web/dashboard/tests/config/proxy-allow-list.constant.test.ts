@@ -121,7 +121,24 @@ describe("proxy allow-list: admin billing (Module 9)", () => {
     expect(allowed(HttpMethod.Put, "admin/payouts/p1/approve", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Patch, "admin/payouts/p1/refund", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Delete, "admin/subscriptions/s1", AuthActor.Admin)).toBe(false);
-    expect(allowed(HttpMethod.Get, "admin/settings", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Get, "admin/payment-gateways", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Get, "admin/payouts/p1", AuthActor.Admin)).toBe(false);
+  });
+});
+
+describe("proxy allow-list: analytics and settings (Module 10)", () => {
+  it.each([
+    [HttpMethod.Get, "admin/analytics/overview"],
+    [HttpMethod.Get, "admin/settings"],
+    [HttpMethod.Patch, "admin/settings"],
+  ])("lets only the admin %s %s", (method, path) => {
+    expect(allowed(method, path, AuthActor.Admin)).toBe(true);
+    for (const actor of [AuthActor.Manager, AuthActor.Barber, AuthActor.Owner]) expect(allowed(method, path, actor)).toBe(false);
+  });
+
+  it("keeps the rest of the settings surface closed", () => {
+    expect(allowed(HttpMethod.Put, "admin/settings", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Post, "admin/analytics/overview", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Get, "admin/analytics", AuthActor.Admin)).toBe(false);
   });
 });

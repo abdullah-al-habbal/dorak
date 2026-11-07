@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -28,6 +29,7 @@ use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
+use Modules\Settings\Constants\SettingsConstants;
 use Modules\Subscription\Enums\SubscriptionIntervalUnitEnum;
 use Modules\Subscription\Enums\SubscriptionStatus;
 use Modules\Subscription\Models\BrandSubscriptionModel;
@@ -92,6 +94,14 @@ final class E2eDashboardSeeder extends Seeder
 
         $this->reviews($branch);
         $this->ownerBilling($branch->brand, $currency);
+        $this->restoreSettingsBaseline();
+    }
+
+    /** Admin specs edit platform settings; every reset puts them back on their defaults. */
+    private function restoreSettingsBaseline(): void
+    {
+        DB::table('platform_settings')->delete();
+        Cache::forget(SettingsConstants::SETTINGS_CACHE_KEY);
     }
 
     /** One shift per weekday (unique key): Mon to Wed work, Thu is switched off, the rest are days off. Weekdays: 0 is Sunday. */

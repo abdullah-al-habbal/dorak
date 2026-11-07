@@ -54,3 +54,9 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - Subscription moves and "generate drafts" use the shared confirm overlay; cancelling is destructive. Assigning a plan states that it replaces the current live subscription.
 - Plan prices are typed in major units (`49.00`, Arabic-Indic digits accepted) and sent as minor units. Feature flags are native checkboxes with a 44px row; the active flag is a `Switch` inside the form (saved with the form, unlike the immediate stylist toggle).
 - Admin screens reuse the filter pattern: native select, status and page in the URL, filtered-empty with a clear button.
+
+## Platform analytics and settings
+- Analytics reuses the Earnings period picker, URL contract and `BarChart`; the page is sections under `h2`s, not a wall of identical tiles. Bookings lead with the chart, money is one card per currency (never summed), and the platform size sits last because it is not tied to the period (its caption says so).
+- `MeterRow` pairs every figure with a thin proportional bar; the number is the meaning, the bar is decoration (`aria-hidden`).
+- Settings are grouped cards (`role="group"` named by the heading). Each field shows its default and allowed range under the input, and a per-field "Default" button. The sticky save bar says "unsaved changes" or "all saved" in a live region and the form warns before the tab closes.
+- Labels and units come from the dictionary keyed by `setting_key`, so a new backend setting shows its raw key until copy is added.

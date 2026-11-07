@@ -53,4 +53,22 @@ describe('Platform settings', function (): void {
         $this->getJson('/api/v1/dashboard/admin/settings')->assertForbidden();
         $this->patchJson('/api/v1/dashboard/admin/settings', ['settings' => [SettingKey::ExploreCandidateCap->value => 100]])->assertForbidden();
     });
+
+    it('rejects cross-field combinations that would break the platform', function (): void {
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->patchJson('/api/v1/dashboard/admin/settings', ['settings' => [
+            SettingKey::PaginationDefaultPerPage->value => 60,
+            SettingKey::PaginationMaxPerPage->value => 50,
+        ]])->assertUnprocessable()->assertJsonValidationErrors(['settings.pagination_default_per_page']);
+
+        $this->patchJson('/api/v1/dashboard/admin/settings', ['settings' => [
+            SettingKey::DashboardSessionTtlSeconds->value => 600000,
+            SettingKey::DashboardRefreshTtlSeconds->value => 4000,
+        ]])->assertUnprocessable()->assertJsonValidationErrors(['settings.dashboard_refresh_ttl_seconds']);
+
+        $this->patchJson('/api/v1/dashboard/admin/settings', ['settings' => [SettingKey::PaginationDefaultPerPage->value => 100]])->assertOk();
+        $this->patchJson('/api/v1/dashboard/admin/settings', ['settings' => [SettingKey::PaginationMaxPerPage->value => 50]])
+            ->assertUnprocessable()->assertJsonValidationErrors(['settings.pagination_default_per_page']);
+    });
 });

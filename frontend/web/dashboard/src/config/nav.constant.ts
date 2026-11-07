@@ -26,7 +26,7 @@ const overview: NavItem = { key: "overview", segment: "", icon: LayoutDashboardI
 export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
   [AuthActor.Admin]: [
     overview,
-    { key: "analytics", segment: "analytics", icon: BarChart3Icon, ready: false },
+    { key: "analytics", segment: "analytics", icon: BarChart3Icon, ready: true },
     { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: true },
     { key: "brands", segment: "brands", icon: StoreIcon, ready: false },
     { key: "branches", segment: "branches", icon: BuildingIcon, ready: true },
@@ -34,7 +34,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
     { key: "payouts", segment: "payouts", icon: WalletIcon, ready: true },
     { key: "plans", segment: "plans", icon: LayersIcon, ready: true },
     { key: "subscriptions", segment: "subscriptions", icon: CreditCardIcon, ready: true },
-    { key: "settings", segment: "settings", icon: SettingsIcon, ready: false },
+    { key: "settings", segment: "settings", icon: SettingsIcon, ready: true },
   ],
   [AuthActor.Manager]: [
     overview,

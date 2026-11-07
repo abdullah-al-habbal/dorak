@@ -1,0 +1,42 @@
+export const enAnalytics = {
+  title: "Analytics",
+  description: "How the platform is doing: bookings, subscriptions, commission and payouts. Brand owners, managers and barbers see their own figures on Earnings.",
+  platform: {
+    title: "Platform size",
+    caption: "Live totals, not tied to the period.",
+    brands: "Brands",
+    branches: "Branches",
+    barbers: "Barbers",
+    clients: "Clients",
+  },
+  bookings: {
+    title: "Bookings",
+    chartTitle: "Completed bookings by day",
+    total: "{total} completed",
+    summary: "Completed bookings by day: {total} in total across {count} days, at most {peak} on one day.",
+    statusTitle: "Bookings by status",
+    noneCompleted: "No bookings were completed in this period.",
+    noneInPeriod: "No bookings start in this period.",
+  },
+  money: {
+    title: "Money",
+    caption: "Subscriptions are live; commission and payouts follow the period. Each currency stands alone.",
+    none: "No subscriptions, commission or payouts yet.",
+    recurring: "Recurring revenue",
+    pending: "Commission not yet paid out",
+    settled: "Commission paid out",
+    payoutLine: "Payouts, {status} ({count})",
+  },
+  plans: {
+    title: "Subscriptions by plan",
+    caption: "Active and past-due brands, live.",
+    none: "No brand has a live subscription.",
+  },
+  states: {
+    loading: "Loading analytics",
+    errorTitle: "Analytics couldn't load",
+    errorBody: "Check your connection and try again.",
+    forbiddenTitle: "Analytics are for platform admins",
+    forbiddenBody: "Your account has no access to platform analytics. Open Earnings for your own figures.",
+  },
+};

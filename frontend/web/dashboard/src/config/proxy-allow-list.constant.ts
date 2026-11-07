@@ -33,6 +33,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^admin/subscription-plans/${ID}$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/payouts/${ID}/(approve|mark-paid|cancel)$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/subscriptions/${ID}/status$`), guards: ADMIN_ONLY },
+  // Platform analytics and settings (Module 10). Admin only; the backend re-checks.
+  { methods: [HttpMethod.Get], pattern: /^admin\/(analytics\/overview|settings)$/, guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: /^admin\/settings$/, guards: ADMIN_ONLY },
   // The barber portal: the Operations routes reject barbers, so these are their own read-only endpoints.
   { methods: [HttpMethod.Get], pattern: /^schedule\/(appointments|hours)$/, guards: BARBER_ONLY },
   { methods: [HttpMethod.Get], pattern: /^earnings$/, guards: EARNINGS },

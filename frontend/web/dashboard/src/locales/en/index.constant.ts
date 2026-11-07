@@ -1,3 +1,5 @@
+import { enAnalytics } from "@/locales/en/analytics.constant";
+import { enSettings } from "@/locales/en/settings.constant";
 import { enAdminPayouts } from "@/locales/en/admin-payouts.constant";
 import { enAdminSubscriptions } from "@/locales/en/admin-subscriptions.constant";
 import { enPlans } from "@/locales/en/plans.constant";
@@ -34,6 +36,8 @@ export const enDictionary = {
   stylists: enStylists,
   services: enServices,
   workingHours: enWorkingHours,
+  analytics: enAnalytics,
+  settings: enSettings,
   earnings: enEarnings,
   errors: enErrors,
 } as const;
