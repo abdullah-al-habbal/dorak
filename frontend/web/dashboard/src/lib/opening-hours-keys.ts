@@ -1,5 +1,7 @@
+import { queryKey } from "@/lib/create-query-keys.util";
+
 export const openingHoursKeys = {
-  branch: (branchId: string) => ["opening-hours", branchId] as const,
+  branch: (branchId: string) => queryKey("opening-hours", branchId),
   // Branch options feed the picker only; a schedule save must not refetch them.
-  branches: ["branch-options"] as const,
+  branches: queryKey("branch-options"),
 };

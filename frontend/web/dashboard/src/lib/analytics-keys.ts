@@ -1,6 +1,6 @@
+import { createQueryKeys } from "@/lib/create-query-keys.util";
 import type { EarningsRange } from "@/types/earnings-range.type";
 
-export const analyticsKeys = {
-  all: ["platform-analytics"] as const,
-  range: (range: EarningsRange) => ["platform-analytics", range.from, range.to] as const,
-};
+export const analyticsKeys = createQueryKeys("platform-analytics", {
+  range: (range: EarningsRange) => [range.from, range.to] as const,
+});

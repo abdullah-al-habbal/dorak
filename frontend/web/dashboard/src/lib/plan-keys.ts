@@ -1,6 +1,7 @@
-export const planKeys = {
-  all: ["admin-plans"] as const,
-  list: (state: string, page: number) => ["admin-plans", "list", state, page] as const,
-  options: ["admin-plans", "options"] as const,
-  featureKeys: ["admin-plans", "feature-keys"] as const,
-};
+import { createQueryKeys } from "@/lib/create-query-keys.util";
+
+export const planKeys = createQueryKeys("admin-plans", {
+  list: (state: string, page: number) => ["list", state, page] as const,
+  options: ["options"] as const,
+  featureKeys: ["feature-keys"] as const,
+});

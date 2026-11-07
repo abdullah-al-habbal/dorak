@@ -1,4 +1,5 @@
-export const subscriptionKeys = {
-  all: ["subscription"] as const,
-  current: () => ["subscription", "current"] as const,
-};
+import { createQueryKeys } from "@/lib/create-query-keys.util";
+
+export const subscriptionKeys = createQueryKeys("subscription", {
+  current: () => ["current"] as const,
+});

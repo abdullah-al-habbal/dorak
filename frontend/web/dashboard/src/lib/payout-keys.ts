@@ -1,4 +1,5 @@
-export const payoutKeys = {
-  all: ["payouts"] as const,
-  list: (status: string, page: number) => ["payouts", "list", status, page] as const,
-};
+import { createQueryKeys } from "@/lib/create-query-keys.util";
+
+export const payoutKeys = createQueryKeys("payouts", {
+  list: (status: string, page: number) => ["list", status, page] as const,
+});

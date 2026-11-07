@@ -1,6 +1,6 @@
+import { createQueryKeys } from "@/lib/create-query-keys.util";
 import type { ChairFilters } from "@/types/chair-filters.type";
 
-export const chairKeys = {
-  all: ["chairs"] as const,
-  list: (filters: ChairFilters) => ["chairs", "list", filters] as const,
-};
+export const chairKeys = createQueryKeys("chairs", {
+  list: (filters: ChairFilters) => ["list", filters] as const,
+});

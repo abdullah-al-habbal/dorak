@@ -1,3 +1,3 @@
-export const platformSettingsKeys = {
-  all: ["platform-settings"] as const,
-};
+import { createQueryKeys } from "@/lib/create-query-keys.util";
+
+export const platformSettingsKeys = createQueryKeys("platform-settings", {});

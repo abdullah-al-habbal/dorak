@@ -1,7 +1,10 @@
+import { createQueryKeys, queryKey } from "@/lib/create-query-keys.util";
+
 export const serviceKeys = {
-  all: ["services"] as const,
-  list: (search: string | undefined) => ["services", "list", search ?? ""] as const,
-  currencies: ["currencies"] as const,
+  ...createQueryKeys("services", {
+    list: (search: string | undefined) => ["list", search ?? ""] as const,
+  }),
+  currencies: queryKey("currencies"),
   // Not under "services": a service write must not refetch the category list, and vice versa.
-  categories: ["service-categories"] as const,
+  categories: queryKey("service-categories"),
 };
