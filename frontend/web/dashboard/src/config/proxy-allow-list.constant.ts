@@ -4,6 +4,7 @@ import type { ProxyRule } from "@/interfaces/proxy-rule.interface";
 
 const OPERATIONS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner];
 const EARNINGS: readonly AuthActor[] = [AuthActor.Manager, AuthActor.Barber, AuthActor.Owner];
+const BRANDS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];
 const OWNER_ONLY: readonly AuthActor[] = [AuthActor.Owner];
 const ID = "[^/]+";
 
@@ -16,6 +17,11 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^bookings/${ID}(/(cancel|reschedule))?$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches(/${ID})?$`), guards: OPERATIONS },
   { methods: [HttpMethod.Put], pattern: new RegExp(`^branches/${ID}$`), guards: OPERATIONS },
+  // Creating and deleting a branch is for platform admins and brand owners; the backend refuses a manager too.
+  { methods: [HttpMethod.Post], pattern: /^branches$/, guards: BRANDS },
+  { methods: [HttpMethod.Delete], pattern: new RegExp(`^branches/${ID}$`), guards: BRANDS },
+  // The brand picker of the branch form.
+  { methods: [HttpMethod.Get], pattern: /^brands$/, guards: BRANDS },
   { methods: [HttpMethod.Get, HttpMethod.Put], pattern: new RegExp(`^branches/${ID}/opening-hours$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/reviews$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^(payouts|subscription)$/, guards: OWNER_ONLY },

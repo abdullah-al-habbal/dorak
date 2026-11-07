@@ -97,4 +97,31 @@ describe('Dashboard Branch API', function (): void {
 
         $this->postJson('/api/v1/dashboard/branches', $payload)->assertUnprocessable()->assertJsonValidationErrors('password');
     });
+
+    it('filters the branch list by status and brand', function (): void {
+        $brand = BrandModel::factory()->create();
+        $enabled = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => BranchStatusEnum::Enabled]);
+        $disabled = BranchModel::factory()->create(['brand_id' => $brand->id, 'status' => BranchStatusEnum::Disabled]);
+        $this->authenticateDashboardActor($this->admin);
+
+        $this->getJson("/api/v1/dashboard/branches?brand_id={$brand->id}&status=disabled")
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.id', $disabled->id);
+        $this->getJson("/api/v1/dashboard/branches?brand_id={$brand->id}")
+            ->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonFragment(['id' => $enabled->id]);
+        $this->getJson('/api/v1/dashboard/branches?status=bogus')->assertUnprocessable()->assertJsonValidationErrors('status');
+        $this->getJson('/api/v1/dashboard/branches?brand_id=not-a-uuid')->assertUnprocessable()->assertJsonValidationErrors('brand_id');
+    });
+
+    it('never lets a brand filter widen a manager scope to another brand', function (): void {
+        $other = BranchModel::factory()->create();
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->getJson("/api/v1/dashboard/branches?brand_id={$other->brand_id}")
+            ->assertOk()
+            ->assertJsonCount(0, 'data');
+    });
 });

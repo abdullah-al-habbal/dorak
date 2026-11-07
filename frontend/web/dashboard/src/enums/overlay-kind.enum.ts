@@ -5,4 +5,5 @@ export enum OverlayKind {
   StylistForm = "stylist-form",
   ServiceForm = "service-form",
   ChairForm = "chair-form",
+  BranchForm = "branch-form",
 }

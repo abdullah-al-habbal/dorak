@@ -25,6 +25,8 @@ final class ListBranchesAction extends BaseApiAction
             $request->integer('per_page', 15),
             $actor->scopedBranchIds(),
             $request->validated('search'),
+            $request->validated('status'),
+            $request->validated('brand_id'),
         ));
 
         return $this->paginated($branches, BranchResource::class);

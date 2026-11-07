@@ -1,4 +1,5 @@
 import { arAuth } from "@/locales/ar/auth.constant";
+import { arBranches } from "@/locales/ar/branches.constant";
 import { arBookings } from "@/locales/ar/bookings.constant";
 import { arChairs } from "@/locales/ar/chairs.constant";
 import { arCommon } from "@/locales/ar/common.constant";
@@ -19,6 +20,7 @@ export const arDictionary: Dictionary = {
   bookings: arBookings,
   shell: arShell,
   chairs: arChairs,
+  branches: arBranches,
   payouts: arPayouts,
   reviews: arReviews,
   subscription: arSubscription,

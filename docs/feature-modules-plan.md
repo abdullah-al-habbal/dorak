@@ -110,7 +110,9 @@ Initial list (the real backend paths, see section 4):
 | GET | `/bookings`, `/bookings/{id}`, `/bookings/{id}/history` | admin, manager, owner |
 | PATCH | `/bookings/{id}`, `/bookings/{id}/cancel`, `/bookings/{id}/reschedule` | admin, manager, owner |
 | POST | `/bookings/walk-in`, `/bookings/{id}/review` | admin, manager, owner |
-| GET, PUT | `/branches`, `/branches/{id}` (PUT for working hours) | admin, manager, owner |
+| GET, PUT | `/branches`, `/branches/{id}` (PUT for working hours and the branch form) | admin, manager, owner |
+| POST, DELETE | `/branches`, `/branches/{id}` | admin, owner (proxy rule; the backend also refuses a manager) |
+| GET | `/brands` (the branch form's brand picker) | admin, owner |
 | GET | `/earnings` | manager, barber, owner |
 | GET, POST, PUT, DELETE | `/services`, `/services/{id}` | admin, manager, owner |
 | GET, POST, PUT, DELETE | `/stylists`, `/stylists/{id}` | admin, manager, owner |
@@ -331,6 +333,28 @@ Backend audit (no contract gap found, no backend behaviour change):
 - Out of scope: approving, paying or cancelling payouts and changing plans (admin-only, `/admin/payouts`, `/admin/subscriptions`).
 - E2E: `E2eDashboardSeeder` now seeds an owner (`e2e-owner@dorak.test`) for the manager's brand, an active plan with the `multi_branch` feature, and four payouts (paid, approved, cancelled, plus a hidden draft). The global setup saves a second session (`tests/e2e/.auth/owner.json`); owner specs use `test.use({ storageState: E2E_OWNER_STORAGE_STATE })`.
 - Mobile: no impact. The mobile apps do not call these dashboard routes and no API contract changed.
+
+## 10c. Module 7: Owner and Admin Branches
+
+Chosen 2026-11-07 as the next milestone. Remaining "Soon" items after it: Brands, Catalog, Analytics and Settings (admin), Payouts (admin) and Schedule (barber, needs a new barber-scoped endpoint).
+
+Backend audit (`php artisan route:list --path=api/v1/dashboard`), all behind the Operations guard group:
+
+- `GET /branches?search&status&brand_id&per_page&page`, `GET|PUT|DELETE /branches/{branch}`, `POST /branches`. The list is scoped by `DashboardActor::scopedBrandIds()` and `scopedBranchIds()`; a branch outside the scope is 404 on reads and 403 on writes.
+- `StoreBranchAction` and `DestroyBranchAction` require `DashboardActor::canManageBrand()` (platform admin, or an owner of that brand). A branch manager gets 403 and can only `PUT` their own branch. `PUT` keeps an owner's brand inside the brands they own.
+- Rules: `BranchRequest` (`brand_id` uuid, `name{en,ar}` max 120, `email` unique, `status`, `universe`, `description{en,ar}`, `address{en,ar}`, `latitude`, `longitude`, `tags`, optional `opening_hours`); `password` is required on create and optional on update (min 12).
+- Failures: 409 `CONFLICT` with a localized message for the brand's last active branch (disable or delete) and for a delete while bookings are upcoming; 403 `feature_not_enabled` when the brand's plan lacks `multi_branch` and it already has a branch, or when a non-original branch is edited after a downgrade (EC-6).
+- Gap fixed in the backend: the list had only `search`. It now also accepts `status` (`pending|enabled|disabled`) and `brand_id` (uuid), validated, and still intersected with the actor's scope, so a filter can never widen access. Additive; mobile does not call dashboard routes.
+
+**Implemented (dashboard).** `/dashboard/[guard]/branches` for admin and owner (manager and barber see the forbidden state; managers keep editing their own hours from Working hours).
+
+- Proxy: `POST branches` and `DELETE branches/{id}` for admin and owner only, plus `GET brands` (admin, owner) for the brand picker. `GET|PUT` stay on the Operations guards.
+- List: `status`, `brand` (shown when the account sees more than one brand), `search` and `page` live in the URL; the brand column appears under the same condition; rating is text, status is icon plus text.
+- Create and edit use the `branch-form` overlay. Editing first loads `GET /branches/{id}` because list rows carry text in one locale only; saving without both translations loaded would erase the other language. Fields: brand (create only, and only when there is a choice), name (en, ar), login email, password (required on create, "leave empty to keep" on edit), status, audience, description and address (en, ar), latitude and longitude.
+- The form never sends `opening_hours`, `tags` or the floor plan, so an edit leaves them as saved. Two empty translations are sent as `null`. The brand of an existing branch is not editable here.
+- Delete goes through the confirm overlay. A 409 shows the backend's own reason in a toast; a 403 on save explains that the plan needs the multi-branch feature.
+- E2E (owner session): list and filter, create, edit and delete, the last-branch refusal, and Arabic RTL. `E2eDashboardSeeder` now restores the seeded branch's name and status and deletes extra branches of the brand, so the specs can reset the real backend.
+- Mobile: no impact. None of the three apps or the shared packages call `/dashboard/*` (they use `/branch/*`, `/explore/*` and the public `/branches/{id}/...` routes), and no existing contract changed.
 
 ## 11. Cross-cutting concerns
 

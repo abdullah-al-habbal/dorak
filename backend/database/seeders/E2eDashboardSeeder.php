@@ -11,6 +11,7 @@ use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Models\BrandModel;
@@ -29,6 +30,7 @@ use Modules\Subscription\Enums\SubscriptionStatus;
 use Modules\Subscription\Models\BrandSubscriptionModel;
 use Modules\Subscription\Models\PlanFeatureModel;
 use Modules\Subscription\Models\SubscriptionPlanModel;
+use Modules\Subscription\Services\PlanFeatureSyncer;
 
 /**
  * Deterministic data for the dashboard Playwright suite (frontend/web/dashboard/tests/e2e).
@@ -53,6 +55,7 @@ final class E2eDashboardSeeder extends Seeder
         );
 
         $branch = $this->branch();
+        $this->restoreBranchBaseline($branch);
         $chairs = [$this->chair($branch, 'Chair 1'), $this->chair($branch, 'Chair 2')];
 
         DB::table('branch_opening_hours')->where('branch_id', $branch->id)->delete();
@@ -118,6 +121,8 @@ final class E2eDashboardSeeder extends Seeder
         );
         PlanFeatureModel::query()->firstOrCreate(['plan_id' => $plan->id, 'feature_key' => 'multi_branch']);
         BrandSubscriptionModel::factory()->create(['brand_id' => $brand->id, 'plan_id' => $plan->id, 'status' => SubscriptionStatus::Active]);
+        // A real subscription change syncs the plan's features to the brand's flags; the factory does not.
+        app(PlanFeatureSyncer::class)->grant($brand, $plan);
 
         PayoutModel::query()->where('brand_id', $brand->id)->delete();
         $rows = [[PayoutStatus::Paid, 125000, 3], [PayoutStatus::Approved, 84050, 2], [PayoutStatus::Cancelled, 20000, 1], [PayoutStatus::Draft, 99900, 0]];
@@ -149,6 +154,16 @@ final class E2eDashboardSeeder extends Seeder
             'email' => self::MANAGER_EMAIL,
             'password' => Hash::make(self::MANAGER_PASSWORD),
         ]);
+    }
+
+    /** Undoes what the branches spec does: a renamed or disabled seeded branch and any extra branch it created. */
+    private function restoreBranchBaseline(BranchModel $branch): void
+    {
+        $branch->update([
+            'name' => ['en' => 'E2E Salon', 'ar' => 'صالون الاختبار'],
+            'status' => BranchStatusEnum::Enabled->value,
+        ]);
+        BranchModel::query()->where('brand_id', $branch->brand_id)->whereKeyNot($branch->id)->get()->each->delete();
     }
 
     private function chair(BranchModel $branch, string $label): ChairModel

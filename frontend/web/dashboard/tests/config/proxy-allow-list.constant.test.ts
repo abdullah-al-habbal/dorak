@@ -49,3 +49,32 @@ describe("proxy allow-list: owner payouts and subscription", () => {
     expect(allowed(HttpMethod.Get, "payouts/p1", AuthActor.Owner)).toBe(false);
   });
 });
+
+describe("proxy allow-list: branch management", () => {
+  it("lets admins and owners create and delete branches, but not managers or barbers", () => {
+    for (const actor of [AuthActor.Admin, AuthActor.Owner]) {
+      expect(allowed(HttpMethod.Post, "branches", actor)).toBe(true);
+      expect(allowed(HttpMethod.Delete, "branches/b1", actor)).toBe(true);
+    }
+    for (const actor of [AuthActor.Manager, AuthActor.Barber]) {
+      expect(allowed(HttpMethod.Post, "branches", actor)).toBe(false);
+      expect(allowed(HttpMethod.Delete, "branches/b1", actor)).toBe(false);
+    }
+  });
+
+  it("keeps reads and updates open to the operations guards", () => {
+    expect(allowed(HttpMethod.Get, "branches", AuthActor.Owner)).toBe(true);
+    expect(allowed(HttpMethod.Get, "branches/b1", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Put, "branches/b1", AuthActor.Manager)).toBe(true);
+    expect(allowed(HttpMethod.Post, "branches/b1", AuthActor.Owner)).toBe(false);
+    expect(allowed(HttpMethod.Delete, "branches/b1/opening-hours", AuthActor.Owner)).toBe(false);
+  });
+
+  it("opens the brand picker to admins and owners only, read-only", () => {
+    expect(allowed(HttpMethod.Get, "brands", AuthActor.Owner)).toBe(true);
+    expect(allowed(HttpMethod.Get, "brands", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Get, "brands", AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Post, "brands", AuthActor.Owner)).toBe(false);
+    expect(allowed(HttpMethod.Get, "brands/b1", AuthActor.Owner)).toBe(false);
+  });
+});

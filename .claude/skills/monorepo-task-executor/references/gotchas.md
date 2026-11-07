@@ -23,3 +23,5 @@ codeanchors:
 - Pint may fail on a file you did not touch (pre-existing working-tree edit). Run it on touched paths, report the unrelated failure, and never reformat or stage that file.
 - Do not claim another layer (mobile, dashboard) is unaffected without inspecting it; state what you checked and what you did not run.
 - Pest `arch()`: exclude the contract interface and the factory when asserting on implementations (`->ignoring(...)`).
+- `npm run clean:artifacts` deletes `.next/`, which holds Next's generated `LayoutProps`/`PageProps` types, so the pre-commit typecheck fails right after cleanup. Run `cd frontend/web/dashboard && npx next typegen` after the cleanup and before committing.
+- The E2E seeder creates subscriptions through a factory, which does not sync Pennant brand flags; call `PlanFeatureSyncer::grant()` when a spec needs a plan feature such as `multi_branch`.
