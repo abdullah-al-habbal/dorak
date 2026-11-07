@@ -1,0 +1,48 @@
+"use client";
+
+import { useMemo } from "react";
+import type { JSX } from "react";
+
+import { ChairServiceSwitch } from "@/components/chairs/chair-service-switch";
+import { ChairStatusBadge } from "@/components/chairs/chair-status-badge";
+import { DataTable } from "@/components/ui/table/data-table";
+import { ChairStatus } from "@/enums/chair-status.enum";
+import { useI18n } from "@/hooks/use-i18n";
+import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
+import { localizedText } from "@/lib/booking-format.util";
+import type { Chair } from "@/types/chair.type";
+
+interface ChairListProps {
+  chairs: readonly Chair[];
+  togglingId: string | null;
+  onSelect: (chair: Chair) => void;
+  onToggle: (chair: Chair, inService: boolean) => void;
+}
+
+function getChairId(chair: Chair): string {
+  return chair.id;
+}
+
+export function ChairList({ chairs, togglingId, onSelect, onToggle }: ChairListProps): JSX.Element {
+  const { locale, dictionary } = useI18n();
+  const { chairs: t } = dictionary;
+
+  const columns = useMemo<DataTableColumn<Chair>[]>(
+    () => [
+      { id: "label", header: t.columns.label, primary: true, cell: (chair) => <span dir="auto" className="truncate font-medium">{chair.label}</span> },
+      { id: "zone", header: t.columns.zone, cell: (chair) => <span className="text-muted-foreground">{chair.floor_zone ? t.zone[chair.floor_zone] : t.none}</span> },
+      { id: "stylist", header: t.columns.stylist, cell: (chair) => <span dir="auto" className="text-muted-foreground">{localizedText(chair.barber?.name, locale) || t.noStylist}</span> },
+      { id: "status", header: t.columns.status, cell: (chair) => <ChairStatusBadge status={chair.status ?? chair.configured_status ?? ChairStatus.Available} /> },
+      {
+        id: "service",
+        header: t.columns.inService,
+        interactive: true,
+        align: "end",
+        cell: (chair) => <ChairServiceSwitch chair={chair} disabled={togglingId === chair.id} onToggle={onToggle} />,
+      },
+    ],
+    [locale, onToggle, t, togglingId],
+  );
+
+  return <DataTable caption={t.title} columns={columns} rows={chairs} getRowId={getChairId} onRowSelect={onSelect} rowLabel={(chair) => chair.label ?? ""} />;
+}

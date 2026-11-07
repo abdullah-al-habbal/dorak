@@ -36,7 +36,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
   [AuthActor.Manager]: [
     overview,
     { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: true },
-    { key: "chairs", segment: "chairs", icon: SofaIcon, ready: false },
+    { key: "chairs", segment: "chairs", icon: SofaIcon, ready: true },
     { key: "stylists", segment: "stylists", icon: UsersIcon, ready: true },
     { key: "services", segment: "services", icon: ScissorsIcon, ready: true },
     { key: "workingHours", segment: "working-hours", icon: ClockIcon, ready: true },

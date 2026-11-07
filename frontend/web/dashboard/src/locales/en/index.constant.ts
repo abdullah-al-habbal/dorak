@@ -1,5 +1,6 @@
 import { enAuth } from "@/locales/en/auth.constant";
 import { enBookings } from "@/locales/en/bookings.constant";
+import { enChairs } from "@/locales/en/chairs.constant";
 import { enCommon } from "@/locales/en/common.constant";
 import { enEarnings } from "@/locales/en/earnings.constant";
 import { enErrors } from "@/locales/en/errors.constant";
@@ -13,6 +14,7 @@ export const enDictionary = {
   auth: enAuth,
   bookings: enBookings,
   shell: enShell,
+  chairs: enChairs,
   stylists: enStylists,
   services: enServices,
   workingHours: enWorkingHours,

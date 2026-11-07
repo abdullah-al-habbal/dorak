@@ -1,0 +1,8 @@
+import type { OverlayKind } from "@/enums/overlay-kind.enum";
+import type { Chair } from "@/types/chair.type";
+
+export interface ChairFormOverlayRequest {
+  kind: OverlayKind.ChairForm;
+  /** Present when editing an existing chair. */
+  chair?: Chair;
+}

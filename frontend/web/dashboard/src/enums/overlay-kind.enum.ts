@@ -4,4 +4,5 @@ export enum OverlayKind {
   Reschedule = "reschedule",
   StylistForm = "stylist-form",
   ServiceForm = "service-form",
+  ChairForm = "chair-form",
 }

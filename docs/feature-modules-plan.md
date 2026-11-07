@@ -297,6 +297,14 @@ Delivery, each a separate local commit with its own gates:
 1. Chairs: proxy allow-list for `chairs` CRUD, schemas, queries, mutations, directory (zone and status badges, search, paging), create/edit dialog with a barber select and numeric layout fields, delete through the confirm overlay, Vitest, Playwright.
 2. Reviews: proxy allow-list for `branches/{id}/reviews`, branch picker for multi-branch guards, rating summary, review list, Vitest, Playwright.
 
+**Implemented: Chairs (dashboard, step 1).** `/dashboard/[guard]/chairs` for admin, manager and owner (barbers see the forbidden state; the proxy also denies them).
+
+- Proxy: `GET|POST chairs`, `GET|PUT|DELETE chairs/{id}` for the Operations guards.
+- List: `GET /chairs?search&branch_id&status&floor_zone&page&per_page`. Filters live in the URL (`search, branch, status, zone, page`). The row's badge shows the live `status`; the in-service switch and the edit form use `configured_status`, so an edit never writes the derived `occupied` back.
+- Create and edit send the full `ChairRequest`. Decision: the dashboard does not edit floor-plan placement or the stylist assignment (stylists are assigned from the Stylists screen via `chair_id`). Edits resend the saved `layout_settings`; new chairs get a default placement (`DEFAULT_CHAIR_LAYOUT`) that the mobile layout editor refines. A branch select shows only for accounts that are not tied to one branch.
+- Maintenance: the switch sends a full PUT with `status=maintenance`. The backend answers 409 while future reservation-blocking bookings exist; the proxy reports every 409 as the `conflict` code, so the UI offers a confirm and retries with `force=true`, which cancels and notifies those bookings. This confirm path is covered by code review only, not E2E, because the seeded bookings are time-of-day dependent.
+- Deleting uses the confirm overlay; a chair with bookings is refused by the backend.
+
 Backend gaps are fixed in the backend (Pest plus docs) as they surface. Not in scope: a drag-and-drop floor-map editor and review dispute handling.
 
 ## 11. Cross-cutting concerns
