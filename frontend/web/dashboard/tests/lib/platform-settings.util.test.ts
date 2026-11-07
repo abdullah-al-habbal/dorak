@@ -57,4 +57,9 @@ describe("platform settings util", () => {
     expect(mapSettingsSaveError(error, "generic").fieldErrors).toEqual({ pagination_default_per_page: "Too big" });
     expect(mapSettingsSaveError(new Error("x"), "generic").formError).toBe("generic");
   });
+
+  it("keeps a backend field name without the settings prefix as it is", () => {
+    const error = new ApiClientError({ status: 422, code: "VALIDATION_ERROR", message: "invalid", fields: { settings: ["Required"] } });
+    expect(mapSettingsSaveError(error, "generic").fieldErrors).toEqual({ settings: "Required" });
+  });
 });

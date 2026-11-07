@@ -1,4 +1,5 @@
 import { HttpStatus } from "@/enums/http-status.enum";
+import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const OUTSIDE_SCHEDULE_CODE = "booking_outside_schedule";
@@ -7,13 +8,6 @@ export interface BookingFormErrorMessages {
   conflict: string;
   outsideSchedule: string;
   generic: string;
-}
-
-export interface MappedFormError {
-  /** Messages keyed by the form field they belong under. */
-  fieldErrors: Record<string, string>;
-  /** Shown in the form-level alert when no field owns the problem. */
-  formError?: string;
 }
 
 /**

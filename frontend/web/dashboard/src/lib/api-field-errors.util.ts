@@ -1,6 +1,6 @@
 import { HttpStatus } from "@/enums/http-status.enum";
+import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { MappedFormError } from "@/lib/booking-form-error.util";
 
 /** Maps a failed write to inline field errors when the backend names the fields, else a form-level message. */
 export function mapApiFieldErrors(error: unknown, generic: string): MappedFormError {

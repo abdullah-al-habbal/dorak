@@ -1,5 +1,5 @@
-import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
-import type { MappedFormError } from "@/lib/booking-form-error.util";
+import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
+import { mapApiFormError } from "@/lib/map-api-form-error.util";
 
 const API_TO_FORM_FIELD: Record<string, string> = { price_amount_minor: "price" };
 
@@ -9,8 +9,5 @@ function toFormFieldName(name: string): string {
 }
 
 export function mapPlanSaveError(error: unknown, generic: string): MappedFormError {
-  const mapped = mapApiFieldErrors(error, generic);
-  const fieldErrors: Record<string, string> = {};
-  for (const [name, message] of Object.entries(mapped.fieldErrors)) fieldErrors[toFormFieldName(name)] = message;
-  return { ...mapped, fieldErrors };
+  return mapApiFormError(error, generic, toFormFieldName);
 }

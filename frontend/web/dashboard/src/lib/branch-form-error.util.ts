@@ -1,6 +1,6 @@
 import { HttpStatus } from "@/enums/http-status.enum";
-import type { MappedFormError } from "@/lib/booking-form-error.util";
-import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
+import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
+import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 interface BranchSaveMessages {
@@ -18,8 +18,5 @@ function toFormFieldName(name: string): string {
 export function mapBranchSaveError(error: unknown, messages: BranchSaveMessages): MappedFormError {
   if (error instanceof ApiClientError && error.status === HttpStatus.Forbidden) return { fieldErrors: {}, formError: messages.planLimit };
   if (error instanceof ApiClientError && error.status === HttpStatus.Conflict) return { fieldErrors: {}, formError: error.message || messages.generic };
-  const mapped = mapApiFieldErrors(error, messages.generic);
-  const fieldErrors: Record<string, string> = {};
-  for (const [name, message] of Object.entries(mapped.fieldErrors)) fieldErrors[toFormFieldName(name)] = message;
-  return { ...mapped, fieldErrors };
+  return mapApiFormError(error, messages.generic, toFormFieldName);
 }
