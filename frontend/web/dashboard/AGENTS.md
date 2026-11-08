@@ -104,7 +104,9 @@ Reviews flag any re-implementation.
   `npm test`, `npm run build`.
 - **Playwright E2E** (`npm run test:e2e`, specs in `tests/e2e/`): runs against the **real stack**: Next.js on
   3000 and the Laravel API on 8000. Each server is reused when already running, otherwise Playwright starts
-  `npm`'s `next dev` / `php artisan serve`. Projects: desktop 1440x900, `mobile-390`, `ultrawide-3440`
+  a production build (`npm run build && npm start`; `next dev` fails on the Google Fonts fetch in sandboxed runs,
+  so stop a running `next dev` first) and `php artisan serve`. Always run it as `TZ=UTC npx playwright test`
+  (see the task executor's `references/gates.md`). Projects: desktop 1440x900, `mobile-390`, `ultrawide-3440`
   (cached Chromium; `npm run test:e2e:install` if missing).
   `tests/e2e/support/global-setup.ts` runs `php artisan migrate:fresh --seed` plus
   `backend/database/seeders/E2eDashboardSeeder.php` (**this wipes the dev database**), then signs the seeded

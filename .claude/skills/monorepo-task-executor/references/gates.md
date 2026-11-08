@@ -28,7 +28,9 @@ Run each from the stated directory. Never claim a gate passed unless the command
 Whenever dashboard code, copy, or contracts change, run from that directory: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
 
 ### Playwright E2E (mandatory dashboard gate)
-- Run from `frontend/web/dashboard/` after lint, typecheck, `npm test` and build pass: `npx playwright test tests/e2e/<spec>.spec.ts` for the task's spec(s), then the whole suite `npx playwright test` when shared code (proxy, overlays, nav, seeder, locales) changed.
+- Run from `frontend/web/dashboard/` after lint, typecheck, `npm test` and build pass: `TZ=UTC npx playwright test tests/e2e/<spec>.spec.ts` for the task's spec(s), then the whole suite `TZ=UTC npx playwright test` when shared code (hooks, proxy, overlays, nav, seeder, locales) changed. `TZ=UTC` is mandatory: the backend clock is UTC, and a local-zone browser disagrees with the seeded "today" between 00:00 and 03:00 local time.
+- Production build only: the config starts `npm run build && npm start` (600 s timeout) because `next dev` fetches Google Fonts at runtime and fails in sandboxed runs. It reuses any server on port 3000, so first check `ss -ltn | grep -E ':(3000|8000)\b'` and stop a running `next dev`.
+- Read the real result line (`N passed` / `N failed`), not the exit code of a pipe such as `| tail`, which reports success even when tests fail.
 - The global setup runs `migrate:fresh --seed` plus `E2eDashboardSeeder` on the dev database. Only run it where the user has authorised wiping that database; otherwise stop and ask.
 - Every task that touches the dashboard adds or updates a spec under `tests/e2e/`, and extends `E2eDashboardSeeder` if it needs data (keep the seeder idempotent).
 - It must pass fully, on every configured project (desktop, mobile-390, ultrawide-3440). A failure, a flaky pass that needed a retry, or an environment block means **no commit**: fix and rerun, or report the blocker and leave the task incomplete. Never skip, `.only`, or weaken a test to get green.

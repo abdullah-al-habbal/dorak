@@ -65,3 +65,11 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 - Never claim a gate passed unless its command completed and you saw the result.
 - Never commit when Playwright E2E, or any other gate, fails or was not run.
 - Keep this file under 500 lines and each reference under 200; put new detail in `references/` or `templates/`.
+
+## Mandatory Engineering Gotchas & Rules (Codified from Batch 2 Refactor Learnings)
+
+These apply to every task type (feature, fix, hotfix, refactor, review) and add to the workflow above; exact commands are in `references/gates.md`.
+
+1. **Playwright runs against a production build, never `next dev`.** The dev server fetches Google Fonts at runtime, and that lookup fails in sandboxed or offline runs. `playwright.config.ts` starts `npm run build && npm start` with an extended (600 s) timeout, but it reuses any server already on port 3000, so stop a running `next dev` before Playwright starts. Do not shorten that timeout or point E2E at a dev server.
+2. **Run Playwright with `TZ=UTC`.** The backend clock is UTC (`modules/Core/Config/app.php`) and the seeder builds "today" from `now()`, while the Next server and browser inherit the machine's local zone. Without `TZ=UTC`, runs between 00:00 and 03:00 local time (+03:00) see a different "today" than the seed and fail date-based specs. Every Playwright command, focused or full, is prefixed with `TZ=UTC`.
+3. **One slice per task, verified before the next starts.** Work strictly slice by slice: scan, then a minimal plan, then implement, then all gates (Playwright included), then hygiene cleanup, then one local commit for that slice. Never bundle several refactor steps, or a refactor and an unrelated fix, into one commit. A pre-existing failure found on the way is reported, and only fixed as its own task and commit once the user agrees.
