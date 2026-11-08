@@ -1,10 +1,14 @@
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 
+import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpStatus } from "@/enums/http-status.enum";
 import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 
 const { workingHours } = dictionaryFor("en");
 const arabic = dictionaryFor("ar");
+const OPENING_HOURS_API = /^\/api\/dashboard\/branches\/[^/]+\/opening-hours$/;
+const SHIFT_ERROR = "Shifts on the same day must not overlap.";
 
 /** One day's row, so "Add shift" and the fields are not confused with other days. */
 function dayRow(page: Page, day: string): Locator {
@@ -44,6 +48,27 @@ test.describe("working hours", () => {
     await page.reload();
     await expect(page.getByLabel(`Monday, ${workingHours.shift.replace("{number}", "2")}: ${workingHours.closesAt}`)).toHaveValue("22:00");
     await expect(page.getByText(workingHours.notConfigured)).toBeHidden();
+  });
+
+  test("shows the first field error, then the generic copy, when the backend refuses a save", async ({ page }) => {
+    let refusal: number = HttpStatus.Unprocessable;
+    await page.route(
+      (url) => OPENING_HOURS_API.test(url.pathname),
+      async (route) => {
+        if (route.request().method() !== HttpMethod.Put) return route.fallback();
+        const fields = refusal === HttpStatus.Unprocessable ? { "days.0": [SHIFT_ERROR] } : undefined;
+        return route.fulfill({ status: refusal, contentType: "application/json", body: JSON.stringify({ success: false, message: "refused", error: { code: "refused", fields } }) });
+      },
+    );
+    await openPage(page);
+    await page.getByRole("switch", { name: "Thursday" }).click();
+
+    await page.getByRole("button", { name: workingHours.save }).click();
+    await expect(page.getByText(SHIFT_ERROR)).toBeVisible();
+
+    refusal = HttpStatus.InternalServerError;
+    await page.getByRole("button", { name: workingHours.save }).click();
+    await expect(page.getByText(workingHours.errors.generic)).toBeVisible();
   });
 
   test("blocks saving while shifts overlap", async ({ page }) => {

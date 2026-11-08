@@ -13,7 +13,7 @@ import { useLeaveWarning } from "@/hooks/use-leave-warning";
 import { useSaveOpeningHours } from "@/hooks/use-save-opening-hours";
 import type { OpeningHoursDay } from "@/interfaces/opening-hours-day.interface";
 import type { Shift } from "@/interfaces/shift.interface";
-import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
+import { formErrorMessage } from "@/lib/map-api-form-error.util";
 import { addShift, copyDay, findIssues, isSameWeek, orderedDays, removeShift, setDayOpen, updateShift, weekFromServer, weekToPayload } from "@/lib/opening-hours.util";
 import type { OpeningHoursWeek } from "@/types/opening-hours-week.type";
 
@@ -55,8 +55,7 @@ export function WorkingHoursEditor({ branchId, initial }: WorkingHoursEditorProp
       setBaseline(next);
       setDraft(next);
     } catch (error) {
-      const mapped = mapApiFieldErrors(error, t.errors.generic);
-      setFormError(Object.values(mapped.fieldErrors)[0] ?? mapped.formError);
+      setFormError(formErrorMessage(error, t.errors.generic));
     }
   }, [draft, save, t.errors.generic]);
 

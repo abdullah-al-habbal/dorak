@@ -12,7 +12,7 @@ import { useCreateServiceCategory } from "@/hooks/use-create-service-category";
 import { useI18n } from "@/hooks/use-i18n";
 import { useServiceCategories } from "@/hooks/use-service-categories";
 import { localizedText } from "@/lib/booking-format.util";
-import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
+import { formErrorMessage } from "@/lib/map-api-form-error.util";
 
 interface ServiceCategoryFieldProps {
   value: string;
@@ -50,8 +50,7 @@ export function ServiceCategoryField({ value, onChange }: ServiceCategoryFieldPr
       onChange(created.id);
       reset();
     } catch (failure) {
-      const mapped = mapApiFieldErrors(failure, f.errors.generic);
-      setError(Object.values(mapped.fieldErrors)[0] ?? mapped.formError);
+      setError(formErrorMessage(failure, f.errors.generic));
     }
   }
 

@@ -34,7 +34,7 @@ the same shape repeats.
 | 2 | Shared mutation feedback for the remaining mutation hooks | Done |
 | 3 | Shared list query for the paginated list hooks | Done |
 | 3a | `useDeleteMutation` and `useSaveMutation` built on `useFeedbackMutation` | Done |
-| 3b | Service category field error mapping through `mapApiFormError` | Planned |
+| 3b | Service category field error mapping through `mapApiFormError` | Done |
 | 3c | Plan options read through `useReferenceQuery` | Planned |
 | 4 | Remaining URL filter alignment | Planned |
 
@@ -93,8 +93,10 @@ queryFn })` (earnings, analytics, platform settings, schedule hours, subscriptio
 - **3a.** `useDeleteMutation` and `useSaveMutation` build their options through
   `deleteFeedbackOptions` and `saveFeedbackOptions` on top of `useFeedbackMutation`, so the
   toast and invalidate-on-settle code lives once. Signatures, toasts and keys are unchanged.
-- **3b.** `components/services/service-category-field.tsx` stops walking `mapApiFieldErrors`
-  output by hand and reads `mapApiFormError` instead, with the same message shown.
+- **3b.** `components/services/service-category-field.tsx` and
+  `components/working-hours/working-hours-editor.tsx` both walked `mapApiFieldErrors` output by
+  hand for one message. Both now call `formErrorMessage(error, generic)`
+  (`lib/map-api-form-error.util.ts`), built on `mapApiFormError`, with the same message shown.
 - **3c.** `usePlanOptions` moves to `useReferenceQuery`. This is the one intended behaviour
   change in Batch 3: the active-plan options are cached for `STALE_TIME.Reference` instead of
   refetched every time the assign dialog opens. Approved by the user.

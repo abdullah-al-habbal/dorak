@@ -13,3 +13,9 @@ export function mapApiFormError(error: unknown, generic: string, toFormFieldName
   for (const [name, message] of Object.entries(mapped.fieldErrors)) fieldErrors[toFormFieldName(name)] = message;
   return { ...mapped, fieldErrors };
 }
+
+/** One message for a form without per-field slots: the first field error, else the form-level message. */
+export function formErrorMessage(error: unknown, generic: string): string | undefined {
+  const mapped = mapApiFormError(error, generic);
+  return Object.values(mapped.fieldErrors)[0] ?? mapped.formError;
+}
