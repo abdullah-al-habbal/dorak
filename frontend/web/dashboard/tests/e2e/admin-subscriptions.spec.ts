@@ -1,5 +1,8 @@
 import { expect, test } from "@playwright/test";
 
+import type { Page } from "@playwright/test";
+
+import { PLAN_OPTIONS_LIMIT } from "@/config/plan.constant";
 import { E2E_ADMIN_STORAGE_STATE } from "@tests/e2e/support/e2e-env.constant";
 import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 
@@ -7,6 +10,14 @@ const en = dictionaryFor("en");
 const ar = dictionaryFor("ar");
 const t = en.adminSubscriptions;
 const SUBSCRIPTIONS = "/dashboard/admin/subscriptions";
+const PLANS_API = "/api/dashboard/admin/subscription-plans";
+
+/** Follows a sidebar link without a full reload, so the query cache survives (opens the menu on phones). */
+async function navigateTo(page: Page, name: string): Promise<void> {
+  const link = page.getByRole("link", { name, exact: true }).locator("visible=true").first();
+  if (!(await link.isVisible())) await page.getByRole("button", { name: en.shell.openMenu }).click();
+  await page.getByRole("link", { name, exact: true }).locator("visible=true").first().click();
+}
 
 test.describe("admin subscriptions", () => {
   test.use({ storageState: E2E_ADMIN_STORAGE_STATE });
@@ -67,6 +78,45 @@ test.describe("admin subscriptions", () => {
     await dialog.getByRole("button", { name: t.assignDialog.submit }).click();
     await expect(dialog).toBeHidden();
     await expect(page.getByText(t.toast.assigned)).toBeVisible();
+  });
+
+  test("caches the assign dialog's plan options until a plan is saved", async ({ page }) => {
+    let optionRequests = 0;
+    page.on("request", (request) => {
+      const url = new URL(request.url());
+      if (url.pathname === PLANS_API && url.searchParams.get("per_page") === String(PLAN_OPTIONS_LIMIT)) optionRequests += 1;
+    });
+    await signIn(page, "en", "admin");
+    await page.goto(SUBSCRIPTIONS);
+
+    const dialog = page.getByRole("dialog");
+    const planSelect = dialog.getByLabel(t.assignDialog.plan);
+    await page.getByRole("button", { name: t.assign }).click();
+    await expect(planSelect).toContainText("E2E Growth");
+    await expect(planSelect).not.toContainText("E2E Legacy");
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+
+    // Reopening inside the cache window reuses the options instead of refetching them.
+    await page.getByRole("button", { name: t.assign }).click();
+    await expect(planSelect).toContainText("E2E Growth");
+    expect(optionRequests).toBe(1);
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+
+    // Activating a plan invalidates every plan key, so the next open lists it.
+    await navigateTo(page, en.shell.nav.plans);
+    await expect(page.getByRole("heading", { level: 1, name: en.plans.title })).toBeVisible();
+    await page.getByText("E2E Legacy").locator("visible=true").first().click();
+    await dialog.getByRole("switch", { name: en.plans.form.active }).click();
+    await dialog.getByRole("button", { name: en.plans.form.save }).click();
+    await expect(dialog).toBeHidden();
+
+    await navigateTo(page, en.shell.nav.subscriptions);
+    await expect(page.getByRole("heading", { level: 1, name: t.title })).toBeVisible();
+    await page.getByRole("button", { name: t.assign }).click();
+    await expect(planSelect).toContainText("E2E Legacy");
+    expect(optionRequests).toBe(2);
   });
 
   test("renders right-to-left in Arabic", async ({ page }) => {

@@ -35,7 +35,7 @@ the same shape repeats.
 | 3 | Shared list query for the paginated list hooks | Done |
 | 3a | `useDeleteMutation` and `useSaveMutation` built on `useFeedbackMutation` | Done |
 | 3b | Service category field error mapping through `mapApiFormError` | Done |
-| 3c | Plan options read through `useReferenceQuery` | Planned |
+| 3c | Plan options read through `useReferenceQuery` | Done |
 | 4 | Remaining URL filter alignment | Planned |
 
 ### Step 1: HTTP status unification
@@ -99,7 +99,9 @@ queryFn })` (earnings, analytics, platform settings, schedule hours, subscriptio
   (`lib/map-api-form-error.util.ts`), built on `mapApiFormError`, with the same message shown.
 - **3c.** `usePlanOptions` moves to `useReferenceQuery`. This is the one intended behaviour
   change in Batch 3: the active-plan options are cached for `STALE_TIME.Reference` instead of
-  refetched every time the assign dialog opens. Approved by the user.
+  refetched every time the assign dialog opens. Approved by the user. Saving or deleting a plan
+  still invalidates `planKeys.all`, so a new or activated plan shows on the next open; Playwright
+  (`admin-subscriptions.spec.ts`) counts the option requests to pin both behaviours.
 
 ### Step 4: Remaining URL filter alignment
 
