@@ -411,6 +411,20 @@ Backend audit (`php artisan route:list --path=api/v1/dashboard/admin`):
 - E2E: `admin-analytics` and `admin-settings` specs (admin session). `E2eDashboardSeeder` clears `platform_settings` on each reset.
 - Mobile: no impact. The three apps and the shared packages never call `/dashboard/*`, the analytics change is additive, and settings are only read server side.
 
+## 10g. Module 11: Admin Brands (approval)
+
+Chosen 2026-11-08, approve-only (see `docs/decisions-required.md`). Every endpoint already existed: `GET /brands` and `GET /brands/{brand}` (admin and owner, scoped by `canManageBrand`) and `PATCH /admin/brands/{brand}/approve`. The audit found three backend gaps, all closed additively:
+
+- The approve action relied on middleware only. `BrandPolicy::approve` (an `AdminModel`) now guards it, and the Filament Approve button checks the same ability, so both approval paths share one rule. Policy actors are `mixed` so a denial is a 403, never a type error.
+- The list read a raw request. `ListDashboardBrandsRequest` validates `status` (`pending|active`), `search` (max 100) and `page`, and still clamps `per_page`; `BrandPolicy::viewAny` (admin or brand owner) authorizes it.
+- No way to list pending brands: the optional `status` filter, intersected with the owner scope.
+
+**Implemented (dashboard).** The admin nav enables Brands; the proxy opens `GET brands/{id}` and `PATCH admin/brands/{id}/approve` to the admin guard only.
+
+- `/dashboard/admin/brands`: the pending queue by default, a status select (pending, active, all) and a name search in the URL, rows with owner email, branch count, status (icon and text) and created date, Approve on pending rows behind the confirm overlay. A row opens the `brand-detail` overlay (both name translations, owner, currency, audience, slug, branches, description) with Approve for a pending brand. Approving invalidates the admin brand keys and the brand pickers. Other guards get the forbidden state.
+- E2E: `admin-brands` (admin session, reset before each test). `E2eDashboardSeeder` seeds "E2E Pending Cuts" for a second owner, older than every other brand, and puts it back to pending on each reset; `admin-subscriptions` now picks that brand by name instead of by position.
+- Mobile: no impact. The apps never call `/dashboard/*` and `BrandResource` is unchanged.
+
 ## 11. Cross-cutting concerns
 
 - **Security.** Authorization stays on the backend. The proxy allow-list, guard checks and body caps are defence in depth. No token is ever readable by the browser. CSV export neutralises formula injection. Server-provided strings are rendered as text, never as HTML.

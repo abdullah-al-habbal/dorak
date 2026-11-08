@@ -63,6 +63,14 @@ final class E2eDashboardSeeder extends Seeder
 
     public const int LEGACY_PLAN_ORDER = 100;
 
+    /** The pending brand the admin brands spec approves; every reset puts it back to `pending`. */
+    public const string PENDING_BRAND_OWNER_EMAIL = 'e2e-pending-owner@dorak.test';
+
+    public const array PENDING_BRAND_NAME = ['en' => 'E2E Pending Cuts', 'ar' => 'قصات قيد المراجعة'];
+
+    /** Older than every other brand, so lists ordered newest first keep their order and show it last. */
+    public const string PENDING_BRAND_CREATED_AT = '2020-01-01 00:00:00';
+
     /** The seeded chairs; the chairs spec creates others, and every reset removes them. */
     private const array CHAIR_LABELS = ['Chair 1', 'Chair 2'];
 
@@ -108,6 +116,7 @@ final class E2eDashboardSeeder extends Seeder
 
         $this->reviews($branch);
         $this->ownerBilling($branch->brand, $owner, $currency);
+        $this->pendingBrand($currency);
         $this->restoreSettingsBaseline();
     }
 
@@ -153,6 +162,20 @@ final class E2eDashboardSeeder extends Seeder
                 'status' => $status,
             ]);
         }
+    }
+
+    /** A second owner's brand awaiting approval (admin brands spec). Seeded owner and currency, no factory relations. */
+    private function pendingBrand(CurrencyModel $currency): void
+    {
+        $owner = ClientModel::query()->firstOrCreate(
+            ['email' => self::PENDING_BRAND_OWNER_EMAIL],
+            ClientModel::factory()->raw(['email' => self::PENDING_BRAND_OWNER_EMAIL, 'name' => ['en' => 'E2E Pending Owner', 'ar' => 'مالك قيد المراجعة'], 'password' => Hash::make(self::OWNER_PASSWORD)]),
+        );
+        $brand = BrandModel::query()->updateOrCreate(
+            ['owner_id' => $owner->id],
+            ['name' => self::PENDING_BRAND_NAME, 'status' => BrandStatusEnum::Pending->value, 'base_currency_code' => $currency->code],
+        );
+        $brand->forceFill(['created_at' => self::PENDING_BRAND_CREATED_AT])->saveQuietly();
     }
 
     /** The brand owner (dashboard actor `owner`). */

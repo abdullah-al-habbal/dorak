@@ -22,8 +22,11 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   // Creating and deleting a branch is for platform admins and brand owners; the backend refuses a manager too.
   { methods: [HttpMethod.Post], pattern: /^branches$/, guards: BRANDS },
   { methods: [HttpMethod.Delete], pattern: new RegExp(`^branches/${ID}$`), guards: BRANDS },
-  // The brand picker of the branch form.
+  // The brand pickers and the admin approval list (owners get only their brands).
   { methods: [HttpMethod.Get], pattern: /^brands$/, guards: BRANDS },
+  // Brand approval: the detail read and the approve action. Admin only; the backend re-checks through `BrandPolicy`.
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^brands/${ID}$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/brands/${ID}/approve$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Get, HttpMethod.Put], pattern: new RegExp(`^branches/${ID}/opening-hours$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/reviews$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^(payouts|subscription)$/, guards: OWNER_ONLY },

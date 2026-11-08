@@ -142,3 +142,24 @@ describe("proxy allow-list: analytics and settings (Module 10)", () => {
     expect(allowed(HttpMethod.Get, "admin/analytics", AuthActor.Admin)).toBe(false);
   });
 });
+
+describe("proxy allow-list: brand approval", () => {
+  it("lets only admins read a brand's detail and approve it", () => {
+    expect(allowed(HttpMethod.Get, "brands/b1", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Patch, "admin/brands/b1/approve", AuthActor.Admin)).toBe(true);
+    for (const actor of [AuthActor.Owner, AuthActor.Manager, AuthActor.Barber]) {
+      expect(allowed(HttpMethod.Get, "brands/b1", actor)).toBe(false);
+      expect(allowed(HttpMethod.Patch, "admin/brands/b1/approve", actor)).toBe(false);
+    }
+  });
+
+  it("keeps the brand list for admins and owners only, and rejects other brand calls", () => {
+    expect(allowed(HttpMethod.Get, "brands", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Get, "brands", AuthActor.Owner)).toBe(true);
+    expect(allowed(HttpMethod.Get, "brands", AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Put, "brands/b1", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Post, "admin/brands/b1/approve", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Patch, "admin/brands/b1/approve/extra", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Get, "brands/b1/features", AuthActor.Admin)).toBe(false);
+  });
+});

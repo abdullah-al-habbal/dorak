@@ -41,6 +41,8 @@ final class BrandsTable
                     ->icon('heroicon-o-check-badge')
                     ->color('success')
                     ->requiresConfirmation()
+                    // The same `BrandPolicy::approve` gate as `PATCH /dashboard/admin/brands/{brand}/approve`.
+                    ->authorize('approve')
                     ->visible(fn (BrandModel $record): bool => ! $record->isActive())
                     ->action(fn (BrandModel $record) => $record->update(['status' => BrandStatusEnum::Active])),
                 ViewAction::make(),

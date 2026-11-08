@@ -9,4 +9,5 @@ export enum OverlayKind {
   PayoutAction = "payout-action",
   PlanForm = "plan-form",
   AssignSubscription = "assign-subscription",
+  BrandDetail = "brand-detail",
 }

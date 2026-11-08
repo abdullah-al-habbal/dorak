@@ -1,6 +1,7 @@
 import { arAnalytics } from "@/locales/ar/analytics.constant";
 import { arSettings } from "@/locales/ar/settings.constant";
 import { arAdminPayouts } from "@/locales/ar/admin-payouts.constant";
+import { arAdminBrands } from "@/locales/ar/admin-brands.constant";
 import { arAdminSubscriptions } from "@/locales/ar/admin-subscriptions.constant";
 import { arPlans } from "@/locales/ar/plans.constant";
 import { arAuth } from "@/locales/ar/auth.constant";
@@ -31,6 +32,7 @@ export const arDictionary: Dictionary = {
   adminPayouts: arAdminPayouts,
   plans: arPlans,
   adminSubscriptions: arAdminSubscriptions,
+  adminBrands: arAdminBrands,
   reviews: arReviews,
   schedule: arSchedule,
   subscription: arSubscription,

@@ -88,10 +88,10 @@ the account is deactivated or banned). Managed barbers without a login cannot re
 ## Brand approval (Gap G2)
 
 - `brands.status` (`Modules\Brand\Enums\BrandStatusEnum`: `pending`, `active`; migration backfills existing rows to `active`). Brands created via `POST /brands` or `POST /dashboard/brands` start `pending`; factories, the seeder and brands created in the Filament admin panel are `active`.
-- `POST /admin/brands/{brand}/approve` (`auth:admin_api`) and `PATCH /dashboard/admin/brands/{brand}/approve` (admin actor) set `active` (idempotent); Filament table has an Approve action and status badge.
+- `PATCH /dashboard/admin/brands/{brand}/approve` (admin actor) sets `active` (idempotent; the old `POST /admin/brands/{brand}/approve` route is gone). `BrandPolicy::approve` (an `AdminModel` only) guards it and the Filament table's Approve action alike; the Filament table also shows a status badge.
 - Gate: public `GET /brands` and `/brands/{id}` list active brands only; `BranchModel::isOperational()` (enabled branch + active brand) backs branch login, refresh, `EnsureBranchAccountAccess` and `scopeDiscoverable`.
-- API resource `status` field; dashboard Brands page shows the status badge and an Approve button for admins; mobile `BrandDto.status`.
-- Tests: `tests/Feature/Brand/BrandApprovalTest.php`.
+- Dashboard list `GET /dashboard/brands?status=&search=&per_page=&page=` (`ListDashboardBrandsRequest`; `BrandPolicy::viewAny`: admin or brand owner, owners stay scoped; `per_page` is clamped, never rejected). API resource `status` field; the dashboard `/dashboard/admin/brands` page opens on the pending queue with a detail dialog and Approve; mobile `BrandDto.status`.
+- Tests: `tests/Feature/Brand/BrandApprovalTest.php`, `tests/Feature/Dashboard/DashboardAdminBrandsTest.php`.
 
 ## Role-based earnings, plan and payout visibility (Gap G4)
 

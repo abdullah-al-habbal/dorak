@@ -72,8 +72,9 @@ test.describe("admin subscriptions", () => {
     await expect(dialog.getByText(t.assignDialog.validation.brand)).toBeVisible();
     await expect(dialog.getByText(t.assignDialog.validation.plan)).toBeVisible();
 
-    // The only brand with a subscription is the seeded one; pick the first brand and the active seeded plan.
-    await dialog.getByLabel(t.assignDialog.brand).selectOption({ index: 1 });
+    // Pick a deterministic brand by name (not by position): the seeded pending brand, which has no subscription.
+    // Every reset removes subscriptions of brands other than the E2E brand.
+    await dialog.getByLabel(t.assignDialog.brand).selectOption({ label: "E2E Pending Cuts" });
     await dialog.getByLabel(t.assignDialog.plan).selectOption({ label: "E2E Growth" });
     await dialog.getByRole("button", { name: t.assignDialog.submit }).click();
     await expect(dialog).toBeHidden();

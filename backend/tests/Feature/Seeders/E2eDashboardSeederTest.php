@@ -8,6 +8,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Constants\BrandFeatureConstants;
+use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Models\ChairModel;
@@ -46,6 +47,23 @@ describe('E2E dashboard seeder', function (): void {
         $this->seed(E2eDashboardSeeder::class);
 
         expect(BarberModel::query()->where('email', 'lina.e2e@dorak.test')->firstOrFail()->getTranslation('name', 'en'))->toBe('Lina Saad');
+    });
+
+    it('puts the approved pending brand back to pending, oldest of all, without adding rows on reset', function (): void {
+        $this->seed(E2eDashboardSeeder::class);
+        $owner = ClientModel::query()->where('email', E2eDashboardSeeder::PENDING_BRAND_OWNER_EMAIL)->sole();
+        $brand = BrandModel::query()->where('owner_id', $owner->id)->sole();
+        $brand->update(['status' => BrandStatusEnum::Active]);
+        $brands = BrandModel::query()->count();
+
+        $this->seed(E2eDashboardSeeder::class);
+
+        $brand->refresh();
+        expect($brand->status)->toBe(BrandStatusEnum::Pending)
+            ->and($brand->getTranslations('name'))->toBe(E2eDashboardSeeder::PENDING_BRAND_NAME)
+            ->and($brand->created_at->toDateTimeString())->toBe(E2eDashboardSeeder::PENDING_BRAND_CREATED_AT)
+            ->and(BrandModel::query()->count())->toBe($brands)
+            ->and(BrandModel::query()->orderBy('created_at')->value('id'))->toBe($brand->id);
     });
 
     it('removes a subscription assigned to another brand and revokes its features on reset', function (): void {
