@@ -1,10 +1,10 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UseMutationResult } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutation";
+import type { OptimisticToggleContext } from "@/interfaces/optimistic-toggle-context.interface";
 import { activeTogglePayload } from "@/lib/service-form.util";
 import { withServiceActive } from "@/lib/service-cache.util";
 import { serviceKeys } from "@/lib/service-keys";
@@ -16,28 +16,15 @@ interface ToggleVariables {
   active: boolean;
 }
 
-interface ToggleContext {
-  snapshots: [readonly unknown[], Service[] | undefined][];
-}
-
 /** The backend has no partial update, so this PUTs the full service with one flag flipped. */
-export function useUpdateServiceActive(): UseMutationResult<Service, Error, ToggleVariables, ToggleContext> {
+export function useUpdateServiceActive(): UseMutationResult<Service, Error, ToggleVariables, OptimisticToggleContext<Service[]>> {
   const { services } = useDictionary();
-  const client = useQueryClient();
 
-  return useMutation<Service, Error, ToggleVariables, ToggleContext>({
+  return useOptimisticToggleMutation<Service, ToggleVariables, Service[]>({
+    queryKey: serviceKeys.all,
     mutationFn: ({ service, active }) => updateService(service.id, activeTogglePayload(service, active)),
-    onMutate: async ({ service, active }) => {
-      await client.cancelQueries({ queryKey: serviceKeys.all });
-      const snapshots = client.getQueriesData<Service[]>({ queryKey: serviceKeys.all });
-      client.setQueriesData<Service[]>({ queryKey: serviceKeys.all }, (list) => withServiceActive(list, service.id, active));
-      return { snapshots };
-    },
-    onError: (_error, _variables, context) => {
-      context?.snapshots.forEach(([key, data]) => client.setQueryData(key, data));
-      toast.error(services.toast.failed);
-    },
-    onSuccess: (_data, { active }) => toast.success(active ? services.toast.activated : services.toast.deactivated),
-    onSettled: () => client.invalidateQueries({ queryKey: serviceKeys.all }),
+    patch: (list, { service, active }) => withServiceActive(list, service.id, active),
+    successMessage: ({ active }) => (active ? services.toast.activated : services.toast.deactivated),
+    failureMessage: services.toast.failed,
   });
 }

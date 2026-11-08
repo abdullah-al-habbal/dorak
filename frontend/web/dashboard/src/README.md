@@ -20,6 +20,7 @@ Architecture rules for the dashboard. All imports use the `@/` alias; never `./`
 | `config/` | `*.constant.ts` files: actors, routes, cookies, nav, locales. |
 | `locales/` | Typed EN and AR dictionaries, split by namespace, plus locale resolution. |
 | `hooks/` | One hook per file, named `use-<name>.ts`. |
+| `hooks/use-optimistic-toggle-mutation.ts` | `useOptimisticToggleMutation({ queryKey, mutationFn, patch, successMessage, failureMessage? })` for switch toggles: cancels and snapshots every cached entry under `queryKey`, applies `patch` to each, restores the snapshots on failure (toasting `failureMessage` when given), toasts success, then invalidates the root. The callbacks live in `lib/optimistic-toggle-mutation.util.ts` so they are unit-tested without React. Used by the stylist status, service active and chair status hooks. |
 | `tests/` (project root) | Mirrors `src/`; import app code and helpers through `@/` and `@tests/`. |
 
 ## Routing

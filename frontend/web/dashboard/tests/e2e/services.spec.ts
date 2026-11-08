@@ -1,10 +1,16 @@
 import { expect, test } from "@playwright/test";
 
-import { dictionaryFor, expectNoHorizontalScroll, signIn } from "@tests/e2e/support/sign-in";
+import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 
 const { services } = dictionaryFor("en");
 
+const HAIRCUT = "Classic haircut";
+
 test.describe("services", () => {
+  test.afterEach(async () => {
+    await resetBackend();
+  });
+
   test("groups services by category", async ({ page }) => {
     await signIn(page);
     await page.goto("/dashboard/manager/services");
@@ -24,5 +30,19 @@ test.describe("services", () => {
     await dialog.getByRole("button", { name: services.form.newCategory }).click();
     await expect(dialog.getByLabel(services.form.newCategoryNameEn)).toBeVisible();
     await expect(dialog.getByLabel(services.form.newCategoryNameAr)).toBeVisible();
+  });
+
+  test("deactivates and reactivates a service from its switch", async ({ page }) => {
+    await signIn(page);
+    await page.goto("/dashboard/manager/services");
+
+    await page.getByRole("switch", { name: services.toggle.deactivate.replace("{name}", HAIRCUT) }).locator("visible=true").first().click();
+    await expect(page.getByText(services.toast.deactivated)).toBeVisible();
+    const activate = page.getByRole("switch", { name: services.toggle.activate.replace("{name}", HAIRCUT) }).locator("visible=true").first();
+    await expect(activate).not.toBeChecked();
+
+    await activate.click();
+    await expect(page.getByText(services.toast.activated)).toBeVisible();
+    await expect(page.getByRole("switch", { name: services.toggle.deactivate.replace("{name}", HAIRCUT) }).locator("visible=true").first()).toBeChecked();
   });
 });
