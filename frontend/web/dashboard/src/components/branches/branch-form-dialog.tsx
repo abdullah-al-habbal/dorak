@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { BranchFormBody } from "@/components/branches/branch-form-body";
 import { ErrorState } from "@/components/common/error-state";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SkeletonRows } from "@/components/ui/skeleton-row";
 import { useBranchDetail } from "@/hooks/use-branch-detail";
 import { useBrandOptions } from "@/hooks/use-brand-options";
 import { useI18n } from "@/hooks/use-i18n";
@@ -17,6 +17,8 @@ interface BranchFormDialogProps {
 }
 
 const LOADING_ROWS = 4;
+const LOADING_ROW_CLASS = "h-10";
+const LOADING_STACK_CLASS = "gap-3";
 
 /** Create, or edit with the full detail (both translations) loaded first so a save never drops the other language. */
 export function BranchFormDialog({ branch, onClose }: BranchFormDialogProps): JSX.Element {
@@ -37,9 +39,7 @@ export function BranchFormDialog({ branch, onClose }: BranchFormDialogProps): JS
         </DialogHeader>
         {failed ? <ErrorState title={t.states.formErrorTitle} body={t.states.errorBody} onRetry={() => (creating ? brandOptions.refetch() : detail.refetch())} /> : null}
         {!failed && !ready ? (
-          <div aria-busy className="flex flex-col gap-3">
-            {Array.from({ length: LOADING_ROWS }, (_, index) => <Skeleton key={index} className="h-10 w-full" />)}
-          </div>
+          <SkeletonRows count={LOADING_ROWS} rowClassName={LOADING_ROW_CLASS} className={LOADING_STACK_CLASS} />
         ) : null}
         {ready ? <BranchFormBody branch={detail.data} brands={brandOptions.data ?? []} onClose={onClose} /> : null}
       </DialogContent>

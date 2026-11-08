@@ -1,24 +1,13 @@
 import { expect, test } from "@playwright/test";
-import type { Page } from "@playwright/test";
 
+import { BookingStatus } from "@/enums/booking-status.enum";
+import { BookingView } from "@/enums/booking-view.enum";
+import { holdRequests } from "@tests/e2e/support/hold-requests";
 import { dictionaryFor, expectNoHorizontalScroll, signIn } from "@tests/e2e/support/sign-in";
 
 const { bookings, common } = dictionaryFor("en");
 const BOOKINGS_API = "/api/dashboard/bookings";
 const HISTORY_API = /^\/api\/dashboard\/bookings\/[^/]+\/history$/;
-
-/** Holds every request whose path matches until the returned release function is called. */
-async function holdRequests(page: Page, matches: (pathname: string) => boolean): Promise<() => void> {
-  let release: () => void = () => undefined;
-  const gate = new Promise<void>((resolve) => {
-    release = resolve;
-  });
-  await page.route((url) => matches(url.pathname), async (route) => {
-    await gate;
-    await route.continue();
-  });
-  return release;
-}
 
 test.describe("bookings", () => {
   test("shows today's bookings without sideways scroll", async ({ page }) => {
@@ -51,5 +40,21 @@ test.describe("bookings", () => {
     await expect(dialog.getByRole("status", { name: common.loading })).toBeVisible();
     releaseHistory();
     await expect(dialog.getByRole("status", { name: common.loading })).toHaveCount(0);
+  });
+
+  test("keeps the view and filters in the URL and resets the page when a filter changes", async ({ page }) => {
+    await signIn(page);
+    await page.goto("/dashboard/manager/bookings?view=list&page=2");
+    await expect(page.getByRole("heading", { level: 1, name: bookings.title })).toBeVisible();
+
+    await page.getByLabel(bookings.filters.status).selectOption(BookingStatus.Confirmed);
+    await expect(page).toHaveURL(/[?&]status=confirmed/);
+    const afterFilter = new URL(page.url()).searchParams;
+    expect(afterFilter.get("view")).toBe(BookingView.List);
+    expect(afterFilter.has("page")).toBe(false);
+
+    await page.getByRole("group", { name: bookings.views.label }).getByRole("button", { name: bookings.views.week }).click();
+    await expect(page).not.toHaveURL(/[?&]view=/);
+    expect(new URL(page.url()).searchParams.get("status")).toBe(BookingStatus.Confirmed);
   });
 });

@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { E2E_ADMIN_STORAGE_STATE, E2E_OWNER_STORAGE_STATE } from "@tests/e2e/support/e2e-env.constant";
+import { holdRequests } from "@tests/e2e/support/hold-requests";
 import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 
 const en = dictionaryFor("en");
@@ -8,6 +9,7 @@ const ar = dictionaryFor("ar");
 const t = en.plans;
 const PLANS = "/dashboard/admin/plans";
 const NEW_PLAN = "E2E Scale";
+const FEATURE_KEYS_API = "/api/dashboard/admin/plan-feature-keys";
 
 test.describe("admin plans", () => {
   test.use({ storageState: E2E_ADMIN_STORAGE_STATE });
@@ -28,6 +30,21 @@ test.describe("admin plans", () => {
     await expect(page).toHaveURL(/state=inactive/);
     await expect(page.getByText(t.states.results.replace("{count}", "1"))).toBeVisible();
     await expect(page.getByText("E2E Legacy").locator("visible=true").first()).toBeVisible();
+  });
+
+  test("shows skeleton rows in the plan form until its options load", async ({ page }) => {
+    await signIn(page, "en", "admin");
+    await page.goto(PLANS);
+    const releaseOptions = await holdRequests(page, (pathname) => pathname === FEATURE_KEYS_API);
+    await page.getByRole("button", { name: t.newPlan }).click();
+
+    const dialog = page.getByRole("dialog");
+    const loading = dialog.getByRole("status", { name: en.common.loading });
+    await expect(loading).toBeVisible();
+    await expect(dialog.getByRole("button", { name: t.form.create })).toHaveCount(0);
+    releaseOptions();
+    await expect(dialog.getByRole("button", { name: t.form.create })).toBeVisible();
+    await expect(loading).toHaveCount(0);
   });
 
   test("validates, then creates a plan with a feature", async ({ page }) => {

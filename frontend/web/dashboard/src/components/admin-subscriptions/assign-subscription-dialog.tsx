@@ -10,7 +10,7 @@ import { FormField } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { NativeSelect } from "@/components/ui/native-select";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SkeletonRows } from "@/components/ui/skeleton-row";
 import { HttpStatus } from "@/enums/http-status.enum";
 import { useAssignSubscription } from "@/hooks/use-assign-subscription";
 import { useBrandOptions } from "@/hooks/use-brand-options";
@@ -20,6 +20,8 @@ import { localizedText } from "@/lib/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const LOADING_ROWS = 2;
+const LOADING_ROW_CLASS = "h-10";
+const LOADING_STACK_CLASS = "gap-3";
 
 /** Assigns a plan to a brand. The backend replaces the brand's current live subscription. */
 export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): JSX.Element {
@@ -58,9 +60,7 @@ export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): 
         </DialogHeader>
         {failed ? <ErrorState title={t.states.formErrorTitle} body={t.states.errorBody} onRetry={() => { void brands.refetch(); void plans.refetch(); }} /> : null}
         {!failed && !ready ? (
-          <div aria-busy className="flex flex-col gap-3">
-            {Array.from({ length: LOADING_ROWS }, (_, index) => <Skeleton key={index} className="h-10 w-full" />)}
-          </div>
+          <SkeletonRows count={LOADING_ROWS} rowClassName={LOADING_ROW_CLASS} className={LOADING_STACK_CLASS} />
         ) : null}
         {ready ? (
           <form onSubmit={submit} noValidate className="flex flex-col gap-4">

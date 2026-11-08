@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { ErrorState } from "@/components/common/error-state";
 import { PlanFormBody } from "@/components/plans/plan-form-body";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SkeletonRows } from "@/components/ui/skeleton-row";
 import { useCurrencies } from "@/hooks/use-currencies";
 import { useI18n } from "@/hooks/use-i18n";
 import { usePlanFeatureKeys } from "@/hooks/use-plan-feature-keys";
@@ -17,6 +17,8 @@ interface PlanFormDialogProps {
 }
 
 const LOADING_ROWS = 4;
+const LOADING_ROW_CLASS = "h-10";
+const LOADING_STACK_CLASS = "gap-3";
 
 /** Create or edit a plan. The currency and feature lists load first so the form never renders half-empty. */
 export function PlanFormDialog({ plan, onClose }: PlanFormDialogProps): JSX.Element {
@@ -40,9 +42,7 @@ export function PlanFormDialog({ plan, onClose }: PlanFormDialogProps): JSX.Elem
         </DialogHeader>
         {failed ? <ErrorState title={t.states.formErrorTitle} body={t.states.errorBody} onRetry={retry} /> : null}
         {!failed && !ready ? (
-          <div aria-busy className="flex flex-col gap-3">
-            {Array.from({ length: LOADING_ROWS }, (_, index) => <Skeleton key={index} className="h-10 w-full" />)}
-          </div>
+          <SkeletonRows count={LOADING_ROWS} rowClassName={LOADING_ROW_CLASS} className={LOADING_STACK_CLASS} />
         ) : null}
         {ready ? <PlanFormBody plan={plan} currencies={currencies.data} featureKeys={featureKeys.data} onClose={onClose} /> : null}
       </DialogContent>

@@ -14,6 +14,8 @@ interface SkeletonRowProps {
 interface SkeletonRowsProps {
   count: number;
   rowClassName?: string;
+  /** Extra classes for the stack, for example a wider `gap-3` inside dialogs. */
+  className?: string;
 }
 
 /** One full-width placeholder row; the shimmer stops under `prefers-reduced-motion`. */
@@ -22,10 +24,10 @@ export function SkeletonRow({ className }: SkeletonRowProps): JSX.Element {
 }
 
 /** A stack of placeholder rows announced to assistive tech as one loading status. */
-export function SkeletonRows({ count, rowClassName }: SkeletonRowsProps): JSX.Element {
+export function SkeletonRows({ count, rowClassName, className }: SkeletonRowsProps): JSX.Element {
   const { common } = useDictionary();
   return (
-    <div role="status" aria-busy="true" aria-label={common.loading} className="flex flex-col gap-2">
+    <div role="status" aria-busy="true" aria-label={common.loading} className={cn("flex flex-col gap-2", className)}>
       {Array.from({ length: count }, (_, index) => (
         <SkeletonRow key={index} className={rowClassName} />
       ))}

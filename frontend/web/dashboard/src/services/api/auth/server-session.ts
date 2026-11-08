@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 
 import { BACKEND_PATH } from "@/config/backend.constant";
 import { ACCESS_COOKIE, CLAIM_COOKIE } from "@/config/cookies.constant";
@@ -21,7 +22,9 @@ function profileMatchesClaim(profile: MeProfile, claim: SessionClaim): boolean {
   );
 }
 
+/** Waits for a real request first: claim expiry reads the clock, which a prerender or runtime prefetch must not do. */
 async function loadSession(): Promise<ServerSession | null> {
+  await connection();
   const store = await cookies();
   const claimToken = store.get(CLAIM_COOKIE)?.value;
   const accessToken = store.get(ACCESS_COOKIE)?.value;
