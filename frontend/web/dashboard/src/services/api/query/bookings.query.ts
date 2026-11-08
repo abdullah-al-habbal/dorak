@@ -1,4 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
+import { BookingView } from "@/enums/booking-view.enum";
 import { windowFor } from "@/lib/booking-filters.util";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { bookingListSchema } from "@/schemas/booking.zod";
@@ -9,6 +10,7 @@ import type { BookingPage } from "@/types/booking-page.type";
 
 const PER_PAGE = 100;
 const MAX_PAGES = 10;
+const FIRST_PAGE = 1;
 
 function queryString(filters: BookingFilters, weekStart: number, page: number): string {
   const { from, to } = windowFor(filters, weekStart);
@@ -35,4 +37,11 @@ export async function fetchBookingWindow(filters: BookingFilters, weekStart: num
     items.push(...(await fetchBookingPage(filters, weekStart, page)).items);
   }
   return items;
+}
+
+/** The list view reads one page; the day and week grids read the whole window as a single page. */
+export async function fetchBookingsForView(filters: BookingFilters, weekStart: number): Promise<BookingPage> {
+  if (filters.view === BookingView.List) return fetchBookingPage(filters, weekStart, filters.page);
+  const items = await fetchBookingWindow(filters, weekStart);
+  return { items, page: resolvePageInfo(null, items.length, items.length, FIRST_PAGE) };
 }

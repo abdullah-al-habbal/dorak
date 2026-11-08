@@ -2,13 +2,14 @@
 
 import type { JSX } from "react";
 
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { SkeletonRows } from "@/components/ui/skeleton-row";
 import { useBookingHistory } from "@/hooks/use-booking-history";
 import { useI18n } from "@/hooks/use-i18n";
 import { actorLabel, statusLabel } from "@/lib/booking-status-label.util";
 
 const SKELETON_ROWS = 3;
+const SKELETON_ROW_CLASS = "h-8";
 
 export function BookingHistoryTimeline({ bookingId }: { bookingId: string }): JSX.Element {
   const { locale, direction, dictionary } = useI18n();
@@ -19,11 +20,7 @@ export function BookingHistoryTimeline({ bookingId }: { bookingId: string }): JS
   return (
     <section aria-labelledby="booking-history-title" className="flex flex-col gap-2 border-t border-border pt-4">
       <h3 id="booking-history-title" className="text-sm font-medium">{t.history.title}</h3>
-      {history.isPending ? (
-        <div role="status" aria-busy="true" aria-label={common.loading} className="flex flex-col gap-2">
-          {Array.from({ length: SKELETON_ROWS }, (_, index) => <Skeleton key={index} className="h-8 w-full motion-reduce:animate-none" />)}
-        </div>
-      ) : null}
+      {history.isPending ? <SkeletonRows count={SKELETON_ROWS} rowClassName={SKELETON_ROW_CLASS} /> : null}
       {history.isError ? (
         <div role="alert" className="flex items-center justify-between gap-2 text-sm text-muted-foreground">
           <span>{t.history.error}</span>

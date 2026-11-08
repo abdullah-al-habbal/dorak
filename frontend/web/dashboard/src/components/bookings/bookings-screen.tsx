@@ -1,6 +1,5 @@
 "use client";
 
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 import type { JSX } from "react";
 
@@ -18,13 +17,12 @@ import { AuthActor } from "@/enums/auth-actor.enum";
 import { BookingView } from "@/enums/booking-view.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useBookingFilters } from "@/hooks/use-booking-filters";
+import { useBookingsQuery } from "@/hooks/use-bookings-query";
 import { useChairOptions } from "@/hooks/use-chair-options";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { buildBookingChips, CLEAR_ALL_PATCH, patchForChip } from "@/lib/booking-chips.util";
 import { localizedText } from "@/lib/booking-format.util";
-import { bookingKeys } from "@/lib/booking-keys";
-import { fetchBookingPage, fetchBookingWindow } from "@/services/api/query/bookings.query";
 import type { Booking } from "@/types/booking.type";
 
 export function BookingsScreen({ actor }: { actor: AuthActor }): JSX.Element {
@@ -46,15 +44,7 @@ function BookingsContent(): JSX.Element {
   const paged = filters.view === BookingView.List;
   const [selected, setSelected] = useState<Booking | null>(null);
 
-  const query = useQuery({
-    queryKey: bookingKeys.list(filters),
-    queryFn: async () => {
-      if (paged) return fetchBookingPage(filters, weekStart, filters.page);
-      const items = await fetchBookingWindow(filters, weekStart);
-      return { items, page: { total: items.length, per_page: items.length, current_page: 1, total_pages: 1 } };
-    },
-    placeholderData: keepPreviousData,
-  });
+  const query = useBookingsQuery(filters, weekStart);
 
   const chairLabel = useCallback(
     (id: string) => localizedText(chairs.data?.find((chair) => chair.id === id)?.label, locale) || id,
