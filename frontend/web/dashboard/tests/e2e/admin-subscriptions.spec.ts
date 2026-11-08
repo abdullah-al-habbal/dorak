@@ -37,6 +37,7 @@ test.describe("admin subscriptions", () => {
     await expect(dialog.getByRole("heading", { name: t.confirm.past_due.title })).toBeVisible();
     await dialog.getByRole("button", { name: t.confirm.past_due.confirm }).click();
     await expect(dialog).toBeHidden();
+    await expect(page.getByText(t.toast.updated)).toBeVisible();
     await expect(page.getByText(en.subscription.status.past_due, { exact: true }).locator("visible=true").first()).toBeVisible();
 
     await page.getByRole("button", { name: new RegExp(`^${t.actions.active}:`) }).click();

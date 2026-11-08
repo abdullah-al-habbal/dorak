@@ -2,12 +2,15 @@ import { expect, test } from "@playwright/test";
 
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { BookingView } from "@/enums/booking-view.enum";
+import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpStatus } from "@/enums/http-status.enum";
 import { holdRequests } from "@tests/e2e/support/hold-requests";
 import { dictionaryFor, expectNoHorizontalScroll, signIn } from "@tests/e2e/support/sign-in";
 
 const { bookings, common } = dictionaryFor("en");
 const BOOKINGS_API = "/api/dashboard/bookings";
 const HISTORY_API = /^\/api\/dashboard\/bookings\/[^/]+\/history$/;
+const BOOKING_API = /^\/api\/dashboard\/bookings\/[^/]+$/;
 
 test.describe("bookings", () => {
   test("shows today's bookings without sideways scroll", async ({ page }) => {
@@ -40,6 +43,30 @@ test.describe("bookings", () => {
     await expect(dialog.getByRole("status", { name: common.loading })).toBeVisible();
     releaseHistory();
     await expect(dialog.getByRole("status", { name: common.loading })).toHaveCount(0);
+  });
+
+  test("toasts the status-specific reason when a status change is refused", async ({ page }) => {
+    await signIn(page);
+    let refusal: number = HttpStatus.Conflict;
+    await page.route(
+      (url) => BOOKING_API.test(url.pathname),
+      async (route) => {
+        if (route.request().method() !== HttpMethod.Patch) return route.fallback();
+        return route.fulfill({ status: refusal, contentType: "application/json", body: "{}" });
+      },
+    );
+    await page.goto("/dashboard/manager/bookings?view=list");
+    await page.getByRole("button", { name: /^Nadia Farah, / }).locator("visible=true").first().click();
+    const dialog = page.getByRole("dialog");
+    const confirm = dialog.getByRole("button", { name: bookings.action.confirmed });
+
+    await confirm.click();
+    await expect(page.getByText(bookings.toast.conflict)).toBeVisible();
+
+    refusal = HttpStatus.BadRequest;
+    await confirm.click();
+    await expect(page.getByText(bookings.toast.invalid)).toBeVisible();
+    await expect(dialog).toBeVisible();
   });
 
   test("keeps the view and filters in the URL and resets the page when a filter changes", async ({ page }) => {

@@ -1,29 +1,26 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import type { UseMutationResult } from "@tanstack/react-query";
 
-import { HttpStatus } from "@/enums/http-status.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { bookingKeys } from "@/lib/booking-keys";
-import { ApiClientError } from "@/services/api/core/api-client-error";
+import { bookingStatusErrorMessage } from "@/lib/booking-status-error.util";
 import { updateBookingStatus } from "@/services/api/mutation/update-booking-status.mutation";
+import type { Booking } from "@/types/booking.type";
 import type { BookingTarget } from "@/types/booking-target.type";
 
+interface BookingStatusVariables {
+  id: string;
+  target: BookingTarget;
+}
 
-export function useUpdateBookingStatus() {
+export function useUpdateBookingStatus(): UseMutationResult<Booking, Error, BookingStatusVariables> {
   const { bookings } = useDictionary();
-  const client = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id, target }: { id: string; target: BookingTarget }) => updateBookingStatus(id, target),
-    onSuccess: () => toast.success(bookings.toast.updated),
-    onError: (error) => {
-      const status = error instanceof ApiClientError ? error.status : 0;
-      toast.error(
-        status === HttpStatus.Conflict ? bookings.toast.conflict : status === HttpStatus.BadRequest ? bookings.toast.invalid : bookings.toast.failed,
-      );
-    },
-    onSettled: () => client.invalidateQueries({ queryKey: bookingKeys.all }),
+  return useFeedbackMutation({
+    mutationFn: ({ id, target }: BookingStatusVariables) => updateBookingStatus(id, target),
+    invalidate: [bookingKeys.all],
+    successMessage: () => bookings.toast.updated,
+    errorMessage: (error) => bookingStatusErrorMessage(error, bookings.toast),
   });
 }

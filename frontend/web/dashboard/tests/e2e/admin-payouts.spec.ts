@@ -46,6 +46,7 @@ test.describe("admin payouts", () => {
     await dialog.getByLabel(t.dialog.notes).fill("Checked by E2E");
     await dialog.getByRole("button", { name: t.dialog.approve.confirm }).click();
     await expect(dialog).toBeHidden();
+    await expect(page.getByText(t.toast.approve)).toBeVisible();
 
     // The draft is gone from the draft filter and the approved list now holds two.
     await expect(page.getByText(t.states.filteredTitle)).toBeVisible();

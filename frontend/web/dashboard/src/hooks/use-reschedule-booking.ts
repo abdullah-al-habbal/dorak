@@ -1,10 +1,9 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UseMutationResult } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 import { useDictionary } from "@/hooks/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import type { ReschedulePayload } from "@/interfaces/reschedule-payload.interface";
 import { bookingKeys } from "@/lib/booking-keys";
 import { rescheduleBooking } from "@/services/api/mutation/reschedule-booking.mutation";
@@ -17,10 +16,9 @@ interface RescheduleVariables {
 
 export function useRescheduleBooking(): UseMutationResult<Booking, Error, RescheduleVariables> {
   const { bookings } = useDictionary();
-  const client = useQueryClient();
-  return useMutation({
+  return useFeedbackMutation({
     mutationFn: ({ id, payload }: RescheduleVariables) => rescheduleBooking(id, payload),
-    onSuccess: () => toast.success(bookings.reschedule.success),
-    onSettled: () => client.invalidateQueries({ queryKey: bookingKeys.all }),
+    invalidate: [bookingKeys.all],
+    successMessage: () => bookings.reschedule.success,
   });
 }
