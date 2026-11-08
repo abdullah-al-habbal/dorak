@@ -38,6 +38,7 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 | `references/fullstack-sync.md` | Steps 3 and 5: the layer matrix and contract ripple rules |
 | `references/gates.md` | Step 7: exact commands per subsystem and baseline handling |
 | `references/gotchas.md` | Step 5: pitfalls learned from earlier tasks |
+| `../llm-council/SKILL.md` | Step 3a: triage (simple, medium, complex), the five-advisor feasibility council, and the PROCEED/HALT rule |
 | `references/security-review.md` | Step 7a: when the diff needs a security review, which `security-audit` companion files to load, and what to do with each outcome |
 | `references/dashboard-shared-primitives.md` | Steps 3 and 5, and every dashboard review: the shared hooks, key factory, field builders and mappers that must be reused, not re-implemented |
 | `templates/decision-record.md` | Step 4: wording for `decisions-required.md` |
@@ -49,6 +50,7 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 1. **Establish the workspace.** Run `scripts/preflight.sh [topic]`. Preserve unrelated edits and never stage them. Never push, change remotes, or use `--no-verify`.
 2. **Audit.** Read every file `preflight` lists and the request in full, following `references/audit-directive.md`. If the request, a guide, or the code disagree, or a decision is open and unprescribed, stop and report it; do not guess.
 3. **Define the vertical slice.** Apply `references/fullstack-sync.md`: list affected layers, every entry point to the behaviour, and explicit out-of-scope items. Verify any client behaviour the request names even if no change is expected. For dashboard work, map each piece of the slice to a primitive in `references/dashboard-shared-primitives.md` before planning new code.
+3a. **Feasibility council (medium and complex tasks).** Triage the task with `../llm-council/SKILL.md`. A simple task skips the council with the reason recorded. Otherwise run the council on the planned slice before any file change: five independent read-only advisors, anonymous peer review, then the chairman's gate. On **PROCEED**, carry every condition into the plan as an acceptance criterion. On **HALT**, show the `⛔ COUNCIL HALT` alert with each upheld rejection, its reason and evidence, and stop: no edits, no commit, until the user revises the request, resolves the decision, or explicitly overrides.
 4. **Record decisions and the contract.** Use `templates/decision-record.md` in `docs/decisions-required.md`; add the implemented contract to the relevant doc with `templates/implemented-contract.md`.
 5. **Implement with local conventions.** Imports at the top, no relative module imports, `declare(strict_types=1)`, local framework patterns per the subsystem guides. Apply each subsystem's security and quality governance (`backend/CLAUDE.md`, `frontend/web/dashboard/AGENTS.md`, `frontend/mobile/CLAUDE.md`): authorization/ownership checks, no `any`/`dynamic` escapes, file/method size limits, no magic literals or parameter clumps. Add regression tests for allowed, rejected, and side-effect behaviour. For UI work in the dashboard or mobile apps, use the shared `frontend-design` and `interface-design` skills (see `.claude/skills/README.md`); dashboard UI also runs `web-design-guidelines` before closing. If the dashboard needs a contract the backend lacks, change the backend (backward compatible for mobile) instead of adding a frontend workaround. Read `references/gotchas.md` first. In the dashboard, reuse or extend the primitives in `references/dashboard-shared-primitives.md`; this applies to fixes, hotfixes and reviews as much as to features. When a task adds a new primitive, add its row there in the same commit.
 6. **Iterate narrowly.** Focused tests and formatters on touched files only; run `scripts/check-conventions.sh`.
@@ -67,6 +69,7 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 - Follow nested project instructions even when their commands differ from these defaults.
 - Never claim a gate passed unless its command completed and you saw the result.
 - Never commit when Playwright E2E, or any other gate, fails or was not run.
+- Never start implementing a medium or complex task without a council PROCEED or an explicit user override after a HALT; record the override in the report and the commit body.
 - Never commit with an unresolved confirmed security finding introduced by the task, and never write `security-audit` artifacts into the repository.
 - Keep this file under 500 lines and each reference under 200; put new detail in `references/` or `templates/`.
 

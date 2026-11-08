@@ -10,6 +10,8 @@ codeanchors:
 
 **<Task NN> is done and committed locally as `<sha>`.** Nothing was pushed.
 
+**Feasibility council:** <skipped (simple): reason | PROCEED: votes, conditions carried | HALT overridden by the user: reason>
+
 **Decisions / inconsistencies**
 - <decision recorded, or spec/guide mismatch found and how it was resolved or escalated>
 

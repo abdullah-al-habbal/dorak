@@ -17,6 +17,14 @@ AI agent skills for this area. Each skill is a directory with a `SKILL.md` entry
 - [Monorepo Task Executor](monorepo-task-executor/SKILL.md)
 - [Stitch Export → Flutter Atomic Converter](stitch-flutter-converter/SKILL.md)
 
+## Shared planning skill
+
+- [LLM Council](llm-council/SKILL.md) — a feasibility gate for medium and complex tasks: five
+  read-only advisors, anonymous peer review and a chairman issue PROCEED or HALT; one upheld,
+  evidence-backed rejection halts the task. The task executor runs it as Step 3a. It is a Dorak
+  implementation of Karpathy's LLM Council method and the five advisors of
+  `aiwithremy/claude-skills-llm-council`, whose repository has no licence and so is not copied.
+
 ## Shared security skill
 
 - [Security Audit](security-audit/SKILL.md) — Cloudflare's defensive, source-first
