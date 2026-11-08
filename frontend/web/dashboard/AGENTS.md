@@ -59,6 +59,17 @@ without asking the user.**
   authorization and branch scope; the proxy allow-list is defence in depth. Render server
   strings as text, never HTML.
 
+## Shared primitives (mandatory reuse)
+
+Every dashboard change, whether a feature, fix, hotfix, refactor or review, reuses the shared
+hooks and helpers from the refactor batches instead of writing new copies: `useUrlFilters`,
+`resolvePageInfo`, `useDeleteMutation`, `useSaveMutation`, `useReferenceQuery`/`STALE_TIME`,
+`HttpStatus`, `createQueryKeys`, the `schemas/fields/` builders, `mapApiFormError` and
+`useOptimisticToggleMutation`. The full table, the extend-don't-fork rule and the behaviour each
+migration must keep are in
+[dashboard-shared-primitives.md](../../../.claude/skills/monorepo-task-executor/references/dashboard-shared-primitives.md).
+Reviews flag any re-implementation.
+
 ## Type safety and quality
 
 - No explicit `any`. Do not cast external data (API bodies, `JSON.parse`, form input)
