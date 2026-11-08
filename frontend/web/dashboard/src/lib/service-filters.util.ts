@@ -4,6 +4,7 @@ export function searchFromParams(params: URLSearchParams): string | undefined {
   return params.get("search")?.trim().slice(0, MAX_SEARCH) || undefined;
 }
 
-export function searchToQuery(search: string | undefined): string {
-  return search ? new URLSearchParams({ search }).toString() : "";
+/** No search means no params, so the URL falls back to the bare path. */
+export function searchToParams(search: string | undefined): URLSearchParams {
+  return new URLSearchParams(search ? { search } : {});
 }

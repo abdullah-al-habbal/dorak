@@ -28,6 +28,8 @@ test.describe("earnings", () => {
     await expect(page.getByText(earnings.states.emptyTitle)).toBeVisible();
     await expect(page).toHaveURL(/from=/);
     await page.getByRole("button", { name: earnings.range.presets["30d"] }).click();
+    // The default preset is implicit, so the URL drops the range entirely.
+    await expect(page).toHaveURL(/\/dashboard\/manager\/earnings$/);
     await expect(page.getByRole("img", { name: /Revenue by day/ })).toBeVisible();
   });
 

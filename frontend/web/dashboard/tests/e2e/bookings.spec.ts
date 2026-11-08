@@ -11,6 +11,8 @@ const { bookings, common } = dictionaryFor("en");
 const BOOKINGS_API = "/api/dashboard/bookings";
 const HISTORY_API = /^\/api\/dashboard\/bookings\/[^/]+\/history$/;
 const BOOKING_API = /^\/api\/dashboard\/bookings\/[^/]+$/;
+const FIRST_PAGE = 1;
+const SECOND_PAGE = 2;
 
 test.describe("bookings", () => {
   test("shows today's bookings without sideways scroll", async ({ page }) => {
@@ -83,5 +85,36 @@ test.describe("bookings", () => {
     await page.getByRole("group", { name: bookings.views.label }).getByRole("button", { name: bookings.views.week }).click();
     await expect(page).not.toHaveURL(/[?&]view=/);
     expect(new URL(page.url()).searchParams.get("status")).toBe(BookingStatus.Confirmed);
+  });
+
+  test("writes the next page from the pagination bar and keeps the filters", async ({ page }) => {
+    await signIn(page);
+    // The seed fits on one page, so every page serves the first page's rows and claims a second page to show the bar.
+    await page.route(
+      (url) => url.pathname === BOOKINGS_API,
+      async (route) => {
+        if (route.request().method() !== HttpMethod.Get) return route.fallback();
+        const requested = new URL(route.request().url());
+        const query = requested.searchParams;
+        const perPage = Number(query.get("per_page"));
+        const currentPage = Number(query.get("page") ?? FIRST_PAGE);
+        query.set("page", String(FIRST_PAGE));
+        const response = await route.fetch({ url: requested.toString() });
+        const body = (await response.json()) as { meta?: Record<string, unknown> };
+        const pagination = { total: perPage * SECOND_PAGE, per_page: perPage, current_page: currentPage, total_pages: SECOND_PAGE };
+        return route.fulfill({ response, json: { ...body, meta: { ...body.meta, pagination } } });
+      },
+    );
+    await page.goto(`/dashboard/manager/bookings?view=list&status=${BookingStatus.Confirmed}`);
+
+    const pagination = page.getByRole("navigation", { name: bookings.title });
+    await pagination.getByRole("button", { name: common.pagination.next }).click();
+    await expect(page).toHaveURL(/[?&]page=2(&|$)/);
+    // Waiting for the second page to render also lets its intercepted request finish inside this test.
+    const pageLabel = common.pagination.page.replace("{page}", String(SECOND_PAGE)).replace("{total}", String(SECOND_PAGE));
+    await expect(pagination.getByText(pageLabel)).toBeVisible();
+    const params = new URL(page.url()).searchParams;
+    expect(params.get("view")).toBe(BookingView.List);
+    expect(params.get("status")).toBe(BookingStatus.Confirmed);
   });
 });

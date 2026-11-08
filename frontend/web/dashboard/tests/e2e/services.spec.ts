@@ -9,6 +9,8 @@ const { services } = dictionaryFor("en");
 const HAIRCUT = "Classic haircut";
 const CATEGORIES_API = "/api/dashboard/service-categories";
 const CATEGORY_NAME_ERROR = "That category name is already taken.";
+const SERVICES = "/dashboard/manager/services";
+const BOOKINGS = "/dashboard/manager/bookings";
 
 test.describe("services", () => {
   test.afterEach(async () => {
@@ -74,5 +76,25 @@ test.describe("services", () => {
     await activate.click();
     await expect(page.getByText(services.toast.activated)).toBeVisible();
     await expect(page.getByRole("switch", { name: services.toggle.deactivate.replace("{name}", HAIRCUT) }).locator("visible=true").first()).toBeChecked();
+  });
+
+  test("keeps the search in the URL, clears back to the bare path, and replaces history", async ({ page }) => {
+    await signIn(page);
+    await page.goto(BOOKINGS);
+    await page.goto(SERVICES);
+    // Wait for the data (and so hydration) before typing, or the change event is lost.
+    await expect(page.getByText(HAIRCUT).locator("visible=true").first()).toBeVisible();
+    const search = page.getByLabel(services.search);
+
+    await search.fill("Classic haircut");
+    await expect(page).toHaveURL(/\/dashboard\/manager\/services\?search=Classic\+haircut$/);
+    await expect(page.getByRole("heading", { name: "Beard" })).toBeHidden();
+
+    await search.fill("");
+    await expect(page).toHaveURL(/\/dashboard\/manager\/services$/);
+
+    // Search writes replace the entry, so Back leaves the screen instead of stepping through searches.
+    await page.goBack();
+    await expect(page).toHaveURL(/\/dashboard\/manager\/bookings$/);
   });
 });

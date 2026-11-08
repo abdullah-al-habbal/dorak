@@ -36,7 +36,7 @@ the same shape repeats.
 | 3a | `useDeleteMutation` and `useSaveMutation` built on `useFeedbackMutation` | Done |
 | 3b | Service category field error mapping through `mapApiFormError` | Done |
 | 3c | Plan options read through `useReferenceQuery` | Done |
-| 4 | Remaining URL filter alignment | Planned |
+| 4 | Remaining URL filter alignment | Done |
 
 ### Step 1: HTTP status unification
 
@@ -115,6 +115,44 @@ queryFn })` (earnings, analytics, platform settings, schedule hours, subscriptio
 - `hooks/use-url-page.ts` is in scope for the same review.
 - Acceptance: the URL each hook writes is unchanged, covered by Playwright for earnings and
   services.
+
+#### Decision (feasibility council, 2026-11-08): PROCEED with a page-agnostic base
+
+All five advisors approved with conditions; no rejection was raised. The request offered (a) an
+optional no-page mode in `useUrlFilters` and (b) documenting the hooks as exceptions. The council
+chose the `useUrlState` base named above, which this doc already allowed as the alternative to (a):
+
+- (a) is rejected: a flag or a looser `F` puts a conditional page rule, and a type hole, into a
+  primitive with nine callers (booking, branch, chair, stylist, review, plan, payout, schedule,
+  admin subscription), and it does nothing for the shared write.
+- (b) is rejected: it keeps the same `router.replace` expression in four files, against the
+  "hand-written `useSearchParams` + `router.replace`" rule in `dashboard-shared-primitives.md`.
+
+Design, three layers:
+
+- `lib/url-query.util.ts`: `toReplaceHref(pathname, query)` (bare pathname for an empty query)
+  and `applyFilterPatch(filters, patch)` (any non-`page` key resets to page 1).
+- `hooks/use-replace-query.ts`: `useReplaceQuery()` returns a stable writer that calls
+  `router.replace(href, { scroll: false })`. It is the only place a query string is written.
+- `hooks/use-url-state.ts`: `useUrlState(fromParams, toParams)` returns `{ value, setValue }`.
+  `setValue` takes a whole value and does not depend on the current value, so `setRange` and
+  `setSearch` keep a stable identity (the services `SearchInput` lists `onCommit` as an effect
+  dependency, and a changing setter would restart its debounce).
+- `useUrlFilters` is `useUrlState` plus `applyFilterPatch`, with the same signature and the same
+  `F extends { page: number }` bound. `useEarningsRange` and `useServiceSearch` move onto
+  `useUrlState` with stable serialisers (`today` bound with `useCallback`, a module-level
+  `searchToParams`). `searchToParams` replaces `searchToQuery`, which had no other caller; its
+  Vitest cases pin the exact query strings `searchToQuery` wrote (empty, `search=a+b`, Arabic).
+
+`hooks/use-url-page.ts` is removed. All ten `PaginationBar` callers pass `onPageChange` (their
+filter hook's page setter), so the `useUrlPage` fallback never ran. `onPageChange` becomes
+required, which the typecheck proves, and the unused `withPage` helper goes with it. No URL a
+user can produce changes.
+
+Coverage is written first and run green on the code before the refactor, then rerun unchanged
+after it: the services search URL and its bare-path clear, the bare earnings URL on the default
+preset, the pagination bar's `page=2` write, and a back-navigation check that the writes replace
+history instead of pushing to it.
 
 ## Not in Batch 3
 

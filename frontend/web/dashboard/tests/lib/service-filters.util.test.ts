@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { searchFromParams, searchToQuery } from "@/lib/service-filters.util";
+import { searchFromParams, searchToParams } from "@/lib/service-filters.util";
 
 describe("service filters", () => {
   it("reads, trims and bounds the search", () => {
@@ -9,8 +9,16 @@ describe("service filters", () => {
     expect(searchFromParams(new URLSearchParams(`search=${"a".repeat(300)}`))?.length).toBe(100);
   });
 
-  it("writes nothing for an empty search", () => {
-    expect(searchToQuery(undefined)).toBe("");
-    expect(searchToQuery("a b")).toBe("search=a+b");
+  // The query strings the earlier `searchToQuery` wrote, pinned so the URL stays the same.
+  it("writes nothing for an empty search and the same encoded query otherwise", () => {
+    expect(searchToParams(undefined).toString()).toBe("");
+    expect(searchToParams("").toString()).toBe("");
+    expect(searchToParams("a b").toString()).toBe("search=a+b");
+    expect(searchToParams("قص").toString()).toBe("search=%D9%82%D8%B5");
+  });
+
+  it("round-trips through the reader", () => {
+    expect(searchFromParams(searchToParams("fade & beard"))).toBe("fade & beard");
+    expect(searchFromParams(searchToParams(undefined))).toBeUndefined();
   });
 });

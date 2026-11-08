@@ -1,28 +1,17 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
-const FIRST_PAGE = 1;
+import { useUrlState } from "@/hooks/use-url-state";
+import { applyFilterPatch } from "@/lib/url-query.util";
 
-/** The URL is the source of truth: parse filters from it and write patches back, resetting to page 1 on any filter change. */
+/** URL-backed list filters: `useUrlState` plus the rule that any filter change resets to page 1. */
 export function useUrlFilters<F extends { page: number }>(
   fromParams: (params: URLSearchParams) => F,
   toParams: (filters: F) => URLSearchParams,
 ): { filters: F; update: (patch: Partial<F>) => void } {
-  const router = useRouter();
-  const pathname = usePathname();
-  const params = useSearchParams();
-  const filters = useMemo(() => fromParams(new URLSearchParams(params.toString())), [fromParams, params]);
-
-  const update = useCallback(
-    (patch: Partial<F>) => {
-      const resetsPage = Object.keys(patch).some((key) => key !== "page");
-      const query = toParams({ ...filters, ...(resetsPage ? { page: FIRST_PAGE } : {}), ...patch }).toString();
-      router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-    },
-    [filters, pathname, router, toParams],
-  );
+  const { value: filters, setValue } = useUrlState(fromParams, toParams);
+  const update = useCallback((patch: Partial<F>) => setValue(applyFilterPatch(filters, patch)), [filters, setValue]);
 
   return { filters, update };
 }

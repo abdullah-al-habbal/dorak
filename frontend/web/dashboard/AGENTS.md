@@ -62,7 +62,7 @@ without asking the user.**
 ## Shared primitives (mandatory reuse)
 
 Every dashboard change, whether a feature, fix, hotfix, refactor or review, reuses the shared
-hooks and helpers from the refactor batches instead of writing new copies: `useUrlFilters`,
+hooks and helpers from the refactor batches instead of writing new copies: `useUrlFilters`/`useUrlState`/`useReplaceQuery`,
 `resolvePageInfo`, `useDeleteMutation`, `useSaveMutation`, `useReferenceQuery`/`STALE_TIME`,
 `HttpStatus`, `createQueryKeys`, the `schemas/fields/` builders, `mapApiFormError`,
 `useOptimisticToggleMutation`, `useFeedbackMutation` and `useListQuery`. The full table, the extend-don't-fork rule and the behaviour each
