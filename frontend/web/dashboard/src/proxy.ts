@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 import { ACCESS_COOKIE, CLAIM_COOKIE, REFRESH_COOKIE } from "@/config/cookies.constant";
+import { HttpStatus } from "@/enums/http-status.enum";
 import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
 import { clearSessionCookies, setSessionCookies } from "@/services/api/auth/cookies";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
@@ -37,7 +38,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     hasSessionCookies: [CLAIM_COOKIE, ACCESS_COOKIE, REFRESH_COOKIE].some((name) => request.cookies.has(name)),
   });
 
-  if (decision.kind === "not-found") return NextResponse.rewrite(new URL(NOT_FOUND_PATH, request.url), { status: 404 });
+  if (decision.kind === "not-found") return NextResponse.rewrite(new URL(NOT_FOUND_PATH, request.url), { status: HttpStatus.NotFound });
 
   // A refreshed session on a pass-through request is replayed as a redirect so the new cookies reach the server render.
   const location =

@@ -5,6 +5,7 @@ childnodes:
   - docs.architecture
   - docs.decisions
   - docs.remediation
+  - docs.planning.dashboard-refactor-batch-3
   - docs.audit
   - docs.graph.part-2
   - docs.graph.part-3
