@@ -9,6 +9,7 @@ childnodes:
   - skills.repo.monorepo-task-executor.references.fullstack-sync
   - skills.repo.monorepo-task-executor.references.gates
   - skills.repo.monorepo-task-executor.references.gotchas
+  - skills.repo.monorepo-task-executor.references.security-review
   - skills.repo.monorepo-task-executor.templates.commit-message
   - skills.repo.monorepo-task-executor.templates.decision-record
   - skills.repo.monorepo-task-executor.templates.final-report
@@ -37,6 +38,7 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 | `references/fullstack-sync.md` | Steps 3 and 5: the layer matrix and contract ripple rules |
 | `references/gates.md` | Step 7: exact commands per subsystem and baseline handling |
 | `references/gotchas.md` | Step 5: pitfalls learned from earlier tasks |
+| `references/security-review.md` | Step 7a: when the diff needs a security review, which `security-audit` companion files to load, and what to do with each outcome |
 | `references/dashboard-shared-primitives.md` | Steps 3 and 5, and every dashboard review: the shared hooks, key factory, field builders and mappers that must be reused, not re-implemented |
 | `templates/decision-record.md` | Step 4: wording for `decisions-required.md` |
 | `templates/implemented-contract.md` | Step 4: the section recorded in the change report or relevant doc |
@@ -51,6 +53,7 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 5. **Implement with local conventions.** Imports at the top, no relative module imports, `declare(strict_types=1)`, local framework patterns per the subsystem guides. Apply each subsystem's security and quality governance (`backend/CLAUDE.md`, `frontend/web/dashboard/AGENTS.md`, `frontend/mobile/CLAUDE.md`): authorization/ownership checks, no `any`/`dynamic` escapes, file/method size limits, no magic literals or parameter clumps. Add regression tests for allowed, rejected, and side-effect behaviour. For UI work in the dashboard or mobile apps, use the shared `frontend-design` and `interface-design` skills (see `.claude/skills/README.md`); dashboard UI also runs `web-design-guidelines` before closing. If the dashboard needs a contract the backend lacks, change the backend (backward compatible for mobile) instead of adding a frontend workaround. Read `references/gotchas.md` first. In the dashboard, reuse or extend the primitives in `references/dashboard-shared-primitives.md`; this applies to fixes, hotfixes and reviews as much as to features. When a task adds a new primitive, add its row there in the same commit.
 6. **Iterate narrowly.** Focused tests and formatters on touched files only; run `scripts/check-conventions.sh`.
 7. **Run gates** from `references/gates.md` for every touched subsystem, in this order: backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, then `scripts/check-conventions.sh`. A contract change means backend, dashboard, and mobile gates all run. Playwright is mandatory for dashboard work and must fully pass; ask before running it if the user has not authorised wiping the dev database.
+7a. **Security review.** Review the task's diff with the shared `security-audit` skill in guidance mode, following `references/security-review.md`: required whenever the diff touches auth, authorization, tenant scope, the proxy, money flows, uploads, mobile storage or dependencies; otherwise record it as not applicable with a reason. A confirmed issue introduced by the task is fixed (with a regression test and a gate rerun) before committing; a pre-existing one is reported, not fixed. Run the skill's full audit mode only on an explicit user request, with its output outside the repository.
 8. **Close on evidence.** Verify each acceptance criterion. Call the work done only after all applicable gates pass, Playwright included. If any gate fails or is blocked by the environment, do not commit: leave the task incomplete and report the failure or blocker.
 8a. **Hygiene cleanup** (only after every gate passed, so failure artifacts stay available while debugging): `cd frontend/web/dashboard && npm run clean:artifacts`; `cd backend && rm -rf storage/framework/cache/phpstan/ && rm -f storage/logs/*.log`; `cd frontend/mobile && dart run melos run clean`. These remove only git-ignored output; never delete tracked files or placeholders. Stop `next dev` first or restart it. Then run `cd frontend/web/dashboard && npx next typegen`, because the cleanup removes the generated route types the pre-commit typecheck needs.
 9. **Review and commit locally, only if every gate including Playwright passed.** `git diff --check`, inspect `git diff` and `git status`, revert unrelated formatter output, stage task files only, inspect `git diff --cached`, commit with `templates/commit-message.md` (conventional type, task number, session attribution). Let pre-commit hooks finish. Run `git status --short` afterwards.
@@ -64,6 +67,7 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 - Follow nested project instructions even when their commands differ from these defaults.
 - Never claim a gate passed unless its command completed and you saw the result.
 - Never commit when Playwright E2E, or any other gate, fails or was not run.
+- Never commit with an unresolved confirmed security finding introduced by the task, and never write `security-audit` artifacts into the repository.
 - Keep this file under 500 lines and each reference under 200; put new detail in `references/` or `templates/`.
 
 ## Mandatory Engineering Gotchas & Rules (Codified from Batch 2 Refactor Learnings)

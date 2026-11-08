@@ -41,7 +41,7 @@ Whenever dashboard code, copy, or contracts change, run from that directory: `np
 - `dart format` only on touched files. Workspace-wide formatting rewrites unrelated files; revert any it modifies.
 
 ## Order of gates
-Preflight audit, implementation, backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, `scripts/check-conventions.sh`, hygiene cleanup, then the commit. Each step runs only if the previous passed.
+Preflight audit, implementation, backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, `scripts/check-conventions.sh`, the security review (`references/security-review.md`), hygiene cleanup, then the commit. Each step runs only if the previous passed.
 
 ## Repository rules
 `scripts/check-conventions.sh` flags relative imports, inline FQCNs, and missing `strict_types`, and runs `git diff --check`.

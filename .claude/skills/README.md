@@ -17,6 +17,19 @@ AI agent skills for this area. Each skill is a directory with a `SKILL.md` entry
 - [Monorepo Task Executor](monorepo-task-executor/SKILL.md)
 - [Stitch Export → Flutter Atomic Converter](stitch-flutter-converter/SKILL.md)
 
+## Shared security skill
+
+- [Security Audit](security-audit/SKILL.md) — Cloudflare's defensive, source-first
+  vulnerability review (`cloudflare/security-audit-skill`, MIT, commit
+  `c1c8a8c1471069fb0e188eeaff69b8e8db6564a8`). The task executor runs it in guidance mode on
+  every task diff that crosses a trust boundary
+  ([security-review.md](monorepo-task-executor/references/security-review.md)); its full audit
+  mode runs only on explicit request and writes outside the repository. The files were copied
+  unchanged from upstream after review rather than installed with `npx skills add`, so the skill
+  has no `skills-lock.json` entry yet; running
+  `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit`
+  at the root adds one.
+
 ## Shared UI/UX skills
 
 Installed from upstream with `npx skills add` run at the repository root, so

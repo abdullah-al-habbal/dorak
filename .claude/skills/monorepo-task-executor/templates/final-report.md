@@ -28,6 +28,7 @@ codeanchors:
 | Pint | `<cmd>` | <clean / pre-existing findings listed below> |
 | Dashboard | lint, typecheck, test, build | <result, counts> |
 | Mobile | `dart run melos run verify` | <result> |
+| Security review | `security-audit` guidance mode on the diff | <surfaces and companion files checked, findings; or not applicable: reason> |
 
 **Pre-existing findings (not mine):** <list or none>
 **Not done / out of scope:** <list or none>
