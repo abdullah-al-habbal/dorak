@@ -31,8 +31,12 @@ the same shape repeats.
 | Step | Scope | Status |
 | --- | --- | --- |
 | 1 | HTTP status unification | Done |
-| 2 | Shared mutation feedback for the remaining mutation hooks | Planned |
-| 3 | Remaining URL filter alignment | Planned |
+| 2 | Shared mutation feedback for the remaining mutation hooks | Done |
+| 3 | Shared list query for the paginated list hooks | Done |
+| 3a | `useDeleteMutation` and `useSaveMutation` built on `useFeedbackMutation` | Done |
+| 3b | Service category field error mapping through `mapApiFormError` | Planned |
+| 3c | Plan options read through `useReferenceQuery` | Planned |
+| 4 | Remaining URL filter alignment | Planned |
 
 ### Step 1: HTTP status unification
 
@@ -66,7 +70,36 @@ invalidating one or more key roots.
   move to an existing primitive (`useSaveMutation`, `mapApiFormError`) if one already fits.
 - Hook signatures and the fields callers read stay unchanged.
 
-### Step 3: Remaining URL filter alignment
+Outcome: `useFeedbackMutation({ mutationFn, invalidate, successMessage, errorMessage? })`
+(`hooks/use-feedback-mutation.ts`, callbacks in `lib/feedback-mutation.util.ts`) now backs
+eight of the ten hooks. The booking status 409/400 copy moved to `bookingStatusErrorMessage`.
+Create service category (no toast, invalidates on success only) and save opening hours
+(`setQueryData`, no invalidation) keep `useMutation`, because the primitive would change their
+behaviour.
+
+### Step 3: Shared list query
+
+Eleven list hooks repeated `useQuery({ queryKey: xKeys.list(...), queryFn, placeholderData:
+keepPreviousData })`. `useListQuery(queryKey, queryFn, enabled?)` (`hooks/use-list-query.ts`,
+options in `lib/list-query.util.ts`) now backs branches, stylists, chairs, services, plans,
+reviews, payouts, admin payouts, admin subscriptions, schedule appointments and bookings.
+Reads that must not show the previous record (booking history, opening hours), that have their
+own cache rule (branch detail, `gcTime: 0`) or that are already a bare `useQuery({ queryKey,
+queryFn })` (earnings, analytics, platform settings, schedule hours, subscriptions) stay on
+`useQuery`.
+
+### Step 3a to 3c: Follow-ups
+
+- **3a.** `useDeleteMutation` and `useSaveMutation` build their options through
+  `deleteFeedbackOptions` and `saveFeedbackOptions` on top of `useFeedbackMutation`, so the
+  toast and invalidate-on-settle code lives once. Signatures, toasts and keys are unchanged.
+- **3b.** `components/services/service-category-field.tsx` stops walking `mapApiFieldErrors`
+  output by hand and reads `mapApiFormError` instead, with the same message shown.
+- **3c.** `usePlanOptions` moves to `useReferenceQuery`. This is the one intended behaviour
+  change in Batch 3: the active-plan options are cached for `STALE_TIME.Reference` instead of
+  refetched every time the assign dialog opens. Approved by the user.
+
+### Step 4: Remaining URL filter alignment
 
 `hooks/use-earnings-range.ts` and `hooks/use-service-search.ts` still call `useSearchParams` and
 `router.replace` by hand. Neither state has a page number, while `useUrlFilters` requires
