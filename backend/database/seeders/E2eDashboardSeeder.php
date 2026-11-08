@@ -25,6 +25,7 @@ use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Payout\Enums\PayoutStatus;
 use Modules\Payout\Models\PayoutModel;
+use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Enums\ReviewSubjectTypeEnum;
 use Modules\Review\Models\ReviewModel;
@@ -62,16 +63,29 @@ final class E2eDashboardSeeder extends Seeder
 
     public const int LEGACY_PLAN_ORDER = 100;
 
+    /** The seeded chairs; the chairs spec creates others, and every reset removes them. */
+    private const array CHAIR_LABELS = ['Chair 1', 'Chair 2'];
+
     public function run(): void
+    {
+        // One transaction: a reseed that fails part-way keeps the previous baseline instead of a half-reset database.
+        DB::transaction(fn () => $this->seedBaseline());
+        // After the commit, so no request can re-cache the old settings in between.
+        Cache::forget(SettingsConstants::SETTINGS_CACHE_KEY);
+    }
+
+    private function seedBaseline(): void
     {
         $currency = CurrencyModel::query()->firstOrCreate(
             ['code' => 'USD'],
             ['name' => ['en' => 'US dollar', 'ar' => 'دولار أمريكي'], 'symbol' => '$', 'is_default' => true],
         );
 
-        $branch = $this->branch();
+        $owner = $this->owner();
+        $branch = $this->branch($currency, $owner);
         $this->restoreBranchBaseline($branch);
-        $chairs = [$this->chair($branch, 'Chair 1'), $this->chair($branch, 'Chair 2')];
+        $chairs = array_map(fn (string $label): ChairModel => $this->chair($branch, $label), self::CHAIR_LABELS);
+        ChairModel::query()->where('branch_id', $branch->id)->whereNotIn('label', self::CHAIR_LABELS)->delete();
 
         DB::table('branch_opening_hours')->where('branch_id', $branch->id)->delete();
 
@@ -93,15 +107,14 @@ final class E2eDashboardSeeder extends Seeder
         $this->booking($chairs[1], $lina, $beard, 'Older Client', 'عميل قديم', 11, BookingStatus::Completed, 40);
 
         $this->reviews($branch);
-        $this->ownerBilling($branch->brand, $currency);
+        $this->ownerBilling($branch->brand, $owner, $currency);
         $this->restoreSettingsBaseline();
     }
 
-    /** Admin specs edit platform settings; every reset puts them back on their defaults. */
+    /** Admin specs edit platform settings; every reset puts them back on their defaults (`run()` clears the cache). */
     private function restoreSettingsBaseline(): void
     {
         DB::table('platform_settings')->delete();
-        Cache::forget(SettingsConstants::SETTINGS_CACHE_KEY);
     }
 
     /** One shift per weekday (unique key): Mon to Wed work, Thu is switched off, the rest are days off. Weekdays: 0 is Sunday. */
@@ -125,11 +138,14 @@ final class E2eDashboardSeeder extends Seeder
             [2, 'Waited too long for my turn.', ReviewStatus::Published],
             [1, 'Disputed by the branch.', ReviewStatus::Disputed],
         ];
-        // Reuse the seeded completed bookings: the factory's own booking would create random currencies.
-        $bookingIds = BookingModel::query()->where('branch_id', $branch->id)->where('booking_status', BookingStatus::Completed)->orderBy('id')->pluck('id');
+        // Reuse the seeded completed bookings and their clients: the factory's own booking would create random
+        // currencies, and its own author a random-e-mail client per reseed that collides once enough have piled up.
+        $bookings = BookingModel::query()->where('branch_id', $branch->id)->where('booking_status', BookingStatus::Completed)->orderBy('id')->get(['id', 'client_id']);
         foreach ($rows as $index => [$rating, $body, $status]) {
             ReviewModel::factory()->create([
-                'booking_id' => $bookingIds[$index],
+                'booking_id' => $bookings[$index]->id,
+                'author_id' => $bookings[$index]->client_id,
+                'author_type' => ReviewAuthorTypeEnum::Client,
                 'subject_type' => ReviewSubjectTypeEnum::Branch,
                 'subject_id' => $branch->id,
                 'rating' => $rating,
@@ -139,13 +155,18 @@ final class E2eDashboardSeeder extends Seeder
         }
     }
 
-    /** The brand owner (dashboard actor `owner`) with an active plan and payouts in every visible status plus one hidden draft. */
-    private function ownerBilling(BrandModel $brand, CurrencyModel $currency): void
+    /** The brand owner (dashboard actor `owner`). */
+    private function owner(): ClientModel
     {
-        $owner = ClientModel::query()->firstOrCreate(
+        return ClientModel::query()->firstOrCreate(
             ['email' => self::OWNER_EMAIL],
             ClientModel::factory()->raw(['email' => self::OWNER_EMAIL, 'name' => ['en' => 'E2E Owner', 'ar' => 'مالك الاختبار'], 'password' => Hash::make(self::OWNER_PASSWORD)]),
         );
+    }
+
+    /** The owner's brand with an active plan and payouts in every visible status plus one hidden draft. */
+    private function ownerBilling(BrandModel $brand, ClientModel $owner, CurrencyModel $currency): void
+    {
         $brand->update(['owner_id' => $owner->id]);
 
         BrandSubscriptionModel::query()->where('brand_id', $brand->id)->delete();
@@ -205,14 +226,16 @@ final class E2eDashboardSeeder extends Seeder
         return $plan;
     }
 
-    private function branch(): BranchModel
+    private function branch(CurrencyModel $currency, ClientModel $owner): BranchModel
     {
         $existing = BranchModel::query()->where('email', self::MANAGER_EMAIL)->first();
         if ($existing !== null) {
             return $existing;
         }
 
-        $brand = BrandModel::factory()->create(['status' => BrandStatusEnum::Active->value]);
+        // Seeded owner and currency: the factory's own are a random-e-mail client and a random currency code,
+        // which collide with rows the base seeders (or this one) already created.
+        $brand = BrandModel::factory()->create(['status' => BrandStatusEnum::Active->value, 'owner_id' => $owner->id, 'base_currency_code' => $currency->code]);
 
         return BranchModel::factory()->create([
             'brand_id' => $brand->id,
@@ -244,6 +267,8 @@ final class E2eDashboardSeeder extends Seeder
             ['email' => $email],
             BarberModel::factory()->raw(['email' => $email, 'name' => ['en' => $en, 'ar' => $ar], 'status' => $status->value, 'password' => Hash::make(self::BARBER_PASSWORD)]),
         );
+        // The stylists spec toggles the status; restore it so a failed run cannot leak into the next project.
+        $barber->update(['name' => ['en' => $en, 'ar' => $ar], 'status' => $status->value]);
         $chair->update(['barber_id' => $barber->id]);
 
         return $barber;
@@ -264,7 +289,8 @@ final class E2eDashboardSeeder extends Seeder
             ['name' => ['en' => $categoryEn, 'ar' => $categoryAr], 'is_active' => true],
         );
 
-        return OfferedServiceModel::query()->firstOrCreate(
+        // updateOrCreate: the services spec toggles the active flag, and a reset must restore it.
+        return OfferedServiceModel::query()->updateOrCreate(
             ['serviceable_id' => $branch->brand_id, 'serviceable_type' => ServiceableTypeEnum::Brand, 'category_id' => $category->id],
             [
                 'name' => ['en' => $nameEn, 'ar' => $nameAr],
