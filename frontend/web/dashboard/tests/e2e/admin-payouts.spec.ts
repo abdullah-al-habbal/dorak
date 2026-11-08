@@ -1,12 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 import { E2E_ADMIN_STORAGE_STATE, E2E_STORAGE_STATE } from "@tests/e2e/support/e2e-env.constant";
+import { holdRequests } from "@tests/e2e/support/hold-requests";
 import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 
 const en = dictionaryFor("en");
 const ar = dictionaryFor("ar");
 const t = en.adminPayouts;
 const PAYOUTS = "/dashboard/admin/payouts";
+const ADMIN_PAYOUTS_API = "/api/dashboard/admin/payouts";
 
 test.describe("admin payouts", () => {
   test.use({ storageState: E2E_ADMIN_STORAGE_STATE });
@@ -34,6 +36,22 @@ test.describe("admin payouts", () => {
     await page.getByLabel(t.filters.status).selectOption("draft");
     await expect(page).toHaveURL(/status=draft/);
     await expect(page.getByText(t.states.results.replace("{count}", "1"))).toBeVisible();
+  });
+
+  test("keeps the previous page on screen while a new filter loads", async ({ page }) => {
+    await signIn(page, "en", "admin");
+    await page.goto(PAYOUTS);
+    await expect(page.getByText(t.states.results.replace("{count}", "4"))).toBeVisible();
+
+    const release = await holdRequests(page, (pathname) => pathname === ADMIN_PAYOUTS_API);
+    await page.getByLabel(t.filters.status).selectOption("draft");
+    await expect(page.locator("[aria-busy=true]")).toBeVisible();
+    await expect(page.getByText(t.states.results.replace("{count}", "4"))).toBeVisible();
+    await expect(page.getByRole("status", { name: en.common.loading })).toHaveCount(0);
+
+    release();
+    await expect(page.getByText(t.states.results.replace("{count}", "1"))).toBeVisible();
+    await expect(page.locator("[aria-busy=true]")).toHaveCount(0);
   });
 
   test("approves a draft payout", async ({ page }) => {

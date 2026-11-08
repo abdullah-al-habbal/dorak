@@ -65,7 +65,7 @@ Every dashboard change, whether a feature, fix, hotfix, refactor or review, reus
 hooks and helpers from the refactor batches instead of writing new copies: `useUrlFilters`,
 `resolvePageInfo`, `useDeleteMutation`, `useSaveMutation`, `useReferenceQuery`/`STALE_TIME`,
 `HttpStatus`, `createQueryKeys`, the `schemas/fields/` builders, `mapApiFormError`,
-`useOptimisticToggleMutation` and `useFeedbackMutation`. The full table, the extend-don't-fork rule and the behaviour each
+`useOptimisticToggleMutation`, `useFeedbackMutation` and `useListQuery`. The full table, the extend-don't-fork rule and the behaviour each
 migration must keep are in
 [dashboard-shared-primitives.md](../../../.claude/skills/monorepo-task-executor/references/dashboard-shared-primitives.md).
 Reviews flag any re-implementation.
