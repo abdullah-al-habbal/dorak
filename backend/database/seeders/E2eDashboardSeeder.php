@@ -144,11 +144,12 @@ final class E2eDashboardSeeder extends Seeder
     {
         $owner = ClientModel::query()->firstOrCreate(
             ['email' => self::OWNER_EMAIL],
-            ClientModel::factory()->make(['email' => self::OWNER_EMAIL, 'name' => ['en' => 'E2E Owner', 'ar' => 'مالك الاختبار'], 'password' => Hash::make(self::OWNER_PASSWORD)])->getAttributes(),
+            ClientModel::factory()->raw(['email' => self::OWNER_EMAIL, 'name' => ['en' => 'E2E Owner', 'ar' => 'مالك الاختبار'], 'password' => Hash::make(self::OWNER_PASSWORD)]),
         );
         $brand->update(['owner_id' => $owner->id]);
 
         BrandSubscriptionModel::query()->where('brand_id', $brand->id)->delete();
+        $this->removeOtherBrandSubscriptions($brand);
         $plan = $this->plan($currency, self::GROWTH_PLAN_ORDER, 4900, ['en' => 'E2E Growth', 'ar' => 'نمو الاختبار'], true);
         $this->plan($currency, self::LEGACY_PLAN_ORDER, 2900, ['en' => 'E2E Legacy', 'ar' => 'الخطة القديمة'], false);
         // The plans spec creates and edits plans; anything that is not one of the two seeded plans goes.
@@ -171,6 +172,19 @@ final class E2eDashboardSeeder extends Seeder
                 'created_at' => now()->subDays($daysAgo),
             ]);
         }
+    }
+
+    /** The subscriptions spec assigns a plan to another brand; that subscription and the feature flags it granted go, so the seeded one is the only subscription. */
+    private function removeOtherBrandSubscriptions(BrandModel $brand): void
+    {
+        $syncer = app(PlanFeatureSyncer::class);
+        BrandSubscriptionModel::query()->whereNot('brand_id', $brand->id)->with('brand')->get()
+            ->each(function (BrandSubscriptionModel $subscription) use ($syncer): void {
+                if ($subscription->brand !== null) {
+                    $syncer->revoke($subscription->brand);
+                }
+                $subscription->delete();
+            });
     }
 
     /** A seeded plan keyed by its display order; running the seeder again restores its name, price and active flag. */
@@ -228,7 +242,7 @@ final class E2eDashboardSeeder extends Seeder
     {
         $barber = BarberModel::query()->firstOrCreate(
             ['email' => $email],
-            BarberModel::factory()->make(['email' => $email, 'name' => ['en' => $en, 'ar' => $ar], 'status' => $status->value, 'password' => Hash::make(self::BARBER_PASSWORD)])->getAttributes(),
+            BarberModel::factory()->raw(['email' => $email, 'name' => ['en' => $en, 'ar' => $ar], 'status' => $status->value, 'password' => Hash::make(self::BARBER_PASSWORD)]),
         );
         $chair->update(['barber_id' => $barber->id]);
 
@@ -269,7 +283,7 @@ final class E2eDashboardSeeder extends Seeder
         $email = 'e2e-client-'.Str::slug($clientEn).'@dorak.test';
         $client = ClientModel::query()->firstOrCreate(
             ['email' => $email],
-            ClientModel::factory()->make(['email' => $email, 'name' => ['en' => $clientEn, 'ar' => $clientAr]])->getAttributes(),
+            ClientModel::factory()->raw(['email' => $email, 'name' => ['en' => $clientEn, 'ar' => $clientAr]]),
         );
         $startsAt = now()->subDays($daysAgo)->setTime($hour, 0);
 
