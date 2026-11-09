@@ -88,6 +88,13 @@ Without these tasks, someone can't get in, can't get back in, can't be approved,
   3. Render `lang` and `dir` on the server from the locale cookie in `src/app/layout.tsx`, so Arabic pages stop flashing left-to-right.
   4. Check every screen's message for 429 and for a backend that is down (502/503). Add a localized "service unavailable or maintenance" state.
   5. Use or delete the unused `errors.forbidden` dictionary entry. Keep the redirect and in-page forbidden pattern, and don't adopt the experimental `forbidden.tsx`.
+- **Implemented (NS-29, done):**
+  - **API errors:** `ApiExceptionResponseHandler` keeps a deliberate message from an `AuthorizationException`, `AccessDeniedHttpException` or `ConflictHttpException` (not Laravel's "This action is unauthorized."); anything else gets the localized generic text. New codes `METHOD_NOT_ALLOWED` (405) and `PAYLOAD_TOO_LARGE` (413); 503 is `SERVICE_UNAVAILABLE`. The generic texts live only in `Core/Lang/*/messages.php`; the unused `core.php` files are deleted. Existing codes and the envelope are unchanged (mobile unaffected; a 405 or 413 used to arrive as `UNPROCESSABLE_ENTITY`).
+  - **Root cause fixed on the way:** the three Filament panel providers translated `core::messages.*` while registering, before the Core namespace existed, and Laravel cached an empty group, so every generic API message came back as the raw key. They now translate lazily. Tests: `tests/Feature/Core/ApiErrorStatusTest.php`.
+  - **Website:** `Website/Resources/views/errors/{404,500,503}` (self-contained, en and ar by `Accept-Language`, no Vite, database or session), registered in the `errors` view namespace by `WebsiteServiceProvider`. Tests: `tests/Feature/Website/ErrorPagesTest.php`.
+  - **Dashboard:** `global-error.tsx`; a portal `error.tsx` that keeps the shell, logs the error and shows a reference (the backend `request_id`, now carried through the proxy envelope and `ApiClientError`, else Next's digest); `lang` and `dir` rendered from the locale cookie in the root layout; `ApiErrorCode.ServiceUnavailable` for a backend 503 with a maintenance message; `errors.forbidden` is used by the portal error page for 403.
+  - **Cost of server-side `lang`/`dir`:** reading the cookie in the root layout makes the document render per request, so the root layout sets `export const instant = false` (Cache Components otherwise fails the build).
+  - **Not done:** the backend takes its locale from the signed-in account's preference, not from `Accept-Language`, so a signed-out API error (for example a login 429) is still English.
 - **Done when:**
   - Pest covers each status code.
   - Vitest covers the new pages' copy selection.

@@ -23,7 +23,7 @@ Source: [product audit](planning/product-audit-part-3.md). Remaining launch-read
 
 ## Launch roadmap
 
-Plan: [next steps](next-steps/index.md), 30 tasks in execution order. All its decisions, D1 to D13, are resolved. The details and the operational defaults (clean-up after 7 days, a resubmission cap of 3, 60 s polling, 5 registrations per hour per email) are in [its decisions page](next-steps/01-decisions.md). NS-01 and NS-02 are shipped; Phase 1 continues with NS-29.
+Plan: [next steps](next-steps/index.md), 30 tasks in execution order. All its decisions, D1 to D13, are resolved. The details and the operational defaults (clean-up after 7 days, a resubmission cap of 3, 60 s polling, 5 registrations per hour per email) are in [its decisions page](next-steps/01-decisions.md). NS-01, NS-02 and NS-29 are shipped; Phase 1 continues with NS-03.
 
 - [x] **D1: Filament is retired:** decided 2026-11-09. The Next.js dashboard is the only web surface for every guard, including the whole admin back office. Filament is removed after its replacements ship (NS-28).
 - [x] **D2: How a new brand owner joins:** decided 2026-11-09. A public "Register your business" page on the dashboard, with email verification, a status page and emails (NS-03). Barbers keep the stylist app's sign-up and get an admin approval queue (NS-30). Clients need no approval; branches and admins are never public.

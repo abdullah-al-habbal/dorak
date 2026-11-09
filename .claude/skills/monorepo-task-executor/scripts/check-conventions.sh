@@ -19,7 +19,7 @@ while IFS= read -r f; do
     *.dart)
       grep -nE "^(import|export) '\.{1,2}/" "$f" >/dev/null && report relative-import "$f" ;;
     *.php)
-      case "$f" in */Database/Migrations/*|*/vendor/*) continue ;; esac
+      case "$f" in */Database/Migrations/*|*/vendor/*|*.blade.php) continue ;; esac
       grep -q "declare(strict_types=1);" "$f" || report strict-types "$f"
       grep -nE "^\s*[^/*#' \"].*[^\\\\A-Za-z]\\\\Modules\\\\" "$f" | grep -vE "^\S*:\s*(use|namespace) " >/dev/null && report inline-fqcn "$f" ;;
   esac

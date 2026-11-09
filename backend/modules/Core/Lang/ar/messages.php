@@ -14,6 +14,8 @@ return [
     'unprocessable' => 'تعذرت معالجة الطلب.',
     'unauthorized' => 'غير مصرح',
     'forbidden' => 'محظور',
+    'method_not_allowed' => 'هذا الإجراء غير مسموح لهذا المورد.',
+    'payload_too_large' => 'حجم الطلب كبير جدًا.',
     'conflict' => 'يتعارض الطلب مع الحالة الحالية للمورد.',
     'too_many_requests' => 'طلبات كثيرة جدًا',
     'server_error' => 'خطأ في الخادم',

@@ -14,6 +14,8 @@ return [
     'unprocessable' => 'The request could not be processed.',
     'unauthorized' => 'Unauthenticated',
     'forbidden' => 'Forbidden',
+    'method_not_allowed' => 'This action is not allowed for this resource.',
+    'payload_too_large' => 'The request is too large.',
     'conflict' => 'The request conflicts with the current resource state.',
     'too_many_requests' => 'Too many requests',
     'server_error' => 'Server error',

@@ -11,4 +11,5 @@ export enum ApiErrorCode {
   Conflict = "conflict",
   Network = "network_error",
   Server = "server_error",
+  ServiceUnavailable = "service_unavailable",
 }

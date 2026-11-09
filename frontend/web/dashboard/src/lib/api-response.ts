@@ -13,9 +13,10 @@ export function apiFailure(
   code: ApiErrorCode,
   message: string,
   fields?: Record<string, string[]>,
+  requestId?: string,
 ): NextResponse {
   return NextResponse.json(
-    { success: false, message, error: { code, fields } },
+    { success: false, message, error: { code, fields }, request_id: requestId },
     { status, headers: NO_STORE },
   );
 }

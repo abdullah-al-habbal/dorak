@@ -2,6 +2,9 @@ export const enErrors = {
   notFound: { title: "Page not found", body: "That page doesn't exist or has moved." },
   generic: { title: "Something went wrong", body: "The page couldn't be shown. Try again." },
   forbidden: { title: "Access denied", body: "Your role can't open this area." },
+  unavailable: { title: "Temporarily unavailable", body: "Dorak is down for maintenance or can't be reached right now. Try again in a few minutes." },
+  rateLimited: { title: "Too many requests", body: "You've made too many requests. Wait a minute, then try again." },
+  reference: "Reference",
   backToWorkspace: "Back to your workspace",
   api: {
     invalid_request: "The request couldn't be understood.",
@@ -15,6 +18,7 @@ export const enErrors = {
     too_many_requests: "Too many attempts. Wait a minute, then try again.",
     conflict: "That time was just taken or changed. Reload and try again.",
     network_error: "Can't reach the server. Check your connection.",
+    service_unavailable: "Dorak is temporarily unavailable. Try again in a few minutes.",
     server_error: "Something went wrong on our side. Try again shortly.",
   },
 } as const;

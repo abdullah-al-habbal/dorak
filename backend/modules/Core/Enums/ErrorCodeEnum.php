@@ -13,7 +13,9 @@ enum ErrorCodeEnum: string
     case UNAUTHORIZED = 'UNAUTHORIZED';
     case FORBIDDEN = 'FORBIDDEN';
     case RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND';
+    case METHOD_NOT_ALLOWED = 'METHOD_NOT_ALLOWED';
     case CONFLICT = 'CONFLICT';
+    case PAYLOAD_TOO_LARGE = 'PAYLOAD_TOO_LARGE';
     case UNPROCESSABLE_ENTITY = 'UNPROCESSABLE_ENTITY';
     case TOO_MANY_REQUESTS = 'TOO_MANY_REQUESTS';
     case SERVER_ERROR = 'SERVER_ERROR';
@@ -27,7 +29,9 @@ enum ErrorCodeEnum: string
             self::UNAUTHORIZED => Response::HTTP_UNAUTHORIZED,
             self::FORBIDDEN => Response::HTTP_FORBIDDEN,
             self::RESOURCE_NOT_FOUND => Response::HTTP_NOT_FOUND,
+            self::METHOD_NOT_ALLOWED => Response::HTTP_METHOD_NOT_ALLOWED,
             self::CONFLICT => Response::HTTP_CONFLICT,
+            self::PAYLOAD_TOO_LARGE => Response::HTTP_REQUEST_ENTITY_TOO_LARGE,
             self::UNPROCESSABLE_ENTITY => Response::HTTP_UNPROCESSABLE_ENTITY,
             self::TOO_MANY_REQUESTS => Response::HTTP_TOO_MANY_REQUESTS,
             self::SERVER_ERROR => Response::HTTP_INTERNAL_SERVER_ERROR,
@@ -43,7 +47,9 @@ enum ErrorCodeEnum: string
             self::UNAUTHORIZED => 'core::messages.unauthorized',
             self::FORBIDDEN => 'core::messages.forbidden',
             self::RESOURCE_NOT_FOUND => 'core::messages.not_found',
+            self::METHOD_NOT_ALLOWED => 'core::messages.method_not_allowed',
             self::CONFLICT => 'core::messages.conflict',
+            self::PAYLOAD_TOO_LARGE => 'core::messages.payload_too_large',
             self::UNPROCESSABLE_ENTITY => 'core::messages.unprocessable',
             self::TOO_MANY_REQUESTS => 'core::messages.too_many_requests',
             self::SERVER_ERROR => 'core::messages.server_error',

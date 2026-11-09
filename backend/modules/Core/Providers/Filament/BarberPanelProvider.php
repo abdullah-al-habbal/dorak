@@ -22,7 +22,7 @@ final class BarberPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#059669',
             ])
-            ->brandName(__('core::messages.barber_panel'))
+            ->brandName(fn (): string => __('core::messages.barber_panel'))
             ->middleware([
                 ScopePanelToCurrentUser::class,
             ]);

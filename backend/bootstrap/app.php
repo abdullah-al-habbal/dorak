@@ -34,7 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return false;
         });
-        $exceptions->respond(function (Response $response): Response {
-            return app(ApiExceptionResponseHandler::class)->handle($response, request());
+        $exceptions->respond(function (Response $response, Throwable $exception): Response {
+            return app(ApiExceptionResponseHandler::class)->handle($response, request(), $exception);
         });
     })->create();

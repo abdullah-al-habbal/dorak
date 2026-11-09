@@ -62,7 +62,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | | **[Phase 1: nobody is locked out](02-phase-1-access.md)** | | | | | |
 | NS-01 | Password recovery on every login | all | New | M | | Done |
 | NS-02 | Account page: profile, email, password, notification settings | all | Ready | M | | Done |
-| NS-29 | Error handling and localized error pages (backend and dashboard) | all | Partial | M | D13 (website pages only) | Todo |
+| NS-29 | Error handling and localized error pages (backend and dashboard) | all | Partial | M | D13 (website pages only) | Done |
 | NS-03 | Owner public registration, status page, emails, first brand | owner, admin | New | L | D2 (decided), D10, D11, D12 | Todo |
 | NS-30 | Barber approval queue and sign-up hardening | admin, barber | Partial | M | D8 | Todo |
 | NS-04 | Admin users: invite, edit, deactivate | admin | New | M | NS-01 | Todo |
@@ -96,7 +96,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-27 | Barber web extras | barber | Partial | M | D7 | Closed, no work (D7) |
 | NS-28 | Retire Filament | all | Removal | M | NS-01 to NS-24, NS-29, NS-30 | Todo |
 
-Every decision is resolved, so no task is blocked. NS-01 and NS-02 are done; the next task is NS-29.
+Every decision is resolved, so no task is blocked. NS-01, NS-02 and NS-29 are done; the next task is NS-03.
 
 Phases 1 and 2 are the launch minimum, because without them a guard is locked out or the platform can't be governed. Phase 3 is needed for a smooth first week of real use. Phases 4 to 7 complete the product vision.
 
@@ -116,5 +116,3 @@ Every finding is placed in a task. The evidence is in the [audit](09-audit-regis
 - **Branch "pending" isn't a gate,** because the owner can set any status → D9, NS-06.
 - **No email or notification for submission, approval or rejection;** approval has no row lock → NS-03, NS-06, NS-30, NS-10.
 - **Registration edge cases:** a repeat sign-up reveals the email; a soft-deleted email is blocked forever; abandoned sign-ups are kept; a duplicate barber phone is likely a 500; limits are per IP only → NS-03, NS-30, D10, D12.
-- **The API error handler** discards seven specific translated messages, mis-maps 405, 413 and 503, and duplicates its generic texts; tests are thin → NS-29.
-- **Dashboard error pages:** 404 and 500 exist and are localized. `global-error.tsx` and a portal-level `error.tsx` are missing. `lang` and `dir` are set only after hydration. The Laravel website has no error pages → NS-29, D13.

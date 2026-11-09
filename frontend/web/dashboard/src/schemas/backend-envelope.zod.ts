@@ -6,6 +6,7 @@ export const backendEnvelopeSchema = z.object({
   code: z.string(),
   message: z.string(),
   timestamp: z.string(),
+  request_id: z.string().optional(),
   data: z.unknown().optional(),
   meta: z.unknown().optional(),
   errors: z.record(z.string(), z.array(z.string())).optional(),

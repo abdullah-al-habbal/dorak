@@ -41,7 +41,7 @@ async function readBody(response: Response): Promise<unknown> {
 function toError(status: number, body: unknown): ApiClientError {
   const failure = apiFailureBodySchema.safeParse(body);
   if (failure.success) {
-    return new ApiClientError({ status, code: failure.data.error.code, message: failure.data.message, fields: failure.data.error.fields });
+    return new ApiClientError({ status, code: failure.data.error.code, message: failure.data.message, requestId: failure.data.request_id, fields: failure.data.error.fields });
   }
   return new ApiClientError({ status, code: ApiErrorCode.Server, message: "" });
 }

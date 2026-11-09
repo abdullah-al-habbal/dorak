@@ -23,4 +23,9 @@ describe("mapBackendFailure", () => {
     expect(mapBackendFailure(result(500)).code).toBe(ApiErrorCode.Server);
     expect(mapBackendFailure(result(302, "X", "redirect")).status).toBe(502);
   });
+
+  it("reports a backend in maintenance, or a gateway 503 page, as service unavailable", () => {
+    expect(mapBackendFailure(result(503, "SERVICE_UNAVAILABLE"))).toMatchObject({ status: 503, code: ApiErrorCode.ServiceUnavailable });
+    expect(mapBackendFailure(result(503, "X", "invalid-response"))).toMatchObject({ status: 503, code: ApiErrorCode.ServiceUnavailable });
+  });
 });

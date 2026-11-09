@@ -22,7 +22,7 @@ final class BranchPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#7c3aed',
             ])
-            ->brandName(__('core::messages.branch_panel'))
+            ->brandName(fn (): string => __('core::messages.branch_panel'))
             ->middleware([
                 ScopePanelToCurrentUser::class,
             ]);

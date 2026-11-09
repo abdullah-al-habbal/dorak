@@ -84,11 +84,11 @@ export async function forwardDashboardRequest(
     return apiFailure(HttpStatus.NotFound, ApiErrorCode.ResourceNotFound, dictionary.errors.api.resource_not_found);
   }
   if (result.status === HttpStatus.Conflict) {
-    return apiFailure(HttpStatus.Conflict, ApiErrorCode.Conflict, result.envelope?.message || dictionary.errors.api.conflict);
+    return apiFailure(HttpStatus.Conflict, ApiErrorCode.Conflict, result.envelope?.message || dictionary.errors.api.conflict, undefined, result.envelope?.request_id);
   }
   if (result.status === HttpStatus.Unprocessable && result.envelope && !result.envelope.errors) {
     // A business-rule rejection: the backend's own (localized) message is the useful one.
-    return apiFailure(HttpStatus.BadRequest, ApiErrorCode.InvalidRequest, result.envelope.message || dictionary.errors.api.invalid_request);
+    return apiFailure(HttpStatus.BadRequest, ApiErrorCode.InvalidRequest, result.envelope.message || dictionary.errors.api.invalid_request, undefined, result.envelope.request_id);
   }
   return failureFromBackend(result, dictionary);
 }

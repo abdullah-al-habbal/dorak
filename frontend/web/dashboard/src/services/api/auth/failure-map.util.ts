@@ -12,6 +12,7 @@ export interface MappedFailure {
 
 export function mapBackendFailure(result: BackendResult): MappedFailure {
   if (result.failure === "transport") return { status: HttpStatus.ServiceUnavailable, code: ApiErrorCode.Network };
+  if (result.status === HttpStatus.ServiceUnavailable) return { status: HttpStatus.ServiceUnavailable, code: ApiErrorCode.ServiceUnavailable };
   if (result.failure !== "none") return { status: HttpStatus.BadGateway, code: ApiErrorCode.Server };
   if (result.status === HttpStatus.Unauthorized) return { status: HttpStatus.Unauthorized, code: ApiErrorCode.InvalidCredentials };
   if (result.status === HttpStatus.Forbidden && result.envelope?.code === BANNED_CODE) {
