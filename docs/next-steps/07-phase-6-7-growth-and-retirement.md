@@ -16,7 +16,7 @@ Routes: [index](index.md) · [decisions](01-decisions.md).
 
 - **Guards:** admin.
 - **Story:** the platform team edits the marketing pages, their sections, the testimonials and the onboarding screens without a deploy.
-- **Needs:** [D13](01-decisions.md#d13-the-laravel-public-website): whether the public website stays in Laravel.
+- **Decision:** [D13](01-decisions.md#d13-the-laravel-public-website), resolved: the public website stays in Laravel, so this edits the content its Blade pages read.
 - **Backend: New.** `marketing_pages`, `sections`, `testimonials` and `onboarding_configurations` have public read APIs and seeders, but no write API.
 - **Dashboard:**
   - a "Content" area with a page list, ordered sections, testimonials and the onboarding steps;
@@ -28,15 +28,14 @@ Routes: [index](index.md) · [decisions](01-decisions.md).
 
 - **Guards:** owner, admin.
 - **Story:** an owner upgrades or renews their plan and pays online.
-- **Needs:** [D6](01-decisions.md#d6-plan-billing-at-launch). Skip this task if billing stays manual.
+- **Status: deferred after launch** ([D6](01-decisions.md#d6-plan-billing-at-launch): billing is manual at launch).
 - **Backend: New.** The subscription and gateway tables exist (`brand_subscriptions`, `payment_gateways`), but no checkout, invoice or webhook flow does.
 - **Dashboard:** plan comparison, checkout and invoices on the owner's Subscription page.
 
 ## NS-27: Barber web extras
 
 - **Guards:** barber.
-- **Needs:** [D7](01-decisions.md#d7-barber-web-scope-after-filament). The recommended answer keeps the web light, and this task is then closed with no work.
-- **If D7 widens the scope:**
+- **Status: closed, no work** ([D7](01-decisions.md#d7-barber-web-scope-after-filament): the barber web stays light). Kept for the record, in case the scope widens later:
   - services and prices;
   - portfolio photos (`barber_portfolio_photos`);
   - invitations;

@@ -23,21 +23,24 @@ Source: [product audit](planning/product-audit-part-3.md). Remaining launch-read
 
 ## Launch roadmap
 
-Plan: [next steps](next-steps/index.md), 30 tasks in execution order. The details and recommendations are in [its decisions page](next-steps/01-decisions.md).
+Plan: [next steps](next-steps/index.md), 30 tasks in execution order. All its decisions, D1 to D13, are resolved. The details and the operational defaults (clean-up after 7 days, a resubmission cap of 3, 60 s polling, 5 registrations per hour per email) are in [its decisions page](next-steps/01-decisions.md). Phase 1 starts with NS-01, NS-02 and NS-29.
 
 - [x] **D1: Filament is retired:** decided 2026-11-09. The Next.js dashboard is the only web surface for every guard, including the whole admin back office. Filament is removed after its replacements ship (NS-28).
 - [x] **D2: How a new brand owner joins:** decided 2026-11-09. A public "Register your business" page on the dashboard, with email verification, a status page and emails (NS-03). Barbers keep the stylist app's sign-up and get an admin approval queue (NS-30). Clients need no approval; branches and admins are never public.
-- [ ] **D3: How the admin sees branch-level records** (blocks NS-09).
-- [ ] **D4: What an admin may see about a client** (blocks NS-07).
-- [ ] **D5: How notifications reach the dashboard** (blocks NS-10).
-- [ ] **D6: Plan billing at launch** (blocks NS-26 only).
-- [ ] **D7: Barber web scope after Filament** (blocks NS-27).
-- [ ] **D8: Rejecting and suspending a brand**, including resubmission and whether barbers get a `rejected` status (blocks NS-06, NS-30).
-- [ ] **D9: Branch approval model.** The owner can set any branch status today (blocks the branch part of NS-06).
-- [ ] **D10: Re-registration after account deletion.** A soft-deleted email is blocked forever (blocks one NS-03 edge case).
-- [ ] **D11: Early access for a pending owner** (blocks the waiting part of NS-03).
-- [ ] **D12: CAPTCHA on public forms.** It needs a package (blocks the CAPTCHA part of NS-03).
-- [ ] **D13: The Laravel public website:** keep it with localized error pages, or move it (blocks NS-29 item 5, NS-25).
+- [x] **D3: Admin view of branch records:** resolved 2026-11-09. One platform-wide list per screen, with brand and branch filters (NS-09). No pick-a-branch-first mode.
+- [x] **D4: Client data for admins:** resolved 2026-11-09. Admins see the account, bans, bookings and reviews written. Face analysis, preference vectors, interaction logs, saved filters, service histories, favourites and discovery preferences are never exposed (NS-07).
+- [x] **D5: Dashboard notifications:** resolved 2026-11-09. Polling every 60 s while the tab is visible, and on sign-in. No realtime channel at launch (NS-10).
+- [x] **D6: Billing at launch:** resolved 2026-11-09. Manual: the admin assigns plans and payment happens outside the system. NS-26 is deferred until after launch.
+- [x] **D7: Barber web scope:** resolved 2026-11-09. Light: schedule, earnings and the account page. Self-service stays in `stylist_app`, and NS-27 closes with no work.
+- [x] **D8: Rejection and suspension:** resolved 2026-11-09.
+  - Brands gain `rejected` (with a reason; resubmit to `pending`; after 3 resubmissions, "contact support") and `suspended` (with a reason; out of client search; no new bookings; existing future bookings kept unless the admin also cancels them, which notifies the clients; subscription unchanged; the owner and managers sign in to a banner and can't create).
+  - Barbers gain `rejected` with the same resubmission cap; the stylist app is synced in the same task.
+  - Each transition is row-locked and recorded in `status_change_logs`, with an email and a notification (NS-06, NS-30).
+- [x] **D9: Branch approval:** resolved 2026-11-09. The brand approval and the plan's branch limit are the gate. The owner loses the `status` field on branch create and edit, and switching a branch on or off becomes an explicit, checked action. The admin can suspend a branch. No per-branch approval queue (NS-06).
+- [x] **D10: Deleted accounts:** resolved 2026-11-09. Deletion anonymises the email, name and phone, keeps the bookings, and frees the email for a fresh account. A banned email stays refused (NS-03).
+- [x] **D11: Pending owner early access:** resolved 2026-11-09. Brand profile, plus one branch with its hours, chairs and services. No stylists, invitations, extra branches, client visibility or bookings until approval (NS-03).
+- [x] **D12: CAPTCHA:** resolved 2026-11-09. None at launch: limits per IP (5 per minute) and per email (5 per hour), a honeypot field, and verification before the queue. Turnstile only if abuse appears, with package approval (NS-03).
+- [x] **D13: Public website:** resolved 2026-11-09. It stays in Laravel, with English and Arabic 404, 500 and 503 pages (NS-29). Content is managed by NS-25.
 
 ## Dashboard feature modules
 

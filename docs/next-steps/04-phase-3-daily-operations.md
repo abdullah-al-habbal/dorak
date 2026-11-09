@@ -26,7 +26,7 @@ These tasks remove the places where a manager or owner has to refresh, switch to
 
 - **Guards:** all four. The admin gets platform events, such as a new brand to approve or a new dispute.
 - **Story:** a manager sees a new or cancelled booking without refreshing, and an admin sees new work in their queues.
-- **Needs:** [D5](01-decisions.md#d5-how-notifications-reach-the-dashboard).
+- **Decision:** [D5](01-decisions.md#d5-how-notifications-reach-the-dashboard), resolved: poll the unread count every **60 s** while the tab is visible, and on sign-in. No realtime channel at launch.
 - **Backend: New.**
   - The feed (`GET /notifications`, `POST /notifications/read-all`, `PATCH /notifications/{id}/read`) accepts only the `client`, `barber` and `branch_api` guards. Add dashboard routes that resolve the dashboard actor.
   - Admins have no notifications yet. Send them at least these events:

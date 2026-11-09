@@ -58,7 +58,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 
 | # | Task | Guards | Backend | Size | Needs | Status |
 |---|---|---|---|---|---|---|
-| | **[Decisions](01-decisions.md)** (settle before the task that needs them) | | | | | D1, D2 decided; D3 to D13 open |
+| | **[Decisions](01-decisions.md)** (settle before the task that needs them) | | | | | All resolved (D1 to D13) |
 | | **[Phase 1: nobody is locked out](02-phase-1-access.md)** | | | | | |
 | NS-01 | Password recovery on every login | all | New | M | | Todo |
 | NS-02 | Account page: profile, email, password, notification settings | all | Ready | M | | Todo |
@@ -92,9 +92,11 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-24 | Payout detail | admin, owner | Ready | S | | Todo |
 | | **[Phases 6 and 7: growth, then retire Filament](07-phase-6-7-growth-and-retirement.md)** | | | | | |
 | NS-25 | Website content: pages, sections, testimonials, onboarding | admin | New | L | D13 | Todo |
-| NS-26 | Plan self-service and billing | owner, admin | New | L | D6 | Todo |
-| NS-27 | Barber web extras | barber | Partial | M | D7 | Todo |
+| NS-26 | Plan self-service and billing | owner, admin | New | L | D6 | Deferred after launch (D6) |
+| NS-27 | Barber web extras | barber | Partial | M | D7 | Closed, no work (D7) |
 | NS-28 | Retire Filament | all | Removal | M | NS-01 to NS-24, NS-29, NS-30 | Todo |
+
+Every decision is resolved, so no task is blocked. Implementation starts with NS-01, NS-02 and NS-29.
 
 Phases 1 and 2 are the launch minimum, because without them a guard is locked out or the platform can't be governed. Phase 3 is needed for a smooth first week of real use. Phases 4 to 7 complete the product vision.
 

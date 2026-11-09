@@ -33,7 +33,7 @@ The platform runs on seeded values until these exist. They come after phases 1 t
 
 - **Guards:** admin.
 - **Story:** the admin manages which languages the platform offers.
-- **Backend: New.** The `languages` table has no API. The apps ship English and Arabic copy, so decide in the task whether this list only switches languages on and off.
+- **Backend: New.** The `languages` table has no API. Per the [operational defaults](01-decisions.md#operational-defaults), the screen only switches existing languages on and off. A new language needs translations in code, so admins can't create one.
 - **Dashboard:** a "Languages" section under Settings.
 - **Done when:** Pest covers the rule that the default language can't be switched off.
 

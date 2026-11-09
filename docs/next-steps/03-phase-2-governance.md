@@ -34,28 +34,29 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
 
 - **Guards:** admin.
 - **Story:** the admin corrects a brand's details, rejects or suspends it with a reason, overrides its plan features, and sees its approval history.
-- **Needs:** [D8](01-decisions.md#d8-rejecting-and-suspending-a-brand) and [D9](01-decisions.md#d9-branch-approval-model).
+- **Decisions:** [D8](01-decisions.md#d8-rejecting-and-suspending-a-brand-and-rejecting-a-barber) and [D9](01-decisions.md#d9-branch-approval-model), both resolved.
 - **Backend: Partial.**
   - Editing is ready: `PUT /brands/{brand}`, with the admin already allowed.
   - Feature overrides (`GET|PATCH /admin/brands/{brand}/features`) and history (`GET /admin/audit/{subjectType}/{subjectId}`) exist only on `admin_api`. Add dashboard routes for them.
   - Reject and suspend are New:
-    - statuses with a required reason;
-    - resubmission for a rejected owner within the D8 cap; NS-03's status page shows the reason and "Fix and resubmit";
-    - side effects as D8 decides.
+    - `rejected` and `suspended` statuses, each with a required reason;
+    - resubmission returns a rejected brand to `pending`, up to **3** times, then "contact support". NS-03's status page shows the reason and "Fix and resubmit".
+    - **Suspended:** the brand's branches leave client search and take no new bookings. Existing future bookings stay, unless the admin ticks "also cancel future bookings", which cancels them and notifies each client. The subscription is unchanged. The owner and managers sign in to a "suspended" banner and can't create anything.
+    - Reactivating restores the brand to `active`.
   - **Lock every transition, approval included.** `ApproveBrandAction` updates the status today with no lock, so a concurrent approve and reject could both apply ([audit §3](09-audit-registration-and-errors.md#3-registration-edge-cases)).
   - **Emails** for approved, rejected, suspended and reactivated, in the owner's language. Today approval sends nothing ([audit §2](09-audit-registration-and-errors.md#2-messages-and-rate-limits-today)).
   - The pickers already skip pending brands ([decisions](../decisions-required.md), Admin Brands). Extend the same rule to rejected and suspended brands, and enforce it in the backend as well.
-  - **Branch status (D9):** stop the owner setting any `status` through `Dashboard/Http/Requests/Business/BranchRequest.php`, and apply the chosen branch gate. The admin can suspend or reactivate a branch; the activation exists on `admin_api` only today, so add a dashboard route.
+  - **Branch status (D9):** remove `status` from `Dashboard/Http/Requests/Business/BranchRequest.php`. Add an explicit switch-on/switch-off action for the owner, which requires an approved brand and a branch within the plan limit. Branches of approved brands no longer start as a misleading `pending`. The admin can suspend or reactivate a branch; the activation exists on `admin_api` only today, so add a dashboard route.
 - **Dashboard:** the existing brand detail dialog becomes a detail page with Edit, Reject, Suspend or Reactivate, Features and History. Branches get a Suspend or Reactivate action for the admin.
 - **Done when:**
-  - Pest covers each transition, the lock, the emails, the resubmission cap and the side effects chosen in D8 and D9.
+  - Pest covers each transition, the lock, the emails, the resubmission cap, the suspension effects on search and new bookings, the optional cancellation, and the branch switch rules.
   - E2E covers reject → resubmit → approve, and suspend.
 
 ## NS-07: Clients and bans
 
 - **Guards:** admin.
 - **Story:** the admin finds a client, sees their account and bookings, and bans or unbans them with a reason and an optional end date.
-- **Needs:** [D4](01-decisions.md#d4-what-an-admin-may-see-about-a-client).
+- **Decision:** [D4](01-decisions.md#d4-what-an-admin-may-see-about-a-client), resolved. Admins see the account, bans, bookings and reviews only. Client personal data such as face analysis, preference vectors and interaction logs is never exposed, and a test asserts it.
 - **Backend: New.**
   - Add admin dashboard routes for listing, searching and showing clients.
   - Bans: the `bans` table is polymorphic, with `bannable`, `reason`, `expires_at` and `banned_by_id`. Add create and lift routes.
@@ -80,7 +81,7 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
 
 - **Guards:** admin.
 - **Story:** the admin inspects any branch's chairs, stylists, services, reviews, working hours, invitations and job postings, to support owners and to moderate.
-- **Needs:** [D3](01-decisions.md#d3-how-the-admin-sees-branch-level-records).
+- **Decision:** [D3](01-decisions.md#d3-how-the-admin-sees-branch-level-records), resolved: platform-wide lists with brand and branch filters.
 - **Backend: Partial.**
   - The Operations routes already allow the admin: chairs, stylists, services, reviews, opening hours, affiliations and job postings.
   - Check in the task that each list works for an admin without a branch scope, and add `brand_id` and `branch_id` filters where they are missing.
