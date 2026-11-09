@@ -1,5 +1,6 @@
 import { HttpStatus } from "@/enums/http-status.enum";
 import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
+import { hasApiFieldErrors } from "@/lib/api-field-errors.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const OUTSIDE_SCHEDULE_CODE = "booking_outside_schedule";
@@ -18,7 +19,7 @@ export function mapBookingFormError(error: unknown, messages: BookingFormErrorMe
   if (!(error instanceof ApiClientError)) return { fieldErrors: {}, formError: messages.generic };
   if (error.status === HttpStatus.Conflict) return { fieldErrors: { [startField]: messages.conflict } };
   if (error.code === OUTSIDE_SCHEDULE_CODE) return { fieldErrors: { [startField]: messages.outsideSchedule } };
-  if (error.status === HttpStatus.Unprocessable && error.fields) {
+  if (hasApiFieldErrors(error)) {
     const fieldErrors: Record<string, string> = {};
     for (const [name, list] of Object.entries(error.fields)) {
       const first = list[0];

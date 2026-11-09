@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Http\Requests\Business;
 
-use Illuminate\Validation\Rule;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\ServiceCatalog\Support\CatalogCategoryNameRules;
 
+/** The service form's inline create: same name rules as the admin catalog (shared, so they cannot drift). */
 final class StoreServiceCategoryRequest extends BaseApiFormRequest
 {
+    /** @return array<string, array<int, mixed>> */
     public function rules(): array
     {
-        return [
-            'name' => ['required', 'array:en,ar'],
-            'name.en' => ['required', 'string', 'max:120', Rule::unique('service_catalog_categories', 'name->en')->whereNull('deleted_at')],
-            'name.ar' => ['required', 'string', 'max:120', Rule::unique('service_catalog_categories', 'name->ar')->whereNull('deleted_at')],
-        ];
+        return CatalogCategoryNameRules::rules();
     }
 }

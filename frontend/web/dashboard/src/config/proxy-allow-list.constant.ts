@@ -39,6 +39,11 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   // Platform analytics and settings (Module 10). Admin only; the backend re-checks.
   { methods: [HttpMethod.Get], pattern: /^admin\/(analytics\/overview|settings)$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: /^admin\/settings$/, guards: ADMIN_ONLY },
+  // Global catalog (Module 12): categories are managed here; catalog items are read only (edited in Filament). Admin only; the backend re-checks.
+  { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^admin\/catalog-categories$/, guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^admin/catalog-categories/${ID}$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/catalog-categories/${ID}/active$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Get], pattern: /^admin\/catalog-items$/, guards: ADMIN_ONLY },
   // The barber portal: the Operations routes reject barbers, so these are their own read-only endpoints.
   { methods: [HttpMethod.Get], pattern: /^schedule\/(appointments|hours)$/, guards: BARBER_ONLY },
   { methods: [HttpMethod.Get], pattern: /^earnings$/, guards: EARNINGS },

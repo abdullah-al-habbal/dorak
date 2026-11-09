@@ -6,7 +6,9 @@ namespace Modules\ServiceCatalog\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Modules\Core\Providers\BaseModuleServiceProvider;
+use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
+use Modules\ServiceCatalog\Policies\ServiceCatalogCategoryPolicy;
 use Modules\ServiceCatalog\Policies\ServiceCatalogItemPolicy;
 
 final class ServiceCatalogServiceProvider extends BaseModuleServiceProvider
@@ -22,5 +24,6 @@ final class ServiceCatalogServiceProvider extends BaseModuleServiceProvider
     protected function afterBoot(): void
     {
         Gate::policy(ServiceCatalogItemModel::class, ServiceCatalogItemPolicy::class);
+        Gate::policy(ServiceCatalogCategoryModel::class, ServiceCatalogCategoryPolicy::class);
     }
 }

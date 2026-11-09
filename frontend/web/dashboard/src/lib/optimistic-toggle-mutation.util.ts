@@ -4,10 +4,10 @@ import { toast } from "sonner";
 import type { OptimisticToggleContext } from "@/interfaces/optimistic-toggle-context.interface";
 import type { OptimisticToggleMutationOptions } from "@/interfaces/optimistic-toggle-mutation-options.interface";
 
-/** Patches every cached entry under the root at once, restores the snapshots on failure, then refetches. */
+/** Patches every cached entry under the root at once, restores the snapshots on failure, then refetches it (and any extra roots). */
 export function optimisticToggleMutationOptions<TData, TVariables, TCache>(
   client: QueryClient,
-  { queryKey, mutationFn, patch, successMessage, failureMessage }: OptimisticToggleMutationOptions<TData, TVariables, TCache>,
+  { queryKey, mutationFn, patch, successMessage, failureMessage, invalidate = [] }: OptimisticToggleMutationOptions<TData, TVariables, TCache>,
 ): UseMutationOptions<TData, Error, TVariables, OptimisticToggleContext<TCache>> {
   return {
     mutationFn,
@@ -22,6 +22,6 @@ export function optimisticToggleMutationOptions<TData, TVariables, TCache>(
       if (failureMessage !== undefined) toast.error(failureMessage);
     },
     onSuccess: (_data, variables) => toast.success(successMessage(variables)),
-    onSettled: () => client.invalidateQueries({ queryKey }),
+    onSettled: () => Promise.all([queryKey, ...invalidate].map((root) => client.invalidateQueries({ queryKey: root }))),
   };
 }

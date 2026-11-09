@@ -71,6 +71,14 @@ final class E2eDashboardSeeder extends Seeder
     /** Older than every other brand, so lists ordered newest first keep their order and show it last. */
     public const string PENDING_BRAND_CREATED_AT = '2020-01-01 00:00:00';
 
+    /** The empty category the admin catalog spec toggles and deletes; every reset restores it. */
+    public const string CATALOG_EMPTY_CATEGORY_SLUG = 'e2e-catalog-empty';
+
+    public const array CATALOG_EMPTY_CATEGORY_NAME = ['en' => 'E2E Empty Category', 'ar' => 'فئة فارغة للاختبار'];
+
+    /** Categories the admin catalog spec creates start with this English name; every reset removes them. */
+    public const string CATALOG_SPEC_NAME_PREFIX = 'E2E Spec';
+
     /** The seeded chairs; the chairs spec creates others, and every reset removes them. */
     private const array CHAIR_LABELS = ['Chair 1', 'Chair 2'];
 
@@ -118,6 +126,35 @@ final class E2eDashboardSeeder extends Seeder
         $this->ownerBilling($branch->brand, $owner, $currency);
         $this->pendingBrand($currency);
         $this->restoreSettingsBaseline();
+        $this->restoreCatalogBaseline();
+    }
+
+    /** Admin catalog spec: restore the empty category and drop the ones the spec created (they never get items or services). */
+    private function restoreCatalogBaseline(): void
+    {
+        $this->catalogCategory(self::CATALOG_EMPTY_CATEGORY_SLUG, self::CATALOG_EMPTY_CATEGORY_NAME);
+        ServiceCatalogCategoryModel::withTrashed()
+            ->where('name->en', 'like', self::CATALOG_SPEC_NAME_PREFIX.'%')
+            ->each(fn (ServiceCatalogCategoryModel $category) => $category->forceDelete());
+    }
+
+    /**
+     * Slugs stay unique across soft-deleted rows, so a category a spec deleted is restored, not
+     * re-inserted; a spec that switched it off gets it back active and top-level.
+     *
+     * @param  array{en: string, ar: string}  $name
+     */
+    private function catalogCategory(string $slug, array $name): ServiceCatalogCategoryModel
+    {
+        $category = ServiceCatalogCategoryModel::withTrashed()->updateOrCreate(
+            ['slug' => $slug],
+            ['name' => $name, 'is_active' => true, 'parent_id' => null],
+        );
+        if ($category->trashed()) {
+            $category->restore();
+        }
+
+        return $category;
     }
 
     /** Admin specs edit platform settings; every reset puts them back on their defaults (`run()` clears the cache). */
@@ -307,10 +344,7 @@ final class E2eDashboardSeeder extends Seeder
         int $priceMinor,
         int $minutes,
     ): OfferedServiceModel {
-        $category = ServiceCatalogCategoryModel::query()->firstOrCreate(
-            ['slug' => 'e2e-'.strtolower($categoryEn)],
-            ['name' => ['en' => $categoryEn, 'ar' => $categoryAr], 'is_active' => true],
-        );
+        $category = $this->catalogCategory('e2e-'.strtolower($categoryEn), ['en' => $categoryEn, 'ar' => $categoryAr]);
 
         // updateOrCreate: the services spec toggles the active flag, and a reset must restore it.
         return OfferedServiceModel::query()->updateOrCreate(

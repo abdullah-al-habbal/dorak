@@ -425,6 +425,20 @@ Chosen 2026-11-08, approve-only (see `docs/decisions-required.md`). Every endpoi
 - E2E: `admin-brands` (admin session, reset before each test). `E2eDashboardSeeder` seeds "E2E Pending Cuts" for a second owner, older than every other brand, and puts it back to pending on each reset; `admin-subscriptions` now picks that brand by name instead of by position.
 - Mobile: no impact. The apps never call `/dashboard/*` and `BrandResource` is unchanged.
 
+## 10h. Module 12: Admin Catalog
+
+Chosen 2026-11-09 (see `docs/decisions-required.md`). Feasibility gate: LLM council, 5/5 approve with conditions.
+
+### Implemented contract
+- Shared code path: `CatalogCategoryUsage::isEmpty()`, used by `DestroyCatalogCategoryAction` (through `DeleteCatalogCategoryHandler`, row-locked) and the Filament categories table delete action. `CatalogCategoryNameRules::rules()` and `CatalogCategorySlugGenerator` are shared by the admin save request and `POST /dashboard/service-categories`.
+- Routes (admin group, `ServiceCatalogCategoryPolicy`: `AdminModel` only): `GET /dashboard/admin/catalog-categories?status=&search=`, `POST /dashboard/admin/catalog-categories`, `PUT /dashboard/admin/catalog-categories/{category}`, `PATCH /dashboard/admin/catalog-categories/{category}/active`, `DELETE /dashboard/admin/catalog-categories/{category}`. The public `/service-catalog/categories` payload is unchanged (tested).
+- Request: `name{en,ar}` (required, max 120, unique per locale among non-deleted rows), `description{en,ar}` (nullable, max 1000), `universe` (optional, defaults to unisex), `sort_order` (0-65535), `is_active`.
+- Failure: HTTP 409, `code = CONFLICT` on deleting a category in use; 422 on validation; 403 for every non-admin actor.
+- Success: `AdminCatalogCategoryResource` with `items_count`, `children_count`, `services_count` and `children`. Toggling does not cascade.
+- Related hardening: catalog item `category_id` rejects deleted categories; `ServiceRequest` keeps a service's current (now inactive) category on update while new links must be active.
+- Dashboard: `components/admin-catalog/*`, `/dashboard/admin/catalog`, nav entry enabled, proxy rules admin-only (items read-only). Writes invalidate `serviceKeys.categories` so the service form picker refreshes. E2E: `admin-catalog` (seeder restores "E2E Empty Category" and drops "E2E Spec" categories on reset). Mobile: no impact (the apps never call `/dashboard/*`, public catalog payloads unchanged).
+- Deviations: catalog items are read-only on the dashboard (Filament keeps item CRUD).
+
 ## 11. Cross-cutting concerns
 
 - **Security.** Authorization stays on the backend. The proxy allow-list, guard checks and body caps are defence in depth. No token is ever readable by the browser. CSV export neutralises formula injection. Server-provided strings are rendered as text, never as HTML.

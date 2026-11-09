@@ -17,6 +17,7 @@ use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Payout\Models\PayoutModel;
 use Modules\Review\Models\ReviewModel;
+use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\Subscription\Models\BrandSubscriptionModel;
 use Modules\Subscription\Models\SubscriptionPlanModel;
 use Modules\Subscription\Services\PlanFeatureSyncer;
@@ -115,6 +116,22 @@ describe('E2E dashboard seeder', function (): void {
         expect(BarberModel::query()->where('email', 'lina.e2e@dorak.test')->firstOrFail()->status)->toBe(BarberStatusEnum::Disabled)
             ->and(OfferedServiceModel::query()->where('serviceable_id', $branch->brand_id)->pluck('is_active')->unique()->all())->toBe([true])
             ->and(ChairModel::query()->where('branch_id', $branch->id)->orderBy('label')->pluck('label')->all())->toBe(['Chair 1', 'Chair 2']);
+    });
+
+    it('restores deleted or switched-off catalog categories and drops spec-created ones on reset', function (): void {
+        $this->seed(E2eDashboardSeeder::class);
+        $empty = ServiceCatalogCategoryModel::query()->where('slug', E2eDashboardSeeder::CATALOG_EMPTY_CATEGORY_SLUG)->sole();
+        $empty->delete();
+        ServiceCatalogCategoryModel::query()->where('slug', 'e2e-hair')->update(['is_active' => false]);
+        ServiceCatalogCategoryModel::factory()->create(['name' => ['en' => E2eDashboardSeeder::CATALOG_SPEC_NAME_PREFIX.' Scalp', 'ar' => 'فروة']])->delete();
+        $count = ServiceCatalogCategoryModel::withTrashed()->count();
+
+        $this->seed(E2eDashboardSeeder::class);
+
+        expect(ServiceCatalogCategoryModel::query()->find($empty->id)?->getTranslations('name'))->toBe(E2eDashboardSeeder::CATALOG_EMPTY_CATEGORY_NAME)
+            ->and(ServiceCatalogCategoryModel::query()->where('slug', 'e2e-hair')->value('is_active'))->toBeTrue()
+            ->and(ServiceCatalogCategoryModel::withTrashed()->where('name->en', 'like', E2eDashboardSeeder::CATALOG_SPEC_NAME_PREFIX.'%')->exists())->toBeFalse()
+            ->and(ServiceCatalogCategoryModel::withTrashed()->count())->toBe($count - 1);
     });
 
     it('keeps the previous baseline when a reset fails part-way', function (): void {

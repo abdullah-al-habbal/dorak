@@ -2,6 +2,8 @@
 
 import { AssignSubscriptionDialog } from "@/components/admin-subscriptions/assign-subscription-dialog";
 import { BrandDetailDialog } from "@/components/admin-brands/brand-detail-dialog";
+import { CatalogCategoryDetailDialog } from "@/components/admin-catalog/catalog-category-detail-dialog";
+import { CatalogCategoryFormDialog } from "@/components/admin-catalog/catalog-category-form-dialog";
 import { PayoutActionDialog } from "@/components/admin-payouts/payout-action-dialog";
 import { PlanFormDialog } from "@/components/plans/plan-form-dialog";
 import { BranchFormDialog } from "@/components/branches/branch-form-dialog";
@@ -45,6 +47,10 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <AssignSubscriptionDialog onClose={onClose} />;
     case OverlayKind.BrandDetail:
       return <BrandDetailDialog brand={request.brand} onClose={onClose} />;
+    case OverlayKind.CatalogCategoryForm:
+      return <CatalogCategoryFormDialog category={request.category} onClose={onClose} />;
+    case OverlayKind.CatalogCategoryDetail:
+      return <CatalogCategoryDetailDialog category={request.category} onClose={onClose} />;
     default: {
       const unhandled: never = request;
       throw new Error(`Unhandled overlay kind: ${JSON.stringify(unhandled)}`);

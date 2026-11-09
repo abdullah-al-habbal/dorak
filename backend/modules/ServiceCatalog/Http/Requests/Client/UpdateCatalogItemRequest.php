@@ -21,7 +21,7 @@ final class UpdateCatalogItemRequest extends BaseApiFormRequest
         $id = $this->route('id');
 
         return [
-            'category_id' => ['sometimes', 'uuid', 'exists:service_catalog_categories,id'],
+            'category_id' => ['sometimes', 'uuid', Rule::exists('service_catalog_categories', 'id')->whereNull('deleted_at')],
             'name.en' => ['sometimes', 'string', 'max:255'],
             'name.ar' => ['sometimes', 'string', 'max:255'],
             'description.en' => ['nullable', 'string', 'max:5000'],

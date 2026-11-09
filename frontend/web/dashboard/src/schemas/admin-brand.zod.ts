@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import { BrandStatus } from "@/enums/brand-status.enum";
 import { localizedTextSchema } from "@/schemas/localized-text.zod";
-
-/** Spatie serialises a translatable field with no translations as `[]`; read that as "no text". */
-const optionalTranslationSchema = z.preprocess((value) => (Array.isArray(value) && value.length === 0 ? null : value), localizedTextSchema.nullable());
+import { optionalTranslationSchema } from "@/schemas/optional-translation.zod";
 
 /** `GET /brands` and `GET /brands/{id}` (`BrandResource`), the fields the admin approval screen reads. */
 export const adminBrandSchema = z.object({

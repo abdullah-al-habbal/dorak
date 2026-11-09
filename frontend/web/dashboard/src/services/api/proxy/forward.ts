@@ -72,7 +72,8 @@ export async function forwardDashboardRequest(
 
   if (result.ok && result.envelope) {
     const { message, data, meta } = result.envelope;
-    return NextResponse.json({ success: true, message, data, meta }, { status: result.status, headers: NO_STORE });
+    // `data` is always present: a backend reply without one (a delete) would otherwise lose the key in JSON and fail the client's envelope parse.
+    return NextResponse.json({ success: true, message, data: data ?? null, meta }, { status: result.status, headers: NO_STORE });
   }
   if (result.status === HttpStatus.Unauthorized) {
     return apiFailure(HttpStatus.Unauthorized, ApiErrorCode.SessionExpired, dictionary.errors.api.session_expired);

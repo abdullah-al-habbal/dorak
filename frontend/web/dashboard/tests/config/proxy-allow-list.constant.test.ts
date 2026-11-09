@@ -163,3 +163,31 @@ describe("proxy allow-list: brand approval", () => {
     expect(allowed(HttpMethod.Get, "brands/b1/features", AuthActor.Admin)).toBe(false);
   });
 });
+
+describe("proxy allow-list: admin catalog", () => {
+  it.each([
+    [HttpMethod.Get, "admin/catalog-categories"],
+    [HttpMethod.Post, "admin/catalog-categories"],
+    [HttpMethod.Put, "admin/catalog-categories/c1"],
+    [HttpMethod.Delete, "admin/catalog-categories/c1"],
+    [HttpMethod.Patch, "admin/catalog-categories/c1/active"],
+    [HttpMethod.Get, "admin/catalog-items"],
+  ])("lets an admin %s %s", (method, path) => {
+    expect(allowed(method, path, AuthActor.Admin)).toBe(true);
+  });
+
+  it.each([AuthActor.Manager, AuthActor.Owner, AuthActor.Barber])("refuses every catalog path to %s", (guard) => {
+    expect(allowed(HttpMethod.Get, "admin/catalog-categories", guard)).toBe(false);
+    expect(allowed(HttpMethod.Post, "admin/catalog-categories", guard)).toBe(false);
+    expect(allowed(HttpMethod.Patch, "admin/catalog-categories/c1/active", guard)).toBe(false);
+    expect(allowed(HttpMethod.Get, "admin/catalog-items", guard)).toBe(false);
+  });
+
+  it("keeps catalog items read only and rejects unknown category paths", () => {
+    expect(allowed(HttpMethod.Post, "admin/catalog-items", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Put, "admin/catalog-items/i1", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Delete, "admin/catalog-items/i1", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Patch, "admin/catalog-categories/c1", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Get, "admin/catalog-categories/c1/children", AuthActor.Admin)).toBe(false);
+  });
+});

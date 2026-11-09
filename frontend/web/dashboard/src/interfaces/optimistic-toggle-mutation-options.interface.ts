@@ -7,4 +7,6 @@ export interface OptimisticToggleMutationOptions<TData, TVariables, TCache> {
   successMessage: (variables: TVariables) => string;
   /** Toasted after the rollback. Omit it when the caller reports the failure itself. */
   failureMessage?: string;
+  /** Other query-key roots refreshed once settled, such as an option list the toggle changes. Not patched optimistically. */
+  invalidate?: ReadonlyArray<readonly unknown[]>;
 }

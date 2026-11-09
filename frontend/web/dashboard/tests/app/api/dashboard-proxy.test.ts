@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { signClaim } from "@tests/helpers/claim.helper";
-import { GET, PATCH } from "@/app/api/dashboard/[...path]/route";
+import { DELETE, GET, PATCH } from "@/app/api/dashboard/[...path]/route";
 
 const jar = vi.hoisted(() => ({ values: {} as Record<string, string> }));
 vi.mock("next/headers", () => ({
@@ -61,6 +61,13 @@ describe("dashboard proxy", () => {
     vi.stubGlobal("fetch", fetchMock);
     await call(PATCH, ["bookings", "1"], { method: "PATCH", body: JSON.stringify({ booking_status: "confirmed" }) });
     expect(JSON.parse(String(fetchMock.mock.calls[0][1].body))).toEqual({ booking_status: "confirmed" });
+  });
+
+  it("always returns a data key, null when the backend reply has none (a delete)", async () => {
+    await signIn();
+    vi.stubGlobal("fetch", backendReply(200, {}));
+    const response = await call(DELETE, ["chairs", "abc"], { method: "DELETE" });
+    expect(await response.json()).toEqual({ success: true, message: "m", data: null });
   });
 
   it("denies paths outside the allow-list, including /barbers", async () => {

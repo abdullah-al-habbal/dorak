@@ -19,7 +19,7 @@ final class CreateCatalogItemRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required', 'uuid', 'exists:service_catalog_categories,id'],
+            'category_id' => ['required', 'uuid', Rule::exists('service_catalog_categories', 'id')->whereNull('deleted_at')],
             'name.en' => ['required', 'string', 'max:255'],
             'name.ar' => ['required', 'string', 'max:255'],
             'description.en' => ['nullable', 'string', 'max:5000'],

@@ -30,7 +30,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
     { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: true },
     { key: "brands", segment: "brands", icon: StoreIcon, ready: true },
     { key: "branches", segment: "branches", icon: BuildingIcon, ready: true },
-    { key: "catalog", segment: "catalog", icon: LibraryIcon, ready: false },
+    { key: "catalog", segment: "catalog", icon: LibraryIcon, ready: true },
     { key: "payouts", segment: "payouts", icon: WalletIcon, ready: true },
     { key: "plans", segment: "plans", icon: LayersIcon, ready: true },
     { key: "subscriptions", segment: "subscriptions", icon: CreditCardIcon, ready: true },

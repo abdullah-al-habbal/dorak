@@ -85,6 +85,17 @@ describe("optimisticToggleMutationOptions", () => {
     expect(client.getQueryState(OTHER_KEY)?.isInvalidated).toBe(false);
   });
 
+  it("also invalidates the extra roots once settled, without patching them", async () => {
+    const options = { ...toggleOptions(async () => ({ id: "a", on: true }), "failed"), invalidate: [OTHER_KEY] };
+    const observer = new MutationObserver(client, optimisticToggleMutationOptions(client, options));
+
+    await observer.mutate({ id: "a", on: true });
+
+    expect(client.getQueryState(FIRST_KEY)?.isInvalidated).toBe(true);
+    expect(client.getQueryState(OTHER_KEY)?.isInvalidated).toBe(true);
+    expect(client.getQueryData(OTHER_KEY)).toEqual(OTHER_PAGE);
+  });
+
   it("restores every snapshot and toasts the failure message when the request fails", async () => {
     const observer = new MutationObserver(client, optimisticToggleMutationOptions(client, toggleOptions(async () => Promise.reject(new Error("boom")), "failed")));
 

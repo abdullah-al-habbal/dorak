@@ -64,3 +64,10 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - `MeterRow` pairs every figure with a thin proportional bar; the number is the meaning, the bar is decoration (`aria-hidden`).
 - Settings are grouped cards (`role="group"` named by the heading). Each field shows its default and allowed range under the input, and a per-field "Default" button. The sticky save bar says "unsaved changes" or "all saved" in a live region and the form warns before the tab closes.
 - Labels and units come from the dictionary keyed by `setting_key`, so a new backend setting shows its raw key until copy is added.
+
+## Admin catalog (global categories)
+- One table of top-level categories; the row opens a read-only detail dialog (figures in a `dl`, subcategories as status chips, the first 50 catalog items under "Read only. Catalog items are created and edited in the admin panel."). Edit is a separate outlined row button and also sits in the detail footer. Subcategories and items are never editable here.
+- Counts (catalog items, services) are right-aligned tabular numbers; a subcategory count rides under the name as muted meta text, not a column.
+- The active `Switch` follows the toggle rule: switching on is instant, switching off opens the confirm overlay, which states what it does not do (catalog items stay visible to clients). The same caveat sits under the page description with an info icon, because "deactivate" reads like "unpublish".
+- Delete appears in the edit dialog only for an empty category. For one in use, the button is replaced by a sentence explaining why and pointing to deactivation, never a silently disabled button. The backend still answers 409, surfaced as a toast.
+- The list is not paginated (the whole taxonomy fits), so filters live in the URL through `useUrlState`, not `useUrlFilters`. The empty (unfiltered) state offers "New category".
