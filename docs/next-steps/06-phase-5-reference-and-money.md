@@ -1,0 +1,78 @@
+---
+nodeid: docs.next_steps.phase_5
+parentnode: docs.next_steps
+childnodes: []
+codeanchors:
+  - backend/modules/Dashboard/
+  - backend/modules/Currency/
+  - backend/modules/Language/
+  - backend/modules/ServiceCatalog/
+  - frontend/web/dashboard/src/
+---
+
+# Phase 5: Reference Data and Money
+
+Routes: [index](index.md).
+
+The platform runs on seeded values until these exist. They come after phases 1 to 4 because seeded data keeps working, while a locked-out user does not.
+
+## NS-19: Currencies and exchange rates
+
+- **Guards:** admin.
+- **Story:** the admin adds a currency, retires one, and keeps the exchange rates current for multi-currency display.
+- **Backend: Partial.**
+  - `GET /admin/exchange-rates` exists, and `GET /currencies` is read-only on the Operations routes.
+  - Currency writes and rate writes are New (tables: `currencies`, `exchange_rates`).
+  - A currency in use (brand base currency, prices, payouts) can be deactivated, not deleted.
+- **Dashboard:** a "Currencies" screen with a rates tab.
+- **Done when:**
+  - Pest covers the in-use guard and rate validation.
+  - E2E covers adding a rate.
+
+## NS-20: Languages
+
+- **Guards:** admin.
+- **Story:** the admin manages which languages the platform offers.
+- **Backend: New.** The `languages` table has no API. The apps ship English and Arabic copy, so decide in the task whether this list only switches languages on and off.
+- **Dashboard:** a "Languages" section under Settings.
+- **Done when:** Pest covers the rule that the default language can't be switched off.
+
+## NS-21: Catalog items, tags and media
+
+- **Guards:** admin.
+- **Story:** the admin curates the global service catalog below the categories: items, tags and images.
+- **Backend: Partial.**
+  - Item CRUD is ready (`/admin/catalog-items`).
+  - Tags are read-only (`GET /admin/catalog-tags`), so tag writes are New.
+  - Check `service_catalog_media` in the task.
+- **Dashboard:** turn the read-only items preview in Catalog into full CRUD, and add tag management.
+- **Done when:** E2E covers the item CRUD and tag assignment.
+
+## NS-22: Commission rules and ledger
+
+- **Guards:** admin.
+- **Story:** the admin sets the platform commission per plan, brand or service, and audits the commission charged on each booking.
+- **Backend: Ready.** `/admin/commission-rules` CRUD and `GET /admin/commission-entries`.
+- **Dashboard:**
+  - a "Commissions" screen with Rules and Ledger tabs;
+  - amounts per currency, never summed across currencies.
+- **Done when:** E2E covers creating a rule and the ledger filters.
+
+## NS-23: Payment gateways
+
+- **Guards:** admin.
+- **Story:** the admin configures and activates the payment gateways.
+- **Backend: Ready.** `/admin/payment-gateways` CRUD and `PATCH .../active`.
+- **Dashboard:**
+  - a "Payment gateways" section under Settings;
+  - secrets are write-only, never shown back;
+  - the security review is required.
+- **Done when:** E2E covers creating and toggling a gateway, and a check confirms no secret appears in any response.
+
+## NS-24: Payout detail
+
+- **Guards:** admin; the owner's read-only view.
+- **Story:** the admin opens a payout and sees its lines, period and status history before approving it or marking it paid.
+- **Backend: Ready.** `GET /admin/payouts/{payout}`.
+- **Dashboard:** a payout detail page linked from the existing list. The existing approve, mark-paid and cancel actions move onto it.
+- **Done when:** E2E covers opening a payout and approving it from the detail page.

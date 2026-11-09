@@ -35,6 +35,18 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [05: Missing backend routes](../mobile-audit-g10-g11/05-missing-backend-routes.md)
 - [06: MVP scope decisions](../mobile-audit-g10-g11/06-mvp-scope-decisions.md)
 
+### `docs/next-steps/`
+
+- [Next Steps: Launch Roadmap](../next-steps/index.md)
+- [Decisions for the Launch Roadmap](../next-steps/01-decisions.md)
+- [Phase 1: Nobody Is Locked Out](../next-steps/02-phase-1-access.md)
+- [Phase 2: The Platform Team Runs the Platform Alone](../next-steps/03-phase-2-governance.md)
+- [Phase 3: The Daily Routine Needs No Workaround](../next-steps/04-phase-3-daily-operations.md)
+- [Phase 4: Staffing and Signature Features](../next-steps/05-phase-4-staffing.md)
+- [Phase 5: Reference Data and Money](../next-steps/06-phase-5-reference-and-money.md)
+- [Phases 6 and 7: Growth, then Retire Filament](../next-steps/07-phase-6-7-growth-and-retirement.md)
+- [Coverage Matrix](../next-steps/08-coverage-matrix.md)
+
 ### `docs/planning/`
 
 - [Product Audit](../planning/product-audit.md)

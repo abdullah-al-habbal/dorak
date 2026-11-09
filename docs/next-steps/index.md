@@ -1,0 +1,103 @@
+---
+nodeid: docs.next_steps
+parentnode: docs.graph.part-3
+childnodes:
+  - docs.next_steps.decisions
+  - docs.next_steps.phase_1
+  - docs.next_steps.phase_2
+  - docs.next_steps.phase_3
+  - docs.next_steps.phase_4
+  - docs.next_steps.phase_5
+  - docs.next_steps.phase_6_7
+  - docs.next_steps.coverage
+codeanchors:
+  - backend/modules/
+  - frontend/web/dashboard/src/
+  - frontend/mobile/apps/
+---
+
+# Next Steps: Launch Roadmap
+
+Routes: [documentation graph](../index.md) · [open decisions](../decisions-required.md) · [feature modules plan](../feature-modules-plan.md).
+
+This plan merges three read-only studies from 2026-11-09: what each guard can do today, what each guard lacks against the backend, and the launch priorities. It was re-ranked after the decision to retire Filament.
+
+Evidence:
+
+- `backend/modules/Dashboard/Routes/Api/V1/dashboard.php` and the other module route files;
+- the database migrations (every `Schema::create`);
+- the dashboard's proxy allow-list (`src/config/proxy-allow-list.constant.ts`) and navigation (`src/config/nav.constant.ts`);
+- the 23 Filament resources being replaced;
+- the feature folders of the three mobile apps.
+
+## Ground rules
+
+- **Filament is retired** ([D1](01-decisions.md#d1-filament-is-retired)). The Next.js dashboard is the only web surface for every guard, including the whole admin back office: users, reference data, moderation and money. No task may rely on Filament, and Filament is removed last ([NS-28](07-phase-6-7-growth-and-retirement.md#ns-28-retire-filament)).
+- **The mobile apps keep their scope.** Clients book in `client_app`. Stylists keep full self-service in `stylist_app`: services, portfolio, invitations and jobs. `business_app` mirrors the manager.
+- **Order rule:** a guard must never hit a dead end before another guard gains a convenience. The phases are:
+  1. nobody is locked out;
+  2. the platform team can run the platform alone;
+  3. the daily routine needs no workaround;
+  4. staffing and signature features;
+  5. reference data and money;
+  6. growth;
+  7. remove Filament.
+- **One task is one task-executor run:** the council for medium or complex work, every gate, and one local commit. When the backend is Partial or New, the backend change ships in the same task, following the backend contract policy.
+
+Backend status:
+
+- **Ready:** the dashboard route exists. Only the allow-list rule and the screens are missing.
+- **Partial:** the logic exists, but only on a mobile or `admin_api` route or in part, so a dashboard route is needed.
+- **New:** no API exists.
+
+Size: S (about a day), M (a few days), L (a week or more).
+
+## Ordered task map
+
+| # | Task | Guards | Backend | Size | Needs | Status |
+|---|---|---|---|---|---|---|
+| | **[Decisions](01-decisions.md)** (settle before the task that needs them) | | | | | D1 decided |
+| | **[Phase 1: nobody is locked out](02-phase-1-access.md)** | | | | | |
+| NS-01 | Password recovery on every login | all | New | M | | Todo |
+| NS-02 | Account page: profile, email, password, notification settings | all | Ready | M | | Todo |
+| NS-03 | Owner self-registration and first brand | owner, admin | New | L | D2 | Todo |
+| NS-04 | Admin users: invite, edit, deactivate | admin | New | M | NS-01 | Todo |
+| | **[Phase 2: the platform team runs the platform alone](03-phase-2-governance.md)** | | | | | |
+| NS-05 | Review moderation (disputes) | admin | Ready | S | | Todo |
+| NS-06 | Brand lifecycle: edit, reject, suspend, feature overrides, history | admin | Partial | L | D8 | Todo |
+| NS-07 | Clients and bans | admin | New | L | D4 | Todo |
+| NS-08 | Barbers platform-wide: activation, bans, activation log | admin | Partial | M | NS-07 | Todo |
+| NS-09 | Branch-level oversight: chairs, stylists, services, reviews, hours, invitations, jobs | admin | Partial | M | D3 | Todo |
+| | **[Phase 3: the daily routine needs no workaround](04-phase-3-daily-operations.md)** | | | | | |
+| NS-10 | Notifications feed in the dashboard | all | New | M | D5 | Todo |
+| NS-11 | Rate the client after a visit | manager, owner | Ready | S | | Todo |
+| NS-12 | Closure days and special hours | manager, owner | Partial | M | | Todo |
+| NS-13 | Owner workspace: brand profile, add a brand, chairs, services, reviews | owner | Ready | M | | Todo |
+| NS-14 | Dispute a review from the dashboard | manager, owner | Partial | S | NS-05 | Todo |
+| | **[Phase 4: staffing and signature features](05-phase-4-staffing.md)** | | | | | |
+| NS-15 | Floor plan editor | manager, owner | Ready | L | | Todo |
+| NS-16 | Barber invitations (affiliations) | manager, owner | Ready | M | | Todo |
+| NS-17 | Job postings and applications | manager, owner | Ready | M | NS-16 | Todo |
+| NS-18 | Per-brand stylist pricing | owner | Ready | M | NS-13 | Todo |
+| | **[Phase 5: reference data and money](06-phase-5-reference-and-money.md)** | | | | | |
+| NS-19 | Currencies and exchange rates | admin | Partial | M | | Todo |
+| NS-20 | Languages | admin | New | S | | Todo |
+| NS-21 | Catalog items, tags and media | admin | Partial | M | | Todo |
+| NS-22 | Commission rules and ledger | admin | Ready | M | | Todo |
+| NS-23 | Payment gateways | admin | Ready | S | | Todo |
+| NS-24 | Payout detail | admin, owner | Ready | S | | Todo |
+| | **[Phases 6 and 7: growth, then retire Filament](07-phase-6-7-growth-and-retirement.md)** | | | | | |
+| NS-25 | Website content: pages, sections, testimonials, onboarding | admin | New | L | | Todo |
+| NS-26 | Plan self-service and billing | owner, admin | New | L | D6 | Todo |
+| NS-27 | Barber web extras | barber | Partial | M | D7 | Todo |
+| NS-28 | Retire Filament | all | Removal | M | NS-01 to NS-24 | Todo |
+
+Phases 1 and 2 are the launch minimum, because without them a guard is locked out or the platform can't be governed. Phase 3 is needed for a smooth first week of real use. Phases 4 to 7 complete the product vision.
+
+What works today, and the Filament-to-task map that proves nothing is lost, are in the [coverage matrix](08-coverage-matrix.md).
+
+## Corrections to the earlier chat reports
+
+- **Notifications are not "backend ready".** The feed routes accept only the mobile guards (`client`, `barber`, `branch_api`). No dashboard route exists, and admins have no feed at all ([NS-10](04-phase-3-daily-operations.md#ns-10-notifications-feed-in-the-dashboard)).
+- **No interface can onboard a new owner.** A brand can be created only by a client token (`POST /api/v1/brands`) or by an existing owner on the dashboard. No mobile app calls the create route, and Filament is going away ([NS-03](02-phase-1-access.md#ns-03-owner-self-registration-and-first-brand)).
+- **A brand history API exists.** `GET /admin/audit/{subjectType}/{subjectId}` (status-change log) is served on the `admin_api` guard. It needs a dashboard route, not a new design ([NS-06](03-phase-2-governance.md#ns-06-brand-lifecycle)).
