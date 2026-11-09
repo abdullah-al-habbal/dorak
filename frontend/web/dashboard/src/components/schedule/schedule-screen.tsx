@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import type { JSX } from "react";
 
 import { EmptyState } from "@/components/common/empty-state";
@@ -31,8 +30,8 @@ function ScheduleContent(): JSX.Element {
   const { schedule: t } = dictionary;
   const { filters, update } = useScheduleFilters();
   const query = useScheduleAppointments(filters, WEEK_START[locale]);
-  const clear = useCallback(() => update({ status: undefined, range: SCHEDULE_DEFAULT_RANGE }), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
+  const clear = () => update({ status: undefined, range: SCHEDULE_DEFAULT_RANGE });
+  const changePage = (page: number) => update({ page });
   const items = query.data?.items ?? [];
   const page = query.data?.page;
   const filtered = filters.status !== undefined || filters.range !== SCHEDULE_DEFAULT_RANGE;

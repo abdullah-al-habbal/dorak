@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
 import type { JSX } from "react";
 
 import { EmptyState } from "@/components/common/empty-state";
@@ -40,36 +39,30 @@ function StylistsContent(): JSX.Element {
   const query = useStylists(filters);
   const status = useUpdateStylistStatus();
 
-  const chairLabel = useCallback(
-    (id: string) => localizedText(chairs.data?.find((chair) => chair.id === id)?.label, locale) || id,
-    [chairs.data, locale],
-  );
-  const chips = useMemo(() => buildStylistChips({ filters, dictionary, chairLabel }), [filters, dictionary, chairLabel]);
-  const clear = useCallback(() => update(STYLIST_CLEAR_ALL_PATCH), [update]);
-  const removeChip = useCallback((key: string) => update(stylistPatchForChip(key)), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
-  const openNew = useCallback(() => overlay.open({ kind: OverlayKind.StylistForm }), [overlay]);
-  const openEdit = useCallback((stylist: Stylist) => overlay.open({ kind: OverlayKind.StylistForm, stylist }), [overlay]);
+  const chairLabel = (id: string) => localizedText(chairs.data?.find((chair) => chair.id === id)?.label, locale) || id;
+  const chips = buildStylistChips({ filters, dictionary, chairLabel });
+  const clear = () => update(STYLIST_CLEAR_ALL_PATCH);
+  const removeChip = (key: string) => update(stylistPatchForChip(key));
+  const changePage = (page: number) => update({ page });
+  const openNew = () => overlay.open({ kind: OverlayKind.StylistForm });
+  const openEdit = (stylist: Stylist) => overlay.open({ kind: OverlayKind.StylistForm, stylist });
 
-  const toggle = useCallback(
-    (stylist: Stylist, active: boolean) => {
-      if (active) {
-        status.mutate({ id: stylist.id, active });
-        return;
-      }
-      overlay.open({
-        kind: OverlayKind.Confirm,
-        title: t.confirm.deactivateTitle,
-        description: t.confirm.deactivateBody,
-        confirmLabel: t.confirm.deactivate,
-        destructive: true,
-        onConfirm: async () => {
-          await status.mutateAsync({ id: stylist.id, active });
-        },
-      });
-    },
-    [overlay, status, t],
-  );
+  const toggle = (stylist: Stylist, active: boolean) => {
+    if (active) {
+      status.mutate({ id: stylist.id, active });
+      return;
+    }
+    overlay.open({
+      kind: OverlayKind.Confirm,
+      title: t.confirm.deactivateTitle,
+      description: t.confirm.deactivateBody,
+      confirmLabel: t.confirm.deactivate,
+      destructive: true,
+      onConfirm: async () => {
+        await status.mutateAsync({ id: stylist.id, active });
+      },
+    });
+  };
 
   const items = query.data?.items ?? [];
   const page = query.data?.page;

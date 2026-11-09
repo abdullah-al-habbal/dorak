@@ -1,7 +1,6 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
-import { useCallback } from "react";
 import type { JSX } from "react";
 
 import { EmptyState } from "@/components/common/empty-state";
@@ -36,10 +35,10 @@ function PlansContent(): JSX.Element {
   const { filters, update } = usePlanFilters();
   const overlay = useOverlay();
   const query = usePlans(filters);
-  const clear = useCallback(() => update({ state: undefined }), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
-  const openNew = useCallback(() => overlay.open({ kind: OverlayKind.PlanForm }), [overlay]);
-  const openEdit = useCallback((plan: Plan) => overlay.open({ kind: OverlayKind.PlanForm, plan }), [overlay]);
+  const clear = () => update({ state: undefined });
+  const changePage = (page: number) => update({ page });
+  const openNew = () => overlay.open({ kind: OverlayKind.PlanForm });
+  const openEdit = (plan: Plan) => overlay.open({ kind: OverlayKind.PlanForm, plan });
   const items = query.data?.items ?? [];
   const page = query.data?.page;
 

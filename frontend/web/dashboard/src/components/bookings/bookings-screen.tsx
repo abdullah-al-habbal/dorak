@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import type { JSX } from "react";
 
 import { BookingDetailDialog } from "@/components/bookings/booking-detail-dialog";
@@ -46,15 +46,12 @@ function BookingsContent(): JSX.Element {
 
   const query = useBookingsQuery(filters, weekStart);
 
-  const chairLabel = useCallback(
-    (id: string) => localizedText(chairs.data?.find((chair) => chair.id === id)?.label, locale) || id,
-    [chairs.data, locale],
-  );
-  const chips = useMemo(() => buildBookingChips({ filters, dictionary, chairLabel }), [filters, dictionary, chairLabel]);
-  const removeChip = useCallback((key: string) => update(patchForChip(key)), [update]);
-  const clear = useCallback(() => update(CLEAR_ALL_PATCH), [update]);
-  const openWalkIn = useCallback(() => overlay.open({ kind: OverlayKind.WalkIn }), [overlay]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
+  const chairLabel = (id: string) => localizedText(chairs.data?.find((chair) => chair.id === id)?.label, locale) || id;
+  const chips = buildBookingChips({ filters, dictionary, chairLabel });
+  const removeChip = (key: string) => update(patchForChip(key));
+  const clear = () => update(CLEAR_ALL_PATCH);
+  const openWalkIn = () => overlay.open({ kind: OverlayKind.WalkIn });
+  const changePage = (page: number) => update({ page });
 
   const items = query.data?.items ?? [];
   const page = query.data?.page;

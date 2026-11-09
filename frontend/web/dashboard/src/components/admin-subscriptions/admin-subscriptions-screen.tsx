@@ -1,7 +1,6 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
-import { useCallback } from "react";
 import type { JSX } from "react";
 
 import { AdminSubscriptionList } from "@/components/admin-subscriptions/admin-subscription-list";
@@ -40,25 +39,22 @@ function AdminSubscriptionsContent(): JSX.Element {
   const overlay = useOverlay();
   const updateStatus = useUpdateSubscriptionStatus();
   const query = useAdminSubscriptions(filters);
-  const clear = useCallback(() => update({ status: undefined }), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
-  const openAssign = useCallback(() => overlay.open({ kind: OverlayKind.AssignSubscription }), [overlay]);
-  const confirmTransition = useCallback(
-    (item: AdminSubscription, target: SubscriptionTarget) => {
-      const copy = t.confirm[target];
-      overlay.open({
-        kind: OverlayKind.Confirm,
-        title: copy.title,
-        description: `${localizedText(item.brand?.name, locale)}: ${copy.body}`,
-        confirmLabel: copy.confirm,
-        destructive: target === SubscriptionStatus.Cancelled,
-        onConfirm: async () => {
-          await updateStatus.mutateAsync({ id: item.id, status: target });
-        },
-      });
-    },
-    [locale, overlay, t, updateStatus],
-  );
+  const clear = () => update({ status: undefined });
+  const changePage = (page: number) => update({ page });
+  const openAssign = () => overlay.open({ kind: OverlayKind.AssignSubscription });
+  const confirmTransition = (item: AdminSubscription, target: SubscriptionTarget) => {
+    const copy = t.confirm[target];
+    overlay.open({
+      kind: OverlayKind.Confirm,
+      title: copy.title,
+      description: `${localizedText(item.brand?.name, locale)}: ${copy.body}`,
+      confirmLabel: copy.confirm,
+      destructive: target === SubscriptionStatus.Cancelled,
+      onConfirm: async () => {
+        await updateStatus.mutateAsync({ id: item.id, status: target });
+      },
+    });
+  };
   const items = query.data?.items ?? [];
   const page = query.data?.page;
 

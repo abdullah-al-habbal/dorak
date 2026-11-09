@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import type { JSX } from "react";
 
 import { ChairList } from "@/components/chairs/chair-list";
@@ -42,13 +42,13 @@ function ChairsContent(): JSX.Element {
   const query = useChairs(filters);
   const { toggle, togglingId } = useChairStatusToggle();
 
-  const branchLabel = useCallback((id: string) => branches.find((branch) => branch.id === id)?.name ?? id, [branches]);
-  const chips = useMemo(() => buildChairChips({ filters, dictionary, branchLabel }), [filters, dictionary, branchLabel]);
-  const clear = useCallback(() => update(CHAIR_CLEAR_ALL_PATCH), [update]);
-  const removeChip = useCallback((key: string) => update(chairPatchForChip(key)), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
-  const openNew = useCallback(() => overlay.open({ kind: OverlayKind.ChairForm }), [overlay]);
-  const openEdit = useCallback((chair: Chair) => overlay.open({ kind: OverlayKind.ChairForm, chair }), [overlay]);
+  const branchLabel = (id: string) => branches.find((branch) => branch.id === id)?.name ?? id;
+  const chips = buildChairChips({ filters, dictionary, branchLabel });
+  const clear = () => update(CHAIR_CLEAR_ALL_PATCH);
+  const removeChip = (key: string) => update(chairPatchForChip(key));
+  const changePage = (page: number) => update({ page });
+  const openNew = () => overlay.open({ kind: OverlayKind.ChairForm });
+  const openEdit = (chair: Chair) => overlay.open({ kind: OverlayKind.ChairForm, chair });
 
   const items = query.data?.items ?? [];
   const page = query.data?.page;

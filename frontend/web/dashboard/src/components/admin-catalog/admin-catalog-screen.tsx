@@ -1,7 +1,6 @@
 "use client";
 
 import { InfoIcon } from "lucide-react";
-import { useCallback } from "react";
 import type { JSX } from "react";
 
 import { AdminCatalogToolbar } from "@/components/admin-catalog/admin-catalog-toolbar";
@@ -39,31 +38,28 @@ function AdminCatalogContent(): JSX.Element {
   const query = useAdminCatalogCategories(filters);
   const toggle = useUpdateCatalogCategoryActive();
   const { mutate: toggleActive } = toggle;
-  const clear = useCallback(() => update({ status: undefined, search: undefined }), [update]);
-  const openNew = useCallback(() => overlay.open({ kind: OverlayKind.CatalogCategoryForm }), [overlay]);
-  const openEdit = useCallback((category: AdminCatalogCategory) => overlay.open({ kind: OverlayKind.CatalogCategoryForm, category }), [overlay]);
-  const openDetail = useCallback((category: AdminCatalogCategory) => overlay.open({ kind: OverlayKind.CatalogCategoryDetail, category }), [overlay]);
+  const clear = () => update({ status: undefined, search: undefined });
+  const openNew = () => overlay.open({ kind: OverlayKind.CatalogCategoryForm });
+  const openEdit = (category: AdminCatalogCategory) => overlay.open({ kind: OverlayKind.CatalogCategoryForm, category });
+  const openDetail = (category: AdminCatalogCategory) => overlay.open({ kind: OverlayKind.CatalogCategoryDetail, category });
   const { mutateAsync: toggleActiveAsync } = toggle;
   // Switching on is instant; switching off confirms first and states what it does (and doesn't) hide.
-  const onToggle = useCallback(
-    (category: AdminCatalogCategory, active: boolean) => {
-      if (active) {
-        toggleActive({ id: category.id, active });
-        return;
-      }
-      overlay.open({
-        kind: OverlayKind.Confirm,
-        title: t.confirm.deactivateTitle,
-        description: t.confirm.deactivateBody.replace("{category}", localizedText(category.name, locale)),
-        confirmLabel: t.confirm.deactivate,
-        destructive: true,
-        onConfirm: async () => {
-          await toggleActiveAsync({ id: category.id, active });
-        },
-      });
-    },
-    [locale, overlay, t, toggleActive, toggleActiveAsync],
-  );
+  const onToggle = (category: AdminCatalogCategory, active: boolean) => {
+    if (active) {
+      toggleActive({ id: category.id, active });
+      return;
+    }
+    overlay.open({
+      kind: OverlayKind.Confirm,
+      title: t.confirm.deactivateTitle,
+      description: t.confirm.deactivateBody.replace("{category}", localizedText(category.name, locale)),
+      confirmLabel: t.confirm.deactivate,
+      destructive: true,
+      onConfirm: async () => {
+        await toggleActiveAsync({ id: category.id, active });
+      },
+    });
+  };
   const items = query.data ?? [];
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import type { JSX } from "react";
 
 import { EmptyState } from "@/components/common/empty-state";
@@ -42,10 +42,10 @@ function ServicesContent(): JSX.Element {
 
   const items = useMemo(() => query.data ?? [], [query.data]);
   const groups = useMemo(() => groupByCategory(items, locale), [items, locale]);
-  const clear = useCallback(() => setSearch(undefined), [setSearch]);
-  const openNew = useCallback(() => overlay.open({ kind: OverlayKind.ServiceForm, brandId }), [overlay, brandId]);
-  const openEdit = useCallback((service: Service) => overlay.open({ kind: OverlayKind.ServiceForm, service, brandId }), [overlay, brandId]);
-  const toggle = useCallback((service: Service, active: boolean) => toggleActive.mutate({ service, active }), [toggleActive]);
+  const clear = () => setSearch(undefined);
+  const openNew = () => overlay.open({ kind: OverlayKind.ServiceForm, brandId });
+  const openEdit = (service: Service) => overlay.open({ kind: OverlayKind.ServiceForm, service, brandId });
+  const toggle = (service: Service, active: boolean) => toggleActive.mutate({ service, active });
   const togglingId = toggleActive.isPending ? (toggleActive.variables?.service.id ?? null) : null;
 
   return (

@@ -1,7 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
-
 import { ApiErrorCode } from "@/enums/api-error-code.enum";
 import { ChairStatus } from "@/enums/chair-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
@@ -28,33 +26,30 @@ export function useChairStatusToggle(): ChairStatusToggle {
   const update = useUpdateChairStatus();
   const { mutate } = update;
 
-  const toggle = useCallback(
-    (chair: Chair, inService: boolean) => {
-      if (inService) {
-        mutate({ chair, status: ChairStatus.Available });
-        return;
-      }
-      mutate(
-        { chair, status: ChairStatus.Maintenance },
-        {
-          onError: (error) => {
-            if (!hasActiveBookings(error)) return;
-            overlay.open({
-              kind: OverlayKind.Confirm,
-              title: chairs.confirm.maintenanceTitle,
-              description: chairs.confirm.maintenanceBody,
-              confirmLabel: chairs.confirm.maintenance,
-              destructive: true,
-              onConfirm: async () => {
-                await update.mutateAsync({ chair, status: ChairStatus.Maintenance, force: true });
-              },
-            });
-          },
+  const toggle = (chair: Chair, inService: boolean) => {
+    if (inService) {
+      mutate({ chair, status: ChairStatus.Available });
+      return;
+    }
+    mutate(
+      { chair, status: ChairStatus.Maintenance },
+      {
+        onError: (error) => {
+          if (!hasActiveBookings(error)) return;
+          overlay.open({
+            kind: OverlayKind.Confirm,
+            title: chairs.confirm.maintenanceTitle,
+            description: chairs.confirm.maintenanceBody,
+            confirmLabel: chairs.confirm.maintenance,
+            destructive: true,
+            onConfirm: async () => {
+              await update.mutateAsync({ chair, status: ChairStatus.Maintenance, force: true });
+            },
+          });
         },
-      );
-    },
-    [chairs, mutate, overlay, update],
-  );
+      },
+    );
+  };
 
   return { toggle, togglingId: update.isPending ? (update.variables?.chair.id ?? null) : null };
 }

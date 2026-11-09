@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import { loginRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
@@ -13,7 +13,7 @@ export function useSignOut(actor: AuthActor) {
   const clearSession = useAuthStore((state) => state.clearSession);
   const [pending, setPending] = useState(false);
 
-  const signOut = useCallback(async () => {
+  const signOut = async () => {
     setPending(true);
     try {
       await logoutMutation();
@@ -22,7 +22,7 @@ export function useSignOut(actor: AuthActor) {
       router.replace(loginRoute(actor));
       router.refresh();
     }
-  }, [actor, clearSession, router]);
+  };
 
   return { signOut, pending };
 }

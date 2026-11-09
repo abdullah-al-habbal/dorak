@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import type { JSX } from "react";
 
 import { AdminBrandList } from "@/components/admin-brands/admin-brand-list";
@@ -37,9 +36,9 @@ function AdminBrandsContent(): JSX.Element {
   const overlay = useOverlay();
   const confirmApprove = useConfirmApproveBrand();
   const query = useAdminBrands(filters);
-  const clear = useCallback(() => update({ status: DEFAULT_BRAND_STATUS_FILTER, search: undefined }), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
-  const openDetail = useCallback((brand: AdminBrand) => overlay.open({ kind: OverlayKind.BrandDetail, brand }), [overlay]);
+  const clear = () => update({ status: DEFAULT_BRAND_STATUS_FILTER, search: undefined });
+  const changePage = (page: number) => update({ page });
+  const openDetail = (brand: AdminBrand) => overlay.open({ kind: OverlayKind.BrandDetail, brand });
   const items = query.data?.items ?? [];
   const page = query.data?.page;
 

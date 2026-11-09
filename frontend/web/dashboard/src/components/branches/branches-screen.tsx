@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import type { JSX } from "react";
 
 import { BranchList } from "@/components/branches/branch-list";
@@ -42,16 +42,16 @@ function BranchesContent(): JSX.Element {
   const brands = useMemo(() => brandOptions.data ?? [], [brandOptions.data]);
   const query = useBranches(filters);
 
-  const brandLabel = useCallback((id: string) => {
+  const brandLabel = (id: string) => {
     const brand = brands.find((candidate) => candidate.id === id);
     return brand ? localizedText(brand.name, locale) : id;
-  }, [brands, locale]);
-  const chips = useMemo(() => buildBranchChips({ filters, dictionary, brandLabel }), [filters, dictionary, brandLabel]);
-  const clear = useCallback(() => update(BRANCH_CLEAR_ALL_PATCH), [update]);
-  const removeChip = useCallback((key: string) => update(branchPatchForChip(key)), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
-  const openNew = useCallback(() => overlay.open({ kind: OverlayKind.BranchForm }), [overlay]);
-  const openEdit = useCallback((branch: Branch) => overlay.open({ kind: OverlayKind.BranchForm, branch }), [overlay]);
+  };
+  const chips = buildBranchChips({ filters, dictionary, brandLabel });
+  const clear = () => update(BRANCH_CLEAR_ALL_PATCH);
+  const removeChip = (key: string) => update(branchPatchForChip(key));
+  const changePage = (page: number) => update({ page });
+  const openNew = () => overlay.open({ kind: OverlayKind.BranchForm });
+  const openEdit = (branch: Branch) => overlay.open({ kind: OverlayKind.BranchForm, branch });
 
   const items = query.data?.items ?? [];
   const page = query.data?.page;

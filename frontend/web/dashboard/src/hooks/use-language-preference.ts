@@ -1,7 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
-
 import type { Locale } from "@/enums/locale.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
@@ -26,7 +24,7 @@ export function useLanguagePreference(): LanguagePreference {
   });
   const { mutate } = mutation;
 
-  const choose = useCallback((locale: Locale) => mutate(locale, { onSuccess: () => switchTo(locale) }), [mutate, switchTo]);
+  const choose = (locale: Locale) => mutate(locale, { onSuccess: () => switchTo(locale) });
 
   return { choose, pending: mutation.isPending || switching };
 }

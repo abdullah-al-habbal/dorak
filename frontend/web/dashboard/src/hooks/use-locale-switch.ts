@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useTransition } from "react";
+import { useTransition } from "react";
 
 import { LOCALE_COOKIE } from "@/config/cookies.constant";
 import type { Locale } from "@/enums/locale.enum";
@@ -11,13 +11,10 @@ export function useLocaleSwitch() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
-  const switchTo = useCallback(
-    (locale: Locale) => {
-      writeClientCookie(LOCALE_COOKIE, locale);
-      startTransition(() => router.refresh());
-    },
-    [router],
-  );
+  const switchTo = (locale: Locale) => {
+    writeClientCookie(LOCALE_COOKIE, locale);
+    startTransition(() => router.refresh());
+  };
 
   return { switchTo, pending };
 }

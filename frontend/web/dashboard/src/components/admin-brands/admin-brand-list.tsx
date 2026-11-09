@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckIcon } from "lucide-react";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import type { JSX } from "react";
 
 import { BrandStatusBadge } from "@/components/admin-brands/brand-status-badge";
@@ -26,7 +26,7 @@ function getBrandId(brand: AdminBrand): string {
 export function AdminBrandList({ brands, onSelect, onApprove }: AdminBrandListProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { adminBrands: t } = dictionary;
-  const rowLabel = useCallback((brand: AdminBrand) => t.rowLabel.replace("{brand}", localizedText(brand.name, locale)), [locale, t]);
+  const rowLabel = (brand: AdminBrand) => t.rowLabel.replace("{brand}", localizedText(brand.name, locale));
 
   const columns = useMemo<DataTableColumn<AdminBrand>[]>(() => {
     const date = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });

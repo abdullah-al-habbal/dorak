@@ -1,7 +1,6 @@
 "use client";
 
 import { WalletIcon } from "lucide-react";
-import { useCallback } from "react";
 import type { JSX } from "react";
 
 import { AdminPayoutList } from "@/components/admin-payouts/admin-payout-list";
@@ -29,22 +28,19 @@ export function AdminPayoutsScreen(): JSX.Element {
   const overlay = useOverlay();
   const generate = useGeneratePayouts();
   const query = useAdminPayouts(filters);
-  const clear = useCallback(() => update({ status: undefined }), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
-  const openAction = useCallback((payout: AdminPayout, action: PayoutAction) => overlay.open({ kind: OverlayKind.PayoutAction, payout, action }), [overlay]);
-  const confirmGenerate = useCallback(
-    () =>
-      overlay.open({
-        kind: OverlayKind.Confirm,
-        title: t.generateConfirm.title,
-        description: t.generateConfirm.body,
-        confirmLabel: t.generateConfirm.confirm,
-        onConfirm: async () => {
-          await generate.mutateAsync();
-        },
-      }),
-    [generate, overlay, t],
-  );
+  const clear = () => update({ status: undefined });
+  const changePage = (page: number) => update({ page });
+  const openAction = (payout: AdminPayout, action: PayoutAction) => overlay.open({ kind: OverlayKind.PayoutAction, payout, action });
+  const confirmGenerate = () =>
+    overlay.open({
+      kind: OverlayKind.Confirm,
+      title: t.generateConfirm.title,
+      description: t.generateConfirm.body,
+      confirmLabel: t.generateConfirm.confirm,
+      onConfirm: async () => {
+        await generate.mutateAsync();
+      },
+    });
   const items = query.data?.items ?? [];
   const page = query.data?.page;
 

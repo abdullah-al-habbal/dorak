@@ -1,6 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
 import type { JSX } from "react";
 
 import { AdminPayoutsScreen } from "@/components/admin-payouts/admin-payouts-screen";
@@ -34,8 +33,8 @@ function PayoutsContent(): JSX.Element {
   const { payouts: t } = dictionary;
   const { filters, update } = usePayoutFilters();
   const query = usePayouts(filters);
-  const clear = useCallback(() => update({ status: undefined }), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
+  const clear = () => update({ status: undefined });
+  const changePage = (page: number) => update({ page });
   const items = query.data?.items ?? [];
   const page = query.data?.page;
 

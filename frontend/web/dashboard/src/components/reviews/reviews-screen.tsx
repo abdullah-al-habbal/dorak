@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import type { JSX } from "react";
 
 import { EmptyState } from "@/components/common/empty-state";
@@ -37,8 +37,8 @@ function ReviewsContent(): JSX.Element {
   const branches = useMemo(() => options.data ?? [], [options.data]);
   const branchId = ownBranchId ?? filters.branchId ?? branches[0]?.id ?? null;
   const query = useReviews(branchId, filters.page);
-  const changeBranch = useCallback((id: string) => update({ branchId: id }), [update]);
-  const changePage = useCallback((page: number) => update({ page }), [update]);
+  const changeBranch = (id: string) => update({ branchId: id });
+  const changePage = (page: number) => update({ page });
 
   const noBranch = choosingBranch && options.isSuccess && branches.length === 0;
   const loading = (choosingBranch && options.isPending) || (branchId !== null && query.isPending);
