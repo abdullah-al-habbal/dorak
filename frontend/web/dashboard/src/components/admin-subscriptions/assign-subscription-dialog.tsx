@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { NativeSelect } from "@/components/ui/native-select";
 import { SkeletonRows } from "@/components/ui/skeleton-row";
+import { BrandStatus } from "@/enums/brand-status.enum";
 import { HttpStatus } from "@/enums/http-status.enum";
 import { useAssignSubscription } from "@/hooks/use-assign-subscription";
 import { useBrandOptions } from "@/hooks/use-brand-options";
@@ -23,12 +24,12 @@ const LOADING_ROWS = 2;
 const LOADING_ROW_CLASS = "h-10";
 const LOADING_STACK_CLASS = "gap-3";
 
-/** Assigns a plan to a brand. The backend replaces the brand's current live subscription. */
+/** Assigns a plan to an approved brand (pending brands are not offered). The backend replaces the brand's current live subscription. */
 export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): JSX.Element {
   const { dictionary, locale } = useI18n();
   const { adminSubscriptions: t, common } = dictionary;
   const d = t.assignDialog;
-  const brands = useBrandOptions();
+  const brands = useBrandOptions(BrandStatus.Active);
   const plans = usePlanOptions();
   const assign = useAssignSubscription();
   const [brandId, setBrandId] = useState("");
@@ -65,6 +66,7 @@ export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): 
         {ready ? (
           <form onSubmit={submit} noValidate className="flex flex-col gap-4">
             <FormErrorBanner message={errors.form} />
+            {brands.data.length === 0 ? <p role="status" className="rounded-lg bg-warning/15 px-3 py-2 text-sm">{d.noBrands}</p> : null}
             {plans.data.length === 0 ? <p role="status" className="rounded-lg bg-warning/15 px-3 py-2 text-sm">{d.noPlans}</p> : null}
             <FormField id="assign-brand" label={d.brand} error={errors.brand}>
               <NativeSelect id="assign-brand" value={brandId} aria-invalid={Boolean(errors.brand)} onChange={(event) => setBrandId(event.target.value)}>

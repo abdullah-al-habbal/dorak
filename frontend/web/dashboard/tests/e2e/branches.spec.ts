@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-import { E2E_OWNER_STORAGE_STATE } from "@tests/e2e/support/e2e-env.constant";
+import { E2E_ADMIN_STORAGE_STATE, E2E_ASSIGNABLE_BRAND_NAME, E2E_OWNER_PASSWORD, E2E_OWNER_STORAGE_STATE, E2E_PENDING_BRAND_NAME, E2E_PENDING_OWNER_EMAIL } from "@tests/e2e/support/e2e-env.constant";
 import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 
-const { branches } = dictionaryFor("en");
+const { auth, branches } = dictionaryFor("en");
 const SEEDED = "E2E Salon";
 const NEW_NAME = "E2E Annex";
 const RENAMED = "E2E Annex Renamed";
@@ -79,5 +79,41 @@ test.describe("owner branches", () => {
     await page.goto("/dashboard/owner/branches");
     await expect(page.getByRole("heading", { level: 1, name: dictionaryFor("ar").branches.title })).toBeVisible();
     await expectNoHorizontalScroll(page);
+  });
+});
+
+test.describe("new branch brand picker", () => {
+  test.use({ storageState: E2E_ADMIN_STORAGE_STATE });
+
+  test("offers approved brands only", async ({ page }) => {
+    await signIn(page, "en", "admin");
+    await page.goto("/dashboard/admin/branches");
+    await page.getByRole("button", { name: branches.newBranch }).click();
+
+    const brand = page.getByRole("dialog").getByLabel(branches.form.brand);
+    await expect(brand.locator("option", { hasText: E2E_ASSIGNABLE_BRAND_NAME })).toHaveCount(1);
+    await expect(brand.locator("option", { hasText: E2E_PENDING_BRAND_NAME })).toHaveCount(0);
+  });
+});
+
+test.describe("owner whose brand awaits approval", () => {
+  // Signs in through the form as the pending brand's owner, so no saved session.
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  test("is told to wait for approval instead of getting the branch form", async ({ page }) => {
+    await page.goto("/dashboard/owner/login");
+    await page.getByLabel(auth.email).fill(E2E_PENDING_OWNER_EMAIL);
+    await page.getByLabel(auth.password, { exact: true }).fill(E2E_OWNER_PASSWORD);
+    await page.getByRole("button", { name: auth.submit }).click();
+    await expect(page).not.toHaveURL(/\/login/);
+
+    await page.goto("/dashboard/owner/branches");
+    await page.getByRole("button", { name: branches.newBranch }).first().click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog.getByText(branches.form.awaitingApproval.title)).toBeVisible();
+    await expect(dialog.getByLabel(branches.form.nameEn)).toHaveCount(0);
+    // The notice carries its own Close; the dialog's corner button has the same name.
+    await dialog.getByRole("status").getByRole("button", { name: dictionaryFor("en").common.close }).click();
+    await expect(dialog).toBeHidden();
   });
 });

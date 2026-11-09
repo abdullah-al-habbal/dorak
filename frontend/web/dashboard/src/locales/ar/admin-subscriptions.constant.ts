@@ -19,6 +19,7 @@ export const arAdminSubscriptions: Dictionary["adminSubscriptions"] = {
     brand: "العلامة التجارية",
     plan: "الخطة",
     choose: "اختر…",
+    noBrands: "لا توجد علامات تجارية معتمدة. وافق على علامة تجارية من شاشة العلامات التجارية أولًا.",
     noPlans: "لا توجد خطط نشطة. أنشئ خطة أو فعّلها أولًا.",
     submit: "إسناد الخطة",
     back: "رجوع",

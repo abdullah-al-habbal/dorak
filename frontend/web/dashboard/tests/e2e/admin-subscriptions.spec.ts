@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
 import { PLAN_OPTIONS_LIMIT } from "@/config/plan.constant";
-import { E2E_ADMIN_STORAGE_STATE } from "@tests/e2e/support/e2e-env.constant";
+import { E2E_ADMIN_STORAGE_STATE, E2E_ASSIGNABLE_BRAND_NAME, E2E_PENDING_BRAND_NAME } from "@tests/e2e/support/e2e-env.constant";
 import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 
 const en = dictionaryFor("en");
@@ -72,9 +72,11 @@ test.describe("admin subscriptions", () => {
     await expect(dialog.getByText(t.assignDialog.validation.brand)).toBeVisible();
     await expect(dialog.getByText(t.assignDialog.validation.plan)).toBeVisible();
 
-    // Pick a deterministic brand by name (not by position): the seeded pending brand, which has no subscription.
-    // Every reset removes subscriptions of brands other than the E2E brand.
-    await dialog.getByLabel(t.assignDialog.brand).selectOption({ label: "E2E Pending Cuts" });
+    // A pending brand is not offered; pick an approved one by name (not by position).
+    // Every reset removes subscriptions of brands other than the E2E brand, so it has none.
+    const brand = dialog.getByLabel(t.assignDialog.brand);
+    await expect(brand.locator("option", { hasText: E2E_PENDING_BRAND_NAME })).toHaveCount(0);
+    await brand.selectOption({ label: E2E_ASSIGNABLE_BRAND_NAME });
     await dialog.getByLabel(t.assignDialog.plan).selectOption({ label: "E2E Growth" });
     await dialog.getByRole("button", { name: t.assignDialog.submit }).click();
     await expect(dialog).toBeHidden();

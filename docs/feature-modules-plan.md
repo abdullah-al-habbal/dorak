@@ -149,7 +149,7 @@ The guard column mirrors `DashboardOperationsAuthorizationMiddleware` (rejects b
 
 ## 4. Contract mismatches
 
-Found by comparing the brief with the backend. These are the decisions that need a human or a backend check before the affected module starts. Also recorded in [open decisions](decisions-required.md).
+Found by comparing the brief with the backend before the modules started. Every row is now settled; the outcome is recorded in [open decisions](decisions-required.md) and in each module's section.
 
 | Brief | Backend reality | Plan |
 | --- | --- | --- |
@@ -158,7 +158,7 @@ Found by comparing the brief with the backend. These are the decisions that need
 | Split shifts / breaks in working hours | Resolved. A day carries up to four non-overlapping `shifts`; `opens_time`/`closes_time` remain as the day's first open and last close for older clients. Overnight hours are still not representable (close must be after open on the same day). | The editor offers add, remove and copy-to-days per day; booking and slot checks require a booking to fit inside a single shift. |
 | Statuses Pending / Confirmed / Completed / Cancelled | `BookingStatus` also has `in_progress` and `no_show`. | Six statuses, all live in the backend. Transitions follow `BookingStatus::canTransitionTo`; the UI offers only those, and never `pending` as a target. |
 | Commission rules on a barber | `StylistRequest` has no commission field. Rules are `admin/commission-rules` (platform admin only). | Barbers module shows commission read-only for admin; other guards do not see it. No commission editing in this module. |
-| Commission splits and trends in earnings | `ShowEarningsRequest` accepts only `from` and `to`. Whether the response has splits or a previous-period figure is **unverified**. | Verify the `ShowEarningsAction` response shape first. If there is no previous-period figure, the trend is computed by a second request for the equal preceding range; if that is not wanted, the indicator is hidden. |
+| Commission splits and trends in earnings | `ShowEarningsRequest` accepts `from` and `to`. Resolved 2026-11-05: the response keeps `{scope, totals[]}` and adds `series[]` (per day and currency), `previous_period` and `previous_totals[]` (null without a full range). | Trends come from `previous_totals[]` in the same response; no second request and no paging. |
 | CSV export | No export endpoint. | Client-side, from the loaded and filtered rows. |
 | Barber portal | Barbers are rejected by the Operations group (`/bookings`, `/overview`, `/stylists`, ...). Only `/earnings` and profile routes work. | Resolved 2026-11-07 (Module 8): the barber guard gets earnings and a read-only Schedule backed by the barber-scoped `GET /schedule/appointments` and `GET /schedule/hours` (see [Module 8](#10d-module-8-barber-schedule)). |
 | Booking list has no calendar-window parameter | `date_from`, `date_to` exist. | The grid requests exactly the visible window, with `per_page=100` and follows the pagination metadata until complete. |
@@ -422,7 +422,8 @@ Chosen 2026-11-08, approve-only (see `docs/decisions-required.md`). Every endpoi
 **Implemented (dashboard).** The admin nav enables Brands; the proxy opens `GET brands/{id}` and `PATCH admin/brands/{id}/approve` to the admin guard only.
 
 - `/dashboard/admin/brands`: the pending queue by default, a status select (pending, active, all) and a name search in the URL, rows with owner email, branch count, status (icon and text) and created date, Approve on pending rows behind the confirm overlay. A row opens the `brand-detail` overlay (both name translations, owner, currency, audience, slug, branches, description) with Approve for a pending brand. Approving invalidates the admin brand keys and the brand pickers. Other guards get the forbidden state.
-- E2E: `admin-brands` (admin session, reset before each test). `E2eDashboardSeeder` seeds "E2E Pending Cuts" for a second owner, older than every other brand, and puts it back to pending on each reset; `admin-subscriptions` now picks that brand by name instead of by position.
+- E2E: `admin-brands` (admin session, reset before each test). `E2eDashboardSeeder` seeds "E2E Pending Cuts" for a second owner, older than every other brand, and puts it back to pending on each reset.
+- Pickers (2026-11-09): the branch-create and assign-plan brand selects use `useBrandOptions(BrandStatus.Active)` (`GET /brands?status=active`, key `branchKeys.brandsByStatus`, under `branchKeys.brands` so approval still refreshes it); the branch list and its brand filter keep every brand. A new branch for an owner with no approved brand shows a waiting state instead of the form; the assign dialog says when no brand is approved. E2E: `branches` (admin picker, pending owner's waiting state) and `admin-subscriptions` (assigns to "Dorak Demo", the pending brand is not offered).
 - Mobile: no impact. The apps never call `/dashboard/*` and `BrandResource` is unchanged.
 
 ## 10h. Module 12: Admin Catalog
@@ -447,9 +448,9 @@ Chosen 2026-11-09 (see `docs/decisions-required.md`). Feasibility gate: LLM coun
 - **Observability.** `ApiClientError` carries the backend `code` and the request timestamp for support. No PII in client logs.
 - **Testing.** Vitest in the Node environment covers the pure logic (schemas, mappers, slot layout, CSV, proxy policy). Component behaviour is verified in the browser. Adding `jsdom` and Testing Library would allow component tests; that is a dependency decision for the maintainers.
 
-## 12. Open questions
+## 12. Questions raised by the plan (all resolved)
 
-Questions 1-3 and 5 were resolved on 2026-11-04; see [open decisions](decisions-required.md). Question 6 (chart library) is still open.
+All six are resolved; see [open decisions](decisions-required.md). Questions 1-3 were resolved on 2026-11-04, question 5 on 2026-11-07, and question 6 on 2026-11-05: no chart library, the earnings bars are Tailwind flex rows (`components/earnings/bar-chart.tsx`).
 
 1. URL segment: keep `stylists` (consistent with backend and nav) or rename to `barbers`?
 2. Does `PUT /branches/{id}` accept a partial payload, or must the whole branch be sent?

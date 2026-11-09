@@ -17,6 +17,7 @@ export const enAdminSubscriptions = {
     brand: "Brand",
     plan: "Plan",
     choose: "Choose…",
+    noBrands: "There are no approved brands. Approve a brand on the Brands screen first.",
     noPlans: "There are no active plans. Create or activate a plan first.",
     submit: "Assign plan",
     back: "Back",

@@ -38,6 +38,10 @@ export const arBranches: Dictionary["branches"] = {
   form: {
     createTitle: "فرع جديد",
     editTitle: "تعديل الفرع",
+    awaitingApproval: {
+      title: "علامتك التجارية بانتظار الموافقة",
+      body: "يمكنك إضافة الفروع بعد أن يوافق فريق دورك على علامتك التجارية.",
+    },
     description: "تُعدَّل ساعات العمل من شاشة ساعات العمل.",
     brand: "العلامة التجارية",
     nameEn: "الاسم (بالإنجليزية)",

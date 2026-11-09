@@ -58,6 +58,7 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 ## Admin brands (approval)
 - The screen is a queue: it opens on pending brands (the default stays out of the URL), and "All statuses" is the last option, not the first. An empty queue says nothing is waiting rather than "no brands".
 - A row opens a read-only detail dialog (both name translations side by side, identifiers `dir="ltr"` and `translate="no"`); Approve sits on pending rows and in the dialog footer, and always goes through the confirm overlay, which states that the brand becomes visible and cannot be moved back from the dashboard.
+- Pickers that create something under a brand (new branch, assign a plan) offer approved brands only; lists and filters keep every brand so existing rows stay labelled. When nothing is approved, the new-branch dialog replaces the form with a waiting state (title, one-line reason, Close) rather than a form that cannot be submitted; the assign dialog shows the same inline status note as "no active plans".
 
 ## Platform analytics and settings
 - Analytics reuses the Earnings period picker, URL contract and `BarChart`; the page is sections under `h2`s, not a wall of identical tiles. Bookings lead with the chart, money is one card per currency (never summed), and the platform size sits last because it is not tied to the period (its caption says so).

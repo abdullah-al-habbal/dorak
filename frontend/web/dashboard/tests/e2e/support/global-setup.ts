@@ -7,8 +7,8 @@ import { enDictionary } from "@/locales/en/index.constant";
 
 /** Rebuilds the dev database, seeds the E2E baseline, then signs the seeded manager in once. */
 export default async function globalSetup(): Promise<void> {
-  await artisan("migrate:fresh", "--seed");
-  await artisan("db:seed", `--class=${E2E_SEEDER_CLASS}`);
+  await artisan(["migrate:fresh", "--seed"]);
+  await artisan(["db:seed", `--class=${E2E_SEEDER_CLASS}`]);
 
   const browser = await chromium.launch();
   try {

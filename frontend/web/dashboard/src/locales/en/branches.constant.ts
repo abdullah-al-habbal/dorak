@@ -36,6 +36,10 @@ export const enBranches = {
   form: {
     createTitle: "New branch",
     editTitle: "Edit branch",
+    awaitingApproval: {
+      title: "Your brand is waiting for approval",
+      body: "You can add branches once the Dorak team approves your brand.",
+    },
     description: "Opening hours are edited on the Working hours screen.",
     brand: "Brand",
     nameEn: "Name (English)",

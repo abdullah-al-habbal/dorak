@@ -1,11 +1,11 @@
-import { expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
 import { arDictionary } from "@/locales/ar/index.constant";
 import { enDictionary } from "@/locales/en/index.constant";
 import type { Dictionary } from "@/types/dictionary.type";
 import { artisan } from "@tests/e2e/support/artisan";
-import { E2E_APP_URL, E2E_EMAIL, E2E_PASSWORD, E2E_SEEDER_CLASS } from "@tests/e2e/support/e2e-env.constant";
+import { E2E_APP_URL, E2E_EMAIL, E2E_PASSWORD, E2E_SEEDER_CLASS, RESET_BACKEND_EXTRA_MS, RESET_SEED_TIMEOUT_MS } from "@tests/e2e/support/e2e-env.constant";
 
 export type E2ELocale = "en" | "ar";
 
@@ -44,7 +44,12 @@ export async function expectNoHorizontalScroll(page: Page): Promise<void> {
   expect(overflow).toBeLessThanOrEqual(0);
 }
 
-/** Restores the seeded baseline in the real database (no saved working hours, today's two bookings). */
+/**
+ * Restores the seeded baseline in the real database (no saved working hours, today's two bookings).
+ * Called from test hooks: it adds its own time to the running test's budget, and a seed that hangs is killed.
+ */
 export async function resetBackend(): Promise<void> {
-  await artisan("db:seed", `--class=${E2E_SEEDER_CLASS}`);
+  const info = test.info();
+  info.setTimeout(info.timeout + RESET_BACKEND_EXTRA_MS);
+  await artisan(["db:seed", `--class=${E2E_SEEDER_CLASS}`], { timeoutMs: RESET_SEED_TIMEOUT_MS });
 }
