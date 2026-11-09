@@ -9,6 +9,7 @@ import { apiFailure, apiSuccess } from "@/lib/api-response";
 import { getRequestDictionary } from "@/locales/get-request-dictionary";
 import { loginBodySchema } from "@/schemas/login-body.zod";
 import { backendRequest } from "@/services/api/auth/backend-client";
+import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { setSessionCookies } from "@/services/api/auth/cookies";
 import { failureFromBackend } from "@/services/api/auth/failure-response";
 import { tokensFromBackendData } from "@/services/api/auth/login-data.util";
@@ -26,6 +27,7 @@ export async function POST(request: Request) {
     path: BACKEND_PATH.login,
     method: HttpMethod.Post,
     body: { actor_type: BACKEND_ACTOR_TYPE[actor], email, password },
+    clientIp: clientIpFromHeaders(request.headers),
   });
   if (!result.ok) return failureFromBackend(result, dictionary);
 

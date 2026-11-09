@@ -60,8 +60,8 @@ Size: S (about a day), M (a few days), L (a week or more).
 |---|---|---|---|---|---|---|
 | | **[Decisions](01-decisions.md)** (settle before the task that needs them) | | | | | All resolved (D1 to D13) |
 | | **[Phase 1: nobody is locked out](02-phase-1-access.md)** | | | | | |
-| NS-01 | Password recovery on every login | all | New | M | | Todo |
-| NS-02 | Account page: profile, email, password, notification settings | all | Ready | M | | Todo |
+| NS-01 | Password recovery on every login | all | New | M | | Done |
+| NS-02 | Account page: profile, email, password, notification settings | all | Ready | M | | Done |
 | NS-29 | Error handling and localized error pages (backend and dashboard) | all | Partial | M | D13 (website pages only) | Todo |
 | NS-03 | Owner public registration, status page, emails, first brand | owner, admin | New | L | D2 (decided), D10, D11, D12 | Todo |
 | NS-30 | Barber approval queue and sign-up hardening | admin, barber | Partial | M | D8 | Todo |
@@ -96,7 +96,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-27 | Barber web extras | barber | Partial | M | D7 | Closed, no work (D7) |
 | NS-28 | Retire Filament | all | Removal | M | NS-01 to NS-24, NS-29, NS-30 | Todo |
 
-Every decision is resolved, so no task is blocked. Implementation starts with NS-01, NS-02 and NS-29.
+Every decision is resolved, so no task is blocked. NS-01 and NS-02 are done; the next task is NS-29.
 
 Phases 1 and 2 are the launch minimum, because without them a guard is locked out or the platform can't be governed. Phase 3 is needed for a smooth first week of real use. Phases 4 to 7 complete the product vision.
 

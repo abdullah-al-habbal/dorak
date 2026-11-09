@@ -65,3 +65,29 @@ describe("decideRoute", () => {
     expect(unsafe.location).toBe("/dashboard/admin");
   });
 });
+
+describe("decideRoute: password recovery pages", () => {
+  it.each(["forgot-password", "reset-password"])("opens %s for anonymous visitors without clearing anything", (segment) => {
+    expect(decideRoute({ ...base, pathname: `/dashboard/manager/${segment}`, hasSessionCookies: true, claimActor: null })).toEqual({ kind: "next" });
+  });
+
+  it.each(["forgot-password", "reset-password"])("opens %s for any signed-in actor, so a link works on a shared device", (segment) => {
+    expect(decideRoute({ ...base, pathname: `/dashboard/manager/${segment}`, claimActor: AuthActor.Manager })).toEqual({ kind: "next" });
+    expect(decideRoute({ ...base, pathname: `/dashboard/manager/${segment}`, claimActor: AuthActor.Owner })).toEqual({ kind: "next" });
+  });
+
+  it("still guards the account page", () => {
+    expect(decideRoute({ ...base, pathname: "/dashboard/barber/account", claimActor: null }).kind).toBe("redirect");
+    expect(decideRoute({ ...base, pathname: "/dashboard/barber/account", claimActor: AuthActor.Barber })).toEqual({ kind: "next" });
+  });
+});
+
+describe("isSafeCallback: public auth pages", () => {
+  it.each(["forgot-password", "reset-password", "login"])("never sends a signed-in user back to %s", (segment) => {
+    expect(isSafeCallback(`/dashboard/admin/${segment}?token=x`, AuthActor.Admin)).toBe(false);
+  });
+
+  it("still accepts ordinary portal pages", () => {
+    expect(isSafeCallback("/dashboard/admin/account", AuthActor.Admin)).toBe(true);
+  });
+});

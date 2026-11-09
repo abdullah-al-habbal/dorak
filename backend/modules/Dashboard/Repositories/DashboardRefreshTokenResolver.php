@@ -74,10 +74,17 @@ final class DashboardRefreshTokenResolver
 
     public function revokeForActor(DashboardActor $actor): void
     {
+        $this->revokeAllFor($actor->actorType, $actor->id);
+    }
+
+    /** Revokes every active refresh token of an account, except the one given (the session making a change). */
+    public function revokeAllFor(DashboardActorTypeEnum $actorType, string $actorId, ?string $exceptPlainText = null): void
+    {
         DashboardRefreshTokenModel::query()
-            ->where('actor_type', $actor->actorType)
-            ->where('actor_id', $actor->id)
+            ->where('actor_type', $actorType)
+            ->where('actor_id', $actorId)
             ->whereNull('revoked_at')
+            ->when($exceptPlainText !== null, fn ($query) => $query->where('token_hash', '!=', $this->hash((string) $exceptPlainText)))
             ->update(['revoked_at' => now()]);
     }
 

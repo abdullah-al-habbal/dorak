@@ -1,0 +1,31 @@
+export const enPasswordReset = {
+  forgotLink: "Forgot password?",
+  forgot: {
+    title: "Reset your password",
+    body: "Enter the email you sign in with. We’ll send you a link to set a new password.",
+    submit: "Send reset link",
+    submitting: "Sending…",
+    sentTitle: "Check your email",
+    sentBody: "If {email} can sign in to this workspace, a reset link is on its way. It works once and expires in an hour.",
+    otherEmail: "Use a different email",
+  },
+  reset: {
+    title: "Set a new password",
+    body: "Use at least 12 characters. Every device signed in to this account will be signed out.",
+    newPassword: "New password",
+    confirmPassword: "Confirm new password",
+    submit: "Set new password",
+    submitting: "Saving…",
+    invalidTitle: "This link can’t be used",
+    invalidBody: "It may have expired or already been used. Ask for a new one.",
+    requestNew: "Ask for a new link",
+  },
+  validation: {
+    email: "Enter a valid email address.",
+    passwordLength: "Use 12 to 255 characters.",
+    passwordMismatch: "The passwords don’t match.",
+  },
+  tooManyRequests: "Too many requests. Wait a few minutes, then try again.",
+  doneNotice: "Password updated. Sign in with your new password.",
+  backToSignIn: "Back to sign in",
+} as const;

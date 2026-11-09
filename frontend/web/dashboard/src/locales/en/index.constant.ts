@@ -5,7 +5,9 @@ import { enAdminBrands } from "@/locales/en/admin-brands.constant";
 import { enAdminCatalog } from "@/locales/en/admin-catalog.constant";
 import { enAdminSubscriptions } from "@/locales/en/admin-subscriptions.constant";
 import { enPlans } from "@/locales/en/plans.constant";
+import { enAccount } from "@/locales/en/account.constant";
 import { enAuth } from "@/locales/en/auth.constant";
+import { enPasswordReset } from "@/locales/en/password-reset.constant";
 import { enBranches } from "@/locales/en/branches.constant";
 import { enBookings } from "@/locales/en/bookings.constant";
 import { enChairs } from "@/locales/en/chairs.constant";
@@ -24,6 +26,8 @@ import { enWorkingHours } from "@/locales/en/working-hours.constant";
 export const enDictionary = {
   common: enCommon,
   auth: enAuth,
+  passwordReset: enPasswordReset,
+  account: enAccount,
   bookings: enBookings,
   shell: enShell,
   chairs: enChairs,

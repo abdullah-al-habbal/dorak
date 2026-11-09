@@ -8,11 +8,16 @@ const BRANDS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];
 const BARBER_ONLY: readonly AuthActor[] = [AuthActor.Barber];
 const ADMIN_ONLY: readonly AuthActor[] = [AuthActor.Admin];
 const OWNER_ONLY: readonly AuthActor[] = [AuthActor.Owner];
+const EVERY_ACTOR: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Manager, AuthActor.Barber, AuthActor.Owner];
 const ID = "[^/]+";
 
 // Default deny. Paths are the real backend dashboard paths, with no renaming.
 // Guards mirror DashboardOperations/EarningsAuthorizationMiddleware; the backend stays the authority.
 export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
+  // The account page (NS-02): every actor manages only their own profile; the backend resolves "own" from the session.
+  // `profile/password` is not here: it goes through /api/auth/password/change, which adds the session's refresh token.
+  { methods: [HttpMethod.Get, HttpMethod.Patch], pattern: /^(profile|profile\/notifications|settings)$/, guards: EVERY_ACTOR },
+  { methods: [HttpMethod.Post], pattern: /^profile\/email\/(change|verify)$/, guards: EVERY_ACTOR },
   { methods: [HttpMethod.Get], pattern: /^overview$/, guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^bookings(/${ID}(/history)?)?$`), guards: OPERATIONS },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^bookings/(walk-in|${ID}/review)$`), guards: OPERATIONS },

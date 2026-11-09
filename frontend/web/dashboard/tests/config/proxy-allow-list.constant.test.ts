@@ -191,3 +191,25 @@ describe("proxy allow-list: admin catalog", () => {
     expect(allowed(HttpMethod.Get, "admin/catalog-categories/c1/children", AuthActor.Admin)).toBe(false);
   });
 });
+
+describe("proxy allow-list: the account page", () => {
+  const everyone = [AuthActor.Admin, AuthActor.Manager, AuthActor.Barber, AuthActor.Owner];
+
+  it.each(everyone)("lets %s read and edit their own profile, notifications and settings", (guard) => {
+    for (const path of ["profile", "profile/notifications", "settings"]) {
+      expect(allowed(HttpMethod.Get, path, guard)).toBe(true);
+      expect(allowed(HttpMethod.Patch, path, guard)).toBe(true);
+    }
+    expect(allowed(HttpMethod.Post, "profile/email/change", guard)).toBe(true);
+    expect(allowed(HttpMethod.Post, "profile/email/verify", guard)).toBe(true);
+  });
+
+  it("keeps the password change off the generic proxy and refuses other verbs and paths", () => {
+    for (const guard of everyone) {
+      expect(allowed(HttpMethod.Put, "profile/password", guard)).toBe(false);
+      expect(allowed(HttpMethod.Delete, "profile", guard)).toBe(false);
+      expect(allowed(HttpMethod.Get, "profile/email/change", guard)).toBe(false);
+      expect(allowed(HttpMethod.Patch, "settings/extra", guard)).toBe(false);
+    }
+  });
+});

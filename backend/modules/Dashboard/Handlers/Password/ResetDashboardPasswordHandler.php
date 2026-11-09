@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Dashboard\Handlers\Password;
+
+use Illuminate\Contracts\Auth\PasswordBrokerFactory;
+use Illuminate\Support\Facades\DB;
+use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Models\BarberModel;
+use Modules\Branch\Models\BranchModel;
+use Modules\Client\Models\ClientModel;
+use Modules\Dashboard\CQRS\Command\ResetDashboardPasswordCommand;
+use Modules\Dashboard\Repositories\DashboardPasswordResetAccountResolver;
+use Modules\Dashboard\Services\DashboardCredentialRevoker;
+use Modules\Dashboard\Services\DashboardMobileResetCodeCleaner;
+
+/**
+ * Sets a new password from a reset link. Returns false, without saying why, for
+ * an unknown or no-longer-eligible account and for a wrong, expired or used
+ * token. The account row is locked so one token can never be used twice.
+ */
+final class ResetDashboardPasswordHandler
+{
+    public function __construct(
+        private readonly DashboardPasswordResetAccountResolver $accounts,
+        private readonly PasswordBrokerFactory $brokers,
+        private readonly DashboardCredentialRevoker $credentials,
+        private readonly DashboardMobileResetCodeCleaner $mobileCodes,
+    ) {}
+
+    public function handle(ResetDashboardPasswordCommand $command): bool
+    {
+        $account = $this->accounts->find($command->actorType, $command->email);
+
+        if ($account === null) {
+            return false;
+        }
+
+        return DB::transaction(fn (): bool => $this->reset($command, $account));
+    }
+
+    private function reset(ResetDashboardPasswordCommand $command, AdminModel|BranchModel|BarberModel|ClientModel $account): bool
+    {
+        $account->newQuery()->whereKey($account->getKey())->lockForUpdate()->first();
+        $broker = $this->brokers->broker($command->actorType->passwordBroker()->value);
+
+        if (! $broker->tokenExists($account, $command->token)) {
+            return false;
+        }
+
+        $account->forceFill(['password' => $command->password])->save();
+        $this->credentials->revokeAll($command->actorType, $account);
+        $this->mobileCodes->clear($command->actorType, (string) $account->getKey());
+
+        return true;
+    }
+}

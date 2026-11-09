@@ -72,3 +72,10 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - The active `Switch` follows the toggle rule: switching on is instant, switching off opens the confirm overlay, which states what it does not do (catalog items stay visible to clients). The same caveat sits under the page description with an info icon, because "deactivate" reads like "unpublish".
 - Delete appears in the edit dialog only for an empty category. For one in use, the button is replaced by a sentence explaining why and pointing to deactivation, never a silently disabled button. The backend still answers 409, surfaced as a toast.
 - The list is not paginated (the whole taxonomy fits), so filters live in the URL through `useUrlState`, not `useUrlFilters`. The empty (unfiltered) state offers "New category".
+
+## Password recovery and account page
+- Forgot, reset and sign-in share `AuthShell` (form column plus brand panel) and `PasswordInput` (reveal toggle with an `aria-pressed` label). The pole stripe stays in its three places.
+- Forgot answers with one calm card ("Check your email") whether or not the address exists; the wording never confirms an account. A dead reset link is a `role="alert"` card with one action, "Ask for a new link".
+- The account page is five grouped cards (`role="group"` named by an `h2`) under one `h1`, in a `max-w-3xl` column: Profile, Email, Password, Notifications, Language. Forms are label above, inline error, a single primary button at the start edge, disabled until the form is dirty where saving nothing makes no sense.
+- The email change is two steps in one card: current address shown read-only, then either the new-address form or the 6-digit code form (monospace, tabular, `autocomplete="one-time-code"`), with "Use a different email" always available.
+- Notification rows are switch rows (label, one-line hint, `Switch` named "<setting> notifications") that flip at once and roll back with an error toast. Language is a native select, so mobile gets the system picker and RTL works for free.

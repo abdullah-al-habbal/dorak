@@ -37,6 +37,15 @@ Without these tasks, someone can't get in, can't get back in, can't be approved,
   - E2E covers the request and reset pages with a seeded token.
   - The security review passes, because this is an authentication change.
 
+### NS-01 as built
+
+- **Routes:** `POST /api/v1/dashboard/password/forgot` and `/password/reset`, public, built on the existing Laravel password brokers (`auth.passwords.{admins,branches,barbers,clients}`; 60-minute expiry, bcrypt-hashed single-use tokens). The mail is sent after the response (`defer()`), so a known and an unknown email take the same time and get the same answer.
+- **Limits:** forgot is 5 per minute per IP and 5 per hour per email (actor type plus a SHA-256 of the lowercased email; unknown emails count too). Reset is 5 per minute per IP only, so junk attempts cannot lock the real owner out. `TRUSTED_PROXIES` (`Core/Config/trustedproxy.php`, never `*`) decides which `X-Forwarded-For` the backend believes; the BFF forwards the right-most entry.
+- **Eligibility:** the account is checked again when the password is set, under a row lock: owner needs an enabled, verified client with a brand; barber needs a login, a password and no ban or disabled status.
+- **After a reset:** every dashboard session and refresh token of the account is revoked, and any open mobile reset code is cleared. A mobile reset clears the dashboard token the same way (`DashboardCredentialRevoker`, `DashboardMobileResetCodeCleaner`).
+- **Dashboard:** `/dashboard/<guard>/forgot-password` and `/reset-password` are public for every session state. The reset page sends `Referrer-Policy: no-referrer`, is `noindex`, and removes `token` and `email` from the address bar on load.
+- **Reusable by NS-04:** `DashboardPasswordResetLinkSender::send()` creates the token and mails the link, so an admin invite is a reset link.
+
 ## NS-02: Account page
 
 - **Guards:** all four.
@@ -54,6 +63,13 @@ Without these tasks, someone can't get in, can't get back in, can't be approved,
 - **Done when:**
   - Vitest covers the schemas and proxy rules.
   - E2E covers each section for a manager, and covers one other guard.
+
+### NS-02 as built
+
+- **Page:** `/dashboard/<guard>/account` for all four guards, opened from a new "Account" item in the user menu. Sections: Profile (display name), Email (request a code, then confirm; the old email keeps working until then), Password, Notifications (four optimistic switches) and Language (`PATCH /dashboard/settings`, then the locale cookie, so emails follow it too).
+- **Deviation from the plan:** `PUT /profile/password` is not on the proxy allow-list. The page calls `PUT /api/auth/password/change`, a BFF route that adds this session's refresh token, so the backend ends the account's other sessions and keeps this one. A password change also deletes any open reset link and mobile reset code.
+- **Allow-list:** `profile`, `profile/notifications` and `settings` (GET, PATCH) and `profile/email/(change|verify)` (POST), for all four guards.
+- **E2E:** two dedicated admins in `E2eDashboardSeeder` (a reset has to end every session, and the account spec changes the password and email, so neither can use a shared saved session). The seeder leaves a known hashed reset token and a pending email change with a known code.
 
 ## NS-29: Error handling and error pages
 

@@ -7,11 +7,13 @@ import { tokensFromBackendData } from "@/services/api/auth/login-data.util";
 export async function refreshSession(
   refreshToken: string,
   claim: string | undefined,
+  clientIp?: string,
 ): Promise<SessionTokens | null> {
   const result = await backendRequest({
     path: BACKEND_PATH.refresh,
     method: HttpMethod.Post,
     body: { refresh_token: refreshToken, ...(claim ? { claim } : {}) },
+    clientIp,
   });
   return result.ok ? tokensFromBackendData(result.envelope?.data) : null;
 }

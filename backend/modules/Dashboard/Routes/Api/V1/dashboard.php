@@ -11,6 +11,7 @@ use Modules\Commission\Http\Actions\Admin\StoreCommissionRuleAction;
 use Modules\Commission\Http\Actions\Admin\UpdateCommissionRuleAction;
 use Modules\Currency\Http\Actions\Shared\ListCurrenciesAction;
 use Modules\Currency\Http\Actions\Shared\ListExchangeRatesAction;
+use Modules\Dashboard\Constants\DashboardPasswordResetConstants;
 use Modules\Dashboard\Http\Actions\Analytics\ShowPlatformAnalyticsAction;
 use Modules\Dashboard\Http\Actions\Barbers\DestroyBarberServiceOverrideAction;
 use Modules\Dashboard\Http\Actions\Barbers\ListBarberServiceOverridesAction;
@@ -72,9 +73,11 @@ use Modules\Dashboard\Http\Actions\Services\ShowServiceAction;
 use Modules\Dashboard\Http\Actions\Services\StoreServiceAction;
 use Modules\Dashboard\Http\Actions\Services\UpdateServiceAction;
 use Modules\Dashboard\Http\Actions\Shared\DashboardLoginAction;
+use Modules\Dashboard\Http\Actions\Shared\ForgotDashboardPasswordAction;
 use Modules\Dashboard\Http\Actions\Shared\LogoutAction;
 use Modules\Dashboard\Http\Actions\Shared\MeAction;
 use Modules\Dashboard\Http\Actions\Shared\RefreshSessionAction;
+use Modules\Dashboard\Http\Actions\Shared\ResetDashboardPasswordAction;
 use Modules\Dashboard\Http\Actions\Stylists\ActivateStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\DeactivateStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\DestroyStylistAction;
@@ -130,6 +133,8 @@ use Modules\Subscription\Http\Actions\Owner\ListOwnerSubscriptionsAction;
 Route::prefix('dashboard')->group(function (): void {
     Route::post('/login', DashboardLoginAction::class)->middleware('throttle:'.config('dashboard.dashboard.login_attempts_per_minute').',1');
     Route::post('/refresh', RefreshSessionAction::class)->middleware('throttle:10,1');
+    Route::post('/password/forgot', ForgotDashboardPasswordAction::class)->middleware('throttle:'.DashboardPasswordResetConstants::DASHBOARD_PASSWORD_FORGOT_LIMITER);
+    Route::post('/password/reset', ResetDashboardPasswordAction::class)->middleware('throttle:'.DashboardPasswordResetConstants::DASHBOARD_PASSWORD_RESET_LIMITER);
 
     Route::middleware([DashboardAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
         Route::get('/me', MeAction::class);

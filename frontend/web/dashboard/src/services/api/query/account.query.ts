@@ -1,0 +1,21 @@
+import { ACCOUNT_API } from "@/config/account.constant";
+import { DASHBOARD_API } from "@/config/routes.constant";
+import { accountProfileSchema } from "@/schemas/account-profile.zod";
+import { accountSettingsSchema } from "@/schemas/account-settings.zod";
+import { notificationPreferencesSchema } from "@/schemas/notification-preferences.zod";
+import { apiRequest } from "@/services/api/core/client";
+import type { AccountProfile } from "@/types/account-profile.type";
+import type { AccountSettings } from "@/types/account-settings.type";
+import type { NotificationPreferences } from "@/types/notification-preferences.type";
+
+export async function fetchAccountProfile(): Promise<AccountProfile> {
+  return apiRequest(`${DASHBOARD_API}${ACCOUNT_API.profile}`, { schema: accountProfileSchema });
+}
+
+export async function fetchNotificationPreferences(): Promise<NotificationPreferences> {
+  return apiRequest(`${DASHBOARD_API}${ACCOUNT_API.notifications}`, { schema: notificationPreferencesSchema });
+}
+
+export async function fetchAccountSettings(): Promise<AccountSettings> {
+  return apiRequest(`${DASHBOARD_API}${ACCOUNT_API.settings}`, { schema: accountSettingsSchema });
+}

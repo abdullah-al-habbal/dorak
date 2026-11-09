@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Barber\Models\BarberScheduleModel;
@@ -21,10 +22,15 @@ use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
+use Modules\Dashboard\Models\DashboardEmailChangeModel;
+use Modules\Dashboard\Models\DashboardNotificationPreferenceModel;
+use Modules\Dashboard\Models\DashboardRefreshTokenModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Payout\Enums\PayoutStatus;
 use Modules\Payout\Models\PayoutModel;
+use Modules\Preference\Models\PreferenceModel;
 use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Enums\ReviewSubjectTypeEnum;
@@ -58,6 +64,26 @@ final class E2eDashboardSeeder extends Seeder
 
     public const string BARBER_PASSWORD = 'e2e-password-123';
 
+    /** Dedicated admin whose password the reset spec changes (a reset ends every session, so no shared account can be used). */
+    public const string RESET_ADMIN_EMAIL = 'e2e-reset-admin@dorak.test';
+
+    public const string RESET_ADMIN_PASSWORD = 'e2e-password-123';
+
+    /** The plain reset token the seeder stores (hashed) for the reset admin; the spec opens a link carrying it. */
+    public const string RESET_ADMIN_TOKEN = 'e2e-reset-token-0123456789abcdef0123456789abcdef0123456789abcdef';
+
+    /** Dedicated admin the account spec edits (name, email, password, notifications, language). */
+    public const string ACCOUNT_ADMIN_EMAIL = 'e2e-account-admin@dorak.test';
+
+    public const string ACCOUNT_ADMIN_PASSWORD = 'e2e-password-123';
+
+    public const string ACCOUNT_ADMIN_NAME = 'E2E Account Admin';
+
+    /** The address and code of the email change the seeder leaves pending for the account admin. */
+    public const string ACCOUNT_ADMIN_PENDING_EMAIL = 'e2e-account-admin-new@dorak.test';
+
+    public const string ACCOUNT_ADMIN_PENDING_CODE = '123456';
+
     /** Display orders that identify the two seeded plans: the active one the brand is on and an inactive one the plans spec edits. */
     public const int GROWTH_PLAN_ORDER = 99;
 
@@ -88,6 +114,8 @@ final class E2eDashboardSeeder extends Seeder
         DB::transaction(fn () => $this->seedBaseline());
         // After the commit, so no request can re-cache the old settings in between.
         Cache::forget(SettingsConstants::SETTINGS_CACHE_KEY);
+        // The recovery specs hit the per-email and per-IP reset limits (5 per hour / minute); a reset starts them from zero.
+        Cache::flush();
     }
 
     private function seedBaseline(): void
@@ -127,6 +155,41 @@ final class E2eDashboardSeeder extends Seeder
         $this->pendingBrand($currency);
         $this->restoreSettingsBaseline();
         $this->restoreCatalogBaseline();
+        $this->restoreAccessAdmins();
+    }
+
+    /** NS-01/NS-02 specs: two dedicated admins, restored to a known password, email, name, preferences and one open reset link or email change. */
+    private function restoreAccessAdmins(): void
+    {
+        $reset = $this->accessAdmin(self::RESET_ADMIN_EMAIL, self::RESET_ADMIN_PASSWORD, 'E2E Reset Admin');
+        DB::table('password_reset_tokens_admins')->updateOrInsert(['email' => $reset->email], ['token' => Hash::make(self::RESET_ADMIN_TOKEN), 'created_at' => now()]);
+
+        $account = $this->accessAdmin(self::ACCOUNT_ADMIN_EMAIL, self::ACCOUNT_ADMIN_PASSWORD, self::ACCOUNT_ADMIN_NAME);
+        DB::table('password_reset_tokens_admins')->where('email', $account->email)->delete();
+        DashboardNotificationPreferenceModel::query()->where('actor_type', DashboardActorTypeEnum::Admin)->where('actor_id', $account->id)->delete();
+        PreferenceModel::query()->where('preferenceable_id', $account->id)->delete();
+        DashboardEmailChangeModel::query()->where('actor_type', DashboardActorTypeEnum::Admin)->where('actor_id', $account->id)->delete();
+        DashboardEmailChangeModel::query()->create([
+            'actor_type' => DashboardActorTypeEnum::Admin,
+            'actor_id' => $account->id,
+            'email' => self::ACCOUNT_ADMIN_PENDING_EMAIL,
+            'code_hash' => Hash::make(self::ACCOUNT_ADMIN_PENDING_CODE),
+            'attempts_count' => 0,
+            'expires_at' => now()->addHours(2),
+        ]);
+    }
+
+    private function accessAdmin(string $email, string $password, string $name): AdminModel
+    {
+        // The account spec confirms the pending email, so the admin may sit under that address: find it there too.
+        $admin = AdminModel::query()->where('email', $email)->first()
+            ?? ($email === self::ACCOUNT_ADMIN_EMAIL ? AdminModel::query()->where('email', self::ACCOUNT_ADMIN_PENDING_EMAIL)->first() : null)
+            ?? new AdminModel;
+        $admin->forceFill(['name' => ['en' => $name, 'ar' => $name], 'email' => $email, 'email_verified_at' => now(), 'password' => $password])->save();
+        $admin->tokens()->delete();
+        DashboardRefreshTokenModel::query()->where('actor_type', DashboardActorTypeEnum::Admin)->where('actor_id', $admin->id)->delete();
+
+        return $admin;
     }
 
     /** Admin catalog spec: restore the empty category and drop the ones the spec created (they never get items or services). */

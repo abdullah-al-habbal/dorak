@@ -1,6 +1,7 @@
 "use client";
 
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, UserRoundIcon } from "lucide-react";
+import Link from "next/link";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -10,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { accountRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useSignOut } from "@/hooks/use-sign-out";
@@ -40,6 +42,11 @@ export function UserMenu({ actor, initialProfile }: { actor: AuthActor; initialP
           <p className="truncate text-sm font-medium">{name}</p>
           {profile.email && profile.email !== name ? <p className="truncate text-xs text-muted-foreground">{profile.email}</p> : null}
         </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem render={<Link href={accountRoute(actor)} />}>
+          <UserRoundIcon aria-hidden />
+          {shell.profile.account}
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" disabled={pending} onClick={signOut}>
           <LogOutIcon aria-hidden />

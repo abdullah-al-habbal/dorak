@@ -1,5 +1,6 @@
 /** The suite drives the real stack: Next.js on 3000 talking to the Laravel API on 8000. */
-export const E2E_APP_PORT = 3000;
+/** Defaults to 3000; set `E2E_APP_PORT` when another project already holds it. */
+export const E2E_APP_PORT = Number(process.env.E2E_APP_PORT ?? 3000);
 export const E2E_BACKEND_PORT = 8000;
 export const E2E_APP_URL = `http://localhost:${E2E_APP_PORT}`;
 export const E2E_BACKEND_URL = `http://127.0.0.1:${E2E_BACKEND_PORT}`;
@@ -35,3 +36,14 @@ export const E2E_BARBER_STORAGE_STATE = "tests/e2e/.auth/barber.json";
 export const E2E_ADMIN_EMAIL = "admin@dorak.sy";
 export const E2E_ADMIN_PASSWORD = "password";
 export const E2E_ADMIN_STORAGE_STATE = "tests/e2e/.auth/admin.json";
+/** Dedicated admins for the password-recovery and account specs; created by `E2eDashboardSeeder::restoreAccessAdmins`. */
+export const E2E_RESET_ADMIN_EMAIL = "e2e-reset-admin@dorak.test";
+export const E2E_RESET_ADMIN_PASSWORD = "e2e-password-123";
+/** The plain token the seeder stores (hashed) for the reset admin. */
+export const E2E_RESET_ADMIN_TOKEN = "e2e-reset-token-0123456789abcdef0123456789abcdef0123456789abcdef";
+export const E2E_ACCOUNT_ADMIN_EMAIL = "e2e-account-admin@dorak.test";
+export const E2E_ACCOUNT_ADMIN_PASSWORD = "e2e-password-123";
+export const E2E_ACCOUNT_ADMIN_NAME = "E2E Account Admin";
+/** The email change the seeder leaves pending for the account admin, and its code. */
+export const E2E_ACCOUNT_ADMIN_PENDING_EMAIL = "e2e-account-admin-new@dorak.test";
+export const E2E_ACCOUNT_ADMIN_PENDING_CODE = "123456";

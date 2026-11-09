@@ -10,6 +10,7 @@ import { getRequestDictionary } from "@/locales/get-request-dictionary";
 import { resolveLocale } from "@/locales/resolve-locale.util";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
+import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { failureFromBackend } from "@/services/api/auth/failure-response";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
 import { matchProxyRule } from "@/services/api/proxy/match-rule.util";
@@ -68,6 +69,7 @@ export async function forwardDashboardRequest(
     accessToken,
     claim: claimToken,
     locale: resolveLocale(store.get(LOCALE_COOKIE)?.value, request.headers.get("accept-language")),
+    clientIp: clientIpFromHeaders(request.headers),
   });
 
   if (result.ok && result.envelope) {

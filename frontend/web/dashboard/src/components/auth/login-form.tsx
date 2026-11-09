@@ -1,12 +1,13 @@
 "use client";
 
-import { AlertCircleIcon, EyeIcon, EyeOffIcon } from "lucide-react";
-import { useState } from "react";
+import { AlertCircleIcon } from "lucide-react";
+import Link from "next/link";
 
+import { PasswordInput } from "@/components/auth/password-input";
 import { LoadingButton } from "@/components/buttons/loading-button";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { forgotPasswordRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useLoginForm } from "@/hooks/use-login-form";
@@ -17,9 +18,8 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ actor, callbackUrl }: LoginFormProps) {
-  const { auth } = useDictionary();
+  const { auth, passwordReset } = useDictionary();
   const { form, onSubmit, formError, submitting } = useLoginForm(actor, callbackUrl);
-  const [revealed, setRevealed] = useState(false);
   const { errors } = form.formState;
 
   return (
@@ -52,38 +52,26 @@ export function LoginForm({ actor, callbackUrl }: LoginFormProps) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="password">{auth.password}</Label>
-        <div className="relative">
-          <Input
-            id="password"
-            type={revealed ? "text" : "password"}
-            autoComplete="current-password"
-            placeholder={auth.passwordPlaceholder}
-            className="pe-11"
-            aria-invalid={Boolean(errors.password)}
-            aria-describedby={errors.password ? "password-error" : undefined}
-            {...form.register("password")}
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            className="absolute end-1.5 top-1/2 -translate-y-1/2 text-muted-foreground"
-            aria-label={revealed ? auth.hidePassword : auth.showPassword}
-            aria-pressed={revealed}
-            onClick={() => setRevealed((value) => !value)}
-          >
-            {revealed ? <EyeOffIcon aria-hidden /> : <EyeIcon aria-hidden />}
-          </Button>
+        <div className="flex items-baseline justify-between gap-3">
+          <Label htmlFor="password">{auth.password}</Label>
+          <Link href={forgotPasswordRoute(actor)} className="text-sm font-medium text-primary underline-offset-4 hover:underline">
+            {passwordReset.forgotLink}
+          </Link>
         </div>
+        <PasswordInput
+          id="password"
+          autoComplete="current-password"
+          placeholder={auth.passwordPlaceholder}
+          invalid={Boolean(errors.password)}
+          describedBy={errors.password ? "password-error" : undefined}
+          registration={form.register("password")}
+        />
         {errors.password ? <p id="password-error" className="text-sm text-destructive">{auth.passwordRequired}</p> : null}
       </div>
 
       <LoadingButton type="submit" size="lg" loading={submitting} loadingLabel={auth.submitting} className="mt-1 w-full">
         {auth.submit}
       </LoadingButton>
-
-      <p className="text-sm text-muted-foreground">{auth.forgotNote}</p>
     </form>
   );
 }

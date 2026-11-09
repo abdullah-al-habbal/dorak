@@ -9,4 +9,5 @@ export const useAuthStore = create<AuthState>((set) => ({
   profile: null,
   setSession: (actor, profile) => set({ status: AuthStatus.Authenticated, actor, profile }),
   clearSession: () => set({ status: AuthStatus.Anonymous, actor: null, profile: null }),
+  patchProfile: (patch) => set((state) => (state.profile ? { profile: { ...state.profile, ...patch } } : {})),
 }));

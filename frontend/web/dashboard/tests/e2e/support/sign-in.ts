@@ -53,3 +53,19 @@ export async function resetBackend(): Promise<void> {
   info.setTimeout(info.timeout + RESET_BACKEND_EXTRA_MS);
   await artisan(["db:seed", `--class=${E2E_SEEDER_CLASS}`], { timeoutMs: RESET_SEED_TIMEOUT_MS });
 }
+
+interface Credentials {
+  email: string;
+  password: string;
+}
+
+/** Signs in through the real admin form with the given account; specs that change credentials cannot share a saved session. */
+export async function signInAdminThroughForm(page: Page, { email, password }: Credentials, locale: E2ELocale = "en"): Promise<void> {
+  const { auth } = dictionaryFor(locale);
+  await page.context().addCookies([{ name: "NEXT_LOCALE", value: locale, url: E2E_APP_URL }]);
+  await page.goto("/dashboard/admin/login");
+  await page.getByLabel(auth.email).fill(email);
+  await page.getByLabel(auth.password, { exact: true }).fill(password);
+  await page.getByRole("button", { name: auth.submit }).click();
+  await expect(page).not.toHaveURL(/\/login/);
+}

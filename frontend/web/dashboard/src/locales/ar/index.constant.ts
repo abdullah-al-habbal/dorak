@@ -5,7 +5,9 @@ import { arAdminBrands } from "@/locales/ar/admin-brands.constant";
 import { arAdminCatalog } from "@/locales/ar/admin-catalog.constant";
 import { arAdminSubscriptions } from "@/locales/ar/admin-subscriptions.constant";
 import { arPlans } from "@/locales/ar/plans.constant";
+import { arAccount } from "@/locales/ar/account.constant";
 import { arAuth } from "@/locales/ar/auth.constant";
+import { arPasswordReset } from "@/locales/ar/password-reset.constant";
 import { arBranches } from "@/locales/ar/branches.constant";
 import { arBookings } from "@/locales/ar/bookings.constant";
 import { arChairs } from "@/locales/ar/chairs.constant";
@@ -25,6 +27,8 @@ import type { Dictionary } from "@/types/dictionary.type";
 export const arDictionary: Dictionary = {
   common: arCommon,
   auth: arAuth,
+  passwordReset: arPasswordReset,
+  account: arAccount,
   bookings: arBookings,
   shell: arShell,
   chairs: arChairs,

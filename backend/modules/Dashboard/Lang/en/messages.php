@@ -30,4 +30,7 @@ return [
     'branch_last_active' => 'A brand must keep at least one active branch.',
     'branch_has_upcoming_bookings' => 'A branch with upcoming bookings cannot be deleted.',
     'shifts_overlap' => 'Shifts on the same day must not overlap.',
+    'password_reset_link_sent' => 'If an account with that email can sign in here, we’ve sent it a link to reset the password.',
+    'password_reset_link_invalid' => 'This reset link is invalid or has expired. Request a new one.',
+    'password_reset_done' => 'Your password has been reset. Sign in with your new password.',
 ];

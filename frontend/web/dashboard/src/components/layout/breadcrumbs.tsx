@@ -13,7 +13,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { NAV_ITEMS } from "@/config/nav.constant";
-import { portalRoot } from "@/config/routes.constant";
+import { ACCOUNT_SEGMENT, portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 
@@ -25,7 +25,8 @@ export function Breadcrumbs({ actor }: { actor: AuthActor }) {
 
   const crumbs = segments.map((segment, index) => {
     const item = NAV_ITEMS[actor].find((entry) => entry.segment === segment);
-    return { label: item ? shell.nav[item.key] : segment, href: `${root}/${segments.slice(0, index + 1).join("/")}` };
+    const label = item ? shell.nav[item.key] : segment === ACCOUNT_SEGMENT ? shell.profile.account : segment;
+    return { label, href: `${root}/${segments.slice(0, index + 1).join("/")}` };
   });
 
   return (

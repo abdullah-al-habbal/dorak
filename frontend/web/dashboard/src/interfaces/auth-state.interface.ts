@@ -8,4 +8,6 @@ export interface AuthState {
   profile: MeProfile | null;
   setSession: (actor: AuthActor, profile: MeProfile) => void;
   clearSession: () => void;
+  /** Applies an account-page change (name or confirmed email) to the header without a reload. */
+  patchProfile: (patch: Partial<Pick<MeProfile, "display_name" | "email">>) => void;
 }

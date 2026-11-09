@@ -21,7 +21,6 @@ export const enAuth = {
   switchWorkspace: "Not your workspace?",
   guardPickerTitle: "Choose your workspace",
   guardPickerSubtitle: "Each role signs in to its own portal.",
-  forgotNote: "Forgot your password? Ask your platform administrator to reset it.",
   signOut: "Sign out",
   signingOut: "Signing out…",
   actors: {

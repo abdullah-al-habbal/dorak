@@ -7,4 +7,6 @@ export interface BackendRequest {
   accessToken?: string;
   claim?: string;
   locale?: string;
+  /** The visitor's IP, forwarded so the backend's per-IP limits count visitors, not this server. */
+  clientIp?: string;
 }

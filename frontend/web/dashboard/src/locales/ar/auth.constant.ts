@@ -23,7 +23,6 @@ export const arAuth: Dictionary["auth"] = {
   switchWorkspace: "ليست مساحة عملك؟",
   guardPickerTitle: "اختر مساحة عملك",
   guardPickerSubtitle: "لكل دور بوابة دخول خاصة به.",
-  forgotNote: "نسيت كلمة المرور؟ اطلب من مسؤول المنصة إعادة تعيينها.",
   signOut: "تسجيل الخروج",
   signingOut: "جارٍ تسجيل الخروج…",
   actors: {

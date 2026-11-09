@@ -4,6 +4,17 @@ export const ROUTE_ROOT = "/dashboard";
 export const HOME_ROUTE = "/";
 export const FORBIDDEN_SEGMENT = "forbidden";
 export const LOGIN_SEGMENT = "login";
+export const FORGOT_PASSWORD_SEGMENT = "forgot-password";
+export const RESET_PASSWORD_SEGMENT = "reset-password";
+export const ACCOUNT_SEGMENT = "account";
+/** Pages under a guard that a signed-out visitor may open. */
+export const PUBLIC_AUTH_SEGMENTS: readonly string[] = [LOGIN_SEGMENT, FORGOT_PASSWORD_SEGMENT, RESET_PASSWORD_SEGMENT];
+/** Set on the login URL after a successful password reset, so the page confirms it. */
+export const RESET_DONE_PARAM = "reset";
+export const RESET_DONE_VALUE = "1";
+/** Query names in the emailed reset link, as the backend builds it. */
+export const RESET_LINK_TOKEN_PARAM = "token";
+export const RESET_LINK_EMAIL_PARAM = "email";
 export const CALLBACK_PARAM = "callbackUrl";
 
 export const API_ROUTE = {
@@ -11,6 +22,9 @@ export const API_ROUTE = {
   refresh: "/api/auth/refresh",
   logout: "/api/auth/logout",
   me: "/api/auth/me",
+  passwordForgot: "/api/auth/password/forgot",
+  passwordReset: "/api/auth/password/reset",
+  passwordChange: "/api/auth/password/change",
 } as const;
 
 /** Backend dashboard paths are used as-is behind this prefix; there is no renaming. */
@@ -26,4 +40,16 @@ export function loginRoute(actor: AuthActor): string {
 
 export function forbiddenRoute(actor: AuthActor): string {
   return `${portalRoot(actor)}/${FORBIDDEN_SEGMENT}`;
+}
+
+export function forgotPasswordRoute(actor: AuthActor): string {
+  return `${portalRoot(actor)}/${FORGOT_PASSWORD_SEGMENT}`;
+}
+
+export function resetDoneLoginRoute(actor: AuthActor): string {
+  return `${loginRoute(actor)}?${RESET_DONE_PARAM}=${RESET_DONE_VALUE}`;
+}
+
+export function accountRoute(actor: AuthActor): string {
+  return `${portalRoot(actor)}/${ACCOUNT_SEGMENT}`;
 }

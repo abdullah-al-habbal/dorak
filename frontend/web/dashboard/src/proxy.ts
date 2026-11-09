@@ -5,6 +5,7 @@ import { ACCESS_COOKIE, CLAIM_COOKIE, REFRESH_COOKIE } from "@/config/cookies.co
 import { HttpStatus } from "@/enums/http-status.enum";
 import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
 import { clearSessionCookies, setSessionCookies } from "@/services/api/auth/cookies";
+import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
 import { refreshSession } from "@/services/api/auth/refresh";
 import { decideRoute } from "@/services/api/auth/route-policy.util";
@@ -15,7 +16,7 @@ const NOT_FOUND_PATH = "/_not-found";
 async function tryRefresh(request: NextRequest): Promise<SessionTokens | null> {
   const refreshToken = request.cookies.get(REFRESH_COOKIE)?.value;
   if (!refreshToken) return null;
-  return refreshSession(refreshToken, request.cookies.get(CLAIM_COOKIE)?.value);
+  return refreshSession(refreshToken, request.cookies.get(CLAIM_COOKIE)?.value, clientIpFromHeaders(request.headers));
 }
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {

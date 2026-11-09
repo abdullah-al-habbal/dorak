@@ -2,6 +2,7 @@ import {
   BACKEND_DASHBOARD_PREFIX,
   BACKEND_TIMEOUT_MS,
   CLAIM_HEADER,
+  FORWARDED_FOR_HEADER,
 } from "@/config/backend.constant";
 import { backendEnvelopeSchema } from "@/schemas/backend-envelope.zod";
 import { readBackendUrl } from "@/services/api/auth/session-keys.util";
@@ -16,6 +17,7 @@ function buildHeaders(request: BackendRequest): Headers {
   if (request.accessToken) headers.set("Authorization", `Bearer ${request.accessToken}`);
   if (request.claim) headers.set(CLAIM_HEADER, request.claim);
   if (request.locale) headers.set("Accept-Language", request.locale);
+  if (request.clientIp) headers.set(FORWARDED_FOR_HEADER, request.clientIp);
   return headers;
 }
 
