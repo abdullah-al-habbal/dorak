@@ -34,16 +34,22 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
 
 - **Guards:** admin.
 - **Story:** the admin corrects a brand's details, rejects or suspends it with a reason, overrides its plan features, and sees its approval history.
-- **Needs:** [D8](01-decisions.md#d8-rejecting-and-suspending-a-brand).
+- **Needs:** [D8](01-decisions.md#d8-rejecting-and-suspending-a-brand) and [D9](01-decisions.md#d9-branch-approval-model).
 - **Backend: Partial.**
   - Editing is ready: `PUT /brands/{brand}`, with the admin already allowed.
   - Feature overrides (`GET|PATCH /admin/brands/{brand}/features`) and history (`GET /admin/audit/{subjectType}/{subjectId}`) exist only on `admin_api`. Add dashboard routes for them.
-  - Reject and suspend are New: statuses, rules, row locking and notifications.
+  - Reject and suspend are New:
+    - statuses with a required reason;
+    - resubmission for a rejected owner within the D8 cap; NS-03's status page shows the reason and "Fix and resubmit";
+    - side effects as D8 decides.
+  - **Lock every transition, approval included.** `ApproveBrandAction` updates the status today with no lock, so a concurrent approve and reject could both apply ([audit §3](09-audit-registration-and-errors.md#3-registration-edge-cases)).
+  - **Emails** for approved, rejected, suspended and reactivated, in the owner's language. Today approval sends nothing ([audit §2](09-audit-registration-and-errors.md#2-messages-and-rate-limits-today)).
   - The pickers already skip pending brands ([decisions](../decisions-required.md), Admin Brands). Extend the same rule to rejected and suspended brands, and enforce it in the backend as well.
-- **Dashboard:** the existing brand detail dialog becomes a detail page with Edit, Reject, Suspend or Reactivate, Features and History.
+  - **Branch status (D9):** stop the owner setting any `status` through `Dashboard/Http/Requests/Business/BranchRequest.php`, and apply the chosen branch gate. The admin can suspend or reactivate a branch; the activation exists on `admin_api` only today, so add a dashboard route.
+- **Dashboard:** the existing brand detail dialog becomes a detail page with Edit, Reject, Suspend or Reactivate, Features and History. Branches get a Suspend or Reactivate action for the admin.
 - **Done when:**
-  - Pest covers each transition and the side effects chosen in D8.
-  - E2E covers reject and suspend.
+  - Pest covers each transition, the lock, the emails, the resubmission cap and the side effects chosen in D8 and D9.
+  - E2E covers reject → resubmit → approve, and suspend.
 
 ## NS-07: Clients and bans
 
@@ -62,7 +68,7 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
 ## NS-08: Barbers platform-wide
 
 - **Guards:** admin.
-- **Story:** the admin finds any barber across brands, sees their affiliations, activates or deactivates them, bans them, and reads the activation log.
+- **Story:** the admin finds any barber across brands, sees their affiliations, activates or deactivates them, bans them, and reads the activation log. Approving new sign-ups is the earlier [NS-30](02-phase-1-access.md#ns-30-barber-approval-queue), because it locks barbers out. This task reuses NS-30's dashboard routes.
 - **Backend: Partial.**
   - Activation exists only on `admin_api`: `POST /barbers/{barber}/activate|deactivate`, also for branches.
   - Activation logs are stored in `activation_logs`.

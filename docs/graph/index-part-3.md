@@ -46,6 +46,7 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Phase 5: Reference Data and Money](../next-steps/06-phase-5-reference-and-money.md)
 - [Phases 6 and 7: Growth, then Retire Filament](../next-steps/07-phase-6-7-growth-and-retirement.md)
 - [Coverage Matrix](../next-steps/08-coverage-matrix.md)
+- [Audit: Registration, Approval and Error Handling](../next-steps/09-audit-registration-and-errors.md)
 
 ### `docs/planning/`
 

@@ -29,7 +29,12 @@ These tasks remove the places where a manager or owner has to refresh, switch to
 - **Needs:** [D5](01-decisions.md#d5-how-notifications-reach-the-dashboard).
 - **Backend: New.**
   - The feed (`GET /notifications`, `POST /notifications/read-all`, `PATCH /notifications/{id}/read`) accepts only the `client`, `barber` and `branch_api` guards. Add dashboard routes that resolve the dashboard actor.
-  - Admins have no notifications yet, so decide which events to send them.
+  - Admins have no notifications yet. Send them at least these events:
+    - a verified brand submitted (NS-03);
+    - a barber awaiting approval (NS-30);
+    - a review disputed (NS-14).
+  - Owners get: brand approved, rejected, suspended or reactivated (NS-06).
+  - Barbers get: approved or rejected (NS-30), alongside the emails those tasks send.
 - **Dashboard:**
   - replace the placeholder `components/layout/notifications-menu.tsx` with the feed and an unread badge;
   - add mark-as-read and mark-all;

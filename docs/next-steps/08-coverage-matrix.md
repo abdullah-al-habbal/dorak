@@ -21,7 +21,19 @@ Routes: [index](index.md).
 | Owner | `/dashboard/owner` | Overview; Bookings across branches; Branches (CRUD, approved brands only); Stylists; Working hours; Earnings; Payouts (read-only); Subscription (read-only) |
 | Barber | `/dashboard/barber` | Overview; Schedule (read-only); Earnings |
 
-Missing for every guard: an account page (NS-02), password recovery (NS-01) and a working notifications bell (NS-10).
+Missing for every guard: an account page (NS-02), password recovery (NS-01), a working notifications bell (NS-10), and a `global-error` and portal-level error page (NS-29).
+
+## How each account type joins
+
+| Type | Public sign-up | Approval | Task |
+|---|---|---|---|
+| Brand owner | None today → public web page | Admin (Brands queue, shipped) | NS-03, NS-06 |
+| Barber | Stylist app (works) | Admin, on `admin_api` only today | NS-30 |
+| Client | Mobile app (works) | None; email verification | none |
+| Branch | Never public; created by the owner | Not a real gate today | D9, NS-06 |
+| Admin | Never public | Invited | NS-04 |
+
+Details and evidence: [registration and error audit](09-audit-registration-and-errors.md).
 
 ## Filament map: what replaces each resource
 
@@ -33,7 +45,7 @@ Panel resources, from `modules/*/Filament/Panels/<Panel>/`:
 | Brand | Admin | Brands (shipped) + NS-06 |
 | Client | Admin | NS-07 |
 | Ban | Admin | NS-07, NS-08 |
-| Barber | Admin | NS-08 |
+| Barber | Admin | NS-30 (approving sign-ups), NS-08 (everything else) |
 | ActivationLog | Admin | NS-08 |
 | Review | Admin, Branch, Barber | NS-05 (admin), Reviews + NS-14 (branch), `stylist_app` (barber) |
 | Branch | Admin | Branches (shipped) |
@@ -62,7 +74,9 @@ Panel resources, from `modules/*/Filament/Panels/<Panel>/`:
 | `features`, `plan_features` (per-brand overrides) | NS-06 |
 | `status_change_logs` | NS-06 |
 | `notifications` | NS-10 |
-| `marketing_pages`, `sections`, `testimonials`, `onboarding_configurations` | NS-25 |
+| `activation_logs` (barber and branch approvals) | NS-30, NS-08, NS-06 |
+| `password_reset_tokens_*` | NS-01 |
+| `marketing_pages`, `sections`, `testimonials`, `onboarding_configurations` | NS-25 (and the website error pages in NS-29, D13) |
 | `barber_service_overrides` | NS-18 |
 | `barber_portfolio_photos`, `barber_schedules` | `stylist_app` (D7) |
 | Client personal data (`client_face_*`, `client_preference_vectors`, `client_interaction_logs`, `client_saved_filters`, `client_service_histories*`, `client_favorites`, `client_discovery_preferences`) | Not shown to admins (D4) |

@@ -21,11 +21,19 @@ Each decision blocks only the tasks listed under it. A recommendation is given w
 
 Blocks [NS-03](02-phase-1-access.md#ns-03-owner-self-registration-and-first-brand).
 
-A brand belongs to a client account ([ADR 0001](../adr/0001-brand-owner-as-client.md)). Today only a client token or an existing owner can create one, and no interface does it.
+**Decided 2026-11-09 by the product owner: (a), a public "Register your business" page on the dashboard.** It creates the client account and a pending brand, with an optional first branch. It also offers an existing app client a "sign in and create my brand" path. Only verified submissions reach the admin queue. The applicant follows the review on a status page and by email. The full flow and edge cases are in NS-03.
 
-- **(a) Recommended: "Register your business" on the dashboard.** It creates the client account and a pending brand, with an optional first branch. Owners already work on the web, and the "waiting for approval" state already exists.
-- (b) A "Create my brand" screen in `client_app`, after which the owner signs in to the web.
-- (c) The admin creates the brand for an existing client account. This works, but it puts the platform team in the sales path.
+A brand belongs to a client account ([ADR 0001](../adr/0001-brand-owner-as-client.md)). The options not taken were (b) a "Create my brand" screen in `client_app`, and (c) the admin creating the brand for an existing client.
+
+**Which account types get a public sign-up:**
+
+| Type | Public sign-up | Approval |
+|---|---|---|
+| Brand owners | The new web page (NS-03) | Admin |
+| Barbers | Keep the stylist app's existing sign-up | Admin, through the new queue (NS-30) |
+| Clients | Mobile app only | None; email verification is enough |
+| Branches | Never public; created inside an approved brand | See D9 |
+| Admins | Never public | Invited (NS-04) |
 
 ## D3: How the admin sees branch-level records
 
@@ -67,6 +75,46 @@ Blocks [NS-06](03-phase-2-governance.md#ns-06-brand-lifecycle).
 
 Brands are pending or active today. To decide:
 
-- Does a rejected owner see the reason and resubmit?
+- Does a rejected owner see the reason and resubmit? Recommended: yes, with a resubmission cap (a constant) and every decision kept in the status history.
 - What happens to a suspended brand's branches, future bookings, subscription and public listing?
-- Does an owner get a notification?
+- Does an owner get a notification? Recommended: an email and an in-app notification for approved, rejected, suspended and reactivated.
+- Does a barber rejection (NS-30) need a `rejected` status, or does `disabled` with a reason cover it? Keep the barber and brand answers consistent.
+
+## D9: Branch approval model
+
+Blocks the branch part of [NS-06](03-phase-2-governance.md#ns-06-brand-lifecycle).
+
+Branches default to `pending`, but the owner can send any `status` when creating or editing a branch, so the default is not a real gate ([audit §1](09-audit-registration-and-errors.md#1-how-each-account-type-joins-today)).
+
+- **(a) Recommended:** the brand approval and the plan's branch limit are the gate. A branch of an approved brand goes live when its owner enables it. The admin can suspend a branch. Remove the misleading `pending` default for new branches of approved brands.
+- (b) Every new branch needs admin approval: enforce `pending`, take `status` away from the owner, and add a branch queue.
+
+## D10: Re-registration after account deletion
+
+Blocks one NS-03 edge case.
+
+Clients are soft-deleted, and both the unique rule and the database index count deleted rows, so a deleted person can never register with that email again.
+
+- **(a) Recommended:** offer to restore the account through email verification.
+- (b) Anonymise the email when an account is deleted, which frees it.
+
+## D11: Early access for a pending owner
+
+Blocks the waiting part of NS-03.
+
+**Recommended:** while pending, the owner may edit the brand profile and prepare a first branch, its services and chairs. Clients see nothing and no bookings are possible until approval. Decide whether stylists may be added before approval (recommended: no).
+
+## D12: CAPTCHA on public forms
+
+Blocks the CAPTCHA part of NS-03.
+
+**Recommended for launch:** limits per IP and per email, a honeypot field, and email verification before a submission reaches the queue. Add a CAPTCHA (for example Cloudflare Turnstile) only if abuse appears. It needs a new package, so ask before installing it.
+
+## D13: The Laravel public website
+
+Blocks NS-29 item 5 and NS-25.
+
+The Website module serves `/`, `/features` and `/pricing` from Laravel, with no error pages.
+
+- **(a)** Keep it in Laravel: add en and ar 404, 500 and 503 views (NS-29), and manage its content in NS-25.
+- (b) Move the public site next to the dashboard's public pages, and drop the Blade pages.

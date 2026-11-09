@@ -23,16 +23,21 @@ Source: [product audit](planning/product-audit-part-3.md). Remaining launch-read
 
 ## Launch roadmap
 
-Plan: [next steps](next-steps/index.md), 28 tasks in execution order. The details and recommendations are in [its decisions page](next-steps/01-decisions.md).
+Plan: [next steps](next-steps/index.md), 30 tasks in execution order. The details and recommendations are in [its decisions page](next-steps/01-decisions.md).
 
 - [x] **D1: Filament is retired:** decided 2026-11-09. The Next.js dashboard is the only web surface for every guard, including the whole admin back office. Filament is removed after its replacements ship (NS-28).
-- [ ] **D2: How a new brand owner joins** (blocks NS-03, a launch blocker).
+- [x] **D2: How a new brand owner joins:** decided 2026-11-09. A public "Register your business" page on the dashboard, with email verification, a status page and emails (NS-03). Barbers keep the stylist app's sign-up and get an admin approval queue (NS-30). Clients need no approval; branches and admins are never public.
 - [ ] **D3: How the admin sees branch-level records** (blocks NS-09).
 - [ ] **D4: What an admin may see about a client** (blocks NS-07).
 - [ ] **D5: How notifications reach the dashboard** (blocks NS-10).
 - [ ] **D6: Plan billing at launch** (blocks NS-26 only).
 - [ ] **D7: Barber web scope after Filament** (blocks NS-27).
-- [ ] **D8: Rejecting and suspending a brand** (blocks NS-06).
+- [ ] **D8: Rejecting and suspending a brand**, including resubmission and whether barbers get a `rejected` status (blocks NS-06, NS-30).
+- [ ] **D9: Branch approval model.** The owner can set any branch status today (blocks the branch part of NS-06).
+- [ ] **D10: Re-registration after account deletion.** A soft-deleted email is blocked forever (blocks one NS-03 edge case).
+- [ ] **D11: Early access for a pending owner** (blocks the waiting part of NS-03).
+- [ ] **D12: CAPTCHA on public forms.** It needs a package (blocks the CAPTCHA part of NS-03).
+- [ ] **D13: The Laravel public website:** keep it with localized error pages, or move it (blocks NS-29 item 5, NS-25).
 
 ## Dashboard feature modules
 
