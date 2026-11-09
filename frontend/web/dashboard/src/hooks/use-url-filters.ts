@@ -1,7 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
-
 import { useUrlState } from "@/hooks/use-url-state";
 import { applyFilterPatch } from "@/lib/url-query.util";
 
@@ -11,7 +9,7 @@ export function useUrlFilters<F extends { page: number }>(
   toParams: (filters: F) => URLSearchParams,
 ): { filters: F; update: (patch: Partial<F>) => void } {
   const { value: filters, setValue } = useUrlState(fromParams, toParams);
-  const update = useCallback((patch: Partial<F>) => setValue(applyFilterPatch(filters, patch)), [filters, setValue]);
+  const update = (patch: Partial<F>): void => setValue(applyFilterPatch(filters, patch));
 
   return { filters, update };
 }

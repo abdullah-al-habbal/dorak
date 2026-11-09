@@ -42,12 +42,12 @@ export function WorkingHoursEditor({ branchId, initial }: WorkingHoursEditorProp
   const remove = useCallback((day: Weekday, index: number) => setDraft((week) => removeShift(week, day, index)), []);
   const update = useCallback((day: Weekday, index: number, patch: Partial<Shift>) => setDraft((week) => updateShift(week, day, index, patch)), []);
   const copy = useCallback((from: Weekday, targets: readonly Weekday[]) => setDraft((week) => copyDay(week, from, targets)), []);
-  const discard = useCallback(() => {
+  const discard = (): void => {
     setDraft(baseline);
     setFormError(undefined);
-  }, [baseline]);
+  };
 
-  const submit = useCallback(async () => {
+  const submit = async (): Promise<void> => {
     setFormError(undefined);
     try {
       const saved = await save.mutateAsync(weekToPayload(draft));
@@ -57,7 +57,7 @@ export function WorkingHoursEditor({ branchId, initial }: WorkingHoursEditorProp
     } catch (error) {
       setFormError(formErrorMessage(error, t.errors.generic));
     }
-  }, [draft, save, t.errors.generic]);
+  };
 
   return (
     <div className="flex flex-col gap-4">

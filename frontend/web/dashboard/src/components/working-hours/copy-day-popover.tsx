@@ -1,7 +1,7 @@
 "use client";
 
 import { CopyIcon } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -26,13 +26,13 @@ export function CopyDayPopover({ source, days, onCopy }: CopyDayPopoverProps): J
   const allSelected = targets.length > 0 && targets.every((day) => selected.includes(day));
   const sourceLabel = weekdayLabel(source, locale);
 
-  const toggle = useCallback((day: Weekday) => setSelected((current) => (current.includes(day) ? current.filter((entry) => entry !== day) : [...current, day])), []);
-  const toggleAll = useCallback(() => setSelected(allSelected ? [] : targets), [allSelected, targets]);
-  const apply = useCallback(() => {
+  const toggle = (day: Weekday): void => setSelected((current) => (current.includes(day) ? current.filter((entry) => entry !== day) : [...current, day]));
+  const toggleAll = (): void => setSelected(allSelected ? [] : targets);
+  const apply = (): void => {
     onCopy(source, selected);
     setSelected([]);
     setOpen(false);
-  }, [onCopy, selected, source]);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
