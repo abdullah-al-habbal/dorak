@@ -66,5 +66,13 @@ export const enRegisterBusiness = {
     emptyBody: "This account has no business to review.",
     errorTitle: "Couldn’t load your status",
     errorBody: "Check your connection, then try again.",
+    rejectedTitle: "Your business wasn't approved yet",
+    suspendedTitle: "Your business is suspended",
+    reasonLabel: "Reason",
+    fix: "Fix details",
+    resubmit: "Resubmit for review",
+    contactSupport: "You've used all resubmissions. Please contact support.",
+    resubmitted: "Sent for review again.",
+    resubmitFailed: "It couldn't be resubmitted. Try again.",
   },
 } as const;

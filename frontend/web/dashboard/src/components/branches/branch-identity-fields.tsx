@@ -9,7 +9,6 @@ import { BRANCH_MAX_EMAIL, BRANCH_MAX_NAME, BRANCH_MAX_PASSWORD } from "@/config
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import type { BranchFieldsProps } from "@/interfaces/branch-fields-props.interface";
-import { selectableStatuses } from "@/lib/branch-form.util";
 import type { BranchFormValues } from "@/schemas/branch-form.zod";
 
 export function BranchIdentityFields({ form, creating }: BranchFieldsProps): JSX.Element {
@@ -33,13 +32,6 @@ export function BranchIdentityFields({ form, creating }: BranchFieldsProps): JSX
         <Input id="branch-password" type="password" dir="ltr" autoComplete="new-password" maxLength={BRANCH_MAX_PASSWORD} {...invalid("password", "branch-password")} {...form.register("password")} />
       </FormField>
       <div className="grid gap-4 sm:grid-cols-2">
-        <FormField id="branch-status" label={f.status} error={errors.status?.message}>
-          <NativeSelect id="branch-status" {...form.register("status")}>
-            {selectableStatuses(form.formState.defaultValues?.status ?? form.getValues("status")).map((status) => (
-              <option key={status} value={status}>{t.status[status]}</option>
-            ))}
-          </NativeSelect>
-        </FormField>
         <FormField id="branch-universe" label={f.universe} error={errors.universe?.message}>
           <NativeSelect id="branch-universe" {...form.register("universe")}>
             {Object.values(VenueUniverse).map((universe) => (

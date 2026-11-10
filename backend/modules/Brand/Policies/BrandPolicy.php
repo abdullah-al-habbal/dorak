@@ -35,4 +35,10 @@ final class BrandPolicy
     {
         return $actor instanceof AdminModel;
     }
+
+    /** NS-06: only a platform admin rejects, suspends or reactivates a brand. */
+    public function review(mixed $actor, BrandModel $brand): bool
+    {
+        return $actor instanceof AdminModel;
+    }
 }

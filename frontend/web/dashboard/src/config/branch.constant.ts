@@ -1,4 +1,4 @@
-import { CheckCircle2Icon, ClockIcon, PauseCircleIcon } from "lucide-react";
+import { CheckCircle2Icon, ClockIcon, PauseCircleIcon, ShieldAlertIcon } from "lucide-react";
 
 import { BranchStatus } from "@/enums/branch-status.enum";
 import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
@@ -21,4 +21,5 @@ export const BRANCH_STATUS_STYLE: Record<BranchStatus, BookingStatusStyle> = {
   [BranchStatus.Enabled]: { variant: "success", icon: CheckCircle2Icon },
   [BranchStatus.Pending]: { variant: "warning", icon: ClockIcon },
   [BranchStatus.Disabled]: { variant: "outline", icon: PauseCircleIcon },
+  [BranchStatus.Suspended]: { variant: "destructive", icon: ShieldAlertIcon },
 };

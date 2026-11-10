@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Modules\Admin\Constants\AdminUserConstants;
-use Modules\Admin\Http\Resources\AdminUserResource;
+use Modules\Admin\Http\Resources\Admin\AdminUserResource;
 use Modules\Admin\Services\AdminUserService;
 use Modules\Core\Http\Actions\BaseApiAction;
 

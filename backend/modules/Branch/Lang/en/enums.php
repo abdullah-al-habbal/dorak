@@ -7,5 +7,6 @@ return [
         'pending' => 'Pending',
         'enabled' => 'Enabled',
         'disabled' => 'Disabled',
+        'suspended' => 'Suspended',
     ],
 ];

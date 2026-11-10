@@ -3,6 +3,9 @@ import type { AdminUserFormOverlayRequest } from "@/interfaces/admin-user-form-o
 import type { AssignSubscriptionOverlayRequest } from "@/interfaces/assign-subscription-overlay-request.interface";
 import type { BarberApprovalDetailOverlayRequest } from "@/interfaces/barber-approval-detail-overlay-request.interface";
 import type { BarberRejectOverlayRequest } from "@/interfaces/barber-reject-overlay-request.interface";
+import type { BrandEditOverlayRequest } from "@/interfaces/brand-edit-overlay-request.interface";
+import type { BrandReasonOverlayRequest } from "@/interfaces/brand-reason-overlay-request.interface";
+import type { BranchSuspendOverlayRequest } from "@/interfaces/branch-suspend-overlay-request.interface";
 import type { BrandDetailOverlayRequest } from "@/interfaces/brand-detail-overlay-request.interface";
 import type { CatalogCategoryDetailOverlayRequest } from "@/interfaces/catalog-category-detail-overlay-request.interface";
 import type { CatalogCategoryFormOverlayRequest } from "@/interfaces/catalog-category-form-overlay-request.interface";
@@ -17,4 +20,4 @@ import type { StylistFormOverlayRequest } from "@/interfaces/stylist-form-overla
 import type { WalkInOverlayRequest } from "@/interfaces/walk-in-overlay-request.interface";
 
 /** Every dialog or sheet the portal can show. Feature modules add their own member here. */
-export type OverlayRequest = ConfirmOverlayRequest | WalkInOverlayRequest | RescheduleOverlayRequest | StylistFormOverlayRequest | ServiceFormOverlayRequest | ChairFormOverlayRequest | BranchFormOverlayRequest | PayoutActionOverlayRequest | PlanFormOverlayRequest | AssignSubscriptionOverlayRequest | BrandDetailOverlayRequest | BarberApprovalDetailOverlayRequest | BarberRejectOverlayRequest | AdminUserFormOverlayRequest | ReviewResolveOverlayRequest | CatalogCategoryFormOverlayRequest | CatalogCategoryDetailOverlayRequest;
+export type OverlayRequest = ConfirmOverlayRequest | WalkInOverlayRequest | RescheduleOverlayRequest | StylistFormOverlayRequest | ServiceFormOverlayRequest | ChairFormOverlayRequest | BranchFormOverlayRequest | PayoutActionOverlayRequest | PlanFormOverlayRequest | AssignSubscriptionOverlayRequest | BrandDetailOverlayRequest | BrandReasonOverlayRequest | BrandEditOverlayRequest | BranchSuspendOverlayRequest | BarberApprovalDetailOverlayRequest | BarberRejectOverlayRequest | AdminUserFormOverlayRequest | ReviewResolveOverlayRequest | CatalogCategoryFormOverlayRequest | CatalogCategoryDetailOverlayRequest;

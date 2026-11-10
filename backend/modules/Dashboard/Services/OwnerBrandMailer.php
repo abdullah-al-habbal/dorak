@@ -10,12 +10,14 @@ use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Mail\OwnerBrandApproved;
+use Modules\Dashboard\Mail\OwnerBrandReactivated;
 use Modules\Dashboard\Mail\OwnerBrandRejected;
 use Modules\Dashboard\Mail\OwnerBrandSubmitted;
+use Modules\Dashboard\Mail\OwnerBrandSuspended;
 use Modules\Dashboard\Repositories\DashboardPreferredLocaleResolver;
 use Throwable;
 
-/** The three emails an owner gets about the review of their brand, in the owner's language. */
+/** The emails an owner gets about the review of their brand, in the owner's language. */
 final class OwnerBrandMailer
 {
     public function __construct(private readonly DashboardPreferredLocaleResolver $locales) {}
@@ -34,6 +36,16 @@ final class OwnerBrandMailer
     public function rejected(BrandModel $brand, string $reason): void
     {
         $this->send($brand, fn (string $name, string $url): Mailable => new OwnerBrandRejected($name, $reason, $url));
+    }
+
+    public function suspended(BrandModel $brand, string $reason): void
+    {
+        $this->send($brand, fn (string $name, string $url): Mailable => new OwnerBrandSuspended($name, $reason, $url));
+    }
+
+    public function reactivated(BrandModel $brand): void
+    {
+        $this->send($brand, fn (string $name, string $url): Mailable => new OwnerBrandReactivated($name, $url));
     }
 
     /** @param callable(string, string): Mailable $make */

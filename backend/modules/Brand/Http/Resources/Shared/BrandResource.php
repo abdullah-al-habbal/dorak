@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Brand\Http\Resources\Shared;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Brand\Constants\BrandReviewConstants;
 use Modules\Brand\Services\BrandFeatures;
 
 final class BrandResource extends JsonResource
@@ -27,6 +28,9 @@ final class BrandResource extends JsonResource
             'slug' => $this->offsetGet('slug'),
             'universe' => $this->offsetGet('universe'),
             'status' => $this->offsetGet('status'),
+            'status_reason' => $this->offsetGet('status_reason'),
+            'submission_count' => (int) ($this->offsetGet('submission_count') ?? 1),
+            'max_submissions' => BrandReviewConstants::BRAND_MAX_SUBMISSIONS,
             'branches_count' => $this->offsetGet('branches_count') !== null
                 ? (int) $this->offsetGet('branches_count')
                 : $this->whenLoaded('branches', fn () => $this->branches->count()),

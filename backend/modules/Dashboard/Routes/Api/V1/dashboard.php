@@ -3,7 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Modules\Audit\Http\Actions\Admin\ListStatusChangeLogsAction;
 use Modules\Brand\Http\Actions\Admin\ApproveBrandAction;
+use Modules\Brand\Http\Actions\Admin\GetBrandFeaturesAction;
+use Modules\Brand\Http\Actions\Admin\ReactivateBrandAction;
+use Modules\Brand\Http\Actions\Admin\RejectBrandAction;
+use Modules\Brand\Http\Actions\Admin\SuspendBrandAction;
+use Modules\Brand\Http\Actions\Admin\UpdateBrandFeaturesAction;
 use Modules\Commission\Http\Actions\Admin\DestroyCommissionRuleAction;
 use Modules\Commission\Http\Actions\Admin\ListCommissionEntriesAction;
 use Modules\Commission\Http\Actions\Admin\ListCommissionRulesAction;
@@ -37,6 +43,9 @@ use Modules\Dashboard\Http\Actions\Branches\StoreBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\UpdateBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\UpdateBranchFloorPlanAction;
 use Modules\Dashboard\Http\Actions\Branches\UpdateBranchOpeningHoursAction;
+use Modules\Dashboard\Http\Actions\BranchLifecycle\ReactivateBranchAction;
+use Modules\Dashboard\Http\Actions\BranchLifecycle\SuspendBranchAction;
+use Modules\Dashboard\Http\Actions\BranchLifecycle\SwitchBranchAction;
 use Modules\Dashboard\Http\Actions\Brands\ListBrandsAction;
 use Modules\Dashboard\Http\Actions\Brands\ShowBrandAction;
 use Modules\Dashboard\Http\Actions\Brands\StoreBrandAction;
@@ -60,6 +69,7 @@ use Modules\Dashboard\Http\Actions\Earnings\ShowEarningsAction;
 use Modules\Dashboard\Http\Actions\Owner\CreateOwnerBrandAction;
 use Modules\Dashboard\Http\Actions\Owner\RegisterOwnerAction;
 use Modules\Dashboard\Http\Actions\Owner\ResendOwnerCodeAction;
+use Modules\Dashboard\Http\Actions\Owner\ResubmitBrandAction;
 use Modules\Dashboard\Http\Actions\Owner\VerifyOwnerEmailAction;
 use Modules\Dashboard\Http\Actions\People\DestroyBranchJobPostingAction;
 use Modules\Dashboard\Http\Actions\People\InviteBranchAffiliationAction;
@@ -172,6 +182,14 @@ Route::prefix('dashboard')->group(function (): void {
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardAdminAuthorizationMiddleware::class])->prefix('admin')->group(function (): void {
         Route::patch('/brands/{brand}/approve', ApproveBrandAction::class);
+        Route::patch('/brands/{brand}/reject', RejectBrandAction::class);
+        Route::patch('/brands/{brand}/suspend', SuspendBrandAction::class);
+        Route::patch('/brands/{brand}/reactivate', ReactivateBrandAction::class);
+        Route::get('/brands/{brand}/features', GetBrandFeaturesAction::class);
+        Route::patch('/brands/{brand}/features', UpdateBrandFeaturesAction::class);
+        Route::get('/audit/{subjectType}/{subjectId}', ListStatusChangeLogsAction::class);
+        Route::patch('/branches/{branch}/suspend', SuspendBranchAction::class);
+        Route::patch('/branches/{branch}/reactivate', ReactivateBranchAction::class);
         Route::get('/admins', ListAdminUsersAction::class);
         Route::post('/admins', InviteAdminUserAction::class);
         Route::put('/admins/{admin}', UpdateAdminUserAction::class);
@@ -251,6 +269,9 @@ Route::prefix('dashboard')->group(function (): void {
         Route::post('/brands', StoreBrandAction::class);
         Route::get('/brands/{brand}', ShowBrandAction::class);
         Route::put('/brands/{brand}', UpdateBrandAction::class);
+        Route::post('/brands/{brand}/resubmit', ResubmitBrandAction::class);
+        Route::patch('/branches/{branch}/switch-on', SwitchBranchAction::class)->defaults('on', true);
+        Route::patch('/branches/{branch}/switch-off', SwitchBranchAction::class)->defaults('on', false);
         Route::get('/barbers/{barber}/services', ListBarberServiceOverridesAction::class);
         Route::put('/barbers/{barber}/services/{service}/override', UpsertBarberServiceOverrideAction::class);
         Route::delete('/barbers/{barber}/services/{service}/override', DestroyBarberServiceOverrideAction::class);

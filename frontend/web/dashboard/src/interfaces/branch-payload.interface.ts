@@ -1,4 +1,3 @@
-import type { BranchStatus } from "@/enums/branch-status.enum";
 import type { VenueUniverse } from "@/enums/venue-universe.enum";
 
 interface Translated {
@@ -11,7 +10,6 @@ export interface BranchPayload {
   brand_id: string;
   name: Translated;
   email: string;
-  status: BranchStatus;
   universe: VenueUniverse;
   description: Translated | null;
   address: Translated | null;

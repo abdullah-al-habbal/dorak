@@ -157,7 +157,7 @@ describe("proxy allow-list: brand approval", () => {
     expect(allowed(HttpMethod.Get, "brands", AuthActor.Admin)).toBe(true);
     expect(allowed(HttpMethod.Get, "brands", AuthActor.Owner)).toBe(true);
     expect(allowed(HttpMethod.Get, "brands", AuthActor.Manager)).toBe(false);
-    expect(allowed(HttpMethod.Put, "brands/b1", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Put, "brands/b1", AuthActor.Manager)).toBe(false);
     expect(allowed(HttpMethod.Post, "admin/brands/b1/approve", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Patch, "admin/brands/b1/approve/extra", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Get, "brands/b1/features", AuthActor.Admin)).toBe(false);

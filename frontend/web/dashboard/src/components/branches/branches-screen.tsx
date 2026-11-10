@@ -30,10 +30,10 @@ export function BranchesScreen({ actor }: { actor: AuthActor }): JSX.Element {
     const { states } = dictionary.branches;
     return <EmptyState variant="forbidden" title={states.forbiddenTitle} body={states.forbiddenBody} />;
   }
-  return <BranchesContent />;
+  return <BranchesContent actor={actor} />;
 }
 
-function BranchesContent(): JSX.Element {
+function BranchesContent({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary, locale } = useI18n();
   const { branches: t, bookings } = dictionary;
   const { filters, update } = useBranchFilters();
@@ -77,7 +77,7 @@ function BranchesContent(): JSX.Element {
         {items.length > 0 ? (
           <>
             <p className="tabular text-sm text-muted-foreground" aria-live="polite">{t.states.results.replace("{count}", String(page?.total ?? items.length))}</p>
-            <BranchList branches={items} brandLabel={brandLabel} showBrand={brands.length > 1} onSelect={openEdit} />
+            <BranchList branches={items} brandLabel={brandLabel} showBrand={brands.length > 1} onSelect={openEdit} actor={actor} />
             {page ? <PaginationBar page={page.current_page} totalPages={page.total_pages} label={t.title} onPageChange={changePage} /> : null}
           </>
         ) : null}

@@ -12,6 +12,7 @@ enum BranchStatusEnum: string implements HasColor, HasLabel
     case Pending = 'pending';
     case Enabled = 'enabled';
     case Disabled = 'disabled';
+    case Suspended = 'suspended';
 
     public function label(): string
     {
@@ -34,6 +35,7 @@ enum BranchStatusEnum: string implements HasColor, HasLabel
             self::Pending => 'warning',
             self::Enabled => 'success',
             self::Disabled => 'danger',
+            self::Suspended => 'gray',
         };
     }
 }

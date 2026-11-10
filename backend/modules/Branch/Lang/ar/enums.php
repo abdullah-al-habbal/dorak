@@ -7,5 +7,6 @@ return [
         'pending' => 'قيد الانتظار',
         'enabled' => 'مفعّل',
         'disabled' => 'معطّل',
+        'suspended' => 'معلّق',
     ],
 ];

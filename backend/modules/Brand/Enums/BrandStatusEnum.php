@@ -12,6 +12,8 @@ enum BrandStatusEnum: string implements HasColor, HasLabel
 {
     case Pending = 'pending';
     case Active = 'active';
+    case Rejected = 'rejected';
+    case Suspended = 'suspended';
 
     public function label(): string
     {
@@ -28,6 +30,8 @@ enum BrandStatusEnum: string implements HasColor, HasLabel
         return match ($this) {
             self::Pending => 'warning',
             self::Active => 'success',
+            self::Rejected => 'danger',
+            self::Suspended => 'gray',
         };
     }
 }

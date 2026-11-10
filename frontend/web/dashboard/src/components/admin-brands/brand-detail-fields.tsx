@@ -41,6 +41,14 @@ export function BrandDetailFields({ brand }: { brand: AdminBrand }): JSX.Element
       <Field label={t.detail.branches}><span className="tabular">{brand.branches_count ?? none}</span></Field>
       <Field label={t.detail.created}><span className="tabular">{created}</span></Field>
       <Field label={t.detail.slug}><span dir="ltr" translate="no">{brand.slug ?? none}</span></Field>
+      {brand.status_reason ? (
+        <div className="sm:col-span-2">
+          <Field label={t.detail.statusReason}><span dir="auto">{brand.status_reason}</span></Field>
+        </div>
+      ) : null}
+      <Field label={t.detail.submissions}>
+        <span className="tabular">{brand.submission_count ?? none}{brand.max_submissions ? ` / ${brand.max_submissions}` : ""}</span>
+      </Field>
       <div className="sm:col-span-2">
         <Field label={t.detail.descriptionLabel}><span dir="auto">{localizedText(brand.description, locale) || none}</span></Field>
       </div>

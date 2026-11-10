@@ -30,7 +30,7 @@ describe("admin brand schema", () => {
   });
 
   it("rejects a status the dashboard does not know", () => {
-    expect(adminBrandSchema.safeParse({ ...row, status: "suspended" }).success).toBe(false);
+    expect(adminBrandSchema.safeParse({ ...row, status: "archived" }).success).toBe(false);
   });
 
   it("accepts a brand without owner or currency relations", () => {

@@ -5,6 +5,9 @@ import { ReviewResolveDialog } from "@/components/review-moderation/review-resol
 import { AdminUserFormDialog } from "@/components/admin-users/admin-user-form-dialog";
 import { BarberApprovalDetailDialog } from "@/components/barber-approvals/barber-approval-detail-dialog";
 import { BarberRejectDialog } from "@/components/barber-approvals/barber-reject-dialog";
+import { BrandEditDialog } from "@/components/admin-brands/brand-edit-dialog";
+import { BrandReasonDialog } from "@/components/admin-brands/brand-reason-dialog";
+import { BranchSuspendDialog } from "@/components/branches/branch-suspend-dialog";
 import { BrandDetailDialog } from "@/components/admin-brands/brand-detail-dialog";
 import { CatalogCategoryDetailDialog } from "@/components/admin-catalog/catalog-category-detail-dialog";
 import { CatalogCategoryFormDialog } from "@/components/admin-catalog/catalog-category-form-dialog";
@@ -59,6 +62,12 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <AdminUserFormDialog admin={request.admin} onClose={onClose} />;
     case OverlayKind.ReviewResolve:
       return <ReviewResolveDialog review={request.review} onClose={onClose} />;
+    case OverlayKind.BrandReason:
+      return <BrandReasonDialog request={request} onClose={onClose} />;
+    case OverlayKind.BrandEdit:
+      return <BrandEditDialog brand={request.brand} onClose={onClose} />;
+    case OverlayKind.BranchSuspend:
+      return <BranchSuspendDialog branch={request.branch} onClose={onClose} />;
     case OverlayKind.CatalogCategoryForm:
       return <CatalogCategoryFormDialog category={request.category} onClose={onClose} />;
     case OverlayKind.CatalogCategoryDetail:

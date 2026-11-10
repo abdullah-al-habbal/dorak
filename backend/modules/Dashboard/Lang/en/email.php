@@ -13,4 +13,8 @@ return [
     'owner_brand_approved_body' => '<p>Good news: <strong>:name</strong> has been approved. You can now add stylists and open your branch to clients.</p><p><a href=":url">Open your dashboard</a></p>',
     'owner_brand_rejected_subject' => 'Your Dorak business needs changes',
     'owner_brand_rejected_body' => '<p>We could not approve <strong>:name</strong> yet.</p><p>Reason: :reason</p><p>Please fix it and send it again. <a href=":url">Open your dashboard</a></p>',
+    'owner_brand_suspended_subject' => 'Your Dorak business is suspended',
+    'owner_brand_suspended_body' => '<p><strong>:name</strong> has been suspended and is hidden from clients. Existing bookings stay unless we told you otherwise.</p><p>Reason: :reason</p><p><a href=":url">Open your dashboard</a></p>',
+    'owner_brand_reactivated_subject' => 'Your Dorak business is active again',
+    'owner_brand_reactivated_body' => '<p><strong>:name</strong> is active again and visible to clients.</p><p><a href=":url">Open your dashboard</a></p>',
 ];

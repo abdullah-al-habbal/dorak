@@ -10,7 +10,6 @@ const valid = {
   name_ar: "وسط المدينة",
   email: "downtown@example.test",
   password: "a-secure-password",
-  status: "enabled",
   universe: "unisex",
   description_en: "",
   description_ar: "",
@@ -47,7 +46,6 @@ describe("branch form schema", () => {
     expect(create.safeParse({ ...valid, latitude: "24.7", longitude: "46.7" }).success).toBe(true);
     expect(create.safeParse({ ...valid, latitude: "91" }).success).toBe(false);
     expect(create.safeParse({ ...valid, longitude: "-181" }).success).toBe(false);
-    expect(create.safeParse({ ...valid, status: "archived" }).success).toBe(false);
     expect(create.safeParse({ ...valid, universe: "kids" }).success).toBe(false);
   });
 

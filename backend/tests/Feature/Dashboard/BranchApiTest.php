@@ -77,16 +77,10 @@ describe('Dashboard Branch API', function (): void {
         expect(BranchModel::query()->whereKey($secondBranch->id)->exists())->toBeTrue();
     });
 
-    it('prevents deactivation of a brand last active branch', function (): void {
+    it('prevents switching off the last active branch of a brand', function (): void {
         $this->authenticateDashboardActor($this->admin);
-        $payload = [
-            'brand_id' => $this->branch->brand_id,
-            'name' => ['en' => 'Disabled Branch', 'ar' => 'فرع معطل'],
-            'email' => $this->branch->email,
-            'status' => BranchStatusEnum::Disabled,
-        ];
 
-        $this->putJson("/api/v1/dashboard/branches/{$this->branch->id}", $payload)->assertStatus(409);
+        $this->patchJson("/api/v1/dashboard/branches/{$this->branch->id}/switch-off")->assertStatus(409);
         expect($this->branch->fresh()->status->value)->toBe(BranchStatusEnum::Enabled->value);
     });
 

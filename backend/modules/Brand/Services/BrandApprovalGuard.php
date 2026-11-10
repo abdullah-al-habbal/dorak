@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Modules\Brand\Services;
 
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Exceptions\BrandNotApprovedException;
+use Modules\Brand\Exceptions\BrandSuspendedException;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\Support\DashboardActor;
@@ -42,6 +44,18 @@ final class BrandApprovalGuard
         }
     }
 
+    /** D8: a suspended brand is read-only for its owner and managers, whatever else it can do. */
+    public function ensureNotSuspended(DashboardActor $actor, mixed $brandId): void
+    {
+        if ($actor->isPlatformAdmin() || $brandId === null) {
+            return;
+        }
+
+        if (BrandModel::query()->find($brandId)?->status === BrandStatusEnum::Suspended) {
+            throw new BrandSuspendedException;
+        }
+    }
+
     public function ensureApproved(DashboardActor $actor, mixed $brandId): void
     {
         if ($actor->isPlatformAdmin() || $brandId === null) {
@@ -49,6 +63,10 @@ final class BrandApprovalGuard
         }
 
         $brand = BrandModel::query()->find($brandId);
+
+        if ($brand instanceof BrandModel && $brand->status === BrandStatusEnum::Suspended) {
+            throw new BrandSuspendedException;
+        }
 
         if ($brand instanceof BrandModel && ! $brand->isActive()) {
             throw new BrandNotApprovedException;

@@ -3,8 +3,10 @@
 import { useMemo } from "react";
 import type { JSX } from "react";
 
+import { BranchLifecycleActions } from "@/components/branches/branch-lifecycle-actions";
 import { BranchStatusBadge } from "@/components/branches/branch-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
+import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
@@ -16,13 +18,14 @@ interface BranchListProps {
   brandLabel: (id: string) => string;
   showBrand: boolean;
   onSelect: (branch: Branch) => void;
+  actor: AuthActor;
 }
 
 function getBranchId(branch: Branch): string {
   return branch.id;
 }
 
-export function BranchList({ branches, brandLabel, showBrand, onSelect }: BranchListProps): JSX.Element {
+export function BranchList({ branches, brandLabel, showBrand, onSelect, actor }: BranchListProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { branches: t } = dictionary;
   const ratingFormat = useMemo(() => new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }), [locale]);
@@ -44,11 +47,12 @@ export function BranchList({ branches, brandLabel, showBrand, onSelect }: Branch
         ),
       },
       { id: "status", header: t.columns.status, cell: (branch) => <BranchStatusBadge status={branch.status} /> },
+      { id: "actions", header: t.columns.actions, interactive: true, align: "end", cell: (branch) => <BranchLifecycleActions branch={branch} actor={actor} /> },
     ];
     if (!showBrand) return base;
     const brand: DataTableColumn<Branch> = { id: "brand", header: t.columns.brand, cell: (branch) => <span dir="auto" className="truncate text-muted-foreground">{branch.brand_id ? brandLabel(branch.brand_id) : t.none}</span> };
     return [...base.slice(0, 1), brand, ...base.slice(1)];
-  }, [brandLabel, locale, ratingFormat, showBrand, t]);
+  }, [actor, brandLabel, locale, ratingFormat, showBrand, t]);
 
   return <DataTable caption={t.title} columns={columns} rows={branches} getRowId={getBranchId} onRowSelect={onSelect} rowLabel={(branch) => localizedText(branch.name, locale)} />;
 }

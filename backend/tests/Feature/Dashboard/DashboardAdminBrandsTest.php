@@ -67,7 +67,7 @@ describe('Dashboard brand list (admin approval queue)', function (): void {
 
         $row = $this->getJson('/api/v1/dashboard/brands')->assertOk()->json('data.0');
 
-        expect(array_keys($row))->toBe(['id', 'name', 'description', 'logo_url', 'owner', 'base_currency', 'slug', 'universe', 'status', 'branches_count', 'features', 'created_at']);
+        expect(array_keys($row))->toBe(['id', 'name', 'description', 'logo_url', 'owner', 'base_currency', 'slug', 'universe', 'status', 'status_reason', 'submission_count', 'max_submissions', 'branches_count', 'features', 'created_at']);
     });
 
     it('forbids managers and barbers', function (): void {

@@ -1,5 +1,4 @@
 import { LATITUDE_LIMIT, LONGITUDE_LIMIT } from "@/config/branch.constant";
-import { BranchStatus } from "@/enums/branch-status.enum";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import type { BranchPayload } from "@/interfaces/branch-payload.interface";
 import { parseCoordinate } from "@/lib/coordinate.util";
@@ -13,7 +12,6 @@ export function emptyBranchForm(brandId: string): BranchFormValues {
     name_ar: "",
     email: "",
     password: "",
-    status: BranchStatus.Enabled,
     universe: VenueUniverse.Unisex,
     description_en: "",
     description_ar: "",
@@ -35,7 +33,6 @@ export function branchToForm(branch: BranchDetail): BranchFormValues {
     name_ar: branch.name?.ar ?? "",
     email: branch.email,
     password: "",
-    status: branch.status,
     universe: branch.universe ?? VenueUniverse.Unisex,
     description_en: branch.description?.en ?? "",
     description_ar: branch.description?.ar ?? "",
@@ -58,7 +55,6 @@ export function formToBranchPayload(values: BranchFormValues): BranchPayload {
     brand_id: values.brand_id,
     name: { en: values.name_en.trim(), ar: values.name_ar.trim() },
     email: values.email.trim(),
-    status: values.status,
     universe: values.universe,
     description: translations(values.description_en, values.description_ar),
     address: translations(values.address_en, values.address_ar),
@@ -66,9 +62,4 @@ export function formToBranchPayload(values: BranchFormValues): BranchPayload {
     longitude: parseCoordinate(values.longitude, LONGITUDE_LIMIT) ?? null,
     ...(password === "" ? {} : { password }),
   };
-}
-
-/** The statuses an editor may pick: `pending` is shown only while a branch is still pending approval. */
-export function selectableStatuses(current: BranchStatus): BranchStatus[] {
-  return current === BranchStatus.Pending ? [BranchStatus.Pending, BranchStatus.Enabled, BranchStatus.Disabled] : [BranchStatus.Enabled, BranchStatus.Disabled];
 }

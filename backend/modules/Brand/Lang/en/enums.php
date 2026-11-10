@@ -6,5 +6,7 @@ return [
     'status' => [
         'pending' => 'Pending approval',
         'active' => 'Active',
+        'rejected' => 'Rejected',
+        'suspended' => 'Suspended',
     ],
 ];

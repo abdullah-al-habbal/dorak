@@ -10,7 +10,6 @@ import {
   LATITUDE_LIMIT,
   LONGITUDE_LIMIT,
 } from "@/config/branch.constant";
-import { BranchStatus } from "@/enums/branch-status.enum";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { parseCoordinate } from "@/lib/coordinate.util";
 import { emailField } from "@/schemas/fields/email-field.zod";
@@ -28,7 +27,6 @@ export function createBranchSchema(messages: BranchValidation, creating: boolean
     name_ar: nameField(BRANCH_MAX_NAME, messages.name),
     email: emailField(BRANCH_MAX_EMAIL, messages.email),
     password: passwordField({ min: BRANCH_MIN_PASSWORD, max: BRANCH_MAX_PASSWORD, message: messages.password, required: creating }),
-    status: z.enum(BranchStatus, messages.status),
     universe: z.enum(VenueUniverse, messages.universe),
     description_en: z.string().trim().max(BRANCH_MAX_DESCRIPTION, messages.description),
     description_ar: z.string().trim().max(BRANCH_MAX_DESCRIPTION, messages.description),

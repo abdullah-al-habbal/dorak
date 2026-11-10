@@ -38,6 +38,14 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   // NS-30 barber review: the queue, the detail, approve and reject. Admin only; the backend re-checks.
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/barbers(/${ID})?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/barbers/${ID}/(approve|reject)$`), guards: ADMIN_ONLY },
+  // NS-06 brand lifecycle: reject, suspend, reactivate, feature overrides, history (admin) and resubmit/edit (owner too).
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/brands/${ID}/(reject|suspend|reactivate|features)$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Get], pattern: /^admin\/audit\/(brand|branch)\/[^/]+$/, guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Put], pattern: new RegExp(`^brands/${ID}$`), guards: BRANDS },
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^brands/${ID}/resubmit$`), guards: OWNER_ONLY },
+  // NS-06 / D9 branch lifecycle: the owner and the branch's manager switch on or off, the admin suspends and reactivates.
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/switch-(on|off)$`), guards: OPERATIONS },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/branches/${ID}/(suspend|reactivate)$`), guards: ADMIN_ONLY },
   // NS-04 admin users: list, invite, edit, deactivate, reactivate, resend the invitation. Admin only; the backend re-checks.
   { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^admin\/admins$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Put], pattern: new RegExp(`^admin/admins/${ID}$`), guards: ADMIN_ONLY },

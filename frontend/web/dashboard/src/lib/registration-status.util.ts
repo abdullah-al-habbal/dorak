@@ -11,7 +11,7 @@ export const REGISTRATION_STEPS: readonly RegistrationStep[] = [RegistrationStep
 
 /** Where a brand stands: a pending brand is under review (its email was confirmed to get here), an active one is approved. */
 export function currentRegistrationStep(status: BrandStatus): RegistrationStep {
-  return status === BrandStatus.Active ? RegistrationStep.Approved : RegistrationStep.Review;
+  return status === BrandStatus.Active || status === BrandStatus.Suspended ? RegistrationStep.Approved : RegistrationStep.Review;
 }
 
 /** Steps up to and including the current one are done. */

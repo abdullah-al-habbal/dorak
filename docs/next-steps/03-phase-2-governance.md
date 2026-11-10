@@ -96,3 +96,11 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
   - the existing screens reused with a brand and branch filter;
   - read-only where the PRD keeps an action with the branch.
 - **Done when:** Pest covers admin scoping on each list, and E2E covers the filter on two of the screens.
+
+### NS-06 as built
+
+- **Brand states:** `pending`, `active`, `rejected`, `suspended`. `BrandReviewService` (row-locked) approves, rejects (reason 3 to 500 characters), resubmits (owner; cap of 3 submissions, then 409 `brand_resubmission_limit`), suspends (optionally cancelling future bookings) and reactivates; every move is written to `status_change_logs` and the owner is emailed. A suspended brand is blocked by `BrandApprovalGuard` (403 `brand_suspended`) and its branches leave search, slots and booking because discoverability requires an active brand.
+- **Branches (D9):** `status` is no longer accepted in the branch form. A new branch starts `disabled` under an approved brand, else `pending`. Owners and managers switch a branch on or off (`PATCH /branches/{id}/switch-on|switch-off`); only the admin suspends and reactivates (`PATCH /admin/branches/{id}/suspend|reactivate`, reactivation returns the branch to `disabled`).
+- **Admin extras:** feature overrides (`GET|PATCH /admin/brands/{id}/features`: `multi_branch`, `job_board`) and the status history (`GET /admin/audit/{brand|branch}/{id}`).
+- **Dashboard:** brand detail dialog gains edit, reject, suspend (with the cancel-bookings switch), reactivate, feature switches and history; the branch list gains switch on/off and suspend/reactivate actions; the owner status page shows the rejection reason with "Fix details" and "Resubmit", or a suspended notice. Proxy rules added for all new routes (admin only unless noted).
+- **Not done:** tests (deliberately skipped by instruction).

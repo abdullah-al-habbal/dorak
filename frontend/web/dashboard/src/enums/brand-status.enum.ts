@@ -2,4 +2,6 @@
 export enum BrandStatus {
   Pending = "pending",
   Active = "active",
+  Rejected = "rejected",
+  Suspended = "suspended",
 }

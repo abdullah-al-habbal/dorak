@@ -68,5 +68,13 @@ export const arRegisterBusiness: Dictionary["registerBusiness"] = {
     emptyBody: "ليس لهذا الحساب نشاط قيد المراجعة.",
     errorTitle: "تعذّر تحميل الحالة",
     errorBody: "تحقق من اتصالك ثم حاول مرة أخرى.",
+    rejectedTitle: "لم تتم الموافقة على نشاطك بعد",
+    suspendedTitle: "نشاطك معلّق",
+    reasonLabel: "السبب",
+    fix: "تعديل البيانات",
+    resubmit: "إعادة الإرسال للمراجعة",
+    contactSupport: "استنفدت كل محاولات إعادة الإرسال. يرجى التواصل مع الدعم.",
+    resubmitted: "تم الإرسال للمراجعة مجددًا.",
+    resubmitFailed: "تعذّرت إعادة الإرسال. حاول مجددًا.",
   },
 };

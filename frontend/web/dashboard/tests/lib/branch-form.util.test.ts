@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { BranchStatus } from "@/enums/branch-status.enum";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
-import { branchToForm, emptyBranchForm, formToBranchPayload, selectableStatuses } from "@/lib/branch-form.util";
+import { branchToForm, emptyBranchForm, formToBranchPayload } from "@/lib/branch-form.util";
 import type { BranchDetail } from "@/types/branch-detail.type";
 
 const detail: BranchDetail = {
@@ -25,7 +25,7 @@ describe("branch form helpers", () => {
   });
 
   it("starts a new branch enabled, unisex and for the given brand", () => {
-    expect(emptyBranchForm("b9")).toMatchObject({ brand_id: "b9", status: BranchStatus.Enabled, universe: VenueUniverse.Unisex, password: "" });
+    expect(emptyBranchForm("b9")).toMatchObject({ brand_id: "b9", universe: VenueUniverse.Unisex, password: "" });
   });
 
   it("builds the payload: trimmed text, null for empty translations and coordinates", () => {
@@ -34,7 +34,6 @@ describe("branch form helpers", () => {
       brand_id: "b1",
       name: { en: "A", ar: "ب" },
       email: "a@b.test",
-      status: BranchStatus.Enabled,
       universe: VenueUniverse.Unisex,
       description: { en: "", ar: "وصف" },
       address: null,
@@ -50,10 +49,5 @@ describe("branch form helpers", () => {
     expect("password" in without).toBe(false);
     expect(Object.keys(without)).not.toEqual(expect.arrayContaining(["opening_hours", "tags", "floor_plan_zones"]));
     expect(without.latitude).toBe(24.7136);
-  });
-
-  it("offers pending only while a branch is still pending", () => {
-    expect(selectableStatuses(BranchStatus.Enabled)).toEqual([BranchStatus.Enabled, BranchStatus.Disabled]);
-    expect(selectableStatuses(BranchStatus.Pending)).toContain(BranchStatus.Pending);
   });
 });

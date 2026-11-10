@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Admin\Http\Resources;
+namespace Modules\Admin\Http\Resources\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

@@ -29,7 +29,7 @@ use Modules\Preference\Models\PreferenceModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['owner_id', 'name', 'slug', 'universe', 'description', 'logo_url', 'base_currency_code', 'status'])]
+#[Fillable(['owner_id', 'name', 'slug', 'universe', 'description', 'logo_url', 'base_currency_code', 'status', 'status_reason', 'submission_count'])]
 #[Table('brands')]
 #[Translatable([
     'name',
@@ -84,6 +84,7 @@ class BrandModel extends Model
         return [
             'universe' => VenueUniverse::class,
             'status' => BrandStatusEnum::class,
+            'submission_count' => 'integer',
             'description' => 'array',
             'name' => 'array',
         ];

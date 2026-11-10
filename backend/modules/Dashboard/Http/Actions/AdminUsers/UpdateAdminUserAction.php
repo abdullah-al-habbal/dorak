@@ -7,7 +7,7 @@ namespace Modules\Dashboard\Http\Actions\AdminUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Modules\Admin\Constants\AdminUserConstants;
-use Modules\Admin\Http\Resources\AdminUserResource;
+use Modules\Admin\Http\Resources\Admin\AdminUserResource;
 use Modules\Admin\Services\AdminUserService;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Http\Requests\Business\AdminUserRequest;

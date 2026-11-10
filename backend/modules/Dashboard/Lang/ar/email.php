@@ -13,4 +13,8 @@ return [
     'owner_brand_approved_body' => '<p>خبر سار: تمت الموافقة على <strong>:name</strong>. يمكنك الآن إضافة المصففين وفتح فرعك للعملاء.</p><p><a href=":url">افتح لوحة التحكم</a></p>',
     'owner_brand_rejected_subject' => 'نشاطك في دورك يحتاج إلى تعديلات',
     'owner_brand_rejected_body' => '<p>لم نتمكن من الموافقة على <strong>:name</strong> بعد.</p><p>السبب: :reason</p><p>يرجى تصحيح ذلك وإعادة الإرسال. <a href=":url">افتح لوحة التحكم</a></p>',
+    'owner_brand_suspended_subject' => 'تم تعليق نشاطك في دوراك',
+    'owner_brand_suspended_body' => '<p>تم تعليق <strong>:name</strong> وإخفاؤه عن العملاء. تبقى الحجوزات القائمة ما لم نخبرك بغير ذلك.</p><p>السبب: :reason</p><p><a href=":url">افتح لوحة التحكم</a></p>',
+    'owner_brand_reactivated_subject' => 'عاد نشاطك في دوراك',
+    'owner_brand_reactivated_body' => '<p>عاد <strong>:name</strong> نشطًا وظاهرًا للعملاء.</p><p><a href=":url">افتح لوحة التحكم</a></p>',
 ];

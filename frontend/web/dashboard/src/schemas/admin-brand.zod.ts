@@ -15,6 +15,10 @@ export const adminBrandSchema = z.object({
   slug: z.string().nullable().optional(),
   universe: z.string().nullable().optional(),
   status: z.enum(BrandStatus),
+  status_reason: z.string().nullable().optional(),
+  submission_count: z.number().optional(),
+  max_submissions: z.number().optional(),
+  features: z.record(z.string(), z.boolean()).optional(),
   branches_count: z.number().nullable().optional(),
   created_at: z.string(),
 });
