@@ -30,6 +30,12 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
   - a "Reviews" admin screen with the disputed queue by default and a resolve dialog with a confirmation.
 - **Done when:** Vitest covers the proxy rules, and E2E covers resolving a seeded dispute.
 
+### NS-05 as built
+
+- **Backend:** the routes were ready. `AdminReviewResource` gains `subject_name` (the branch, stylist or client being reviewed) and the list eager-loads the subject. Outcomes are `published` and `hidden`; resolving a review that is no longer `disputed` answers 422, and disputes nobody decides within 48 hours are re-published by `reviews:release-expired-disputes`.
+- **Dashboard:** the admin "Reviews" entry opens the disputed queue (status filter in the URL). A row opens a resolve dialog with the review, the dispute reason, an outcome (keep published or hide) and an optional note. Proxy rules: `GET admin/reviews`, `PATCH admin/reviews/{id}/resolve`, admin only.
+- **Tests:** none added, by the product owner's instruction for this batch; the "Done when" test items stay open.
+
 ## NS-06: Brand lifecycle
 
 - **Guards:** admin.

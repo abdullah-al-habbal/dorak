@@ -43,6 +43,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Put], pattern: new RegExp(`^admin/admins/${ID}$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/admins/${ID}/(deactivate|reactivate)$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/admins/${ID}/resend-invite$`), guards: ADMIN_ONLY },
+  // NS-05 review moderation: the disputed queue and the resolve action. Admin only; the backend re-checks.
+  { methods: [HttpMethod.Get], pattern: /^admin\/reviews$/, guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/reviews/${ID}/resolve$`), guards: ADMIN_ONLY },
   // Platform billing (Module 9): payout approvals, plans and brand subscriptions. Admin only; the backend re-checks.
   { methods: [HttpMethod.Get], pattern: /^admin\/(payouts|subscription-plans|subscriptions|plan-feature-keys)$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: /^admin\/(payouts\/generate|subscription-plans|subscriptions)$/, guards: ADMIN_ONLY },

@@ -6,6 +6,7 @@ import type { JSX } from "react";
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { FormField } from "@/components/common/form-field";
+import { ReviewModerationScreen } from "@/components/review-moderation/review-moderation-screen";
 import { RatingSummary } from "@/components/reviews/rating-summary";
 import { ReviewList } from "@/components/reviews/review-list";
 import { NativeSelect } from "@/components/ui/native-select";
@@ -20,6 +21,7 @@ import { useAuthStore } from "@/store/auth.store";
 
 export function ReviewsScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();
+  if (actor === AuthActor.Admin) return <ReviewModerationScreen />;
   if (actor === AuthActor.Barber) {
     const { states } = dictionary.reviews;
     return <EmptyState variant="forbidden" title={states.forbiddenTitle} body={states.forbiddenBody} />;

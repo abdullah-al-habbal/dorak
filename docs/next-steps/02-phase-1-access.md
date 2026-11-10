@@ -199,4 +199,3 @@ Without these tasks, someone can't get in, can't get back in, can't be approved,
 - **Dashboard:** "Admins" at `/dashboard/admin/admins` (a menu entry beside Settings): search and status filter in the URL, invite and edit dialog, deactivate or reactivate behind a confirmation (the backend guard message is toasted on a 409), and resend invite. The row of the signed-in admin hides Deactivate.
 - **Invitation email:** it reuses the password-reset mail. A dedicated "you were invited" copy is a later wording task.
 - **Tests:** none added, by the product owner's instruction for this batch; the "Done when" test items stay open.
-

@@ -19,6 +19,7 @@ final class AdminReviewResource extends JsonResource
 
         return [
             ...(new ReviewResource($this->resource))->toArray($request),
+            'subject_name' => $this->whenLoaded('subject', fn (): ?string => $this->subject?->getAttribute('name') === null ? null : (string) $this->subject->getAttribute('name')),
             'dispute_reason' => $this->offsetGet('dispute_reason'),
             'resolution_note' => $this->offsetGet('resolution_note'),
             'resolved_at' => $resolvedAt instanceof Carbon ? $resolvedAt->toIso8601String() : null,

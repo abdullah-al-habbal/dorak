@@ -13,6 +13,7 @@ export enum OverlayKind {
   BarberApprovalDetail = "barber-approval-detail",
   BarberReject = "barber-reject",
   AdminUserForm = "admin-user-form",
+  ReviewResolve = "review-resolve",
   CatalogCategoryForm = "catalog-category-form",
   CatalogCategoryDetail = "catalog-category-detail",
 }

@@ -16,7 +16,7 @@ final class ListAdminReviewsAction extends BaseApiAction
     {
         $reviews = ReviewModel::query()
             ->where('status', $request->status())
-            ->with('author')
+            ->with(['author', 'subject'])
             ->orderByDesc('disputed_at')
             ->orderByDesc('created_at')
             ->paginate($request->perPage());
