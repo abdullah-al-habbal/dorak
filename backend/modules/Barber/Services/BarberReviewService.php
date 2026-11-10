@@ -12,6 +12,8 @@ use Modules\Barber\Constants\BarberReviewConstants;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Exceptions\BarberReviewException;
 use Modules\Barber\Models\BarberModel;
+use Modules\Core\Enums\PlatformEventEnum;
+use Modules\Core\Services\PlatformNotifier;
 
 /** Every barber review transition runs under a row lock so two admins (or a double click) cannot race. */
 final class BarberReviewService
@@ -85,6 +87,7 @@ final class BarberReviewService
                 'status' => BarberStatusEnum::Pending,
                 'submission_count' => (int) $barber->submission_count + 1,
             ])->save();
+            app(PlatformNotifier::class)->toAdmins(PlatformEventEnum::BarberAwaitingApproval, (string) $barber->getKey());
 
             return $barber;
         });

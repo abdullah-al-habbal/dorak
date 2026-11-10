@@ -41,6 +41,13 @@ These tasks remove the places where a manager or owner has to refresh, switch to
   - link each item to its record.
 - **Done when:** Pest covers each actor type's scope, and E2E covers a seeded notification marked as read.
 
+
+### NS-10 as built
+
+- **Backend:** dashboard routes for every actor type: `GET /dashboard/notifications` (paginated, `meta.unread_count`, optional `unread=1`), `POST /notifications/read-all` and `PATCH /notifications/{id}/read`. `DashboardNotificationScope` limits every read and write to the signed-in account's own rows by its morph type and id, so another account's row answers 404. The new `PlatformNotifier` writes inbox rows for the `PlatformEventEnum` events: a verified brand submitted, a barber awaiting approval (verified sign-up or resubmission) and a review disputed go to every active admin; brand approved, rejected, suspended and reactivated go to the owner; barber approved and rejected go to the barber. The rows are written beside the existing emails, and a failed write never breaks the business action. Manager rows (booking pushes to a branch) already existed and now reach the dashboard through the same feed.
+- **Dashboard:** the bell shows an unread badge, refetches every 60 seconds while the tab is visible (D5), lists the latest 20 with localized text from the event key, links each row to its record and offers mark-as-read and mark-all. The proxy allows `GET notifications`, `POST notifications/read-all` and `PATCH notifications/{id}/read` for every actor.
+- **Not done:** tests (skipped by instruction); a full notifications page with paging (the bell shows the latest 20); admin events for disputes raised from the dashboard (NS-14 reuses the same dispute handler, so they are covered once it exists); push delivery of these events.
+
 ## NS-11: Rate the client after a visit
 
 - **Guards:** manager, owner.

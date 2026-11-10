@@ -19,7 +19,7 @@ export function Header({ actor, profile }: { actor: AuthActor; profile: MeProfil
       <div className="flex items-center gap-0.5">
         <LanguageToggle />
         <ThemeToggle />
-        <NotificationsMenu />
+        <NotificationsMenu actor={actor} />
         <UserMenu actor={actor} initialProfile={profile} />
       </div>
     </header>

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Mail;
 use Modules\Barber\Mail\BarberApproved;
 use Modules\Barber\Mail\BarberRejected;
 use Modules\Barber\Models\BarberModel;
+use Modules\Core\Enums\DeviceTokenUserTypeEnum;
+use Modules\Core\Enums\PlatformEventEnum;
+use Modules\Core\Services\PlatformNotifier;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardPreferredLocaleResolver;
 use Throwable;
@@ -16,15 +19,17 @@ use Throwable;
 /** The two emails a barber gets about the review of their account, in the barber's language. */
 final class BarberReviewMailer
 {
-    public function __construct(private readonly DashboardPreferredLocaleResolver $locales) {}
+    public function __construct(private readonly DashboardPreferredLocaleResolver $locales, private readonly PlatformNotifier $notifier) {}
 
     public function approved(BarberModel $barber): void
     {
+        $this->notifier->toAccount(DeviceTokenUserTypeEnum::Barber, (string) $barber->getKey(), PlatformEventEnum::BarberApproved, (string) $barber->getKey());
         $this->send($barber, fn (string $name): BarberApproved => new BarberApproved($name));
     }
 
     public function rejected(BarberModel $barber, string $reason): void
     {
+        $this->notifier->toAccount(DeviceTokenUserTypeEnum::Barber, (string) $barber->getKey(), PlatformEventEnum::BarberRejected, (string) $barber->getKey());
         $this->send($barber, fn (string $name): BarberRejected => new BarberRejected($name, $reason));
     }
 

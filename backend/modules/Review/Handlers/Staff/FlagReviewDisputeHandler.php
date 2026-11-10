@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Modules\Review\Handlers\Staff;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Core\Enums\PlatformEventEnum;
+use Modules\Core\Services\PlatformNotifier;
 use Modules\Review\CQRS\Command\Staff\FlagReviewDisputeCommand;
 use Modules\Review\Enums\ReviewStatus;
 use Modules\Review\Models\ReviewModel;
@@ -36,6 +38,8 @@ final class FlagReviewDisputeHandler
                 'resolved_at' => null,
                 'resolved_by_id' => null,
             ]);
+
+            app(PlatformNotifier::class)->toAdmins(PlatformEventEnum::ReviewDisputed, (string) $review->getKey());
 
             return FlagReviewDisputeResult::success($review->fresh('author'));
         });

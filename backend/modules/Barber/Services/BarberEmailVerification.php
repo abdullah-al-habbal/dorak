@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Modules\Barber\Mail\BarberEmailVerificationCode;
 use Modules\Barber\Models\BarberModel;
+use Modules\Core\Enums\PlatformEventEnum;
+use Modules\Core\Services\PlatformNotifier;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
 
@@ -55,6 +57,8 @@ final class BarberEmailVerification
         Cache::forget($this->attemptsKey($barberId));
 
         $barber->forceFill(['email_verified_at' => now()])->save();
+        // A verified self-registration reaches the admin queue (NS-30); branch-made barbers never verify here.
+        app(PlatformNotifier::class)->toAdmins(PlatformEventEnum::BarberAwaitingApproval, $barberId);
 
         return true;
     }

@@ -10,4 +10,5 @@ enum NotificationTypeEnum: string
     case Invite = 'invite';
     case Application = 'application';
     case ReviewRequest = 'review_request';
+    case PlatformEvent = 'platform_event';
 }
