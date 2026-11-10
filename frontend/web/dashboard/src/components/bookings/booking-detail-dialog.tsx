@@ -5,6 +5,7 @@ import { BookingStatusBadge } from "@/components/bookings/booking-status-badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { BookingHistoryTimeline } from "@/components/bookings/booking-history-timeline";
+import { RATABLE_STATUSES } from "@/config/client-rating.constant";
 import { BOOKING_TRANSITIONS, DESTRUCTIVE_TRANSITIONS, RESCHEDULABLE_STATUSES } from "@/config/booking-transitions.constant";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/use-i18n";
@@ -54,6 +55,13 @@ export function BookingDetailDialog({ booking, onClose }: BookingDetailDialogPro
     overlay.open({ kind: OverlayKind.Reschedule, booking });
   }
 
+  function rateClient() {
+    if (!booking) return;
+    onClose();
+    overlay.open({ kind: OverlayKind.RateClient, booking });
+  }
+
+  const canRate = booking !== null && !booking.client_review && RATABLE_STATUSES.includes(booking.booking_status);
   const next = booking ? BOOKING_TRANSITIONS[booking.booking_status] : [];
 
   return (
@@ -102,11 +110,19 @@ export function BookingDetailDialog({ booking, onClose }: BookingDetailDialogPro
                     {t.action[target]}
                   </LoadingButton>
                 ))}
+                {canRate ? <Button variant="outline" disabled={mutation.isPending} onClick={rateClient}>{t.rateClient.action}</Button> : null}
                 {canReschedule ? (
                   <Button variant="outline" disabled={mutation.isPending} onClick={reschedule}>{t.reschedule.action}</Button>
                 ) : null}
               </div>
             </div>
+            {booking.client_review ? (
+              <div className="flex flex-col gap-1 border-t border-border pt-4 text-sm">
+                <p className="font-medium">{t.rateClient.given}</p>
+                <p className="tabular">{t.rateClient.stars.replace("{count}", String(booking.client_review.rating))}</p>
+                {booking.client_review.body ? <p dir="auto" className="break-words text-muted-foreground">{booking.client_review.body}</p> : null}
+              </div>
+            ) : null}
             <BookingHistoryTimeline bookingId={booking.id} />
           </>
         ) : null}

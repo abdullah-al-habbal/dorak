@@ -48,6 +48,13 @@ These tasks remove the places where a manager or owner has to refresh, switch to
 - **Dashboard:** the bell shows an unread badge, refetches every 60 seconds while the tab is visible (D5), lists the latest 20 with localized text from the event key, links each row to its record and offers mark-as-read and mark-all. The proxy allows `GET notifications`, `POST notifications/read-all` and `PATCH notifications/{id}/read` for every actor.
 - **Not done:** tests (skipped by instruction); a full notifications page with paging (the bell shows the latest 20); admin events for disputes raised from the dashboard (NS-14 reuses the same dispute handler, so they are covered once it exists); push delivery of these events.
 
+
+### NS-11 as built
+
+- **Backend:** `POST /bookings/{id}/review` already existed (one rating per booking, completed or no-show only, scoped to the branch). The staff booking payload now carries `client_review` (`rating`, `body`, `created_at`, or null), so the dashboard shows the given rating instead of offering the action again. The field is additive for the mobile apps.
+- **Dashboard:** the booking detail shows "Rate client" for a completed or no-show booking without a rating, opening a dialog with 1 to 5 stars and an optional note; once rated, the detail shows the stars and note. A 409 answers "already rated".
+- **Not done:** tests (skipped by instruction).
+
 ## NS-11: Rate the client after a visit
 
 - **Guards:** manager, owner.

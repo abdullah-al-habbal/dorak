@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { BookingStatus } from "@/enums/booking-status.enum";
+import { clientRatingSchema } from "@/schemas/client-rating.zod";
 
 const localized = z.union([z.string(), z.record(z.string(), z.string().nullable())]);
 
@@ -32,6 +33,7 @@ export const bookingSchema = z.object({
   barber: barberSchema,
   services: z.array(serviceSchema).optional().default([]),
   client: clientSchema,
+  client_review: clientRatingSchema.nullable().optional(),
 });
 
 export const bookingListSchema = z.array(bookingSchema);
