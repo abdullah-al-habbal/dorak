@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 use Modules\Ban\Constants\BanConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
-final class BanClientRequest extends BaseApiFormRequest
+final class BanAccountRequest extends BaseApiFormRequest
 {
     /** @return array<string, array<int, mixed>> */
     public function rules(): array

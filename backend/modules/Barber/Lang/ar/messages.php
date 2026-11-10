@@ -18,4 +18,7 @@ return [
     'review_rejected_subject' => 'حسابك في دوراك يحتاج إلى تعديلات',
     'review_rejected_body' => '<p>مرحباً :name،</p><p>لم تتم الموافقة على حسابك. السبب: :reason</p><p>عدّل ملفك في تطبيق المصفف ثم أعد تقديمه.</p>',
     'account_rejected' => 'لم تتم الموافقة على حسابك: :reason. أعد تقديمه بعد تعديل ملفك.',
+    'activation_not_enabled' => 'لا يمكن إيقاف إلا الحلاق النشط.',
+    'activation_not_disabled' => 'لا يمكن إعادة تفعيل إلا الحلاق الموقوف.',
+    'activation_toggled' => 'تم تحديث الحلاق.',
 ];

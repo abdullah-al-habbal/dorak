@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { BarberStatus } from "@/enums/barber-status.enum";
+import { clientBanSchema } from "@/schemas/admin-client.zod";
 import { localizedTextSchema } from "@/schemas/localized-text.zod";
 import { optionalTranslationSchema } from "@/schemas/optional-translation.zod";
 
@@ -11,6 +12,9 @@ export const barberApprovalSchema = z.object({
   bio: optionalTranslationSchema.optional(),
   email: z.string().nullable().optional(),
   phone: z.string().nullable().optional(),
+  has_login: z.boolean().optional(),
+  is_banned: z.boolean().optional(),
+  bans: z.array(clientBanSchema).optional(),
   is_freelancer: z.boolean().optional(),
   status: z.enum(BarberStatus),
   email_verified_at: z.string().nullable().optional(),
@@ -25,3 +29,28 @@ export const barberApprovalSchema = z.object({
 export const barberApprovalListSchema = z.array(barberApprovalSchema);
 
 export const barberRejectBodySchema = z.object({ reason: z.string().trim().min(3).max(500) });
+
+/** `GET /admin/barbers/{id}/activation-log` (`AdminActivationLogResource`). */
+export const barberActivationLogSchema = z.object({
+  id: z.string(),
+  status: z.string(),
+  reason: z.string().nullable().optional(),
+  activated_by: z.string().nullable().optional(),
+  activated_at: z.string().nullable().optional(),
+});
+
+export const barberActivationLogListSchema = z.array(barberActivationLogSchema);
+
+/** `GET /admin/barbers/{id}/affiliations` (`AdminAffiliationResource`). */
+export const barberAffiliationSchema = z.object({
+  id: z.string(),
+  affiliable_type: z.string(),
+  affiliable_name: localizedTextSchema.nullable().optional(),
+  status: z.string(),
+  commission_percent: z.union([z.string(), z.number()]).nullable().optional(),
+  invited_at: z.string().nullable().optional(),
+  accepted_at: z.string().nullable().optional(),
+  terminated_at: z.string().nullable().optional(),
+});
+
+export const barberAffiliationListSchema = z.array(barberAffiliationSchema);

@@ -12,7 +12,7 @@ export const arShell: Dictionary["shell"] = {
     analytics: "التحليلات",
     bookings: "الحجوزات",
     branches: "الفروع",
-    barberApprovals: "مراجعة الحلاقين",
+    barberApprovals: "الحلاقون",
     clients: "العملاء",
     admins: "المشرفون",
     brands: "العلامات التجارية",

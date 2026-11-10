@@ -1,8 +1,9 @@
 "use client";
 
-import { CheckIcon, XIcon } from "lucide-react";
+import { BanIcon, CheckIcon, PowerIcon, PowerOffIcon, ShieldOffIcon, XIcon } from "lucide-react";
 import type { JSX } from "react";
 
+import { BarberAccountSections } from "@/components/barber-approvals/barber-account-sections";
 import { BarberApprovalFields } from "@/components/barber-approvals/barber-approval-fields";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { BarberStatus } from "@/enums/barber-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useBarberApproval } from "@/hooks/use-barber-approval";
 import { useConfirmApproveBarber } from "@/hooks/use-confirm-approve-barber";
+import { useConfirmBarberMoves } from "@/hooks/use-confirm-barber-moves";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
@@ -27,18 +29,20 @@ export function BarberApprovalDetailDialog({ barber: initial, onClose }: BarberA
   const { barberApprovals: t } = dictionary;
   const query = useBarberApproval(initial);
   const confirmApprove = useConfirmApproveBarber();
+  const { confirmActive, confirmUnban } = useConfirmBarberMoves();
   const overlay = useOverlay();
   const barber = query.data ?? initial;
 
   return (
     <Dialog open onOpenChange={(open) => (open ? undefined : onClose())}>
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="max-h-[90dvh] overflow-y-auto overscroll-contain sm:max-w-xl">
         <DialogHeader>
           <DialogTitle dir="auto">{localizedText(barber.name, locale) || t.detail.title}</DialogTitle>
           <DialogDescription>{t.detail.description}</DialogDescription>
         </DialogHeader>
         <FormErrorBanner message={query.isError ? t.detail.loadFailed : undefined} />
         <BarberApprovalFields barber={barber} />
+        <BarberAccountSections barber={barber} />
         <DialogFooter>
           <Button type="button" variant="ghost" onClick={onClose}>{t.detail.close}</Button>
           {barber.status === BarberStatus.Pending ? (
@@ -53,6 +57,29 @@ export function BarberApprovalDetailDialog({ barber: initial, onClose }: BarberA
               </Button>
             </>
           ) : null}
+          {barber.status === BarberStatus.Enabled ? (
+            <Button type="button" variant="outline" onClick={() => confirmActive(barber, false)}>
+              <PowerOffIcon aria-hidden data-icon="inline-start" />
+              {t.activation.off.action}
+            </Button>
+          ) : null}
+          {barber.status === BarberStatus.Disabled ? (
+            <Button type="button" variant="outline" onClick={() => confirmActive(barber, true)}>
+              <PowerIcon aria-hidden data-icon="inline-start" />
+              {t.activation.on.action}
+            </Button>
+          ) : null}
+          {barber.is_banned ? (
+            <Button type="button" variant="outline" onClick={() => confirmUnban(barber)}>
+              <ShieldOffIcon aria-hidden data-icon="inline-start" />
+              {t.unbanDialog.action}
+            </Button>
+          ) : (
+            <Button type="button" variant="outline" onClick={() => overlay.open({ kind: OverlayKind.BarberBan, barber })}>
+              <BanIcon aria-hidden data-icon="inline-start" />
+              {t.banDialog.action}
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

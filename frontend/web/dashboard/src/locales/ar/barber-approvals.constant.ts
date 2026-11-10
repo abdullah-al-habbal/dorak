@@ -1,8 +1,8 @@
 import type { Dictionary } from "@/types/dictionary.type";
 
 export const arBarberApprovals: Dictionary["barberApprovals"] = {
-  title: "مراجعة الحلاقين",
-  description: "ينتظر هنا الحلاقون الذين سجلوا في تطبيق المصفف حتى تتم مراجعتهم. يستطيع الحلاق المقبول تسجيل الدخول، ويرى الحلاق المرفوض السبب ويمكنه إعادة التقديم حتى ثلاث مرات.",
+  title: "الحلاقون",
+  description: "كل الحلاقين في المنصة. ينتظر المسجلون الجدد هنا المراجعة (تصفية قيد الانتظار)؛ ويمكن إيقاف الحلاقين المقبولين أو حظرهم ومعرفة انتماءاتهم وسجل تفعيلهم.",
   status: { pending: "بانتظار المراجعة", enabled: "مقبول", disabled: "غير نشط", rejected: "مرفوض" },
   columns: { barber: "الحلاق", email: "البريد الإلكتروني", submissions: "مرات التقديم", status: "الحالة", created: "تاريخ التسجيل", actions: "الإجراءات" },
   approve: "موافقة",
@@ -49,8 +49,35 @@ export const arBarberApprovals: Dictionary["barberApprovals"] = {
     close: "إغلاق",
     loadFailed: "تعذر تحميل أحدث التفاصيل؛ نعرض نسخة القائمة.",
   },
+  activation: {
+    on: { action: "تفعيل", title: "تفعيل هذا الحلاق؟", body: "يستطيع {barber} تسجيل الدخول وتلقي الحجوزات من جديد.", confirm: "تفعيل الحلاق" },
+    off: { action: "إيقاف", title: "إيقاف هذا الحلاق؟", body: "يختفي {barber} من البحث ولا يستطيع تلقي حجوزات جديدة حتى تعيد تفعيله.", confirm: "إيقاف الحلاق" },
+  },
+  banDialog: {
+    action: "حظر",
+    title: "حظر هذا الحلاق؟",
+    body: "يُسجَّل خروج {barber} من كل مكان ويختفي من البحث ولا يستطيع الدخول حتى ينتهي الحظر أو ترفعه.",
+    reason: "السبب",
+    reasonHint: "يُحفظ في سجل الحظر. من 3 إلى 500 حرف.",
+    reasonRequired: "أدخل سببًا لا يقل عن 3 أحرف.",
+    endsAt: "نهاية الحظر",
+    endsAtHint: "اتركه فارغًا لحظر دائم.",
+    endInPast: "اختر تاريخ انتهاء في المستقبل.",
+    confirm: "حظر الحلاق",
+    failed: "تعذّر حظر الحلاق. ربما هو محظور بالفعل؛ أعد التحميل وحاول مجددًا.",
+  },
+  unbanDialog: { action: "رفع الحظر", title: "رفع هذا الحظر؟", body: "يستطيع {barber} تسجيل الدخول من جديد فورًا.", confirm: "رفع الحظر عن الحلاق" },
+  account: {
+    activationLog: "سجل التفعيل",
+    noLog: "لا توجد تغييرات في التفعيل بعد.",
+    affiliations: "الانتماءات",
+    noAffiliations: "غير منتمٍ إلى أي فرع أو علامة.",
+    loadFailed: "تعذّر تحميل هذا القسم.",
+    kinds: { branch: "فرع", brand: "علامة" },
+    states: { enabled: "مفعّل", disabled: "موقوف", pending: "قيد الانتظار", active: "نشط", rejected: "مرفوض", terminated: "منتهٍ" },
+  },
   filters: { toolbar: "تصفية الحلاقين", status: "الحالة", allStatuses: "كل الحالات", search: "ابحث بالاسم أو البريد", clear: "مسح التصفية" },
-  toast: { approved: "تمت الموافقة على الحلاق.", approveFailed: "تعذرت الموافقة على الحلاق.", rejected: "تم رفض الحلاق." },
+  toast: { approved: "تمت الموافقة على الحلاق.", approveFailed: "تعذرت الموافقة على الحلاق.", rejected: "تم رفض الحلاق.", activated: "تم تفعيل الحلاق.", deactivated: "تم إيقاف الحلاق.", activationFailed: "تعذّر إجراء هذا التغيير. ربما تغيّر الحلاق؛ أعد التحميل وحاول مجددًا.", banned: "تم حظر الحلاق.", unbanned: "تم رفع الحظر عن الحلاق.", unbanFailed: "تعذّر رفع الحظر." },
   states: {
     emptyTitle: "لا يوجد حلاقون بانتظار المراجعة",
     emptyBody: "يظهر هنا الحلاقون الجدد حتى تراجعهم.",

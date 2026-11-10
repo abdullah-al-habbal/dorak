@@ -15,6 +15,7 @@ export enum OverlayKind {
   BranchSuspend = "branch-suspend",
   BarberApprovalDetail = "barber-approval-detail",
   BarberReject = "barber-reject",
+  BarberBan = "barber-ban",
   ClientDetail = "client-detail",
   ClientBan = "client-ban",
   AdminUserForm = "admin-user-form",

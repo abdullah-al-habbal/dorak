@@ -18,4 +18,7 @@ return [
     'review_rejected_subject' => 'Your Dorak account needs changes',
     'review_rejected_body' => '<p>Hello :name,</p><p>Your account was not approved. Reason: :reason</p><p>Update your profile in the stylist app and submit it again.</p>',
     'account_rejected' => 'Your account was not approved: :reason. Resubmit it after fixing your profile.',
+    'activation_not_enabled' => 'Only an active barber can be deactivated.',
+    'activation_not_disabled' => 'Only a deactivated barber can be reactivated.',
+    'activation_toggled' => 'Barber updated.',
 ];

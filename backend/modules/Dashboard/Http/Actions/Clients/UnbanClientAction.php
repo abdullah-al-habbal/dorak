@@ -8,21 +8,22 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Modules\Ban\Constants\BanConstants;
-use Modules\Ban\Services\ClientBanService;
+use Modules\Ban\Enums\BannableTypeEnum;
+use Modules\Ban\Services\AccountBanService;
 use Modules\Client\Http\Resources\Admin\AdminClientResource;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class UnbanClientAction extends BaseApiAction
 {
-    public function __construct(private readonly ClientBanService $bans) {}
+    public function __construct(private readonly AccountBanService $bans) {}
 
     public function __invoke(Request $request, string $client): JsonResponse
     {
         $admin = $request->user('admin_api');
         Gate::forUser($admin)->authorize(BanConstants::MANAGE_CLIENTS_ABILITY);
 
-        $this->bans->unban($client, $admin);
+        $this->bans->unban(BannableTypeEnum::Client, $client, $admin);
 
         return $this->ok(
             data: new AdminClientResource(ClientModel::query()->withCount('bookings')->with('bans.admin')->findOrFail($client)),

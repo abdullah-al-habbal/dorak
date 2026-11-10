@@ -35,7 +35,7 @@ export function BarberApprovalList({ barbers, onSelect, onApprove, onReject }: B
       { id: "barber", header: t.columns.barber, primary: true, cell: (barber) => <span dir="auto" className="truncate font-medium">{localizedText(barber.name, locale) || t.none}</span> },
       { id: "email", header: t.columns.email, cell: (barber) => <span dir="ltr" translate="no" className="truncate text-muted-foreground">{barber.email ?? t.none}</span> },
       { id: "submissions", header: t.columns.submissions, cell: (barber) => <span className="tabular">{barber.submission_count ?? t.none}</span> },
-      { id: "status", header: t.columns.status, cell: (barber) => <BarberStatusBadge status={barber.status} /> },
+      { id: "status", header: t.columns.status, cell: (barber) => <BarberStatusBadge status={barber.status} banned={barber.is_banned === true} /> },
       { id: "created", header: t.columns.created, cell: (barber) => <span className="tabular text-sm text-muted-foreground">{date.format(new Date(barber.created_at))}</span> },
       {
         id: "actions",

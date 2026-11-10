@@ -36,8 +36,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/reviews$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^(payouts|subscription)$/, guards: OWNER_ONLY },
   // NS-30 barber review: the queue, the detail, approve and reject. Admin only; the backend re-checks.
-  { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/barbers(/${ID})?$`), guards: ADMIN_ONLY },
-  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/barbers/${ID}/(approve|reject)$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/barbers(/${ID}(/(activation-log|affiliations))?)?$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/barbers/${ID}/ban$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/barbers/${ID}/(approve|reject|activate|deactivate|unban)$`), guards: ADMIN_ONLY },
   // NS-07 clients and bans (admin only).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/clients(/${ID}(/(bookings|reviews))?)?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/clients/${ID}/ban$`), guards: ADMIN_ONLY },

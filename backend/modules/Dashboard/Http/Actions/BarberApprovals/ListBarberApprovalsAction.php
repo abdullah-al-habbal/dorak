@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Http\Actions\BarberApprovals;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Modules\Barber\Constants\BarberReviewConstants;
+use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Http\Resources\Admin\BarberReviewResource;
 use Modules\Barber\Models\BarberModel;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -22,8 +23,9 @@ final class ListBarberApprovalsAction extends BaseApiAction
         $search = $request->search();
 
         $barbers = BarberModel::query()
-            // Barbers created by a branch manager have no login and never enter the queue.
-            ->where('has_login', true)
+            ->withExists(['bans as is_banned' => fn ($bans) => $bans->active()])
+            // Barbers created by a branch manager have no login and never enter the review queue.
+            ->when($status === BarberStatusEnum::Pending, fn ($query) => $query->where('has_login', true))
             ->when($status !== null, fn ($query) => $query->where('status', $status))
             ->when($search !== '', fn ($query) => $query->where(function ($inner) use ($search): void {
                 $like = '%'.addcslashes($search, '%_\\').'%';

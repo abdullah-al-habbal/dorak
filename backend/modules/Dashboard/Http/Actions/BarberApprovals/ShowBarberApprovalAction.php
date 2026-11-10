@@ -17,7 +17,7 @@ final class ShowBarberApprovalAction extends BaseApiAction
     public function __invoke(Request $request, string $barber): JsonResponse
     {
         Gate::forUser($request->user('admin_api'))->authorize(BarberReviewConstants::REVIEW_ABILITY);
-        $model = BarberModel::query()->where('has_login', true)->with('portfolioPhotos')->findOrFail($barber);
+        $model = BarberModel::query()->with(['portfolioPhotos', 'bans.admin'])->findOrFail($barber);
 
         return $this->ok(new BarberReviewResource($model));
     }

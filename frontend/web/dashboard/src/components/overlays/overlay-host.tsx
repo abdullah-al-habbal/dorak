@@ -6,6 +6,7 @@ import { AdminUserFormDialog } from "@/components/admin-users/admin-user-form-di
 import { BarberApprovalDetailDialog } from "@/components/barber-approvals/barber-approval-detail-dialog";
 import { ClientBanDialog } from "@/components/clients/client-ban-dialog";
 import { ClientDetailDialog } from "@/components/clients/client-detail-dialog";
+import { BarberBanDialog } from "@/components/barber-approvals/barber-ban-dialog";
 import { BarberRejectDialog } from "@/components/barber-approvals/barber-reject-dialog";
 import { BrandEditDialog } from "@/components/admin-brands/brand-edit-dialog";
 import { BrandReasonDialog } from "@/components/admin-brands/brand-reason-dialog";
@@ -58,6 +59,8 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <BrandDetailDialog brand={request.brand} onClose={onClose} />;
     case OverlayKind.BarberApprovalDetail:
       return <BarberApprovalDetailDialog barber={request.barber} onClose={onClose} />;
+    case OverlayKind.BarberBan:
+      return <BarberBanDialog barber={request.barber} onClose={onClose} />;
     case OverlayKind.ClientDetail:
       return <ClientDetailDialog client={request.client} onClose={onClose} />;
     case OverlayKind.ClientBan:
