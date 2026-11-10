@@ -1,6 +1,5 @@
 "use client";
 
-import { memo } from "react";
 import type { JSX } from "react";
 
 import { Switch } from "@/components/ui/switch";
@@ -14,7 +13,7 @@ interface NotificationSwitchRowProps {
   onToggle: (key: NotificationPreferenceKey, enabled: boolean) => void;
 }
 
-export const NotificationSwitchRow = memo(function NotificationSwitchRow({ preference, enabled, disabled, onToggle }: NotificationSwitchRowProps): JSX.Element {
+export function NotificationSwitchRow({ preference, enabled, disabled, onToggle }: NotificationSwitchRowProps): JSX.Element {
   const { account } = useDictionary();
   const t = account.notifications;
   const copy = t.keys[preference];
@@ -35,4 +34,4 @@ export const NotificationSwitchRow = memo(function NotificationSwitchRow({ prefe
       />
     </li>
   );
-});
+}

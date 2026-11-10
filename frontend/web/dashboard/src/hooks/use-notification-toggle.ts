@@ -1,7 +1,5 @@
 "use client";
 
-import { useCallback } from "react";
-
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutation";
 import { accountKeys } from "@/lib/account-keys";
@@ -32,9 +30,7 @@ export function useNotificationToggle(current: NotificationPreferences): Notific
     successMessage: ({ key, enabled }) => (enabled ? t.turnedOn : t.turnedOff).replace("{setting}", t.keys[key].label),
     failureMessage: t.failed,
   });
-  const { mutate } = mutation;
-
-  const toggle = useCallback((key: NotificationPreferenceKey, enabled: boolean) => mutate({ current, key, enabled }), [current, mutate]);
+  const toggle = (key: NotificationPreferenceKey, enabled: boolean): void => mutation.mutate({ current, key, enabled });
 
   return { toggle, pending: mutation.isPending };
 }

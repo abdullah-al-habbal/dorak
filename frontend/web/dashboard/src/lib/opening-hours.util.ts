@@ -134,6 +134,20 @@ export function findIssues(week: OpeningHoursWeek): ShiftIssueEntry[] {
   return issues;
 }
 
+/** The one array every problem-free day receives, so a memoized day row sees the same prop between renders. */
+export const NO_ISSUES: readonly ShiftIssueEntry[] = Object.freeze([]);
+
+/** Groups problems by day. A day without problems is absent; read it with `?? NO_ISSUES`. */
+export function groupIssuesByDay(issues: readonly ShiftIssueEntry[]): ReadonlyMap<Weekday, readonly ShiftIssueEntry[]> {
+  const byDay = new Map<Weekday, ShiftIssueEntry[]>();
+  for (const entry of issues) {
+    const group = byDay.get(entry.day);
+    if (group) group.push(entry);
+    else byDay.set(entry.day, [entry]);
+  }
+  return byDay;
+}
+
 export function weekToPayload(week: OpeningHoursWeek): OpeningHoursPayload {
   return {
     hours: week.map((day) =>

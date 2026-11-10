@@ -14,7 +14,20 @@ import { useSaveOpeningHours } from "@/hooks/use-save-opening-hours";
 import type { OpeningHoursDay } from "@/interfaces/opening-hours-day.interface";
 import type { Shift } from "@/interfaces/shift.interface";
 import { formErrorMessage } from "@/lib/map-api-form-error.util";
-import { addShift, copyDay, findIssues, isSameWeek, orderedDays, removeShift, setDayOpen, updateShift, weekFromServer, weekToPayload } from "@/lib/opening-hours.util";
+import {
+  NO_ISSUES,
+  addShift,
+  copyDay,
+  findIssues,
+  groupIssuesByDay,
+  isSameWeek,
+  orderedDays,
+  removeShift,
+  setDayOpen,
+  updateShift,
+  weekFromServer,
+  weekToPayload,
+} from "@/lib/opening-hours.util";
 import type { OpeningHoursWeek } from "@/types/opening-hours-week.type";
 
 interface WorkingHoursEditorProps {
@@ -32,6 +45,7 @@ export function WorkingHoursEditor({ branchId, initial }: WorkingHoursEditorProp
   const [formError, setFormError] = useState<string | undefined>(undefined);
 
   const issues = useMemo(() => findIssues(draft), [draft]);
+  const issuesByDay = useMemo(() => groupIssuesByDay(issues), [issues]);
   const dirty = !isSameWeek(draft, baseline);
   useLeaveWarning(dirty);
   const days = useMemo(() => orderedDays(draft, WEEK_START[locale]), [draft, locale]);
@@ -67,7 +81,7 @@ export function WorkingHoursEditor({ branchId, initial }: WorkingHoursEditorProp
           <WorkingHoursDayRow
             key={day.day_of_week}
             day={day}
-            issues={issues.filter((entry) => entry.day === day.day_of_week)}
+            issues={issuesByDay.get(day.day_of_week) ?? NO_ISSUES}
             order={order}
             onToggle={toggle}
             onAddShift={add}

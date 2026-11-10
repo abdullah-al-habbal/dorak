@@ -81,7 +81,7 @@ Reviews flag any re-implementation.
 - No magic strings or numbers for statuses, limits or codes: use the module's enum or constant.
 - Prefer guard clauses and early returns over nested `if/else`.
 - `useCallback` only where identity matters: a handler passed to a `memo` component
-  (`WorkingHoursDayRow`, `NotificationSwitchRow`), or a function a hook must keep stable
+  (`WorkingHoursDayRow`, the only `memo` row; give it props that keep their identity between renders, such as the shared `NO_ISSUES` array), or a function a hook must keep stable
   (a serialiser handed to `useUrlState`, an effect dependency). Do not wrap handlers passed to
   ordinary components or DOM elements, and drop a `useMemo` whose only dependency is such a
   function. The React Compiler is not enabled. Keep local UI state local.

@@ -7,7 +7,9 @@ import {
   addShift,
   canAddShift,
   copyDay,
+  NO_ISSUES,
   findIssues,
+  groupIssuesByDay,
   isSameWeek,
   nextShift,
   orderedDays,
@@ -98,6 +100,26 @@ describe("findIssues", () => {
     expect(findIssues(day([{ opens_time: "13:00", closes_time: "09:00" }]))).toEqual([{ day: 1, index: 0, issue: ShiftIssue.Inverted }]);
     expect(findIssues(day([{ opens_time: "09:00", closes_time: "13:00" }, { opens_time: "12:00", closes_time: "15:00" }]))).toEqual([{ day: 1, index: 1, issue: ShiftIssue.Overlap }]);
     expect(findIssues(day([{ opens_time: "09:00", closes_time: "12:00" }, { opens_time: "12:00", closes_time: "15:00" }]))).toEqual([]);
+  });
+});
+
+describe("groupIssuesByDay", () => {
+  it("groups entries by day and leaves problem-free days absent", () => {
+    const monday = { day: Weekday.Monday, index: 0, issue: ShiftIssue.Inverted };
+    const mondayLater = { day: Weekday.Monday, index: 2, issue: ShiftIssue.Overlap };
+    const friday = { day: Weekday.Friday, index: 1, issue: ShiftIssue.Overlap };
+    const byDay = groupIssuesByDay([monday, friday, mondayLater]);
+    expect(byDay.get(Weekday.Monday)).toEqual([monday, mondayLater]);
+    expect(byDay.get(Weekday.Friday)).toEqual([friday]);
+    expect(byDay.get(Weekday.Tuesday)).toBeUndefined();
+  });
+
+  it("hands every problem-free day the same frozen array, so memoized rows keep their props", () => {
+    const first = groupIssuesByDay([]).get(Weekday.Sunday) ?? NO_ISSUES;
+    const second = groupIssuesByDay([{ day: Weekday.Monday, index: 0, issue: ShiftIssue.Inverted }]).get(Weekday.Sunday) ?? NO_ISSUES;
+    expect(first).toBe(second);
+    expect(Object.isFrozen(NO_ISSUES)).toBe(true);
+    expect(NO_ISSUES).toHaveLength(0);
   });
 });
 
