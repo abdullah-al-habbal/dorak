@@ -55,6 +55,13 @@ These tasks remove the places where a manager or owner has to refresh, switch to
 - **Dashboard:** the booking detail shows "Rate client" for a completed or no-show booking without a rating, opening a dialog with 1 to 5 stars and an optional note; once rated, the detail shows the stars and note. A 409 answers "already rated".
 - **Not done:** tests (skipped by instruction).
 
+
+### NS-12 as built
+
+- **Backend:** dashboard routes `GET /branches/{branch}/hours-overrides` (from today on, soonest first), `PUT` and `DELETE /branches/{branch}/hours-overrides/{date}`, resolved through `ScopedBranchResolver` (a branch outside the actor's scope answers 404) and `ensureBranchManageable`. Setting a past date is rejected; setting a date again replaces its earlier exception. They reuse `BranchHours::setOverride/clearOverride`, the same logic the branch account's routes use, so availability already honours a closed or shortened day.
+- **Dashboard:** a "Special days" section under the weekly editor on Working hours, to add a closed day or special hours for a date, list the upcoming ones and remove them. The proxy allows `GET` and `PUT|DELETE` for admin, manager and owner.
+- **Not done:** tests (skipped by instruction); a date range or recurring closures (one date at a time).
+
 ## NS-11: Rate the client after a visit
 
 - **Guards:** manager, owner.

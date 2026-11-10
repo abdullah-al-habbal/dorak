@@ -32,4 +32,18 @@ export const enWorkingHours = {
     noBranchBody: "Your account isn't linked to a branch yet.",
   },
   errors: { generic: "The working hours couldn't be saved. Try again." },
+  specialDays: {
+    title: "Special days",
+    description: "Close the branch on a holiday or shorten one day. Clients can't book outside these hours on those dates.",
+    date: "Date",
+    kind: "Type",
+    closedAllDay: "Closed all day",
+    specialHours: "Special hours",
+    add: "Save special day",
+    empty: "No special days are set.",
+    remove: "Remove the special day on {date}",
+    loadFailed: "Special days couldn't load.",
+    issues: { date: "Choose a date.", past: "Choose today or a later date.", times: "Choose opening and closing times.", order: "Closing time must be after opening time." },
+    toast: { saved: "Special day saved.", removed: "Special day removed.", failed: "The special day couldn't be saved." },
+  },
 } as const;

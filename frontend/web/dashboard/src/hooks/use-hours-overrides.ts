@@ -1,0 +1,12 @@
+"use client";
+
+import type { UseQueryResult } from "@tanstack/react-query";
+
+import { useDetailQuery } from "@/hooks/use-detail-query";
+import { hoursOverrideKeys } from "@/lib/hours-override-keys";
+import { fetchHoursOverrides } from "@/services/api/query/hours-override.query";
+import type { HoursOverride } from "@/types/hours-override.type";
+
+export function useHoursOverrides(branchId: string | null): UseQueryResult<HoursOverride[]> {
+  return useDetailQuery(branchId, hoursOverrideKeys.branch, fetchHoursOverrides);
+}

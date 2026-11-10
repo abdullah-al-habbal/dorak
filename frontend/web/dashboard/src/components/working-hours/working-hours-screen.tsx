@@ -8,6 +8,7 @@ import { ErrorState } from "@/components/common/error-state";
 import { FormField } from "@/components/common/form-field";
 import { NativeSelect } from "@/components/ui/native-select";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
+import { SpecialDaysSection } from "@/components/working-hours/special-days-section";
 import { WorkingHoursEditor } from "@/components/working-hours/working-hours-editor";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { useBranchOptions } from "@/hooks/use-branch-options";
@@ -68,6 +69,7 @@ function WorkingHoursContent(): JSX.Element {
         <>
           {!hasSavedHours(hours.data) ? <p role="note" className="rounded-lg bg-warning/15 px-3 py-2 text-sm">{t.notConfigured}</p> : null}
           <WorkingHoursEditor key={branchId} branchId={branchId} initial={hours.data} />
+          <SpecialDaysSection key={`special-${branchId}`} branchId={branchId} />
         </>
       ) : null}
     </div>
