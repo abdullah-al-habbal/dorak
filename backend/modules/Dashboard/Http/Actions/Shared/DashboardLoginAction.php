@@ -10,15 +10,13 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Handlers\DashboardLoginHandler;
 use Modules\Dashboard\Http\Requests\Shared\DashboardLoginRequest;
-use Modules\Dashboard\Repositories\DashboardRefreshTokenResolver;
-use Modules\Dashboard\Support\DashboardSessionClaim;
+use Modules\Dashboard\Support\DashboardSessionIssuer;
 
 final class DashboardLoginAction extends BaseApiAction
 {
     public function __construct(
         private readonly DashboardLoginHandler $handler,
-        private readonly DashboardSessionClaim $claim,
-        private readonly DashboardRefreshTokenResolver $refreshResolver,
+        private readonly DashboardSessionIssuer $sessions,
     ) {}
 
     public function __invoke(DashboardLoginRequest $request): JsonResponse
@@ -44,12 +42,6 @@ final class DashboardLoginAction extends BaseApiAction
             return $this->unauthorized(message: $this->trans('core::messages.invalid_credentials'));
         }
 
-        return $this->success(data: [
-            'claim' => $this->claim->issue($actor),
-            'expires_in' => $this->claim->expiresIn(),
-            'token' => $this->handler->createToken($actor),
-            'refresh_token' => $this->refreshResolver->issue($actor),
-            'refresh_expires_in' => $this->refreshResolver->ttl(),
-        ]);
+        return $this->success(data: $this->sessions->issue($actor));
     }
 }

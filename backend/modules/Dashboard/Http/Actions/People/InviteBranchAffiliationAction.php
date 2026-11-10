@@ -9,6 +9,7 @@ use Modules\BarberAffiliation\Eloquent\Resolvers\Barber\BarberAlreadyAffiliatedE
 use Modules\BarberAffiliation\Handlers\Branch\InviteAffiliationHandler;
 use Modules\BarberAffiliation\Jobs\AffiliationInvitedNotification;
 use Modules\Branch\Http\Requests\Branch\InviteAffiliationRequest;
+use Modules\Brand\Services\BrandApprovalGuard;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -20,12 +21,14 @@ final class InviteBranchAffiliationAction extends BaseApiAction
     public function __construct(
         private readonly ScopedBranchResolver $branches,
         private readonly BrandFeatures $brandFeatures,
+        private readonly BrandApprovalGuard $approvals,
         private readonly InviteAffiliationHandler $handler,
     ) {}
 
     public function __invoke(InviteAffiliationRequest $request, string $branch): JsonResponse
     {
         $model = $this->branches->resolve($request, $branch);
+        $this->approvals->ensureBranchBrandApproved($request->attributes->get('dashboard_actor'), $model->getKey());
         $this->brandFeatures->ensureBranchManageable($model->getKey());
 
         try {

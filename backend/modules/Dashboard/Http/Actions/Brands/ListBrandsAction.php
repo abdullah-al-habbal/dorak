@@ -26,6 +26,8 @@ final class ListBrandsAction extends BaseApiAction
         $brands = BrandModel::query()
             ->with(['owner', 'baseCurrency'])
             ->withCount('branches')
+            // Only brands whose owner confirmed their email are in the review queue (D12).
+            ->whereHas('owner', fn ($owner) => $owner->whereNotNull('email_verified_at'))
             ->when($scope !== null, fn ($query) => $query->whereKey($scope))
             ->when($status !== null, fn ($query) => $query->where('status', $status))
             ->when($search !== '', fn ($query) => $query->where(function ($inner) use ($search): void {

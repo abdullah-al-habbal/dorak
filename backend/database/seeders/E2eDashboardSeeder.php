@@ -105,6 +105,12 @@ final class E2eDashboardSeeder extends Seeder
     /** Categories the admin catalog spec creates start with this English name; every reset removes them. */
     public const string CATALOG_SPEC_NAME_PREFIX = 'E2E Spec';
 
+    /** NS-03: the owner the registration spec signs up; every reset removes the account and its brand. */
+    public const string REGISTERED_OWNER_EMAIL = 'e2e-new-owner@dorak.test';
+
+    /** NS-03: a verified app client with no brand, who adds a business to the same account. Every reset removes the brand the spec creates. */
+    public const string APP_CLIENT_EMAIL = 'e2e-app-client@dorak.test';
+
     /** The seeded chairs; the chairs spec creates others, and every reset removes them. */
     private const array CHAIR_LABELS = ['Chair 1', 'Chair 2'];
 
@@ -156,6 +162,22 @@ final class E2eDashboardSeeder extends Seeder
         $this->restoreSettingsBaseline();
         $this->restoreCatalogBaseline();
         $this->restoreAccessAdmins();
+        $this->restoreRegistrationBaseline();
+    }
+
+    /** NS-03 specs: the signed-up owner is gone, and the app client is verified again with no brand. */
+    private function restoreRegistrationBaseline(): void
+    {
+        ClientModel::withTrashed()->where('email', self::REGISTERED_OWNER_EMAIL)->get()->each(function (ClientModel $client): void {
+            BrandModel::query()->where('owner_id', $client->id)->delete();
+            $client->forceDelete();
+        });
+
+        $appClient = ClientModel::query()->firstOrCreate(
+            ['email' => self::APP_CLIENT_EMAIL],
+            ClientModel::factory()->raw(['email' => self::APP_CLIENT_EMAIL, 'name' => ['en' => 'E2E App Client', 'ar' => 'عميل التطبيق'], 'password' => Hash::make(self::OWNER_PASSWORD)]),
+        );
+        BrandModel::query()->where('owner_id', $appClient->id)->delete();
     }
 
     /** NS-01/NS-02 specs: two dedicated admins, restored to a known password, email, name, preferences and one open reset link or email change. */

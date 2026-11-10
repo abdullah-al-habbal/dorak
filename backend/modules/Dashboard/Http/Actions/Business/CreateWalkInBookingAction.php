@@ -10,6 +10,7 @@ use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
 use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
+use Modules\Brand\Services\BrandApprovalGuard;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Eloquent\Resolvers\Bookings\WalkInServicesUnavailableException;
 use Modules\Dashboard\Eloquent\Resolvers\Bookings\WalkInStylistNotAssignedException;
@@ -19,7 +20,10 @@ use Modules\Dashboard\Support\DashboardActor;
 
 final class CreateWalkInBookingAction extends BaseApiAction
 {
-    public function __construct(private readonly CreateWalkInBookingHandler $handler) {}
+    public function __construct(
+        private readonly CreateWalkInBookingHandler $handler,
+        private readonly BrandApprovalGuard $approvals,
+    ) {}
 
     public function __invoke(CreateWalkInBookingRequest $request): JsonResponse
     {
@@ -30,6 +34,8 @@ final class CreateWalkInBookingAction extends BaseApiAction
         if (! $actor->canAccessBranch($command->branchId)) {
             return $this->forbidden();
         }
+
+        $this->approvals->ensureBranchBrandApproved($actor, $command->branchId);
 
         try {
             return $this->created(new StaffBookingResource($this->handler->handle($command)));

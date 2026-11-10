@@ -30,13 +30,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## Stack
-
-Next.js 16 (App Router), React 19, TypeScript, Tailwind 4, shadcn/ui on Base UI,
-TanStack Query, Zod, react-hook-form, Zustand (theme and auth profile only), Sonner.
-No axios, no i18n library, no calendar or chart library. **Do not install packages
-without asking the user.**
-
 ## Conventions
 
 - **Imports:** `@/` (and `@tests/` in tests) only. Never `./` or `../`. Imports stay at the
@@ -107,7 +100,7 @@ Reviews flag any re-implementation.
 - Before closing any change, from this directory: `npm run lint`, `npm run typecheck`,
   `npm test`, `npm run build`.
 - **Playwright E2E** (`npm run test:e2e`, specs in `tests/e2e/`): runs against the **real stack**: Next.js on
-  3000 and the Laravel API on 8000. Each server is reused when already running, otherwise Playwright starts
+  3000 (set `E2E_APP_PORT` when another project holds it) and the Laravel API on 8000. Each server is reused when already running, otherwise Playwright starts
   a production build (`npm run build && npm start`; `next dev` fails on the Google Fonts fetch in sandboxed runs,
   so stop a running `next dev` first) and `php artisan serve`. Always run it as `TZ=UTC npx playwright test`
   (see the task executor's `references/gates.md`). Projects: desktop 1440x900, `mobile-390`, `ultrawide-3440`
@@ -120,5 +113,3 @@ Reviews flag any re-implementation.
   Backend `.env` must set `DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE` above the default 5 (the auth specs sign in
   through the form). `signIn` hides the dev-only Next issue badge, which otherwise covers bottom-anchored
   controls on phones.
-- **Working hours** (`/dashboard/[guard]/working-hours`): reads and writes `GET|PUT /branches/{id}/opening-hours`
-  (up to four shifts per day). See `backend/docs/feature-index.md`.

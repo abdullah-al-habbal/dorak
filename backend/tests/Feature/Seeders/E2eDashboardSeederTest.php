@@ -67,6 +67,22 @@ describe('E2E dashboard seeder', function (): void {
             ->and(BrandModel::query()->orderBy('created_at')->value('id'))->toBe($brand->id);
     });
 
+    it('removes the owner the registration spec signs up, and the brand an app client adds, on reset', function (): void {
+        $this->seed(E2eDashboardSeeder::class);
+        $signedUp = ClientModel::factory()->unverified()->create(['email' => E2eDashboardSeeder::REGISTERED_OWNER_EMAIL]);
+        BrandModel::factory()->pending()->create(['owner_id' => $signedUp->id]);
+        $appClient = ClientModel::query()->where('email', E2eDashboardSeeder::APP_CLIENT_EMAIL)->sole();
+        BrandModel::factory()->pending()->create(['owner_id' => $appClient->id]);
+        $clients = ClientModel::query()->count();
+
+        $this->seed(E2eDashboardSeeder::class);
+
+        expect(ClientModel::withTrashed()->where('email', E2eDashboardSeeder::REGISTERED_OWNER_EMAIL)->exists())->toBeFalse()
+            ->and(BrandModel::query()->where('owner_id', $signedUp->id)->exists())->toBeFalse()
+            ->and(BrandModel::query()->where('owner_id', $appClient->id)->exists())->toBeFalse()
+            ->and(ClientModel::query()->count())->toBe($clients - 1);
+    });
+
     it('removes a subscription assigned to another brand and revokes its features on reset', function (): void {
         $this->seed(E2eDashboardSeeder::class);
         $seeded = BrandSubscriptionModel::query()->sole();

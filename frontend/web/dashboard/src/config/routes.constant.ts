@@ -17,6 +17,11 @@ export const RESET_LINK_TOKEN_PARAM = "token";
 export const RESET_LINK_EMAIL_PARAM = "email";
 export const CALLBACK_PARAM = "callbackUrl";
 
+/** The public owner sign-up page (NS-03). It lives outside the guarded `/dashboard` tree, so no sign-in is needed. */
+export const REGISTER_BUSINESS_ROUTE = "/register/business";
+/** The owner portal page that shows how the review of a new brand is going. */
+export const STATUS_SEGMENT = "status";
+
 export const API_ROUTE = {
   login: "/api/auth/login",
   refresh: "/api/auth/refresh",
@@ -25,6 +30,10 @@ export const API_ROUTE = {
   passwordForgot: "/api/auth/password/forgot",
   passwordReset: "/api/auth/password/reset",
   passwordChange: "/api/auth/password/change",
+  registerBusiness: "/api/auth/register/business",
+  registerVerify: "/api/auth/register/verify",
+  registerResend: "/api/auth/register/resend",
+  registerExisting: "/api/auth/register/existing",
 } as const;
 
 /** Backend dashboard paths are used as-is behind this prefix; there is no renaming. */
@@ -48,6 +57,10 @@ export function forgotPasswordRoute(actor: AuthActor): string {
 
 export function resetDoneLoginRoute(actor: AuthActor): string {
   return `${loginRoute(actor)}?${RESET_DONE_PARAM}=${RESET_DONE_VALUE}`;
+}
+
+export function statusRoute(actor: AuthActor): string {
+  return `${portalRoot(actor)}/${STATUS_SEGMENT}`;
 }
 
 export function accountRoute(actor: AuthActor): string {

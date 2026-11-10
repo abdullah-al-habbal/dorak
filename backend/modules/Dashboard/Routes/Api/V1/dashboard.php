@@ -12,6 +12,7 @@ use Modules\Commission\Http\Actions\Admin\UpdateCommissionRuleAction;
 use Modules\Currency\Http\Actions\Shared\ListCurrenciesAction;
 use Modules\Currency\Http\Actions\Shared\ListExchangeRatesAction;
 use Modules\Dashboard\Constants\DashboardPasswordResetConstants;
+use Modules\Dashboard\Constants\OwnerRegistrationConstants;
 use Modules\Dashboard\Http\Actions\Analytics\ShowPlatformAnalyticsAction;
 use Modules\Dashboard\Http\Actions\Barbers\DestroyBarberServiceOverrideAction;
 use Modules\Dashboard\Http\Actions\Barbers\ListBarberServiceOverridesAction;
@@ -46,6 +47,10 @@ use Modules\Dashboard\Http\Actions\Chairs\ShowChairAction;
 use Modules\Dashboard\Http\Actions\Chairs\StoreChairAction;
 use Modules\Dashboard\Http\Actions\Chairs\UpdateChairAction;
 use Modules\Dashboard\Http\Actions\Earnings\ShowEarningsAction;
+use Modules\Dashboard\Http\Actions\Owner\CreateOwnerBrandAction;
+use Modules\Dashboard\Http\Actions\Owner\RegisterOwnerAction;
+use Modules\Dashboard\Http\Actions\Owner\ResendOwnerCodeAction;
+use Modules\Dashboard\Http\Actions\Owner\VerifyOwnerEmailAction;
 use Modules\Dashboard\Http\Actions\People\DestroyBranchJobPostingAction;
 use Modules\Dashboard\Http\Actions\People\InviteBranchAffiliationAction;
 use Modules\Dashboard\Http\Actions\People\ListBranchAffiliationsAction;
@@ -135,6 +140,13 @@ Route::prefix('dashboard')->group(function (): void {
     Route::post('/refresh', RefreshSessionAction::class)->middleware('throttle:10,1');
     Route::post('/password/forgot', ForgotDashboardPasswordAction::class)->middleware('throttle:'.DashboardPasswordResetConstants::DASHBOARD_PASSWORD_FORGOT_LIMITER);
     Route::post('/password/reset', ResetDashboardPasswordAction::class)->middleware('throttle:'.DashboardPasswordResetConstants::DASHBOARD_PASSWORD_RESET_LIMITER);
+
+    Route::prefix('owner')->group(function (): void {
+        Route::post('/register', RegisterOwnerAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_REGISTER_LIMITER);
+        Route::post('/code/resend', ResendOwnerCodeAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_REGISTER_LIMITER);
+        Route::post('/verify', VerifyOwnerEmailAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_VERIFY_LIMITER);
+        Route::post('/brand', CreateOwnerBrandAction::class)->middleware('throttle:'.config('dashboard.dashboard.login_attempts_per_minute').',1');
+    });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
         Route::get('/me', MeAction::class);

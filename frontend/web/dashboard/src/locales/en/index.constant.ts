@@ -7,6 +7,7 @@ import { enAdminSubscriptions } from "@/locales/en/admin-subscriptions.constant"
 import { enPlans } from "@/locales/en/plans.constant";
 import { enAccount } from "@/locales/en/account.constant";
 import { enAuth } from "@/locales/en/auth.constant";
+import { enRegisterBusiness } from "@/locales/en/register-business.constant";
 import { enPasswordReset } from "@/locales/en/password-reset.constant";
 import { enBranches } from "@/locales/en/branches.constant";
 import { enBookings } from "@/locales/en/bookings.constant";
@@ -27,6 +28,7 @@ export const enDictionary = {
   common: enCommon,
   auth: enAuth,
   passwordReset: enPasswordReset,
+  registerBusiness: enRegisterBusiness,
   account: enAccount,
   bookings: enBookings,
   shell: enShell,

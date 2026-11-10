@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Core\Providers\BaseModuleServiceProvider;
+use Modules\Dashboard\Console\Commands\PurgeUnverifiedSignupsCommand;
 use Modules\Dashboard\Constants\DashboardPasswordResetConstants;
+use Modules\Dashboard\Constants\OwnerRegistrationConstants;
 use Modules\Dashboard\Policies\BarberSchedulePolicy;
 use Modules\Dashboard\Policies\BarberServiceOverridePolicy;
 use Modules\OfferedService\Models\BarberServiceOverrideModel;
@@ -26,11 +29,25 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
         $this->moduleName = 'dashboard';
     }
 
+    public function register(): void
+    {
+        parent::register();
+
+        $this->commands([PurgeUnverifiedSignupsCommand::class]);
+    }
+
     protected function afterBoot(): void
     {
         Gate::policy(BarberScheduleModel::class, BarberSchedulePolicy::class);
         Gate::policy(BarberServiceOverrideModel::class, BarberServiceOverridePolicy::class);
         $this->registerPasswordResetLimiters();
+        $this->registerOwnerRegistrationLimiters();
+
+        $this->app->afterResolving(Schedule::class, function (Schedule $schedule): void {
+            $schedule->command(OwnerRegistrationConstants::PURGE_COMMAND)
+                ->dailyAt(OwnerRegistrationConstants::PURGE_TIME)
+                ->withoutOverlapping();
+        });
     }
 
     /**
@@ -46,6 +63,28 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
         ]);
 
         RateLimiter::for(DashboardPasswordResetConstants::DASHBOARD_PASSWORD_RESET_LIMITER, fn (Request $request): Limit => Limit::perMinute(DashboardPasswordResetConstants::DASHBOARD_PASSWORD_RESET_PER_IP_PER_MINUTE)->by('ip:'.$request->ip()));
+    }
+
+    /** Sign-ups and resends share one budget per IP and per email; the verify step has its own, looser one. */
+    private function registerOwnerRegistrationLimiters(): void
+    {
+        RateLimiter::for(OwnerRegistrationConstants::OWNER_REGISTER_LIMITER, fn (Request $request): array => [
+            Limit::perMinute(OwnerRegistrationConstants::OWNER_REGISTER_PER_IP_PER_MINUTE)->by('owner-register-ip:'.$request->ip()),
+            Limit::perHour(OwnerRegistrationConstants::OWNER_REGISTER_PER_EMAIL_PER_HOUR)->by('owner-register-email:'.$this->ownerEmailKey($request)),
+        ]);
+
+        RateLimiter::for(OwnerRegistrationConstants::OWNER_VERIFY_LIMITER, fn (Request $request): array => [
+            Limit::perMinute(OwnerRegistrationConstants::OWNER_VERIFY_PER_IP_PER_MINUTE)->by('owner-verify-ip:'.$request->ip()),
+            Limit::perHour(OwnerRegistrationConstants::OWNER_VERIFY_PER_EMAIL_PER_HOUR)->by('owner-verify-email:'.$this->ownerEmailKey($request)),
+        ]);
+    }
+
+    /** The email may arrive as `owner.email` (sign-up) or `email` (resend, verify); case and spaces do not matter. */
+    private function ownerEmailKey(Request $request): string
+    {
+        $email = $request->input('owner.email', $request->input('email'));
+
+        return hash('sha256', is_string($email) ? Str::lower(trim($email)) : '');
     }
 
     private function emailKey(Request $request): string

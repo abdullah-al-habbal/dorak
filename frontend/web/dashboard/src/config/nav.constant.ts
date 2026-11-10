@@ -3,6 +3,7 @@ import {
   BarChart3Icon,
   BookOpenCheckIcon,
   BuildingIcon,
+  ClipboardCheckIcon,
   CalendarClockIcon,
   ClockIcon,
   CreditCardIcon,
@@ -53,6 +54,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
   ],
   [AuthActor.Owner]: [
     overview,
+    { key: "status", segment: "status", icon: ClipboardCheckIcon, ready: true },
     { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: true },
     { key: "branches", segment: "branches", icon: BuildingIcon, ready: true },
     { key: "stylists", segment: "stylists", icon: UsersIcon, ready: true },

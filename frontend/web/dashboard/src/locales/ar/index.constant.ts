@@ -7,6 +7,7 @@ import { arAdminSubscriptions } from "@/locales/ar/admin-subscriptions.constant"
 import { arPlans } from "@/locales/ar/plans.constant";
 import { arAccount } from "@/locales/ar/account.constant";
 import { arAuth } from "@/locales/ar/auth.constant";
+import { arRegisterBusiness } from "@/locales/ar/register-business.constant";
 import { arPasswordReset } from "@/locales/ar/password-reset.constant";
 import { arBranches } from "@/locales/ar/branches.constant";
 import { arBookings } from "@/locales/ar/bookings.constant";
@@ -28,6 +29,7 @@ export const arDictionary: Dictionary = {
   common: arCommon,
   auth: arAuth,
   passwordReset: arPasswordReset,
+  registerBusiness: arRegisterBusiness,
   account: arAccount,
   bookings: arBookings,
   shell: arShell,

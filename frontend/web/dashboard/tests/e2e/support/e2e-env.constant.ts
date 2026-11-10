@@ -47,3 +47,11 @@ export const E2E_ACCOUNT_ADMIN_NAME = "E2E Account Admin";
 /** The email change the seeder leaves pending for the account admin, and its code. */
 export const E2E_ACCOUNT_ADMIN_PENDING_EMAIL = "e2e-account-admin-new@dorak.test";
 export const E2E_ACCOUNT_ADMIN_PENDING_CODE = "123456";
+/** `E2eDashboardSeeder::REGISTERED_OWNER_EMAIL`: the owner the registration spec signs up; every reset removes it. */
+export const E2E_REGISTERED_OWNER_EMAIL = "e2e-new-owner@dorak.test";
+export const E2E_REGISTERED_OWNER_PASSWORD = "a-long-owner-password-1";
+/** `E2eDashboardSeeder::APP_CLIENT_EMAIL`: a verified app client with no brand. */
+export const E2E_APP_CLIENT_EMAIL = "e2e-app-client@dorak.test";
+export const E2E_APP_CLIENT_PASSWORD = "e2e-password-123";
+/** The code the registration spec plants for the signed-up owner. */
+export const E2E_PLANTED_CODE = "246810";

@@ -17,4 +17,8 @@ export const BACKEND_PATH = {
   passwordForgot: "/password/forgot",
   passwordReset: "/password/reset",
   passwordChange: "/profile/password",
+  ownerRegister: "/owner/register",
+  ownerVerify: "/owner/verify",
+  ownerResend: "/owner/code/resend",
+  ownerBrand: "/owner/brand",
 } as const;
