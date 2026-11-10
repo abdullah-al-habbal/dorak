@@ -77,7 +77,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-11 | Rate the client after a visit | manager, owner | Ready | S | | Done (no tests) |
 | NS-12 | Closure days and special hours | manager, owner | Partial | M | | Done (no tests) |
 | NS-13 | Owner workspace: brand profile, add a brand, chairs, services, reviews | owner | Ready | M | | Done (no tests) |
-| NS-14 | Dispute a review from the dashboard | manager, owner | Partial | S | NS-05 | Todo |
+| NS-14 | Dispute a review from the dashboard | manager, owner | Partial | S | NS-05 | Done (no tests) |
 | | **[Phase 4: staffing and signature features](05-phase-4-staffing.md)** | | | | | |
 | NS-15 | Floor plan editor | manager, owner | Ready | L | | Todo |
 | NS-16 | Barber invitations (affiliations) | manager, owner | Ready | M | | Todo |
@@ -96,7 +96,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-27 | Barber web extras | barber | Partial | M | D7 | Closed, no work (D7) |
 | NS-28 | Retire Filament | all | Removal | M | NS-01 to NS-24, NS-29, NS-30 | Todo |
 
-Every decision is resolved, so no task is blocked. NS-01, NS-02, NS-03, NS-29, NS-30, NS-04, NS-05, NS-06, NS-07, NS-08, NS-09, NS-10, NS-11, NS-12 and NS-13 are done; the next task is NS-14.
+Every decision is resolved, so no task is blocked. NS-01, NS-02, NS-03, NS-29, NS-30, NS-04, NS-05, NS-06, NS-07, NS-08, NS-09, NS-10, NS-11, NS-12, NS-13 and NS-14 are done; the next task is NS-15.
 
 Phases 1 and 2 are the launch minimum, because without them a guard is locked out or the platform can't be governed. Phase 3 is needed for a smooth first week of real use. Phases 4 to 7 complete the product vision.
 

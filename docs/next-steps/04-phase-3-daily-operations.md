@@ -69,6 +69,13 @@ These tasks remove the places where a manager or owner has to refresh, switch to
 - **Dashboard:** the owner menu gains Brand, Chairs, Services and Reviews. The Brand page lists the owner's brands with their status, currency and branch count, an Edit action (the shared name and description dialog; disabled while suspended) and "Add a brand", a dialog with the English and Arabic names, the currency and the first branch's names. The new brand starts pending and goes to the platform team. Chairs and Reviews reuse the manager screens with their branch picker or filter; Services shows the owner's brands' services. The proxy allows `POST brands` for owners only; the proxy test was updated to match.
 - **Not done:** tests (skipped by instruction); logo upload and universe on the create form (the backend defaults apply).
 
+
+### NS-14 as built
+
+- **Backend:** `POST /dashboard/branches/{branch}/reviews/{review}/dispute` (body `reason`, 10 to 1000 characters). The branch is resolved inside the actor's scope and the review must be a published review about that branch, otherwise 404; the platform admin gets 403 because admins judge disputes. It reuses `FlagReviewDisputeHandler`, so the review is held from the public rating and the admins get the NS-10 "review disputed" notification.
+- **Dashboard:** every published review on the Reviews screen has a "Dispute" action opening a reason dialog; once flagged, the review shows the Disputed badge, and NS-05's moderation queue picks it up. The proxy allows the POST for manager and owner only.
+- **Not done:** tests (skipped by instruction).
+
 ## NS-11: Rate the client after a visit
 
 - **Guards:** manager, owner.

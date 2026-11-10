@@ -3,13 +3,20 @@
 import type { JSX } from "react";
 
 import { RatingStars } from "@/components/reviews/rating-stars";
+import { Button } from "@/components/ui/button";
 import { ReviewStatusBadge } from "@/components/reviews/review-status-badge";
 import { ReviewStatus } from "@/enums/review-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { REVIEW_MAX_RATING } from "@/config/review.constant";
 import type { Review } from "@/types/review.type";
 
-export function ReviewList({ reviews }: { reviews: readonly Review[] }): JSX.Element {
+interface ReviewListProps {
+  reviews: readonly Review[];
+  /** Present when the viewer may dispute; only a published review offers it. */
+  onDispute?: (review: Review) => void;
+}
+
+export function ReviewList({ reviews, onDispute }: ReviewListProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { reviews: t } = dictionary;
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
@@ -25,6 +32,11 @@ export function ReviewList({ reviews }: { reviews: readonly Review[] }): JSX.Ele
           </div>
           {review.body ? <p dir="auto" className="break-words text-sm">{review.body}</p> : null}
           {review.status && review.status !== ReviewStatus.Published ? <div><ReviewStatusBadge status={review.status} /></div> : null}
+          {onDispute && review.status === ReviewStatus.Published ? (
+            <div>
+              <Button type="button" size="sm" variant="outline" onClick={() => onDispute(review)}>{t.dispute.action}</Button>
+            </div>
+          ) : null}
         </li>
       ))}
     </ul>

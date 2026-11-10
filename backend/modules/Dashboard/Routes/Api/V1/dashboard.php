@@ -41,6 +41,7 @@ use Modules\Dashboard\Http\Actions\Barbers\ListBarberServiceOverridesAction;
 use Modules\Dashboard\Http\Actions\Barbers\UpsertBarberServiceOverrideAction;
 use Modules\Dashboard\Http\Actions\Branches\ClearBranchHoursOverrideAction;
 use Modules\Dashboard\Http\Actions\Branches\DestroyBranchAction;
+use Modules\Dashboard\Http\Actions\Branches\FlagBranchReviewDisputeAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchesAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchHoursOverridesAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchReviewsAction;
@@ -333,6 +334,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/branches/{branch}/floor-plan', ShowBranchFloorPlanAction::class);
         Route::patch('/branches/{branch}/floor-plan', UpdateBranchFloorPlanAction::class);
         Route::get('/branches/{branch}/reviews', ListBranchReviewsAction::class);
+        Route::post('/branches/{branch}/reviews/{review}/dispute', FlagBranchReviewDisputeAction::class)->whereUuid('review');
         Route::get('/branches/{branch}/affiliations', ListBranchAffiliationsAction::class);
         Route::post('/branches/{branch}/affiliations', InviteBranchAffiliationAction::class);
         Route::post('/branches/{branch}/affiliations/{affiliation}/accept', RespondBranchAffiliationAction::class)->defaults('accept', true);

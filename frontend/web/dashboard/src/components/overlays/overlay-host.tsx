@@ -20,6 +20,7 @@ import { PlanFormDialog } from "@/components/plans/plan-form-dialog";
 import { BranchFormDialog } from "@/components/branches/branch-form-dialog";
 import { ChairFormDialog } from "@/components/chairs/chair-form-dialog";
 import { BrandCreateDialog } from "@/components/owner-brand/brand-create-dialog";
+import { ReviewDisputeDialog } from "@/components/reviews/review-dispute-dialog";
 import { RateClientDialog } from "@/components/bookings/rate-client-dialog";
 import { RescheduleDialog } from "@/components/bookings/reschedule-dialog";
 import { ServiceFormDialog } from "@/components/services/service-form-dialog";
@@ -44,6 +45,8 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <WalkInDialog onClose={onClose} />;
     case OverlayKind.BrandCreate:
       return <BrandCreateDialog onClose={onClose} />;
+    case OverlayKind.ReviewDispute:
+      return <ReviewDisputeDialog branchId={request.branchId} review={request.review} onClose={onClose} />;
     case OverlayKind.RateClient:
       return <RateClientDialog booking={request.booking} onClose={onClose} />;
     case OverlayKind.Reschedule:

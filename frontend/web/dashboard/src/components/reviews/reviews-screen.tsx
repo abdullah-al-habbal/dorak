@@ -13,11 +13,14 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
+import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useBranchOptions } from "@/hooks/use-branch-options";
 import { useI18n } from "@/hooks/use-i18n";
+import { useOverlay } from "@/hooks/use-overlay";
 import { useReviewFilters } from "@/hooks/use-review-filters";
 import { useReviews } from "@/hooks/use-reviews";
 import { useAuthStore } from "@/store/auth.store";
+import type { Review } from "@/types/review.type";
 
 export function ReviewsScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();
@@ -41,6 +44,10 @@ function ReviewsContent(): JSX.Element {
   const query = useReviews(branchId, filters.page);
   const changeBranch = (id: string) => update({ branchId: id });
   const changePage = (page: number) => update({ page });
+  const overlay = useOverlay();
+  const openDispute = (review: Review) => {
+    if (branchId !== null) overlay.open({ kind: OverlayKind.ReviewDispute, branchId, review });
+  };
 
   const noBranch = choosingBranch && options.isSuccess && branches.length === 0;
   const loading = (choosingBranch && options.isPending) || (branchId !== null && query.isPending);
@@ -81,7 +88,7 @@ function ReviewsContent(): JSX.Element {
           ) : (
             <>
               <p className="tabular text-sm text-muted-foreground" aria-live="polite">{t.states.results.replace("{count}", String(page?.total ?? items.length))}</p>
-              <ReviewList reviews={items} />
+              <ReviewList reviews={items} onDispute={openDispute} />
               {page ? <PaginationBar page={page.current_page} totalPages={page.total_pages} label={t.title} onPageChange={changePage} /> : null}
             </>
           )}

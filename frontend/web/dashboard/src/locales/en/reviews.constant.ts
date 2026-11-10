@@ -24,4 +24,15 @@ export const enReviews = {
     forbiddenBody: "Branch reviews are for branch and brand teams.",
     results: "{count} reviews",
   },
+  dispute: {
+    action: "Dispute",
+    title: "Dispute this review",
+    description: "Use this when a review is unfair or untrue. It is held back from your public rating until the platform team decides, within 48 hours.",
+    reason: "Why is this review wrong?",
+    reasonHint: "At least {count} characters. The platform team reads this.",
+    reasonRequired: "Write at least {count} characters.",
+    submit: "Send dispute",
+    success: "Dispute sent to the platform team.",
+    failed: "The dispute couldn't be sent. The review may no longer be published.",
+  },
 } as const;
