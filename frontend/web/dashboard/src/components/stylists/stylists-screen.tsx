@@ -11,6 +11,7 @@ import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
+import { useBranchOptions } from "@/hooks/use-branch-options";
 import { useChairOptions } from "@/hooks/use-chair-options";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
@@ -27,20 +28,23 @@ export function StylistsScreen({ actor }: { actor: AuthActor }): JSX.Element {
     const { states } = dictionary.stylists;
     return <EmptyState variant="forbidden" title={states.forbiddenTitle} body={states.forbiddenBody} />;
   }
-  return <StylistsContent />;
+  return <StylistsContent readOnly={actor === AuthActor.Admin} />;
 }
 
-function StylistsContent(): JSX.Element {
+function StylistsContent({ readOnly }: { readOnly: boolean }): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { stylists: t, bookings } = dictionary;
   const { filters, update } = useStylistFilters();
   const overlay = useOverlay();
   const chairs = useChairOptions();
+  const branchOptions = useBranchOptions(readOnly);
+  const branches = branchOptions.data ?? [];
   const query = useStylists(filters);
   const status = useUpdateStylistStatus();
 
   const chairLabel = (id: string) => localizedText(chairs.data?.find((chair) => chair.id === id)?.label, locale) || id;
-  const chips = buildStylistChips({ filters, dictionary, chairLabel });
+  const branchLabel = (id: string) => branches.find((branch) => branch.id === id)?.name ?? id;
+  const chips = buildStylistChips({ filters, dictionary, chairLabel, branchLabel });
   const clear = () => update(STYLIST_CLEAR_ALL_PATCH);
   const removeChip = (key: string) => update(stylistPatchForChip(key));
   const changePage = (page: number) => update({ page });
@@ -70,7 +74,7 @@ function StylistsContent(): JSX.Element {
   return (
     <div className="flex flex-col gap-5">
       <h1 className="font-heading text-3xl font-semibold">{t.title}</h1>
-      <StylistToolbar filters={filters} chairs={chairs.data ?? []} onChange={update} onNew={openNew} />
+      <StylistToolbar filters={filters} chairs={chairs.data ?? []} branches={branches} onChange={update} onNew={readOnly ? undefined : openNew} />
       <FilterChips chips={chips} onRemove={removeChip} onClearAll={clear} />
 
       {query.isError && items.length > 0 ? <p role="status" className="rounded-lg bg-warning/15 px-3 py-2 text-sm">{bookings.states.stale}</p> : null}
@@ -88,7 +92,7 @@ function StylistsContent(): JSX.Element {
         {items.length > 0 ? (
           <>
             <p className="tabular text-sm text-muted-foreground" aria-live="polite">{t.states.results.replace("{count}", String(page?.total ?? items.length))}</p>
-            <StylistList stylists={items} togglingId={status.isPending ? (status.variables?.id ?? null) : null} onSelect={openEdit} onToggle={toggle} />
+            <StylistList stylists={items} togglingId={status.isPending ? (status.variables?.id ?? null) : null} onSelect={openEdit} onToggle={toggle} readOnly={readOnly} />
             {page ? <PaginationBar page={page.current_page} totalPages={page.total_pages} label={t.title} onPageChange={changePage} /> : null}
           </>
         ) : null}

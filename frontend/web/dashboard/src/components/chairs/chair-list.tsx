@@ -17,13 +17,15 @@ interface ChairListProps {
   togglingId: string | null;
   onSelect: (chair: Chair) => void;
   onToggle: (chair: Chair, inService: boolean) => void;
+  /** The platform admin only reads a branch's chairs. */
+  readOnly?: boolean;
 }
 
 function getChairId(chair: Chair): string {
   return chair.id;
 }
 
-export function ChairList({ chairs, togglingId, onSelect, onToggle }: ChairListProps): JSX.Element {
+export function ChairList({ chairs, togglingId, onSelect, onToggle, readOnly = false }: ChairListProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { chairs: t } = dictionary;
 
@@ -38,11 +40,11 @@ export function ChairList({ chairs, togglingId, onSelect, onToggle }: ChairListP
         header: t.columns.inService,
         interactive: true,
         align: "end",
-        cell: (chair) => <ChairServiceSwitch chair={chair} disabled={togglingId === chair.id} onToggle={onToggle} />,
+        cell: (chair) => <ChairServiceSwitch chair={chair} disabled={readOnly || togglingId === chair.id} onToggle={onToggle} />,
       },
     ],
-    [locale, onToggle, t, togglingId],
+    [locale, onToggle, readOnly, t, togglingId],
   );
 
-  return <DataTable caption={t.title} columns={columns} rows={chairs} getRowId={getChairId} onRowSelect={onSelect} rowLabel={(chair) => chair.label ?? ""} />;
+  return <DataTable caption={t.title} columns={columns} rows={chairs} getRowId={getChairId} onRowSelect={readOnly ? undefined : onSelect} rowLabel={(chair) => chair.label ?? ""} />;
 }

@@ -108,8 +108,8 @@ describe("migrated key modules keep their original key structures", () => {
     ]);
     expect(scheduleKeys.hours).toEqual(["schedule", "hours"]);
     expect(serviceKeys.all).toEqual(["services"]);
-    expect(serviceKeys.list(undefined)).toEqual(["services", "list", ""]);
-    expect(serviceKeys.list("cut")).toEqual(["services", "list", "cut"]);
+    expect(serviceKeys.list({ page: 1 })).toEqual(["services", "list", "", ""]);
+    expect(serviceKeys.list({ search: "cut", brandId: "b1", page: 1 })).toEqual(["services", "list", "cut", "b1"]);
     expect(serviceKeys.currencies).toEqual(["currencies"]);
     expect(serviceKeys.categories).toEqual(["service-categories"]);
     expect(stylistKeys.all).toEqual(["stylists"]);

@@ -39,6 +39,8 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/barbers(/${ID}(/(activation-log|affiliations))?)?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/barbers/${ID}/ban$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/barbers/${ID}/(approve|reject|activate|deactivate|unban)$`), guards: ADMIN_ONLY },
+  // NS-09 branch oversight: the admin reads a branch's invitations and job postings (NS-16 and NS-17 add the branch teams' writes).
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/(affiliations|job-postings)$`), guards: ADMIN_ONLY },
   // NS-07 clients and bans (admin only).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/clients(/${ID}(/(bookings|reviews))?)?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/clients/${ID}/ban$`), guards: ADMIN_ONLY },

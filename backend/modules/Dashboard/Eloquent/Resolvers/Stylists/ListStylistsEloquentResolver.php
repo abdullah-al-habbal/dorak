@@ -19,6 +19,8 @@ final class ListStylistsEloquentResolver
                 'chairs',
                 fn ($chairs) => $chairs->whereIn('branch_id', $query->branchIds),
             ))
+            // AND-ed with the actor's scope above, so a filter can narrow a list but never widen it.
+            ->when($query->branchId !== null, fn ($builder) => $builder->whereHas('chairs', fn ($chairs) => $chairs->where('branch_id', $query->branchId)))
             ->when($query->search !== null, fn ($builder) => $builder->where(
                 fn ($search) => $search->where('name->en', 'like', "%{$query->search}%")
                     ->orWhere('name->ar', 'like', "%{$query->search}%")

@@ -26,6 +26,7 @@ final class ListStylistsAction extends BaseApiAction
             $request->validated('search'),
             $request->validated('chair_id'),
             $request->validated('status'),
+            $request->validated('branch_id'),
         ));
 
         return $this->paginated($stylists, DashboardStylistResource::class);

@@ -10,6 +10,7 @@ import { BarberBanDialog } from "@/components/barber-approvals/barber-ban-dialog
 import { BarberRejectDialog } from "@/components/barber-approvals/barber-reject-dialog";
 import { BrandEditDialog } from "@/components/admin-brands/brand-edit-dialog";
 import { BrandReasonDialog } from "@/components/admin-brands/brand-reason-dialog";
+import { BranchOversightDialog } from "@/components/branches/branch-oversight-dialog";
 import { BranchSuspendDialog } from "@/components/branches/branch-suspend-dialog";
 import { BrandDetailDialog } from "@/components/admin-brands/brand-detail-dialog";
 import { CatalogCategoryDetailDialog } from "@/components/admin-catalog/catalog-category-detail-dialog";
@@ -75,6 +76,8 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <BrandReasonDialog request={request} onClose={onClose} />;
     case OverlayKind.BrandEdit:
       return <BrandEditDialog brand={request.brand} onClose={onClose} />;
+    case OverlayKind.BranchOversight:
+      return <BranchOversightDialog branch={request.branch} onClose={onClose} />;
     case OverlayKind.BranchSuspend:
       return <BranchSuspendDialog branch={request.branch} onClose={onClose} />;
     case OverlayKind.CatalogCategoryForm:

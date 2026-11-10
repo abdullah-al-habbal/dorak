@@ -18,13 +18,15 @@ interface ServiceGroupSectionProps {
   togglingId: string | null;
   onSelect: (service: Service) => void;
   onToggle: (service: Service, active: boolean) => void;
+  /** The platform admin only reads a brand's services. */
+  readOnly?: boolean;
 }
 
 function getServiceId(service: Service): string {
   return service.id;
 }
 
-export function ServiceGroupSection({ group, togglingId, onSelect, onToggle }: ServiceGroupSectionProps): JSX.Element {
+export function ServiceGroupSection({ group, togglingId, onSelect, onToggle, readOnly = false }: ServiceGroupSectionProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { services: t } = dictionary;
   const heading = group.label ?? t.uncategorised;
@@ -40,16 +42,16 @@ export function ServiceGroupSection({ group, togglingId, onSelect, onToggle }: S
         header: t.columns.active,
         interactive: true,
         align: "end",
-        cell: (service) => <ServiceActiveSwitch service={service} disabled={togglingId === service.id} onToggle={onToggle} />,
+        cell: (service) => <ServiceActiveSwitch service={service} disabled={readOnly || togglingId === service.id} onToggle={onToggle} />,
       },
     ],
-    [dictionary, locale, onToggle, t, togglingId],
+    [dictionary, locale, onToggle, readOnly, t, togglingId],
   );
 
   return (
     <section aria-label={heading} className="flex flex-col gap-2">
       <h2 className="font-heading text-lg font-semibold">{heading}</h2>
-      <DataTable caption={heading} columns={columns} rows={group.services} getRowId={getServiceId} onRowSelect={onSelect} rowLabel={(service) => localizedText(service.name, locale)} />
+      <DataTable caption={heading} columns={columns} rows={group.services} getRowId={getServiceId} onRowSelect={readOnly ? undefined : onSelect} rowLabel={(service) => localizedText(service.name, locale)} />
     </section>
   );
 }

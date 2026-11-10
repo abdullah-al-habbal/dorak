@@ -17,7 +17,8 @@ interface ChairToolbarProps {
   /** More than one entry shows the branch filter. */
   branches: readonly BranchOption[];
   onChange: (patch: Partial<ChairFilters>) => void;
-  onNew: () => void;
+  /** Omitted for the platform admin, who only reads chairs. */
+  onNew?: () => void;
 }
 
 const STATUSES = new Set<string>(Object.values(ChairStatus));
@@ -59,10 +60,12 @@ export function ChairToolbar({ filters, branches, onChange, onNew }: ChairToolba
           </NativeSelect>
         </label>
       ) : null}
-      <Button className="ms-auto" onClick={onNew}>
-        <PlusIcon aria-hidden data-icon="inline-start" />
-        {t.newChair}
-      </Button>
+      {onNew ? (
+        <Button className="ms-auto" onClick={onNew}>
+          <PlusIcon aria-hidden data-icon="inline-start" />
+          {t.newChair}
+        </Button>
+      ) : null}
     </div>
   );
 }

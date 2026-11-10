@@ -3,6 +3,8 @@ import type { Dictionary } from "@/types/dictionary.type";
 export const arServices: Dictionary["services"] = {
   title: "الخدمات",
   newService: "خدمة جديدة",
+  brandFilter: "العلامة",
+  allBrands: "كل العلامات",
   search: "ابحث عن خدمة",
   uncategorised: "خدمات أخرى",
   columns: { name: "الخدمة", price: "السعر", duration: "المدة", flags: "التفاصيل", active: "نشطة" },

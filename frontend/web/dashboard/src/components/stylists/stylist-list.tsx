@@ -18,6 +18,8 @@ interface StylistListProps {
   togglingId: string | null;
   onSelect: (stylist: Stylist) => void;
   onToggle: (stylist: Stylist, active: boolean) => void;
+  /** The platform admin only reads a branch's staff. */
+  readOnly?: boolean;
 }
 
 const DASH = "-";
@@ -26,7 +28,7 @@ function getStylistId(stylist: Stylist): string {
   return stylist.id;
 }
 
-export function StylistList({ stylists, togglingId, onSelect, onToggle }: StylistListProps): JSX.Element {
+export function StylistList({ stylists, togglingId, onSelect, onToggle, readOnly = false }: StylistListProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { stylists: t } = dictionary;
 
@@ -57,11 +59,11 @@ export function StylistList({ stylists, togglingId, onSelect, onToggle }: Stylis
         header: t.columns.active,
         interactive: true,
         align: "end",
-        cell: (stylist) => <StylistActiveSwitch stylist={stylist} disabled={togglingId === stylist.id} onToggle={onToggle} />,
+        cell: (stylist) => <StylistActiveSwitch stylist={stylist} disabled={readOnly || togglingId === stylist.id} onToggle={onToggle} />,
       },
     ],
-    [locale, onToggle, t, togglingId],
+    [locale, onToggle, t, readOnly, togglingId],
   );
 
-  return <DataTable caption={t.title} columns={columns} rows={stylists} getRowId={getStylistId} onRowSelect={onSelect} rowLabel={(stylist) => localizedText(stylist.name, locale)} />;
+  return <DataTable caption={t.title} columns={columns} rows={stylists} getRowId={getStylistId} onRowSelect={readOnly ? undefined : onSelect} rowLabel={(stylist) => localizedText(stylist.name, locale)} />;
 }

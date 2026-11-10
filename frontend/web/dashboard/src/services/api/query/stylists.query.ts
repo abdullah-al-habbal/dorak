@@ -11,6 +11,7 @@ function queryString(filters: StylistFilters): string {
   const params = new URLSearchParams({ per_page: String(PER_PAGE), page: String(filters.page) });
   if (filters.search) params.set("search", filters.search);
   if (filters.chairId) params.set("chair_id", filters.chairId);
+  if (filters.branchId) params.set("branch_id", filters.branchId);
   if (filters.status) params.set("status", filters.status);
   return params.toString();
 }

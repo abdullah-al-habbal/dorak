@@ -10,6 +10,7 @@ export function filtersFromParams(params: URLSearchParams): StylistFilters {
   return {
     search: params.get("search")?.slice(0, MAX_SEARCH) || undefined,
     chairId: params.get("chair") || undefined,
+    branchId: params.get("branch") || undefined,
     status: status && STATUSES.has(status) ? (status as BarberStatus) : undefined,
     page: Number.isInteger(page) && page > 0 ? page : 1,
   };
@@ -19,6 +20,7 @@ export function filtersToParams(filters: StylistFilters): URLSearchParams {
   const params = new URLSearchParams();
   if (filters.search) params.set("search", filters.search);
   if (filters.chairId) params.set("chair", filters.chairId);
+  if (filters.branchId) params.set("branch", filters.branchId);
   if (filters.status) params.set("status", filters.status);
   if (filters.page > 1) params.set("page", String(filters.page));
   return params;

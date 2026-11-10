@@ -16,6 +16,7 @@ final class ListStylistsRequest extends BaseApiFormRequest
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
             'search' => ['nullable', 'string', 'max:100'],
             'chair_id' => ['nullable', 'uuid'],
+            'branch_id' => ['nullable', 'uuid'],
             'status' => ['nullable', Rule::enum(BarberStatusEnum::class)],
         ];
     }

@@ -29,6 +29,7 @@ final class ListChairsAction extends BaseApiAction
             $request->validated('branch_id'),
             $request->enum('status', ChairStatus::class),
             $request->enum('floor_zone', FloorZone::class),
+            $request->validated('brand_id'),
         ));
 
         return $this->paginated($chairs, ChairResource::class);

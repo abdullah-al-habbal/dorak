@@ -3,7 +3,7 @@ import type { Dictionary } from "@/types/dictionary.type";
 export const arStylists: Dictionary["stylists"] = {
   title: "المصففون",
   newStylist: "مصفف جديد",
-  filters: { search: "ابحث بالاسم", status: "الحالة", allStatuses: "كل الحالات", chair: "الكرسي", allChairs: "كل الكراسي", clear: "مسح التصفية", toolbar: "تصفية المصففين" },
+  filters: { search: "ابحث بالاسم", status: "الحالة", allStatuses: "كل الحالات", chair: "الكرسي", branch: "الفرع", allBranches: "كل الفروع", allChairs: "كل الكراسي", clear: "مسح التصفية", toolbar: "تصفية المصففين" },
   status: { pending: "بانتظار الموافقة", enabled: "نشط", disabled: "غير نشط", rejected: "مرفوض" },
   columns: { name: "المصفف", phone: "الهاتف", chair: "الكرسي", status: "الحالة", active: "نشط" },
   noChair: "بدون كرسي",

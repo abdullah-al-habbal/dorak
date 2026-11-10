@@ -24,6 +24,7 @@ final class ListServicesAction extends BaseApiAction
             $actor->scopedBrandIds(),
             $request->integer('per_page', 15),
             $request->validated('search'),
+            $request->validated('brand_id'),
         ));
 
         return $this->paginated($services, DashboardServiceResource::class);

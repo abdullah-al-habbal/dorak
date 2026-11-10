@@ -28,10 +28,10 @@ export function ChairsScreen({ actor }: { actor: AuthActor }): JSX.Element {
     const { states } = dictionary.chairs;
     return <EmptyState variant="forbidden" title={states.forbiddenTitle} body={states.forbiddenBody} />;
   }
-  return <ChairsContent />;
+  return <ChairsContent readOnly={actor === AuthActor.Admin} />;
 }
 
-function ChairsContent(): JSX.Element {
+function ChairsContent({ readOnly }: { readOnly: boolean }): JSX.Element {
   const { dictionary } = useI18n();
   const { chairs: t, bookings } = dictionary;
   const { filters, update } = useChairFilters();
@@ -56,7 +56,7 @@ function ChairsContent(): JSX.Element {
   return (
     <div className="flex flex-col gap-5">
       <h1 className="font-heading text-3xl font-semibold">{t.title}</h1>
-      <ChairToolbar filters={filters} branches={branches} onChange={update} onNew={openNew} />
+      <ChairToolbar filters={filters} branches={branches} onChange={update} onNew={readOnly ? undefined : openNew} />
       <FilterChips chips={chips} onRemove={removeChip} onClearAll={clear} />
 
       {query.isError && items.length > 0 ? <p role="status" className="rounded-lg bg-warning/15 px-3 py-2 text-sm">{bookings.states.stale}</p> : null}
@@ -74,7 +74,7 @@ function ChairsContent(): JSX.Element {
         {items.length > 0 ? (
           <>
             <p className="tabular text-sm text-muted-foreground" aria-live="polite">{t.states.results.replace("{count}", String(page?.total ?? items.length))}</p>
-            <ChairList chairs={items} togglingId={togglingId} onSelect={openEdit} onToggle={toggle} />
+            <ChairList chairs={items} togglingId={togglingId} onSelect={openEdit} onToggle={toggle} readOnly={readOnly} />
             {page ? <PaginationBar page={page.current_page} totalPages={page.total_pages} label={t.title} onPageChange={changePage} /> : null}
           </>
         ) : null}

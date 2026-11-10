@@ -2,6 +2,8 @@ export const enServices = {
   title: "Services",
   newService: "New service",
   search: "Search services",
+  brandFilter: "Brand",
+  allBrands: "All brands",
   uncategorised: "Other services",
   columns: { name: "Service", price: "Price", duration: "Duration", flags: "Details", active: "Active" },
   free: "Free",

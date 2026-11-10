@@ -51,7 +51,8 @@ function BranchesContent({ actor }: { actor: AuthActor }): JSX.Element {
   const removeChip = (key: string) => update(branchPatchForChip(key));
   const changePage = (page: number) => update({ page });
   const openNew = () => overlay.open({ kind: OverlayKind.BranchForm });
-  const openEdit = (branch: Branch) => overlay.open({ kind: OverlayKind.BranchForm, branch });
+  // The platform admin opens a read-only oversight view; owners and managers open the editor.
+  const openEdit = (branch: Branch) => overlay.open(actor === AuthActor.Admin ? { kind: OverlayKind.BranchOversight, branch } : { kind: OverlayKind.BranchForm, branch });
 
   const items = query.data?.items ?? [];
   const page = query.data?.page;

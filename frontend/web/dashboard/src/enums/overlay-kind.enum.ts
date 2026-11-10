@@ -12,6 +12,7 @@ export enum OverlayKind {
   BrandDetail = "brand-detail",
   BrandReason = "brand-reason",
   BrandEdit = "brand-edit",
+  BranchOversight = "branch-oversight",
   BranchSuspend = "branch-suspend",
   BarberApprovalDetail = "barber-approval-detail",
   BarberReject = "barber-reject",

@@ -26,6 +26,7 @@ final class ListChairsEloquentResolver
             ])
             ->when($query->branchIds !== null, fn ($builder) => $builder->whereIn('branch_id', $query->branchIds))
             ->when($query->branchId !== null, fn ($builder) => $builder->where('branch_id', $query->branchId))
+            ->when($query->brandId !== null, fn ($builder) => $builder->whereHas('branch', fn ($branches) => $branches->where('brand_id', $query->brandId)))
             ->when($query->status !== null, fn ($builder) => $builder->where('status', $query->status))
             ->when($query->floorZone !== null, fn ($builder) => $builder->where('floor_zone', $query->floorZone))
             ->when($query->search !== null, fn ($builder) => $builder->where('label', 'like', "%{$query->search}%"))

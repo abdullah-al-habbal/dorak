@@ -13,6 +13,7 @@ final class ListServicesRequest extends BaseApiFormRequest
         return [
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
             'search' => ['nullable', 'string', 'max:100'],
+            'brand_id' => ['nullable', 'uuid'],
         ];
     }
 }
