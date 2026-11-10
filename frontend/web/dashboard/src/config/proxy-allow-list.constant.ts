@@ -57,6 +57,8 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get], pattern: /^admin\/audit\/(brand|branch)\/[^/]+$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Put], pattern: new RegExp(`^brands/${ID}$`), guards: BRANDS },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^brands/${ID}/resubmit$`), guards: OWNER_ONLY },
+  // NS-13: an existing owner adds another brand (it starts pending).
+  { methods: [HttpMethod.Post], pattern: /^brands$/, guards: OWNER_ONLY },
   // NS-06 / D9 branch lifecycle: the owner and the branch's manager switch on or off, the admin suspends and reactivates.
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/switch-(on|off)$`), guards: OPERATIONS },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/branches/${ID}/(suspend|reactivate)$`), guards: ADMIN_ONLY },

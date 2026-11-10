@@ -64,9 +64,13 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
   [AuthActor.Owner]: [
     overview,
     { key: "status", segment: "status", icon: ClipboardCheckIcon, ready: true },
+    { key: "brand", segment: "brand", icon: StoreIcon, ready: true },
     { key: "bookings", segment: "bookings", icon: BookOpenCheckIcon, ready: true },
     { key: "branches", segment: "branches", icon: BuildingIcon, ready: true },
+    { key: "chairs", segment: "chairs", icon: SofaIcon, ready: true },
     { key: "stylists", segment: "stylists", icon: UsersIcon, ready: true },
+    { key: "services", segment: "services", icon: ScissorsIcon, ready: true },
+    { key: "reviews", segment: "reviews", icon: StarIcon, ready: true },
     { key: "workingHours", segment: "working-hours", icon: ClockIcon, ready: true },
     { key: "earnings", segment: "earnings", icon: BadgeDollarSignIcon, ready: true },
     { key: "payouts", segment: "payouts", icon: WalletIcon, ready: true },

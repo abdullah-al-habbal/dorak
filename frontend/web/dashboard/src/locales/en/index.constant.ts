@@ -2,6 +2,7 @@ import { enAnalytics } from "@/locales/en/analytics.constant";
 import { enSettings } from "@/locales/en/settings.constant";
 import { enAdminPayouts } from "@/locales/en/admin-payouts.constant";
 import { enClients } from "@/locales/en/clients.constant";
+import { enOwnerBrand } from "@/locales/en/owner-brand.constant";
 import { enBranchOversight } from "@/locales/en/branch-oversight.constant";
 import { enBarberApprovals } from "@/locales/en/barber-approvals.constant";
 import { enAdminUsers } from "@/locales/en/admin-users.constant";
@@ -48,6 +49,7 @@ export const enDictionary = {
   adminUsers: enAdminUsers,
   barberApprovals: enBarberApprovals,
   branchOversight: enBranchOversight,
+  ownerBrand: enOwnerBrand,
   clients: enClients,
   adminCatalog: enAdminCatalog,
   reviews: enReviews,

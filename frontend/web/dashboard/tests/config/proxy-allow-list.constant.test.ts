@@ -70,11 +70,13 @@ describe("proxy allow-list: branch management", () => {
     expect(allowed(HttpMethod.Delete, "branches/b1/opening-hours", AuthActor.Owner)).toBe(false);
   });
 
-  it("opens the brand picker to admins and owners only, read-only", () => {
+  it("opens the brand picker to admins and owners, and brand creation to owners", () => {
     expect(allowed(HttpMethod.Get, "brands", AuthActor.Owner)).toBe(true);
     expect(allowed(HttpMethod.Get, "brands", AuthActor.Admin)).toBe(true);
     expect(allowed(HttpMethod.Get, "brands", AuthActor.Manager)).toBe(false);
-    expect(allowed(HttpMethod.Post, "brands", AuthActor.Owner)).toBe(false);
+    // NS-13: the owner adds a brand; nobody else creates one here.
+    expect(allowed(HttpMethod.Post, "brands", AuthActor.Owner)).toBe(true);
+    expect(allowed(HttpMethod.Post, "brands", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Get, "brands/b1", AuthActor.Owner)).toBe(false);
   });
 });

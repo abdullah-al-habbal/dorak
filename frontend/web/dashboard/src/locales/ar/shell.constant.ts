@@ -8,6 +8,7 @@ export const arShell: Dictionary["shell"] = {
   soon: "قريبًا",
   nav: {
     overview: "نظرة عامة",
+    brand: "العلامة التجارية",
     status: "مراجعة النشاط",
     analytics: "التحليلات",
     bookings: "الحجوزات",

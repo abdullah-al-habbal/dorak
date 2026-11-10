@@ -7,6 +7,7 @@ export const enShell = {
   nav: {
     overview: "Overview",
     status: "Business review",
+    brand: "Brand",
     analytics: "Analytics",
     bookings: "Bookings",
     branches: "Branches",
