@@ -12,6 +12,7 @@ export enum OverlayKind {
   BrandDetail = "brand-detail",
   BarberApprovalDetail = "barber-approval-detail",
   BarberReject = "barber-reject",
+  AdminUserForm = "admin-user-form",
   CatalogCategoryForm = "catalog-category-form",
   CatalogCategoryDetail = "catalog-category-detail",
 }

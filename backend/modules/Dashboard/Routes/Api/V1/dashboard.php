@@ -13,6 +13,12 @@ use Modules\Currency\Http\Actions\Shared\ListCurrenciesAction;
 use Modules\Currency\Http\Actions\Shared\ListExchangeRatesAction;
 use Modules\Dashboard\Constants\DashboardPasswordResetConstants;
 use Modules\Dashboard\Constants\OwnerRegistrationConstants;
+use Modules\Dashboard\Http\Actions\AdminUsers\DeactivateAdminUserAction;
+use Modules\Dashboard\Http\Actions\AdminUsers\InviteAdminUserAction;
+use Modules\Dashboard\Http\Actions\AdminUsers\ListAdminUsersAction;
+use Modules\Dashboard\Http\Actions\AdminUsers\ReactivateAdminUserAction;
+use Modules\Dashboard\Http\Actions\AdminUsers\ResendAdminInviteAction;
+use Modules\Dashboard\Http\Actions\AdminUsers\UpdateAdminUserAction;
 use Modules\Dashboard\Http\Actions\Analytics\ShowPlatformAnalyticsAction;
 use Modules\Dashboard\Http\Actions\BarberApprovals\ApproveBarberAction;
 use Modules\Dashboard\Http\Actions\BarberApprovals\ListBarberApprovalsAction;
@@ -166,6 +172,12 @@ Route::prefix('dashboard')->group(function (): void {
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardAdminAuthorizationMiddleware::class])->prefix('admin')->group(function (): void {
         Route::patch('/brands/{brand}/approve', ApproveBrandAction::class);
+        Route::get('/admins', ListAdminUsersAction::class);
+        Route::post('/admins', InviteAdminUserAction::class);
+        Route::put('/admins/{admin}', UpdateAdminUserAction::class);
+        Route::patch('/admins/{admin}/deactivate', DeactivateAdminUserAction::class);
+        Route::patch('/admins/{admin}/reactivate', ReactivateAdminUserAction::class);
+        Route::post('/admins/{admin}/resend-invite', ResendAdminInviteAction::class)->middleware('throttle:5,1');
         Route::get('/barbers', ListBarberApprovalsAction::class);
         Route::get('/barbers/{barber}', ShowBarberApprovalAction::class);
         Route::patch('/barbers/{barber}/approve', ApproveBarberAction::class);

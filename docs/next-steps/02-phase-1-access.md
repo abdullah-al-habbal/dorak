@@ -192,3 +192,11 @@ Without these tasks, someone can't get in, can't get back in, can't be approved,
   - Pest covers the last-admin and self-deactivation guards.
   - The security review passes.
   - E2E covers invite and deactivate.
+
+### NS-04 as built
+
+- **Backend:** migration `2026_11_10_000002` adds `admins.deactivated_at`. `AdminUserService` invites (random password plus the NS-01 reset link, so the colleague sets their own), edits, deactivates, reactivates and resends the invitation. Deactivation runs under a row lock, refuses yourself (409 `admin_self_deactivation`) and the last active admin (409 `admin_last_active`), and deletes every token the admin holds. A deactivated admin cannot sign in, reset a password, use an existing token (`DashboardAuthorizationMiddleware`) or open Filament. Routes under `/dashboard/admin/admins`, behind the `manage-admin-users` ability; the resend route is throttled to 5 per minute.
+- **Dashboard:** "Admins" at `/dashboard/admin/admins` (a menu entry beside Settings): search and status filter in the URL, invite and edit dialog, deactivate or reactivate behind a confirmation (the backend guard message is toasted on a 409), and resend invite. The row of the signed-in admin hides Deactivate.
+- **Invitation email:** it reuses the password-reset mail. A dedicated "you were invited" copy is a later wording task.
+- **Tests:** none added, by the product owner's instruction for this batch; the "Done when" test items stay open.
+

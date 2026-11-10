@@ -3,6 +3,7 @@ import {
   BarChart3Icon,
   BookOpenCheckIcon,
   BuildingIcon,
+  ShieldCheckIcon,
   UserCheckIcon,
   ClipboardCheckIcon,
   CalendarClockIcon,
@@ -37,6 +38,7 @@ export const NAV_ITEMS: Record<AuthActor, readonly NavItem[]> = {
     { key: "payouts", segment: "payouts", icon: WalletIcon, ready: true },
     { key: "plans", segment: "plans", icon: LayersIcon, ready: true },
     { key: "subscriptions", segment: "subscriptions", icon: CreditCardIcon, ready: true },
+    { key: "admins", segment: "admins", icon: ShieldCheckIcon, ready: true },
     { key: "settings", segment: "settings", icon: SettingsIcon, ready: true },
   ],
   [AuthActor.Manager]: [

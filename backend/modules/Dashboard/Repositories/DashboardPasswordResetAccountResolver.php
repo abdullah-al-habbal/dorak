@@ -26,7 +26,7 @@ final class DashboardPasswordResetAccountResolver
     public function find(DashboardActorTypeEnum $actorType, string $email): AdminModel|BranchModel|BarberModel|ClientModel|null
     {
         return match ($actorType) {
-            DashboardActorTypeEnum::Admin => AdminModel::query()->where('email', $email)->first(),
+            DashboardActorTypeEnum::Admin => AdminModel::query()->where('email', $email)->whereNull('deactivated_at')->first(),
             DashboardActorTypeEnum::Branch => BranchModel::query()->where('email', $email)->first(),
             DashboardActorTypeEnum::Barber => $this->findBarber($email),
             DashboardActorTypeEnum::Owner => $this->findOwner($email),

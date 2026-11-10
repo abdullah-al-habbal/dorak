@@ -32,13 +32,20 @@ class AdminModel extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $panel->getId() === 'admin';
+        return $panel->getId() === 'admin' && $this->isActive();
+    }
+
+    /** NS-04: a deactivated admin can no longer sign in and every token they hold stops working. */
+    public function isActive(): bool
+    {
+        return $this->getAttribute('deactivated_at') === null;
     }
 
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
+            'deactivated_at' => 'datetime',
             'password' => 'hashed',
         ];
     }

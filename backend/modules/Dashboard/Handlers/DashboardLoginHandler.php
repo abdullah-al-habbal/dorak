@@ -50,7 +50,7 @@ final class DashboardLoginHandler
         $admin = AdminModel::query()->where('email', $email)->first();
         $storedPassword = $admin?->getAttribute('password');
         $adminId = $admin?->getAuthIdentifier();
-        if ($admin instanceof AdminModel && is_string($storedPassword) && is_string($adminId) && Hash::check($password, $storedPassword)) {
+        if ($admin instanceof AdminModel && $admin->isActive() && is_string($storedPassword) && is_string($adminId) && Hash::check($password, $storedPassword)) {
             return new DashboardActor($adminId, DashboardActorTypeEnum::Admin, 'platform_admin', null);
         }
 

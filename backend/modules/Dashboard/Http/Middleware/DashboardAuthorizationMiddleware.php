@@ -42,6 +42,10 @@ final class DashboardAuthorizationMiddleware
                 continue;
             }
 
+            if ($model instanceof AdminModel && ! $model->isActive()) {
+                continue;
+            }
+
             $token = $model->currentAccessToken();
             if (! $model->tokenCan(TokenAbility::Dashboard->value)) {
                 continue;

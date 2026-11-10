@@ -1,6 +1,7 @@
 "use client";
 
 import { AssignSubscriptionDialog } from "@/components/admin-subscriptions/assign-subscription-dialog";
+import { AdminUserFormDialog } from "@/components/admin-users/admin-user-form-dialog";
 import { BarberApprovalDetailDialog } from "@/components/barber-approvals/barber-approval-detail-dialog";
 import { BarberRejectDialog } from "@/components/barber-approvals/barber-reject-dialog";
 import { BrandDetailDialog } from "@/components/admin-brands/brand-detail-dialog";
@@ -53,6 +54,8 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <BarberApprovalDetailDialog barber={request.barber} onClose={onClose} />;
     case OverlayKind.BarberReject:
       return <BarberRejectDialog barber={request.barber} onClose={onClose} />;
+    case OverlayKind.AdminUserForm:
+      return <AdminUserFormDialog admin={request.admin} onClose={onClose} />;
     case OverlayKind.CatalogCategoryForm:
       return <CatalogCategoryFormDialog category={request.category} onClose={onClose} />;
     case OverlayKind.CatalogCategoryDetail:
