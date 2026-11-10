@@ -23,6 +23,8 @@ use Modules\Ban\Enums\BannableTypeEnum;
     'reason',
     'banned_at',
     'expires_at',
+    'lifted_at',
+    'lifted_by_id',
     'banned_by_id',
 ])]
 #[Table('bans')]
@@ -37,6 +39,7 @@ class BanModel extends Model
             'bannable_type' => BannableTypeEnum::class,
             'banned_at' => 'datetime',
             'expires_at' => 'datetime',
+            'lifted_at' => 'datetime',
         ];
     }
 

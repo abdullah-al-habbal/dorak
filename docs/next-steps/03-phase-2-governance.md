@@ -104,3 +104,10 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
 - **Admin extras:** feature overrides (`GET|PATCH /admin/brands/{id}/features`: `multi_branch`, `job_board`) and the status history (`GET /admin/audit/{brand|branch}/{id}`).
 - **Dashboard:** brand detail dialog gains edit, reject, suspend (with the cancel-bookings switch), reactivate, feature switches and history; the branch list gains switch on/off and suspend/reactivate actions; the owner status page shows the rejection reason with "Fix details" and "Resubmit", or a suspended notice. Proxy rules added for all new routes (admin only unless noted).
 - **Not done:** tests (deliberately skipped by instruction).
+
+### NS-07 as built
+
+- **Backend:** admin routes `GET /dashboard/admin/clients` (search by name, email or phone; filters `status` and `banned`), `GET /clients/{id}` (with ban history), `GET /clients/{id}/bookings`, `GET /clients/{id}/reviews`, `POST /clients/{id}/ban` (reason 3 to 500 characters, optional `expires_at`, empty means permanent) and `PATCH /clients/{id}/unban`. All are gated by `manage-clients` (admins only). `ClientBanService` bans and unbans under a row lock; a second ban answers 409 `client_already_banned` and unbanning a client with no active ban answers 409 `client_not_banned`. A lifted ban keeps its row (`lifted_at`, `lifted_by_id`) so the history stays. `BanObserver` already deletes a banned client's tokens, and `EnsureNotBanned` sits in the `api` group, so a banned client or owner is refused on every route including the dashboard.
+- **D4:** `AdminClientResource` returns the account, ban status and history and the bookings count only. Face, preference, interaction, favourite and service-history data never appear in any admin payload.
+- **Dashboard:** admin "Clients" screen (filters in the URL), detail dialog (account, ban history, latest bookings, reviews written), ban dialog (reason and optional end date) and an unban confirmation. Proxy rules are admin only.
+- **Not done:** tests (skipped by instruction); paging inside the detail dialog (the latest 20 bookings and reviews only).

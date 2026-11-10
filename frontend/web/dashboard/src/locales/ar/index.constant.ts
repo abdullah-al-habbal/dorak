@@ -1,6 +1,7 @@
 import { arAnalytics } from "@/locales/ar/analytics.constant";
 import { arSettings } from "@/locales/ar/settings.constant";
 import { arAdminPayouts } from "@/locales/ar/admin-payouts.constant";
+import { arClients } from "@/locales/ar/clients.constant";
 import { arBarberApprovals } from "@/locales/ar/barber-approvals.constant";
 import { arAdminUsers } from "@/locales/ar/admin-users.constant";
 import { arReviewModeration } from "@/locales/ar/review-moderation.constant";
@@ -46,6 +47,7 @@ export const arDictionary: Dictionary = {
   reviewModeration: arReviewModeration,
   adminUsers: arAdminUsers,
   barberApprovals: arBarberApprovals,
+  clients: arClients,
   adminCatalog: arAdminCatalog,
   reviews: arReviews,
   schedule: arSchedule,

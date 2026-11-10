@@ -69,7 +69,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | | **[Phase 2: the platform team runs the platform alone](03-phase-2-governance.md)** | | | | | |
 | NS-05 | Review moderation (disputes) | admin | Ready | S | | Done (no tests) |
 | NS-06 | Brand lifecycle: edit, reject and resubmit, suspend, locks, emails, branch status, feature overrides, history | admin | Partial | L | D8, D9 | Done (no tests) |
-| NS-07 | Clients and bans | admin | New | L | D4 | Todo |
+| NS-07 | Clients and bans | admin | New | L | D4 | Done (no tests) |
 | NS-08 | Barbers platform-wide: activation, bans, activation log | admin | Partial | M | NS-07, NS-30 | Todo |
 | NS-09 | Branch-level oversight: chairs, stylists, services, reviews, hours, invitations, jobs | admin | Partial | M | D3 | Todo |
 | | **[Phase 3: the daily routine needs no workaround](04-phase-3-daily-operations.md)** | | | | | |
@@ -96,7 +96,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-27 | Barber web extras | barber | Partial | M | D7 | Closed, no work (D7) |
 | NS-28 | Retire Filament | all | Removal | M | NS-01 to NS-24, NS-29, NS-30 | Todo |
 
-Every decision is resolved, so no task is blocked. NS-01, NS-02, NS-03, NS-29, NS-30, NS-04, NS-05 and NS-06 are done; the next task is NS-07.
+Every decision is resolved, so no task is blocked. NS-01, NS-02, NS-03, NS-29, NS-30, NS-04, NS-05, NS-06 and NS-07 are done; the next task is NS-08.
 
 Phases 1 and 2 are the launch minimum, because without them a guard is locked out or the platform can't be governed. Phase 3 is needed for a smooth first week of real use. Phases 4 to 7 complete the product vision.
 
