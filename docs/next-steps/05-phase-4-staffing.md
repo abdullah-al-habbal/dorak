@@ -29,6 +29,12 @@ The backend is ready for all four tasks, so only the allow-list rules and the sc
   - Vitest covers the layout maths.
   - E2E covers saving and reloading a layout, and keyboard placement.
 
+
+### NS-15 as built
+
+- **Backend:** no change. `GET|PATCH /branches/{branch}/floor-plan` carries the preset, zones, canvas and decorations, and each chair's placement is its `layout_settings`, saved through the existing `PUT /chairs/{id}`.
+- **Dashboard:** the Chairs screen has a List / Floor plan switch. The plan is an SVG editor built without a new package: drag a chair or decoration, or select it and use the arrow keys (Shift for bigger steps), `[` and `]` to rotate a chair, Delete to remove a decoration, or type exact values in the inspector. The toolbar sets the layout preset (a zoned preset saves a men and a women half), the canvas size and unit, and adds decorations. Saving writes the layout, then each chair that moved. Chair positions and sizes are saved in stage units (a stage 1000 units wide, as tall as the canvas ratio makes it); decorations and zones are percent of the canvas. Below 768 px wide, and for the platform admin, the plan is read-only. The proxy allows `GET` and `PATCH` for the operations guards.
+- **Not done:** tests (skipped by instruction, so the layout maths has no Vitest yet); the zone rectangles are fixed halves, not draggable; a chair's zone is still set in its own form.
 ## NS-16: Barber invitations
 
 - **Guards:** manager, owner.

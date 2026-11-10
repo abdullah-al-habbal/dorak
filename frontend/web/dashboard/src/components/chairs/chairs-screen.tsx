@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { JSX } from "react";
 
 import { ChairList } from "@/components/chairs/chair-list";
 import { ChairToolbar } from "@/components/chairs/chair-toolbar";
+import { FloorPlanPanel } from "@/components/floor-plan/floor-plan-panel";
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { FilterChips } from "@/components/common/filter-chips";
+import { Button } from "@/components/ui/button";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
@@ -41,6 +43,8 @@ function ChairsContent({ readOnly }: { readOnly: boolean }): JSX.Element {
   const branches = useMemo(() => branchOptions.data ?? [], [branchOptions.data]);
   const query = useChairs(filters);
   const { toggle, togglingId } = useChairStatusToggle();
+  const [view, setView] = useState<"list" | "plan">("list");
+  const planBranchId = ownBranchId ?? filters.branchId ?? branches[0]?.id ?? null;
 
   const branchLabel = (id: string) => branches.find((branch) => branch.id === id)?.name ?? id;
   const chips = buildChairChips({ filters, dictionary, branchLabel });
@@ -56,6 +60,17 @@ function ChairsContent({ readOnly }: { readOnly: boolean }): JSX.Element {
   return (
     <div className="flex flex-col gap-5">
       <h1 className="font-heading text-3xl font-semibold">{t.title}</h1>
+      <div role="group" aria-label={dictionary.floorPlan.viewLabel} className="flex gap-2">
+        <Button type="button" size="sm" variant={view === "list" ? "default" : "outline"} aria-pressed={view === "list"} onClick={() => setView("list")}>{dictionary.floorPlan.listView}</Button>
+        <Button type="button" size="sm" variant={view === "plan" ? "default" : "outline"} aria-pressed={view === "plan"} onClick={() => setView("plan")}>{dictionary.floorPlan.planView}</Button>
+      </div>
+      {view === "plan" ? (
+        <>
+          {ownBranchId === null && branches.length > 1 ? <ChairToolbar filters={filters} branches={branches} onChange={update} /> : null}
+          <FloorPlanPanel branchId={planBranchId} viewOnly={readOnly} />
+        </>
+      ) : null}
+      {view === "list" ? <>
       <ChairToolbar filters={filters} branches={branches} onChange={update} onNew={readOnly ? undefined : openNew} />
       <FilterChips chips={chips} onRemove={removeChip} onClearAll={clear} />
 
@@ -79,6 +94,7 @@ function ChairsContent({ readOnly }: { readOnly: boolean }): JSX.Element {
           </>
         ) : null}
       </div>
+      </> : null}
     </div>
   );
 }

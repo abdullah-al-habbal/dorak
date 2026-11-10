@@ -102,4 +102,6 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
     guards: OPERATIONS,
   },
   { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^service-categories$/, guards: OPERATIONS },
+  // NS-15 floor plan editor.
+  { methods: [HttpMethod.Get, HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/floor-plan$`), guards: OPERATIONS },
 ];
