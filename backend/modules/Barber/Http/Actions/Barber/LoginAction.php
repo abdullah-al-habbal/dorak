@@ -7,6 +7,7 @@ namespace Modules\Barber\Http\Actions\Barber;
 use Illuminate\Http\JsonResponse;
 use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
+use Modules\Barber\Exceptions\BarberRejectedException;
 use Modules\Barber\Handlers\Barber\LoginHandler;
 use Modules\Barber\Http\Requests\Barber\LoginRequest;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -23,6 +24,8 @@ final class LoginAction extends BaseApiAction
             $result = $this->handler->handle($request->toCommand());
         } catch (AccountBannedException) {
             return $this->forbidden(message: $this->trans('ban::ui.account_banned'), code: 'ACCOUNT_BANNED');
+        } catch (BarberRejectedException $rejected) {
+            return $this->forbidden(message: $this->trans('barber::messages.account_rejected', ['reason' => $rejected->reason]), code: BarberRejectedException::CODE);
         } catch (AccountNotActiveException) {
             return $this->forbidden(message: $this->trans('activation::messages.account_not_active'), code: 'ACCOUNT_NOT_ACTIVE');
         }

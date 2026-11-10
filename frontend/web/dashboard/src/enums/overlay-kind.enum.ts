@@ -10,6 +10,8 @@ export enum OverlayKind {
   PlanForm = "plan-form",
   AssignSubscription = "assign-subscription",
   BrandDetail = "brand-detail",
+  BarberApprovalDetail = "barber-approval-detail",
+  BarberReject = "barber-reject",
   CatalogCategoryForm = "catalog-category-form",
   CatalogCategoryDetail = "catalog-category-detail",
 }

@@ -35,6 +35,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get, HttpMethod.Put], pattern: new RegExp(`^branches/${ID}/opening-hours$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/reviews$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^(payouts|subscription)$/, guards: OWNER_ONLY },
+  // NS-30 barber review: the queue, the detail, approve and reject. Admin only; the backend re-checks.
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/barbers(/${ID})?$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/barbers/${ID}/(approve|reject)$`), guards: ADMIN_ONLY },
   // Platform billing (Module 9): payout approvals, plans and brand subscriptions. Admin only; the backend re-checks.
   { methods: [HttpMethod.Get], pattern: /^admin\/(payouts|subscription-plans|subscriptions|plan-feature-keys)$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: /^admin\/(payouts\/generate|subscription-plans|subscriptions)$/, guards: ADMIN_ONLY },

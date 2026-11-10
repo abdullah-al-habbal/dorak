@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { NavQueueCount } from "@/components/layout/nav-queue-count";
 import { NAV_ITEMS } from "@/config/nav.constant";
 import { portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
@@ -57,6 +58,7 @@ export function SidebarNav({ actor, collapsed, onNavigate }: SidebarNavProps) {
             {active ? <span aria-hidden className="pole-stripe absolute inset-y-2 start-0 w-[3px] rounded-full" /> : null}
             <Icon className="size-[18px] shrink-0" aria-hidden />
             {collapsed ? <span className="sr-only">{label}</span> : <span className="truncate">{label}</span>}
+            {collapsed ? null : <NavQueueCount itemKey={item.key} />}
           </Link>
         );
       })}

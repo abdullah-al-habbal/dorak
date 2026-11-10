@@ -14,6 +14,10 @@ use Modules\Currency\Http\Actions\Shared\ListExchangeRatesAction;
 use Modules\Dashboard\Constants\DashboardPasswordResetConstants;
 use Modules\Dashboard\Constants\OwnerRegistrationConstants;
 use Modules\Dashboard\Http\Actions\Analytics\ShowPlatformAnalyticsAction;
+use Modules\Dashboard\Http\Actions\BarberApprovals\ApproveBarberAction;
+use Modules\Dashboard\Http\Actions\BarberApprovals\ListBarberApprovalsAction;
+use Modules\Dashboard\Http\Actions\BarberApprovals\RejectBarberAction;
+use Modules\Dashboard\Http\Actions\BarberApprovals\ShowBarberApprovalAction;
 use Modules\Dashboard\Http\Actions\Barbers\DestroyBarberServiceOverrideAction;
 use Modules\Dashboard\Http\Actions\Barbers\ListBarberServiceOverridesAction;
 use Modules\Dashboard\Http\Actions\Barbers\UpsertBarberServiceOverrideAction;
@@ -162,6 +166,10 @@ Route::prefix('dashboard')->group(function (): void {
 
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardAdminAuthorizationMiddleware::class])->prefix('admin')->group(function (): void {
         Route::patch('/brands/{brand}/approve', ApproveBrandAction::class);
+        Route::get('/barbers', ListBarberApprovalsAction::class);
+        Route::get('/barbers/{barber}', ShowBarberApprovalAction::class);
+        Route::patch('/barbers/{barber}/approve', ApproveBarberAction::class);
+        Route::patch('/barbers/{barber}/reject', RejectBarberAction::class);
         Route::get('/reviews', ListAdminReviewsAction::class);
         Route::patch('/reviews/{review}/resolve', ResolveReviewDisputeAction::class);
         Route::get('/exchange-rates', ListExchangeRatesAction::class);

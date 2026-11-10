@@ -13,6 +13,7 @@ enum BarberStatusEnum: string implements HasColor, HasLabel
     case Pending = 'pending';
     case Enabled = 'enabled';
     case Disabled = 'disabled';
+    case Rejected = 'rejected';
 
     public function label(): string
     {
@@ -20,6 +21,7 @@ enum BarberStatusEnum: string implements HasColor, HasLabel
             self::Pending => 'Pending',
             self::Enabled => 'Enabled',
             self::Disabled => 'Disabled',
+            self::Rejected => 'Rejected',
         };
     }
 
@@ -39,6 +41,7 @@ enum BarberStatusEnum: string implements HasColor, HasLabel
             self::Pending => 'warning',
             self::Enabled => 'success',
             self::Disabled => 'danger',
+            self::Rejected => 'danger',
         };
     }
 }

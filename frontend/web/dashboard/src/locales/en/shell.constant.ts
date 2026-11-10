@@ -10,6 +10,7 @@ export const enShell = {
     analytics: "Analytics",
     bookings: "Bookings",
     branches: "Branches",
+    barberApprovals: "Barber approvals",
     brands: "Brands",
     chairs: "Chairs",
     stylists: "Stylists",

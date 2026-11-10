@@ -14,6 +14,7 @@ use Modules\Barber\Http\Actions\Barber\LogoutAction;
 use Modules\Barber\Http\Actions\Barber\RefreshTokenAction;
 use Modules\Barber\Http\Actions\Barber\RegisterAction;
 use Modules\Barber\Http\Actions\Barber\ResetPasswordAction;
+use Modules\Barber\Http\Actions\Barber\ResubmitAction;
 use Modules\Barber\Http\Actions\Barber\SendEmailVerificationAction;
 use Modules\Barber\Http\Actions\Barber\TodayAppointmentsAction;
 use Modules\Barber\Http\Actions\Barber\UpdateProfileAction;
@@ -35,6 +36,7 @@ Route::prefix('barber')->name('barber.')->group(function (): void {
     Route::post('/login', LoginAction::class)->name('login')->middleware('throttle:5,1');
 
     Route::post('/register', RegisterAction::class)->name('register')->middleware('throttle:5,1');
+    Route::post('/resubmit', ResubmitAction::class)->name('resubmit')->middleware('throttle:5,1');
     Route::post('/forgot-password', ForgotPasswordAction::class)->name('forgot-password')->middleware('throttle:5,1');
     Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password')->middleware('throttle:5,1');
 

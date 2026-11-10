@@ -171,6 +171,15 @@ Without these tasks, someone can't get in, can't get back in, can't be approved,
   - E2E covers approving a seeded pending barber.
   - `melos run verify` passes if the app changes.
 
+### NS-30 as built
+
+- **Backend:** `BarberStatusEnum::Rejected`; migration `2026_11_10_000001` adds `rejection_reason`, `reviewed_at`, `submission_count` (default 1) to `barbers`. `BarberReviewService` approves, rejects and resubmits under `lockForUpdate`; approval also writes an activation log. Approval and rejection emails (`BarberApproved`, `BarberRejected`, en and ar) go out after the transaction. Admin routes under `/dashboard/admin`: `GET /barbers`, `GET /barbers/{barber}`, `PATCH /barbers/{barber}/approve|reject`, gated by the `review-barbers` ability (platform admin only; a named gate because `BarberModel` already carries the branch activation policy).
+- **Sign-up hardening:** the barber phone is normalised and unique, and a banned email follows the client rule. The generic "check your email" answer for a repeat sign-up is **not** applied: the stylist app expects the `{token, barber}` answer, so changing it needs a mobile contract change (left for a later task).
+- **Resubmission:** a rejected barber's login answers 403 `ACCOUNT_REJECTED` with the admin's reason. `POST /barber/resubmit` takes the email and password (a rejected barber holds no token) plus optional `name`, `bio` and `phone` fixes, returns the account to `pending` and counts the submission; the third submission is the last (409 `barber_resubmission_limit`). `EnsureBarberAccountAccess` treats `rejected` like `pending` for the `approved` scope. `BarberResource` gains `rejection_reason` and `submission_count`.
+- **Dashboard:** admin "Barber approvals" at `/dashboard/admin/barber-approvals` (pending by default, status and search in the URL), a detail dialog with the portfolio, approve behind a confirmation, reject with a required reason, and the pending count next to the menu entry (`usePendingBarberCount`, `NavQueueCount`).
+- **Stylist app:** unchanged. It already shows the server message on a refused login, so a rejected barber sees the reason; a dedicated resubmit screen that calls `POST /barber/resubmit` is not built yet.
+- **Tests:** none added, by the product owner's instruction for this batch; the "Done when" test items stay open.
+
 ## NS-04: Admin users
 
 - **Guards:** admin.

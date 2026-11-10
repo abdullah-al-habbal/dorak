@@ -3,4 +3,5 @@ export enum BarberStatus {
   Pending = "pending",
   Enabled = "enabled",
   Disabled = "disabled",
+  Rejected = "rejected",
 }

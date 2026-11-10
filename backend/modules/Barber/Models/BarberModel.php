@@ -30,7 +30,7 @@ use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['name', 'bio', 'email', 'phone', 'password', 'has_login', 'status', 'is_freelancer', 'client_id', 'latitude', 'longitude', 'travel_radius_km', 'is_workstation_online', 'managed_by_branch_id', 'universe'])]
+#[Fillable(['name', 'bio', 'email', 'phone', 'password', 'has_login', 'status', 'is_freelancer', 'client_id', 'latitude', 'longitude', 'travel_radius_km', 'is_workstation_online', 'managed_by_branch_id', 'universe', 'rejection_reason', 'reviewed_at', 'submission_count'])]
 #[Hidden(['password', 'remember_token'])]
 #[Table('barbers')]
 #[Translatable(['name', 'bio'])]
@@ -131,6 +131,8 @@ class BarberModel extends Authenticatable implements FilamentUser
             'status' => BarberStatusEnum::class,
             'universe' => VenueUniverse::class,
             'email_verified_at' => 'datetime',
+            'reviewed_at' => 'datetime',
+            'submission_count' => 'integer',
             'password' => 'hashed',
             'has_login' => 'boolean',
             'is_freelancer' => 'boolean',

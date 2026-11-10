@@ -1,6 +1,7 @@
 import { arAnalytics } from "@/locales/ar/analytics.constant";
 import { arSettings } from "@/locales/ar/settings.constant";
 import { arAdminPayouts } from "@/locales/ar/admin-payouts.constant";
+import { arBarberApprovals } from "@/locales/ar/barber-approvals.constant";
 import { arAdminBrands } from "@/locales/ar/admin-brands.constant";
 import { arAdminCatalog } from "@/locales/ar/admin-catalog.constant";
 import { arAdminSubscriptions } from "@/locales/ar/admin-subscriptions.constant";
@@ -40,6 +41,7 @@ export const arDictionary: Dictionary = {
   plans: arPlans,
   adminSubscriptions: arAdminSubscriptions,
   adminBrands: arAdminBrands,
+  barberApprovals: arBarberApprovals,
   adminCatalog: arAdminCatalog,
   reviews: arReviews,
   schedule: arSchedule,

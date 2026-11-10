@@ -21,7 +21,7 @@ use Modules\Core\Enums\AccountAccessScope;
  *   branch-managed barber is also blocked while the managing branch is disabled.
  * - `onboarding`: pending or enabled — profile read and email verification,
  *   reachable with the token a self-registered (pending) barber receives.
- * - `approved`: anything but pending — self activation/deactivation, so a
+ * - `approved`: anything but pending or rejected — self activation/deactivation, so a
  *   barber awaiting admin approval cannot activate themselves.
  */
 final class EnsureBarberAccountAccess
@@ -38,7 +38,7 @@ final class EnsureBarberAccountAccess
 
         $allowed = match (AccountAccessScope::fromParameter($scope)) {
             AccountAccessScope::Onboarding => in_array($status, [BarberStatusEnum::Pending, BarberStatusEnum::Enabled], true),
-            AccountAccessScope::Approved => $status !== BarberStatusEnum::Pending,
+            AccountAccessScope::Approved => ! in_array($status, [BarberStatusEnum::Pending, BarberStatusEnum::Rejected], true),
             default => $status === BarberStatusEnum::Enabled && ! $this->managingBranchDisabled($barber),
         };
 

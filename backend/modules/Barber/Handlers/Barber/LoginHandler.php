@@ -9,6 +9,7 @@ use Modules\Activation\Exceptions\AccountNotActiveException;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\CQRS\Command\Barber\LoginCommand;
 use Modules\Barber\Enums\BarberStatusEnum;
+use Modules\Barber\Exceptions\BarberRejectedException;
 use Modules\Barber\Repositories\LoginEloquentResolver;
 use Modules\Barber\ValuesObjects\LoginResult;
 use Modules\Core\Enums\TokenAbility;
@@ -29,6 +30,10 @@ final class LoginHandler
 
         if ($barber->isBanned()) {
             throw new AccountBannedException;
+        }
+
+        if ($barber->getAttribute('status') === BarberStatusEnum::Rejected) {
+            throw new BarberRejectedException((string) $barber->getAttribute('rejection_reason'));
         }
 
         if ($barber->getAttribute('status') !== BarberStatusEnum::Enabled) {

@@ -4,7 +4,7 @@ export const arStylists: Dictionary["stylists"] = {
   title: "المصففون",
   newStylist: "مصفف جديد",
   filters: { search: "ابحث بالاسم", status: "الحالة", allStatuses: "كل الحالات", chair: "الكرسي", allChairs: "كل الكراسي", clear: "مسح التصفية", toolbar: "تصفية المصففين" },
-  status: { pending: "بانتظار الموافقة", enabled: "نشط", disabled: "غير نشط" },
+  status: { pending: "بانتظار الموافقة", enabled: "نشط", disabled: "غير نشط", rejected: "مرفوض" },
   columns: { name: "المصفف", phone: "الهاتف", chair: "الكرسي", status: "الحالة", active: "نشط" },
   noChair: "بدون كرسي",
   toggle: { activate: "تفعيل {name}", deactivate: "إيقاف {name}" },

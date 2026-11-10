@@ -2,7 +2,7 @@ export const enStylists = {
   title: "Stylists",
   newStylist: "New stylist",
   filters: { search: "Search by name", status: "Status", allStatuses: "All statuses", chair: "Chair", allChairs: "All chairs", clear: "Clear filters", toolbar: "Stylist filters" },
-  status: { pending: "Awaiting approval", enabled: "Active", disabled: "Inactive" },
+  status: { pending: "Awaiting approval", enabled: "Active", disabled: "Inactive", rejected: "Rejected" },
   columns: { name: "Stylist", phone: "Phone", chair: "Chair", status: "Status", active: "Active" },
   noChair: "No chair",
   toggle: { activate: "Activate {name}", deactivate: "Deactivate {name}" },
