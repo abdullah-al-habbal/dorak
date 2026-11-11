@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Support;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Modules\Branch\Models\BranchModel;
 use Modules\Dashboard\CQRS\Query\ShowBranchQuery;
@@ -22,5 +23,20 @@ final readonly class ScopedBranchResolver
         $branch = $this->handler->handle(new ShowBranchQuery($branchId, $actor->scopedBrandIds(), $actor->scopedBranchIds()));
 
         return $branch;
+    }
+
+    /**
+     * Like `resolve`, for the operations the shop's own team performs (the job board): a platform
+     * administrator is refused, matching the proxy allow-list's manager and owner guards.
+     */
+    public function resolveForTeam(Request $request, string $branchId): BranchModel
+    {
+        /** @var DashboardActor $actor */
+        $actor = $request->attributes->get('dashboard_actor');
+        if ($actor->isPlatformAdmin()) {
+            throw new AuthorizationException(__('dashboard::messages.branch_team_only'));
+        }
+
+        return $this->resolve($request, $branchId);
     }
 }

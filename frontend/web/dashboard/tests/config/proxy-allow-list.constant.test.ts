@@ -217,3 +217,27 @@ describe("proxy allow-list: the account page", () => {
     }
   });
 });
+
+describe("proxy allow-list: job applications", () => {
+  const applications = "branches/b1/job-postings/p1/applications";
+
+  it("lets the shop team read, mark as seen and decide", () => {
+    for (const guard of [AuthActor.Manager, AuthActor.Owner]) {
+      expect(allowed(HttpMethod.Get, applications, guard)).toBe(true);
+      expect(allowed(HttpMethod.Post, `${applications}/mark-seen`, guard)).toBe(true);
+      expect(allowed(HttpMethod.Patch, `${applications}/a1/status`, guard)).toBe(true);
+    }
+  });
+
+  it("keeps admins and barbers out of the applicants' data", () => {
+    for (const guard of [AuthActor.Admin, AuthActor.Barber]) {
+      expect(allowed(HttpMethod.Get, applications, guard)).toBe(false);
+      expect(allowed(HttpMethod.Post, `${applications}/mark-seen`, guard)).toBe(false);
+    }
+  });
+
+  it("does not allow other methods on mark-seen", () => {
+    expect(allowed(HttpMethod.Get, `${applications}/mark-seen`, AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Put, `${applications}/mark-seen`, AuthActor.Manager)).toBe(false);
+  });
+});

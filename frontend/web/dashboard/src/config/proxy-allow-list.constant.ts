@@ -54,6 +54,7 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/job-postings$`), guards: [AuthActor.Manager, AuthActor.Owner] },
   { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}$`), guards: [AuthActor.Manager, AuthActor.Owner] },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications$`), guards: [AuthActor.Manager, AuthActor.Owner] },
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications/mark-seen$`), guards: [AuthActor.Manager, AuthActor.Owner] },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications/${ID}/status$`), guards: [AuthActor.Manager, AuthActor.Owner] },
   // NS-16 barber invitations: everyone with branch access reads; only the branch teams act (the admin has no stake in who works at a shop).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/affiliations$`), guards: OPERATIONS },

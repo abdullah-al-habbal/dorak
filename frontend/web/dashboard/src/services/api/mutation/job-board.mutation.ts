@@ -45,3 +45,13 @@ export async function deleteJobPosting(branchId: string, id: string): Promise<vo
 export function updateApplicationStatus(branchId: string, postingId: string, id: string, status: string): Promise<JobApplication> {
   return apiRequest(`${postingsPath(branchId)}/${encodeURIComponent(postingId)}/applications/${encodeURIComponent(id)}/status`, { method: HttpMethod.Patch, body: { status }, schema: jobApplicationSchema });
 }
+
+export interface MarkApplicationsSeenVariables {
+  branchId: string;
+  postingId: string;
+}
+
+/** Opening a vacancy's applications is a read; marking the new ones as seen is this explicit call. */
+export async function markApplicationsSeen({ branchId, postingId }: MarkApplicationsSeenVariables): Promise<void> {
+  await apiRequest(`${postingsPath(branchId)}/${encodeURIComponent(postingId)}/applications/mark-seen`, { method: HttpMethod.Post, schema: z.unknown() });
+}

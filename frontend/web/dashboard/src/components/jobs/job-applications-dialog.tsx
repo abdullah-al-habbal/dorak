@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { JSX } from "react";
 
 import { EmptyState } from "@/components/common/empty-state";
@@ -13,6 +13,7 @@ import type { ApplicationStatus } from "@/enums/application-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { useJobApplications } from "@/hooks/use-job-applications";
+import { useMarkApplicationsSeen } from "@/hooks/use-mark-applications-seen";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useUpdateApplicationStatus } from "@/hooks/use-update-application-status";
 import { localizedText } from "@/lib/booking-format.util";
@@ -33,9 +34,15 @@ export function JobApplicationsDialog({ branchId, posting, onClose }: JobApplica
   const { jobs: t } = dictionary;
   const overlay = useOverlay();
   const update = useUpdateApplicationStatus();
+  const { mutate: markSeen } = useMarkApplicationsSeen();
   const [page, setPage] = useState(FIRST_PAGE);
   const query = useJobApplications(branchId, posting.id, page);
   const items = query.data?.items ?? [];
+
+  // Opening the vacancy is what makes its new applications "seen"; the list read itself stays free of side effects.
+  useEffect(() => {
+    markSeen({ branchId, postingId: posting.id });
+  }, [markSeen, branchId, posting.id]);
 
   function changeStatus(application: JobApplication, status: ApplicationStatus): void {
     update.mutate({ branchId, postingId: posting.id, id: application.id, status });

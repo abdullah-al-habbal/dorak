@@ -153,7 +153,7 @@ describe('Dashboard branch job postings', function () use ($posting): void {
 });
 
 describe('Dashboard branch applications', function (): void {
-    it('lists snapshot fields, marks them seen and applies a valid decision', function (): void {
+    it('lists snapshot fields without changing them, marks them seen on request and applies a valid decision', function (): void {
         $branch = BranchModel::factory()->create();
         $job = JobPostingModel::factory()->create(['branch_id' => $branch->id]);
         $application = ApplicationModel::factory()->create(['job_posting_id' => $job->id]);
@@ -162,7 +162,13 @@ describe('Dashboard branch applications', function (): void {
         $this->getJson("/api/v1/dashboard/branches/{$branch->id}/job-postings/{$job->id}/applications")
             ->assertOk()
             ->assertJsonPath('data.0.profile_snapshot.bio', $application->profile_snapshot['bio'])
-            ->assertJsonPath('data.0.status', 'seen');
+            ->assertJsonPath('data.0.status', ApplicationStatus::Submitted->value);
+        expect($application->fresh()->status)->toBe(ApplicationStatus::Submitted);
+
+        $this->postJson("/api/v1/dashboard/branches/{$branch->id}/job-postings/{$job->id}/applications/mark-seen")
+            ->assertOk()
+            ->assertJsonPath('data.updated', 1);
+        expect($application->fresh()->status)->toBe(ApplicationStatus::Seen);
 
         $path = "/api/v1/dashboard/branches/{$branch->id}/job-postings/{$job->id}/applications/{$application->id}/status";
         $this->patchJson($path, ['status' => ApplicationStatus::Accepted])->assertOk()->assertJsonPath('data.status', ApplicationStatus::Accepted->value);

@@ -7,6 +7,8 @@ namespace Modules\Marketing\Http\Requests\Admin;
 use Illuminate\Validation\Rule;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 use Modules\Marketing\Constants\MarketingAdminConstants;
+use Modules\Marketing\Models\TestimonialModel;
+use Modules\Marketing\Rules\TrustedMediaUrlRule;
 
 /** Create (`POST`) and update (`PUT .../{testimonial}`). An author appears once per section. */
 final class SaveTestimonialRequest extends BaseApiFormRequest
@@ -27,9 +29,16 @@ final class SaveTestimonialRequest extends BaseApiFormRequest
             'body' => ['required', 'array:en,ar'],
             'body.en' => ['required', 'string', 'max:'.MarketingAdminConstants::TESTIMONIAL_BODY_MAX_LENGTH],
             'body.ar' => ['required', 'string', 'max:'.MarketingAdminConstants::TESTIMONIAL_BODY_MAX_LENGTH],
-            'avatar_url' => ['nullable', 'string', 'max:'.MarketingAdminConstants::TEXT_MAX_LENGTH],
+            'avatar_url' => ['nullable', 'string', 'max:'.MarketingAdminConstants::TEXT_MAX_LENGTH, new TrustedMediaUrlRule($this->currentAvatarUrl())],
             'rating' => ['required', 'integer', 'between:'.MarketingAdminConstants::RATING_MIN.','.MarketingAdminConstants::RATING_MAX],
             'sort_order' => ['sometimes', 'integer', 'min:0', 'max:'.MarketingAdminConstants::SORT_ORDER_MAX],
         ];
+    }
+
+    private function currentAvatarUrl(): ?string
+    {
+        $testimonial = TestimonialModel::query()->find($this->route('testimonial'));
+
+        return $testimonial instanceof TestimonialModel ? $testimonial->avatar_url : null;
     }
 }

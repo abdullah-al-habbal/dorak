@@ -9,4 +9,5 @@ return [
     'section_saved' => 'تم حفظ القسم.',
     'testimonial_saved' => 'تم حفظ الشهادة.',
     'testimonial_deleted' => 'تم حذف الشهادة.',
+    'media_url_untrusted' => 'يجب أن تكون الصورة مسارًا على هذا الموقع أو عنوان https على مضيف موثوق.',
 ];

@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Core\Providers\BaseModuleServiceProvider;
 use Modules\Dashboard\Console\Commands\PurgeUnverifiedSignupsCommand;
+use Modules\Dashboard\Constants\DashboardBarberLookupConstants;
 use Modules\Dashboard\Constants\DashboardPasswordResetConstants;
 use Modules\Dashboard\Constants\OwnerRegistrationConstants;
 use Modules\Dashboard\Policies\BarberSchedulePolicy;
@@ -42,6 +44,7 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
         Gate::policy(BarberServiceOverrideModel::class, BarberServiceOverridePolicy::class);
         $this->registerPasswordResetLimiters();
         $this->registerOwnerRegistrationLimiters();
+        $this->registerBarberLookupLimiter();
 
         $this->app->afterResolving(Schedule::class, function (Schedule $schedule): void {
             $schedule->command(OwnerRegistrationConstants::PURGE_COMMAND)
@@ -63,6 +66,28 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
         ]);
 
         RateLimiter::for(DashboardPasswordResetConstants::DASHBOARD_PASSWORD_RESET_LIMITER, fn (Request $request): Limit => Limit::perMinute(DashboardPasswordResetConstants::DASHBOARD_PASSWORD_RESET_PER_IP_PER_MINUTE)->by('ip:'.$request->ip()));
+    }
+
+    /**
+     * Lookups reveal whether an exact email or phone belongs to a stylist, so they are budgeted per
+     * signed-in account (falling back to the IP), not per IP: offices share one address.
+     */
+    private function registerBarberLookupLimiter(): void
+    {
+        RateLimiter::for(DashboardBarberLookupConstants::BARBER_LOOKUP_LIMITER, fn (Request $request): Limit => Limit::perMinute(DashboardBarberLookupConstants::BARBER_LOOKUP_PER_ACCOUNT_PER_MINUTE)->by('barber-lookup:'.$this->accountKey($request)));
+    }
+
+    /** Throttle middleware runs before the dashboard session middleware, so the account is read straight from the token's guards. */
+    private function accountKey(Request $request): string
+    {
+        foreach (DashboardBarberLookupConstants::ACCOUNT_GUARDS as $guard) {
+            $account = $request->user($guard);
+            if ($account instanceof Model) {
+                return $account->getMorphClass().':'.$account->getKey();
+            }
+        }
+
+        return 'ip:'.$request->ip();
     }
 
     /** Sign-ups and resends share one budget per IP and per email; the verify step has its own, looser one. */

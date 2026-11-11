@@ -9,4 +9,5 @@ return [
     'section_saved' => 'Section saved.',
     'testimonial_saved' => 'Testimonial saved.',
     'testimonial_deleted' => 'Testimonial deleted.',
+    'media_url_untrusted' => 'The image must be a path on this site or an https address on a trusted host.',
 ];
