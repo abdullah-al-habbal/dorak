@@ -76,3 +76,10 @@ The backend is ready for all four tasks, so only the allow-list rules and the sc
 - **Backend: Ready.** `GET /barbers/{barber}/services` and `PUT|DELETE /barbers/{barber}/services/{service}/override`. Audit finding G6 counted this page as built, but it doesn't exist in this dashboard.
 - **Dashboard:** a "Pricing" tab in the stylist's detail page, showing the default and the override, with a reset action.
 - **Done when:** E2E covers setting and clearing an override, and checks that the booking price follows it.
+
+### NS-18 as built
+
+- **Backend:** no change. `GET /barbers/{barber}/services?brand_id=` returns each service with the brand's effective terms plus the barber's defaults; `PUT|DELETE .../{service}/override` sets or clears them. The policy lets the brand's owner act only for a barber who works for that brand.
+- **Dashboard:** in the owner's stylist form, a "Pricing" button opens a dialog listing the stylist's services with the default beside editable price and duration, a "Your terms" or "Stylist's default" badge, Save, and Reset to default (an owner with several brands picks one). A value equal to the default is sent as no override. The proxy allows these routes for the owner only.
+- **Mobile:** no change.
+- **Not done:** tests (skipped by instruction); the "booking price follows the override" check is backend behaviour already covered by its own tests, with no E2E here.

@@ -59,6 +59,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/affiliations$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^barber-lookup$/, guards: [AuthActor.Manager, AuthActor.Owner] },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/affiliations(/${ID}/(accept|reject|terminate))?$`), guards: [AuthActor.Manager, AuthActor.Owner] },
+  // NS-18 per-brand stylist pricing: the brand owner sets a stylist's terms (the backend checks the stylist works for that brand).
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^barbers/${ID}/services$`), guards: [AuthActor.Owner] },
+  { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^barbers/${ID}/services/${ID}/override$`), guards: [AuthActor.Owner] },
   // NS-07 clients and bans (admin only).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/clients(/${ID}(/(bookings|reviews))?)?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/clients/${ID}/ban$`), guards: ADMIN_ONLY },

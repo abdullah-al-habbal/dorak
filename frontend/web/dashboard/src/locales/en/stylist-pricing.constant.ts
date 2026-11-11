@@ -1,0 +1,23 @@
+export const enStylistPricing = {
+  open: "Pricing",
+  title: "Pricing for {name}",
+  description: "Set your brand's price and duration for this stylist's services. Reset returns a service to the stylist's own terms.",
+  brand: "Brand",
+  services: "Services",
+  default: "Stylist's default",
+  overridden: "Your terms",
+  defaultTerms: "Default: {price}, {duration} min",
+  price: "Price ({currency})",
+  duration: "Duration (minutes)",
+  save: "Save",
+  reset: "Reset to default",
+  invalid: "Enter a valid price and a whole number of minutes.",
+  nothing: "Change the price or duration to differ from the default.",
+  toast: { saved: "Pricing saved.", cleared: "Back to the stylist's default.", failed: "The pricing couldn't be changed. This stylist may not work for this brand." },
+  states: {
+    emptyTitle: "No services",
+    emptyBody: "This stylist hasn't added any services yet.",
+    errorTitle: "Pricing couldn't load",
+    errorBody: "Check your connection, then try again.",
+  },
+} as const;

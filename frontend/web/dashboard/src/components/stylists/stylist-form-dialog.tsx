@@ -12,12 +12,14 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
+import { AuthActor } from "@/enums/auth-actor.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useChairOptions } from "@/hooks/use-chair-options";
 import { useDeleteStylist } from "@/hooks/use-delete-stylist";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useSaveStylist } from "@/hooks/use-save-stylist";
+import { useAuthStore } from "@/store/auth.store";
 import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
 import { localizedText } from "@/lib/booking-format.util";
 import { emptyStylistForm, formToStylistPayload, stylistToForm } from "@/lib/stylist-form.util";
@@ -36,6 +38,7 @@ export function StylistFormDialog({ stylist, onClose }: StylistFormDialogProps):
   const f = t.form;
   const creating = stylist === undefined;
   const overlay = useOverlay();
+  const isOwner = useAuthStore((state) => state.actor) === AuthActor.Owner;
   const chairs = useChairOptions();
   const save = useSaveStylist();
   const remove = useDeleteStylist();
@@ -104,6 +107,7 @@ export function StylistFormDialog({ stylist, onClose }: StylistFormDialogProps):
             </NativeSelect>
           </FormField>
           <DialogFooter>
+            {stylist && isOwner ? <Button type="button" variant="outline" disabled={busy} onClick={() => { onClose(); overlay.open({ kind: OverlayKind.StylistPricing, stylist }); }}>{dictionary.stylistPricing.open}</Button> : null}
             {stylist ? <Button type="button" variant="ghost" className="me-auto text-destructive" disabled={busy} onClick={confirmDelete}>{f.delete}</Button> : null}
             <Button type="button" variant="ghost" disabled={busy} onClick={onClose}>{common.cancel}</Button>
             <LoadingButton type="submit" loading={busy}>{creating ? f.create : f.save}</LoadingButton>

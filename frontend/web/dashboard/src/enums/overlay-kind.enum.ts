@@ -29,4 +29,5 @@ export enum OverlayKind {
   CatalogCategoryDetail = "catalog-category-detail",
   JobPostingForm = "job-posting-form",
   JobApplications = "job-applications",
+  StylistPricing = "stylist-pricing",
 }
