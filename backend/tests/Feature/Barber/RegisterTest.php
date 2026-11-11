@@ -10,6 +10,7 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Mail\BarberEmailVerificationCode;
 use Modules\Barber\Models\BarberModel;
+use Modules\Barber\Services\BarberReviewService;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
 
@@ -129,14 +130,18 @@ describe('the sign-up token of a pending barber', function (): void {
         'job applications' => ['GET', '/api/v1/applications'],
     ]);
 
-    it('gains full access only after an admin activates the barber', function (): void {
+    it('gains full access only after the review queue approves the barber', function (): void {
         [$token, $barber] = registerBarber();
 
         $this->withToken($token)->getJson('/api/v1/barber/schedule')->assertForbidden();
 
+        // The legacy activate route cannot approve a pending barber; only the review queue can.
         $this->actingAs(AdminModel::factory()->create(), 'admin_api')
             ->postJson("/api/v1/admin/barbers/{$barber->id}/activate", ['reason' => 'Vetted'])
-            ->assertSuccessful();
+            ->assertStatus(409);
+        expect($barber->fresh()->status)->toBe(BarberStatusEnum::Pending);
+
+        app(BarberReviewService::class)->approve((string) $barber->getKey());
         expect($barber->fresh()->status)->toBe(BarberStatusEnum::Enabled);
 
         app('auth')->forgetGuards();

@@ -29,6 +29,18 @@ final class BarberActivationService
         return $this->move($barberId, BarberStatusEnum::Disabled, BarberStatusEnum::Enabled, $admin, $reason);
     }
 
+    /**
+     * The legacy toggle routes (admin, branch manager) may only switch a barber the review queue already approved:
+     * a pending or rejected barber stays where NS-30 put it. Repeating an on or off stays allowed (idempotent).
+     */
+    public function ensureToggleable(string $barberId): void
+    {
+        $status = BarberModel::query()->findOrFail($barberId)->status;
+        if ($status === BarberStatusEnum::Pending || $status === BarberStatusEnum::Rejected) {
+            throw BarberActivationException::notApproved();
+        }
+    }
+
     private function move(string $barberId, BarberStatusEnum $from, BarberStatusEnum $to, AdminModel $admin, ?string $reason): BarberModel
     {
         return DB::transaction(function () use ($barberId, $from, $to, $admin, $reason): BarberModel {

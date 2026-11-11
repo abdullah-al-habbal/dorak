@@ -10,7 +10,7 @@ use Modules\Branch\Services\BranchLifecycleService;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
 
-/** D9: the owner (or a manager of that branch) switches a branch on or off; the route default `on` picks the direction. */
+/** D9: the owner (or a platform admin) switches a branch on or off; branch managers are refused by the route middleware. The route default `on` picks the direction. */
 final class SwitchBranchAction extends BaseApiAction
 {
     public function __construct(private readonly BranchLifecycleService $lifecycle) {}

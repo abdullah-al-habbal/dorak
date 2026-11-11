@@ -8,6 +8,7 @@ use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
+use Modules\Client\Models\ClientModel;
 
 describe('Dashboard Branch API', function (): void {
     beforeEach(function (): void {
@@ -82,6 +83,28 @@ describe('Dashboard Branch API', function (): void {
 
         $this->patchJson("/api/v1/dashboard/branches/{$this->branch->id}/switch-off")->assertStatus(409);
         expect($this->branch->fresh()->status->value)->toBe(BranchStatusEnum::Enabled->value);
+    });
+
+    it('refuses a branch manager on switch-on and switch-off (D9: owner and admin only)', function (): void {
+        $this->branch->forceFill(['status' => BranchStatusEnum::Disabled])->save();
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->patchJson("/api/v1/dashboard/branches/{$this->branch->id}/switch-on")->assertForbidden();
+        $this->patchJson("/api/v1/dashboard/branches/{$this->branch->id}/switch-off")->assertForbidden();
+        expect($this->branch->fresh()->status->value)->toBe(BranchStatusEnum::Disabled->value);
+    });
+
+    it('lets the owner switch their own branch but not another brand branch', function (): void {
+        $owner = ClientModel::factory()->create();
+        $brand = BrandModel::factory()->create(['owner_id' => $owner->id]);
+        $mine = BranchModel::factory()->count(2)->create(['brand_id' => $brand->id])->first();
+        $foreign = BranchModel::factory()->create();
+        $this->authenticateDashboardActor($owner);
+
+        $this->patchJson("/api/v1/dashboard/branches/{$mine->id}/switch-off")->assertOk();
+        expect($mine->fresh()->status->value)->toBe(BranchStatusEnum::Disabled->value);
+        $this->patchJson("/api/v1/dashboard/branches/{$foreign->id}/switch-off")->assertNotFound();
+        expect($foreign->fresh()->status->value)->toBe(BranchStatusEnum::Enabled->value);
     });
 
     it('requires a password when an admin creates a branch', function (): void {

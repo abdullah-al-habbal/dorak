@@ -155,3 +155,22 @@ it('blocks discovery preferences without auth', function () {
 
     $response->assertUnauthorized();
 });
+
+it('does not let another client update or delete a saved filter', function () {
+    $created = $this->postJson('/api/v1/client/saved-filters', [
+        'name' => 'My Filter',
+        'filter_criteria' => ['universe' => 'men'],
+    ])->json('data');
+
+    $this->actingAs(ClientModel::factory()->create(), 'client');
+
+    $this->putJson("/api/v1/client/saved-filters/{$created['id']}", [
+        'name' => 'Stolen',
+        'filter_criteria' => ['universe' => 'women'],
+    ])->assertNotFound();
+    // A delete is scoped by client: for a foreign id it is the same silent no-op as for a missing one.
+    $this->deleteJson("/api/v1/client/saved-filters/{$created['id']}")->assertOk();
+
+    $this->actingAs($this->client, 'client');
+    expect($this->getJson("/api/v1/client/saved-filters/{$created['id']}")->json('data.name'))->toBe('My Filter');
+});

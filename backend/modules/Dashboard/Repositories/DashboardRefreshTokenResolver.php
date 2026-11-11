@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Repositories;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Modules\Admin\Models\AdminModel;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Models\DashboardRefreshTokenModel;
 use Modules\Dashboard\Support\DashboardActor;
@@ -109,11 +110,21 @@ final class DashboardRefreshTokenResolver
     private function actorFromRecord(DashboardRefreshTokenModel $record): ?DashboardActor
     {
         return match ($record->actor_type) {
-            DashboardActorTypeEnum::Admin => new DashboardActor($record->actor_id, DashboardActorTypeEnum::Admin, 'platform_admin', null),
+            DashboardActorTypeEnum::Admin => $this->activeAdminActor($record->actor_id),
             DashboardActorTypeEnum::Branch => new DashboardActor($record->actor_id, DashboardActorTypeEnum::Branch, 'branch_manager', $record->actor_id),
             DashboardActorTypeEnum::Barber => new DashboardActor($record->actor_id, DashboardActorTypeEnum::Barber, 'barber', null),
             DashboardActorTypeEnum::Owner => $this->ownerActors->forClientId($record->actor_id),
         };
+    }
+
+    /** NS-04: a deactivated or deleted admin cannot renew a session; the caller revokes the token. */
+    private function activeAdminActor(string $adminId): ?DashboardActor
+    {
+        $admin = AdminModel::query()->find($adminId);
+
+        return $admin instanceof AdminModel && $admin->isActive()
+            ? DashboardActor::platformAdmin($adminId)
+            : null;
     }
 
     private function hash(string $plainText): string

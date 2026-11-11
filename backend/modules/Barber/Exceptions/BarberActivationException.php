@@ -14,6 +14,8 @@ final class BarberActivationException extends RuntimeException
 
     public const string CODE_NOT_DISABLED = 'barber_not_disabled';
 
+    public const string CODE_NOT_APPROVED = 'barber_not_approved';
+
     private function __construct(private readonly string $errorCode, string $messageKey)
     {
         parent::__construct(__($messageKey));
@@ -27,6 +29,11 @@ final class BarberActivationException extends RuntimeException
     public static function notDisabled(): self
     {
         return new self(self::CODE_NOT_DISABLED, 'barber::messages.activation_not_disabled');
+    }
+
+    public static function notApproved(): self
+    {
+        return new self(self::CODE_NOT_APPROVED, 'barber::messages.activation_not_approved');
     }
 
     public function render(): JsonResponse

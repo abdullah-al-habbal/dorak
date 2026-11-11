@@ -35,6 +35,15 @@ describe("proxy allow-list: branch reviews", () => {
   });
 });
 
+describe("proxy allow-list: branch switch (D9)", () => {
+  it.each(["switch-on", "switch-off"])("lets owners and admins %s but never managers or barbers", (action) => {
+    expect(allowed(HttpMethod.Patch, `branches/b1/${action}`, AuthActor.Owner)).toBe(true);
+    expect(allowed(HttpMethod.Patch, `branches/b1/${action}`, AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Patch, `branches/b1/${action}`, AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Patch, `branches/b1/${action}`, AuthActor.Barber)).toBe(false);
+  });
+});
+
 describe("proxy allow-list: owner payouts and subscription", () => {
   it.each(["payouts", "subscription"])("allows only the owner to read %s", (path) => {
     expect(allowed(HttpMethod.Get, path, AuthActor.Owner)).toBe(true);

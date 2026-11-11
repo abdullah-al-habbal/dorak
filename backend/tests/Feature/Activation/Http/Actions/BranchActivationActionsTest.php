@@ -12,7 +12,7 @@ use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 
 it('activates a branch as admin', function () {
-    $branch = BranchModel::factory()->create();
+    $branch = BranchModel::factory()->create(['status' => BranchStatusEnum::Disabled]);
     $this->actingAs(AdminModel::factory()->create(), 'admin_api');
 
     $response = $this->postJson("/api/v1/admin/branches/{$branch->id}/activate", [
@@ -26,6 +26,7 @@ it('activates a branch as admin', function () {
 
 it('deactivates a branch as admin and does not delete it', function () {
     $branch = BranchModel::factory()->create();
+    BranchModel::factory()->create(['brand_id' => $branch->brand_id]);
     $this->actingAs(AdminModel::factory()->create(), 'admin_api');
 
     $response = $this->postJson("/api/v1/admin/branches/{$branch->id}/deactivate");
@@ -108,6 +109,7 @@ it('removes a deactivated branch from explore results', function () {
         'latitude' => 33.5,
         'longitude' => 36.3,
     ]);
+    BranchModel::factory()->create(['brand_id' => $branch->brand_id]);
     $this->actingAs(AdminModel::factory()->create(), 'admin_api');
     $this->postJson("/api/v1/admin/branches/{$branch->id}/deactivate")->assertCreated();
 
@@ -116,3 +118,47 @@ it('removes a deactivated branch from explore results', function () {
     $response->assertOk();
     expect($response->json('data'))->toHaveCount(0);
 });
+
+it('keeps a suspended branch suspended on the legacy activate and deactivate routes', function (string $action) {
+    $branch = BranchModel::factory()->create(['status' => BranchStatusEnum::Suspended]);
+    $this->actingAs(AdminModel::factory()->create(), 'admin_api');
+
+    $this->postJson("/api/v1/admin/branches/{$branch->id}/{$action}")->assertStatus(409);
+
+    expect($branch->refresh()->status->value)->toBe(BranchStatusEnum::Suspended->value);
+})->with(['activate', 'deactivate']);
+
+it('refuses to deactivate the last enabled branch of a brand on the legacy route', function () {
+    $branch = BranchModel::factory()->create();
+    $this->actingAs(AdminModel::factory()->create(), 'admin_api');
+
+    $this->postJson("/api/v1/admin/branches/{$branch->id}/deactivate")->assertStatus(409);
+
+    expect($branch->refresh()->status->value)->toBe(BranchStatusEnum::Enabled->value);
+});
+
+it('records the legacy branch switch in the status history', function () {
+    $branch = BranchModel::factory()->create();
+    BranchModel::factory()->create(['brand_id' => $branch->brand_id]);
+    $admin = AdminModel::factory()->create();
+    $this->actingAs($admin, 'admin_api');
+
+    $this->postJson("/api/v1/admin/branches/{$branch->id}/deactivate")->assertCreated();
+
+    $this->getJson("/api/v1/admin/audit/branch/{$branch->id}")->assertOk()->assertJsonPath('data.0.to_status', 'disabled');
+});
+
+it('refuses a branch switching a pending or rejected barber it manages', function (BarberStatusEnum $status, string $action) {
+    $branch = BranchModel::factory()->create();
+    $barber = BarberModel::factory()->create(['managed_by_branch_id' => $branch->id, 'status' => $status]);
+    $this->actingAs($branch, 'branch_api');
+
+    $this->postJson("/api/v1/branch/barbers/{$barber->id}/{$action}")->assertStatus(409);
+
+    expect($barber->refresh()->status)->toBe($status);
+})->with([
+    'pending activate' => [BarberStatusEnum::Pending, 'activate'],
+    'rejected activate' => [BarberStatusEnum::Rejected, 'activate'],
+    'pending deactivate' => [BarberStatusEnum::Pending, 'deactivate'],
+    'rejected deactivate' => [BarberStatusEnum::Rejected, 'deactivate'],
+]);

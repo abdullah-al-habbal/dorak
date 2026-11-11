@@ -125,3 +125,14 @@ it('registers the purge command in the scheduler', function () {
 
     expect($events)->not->toBeEmpty();
 });
+
+it('forbids another client from setting a photo as primary', function () {
+    uploadFacePhoto($this->client, true);
+    $second = uploadFacePhoto($this->client, false)->json('data.id');
+
+    $this->actingAs(ClientModel::factory()->create(), 'client')
+        ->patchJson("/api/v1/client/face-profile/{$second}/primary")
+        ->assertForbidden();
+
+    expect(ClientFaceProfileModel::query()->findOrFail($second)->is_primary)->toBeFalse();
+});

@@ -13,5 +13,6 @@ final readonly class ToggleActivationCommand
         public ActivableTypeEnum $activableType,
         public bool $activate,
         public ?string $reason,
+        public ?string $activatedById = null,
     ) {}
 }

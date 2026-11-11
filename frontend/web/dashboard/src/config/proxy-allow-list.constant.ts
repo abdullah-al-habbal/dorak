@@ -97,8 +97,8 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Post], pattern: new RegExp(`^brands/${ID}/resubmit$`), guards: OWNER_ONLY },
   // NS-13: an existing owner adds another brand (it starts pending).
   { methods: [HttpMethod.Post], pattern: /^brands$/, guards: OWNER_ONLY },
-  // NS-06 / D9 branch lifecycle: the owner and the branch's manager switch on or off, the admin suspends and reactivates.
-  { methods: [HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/switch-(on|off)$`), guards: OPERATIONS },
+  // NS-06 / D9 branch lifecycle: the owner (and the admin) switch on or off; managers do not (the backend answers 403). Only the admin suspends and reactivates.
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/switch-(on|off)$`), guards: BRANDS },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/branches/${ID}/(suspend|reactivate)$`), guards: ADMIN_ONLY },
   // NS-04 admin users: list, invite, edit, deactivate, reactivate, resend the invitation. Admin only; the backend re-checks.
   { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^admin\/admins$/, guards: ADMIN_ONLY },

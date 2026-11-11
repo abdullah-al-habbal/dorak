@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Hash;
 use Modules\Admin\Models\AdminModel;
+use Modules\Admin\Services\AdminUserService;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
@@ -201,6 +202,24 @@ describe('Dashboard auth API', function (): void {
         $this->postJson('/api/v1/dashboard/refresh', [
             'refresh_token' => $originalRefresh,
         ])->assertUnauthorized();
+    });
+
+    it('refuses to rotate the refresh token of a deactivated admin', function (): void {
+        $admin = AdminModel::factory()->create(['email' => 'admin@example.test', 'password' => Hash::make('password')]);
+        $other = AdminModel::factory()->create();
+
+        $login = $this->postJson('/api/v1/dashboard/login', [
+            'actor_type' => 'admin',
+            'email' => $admin->email,
+            'password' => 'password',
+        ])->assertOk();
+
+        app(AdminUserService::class)->deactivate($admin->id, $other->id);
+
+        $this->postJson('/api/v1/dashboard/refresh', [
+            'refresh_token' => (string) $login->json('data.refresh_token'),
+        ])->assertUnauthorized();
+        expect(DashboardRefreshTokenModel::query()->where('actor_id', $admin->id)->whereNull('revoked_at')->count())->toBe(0);
     });
 
     it('rejects an expired refresh token', function (): void {

@@ -30,6 +30,12 @@ final readonly class DashboardActor implements Authorizable
         return Gate::forUser($this)->check($abilities, $arguments);
     }
 
+    /** A platform-admin actor for code paths outside the dashboard middleware (for example the legacy `admin_api` routes). */
+    public static function platformAdmin(string $adminId): self
+    {
+        return new self($adminId, DashboardActorTypeEnum::Admin, 'platform_admin', null);
+    }
+
     public function isPlatformAdmin(): bool
     {
         return $this->actorType === DashboardActorTypeEnum::Admin;

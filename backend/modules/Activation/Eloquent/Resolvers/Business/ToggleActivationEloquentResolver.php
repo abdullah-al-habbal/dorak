@@ -23,6 +23,7 @@ final class ToggleActivationEloquentResolver
             'activable_type' => $command->activableType,
             'status' => $command->activate ? ActivationStatusEnum::Enabled : ActivationStatusEnum::Disabled,
             'reason' => $command->reason,
+            'activated_by_id' => $command->activatedById,
             'activated_at' => now(),
         ]);
     }

@@ -20,5 +20,6 @@ return [
     'account_rejected' => 'Your account was not approved: :reason. Resubmit it after fixing your profile.',
     'activation_not_enabled' => 'Only an active barber can be deactivated.',
     'activation_not_disabled' => 'Only a deactivated barber can be reactivated.',
+    'activation_not_approved' => 'A barber that is pending approval or was rejected cannot be switched on or off.',
     'activation_toggled' => 'Barber updated.',
 ];

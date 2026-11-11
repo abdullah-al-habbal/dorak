@@ -20,5 +20,6 @@ return [
     'account_rejected' => 'لم تتم الموافقة على حسابك: :reason. أعد تقديمه بعد تعديل ملفك.',
     'activation_not_enabled' => 'لا يمكن إيقاف إلا الحلاق النشط.',
     'activation_not_disabled' => 'لا يمكن إعادة تفعيل إلا الحلاق الموقوف.',
+    'activation_not_approved' => 'لا يمكن تفعيل أو إيقاف حلاق قيد المراجعة أو مرفوض.',
     'activation_toggled' => 'تم تحديث الحلاق.',
 ];
