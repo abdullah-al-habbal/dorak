@@ -1,0 +1,11 @@
+/** Basis points in one percent: the backend stores a percent rule as `value_bps` (100 = 1%). */
+export const BPS_PER_PERCENT = 100;
+export const COMMISSION_NOTES_MAX = 2000;
+/** The ledger filter values; the backend takes `settled=1|0` and no parameter for "all". */
+export const SETTLED_ALL = "all";
+export const SETTLED_YES = "settled";
+export const SETTLED_NO = "unsettled";
+export const SETTLED_FILTERS = [SETTLED_ALL, SETTLED_NO, SETTLED_YES] as const;
+export type SettledFilter = (typeof SETTLED_FILTERS)[number];
+export const ALL_BRANDS = "";
+export type CommissionView = "rules" | "ledger";

@@ -4,6 +4,7 @@ import { arAdminPayouts } from "@/locales/ar/admin-payouts.constant";
 import { arClients } from "@/locales/ar/clients.constant";
 import { arStylistPricing } from "@/locales/ar/stylist-pricing.constant";
 import { arCurrencies } from "@/locales/ar/currencies.constant";
+import { arCommissions } from "@/locales/ar/commissions.constant";
 import { arJobs } from "@/locales/ar/jobs.constant";
 import { arInvitations } from "@/locales/ar/invitations.constant";
 import { arFloorPlan } from "@/locales/ar/floor-plan.constant";
@@ -59,6 +60,7 @@ export const arDictionary: Dictionary = {
   floorPlan: arFloorPlan,
   invitations: arInvitations,
   jobs: arJobs,
+  commissions: arCommissions,
   currencies: arCurrencies,
   stylistPricing: arStylistPricing,
   clients: arClients,

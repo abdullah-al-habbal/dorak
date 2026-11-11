@@ -79,6 +79,13 @@ The platform runs on seeded values until these exist. They come after phases 1 t
   - amounts per currency, never summed across currencies.
 - **Done when:** E2E covers creating a rule and the ledger filters.
 
+### NS-22 as built
+
+- **Backend:** no change. `/admin/commission-rules` (CRUD) and `GET /admin/commission-entries` (filters `brand_id` and `settled`) were already served and authorized by `CommissionPolicy`.
+- **Dashboard:** an admin "Commissions" screen with a Rules tab (add, edit and delete a rule for everyone, one brand or one branch; a percent is typed as a percent and sent as basis points, a flat amount needs a currency) and a Ledger tab (filter by brand and by paid out or not; each amount in its own currency, with totals per currency for the visible page only, never summed across currencies).
+- **Mobile:** no change.
+- **Not done:** tests (skipped by instruction); the ledger's per-entry rule snapshot is not shown.
+
 ## NS-23: Payment gateways
 
 - **Guards:** admin.

@@ -29,6 +29,7 @@ import { RescheduleDialog } from "@/components/bookings/reschedule-dialog";
 import { ServiceFormDialog } from "@/components/services/service-form-dialog";
 import { CatalogItemFormDialog } from "@/components/catalog-items/catalog-item-form-dialog";
 import { CatalogTagFormDialog } from "@/components/catalog-items/catalog-tag-form-dialog";
+import { CommissionRuleFormDialog } from "@/components/commissions/commission-rule-form-dialog";
 import { CurrencyFormDialog } from "@/components/currencies/currency-form-dialog";
 import { ExchangeRateDialog } from "@/components/currencies/exchange-rate-dialog";
 import { StylistPricingDialog } from "@/components/stylists/stylist-pricing-dialog";
@@ -71,6 +72,8 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <CatalogItemFormDialog item={request.item} onClose={onClose} />;
     case OverlayKind.CatalogTagForm:
       return <CatalogTagFormDialog tag={request.tag} onClose={onClose} />;
+    case OverlayKind.CommissionRuleForm:
+      return <CommissionRuleFormDialog rule={request.rule} onClose={onClose} />;
     case OverlayKind.CurrencyForm:
       return <CurrencyFormDialog currency={request.currency} onClose={onClose} />;
     case OverlayKind.ExchangeRateForm:

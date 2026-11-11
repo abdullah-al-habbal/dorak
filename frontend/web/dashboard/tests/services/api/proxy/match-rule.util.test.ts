@@ -22,7 +22,7 @@ describe("matchProxyRule", () => {
   });
 
   it("denies unknown paths and traversal", () => {
-    expect(matchProxyRule(HttpMethod.Get, "admin/commission-rules").kind).toBe("not-found");
+    expect(matchProxyRule(HttpMethod.Get, "admin/no-such-route").kind).toBe("not-found");
     expect(matchProxyRule(HttpMethod.Get, "bookings/1/../brands").kind).toBe("not-found");
   });
 

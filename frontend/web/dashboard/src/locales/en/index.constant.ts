@@ -4,6 +4,7 @@ import { enAdminPayouts } from "@/locales/en/admin-payouts.constant";
 import { enClients } from "@/locales/en/clients.constant";
 import { enStylistPricing } from "@/locales/en/stylist-pricing.constant";
 import { enCurrencies } from "@/locales/en/currencies.constant";
+import { enCommissions } from "@/locales/en/commissions.constant";
 import { enJobs } from "@/locales/en/jobs.constant";
 import { enInvitations } from "@/locales/en/invitations.constant";
 import { enFloorPlan } from "@/locales/en/floor-plan.constant";
@@ -58,6 +59,7 @@ export const enDictionary = {
   floorPlan: enFloorPlan,
   invitations: enInvitations,
   jobs: enJobs,
+  commissions: enCommissions,
   currencies: enCurrencies,
   stylistPricing: enStylistPricing,
   clients: enClients,
