@@ -185,10 +185,11 @@ describe("proxy allow-list: admin catalog", () => {
     expect(allowed(HttpMethod.Get, "admin/catalog-items", guard)).toBe(false);
   });
 
-  it("keeps catalog items read only and rejects unknown category paths", () => {
-    expect(allowed(HttpMethod.Post, "admin/catalog-items", AuthActor.Admin)).toBe(false);
-    expect(allowed(HttpMethod.Put, "admin/catalog-items/i1", AuthActor.Admin)).toBe(false);
-    expect(allowed(HttpMethod.Delete, "admin/catalog-items/i1", AuthActor.Admin)).toBe(false);
+  it("lets only the admin write catalog items (NS-21) and rejects unknown category paths", () => {
+    expect(allowed(HttpMethod.Post, "admin/catalog-items", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Put, "admin/catalog-items/i1", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Delete, "admin/catalog-items/i1", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Post, "admin/catalog-items", AuthActor.Owner)).toBe(false);
     expect(allowed(HttpMethod.Patch, "admin/catalog-categories/c1", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Get, "admin/catalog-categories/c1/children", AuthActor.Admin)).toBe(false);
   });

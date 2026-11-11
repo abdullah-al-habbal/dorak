@@ -161,10 +161,13 @@ use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 use Modules\Review\Http\Actions\Admin\ListAdminReviewsAction;
 use Modules\Review\Http\Actions\Admin\ResolveReviewDisputeAction;
 use Modules\ServiceCatalog\Http\Actions\Admin\DestroyCatalogCategoryAction;
+use Modules\ServiceCatalog\Http\Actions\Admin\DestroyCatalogTagAction;
 use Modules\ServiceCatalog\Http\Actions\Admin\ListAdminCatalogCategoriesAction;
 use Modules\ServiceCatalog\Http\Actions\Admin\SetCatalogCategoryActiveAction;
 use Modules\ServiceCatalog\Http\Actions\Admin\StoreCatalogCategoryAction;
+use Modules\ServiceCatalog\Http\Actions\Admin\StoreCatalogTagAction;
 use Modules\ServiceCatalog\Http\Actions\Admin\UpdateCatalogCategoryAction;
+use Modules\ServiceCatalog\Http\Actions\Admin\UpdateCatalogTagAction;
 use Modules\ServiceCatalog\Http\Actions\Client\CreateCatalogItemAction;
 use Modules\ServiceCatalog\Http\Actions\Client\DeleteCatalogItemAction;
 use Modules\ServiceCatalog\Http\Actions\Client\UpdateCatalogItemAction;
@@ -265,6 +268,9 @@ Route::prefix('dashboard')->group(function (): void {
         Route::patch('/catalog-categories/{category}/active', SetCatalogCategoryActiveAction::class);
         Route::delete('/catalog-categories/{category}', DestroyCatalogCategoryAction::class);
         Route::get('/catalog-tags', ListCatalogTagsAction::class);
+        Route::post('/catalog-tags', StoreCatalogTagAction::class);
+        Route::put('/catalog-tags/{tag}', UpdateCatalogTagAction::class);
+        Route::delete('/catalog-tags/{tag}', DestroyCatalogTagAction::class);
 
         Route::get('/subscription-plans', ListSubscriptionPlansAction::class);
         Route::post('/subscription-plans', StoreSubscriptionPlanAction::class);

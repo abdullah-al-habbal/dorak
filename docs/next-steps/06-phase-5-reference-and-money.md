@@ -62,6 +62,13 @@ The platform runs on seeded values until these exist. They come after phases 1 t
 - **Dashboard:** turn the read-only items preview in Catalog into full CRUD, and add tag management.
 - **Done when:** E2E covers the item CRUD and tag assignment.
 
+### NS-21 as built
+
+- **Backend:** tag writes are new (`POST|PUT|DELETE /admin/catalog-tags`, `ServiceCatalogItemTagPolicy`, soft delete, generated slug); the tag list returns `slug`, `is_active` and `items_count`. Item CRUD was ready and is unchanged.
+- **Dashboard:** the Catalog screen has Categories, Items and Tags tabs. Items: filter by category and search, add or edit (names, slug, category, description, default duration, active, tags) and delete behind a confirmation. Tags: add, edit (names, group, active) and delete. The proxy allows item and tag writes for the admin only.
+- **Mobile:** no change.
+- **Not done:** (1) catalog media (images): the dashboard has no file-upload path yet (multipart through the proxy), so images are not managed here; the list and the `media` field of an item stay read-only; (2) price range, face shape, hair texture and the other style attributes are kept as they are on edit but cannot be set from the form; (3) tests (skipped by instruction; the tag routes were smoke-checked with a throwaway Pest test that was not kept). One existing Vitest assertion (items were read only) was updated to the new rule.
+
 ## NS-22: Commission rules and ledger
 
 - **Guards:** admin.

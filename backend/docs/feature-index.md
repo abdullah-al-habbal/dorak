@@ -145,3 +145,6 @@ Authorization via `DashboardEarningsAuthorizationMiddleware` / `DashboardOwnerAu
 
 ## Languages (NS-20)
 - Admin-only `GET /api/v1/dashboard/admin/languages` and `PATCH .../{language}/active`, authorized through `LanguagePolicy`. `languages.is_active` (default true) switches an existing language on or off; the default language can't be switched off (409). No create or delete: a new language needs translations in code. Nothing else reads the flag yet.
+
+## Catalog tags (NS-21)
+- Admin-only `POST /api/v1/dashboard/admin/catalog-tags`, `PUT .../{tag}` and `DELETE .../{tag}` (soft delete), authorized through `ServiceCatalogItemTagPolicy`; the slug is generated from the English name. `GET /admin/catalog-tags` now also returns `slug`, `is_active` and `items_count`. Item CRUD (`/admin/catalog-items`) was already served and is now used by the dashboard.

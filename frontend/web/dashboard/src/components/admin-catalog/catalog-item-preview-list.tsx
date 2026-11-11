@@ -12,7 +12,7 @@ import { localizedText } from "@/lib/booking-format.util";
 const LOADING_ROWS = 3;
 const LOADING_ROW_CLASS = "h-9";
 
-/** Read-only: catalog items are edited in the admin panel (Filament), never from this list. */
+/** Read-only preview inside the category dialog; items are edited on the Items tab. */
 export function CatalogItemPreviewList({ categoryId }: { categoryId: string }): JSX.Element {
   const { dictionary, locale } = useI18n();
   const { detail } = dictionary.adminCatalog;

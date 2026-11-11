@@ -1,13 +1,17 @@
 "use client";
 
 import { InfoIcon } from "lucide-react";
+import { useState } from "react";
 import type { JSX } from "react";
 
+import { CatalogItemsPanel } from "@/components/catalog-items/catalog-items-panel";
+import { CatalogTagsPanel } from "@/components/catalog-items/catalog-tags-panel";
 import { AdminCatalogToolbar } from "@/components/admin-catalog/admin-catalog-toolbar";
 import { CatalogCategoryList } from "@/components/admin-catalog/catalog-category-list";
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { Button } from "@/components/ui/button";
+import type { CatalogView } from "@/config/admin-catalog.constant";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
@@ -27,7 +31,27 @@ export function AdminCatalogScreen({ actor }: { actor: AuthActor }): JSX.Element
     const { states } = dictionary.adminCatalog;
     return <EmptyState variant="forbidden" title={states.forbiddenTitle} body={states.forbiddenBody} />;
   }
-  return <AdminCatalogContent />;
+  return <AdminCatalogTabs />;
+}
+
+/** Categories, the items under them, and the tags that group items. */
+function AdminCatalogTabs(): JSX.Element {
+  const { dictionary } = useI18n();
+  const { adminCatalog: t } = dictionary;
+  const [view, setView] = useState<CatalogView>("categories");
+  const views: readonly CatalogView[] = ["categories", "items", "tags"];
+  return (
+    <div className="flex flex-col gap-5">
+      <div role="group" aria-label={t.tabsLabel} className="flex gap-2">
+        {views.map((value) => (
+          <Button key={value} type="button" size="sm" variant={view === value ? "default" : "outline"} aria-pressed={view === value} onClick={() => setView(value)}>{t.tabs[value]}</Button>
+        ))}
+      </div>
+      {view === "categories" ? <AdminCatalogContent /> : null}
+      {view === "items" ? <CatalogItemsPanel /> : null}
+      {view === "tags" ? <CatalogTagsPanel /> : null}
+    </div>
+  );
 }
 
 function AdminCatalogContent(): JSX.Element {
