@@ -33,6 +33,7 @@ export enum OverlayKind {
   CurrencyForm = "currency-form",
   CatalogItemForm = "catalog-item-form",
   CommissionRuleForm = "commission-rule-form",
+  PaymentGatewayForm = "payment-gateway-form",
   CatalogTagForm = "catalog-tag-form",
   ExchangeRateForm = "exchange-rate-form",
 }

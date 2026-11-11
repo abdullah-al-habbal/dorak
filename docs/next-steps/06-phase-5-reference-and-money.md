@@ -97,6 +97,14 @@ The platform runs on seeded values until these exist. They come after phases 1 t
   - the security review is required.
 - **Done when:** E2E covers creating and toggling a gateway, and a check confirms no secret appears in any response.
 
+### NS-23 as built
+
+- **Backend:** no change. `/admin/payment-gateways` CRUD and `PATCH .../active` already existed. The model hides `gateway_settings` and the resource returns only the names of the keys that are set. The default gateway and the last active one can't be switched off or deleted (409).
+- **Dashboard:** a "Payment gateways" section on the Settings screen: a switch per gateway, a Default badge, "Credentials set: key names", and an add/edit dialog (code, both names, integration, order, active, default). Credentials are write-only: typed into password fields, sent once, never shown; leaving them empty keeps the stored ones and adding any replaces all of them. The proxy allows these routes for the admin only.
+- **Security review:** the responses of list, create, update and activate were checked with a throwaway Pest test (a secret value never appears; the key names do); the admin guard is enforced by the proxy and by `DashboardAdminAuthorizationMiddleware` plus `PaymentGatewayPolicy`. The test was not kept.
+- **Mobile:** no change.
+- **Not done:** tests (skipped by instruction). Only the `offline` integration exists today, so the dialog offers that driver.
+
 ## NS-24: Payout detail
 
 - **Guards:** admin; the owner's read-only view.

@@ -5,6 +5,7 @@ import type { JSX } from "react";
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { LanguagesSection } from "@/components/platform-settings/languages-section";
+import { PaymentGatewaysSection } from "@/components/payment-gateways/payment-gateways-section";
 import { PlatformSettingsForm } from "@/components/platform-settings/platform-settings-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
@@ -39,6 +40,7 @@ function PlatformSettingsContent(): JSX.Element {
         {query.isError && !query.data ? <ErrorState title={t.states.errorTitle} body={t.states.errorBody} onRetry={() => query.refetch()} /> : null}
         {query.data ? <PlatformSettingsForm settings={query.data} /> : null}
       </div>
+      <PaymentGatewaysSection />
       <LanguagesSection />
     </div>
   );

@@ -123,7 +123,7 @@ describe("proxy allow-list: admin billing (Module 9)", () => {
     expect(allowed(HttpMethod.Put, "admin/payouts/p1/approve", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Patch, "admin/payouts/p1/refund", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Delete, "admin/subscriptions/s1", AuthActor.Admin)).toBe(false);
-    expect(allowed(HttpMethod.Get, "admin/payment-gateways", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Get, "admin/no-such-route", AuthActor.Admin)).toBe(false);
     expect(allowed(HttpMethod.Get, "admin/payouts/p1", AuthActor.Admin)).toBe(false);
   });
 });
