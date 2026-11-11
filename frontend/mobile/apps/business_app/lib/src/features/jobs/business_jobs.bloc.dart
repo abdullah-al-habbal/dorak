@@ -65,6 +65,8 @@ class BusinessJobsBloc extends Cubit<BusinessJobsState> {
 
   Future<void> loadApplicants(String jobId) async {
     emit(state.copyWith(loading: true, applicants: const [], clearError: true));
+    await _markSeen(jobId);
+    if (isClosed) return;
     try {
       final page = await _repository.getBranchApplications(jobId);
       if (isClosed) return;
@@ -72,6 +74,15 @@ class BusinessJobsBloc extends Cubit<BusinessJobsState> {
     } catch (error) {
       if (isClosed) return;
       emit(state.copyWith(loading: false, error: error));
+    }
+  }
+
+  /// Best-effort: the list is read-only, so a failed mark-seen never blocks it.
+  Future<void> _markSeen(String jobId) async {
+    try {
+      await _repository.markBranchApplicationsSeen(jobId);
+    } catch (_) {
+      // Intentionally ignored: marking seen is informational.
     }
   }
 

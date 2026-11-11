@@ -98,6 +98,7 @@ void main() {
     await repository.saveBranchJobPosting({'title': {}}, id: 'j1');
     await repository.deleteBranchJobPosting('j1');
     await repository.getBranchApplications('j1');
+    await repository.markBranchApplicationsSeen('j1');
     await repository.updateBranchApplicationStatus('j1', 'app1', 'accepted');
 
     expect(
@@ -108,6 +109,7 @@ void main() {
         'PUT /branch/job-postings/j1',
         'DELETE /branch/job-postings/j1',
         'GET /branch/job-postings/j1/applications',
+        'POST /branch/job-postings/j1/applications/mark-seen',
         'PATCH /branch/job-postings/j1/applications/app1/status',
       ],
     );

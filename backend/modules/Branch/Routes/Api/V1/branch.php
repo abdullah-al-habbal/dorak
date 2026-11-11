@@ -20,6 +20,7 @@ use Modules\Branch\Http\Actions\Branch\ListJobPostingsAction;
 use Modules\Branch\Http\Actions\Branch\ListReviewsAction;
 use Modules\Branch\Http\Actions\Branch\LoginAction;
 use Modules\Branch\Http\Actions\Branch\LogoutAction;
+use Modules\Branch\Http\Actions\Branch\MarkApplicationsSeenAction;
 use Modules\Branch\Http\Actions\Branch\RefreshTokenAction;
 use Modules\Branch\Http\Actions\Branch\RejectAffiliationAction;
 use Modules\Branch\Http\Actions\Branch\ResetPasswordAction;
@@ -68,6 +69,7 @@ Route::prefix('branch')->name('branch.')->group(function (): void {
         Route::put('/job-postings/{jobPosting}', UpdateJobPostingAction::class)->name('job-postings.update');
         Route::delete('/job-postings/{jobPosting}', DeleteJobPostingAction::class)->name('job-postings.delete');
         Route::get('/job-postings/{jobPosting}/applications', ListApplicationsAction::class)->name('job-postings.applications');
+        Route::post('/job-postings/{jobPosting}/applications/mark-seen', MarkApplicationsSeenAction::class)->name('job-postings.applications.mark-seen');
         Route::patch('/job-postings/{jobPosting}/applications/{application}/status', UpdateApplicationStatusAction::class)->name('job-postings.applications.status');
         Route::get('/reviews', ListReviewsAction::class)->name('reviews.list');
     });

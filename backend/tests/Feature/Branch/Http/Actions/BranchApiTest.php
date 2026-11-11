@@ -432,7 +432,7 @@ describe('Branch API', function () {
                 $response->assertNotFound();
             });
 
-            it('marks submitted applications as seen on the first fetch', function () {
+            it('does not change any application status when listing', function () {
                 $jobPosting = JobPostingModel::factory()->create(['branch_id' => $this->branch->id]);
                 $application = ApplicationModel::factory()->create([
                     'job_posting_id' => $jobPosting->id,
@@ -441,7 +441,43 @@ describe('Branch API', function () {
 
                 $this->getJson("/api/v1/branch/job-postings/{$jobPosting->id}/applications")->assertOk();
 
-                expect($application->fresh()->status->value)->toBe(ApplicationStatus::Seen->value);
+                expect($application->fresh()->status->value)->toBe(ApplicationStatus::Submitted->value);
+            });
+        });
+
+        describe('POST /api/v1/branch/job-postings/{jobPosting}/applications/mark-seen', function () {
+            it('moves only submitted applications to seen and is idempotent', function () {
+                $jobPosting = JobPostingModel::factory()->create(['branch_id' => $this->branch->id]);
+                $new = ApplicationModel::factory()->create(['job_posting_id' => $jobPosting->id, 'status' => ApplicationStatus::Submitted]);
+                $accepted = ApplicationModel::factory()->create(['job_posting_id' => $jobPosting->id, 'status' => ApplicationStatus::Accepted]);
+                $rejected = ApplicationModel::factory()->create(['job_posting_id' => $jobPosting->id, 'status' => ApplicationStatus::Rejected]);
+                $url = "/api/v1/branch/job-postings/{$jobPosting->id}/applications/mark-seen";
+
+                $this->postJson($url)->assertOk()->assertJsonPath('data.updated', 1);
+                $this->postJson($url)->assertOk()->assertJsonPath('data.updated', 0);
+
+                expect($new->fresh()->status->value)->toBe(ApplicationStatus::Seen->value);
+                expect($accepted->fresh()->status->value)->toBe(ApplicationStatus::Accepted->value);
+                expect($rejected->fresh()->status->value)->toBe(ApplicationStatus::Rejected->value);
+            });
+
+            it('returns 404 and changes nothing for another branch posting', function () {
+                $foreign = JobPostingModel::factory()->create();
+                $application = ApplicationModel::factory()->create(['job_posting_id' => $foreign->id, 'status' => ApplicationStatus::Submitted]);
+
+                $this->postJson("/api/v1/branch/job-postings/{$foreign->id}/applications/mark-seen")->assertNotFound();
+
+                expect($application->fresh()->status->value)->toBe(ApplicationStatus::Submitted->value);
+            });
+
+            it('leaves other postings of the same branch untouched', function () {
+                $first = JobPostingModel::factory()->create(['branch_id' => $this->branch->id]);
+                $second = JobPostingModel::factory()->create(['branch_id' => $this->branch->id]);
+                $other = ApplicationModel::factory()->create(['job_posting_id' => $second->id, 'status' => ApplicationStatus::Submitted]);
+
+                $this->postJson("/api/v1/branch/job-postings/{$first->id}/applications/mark-seen")->assertOk()->assertJsonPath('data.updated', 0);
+
+                expect($other->fresh()->status->value)->toBe(ApplicationStatus::Submitted->value);
             });
         });
 
@@ -472,6 +508,7 @@ describe('Branch API', function () {
                 ['GET', '/api/v1/branch/bookings'],
                 ['GET', '/api/v1/branch/job-postings'],
                 ['GET', '/api/v1/branch/reviews'],
+                ['POST', '/api/v1/branch/job-postings/any/applications/mark-seen'],
             ];
 
             foreach ($endpoints as [$method, $uri]) {

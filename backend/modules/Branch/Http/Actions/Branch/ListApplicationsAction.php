@@ -7,11 +7,11 @@ namespace Modules\Branch\Http\Actions\Branch;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Core\Http\Actions\BaseApiAction;
-use Modules\JobPosting\Enums\ApplicationStatus;
 use Modules\JobPosting\Http\Resources\Barber\ApplicationResource;
 use Modules\JobPosting\Models\ApplicationModel;
 use Modules\JobPosting\Models\JobPostingModel;
 
+/** Read-only: marking applications as seen is its own call (`MarkApplicationsSeenAction`). */
 final class ListApplicationsAction extends BaseApiAction
 {
     public function __invoke(Request $request, string $jobPosting): JsonResponse
@@ -19,10 +19,6 @@ final class ListApplicationsAction extends BaseApiAction
         $branch = $request->user('branch_api');
 
         JobPostingModel::where('branch_id', $branch->id)->findOrFail($jobPosting);
-
-        ApplicationModel::where('job_posting_id', $jobPosting)
-            ->where('status', ApplicationStatus::Submitted)
-            ->update(['status' => ApplicationStatus::Seen]);
 
         $applications = ApplicationModel::where('job_posting_id', $jobPosting)
             ->with('barber')

@@ -8,6 +8,8 @@ class JobPostingEndpoints {
   static String branchJobPosting(String id) => '$branchJobPostings/$id';
   static String branchApplications(String id) =>
       '${branchJobPosting(id)}/applications';
+  static String branchApplicationsSeen(String id) =>
+      '${branchApplications(id)}/mark-seen';
   static String branchApplicationStatus(String jobId, String applicationId) =>
       '${branchApplications(jobId)}/$applicationId/status';
 }

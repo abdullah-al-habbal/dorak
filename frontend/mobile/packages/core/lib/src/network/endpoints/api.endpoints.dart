@@ -235,6 +235,8 @@ class _JobPostingEndpoints {
       JobPostingEndpoints.branchJobPosting(id);
   String branchApplications(String id) =>
       JobPostingEndpoints.branchApplications(id);
+  String branchApplicationsSeen(String id) =>
+      JobPostingEndpoints.branchApplicationsSeen(id);
   String branchApplicationStatus(String jobId, String applicationId) =>
       JobPostingEndpoints.branchApplicationStatus(jobId, applicationId);
 }

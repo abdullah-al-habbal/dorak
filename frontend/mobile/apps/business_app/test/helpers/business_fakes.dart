@@ -64,6 +64,16 @@ class FakeJobPostingRepository implements JobPostingRepository {
     String jobId,
   ) async => pageOf(applicants);
 
+  int markSeenCalls = 0;
+  Object? markSeenError;
+
+  @override
+  Future<void> markBranchApplicationsSeen(String jobId) async {
+    markSeenCalls++;
+    final error = markSeenError;
+    if (error != null) throw error;
+  }
+
   @override
   Future<JobApplicationDto> updateBranchApplicationStatus(
     String jobId,

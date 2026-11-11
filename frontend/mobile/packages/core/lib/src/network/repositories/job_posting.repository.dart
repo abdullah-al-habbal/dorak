@@ -12,6 +12,7 @@ abstract class JobPostingRepository {
   });
   Future<void> deleteBranchJobPosting(String id);
   Future<PaginatedData<JobApplicationDto>> getBranchApplications(String jobId);
+  Future<void> markBranchApplicationsSeen(String jobId);
   Future<JobApplicationDto> updateBranchApplicationStatus(
     String jobId,
     String applicationId,
@@ -87,6 +88,11 @@ class DioJobPostingRepository implements JobPostingRepository {
         JobApplicationDto.fromJson(json as Map<String, dynamic>),
   );
   @override
+  Future<void> markBranchApplicationsSeen(String jobId) => _client.post<void>(
+    ApiEndpoints.jobPosting.branchApplicationsSeen(jobId),
+    parser: _discardBody,
+  );
+  @override
   Future<JobApplicationDto> updateBranchApplicationStatus(
     String jobId,
     String applicationId,
@@ -96,4 +102,6 @@ class DioJobPostingRepository implements JobPostingRepository {
     data: {'status': status},
     parser: (json) => JobApplicationDto.fromJson(json as Map<String, dynamic>),
   );
+
+  static void _discardBody(dynamic _) {}
 }

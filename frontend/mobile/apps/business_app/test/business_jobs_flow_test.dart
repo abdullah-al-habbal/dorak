@@ -66,6 +66,24 @@ void main() {
     expect(find.text('No job postings yet.'), findsNothing);
   });
 
+  test('opening the applicants marks them seen before listing', () async {
+    await bloc.loadApplicants('job-1');
+
+    expect(repository.markSeenCalls, 1);
+    expect(bloc.state.applicants, isNotEmpty);
+  });
+
+  test('a failed mark-seen never blocks the applicant list', () async {
+    repository.markSeenError = Exception('offline');
+
+    await bloc.loadApplicants('job-1');
+
+    expect(repository.markSeenCalls, 1);
+    expect(bloc.state.loading, isFalse);
+    expect(bloc.state.error, isNull);
+    expect(bloc.state.applicants, isNotEmpty);
+  });
+
   test(
     'an applicant decision updates the row with the backend status',
     () async {
