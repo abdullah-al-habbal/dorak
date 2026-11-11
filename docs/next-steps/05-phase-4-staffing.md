@@ -62,6 +62,13 @@ The backend is ready for all four tasks, so only the allow-list rules and the sc
 - **Dashboard:** a "Jobs" screen with the postings, an application list per posting, and status changes. Accepting an applicant should lead into NS-16.
 - **Done when:** E2E covers posting, an application's status change, and closing the posting.
 
+### NS-17 as built
+
+- **Backend:** no change. The job-posting and application routes under `/branches/{branch}/job-postings` were already on the dashboard API; the job board stays gated by the brand's plan feature (a 403 shows "your plan doesn't include the job board").
+- **Dashboard:** a "Job postings" screen for managers and owners (an owner picks the branch). Each posting shows its status, type, location and application count. The create / edit dialog takes both languages and, when editing, a status (close or reopen) and a delete behind a confirmation. "Applications" opens the applicants (the barber's profile as it was when they applied) with accept and reject; an accepted applicant has "Invite to branch", which opens the NS-16 invitation dialog with the barber already chosen. The proxy allows reading for every branch guard and writing for manager and owner only.
+- **Mobile:** no change.
+- **Not done:** tests (skipped by instruction); the "seen" status is set by the backend when the list opens, so there is no manual control for it.
+
 ## NS-18: Per-brand stylist pricing
 
 - **Guards:** owner.

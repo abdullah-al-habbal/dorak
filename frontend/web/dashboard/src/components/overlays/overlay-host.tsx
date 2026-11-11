@@ -21,6 +21,8 @@ import { BranchFormDialog } from "@/components/branches/branch-form-dialog";
 import { ChairFormDialog } from "@/components/chairs/chair-form-dialog";
 import { BrandCreateDialog } from "@/components/owner-brand/brand-create-dialog";
 import { ReviewDisputeDialog } from "@/components/reviews/review-dispute-dialog";
+import { JobApplicationsDialog } from "@/components/jobs/job-applications-dialog";
+import { JobPostingFormDialog } from "@/components/jobs/job-posting-form-dialog";
 import { InviteBarberDialog } from "@/components/invitations/invite-barber-dialog";
 import { RateClientDialog } from "@/components/bookings/rate-client-dialog";
 import { RescheduleDialog } from "@/components/bookings/reschedule-dialog";
@@ -49,7 +51,11 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
     case OverlayKind.ReviewDispute:
       return <ReviewDisputeDialog branchId={request.branchId} review={request.review} onClose={onClose} />;
     case OverlayKind.InviteBarber:
-      return <InviteBarberDialog branchId={request.branchId} onClose={onClose} />;
+      return <InviteBarberDialog branchId={request.branchId} barber={request.barber} onClose={onClose} />;
+    case OverlayKind.JobPostingForm:
+      return <JobPostingFormDialog branchId={request.branchId} posting={request.posting} onClose={onClose} />;
+    case OverlayKind.JobApplications:
+      return <JobApplicationsDialog branchId={request.branchId} posting={request.posting} onClose={onClose} />;
     case OverlayKind.RateClient:
       return <RateClientDialog booking={request.booking} onClose={onClose} />;
     case OverlayKind.Reschedule:

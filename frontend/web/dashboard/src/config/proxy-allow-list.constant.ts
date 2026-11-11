@@ -48,8 +48,13 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get], pattern: /^notifications$/, guards: EVERY_ACTOR },
   { methods: [HttpMethod.Post], pattern: /^notifications\/read-all$/, guards: EVERY_ACTOR },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^notifications/${ID}/read$`), guards: EVERY_ACTOR },
-  // NS-09 branch oversight: the admin reads a branch's invitations and job postings (NS-16 and NS-17 add the branch teams' writes).
-  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/job-postings$`), guards: ADMIN_ONLY },
+  // NS-09 branch oversight: the admin reads a branch's job postings; NS-17 gives the branch teams the whole job board.
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/job-postings$`), guards: OPERATIONS },
+  // NS-17 job board: a manager or owner posts vacancies, reads the applications and moves each one through its statuses.
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/job-postings$`), guards: [AuthActor.Manager, AuthActor.Owner] },
+  { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}$`), guards: [AuthActor.Manager, AuthActor.Owner] },
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications$`), guards: [AuthActor.Manager, AuthActor.Owner] },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications/${ID}/status$`), guards: [AuthActor.Manager, AuthActor.Owner] },
   // NS-16 barber invitations: everyone with branch access reads; only the branch teams act (the admin has no stake in who works at a shop).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/affiliations$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^barber-lookup$/, guards: [AuthActor.Manager, AuthActor.Owner] },

@@ -19,12 +19,18 @@ import { localizedText } from "@/lib/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 /** Finds an existing barber by name, email or phone and invites them to the branch, with an optional commission. */
-export function InviteBarberDialog({ branchId, onClose }: { branchId: string; onClose: () => void }): JSX.Element {
+interface InviteBarberDialogProps {
+  branchId: string;
+  barber?: { id: string; name: string };
+  onClose: () => void;
+}
+
+export function InviteBarberDialog({ branchId, barber, onClose }: InviteBarberDialogProps): JSX.Element {
   const { dictionary, locale } = useI18n();
   const { invitations: t, common } = dictionary;
   const invite = useInviteBarber();
   const [term, setTerm] = useState("");
-  const [barberId, setBarberId] = useState<string>();
+  const [barberId, setBarberId] = useState<string | undefined>(barber?.id);
   const [commission, setCommission] = useState("");
   const [error, setError] = useState<string>();
   const lookup = useBarberLookup(term);
@@ -59,9 +65,9 @@ export function InviteBarberDialog({ branchId, onClose }: { branchId: string; on
         </DialogHeader>
         <form onSubmit={submit} noValidate className="flex flex-col gap-4">
           <FormErrorBanner message={error} />
-          <FormField id="barber-lookup" label={t.inviteDialog.search} hint={t.inviteDialog.searchHint.replace("{count}", String(BARBER_LOOKUP_MIN))}>
+          {barber ? <p dir="auto" className="rounded-lg border border-primary px-3 py-2 text-sm font-medium">{barber.name}</p> : <FormField id="barber-lookup" label={t.inviteDialog.search} hint={t.inviteDialog.searchHint.replace("{count}", String(BARBER_LOOKUP_MIN))}>
             <SearchInput value={term || undefined} label={t.inviteDialog.search} onCommit={(value) => { setTerm(value ?? ""); setBarberId(undefined); }} />
-          </FormField>
+          </FormField>}
           {term.length >= BARBER_LOOKUP_MIN && lookup.data && results.length === 0 ? <p className="text-sm text-muted-foreground">{t.inviteDialog.none}</p> : null}
           {lookup.isError ? <p role="alert" className="text-sm text-destructive">{t.inviteDialog.lookupFailed}</p> : null}
           {results.length > 0 ? (

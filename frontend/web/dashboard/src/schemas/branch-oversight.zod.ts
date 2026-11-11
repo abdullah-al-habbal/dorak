@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { optionalTranslationSchema } from "@/schemas/optional-translation.zod";
 import { localizedTextSchema } from "@/schemas/localized-text.zod";
 
 /** `GET /branches/{id}/affiliations` (`DashboardAffiliationResource`): the invitations between a branch and barbers. */
@@ -21,6 +22,9 @@ export const branchInvitationListSchema = z.array(branchInvitationSchema);
 export const branchJobPostingSchema = z.object({
   id: z.string(),
   title: localizedTextSchema,
+  description: localizedTextSchema.nullable().optional(),
+  requirements: optionalTranslationSchema.optional(),
+  location: z.string().nullable().optional(),
   status: z.string(),
   employment_type: z.string().nullable().optional(),
   applications_count: z.number().optional(),

@@ -2,6 +2,7 @@ import { enAnalytics } from "@/locales/en/analytics.constant";
 import { enSettings } from "@/locales/en/settings.constant";
 import { enAdminPayouts } from "@/locales/en/admin-payouts.constant";
 import { enClients } from "@/locales/en/clients.constant";
+import { enJobs } from "@/locales/en/jobs.constant";
 import { enInvitations } from "@/locales/en/invitations.constant";
 import { enFloorPlan } from "@/locales/en/floor-plan.constant";
 import { enOwnerBrand } from "@/locales/en/owner-brand.constant";
@@ -54,6 +55,7 @@ export const enDictionary = {
   ownerBrand: enOwnerBrand,
   floorPlan: enFloorPlan,
   invitations: enInvitations,
+  jobs: enJobs,
   clients: enClients,
   adminCatalog: enAdminCatalog,
   reviews: enReviews,

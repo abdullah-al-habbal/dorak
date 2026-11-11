@@ -21,6 +21,8 @@ import type { ReviewResolveOverlayRequest } from "@/interfaces/review-resolve-ov
 import type { BrandCreateOverlayRequest } from "@/interfaces/brand-create-overlay-request.interface";
 import type { ReviewDisputeOverlayRequest } from "@/interfaces/review-dispute-overlay-request.interface";
 import type { InviteBarberOverlayRequest } from "@/interfaces/invite-barber-overlay-request.interface";
+import type { JobApplicationsOverlayRequest } from "@/interfaces/job-applications-overlay-request.interface";
+import type { JobPostingFormOverlayRequest } from "@/interfaces/job-posting-form-overlay-request.interface";
 import type { RateClientOverlayRequest } from "@/interfaces/rate-client-overlay-request.interface";
 import type { RescheduleOverlayRequest } from "@/interfaces/reschedule-overlay-request.interface";
 import type { ServiceFormOverlayRequest } from "@/interfaces/service-form-overlay-request.interface";
@@ -28,4 +30,4 @@ import type { StylistFormOverlayRequest } from "@/interfaces/stylist-form-overla
 import type { WalkInOverlayRequest } from "@/interfaces/walk-in-overlay-request.interface";
 
 /** Every dialog or sheet the portal can show. Feature modules add their own member here. */
-export type OverlayRequest = ConfirmOverlayRequest | WalkInOverlayRequest | RescheduleOverlayRequest | RateClientOverlayRequest | InviteBarberOverlayRequest | ReviewDisputeOverlayRequest | BrandCreateOverlayRequest | StylistFormOverlayRequest | ServiceFormOverlayRequest | ChairFormOverlayRequest | BranchFormOverlayRequest | PayoutActionOverlayRequest | PlanFormOverlayRequest | AssignSubscriptionOverlayRequest | BrandDetailOverlayRequest | BrandReasonOverlayRequest | BrandEditOverlayRequest | BranchSuspendOverlayRequest | BranchOversightOverlayRequest | BarberApprovalDetailOverlayRequest | BarberRejectOverlayRequest | BarberBanOverlayRequest | ClientDetailOverlayRequest | ClientBanOverlayRequest | AdminUserFormOverlayRequest | ReviewResolveOverlayRequest | CatalogCategoryFormOverlayRequest | CatalogCategoryDetailOverlayRequest;
+export type OverlayRequest = ConfirmOverlayRequest | WalkInOverlayRequest | RescheduleOverlayRequest | RateClientOverlayRequest | InviteBarberOverlayRequest | ReviewDisputeOverlayRequest | BrandCreateOverlayRequest | StylistFormOverlayRequest | ServiceFormOverlayRequest | ChairFormOverlayRequest | BranchFormOverlayRequest | PayoutActionOverlayRequest | PlanFormOverlayRequest | AssignSubscriptionOverlayRequest | BrandDetailOverlayRequest | BrandReasonOverlayRequest | BrandEditOverlayRequest | BranchSuspendOverlayRequest | BranchOversightOverlayRequest | BarberApprovalDetailOverlayRequest | BarberRejectOverlayRequest | BarberBanOverlayRequest | ClientDetailOverlayRequest | ClientBanOverlayRequest | AdminUserFormOverlayRequest | ReviewResolveOverlayRequest | CatalogCategoryFormOverlayRequest | CatalogCategoryDetailOverlayRequest | JobPostingFormOverlayRequest | JobApplicationsOverlayRequest;
