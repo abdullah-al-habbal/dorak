@@ -153,6 +153,7 @@ use Modules\Payment\Http\Actions\Admin\UpdatePaymentGatewayAction;
 use Modules\Payout\Http\Actions\Admin\ApprovePayoutAction;
 use Modules\Payout\Http\Actions\Admin\CancelPayoutAction;
 use Modules\Payout\Http\Actions\Admin\GeneratePayoutsAction;
+use Modules\Payout\Http\Actions\Admin\ListPayoutEntriesAction;
 use Modules\Payout\Http\Actions\Admin\ListPayoutsAction;
 use Modules\Payout\Http\Actions\Admin\MarkPaidPayoutAction;
 use Modules\Payout\Http\Actions\Admin\ShowPayoutAction;
@@ -300,6 +301,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/payouts', ListPayoutsAction::class);
         Route::post('/payouts/generate', GeneratePayoutsAction::class);
         Route::get('/payouts/{payout}', ShowPayoutAction::class);
+        Route::get('/payouts/{payout}/entries', ListPayoutEntriesAction::class);
         Route::patch('/payouts/{payout}/approve', ApprovePayoutAction::class);
         Route::patch('/payouts/{payout}/mark-paid', MarkPaidPayoutAction::class);
         Route::patch('/payouts/{payout}/cancel', CancelPayoutAction::class);

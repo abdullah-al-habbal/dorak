@@ -31,6 +31,7 @@ export function AdminPayoutsScreen(): JSX.Element {
   const clear = () => update({ status: undefined });
   const changePage = (page: number) => update({ page });
   const openAction = (payout: AdminPayout, action: PayoutAction) => overlay.open({ kind: OverlayKind.PayoutAction, payout, action });
+  const openDetail = (payout: AdminPayout) => overlay.open({ kind: OverlayKind.PayoutDetail, payout });
   const confirmGenerate = () =>
     overlay.open({
       kind: OverlayKind.Confirm,
@@ -80,7 +81,7 @@ export function AdminPayoutsScreen(): JSX.Element {
         {items.length > 0 ? (
           <>
             <p className="tabular text-sm text-muted-foreground" aria-live="polite">{t.states.results.replace("{count}", String(page?.total ?? items.length))}</p>
-            <AdminPayoutList payouts={items} onAction={openAction} />
+            <AdminPayoutList payouts={items} onAction={openAction} onSelect={openDetail} />
             {page ? <PaginationBar page={page.current_page} totalPages={page.total_pages} label={t.title} onPageChange={changePage} /> : null}
           </>
         ) : null}

@@ -14,11 +14,13 @@ export const adminPayoutSchema = z.object({
   brand: z.object({ id: z.string(), name: localizedTextSchema }).nullable().optional(),
   period_started_at: z.string().nullable().optional(),
   period_ended_at: z.string().nullable().optional(),
+  approved_by: z.object({ id: z.string(), name: localizedTextSchema }).nullable().optional(),
   approved_at: z.string().nullable().optional(),
   paid_at: z.string().nullable().optional(),
   external_reference: z.string().nullable().optional(),
   notes: z.string().nullable().optional(),
   created_at: z.string(),
+  updated_at: z.string().nullable().optional(),
 });
 
 export const adminPayoutListSchema = z.array(adminPayoutSchema);

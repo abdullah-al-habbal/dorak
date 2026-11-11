@@ -15,7 +15,7 @@ final class ShowPayoutAction extends BaseApiAction
 {
     public function __invoke(Request $request, string $payout): JsonResponse
     {
-        $model = PayoutModel::query()->with(['brand', 'currency'])->findOrFail($payout);
+        $model = PayoutModel::query()->with(['brand', 'currency', 'approver'])->findOrFail($payout);
         Gate::forUser($request->user('admin_api'))->authorize('view', $model);
 
         return $this->ok(data: new PayoutResource($model));

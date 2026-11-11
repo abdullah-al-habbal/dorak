@@ -16,13 +16,14 @@ import type { AdminPayout } from "@/types/admin-payout.type";
 interface AdminPayoutListProps {
   payouts: readonly AdminPayout[];
   onAction: (payout: AdminPayout, action: PayoutAction) => void;
+  onSelect: (payout: AdminPayout) => void;
 }
 
 function getPayoutId(payout: AdminPayout): string {
   return payout.id;
 }
 
-export function AdminPayoutList({ payouts, onAction }: AdminPayoutListProps): JSX.Element {
+export function AdminPayoutList({ payouts, onAction, onSelect }: AdminPayoutListProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { adminPayouts: t, payouts: shared } = dictionary;
 
@@ -69,5 +70,5 @@ export function AdminPayoutList({ payouts, onAction }: AdminPayoutListProps): JS
     ];
   }, [locale, onAction, shared, t]);
 
-  return <DataTable caption={t.title} columns={columns} rows={payouts} getRowId={getPayoutId} />;
+  return <DataTable caption={t.title} columns={columns} rows={payouts} getRowId={getPayoutId} onRowSelect={onSelect} rowLabel={(payout) => t.detail.open + ": " + localizedText(payout.brand?.name, locale)} />;
 }

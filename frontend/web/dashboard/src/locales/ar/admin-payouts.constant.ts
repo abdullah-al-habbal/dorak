@@ -6,6 +6,23 @@ export const arAdminPayouts: Dictionary["adminPayouts"] = {
   generate: "إنشاء مسودات",
   columns: { period: "الفترة", brand: "العلامة", amount: "المبلغ", status: "الحالة", payment: "الدفع", actions: "الإجراءات" },
   actions: { approve: "اعتماد", "mark-paid": "تسجيل كمدفوع", cancel: "إلغاء الدفعة" },
+  detail: {
+    title: "دفعة {brand}",
+    history: "سجل الحالة",
+    created: "إنشاء المسودة",
+    approved: "تمت الموافقة",
+    paid: "تم تسجيل الدفع",
+    cancelled: "أُلغيت",
+    by: "بواسطة {name}",
+    lines: "بنود العمولة",
+    base: "إجمالي الحجز {amount}",
+    noLinesTitle: "لا توجد بنود",
+    noLinesBody: "لا توجد إدخالات عمولة مرتبطة بهذه الدفعة.",
+    linesErrorTitle: "تعذّر تحميل البنود",
+    errorTitle: "تعذّر تحميل الدفعة",
+    errorBody: "تحقق من اتصالك ثم حاول مرة أخرى.",
+    open: "فتح تفاصيل الدفعة",
+  },
   rowAction: "{action}: {brand}، {period}",
   dialog: {
     approve: {

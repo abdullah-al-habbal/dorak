@@ -4,6 +4,23 @@ export const enAdminPayouts = {
   generate: "Generate drafts",
   columns: { period: "Period", brand: "Brand", amount: "Amount", status: "Status", payment: "Payment", actions: "Actions" },
   actions: { approve: "Approve", "mark-paid": "Mark paid", cancel: "Cancel payout" },
+  detail: {
+    title: "Payout for {brand}",
+    history: "Status history",
+    created: "Draft created",
+    approved: "Approved",
+    paid: "Marked paid",
+    cancelled: "Cancelled",
+    by: "by {name}",
+    lines: "Commission lines",
+    base: "Booking total {amount}",
+    noLinesTitle: "No lines",
+    noLinesBody: "No commission entries are attached to this payout.",
+    linesErrorTitle: "The lines couldn't load",
+    errorTitle: "The payout couldn't load",
+    errorBody: "Check your connection, then try again.",
+    open: "Open payout details",
+  },
   rowAction: "{action}: {brand}, {period}",
   dialog: {
     approve: {

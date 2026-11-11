@@ -148,3 +148,6 @@ Authorization via `DashboardEarningsAuthorizationMiddleware` / `DashboardOwnerAu
 
 ## Catalog tags (NS-21)
 - Admin-only `POST /api/v1/dashboard/admin/catalog-tags`, `PUT .../{tag}` and `DELETE .../{tag}` (soft delete), authorized through `ServiceCatalogItemTagPolicy`; the slug is generated from the English name. `GET /admin/catalog-tags` now also returns `slug`, `is_active` and `items_count`. Item CRUD (`/admin/catalog-items`) was already served and is now used by the dashboard.
+
+## Payout detail (NS-24)
+- Admin `GET /api/v1/dashboard/admin/payouts/{payout}` now also returns `approved_by` and `updated_at`; new `GET .../{payout}/entries` lists, paginated, the commission entries a payout settles (its lines), authorized through `PayoutPolicy::view`. The payout status history is derived from `created_at`, `approved_at` (+ approver), `paid_at` and, for a cancelled payout, `updated_at`; there is no separate status log.

@@ -78,6 +78,8 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^admin\/payment-gateways$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^admin/payment-gateways/${ID}$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/payment-gateways/${ID}/active$`), guards: ADMIN_ONLY },
+  // NS-24 payout detail (admin only): one payout and the commission lines it settles.
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/payouts/${ID}(/entries)?$`), guards: ADMIN_ONLY },
   // NS-07 clients and bans (admin only).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/clients(/${ID}(/(bookings|reviews))?)?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/clients/${ID}/ban$`), guards: ADMIN_ONLY },
