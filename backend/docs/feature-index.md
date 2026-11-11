@@ -151,3 +151,6 @@ Authorization via `DashboardEarningsAuthorizationMiddleware` / `DashboardOwnerAu
 
 ## Payout detail (NS-24)
 - Admin `GET /api/v1/dashboard/admin/payouts/{payout}` now also returns `approved_by` and `updated_at`; new `GET .../{payout}/entries` lists, paginated, the commission entries a payout settles (its lines), authorized through `PayoutPolicy::view`. The payout status history is derived from `created_at`, `approved_at` (+ approver), `paid_at` and, for a cancelled payout, `updated_at`; there is no separate status log.
+
+## Website content admin (NS-25)
+- Admin-only, `MarketingContentPolicy` (pages, sections, testimonials) and `OnboardingConfigurationPolicy`: `GET /dashboard/admin/marketing-pages` (pages with ordered sections, plus all testimonials), `PUT .../marketing-pages/{page}` (titles, meta descriptions; the slug is fixed), `PUT .../marketing-sections/{section}` (title, subtitle, structured per-locale body capped at 20,000 bytes, media path, order, audience; page and type are fixed), `POST|PUT|DELETE .../testimonials`, `GET .../onboarding-configs`, `PUT .../onboarding-configs/{config}` (`is_active`, `sort_order`). The public marketing and onboarding reads are unchanged.

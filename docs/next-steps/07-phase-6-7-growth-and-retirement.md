@@ -24,6 +24,13 @@ Routes: [index](index.md) · [decisions](01-decisions.md).
   - a preview.
 - **Done when:** Pest covers the write rules, and E2E covers editing a section and seeing it in the public API.
 
+### NS-25 as built
+
+- **Backend (new):** admin write APIs for the marketing content and the onboarding screens, each behind a Policy: page titles and meta descriptions, section content, order and audience, testimonials (create, edit, delete) and the onboarding hero (switch on or off, order). The public reads are unchanged, so the Laravel website and the apps see edits at once.
+- **Dashboard:** a "Website content" screen (admin only, nav "content") with Pages (pages and their ordered sections, each with its own editor), Testimonials and Onboarding tabs. Every text field is bilingual. The section editor shows a live preview of the heading in both languages. The proxy allows these routes for the admin only.
+- **Mobile:** no change.
+- **Not done:** creating or deleting pages and sections (the Blade templates fix them, so the slug and section type stay read-only); replacing the onboarding image (needs a multipart upload path, as for NS-21); a friendlier editor than JSON for the structured section body; tests (skipped by instruction; the routes were smoke-checked with a throwaway Pest test that was not kept).
+
 ## NS-26: Plan self-service and billing
 
 - **Guards:** owner, admin.

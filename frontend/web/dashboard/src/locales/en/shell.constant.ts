@@ -16,6 +16,7 @@ export const enShell = {
     admins: "Admins",
     brands: "Brands",
     chairs: "Chairs",
+    content: "Content",
     currencies: "Currencies",
     commissions: "Commissions",
     jobs: "Jobs",

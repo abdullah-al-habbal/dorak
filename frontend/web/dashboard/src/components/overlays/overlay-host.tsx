@@ -32,6 +32,9 @@ import { CatalogTagFormDialog } from "@/components/catalog-items/catalog-tag-for
 import { CommissionRuleFormDialog } from "@/components/commissions/commission-rule-form-dialog";
 import { PaymentGatewayFormDialog } from "@/components/payment-gateways/payment-gateway-form-dialog";
 import { PayoutDetailDialog } from "@/components/admin-payouts/payout-detail-dialog";
+import { ContentPageDialog } from "@/components/website-content/content-page-dialog";
+import { ContentSectionDialog } from "@/components/website-content/content-section-dialog";
+import { TestimonialDialog } from "@/components/website-content/testimonial-dialog";
 import { CurrencyFormDialog } from "@/components/currencies/currency-form-dialog";
 import { ExchangeRateDialog } from "@/components/currencies/exchange-rate-dialog";
 import { StylistPricingDialog } from "@/components/stylists/stylist-pricing-dialog";
@@ -80,6 +83,12 @@ export function OverlayHost({ request, onClose }: OverlayHostProps) {
       return <PaymentGatewayFormDialog gateway={request.gateway} onClose={onClose} />;
     case OverlayKind.PayoutDetail:
       return <PayoutDetailDialog payout={request.payout} onClose={onClose} />;
+    case OverlayKind.ContentPageForm:
+      return <ContentPageDialog page={request.page} onClose={onClose} />;
+    case OverlayKind.ContentSectionForm:
+      return <ContentSectionDialog section={request.section} onClose={onClose} />;
+    case OverlayKind.TestimonialForm:
+      return <TestimonialDialog testimonial={request.testimonial} sections={request.sections} onClose={onClose} />;
     case OverlayKind.CurrencyForm:
       return <CurrencyFormDialog currency={request.currency} onClose={onClose} />;
     case OverlayKind.ExchangeRateForm:

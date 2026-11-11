@@ -5,4 +5,8 @@ declare(strict_types=1);
 return [
     'page_not_found' => 'The requested page was not found.',
     'section_not_found' => 'The requested section was not found.',
+    'page_saved' => 'Page saved.',
+    'section_saved' => 'Section saved.',
+    'testimonial_saved' => 'Testimonial saved.',
+    'testimonial_deleted' => 'Testimonial deleted.',
 ];

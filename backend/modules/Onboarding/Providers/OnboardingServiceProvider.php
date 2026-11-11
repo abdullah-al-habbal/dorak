@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Onboarding\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Modules\Core\Providers\BaseModuleServiceProvider;
+use Modules\Onboarding\Models\OnboardingConfigurationModel;
+use Modules\Onboarding\Policies\OnboardingConfigurationPolicy;
 
 final class OnboardingServiceProvider extends BaseModuleServiceProvider
 {
@@ -14,5 +17,10 @@ final class OnboardingServiceProvider extends BaseModuleServiceProvider
         $this->moduleDir = dirname(__DIR__);
         $this->moduleNamespace = __NAMESPACE__;
         $this->moduleName = 'onboarding';
+    }
+
+    protected function afterBoot(): void
+    {
+        Gate::policy(OnboardingConfigurationModel::class, OnboardingConfigurationPolicy::class);
     }
 }
