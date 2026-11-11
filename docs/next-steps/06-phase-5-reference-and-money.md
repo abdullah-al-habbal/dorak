@@ -44,6 +44,13 @@ The platform runs on seeded values until these exist. They come after phases 1 t
 - **Dashboard:** a "Languages" section under Settings.
 - **Done when:** Pest covers the rule that the default language can't be switched off.
 
+### NS-20 as built
+
+- **Backend:** new `languages.is_active` column; admin `GET /admin/languages` and `PATCH /admin/languages/{id}/active` through `LanguagePolicy`. The default language answers 409 when switched off. There is no create or delete.
+- **Dashboard:** a "Languages" section on the Settings screen with a switch per language (the default one is locked on).
+- **Mobile:** no change.
+- **Not done:** tests (skipped by instruction; smoke-checked with a throwaway Pest test that was not kept). No other code reads `is_active` yet, so switching a language off does not yet hide it anywhere.
+
 ## NS-21: Catalog items, tags and media
 
 - **Guards:** admin.

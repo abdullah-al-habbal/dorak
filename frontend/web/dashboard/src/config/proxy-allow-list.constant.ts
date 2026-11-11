@@ -67,6 +67,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Put], pattern: new RegExp(`^admin/currencies/${ID}$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/currencies/${ID}/active$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Delete], pattern: new RegExp(`^admin/exchange-rates/${ID}$`), guards: ADMIN_ONLY },
+  // NS-20 languages: the admin switches the existing languages on and off.
+  { methods: [HttpMethod.Get], pattern: /^admin\/languages$/, guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/languages/${ID}/active$`), guards: ADMIN_ONLY },
   // NS-07 clients and bans (admin only).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/clients(/${ID}(/(bookings|reviews))?)?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/clients/${ID}/ban$`), guards: ADMIN_ONLY },

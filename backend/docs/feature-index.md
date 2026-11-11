@@ -142,3 +142,6 @@ Authorization via `DashboardEarningsAuthorizationMiddleware` / `DashboardOwnerAu
 ## Currencies and exchange rates (NS-19)
 - Admin-only `GET|POST /api/v1/dashboard/admin/currencies`, `PUT .../{currency}`, `PATCH .../{currency}/active` and `GET|POST /admin/exchange-rates`, `DELETE /admin/exchange-rates/{rate}`; writes go through `CurrencyPolicy`.
 - `currencies.is_active` (default true): a currency is retired, never deleted; the default currency can't be retired (409). The public and operations `GET /currencies` list active currencies only; conversion still works for retired ones. Rates are a history, the newest one in effect wins.
+
+## Languages (NS-20)
+- Admin-only `GET /api/v1/dashboard/admin/languages` and `PATCH .../{language}/active`, authorized through `LanguagePolicy`. `languages.is_active` (default true) switches an existing language on or off; the default language can't be switched off (409). No create or delete: a new language needs translations in code. Nothing else reads the flag yet.

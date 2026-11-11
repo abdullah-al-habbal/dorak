@@ -48,6 +48,16 @@ export const enSettings = {
   },
   errors: { generic: "The settings couldn't be saved. Try again." },
   toast: { saved: "Settings saved." },
+  languages: {
+    title: "Languages",
+    description: "Switch the platform's languages on or off. A new language needs translations in code, so it can't be added here.",
+    default: "Default",
+    switchOn: "Switch on {name}",
+    switchOff: "Switch off {name}",
+    errorTitle: "Languages couldn't load",
+    errorBody: "Check your connection, then try again.",
+    toast: { on: "Language switched on.", off: "Language switched off.", failed: "The change couldn't be made. The default language can't be switched off." },
+  },
   states: {
     loading: "Loading settings",
     errorTitle: "Settings couldn't load",

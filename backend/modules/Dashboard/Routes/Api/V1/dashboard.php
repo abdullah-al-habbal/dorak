@@ -143,6 +143,8 @@ use Modules\Dashboard\Http\Middleware\DashboardBrandAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardEarningsAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOperationsAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOwnerAuthorizationMiddleware;
+use Modules\Language\Http\Actions\Admin\ListAdminLanguagesAction;
+use Modules\Language\Http\Actions\Admin\SetLanguageActiveAction;
 use Modules\Payment\Http\Actions\Admin\DestroyPaymentGatewayAction;
 use Modules\Payment\Http\Actions\Admin\ListPaymentGatewaysAction;
 use Modules\Payment\Http\Actions\Admin\SetPaymentGatewayActiveAction;
@@ -247,6 +249,8 @@ Route::prefix('dashboard')->group(function (): void {
         Route::post('/exchange-rates', StoreExchangeRateAction::class);
         Route::delete('/exchange-rates/{rate}', DestroyExchangeRateAction::class);
         Route::get('/currencies', ListAdminCurrenciesAction::class);
+        Route::get('/languages', ListAdminLanguagesAction::class);
+        Route::patch('/languages/{language}/active', SetLanguageActiveAction::class);
         Route::post('/currencies', StoreCurrencyAction::class);
         Route::put('/currencies/{currency}', UpdateCurrencyAction::class);
         Route::patch('/currencies/{currency}/active', SetCurrencyActiveAction::class);
