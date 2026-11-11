@@ -138,3 +138,7 @@ Authorization via `DashboardEarningsAuthorizationMiddleware` / `DashboardOwnerAu
 - Public `POST /api/v1/dashboard/owner/{register,code/resend,verify,brand}`: one answer for every email, verify opens the owner session, an existing client adds a brand with their password. Limits 5/min per IP and 5/hour per email (verify 10 and 10).
 - `BrandApprovalGuard` (D11) keeps a pending brand to its profile and one prepared branch; the dashboard brand list and approval only see verified owners; `OwnerBrandMailer` sends the submitted, approved and rejected emails (en and ar, queued); `signups:purge-unverified` removes sign-ups unverified after 7 days.
 - Tests: `tests/Feature/Dashboard/OwnerRegistrationTest.php`, `tests/Feature/Seeders/E2eDashboardSeederTest.php`.
+
+## Currencies and exchange rates (NS-19)
+- Admin-only `GET|POST /api/v1/dashboard/admin/currencies`, `PUT .../{currency}`, `PATCH .../{currency}/active` and `GET|POST /admin/exchange-rates`, `DELETE /admin/exchange-rates/{rate}`; writes go through `CurrencyPolicy`.
+- `currencies.is_active` (default true): a currency is retired, never deleted; the default currency can't be retired (409). The public and operations `GET /currencies` list active currencies only; conversion still works for retired ones. Rates are a history, the newest one in effect wins.

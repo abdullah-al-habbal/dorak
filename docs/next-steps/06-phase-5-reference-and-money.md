@@ -29,6 +29,13 @@ The platform runs on seeded values until these exist. They come after phases 1 t
   - Pest covers the in-use guard and rate validation.
   - E2E covers adding a rate.
 
+### NS-19 as built
+
+- **Backend:** new `currencies.is_active` column. Admin routes under `/admin`: `GET|POST /currencies`, `PUT /currencies/{id}`, `PATCH /currencies/{id}/active`, `POST /exchange-rates`, `DELETE /exchange-rates/{id}` (plus the existing `GET /exchange-rates`), authorized through `CurrencyPolicy`. The code is set once; the default currency can't be retired; both currencies of a rate must be active and different, and the rate is positive up to 6 decimals. `GET /currencies` (mobile and pickers) now lists active currencies only, with the same shape.
+- **Dashboard:** an admin "Currencies" screen with a Currencies tab (add, edit, retire and restore behind a confirmation) and an Exchange rates tab (history, newest first, "Current" marks the rate the converter uses; add and remove). The service form's currency picker refreshes after a change.
+- **Mobile:** no change; the list response shape is unchanged.
+- **Not done:** tests (skipped by instruction; the endpoints were smoke-checked with a throwaway Pest test that was not kept), so the in-use guard is not covered by Pest.
+
 ## NS-20: Languages
 
 - **Guards:** admin.

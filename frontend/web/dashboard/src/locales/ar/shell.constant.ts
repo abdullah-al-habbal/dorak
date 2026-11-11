@@ -18,6 +18,7 @@ export const arShell: Dictionary["shell"] = {
     admins: "المشرفون",
     brands: "العلامات التجارية",
     chairs: "الكراسي",
+    currencies: "العملات",
     jobs: "الوظائف",
     stylists: "الحلاقون",
     services: "الخدمات",

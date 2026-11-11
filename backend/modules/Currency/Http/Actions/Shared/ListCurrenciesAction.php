@@ -13,7 +13,7 @@ final class ListCurrenciesAction extends BaseApiAction
 {
     public function __invoke(): JsonResponse
     {
-        $currencies = CurrencyModel::orderBy('code')->get();
+        $currencies = CurrencyModel::where('is_active', true)->orderBy('code')->get();
 
         return $this->ok(
             data: CurrencyResource::collection($currencies),
