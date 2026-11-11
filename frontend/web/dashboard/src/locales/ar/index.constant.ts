@@ -2,6 +2,7 @@ import { arAnalytics } from "@/locales/ar/analytics.constant";
 import { arSettings } from "@/locales/ar/settings.constant";
 import { arAdminPayouts } from "@/locales/ar/admin-payouts.constant";
 import { arClients } from "@/locales/ar/clients.constant";
+import { arInvitations } from "@/locales/ar/invitations.constant";
 import { arFloorPlan } from "@/locales/ar/floor-plan.constant";
 import { arOwnerBrand } from "@/locales/ar/owner-brand.constant";
 import { arBranchOversight } from "@/locales/ar/branch-oversight.constant";
@@ -53,6 +54,7 @@ export const arDictionary: Dictionary = {
   branchOversight: arBranchOversight,
   ownerBrand: arOwnerBrand,
   floorPlan: arFloorPlan,
+  invitations: arInvitations,
   clients: arClients,
   adminCatalog: arAdminCatalog,
   reviews: arReviews,

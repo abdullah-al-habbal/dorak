@@ -45,6 +45,13 @@ The backend is ready for all four tasks, so only the allow-list rules and the sc
 - **Dashboard:** an "Invitations" tab on Stylists, with pending, active and ended lists, and actions behind confirmations.
 - **Done when:** E2E covers invite, then accept (seeded), then terminate.
 
+### NS-16 as built
+
+- **Backend:** one new read route, `GET /barber-lookup?search=` (manager and owner), returning `id` and `name` of at most ten discoverable barbers matched by name, or by exact email or phone; three characters minimum. The affiliation routes already existed and are unchanged.
+- **Dashboard:** the Stylists screen has a List / Invitations switch. The Invitations panel lists pending, active and ended affiliations; the "Invite a barber" dialog searches the lookup and sends the invitation. Accept, reject and end are behind confirmations. The proxy allows reading for every branch guard and writing for manager and owner only; the admin keeps read-only oversight through NS-09's branch pages.
+- **Mobile:** no change, the existing contract is untouched.
+- **Not done:** tests (skipped by instruction).
+
 ## NS-17: Job postings and applications
 
 - **Guards:** manager, owner.

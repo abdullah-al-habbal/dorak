@@ -95,6 +95,7 @@ use Modules\Dashboard\Http\Actions\People\InviteBranchAffiliationAction;
 use Modules\Dashboard\Http\Actions\People\ListBranchAffiliationsAction;
 use Modules\Dashboard\Http\Actions\People\ListBranchApplicationsAction;
 use Modules\Dashboard\Http\Actions\People\ListBranchJobPostingsAction;
+use Modules\Dashboard\Http\Actions\People\LookupBarbersAction;
 use Modules\Dashboard\Http\Actions\People\RespondBranchAffiliationAction;
 use Modules\Dashboard\Http\Actions\People\StoreBranchJobPostingAction;
 use Modules\Dashboard\Http\Actions\People\TerminateBranchAffiliationAction;
@@ -335,6 +336,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::patch('/branches/{branch}/floor-plan', UpdateBranchFloorPlanAction::class);
         Route::get('/branches/{branch}/reviews', ListBranchReviewsAction::class);
         Route::post('/branches/{branch}/reviews/{review}/dispute', FlagBranchReviewDisputeAction::class)->whereUuid('review');
+        Route::get('/barber-lookup', LookupBarbersAction::class);
         Route::get('/branches/{branch}/affiliations', ListBranchAffiliationsAction::class);
         Route::post('/branches/{branch}/affiliations', InviteBranchAffiliationAction::class);
         Route::post('/branches/{branch}/affiliations/{affiliation}/accept', RespondBranchAffiliationAction::class)->defaults('accept', true);

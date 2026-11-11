@@ -49,7 +49,11 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Post], pattern: /^notifications\/read-all$/, guards: EVERY_ACTOR },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^notifications/${ID}/read$`), guards: EVERY_ACTOR },
   // NS-09 branch oversight: the admin reads a branch's invitations and job postings (NS-16 and NS-17 add the branch teams' writes).
-  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/(affiliations|job-postings)$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/job-postings$`), guards: ADMIN_ONLY },
+  // NS-16 barber invitations: everyone with branch access reads; only the branch teams act (the admin has no stake in who works at a shop).
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/affiliations$`), guards: OPERATIONS },
+  { methods: [HttpMethod.Get], pattern: /^barber-lookup$/, guards: [AuthActor.Manager, AuthActor.Owner] },
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/affiliations(/${ID}/(accept|reject|terminate))?$`), guards: [AuthActor.Manager, AuthActor.Owner] },
   // NS-07 clients and bans (admin only).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/clients(/${ID}(/(bookings|reviews))?)?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/clients/${ID}/ban$`), guards: ADMIN_ONLY },

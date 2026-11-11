@@ -3,6 +3,7 @@ export enum OverlayKind {
   WalkIn = "walk-in",
   BrandCreate = "brand-create",
   ReviewDispute = "review-dispute",
+  InviteBarber = "invite-barber",
   RateClient = "rate-client",
   Reschedule = "reschedule",
   StylistForm = "stylist-form",
