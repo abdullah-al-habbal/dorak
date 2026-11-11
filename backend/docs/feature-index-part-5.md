@@ -8,11 +8,11 @@ codeanchors:
 
 Part 5 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous](feature-index-part-4.md) · [Next](feature-index-part-6.md)
 
-### Admin Filament Pages (PRD 13 Phase 2)
+### Admin pages (PRD 13 Phase 2, historical; since replaced by the dashboard, NS-28)
 - Booking CreatePage — already existed
 - Review CreatePage + EditPage — already existed
 - Application CreatePage (JobPosting) — already existed
-- All admin Filament pages verified present in all modules
+- All admin pages verified present in all modules
 
 ### Phase 5 — API Contract Tests (PRD 13)
 - `tests/Feature/Contract/ApiResponseContractTest.php` — 40 tests covering all 30+ endpoints

@@ -10,7 +10,7 @@ Part 2 of 4 · [12 — Implementation PRD: From Current State to MVP](12-impleme
 
 ## 2. Track A: Admin Panel Gaps
 
-All Filament resources exist. The following **pages** were missing:
+All admin resources were delivered in the dashboard (NS-04 to NS-30). The following **pages** were missing:
 
 | Module | Missing Page | Status |
 |--------|-------------|--------|
@@ -53,6 +53,6 @@ REST API endpoints are missing for modules that the mobile app needs to consume.
 
 | Module | Endpoints Needed | Why |
 |--------|-----------------|-----|
-| **OfferedService** | Admin manages via Filament; may need `GET /barbers/{id}/services` for mobile | Currently embedded in explore/booking flows |
+| **OfferedService** | Admin manages via the dashboard; may need `GET /barbers/{id}/services` for mobile | Currently embedded in explore/booking flows |
 | **Ban** | Read-only check `GET /clients/{id}/bans/check` | Prevent banned clients from booking |
 | **Social Login** | `POST /auth/social/{provider}` | Socialite → Sanctum token flow |

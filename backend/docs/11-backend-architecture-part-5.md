@@ -14,7 +14,6 @@ Part 5 of 19 · [11 — Backend Architecture (C4 Level 3: Components & Conventio
 bootstrap/providers.php                 # Entry: all providers, in explicit order
 ├── Modules\Auth\...                     # sessions, password reset
 ├── App\Providers\...                    # rate limiting, model strict mode
-├── App\Providers\Filament\...           # Admin + Client panel discovery
 └── Modules\{Brand,Branch,Chair,Barber,Affiliation,Service,Booking,Review,Job,Currency,Settings}\...
 
 modules/Booking/                         # one module = one aggregate from 06
@@ -36,9 +35,6 @@ modules/Booking/                         # one module = one aggregate from 06
 │   ├── Migrations/                          # module-owned tables (see migrations skill for cascades)
 │   ├── Seeders/
 │   └── Factories/BookingFactory.php
-├── Filament/
-│   ├── Admin/{Resources,Pages,Widgets}/     # admin UI (reads presenters + resolvers)
-│   └── Client/{Resources,Pages,Widgets}/    # client UI
 ├── lang/{en,ar}/booking.php
 └── Resources/views/
 
@@ -53,7 +49,7 @@ config/panels.php                        # panel colors, paths, brand, plugins
 - **Small classes by construction.** Action/Handler/Resolver each hold one method — nothing becomes a 2,000‑line service.
 - **No framework lock‑in.** Modules are PSR‑4 PHP classes, not Laravel magic; the pattern survives a framework change.
 - **Cheap to delete.** A failed feature = delete one directory + one line in `providers.php`.
-- **Dual‑panel reuse.** Admin and Client share models, resolvers, and presenters; only the Filament UI differs.
+- **One API, many clients.** The dashboard and the mobile apps share models, resolvers, and presenters through the API.
 - **Translation as infrastructure.** `ar`/`en` from day one of every module.
 
 ---

@@ -12,14 +12,8 @@ Part 8 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 
 All backend features are built, tested, and passing; the sections above are the live contract. Pending work lives in [execution status](14-execution-status.md).
 
-### Barber Panel (Filament)
-- `ProfileResource` — barber self-service profile (edit name, email, password)
-- `OfferedServiceResource` — CRUD for barber's offered services (auto-sets serviceable_type=barber)
-- `BookingResource` — list/view/edit barber's bookings (status management)
-- `ReviewResource` — read-only view of client reviews for barber's bookings
-- `ApplicationResource` — list/create/view job applications (auto-sets barber_id)
-- `BarberAffiliationResource` — read-only view of branch/brand affiliations
-- `ScopePanelToCurrentUser` middleware — global scopes: BarberModel, BookingModel, OfferedServiceModel, ReviewModel, BarberAffiliationModel, ApplicationModel
+### Barber panel (retired)
+The barber web panel was retired with the other panels (NS-28); barbers use the stylist app and the light barber dashboard.
 
 ### Future Phases (not started)
 See `docs/02-prd.md` §5 (phase roadmap) and §8 (locked implementation decisions) for remaining scope.
@@ -48,7 +42,7 @@ See `docs/02-prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 - `POST /api/v1/branch/affiliations` lets a branch invite a barber directly (pending invite); the inviting branch cannot accept/reject its own invite (403).
 - `POST /api/v1/affiliations/{affiliation}/terminate` (barber) and `POST /api/v1/branch/affiliations/{affiliation}/terminate` (branch) end an active affiliation, clearing `chairs.barber_id` for that barber at that branch. Future bookings are left untouched.
 - Deleting a brand terminates every pending/active affiliation pointing at the brand or any of its branches before the cascade.
-- The affiliation status enum was renamed `accepted` → `active` (enum, Filament UI, and a backfill migration) to match the product spec's vocabulary.
+- The affiliation status enum was renamed `accepted` → `active` (enum, UI, and a backfill migration) to match the product spec's vocabulary.
 
 ### Dynamic Monetization (Task 65)
 - Tables: `subscription_plans`, `plan_features`, `brand_subscriptions`, `payment_gateways`, `commission_rules`, `commission_entries`, `payouts`. Money is integer minor units plus `currency_code`; statuses are Backed Enums.

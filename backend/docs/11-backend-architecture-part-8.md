@@ -36,7 +36,6 @@ modules/
 │   │   ├── Command/
 │   │   └── Query/
 │   ├── Database/Migrations/
-│   ├── Filament/Admin/
 │   └── Providers/ServiceCatalogServiceProvider.php
 │
 ├── ClientHistory/            # Service history journal

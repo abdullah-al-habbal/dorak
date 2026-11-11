@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Gate;
-use Livewire\Livewire;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Enums\BrandStatusEnum;
-use Modules\Brand\Filament\Panels\Admin\Resources\BrandResource\Pages\ListBrandsPage;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
@@ -107,18 +104,5 @@ describe('Brand approval authorization', function (): void {
             ->and(Gate::forUser(new DashboardActor('b', DashboardActorTypeEnum::Barber, 'barber'))->allows('viewAny', BrandModel::class))->toBeFalse()
             ->and(Gate::forUser(null)->allows('viewAny', BrandModel::class))->toBeFalse()
             ->and(Gate::forUser(ClientModel::factory()->create())->allows('viewAny', BrandModel::class))->toBeFalse();
-    });
-
-    it('approves through the Filament table action under the same policy', function (): void {
-        $brand = BrandModel::factory()->pending()->create();
-        $this->actingAs(AdminModel::factory()->create(), 'admin');
-        Filament::setCurrentPanel(Filament::getPanel('admin'));
-
-        $this->get('/admin/brands')->assertOk();
-        Livewire::test(ListBrandsPage::class)
-            ->assertTableActionVisible('approve', $brand)
-            ->callTableAction('approve', $brand);
-
-        expect($brand->refresh()->status)->toBe(BrandStatusEnum::Active);
     });
 });

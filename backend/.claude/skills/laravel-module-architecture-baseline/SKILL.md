@@ -1,6 +1,6 @@
 ---
 name: laravel-module-architecture-baseline
-description: The mandatory backend architecture standard for this salon/barbershop platform. Use this whenever creating or editing ANY backend class - a new module, an action, a handler, an Eloquent resolver, a presenter, a form request, a model, a service provider, or a Filament resource/page - and whenever deciding WHERE a piece of code should live. Enforces the modular-by-domain layout under modules/{Name}/ and the strict Action -> Handler -> EloquentResolver flow (no controllers, no service layer, no repositories; each layer is a single-method final class named by action). Always consult this skill before writing backend code; it overrides default Laravel conventions. Mirrors docs/11.
+description: The mandatory backend architecture standard for this salon/barbershop platform. Use this whenever creating or editing ANY backend class - a new module, an action, a handler, an Eloquent resolver, a presenter, a form request, a model, a service provider - and whenever deciding WHERE a piece of code should live. Enforces the modular-by-domain layout under modules/{Name}/ and the strict Action -> Handler -> EloquentResolver flow (no controllers, no service layer, no repositories; each layer is a single-method final class named by action). Always consult this skill before writing backend code; it overrides default Laravel conventions. Mirrors docs/11.
 nodeid: skills.backend.laravel-module-architecture-baseline
 parentnode: skills.backend
 childnodes:
@@ -24,14 +24,12 @@ The non‑optional shape of the backend. It overrides default Laravel habits (no
 4. **`final` on every class.** No inheritance. Share via a **trait** or by **calling a collaborator**, never a base class.
 5. **No interfaces, no abstract bases.** Concrete classes only; the contract is the method signature.
 6. **`newQuery()`, never `Model::query()`.** Resolvers inject the model in the constructor and call `$this->model->newQuery()`.
-7. **Filament reads, never queries.** A Filament resource/page calls a resolver (for tables/scoped data) or a presenter (for infolists). It never writes raw Eloquent.
 
 ## Provider & boot rules
 
 - Register every module provider **by name** in `bootstrap/providers.php` (no auto‑discovery).
 - **`register()` is empty.** No bindings, no deferred providers.
 - In `boot()`, guard each `load*` call with `File::exists()` / `File::isDirectory()` — a missing directory is not an error.
-- **Never register Filament inside a module provider** — the two panel providers (`AdminPanelProvider`, `ClientPanelProvider`) scan `modules/{Module}/Filament/{Admin|Client}/` at runtime.
 
 ## Translation‑first (enforces docs/04 J1/J2)
 
@@ -51,7 +49,6 @@ modules/{Name}/
 ├── Repositories/{Action}EloquentResolver.php  (final, one method, newQuery())
 ├── Presenters/{Name}Presenter.php      (final)
 ├── Database/{Migrations,Seeders,Factories}/
-├── Filament/{Admin,Client}/{Resources,Pages,Widgets}/
 ├── lang/{en,ar}/{name}.php
 └── Resources/views/
 ```

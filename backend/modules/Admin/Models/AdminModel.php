@@ -5,8 +5,6 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Models;
 
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Table;
@@ -22,18 +20,13 @@ use Spatie\Translatable\HasTranslations;
 #[Hidden(['password', 'remember_token'])]
 #[Table('admins')]
 #[Translatable(['name'])]
-class AdminModel extends Authenticatable implements FilamentUser
+class AdminModel extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use HasTranslations;
     use HasUuids;
     use Notifiable;
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $panel->getId() === 'admin' && $this->isActive();
-    }
 
     /** NS-04: a deactivated admin can no longer sign in and every token they hold stops working. */
     public function isActive(): bool

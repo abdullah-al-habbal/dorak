@@ -13,10 +13,10 @@ Part 15 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-c
 **Rule:** CORS is a browser security feature. **Flutter mobile apps are NOT affected** — CORS only applies to web browsers.
 
 **Relevant For:**
-- Filament admin panel (runs in browser) → CORS headers needed on API
+- Next.js dashboard (browser calls go through its server-side proxy) → no CORS needed on the API
 - Flutter mobile apps → No CORS concern
 
-**Laravel Implementation (for Filament/web):**
+**Laravel Implementation (for web):**
 
 ```php
 // config/cors.php — already handled by Laravel

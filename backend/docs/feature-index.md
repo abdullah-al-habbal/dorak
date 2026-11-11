@@ -21,7 +21,7 @@ codeanchors:
 - Queued jobs (all `afterCommit`, ID-only scalar payloads, stable `dispatchKey`, en+ar copy): `AffiliationInvitedNotification` (`invite`), `AffiliationRespondedNotification` (`invite`), `JobApplicationReceivedNotification` (`application`), `JobApplicationStatusChangedNotification` (`application`), `ReviewRequestNotification` (`review_request`).
 - Triggers: `POST /barbers/{barber}/affiliate` (branch targets only), barber `POST /affiliations/{id}/accept|reject` and branch `POST /branch/affiliations/{id}/accept|reject`, `POST /jobs/{job}/apply`, `PATCH /branch/job-postings/{posting}/applications/{application}/status`, and booking completion through `BookingTransitionNotifier::statusChanged` (barber, branch and dashboard routes).
 - FCM/inbox `data`: `type` (enum value), `event` (`affiliation_invited|affiliation_responded|application_received|application_status_changed|review_request`) plus IDs (`affiliation_id`, `application_id`, `job_posting_id`, `booking_id`, `status`).
-- Not notified: brand-targeted affiliation requests (no notifiable actor), Filament direct edits, review requests for bookings with neither a branch nor a barber to review (Task 39). Tests: `tests/Feature/Notification/DomainEventNotificationTest.php`.
+- Not notified: brand-targeted affiliation requests (no notifiable actor), review requests for bookings with neither a branch nor a barber to review (Task 39). Tests: `tests/Feature/Notification/DomainEventNotificationTest.php`.
 
 ### Notification Inbox & Delivery Records (Task 30)
 - Tables `notifications` (uuid, `notifiable` morph using `client`/`barber`/`branch` aliases, `type` `booking_update|invite|application|review_request`, `title`, `body`, `data`, unique `dedupe_key`, `read_at`) and `notification_deliveries` (`notification_id`, nullable `device_token_id` with `nullOnDelete`, `status` `sent|failed`, `provider_message_id`, `error`, `attempted_at`).
@@ -58,7 +58,7 @@ codeanchors:
 - [Part 2: Client](feature-index-part-2.md)
 - [Part 3: Review API](feature-index-part-3.md)
 - [Part 4: JobPosting API](feature-index-part-4.md)
-- [Part 5: Admin Filament Pages (PRD 13 Phase 2)](feature-index-part-5.md)
+- [Part 5: Admin pages (PRD 13 Phase 2, historical)](feature-index-part-5.md)
 - [Part 6: Password Change](feature-index-part-6.md)
 - [Part 7: PRD Phase 3 — ClientFaceProfile Module (Complete)](feature-index-part-7.md)
 - [Part 8: Feature Registry](feature-index-part-8.md)
@@ -87,9 +87,9 @@ the account is deactivated or banned). Managed barbers without a login cannot re
 
 ## Brand approval (Gap G2)
 
-- `brands.status` (`Modules\Brand\Enums\BrandStatusEnum`: `pending`, `active`; migration backfills existing rows to `active`). Brands created via `POST /brands` or `POST /dashboard/brands` start `pending`; factories, the seeder and brands created in the Filament admin panel are `active`.
-- Admin catalog categories (Module 12): `GET|POST /dashboard/admin/catalog-categories`, `PUT|DELETE /dashboard/admin/catalog-categories/{category}`, `PATCH .../{category}/active` (`ServiceCatalogCategoryPolicy`, admin only; `AdminCatalogCategoryResource` with item, subcategory and service counts). Delete is refused with 409 `CONFLICT` unless `CatalogCategoryUsage::isEmpty()`; the Filament delete action uses the same guard. Shared `CatalogCategoryNameRules` and `CatalogCategorySlugGenerator` (also used by `POST /dashboard/service-categories`). Catalog item `category_id` rejects deleted categories; `ServiceRequest` keeps a service's current inactive category on update. Tests: `DashboardAdminCatalogCategoriesTest`.
-- `PATCH /dashboard/admin/brands/{brand}/approve` (admin actor) sets `active` (idempotent; the old `POST /admin/brands/{brand}/approve` route is gone). `BrandPolicy::approve` (an `AdminModel` only) guards it and the Filament table's Approve action alike; the Filament table also shows a status badge.
+- `brands.status` (`Modules\Brand\Enums\BrandStatusEnum`: `pending`, `active`; migration backfills existing rows to `active`). Brands created via `POST /brands` or `POST /dashboard/brands` start `pending`; factories and the seeder create `active` brands.
+- Admin catalog categories (Module 12): `GET|POST /dashboard/admin/catalog-categories`, `PUT|DELETE /dashboard/admin/catalog-categories/{category}`, `PATCH .../{category}/active` (`ServiceCatalogCategoryPolicy`, admin only; `AdminCatalogCategoryResource` with item, subcategory and service counts). Delete is refused with 409 `CONFLICT` unless `CatalogCategoryUsage::isEmpty()`. Shared `CatalogCategoryNameRules` and `CatalogCategorySlugGenerator` (also used by `POST /dashboard/service-categories`). Catalog item `category_id` rejects deleted categories; `ServiceRequest` keeps a service's current inactive category on update. Tests: `DashboardAdminCatalogCategoriesTest`.
+- `PATCH /dashboard/admin/brands/{brand}/approve` (admin actor) sets `active` (idempotent; the old `POST /admin/brands/{brand}/approve` route is gone). `BrandPolicy::approve` (an `AdminModel` only) guards it.
 - Gate: public `GET /brands` and `/brands/{id}` list active brands only; `BranchModel::isOperational()` (enabled branch + active brand) backs branch login, refresh, `EnsureBranchAccountAccess` and `scopeDiscoverable`.
 - Dashboard list `GET /dashboard/brands?status=&search=&per_page=&page=` (`ListDashboardBrandsRequest`; `BrandPolicy::viewAny`: admin or brand owner, owners stay scoped; `per_page` is clamped, never rejected). API resource `status` field; the dashboard `/dashboard/admin/brands` page opens on the pending queue with a detail dialog and Approve; mobile `BrandDto.status`.
 - Tests: `tests/Feature/Brand/BrandApprovalTest.php`, `tests/Feature/Dashboard/DashboardAdminBrandsTest.php`.
@@ -154,3 +154,6 @@ Authorization via `DashboardEarningsAuthorizationMiddleware` / `DashboardOwnerAu
 
 ## Website content admin (NS-25)
 - Admin-only, `MarketingContentPolicy` (pages, sections, testimonials) and `OnboardingConfigurationPolicy`: `GET /dashboard/admin/marketing-pages` (pages with ordered sections, plus all testimonials), `PUT .../marketing-pages/{page}` (titles, meta descriptions; the slug is fixed), `PUT .../marketing-sections/{section}` (title, subtitle, structured per-locale body capped at 20,000 bytes, media path, order, audience; page and type are fixed), `POST|PUT|DELETE .../testimonials`, `GET .../onboarding-configs`, `PUT .../onboarding-configs/{config}` (`is_active`, `sort_order`). The public marketing and onboarding reads are unchanged.
+
+## Filament retired (NS-28)
+- Removed every `modules/*/Filament/` folder, the three panel providers, `ScopePanelToCurrentUser`, `Core/Config/filament.php`, `FilamentUser` on the admin, client, branch and barber models, and the Filament contracts plus `getColor()`/`getLabel()` on 12 status enums (each keeps `label()`). No route is served under `/admin`, `/branch` or `/barber` (`tests/Feature/Core/PanelRetirementTest.php`). `filament/filament` stays in `composer.json` by instruction; nothing in the code uses it.

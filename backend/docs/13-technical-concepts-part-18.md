@@ -53,6 +53,6 @@ All Dorak API responses follow `ApiResponseBodyValueObject`:
 1. Login → `POST /api/v1/branch/login` → returns `plainTextToken`
 2. Same flow as client app
 
-**Filament Panels (Session):**
-1. Login via Filament form → session cookie
-2. No token management needed
+**Dashboard (Next.js session):**
+1. Login → `POST /api/v1/dashboard/login`, the dashboard stores the session in httpOnly cookies
+2. The proxy attaches the access token to API calls

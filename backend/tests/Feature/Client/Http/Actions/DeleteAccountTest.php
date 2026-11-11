@@ -2,19 +2,14 @@
 
 declare(strict_types=1);
 
-use Filament\Facades\Filament;
-use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
-use Livewire\Livewire;
-use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Client\Enums\ClientStatusEnum;
-use Modules\Client\Filament\Panels\Admin\Resources\ClientResource\Pages\ListClientsPage;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
 use Modules\ClientHistory\Enums\HistoryMediaType;
@@ -170,36 +165,5 @@ describe('DELETE /api/v1/client/account when allowed', function (): void {
             ->assertUnauthorized();
 
         $this->assertNotSoftDeleted('clients', ['id' => $client->id]);
-    });
-});
-
-describe('admin panel client deletion', function (): void {
-    beforeEach(function (): void {
-        Filament::setCurrentPanel(Filament::getPanel('admin'));
-        $this->actingAs(AdminModel::factory()->create(), 'admin');
-    });
-
-    it('goes through the same rules and anonymization', function (): void {
-        $client = deletableClient();
-        $history = historyForDeletedClient($client);
-
-        Livewire::test(ListClientsPage::class)
-            ->callTableAction(DeleteAction::class, $client);
-
-        $this->assertSoftDeleted('clients', ['id' => $client->id]);
-        expect(ClientModel::withTrashed()->findOrFail($client->id)->email)->toEndWith('@deleted.invalid')
-            ->and($history->fresh()->client_id)->toBeNull();
-    });
-
-    it('is blocked while the client has an active booking', function (): void {
-        $client = deletableClient();
-        BookingModel::factory()->create(['client_id' => $client->id, 'booking_status' => BookingStatus::Confirmed]);
-
-        Livewire::test(ListClientsPage::class)
-            ->callTableAction(DeleteAction::class, $client)
-            ->assertNotified(__('client::ui.delete_blocked_active_bookings'));
-
-        $this->assertNotSoftDeleted('clients', ['id' => $client->id]);
-        expect($client->fresh()->email)->toBe($client->email);
     });
 });

@@ -45,10 +45,10 @@ flowchart LR
     HAN --> RES["EloquentResolver<br/>(single method)"]
     RES --> MOD["Model"]
     HAN --> PRE["Presenter<br/>(format output)"]
-    PRE --> FIL["Filament Resource / Page"]
-    RES -.->|"scoped query"| FIL
+    PRE --> API["API Resource / dashboard"]
+    RES -.->|"scoped query"| API
 ```
 
-**Key rule — resolvers own ALL query logic.** Filament resources never write raw Eloquent. If a resource needs scoped data (e.g. a client panel showing only the current user's bookings), it calls a resolver method, not an inline query. Presenters format for output; Filament reads from presenters for infolists and from resolvers for tables.
+**Key rule — resolvers own ALL query logic.** Actions and API resources never write raw Eloquent. If an endpoint needs scoped data (e.g. a client seeing only their own bookings), it calls a resolver method, not an inline query. Presenters format for output.
 
 ---

@@ -1,30 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 4
-			path: modules/Activation/Filament/Actions/ToggleActivationAction.php
-
-		-
-			message: '#^Anonymous function should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/Activation/Filament/Panels/Admin/Resources/ActivationLogResource/ActivationLogsTable.php
-
-		-
-			message: '#^Cannot access property \$value on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: modules/Activation/Filament/Panels/Admin/Resources/ActivationLogResource/ActivationLogsTable.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: modules/Activation/Filament/Panels/Admin/Resources/ActivationLogResource/ActivationLogsTable.php
-
-		-
 			message: '#^Cannot access property \$id on Modules\\Barber\\Models\\BarberModel\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -371,12 +347,6 @@ parameters:
 			identifier: return.unusedType
 			count: 1
 			path: modules/Barber/Enums/BarberStatusEnum.php
-
-		-
-			message: '#^Method Modules\\Barber\\Filament\\Panels\\Barber\\Resources\\ProfileResource\\ProfileResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/Barber/Filament/Panels/Barber/Resources/ProfileResource/ProfileResource.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Barber\\Models\\BarberModel\:\:\$email\.$#'
@@ -937,30 +907,6 @@ parameters:
 			path: modules/BarberAffiliation/Enums/AffiliationStatus.php
 
 		-
-			message: '#^Method Modules\\BarberAffiliation\\Filament\\Panels\\Barber\\Resources\\BarberAffiliationResource\\BarberAffiliationResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/BarberAffiliation/Filament/Panels/Barber/Resources/BarberAffiliationResource/BarberAffiliationResource.php
-
-		-
-			message: '#^Method Modules\\BarberAffiliation\\Filament\\Panels\\Branch\\Resources\\BarberAffiliationResource\\BarberAffiliationResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/BarberAffiliation/Filament/Panels/Branch/Resources/BarberAffiliationResource/BarberAffiliationResource.php
-
-		-
-			message: '#^Cannot access property \$status on mixed\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: modules/BarberAffiliation/Filament/Panels/Branch/Resources/BarberAffiliationResource/BarberAffiliationsTable.php
-
-		-
-			message: '#^Cannot call method update\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: modules/BarberAffiliation/Filament/Panels/Branch/Resources/BarberAffiliationResource/BarberAffiliationsTable.php
-
-		-
 			message: '#^Cannot access property \$id on Modules\\BarberAffiliation\\Models\\BarberAffiliationModel\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -1175,18 +1121,6 @@ parameters:
 			identifier: return.unusedType
 			count: 1
 			path: modules/Booking/Enums/BookingStatus.php
-
-		-
-			message: '#^Method Modules\\Booking\\Filament\\Panels\\Barber\\Resources\\BookingResource\\BookingResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/Booking/Filament/Panels/Barber/Resources/BookingResource/BookingResource.php
-
-		-
-			message: '#^Method Modules\\Booking\\Filament\\Panels\\Branch\\Resources\\BookingResource\\BookingResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/Booking/Filament/Panels/Branch/Resources/BookingResource/BookingResource.php
 
 		-
 			message: '#^Parameter \#1 \$bookingId of job class Modules\\Booking\\Jobs\\SendBookingStatusNotificationJob constructor expects string in Modules\\Booking\\Jobs\\SendBookingStatusNotificationJob\:\:dispatch\(\), int given\.$#'
@@ -1493,12 +1427,6 @@ parameters:
 			identifier: return.unusedType
 			count: 1
 			path: modules/Branch/Enums/BranchStatusEnum.php
-
-		-
-			message: '#^Method Modules\\Branch\\Filament\\Panels\\Branch\\Resources\\ProfileResource\\ProfileResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/Branch/Filament/Panels/Branch/Resources/ProfileResource/ProfileResource.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Branch\\Models\\BranchModel\:\:\$email\.$#'
@@ -2543,36 +2471,6 @@ parameters:
 			identifier: return.unusedType
 			count: 1
 			path: modules/Chair/Enums/ChairStatus.php
-
-		-
-			message: '#^Call to static method make\(\) on an unknown class Filament\\Forms\\Components\\JSONInput\.$#'
-			identifier: class.notFound
-			count: 1
-			path: modules/Chair/Filament/Panels/Branch/Resources/ChairResource/ChairFormSchema.php
-
-		-
-			message: '#^Cannot call method label\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: modules/Chair/Filament/Panels/Branch/Resources/ChairResource/ChairFormSchema.php
-
-		-
-			message: '#^Cannot call method nullable\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: modules/Chair/Filament/Panels/Branch/Resources/ChairResource/ChairFormSchema.php
-
-		-
-			message: '#^Parameter \#1 \$components of method Filament\\Forms\\Components\\Component\:\:schema\(\) expects array\<Filament\\Forms\\Components\\Component\>\|Closure, array\{Filament\\Forms\\Components\\TextInput, Filament\\Forms\\Components\\Select, Filament\\Forms\\Components\\Select, mixed\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/Chair/Filament/Panels/Branch/Resources/ChairResource/ChairFormSchema.php
-
-		-
-			message: '#^Method Modules\\Chair\\Filament\\Panels\\Branch\\Resources\\ChairResource\\ChairResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/Chair/Filament/Panels/Branch/Resources/ChairResource/ChairResource.php
 
 		-
 			message: '#^Method Modules\\Chair\\Handlers\\Shared\\ListChairsHandler\:\:handle\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
@@ -7843,60 +7741,6 @@ parameters:
 			path: modules/JobPosting/Enums/JobPostingStatusEnum.php
 
 		-
-			message: '#^Cannot access offset ''en'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Barber/Resources/ApplicationResource/ApplicationFormSchema.php
-
-		-
-			message: '#^Method Modules\\JobPosting\\Filament\\Panels\\Barber\\Resources\\ApplicationResource\\ApplicationResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Barber/Resources/ApplicationResource/ApplicationResource.php
-
-		-
-			message: '#^Call to an undefined method Filament\\Infolists\\Components\\TextEntry\:\:json\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Branch/Resources/ApplicationResource/ApplicationInfolistSchema.php
-
-		-
-			message: '#^Parameter \#1 \$components of method Filament\\Infolists\\Components\\Component\:\:schema\(\) expects array\<Filament\\Infolists\\Components\\Component\>\|Closure, array\{mixed\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Branch/Resources/ApplicationResource/ApplicationInfolistSchema.php
-
-		-
-			message: '#^Method Modules\\JobPosting\\Filament\\Panels\\Branch\\Resources\\ApplicationResource\\ApplicationResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Branch/Resources/ApplicationResource/ApplicationResource.php
-
-		-
-			message: '#^Call to an undefined method Filament\\Infolists\\Components\\TextEntry\:\:counts\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Branch/Resources/JobPostingResource/JobPostingInfolistSchema.php
-
-		-
-			message: '#^Cannot call method label\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Branch/Resources/JobPostingResource/JobPostingInfolistSchema.php
-
-		-
-			message: '#^Parameter \#1 \$components of method Filament\\Infolists\\Components\\Component\:\:schema\(\) expects array\<Filament\\Infolists\\Components\\Component\>\|Closure, array\{Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, mixed, Filament\\Infolists\\Components\\TextEntry\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Branch/Resources/JobPostingResource/JobPostingInfolistSchema.php
-
-		-
-			message: '#^Method Modules\\JobPosting\\Filament\\Panels\\Branch\\Resources\\JobPostingResource\\JobPostingResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/JobPosting/Filament/Panels/Branch/Resources/JobPostingResource/JobPostingResource.php
-
-		-
 			message: '#^Method Modules\\JobPosting\\Handlers\\Barber\\ListApplicationsHandler\:\:handle\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -8693,66 +8537,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: modules/OfferedService/Eloquent/Resolvers/Shared/ListBarberServicesEloquentResolver.php
-
-		-
-			message: '#^Call to an undefined method Filament\\Infolists\\Components\\TextEntry\:\:boolean\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: modules/OfferedService/Filament/Panels/Barber/Resources/OfferedServiceResource/OfferedServiceInfolistSchema.php
-
-		-
-			message: '#^Parameter \#1 \$components of method Filament\\Infolists\\Components\\Component\:\:schema\(\) expects array\<Filament\\Infolists\\Components\\Component\>\|Closure, array\{Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, mixed, mixed, Filament\\Infolists\\Components\\TextEntry\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/OfferedService/Filament/Panels/Barber/Resources/OfferedServiceResource/OfferedServiceInfolistSchema.php
-
-		-
-			message: '#^Method Modules\\OfferedService\\Filament\\Panels\\Barber\\Resources\\OfferedServiceResource\\OfferedServiceResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/OfferedService/Filament/Panels/Barber/Resources/OfferedServiceResource/OfferedServiceResource.php
-
-		-
-			message: '#^Anonymous function should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/OfferedService/Filament/Panels/Branch/Resources/OfferedServiceResource/OfferedServiceInfolistSchema.php
-
-		-
-			message: '#^Call to an undefined method Filament\\Infolists\\Components\\TextEntry\:\:boolean\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: modules/OfferedService/Filament/Panels/Branch/Resources/OfferedServiceResource/OfferedServiceInfolistSchema.php
-
-		-
-			message: '#^Parameter \#1 \$components of method Filament\\Infolists\\Components\\Component\:\:schema\(\) expects array\<Filament\\Infolists\\Components\\Component\>\|Closure, array\{Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, Filament\\Infolists\\Components\\TextEntry, mixed, mixed\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/OfferedService/Filament/Panels/Branch/Resources/OfferedServiceResource/OfferedServiceInfolistSchema.php
-
-		-
-			message: '#^Method Modules\\OfferedService\\Filament\\Panels\\Branch\\Resources\\OfferedServiceResource\\OfferedServiceResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/OfferedService/Filament/Panels/Branch/Resources/OfferedServiceResource/OfferedServiceResource.php
-
-		-
-			message: '#^Anonymous function should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/OfferedService/Filament/Panels/Branch/Resources/OfferedServiceResource/OfferedServicesTable.php
-
-		-
-			message: '#^Cannot access property \$code on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: modules/OfferedService/Filament/Panels/Branch/Resources/OfferedServiceResource/OfferedServicesTable.php
-
-		-
-			message: '#^Cannot access property \$currency on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: modules/OfferedService/Filament/Panels/Branch/Resources/OfferedServiceResource/OfferedServicesTable.php
 
 		-
 			message: '#^Method Modules\\OfferedService\\Handlers\\Shared\\ListBarberServicesHandler\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
@@ -9611,18 +9395,6 @@ parameters:
 			identifier: return.unusedType
 			count: 1
 			path: modules/Review/Enums/ReviewStatus.php
-
-		-
-			message: '#^Method Modules\\Review\\Filament\\Panels\\Barber\\Resources\\ReviewResource\\ReviewResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/Review/Filament/Panels/Barber/Resources/ReviewResource/ReviewResource.php
-
-		-
-			message: '#^Method Modules\\Review\\Filament\\Panels\\Branch\\Resources\\ReviewResource\\ReviewResource\:\:getEloquentQuery\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: modules/Review/Filament/Panels/Branch/Resources/ReviewResource/ReviewResource.php
 
 		-
 			message: '#^Method Modules\\Review\\Handlers\\Shared\\GetBarberReviewsHandler\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'

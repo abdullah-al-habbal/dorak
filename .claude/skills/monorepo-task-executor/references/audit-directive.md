@@ -28,4 +28,4 @@ When judging code, sub-agent reports, or static-analysis output:
 - Drop what you cannot trace to code or reproduce. Never "fix" an unverified finding.
 
 ## Find every path to the behaviour
-Before designing, grep for every entry point that performs the same change: routes, dashboard handlers, Filament panels, other modules, jobs, mobile repositories. Task 27 had three routes that set chair status; fixing two would have left a bypass. Build one shared service/resolver per rule and call it from all of them.
+Before designing, grep for every entry point that performs the same change: routes, dashboard handlers, other modules, jobs, mobile repositories. Task 27 had three routes that set chair status; fixing two would have left a bypass. Build one shared service/resolver per rule and call it from all of them.

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Barber\Models;
 
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Table;
@@ -34,7 +32,7 @@ use Spatie\Translatable\HasTranslations;
 #[Hidden(['password', 'remember_token'])]
 #[Table('barbers')]
 #[Translatable(['name', 'bio'])]
-class BarberModel extends Authenticatable implements FilamentUser
+class BarberModel extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -45,11 +43,6 @@ class BarberModel extends Authenticatable implements FilamentUser
     protected static function newFactory(): BarberFactory
     {
         return BarberFactory::new();
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $panel->getId() === 'barber';
     }
 
     public function activationLogs(): MorphMany

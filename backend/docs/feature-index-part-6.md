@@ -47,7 +47,7 @@ Part 6 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 - 2 ValueObjects: `PriceRangeValueObject`, `ServiceCatalogItemMetadataValueObject`
 - 2 Casts: `PriceRangeCast`, `ServiceCatalogItemMetadataCast`
 - CQRS: Create/Update/Delete/List/Get commands+queries, handlers, resolvers
-- Filament Admin CRUD: Categories, Items, Tags (list/create/edit/view)
+- Admin CRUD in the dashboard: Categories, Items, Tags
 - `OfferedServiceModel.catalog_item_id` FK + migration
 - Registered in `bootstrap/providers.php`
 - Task 14: all catalog tables keyed by UUID (`HasUuids`); API `id`/`category_id`/`catalog_item_id(s)` are UUID strings and validated with `uuid`; morph aliases `catalog_item`/`catalog_category`

@@ -39,8 +39,5 @@ return [
     'reset_code_verified' => 'Reset code verified',
     'password_reset' => 'Password reset successfully',
     'password_changed' => 'Password changed successfully',
-    'admin_panel' => 'Dorak Admin',
-    'branch_panel' => 'Dorak Branch',
-    'barber_panel' => 'Dorak Barber',
     'token_ability_missing' => 'This token cannot be used on this API surface.',
 ];

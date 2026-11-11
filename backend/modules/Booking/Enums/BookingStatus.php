@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Booking\Enums;
 
-use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasLabel;
-use Illuminate\Support\Str;
-
-enum BookingStatus: string implements HasColor, HasLabel
+enum BookingStatus: string
 {
     case Pending = 'pending';
     case Confirmed = 'confirmed';
@@ -36,22 +32,5 @@ enum BookingStatus: string implements HasColor, HasLabel
     public static function reservationBlockingValues(): array
     {
         return [self::Pending->value, self::Confirmed->value, self::InProgress->value];
-    }
-
-    public function getLabel(): ?string
-    {
-        return Str::headline($this->value);
-    }
-
-    public function getColor(): string
-    {
-        return match ($this) {
-            self::Pending => 'gray',
-            self::Confirmed => 'success',
-            self::InProgress => 'warning',
-            self::Cancelled => 'danger',
-            self::Completed => 'info',
-            self::NoShow => 'gray',
-        };
     }
 }

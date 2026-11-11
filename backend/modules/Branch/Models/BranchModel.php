@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Branch\Models;
 
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Table;
@@ -38,18 +36,13 @@ use Spatie\Translatable\HasTranslations;
 #[Hidden(['password', 'remember_token'])]
 #[Table('branches')]
 #[Translatable(['name', 'description', 'address'])]
-class BranchModel extends Authenticatable implements FilamentUser
+class BranchModel extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use HasTranslations;
     use HasUuids;
     use Notifiable;
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $panel->getId() === 'branch';
-    }
 
     public function activationLogs(): MorphMany
     {
@@ -133,7 +126,7 @@ class BranchModel extends Authenticatable implements FilamentUser
 
     /**
      * A branch created without a universe inherits its brand's (Task 44), on
-     * every creation path (dashboard, Filament, brand onboarding).
+     * every creation path (dashboard, brand onboarding).
      */
     protected static function booted(): void
     {

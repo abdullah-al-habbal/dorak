@@ -17,7 +17,7 @@ Route files live in each module's `Routes/` directory:
 ```
 modules/{Module}/Routes/
 ├── Api/routes.php      # API endpoints — return JSON
-└── Web/web.php         # Web/Filament routes — handled by Filament panels
+└── Web/web.php         # Web routes (Blade pages only)
 ```
 
 ## Wiring
@@ -48,7 +48,7 @@ API routes return JSON. Actions should extend `BaseApiAction` and use `ApiRespon
 
 ## Web routes
 
-Web routes (Filament panels, Blade pages) use standard Laravel routing. Filament handles its own route registration via panel configuration.
+Web routes (Blade pages) use standard Laravel routing.
 
 ## Notes
 

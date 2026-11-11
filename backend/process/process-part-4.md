@@ -17,7 +17,7 @@ repo-root/
 ├── docs/                          # the product docs (the spec) — README + 01..11
 │   ├── README.md ... 11-backend-architecture.md
 ├── modules/                       # the actual app code (see docs/11) — one module per aggregate
-│   └── {Brand,Branch,Chair,Barber,Booking,...}/   # Action/Handler/EloquentResolver + Filament + lang
+│   └── {Brand,Branch,Chair,Barber,Booking,...}/   # Action/Handler/EloquentResolver + lang
 ├── process/                       # CRESCENT process layer
 │   ├── process.md                 # this file — the wiring diagram
 └── .claude/

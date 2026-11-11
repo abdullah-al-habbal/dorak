@@ -16,7 +16,6 @@ modules/{Module}/
 ├── Config/
 ├── Database/Migrations/
 ├── Enums/
-├── Filament/Panels/{Admin|Barber|Branch}/Resources/
 ├── Http/Actions/{Client|Barber|Shared}/
 ├── Http/Resources/
 ├── Models/

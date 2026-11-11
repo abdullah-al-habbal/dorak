@@ -16,7 +16,6 @@ Part 2 of 2 · [Module Architecture — baseline standard](../SKILL.md) · [Prev
 - [ ] Action is invokable and thin; Handler has only `handle()`; Resolver has one Eloquent‑only method
 - [ ] every class is `final`; no `implements`, no `extends` of a project base
 - [ ] resolver uses constructor‑injected model + `newQuery()`
-- [ ] Filament resources call resolver/presenter, never raw Eloquent
 - [ ] provider added to `bootstrap/providers.php`; `register()` empty; `boot()` guarded with `File::exists`
 - [ ] both `lang/en` and `lang/ar` present; no hardcoded strings
 - [ ] names follow the `docs/11` §6 convention table

@@ -8,7 +8,7 @@ use Modules\Admin\Models\AdminModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 
 /**
- * The global taxonomy is platform data: only an admin (Filament or the `admin_api` dashboard
+ * The global taxonomy is platform data: only an admin (the `admin_api` dashboard
  * session) writes it. Actors are `mixed` so a non-admin or null actor is a denial, not a 500.
  */
 final class ServiceCatalogCategoryPolicy

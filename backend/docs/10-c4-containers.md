@@ -27,7 +27,7 @@ flowchart TB
 
     subgraph Dorak[Dorak system]
         APP["Client Mobile App<br/>(Flutter) - draws the backend-described floor plan"]
-        ADMIN["Admin / Owner Panel<br/>(Filament v5; React or Blade)"]
+        ADMIN["Admin / Owner Panel<br/>(Next.js dashboard)"]
         API["Application & API<br/>(Laravel) - business rules, floor-plan assembly, currency conversion, booking guarantee"]
         AUTH["Authentication<br/>(token-based, e.g. Sanctum)"]
         DB[("Primary Database<br/>(MySQL) - tenants, branches, chairs, barbers, bookings, ...")]

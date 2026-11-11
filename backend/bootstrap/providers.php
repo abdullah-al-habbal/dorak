@@ -23,9 +23,6 @@ use Modules\ClientInteraction\Providers\ClientInteractionServiceProvider;
 use Modules\ClientRecommendation\Providers\ClientRecommendationServiceProvider;
 use Modules\Commission\Providers\CommissionServiceProvider;
 use Modules\Core\Providers\ApplicationServiceProvider;
-use Modules\Core\Providers\Filament\AdminPanelProvider;
-use Modules\Core\Providers\Filament\BarberPanelProvider;
-use Modules\Core\Providers\Filament\BranchPanelProvider;
 use Modules\Currency\Providers\CurrencyServiceProvider;
 use Modules\Dashboard\Providers\DashboardServiceProvider;
 use Modules\Explore\Providers\ExploreServiceProvider;
@@ -53,9 +50,6 @@ return [
     ActivationServiceProvider::class,
     BanServiceProvider::class,
     ApplicationServiceProvider::class,
-    AdminPanelProvider::class,
-    BarberPanelProvider::class,
-    BranchPanelProvider::class,
     AdminServiceProvider::class,
     BarberServiceProvider::class,
     BranchServiceProvider::class,

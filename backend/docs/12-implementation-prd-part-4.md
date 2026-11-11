@@ -17,7 +17,7 @@ Existing test files (13) cover only Client, Barber, Admin models + health check.
 | **Booking** | Feature + Unit | Concurrency (two simultaneous bookings on same chair+slot), cancel, list, show | BK-01 |
 | **Explore** | Feature | Haversine radius search, barber list, branch detail | (implied) |
 | **Review** | Feature | Submit review, list by branch, validation errors | (implied) |
-| **Brand** | Feature | CRUD via Filament, unique slug, auto-create branch | TN-01 |
+| **Brand** | Feature | CRUD via the dashboard, unique slug, auto-create branch | TN-01 |
 | **Chair** | Feature | CRUD, status transitions, floor-plan position | CH-01 |
 | **BarberAffiliation** | Feature | Invite → accept/reject flow, multi-shop constraint | AF-01 |
 | **Currency** | Feature | Exchange rate CRUD, conversion calculation | CU-01 |
@@ -33,7 +33,7 @@ Acceptance criteria:
 ## 6. Execution Order
 
 ```
-Week 1: Track A gaps (5 missing Filament pages) ✅ DONE
+Week 1: Track A gaps (5 missing admin pages) ✅ DONE
   └→ Verified: all 62 tests pass, pages follow 8-file template
 
 Week 2: Track B High — Brand + Chair APIs
@@ -48,7 +48,7 @@ Week 4: Backfill tests — Booking concurrency, Explore search, Review submissio
 Week 5: Track B Medium — JobPosting + Application APIs + Currency API
   └→ Verify: phpstan + phpunit green
 
-Week 6: Frontend screens for new APIs + Filament page gaps
+Week 6: Frontend screens for new APIs + admin page gaps
   └→ Verify: dart analyze clean, full-stack smoke test
 ```
 
@@ -58,7 +58,7 @@ Week 6: Frontend screens for new APIs + Filament page gaps
 
 | Risk | Mitigation |
 |------|-----------|
-| ~~Filament page gaps block admin workflows~~ | ~~Track A first — 5 pages, 5h, unblocks everything~~ RESOLVED |
+| ~~Admin page gaps block admin workflows~~ | ~~Track A first — 5 pages, 5h, unblocks everything~~ RESOLVED |
 | New API endpoints break mobile contract | Follow existing response shapes (Explore/Booking patterns); write contract tests |
 | Backfill tests reveal pre-existing bugs | Fix bugs before adding new endpoints; KANBAN Blocked column for anything found |
 | Frontend ↔ Backend desync (API changes mid-build) | Freeze API contract per module before mobile starts; communicate via updated route files |

@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Gate;
-use Livewire\Livewire;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
@@ -15,7 +13,6 @@ use Modules\Core\Enums\VenueUniverse;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
-use Modules\ServiceCatalog\Filament\Panels\Admin\Resources\ServiceCatalogCategoryResource\Pages\ListServiceCatalogCategoriesPage;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 
@@ -191,22 +188,6 @@ describe('Admin catalog categories: delete', function (): void {
             'slug' => 'fade-after-delete',
             'is_active' => true,
         ])->assertUnprocessable()->assertJsonValidationErrors(['category_id']);
-    });
-
-    it('applies the same rule to the Filament delete action', function (): void {
-        $empty = ServiceCatalogCategoryModel::factory()->create();
-        $used = ServiceCatalogCategoryModel::factory()->create();
-        ServiceCatalogItemModel::factory()->create(['category_id' => $used->id]);
-        $this->actingAs(AdminModel::factory()->create(), 'admin');
-        Filament::setCurrentPanel(Filament::getPanel('admin'));
-
-        Livewire::test(ListServiceCatalogCategoriesPage::class)
-            ->assertTableActionHidden('delete', $used)
-            ->assertTableActionVisible('delete', $empty)
-            ->callTableAction('delete', $empty);
-
-        expect(ServiceCatalogCategoryModel::query()->find($empty->id))->toBeNull()
-            ->and(ServiceCatalogCategoryModel::query()->find($used->id))->not->toBeNull();
     });
 });
 

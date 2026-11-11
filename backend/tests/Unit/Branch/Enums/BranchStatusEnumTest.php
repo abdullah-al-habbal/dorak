@@ -10,7 +10,7 @@ use Modules\Branch\Enums\FloorPlanCanvasUnit;
 it('translates status labels in english and arabic', function () {
     app()->setLocale('en');
     expect(BranchStatusEnum::Enabled->label())->toBe('Enabled')
-        ->and(BranchStatusEnum::Pending->getLabel())->toBe('Pending');
+        ->and(BranchStatusEnum::Pending->label())->toBe('Pending');
 
     app()->setLocale('ar');
     expect(BranchStatusEnum::Disabled->label())->toBe('معطّل');

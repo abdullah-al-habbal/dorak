@@ -20,5 +20,5 @@ Genuine remaining gaps (not in code): A/B testing framework, real AI face analys
 ## Framework
 
 - Laravel ^13.8, PHP ^8.3
-- Filament ^3.0, Spatie Permissions, Spatie Translatable, Sanctum, Socialite
+- Spatie Permissions, Spatie Translatable, Sanctum, Socialite
 - Vite with Tailwind CSS v4, `@tailwindcss/vite` plugin

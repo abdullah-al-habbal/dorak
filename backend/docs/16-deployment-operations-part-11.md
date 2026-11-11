@@ -23,7 +23,7 @@ net growth over 2 runs + 1 stale   : 0
 ```
 
 317 compiled files come from 13 first-party Blade templates plus vendor package
-views (Filament and friends). That number is a property of the dependency tree,
+views (framework packages and friends). That number is a property of the dependency tree,
 not of deployment count.
 
 ### Answers to the questions asked

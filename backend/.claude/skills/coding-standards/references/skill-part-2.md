@@ -44,9 +44,6 @@ Every class **must** carry a suffix matching its layer/role. No bare names like 
 | Job                     | `Job`            | `SendReminderJob`                          |
 | Notification            | `Notification`   | `BookingConfirmationNotification`          |
 | Value Object            | `ValueObject`    | `ApiResponseBodyValueObject`               |
-| Filament Resource       | `Resource`       | `BookingResource`                          |
-| Filament Page           | `Page`           | `FloorPlanPage`                            |
-| Filament Widget         | `Widget`         | `BookingsOverviewWidget`                   |
 
 ## Autoloading
 

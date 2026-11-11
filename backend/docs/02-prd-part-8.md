@@ -37,7 +37,7 @@ Part 8 of 8 · [02 — Product Requirements Document (PRD)](02-prd.md) · [Previ
 
 | Phase | Theme | Deliverables | Est. Duration |
 |-------|-------|--------------|---------------|
-| **Phase 1 — Catalog Foundation** | Canonical taxonomy | Migrations + Models for ServiceCatalog. Filament Admin CRUD. Update `OfferedServiceModel` with optional `catalog_item_id`. API endpoints. | 1 week |
+| **Phase 1 — Catalog Foundation** | Canonical taxonomy | Migrations + Models for ServiceCatalog. Admin CRUD in the dashboard. Update `OfferedServiceModel` with optional `catalog_item_id`. API endpoints. | 1 week |
 | **Phase 2 — History Layer** | Client service journal | Migrations + Models for ClientHistory. Auto-creation on booking completion. Client timeline API. Rebooking flow. | 1 week |
 | **Phase 3 — Face Profile & AI** | Onboarding intelligence | Migrations + Models for ClientFaceProfile. Upload endpoints. Async analysis queue. Decision point: 3rd-party vs Python service. | 1.5 weeks |
 | **Phase 4 — Interaction Graph** | Tracking & favorites | Migrations + Models for ClientInteraction. Instrument all discovery touchpoints. Favorite/unfavorite APIs. Saved filter CRUD. | 1 week |

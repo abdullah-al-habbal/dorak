@@ -32,7 +32,7 @@ The look is good, but it is **generated centrally** — no per‑shop front‑en
 | Auth | Token‑based (Sanctum) |
 | Identifiers | UUID‑style, non‑guessable |
 | Client app | Flutter |
-| Admin panel | Filament v5 (React or Blade) |
+| Admin panel | Next.js dashboard (`frontend/web/dashboard`) |
 | Multi‑tenancy | SaaS, per‑brand isolation |
 | Hosting | Hostinger (owner's intent) |
 

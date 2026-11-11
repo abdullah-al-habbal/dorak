@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Chair\Enums;
 
-use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasLabel;
-use Illuminate\Support\Str;
-
-enum ChairStatus: string implements HasColor, HasLabel
+enum ChairStatus: string
 {
     case Available = 'available';
     case Occupied = 'occupied';
@@ -22,19 +18,5 @@ enum ChairStatus: string implements HasColor, HasLabel
     public function isBookable(): bool
     {
         return $this === self::Available;
-    }
-
-    public function getLabel(): ?string
-    {
-        return Str::headline($this->value);
-    }
-
-    public function getColor(): string
-    {
-        return match ($this) {
-            self::Available => 'success',
-            self::Occupied => 'warning',
-            self::Maintenance => 'danger',
-        };
     }
 }

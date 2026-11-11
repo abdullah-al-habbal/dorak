@@ -39,8 +39,5 @@ return [
     'reset_code_verified' => 'تم التحقق من رمز إعادة التعيين',
     'password_reset' => 'تمت إعادة تعيين كلمة المرور بنجاح',
     'password_changed' => 'تم تغيير كلمة المرور بنجاح',
-    'admin_panel' => 'إدارة دوراك',
-    'branch_panel' => 'فرع دوراك',
-    'barber_panel' => 'حلاق دوراك',
     'token_ability_missing' => 'لا يمكن استخدام هذا الرمز مع هذه الواجهة.',
 ];

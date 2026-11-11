@@ -11,7 +11,6 @@ childnodes:
   - skills.backend.crescent
   - skills.backend.database-conventions
   - skills.backend.feature-flags
-  - skills.backend.filament-module-structure
   - skills.backend.grill-me
   - skills.backend.how-to-add-a-module
   - skills.backend.how-to-add-a-route
@@ -59,7 +58,6 @@ architecture and conventions.
 | [10StrictBackendArchitecture](10StrictBackendArchitecture/SKILL.md) | FormRequests, Command objects, strict imports, Resource composition |
 | [how-to-add-a-module](how-to-add-a-module/SKILL.md) | Steps to create a new domain module |
 | [how-to-add-a-route](how-to-add-a-route/SKILL.md) | Defining API and web routes per module |
-| [filament-module-structure](filament-module-structure/SKILL.md) | Filament resource and page placement per module |
 
 ## Continued in
 

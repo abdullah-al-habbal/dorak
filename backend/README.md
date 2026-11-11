@@ -18,7 +18,6 @@ Built for a dual‑universe consumer app (Men's Grooming & Women's Beauty), with
 - **PHP** 8.3+ & **Laravel** 13.x
 - **MySQL** 8.0 (primary database)
 - **Flutter** (client app, API consumed via Sanctum)
-- **Filament** 3.x (admin & client panels)
 - **Spatie** packages: Translatable, Laravel Permission
 - **Laravel** Pennant (feature flags), Sanctum (API tokens), Socialite (social login)
 - **Pest** / PHPUnit for testing, **Larastan** for static analysis

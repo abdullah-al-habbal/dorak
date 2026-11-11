@@ -37,8 +37,6 @@ Every feature is a self‑contained **module** under `modules/{Name}/`, owning i
 | HTTP — validation | `Http/Requests/` |
 | HTTP — entry points | `Http/Actions/{Action}Action.php` |
 | Logic | `Handlers/{Action}Handler.php` |
-| Admin UI | `Filament/Admin/{Resources,Pages,Widgets}/` |
-| Client UI | `Filament/Client/{Resources,Pages,Widgets}/` |
 | Translations | `lang/{en,ar}/{name}.php` |
 | Blade | `Resources/views/` |
 | Provider | `Providers/{Name}ServiceProvider.php` |

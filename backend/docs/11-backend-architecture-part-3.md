@@ -26,21 +26,9 @@ Resolvers always use `$this->model->newQuery()`, never the static facade — so 
 
 ---
 
-## 5. Dual Filament panels
+## 5. Web surface
 
-Two panels, discovered at runtime from the filesystem:
-
-```
-app/Providers/Filament/
-  ├── AdminPanelProvider.php    # /admin  — roles: admin, supervisor
-  └── ClientPanelProvider.php   # /client — role: user
-```
-
-- **Filament is never registered inside module service providers.** The two panel providers scan `modules/{Module}/Filament/{Admin|Client}/{Resources,Pages,Widgets}/`.
-- **Auth gating:** each panel's `authMiddleware()` runs the ban‑check middleware; model‑level access via `ClientModel::canAccessPanel()` (or the corresponding auth model for each guard).
-- Panel config (id, path, brand, primary color, SPA, `SpatieTranslatablePlugin`) lives in `config/panels.php`.
-
-> Mapped to Dorak's locked roles (`04` group H): **/admin** serves Platform Admin / Brand Owner / Branch Manager with policies enforcing the fixed Owner and Manager capabilities; **/client** serves Clients and Barbers.
+There are no server-rendered admin panels. The Next.js dashboard (`frontend/web/dashboard`) is the only web surface for every guard; it talks to the `/api/v1/dashboard/*` routes through its proxy. The retired Filament panels (decision D1, NS-28) left no routes under `/admin`, `/branch` or `/barber`.
 
 ---
 
@@ -56,7 +44,6 @@ app/Providers/Filament/
 | Presenters | `{Module}Presenter` | `BookingPresenter` |
 | Service providers | `{Module}ServiceProvider` | `BookingServiceProvider` |
 | Translation namespace | snake_case module name | `__('booking::messages.key')` |
-| View namespace | kebab‑case module name | `'booking::filament.pages.*'` |
 | Migrations | `YYYY_MM_DD_000{N}_create_{table}_table.php` | stamped for ordering |
 
 ---

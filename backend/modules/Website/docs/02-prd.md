@@ -17,7 +17,7 @@ The Dorak Website is the primary conversion engine for the SaaS. It must convinc
 1. **Convert Owners:** Clearly explain the operational benefits (Branch-First, multi-branch) to drive B2B signups.
 2. **Delight Clients:** Show the interactive floor plan and dual-universe experience to drive app downloads.
 3. **Zero Discrimination:** The base design must be gender-neutral. The "Universe" selection only changes content and accent colors, never the core layout.
-4. **Dynamic Marketing:** Allow the platform admin to update pricing, features, and testimonials from the Filament Admin panel without touching code.
+4. **Dynamic Marketing:** Allow the platform admin to update pricing, features, and testimonials from the dashboard without touching code.
 
 ### Non-Goals
 - Building the actual application UI (that is the Flutter app's job).

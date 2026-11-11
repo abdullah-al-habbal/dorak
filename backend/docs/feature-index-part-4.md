@@ -39,23 +39,18 @@ Part 4 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 ### Activation API (Admin)
 - `ActivateAction` [POST /api/v1/admin/{entity}/{id}/activate] — activate barber/branch. Auth:admin
 - `DeactivateAction` [POST /api/v1/admin/{entity}/{id}/deactivate] — deactivate barber/branch. Auth:admin
-- `ToggleActivationAction` — Filament action for admin panel toggle
-- Filament pages: EditActivationLogPage, ListActivationLogsPage, ViewActivationLogPage
 
 ### Chair API
 - `ListChairsAction` [GET /api/v1/chairs] — list chairs. Auth:barber
 - `ShowChairAction` [GET /api/v1/chairs/{chair}] — single chair detail. Auth:barber
 - `UpdateChairAction` [PUT /api/v1/chairs/{chair}] — update chair. Auth:barber
-- Filament pages: Create/Edit/List/View Chair
 
 ### Currency API
 - `ListCurrenciesAction` [GET /api/v1/currencies] — list currencies. No auth.
 - `ListExchangeRatesAction` [GET /api/v1/exchange-rates] — list exchange rates. Auth:admin
 - `ConvertCurrencyAction` [POST /api/v1/currency/convert] — convert amount. Auth:admin
-- Filament pages: Create/Edit/List/View Currency + ExchangeRate
 
 ### Test Backfill (PRD 13 Phase 1)
 - Booking concurrency: 3 tests — different chairs same slot, same slot different chairs, race condition via direct insert
 - BarberAffiliation multi-shop constraint: CreateAffiliationAction + test for conflict
-- Brand Filament list page: load test
 - `ErrorCodeEnum::CONFLICT` (HTTP 409) added for conflict responses

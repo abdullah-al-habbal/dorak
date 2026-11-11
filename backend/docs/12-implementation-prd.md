@@ -13,7 +13,7 @@ codeanchors:
 
 > ⚠️ **HISTORICAL (updated 2026-08-09):** All Track A + Track B gaps resolved. The Flutter frontend was removed on 2026-08-09 and is being rebuilt from scratch (new UI/UX). Sections referencing `dorak_client_app` screens (§1 Track B consumer, §4) are superseded — treat API endpoints as the stable contract.
 
-> **Preface:** All 20 backend modules have database schema + Filament admin panels. "CRUD" in Dorak means **Filament management UI**, not REST API. This document clarifies what exists, what's missing, and what to build in what order — across **two tracks**: Admin Panel (Filament) and Client API (REST).
+> **Preface:** All 20 backend modules have database schema. "CRUD" in Dorak is delivered by the **dashboard** over the dashboard API. This document clarifies what exists, what's missing, and what to build in what order — across **two tracks**: Admin Panel (dashboard) and Client API (REST).
 > Consumes the current-state snapshot from `dorak/report.md`.
 
 ---
@@ -22,12 +22,12 @@ codeanchors:
 
 | Track | What it builds | Consumer | Priority now |
 |-------|---------------|----------|-------------|
-| **A — Admin Panel** | Filament resources, pages, actions, widgets | Brand owners, branch managers, platform admins | **Finish gaps first** (blocker for Track B) |
+| **A — Admin Panel** | Dashboard screens and routes | Brand owners, branch managers, platform admins | **Finish gaps first** (blocker for Track B) |
 | **B — Client API** | REST endpoints consumed by mobile apps | `dorak_client_app` (Flutter), future barber/business apps | **After Track A** for each module |
 
 Each module may need Track A, Track B, or both:
 
-| Module | A: Filament | B: API | Status |
+| Module | A: Dashboard | B: API | Status |
 |--------|-------------|--------|--------|
 | Core | Foundation config | Health check | ✅ Both |
 | Client | Admin CRUD | Auth + Profile | ✅ Both |

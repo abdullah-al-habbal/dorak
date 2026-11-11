@@ -94,9 +94,9 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-25 | Website content: pages, sections, testimonials, onboarding | admin | New | L | D13 | Done (no tests, image upload open) |
 | NS-26 | Plan self-service and billing | owner, admin | New | L | D6 | Deferred after launch (D6) |
 | NS-27 | Barber web extras | barber | Partial | M | D7 | Closed, no work (D7) |
-| NS-28 | Retire Filament | all | Removal | M | NS-01 to NS-24, NS-29, NS-30 | Todo |
+| NS-28 | Retire Filament | all | Removal | M | NS-01 to NS-24, NS-29, NS-30 | Done (package kept in composer; admin_api route clean-up open) |
 
-Every decision is resolved, so no task is blocked. NS-01, NS-02, NS-03, NS-29, NS-30, NS-04, NS-05, NS-06, NS-07, NS-08, NS-09, NS-10, NS-11, NS-12, NS-13, NS-14, NS-15, NS-16, NS-17, NS-18, NS-19, NS-20, NS-21, NS-22, NS-23, NS-24 and NS-25 are done; the next task is NS-28 (NS-26 is deferred and NS-27 is closed).
+Every decision is resolved, so no task is blocked. NS-01, NS-02, NS-03, NS-29, NS-30, NS-04, NS-05, NS-06, NS-07, NS-08, NS-09, NS-10, NS-11, NS-12, NS-13, NS-14, NS-15, NS-16, NS-17, NS-18, NS-19, NS-20, NS-21, NS-22, NS-23, NS-24 and NS-25 and NS-28 are done (NS-26 is deferred and NS-27 is closed).
 
 **Test coverage (2026-11-11):** `DashboardAdminBackOfficeTest` and `DashboardAdminOperationsTest` now cover the admin back office of NS-04 to NS-25: an authorization matrix over 43 admin routes (anonymous 401, owner, manager and stylist 403), admin self-deactivation, write-only gateway credentials, the default-currency guard, language switching, client bans, testimonials and payout lines. Per-feature happy paths, the dashboard Vitest and Playwright specs are still open.
 

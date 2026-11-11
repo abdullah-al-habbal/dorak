@@ -14,7 +14,7 @@ The skills are the **engineering harness**. They are not generic Laravel tips �
 
 | Skill | Enforces (from the docs) | Example binding |
 |---|---|---|
-| **module-architecture** | the aggregates in `06`; the structure in `11` | one module per aggregate; **no controller/service/repository** — only **Action → Handler → EloquentResolver** (single-method, `final`); Filament reads via resolvers/presenters |
+| **module-architecture** | the aggregates in `06`; the structure in `11` | one module per aggregate; **no controller/service/repository** — only **Action → Handler → EloquentResolver** (single-method, `final`) |
 | **type-safety** | the fixed value lists in `06` | every `status` / `gender_category` becomes a **backed enum**, not a magic string; the floor‑plan payload (`10`) becomes a typed object |
 | **migrations** | entities `06` + cascade laws `04` | brand delete **cascades** branches/chairs (rule **A6**) but a barber **survives** — only the affiliation row is removed (rule **C5**); polymorphic columns for affiliations/services/settings (`06` §4) |
 | **validations** | the If/Then rules `04` + edge cases `08` | reject a 2nd branch when the `multi_branch` flag is off (**A3/I2**); validate both `ar` **and** `en` on translatable fields (**J1/J2**) |

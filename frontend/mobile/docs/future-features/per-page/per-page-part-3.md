@@ -53,7 +53,7 @@ final pager = FeedBloc(
 
 ## Out of Scope
 
-* Admin UI for editing settings (Filament resource or settings page) — can be
+* Admin UI for editing settings (dashboard screen or settings page) — can be
   a follow-up; seeding suffices initially.
 * Additional keys beyond `pagination.per_page`.
 

@@ -29,7 +29,7 @@ Key fields per entity are defined in `06-entity-model-abstract.md` §6 (Client I
 #### Service Catalog & Taxonomy
 | ID | Requirement | Priority |
 |----|-------------|----------|
-| SC-1 | Platform admins can CRUD categories and items via Filament Admin Panel. | ✅ Must |
+| SC-1 | Platform admins can CRUD categories and items via the dashboard. | ✅ Must |
 | SC-2 | Items support bilingual name/description, default duration, typical price range, and a `metadata` JSON spec sheet. | ✅ Must |
 | SC-3 | Items support multiple tags via `ServiceCatalogItemTagModel`. | ✅ Must |
 | SC-4 | Items support media gallery via `ServiceCatalogItemMediaModel`. | 🟢 Should |

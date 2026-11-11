@@ -35,9 +35,7 @@ The *policy* for what to test (every house rule → a test; every edge case → 
 | **Controllers / Service layer / Repository layer** | Replaced by single‑method **Action / Handler / EloquentResolver** so no class grows unbounded |
 | Service‑container bindings | Concrete classes resolved directly; no interfaces to bind |
 | Abstract base classes | `final` + composition over inheritance |
-| Most `Routes/web.php` | Filament handles panel routing; Actions are bound where API/web routes are needed |
 | Module auto‑discovery | Explicit `providers.php` keeps boot order predictable |
-| Filament in `register()` | Panel providers own discovery; modules never touch Filament |
 | `app/` features (except providers) | Domain code lives in `modules/`; `app/` is only glue |
 
 ---

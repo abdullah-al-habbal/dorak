@@ -10,8 +10,8 @@ use Modules\Client\Models\ClientModel;
 use Modules\Dashboard\Support\DashboardActor;
 
 /**
- * Actors are `mixed` on purpose: the Gate calls these methods with an `AdminModel` (Filament,
- * `admin_api`), a `DashboardActor` or null, and a narrower type would turn a denial into a 500.
+ * Actors are `mixed` on purpose: the Gate calls these methods with an `AdminModel` (`admin_api`),
+ * a `DashboardActor` or null, and a narrower type would turn a denial into a 500.
  */
 final class BrandPolicy
 {
@@ -20,7 +20,7 @@ final class BrandPolicy
         return $brand->getAttribute('owner_id') === $owner->getKey();
     }
 
-    /** Listing brands: platform admins (Filament or dashboard) and brand owners, whose list stays scoped to their brands. */
+    /** Listing brands: platform admins (dashboard) and brand owners, whose list stays scoped to their brands. */
     public function viewAny(mixed $actor): bool
     {
         if ($actor instanceof AdminModel) {

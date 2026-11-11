@@ -14,7 +14,7 @@ codeanchors:
 3. Clicks "Pricing" in the navbar.
 4. Views the Freemium Gate comparison.
 5. Clicks "Start for Free".
-6. Redirected to the Filament `AdminPanel` or `BranchPanel` signup.
+6. Redirected to the dashboard sign-up.
 
 ## 2. Client Universe Selection Flow
 1. Visitor lands on the Home page (Default: Neutral or detected by browser).

@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\JobPosting\Enums;
 
-use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasLabel;
-use Illuminate\Support\Str;
-
-enum JobPostingStatusEnum: string implements HasColor, HasLabel
+enum JobPostingStatusEnum: string
 {
     case Open = 'open';
     case Closed = 'closed';
@@ -26,19 +22,5 @@ enum JobPostingStatusEnum: string implements HasColor, HasLabel
     public function isOpen(): bool
     {
         return $this === self::Open;
-    }
-
-    public function getLabel(): ?string
-    {
-        return Str::headline($this->value);
-    }
-
-    public function getColor(): string
-    {
-        return match ($this) {
-            self::Open => 'success',
-            self::Closed => 'danger',
-            self::Archived => 'gray',
-        };
     }
 }
