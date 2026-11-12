@@ -21,7 +21,7 @@ final class ListBarberSlotsAction extends BaseApiAction
 
     public function __invoke(ListBarberSlotsRequest $request, string $barber): JsonResponse
     {
-        BarberModel::query()->findOrFail($barber);
+        BarberModel::query()->discoverable()->findOrFail($barber);
 
         try {
             $slots = $this->handler->handle($request->toQuery($barber));

@@ -15,7 +15,7 @@ final class ListBarberServicesEloquentResolver
 
     public function resolve(ListBarberServicesQuery $query): Collection
     {
-        $barber = BarberModel::with('services.currency')->findOrFail($query->barberId);
+        $barber = BarberModel::discoverable()->with('services.currency')->findOrFail($query->barberId);
 
         if ($query->branchId !== null) {
             $this->serviceTerms->attach($barber->services, $this->serviceTerms->brandIdForBranch($query->branchId));

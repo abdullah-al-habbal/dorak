@@ -16,7 +16,7 @@ final class ListChairsEloquentResolver
     {
         $now = now();
         $availabilityEnd = $now->copy()->addSecond();
-        $query = ChairModel::with([
+        $query = ChairModel::query()->discoverable()->with([
             'branch',
             'barber',
             'bookings' => function (HasMany $bookingQuery) use ($now, $availabilityEnd): void {
@@ -32,6 +32,9 @@ final class ListChairsEloquentResolver
             $query->where('status', $payload->status);
         }
 
-        return $query->paginate($payload->perPage);
+        $chairs = $query->paginate($payload->perPage);
+        $chairs->getCollection()->each(fn (ChairModel $chair) => $chair->concealUndiscoverableBarber());
+
+        return $chairs;
     }
 }

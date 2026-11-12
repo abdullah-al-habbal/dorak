@@ -61,7 +61,7 @@ final class GetBarberDetailEloquentResolver
                 'chair_label' => $chairs->get($branch->getKey()),
             ]);
 
-        $brands = BrandModel::query()->whereKey($brandIds)->orderBy('id')->get()
+        $brands = BrandModel::active()->whereKey($brandIds)->orderBy('id')->get()
             ->map(fn (BrandModel $brand): array => [
                 'type' => 'brand',
                 'id' => (string) $brand->getKey(),

@@ -7,6 +7,7 @@ namespace Modules\Chair\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -53,6 +54,29 @@ class ChairModel extends Model
     public function bookings(): HasMany
     {
         return $this->hasMany(BookingModel::class, 'chair_id');
+    }
+
+    /**
+     * Chairs of a branch guests may discover (enabled, active brand, not banned).
+     *
+     * @param  Builder<ChairModel>  $query
+     * @return Builder<ChairModel>
+     */
+    public function scopeDiscoverable(Builder $query): Builder
+    {
+        return $query->whereHas('branch', fn (Builder $branch) => $branch->discoverable());
+    }
+
+    /** Public payloads never expose a seated barber who is not enabled or is banned. */
+    public function concealUndiscoverableBarber(): static
+    {
+        $barber = $this->barber;
+
+        if ($barber !== null && (! $barber->isEnabled || $barber->isBanned())) {
+            $this->setRelation('barber', null);
+        }
+
+        return $this;
     }
 
     public function currentAvailability(): ChairStatus

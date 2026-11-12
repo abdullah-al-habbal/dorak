@@ -14,7 +14,7 @@ final class ShowChairAction extends BaseApiAction
 {
     public function __invoke(Request $request, string $chair): JsonResponse
     {
-        $chair = ChairModel::with(['branch', 'barber'])->findOrFail($chair);
+        $chair = ChairModel::query()->discoverable()->with(['branch', 'barber'])->findOrFail($chair)->concealUndiscoverableBarber();
 
         return $this->ok(data: new ChairResource($chair));
     }
