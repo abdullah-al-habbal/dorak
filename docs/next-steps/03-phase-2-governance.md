@@ -117,7 +117,8 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
 
 - **Backend:** admin routes under `/dashboard/admin/barbers/{barber}`: `PATCH activate|deactivate` (optional reason), `POST ban` and `PATCH unban`, `GET activation-log` and `GET affiliations`, all behind the `review-barbers` gate. `BarberActivationService` moves only an approved barber to disabled and back (anything else answers 409 `barber_not_enabled` or `barber_not_disabled`; pending and rejected barbers stay in the NS-30 queue) and writes an `activation_logs` row with the admin and reason. The NS-07 ban service became `AccountBanService` and now serves clients and barbers; bans keep their history and the `BanObserver` signs the barber out of the stylist app. The list now returns every barber (branch-created ones included), and only the `pending` queue is limited to barbers with a login.
 - **Dashboard:** the NS-30 screen is now the admin "Barbers" screen. Its detail dialog adds the ban history, the activation log and the affiliations, plus activate, deactivate, ban and unban. Banned barbers show a ban badge in the list.
-- **Not done:** tests (skipped by instruction); a reason prompt on deactivation (the move is confirmed but the reason stays empty); the dashboard has no way to end a barber's affiliation.
+- **Tests:** the same `DashboardAdminBarbersTest.php` covers activate and deactivate (activation log with admin and reason, 409 `barber_not_enabled` and `barber_not_disabled` and for pending or rejected barbers, reason length, 404), the activation-log and affiliation lists, ban (sign-out, list flag, 409 codes, reason) and unban (the ban row stays with who lifted it). Vitest and Playwright stay open (WP-2, WP-3).
+- **Not done:** a reason prompt on deactivation (the move is confirmed but the reason stays empty); the dashboard has no way to end a barber's affiliation.
 
 ### NS-09 as built
 
