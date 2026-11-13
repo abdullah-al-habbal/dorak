@@ -130,14 +130,12 @@ describe('Create a job posting (NS-17)', function (): void {
         expect(JobPostingModel::query()->count())->toBe(1);
     });
 
-    it('is closed to a barber, to an anonymous caller and to the admin', function (): void {
+    it('is closed to a barber and to an anonymous caller (the admin is covered in DashboardAdminStaffingTest)', function (): void {
         $world = jobBoardWorld();
         $url = JOB_BOARD_URL."/{$world['branch']->id}/job-postings";
 
         $this->postJson($url, jobBoardPayload())->assertUnauthorized();
         jobBoardSwitchTo(BarberModel::factory()->create());
-        $this->postJson($url, jobBoardPayload())->assertForbidden();
-        jobBoardSwitchTo(AdminModel::factory()->create());
         $this->postJson($url, jobBoardPayload())->assertForbidden();
 
         expect(JobPostingModel::query()->count())->toBe(0);

@@ -21,7 +21,7 @@ return [
     'owner_operation_only' => 'عملية لوحة التحكم هذه متاحة لمالكي العلامات فقط.',
     'brand_owner_only' => 'مالك العلامة التجارية فقط يمكنه إنشاء علامة تجارية.',
     'barber_operation_unavailable' => 'عملية لوحة التحكم هذه غير متاحة للحلاقين.',
-    'branch_team_only' => 'هذه العملية متاحة لفريق الفرع (المدير أو مالك العلامة) فقط.',
+    'staffing_not_permitted' => 'هذه العملية متاحة لمدير المنصة أو مدير الفرع أو مالك العلامة فقط.',
     'session_secret_invalid' => 'يجب ألا يقل طول DASHBOARD_SESSION_SECRET عن 32 حرفًا.',
     'claim_encoding_failed' => 'تعذر ترميز بيانات جلسة لوحة التحكم.',
     'actor_type_unsupported' => 'نوع مستخدم لوحة التحكم غير مدعوم: :actor_type',

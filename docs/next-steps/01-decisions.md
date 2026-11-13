@@ -140,7 +140,7 @@ Options not taken: a `client_app` screen, or the admin creating brands for clien
 
 - **Allowed while pending:** edit the brand profile, and prepare **one branch** (the first branch) with its working hours, chairs and services.
 - **Not allowed until approval:**
-  - adding stylists or sending invitations;
+  - adding stylists or sending invitations (since 2026-11-13 this includes accepting a barber's join request, and creating or accepting any affiliation, for every actor);
   - more branches;
   - anything clients can see;
   - bookings.

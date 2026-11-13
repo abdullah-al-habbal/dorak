@@ -21,7 +21,7 @@ return [
     'owner_operation_only' => 'This dashboard operation is available to brand owners only.',
     'brand_owner_only' => 'Only a brand owner can create a brand.',
     'barber_operation_unavailable' => 'This dashboard operation is not available to barbers.',
-    'branch_team_only' => 'Only the shop\'s own team (a manager or the brand owner) can do this.',
+    'staffing_not_permitted' => 'Only a platform admin, the branch manager or the brand owner can manage barber affiliations and the job board.',
     'session_secret_invalid' => 'DASHBOARD_SESSION_SECRET must be at least 32 characters.',
     'claim_encoding_failed' => 'Unable to encode dashboard claim.',
     'actor_type_unsupported' => 'Unsupported dashboard actor type: :actor_type',

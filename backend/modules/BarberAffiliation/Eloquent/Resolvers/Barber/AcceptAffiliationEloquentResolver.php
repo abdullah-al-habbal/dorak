@@ -9,13 +9,18 @@ use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Audit\Services\StatusChangeLogger;
 use Modules\BarberAffiliation\CQRS\Command\Barber\AcceptAffiliationCommand;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\BarberAffiliation\ValuesObjects\AcceptAffiliationResult;
+use Modules\Brand\Services\BrandStaffingGuard;
 
 final class AcceptAffiliationEloquentResolver
 {
-    public function __construct(private readonly StatusChangeLogger $statusChangeLogger) {}
+    public function __construct(
+        private readonly StatusChangeLogger $statusChangeLogger,
+        private readonly BrandStaffingGuard $staffingGuard,
+    ) {}
 
     public function resolve(AcceptAffiliationCommand $command): AcceptAffiliationResult
     {
@@ -25,6 +30,11 @@ final class AcceptAffiliationEloquentResolver
             if ($affiliation->status !== AffiliationStatus::Pending) {
                 return AcceptAffiliationResult::invalidStatus();
             }
+
+            match ($affiliation->affiliable_type) {
+                AffiliableType::Branch => $this->staffingGuard->ensureBranchAcceptsBarbers($affiliation->affiliable_id),
+                AffiliableType::Brand => $this->staffingGuard->ensureBrandAcceptsBarbers($affiliation->affiliable_id),
+            };
 
             $fromStatus = $affiliation->status;
             $affiliation->update([

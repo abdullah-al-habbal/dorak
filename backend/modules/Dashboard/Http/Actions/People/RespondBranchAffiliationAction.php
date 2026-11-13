@@ -10,6 +10,7 @@ use Modules\Branch\Exceptions\AffiliationResponseException;
 use Modules\Branch\Services\BranchAffiliationResponder;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Http\Resources\Shared\DashboardAffiliationResource;
+use Modules\Dashboard\Support\AffiliationActorResolver;
 use Modules\Dashboard\Support\ScopedBranchResolver;
 
 /** Accept (`accept` route default true) or reject a pending affiliation of an in-scope branch. */
@@ -18,15 +19,16 @@ final class RespondBranchAffiliationAction extends BaseApiAction
     public function __construct(
         private readonly ScopedBranchResolver $branches,
         private readonly BranchAffiliationResponder $responder,
+        private readonly AffiliationActorResolver $actors,
     ) {}
 
     public function __invoke(Request $request, string $branch, string $affiliation): JsonResponse
     {
-        $model = $this->branches->resolve($request, $branch);
+        $model = $this->branches->resolveForStaffing($request, $branch);
         $accept = $request->route('accept') === true;
 
         try {
-            $result = $this->responder->respond($model, $affiliation, $accept);
+            $result = $this->responder->respond($model, $affiliation, $accept, $this->actors->actingAs($request));
         } catch (AffiliationResponseException $exception) {
             return $this->businessError($exception->errorCode, message: $exception->getMessage());
         }

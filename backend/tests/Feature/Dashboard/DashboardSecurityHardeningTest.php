@@ -32,22 +32,7 @@ describe('Barber lookup rate limit', function (): void {
     });
 });
 
-describe('Job board is for the shop team only', function (): void {
-    it('refuses a platform admin on every application and posting write, and leaves the data alone', function (): void {
-        $job = JobPostingModel::factory()->create();
-        $application = ApplicationModel::factory()->create(['job_posting_id' => $job->id]);
-        $this->authenticateDashboardActor(AdminModel::factory()->create());
-        $base = "/api/v1/dashboard/branches/{$job->branch_id}/job-postings";
-
-        $this->getJson("{$base}/{$job->id}/applications")->assertForbidden();
-        $this->postJson("{$base}/{$job->id}/applications/mark-seen")->assertForbidden();
-        $this->patchJson("{$base}/{$job->id}/applications/{$application->id}/status", ['status' => ApplicationStatus::Accepted->value])->assertForbidden();
-        $this->deleteJson("{$base}/{$job->id}")->assertForbidden();
-
-        expect($application->fresh()->status)->toBe(ApplicationStatus::Submitted)
-            ->and(JobPostingModel::find($job->id))->not->toBeNull();
-    });
-
+describe('Job board access (the admin is covered in DashboardAdminStaffingTest)', function (): void {
     it('refuses a barber on mark-seen', function (): void {
         $job = JobPostingModel::factory()->create();
         $this->authenticateDashboardActor(BarberModel::factory()->create());

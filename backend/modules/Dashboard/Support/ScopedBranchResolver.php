@@ -26,15 +26,16 @@ final readonly class ScopedBranchResolver
     }
 
     /**
-     * Like `resolve`, for the operations the shop's own team performs (the job board): a platform
-     * administrator is refused, matching the proxy allow-list's manager and owner guards.
+     * Like `resolve`, for the staffing operations (barber affiliations and the job board): the
+     * platform admin, a branch manager and a brand owner may act, each inside their own scope;
+     * anyone else is refused. Feature gates and lifecycle rules still apply to every actor.
      */
-    public function resolveForTeam(Request $request, string $branchId): BranchModel
+    public function resolveForStaffing(Request $request, string $branchId): BranchModel
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        if ($actor->isPlatformAdmin()) {
-            throw new AuthorizationException(__('dashboard::messages.branch_team_only'));
+        if (! $actor->canManageStaffing()) {
+            throw new AuthorizationException(__('dashboard::messages.staffing_not_permitted'));
         }
 
         return $this->resolve($request, $branchId);

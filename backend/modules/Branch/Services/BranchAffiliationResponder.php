@@ -12,16 +12,21 @@ use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Jobs\AffiliationRespondedNotification;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
+use Modules\BarberAffiliation\ValuesObjects\AffiliationActor;
 use Modules\Branch\Exceptions\AffiliationResponseException;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Services\BrandStaffingGuard;
 
 /** Accept/reject of a pending affiliation addressed to a branch; shared by the branch-account and dashboard routes. */
 final readonly class BranchAffiliationResponder
 {
-    public function __construct(private StatusChangeLogger $statusChangeLogger) {}
+    public function __construct(
+        private StatusChangeLogger $statusChangeLogger,
+        private BrandStaffingGuard $staffingGuard,
+    ) {}
 
     /** @throws AffiliationResponseException */
-    public function respond(BranchModel $branch, string $affiliationId, bool $accept): BarberAffiliationModel
+    public function respond(BranchModel $branch, string $affiliationId, bool $accept, ?AffiliationActor $actor = null): BarberAffiliationModel
     {
         $affiliation = $this->findForBranch($branch, $affiliationId);
 
@@ -35,7 +40,11 @@ final readonly class BranchAffiliationResponder
 
         $next = $accept ? AffiliationStatus::Active : AffiliationStatus::Rejected;
 
-        DB::transaction(function () use ($affiliation, $branch, $next, $accept): void {
+        DB::transaction(function () use ($affiliation, $branch, $next, $accept, $actor): void {
+            if ($accept) {
+                $this->staffingGuard->ensureBrandAcceptsBarbers($branch->brand_id);
+            }
+
             $fromStatus = $affiliation->status;
             $affiliation->update([
                 'status' => $next,
@@ -47,8 +56,8 @@ final readonly class BranchAffiliationResponder
                 (string) $affiliation->id,
                 $fromStatus->value,
                 $next->value,
-                StatusChangeActorTypeEnum::Branch,
-                (string) $branch->id,
+                $actor?->type ?? StatusChangeActorTypeEnum::Branch,
+                $actor?->id ?? (string) $branch->id,
             );
         });
 

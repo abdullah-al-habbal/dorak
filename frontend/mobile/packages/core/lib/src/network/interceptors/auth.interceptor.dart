@@ -42,8 +42,13 @@ class AuthInterceptor extends Interceptor {
 
     if (carriedBearer && !isAuthLifecycle && (status == 401 || status == 403)) {
       final body = err.response?.data;
-      if (body is Map && body['code'] == 'ACCOUNT_BANNED') {
+      final code = body is Map ? body['code'] : null;
+      if (code == 'ACCOUNT_BANNED') {
         reportAccountBanned();
+      } else if (status == 403 &&
+          AuthInterceptorConstants.authInterceptorBusinessForbiddenCodes
+              .contains(code)) {
+        // A business rejection of one action, not a session problem.
       } else {
         reportUnauthorized();
       }

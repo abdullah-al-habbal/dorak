@@ -87,6 +87,12 @@ final readonly class DashboardActor implements Authorizable
         };
     }
 
+    /** Barber affiliations and the job board: the platform admin, a branch manager or a brand owner (decided 2026-11-13). */
+    public function canManageStaffing(): bool
+    {
+        return $this->isPlatformAdmin() || $this->isBranchManager() || $this->isBrandOwner();
+    }
+
     public function canAccessBranch(mixed $branchId): bool
     {
         $scope = $this->scopedBranchIds();

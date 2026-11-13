@@ -10,18 +10,28 @@ use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Audit\Services\StatusChangeLogger;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\CQRS\Command\Barber\CreateAffiliationCommand;
+use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
+use Modules\Brand\Services\BrandStaffingGuard;
 
 final class CreateAffiliationEloquentResolver
 {
-    public function __construct(private readonly StatusChangeLogger $statusChangeLogger) {}
+    public function __construct(
+        private readonly StatusChangeLogger $statusChangeLogger,
+        private readonly BrandStaffingGuard $staffingGuard,
+    ) {}
 
     public function resolve(CreateAffiliationCommand $command): BarberAffiliationModel
     {
         return DB::transaction(function () use ($command): BarberAffiliationModel {
             $barber = BarberModel::findOrFail($command->barberId);
+
+            match ($command->affiliableType) {
+                AffiliableType::Branch => $this->staffingGuard->ensureBranchAcceptsBarbers($command->affiliableId),
+                AffiliableType::Brand => $this->staffingGuard->ensureBrandAcceptsBarbers($command->affiliableId),
+            };
 
             $existing = BarberAffiliationModel::where('barber_id', $barber->id)
                 ->where('affiliable_id', $command->affiliableId)

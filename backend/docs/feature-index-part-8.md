@@ -39,6 +39,7 @@ See `docs/02-prd.md` §5 (phase roadmap) and §8 (locked implementation decision
 
 ### Complete Affiliation Lifecycle (Task 55)
 - A barber may hold several simultaneous pending/active affiliations across different branches/brands; only a duplicate pending/active affiliation to the *same* affiliable is rejected (409). `affiliable_id` must exist for its `affiliable_type` (422 otherwise).
+- D11 (2026-11-13): while a brand is `pending`, `BrandStaffingGuard` refuses (403 `brand_not_approved`) creating, inviting and accepting an affiliation to the brand or any of its branches on every surface (barber app `POST /barbers/{barber}/affiliate` and `POST /affiliations/{id}/accept`, branch account API, dashboard); reject and terminate stay allowed. The dashboard affiliation and job-board routes accept the platform admin (audit actor `admin`).
 - `POST /api/v1/branch/affiliations` lets a branch invite a barber directly (pending invite); the inviting branch cannot accept/reject its own invite (403).
 - `POST /api/v1/affiliations/{affiliation}/terminate` (barber) and `POST /api/v1/branch/affiliations/{affiliation}/terminate` (branch) end an active affiliation, clearing `chairs.barber_id` for that barber at that branch. Future bookings are left untouched.
 - Deleting a brand terminates every pending/active affiliation pointing at the brand or any of its branches before the cascade.

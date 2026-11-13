@@ -6,6 +6,7 @@ namespace Modules\Branch\Http\Requests\Branch;
 
 use Illuminate\Validation\Rule;
 use Modules\BarberAffiliation\CQRS\Command\Branch\InviteAffiliationCommand;
+use Modules\BarberAffiliation\ValuesObjects\AffiliationActor;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class InviteAffiliationRequest extends BaseApiFormRequest
@@ -19,12 +20,13 @@ final class InviteAffiliationRequest extends BaseApiFormRequest
         ];
     }
 
-    public function toCommand(string $branchId): InviteAffiliationCommand
+    public function toCommand(string $branchId, ?AffiliationActor $actor = null): InviteAffiliationCommand
     {
         return new InviteAffiliationCommand(
             branchId: $branchId,
             barberId: (string) $this->validated('barber_id'),
             commissionPercent: $this->validated('commission_percent') !== null ? (float) $this->validated('commission_percent') : null,
+            actor: $actor,
         );
     }
 }

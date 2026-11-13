@@ -177,14 +177,14 @@ describe('Admin per-branch oversight reads', function (): void {
         $this->getJson(OVERSIGHT_URL."/branches/{$branch->id}/{$path}")->assertNotFound();
     })->with(['reviews', 'opening-hours', 'affiliations', 'job-postings']);
 
-    it('keeps the job board write and application routes closed to the platform admin', function (): void {
+    it('keeps the job_board plan feature in force for the platform admin\'s writes', function (): void {
         $branch = BranchModel::factory()->create();
         $this->authenticateDashboardActor(AdminModel::factory()->create());
 
         $this->postJson(OVERSIGHT_URL."/branches/{$branch->id}/job-postings", [
             'title' => ['en' => 'Barber', 'ar' => 'حلاق'],
             'description' => ['en' => 'Join us', 'ar' => 'انضم'],
-        ])->assertForbidden();
+        ])->assertForbidden()->assertJsonPath('code', 'feature_not_enabled');
 
         expect(JobPostingModel::query()->where('branch_id', $branch->id)->count())->toBe(0);
     });

@@ -21,7 +21,7 @@ final class UpdateBranchJobPostingAction extends BaseApiAction
 
     public function __invoke(UpdateJobPostingRequest $request, string $branch, string $jobPosting): JsonResponse
     {
-        $model = $this->branches->resolveForTeam($request, $branch);
+        $model = $this->branches->resolveForStaffing($request, $branch);
         $this->brandFeatures->ensureJobBoard($model->getKey());
 
         $posting = JobPostingModel::where('branch_id', $model->getKey())->findOrFail($jobPosting);

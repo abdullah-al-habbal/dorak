@@ -21,7 +21,7 @@ final class ListBranchApplicationsAction extends BaseApiAction
 
     public function __invoke(Request $request, string $branch, string $jobPosting): JsonResponse
     {
-        $model = $this->branches->resolveForTeam($request, $branch);
+        $model = $this->branches->resolveForStaffing($request, $branch);
         $posting = JobPostingModel::where('branch_id', $model->getKey())->findOrFail($jobPosting);
 
         return $this->paginated(

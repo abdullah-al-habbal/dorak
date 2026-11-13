@@ -16,16 +16,21 @@ use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Services\BrandStaffingGuard;
 
 final class InviteAffiliationEloquentResolver
 {
-    public function __construct(private readonly StatusChangeLogger $statusChangeLogger) {}
+    public function __construct(
+        private readonly StatusChangeLogger $statusChangeLogger,
+        private readonly BrandStaffingGuard $staffingGuard,
+    ) {}
 
     public function resolve(InviteAffiliationCommand $command): BarberAffiliationModel
     {
         return DB::transaction(function () use ($command): BarberAffiliationModel {
             $branch = BranchModel::findOrFail($command->branchId);
             $barber = BarberModel::findOrFail($command->barberId);
+            $this->staffingGuard->ensureBranchAcceptsBarbers($branch->id);
 
             $existing = BarberAffiliationModel::where('barber_id', $barber->id)
                 ->where('affiliable_id', $branch->id)
@@ -53,8 +58,8 @@ final class InviteAffiliationEloquentResolver
                 (string) $affiliation->id,
                 null,
                 AffiliationStatus::Pending->value,
-                StatusChangeActorTypeEnum::Branch,
-                (string) $branch->id,
+                $command->actor?->type ?? StatusChangeActorTypeEnum::Branch,
+                $command->actor?->id ?? (string) $branch->id,
             );
 
             return $affiliation;

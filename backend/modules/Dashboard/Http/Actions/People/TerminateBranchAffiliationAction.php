@@ -13,6 +13,7 @@ use Modules\Branch\Services\BranchAffiliationResponder;
 use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Http\Resources\Shared\DashboardAffiliationResource;
+use Modules\Dashboard\Support\AffiliationActorResolver;
 use Modules\Dashboard\Support\ScopedBranchResolver;
 
 final class TerminateBranchAffiliationAction extends BaseApiAction
@@ -21,17 +22,19 @@ final class TerminateBranchAffiliationAction extends BaseApiAction
         private readonly ScopedBranchResolver $branches,
         private readonly BranchAffiliationResponder $responder,
         private readonly TerminateAffiliationHandler $handler,
+        private readonly AffiliationActorResolver $actors,
     ) {}
 
     public function __invoke(Request $request, string $branch, string $affiliation): JsonResponse
     {
-        $model = $this->branches->resolve($request, $branch);
+        $model = $this->branches->resolveForStaffing($request, $branch);
         $affiliationModel = $this->responder->findForBranch($model, $affiliation);
+        $actor = $this->actors->actingAs($request);
 
         $result = $this->handler->handle(new TerminateAffiliationCommand(
             $affiliationModel->id,
-            StatusChangeActorTypeEnum::Branch->value,
-            (string) $model->getKey(),
+            ($actor?->type ?? StatusChangeActorTypeEnum::Branch)->value,
+            $actor?->id ?? (string) $model->getKey(),
         ));
 
         if (! $result->success) {
