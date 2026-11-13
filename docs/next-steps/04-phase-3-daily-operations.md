@@ -54,14 +54,15 @@ These tasks remove the places where a manager or owner has to refresh, switch to
 
 - **Backend:** `POST /bookings/{id}/review` already existed (one rating per booking, completed or no-show only, scoped to the branch). The staff booking payload now carries `client_review` (`rating`, `body`, `created_at`, or null), so the dashboard shows the given rating instead of offering the action again. The field is additive for the mobile apps.
 - **Dashboard:** the booking detail shows "Rate client" for a completed or no-show booking without a rating, opening a dialog with 1 to 5 stars and an optional note; once rated, the detail shows the stars and note. A 409 answers "already rated".
-- **Not done:** tests (skipped by instruction).
+- **Tests:** `backend/tests/Feature/Dashboard/DashboardClientRatingTest.php` (16 cases) plus the cases in `ClientReviewTest` cover the stored author, subject and note, no-show allowed, 422 for pending, confirmed, in-progress and cancelled bookings, 409 on a second rating, rating and note validation, 403 for another branch, an unknown booking, a barber and the admin, 401 anonymous, `client_review` and the reputation on the booking detail, and the rating staying hidden from the client. Vitest and Playwright stay open (WP-2, WP-3).
 
 
 ### NS-12 as built
 
 - **Backend:** dashboard routes `GET /branches/{branch}/hours-overrides` (from today on, soonest first), `PUT` and `DELETE /branches/{branch}/hours-overrides/{date}`, resolved through `ScopedBranchResolver` (a branch outside the actor's scope answers 404) and `ensureBranchManageable`. Setting a past date is rejected; setting a date again replaces its earlier exception. They reuse `BranchHours::setOverride/clearOverride`, the same logic the branch account's routes use, so availability already honours a closed or shortened day.
 - **Dashboard:** a "Special days" section under the weekly editor on Working hours, to add a closed day or special hours for a date, list the upcoming ones and remove them. The proxy allows `GET` and `PUT|DELETE` for admin, manager and owner.
-- **Not done:** tests (skipped by instruction); a date range or recurring closures (one date at a time).
+- **Tests:** `backend/tests/Feature/Dashboard/DashboardHoursOverridesTest.php` (15 cases) covers closing a day, special hours replacing an earlier exception, the list (today onward, soonest first, own branch only), idempotent clear, date and hours validation, 404 for another branch's manager, owner and admin access, 403 for a barber and for an extra branch after a `multi_branch` downgrade, and the booking effect: a closed day removes every slot and clearing it brings them back, and special hours limit the slots and refuse a booking outside them. Vitest and Playwright stay open (WP-2, WP-3).
+- **Not done:** a date range or recurring closures (one date at a time).
 
 
 ### NS-13 as built

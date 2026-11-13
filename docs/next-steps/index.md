@@ -74,8 +74,8 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-09 | Branch-level oversight: chairs, stylists, services, reviews, hours, invitations, jobs | admin | Partial | M | D3 | Done (backend tests; UI tests open) |
 | | **[Phase 3: the daily routine needs no workaround](04-phase-3-daily-operations.md)** | | | | | |
 | NS-10 | Notifications feed in the dashboard | all | New | M | D5 | Done (backend tests; UI tests open) |
-| NS-11 | Rate the client after a visit | manager, owner | Ready | S | | Done (no tests) |
-| NS-12 | Closure days and special hours | manager, owner | Partial | M | | Done (no tests) |
+| NS-11 | Rate the client after a visit | manager, owner | Ready | S | | Done (backend tests; UI tests open) |
+| NS-12 | Closure days and special hours | manager, owner | Partial | M | | Done (backend tests; UI tests open) |
 | NS-13 | Owner workspace: brand profile, add a brand, chairs, services, reviews | owner | Ready | M | | Done (no tests) |
 | NS-14 | Dispute a review from the dashboard | manager, owner | Partial | S | NS-05 | Done (backend tests; UI tests open) |
 | | **[Phase 4: staffing and signature features](05-phase-4-staffing.md)** | | | | | |
