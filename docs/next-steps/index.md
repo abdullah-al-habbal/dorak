@@ -64,7 +64,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-02 | Account page: profile, email, password, notification settings | all | Ready | M | | Done |
 | NS-29 | Error handling and localized error pages (backend and dashboard) | all | Partial | M | D13 (website pages only) | Done |
 | NS-03 | Owner public registration, status page, emails, first brand | owner, admin | New | L | D2 (decided), D10, D11, D12 | Done |
-| NS-30 | Barber approval queue and sign-up hardening | admin, barber | Partial | M | D8 | Done (no tests, mobile resubmit screen open) |
+| NS-30 | Barber approval queue and sign-up hardening | admin, barber | Partial | M | D8 | Done (backend tests; UI tests and mobile resubmit screen open) |
 | NS-04 | Admin users: invite, edit, deactivate | admin | New | M | NS-01 | Done (backend tests; UI tests open) |
 | | **[Phase 2: the platform team runs the platform alone](03-phase-2-governance.md)** | | | | | |
 | NS-05 | Review moderation (disputes) | admin | Ready | S | | Done (backend tests; UI tests open) |
