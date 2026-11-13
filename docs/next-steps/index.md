@@ -71,7 +71,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-06 | Brand lifecycle: edit, reject and resubmit, suspend, locks, emails, branch status, feature overrides, history | admin | Partial | L | D8, D9 | Done (backend tests; UI tests open) |
 | NS-07 | Clients and bans | admin | New | L | D4 | Done (backend tests; UI tests open) |
 | NS-08 | Barbers platform-wide: activation, bans, activation log | admin | Partial | M | NS-07, NS-30 | Done (backend tests; UI tests open) |
-| NS-09 | Branch-level oversight: chairs, stylists, services, reviews, hours, invitations, jobs | admin | Partial | M | D3 | Done (no tests) |
+| NS-09 | Branch-level oversight: chairs, stylists, services, reviews, hours, invitations, jobs | admin | Partial | M | D3 | Done (backend tests; UI tests open) |
 | | **[Phase 3: the daily routine needs no workaround](04-phase-3-daily-operations.md)** | | | | | |
 | NS-10 | Notifications feed in the dashboard | all | New | M | D5 | Done (backend tests; UI tests open) |
 | NS-11 | Rate the client after a visit | manager, owner | Ready | S | | Done (no tests) |
