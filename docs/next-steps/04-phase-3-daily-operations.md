@@ -74,7 +74,7 @@ These tasks remove the places where a manager or owner has to refresh, switch to
 
 - **Backend:** `POST /dashboard/branches/{branch}/reviews/{review}/dispute` (body `reason`, 10 to 1000 characters). The branch is resolved inside the actor's scope and the review must be a published review about that branch, otherwise 404; the platform admin gets 403 because admins judge disputes. It reuses `FlagReviewDisputeHandler`, so the review is held from the public rating and the admins get the NS-10 "review disputed" notification.
 - **Dashboard:** every published review on the Reviews screen has a "Dispute" action opening a reason dialog; once flagged, the review shows the Disputed badge, and NS-05's moderation queue picks it up. The proxy allows the POST for manager and owner only.
-- **Not done:** tests (skipped by instruction).
+- **Tests:** `backend/tests/Feature/Dashboard/DashboardReviewDisputeTest.php` covers manager and owner happy paths (review held, reason stored, one notification per active admin and none for a deactivated one), a re-dispute clearing the earlier resolution, 403 for the admin and barber, 401 anonymous, 404 for another branch, another brand, a barber review, an unknown or malformed review id, 422 for a disputed, hidden or resolved review, and the reason length bounds (10 and 1000). Vitest and Playwright stay open (WP-2, WP-3).
 
 ## NS-11: Rate the client after a visit
 

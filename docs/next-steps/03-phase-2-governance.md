@@ -34,7 +34,7 @@ Once Filament is gone, these tasks are the only way to moderate, govern brands a
 
 - **Backend:** the routes were ready. `AdminReviewResource` gains `subject_name` (the branch, stylist or client being reviewed) and the list eager-loads the subject. Outcomes are `published` and `hidden`; resolving a review that is no longer `disputed` answers 422, and disputes nobody decides within 48 hours are re-published by `reviews:release-expired-disputes`.
 - **Dashboard:** the admin "Reviews" entry opens the disputed queue (status filter in the URL). A row opens a resolve dialog with the review, the dispute reason, an outcome (keep published or hide) and an optional note. Proxy rules: `GET admin/reviews`, `PATCH admin/reviews/{id}/resolve`, admin only.
-- **Tests:** none added, by the product owner's instruction for this batch; the "Done when" test items stay open.
+- **Tests:** `ReviewDisputeTest` and `DashboardAdminModerationTest` cover the core flow; `backend/tests/Feature/Dashboard/DashboardReviewDisputeTest.php` adds the queue (subject name, ordering, paging, `per_page` bounds), keep-published outcome with resolver and timestamp, the 422 on a second resolution, 404 on an unknown review, status and note validation, and the anonymous 401. Vitest and Playwright stay open (WP-2, WP-3).
 
 ## NS-06: Brand lifecycle
 

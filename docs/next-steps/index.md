@@ -67,7 +67,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-30 | Barber approval queue and sign-up hardening | admin, barber | Partial | M | D8 | Done (no tests, mobile resubmit screen open) |
 | NS-04 | Admin users: invite, edit, deactivate | admin | New | M | NS-01 | Done (backend tests; UI tests open) |
 | | **[Phase 2: the platform team runs the platform alone](03-phase-2-governance.md)** | | | | | |
-| NS-05 | Review moderation (disputes) | admin | Ready | S | | Done (no tests) |
+| NS-05 | Review moderation (disputes) | admin | Ready | S | | Done (backend tests; UI tests open) |
 | NS-06 | Brand lifecycle: edit, reject and resubmit, suspend, locks, emails, branch status, feature overrides, history | admin | Partial | L | D8, D9 | Done (no tests) |
 | NS-07 | Clients and bans | admin | New | L | D4 | Done (no tests) |
 | NS-08 | Barbers platform-wide: activation, bans, activation log | admin | Partial | M | NS-07, NS-30 | Done (no tests) |
@@ -77,7 +77,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-11 | Rate the client after a visit | manager, owner | Ready | S | | Done (no tests) |
 | NS-12 | Closure days and special hours | manager, owner | Partial | M | | Done (no tests) |
 | NS-13 | Owner workspace: brand profile, add a brand, chairs, services, reviews | owner | Ready | M | | Done (no tests) |
-| NS-14 | Dispute a review from the dashboard | manager, owner | Partial | S | NS-05 | Done (no tests) |
+| NS-14 | Dispute a review from the dashboard | manager, owner | Partial | S | NS-05 | Done (backend tests; UI tests open) |
 | | **[Phase 4: staffing and signature features](05-phase-4-staffing.md)** | | | | | |
 | NS-15 | Floor plan editor | manager, owner | Ready | L | | Done (no tests) |
 | NS-16 | Barber invitations (affiliations) | manager, owner | Ready | M | | Done (no tests) |
