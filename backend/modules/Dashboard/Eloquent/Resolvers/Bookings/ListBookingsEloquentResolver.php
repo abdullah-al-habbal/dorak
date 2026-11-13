@@ -28,9 +28,10 @@ final class ListBookingsEloquentResolver
             ->when(isset($filters['date_to']), fn ($builder) => $builder->where('starts_at', '<=', $this->upperBound((string) $filters['date_to'])))
             ->when(isset($filters['search']), fn ($builder) => $builder->whereHas(
                 'client',
+                // MySQL compares the extracted JSON text case-sensitively, so lower both sides.
                 fn ($client) => $client->where(
-                    fn ($name) => $name->where('name->en', 'like', "%{$filters['search']}%")
-                        ->orWhere('name->ar', 'like', "%{$filters['search']}%"),
+                    fn ($name) => $name->whereRaw('LOWER(JSON_UNQUOTE(JSON_EXTRACT(`name`, \'$.en\'))) like ?', ['%'.mb_strtolower((string) $filters['search']).'%'])
+                        ->orWhereRaw('LOWER(JSON_UNQUOTE(JSON_EXTRACT(`name`, \'$.ar\'))) like ?', ['%'.mb_strtolower((string) $filters['search']).'%']),
                 ),
             ))
             ->latest('starts_at')->paginate((int) ($filters['per_page'] ?? 15));

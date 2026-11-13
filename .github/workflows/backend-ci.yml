@@ -19,9 +19,8 @@ jobs:
   quality-gate:
     runs-on: ubuntu-latest
 
-    # The suite has only ever run on MySQL and the 57 migrations were written
-    # for it, so CI uses the same engine as local (.env.testing -> mysql) and
-    # production. sqlite in-memory would be faster but is unproven here.
+    # MySQL is the only supported test engine (same as local and production);
+    # phpunit.xml forces it and TestDatabaseGuard refuses anything else.
     services:
       mysql:
         image: mysql:8
@@ -37,10 +36,8 @@ jobs:
           --health-retries=10
 
     env:
-      # phpunit.xml sets APP_KEY, cache, session, mail and queue but no DB_*,
-      # and both .env.testing and database/database.sqlite are gitignored — so
-      # without these the suite falls through to the framework default (sqlite)
-      # pointing at a file that does not exist in CI.
+      # phpunit.xml forces DB_CONNECTION=mysql and DB_DATABASE=dorak_test; the
+      # host and credentials come from here because .env.testing is gitignored.
       DB_CONNECTION: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306

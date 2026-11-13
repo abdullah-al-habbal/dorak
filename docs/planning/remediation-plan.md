@@ -37,8 +37,8 @@ add ownership before using this as a platform-wide shared catalog.
 
 ## Test environment
 
-The PHPUnit configuration uses SQLite in-memory storage so the backend suite
-does not depend on a local MySQL `dorak_test` database.
+The PHPUnit configuration forces MySQL `dorak_test` (SQLite is not supported; a guard
+refuses any other engine or database). A local MySQL server is required.
 
 ## Phase 4: Availability and booking lifecycle
 

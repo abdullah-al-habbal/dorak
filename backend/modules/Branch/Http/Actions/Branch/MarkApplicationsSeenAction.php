@@ -6,6 +6,7 @@ namespace Modules\Branch\Http\Actions\Branch;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\JobPosting\Models\JobPostingModel;
 use Modules\JobPosting\Services\ApplicationSeenMarker;
@@ -21,6 +22,6 @@ final class MarkApplicationsSeenAction extends BaseApiAction
 
         $posting = JobPostingModel::where('branch_id', $branch->id)->findOrFail($jobPosting);
 
-        return $this->updated(data: ['updated' => $this->marker->markSeen((string) $posting->getKey())]);
+        return $this->updated(data: ['updated' => $this->marker->markSeen((string) $posting->getKey(), StatusChangeActorTypeEnum::Branch, (string) $branch->getKey())]);
     }
 }

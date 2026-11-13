@@ -7,6 +7,7 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\DB;
 use LogicException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
@@ -16,10 +17,28 @@ use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardSessionClaim;
+use Tests\Support\TestDatabaseGuard;
 
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
+
+    /**
+     * Runs before any trait set-up, so before RefreshDatabase's migrate:fresh, and refuses any database but
+     * MySQL `dorak_test`. Overriding setUpTraits keeps the guard in force even when a test file re-applies a trait.
+     *
+     * @return array<class-string, class-string>
+     */
+    protected function setUpTraits()
+    {
+        TestDatabaseGuard::assertSafe(
+            (string) app()->environment(),
+            DB::connection()->getDriverName(),
+            DB::connection()->getDatabaseName(),
+        );
+
+        return parent::setUpTraits();
+    }
 
     protected function authenticateDashboardActor(AdminModel|BarberModel|BranchModel|ClientModel $model): static
     {

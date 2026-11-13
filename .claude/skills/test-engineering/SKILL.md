@@ -17,7 +17,7 @@ Read these first when the area applies; this skill adds a cross-stack layer and 
 | Topic | Authority (wins on conflict) |
 | --- | --- |
 | Backend test database, `RefreshDatabase`, Pest layout | `backend/.claude/skills/testing`, `backend/AGENTS.md`, `backend/CLAUDE.md` |
-| Which docs rule or edge case needs a test | `backend/.claude/skills/laravel-testing-baseline` (the docs-to-tests map only; its "SQLite :memory:" line is stale, see below) |
+| Which docs rule or edge case needs a test | `backend/.claude/skills/laravel-testing-baseline` (the docs-to-tests map only) |
 | Gate commands and their order | `../monorepo-task-executor/references/gates.md` |
 | Feasibility of a task | `../llm-council/SKILL.md` |
 | Security review of a diff | `../monorepo-task-executor/references/security-review.md` |
@@ -34,7 +34,7 @@ If the output differs, trust the output and report the drift.
 
 | Fact | Check |
 | --- | --- |
-| Backend tests run on MySQL `dorak_test` (via gitignored `.env.testing`). `phpunit.xml` sets `DB_CONNECTION=sqlite` with non-forced `<env>`, which `APP_ENV=testing` overrides; `laravel-testing-baseline` still says SQLite and is wrong. CI uses a MySQL 8 service. | `cd backend && APP_ENV=testing php artisan tinker --execute='echo config("database.default");'`, and `.github/workflows/backend-ci.yml` |
+| Backend tests run on MySQL `dorak_test` only (decision 2026-11-13). SQLite is not supported: `phpunit.xml` forces `DB_CONNECTION=mysql`, `DB_DATABASE=dorak_test`, and `Tests\Support\TestDatabaseGuard` (called from `Tests\TestCase::setUpTraits`, before `migrate:fresh`) throws unless the driver is `mysql` and the database is `dorak_test` or `dorak_test_<n>`. Host and credentials come from the gitignored `.env.testing` or the CI environment. CI uses a MySQL 8 service. | `cd backend && vendor/bin/pest tests/Unit/TestDatabaseGuardTest.php`, and `.github/workflows/backend-ci.yml` |
 | Pest 3.8.x on PHPUnit 11 | `cd backend && vendor/bin/pest --version` |
 | No code coverage driver is loaded, so `pest --coverage` and `--mutate` cannot run here | `php -m \| grep -i -E "pcov\|xdebug"` |
 | `phpunit.xml` `<source>` includes `app`, which does not exist (code lives in `modules/`), so coverage numbers would be meaningless until it is fixed | `ls backend/app` |
@@ -149,8 +149,7 @@ Backend tests already run on MySQL (verified above), so engine behaviour is exer
 foreign keys and cascade rules, unique constraints, orphan prevention, soft deletes, transaction
 rollback and concurrent writes. Concurrency (double booking, two simultaneous approvals) needs
 real overlapping connections; a single-process test does not prove it, so mark it `unverified` until
-a parallel or two-connection test exists. Never assume SQLite results transfer to MySQL if a suite or
-a developer overrides `DB_CONNECTION`. Tests use `dorak_test` only; never point them at the
+a parallel or two-connection test exists. MySQL is the only engine tests run on; SQLite is not supported. Tests use `dorak_test` only; never point them at the
 development database `dorak_backend_development_db`, and never run `migrate:fresh` against it.
 
 ## 9. Test effectiveness review

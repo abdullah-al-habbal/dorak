@@ -16,6 +16,7 @@ use Modules\BarberAffiliation\Enums\AffiliationInitiatorTypeEnum;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Services\BrandFeatures;
 use Modules\Brand\Services\BrandStaffingGuard;
 
 final class InviteAffiliationEloquentResolver
@@ -23,14 +24,18 @@ final class InviteAffiliationEloquentResolver
     public function __construct(
         private readonly StatusChangeLogger $statusChangeLogger,
         private readonly BrandStaffingGuard $staffingGuard,
+        private readonly BrandFeatures $brandFeatures,
     ) {}
 
     public function resolve(InviteAffiliationCommand $command): BarberAffiliationModel
     {
         return DB::transaction(function () use ($command): BarberAffiliationModel {
             $branch = BranchModel::findOrFail($command->branchId);
-            $barber = BarberModel::findOrFail($command->barberId);
+            // Barber row first: it serialises this barber's invitations, so the duplicate check below cannot race.
+            $barber = BarberModel::query()->lockForUpdate()->findOrFail($command->barberId);
+
             $this->staffingGuard->ensureBranchAcceptsBarbers($branch->id);
+            $this->brandFeatures->ensureBranchManageable($branch->id);
 
             $existing = BarberAffiliationModel::where('barber_id', $barber->id)
                 ->where('affiliable_id', $branch->id)

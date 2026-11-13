@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\JobPosting\Eloquent\Resolvers\Shared;
 
 use Modules\JobPosting\CQRS\Query\Shared\ShowJobPostingQuery;
-use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Models\JobPostingModel;
 
 final class ShowJobPostingEloquentResolver
@@ -13,7 +12,7 @@ final class ShowJobPostingEloquentResolver
     public function resolve(ShowJobPostingQuery $query): JobPostingModel
     {
         return JobPostingModel::with('branch')
-            ->where('status', JobPostingStatusEnum::Open)
+            ->publiclyVisible()
             ->findOrFail($query->jobId);
     }
 }

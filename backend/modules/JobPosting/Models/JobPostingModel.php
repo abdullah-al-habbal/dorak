@@ -7,6 +7,7 @@ namespace Modules\JobPosting\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,19 @@ class JobPostingModel extends Model
             'description' => 'array',
             'requirements' => 'array',
         ];
+    }
+
+    /**
+     * Postings the public board may show and accept applications for: open, on a branch whose
+     * brand is Active (D11). Pending, Suspended and Rejected brands, and brandless branches, stay hidden.
+     *
+     * @param  Builder<JobPostingModel>  $query
+     * @return Builder<JobPostingModel>
+     */
+    public function scopePubliclyVisible(Builder $query): Builder
+    {
+        return $query->where('status', JobPostingStatusEnum::Open)
+            ->whereHas('branch', fn (Builder $branch) => $branch->whereHas('brand', fn (Builder $brand) => $brand->active()));
     }
 
     public function branch(): BelongsTo

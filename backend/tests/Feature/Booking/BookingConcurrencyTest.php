@@ -36,7 +36,7 @@ it('rejects second booking when same chair+slot already confirmed', function () 
 
     $response->assertStatus(409);
     expect(BookingModel::where('chair_id', $chair->id)
-        ->whereNotIn('status', ['cancelled'])
+        ->whereNotIn('booking_status', ['cancelled'])
         ->count()
     )->toBe(1);
 });

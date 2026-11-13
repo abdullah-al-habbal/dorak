@@ -31,6 +31,21 @@ final class BrandStaffingGuard
         }
     }
 
+    /**
+     * D11 for the job board: a Pending brand may not create or edit a posting, whoever acts. Deleting
+     * a posting and deciding on applications stay open, and other statuses keep their current rules.
+     *
+     * @throws BrandNotApprovedException
+     */
+    public function ensureBranchMayPublishJobs(mixed $branchId): void
+    {
+        $brandId = BranchModel::query()->whereKey($branchId)->value('brand_id');
+
+        if ($brandId !== null && BrandModel::query()->whereKey($brandId)->value('status') === BrandStatusEnum::Pending) {
+            throw new BrandNotApprovedException;
+        }
+    }
+
     /** @throws BrandNotApprovedException */
     public function ensureBranchAcceptsBarbers(mixed $branchId): void
     {

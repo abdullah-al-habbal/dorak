@@ -11,17 +11,6 @@ use Pdo\Mysql;
 return [
     'default' => env('DB_CONNECTION'),
     'connections' => [
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'url' => env('DB_URL'),
-            'database' => env('DB_DATABASE'),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS'),
-            'busy_timeout' => null,
-            'journal_mode' => null,
-            'synchronous' => null,
-            'transaction_mode' => 'DEFERRED',
-        ],
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),

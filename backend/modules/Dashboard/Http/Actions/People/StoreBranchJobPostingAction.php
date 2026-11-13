@@ -7,6 +7,7 @@ namespace Modules\Dashboard\Http\Actions\People;
 use Illuminate\Http\JsonResponse;
 use Modules\Branch\Http\Requests\Branch\StoreJobPostingRequest;
 use Modules\Brand\Services\BrandFeatures;
+use Modules\Brand\Services\BrandStaffingGuard;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\ScopedBranchResolver;
 use Modules\JobPosting\Enums\JobPostingStatusEnum;
@@ -18,11 +19,13 @@ final class StoreBranchJobPostingAction extends BaseApiAction
     public function __construct(
         private readonly ScopedBranchResolver $branches,
         private readonly BrandFeatures $brandFeatures,
+        private readonly BrandStaffingGuard $staffingGuard,
     ) {}
 
     public function __invoke(StoreJobPostingRequest $request, string $branch): JsonResponse
     {
         $model = $this->branches->resolveForStaffing($request, $branch);
+        $this->staffingGuard->ensureBranchMayPublishJobs($model->getKey());
         $this->brandFeatures->ensureJobBoard($model->getKey());
 
         $posting = JobPostingModel::create([

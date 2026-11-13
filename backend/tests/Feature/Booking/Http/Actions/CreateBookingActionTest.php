@@ -161,7 +161,7 @@ it('ensures only one booking per chair+slot in database after conflict', functio
     ])->assertStatus(409);
 
     expect(BookingModel::where('chair_id', $chair->id)
-        ->whereNotIn('status', ['cancelled'])
+        ->whereNotIn('booking_status', ['cancelled'])
         ->count()
     )->toBe(1);
 });

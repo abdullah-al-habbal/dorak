@@ -26,11 +26,17 @@ final class CreateAffiliationRequest extends BaseApiFormRequest
             && Gate::forUser($barber)->allows('create', [BarberAffiliationModel::class, (string) $this->route('barber')]);
     }
 
+    /** @return array<string, string> */
+    public function messages(): array
+    {
+        return ['affiliable_type.in' => __('barberaffiliation::messages.brand_level_not_supported')];
+    }
+
     public function rules(): array
     {
         return [
             'affiliable_id' => ['required', 'string', ValidationLimitConstants::RULE_ID_MAX, $this->affiliableExistsRule()],
-            'affiliable_type' => ['required', Rule::enum(AffiliableType::class)],
+            'affiliable_type' => ['required', Rule::in([AffiliableType::Branch->value])],
             'commission_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }

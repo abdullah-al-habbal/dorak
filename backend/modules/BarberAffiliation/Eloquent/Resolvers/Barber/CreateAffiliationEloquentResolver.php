@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\BarberAffiliation\Eloquent\Resolvers\Barber;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Audit\Services\StatusChangeLogger;
@@ -26,12 +27,14 @@ final class CreateAffiliationEloquentResolver
     public function resolve(CreateAffiliationCommand $command): BarberAffiliationModel
     {
         return DB::transaction(function () use ($command): BarberAffiliationModel {
-            $barber = BarberModel::findOrFail($command->barberId);
+            if ($command->affiliableType !== AffiliableType::Branch) {
+                throw ValidationException::withMessages(['affiliable_type' => [__('barberaffiliation::messages.brand_level_not_supported')]]);
+            }
 
-            match ($command->affiliableType) {
-                AffiliableType::Branch => $this->staffingGuard->ensureBranchAcceptsBarbers($command->affiliableId),
-                AffiliableType::Brand => $this->staffingGuard->ensureBrandAcceptsBarbers($command->affiliableId),
-            };
+            // Barber row first: it serialises this barber's requests, so the duplicate check below cannot race.
+            $barber = BarberModel::query()->lockForUpdate()->findOrFail($command->barberId);
+
+            $this->staffingGuard->ensureBranchAcceptsBarbers($command->affiliableId);
 
             $existing = BarberAffiliationModel::where('barber_id', $barber->id)
                 ->where('affiliable_id', $command->affiliableId)

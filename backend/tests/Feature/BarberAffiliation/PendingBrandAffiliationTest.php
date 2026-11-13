@@ -83,28 +83,28 @@ describe('A barber cannot join a Pending brand (barber app)', function (): void 
         Queue::assertNothingPushed();
     });
 
-    it('refuses a join request addressed to the Pending brand itself', function (): void {
+    it('no longer takes a join request addressed to the brand itself, Pending or not (brand-level requests are closed)', function (): void {
         $world = pendingBrandWorld();
         $barber = BarberModel::factory()->create();
 
         $this->actingAs($barber, 'barber')
             ->postJson("/api/v1/barbers/{$barber->id}/affiliate", ['affiliable_id' => $world['brand']->id, 'affiliable_type' => AffiliableType::Brand->value])
-            ->assertForbidden()
-            ->assertJsonPath('code', 'brand_not_approved');
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('affiliable_type');
 
         $this->assertDatabaseCount('barber_affiliations', 0);
     });
 
-    it('still accepts a join request to an approved brand and to its branch', function (): void {
+    it('still accepts a join request to a branch of an approved brand, and refuses one to the brand itself', function (): void {
         Queue::fake();
         $world = pendingBrandWorld(pending: false);
         $barber = BarberModel::factory()->create();
         $this->actingAs($barber, 'barber');
 
         $this->postJson("/api/v1/barbers/{$barber->id}/affiliate", ['affiliable_id' => $world['branch']->id, 'affiliable_type' => AffiliableType::Branch->value])->assertCreated();
-        $this->postJson("/api/v1/barbers/{$barber->id}/affiliate", ['affiliable_id' => $world['brand']->id, 'affiliable_type' => AffiliableType::Brand->value])->assertCreated();
+        $this->postJson("/api/v1/barbers/{$barber->id}/affiliate", ['affiliable_id' => $world['brand']->id, 'affiliable_type' => AffiliableType::Brand->value])->assertUnprocessable();
 
-        $this->assertDatabaseCount('barber_affiliations', 2);
+        $this->assertDatabaseCount('barber_affiliations', 1);
     });
 
     it('refuses to accept an invitation from a Pending brand and rolls the whole change back', function (): void {
@@ -151,7 +151,7 @@ describe('A barber cannot join a Pending brand (barber app)', function (): void 
         expect($invite->fresh())->status->toBe(AffiliationStatus::Active)->accepted_at->not->toBeNull();
     });
 
-    it('refuses to accept a brand-level invitation while the brand is Pending', function (): void {
+    it('answers 400 and leaves a legacy brand-level request untouched while the brand is Pending', function (): void {
         $world = pendingBrandWorld();
         $barber = BarberModel::factory()->create();
         $invite = BarberAffiliationModel::factory()->pending()->create([
@@ -162,7 +162,7 @@ describe('A barber cannot join a Pending brand (barber app)', function (): void 
             'initiated_by_id' => $world['branch']->id,
         ]);
 
-        $this->actingAs($barber, 'barber')->postJson("/api/v1/affiliations/{$invite->id}/accept")->assertForbidden()->assertJsonPath('code', 'brand_not_approved');
+        $this->actingAs($barber, 'barber')->postJson("/api/v1/affiliations/{$invite->id}/accept")->assertStatus(400);
 
         pendingBrandAssertUntouched($invite);
     });

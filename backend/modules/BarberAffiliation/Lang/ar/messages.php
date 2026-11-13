@@ -5,6 +5,7 @@ declare(strict_types=1);
 return [
     'already_affiliated' => 'الحلاق لديه انتساب قيد الانتظار أو نشط مع هذا المتجر بالفعل.',
     'affiliable_not_found' => 'affiliable_id المحدد غير موجود لـ affiliable_type المحدد.',
+    'brand_level_not_supported' => 'يمكن توجيه طلبات الانتساب إلى فرع فقط.',
     'created' => 'تم إنشاء الانتساب بنجاح.',
     'not_pending' => 'الانتساب ليس قيد الانتظار.',
     'not_active' => 'الانتساب غير نشط.',

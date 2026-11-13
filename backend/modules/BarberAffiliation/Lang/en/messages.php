@@ -5,6 +5,7 @@ declare(strict_types=1);
 return [
     'already_affiliated' => 'Barber already has a pending or active affiliation with this shop.',
     'affiliable_not_found' => 'The selected affiliable_id does not exist for the given affiliable_type.',
+    'brand_level_not_supported' => 'Affiliation requests can only be addressed to a branch.',
     'created' => 'Affiliation created successfully.',
     'not_pending' => 'Affiliation is not in pending status.',
     'not_active' => 'Affiliation is not active.',

@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace Modules\JobPosting\Eloquent\Resolvers\Barber;
 
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Support\Facades\DB;
 use Modules\Barber\Models\BarberModel;
 use Modules\JobPosting\CQRS\Command\Barber\ApplyForJobCommand;
 use Modules\JobPosting\Enums\ApplicationStatus;
-use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Models\ApplicationModel;
 use Modules\JobPosting\Models\JobPostingModel;
 use Modules\JobPosting\Support\BarberProfileSnapshotBuilder;
 use Modules\JobPosting\ValuesObjects\ApplyForJobResult;
 
+/**
+ * Applying is serialised per posting: the posting row is locked, visibility (open posting on an Active
+ * brand) is checked after the lock, and the unique (posting, barber) index is the last line of defence.
+ */
 final class ApplyForJobEloquentResolver
 {
     public function __construct(
@@ -21,9 +26,18 @@ final class ApplyForJobEloquentResolver
 
     public function resolve(ApplyForJobCommand $command): ApplyForJobResult
     {
-        $jobPosting = JobPostingModel::findOrFail($command->jobPostingId);
+        try {
+            return DB::transaction(fn (): ApplyForJobResult => $this->apply($command));
+        } catch (UniqueConstraintViolationException) {
+            return ApplyForJobResult::alreadyApplied();
+        }
+    }
 
-        if ($jobPosting->status !== JobPostingStatusEnum::Open) {
+    private function apply(ApplyForJobCommand $command): ApplyForJobResult
+    {
+        $jobPosting = JobPostingModel::query()->lockForUpdate()->findOrFail($command->jobPostingId);
+
+        if (! JobPostingModel::query()->publiclyVisible()->whereKey($jobPosting->getKey())->exists()) {
             return ApplyForJobResult::notOpen();
         }
 

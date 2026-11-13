@@ -20,7 +20,7 @@ final class RejectAffiliationEloquentResolver
     public function resolve(RejectAffiliationCommand $command): RejectAffiliationResult
     {
         return DB::transaction(function () use ($command): RejectAffiliationResult {
-            $affiliation = BarberAffiliationModel::findOrFail($command->affiliationId);
+            $affiliation = BarberAffiliationModel::query()->lockForUpdate()->findOrFail($command->affiliationId);
 
             if ($affiliation->status !== AffiliationStatus::Pending) {
                 return RejectAffiliationResult::invalidStatus();

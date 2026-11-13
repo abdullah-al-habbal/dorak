@@ -10,7 +10,6 @@ use Modules\BarberAffiliation\Handlers\Branch\InviteAffiliationHandler;
 use Modules\BarberAffiliation\Jobs\AffiliationInvitedNotification;
 use Modules\Branch\Http\Requests\Branch\InviteAffiliationRequest;
 use Modules\Brand\Services\BrandApprovalGuard;
-use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Http\Resources\Shared\DashboardAffiliationResource;
@@ -21,7 +20,6 @@ final class InviteBranchAffiliationAction extends BaseApiAction
 {
     public function __construct(
         private readonly ScopedBranchResolver $branches,
-        private readonly BrandFeatures $brandFeatures,
         private readonly BrandApprovalGuard $approvals,
         private readonly InviteAffiliationHandler $handler,
         private readonly AffiliationActorResolver $actors,
@@ -31,7 +29,6 @@ final class InviteBranchAffiliationAction extends BaseApiAction
     {
         $model = $this->branches->resolveForStaffing($request, $branch);
         $this->approvals->ensureBranchBrandApproved($request->attributes->get('dashboard_actor'), $model->getKey());
-        $this->brandFeatures->ensureBranchManageable($model->getKey());
 
         try {
             $affiliation = $this->handler->handle($request->toCommand((string) $model->getKey(), $this->actors->actingAs($request)));

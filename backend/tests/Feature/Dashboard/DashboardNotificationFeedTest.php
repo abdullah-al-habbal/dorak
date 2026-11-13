@@ -20,7 +20,9 @@ const DASHBOARD_FEED_URL = '/api/v1/dashboard/notifications';
 
 function feedRow(Model $account, array $attributes = []): NotificationModel
 {
-    return NotificationModel::query()->create([
+    // forceFill: created_at and read_at are not mass-assignable, and without them every row ties on now().
+    $row = new NotificationModel;
+    $row->forceFill([
         'notifiable_type' => $account->getMorphClass(),
         'notifiable_id' => $account->getKey(),
         'type' => NotificationTypeEnum::PlatformEvent,
@@ -28,7 +30,9 @@ function feedRow(Model $account, array $attributes = []): NotificationModel
         'body' => 'Body',
         'data' => ['event' => 'review_disputed', 'subject_id' => 'x'],
         ...$attributes,
-    ]);
+    ])->save();
+
+    return $row;
 }
 
 function feedOwnerWithBrand(): ClientModel

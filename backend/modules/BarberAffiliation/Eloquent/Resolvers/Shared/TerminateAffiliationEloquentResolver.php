@@ -22,7 +22,7 @@ final class TerminateAffiliationEloquentResolver
     public function resolve(TerminateAffiliationCommand $command): TerminateAffiliationResult
     {
         return DB::transaction(function () use ($command): TerminateAffiliationResult {
-            $affiliation = BarberAffiliationModel::findOrFail($command->affiliationId);
+            $affiliation = BarberAffiliationModel::query()->lockForUpdate()->findOrFail($command->affiliationId);
 
             if ($affiliation->status !== AffiliationStatus::Active) {
                 return TerminateAffiliationResult::invalidStatus();

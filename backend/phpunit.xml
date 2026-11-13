@@ -25,8 +25,12 @@
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+        <!-- MySQL only. Forced so a stray DB_* variable or .env value cannot point the suite at another
+             database; host and credentials still come from .env.testing or the CI environment.
+             Tests\Support\TestDatabaseGuard refuses anything but MySQL `dorak_test` before migrating. -->
+        <env name="DB_CONNECTION" value="mysql" force="true"/>
+        <env name="DB_DATABASE" value="dorak_test" force="true"/>
+        <env name="DB_URL" value="" force="true"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
         <env name="MAIL_MAILER" value="array"/>

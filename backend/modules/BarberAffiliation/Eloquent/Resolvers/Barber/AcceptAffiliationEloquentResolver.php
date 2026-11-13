@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Audit\Services\StatusChangeLogger;
+use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\CQRS\Command\Barber\AcceptAffiliationCommand;
 use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
@@ -25,16 +26,16 @@ final class AcceptAffiliationEloquentResolver
     public function resolve(AcceptAffiliationCommand $command): AcceptAffiliationResult
     {
         return DB::transaction(function () use ($command): AcceptAffiliationResult {
-            $affiliation = BarberAffiliationModel::findOrFail($command->affiliationId);
+            // Lock order: barber, affiliation, brand. The status is re-read under the lock.
+            BarberModel::query()->lockForUpdate()->find($command->barberId);
+            $affiliation = BarberAffiliationModel::query()->lockForUpdate()->findOrFail($command->affiliationId);
 
-            if ($affiliation->status !== AffiliationStatus::Pending) {
+            // A legacy brand-level request can never become Active: no party can answer it.
+            if ($affiliation->status !== AffiliationStatus::Pending || $affiliation->affiliable_type !== AffiliableType::Branch) {
                 return AcceptAffiliationResult::invalidStatus();
             }
 
-            match ($affiliation->affiliable_type) {
-                AffiliableType::Branch => $this->staffingGuard->ensureBranchAcceptsBarbers($affiliation->affiliable_id),
-                AffiliableType::Brand => $this->staffingGuard->ensureBrandAcceptsBarbers($affiliation->affiliable_id),
-            };
+            $this->staffingGuard->ensureBranchAcceptsBarbers($affiliation->affiliable_id);
 
             $fromStatus = $affiliation->status;
             $affiliation->update([

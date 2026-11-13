@@ -95,9 +95,11 @@ commands that re-check these facts.
 
 ## Database compatibility
 
-Backend tests run on MySQL (`dorak_test`) locally and in CI, the same engine as production, so engine
-behaviour is exercised. The older backend `laravel-testing-baseline` skill still says SQLite; the
-test-engineering skill records MySQL as the verified truth. True concurrency (double booking) needs
+Backend tests run on MySQL (`dorak_test`) only, locally and in CI, the same engine as production, so
+engine behaviour (locks, unique indexes, transactions, DDL) is exercised. SQLite is not a supported test
+driver: `phpunit.xml` forces MySQL and `dorak_test`, and `Tests\Support\TestDatabaseGuard` stops the run
+before `migrate:fresh` if the driver or database name differs, so the development database cannot be
+wiped by a test run. A lock-order test asserts the real `FOR UPDATE` statements; true concurrency (double booking) needs
 overlapping connections and stays marked unverified until such a test exists.
 
 ## Workflow

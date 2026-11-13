@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Branch\Http\Actions\Branch;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Modules\Branch\Http\Requests\Branch\ListApplicationsRequest;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\JobPosting\Http\Resources\Barber\ApplicationResource;
 use Modules\JobPosting\Models\ApplicationModel;
@@ -14,7 +14,7 @@ use Modules\JobPosting\Models\JobPostingModel;
 /** Read-only: marking applications as seen is its own call (`MarkApplicationsSeenAction`). */
 final class ListApplicationsAction extends BaseApiAction
 {
-    public function __invoke(Request $request, string $jobPosting): JsonResponse
+    public function __invoke(ListApplicationsRequest $request, string $jobPosting): JsonResponse
     {
         $branch = $request->user('branch_api');
 
@@ -23,7 +23,7 @@ final class ListApplicationsAction extends BaseApiAction
         $applications = ApplicationModel::where('job_posting_id', $jobPosting)
             ->with('barber')
             ->orderByDesc('created_at')
-            ->paginate($request->input('per_page', 15));
+            ->paginate($request->perPage());
 
         return $this->paginated($applications, ApplicationResource::class);
     }

@@ -13,8 +13,8 @@ codeanchors:
 
 ## Database
 
-- All integration and feature tests use a real MySQL database (not SQLite).
-- A separate test database (`dorak_test`) is defined in `.env.testing` and used automatically when `APP_ENV=testing`.
+- All tests use a real MySQL database. SQLite is not supported and never a fallback.
+- `phpunit.xml` forces `DB_CONNECTION=mysql` and `DB_DATABASE=dorak_test`; host and credentials come from `.env.testing` (CI: environment). `Tests\Support\TestDatabaseGuard` throws before `migrate:fresh` for any other driver or database name.
 - The `RefreshDatabase` trait is applied via the base `Tests\TestCase`, guaranteeing a clean state for every test.
 
 ## Test structure

@@ -29,8 +29,8 @@ php artisan queue:work
 php artisan serve
 ```
 
-Use a configured database in development or the PHPUnit SQLite configuration for
-tests. Queue workers are required for booking push notifications.
+Use a configured MySQL database in development and the dedicated MySQL `dorak_test`
+database for tests (SQLite is not supported). Queue workers are required for booking push notifications.
 
 ### Flutter workspace
 

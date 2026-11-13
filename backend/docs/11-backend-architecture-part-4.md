@@ -19,7 +19,7 @@ This is the code‑level enforcement of `04` **J1/J2** (always show the user's l
 ## 8. Testing
 
 - **Pest** + **PHPUnit 11**.
-- **SQLite `:memory:`** — no external DB required.
+- **MySQL `dorak_test`** only (forced in `phpunit.xml`, enforced by `Tests\Support\TestDatabaseGuard`); SQLite is not supported.
 - Tests in `tests/Feature/`, `tests/Unit/`, `tests/Integration/`.
 - **Factories in each module's `Database/Factories/`.**
 - Run: `composer test` (clears config, runs the full suite).
