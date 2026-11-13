@@ -76,10 +76,10 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-10 | Notifications feed in the dashboard | all | New | M | D5 | Done (backend tests; UI tests open) |
 | NS-11 | Rate the client after a visit | manager, owner | Ready | S | | Done (backend tests; UI tests open) |
 | NS-12 | Closure days and special hours | manager, owner | Partial | M | | Done (backend tests; UI tests open) |
-| NS-13 | Owner workspace: brand profile, add a brand, chairs, services, reviews | owner | Ready | M | | Done (no tests) |
+| NS-13 | Owner workspace: brand profile, add a brand, chairs, services, reviews | owner | Ready | M | | Done (backend tests; UI tests open) |
 | NS-14 | Dispute a review from the dashboard | manager, owner | Partial | S | NS-05 | Done (backend tests; UI tests open) |
 | | **[Phase 4: staffing and signature features](05-phase-4-staffing.md)** | | | | | |
-| NS-15 | Floor plan editor | manager, owner | Ready | L | | Done (no tests) |
+| NS-15 | Floor plan editor | manager, owner | Ready | L | | Done (backend tests; UI tests open) |
 | NS-16 | Barber invitations (affiliations) | manager, owner | Ready | M | | Done (no tests) |
 | NS-17 | Job postings and applications | manager, owner | Ready | M | NS-16 | Done (no tests) |
 | NS-18 | Per-brand stylist pricing | owner | Ready | M | NS-13 | Done (no tests) |

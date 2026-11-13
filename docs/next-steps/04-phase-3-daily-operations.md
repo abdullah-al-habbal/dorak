@@ -69,7 +69,8 @@ These tasks remove the places where a manager or owner has to refresh, switch to
 
 - **Backend:** no change. `GET|PUT /brands/{brand}` and `POST /brands` already served the owner, and the Operations routes already allow owners for chairs, services and reviews.
 - **Dashboard:** the owner menu gains Brand, Chairs, Services and Reviews. The Brand page lists the owner's brands with their status, currency and branch count, an Edit action (the shared name and description dialog; disabled while suspended) and "Add a brand", a dialog with the English and Arabic names, the currency and the first branch's names. The new brand starts pending and goes to the platform team. Chairs and Reviews reuse the manager screens with their branch picker or filter; Services shows the owner's brands' services. The proxy allows `POST brands` for owners only; the proxy test was updated to match.
-- **Not done:** tests (skipped by instruction); logo upload and universe on the create form (the backend defaults apply).
+- **Tests:** `backend/tests/Feature/Dashboard/DashboardOwnerBrandsTest.php` (24 cases, with `OwnerApiTest` for branches and sessions) covers the owner's brand list (own brands only, status and name filters, literal wildcards), the detail (404 for another owner's or an unknown brand, 403 for a manager), creating a pending brand with its first branch (several brands per owner, names, currency, logo, universe and first-branch validation), 403 for the admin, a manager, a barber and 401 anonymous, and editing (owner and status untouchable, rejected and pending brands can be fixed, validation, 403 for strangers, the admin can edit any brand). Vitest and Playwright stay open (WP-2, WP-3).
+- **Not done:** logo upload and universe on the create form (the backend defaults apply).
 
 
 ### NS-14 as built
