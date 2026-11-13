@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
+use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\JobPosting\Models\JobPostingModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
@@ -155,9 +157,17 @@ describe('Chairs brand_id filter', function (): void {
 describe('Admin per-branch oversight reads', function (): void {
     it('lets the admin read reviews, opening hours, affiliations and job postings of any branch', function (string $path): void {
         $branch = BranchModel::factory()->create();
+        $affiliation = BarberAffiliationModel::factory()->create(['affiliable_id' => $branch->id]);
+        $posting = JobPostingModel::factory()->create(['branch_id' => $branch->id]);
         $this->authenticateDashboardActor(AdminModel::factory()->create());
 
-        $this->getJson(OVERSIGHT_URL."/branches/{$branch->id}/{$path}")->assertOk();
+        $response = $this->getJson(OVERSIGHT_URL."/branches/{$branch->id}/{$path}")->assertOk();
+
+        // Seeded rows prove the admin sees real data, not just an empty 200.
+        $expected = ['affiliations' => $affiliation->id, 'job-postings' => $posting->id][$path] ?? null;
+        if ($expected !== null) {
+            expect(collect($response->json('data'))->pluck('id')->all())->toBe([$expected]);
+        }
     })->with(['reviews', 'opening-hours', 'affiliations', 'job-postings']);
 
     it('answers 404 for a manager of another branch on the same routes', function (string $path): void {
@@ -175,5 +185,7 @@ describe('Admin per-branch oversight reads', function (): void {
             'title' => ['en' => 'Barber', 'ar' => 'حلاق'],
             'description' => ['en' => 'Join us', 'ar' => 'انضم'],
         ])->assertForbidden();
+
+        expect(JobPostingModel::query()->where('branch_id', $branch->id)->count())->toBe(0);
     });
 });
