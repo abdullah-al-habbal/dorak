@@ -65,7 +65,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-29 | Error handling and localized error pages (backend and dashboard) | all | Partial | M | D13 (website pages only) | Done |
 | NS-03 | Owner public registration, status page, emails, first brand | owner, admin | New | L | D2 (decided), D10, D11, D12 | Done |
 | NS-30 | Barber approval queue and sign-up hardening | admin, barber | Partial | M | D8 | Done (no tests, mobile resubmit screen open) |
-| NS-04 | Admin users: invite, edit, deactivate | admin | New | M | NS-01 | Done (no tests) |
+| NS-04 | Admin users: invite, edit, deactivate | admin | New | M | NS-01 | Done (backend tests; UI tests open) |
 | | **[Phase 2: the platform team runs the platform alone](03-phase-2-governance.md)** | | | | | |
 | NS-05 | Review moderation (disputes) | admin | Ready | S | | Done (no tests) |
 | NS-06 | Brand lifecycle: edit, reject and resubmit, suspend, locks, emails, branch status, feature overrides, history | admin | Partial | L | D8, D9 | Done (no tests) |

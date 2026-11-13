@@ -178,7 +178,7 @@ Without these tasks, someone can't get in, can't get back in, can't be approved,
 - **Resubmission:** a rejected barber's login answers 403 `ACCOUNT_REJECTED` with the admin's reason. `POST /barber/resubmit` takes the email and password (a rejected barber holds no token) plus optional `name`, `bio` and `phone` fixes, returns the account to `pending` and counts the submission; the third submission is the last (409 `barber_resubmission_limit`). `EnsureBarberAccountAccess` treats `rejected` like `pending` for the `approved` scope. `BarberResource` gains `rejection_reason` and `submission_count`.
 - **Dashboard:** admin "Barber approvals" at `/dashboard/admin/barber-approvals` (pending by default, status and search in the URL), a detail dialog with the portfolio, approve behind a confirmation, reject with a required reason, and the pending count next to the menu entry (`usePendingBarberCount`, `NavQueueCount`).
 - **Stylist app:** unchanged. It already shows the server message on a refused login, so a rejected barber sees the reason; a dedicated resubmit screen that calls `POST /barber/resubmit` is not built yet.
-- **Tests:** none added, by the product owner's instruction for this batch; the "Done when" test items stay open.
+- **Tests:** `backend/tests/Feature/Dashboard/DashboardAdminUsersTest.php` (23 cases) covers invite (mail, lowercase email, duplicate and validation 422), edit (own-email keep, 404), self and last-active deactivation guards (409 codes), token deletion, a deactivated admin's new token being refused, reactivate, resend (throttle 422, deactivated 404) and list filters. Dashboard Vitest and Playwright specs stay open (WP-2, WP-3).
 
 ## NS-04: Admin users
 
