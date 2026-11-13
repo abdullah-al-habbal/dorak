@@ -43,5 +43,8 @@ Whenever dashboard code, copy, or contracts change, run from that directory: `np
 ## Order of gates
 Preflight audit, feasibility council (`../llm-council/SKILL.md`, medium and complex tasks), implementation, backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, `scripts/check-conventions.sh`, the security review (`references/security-review.md`), hygiene cleanup, then the commit. Each step runs only if the previous passed.
 
+## Tests
+When a task writes, reviews or fixes tests, or touches authorization, tenant scope, state transitions or money, apply `../../test-engineering/SKILL.md` (what the tests must prove; the gates above still decide pass or fail).
+
 ## Repository rules
 `scripts/check-conventions.sh` flags relative imports, inline FQCNs, and missing `strict_types`, and runs `git diff --check`.

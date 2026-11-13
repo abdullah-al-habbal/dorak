@@ -3,6 +3,7 @@ nodeid: docs.architecture
 parentnode: docs.graph
 childnodes:
   - docs.deployment
+  - docs.testing-strategy
 codeanchors:
   - backend/modules/Booking/
   - frontend/web/dashboard/src/

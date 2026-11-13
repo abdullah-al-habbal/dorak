@@ -25,6 +25,14 @@ AI agent skills for this area. Each skill is a directory with a `SKILL.md` entry
   implementation of Karpathy's LLM Council method and the five advisors of
   `aiwithremy/claude-skills-llm-council`, whose repository has no licence and so is not copied.
 
+## Shared testing skill
+
+- [Test Engineering](test-engineering/SKILL.md) — risk-based test strategy for the backend, the
+  dashboard and the mobile apps: authorization and cross-tenant checks, lifecycle and failure tests,
+  the test-effectiveness review, a 14-step workflow and a coverage-matrix format. It is reviewable
+  guidance with no script behind it, and it defers to the backend `testing` skill and the task
+  executor gates. Background: [Testing strategy](../../docs/architecture/testing-strategy.md).
+
 ## Shared security skill
 
 - [Security Audit](security-audit/SKILL.md) — Cloudflare's defensive, source-first

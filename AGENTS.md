@@ -55,6 +55,11 @@ specific; read it before changing files in that area.
 - When the user types `/graphify`, invoke the available Skill tool with
   `skill: "graphify"` before doing anything else.
 
+## Testing
+
+- For writing, reviewing or expanding tests, regression tests, and security-sensitive changes, use
+  [test-engineering](.claude/skills/test-engineering/SKILL.md) (strategy: [testing strategy](docs/architecture/testing-strategy.md)).
+
 ## UI/UX skills
 
 - For any dashboard or mobile UI work, use the shared skills in

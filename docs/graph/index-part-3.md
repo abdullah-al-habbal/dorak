@@ -20,6 +20,7 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 
 - [Architecture](../architecture/architecture.md)
 - [Frontend Architecture](../architecture/frontend-architecture.md)
+- [Testing Strategy](../architecture/testing-strategy.md)
 
 ### `docs/deployment/`
 

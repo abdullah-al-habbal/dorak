@@ -57,6 +57,11 @@ files in that area.
   `frontend/mobile/CLAUDE.md` before writing code in that area; these rules
   apply in addition to, not instead of, the subsystem's existing skills.
 
+## Testing
+
+- For writing, reviewing or expanding tests, regression tests, and security-sensitive changes, use
+  [test-engineering](.claude/skills/test-engineering/SKILL.md) (strategy: [testing strategy](docs/architecture/testing-strategy.md)).
+
 ## UI/UX skills
 
 - For any dashboard or mobile UI work, use the shared skills in
