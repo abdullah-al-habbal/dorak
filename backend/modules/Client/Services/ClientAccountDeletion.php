@@ -44,23 +44,7 @@ final class ClientAccountDeletion
 
             $avatar = $locked->getAttribute('avatar_path');
 
-            $locked->tokens()->delete();
-            $locked->socialAccounts()->delete();
-
-            $locked->setTranslations('name', [
-                'en' => __('client::messages.deleted_client_name', [], 'en'),
-                'ar' => __('client::messages.deleted_client_name', [], 'ar'),
-            ]);
-            $locked->forceFill([
-                'email' => "deleted-{$locked->getKey()}@deleted.invalid",
-                'email_verified_at' => null,
-                'phone' => null,
-                'phone_verified_at' => null,
-                'avatar_path' => null,
-                'password' => Hash::make(Str::random(64)),
-                'remember_token' => null,
-                'status' => ClientStatusEnum::Disabled,
-            ])->save();
+            $this->anonymise($locked);
 
             $locked->delete();
 
@@ -78,5 +62,26 @@ final class ClientAccountDeletion
         $client->refresh();
 
         return true;
+    }
+
+    private function anonymise(ClientModel $locked): void
+    {
+        $locked->tokens()->delete();
+        $locked->socialAccounts()->delete();
+
+        $locked->setTranslations('name', [
+            'en' => __('client::messages.deleted_client_name', [], 'en'),
+            'ar' => __('client::messages.deleted_client_name', [], 'ar'),
+        ]);
+        $locked->forceFill([
+            'email' => "deleted-{$locked->getKey()}@deleted.invalid",
+            'email_verified_at' => null,
+            'phone' => null,
+            'phone_verified_at' => null,
+            'avatar_path' => null,
+            'password' => Hash::make(Str::random(64)),
+            'remember_token' => null,
+            'status' => ClientStatusEnum::Disabled,
+        ])->save();
     }
 }
