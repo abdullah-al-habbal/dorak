@@ -121,6 +121,19 @@ describe('Set and clear a special day (NS-12)', function (): void {
         expect(BranchHoursOverrideModel::query()->count())->toBe(0);
     });
 
+    it('answers 404 for the owner of another brand on list, set and clear', function (): void {
+        $branch = BranchModel::factory()->create();
+        $foreignOwner = ClientModel::factory()->create();
+        BrandModel::factory()->create(['owner_id' => $foreignOwner->id]);
+        $this->authenticateDashboardActor($foreignOwner);
+
+        $this->getJson(overrideUrl($branch))->assertNotFound();
+        $this->putJson(overrideUrl($branch, futureDate()), ['is_closed' => true])->assertNotFound();
+        $this->deleteJson(overrideUrl($branch, futureDate()))->assertNotFound();
+
+        expect(BranchHoursOverrideModel::query()->count())->toBe(0);
+    });
+
     it('lets an owner and an admin manage a branch and refuses a barber and anonymous callers', function (): void {
         $owner = ClientModel::factory()->create();
         $brand = BrandModel::factory()->create(['owner_id' => $owner->id]);

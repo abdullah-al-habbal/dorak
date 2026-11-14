@@ -7,6 +7,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Review\Enums\ReviewAuthorTypeEnum;
 use Modules\Review\Enums\ReviewStatus;
@@ -136,5 +137,24 @@ describe('Rate the client from the dashboard (NS-11)', function (): void {
         $response = $this->getJson("/api/v1/bookings/{$booking->id}");
 
         expect(json_encode($response->json()))->not->toContain('Rude.')->not->toContain('reputation');
+    });
+
+    it('lets the owner of the booking\'s brand rate the client and refuses a foreign owner', function (): void {
+        $booking = BookingModel::factory()->completed()->create();
+        $brand = BrandModel::query()->findOrFail(ratingBranch($booking)->brand_id);
+        $owner = ClientModel::query()->findOrFail($brand->owner_id);
+        $foreignOwner = ClientModel::factory()->create();
+        BrandModel::factory()->create(['owner_id' => $foreignOwner->id]);
+
+        $this->authenticateDashboardActor($foreignOwner);
+        $this->postJson(ratingUrl($booking), ['rating' => 5])->assertForbidden();
+        expect(ReviewModel::query()->count())->toBe(0);
+
+        app('auth')->forgetGuards();
+        $this->flushHeaders();
+        $this->authenticateDashboardActor($owner);
+        $this->postJson(ratingUrl($booking), ['rating' => 3])->assertCreated()->assertJsonPath('data.rating', 3);
+
+        expect(ReviewModel::query()->sole())->author_id->toBe($booking->branch_id);
     });
 });

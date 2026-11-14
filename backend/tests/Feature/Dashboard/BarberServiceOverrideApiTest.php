@@ -111,6 +111,14 @@ describe('PUT /dashboard/barbers/{barber}/services/{service}/override', function
         $this->assertDatabaseCount('barber_service_overrides', 0);
     });
 
+    it('answers 401 to anonymous callers on every override route', function (): void {
+        $this->putJson(($this->overrideUrl)(), ($this->payload)())->assertUnauthorized();
+        $this->deleteJson(($this->overrideUrl)().'?brand_id='.$this->brand->id)->assertUnauthorized();
+        $this->getJson('/api/v1/dashboard/barbers/'.$this->barber->id.'/services?brand_id='.$this->brand->id)->assertUnauthorized();
+
+        $this->assertDatabaseCount('barber_service_overrides', 0);
+    });
+
     it('forbids branch managers and barbers', function (): void {
         $this->authenticateDashboardActor($this->branch)
             ->putJson(($this->overrideUrl)(), ($this->payload)())
