@@ -50,79 +50,106 @@ final class FcmNotificationSender
         $credentials = $this->credentials();
 
         if (! is_string($projectId) || $projectId === '' || $credentials === null) {
-            if (! $this->missingCredentialsWarningLogged) {
-                Log::warning('FCM delivery skipped because project credentials are missing.');
-                $this->missingCredentialsWarningLogged = true;
-            }
+            $this->warnMissingCredentialsOnce();
 
             return $notification;
         }
 
         $alias = $this->writer->morphAlias($userType);
         $deliveredTokenIds = $this->writer->deliveredTokenIds($notification);
+        $endpoint = "https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send";
+        $payload = [
+            'notification' => ['title' => $title, 'body' => $body],
+            'data' => (object) array_map(
+                static fn (bool|float|int|string|null $value): string => is_scalar($value) ? (string) $value : '',
+                $data,
+            ),
+        ];
 
         DeviceTokenModel::query()
             ->where('user_type', $alias)
             ->where('user_id', $userId)
             ->whereNotIn('id', $deliveredTokenIds)
             ->get()
-            ->each(function (DeviceTokenModel $deviceToken) use ($notification, $projectId, $credentials, $title, $body, $data): void {
-                $token = $deviceToken->getAttribute('token');
-                if (! is_string($token)) {
-                    return;
-                }
-
-                try {
-                    $response = Http::withToken($this->accessToken($credentials))
-                        ->retry(3, 100, fn (Throwable $exception, PendingRequest $request, ?string $method): bool => $exception instanceof RequestException
-                            && ($exception->response->status() === 429 || $exception->response->serverError()),
-                            throw: false,
-                        )
-                        ->post("https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send", [
-                            'message' => [
-                                'token' => $token,
-                                'notification' => ['title' => $title, 'body' => $body],
-                                'data' => (object) array_map(
-                                    static fn (bool|float|int|string|null $value): string => is_scalar($value) ? (string) $value : '',
-                                    $data,
-                                ),
-                            ],
-                        ]);
-
-                    if ($response->successful()) {
-                        $messageId = $response->json('name');
-                        $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Sent, is_string($messageId) ? $messageId : null);
-
-                        return;
-                    }
-
-                    $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Failed, error: $this->errorSummary($response));
-
-                    if ($response->status() === 429 || $response->serverError()) {
-                        $response->throw();
-                    } elseif ($this->isInvalidTokenResponse($response->status(), $response->json())) {
-                        $deviceToken->delete();
-                    } else {
-                        Log::warning('FCM rejected a device notification.', [
-                            'device_token_id' => $deviceToken->id,
-                            'status' => $response->status(),
-                        ]);
-                    }
-                } catch (Throwable $exception) {
-                    if ($exception instanceof RequestException
-                        && ($exception->response->status() === 429 || $exception->response->serverError())) {
-                        throw $exception;
-                    }
-
-                    $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Failed, error: Str::limit($exception::class.': '.$exception->getMessage(), 1000));
-                    Log::warning('FCM device notification failed.', [
-                        'device_token_id' => $deviceToken->id,
-                        'exception' => $exception::class,
-                    ]);
-                }
-            });
+            ->each(fn (DeviceTokenModel $deviceToken) => $this->pushToDevice($notification, $deviceToken, $endpoint, $credentials, $payload));
 
         return $notification;
+    }
+
+    private function warnMissingCredentialsOnce(): void
+    {
+        if ($this->missingCredentialsWarningLogged) {
+            return;
+        }
+
+        Log::warning('FCM delivery skipped because project credentials are missing.');
+        $this->missingCredentialsWarningLogged = true;
+    }
+
+    /**
+     * @param  array{client_email: string, private_key: string}  $credentials
+     * @param  array{notification: array{title: string, body: string}, data: object}  $payload
+     */
+    private function pushToDevice(
+        NotificationModel $notification,
+        DeviceTokenModel $deviceToken,
+        string $endpoint,
+        array $credentials,
+        array $payload,
+    ): void {
+        $token = $deviceToken->getAttribute('token');
+        if (! is_string($token)) {
+            return;
+        }
+
+        try {
+            $response = Http::withToken($this->accessToken($credentials))
+                ->retry(3, 100, fn (Throwable $exception, PendingRequest $request, ?string $method): bool => $this->isRetryable($exception),
+                    throw: false,
+                )
+                ->post($endpoint, ['message' => ['token' => $token, ...$payload]]);
+
+            $this->recordResponse($notification, $deviceToken, $response);
+        } catch (Throwable $exception) {
+            if ($this->isRetryable($exception)) {
+                throw $exception;
+            }
+
+            $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Failed, error: Str::limit($exception::class.': '.$exception->getMessage(), 1000));
+            Log::warning('FCM device notification failed.', [
+                'device_token_id' => $deviceToken->id,
+                'exception' => $exception::class,
+            ]);
+        }
+    }
+
+    private function isRetryable(Throwable $exception): bool
+    {
+        return $exception instanceof RequestException
+            && ($exception->response->status() === 429 || $exception->response->serverError());
+    }
+
+    private function recordResponse(NotificationModel $notification, DeviceTokenModel $deviceToken, Response $response): void
+    {
+        if ($response->successful()) {
+            $messageId = $response->json('name');
+            $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Sent, is_string($messageId) ? $messageId : null);
+
+            return;
+        }
+
+        $this->writer->recordDelivery($notification, $deviceToken->id, NotificationDeliveryStatusEnum::Failed, error: $this->errorSummary($response));
+
+        if ($response->status() === 429 || $response->serverError()) {
+            $response->throw();
+        } elseif ($this->isInvalidTokenResponse($response->status(), $response->json())) {
+            $deviceToken->delete();
+        } else {
+            Log::warning('FCM rejected a device notification.', [
+                'device_token_id' => $deviceToken->id,
+                'status' => $response->status(),
+            ]);
+        }
     }
 
     private function errorSummary(Response $response): string
