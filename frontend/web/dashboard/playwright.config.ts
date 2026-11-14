@@ -37,6 +37,8 @@ export default defineConfig({
       // A production build avoids the dev server's runtime Google Fonts fetch, so it also runs offline.
       command: `npm run build && npm start -- -p ${E2E_APP_PORT}`,
       url: `${E2E_APP_URL}/dashboard/manager/login`,
+      // The Next server must reach the API on the port this run chose, not the one in .env.local.
+      env: { BACKEND_API_URL: E2E_BACKEND_URL },
       reuseExistingServer: true,
       timeout: BUILD_AND_START_TIMEOUT_MS,
     },

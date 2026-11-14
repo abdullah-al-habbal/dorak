@@ -100,13 +100,13 @@ Reviews flag any re-implementation.
 - Before closing any change, from this directory: `npm run lint`, `npm run typecheck`,
   `npm test`, `npm run build`.
 - **Playwright E2E** (`npm run test:e2e`, specs in `tests/e2e/`): runs against the **real stack**: Next.js on
-  3000 (set `E2E_APP_PORT` when another project holds it) and the Laravel API on 8000. Each server is reused when already running, otherwise Playwright starts
+  3000 (set `E2E_APP_PORT` when another project holds it) and the Laravel API on 8000 (set `E2E_BACKEND_PORT` likewise; the Next server is pointed at it through `BACKEND_API_URL`). Never stop another project's server: pick free ports. Each server is reused when already running, otherwise Playwright starts
   a production build (`npm run build && npm start`; `next dev` fails on the Google Fonts fetch in sandboxed runs,
   so stop a running `next dev` first) and `php artisan serve`. Always run it as `TZ=UTC npx playwright test`
   (see the task executor's `references/gates.md`). Projects: desktop 1440x900, `mobile-390`, `ultrawide-3440`
   (cached Chromium; `npm run test:e2e:install` if missing).
   `tests/e2e/support/global-setup.ts` runs `php artisan migrate:fresh --seed` plus
-  `backend/database/seeders/E2eDashboardSeeder.php` (**this wipes the dev database**), then signs the seeded
+  `backend/database/seeders/E2eDashboardSeeder.php` (**this wipes the database the backend is configured with, so run it only with `DB_DATABASE=dorak_test`** on the MySQL 8.4 test server, e.g. `DB_HOST=127.0.0.1 DB_PORT=3307 DB_USERNAME=root DB_PASSWORD=<phpunit.xml> DB_DATABASE=dorak_test`; the helper refuses any other name), then signs the seeded
   manager (`e2e-manager@dorak.test`) and the seeded brand owner (`e2e-owner@dorak.test`) in once and saves the sessions to `tests/e2e/.auth/` (gitignored). Owner-only specs use `test.use({ storageState: E2E_OWNER_STORAGE_STATE })` and `signIn(page, locale, "owner")`.
   Specs reuse that session; auth specs start signed out. `resetBackend()` re-runs the E2E seeder, which restores
   the baseline (no saved working hours, today's two bookings). When a spec needs other data, extend the seeder.

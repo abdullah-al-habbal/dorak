@@ -1,7 +1,7 @@
 /** The suite drives the real stack: Next.js on 3000 talking to the Laravel API on 8000. */
-/** Defaults to 3000; set `E2E_APP_PORT` when another project already holds it. */
+/** Both default to those ports; set `E2E_APP_PORT` / `E2E_BACKEND_PORT` when another project already holds one. */
 export const E2E_APP_PORT = Number(process.env.E2E_APP_PORT ?? 3000);
-export const E2E_BACKEND_PORT = 8000;
+export const E2E_BACKEND_PORT = Number(process.env.E2E_BACKEND_PORT ?? 8000);
 export const E2E_APP_URL = `http://localhost:${E2E_APP_PORT}`;
 export const E2E_BACKEND_URL = `http://127.0.0.1:${E2E_BACKEND_PORT}`;
 /** The backend project, relative to the dashboard folder; artisan runs from here. */
