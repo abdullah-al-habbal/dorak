@@ -31,43 +31,24 @@ final class SocialLoginHandler
             return SocialLoginResult::invalidToken();
         }
 
-        $providerId = $socialUser->getId();
-        $email = $socialUser->getEmail();
-        $name = $socialUser->getName();
-        $avatar = $socialUser->getAvatar();
+        $socialAccount = $this->resolver->findSocialAccount($command->provider, $socialUser->getId());
+        $isNew = $socialAccount === null;
 
-        $socialAccount = $this->resolver->findSocialAccount($command->provider, $providerId);
-
-        if ($socialAccount !== null) {
-            $client = $socialAccount->client;
-            $isNew = false;
-        } else {
-            if (! $this->providerVerifiedEmail($socialUser, $email)) {
+        if ($isNew) {
+            if (! $this->providerVerifiedEmail($socialUser, $socialUser->getEmail())) {
                 return SocialLoginResult::emailNotVerified();
             }
 
-            $client = $this->resolver->findClientByEmail($email);
-
-            if ($client === null) {
-                $client = $this->resolver->createClient($name ?: Str::before($email, '@'), $email);
-            }
-
-            $this->resolver->createSocialAccount($client, $command->provider, $providerId, $avatar);
-            $isNew = true;
+            $client = $this->linkOrCreateClient($command, $socialUser);
+        } else {
+            $client = $socialAccount->client;
         }
 
         if (! $client instanceof ClientModel) {
             return SocialLoginResult::invalidToken();
         }
 
-        if ($client->isBanned()) {
-            throw new AccountBannedException;
-        }
-
-        if ($client->getAttribute('status') === ClientStatusEnum::Disabled
-            || ($client->getAttribute('status') === ClientStatusEnum::Pending && $client->getAttribute('email_verified_at') !== null)) {
-            throw new AccountNotActiveException;
-        }
+        $this->ensureClientMayLogin($client);
 
         $token = $client->createToken('client-app', $client->accessTokenAbilities())->plainTextToken;
 
@@ -76,6 +57,29 @@ final class SocialLoginHandler
             clientData: ClientProfileResource::make($client->refresh())->resolve(),
             isNew: $isNew,
         );
+    }
+
+    private function linkOrCreateClient(SocialLoginCommand $command, SocialUser $socialUser): ClientModel
+    {
+        $email = $socialUser->getEmail();
+        $client = $this->resolver->findClientByEmail($email)
+            ?? $this->resolver->createClient($socialUser->getName() ?: Str::before($email, '@'), $email);
+
+        $this->resolver->createSocialAccount($client, $command->provider, $socialUser->getId(), $socialUser->getAvatar());
+
+        return $client;
+    }
+
+    private function ensureClientMayLogin(ClientModel $client): void
+    {
+        if ($client->isBanned()) {
+            throw new AccountBannedException;
+        }
+
+        if ($client->getAttribute('status') === ClientStatusEnum::Disabled
+            || ($client->getAttribute('status') === ClientStatusEnum::Pending && $client->getAttribute('email_verified_at') !== null)) {
+            throw new AccountNotActiveException;
+        }
     }
 
     /**
