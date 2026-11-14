@@ -50,26 +50,31 @@ final class SubmitReviewHandler
                 return SubmitReviewResult::noSubject();
             }
 
-            $barberReview = $barberId === null ? null : $this->resolver->createReview([
-                ...$this->baseAttributes($booking, $command),
-                'subject_id' => $barberId,
-                'subject_type' => ReviewSubjectTypeEnum::Barber,
-                'rating' => $branchId === null ? $command->rating : ($command->barberRating ?? $command->rating),
-            ]);
-
-            if ($branchId === null && $barberReview !== null) {
-                return SubmitReviewResult::success($barberReview);
-            }
-
-            $branchReview = $this->resolver->createReview([
-                ...$this->baseAttributes($booking, $command),
-                'subject_id' => $branchId,
-                'subject_type' => ReviewSubjectTypeEnum::Branch,
-                'rating' => $command->rating,
-            ]);
-
-            return SubmitReviewResult::success($branchReview, $barberReview);
+            return $this->createReviews($booking, $command, $branchId, $barberId);
         });
+    }
+
+    private function createReviews(BookingModel $booking, SubmitReviewCommand $command, ?string $branchId, ?string $barberId): SubmitReviewResult
+    {
+        $barberReview = $barberId === null ? null : $this->resolver->createReview([
+            ...$this->baseAttributes($booking, $command),
+            'subject_id' => $barberId,
+            'subject_type' => ReviewSubjectTypeEnum::Barber,
+            'rating' => $branchId === null ? $command->rating : ($command->barberRating ?? $command->rating),
+        ]);
+
+        if ($branchId === null && $barberReview !== null) {
+            return SubmitReviewResult::success($barberReview);
+        }
+
+        $branchReview = $this->resolver->createReview([
+            ...$this->baseAttributes($booking, $command),
+            'subject_id' => $branchId,
+            'subject_type' => ReviewSubjectTypeEnum::Branch,
+            'rating' => $command->rating,
+        ]);
+
+        return SubmitReviewResult::success($branchReview, $barberReview);
     }
 
     private function branchIdOf(BookingModel $booking): ?string
