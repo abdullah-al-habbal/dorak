@@ -8,7 +8,7 @@ Prerequisites T-01 to T-04 gate the slices as listed in the "Depends on" column.
 ## Slice table
 | Slice | Objective | Depends on | Acceptance | Main files |
 |---|---|---|---|---|
-| S1 (F-05) | Mandatory claim for every Dashboard token, bound to the actor (D-01); previous access token kept on refresh (D-02); rollback flag `dashboard.require_session_claim` (default true) | T-01 | every header state in [03](03-f05-session-lifecycle.md) section 2 gives the expected code; old token dead after refresh | `DashboardAuthorizationMiddleware`, `DashboardSessionClaim::matches`, config, `DashboardLoginApiTest`, `DashboardProfileApiTest`, `DashboardAuthApiTest`, new `DashboardSessionClaimEnforcementTest` |
+| S1 (F-05) **DONE 2026-11-15: `tid` binding plus durable revocation (D-05 to D-07), gates passed, see [03](03-f05-session-lifecycle.md) sections 6, 8 and 8.6; the rollback flag was not created** | Mandatory claim for every Dashboard token, bound to the actor (D-01); previous access token kept on refresh (D-02); rollback flag `dashboard.require_session_claim` (default true) | T-01 | every header state in [03](03-f05-session-lifecycle.md) section 5.4 gives the expected code; old token dead after refresh **only if the owner approves token binding (04 section F); otherwise this criterion is replaced by the accepted residual** | `DashboardAuthorizationMiddleware`, `DashboardSessionClaim::matches`, config, `DashboardLoginApiTest`, `DashboardProfileApiTest`, `DashboardAuthApiTest`, new `DashboardSessionClaimEnforcementTest` |
 | S2 (F-01 foundation) | `DashboardWriteGuard` service, `ScopedBranchResolver::resolveForWrite`, exemptions list, architecture test | T-02, T-03; answers in [04](04-decisions-and-open-questions.md) C and D (resolved) | unit tests of the guard; architecture test fails when a non-GET dashboard action neither calls the guard nor is on the reviewed exemption list | new `Modules\Dashboard\Services\DashboardWriteGuard`, `ScopedBranchResolver`, `DashboardServiceProvider`, arch test |
 | S3 (F-01 setup group) | Apply guard to branch edit and delete, chairs, floor plan, services, stylists, hours (about 15 routes) | S2, T-02, T-03 | Suspended brand or branch blocked; Disabled and Pending allowed (D9); mobile service CRUD unchanged | matching actions and handlers |
 | S4 (F-01 bookings) | Booking status, cancel, reschedule, review, walk-in on branch state | S2, T-02, T-03; cancel allowed, walk-in blocked on Suspended and Disabled branches (resolved) | per resolved decisions | booking actions, `CreateWalkInBookingAction` |
@@ -29,7 +29,8 @@ Prerequisites T-01 to T-04 gate the slices as listed in the "Depends on" column.
 - No DB change. D-02: refresh keeps the previous access token; deleting it (a nullable token-id column on the refresh row) is out of scope unless the owner decides later.
 - Compatibility: BFF already complies; update the three test files; in-flight sessions are safe because the BFF refuses to forward without the claim cookie.
 - Rollback: set the flag off or revert; no data to undo. The flag is a rollback tool only: D-01 is the required behavior and the default is on.
-- Tests: header absent, empty, malformed, expired, revoked, mismatched each 401; old token after refresh 401; flag off still passes.
+- Tests: the nine items of [03](03-f05-session-lifecycle.md) section 5.9 (header absent, empty, malformed, expired, revoked, mismatched each 401; old token after refresh 401 needs token binding; mobile unchanged; flag off still passes).
+- T-01 findings: the flag `dashboard.require_session_claim` does not exist yet and must be created; recommended addition (pending owner approval): claim carries `tid` and the middleware requires it to equal the current token id ([03](03-f05-session-lifecycle.md) section 5.7).
 
 ## S2 to S6 design (F-01)
 - Central service, not one route middleware: an owner can hold several brands, and the target resource (often from the body)
@@ -69,3 +70,6 @@ Startup first (see [00](00-next-session-start.md)), then the prerequisites, then
 
 The handover work packages (WP-1 depth gaps, WP-9, WP-3 gaps, WP-6, WP-4 and WP-5, WP-8b, WP-2 component tests with jsdom, WP-11) follow only after the
 slices above and are planned in [07](07-missing-features.md). **Out of scope:** Batch 2 (D-03) and WP-10 / billing / NS-26 / NS-27 (D-04).
+
+## S1 extension (F-05e to F-05i, decided and implemented 2026-11-15, gates passed, committed locally with S1)
+Decisions D-05 to D-07 ([04](04-decisions-and-open-questions.md) section G); implementation and evidence in [03](03-f05-session-lifecycle.md) section 8. Gates run 2026-11-15: full Pest 2470 passed, Vitest 609 passed, Playwright 441 passed ([03](03-f05-session-lifecycle.md) section 8.6). Next slice: S10.

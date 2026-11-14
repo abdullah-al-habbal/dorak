@@ -31,7 +31,10 @@
 - Last verified gates (2026-11-14): see [06](06-test-coverage-gaps.md) baseline line.
 
 ## Audit method and limits
-- Read-only: no Pest, Playwright, DB writes or migrations were run for F-01 and F-05. Statements are "trace-confirmed, not executed".
+- F-01: read-only, no Pest, Playwright, DB writes or migrations. F-05 (S1) was verified by the gates in [03](03-f05-session-lifecycle.md) section 8.6 (2026-11-15). Statements are "trace-confirmed, not executed".
+  Exception, 2026-11-14 (T-01 audit): one throwaway Pest probe for F-05 ran against `dorak_test` only (127.0.0.1:3307), kept outside the repository; F-05 statements in
+  [03](03-f05-session-lifecycle.md) section 5 are execution-confirmed. F-01 stays trace-only until T-02. No application code, `.env` or `.env.testing` was changed.
 - Route and action inventories came from `route:list` and static scans kept in the session scratchpad; the F-01 route lists were
   copied into [02](02-f01-account-state-matrix.md) so they do not depend on the scratchpad.
 - Earlier in the session the full transcript is at `/home/lenovo/.claude-personal/projects/-home-lenovo-work-projects-dorak/51a232af-afa6-4776-ab4e-23d2f4b3c294.jsonl`.
+- Pest authorization (2026-11-15): container `dorak-test-db-mysql-1` is `Exited (255)`, nothing listens on 3307. Still stopped on 2026-11-15 (not started). Exact steps the owner must approve are in [03](03-f05-session-lifecycle.md) section 7.5 (`composer test:db:up`, then `vendor/bin/pest ...` or `composer test`, on `dorak_test` only; no `.env.testing` change).

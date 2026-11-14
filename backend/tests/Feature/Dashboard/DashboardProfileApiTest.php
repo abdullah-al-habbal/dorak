@@ -168,9 +168,14 @@ describe('Dashboard profile API', function (): void {
 
 function dashboardProfileToken(TestCase $test, AdminModel|BranchModel|BarberModel $model, string $actorType = 'admin'): string
 {
-    return (string) $test->postJson('/api/v1/dashboard/login', [
+    $login = $test->postJson('/api/v1/dashboard/login', [
         'actor_type' => $actorType,
         'email' => $model->email,
         'password' => 'password',
-    ])->assertOk()->json('data.token');
+    ])->assertOk();
+
+    // The session claim is mandatory; keep it on the test instance next to the bearer the caller adds.
+    $test->withHeader('X-Dashboard-Session', (string) $login->json('data.claim'));
+
+    return (string) $login->json('data.token');
 }

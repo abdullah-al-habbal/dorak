@@ -13,7 +13,7 @@ Written 2026-11-14 (decision G-01 session). Next session scope: **implementation
 - Earlier decisions A to F and their answers: [04](04-decisions-and-open-questions.md) sections A to D.
 
 ## Mandatory prerequisites (complete before the work they gate; details in [10](10-prerequisites-t01-t04.md))
-- **T-01:** resolve the F-05 HTTP-status and evidence inconsistencies by tracing middleware registration and running each header state. Gates S1.
+- **T-01:** resolve the F-05 HTTP-status and evidence inconsistencies by tracing middleware registration and running each header state. Gates S1. **Audit done 2026-11-14** ([03](03-f05-session-lifecycle.md) section 5); S1 (F-05) is **done**: `tid` binding and durable revocation implemented, all gates passed 2026-11-15 ([03](03-f05-session-lifecycle.md) section 8.6), committed locally.
 - **T-02:** verify F-01 runtime behavior per fix (actor, resource, lifecycle state, expected status, side effects); regression tests first. Gates S2 to S6.
 - **T-03:** trace Dashboard/Mobile shared Actions and entry points; regression coverage for both consumers. Gates every slice that touches shared code.
 - **T-04:** documentation and dependency-order consistency; re-check at the start of each slice.
@@ -40,3 +40,6 @@ Stop and report on a failed gate, an undecided question or a conflict with a dec
 ## Remaining notes (non-blocking)
 - Pushing the local commits is a standing rule (only on explicit request), not an open question.
 - Handover work packages (WP-1, WP-3, WP-6, WP-4/5, WP-8b, WP-9, WP-2, WP-11) come after the slices; see [07](07-missing-features.md).
+
+## F-05 final review (2026-11-15)
+Audit: [03](03-f05-session-lifecycle.md) section 7. Fixes D-05 to D-07 implemented (section 8) and verified (section 8.6), committed locally. **Next slice: S10** (F-03 active-currency rule).

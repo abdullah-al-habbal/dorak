@@ -19,7 +19,7 @@ least one Pest file), with depth gaps. The handover's "currency in-use guard" do
 | F-02 | Any manager or owner can create a global active `ServiceCatalogCategory` | Real defect vs decision B | Medium | Confirmed by trace | below |
 | F-03 | A retired currency is still accepted by seven validation points | Real defect | Low to Medium | Confirmed by trace | below |
 | F-04 | Language `is_active` has no consumer | Real defect vs decision E | Low | Confirmed by trace | below |
-| F-05 | Dashboard session claim is advisory (header optional, claim not bound to the actor, previous access token survives refresh) | Documented behavior plus defense-in-depth gap | Low to Medium | Confirmed by trace; T-01 must verify before S1. Decided: D-01 (mandatory and bound), D-02 (previous token kept) | [03](03-f05-session-lifecycle.md), [10](10-prerequisites-t01-t04.md) |
+| F-05 | Dashboard session claim is advisory (header optional, claim not bound to the actor, previous access token survives refresh) | Documented behavior plus defense-in-depth gap | Low to Medium | Confirmed by trace **and by execution (T-01 audit, 2026-11-14)**: old token plus the new claim of the same actor is accepted (200), so D-01 alone does not close it; see [03](03-f05-session-lifecycle.md) section 5. Decided: D-01 (mandatory and bound), D-02 (previous token kept); token binding approved and implemented. **Final review 2026-11-15:** F-05e to F-05j (cache revocation durability, concurrent refresh, refresh order) in [03](03-f05-session-lifecycle.md) section 7; decisions D-05 to D-07 decided and implemented 2026-11-15 (gates passed, committed locally), see [03](03-f05-session-lifecycle.md) section 8 | [03](03-f05-session-lifecycle.md), [10](10-prerequisites-t01-t04.md) |
 | F-06 | Inconsistent and duplicated authorization (scope-only writes, few gates) | Tech debt, product decision open | Medium | Confirmed | below |
 | F-07 | A D1 manager can edit and delete brand-wide services | Real defect vs decision C | Medium | Confirmed by trace | below |
 | F-08 | All admins have equal privileges including payouts | Decision D (no dual approval) | Info | Resolved by decision | below |
@@ -28,7 +28,7 @@ least one Pest file), with depth gaps. The handover's "currency in-use guard" do
 | F-11 | Proxy allow-list comment "admin has no stake" contradicts `decisions-required.md:69` | Documentation inconsistency | Low | Confirmed | below |
 
 ## Resolution status and prerequisites
-- F-05: decisions D-01 and D-02 are final ([04](04-decisions-and-open-questions.md) E); implement in S1 after T-01.
+- F-05: decisions D-01 and D-02 are final ([04](04-decisions-and-open-questions.md) E); T-01 verification done 2026-11-14 ([03](03-f05-session-lifecycle.md) section 5). Fix implemented with `tid` binding and durable revocation; all gates passed 2026-11-15, committed locally: [03](03-f05-session-lifecycle.md) section 6.
 - F-01 and every slice that shares code with mobile: T-02 and T-03 first ([10](10-prerequisites-t01-t04.md)).
 
 ## F-02 Global service category creation by tenant roles

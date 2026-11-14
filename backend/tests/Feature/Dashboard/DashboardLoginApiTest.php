@@ -38,6 +38,7 @@ describe('Dashboard login API', function (): void {
             ->not->toHaveKey('branch_id');
 
         $this->withHeader('Authorization', 'Bearer '.$token)
+            ->withHeader('X-Dashboard-Session', (string) $response->json('data.claim'))
             ->getJson('/api/v1/dashboard/overview')
             ->assertOk();
     });

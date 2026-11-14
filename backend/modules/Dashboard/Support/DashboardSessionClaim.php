@@ -13,7 +13,8 @@ use RuntimeException;
 
 final class DashboardSessionClaim
 {
-    public function issue(DashboardActor $actor): string
+    /** @param int|string $tokenId id of the Sanctum access token this claim is bound to (claim key `tid`) */
+    public function issue(DashboardActor $actor, int|string $tokenId): string
     {
         [$kid, $secret] = $this->activeSecret();
 
@@ -28,6 +29,7 @@ final class DashboardSessionClaim
             'jti' => (string) Str::uuid(),
             'role' => $actor->role,
             'sub' => $actor->id,
+            'tid' => (string) $tokenId,
             ...($actor->branchId === null ? [] : ['branch_id' => $actor->branchId]),
             ...($actor->isBrandOwner() ? ['brand_id' => $actor->brandId, 'brand_ids' => $actor->brandIds] : []),
         ];
@@ -99,65 +101,88 @@ final class DashboardSessionClaim
 
     public function revokeClaim(?string $token): void
     {
-        if (! is_string($token)) {
-            return;
-        }
-
-        $parts = explode('.', $token);
-        if (count($parts) !== 3) {
-            return;
-        }
-
-        try {
-            $header = json_decode((string) base64_decode(strtr($parts[0], '-_', '+/')), true, flags: JSON_THROW_ON_ERROR);
-            $payload = json_decode((string) base64_decode(strtr($parts[1], '-_', '+/')), true, flags: JSON_THROW_ON_ERROR);
-        } catch (JsonException) {
-            return;
-        }
-
-        if (! is_array($header) || ! is_array($payload) || ! is_string($header['kid'] ?? null)
-            || ! is_string($payload['jti'] ?? null) || ! is_int($payload['exp'] ?? null)) {
-            return;
-        }
-
-        $secret = $this->secrets()[$header['kid']] ?? null;
-        $expected = is_string($secret)
-            ? $this->base64Url(hash_hmac('sha256', $parts[0].'.'.$parts[1], $secret, true))
-            : '';
-        if ($secret !== null && hash_equals($expected, $parts[2]) && $payload['exp'] > time()) {
+        $payload = is_string($token) ? $this->signedPayload($token) : null;
+        if ($payload !== null) {
             $this->revoke($payload['jti'], $payload['exp']);
         }
     }
 
+    /**
+     * The id of the access token a claim was issued for, but only when the claim is genuinely signed and unexpired AND belongs to this actor
+     * (`sub`, `actor_type`). A forged, expired, legacy (no `tid`) or foreign claim yields null, so it can never be used to touch another actor's token.
+     * Revocation state is ignored on purpose: a replayed, already revoked claim still names the token that must stay dead.
+     */
+    public function boundTokenId(string $token, DashboardActor $actor): ?string
+    {
+        $payload = $this->signedPayload($token);
+        if ($payload === null || ! is_string($payload['tid'] ?? null) || $payload['tid'] === '') {
+            return null;
+        }
+
+        return ($payload['sub'] ?? null) === $actor->id && ($payload['actor_type'] ?? null) === $actor->actorType->value
+            ? $payload['tid']
+            : null;
+    }
+
     public function isValid(string $token): bool
+    {
+        return $this->verifiedPayload($token) !== null;
+    }
+
+    /**
+     * True when the claim is valid (signature, expiry, issuer, revocation) AND is bound to this exact access token and actor.
+     * A claim without `tid` (legacy) never matches.
+     */
+    public function matches(string $token, int|string $tokenId, DashboardActor $actor): bool
+    {
+        $payload = $this->verifiedPayload($token);
+        if ($payload === null) {
+            return false;
+        }
+
+        return is_string($payload['tid'] ?? null) && hash_equals((string) $tokenId, $payload['tid'])
+            && ($payload['sub'] ?? null) === $actor->id
+            && ($payload['actor_type'] ?? null) === $actor->actorType->value;
+    }
+
+    /** @return array<string, mixed>|null the payload of a claim whose signature, issuer, expiry and revocation state are valid */
+    private function verifiedPayload(string $token): ?array
+    {
+        $payload = $this->signedPayload($token);
+
+        return $payload !== null && ! $this->isRevoked($payload['jti']) ? $payload : null;
+    }
+
+    /** @return array<string, mixed>|null the payload of a claim whose algorithm, issuer, `kid`, signature and expiry are valid (revocation is not consulted) */
+    private function signedPayload(string $token): ?array
     {
         $parts = explode('.', $token);
         if (count($parts) !== 3) {
-            return false;
+            return null;
         }
 
         try {
             $header = json_decode((string) base64_decode(strtr($parts[0], '-_', '+/')), true, flags: JSON_THROW_ON_ERROR);
             $payload = json_decode((string) base64_decode(strtr($parts[1], '-_', '+/')), true, flags: JSON_THROW_ON_ERROR);
         } catch (JsonException) {
-            return false;
+            return null;
         }
 
         if (! is_array($header) || ($header['alg'] ?? null) !== DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_ALGORITHM
             || ! is_array($payload) || ($payload['iss'] ?? null) !== DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_ISSUER
             || ! is_string($header['kid'] ?? null) || ! is_string($payload['jti'] ?? null)
             || ! is_int($payload['exp'] ?? null) || $payload['exp'] <= time()) {
-            return false;
+            return null;
         }
 
         $secret = $this->secrets()[$header['kid']] ?? null;
         if (! is_string($secret)) {
-            return false;
+            return null;
         }
 
         $expected = $this->base64Url(hash_hmac('sha256', $parts[0].'.'.$parts[1], $secret, true));
 
-        return hash_equals($expected, $parts[2]) && ! $this->isRevoked($payload['jti']);
+        return hash_equals($expected, $parts[2]) ? $payload : null;
     }
 
     public function expiresIn(): int

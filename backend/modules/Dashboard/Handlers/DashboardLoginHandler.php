@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Handlers;
 
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\NewAccessToken;
 use Modules\Admin\Models\AdminModel;
 use Modules\Ban\Exceptions\AccountBannedException;
 use Modules\Barber\Models\BarberModel;
@@ -34,7 +35,8 @@ final class DashboardLoginHandler
         };
     }
 
-    public function createToken(DashboardActor $actor): string
+    /** Creates the Sanctum access token; the session claim is issued afterwards for exactly this token's id. */
+    public function createAccessToken(DashboardActor $actor): NewAccessToken
     {
         $model = $this->resolveModel($actor);
 
@@ -42,7 +44,22 @@ final class DashboardLoginHandler
             'dashboard-session',
             TokenAbility::forDashboard(),
             now()->addSeconds($this->accessTtl()),
-        )->plainTextToken;
+        );
+    }
+
+    /**
+     * F-05e (durable revocation): ends the usability of a superseded access token without deleting its row (D-02).
+     * Sanctum rejects a token whose `expires_at` is in the past on every request (`Guard::isValidAccessToken`), straight from the database,
+     * so the revocation survives a cache flush. Scoped to the actor's own tokens; never extends an expiry.
+     */
+    public function expireAccessToken(DashboardActor $actor, string $tokenId): void
+    {
+        $expired = now()->subSecond();
+
+        $this->resolveModel($actor)->tokens()
+            ->whereKey($tokenId)
+            ->where(fn ($query) => $query->whereNull('expires_at')->orWhere('expires_at', '>', $expired))
+            ->update(['expires_at' => $expired]);
     }
 
     private function authenticateAdmin(string $email, string $password): ?DashboardActor

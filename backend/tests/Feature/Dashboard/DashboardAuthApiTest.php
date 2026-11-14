@@ -50,9 +50,11 @@ describe('Dashboard auth API', function (): void {
                 'jti' => $claim['jti'],
             ])
             ->not->toHaveKey('branch_id');
+        expect($claim['tid'])->toBe((string) explode('|', (string) $response->json('data.token'))[0]);
         expect($response->json('data.refresh_token'))->toBeString()->not->toBeEmpty();
 
         $this->withHeader('Authorization', 'Bearer '.$response->json('data.token'))
+            ->withHeader('X-Dashboard-Session', $claimToken)
             ->getJson('/api/v1/dashboard/me')
             ->assertOk()
             ->assertJsonPath('data.actor_type', DashboardActorTypeEnum::Barber->value)
@@ -84,11 +86,13 @@ describe('Dashboard auth API', function (): void {
         $claimService = app(DashboardSessionClaim::class);
         $admin = AdminModel::factory()->create();
         $actor = new DashboardActor((string) $admin->id, DashboardActorTypeEnum::Admin, 'platform_admin', null);
-        $oldClaim = $claimService->issue($actor);
-        $token = $admin->createToken('dashboard-session', ['dashboard'])->plainTextToken;
+        $access = $admin->createToken('dashboard-session', ['dashboard']);
+        $token = $access->plainTextToken;
+        $tokenId = $access->accessToken->getKey();
+        $oldClaim = $claimService->issue($actor, $tokenId);
 
         config(['dashboard.dashboard.active_kid' => 'k2']);
-        expect(decodeDashboardClaimHeader($claimService->issue($actor))['kid'])->toBe('k2');
+        expect(decodeDashboardClaimHeader($claimService->issue($actor, $tokenId))['kid'])->toBe('k2');
         expect($claimService->isValid($oldClaim))->toBeTrue();
         $this->withHeader('X-Dashboard-Session', $oldClaim)
             ->withToken($token)
@@ -109,13 +113,14 @@ describe('Dashboard auth API', function (): void {
             'password' => Hash::make('password'),
         ]);
 
-        $token = (string) $this->postJson('/api/v1/dashboard/login', [
+        $login = $this->postJson('/api/v1/dashboard/login', [
             'actor_type' => 'admin',
             'email' => $admin->email,
             'password' => 'password',
-        ])->assertOk()->json('data.token');
+        ])->assertOk();
 
-        $this->withHeader('Authorization', 'Bearer '.$token)
+        $this->withHeader('Authorization', 'Bearer '.$login->json('data.token'))
+            ->withHeader('X-Dashboard-Session', (string) $login->json('data.claim'))
             ->getJson('/api/v1/dashboard/me')
             ->assertOk()
             ->assertJsonPath('data.actor_type', DashboardActorTypeEnum::Admin->value)
@@ -131,13 +136,14 @@ describe('Dashboard auth API', function (): void {
             'password' => Hash::make('password'),
         ]);
 
-        $token = (string) $this->postJson('/api/v1/dashboard/login', [
+        $login = $this->postJson('/api/v1/dashboard/login', [
             'actor_type' => 'branch',
             'email' => $branch->email,
             'password' => 'password',
-        ])->assertOk()->json('data.token');
+        ])->assertOk();
 
-        $this->withHeader('Authorization', 'Bearer '.$token)
+        $this->withHeader('Authorization', 'Bearer '.$login->json('data.token'))
+            ->withHeader('X-Dashboard-Session', (string) $login->json('data.claim'))
             ->getJson('/api/v1/dashboard/me')
             ->assertOk()
             ->assertJsonPath('data.actor_type', DashboardActorTypeEnum::Branch->value)
@@ -148,9 +154,11 @@ describe('Dashboard auth API', function (): void {
     it('rejects a token that does not carry the dashboard ability', function (): void {
         $admin = AdminModel::factory()->create();
 
-        $token = $admin->createToken('other', ['other'])->plainTextToken;
+        $access = $admin->createToken('other', ['other']);
+        $claim = app(DashboardSessionClaim::class)->issue(DashboardActor::platformAdmin((string) $admin->id), $access->accessToken->getKey());
 
-        $this->withHeader('Authorization', 'Bearer '.$token)
+        $this->withHeader('Authorization', 'Bearer '.$access->plainTextToken)
+            ->withHeader('X-Dashboard-Session', $claim)
             ->getJson('/api/v1/dashboard/me')
             ->assertUnauthorized();
     });
@@ -161,13 +169,16 @@ describe('Dashboard auth API', function (): void {
             'has_login' => true,
             'status' => BarberStatusEnum::Enabled,
         ]);
-        $token = (string) $this->postJson('/api/v1/dashboard/login', [
+        $login = $this->postJson('/api/v1/dashboard/login', [
             'actor_type' => 'barber',
             'email' => $barber->email,
             'password' => 'password',
-        ])->assertOk()->json('data.token');
+        ])->assertOk();
 
-        $this->withToken($token)->getJson('/api/v1/dashboard/chairs')->assertForbidden();
+        $this->withToken((string) $login->json('data.token'))
+            ->withHeader('X-Dashboard-Session', (string) $login->json('data.claim'))
+            ->getJson('/api/v1/dashboard/chairs')
+            ->assertForbidden();
     });
 
     it('rotates the refresh token and rejects replay of the used token', function (): void {
@@ -192,12 +203,26 @@ describe('Dashboard auth API', function (): void {
         expect($rotated->json('data.refresh_token'))->toBeString()->not->toBe($originalRefresh);
 
         $this->withHeader('Authorization', 'Bearer '.$rotated->json('data.token'))
+            ->withHeader('X-Dashboard-Session', (string) $rotated->json('data.claim'))
             ->getJson('/api/v1/dashboard/me')
             ->assertOk();
 
+        $this->app['auth']->forgetGuards();
+
+        // The previous access token is kept (D-02) but its revoked claim no longer authenticates it, and the new claim does not fit it.
+        $this->flushHeaders();
+        $this->withHeader('Authorization', 'Bearer '.$login->json('data.token'))
+            ->withHeader('X-Dashboard-Session', (string) $login->json('data.claim'))
+            ->getJson('/api/v1/dashboard/me')
+            ->assertUnauthorized();
+
+        $this->app['auth']->forgetGuards();
+        $this->flushHeaders();
         $this->withHeader('X-Dashboard-Session', (string) $login->json('data.claim'))
             ->getJson('/api/v1/dashboard/me')
             ->assertUnauthorized();
+
+        $this->flushHeaders();
 
         $this->postJson('/api/v1/dashboard/refresh', [
             'refresh_token' => $originalRefresh,
@@ -258,16 +283,19 @@ describe('Dashboard auth API', function (): void {
         $refreshToken = (string) $login->json('data.refresh_token');
 
         $this->withHeader('Authorization', 'Bearer '.$token)
-            ->postJson('/api/v1/dashboard/logout', ['claim' => $claim])
+            ->withHeader('X-Dashboard-Session', $claim)
+            ->postJson('/api/v1/dashboard/logout')
             ->assertOk()
             ->assertJsonPath('data.logged_out', true);
 
         $this->app['auth']->forgetGuards();
 
         $this->withHeader('Authorization', 'Bearer '.$token)
+            ->withHeader('X-Dashboard-Session', $claim)
             ->getJson('/api/v1/dashboard/me')
             ->assertUnauthorized();
 
+        $this->flushHeaders();
         $this->withHeader('X-Dashboard-Session', $claim)
             ->getJson('/api/v1/dashboard/me')
             ->assertUnauthorized();

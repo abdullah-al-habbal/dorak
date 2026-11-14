@@ -19,6 +19,16 @@ describe("verifyClaim", () => {
     expect(await verifyClaim(undefined)).toBeNull();
   });
 
+  it("exposes the access-token id the claim is bound to", async () => {
+    expect((await verifyClaim(await signClaim({ tid: "42" })))?.tid).toBe("42");
+  });
+
+  it("rejects a legacy claim without tid, an empty tid and a numeric tid", async () => {
+    expect(await verifyClaim(await signClaim({ tid: undefined }))).toBeNull();
+    expect(await verifyClaim(await signClaim({ tid: "" }))).toBeNull();
+    expect(await verifyClaim(await signClaim({ tid: 10 }))).toBeNull();
+  });
+
   it("rejects an unknown role", async () => {
     expect(await verifyClaim(await signClaim({ role: "superuser" }))).toBeNull();
   });

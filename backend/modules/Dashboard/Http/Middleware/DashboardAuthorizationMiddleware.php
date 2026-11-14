@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 use LogicException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
@@ -13,6 +14,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\TokenAbility;
 use Modules\Core\Helpers\ApiResponseTrait;
+use Modules\Dashboard\Constants\DashboardSessionConstants;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Support\DashboardActor;
@@ -31,8 +33,9 @@ final class DashboardAuthorizationMiddleware
     /** @param Closure(Request): Response $next */
     public function handle(Request $request, Closure $next): Response
     {
-        $sessionClaim = $request->header('X-Dashboard-Session');
-        if (is_string($sessionClaim) && ! $this->claim->isValid($sessionClaim)) {
+        // D-01: the claim is mandatory. A missing, empty, malformed, expired, revoked or legacy (no `tid`) claim is a 401.
+        $sessionClaim = $request->header(DashboardSessionConstants::DASHBOARD_SESSION_CLAIM_HEADER);
+        if (! is_string($sessionClaim) || $sessionClaim === '' || ! $this->claim->isValid($sessionClaim)) {
             return $this->unauthorized();
         }
 
@@ -54,6 +57,11 @@ final class DashboardAuthorizationMiddleware
             $actor = $this->actorFor($guard, $model);
             if ($actor === null) {
                 continue;
+            }
+
+            // F-05: the claim must have been issued for this exact access token and actor (`tid`, `sub`, `actor_type`).
+            if (! $token instanceof PersonalAccessToken || ! $this->claim->matches($sessionClaim, $token->getKey(), $actor)) {
+                return $this->unauthorized();
             }
 
             $request->attributes->set('dashboard_actor', $actor);

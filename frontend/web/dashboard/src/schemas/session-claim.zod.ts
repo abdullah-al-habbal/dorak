@@ -14,4 +14,6 @@ export const sessionClaimSchema = z.object({
   exp: z.number().int(),
   iss: z.string(),
   jti: z.string().min(1),
+  /** Id of the backend access token this claim is bound to. A claim without it is a legacy claim and is rejected, which sends the session through the refresh token. */
+  tid: z.string().min(1),
 });

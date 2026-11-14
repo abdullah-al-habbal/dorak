@@ -21,6 +21,7 @@ export async function signClaim(overrides: Record<string, unknown> = {}, secret:
       exp: now + 3600,
       iss: "dorak-backend",
       jti: "jti-1",
+      tid: "10",
       ...overrides,
     }),
   );

@@ -70,8 +70,13 @@ abstract class TestCase extends BaseTestCase
             default => new DashboardActor($id, DashboardActorTypeEnum::Branch, 'branch_manager', $id, (string) $model->getAttribute('brand_id')),
         };
 
+        // The access token first, then the claim bound to its id (`tid`), exactly as DashboardSessionIssuer does.
+        $access = $model->createToken('dashboard-session', ['dashboard']);
+        // A guard keeps the user of the previous request; its token no longer matches the new claim (`tid`), so each call starts clean.
+        $this->app['auth']->forgetGuards();
+
         return $this
-            ->withToken($model->createToken('dashboard-session', ['dashboard'])->plainTextToken)
-            ->withHeader('X-Dashboard-Session', app(DashboardSessionClaim::class)->issue($actor));
+            ->withToken($access->plainTextToken)
+            ->withHeader('X-Dashboard-Session', app(DashboardSessionClaim::class)->issue($actor, $access->accessToken->getKey()));
     }
 }

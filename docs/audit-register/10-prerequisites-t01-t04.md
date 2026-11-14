@@ -6,7 +6,7 @@ unchanged until the gated slice starts.
 
 | ID | Prerequisite | Gates | Status |
 |---|---|---|---|
-| T-01 | Verify F-05 against the running code and resolve the conflicting audit descriptions | S1 | Required, not started |
+| T-01 | Verify F-05 against the running code and resolve the conflicting audit descriptions | S1 | **Audit and verification done 2026-11-14** ([03](03-f05-session-lifecycle.md) section 5). Owner approved `tid` binding; implemented, see [03](03-f05-session-lifecycle.md) section 6 (all gates passed 2026-11-15). Final review fixes D-05 to D-07: [03](03-f05-session-lifecycle.md) section 8 |
 | T-02 | Verify F-01 runtime behavior per affected fix and add regression tests for confirmed defects | S2 to S6 | Required, not started |
 | T-03 | Trace shared Dashboard/Mobile paths and add regression coverage for both consumers | S2 to S6, S8, S9, S10, S11, S13, S14 | Required, not started |
 | T-04 | Reconcile decisions, findings, scope, dependency order and next-session instructions | every slice (re-check at each start) | Documentation part done 2026-11-14; re-check at session start |
@@ -28,6 +28,7 @@ Trace and verify, then record the result in [03](03-f05-session-lifecycle.md):
      says "when sent, must validate". Decision D-01 supersedes it; update that planning line when S1 lands.
 4. Where the `dashboard.require_session_claim` rollback flag is read, and confirm it defaults to true (D-01 is the required behavior; turning it off is a
    rollback tool only and needs the owner's approval to ship disabled).
+**Result (2026-11-14):** items 1 to 4 are answered in [03](03-f05-session-lifecycle.md) sections 5.3 to 5.8. Item 1: middleware is first in every dashboard group, `mobile.php` is outside it. Item 2: measured by a probe run on `dorak_test` (section 5.4). Item 3: the four conflicts are confirmed as imprecise (`:170` proves only a role 403; `:198-200` sends no bearer; "advisory" superseded by D-01; "not revoked on refresh" is wrong for the claim and right for the access token). Item 4: the flag **does not exist in code** yet.
 5. Output: a table "header state, token state, expected status, actual status", the list of routes covered, and the tests to add. S1 starts only after this.
 
 ## T-02 F-01 runtime verification (before S2 to S6)

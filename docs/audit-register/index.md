@@ -21,7 +21,7 @@ Status words: *confirmed* (full path traced), *trace-confirmed, not executed* (n
 
 ## At a glance
 - Findings: 11 (F-01 to F-11). Strongest: F-01 (operational writes open for a suspended brand or branch, manager accounts never lifecycle-checked, refresh only
-  re-validates admins) and F-05 (claim header optional, not bound to the actor, previous access token survives refresh).
+  re-validates admins) and F-05 (claim header optional, not bound to the actor or the access token, previous access token survives refresh; execution-confirmed 2026-11-14, including old token plus the new claim of the same actor accepted, see [03](03-f05-session-lifecycle.md) section 5).
 - Decisions final: A to F plus their answers, and **D-01 to D-04, G-01** ([04](04-decisions-and-open-questions.md) E): mandatory bound claim (D-01), previous
   token kept on refresh (D-02), Batch 2 excluded (D-03), billing / NS-27 deferred (D-04), one local documentation commit (G-01).
 - Mandatory prerequisites T-01 to T-04 ([10](10-prerequisites-t01-t04.md)) gate the slices; the next session is implementation only and starts with T-01, then S1.

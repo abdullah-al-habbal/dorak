@@ -7,7 +7,7 @@ Playwright 435 passed (32 specs; desktop, mobile-390, ultrawide-3440), mobile te
 - No test asserts dashboard writes (chairs, services, booking transitions, hours, stylists) by a suspended brand or branch (F-01a).
 - No test of session continuity after suspend, disable or deactivate; only a deactivated admin refresh (`DashboardAuthApiTest.php:207`).
 - No test for dashboard refresh after a ban (`BanEnforcementTest` covers mobile `/client/refresh-token` only) (F-01c).
-- No test for a request without `X-Dashboard-Session` after refresh, empty header, mismatched claim, revoked claim with live token (F-05d).
+- No test for a request without `X-Dashboard-Session` after refresh, empty header, mismatched claim, revoked claim with live token (F-05d). All of these were run once by the T-01 probe (results in [03](03-f05-session-lifecycle.md) section 5.4) but **no permanent test existed**; the set of section 5.9 is now written (`DashboardSessionClaimEnforcementTest`, Vitest refresh route test) and **not yet executed against MySQL** ([03](03-f05-session-lifecycle.md) section 6.5).
 - No test that retired currencies are rejected at the seven validation points (F-03); no currency in-use guard exists.
 - No test that an inactive language is hidden or rejected (F-04).
 - No test that a manager or owner cannot create a global category (F-02 pins the opposite: `ServiceApiTest.php:88-100`).
@@ -41,3 +41,4 @@ Playwright 435 passed (32 specs; desktop, mobile-390, ultrawide-3440), mobile te
 ## Mobile
 - 141 test files; each WP-4 and WP-5 change needs tests ([07](07-missing-features.md), [08](08-tech-debt.md)).
 - Not run in the last verification: `composer audit`, `npm audit`, Dart dependency check, `melos verify`.
+- F-05 final review (2026-11-15): the tests are written (Pest cases in `DashboardSessionClaimEnforcementTest`, Vitest `refresh.single-flight.test.ts` and the parallel case in `refresh.route.test.ts`); Vitest, Pest (full suite, 2470 passed) and the Playwright spec `session-refresh.spec.ts` ran on 2026-11-15. Still missing: a real two-process concurrent `rotate()` test in the `concurrency` group. See [03](03-f05-session-lifecycle.md) section 8.4.
