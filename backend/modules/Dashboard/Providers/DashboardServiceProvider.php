@@ -19,7 +19,11 @@ use Modules\Dashboard\Constants\DashboardPasswordResetConstants;
 use Modules\Dashboard\Constants\OwnerRegistrationConstants;
 use Modules\Dashboard\Policies\BarberSchedulePolicy;
 use Modules\Dashboard\Policies\BarberServiceOverridePolicy;
+use Modules\Dashboard\Policies\DashboardBookingPolicy;
+use Modules\Dashboard\Policies\DashboardBranchPolicy;
 use Modules\Dashboard\Policies\DashboardChairPolicy;
+use Modules\Dashboard\Policies\DashboardReviewPolicy;
+use Modules\Dashboard\Policies\DashboardServicePolicy;
 use Modules\OfferedService\Models\BarberServiceOverrideModel;
 
 final class DashboardServiceProvider extends BaseModuleServiceProvider
@@ -43,6 +47,12 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
     {
         Gate::policy(BarberScheduleModel::class, BarberSchedulePolicy::class);
         Gate::policy(BarberServiceOverrideModel::class, BarberServiceOverridePolicy::class);
+        foreach (['create', 'delete', 'update', 'updateHours'] as $ability) {
+            Gate::define("dashboard.branch.{$ability}", [DashboardBranchPolicy::class, $ability]);
+        }
+        Gate::define('dashboard.service.write', [DashboardServicePolicy::class, 'write']);
+        Gate::define('dashboard.review.file', [DashboardReviewPolicy::class, 'file']);
+        Gate::define('dashboard.booking.createWalkIn', [DashboardBookingPolicy::class, 'createWalkIn']);
         Gate::define('dashboard.chair.create', [DashboardChairPolicy::class, 'create']);
         Gate::define('dashboard.chair.manage', [DashboardChairPolicy::class, 'manage']);
         $this->registerPasswordResetLimiters();

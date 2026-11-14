@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Branches;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use LogicException;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\ErrorCodeEnum;
@@ -23,9 +24,7 @@ final class DestroyBranchAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        if (! $actor->canManageBrand($branch->getAttribute('brand_id'))) {
-            return $this->forbidden();
-        }
+        Gate::forUser($actor)->authorize('dashboard.branch.delete', $branch);
 
         try {
             $branchId = $branch->getAttribute('id');

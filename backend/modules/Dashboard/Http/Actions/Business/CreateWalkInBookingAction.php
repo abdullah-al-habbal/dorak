@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Business;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
@@ -31,9 +32,7 @@ final class CreateWalkInBookingAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $command = $request->toCommand();
 
-        if (! $actor->canAccessBranch($command->branchId)) {
-            return $this->forbidden();
-        }
+        Gate::forUser($actor)->authorize('dashboard.booking.createWalkIn', $command->branchId);
 
         $this->approvals->ensureBranchBrandApproved($actor, $command->branchId);
 

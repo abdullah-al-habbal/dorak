@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Business;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Review\Enums\ReviewAuthorTypeEnum;
@@ -24,9 +25,7 @@ final class ReviewBookingClientAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        if ($actor->isPlatformAdmin()) {
-            return $this->forbidden();
-        }
+        Gate::forUser($actor)->authorize('dashboard.review.file');
 
         $result = $this->handler->handle($request->toCommand($booking, ReviewAuthorTypeEnum::Branch, null, $actor->scopedBranchIds() ?? []));
 

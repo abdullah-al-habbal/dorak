@@ -24,6 +24,8 @@ Before building, read `docs/02-prd.md` then `docs/feature-index.md` to see what 
   before adding or touching one of these paths — the repo has 22 `*Policy` classes (one per
   module under `modules/*/Policies/`); some older paths still rely on scoped queries only, so
   do not copy that pattern into new code.
+  Dashboard actions authorize through `Gate::forUser($actor)->authorize('dashboard.<resource>.<ability>', ...)`;
+  the abilities are defined in `DashboardServiceProvider` and implemented in `modules/Dashboard/Policies/`.
 - All validation lives in a `FormRequest` (`Http/Requests/`), never inline `$request->validate()`
   in an Action/Handler — see `.claude/skills/10StrictBackendArchitecture/SKILL.md`.
 - Mass assignment is blocked by `#[Fillable([...])]` on every model — never widen it to `*`.

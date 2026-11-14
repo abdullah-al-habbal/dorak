@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Branches;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use LogicException;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Services\BrandFeatures;
@@ -31,9 +32,7 @@ final class UpdateBranchAction extends BaseApiAction
         }
         $branchId = (string) $branchId;
         $this->brandFeatures->ensureBranchManageable($branchId);
-        if (! $actor->isPlatformAdmin() && (! $actor->canAccessBranch($branchId) || ! $this->keepsBrandInScope($actor, $branch, $request->validated('brand_id')))) {
-            return $this->forbidden();
-        }
+        Gate::forUser($actor)->authorize('dashboard.branch.update', [$branch, $request->validated('brand_id')]);
 
         try {
             $updatedBranch = $this->handler->handle($branch, new UpdateBranchCommand($branchId, $request->validated()));
@@ -42,18 +41,5 @@ final class UpdateBranchAction extends BaseApiAction
         }
 
         return $this->updated($updatedBranch);
-    }
-
-    /**
-     * A branch manager cannot move their branch to another brand, and a brand
-     * owner can move it only between brands they own.
-     */
-    private function keepsBrandInScope(DashboardActor $actor, BranchModel $branch, mixed $brandId): bool
-    {
-        if ($actor->isBrandOwner()) {
-            return $actor->canManageBrand($brandId);
-        }
-
-        return (string) $branch->getAttribute('brand_id') === (string) $brandId;
     }
 }

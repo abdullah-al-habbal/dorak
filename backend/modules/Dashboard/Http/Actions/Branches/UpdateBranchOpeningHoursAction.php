@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Branches;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Services\BranchHours;
 use Modules\Brand\Services\BrandFeatures;
@@ -25,9 +26,7 @@ final class UpdateBranchOpeningHoursAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $branchId = (string) $branch->getKey();
         $this->brandFeatures->ensureBranchManageable($branchId);
-        if (! $actor->isPlatformAdmin() && ! $actor->canAccessBranch($branchId)) {
-            return $this->forbidden();
-        }
+        Gate::forUser($actor)->authorize('dashboard.branch.updateHours', $branch);
 
         $this->hours->replaceWeek($branch, $request->validated('hours'));
 

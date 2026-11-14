@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Branches;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Brand\Services\BrandApprovalGuard;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -24,9 +25,7 @@ final class StoreBranchAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
-        if (! $actor->canManageBrand($request->validated('brand_id'))) {
-            return $this->forbidden();
-        }
+        Gate::forUser($actor)->authorize('dashboard.branch.create', $request->validated('brand_id'));
         $this->approvals->ensureCanAddBranch($actor, $request->validated('brand_id'));
         $this->brandFeatures->ensureCanAddBranch($request->validated('brand_id'));
 
