@@ -86,7 +86,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 | | **[Phase 5: reference data and money](06-phase-5-reference-and-money.md)** | | | | | |
 | NS-19 | Currencies and exchange rates | admin | Partial | M | | Done (no tests) |
 | NS-20 | Languages | admin | New | S | | Done (no tests) |
-| NS-21 | Catalog items, tags and media | admin | Partial | M | | Done (no tests, media upload open) |
+| NS-21 | Catalog items, tags and media | admin | Partial | M | | Done (backend tests; Vitest and Playwright and media upload open) |
 | NS-22 | Commission rules and ledger | admin | Ready | M | | Done (no tests) |
 | NS-23 | Payment gateways | admin | Ready | S | | Done (no tests) |
 | NS-24 | Payout detail | admin, owner | Ready | S | | Done (no tests, owner view open) |
@@ -98,7 +98,7 @@ Size: S (about a day), M (a few days), L (a week or more).
 
 Every decision is resolved, so no task is blocked. NS-01, NS-02, NS-03, NS-29, NS-30, NS-04, NS-05, NS-06, NS-07, NS-08, NS-09, NS-10, NS-11, NS-12, NS-13, NS-14, NS-15, NS-16, NS-17, NS-18, NS-19, NS-20, NS-21, NS-22, NS-23, NS-24 and NS-25 and NS-28 are done (NS-26 is deferred and NS-27 is closed).
 
-**Test coverage (2026-11-11):** `DashboardAdminBackOfficeTest` and `DashboardAdminOperationsTest` now cover the admin back office of NS-04 to NS-25: an authorization matrix over 43 admin routes (anonymous 401, owner, manager and stylist 403), admin self-deactivation, write-only gateway credentials, the default-currency guard, language switching, client bans, testimonials and payout lines. Per-feature happy paths, the dashboard Vitest and Playwright specs are still open. Added 2026-11-14 (WP-1): `DashboardAdminWebsiteContentTest` covers NS-25 marketing pages and onboarding configs (ordering, save, immutable slug, locale, season and image, validation limits, 404, 401/403, and the public onboarding config dropping a switched-off row).
+**Test coverage (2026-11-11):** `DashboardAdminBackOfficeTest` and `DashboardAdminOperationsTest` now cover the admin back office of NS-04 to NS-25: an authorization matrix over 43 admin routes (anonymous 401, owner, manager and stylist 403), admin self-deactivation, write-only gateway credentials, the default-currency guard, language switching, client bans, testimonials and payout lines. Per-feature happy paths, the dashboard Vitest and Playwright specs are still open. Added 2026-11-14 (WP-1): `DashboardAdminWebsiteContentTest` covers NS-25 marketing pages and onboarding configs (ordering, save, immutable slug, locale, season and image, validation limits, 404, 401/403, and the public onboarding config dropping a switched-off row). Also 2026-11-14: `DashboardAdminRouteAuthorizationTest` reads every route under `dashboard/admin` from the router (93 today) and asserts 401 for anonymous and 403 for an owner, barber and branch, so a new admin route is covered automatically; `DashboardAdminMissingRecordTest` pins 404 for twelve record routes; `DashboardAdminCatalogTagsTest` covers NS-21 tags (create with generated slug, update without slug change, validation, soft delete); `DashboardAdminActiveToggleTest` covers the currency, language, gateway and catalog-category switches including the last-active-gateway rule.
 
 Phases 1 and 2 are the launch minimum, because without them a guard is locked out or the platform can't be governed. Phase 3 is needed for a smooth first week of real use. Phases 4 to 7 complete the product vision.
 
