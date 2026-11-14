@@ -85,7 +85,8 @@ The platform runs on seeded values until these exist. They come after phases 1 t
 - **Backend:** no change. `/admin/commission-rules` (CRUD) and `GET /admin/commission-entries` (filters `brand_id` and `settled`) were already served and authorized by `CommissionPolicy`.
 - **Dashboard:** an admin "Commissions" screen with a Rules tab (add, edit and delete a rule for everyone, one brand or one branch; a percent is typed as a percent and sent as basis points, a flat amount needs a currency) and a Ledger tab (filter by brand and by paid out or not; each amount in its own currency, with totals per currency for the visible page only, never summed across currencies).
 - **Mobile:** no change.
-- **Not done:** tests (skipped by instruction); the ledger's per-entry rule snapshot is not shown.
+- **Tests:** `backend/tests/Feature/Monetization/CommissionTest.php` covers rule create (global, brand, branch, flat with currency), validation, list, update and delete, rule resolution (branch over brand over global; foreign overrides and other-currency flat rules ignored), accrual on completed bookings and the ledger filters. 401 and 403 are in `MonetizationAuthorizationTest` and the admin authorization matrix; 404 is in `DashboardAdminMissingRecordTest`. Dashboard tests are open (WP-2, WP-3).
+- **Not done:** the ledger's per-entry rule snapshot is not shown.
 
 ## NS-23: Payment gateways
 
@@ -102,9 +103,10 @@ The platform runs on seeded values until these exist. They come after phases 1 t
 
 - **Backend:** no change. `/admin/payment-gateways` CRUD and `PATCH .../active` already existed. The model hides `gateway_settings` and the resource returns only the names of the keys that are set. The default gateway and the last active one can't be switched off or deleted (409).
 - **Dashboard:** a "Payment gateways" section on the Settings screen: a switch per gateway, a Default badge, "Credentials set: key names", and an add/edit dialog (code, both names, integration, order, active, default). Credentials are write-only: typed into password fields, sent once, never shown; leaving them empty keeps the stored ones and adding any replaces all of them. The proxy allows these routes for the admin only.
-- **Security review:** the responses of list, create, update and activate were checked with a throwaway Pest test (a secret value never appears; the key names do); the admin guard is enforced by the proxy and by `DashboardAdminAuthorizationMiddleware` plus `PaymentGatewayPolicy`. The test was not kept.
+- **Security review:** the responses of list, create, update and activate are pinned by a kept Pest test (a secret value never appears; the key names do); the admin guard is enforced by the proxy and by `DashboardAdminAuthorizationMiddleware` plus `PaymentGatewayPolicy`.
 - **Mobile:** no change.
-- **Not done:** tests (skipped by instruction). Only the `offline` integration exists today, so the dialog offers that driver.
+- **Tests:** `backend/tests/Feature/Monetization/PaymentGatewayTest.php` covers the seeded default, create with encrypted config, validation, the driver enum, list, a single default, update keeping stored config, the default and last-active guards, and delete; `DashboardAdminBackOfficeTest` pins that no secret value is returned by create, update, list or activate. Dashboard tests are open.
+- **Not done:** Only the `offline` integration exists today, so the dialog offers that driver.
 
 ## NS-24: Payout detail
 

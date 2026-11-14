@@ -87,8 +87,8 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-19 | Currencies and exchange rates | admin | Partial | M | | Done (backend tests; UI tests open) |
 | NS-20 | Languages | admin | New | S | | Done (backend tests; UI tests open; is_active hiding open) |
 | NS-21 | Catalog items, tags and media | admin | Partial | M | | Done (backend tests; Vitest and Playwright and media upload open) |
-| NS-22 | Commission rules and ledger | admin | Ready | M | | Done (no tests) |
-| NS-23 | Payment gateways | admin | Ready | S | | Done (no tests) |
+| NS-22 | Commission rules and ledger | admin | Ready | M | | Done (backend tests; UI tests and rule snapshot open) |
+| NS-23 | Payment gateways | admin | Ready | S | | Done (backend tests; UI tests open) |
 | NS-24 | Payout detail | admin, owner | Ready | S | | Done (backend tests for the admin view; UI tests and the owner view open) |
 | | **[Phases 6 and 7: growth, then retire Filament](07-phase-6-7-growth-and-retirement.md)** | | | | | |
 | NS-25 | Website content: pages, sections, testimonials, onboarding | admin | New | L | D13 | Done (backend tests; Vitest and Playwright and image upload open) |
