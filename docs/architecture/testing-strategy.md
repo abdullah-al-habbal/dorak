@@ -78,6 +78,16 @@ to another tenant's values, and the database is asserted afterwards, not only th
 owner is a client account with a dashboard capability, not a role flag
 ([ADR 0001](../adr/0001-brand-owner-as-client.md)). The skill holds the procedure.
 
+Two generated route matrices read the router itself, so a new route is covered the moment it exists.
+`DashboardAdminRouteAuthorizationTest` sends every `/dashboard/admin` route anonymously (401) and as an
+owner, manager and barber (403). `DashboardCrossTenantRouteTest` creates one of every record an ID route
+can name inside owner B's brand, then sends every other tenant-facing dashboard ID route as owner A and
+as a manager of owner A, with a body that passes validation so the tenant check is reached. It expects
+403 or 404 and digests twelve tenant tables before and after to prove nothing changed. A control test
+runs the same routes as owner B and fails on any 401, 403, 404, 422 or 5xx, so a fixture that cannot
+reach the code under test cannot make the isolation check pass vacuously. A route parameter with no
+fixture fails the test. When a route gains a body rule, add its valid body to `tenantPayload`.
+
 ## Test quality
 
 A test is judged by whether it would fail if the feature regressed: persisted state, forbidden state
