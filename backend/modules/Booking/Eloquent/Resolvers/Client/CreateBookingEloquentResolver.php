@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Booking\Eloquent\Resolvers\Client;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliableType;
@@ -48,16 +49,9 @@ final class CreateBookingEloquentResolver
             throw new ActiveBookingBanException;
         }
 
-        $chair = $command->chairId !== null
-            ? ChairModel::query()->lockForUpdate()->findOrFail($command->chairId)
-            : null;
-
+        $chair = $this->lockChairMatchingBarber($command);
         $chairBarberId = $chair?->getAttribute('barber_id');
         $chairBarberId = is_string($chairBarberId) ? $chairBarberId : null;
-
-        if ($chairBarberId !== null && $command->barberId !== null && $command->barberId !== $chairBarberId) {
-            throw new InvalidBookingServicesException('booking::messages.barber_chair_mismatch');
-        }
 
         $barberId = $command->barberId ?? $chairBarberId;
 
@@ -68,27 +62,88 @@ final class CreateBookingEloquentResolver
             $this->ensureBarberAffiliatedWithBranch($barberId, $branchId);
         }
 
+        $services = $this->lockActiveServices($command->serviceIds);
+        $this->ensureHomeAddressRules($command, $barberId, $services);
+
+        $endsAt = $command->startsAt->copy()->addMinutes($this->totalDuration($services, $branchId, $barberId));
+
+        if ($branchId !== null && ! BranchModel::query()->discoverable()->whereKey($branchId)->exists()) {
+            throw new NonDiscoverableBookingEntityException;
+        }
+
+        if ($chair !== null) {
+            $this->ensureChairBookable($chair, $command->startsAt, $endsAt);
+        }
+
+        if (! $this->branchHours->covers($branchId, $command->startsAt, $endsAt)) {
+            throw new BookingOutsideScheduleException;
+        }
+
+        if ($barberId !== null) {
+            $this->ensureBarberBookable($barberId, $command->startsAt, $endsAt);
+        }
+
+        return $this->persist($command, $barberId, $branchId, $endsAt);
+    }
+
+    private function lockChairMatchingBarber(CreateBookingCommand $command): ?ChairModel
+    {
+        if ($command->chairId === null) {
+            return null;
+        }
+
+        $chair = ChairModel::query()->lockForUpdate()->findOrFail($command->chairId);
+        $chairBarberId = $chair->getAttribute('barber_id');
+
+        if (is_string($chairBarberId) && $command->barberId !== null && $command->barberId !== $chairBarberId) {
+            throw new InvalidBookingServicesException('booking::messages.barber_chair_mismatch');
+        }
+
+        return $chair;
+    }
+
+    /**
+     * @param  list<string>  $serviceIds
+     * @return Collection<int, OfferedServiceModel>
+     */
+    private function lockActiveServices(array $serviceIds): Collection
+    {
         $services = OfferedServiceModel::query()
-            ->whereIn('id', $command->serviceIds)
+            ->whereIn('id', $serviceIds)
             ->where('is_active', true)
             ->lockForUpdate()
             ->get();
 
-        if ($services->count() !== count($command->serviceIds)) {
+        if ($services->count() !== count($serviceIds)) {
             throw new InvalidBookingServicesException;
         }
 
-        if ($command->homeAddress !== null) {
-            AtHomeBookingRules::ensure(
-                $barberId,
-                $services,
-                $this->coordinate($command->homeAddress['latitude'] ?? null),
-                $this->coordinate($command->homeAddress['longitude'] ?? null),
-            );
+        return $services;
+    }
+
+    /**
+     * @param  Collection<int, OfferedServiceModel>  $services
+     */
+    private function ensureHomeAddressRules(CreateBookingCommand $command, ?string $barberId, Collection $services): void
+    {
+        if ($command->homeAddress === null) {
+            return;
         }
 
-        $brandId = $this->serviceTerms->brandIdForBranch($branchId);
-        $this->serviceTerms->attach($services, $brandId);
+        AtHomeBookingRules::ensure(
+            $barberId,
+            $services,
+            $this->coordinate($command->homeAddress['latitude'] ?? null),
+            $this->coordinate($command->homeAddress['longitude'] ?? null),
+        );
+    }
+
+    /**
+     * @param  Collection<int, OfferedServiceModel>  $services
+     */
+    private function totalDuration(Collection $services, ?string $branchId, ?string $barberId): int
+    {
+        $this->serviceTerms->attach($services, $this->serviceTerms->brandIdForBranch($branchId));
         $totalDuration = 0;
 
         foreach ($services as $service) {
@@ -105,44 +160,39 @@ final class CreateBookingEloquentResolver
             $totalDuration += $duration;
         }
 
-        $endsAt = $command->startsAt->copy()->addMinutes($totalDuration);
+        return $totalDuration;
+    }
 
-        if ($branchId !== null) {
-            if (! BranchModel::query()->discoverable()->whereKey($branchId)->exists()) {
-                throw new NonDiscoverableBookingEntityException;
-            }
+    private function ensureChairBookable(ChairModel $chair, Carbon $startsAt, Carbon $endsAt): void
+    {
+        if (! $chair->currentAvailability()->isBookable()) {
+            throw new ChairNotAvailableException;
         }
 
-        if ($chair !== null) {
+        $this->ensureNoOverlap('chair_id', (string) $chair->getKey(), $startsAt, $endsAt);
+    }
 
-            if (! $chair->currentAvailability()->isBookable()) {
-                throw new ChairNotAvailableException;
-            }
+    private function ensureBarberBookable(string $barberId, Carbon $startsAt, Carbon $endsAt): void
+    {
+        $barber = BarberModel::query()->lockForUpdate()->findOrFail($barberId);
 
-            $this->ensureNoOverlap('chair_id', $command->chairId, $command->startsAt, $endsAt);
+        if ($barber->isBanned()) {
+            throw new ActiveBookingBanException;
         }
 
-        if (! $this->branchHours->covers($branchId, $command->startsAt, $endsAt)) {
+        if ($barber->getAttribute('status') !== BarberStatusEnum::Enabled) {
+            throw new NonDiscoverableBookingEntityException;
+        }
+
+        if (! BarberScheduleAvailability::covers($barberId, $startsAt, $endsAt)) {
             throw new BookingOutsideScheduleException;
         }
 
-        if ($barberId !== null) {
-            $barber = BarberModel::query()->lockForUpdate()->findOrFail($barberId);
+        $this->ensureNoOverlap('barber_id', $barberId, $startsAt, $endsAt);
+    }
 
-            if ($barber->isBanned()) {
-                throw new ActiveBookingBanException;
-            }
-            if ($barber->getAttribute('status') !== BarberStatusEnum::Enabled) {
-                throw new NonDiscoverableBookingEntityException;
-            }
-
-            if (! BarberScheduleAvailability::covers($barberId, $command->startsAt, $endsAt)) {
-                throw new BookingOutsideScheduleException;
-            }
-
-            $this->ensureNoOverlap('barber_id', $barberId, $command->startsAt, $endsAt);
-        }
-
+    private function persist(CreateBookingCommand $command, ?string $barberId, ?string $branchId, Carbon $endsAt): BookingModel
+    {
         $bookingData = [
             'client_id' => $command->clientId,
             'barber_id' => $barberId,
@@ -163,9 +213,7 @@ final class CreateBookingEloquentResolver
         }
 
         $booking = BookingModel::create($bookingData);
-
         $booking->services()->attach($command->serviceIds);
-
         $booking->load(['chair.barber', 'barber', 'services']);
 
         return $booking;
