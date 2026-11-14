@@ -34,22 +34,11 @@ final class ReviewClientHandler
             $branchId = $booking->getAttribute('branch_id') ?? $booking->chair?->getAttribute('branch_id');
             $branchId = is_string($branchId) && $branchId !== '' ? $branchId : null;
 
-            if ($command->authorSide === ReviewAuthorTypeEnum::Branch) {
-                if ($branchId === null || ($command->branchScope !== null && ! in_array($branchId, $command->branchScope, true))) {
-                    return ReviewClientResult::failure('not_own_booking');
-                }
-                $authorType = ReviewAuthorTypeEnum::Branch;
-                $authorId = $branchId;
-            } else {
-                if ($command->barberId === null || $booking->getAttribute('barber_id') !== $command->barberId) {
-                    return ReviewClientResult::failure('not_own_booking');
-                }
-                if ($branchId !== null) {
-                    return ReviewClientResult::failure('branch_rates_client');
-                }
-                $authorType = ReviewAuthorTypeEnum::Barber;
-                $authorId = $command->barberId;
+            $author = $this->resolveAuthor($command, $booking, $branchId);
+            if (is_string($author)) {
+                return ReviewClientResult::failure($author);
             }
+            [$authorType, $authorId] = $author;
 
             if (! in_array($booking->booking_status, [BookingStatus::Completed, BookingStatus::NoShow], true)) {
                 return ReviewClientResult::failure('booking_not_finished');
@@ -76,5 +65,29 @@ final class ReviewClientHandler
 
             return ReviewClientResult::success($review);
         });
+    }
+
+    /**
+     * @return array{ReviewAuthorTypeEnum, string}|string The author side and id, or the failure code.
+     */
+    private function resolveAuthor(ReviewClientCommand $command, BookingModel $booking, ?string $branchId): array|string
+    {
+        if ($command->authorSide === ReviewAuthorTypeEnum::Branch) {
+            if ($branchId === null || ($command->branchScope !== null && ! in_array($branchId, $command->branchScope, true))) {
+                return 'not_own_booking';
+            }
+
+            return [ReviewAuthorTypeEnum::Branch, $branchId];
+        }
+
+        if ($command->barberId === null || $booking->getAttribute('barber_id') !== $command->barberId) {
+            return 'not_own_booking';
+        }
+
+        if ($branchId !== null) {
+            return 'branch_rates_client';
+        }
+
+        return [ReviewAuthorTypeEnum::Barber, $command->barberId];
     }
 }
