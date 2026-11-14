@@ -21,8 +21,9 @@ Before building, read `docs/02-prd.md` then `docs/feature-index.md` to see what 
   not an authorization check. Any Action that reads or mutates a resource another actor could
   own MUST authorize via a `*Policy` class + `$this->authorize()` / `Gate::allows()` / `->can()`.
   See `.claude/skills/laravel-native-abstractions/SKILL.md` (`references/requests-validation-authorization.md`)
-  before adding or touching one of these paths — this repo currently has zero Policy classes,
-  so do not copy the existing scoped-query pattern into new code.
+  before adding or touching one of these paths — the repo has 22 `*Policy` classes (one per
+  module under `modules/*/Policies/`); some older paths still rely on scoped queries only, so
+  do not copy that pattern into new code.
 - All validation lives in a `FormRequest` (`Http/Requests/`), never inline `$request->validate()`
   in an Action/Handler — see `.claude/skills/10StrictBackendArchitecture/SKILL.md`.
 - Mass assignment is blocked by `#[Fillable([...])]` on every model — never widen it to `*`.
