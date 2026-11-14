@@ -9,7 +9,9 @@ use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Modules\Core\Constants\DatabaseSafetyConstants;
 use Modules\Core\Constants\MorphMapConstants;
 use Modules\Core\Contracts\SmsSender;
 use Modules\Core\Models\NotificationDeliveryModel;
@@ -49,12 +51,34 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
 
     protected function afterBoot(): void
     {
+        $this->prohibitDestructiveDatabaseCommands();
         $this->registerMorphMap();
         $this->registerFactoryResolution();
         $this->loadAppRoutes();
         Broadcast::routes(['prefix' => 'api/v1', 'middleware' => ['api', 'auth:admin_api,branch_api,barber,client']]);
         require __DIR__.'/../Routes/channels.php';
         $this->scheduleNotificationDeliveryPruning();
+    }
+
+    /**
+     * `migrate:fresh`, `migrate:refresh`, `migrate:reset` and `db:wipe` refuse to run in production AND whenever the
+     * default connection is not a local database (remote host, or no host and no socket), whatever APP_ENV says.
+     * `migrate:fresh` on a developer's own machine stays available.
+     */
+    private function prohibitDestructiveDatabaseCommands(): void
+    {
+        DB::prohibitDestructiveCommands($this->app->isProduction() || ! $this->defaultConnectionIsLocal());
+    }
+
+    private function defaultConnectionIsLocal(): bool
+    {
+        $config = (array) config('database.connections.'.config('database.default'), []);
+
+        if ((string) ($config['unix_socket'] ?? '') !== '') {
+            return true;
+        }
+
+        return in_array((string) ($config['host'] ?? ''), DatabaseSafetyConstants::DATABASE_SAFETY_LOCAL_HOSTS, true);
     }
 
     private function scheduleNotificationDeliveryPruning(): void

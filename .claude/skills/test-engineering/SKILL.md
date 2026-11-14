@@ -19,7 +19,6 @@ Read these first when the area applies; this skill adds a cross-stack layer and 
 | Backend test database, `RefreshDatabase`, Pest layout | `backend/.claude/skills/testing`, `backend/AGENTS.md`, `backend/CLAUDE.md` |
 | Which docs rule or edge case needs a test | `backend/.claude/skills/laravel-testing-baseline` (the docs-to-tests map only) |
 | Gate commands and their order | `../monorepo-task-executor/references/gates.md` |
-| Feasibility of a task | `../llm-council/SKILL.md` |
 | Security review of a diff | `../monorepo-task-executor/references/security-review.md` |
 | Dashboard test rules | `frontend/web/dashboard/AGENTS.md` ("Testing and gates") |
 | Mobile test rules | `frontend/mobile/CLAUDE.md` and the guide in the app or package |
@@ -34,7 +33,7 @@ If the output differs, trust the output and report the drift.
 
 | Fact | Check |
 | --- | --- |
-| Backend tests run on MySQL `dorak_test` only (decision 2026-11-13). SQLite is not supported: `phpunit.xml` forces `DB_CONNECTION=mysql`, `DB_DATABASE=dorak_test`, and `Tests\Support\TestDatabaseGuard` (called from `Tests\TestCase::setUpTraits`, before `migrate:fresh`) throws unless the driver is `mysql` and the database is `dorak_test` or `dorak_test_<n>`. Host and credentials come from the gitignored `.env.testing` or the CI environment. CI uses a MySQL 8 service. | `cd backend && vendor/bin/pest tests/Unit/TestDatabaseGuardTest.php`, and `.github/workflows/backend-ci.yml` |
+| Backend tests run on MySQL 8.4 `dorak_test` only (permanent policy, 2026-11-14). SQLite and MariaDB are not supported: `phpunit.xml` forces the `mysql` driver, host `127.0.0.1`, port `3307`, user `root` and `DB_DATABASE=dorak_test`, and `Tests\Support\TestDatabaseGuard` (called from `Tests\TestCase::refreshApplication` and `setUpTraits`, before any database is created or migrated) throws unless `APP_ENV=testing`, the driver is `mysql`, the run is sequential (no parallel worker markers), the server is MySQL 8.4 (MariaDB and other versions are refused; `composer test:db:up` starts it from `backend/docker-compose.test.yml`), the database is exactly `dorak_test`, the host is `127.0.0.1`, `localhost` or `::1`, there is no unix socket, the port is exactly 3307 (never the development server's 3306) and the user is `root` or `dorak_test*`. `.env.testing` cannot redirect the suite. CI uses the same `mysql:8.4` image on port 3307. Permanent policy: `dorak_test` is the only test database, tests run sequentially, `--parallel` and per-worker databases are prohibited, and `composer test` recreates `dorak_test` clean first; changing this needs explicit approval. | `cd backend && vendor/bin/pest tests/Unit/TestDatabaseGuardTest.php`, and `.github/workflows/backend-ci.yml` |
 | Pest 3.8.x on PHPUnit 11 | `cd backend && vendor/bin/pest --version` |
 | No code coverage driver is loaded, so `pest --coverage` and `--mutate` cannot run here | `php -m \| grep -i -E "pcov\|xdebug"` |
 | `phpunit.xml` `<source>` includes `app`, which does not exist (code lives in `modules/`), so coverage numbers would be meaningless until it is fixed | `ls backend/app` |
@@ -149,7 +148,7 @@ Backend tests already run on MySQL (verified above), so engine behaviour is exer
 foreign keys and cascade rules, unique constraints, orphan prevention, soft deletes, transaction
 rollback and concurrent writes. Concurrency (double booking, two simultaneous approvals) needs
 real overlapping connections; a single-process test does not prove it, so mark it `unverified` until
-a parallel or two-connection test exists. MySQL is the only engine tests run on; SQLite is not supported. Tests use `dorak_test` only; never point them at the
+a parallel or two-connection test exists (`backend/tests/Concurrency`, group `concurrency`, is the model: separate PHP processes, `composer test:concurrency`). MySQL is the only engine tests run on; SQLite is not supported. Tests use `dorak_test` only; never point them at the
 development database `dorak_backend_development_db`, and never run `migrate:fresh` against it.
 
 ## 9. Test effectiveness review

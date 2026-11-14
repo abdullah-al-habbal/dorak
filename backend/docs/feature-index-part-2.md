@@ -53,8 +53,7 @@ Part 2 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 - Routes: bookings.php (auth:client), floor-plan.php (no auth)
 
 ### CI / Code Quality
-- `phpstan.neon` — level `max`, paths: modules/, bootstrap/. Larastan extension
-- `.github/workflows/backend-ci.yml` — Pint formatting, PHPStan max, PHPUnit coverage, SonarQube scan (MySQL service)
+- `.github/workflows/backend-ci.yml` — Pint formatting, PHPUnit coverage, SonarQube scan (MySQL service)
 - `sonar-project.properties` — backend sources, exclusions, coverage reports
 - BaseApiAction: removed abstract __invoke() (signatures vary per action)
 

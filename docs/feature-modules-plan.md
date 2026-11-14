@@ -428,7 +428,7 @@ Chosen 2026-11-08, approve-only (see `docs/decisions-required.md`). Every endpoi
 
 ## 10h. Module 12: Admin Catalog
 
-Chosen 2026-11-09 (see `docs/decisions-required.md`). Feasibility gate: LLM council, 5/5 approve with conditions.
+Chosen 2026-11-09 (see `docs/decisions-required.md`). Feasibility assessment: approved with conditions.
 
 ### Implemented contract
 - Shared code path: `CatalogCategoryUsage::isEmpty()`, used by `DestroyCatalogCategoryAction` (through `DeleteCatalogCategoryHandler`, row-locked). `CatalogCategoryNameRules::rules()` and `CatalogCategorySlugGenerator` are shared by the admin save request and `POST /dashboard/service-categories`.

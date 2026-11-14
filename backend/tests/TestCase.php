@@ -24,20 +24,38 @@ abstract class TestCase extends BaseTestCase
     use RefreshDatabase;
 
     /**
-     * Runs before any trait set-up, so before RefreshDatabase's migrate:fresh, and refuses any database but
-     * MySQL `dorak_test`. Overriding setUpTraits keeps the guard in force even when a test file re-applies a trait.
+     * Runs before any trait set-up, so before RefreshDatabase's migrate:fresh, and refuses any connection but
+     * the local MySQL `dorak_test`. Overriding setUpTraits keeps the guard in force even when a test file re-applies a trait.
      *
      * @return array<class-string, class-string>
      */
     protected function setUpTraits()
     {
-        TestDatabaseGuard::assertSafe(
-            (string) app()->environment(),
-            DB::connection()->getDriverName(),
-            DB::connection()->getDatabaseName(),
-        );
+        $this->assertTestDatabaseIsSafe();
 
         return parent::setUpTraits();
+    }
+
+    /**
+     * Laravel creates per-worker databases right after the app boots, before setUpTraits. Guarding here stops
+     * a `--parallel` run before it can create anything.
+     */
+    protected function refreshApplication(): void
+    {
+        parent::refreshApplication();
+        $this->assertTestDatabaseIsSafe();
+    }
+
+    private function assertTestDatabaseIsSafe(): void
+    {
+        TestDatabaseGuard::assertSafe(
+            (string) app()->environment(),
+            DB::connection()->getConfig(),
+        );
+        TestDatabaseGuard::assertServer(
+            fn (): string => (string) DB::selectOne('select version() as version')->version,
+            DB::connection()->getConfig(),
+        );
     }
 
     protected function authenticateDashboardActor(AdminModel|BarberModel|BranchModel|ClientModel $model): static

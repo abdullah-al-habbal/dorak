@@ -17,9 +17,7 @@ Run each from the stated directory. Never claim a gate passed unless the command
 - Focused: `php -d memory_limit=1G vendor/bin/pest tests/Feature/...`.
 - Style: `vendor/bin/pint <touched paths>`, then `vendor/bin/pint --test <touched paths>`.
 - Migrations: also `php scripts/check_migrations.php`.
-- PHPStan is explicitly exempted as a required gate for this repo (see `backend/CLAUDE.md`) —
-  do not run or report it as a blocking check. `pint --test` and `php artisan test`/Pest remain
-  mandatory.
+- `pint --test` and `php artisan test`/Pest are the mandatory gates.
 - Authorization: for any touched Action that reads or mutates another actor's resource,
   confirm a `*Policy` + `$this->authorize()`/`Gate::allows()`/`->can()` check exists — a scoped
   query alone (`where('*_id', ...)`) does not satisfy this gate.
@@ -41,7 +39,7 @@ Whenever dashboard code, copy, or contracts change, run from that directory: `np
 - `dart format` only on touched files. Workspace-wide formatting rewrites unrelated files; revert any it modifies.
 
 ## Order of gates
-Preflight audit, feasibility council (`../llm-council/SKILL.md`, medium and complex tasks), implementation, backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, `scripts/check-conventions.sh`, the security review (`references/security-review.md`), hygiene cleanup, then the commit. Each step runs only if the previous passed.
+Preflight audit, implementation, backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, `scripts/check-conventions.sh`, the security review (`references/security-review.md`), hygiene cleanup, then the commit. Each step runs only if the previous passed.
 
 ## Tests
 When a task writes, reviews or fixes tests, or touches authorization, tenant scope, state transitions or money, apply `../../test-engineering/SKILL.md` (what the tests must prove; the gates above still decide pass or fail).

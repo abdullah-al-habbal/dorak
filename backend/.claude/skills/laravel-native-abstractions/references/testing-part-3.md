@@ -30,8 +30,4 @@ Part 3 of 3 · [Testing Laravel Abstractions](testing.md) · [Previous](testing-
 composer test                       # config:clear + Pest against dorak_test
 php artisan test --filter Booking
 vendor/bin/pint --test              # formatting gate (also runs in CI + pre-push)
-vendor/bin/phpstan analyse           # larastan; config in phpstan.neon
 ```
-
-There is no `composer analyse` script in `composer.json` despite `CLAUDE.md` naming one — call
-`vendor/bin/phpstan analyse` directly.

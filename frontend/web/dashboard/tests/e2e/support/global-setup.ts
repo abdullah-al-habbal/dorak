@@ -5,7 +5,7 @@ import { artisan } from "@tests/e2e/support/artisan";
 import { E2E_ADMIN_EMAIL, E2E_ADMIN_PASSWORD, E2E_ADMIN_STORAGE_STATE, E2E_APP_URL, E2E_BARBER_EMAIL, E2E_BARBER_PASSWORD, E2E_BARBER_STORAGE_STATE, E2E_EMAIL, E2E_OWNER_EMAIL, E2E_OWNER_PASSWORD, E2E_OWNER_STORAGE_STATE, E2E_PASSWORD, E2E_SEEDER_CLASS, E2E_STORAGE_STATE } from "@tests/e2e/support/e2e-env.constant";
 import { enDictionary } from "@/locales/en/index.constant";
 
-/** Rebuilds the dev database, seeds the E2E baseline, then signs the seeded manager in once. */
+/** Rebuilds the single test database (`DB_DATABASE=dorak_test`, enforced by `artisan`), seeds the E2E baseline, then signs the seeded manager in once. */
 export default async function globalSetup(): Promise<void> {
   await artisan(["migrate:fresh", "--seed"]);
   await artisan(["db:seed", `--class=${E2E_SEEDER_CLASS}`]);

@@ -29,8 +29,13 @@ declare(strict_types=1);
  * Usage:
  *   php scripts/check_migrations.php [--base=<git-ref>] [--all]
  *
- *   --base=<ref>  compare against this ref (default: origin/dev)
- *   --all         scan every migration in the repo instead of a diff
+ *   --base=<ref>   compare against this ref (default: origin/dev)
+ *   --all          scan every migration in the repo instead of a diff
+ *   --require-base fail (exit 2) when the base ref does not exist, instead of silently scanning everything. That
+ *                  fallback skips check (b) entirely, so CI must pass this flag.
+ *
+ * Uncommitted work counts: edits to tracked migrations and untracked new ones are checked as well, so a local run
+ * sees what the next commit would contain.
  */
 require_once __DIR__.'/MigrationGuardConstants.php';
 
@@ -157,16 +162,52 @@ function scan(string $file): array
     return ['optOut' => $optOut, 'problems' => $problems];
 }
 
+/**
+ * Adds uncommitted work to the committed diff: staged or unstaged edits of tracked migrations and untracked new ones.
+ * A file that is new relative to the base stays "added" even when it was edited again afterwards: it has not shipped.
+ *
+ * @param  list<string>  $added
+ * @param  list<string>  $modified
+ * @return array{0: list<string>, 1: list<string>}
+ */
+function withUncommitted(array $added, array $modified): array
+{
+    [, $lines] = git('diff --relative --name-status --diff-filter=AM HEAD');
+    foreach ($lines as $line) {
+        $parts = preg_split('/\t/', $line);
+        if (count($parts) < 2 || ! isMigrationPath($parts[1])) {
+            continue;
+        }
+        if ($parts[0] === 'A') {
+            $added[] = $parts[1];
+        } elseif (! in_array($parts[1], $added, true)) {
+            $modified[] = $parts[1];
+        }
+    }
+
+    [, $untracked] = git('ls-files --others --exclude-standard');
+    foreach ($untracked as $path) {
+        if (isMigrationPath($path)) {
+            $added[] = $path;
+        }
+    }
+
+    return [array_values(array_unique($added)), array_values(array_unique($modified))];
+}
+
 // ── args ────────────────────────────────────────────────────────────────────
 $base = 'origin/dev';
 $all = false;
+$requireBase = false;
 foreach (array_slice($argv, 1) as $arg) {
     if (str_starts_with($arg, '--base=')) {
         $base = substr($arg, 7);
     } elseif ($arg === '--all') {
         $all = true;
+    } elseif ($arg === '--require-base') {
+        $requireBase = true;
     } elseif ($arg === '-h' || $arg === '--help') {
-        fwrite(STDOUT, "Usage: php scripts/check_migrations.php [--base=<ref>] [--all]\n");
+        fwrite(STDOUT, "Usage: php scripts/check_migrations.php [--base=<ref>] [--all] [--require-base]\n");
         exit(MigrationGuardConstants::MIGRATION_GUARD_EXIT_OK);
     } else {
         fail("Unknown argument: {$arg}");
@@ -183,12 +224,17 @@ if ($all) {
     echo '🔎 Scanning all '.count($added)." migrations (--all)\n";
 } else {
     [$code] = git("rev-parse --verify --quiet {$base}");
+    if ($code !== 0 && $requireBase) {
+        fail("❌ Base ref '{$base}' not found and --require-base is set: refusing to skip the shipped-migration check.");
+        exit(MigrationGuardConstants::MIGRATION_GUARD_EXIT_USAGE);
+    }
     if ($code !== 0) {
         echo "⚠️  Base ref '{$base}' not found; falling back to --all\n";
         $added = migrationFiles();
         $all = true;
     } else {
-        [, $lines] = git("diff --name-status --diff-filter=AM {$base}...HEAD");
+        // --relative: the repository is a monorepo, so paths are otherwise prefixed with `backend/` and never match isMigrationPath().
+        [, $lines] = git("diff --relative --name-status --diff-filter=AM {$base}...HEAD");
         foreach ($lines as $line) {
             $parts = preg_split('/\t/', $line);
             if (count($parts) < 2) {
@@ -204,7 +250,8 @@ if ($all) {
                 $modified[] = $path;
             }
         }
-        echo "🔎 Comparing against {$base}: ".count($added).' added, '.count($modified)." modified migration(s)\n";
+        [$added, $modified] = withUncommitted($added, $modified);
+        echo "🔎 Comparing against {$base} (and the working tree): ".count($added).' added, '.count($modified)." modified migration(s)\n";
     }
 }
 

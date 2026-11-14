@@ -20,7 +20,7 @@ Built for a dual‑universe consumer app (Men's Grooming & Women's Beauty), with
 - **Flutter** (client app, API consumed via Sanctum)
 - **Spatie** packages: Translatable, Laravel Permission
 - **Laravel** Pennant (feature flags), Sanctum (API tokens), Socialite (social login)
-- **Pest** / PHPUnit for testing, **Larastan** for static analysis
+- **Pest** / PHPUnit for testing
 
 ## Getting Started
 

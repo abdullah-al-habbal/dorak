@@ -56,6 +56,5 @@ Key skills under `.claude/skills/`:
 2. Read relevant `.claude/skills/*/SKILL.md`
 3. Implement → `vendor/bin/pint --test` + `composer test` (Pest, MySQL `dorak_test`)
 
-PHPStan is explicitly exempted as a required gate in this repo (kept out to save
-tokens/time) — `vendor/bin/pint --test` and `composer test` remain mandatory and are what
-the Husky pre-push hook enforces; CI additionally re-checks formatting.
+`vendor/bin/pint --test` and `composer test` are the mandatory gates and what the Husky
+pre-push hook enforces; CI additionally re-checks formatting.

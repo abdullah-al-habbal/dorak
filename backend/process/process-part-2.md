@@ -49,14 +49,13 @@ Your requested engine — *Think → Research → Plan → Act → Test → Revi
 | **Plan** | List the files to touch; name the rules/entities/flows being implemented; pick applicable skills | the cited docs + skills |
 | **Act** | Write code to the skills' standards (typed, validated, migrations match cascade rules); **archive any file before a destructive change** | type‑safety, migrations, validations, archive‑file |
 | **Test** | Write/run the tests the ticket demands — one per cited house rule + edge case; red → green | testing skill; `04`, `08`, `07` |
-| **Review** | Self‑review against each skill's checklist + the doc rules; run static analysis | all skills |
+| **Review** | Self‑review against each skill's checklist + the doc rules | all skills |
 | **Verify** | Run the **full** suite; confirm acceptance criteria; confirm **no other house rule regressed** | `04`, `08`, acceptance |
 | **Loop / Done** | Any check fails → back to Plan/Act. All pass → ticket **Done**, take the next | KANBAN board |
 
 **Stopping conditions (all must hold to mark a ticket Done):**
 - every acceptance criterion met,
 - every cited house rule + edge case has a passing test,
-- static analysis clean at the target level,
 - full suite green (no regressions elsewhere).
 
 **Escalation guard (so the loop never spins forever):** if a ticket fails verification **N times** (you pick N, e.g. 3) or touches anything flagged 🟡 *Open* in `02-prd.md` §8, the loop **stops and asks a human**. This is deliberate — the loop is allowed to be autonomous only where the spec is *Decided* (✅), never where it's *Open* (🟡).

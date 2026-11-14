@@ -11,6 +11,20 @@ enum ApplicationStatus: string
     case Accepted = 'accepted';
     case Rejected = 'rejected';
 
+    /**
+     * Which of several duplicate applications to keep (approved rule): Accepted > Seen > Submitted > Rejected.
+     * Equal priority keeps the oldest row.
+     */
+    public function retentionPriority(): int
+    {
+        return match ($this) {
+            self::Accepted => 3,
+            self::Seen => 2,
+            self::Submitted => 1,
+            self::Rejected => 0,
+        };
+    }
+
     public function label(): string
     {
         return $this->value;

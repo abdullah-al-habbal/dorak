@@ -14,7 +14,7 @@ codeanchors:
 ## Database
 
 - All tests use a real MySQL database. SQLite is not supported and never a fallback.
-- `phpunit.xml` forces `DB_CONNECTION=mysql` and `DB_DATABASE=dorak_test`; host and credentials come from `.env.testing` (CI: environment). `Tests\Support\TestDatabaseGuard` throws before `migrate:fresh` for any other driver or database name.
+- `phpunit.xml` forces the whole connection: `mysql` driver, host `127.0.0.1`, port `3307`, user `root`, the container's throwaway password and `DB_DATABASE=dorak_test` (`.env.testing` cannot redirect it). `Tests\Support\TestDatabaseGuard` throws before `migrate:fresh` unless the run is sequential and `APP_ENV`, driver, database name, host (no socket), port 3307, user and server version (MySQL 8.4 only) are all the test values; with no server running it tells you to run `composer test:db:up`. Two-connection tests live in `tests/Concurrency` (group `concurrency`, excluded from the default run because they commit rows): `composer test:concurrency`. **Policy:** `dorak_test` is the only test database, on MySQL 8.4 only (MariaDB and other versions are refused; `composer test:db:up` starts it on 127.0.0.1:3307, `composer test:db:down` stops only that container); tests run sequentially; `--parallel` and per-worker databases are prohibited (the guard refuses them before anything is created); `composer test` recreates `dorak_test` clean first (`composer test:reset`); changing this needs explicit approval.
 - The `RefreshDatabase` trait is applied via the base `Tests\TestCase`, guaranteeing a clean state for every test.
 
 ## Test structure

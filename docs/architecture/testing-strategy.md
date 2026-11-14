@@ -96,11 +96,24 @@ commands that re-check these facts.
 ## Database compatibility
 
 Backend tests run on MySQL (`dorak_test`) only, locally and in CI, the same engine as production, so
-engine behaviour (locks, unique indexes, transactions, DDL) is exercised. SQLite is not a supported test
-driver: `phpunit.xml` forces MySQL and `dorak_test`, and `Tests\Support\TestDatabaseGuard` stops the run
-before `migrate:fresh` if the driver or database name differs, so the development database cannot be
-wiped by a test run. A lock-order test asserts the real `FOR UPDATE` statements; true concurrency (double booking) needs
-overlapping connections and stays marked unverified until such a test exists.
+engine behaviour (locks, unique indexes, transactions, DDL) is exercised. SQLite is not a supported test driver.
+
+### Single test database policy (permanent)
+
+1. `dorak_test` is the only automated-test database.
+2. Automated tests run sequentially.
+3. Parallel, database-per-worker testing is prohibited (`--parallel` creates `dorak_test_test_<n>` databases).
+4. The database is recreated clean before each complete run: `composer test` and `composer test:concurrency` call `composer test:reset` (`backend/scripts/reset_test_database.php`), and CI runs the same script first.
+5. Destructive test operations (drop, create, `migrate:fresh`) apply only to `dorak_test`.
+6. Development and production databases must never be affected by automated test setup.
+7. Integration tests run on **MySQL 8.4** only, locally and in CI (`mysql:8.4`, 127.0.0.1:3307). MariaDB and every other version are refused with no fallback: the guard reads `select version()`.
+8. Any change to this policy requires explicit approval.
+
+Local MySQL 8.4: `composer test:db:up` starts `backend/docker-compose.test.yml` (database `dorak_test`, loopback port 3307, data in memory) and `composer test:db:down` stops only that container. `phpunit.xml` forces the whole connection, so no `.env.testing` setup is needed and it cannot redirect the suite; with the container stopped, tests stop with an instruction to start it. Development databases and their configuration are never used or modified.
+
+Destructive commands: `migrate:fresh`, `migrate:refresh`, `migrate:reset` and `db:wipe` refuse to run in production **and** whenever the default connection is not a local database (remote host, or no host and no socket), whatever `APP_ENV` says. Local development wipes (`composer restart-local`) stay available. There is no production wipe script.
+
+Enforcement: `phpunit.xml` forces MySQL and `dorak_test`; `Tests\Support\TestDatabaseGuard` runs right after the app boots and refuses a parallel worker, a wrong `APP_ENV`, driver, server version, database name, host (a unix socket is refused), port (only 3307) or user before anything is created or migrated. It is an allow-list of configuration, not proof of what the server holds, so never name a development database `dorak_test`. Lock-order tests assert the real `FOR UPDATE` statements; `tests/Concurrency` (group `concurrency`, `composer test:concurrency`, run by CI after the default suite) proves them with separate PHP processes and MySQL sessions against the same `dorak_test`. Those tests commit rows, so the default run excludes them and the schema is rebuilt after every concurrency test; the lock proofs wait on the server's process list instead of sleeping, and the apply race has a variant with the unique index dropped so the lock alone must serialize it. The Playwright suite refuses to run unless `DB_DATABASE=dorak_test`.
 
 ## Workflow
 
@@ -130,7 +143,7 @@ coverage, risk and verification status. The format and statuses are in
 
 | Where | What runs today |
 | --- | --- |
-| GitHub Actions `backend-ci.yml` | migration guard, `composer validate`, PHP syntax check, `php artisan test` on MySQL 8 (coverage off) |
+| GitHub Actions `backend-ci.yml` | migration guard, `composer validate`, PHP syntax check, `php artisan test` on MySQL 8.4 (coverage off) |
 | Local hooks (`.husky`) | commit message format; dashboard lint and typecheck on staged dashboard files |
 | Task executor | the gate order in `gates.md`, including Pint, Pest, dashboard checks, Playwright and `melos verify` |
 
@@ -143,5 +156,4 @@ services, dashboard and mobile CI jobs, and a check that rejects duplicate globa
 - Developers and agents writing, reviewing or expanding tests, fixing a bug with a regression test, or
   touching security-sensitive code open the
   [test-engineering skill](../../.claude/skills/test-engineering/SKILL.md) first.
-- The task executor loads it at its implementation step through `gates.md`; the council judges
-  feasibility, the skill judges test quality, and neither duplicates the other.
+- The task executor loads it at its implementation step through `gates.md`; the skill judges test quality.

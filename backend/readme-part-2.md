@@ -13,7 +13,6 @@ Part 2 of 3 · [Dorak Backend (دورك)](README.md) · [Previous](README.md) ·
 ```bash
 composer dev      # Starts server, queue, logs, Vite concurrently
 composer test     # Runs PHPUnit/Pest tests
-composer analyze  # Runs Larastan (PHPStan) at max level
 ```
 
 ## Project Architecture

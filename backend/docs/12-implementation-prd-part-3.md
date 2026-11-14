@@ -24,7 +24,6 @@ modules/{Name}/
 
 Acceptance criteria:
 - [ ] Each endpoint has passing feature test (happy path + validation error + auth failure)
-- [ ] `phpstan analyse` clean at level max
 - [ ] Response follows existing API conventions (JSON:API-style, camelCase fields)
 - [ ] No `env()` call in API files — config only
 - [ ] `declare(strict_types=1)` on every file

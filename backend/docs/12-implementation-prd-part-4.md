@@ -21,7 +21,6 @@ Existing test files (13) cover only Client, Barber, Admin models + health check.
 | **Chair** | Feature | CRUD, status transitions, floor-plan position | CH-01 |
 | **BarberAffiliation** | Feature | Invite → accept/reject flow, multi-shop constraint | AF-01 |
 | **Currency** | Feature | Exchange rate CRUD, conversion calculation | CU-01 |
-| All modules | Static | `phpstan analyse` at max level | — |
 
 Acceptance criteria:
 - [ ] Each test file passes individually
@@ -46,7 +45,7 @@ Week 4: Backfill tests — Booking concurrency, Explore search, Review submissio
   └→ Verify: phpunit green + every 04 house rule tested
 
 Week 5: Track B Medium — JobPosting + Application APIs + Currency API
-  └→ Verify: phpstan + phpunit green
+  └→ Verify: phpunit green
 
 Week 6: Frontend screens for new APIs + admin page gaps
   └→ Verify: dart analyze clean, full-stack smoke test

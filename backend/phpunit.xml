@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/bootstrap.php"
          colors="true"
          cacheResult="false"
 >
@@ -15,20 +15,36 @@
         <testsuite name="Feature">
             <directory suffix="Test.php">tests/Feature</directory>
         </testsuite>
+        <!-- Real two-connection tests: they commit rows, so the `concurrency` group stays out of the default run.
+             Run them with `composer test:concurrency`. -->
+        <testsuite name="Concurrency">
+            <directory suffix="Test.php">tests/Concurrency</directory>
+        </testsuite>
     </testsuites>
+    <groups>
+        <exclude>
+            <group>concurrency</group>
+        </exclude>
+    </groups>
     <source>
         <include>
             <directory>app</directory>
         </include>
     </source>
     <php>
-        <env name="APP_ENV" value="testing"/>
+        <env name="APP_ENV" value="testing" force="true"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
-        <!-- MySQL only. Forced so a stray DB_* variable or .env value cannot point the suite at another
-             database; host and credentials still come from .env.testing or the CI environment.
-             Tests\Support\TestDatabaseGuard refuses anything but MySQL `dorak_test` before migrating. -->
+        <!-- MySQL 8.4 only, on the dedicated test server (backend/docker-compose.test.yml, `composer test:db:up`; CI uses the
+             same image on the same port). Every connection setting is forced so a stray DB_* variable, .env or .env.testing
+             value cannot point the suite at another database; the root password is the throwaway one of that loopback-only
+             container. Tests\Support\TestDatabaseGuard refuses anything but this server (checks sequential run, APP_ENV,
+             driver, host, port, username, database and server version) before migrating. -->
         <env name="DB_CONNECTION" value="mysql" force="true"/>
+        <env name="DB_HOST" value="127.0.0.1" force="true"/>
+        <env name="DB_PORT" value="3307" force="true"/>
+        <env name="DB_USERNAME" value="root" force="true"/>
+        <env name="DB_PASSWORD" value="root" force="true"/>
         <env name="DB_DATABASE" value="dorak_test" force="true"/>
         <env name="DB_URL" value="" force="true"/>
         <env name="BROADCAST_CONNECTION" value="null"/>

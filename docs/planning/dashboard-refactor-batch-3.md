@@ -116,10 +116,10 @@ queryFn })` (earnings, analytics, platform settings, schedule hours, subscriptio
 - Acceptance: the URL each hook writes is unchanged, covered by Playwright for earnings and
   services.
 
-#### Decision (feasibility council, 2026-11-08): PROCEED with a page-agnostic base
+#### Decision (feasibility assessment, 2026-11-08): proceed with a page-agnostic base
 
-All five advisors approved with conditions; no rejection was raised. The request offered (a) an
-optional no-page mode in `useUrlFilters` and (b) documenting the hooks as exceptions. The council
+The assessment approved the work with conditions; no blocking issue was raised. The request offered (a) an
+optional no-page mode in `useUrlFilters` and (b) documenting the hooks as exceptions. The assessment
 chose the `useUrlState` base named above, which this doc already allowed as the alternative to (a):
 
 - (a) is rejected: a flag or a looser `F` puts a conditional page rule, and a type hole, into a

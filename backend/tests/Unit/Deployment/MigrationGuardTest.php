@@ -211,6 +211,57 @@ it('detects an edited shipped migration against the parent commit', function () 
         ->and($out)->toContain('already shipped was modified');
 });
 
+/** A committed throw-away repository with one shipped migration; returns [root, migration file, base commit]. */
+function shippedMigrationRepository(): array
+{
+    $root = sys_get_temp_dir().'/mig-guard-wt-'.bin2hex(random_bytes(6));
+    $migDir = $root.'/modules/Client/Database/Migrations';
+    mkdir($migDir, 0o777, true);
+    mkdir($root.'/scripts', 0o777, true);
+    copy(guardScript(), $root.'/scripts/check_migrations.php');
+    copy(base_path('scripts/MigrationGuardConstants.php'), $root.'/scripts/MigrationGuardConstants.php');
+    $file = $migDir.'/2030_01_01_000009_shipped.php';
+    file_put_contents($file, migrationSource("Schema::create('shipped', function (Blueprint \$table) {\n \$table->uuid('id')->primary();\n });"));
+    gitInit($root);
+
+    return [$root, $file, trim((new Process(['git', 'rev-parse', 'HEAD'], $root))->mustRun()->getOutput())];
+}
+
+it('detects an edit of a shipped migration that is not committed yet', function () {
+    [$root, $file, $base] = shippedMigrationRepository();
+    file_put_contents($file, file_get_contents($file)."\n// edited after it shipped\n");
+
+    $p = new Process(['php', 'scripts/check_migrations.php', '--base='.$base], $root);
+    $p->run();
+    exec('rm -rf '.escapeshellarg($root));
+
+    expect($p->getExitCode())->toBe(1)->and($p->getErrorOutput())->toContain('already shipped was modified');
+});
+
+it('detects a destructive new migration that is not tracked yet', function () {
+    [$root, $file, $base] = shippedMigrationRepository();
+    file_put_contents(dirname($file).'/2030_01_02_000001_drops.php', migrationSource("Schema::table('shipped', function (Blueprint \$table) {\n \$table->dropColumn('id');\n });"));
+
+    $p = new Process(['php', 'scripts/check_migrations.php', '--base='.$base], $root);
+    $p->run();
+    exec('rm -rf '.escapeshellarg($root));
+
+    expect($p->getExitCode())->toBe(1)->and($p->getErrorOutput())->toContain('drops a column');
+});
+
+it('refuses to skip the shipped-migration check when the base ref is missing and --require-base is set', function () {
+    [$root] = shippedMigrationRepository();
+
+    $strict = new Process(['php', 'scripts/check_migrations.php', '--base=does-not-exist', '--require-base'], $root);
+    $strict->run();
+    $lenient = new Process(['php', 'scripts/check_migrations.php', '--base=does-not-exist'], $root);
+    $lenient->run();
+    exec('rm -rf '.escapeshellarg($root));
+
+    expect($strict->getExitCode())->toBe(2)->and($strict->getErrorOutput())->toContain('--require-base')
+        ->and($lenient->getExitCode())->toBe(0)->and($lenient->getOutput())->toContain('falling back to --all');
+});
+
 // ── regression canary against the real repository ───────────────────────────
 
 it('passes against every migration currently in the repository', function () {
@@ -218,4 +269,53 @@ it('passes against every migration currently in the repository', function () {
     $p->run();
 
     expect($p->getExitCode())->toBe(0, $p->getOutput().$p->getErrorOutput());
+});
+
+// ── monorepo layout: CI runs the guard from backend/, git reports backend/-prefixed paths ──────────────────
+
+/** @return array{exit: int|null, output: string} */
+function runGuardInMonorepo(string $newMigration, string $up, ?string $editShipped = null): array
+{
+    $root = sys_get_temp_dir().'/mig-guard-mono-'.bin2hex(random_bytes(6));
+    $backend = $root.'/backend';
+    $dir = $backend.'/modules/Client/Database/Migrations';
+    mkdir($dir, 0o777, true);
+    mkdir($backend.'/scripts', 0o777, true);
+    copy(guardScript(), $backend.'/scripts/check_migrations.php');
+    copy(base_path('scripts/MigrationGuardConstants.php'), $backend.'/scripts/MigrationGuardConstants.php');
+    file_put_contents($dir.'/2030_01_01_000001_shipped.php', migrationSource("Schema::create('shipped', fn (Blueprint \$t) => \$t->uuid('id'));"));
+    gitInit($root);
+
+    file_put_contents($dir.'/'.$newMigration, migrationSource($up));
+    if ($editShipped !== null) {
+        file_put_contents($dir.'/2030_01_01_000001_shipped.php', migrationSource($editShipped));
+    }
+    foreach ([['git', 'add', '-A'], ['git', 'commit', '-qm', 'change']] as $cmd) {
+        (new Process($cmd, $root))->mustRun();
+    }
+
+    $p = new Process(['php', 'scripts/check_migrations.php', '--base=HEAD~1'], $backend);
+    $p->run();
+    $out = $p->getOutput().$p->getErrorOutput();
+    exec('rm -rf '.escapeshellarg($root));
+
+    return ['exit' => $p->getExitCode(), 'output' => $out];
+}
+
+it('sees a migration added under a backend/ subdirectory instead of reporting "no migrations changed"', function () {
+    $r = runGuardInMonorepo('2030_02_01_000001_new.php', "Schema::create('thing', fn (Blueprint \$t) => \$t->uuid('id'));");
+
+    expect($r['exit'])->toBe(0)
+        ->and($r['output'])->toContain('1 added')
+        ->and($r['output'])->toContain('1 migration(s) checked')
+        ->and($r['output'])->not->toContain('no migrations changed');
+});
+
+it('rejects a destructive new migration and an edited shipped migration in the monorepo layout', function () {
+    $destructive = runGuardInMonorepo('2030_02_01_000002_drop.php', "Schema::table('clients', fn (Blueprint \$t) => \$t->dropColumn('nickname'));");
+    $edited = runGuardInMonorepo('2030_02_01_000003_ok.php', "Schema::create('thing', fn (Blueprint \$t) => \$t->uuid('id'));", editShipped: "Schema::create('shipped', fn (Blueprint \$t) => \$t->string('id'));");
+
+    expect($destructive['exit'])->toBe(1)
+        ->and($edited['exit'])->toBe(1)
+        ->and($edited['output'])->toContain('already shipped');
 });

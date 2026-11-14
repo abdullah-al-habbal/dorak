@@ -1,0 +1,22 @@
+# The automated-test database server: MySQL 8.4, the same image CI uses (.github/workflows/backend-ci.yml).
+# It holds ONE database, `dorak_test`, listens on loopback port 3307 only (never 3306, so it cannot collide with a
+# development server) and keeps its data in memory. The root password is a throwaway for this loopback-only
+# container. Start it with `composer test:db:up`; point the gitignored backend/.env.testing at it:
+#   DB_HOST=127.0.0.1  DB_PORT=3307  DB_USERNAME=root  DB_PASSWORD=root  (DB_DATABASE is forced to dorak_test)
+# Changing the image, the database name or the port requires the owner's approval (see docs/architecture/testing-strategy.md).
+name: dorak-test-db
+services:
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "127.0.0.1:3307:3306"
+    environment:
+      MYSQL_DATABASE: dorak_test
+      MYSQL_ROOT_PASSWORD: root
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20

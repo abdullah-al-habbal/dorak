@@ -4,6 +4,7 @@ parentnode: repo.root
 childnodes:
   - skills.repo.monorepo-task-executor
   - skills.repo.stitch-flutter-converter
+  - skills.repo.codebase-cleanup
 codeanchors:
   - backend/
   - frontend/web/dashboard/
@@ -17,13 +18,13 @@ AI agent skills for this area. Each skill is a directory with a `SKILL.md` entry
 - [Monorepo Task Executor](monorepo-task-executor/SKILL.md)
 - [Stitch Export → Flutter Atomic Converter](stitch-flutter-converter/SKILL.md)
 
-## Shared planning skill
+## Shared hygiene skill
 
-- [LLM Council](llm-council/SKILL.md) — a feasibility gate for medium and complex tasks: five
-  read-only advisors, anonymous peer review and a chairman issue PROCEED or HALT; one upheld,
-  evidence-backed rejection halts the task. The task executor runs it as Step 3a. It is a Dorak
-  implementation of Karpathy's LLM Council method and the five advisors of
-  `aiwithremy/claude-skills-llm-council`, whose repository has no licence and so is not copied.
+- [Codebase Cleanup](codebase-cleanup/SKILL.md) — what "clean up the codebase" means for every agent:
+  removes only Git-ignored leftovers (logs, caches, build and test output, IDE and generated files) in the
+  backend, the dashboard and the three mobile apps, keeps dependencies, `.env*` files, secrets, hooks and
+  uploads, and never touches work in progress, a database, Playwright or Git history. Dry run first with
+  `scripts/cleanup-codebase.sh`, then `--apply`.
 
 ## Shared testing skill
 

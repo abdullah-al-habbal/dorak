@@ -10,14 +10,20 @@ use RuntimeException;
 /** Finds barbers who applied more than once to the same posting, before the unique index can be added. */
 final class DuplicateApplicationScanner
 {
-    /** @return list<array{job_posting_id: string, barber_id: string, total: int}> */
-    public function duplicates(string $table = 'job_applications'): array
+    /**
+     * With `$lock`, the scan is a locking read (`FOR UPDATE`) that sees the latest committed rows instead of the
+     * transaction's snapshot and holds a lock on every row it scans, so writers wait until the transaction ends.
+     *
+     * @return list<array{job_posting_id: string, barber_id: string, total: int}>
+     */
+    public function duplicates(string $table = 'job_applications', bool $lock = false): array
     {
         return DB::table($table)
             ->select('job_posting_id', 'barber_id', DB::raw('COUNT(*) as total'))
             ->groupBy('job_posting_id', 'barber_id')
             ->havingRaw('COUNT(*) > 1')
             ->orderBy('job_posting_id')
+            ->when($lock, fn ($query) => $query->lockForUpdate())
             ->get()
             ->map(fn (object $row): array => [
                 'job_posting_id' => (string) $row->job_posting_id,

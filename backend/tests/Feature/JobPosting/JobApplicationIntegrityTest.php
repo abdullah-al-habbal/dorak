@@ -17,7 +17,7 @@ use Modules\JobPosting\Support\DuplicateApplicationScanner;
 /**
  * Batch 1 (WP-1): one application per barber per posting, held by the database and by a locked,
  * transaction-safe apply. Limit: feature tests share one uncommitted transaction, so a live two-process
- * race is not run; the race is simulated by a duplicate that lands between the check and the insert.
+ * race is not run here (tests/Concurrency does); the race is simulated by a duplicate that lands between the check and the insert.
  */
 function applicationIntegrityPosting(): JobPostingModel
 {
@@ -59,6 +59,25 @@ describe('One application per barber per posting', function (): void {
 
         expect(ApplicationModel::query()->where('job_posting_id', $posting->id)->count())->toBe(1);
         Queue::assertPushed(JobApplicationReceivedNotification::class, 1);
+    });
+
+    it('keeps a rejected barber from applying to the same posting again (approved rule)', function (): void {
+        $posting = applicationIntegrityPosting();
+        $rejected = ApplicationModel::factory()->create(['job_posting_id' => $posting->id, 'barber_id' => $this->barber->id, 'status' => ApplicationStatus::Rejected->value]);
+        $before = (array) DB::table('job_applications')->where('id', $rejected->id)->first();
+        $logsBefore = DB::table('status_change_logs')->count();
+
+        $response = $this->postJson("/api/v1/jobs/{$posting->id}/apply")->assertUnprocessable();
+
+        expect($response->json('message'))->toBe(__('jobposting::messages.already_applied'))
+            ->and(DB::table('job_applications')->where('job_posting_id', $posting->id)->count())->toBe(1)
+            ->and((array) DB::table('job_applications')->where('id', $rejected->id)->first())->toBe($before)
+            ->and(DB::table('status_change_logs')->count())->toBe($logsBefore);
+        Queue::assertNotPushed(JobApplicationReceivedNotification::class);
+
+        // The rule is per posting: the same barber can still apply elsewhere, and another barber to this posting.
+        $this->postJson('/api/v1/jobs/'.applicationIntegrityPosting()->id.'/apply')->assertCreated();
+        $this->actingAs(BarberModel::factory()->create(), 'barber')->postJson("/api/v1/jobs/{$posting->id}/apply")->assertCreated();
     });
 
     it('turns a duplicate that slips past the check into already applied, keeps the original row and the transaction usable', function (): void {
@@ -163,7 +182,7 @@ describe('The unique-index migration', function (): void {
             ->where('table_name', 'job_applications')
             ->where('index_name', 'job_applications_posting_barber_unique')
             ->orderBy('seq_in_index')
-            ->get(['column_name', 'non_unique']);
+            ->get(['column_name as column_name', 'non_unique as non_unique']); // aliased: MySQL 8 returns information_schema labels in upper case
 
         expect($columns->pluck('column_name')->all())->toBe(['job_posting_id', 'barber_id'])
             ->and((int) $columns->first()->non_unique)->toBe(0);

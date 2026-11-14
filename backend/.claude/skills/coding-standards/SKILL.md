@@ -24,7 +24,7 @@ codeanchors:
 - `env()` is only allowed inside files under `modules/*/Config/`.
 - No other class, action, handler, or resolver may call `env()`.
 - Always retrieve configuration with `config('key')`.
-- This rule is enforced by code review and static analysis.
+- This rule is enforced by code review.
 
 ## PHP 8 attributes
 

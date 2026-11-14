@@ -30,7 +30,7 @@ php artisan serve
 ```
 
 Use a configured MySQL database in development and the dedicated MySQL `dorak_test`
-database for tests (SQLite is not supported). Queue workers are required for booking push notifications.
+database, the only automated-test database, for tests (SQLite and parallel per-worker databases are not supported). Queue workers are required for booking push notifications.
 
 ### Flutter workspace
 
@@ -58,3 +58,4 @@ npm run dev
 
 - [Part 2: Firebase configuration](deployment-guide-part-2.md)
 - [Part 3: Release checks](deployment-guide-part-3.md)
+- [Runbook: duplicate job applications and the unique-index migration](duplicate-applications-runbook.md)

@@ -62,4 +62,7 @@ Run it locally:
 php scripts/check_migrations.php               # vs origin/dev
 php scripts/check_migrations.php --all         # every migration
 php scripts/check_migrations.php --base=<ref>
+php scripts/check_migrations.php --base=<ref> --require-base   # CI: a missing base ref fails instead of skipping the shipped-migration check
 ```
+
+Uncommitted edits to tracked migrations and untracked new migrations are checked too.

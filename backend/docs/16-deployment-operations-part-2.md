@@ -34,8 +34,6 @@ Not silently ignored. Owner action: schedule a dependency-update task.
 
 | Issue | Detail |
 |---|---|
-| Larastan `level: max` errors | **15**, identical count before and after `8a07a89`. Files: `ClientFaceProfile/Services/{FaceAnalysisService,FaceAnalysisResponseParser}`, `Marketing/…/GetMarketingPageRequest`, `Client/Jobs/SendEmailVerificationCodeJob`, `Client/Handlers/Client/{VerifyEmailHandler,RegisterHandler}` |
-| Stale PHPStan baseline | `phpstan-baseline.neon` ignores a `GetMarketingPageRequest::getLocale()` error that no longer occurs. `ignore.unmatched` is non-ignorable, so a *fixed* bug now fails the gate |
 | `.env.testing` mail config | still carries an empty `MAIL_URL=`. Inert today (`MAIL_MAILER=log`), but an empty `MAIL_URL` passes `isset()` and nulls the transport |
 | Development-only OTP logging | `ForgotPasswordHandler` + `SendEmailVerificationHandler` log the generated OTP, gated on `app()->environment('local')`. Committed in `8a07a89`. **Must be stripped before anything merges toward staging** |
 | `modules/Core/Enums/Universe.php` | one added blank line, unrelated to any task, left as found |

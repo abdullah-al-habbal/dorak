@@ -61,3 +61,9 @@ Only **expand** operations, unwaived:
 Current repository state: 52 `CREATE`-only, 4 additive `ALTER`, **0 UNIQUE added
 to an existing table**, **0 destructive operations**. Every migration is in the
 allowed set, so code rollback is genuinely safe today.
+
+**Deferred contract migrations (job applications, Batch 1).** A UNIQUE index and the data step that must precede it
+cannot run pre-swap, so the pre-swap `migrate` sets `DEFER_CONTRACT_MIGRATIONS=1` and those two migrations return
+`shouldRun() === false` (SKIPPED, not recorded); the post-swap pass runs them and fails the deploy unless the index
+exists and nothing is pending. The post-swap pass runs in maintenance mode after a drain wait (`artisan down`, `queue:restart`, `DORAK_DRAIN_SECONDS`), resolution and index are one retried unit, and a second health check follows `artisan up`. Procedure and failure table:
+[duplicate-applications-runbook.md](../../docs/deployment/duplicate-applications-runbook.md).

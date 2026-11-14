@@ -19,28 +19,29 @@ jobs:
   quality-gate:
     runs-on: ubuntu-latest
 
-    # MySQL is the only supported test engine (same as local and production);
-    # phpunit.xml forces it and TestDatabaseGuard refuses anything else.
+    # MySQL 8.4 on 127.0.0.1:3307 is the only test server, the same image and port as the local
+    # backend/docker-compose.test.yml. phpunit.xml forces the connection and TestDatabaseGuard refuses anything else
+    # (MariaDB, another version, another port or database, parallel runs). One database: dorak_test.
     services:
       mysql:
-        image: mysql:8
+        image: mysql:8.4
         env:
           MYSQL_DATABASE: dorak_test
           MYSQL_ROOT_PASSWORD: root
         ports:
-          - 3306:3306
+          - 3307:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
 
     env:
-      # phpunit.xml forces DB_CONNECTION=mysql and DB_DATABASE=dorak_test; the
-      # host and credentials come from here because .env.testing is gitignored.
+      # phpunit.xml forces the same connection (127.0.0.1:3307, root/root, dorak_test); these values are for the
+      # bootstrap steps that run outside phpunit and must match it.
       DB_CONNECTION: mysql
       DB_HOST: 127.0.0.1
-      DB_PORT: 3306
+      DB_PORT: 3307
       DB_DATABASE: dorak_test
       DB_USERNAME: root
       DB_PASSWORD: root
@@ -69,18 +70,24 @@ jobs:
         run: |
           set -euo pipefail
 
+          # The checkout has full history (fetch-depth: 0). --require-base makes a missing base ref a failure: without it
+          # the guard falls back to scanning everything, which silently skips the "shipped migration was edited" check.
           if [ -n "${GITHUB_BASE_REF:-}" ]; then
             # pull_request: diff against the target branch
-            git fetch --no-tags --depth=0 origin "$GITHUB_BASE_REF" 2>/dev/null || true
+            git fetch --no-tags origin "$GITHUB_BASE_REF"
             BASE="origin/$GITHUB_BASE_REF"
           else
-            # push: diff against the previous head; all-zeros on a new branch,
-            # in which case the script falls back to scanning everything.
+            # push: diff against the previous head
             BASE="${{ github.event.before }}"
           fi
 
           echo "base ref: $BASE"
-          php scripts/check_migrations.php --base="$BASE"
+          if [ -z "$BASE" ] || [ "${BASE//0/}" = "" ]; then
+            # A brand-new branch has no previous head (all zeros): nothing has shipped from it, scan every migration.
+            php scripts/check_migrations.php --all
+          else
+            php scripts/check_migrations.php --base="$BASE" --require-base
+          fi
 
       - name: Validate Composer configuration
         run: composer validate --strict
@@ -134,7 +141,7 @@ jobs:
           for i in $(seq 1 30); do
             if php -r '
                 try {
-                  new PDO("mysql:host=127.0.0.1;port=3306;dbname=dorak_test", "root", "root");
+                  new PDO("mysql:host=127.0.0.1;port=3307;dbname=dorak_test", "root", "root");
                   exit(0);
                 } catch (Throwable $e) {
                   exit(1);
@@ -147,5 +154,13 @@ jobs:
           echo "❌ MySQL did not become ready within 60s"
           exit 1
 
+      # One test database (dorak_test), recreated clean before each run. Never pass --parallel: the guard refuses it.
+      - name: Reset test database
+        run: php scripts/reset_test_database.php
+
       - name: Run tests
         run: php artisan test --without-tty
+
+      # Real two-connection tests: they commit rows, so they run after the default suite, which excludes them.
+      - name: Run concurrency tests
+        run: php scripts/reset_test_database.php && php artisan test --group=concurrency --without-tty

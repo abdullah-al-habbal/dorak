@@ -44,7 +44,7 @@ Evidence:
   6. growth;
   7. remove Filament.
 - **Task IDs are stable.** New tasks get the next free number, and the row order below is the order of work, so IDs are not always sequential.
-- **One task is one task-executor run:** the council for medium or complex work, every gate, and one local commit. When the backend is Partial or New, the backend change ships in the same task, following the backend contract policy.
+- **One task is one task-executor run:** every gate, and one local commit. When the backend is Partial or New, the backend change ships in the same task, following the backend contract policy.
 
 Backend status:
 

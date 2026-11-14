@@ -80,13 +80,17 @@ initialization or verification. They only remove regenerable, git-ignored output
 1. Frontend dashboard cache and reports:
    `cd frontend/web/dashboard && npm run clean:artifacts`
    (Stop a running `next dev` first, or restart it afterwards; it rebuilds `.next/`.)
-2. Backend temporary logs and PHPStan cache:
-   `cd backend && rm -rf storage/framework/cache/phpstan/ && rm -f storage/logs/*.log`
+2. Backend temporary logs:
+   `cd backend && rm -f storage/logs/*.log`
    (Keep the logs while you are investigating a failure that they record.)
 3. Flutter / mobile build artifacts via Melos:
    `cd frontend/mobile && dart run melos run clean`
 
 Never delete tracked files or `.gitignore` placeholders as part of this cycle.
+
+When the owner asks to "clean up the codebase" (a full cleanup of every ignored leftover, not only this
+cycle), follow the [codebase-cleanup](.claude/skills/codebase-cleanup/SKILL.md) skill: dry run first, then
+`--apply`.
 
 ## Main areas
 

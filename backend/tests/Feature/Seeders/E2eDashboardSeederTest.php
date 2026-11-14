@@ -29,8 +29,8 @@ describe('E2E dashboard seeder', function (): void {
         $lina = BarberModel::query()->where('email', 'lina.e2e@dorak.test')->firstOrFail();
         $omar = BarberModel::query()->where('email', E2eDashboardSeeder::BARBER_EMAIL)->firstOrFail();
 
-        expect($lina->getTranslations('name'))->toBe(['en' => 'Lina Saad', 'ar' => 'لينا سعد'])
-            ->and($omar->getTranslations('name'))->toBe(['en' => 'Omar Haddad', 'ar' => 'عمر حداد']);
+        expect($lina->getTranslations('name'))->toEqual(['en' => 'Lina Saad', 'ar' => 'لينا سعد'])
+            ->and($omar->getTranslations('name'))->toEqual(['en' => 'Omar Haddad', 'ar' => 'عمر حداد']);
     });
 
     it('stores the owner and booking client names as plain translations', function (): void {
@@ -39,8 +39,8 @@ describe('E2E dashboard seeder', function (): void {
         $owner = ClientModel::query()->where('email', E2eDashboardSeeder::OWNER_EMAIL)->firstOrFail();
         $client = ClientModel::query()->where('email', 'e2e-client-sami-khoury@dorak.test')->firstOrFail();
 
-        expect($owner->getTranslations('name'))->toBe(['en' => 'E2E Owner', 'ar' => 'مالك الاختبار'])
-            ->and($client->getTranslations('name'))->toBe(['en' => 'Sami Khoury', 'ar' => 'سامي خوري']);
+        expect($owner->getTranslations('name'))->toEqual(['en' => 'E2E Owner', 'ar' => 'مالك الاختبار'])
+            ->and($client->getTranslations('name'))->toEqual(['en' => 'Sami Khoury', 'ar' => 'سامي خوري']);
     });
 
     it('keeps the names intact when it runs again', function (): void {
@@ -61,7 +61,7 @@ describe('E2E dashboard seeder', function (): void {
 
         $brand->refresh();
         expect($brand->status)->toBe(BrandStatusEnum::Pending)
-            ->and($brand->getTranslations('name'))->toBe(E2eDashboardSeeder::PENDING_BRAND_NAME)
+            ->and($brand->getTranslations('name'))->toEqual(E2eDashboardSeeder::PENDING_BRAND_NAME)
             ->and($brand->created_at->toDateTimeString())->toBe(E2eDashboardSeeder::PENDING_BRAND_CREATED_AT)
             ->and(BrandModel::query()->count())->toBe($brands)
             ->and(BrandModel::query()->orderBy('created_at')->value('id'))->toBe($brand->id);
@@ -144,7 +144,7 @@ describe('E2E dashboard seeder', function (): void {
 
         $this->seed(E2eDashboardSeeder::class);
 
-        expect(ServiceCatalogCategoryModel::query()->find($empty->id)?->getTranslations('name'))->toBe(E2eDashboardSeeder::CATALOG_EMPTY_CATEGORY_NAME)
+        expect(ServiceCatalogCategoryModel::query()->find($empty->id)?->getTranslations('name'))->toEqual(E2eDashboardSeeder::CATALOG_EMPTY_CATEGORY_NAME)
             ->and(ServiceCatalogCategoryModel::query()->where('slug', 'e2e-hair')->value('is_active'))->toBeTrue()
             ->and(ServiceCatalogCategoryModel::withTrashed()->where('name->en', 'like', E2eDashboardSeeder::CATALOG_SPEC_NAME_PREFIX.'%')->exists())->toBeFalse()
             ->and(ServiceCatalogCategoryModel::withTrashed()->count())->toBe($count - 1);

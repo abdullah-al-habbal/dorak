@@ -37,9 +37,7 @@ highest-volume smell in the codebase. See `examples/dorak-refactors.md` for the 
 before/after cases.
 
 **Commands.** `composer test` (config:clear + Pest against MySQL `dorak_test`) and
-`vendor/bin/pint --test` — both are what the Husky pre-push hook runs. Static analysis is
-`vendor/bin/phpstan analyse` with `phpstan.neon`; **there is no `composer analyse` script**
-despite `CLAUDE.md` naming one.
+`vendor/bin/pint --test` — both are what the Husky pre-push hook runs.
 
 **Resolvers live in two places.** 19 `modules/*/Eloquent/Resolvers/` directories (the
 convention) plus 17 legacy `modules/Barber/Repositories/*EloquentResolver.php` files. New

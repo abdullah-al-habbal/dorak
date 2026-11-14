@@ -21,7 +21,7 @@ Documentation routes: [product documentation](docs/README.md) · [repository gra
 ```bash
 composer setup          # install + .env + key:generate + migrate + npm
 composer dev            # server, queue, logs, vite concurrently
-composer test           # config:clear + pest/phpunit (MySQL dorak_test via .env.testing)
+composer test           # recreates dorak_test clean, then pest sequentially (never --parallel; dorak_test is the only test database)
 ```
 
 - Husky pre-push hook runs `pint --test` + `composer test` before every push; CI only checks formatting (`pint --test`). Tests are gated locally, not in CI.
@@ -56,7 +56,7 @@ Before implementing any feature, read `docs/13-technical-concepts.md` — mandat
 - PHP 8 attributes for Eloquent model meta (`#[Fillable]`, `#[Hidden]`, `#[Table]`, `#[Translatable]`)
 - PSR-4: `Modules\\` → `modules/`, `Database\\Seeders\\` → `database/seeders/`, `Tests\\` → `tests/`
 - **Dev-environment migration rule:** to change an existing table (column, index, rename), edit its original `create_*_table` migration and run `php artisan migrate:fresh --seed`; do not add `add_*`/`alter_*` fragment files. A new migration file is only for a brand-new table. (Applies while the project is pre-release; revisit before the first production deploy.)
-- Test config targets a dedicated MySQL/MariaDB test DB via gitignored `.env.testing` (DB `dorak_test`), array cache/session/mail, sync queue
+- Test config targets the dedicated MySQL 8.4 test server (never MariaDB; `composer test:db:up` starts it on 127.0.0.1:3307, `composer test:db:down` stops it; DB `dorak_test`, connection forced by `phpunit.xml`, not by `.env.testing`), array cache/session/mail, sync queue
 
 ## Continued in
 

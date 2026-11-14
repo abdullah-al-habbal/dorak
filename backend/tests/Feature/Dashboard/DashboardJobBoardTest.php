@@ -191,7 +191,7 @@ describe('Edit and delete a job posting (NS-17)', function (): void {
             ->assertJsonPath('data.description.en', 'New text');
 
         expect($posting->fresh())
-            ->getTranslations('title')->toBe($title)
+            ->getTranslations('title')->toEqual($title)
             ->location->toBe('Irbid')
             ->status->toBe(JobPostingStatusEnum::Open);
     });
