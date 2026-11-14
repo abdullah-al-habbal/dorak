@@ -10,6 +10,7 @@ use Laravel\Ai\Embeddings;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientRecommendation\Constants\RecommendationConstants;
 use Modules\ClientRecommendation\Models\ClientPreferenceVectorModel;
 use Modules\ClientRecommendation\Models\EntityEmbeddingModel;
 use Modules\ClientRecommendation\Models\RecommendationEdgeModel;
@@ -45,7 +46,7 @@ final class RecomputeClientVectorsCommand extends Command
 
         ClientModel::query()
             ->when($clientId, fn ($q, $id) => $q->where('id', $id))
-            ->chunk(100, function ($clients) use ($force, $gatherer, $rebuilder): void {
+            ->chunk(RecommendationConstants::RECOMMENDATION_RECOMPUTE_CHUNK_SIZE, function ($clients) use ($force, $gatherer, $rebuilder): void {
                 foreach ($clients as $client) {
                     if (! $force && $this->isFresh($client, $gatherer)) {
                         continue;
@@ -93,7 +94,7 @@ final class RecomputeClientVectorsCommand extends Command
         ];
 
         foreach ($entityTypes as $config) {
-            $config['query']->chunk(100, function ($entities) use ($config): void {
+            $config['query']->chunk(RecommendationConstants::RECOMMENDATION_RECOMPUTE_CHUNK_SIZE, function ($entities) use ($config): void {
                 foreach ($entities as $entity) {
                     $this->processEntity($entity, $config);
                 }
@@ -113,7 +114,7 @@ final class RecomputeClientVectorsCommand extends Command
 
         try {
             $response = Embeddings::for([$text])
-                ->dimensions(1536)
+                ->dimensions(RecommendationConstants::RECOMMENDATION_EMBEDDING_DIMENSIONS)
                 ->generate();
 
             $embedding = $response->embeddings[0] ?? null;
@@ -147,44 +148,55 @@ final class RecomputeClientVectorsCommand extends Command
 
     private function gatherEntitySignals($entity, string $type): array
     {
+        return match ($type) {
+            'branch' => $this->branchSignals($entity),
+            'barber' => $this->barberSignals($entity),
+            default => [],
+        };
+    }
+
+    /** @return list<string> */
+    private function branchSignals($branch): array
+    {
         $signals = [];
 
-        if ($type === 'branch') {
-            if ($entity->name) {
-                $signals[] = "branch name: {$entity->name}";
-            }
+        if ($branch->name) {
+            $signals[] = "branch name: {$branch->name}";
+        }
 
-            if ($entity->brand) {
-                $signals[] = "brand: {$entity->brand->name}";
+        if ($branch->brand) {
+            $signals[] = "brand: {$branch->brand->name}";
 
-                $services = $entity->brand->services()->with('catalogItem')->get();
-                foreach ($services as $service) {
-                    $catalogItem = $service->catalogItem;
-                    if ($catalogItem) {
-                        $signals[] = "offers service: {$catalogItem->name}";
-                        if ($catalogItem->description) {
-                            $signals[] = "service description: {$catalogItem->description}";
-                        }
+            foreach ($branch->brand->services()->with('catalogItem')->get() as $service) {
+                $catalogItem = $service->catalogItem;
+                if ($catalogItem) {
+                    $signals[] = "offers service: {$catalogItem->name}";
+                    if ($catalogItem->description) {
+                        $signals[] = "service description: {$catalogItem->description}";
                     }
                 }
             }
         }
 
-        if ($type === 'barber') {
-            if ($entity->name) {
-                $signals[] = "barber name: {$entity->name}";
-            }
+        return $signals;
+    }
 
-            if ($entity->bio) {
-                $signals[] = "barber bio: {$entity->bio}";
-            }
+    /** @return list<string> */
+    private function barberSignals($barber): array
+    {
+        $signals = [];
 
-            $services = $entity->services()->with('catalogItem')->get();
-            foreach ($services as $service) {
-                $catalogItem = $service->catalogItem;
-                if ($catalogItem) {
-                    $signals[] = "offers service: {$catalogItem->name}";
-                }
+        if ($barber->name) {
+            $signals[] = "barber name: {$barber->name}";
+        }
+
+        if ($barber->bio) {
+            $signals[] = "barber bio: {$barber->bio}";
+        }
+
+        foreach ($barber->services()->with('catalogItem')->get() as $service) {
+            if ($service->catalogItem) {
+                $signals[] = "offers service: {$service->catalogItem->name}";
             }
         }
 
@@ -203,7 +215,7 @@ final class RecomputeClientVectorsCommand extends Command
 
         try {
             $response = Embeddings::for([$text])
-                ->dimensions(1536)
+                ->dimensions(RecommendationConstants::RECOMMENDATION_EMBEDDING_DIMENSIONS)
                 ->generate();
 
             $embedding = $response->embeddings[0] ?? null;

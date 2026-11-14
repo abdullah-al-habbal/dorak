@@ -10,6 +10,10 @@ final class RecommendationConstants
 {
     private function __construct() {}
 
+    public const RECOMMENDATION_EMBEDDING_DIMENSIONS = 1536;
+
+    public const RECOMMENDATION_RECOMPUTE_CHUNK_SIZE = 100;
+
     public const RECOMMENDATION_DEFAULT_WEIGHTS = [
         'alpha' => 0.4,
         'beta' => 0.3,
