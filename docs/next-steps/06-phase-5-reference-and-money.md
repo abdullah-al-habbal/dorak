@@ -34,7 +34,7 @@ The platform runs on seeded values until these exist. They come after phases 1 t
 - **Backend:** new `currencies.is_active` column. Admin routes under `/admin`: `GET|POST /currencies`, `PUT /currencies/{id}`, `PATCH /currencies/{id}/active`, `POST /exchange-rates`, `DELETE /exchange-rates/{id}` (plus the existing `GET /exchange-rates`), authorized through `CurrencyPolicy`. The code is set once; the default currency can't be retired; both currencies of a rate must be active and different, and the rate is positive up to 6 decimals. `GET /currencies` (mobile and pickers) now lists active currencies only, with the same shape.
 - **Dashboard:** an admin "Currencies" screen with a Currencies tab (add, edit, retire and restore behind a confirmation) and an Exchange rates tab (history, newest first, "Current" marks the rate the converter uses; add and remove). The service form's currency picker refreshes after a change.
 - **Mobile:** no change; the list response shape is unchanged.
-- **Not done:** tests (skipped by instruction; the endpoints were smoke-checked with a throwaway Pest test that was not kept), so the in-use guard is not covered by Pest.
+- **Tests:** `backend/tests/Feature/Dashboard/DashboardAdminReferenceDataTest.php` covers the currency list, create (code rules, forced non-default and active), edit (code and flags immutable), retire and restore, the default-currency 409 (`DashboardAdminBackOfficeTest`), rate creation (inactive, unknown and same-pair currencies, rate bounds, optional date) and removal. No route deletes a currency, so an in-use currency can only be retired. 401 and 403 are in the admin authorization matrix. Dashboard Vitest and E2E are still open (WP-2, WP-3).
 
 ## NS-20: Languages
 
@@ -49,7 +49,8 @@ The platform runs on seeded values until these exist. They come after phases 1 t
 - **Backend:** new `languages.is_active` column; admin `GET /admin/languages` and `PATCH /admin/languages/{id}/active` through `LanguagePolicy`. The default language answers 409 when switched off. There is no create or delete.
 - **Dashboard:** a "Languages" section on the Settings screen with a switch per language (the default one is locked on).
 - **Mobile:** no change.
-- **Not done:** tests (skipped by instruction; smoke-checked with a throwaway Pest test that was not kept). No other code reads `is_active` yet, so switching a language off does not yet hide it anywhere.
+- **Tests:** the same `DashboardAdminReferenceDataTest.php` covers the list order (default first), the default-language 409 and the flag validation; the on/off switch is in `DashboardAdminActiveToggleTest`. Dashboard tests are open.
+- **Not done:** no other code reads `is_active` yet, so switching a language off does not yet hide it anywhere.
 
 ## NS-21: Catalog items, tags and media
 

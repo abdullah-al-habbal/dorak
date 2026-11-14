@@ -84,8 +84,8 @@ Size: S (about a day), M (a few days), L (a week or more).
 | NS-17 | Job postings and applications | manager, owner | Ready | M | NS-16 | Done (backend tests; UI tests open) |
 | NS-18 | Per-brand stylist pricing | owner | Ready | M | NS-13 | Done (backend tests; UI tests open) |
 | | **[Phase 5: reference data and money](06-phase-5-reference-and-money.md)** | | | | | |
-| NS-19 | Currencies and exchange rates | admin | Partial | M | | Done (no tests) |
-| NS-20 | Languages | admin | New | S | | Done (no tests) |
+| NS-19 | Currencies and exchange rates | admin | Partial | M | | Done (backend tests; UI tests open) |
+| NS-20 | Languages | admin | New | S | | Done (backend tests; UI tests open; is_active hiding open) |
 | NS-21 | Catalog items, tags and media | admin | Partial | M | | Done (backend tests; Vitest and Playwright and media upload open) |
 | NS-22 | Commission rules and ledger | admin | Ready | M | | Done (no tests) |
 | NS-23 | Payment gateways | admin | Ready | S | | Done (no tests) |
