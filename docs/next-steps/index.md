@@ -25,7 +25,7 @@ This plan merges three read-only studies from 2026-11-09: what each guard can do
 
 Evidence:
 
-- `backend/modules/Dashboard/Routes/Api/V1/dashboard.php` and the other module route files;
+- `backend/modules/Dashboard/Routes/Api/V1/dashboard*.php` (split by middleware group: auth and shared, admin, owner and brand, operations) and the other module route files;
 - the database migrations (every `Schema::create`);
 - the dashboard's proxy allow-list (`src/config/proxy-allow-list.constant.ts`) and navigation (`src/config/nav.constant.ts`);
 - the 23 Filament resources being replaced;

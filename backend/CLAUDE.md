@@ -15,7 +15,7 @@ Before building, read `docs/02-prd.md` then `docs/feature-index.md` to see what 
 - **Before writing ANY new code, READ `.claude/skills/laravel-attributes/SKILL.md`** and use PHP class attributes (`#[Fillable]`, `#[Table]`, `#[Signature]`, ...) instead of class properties — mandatory for models, jobs, commands, requests, resources, factories, tests, DI.
 - `declare(strict_types=1)`, `final` classes. Controllers banned — use invokable Actions.
 - Models suffix `Model`, Actions suffix `Action`. Spatie Translatable for bilingual fields.
-- `BaseModuleServiceProvider` extends all providers; it auto-mounts `Routes/Api/V1/*.php` at `/api/v1`.
+- `BaseModuleServiceProvider` extends all providers; it auto-mounts `Routes/Api/V1/*.php` at `/api/v1`. A module may split a route file by area, for example `dashboard.php`, `dashboard-admin.php`, `dashboard-owner.php` and `dashboard-operations.php`, to stay under the 300-line limit.
 - Api response shape via `ApiResponseBodyValueObject` + `ApiResponseTrait` (paginated/ok/error).
 - **Authorization is not ownership scoping.** A `where('*_id', $actor->id)` query filter is
   not an authorization check. Any Action that reads or mutates a resource another actor could
