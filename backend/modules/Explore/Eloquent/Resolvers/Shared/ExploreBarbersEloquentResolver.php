@@ -100,72 +100,122 @@ final class ExploreBarbersEloquentResolver
      */
     private function applyFilters(Builder $query, ExploreBarbersQuery $payload): Builder
     {
-        if ($payload->catalogItemIds !== null) {
-            $query->whereHas('services', fn ($q) => $q
-                ->where('is_active', true)
-                ->whereIn('catalog_item_id', $payload->catalogItemIds)
-                ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
-            );
-        }
-
-        if ($payload->availableNow !== null && $payload->availableNow) {
-            $startsAt = now();
-            $endsAt = $startsAt->copy()->addMinutes(app(SettingsService::class)->int(SettingKey::BookingMinServiceDurationMinutes));
-            $query->whereDoesntHave('bookings', function ($bookingQuery) use ($startsAt, $endsAt): void {
-                BookingAvailability::apply($bookingQuery, $startsAt, $endsAt);
-            });
-        }
-
-        if ($payload->priceRangeMin !== null || $payload->priceRangeMax !== null) {
-            $query->whereHas('services', fn ($q) => $q
-                ->where('is_active', true)
-                ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
-                ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price_amount_minor', '>=', $payload->priceRangeMin))
-                ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price_amount_minor', '<=', $payload->priceRangeMax))
-            );
-        }
-
-        if ($payload->search !== null) {
-            $pattern = $this->search->pattern($payload->search);
-            $query->where(function (Builder $match) use ($pattern): void {
-                $this->search->orMatchTranslatable($match, ['name'], $pattern);
-                $match->orWhereHas('services', fn (Builder $services) => $services
-                    ->where('is_active', true)
-                    ->where(function (Builder $service) use ($pattern): void {
-                        $this->search->orMatchTranslatable($service, ['name'], $pattern);
-                        $service->orWhereHas('catalogItem', fn (Builder $item) => $item
-                            ->where('is_active', true)
-                            ->where(function (Builder $catalog) use ($pattern): void {
-                                $this->search->orMatchTranslatable($catalog, ['name'], $pattern);
-                                $catalog->orWhereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, $pattern, null));
-                            }));
-                    }));
-            });
-        }
-
-        if ($payload->tagIds !== null) {
-            $query->whereHas('services', fn (Builder $services) => $services
-                ->where('is_active', true)
-                ->whereHas('catalogItem', fn (Builder $item) => $item
-                    ->where('is_active', true)
-                    ->whereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, null, $payload->tagIds))));
-        }
-
-        if ($payload->faceShapeCompatible !== null) {
-            // An explicit face shape filters (REC-1); the client's own analysis only boosts.
-            $query->whereHas('services', fn (Builder $services) => $services
-                ->where('is_active', true)
-                ->whereHas('catalogItem', fn (Builder $item) => $item
-                    ->where('is_active', true)
-                    ->whereJsonContains('face_shapes', $payload->faceShapeCompatible)));
-        }
-
-        if ($payload->ratingMin !== null) {
-            // Stored aggregate of published/resolved reviews (Task 42).
-            $query->where('rating_average', '>=', $payload->ratingMin);
-        }
+        $this->filterByCatalogItems($query, $payload);
+        $this->filterAvailableNow($query, $payload);
+        $this->filterByPrice($query, $payload);
+        $this->filterBySearch($query, $payload);
+        $this->filterByTags($query, $payload);
+        $this->filterByFaceShape($query, $payload);
+        $this->filterByMinRating($query, $payload);
 
         return $query;
+    }
+
+    /** @param Builder<BarberModel> $query */
+    private function filterByCatalogItems(Builder $query, ExploreBarbersQuery $payload): void
+    {
+        if ($payload->catalogItemIds === null) {
+            return;
+        }
+
+        $query->whereHas('services', fn ($q) => $q
+            ->where('is_active', true)
+            ->whereIn('catalog_item_id', $payload->catalogItemIds)
+            ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
+        );
+    }
+
+    /** @param Builder<BarberModel> $query */
+    private function filterAvailableNow(Builder $query, ExploreBarbersQuery $payload): void
+    {
+        if ($payload->availableNow !== true) {
+            return;
+        }
+
+        $startsAt = now();
+        $endsAt = $startsAt->copy()->addMinutes(app(SettingsService::class)->int(SettingKey::BookingMinServiceDurationMinutes));
+        $query->whereDoesntHave('bookings', function ($bookingQuery) use ($startsAt, $endsAt): void {
+            BookingAvailability::apply($bookingQuery, $startsAt, $endsAt);
+        });
+    }
+
+    /** @param Builder<BarberModel> $query */
+    private function filterByPrice(Builder $query, ExploreBarbersQuery $payload): void
+    {
+        if ($payload->priceRangeMin === null && $payload->priceRangeMax === null) {
+            return;
+        }
+
+        $query->whereHas('services', fn ($q) => $q
+            ->where('is_active', true)
+            ->whereHas('catalogItem', fn ($catalog) => $catalog->where('is_active', true))
+            ->when($payload->priceRangeMin !== null, fn ($q) => $q->where('price_amount_minor', '>=', $payload->priceRangeMin))
+            ->when($payload->priceRangeMax !== null, fn ($q) => $q->where('price_amount_minor', '<=', $payload->priceRangeMax))
+        );
+    }
+
+    /** @param Builder<BarberModel> $query */
+    private function filterBySearch(Builder $query, ExploreBarbersQuery $payload): void
+    {
+        if ($payload->search === null) {
+            return;
+        }
+
+        $pattern = $this->search->pattern($payload->search);
+        $query->where(function (Builder $match) use ($pattern): void {
+            $this->search->orMatchTranslatable($match, ['name'], $pattern);
+            $match->orWhereHas('services', fn (Builder $services) => $services
+                ->where('is_active', true)
+                ->where(function (Builder $service) use ($pattern): void {
+                    $this->search->orMatchTranslatable($service, ['name'], $pattern);
+                    $service->orWhereHas('catalogItem', fn (Builder $item) => $item
+                        ->where('is_active', true)
+                        ->where(function (Builder $catalog) use ($pattern): void {
+                            $this->search->orMatchTranslatable($catalog, ['name'], $pattern);
+                            $catalog->orWhereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, $pattern, null));
+                        }));
+                }));
+        });
+    }
+
+    /** @param Builder<BarberModel> $query */
+    private function filterByTags(Builder $query, ExploreBarbersQuery $payload): void
+    {
+        if ($payload->tagIds === null) {
+            return;
+        }
+
+        $query->whereHas('services', fn (Builder $services) => $services
+            ->where('is_active', true)
+            ->whereHas('catalogItem', fn (Builder $item) => $item
+                ->where('is_active', true)
+                ->whereExists(fn (QueryBuilder $tags) => $this->search->tagExists($tags, null, $payload->tagIds))));
+    }
+
+    /** @param Builder<BarberModel> $query */
+    private function filterByFaceShape(Builder $query, ExploreBarbersQuery $payload): void
+    {
+        if ($payload->faceShapeCompatible === null) {
+            return;
+        }
+
+        // An explicit face shape filters (REC-1); the client's own analysis only boosts.
+        $query->whereHas('services', fn (Builder $services) => $services
+            ->where('is_active', true)
+            ->whereHas('catalogItem', fn (Builder $item) => $item
+                ->where('is_active', true)
+                ->whereJsonContains('face_shapes', $payload->faceShapeCompatible)));
+    }
+
+    /** @param Builder<BarberModel> $query */
+    private function filterByMinRating(Builder $query, ExploreBarbersQuery $payload): void
+    {
+        if ($payload->ratingMin === null) {
+            return;
+        }
+
+        // Stored aggregate of published/resolved reviews (Task 42).
+        $query->where('rating_average', '>=', $payload->ratingMin);
     }
 
     /** @param Builder<BarberModel> $query */
