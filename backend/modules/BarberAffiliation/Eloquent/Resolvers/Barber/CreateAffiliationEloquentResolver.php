@@ -36,15 +36,7 @@ final class CreateAffiliationEloquentResolver
 
             $this->staffingGuard->ensureBranchAcceptsBarbers($command->affiliableId);
 
-            $existing = BarberAffiliationModel::where('barber_id', $barber->id)
-                ->where('affiliable_id', $command->affiliableId)
-                ->where('affiliable_type', $command->affiliableType)
-                ->whereIn('status', [AffiliationStatus::Pending, AffiliationStatus::Active])
-                ->exists();
-
-            if ($existing) {
-                throw new BarberAlreadyAffiliatedException;
-            }
+            $this->ensureNoOpenAffiliation($barber->id, $command->affiliableId, $command->affiliableType);
 
             $affiliation = BarberAffiliationModel::create([
                 'barber_id' => $barber->id,
@@ -68,5 +60,18 @@ final class CreateAffiliationEloquentResolver
 
             return $affiliation;
         });
+    }
+
+    private function ensureNoOpenAffiliation(string $barberId, string $affiliableId, AffiliableType $affiliableType): void
+    {
+        $existing = BarberAffiliationModel::where('barber_id', $barberId)
+            ->where('affiliable_id', $affiliableId)
+            ->where('affiliable_type', $affiliableType)
+            ->whereIn('status', [AffiliationStatus::Pending, AffiliationStatus::Active])
+            ->exists();
+
+        if ($existing) {
+            throw new BarberAlreadyAffiliatedException;
+        }
     }
 }
