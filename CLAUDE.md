@@ -32,6 +32,14 @@ files in that area.
     [frontend/mobile/CLAUDE.md](frontend/mobile/CLAUDE.md), and the guides in
     the app or package being changed.
 
+## Current audit and next session
+
+- **Start a session here:** [audit register start point](docs/audit-register/00-next-session-start.md), then the
+  [audit register index](docs/audit-register/index.md) (findings F-01 to F-11, final decisions A to F and D-01 to D-04, mandatory
+  [prerequisites T-01 to T-04](docs/audit-register/10-prerequisites-t01-t04.md), implementation slices, test gaps, missing features, tech debt,
+  environment and gates). The next session is implementation only: complete the startup checks and T-01, then start with S1.
+  Batch 2 and WP-10 (billing, NS-27) stay out of scope.
+
 ## Repository-wide rules
 
 - **No relative module imports.** Use PHP namespaces, TypeScript `@/` aliases,

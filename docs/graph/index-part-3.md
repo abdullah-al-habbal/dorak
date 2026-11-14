@@ -16,6 +16,21 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Decisions Required](../decisions-required.md)
 - [Index](../index.md)
 
+### `docs/audit-register/`
+
+- [Index](../audit-register/index.md)
+- [Start here (next session)](../audit-register/00-next-session-start.md)
+- [Findings register](../audit-register/01-findings-register.md)
+- [F-01 account-state matrix](../audit-register/02-f01-account-state-matrix.md)
+- [F-05 session lifecycle](../audit-register/03-f05-session-lifecycle.md)
+- [Decisions and open questions](../audit-register/04-decisions-and-open-questions.md)
+- [Implementation plan](../audit-register/05-implementation-plan.md)
+- [Test coverage gaps](../audit-register/06-test-coverage-gaps.md)
+- [Missing features](../audit-register/07-missing-features.md)
+- [Technical debt](../audit-register/08-tech-debt.md)
+- [Environment and gates](../audit-register/09-environment-and-gates.md)
+- [Prerequisites T-01 to T-04](../audit-register/10-prerequisites-t01-t04.md)
+
 ### `docs/architecture/`
 
 - [Architecture](../architecture/architecture.md)

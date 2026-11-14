@@ -43,6 +43,13 @@ and the subsystem guides in each project directory.
   packages. Package boundaries and the Dart file taxonomy
   are described in `frontend/mobile/AGENTS.md`.
 
+## Current audit and next session
+
+The independent audit of 2026-11-14 is saved in [`docs/audit-register/`](docs/audit-register/index.md): findings, decisions, the
+implementation plan, test gaps, missing features and tech debt. The decisions are final (D-01 to D-04 and A to F); a new session is
+implementation only and starts at the [next-session start point](docs/audit-register/00-next-session-start.md), with the
+[prerequisites T-01 to T-04](docs/audit-register/10-prerequisites-t01-t04.md) first.
+
 ## Backend contract policy
 
 The backend is ours to change. When the dashboard needs a contract the API does

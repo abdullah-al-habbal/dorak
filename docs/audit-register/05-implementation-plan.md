@@ -1,0 +1,71 @@
+# 05 Implementation plan (decisions final; nothing implemented yet)
+
+Each slice is one `monorepo-task-executor` run: audit, implement, all gates (Pest, Pint, and for dashboard changes lint,
+typecheck, Vitest, build, Playwright with `TZ=UTC` on `dorak_test`), security review, hygiene cleanup, one local commit.
+Never push. The next session is **implementation only** and starts with S1 after the startup checks and **T-01** ([10](10-prerequisites-t01-t04.md)).
+Prerequisites T-01 to T-04 gate the slices as listed in the "Depends on" column.
+
+## Slice table
+| Slice | Objective | Depends on | Acceptance | Main files |
+|---|---|---|---|---|
+| S1 (F-05) | Mandatory claim for every Dashboard token, bound to the actor (D-01); previous access token kept on refresh (D-02); rollback flag `dashboard.require_session_claim` (default true) | T-01 | every header state in [03](03-f05-session-lifecycle.md) section 2 gives the expected code; old token dead after refresh | `DashboardAuthorizationMiddleware`, `DashboardSessionClaim::matches`, config, `DashboardLoginApiTest`, `DashboardProfileApiTest`, `DashboardAuthApiTest`, new `DashboardSessionClaimEnforcementTest` |
+| S2 (F-01 foundation) | `DashboardWriteGuard` service, `ScopedBranchResolver::resolveForWrite`, exemptions list, architecture test | T-02, T-03; answers in [04](04-decisions-and-open-questions.md) C and D (resolved) | unit tests of the guard; architecture test fails when a non-GET dashboard action neither calls the guard nor is on the reviewed exemption list | new `Modules\Dashboard\Services\DashboardWriteGuard`, `ScopedBranchResolver`, `DashboardServiceProvider`, arch test |
+| S3 (F-01 setup group) | Apply guard to branch edit and delete, chairs, floor plan, services, stylists, hours (about 15 routes) | S2, T-02, T-03 | Suspended brand or branch blocked; Disabled and Pending allowed (D9); mobile service CRUD unchanged | matching actions and handlers |
+| S4 (F-01 bookings) | Booking status, cancel, reschedule, review, walk-in on branch state | S2, T-02, T-03; cancel allowed, walk-in blocked on Suspended and Disabled branches (resolved) | per resolved decisions | booking actions, `CreateWalkInBookingAction` |
+| S5 (F-01 staffing and brand level) | Affiliation respond and terminate, job postings and applications, dispute, barber overrides, `POST /brands` | S2, T-02, T-03 | Suspended blocked; Pending behavior unchanged; `resubmit` reviewed | staffing actions, `BrandStaffingGuard` |
+| S6 (F-01c sessions) | Shared liveness check for login, refresh and per request (exists, not banned, barber Enabled, branch operational); optional revocation on suspend, disable, deactivate; ban check for branch accounts | S1, S2, T-02, T-03 | refresh refused for banned, deleted accounts and Disabled barbers; branch ban checked | `DashboardRefreshTokenResolver`, `DashboardAuthorizationMiddleware`, lifecycle services or observers |
+| S7 (docs) | Update behavior docs and `feature-index.md` after S1 to S6 (decisions A to F already recorded) | S1 to S6 and S8 to S14 (last slice) | docs match behavior | docs only |
+| S8 (F-02, decision B) | Platform Admin only for global categories; tenant migration decision | T-03; decision B and answer 5 (resolved) | manager and owner get 403; admin 201; existing categories kept | `StoreServiceCategoryAction`, policy, `ServiceApiTest` |
+| S9 (F-07, decision C) | Owner-only brand-wide service writes; manager branch scope | S2, S3, T-03 | per role matrix | service actions and policy |
+| S10 (F-03) | Shared active-currency validation rule at 7 points | T-03 | retired currency rejected, existing rows readable | 7 request classes, new rule, tests |
+| S11 (F-04, decision E) | Hide and reject inactive languages in new preference updates | T-03 | list excludes inactive; update rejects; existing users unaffected (kept until they change it); mobile contract checked | `SetLanguageActiveAction`, preference requests, language resources |
+| S12 (F-09) | Separate login limiter names for `/login` and `/owner/brand` | none (T-04 re-check only) | each route has its own limit | `dashboard.php`, config, `AGENTS.md` note |
+| S13 (F-10) | Barber lookup oracle mitigation | T-03; answer 6 (resolved) | uniform response for known and unknown people, invite resolved on the server | lookup action, tests |
+| S14 (F-06) | Policies for the remaining scope-only write actions, de-duplicate booking scope query | S2 to S5, T-03; answer 7 (resolved) | each converted action has a policy test; about 15 actions per slice (S14a, S14b, ...) | `modules/Dashboard/Policies`, actions |
+
+## S1 design (F-05)
+- Middleware (D-01): for every token with ability `dashboard`, require a present, valid header, then require claim `sub` and `actor_type` to match the
+  authenticated model. Add `DashboardSessionClaim::matches(string $claim, string $actorId, DashboardActorTypeEnum $type)`.
+- No DB change. D-02: refresh keeps the previous access token; deleting it (a nullable token-id column on the refresh row) is out of scope unless the owner decides later.
+- Compatibility: BFF already complies; update the three test files; in-flight sessions are safe because the BFF refuses to forward without the claim cookie.
+- Rollback: set the flag off or revert; no data to undo. The flag is a rollback tool only: D-01 is the required behavior and the default is on.
+- Tests: header absent, empty, malformed, expired, revoked, mismatched each 401; old token after refresh 401; flag off still passes.
+
+## S2 to S6 design (F-01)
+- Central service, not one route middleware: an owner can hold several brands, and the target resource (often from the body)
+  decides which state applies.
+- `DashboardWriteGuard::ensureBranchWritable(actor, branchId)` and `ensureBrandWritable(actor, brandId)`: for non-admin actors throw
+  when the brand or branch is Suspended (reuse `BrandApprovalGuard::ensureNotSuspended` and its exception; confirm the HTTP mapping first).
+- Exemptions as a constant list of routes or abilities (self-account, logout, cancel of an existing booking, per decisions).
+- `DashboardActorLiveness` for refresh and login: exists, not banned (including branch), barber Enabled, branch operational as decided.
+- No DB schema change expected. Rollback flag: `dashboard.enforce_lifecycle_writes`.
+- Tests: generated matrix of operational write routes (from the router) crossed with {brand Suspended, branch Suspended, branch Disabled,
+  barber Disabled, banned}; architecture test over non-GET dashboard actions; refresh re-validation; mobile no-change tests.
+
+## Risks
+Breaking mobile service CRUD (shared actions), overlapping staffing rules, logging out legitimate users after session revocation,
+missed header-less test callers, scope creep into every action in S2.
+
+## Execution order for the next session (implementation only; decisions final 2026-11-14)
+Each item is its own `monorepo-task-executor` run and local commit; stop and report on any failed gate or on a conflict with a decision.
+Startup first (see [00](00-next-session-start.md)), then the prerequisites, then:
+
+| Order | Slice | Why here (verified dependency) |
+|---|---|---|
+| 1 | **S1** F-05 mandatory claim (D-01, D-02) | needs T-01 only; also the middleware that S6 later extends |
+| 2 | **S10** active-currency rule | independent; T-03 for shared requests |
+| 3 | **S12** separate login limiter names | independent |
+| 4 | **S2** write-guard foundation | T-02, T-03; every F-01 slice needs it |
+| 5 | **S3** setup group | S2 |
+| 6 | **S4** bookings | S2 |
+| 7 | **S5** staffing and brand level | S2 |
+| 8 | **S6** sessions and liveness | S1 (same middleware) and S2 |
+| 9 | **S8** category admin-only | T-03 |
+| 10 | **S9** brand-wide services | S2 and S3 (same service actions) |
+| 11 | **S11** inactive languages | T-03 |
+| 12 | **S13** uniform barber lookup | T-03 |
+| 13 | **S14a, S14b, ...** policy conversion, about 15 actions per slice | after S3 to S5 (same actions) |
+| 14 | **S7** docs and `feature-index.md` sync | after every code slice |
+
+The handover work packages (WP-1 depth gaps, WP-9, WP-3 gaps, WP-6, WP-4 and WP-5, WP-8b, WP-2 component tests with jsdom, WP-11) follow only after the
+slices above and are planned in [07](07-missing-features.md). **Out of scope:** Batch 2 (D-03) and WP-10 / billing / NS-26 / NS-27 (D-04).

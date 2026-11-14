@@ -27,3 +27,4 @@ route from repository area to the relevant Markdown files.
 - [Dashboard guide](../../frontend/web/dashboard/AGENTS.md) · [Dashboard architecture](../architecture/frontend-architecture.md)
 - [Mobile guide](../../frontend/mobile/AGENTS.md) · [Mobile documentation](../../frontend/mobile/docs/index.md)
 - [Open decisions](../decisions-required.md)
+- [Audit register and next-session start point](../audit-register/00-next-session-start.md)
