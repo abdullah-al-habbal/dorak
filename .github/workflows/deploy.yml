@@ -1,11 +1,8 @@
 name: 🚀 Deploy Dorak Backend
 
+# Manual only while the project is built locally: there is no hosting yet, so a push must not start a deploy.
+# Restore the `push` trigger (branches: master, paths: backend/** and this file) when deployment is back in scope.
 on:
-  push:
-    branches: ["master"]
-    paths:
-      - "backend/**"
-      - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
 permissions:
