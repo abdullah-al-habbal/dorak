@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Chairs;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Http\Resources\Shared\ChairResource;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -24,9 +25,7 @@ final class StoreChairAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $attributes = $request->validated();
 
-        if (! $actor->canAccessBranch($attributes['branch_id'])) {
-            return $this->forbidden();
-        }
+        Gate::forUser($actor)->authorize('dashboard.chair.create', $attributes['branch_id']);
         $this->brandFeatures->ensureBranchManageable($attributes['branch_id']);
 
         $chair = $this->handler->handle(new StoreChairCommand(

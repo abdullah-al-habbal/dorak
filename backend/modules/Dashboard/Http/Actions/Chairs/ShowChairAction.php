@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Chairs;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Modules\Chair\Http\Resources\Shared\ChairResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowChairQuery;
@@ -24,6 +25,8 @@ final class ShowChairAction extends BaseApiAction
             $chair,
             $actor->scopedBranchIds(),
         ));
+
+        Gate::forUser($actor)->authorize('dashboard.chair.manage', $model);
 
         return $this->ok(ChairResource::make($model));
     }

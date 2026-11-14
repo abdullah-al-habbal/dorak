@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Chairs;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Chair\Exceptions\ChairHasActiveBookingsException as ChairMaintenanceConflictException;
 use Modules\Chair\Http\Resources\Shared\ChairResource;
@@ -35,9 +36,8 @@ final class UpdateChairAction extends BaseApiAction
         $force = (bool) ($attributes['force'] ?? false);
         unset($attributes['force']);
 
-        if (! $actor->canAccessBranch($attributes['branch_id'])) {
-            return $this->forbidden();
-        }
+        Gate::forUser($actor)->authorize('dashboard.chair.manage', $model);
+        Gate::forUser($actor)->authorize('dashboard.chair.create', $attributes['branch_id']);
         $this->brandFeatures->ensureBranchManageable($model->branch_id);
         $this->brandFeatures->ensureBranchManageable($attributes['branch_id']);
 

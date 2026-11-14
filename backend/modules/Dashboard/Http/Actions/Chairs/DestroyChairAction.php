@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Chairs;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\DestroyChairCommand;
@@ -32,6 +33,7 @@ final class DestroyChairAction extends BaseApiAction
             $actor->scopedBranchIds(),
         ));
 
+        Gate::forUser($actor)->authorize('dashboard.chair.manage', $model);
         $this->brandFeatures->ensureBranchManageable($model->branch_id);
 
         try {
