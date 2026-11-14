@@ -52,6 +52,14 @@ final class ListSlotsEloquentResolver
         $effectiveBarberId = $query->barberId ?? $this->assignedBarberId($query);
         $branchId = $this->slotBranchId($query);
 
+        return $this->freeSlots($query, $effectiveBarberId, $branchId, $totalDuration, $step, $minLead);
+    }
+
+    /**
+     * @return list<array{starts_at: Carbon, ends_at: Carbon}>
+     */
+    private function freeSlots(ListSlotsQuery $query, ?string $barberId, ?string $branchId, int $duration, int $step, int $minLead): array
+    {
         $dayStart = $query->date->copy()->utc()->startOfDay();
         $dayEnd = $dayStart->copy()->addDay();
         $earliest = Carbon::now()->utc()->addMinutes($minLead);
@@ -60,13 +68,12 @@ final class ListSlotsEloquentResolver
         $start = $dayStart->copy();
 
         while ($start->lessThan($dayEnd)) {
-            $endsAt = $start->copy()->addMinutes($totalDuration);
+            $endsAt = $start->copy()->addMinutes($duration);
 
-            if (! $endsAt->greaterThan($dayEnd) && ! $start->lessThan($earliest)) {
-                if ($this->isFree($query, $effectiveBarberId, $start, $endsAt)
-                    && $this->branchHours->covers($branchId, $start, $endsAt)) {
-                    $slots[] = ['starts_at' => $start->copy(), 'ends_at' => $endsAt];
-                }
+            if (! $endsAt->greaterThan($dayEnd) && ! $start->lessThan($earliest)
+                && $this->isFree($query, $barberId, $start, $endsAt)
+                && $this->branchHours->covers($branchId, $start, $endsAt)) {
+                $slots[] = ['starts_at' => $start->copy(), 'ends_at' => $endsAt];
             }
 
             $start = $start->copy()->addMinutes($step);
