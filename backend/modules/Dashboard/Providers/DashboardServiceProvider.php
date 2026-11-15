@@ -24,6 +24,7 @@ use Modules\Dashboard\Policies\DashboardBookingPolicy;
 use Modules\Dashboard\Policies\DashboardBranchPolicy;
 use Modules\Dashboard\Policies\DashboardChairPolicy;
 use Modules\Dashboard\Policies\DashboardReviewPolicy;
+use Modules\Dashboard\Policies\DashboardServiceCategoryPolicy;
 use Modules\Dashboard\Policies\DashboardServicePolicy;
 use Modules\OfferedService\Models\BarberServiceOverrideModel;
 
@@ -52,6 +53,7 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
             Gate::define("dashboard.branch.{$ability}", [DashboardBranchPolicy::class, $ability]);
         }
         Gate::define('dashboard.service.write', [DashboardServicePolicy::class, 'write']);
+        Gate::define('dashboard.serviceCategory.create', [DashboardServiceCategoryPolicy::class, 'create']);
         Gate::define('dashboard.review.file', [DashboardReviewPolicy::class, 'file']);
         Gate::define('dashboard.booking.createWalkIn', [DashboardBookingPolicy::class, 'createWalkIn']);
         Gate::define('dashboard.chair.create', [DashboardChairPolicy::class, 'create']);

@@ -52,11 +52,18 @@ final class DashboardWriteExemptions
     ];
 
     /**
+     * Writes only the platform admin may run, enforced by a policy on a route that tenants can reach. The admin
+     * bypasses the write guard by design, so no lifecycle check applies.
+     */
+    public const array PLATFORM_ADMIN_ONLY = [
+        StoreServiceCategoryAction::class,
+    ];
+
+    /**
      * Operational writes still waiting to adopt the guard. Value: the slice that converts the action; the
      * slice removes the entry in the same commit that adds the guard call.
      */
     public const array PENDING = [
-        StoreServiceCategoryAction::class => 'S8',
     ];
 
     private function __construct() {}

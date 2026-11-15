@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Models\BrandModel;
+use Modules\Client\Models\ClientModel;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
@@ -86,13 +88,31 @@ describe('Dashboard Service API', function (): void {
             ->assertJsonCount(1, 'data');
     });
 
-    it('lists and creates service categories for a branch manager', function (): void {
+    it('lists service categories for a branch manager but leaves creating them to the platform admin (F-02)', function (): void {
         $existing = ServiceCatalogCategoryFactory::new()->create();
         $this->authenticateDashboardActor($this->branch);
 
         $this->getJson('/api/v1/dashboard/service-categories')
             ->assertOk()
             ->assertJsonFragment(['id' => $existing->id]);
+        $this->postJson('/api/v1/dashboard/service-categories', ['name' => ['en' => 'Bridal', 'ar' => 'عرائس']])->assertForbidden();
+        $this->assertDatabaseMissing('service_catalog_categories', ['name->en' => 'Bridal']);
+    });
+
+    it('refuses a brand owner creating a global service category and keeps existing categories', function (): void {
+        $owner = ClientModel::factory()->create();
+        BrandModel::factory()->create(['owner_id' => $owner->id]);
+        $existing = ServiceCatalogCategoryFactory::new()->create();
+        $this->authenticateDashboardActor($owner);
+
+        $this->postJson('/api/v1/dashboard/service-categories', ['name' => ['en' => 'Bridal', 'ar' => 'عرائس']])->assertForbidden();
+        $this->getJson('/api/v1/dashboard/service-categories')->assertOk()->assertJsonFragment(['id' => $existing->id]);
+        $this->assertDatabaseMissing('service_catalog_categories', ['name->en' => 'Bridal']);
+    });
+
+    it('lets the platform admin create a global service category', function (): void {
+        $this->authenticateDashboardActor($this->admin);
+
         $this->postJson('/api/v1/dashboard/service-categories', ['name' => ['en' => 'Bridal', 'ar' => 'عرائس']])
             ->assertCreated()
             ->assertJsonPath('data.name.en', 'Bridal');
@@ -108,7 +128,7 @@ describe('Dashboard Service API', function (): void {
 
     it('rejects a duplicate or incomplete category name', function (): void {
         ServiceCatalogCategoryModel::factory()->create(['name' => ['en' => 'Bridal', 'ar' => 'عرائس']]);
-        $this->authenticateDashboardActor($this->branch);
+        $this->authenticateDashboardActor($this->admin);
 
         $this->postJson('/api/v1/dashboard/service-categories', ['name' => ['en' => 'Bridal', 'ar' => 'زفاف']])
             ->assertUnprocessable();
