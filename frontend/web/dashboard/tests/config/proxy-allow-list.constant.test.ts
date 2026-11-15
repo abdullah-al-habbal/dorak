@@ -230,19 +230,24 @@ describe("proxy allow-list: the account page", () => {
 describe("proxy allow-list: job applications", () => {
   const applications = "branches/b1/job-postings/p1/applications";
 
-  it("lets the shop team read, mark as seen and decide", () => {
-    for (const guard of [AuthActor.Manager, AuthActor.Owner]) {
+  it("lets the admin and the shop team read, mark as seen and decide", () => {
+    for (const guard of [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner]) {
       expect(allowed(HttpMethod.Get, applications, guard)).toBe(true);
       expect(allowed(HttpMethod.Post, `${applications}/mark-seen`, guard)).toBe(true);
       expect(allowed(HttpMethod.Patch, `${applications}/a1/status`, guard)).toBe(true);
     }
   });
 
-  it("keeps admins and barbers out of the applicants' data", () => {
-    for (const guard of [AuthActor.Admin, AuthActor.Barber]) {
-      expect(allowed(HttpMethod.Get, applications, guard)).toBe(false);
-      expect(allowed(HttpMethod.Post, `${applications}/mark-seen`, guard)).toBe(false);
-    }
+  it("keeps barbers out of the applicants' data", () => {
+    expect(allowed(HttpMethod.Get, applications, AuthActor.Barber)).toBe(false);
+    expect(allowed(HttpMethod.Post, `${applications}/mark-seen`, AuthActor.Barber)).toBe(false);
+  });
+
+  it("lets the admin write job postings", () => {
+    expect(allowed(HttpMethod.Post, "branches/b1/job-postings", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Put, "branches/b1/job-postings/p1", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Delete, "branches/b1/job-postings/p1", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Post, "branches/b1/job-postings", AuthActor.Barber)).toBe(false);
   });
 
   it("does not allow other methods on mark-seen", () => {
@@ -281,7 +286,9 @@ describe("proxy allow-list: brand services (F-07) and global categories (F-02)",
 });
 
 describe("proxy allow-list: invite by contact (F-10)", () => {
-  it("lets managers and owners post an invitation by contact and nobody else", () => {
+  it("lets the admin, managers and owners post an invitation by contact and nobody else", () => {
+    expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Get, "barber-lookup", AuthActor.Admin)).toBe(true);
     expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact", AuthActor.Manager)).toBe(true);
     expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact", AuthActor.Owner)).toBe(true);
     expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact", AuthActor.Barber)).toBe(false);

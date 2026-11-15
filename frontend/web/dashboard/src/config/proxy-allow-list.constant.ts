@@ -5,6 +5,8 @@ import type { ProxyRule } from "@/interfaces/core/transport/proxy-rule.interface
 const OPERATIONS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner];
 const SERVICE_WRITERS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];
 const EARNINGS: readonly AuthActor[] = [AuthActor.Manager, AuthActor.Barber, AuthActor.Owner];
+// Staffing (affiliations and the job board): the platform admin, branch managers and brand owners (decided 2026-11-13); the backend re-checks.
+const STAFFING: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner];
 const BRANDS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];
 const BARBER_ONLY: readonly AuthActor[] = [AuthActor.Barber];
 const ADMIN_ONLY: readonly AuthActor[] = [AuthActor.Admin];
@@ -51,16 +53,16 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^notifications/${ID}/read$`), guards: EVERY_ACTOR },
   // NS-09 branch oversight: the admin reads a branch's job postings; NS-17 gives the branch teams the whole job board.
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/job-postings$`), guards: OPERATIONS },
-  // NS-17 job board: a manager or owner posts vacancies, reads the applications and moves each one through its statuses.
-  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/job-postings$`), guards: [AuthActor.Manager, AuthActor.Owner] },
-  { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}$`), guards: [AuthActor.Manager, AuthActor.Owner] },
-  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications$`), guards: [AuthActor.Manager, AuthActor.Owner] },
-  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications/mark-seen$`), guards: [AuthActor.Manager, AuthActor.Owner] },
-  { methods: [HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications/${ID}/status$`), guards: [AuthActor.Manager, AuthActor.Owner] },
-  // NS-16 barber invitations: everyone with branch access reads; only the branch teams act (the admin has no stake in who works at a shop).
+  // NS-17 job board: the admin, a manager or an owner posts vacancies, reads the applications and moves each one through its statuses.
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/job-postings$`), guards: STAFFING },
+  { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}$`), guards: STAFFING },
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications$`), guards: STAFFING },
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications/mark-seen$`), guards: STAFFING },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/job-postings/${ID}/applications/${ID}/status$`), guards: STAFFING },
+  // NS-16 barber invitations: everyone with branch access reads; the platform admin, managers and owners act (admin has full staffing permissions, 2026-11-13).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/affiliations$`), guards: OPERATIONS },
-  { methods: [HttpMethod.Get], pattern: /^barber-lookup$/, guards: [AuthActor.Manager, AuthActor.Owner] },
-  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/affiliations(/(by-contact|${ID}/(accept|reject|terminate)))?$`), guards: [AuthActor.Manager, AuthActor.Owner] },
+  { methods: [HttpMethod.Get], pattern: /^barber-lookup$/, guards: STAFFING },
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/affiliations(/(by-contact|${ID}/(accept|reject|terminate)))?$`), guards: STAFFING },
   // NS-18 per-brand stylist pricing: the brand owner sets a stylist's terms (the backend checks the stylist works for that brand).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^barbers/${ID}/services$`), guards: [AuthActor.Owner] },
   { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^barbers/${ID}/services/${ID}/override$`), guards: [AuthActor.Owner] },

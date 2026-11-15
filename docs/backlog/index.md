@@ -36,7 +36,6 @@ Facebook sign-in are unsupported (G9).
 
 | ID | Item | Layer | Size |
 |---|---|---|---|
-| BG-1 | Proxy allow-list comment says "admin has no stake" in affiliations and the job board; the admin has full permissions (resolved 2026-11-13). Fix the comment (and the allow-list rules if they still block admin writes). | dashboard | S |
 | BG-2 | Hide the inline "new category" form for non-admins (the backend already refuses, S8). | dashboard | S |
 | BG-3 | Barber self-reactivation: a barber an admin deactivated can re-enable themselves via `POST /barbers/{barber}/activate`. Decided: block it until an admin reactivates, using `activation_logs.activated_by_id`. | backend, mobile check | M |
 | BG-4 | Public barber resource leaks `email`, `phone`, exact coordinates, `submission_count`, `email_verified_at`. Decided: add a separate public resource (name, bio, rating, rounded location); keep the old fields until both mobile apps ship, then remove. Contract tests pin `email` (`ApiResponseContractTest`). Needs a coordinated mobile release. | backend, mobile | L |
@@ -67,7 +66,7 @@ Facebook sign-in are unsupported (G9).
 - FT-13 Website content: onboarding image upload, create and delete of pages and sections, an editor friendlier than JSON (NS-25).
 - FT-14 Show the ledger's per-entry rule snapshot (NS-22); more gateway drivers when they exist (NS-23); owner endpoint and view for a payout's lines (NS-24).
 - FT-15 Language `is_active` must hide a language wherever languages are offered (the backend rejects it for new input since S11) (NS-20).
-- FT-16 Admin job-board write UI (proxy allow-list, see BG-1).
+- FT-16 Admin job-board write UI (the proxy allow-list already admits the admin since BG-1).
 - FT-17 Suspended-brand banner and blocked-action messages when a write returns 403 (decision A, D8).
 - FT-18 Admin UI for global service categories, if none exists (decision B).
 - FT-19 Confirm payout abilities are separate: create, approve, pay (decision D).
