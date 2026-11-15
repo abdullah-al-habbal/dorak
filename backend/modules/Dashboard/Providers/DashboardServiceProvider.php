@@ -21,11 +21,14 @@ use Modules\Dashboard\Constants\OwnerRegistrationConstants;
 use Modules\Dashboard\Policies\BarberSchedulePolicy;
 use Modules\Dashboard\Policies\BarberServiceOverridePolicy;
 use Modules\Dashboard\Policies\DashboardBookingPolicy;
+use Modules\Dashboard\Policies\DashboardBranchLifecyclePolicy;
 use Modules\Dashboard\Policies\DashboardBranchPolicy;
+use Modules\Dashboard\Policies\DashboardBrandPolicy;
 use Modules\Dashboard\Policies\DashboardChairPolicy;
 use Modules\Dashboard\Policies\DashboardReviewPolicy;
 use Modules\Dashboard\Policies\DashboardServiceCategoryPolicy;
 use Modules\Dashboard\Policies\DashboardServicePolicy;
+use Modules\Dashboard\Policies\DashboardStaffingPolicy;
 use Modules\Dashboard\Policies\DashboardStylistPolicy;
 use Modules\OfferedService\Models\BarberServiceOverrideModel;
 
@@ -57,6 +60,11 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
         Gate::define('dashboard.serviceCategory.create', [DashboardServiceCategoryPolicy::class, 'create']);
         Gate::define('dashboard.review.file', [DashboardReviewPolicy::class, 'file']);
         Gate::define('dashboard.booking.manage', [DashboardBookingPolicy::class, 'manage']);
+        Gate::define('dashboard.staffing.manage', [DashboardStaffingPolicy::class, 'manage']);
+        Gate::define('dashboard.brand.create', [DashboardBrandPolicy::class, 'create']);
+        Gate::define('dashboard.brand.update', [DashboardBrandPolicy::class, 'update']);
+        Gate::define('dashboard.branchLifecycle.suspend', [DashboardBranchLifecyclePolicy::class, 'suspend']);
+        Gate::define('dashboard.branchLifecycle.switch', [DashboardBranchLifecyclePolicy::class, 'switch']);
         Gate::define('dashboard.stylist.create', [DashboardStylistPolicy::class, 'create']);
         Gate::define('dashboard.stylist.manage', [DashboardStylistPolicy::class, 'manage']);
         Gate::define('dashboard.booking.createWalkIn', [DashboardBookingPolicy::class, 'createWalkIn']);

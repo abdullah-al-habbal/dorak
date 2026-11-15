@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\People;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Branch\Http\Requests\Branch\UpdateApplicationStatusRequest;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -25,6 +26,7 @@ final class UpdateBranchApplicationStatusAction extends BaseApiAction
     public function __invoke(UpdateApplicationStatusRequest $request, string $branch, string $jobPosting, string $application): JsonResponse
     {
         $model = $this->branches->resolveForStaffingWrite($request, $branch);
+        Gate::forUser($request->attributes->get('dashboard_actor'))->authorize('dashboard.staffing.manage', $model);
         $actor = $this->actors->actingAs($request);
         $posting = JobPostingModel::where('branch_id', $model->getKey())->findOrFail($jobPosting);
 

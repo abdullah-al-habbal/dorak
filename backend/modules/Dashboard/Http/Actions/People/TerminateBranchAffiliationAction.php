@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\People;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\BarberAffiliation\CQRS\Command\Shared\TerminateAffiliationCommand;
 use Modules\BarberAffiliation\Handlers\Shared\TerminateAffiliationHandler;
@@ -28,6 +29,7 @@ final class TerminateBranchAffiliationAction extends BaseApiAction
     public function __invoke(Request $request, string $branch, string $affiliation): JsonResponse
     {
         $model = $this->branches->resolveForStaffingWrite($request, $branch);
+        Gate::forUser($request->attributes->get('dashboard_actor'))->authorize('dashboard.staffing.manage', $model);
         $affiliationModel = $this->responder->findForBranch($model, $affiliation);
         $actor = $this->actors->actingAs($request);
 

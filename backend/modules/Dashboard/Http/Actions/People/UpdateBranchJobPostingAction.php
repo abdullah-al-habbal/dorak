@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\People;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Http\Requests\Branch\UpdateJobPostingRequest;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Brand\Services\BrandStaffingGuard;
@@ -24,6 +25,7 @@ final class UpdateBranchJobPostingAction extends BaseApiAction
     public function __invoke(UpdateJobPostingRequest $request, string $branch, string $jobPosting): JsonResponse
     {
         $model = $this->branches->resolveForStaffingWrite($request, $branch);
+        Gate::forUser($request->attributes->get('dashboard_actor'))->authorize('dashboard.staffing.manage', $model);
         $this->staffingGuard->ensureBranchMayPublishJobs($model->getKey());
         $this->brandFeatures->ensureJobBoard($model->getKey());
 

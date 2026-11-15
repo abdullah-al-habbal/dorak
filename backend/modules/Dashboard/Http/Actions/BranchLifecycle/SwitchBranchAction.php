@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\BranchLifecycle;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Services\BranchLifecycleService;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Services\DashboardWriteGuard;
@@ -23,6 +24,7 @@ final class SwitchBranchAction extends BaseApiAction
         // Out-of-scope branches are indistinguishable from missing ones.
         abort_unless($actor->canAccessBranch($branch), 404);
 
+        Gate::forUser($actor)->authorize('dashboard.branchLifecycle.switch', $branch);
         $this->writeGuard->ensureBranchIdWritable($actor, $branch);
 
         $updated = $on ? $this->lifecycle->switchOn($actor, $branch) : $this->lifecycle->switchOff($actor, $branch);

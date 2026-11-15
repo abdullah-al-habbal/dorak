@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\People;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\BarberAffiliation\Eloquent\Resolvers\Barber\BarberAlreadyAffiliatedException;
 use Modules\BarberAffiliation\Handlers\Branch\InviteAffiliationHandler;
 use Modules\BarberAffiliation\Jobs\AffiliationInvitedNotification;
@@ -28,6 +29,7 @@ final class InviteBranchAffiliationAction extends BaseApiAction
     public function __invoke(InviteAffiliationRequest $request, string $branch): JsonResponse
     {
         $model = $this->branches->resolveForStaffingWrite($request, $branch);
+        Gate::forUser($request->attributes->get('dashboard_actor'))->authorize('dashboard.staffing.manage', $model);
         $this->approvals->ensureBranchBrandApproved($request->attributes->get('dashboard_actor'), $model->getKey());
 
         try {

@@ -95,3 +95,45 @@ describe('Dashboard booking and stylist policies (S14a, F-06)', function (): voi
             ->and(Gate::forUser(branchManagerActor($this->other))->denies('dashboard.branch.updateHours', $this->branch))->toBeTrue();
     });
 });
+
+describe('Dashboard staffing, brand and branch lifecycle policies (S14b, F-06)', function (): void {
+    beforeEach(function (): void {
+        $this->branch = BranchModel::factory()->create();
+        $this->other = BranchModel::factory()->create();
+        $this->admin = DashboardActor::platformAdmin('admin-id');
+        $this->barber = new DashboardActor('b1', DashboardActorTypeEnum::Barber, 'barber');
+        $this->owner = new DashboardActor('o1', DashboardActorTypeEnum::Owner, 'owner', null, (string) $this->branch->brand_id, [(string) $this->branch->brand_id], [(string) $this->branch->id]);
+    });
+
+    it('limits staffing to the admin, the branch manager and the brand owner of that branch', function (): void {
+        expect(Gate::forUser($this->admin)->allows('dashboard.staffing.manage', $this->other))->toBeTrue()
+            ->and(Gate::forUser(branchManagerActor($this->branch))->allows('dashboard.staffing.manage', $this->branch))->toBeTrue()
+            ->and(Gate::forUser(branchManagerActor($this->branch))->denies('dashboard.staffing.manage', $this->other))->toBeTrue()
+            ->and(Gate::forUser($this->owner)->allows('dashboard.staffing.manage', $this->branch))->toBeTrue()
+            ->and(Gate::forUser($this->owner)->denies('dashboard.staffing.manage', $this->other))->toBeTrue()
+            ->and(Gate::forUser($this->barber)->denies('dashboard.staffing.manage', $this->branch))->toBeTrue();
+    });
+
+    it('lets only an owner create a brand and only its owner or the admin change it', function (): void {
+        $brandId = (string) $this->branch->brand_id;
+
+        expect(Gate::forUser($this->owner)->allows('dashboard.brand.create'))->toBeTrue()
+            ->and(Gate::forUser($this->admin)->denies('dashboard.brand.create'))->toBeTrue()
+            ->and(Gate::forUser(branchManagerActor($this->branch))->denies('dashboard.brand.create'))->toBeTrue()
+            ->and(Gate::forUser($this->owner)->allows('dashboard.brand.update', $brandId))->toBeTrue()
+            ->and(Gate::forUser($this->owner)->denies('dashboard.brand.update', (string) $this->other->brand_id))->toBeTrue()
+            ->and(Gate::forUser(branchManagerActor($this->branch))->denies('dashboard.brand.update', $brandId))->toBeTrue()
+            ->and(Gate::forUser($this->admin)->allows('dashboard.brand.update', $brandId))->toBeTrue();
+    });
+
+    it('keeps suspension with the admin and the on/off switch with the owner of that branch', function (): void {
+        $manager = branchManagerActor($this->branch);
+
+        expect(Gate::forUser($this->admin)->allows('dashboard.branchLifecycle.suspend'))->toBeTrue()
+            ->and(Gate::forUser($this->owner)->denies('dashboard.branchLifecycle.suspend'))->toBeTrue()
+            ->and(Gate::forUser($this->owner)->allows('dashboard.branchLifecycle.switch', (string) $this->branch->id))->toBeTrue()
+            ->and(Gate::forUser($this->owner)->denies('dashboard.branchLifecycle.switch', (string) $this->other->id))->toBeTrue()
+            ->and(Gate::forUser($manager)->denies('dashboard.branchLifecycle.switch', (string) $this->branch->id))->toBeTrue()
+            ->and(Gate::forUser($this->admin)->allows('dashboard.branchLifecycle.switch', (string) $this->other->id))->toBeTrue();
+    });
+});

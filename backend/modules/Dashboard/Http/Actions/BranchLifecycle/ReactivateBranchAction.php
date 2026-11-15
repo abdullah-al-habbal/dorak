@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\BranchLifecycle;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Services\BranchLifecycleService;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Support\DashboardActor;
@@ -18,6 +19,8 @@ final class ReactivateBranchAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
+
+        Gate::forUser($actor)->authorize('dashboard.branchLifecycle.suspend');
 
         return $this->ok(data: $this->lifecycle->reactivate($actor, $branch), message: __('branch::messages.reactivated'));
     }

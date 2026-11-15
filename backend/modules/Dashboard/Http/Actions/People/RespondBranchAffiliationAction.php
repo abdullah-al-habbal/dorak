@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\People;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Exceptions\AffiliationResponseException;
 use Modules\Branch\Services\BranchAffiliationResponder;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -25,6 +26,7 @@ final class RespondBranchAffiliationAction extends BaseApiAction
     public function __invoke(Request $request, string $branch, string $affiliation): JsonResponse
     {
         $model = $this->branches->resolveForStaffingWrite($request, $branch);
+        Gate::forUser($request->attributes->get('dashboard_actor'))->authorize('dashboard.staffing.manage', $model);
         $accept = $request->route('accept') === true;
 
         try {
