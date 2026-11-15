@@ -7,7 +7,7 @@ import { HttpMethod } from "@/enums/http-method.enum";
 import { HttpStatus } from "@/enums/http-status.enum";
 import { apiFailure, apiSuccess } from "@/lib/api-response";
 import { getRequestDictionary } from "@/locales/get-request-dictionary";
-import { loginBodySchema } from "@/schemas/login-body.zod";
+import { loginBodySchema } from "@/schemas/core/login-body.zod";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { setSessionCookies } from "@/services/api/auth/cookies";

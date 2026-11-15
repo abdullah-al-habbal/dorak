@@ -2,7 +2,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { BranchLifecycleAction } from "@/enums/branch-lifecycle-action.enum";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { BranchLifecyclePayload } from "@/interfaces/branches/branch-lifecycle-payload.interface";
-import { branchSchema } from "@/schemas/branch.zod";
+import { branchSchema } from "@/schemas/branches/branch.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { Branch } from "@/types/branches/branch.type";
 

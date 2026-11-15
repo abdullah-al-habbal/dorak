@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { platformAnalyticsSchema } from "@/schemas/platform-analytics.zod";
-import { platformSettingListSchema, platformSettingValuesSchema } from "@/schemas/platform-setting.zod";
-import { createPlatformSettingsSchema } from "@/schemas/platform-settings-form.zod";
+import { platformAnalyticsSchema } from "@/schemas/platform/platform-analytics.zod";
+import { platformSettingListSchema, platformSettingValuesSchema } from "@/schemas/platform/platform-setting.zod";
+import { createPlatformSettingsSchema } from "@/schemas/platform/platform-settings-form.zod";
 import { DICTIONARIES } from "@/locales/dictionaries.constant";
 import { Locale } from "@/enums/locale.enum";
 

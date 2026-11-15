@@ -1,6 +1,6 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { platformSettingValuesSchema } from "@/schemas/platform-setting.zod";
+import { platformSettingValuesSchema } from "@/schemas/platform/platform-setting.zod";
 import { apiRequest } from "@/services/api/core/client";
 
 /** Sends only the settings that changed; the backend validates each against its own bounds. */

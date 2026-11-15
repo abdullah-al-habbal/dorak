@@ -1,6 +1,6 @@
 import { NOTIFICATION_PER_PAGE } from "@/config/notification.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { dashboardNotificationListSchema, unreadCountSchema } from "@/schemas/dashboard-notification.zod";
+import { dashboardNotificationListSchema, unreadCountSchema } from "@/schemas/account/dashboard-notification.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { NotificationFeed } from "@/types/account/notification-feed.type";
 

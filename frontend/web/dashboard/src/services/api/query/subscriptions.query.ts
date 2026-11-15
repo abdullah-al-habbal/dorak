@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { subscriptionListSchema } from "@/schemas/subscription.zod";
+import { subscriptionListSchema } from "@/schemas/plans/subscription.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { Subscription } from "@/types/plans/subscription.type";
 

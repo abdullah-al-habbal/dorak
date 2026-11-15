@@ -1,6 +1,6 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { adminClientSchema } from "@/schemas/admin-client.zod";
+import { adminClientSchema } from "@/schemas/clients/admin-client.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { AdminClient } from "@/types/clients/admin-client.type";
 

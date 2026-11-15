@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { EMAIL_CODE_LENGTH } from "@/config/field-limit.constant";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
-import { emailCodeFormSchema } from "@/schemas/email-code-form.zod";
+import { emailCodeFormSchema } from "@/schemas/account/email-code-form.zod";
 import type { AccountProfile } from "@/types/account/account-profile.type";
 import type { EmailCodeFormValues } from "@/types/core/email-code-form-values.type";
 

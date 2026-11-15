@@ -10,7 +10,7 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
-import { emailChangeFormSchema } from "@/schemas/email-change-form.zod";
+import { emailChangeFormSchema } from "@/schemas/account/email-change-form.zod";
 import type { EmailChangeFormValues } from "@/types/account/email-change-form-values.type";
 import type { EmailChangeResult } from "@/types/account/email-change-result.type";
 

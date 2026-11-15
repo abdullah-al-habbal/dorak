@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { chairOptionListSchema } from "@/schemas/chair.zod";
+import { chairOptionListSchema } from "@/schemas/chairs/chair.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { ChairOption } from "@/types/chairs/chair-option.type";
 

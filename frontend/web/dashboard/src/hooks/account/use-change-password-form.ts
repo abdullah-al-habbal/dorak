@@ -7,7 +7,7 @@ import type { UseFormReturn } from "react-hook-form";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
-import { changePasswordFormSchema } from "@/schemas/change-password-form.zod";
+import { changePasswordFormSchema } from "@/schemas/account/change-password-form.zod";
 import { changePassword } from "@/services/api/mutation/change-password.mutation";
 import type { ChangePasswordFormValues } from "@/types/account/change-password-form-values.type";
 

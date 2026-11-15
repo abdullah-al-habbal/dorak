@@ -11,7 +11,7 @@ import { useSavePlatformSettings } from "@/hooks/platform/use-save-platform-sett
 import { changedSettings, settingsToForm } from "@/lib/platform/platform-settings.util";
 import type { SettingFormValues } from "@/lib/platform/platform-settings.util";
 import { mapSettingsSaveError } from "@/lib/platform/platform-settings-error.util";
-import { createPlatformSettingsSchema } from "@/schemas/platform-settings-form.zod";
+import { createPlatformSettingsSchema } from "@/schemas/platform/platform-settings-form.zod";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 interface PlatformSettingsFormController {

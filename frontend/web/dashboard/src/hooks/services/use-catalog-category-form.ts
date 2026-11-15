@@ -12,8 +12,8 @@ import { useOverlay } from "@/hooks/core/use-overlay";
 import { useSaveCatalogCategory } from "@/hooks/services/use-save-catalog-category";
 import { catalogCategoryToForm, emptyCatalogCategoryForm, formToCatalogCategoryPayload } from "@/lib/services/catalog-category-form.util";
 import { mapCatalogCategorySaveError } from "@/lib/services/catalog-category-form-error.util";
-import { createCatalogCategorySchema } from "@/schemas/catalog-category-form.zod";
-import type { CatalogCategoryFormValues } from "@/schemas/catalog-category-form.zod";
+import { createCatalogCategorySchema } from "@/schemas/services/catalog-category-form.zod";
+import type { CatalogCategoryFormValues } from "@/schemas/services/catalog-category-form.zod";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 interface CatalogCategoryFormController {

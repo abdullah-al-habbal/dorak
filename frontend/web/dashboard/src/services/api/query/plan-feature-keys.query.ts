@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { planFeatureKeysSchema } from "@/schemas/plan.zod";
+import { planFeatureKeysSchema } from "@/schemas/plans/plan.zod";
 import { apiRequest } from "@/services/api/core/client";
 
 export function fetchPlanFeatureKeys(): Promise<string[]> {

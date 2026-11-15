@@ -9,7 +9,7 @@ import { HttpStatus } from "@/enums/http-status.enum";
 import { apiFailure, apiSuccess } from "@/lib/api-response";
 import { getRequestDictionary } from "@/locales/get-request-dictionary";
 import { resolveLocale } from "@/locales/resolve-locale.util";
-import { forgotPasswordBodySchema } from "@/schemas/forgot-password-body.zod";
+import { forgotPasswordBodySchema } from "@/schemas/account/forgot-password-body.zod";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { failureFromBackend } from "@/services/api/auth/failure-response";

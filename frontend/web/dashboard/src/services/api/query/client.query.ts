@@ -1,7 +1,7 @@
 import { CLIENT_RELATION_PER_PAGE } from "@/config/client.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { ClientRelation } from "@/enums/client-relation.enum";
-import { adminClientSchema, clientBookingListSchema, clientReviewListSchema } from "@/schemas/admin-client.zod";
+import { adminClientSchema, clientBookingListSchema, clientReviewListSchema } from "@/schemas/clients/admin-client.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { AdminClient } from "@/types/clients/admin-client.type";
 import type { ClientBooking } from "@/types/bookings/client-booking.type";

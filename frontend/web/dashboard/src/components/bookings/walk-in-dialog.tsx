@@ -20,8 +20,8 @@ import { useServiceOptions } from "@/hooks/services/use-service-options";
 import { defaultWalkInStart, localInputToUtcIso } from "@/lib/bookings/booking-datetime.util";
 import { mapBookingFormError } from "@/lib/bookings/booking-form-error.util";
 import { localizedText } from "@/lib/core/booking-format.util";
-import { createWalkInSchema } from "@/schemas/walk-in-form.zod";
-import type { WalkInFormValues } from "@/schemas/walk-in-form.zod";
+import { createWalkInSchema } from "@/schemas/bookings/walk-in-form.zod";
+import type { WalkInFormValues } from "@/schemas/bookings/walk-in-form.zod";
 
 const START_FIELD = "starts_at";
 

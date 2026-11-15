@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { serviceTermsListSchema } from "@/schemas/service-terms.zod";
+import { serviceTermsListSchema } from "@/schemas/services/service-terms.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { ServiceTerms } from "@/types/services/service-terms.type";
 

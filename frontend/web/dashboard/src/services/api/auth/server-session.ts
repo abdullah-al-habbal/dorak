@@ -6,7 +6,7 @@ import { BACKEND_PATH } from "@/config/backend.constant";
 import { ACCESS_COOKIE, CLAIM_COOKIE } from "@/config/cookies.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { ServerSession } from "@/interfaces/core/server-session.interface";
-import { meProfileSchema } from "@/schemas/me-profile.zod";
+import { meProfileSchema } from "@/schemas/account/me-profile.zod";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
 import { verifyClaim } from "@/services/api/auth/jwt.util";

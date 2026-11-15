@@ -1,4 +1,4 @@
-import { pageInfoSchema } from "@/schemas/page-info.zod";
+import { pageInfoSchema } from "@/schemas/core/page-info.zod";
 import type { PageInfo } from "@/types/core/page-info.type";
 
 const SINGLE_PAGE = 1;

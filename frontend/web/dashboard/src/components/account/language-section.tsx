@@ -10,7 +10,7 @@ import { useAccountSettings } from "@/hooks/account/use-account-settings";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useLanguagePreference } from "@/hooks/account/use-language-preference";
-import { localeSchema } from "@/schemas/locale.zod";
+import { localeSchema } from "@/schemas/core/locale.zod";
 
 /** The account's language. Saved on the backend so emails follow it, then applied to this dashboard. */
 export function LanguageSection(): JSX.Element {

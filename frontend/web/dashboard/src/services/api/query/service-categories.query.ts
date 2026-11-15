@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { serviceCategoryListSchema } from "@/schemas/service-category.zod";
+import { serviceCategoryListSchema } from "@/schemas/services/service-category.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { ServiceCategory } from "@/types/services/service-category.type";
 

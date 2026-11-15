@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { bookingHistorySchema } from "@/schemas/booking-history.zod";
+import { bookingHistorySchema } from "@/schemas/bookings/booking-history.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { BookingHistoryEntry } from "@/types/bookings/booking-history-entry.type";
 

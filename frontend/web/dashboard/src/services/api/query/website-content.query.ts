@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { onboardingConfigListSchema, websiteContentSchema } from "@/schemas/website-content.zod";
+import { onboardingConfigListSchema, websiteContentSchema } from "@/schemas/platform/website-content.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { OnboardingConfig, WebsiteContent } from "@/types/platform/website-content.type";
 

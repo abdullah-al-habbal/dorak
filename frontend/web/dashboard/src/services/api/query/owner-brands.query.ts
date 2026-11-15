@@ -1,6 +1,6 @@
 import { BRANCH_OPTIONS_LIMIT } from "@/config/branch.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { adminBrandListSchema } from "@/schemas/admin-brand.zod";
+import { adminBrandListSchema } from "@/schemas/brands/admin-brand.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 

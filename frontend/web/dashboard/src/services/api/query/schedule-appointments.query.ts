@@ -2,7 +2,7 @@ import { SCHEDULE_PER_PAGE } from "@/config/schedule.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { scheduleWindow } from "@/lib/bookings/schedule-filters.util";
 import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
-import { bookingListSchema } from "@/schemas/booking.zod";
+import { bookingListSchema } from "@/schemas/bookings/booking.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { BookingPage } from "@/types/bookings/booking-page.type";
 import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";

@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { paymentGatewayListSchema } from "@/schemas/payment-gateway.zod";
+import { paymentGatewayListSchema } from "@/schemas/platform/payment-gateway.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { PaymentGateway } from "@/types/platform/payment-gateway.type";
 

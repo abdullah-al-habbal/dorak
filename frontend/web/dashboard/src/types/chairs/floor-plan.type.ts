@@ -1,6 +1,6 @@
 import type { z } from "zod";
 
-import type { floorCanvasSchema, floorDecorationSchema, floorPlanLayoutSchema, floorPlanSchema, floorZoneRectSchema } from "@/schemas/floor-plan.zod";
+import type { floorCanvasSchema, floorDecorationSchema, floorPlanLayoutSchema, floorPlanSchema, floorZoneRectSchema } from "@/schemas/chairs/floor-plan.zod";
 
 export type FloorPlan = z.infer<typeof floorPlanSchema>;
 export type FloorPlanLayout = z.infer<typeof floorPlanLayoutSchema>;

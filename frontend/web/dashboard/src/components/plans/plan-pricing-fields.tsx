@@ -9,7 +9,7 @@ import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import type { PlanFieldsProps } from "@/interfaces/plans/plan-fields-props.interface";
 import { localizedText } from "@/lib/core/booking-format.util";
-import type { PlanFormValues } from "@/schemas/plan-form.zod";
+import type { PlanFormValues } from "@/schemas/plans/plan-form.zod";
 import type { Currency } from "@/types/platform/currency.type";
 
 interface PlanPricingFieldsProps extends PlanFieldsProps {

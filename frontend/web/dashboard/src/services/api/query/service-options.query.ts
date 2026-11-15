@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { serviceOptionListSchema } from "@/schemas/service-option.zod";
+import { serviceOptionListSchema } from "@/schemas/services/service-option.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { ServiceOption } from "@/types/services/service-option.type";
 

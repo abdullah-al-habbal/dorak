@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { branchInvitationListSchema, branchJobPostingListSchema } from "@/schemas/branch-oversight.zod";
+import { branchInvitationListSchema, branchJobPostingListSchema } from "@/schemas/branches/branch-oversight.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";

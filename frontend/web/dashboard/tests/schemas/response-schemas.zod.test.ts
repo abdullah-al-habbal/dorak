@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { chairListSchema, chairSchema } from "@/schemas/chair.zod";
-import { hoursOverrideInputSchema, hoursOverrideSchema } from "@/schemas/hours-override.zod";
-import { openingHoursSchema } from "@/schemas/opening-hours.zod";
-import { optionalTranslationSchema } from "@/schemas/optional-translation.zod";
-import { paymentGatewaySchema } from "@/schemas/payment-gateway.zod";
-import { floorPlanSchema } from "@/schemas/floor-plan.zod";
-import { stylistSchema } from "@/schemas/stylist.zod";
+import { chairListSchema, chairSchema } from "@/schemas/chairs/chair.zod";
+import { hoursOverrideInputSchema, hoursOverrideSchema } from "@/schemas/hours/hours-override.zod";
+import { openingHoursSchema } from "@/schemas/hours/opening-hours.zod";
+import { optionalTranslationSchema } from "@/schemas/core/optional-translation.zod";
+import { paymentGatewaySchema } from "@/schemas/platform/payment-gateway.zod";
+import { floorPlanSchema } from "@/schemas/chairs/floor-plan.zod";
+import { stylistSchema } from "@/schemas/stylists/stylist.zod";
 
 describe("hours overrides", () => {
   it("reads a closure day and a special-hours day", () => {

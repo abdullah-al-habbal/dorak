@@ -1,6 +1,6 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { adminCatalogFiltersToParams } from "@/lib/services/admin-catalog-filters.util";
-import { adminCatalogCategoryListSchema } from "@/schemas/admin-catalog-category.zod";
+import { adminCatalogCategoryListSchema } from "@/schemas/services/admin-catalog-category.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 import type { AdminCatalogFilters } from "@/types/services/admin-catalog-filters.type";

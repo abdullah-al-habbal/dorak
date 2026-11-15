@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { ReviewResolvePayload } from "@/interfaces/clients/review-resolve-payload.interface";
-import { adminReviewSchema } from "@/schemas/admin-review.zod";
+import { adminReviewSchema } from "@/schemas/clients/admin-review.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { AdminReview } from "@/types/clients/admin-review.type";
 

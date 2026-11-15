@@ -3,8 +3,8 @@ import { ApiErrorCode } from "@/enums/api-error-code.enum";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { HttpStatus } from "@/enums/http-status.enum";
 import type { ApiRequestOptions } from "@/interfaces/core/api-request-options.interface";
-import { apiFailureBodySchema } from "@/schemas/api-failure-body.zod";
-import { apiSuccessBodySchema } from "@/schemas/api-success-body.zod";
+import { apiFailureBodySchema } from "@/schemas/core/api-failure-body.zod";
+import { apiSuccessBodySchema } from "@/schemas/core/api-success-body.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import { reportSessionExpired } from "@/services/api/core/session-expiry.util";
 

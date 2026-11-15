@@ -15,7 +15,7 @@ import { useBrandCreateForm } from "@/hooks/brands/use-brand-create-form";
 import { useCurrencies } from "@/hooks/platform/use-currencies";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/core/booking-format.util";
-import type { BrandCreateFormValues } from "@/schemas/brand-create-form.zod";
+import type { BrandCreateFormValues } from "@/schemas/brands/brand-create-form.zod";
 
 /** Adds another brand to the owner's account. It starts pending, like the first one. */
 export function BrandCreateDialog({ onClose }: { onClose: () => void }): JSX.Element {

@@ -1,5 +1,5 @@
 import { DEFAULT_KEY_ID, BACKEND_DEFAULT_URL } from "@/config/backend.constant";
-import { sessionKeyRingSchema } from "@/schemas/session-keys.zod";
+import { sessionKeyRingSchema } from "@/schemas/core/session-keys.zod";
 import type { SessionKeyRing } from "@/types/core/session-key-ring.type";
 
 export function readBackendUrl(): string {

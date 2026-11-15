@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CATALOG_CATEGORY_MAX_DESCRIPTION, CATALOG_CATEGORY_MAX_NAME, CATALOG_CATEGORY_MAX_SORT_ORDER } from "@/config/admin-catalog.constant";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import type { CatalogCategoryFormValues } from "@/schemas/catalog-category-form.zod";
+import type { CatalogCategoryFormValues } from "@/schemas/services/catalog-category-form.zod";
 
 /** Bilingual name and description, then audience and order. Arabic inputs are `dir="rtl"` in either locale. */
 export function CatalogCategoryFormFields({ form }: { form: UseFormReturn<CatalogCategoryFormValues> }): JSX.Element {

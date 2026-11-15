@@ -1,0 +1,33 @@
+import { z } from "zod";
+
+import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { optionalTranslationSchema } from "@/schemas/core/optional-translation.zod";
+
+const tagRefSchema = z.object({ id: z.string(), name: localizedTextSchema, slug: z.string().optional(), group_name: z.string().nullable().optional() });
+
+/** `ServiceCatalogItemResource` as the admin item screen reads it (with its category and tags loaded). */
+export const catalogItemSchema = z.object({
+  id: z.string(),
+  category_id: z.string(),
+  name: localizedTextSchema,
+  description: optionalTranslationSchema.optional(),
+  slug: z.string(),
+  default_duration_minutes: z.number().int().nullable().optional(),
+  category: z.object({ id: z.string(), name: localizedTextSchema }).optional(),
+  tags: z.array(tagRefSchema).optional().default([]),
+  is_active: z.boolean(),
+});
+
+export const catalogItemListSchema = z.array(catalogItemSchema);
+
+/** `AdminCatalogTagResource`, also the shape the list route returns. */
+export const catalogTagSchema = z.object({
+  id: z.string(),
+  name: localizedTextSchema,
+  slug: z.string().optional(),
+  group_name: z.string().nullable().optional(),
+  is_active: z.boolean().optional().default(true),
+  items_count: z.number().int().optional().default(0),
+});
+
+export const catalogTagListSchema = z.array(catalogTagSchema);

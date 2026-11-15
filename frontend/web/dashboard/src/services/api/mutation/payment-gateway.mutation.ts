@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { paymentGatewaySchema } from "@/schemas/payment-gateway.zod";
+import { paymentGatewaySchema } from "@/schemas/platform/payment-gateway.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { PaymentGateway } from "@/types/platform/payment-gateway.type";
 

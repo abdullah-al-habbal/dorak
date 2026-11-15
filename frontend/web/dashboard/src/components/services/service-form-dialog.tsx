@@ -22,8 +22,8 @@ import { useSaveService } from "@/hooks/services/use-save-service";
 import { mapApiFieldErrors } from "@/lib/core/api-field-errors.util";
 import { DURATION_PRESETS } from "@/lib/core/duration.util";
 import { emptyServiceForm, existingServiceOwner, formToServicePayload, newServiceOwner, serviceToForm } from "@/lib/services/service-form.util";
-import { createServiceSchema } from "@/schemas/service-form.zod";
-import type { ServiceFormValues } from "@/schemas/service-form.zod";
+import { createServiceSchema } from "@/schemas/services/service-form.zod";
+import type { ServiceFormValues } from "@/schemas/services/service-form.zod";
 import type { Service } from "@/types/services/service.type";
 
 interface ServiceFormDialogProps {

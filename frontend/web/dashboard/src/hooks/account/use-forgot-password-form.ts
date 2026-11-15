@@ -8,7 +8,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { isTooManyRequests } from "@/lib/account/password-reset-error.util";
-import { forgotPasswordFormSchema } from "@/schemas/forgot-password-form.zod";
+import { forgotPasswordFormSchema } from "@/schemas/account/forgot-password-form.zod";
 import { requestPasswordReset } from "@/services/api/mutation/request-password-reset.mutation";
 import type { ForgotPasswordFormValues } from "@/types/account/forgot-password-form-values.type";
 

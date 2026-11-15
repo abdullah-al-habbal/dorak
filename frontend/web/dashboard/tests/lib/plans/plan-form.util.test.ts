@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { emptyPlanForm, formToPlanPayload, planToForm } from "@/lib/plans/plan-form.util";
 import { mapPlanSaveError } from "@/lib/plans/plan-form-error.util";
-import { planSchema } from "@/schemas/plan.zod";
+import { planSchema } from "@/schemas/plans/plan.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const plan = planSchema.parse({

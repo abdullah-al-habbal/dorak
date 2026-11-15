@@ -6,7 +6,7 @@ Architecture rules for the dashboard. All imports use the `@/` alias; never `./`
 | --- | --- |
 | `interfaces/` | One interface per file, `<name>.interface.ts`, grouped in `interfaces/<domain>/` (`core`, `ui` for shared). |
 | `types/` | One type per file, `<name>.type.ts`, grouped in `types/<domain>/` (`core` for shared). |
-| `schemas/` | One Zod schema per file, `<name>.zod.ts`. |
+| `schemas/` | One Zod schema per file, `<name>.zod.ts`, grouped in `schemas/<domain>/` (`core` for envelopes, session and locale). |
 | `schemas/fields/` | Zod field builders for shared form rules (`nameField`, `emailField`, `phoneField`, `passwordField`). Form schemas compose these instead of repeating the chain; limits live in `config/field-limit.constant.ts` or the module's constant. |
 | `enums/` | Explicit TypeScript enums for domain modes and categories. |
 | `components/` | No flat files. Group into typed subfolders (`buttons/`, `forms/`, `dialogs/`, `layout/`, shadcn `ui/`). |

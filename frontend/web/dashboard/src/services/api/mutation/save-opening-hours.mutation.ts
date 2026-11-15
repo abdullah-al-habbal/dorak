@@ -2,7 +2,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { OpeningHoursPayload } from "@/interfaces/hours/opening-hours-payload.interface";
-import { openingHoursSchema } from "@/schemas/opening-hours.zod";
+import { openingHoursSchema } from "@/schemas/hours/opening-hours.zod";
 import { apiRequest } from "@/services/api/core/client";
 
 export async function saveOpeningHours(branchId: string, payload: OpeningHoursPayload): Promise<OpeningHoursDay[]> {

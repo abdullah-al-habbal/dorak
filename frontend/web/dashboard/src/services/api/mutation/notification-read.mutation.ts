@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { dashboardNotificationSchema } from "@/schemas/dashboard-notification.zod";
+import { dashboardNotificationSchema } from "@/schemas/account/dashboard-notification.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
 

@@ -1,7 +1,7 @@
 import { BRANCH_OPTIONS_LIMIT } from "@/config/branch.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import type { BrandStatus } from "@/enums/brand-status.enum";
-import { brandOptionListSchema } from "@/schemas/branch.zod";
+import { brandOptionListSchema } from "@/schemas/branches/branch.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { BrandOption } from "@/types/brands/brand-option.type";
 

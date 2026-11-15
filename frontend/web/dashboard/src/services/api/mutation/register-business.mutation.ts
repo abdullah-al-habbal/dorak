@@ -1,7 +1,7 @@
 import { API_ROUTE } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { acknowledgementSchema } from "@/schemas/acknowledgement.zod";
-import { loginResultSchema } from "@/schemas/login-result.zod";
+import { acknowledgementSchema } from "@/schemas/core/acknowledgement.zod";
+import { loginResultSchema } from "@/schemas/core/login-result.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { LoginResult } from "@/types/core/login-result.type";
 import type { RegisterBusinessBody } from "@/types/core/register-business-body.type";

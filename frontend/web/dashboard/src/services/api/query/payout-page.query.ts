@@ -1,7 +1,7 @@
 import { PAYOUT_PER_PAGE } from "@/config/payout.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
-import { payoutListSchema } from "@/schemas/payout.zod";
+import { payoutListSchema } from "@/schemas/earnings/payout.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { PayoutFilters } from "@/types/earnings/payout-filters.type";
 import type { PayoutPage } from "@/types/earnings/payout-page.type";

@@ -1,6 +1,6 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { barberApprovalSchema } from "@/schemas/barber-approval.zod";
+import { barberApprovalSchema } from "@/schemas/stylists/barber-approval.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 

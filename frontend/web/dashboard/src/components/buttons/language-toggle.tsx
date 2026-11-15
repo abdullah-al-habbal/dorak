@@ -13,7 +13,7 @@ import {
 import { LOCALES, LOCALE_LABEL } from "@/config/locales.constant";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useLocaleSwitch } from "@/hooks/core/use-locale-switch";
-import { localeSchema } from "@/schemas/locale.zod";
+import { localeSchema } from "@/schemas/core/locale.zod";
 
 export function LanguageToggle() {
   const { locale, dictionary } = useI18n();

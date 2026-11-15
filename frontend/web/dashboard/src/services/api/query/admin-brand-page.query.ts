@@ -2,7 +2,7 @@ import { ADMIN_BRAND_PER_PAGE } from "@/config/admin-brand.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { adminBrandQueryString } from "@/lib/brands/admin-brand-filters.util";
 import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
-import { adminBrandListSchema } from "@/schemas/admin-brand.zod";
+import { adminBrandListSchema } from "@/schemas/brands/admin-brand.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
 import type { AdminBrandPage } from "@/types/brands/admin-brand-page.type";

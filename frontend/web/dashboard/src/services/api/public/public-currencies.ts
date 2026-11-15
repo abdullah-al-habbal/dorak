@@ -1,6 +1,6 @@
 import { BACKEND_TIMEOUT_MS } from "@/config/backend.constant";
-import { currencyListSchema } from "@/schemas/currency.zod";
-import { apiSuccessBodySchema } from "@/schemas/api-success-body.zod";
+import { currencyListSchema } from "@/schemas/platform/currency.zod";
+import { apiSuccessBodySchema } from "@/schemas/core/api-success-body.zod";
 import { readBackendUrl } from "@/services/api/auth/session-keys.util";
 import type { Currency } from "@/types/platform/currency.type";
 

@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PLAN_MAX_DESCRIPTION, PLAN_MAX_NAME } from "@/config/plan.constant";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { PlanFieldsProps } from "@/interfaces/plans/plan-fields-props.interface";
-import type { PlanFormValues } from "@/schemas/plan-form.zod";
+import type { PlanFormValues } from "@/schemas/plans/plan-form.zod";
 
 export function PlanIdentityFields({ form }: PlanFieldsProps): JSX.Element {
   const { plans: t } = useDictionary();

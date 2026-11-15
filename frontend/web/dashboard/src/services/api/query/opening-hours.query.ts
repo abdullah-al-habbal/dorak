@@ -1,6 +1,6 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
-import { openingHoursSchema } from "@/schemas/opening-hours.zod";
+import { openingHoursSchema } from "@/schemas/hours/opening-hours.zod";
 import { apiRequest } from "@/services/api/core/client";
 
 export async function fetchOpeningHours(branchId: string): Promise<OpeningHoursDay[]> {

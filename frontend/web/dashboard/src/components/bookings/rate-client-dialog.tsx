@@ -15,7 +15,7 @@ import { HttpStatus } from "@/enums/http-status.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useRateClient } from "@/hooks/clients/use-rate-client";
 import { cn } from "@/lib/utils";
-import { clientRatingInputSchema } from "@/schemas/client-rating.zod";
+import { clientRatingInputSchema } from "@/schemas/clients/client-rating.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { Booking } from "@/types/bookings/booking.type";
 

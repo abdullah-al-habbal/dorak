@@ -2,8 +2,8 @@ import { z } from "zod";
 
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { branchJobPostingSchema } from "@/schemas/branch-oversight.zod";
-import { jobApplicationSchema } from "@/schemas/job-application.zod";
+import { branchJobPostingSchema } from "@/schemas/branches/branch-oversight.zod";
+import { jobApplicationSchema } from "@/schemas/jobs/job-application.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
 import type { JobApplication } from "@/types/jobs/job-application.type";

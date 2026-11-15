@@ -23,8 +23,8 @@ import { useAuthStore } from "@/store/auth.store";
 import { mapApiFieldErrors } from "@/lib/core/api-field-errors.util";
 import { localizedText } from "@/lib/core/booking-format.util";
 import { emptyStylistForm, formToStylistPayload, stylistToForm } from "@/lib/stylists/stylist-form.util";
-import { createStylistSchema } from "@/schemas/stylist-form.zod";
-import type { StylistFormValues } from "@/schemas/stylist-form.zod";
+import { createStylistSchema } from "@/schemas/stylists/stylist-form.zod";
+import type { StylistFormValues } from "@/schemas/stylists/stylist-form.zod";
 import type { Stylist } from "@/types/stylists/stylist.type";
 
 interface StylistFormDialogProps {

@@ -1,6 +1,6 @@
 import { API_ROUTE } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { acknowledgementSchema } from "@/schemas/acknowledgement.zod";
+import { acknowledgementSchema } from "@/schemas/core/acknowledgement.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { ChangePasswordBody } from "@/types/account/change-password-body.type";
 

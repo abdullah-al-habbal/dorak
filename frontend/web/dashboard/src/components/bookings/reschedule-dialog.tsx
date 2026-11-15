@@ -15,8 +15,8 @@ import { useI18n } from "@/hooks/core/use-i18n";
 import { useRescheduleBooking } from "@/hooks/bookings/use-reschedule-booking";
 import { isoToLocalInput, localInputToUtcIso, toLocalInput } from "@/lib/bookings/booking-datetime.util";
 import { mapBookingFormError } from "@/lib/bookings/booking-form-error.util";
-import { createRescheduleSchema } from "@/schemas/reschedule-form.zod";
-import type { RescheduleFormValues } from "@/schemas/reschedule-form.zod";
+import { createRescheduleSchema } from "@/schemas/bookings/reschedule-form.zod";
+import type { RescheduleFormValues } from "@/schemas/bookings/reschedule-form.zod";
 import type { Booking } from "@/types/bookings/booking.type";
 
 const START_FIELD = "starts_at";

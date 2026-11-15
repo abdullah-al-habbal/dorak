@@ -12,7 +12,7 @@ import { AuthActor } from "@/enums/auth-actor.enum";
 import { ApiErrorCode } from "@/enums/api-error-code.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { registerErrorMessage } from "@/lib/account/register-error.util";
-import { verifyCodeFormSchema } from "@/schemas/register-business-form.zod";
+import { verifyCodeFormSchema } from "@/schemas/account/register-business-form.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import { resendOwnerCode, verifyOwnerCode } from "@/services/api/mutation/register-business.mutation";
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { payoutListSchema } from "@/schemas/payout.zod";
-import { subscriptionListSchema } from "@/schemas/subscription.zod";
+import { payoutListSchema } from "@/schemas/earnings/payout.zod";
+import { subscriptionListSchema } from "@/schemas/plans/subscription.zod";
 
 const payout = { id: "p1", status: "paid", direction_type: "platform_to_brand", total_amount_minor: 1000, currency_code: "USD", brand: { id: "b1", name: { en: "Brand", ar: "علامة" } }, paid_at: null, created_at: "2026-11-01T10:00:00+00:00", extra: 1 };
 

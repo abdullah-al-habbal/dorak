@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { loginFormSchema } from "@/schemas/login-form.zod";
+import { loginFormSchema } from "@/schemas/core/login-form.zod";
 import { isSafeCallback } from "@/services/api/auth/route-policy.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import { loginMutation } from "@/services/api/mutation/login.mutation";

@@ -9,7 +9,7 @@ import { BRANCH_MAX_EMAIL, BRANCH_MAX_NAME, BRANCH_MAX_PASSWORD } from "@/config
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { BranchFieldsProps } from "@/interfaces/branches/branch-fields-props.interface";
-import type { BranchFormValues } from "@/schemas/branch-form.zod";
+import type { BranchFormValues } from "@/schemas/branches/branch-form.zod";
 
 export function BranchIdentityFields({ form, creating }: BranchFieldsProps): JSX.Element {
   const { branches: t } = useDictionary();

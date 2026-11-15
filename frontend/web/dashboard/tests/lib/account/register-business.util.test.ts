@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { brandBody, existingOwnerBody, registerBusinessBody } from "@/lib/account/register-business.util";
-import { registerBusinessBodySchema } from "@/schemas/register-business-body.zod";
-import { registerExistingBodySchema } from "@/schemas/register-existing-body.zod";
+import { registerBusinessBodySchema } from "@/schemas/account/register-business-body.zod";
+import { registerExistingBodySchema } from "@/schemas/account/register-existing-body.zod";
 import type { RegisterBusinessFormValues } from "@/types/core/register-business-form-values.type";
 
 const values: RegisterBusinessFormValues = {

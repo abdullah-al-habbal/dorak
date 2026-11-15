@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { ChairPayload } from "@/interfaces/chairs/chair-payload.interface";
-import { chairSchema } from "@/schemas/chair.zod";
+import { chairSchema } from "@/schemas/chairs/chair.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { Chair } from "@/types/chairs/chair.type";
 

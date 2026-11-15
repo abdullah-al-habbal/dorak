@@ -3,7 +3,7 @@ import { z } from "zod";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { UniverseVisibility } from "@/enums/universe-visibility.enum";
-import { contentPageSchema, contentSectionSchema, onboardingConfigSchema, testimonialSchema } from "@/schemas/website-content.zod";
+import { contentPageSchema, contentSectionSchema, onboardingConfigSchema, testimonialSchema } from "@/schemas/platform/website-content.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { ContentPage, ContentSection, OnboardingConfig, Testimonial } from "@/types/platform/website-content.type";
 

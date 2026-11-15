@@ -4,10 +4,10 @@ import { ADMIN_USER_MAX_EMAIL } from "@/config/admin-user.constant";
 import { BRAND_MAX_DESCRIPTION } from "@/config/admin-brand.constant";
 import { Locale } from "@/enums/locale.enum";
 import { DICTIONARIES } from "@/locales/dictionaries.constant";
-import { createAdminUserSchema } from "@/schemas/admin-user-form.zod";
-import { createBrandCreateSchema } from "@/schemas/brand-create-form.zod";
-import { createBrandEditSchema } from "@/schemas/brand-edit-form.zod";
-import { createRescheduleSchema } from "@/schemas/reschedule-form.zod";
+import { createAdminUserSchema } from "@/schemas/platform/admin-user-form.zod";
+import { createBrandCreateSchema } from "@/schemas/brands/brand-create-form.zod";
+import { createBrandEditSchema } from "@/schemas/brands/brand-edit-form.zod";
+import { createRescheduleSchema } from "@/schemas/bookings/reschedule-form.zod";
 import { zodOutcome } from "@tests/helpers/zod-outcome.helper";
 
 const en = DICTIONARIES[Locale.En];

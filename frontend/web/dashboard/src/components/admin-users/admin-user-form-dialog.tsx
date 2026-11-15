@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { ADMIN_USER_MAX_EMAIL, ADMIN_USER_MAX_NAME } from "@/config/admin-user.constant";
 import { useAdminUserForm } from "@/hooks/platform/use-admin-user-form";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import type { AdminUserFormValues } from "@/schemas/admin-user-form.zod";
+import type { AdminUserFormValues } from "@/schemas/platform/admin-user-form.zod";
 import type { AdminUser } from "@/types/platform/admin-user.type";
 
 interface AdminUserFormDialogProps {

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { ServicePayload } from "@/interfaces/services/service-payload.interface";
-import { serviceSchema } from "@/schemas/service.zod";
+import { serviceSchema } from "@/schemas/services/service.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { Service } from "@/types/services/service.type";
 

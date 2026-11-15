@@ -8,8 +8,8 @@ import type { UseFormReturn } from "react-hook-form";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useSaveAdminUser } from "@/hooks/platform/use-save-admin-user";
 import { adminUserToForm, emptyAdminUserForm, formToAdminUserPayload, mapAdminUserSaveError } from "@/lib/platform/admin-user-form.util";
-import { createAdminUserSchema } from "@/schemas/admin-user-form.zod";
-import type { AdminUserFormValues } from "@/schemas/admin-user-form.zod";
+import { createAdminUserSchema } from "@/schemas/platform/admin-user-form.zod";
+import type { AdminUserFormValues } from "@/schemas/platform/admin-user-form.zod";
 import type { AdminUser } from "@/types/platform/admin-user.type";
 
 interface AdminUserFormController {

@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
-import { adminPayoutSchema } from "@/schemas/admin-payout.zod";
-import { commissionEntryListSchema } from "@/schemas/commission.zod";
+import { adminPayoutSchema } from "@/schemas/earnings/admin-payout.zod";
+import { commissionEntryListSchema } from "@/schemas/earnings/commission.zod";
 import { apiRequest, apiRequestWithMeta } from "@/services/api/core/client";
 import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 import type { CommissionEntryPage } from "@/types/earnings/commission.type";

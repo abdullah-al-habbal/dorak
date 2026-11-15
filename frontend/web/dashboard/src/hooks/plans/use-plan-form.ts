@@ -12,8 +12,8 @@ import { useOverlay } from "@/hooks/core/use-overlay";
 import { useSavePlan } from "@/hooks/plans/use-save-plan";
 import { emptyPlanForm, formToPlanPayload, planToForm } from "@/lib/plans/plan-form.util";
 import { mapPlanSaveError } from "@/lib/plans/plan-form-error.util";
-import { createPlanSchema } from "@/schemas/plan-form.zod";
-import type { PlanFormValues } from "@/schemas/plan-form.zod";
+import { createPlanSchema } from "@/schemas/plans/plan-form.zod";
+import type { PlanFormValues } from "@/schemas/plans/plan-form.zod";
 import type { Plan } from "@/types/plans/plan.type";
 
 interface PlanFormController {

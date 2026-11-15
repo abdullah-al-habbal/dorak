@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { adminPayoutListSchema } from "@/schemas/admin-payout.zod";
-import { adminSubscriptionListSchema } from "@/schemas/admin-subscription.zod";
-import { planFeatureKeysSchema, planListSchema } from "@/schemas/plan.zod";
+import { adminPayoutListSchema } from "@/schemas/earnings/admin-payout.zod";
+import { adminSubscriptionListSchema } from "@/schemas/plans/admin-subscription.zod";
+import { planFeatureKeysSchema, planListSchema } from "@/schemas/plans/plan.zod";
 
 const payout = { id: "p1", status: "draft", direction_type: "platform_to_brand", total_amount_minor: 1000, currency: { id: "c", code: "USD" }, brand: { id: "b1", name: { en: "Brand", ar: "علامة" } }, notes: null, created_at: "2026-11-01T10:00:00+00:00" };
 

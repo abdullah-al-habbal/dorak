@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { floorPlanSchema } from "@/schemas/floor-plan.zod";
+import { floorPlanSchema } from "@/schemas/chairs/floor-plan.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 

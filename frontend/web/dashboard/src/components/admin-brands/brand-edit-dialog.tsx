@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { BRAND_MAX_DESCRIPTION, BRAND_MAX_NAME } from "@/config/admin-brand.constant";
 import { useBrandEditForm } from "@/hooks/brands/use-brand-edit-form";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import type { BrandEditFormValues } from "@/schemas/brand-edit-form.zod";
+import type { BrandEditFormValues } from "@/schemas/brands/brand-edit-form.zod";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 interface BrandEditDialogProps {

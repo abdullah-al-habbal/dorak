@@ -1,5 +1,5 @@
 import type { StylistPayload } from "@/interfaces/stylists/stylist-payload.interface";
-import type { StylistFormValues } from "@/schemas/stylist-form.zod";
+import type { StylistFormValues } from "@/schemas/stylists/stylist-form.zod";
 import type { Stylist } from "@/types/stylists/stylist.type";
 
 export function emptyStylistForm(): StylistFormValues {

@@ -1,6 +1,6 @@
 import { CLAIM_ISSUER } from "@/config/backend.constant";
-import { jwtHeaderSchema } from "@/schemas/jwt-header.zod";
-import { sessionClaimSchema } from "@/schemas/session-claim.zod";
+import { jwtHeaderSchema } from "@/schemas/core/jwt-header.zod";
+import { sessionClaimSchema } from "@/schemas/core/session-claim.zod";
 import { readKeyRing } from "@/services/api/auth/session-keys.util";
 import type { SessionClaim } from "@/types/core/session-claim.type";
 

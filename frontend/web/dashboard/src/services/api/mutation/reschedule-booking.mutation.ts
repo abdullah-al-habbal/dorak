@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { ReschedulePayload } from "@/interfaces/bookings/reschedule-payload.interface";
-import { bookingSchema } from "@/schemas/booking.zod";
+import { bookingSchema } from "@/schemas/bookings/booking.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { Booking } from "@/types/bookings/booking.type";
 

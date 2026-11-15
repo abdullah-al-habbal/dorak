@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { earningsSchema } from "@/schemas/earnings.zod";
+import { earningsSchema } from "@/schemas/earnings/earnings.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { Earnings } from "@/types/earnings/earnings.type";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";

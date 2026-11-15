@@ -2,7 +2,7 @@ import { REVIEW_MODERATION_PER_PAGE } from "@/config/review-moderation.constant"
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
 import { reviewModerationQueryString } from "@/lib/clients/review-moderation-filters.util";
-import { adminReviewListSchema } from "@/schemas/admin-review.zod";
+import { adminReviewListSchema } from "@/schemas/clients/admin-review.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { AdminReviewPage } from "@/types/clients/admin-review-page.type";
 import type { ReviewModerationFilters } from "@/types/clients/review-moderation-filters.type";

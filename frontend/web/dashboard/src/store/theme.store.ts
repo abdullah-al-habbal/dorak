@@ -5,7 +5,7 @@ import { ThemeMode } from "@/enums/theme-mode.enum";
 import type { ThemeState } from "@/interfaces/ui/theme-state.interface";
 import { readClientCookie, writeClientCookie } from "@/lib/core/cookie.util";
 import { applyTheme } from "@/lib/core/theme.util";
-import { themeModeSchema } from "@/schemas/theme-mode.zod";
+import { themeModeSchema } from "@/schemas/core/theme-mode.zod";
 
 export const useThemeStore = create<ThemeState>((set) => ({
   mode: ThemeMode.System,

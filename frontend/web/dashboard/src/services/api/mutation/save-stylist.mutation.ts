@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import type { StylistPayload } from "@/interfaces/stylists/stylist-payload.interface";
-import { stylistSchema } from "@/schemas/stylist.zod";
+import { stylistSchema } from "@/schemas/stylists/stylist.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { Stylist } from "@/types/stylists/stylist.type";
 

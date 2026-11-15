@@ -1,5 +1,5 @@
 import { API_ROUTE } from "@/config/routes.constant";
-import { sessionPayloadSchema } from "@/schemas/session-payload.zod";
+import { sessionPayloadSchema } from "@/schemas/core/session-payload.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { SessionPayload } from "@/types/core/session-payload.type";
 

@@ -8,7 +8,7 @@ import { fieldErrorId } from "@/components/common/form-field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/core/booking-format.util";
-import type { WalkInFormValues } from "@/schemas/walk-in-form.zod";
+import type { WalkInFormValues } from "@/schemas/bookings/walk-in-form.zod";
 import type { ServiceOption } from "@/types/services/service-option.type";
 
 interface WalkInServicePickerProps {

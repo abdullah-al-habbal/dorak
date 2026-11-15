@@ -12,8 +12,8 @@ import { useOverlay } from "@/hooks/core/use-overlay";
 import { useSaveBranch } from "@/hooks/branches/use-save-branch";
 import { branchToForm, emptyBranchForm, formToBranchPayload } from "@/lib/branches/branch-form.util";
 import { mapBranchSaveError } from "@/lib/branches/branch-form-error.util";
-import { createBranchSchema } from "@/schemas/branch-form.zod";
-import type { BranchFormValues } from "@/schemas/branch-form.zod";
+import { createBranchSchema } from "@/schemas/branches/branch-form.zod";
+import type { BranchFormValues } from "@/schemas/branches/branch-form.zod";
 import type { BranchDetail } from "@/types/branches/branch-detail.type";
 
 interface BranchFormController {

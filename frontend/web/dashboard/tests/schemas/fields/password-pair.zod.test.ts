@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { zodOutcome } from "@tests/helpers/zod-outcome.helper";
-import { changePasswordFormSchema } from "@/schemas/change-password-form.zod";
+import { changePasswordFormSchema } from "@/schemas/account/change-password-form.zod";
 import { passwordPairSchema } from "@/schemas/fields/password-pair.zod";
 
 const MESSAGES = { length: "length", mismatch: "mismatch" };

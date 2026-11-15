@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { adminCurrencySchema, exchangeRateSchema } from "@/schemas/currency-admin.zod";
+import { adminCurrencySchema, exchangeRateSchema } from "@/schemas/platform/currency-admin.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { AdminCurrency, ExchangeRate } from "@/types/platform/currency-admin.type";
 

@@ -8,7 +8,7 @@ import { HttpStatus } from "@/enums/http-status.enum";
 import { apiFailure, apiSuccess } from "@/lib/api-response";
 import { getRequestDictionary } from "@/locales/get-request-dictionary";
 import { resolveLocale } from "@/locales/resolve-locale.util";
-import { registerBusinessBodySchema } from "@/schemas/register-business-body.zod";
+import { registerBusinessBodySchema } from "@/schemas/account/register-business-body.zod";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { failureFromBackend } from "@/services/api/auth/failure-response";

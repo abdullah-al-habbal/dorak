@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { hoursOverrideListSchema } from "@/schemas/hours-override.zod";
+import { hoursOverrideListSchema } from "@/schemas/hours/hours-override.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { HoursOverride } from "@/types/hours/hours-override.type";
 

@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { barberActivationLogListSchema, barberAffiliationListSchema } from "@/schemas/barber-approval.zod";
+import { barberActivationLogListSchema, barberAffiliationListSchema } from "@/schemas/stylists/barber-approval.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { BarberActivationLog } from "@/types/stylists/barber-activation-log.type";
 import type { BarberAffiliation } from "@/types/stylists/barber-affiliation.type";

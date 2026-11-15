@@ -1,7 +1,7 @@
 import { REVIEW_PER_PAGE } from "@/config/review.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
-import { reviewListSchema, reviewSummarySchema } from "@/schemas/review.zod";
+import { reviewListSchema, reviewSummarySchema } from "@/schemas/clients/review.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { ReviewPage } from "@/types/clients/review-page.type";
 

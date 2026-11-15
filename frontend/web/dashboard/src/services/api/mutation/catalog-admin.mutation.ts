@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import { catalogItemSchema, catalogTagSchema } from "@/schemas/catalog-item.zod";
+import { catalogItemSchema, catalogTagSchema } from "@/schemas/services/catalog-item.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { CatalogItem, CatalogTag } from "@/types/services/catalog-item.type";
 

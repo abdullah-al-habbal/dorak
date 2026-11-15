@@ -1,6 +1,6 @@
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import type { SessionTokens } from "@/interfaces/core/session-tokens.interface";
-import { loginDataSchema } from "@/schemas/login-data.zod";
+import { loginDataSchema } from "@/schemas/core/login-data.zod";
 import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
 

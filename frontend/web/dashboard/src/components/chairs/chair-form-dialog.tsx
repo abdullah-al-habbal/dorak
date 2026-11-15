@@ -23,8 +23,8 @@ import { useOverlay } from "@/hooks/core/use-overlay";
 import { useSaveChair } from "@/hooks/chairs/use-save-chair";
 import { mapApiFieldErrors } from "@/lib/core/api-field-errors.util";
 import { chairToForm, emptyChairForm, formToChairPayload } from "@/lib/chairs/chair-form.util";
-import { createChairSchema } from "@/schemas/chair-form.zod";
-import type { ChairFormValues } from "@/schemas/chair-form.zod";
+import { createChairSchema } from "@/schemas/chairs/chair-form.zod";
+import type { ChairFormValues } from "@/schemas/chairs/chair-form.zod";
 import { useAuthStore } from "@/store/auth.store";
 import type { Chair } from "@/types/chairs/chair.type";
 
