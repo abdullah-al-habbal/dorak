@@ -3,8 +3,8 @@
 import type { JSX } from "react";
 
 import { AccountBanDialog } from "@/components/common/account-ban-dialog";
-import { useBanBarber } from "@/hooks/use-ban-barber";
-import { useI18n } from "@/hooks/use-i18n";
+import { useBanBarber } from "@/hooks/stylists/use-ban-barber";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 

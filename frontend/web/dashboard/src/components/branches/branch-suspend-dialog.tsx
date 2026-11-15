@@ -11,8 +11,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Textarea } from "@/components/ui/textarea";
 import { BRAND_REASON_MAX, BRAND_REASON_MIN } from "@/config/admin-brand.constant";
 import { BranchLifecycleAction } from "@/enums/branch-lifecycle-action.enum";
-import { useBranchLifecycle } from "@/hooks/use-branch-lifecycle";
-import { useI18n } from "@/hooks/use-i18n";
+import { useBranchLifecycle } from "@/hooks/branches/use-branch-lifecycle";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { Branch } from "@/types/branches/branch.type";
 

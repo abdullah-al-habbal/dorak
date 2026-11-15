@@ -8,9 +8,9 @@ import { WorkingHoursDayRow } from "@/components/working-hours/working-hours-day
 import { WorkingHoursSaveBar } from "@/components/working-hours/working-hours-save-bar";
 import { WEEK_START } from "@/config/week-start.constant";
 import type { Weekday } from "@/enums/weekday.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useLeaveWarning } from "@/hooks/use-leave-warning";
-import { useSaveOpeningHours } from "@/hooks/use-save-opening-hours";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useLeaveWarning } from "@/hooks/core/use-leave-warning";
+import { useSaveOpeningHours } from "@/hooks/hours/use-save-opening-hours";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { Shift } from "@/interfaces/hours/shift.interface";
 import { formErrorMessage } from "@/lib/map-api-form-error.util";

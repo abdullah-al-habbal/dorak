@@ -3,7 +3,7 @@
 import type { JSX, ReactNode } from "react";
 
 import { BarberStatusBadge } from "@/components/barber-approvals/barber-status-badge";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 function Field({ label, children }: { label: string; children: ReactNode }): JSX.Element {

@@ -3,7 +3,7 @@
 import type { JSX } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import { cn } from "@/lib/utils";
 
 interface SkeletonRowProps {

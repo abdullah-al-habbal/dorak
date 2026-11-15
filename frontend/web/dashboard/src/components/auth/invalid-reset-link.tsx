@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { forgotPasswordRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 /** Shown for a link the backend refused, or one missing its token or email. */
 export function InvalidResetLink({ actor }: { actor: AuthActor }): JSX.Element {

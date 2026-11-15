@@ -7,7 +7,7 @@ import type { JSX } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { Weekday } from "@/enums/weekday.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { weekdayLabel } from "@/lib/weekday-label.util";
 
 interface CopyDayPopoverProps {

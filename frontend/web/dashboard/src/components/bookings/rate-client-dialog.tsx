@@ -12,8 +12,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Textarea } from "@/components/ui/textarea";
 import { CLIENT_RATING_BODY_MAX, CLIENT_RATING_MAX, CLIENT_RATING_MIN } from "@/config/client-rating.constant";
 import { HttpStatus } from "@/enums/http-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useRateClient } from "@/hooks/use-rate-client";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useRateClient } from "@/hooks/clients/use-rate-client";
 import { cn } from "@/lib/utils";
 import { clientRatingInputSchema } from "@/schemas/client-rating.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
 import { REVIEW_MAX_RATING } from "@/config/review.constant";
 import { ReviewStatus } from "@/enums/review-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import type { AdminReview } from "@/types/clients/admin-review.type";
 

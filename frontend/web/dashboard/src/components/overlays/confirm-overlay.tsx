@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { ConfirmOverlayRequest } from "@/interfaces/ui/confirm-overlay-request.interface";
 
 interface ConfirmOverlayProps {

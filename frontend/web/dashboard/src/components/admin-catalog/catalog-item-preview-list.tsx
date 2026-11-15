@@ -5,8 +5,8 @@ import type { JSX } from "react";
 import { CatalogCategoryStatusBadge } from "@/components/admin-catalog/catalog-category-status-badge";
 import { ErrorState } from "@/components/common/error-state";
 import { SkeletonRows } from "@/components/ui/skeleton-row";
-import { useCatalogCategoryItems } from "@/hooks/use-catalog-category-items";
-import { useI18n } from "@/hooks/use-i18n";
+import { useCatalogCategoryItems } from "@/hooks/services/use-catalog-category-items";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 
 const LOADING_ROWS = 3;

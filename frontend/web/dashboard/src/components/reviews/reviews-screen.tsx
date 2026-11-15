@@ -14,11 +14,11 @@ import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useBranchOptions } from "@/hooks/use-branch-options";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useReviewFilters } from "@/hooks/use-review-filters";
-import { useReviews } from "@/hooks/use-reviews";
+import { useBranchOptions } from "@/hooks/branches/use-branch-options";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useReviewFilters } from "@/hooks/clients/use-review-filters";
+import { useReviews } from "@/hooks/clients/use-reviews";
 import { useAuthStore } from "@/store/auth.store";
 import type { Review } from "@/types/clients/review.type";
 

@@ -5,7 +5,7 @@ import type { JSX } from "react";
 
 import { Notice } from "@/components/common/notice";
 import { Button } from "@/components/ui/button";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 interface ErrorStateProps {
   title: string;

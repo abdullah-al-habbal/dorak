@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { forgotPasswordRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useLoginForm } from "@/hooks/use-login-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useLoginForm } from "@/hooks/core/use-login-form";
 
 interface LoginFormProps {
   actor: AuthActor;

@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { TextDirection } from "@/enums/text-direction.enum";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useSidebar } from "@/hooks/use-sidebar";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useSidebar } from "@/hooks/core/use-sidebar";
 
 export function MobileNav({ actor }: { actor: AuthActor }) {
   const { dictionary, direction } = useI18n();

@@ -10,7 +10,7 @@ import { OnboardingPanel } from "@/components/website-content/onboarding-panel";
 import { TestimonialsPanel } from "@/components/website-content/testimonials-panel";
 import type { ContentView } from "@/config/website-content.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 
 const VIEWS: readonly ContentView[] = ["pages", "testimonials", "onboarding"];
 

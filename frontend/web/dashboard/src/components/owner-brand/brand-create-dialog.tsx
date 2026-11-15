@@ -11,9 +11,9 @@ import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { BRAND_MAX_NAME } from "@/config/admin-brand.constant";
 import { OWNER_BRANCH_NAME_MAX } from "@/config/owner-brand.constant";
-import { useBrandCreateForm } from "@/hooks/use-brand-create-form";
-import { useCurrencies } from "@/hooks/use-currencies";
-import { useI18n } from "@/hooks/use-i18n";
+import { useBrandCreateForm } from "@/hooks/brands/use-brand-create-form";
+import { useCurrencies } from "@/hooks/platform/use-currencies";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { BrandCreateFormValues } from "@/schemas/brand-create-form.zod";
 

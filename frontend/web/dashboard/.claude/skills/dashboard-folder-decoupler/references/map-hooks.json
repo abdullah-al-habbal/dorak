@@ -1,0 +1,63 @@
+{
+  "dirs": [
+    "hooks"
+  ],
+  "default": "core",
+  "core": [
+    "^use-(dictionary|i18n|overlay|list-query|url-state|url-filters|replace-query|detail-query|feedback-mutation|save-mutation|delete-mutation|optimistic-toggle-mutation|reference-query|media-query|sidebar|locale-switch|leave-warning|sign-out|status-history)$"
+  ],
+  "rules": [
+    [
+      "job|application",
+      "jobs"
+    ],
+    [
+      "barber|stylist",
+      "stylists"
+    ],
+    [
+      "booking|walk-in|reschedule|schedule|appointment|slot|calendar",
+      "bookings"
+    ],
+    [
+      "service|catalog",
+      "services"
+    ],
+    [
+      "chair|floor-plan",
+      "chairs"
+    ],
+    [
+      "opening-hours|hours-override|working-hours|shift|weekday|hours",
+      "hours"
+    ],
+    [
+      "earning|commission|payout",
+      "earnings"
+    ],
+    [
+      "client|review|rating",
+      "clients"
+    ],
+    [
+      "plan|subscription|feature-key",
+      "plans"
+    ],
+    [
+      "brand",
+      "brands"
+    ],
+    [
+      "branch|invitation",
+      "branches"
+    ],
+    [
+      "account|notification|password|email-change|display-name|language-preference|profile",
+      "account"
+    ],
+    [
+      "platform|admin-invite|currenc|language|payment-gateway|website-content|analytics|admin-user|exchange-rate|setting",
+      "platform"
+    ]
+  ]
+}

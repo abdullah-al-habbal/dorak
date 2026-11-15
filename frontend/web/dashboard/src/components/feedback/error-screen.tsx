@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ROUTE_ROOT } from "@/config/routes.constant";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import { classifyError, errorReference } from "@/lib/error-view.util";
 
 interface ErrorScreenProps {

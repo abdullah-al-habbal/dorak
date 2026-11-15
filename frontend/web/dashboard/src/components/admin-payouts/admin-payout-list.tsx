@@ -7,7 +7,7 @@ import { PayoutStatusBadge } from "@/components/payouts/payout-status-badge";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
 import { PayoutAction } from "@/enums/payout-action.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { formatPrice, localizedText } from "@/lib/booking-format.util";
 import { availablePayoutActions } from "@/lib/payout-actions.util";

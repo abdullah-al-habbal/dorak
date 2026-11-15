@@ -7,7 +7,7 @@ import type { UseFormRegisterReturn } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 interface PasswordInputProps {
   id: string;

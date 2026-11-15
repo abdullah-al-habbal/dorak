@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { NOTIFICATION_BADGE_MAX } from "@/config/notification.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useMarkAllNotificationsRead, useMarkNotificationRead } from "@/hooks/use-mark-notification-read";
-import { useNotificationFeed } from "@/hooks/use-notification-feed";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useMarkAllNotificationsRead, useMarkNotificationRead } from "@/hooks/account/use-mark-notification-read";
+import { useNotificationFeed } from "@/hooks/account/use-notification-feed";
 import { notificationHref } from "@/lib/notification-link.util";
 import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
 

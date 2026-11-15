@@ -6,7 +6,7 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { BRANCH_MAX_ADDRESS, BRANCH_MAX_DESCRIPTION } from "@/config/branch.constant";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { BranchFieldsProps } from "@/interfaces/branches/branch-fields-props.interface";
 import type { BranchFormValues } from "@/schemas/branch-form.zod";
 

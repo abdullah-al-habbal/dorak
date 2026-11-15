@@ -11,10 +11,10 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { DEFAULT_REVIEW_MODERATION_STATUS } from "@/config/review-moderation.constant";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { ReviewStatus } from "@/enums/review-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useReviewModeration } from "@/hooks/use-review-moderation";
-import { useReviewModerationFilters } from "@/hooks/use-review-moderation-filters";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useReviewModeration } from "@/hooks/clients/use-review-moderation";
+import { useReviewModerationFilters } from "@/hooks/clients/use-review-moderation-filters";
 import type { AdminReview } from "@/types/clients/admin-review.type";
 
 function toStatus(value: string): ReviewStatus {

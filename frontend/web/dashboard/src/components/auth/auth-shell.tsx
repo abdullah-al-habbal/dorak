@@ -5,7 +5,7 @@ import type { JSX, ReactNode } from "react";
 import { BrandPanel } from "@/components/auth/brand-panel";
 import { LanguageToggle } from "@/components/buttons/language-toggle";
 import { ThemeToggle } from "@/components/buttons/theme-toggle";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 interface AuthShellProps {
   /** The workspace the page belongs to, shown above the title. */

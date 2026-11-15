@@ -46,7 +46,7 @@ No file redeclares `HTTP_*` constants or writes a bare status number.
 - `HttpStatus` gains `MethodNotAllowed` (405), `PayloadTooLarge` (413), `TooManyRequests` (429),
   `InternalServerError` (500), `BadGateway` (502) and `ServiceUnavailable` (503). The existing
   members keep their names and values.
-- Migrated files: `hooks/use-update-booking-status.ts`, `services/api/proxy/forward.ts`,
+- Migrated files: `hooks/bookings/use-update-booking-status.ts`, `services/api/proxy/forward.ts`,
   `services/api/auth/failure-map.util.ts`, `app/api/auth/{login,refresh,me}/route.ts`, and the
   bare `404` in `proxy.ts`.
 - Out of scope: the "404" text shown on the not-found screen, which is copy, not a status;
@@ -71,7 +71,7 @@ invalidating one or more key roots.
 - Hook signatures and the fields callers read stay unchanged.
 
 Outcome: `useFeedbackMutation({ mutationFn, invalidate, successMessage, errorMessage? })`
-(`hooks/use-feedback-mutation.ts`, callbacks in `lib/feedback-mutation.util.ts`) now backs
+(`hooks/core/use-feedback-mutation.ts`, callbacks in `lib/feedback-mutation.util.ts`) now backs
 eight of the ten hooks. The booking status 409/400 copy moved to `bookingStatusErrorMessage`.
 Create service category (no toast, invalidates on success only) and save opening hours
 (`setQueryData`, no invalidation) keep `useMutation`, because the primitive would change their
@@ -80,7 +80,7 @@ behaviour.
 ### Step 3: Shared list query
 
 Eleven list hooks repeated `useQuery({ queryKey: xKeys.list(...), queryFn, placeholderData:
-keepPreviousData })`. `useListQuery(queryKey, queryFn, enabled?)` (`hooks/use-list-query.ts`,
+keepPreviousData })`. `useListQuery(queryKey, queryFn, enabled?)` (`hooks/core/use-list-query.ts`,
 options in `lib/list-query.util.ts`) now backs branches, stylists, chairs, services, plans,
 reviews, payouts, admin payouts, admin subscriptions, schedule appointments and bookings.
 Reads that must not show the previous record (booking history, opening hours), that have their
@@ -105,7 +105,7 @@ queryFn })` (earnings, analytics, platform settings, schedule hours, subscriptio
 
 ### Step 4: Remaining URL filter alignment
 
-`hooks/use-earnings-range.ts` and `hooks/use-service-search.ts` still call `useSearchParams` and
+`hooks/earnings/use-earnings-range.ts` and `hooks/use-service-search.ts` still call `useSearchParams` and
 `router.replace` by hand. Neither state has a page number, while `useUrlFilters` requires
 `page`.
 
@@ -132,9 +132,9 @@ Design, three layers:
 
 - `lib/url-query.util.ts`: `toReplaceHref(pathname, query)` (bare pathname for an empty query)
   and `applyFilterPatch(filters, patch)` (any non-`page` key resets to page 1).
-- `hooks/use-replace-query.ts`: `useReplaceQuery()` returns a stable writer that calls
+- `hooks/core/use-replace-query.ts`: `useReplaceQuery()` returns a stable writer that calls
   `router.replace(href, { scroll: false })`. It is the only place a query string is written.
-- `hooks/use-url-state.ts`: `useUrlState(fromParams, toParams)` returns `{ value, setValue }`.
+- `hooks/core/use-url-state.ts`: `useUrlState(fromParams, toParams)` returns `{ value, setValue }`.
   `setValue` takes a whole value and does not depend on the current value, so `setRange` and
   `setSearch` keep a stable identity (the services `SearchInput` lists `onCommit` as an effect
   dependency, and a changing setter would restart its debounce).

@@ -2,8 +2,8 @@
 
 import type { JSX } from "react";
 
-import { useI18n } from "@/hooks/use-i18n";
-import { useOpeningHours } from "@/hooks/use-opening-hours";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOpeningHours } from "@/hooks/hours/use-opening-hours";
 import { weekdayLabel } from "@/lib/weekday-label.util";
 
 /** The branch's opening hours, read-only. */

@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import { earningsCsv, earningsFilename } from "@/lib/earnings-csv.util";
 import type { Earnings } from "@/types/earnings/earnings.type";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";

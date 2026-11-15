@@ -6,7 +6,7 @@ import type { JSX } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { ShiftIssue } from "@/enums/shift-issue.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { Shift } from "@/interfaces/hours/shift.interface";
 
 interface ShiftRowProps {

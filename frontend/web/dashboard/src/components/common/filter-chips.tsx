@@ -4,7 +4,7 @@ import { XIcon } from "lucide-react";
 import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { FilterChip } from "@/interfaces/ui/filter-chip.interface";
 
 interface FilterChipsProps {

@@ -7,7 +7,7 @@ import { FormField } from "@/components/common/form-field";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText, formatPrice } from "@/lib/booking-format.util";
 import { draftFromTerms, draftToPayload } from "@/lib/service-override.util";
 import type { ServiceOverridePayload } from "@/services/api/mutation/stylist-pricing.mutation";

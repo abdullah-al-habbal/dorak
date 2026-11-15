@@ -12,8 +12,8 @@ import { FLOOR_DECORATION_TYPES, FLOOR_PLAN_PRESETS, MAX_CANVAS_SIZE } from "@/c
 import { FloorCanvasUnit } from "@/enums/floor-canvas-unit.enum";
 import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
 import type { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import type { FloorPlanEditor } from "@/hooks/use-floor-plan-editor";
+import { useI18n } from "@/hooks/core/use-i18n";
+import type { FloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
 
 const UNITS: readonly FloorCanvasUnit[] = [FloorCanvasUnit.Meters, FloorCanvasUnit.Feet, FloorCanvasUnit.Pixels];
 

@@ -11,9 +11,9 @@ import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { PayoutStatus } from "@/enums/payout-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { usePayoutFilters } from "@/hooks/use-payout-filters";
-import { usePayouts } from "@/hooks/use-payouts";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { usePayoutFilters } from "@/hooks/earnings/use-payout-filters";
+import { usePayouts } from "@/hooks/earnings/use-payouts";
 
 /** Drafts are internal, so the status filter never offers them. */
 const FILTER_STATUSES: readonly PayoutStatus[] = [PayoutStatus.Approved, PayoutStatus.Paid, PayoutStatus.Cancelled];

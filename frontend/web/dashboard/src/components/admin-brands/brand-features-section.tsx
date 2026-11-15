@@ -5,8 +5,8 @@ import type { JSX } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { BRAND_FEATURE_KEYS } from "@/config/admin-brand.constant";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useUpdateBrandFeatures } from "@/hooks/use-update-brand-features";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useUpdateBrandFeatures } from "@/hooks/brands/use-update-brand-features";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** The brand's premium flags. An override switches one on or off for this brand regardless of its plan. */

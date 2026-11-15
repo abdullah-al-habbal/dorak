@@ -7,7 +7,7 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { CLIENT_STATUS_FILTER_ALL } from "@/config/client.constant";
 import { ClientBanFilter } from "@/enums/client-ban-filter.enum";
 import { ClientStatus } from "@/enums/client-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { ClientFilters } from "@/types/clients/client-filters.type";
 
 interface ClientToolbarProps {

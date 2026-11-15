@@ -11,8 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LOCALES, LOCALE_LABEL } from "@/config/locales.constant";
-import { useI18n } from "@/hooks/use-i18n";
-import { useLocaleSwitch } from "@/hooks/use-locale-switch";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useLocaleSwitch } from "@/hooks/core/use-locale-switch";
 import { localeSchema } from "@/schemas/locale.zod";
 
 export function LanguageToggle() {

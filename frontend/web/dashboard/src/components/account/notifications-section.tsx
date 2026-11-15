@@ -6,8 +6,8 @@ import { AccountSection } from "@/components/account/account-section";
 import { NotificationSwitches } from "@/components/account/notification-switches";
 import { ErrorState } from "@/components/common/error-state";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useNotificationPreferences } from "@/hooks/use-notification-preferences";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useNotificationPreferences } from "@/hooks/account/use-notification-preferences";
 
 export function NotificationsSection(): JSX.Element {
   const { account } = useDictionary();

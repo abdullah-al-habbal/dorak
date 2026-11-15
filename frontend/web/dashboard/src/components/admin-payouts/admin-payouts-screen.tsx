@@ -13,11 +13,11 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import type { PayoutAction } from "@/enums/payout-action.enum";
 import { PayoutStatus } from "@/enums/payout-status.enum";
-import { useAdminPayouts } from "@/hooks/use-admin-payouts";
-import { useGeneratePayouts } from "@/hooks/use-generate-payouts";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { usePayoutFilters } from "@/hooks/use-payout-filters";
+import { useAdminPayouts } from "@/hooks/earnings/use-admin-payouts";
+import { useGeneratePayouts } from "@/hooks/earnings/use-generate-payouts";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { usePayoutFilters } from "@/hooks/earnings/use-payout-filters";
 import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 
 /** The platform admin's payout queue: every status (drafts included), with approve, pay and cancel actions. */

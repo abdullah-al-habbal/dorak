@@ -6,8 +6,8 @@ import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { PlatformSettingGroup } from "@/components/platform-settings/platform-setting-group";
 import { Button } from "@/components/ui/button";
 import { SETTING_GROUP_ORDER } from "@/config/platform-settings.constant";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { usePlatformSettingsForm } from "@/hooks/use-platform-settings-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { usePlatformSettingsForm } from "@/hooks/platform/use-platform-settings-form";
 import { groupSettings } from "@/lib/platform-settings.util";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 

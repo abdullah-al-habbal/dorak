@@ -11,8 +11,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { CURRENCY_CODE_LENGTH, CURRENCY_NAME_MAX, CURRENCY_SYMBOL_MAX } from "@/config/currency-admin.constant";
 import { HttpStatus } from "@/enums/http-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useSaveCurrency } from "@/hooks/use-save-currency";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useSaveCurrency } from "@/hooks/platform/use-save-currency";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { AdminCurrency } from "@/types/platform/currency-admin.type";
 

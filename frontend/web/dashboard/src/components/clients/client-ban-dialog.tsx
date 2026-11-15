@@ -3,8 +3,8 @@
 import type { JSX } from "react";
 
 import { AccountBanDialog } from "@/components/common/account-ban-dialog";
-import { useBanClient } from "@/hooks/use-ban-client";
-import { useI18n } from "@/hooks/use-i18n";
+import { useBanClient } from "@/hooks/clients/use-ban-client";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { AdminClient } from "@/types/clients/admin-client.type";
 

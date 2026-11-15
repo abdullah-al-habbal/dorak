@@ -13,10 +13,10 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { PlanState } from "@/enums/plan-state.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { usePlanFilters } from "@/hooks/use-plan-filters";
-import { usePlans } from "@/hooks/use-plans";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { usePlanFilters } from "@/hooks/plans/use-plan-filters";
+import { usePlans } from "@/hooks/plans/use-plans";
 import type { Plan } from "@/types/plans/plan.type";
 
 /** Subscription plans are platform-admin only; the proxy and the backend refuse everyone else too. */

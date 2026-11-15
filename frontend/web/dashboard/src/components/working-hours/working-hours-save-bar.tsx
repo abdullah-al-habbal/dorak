@@ -2,7 +2,7 @@ import type { JSX } from "react";
 
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { Button } from "@/components/ui/button";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 interface WorkingHoursSaveBarProps {
   dirty: boolean;

@@ -3,9 +3,9 @@
 import type { JSX } from "react";
 
 import { ClientBansSection } from "@/components/clients/client-bans-section";
-import { useBarberActivationLog } from "@/hooks/use-barber-activation-log";
-import { useBarberAffiliations } from "@/hooks/use-barber-affiliations";
-import { useI18n } from "@/hooks/use-i18n";
+import { useBarberActivationLog } from "@/hooks/stylists/use-barber-activation-log";
+import { useBarberAffiliations } from "@/hooks/stylists/use-barber-affiliations";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 

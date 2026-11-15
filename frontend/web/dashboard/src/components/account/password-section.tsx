@@ -6,8 +6,8 @@ import { AccountSection } from "@/components/account/account-section";
 import { PasswordFieldRow } from "@/components/account/password-field-row";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
-import { useChangePasswordForm } from "@/hooks/use-change-password-form";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useChangePasswordForm } from "@/hooks/account/use-change-password-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function PasswordSection({ email }: { email: string | null }): JSX.Element {
   const { account } = useDictionary();

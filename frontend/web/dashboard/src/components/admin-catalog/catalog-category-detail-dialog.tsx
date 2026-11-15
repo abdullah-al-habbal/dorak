@@ -8,8 +8,8 @@ import { CatalogItemPreviewList } from "@/components/admin-catalog/catalog-item-
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 

@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CHAIR_STATUS_STYLE } from "@/config/chair-status-badge.constant";
 import type { ChairStatus } from "@/enums/chair-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function ChairStatusBadge({ status }: { status: ChairStatus }): JSX.Element {
   const { chairs } = useDictionary();

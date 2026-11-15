@@ -7,7 +7,7 @@ import { SearchInput } from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { BarberStatus } from "@/enums/barber-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { BranchOption } from "@/types/branches/branch-option.type";
 import type { ChairOption } from "@/types/chairs/chair-option.type";

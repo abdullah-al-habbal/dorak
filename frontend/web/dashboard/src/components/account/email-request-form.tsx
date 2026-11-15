@@ -8,7 +8,7 @@ import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import { emailChangeFormSchema } from "@/schemas/email-change-form.zod";
 import type { EmailChangeFormValues } from "@/types/account/email-change-form-values.type";

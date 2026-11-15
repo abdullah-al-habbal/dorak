@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { BrandLifecycleAction } from "@/enums/brand-lifecycle-action.enum";
 import { BrandStatus } from "@/enums/brand-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useConfirmApproveBrand } from "@/hooks/use-confirm-approve-brand";
-import { useConfirmReactivateBrand } from "@/hooks/use-confirm-reactivate-brand";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useConfirmApproveBrand } from "@/hooks/brands/use-confirm-approve-brand";
+import { useConfirmReactivateBrand } from "@/hooks/brands/use-confirm-reactivate-brand";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** What an admin can do with a brand in its current status. Each move opens its own dialog on top of this one. */

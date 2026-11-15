@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { REVIEW_DISPUTE_REASON_MAX, REVIEW_DISPUTE_REASON_MIN, REVIEW_MAX_RATING } from "@/config/review.constant";
-import { useDisputeReview } from "@/hooks/use-dispute-review";
-import { useI18n } from "@/hooks/use-i18n";
+import { useDisputeReview } from "@/hooks/clients/use-dispute-review";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { Review } from "@/types/clients/review.type";
 
 interface ReviewDisputeDialogProps {

@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 import { Card } from "@/components/ui/card";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import { currencyRows } from "@/lib/analytics-money.util";
 import { formatPrice } from "@/lib/booking-format.util";
 import { formatCount } from "@/lib/earnings-format.util";

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { SCHEDULE_RANGES } from "@/config/schedule.constant";
 import { BookingStatus } from "@/enums/booking-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";
 
 const STATUSES = Object.values(BookingStatus);

@@ -6,7 +6,7 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { PlanFieldsProps } from "@/interfaces/plans/plan-fields-props.interface";
 import { localizedText } from "@/lib/booking-format.util";
 import type { PlanFormValues } from "@/schemas/plan-form.zod";

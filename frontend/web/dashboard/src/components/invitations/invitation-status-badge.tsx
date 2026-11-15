@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { Badge } from "@/components/ui/badge";
 import { AFFILIATION_STATUS_STYLE } from "@/config/invitation.constant";
 import { AffiliationStatus } from "@/enums/affiliation-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 function asStatus(value: string): AffiliationStatus {
   return Object.values(AffiliationStatus).find((status) => status === value) ?? AffiliationStatus.Pending;

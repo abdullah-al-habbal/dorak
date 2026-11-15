@@ -7,7 +7,7 @@ import { BranchLifecycleActions } from "@/components/branches/branch-lifecycle-a
 import { BranchStatusBadge } from "@/components/branches/branch-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
 import type { Branch } from "@/types/branches/branch.type";

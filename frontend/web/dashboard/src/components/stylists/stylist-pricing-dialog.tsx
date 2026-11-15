@@ -10,10 +10,10 @@ import { ServiceTermsRow } from "@/components/stylists/service-terms-row";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { NativeSelect } from "@/components/ui/native-select";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { useBrandOptions } from "@/hooks/use-brand-options";
-import { useI18n } from "@/hooks/use-i18n";
-import { useClearServiceOverride, useSaveServiceOverride } from "@/hooks/use-service-override";
-import { useStylistServiceTerms } from "@/hooks/use-stylist-service-terms";
+import { useBrandOptions } from "@/hooks/brands/use-brand-options";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useClearServiceOverride, useSaveServiceOverride } from "@/hooks/services/use-service-override";
+import { useStylistServiceTerms } from "@/hooks/stylists/use-stylist-service-terms";
 import { localizedText } from "@/lib/booking-format.util";
 import type { Stylist } from "@/types/stylists/stylist.type";
 

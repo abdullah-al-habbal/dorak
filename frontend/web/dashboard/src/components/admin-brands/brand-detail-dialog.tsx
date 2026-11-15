@@ -9,8 +9,8 @@ import { BrandHistorySection } from "@/components/admin-brands/brand-history-sec
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useAdminBrand } from "@/hooks/use-admin-brand";
-import { useI18n } from "@/hooks/use-i18n";
+import { useAdminBrand } from "@/hooks/brands/use-admin-brand";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 

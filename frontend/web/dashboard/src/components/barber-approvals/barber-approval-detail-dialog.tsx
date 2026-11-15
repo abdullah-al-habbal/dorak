@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { BarberStatus } from "@/enums/barber-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useBarberApproval } from "@/hooks/use-barber-approval";
-import { useConfirmApproveBarber } from "@/hooks/use-confirm-approve-barber";
-import { useConfirmBarberMoves } from "@/hooks/use-confirm-barber-moves";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useBarberApproval } from "@/hooks/stylists/use-barber-approval";
+import { useConfirmApproveBarber } from "@/hooks/stylists/use-confirm-approve-barber";
+import { useConfirmBarberMoves } from "@/hooks/stylists/use-confirm-barber-moves";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 

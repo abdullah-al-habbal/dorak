@@ -6,7 +6,7 @@ import { FeatureList } from "@/components/subscription/feature-list";
 import { SubscriptionStatusBadge } from "@/components/subscription/subscription-status-badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { SubscriptionStatus } from "@/enums/subscription-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { formatPrice, localizedText } from "@/lib/booking-format.util";
 import { intervalLabel } from "@/lib/subscription-format.util";
 import type { Subscription } from "@/types/plans/subscription.type";

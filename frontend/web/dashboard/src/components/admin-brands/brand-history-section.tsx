@@ -2,8 +2,8 @@
 
 import type { JSX } from "react";
 
-import { useI18n } from "@/hooks/use-i18n";
-import { useStatusHistory } from "@/hooks/use-status-history";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useStatusHistory } from "@/hooks/core/use-status-history";
 
 const BRAND_SUBJECT = "brand";
 

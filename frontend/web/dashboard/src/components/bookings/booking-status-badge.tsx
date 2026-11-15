@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { BOOKING_STATUS_STYLE } from "@/config/booking-status-badge.constant";
 import type { BookingStatus } from "@/enums/booking-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function BookingStatusBadge({ status }: { status: BookingStatus }) {
   const { bookings } = useDictionary();

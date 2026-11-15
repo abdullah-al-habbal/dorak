@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { Badge } from "@/components/ui/badge";
 import { REVIEW_STATUS_STYLE } from "@/config/review.constant";
 import type { ReviewStatus } from "@/enums/review-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function ReviewStatusBadge({ status }: { status: ReviewStatus }): JSX.Element {
   const { reviews } = useDictionary();

@@ -7,7 +7,7 @@ import { LanguageToggle } from "@/components/buttons/language-toggle";
 import { ThemeToggle } from "@/components/buttons/theme-toggle";
 import { AUTH_ACTORS } from "@/config/auth-actors.constant";
 import { loginRoute } from "@/config/routes.constant";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function GuardPicker() {
   const { common, auth } = useDictionary();

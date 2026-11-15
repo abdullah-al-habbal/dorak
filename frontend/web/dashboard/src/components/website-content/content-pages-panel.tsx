@@ -8,9 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useWebsiteContent } from "@/hooks/use-website-content";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useWebsiteContent } from "@/hooks/platform/use-website-content";
 import { localizedText } from "@/lib/booking-format.util";
 
 /** Every marketing page with its ordered sections; a page and a section each open their own editor. */

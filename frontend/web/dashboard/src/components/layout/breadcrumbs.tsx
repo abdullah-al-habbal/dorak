@@ -15,7 +15,7 @@ import {
 import { NAV_ITEMS } from "@/config/nav.constant";
 import { ACCOUNT_SEGMENT, portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function Breadcrumbs({ actor }: { actor: AuthActor }) {
   const { shell, auth } = useDictionary();

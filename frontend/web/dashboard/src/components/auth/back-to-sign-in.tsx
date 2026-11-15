@@ -4,7 +4,7 @@ import type { JSX } from "react";
 
 import { loginRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function BackToSignIn({ actor }: { actor: AuthActor }): JSX.Element {
   const { passwordReset } = useDictionary();

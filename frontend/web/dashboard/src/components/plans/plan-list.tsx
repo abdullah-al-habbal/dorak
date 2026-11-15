@@ -5,7 +5,7 @@ import type { JSX } from "react";
 
 import { PlanStateBadge } from "@/components/plans/plan-state-badge";
 import { DataTable } from "@/components/ui/table/data-table";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { formatPrice, localizedText } from "@/lib/booking-format.util";
 import { featureLabel, intervalLabel } from "@/lib/subscription-format.util";

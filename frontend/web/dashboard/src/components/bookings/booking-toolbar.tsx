@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { BookingView } from "@/enums/booking-view.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { addDays, parseDateKey, toDateKey } from "@/lib/booking-date.util";
 import { formatDay } from "@/lib/booking-format.util";
 import { isBookingStatus } from "@/lib/booking-status-label.util";

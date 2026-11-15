@@ -7,7 +7,7 @@ import { NavQueueCount } from "@/components/layout/nav-queue-count";
 import { NAV_ITEMS } from "@/config/nav.constant";
 import { portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import { cn } from "@/lib/utils";
 
 interface SidebarNavProps {

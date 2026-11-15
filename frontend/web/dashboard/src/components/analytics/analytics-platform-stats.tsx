@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 import { Card } from "@/components/ui/card";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import { formatCount } from "@/lib/earnings-format.util";
 import type { PlatformAnalytics } from "@/types/platform/platform-analytics.type";
 

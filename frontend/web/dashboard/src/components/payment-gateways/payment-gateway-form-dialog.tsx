@@ -14,9 +14,9 @@ import { GATEWAY_CODE_MAX, GATEWAY_CODE_PATTERN, GATEWAY_NAME_MAX, GATEWAY_SETTI
 import { HttpStatus } from "@/enums/http-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { PaymentGatewayDriver } from "@/enums/payment-gateway-driver.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useDeletePaymentGateway, useSavePaymentGateway } from "@/hooks/use-payment-gateways";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useDeletePaymentGateway, useSavePaymentGateway } from "@/hooks/platform/use-payment-gateways";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { PaymentGateway } from "@/types/platform/payment-gateway.type";
 

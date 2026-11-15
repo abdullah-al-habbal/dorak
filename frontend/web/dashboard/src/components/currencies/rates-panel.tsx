@@ -9,10 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useExchangeRates } from "@/hooks/use-admin-currencies";
-import { useDeleteExchangeRate } from "@/hooks/use-delete-exchange-rate";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useExchangeRates } from "@/hooks/platform/use-admin-currencies";
+import { useDeleteExchangeRate } from "@/hooks/platform/use-delete-exchange-rate";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import { currentRateIds } from "@/lib/exchange-rate.util";
 import type { ExchangeRate } from "@/types/platform/currency-admin.type";
 

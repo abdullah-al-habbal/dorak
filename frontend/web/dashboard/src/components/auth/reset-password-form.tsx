@@ -8,8 +8,8 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useResetPasswordForm } from "@/hooks/use-reset-password-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useResetPasswordForm } from "@/hooks/account/use-reset-password-form";
 
 interface ResetPasswordFormProps {
   actor: AuthActor;

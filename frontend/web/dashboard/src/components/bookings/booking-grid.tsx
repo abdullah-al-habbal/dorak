@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { BOOKING_STATUS_STYLE } from "@/config/booking-status-badge.constant";
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { BookingView } from "@/enums/booking-view.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { addDays, minutesBetween, parseDateKey, startOfWeek, toDateKey } from "@/lib/booking-date.util";
 import { formatDay, formatTime, localizedText, serviceSummary } from "@/lib/booking-format.util";
 import { hourRange, layoutDay } from "@/lib/slot-layout.util";

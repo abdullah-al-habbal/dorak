@@ -7,7 +7,7 @@ import { SearchInput } from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { CatalogCategoryStatus } from "@/enums/catalog-category-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { AdminCatalogFilters } from "@/types/services/admin-catalog-filters.type";
 
 interface AdminCatalogToolbarProps {

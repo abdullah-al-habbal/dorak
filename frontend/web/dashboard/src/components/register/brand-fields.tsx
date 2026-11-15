@@ -6,7 +6,7 @@ import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { Currency } from "@/types/platform/currency.type";
 

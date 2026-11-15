@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { JSX } from "react";
 
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { cn } from "@/lib/utils";
 import { notificationEvent } from "@/lib/notification-link.util";
 import type { DashboardNotification } from "@/types/account/dashboard-notification.type";

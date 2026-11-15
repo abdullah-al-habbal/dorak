@@ -184,7 +184,7 @@ Route `/dashboard/[guard]/bookings`, guards admin, manager, owner (barber has no
 
 Backend: `GET /bookings` (filters `chair_id, date_from, date_to, per_page, booking_status, hide_cancelled, search, stylist_id`), `GET /bookings/{id}`, `GET /bookings/{id}/history`, `PATCH /bookings/{id}` (`booking_status`), `PATCH .../cancel`, `PATCH .../reschedule`, `POST /bookings/walk-in`, `POST .../review`.
 
-Files (representative): `schemas/booking.zod.ts`, `schemas/booking-filters.zod.ts`, `schemas/walk-in-form.zod.ts`, `enums/booking-status.enum.ts`, `enums/booking-view.enum.ts`, `types/bookings/booking.type.ts`, `interfaces/booking-slot-layout.interface.ts`, `services/api/query/bookings.query.ts`, `services/api/mutation/{update-booking-status,cancel-booking,reschedule-booking,create-walk-in}.mutation.ts`, `lib/query-keys/bookings/booking-keys.ts`, `lib/slot-layout.util.ts`, `components/bookings/*`, `hooks/use-booking-filters.ts`.
+Files (representative): `schemas/booking.zod.ts`, `schemas/booking-filters.zod.ts`, `schemas/walk-in-form.zod.ts`, `enums/booking-status.enum.ts`, `enums/booking-view.enum.ts`, `types/bookings/booking.type.ts`, `interfaces/booking-slot-layout.interface.ts`, `services/api/query/bookings.query.ts`, `services/api/mutation/{update-booking-status,cancel-booking,reschedule-booking,create-walk-in}.mutation.ts`, `lib/query-keys/bookings/booking-keys.ts`, `lib/slot-layout.util.ts`, `components/bookings/*`, `hooks/bookings/use-booking-filters.ts`.
 
 Views:
 - **List** (default on mobile and under 640px): table on desktop, cards on phones. Columns: time, client, service, barber, chair, status, price.

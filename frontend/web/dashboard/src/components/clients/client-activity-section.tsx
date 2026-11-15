@@ -2,9 +2,9 @@
 
 import type { JSX } from "react";
 
-import { useClientBookings } from "@/hooks/use-client-bookings";
-import { useClientReviews } from "@/hooks/use-client-reviews";
-import { useI18n } from "@/hooks/use-i18n";
+import { useClientBookings } from "@/hooks/bookings/use-client-bookings";
+import { useClientReviews } from "@/hooks/clients/use-client-reviews";
+import { useI18n } from "@/hooks/core/use-i18n";
 
 /** The client's latest bookings and the reviews they wrote (D4 allows nothing beyond these). */
 export function ClientActivitySection({ clientId }: { clientId: string }): JSX.Element {

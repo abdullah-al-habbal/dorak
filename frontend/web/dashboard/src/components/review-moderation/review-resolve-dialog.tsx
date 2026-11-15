@@ -14,8 +14,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { REVIEW_RESOLUTION_NOTE_MAX, REVIEW_RESOLUTION_OUTCOMES } from "@/config/review-moderation.constant";
 import { REVIEW_MAX_RATING } from "@/config/review.constant";
 import { ReviewStatus } from "@/enums/review-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useResolveReview } from "@/hooks/use-resolve-review";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useResolveReview } from "@/hooks/clients/use-resolve-review";
 import type { AdminReview } from "@/types/clients/admin-review.type";
 
 interface ReviewResolveDialogProps {

@@ -9,10 +9,10 @@ import { ClientStatusBadge } from "@/components/clients/client-status-badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useClientDetail } from "@/hooks/use-client-detail";
-import { useConfirmUnbanClient } from "@/hooks/use-confirm-unban-client";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useClientDetail } from "@/hooks/clients/use-client-detail";
+import { useConfirmUnbanClient } from "@/hooks/clients/use-confirm-unban-client";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
 import type { AdminClient } from "@/types/clients/admin-client.type";
 

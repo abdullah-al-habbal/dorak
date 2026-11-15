@@ -14,10 +14,10 @@ import { ErrorState } from "@/components/common/error-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useEarnings } from "@/hooks/use-earnings";
-import { useEarningsRange } from "@/hooks/use-earnings-range";
-import { useI18n } from "@/hooks/use-i18n";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useEarnings } from "@/hooks/earnings/use-earnings";
+import { useEarningsRange } from "@/hooks/earnings/use-earnings-range";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { currencyCodes, totalFor } from "@/lib/earnings-metrics.util";
 import { chartBuckets, dailyBuckets } from "@/lib/earnings-series.util";
 

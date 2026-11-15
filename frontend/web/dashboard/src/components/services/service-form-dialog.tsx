@@ -14,11 +14,11 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useCurrencies } from "@/hooks/use-currencies";
-import { useDeleteService } from "@/hooks/use-delete-service";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useSaveService } from "@/hooks/use-save-service";
+import { useCurrencies } from "@/hooks/platform/use-currencies";
+import { useDeleteService } from "@/hooks/services/use-delete-service";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useSaveService } from "@/hooks/services/use-save-service";
 import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
 import { DURATION_PRESETS } from "@/lib/duration.util";
 import { emptyServiceForm, existingServiceOwner, formToServicePayload, newServiceOwner, serviceToForm } from "@/lib/service-form.util";

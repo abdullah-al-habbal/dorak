@@ -8,8 +8,8 @@ import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { BrandFields } from "@/components/register/brand-fields";
 import { Input } from "@/components/ui/input";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useExistingOwnerForm } from "@/hooks/use-existing-owner-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useExistingOwnerForm } from "@/hooks/core/use-existing-owner-form";
 import type { Currency } from "@/types/platform/currency.type";
 
 /** "I already have a Dorak account": the password proves who they are, then the business is added to that account. */

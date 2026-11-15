@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { EmptyState } from "@/components/common/empty-state";
 import { EarningsContent } from "@/components/earnings/earnings-content";
 import { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 /** The backend rejects platform admins, so they get an explanation instead of a failing request. */
 export function EarningsScreen({ actor }: { actor: AuthActor }): JSX.Element {

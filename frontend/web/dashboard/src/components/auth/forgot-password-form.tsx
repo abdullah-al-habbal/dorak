@@ -9,8 +9,8 @@ import { LoadingButton } from "@/components/buttons/loading-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useForgotPasswordForm } from "@/hooks/use-forgot-password-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useForgotPasswordForm } from "@/hooks/account/use-forgot-password-form";
 
 export function ForgotPasswordForm({ actor }: { actor: AuthActor }): JSX.Element {
   const { auth, passwordReset } = useDictionary();

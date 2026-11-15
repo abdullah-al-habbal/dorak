@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 import { BarChart } from "@/components/earnings/bar-chart";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { BarChartDatum } from "@/interfaces/ui/bar-chart-datum.interface";
 import type { EarningsBucket } from "@/interfaces/earnings/earnings-bucket.interface";
 import { formatPrice } from "@/lib/booking-format.util";

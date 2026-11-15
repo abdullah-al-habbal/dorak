@@ -1,6 +1,6 @@
 "use client";
 
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 /** Sign-in side panel. One orchestrated moment: the pole turns once on load, then rests. */
 export function BrandPanel() {

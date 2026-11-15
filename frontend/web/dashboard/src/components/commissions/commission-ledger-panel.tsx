@@ -11,9 +11,9 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { ALL_BRANDS, SETTLED_ALL, SETTLED_FILTERS } from "@/config/commission.constant";
-import { useBrandOptions } from "@/hooks/use-brand-options";
-import { useCommissionEntries } from "@/hooks/use-commissions";
-import { useI18n } from "@/hooks/use-i18n";
+import { useBrandOptions } from "@/hooks/brands/use-brand-options";
+import { useCommissionEntries } from "@/hooks/earnings/use-commissions";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import { money, totalsByCurrency } from "@/lib/commission.util";
 

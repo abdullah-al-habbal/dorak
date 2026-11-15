@@ -14,10 +14,10 @@ import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { INVITATION_FILTER_ALL, INVITATION_STATUSES } from "@/config/invitation.constant";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useActOnInvitation } from "@/hooks/use-act-on-invitation";
-import { useI18n } from "@/hooks/use-i18n";
-import { useInvitations } from "@/hooks/use-invitations";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useActOnInvitation } from "@/hooks/branches/use-act-on-invitation";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useInvitations } from "@/hooks/branches/use-invitations";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import type { InvitationAction } from "@/services/api/mutation/invitation.mutation";
 import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 

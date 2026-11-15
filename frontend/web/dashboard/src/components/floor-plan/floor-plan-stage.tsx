@@ -5,8 +5,8 @@ import type { JSX, KeyboardEvent, PointerEvent } from "react";
 
 import { KEYBOARD_BIG_STEP, KEYBOARD_STEP, ROTATION_STEP, UNISEX_ZONES } from "@/config/floor-plan.constant";
 import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import type { FloorPlanEditor } from "@/hooks/use-floor-plan-editor";
+import { useI18n } from "@/hooks/core/use-i18n";
+import type { FloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
 import { moveChair, moveDecoration, percentToUnits, pointerToStage, rotateChair, stageSize, unitsToPercent } from "@/lib/floor-plan-geometry.util";
 import { cn } from "@/lib/utils";
 import type { Chair } from "@/types/chairs/chair.type";

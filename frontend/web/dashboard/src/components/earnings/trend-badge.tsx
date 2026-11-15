@@ -3,7 +3,7 @@ import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { TrendDirection } from "@/enums/trend-direction.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { EarningsTrend } from "@/interfaces/earnings/earnings-trend.interface";
 import { formatPercent } from "@/lib/earnings-format.util";
 

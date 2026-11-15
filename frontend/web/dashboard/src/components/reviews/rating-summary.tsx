@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { RatingStars } from "@/components/reviews/rating-stars";
 import { Card, CardContent } from "@/components/ui/card";
 import { REVIEW_MAX_RATING } from "@/config/review.constant";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import { ratingBars } from "@/lib/review-summary.util";
 import type { ReviewSummary } from "@/types/clients/review-summary.type";
 

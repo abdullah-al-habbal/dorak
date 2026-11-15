@@ -7,7 +7,7 @@ import { SubscriptionStatusBadge } from "@/components/subscription/subscription-
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
 import { SubscriptionStatus } from "@/enums/subscription-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
 import { availableSubscriptionTargets } from "@/lib/subscription-transitions.util";

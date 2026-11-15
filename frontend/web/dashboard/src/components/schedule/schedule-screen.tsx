@@ -12,9 +12,9 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { SCHEDULE_DEFAULT_RANGE } from "@/config/schedule.constant";
 import { WEEK_START } from "@/config/week-start.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useScheduleAppointments } from "@/hooks/use-schedule-appointments";
-import { useScheduleFilters } from "@/hooks/use-schedule-filters";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useScheduleAppointments } from "@/hooks/bookings/use-schedule-appointments";
+import { useScheduleFilters } from "@/hooks/bookings/use-schedule-filters";
 
 export function ScheduleScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

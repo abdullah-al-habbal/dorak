@@ -6,7 +6,7 @@ import type { JSX } from "react";
 import { Badge } from "@/components/ui/badge";
 import { BARBER_APPROVAL_STATUS_STYLE } from "@/config/barber-approval.constant";
 import type { BarberStatus } from "@/enums/barber-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 /** A ban outranks the account status, so a banned barber shows the ban badge only. */
 export function BarberStatusBadge({ status, banned = false }: { status: BarberStatus; banned?: boolean }): JSX.Element {

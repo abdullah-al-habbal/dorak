@@ -8,9 +8,9 @@ import { AuthActor } from "@/enums/auth-actor.enum";
 import { BranchLifecycleAction } from "@/enums/branch-lifecycle-action.enum";
 import { BranchStatus } from "@/enums/branch-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useBranchLifecycle } from "@/hooks/use-branch-lifecycle";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useBranchLifecycle } from "@/hooks/branches/use-branch-lifecycle";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
 import type { Branch } from "@/types/branches/branch.type";
 

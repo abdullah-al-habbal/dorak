@@ -10,7 +10,7 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EMAIL_CODE_LENGTH } from "@/config/field-limit.constant";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import { emailCodeFormSchema } from "@/schemas/email-code-form.zod";
 import type { AccountProfile } from "@/types/account/account-profile.type";

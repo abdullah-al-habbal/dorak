@@ -10,8 +10,8 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { BrandFields } from "@/components/register/brand-fields";
 import { HoneypotField } from "@/components/register/honeypot-field";
 import { Input } from "@/components/ui/input";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useRegisterBusinessForm } from "@/hooks/use-register-business-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useRegisterBusinessForm } from "@/hooks/core/use-register-business-form";
 import type { Currency } from "@/types/platform/currency.type";
 
 interface RegisterDetailsFormProps {

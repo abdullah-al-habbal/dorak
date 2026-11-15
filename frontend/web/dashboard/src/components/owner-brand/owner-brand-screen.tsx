@@ -10,9 +10,9 @@ import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { BrandStatus } from "@/enums/brand-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useOwnerBrands } from "@/hooks/use-owner-brands";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useOwnerBrands } from "@/hooks/brands/use-owner-brands";
 import { localizedText } from "@/lib/booking-format.util";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 

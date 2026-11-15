@@ -15,10 +15,10 @@ import { EMPLOYMENT_NONE, EMPLOYMENT_TYPES, JOB_LOCATION_MAX, JOB_TEXT_MAX, JOB_
 import { HttpStatus } from "@/enums/http-status.enum";
 import { JobPostingStatus } from "@/enums/job-posting-status.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useDeleteJobPosting } from "@/hooks/use-delete-job-posting";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useSaveJobPosting } from "@/hooks/use-save-job-posting";
+import { useDeleteJobPosting } from "@/hooks/jobs/use-delete-job-posting";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useSaveJobPosting } from "@/hooks/jobs/use-save-job-posting";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { JobPostingBody } from "@/services/api/mutation/job-board.mutation";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";

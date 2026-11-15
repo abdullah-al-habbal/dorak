@@ -13,8 +13,8 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { CONTENT_SORT_MAX, CONTENT_TEXT_MAX, SECTION_BODY_MAX_BYTES } from "@/config/website-content.constant";
 import { UniverseVisibility } from "@/enums/universe-visibility.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useUpdateContentSection } from "@/hooks/use-website-content";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useUpdateContentSection } from "@/hooks/platform/use-website-content";
 import { bodyJson, bodyPreview, localeText, parseBodyObject } from "@/lib/website-content.util";
 import type { ContentSection } from "@/types/platform/website-content.type";
 

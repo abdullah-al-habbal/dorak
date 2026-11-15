@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { Badge } from "@/components/ui/badge";
 import { STYLIST_STATUS_STYLE } from "@/config/stylist-status-badge.constant";
 import type { BarberStatus } from "@/enums/barber-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function StylistStatusBadge({ status }: { status: BarberStatus }): JSX.Element {
   const { stylists } = useDictionary();

@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { usePlanForm } from "@/hooks/use-plan-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { usePlanForm } from "@/hooks/plans/use-plan-form";
 import type { Currency } from "@/types/platform/currency.type";
 import type { Plan } from "@/types/plans/plan.type";
 

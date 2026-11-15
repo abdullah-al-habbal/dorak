@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 interface CurrencySwitchProps {
   codes: readonly string[];

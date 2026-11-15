@@ -6,7 +6,7 @@ import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import type { EarningsBucket } from "@/interfaces/earnings/earnings-bucket.interface";
 import { formatPrice } from "@/lib/booking-format.util";

@@ -11,9 +11,9 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { SpecialDaysSection } from "@/components/working-hours/special-days-section";
 import { WorkingHoursEditor } from "@/components/working-hours/working-hours-editor";
 import { AuthActor } from "@/enums/auth-actor.enum";
-import { useBranchOptions } from "@/hooks/use-branch-options";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOpeningHours } from "@/hooks/use-opening-hours";
+import { useBranchOptions } from "@/hooks/branches/use-branch-options";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOpeningHours } from "@/hooks/hours/use-opening-hours";
 import { hasSavedHours } from "@/lib/opening-hours.util";
 import { useAuthStore } from "@/store/auth.store";
 

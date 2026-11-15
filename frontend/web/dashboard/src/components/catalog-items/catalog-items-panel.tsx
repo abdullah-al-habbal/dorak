@@ -14,10 +14,10 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useCatalogItems } from "@/hooks/use-catalog-admin";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useServiceCategories } from "@/hooks/use-service-categories";
+import { useCatalogItems } from "@/hooks/services/use-catalog-admin";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useServiceCategories } from "@/hooks/services/use-service-categories";
 import { localizedText } from "@/lib/booking-format.util";
 
 const FIRST_PAGE = 1;

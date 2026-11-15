@@ -12,11 +12,11 @@ import { CLIENT_STATUS_FILTER_ALL } from "@/config/client.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { ClientBanFilter } from "@/enums/client-ban-filter.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useClientFilters } from "@/hooks/use-client-filters";
-import { useClients } from "@/hooks/use-clients";
-import { useConfirmUnbanClient } from "@/hooks/use-confirm-unban-client";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useClientFilters } from "@/hooks/clients/use-client-filters";
+import { useClients } from "@/hooks/clients/use-clients";
+import { useConfirmUnbanClient } from "@/hooks/clients/use-confirm-unban-client";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import { hasClientFilters } from "@/lib/client-filters.util";
 import type { AdminClient } from "@/types/clients/admin-client.type";
 

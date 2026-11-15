@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { usePaymentGateways, useSetPaymentGatewayActive } from "@/hooks/use-payment-gateways";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { usePaymentGateways, useSetPaymentGatewayActive } from "@/hooks/platform/use-payment-gateways";
 import { localizedText } from "@/lib/booking-format.util";
 
 /** The payment gateways. Credentials are write-only: the list shows which keys are set, never their values. */

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { APPLICATION_STATUS_STYLE, POSTING_STATUS_STYLE } from "@/config/job-board.constant";
 import { ApplicationStatus } from "@/enums/application-status.enum";
 import { JobPostingStatus } from "@/enums/job-posting-status.enum";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 export function PostingStatusBadge({ status }: { status: string }): JSX.Element {
   const { jobs } = useDictionary();

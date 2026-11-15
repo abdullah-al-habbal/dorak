@@ -11,11 +11,11 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { DEFAULT_BRAND_STATUS_FILTER } from "@/config/admin-brand.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useAdminBrandFilters } from "@/hooks/use-admin-brand-filters";
-import { useAdminBrands } from "@/hooks/use-admin-brands";
-import { useConfirmApproveBrand } from "@/hooks/use-confirm-approve-brand";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useAdminBrandFilters } from "@/hooks/brands/use-admin-brand-filters";
+import { useAdminBrands } from "@/hooks/brands/use-admin-brands";
+import { useConfirmApproveBrand } from "@/hooks/brands/use-confirm-approve-brand";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import { hasAdminBrandFilters } from "@/lib/admin-brand-filters.util";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 

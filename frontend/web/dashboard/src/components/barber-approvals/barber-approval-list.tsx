@@ -8,7 +8,7 @@ import { BarberStatusBadge } from "@/components/barber-approvals/barber-status-b
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
 import { BarberStatus } from "@/enums/barber-status.enum";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";

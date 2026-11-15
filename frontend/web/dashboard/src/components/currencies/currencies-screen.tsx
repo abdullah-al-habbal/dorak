@@ -13,10 +13,10 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import type { CurrencyView } from "@/config/currency-admin.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useAdminCurrencies } from "@/hooks/use-admin-currencies";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
-import { useSetCurrencyActive } from "@/hooks/use-set-currency-active";
+import { useAdminCurrencies } from "@/hooks/platform/use-admin-currencies";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
+import { useSetCurrencyActive } from "@/hooks/platform/use-set-currency-active";
 import type { AdminCurrency } from "@/types/platform/currency-admin.type";
 
 /** The platform admin's currencies and exchange rates. */

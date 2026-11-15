@@ -7,8 +7,8 @@ import { ErrorState } from "@/components/common/error-state";
 import { SubscriptionCard } from "@/components/subscription/subscription-card";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/use-i18n";
-import { useSubscriptions } from "@/hooks/use-subscriptions";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useSubscriptions } from "@/hooks/plans/use-subscriptions";
 
 export function SubscriptionScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

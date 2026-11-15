@@ -9,8 +9,8 @@ import { PasswordSection } from "@/components/account/password-section";
 import { ProfileSection } from "@/components/account/profile-section";
 import { ErrorState } from "@/components/common/error-state";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAccountProfile } from "@/hooks/use-account-profile";
-import { useDictionary } from "@/hooks/use-dictionary";
+import { useAccountProfile } from "@/hooks/account/use-account-profile";
+import { useDictionary } from "@/hooks/core/use-dictionary";
 
 /** Every actor's own account: profile, sign-in email, password, notifications and language. */
 export function AccountScreen(): JSX.Element {

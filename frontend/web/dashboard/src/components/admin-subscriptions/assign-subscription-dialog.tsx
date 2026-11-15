@@ -13,10 +13,10 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { SkeletonRows } from "@/components/ui/skeleton-row";
 import { BrandStatus } from "@/enums/brand-status.enum";
 import { HttpStatus } from "@/enums/http-status.enum";
-import { useAssignSubscription } from "@/hooks/use-assign-subscription";
-import { useBrandOptions } from "@/hooks/use-brand-options";
-import { useI18n } from "@/hooks/use-i18n";
-import { usePlanOptions } from "@/hooks/use-plan-options";
+import { useAssignSubscription } from "@/hooks/plans/use-assign-subscription";
+import { useBrandOptions } from "@/hooks/brands/use-brand-options";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { usePlanOptions } from "@/hooks/plans/use-plan-options";
 import { localizedText } from "@/lib/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 

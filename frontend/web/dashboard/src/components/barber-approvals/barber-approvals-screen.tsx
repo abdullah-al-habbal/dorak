@@ -11,11 +11,11 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { DEFAULT_BARBER_STATUS_FILTER } from "@/config/barber-approval.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useBarberApprovalFilters } from "@/hooks/use-barber-approval-filters";
-import { useBarberApprovals } from "@/hooks/use-barber-approvals";
-import { useConfirmApproveBarber } from "@/hooks/use-confirm-approve-barber";
-import { useI18n } from "@/hooks/use-i18n";
-import { useOverlay } from "@/hooks/use-overlay";
+import { useBarberApprovalFilters } from "@/hooks/stylists/use-barber-approval-filters";
+import { useBarberApprovals } from "@/hooks/stylists/use-barber-approvals";
+import { useConfirmApproveBarber } from "@/hooks/stylists/use-confirm-approve-barber";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useOverlay } from "@/hooks/core/use-overlay";
 import { hasBarberApprovalFilters } from "@/lib/barber-approval-filters.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 

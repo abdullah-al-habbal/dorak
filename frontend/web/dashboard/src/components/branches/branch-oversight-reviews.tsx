@@ -2,8 +2,8 @@
 
 import type { JSX } from "react";
 
-import { useI18n } from "@/hooks/use-i18n";
-import { useReviews } from "@/hooks/use-reviews";
+import { useI18n } from "@/hooks/core/use-i18n";
+import { useReviews } from "@/hooks/clients/use-reviews";
 
 const FIRST_PAGE = 1;
 

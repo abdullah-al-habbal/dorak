@@ -9,8 +9,8 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EMAIL_CODE_LENGTH } from "@/config/field-limit.constant";
-import { useDictionary } from "@/hooks/use-dictionary";
-import { useVerifyOwnerCodeForm } from "@/hooks/use-verify-owner-code-form";
+import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useVerifyOwnerCodeForm } from "@/hooks/core/use-verify-owner-code-form";
 
 interface VerifyCodeFormProps {
   email: string;
