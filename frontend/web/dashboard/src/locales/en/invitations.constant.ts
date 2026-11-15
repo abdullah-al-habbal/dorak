@@ -17,7 +17,7 @@ export const enInvitations = {
     terminateTitle: "End this affiliation?",
     terminateBody: "The barber stops working for this branch and their future bookings here are affected. You can invite them again later.",
   },
-  toast: { invited: "Invitation sent.", accept: "Request accepted.", reject: "Request rejected.", terminate: "Affiliation ended.", failed: "That change couldn't be made. Refresh and try again." },
+  toast: { invited: "Invitation sent.", requested: "If a matching barber can be invited, the invitation has been sent.", accept: "Request accepted.", reject: "Request rejected.", terminate: "Affiliation ended.", failed: "That change couldn't be made. Refresh and try again." },
   states: {
     emptyTitle: "No invitations",
     emptyBody: "Invite a barber, or wait for barbers to ask to join.",
@@ -33,6 +33,7 @@ export const enInvitations = {
     searchHint: "Type at least {count} characters.",
     results: "Matching barbers",
     none: "No matching barber was found.",
+    contactHint: "Emails and phone numbers are not searched. Send the invitation and, if that person has an account, they will be notified.",
     lookupFailed: "The search couldn't run.",
     commission: "Commission (%)",
     commissionHint: "Optional. The share the branch keeps from this barber's services.",

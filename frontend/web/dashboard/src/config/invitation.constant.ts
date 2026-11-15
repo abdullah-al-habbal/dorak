@@ -5,6 +5,8 @@ import type { BookingStatusStyle } from "@/interfaces/booking-status-style.inter
 
 /** The backend refuses a shorter lookup, so the picker doesn't ask. */
 export const BARBER_LOOKUP_MIN = 3;
+/** An exact email or phone is never matched by the search (it would confirm who has an account); it is invited by contact. */
+export const BARBER_CONTACT_PATTERN = /^(?:[^\s@]+@[^\s@]+|\+?[\d\s-]{7,})$/;
 export const COMMISSION_MIN = 0;
 export const COMMISSION_MAX = 100;
 /** The URL-free filter value that lifts the status filter. */

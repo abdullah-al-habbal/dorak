@@ -133,6 +133,7 @@ function tenantPayload(string $key, array $ids, string $ownBrandId): array
         'PATCH api/v1/dashboard/branches/{branch}/floor-plan' => ['preset' => 'standard'],
         'POST api/v1/dashboard/branches/{branch}/reviews/{review}/dispute' => ['reason' => 'This review is unfair and wrong.'],
         'POST api/v1/dashboard/branches/{branch}/affiliations' => ['barber_id' => $ids['barber']],
+        'POST api/v1/dashboard/branches/{branch}/affiliations/by-contact' => ['contact' => 'nobody@example.test'],
         'POST api/v1/dashboard/branches/{branch}/job-postings' => ['title' => $translated, 'description' => $translated],
         'PATCH api/v1/dashboard/branches/{branch}/job-postings/{jobPosting}/applications/{application}/status' => ['status' => 'accepted'],
         'PUT api/v1/dashboard/barbers/{barber}/services/{service}/override' => ['brand_id' => $ownBrandId, 'price_amount_minor' => 1000],

@@ -60,7 +60,7 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   // NS-16 barber invitations: everyone with branch access reads; only the branch teams act (the admin has no stake in who works at a shop).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/affiliations$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: /^barber-lookup$/, guards: [AuthActor.Manager, AuthActor.Owner] },
-  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/affiliations(/${ID}/(accept|reject|terminate))?$`), guards: [AuthActor.Manager, AuthActor.Owner] },
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^branches/${ID}/affiliations(/(by-contact|${ID}/(accept|reject|terminate)))?$`), guards: [AuthActor.Manager, AuthActor.Owner] },
   // NS-18 per-brand stylist pricing: the brand owner sets a stylist's terms (the backend checks the stylist works for that brand).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^barbers/${ID}/services$`), guards: [AuthActor.Owner] },
   { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^barbers/${ID}/services/${ID}/override$`), guards: [AuthActor.Owner] },

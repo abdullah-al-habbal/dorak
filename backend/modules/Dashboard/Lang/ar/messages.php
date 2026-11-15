@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'invitation_requested' => 'إذا وُجد مصفف مطابق يمكن دعوته، فقد تم إرسال الدعوة.',
     'chair_stylist_unavailable' => 'الكرسي أو الحلاق المحدد لم يعد متاحًا لهذا الوقت.',
     'invalid_booking_status' => 'حالة الحجز غير صالحة.',
     'assign_branch_chair' => 'يجب على مدير الفرع تعيين كرسي للفرع.',

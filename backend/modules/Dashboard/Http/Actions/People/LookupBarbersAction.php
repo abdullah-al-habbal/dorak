@@ -11,7 +11,8 @@ use Modules\Dashboard\Http\Requests\Business\LookupBarbersRequest;
 use Modules\Dashboard\Http\Resources\Shared\BarberLookupResource;
 
 /**
- * NS-16: the barbers a branch can invite, found by name or by exact email or phone. Only discoverable
+ * NS-16: the barbers a branch can invite, found by name. Email and phone are never matched here (that would confirm who has an account); an exact
+ * contact is invited through `InviteBranchAffiliationByContactAction`. Only discoverable
  * (enabled and not banned) barbers are returned, ten at most, so this is a picker and not a directory.
  */
 final class LookupBarbersAction extends BaseApiAction
@@ -27,9 +28,7 @@ final class LookupBarbersAction extends BaseApiAction
             ->discoverable()
             ->where(fn ($inner) => $inner
                 ->where('name->en', 'like', $like)
-                ->orWhere('name->ar', 'like', $like)
-                ->orWhere('email', $search)
-                ->orWhere('phone', $search))
+                ->orWhere('name->ar', 'like', $like))
             ->orderBy('name->en')
             ->limit(self::LIMIT)
             ->get();

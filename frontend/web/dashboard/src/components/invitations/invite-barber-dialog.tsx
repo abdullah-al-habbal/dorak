@@ -10,11 +10,12 @@ import { SearchInput } from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { BARBER_LOOKUP_MIN, COMMISSION_MAX, COMMISSION_MIN } from "@/config/invitation.constant";
+import { BARBER_CONTACT_PATTERN, BARBER_LOOKUP_MIN, COMMISSION_MAX, COMMISSION_MIN } from "@/config/invitation.constant";
 import { HttpStatus } from "@/enums/http-status.enum";
 import { useBarberLookup } from "@/hooks/use-barber-lookup";
 import { useI18n } from "@/hooks/use-i18n";
 import { useInviteBarber } from "@/hooks/use-invite-barber";
+import { useInviteBarberByContact } from "@/hooks/use-invite-barber-by-contact";
 import { localizedText } from "@/lib/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
@@ -29,6 +30,7 @@ export function InviteBarberDialog({ branchId, barber, onClose }: InviteBarberDi
   const { dictionary, locale } = useI18n();
   const { invitations: t, common } = dictionary;
   const invite = useInviteBarber();
+  const inviteByContact = useInviteBarberByContact();
   const [term, setTerm] = useState("");
   const [barberId, setBarberId] = useState<string | undefined>(barber?.id);
   const [commission, setCommission] = useState("");
@@ -39,7 +41,9 @@ export function InviteBarberDialog({ branchId, barber, onClose }: InviteBarberDi
   async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     setError(undefined);
-    if (!barberId) {
+    const contact = term.trim();
+    const byContact = !barberId && BARBER_CONTACT_PATTERN.test(contact);
+    if (!barberId && !byContact) {
       setError(t.inviteDialog.pick);
       return;
     }
@@ -48,8 +52,10 @@ export function InviteBarberDialog({ branchId, barber, onClose }: InviteBarberDi
       setError(t.inviteDialog.commissionRange);
       return;
     }
+    const commissionPart = percent === undefined ? {} : { commission_percent: percent };
     try {
-      await invite.mutateAsync({ branchId, payload: { barber_id: barberId, ...(percent === undefined ? {} : { commission_percent: percent }) } });
+      if (barberId) await invite.mutateAsync({ branchId, payload: { barber_id: barberId, ...commissionPart } });
+      else await inviteByContact.mutateAsync({ branchId, payload: { contact, ...commissionPart } });
       onClose();
     } catch (failure) {
       setError(failure instanceof ApiClientError && failure.status === HttpStatus.Conflict ? t.inviteDialog.alreadyAffiliated : t.inviteDialog.failed);
@@ -57,7 +63,7 @@ export function InviteBarberDialog({ branchId, barber, onClose }: InviteBarberDi
   }
 
   return (
-    <Dialog open onOpenChange={(open) => (open || invite.isPending ? undefined : onClose())}>
+    <Dialog open onOpenChange={(open) => (open || invite.isPending || inviteByContact.isPending ? undefined : onClose())}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto overscroll-contain sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{t.inviteDialog.title}</DialogTitle>
@@ -68,7 +74,7 @@ export function InviteBarberDialog({ branchId, barber, onClose }: InviteBarberDi
           {barber ? <p dir="auto" className="rounded-lg border border-primary px-3 py-2 text-sm font-medium">{barber.name}</p> : <FormField id="barber-lookup" label={t.inviteDialog.search} hint={t.inviteDialog.searchHint.replace("{count}", String(BARBER_LOOKUP_MIN))}>
             <SearchInput value={term || undefined} label={t.inviteDialog.search} onCommit={(value) => { setTerm(value ?? ""); setBarberId(undefined); }} />
           </FormField>}
-          {term.length >= BARBER_LOOKUP_MIN && lookup.data && results.length === 0 ? <p className="text-sm text-muted-foreground">{t.inviteDialog.none}</p> : null}
+          {term.length >= BARBER_LOOKUP_MIN && lookup.data && results.length === 0 ? <p className="text-sm text-muted-foreground">{BARBER_CONTACT_PATTERN.test(term.trim()) ? t.inviteDialog.contactHint : t.inviteDialog.none}</p> : null}
           {lookup.isError ? <p role="alert" className="text-sm text-destructive">{t.inviteDialog.lookupFailed}</p> : null}
           {results.length > 0 ? (
             <fieldset className="flex flex-col gap-1">
@@ -85,8 +91,8 @@ export function InviteBarberDialog({ branchId, barber, onClose }: InviteBarberDi
             <Input id="invite-commission" type="number" inputMode="decimal" dir="ltr" min={COMMISSION_MIN} max={COMMISSION_MAX} value={commission} onChange={(event) => setCommission(event.target.value)} />
           </FormField>
           <DialogFooter>
-            <Button type="button" variant="ghost" disabled={invite.isPending} onClick={onClose}>{common.cancel}</Button>
-            <LoadingButton type="submit" loading={invite.isPending} loadingLabel={common.loading}>{t.inviteDialog.submit}</LoadingButton>
+            <Button type="button" variant="ghost" disabled={invite.isPending || inviteByContact.isPending} onClick={onClose}>{common.cancel}</Button>
+            <LoadingButton type="submit" loading={invite.isPending || inviteByContact.isPending} loadingLabel={common.loading}>{t.inviteDialog.submit}</LoadingButton>
           </DialogFooter>
         </form>
       </DialogContent>

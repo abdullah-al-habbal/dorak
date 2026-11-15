@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    'invitation_requested' => 'If a matching stylist can be invited, the invitation has been sent.',
     'chair_stylist_unavailable' => 'The selected chair or stylist is no longer available for this time.',
     'invalid_booking_status' => 'Invalid booking status.',
     'assign_branch_chair' => 'A branch manager must assign a branch chair.',

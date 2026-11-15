@@ -279,3 +279,13 @@ describe("proxy allow-list: brand services (F-07) and global categories (F-02)",
     expect(allowed(HttpMethod.Post, "service-categories", AuthActor.Manager)).toBe(false);
   });
 });
+
+describe("proxy allow-list: invite by contact (F-10)", () => {
+  it("lets managers and owners post an invitation by contact and nobody else", () => {
+    expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact", AuthActor.Manager)).toBe(true);
+    expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact", AuthActor.Owner)).toBe(true);
+    expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact", AuthActor.Barber)).toBe(false);
+    expect(allowed(HttpMethod.Get, "branches/b1/affiliations/by-contact", AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact/extra", AuthActor.Manager)).toBe(false);
+  });
+});

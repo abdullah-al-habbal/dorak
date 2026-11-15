@@ -35,6 +35,7 @@ use Modules\Dashboard\Http\Actions\Chairs\StoreChairAction;
 use Modules\Dashboard\Http\Actions\Chairs\UpdateChairAction;
 use Modules\Dashboard\Http\Actions\People\DestroyBranchJobPostingAction;
 use Modules\Dashboard\Http\Actions\People\InviteBranchAffiliationAction;
+use Modules\Dashboard\Http\Actions\People\InviteBranchAffiliationByContactAction;
 use Modules\Dashboard\Http\Actions\People\ListBranchAffiliationsAction;
 use Modules\Dashboard\Http\Actions\People\ListBranchApplicationsAction;
 use Modules\Dashboard\Http\Actions\People\ListBranchJobPostingsAction;
@@ -91,6 +92,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/barber-lookup', LookupBarbersAction::class)->middleware('throttle:'.DashboardBarberLookupConstants::BARBER_LOOKUP_LIMITER);
         Route::get('/branches/{branch}/affiliations', ListBranchAffiliationsAction::class);
         Route::post('/branches/{branch}/affiliations', InviteBranchAffiliationAction::class);
+        Route::post('/branches/{branch}/affiliations/by-contact', InviteBranchAffiliationByContactAction::class)->middleware('throttle:'.DashboardBarberLookupConstants::BARBER_LOOKUP_LIMITER);
         Route::post('/branches/{branch}/affiliations/{affiliation}/accept', RespondBranchAffiliationAction::class)->defaults('accept', true);
         Route::post('/branches/{branch}/affiliations/{affiliation}/reject', RespondBranchAffiliationAction::class)->defaults('accept', false);
         Route::post('/branches/{branch}/affiliations/{affiliation}/terminate', TerminateBranchAffiliationAction::class);

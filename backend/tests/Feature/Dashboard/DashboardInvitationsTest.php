@@ -67,14 +67,13 @@ describe('Barber lookup (NS-16)', function (): void {
             ->and(array_keys($byEnglish[0]))->toBe(['id', 'name']);
     });
 
-    it('matches email and phone exactly, never by fragment, and never leaks them', function (): void {
-        $barber = BarberModel::factory()->create(['email' => 'lookup.me@example.test', 'phone' => '00963111222333']);
+    it('never matches by email or phone, so the lookup cannot confirm who has an account (F-10)', function (): void {
+        BarberModel::factory()->create(['email' => 'lookup.me@example.test', 'phone' => '00963111222333']);
         $this->authenticateDashboardActor(BranchModel::factory()->create());
 
-        expect(collect(invitationsLookup('lookup.me@example.test'))->pluck('id')->all())->toBe([$barber->id])
-            ->and(collect(invitationsLookup('00963111222333'))->pluck('id')->all())->toBe([$barber->id])
-            ->and(invitationsLookup('lookup.me@example'))->toBe([])
-            ->and(invitationsLookup('0096311122'))->toBe([]);
+        expect(invitationsLookup('lookup.me@example.test'))->toBe([])
+            ->and(invitationsLookup('00963111222333'))->toBe([])
+            ->and(invitationsLookup('nobody@example.test'))->toBe([]);
     });
 
     it('hides barbers who are not enabled or are banned, and still shows an expired ban', function (BarberStatusEnum $status): void {
@@ -129,6 +128,42 @@ describe('Barber lookup (NS-16)', function (): void {
         }
         invitationsSwitchTo(BarberModel::factory()->create());
         $this->getJson($url)->assertForbidden();
+    });
+});
+
+describe('Invite a barber by contact (F-10)', function (): void {
+    it('answers the same 202 for a known, an unknown, an unavailable and an already invited contact, and invites only the discoverable one', function (): void {
+        Queue::fake();
+        $branch = BranchModel::factory()->create();
+        $known = BarberModel::factory()->create(['email' => 'known@example.test', 'phone' => '00963555000111']);
+        BarberModel::factory()->create(['email' => 'off@example.test', 'status' => BarberStatusEnum::Disabled->value]);
+        $this->authenticateDashboardActor($branch);
+        $url = INVITATIONS_URL."/branches/{$branch->id}/affiliations/by-contact";
+
+        $responses = collect(['known@example.test', 'nobody@example.test', 'off@example.test', '00963555000111', 'known@example.test'])
+            ->map(fn (string $contact) => $this->postJson($url, ['contact' => $contact, 'commission_percent' => 10])->assertStatus(202)->json('message'));
+
+        expect($responses->unique()->count())->toBe(1)
+            ->and(BarberAffiliationModel::query()->where('affiliable_id', $branch->id)->count())->toBe(1)
+            ->and(BarberAffiliationModel::query()->where('affiliable_id', $branch->id)->value('barber_id'))->toBe($known->id);
+    });
+
+    it('validates the contact and stays inside the manager\'s own branch', function (): void {
+        $world = invitationsOwnerWorld();
+        $foreign = BranchModel::factory()->create();
+        $this->authenticateDashboardActor($world['owner']);
+
+        $this->postJson(INVITATIONS_URL."/branches/{$world['branch']->id}/affiliations/by-contact", [])->assertUnprocessable()->assertJsonValidationErrors('contact');
+        $this->postJson(INVITATIONS_URL."/branches/{$foreign->id}/affiliations/by-contact", ['contact' => 'someone@example.test'])->assertNotFound();
+    });
+
+    it('is closed to a barber and anonymous callers', function (): void {
+        $branch = BranchModel::factory()->create();
+        $url = INVITATIONS_URL."/branches/{$branch->id}/affiliations/by-contact";
+
+        $this->postJson($url, ['contact' => 'someone@example.test'])->assertUnauthorized();
+        invitationsSwitchTo(BarberModel::factory()->create());
+        $this->postJson($url, ['contact' => 'someone@example.test'])->assertForbidden();
     });
 });
 
