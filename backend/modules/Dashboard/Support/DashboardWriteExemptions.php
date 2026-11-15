@@ -4,23 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Support;
 
-use Modules\Dashboard\Http\Actions\Barbers\DestroyBarberServiceOverrideAction;
-use Modules\Dashboard\Http\Actions\Barbers\UpsertBarberServiceOverrideAction;
-use Modules\Dashboard\Http\Actions\Branches\FlagBranchReviewDisputeAction;
 use Modules\Dashboard\Http\Actions\Brands\StoreBrandAction;
-use Modules\Dashboard\Http\Actions\Brands\UpdateBrandAction;
 use Modules\Dashboard\Http\Actions\Business\CancelBookingAction;
 use Modules\Dashboard\Http\Actions\Notifications\MarkAllDashboardNotificationsReadAction;
 use Modules\Dashboard\Http\Actions\Notifications\MarkDashboardNotificationReadAction;
 use Modules\Dashboard\Http\Actions\Owner\ResubmitBrandAction;
-use Modules\Dashboard\Http\Actions\People\DestroyBranchJobPostingAction;
-use Modules\Dashboard\Http\Actions\People\InviteBranchAffiliationAction;
-use Modules\Dashboard\Http\Actions\People\MarkBranchApplicationsSeenAction;
-use Modules\Dashboard\Http\Actions\People\RespondBranchAffiliationAction;
-use Modules\Dashboard\Http\Actions\People\StoreBranchJobPostingAction;
-use Modules\Dashboard\Http\Actions\People\TerminateBranchAffiliationAction;
-use Modules\Dashboard\Http\Actions\People\UpdateBranchApplicationStatusAction;
-use Modules\Dashboard\Http\Actions\People\UpdateBranchJobPostingAction;
 use Modules\Dashboard\Http\Actions\Profile\RequestEmailChangeAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdateNotificationPreferencesAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdatePasswordAction;
@@ -57,6 +45,10 @@ final class DashboardWriteExemptions
      */
     public const array ALLOWED_WHEN_SUSPENDED = [
         CancelBookingAction::class,
+        // The owner of a suspended brand may still open another brand (decision A, point 3). It touches no existing brand or branch.
+        StoreBrandAction::class,
+        // Resubmit only works on a Rejected brand (`BrandReviewService::resubmit`), so it can never run on a Suspended one: reviewed, no guard needed.
+        ResubmitBrandAction::class,
     ];
 
     /**
@@ -64,20 +56,6 @@ final class DashboardWriteExemptions
      * slice removes the entry in the same commit that adds the guard call.
      */
     public const array PENDING = [
-        DestroyBarberServiceOverrideAction::class => 'S5',
-        UpsertBarberServiceOverrideAction::class => 'S5',
-        FlagBranchReviewDisputeAction::class => 'S5',
-        StoreBrandAction::class => 'S5',
-        UpdateBrandAction::class => 'S5',
-        ResubmitBrandAction::class => 'S5',
-        DestroyBranchJobPostingAction::class => 'S5',
-        InviteBranchAffiliationAction::class => 'S5',
-        MarkBranchApplicationsSeenAction::class => 'S5',
-        RespondBranchAffiliationAction::class => 'S5',
-        StoreBranchJobPostingAction::class => 'S5',
-        TerminateBranchAffiliationAction::class => 'S5',
-        UpdateBranchApplicationStatusAction::class => 'S5',
-        UpdateBranchJobPostingAction::class => 'S5',
         StoreServiceCategoryAction::class => 'S8',
     ];
 

@@ -27,7 +27,7 @@ final class TerminateBranchAffiliationAction extends BaseApiAction
 
     public function __invoke(Request $request, string $branch, string $affiliation): JsonResponse
     {
-        $model = $this->branches->resolveForStaffing($request, $branch);
+        $model = $this->branches->resolveForStaffingWrite($request, $branch);
         $affiliationModel = $this->responder->findForBranch($model, $affiliation);
         $actor = $this->actors->actingAs($request);
 

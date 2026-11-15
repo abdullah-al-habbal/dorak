@@ -24,7 +24,7 @@ final class MarkBranchApplicationsSeenAction extends BaseApiAction
 
     public function __invoke(Request $request, string $branch, string $jobPosting): JsonResponse
     {
-        $model = $this->branches->resolveForStaffing($request, $branch);
+        $model = $this->branches->resolveForStaffingWrite($request, $branch);
         $actor = $this->actors->actingAs($request);
         $posting = JobPostingModel::where('branch_id', $model->getKey())->findOrFail($jobPosting);
 

@@ -27,7 +27,7 @@ final class InviteBranchAffiliationAction extends BaseApiAction
 
     public function __invoke(InviteAffiliationRequest $request, string $branch): JsonResponse
     {
-        $model = $this->branches->resolveForStaffing($request, $branch);
+        $model = $this->branches->resolveForStaffingWrite($request, $branch);
         $this->approvals->ensureBranchBrandApproved($request->attributes->get('dashboard_actor'), $model->getKey());
 
         try {

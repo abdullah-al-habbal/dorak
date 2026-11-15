@@ -24,7 +24,7 @@ final class UpdateBranchApplicationStatusAction extends BaseApiAction
 
     public function __invoke(UpdateApplicationStatusRequest $request, string $branch, string $jobPosting, string $application): JsonResponse
     {
-        $model = $this->branches->resolveForStaffing($request, $branch);
+        $model = $this->branches->resolveForStaffingWrite($request, $branch);
         $actor = $this->actors->actingAs($request);
         $posting = JobPostingModel::where('branch_id', $model->getKey())->findOrFail($jobPosting);
 

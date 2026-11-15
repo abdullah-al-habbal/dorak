@@ -46,7 +46,7 @@ function actionCallsWriteGuard(string $class): bool
 {
     $source = (string) file_get_contents((new ReflectionClass($class))->getFileName());
 
-    return str_contains($source, DashboardWriteGuard::class) || str_contains($source, 'resolveForWrite(');
+    return str_contains($source, DashboardWriteGuard::class) || str_contains($source, 'resolveForWrite(') || str_contains($source, 'resolveForStaffingWrite(');
 }
 
 /**

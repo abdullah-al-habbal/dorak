@@ -24,7 +24,7 @@ final class StoreBranchJobPostingAction extends BaseApiAction
 
     public function __invoke(StoreJobPostingRequest $request, string $branch): JsonResponse
     {
-        $model = $this->branches->resolveForStaffing($request, $branch);
+        $model = $this->branches->resolveForStaffingWrite($request, $branch);
         $this->staffingGuard->ensureBranchMayPublishJobs($model->getKey());
         $this->brandFeatures->ensureJobBoard($model->getKey());
 

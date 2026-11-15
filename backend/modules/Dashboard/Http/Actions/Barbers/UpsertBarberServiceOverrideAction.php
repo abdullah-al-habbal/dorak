@@ -11,13 +11,14 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\UpsertBarberServiceOverrideCommand;
 use Modules\Dashboard\Handlers\Barbers\UpsertBarberServiceOverrideHandler;
 use Modules\Dashboard\Http\Requests\Business\UpsertBarberServiceOverrideRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 use Modules\OfferedService\Models\BarberServiceOverrideModel;
 
 final class UpsertBarberServiceOverrideAction extends BaseApiAction
 {
-    public function __construct(private readonly UpsertBarberServiceOverrideHandler $handler) {}
+    public function __construct(private readonly UpsertBarberServiceOverrideHandler $handler, private readonly DashboardWriteGuard $writeGuard) {}
 
     public function __invoke(UpsertBarberServiceOverrideRequest $request, string $barber, string $service): JsonResponse
     {
@@ -27,6 +28,8 @@ final class UpsertBarberServiceOverrideAction extends BaseApiAction
         $barberId = (string) BarberModel::query()->findOrFail($barber)->getKey();
 
         Gate::forUser($actor)->authorize('manage', [BarberServiceOverrideModel::class, $barberId, $input['brand_id']]);
+
+        $this->writeGuard->ensureBrandWritable($actor, $input['brand_id']);
 
         return $this->updated(ServiceResource::make($this->handler->handle(new UpsertBarberServiceOverrideCommand(
             $barberId,

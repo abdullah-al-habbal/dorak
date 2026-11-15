@@ -34,7 +34,7 @@ final class FlagBranchReviewDisputeAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         Gate::forUser($actor)->authorize('dashboard.review.file');
 
-        $scoped = $this->branches->resolve($request, $branch);
+        $scoped = $this->branches->resolveForWrite($request, $branch);
         ReviewModel::query()
             ->whereKey($review)
             ->where('subject_type', ReviewSubjectTypeEnum::Branch)

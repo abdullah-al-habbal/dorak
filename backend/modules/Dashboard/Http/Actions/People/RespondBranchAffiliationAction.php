@@ -24,7 +24,7 @@ final class RespondBranchAffiliationAction extends BaseApiAction
 
     public function __invoke(Request $request, string $branch, string $affiliation): JsonResponse
     {
-        $model = $this->branches->resolveForStaffing($request, $branch);
+        $model = $this->branches->resolveForStaffingWrite($request, $branch);
         $accept = $request->route('accept') === true;
 
         try {

@@ -55,4 +55,15 @@ final readonly class ScopedBranchResolver
 
         return $this->resolve($request, $branchId);
     }
+
+    /** `resolveForStaffing` for a staffing write: role, then scope (404), then the lifecycle guard (403 when Suspended). */
+    public function resolveForStaffingWrite(Request $request, string $branchId): BranchModel
+    {
+        $branch = $this->resolveForStaffing($request, $branchId);
+        /** @var DashboardActor $actor */
+        $actor = $request->attributes->get('dashboard_actor');
+        $this->writeGuard->ensureBranchWritable($actor, $branch);
+
+        return $branch;
+    }
 }

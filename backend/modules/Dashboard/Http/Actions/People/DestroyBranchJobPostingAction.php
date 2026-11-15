@@ -18,7 +18,7 @@ final class DestroyBranchJobPostingAction extends BaseApiAction
 
     public function __invoke(Request $request, string $branch, string $jobPosting): JsonResponse
     {
-        $model = $this->branches->resolveForStaffing($request, $branch);
+        $model = $this->branches->resolveForStaffingWrite($request, $branch);
         JobPostingModel::where('branch_id', $model->getKey())->findOrFail($jobPosting)->delete();
 
         return $this->noContent(SuccessCodeEnum::DELETED);
