@@ -7,6 +7,7 @@ namespace Modules\Activation\Providers;
 use Illuminate\Support\Facades\Gate;
 use Modules\Activation\Models\ActivationLogModel;
 use Modules\Activation\Observers\ActivationLogObserver;
+use Modules\Activation\Policies\BarberSelfActivationPolicy;
 use Modules\Activation\Policies\BranchBarberActivationPolicy;
 use Modules\Barber\Models\BarberModel;
 use Modules\Core\Providers\BaseModuleServiceProvider;
@@ -25,5 +26,6 @@ final class ActivationServiceProvider extends BaseModuleServiceProvider
     {
         ActivationLogModel::observe(ActivationLogObserver::class);
         Gate::policy(BarberModel::class, BranchBarberActivationPolicy::class);
+        Gate::define(BarberSelfActivationPolicy::ABILITY, [BarberSelfActivationPolicy::class, 'activate']);
     }
 }

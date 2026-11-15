@@ -34,7 +34,6 @@ Facebook sign-in are unsupported (G9).
 
 | ID | Item | Layer | Size |
 |---|---|---|---|
-| BG-3 | Barber self-reactivation: a barber an admin deactivated can re-enable themselves via `POST /barbers/{barber}/activate`. Decided: block it until an admin reactivates, using `activation_logs.activated_by_id`. | backend, mobile check | M |
 | BG-4 | Public barber resource leaks `email`, `phone`, exact coordinates, `submission_count`, `email_verified_at`. Decided: add a separate public resource (name, bio, rating, rounded location); keep the old fields until both mobile apps ship, then remove. Contract tests pin `email` (`ApiResponseContractTest`). Needs a coordinated mobile release. | backend, mobile | L |
 | BG-5 | By-contact invite (S13) answers the same body for every case but response time differs between a match and no match. | backend | S |
 | BG-6 | Session-claim revocation lives in the cache only; the database expiry of the superseded token (D-05) covers most of it. | backend | S |
@@ -106,6 +105,7 @@ Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are reso
 - **D1:** a service is owned by a brand or a barber, never a branch. **D6:** manual billing at launch. **D7:** NS-27 closed. **D8, D9:** brand and branch lifecycle states. **D11:** a pending owner gets one branch of setup, no stylists, invitations or bookings until approval. **D13:** website content is managed in the dashboard.
 - **Platform admin on staffing:** full permissions on affiliations and the job board (2026-11-13). Brand-level affiliations are closed; rejected barbers cannot re-apply to the same posting.
 - **Dashboard component tests (BD-1, 2026-11-15):** `jsdom` and Testing Library are allowed for component tests. **`docs/handover-remaining-work.md` (BD-3, 2026-11-15):** retired; its open items live in this backlog.
+- **Barber self-reactivation (BG-3, 2026-11-15):** a barber an admin switched off gets 403 `barber_deactivated_by_admin` from `POST /barbers/{barber}/activate` until an admin reactivates them; implemented by `BarberSelfActivationPolicy`. The mobile apps do not call that route.
 - **Standing rules:** local commits only, never push; pending-brand records are hidden from public reads; backend contract changes are backward compatible for mobile.
 
 Record a new decision here as one line under this heading, with its date, and link the code or doc that implements it. The older full wording is in Git history (see the top of this file).
