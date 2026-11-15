@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Currency\Rules\ActiveCurrencyRule;
 use Modules\Subscription\CQRS\Command\SavePlanCommand;
 use Modules\Subscription\Enums\SubscriptionIntervalUnitEnum;
 
@@ -22,7 +23,7 @@ final class SavePlanRequest extends BaseApiFormRequest
             'description.en' => ['nullable', 'string', 'max:2000'],
             'description.ar' => ['nullable', 'string', 'max:2000'],
             'price_amount_minor' => ['required', 'integer', ValidationLimitConstants::RULE_PRICE_MINOR],
-            'currency_code' => ['required', 'exists:currencies,code'],
+            'currency_code' => ['required', 'string', new ActiveCurrencyRule],
             'interval_unit' => ['required', Rule::enum(SubscriptionIntervalUnitEnum::class)],
             'interval_count' => ['required', 'integer', 'min:1', 'max:120'],
             'is_active' => ['required', 'boolean'],

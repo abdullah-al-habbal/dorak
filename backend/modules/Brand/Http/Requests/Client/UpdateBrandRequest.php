@@ -9,6 +9,7 @@ use Modules\Brand\CQRS\Command\Client\UpdateBrandCommand;
 use Modules\Brand\Models\BrandModel;
 use Modules\Core\Enums\VenueUniverse;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Currency\Rules\ActiveCurrencyRule;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateBrandRequest extends BaseApiFormRequest
@@ -32,7 +33,7 @@ final class UpdateBrandRequest extends BaseApiFormRequest
         return [
             'name.en' => ['sometimes', 'string', 'max:255'],
             'name.ar' => ['sometimes', 'string', 'max:255'],
-            'base_currency_code' => ['sometimes', 'string', 'exists:currencies,code'],
+            'base_currency_code' => ['sometimes', 'string', new ActiveCurrencyRule],
             'logo_url' => ['nullable', 'url', 'max:2048'],
             'description.en' => ['nullable', 'string', 'max:5000'],
             'description.ar' => ['nullable', 'string', 'max:5000'],

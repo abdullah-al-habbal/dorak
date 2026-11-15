@@ -6,6 +6,7 @@ namespace Modules\Brand\Support;
 
 use Illuminate\Validation\Rule;
 use Modules\Core\Enums\VenueUniverse;
+use Modules\Currency\Rules\ActiveCurrencyRule;
 
 /** The brand fields every brand-creating request validates the same way, optionally under a key prefix. */
 final class BrandPayloadRules
@@ -16,7 +17,7 @@ final class BrandPayloadRules
         $rules = [
             'name.en' => ['required', 'string', 'max:255'],
             'name.ar' => ['required', 'string', 'max:255'],
-            'base_currency_code' => ['required', 'string', 'exists:currencies,code'],
+            'base_currency_code' => ['required', 'string', new ActiveCurrencyRule],
             'logo_url' => ['nullable', 'url', 'max:2048'],
             'description.en' => ['nullable', 'string', 'max:5000'],
             'description.ar' => ['nullable', 'string', 'max:5000'],

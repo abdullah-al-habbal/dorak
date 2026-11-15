@@ -70,7 +70,7 @@ Notes:
 - A versus D8 and D9 (resolved in C).
 - Earlier F-05 wording ('advisory', 'not revoked on refresh') and test evidence (`DashboardAuthApiTest.php:170`, `:198-200`) were imprecise: see T-01 in [10](10-prerequisites-t01-t04.md).
 - Three meanings of 'Batch 2' (see E, D-03).
-- Handover says a currency in-use guard exists; code has none (F-03).
+- Handover says a currency in-use guard exists; code has none (F-03). Resolved by S10: no guard is needed, retired currencies are only rejected for new input.
 - **F-05 (found by the T-01 audit, 2026-11-14):** the S1 acceptance "old token dead after refresh" cannot hold under D-01 and D-02 as written (claim bound to `sub` and
   `actor_type` only), and the D-02 residual text understates the window. **Open owner question:** (a) keep D-01 as written and rewrite the S1 acceptance to accept the
   residual, or (b) add the access-token id (`tid`) to the claim and require it to match (recommended, no schema change, D-02 kept). **Resolved 2026-11-14: (b) approved and implemented** (gates passed, committed locally); see [03](03-f05-session-lifecycle.md) section 6.

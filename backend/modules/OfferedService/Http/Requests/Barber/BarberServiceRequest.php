@@ -7,6 +7,7 @@ namespace Modules\OfferedService\Http\Requests\Barber;
 use Illuminate\Validation\Rule;
 use Modules\Core\Constants\ValidationLimitConstants;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Currency\Rules\ActiveCurrencyRule;
 
 final class BarberServiceRequest extends BaseApiFormRequest
 {
@@ -14,7 +15,7 @@ final class BarberServiceRequest extends BaseApiFormRequest
     {
         return [
             'catalog_item_id' => ['nullable', 'uuid', Rule::exists('service_catalog_items', 'id')->where('is_active', true)],
-            'currency_code' => ['required', 'string', Rule::exists('currencies', 'code')],
+            'currency_code' => ['required', 'string', new ActiveCurrencyRule],
             'name' => ['required', 'array:en,ar'],
             'name.en' => ['required', 'string', 'max:120'],
             'name.ar' => ['required', 'string', 'max:120'],

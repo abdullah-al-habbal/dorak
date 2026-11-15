@@ -7,6 +7,7 @@ namespace Modules\Preference\Http\Requests\Shared;
 use Illuminate\Validation\Rule;
 use Modules\Core\Enums\Locale;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Currency\Rules\ActiveCurrencyRule;
 use Modules\Preference\Enums\PriceDisplayModeEnum;
 use Modules\Preference\Enums\ThemeEnum;
 
@@ -17,7 +18,7 @@ final class UpdateSettingsRequest extends BaseApiFormRequest
         return [
             'preferred_language' => ['sometimes', 'nullable', Rule::enum(Locale::class)],
             'allows_notifications' => ['sometimes', 'boolean'],
-            'display_currency_code' => ['sometimes', 'nullable', 'exists:currencies,code'],
+            'display_currency_code' => ['sometimes', 'nullable', 'string', new ActiveCurrencyRule],
             'theme_mode' => ['sometimes', 'nullable', Rule::enum(ThemeEnum::class)],
             'price_display_mode' => ['sometimes', 'nullable', Rule::enum(PriceDisplayModeEnum::class)],
         ];

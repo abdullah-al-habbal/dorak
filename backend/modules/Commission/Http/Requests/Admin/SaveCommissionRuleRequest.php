@@ -10,6 +10,7 @@ use Modules\Commission\CQRS\Command\SaveCommissionRuleCommand;
 use Modules\Commission\Enums\CommissionScope;
 use Modules\Commission\Enums\CommissionType;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
+use Modules\Currency\Rules\ActiveCurrencyRule;
 
 final class SaveCommissionRuleRequest extends BaseApiFormRequest
 {
@@ -38,7 +39,7 @@ final class SaveCommissionRuleRequest extends BaseApiFormRequest
                 : ['required', 'integer', 'min:1'],
             'currency_code' => [
                 Rule::requiredIf($this->input('type') === CommissionType::Flat->value),
-                'nullable', 'exists:currencies,code',
+                'nullable', 'string', new ActiveCurrencyRule,
             ],
             'is_active' => ['required', 'boolean'],
             'notes' => ['sometimes', 'nullable', 'string', 'max:2000'],
