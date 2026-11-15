@@ -50,13 +50,8 @@ final class CreateBookingEloquentResolver
         }
 
         $chair = $this->lockChairMatchingBarber($command);
-        $chairBarberId = $chair?->getAttribute('barber_id');
-        $chairBarberId = is_string($chairBarberId) ? $chairBarberId : null;
-
-        $barberId = $command->barberId ?? $chairBarberId;
-
-        $branchId = $chair?->getAttribute('branch_id') ?? $command->branchId;
-        $branchId = is_string($branchId) ? $branchId : null;
+        $barberId = $command->barberId ?? $this->stringOrNull($chair?->getAttribute('barber_id'));
+        $branchId = $this->stringOrNull($chair?->getAttribute('branch_id') ?? $command->branchId);
 
         if ($chair === null && $branchId !== null) {
             $this->ensureBarberAffiliatedWithBranch($barberId, $branchId);
@@ -67,9 +62,7 @@ final class CreateBookingEloquentResolver
 
         $endsAt = $command->startsAt->copy()->addMinutes($this->totalDuration($services, $branchId, $barberId));
 
-        if ($branchId !== null && ! BranchModel::query()->discoverable()->whereKey($branchId)->exists()) {
-            throw new NonDiscoverableBookingEntityException;
-        }
+        $this->ensureBranchDiscoverable($branchId);
 
         if ($chair !== null) {
             $this->ensureChairBookable($chair, $command->startsAt, $endsAt);
@@ -84,6 +77,18 @@ final class CreateBookingEloquentResolver
         }
 
         return $this->persist($command, $barberId, $branchId, $endsAt);
+    }
+
+    private function stringOrNull(mixed $value): ?string
+    {
+        return is_string($value) ? $value : null;
+    }
+
+    private function ensureBranchDiscoverable(?string $branchId): void
+    {
+        if ($branchId !== null && ! BranchModel::query()->discoverable()->whereKey($branchId)->exists()) {
+            throw new NonDiscoverableBookingEntityException;
+        }
     }
 
     private function lockChairMatchingBarber(CreateBookingCommand $command): ?ChairModel

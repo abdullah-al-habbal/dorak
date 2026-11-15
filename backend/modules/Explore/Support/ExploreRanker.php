@@ -47,12 +47,7 @@ final class ExploreRanker
         $clientEmbedding = $clientId === null ? null : ClientPreferenceVectorModel::query()->where('client_id', $clientId)->value('embedding');
         $clientEmbedding = is_array($clientEmbedding) && $clientEmbedding !== [] ? $clientEmbedding : null;
 
-        $edges = $clientId === null ? collect() : RecommendationEdgeModel::query()
-            ->where('source_type', 'client')
-            ->where('source_id', $clientId)
-            ->where('target_type', $entityType)
-            ->whereIn('target_id', $ids)
-            ->pluck('weight_ratio', 'target_id');
+        $edges = $this->edgeWeights($clientId, $entityType, $ids);
 
         $embeddings = $clientEmbedding === null ? collect() : EntityEmbeddingModel::query()
             ->where('entity_type', $entityType)
@@ -78,6 +73,21 @@ final class ExploreRanker
                 face: isset($faceMatches[$id]) ? 1.0 : 0.0,
             ));
         });
+    }
+
+    /** @param list<string> $ids */
+    private function edgeWeights(?string $clientId, string $entityType, array $ids): Collection
+    {
+        if ($clientId === null) {
+            return collect();
+        }
+
+        return RecommendationEdgeModel::query()
+            ->where('source_type', 'client')
+            ->where('source_id', $clientId)
+            ->where('target_type', $entityType)
+            ->whereIn('target_id', $ids)
+            ->pluck('weight_ratio', 'target_id');
     }
 
     public function paginate(Collection $scored, int $perPage, ?int $page = null): LengthAwarePaginator

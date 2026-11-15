@@ -110,14 +110,8 @@ final class RecomputeClientVectorsCommand extends Command
             return;
         }
 
-        $text = implode("\n", $signals);
-
         try {
-            $response = Embeddings::for([$text])
-                ->dimensions(RecommendationConstants::RECOMMENDATION_EMBEDDING_DIMENSIONS)
-                ->generate();
-
-            $embedding = $response->embeddings[0] ?? null;
+            $embedding = $this->embed($signals);
 
             if ($embedding === null) {
                 $this->warn($this->cli('cli_embedding_missing', ['entity_type' => $config['type'], 'entity_id' => $entity->id]));
@@ -211,14 +205,8 @@ final class RecomputeClientVectorsCommand extends Command
             return;
         }
 
-        $text = implode("\n", $signals);
-
         try {
-            $response = Embeddings::for([$text])
-                ->dimensions(RecommendationConstants::RECOMMENDATION_EMBEDDING_DIMENSIONS)
-                ->generate();
-
-            $embedding = $response->embeddings[0] ?? null;
+            $embedding = $this->embed($signals);
 
             if ($embedding === null) {
                 $this->warn($this->cli('cli_client_embedding_missing', ['client_id' => $client->id]));
@@ -244,6 +232,16 @@ final class RecomputeClientVectorsCommand extends Command
         } catch (Throwable $e) {
             $this->error($this->cli('cli_client_vector_failed', ['client_id' => $client->id, 'reason' => $e->getMessage()]));
         }
+    }
+
+    /** @param array<int, string> $signals */
+    private function embed(array $signals): mixed
+    {
+        $response = Embeddings::for([implode("\n", $signals)])
+            ->dimensions(RecommendationConstants::RECOMMENDATION_EMBEDDING_DIMENSIONS)
+            ->generate();
+
+        return $response->embeddings[0] ?? null;
     }
 
     private function cli(string $key, array $replace = []): string

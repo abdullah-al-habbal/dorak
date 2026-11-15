@@ -52,19 +52,22 @@ final class ReviewClientHandler
                 return ReviewClientResult::failure('already_reviewed');
             }
 
-            $review = ReviewModel::query()->create([
-                'booking_id' => $booking->id,
-                'author_id' => $authorId,
-                'author_type' => $authorType,
-                'subject_id' => $booking->client_id,
-                'subject_type' => ReviewSubjectTypeEnum::Client,
-                'rating' => $command->rating,
-                'body' => $command->body,
-                'status' => ReviewStatus::Published,
-            ]);
-
-            return ReviewClientResult::success($review);
+            return ReviewClientResult::success($this->publish($command, $booking, $authorType, $authorId));
         });
+    }
+
+    private function publish(ReviewClientCommand $command, BookingModel $booking, mixed $authorType, mixed $authorId): ReviewModel
+    {
+        return ReviewModel::query()->create([
+            'booking_id' => $booking->id,
+            'author_id' => $authorId,
+            'author_type' => $authorType,
+            'subject_id' => $booking->client_id,
+            'subject_type' => ReviewSubjectTypeEnum::Client,
+            'rating' => $command->rating,
+            'body' => $command->body,
+            'status' => ReviewStatus::Published,
+        ]);
     }
 
     /**
