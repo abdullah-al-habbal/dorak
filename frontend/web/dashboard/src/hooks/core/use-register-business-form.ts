@@ -9,7 +9,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { registerBusinessBody } from "@/lib/account/register-business.util";
 import { registerErrorMessage } from "@/lib/account/register-error.util";
 import { registerBusinessFormSchema } from "@/schemas/account/register-business-form.zod";
-import { registerBusiness } from "@/services/api/mutation/register-business.mutation";
+import { registerBusiness } from "@/services/api/mutation/account/register-business.mutation";
 import type { RegisterBusinessFormValues } from "@/types/core/register-business-form-values.type";
 
 const EMPTY_VALUES: RegisterBusinessFormValues = {

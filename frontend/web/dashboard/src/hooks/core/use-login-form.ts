@@ -11,7 +11,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { loginFormSchema } from "@/schemas/core/login-form.zod";
 import { isSafeCallback } from "@/services/api/auth/route-policy.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import { loginMutation } from "@/services/api/mutation/login.mutation";
+import { loginMutation } from "@/services/api/mutation/core/login.mutation";
 import type { LoginFormValues } from "@/types/core/login-form-values.type";
 
 const ERROR_KEY: Record<string, "invalidCredentials" | "accountBanned" | "tooManyAttempts" | "network"> = {

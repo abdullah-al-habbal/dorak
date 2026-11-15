@@ -9,9 +9,9 @@ import { useListQuery } from "@/hooks/core/use-list-query";
 import { useSaveMutation } from "@/hooks/core/use-save-mutation";
 import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { paymentGatewayKeys } from "@/lib/query-keys/platform/payment-gateway-keys";
-import { createPaymentGateway, deletePaymentGateway, setPaymentGatewayActive, updatePaymentGateway } from "@/services/api/mutation/payment-gateway.mutation";
-import type { PaymentGatewayPayload } from "@/services/api/mutation/payment-gateway.mutation";
-import { fetchPaymentGateways } from "@/services/api/query/payment-gateway.query";
+import { createPaymentGateway, deletePaymentGateway, setPaymentGatewayActive, updatePaymentGateway } from "@/services/api/mutation/platform/payment-gateway.mutation";
+import type { PaymentGatewayPayload } from "@/services/api/mutation/platform/payment-gateway.mutation";
+import { fetchPaymentGateways } from "@/services/api/query/platform/payment-gateway.query";
 import type { PaymentGateway } from "@/types/platform/payment-gateway.type";
 
 export function usePaymentGateways(): UseQueryResult<PaymentGateway[]> {

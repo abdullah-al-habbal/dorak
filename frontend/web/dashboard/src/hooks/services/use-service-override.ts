@@ -5,8 +5,8 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import { stylistPricingKeys } from "@/lib/query-keys/stylists/stylist-pricing-keys";
-import { clearServiceOverride, saveServiceOverride } from "@/services/api/mutation/stylist-pricing.mutation";
-import type { ServiceOverridePayload } from "@/services/api/mutation/stylist-pricing.mutation";
+import { clearServiceOverride, saveServiceOverride } from "@/services/api/mutation/stylists/stylist-pricing.mutation";
+import type { ServiceOverridePayload } from "@/services/api/mutation/stylists/stylist-pricing.mutation";
 import type { ServiceTerms } from "@/types/services/service-terms.type";
 
 interface SaveVariables {

@@ -4,7 +4,7 @@ import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
 import type { FloorDecorationDraft, FloorPlanDraft } from "@/interfaces/chairs/floor-plan-draft.interface";
 import { layoutOf } from "@/lib/chairs/chair-form.util";
 import { clampChair, stageSize } from "@/lib/chairs/floor-plan-geometry.util";
-import type { FloorPlanLayoutPayload } from "@/services/api/mutation/floor-plan.mutation";
+import type { FloorPlanLayoutPayload } from "@/services/api/mutation/chairs/floor-plan.mutation";
 import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 
 /** The editor's working copy of a saved plan. */

@@ -9,7 +9,7 @@ import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggl
 import { withChairStatus } from "@/lib/chairs/chair-cache.util";
 import { statusChangePayload } from "@/lib/chairs/chair-form.util";
 import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
-import { updateChair } from "@/services/api/mutation/save-chair.mutation";
+import { updateChair } from "@/services/api/mutation/chairs/save-chair.mutation";
 import type { ChairPage } from "@/types/chairs/chair-page.type";
 import type { Chair } from "@/types/chairs/chair.type";
 

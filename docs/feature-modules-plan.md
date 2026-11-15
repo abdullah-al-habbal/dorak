@@ -184,7 +184,7 @@ Route `/dashboard/[guard]/bookings`, guards admin, manager, owner (barber has no
 
 Backend: `GET /bookings` (filters `chair_id, date_from, date_to, per_page, booking_status, hide_cancelled, search, stylist_id`), `GET /bookings/{id}`, `GET /bookings/{id}/history`, `PATCH /bookings/{id}` (`booking_status`), `PATCH .../cancel`, `PATCH .../reschedule`, `POST /bookings/walk-in`, `POST .../review`.
 
-Files (representative): `schemas/bookings/booking.zod.ts`, `schemas/booking-filters.zod.ts`, `schemas/bookings/walk-in-form.zod.ts`, `enums/booking-status.enum.ts`, `enums/booking-view.enum.ts`, `types/bookings/booking.type.ts`, `interfaces/booking-slot-layout.interface.ts`, `services/api/query/bookings.query.ts`, `services/api/mutation/{update-booking-status,cancel-booking,reschedule-booking,create-walk-in}.mutation.ts`, `lib/query-keys/bookings/booking-keys.ts`, `lib/bookings/slot-layout.util.ts`, `components/bookings/*`, `hooks/bookings/use-booking-filters.ts`.
+Files (representative): `schemas/bookings/booking.zod.ts`, `schemas/booking-filters.zod.ts`, `schemas/bookings/walk-in-form.zod.ts`, `enums/booking-status.enum.ts`, `enums/booking-view.enum.ts`, `types/bookings/booking.type.ts`, `interfaces/booking-slot-layout.interface.ts`, `services/api/query/bookings/bookings.query.ts`, `services/api/mutation/{update-booking-status,cancel-booking,reschedule-booking,create-walk-in}.mutation.ts`, `lib/query-keys/bookings/booking-keys.ts`, `lib/bookings/slot-layout.util.ts`, `components/bookings/*`, `hooks/bookings/use-booking-filters.ts`.
 
 Views:
 - **List** (default on mobile and under 640px): table on desktop, cards on phones. Columns: time, client, service, barber, chair, status, price.
@@ -214,7 +214,7 @@ Route `/dashboard/[guard]/earnings`, guards manager, barber, owner (the backend 
 
 Backend: `GET /earnings?from&to`. Admin commission data is under `/admin/commission-entries` and belongs to a later admin module.
 
-Files: `schemas/earnings/earnings.zod.ts` (written after verifying the response), `types/earnings-row.type.ts`, `services/api/query/earnings.query.ts`, `lib/date-range-presets.util.ts`, `lib/core/csv.util.ts`, `lib/currency-format.util.ts`, `components/earnings/{metric-card,earnings-table,date-range-filter,export-button,trend-badge}.tsx`.
+Files: `schemas/earnings/earnings.zod.ts` (written after verifying the response), `types/earnings-row.type.ts`, `services/api/query/earnings/earnings.query.ts`, `lib/date-range-presets.util.ts`, `lib/core/csv.util.ts`, `lib/currency-format.util.ts`, `components/earnings/{metric-card,earnings-table,date-range-filter,export-button,trend-badge}.tsx`.
 
 Content:
 - **Metric cards** (a row that wraps, not a fixed grid): revenue, average ticket (revenue divided by completed bookings, guarded against division by zero), commission/earned share, booking count. Each has a value, a label and a trend badge if a comparison is available. Cards differ in weight: revenue is the largest. They are not identical tiles.

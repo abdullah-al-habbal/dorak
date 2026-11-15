@@ -7,7 +7,7 @@ import { useSaveMutation } from "@/hooks/core/use-save-mutation";
 import type { StylistPayload } from "@/interfaces/stylists/stylist-payload.interface";
 import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { stylistKeys } from "@/lib/query-keys/stylists/stylist-keys";
-import { createStylist, updateStylist } from "@/services/api/mutation/save-stylist.mutation";
+import { createStylist, updateStylist } from "@/services/api/mutation/stylists/save-stylist.mutation";
 import type { Stylist } from "@/types/stylists/stylist.type";
 
 export function useSaveStylist(): UseMutationResult<Stylist, Error, SaveVariables<StylistPayload>> {

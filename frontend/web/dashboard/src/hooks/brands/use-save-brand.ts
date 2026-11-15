@@ -8,7 +8,7 @@ import type { BrandUpdatePayload } from "@/interfaces/brands/brand-update-payloa
 import { adminBrandKeys } from "@/lib/query-keys/brands/admin-brand-keys";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { ownerBrandKeys } from "@/lib/query-keys/brands/owner-brand-keys";
-import { updateBrand } from "@/services/api/mutation/brand-lifecycle.mutation";
+import { updateBrand } from "@/services/api/mutation/brands/brand-lifecycle.mutation";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 interface SaveBrandVariables {

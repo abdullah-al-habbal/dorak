@@ -8,9 +8,9 @@ import { useListQuery } from "@/hooks/core/use-list-query";
 import { useSaveMutation } from "@/hooks/core/use-save-mutation";
 import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { commissionKeys } from "@/lib/query-keys/earnings/commission-keys";
-import { createCommissionRule, deleteCommissionRule, updateCommissionRule } from "@/services/api/mutation/commission.mutation";
-import type { CommissionRulePayload } from "@/services/api/mutation/commission.mutation";
-import { fetchCommissionEntries, fetchCommissionRules } from "@/services/api/query/commission.query";
+import { createCommissionRule, deleteCommissionRule, updateCommissionRule } from "@/services/api/mutation/earnings/commission.mutation";
+import type { CommissionRulePayload } from "@/services/api/mutation/earnings/commission.mutation";
+import { fetchCommissionEntries, fetchCommissionRules } from "@/services/api/query/earnings/commission.query";
 import type { CommissionEntryPage, CommissionRule, CommissionRulePage } from "@/types/earnings/commission.type";
 
 export function useCommissionRules(page: number): UseQueryResult<CommissionRulePage> {

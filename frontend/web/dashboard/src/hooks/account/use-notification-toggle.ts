@@ -4,7 +4,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useOptimisticToggleMutation } from "@/hooks/core/use-optimistic-toggle-mutation";
 import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { withNotificationPreference } from "@/lib/account/notification-preferences-cache.util";
-import { updateNotificationPreferences } from "@/services/api/mutation/account.mutation";
+import { updateNotificationPreferences } from "@/services/api/mutation/account/account.mutation";
 import type { NotificationPreferenceKey } from "@/types/account/notification-preference-key.type";
 import type { NotificationPreferences } from "@/types/account/notification-preferences.type";
 

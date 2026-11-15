@@ -8,7 +8,7 @@ import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggl
 import { adminCatalogKeys } from "@/lib/query-keys/services/admin-catalog-keys";
 import { withCategoryActive } from "@/lib/services/catalog-category-cache.util";
 import { serviceKeys } from "@/lib/query-keys/services/service-keys";
-import { setCatalogCategoryActive } from "@/services/api/mutation/save-catalog-category.mutation";
+import { setCatalogCategoryActive } from "@/services/api/mutation/services/save-catalog-category.mutation";
 import type { AdminCatalogCategory, CatalogSubcategory } from "@/types/services/admin-catalog-category.type";
 
 interface ToggleVariables {

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { subscriptionKeys } from "@/lib/query-keys/plans/subscription-keys";
-import { fetchSubscriptions } from "@/services/api/query/subscriptions.query";
+import { fetchSubscriptions } from "@/services/api/query/plans/subscriptions.query";
 import type { Subscription } from "@/types/plans/subscription.type";
 
 export function useSubscriptions(): UseQueryResult<Subscription[]> {

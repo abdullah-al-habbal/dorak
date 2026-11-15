@@ -7,7 +7,7 @@ import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import type { PayoutTransitionPayload } from "@/interfaces/earnings/payout-transition-payload.interface";
 import { adminPayoutKeys } from "@/lib/query-keys/earnings/admin-payout-keys";
 import { payoutKeys } from "@/lib/query-keys/earnings/payout-keys";
-import { transitionPayout } from "@/services/api/mutation/transition-payout.mutation";
+import { transitionPayout } from "@/services/api/mutation/earnings/transition-payout.mutation";
 import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 
 /** Failures are rethrown to the dialog, which shows the backend's reason inline. */

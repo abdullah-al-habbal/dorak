@@ -5,7 +5,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import { barberApprovalKeys } from "@/lib/query-keys/stylists/barber-approval-keys";
-import { approveBarber } from "@/services/api/mutation/review-barber.mutation";
+import { approveBarber } from "@/services/api/mutation/stylists/review-barber.mutation";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 export function useApproveBarber(): UseMutationResult<BarberApproval, Error, string> {

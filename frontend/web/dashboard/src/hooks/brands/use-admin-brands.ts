@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useListQuery } from "@/hooks/core/use-list-query";
 import { adminBrandKeys } from "@/lib/query-keys/brands/admin-brand-keys";
-import { fetchAdminBrandPage } from "@/services/api/query/admin-brand-page.query";
+import { fetchAdminBrandPage } from "@/services/api/query/brands/admin-brand-page.query";
 import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
 import type { AdminBrandPage } from "@/types/brands/admin-brand-page.type";
 

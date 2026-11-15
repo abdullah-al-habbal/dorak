@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useListQuery } from "@/hooks/core/use-list-query";
 import { jobKeys } from "@/lib/query-keys/jobs/job-keys";
-import { fetchJobPostingPage } from "@/services/api/query/job-board.query";
+import { fetchJobPostingPage } from "@/services/api/query/jobs/job-board.query";
 import type { JobPostingPage } from "@/types/jobs/job-board-page.type";
 
 export function useJobPostings(branchId: string, page: number): UseQueryResult<JobPostingPage> {

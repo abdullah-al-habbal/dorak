@@ -1,0 +1,68 @@
+{
+  "dirs": [
+    "services/api/query",
+    "services/api/mutation"
+  ],
+  "default": "core",
+  "core": [
+    "^(session|me|sign-out|logout|refresh)"
+  ],
+  "rules": [
+    [
+      "job|application",
+      "jobs"
+    ],
+    [
+      "register|registration|password-reset|email",
+      "account"
+    ],
+    [
+      "barber|stylist",
+      "stylists"
+    ],
+    [
+      "booking|walk-in|reschedule|schedule|appointment|slot|calendar",
+      "bookings"
+    ],
+    [
+      "service|catalog",
+      "services"
+    ],
+    [
+      "chair|floor-plan",
+      "chairs"
+    ],
+    [
+      "opening-hours|hours-override|working-hours|shift|weekday|hours",
+      "hours"
+    ],
+    [
+      "earning|commission|payout",
+      "earnings"
+    ],
+    [
+      "client|review|rating",
+      "clients"
+    ],
+    [
+      "plan|subscription|feature-key",
+      "plans"
+    ],
+    [
+      "brand",
+      "brands"
+    ],
+    [
+      "branch|invitation",
+      "branches"
+    ],
+    [
+      "account|notification|password|email-change|display-name|language-preference|profile",
+      "account"
+    ],
+    [
+      "platform|currenc|language|payment-gateway|website-content|analytics|admin-user|exchange-rate|setting",
+      "platform"
+    ]
+  ]
+}

@@ -8,7 +8,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { OpeningHoursPayload } from "@/interfaces/hours/opening-hours-payload.interface";
 import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";
-import { saveOpeningHours } from "@/services/api/mutation/save-opening-hours.mutation";
+import { saveOpeningHours } from "@/services/api/mutation/hours/save-opening-hours.mutation";
 
 export function useSaveOpeningHours(branchId: string): UseMutationResult<OpeningHoursDay[], Error, OpeningHoursPayload> {
   const { workingHours } = useDictionary();

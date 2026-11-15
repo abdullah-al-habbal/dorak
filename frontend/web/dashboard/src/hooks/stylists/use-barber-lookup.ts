@@ -5,7 +5,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { BARBER_LOOKUP_MIN } from "@/config/invitation.constant";
 import { useListQuery } from "@/hooks/core/use-list-query";
 import { invitationKeys } from "@/lib/query-keys/branches/invitation-keys";
-import { fetchBarberLookup } from "@/services/api/query/barber-lookup.query";
+import { fetchBarberLookup } from "@/services/api/query/stylists/barber-lookup.query";
 import type { BarberLookup } from "@/types/stylists/barber-lookup.type";
 
 /** Idle until the term is long enough for the backend to accept it. */

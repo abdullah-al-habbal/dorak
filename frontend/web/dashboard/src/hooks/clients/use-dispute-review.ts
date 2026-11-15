@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import type { ReviewDisputePayload } from "@/interfaces/clients/review-dispute-payload.interface";
 import { reviewKeys } from "@/lib/query-keys/clients/review-keys";
-import { disputeReview } from "@/services/api/mutation/dispute-review.mutation";
+import { disputeReview } from "@/services/api/mutation/clients/dispute-review.mutation";
 import type { Review } from "@/types/clients/review.type";
 
 /** Failures are rethrown to the dialog (a 422 means the review is no longer published). */

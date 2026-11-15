@@ -8,7 +8,7 @@ import type { BranchPayload } from "@/interfaces/branches/branch-payload.interfa
 import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";
-import { createBranch, updateBranch } from "@/services/api/mutation/save-branch.mutation";
+import { createBranch, updateBranch } from "@/services/api/mutation/branches/save-branch.mutation";
 import type { BranchDetail } from "@/types/branches/branch-detail.type";
 
 export function useSaveBranch(): UseMutationResult<BranchDetail, Error, SaveVariables<BranchPayload>> {

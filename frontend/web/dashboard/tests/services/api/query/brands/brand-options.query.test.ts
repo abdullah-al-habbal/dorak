@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { BRANCH_OPTIONS_LIMIT } from "@/config/branch.constant";
 import { BrandStatus } from "@/enums/brand-status.enum";
 import { apiRequest } from "@/services/api/core/client";
-import { fetchBrandOptions } from "@/services/api/query/brand-options.query";
+import { fetchBrandOptions } from "@/services/api/query/brands/brand-options.query";
 
 vi.mock("@/services/api/core/client", () => ({ apiRequest: vi.fn() }));
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { loginRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import { logoutMutation } from "@/services/api/mutation/logout.mutation";
+import { logoutMutation } from "@/services/api/mutation/core/logout.mutation";
 import { useAuthStore } from "@/store/auth.store";
 
 export function useSignOut(actor: AuthActor) {

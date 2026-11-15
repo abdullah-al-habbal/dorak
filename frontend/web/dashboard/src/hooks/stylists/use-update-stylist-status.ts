@@ -8,7 +8,7 @@ import { useOptimisticToggleMutation } from "@/hooks/core/use-optimistic-toggle-
 import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggle-context.interface";
 import { withStylistStatus } from "@/lib/stylists/stylist-cache.util";
 import { stylistKeys } from "@/lib/query-keys/stylists/stylist-keys";
-import { setStylistActive } from "@/services/api/mutation/toggle-stylist.mutation";
+import { setStylistActive } from "@/services/api/mutation/stylists/toggle-stylist.mutation";
 import type { StylistPage } from "@/types/stylists/stylist-page.type";
 import type { Stylist } from "@/types/stylists/stylist.type";
 

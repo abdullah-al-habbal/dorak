@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useListQuery } from "@/hooks/core/use-list-query";
 import { reviewModerationKeys } from "@/lib/query-keys/clients/review-moderation-keys";
-import { fetchAdminReviewPage } from "@/services/api/query/admin-review-page.query";
+import { fetchAdminReviewPage } from "@/services/api/query/clients/admin-review-page.query";
 import type { AdminReviewPage } from "@/types/clients/admin-review-page.type";
 import type { ReviewModerationFilters } from "@/types/clients/review-moderation-filters.type";
 

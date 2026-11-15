@@ -7,8 +7,8 @@ import { useSaveMutation } from "@/hooks/core/use-save-mutation";
 import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { currencyAdminKeys } from "@/lib/query-keys/platform/currency-admin-keys";
 import { serviceKeys } from "@/lib/query-keys/services/service-keys";
-import { createCurrency, updateCurrency } from "@/services/api/mutation/currency-admin.mutation";
-import type { CurrencyPayload } from "@/services/api/mutation/currency-admin.mutation";
+import { createCurrency, updateCurrency } from "@/services/api/mutation/platform/currency-admin.mutation";
+import type { CurrencyPayload } from "@/services/api/mutation/platform/currency-admin.mutation";
 import type { AdminCurrency } from "@/types/platform/currency-admin.type";
 
 /** Also refreshes the currency picker the service form reads. */

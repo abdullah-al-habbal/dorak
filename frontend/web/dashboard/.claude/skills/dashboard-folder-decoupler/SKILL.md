@@ -35,7 +35,7 @@ Run from `frontend/web/dashboard`. One layer × one batch per commit.
    2. `bash ../../../.claude/skills/monorepo-task-executor/scripts/check-conventions.sh`
    3. `npm run typecheck`, `npm run lint`, `npm test` (test count must equal the baseline), `npm run build`.
    4. `TZ=UTC npx playwright test` only if `app/`, `services/api/proxy` or the allow-list changed (they must not).
-4. **Docs.** Update `src/README.md` (layer rows) and any `codeanchors` that named a moved path.
+4. **Docs.** Run `node …/rewrite-docs.mjs $SCRATCH/moves.json` for path mentions in markdown, then update `src/README.md` (layer rows) and any `codeanchors` that named a moved path.
 5. **Commit locally**, stage only moved files, mirrored tests and doc edits:
    `refactor(dashboard): group <layer> by domain (Task N)`. Never push, never `--no-verify`.
    On any gate failure revert the batch (`git restore --staged --worktree` on the moved paths) and report the output.

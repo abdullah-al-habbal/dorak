@@ -5,7 +5,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import { clientKeys } from "@/lib/query-keys/clients/client-keys";
-import { banClient } from "@/services/api/mutation/client-ban.mutation";
+import { banClient } from "@/services/api/mutation/clients/client-ban.mutation";
 import type { AdminClient } from "@/types/clients/admin-client.type";
 
 interface BanVariables {

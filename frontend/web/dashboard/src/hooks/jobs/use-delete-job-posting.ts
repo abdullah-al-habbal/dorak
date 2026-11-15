@@ -6,7 +6,7 @@ import { useDeleteMutation } from "@/hooks/core/use-delete-mutation";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
 import { jobKeys } from "@/lib/query-keys/jobs/job-keys";
-import { deleteJobPosting } from "@/services/api/mutation/job-board.mutation";
+import { deleteJobPosting } from "@/services/api/mutation/jobs/job-board.mutation";
 
 export function useDeleteJobPosting(branchId: string): UseMutationResult<void, Error, string> {
   const { jobs } = useDictionary();

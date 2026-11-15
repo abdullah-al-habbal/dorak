@@ -5,7 +5,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import { useLocaleSwitch } from "@/hooks/core/use-locale-switch";
 import { accountKeys } from "@/lib/query-keys/account/account-keys";
-import { updatePreferredLanguage } from "@/services/api/mutation/account.mutation";
+import { updatePreferredLanguage } from "@/services/api/mutation/account/account.mutation";
 
 interface LanguagePreference {
   choose: (locale: Locale) => void;

@@ -12,7 +12,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
 import { isInvalidResetLink, isTooManyRequests } from "@/lib/account/password-reset-error.util";
 import { passwordPairSchema } from "@/schemas/fields/password-pair.zod";
-import { resetPassword } from "@/services/api/mutation/reset-password.mutation";
+import { resetPassword } from "@/services/api/mutation/account/reset-password.mutation";
 import type { PasswordPairValues } from "@/types/account/password-pair-values.type";
 
 interface ResetLink {

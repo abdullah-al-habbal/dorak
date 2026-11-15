@@ -9,7 +9,7 @@ import type { BranchLifecyclePayload } from "@/interfaces/branches/branch-lifecy
 import { brandHistoryKeys } from "@/lib/query-keys/brands/brand-history-keys";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import { transitionBranch } from "@/services/api/mutation/branch-lifecycle.mutation";
+import { transitionBranch } from "@/services/api/mutation/branches/branch-lifecycle.mutation";
 import type { Branch } from "@/types/branches/branch.type";
 
 const TOAST_BY_ACTION = {

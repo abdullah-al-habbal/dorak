@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { BarberStatus } from "@/enums/barber-status.enum";
 import { barberApprovalKeys } from "@/lib/query-keys/stylists/barber-approval-keys";
-import { fetchBarberApprovalPage } from "@/services/api/query/barber-approval-page.query";
+import { fetchBarberApprovalPage } from "@/services/api/query/stylists/barber-approval-page.query";
 
 const PENDING_COUNT_PAGE_SIZE = 1;
 const PENDING_COUNT_STALE_MS = 60_000;

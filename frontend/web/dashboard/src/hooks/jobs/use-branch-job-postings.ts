@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
-import { fetchBranchJobPostings } from "@/services/api/query/branch-oversight.query";
+import { fetchBranchJobPostings } from "@/services/api/query/branches/branch-oversight.query";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
 
 export function useBranchJobPostings(branchId: string): UseQueryResult<BranchJobPosting[]> {

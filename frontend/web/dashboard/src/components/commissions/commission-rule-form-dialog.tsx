@@ -25,7 +25,7 @@ import { localizedText } from "@/lib/core/booking-format.util";
 import { bpsToPercent, percentToBps } from "@/lib/earnings/commission.util";
 import { minorUnitsToInput, parseMinorUnits } from "@/lib/core/money.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { CommissionRulePayload } from "@/services/api/mutation/commission.mutation";
+import type { CommissionRulePayload } from "@/services/api/mutation/earnings/commission.mutation";
 import type { CommissionRule } from "@/types/earnings/commission.type";
 
 /** Adds or edits a commission rule: where it applies (all, one brand or one branch) and what it charges (a percent or a flat amount). */

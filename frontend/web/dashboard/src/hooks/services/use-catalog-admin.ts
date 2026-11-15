@@ -9,9 +9,9 @@ import { useSaveMutation } from "@/hooks/core/use-save-mutation";
 import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { adminCatalogKeys } from "@/lib/query-keys/services/admin-catalog-keys";
 import { catalogAdminKeys } from "@/lib/query-keys/services/catalog-admin-keys";
-import { createCatalogItem, createCatalogTag, deleteCatalogItem, deleteCatalogTag, updateCatalogItem, updateCatalogTag } from "@/services/api/mutation/catalog-admin.mutation";
-import type { CatalogItemPayload, CatalogTagPayload } from "@/services/api/mutation/catalog-admin.mutation";
-import { fetchCatalogItemPage, fetchCatalogTags } from "@/services/api/query/catalog-admin.query";
+import { createCatalogItem, createCatalogTag, deleteCatalogItem, deleteCatalogTag, updateCatalogItem, updateCatalogTag } from "@/services/api/mutation/services/catalog-admin.mutation";
+import type { CatalogItemPayload, CatalogTagPayload } from "@/services/api/mutation/services/catalog-admin.mutation";
+import { fetchCatalogItemPage, fetchCatalogTags } from "@/services/api/query/services/catalog-admin.query";
 import type { CatalogItem, CatalogItemPage, CatalogTag } from "@/types/services/catalog-item.type";
 
 export function useCatalogItems(categoryId: string, search: string, page: number): UseQueryResult<CatalogItemPage> {

@@ -6,8 +6,8 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
 import { invitationKeys } from "@/lib/query-keys/branches/invitation-keys";
-import { inviteBarberByContact } from "@/services/api/mutation/invitation.mutation";
-import type { InviteBarberByContactPayload } from "@/services/api/mutation/invitation.mutation";
+import { inviteBarberByContact } from "@/services/api/mutation/branches/invitation.mutation";
+import type { InviteBarberByContactPayload } from "@/services/api/mutation/branches/invitation.mutation";
 
 interface InviteByContactVariables {
   branchId: string;

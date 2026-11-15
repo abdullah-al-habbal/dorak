@@ -9,8 +9,8 @@ import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
 import { draftToLayoutPayload, movedChairIds } from "@/lib/chairs/floor-plan-draft.util";
 import { floorPlanKeys } from "@/lib/query-keys/chairs/floor-plan-keys";
 import { chairPayloadWithLayout } from "@/lib/chairs/floor-plan-save.util";
-import { saveFloorPlanLayout } from "@/services/api/mutation/floor-plan.mutation";
-import { updateChair } from "@/services/api/mutation/save-chair.mutation";
+import { saveFloorPlanLayout } from "@/services/api/mutation/chairs/floor-plan.mutation";
+import { updateChair } from "@/services/api/mutation/chairs/save-chair.mutation";
 import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 
 interface SaveFloorPlanVariables {

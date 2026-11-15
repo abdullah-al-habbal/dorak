@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useListQuery } from "@/hooks/core/use-list-query";
 import { planKeys } from "@/lib/query-keys/plans/plan-keys";
-import { fetchPlanPage } from "@/services/api/query/plan-page.query";
+import { fetchPlanPage } from "@/services/api/query/plans/plan-page.query";
 import type { PlanFilters } from "@/types/plans/plan-filters.type";
 import type { PlanPage } from "@/types/plans/plan-page.type";
 

@@ -14,7 +14,7 @@ import { existingOwnerBody } from "@/lib/account/register-business.util";
 import { registerErrorMessage } from "@/lib/account/register-error.util";
 import { existingOwnerFormSchema } from "@/schemas/account/register-business-form.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import { createBrandForExistingClient } from "@/services/api/mutation/register-business.mutation";
+import { createBrandForExistingClient } from "@/services/api/mutation/account/register-business.mutation";
 import type { ExistingOwnerFormValues } from "@/types/core/existing-owner-form-values.type";
 
 const EMPTY_VALUES: ExistingOwnerFormValues = { email: "", password: "", brandNameEn: "", brandNameAr: "", currency: "", branchNameEn: "", branchNameAr: "" };

@@ -10,8 +10,8 @@ Architecture rules for the dashboard. All imports use the `@/` alias; never `./`
 | `schemas/fields/` | Zod field builders for shared form rules (`nameField`, `emailField`, `phoneField`, `passwordField`). Form schemas compose these instead of repeating the chain; limits live in `config/field-limit.constant.ts` or the module's constant. |
 | `enums/` | Explicit TypeScript enums for domain modes and categories. |
 | `components/` | No flat files. Group into typed subfolders (`buttons/`, `forms/`, `dialogs/`, `layout/`, shadcn `ui/`). |
-| `services/api/query/` | Read-only API actions (TanStack Query). |
-| `services/api/mutation/` | Write API actions (TanStack mutations). |
+| `services/api/query/<domain>/` | Read-only API actions (TanStack Query), grouped by domain (`core` for session). |
+| `services/api/mutation/<domain>/` | Write API actions (TanStack mutations), grouped by domain (`core` for login and logout). |
 | `store/` | Zustand client state (theme, auth profile). Layout state that needs server seeding lives in providers instead. |
 | `components/providers/` | App-wide and portal context providers (`SidebarProvider`, `I18nProvider`, `AppProviders`). |
 | `components/overlays/` | `OverlayProvider` and the single dialog/sheet host. Add a kind to `OverlayKind` and `OverlayRequest`, then a case in `OverlayHost`. |
@@ -28,7 +28,7 @@ Architecture rules for the dashboard. All imports use the `@/` alias; never `./`
 | `hooks/core/use-url-filters.ts` | `useUrlFilters(fromParams, toParams)` for paged list filters: `useUrlState` plus `applyFilterPatch` (`lib/core/url-query.util.ts`), so any change other than `page` resets to page 1. Used by the booking, branch, chair, stylist, review, plan, payout, schedule and admin subscription filter hooks, whose page setter is the `PaginationBar`'s required `onPageChange`. |
 | `hooks/core/use-replace-query.ts` | `useReplaceQuery()` returns the one writer for query strings: `router.replace` to `toReplaceHref(pathname, query)` (the bare pathname when the query is empty) with `{ scroll: false }`, so a filter change replaces the history entry instead of adding one. |
 | `hooks/core/use-detail-query.ts` | `useDetailQuery(id, keyFor, fetcher, extras?)` reads one record by id: while `id` is `null` or `undefined` the `queryFn` is TanStack's `skipToken` (no request, the query stays idle), otherwise it fetches `fetcher(id)` under `keyFor(id ?? "")`; `extras.gcTime` sets the cache lifetime. The options live in `lib/core/detail-query.util.ts`. Used by `useBookingHistory`, `useOpeningHours` and `useBranchDetail`. |
-| `hooks/bookings/use-bookings-query.ts` | `useBookingsQuery(filters, weekStart)` reads the bookings screen's data under `bookingKeys.list(filters)` through `useListQuery`. The fetch lives in `fetchBookingsForView` (`services/api/query/bookings.query.ts`): one page for the list view, the whole window as a single page (via `resolvePageInfo`) for the day and week grids. |
+| `hooks/bookings/use-bookings-query.ts` | `useBookingsQuery(filters, weekStart)` reads the bookings screen's data under `bookingKeys.list(filters)` through `useListQuery`. The fetch lives in `fetchBookingsForView` (`services/api/query/bookings/bookings.query.ts`): one page for the list view, the whole window as a single page (via `resolvePageInfo`) for the day and week grids. |
 | `components/ui/skeleton-row.tsx` | `SkeletonRow({ className? })` is one full-width placeholder row whose shimmer stops under reduced motion; `SkeletonRows({ count, rowClassName?, className? })` stacks them inside one `role="status"` region labelled `common.loading`. `TableSkeleton`, the booking history timeline and the plan, branch and assign-subscription form dialogs use it; loading lists build on it instead of mapping `Skeleton` by hand. |
 | `tests/` (project root) | Mirrors `src/`; import app code and helpers through `@/` and `@tests/`. |
 

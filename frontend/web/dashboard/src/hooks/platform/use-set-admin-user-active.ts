@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import { adminUserKeys } from "@/lib/query-keys/platform/admin-user-keys";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import { deactivateAdminUser, reactivateAdminUser } from "@/services/api/mutation/admin-user.mutation";
+import { deactivateAdminUser, reactivateAdminUser } from "@/services/api/mutation/platform/admin-user.mutation";
 import type { AdminUser } from "@/types/platform/admin-user.type";
 
 const HTTP_CONFLICT = 409;

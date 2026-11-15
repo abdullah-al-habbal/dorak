@@ -8,7 +8,7 @@ import type { CatalogCategoryPayload } from "@/interfaces/services/catalog-categ
 import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { adminCatalogKeys } from "@/lib/query-keys/services/admin-catalog-keys";
 import { serviceKeys } from "@/lib/query-keys/services/service-keys";
-import { createCatalogCategory, updateCatalogCategory } from "@/services/api/mutation/save-catalog-category.mutation";
+import { createCatalogCategory, updateCatalogCategory } from "@/services/api/mutation/services/save-catalog-category.mutation";
 import type { CatalogSubcategory } from "@/types/services/admin-catalog-category.type";
 
 /** Also refreshes the service form's category picker, which lists the same global categories. */

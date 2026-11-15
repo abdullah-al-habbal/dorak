@@ -7,7 +7,7 @@ import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import type { BrandCreatePayload } from "@/interfaces/brands/brand-create-payload.interface";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { ownerBrandKeys } from "@/lib/query-keys/brands/owner-brand-keys";
-import { createBrand } from "@/services/api/mutation/brand-create.mutation";
+import { createBrand } from "@/services/api/mutation/brands/brand-create.mutation";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** Failures are rethrown to the form. */

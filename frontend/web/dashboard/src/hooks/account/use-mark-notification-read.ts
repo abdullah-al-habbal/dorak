@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UseMutationResult } from "@tanstack/react-query";
 
 import { notificationKeys } from "@/lib/query-keys/account/notification-keys";
-import { markAllNotificationsRead, markNotificationRead } from "@/services/api/mutation/notification-read.mutation";
+import { markAllNotificationsRead, markNotificationRead } from "@/services/api/mutation/account/notification-read.mutation";
 
 /** Quiet by design: reading a notification needs no toast, only a refreshed feed. */
 export function useMarkNotificationRead(): UseMutationResult<unknown, Error, string> {

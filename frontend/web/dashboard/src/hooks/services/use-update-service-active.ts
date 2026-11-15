@@ -8,7 +8,7 @@ import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggl
 import { activeTogglePayload } from "@/lib/services/service-form.util";
 import { withServiceActive } from "@/lib/services/service-cache.util";
 import { serviceKeys } from "@/lib/query-keys/services/service-keys";
-import { updateService } from "@/services/api/mutation/save-service.mutation";
+import { updateService } from "@/services/api/mutation/services/save-service.mutation";
 import type { Service } from "@/types/services/service.type";
 
 interface ToggleVariables {

@@ -9,7 +9,7 @@ import type { BrandLifecyclePayload } from "@/interfaces/brands/brand-lifecycle-
 import { adminBrandKeys } from "@/lib/query-keys/brands/admin-brand-keys";
 import { brandHistoryKeys } from "@/lib/query-keys/brands/brand-history-keys";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
-import { transitionBrand } from "@/services/api/mutation/brand-lifecycle.mutation";
+import { transitionBrand } from "@/services/api/mutation/brands/brand-lifecycle.mutation";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** Reject, suspend and reactivate. Failures are rethrown to the dialog, which shows them inline. */

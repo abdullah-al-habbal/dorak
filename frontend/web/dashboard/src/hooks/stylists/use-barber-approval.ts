@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { barberApprovalKeys } from "@/lib/query-keys/stylists/barber-approval-keys";
-import { fetchBarberApproval } from "@/services/api/query/barber-approval.query";
+import { fetchBarberApproval } from "@/services/api/query/stylists/barber-approval.query";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** The detail dialog's read (it adds the portfolio). It starts from the list row, so the dialog never opens empty. */

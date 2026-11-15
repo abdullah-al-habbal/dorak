@@ -18,7 +18,7 @@ import { useActOnInvitation } from "@/hooks/branches/use-act-on-invitation";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useInvitations } from "@/hooks/branches/use-invitations";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import type { InvitationAction } from "@/services/api/mutation/invitation.mutation";
+import type { InvitationAction } from "@/services/api/mutation/branches/invitation.mutation";
 import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 
 const FIRST_PAGE = 1;

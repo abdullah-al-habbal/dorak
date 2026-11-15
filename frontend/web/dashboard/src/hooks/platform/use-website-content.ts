@@ -16,9 +16,9 @@ import {
   updateContentSection,
   updateOnboardingConfig,
   updateTestimonial,
-} from "@/services/api/mutation/website-content.mutation";
-import type { OnboardingPayload, PagePayload, SectionPayload, TestimonialPayload } from "@/services/api/mutation/website-content.mutation";
-import { fetchOnboardingConfigs, fetchWebsiteContent } from "@/services/api/query/website-content.query";
+} from "@/services/api/mutation/platform/website-content.mutation";
+import type { OnboardingPayload, PagePayload, SectionPayload, TestimonialPayload } from "@/services/api/mutation/platform/website-content.mutation";
+import { fetchOnboardingConfigs, fetchWebsiteContent } from "@/services/api/query/platform/website-content.query";
 import type { ContentPage, ContentSection, OnboardingConfig, Testimonial, WebsiteContent } from "@/types/platform/website-content.type";
 
 interface UpdateVariables<P> {

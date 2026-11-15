@@ -20,7 +20,7 @@ import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useSaveJobPosting } from "@/hooks/jobs/use-save-job-posting";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { JobPostingBody } from "@/services/api/mutation/job-board.mutation";
+import type { JobPostingBody } from "@/services/api/mutation/jobs/job-board.mutation";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
 
 interface JobPostingFormDialogProps {

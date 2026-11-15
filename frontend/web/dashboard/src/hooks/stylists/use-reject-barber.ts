@@ -5,7 +5,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
 import { barberApprovalKeys } from "@/lib/query-keys/stylists/barber-approval-keys";
-import { rejectBarber } from "@/services/api/mutation/review-barber.mutation";
+import { rejectBarber } from "@/services/api/mutation/stylists/review-barber.mutation";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Failures are rethrown to the dialog, which shows the backend's reason inline. */

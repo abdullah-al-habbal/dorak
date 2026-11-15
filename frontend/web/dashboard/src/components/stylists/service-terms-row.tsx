@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { localizedText, formatPrice } from "@/lib/core/booking-format.util";
 import { draftFromTerms, draftToPayload } from "@/lib/services/service-override.util";
-import type { ServiceOverridePayload } from "@/services/api/mutation/stylist-pricing.mutation";
+import type { ServiceOverridePayload } from "@/services/api/mutation/stylists/stylist-pricing.mutation";
 import type { ServiceTerms } from "@/types/services/service-terms.type";
 
 interface ServiceTermsRowProps {

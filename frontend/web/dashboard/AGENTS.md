@@ -38,7 +38,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **File taxonomy** (details in [src/README.md](src/README.md)): one `.type.ts`,
   `.interface.ts`, `.zod.ts` or `.enum.ts` per file; constants in `.constant.ts`; pure
   helpers in `.util.ts`; one hook per file named `use-<name>.ts`; reads in
-  `services/api/query/*.query.ts`, writes in `services/api/mutation/*.mutation.ts`; no
+  `services/api/query/<domain>/*.query.ts`, writes in `services/api/mutation/<domain>/*.mutation.ts`; no
   catch-all names (`types.ts`, `helpers.ts`, `constants.ts`); `lib/utils.ts` is shadcn's generated file and the one exception.
 - **Routes:** all application paths live in `src/config/routes.constant.ts`. Portal layouts
   validate the session and actor; do not bypass them in nested routes. Backend dashboard
