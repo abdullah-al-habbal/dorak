@@ -38,6 +38,7 @@ export const arShell: Dictionary["shell"] = {
   notifications: {
     title: "الإشعارات",
     titleWithCount: "الإشعارات، {count} غير مقروءة",
+    viewAll: "عرض كل الإشعارات",
     markAll: "تعليم الكل كمقروء",
     unread: "غير مقروء",
     events: {

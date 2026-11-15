@@ -4,6 +4,8 @@ import { NotificationEvent } from "@/enums/ui/notification-event.enum";
 /** D5: the unread count refetches every 60 seconds while the tab is visible. */
 export const NOTIFICATION_POLL_MS = 60_000;
 export const NOTIFICATION_PER_PAGE = 20;
+/** Rows per page on the full notifications page (FT-5). */
+export const NOTIFICATION_PAGE_SIZE = 15;
 /** Past this the badge reads "99+". */
 export const NOTIFICATION_BADGE_MAX = 99;
 

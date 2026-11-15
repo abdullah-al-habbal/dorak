@@ -7,6 +7,7 @@ export const LOGIN_SEGMENT = "login";
 export const FORGOT_PASSWORD_SEGMENT = "forgot-password";
 export const RESET_PASSWORD_SEGMENT = "reset-password";
 export const ACCOUNT_SEGMENT = "account";
+export const NOTIFICATIONS_SEGMENT = "notifications";
 /** Pages under a guard that a signed-out visitor may open. */
 export const PUBLIC_AUTH_SEGMENTS: readonly string[] = [LOGIN_SEGMENT, FORGOT_PASSWORD_SEGMENT, RESET_PASSWORD_SEGMENT];
 /** Set on the login URL after a successful password reset, so the page confirms it. */
@@ -65,4 +66,8 @@ export function statusRoute(actor: AuthActor): string {
 
 export function accountRoute(actor: AuthActor): string {
   return `${portalRoot(actor)}/${ACCOUNT_SEGMENT}`;
+}
+
+export function notificationsRoute(actor: AuthActor): string {
+  return `${portalRoot(actor)}/${NOTIFICATIONS_SEGMENT}`;
 }

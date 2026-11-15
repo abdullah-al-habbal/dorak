@@ -34,6 +34,7 @@ import { arPayouts } from "@/locales/ar/payouts.constant";
 import { arReviews } from "@/locales/ar/reviews.constant";
 import { arSchedule } from "@/locales/ar/schedule.constant";
 import { arSubscription } from "@/locales/ar/subscription.constant";
+import { arNotificationsPage } from "@/locales/ar/notifications-page.constant";
 import { arShell } from "@/locales/ar/shell.constant";
 import { arWorkingHours } from "@/locales/ar/working-hours.constant";
 import type { Dictionary } from "@/types/core/shared/dictionary.type";
@@ -56,6 +57,7 @@ export const arDictionary: Dictionary = {
   reviewModeration: arReviewModeration,
   adminUsers: arAdminUsers,
   barberApprovals: arBarberApprovals,
+  notificationsPage: arNotificationsPage,
   branchOversight: arBranchOversight,
   ownerBrand: arOwnerBrand,
   floorPlan: arFloorPlan,

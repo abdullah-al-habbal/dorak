@@ -34,6 +34,7 @@ import { enPayouts } from "@/locales/en/payouts.constant";
 import { enReviews } from "@/locales/en/reviews.constant";
 import { enSchedule } from "@/locales/en/schedule.constant";
 import { enSubscription } from "@/locales/en/subscription.constant";
+import { enNotificationsPage } from "@/locales/en/notifications-page.constant";
 import { enShell } from "@/locales/en/shell.constant";
 import { enWorkingHours } from "@/locales/en/working-hours.constant";
 
@@ -55,6 +56,7 @@ export const enDictionary = {
   reviewModeration: enReviewModeration,
   adminUsers: enAdminUsers,
   barberApprovals: enBarberApprovals,
+  notificationsPage: enNotificationsPage,
   branchOversight: enBranchOversight,
   ownerBrand: enOwnerBrand,
   floorPlan: enFloorPlan,

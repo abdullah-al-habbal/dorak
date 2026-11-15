@@ -13,7 +13,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { NAV_ITEMS } from "@/config/money-shell/nav.constant";
-import { ACCOUNT_SEGMENT, portalRoot } from "@/config/routes.constant";
+import { ACCOUNT_SEGMENT, NOTIFICATIONS_SEGMENT, portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/access/auth-actor.enum";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
@@ -25,7 +25,7 @@ export function Breadcrumbs({ actor }: { actor: AuthActor }) {
 
   const crumbs = segments.map((segment, index) => {
     const item = NAV_ITEMS[actor].find((entry) => entry.segment === segment);
-    const label = item ? shell.nav[item.key] : segment === ACCOUNT_SEGMENT ? shell.profile.account : segment;
+    const label = item ? shell.nav[item.key] : segment === ACCOUNT_SEGMENT ? shell.profile.account : segment === NOTIFICATIONS_SEGMENT ? shell.notifications.title : segment;
     return { label, href: `${root}/${segments.slice(0, index + 1).join("/")}` };
   });
 

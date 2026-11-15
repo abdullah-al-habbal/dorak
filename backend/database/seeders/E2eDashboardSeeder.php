@@ -21,6 +21,8 @@ use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Enums\NotificationTypeEnum;
+use Modules\Core\Models\NotificationModel;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Models\DashboardEmailChangeModel;
@@ -52,6 +54,11 @@ use Modules\Subscription\Services\PlanFeatureSyncer;
 final class E2eDashboardSeeder extends Seeder
 {
     public const string MANAGER_EMAIL = 'e2e-manager@dorak.test';
+
+    /** FT-5: the manager's inbox holds this many notifications (two pages of 15), the newest `MANAGER_UNREAD_NOTIFICATIONS` of them unread. */
+    public const int MANAGER_NOTIFICATIONS = 17;
+
+    public const int MANAGER_UNREAD_NOTIFICATIONS = 3;
 
     public const string MANAGER_PASSWORD = 'e2e-password-123';
 
@@ -157,12 +164,34 @@ final class E2eDashboardSeeder extends Seeder
         $this->booking($chairs[1], $lina, $beard, 'Older Client', 'عميل قديم', 11, BookingStatus::Completed, 40);
 
         $this->reviews($branch);
+        $this->managerNotifications($branch);
         $this->ownerBilling($branch->brand, $owner, $currency);
         $this->pendingBrand($currency);
         $this->restoreSettingsBaseline();
         $this->restoreCatalogBaseline();
         $this->restoreAccessAdmins();
         $this->restoreRegistrationBaseline();
+    }
+
+    /** FT-5: a paged inbox for the manager. Titles are stored English; booking rows carry no event, the oldest row is a review alert. */
+    private function managerNotifications(BranchModel $branch): void
+    {
+        NotificationModel::query()->where('notifiable_type', $branch->getMorphClass())->where('notifiable_id', $branch->getKey())->delete();
+
+        for ($index = 1; $index <= self::MANAGER_NOTIFICATIONS; $index++) {
+            $isReview = $index === self::MANAGER_NOTIFICATIONS;
+            $notification = NotificationModel::query()->create([
+                'notifiable_type' => $branch->getMorphClass(),
+                'notifiable_id' => $branch->getKey(),
+                'type' => $isReview ? NotificationTypeEnum::PlatformEvent : NotificationTypeEnum::BookingUpdate,
+                'title' => $isReview ? 'E2E review alert' : 'E2E booking update '.$index,
+                'body' => $isReview ? 'A review was disputed.' : 'Booking '.$index.' changed.',
+                'data' => $isReview ? ['event' => 'review_disputed'] : [],
+                'read_at' => $index <= self::MANAGER_UNREAD_NOTIFICATIONS ? null : now(),
+            ]);
+            // Newest first: index 1 is the latest.
+            $notification->forceFill(['created_at' => now()->subMinutes($index)])->save();
+        }
     }
 
     /** NS-03 specs: the signed-up owner is gone, and the app client is verified again with no brand. */

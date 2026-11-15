@@ -45,7 +45,6 @@ Facebook sign-in are unsupported (G9).
 - FT-4 Accepted trade-off to revisit at the next mobile release: Business-app builds before `32d66844` no longer clear the unseen application state.
 
 **Dashboard**
-- FT-5 Full notifications page with paging (the bell shows the latest 20).
 - FT-6 Paging for bookings, reviews and the oversight dialog (latest 20 only today).
 - FT-7 Reason prompt on barber deactivation; end a barber's affiliation from the dashboard.
 - FT-8 Date ranges and recurring closures (NS-12).
@@ -75,7 +74,7 @@ Facebook sign-in are unsupported (G9).
 - TS-1 Backend depth (allowed, 401, 403, 404, 422, side effects) for NS-04 admin users, NS-05 and NS-14 disputes, NS-06 brand lifecycle, NS-07 clients and bans, NS-08 barbers and activation log, NS-30 approval queue, NS-09 oversight filters, NS-10 notifications feed, NS-11 rate client, NS-12 hours exceptions, NS-13 owner workspace, NS-15 floor plan, NS-16 invitations, NS-17 job board, NS-18 per-brand pricing, NS-19 currencies, NS-20 languages, NS-21 catalog, NS-22 commission, NS-23 gateways, NS-24 payout detail, NS-25 website content. Re-check which are already covered before writing (several have dedicated Dashboard test files).
 - TS-2 Branch-account ban test; dashboard refresh after a ban; session continuity after suspend, disable or deactivate.
 - TS-3 More dashboard component tests. The setup is done (`tests/helpers/dom.helper.ts`, first tests in `tests/components/common/`); add tests with each UI change, starting with the list states and the form dialogs.
-- TS-4 Playwright specs missing: floor-plan editor, invitations (`invitations.spec.ts` is written but has never run), per-brand pricing, oversight dialog and hours exceptions, gateways and languages, notifications feed, rate client, review dispute and moderation, mutations of the eight smoke modules (admin invite and deactivate, client ban, barber approve and reject, currency, commission rule, content edits, job postings and applications, owner brand create), owner status page, suspended-brand banner, session expiry.
+- TS-4 Playwright specs missing: floor-plan editor, invitations (`invitations.spec.ts` is written but has never run), per-brand pricing, oversight dialog and hours exceptions, gateways and languages, rate client, review dispute and moderation, mutations of the eight smoke modules (admin invite and deactivate, client ban, barber approve and reject, currency, commission rule, content edits, job postings and applications, owner brand create), owner status page, suspended-brand banner, session expiry.
 - TS-5 A real two-process concurrent-refresh test.
 - TS-6 Mobile: tests with every WP change in sections 3 and 4.
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { BellIcon } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import type { JSX } from "react";
 
@@ -12,6 +13,7 @@ import type { AuthActor } from "@/enums/access/auth-actor.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useMarkAllNotificationsRead, useMarkNotificationRead } from "@/hooks/account/notifications/use-mark-notification-read";
 import { useNotificationFeed } from "@/hooks/account/notifications/use-notification-feed";
+import { notificationsRoute } from "@/config/routes.constant";
 import { notificationHref } from "@/lib/account/notification-link.util";
 import type { DashboardNotification } from "@/types/account/profile/dashboard-notification.type";
 
@@ -66,6 +68,11 @@ export function NotificationsMenu({ actor }: { actor: AuthActor }): JSX.Element 
             </li>
           ))}
         </ul>
+        <div className="border-t p-1">
+          <Button variant="ghost" size="sm" className="w-full" render={<Link href={notificationsRoute(actor)} onClick={() => setOpen(false)} />}>
+            {t.viewAll}
+          </Button>
+        </div>
       </PopoverContent>
     </Popover>
   );

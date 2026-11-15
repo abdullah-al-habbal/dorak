@@ -37,6 +37,7 @@ export const enShell = {
     title: "Notifications",
     titleWithCount: "Notifications, {count} unread",
     markAll: "Mark all read",
+    viewAll: "View all notifications",
     unread: "Unread",
     events: {
       brand_submitted: { title: "A brand is waiting for approval", body: "Review the new brand in the approval queue." },
