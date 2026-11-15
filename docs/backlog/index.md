@@ -35,8 +35,6 @@ Facebook sign-in are unsupported (G9).
 | ID | Item | Layer | Size |
 |---|---|---|---|
 | BG-4 | Public barber resource leaks `email`, `phone`, exact coordinates, `submission_count`, `email_verified_at`. Decided: add a separate public resource (name, bio, rating, rounded location); keep the old fields until both mobile apps ship, then remove. Contract tests pin `email` (`ApiResponseContractTest`). Needs a coordinated mobile release. | backend, mobile | L |
-| BG-6 | Session-claim revocation lives in the cache only; the database expiry of the superseded token (D-05) covers most of it. | backend | S |
-| BG-7 | BFF refresh single-flight is per process; several BFF instances without sticky routing can still race (D-06). | dashboard | M |
 
 ## 3. Missing features
 
@@ -102,6 +100,8 @@ Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are reso
 - **Platform admin on staffing:** full permissions on affiliations and the job board (2026-11-13). Brand-level affiliations are closed; rejected barbers cannot re-apply to the same posting.
 - **Dashboard component tests (BD-1, 2026-11-15):** `jsdom` and Testing Library are allowed for component tests. **`docs/handover-remaining-work.md` (BD-3, 2026-11-15):** retired; its open items live in this backlog.
 - **Barber self-reactivation (BG-3, 2026-11-15):** a barber an admin switched off gets 403 `barber_deactivated_by_admin` from `POST /barbers/{barber}/activate` until an admin reactivates them; implemented by `BarberSelfActivationPolicy`. The mobile apps do not call that route.
+- **Claim revocation in the cache (BG-6, 2026-11-15):** accepted as defence in depth. Logout and refresh delete or expire the access token in the database, and `DashboardSessionClaim::matches` needs the claim's `tid` to equal that token, so a cache flush cannot revive a session.
+- **BFF refresh single-flight (BG-7, 2026-11-15):** accepted as per process. Run the dashboard BFF as one instance or behind sticky routing per browser session; a second instance racing the rotation would be signed out and sign in again. Rotation is not relaxed with a replay grace window, so token reuse stays detectable.
 - **Standing rules:** local commits only, never push; pending-brand records are hidden from public reads; backend contract changes are backward compatible for mobile.
 
 Record a new decision here as one line under this heading, with its date, and link the code or doc that implements it. The older full wording is in Git history (see the top of this file).
