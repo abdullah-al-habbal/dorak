@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, ClockIcon, PauseCircleIcon, ShieldAlertIcon } from "lucide-react";
 
 import { BranchStatus } from "@/enums/branch-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const BRANCH_PER_PAGE = 20;
 export const BRANCH_OPTIONS_LIMIT = 100;

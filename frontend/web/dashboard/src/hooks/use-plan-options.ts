@@ -7,7 +7,7 @@ import { PlanState } from "@/enums/plan-state.enum";
 import { useReferenceQuery } from "@/hooks/use-reference-query";
 import { planKeys } from "@/lib/query-keys/plans/plan-keys";
 import { fetchPlanPage } from "@/services/api/query/plan-page.query";
-import type { Plan } from "@/types/plan.type";
+import type { Plan } from "@/types/plans/plan.type";
 
 async function fetchActivePlans(): Promise<Plan[]> {
   return (await fetchPlanPage({ state: PlanState.Active, page: 1 }, PLAN_OPTIONS_LIMIT)).items;

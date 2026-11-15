@@ -6,7 +6,7 @@ import { PostingStatusBadge } from "@/components/jobs/job-status-badges";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BranchJobPosting } from "@/types/branch-job-posting.type";
+import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
 
 interface JobPostingRowProps {
   posting: BranchJobPosting;

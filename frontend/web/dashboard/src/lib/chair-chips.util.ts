@@ -1,6 +1,6 @@
-import type { FilterChip } from "@/interfaces/filter-chip.interface";
-import type { ChairFilters } from "@/types/chair-filters.type";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { FilterChip } from "@/interfaces/ui/filter-chip.interface";
+import type { ChairFilters } from "@/types/chairs/chair-filters.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 export const CHAIR_CHIP_KEY = { status: "status", zone: "zone", branch: "branch", search: "search" } as const;
 

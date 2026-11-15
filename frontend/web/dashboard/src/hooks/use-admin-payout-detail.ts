@@ -6,8 +6,8 @@ import { useDetailQuery } from "@/hooks/use-detail-query";
 import { useListQuery } from "@/hooks/use-list-query";
 import { adminPayoutKeys } from "@/lib/query-keys/earnings/admin-payout-keys";
 import { fetchAdminPayout, fetchPayoutEntries } from "@/services/api/query/admin-payout-detail.query";
-import type { AdminPayout } from "@/types/admin-payout.type";
-import type { CommissionEntryPage } from "@/types/commission.type";
+import type { AdminPayout } from "@/types/earnings/admin-payout.type";
+import type { CommissionEntryPage } from "@/types/earnings/commission.type";
 
 export function useAdminPayoutDetail(id: string): UseQueryResult<AdminPayout> {
   return useDetailQuery(id, adminPayoutKeys.detail, fetchAdminPayout);

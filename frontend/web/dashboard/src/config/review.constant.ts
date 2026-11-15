@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, EyeOffIcon, FlagIcon, ShieldCheckIcon } from "lucide-react";
 
 import { ReviewStatus } from "@/enums/review-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const REVIEW_PER_PAGE = 10;
 /** Mirrors `FlagReviewDisputeRequest`: a dispute needs a reason of 10 to 1000 characters. */

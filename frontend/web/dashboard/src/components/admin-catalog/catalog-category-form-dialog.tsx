@@ -13,7 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { useCatalogCategoryForm } from "@/hooks/use-catalog-category-form";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { isCatalogCategoryInUse } from "@/lib/catalog-category-form.util";
-import type { AdminCatalogCategory } from "@/types/admin-catalog-category.type";
+import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 interface CatalogCategoryFormDialogProps {
   category?: AdminCatalogCategory;

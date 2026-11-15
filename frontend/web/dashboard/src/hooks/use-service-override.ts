@@ -7,7 +7,7 @@ import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { stylistPricingKeys } from "@/lib/query-keys/stylists/stylist-pricing-keys";
 import { clearServiceOverride, saveServiceOverride } from "@/services/api/mutation/stylist-pricing.mutation";
 import type { ServiceOverridePayload } from "@/services/api/mutation/stylist-pricing.mutation";
-import type { ServiceTerms } from "@/types/service-terms.type";
+import type { ServiceTerms } from "@/types/services/service-terms.type";
 
 interface SaveVariables {
   barberId: string;

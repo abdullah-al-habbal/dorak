@@ -3,8 +3,8 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { adminSubscriptionListSchema } from "@/schemas/admin-subscription.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { AdminSubscriptionFilters } from "@/types/admin-subscription-filters.type";
-import type { AdminSubscriptionPage } from "@/types/admin-subscription-page.type";
+import type { AdminSubscriptionFilters } from "@/types/plans/admin-subscription-filters.type";
+import type { AdminSubscriptionPage } from "@/types/plans/admin-subscription-page.type";
 
 export async function fetchAdminSubscriptionPage(filters: AdminSubscriptionFilters): Promise<AdminSubscriptionPage> {
   const params = new URLSearchParams({ per_page: String(ADMIN_SUBSCRIPTION_PER_PAGE), page: String(filters.page) });

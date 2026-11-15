@@ -13,7 +13,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useMarkAllNotificationsRead, useMarkNotificationRead } from "@/hooks/use-mark-notification-read";
 import { useNotificationFeed } from "@/hooks/use-notification-feed";
 import { notificationHref } from "@/lib/notification-link.util";
-import type { DashboardNotification } from "@/types/dashboard-notification.type";
+import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
 
 /** The bell: an unread badge that polls every minute, the latest rows, mark-as-read and mark-all (NS-10). */
 export function NotificationsMenu({ actor }: { actor: AuthActor }): JSX.Element {

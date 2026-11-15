@@ -1,9 +1,0 @@
-import type { Weekday } from "@/enums/weekday.enum";
-import type { Shift } from "@/interfaces/shift.interface";
-
-export interface OpeningHoursDay {
-  day_of_week: Weekday;
-  is_closed: boolean;
-  /** Empty when the day is closed. */
-  shifts: Shift[];
-}

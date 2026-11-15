@@ -12,7 +12,7 @@ import { BrandStatus } from "@/enums/brand-status.enum";
 import { useBranchDetail } from "@/hooks/use-branch-detail";
 import { useBrandOptions } from "@/hooks/use-brand-options";
 import { useI18n } from "@/hooks/use-i18n";
-import type { Branch } from "@/types/branch.type";
+import type { Branch } from "@/types/branches/branch.type";
 
 interface BranchFormDialogProps {
   branch?: Branch;

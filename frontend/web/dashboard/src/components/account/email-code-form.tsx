@@ -13,8 +13,8 @@ import { EMAIL_CODE_LENGTH } from "@/config/field-limit.constant";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import { emailCodeFormSchema } from "@/schemas/email-code-form.zod";
-import type { AccountProfile } from "@/types/account-profile.type";
-import type { EmailCodeFormValues } from "@/types/email-code-form-values.type";
+import type { AccountProfile } from "@/types/account/account-profile.type";
+import type { EmailCodeFormValues } from "@/types/core/email-code-form-values.type";
 
 interface EmailCodeFormProps {
   pendingEmail: string;

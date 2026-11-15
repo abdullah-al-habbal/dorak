@@ -1,8 +1,8 @@
 import { AUTH_ACTORS } from "@/config/auth-actors.constant";
 import { CALLBACK_PARAM, LOGIN_SEGMENT, PUBLIC_AUTH_SEGMENTS, ROUTE_ROOT, loginRoute, portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import type { RouteGuardDecision } from "@/interfaces/route-guard-decision.interface";
-import type { RoutePolicyInput } from "@/interfaces/route-policy-input.interface";
+import type { RouteGuardDecision } from "@/interfaces/core/route-guard-decision.interface";
+import type { RoutePolicyInput } from "@/interfaces/core/route-policy-input.interface";
 
 export function guardFromPath(pathname: string): AuthActor | null {
   const [, root, guard] = pathname.split("/");

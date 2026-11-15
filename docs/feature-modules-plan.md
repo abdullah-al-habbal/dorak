@@ -61,7 +61,7 @@ Not in scope: backend changes, realtime (Echo), notifications wired to the backe
 
 ### 2.4 OverlayProvider (the Modal/Sheet context)
 
-- One host, one typed union. `OverlayRequest` (in `types/overlay-request.type.ts`) is a discriminated union keyed by `OverlayKind`. Today it only has `confirm`.
+- One host, one typed union. `OverlayRequest` (in `types/ui/overlay-request.type.ts`) is a discriminated union keyed by `OverlayKind`. Today it only has `confirm`.
 - Feature code calls `const { open, close } = useOverlay()` and never keeps a local `open` state or mounts its own `<Dialog>`.
 - `OverlayHost` switches on `kind` with an exhaustive `never` check, so adding a kind without a renderer fails the typecheck.
 - **How a module adds a form overlay**: add the member to the enum, add an interface such as `ServiceFormOverlayRequest { kind: OverlayKind.ServiceForm; mode: 'create' | 'edit'; id?: string }`, add it to the union, add the case in `OverlayHost`. Form overlays are loaded with `next/dynamic` so they do not enter the shell bundle. This was not done up front because a single `confirm` kind does not justify it, and a stub would be dead code.
@@ -184,7 +184,7 @@ Route `/dashboard/[guard]/bookings`, guards admin, manager, owner (barber has no
 
 Backend: `GET /bookings` (filters `chair_id, date_from, date_to, per_page, booking_status, hide_cancelled, search, stylist_id`), `GET /bookings/{id}`, `GET /bookings/{id}/history`, `PATCH /bookings/{id}` (`booking_status`), `PATCH .../cancel`, `PATCH .../reschedule`, `POST /bookings/walk-in`, `POST .../review`.
 
-Files (representative): `schemas/booking.zod.ts`, `schemas/booking-filters.zod.ts`, `schemas/walk-in-form.zod.ts`, `enums/booking-status.enum.ts`, `enums/booking-view.enum.ts`, `types/booking.type.ts`, `interfaces/booking-slot-layout.interface.ts`, `services/api/query/bookings.query.ts`, `services/api/mutation/{update-booking-status,cancel-booking,reschedule-booking,create-walk-in}.mutation.ts`, `lib/query-keys/bookings/booking-keys.ts`, `lib/slot-layout.util.ts`, `components/bookings/*`, `hooks/use-booking-filters.ts`.
+Files (representative): `schemas/booking.zod.ts`, `schemas/booking-filters.zod.ts`, `schemas/walk-in-form.zod.ts`, `enums/booking-status.enum.ts`, `enums/booking-view.enum.ts`, `types/bookings/booking.type.ts`, `interfaces/booking-slot-layout.interface.ts`, `services/api/query/bookings.query.ts`, `services/api/mutation/{update-booking-status,cancel-booking,reschedule-booking,create-walk-in}.mutation.ts`, `lib/query-keys/bookings/booking-keys.ts`, `lib/slot-layout.util.ts`, `components/bookings/*`, `hooks/use-booking-filters.ts`.
 
 Views:
 - **List** (default on mobile and under 640px): table on desktop, cards on phones. Columns: time, client, service, barber, chair, status, price.
@@ -234,7 +234,7 @@ Route `/dashboard/[guard]/services`, guards admin, manager, owner.
 
 Backend: `GET/POST /services`, `GET/PUT/DELETE /services/{id}`; `ServiceRequest` fields: `serviceable_id`, `serviceable_type`, `catalog_item_id` (nullable), `currency_code`, `name{en,ar}`, `price_amount_minor`, `duration_minutes` (1-1440, nullable), `is_active`, `is_at_home`. Working hours: `GET|PUT /branches/{id}/opening-hours` (`hours: [{day_of_week, is_closed | shifts[{opens_time, closes_time}]}]`).
 
-Files: `schemas/service-form.zod.ts`, `schemas/opening-hours.zod.ts`, `enums/weekday.enum.ts`, `interfaces/opening-hours-day.interface.ts`, `services/api/{query/services.query.ts,mutation/{save-service,delete-service,save-opening-hours}.mutation.ts}`, `hooks/use-service-form.ts`, `hooks/use-opening-hours-form.ts`, `components/services/*`, `components/working-hours/*`.
+Files: `schemas/service-form.zod.ts`, `schemas/opening-hours.zod.ts`, `enums/weekday.enum.ts`, `interfaces/hours/opening-hours-day.interface.ts`, `services/api/{query/services.query.ts,mutation/{save-service,delete-service,save-opening-hours}.mutation.ts}`, `hooks/use-service-form.ts`, `hooks/use-opening-hours-form.ts`, `components/services/*`, `components/working-hours/*`.
 
 Services:
 - Table or card list grouped by category when `catalog_item_id` carries one (category data comes from the catalog; the manager guard cannot call `/admin/catalog-*`, so grouping falls back to a flat list if categories are not exposed to non-admin guards. Verify).
@@ -259,7 +259,7 @@ Route `/dashboard/[guard]/stylists` (UI label "Barbers"), guards admin, manager,
 
 Backend: `GET/POST /stylists`, `GET/PUT/DELETE /stylists/{id}`, `PATCH /stylists/{id}/activate|deactivate`, `GET /chairs` for assignment. `StylistRequest`: `name{en,ar}`, `email` (unique), `phone` (nullable), `password` (min 12, optional on update), `status` (`pending|enabled|disabled`), `chair_id` (nullable). List filters: `search`, `per_page`.
 
-Files: `schemas/stylist-form.zod.ts`, `enums/barber-status.enum.ts`, `types/stylist.type.ts`, `services/api/{query/stylists.query.ts,mutation/{save-stylist,delete-stylist,toggle-stylist}.mutation.ts}`, `components/stylists/*`.
+Files: `schemas/stylist-form.zod.ts`, `enums/barber-status.enum.ts`, `types/stylists/stylist.type.ts`, `services/api/{query/stylists.query.ts,mutation/{save-stylist,delete-stylist,toggle-stylist}.mutation.ts}`, `components/stylists/*`.
 
 Content:
 - Directory: avatar (initials fallback), name in the active locale, contact, chair, status badge, an Active toggle. Search with debounce. Table on desktop, cards on phones.

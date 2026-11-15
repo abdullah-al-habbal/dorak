@@ -14,7 +14,7 @@ import { HttpStatus } from "@/enums/http-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { useSaveCurrency } from "@/hooks/use-save-currency";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { AdminCurrency } from "@/types/currency-admin.type";
+import type { AdminCurrency } from "@/types/platform/currency-admin.type";
 
 function pair(value: AdminCurrency["name"] | undefined): { en: string; ar: string } {
   const source = typeof value === "object" && value !== null ? value : {};

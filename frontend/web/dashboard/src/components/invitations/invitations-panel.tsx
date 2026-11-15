@@ -19,7 +19,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useInvitations } from "@/hooks/use-invitations";
 import { useOverlay } from "@/hooks/use-overlay";
 import type { InvitationAction } from "@/services/api/mutation/invitation.mutation";
-import type { BranchInvitation } from "@/types/branch-invitation.type";
+import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 
 const FIRST_PAGE = 1;
 

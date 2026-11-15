@@ -19,7 +19,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
 import { BRANCH_CLEAR_ALL_PATCH, branchPatchForChip, buildBranchChips } from "@/lib/branch-chips.util";
-import type { Branch } from "@/types/branch.type";
+import type { Branch } from "@/types/branches/branch.type";
 
 const BRANCH_ACTORS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];
 

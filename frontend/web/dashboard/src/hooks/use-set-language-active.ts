@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { languageAdminKeys } from "@/lib/query-keys/platform/language-admin-keys";
 import { setLanguageActive } from "@/services/api/mutation/language-admin.mutation";
-import type { AdminLanguage } from "@/types/admin-language.type";
+import type { AdminLanguage } from "@/types/platform/admin-language.type";
 
 interface ActiveVariables {
   id: string;

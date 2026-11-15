@@ -4,8 +4,8 @@ import { adminUserToForm, emptyAdminUserForm, formToAdminUserPayload, mapAdminUs
 import { EMPTY_BRAND_CREATE_FORM, createFormToBrandPayload, mapBrandCreateError } from "@/lib/brand-create-form.util";
 import { brandToEditForm, editFormToBrandPayload, mapBrandEditError } from "@/lib/brand-edit-form.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { AdminBrand } from "@/types/admin-brand.type";
-import type { AdminUser } from "@/types/admin-user.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
+import type { AdminUser } from "@/types/platform/admin-user.type";
 
 function validation(fields: Record<string, string[]>): ApiClientError {
   return new ApiClientError({ status: 422, code: "invalid_request", message: "x", fields });

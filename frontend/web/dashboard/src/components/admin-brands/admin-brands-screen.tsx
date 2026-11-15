@@ -17,7 +17,7 @@ import { useConfirmApproveBrand } from "@/hooks/use-confirm-approve-brand";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { hasAdminBrandFilters } from "@/lib/admin-brand-filters.util";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** Brand approval is platform-admin only; the proxy and the backend refuse everyone else too. */
 export function AdminBrandsScreen({ actor }: { actor: AuthActor }): JSX.Element {

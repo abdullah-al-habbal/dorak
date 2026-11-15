@@ -10,7 +10,7 @@ import { FLOOR_PLAN_LABEL_MAX, ROTATION_STEP } from "@/config/floor-plan.constan
 import { useI18n } from "@/hooks/use-i18n";
 import type { FloorPlanEditor } from "@/hooks/use-floor-plan-editor";
 import { rotateChair } from "@/lib/floor-plan-geometry.util";
-import type { Chair } from "@/types/chair.type";
+import type { Chair } from "@/types/chairs/chair.type";
 
 interface NumberFieldProps {
   id: string;

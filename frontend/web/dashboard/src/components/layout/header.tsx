@@ -7,7 +7,7 @@ import { UserMenu } from "@/components/layout/user-menu";
 import { LanguageToggle } from "@/components/buttons/language-toggle";
 import { ThemeToggle } from "@/components/buttons/theme-toggle";
 import type { AuthActor } from "@/enums/auth-actor.enum";
-import type { MeProfile } from "@/types/me-profile.type";
+import type { MeProfile } from "@/types/account/me-profile.type";
 
 export function Header({ actor, profile }: { actor: AuthActor; profile: MeProfile }) {
   return (

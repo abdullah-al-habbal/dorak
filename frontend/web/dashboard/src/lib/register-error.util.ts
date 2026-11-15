@@ -1,5 +1,5 @@
 import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 /** Copy for a failed sign-up step; anything not listed is `generic`, the shared "something went wrong" message. */

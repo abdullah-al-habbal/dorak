@@ -1,5 +1,5 @@
 import { createQueryKeys } from "@/lib/create-query-keys.util";
-import type { BarberApprovalFilters } from "@/types/barber-approval-filters.type";
+import type { BarberApprovalFilters } from "@/types/stylists/barber-approval-filters.type";
 
 export const barberApprovalKeys = createQueryKeys("barber-approvals", {
   list: (filters: BarberApprovalFilters) => ["list", filters] as const,

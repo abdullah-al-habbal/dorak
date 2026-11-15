@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { Service } from "@/types/service.type";
+import type { Service } from "@/types/services/service.type";
 
 interface ServiceActiveSwitchProps {
   service: Service;

@@ -7,7 +7,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { useListQuery } from "@/hooks/use-list-query";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
-import type { SaveVariables } from "@/interfaces/save-variables.interface";
+import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { websiteContentKeys } from "@/lib/query-keys/platform/website-content-keys";
 import {
   createTestimonial,
@@ -19,7 +19,7 @@ import {
 } from "@/services/api/mutation/website-content.mutation";
 import type { OnboardingPayload, PagePayload, SectionPayload, TestimonialPayload } from "@/services/api/mutation/website-content.mutation";
 import { fetchOnboardingConfigs, fetchWebsiteContent } from "@/services/api/query/website-content.query";
-import type { ContentPage, ContentSection, OnboardingConfig, Testimonial, WebsiteContent } from "@/types/website-content.type";
+import type { ContentPage, ContentSection, OnboardingConfig, Testimonial, WebsiteContent } from "@/types/platform/website-content.type";
 
 interface UpdateVariables<P> {
   id: string;

@@ -2,7 +2,7 @@ import { MutationObserver, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { OptimisticToggleMutationOptions } from "@/interfaces/optimistic-toggle-mutation-options.interface";
+import type { OptimisticToggleMutationOptions } from "@/interfaces/core/optimistic-toggle-mutation-options.interface";
 import { optimisticToggleMutationOptions } from "@/lib/optimistic-toggle-mutation.util";
 
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

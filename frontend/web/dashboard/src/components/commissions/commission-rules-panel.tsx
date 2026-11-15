@@ -19,7 +19,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
 import { bpsToPercent, money } from "@/lib/commission.util";
-import type { CommissionRule } from "@/types/commission.type";
+import type { CommissionRule } from "@/types/earnings/commission.type";
 
 const FIRST_PAGE = 1;
 

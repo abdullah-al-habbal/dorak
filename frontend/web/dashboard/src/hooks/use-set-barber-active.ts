@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { barberApprovalKeys } from "@/lib/query-keys/stylists/barber-approval-keys";
 import { setBarberActive } from "@/services/api/mutation/barber-account.mutation";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 export function useSetBarberActive(): UseMutationResult<BarberApproval, Error, { id: string; active: boolean }> {
   const { barberApprovals } = useDictionary();

@@ -19,7 +19,7 @@ import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
 import { money } from "@/lib/commission.util";
 import { availablePayoutActions } from "@/lib/payout-actions.util";
-import type { AdminPayout } from "@/types/admin-payout.type";
+import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 
 const FIRST_PAGE = 1;
 

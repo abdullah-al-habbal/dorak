@@ -1,9 +1,9 @@
 import { LATITUDE_LIMIT, LONGITUDE_LIMIT } from "@/config/branch.constant";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
-import type { BranchPayload } from "@/interfaces/branch-payload.interface";
+import type { BranchPayload } from "@/interfaces/branches/branch-payload.interface";
 import { parseCoordinate } from "@/lib/coordinate.util";
 import type { BranchFormValues } from "@/schemas/branch-form.zod";
-import type { BranchDetail } from "@/types/branch-detail.type";
+import type { BranchDetail } from "@/types/branches/branch-detail.type";
 
 export function emptyBranchForm(brandId: string): BranchFormValues {
   return {

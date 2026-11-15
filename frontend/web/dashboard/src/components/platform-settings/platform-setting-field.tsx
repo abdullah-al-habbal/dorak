@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useI18n } from "@/hooks/use-i18n";
 import type { SettingFormValues } from "@/lib/platform-settings.util";
 import { formatCount } from "@/lib/earnings-format.util";
-import type { PlatformSetting } from "@/types/platform-setting.type";
+import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 interface PlatformSettingFieldProps {
   setting: PlatformSetting;

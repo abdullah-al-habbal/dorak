@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, CircleDashedIcon, CircleSlashIcon, PlayCircleIcon, UserXIcon, ClockIcon } from "lucide-react";
 
 import { BookingStatus } from "@/enums/booking-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const BOOKING_STATUS_STYLE: Record<BookingStatus, BookingStatusStyle> = {
   [BookingStatus.Pending]: { variant: "warning", icon: ClockIcon },

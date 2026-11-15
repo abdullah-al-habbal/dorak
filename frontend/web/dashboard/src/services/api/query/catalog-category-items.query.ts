@@ -3,7 +3,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { catalogItemPreviewListSchema } from "@/schemas/catalog-item-preview.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { CatalogItemsPreview } from "@/types/catalog-items-preview.type";
+import type { CatalogItemsPreview } from "@/types/services/catalog-items-preview.type";
 
 const FIRST_PAGE = 1;
 

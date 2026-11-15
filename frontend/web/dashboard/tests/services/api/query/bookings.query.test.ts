@@ -3,8 +3,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { BookingView } from "@/enums/booking-view.enum";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import { fetchBookingsForView } from "@/services/api/query/bookings.query";
-import type { Booking } from "@/types/booking.type";
-import type { BookingFilters } from "@/types/booking-filters.type";
+import type { Booking } from "@/types/bookings/booking.type";
+import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
 vi.mock("@/services/api/core/client", () => ({ apiRequestWithMeta: vi.fn() }));
 

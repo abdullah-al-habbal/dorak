@@ -10,8 +10,8 @@ import { addDays, minutesBetween, parseDateKey, startOfWeek, toDateKey } from "@
 import { formatDay, formatTime, localizedText, serviceSummary } from "@/lib/booking-format.util";
 import { hourRange, layoutDay } from "@/lib/slot-layout.util";
 import { cn } from "@/lib/utils";
-import type { Booking } from "@/types/booking.type";
-import type { BookingEventLayout } from "@/types/booking-event-layout.type";
+import type { Booking } from "@/types/bookings/booking.type";
+import type { BookingEventLayout } from "@/types/bookings/booking-event-layout.type";
 
 const HOUR_PX = 56;
 const NO_CHAIR = "__none__";

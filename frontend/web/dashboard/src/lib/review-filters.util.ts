@@ -1,4 +1,4 @@
-import type { ReviewFilters } from "@/types/review-filters.type";
+import type { ReviewFilters } from "@/types/clients/review-filters.type";
 
 export function reviewFiltersFromParams(params: URLSearchParams): ReviewFilters {
   const page = Number(params.get("page"));

@@ -19,8 +19,8 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useUpdateSubscriptionStatus } from "@/hooks/use-update-subscription-status";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminSubscription } from "@/types/admin-subscription.type";
-import type { SubscriptionTarget } from "@/types/subscription-target.type";
+import type { AdminSubscription } from "@/types/plans/admin-subscription.type";
+import type { SubscriptionTarget } from "@/types/plans/subscription-target.type";
 
 /** Brand subscriptions are platform-admin only; the proxy and the backend refuse everyone else too. */
 export function AdminSubscriptionsScreen({ actor }: { actor: AuthActor }): JSX.Element {

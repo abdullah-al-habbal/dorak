@@ -1,7 +1,7 @@
 import { AlertTriangleIcon, BanIcon, CheckCircle2Icon, HourglassIcon } from "lucide-react";
 
 import { SubscriptionStatus } from "@/enums/subscription-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 /** Status is always icon plus text, never colour alone. */
 export const SUBSCRIPTION_STATUS_STYLE: Record<SubscriptionStatus, BookingStatusStyle> = {

@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, HourglassIcon, PauseCircleIcon, XCircleIcon } from "lucide-react";
 
 import { BrandStatus } from "@/enums/brand-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const ADMIN_BRAND_PER_PAGE = 10;
 

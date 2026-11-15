@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useAdminBrand } from "@/hooks/use-admin-brand";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 interface BrandDetailDialogProps {
   brand: AdminBrand;

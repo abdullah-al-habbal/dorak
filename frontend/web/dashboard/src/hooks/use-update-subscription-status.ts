@@ -8,7 +8,7 @@ import { adminSubscriptionKeys } from "@/lib/query-keys/plans/admin-subscription
 import { conflictMessage } from "@/lib/conflict-message.util";
 import { updateSubscriptionStatus } from "@/services/api/mutation/update-subscription-status.mutation";
 import type { UpdateSubscriptionStatusVariables } from "@/services/api/mutation/update-subscription-status.mutation";
-import type { AdminSubscription } from "@/types/admin-subscription.type";
+import type { AdminSubscription } from "@/types/plans/admin-subscription.type";
 
 export function useUpdateSubscriptionStatus(): UseMutationResult<AdminSubscription, Error, UpdateSubscriptionStatusVariables> {
   const { adminSubscriptions } = useDictionary();

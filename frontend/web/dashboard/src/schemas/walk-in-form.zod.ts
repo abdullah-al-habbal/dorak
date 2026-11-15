@@ -5,7 +5,7 @@ import { parseLocalInput } from "@/lib/booking-datetime.util";
 import { emailField } from "@/schemas/fields/email-field.zod";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import { phoneField } from "@/schemas/fields/phone-field.zod";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 type WalkInValidation = Dictionary["bookings"]["walkIn"]["validation"];
 

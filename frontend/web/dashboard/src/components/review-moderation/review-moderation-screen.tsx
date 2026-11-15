@@ -15,7 +15,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useReviewModeration } from "@/hooks/use-review-moderation";
 import { useReviewModerationFilters } from "@/hooks/use-review-moderation-filters";
-import type { AdminReview } from "@/types/admin-review.type";
+import type { AdminReview } from "@/types/clients/admin-review.type";
 
 function toStatus(value: string): ReviewStatus {
   return Object.values(ReviewStatus).find((status) => status === value) ?? DEFAULT_REVIEW_MODERATION_STATUS;

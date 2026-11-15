@@ -1,8 +1,8 @@
 import type { QueryClient, UseMutationOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import type { OptimisticToggleContext } from "@/interfaces/optimistic-toggle-context.interface";
-import type { OptimisticToggleMutationOptions } from "@/interfaces/optimistic-toggle-mutation-options.interface";
+import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggle-context.interface";
+import type { OptimisticToggleMutationOptions } from "@/interfaces/core/optimistic-toggle-mutation-options.interface";
 
 /** Patches every cached entry under the root at once, restores the snapshots on failure, then refetches it (and any extra roots). */
 export function optimisticToggleMutationOptions<TData, TVariables, TCache>(

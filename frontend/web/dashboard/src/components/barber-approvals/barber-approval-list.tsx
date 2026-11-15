@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
 import { BarberStatus } from "@/enums/barber-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
-import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
+import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberApprovalListProps {
   barbers: readonly BarberApproval[];

@@ -11,8 +11,8 @@ import { Input } from "@/components/ui/input";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import { emailChangeFormSchema } from "@/schemas/email-change-form.zod";
-import type { EmailChangeFormValues } from "@/types/email-change-form-values.type";
-import type { EmailChangeResult } from "@/types/email-change-result.type";
+import type { EmailChangeFormValues } from "@/types/account/email-change-form-values.type";
+import type { EmailChangeResult } from "@/types/account/email-change-result.type";
 
 interface EmailRequestFormProps {
   request: (email: string) => Promise<EmailChangeResult>;

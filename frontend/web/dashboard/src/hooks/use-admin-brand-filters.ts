@@ -2,7 +2,7 @@
 
 import { useUrlFilters } from "@/hooks/use-url-filters";
 import { adminBrandFiltersFromParams, adminBrandFiltersToParams } from "@/lib/admin-brand-filters.util";
-import type { AdminBrandFilters } from "@/types/admin-brand-filters.type";
+import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
 
 /** The URL is the source of truth for the status filter, the search and the page. */
 export function useAdminBrandFilters(): { filters: AdminBrandFilters; update: (patch: Partial<AdminBrandFilters>) => void } {

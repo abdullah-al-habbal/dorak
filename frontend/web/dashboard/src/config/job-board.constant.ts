@@ -3,7 +3,7 @@ import { CheckCircle2Icon, CircleDotIcon, EyeIcon, InboxIcon, LockIcon, XCircleI
 import { ApplicationStatus } from "@/enums/application-status.enum";
 import { EmploymentType } from "@/enums/employment-type.enum";
 import { JobPostingStatus } from "@/enums/job-posting-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const JOB_TITLE_MAX = 120;
 export const JOB_TEXT_MAX = 2000;

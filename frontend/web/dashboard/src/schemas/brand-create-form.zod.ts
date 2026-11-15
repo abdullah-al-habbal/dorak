@@ -3,7 +3,7 @@ import { z } from "zod";
 import { BRAND_MAX_NAME } from "@/config/admin-brand.constant";
 import { OWNER_BRANCH_NAME_MAX } from "@/config/owner-brand.constant";
 import { nameField } from "@/schemas/fields/name-field.zod";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 type BrandCreateValidation = Dictionary["ownerBrand"]["create"]["validation"];
 

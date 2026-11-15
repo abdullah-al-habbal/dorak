@@ -2,8 +2,8 @@ import type { JSX } from "react";
 
 import { BarChart } from "@/components/earnings/bar-chart";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { BarChartDatum } from "@/interfaces/bar-chart-datum.interface";
-import type { EarningsBucket } from "@/interfaces/earnings-bucket.interface";
+import type { BarChartDatum } from "@/interfaces/ui/bar-chart-datum.interface";
+import type { EarningsBucket } from "@/interfaces/earnings/earnings-bucket.interface";
 import { formatPrice } from "@/lib/booking-format.util";
 import { formatCount, formatShortDate } from "@/lib/earnings-format.util";
 

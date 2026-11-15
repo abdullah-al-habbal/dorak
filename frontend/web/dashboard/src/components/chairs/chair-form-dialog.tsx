@@ -26,7 +26,7 @@ import { chairToForm, emptyChairForm, formToChairPayload } from "@/lib/chair-for
 import { createChairSchema } from "@/schemas/chair-form.zod";
 import type { ChairFormValues } from "@/schemas/chair-form.zod";
 import { useAuthStore } from "@/store/auth.store";
-import type { Chair } from "@/types/chair.type";
+import type { Chair } from "@/types/chairs/chair.type";
 
 interface ChairFormDialogProps {
   chair?: Chair;

@@ -1,4 +1,4 @@
-import type { ServiceFilters } from "@/types/service-filters.type";
+import type { ServiceFilters } from "@/types/services/service-filters.type";
 
 const MAX_SEARCH = 100;
 

@@ -4,7 +4,7 @@ import { NAME_MAX_LENGTH } from "@/config/field-limit.constant";
 import { parseDuration } from "@/lib/duration.util";
 import { parseMinorUnits } from "@/lib/money.util";
 import { nameField } from "@/schemas/fields/name-field.zod";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 type ServiceValidation = Dictionary["services"]["form"]["validation"];
 

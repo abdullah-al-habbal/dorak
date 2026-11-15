@@ -1,6 +1,6 @@
-import type { StylistPayload } from "@/interfaces/stylist-payload.interface";
+import type { StylistPayload } from "@/interfaces/stylists/stylist-payload.interface";
 import type { StylistFormValues } from "@/schemas/stylist-form.zod";
-import type { Stylist } from "@/types/stylist.type";
+import type { Stylist } from "@/types/stylists/stylist.type";
 
 export function emptyStylistForm(): StylistFormValues {
   return { name_en: "", name_ar: "", email: "", phone: "", password: "", chair_id: "" };

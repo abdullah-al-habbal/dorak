@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { REVIEW_DISPUTE_REASON_MAX, REVIEW_DISPUTE_REASON_MIN, REVIEW_MAX_RATING } from "@/config/review.constant";
 import { useDisputeReview } from "@/hooks/use-dispute-review";
 import { useI18n } from "@/hooks/use-i18n";
-import type { Review } from "@/types/review.type";
+import type { Review } from "@/types/clients/review.type";
 
 interface ReviewDisputeDialogProps {
   branchId: string;

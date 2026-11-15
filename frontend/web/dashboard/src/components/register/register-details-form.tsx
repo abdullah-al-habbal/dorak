@@ -12,7 +12,7 @@ import { HoneypotField } from "@/components/register/honeypot-field";
 import { Input } from "@/components/ui/input";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useRegisterBusinessForm } from "@/hooks/use-register-business-form";
-import type { Currency } from "@/types/currency.type";
+import type { Currency } from "@/types/platform/currency.type";
 
 interface RegisterDetailsFormProps {
   currencies: readonly Currency[];

@@ -1,5 +1,5 @@
 import { createQueryKeys } from "@/lib/create-query-keys.util";
-import type { BookingFilters } from "@/types/booking-filters.type";
+import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
 export const bookingKeys = createQueryKeys("bookings", {
   list: (filters: BookingFilters) => ["list", filters] as const,

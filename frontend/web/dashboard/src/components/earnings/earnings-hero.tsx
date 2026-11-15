@@ -6,8 +6,8 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { formatPrice } from "@/lib/booking-format.util";
 import { averageTicket, computeTrend } from "@/lib/earnings-metrics.util";
 import { formatCount, formatShortDate } from "@/lib/earnings-format.util";
-import type { Earnings } from "@/types/earnings.type";
-import type { EarningsTotal } from "@/types/earnings-total.type";
+import type { Earnings } from "@/types/earnings/earnings.type";
+import type { EarningsTotal } from "@/types/earnings/earnings-total.type";
 
 interface EarningsHeroProps {
   earnings: Earnings;

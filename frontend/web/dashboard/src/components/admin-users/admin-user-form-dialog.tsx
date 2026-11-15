@@ -12,7 +12,7 @@ import { ADMIN_USER_MAX_EMAIL, ADMIN_USER_MAX_NAME } from "@/config/admin-user.c
 import { useAdminUserForm } from "@/hooks/use-admin-user-form";
 import { useDictionary } from "@/hooks/use-dictionary";
 import type { AdminUserFormValues } from "@/schemas/admin-user-form.zod";
-import type { AdminUser } from "@/types/admin-user.type";
+import type { AdminUser } from "@/types/platform/admin-user.type";
 
 interface AdminUserFormDialogProps {
   admin?: AdminUser;

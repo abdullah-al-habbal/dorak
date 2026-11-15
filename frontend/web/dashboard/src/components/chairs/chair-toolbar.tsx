@@ -9,8 +9,8 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { ChairStatus } from "@/enums/chair-status.enum";
 import { FloorZone } from "@/enums/floor-zone.enum";
 import { useI18n } from "@/hooks/use-i18n";
-import type { ChairFilters } from "@/types/chair-filters.type";
-import type { BranchOption } from "@/types/branch-option.type";
+import type { ChairFilters } from "@/types/chairs/chair-filters.type";
+import type { BranchOption } from "@/types/branches/branch-option.type";
 
 interface ChairToolbarProps {
   filters: ChairFilters;

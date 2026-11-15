@@ -9,7 +9,7 @@ import { SubscriptionStatus } from "@/enums/subscription-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { formatPrice, localizedText } from "@/lib/booking-format.util";
 import { intervalLabel } from "@/lib/subscription-format.util";
-import type { Subscription } from "@/types/subscription.type";
+import type { Subscription } from "@/types/plans/subscription.type";
 
 export function SubscriptionCard({ subscription }: { subscription: Subscription }): JSX.Element {
   const { locale, dictionary } = useI18n();

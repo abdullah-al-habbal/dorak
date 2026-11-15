@@ -7,8 +7,8 @@ import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { requestEmailChange, verifyEmailChange } from "@/services/api/mutation/account.mutation";
 import { useAuthStore } from "@/store/auth.store";
-import type { AccountProfile } from "@/types/account-profile.type";
-import type { EmailChangeResult } from "@/types/email-change-result.type";
+import type { AccountProfile } from "@/types/account/account-profile.type";
+import type { EmailChangeResult } from "@/types/account/email-change-result.type";
 
 interface EmailChange {
   /** The address waiting for its code; the code step shows while this is set. */

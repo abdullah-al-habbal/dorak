@@ -10,7 +10,7 @@ import { EARNINGS_PRESETS } from "@/config/earnings.constant";
 import { EarningsPreset } from "@/enums/earnings-preset.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { detectPreset, EarningsRangeIssue, presetRange, rangeIssue } from "@/lib/earnings-range.util";
-import type { EarningsRange } from "@/types/earnings-range.type";
+import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 interface EarningsRangePickerProps {
   range: EarningsRange;

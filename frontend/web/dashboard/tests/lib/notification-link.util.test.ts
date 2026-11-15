@@ -4,7 +4,7 @@ import { STATUS_SEGMENT } from "@/config/routes.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { NotificationEvent } from "@/enums/notification-event.enum";
 import { isNotificationEvent, notificationEvent, notificationHref } from "@/lib/notification-link.util";
-import type { DashboardNotification } from "@/types/dashboard-notification.type";
+import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
 
 function row(type: string, data: Record<string, unknown> = {}): DashboardNotification {
   return { id: "n1", type, title: "t", body: "b", data, created_at: "2026-01-01T00:00:00Z" };

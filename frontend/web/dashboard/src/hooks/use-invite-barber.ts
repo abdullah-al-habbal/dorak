@@ -8,7 +8,7 @@ import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-
 import { invitationKeys } from "@/lib/query-keys/branches/invitation-keys";
 import { inviteBarber } from "@/services/api/mutation/invitation.mutation";
 import type { InviteBarberPayload } from "@/services/api/mutation/invitation.mutation";
-import type { BranchInvitation } from "@/types/branch-invitation.type";
+import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 
 interface InviteVariables {
   branchId: string;

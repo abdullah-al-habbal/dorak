@@ -6,7 +6,7 @@ import {
 } from "@/config/earnings.constant";
 import { EarningsPreset } from "@/enums/earnings-preset.enum";
 import { addDays, parseDateKey, toDateKey } from "@/lib/booking-date.util";
-import type { EarningsRange } from "@/types/earnings-range.type";
+import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 const MS_PER_DAY = 86_400_000;
 

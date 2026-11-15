@@ -8,9 +8,9 @@ import { BranchStatusBadge } from "@/components/branches/branch-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useI18n } from "@/hooks/use-i18n";
-import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
+import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
-import type { Branch } from "@/types/branch.type";
+import type { Branch } from "@/types/branches/branch.type";
 
 interface BranchListProps {
   branches: readonly Branch[];

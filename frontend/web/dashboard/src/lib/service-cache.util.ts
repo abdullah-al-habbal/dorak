@@ -1,4 +1,4 @@
-import type { Service } from "@/types/service.type";
+import type { Service } from "@/types/services/service.type";
 
 /** Returns the list with one service's active flag replaced; the same list when it is absent. */
 export function withServiceActive(services: Service[] | undefined, id: string, active: boolean): Service[] | undefined {

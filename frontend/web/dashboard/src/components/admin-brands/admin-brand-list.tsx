@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
 import { BrandStatus } from "@/enums/brand-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
-import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
+import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 interface AdminBrandListProps {
   brands: readonly AdminBrand[];

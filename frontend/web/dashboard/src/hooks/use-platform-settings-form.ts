@@ -12,7 +12,7 @@ import { changedSettings, settingsToForm } from "@/lib/platform-settings.util";
 import type { SettingFormValues } from "@/lib/platform-settings.util";
 import { mapSettingsSaveError } from "@/lib/platform-settings-error.util";
 import { createPlatformSettingsSchema } from "@/schemas/platform-settings-form.zod";
-import type { PlatformSetting } from "@/types/platform-setting.type";
+import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 interface PlatformSettingsFormController {
   form: UseFormReturn<SettingFormValues>;

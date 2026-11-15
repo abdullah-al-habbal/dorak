@@ -8,8 +8,8 @@ import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
 import { FloorZone } from "@/enums/floor-zone.enum";
 import { chairPayloadWithLayout } from "@/lib/floor-plan-save.util";
 import { draftToLayoutPayload, isDirty, movedChairIds, newDecoration, planToDraft } from "@/lib/floor-plan-draft.util";
-import type { Chair } from "@/types/chair.type";
-import type { FloorPlan } from "@/types/floor-plan.type";
+import type { Chair } from "@/types/chairs/chair.type";
+import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 
 const chair: Chair = {
   id: "c1",

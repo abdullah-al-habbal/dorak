@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { bpsToPercent, money, percentToBps, totalsByCurrency } from "@/lib/commission.util";
-import type { CommissionEntry } from "@/types/commission.type";
+import type { CommissionEntry } from "@/types/earnings/commission.type";
 
 function entry(base: number, commission: number, code?: string): CommissionEntry {
   return { id: `e-${base}`, base_amount_minor: base, commission_amount_minor: commission, currency: code ? { code } : null, created_at: "2026-01-01T00:00:00Z" };

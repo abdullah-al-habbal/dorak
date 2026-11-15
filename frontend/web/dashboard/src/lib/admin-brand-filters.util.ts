@@ -1,7 +1,7 @@
 import { ADMIN_BRAND_MAX_SEARCH, BRAND_STATUS_FILTER_ALL, DEFAULT_BRAND_STATUS_FILTER } from "@/config/admin-brand.constant";
 import { BrandStatus } from "@/enums/brand-status.enum";
-import type { AdminBrandFilters } from "@/types/admin-brand-filters.type";
-import type { BrandStatusFilter } from "@/types/brand-status-filter.type";
+import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
+import type { BrandStatusFilter } from "@/types/brands/brand-status-filter.type";
 
 const STATUS_FILTERS = new Set<string>([...Object.values(BrandStatus), BRAND_STATUS_FILTER_ALL]);
 

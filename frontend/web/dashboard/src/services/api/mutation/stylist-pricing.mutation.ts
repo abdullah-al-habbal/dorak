@@ -4,7 +4,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { serviceTermsSchema } from "@/schemas/service-terms.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { ServiceTerms } from "@/types/service-terms.type";
+import type { ServiceTerms } from "@/types/services/service-terms.type";
 
 export interface ServiceOverridePayload {
   brand_id: string;

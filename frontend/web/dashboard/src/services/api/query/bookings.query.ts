@@ -4,9 +4,9 @@ import { windowFor } from "@/lib/booking-filters.util";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { bookingListSchema } from "@/schemas/booking.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { Booking } from "@/types/booking.type";
-import type { BookingFilters } from "@/types/booking-filters.type";
-import type { BookingPage } from "@/types/booking-page.type";
+import type { Booking } from "@/types/bookings/booking.type";
+import type { BookingFilters } from "@/types/bookings/booking-filters.type";
+import type { BookingPage } from "@/types/bookings/booking-page.type";
 
 const PER_PAGE = 100;
 const MAX_PAGES = 10;

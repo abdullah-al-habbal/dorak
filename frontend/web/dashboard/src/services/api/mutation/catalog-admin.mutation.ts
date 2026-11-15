@@ -4,7 +4,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { catalogItemSchema, catalogTagSchema } from "@/schemas/catalog-item.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { CatalogItem, CatalogTag } from "@/types/catalog-item.type";
+import type { CatalogItem, CatalogTag } from "@/types/services/catalog-item.type";
 
 type Translated = { en: string; ar: string };
 

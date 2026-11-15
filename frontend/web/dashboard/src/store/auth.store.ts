@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 import { AuthStatus } from "@/enums/auth-status.enum";
-import type { AuthState } from "@/interfaces/auth-state.interface";
+import type { AuthState } from "@/interfaces/core/auth-state.interface";
 
 export const useAuthStore = create<AuthState>((set) => ({
   status: AuthStatus.Unknown,

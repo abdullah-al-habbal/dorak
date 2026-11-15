@@ -16,7 +16,7 @@ import { REVIEW_MAX_RATING } from "@/config/review.constant";
 import { ReviewStatus } from "@/enums/review-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { useResolveReview } from "@/hooks/use-resolve-review";
-import type { AdminReview } from "@/types/admin-review.type";
+import type { AdminReview } from "@/types/clients/admin-review.type";
 
 interface ReviewResolveDialogProps {
   review: AdminReview;

@@ -1,5 +1,5 @@
-import type { BrandCreatePayload } from "@/interfaces/brand-create-payload.interface";
-import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
+import type { BrandCreatePayload } from "@/interfaces/brands/brand-create-payload.interface";
+import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
 import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import type { BrandCreateFormValues } from "@/schemas/brand-create-form.zod";
 

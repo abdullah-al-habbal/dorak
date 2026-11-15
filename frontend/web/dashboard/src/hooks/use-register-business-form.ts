@@ -10,7 +10,7 @@ import { registerBusinessBody } from "@/lib/register-business.util";
 import { registerErrorMessage } from "@/lib/register-error.util";
 import { registerBusinessFormSchema } from "@/schemas/register-business-form.zod";
 import { registerBusiness } from "@/services/api/mutation/register-business.mutation";
-import type { RegisterBusinessFormValues } from "@/types/register-business-form-values.type";
+import type { RegisterBusinessFormValues } from "@/types/core/register-business-form-values.type";
 
 const EMPTY_VALUES: RegisterBusinessFormValues = {
   ownerName: "",

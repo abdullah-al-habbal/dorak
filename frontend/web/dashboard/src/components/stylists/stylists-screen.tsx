@@ -24,7 +24,7 @@ import { useStylists } from "@/hooks/use-stylists";
 import { useUpdateStylistStatus } from "@/hooks/use-update-stylist-status";
 import { localizedText } from "@/lib/booking-format.util";
 import { buildStylistChips, STYLIST_CLEAR_ALL_PATCH, stylistPatchForChip } from "@/lib/stylist-chips.util";
-import type { Stylist } from "@/types/stylist.type";
+import type { Stylist } from "@/types/stylists/stylist.type";
 
 export function StylistsScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

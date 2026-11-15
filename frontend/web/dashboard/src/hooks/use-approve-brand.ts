@@ -7,7 +7,7 @@ import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { adminBrandKeys } from "@/lib/query-keys/brands/admin-brand-keys";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { approveBrand } from "@/services/api/mutation/approve-brand.mutation";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 export function useApproveBrand(): UseMutationResult<AdminBrand, Error, string> {
   const { adminBrands } = useDictionary();

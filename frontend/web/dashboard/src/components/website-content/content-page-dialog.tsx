@@ -14,7 +14,7 @@ import { CONTENT_META_MAX, CONTENT_TEXT_MAX } from "@/config/website-content.con
 import { useI18n } from "@/hooks/use-i18n";
 import { useUpdateContentPage } from "@/hooks/use-website-content";
 import { localeText } from "@/lib/website-content.util";
-import type { ContentPage } from "@/types/website-content.type";
+import type { ContentPage } from "@/types/platform/website-content.type";
 
 /** Edits a page's titles and search descriptions. The slug is fixed. */
 export function ContentPageDialog({ page, onClose }: { page: ContentPage; onClose: () => void }): JSX.Element {

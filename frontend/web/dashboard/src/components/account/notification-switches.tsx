@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { NotificationSwitchRow } from "@/components/account/notification-switch-row";
 import { NOTIFICATION_PREFERENCE_KEYS } from "@/config/account.constant";
 import { useNotificationToggle } from "@/hooks/use-notification-toggle";
-import type { NotificationPreferences } from "@/types/notification-preferences.type";
+import type { NotificationPreferences } from "@/types/account/notification-preferences.type";
 
 export function NotificationSwitches({ preferences }: { preferences: NotificationPreferences }): JSX.Element {
   const { toggle, pending } = useNotificationToggle(preferences);

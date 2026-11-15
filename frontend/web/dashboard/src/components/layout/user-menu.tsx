@@ -17,7 +17,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useSignOut } from "@/hooks/use-sign-out";
 import { initialsOf } from "@/lib/initials.util";
 import { useAuthStore } from "@/store/auth.store";
-import type { MeProfile } from "@/types/me-profile.type";
+import type { MeProfile } from "@/types/account/me-profile.type";
 
 export function UserMenu({ actor, initialProfile }: { actor: AuthActor; initialProfile: MeProfile }) {
   const { shell, auth } = useDictionary();

@@ -1,8 +1,8 @@
 import { EARNINGS_FLAT_THRESHOLD_PERCENT, EARNINGS_PERCENT } from "@/config/earnings.constant";
 import { TrendDirection } from "@/enums/trend-direction.enum";
-import type { EarningsTrend } from "@/interfaces/earnings-trend.interface";
-import type { Earnings } from "@/types/earnings.type";
-import type { EarningsTotal } from "@/types/earnings-total.type";
+import type { EarningsTrend } from "@/interfaces/earnings/earnings-trend.interface";
+import type { Earnings } from "@/types/earnings/earnings.type";
+import type { EarningsTotal } from "@/types/earnings/earnings-total.type";
 
 /** Every currency the period has revenue in. Totals are never summed across currencies. */
 export function currencyCodes(earnings: Earnings): string[] {

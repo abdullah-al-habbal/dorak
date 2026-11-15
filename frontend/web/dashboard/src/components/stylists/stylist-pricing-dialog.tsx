@@ -15,7 +15,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useClearServiceOverride, useSaveServiceOverride } from "@/hooks/use-service-override";
 import { useStylistServiceTerms } from "@/hooks/use-stylist-service-terms";
 import { localizedText } from "@/lib/booking-format.util";
-import type { Stylist } from "@/types/stylist.type";
+import type { Stylist } from "@/types/stylists/stylist.type";
 
 /** A brand owner's price and duration for a stylist's services, over the stylist's own defaults. */
 export function StylistPricingDialog({ stylist, onClose }: { stylist: Stylist; onClose: () => void }): JSX.Element {

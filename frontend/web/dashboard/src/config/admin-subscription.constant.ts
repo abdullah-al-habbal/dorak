@@ -1,5 +1,5 @@
 import { SubscriptionStatus } from "@/enums/subscription-status.enum";
-import type { SubscriptionTarget } from "@/types/subscription-target.type";
+import type { SubscriptionTarget } from "@/types/plans/subscription-target.type";
 
 export const ADMIN_SUBSCRIPTION_PER_PAGE = 10;
 

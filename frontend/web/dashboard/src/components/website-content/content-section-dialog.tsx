@@ -16,7 +16,7 @@ import { UniverseVisibility } from "@/enums/universe-visibility.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { useUpdateContentSection } from "@/hooks/use-website-content";
 import { bodyJson, bodyPreview, localeText, parseBodyObject } from "@/lib/website-content.util";
-import type { ContentSection } from "@/types/website-content.type";
+import type { ContentSection } from "@/types/platform/website-content.type";
 
 /** Edits a section's text and structured content for both languages, with a live preview of the headline. */
 export function ContentSectionDialog({ section, onClose }: { section: ContentSection; onClose: () => void }): JSX.Element {

@@ -1,6 +1,6 @@
 import { ADMIN_CATALOG_MAX_SEARCH } from "@/config/admin-catalog.constant";
 import { CatalogCategoryStatus } from "@/enums/catalog-category-status.enum";
-import type { AdminCatalogFilters } from "@/types/admin-catalog-filters.type";
+import type { AdminCatalogFilters } from "@/types/services/admin-catalog-filters.type";
 
 function toStatus(value: string | null): CatalogCategoryStatus | undefined {
   return Object.values(CatalogCategoryStatus).find((status) => status === value);

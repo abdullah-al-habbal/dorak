@@ -3,9 +3,9 @@ import { HttpMethod } from "@/enums/http-method.enum";
 import { acknowledgementSchema } from "@/schemas/acknowledgement.zod";
 import { loginResultSchema } from "@/schemas/login-result.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { LoginResult } from "@/types/login-result.type";
-import type { RegisterBusinessBody } from "@/types/register-business-body.type";
-import type { RegisterExistingBody } from "@/types/register-existing-body.type";
+import type { LoginResult } from "@/types/core/login-result.type";
+import type { RegisterBusinessBody } from "@/types/core/register-business-body.type";
+import type { RegisterExistingBody } from "@/types/core/register-existing-body.type";
 
 /** Public sign-up. The answer is the same for any email, so a success only means "check your email". */
 export async function registerBusiness(body: RegisterBusinessBody): Promise<void> {

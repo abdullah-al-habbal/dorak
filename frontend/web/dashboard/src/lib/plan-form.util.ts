@@ -1,8 +1,8 @@
 import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
 import { minorUnitsToInput, parseMinorUnits } from "@/lib/money.util";
-import type { PlanPayload } from "@/interfaces/plan-payload.interface";
+import type { PlanPayload } from "@/interfaces/plans/plan-payload.interface";
 import type { PlanFormValues } from "@/schemas/plan-form.zod";
-import type { Plan } from "@/types/plan.type";
+import type { Plan } from "@/types/plans/plan.type";
 
 const DEFAULT_INTERVAL_COUNT = "1";
 

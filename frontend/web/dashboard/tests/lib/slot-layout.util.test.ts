@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { layoutDay } from "@/lib/slot-layout.util";
-import type { Booking } from "@/types/booking.type";
+import type { Booking } from "@/types/bookings/booking.type";
 
 function booking(id: string, start: string, end: string | null): Booking {
   return { id, starts_at: start, ends_at: end, booking_status: BookingStatus.Confirmed, services: [] };

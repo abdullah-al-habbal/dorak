@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 export const arJobs: Dictionary["jobs"] = {
   title: "الوظائف الشاغرة",

@@ -1,7 +1,7 @@
 import { LOCALE_COOKIE } from "@/config/cookies.constant";
 import { DICTIONARIES } from "@/locales/dictionaries.constant";
 import { resolveLocale } from "@/locales/resolve-locale.util";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 export function getRequestDictionary(request: Request): Dictionary {
   const cookie = request.headers

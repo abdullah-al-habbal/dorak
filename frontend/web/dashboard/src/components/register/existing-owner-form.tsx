@@ -10,7 +10,7 @@ import { BrandFields } from "@/components/register/brand-fields";
 import { Input } from "@/components/ui/input";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useExistingOwnerForm } from "@/hooks/use-existing-owner-form";
-import type { Currency } from "@/types/currency.type";
+import type { Currency } from "@/types/platform/currency.type";
 
 /** "I already have a Dorak account": the password proves who they are, then the business is added to that account. */
 export function ExistingOwnerForm({ currencies }: { currencies: readonly Currency[] }): JSX.Element {

@@ -2,8 +2,8 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { stylistListSchema } from "@/schemas/stylist.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { StylistFilters } from "@/types/stylist-filters.type";
-import type { StylistPage } from "@/types/stylist-page.type";
+import type { StylistFilters } from "@/types/stylists/stylist-filters.type";
+import type { StylistPage } from "@/types/stylists/stylist-page.type";
 
 const PER_PAGE = 20;
 

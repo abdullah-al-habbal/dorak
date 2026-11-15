@@ -4,8 +4,8 @@ import { scheduleWindow } from "@/lib/schedule-filters.util";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { bookingListSchema } from "@/schemas/booking.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { BookingPage } from "@/types/booking-page.type";
-import type { ScheduleFilters } from "@/types/schedule-filters.type";
+import type { BookingPage } from "@/types/bookings/booking-page.type";
+import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";
 
 export async function fetchScheduleAppointments(filters: ScheduleFilters, weekStart: number): Promise<BookingPage> {
   const window = scheduleWindow(filters.range, new Date(), weekStart);

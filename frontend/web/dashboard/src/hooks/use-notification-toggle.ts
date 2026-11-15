@@ -5,8 +5,8 @@ import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutat
 import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { withNotificationPreference } from "@/lib/notification-preferences-cache.util";
 import { updateNotificationPreferences } from "@/services/api/mutation/account.mutation";
-import type { NotificationPreferenceKey } from "@/types/notification-preference-key.type";
-import type { NotificationPreferences } from "@/types/notification-preferences.type";
+import type { NotificationPreferenceKey } from "@/types/account/notification-preference-key.type";
+import type { NotificationPreferences } from "@/types/account/notification-preferences.type";
 
 interface ToggleVariables {
   current: NotificationPreferences;

@@ -2,7 +2,7 @@ import { CLAIM_ISSUER } from "@/config/backend.constant";
 import { jwtHeaderSchema } from "@/schemas/jwt-header.zod";
 import { sessionClaimSchema } from "@/schemas/session-claim.zod";
 import { readKeyRing } from "@/services/api/auth/session-keys.util";
-import type { SessionClaim } from "@/types/session-claim.type";
+import type { SessionClaim } from "@/types/core/session-claim.type";
 
 const TEXT = new TextEncoder();
 const MS_PER_SECOND = 1000;

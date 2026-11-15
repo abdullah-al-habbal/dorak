@@ -1,6 +1,6 @@
 import { ApiErrorCode } from "@/enums/api-error-code.enum";
 import { HttpStatus } from "@/enums/http-status.enum";
-import type { BackendResult } from "@/interfaces/backend-result.interface";
+import type { BackendResult } from "@/interfaces/core/backend-result.interface";
 
 const BANNED_CODE = "ACCOUNT_BANNED";
 

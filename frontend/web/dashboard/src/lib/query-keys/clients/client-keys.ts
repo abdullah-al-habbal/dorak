@@ -1,5 +1,5 @@
 import { createQueryKeys } from "@/lib/create-query-keys.util";
-import type { ClientFilters } from "@/types/client-filters.type";
+import type { ClientFilters } from "@/types/clients/client-filters.type";
 
 export const clientKeys = createQueryKeys("admin-clients", {
   list: (filters: ClientFilters) => ["list", filters] as const,

@@ -2,7 +2,7 @@ import { API_ROUTE } from "@/config/routes.constant";
 import { ApiErrorCode } from "@/enums/api-error-code.enum";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { HttpStatus } from "@/enums/http-status.enum";
-import type { ApiRequestOptions } from "@/interfaces/api-request-options.interface";
+import type { ApiRequestOptions } from "@/interfaces/core/api-request-options.interface";
 import { apiFailureBodySchema } from "@/schemas/api-failure-body.zod";
 import { apiSuccessBodySchema } from "@/schemas/api-success-body.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";

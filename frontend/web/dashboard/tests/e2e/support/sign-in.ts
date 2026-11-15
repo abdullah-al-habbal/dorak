@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 
 import { arDictionary } from "@/locales/ar/index.constant";
 import { enDictionary } from "@/locales/en/index.constant";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 import { artisan } from "@tests/e2e/support/artisan";
 import { E2E_APP_URL, E2E_EMAIL, E2E_PASSWORD, E2E_SEEDER_CLASS, RESET_BACKEND_EXTRA_MS, RESET_SEED_TIMEOUT_MS } from "@tests/e2e/support/e2e-env.constant";
 

@@ -10,11 +10,11 @@ import {
 } from "@/config/working-hours.constant";
 import { ShiftIssue } from "@/enums/shift-issue.enum";
 import { Weekday } from "@/enums/weekday.enum";
-import type { OpeningHoursDay } from "@/interfaces/opening-hours-day.interface";
-import type { OpeningHoursPayload } from "@/interfaces/opening-hours-payload.interface";
-import type { ShiftIssueEntry } from "@/interfaces/shift-issue-entry.interface";
-import type { Shift } from "@/interfaces/shift.interface";
-import type { OpeningHoursWeek } from "@/types/opening-hours-week.type";
+import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
+import type { OpeningHoursPayload } from "@/interfaces/hours/opening-hours-payload.interface";
+import type { ShiftIssueEntry } from "@/interfaces/hours/shift-issue-entry.interface";
+import type { Shift } from "@/interfaces/hours/shift.interface";
+import type { OpeningHoursWeek } from "@/types/hours/opening-hours-week.type";
 
 const ALL_DAYS: readonly Weekday[] = [
   Weekday.Sunday,

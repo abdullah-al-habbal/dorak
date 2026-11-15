@@ -10,7 +10,7 @@ import { useSaveBrand } from "@/hooks/use-save-brand";
 import { brandToEditForm, editFormToBrandPayload, mapBrandEditError } from "@/lib/brand-edit-form.util";
 import { createBrandEditSchema } from "@/schemas/brand-edit-form.zod";
 import type { BrandEditFormValues } from "@/schemas/brand-edit-form.zod";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 interface BrandEditFormController {
   form: UseFormReturn<BrandEditFormValues>;

@@ -13,7 +13,7 @@ import { BRAND_MAX_DESCRIPTION, BRAND_MAX_NAME } from "@/config/admin-brand.cons
 import { useBrandEditForm } from "@/hooks/use-brand-edit-form";
 import { useDictionary } from "@/hooks/use-dictionary";
 import type { BrandEditFormValues } from "@/schemas/brand-edit-form.zod";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 interface BrandEditDialogProps {
   brand: AdminBrand;

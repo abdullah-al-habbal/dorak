@@ -17,7 +17,7 @@ import { useRateClient } from "@/hooks/use-rate-client";
 import { cn } from "@/lib/utils";
 import { clientRatingInputSchema } from "@/schemas/client-rating.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { Booking } from "@/types/booking.type";
+import type { Booking } from "@/types/bookings/booking.type";
 
 const STARS = Array.from({ length: CLIENT_RATING_MAX - CLIENT_RATING_MIN + 1 }, (_, index) => CLIENT_RATING_MIN + index);
 

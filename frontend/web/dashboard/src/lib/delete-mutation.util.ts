@@ -1,5 +1,5 @@
-import type { DeleteMutationOptions } from "@/interfaces/delete-mutation-options.interface";
-import type { FeedbackMutationOptions } from "@/interfaces/feedback-mutation-options.interface";
+import type { DeleteMutationOptions } from "@/interfaces/core/delete-mutation-options.interface";
+import type { FeedbackMutationOptions } from "@/interfaces/core/feedback-mutation-options.interface";
 import { conflictMessage } from "@/lib/conflict-message.util";
 
 /** The delete flow as feedback options: toast the outcome (the 409 reason when asked), then refresh every listed root. */

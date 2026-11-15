@@ -6,7 +6,7 @@ import { useOverlay } from "@/hooks/use-overlay";
 import { useSetBarberActive } from "@/hooks/use-set-barber-active";
 import { useUnbanBarber } from "@/hooks/use-unban-barber";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberMoves {
   confirmActive: (barber: BarberApproval, active: boolean) => void;

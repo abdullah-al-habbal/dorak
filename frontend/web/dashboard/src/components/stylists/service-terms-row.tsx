@@ -11,7 +11,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { localizedText, formatPrice } from "@/lib/booking-format.util";
 import { draftFromTerms, draftToPayload } from "@/lib/service-override.util";
 import type { ServiceOverridePayload } from "@/services/api/mutation/stylist-pricing.mutation";
-import type { ServiceTerms } from "@/types/service-terms.type";
+import type { ServiceTerms } from "@/types/services/service-terms.type";
 
 interface ServiceTermsRowProps {
   terms: ServiceTerms;

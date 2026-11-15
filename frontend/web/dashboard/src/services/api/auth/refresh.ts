@@ -1,7 +1,7 @@
 import { BACKEND_PATH } from "@/config/backend.constant";
 import { REFRESH_REPLAY_WINDOW_MS } from "@/config/refresh-coordination.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import type { SessionTokens } from "@/interfaces/session-tokens.interface";
+import type { SessionTokens } from "@/interfaces/core/session-tokens.interface";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { tokensFromBackendData } from "@/services/api/auth/login-data.util";
 

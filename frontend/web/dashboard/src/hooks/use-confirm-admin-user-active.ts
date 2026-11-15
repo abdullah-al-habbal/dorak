@@ -5,7 +5,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useSetAdminUserActive } from "@/hooks/use-set-admin-user-active";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminUser } from "@/types/admin-user.type";
+import type { AdminUser } from "@/types/platform/admin-user.type";
 
 /** Opens the deactivate or reactivate confirmation for one admin. */
 export function useConfirmAdminUserActive(): (admin: AdminUser) => void {

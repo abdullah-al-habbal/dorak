@@ -4,8 +4,8 @@ import { adminBrandQueryString } from "@/lib/admin-brand-filters.util";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { adminBrandListSchema } from "@/schemas/admin-brand.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { AdminBrandFilters } from "@/types/admin-brand-filters.type";
-import type { AdminBrandPage } from "@/types/admin-brand-page.type";
+import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
+import type { AdminBrandPage } from "@/types/brands/admin-brand-page.type";
 
 export async function fetchAdminBrandPage(filters: AdminBrandFilters): Promise<AdminBrandPage> {
   const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/brands?${adminBrandQueryString(filters, ADMIN_BRAND_PER_PAGE)}`, { schema: adminBrandListSchema });

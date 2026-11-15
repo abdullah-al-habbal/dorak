@@ -14,7 +14,7 @@ import { catalogCategoryToForm, emptyCatalogCategoryForm, formToCatalogCategoryP
 import { mapCatalogCategorySaveError } from "@/lib/catalog-category-form-error.util";
 import { createCatalogCategorySchema } from "@/schemas/catalog-category-form.zod";
 import type { CatalogCategoryFormValues } from "@/schemas/catalog-category-form.zod";
-import type { AdminCatalogCategory } from "@/types/admin-catalog-category.type";
+import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 interface CatalogCategoryFormController {
   form: UseFormReturn<CatalogCategoryFormValues>;

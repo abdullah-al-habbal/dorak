@@ -4,7 +4,7 @@ import type { JSX } from "react";
 
 import { Switch } from "@/components/ui/switch";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { NotificationPreferenceKey } from "@/types/notification-preference-key.type";
+import type { NotificationPreferenceKey } from "@/types/account/notification-preference-key.type";
 
 interface NotificationSwitchRowProps {
   preference: NotificationPreferenceKey;

@@ -1,4 +1,4 @@
-import type { HoursOverrideInput } from "@/types/hours-override.type";
+import type { HoursOverrideInput } from "@/types/hours/hours-override.type";
 
 export type SpecialDayKind = "closed" | "hours";
 

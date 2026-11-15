@@ -1,4 +1,4 @@
-import type { ExchangeRate } from "@/types/currency-admin.type";
+import type { ExchangeRate } from "@/types/platform/currency-admin.type";
 
 /** For each pair, the newest rate that has already taken effect: the one the converter uses. */
 export function currentRateIds(rates: readonly ExchangeRate[], now: Date): Set<string> {

@@ -1,7 +1,7 @@
 import { SCHEDULE_DAYS_IN_WEEK } from "@/config/schedule.constant";
 import type { Weekday } from "@/enums/weekday.enum";
-import type { ScheduleHoursDay } from "@/interfaces/schedule-hours-day.interface";
-import type { ScheduleHoursRow } from "@/types/schedule-hours-row.type";
+import type { ScheduleHoursDay } from "@/interfaces/bookings/schedule-hours-day.interface";
+import type { ScheduleHoursRow } from "@/types/bookings/schedule-hours-row.type";
 
 const TIME_PATTERN = /^(\d{1,2}):(\d{2})/;
 

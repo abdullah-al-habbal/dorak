@@ -3,8 +3,8 @@ import { BookingStatus } from "@/enums/booking-status.enum";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { bookingSchema } from "@/schemas/booking.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { Booking } from "@/types/booking.type";
-import type { BookingTarget } from "@/types/booking-target.type";
+import type { Booking } from "@/types/bookings/booking.type";
+import type { BookingTarget } from "@/types/bookings/booking-target.type";
 
 /** Cancelling has its own route; every other transition is a status PATCH. */
 export function updateBookingStatus(id: string, target: BookingTarget): Promise<Booking> {

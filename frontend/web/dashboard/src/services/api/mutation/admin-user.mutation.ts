@@ -2,10 +2,10 @@ import { z } from "zod";
 
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import type { AdminUserPayload } from "@/interfaces/admin-user-payload.interface";
+import type { AdminUserPayload } from "@/interfaces/platform/admin-user-payload.interface";
 import { adminUserSchema } from "@/schemas/admin-user.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { AdminUser } from "@/types/admin-user.type";
+import type { AdminUser } from "@/types/platform/admin-user.type";
 
 const ADMINS = `${DASHBOARD_API}/admin/admins`;
 

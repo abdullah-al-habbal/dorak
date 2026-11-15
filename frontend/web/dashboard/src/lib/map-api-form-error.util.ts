@@ -1,6 +1,6 @@
-import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
+import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
 import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
-import type { FormFieldNameMapper } from "@/types/form-field-name-mapper.type";
+import type { FormFieldNameMapper } from "@/types/core/form-field-name-mapper.type";
 
 /**
  * Maps a failed write with `mapApiFieldErrors`, then renames each field key with the form's own

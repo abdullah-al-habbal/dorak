@@ -25,7 +25,7 @@ import { localizedText } from "@/lib/booking-format.util";
 import { emptyStylistForm, formToStylistPayload, stylistToForm } from "@/lib/stylist-form.util";
 import { createStylistSchema } from "@/schemas/stylist-form.zod";
 import type { StylistFormValues } from "@/schemas/stylist-form.zod";
-import type { Stylist } from "@/types/stylist.type";
+import type { Stylist } from "@/types/stylists/stylist.type";
 
 interface StylistFormDialogProps {
   stylist?: Stylist;

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PLAN_MAX_DESCRIPTION, PLAN_MAX_NAME } from "@/config/plan.constant";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { PlanFieldsProps } from "@/interfaces/plan-fields-props.interface";
+import type { PlanFieldsProps } from "@/interfaces/plans/plan-fields-props.interface";
 import type { PlanFormValues } from "@/schemas/plan-form.zod";
 
 export function PlanIdentityFields({ form }: PlanFieldsProps): JSX.Element {

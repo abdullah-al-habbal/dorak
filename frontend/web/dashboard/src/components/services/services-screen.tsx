@@ -22,7 +22,7 @@ import { useUpdateServiceActive } from "@/hooks/use-update-service-active";
 import { localizedText } from "@/lib/booking-format.util";
 import { groupByCategory } from "@/lib/service-grouping.util";
 import { useAuthStore } from "@/store/auth.store";
-import type { Service } from "@/types/service.type";
+import type { Service } from "@/types/services/service.type";
 
 export function ServicesScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

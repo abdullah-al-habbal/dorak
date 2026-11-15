@@ -2,7 +2,7 @@
 
 import { useUrlFilters } from "@/hooks/use-url-filters";
 import { chairFiltersFromParams, chairFiltersToParams } from "@/lib/chair-filters.util";
-import type { ChairFilters } from "@/types/chair-filters.type";
+import type { ChairFilters } from "@/types/chairs/chair-filters.type";
 
 /** The URL is the source of truth for chair filters. */
 export function useChairFilters(): { filters: ChairFilters; update: (patch: Partial<ChairFilters>) => void } {

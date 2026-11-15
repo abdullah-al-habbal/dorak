@@ -14,8 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { usePlanForm } from "@/hooks/use-plan-form";
-import type { Currency } from "@/types/currency.type";
-import type { Plan } from "@/types/plan.type";
+import type { Currency } from "@/types/platform/currency.type";
+import type { Plan } from "@/types/plans/plan.type";
 
 interface PlanFormBodyProps {
   plan?: Plan;

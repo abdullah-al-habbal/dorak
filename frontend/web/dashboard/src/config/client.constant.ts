@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, CircleSlashIcon, HourglassIcon } from "lucide-react";
 
 import { ClientStatus } from "@/enums/client-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const CLIENT_PER_PAGE = 20;
 export const CLIENT_RELATION_PER_PAGE = 20;

@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 import { AuthActor } from "@/enums/auth-actor.enum";
-import type { NavItem } from "@/interfaces/nav-item.interface";
+import type { NavItem } from "@/interfaces/ui/nav-item.interface";
 
 const overview: NavItem = { key: "overview", segment: "", icon: LayoutDashboardIcon, ready: true };
 

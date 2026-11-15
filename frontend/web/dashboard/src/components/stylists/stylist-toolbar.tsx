@@ -9,9 +9,9 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { BarberStatus } from "@/enums/barber-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BranchOption } from "@/types/branch-option.type";
-import type { ChairOption } from "@/types/chair-option.type";
-import type { StylistFilters } from "@/types/stylist-filters.type";
+import type { BranchOption } from "@/types/branches/branch-option.type";
+import type { ChairOption } from "@/types/chairs/chair-option.type";
+import type { StylistFilters } from "@/types/stylists/stylist-filters.type";
 
 interface StylistToolbarProps {
   filters: StylistFilters;

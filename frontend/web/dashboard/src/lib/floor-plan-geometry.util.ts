@@ -1,6 +1,6 @@
 import { MAX_LAYOUT_VALUE, MIN_CHAIR_SIZE, PERCENT_MAX, ROTATION_LIMIT, STAGE_WIDTH } from "@/config/floor-plan.constant";
-import type { ChairLayoutPayload } from "@/interfaces/chair-payload.interface";
-import type { FloorCanvas, FloorDecoration } from "@/types/floor-plan.type";
+import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
+import type { FloorCanvas, FloorDecoration } from "@/types/chairs/floor-plan.type";
 
 export interface StageSize {
   width: number;

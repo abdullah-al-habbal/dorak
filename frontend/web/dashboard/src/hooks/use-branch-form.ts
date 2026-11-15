@@ -14,7 +14,7 @@ import { branchToForm, emptyBranchForm, formToBranchPayload } from "@/lib/branch
 import { mapBranchSaveError } from "@/lib/branch-form-error.util";
 import { createBranchSchema } from "@/schemas/branch-form.zod";
 import type { BranchFormValues } from "@/schemas/branch-form.zod";
-import type { BranchDetail } from "@/types/branch-detail.type";
+import type { BranchDetail } from "@/types/branches/branch-detail.type";
 
 interface BranchFormController {
   form: UseFormReturn<BranchFormValues>;

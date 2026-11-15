@@ -4,7 +4,7 @@ import { useLayoutEffect } from "react";
 import type { ReactNode } from "react";
 
 import { I18nContext } from "@/components/providers/i18n-context";
-import type { I18nContextValue } from "@/interfaces/i18n-context-value.interface";
+import type { I18nContextValue } from "@/interfaces/ui/i18n-context-value.interface";
 
 interface I18nProviderProps {
   value: I18nContextValue;

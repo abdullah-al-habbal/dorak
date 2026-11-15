@@ -3,7 +3,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import type { BrandStatus } from "@/enums/brand-status.enum";
 import { brandOptionListSchema } from "@/schemas/branch.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { BrandOption } from "@/types/brand-option.type";
+import type { BrandOption } from "@/types/brands/brand-option.type";
 
 /** The brands the actor can see; with a status, only those (the backend filters after scoping to the actor). */
 export function fetchBrandOptions(status?: BrandStatus): Promise<BrandOption[]> {

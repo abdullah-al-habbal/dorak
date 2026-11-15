@@ -9,7 +9,7 @@ import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import { changePasswordFormSchema } from "@/schemas/change-password-form.zod";
 import { changePassword } from "@/services/api/mutation/change-password.mutation";
-import type { ChangePasswordFormValues } from "@/types/change-password-form-values.type";
+import type { ChangePasswordFormValues } from "@/types/account/change-password-form-values.type";
 
 const EMPTY: ChangePasswordFormValues = { current_password: "", password: "", password_confirmation: "" };
 const FIELDS = new Set<string>(Object.keys(EMPTY));

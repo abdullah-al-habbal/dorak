@@ -22,7 +22,7 @@ import { useOverlay } from "@/hooks/use-overlay";
 import { useUpdateCatalogCategoryActive } from "@/hooks/use-update-catalog-category-active";
 import { hasAdminCatalogFilters } from "@/lib/admin-catalog-filters.util";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminCatalogCategory } from "@/types/admin-catalog-category.type";
+import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 /** The global catalog is platform-admin only; the proxy and the backend refuse everyone else too. */
 export function AdminCatalogScreen({ actor }: { actor: AuthActor }): JSX.Element {

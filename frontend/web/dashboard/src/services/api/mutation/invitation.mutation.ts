@@ -4,7 +4,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { branchInvitationSchema } from "@/schemas/branch-oversight.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { BranchInvitation } from "@/types/branch-invitation.type";
+import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 
 export interface InviteBarberPayload {
   barber_id: string;

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { MAX_LAYOUT_VALUE, MIN_CHAIR_SIZE, STAGE_WIDTH } from "@/config/floor-plan.constant";
 import { FloorCanvasUnit } from "@/enums/floor-canvas-unit.enum";
 import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
-import type { ChairLayoutPayload } from "@/interfaces/chair-payload.interface";
+import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
 import {
   clamp,
   clampChair,
@@ -16,7 +16,7 @@ import {
   stageSize,
   unitsToPercent,
 } from "@/lib/floor-plan-geometry.util";
-import type { FloorDecoration } from "@/types/floor-plan.type";
+import type { FloorDecoration } from "@/types/chairs/floor-plan.type";
 
 const stage = { width: 1000, height: 500 };
 const chair: ChairLayoutPayload = { position_x: 100, position_y: 100, width: 60, height: 60, rotation: 0 };

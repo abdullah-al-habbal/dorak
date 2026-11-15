@@ -10,7 +10,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { isTooManyRequests } from "@/lib/password-reset-error.util";
 import { forgotPasswordFormSchema } from "@/schemas/forgot-password-form.zod";
 import { requestPasswordReset } from "@/services/api/mutation/request-password-reset.mutation";
-import type { ForgotPasswordFormValues } from "@/types/forgot-password-form-values.type";
+import type { ForgotPasswordFormValues } from "@/types/account/forgot-password-form-values.type";
 
 interface ForgotPasswordForm {
   form: UseFormReturn<ForgotPasswordFormValues>;

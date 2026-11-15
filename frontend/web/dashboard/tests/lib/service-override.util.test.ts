@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { draftFromTerms, draftToPayload } from "@/lib/service-override.util";
-import type { ServiceTerms } from "@/types/service-terms.type";
+import type { ServiceTerms } from "@/types/services/service-terms.type";
 
 const terms: ServiceTerms = {
   id: "s1",

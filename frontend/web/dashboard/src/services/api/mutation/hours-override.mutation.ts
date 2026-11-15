@@ -4,7 +4,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { hoursOverrideSchema } from "@/schemas/hours-override.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { HoursOverride, HoursOverrideInput } from "@/types/hours-override.type";
+import type { HoursOverride, HoursOverrideInput } from "@/types/hours/hours-override.type";
 
 function overridePath(branchId: string, date: string): string {
   return `${DASHBOARD_API}/branches/${encodeURIComponent(branchId)}/hours-overrides/${encodeURIComponent(date)}`;

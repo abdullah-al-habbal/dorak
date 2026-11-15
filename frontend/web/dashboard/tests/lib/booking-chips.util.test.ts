@@ -4,7 +4,7 @@ import { BookingStatus } from "@/enums/booking-status.enum";
 import { BookingView } from "@/enums/booking-view.enum";
 import { buildBookingChips, CHIP_KEY, CLEAR_ALL_PATCH, patchForChip } from "@/lib/booking-chips.util";
 import { enDictionary } from "@/locales/en/index.constant";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 const BASE = { view: BookingView.List, date: "2026-11-04", page: 1 };
 const dictionary: Dictionary = enDictionary;

@@ -1,5 +1,5 @@
 import { BookingStatus } from "@/enums/booking-status.enum";
-import type { BookingTarget } from "@/types/booking-target.type";
+import type { BookingTarget } from "@/types/bookings/booking-target.type";
 
 /** Mirrors BookingStatus::canTransitionTo. `pending` is never a target. */
 export const BOOKING_TRANSITIONS: Record<BookingStatus, readonly BookingTarget[]> = {

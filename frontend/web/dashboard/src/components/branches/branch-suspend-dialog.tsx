@@ -14,7 +14,7 @@ import { BranchLifecycleAction } from "@/enums/branch-lifecycle-action.enum";
 import { useBranchLifecycle } from "@/hooks/use-branch-lifecycle";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { Branch } from "@/types/branch.type";
+import type { Branch } from "@/types/branches/branch.type";
 
 interface BranchSuspendDialogProps {
   branch: Branch;

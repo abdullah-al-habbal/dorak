@@ -1,5 +1,5 @@
 import { HttpStatus } from "@/enums/http-status.enum";
-import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
+import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 /**

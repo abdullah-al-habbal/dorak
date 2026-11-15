@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOnboardingConfigs, useUpdateOnboardingConfig } from "@/hooks/use-website-content";
-import type { OnboardingConfig } from "@/types/website-content.type";
+import type { OnboardingConfig } from "@/types/platform/website-content.type";
 
 /** The onboarding hero per language and season; each can be switched on or off. */
 export function OnboardingPanel(): JSX.Element {

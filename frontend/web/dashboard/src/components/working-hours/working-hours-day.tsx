@@ -12,9 +12,9 @@ import { Switch } from "@/components/ui/switch";
 import { MAX_SHIFTS_PER_DAY } from "@/config/working-hours.constant";
 import type { Weekday } from "@/enums/weekday.enum";
 import { useI18n } from "@/hooks/use-i18n";
-import type { OpeningHoursDay } from "@/interfaces/opening-hours-day.interface";
-import type { ShiftIssueEntry } from "@/interfaces/shift-issue-entry.interface";
-import type { Shift } from "@/interfaces/shift.interface";
+import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
+import type { ShiftIssueEntry } from "@/interfaces/hours/shift-issue-entry.interface";
+import type { Shift } from "@/interfaces/hours/shift.interface";
 import { canAddShift } from "@/lib/opening-hours.util";
 import { weekdayLabel } from "@/lib/weekday-label.util";
 

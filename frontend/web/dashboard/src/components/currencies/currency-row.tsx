@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminCurrency } from "@/types/currency-admin.type";
+import type { AdminCurrency } from "@/types/platform/currency-admin.type";
 
 interface CurrencyRowProps {
   currency: AdminCurrency;

@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { rateClient } from "@/services/api/mutation/rate-client.mutation";
-import type { ClientRatingInput } from "@/types/client-rating.type";
+import type { ClientRatingInput } from "@/types/clients/client-rating.type";
 
 interface RateClientVariables {
   bookingId: string;

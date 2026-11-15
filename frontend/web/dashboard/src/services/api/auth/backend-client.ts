@@ -6,8 +6,8 @@ import {
 } from "@/config/backend.constant";
 import { backendEnvelopeSchema } from "@/schemas/backend-envelope.zod";
 import { readBackendUrl } from "@/services/api/auth/session-keys.util";
-import type { BackendRequest } from "@/interfaces/backend-request.interface";
-import type { BackendResult } from "@/interfaces/backend-result.interface";
+import type { BackendRequest } from "@/interfaces/core/backend-request.interface";
+import type { BackendResult } from "@/interfaces/core/backend-result.interface";
 
 const REDIRECT_MIN = 300;
 const REDIRECT_MAX = 399;

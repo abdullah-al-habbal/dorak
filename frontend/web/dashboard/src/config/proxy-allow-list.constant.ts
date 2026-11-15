@@ -1,6 +1,6 @@
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { HttpMethod } from "@/enums/http-method.enum";
-import type { ProxyRule } from "@/interfaces/proxy-rule.interface";
+import type { ProxyRule } from "@/interfaces/core/proxy-rule.interface";
 
 const OPERATIONS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner];
 const SERVICE_WRITERS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];

@@ -2,7 +2,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { floorPlanLayoutSchema } from "@/schemas/floor-plan.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { FloorPlanLayout } from "@/types/floor-plan.type";
+import type { FloorPlanLayout } from "@/types/chairs/floor-plan.type";
 
 export interface FloorPlanLayoutPayload {
   preset: string;

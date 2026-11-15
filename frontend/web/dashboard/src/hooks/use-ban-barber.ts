@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { barberApprovalKeys } from "@/lib/query-keys/stylists/barber-approval-keys";
 import { banBarber } from "@/services/api/mutation/barber-account.mutation";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Failures are rethrown to the dialog, which shows them inline. */
 export function useBanBarber(): UseMutationResult<BarberApproval, Error, { id: string; reason: string; expiresAt?: string }> {

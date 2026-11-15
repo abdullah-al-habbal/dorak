@@ -15,7 +15,7 @@ import { parseCoordinate } from "@/lib/coordinate.util";
 import { emailField } from "@/schemas/fields/email-field.zod";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import { passwordField } from "@/schemas/fields/password-field.zod";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 type BranchValidation = Dictionary["branches"]["form"]["validation"];
 

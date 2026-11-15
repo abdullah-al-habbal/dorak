@@ -1,6 +1,6 @@
 import { minutesBetween } from "@/lib/booking-date.util";
-import type { Booking } from "@/types/booking.type";
-import type { BookingEventLayout } from "@/types/booking-event-layout.type";
+import type { Booking } from "@/types/bookings/booking.type";
+import type { BookingEventLayout } from "@/types/bookings/booking-event-layout.type";
 
 export const DEFAULT_DURATION_MINUTES = 30;
 export const MIN_EVENT_MINUTES = 15;

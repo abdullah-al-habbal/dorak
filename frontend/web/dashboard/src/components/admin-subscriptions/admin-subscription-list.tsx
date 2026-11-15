@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
 import { SubscriptionStatus } from "@/enums/subscription-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
-import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
+import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
 import { availableSubscriptionTargets } from "@/lib/subscription-transitions.util";
-import type { AdminSubscription } from "@/types/admin-subscription.type";
-import type { SubscriptionTarget } from "@/types/subscription-target.type";
+import type { AdminSubscription } from "@/types/plans/admin-subscription.type";
+import type { SubscriptionTarget } from "@/types/plans/subscription-target.type";
 
 interface AdminSubscriptionListProps {
   subscriptions: readonly AdminSubscription[];

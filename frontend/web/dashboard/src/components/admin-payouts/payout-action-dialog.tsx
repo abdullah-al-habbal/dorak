@@ -17,7 +17,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useTransitionPayout } from "@/hooks/use-transition-payout";
 import { formatPrice, localizedText } from "@/lib/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { AdminPayout } from "@/types/admin-payout.type";
+import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 
 interface PayoutActionDialogProps {
   payout: AdminPayout;

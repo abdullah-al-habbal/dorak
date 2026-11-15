@@ -17,7 +17,7 @@ import { useAdminCurrencies } from "@/hooks/use-admin-currencies";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useSetCurrencyActive } from "@/hooks/use-set-currency-active";
-import type { AdminCurrency } from "@/types/currency-admin.type";
+import type { AdminCurrency } from "@/types/platform/currency-admin.type";
 
 /** The platform admin's currencies and exchange rates. */
 export function CurrenciesScreen({ actor }: { actor: AuthActor }): JSX.Element {

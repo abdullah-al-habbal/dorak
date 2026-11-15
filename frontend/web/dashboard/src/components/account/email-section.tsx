@@ -7,7 +7,7 @@ import { EmailCodeForm } from "@/components/account/email-code-form";
 import { EmailRequestForm } from "@/components/account/email-request-form";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useEmailChange } from "@/hooks/use-email-change";
-import type { AccountProfile } from "@/types/account-profile.type";
+import type { AccountProfile } from "@/types/account/account-profile.type";
 
 export function EmailSection({ profile }: { profile: AccountProfile }): JSX.Element {
   const { account } = useDictionary();

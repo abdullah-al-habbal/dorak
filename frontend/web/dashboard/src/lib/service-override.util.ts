@@ -1,6 +1,6 @@
 import { minorUnitsToInput, parseMinorUnits } from "@/lib/money.util";
 import type { ServiceOverridePayload } from "@/services/api/mutation/stylist-pricing.mutation";
-import type { ServiceTerms } from "@/types/service-terms.type";
+import type { ServiceTerms } from "@/types/services/service-terms.type";
 
 export interface OverrideDraft {
   price: string;

@@ -7,7 +7,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useUpdateChairStatus } from "@/hooks/use-update-chair-status";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { Chair } from "@/types/chair.type";
+import type { Chair } from "@/types/chairs/chair.type";
 
 interface ChairStatusToggle {
   /** `inService` true puts the chair back to available; false moves it to maintenance. */

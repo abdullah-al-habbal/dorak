@@ -3,7 +3,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { branchInvitationListSchema } from "@/schemas/branch-oversight.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { InvitationPage } from "@/types/invitation-page.type";
+import type { InvitationPage } from "@/types/branches/invitation-page.type";
 
 /** The backend sets the page size from the platform pagination setting. */
 const ASSUMED_PER_PAGE = 15;

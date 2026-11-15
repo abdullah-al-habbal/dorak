@@ -2,7 +2,7 @@ import { MutationObserver, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { FeedbackMutationOptions } from "@/interfaces/feedback-mutation-options.interface";
+import type { FeedbackMutationOptions } from "@/interfaces/core/feedback-mutation-options.interface";
 import { feedbackMutationOptions } from "@/lib/feedback-mutation.util";
 
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

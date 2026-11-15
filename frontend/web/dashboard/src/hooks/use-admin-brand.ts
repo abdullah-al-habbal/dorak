@@ -5,7 +5,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { adminBrandKeys } from "@/lib/query-keys/brands/admin-brand-keys";
 import { fetchAdminBrand } from "@/services/api/query/admin-brand.query";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** The detail dialog's read. It starts from the list row, so the dialog never opens empty. */
 export function useAdminBrand(brand: AdminBrand): UseQueryResult<AdminBrand> {

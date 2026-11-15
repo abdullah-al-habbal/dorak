@@ -42,7 +42,7 @@ import { StylistFormDialog } from "@/components/stylists/stylist-form-dialog";
 import { WalkInDialog } from "@/components/bookings/walk-in-dialog";
 import { ConfirmOverlay } from "@/components/overlays/confirm-overlay";
 import { OverlayKind } from "@/enums/overlay-kind.enum";
-import type { OverlayRequest } from "@/types/overlay-request.type";
+import type { OverlayRequest } from "@/types/ui/overlay-request.type";
 
 interface OverlayHostProps {
   request: OverlayRequest | null;

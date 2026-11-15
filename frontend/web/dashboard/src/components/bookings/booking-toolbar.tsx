@@ -15,8 +15,8 @@ import { isBookingStatus } from "@/lib/booking-status-label.util";
 import { localizedText } from "@/lib/booking-format.util";
 import { windowFor } from "@/lib/booking-filters.util";
 import { cn } from "@/lib/utils";
-import type { ChairOption } from "@/types/chair-option.type";
-import type { BookingFilters } from "@/types/booking-filters.type";
+import type { ChairOption } from "@/types/chairs/chair-option.type";
+import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
 const SEARCH_DEBOUNCE_MS = 300;
 const DAYS_PER_WEEK = 7;

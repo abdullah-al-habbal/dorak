@@ -9,8 +9,8 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { BranchStatus } from "@/enums/branch-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BranchFilters } from "@/types/branch-filters.type";
-import type { BrandOption } from "@/types/brand-option.type";
+import type { BranchFilters } from "@/types/branches/branch-filters.type";
+import type { BrandOption } from "@/types/brands/brand-option.type";
 
 interface BranchToolbarProps {
   filters: BranchFilters;

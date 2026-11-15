@@ -7,7 +7,7 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { BRAND_STATUS_FILTER_ALL } from "@/config/admin-brand.constant";
 import { BrandStatus } from "@/enums/brand-status.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { AdminBrandFilters } from "@/types/admin-brand-filters.type";
+import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
 
 interface AdminBrandToolbarProps {
   filters: AdminBrandFilters;

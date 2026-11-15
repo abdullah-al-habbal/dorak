@@ -2,8 +2,8 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { serviceListSchema } from "@/schemas/service.zod";
 import { pageInfoSchema } from "@/schemas/page-info.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { ServiceFilters } from "@/types/service-filters.type";
-import type { Service } from "@/types/service.type";
+import type { ServiceFilters } from "@/types/services/service-filters.type";
+import type { Service } from "@/types/services/service.type";
 
 const PER_PAGE = 100;
 const MAX_PAGES = 5;

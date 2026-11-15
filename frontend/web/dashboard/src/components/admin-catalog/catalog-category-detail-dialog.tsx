@@ -11,7 +11,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminCatalogCategory } from "@/types/admin-catalog-category.type";
+import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 interface CatalogCategoryDetailDialogProps {
   category: AdminCatalogCategory;

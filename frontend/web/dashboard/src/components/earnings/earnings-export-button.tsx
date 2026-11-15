@@ -7,8 +7,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { earningsCsv, earningsFilename } from "@/lib/earnings-csv.util";
-import type { Earnings } from "@/types/earnings.type";
-import type { EarningsRange } from "@/types/earnings-range.type";
+import type { Earnings } from "@/types/earnings/earnings.type";
+import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 interface EarningsExportButtonProps {
   earnings: Earnings | undefined;

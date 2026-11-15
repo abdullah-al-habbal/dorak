@@ -2,7 +2,7 @@ import { BanIcon, CheckCircle2Icon, CircleDashedIcon, HourglassIcon } from "luci
 
 import { PayoutAction } from "@/enums/payout-action.enum";
 import { PayoutStatus } from "@/enums/payout-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const PAYOUT_PER_PAGE = 10;
 

@@ -12,7 +12,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useDeleteTestimonial, useWebsiteContent } from "@/hooks/use-website-content";
 import { localeText } from "@/lib/website-content.util";
-import type { Testimonial } from "@/types/website-content.type";
+import type { Testimonial } from "@/types/platform/website-content.type";
 
 /** The quotes shown in the testimonials sections. */
 export function TestimonialsPanel(): JSX.Element {

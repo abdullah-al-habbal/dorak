@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { clientKeys } from "@/lib/query-keys/clients/client-keys";
 import { unbanClient } from "@/services/api/mutation/client-ban.mutation";
-import type { AdminClient } from "@/types/admin-client.type";
+import type { AdminClient } from "@/types/clients/admin-client.type";
 
 export function useUnbanClient(): UseMutationResult<AdminClient, Error, string> {
   const { clients } = useDictionary();

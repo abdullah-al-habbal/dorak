@@ -2,7 +2,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { catalogItemListSchema, catalogTagListSchema } from "@/schemas/catalog-item.zod";
 import { apiRequest, apiRequestWithMeta } from "@/services/api/core/client";
-import type { CatalogItemPage, CatalogTag } from "@/types/catalog-item.type";
+import type { CatalogItemPage, CatalogTag } from "@/types/services/catalog-item.type";
 
 export const CATALOG_ITEMS_PER_PAGE = 20;
 

@@ -9,7 +9,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import type { FloorPlanEditor } from "@/hooks/use-floor-plan-editor";
 import { moveChair, moveDecoration, percentToUnits, pointerToStage, rotateChair, stageSize, unitsToPercent } from "@/lib/floor-plan-geometry.util";
 import { cn } from "@/lib/utils";
-import type { Chair } from "@/types/chair.type";
+import type { Chair } from "@/types/chairs/chair.type";
 
 interface DragState {
   kind: "chair" | "decoration";

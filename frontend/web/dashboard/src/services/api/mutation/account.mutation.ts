@@ -7,10 +7,10 @@ import { accountSettingsSchema } from "@/schemas/account-settings.zod";
 import { emailChangeResultSchema } from "@/schemas/email-change-result.zod";
 import { notificationPreferencesSchema } from "@/schemas/notification-preferences.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { AccountProfile } from "@/types/account-profile.type";
-import type { AccountSettings } from "@/types/account-settings.type";
-import type { EmailChangeResult } from "@/types/email-change-result.type";
-import type { NotificationPreferences } from "@/types/notification-preferences.type";
+import type { AccountProfile } from "@/types/account/account-profile.type";
+import type { AccountSettings } from "@/types/account/account-settings.type";
+import type { EmailChangeResult } from "@/types/account/email-change-result.type";
+import type { NotificationPreferences } from "@/types/account/notification-preferences.type";
 
 export async function updateDisplayName(displayName: string): Promise<AccountProfile> {
   return apiRequest(`${DASHBOARD_API}${ACCOUNT_API.profile}`, { method: HttpMethod.Patch, body: { display_name: displayName }, schema: accountProfileSchema });

@@ -9,7 +9,7 @@ import { SkeletonRows } from "@/components/ui/skeleton-row";
 import { useCurrencies } from "@/hooks/use-currencies";
 import { useI18n } from "@/hooks/use-i18n";
 import { usePlanFeatureKeys } from "@/hooks/use-plan-feature-keys";
-import type { Plan } from "@/types/plan.type";
+import type { Plan } from "@/types/plans/plan.type";
 
 interface PlanFormDialogProps {
   plan?: Plan;

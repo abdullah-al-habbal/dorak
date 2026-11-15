@@ -6,7 +6,7 @@ import { useBrandLifecycle } from "@/hooks/use-brand-lifecycle";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** Opens the reactivate confirmation for a suspended brand. */
 export function useConfirmReactivateBrand(): (brand: AdminBrand) => void {

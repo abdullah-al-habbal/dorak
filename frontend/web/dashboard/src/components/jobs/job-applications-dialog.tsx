@@ -17,8 +17,8 @@ import { useMarkApplicationsSeen } from "@/hooks/use-mark-applications-seen";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useUpdateApplicationStatus } from "@/hooks/use-update-application-status";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BranchJobPosting } from "@/types/branch-job-posting.type";
-import type { JobApplication } from "@/types/job-application.type";
+import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
+import type { JobApplication } from "@/types/jobs/job-application.type";
 
 const FIRST_PAGE = 1;
 

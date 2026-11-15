@@ -12,8 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CLIENT_BAN_REASON_MAX, CLIENT_BAN_REASON_MIN } from "@/config/client.constant";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { BanDialogCopy } from "@/interfaces/ban-dialog-copy.interface";
-import type { BanSubmission } from "@/interfaces/ban-submission.interface";
+import type { BanDialogCopy } from "@/interfaces/ui/ban-dialog-copy.interface";
+import type { BanSubmission } from "@/interfaces/ui/ban-submission.interface";
 
 interface AccountBanDialogProps {
   copy: BanDialogCopy;

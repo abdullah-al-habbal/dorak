@@ -16,7 +16,7 @@ import { useOwnerBrands } from "@/hooks/use-owner-brands";
 import { localizedText } from "@/lib/booking-format.util";
 import { REGISTRATION_STEPS, RegistrationStep, currentRegistrationStep, isStepReached } from "@/lib/registration-status.util";
 import { cn } from "@/lib/utils";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 export function RegistrationStatusScreen(): JSX.Element {
   const { dictionary } = useI18n();

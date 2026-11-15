@@ -4,8 +4,8 @@ import { PlanState } from "@/enums/plan-state.enum";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { planListSchema } from "@/schemas/plan.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { PlanFilters } from "@/types/plan-filters.type";
-import type { PlanPage } from "@/types/plan-page.type";
+import type { PlanFilters } from "@/types/plans/plan-filters.type";
+import type { PlanPage } from "@/types/plans/plan-page.type";
 
 /** `perPage` lets the assign dialog fetch every active plan at once. */
 export async function fetchPlanPage(filters: PlanFilters, perPage: number = PLAN_PER_PAGE): Promise<PlanPage> {

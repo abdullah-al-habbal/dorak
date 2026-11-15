@@ -2,8 +2,8 @@ import { SCHEDULE_DAYS_IN_WEEK, SCHEDULE_DEFAULT_RANGE, SCHEDULE_RANGES } from "
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { ScheduleRange } from "@/enums/schedule-range.enum";
 import { addDays, startOfWeek, toDateKey } from "@/lib/booking-date.util";
-import type { ScheduleFilters } from "@/types/schedule-filters.type";
-import type { ScheduleWindow } from "@/types/schedule-window.type";
+import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";
+import type { ScheduleWindow } from "@/types/bookings/schedule-window.type";
 
 const STATUSES = new Set<string>(Object.values(BookingStatus));
 const RANGES = new Set<string>(SCHEDULE_RANGES);

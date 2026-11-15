@@ -12,8 +12,8 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useUpdateBookingStatus } from "@/hooks/use-update-booking-status";
 import { bookingTotal, formatDay, formatTime, localizedText } from "@/lib/booking-format.util";
-import type { Booking } from "@/types/booking.type";
-import type { BookingTarget } from "@/types/booking-target.type";
+import type { Booking } from "@/types/bookings/booking.type";
+import type { BookingTarget } from "@/types/bookings/booking-target.type";
 
 interface BookingDetailDialogProps {
   booking: Booking | null;

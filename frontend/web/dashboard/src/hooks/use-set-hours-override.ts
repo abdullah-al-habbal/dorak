@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { hoursOverrideKeys } from "@/lib/query-keys/hours/hours-override-keys";
 import { setHoursOverride } from "@/services/api/mutation/hours-override.mutation";
-import type { HoursOverride, HoursOverrideInput } from "@/types/hours-override.type";
+import type { HoursOverride, HoursOverrideInput } from "@/types/hours/hours-override.type";
 
 interface SetOverrideVariables {
   branchId: string;

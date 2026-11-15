@@ -14,7 +14,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useOwnerBrands } from "@/hooks/use-owner-brands";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** The owner's brands: edit the profile, add another brand. A suspended brand can't be edited (the platform team lifts that). */
 export function OwnerBrandScreen(): JSX.Element {

@@ -1,7 +1,7 @@
 import type { QueryClient, UseMutationOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import type { FeedbackMutationOptions } from "@/interfaces/feedback-mutation-options.interface";
+import type { FeedbackMutationOptions } from "@/interfaces/core/feedback-mutation-options.interface";
 
 /** Toasts the outcome, then refreshes every listed query root once the mutation settles. */
 export function feedbackMutationOptions<TData, TVariables>(

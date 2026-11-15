@@ -7,8 +7,8 @@ import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { bookingStatusErrorMessage } from "@/lib/booking-status-error.util";
 import { updateBookingStatus } from "@/services/api/mutation/update-booking-status.mutation";
-import type { Booking } from "@/types/booking.type";
-import type { BookingTarget } from "@/types/booking-target.type";
+import type { Booking } from "@/types/bookings/booking.type";
+import type { BookingTarget } from "@/types/bookings/booking-target.type";
 
 interface BookingStatusVariables {
   id: string;

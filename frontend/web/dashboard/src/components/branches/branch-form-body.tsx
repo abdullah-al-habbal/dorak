@@ -13,8 +13,8 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { useBranchForm } from "@/hooks/use-branch-form";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BranchDetail } from "@/types/branch-detail.type";
-import type { BrandOption } from "@/types/brand-option.type";
+import type { BranchDetail } from "@/types/branches/branch-detail.type";
+import type { BrandOption } from "@/types/brands/brand-option.type";
 
 interface BranchFormBodyProps {
   branch?: BranchDetail;

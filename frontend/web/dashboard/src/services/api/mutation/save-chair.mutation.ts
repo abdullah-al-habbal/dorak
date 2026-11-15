@@ -1,9 +1,9 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import type { ChairPayload } from "@/interfaces/chair-payload.interface";
+import type { ChairPayload } from "@/interfaces/chairs/chair-payload.interface";
 import { chairSchema } from "@/schemas/chair.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { Chair } from "@/types/chair.type";
+import type { Chair } from "@/types/chairs/chair.type";
 
 const CHAIRS = `${DASHBOARD_API}/chairs`;
 

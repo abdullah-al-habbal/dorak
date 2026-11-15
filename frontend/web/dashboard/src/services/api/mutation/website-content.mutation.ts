@@ -5,7 +5,7 @@ import { HttpMethod } from "@/enums/http-method.enum";
 import type { UniverseVisibility } from "@/enums/universe-visibility.enum";
 import { contentPageSchema, contentSectionSchema, onboardingConfigSchema, testimonialSchema } from "@/schemas/website-content.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { ContentPage, ContentSection, OnboardingConfig, Testimonial } from "@/types/website-content.type";
+import type { ContentPage, ContentSection, OnboardingConfig, Testimonial } from "@/types/platform/website-content.type";
 
 interface Pair {
   en: string;

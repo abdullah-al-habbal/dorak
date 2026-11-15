@@ -2,7 +2,7 @@ import { BOOKING_NOTIFICATION_TYPE, BOOKINGS_SEGMENT, NOTIFICATION_EVENT_SEGMENT
 import { portalRoot } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { NotificationEvent } from "@/enums/notification-event.enum";
-import type { DashboardNotification } from "@/types/dashboard-notification.type";
+import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
 
 const EVENTS = new Set<string>(Object.values(NotificationEvent));
 

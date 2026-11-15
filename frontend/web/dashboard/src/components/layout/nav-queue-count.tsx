@@ -3,7 +3,7 @@
 import type { JSX } from "react";
 
 import { usePendingBarberCount } from "@/hooks/use-pending-barber-count";
-import type { NavKey } from "@/types/nav-key.type";
+import type { NavKey } from "@/types/ui/nav-key.type";
 
 function PendingBarberCount(): JSX.Element | null {
   const count = usePendingBarberCount();

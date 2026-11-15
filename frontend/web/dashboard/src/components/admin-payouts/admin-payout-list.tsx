@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
 import { PayoutAction } from "@/enums/payout-action.enum";
 import { useI18n } from "@/hooks/use-i18n";
-import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
+import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { formatPrice, localizedText } from "@/lib/booking-format.util";
 import { availablePayoutActions } from "@/lib/payout-actions.util";
-import type { AdminPayout } from "@/types/admin-payout.type";
+import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 
 interface AdminPayoutListProps {
   payouts: readonly AdminPayout[];

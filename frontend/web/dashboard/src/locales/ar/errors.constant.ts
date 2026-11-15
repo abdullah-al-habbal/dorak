@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 export const arErrors: Dictionary["errors"] = {
   notFound: { title: "الصفحة غير موجودة", body: "هذه الصفحة غير موجودة أو تم نقلها." },

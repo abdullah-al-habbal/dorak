@@ -16,7 +16,7 @@ import { useConfirmBarberMoves } from "@/hooks/use-confirm-barber-moves";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberApprovalDetailDialogProps {
   barber: BarberApproval;

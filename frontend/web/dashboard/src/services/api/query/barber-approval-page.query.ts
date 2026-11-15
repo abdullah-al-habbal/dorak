@@ -4,8 +4,8 @@ import { barberApprovalQueryString } from "@/lib/barber-approval-filters.util";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { barberApprovalListSchema } from "@/schemas/barber-approval.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { BarberApprovalFilters } from "@/types/barber-approval-filters.type";
-import type { BarberApprovalPage } from "@/types/barber-approval-page.type";
+import type { BarberApprovalFilters } from "@/types/stylists/barber-approval-filters.type";
+import type { BarberApprovalPage } from "@/types/stylists/barber-approval-page.type";
 
 export async function fetchBarberApprovalPage(filters: BarberApprovalFilters, perPage: number = BARBER_APPROVAL_PER_PAGE): Promise<BarberApprovalPage> {
   const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/admin/barbers?${barberApprovalQueryString(filters, perPage)}`, { schema: barberApprovalListSchema });

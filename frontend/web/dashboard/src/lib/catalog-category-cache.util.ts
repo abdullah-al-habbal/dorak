@@ -1,4 +1,4 @@
-import type { AdminCatalogCategory } from "@/types/admin-catalog-category.type";
+import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 /**
  * Flips one top-level category's active flag in a cached list; the same list when it is absent.

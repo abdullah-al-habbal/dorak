@@ -21,7 +21,7 @@ import { useServiceCategories } from "@/hooks/use-service-categories";
 import { localizedText } from "@/lib/booking-format.util";
 import { slugify } from "@/lib/slugify.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { CatalogItem } from "@/types/catalog-item.type";
+import type { CatalogItem } from "@/types/services/catalog-item.type";
 
 function pair(value: unknown): { en: string; ar: string } {
   const source = typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};

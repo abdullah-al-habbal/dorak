@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { ConfirmOverlayRequest } from "@/interfaces/confirm-overlay-request.interface";
+import type { ConfirmOverlayRequest } from "@/interfaces/ui/confirm-overlay-request.interface";
 
 interface ConfirmOverlayProps {
   request: ConfirmOverlayRequest;

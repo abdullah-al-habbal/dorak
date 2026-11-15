@@ -6,7 +6,7 @@ import { STALE_TIME } from "@/config/stale-time.constant";
 import { useReferenceQuery } from "@/hooks/use-reference-query";
 import { serviceKeys } from "@/lib/query-keys/services/service-keys";
 import { fetchCurrencies } from "@/services/api/query/currencies.query";
-import type { Currency } from "@/types/currency.type";
+import type { Currency } from "@/types/platform/currency.type";
 
 export function useCurrencies(): UseQueryResult<Currency[]> {
   return useReferenceQuery(serviceKeys.currencies, fetchCurrencies, STALE_TIME.Static);

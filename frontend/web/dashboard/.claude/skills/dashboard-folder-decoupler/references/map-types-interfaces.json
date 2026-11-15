@@ -1,0 +1,67 @@
+{
+  "dirs": [
+    "types",
+    "interfaces"
+  ],
+  "default": "core",
+  "core": [
+    "^(dictionary|overlay|api-|backend-|pagination|page-info|nav|locale|theme|auth-|session|route|sidebar|localized|mapped-form|id-|select-option|money|toast)"
+  ],
+  "rules": [
+    [
+      "job|application",
+      "jobs"
+    ],
+    [
+      "barber|stylist",
+      "stylists"
+    ],
+    [
+      "booking|walk-in|reschedule|schedule|appointment|slot|calendar",
+      "bookings"
+    ],
+    [
+      "service|catalog",
+      "services"
+    ],
+    [
+      "chair|floor-plan",
+      "chairs"
+    ],
+    [
+      "opening-hours|hours-override|working-hours|shift|weekday|hours",
+      "hours"
+    ],
+    [
+      "earning|commission|payout",
+      "earnings"
+    ],
+    [
+      "client|review|rating",
+      "clients"
+    ],
+    [
+      "plan|subscription|feature-key",
+      "plans"
+    ],
+    [
+      "brand",
+      "brands"
+    ],
+    [
+      "branch|invitation",
+      "branches"
+    ],
+    [
+      "account|notification|password|email-change|display-name|language-preference|profile",
+      "account"
+    ],
+    [
+      "platform|currency|language|payment-gateway|website-content|analytics|admin-user|exchange-rate|setting",
+      "platform"
+    ]
+  ],
+  "ui": [
+    "^(data-table|bar-chart|filter-chip|nav-item|nav-key|sidebar|theme|overlay|confirm-overlay|i18n|ban-dialog|ban-submission|session-hydrator)"
+  ]
+}

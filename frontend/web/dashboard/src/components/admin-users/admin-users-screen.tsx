@@ -21,7 +21,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useResendAdminInvite } from "@/hooks/use-resend-admin-invite";
 import { hasAdminUserFilters } from "@/lib/admin-user-filters.util";
-import type { AdminUser } from "@/types/admin-user.type";
+import type { AdminUser } from "@/types/platform/admin-user.type";
 
 /** Managing admin accounts is platform-admin only; the proxy and the backend refuse everyone else too. */
 export function AdminUsersScreen({ actor }: { actor: AuthActor }): JSX.Element {

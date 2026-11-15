@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { adminCurrencyListSchema, exchangeRateListSchema } from "@/schemas/currency-admin.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { AdminCurrency, ExchangeRate } from "@/types/currency-admin.type";
+import type { AdminCurrency, ExchangeRate } from "@/types/platform/currency-admin.type";
 
 export function fetchAdminCurrencies(): Promise<AdminCurrency[]> {
   return apiRequest(`${DASHBOARD_API}/admin/currencies`, { schema: adminCurrencyListSchema });

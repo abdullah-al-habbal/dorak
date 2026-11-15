@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { PasswordFieldOptions } from "@/interfaces/password-field-options.interface";
+import type { PasswordFieldOptions } from "@/interfaces/account/password-field-options.interface";
 
 /** An untrimmed password between `min` and `max` characters; optional passwords also accept "". One issue, always `message`. */
 export function passwordField({ min, max, message, required }: PasswordFieldOptions): z.ZodString {

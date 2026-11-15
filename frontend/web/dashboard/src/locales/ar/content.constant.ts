@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 export const arContent: Dictionary["content"] = {
   title: "محتوى الموقع",

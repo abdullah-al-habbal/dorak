@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 
-import type { OpeningHoursDay } from "@/interfaces/opening-hours-day.interface";
+import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import { shiftSegment } from "@/lib/opening-hours.util";
 
 /** A 24-hour track with each shift drawn on it, so a break between shifts is visible at a glance. Decorative: the time fields carry the data. */

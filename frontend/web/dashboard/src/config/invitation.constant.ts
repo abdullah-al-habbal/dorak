@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, HourglassIcon, UserXIcon, XCircleIcon } from "lucide-react";
 
 import { AffiliationStatus } from "@/enums/affiliation-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 /** The backend refuses a shorter lookup, so the picker doesn't ask. */
 export const BARBER_LOOKUP_MIN = 3;

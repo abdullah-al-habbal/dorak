@@ -5,7 +5,7 @@ import { useApproveBarber } from "@/hooks/use-approve-barber";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Opens the approve confirmation for a barber, from the row or from the detail dialog. */
 export function useConfirmApproveBarber(): (barber: BarberApproval) => void {

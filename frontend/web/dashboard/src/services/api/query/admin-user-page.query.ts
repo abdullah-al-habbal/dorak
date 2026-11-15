@@ -4,8 +4,8 @@ import { adminUserQueryString } from "@/lib/admin-user-filters.util";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { adminUserListSchema } from "@/schemas/admin-user.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { AdminUserFilters } from "@/types/admin-user-filters.type";
-import type { AdminUserPage } from "@/types/admin-user-page.type";
+import type { AdminUserFilters } from "@/types/platform/admin-user-filters.type";
+import type { AdminUserPage } from "@/types/platform/admin-user-page.type";
 
 export async function fetchAdminUserPage(filters: AdminUserFilters): Promise<AdminUserPage> {
   const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/admin/admins?${adminUserQueryString(filters, ADMIN_USER_PER_PAGE)}`, { schema: adminUserListSchema });

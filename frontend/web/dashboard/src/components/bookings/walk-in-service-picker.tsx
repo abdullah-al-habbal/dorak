@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { WalkInFormValues } from "@/schemas/walk-in-form.zod";
-import type { ServiceOption } from "@/types/service-option.type";
+import type { ServiceOption } from "@/types/services/service-option.type";
 
 interface WalkInServicePickerProps {
   control: Control<WalkInFormValues>;

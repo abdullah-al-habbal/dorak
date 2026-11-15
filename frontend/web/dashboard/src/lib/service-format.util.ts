@@ -1,6 +1,6 @@
 import { splitDuration } from "@/lib/duration.util";
 import { formatPrice } from "@/lib/booking-format.util";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 /** "1 h 30 min", "45 min" or "1 h", from the dictionary's unit templates. */
 export function formatDuration(minutes: number, dictionary: Dictionary): string {

@@ -1,4 +1,4 @@
-import type { MoneyTotal } from "@/types/money-total.type";
+import type { MoneyTotal } from "@/types/core/money-total.type";
 
 export interface CurrencyRow {
   currency: string;

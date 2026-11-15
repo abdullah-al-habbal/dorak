@@ -5,7 +5,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useUnbanClient } from "@/hooks/use-unban-client";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminClient } from "@/types/admin-client.type";
+import type { AdminClient } from "@/types/clients/admin-client.type";
 
 /** Opens the unban confirmation. */
 export function useConfirmUnbanClient(): (client: AdminClient) => void {

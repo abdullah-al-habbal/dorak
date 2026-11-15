@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { CatalogCategoryStatus } from "@/enums/catalog-category-status.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { AdminCatalogFilters } from "@/types/admin-catalog-filters.type";
+import type { AdminCatalogFilters } from "@/types/services/admin-catalog-filters.type";
 
 interface AdminCatalogToolbarProps {
   filters: AdminCatalogFilters;

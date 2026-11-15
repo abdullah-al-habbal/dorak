@@ -8,7 +8,7 @@ import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-
 import { invitationKeys } from "@/lib/query-keys/branches/invitation-keys";
 import { actOnInvitation } from "@/services/api/mutation/invitation.mutation";
 import type { InvitationAction } from "@/services/api/mutation/invitation.mutation";
-import type { BranchInvitation } from "@/types/branch-invitation.type";
+import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 
 interface ActVariables {
   branchId: string;

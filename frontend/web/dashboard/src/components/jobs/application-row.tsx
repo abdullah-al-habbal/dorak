@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ApplicationStatus } from "@/enums/application-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { JobApplication } from "@/types/job-application.type";
+import type { JobApplication } from "@/types/jobs/job-application.type";
 
 interface ApplicationRowProps {
   application: JobApplication;

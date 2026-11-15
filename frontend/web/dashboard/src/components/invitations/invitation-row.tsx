@@ -9,7 +9,7 @@ import { AffiliationStatus } from "@/enums/affiliation-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
 import type { InvitationAction } from "@/services/api/mutation/invitation.mutation";
-import type { BranchInvitation } from "@/types/branch-invitation.type";
+import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 
 interface InvitationRowProps {
   invitation: BranchInvitation;

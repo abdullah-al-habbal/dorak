@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import type { OpeningHoursDay } from "@/interfaces/opening-hours-day.interface";
+import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import { openingHoursSchema } from "@/schemas/opening-hours.zod";
 import { apiRequest } from "@/services/api/core/client";
 

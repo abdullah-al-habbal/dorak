@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { BranchStatus } from "@/enums/branch-status.enum";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { branchToForm, emptyBranchForm, formToBranchPayload } from "@/lib/branch-form.util";
-import type { BranchDetail } from "@/types/branch-detail.type";
+import type { BranchDetail } from "@/types/branches/branch-detail.type";
 
 const detail: BranchDetail = {
   id: "br1",

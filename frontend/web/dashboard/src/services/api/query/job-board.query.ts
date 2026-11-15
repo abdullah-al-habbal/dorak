@@ -3,7 +3,7 @@ import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { branchJobPostingListSchema } from "@/schemas/branch-oversight.zod";
 import { jobApplicationListSchema } from "@/schemas/job-application.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { JobApplicationPage, JobPostingPage } from "@/types/job-board-page.type";
+import type { JobApplicationPage, JobPostingPage } from "@/types/jobs/job-board-page.type";
 
 /** The backend sets the page size from the platform pagination setting. */
 const ASSUMED_PER_PAGE = 15;

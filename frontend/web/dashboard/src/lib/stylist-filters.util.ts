@@ -1,5 +1,5 @@
 import { BarberStatus } from "@/enums/barber-status.enum";
-import type { StylistFilters } from "@/types/stylist-filters.type";
+import type { StylistFilters } from "@/types/stylists/stylist-filters.type";
 
 const STATUSES = new Set<string>(Object.values(BarberStatus));
 const MAX_SEARCH = 100;

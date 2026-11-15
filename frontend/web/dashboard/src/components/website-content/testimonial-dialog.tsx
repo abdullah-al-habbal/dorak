@@ -17,7 +17,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useSaveTestimonial } from "@/hooks/use-website-content";
 import { localeText } from "@/lib/website-content.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { ContentSection, Testimonial } from "@/types/website-content.type";
+import type { ContentSection, Testimonial } from "@/types/platform/website-content.type";
 
 const DEFAULT_RATING = 5;
 

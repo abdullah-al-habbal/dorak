@@ -1,7 +1,7 @@
 import { VenueUniverse } from "@/enums/venue-universe.enum";
-import type { CatalogCategoryPayload } from "@/interfaces/catalog-category-payload.interface";
+import type { CatalogCategoryPayload } from "@/interfaces/services/catalog-category-payload.interface";
 import type { CatalogCategoryFormValues } from "@/schemas/catalog-category-form.zod";
-import type { AdminCatalogCategory } from "@/types/admin-catalog-category.type";
+import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 type Translatable = AdminCatalogCategory["name"] | AdminCatalogCategory["description"];
 

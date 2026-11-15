@@ -3,7 +3,7 @@
 import { useContext } from "react";
 
 import { OverlayContext } from "@/components/overlays/overlay-context";
-import type { OverlayContextValue } from "@/interfaces/overlay-context-value.interface";
+import type { OverlayContextValue } from "@/interfaces/ui/overlay-context-value.interface";
 
 export function useOverlay(): OverlayContextValue {
   const value = useContext(OverlayContext);

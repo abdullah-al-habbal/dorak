@@ -3,8 +3,8 @@ import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { adminPayoutSchema } from "@/schemas/admin-payout.zod";
 import { commissionEntryListSchema } from "@/schemas/commission.zod";
 import { apiRequest, apiRequestWithMeta } from "@/services/api/core/client";
-import type { AdminPayout } from "@/types/admin-payout.type";
-import type { CommissionEntryPage } from "@/types/commission.type";
+import type { AdminPayout } from "@/types/earnings/admin-payout.type";
+import type { CommissionEntryPage } from "@/types/earnings/commission.type";
 
 /** The backend sets the page size from the platform pagination setting. */
 const ASSUMED_PER_PAGE = 15;

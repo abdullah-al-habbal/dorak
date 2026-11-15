@@ -3,7 +3,7 @@
 import { useContext } from "react";
 
 import { SidebarContext } from "@/components/providers/sidebar-context";
-import type { SidebarContextValue } from "@/interfaces/sidebar-context-value.interface";
+import type { SidebarContextValue } from "@/interfaces/ui/sidebar-context-value.interface";
 
 export function useSidebar(): SidebarContextValue {
   const value = useContext(SidebarContext);

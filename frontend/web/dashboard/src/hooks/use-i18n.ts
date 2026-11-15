@@ -3,7 +3,7 @@
 import { useContext } from "react";
 
 import { I18nContext } from "@/components/providers/i18n-context";
-import type { I18nContextValue } from "@/interfaces/i18n-context-value.interface";
+import type { I18nContextValue } from "@/interfaces/ui/i18n-context-value.interface";
 
 export function useI18n(): I18nContextValue {
   const value = useContext(I18nContext);

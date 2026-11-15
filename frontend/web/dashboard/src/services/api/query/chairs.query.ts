@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { chairOptionListSchema } from "@/schemas/chair.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { ChairOption } from "@/types/chair-option.type";
+import type { ChairOption } from "@/types/chairs/chair-option.type";
 
 const MAX_PER_PAGE = 100;
 

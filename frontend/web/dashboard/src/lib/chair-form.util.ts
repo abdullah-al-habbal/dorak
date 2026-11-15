@@ -1,9 +1,9 @@
 import { DEFAULT_CHAIR_LAYOUT } from "@/config/chair-layout.constant";
 import { ChairStatus } from "@/enums/chair-status.enum";
 import { FloorZone } from "@/enums/floor-zone.enum";
-import type { ChairLayoutPayload, ChairPayload } from "@/interfaces/chair-payload.interface";
+import type { ChairLayoutPayload, ChairPayload } from "@/interfaces/chairs/chair-payload.interface";
 import type { ChairFormValues } from "@/schemas/chair-form.zod";
-import type { Chair } from "@/types/chair.type";
+import type { Chair } from "@/types/chairs/chair.type";
 
 export function emptyChairForm(branchId: string): ChairFormValues {
   return { label: "", floor_zone: FloorZone.Shared, status: ChairStatus.Available, branch_id: branchId };

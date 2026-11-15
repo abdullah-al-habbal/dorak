@@ -2,8 +2,8 @@ import { z } from "zod";
 
 import { settingIssues } from "@/lib/platform-settings.util";
 import type { SettingFormValues } from "@/lib/platform-settings.util";
-import type { Dictionary } from "@/types/dictionary.type";
-import type { PlatformSetting } from "@/types/platform-setting.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
+import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 type SettingsValidation = Dictionary["settings"]["validation"];
 

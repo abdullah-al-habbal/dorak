@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 
 import { useUrlState } from "@/hooks/use-url-state";
 import { rangeFromParams, rangeToParams } from "@/lib/earnings-range.util";
-import type { EarningsRange } from "@/types/earnings-range.type";
+import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 /** The URL holds the period, so a link or reload reproduces the screen. */
 export function useEarningsRange(): { range: EarningsRange; today: Date; setRange: (range: EarningsRange) => void } {

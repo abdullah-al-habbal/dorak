@@ -20,7 +20,7 @@ import { useOverlay } from "@/hooks/use-overlay";
 import { useReviewFilters } from "@/hooks/use-review-filters";
 import { useReviews } from "@/hooks/use-reviews";
 import { useAuthStore } from "@/store/auth.store";
-import type { Review } from "@/types/review.type";
+import type { Review } from "@/types/clients/review.type";
 
 export function ReviewsScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

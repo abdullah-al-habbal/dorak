@@ -1,8 +1,8 @@
 import { minorUnitsToInput, parseMinorUnits } from "@/lib/money.util";
 import { parseDuration } from "@/lib/duration.util";
-import type { ServicePayload } from "@/interfaces/service-payload.interface";
+import type { ServicePayload } from "@/interfaces/services/service-payload.interface";
 import type { ServiceFormValues } from "@/schemas/service-form.zod";
-import type { Service } from "@/types/service.type";
+import type { Service } from "@/types/services/service.type";
 
 const BRAND = "brand";
 

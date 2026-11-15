@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { Weekday } from "@/enums/weekday.enum";
 import { formatClock, scheduleWeek } from "@/lib/schedule-hours.util";
-import type { ScheduleHoursRow } from "@/types/schedule-hours-row.type";
+import type { ScheduleHoursRow } from "@/types/bookings/schedule-hours-row.type";
 
 const row = (day_of_week: number, start_time: string, end_time: string, is_active = true): ScheduleHoursRow => ({
   id: `${day_of_week}-${start_time}`,

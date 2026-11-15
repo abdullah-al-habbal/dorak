@@ -5,12 +5,12 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { BarberStatus } from "@/enums/barber-status.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutation";
-import type { OptimisticToggleContext } from "@/interfaces/optimistic-toggle-context.interface";
+import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggle-context.interface";
 import { withStylistStatus } from "@/lib/stylist-cache.util";
 import { stylistKeys } from "@/lib/query-keys/stylists/stylist-keys";
 import { setStylistActive } from "@/services/api/mutation/toggle-stylist.mutation";
-import type { StylistPage } from "@/types/stylist-page.type";
-import type { Stylist } from "@/types/stylist.type";
+import type { StylistPage } from "@/types/stylists/stylist-page.type";
+import type { Stylist } from "@/types/stylists/stylist.type";
 
 interface ToggleVariables {
   id: string;

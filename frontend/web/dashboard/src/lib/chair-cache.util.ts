@@ -1,5 +1,5 @@
 import type { ChairStatus } from "@/enums/chair-status.enum";
-import type { ChairPage } from "@/types/chair-page.type";
+import type { ChairPage } from "@/types/chairs/chair-page.type";
 
 /** Returns the page with one chair's stored status replaced; untouched pages are returned as-is. */
 export function withChairStatus(page: ChairPage | undefined, id: string, status: ChairStatus): ChairPage | undefined {

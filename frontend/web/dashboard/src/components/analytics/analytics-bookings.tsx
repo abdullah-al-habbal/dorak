@@ -4,11 +4,11 @@ import { MeterRow } from "@/components/analytics/meter-row";
 import { BarChart } from "@/components/earnings/bar-chart";
 import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { BarChartDatum } from "@/interfaces/bar-chart-datum.interface";
+import type { BarChartDatum } from "@/interfaces/ui/bar-chart-datum.interface";
 import { fillDailyCounts, sumCounts } from "@/lib/analytics-series.util";
 import { formatCount, formatShortDate } from "@/lib/earnings-format.util";
-import type { EarningsRange } from "@/types/earnings-range.type";
-import type { PlatformAnalytics } from "@/types/platform-analytics.type";
+import type { EarningsRange } from "@/types/earnings/earnings-range.type";
+import type { PlatformAnalytics } from "@/types/platform/platform-analytics.type";
 
 interface AnalyticsBookingsProps {
   analytics: PlatformAnalytics;

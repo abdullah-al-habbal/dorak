@@ -1,4 +1,4 @@
-import type { MappedFormError } from "@/interfaces/mapped-form-error.interface";
+import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
 import { mapApiFormError } from "@/lib/map-api-form-error.util";
 
 const API_TO_FORM_FIELD: Record<string, string> = { price_amount_minor: "price" };

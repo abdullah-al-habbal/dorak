@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { BarberStatus } from "@/enums/barber-status.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { Stylist } from "@/types/stylist.type";
+import type { Stylist } from "@/types/stylists/stylist.type";
 
 interface StylistActiveSwitchProps {
   stylist: Stylist;

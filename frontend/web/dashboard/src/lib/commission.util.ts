@@ -1,6 +1,6 @@
 import { BPS_PER_PERCENT } from "@/config/commission.constant";
 import { formatPrice } from "@/lib/booking-format.util";
-import type { CommissionEntry } from "@/types/commission.type";
+import type { CommissionEntry } from "@/types/earnings/commission.type";
 
 /** "2.5" becomes 250 basis points; null when it isn't a percent between 0.01 and 100 with at most two decimals. */
 export function percentToBps(text: string): number | null {

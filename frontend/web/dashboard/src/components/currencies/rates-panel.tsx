@@ -14,7 +14,7 @@ import { useDeleteExchangeRate } from "@/hooks/use-delete-exchange-rate";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { currentRateIds } from "@/lib/exchange-rate.util";
-import type { ExchangeRate } from "@/types/currency-admin.type";
+import type { ExchangeRate } from "@/types/platform/currency-admin.type";
 
 /** The rate history, newest first. The rate the converter uses for each pair is marked "current". */
 export function RatesPanel(): JSX.Element {

@@ -4,8 +4,8 @@ import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { reviewModerationQueryString } from "@/lib/review-moderation-filters.util";
 import { adminReviewListSchema } from "@/schemas/admin-review.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { AdminReviewPage } from "@/types/admin-review-page.type";
-import type { ReviewModerationFilters } from "@/types/review-moderation-filters.type";
+import type { AdminReviewPage } from "@/types/clients/admin-review-page.type";
+import type { ReviewModerationFilters } from "@/types/clients/review-moderation-filters.type";
 
 export async function fetchAdminReviewPage(filters: ReviewModerationFilters): Promise<AdminReviewPage> {
   const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/admin/reviews?${reviewModerationQueryString(filters)}`, { schema: adminReviewListSchema });

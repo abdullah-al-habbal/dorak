@@ -17,7 +17,7 @@ import { useConfirmApproveBarber } from "@/hooks/use-confirm-approve-barber";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { hasBarberApprovalFilters } from "@/lib/barber-approval-filters.util";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Barber review is platform-admin only; the proxy and the backend refuse everyone else too. */
 export function BarberApprovalsScreen({ actor }: { actor: AuthActor }): JSX.Element {

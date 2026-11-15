@@ -6,7 +6,7 @@ import { BrandStatusBadge } from "@/components/admin-brands/brand-status-badge";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 function Field({ label, children }: { label: string; children: ReactNode }): JSX.Element {
   return (

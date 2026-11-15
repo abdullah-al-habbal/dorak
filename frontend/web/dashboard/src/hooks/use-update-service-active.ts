@@ -4,12 +4,12 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutation";
-import type { OptimisticToggleContext } from "@/interfaces/optimistic-toggle-context.interface";
+import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggle-context.interface";
 import { activeTogglePayload } from "@/lib/service-form.util";
 import { withServiceActive } from "@/lib/service-cache.util";
 import { serviceKeys } from "@/lib/query-keys/services/service-keys";
 import { updateService } from "@/services/api/mutation/save-service.mutation";
-import type { Service } from "@/types/service.type";
+import type { Service } from "@/types/services/service.type";
 
 interface ToggleVariables {
   service: Service;

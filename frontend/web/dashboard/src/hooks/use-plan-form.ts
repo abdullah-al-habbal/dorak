@@ -14,7 +14,7 @@ import { emptyPlanForm, formToPlanPayload, planToForm } from "@/lib/plan-form.ut
 import { mapPlanSaveError } from "@/lib/plan-form-error.util";
 import { createPlanSchema } from "@/schemas/plan-form.zod";
 import type { PlanFormValues } from "@/schemas/plan-form.zod";
-import type { Plan } from "@/types/plan.type";
+import type { Plan } from "@/types/plans/plan.type";
 
 interface PlanFormController {
   form: UseFormReturn<PlanFormValues>;

@@ -1,5 +1,5 @@
 import { pageInfoSchema } from "@/schemas/page-info.zod";
-import type { PageInfo } from "@/types/page-info.type";
+import type { PageInfo } from "@/types/core/page-info.type";
 
 const SINGLE_PAGE = 1;
 

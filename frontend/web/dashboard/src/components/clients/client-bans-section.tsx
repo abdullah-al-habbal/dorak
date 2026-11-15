@@ -3,7 +3,7 @@
 import type { JSX } from "react";
 
 import { useI18n } from "@/hooks/use-i18n";
-import type { ClientBan } from "@/types/client-ban.type";
+import type { ClientBan } from "@/types/clients/client-ban.type";
 
 /** Every ban the client has had, newest first, with who set it and when it ended. */
 export function ClientBansSection({ bans }: { bans: readonly ClientBan[] | undefined }): JSX.Element {

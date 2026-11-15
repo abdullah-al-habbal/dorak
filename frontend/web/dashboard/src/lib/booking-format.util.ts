@@ -1,4 +1,4 @@
-import type { Booking } from "@/types/booking.type";
+import type { Booking } from "@/types/bookings/booking.type";
 
 type Localized = string | Record<string, string | null> | null | undefined;
 

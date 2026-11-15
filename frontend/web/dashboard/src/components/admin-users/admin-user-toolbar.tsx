@@ -6,7 +6,7 @@ import { SearchInput } from "@/components/common/search-input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { AdminUserState } from "@/enums/admin-user-state.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { AdminUserFilters } from "@/types/admin-user-filters.type";
+import type { AdminUserFilters } from "@/types/platform/admin-user-filters.type";
 
 interface AdminUserToolbarProps {
   filters: AdminUserFilters;

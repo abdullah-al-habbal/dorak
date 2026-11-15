@@ -1,6 +1,6 @@
 import { DEFAULT_KEY_ID, BACKEND_DEFAULT_URL } from "@/config/backend.constant";
 import { sessionKeyRingSchema } from "@/schemas/session-keys.zod";
-import type { SessionKeyRing } from "@/types/session-key-ring.type";
+import type { SessionKeyRing } from "@/types/core/session-key-ring.type";
 
 export function readBackendUrl(): string {
   const url = process.env.BACKEND_API_URL?.trim();

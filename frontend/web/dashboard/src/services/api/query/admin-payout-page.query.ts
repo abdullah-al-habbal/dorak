@@ -3,8 +3,8 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { adminPayoutListSchema } from "@/schemas/admin-payout.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { AdminPayoutPage } from "@/types/admin-payout-page.type";
-import type { PayoutFilters } from "@/types/payout-filters.type";
+import type { AdminPayoutPage } from "@/types/earnings/admin-payout-page.type";
+import type { PayoutFilters } from "@/types/earnings/payout-filters.type";
 
 export async function fetchAdminPayoutPage(filters: PayoutFilters): Promise<AdminPayoutPage> {
   const params = new URLSearchParams({ per_page: String(PAYOUT_PER_PAGE), page: String(filters.page) });

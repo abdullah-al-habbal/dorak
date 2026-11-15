@@ -6,7 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { MeProfile } from "@/types/me-profile.type";
+import type { MeProfile } from "@/types/account/me-profile.type";
 
 export function PortalShell({ actor, profile, children }: { actor: AuthActor; profile: MeProfile; children: ReactNode }) {
   return (

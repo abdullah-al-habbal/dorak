@@ -15,7 +15,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useRejectBarber } from "@/hooks/use-reject-barber";
 import { localizedText } from "@/lib/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberRejectDialogProps {
   barber: BarberApproval;

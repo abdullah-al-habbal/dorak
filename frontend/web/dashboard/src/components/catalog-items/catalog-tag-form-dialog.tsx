@@ -14,7 +14,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useDeleteCatalogTag, useSaveCatalogTag } from "@/hooks/use-catalog-admin";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
-import type { CatalogTag } from "@/types/catalog-item.type";
+import type { CatalogTag } from "@/types/services/catalog-item.type";
 
 function pair(value: unknown): { en: string; ar: string } {
   const source = typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};

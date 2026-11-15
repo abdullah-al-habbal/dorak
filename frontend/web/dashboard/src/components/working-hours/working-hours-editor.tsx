@@ -11,8 +11,8 @@ import type { Weekday } from "@/enums/weekday.enum";
 import { useI18n } from "@/hooks/use-i18n";
 import { useLeaveWarning } from "@/hooks/use-leave-warning";
 import { useSaveOpeningHours } from "@/hooks/use-save-opening-hours";
-import type { OpeningHoursDay } from "@/interfaces/opening-hours-day.interface";
-import type { Shift } from "@/interfaces/shift.interface";
+import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
+import type { Shift } from "@/interfaces/hours/shift.interface";
 import { formErrorMessage } from "@/lib/map-api-form-error.util";
 import {
   NO_ISSUES,
@@ -28,7 +28,7 @@ import {
   weekFromServer,
   weekToPayload,
 } from "@/lib/opening-hours.util";
-import type { OpeningHoursWeek } from "@/types/opening-hours-week.type";
+import type { OpeningHoursWeek } from "@/types/hours/opening-hours-week.type";
 
 interface WorkingHoursEditorProps {
   branchId: string;

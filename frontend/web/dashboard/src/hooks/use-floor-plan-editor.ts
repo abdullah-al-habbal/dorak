@@ -4,11 +4,11 @@ import { useRef, useState } from "react";
 
 import type { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
 import type { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
-import type { ChairLayoutPayload } from "@/interfaces/chair-payload.interface";
-import type { FloorDecorationDraft, FloorPlanDraft, FloorSelection } from "@/interfaces/floor-plan-draft.interface";
+import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
+import type { FloorDecorationDraft, FloorPlanDraft, FloorSelection } from "@/interfaces/chairs/floor-plan-draft.interface";
 import { clampChair, clampDecoration, stageSize } from "@/lib/floor-plan-geometry.util";
 import { isDirty, newDecoration, planToDraft } from "@/lib/floor-plan-draft.util";
-import type { FloorCanvas, FloorPlan } from "@/types/floor-plan.type";
+import type { FloorCanvas, FloorPlan } from "@/types/chairs/floor-plan.type";
 
 export interface FloorPlanEditor {
   draft: FloorPlanDraft;

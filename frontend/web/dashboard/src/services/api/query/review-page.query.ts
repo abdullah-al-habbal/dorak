@@ -3,7 +3,7 @@ import { DASHBOARD_API } from "@/config/routes.constant";
 import { resolvePageInfo } from "@/lib/resolve-page-info.util";
 import { reviewListSchema, reviewSummarySchema } from "@/schemas/review.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { ReviewPage } from "@/types/review-page.type";
+import type { ReviewPage } from "@/types/clients/review-page.type";
 
 const EMPTY_SUMMARY = { average: null, count: 0, distribution: {} };
 

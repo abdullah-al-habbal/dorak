@@ -1,4 +1,4 @@
-import type { ApiErrorShape } from "@/interfaces/api-error-shape.interface";
+import type { ApiErrorShape } from "@/interfaces/core/api-error-shape.interface";
 
 export class ApiClientError extends Error {
   readonly status: number;

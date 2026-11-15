@@ -14,7 +14,7 @@ import { useConfirmUnbanClient } from "@/hooks/use-confirm-unban-client";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
-import type { AdminClient } from "@/types/admin-client.type";
+import type { AdminClient } from "@/types/clients/admin-client.type";
 
 interface ClientDetailDialogProps {
   client: AdminClient;

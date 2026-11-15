@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { PASSWORD_MAX_LENGTH } from "@/config/field-limit.constant";
-import type { ChangePasswordMessages } from "@/interfaces/change-password-messages.interface";
+import type { ChangePasswordMessages } from "@/interfaces/account/change-password-messages.interface";
 import { passwordField } from "@/schemas/fields/password-field.zod";
 import { passwordPairShape, refinePasswordPair } from "@/schemas/fields/password-pair.zod";
 

@@ -5,7 +5,7 @@ import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { FilterChip } from "@/interfaces/filter-chip.interface";
+import type { FilterChip } from "@/interfaces/ui/filter-chip.interface";
 
 interface FilterChipsProps {
   chips: readonly FilterChip[];

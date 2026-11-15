@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, CircleSlashIcon, HourglassIcon, XCircleIcon } from "lucide-react";
 
 import { BarberStatus } from "@/enums/barber-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const BARBER_APPROVAL_PER_PAGE = 10;
 

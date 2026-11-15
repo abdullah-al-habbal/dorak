@@ -7,8 +7,8 @@ import { BookingStatusBadge } from "@/components/bookings/booking-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
 import { useI18n } from "@/hooks/use-i18n";
 import { bookingTotal, formatDay, formatTime, localizedText, serviceSummary } from "@/lib/booking-format.util";
-import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
-import type { Booking } from "@/types/booking.type";
+import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
+import type { Booking } from "@/types/bookings/booking.type";
 
 interface BookingListProps {
   bookings: readonly Booking[];

@@ -18,7 +18,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { useDeletePaymentGateway, useSavePaymentGateway } from "@/hooks/use-payment-gateways";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { PaymentGateway } from "@/types/payment-gateway.type";
+import type { PaymentGateway } from "@/types/platform/payment-gateway.type";
 
 interface SettingRow {
   key: string;

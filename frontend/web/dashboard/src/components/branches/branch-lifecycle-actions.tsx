@@ -12,7 +12,7 @@ import { useBranchLifecycle } from "@/hooks/use-branch-lifecycle";
 import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { localizedText } from "@/lib/booking-format.util";
-import type { Branch } from "@/types/branch.type";
+import type { Branch } from "@/types/branches/branch.type";
 
 interface BranchLifecycleActionsProps {
   branch: Branch;

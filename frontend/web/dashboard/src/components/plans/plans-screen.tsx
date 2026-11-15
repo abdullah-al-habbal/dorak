@@ -17,7 +17,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { usePlanFilters } from "@/hooks/use-plan-filters";
 import { usePlans } from "@/hooks/use-plans";
-import type { Plan } from "@/types/plan.type";
+import type { Plan } from "@/types/plans/plan.type";
 
 /** Subscription plans are platform-admin only; the proxy and the backend refuse everyone else too. */
 export function PlansScreen({ actor }: { actor: AuthActor }): JSX.Element {

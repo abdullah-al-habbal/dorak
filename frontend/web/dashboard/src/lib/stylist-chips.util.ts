@@ -1,6 +1,6 @@
-import type { FilterChip } from "@/interfaces/filter-chip.interface";
-import type { StylistFilters } from "@/types/stylist-filters.type";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { FilterChip } from "@/interfaces/ui/filter-chip.interface";
+import type { StylistFilters } from "@/types/stylists/stylist-filters.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 export const STYLIST_CHIP_KEY = { status: "status", chair: "chair", branch: "branch", search: "search" } as const;
 

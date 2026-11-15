@@ -13,7 +13,7 @@ import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import { isInvalidResetLink, isTooManyRequests } from "@/lib/password-reset-error.util";
 import { passwordPairSchema } from "@/schemas/fields/password-pair.zod";
 import { resetPassword } from "@/services/api/mutation/reset-password.mutation";
-import type { PasswordPairValues } from "@/types/password-pair-values.type";
+import type { PasswordPairValues } from "@/types/account/password-pair-values.type";
 
 interface ResetLink {
   actor: AuthActor;

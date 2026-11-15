@@ -17,7 +17,7 @@ import { isoToLocalInput, localInputToUtcIso, toLocalInput } from "@/lib/booking
 import { mapBookingFormError } from "@/lib/booking-form-error.util";
 import { createRescheduleSchema } from "@/schemas/reschedule-form.zod";
 import type { RescheduleFormValues } from "@/schemas/reschedule-form.zod";
-import type { Booking } from "@/types/booking.type";
+import type { Booking } from "@/types/bookings/booking.type";
 
 const START_FIELD = "starts_at";
 const DEFAULT_DURATION_MS = 30 * 60_000;

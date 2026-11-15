@@ -11,7 +11,7 @@ import { useConfirmApproveBrand } from "@/hooks/use-confirm-approve-brand";
 import { useConfirmReactivateBrand } from "@/hooks/use-confirm-reactivate-brand";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useOverlay } from "@/hooks/use-overlay";
-import type { AdminBrand } from "@/types/admin-brand.type";
+import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** What an admin can do with a brand in its current status. Each move opens its own dialog on top of this one. */
 export function BrandDetailActions({ brand }: { brand: AdminBrand }): JSX.Element {

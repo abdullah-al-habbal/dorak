@@ -5,8 +5,8 @@ import { useMemo, useState } from "react";
 
 import { SidebarContext } from "@/components/providers/sidebar-context";
 import { SIDEBAR_COOKIE } from "@/config/cookies.constant";
-import type { SidebarContextValue } from "@/interfaces/sidebar-context-value.interface";
-import type { SidebarProviderProps } from "@/interfaces/sidebar-provider-props.interface";
+import type { SidebarContextValue } from "@/interfaces/ui/sidebar-context-value.interface";
+import type { SidebarProviderProps } from "@/interfaces/ui/sidebar-provider-props.interface";
 import { writeClientCookie } from "@/lib/cookie.util";
 import { serializeSidebarState } from "@/lib/sidebar.util";
 

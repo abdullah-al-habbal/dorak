@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { EMAIL_CODE_LENGTH, EMAIL_MAX_LENGTH, NAME_MAX_LENGTH, PHONE_MAX_LENGTH } from "@/config/field-limit.constant";
 import { BRANCH_NAME_MAX_LENGTH, BRAND_NAME_MAX_LENGTH } from "@/config/register-business.constant";
-import type { PasswordPairMessages } from "@/interfaces/password-pair-messages.interface";
+import type { PasswordPairMessages } from "@/interfaces/account/password-pair-messages.interface";
 import { emailField } from "@/schemas/fields/email-field.zod";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import { phoneField } from "@/schemas/fields/phone-field.zod";

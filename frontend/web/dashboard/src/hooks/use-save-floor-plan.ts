@@ -4,14 +4,14 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import type { FloorPlanDraft } from "@/interfaces/floor-plan-draft.interface";
+import type { FloorPlanDraft } from "@/interfaces/chairs/floor-plan-draft.interface";
 import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
 import { draftToLayoutPayload, movedChairIds } from "@/lib/floor-plan-draft.util";
 import { floorPlanKeys } from "@/lib/query-keys/chairs/floor-plan-keys";
 import { chairPayloadWithLayout } from "@/lib/floor-plan-save.util";
 import { saveFloorPlanLayout } from "@/services/api/mutation/floor-plan.mutation";
 import { updateChair } from "@/services/api/mutation/save-chair.mutation";
-import type { FloorPlan } from "@/types/floor-plan.type";
+import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 
 interface SaveFloorPlanVariables {
   branchId: string;

@@ -1,9 +1,9 @@
 import { EARNINGS_DAYS_PER_WEEK, EARNINGS_MAX_DAILY_BARS } from "@/config/earnings.constant";
 import { addDays, parseDateKey, toDateKey } from "@/lib/booking-date.util";
 import { daysInRange } from "@/lib/earnings-range.util";
-import type { EarningsBucket } from "@/interfaces/earnings-bucket.interface";
-import type { EarningsSeriesPoint } from "@/types/earnings-series-point.type";
-import type { EarningsRange } from "@/types/earnings-range.type";
+import type { EarningsBucket } from "@/interfaces/earnings/earnings-bucket.interface";
+import type { EarningsSeriesPoint } from "@/types/earnings/earnings-series-point.type";
+import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 /** One bucket per day of the range, zero-filled, for one currency. */
 export function dailyBuckets(series: readonly EarningsSeriesPoint[], currency: string, range: EarningsRange): EarningsBucket[] {

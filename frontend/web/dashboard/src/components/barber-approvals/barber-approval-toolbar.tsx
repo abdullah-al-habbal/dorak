@@ -7,7 +7,7 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { BARBER_STATUS_FILTER_ALL } from "@/config/barber-approval.constant";
 import { BarberStatus } from "@/enums/barber-status.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { BarberApprovalFilters } from "@/types/barber-approval-filters.type";
+import type { BarberApprovalFilters } from "@/types/stylists/barber-approval-filters.type";
 
 interface BarberApprovalToolbarProps {
   filters: BarberApprovalFilters;

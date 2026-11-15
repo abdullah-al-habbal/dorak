@@ -16,7 +16,7 @@ import { BrandLifecycleAction } from "@/enums/brand-lifecycle-action.enum";
 import { useBrandLifecycle } from "@/hooks/use-brand-lifecycle";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BrandReasonOverlayRequest } from "@/interfaces/brand-reason-overlay-request.interface";
+import type { BrandReasonOverlayRequest } from "@/interfaces/brands/brand-reason-overlay-request.interface";
 
 interface BrandReasonDialogProps {
   request: BrandReasonOverlayRequest;

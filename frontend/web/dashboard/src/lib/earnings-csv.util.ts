@@ -1,7 +1,7 @@
 import { toCsv } from "@/lib/csv.util";
 import { minorUnitsToInput } from "@/lib/money.util";
-import type { Earnings } from "@/types/earnings.type";
-import type { EarningsRange } from "@/types/earnings-range.type";
+import type { Earnings } from "@/types/earnings/earnings.type";
+import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 export interface EarningsCsvHeaders {
   date: string;

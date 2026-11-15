@@ -4,12 +4,12 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutation";
-import type { OptimisticToggleContext } from "@/interfaces/optimistic-toggle-context.interface";
+import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggle-context.interface";
 import { adminCatalogKeys } from "@/lib/query-keys/services/admin-catalog-keys";
 import { withCategoryActive } from "@/lib/catalog-category-cache.util";
 import { serviceKeys } from "@/lib/query-keys/services/service-keys";
 import { setCatalogCategoryActive } from "@/services/api/mutation/save-catalog-category.mutation";
-import type { AdminCatalogCategory, CatalogSubcategory } from "@/types/admin-catalog-category.type";
+import type { AdminCatalogCategory, CatalogSubcategory } from "@/types/services/admin-catalog-category.type";
 
 interface ToggleVariables {
   id: string;

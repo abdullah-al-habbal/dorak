@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, CircleSlashIcon } from "lucide-react";
 
 import { AdminUserState } from "@/enums/admin-user-state.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 export const ADMIN_USER_PER_PAGE = 10;
 export const ADMIN_USER_MAX_SEARCH = 100;

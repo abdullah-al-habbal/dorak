@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 export const arBranchOversight: Dictionary["branchOversight"] = {
   description: "عرض للقراءة فقط لهذا الفرع لأغراض الدعم. الكراسي والمصففون والخدمات في قوائمها الخاصة مع تصفية بالفرع.",

@@ -7,11 +7,11 @@ import { ServiceActiveSwitch } from "@/components/services/service-active-switch
 import { Badge } from "@/components/ui/badge";
 import { DataTable } from "@/components/ui/table/data-table";
 import { useI18n } from "@/hooks/use-i18n";
-import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
-import type { ServiceGroup } from "@/interfaces/service-group.interface";
+import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
+import type { ServiceGroup } from "@/interfaces/services/service-group.interface";
 import { localizedText } from "@/lib/booking-format.util";
 import { formatDuration, formatServicePrice } from "@/lib/service-format.util";
-import type { Service } from "@/types/service.type";
+import type { Service } from "@/types/services/service.type";
 
 interface ServiceGroupSectionProps {
   group: ServiceGroup;

@@ -6,7 +6,7 @@ import { AccountBanDialog } from "@/components/common/account-ban-dialog";
 import { useBanBarber } from "@/hooks/use-ban-barber";
 import { useI18n } from "@/hooks/use-i18n";
 import { localizedText } from "@/lib/booking-format.util";
-import type { BarberApproval } from "@/types/barber-approval.type";
+import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberBanDialogProps {
   barber: BarberApproval;

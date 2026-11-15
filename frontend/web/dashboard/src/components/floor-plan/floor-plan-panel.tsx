@@ -16,7 +16,7 @@ import { useFloorPlanEditor } from "@/hooks/use-floor-plan-editor";
 import { useI18n } from "@/hooks/use-i18n";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useSaveFloorPlan } from "@/hooks/use-save-floor-plan";
-import type { FloorPlan } from "@/types/floor-plan.type";
+import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 
 interface FloorPlanPanelProps {
   branchId: string | null;

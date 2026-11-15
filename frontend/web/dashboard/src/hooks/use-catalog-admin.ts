@@ -6,13 +6,13 @@ import { useDeleteMutation } from "@/hooks/use-delete-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useListQuery } from "@/hooks/use-list-query";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
-import type { SaveVariables } from "@/interfaces/save-variables.interface";
+import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { adminCatalogKeys } from "@/lib/query-keys/services/admin-catalog-keys";
 import { catalogAdminKeys } from "@/lib/query-keys/services/catalog-admin-keys";
 import { createCatalogItem, createCatalogTag, deleteCatalogItem, deleteCatalogTag, updateCatalogItem, updateCatalogTag } from "@/services/api/mutation/catalog-admin.mutation";
 import type { CatalogItemPayload, CatalogTagPayload } from "@/services/api/mutation/catalog-admin.mutation";
 import { fetchCatalogItemPage, fetchCatalogTags } from "@/services/api/query/catalog-admin.query";
-import type { CatalogItem, CatalogItemPage, CatalogTag } from "@/types/catalog-item.type";
+import type { CatalogItem, CatalogItemPage, CatalogTag } from "@/types/services/catalog-item.type";
 
 export function useCatalogItems(categoryId: string, search: string, page: number): UseQueryResult<CatalogItemPage> {
   return useListQuery(catalogAdminKeys.items(categoryId, search, page), () => fetchCatalogItemPage(categoryId, search, page));

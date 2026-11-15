@@ -2,7 +2,7 @@ import { MutationObserver, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { SaveVariables } from "@/interfaces/save-variables.interface";
+import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
 import { feedbackMutationOptions } from "@/lib/feedback-mutation.util";
 import { saveFeedbackOptions } from "@/lib/save-mutation.util";
 

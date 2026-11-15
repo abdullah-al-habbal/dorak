@@ -23,7 +23,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { buildBookingChips, CLEAR_ALL_PATCH, patchForChip } from "@/lib/booking-chips.util";
 import { localizedText } from "@/lib/booking-format.util";
-import type { Booking } from "@/types/booking.type";
+import type { Booking } from "@/types/bookings/booking.type";
 
 export function BookingsScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

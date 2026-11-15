@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/use-dictionary";
 import type { SettingGroup } from "@/enums/setting-group.enum";
 import type { SettingFormValues } from "@/lib/platform-settings.util";
-import type { PlatformSetting } from "@/types/platform-setting.type";
+import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 interface PlatformSettingGroupProps {
   group: SettingGroup;

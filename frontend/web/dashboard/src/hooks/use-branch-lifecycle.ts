@@ -5,12 +5,12 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { BranchLifecycleAction } from "@/enums/branch-lifecycle-action.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import type { BranchLifecyclePayload } from "@/interfaces/branch-lifecycle-payload.interface";
+import type { BranchLifecyclePayload } from "@/interfaces/branches/branch-lifecycle-payload.interface";
 import { brandHistoryKeys } from "@/lib/query-keys/brands/brand-history-keys";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import { transitionBranch } from "@/services/api/mutation/branch-lifecycle.mutation";
-import type { Branch } from "@/types/branch.type";
+import type { Branch } from "@/types/branches/branch.type";
 
 const TOAST_BY_ACTION = {
   [BranchLifecycleAction.SwitchOn]: "switchedOn",

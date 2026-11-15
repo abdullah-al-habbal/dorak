@@ -4,7 +4,7 @@ import { SettingGroup } from "@/enums/setting-group.enum";
 import { changedSettings, groupSettings, settingIssues, settingsToForm } from "@/lib/platform-settings.util";
 import { mapSettingsSaveError } from "@/lib/platform-settings-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { PlatformSetting } from "@/types/platform-setting.type";
+import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 const setting = (key: string, value: number, extra: Partial<PlatformSetting> = {}): PlatformSetting => ({
   setting_key: key,

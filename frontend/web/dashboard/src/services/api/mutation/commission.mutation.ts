@@ -5,7 +5,7 @@ import { CommissionScope, CommissionType } from "@/enums/commission.enum";
 import { HttpMethod } from "@/enums/http-method.enum";
 import { commissionRuleSchema } from "@/schemas/commission.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { CommissionRule } from "@/types/commission.type";
+import type { CommissionRule } from "@/types/earnings/commission.type";
 
 export interface CommissionRulePayload {
   scope: CommissionScope;

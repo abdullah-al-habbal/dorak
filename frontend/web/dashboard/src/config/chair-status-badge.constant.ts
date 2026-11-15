@@ -1,7 +1,7 @@
 import { CheckCircle2Icon, UserRoundIcon, WrenchIcon } from "lucide-react";
 
 import { ChairStatus } from "@/enums/chair-status.enum";
-import type { BookingStatusStyle } from "@/interfaces/booking-status-style.interface";
+import type { BookingStatusStyle } from "@/interfaces/bookings/booking-status-style.interface";
 
 /** Status is always icon plus text, never colour alone. */
 export const CHAIR_STATUS_STYLE: Record<ChairStatus, BookingStatusStyle> = {

@@ -6,7 +6,7 @@ import type { JSX } from "react";
 import { useI18n } from "@/hooks/use-i18n";
 import { cn } from "@/lib/utils";
 import { notificationEvent } from "@/lib/notification-link.util";
-import type { DashboardNotification } from "@/types/dashboard-notification.type";
+import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
 
 interface NotificationItemProps {
   notification: DashboardNotification;

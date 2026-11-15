@@ -5,7 +5,7 @@ import { activeTogglePayload, emptyServiceForm, formToServicePayload, newService
 import { withServiceActive } from "@/lib/service-cache.util";
 import { formatDuration, formatServicePrice } from "@/lib/service-format.util";
 import { createServiceSchema } from "@/schemas/service-form.zod";
-import type { Service } from "@/types/service.type";
+import type { Service } from "@/types/services/service.type";
 
 const SERVICE: Service = {
   id: "s1", name: "Haircut", name_translations: { en: "Haircut", ar: "قص شعر" }, serviceable_id: "b1", serviceable_type: "brand", catalog_item_id: "c1",

@@ -9,7 +9,7 @@ import { SETTING_GROUP_ORDER } from "@/config/platform-settings.constant";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { usePlatformSettingsForm } from "@/hooks/use-platform-settings-form";
 import { groupSettings } from "@/lib/platform-settings.util";
-import type { PlatformSetting } from "@/types/platform-setting.type";
+import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 export function PlatformSettingsForm({ settings }: { settings: readonly PlatformSetting[] }): JSX.Element {
   const { settings: t } = useDictionary();

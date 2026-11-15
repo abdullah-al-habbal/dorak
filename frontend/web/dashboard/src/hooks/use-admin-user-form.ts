@@ -10,7 +10,7 @@ import { useSaveAdminUser } from "@/hooks/use-save-admin-user";
 import { adminUserToForm, emptyAdminUserForm, formToAdminUserPayload, mapAdminUserSaveError } from "@/lib/admin-user-form.util";
 import { createAdminUserSchema } from "@/schemas/admin-user-form.zod";
 import type { AdminUserFormValues } from "@/schemas/admin-user-form.zod";
-import type { AdminUser } from "@/types/admin-user.type";
+import type { AdminUser } from "@/types/platform/admin-user.type";
 
 interface AdminUserFormController {
   form: UseFormReturn<AdminUserFormValues>;

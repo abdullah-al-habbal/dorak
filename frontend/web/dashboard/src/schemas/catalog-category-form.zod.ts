@@ -3,7 +3,7 @@ import { z } from "zod";
 import { CATALOG_CATEGORY_MAX_DESCRIPTION, CATALOG_CATEGORY_MAX_NAME, CATALOG_CATEGORY_MAX_SORT_ORDER } from "@/config/admin-catalog.constant";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { nameField } from "@/schemas/fields/name-field.zod";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 type CatalogValidation = Dictionary["adminCatalog"]["form"]["validation"];
 

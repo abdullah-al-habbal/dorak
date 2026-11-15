@@ -1,5 +1,5 @@
 import { ChairShape } from "@/enums/chair-shape.enum";
-import type { ChairLayoutPayload } from "@/interfaces/chair-payload.interface";
+import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
 
 /** Floor-plan placement for a chair created from the dashboard; the mobile layout editor refines it. */
 export const DEFAULT_CHAIR_LAYOUT: ChairLayoutPayload = {

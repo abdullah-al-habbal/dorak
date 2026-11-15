@@ -24,7 +24,7 @@ import { DURATION_PRESETS } from "@/lib/duration.util";
 import { emptyServiceForm, existingServiceOwner, formToServicePayload, newServiceOwner, serviceToForm } from "@/lib/service-form.util";
 import { createServiceSchema } from "@/schemas/service-form.zod";
 import type { ServiceFormValues } from "@/schemas/service-form.zod";
-import type { Service } from "@/types/service.type";
+import type { Service } from "@/types/services/service.type";
 
 interface ServiceFormDialogProps {
   service?: Service;

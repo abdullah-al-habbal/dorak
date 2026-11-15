@@ -21,7 +21,7 @@ import { useOverlay } from "@/hooks/use-overlay";
 import { useSaveJobPosting } from "@/hooks/use-save-job-posting";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { JobPostingBody } from "@/services/api/mutation/job-board.mutation";
-import type { BranchJobPosting } from "@/types/branch-job-posting.type";
+import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
 
 interface JobPostingFormDialogProps {
   branchId: string;

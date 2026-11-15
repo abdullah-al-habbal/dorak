@@ -1,6 +1,6 @@
-import type { FilterChip } from "@/interfaces/filter-chip.interface";
-import type { BranchFilters } from "@/types/branch-filters.type";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { FilterChip } from "@/interfaces/ui/filter-chip.interface";
+import type { BranchFilters } from "@/types/branches/branch-filters.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 export const BRANCH_CHIP_KEY = { status: "status", brand: "brand", search: "search" } as const;
 

@@ -22,7 +22,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useOverlay } from "@/hooks/use-overlay";
 import { buildChairChips, CHAIR_CLEAR_ALL_PATCH, chairPatchForChip } from "@/lib/chair-chips.util";
 import { useAuthStore } from "@/store/auth.store";
-import type { Chair } from "@/types/chair.type";
+import type { Chair } from "@/types/chairs/chair.type";
 
 export function ChairsScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

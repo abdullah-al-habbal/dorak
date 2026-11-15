@@ -5,8 +5,8 @@ import { HttpMethod } from "@/enums/http-method.enum";
 import { branchJobPostingSchema } from "@/schemas/branch-oversight.zod";
 import { jobApplicationSchema } from "@/schemas/job-application.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { BranchJobPosting } from "@/types/branch-job-posting.type";
-import type { JobApplication } from "@/types/job-application.type";
+import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
+import type { JobApplication } from "@/types/jobs/job-application.type";
 
 type Translated = { en: string; ar: string };
 

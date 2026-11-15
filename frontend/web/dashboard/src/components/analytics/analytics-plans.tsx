@@ -4,7 +4,7 @@ import { MeterRow } from "@/components/analytics/meter-row";
 import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { formatCount } from "@/lib/earnings-format.util";
-import type { PlatformAnalytics } from "@/types/platform-analytics.type";
+import type { PlatformAnalytics } from "@/types/platform/platform-analytics.type";
 
 /** Live brand subscriptions (active or past due) per plan. */
 export function AnalyticsPlans({ plans, locale }: { plans: PlatformAnalytics["subscriptions"]["by_plan"]; locale: string }): JSX.Element {

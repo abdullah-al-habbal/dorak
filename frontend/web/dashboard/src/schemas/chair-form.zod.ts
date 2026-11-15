@@ -3,7 +3,7 @@ import { z } from "zod";
 import { CHAIR_MAX_LABEL } from "@/config/chair-layout.constant";
 import { ChairStatus } from "@/enums/chair-status.enum";
 import { FloorZone } from "@/enums/floor-zone.enum";
-import type { Dictionary } from "@/types/dictionary.type";
+import type { Dictionary } from "@/types/core/dictionary.type";
 
 type ChairValidation = Dictionary["chairs"]["form"]["validation"];
 

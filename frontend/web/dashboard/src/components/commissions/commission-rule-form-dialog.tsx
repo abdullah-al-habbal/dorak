@@ -26,7 +26,7 @@ import { bpsToPercent, percentToBps } from "@/lib/commission.util";
 import { minorUnitsToInput, parseMinorUnits } from "@/lib/money.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { CommissionRulePayload } from "@/services/api/mutation/commission.mutation";
-import type { CommissionRule } from "@/types/commission.type";
+import type { CommissionRule } from "@/types/earnings/commission.type";
 
 /** Adds or edits a commission rule: where it applies (all, one brand or one branch) and what it charges (a percent or a flat amount). */
 export function CommissionRuleFormDialog({ rule, onClose }: { rule?: CommissionRule; onClose: () => void }): JSX.Element {

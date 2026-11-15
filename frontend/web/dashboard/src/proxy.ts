@@ -9,7 +9,7 @@ import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
 import { refreshSession } from "@/services/api/auth/refresh";
 import { decideRoute } from "@/services/api/auth/route-policy.util";
-import type { SessionTokens } from "@/interfaces/session-tokens.interface";
+import type { SessionTokens } from "@/interfaces/core/session-tokens.interface";
 
 const NOT_FOUND_PATH = "/_not-found";
 

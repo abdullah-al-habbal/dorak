@@ -1,5 +1,5 @@
 import { SettingKey } from "@/enums/setting-key.enum";
-import type { PlatformSetting } from "@/types/platform-setting.type";
+import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 export type SettingFormValues = Record<string, string>;
 /** What the form reports while a field may still be unset. */

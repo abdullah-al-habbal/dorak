@@ -5,13 +5,13 @@ import { connection } from "next/server";
 import { BACKEND_PATH } from "@/config/backend.constant";
 import { ACCESS_COOKIE, CLAIM_COOKIE } from "@/config/cookies.constant";
 import { HttpMethod } from "@/enums/http-method.enum";
-import type { ServerSession } from "@/interfaces/server-session.interface";
+import type { ServerSession } from "@/interfaces/core/server-session.interface";
 import { meProfileSchema } from "@/schemas/me-profile.zod";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
-import type { MeProfile } from "@/types/me-profile.type";
-import type { SessionClaim } from "@/types/session-claim.type";
+import type { MeProfile } from "@/types/account/me-profile.type";
+import type { SessionClaim } from "@/types/core/session-claim.type";
 
 function profileMatchesClaim(profile: MeProfile, claim: SessionClaim): boolean {
   return (

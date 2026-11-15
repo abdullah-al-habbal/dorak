@@ -8,10 +8,10 @@ import { StylistStatusBadge } from "@/components/stylists/stylist-status-badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DataTable } from "@/components/ui/table/data-table";
 import { useI18n } from "@/hooks/use-i18n";
-import type { DataTableColumn } from "@/interfaces/data-table-column.interface";
+import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import { localizedText } from "@/lib/booking-format.util";
 import { initialsOf } from "@/lib/initials.util";
-import type { Stylist } from "@/types/stylist.type";
+import type { Stylist } from "@/types/stylists/stylist.type";
 
 interface StylistListProps {
   stylists: readonly Stylist[];

@@ -4,9 +4,9 @@ import { accountProfileSchema } from "@/schemas/account-profile.zod";
 import { accountSettingsSchema } from "@/schemas/account-settings.zod";
 import { notificationPreferencesSchema } from "@/schemas/notification-preferences.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { AccountProfile } from "@/types/account-profile.type";
-import type { AccountSettings } from "@/types/account-settings.type";
-import type { NotificationPreferences } from "@/types/notification-preferences.type";
+import type { AccountProfile } from "@/types/account/account-profile.type";
+import type { AccountSettings } from "@/types/account/account-settings.type";
+import type { NotificationPreferences } from "@/types/account/notification-preferences.type";
 
 export async function fetchAccountProfile(): Promise<AccountProfile> {
   return apiRequest(`${DASHBOARD_API}${ACCOUNT_API.profile}`, { schema: accountProfileSchema });

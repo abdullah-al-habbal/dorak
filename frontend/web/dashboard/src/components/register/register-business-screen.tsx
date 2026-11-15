@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { loginRoute } from "@/config/routes.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
-import type { Currency } from "@/types/currency.type";
+import type { Currency } from "@/types/platform/currency.type";
 
 /** The public owner sign-up: details, then the emailed code; an existing client takes the other form instead. */
 export function RegisterBusinessScreen({ currencies }: { currencies: readonly Currency[] }): JSX.Element {
