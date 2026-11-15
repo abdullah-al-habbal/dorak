@@ -29,7 +29,7 @@ declare(strict_types=1);
  * Usage:
  *   php scripts/check_migrations.php [--base=<git-ref>] [--all]
  *
- *   --base=<ref>   compare against this ref (default: origin/dev)
+ *   --base=<ref>   compare against this ref (default: origin/master)
  *   --all          scan every migration in the repo instead of a diff
  *   --require-base fail (exit 2) when the base ref does not exist, instead of silently scanning everything. That
  *                  fallback skips check (b) entirely, so CI must pass this flag.
@@ -196,7 +196,7 @@ function withUncommitted(array $added, array $modified): array
 }
 
 // ── args ────────────────────────────────────────────────────────────────────
-$base = 'origin/dev';
+$base = 'origin/master';
 $all = false;
 $requireBase = false;
 foreach (array_slice($argv, 1) as $arg) {

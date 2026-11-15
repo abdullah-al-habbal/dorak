@@ -37,7 +37,6 @@ Facebook sign-in are unsupported (G9).
 | BG-4 | Public barber resource leaks `email`, `phone`, exact coordinates, `submission_count`, `email_verified_at`. Decided: add a separate public resource (name, bio, rating, rounded location); keep the old fields until both mobile apps ship, then remove. Contract tests pin `email` (`ApiResponseContractTest`). Needs a coordinated mobile release. | backend, mobile | L |
 | BG-6 | Session-claim revocation lives in the cache only; the database expiry of the superseded token (D-05) covers most of it. | backend | S |
 | BG-7 | BFF refresh single-flight is per process; several BFF instances without sticky routing can still race (D-06). | dashboard | M |
-| BG-10 | The migration guard falls back to `--all` because `origin/dev` does not exist (informational). | tooling | S |
 
 ## 3. Missing features
 
