@@ -38,7 +38,6 @@ Facebook sign-in are unsupported (G9).
 | BG-6 | Session-claim revocation lives in the cache only; the database expiry of the superseded token (D-05) covers most of it. | backend | S |
 | BG-7 | BFF refresh single-flight is per process; several BFF instances without sticky routing can still race (D-06). | dashboard | M |
 | BG-8 | Five methods are 41 to 43 lines against the 40-line guide: `CreateBookingEloquentResolver::resolve`, `ReviewClientHandler::handle`, `ExploreRanker::score`, `RecomputeClientVectorsCommand::processEntity` and `::processClient`. | backend | S |
-| BG-9 | `backend/CLAUDE.md` says 22 policy classes; recount (about 33 with S14) and correct. | docs | S |
 | BG-10 | The migration guard falls back to `--all` because `origin/dev` does not exist (informational). | tooling | S |
 
 ## 3. Missing features

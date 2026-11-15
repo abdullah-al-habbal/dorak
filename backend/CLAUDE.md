@@ -21,8 +21,8 @@ Before building, read `docs/02-prd.md` then `docs/feature-index.md` to see what 
   not an authorization check. Any Action that reads or mutates a resource another actor could
   own MUST authorize via a `*Policy` class + `$this->authorize()` / `Gate::allows()` / `->can()`.
   See `.claude/skills/laravel-native-abstractions/SKILL.md` (`references/requests-validation-authorization.md`)
-  before adding or touching one of these paths — the repo has 22 `*Policy` classes (one per
-  module under `modules/*/Policies/`); some older paths still rely on scoped queries only, so
+  before adding or touching one of these paths — the repo has 33 `*Policy` classes (spread across
+  the modules, each under `modules/*/Policies/`); some older paths still rely on scoped queries only, so
   do not copy that pattern into new code.
   Dashboard actions authorize through `Gate::forUser($actor)->authorize('dashboard.<resource>.<ability>', ...)`;
   the abilities are defined in `DashboardServiceProvider` and implemented in `modules/Dashboard/Policies/`.
