@@ -111,5 +111,5 @@ Reviews flag any re-implementation.
   Specs reuse that session; auth specs start signed out. `resetBackend()` re-runs the E2E seeder, which restores
   the baseline (no saved working hours, today's two bookings). When a spec needs other data, extend the seeder.
   Backend `.env` must set `DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE` above the default 5 (the auth specs sign in
-  through the form). `signIn` hides the dev-only Next issue badge, which otherwise covers bottom-anchored
+  through the form); `/owner/brand` has its own counter and follows the same value unless `DASHBOARD_OWNER_BRAND_ATTEMPTS_PER_MINUTE` is set. `signIn` hides the dev-only Next issue badge, which otherwise covers bottom-anchored
   controls on phones.

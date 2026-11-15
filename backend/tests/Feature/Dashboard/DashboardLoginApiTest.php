@@ -99,4 +99,38 @@ describe('Dashboard login throttle', function (): void {
 
         $this->postJson('/api/v1/dashboard/login', $payload)->assertStatus(429);
     });
+
+    it('counts sign-ins and owner brand attempts separately', function (): void {
+        $login = ['actor_type' => 'branch', 'email' => 'nobody@example.test', 'password' => 'wrong'];
+        $brand = ['email' => 'nobody@example.test', 'password' => 'wrong'];
+
+        foreach (range(1, 5) as $attempt) {
+            $this->postJson('/api/v1/dashboard/login', $login)->assertStatus(401);
+        }
+        $this->postJson('/api/v1/dashboard/login', $login)->assertStatus(429);
+
+        expect($this->postJson('/api/v1/dashboard/owner/brand', $brand)->status())->not->toBe(429);
+
+    });
+
+    it('does not let owner brand attempts spend the sign-in budget', function (): void {
+        $login = ['actor_type' => 'branch', 'email' => 'nobody@example.test', 'password' => 'wrong'];
+
+        foreach (range(1, 5) as $attempt) {
+            $this->postJson('/api/v1/dashboard/owner/brand', ['email' => 'nobody@example.test', 'password' => 'wrong']);
+        }
+        $this->postJson('/api/v1/dashboard/owner/brand', ['email' => 'nobody@example.test', 'password' => 'wrong'])->assertStatus(429);
+
+        $this->postJson('/api/v1/dashboard/login', $login)->assertStatus(401);
+    });
+
+    it('takes the owner brand budget from its own setting, falling back to the login one', function (): void {
+        expect(config('dashboard.dashboard.owner_brand_attempts_per_minute'))->toBe(5);
+
+        config(['dashboard.dashboard.owner_brand_attempts_per_minute' => 2]);
+        $brand = ['email' => 'nobody@example.test', 'password' => 'wrong'];
+        $this->postJson('/api/v1/dashboard/owner/brand', $brand);
+        $this->postJson('/api/v1/dashboard/owner/brand', $brand);
+        $this->postJson('/api/v1/dashboard/owner/brand', $brand)->assertStatus(429);
+    });
 });

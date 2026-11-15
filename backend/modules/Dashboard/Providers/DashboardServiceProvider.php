@@ -15,6 +15,7 @@ use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Core\Providers\BaseModuleServiceProvider;
 use Modules\Dashboard\Console\Commands\PurgeUnverifiedSignupsCommand;
 use Modules\Dashboard\Constants\DashboardBarberLookupConstants;
+use Modules\Dashboard\Constants\DashboardLoginConstants;
 use Modules\Dashboard\Constants\DashboardPasswordResetConstants;
 use Modules\Dashboard\Constants\OwnerRegistrationConstants;
 use Modules\Dashboard\Policies\BarberSchedulePolicy;
@@ -58,6 +59,7 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
         $this->registerPasswordResetLimiters();
         $this->registerOwnerRegistrationLimiters();
         $this->registerBarberLookupLimiter();
+        $this->registerLoginLimiters();
 
         $this->app->afterResolving(Schedule::class, function (Schedule $schedule): void {
             $schedule->command(OwnerRegistrationConstants::PURGE_COMMAND)
@@ -88,6 +90,13 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
     private function registerBarberLookupLimiter(): void
     {
         RateLimiter::for(DashboardBarberLookupConstants::BARBER_LOOKUP_LIMITER, fn (Request $request): Limit => Limit::perMinute(DashboardBarberLookupConstants::BARBER_LOOKUP_PER_ACCOUNT_PER_MINUTE)->by('barber-lookup:'.$this->accountKey($request)));
+    }
+
+    /** Sign-in and owner brand creation take credentials, so each gets its own per-IP counter and configured budget. */
+    private function registerLoginLimiters(): void
+    {
+        RateLimiter::for(DashboardLoginConstants::LOGIN_LIMITER, fn (Request $request): Limit => Limit::perMinute((int) config('dashboard.dashboard.login_attempts_per_minute'))->by('dashboard-login:'.$request->ip()));
+        RateLimiter::for(DashboardLoginConstants::OWNER_BRAND_LIMITER, fn (Request $request): Limit => Limit::perMinute((int) config('dashboard.dashboard.owner_brand_attempts_per_minute'))->by('dashboard-owner-brand:'.$request->ip()));
     }
 
     /** Throttle middleware runs before the dashboard session middleware, so the account is read straight from the token's guards. */

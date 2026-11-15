@@ -23,7 +23,7 @@ least one Pest file), with depth gaps. The handover's "currency in-use guard" do
 | F-06 | Inconsistent and duplicated authorization (scope-only writes, few gates) | Tech debt, product decision open | Medium | Confirmed | below |
 | F-07 | A D1 manager can edit and delete brand-wide services | Real defect vs decision C | Medium | Confirmed by trace | below |
 | F-08 | All admins have equal privileges including payouts | Decision D (no dual approval) | Info | Resolved by decision | below |
-| F-09 | Login limiter config shared with `/owner/brand`; E2E needs a raised limit in `.env` | Operational risk | Low | Confirmed | below |
+| F-09 | Login limiter config shared with `/owner/brand`; E2E needs a raised limit in `.env` | Operational risk | Low | Confirmed; **fixed by S12, 2026-11-15** | below |
 | F-10 | `/barber-lookup` is an exact email or phone existence oracle | Real defect (privacy), throttled | Low to Medium | Confirmed by trace | below |
 | F-11 | Proxy allow-list comment "admin has no stake" contradicts `decisions-required.md:69` | Documentation inconsistency | Low | Confirmed | below |
 

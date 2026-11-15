@@ -19,7 +19,7 @@ Prerequisites T-01 to T-04 gate the slices as listed in the "Depends on" column.
 | S9 (F-07, decision C) | Owner-only brand-wide service writes; manager branch scope | S2, S3, T-03 | per role matrix | service actions and policy |
 | S10 (F-03) **DONE 2026-11-15** | Shared active-currency validation rule at 7 points | T-03 | retired currency rejected, existing rows readable | `Modules\Currency\Rules\ActiveCurrencyRule` in 7 request classes; `tests/Feature/Currency/ActiveCurrencyRuleTest.php` |
 | S11 (F-04, decision E) | Hide and reject inactive languages in new preference updates | T-03 | list excludes inactive; update rejects; existing users unaffected (kept until they change it); mobile contract checked | `SetLanguageActiveAction`, preference requests, language resources |
-| S12 (F-09) | Separate login limiter names for `/login` and `/owner/brand` | none (T-04 re-check only) | each route has its own limit | `dashboard.php`, config, `AGENTS.md` note |
+| S12 (F-09) **DONE 2026-11-15** | Separate login limiter names for `/login` and `/owner/brand` | none (T-04 re-check only) | each route has its own limit | `dashboard.php`, config, `AGENTS.md` note |
 | S13 (F-10) | Barber lookup oracle mitigation | T-03; answer 6 (resolved) | uniform response for known and unknown people, invite resolved on the server | lookup action, tests |
 | S14 (F-06) | Policies for the remaining scope-only write actions, de-duplicate booking scope query | S2 to S5, T-03; answer 7 (resolved) | each converted action has a policy test; about 15 actions per slice (S14a, S14b, ...) | `modules/Dashboard/Policies`, actions |
 
@@ -72,7 +72,10 @@ The handover work packages (WP-1 depth gaps, WP-9, WP-3 gaps, WP-6, WP-4 and WP-
 slices above and are planned in [07](07-missing-features.md). **Out of scope:** Batch 2 (D-03) and WP-10 / billing / NS-26 / NS-27 (D-04).
 
 ## S1 extension (F-05e to F-05i, decided and implemented 2026-11-15, gates passed, committed locally with S1)
-Decisions D-05 to D-07 ([04](04-decisions-and-open-questions.md) section G); implementation and evidence in [03](03-f05-session-lifecycle.md) section 8. Gates run 2026-11-15: full Pest 2470 passed, Vitest 609 passed, Playwright 441 passed ([03](03-f05-session-lifecycle.md) section 8.6). S10 done (see below). Next slice: S12.
+Decisions D-05 to D-07 ([04](04-decisions-and-open-questions.md) section G); implementation and evidence in [03](03-f05-session-lifecycle.md) section 8. Gates run 2026-11-15: full Pest 2470 passed, Vitest 609 passed, Playwright 441 passed ([03](03-f05-session-lifecycle.md) section 8.6). S10 done (see below). S12 done (see below). Next slice: S2.
+
+## S12 (F-09) done 2026-11-15
+Named limiters `dashboard-login` and `dashboard-owner-brand` (`DashboardLoginConstants`, registered in `DashboardServiceProvider`), each counted per IP under its own cache key. `/login` uses `dashboard.dashboard.login_attempts_per_minute`; `/owner/brand` uses the new `owner_brand_attempts_per_minute` (`DASHBOARD_OWNER_BRAND_ATTEMPTS_PER_MINUTE`, falls back to the login value, so the E2E `.env` override of `DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE` keeps covering both). Tests in `DashboardLoginApiTest`. Gates: see commit.
 
 ## S10 (F-03) done 2026-11-15
 One `ActiveCurrencyRule` (`modules/Currency/Rules`, EN and AR message `currency_not_available`) replaces the bare `exists:currencies,code` in `BarberServiceRequest` (mobile), `ServiceRequest` (dashboard), `SavePlanRequest`, `BrandPayloadRules` (create), `UpdateBrandRequest`, `SaveCommissionRuleRequest` and `UpdateSettingsRequest` (dashboard and the three mobile apps). T-03 consumers: dashboard BFF and mobile apps send the same field names and get the same 422 shape; `GET /currencies` already lists active currencies only, so pickers never offer a retired one. Decision: retired is rejected on every write that carries the field, including an edit that resends the stored retired code (the user re-picks); stored rows, reads and the settings GET stay unchanged (tested). Gates: full Pest 2479 passed, pint clean. No dashboard or mobile code changed, so their gates were not rerun.
