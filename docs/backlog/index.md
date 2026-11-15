@@ -35,7 +35,6 @@ Facebook sign-in are unsupported (G9).
 | ID | Item | Layer | Size |
 |---|---|---|---|
 | BG-4 | Public barber resource leaks `email`, `phone`, exact coordinates, `submission_count`, `email_verified_at`. Decided: add a separate public resource (name, bio, rating, rounded location); keep the old fields until both mobile apps ship, then remove. Contract tests pin `email` (`ApiResponseContractTest`). Needs a coordinated mobile release. | backend, mobile | L |
-| BG-5 | By-contact invite (S13) answers the same body for every case but response time differs between a match and no match. | backend | S |
 | BG-6 | Session-claim revocation lives in the cache only; the database expiry of the superseded token (D-05) covers most of it. | backend | S |
 | BG-7 | BFF refresh single-flight is per process; several BFF instances without sticky routing can still race (D-06). | dashboard | M |
 | BG-8 | Five methods are 41 to 43 lines against the 40-line guide: `CreateBookingEloquentResolver::resolve`, `ReviewClientHandler::handle`, `ExploreRanker::score`, `RecomputeClientVectorsCommand::processEntity` and `::processClient`. | backend | S |

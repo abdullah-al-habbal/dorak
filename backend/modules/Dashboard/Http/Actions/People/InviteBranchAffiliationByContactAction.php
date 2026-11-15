@@ -20,7 +20,8 @@ use Modules\Dashboard\Support\ScopedBranchResolver;
 /**
  * F-10: invites a barber by exact email or phone without revealing whether that person exists. A match
  * that is discoverable and not yet affiliated receives the invitation; every other case does nothing, and
- * the caller gets the same 202 either way.
+ * the caller gets the same 202 either way. The invitation is written after the response is sent (BG-5), so a
+ * match costs the caller no more time than a miss.
  */
 final class InviteBranchAffiliationByContactAction extends BaseApiAction
 {
@@ -41,21 +42,22 @@ final class InviteBranchAffiliationByContactAction extends BaseApiAction
         $barber = BarberModel::query()->discoverable()->where(fn ($match) => $match->where('email', $contact)->orWhere('phone', $contact))->first();
 
         if ($barber !== null) {
-            $this->invite($request, (string) $model->getKey(), (string) $barber->getKey());
+            $command = new InviteAffiliationCommand(
+                branchId: (string) $model->getKey(),
+                barberId: (string) $barber->getKey(),
+                commissionPercent: $request->commissionPercent(),
+                actor: $this->actors->actingAs($request),
+            );
+            app()->terminating(fn () => $this->invite($command));
         }
 
         return $this->success(message: __('dashboard::messages.invitation_requested'), status: 202);
     }
 
-    private function invite(InviteBarberByContactRequest $request, string $branchId, string $barberId): void
+    private function invite(InviteAffiliationCommand $command): void
     {
         try {
-            $affiliation = $this->handler->handle(new InviteAffiliationCommand(
-                branchId: $branchId,
-                barberId: $barberId,
-                commissionPercent: $request->commissionPercent(),
-                actor: $this->actors->actingAs($request),
-            ));
+            $affiliation = $this->handler->handle($command);
         } catch (BarberAlreadyAffiliatedException) {
             return;
         }
