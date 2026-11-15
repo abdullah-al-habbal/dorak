@@ -12,6 +12,7 @@ use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowStylistQuery;
 use Modules\Dashboard\Handlers\Stylists\ShowStylistHandler;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class DeactivateStylistAction extends BaseApiAction
@@ -20,6 +21,7 @@ final class DeactivateStylistAction extends BaseApiAction
         private readonly BrandFeatures $brandFeatures,
         private readonly ShowStylistHandler $showHandler,
         private readonly ToggleActivationHandler $toggleHandler,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(ToggleActivationRequest $request, string $stylist): JsonResponse
@@ -29,6 +31,7 @@ final class DeactivateStylistAction extends BaseApiAction
         $model = $this->showHandler->handle(new ShowStylistQuery($stylist, $actor->scopedBranchIds()));
 
         $this->brandFeatures->ensureBranchManageable($model->managed_by_branch_id);
+        $this->writeGuard->ensureBranchIdWritable($actor, $model->managed_by_branch_id);
         $this->toggleHandler->handle($request->toDeactivateCommand($model->getKey()));
 
         return $this->ok(BarberResource::make($model->refresh()));

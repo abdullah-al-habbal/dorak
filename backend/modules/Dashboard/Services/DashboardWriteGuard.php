@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Services;
 
+use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Exceptions\BranchReadOnlyException;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Exceptions\BrandSuspendedException;
 use Modules\Brand\Services\BrandApprovalGuard;
+use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\Support\DashboardActor;
+use Modules\OfferedService\Enums\ServiceableTypeEnum;
 
 /**
  * The one place that decides whether an operational dashboard write is allowed for the state of the
@@ -43,6 +46,54 @@ final readonly class DashboardWriteGuard
 
         if ($branch->status === BranchStatusEnum::Suspended) {
             throw new BranchReadOnlyException;
+        }
+    }
+
+    /**
+     * Same check for a write addressed by branch id. A null or unknown id passes: the action's own
+     * authorization and lookup keep deciding those cases (403 or 404).
+     *
+     * @throws BrandSuspendedException
+     * @throws BranchReadOnlyException
+     */
+    public function ensureBranchIdWritable(DashboardActor $actor, mixed $branchId): void
+    {
+        if ($actor->isPlatformAdmin() || $branchId === null) {
+            return;
+        }
+
+        $branch = BranchModel::query()->find($branchId);
+        if ($branch instanceof BranchModel) {
+            $this->ensureBranchWritable($actor, $branch);
+        }
+    }
+
+    /** For a write addressed by chair (stylist assignment): the chair's branch decides. */
+    public function ensureChairWritable(DashboardActor $actor, mixed $chairId): void
+    {
+        if ($chairId === null) {
+            return;
+        }
+
+        $this->ensureBranchIdWritable($actor, ChairModel::query()->whereKey($chairId)->value('branch_id'));
+    }
+
+    /**
+     * For an offered service: a brand service follows the brand, a barber service follows the branch
+     * that manages the barber (an independent barber has none, so nothing blocks it).
+     */
+    public function ensureServiceableWritable(DashboardActor $actor, mixed $type, mixed $id): void
+    {
+        $value = $type instanceof ServiceableTypeEnum ? $type->value : $type;
+
+        if ($value === ServiceableTypeEnum::Brand->value) {
+            $this->ensureBrandWritable($actor, $id);
+
+            return;
+        }
+
+        if ($value === ServiceableTypeEnum::Barber->value && $id !== null) {
+            $this->ensureBranchIdWritable($actor, BarberModel::query()->whereKey($id)->value('managed_by_branch_id'));
         }
     }
 }

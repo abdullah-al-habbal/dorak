@@ -11,6 +11,7 @@ use Modules\Branch\Services\BranchHours;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Http\Requests\Business\UpdateBranchOpeningHoursRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateBranchOpeningHoursAction extends BaseApiAction
@@ -18,6 +19,7 @@ final class UpdateBranchOpeningHoursAction extends BaseApiAction
     public function __construct(
         private readonly BrandFeatures $brandFeatures,
         private readonly BranchHours $hours,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(UpdateBranchOpeningHoursRequest $request, BranchModel $branch): JsonResponse
@@ -27,6 +29,7 @@ final class UpdateBranchOpeningHoursAction extends BaseApiAction
         $branchId = (string) $branch->getKey();
         $this->brandFeatures->ensureBranchManageable($branchId);
         Gate::forUser($actor)->authorize('dashboard.branch.updateHours', $branch);
+        $this->writeGuard->ensureBranchWritable($actor, $branch);
 
         $this->hours->replaceWeek($branch, $request->validated('hours'));
 

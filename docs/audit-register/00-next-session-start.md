@@ -42,4 +42,4 @@ Stop and report on a failed gate, an undecided question or a conflict with a dec
 - Handover work packages (WP-1, WP-3, WP-6, WP-4/5, WP-8b, WP-9, WP-2, WP-11) come after the slices; see [07](07-missing-features.md).
 
 ## F-05 final review (2026-11-15)
-Audit: [03](03-f05-session-lifecycle.md) section 7. Fixes D-05 to D-07 implemented (section 8) and verified (section 8.6), committed locally. **S10** (F-03) done and committed locally 2026-11-15. S12 (F-09) and S2 (write guard foundation) done 2026-11-15. **Next slice: S3** (apply the guard to setup writes; remove its actions from `DashboardWriteExemptions::PENDING`).
+Audit: [03](03-f05-session-lifecycle.md) section 7. Fixes D-05 to D-07 implemented (section 8) and verified (section 8.6), committed locally. **S10** (F-03) done and committed locally 2026-11-15. S12 (F-09) and S2 (write guard foundation) done 2026-11-15. S3 (setup writes) done 2026-11-15. **Next slice: S4** (bookings; remove its actions from `DashboardWriteExemptions::PENDING`).

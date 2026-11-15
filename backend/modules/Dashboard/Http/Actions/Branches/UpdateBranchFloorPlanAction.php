@@ -13,6 +13,7 @@ use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Query\ShowBranchQuery;
 use Modules\Dashboard\Handlers\Branches\ShowBranchHandler;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateBranchFloorPlanAction extends BaseApiAction
@@ -20,6 +21,7 @@ final class UpdateBranchFloorPlanAction extends BaseApiAction
     public function __construct(
         private readonly ShowBranchHandler $handler,
         private readonly BrandFeatures $brandFeatures,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(UpdateFloorPlanConfigurationRequest $request, string $branch): JsonResponse
@@ -29,6 +31,7 @@ final class UpdateBranchFloorPlanAction extends BaseApiAction
         /** @var BranchModel $model */
         $model = $this->handler->handle(new ShowBranchQuery($branch, $actor->scopedBrandIds(), $actor->scopedBranchIds()));
         $this->brandFeatures->ensureBranchManageable($model->getKey());
+        $this->writeGuard->ensureBranchWritable($actor, $model);
 
         $preset = $request->enum('preset', FloorPlanPreset::class);
         $zones = $request->array('zones');

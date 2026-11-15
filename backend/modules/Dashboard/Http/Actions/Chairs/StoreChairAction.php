@@ -12,12 +12,14 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreChairCommand;
 use Modules\Dashboard\Handlers\Chairs\StoreChairHandler;
 use Modules\Dashboard\Http\Requests\Business\ChairRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class StoreChairAction extends BaseApiAction
 {
     public function __construct(
-        private readonly BrandFeatures $brandFeatures, private readonly StoreChairHandler $handler) {}
+        private readonly BrandFeatures $brandFeatures, private readonly StoreChairHandler $handler,
+        private readonly DashboardWriteGuard $writeGuard) {}
 
     public function __invoke(ChairRequest $request): JsonResponse
     {
@@ -27,6 +29,7 @@ final class StoreChairAction extends BaseApiAction
 
         Gate::forUser($actor)->authorize('dashboard.chair.create', $attributes['branch_id']);
         $this->brandFeatures->ensureBranchManageable($attributes['branch_id']);
+        $this->writeGuard->ensureBranchIdWritable($actor, $attributes['branch_id']);
 
         $chair = $this->handler->handle(new StoreChairCommand(
             $attributes,

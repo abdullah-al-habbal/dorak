@@ -12,6 +12,7 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreStylistCommand;
 use Modules\Dashboard\Handlers\Stylists\StoreStylistHandler;
 use Modules\Dashboard\Http\Requests\Business\StoreStylistRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class StoreStylistAction extends BaseApiAction
@@ -19,7 +20,8 @@ final class StoreStylistAction extends BaseApiAction
     public function __construct(
         private readonly BrandFeatures $brandFeatures,
         private readonly BrandApprovalGuard $approvals,
-        private readonly StoreStylistHandler $handler) {}
+        private readonly StoreStylistHandler $handler,
+        private readonly DashboardWriteGuard $writeGuard) {}
 
     public function __invoke(StoreStylistRequest $request): JsonResponse
     {
@@ -31,6 +33,7 @@ final class StoreStylistAction extends BaseApiAction
             return $this->unprocessable(__('dashboard::messages.assign_branch_chair'));
         }
 
+        $this->writeGuard->ensureChairWritable($actor, $attributes['chair_id'] ?? null);
         $this->approvals->ensureChairBrandApproved($actor, $attributes['chair_id'] ?? null);
         $this->brandFeatures->ensureChairBranchManageable($attributes['chair_id'] ?? null);
 

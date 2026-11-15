@@ -15,12 +15,14 @@ use Modules\Dashboard\CQRS\Command\UpdateBranchCommand;
 use Modules\Dashboard\Eloquent\Resolvers\Branches\BranchLifecycleConflictException;
 use Modules\Dashboard\Handlers\Branches\UpdateBranchHandler;
 use Modules\Dashboard\Http\Requests\Business\UpdateBranchRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateBranchAction extends BaseApiAction
 {
     public function __construct(
-        private readonly BrandFeatures $brandFeatures, private readonly UpdateBranchHandler $handler) {}
+        private readonly BrandFeatures $brandFeatures, private readonly UpdateBranchHandler $handler,
+        private readonly DashboardWriteGuard $writeGuard) {}
 
     public function __invoke(UpdateBranchRequest $request, BranchModel $branch): JsonResponse
     {
@@ -33,6 +35,8 @@ final class UpdateBranchAction extends BaseApiAction
         $branchId = (string) $branchId;
         $this->brandFeatures->ensureBranchManageable($branchId);
         Gate::forUser($actor)->authorize('dashboard.branch.update', [$branch, $request->validated('brand_id')]);
+        $this->writeGuard->ensureBranchWritable($actor, $branch);
+        $this->writeGuard->ensureBrandWritable($actor, $request->validated('brand_id'));
 
         try {
             $updatedBranch = $this->handler->handle($branch, new UpdateBranchCommand($branchId, $request->validated()));

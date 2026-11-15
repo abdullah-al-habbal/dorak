@@ -13,6 +13,7 @@ use Modules\Dashboard\CQRS\Query\ShowStylistQuery;
 use Modules\Dashboard\Handlers\Stylists\ShowStylistHandler;
 use Modules\Dashboard\Handlers\Stylists\UpdateStylistHandler;
 use Modules\Dashboard\Http\Requests\Business\UpdateStylistRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateStylistAction extends BaseApiAction
@@ -21,6 +22,7 @@ final class UpdateStylistAction extends BaseApiAction
         private readonly BrandFeatures $brandFeatures,
         private readonly ShowStylistHandler $showHandler,
         private readonly UpdateStylistHandler $updateHandler,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(UpdateStylistRequest $request, string $stylist): JsonResponse
@@ -32,6 +34,8 @@ final class UpdateStylistAction extends BaseApiAction
 
         $this->brandFeatures->ensureBranchManageable($model->managed_by_branch_id);
         $this->brandFeatures->ensureChairBranchManageable($request->validated('chair_id'));
+        $this->writeGuard->ensureBranchIdWritable($actor, $model->managed_by_branch_id);
+        $this->writeGuard->ensureChairWritable($actor, $request->validated('chair_id'));
 
         return $this->updated(BarberResource::make($this->updateHandler->handle(
             $model,

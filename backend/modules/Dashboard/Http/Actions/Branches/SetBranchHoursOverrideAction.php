@@ -23,7 +23,7 @@ final class SetBranchHoursOverrideAction extends BaseApiAction
 
     public function __invoke(UpdateBranchHoursOverrideRequest $request, string $branch, string $date): JsonResponse
     {
-        $scoped = $this->branches->resolve($request, $branch);
+        $scoped = $this->branches->resolveForWrite($request, $branch);
         $this->brandFeatures->ensureBranchManageable($scoped->getKey());
 
         $override = $this->hours->setOverride($scoped, $date, $request->safe()->except('date'));

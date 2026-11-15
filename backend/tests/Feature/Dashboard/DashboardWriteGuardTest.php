@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Exceptions\BranchReadOnlyException;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Exceptions\BrandSuspendedException;
 use Modules\Brand\Models\BrandModel;
+use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
@@ -138,5 +140,39 @@ describe('ScopedBranchResolver::resolveForWrite', function (): void {
 
         expect(fn () => app(ScopedBranchResolver::class)->resolveForWrite(guardTestRequest($barber), (string) $branch->id))
             ->toThrow(ModelNotFoundException::class);
+    });
+});
+
+describe('DashboardWriteGuard id-based helpers (S3)', function (): void {
+    it('resolves a branch id, a chair id and a serviceable to the state that decides', function (): void {
+        $suspended = guardTestBranch(branch: BranchStatusEnum::Suspended);
+        $chair = ChairModel::factory()->create(['branch_id' => $suspended->id]);
+        $owner = guardTestOwner($suspended);
+        $guard = app(DashboardWriteGuard::class);
+
+        expect(fn () => $guard->ensureBranchIdWritable($owner, $suspended->id))->toThrow(BranchReadOnlyException::class)
+            ->and(fn () => $guard->ensureChairWritable($owner, $chair->id))->toThrow(BranchReadOnlyException::class);
+    });
+
+    it('lets a null or unknown id through so the action keeps its own 403 or 404', function (): void {
+        $branch = guardTestBranch(BrandStatusEnum::Suspended);
+        $guard = app(DashboardWriteGuard::class);
+        $owner = guardTestOwner($branch);
+
+        $guard->ensureBranchIdWritable($owner, null);
+        $guard->ensureBranchIdWritable($owner, '00000000-0000-0000-0000-000000000000');
+        $guard->ensureChairWritable($owner, null);
+        $guard->ensureServiceableWritable($owner, 'barber', null);
+
+        expect(true)->toBeTrue();
+    });
+
+    it('blocks a brand service of a Suspended brand and ignores an independent barber', function (): void {
+        $branch = guardTestBranch(BrandStatusEnum::Suspended);
+        $independent = BarberModel::factory()->create(['managed_by_branch_id' => null]);
+        $guard = app(DashboardWriteGuard::class);
+
+        expect(fn () => $guard->ensureServiceableWritable(guardTestOwner($branch), 'brand', $branch->brand_id))->toThrow(BrandSuspendedException::class);
+        $guard->ensureServiceableWritable(guardTestOwner($branch), 'barber', $independent->id);
     });
 });

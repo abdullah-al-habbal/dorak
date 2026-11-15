@@ -14,17 +14,19 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\DestroyBranchCommand;
 use Modules\Dashboard\Eloquent\Resolvers\Branches\BranchLifecycleConflictException;
 use Modules\Dashboard\Handlers\Branches\DestroyBranchHandler;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class DestroyBranchAction extends BaseApiAction
 {
-    public function __construct(private readonly DestroyBranchHandler $handler) {}
+    public function __construct(private readonly DestroyBranchHandler $handler, private readonly DashboardWriteGuard $writeGuard) {}
 
     public function __invoke(Request $request, BranchModel $branch): JsonResponse
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         Gate::forUser($actor)->authorize('dashboard.branch.delete', $branch);
+        $this->writeGuard->ensureBranchWritable($actor, $branch);
 
         try {
             $branchId = $branch->getAttribute('id');

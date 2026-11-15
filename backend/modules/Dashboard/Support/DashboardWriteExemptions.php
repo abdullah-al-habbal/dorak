@@ -6,15 +6,7 @@ namespace Modules\Dashboard\Support;
 
 use Modules\Dashboard\Http\Actions\Barbers\DestroyBarberServiceOverrideAction;
 use Modules\Dashboard\Http\Actions\Barbers\UpsertBarberServiceOverrideAction;
-use Modules\Dashboard\Http\Actions\Branches\ClearBranchHoursOverrideAction;
-use Modules\Dashboard\Http\Actions\Branches\DestroyBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\FlagBranchReviewDisputeAction;
-use Modules\Dashboard\Http\Actions\Branches\SetBranchHoursOverrideAction;
-use Modules\Dashboard\Http\Actions\Branches\StoreBranchAction;
-use Modules\Dashboard\Http\Actions\Branches\UpdateBranchAction;
-use Modules\Dashboard\Http\Actions\Branches\UpdateBranchFloorPlanAction;
-use Modules\Dashboard\Http\Actions\Branches\UpdateBranchOpeningHoursAction;
-use Modules\Dashboard\Http\Actions\BranchLifecycle\SwitchBranchAction;
 use Modules\Dashboard\Http\Actions\Brands\StoreBrandAction;
 use Modules\Dashboard\Http\Actions\Brands\UpdateBrandAction;
 use Modules\Dashboard\Http\Actions\Business\CancelBookingAction;
@@ -22,9 +14,6 @@ use Modules\Dashboard\Http\Actions\Business\CreateWalkInBookingAction;
 use Modules\Dashboard\Http\Actions\Business\RescheduleBookingAction;
 use Modules\Dashboard\Http\Actions\Business\ReviewBookingClientAction;
 use Modules\Dashboard\Http\Actions\Business\UpdateBookingStatusAction;
-use Modules\Dashboard\Http\Actions\Chairs\DestroyChairAction;
-use Modules\Dashboard\Http\Actions\Chairs\StoreChairAction;
-use Modules\Dashboard\Http\Actions\Chairs\UpdateChairAction;
 use Modules\Dashboard\Http\Actions\Notifications\MarkAllDashboardNotificationsReadAction;
 use Modules\Dashboard\Http\Actions\Notifications\MarkDashboardNotificationReadAction;
 use Modules\Dashboard\Http\Actions\Owner\ResubmitBrandAction;
@@ -42,15 +31,7 @@ use Modules\Dashboard\Http\Actions\Profile\UpdatePasswordAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdateProfileAction;
 use Modules\Dashboard\Http\Actions\Profile\VerifyEmailChangeAction;
 use Modules\Dashboard\Http\Actions\ServiceCategories\StoreServiceCategoryAction;
-use Modules\Dashboard\Http\Actions\Services\DestroyServiceAction;
-use Modules\Dashboard\Http\Actions\Services\StoreServiceAction;
-use Modules\Dashboard\Http\Actions\Services\UpdateServiceAction;
 use Modules\Dashboard\Http\Actions\Shared\LogoutAction;
-use Modules\Dashboard\Http\Actions\Stylists\ActivateStylistAction;
-use Modules\Dashboard\Http\Actions\Stylists\DeactivateStylistAction;
-use Modules\Dashboard\Http\Actions\Stylists\DestroyStylistAction;
-use Modules\Dashboard\Http\Actions\Stylists\StoreStylistAction;
-use Modules\Dashboard\Http\Actions\Stylists\UpdateStylistAction;
 use Modules\Preference\Http\Actions\Dashboard\UpdateSettingsAction;
 
 /**
@@ -79,25 +60,6 @@ final class DashboardWriteExemptions
      * slice removes the entry in the same commit that adds the guard call.
      */
     public const array PENDING = [
-        SwitchBranchAction::class => 'S3',
-        ClearBranchHoursOverrideAction::class => 'S3',
-        DestroyBranchAction::class => 'S3',
-        SetBranchHoursOverrideAction::class => 'S3',
-        StoreBranchAction::class => 'S3',
-        UpdateBranchAction::class => 'S3',
-        UpdateBranchFloorPlanAction::class => 'S3',
-        UpdateBranchOpeningHoursAction::class => 'S3',
-        DestroyChairAction::class => 'S3',
-        StoreChairAction::class => 'S3',
-        UpdateChairAction::class => 'S3',
-        DestroyServiceAction::class => 'S3',
-        StoreServiceAction::class => 'S3',
-        UpdateServiceAction::class => 'S3',
-        ActivateStylistAction::class => 'S3',
-        DeactivateStylistAction::class => 'S3',
-        DestroyStylistAction::class => 'S3',
-        StoreStylistAction::class => 'S3',
-        UpdateStylistAction::class => 'S3',
         CancelBookingAction::class => 'S4',
         CreateWalkInBookingAction::class => 'S4',
         RescheduleBookingAction::class => 'S4',

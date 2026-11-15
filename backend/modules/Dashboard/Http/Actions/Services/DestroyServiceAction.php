@@ -11,6 +11,7 @@ use Modules\Dashboard\CQRS\Command\DestroyServiceCommand;
 use Modules\Dashboard\CQRS\Query\ShowServiceQuery;
 use Modules\Dashboard\Handlers\Services\DestroyServiceHandler;
 use Modules\Dashboard\Handlers\Services\ShowServiceHandler;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class DestroyServiceAction extends BaseApiAction
@@ -18,6 +19,7 @@ final class DestroyServiceAction extends BaseApiAction
     public function __construct(
         private readonly ShowServiceHandler $showHandler,
         private readonly DestroyServiceHandler $destroyHandler,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(Request $request, string $service): JsonResponse
@@ -28,6 +30,7 @@ final class DestroyServiceAction extends BaseApiAction
             $service,
             $actor->scopedBrandIds(),
         ));
+        $this->writeGuard->ensureServiceableWritable($actor, $model->serviceable_type, $model->serviceable_id);
         $this->destroyHandler->handle($model, new DestroyServiceCommand($service));
 
         return $this->deleted();

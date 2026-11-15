@@ -12,6 +12,7 @@ use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\StoreBranchCommand;
 use Modules\Dashboard\Handlers\Branches\StoreBranchHandler;
 use Modules\Dashboard\Http\Requests\Business\StoreBranchRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class StoreBranchAction extends BaseApiAction
@@ -19,13 +20,15 @@ final class StoreBranchAction extends BaseApiAction
     public function __construct(
         private readonly BrandFeatures $brandFeatures,
         private readonly BrandApprovalGuard $approvals,
-        private readonly StoreBranchHandler $handler) {}
+        private readonly StoreBranchHandler $handler,
+        private readonly DashboardWriteGuard $writeGuard) {}
 
     public function __invoke(StoreBranchRequest $request): JsonResponse
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         Gate::forUser($actor)->authorize('dashboard.branch.create', $request->validated('brand_id'));
+        $this->writeGuard->ensureBrandWritable($actor, $request->validated('brand_id'));
         $this->approvals->ensureCanAddBranch($actor, $request->validated('brand_id'));
         $this->brandFeatures->ensureCanAddBranch($request->validated('brand_id'));
 

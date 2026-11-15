@@ -14,6 +14,7 @@ use Modules\Dashboard\CQRS\Query\ShowChairQuery;
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 use Modules\Dashboard\Handlers\Chairs\DestroyChairHandler;
 use Modules\Dashboard\Handlers\Chairs\ShowChairHandler;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class DestroyChairAction extends BaseApiAction
@@ -22,6 +23,7 @@ final class DestroyChairAction extends BaseApiAction
         private readonly BrandFeatures $brandFeatures,
         private readonly ShowChairHandler $showHandler,
         private readonly DestroyChairHandler $destroyHandler,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(Request $request, string $chair): JsonResponse
@@ -35,6 +37,7 @@ final class DestroyChairAction extends BaseApiAction
 
         Gate::forUser($actor)->authorize('dashboard.chair.manage', $model);
         $this->brandFeatures->ensureBranchManageable($model->branch_id);
+        $this->writeGuard->ensureBranchIdWritable($actor, $model->branch_id);
 
         try {
             $this->destroyHandler->handle($model, new DestroyChairCommand($chair));

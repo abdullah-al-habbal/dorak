@@ -16,6 +16,7 @@ use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 use Modules\Dashboard\Handlers\Chairs\ShowChairHandler;
 use Modules\Dashboard\Handlers\Chairs\UpdateChairHandler;
 use Modules\Dashboard\Http\Requests\Business\ChairRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateChairAction extends BaseApiAction
@@ -24,6 +25,7 @@ final class UpdateChairAction extends BaseApiAction
         private readonly BrandFeatures $brandFeatures,
         private readonly ShowChairHandler $showHandler,
         private readonly UpdateChairHandler $updateHandler,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(ChairRequest $request, string $chair): JsonResponse
@@ -40,6 +42,8 @@ final class UpdateChairAction extends BaseApiAction
         Gate::forUser($actor)->authorize('dashboard.chair.create', $attributes['branch_id']);
         $this->brandFeatures->ensureBranchManageable($model->branch_id);
         $this->brandFeatures->ensureBranchManageable($attributes['branch_id']);
+        $this->writeGuard->ensureBranchIdWritable($actor, $model->branch_id);
+        $this->writeGuard->ensureBranchIdWritable($actor, $attributes['branch_id']);
 
         try {
             $updated = $this->updateHandler->handle($model, new UpdateChairCommand($attributes, $model->branch_id, $force));

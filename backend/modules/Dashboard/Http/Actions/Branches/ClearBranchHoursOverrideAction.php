@@ -22,7 +22,7 @@ final class ClearBranchHoursOverrideAction extends BaseApiAction
 
     public function __invoke(Request $request, string $branch, string $date): JsonResponse
     {
-        $scoped = $this->branches->resolve($request, $branch);
+        $scoped = $this->branches->resolveForWrite($request, $branch);
         $this->brandFeatures->ensureBranchManageable($scoped->getKey());
 
         $this->hours->clearOverride($scoped, $date);

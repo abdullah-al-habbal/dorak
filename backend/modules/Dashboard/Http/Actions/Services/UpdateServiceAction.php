@@ -13,6 +13,7 @@ use Modules\Dashboard\Handlers\Services\ShowServiceHandler;
 use Modules\Dashboard\Handlers\Services\UpdateServiceHandler;
 use Modules\Dashboard\Http\Requests\Business\ServiceRequest;
 use Modules\Dashboard\Http\Resources\Shared\DashboardServiceResource;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateServiceAction extends BaseApiAction
@@ -20,6 +21,7 @@ final class UpdateServiceAction extends BaseApiAction
     public function __construct(
         private readonly ShowServiceHandler $showHandler,
         private readonly UpdateServiceHandler $updateHandler,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(ServiceRequest $request, string $service): JsonResponse
@@ -31,6 +33,8 @@ final class UpdateServiceAction extends BaseApiAction
         $attributes = $request->validated();
 
         Gate::forUser($actor)->authorize('dashboard.service.write', [$attributes['serviceable_type'], $attributes['serviceable_id']]);
+        $this->writeGuard->ensureServiceableWritable($actor, $model->serviceable_type, $model->serviceable_id);
+        $this->writeGuard->ensureServiceableWritable($actor, $attributes['serviceable_type'], $attributes['serviceable_id']);
 
         return $this->updated(DashboardServiceResource::make(
             $this->updateHandler->handle($model, new UpdateServiceCommand($attributes))->load(['category', 'catalogItem.category']),
