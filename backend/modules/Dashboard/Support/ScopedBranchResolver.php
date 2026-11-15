@@ -9,11 +9,12 @@ use Illuminate\Http\Request;
 use Modules\Branch\Models\BranchModel;
 use Modules\Dashboard\CQRS\Query\ShowBranchQuery;
 use Modules\Dashboard\Handlers\Branches\ShowBranchHandler;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 
 /** Resolves a branch inside the dashboard actor's scope; anything outside it is a 404. */
 final readonly class ScopedBranchResolver
 {
-    public function __construct(private ShowBranchHandler $handler) {}
+    public function __construct(private ShowBranchHandler $handler, private DashboardWriteGuard $writeGuard) {}
 
     public function resolve(Request $request, string $branchId): BranchModel
     {
@@ -21,6 +22,20 @@ final readonly class ScopedBranchResolver
         $actor = $request->attributes->get('dashboard_actor');
         /** @var BranchModel $branch */
         $branch = $this->handler->handle(new ShowBranchQuery($branchId, $actor->scopedBrandIds(), $actor->scopedBranchIds()));
+
+        return $branch;
+    }
+
+    /**
+     * Like `resolve`, for an operational write: the branch must be in scope (404 otherwise) and writable
+     * for the actor, so a Suspended brand or branch is refused with 403 before anything changes.
+     */
+    public function resolveForWrite(Request $request, string $branchId): BranchModel
+    {
+        $branch = $this->resolve($request, $branchId);
+        /** @var DashboardActor $actor */
+        $actor = $request->attributes->get('dashboard_actor');
+        $this->writeGuard->ensureBranchWritable($actor, $branch);
 
         return $branch;
     }
