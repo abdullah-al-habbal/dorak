@@ -74,6 +74,9 @@ slices above and are planned in [07](07-missing-features.md). **Out of scope:** 
 ## S1 extension (F-05e to F-05i, decided and implemented 2026-11-15, gates passed, committed locally with S1)
 Decisions D-05 to D-07 ([04](04-decisions-and-open-questions.md) section G); implementation and evidence in [03](03-f05-session-lifecycle.md) section 8. Gates run 2026-11-15: full Pest 2470 passed, Vitest 609 passed, Playwright 441 passed ([03](03-f05-session-lifecycle.md) section 8.6). S10 done (see below). S12 done (see below). S2 done (see below). Next slice: S11.
 
+## S7 (docs) done 2026-11-15
+Behavior of S2 to S14 recorded in `backend/docs/feature-index-part-8.md` (section "Dashboard audit register behavior"). Docs only. All planned slices are now done; Batch 2 and WP-10 stay out of scope.
+
 ## S14a (F-06) done 2026-11-15
 First policy conversion batch, 11 actions, no behavior change for allowed callers. `dashboard.booking.manage` (`DashboardBookingPolicy::manage`) now guards cancel, reschedule and status update; `dashboard.stylist.manage` and `dashboard.stylist.create` (`DashboardStylistPolicy`, scope = the stylist's chairs, same as `ShowStylistQuery`) guard store, update, destroy, activate and deactivate; the existing `dashboard.branch.updateHours` now also guards the hours exceptions (set, clear) and the floor plan. Out-of-scope ids still answer 404 first (scoped lookup), so the policy is the second line. Tests: `DashboardPoliciesTest` (booking, stylist, hours ability). Continued in S14b.
 
