@@ -10,10 +10,6 @@ use Modules\Dashboard\Http\Actions\Branches\FlagBranchReviewDisputeAction;
 use Modules\Dashboard\Http\Actions\Brands\StoreBrandAction;
 use Modules\Dashboard\Http\Actions\Brands\UpdateBrandAction;
 use Modules\Dashboard\Http\Actions\Business\CancelBookingAction;
-use Modules\Dashboard\Http\Actions\Business\CreateWalkInBookingAction;
-use Modules\Dashboard\Http\Actions\Business\RescheduleBookingAction;
-use Modules\Dashboard\Http\Actions\Business\ReviewBookingClientAction;
-use Modules\Dashboard\Http\Actions\Business\UpdateBookingStatusAction;
 use Modules\Dashboard\Http\Actions\Notifications\MarkAllDashboardNotificationsReadAction;
 use Modules\Dashboard\Http\Actions\Notifications\MarkDashboardNotificationReadAction;
 use Modules\Dashboard\Http\Actions\Owner\ResubmitBrandAction;
@@ -56,15 +52,18 @@ final class DashboardWriteExemptions
     ];
 
     /**
+     * Writes that stay allowed while a brand or branch is Suspended on purpose (decision A, point 2): cancelling an
+     * existing booking. (A status change to anything but cancelled goes through the guard in `UpdateBookingStatusAction`.)
+     */
+    public const array ALLOWED_WHEN_SUSPENDED = [
+        CancelBookingAction::class,
+    ];
+
+    /**
      * Operational writes still waiting to adopt the guard. Value: the slice that converts the action; the
      * slice removes the entry in the same commit that adds the guard call.
      */
     public const array PENDING = [
-        CancelBookingAction::class => 'S4',
-        CreateWalkInBookingAction::class => 'S4',
-        RescheduleBookingAction::class => 'S4',
-        ReviewBookingClientAction::class => 'S4',
-        UpdateBookingStatusAction::class => 'S4',
         DestroyBarberServiceOverrideAction::class => 'S5',
         UpsertBarberServiceOverrideAction::class => 'S5',
         FlagBranchReviewDisputeAction::class => 'S5',

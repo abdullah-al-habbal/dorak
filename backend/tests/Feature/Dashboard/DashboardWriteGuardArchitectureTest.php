@@ -55,7 +55,7 @@ function actionCallsWriteGuard(string $class): bool
  */
 function unreviewedWriteActions(array $actions): array
 {
-    $reviewed = [...DashboardWriteExemptions::SELF_ACCOUNT, ...array_keys(DashboardWriteExemptions::PENDING)];
+    $reviewed = [...DashboardWriteExemptions::SELF_ACCOUNT, ...DashboardWriteExemptions::ALLOWED_WHEN_SUSPENDED, ...array_keys(DashboardWriteExemptions::PENDING)];
 
     return array_values(array_filter($actions, fn (string $class): bool => ! in_array($class, $reviewed, true) && ! actionCallsWriteGuard($class)));
 }
@@ -80,7 +80,7 @@ it('has every non-GET tenant dashboard action guarded or on the reviewed exempti
 
 it('keeps the exemption list honest: routed, not guarded, one entry per action', function (): void {
     $routed = tenantDashboardWriteActions();
-    $self = DashboardWriteExemptions::SELF_ACCOUNT;
+    $self = [...DashboardWriteExemptions::SELF_ACCOUNT, ...DashboardWriteExemptions::ALLOWED_WHEN_SUSPENDED];
     $pending = array_keys(DashboardWriteExemptions::PENDING);
 
     expect(array_intersect($self, $pending))->toBe([]);

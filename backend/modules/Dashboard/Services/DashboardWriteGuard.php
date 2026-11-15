@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Services;
 
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Enums\BranchStatusEnum;
+use Modules\Branch\Exceptions\BranchNotOperationalException;
 use Modules\Branch\Exceptions\BranchReadOnlyException;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Exceptions\BrandSuspendedException;
@@ -95,5 +97,37 @@ final readonly class DashboardWriteGuard
         if ($value === ServiceableTypeEnum::Barber->value && $id !== null) {
             $this->ensureBranchIdWritable($actor, BarberModel::query()->whereKey($id)->value('managed_by_branch_id'));
         }
+    }
+
+    /**
+     * A walk-in needs an operating branch: Suspended is read-only, and a Disabled (switched off) branch
+     * takes no bookings either (decision A, point 4).
+     *
+     * @throws BrandSuspendedException
+     * @throws BranchReadOnlyException
+     * @throws BranchNotOperationalException
+     */
+    public function ensureBranchTakesWalkIns(DashboardActor $actor, mixed $branchId): void
+    {
+        if ($actor->isPlatformAdmin() || $branchId === null) {
+            return;
+        }
+
+        $branch = BranchModel::query()->find($branchId);
+        if (! $branch instanceof BranchModel) {
+            return;
+        }
+
+        $this->ensureBranchWritable($actor, $branch);
+
+        if ($branch->status === BranchStatusEnum::Disabled) {
+            throw new BranchNotOperationalException;
+        }
+    }
+
+    /** A booking follows its branch; older rows without `branch_id` follow their chair's branch. */
+    public function ensureBookingWritable(DashboardActor $actor, BookingModel $booking): void
+    {
+        $this->ensureBranchIdWritable($actor, $booking->branch_id ?? $booking->chair?->branch_id);
     }
 }

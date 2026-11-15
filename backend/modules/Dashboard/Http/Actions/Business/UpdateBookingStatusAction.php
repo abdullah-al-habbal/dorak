@@ -13,11 +13,12 @@ use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
 use Modules\Booking\Models\BookingModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\Http\Requests\Business\UpdateBookingStatusRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class UpdateBookingStatusAction extends BaseApiAction
 {
-    public function __construct(private readonly BookingLifecycleEloquentResolver $resolver) {}
+    public function __construct(private readonly BookingLifecycleEloquentResolver $resolver, private readonly DashboardWriteGuard $writeGuard) {}
 
     public function __invoke(UpdateBookingStatusRequest $request, string $booking): JsonResponse
     {
@@ -27,6 +28,11 @@ final class UpdateBookingStatusAction extends BaseApiAction
         $status = $request->enum('booking_status', BookingStatus::class);
         if (! $status instanceof BookingStatus) {
             return $this->unprocessable(message: __('dashboard::messages.invalid_booking_status'));
+        }
+
+        // Cancelling stays allowed under suspension (decision A, point 2); every other change is an operational write.
+        if ($status !== BookingStatus::Cancelled) {
+            $this->writeGuard->ensureBookingWritable($actor, $model);
         }
 
         try {

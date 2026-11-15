@@ -14,17 +14,19 @@ use Modules\Dashboard\Eloquent\Resolvers\Bookings\RescheduleBookingEloquentResol
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 use Modules\Dashboard\Handlers\Bookings\ShowBookingHandler;
 use Modules\Dashboard\Http\Requests\Business\RescheduleBookingRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class RescheduleBookingAction extends BaseApiAction
 {
-    public function __construct(private readonly ShowBookingHandler $showHandler, private readonly RescheduleBookingEloquentResolver $resolver) {}
+    public function __construct(private readonly ShowBookingHandler $showHandler, private readonly RescheduleBookingEloquentResolver $resolver, private readonly DashboardWriteGuard $writeGuard) {}
 
     public function __invoke(RescheduleBookingRequest $request, string $booking): JsonResponse
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()));
+        $this->writeGuard->ensureBookingWritable($actor, $model);
         $startsAt = $request->date('starts_at');
         $endsAt = $request->date('ends_at');
         if ($startsAt === null || $endsAt === null) {

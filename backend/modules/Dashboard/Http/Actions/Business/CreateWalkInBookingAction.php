@@ -17,6 +17,7 @@ use Modules\Dashboard\Eloquent\Resolvers\Bookings\WalkInServicesUnavailableExcep
 use Modules\Dashboard\Eloquent\Resolvers\Bookings\WalkInStylistNotAssignedException;
 use Modules\Dashboard\Handlers\Bookings\CreateWalkInBookingHandler;
 use Modules\Dashboard\Http\Requests\Business\CreateWalkInBookingRequest;
+use Modules\Dashboard\Services\DashboardWriteGuard;
 use Modules\Dashboard\Support\DashboardActor;
 
 final class CreateWalkInBookingAction extends BaseApiAction
@@ -24,6 +25,7 @@ final class CreateWalkInBookingAction extends BaseApiAction
     public function __construct(
         private readonly CreateWalkInBookingHandler $handler,
         private readonly BrandApprovalGuard $approvals,
+        private readonly DashboardWriteGuard $writeGuard,
     ) {}
 
     public function __invoke(CreateWalkInBookingRequest $request): JsonResponse
@@ -34,6 +36,7 @@ final class CreateWalkInBookingAction extends BaseApiAction
 
         Gate::forUser($actor)->authorize('dashboard.booking.createWalkIn', $command->branchId);
 
+        $this->writeGuard->ensureBranchTakesWalkIns($actor, $command->branchId);
         $this->approvals->ensureBranchBrandApproved($actor, $command->branchId);
 
         try {
