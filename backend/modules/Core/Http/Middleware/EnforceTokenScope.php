@@ -7,15 +7,14 @@ namespace Modules\Core\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
+use Modules\Core\Enums\ErrorCodeEnum;
 use Modules\Core\Enums\TokenAbility;
+use Modules\Core\Helpers\ApiResponseTrait;
 
-/**
- * Keeps scoped Sanctum tokens on their own API surface: dashboard session
- * tokens only reach the dashboard (plus realtime auth and the notification inbox), mobile-app tokens never
- * reach the dashboard. Wildcard tokens and unauthenticated requests pass.
- */
 final class EnforceTokenScope
 {
+    use ApiResponseTrait;
+
     private const DASHBOARD_PATTERN = 'api/v1/dashboard/*';
 
     private const DASHBOARD_SHARED_PATHS = ['api/v1/broadcasting/auth', 'api/v1/notifications', 'api/v1/notifications/*'];
@@ -28,13 +27,7 @@ final class EnforceTokenScope
             return $next($request);
         }
 
-        return response()->json([
-            'success' => false,
-            'statusCode' => 403,
-            'code' => 'TOKEN_ABILITY_MISSING',
-            'message' => trans('core::messages.token_ability_missing'),
-            'timestamp' => now()->toIso8601String(),
-        ], 403);
+        return $this->error(ErrorCodeEnum::TOKEN_ABILITY_MISSING);
     }
 
     private function currentToken(Request $request): ?PersonalAccessToken

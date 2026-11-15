@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Modules\Ban\Http\Responses;
 
 use Illuminate\Http\JsonResponse;
+use Modules\Core\Enums\ErrorCodeEnum;
+use Modules\Core\Helpers\ApiResponseTrait;
 
+/** The 403 `ACCOUNT_BANNED` answer shared by the ban middleware and the dashboard session check. */
 final class AccountBannedResponse
 {
+    use ApiResponseTrait;
+
     public static function make(): JsonResponse
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 403,
-            'code' => 'ACCOUNT_BANNED',
-            'message' => __('ban::ui.account_banned'),
-            'timestamp' => now()->toISOString(),
-        ], 403);
+        return (new self)->error(ErrorCodeEnum::ACCOUNT_BANNED);
     }
 }

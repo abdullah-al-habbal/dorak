@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Brand\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ConflictApiException;
 
 /** A brand lifecycle move the brand's current state does not allow. Renders a stable 409 API error. */
-final class BrandReviewException extends RuntimeException
+final class BrandReviewException extends ConflictApiException
 {
     public const string CODE_NOT_PENDING = 'brand_not_pending';
 
@@ -50,14 +49,8 @@ final class BrandReviewException extends RuntimeException
         return new self(self::CODE_RESUBMISSION_LIMIT, 'brand::messages.review_resubmission_limit');
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 409,
-            'code' => $this->errorCode,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 409);
+        return $this->errorCode;
     }
 }

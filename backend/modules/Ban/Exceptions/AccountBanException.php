@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Ban\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ConflictApiException;
 
 /** A ban move the account's current state does not allow. Renders a stable 409 API error. */
-final class AccountBanException extends RuntimeException
+final class AccountBanException extends ConflictApiException
 {
     public const string CODE_ALREADY_BANNED = 'account_already_banned';
 
@@ -29,14 +28,8 @@ final class AccountBanException extends RuntimeException
         return new self(self::CODE_NOT_BANNED, 'ban::ui.account_not_banned');
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 409,
-            'code' => $this->errorCode,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 409);
+        return $this->errorCode;
     }
 }

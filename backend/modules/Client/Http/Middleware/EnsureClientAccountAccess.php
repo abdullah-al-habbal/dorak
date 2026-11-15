@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\AccountAccessScope;
+use Modules\Core\Enums\ErrorCodeEnum;
+use Modules\Core\Helpers\ApiResponseTrait;
 
 final class EnsureClientAccountAccess
 {
+    use ApiResponseTrait;
+
     public function handle(Request $request, Closure $next, string $scope = AccountAccessScope::Active->value): mixed
     {
         $client = Auth::guard('client')->user();
@@ -29,13 +33,7 @@ final class EnsureClientAccountAccess
             && $emailVerifiedAt === null;
 
         if (! $active && ! $verificationOnly) {
-            return response()->json([
-                'success' => false,
-                'statusCode' => 403,
-                'code' => 'ACCOUNT_NOT_ACTIVE',
-                'message' => trans('activation::messages.account_not_active'),
-                'timestamp' => now()->toIso8601String(),
-            ], 403);
+            return $this->error(ErrorCodeEnum::ACCOUNT_NOT_ACTIVE);
         }
 
         return $next($request);

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Branch\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ConflictApiException;
 
 /** A branch switch or suspension the branch's current state does not allow. Renders a stable 409 API error. */
-final class BranchLifecycleException extends RuntimeException
+final class BranchLifecycleException extends ConflictApiException
 {
     public const string CODE_SUSPENDED = 'branch_suspended';
 
@@ -43,14 +42,8 @@ final class BranchLifecycleException extends RuntimeException
         return new self(self::CODE_NOT_SUSPENDED, 'branch::messages.lifecycle_not_suspended');
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 409,
-            'code' => $this->errorCode,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 409);
+        return $this->errorCode;
     }
 }

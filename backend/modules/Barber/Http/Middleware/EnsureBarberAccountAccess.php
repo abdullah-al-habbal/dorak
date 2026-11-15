@@ -12,6 +12,8 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\AccountAccessScope;
+use Modules\Core\Enums\ErrorCodeEnum;
+use Modules\Core\Helpers\ApiResponseTrait;
 
 /**
  * Gates barber-token routes on the barber's current status, so a token issued
@@ -26,6 +28,8 @@ use Modules\Core\Enums\AccountAccessScope;
  */
 final class EnsureBarberAccountAccess
 {
+    use ApiResponseTrait;
+
     public function handle(Request $request, Closure $next, string $scope = AccountAccessScope::Active->value): mixed
     {
         $barber = Auth::guard('barber')->user();
@@ -43,13 +47,7 @@ final class EnsureBarberAccountAccess
         };
 
         if (! $allowed) {
-            return response()->json([
-                'success' => false,
-                'statusCode' => 403,
-                'code' => 'ACCOUNT_NOT_ACTIVE',
-                'message' => trans('activation::messages.account_not_active'),
-                'timestamp' => now()->toIso8601String(),
-            ], 403);
+            return $this->error(ErrorCodeEnum::ACCOUNT_NOT_ACTIVE);
         }
 
         return $next($request);

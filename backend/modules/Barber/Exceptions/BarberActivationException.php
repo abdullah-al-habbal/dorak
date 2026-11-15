@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Barber\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ConflictApiException;
 
 /** An activation move the barber's current status does not allow. Renders a stable 409 API error. */
-final class BarberActivationException extends RuntimeException
+final class BarberActivationException extends ConflictApiException
 {
     public const string CODE_NOT_ENABLED = 'barber_not_enabled';
 
@@ -36,14 +35,8 @@ final class BarberActivationException extends RuntimeException
         return new self(self::CODE_NOT_APPROVED, 'barber::messages.activation_not_approved');
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 409,
-            'code' => $this->errorCode,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 409);
+        return $this->errorCode;
     }
 }

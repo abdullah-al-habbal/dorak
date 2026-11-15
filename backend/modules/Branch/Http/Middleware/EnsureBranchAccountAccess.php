@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Branch\Models\BranchModel;
+use Modules\Core\Enums\ErrorCodeEnum;
+use Modules\Core\Helpers\ApiResponseTrait;
 
 /**
  * Gates branch-token routes on the branch's current status, so a token issued
@@ -16,6 +18,8 @@ use Modules\Branch\Models\BranchModel;
  */
 final class EnsureBranchAccountAccess
 {
+    use ApiResponseTrait;
+
     public function handle(Request $request, Closure $next): mixed
     {
         $branch = Auth::guard('branch_api')->user();
@@ -25,13 +29,7 @@ final class EnsureBranchAccountAccess
         }
 
         if (! $branch->isOperational()) {
-            return response()->json([
-                'success' => false,
-                'statusCode' => 403,
-                'code' => 'ACCOUNT_NOT_ACTIVE',
-                'message' => trans('activation::messages.account_not_active'),
-                'timestamp' => now()->toIso8601String(),
-            ], 403);
+            return $this->error(ErrorCodeEnum::ACCOUNT_NOT_ACTIVE);
         }
 
         return $next($request);

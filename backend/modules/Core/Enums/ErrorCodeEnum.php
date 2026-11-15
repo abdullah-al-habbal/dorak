@@ -20,6 +20,9 @@ enum ErrorCodeEnum: string
     case TOO_MANY_REQUESTS = 'TOO_MANY_REQUESTS';
     case SERVER_ERROR = 'SERVER_ERROR';
     case SERVICE_UNAVAILABLE = 'SERVICE_UNAVAILABLE';
+    case ACCOUNT_NOT_ACTIVE = 'ACCOUNT_NOT_ACTIVE';
+    case ACCOUNT_BANNED = 'ACCOUNT_BANNED';
+    case TOKEN_ABILITY_MISSING = 'TOKEN_ABILITY_MISSING';
 
     public function getStatusCode(): int
     {
@@ -36,6 +39,7 @@ enum ErrorCodeEnum: string
             self::TOO_MANY_REQUESTS => Response::HTTP_TOO_MANY_REQUESTS,
             self::SERVER_ERROR => Response::HTTP_INTERNAL_SERVER_ERROR,
             self::SERVICE_UNAVAILABLE => Response::HTTP_SERVICE_UNAVAILABLE,
+            self::ACCOUNT_NOT_ACTIVE, self::ACCOUNT_BANNED, self::TOKEN_ABILITY_MISSING => Response::HTTP_FORBIDDEN,
         };
     }
 
@@ -54,6 +58,9 @@ enum ErrorCodeEnum: string
             self::TOO_MANY_REQUESTS => 'core::messages.too_many_requests',
             self::SERVER_ERROR => 'core::messages.server_error',
             self::SERVICE_UNAVAILABLE => 'core::messages.service_unavailable',
+            self::ACCOUNT_NOT_ACTIVE => 'activation::messages.account_not_active',
+            self::ACCOUNT_BANNED => 'ban::ui.account_banned',
+            self::TOKEN_ABILITY_MISSING => 'core::messages.token_ability_missing',
         };
     }
 }

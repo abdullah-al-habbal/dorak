@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Branch\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ForbiddenApiException;
 
 /** Decision A: a suspended branch can be read but not changed. Renders the stable 403 `branch_read_only` error. */
-final class BranchReadOnlyException extends RuntimeException
+final class BranchReadOnlyException extends ForbiddenApiException
 {
     public const string CODE = 'branch_read_only';
 
@@ -17,14 +16,8 @@ final class BranchReadOnlyException extends RuntimeException
         parent::__construct(__('branch::messages.read_only'));
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 403,
-            'code' => self::CODE,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 403);
+        return self::CODE;
     }
 }

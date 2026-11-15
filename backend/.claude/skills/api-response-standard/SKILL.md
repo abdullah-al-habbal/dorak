@@ -65,4 +65,9 @@ Trait at `Modules\Core\Helpers\ApiResponseTrait`. Mixed into `BaseApiAction` and
 
 `ErrorCodeEnum`: `BAD_REQUEST`, `VALIDATION_FAILED`, `UNAUTHORIZED`, `FORBIDDEN`, `RESOURCE_NOT_FOUND`, `UNPROCESSABLE_ENTITY`, `TOO_MANY_REQUESTS`, `SERVER_ERROR` — maps to HTTP status + translation key.
 
+`ErrorCodeEnum` also has `ACCOUNT_NOT_ACTIVE`, `ACCOUNT_BANNED` and `TOKEN_ABILITY_MISSING` (403) for the account middleware.
+
+## Banned: direct JSON
+Never call `response()->json(` outside `ApiResponseTrait` and the exception handler (architecture test). Domain errors extend `Modules\Core\Exceptions\ConflictApiException` (409) or `ForbiddenApiException` (403) and only supply `errorCode()`; middleware and static helpers `use ApiResponseTrait` and return `$this->error(ErrorCodeEnum::X)`. Details: `docs/api-response-standard.md`.
+
 Both enums have `getStatusCode(): int` and `getMessageKey(): string`.

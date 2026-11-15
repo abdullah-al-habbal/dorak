@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Barber\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ConflictApiException;
 
 /** A review transition the barber's current state does not allow. Renders a stable 409 API error. */
-final class BarberReviewException extends RuntimeException
+final class BarberReviewException extends ConflictApiException
 {
     public const string CODE_NOT_PENDING = 'barber_not_pending';
 
@@ -36,14 +35,8 @@ final class BarberReviewException extends RuntimeException
         return new self(self::CODE_RESUBMISSION_LIMIT, __('barber::messages.review_resubmission_limit'));
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 409,
-            'code' => $this->errorCode,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 409);
+        return $this->errorCode;
     }
 }

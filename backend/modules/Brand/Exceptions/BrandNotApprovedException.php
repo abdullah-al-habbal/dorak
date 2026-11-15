@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Brand\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ForbiddenApiException;
 
-/** D11: a brand still waiting for approval may not do this yet. Renders the stable 403 `brand_not_approved` API error. */
-final class BrandNotApprovedException extends RuntimeException
+final class BrandNotApprovedException extends ForbiddenApiException
 {
     public const string CODE = 'brand_not_approved';
 
@@ -17,14 +15,8 @@ final class BrandNotApprovedException extends RuntimeException
         parent::__construct(__('brand::messages.brand_not_approved'));
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 403,
-            'code' => self::CODE,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 403);
+        return self::CODE;
     }
 }

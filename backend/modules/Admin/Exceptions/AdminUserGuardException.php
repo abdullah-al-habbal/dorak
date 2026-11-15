@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ConflictApiException;
 
 /** NS-04: a change that would leave the platform without a working administrator. Renders a stable 409 error. */
-final class AdminUserGuardException extends RuntimeException
+final class AdminUserGuardException extends ConflictApiException
 {
     public const string CODE_SELF_DEACTIVATION = 'admin_self_deactivation';
 
@@ -29,14 +28,8 @@ final class AdminUserGuardException extends RuntimeException
         return new self(self::CODE_LAST_ACTIVE, __('admin::messages.cannot_deactivate_last'));
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 409,
-            'code' => $this->errorCode,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 409);
+        return $this->errorCode;
     }
 }

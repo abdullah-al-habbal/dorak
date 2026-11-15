@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Branch\Exceptions;
 
-use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Modules\Core\Exceptions\ForbiddenApiException;
 
 /** Decision A, point 4: a Disabled branch takes no walk-ins. Renders the stable 403 `branch_not_operational` error. */
-final class BranchNotOperationalException extends RuntimeException
+final class BranchNotOperationalException extends ForbiddenApiException
 {
     public const string CODE = 'branch_not_operational';
 
@@ -17,14 +16,8 @@ final class BranchNotOperationalException extends RuntimeException
         parent::__construct(__('branch::messages.not_operational'));
     }
 
-    public function render(): JsonResponse
+    public function errorCode(): string
     {
-        return response()->json([
-            'success' => false,
-            'statusCode' => 403,
-            'code' => self::CODE,
-            'message' => $this->getMessage(),
-            'timestamp' => now()->toIso8601String(),
-        ], 403);
+        return self::CODE;
     }
 }
