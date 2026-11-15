@@ -6,6 +6,7 @@ namespace Modules\Ban\Observers;
 
 use Modules\Ban\Models\BanModel;
 use Modules\Barber\Models\BarberModel;
+use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 
 final class BanObserver
@@ -18,7 +19,7 @@ final class BanObserver
 
         $actor = $ban->bannable;
 
-        if ($actor instanceof ClientModel || $actor instanceof BarberModel) {
+        if ($actor instanceof ClientModel || $actor instanceof BarberModel || $actor instanceof BranchModel) {
             $actor->tokens()->delete();
         }
     }

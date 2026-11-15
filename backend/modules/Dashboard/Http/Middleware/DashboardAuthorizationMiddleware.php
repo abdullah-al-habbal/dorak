@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use LogicException;
 use Modules\Admin\Models\AdminModel;
+use Modules\Ban\Http\Responses\AccountBannedResponse;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
@@ -17,6 +18,7 @@ use Modules\Core\Helpers\ApiResponseTrait;
 use Modules\Dashboard\Constants\DashboardSessionConstants;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
+use Modules\Dashboard\Services\DashboardActorLiveness;
 use Modules\Dashboard\Support\DashboardActor;
 use Modules\Dashboard\Support\DashboardSessionClaim;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +30,7 @@ final class DashboardAuthorizationMiddleware
     public function __construct(
         private readonly DashboardSessionClaim $claim,
         private readonly DashboardOwnerActorResolver $ownerActors,
+        private readonly DashboardActorLiveness $liveness,
     ) {}
 
     /** @param Closure(Request): Response $next */
@@ -46,6 +49,14 @@ final class DashboardAuthorizationMiddleware
             }
 
             if ($model instanceof AdminModel && ! $model->isActive()) {
+                continue;
+            }
+
+            // F-01b and F-01c: a manager is ban-checked like clients and barbers (403), and a barber that is no longer Enabled is a 401.
+            if ($model instanceof BranchModel && ! $this->liveness->liveBranch($model)) {
+                return AccountBannedResponse::make();
+            }
+            if ($model instanceof BarberModel && ! $model->isEnabled) {
                 continue;
             }
 

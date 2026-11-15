@@ -80,6 +80,10 @@ final class DashboardLoginHandler
         $storedPassword = $branch?->getAttribute('password');
         $branchId = $branch?->getAuthIdentifier();
         if ($branch instanceof BranchModel && is_string($storedPassword) && is_string($branchId) && Hash::check($password, $storedPassword)) {
+            if ($branch->isBanned()) {
+                throw new AccountBannedException;
+            }
+
             return new DashboardActor($branchId, DashboardActorTypeEnum::Branch, 'branch_manager', $branchId);
         }
 

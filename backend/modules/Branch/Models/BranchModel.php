@@ -55,6 +55,11 @@ class BranchModel extends Authenticatable
         return $this->morphMany(BanModel::class, 'bannable');
     }
 
+    public function isBanned(): bool
+    {
+        return $this->bans()->active()->exists();
+    }
+
     /**
      * @param  Builder<BranchModel>  $query
      * @return Builder<BranchModel>
