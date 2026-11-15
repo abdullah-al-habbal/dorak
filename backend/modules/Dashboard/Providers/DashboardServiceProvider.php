@@ -26,6 +26,7 @@ use Modules\Dashboard\Policies\DashboardChairPolicy;
 use Modules\Dashboard\Policies\DashboardReviewPolicy;
 use Modules\Dashboard\Policies\DashboardServiceCategoryPolicy;
 use Modules\Dashboard\Policies\DashboardServicePolicy;
+use Modules\Dashboard\Policies\DashboardStylistPolicy;
 use Modules\OfferedService\Models\BarberServiceOverrideModel;
 
 final class DashboardServiceProvider extends BaseModuleServiceProvider
@@ -55,6 +56,9 @@ final class DashboardServiceProvider extends BaseModuleServiceProvider
         Gate::define('dashboard.service.write', [DashboardServicePolicy::class, 'write']);
         Gate::define('dashboard.serviceCategory.create', [DashboardServiceCategoryPolicy::class, 'create']);
         Gate::define('dashboard.review.file', [DashboardReviewPolicy::class, 'file']);
+        Gate::define('dashboard.booking.manage', [DashboardBookingPolicy::class, 'manage']);
+        Gate::define('dashboard.stylist.create', [DashboardStylistPolicy::class, 'create']);
+        Gate::define('dashboard.stylist.manage', [DashboardStylistPolicy::class, 'manage']);
         Gate::define('dashboard.booking.createWalkIn', [DashboardBookingPolicy::class, 'createWalkIn']);
         Gate::define('dashboard.chair.create', [DashboardChairPolicy::class, 'create']);
         Gate::define('dashboard.chair.manage', [DashboardChairPolicy::class, 'manage']);

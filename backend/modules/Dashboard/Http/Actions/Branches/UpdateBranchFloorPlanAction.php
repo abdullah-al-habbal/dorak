@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Branches;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Enums\FloorPlanPreset;
 use Modules\Branch\Http\Requests\Branch\UpdateFloorPlanConfigurationRequest;
 use Modules\Branch\Models\BranchModel;
@@ -30,6 +31,7 @@ final class UpdateBranchFloorPlanAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         /** @var BranchModel $model */
         $model = $this->handler->handle(new ShowBranchQuery($branch, $actor->scopedBrandIds(), $actor->scopedBranchIds()));
+        Gate::forUser($actor)->authorize('dashboard.branch.updateHours', $model);
         $this->brandFeatures->ensureBranchManageable($model->getKey());
         $this->writeGuard->ensureBranchWritable($actor, $model);
 

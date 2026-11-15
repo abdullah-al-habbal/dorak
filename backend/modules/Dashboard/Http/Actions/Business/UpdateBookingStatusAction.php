@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Business;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingLifecycleEloquentResolver;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
@@ -25,6 +26,7 @@ final class UpdateBookingStatusAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $model = BookingModel::query()->when($actor->scopedBranchIds() !== null, fn ($query) => $query->forBranches($actor->scopedBranchIds() ?? []))->findOrFail($booking);
+        Gate::forUser($actor)->authorize('dashboard.booking.manage', $model);
         $status = $request->enum('booking_status', BookingStatus::class);
         if (! $status instanceof BookingStatus) {
             return $this->unprocessable(message: __('dashboard::messages.invalid_booking_status'));

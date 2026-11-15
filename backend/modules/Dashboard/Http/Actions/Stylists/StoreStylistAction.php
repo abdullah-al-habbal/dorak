@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Brand\Services\BrandApprovalGuard;
 use Modules\Brand\Services\BrandFeatures;
@@ -27,6 +28,7 @@ final class StoreStylistAction extends BaseApiAction
     {
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
+        Gate::forUser($actor)->authorize('dashboard.stylist.create');
         $attributes = $request->validated();
 
         if (! $actor->isPlatformAdmin() && ! isset($attributes['chair_id'])) {

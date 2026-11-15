@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Business;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Http\Resources\Staff\StaffBookingResource;
@@ -26,6 +27,7 @@ final class RescheduleBookingAction extends BaseApiAction
         /** @var DashboardActor $actor */
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowBookingQuery($booking, $actor->scopedBranchIds()));
+        Gate::forUser($actor)->authorize('dashboard.booking.manage', $model);
         $this->writeGuard->ensureBookingWritable($actor, $model);
         $startsAt = $request->date('starts_at');
         $endsAt = $request->date('ends_at');

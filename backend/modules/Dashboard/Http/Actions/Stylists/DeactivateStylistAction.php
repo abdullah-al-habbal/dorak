@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Activation\Handlers\Business\ToggleActivationHandler;
 use Modules\Activation\Http\Requests\Business\ToggleActivationRequest;
 use Modules\Barber\Http\Resources\Shared\BarberResource;
@@ -30,6 +31,7 @@ final class DeactivateStylistAction extends BaseApiAction
         $actor = $request->attributes->get('dashboard_actor');
         $model = $this->showHandler->handle(new ShowStylistQuery($stylist, $actor->scopedBranchIds()));
 
+        Gate::forUser($actor)->authorize('dashboard.stylist.manage', $model);
         $this->brandFeatures->ensureBranchManageable($model->managed_by_branch_id);
         $this->writeGuard->ensureBranchIdWritable($actor, $model->managed_by_branch_id);
         $this->toggleHandler->handle($request->toDeactivateCommand($model->getKey()));

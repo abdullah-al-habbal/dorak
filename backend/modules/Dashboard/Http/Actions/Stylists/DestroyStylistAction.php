@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\DestroyStylistCommand;
@@ -32,6 +33,7 @@ final class DestroyStylistAction extends BaseApiAction
             $stylist,
             $actor->scopedBranchIds(),
         ));
+        Gate::forUser($actor)->authorize('dashboard.stylist.manage', $model);
         $this->brandFeatures->ensureBranchManageable($model->managed_by_branch_id);
         $this->writeGuard->ensureBranchIdWritable($actor, $model->managed_by_branch_id);
         $this->destroyHandler->handle($model, new DestroyStylistCommand($stylist));

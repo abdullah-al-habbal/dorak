@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Http\Actions\Stylists;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Modules\Barber\Http\Resources\Shared\BarberResource;
 use Modules\Brand\Services\BrandFeatures;
 use Modules\Core\Http\Actions\BaseApiAction;
@@ -32,6 +33,7 @@ final class UpdateStylistAction extends BaseApiAction
         $scope = $actor->scopedBranchIds();
         $model = $this->showHandler->handle(new ShowStylistQuery($stylist, $scope));
 
+        Gate::forUser($actor)->authorize('dashboard.stylist.manage', $model);
         $this->brandFeatures->ensureBranchManageable($model->managed_by_branch_id);
         $this->brandFeatures->ensureChairBranchManageable($request->validated('chair_id'));
         $this->writeGuard->ensureBranchIdWritable($actor, $model->managed_by_branch_id);
