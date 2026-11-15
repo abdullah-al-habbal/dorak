@@ -95,8 +95,10 @@ Reviews flag any re-implementation.
 ## Testing and gates
 
 - Tests live in `tests/`, mirroring `src/` (`src/lib/x.util.ts` -> `tests/lib/x.util.test.ts`).
-  No test files inside `src/`. Vitest runs in the Node environment, so test pure logic and
-  route handlers; component tests need `jsdom` and Testing Library, which require approval.
+  No test files inside `src/`. Vitest runs in the Node environment by default, so test pure logic and
+  route handlers there. Component tests (approved 2026-11-15) live in `tests/components/<area>/*.test.tsx`: start the
+  file with `// @vitest-environment jsdom`, import `@tests/helpers/dom.helper` (jest-dom matchers and cleanup), render
+  with `@testing-library/react` and query by role or label, as in `tests/components/common/form-field.test.tsx`.
 - Before closing any change, from this directory: `npm run lint`, `npm run typecheck`,
   `npm test`, `npm run build`.
 - **Playwright E2E** (`npm run test:e2e`, specs in `tests/e2e/`): runs against the **real stack**: Next.js on
