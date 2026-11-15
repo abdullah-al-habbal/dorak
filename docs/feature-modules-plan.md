@@ -149,7 +149,7 @@ The guard column mirrors `DashboardOperationsAuthorizationMiddleware` (rejects b
 
 ## 4. Contract mismatches
 
-Found by comparing the brief with the backend before the modules started. Every row is now settled; the outcome is recorded in [open decisions](decisions-required.md) and in each module's section.
+Found by comparing the brief with the backend before the modules started. Every row is now settled; the outcome is recorded in [open decisions](backlog/index.md) and in each module's section.
 
 | Brief | Backend reality | Plan |
 | --- | --- | --- |
@@ -413,7 +413,7 @@ Backend audit (`php artisan route:list --path=api/v1/dashboard/admin`):
 
 ## 10g. Module 11: Admin Brands (approval)
 
-Chosen 2026-11-08, approve-only (see `docs/decisions-required.md`). Every endpoint already existed: `GET /brands` and `GET /brands/{brand}` (admin and owner, scoped by `canManageBrand`) and `PATCH /admin/brands/{brand}/approve`. The audit found three backend gaps, all closed additively:
+Chosen 2026-11-08, approve-only (see `docs/backlog/index.md`). Every endpoint already existed: `GET /brands` and `GET /brands/{brand}` (admin and owner, scoped by `canManageBrand`) and `PATCH /admin/brands/{brand}/approve`. The audit found three backend gaps, all closed additively:
 
 - The approve action relied on middleware only. `BrandPolicy::approve` (an `AdminModel`) now guards it. (The retired admin panel used the same ability.) Policy actors are `mixed` so a denial is a 403, never a type error.
 - The list read a raw request. `ListDashboardBrandsRequest` validates `status` (`pending|active`), `search` (max 100) and `page`, and still clamps `per_page`; `BrandPolicy::viewAny` (admin or brand owner) authorizes it.
@@ -428,7 +428,7 @@ Chosen 2026-11-08, approve-only (see `docs/decisions-required.md`). Every endpoi
 
 ## 10h. Module 12: Admin Catalog
 
-Chosen 2026-11-09 (see `docs/decisions-required.md`). Feasibility assessment: approved with conditions.
+Chosen 2026-11-09 (see `docs/backlog/index.md`). Feasibility assessment: approved with conditions.
 
 ### Implemented contract
 - Shared code path: `CatalogCategoryUsage::isEmpty()`, used by `DestroyCatalogCategoryAction` (through `DeleteCatalogCategoryHandler`, row-locked). `CatalogCategoryNameRules::rules()` and `CatalogCategorySlugGenerator` are shared by the admin save request and `POST /dashboard/service-categories`.
@@ -450,7 +450,7 @@ Chosen 2026-11-09 (see `docs/decisions-required.md`). Feasibility assessment: ap
 
 ## 12. Questions raised by the plan (all resolved)
 
-All six are resolved; see [open decisions](decisions-required.md). Questions 1-3 were resolved on 2026-11-04, question 5 on 2026-11-07, and question 6 on 2026-11-05: no chart library, the earnings bars are Tailwind flex rows (`components/earnings/bar-chart.tsx`).
+All six are resolved; see [open decisions](backlog/index.md). Questions 1-3 were resolved on 2026-11-04, question 5 on 2026-11-07, and question 6 on 2026-11-05: no chart library, the earnings bars are Tailwind flex rows (`components/earnings/bar-chart.tsx`).
 
 1. URL segment: keep `stylists` (consistent with backend and nav) or rename to `barbers`?
 2. Does `PUT /branches/{id}` accept a partial payload, or must the whole branch be sent?

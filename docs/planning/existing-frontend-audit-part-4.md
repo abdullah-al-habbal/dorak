@@ -56,4 +56,4 @@ Part 4 of 4 · [Previous](existing-frontend-audit-part-3.md) · [Overview](exist
 - Keep the BFF, cookies, claim verification and per-portal server check.
 - Re-derive UI permissions from role plus scope, not from `permissions`.
 - Mirror every zod bound above, and keep EN and AR parity.
-- Decide F2, F3 and F4 before building forms; record them in `docs/decisions-required.md`.
+- Decide F2, F3 and F4 before building forms; record them in `docs/backlog/index.md`.

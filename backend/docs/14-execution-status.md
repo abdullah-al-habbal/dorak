@@ -16,7 +16,7 @@ codeanchors:
 
 - Phase 3 "Power & Polish" and ~8 open product decisions — see
   `02-prd.md` §5 and §8, plus the repository
-  [open decisions](../../docs/decisions-required.md).
+  [backlog](../../docs/backlog/index.md).
 - Real AI face analysis: `modules/ClientFaceProfile/Jobs/AnalyzeFacePhotoJob.php`
   is an MVP stub.
 

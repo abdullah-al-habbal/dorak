@@ -1,8 +1,8 @@
 # Handover: all remaining work
 
-> See also the [audit register](audit-register/00-next-session-start.md) (2026-11-14): findings F-01 to F-11, decisions A to F, the
+> See also the [audit register](backlog/index.md) (2026-11-14): findings F-01 to F-11, decisions A to F, the
 > slice plan and the next-session start point. Where the two disagree, the register is newer. Next session: implementation only,
-> mandatory prerequisites T-01 to T-04 first ([prerequisites](audit-register/10-prerequisites-t01-t04.md)), then S1.
+> mandatory prerequisites T-01 to T-04 first ([prerequisites](backlog/index.md)), then S1.
 
 Written 2026-11-13 after local commit `a5114013` (nothing pushed).
 **Reconciled 2026-11-14 against the repository at `ff7755c3`** (19 commits ahead of `origin/master`,
@@ -10,7 +10,7 @@ nothing pushed): see section 0a for the verified status. Text below that is mark
 correction; the rest is the original handover. Goal: finish every open
 issue, feature and piece of tech debt across the backend, the dashboard and the three
 mobile apps, each with its tests. Every item below was found by reading the repo on that
-date (`docs/next-steps/*`, `docs/decisions-required.md`, `docs/mobile-audit-g10-g11/index.md`,
+date (`docs/backlog/index.md`, `docs/backlog/index.md`, `docs/mobile-audit-g10-g11/index.md`,
 test counts, file sizes), not recalled from memory. Re-verify an item before working it.
 
 ## 0. How to work
@@ -19,13 +19,13 @@ test counts, file sizes), not recalled from memory. Re-verify an item before wor
   Never bundle two WPs in one commit.
 - Read first: root `CLAUDE.md`, `backend/CLAUDE.md`, `frontend/web/dashboard/AGENTS.md`,
   `frontend/mobile/CLAUDE.md`, `.claude/skills/monorepo-task-executor/SKILL.md` and
-  `references/gates.md`, `docs/decisions-required.md`.
+  `references/gates.md`, `docs/backlog/index.md`.
 - Backend contract policy: when the dashboard needs something the backend lacks, change
   the backend (with Pest and docs), backward compatible for the mobile apps.
 - Never push, change remotes or use `--no-verify`. Commit subject at most 100 characters.
   End commits with `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`.
 - Playwright: `TZ=UTC`, `DB_DATABASE=dorak_test` only (*(2026-11-14)* the permanent policy in
-  `decisions-required.md`; the helper refuses any other name; Laravel does not override process env, so
+  `docs/backlog/index.md`; the helper refuses any other name; Laravel does not override process env, so
   also pass `DB_HOST=127.0.0.1 DB_PORT=3307 DB_USERNAME=root DB_PASSWORD=<from backend/phpunit.xml>`),
   free ports for both servers (`E2E_APP_PORT`, and since `ff7755c3` `E2E_BACKEND_PORT`; default 3000 and 8000).
   The dev DB `dorak_backend_development_db` must never be wiped. Port 3000 belongs to unrelated
@@ -90,20 +90,20 @@ The owner `status` page is only reached through the registration and branch spec
 
 **Open owner decisions (2026-11-14):** convert the remaining Dashboard actions to policies or accept scoped
 lookups; allow jsdom and Testing Library for component tests; define what "Batch 2" meant; when to push the 19 local commits.
-*(Resolved 2026-11-14, see the [audit register](audit-register/04-decisions-and-open-questions.md): policies are converted, about 15 actions per slice; jsdom and Testing Library are allowed; "Batch 2" stays out of scope until the owner defines it (D-03); pushing happens only on an explicit owner request. WP-10 stays deferred (D-04).)*
+*(Resolved 2026-11-14, see the [audit register](backlog/index.md): policies are converted, about 15 actions per slice; jsdom and Testing Library are allowed; "Batch 2" stays out of scope until the owner defines it (D-03); pushing happens only on an explicit owner request. WP-10 stays deferred (D-04).)*
 
 ## 1. Decisions only the product owner can make (ask, do not decide in code)
 
-*(2026-11-14) Q1 and Q2 below were resolved on 2026-11-14 in `decisions-required.md` (`058087fc`): Q1 no (an admin
+*(2026-11-14) Q1 and Q2 below were resolved on 2026-11-14 in `docs/backlog/index.md` (`058087fc`): Q1 no (an admin
 deactivation blocks self-reactivation), Q2 no (a separate public resource, old fields kept until both apps ship).
 The table is kept for the evidence; WP-9 is unblocked but its code is not written.*
 
 | # | Question | Evidence | Recommended default |
 |---|---|---|---|
-| Q1 | May a barber an admin deactivated re-enable themselves via `POST /barbers/{barber}/activate`? | `decisions-required.md` line 66 | No: block until an admin reactivates, using `activation_logs.activated_by_id`. |
+| Q1 | May a barber an admin deactivated re-enable themselves via `POST /barbers/{barber}/activate`? | `docs/backlog/index.md` line 66 | No: block until an admin reactivates, using `activation_logs.activated_by_id`. |
 | Q2 | Should guests see `email`, `phone`, a freelancer's exact `latitude`/`longitude`, `submission_count`, `email_verified_at` in public barber payloads? | line 68; `BarberResource`; contract tests pin `email` (`ApiResponseContractTest.php:507,575`) | No: a separate public resource with name, bio, rating, rounded location. Needs a coordinated mobile release. |
 
-Both unblock WP-9. Record the answer in `decisions-required.md` before coding.
+Both unblock WP-9. Record the answer in `docs/backlog/index.md` before coding.
 
 ## 2. Work packages, in order
 
@@ -220,7 +220,7 @@ public resource, keep the old fields until both mobile apps are released, then r
 
 Full gates on a clean tree: backend Pest and Pint, `composer audit`; dashboard lint,
 typecheck, Vitest, build, full Playwright; `melos verify`; `check-conventions.sh`; docs
-index updated (`docs/index.md`, `docs/next-steps/index.md` status column and the
+index updated (`docs/index.md`, `docs/backlog/index.md` status column and the
 "Done (no tests)" cells, `backend/docs/feature-index.md`).
 
 ## 3. Definition of done (per WP)

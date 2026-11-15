@@ -4,6 +4,7 @@ parentnode: repo.root
 childnodes:
   - docs.architecture
   - docs.decisions
+  - docs.backlog
   - docs.remediation
   - docs.planning.dashboard-refactor-batch-3
   - docs.audit

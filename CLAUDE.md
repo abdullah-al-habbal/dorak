@@ -19,8 +19,9 @@ files in that area.
 ## Start here
 
 - Read [README.md](README.md) for the project map and local setup.
-- For planned work, read [open decisions](docs/decisions-required.md) and
-  update the relevant decision record when a decision is resolved.
+- For planned work, read the [backlog](docs/backlog/index.md) (open decisions, bugs,
+  missing features, tech debt, test gaps) and update it when an item is done or a
+  decision is resolved.
 - Use [the documentation index](docs/index.md) to find maintained product,
   architecture, and engineering documentation.
 - Before changing a subsystem, read its guide:
@@ -32,13 +33,9 @@ files in that area.
     [frontend/mobile/CLAUDE.md](frontend/mobile/CLAUDE.md), and the guides in
     the app or package being changed.
 
-## Current audit and next session
+## Backlog
 
-- **Start a session here:** [audit register start point](docs/audit-register/00-next-session-start.md), then the
-  [audit register index](docs/audit-register/index.md) (findings F-01 to F-11, final decisions A to F and D-01 to D-04, mandatory
-  [prerequisites T-01 to T-04](docs/audit-register/10-prerequisites-t01-t04.md), implementation slices, test gaps, missing features, tech debt,
-  environment and gates). The next session is implementation only: complete the startup checks and T-01, then start with S1.
-  Batch 2 and WP-10 (billing, NS-27) stay out of scope.
+- Everything still open lives in [docs/backlog/index.md](docs/backlog/index.md). Batch 2 and WP-10 (billing, NS-27) stay out of scope until the owner says so.
 
 ## Repository-wide rules
 

@@ -26,7 +26,7 @@ codeanchors:
 
 > Implement the slot-availability change using monorepo-task-executor.
 
-Nothing else is required. The audit directive, full-stack sync, gates, and local commit below are the default behaviour and need not be restated. The requirement is the user's request plus `docs/decisions-required.md`.
+Nothing else is required. The audit directive, full-stack sync, gates, and local commit below are the default behaviour and need not be restated. The requirement is the user's request plus `docs/backlog/index.md`.
 
 ## Folder map (load on demand, not up front)
 
@@ -40,7 +40,7 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 | `references/gotchas.md` | Step 5: pitfalls learned from earlier tasks |
 | `references/security-review.md` | Step 7a: when the diff needs a security review, which `security-audit` companion files to load, and what to do with each outcome |
 | `references/dashboard-shared-primitives.md` | Steps 3 and 5, and every dashboard review: the shared hooks, key factory, field builders and mappers that must be reused, not re-implemented |
-| `templates/decision-record.md` | Step 4: wording for `decisions-required.md` |
+| `templates/decision-record.md` | Step 4: wording for `docs/backlog/index.md` |
 | `templates/implemented-contract.md` | Step 4: the section recorded in the change report or relevant doc |
 | `templates/commit-message.md`, `templates/final-report.md` | Steps 9 and 10 |
 
@@ -50,7 +50,7 @@ Nothing else is required. The audit directive, full-stack sync, gates, and local
 2. **Audit.** Read every file `preflight` lists and the request in full, following `references/audit-directive.md`. If the request, a guide, or the code disagree, or a decision is open and unprescribed, stop and report it; do not guess.
 3. **Define the vertical slice.** Apply `references/fullstack-sync.md`: list affected layers, every entry point to the behaviour, and explicit out-of-scope items. Verify any client behaviour the request names even if no change is expected. For dashboard work, map each piece of the slice to a primitive in `references/dashboard-shared-primitives.md` before planning new code.
 3a. **Engineering assessment.** Before any file change, judge the slice directly from the code evidence: scope, risk, security and tenant impact, contract compatibility, test plan and the gates it must pass. If it cannot be built as one slice, or it conflicts with a recorded decision, stop and report it.
-4. **Record decisions and the contract.** Use `templates/decision-record.md` in `docs/decisions-required.md`; add the implemented contract to the relevant doc with `templates/implemented-contract.md`.
+4. **Record decisions and the contract.** Use `templates/decision-record.md` in `docs/backlog/index.md`; add the implemented contract to the relevant doc with `templates/implemented-contract.md`.
 5. **Implement with local conventions.** Imports at the top, no relative module imports, `declare(strict_types=1)`, local framework patterns per the subsystem guides. Apply each subsystem's security and quality governance (`backend/CLAUDE.md`, `frontend/web/dashboard/AGENTS.md`, `frontend/mobile/CLAUDE.md`): authorization/ownership checks, no `any`/`dynamic` escapes, file/method size limits, no magic literals or parameter clumps. Add regression tests for allowed, rejected, and side-effect behaviour. For UI work in the dashboard or mobile apps, use the shared `frontend-design` and `interface-design` skills (see `.claude/skills/README.md`); dashboard UI also runs `web-design-guidelines` before closing. If the dashboard needs a contract the backend lacks, change the backend (backward compatible for mobile) instead of adding a frontend workaround. Read `references/gotchas.md` first. In the dashboard, reuse or extend the primitives in `references/dashboard-shared-primitives.md`; this applies to fixes, hotfixes and reviews as much as to features. When a task adds a new primitive, add its row there in the same commit.
 6. **Iterate narrowly.** Focused tests and formatters on touched files only; run `scripts/check-conventions.sh`.
 7. **Run gates** from `references/gates.md` for every touched subsystem, in this order: backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, then `scripts/check-conventions.sh`. A contract change means backend, dashboard, and mobile gates all run. Playwright is mandatory for dashboard work and must fully pass; ask before running it if the user has not authorised wiping the dev database.

@@ -13,23 +13,7 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 
 ### `docs/`
 
-- [Decisions Required](../decisions-required.md)
 - [Index](../index.md)
-
-### `docs/audit-register/`
-
-- [Index](../audit-register/index.md)
-- [Start here (next session)](../audit-register/00-next-session-start.md)
-- [Findings register](../audit-register/01-findings-register.md)
-- [F-01 account-state matrix](../audit-register/02-f01-account-state-matrix.md)
-- [F-05 session lifecycle](../audit-register/03-f05-session-lifecycle.md)
-- [Decisions and open questions](../audit-register/04-decisions-and-open-questions.md)
-- [Implementation plan](../audit-register/05-implementation-plan.md)
-- [Test coverage gaps](../audit-register/06-test-coverage-gaps.md)
-- [Missing features](../audit-register/07-missing-features.md)
-- [Technical debt](../audit-register/08-tech-debt.md)
-- [Environment and gates](../audit-register/09-environment-and-gates.md)
-- [Prerequisites T-01 to T-04](../audit-register/10-prerequisites-t01-t04.md)
 
 ### `docs/architecture/`
 
@@ -51,18 +35,9 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [05: Missing backend routes](../mobile-audit-g10-g11/05-missing-backend-routes.md)
 - [06: MVP scope decisions](../mobile-audit-g10-g11/06-mvp-scope-decisions.md)
 
-### `docs/next-steps/`
+### `docs/backlog/`
 
-- [Next Steps: Launch Roadmap](../next-steps/index.md)
-- [Decisions for the Launch Roadmap](../next-steps/01-decisions.md)
-- [Phase 1: Nobody Is Locked Out](../next-steps/02-phase-1-access.md)
-- [Phase 2: The Platform Team Runs the Platform Alone](../next-steps/03-phase-2-governance.md)
-- [Phase 3: The Daily Routine Needs No Workaround](../next-steps/04-phase-3-daily-operations.md)
-- [Phase 4: Staffing and Signature Features](../next-steps/05-phase-4-staffing.md)
-- [Phase 5: Reference Data and Money](../next-steps/06-phase-5-reference-and-money.md)
-- [Phases 6 and 7: Growth, then Retire Filament](../next-steps/07-phase-6-7-growth-and-retirement.md)
-- [Coverage Matrix](../next-steps/08-coverage-matrix.md)
-- [Audit: Registration, Approval and Error Handling](../next-steps/09-audit-registration-and-errors.md)
+- [Backlog: remaining tasks, issues and decisions](../backlog/index.md)
 
 ### `docs/planning/`
 

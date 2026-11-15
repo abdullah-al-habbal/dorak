@@ -6,7 +6,7 @@ namespace Modules\Dashboard\Constants;
 
 /**
  * Public brand-owner registration (NS-03). The limits are the launch defaults
- * from docs/next-steps/01-decisions.md: 5 per minute per IP and 5 per hour per
+ * from docs/backlog/index.md (decisions in force): 5 per minute per IP and 5 per hour per
  * email for sign-ups and code resends. Verifying a code has its own, looser
  * per-email cap, which bounds a guess of the 6-digit code to a few per hour.
  */

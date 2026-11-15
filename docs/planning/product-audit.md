@@ -13,7 +13,7 @@ codeanchors:
 
 # Product Vision and Workflow Audit
 
-> Role-by-role check that every workflow has a backend route **and** a UI. Dated 2026-11-03. Open product calls are tracked in [open decisions](../decisions-required.md).
+> Role-by-role check that every workflow has a backend route **and** a UI. Dated 2026-11-03. Open product calls are tracked in [open decisions](../backlog/index.md).
 
 Part 1 of 3 · [Matrix](product-audit-part-2.md) · [Findings](product-audit-part-3.md)
 

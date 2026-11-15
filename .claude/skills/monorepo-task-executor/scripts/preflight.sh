@@ -13,9 +13,9 @@ git status --short
 echo
 echo "== open decisions${topic:+ mentioning \"$topic\"} =="
 if [ -n "$topic" ]; then
-  grep -n -i -- "$topic" docs/decisions-required.md || echo "(none)"
+  grep -n -i -- "$topic" docs/backlog/index.md || echo "(none)"
 else
-  grep -n "Decision required" docs/decisions-required.md | grep -v "\[x\]" || echo "(none open)"
+  sed -n "/^## 1. Open decisions/,/^## 2\./p" docs/backlog/index.md
 fi
 echo
 echo "== guides to read =="

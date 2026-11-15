@@ -6,7 +6,7 @@ namespace Modules\Dashboard\Constants;
 
 /**
  * Dashboard password recovery (NS-01). The per-email limit on requests is the
- * launch default from docs/next-steps/01-decisions.md (operational defaults);
+ * launch default from docs/backlog/index.md (decisions in force) (operational defaults);
  * the reset step is limited per IP only, because a per-email cap there would
  * let anyone lock a victim out without adding protection to a 64-character token.
  */

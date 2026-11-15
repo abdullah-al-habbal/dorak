@@ -10,7 +10,7 @@ codeanchors:
 
 # 06: MVP scope decisions
 
-Routes: [index](index.md) · [open decision](../decisions-required.md).
+Routes: [index](index.md) · [open decision](../backlog/index.md).
 
 **Status:** Open. This note records the recommendation. It is **not** a resolved decision.
 
@@ -41,4 +41,4 @@ Routes: [index](index.md) · [open decision](../decisions-required.md).
 2. Confirm the inbox definition ([03](03-inbox-scope-definition.md)).
 3. Decide on earnings scope ([02](02-token-scope-mismatch.md)).
 
-When resolved, update `docs/decisions-required.md` and record an ADR next to [ADR 0002](../adr/0002-mvp-scope-deferrals.md).
+When resolved, update `docs/backlog/index.md` and record an ADR next to [ADR 0002](../adr/0002-mvp-scope-deferrals.md).

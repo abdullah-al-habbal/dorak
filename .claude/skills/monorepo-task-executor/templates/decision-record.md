@@ -8,7 +8,7 @@ codeanchors:
   - frontend/mobile/
 ---
 
-<!-- docs/decisions-required.md: replace the open line under the task heading -->
+<!-- docs/backlog/index.md: move the item out of section 1 and add this line under "Decisions in force" -->
 - [x] Decision resolved (<ID, e.g. EC-2>): <choice>. <Observable behaviour: statuses, codes, side effects>. <What is deliberately not done and why>. <Follow-ups>.
 
 <!-- the relevant doc: replace the "Decision required" bullet -->

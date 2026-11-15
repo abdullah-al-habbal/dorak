@@ -17,7 +17,7 @@ codeanchors:
 
 # Mobile Audit G10 / G11: Master Index
 
-Routes: [documentation graph](../index.md) · [open decisions](../decisions-required.md) · [product audit findings](../planning/product-audit-part-3.md).
+Routes: [documentation graph](../index.md) · [open decisions](../backlog/index.md) · [product audit findings](../planning/product-audit-part-3.md).
 
 Read-only audit of `business_app`, `stylist_app` and `packages/core` against the backend, dated 2026-11-03. Findings come from reading code; the analyzer and full test suite were not run for the audit itself. Statuses below are updated as tasks close.
 

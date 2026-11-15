@@ -51,4 +51,4 @@ workarounds.
 Follow the [dashboard guide](../../frontend/web/dashboard/AGENTS.md) and the
 [source layout rules](../../frontend/web/dashboard/src/README.md). Gates: `npm run lint`,
 `npm run typecheck`, `npm test`, `npm run build`. Open work is tracked in the
-[feature modules plan](../feature-modules-plan.md) and [open decisions](../decisions-required.md).
+[feature modules plan](../feature-modules-plan.md) and [open decisions](../backlog/index.md).

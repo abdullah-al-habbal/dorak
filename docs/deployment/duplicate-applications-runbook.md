@@ -1,8 +1,8 @@
 # Runbook: duplicate job applications and the unique-index migration
 
 Status: **approved and implemented (2026-11-14).** The rules are recorded in
-[decisions-required.md](../decisions-required.md) ("Duplicate application cleanup", "Migration strategy for the
-unique index"). The procedure below is safe to repeat. No production data is known to exist
+the former open-decisions file ("Duplicate application cleanup", "Migration strategy for the
+unique index"; in Git history at `de6cff09:docs/decisions-required.md`). The procedure below is safe to repeat. No production data is known to exist
 (see "Production status" there), so today every step is a no-op; it is kept for the first deploy to a database that
 holds data.
 
