@@ -1,4 +1,4 @@
-import type { AuthActor } from "@/enums/auth-actor.enum";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
 
 export const ROUTE_ROOT = "/dashboard";
 export const HOME_ROUTE = "/";

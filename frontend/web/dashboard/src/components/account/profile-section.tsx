@@ -7,8 +7,8 @@ import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
-import { DISPLAY_NAME_MAX_LENGTH } from "@/config/field-limit.constant";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { DISPLAY_NAME_MAX_LENGTH } from "@/config/money-shell/field-limit.constant";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useDisplayNameForm } from "@/hooks/account/use-display-name-form";
 
 export function ProfileSection({ displayName }: { displayName: string | null }): JSX.Element {

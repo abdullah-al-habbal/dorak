@@ -1,5 +1,5 @@
-import { BRANCH_MAX_SEARCH } from "@/config/branch.constant";
-import { BranchStatus } from "@/enums/branch-status.enum";
+import { BRANCH_MAX_SEARCH } from "@/config/venue/branch.constant";
+import { BranchStatus } from "@/enums/venue/branch-status.enum";
 import type { BranchFilters } from "@/types/branches/branch-filters.type";
 
 const STATUSES = new Set<string>(Object.values(BranchStatus));

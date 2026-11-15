@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 /** The barber's profile as it was when they applied (`BarberProfileSnapshotBuilder`); only the fields the screen shows. */
 const profileSnapshotSchema = z.object({

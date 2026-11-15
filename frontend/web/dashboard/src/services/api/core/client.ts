@@ -1,10 +1,10 @@
 import { API_ROUTE } from "@/config/routes.constant";
-import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import { HttpMethod } from "@/enums/http-method.enum";
-import { HttpStatus } from "@/enums/http-status.enum";
-import type { ApiRequestOptions } from "@/interfaces/core/api-request-options.interface";
-import { apiFailureBodySchema } from "@/schemas/core/api-failure-body.zod";
-import { apiSuccessBodySchema } from "@/schemas/core/api-success-body.zod";
+import { ApiErrorCode } from "@/enums/access/api-error-code.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
+import type { ApiRequestOptions } from "@/interfaces/core/transport/api-request-options.interface";
+import { apiFailureBodySchema } from "@/schemas/core/api/api-failure-body.zod";
+import { apiSuccessBodySchema } from "@/schemas/core/api/api-success-body.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import { reportSessionExpired } from "@/services/api/core/session-expiry.util";
 

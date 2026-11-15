@@ -2,8 +2,8 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
 import type { WalkInPayload } from "@/interfaces/bookings/walk-in-payload.interface";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { createWalkIn } from "@/services/api/mutation/bookings/create-walk-in.mutation";

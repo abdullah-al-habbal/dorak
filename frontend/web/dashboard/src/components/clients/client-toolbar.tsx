@@ -4,11 +4,11 @@ import type { JSX } from "react";
 
 import { SearchInput } from "@/components/common/search-input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { CLIENT_STATUS_FILTER_ALL } from "@/config/client.constant";
-import { ClientBanFilter } from "@/enums/client-ban-filter.enum";
-import { ClientStatus } from "@/enums/client-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import type { ClientFilters } from "@/types/clients/client-filters.type";
+import { CLIENT_STATUS_FILTER_ALL } from "@/config/venue/client.constant";
+import { ClientBanFilter } from "@/enums/people/client-ban-filter.enum";
+import { ClientStatus } from "@/enums/people/client-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import type { ClientFilters } from "@/types/clients/clients/client-filters.type";
 
 interface ClientToolbarProps {
   filters: ClientFilters;

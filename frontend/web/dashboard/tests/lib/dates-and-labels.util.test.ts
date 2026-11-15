@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { Locale } from "@/enums/locale.enum";
-import { Weekday } from "@/enums/weekday.enum";
+import { Locale } from "@/enums/access/locale.enum";
+import { Weekday } from "@/enums/booking/weekday.enum";
 import { DICTIONARIES } from "@/locales/dictionaries.constant";
 import { addDays, minutesBetween, parseDateKey, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
 import { actorLabel, isBookingStatus, statusLabel } from "@/lib/bookings/booking-status-label.util";
 import { formatCount, formatPercent, formatShortDate } from "@/lib/earnings/earnings-format.util";
 import { registerErrorMessage } from "@/lib/account/register-error.util";
-import { slugify } from "@/lib/core/slugify.util";
+import { slugify } from "@/lib/core/format/slugify.util";
 import { weekdayLabel } from "@/lib/hours/weekday-label.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 

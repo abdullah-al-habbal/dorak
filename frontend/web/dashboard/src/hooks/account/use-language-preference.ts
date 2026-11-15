@@ -1,9 +1,9 @@
 "use client";
 
-import type { Locale } from "@/enums/locale.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
-import { useLocaleSwitch } from "@/hooks/core/use-locale-switch";
+import type { Locale } from "@/enums/access/locale.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
+import { useLocaleSwitch } from "@/hooks/core/state/use-locale-switch";
 import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { updatePreferredLanguage } from "@/services/api/mutation/account/account.mutation";
 

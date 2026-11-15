@@ -6,8 +6,8 @@ import { ErrorState } from "@/components/common/error-state";
 import { PlanFormBody } from "@/components/plans/plan-form-body";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SkeletonRows } from "@/components/ui/skeleton-row";
-import { useCurrencies } from "@/hooks/platform/use-currencies";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { useCurrencies } from "@/hooks/platform/currencies/use-currencies";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import { usePlanFeatureKeys } from "@/hooks/plans/use-plan-feature-keys";
 import type { Plan } from "@/types/plans/plan.type";
 

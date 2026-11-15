@@ -1,8 +1,8 @@
-import { BOOKING_NOTIFICATION_TYPE, BOOKINGS_SEGMENT, NOTIFICATION_EVENT_SEGMENT } from "@/config/notification.constant";
+import { BOOKING_NOTIFICATION_TYPE, BOOKINGS_SEGMENT, NOTIFICATION_EVENT_SEGMENT } from "@/config/money-shell/notification.constant";
 import { portalRoot } from "@/config/routes.constant";
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import { NotificationEvent } from "@/enums/notification-event.enum";
-import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import { NotificationEvent } from "@/enums/ui/notification-event.enum";
+import type { DashboardNotification } from "@/types/account/profile/dashboard-notification.type";
 
 const EVENTS = new Set<string>(Object.values(NotificationEvent));
 

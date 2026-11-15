@@ -2,8 +2,8 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
 import type { PayoutTransitionPayload } from "@/interfaces/earnings/payout-transition-payload.interface";
 import { adminPayoutKeys } from "@/lib/query-keys/earnings/admin-payout-keys";
 import { payoutKeys } from "@/lib/query-keys/earnings/payout-keys";

@@ -1,5 +1,5 @@
 import type { ServiceFilters } from "@/types/services/service-filters.type";
-import { createQueryKeys, queryKey } from "@/lib/core/create-query-keys.util";
+import { createQueryKeys, queryKey } from "@/lib/core/query/create-query-keys.util";
 
 export const serviceKeys = {
   ...createQueryKeys("services", {

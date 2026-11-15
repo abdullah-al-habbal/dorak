@@ -7,10 +7,10 @@ import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { useDeleteTestimonial, useWebsiteContent } from "@/hooks/platform/use-website-content";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { useDeleteTestimonial, useWebsiteContent } from "@/hooks/platform/settings/use-website-content";
 import { localeText } from "@/lib/platform/website-content.util";
 import type { Testimonial } from "@/types/platform/website-content.type";
 

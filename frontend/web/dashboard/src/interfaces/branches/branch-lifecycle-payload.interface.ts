@@ -1,4 +1,4 @@
-import type { BranchLifecycleAction } from "@/enums/branch-lifecycle-action.enum";
+import type { BranchLifecycleAction } from "@/enums/venue/branch-lifecycle-action.enum";
 
 export interface BranchLifecyclePayload {
   id: string;

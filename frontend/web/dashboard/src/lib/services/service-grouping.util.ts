@@ -1,5 +1,5 @@
 import type { ServiceGroup } from "@/interfaces/services/service-group.interface";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { Service } from "@/types/services/service.type";
 
 export const UNCATEGORISED_KEY = "__uncategorised__";

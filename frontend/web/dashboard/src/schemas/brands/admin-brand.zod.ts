@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { BrandStatus } from "@/enums/brand-status.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
-import { optionalTranslationSchema } from "@/schemas/core/optional-translation.zod";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
+import { optionalTranslationSchema } from "@/schemas/core/api/optional-translation.zod";
 
 /** `GET /brands` and `GET /brands/{id}` (`BrandResource`), the fields the admin approval screen reads. */
 export const adminBrandSchema = z.object({

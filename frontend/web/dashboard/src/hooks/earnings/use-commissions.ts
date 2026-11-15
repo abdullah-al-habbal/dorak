@@ -2,11 +2,11 @@
 
 import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 
-import { useDeleteMutation } from "@/hooks/core/use-delete-mutation";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useListQuery } from "@/hooks/core/use-list-query";
-import { useSaveMutation } from "@/hooks/core/use-save-mutation";
-import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
+import { useDeleteMutation } from "@/hooks/core/query/use-delete-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useListQuery } from "@/hooks/core/query/use-list-query";
+import { useSaveMutation } from "@/hooks/core/query/use-save-mutation";
+import type { SaveVariables } from "@/interfaces/core/query/save-variables.interface";
 import { commissionKeys } from "@/lib/query-keys/earnings/commission-keys";
 import { createCommissionRule, deleteCommissionRule, updateCommissionRule } from "@/services/api/mutation/earnings/commission.mutation";
 import type { CommissionRulePayload } from "@/services/api/mutation/earnings/commission.mutation";

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { BookingStatus } from "@/enums/booking-status.enum";
-import { ScheduleRange } from "@/enums/schedule-range.enum";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import { ScheduleRange } from "@/enums/booking/schedule-range.enum";
 import { scheduleFiltersFromParams, scheduleFiltersToParams, scheduleWindow } from "@/lib/bookings/schedule-filters.util";
 
 describe("schedule filters", () => {

@@ -4,10 +4,10 @@ import type { JSX } from "react";
 
 import { InvitationStatusBadge } from "@/components/invitations/invitation-status-badge";
 import { Button } from "@/components/ui/button";
-import { AffiliationInitiator } from "@/enums/affiliation-initiator.enum";
-import { AffiliationStatus } from "@/enums/affiliation-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { AffiliationInitiator } from "@/enums/people/affiliation-initiator.enum";
+import { AffiliationStatus } from "@/enums/people/affiliation-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { InvitationAction } from "@/services/api/mutation/branches/invitation.mutation";
 import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 

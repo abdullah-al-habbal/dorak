@@ -7,10 +7,10 @@ import type { JSX } from "react";
 import { BarberStatusBadge } from "@/components/barber-approvals/barber-status-badge";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
-import { BarberStatus } from "@/enums/barber-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import type { DataTableColumn } from "@/interfaces/ui/data/data-table-column.interface";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberApprovalListProps {

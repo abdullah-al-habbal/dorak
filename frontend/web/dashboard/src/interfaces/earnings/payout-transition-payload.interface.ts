@@ -1,4 +1,4 @@
-import type { PayoutAction } from "@/enums/payout-action.enum";
+import type { PayoutAction } from "@/enums/money/payout-action.enum";
 
 export interface PayoutTransitionPayload {
   id: string;

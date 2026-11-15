@@ -1,6 +1,6 @@
-import { DEFAULT_REVIEW_MODERATION_STATUS, REVIEW_MODERATION_PER_PAGE } from "@/config/review-moderation.constant";
-import { ReviewStatus } from "@/enums/review-status.enum";
-import type { ReviewModerationFilters } from "@/types/clients/review-moderation-filters.type";
+import { DEFAULT_REVIEW_MODERATION_STATUS, REVIEW_MODERATION_PER_PAGE } from "@/config/platform/review-moderation.constant";
+import { ReviewStatus } from "@/enums/people/review-status.enum";
+import type { ReviewModerationFilters } from "@/types/clients/reviews/review-moderation-filters.type";
 
 const STATUSES = new Set<string>(Object.values(ReviewStatus));
 

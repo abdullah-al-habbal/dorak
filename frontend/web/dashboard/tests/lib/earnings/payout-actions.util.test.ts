@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { PayoutAction } from "@/enums/payout-action.enum";
-import { PayoutStatus } from "@/enums/payout-status.enum";
+import { PayoutAction } from "@/enums/money/payout-action.enum";
+import { PayoutStatus } from "@/enums/money/payout-status.enum";
 import { availablePayoutActions } from "@/lib/earnings/payout-actions.util";
 
 describe("availablePayoutActions", () => {

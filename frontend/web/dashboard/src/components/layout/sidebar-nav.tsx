@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { NavQueueCount } from "@/components/layout/nav-queue-count";
-import { NAV_ITEMS } from "@/config/nav.constant";
+import { NAV_ITEMS } from "@/config/money-shell/nav.constant";
 import { portalRoot } from "@/config/routes.constant";
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { cn } from "@/lib/utils";
 
 interface SidebarNavProps {

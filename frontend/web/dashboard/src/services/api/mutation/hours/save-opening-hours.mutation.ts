@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { OpeningHoursPayload } from "@/interfaces/hours/opening-hours-payload.interface";
 import { openingHoursSchema } from "@/schemas/hours/opening-hours.zod";

@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 
-import { HttpStatus } from "@/enums/http-status.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const STALE_TIME_MS = 30_000;

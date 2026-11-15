@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { BranchStatus } from "@/enums/branch-status.enum";
-import { VenueUniverse } from "@/enums/venue-universe.enum";
+import { BranchStatus } from "@/enums/venue/branch-status.enum";
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
 import { branchToForm, emptyBranchForm, formToBranchPayload } from "@/lib/branches/branch-form.util";
 import type { BranchDetail } from "@/types/branches/branch-detail.type";
 

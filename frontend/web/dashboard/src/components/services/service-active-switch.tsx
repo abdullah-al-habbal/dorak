@@ -3,8 +3,8 @@
 import type { JSX } from "react";
 
 import { Switch } from "@/components/ui/switch";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { Service } from "@/types/services/service.type";
 
 interface ServiceActiveSwitchProps {

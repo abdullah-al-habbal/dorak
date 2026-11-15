@@ -2,10 +2,10 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useOptimisticToggleMutation } from "@/hooks/core/use-optimistic-toggle-mutation";
-import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggle-context.interface";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useOptimisticToggleMutation } from "@/hooks/core/query/use-optimistic-toggle-mutation";
+import type { OptimisticToggleContext } from "@/interfaces/core/query/optimistic-toggle-context.interface";
 import { withChairStatus } from "@/lib/chairs/chair-cache.util";
 import { statusChangePayload } from "@/lib/chairs/chair-form.util";
 import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";

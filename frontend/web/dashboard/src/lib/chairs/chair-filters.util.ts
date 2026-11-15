@@ -1,6 +1,6 @@
-import { CHAIR_MAX_SEARCH } from "@/config/chair-layout.constant";
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { FloorZone } from "@/enums/floor-zone.enum";
+import { CHAIR_MAX_SEARCH } from "@/config/venue/chair-layout.constant";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { FloorZone } from "@/enums/people/floor-zone.enum";
 import type { ChairFilters } from "@/types/chairs/chair-filters.type";
 
 const STATUSES = new Set<string>(Object.values(ChairStatus));

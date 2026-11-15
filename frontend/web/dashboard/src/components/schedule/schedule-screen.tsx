@@ -9,10 +9,10 @@ import { ScheduleHoursCard } from "@/components/schedule/schedule-hours-card";
 import { ScheduleToolbar } from "@/components/schedule/schedule-toolbar";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { SCHEDULE_DEFAULT_RANGE } from "@/config/schedule.constant";
+import { SCHEDULE_DEFAULT_RANGE } from "@/config/ops/schedule.constant";
 import { WEEK_START } from "@/config/week-start.constant";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useScheduleAppointments } from "@/hooks/bookings/use-schedule-appointments";
 import { useScheduleFilters } from "@/hooks/bookings/use-schedule-filters";
 

@@ -1,4 +1,4 @@
-import { queryKey } from "@/lib/core/create-query-keys.util";
+import { queryKey } from "@/lib/core/query/create-query-keys.util";
 
 export const openingHoursKeys = {
   branch: (branchId: string) => queryKey("opening-hours", branchId),

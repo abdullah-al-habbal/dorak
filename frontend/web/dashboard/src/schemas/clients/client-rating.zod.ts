@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CLIENT_RATING_BODY_MAX, CLIENT_RATING_MAX, CLIENT_RATING_MIN } from "@/config/client-rating.constant";
+import { CLIENT_RATING_BODY_MAX, CLIENT_RATING_MAX, CLIENT_RATING_MIN } from "@/config/venue/client-rating.constant";
 
 /** The shop's rating of a client, as the booking payload carries it (`client_review`). */
 export const clientRatingSchema = z.object({

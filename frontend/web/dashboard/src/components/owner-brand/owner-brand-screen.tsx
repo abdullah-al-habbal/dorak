@@ -8,12 +8,12 @@ import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { BrandStatus } from "@/enums/brand-status.enum";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { useOwnerBrands } from "@/hooks/brands/use-owner-brands";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { useOwnerBrands } from "@/hooks/brands/owner/use-owner-brands";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** The owner's brands: edit the profile, add another brand. A suspended brand can't be edited (the platform team lifts that). */

@@ -4,9 +4,9 @@ import type { JSX } from "react";
 
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { NativeSelect } from "@/components/ui/native-select";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useServiceCategories } from "@/hooks/services/use-service-categories";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useServiceCategories } from "@/hooks/services/services/use-service-categories";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 
 interface ServiceCategoryFieldProps {
   value: string;

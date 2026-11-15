@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
 import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { requestEmailChange, verifyEmailChange } from "@/services/api/mutation/account/account.mutation";
 import { useAuthStore } from "@/store/auth.store";
-import type { AccountProfile } from "@/types/account/account-profile.type";
-import type { EmailChangeResult } from "@/types/account/email-change-result.type";
+import type { AccountProfile } from "@/types/account/profile/account-profile.type";
+import type { EmailChangeResult } from "@/types/account/profile/email-change-result.type";
 
 interface EmailChange {
   /** The address waiting for its code; the code step shows while this is set. */

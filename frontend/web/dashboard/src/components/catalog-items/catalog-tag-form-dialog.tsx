@@ -9,11 +9,11 @@ import { FormField } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { CATALOG_TAG_GROUP_MAX, CATALOG_TAG_NAME_MAX } from "@/config/admin-catalog.constant";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useDeleteCatalogTag, useSaveCatalogTag } from "@/hooks/services/use-catalog-admin";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
+import { CATALOG_TAG_GROUP_MAX, CATALOG_TAG_NAME_MAX } from "@/config/platform/admin-catalog.constant";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useDeleteCatalogTag, useSaveCatalogTag } from "@/hooks/services/catalog/use-catalog-admin";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
 import type { CatalogTag } from "@/types/services/catalog-item.type";
 
 function pair(value: unknown): { en: string; ar: string } {

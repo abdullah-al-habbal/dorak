@@ -3,8 +3,8 @@ import type { UseFormReturn } from "react-hook-form";
 
 import { PlatformSettingField } from "@/components/platform-settings/platform-setting-field";
 import { Card } from "@/components/ui/card";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import type { SettingGroup } from "@/enums/setting-group.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import type { SettingGroup } from "@/enums/ui/setting-group.enum";
 import type { SettingFormValues } from "@/lib/platform/platform-settings.util";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 

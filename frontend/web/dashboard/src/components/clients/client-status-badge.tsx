@@ -4,9 +4,9 @@ import { BanIcon } from "lucide-react";
 import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { CLIENT_STATUS_STYLE } from "@/config/client.constant";
-import type { ClientStatus } from "@/enums/client-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { CLIENT_STATUS_STYLE } from "@/config/venue/client.constant";
+import type { ClientStatus } from "@/enums/people/client-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 interface ClientStatusBadgeProps {
   status: ClientStatus;

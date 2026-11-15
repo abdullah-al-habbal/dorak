@@ -2,7 +2,7 @@
 
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { useDetailQuery } from "@/hooks/core/use-detail-query";
+import { useDetailQuery } from "@/hooks/core/query/use-detail-query";
 import { hoursOverrideKeys } from "@/lib/query-keys/hours/hours-override-keys";
 import { fetchHoursOverrides } from "@/services/api/query/hours/hours-override.query";
 import type { HoursOverride } from "@/types/hours/hours-override.type";

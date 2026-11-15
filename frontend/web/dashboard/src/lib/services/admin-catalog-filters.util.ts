@@ -1,5 +1,5 @@
-import { ADMIN_CATALOG_MAX_SEARCH } from "@/config/admin-catalog.constant";
-import { CatalogCategoryStatus } from "@/enums/catalog-category-status.enum";
+import { ADMIN_CATALOG_MAX_SEARCH } from "@/config/platform/admin-catalog.constant";
+import { CatalogCategoryStatus } from "@/enums/venue/catalog-category-status.enum";
 import type { AdminCatalogFilters } from "@/types/services/admin-catalog-filters.type";
 
 function toStatus(value: string | null): CatalogCategoryStatus | undefined {

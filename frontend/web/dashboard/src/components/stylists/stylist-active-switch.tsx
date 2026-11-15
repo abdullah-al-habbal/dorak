@@ -3,9 +3,9 @@
 import type { JSX } from "react";
 
 import { Switch } from "@/components/ui/switch";
-import { BarberStatus } from "@/enums/barber-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { Stylist } from "@/types/stylists/stylist.type";
 
 interface StylistActiveSwitchProps {

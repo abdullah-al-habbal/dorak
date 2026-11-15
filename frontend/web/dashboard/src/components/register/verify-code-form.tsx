@@ -8,9 +8,9 @@ import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EMAIL_CODE_LENGTH } from "@/config/field-limit.constant";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useVerifyOwnerCodeForm } from "@/hooks/core/use-verify-owner-code-form";
+import { EMAIL_CODE_LENGTH } from "@/config/money-shell/field-limit.constant";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useVerifyOwnerCodeForm } from "@/hooks/core/forms/use-verify-owner-code-form";
 
 interface VerifyCodeFormProps {
   email: string;

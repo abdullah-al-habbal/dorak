@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 export const arAdminUsers: Dictionary["adminUsers"] = {
   title: "المشرفون",

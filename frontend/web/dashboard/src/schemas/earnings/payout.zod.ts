@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { PayoutDirection } from "@/enums/payout-direction.enum";
-import { PayoutStatus } from "@/enums/payout-status.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { PayoutDirection } from "@/enums/money/payout-direction.enum";
+import { PayoutStatus } from "@/enums/money/payout-status.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 export const payoutSchema = z.object({
   id: z.string(),

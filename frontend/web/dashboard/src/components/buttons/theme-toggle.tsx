@@ -10,9 +10,9 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ThemeMode } from "@/enums/theme-mode.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { themeModeSchema } from "@/schemas/core/theme-mode.zod";
+import { ThemeMode } from "@/enums/ui/theme-mode.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { themeModeSchema } from "@/schemas/core/api/theme-mode.zod";
 import { useThemeStore } from "@/store/theme.store";
 
 export function ThemeToggle() {

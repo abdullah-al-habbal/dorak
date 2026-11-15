@@ -7,9 +7,9 @@ import { CommissionLedgerPanel } from "@/components/commissions/commission-ledge
 import { CommissionRulesPanel } from "@/components/commissions/commission-rules-panel";
 import { EmptyState } from "@/components/common/empty-state";
 import { Button } from "@/components/ui/button";
-import type { CommissionView } from "@/config/commission.constant";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import type { CommissionView } from "@/config/platform/commission.constant";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 
 /** Platform commission: the rules that set it and the ledger of what was charged. Admin only. */
 export function CommissionsScreen({ actor }: { actor: AuthActor }): JSX.Element {

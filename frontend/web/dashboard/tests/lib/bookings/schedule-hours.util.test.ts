@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { Weekday } from "@/enums/weekday.enum";
+import { Weekday } from "@/enums/booking/weekday.enum";
 import { formatClock, scheduleWeek } from "@/lib/bookings/schedule-hours.util";
 import type { ScheduleHoursRow } from "@/types/bookings/schedule-hours-row.type";
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ShiftIssue } from "@/enums/shift-issue.enum";
-import { Weekday } from "@/enums/weekday.enum";
+import { ShiftIssue } from "@/enums/booking/shift-issue.enum";
+import { Weekday } from "@/enums/booking/weekday.enum";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import {
   addShift,

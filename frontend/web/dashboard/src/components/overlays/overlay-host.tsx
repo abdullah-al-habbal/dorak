@@ -8,11 +8,11 @@ import { ClientBanDialog } from "@/components/clients/client-ban-dialog";
 import { ClientDetailDialog } from "@/components/clients/client-detail-dialog";
 import { BarberBanDialog } from "@/components/barber-approvals/barber-ban-dialog";
 import { BarberRejectDialog } from "@/components/barber-approvals/barber-reject-dialog";
-import { BrandEditDialog } from "@/components/admin-brands/brand-edit-dialog";
-import { BrandReasonDialog } from "@/components/admin-brands/brand-reason-dialog";
-import { BranchOversightDialog } from "@/components/branches/branch-oversight-dialog";
-import { BranchSuspendDialog } from "@/components/branches/branch-suspend-dialog";
-import { BrandDetailDialog } from "@/components/admin-brands/brand-detail-dialog";
+import { BrandEditDialog } from "@/components/admin-brands/detail/brand-edit-dialog";
+import { BrandReasonDialog } from "@/components/admin-brands/detail/brand-reason-dialog";
+import { BranchOversightDialog } from "@/components/branches/oversight/branch-oversight-dialog";
+import { BranchSuspendDialog } from "@/components/branches/oversight/branch-suspend-dialog";
+import { BrandDetailDialog } from "@/components/admin-brands/detail/brand-detail-dialog";
 import { CatalogCategoryDetailDialog } from "@/components/admin-catalog/catalog-category-detail-dialog";
 import { CatalogCategoryFormDialog } from "@/components/admin-catalog/catalog-category-form-dialog";
 import { PayoutActionDialog } from "@/components/admin-payouts/payout-action-dialog";
@@ -24,8 +24,8 @@ import { ReviewDisputeDialog } from "@/components/reviews/review-dispute-dialog"
 import { JobApplicationsDialog } from "@/components/jobs/job-applications-dialog";
 import { JobPostingFormDialog } from "@/components/jobs/job-posting-form-dialog";
 import { InviteBarberDialog } from "@/components/invitations/invite-barber-dialog";
-import { RateClientDialog } from "@/components/bookings/rate-client-dialog";
-import { RescheduleDialog } from "@/components/bookings/reschedule-dialog";
+import { RateClientDialog } from "@/components/bookings/dialogs/rate-client-dialog";
+import { RescheduleDialog } from "@/components/bookings/dialogs/reschedule-dialog";
 import { ServiceFormDialog } from "@/components/services/service-form-dialog";
 import { CatalogItemFormDialog } from "@/components/catalog-items/catalog-item-form-dialog";
 import { CatalogTagFormDialog } from "@/components/catalog-items/catalog-tag-form-dialog";
@@ -39,9 +39,9 @@ import { CurrencyFormDialog } from "@/components/currencies/currency-form-dialog
 import { ExchangeRateDialog } from "@/components/currencies/exchange-rate-dialog";
 import { StylistPricingDialog } from "@/components/stylists/stylist-pricing-dialog";
 import { StylistFormDialog } from "@/components/stylists/stylist-form-dialog";
-import { WalkInDialog } from "@/components/bookings/walk-in-dialog";
+import { WalkInDialog } from "@/components/bookings/dialogs/walk-in-dialog";
 import { ConfirmOverlay } from "@/components/overlays/confirm-overlay";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import type { OverlayRequest } from "@/types/ui/overlay-request.type";
 
 interface OverlayHostProps {

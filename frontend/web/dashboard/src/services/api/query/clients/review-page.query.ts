@@ -1,9 +1,9 @@
-import { REVIEW_PER_PAGE } from "@/config/review.constant";
+import { REVIEW_PER_PAGE } from "@/config/venue/review.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/query/resolve-page-info.util";
 import { reviewListSchema, reviewSummarySchema } from "@/schemas/clients/review.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
-import type { ReviewPage } from "@/types/clients/review-page.type";
+import type { ReviewPage } from "@/types/clients/reviews/review-page.type";
 
 const EMPTY_SUMMARY = { average: null, count: 0, distribution: {} };
 

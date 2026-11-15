@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { JSX } from "react";
 
-import { BookingDetailDialog } from "@/components/bookings/booking-detail-dialog";
+import { BookingDetailDialog } from "@/components/bookings/dialogs/booking-detail-dialog";
 import { BookingGrid } from "@/components/bookings/booking-grid";
 import { BookingList } from "@/components/bookings/booking-list";
 import { BookingToolbar } from "@/components/bookings/booking-toolbar";
@@ -13,16 +13,16 @@ import { FilterChips } from "@/components/common/filter-chips";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { WEEK_START } from "@/config/week-start.constant";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { BookingView } from "@/enums/booking-view.enum";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { BookingView } from "@/enums/booking/booking-view.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useBookingFilters } from "@/hooks/bookings/use-booking-filters";
 import { useBookingsQuery } from "@/hooks/bookings/use-bookings-query";
 import { useChairOptions } from "@/hooks/chairs/use-chair-options";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { buildBookingChips, CLEAR_ALL_PATCH, patchForChip } from "@/lib/bookings/booking-chips.util";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { Booking } from "@/types/bookings/booking.type";
 
 export function BookingsScreen({ actor }: { actor: AuthActor }): JSX.Element {

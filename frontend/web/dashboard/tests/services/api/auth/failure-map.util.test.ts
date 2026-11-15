@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import type { BackendResult } from "@/interfaces/core/backend-result.interface";
+import { ApiErrorCode } from "@/enums/access/api-error-code.enum";
+import type { BackendResult } from "@/interfaces/core/query/backend-result.interface";
 import { mapBackendFailure } from "@/services/api/auth/failure-map.util";
 
 function result(status: number, code = "X", failure: BackendResult["failure"] = "none"): BackendResult {

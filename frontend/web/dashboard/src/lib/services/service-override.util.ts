@@ -1,4 +1,4 @@
-import { minorUnitsToInput, parseMinorUnits } from "@/lib/core/money.util";
+import { minorUnitsToInput, parseMinorUnits } from "@/lib/core/format/money.util";
 import type { ServiceOverridePayload } from "@/services/api/mutation/stylists/stylist-pricing.mutation";
 import type { ServiceTerms } from "@/types/services/service-terms.type";
 

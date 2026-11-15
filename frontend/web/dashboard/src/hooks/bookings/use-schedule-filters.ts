@@ -1,6 +1,6 @@
 "use client";
 
-import { useUrlFilters } from "@/hooks/core/use-url-filters";
+import { useUrlFilters } from "@/hooks/core/state/use-url-filters";
 import { scheduleFiltersFromParams, scheduleFiltersToParams } from "@/lib/bookings/schedule-filters.util";
 import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";
 

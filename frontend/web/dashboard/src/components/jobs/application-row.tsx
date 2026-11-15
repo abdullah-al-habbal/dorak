@@ -4,9 +4,9 @@ import type { JSX } from "react";
 
 import { ApplicationStatusBadge } from "@/components/jobs/job-status-badges";
 import { Button } from "@/components/ui/button";
-import { ApplicationStatus } from "@/enums/application-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { ApplicationStatus } from "@/enums/booking/application-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { JobApplication } from "@/types/jobs/job-application.type";
 
 interface ApplicationRowProps {

@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import type { WalkInPayload } from "@/interfaces/bookings/walk-in-payload.interface";
 import { bookingSchema } from "@/schemas/bookings/booking.zod";
 import { apiRequest } from "@/services/api/core/client";

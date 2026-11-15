@@ -8,12 +8,12 @@ import { ErrorState } from "@/components/common/error-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useExchangeRates } from "@/hooks/platform/use-admin-currencies";
-import { useDeleteExchangeRate } from "@/hooks/platform/use-delete-exchange-rate";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { currentRateIds } from "@/lib/core/exchange-rate.util";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useExchangeRates } from "@/hooks/platform/currencies/use-admin-currencies";
+import { useDeleteExchangeRate } from "@/hooks/platform/currencies/use-delete-exchange-rate";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { currentRateIds } from "@/lib/core/format/exchange-rate.util";
 import type { ExchangeRate } from "@/types/platform/currency-admin.type";
 
 /** The rate history, newest first. The rate the converter uses for each pair is marked "current". */

@@ -5,10 +5,10 @@ import type { JSX } from "react";
 import { RatingStars } from "@/components/reviews/rating-stars";
 import { Button } from "@/components/ui/button";
 import { ReviewStatusBadge } from "@/components/reviews/review-status-badge";
-import { ReviewStatus } from "@/enums/review-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { REVIEW_MAX_RATING } from "@/config/review.constant";
-import type { Review } from "@/types/clients/review.type";
+import { ReviewStatus } from "@/enums/people/review-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { REVIEW_MAX_RATING } from "@/config/venue/review.constant";
+import type { Review } from "@/types/clients/reviews/review.type";
 
 interface ReviewListProps {
   reviews: readonly Review[];

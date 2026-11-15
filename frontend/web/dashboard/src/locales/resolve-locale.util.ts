@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE, LOCALES } from "@/config/locales.constant";
-import { Locale } from "@/enums/locale.enum";
+import { Locale } from "@/enums/access/locale.enum";
 
 function asLocale(value: string | undefined | null): Locale | null {
   const base = value?.trim().toLowerCase().split("-")[0];

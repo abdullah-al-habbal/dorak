@@ -1,5 +1,5 @@
-import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import { HttpStatus } from "@/enums/http-status.enum";
+import { ApiErrorCode } from "@/enums/access/api-error-code.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
 import { apiFailure, apiSuccess } from "@/lib/api-response";
 import { getRequestDictionary } from "@/locales/get-request-dictionary";
 import { getServerSession } from "@/services/api/auth/server-session";

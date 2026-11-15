@@ -1,9 +1,9 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import type { ReviewDisputePayload } from "@/interfaces/clients/review-dispute-payload.interface";
 import { reviewSchema } from "@/schemas/clients/review.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { Review } from "@/types/clients/review.type";
+import type { Review } from "@/types/clients/reviews/review.type";
 
 export function disputeReview({ branchId, reviewId, reason }: ReviewDisputePayload): Promise<Review> {
   return apiRequest(`${DASHBOARD_API}/branches/${encodeURIComponent(branchId)}/reviews/${encodeURIComponent(reviewId)}/dispute`, {

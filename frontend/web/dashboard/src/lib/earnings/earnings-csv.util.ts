@@ -1,5 +1,5 @@
-import { toCsv } from "@/lib/core/csv.util";
-import { minorUnitsToInput } from "@/lib/core/money.util";
+import { toCsv } from "@/lib/core/format/csv.util";
+import { minorUnitsToInput } from "@/lib/core/format/money.util";
 import type { Earnings } from "@/types/earnings/earnings.type";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 

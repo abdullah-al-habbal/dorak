@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { BackendActorType } from "@/enums/backend-actor-type.enum";
-import { BackendRole } from "@/enums/backend-role.enum";
-import { AuthStatus } from "@/enums/auth-status.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { BackendActorType } from "@/enums/access/backend-actor-type.enum";
+import { BackendRole } from "@/enums/access/backend-role.enum";
+import { AuthStatus } from "@/enums/access/auth-status.enum";
 import { useAuthStore } from "@/store/auth.store";
 
 describe("auth store", () => {

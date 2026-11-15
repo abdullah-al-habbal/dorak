@@ -6,10 +6,10 @@ import { ErrorState } from "@/components/common/error-state";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { useAdminLanguages } from "@/hooks/platform/use-admin-languages";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useSetLanguageActive } from "@/hooks/platform/use-set-language-active";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useAdminLanguages } from "@/hooks/platform/settings/use-admin-languages";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useSetLanguageActive } from "@/hooks/platform/settings/use-set-language-active";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 
 /** The languages the platform has translations for: switched on or off here, never added (a new one needs translations in code). */
 export function LanguagesSection(): JSX.Element {

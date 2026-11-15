@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/core/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/query/create-query-keys.util";
 
 export const planKeys = createQueryKeys("admin-plans", {
   list: (state: string, page: number) => ["list", state, page] as const,

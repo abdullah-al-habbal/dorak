@@ -7,13 +7,13 @@ import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
 import { resetDoneLoginRoute } from "@/config/routes.constant";
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 import { isInvalidResetLink, isTooManyRequests } from "@/lib/account/password-reset-error.util";
 import { passwordPairSchema } from "@/schemas/fields/password-pair.zod";
 import { resetPassword } from "@/services/api/mutation/account/reset-password.mutation";
-import type { PasswordPairValues } from "@/types/account/password-pair-values.type";
+import type { PasswordPairValues } from "@/types/account/forms/password-pair-values.type";
 
 interface ResetLink {
   actor: AuthActor;

@@ -1,4 +1,4 @@
-import type { PageInfo } from "@/types/core/page-info.type";
+import type { PageInfo } from "@/types/core/shared/page-info.type";
 import type { Stylist } from "@/types/stylists/stylist.type";
 
 export interface StylistPage {

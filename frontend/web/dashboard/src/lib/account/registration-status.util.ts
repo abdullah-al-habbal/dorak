@@ -1,4 +1,4 @@
-import { BrandStatus } from "@/enums/brand-status.enum";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
 
 /** The steps an owner sees on the review page, in order. "Review" is a label on a pending brand; there is no stored review state. */
 export enum RegistrationStep {

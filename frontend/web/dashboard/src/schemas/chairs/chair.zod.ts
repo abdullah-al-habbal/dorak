@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { FloorZone } from "@/enums/floor-zone.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { FloorZone } from "@/enums/people/floor-zone.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 export const chairOptionSchema = z.object({
   id: z.string(),

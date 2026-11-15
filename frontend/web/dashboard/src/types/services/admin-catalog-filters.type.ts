@@ -1,4 +1,4 @@
-import type { CatalogCategoryStatus } from "@/enums/catalog-category-status.enum";
+import type { CatalogCategoryStatus } from "@/enums/venue/catalog-category-status.enum";
 
 export interface AdminCatalogFilters {
   status?: CatalogCategoryStatus;

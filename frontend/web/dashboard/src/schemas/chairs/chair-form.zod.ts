@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { CHAIR_MAX_LABEL } from "@/config/chair-layout.constant";
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { FloorZone } from "@/enums/floor-zone.enum";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import { CHAIR_MAX_LABEL } from "@/config/venue/chair-layout.constant";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { FloorZone } from "@/enums/people/floor-zone.enum";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 type ChairValidation = Dictionary["chairs"]["form"]["validation"];
 

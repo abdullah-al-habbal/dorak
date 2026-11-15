@@ -1,5 +1,5 @@
-import { ADMIN_USER_MAX_SEARCH, DEFAULT_ADMIN_USER_STATE } from "@/config/admin-user.constant";
-import { AdminUserState } from "@/enums/admin-user-state.enum";
+import { ADMIN_USER_MAX_SEARCH, DEFAULT_ADMIN_USER_STATE } from "@/config/platform/admin-user.constant";
+import { AdminUserState } from "@/enums/access/admin-user-state.enum";
 import type { AdminUserFilters } from "@/types/platform/admin-user-filters.type";
 
 const STATES = new Set<string>(Object.values(AdminUserState));

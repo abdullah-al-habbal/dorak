@@ -4,8 +4,8 @@ import type { JSX } from "react";
 
 import { AnalyticsContent } from "@/components/analytics/analytics-content";
 import { EmptyState } from "@/components/common/empty-state";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 /**
  * Platform analytics are admin only. Owners, managers and barbers read their own figures on Earnings

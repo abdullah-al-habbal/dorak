@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { DEFAULT_DECORATION_SIZE, UNISEX_ZONES } from "@/config/floor-plan.constant";
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { FloorCanvasUnit } from "@/enums/floor-canvas-unit.enum";
-import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
-import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
-import { FloorZone } from "@/enums/floor-zone.enum";
+import { DEFAULT_DECORATION_SIZE, UNISEX_ZONES } from "@/config/venue/floor-plan.constant";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { FloorCanvasUnit } from "@/enums/venue/floor-canvas-unit.enum";
+import { FloorDecorationType } from "@/enums/venue/floor-decoration-type.enum";
+import { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
+import { FloorZone } from "@/enums/people/floor-zone.enum";
 import { chairPayloadWithLayout } from "@/lib/chairs/floor-plan-save.util";
 import { draftToLayoutPayload, isDirty, movedChairIds, newDecoration, planToDraft } from "@/lib/chairs/floor-plan-draft.util";
 import type { Chair } from "@/types/chairs/chair.type";

@@ -3,10 +3,10 @@
 import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { APPLICATION_STATUS_STYLE, POSTING_STATUS_STYLE } from "@/config/job-board.constant";
-import { ApplicationStatus } from "@/enums/application-status.enum";
-import { JobPostingStatus } from "@/enums/job-posting-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { APPLICATION_STATUS_STYLE, POSTING_STATUS_STYLE } from "@/config/ops/job-board.constant";
+import { ApplicationStatus } from "@/enums/booking/application-status.enum";
+import { JobPostingStatus } from "@/enums/booking/job-posting-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 export function PostingStatusBadge({ status }: { status: string }): JSX.Element {
   const { jobs } = useDictionary();

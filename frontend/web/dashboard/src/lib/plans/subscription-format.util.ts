@@ -1,4 +1,4 @@
-import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
+import { SubscriptionInterval } from "@/enums/money/subscription-interval.enum";
 
 /** Singular and plural wording for "per month" / "every 3 months", supplied by the dictionary. */
 export interface IntervalWording {

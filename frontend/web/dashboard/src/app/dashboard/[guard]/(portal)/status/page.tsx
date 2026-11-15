@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { RegistrationStatusScreen } from "@/components/register/registration-status-screen";
-import { AuthActor } from "@/enums/auth-actor.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
 import { parseGuardOrNotFound } from "@/lib/parse-guard";
 
 export const metadata: Metadata = { title: "Business review" };

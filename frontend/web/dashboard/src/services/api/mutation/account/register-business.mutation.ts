@@ -1,11 +1,11 @@
 import { API_ROUTE } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
-import { acknowledgementSchema } from "@/schemas/core/acknowledgement.zod";
-import { loginResultSchema } from "@/schemas/core/login-result.zod";
+import { HttpMethod } from "@/enums/access/http-method.enum";
+import { acknowledgementSchema } from "@/schemas/core/api/acknowledgement.zod";
+import { loginResultSchema } from "@/schemas/core/session/login-result.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { LoginResult } from "@/types/core/login-result.type";
-import type { RegisterBusinessBody } from "@/types/core/register-business-body.type";
-import type { RegisterExistingBody } from "@/types/core/register-existing-body.type";
+import type { LoginResult } from "@/types/core/session/login-result.type";
+import type { RegisterBusinessBody } from "@/types/core/forms/register-business-body.type";
+import type { RegisterExistingBody } from "@/types/core/forms/register-existing-body.type";
 
 /** Public sign-up. The answer is the same for any email, so a success only means "check your email". */
 export async function registerBusiness(body: RegisterBusinessBody): Promise<void> {

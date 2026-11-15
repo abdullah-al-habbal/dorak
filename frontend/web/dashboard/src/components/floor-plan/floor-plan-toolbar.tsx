@@ -8,11 +8,11 @@ import { FormField } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { FLOOR_DECORATION_TYPES, FLOOR_PLAN_PRESETS, MAX_CANVAS_SIZE } from "@/config/floor-plan.constant";
-import { FloorCanvasUnit } from "@/enums/floor-canvas-unit.enum";
-import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
-import type { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { FLOOR_DECORATION_TYPES, FLOOR_PLAN_PRESETS, MAX_CANVAS_SIZE } from "@/config/venue/floor-plan.constant";
+import { FloorCanvasUnit } from "@/enums/venue/floor-canvas-unit.enum";
+import { FloorDecorationType } from "@/enums/venue/floor-decoration-type.enum";
+import type { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { FloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
 
 const UNITS: readonly FloorCanvasUnit[] = [FloorCanvasUnit.Meters, FloorCanvasUnit.Feet, FloorCanvasUnit.Pixels];

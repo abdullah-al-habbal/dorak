@@ -1,4 +1,4 @@
-import type { ChairStatus } from "@/enums/chair-status.enum";
+import type { ChairStatus } from "@/enums/venue/chair-status.enum";
 import type { ChairPage } from "@/types/chairs/chair-page.type";
 
 /** Returns the page with one chair's stored status replaced; untouched pages are returned as-is. */

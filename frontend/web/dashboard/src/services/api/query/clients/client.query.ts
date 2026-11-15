@@ -1,11 +1,11 @@
-import { CLIENT_RELATION_PER_PAGE } from "@/config/client.constant";
+import { CLIENT_RELATION_PER_PAGE } from "@/config/venue/client.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { ClientRelation } from "@/enums/client-relation.enum";
+import { ClientRelation } from "@/enums/people/client-relation.enum";
 import { adminClientSchema, clientBookingListSchema, clientReviewListSchema } from "@/schemas/clients/admin-client.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { AdminClient } from "@/types/clients/admin-client.type";
+import type { AdminClient } from "@/types/clients/clients/admin-client.type";
 import type { ClientBooking } from "@/types/bookings/client-booking.type";
-import type { ClientReview } from "@/types/clients/client-review.type";
+import type { ClientReview } from "@/types/clients/clients/client-review.type";
 
 function clientPath(id: string): string {
   return `${DASHBOARD_API}/admin/clients/${encodeURIComponent(id)}`;

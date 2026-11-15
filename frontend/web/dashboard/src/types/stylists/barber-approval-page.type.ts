@@ -1,5 +1,5 @@
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
-import type { PageInfo } from "@/types/core/page-info.type";
+import type { PageInfo } from "@/types/core/shared/page-info.type";
 
 export interface BarberApprovalPage {
   items: BarberApproval[];

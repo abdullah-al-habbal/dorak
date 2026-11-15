@@ -1,4 +1,4 @@
-import type { PayoutStatus } from "@/enums/payout-status.enum";
+import type { PayoutStatus } from "@/enums/money/payout-status.enum";
 
 export interface PayoutFilters {
   status?: PayoutStatus;

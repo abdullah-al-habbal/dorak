@@ -2,7 +2,7 @@
 
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { useListQuery } from "@/hooks/core/use-list-query";
+import { useListQuery } from "@/hooks/core/query/use-list-query";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { fetchBookingsForView } from "@/services/api/query/bookings/bookings.query";
 import type { BookingFilters } from "@/types/bookings/booking-filters.type";

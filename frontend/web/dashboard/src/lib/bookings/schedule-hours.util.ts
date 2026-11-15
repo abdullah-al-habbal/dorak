@@ -1,5 +1,5 @@
-import { SCHEDULE_DAYS_IN_WEEK } from "@/config/schedule.constant";
-import type { Weekday } from "@/enums/weekday.enum";
+import { SCHEDULE_DAYS_IN_WEEK } from "@/config/ops/schedule.constant";
+import type { Weekday } from "@/enums/booking/weekday.enum";
 import type { ScheduleHoursDay } from "@/interfaces/bookings/schedule-hours-day.interface";
 import type { ScheduleHoursRow } from "@/types/bookings/schedule-hours-row.type";
 

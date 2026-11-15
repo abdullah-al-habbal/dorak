@@ -3,9 +3,9 @@
 import type { JSX } from "react";
 
 import { AccountBanDialog } from "@/components/common/account-ban-dialog";
-import { useBanBarber } from "@/hooks/stylists/use-ban-barber";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useBanBarber } from "@/hooks/stylists/approvals/use-ban-barber";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberBanDialogProps {

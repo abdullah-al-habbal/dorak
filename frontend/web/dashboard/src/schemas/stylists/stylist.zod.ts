@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { BarberStatus } from "@/enums/barber-status.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 const stylistChairSchema = z
   .object({ id: z.string(), label: localizedTextSchema.nullable().optional(), branch_id: z.string().nullable().optional() })

@@ -7,13 +7,13 @@ import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { WorkingHoursDayRow } from "@/components/working-hours/working-hours-day";
 import { WorkingHoursSaveBar } from "@/components/working-hours/working-hours-save-bar";
 import { WEEK_START } from "@/config/week-start.constant";
-import type { Weekday } from "@/enums/weekday.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useLeaveWarning } from "@/hooks/core/use-leave-warning";
+import type { Weekday } from "@/enums/booking/weekday.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useLeaveWarning } from "@/hooks/core/state/use-leave-warning";
 import { useSaveOpeningHours } from "@/hooks/hours/use-save-opening-hours";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { Shift } from "@/interfaces/hours/shift.interface";
-import { formErrorMessage } from "@/lib/core/map-api-form-error.util";
+import { formErrorMessage } from "@/lib/core/errors/map-api-form-error.util";
 import {
   NO_ISSUES,
   addShift,

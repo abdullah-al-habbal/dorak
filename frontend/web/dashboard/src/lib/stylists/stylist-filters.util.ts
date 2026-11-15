@@ -1,4 +1,4 @@
-import { BarberStatus } from "@/enums/barber-status.enum";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
 import type { StylistFilters } from "@/types/stylists/stylist-filters.type";
 
 const STATUSES = new Set<string>(Object.values(BarberStatus));

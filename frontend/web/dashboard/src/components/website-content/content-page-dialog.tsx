@@ -10,9 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { CONTENT_META_MAX, CONTENT_TEXT_MAX } from "@/config/website-content.constant";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useUpdateContentPage } from "@/hooks/platform/use-website-content";
+import { CONTENT_META_MAX, CONTENT_TEXT_MAX } from "@/config/platform/website-content.constant";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useUpdateContentPage } from "@/hooks/platform/settings/use-website-content";
 import { localeText } from "@/lib/platform/website-content.util";
 import type { ContentPage } from "@/types/platform/website-content.type";
 

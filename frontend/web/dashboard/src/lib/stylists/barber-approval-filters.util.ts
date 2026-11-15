@@ -1,5 +1,5 @@
-import { BARBER_APPROVAL_MAX_SEARCH, BARBER_STATUS_FILTER_ALL, DEFAULT_BARBER_STATUS_FILTER } from "@/config/barber-approval.constant";
-import { BarberStatus } from "@/enums/barber-status.enum";
+import { BARBER_APPROVAL_MAX_SEARCH, BARBER_STATUS_FILTER_ALL, DEFAULT_BARBER_STATUS_FILTER } from "@/config/ops/barber-approval.constant";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
 import type { BarberApprovalFilters } from "@/types/stylists/barber-approval-filters.type";
 import type { BarberStatusFilter } from "@/types/stylists/barber-status-filter.type";
 

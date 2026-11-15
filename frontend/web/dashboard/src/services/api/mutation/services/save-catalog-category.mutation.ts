@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import type { CatalogCategoryPayload } from "@/interfaces/services/catalog-category-payload.interface";
 import { catalogSubcategorySchema } from "@/schemas/services/admin-catalog-category.zod";
 import { apiRequest } from "@/services/api/core/client";

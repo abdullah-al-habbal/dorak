@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { OwnerBrandScreen } from "@/components/owner-brand/owner-brand-screen";
-import { AuthActor } from "@/enums/auth-actor.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
 import { parseGuardOrNotFound } from "@/lib/parse-guard";
 
 export const metadata: Metadata = { title: "Brand" };

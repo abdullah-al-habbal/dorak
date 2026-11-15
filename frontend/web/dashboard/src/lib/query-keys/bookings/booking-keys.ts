@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/core/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/query/create-query-keys.util";
 import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
 export const bookingKeys = createQueryKeys("bookings", {

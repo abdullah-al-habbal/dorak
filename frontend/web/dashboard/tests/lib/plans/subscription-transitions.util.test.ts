@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { SubscriptionStatus } from "@/enums/subscription-status.enum";
+import { SubscriptionStatus } from "@/enums/money/subscription-status.enum";
 import { availableSubscriptionTargets } from "@/lib/plans/subscription-transitions.util";
 
 describe("availableSubscriptionTargets", () => {

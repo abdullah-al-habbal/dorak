@@ -3,9 +3,9 @@
 import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { BRANCH_STATUS_STYLE } from "@/config/branch.constant";
-import type { BranchStatus } from "@/enums/branch-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { BRANCH_STATUS_STYLE } from "@/config/venue/branch.constant";
+import type { BranchStatus } from "@/enums/venue/branch-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 export function BranchStatusBadge({ status }: { status: BranchStatus }): JSX.Element {
   const { branches } = useDictionary();

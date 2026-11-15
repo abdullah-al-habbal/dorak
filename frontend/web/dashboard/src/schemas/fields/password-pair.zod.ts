@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/config/field-limit.constant";
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/config/money-shell/field-limit.constant";
 import type { PasswordPair } from "@/interfaces/account/password-pair.interface";
 import type { PasswordPairMessages } from "@/interfaces/account/password-pair-messages.interface";
 import { passwordField } from "@/schemas/fields/password-field.zod";

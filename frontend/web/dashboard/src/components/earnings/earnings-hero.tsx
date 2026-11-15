@@ -2,8 +2,8 @@ import type { JSX, ReactNode } from "react";
 
 import { TrendBadge } from "@/components/earnings/trend-badge";
 import { Card } from "@/components/ui/card";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { formatPrice } from "@/lib/core/booking-format.util";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { formatPrice } from "@/lib/core/format/booking-format.util";
 import { averageTicket, computeTrend } from "@/lib/earnings/earnings-metrics.util";
 import { formatCount, formatShortDate } from "@/lib/earnings/earnings-format.util";
 import type { Earnings } from "@/types/earnings/earnings.type";

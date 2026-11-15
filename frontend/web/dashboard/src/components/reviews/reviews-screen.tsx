@@ -12,15 +12,15 @@ import { ReviewList } from "@/components/reviews/review-list";
 import { NativeSelect } from "@/components/ui/native-select";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useBranchOptions } from "@/hooks/branches/use-branch-options";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { useReviewFilters } from "@/hooks/clients/use-review-filters";
-import { useReviews } from "@/hooks/clients/use-reviews";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { useReviewFilters } from "@/hooks/clients/reviews/use-review-filters";
+import { useReviews } from "@/hooks/clients/reviews/use-reviews";
 import { useAuthStore } from "@/store/auth.store";
-import type { Review } from "@/types/clients/review.type";
+import type { Review } from "@/types/clients/reviews/review.type";
 
 export function ReviewsScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

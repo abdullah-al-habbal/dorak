@@ -1,6 +1,6 @@
 import type { BrandCreatePayload } from "@/interfaces/brands/brand-create-payload.interface";
-import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
-import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
+import type { MappedFormError } from "@/interfaces/core/query/mapped-form-error.interface";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 import type { BrandCreateFormValues } from "@/schemas/brands/brand-create-form.zod";
 
 export const EMPTY_BRAND_CREATE_FORM: BrandCreateFormValues = { name_en: "", name_ar: "", currency: "", branch_en: "", branch_ar: "" };

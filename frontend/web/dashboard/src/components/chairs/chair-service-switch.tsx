@@ -3,8 +3,8 @@
 import type { JSX } from "react";
 
 import { Switch } from "@/components/ui/switch";
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { Chair } from "@/types/chairs/chair.type";
 
 interface ChairServiceSwitchProps {

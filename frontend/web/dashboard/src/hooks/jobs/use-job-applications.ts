@@ -2,7 +2,7 @@
 
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { useListQuery } from "@/hooks/core/use-list-query";
+import { useListQuery } from "@/hooks/core/query/use-list-query";
 import { jobKeys } from "@/lib/query-keys/jobs/job-keys";
 import { fetchJobApplicationPage } from "@/services/api/query/jobs/job-board.query";
 import type { JobApplicationPage } from "@/types/jobs/job-board-page.type";

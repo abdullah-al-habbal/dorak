@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { RATE_PATTERN } from "@/config/currency-admin.constant";
-import { HttpStatus } from "@/enums/http-status.enum";
-import { useAdminCurrencies } from "@/hooks/platform/use-admin-currencies";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useSaveExchangeRate } from "@/hooks/platform/use-save-exchange-rate";
+import { RATE_PATTERN } from "@/config/platform/currency-admin.constant";
+import { HttpStatus } from "@/enums/access/http-status.enum";
+import { useAdminCurrencies } from "@/hooks/platform/currencies/use-admin-currencies";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useSaveExchangeRate } from "@/hooks/platform/currencies/use-save-exchange-rate";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 /** Adds a rate for a pair. Rates are a history: the newest one in effect is used, so a correction is a new rate. */

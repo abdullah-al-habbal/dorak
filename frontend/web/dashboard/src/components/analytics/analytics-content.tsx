@@ -9,10 +9,10 @@ import { AnalyticsPlatformStats } from "@/components/analytics/analytics-platfor
 import { ErrorState } from "@/components/common/error-state";
 import { EarningsRangePicker } from "@/components/earnings/earnings-range-picker";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useEarningsRange } from "@/hooks/earnings/use-earnings-range";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { usePlatformAnalytics } from "@/hooks/platform/use-platform-analytics";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { usePlatformAnalytics } from "@/hooks/platform/settings/use-platform-analytics";
 
 export function AnalyticsContent(): JSX.Element {
   const { locale } = useI18n();

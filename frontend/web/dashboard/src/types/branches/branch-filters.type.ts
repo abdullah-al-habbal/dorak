@@ -1,4 +1,4 @@
-import type { BranchStatus } from "@/enums/branch-status.enum";
+import type { BranchStatus } from "@/enums/venue/branch-status.enum";
 
 export interface BranchFilters {
   search?: string;

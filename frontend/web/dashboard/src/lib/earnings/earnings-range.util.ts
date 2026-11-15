@@ -3,8 +3,8 @@ import {
   EARNINGS_LAST_7_DAYS,
   EARNINGS_LAST_30_DAYS,
   EARNINGS_MAX_RANGE_DAYS,
-} from "@/config/earnings.constant";
-import { EarningsPreset } from "@/enums/earnings-preset.enum";
+} from "@/config/money-shell/earnings.constant";
+import { EarningsPreset } from "@/enums/money/earnings-preset.enum";
 import { addDays, parseDateKey, toDateKey } from "@/lib/bookings/booking-date.util";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 

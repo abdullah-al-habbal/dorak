@@ -2,8 +2,8 @@ import { ArrowDownRightIcon, ArrowUpRightIcon, MinusIcon, SparklesIcon } from "l
 import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { TrendDirection } from "@/enums/trend-direction.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { TrendDirection } from "@/enums/ui/trend-direction.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { EarningsTrend } from "@/interfaces/earnings/earnings-trend.interface";
 import { formatPercent } from "@/lib/earnings/earnings-format.util";
 

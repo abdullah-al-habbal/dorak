@@ -1,7 +1,7 @@
 import { StarIcon } from "lucide-react";
 import type { JSX } from "react";
 
-import { REVIEW_MAX_RATING } from "@/config/review.constant";
+import { REVIEW_MAX_RATING } from "@/config/venue/review.constant";
 import { cn } from "@/lib/utils";
 
 interface RatingStarsProps {

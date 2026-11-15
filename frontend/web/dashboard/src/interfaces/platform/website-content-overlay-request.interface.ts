@@ -1,4 +1,4 @@
-import type { OverlayKind } from "@/enums/overlay-kind.enum";
+import type { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import type { ContentPage, ContentSection, Testimonial } from "@/types/platform/website-content.type";
 
 export interface ContentPageOverlayRequest {

@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { BRAND_MAX_NAME } from "@/config/admin-brand.constant";
-import { OWNER_BRANCH_NAME_MAX } from "@/config/owner-brand.constant";
-import { useBrandCreateForm } from "@/hooks/brands/use-brand-create-form";
-import { useCurrencies } from "@/hooks/platform/use-currencies";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { BRAND_MAX_NAME } from "@/config/platform/admin-brand.constant";
+import { OWNER_BRANCH_NAME_MAX } from "@/config/venue/owner-brand.constant";
+import { useBrandCreateForm } from "@/hooks/brands/owner/use-brand-create-form";
+import { useCurrencies } from "@/hooks/platform/currencies/use-currencies";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { BrandCreateFormValues } from "@/schemas/brands/brand-create-form.zod";
 
 /** Adds another brand to the owner's account. It starts pending, like the first one. */

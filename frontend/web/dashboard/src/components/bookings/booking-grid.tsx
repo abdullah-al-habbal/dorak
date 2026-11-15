@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { BOOKING_STATUS_STYLE } from "@/config/booking-status-badge.constant";
-import { BookingStatus } from "@/enums/booking-status.enum";
-import { BookingView } from "@/enums/booking-view.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { BOOKING_STATUS_STYLE } from "@/config/ops/booking-status-badge.constant";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import { BookingView } from "@/enums/booking/booking-view.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import { addDays, minutesBetween, parseDateKey, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
-import { formatDay, formatTime, localizedText, serviceSummary } from "@/lib/core/booking-format.util";
+import { formatDay, formatTime, localizedText, serviceSummary } from "@/lib/core/format/booking-format.util";
 import { hourRange, layoutDay } from "@/lib/bookings/slot-layout.util";
 import { cn } from "@/lib/utils";
 import type { Booking } from "@/types/bookings/booking.type";

@@ -2,10 +2,10 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useSaveMutation } from "@/hooks/core/use-save-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useSaveMutation } from "@/hooks/core/query/use-save-mutation";
 import type { ChairPayload } from "@/interfaces/chairs/chair-payload.interface";
-import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
+import type { SaveVariables } from "@/interfaces/core/query/save-variables.interface";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
 import { createChair, updateChair } from "@/services/api/mutation/chairs/save-chair.mutation";

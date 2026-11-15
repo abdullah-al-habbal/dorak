@@ -4,8 +4,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { clampPage } from "@/lib/core/pagination.util";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { clampPage } from "@/lib/core/query/pagination.util";
 
 interface PaginationBarProps {
   page: number;

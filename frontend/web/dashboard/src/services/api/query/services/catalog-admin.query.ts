@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/query/resolve-page-info.util";
 import { catalogItemListSchema, catalogTagListSchema } from "@/schemas/services/catalog-item.zod";
 import { apiRequest, apiRequestWithMeta } from "@/services/api/core/client";
 import type { CatalogItemPage, CatalogTag } from "@/types/services/catalog-item.type";

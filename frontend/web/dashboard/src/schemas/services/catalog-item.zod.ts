@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
-import { optionalTranslationSchema } from "@/schemas/core/optional-translation.zod";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
+import { optionalTranslationSchema } from "@/schemas/core/api/optional-translation.zod";
 
 const tagRefSchema = z.object({ id: z.string(), name: localizedTextSchema, slug: z.string().optional(), group_name: z.string().nullable().optional() });
 

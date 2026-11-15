@@ -4,7 +4,7 @@ import { platformAnalyticsSchema } from "@/schemas/platform/platform-analytics.z
 import { platformSettingListSchema, platformSettingValuesSchema } from "@/schemas/platform/platform-setting.zod";
 import { createPlatformSettingsSchema } from "@/schemas/platform/platform-settings-form.zod";
 import { DICTIONARIES } from "@/locales/dictionaries.constant";
-import { Locale } from "@/enums/locale.enum";
+import { Locale } from "@/enums/access/locale.enum";
 
 const analytics = {
   period: { from: "2026-03-01", to: "2026-03-31" },

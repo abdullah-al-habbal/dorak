@@ -25,13 +25,13 @@ Run from `frontend/web/dashboard`. One layer × one batch per commit.
    must be green; if not, report it and stop (do not fix unrelated failures).
 1. **Plan (no writes).** `node .claude/skills/dashboard-folder-decoupler/scripts/plan-moves.mjs <map.json> > $SCRATCH/moves.json`.
    Refuses existing targets and frozen files. It also lists the mirrored `tests/` moves.
-   Ask the user before applying more than 25 files.
+   Ask the user before applying more than 25 files (a density split of an over-10 folder is the exception).
 2. **Apply.** `node …/apply-moves.mjs $SCRATCH/moves.json` runs `git mv`, then rewrites
    quoted specifiers in `src/`, `tests/`, `vitest.config.mts`, `playwright.config.ts` and docs.
    Then fix by hand: `import.meta.glob(...)` patterns and any path in docs prose (the script reports them).
 3. **Verify, in order, all must pass:**
    1. `node …/verify-imports.mjs $SCRATCH/moves.json` (every `@/` resolves, no old path left,
-      no relative import, no barrel, no folder over 30 files; `import.meta.glob` patterns are checked by the tests that use them).
+      no relative import, no barrel, no src folder over 10 files, see Density gate; `import.meta.glob` patterns are checked by the tests that use them).
    2. `bash ../../../.claude/skills/monorepo-task-executor/scripts/check-conventions.sh`
    3. `npm run typecheck`, `npm run lint`, `npm test` (test count must equal the baseline), `npm run build`.
    4. `TZ=UTC npx playwright test` only if `app/`, `services/api/proxy` or the allow-list changed (they must not).
@@ -40,7 +40,15 @@ Run from `frontend/web/dashboard`. One layer × one batch per commit.
    `refactor(dashboard): group <layer> by domain (Task N)`. Never push, never `--no-verify`.
    On any gate failure revert the batch (`git restore --staged --worktree` on the moved paths) and report the output.
 
+## Density gate (permanent)
+
+Every `src/` folder holds **at most 10 direct files**. Fewer is fine; do not merge small folders.
+A folder over 10 is split into cohesive sub-folders (each 10 or fewer) in the same commit that grew it.
+Exempt (frozen/vendored): `app/`, `components/ui/**`, `locales/**`, `services/api/auth`.
+Enforced by `scripts/density.sh [max=10]` (exit 1 on any offender) and by `verify-imports.mjs` (walks all of `src/`).
+Frozen files stay at their path: for example `config/routes.constant.ts` stays at the `config/` root.
+
 Rules: no renames, splits or merges in a move commit. No `index.ts`. Domain names come from
 `references/domain-map.md`; only the owner changes that map.
 
-See `references/layer-rules.md` and `references/domain-map.md`. Helpers: `scripts/density.sh`.
+See `references/layer-rules.md` and `references/domain-map.md`. Helpers: `scripts/density.sh` (gate).

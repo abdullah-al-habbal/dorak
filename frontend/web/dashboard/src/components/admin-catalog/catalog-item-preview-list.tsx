@@ -5,9 +5,9 @@ import type { JSX } from "react";
 import { CatalogCategoryStatusBadge } from "@/components/admin-catalog/catalog-category-status-badge";
 import { ErrorState } from "@/components/common/error-state";
 import { SkeletonRows } from "@/components/ui/skeleton-row";
-import { useCatalogCategoryItems } from "@/hooks/services/use-catalog-category-items";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useCatalogCategoryItems } from "@/hooks/services/catalog/use-catalog-category-items";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 
 const LOADING_ROWS = 3;
 const LOADING_ROW_CLASS = "h-9";

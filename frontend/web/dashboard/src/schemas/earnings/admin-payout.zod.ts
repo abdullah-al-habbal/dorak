@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { PayoutDirection } from "@/enums/payout-direction.enum";
-import { PayoutStatus } from "@/enums/payout-status.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { PayoutDirection } from "@/enums/money/payout-direction.enum";
+import { PayoutStatus } from "@/enums/money/payout-status.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 /** `GET /admin/payouts`: unlike the owner row it carries the currency object and the internal notes. */
 export const adminPayoutSchema = z.object({

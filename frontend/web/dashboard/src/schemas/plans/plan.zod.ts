@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { SubscriptionInterval } from "@/enums/money/subscription-interval.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 /** A translatable field the backend has no value for serializes as an empty array. */
 const optionalLocalizedSchema = z.union([localizedTextSchema, z.tuple([])]).nullable().optional();

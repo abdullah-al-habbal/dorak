@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { BranchStatus } from "@/enums/branch-status.enum";
-import { VenueUniverse } from "@/enums/venue-universe.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { BranchStatus } from "@/enums/venue/branch-status.enum";
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 const coordinateSchema = z.union([z.number(), z.string()]).nullable().optional();
 

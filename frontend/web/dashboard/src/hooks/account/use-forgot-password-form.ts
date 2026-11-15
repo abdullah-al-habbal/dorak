@@ -5,12 +5,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { isTooManyRequests } from "@/lib/account/password-reset-error.util";
-import { forgotPasswordFormSchema } from "@/schemas/account/forgot-password-form.zod";
+import { forgotPasswordFormSchema } from "@/schemas/account/credentials/forgot-password-form.zod";
 import { requestPasswordReset } from "@/services/api/mutation/account/request-password-reset.mutation";
-import type { ForgotPasswordFormValues } from "@/types/account/forgot-password-form-values.type";
+import type { ForgotPasswordFormValues } from "@/types/account/forms/forgot-password-form-values.type";
 
 interface ForgotPasswordForm {
   form: UseFormReturn<ForgotPasswordFormValues>;

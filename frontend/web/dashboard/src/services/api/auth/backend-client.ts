@@ -4,10 +4,10 @@ import {
   CLAIM_HEADER,
   FORWARDED_FOR_HEADER,
 } from "@/config/backend.constant";
-import { backendEnvelopeSchema } from "@/schemas/core/backend-envelope.zod";
+import { backendEnvelopeSchema } from "@/schemas/core/api/backend-envelope.zod";
 import { readBackendUrl } from "@/services/api/auth/session-keys.util";
-import type { BackendRequest } from "@/interfaces/core/backend-request.interface";
-import type { BackendResult } from "@/interfaces/core/backend-result.interface";
+import type { BackendRequest } from "@/interfaces/core/transport/backend-request.interface";
+import type { BackendResult } from "@/interfaces/core/query/backend-result.interface";
 
 const REDIRECT_MIN = 300;
 const REDIRECT_MAX = 399;

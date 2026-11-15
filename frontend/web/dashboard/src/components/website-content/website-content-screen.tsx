@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { ContentPagesPanel } from "@/components/website-content/content-pages-panel";
 import { OnboardingPanel } from "@/components/website-content/onboarding-panel";
 import { TestimonialsPanel } from "@/components/website-content/testimonials-panel";
-import type { ContentView } from "@/config/website-content.constant";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import type { ContentView } from "@/config/platform/website-content.constant";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 
 const VIEWS: readonly ContentView[] = ["pages", "testimonials", "onboarding"];
 

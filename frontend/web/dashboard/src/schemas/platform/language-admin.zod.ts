@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 /** `GET /admin/languages` (`AdminLanguageResource`). */
 export const adminLanguageSchema = z.object({

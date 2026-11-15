@@ -1,4 +1,4 @@
-import type { OverlayKind } from "@/enums/overlay-kind.enum";
+import type { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import type { AdminUser } from "@/types/platform/admin-user.type";
 
 export interface AdminUserFormOverlayRequest {

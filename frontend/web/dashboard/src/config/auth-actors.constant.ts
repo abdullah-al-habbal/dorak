@@ -1,6 +1,6 @@
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { BackendActorType } from "@/enums/backend-actor-type.enum";
-import { BackendRole } from "@/enums/backend-role.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { BackendActorType } from "@/enums/access/backend-actor-type.enum";
+import { BackendRole } from "@/enums/access/backend-role.enum";
 
 export const AUTH_ACTORS: readonly AuthActor[] = [
   AuthActor.Admin,

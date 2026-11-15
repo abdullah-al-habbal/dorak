@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 
 import { dictionaryFor, expectNoHorizontalScroll, signIn } from "@tests/e2e/support/sign-in";
 import type { E2ELocale } from "@tests/e2e/support/sign-in";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 type Guard = "manager" | "owner" | "barber" | "admin";
 

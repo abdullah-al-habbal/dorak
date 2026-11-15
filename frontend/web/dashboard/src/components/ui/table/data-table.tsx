@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
-import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import type { DataTableProps } from "@/interfaces/ui/data-table-props.interface";
+import type { DataTableColumn } from "@/interfaces/ui/data/data-table-column.interface";
+import type { DataTableProps } from "@/interfaces/ui/data/data-table-props.interface";
 import { cn } from "@/lib/utils";
 
 const ROW_BUTTON =

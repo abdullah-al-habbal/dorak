@@ -6,7 +6,7 @@ import type { UseFormReturn } from "react-hook-form";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { SettingFormValues } from "@/lib/platform/platform-settings.util";
 import { formatCount } from "@/lib/earnings/earnings-format.util";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";

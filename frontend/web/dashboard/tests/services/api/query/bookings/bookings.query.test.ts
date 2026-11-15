@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { BookingView } from "@/enums/booking-view.enum";
+import { BookingView } from "@/enums/booking/booking-view.enum";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import { fetchBookingsForView } from "@/services/api/query/bookings/bookings.query";
 import type { Booking } from "@/types/bookings/booking.type";

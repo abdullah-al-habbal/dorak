@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ADMIN_BRAND_MAX_SEARCH, BRAND_STATUS_FILTER_ALL } from "@/config/admin-brand.constant";
-import { BrandStatus } from "@/enums/brand-status.enum";
+import { ADMIN_BRAND_MAX_SEARCH, BRAND_STATUS_FILTER_ALL } from "@/config/platform/admin-brand.constant";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
 import { adminBrandFiltersFromParams, adminBrandFiltersToParams, adminBrandQueryString, hasAdminBrandFilters } from "@/lib/brands/admin-brand-filters.util";
 
 describe("admin brand filters", () => {

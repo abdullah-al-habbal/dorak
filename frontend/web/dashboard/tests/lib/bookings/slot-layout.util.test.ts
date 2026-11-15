@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BookingStatus } from "@/enums/booking-status.enum";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
 import { layoutDay } from "@/lib/bookings/slot-layout.util";
 import type { Booking } from "@/types/bookings/booking.type";
 

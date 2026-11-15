@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import type { PlanPayload } from "@/interfaces/plans/plan-payload.interface";
 import { planSchema } from "@/schemas/plans/plan.zod";
 import { apiRequest } from "@/services/api/core/client";

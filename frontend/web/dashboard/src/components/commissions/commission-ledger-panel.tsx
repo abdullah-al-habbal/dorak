@@ -10,11 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { NativeSelect } from "@/components/ui/native-select";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { ALL_BRANDS, SETTLED_ALL, SETTLED_FILTERS } from "@/config/commission.constant";
-import { useBrandOptions } from "@/hooks/brands/use-brand-options";
+import { ALL_BRANDS, SETTLED_ALL, SETTLED_FILTERS } from "@/config/platform/commission.constant";
+import { useBrandOptions } from "@/hooks/brands/owner/use-brand-options";
 import { useCommissionEntries } from "@/hooks/earnings/use-commissions";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import { money, totalsByCurrency } from "@/lib/earnings/commission.util";
 
 const FIRST_PAGE = 1;

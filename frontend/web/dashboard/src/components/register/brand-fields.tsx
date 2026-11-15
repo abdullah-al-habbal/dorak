@@ -6,8 +6,8 @@ import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { Currency } from "@/types/platform/currency.type";
 
 /** The fields every business sign-up form shares. The forms differ only in the owner fields above these. */

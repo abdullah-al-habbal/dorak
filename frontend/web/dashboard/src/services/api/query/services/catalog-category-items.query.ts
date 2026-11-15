@@ -1,6 +1,6 @@
-import { CATALOG_ITEMS_PREVIEW_PER_PAGE } from "@/config/admin-catalog.constant";
+import { CATALOG_ITEMS_PREVIEW_PER_PAGE } from "@/config/platform/admin-catalog.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/query/resolve-page-info.util";
 import { catalogItemPreviewListSchema } from "@/schemas/services/catalog-item-preview.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { CatalogItemsPreview } from "@/types/services/catalog-items-preview.type";

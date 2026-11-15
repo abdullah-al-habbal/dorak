@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BarberStatus } from "@/enums/barber-status.enum";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
 import { enDictionary } from "@/locales/en/index.constant";
 import { emptyStylistForm, formToStylistPayload, stylistToForm } from "@/lib/stylists/stylist-form.util";
 import { createStylistSchema } from "@/schemas/stylists/stylist-form.zod";

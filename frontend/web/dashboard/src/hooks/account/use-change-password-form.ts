@@ -4,12 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
-import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
-import { changePasswordFormSchema } from "@/schemas/account/change-password-form.zod";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
+import { changePasswordFormSchema } from "@/schemas/account/credentials/change-password-form.zod";
 import { changePassword } from "@/services/api/mutation/account/change-password.mutation";
-import type { ChangePasswordFormValues } from "@/types/account/change-password-form-values.type";
+import type { ChangePasswordFormValues } from "@/types/account/forms/change-password-form-values.type";
 
 const EMPTY: ChangePasswordFormValues = { current_password: "", password: "", password_confirmation: "" };
 const FIELDS = new Set<string>(Object.keys(EMPTY));

@@ -1,6 +1,6 @@
-import { SCHEDULE_DAYS_IN_WEEK, SCHEDULE_DEFAULT_RANGE, SCHEDULE_RANGES } from "@/config/schedule.constant";
-import { BookingStatus } from "@/enums/booking-status.enum";
-import { ScheduleRange } from "@/enums/schedule-range.enum";
+import { SCHEDULE_DAYS_IN_WEEK, SCHEDULE_DEFAULT_RANGE, SCHEDULE_RANGES } from "@/config/ops/schedule.constant";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import { ScheduleRange } from "@/enums/booking/schedule-range.enum";
 import { addDays, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
 import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";
 import type { ScheduleWindow } from "@/types/bookings/schedule-window.type";

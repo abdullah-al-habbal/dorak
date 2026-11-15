@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ForgotPasswordScreen } from "@/components/auth/forgot-password-screen";
+import { ForgotPasswordScreen } from "@/components/auth/screens/forgot-password-screen";
 import { parseGuardOrNotFound } from "@/lib/parse-guard";
 
 export const metadata: Metadata = { title: "Reset your password" };

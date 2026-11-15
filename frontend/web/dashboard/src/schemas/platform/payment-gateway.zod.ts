@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { PaymentGatewayDriver } from "@/enums/payment-gateway-driver.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { PaymentGatewayDriver } from "@/enums/ui/payment-gateway-driver.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 /**
  * `GET /admin/payment-gateways` (`PaymentGatewayResource`). The credentials never come back: only the

@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 
-import { PasswordInput } from "@/components/auth/password-input";
+import { PasswordInput } from "@/components/auth/forms/password-input";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 
 interface PasswordFieldRowProps {

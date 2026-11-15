@@ -1,7 +1,7 @@
 import type { z } from "zod";
 
 import type { commissionEntrySchema, commissionRuleSchema } from "@/schemas/earnings/commission.zod";
-import type { PageInfo } from "@/types/core/page-info.type";
+import type { PageInfo } from "@/types/core/shared/page-info.type";
 
 export type CommissionRule = z.infer<typeof commissionRuleSchema>;
 export type CommissionEntry = z.infer<typeof commissionEntrySchema>;

@@ -5,9 +5,9 @@ import type { JSX } from "react";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { BRANCH_MAX_EMAIL, BRANCH_MAX_NAME, BRANCH_MAX_PASSWORD } from "@/config/branch.constant";
-import { VenueUniverse } from "@/enums/venue-universe.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { BRANCH_MAX_EMAIL, BRANCH_MAX_NAME, BRANCH_MAX_PASSWORD } from "@/config/venue/branch.constant";
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { BranchFieldsProps } from "@/interfaces/branches/branch-fields-props.interface";
 import type { BranchFormValues } from "@/schemas/branches/branch-form.zod";
 

@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import type { BrandCreatePayload } from "@/interfaces/brands/brand-create-payload.interface";
 import { adminBrandSchema } from "@/schemas/brands/admin-brand.zod";
 import { apiRequest } from "@/services/api/core/client";

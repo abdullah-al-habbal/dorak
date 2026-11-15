@@ -4,10 +4,10 @@ import type { JSX } from "react";
 
 import { RatingStars } from "@/components/reviews/rating-stars";
 import { Card, CardContent } from "@/components/ui/card";
-import { REVIEW_MAX_RATING } from "@/config/review.constant";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { REVIEW_MAX_RATING } from "@/config/venue/review.constant";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import { ratingBars } from "@/lib/clients/review-summary.util";
-import type { ReviewSummary } from "@/types/clients/review-summary.type";
+import type { ReviewSummary } from "@/types/clients/reviews/review-summary.type";
 
 export function RatingSummary({ summary }: { summary: ReviewSummary }): JSX.Element {
   const { locale, dictionary } = useI18n();

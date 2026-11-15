@@ -1,4 +1,4 @@
-import type { BarberStatus } from "@/enums/barber-status.enum";
+import type { BarberStatus } from "@/enums/people/barber-status.enum";
 import type { StylistPage } from "@/types/stylists/stylist-page.type";
 
 /** Returns the page with one stylist's status replaced; untouched pages are returned as-is. */

@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
 import { THEME_COOKIE } from "@/config/cookies.constant";
-import { ThemeMode } from "@/enums/theme-mode.enum";
-import type { ThemeState } from "@/interfaces/ui/theme-state.interface";
-import { readClientCookie, writeClientCookie } from "@/lib/core/cookie.util";
-import { applyTheme } from "@/lib/core/theme.util";
-import { themeModeSchema } from "@/schemas/core/theme-mode.zod";
+import { ThemeMode } from "@/enums/ui/theme-mode.enum";
+import type { ThemeState } from "@/interfaces/ui/shell/theme-state.interface";
+import { readClientCookie, writeClientCookie } from "@/lib/core/errors/cookie.util";
+import { applyTheme } from "@/lib/core/errors/theme.util";
+import { themeModeSchema } from "@/schemas/core/api/theme-mode.zod";
 
 export const useThemeStore = create<ThemeState>((set) => ({
   mode: ThemeMode.System,

@@ -2,9 +2,9 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useSaveMutation } from "@/hooks/core/use-save-mutation";
-import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useSaveMutation } from "@/hooks/core/query/use-save-mutation";
+import type { SaveVariables } from "@/interfaces/core/query/save-variables.interface";
 import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
 import { jobKeys } from "@/lib/query-keys/jobs/job-keys";
 import { createJobPosting, updateJobPosting } from "@/services/api/mutation/jobs/job-board.mutation";

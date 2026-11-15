@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { SettingGroup } from "@/enums/setting-group.enum";
+import { SettingGroup } from "@/enums/ui/setting-group.enum";
 
 export const platformSettingSchema = z.object({
   setting_key: z.string(),

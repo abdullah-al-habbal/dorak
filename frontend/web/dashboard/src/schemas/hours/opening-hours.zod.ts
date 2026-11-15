@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { Weekday } from "@/enums/weekday.enum";
+import { Weekday } from "@/enums/booking/weekday.enum";
 
 const TIME_LENGTH = 5;
 const timeSchema = z

@@ -1,8 +1,8 @@
-import { BRAND_HISTORY_PER_PAGE } from "@/config/admin-brand.constant";
+import { BRAND_HISTORY_PER_PAGE } from "@/config/platform/admin-brand.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { statusChangeLogListSchema } from "@/schemas/core/status-change-log.zod";
+import { statusChangeLogListSchema } from "@/schemas/core/api/status-change-log.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { StatusChangeLog } from "@/types/core/status-change-log.type";
+import type { StatusChangeLog } from "@/types/core/shared/status-change-log.type";
 
 /** The status-change log of one subject (`brand` or `branch`), newest first. */
 export function fetchStatusHistory(subjectType: string, id: string): Promise<StatusChangeLog[]> {

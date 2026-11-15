@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { ADMIN_USER_MAX_EMAIL, ADMIN_USER_MAX_NAME } from "@/config/admin-user.constant";
+import { ADMIN_USER_MAX_EMAIL, ADMIN_USER_MAX_NAME } from "@/config/platform/admin-user.constant";
 import { nameField } from "@/schemas/fields/name-field.zod";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 type AdminUserValidation = Dictionary["adminUsers"]["form"]["validation"];
 

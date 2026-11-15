@@ -3,7 +3,7 @@
 import { CheckIcon, MinusIcon } from "lucide-react";
 import type { JSX } from "react";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { featureLabel } from "@/lib/plans/subscription-format.util";
 
 /** Effective flags of the brand. State is icon plus text, never colour alone. */

@@ -5,8 +5,8 @@ import type { JSX } from "react";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PLAN_MAX_DESCRIPTION, PLAN_MAX_NAME } from "@/config/plan.constant";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { PLAN_MAX_DESCRIPTION, PLAN_MAX_NAME } from "@/config/money-shell/plan.constant";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { PlanFieldsProps } from "@/interfaces/plans/plan-fields-props.interface";
 import type { PlanFormValues } from "@/schemas/plans/plan-form.zod";
 

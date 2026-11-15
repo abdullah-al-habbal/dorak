@@ -1,5 +1,5 @@
-import type { OverlayKind } from "@/enums/overlay-kind.enum";
-import type { Review } from "@/types/clients/review.type";
+import type { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import type { Review } from "@/types/clients/reviews/review.type";
 
 export interface ReviewDisputeOverlayRequest {
   kind: OverlayKind.ReviewDispute;

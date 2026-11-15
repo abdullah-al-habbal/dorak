@@ -10,10 +10,10 @@ import { RatingStars } from "@/components/reviews/rating-stars";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { REVIEW_DISPUTE_REASON_MAX, REVIEW_DISPUTE_REASON_MIN, REVIEW_MAX_RATING } from "@/config/review.constant";
-import { useDisputeReview } from "@/hooks/clients/use-dispute-review";
-import { useI18n } from "@/hooks/core/use-i18n";
-import type { Review } from "@/types/clients/review.type";
+import { REVIEW_DISPUTE_REASON_MAX, REVIEW_DISPUTE_REASON_MIN, REVIEW_MAX_RATING } from "@/config/venue/review.constant";
+import { useDisputeReview } from "@/hooks/clients/reviews/use-dispute-review";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import type { Review } from "@/types/clients/reviews/review.type";
 
 interface ReviewDisputeDialogProps {
   branchId: string;

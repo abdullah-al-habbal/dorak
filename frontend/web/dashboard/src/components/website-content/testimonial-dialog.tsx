@@ -11,10 +11,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import { AUTHOR_NAME_MAX, CONTENT_SORT_MAX, CONTENT_TEXT_MAX, RATING_VALUES, TESTIMONIAL_BODY_MAX } from "@/config/website-content.constant";
-import { HttpStatus } from "@/enums/http-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useSaveTestimonial } from "@/hooks/platform/use-website-content";
+import { AUTHOR_NAME_MAX, CONTENT_SORT_MAX, CONTENT_TEXT_MAX, RATING_VALUES, TESTIMONIAL_BODY_MAX } from "@/config/platform/website-content.constant";
+import { HttpStatus } from "@/enums/access/http-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useSaveTestimonial } from "@/hooks/platform/settings/use-website-content";
 import { localeText } from "@/lib/platform/website-content.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { ContentSection, Testimonial } from "@/types/platform/website-content.type";

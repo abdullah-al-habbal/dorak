@@ -7,11 +7,11 @@ import { ErrorState } from "@/components/common/error-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { useWebsiteContent } from "@/hooks/platform/use-website-content";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { useWebsiteContent } from "@/hooks/platform/settings/use-website-content";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 
 /** Every marketing page with its ordered sections; a page and a section each open their own editor. */
 export function ContentPagesPanel(): JSX.Element {

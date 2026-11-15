@@ -11,17 +11,17 @@ import { CatalogCategoryList } from "@/components/admin-catalog/catalog-category
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { Button } from "@/components/ui/button";
-import type { CatalogView } from "@/config/admin-catalog.constant";
+import type { CatalogView } from "@/config/platform/admin-catalog.constant";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useAdminCatalogCategories } from "@/hooks/services/use-admin-catalog-categories";
-import { useAdminCatalogFilters } from "@/hooks/services/use-admin-catalog-filters";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { useUpdateCatalogCategoryActive } from "@/hooks/services/use-update-catalog-category-active";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useAdminCatalogCategories } from "@/hooks/services/catalog/use-admin-catalog-categories";
+import { useAdminCatalogFilters } from "@/hooks/services/catalog/use-admin-catalog-filters";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { useUpdateCatalogCategoryActive } from "@/hooks/services/catalog/use-update-catalog-category-active";
 import { hasAdminCatalogFilters } from "@/lib/services/admin-catalog-filters.util";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 /** The global catalog is platform-admin only; the proxy and the backend refuse everyone else too. */

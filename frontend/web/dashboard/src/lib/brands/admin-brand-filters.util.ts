@@ -1,5 +1,5 @@
-import { ADMIN_BRAND_MAX_SEARCH, BRAND_STATUS_FILTER_ALL, DEFAULT_BRAND_STATUS_FILTER } from "@/config/admin-brand.constant";
-import { BrandStatus } from "@/enums/brand-status.enum";
+import { ADMIN_BRAND_MAX_SEARCH, BRAND_STATUS_FILTER_ALL, DEFAULT_BRAND_STATUS_FILTER } from "@/config/platform/admin-brand.constant";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
 import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
 import type { BrandStatusFilter } from "@/types/brands/brand-status-filter.type";
 

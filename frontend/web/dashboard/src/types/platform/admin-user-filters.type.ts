@@ -1,4 +1,4 @@
-import type { AdminUserState } from "@/enums/admin-user-state.enum";
+import type { AdminUserState } from "@/enums/access/admin-user-state.enum";
 
 export interface AdminUserFilters {
   state: AdminUserState;

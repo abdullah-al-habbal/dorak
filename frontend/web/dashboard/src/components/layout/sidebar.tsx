@@ -4,9 +4,9 @@ import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { Button } from "@/components/ui/button";
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useSidebar } from "@/hooks/core/use-sidebar";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useSidebar } from "@/hooks/core/state/use-sidebar";
 import { cn } from "@/lib/utils";
 
 export function Sidebar({ actor }: { actor: AuthActor }) {

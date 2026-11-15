@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { VenueUniverse } from "@/enums/venue-universe.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
-import { optionalTranslationSchema } from "@/schemas/core/optional-translation.zod";
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
+import { optionalTranslationSchema } from "@/schemas/core/api/optional-translation.zod";
 
 /** `AdminCatalogCategoryResource`: one category with its usage counts. */
 const categoryFields = {

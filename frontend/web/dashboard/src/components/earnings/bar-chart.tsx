@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { JSX } from "react";
 
-import type { BarChartDatum } from "@/interfaces/ui/bar-chart-datum.interface";
+import type { BarChartDatum } from "@/interfaces/ui/data/bar-chart-datum.interface";
 import { cn } from "@/lib/utils";
 
 const MIN_BAR_PERCENT = 2;

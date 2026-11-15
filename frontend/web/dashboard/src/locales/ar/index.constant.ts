@@ -36,7 +36,7 @@ import { arSchedule } from "@/locales/ar/schedule.constant";
 import { arSubscription } from "@/locales/ar/subscription.constant";
 import { arShell } from "@/locales/ar/shell.constant";
 import { arWorkingHours } from "@/locales/ar/working-hours.constant";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 export const arDictionary: Dictionary = {
   common: arCommon,

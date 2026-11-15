@@ -1,5 +1,5 @@
-import type { ShiftIssue } from "@/enums/shift-issue.enum";
-import type { Weekday } from "@/enums/weekday.enum";
+import type { ShiftIssue } from "@/enums/booking/shift-issue.enum";
+import type { Weekday } from "@/enums/booking/weekday.enum";
 
 export interface ShiftIssueEntry {
   day: Weekday;

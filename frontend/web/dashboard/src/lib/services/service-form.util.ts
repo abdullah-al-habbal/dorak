@@ -1,5 +1,5 @@
-import { minorUnitsToInput, parseMinorUnits } from "@/lib/core/money.util";
-import { parseDuration } from "@/lib/core/duration.util";
+import { minorUnitsToInput, parseMinorUnits } from "@/lib/core/format/money.util";
+import { parseDuration } from "@/lib/core/format/duration.util";
 import type { ServicePayload } from "@/interfaces/services/service-payload.interface";
 import type { ServiceFormValues } from "@/schemas/services/service-form.zod";
 import type { Service } from "@/types/services/service.type";

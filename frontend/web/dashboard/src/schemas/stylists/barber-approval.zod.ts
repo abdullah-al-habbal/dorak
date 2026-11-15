@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { BarberStatus } from "@/enums/barber-status.enum";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
 import { clientBanSchema } from "@/schemas/clients/admin-client.zod";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
-import { optionalTranslationSchema } from "@/schemas/core/optional-translation.zod";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
+import { optionalTranslationSchema } from "@/schemas/core/api/optional-translation.zod";
 
 /** `GET /admin/barbers` and the approve/reject answers (`BarberReviewResource`). */
 export const barberApprovalSchema = z.object({

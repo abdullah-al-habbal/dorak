@@ -2,8 +2,8 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
 import { hoursOverrideKeys } from "@/lib/query-keys/hours/hours-override-keys";
 import { clearHoursOverride } from "@/services/api/mutation/hours/hours-override.mutation";
 

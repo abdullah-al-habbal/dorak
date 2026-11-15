@@ -7,9 +7,9 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import { CATALOG_CATEGORY_MAX_DESCRIPTION, CATALOG_CATEGORY_MAX_NAME, CATALOG_CATEGORY_MAX_SORT_ORDER } from "@/config/admin-catalog.constant";
-import { VenueUniverse } from "@/enums/venue-universe.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { CATALOG_CATEGORY_MAX_DESCRIPTION, CATALOG_CATEGORY_MAX_NAME, CATALOG_CATEGORY_MAX_SORT_ORDER } from "@/config/platform/admin-catalog.constant";
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { CatalogCategoryFormValues } from "@/schemas/services/catalog-category-form.zod";
 
 /** Bilingual name and description, then audience and order. Arabic inputs are `dir="rtl"` in either locale. */

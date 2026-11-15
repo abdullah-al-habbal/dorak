@@ -6,7 +6,7 @@ import type { JSX } from "react";
 import { ErrorState } from "@/components/common/error-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { WEEK_START } from "@/config/week-start.constant";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useScheduleHours } from "@/hooks/bookings/use-schedule-hours";
 import { formatClock, scheduleWeek } from "@/lib/bookings/schedule-hours.util";
 import { weekdayLabel } from "@/lib/hours/weekday-label.util";

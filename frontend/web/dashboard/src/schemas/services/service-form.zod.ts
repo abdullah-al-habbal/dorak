@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-import { NAME_MAX_LENGTH } from "@/config/field-limit.constant";
-import { parseDuration } from "@/lib/core/duration.util";
-import { parseMinorUnits } from "@/lib/core/money.util";
+import { NAME_MAX_LENGTH } from "@/config/money-shell/field-limit.constant";
+import { parseDuration } from "@/lib/core/format/duration.util";
+import { parseMinorUnits } from "@/lib/core/format/money.util";
 import { nameField } from "@/schemas/fields/name-field.zod";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 type ServiceValidation = Dictionary["services"]["form"]["validation"];
 

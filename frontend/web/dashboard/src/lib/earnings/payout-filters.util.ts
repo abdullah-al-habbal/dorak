@@ -1,4 +1,4 @@
-import { PayoutStatus } from "@/enums/payout-status.enum";
+import { PayoutStatus } from "@/enums/money/payout-status.enum";
 import type { PayoutFilters } from "@/types/earnings/payout-filters.type";
 
 const STATUSES = new Set<string>(Object.values(PayoutStatus));

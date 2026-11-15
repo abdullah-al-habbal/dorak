@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BarberStatus } from "@/enums/barber-status.enum";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
 import { filtersFromParams, filtersToParams } from "@/lib/stylists/stylist-filters.util";
 
 describe("stylist filters", () => {

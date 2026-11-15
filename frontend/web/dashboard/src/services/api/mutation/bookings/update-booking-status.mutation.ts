@@ -1,6 +1,6 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { BookingStatus } from "@/enums/booking-status.enum";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import { bookingSchema } from "@/schemas/bookings/booking.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { Booking } from "@/types/bookings/booking.type";

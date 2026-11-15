@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BrandStatus } from "@/enums/brand-status.enum";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
 import { adminBrandSchema } from "@/schemas/brands/admin-brand.zod";
 
 const row = {

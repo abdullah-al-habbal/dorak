@@ -13,11 +13,11 @@ import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useEarnings } from "@/hooks/earnings/use-earnings";
 import { useEarningsRange } from "@/hooks/earnings/use-earnings-range";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import { currencyCodes, totalFor } from "@/lib/earnings/earnings-metrics.util";
 import { chartBuckets, dailyBuckets } from "@/lib/earnings/earnings-series.util";
 

@@ -8,8 +8,8 @@ import { SessionHydrator } from "@/components/providers/session-hydrator";
 import { SidebarProvider } from "@/components/providers/sidebar-provider";
 import { SIDEBAR_COOKIE } from "@/config/cookies.constant";
 import { loginRoute, portalRoot } from "@/config/routes.constant";
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import { parseSidebarCookie } from "@/lib/core/sidebar.util";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import { parseSidebarCookie } from "@/lib/core/errors/sidebar.util";
 import { getServerSession } from "@/services/api/auth/server-session";
 
 /** Reads the session at request time, so it must render behind a Suspense boundary. */

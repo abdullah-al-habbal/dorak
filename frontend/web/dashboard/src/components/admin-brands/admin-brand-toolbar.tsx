@@ -4,9 +4,9 @@ import type { JSX } from "react";
 
 import { SearchInput } from "@/components/common/search-input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { BRAND_STATUS_FILTER_ALL } from "@/config/admin-brand.constant";
-import { BrandStatus } from "@/enums/brand-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { BRAND_STATUS_FILTER_ALL } from "@/config/platform/admin-brand.constant";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
 
 interface AdminBrandToolbarProps {

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import { apiRequest } from "@/services/api/core/client";
 import { markApplicationsSeen } from "@/services/api/mutation/jobs/job-board.mutation";
 

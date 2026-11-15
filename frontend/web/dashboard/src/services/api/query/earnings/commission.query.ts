@@ -1,6 +1,6 @@
-import { ALL_BRANDS, SETTLED_ALL, SETTLED_YES } from "@/config/commission.constant";
+import { ALL_BRANDS, SETTLED_ALL, SETTLED_YES } from "@/config/platform/commission.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/query/resolve-page-info.util";
 import { commissionEntryListSchema, commissionRuleListSchema } from "@/schemas/earnings/commission.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { CommissionEntryPage, CommissionRulePage } from "@/types/earnings/commission.type";

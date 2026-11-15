@@ -2,12 +2,12 @@
 
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { NotificationsMenu } from "@/components/layout/notifications-menu";
+import { NotificationsMenu } from "@/components/layout/notifications/notifications-menu";
 import { UserMenu } from "@/components/layout/user-menu";
 import { LanguageToggle } from "@/components/buttons/language-toggle";
 import { ThemeToggle } from "@/components/buttons/theme-toggle";
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import type { MeProfile } from "@/types/account/me-profile.type";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import type { MeProfile } from "@/types/account/profile/me-profile.type";
 
 export function Header({ actor, profile }: { actor: AuthActor; profile: MeProfile }) {
   return (

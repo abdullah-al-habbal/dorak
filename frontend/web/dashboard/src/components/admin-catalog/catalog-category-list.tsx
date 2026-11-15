@@ -7,9 +7,9 @@ import { CatalogCategoryStatusBadge } from "@/components/admin-catalog/catalog-c
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DataTable } from "@/components/ui/table/data-table";
-import { useI18n } from "@/hooks/core/use-i18n";
-import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import type { DataTableColumn } from "@/interfaces/ui/data/data-table-column.interface";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 interface CatalogCategoryListProps {

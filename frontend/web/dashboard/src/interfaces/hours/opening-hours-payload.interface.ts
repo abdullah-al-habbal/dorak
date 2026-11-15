@@ -1,4 +1,4 @@
-import type { Weekday } from "@/enums/weekday.enum";
+import type { Weekday } from "@/enums/booking/weekday.enum";
 import type { Shift } from "@/interfaces/hours/shift.interface";
 
 export interface OpeningHoursPayloadDay {

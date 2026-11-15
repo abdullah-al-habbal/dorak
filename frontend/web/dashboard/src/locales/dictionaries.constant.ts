@@ -1,7 +1,7 @@
-import { Locale } from "@/enums/locale.enum";
+import { Locale } from "@/enums/access/locale.enum";
 import { arDictionary } from "@/locales/ar/index.constant";
 import { enDictionary } from "@/locales/en/index.constant";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 export const DICTIONARIES: Record<Locale, Dictionary> = {
   [Locale.En]: enDictionary,

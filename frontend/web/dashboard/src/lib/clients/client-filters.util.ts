@@ -1,7 +1,7 @@
-import { CLIENT_MAX_SEARCH, CLIENT_STATUS_FILTER_ALL } from "@/config/client.constant";
-import { ClientBanFilter } from "@/enums/client-ban-filter.enum";
-import { ClientStatus } from "@/enums/client-status.enum";
-import type { ClientFilters } from "@/types/clients/client-filters.type";
+import { CLIENT_MAX_SEARCH, CLIENT_STATUS_FILTER_ALL } from "@/config/venue/client.constant";
+import { ClientBanFilter } from "@/enums/people/client-ban-filter.enum";
+import { ClientStatus } from "@/enums/people/client-status.enum";
+import type { ClientFilters } from "@/types/clients/clients/client-filters.type";
 
 function parseStatus(value: string | null): ClientFilters["status"] {
   return Object.values(ClientStatus).find((status) => status === value) ?? CLIENT_STATUS_FILTER_ALL;

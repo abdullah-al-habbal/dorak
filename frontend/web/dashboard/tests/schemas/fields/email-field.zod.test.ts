@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
-import { EMAIL_MAX_LENGTH } from "@/config/field-limit.constant";
+import { EMAIL_MAX_LENGTH } from "@/config/money-shell/field-limit.constant";
 import { emailField } from "@/schemas/fields/email-field.zod";
 import { zodOutcome } from "@tests/helpers/zod-outcome.helper";
 

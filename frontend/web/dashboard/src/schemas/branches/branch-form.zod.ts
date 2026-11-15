@@ -9,13 +9,13 @@ import {
   BRANCH_MIN_PASSWORD,
   LATITUDE_LIMIT,
   LONGITUDE_LIMIT,
-} from "@/config/branch.constant";
-import { VenueUniverse } from "@/enums/venue-universe.enum";
-import { parseCoordinate } from "@/lib/core/coordinate.util";
+} from "@/config/venue/branch.constant";
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
+import { parseCoordinate } from "@/lib/core/format/coordinate.util";
 import { emailField } from "@/schemas/fields/email-field.zod";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import { passwordField } from "@/schemas/fields/password-field.zod";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 type BranchValidation = Dictionary["branches"]["form"]["validation"];
 

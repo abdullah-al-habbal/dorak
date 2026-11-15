@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { ADMIN_USER_MAX_EMAIL } from "@/config/admin-user.constant";
-import { BRAND_MAX_DESCRIPTION } from "@/config/admin-brand.constant";
-import { Locale } from "@/enums/locale.enum";
+import { ADMIN_USER_MAX_EMAIL } from "@/config/platform/admin-user.constant";
+import { BRAND_MAX_DESCRIPTION } from "@/config/platform/admin-brand.constant";
+import { Locale } from "@/enums/access/locale.enum";
 import { DICTIONARIES } from "@/locales/dictionaries.constant";
 import { createAdminUserSchema } from "@/schemas/platform/admin-user-form.zod";
 import { createBrandCreateSchema } from "@/schemas/brands/brand-create-form.zod";

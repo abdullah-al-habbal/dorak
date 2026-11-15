@@ -1,4 +1,4 @@
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import { forwardDashboardRequest } from "@/services/api/proxy/forward";
 
 type RouteContext = { params: Promise<{ path: string[] }> };

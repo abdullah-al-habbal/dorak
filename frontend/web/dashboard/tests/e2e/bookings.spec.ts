@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-import { BookingStatus } from "@/enums/booking-status.enum";
-import { BookingView } from "@/enums/booking-view.enum";
-import { HttpMethod } from "@/enums/http-method.enum";
-import { HttpStatus } from "@/enums/http-status.enum";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import { BookingView } from "@/enums/booking/booking-view.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
 import { holdRequests } from "@tests/e2e/support/hold-requests";
 import { dictionaryFor, expectNoHorizontalScroll, signIn } from "@tests/e2e/support/sign-in";
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ReviewStatus } from "@/enums/review-status.enum";
+import { ReviewStatus } from "@/enums/people/review-status.enum";
 
 /** `GET /admin/reviews` and the resolve answer (`AdminReviewResource`). */
 export const adminReviewSchema = z.object({

@@ -1,4 +1,4 @@
-import type { BarberStatus } from "@/enums/barber-status.enum";
+import type { BarberStatus } from "@/enums/people/barber-status.enum";
 
 export interface StylistFilters {
   search?: string;

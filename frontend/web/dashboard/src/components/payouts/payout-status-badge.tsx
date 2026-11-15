@@ -3,9 +3,9 @@
 import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { PAYOUT_STATUS_STYLE } from "@/config/payout.constant";
-import type { PayoutStatus } from "@/enums/payout-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { PAYOUT_STATUS_STYLE } from "@/config/money-shell/payout.constant";
+import type { PayoutStatus } from "@/enums/money/payout-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 export function PayoutStatusBadge({ status }: { status: PayoutStatus }): JSX.Element {
   const { payouts } = useDictionary();

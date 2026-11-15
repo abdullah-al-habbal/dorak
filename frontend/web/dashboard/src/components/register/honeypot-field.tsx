@@ -1,6 +1,6 @@
 import type { JSX, RefObject } from "react";
 
-import { HONEYPOT_FIELD } from "@/config/register-business.constant";
+import { HONEYPOT_FIELD } from "@/config/money-shell/register-business.constant";
 
 /**
  * A field real visitors never see or reach: off-screen, out of the tab order, and hidden from

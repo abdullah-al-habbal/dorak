@@ -8,17 +8,17 @@ import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { CLIENT_STATUS_FILTER_ALL } from "@/config/client.constant";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { ClientBanFilter } from "@/enums/client-ban-filter.enum";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useClientFilters } from "@/hooks/clients/use-client-filters";
-import { useClients } from "@/hooks/clients/use-clients";
-import { useConfirmUnbanClient } from "@/hooks/clients/use-confirm-unban-client";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
+import { CLIENT_STATUS_FILTER_ALL } from "@/config/venue/client.constant";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { ClientBanFilter } from "@/enums/people/client-ban-filter.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useClientFilters } from "@/hooks/clients/clients/use-client-filters";
+import { useClients } from "@/hooks/clients/clients/use-clients";
+import { useConfirmUnbanClient } from "@/hooks/clients/clients/use-confirm-unban-client";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { hasClientFilters } from "@/lib/clients/client-filters.util";
-import type { AdminClient } from "@/types/clients/admin-client.type";
+import type { AdminClient } from "@/types/clients/clients/admin-client.type";
 
 /** Clients are managed by platform admins only; the proxy and the backend refuse everyone else too. */
 export function ClientsScreen({ actor }: { actor: AuthActor }): JSX.Element {

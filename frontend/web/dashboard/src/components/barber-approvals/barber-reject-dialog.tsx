@@ -9,11 +9,11 @@ import { FormField } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { BARBER_REJECT_REASON_MAX, BARBER_REJECT_REASON_MIN } from "@/config/barber-approval.constant";
-import { HttpStatus } from "@/enums/http-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useRejectBarber } from "@/hooks/stylists/use-reject-barber";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { BARBER_REJECT_REASON_MAX, BARBER_REJECT_REASON_MIN } from "@/config/ops/barber-approval.constant";
+import { HttpStatus } from "@/enums/access/http-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useRejectBarber } from "@/hooks/stylists/approvals/use-reject-barber";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 

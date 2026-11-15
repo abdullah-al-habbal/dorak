@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { Locale } from "@/enums/locale.enum";
+import { Locale } from "@/enums/access/locale.enum";
 import { resolveLocale } from "@/locales/resolve-locale.util";
 
 describe("resolveLocale", () => {

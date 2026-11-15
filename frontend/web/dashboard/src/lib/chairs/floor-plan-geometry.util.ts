@@ -1,4 +1,4 @@
-import { MAX_LAYOUT_VALUE, MIN_CHAIR_SIZE, PERCENT_MAX, ROTATION_LIMIT, STAGE_WIDTH } from "@/config/floor-plan.constant";
+import { MAX_LAYOUT_VALUE, MIN_CHAIR_SIZE, PERCENT_MAX, ROTATION_LIMIT, STAGE_WIDTH } from "@/config/venue/floor-plan.constant";
 import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
 import type { FloorCanvas, FloorDecoration } from "@/types/chairs/floor-plan.type";
 

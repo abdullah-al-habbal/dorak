@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import { hoursOverrideSchema } from "@/schemas/hours/hours-override.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { HoursOverride, HoursOverrideInput } from "@/types/hours/hours-override.type";

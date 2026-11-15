@@ -1,4 +1,4 @@
-import { HttpStatus } from "@/enums/http-status.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 interface BookingStatusErrorMessages {

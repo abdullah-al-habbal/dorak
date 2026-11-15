@@ -11,12 +11,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import { REVIEW_RESOLUTION_NOTE_MAX, REVIEW_RESOLUTION_OUTCOMES } from "@/config/review-moderation.constant";
-import { REVIEW_MAX_RATING } from "@/config/review.constant";
-import { ReviewStatus } from "@/enums/review-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useResolveReview } from "@/hooks/clients/use-resolve-review";
-import type { AdminReview } from "@/types/clients/admin-review.type";
+import { REVIEW_RESOLUTION_NOTE_MAX, REVIEW_RESOLUTION_OUTCOMES } from "@/config/platform/review-moderation.constant";
+import { REVIEW_MAX_RATING } from "@/config/venue/review.constant";
+import { ReviewStatus } from "@/enums/people/review-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useResolveReview } from "@/hooks/clients/reviews/use-resolve-review";
+import type { AdminReview } from "@/types/clients/reviews/admin-review.type";
 
 interface ReviewResolveDialogProps {
   review: AdminReview;

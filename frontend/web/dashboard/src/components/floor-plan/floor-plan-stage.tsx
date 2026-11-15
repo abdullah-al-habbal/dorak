@@ -3,9 +3,9 @@
 import { useRef } from "react";
 import type { JSX, KeyboardEvent, PointerEvent } from "react";
 
-import { KEYBOARD_BIG_STEP, KEYBOARD_STEP, ROTATION_STEP, UNISEX_ZONES } from "@/config/floor-plan.constant";
-import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { KEYBOARD_BIG_STEP, KEYBOARD_STEP, ROTATION_STEP, UNISEX_ZONES } from "@/config/venue/floor-plan.constant";
+import { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { FloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
 import { moveChair, moveDecoration, percentToUnits, pointerToStage, rotateChair, stageSize, unitsToPercent } from "@/lib/chairs/floor-plan-geometry.util";
 import { cn } from "@/lib/utils";

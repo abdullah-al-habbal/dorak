@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BranchStatus } from "@/enums/branch-status.enum";
+import { BranchStatus } from "@/enums/venue/branch-status.enum";
 import { branchFiltersFromParams, branchFiltersToParams, branchQueryString } from "@/lib/branches/branch-filters.util";
 
 describe("branch filters", () => {

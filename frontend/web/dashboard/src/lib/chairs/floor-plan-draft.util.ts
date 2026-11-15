@@ -1,6 +1,6 @@
-import { DEFAULT_DECORATION_SIZE, PERCENT_MAX, UNISEX_ZONES } from "@/config/floor-plan.constant";
-import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
-import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
+import { DEFAULT_DECORATION_SIZE, PERCENT_MAX, UNISEX_ZONES } from "@/config/venue/floor-plan.constant";
+import { FloorDecorationType } from "@/enums/venue/floor-decoration-type.enum";
+import { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
 import type { FloorDecorationDraft, FloorPlanDraft } from "@/interfaces/chairs/floor-plan-draft.interface";
 import { layoutOf } from "@/lib/chairs/chair-form.util";
 import { clampChair, stageSize } from "@/lib/chairs/floor-plan-geometry.util";

@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { BACKEND_PATH } from "@/config/backend.constant";
 import { ACCESS_COOKIE, CLAIM_COOKIE, REFRESH_COOKIE } from "@/config/cookies.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import { apiSuccess } from "@/lib/api-response";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";

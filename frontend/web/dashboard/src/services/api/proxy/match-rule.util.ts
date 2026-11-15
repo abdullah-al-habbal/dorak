@@ -1,6 +1,6 @@
 import { PROXY_ALLOW_LIST } from "@/config/proxy-allow-list.constant";
-import type { HttpMethod } from "@/enums/http-method.enum";
-import type { ProxyMatch } from "@/types/core/proxy-match.type";
+import type { HttpMethod } from "@/enums/access/http-method.enum";
+import type { ProxyMatch } from "@/types/core/api/proxy-match.type";
 
 export function matchProxyRule(method: HttpMethod, path: string): ProxyMatch {
   const byPath = PROXY_ALLOW_LIST.filter((rule) => rule.pattern.test(path));

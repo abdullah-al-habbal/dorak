@@ -1,4 +1,4 @@
-import type { TrendDirection } from "@/enums/trend-direction.enum";
+import type { TrendDirection } from "@/enums/ui/trend-direction.enum";
 
 export interface EarningsTrend {
   direction: TrendDirection;

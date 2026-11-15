@@ -3,15 +3,15 @@
 import type { JSX } from "react";
 import { useRef } from "react";
 
-import { PasswordInput } from "@/components/auth/password-input";
+import { PasswordInput } from "@/components/auth/forms/password-input";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { BrandFields } from "@/components/register/brand-fields";
 import { HoneypotField } from "@/components/register/honeypot-field";
 import { Input } from "@/components/ui/input";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useRegisterBusinessForm } from "@/hooks/core/use-register-business-form";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useRegisterBusinessForm } from "@/hooks/core/forms/use-register-business-form";
 import type { Currency } from "@/types/platform/currency.type";
 
 interface RegisterDetailsFormProps {

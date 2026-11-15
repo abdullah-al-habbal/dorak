@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { PlanState } from "@/enums/plan-state.enum";
-import { SubscriptionStatus } from "@/enums/subscription-status.enum";
+import { PlanState } from "@/enums/money/plan-state.enum";
+import { SubscriptionStatus } from "@/enums/money/subscription-status.enum";
 import { adminSubscriptionFiltersFromParams, adminSubscriptionFiltersToParams } from "@/lib/plans/admin-subscription-filters.util";
 import { planFiltersFromParams, planFiltersToParams } from "@/lib/plans/plan-filters.util";
 

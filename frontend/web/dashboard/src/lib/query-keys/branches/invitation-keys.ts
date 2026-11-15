@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/core/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/query/create-query-keys.util";
 
 export const invitationKeys = createQueryKeys("invitations", {
   list: (branchId: string, status: string, page: number) => ["list", branchId, status, page] as const,

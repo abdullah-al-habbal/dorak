@@ -1,4 +1,4 @@
-import type { ReviewStatus } from "@/enums/review-status.enum";
+import type { ReviewStatus } from "@/enums/people/review-status.enum";
 
 export interface ReviewResolvePayload {
   id: string;

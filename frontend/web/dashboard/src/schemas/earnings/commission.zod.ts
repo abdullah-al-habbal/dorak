@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CommissionScope, CommissionType } from "@/enums/commission.enum";
+import { CommissionScope, CommissionType } from "@/enums/money/commission.enum";
 
 const currencyRefSchema = z.object({ id: z.string().optional(), code: z.string() }).nullable().optional();
 

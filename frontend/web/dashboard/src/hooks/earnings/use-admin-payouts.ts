@@ -2,7 +2,7 @@
 
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { useListQuery } from "@/hooks/core/use-list-query";
+import { useListQuery } from "@/hooks/core/query/use-list-query";
 import { adminPayoutKeys } from "@/lib/query-keys/earnings/admin-payout-keys";
 import { fetchAdminPayoutPage } from "@/services/api/query/earnings/admin-payout-page.query";
 import type { AdminPayoutPage } from "@/types/earnings/admin-payout-page.type";

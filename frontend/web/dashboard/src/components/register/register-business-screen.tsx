@@ -4,14 +4,14 @@ import Link from "next/link";
 import type { JSX } from "react";
 import { useState } from "react";
 
-import { AuthShell } from "@/components/auth/auth-shell";
+import { AuthShell } from "@/components/auth/screens/auth-shell";
 import { ExistingOwnerForm } from "@/components/register/existing-owner-form";
 import { RegisterDetailsForm } from "@/components/register/register-details-form";
 import { VerifyCodeForm } from "@/components/register/verify-code-form";
 import { Button } from "@/components/ui/button";
 import { loginRoute } from "@/config/routes.constant";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { Currency } from "@/types/platform/currency.type";
 
 /** The public owner sign-up: details, then the emailed code; an existing client takes the other form instead. */

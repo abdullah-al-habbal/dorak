@@ -3,9 +3,9 @@
 import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { BRAND_STATUS_STYLE } from "@/config/admin-brand.constant";
-import type { BrandStatus } from "@/enums/brand-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { BRAND_STATUS_STYLE } from "@/config/platform/admin-brand.constant";
+import type { BrandStatus } from "@/enums/venue/brand-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 export function BrandStatusBadge({ status }: { status: BrandStatus }): JSX.Element {
   const { adminBrands } = useDictionary();

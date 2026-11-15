@@ -4,9 +4,9 @@ import type { JSX } from "react";
 
 import { SearchInput } from "@/components/common/search-input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { BARBER_STATUS_FILTER_ALL } from "@/config/barber-approval.constant";
-import { BarberStatus } from "@/enums/barber-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { BARBER_STATUS_FILTER_ALL } from "@/config/ops/barber-approval.constant";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { BarberApprovalFilters } from "@/types/stylists/barber-approval-filters.type";
 
 interface BarberApprovalToolbarProps {

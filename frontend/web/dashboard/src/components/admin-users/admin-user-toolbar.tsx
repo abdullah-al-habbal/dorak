@@ -4,8 +4,8 @@ import type { JSX } from "react";
 
 import { SearchInput } from "@/components/common/search-input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { AdminUserState } from "@/enums/admin-user-state.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { AdminUserState } from "@/enums/access/admin-user-state.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { AdminUserFilters } from "@/types/platform/admin-user-filters.type";
 
 interface AdminUserToolbarProps {

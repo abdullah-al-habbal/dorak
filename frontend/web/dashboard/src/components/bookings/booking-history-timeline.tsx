@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { Button } from "@/components/ui/button";
 import { SkeletonRows } from "@/components/ui/skeleton-row";
 import { useBookingHistory } from "@/hooks/bookings/use-booking-history";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import { actorLabel, statusLabel } from "@/lib/bookings/booking-status-label.util";
 
 const SKELETON_ROWS = 3;

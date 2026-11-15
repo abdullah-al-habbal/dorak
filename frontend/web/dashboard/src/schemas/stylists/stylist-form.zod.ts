@@ -6,12 +6,12 @@ import {
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PHONE_MAX_LENGTH,
-} from "@/config/field-limit.constant";
+} from "@/config/money-shell/field-limit.constant";
 import { emailField } from "@/schemas/fields/email-field.zod";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import { passwordField } from "@/schemas/fields/password-field.zod";
 import { phoneField } from "@/schemas/fields/phone-field.zod";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 type StylistValidation = Dictionary["stylists"]["form"]["validation"];
 

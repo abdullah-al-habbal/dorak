@@ -1,5 +1,5 @@
-import { BookingStatus } from "@/enums/booking-status.enum";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 const STATUSES = new Set<string>(Object.values(BookingStatus));
 

@@ -1,5 +1,5 @@
-import { REVIEW_RATINGS_DESC } from "@/config/review.constant";
-import type { ReviewSummary } from "@/types/clients/review-summary.type";
+import { REVIEW_RATINGS_DESC } from "@/config/venue/review.constant";
+import type { ReviewSummary } from "@/types/clients/reviews/review-summary.type";
 
 export interface RatingBar {
   rating: number;

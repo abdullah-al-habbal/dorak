@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 
-import { HttpMethod } from "@/enums/http-method.enum";
-import { HttpStatus } from "@/enums/http-status.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
 import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 
 const { workingHours } = dictionaryFor("en");

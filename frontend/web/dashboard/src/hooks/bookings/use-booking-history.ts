@@ -2,7 +2,7 @@
 
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { useDetailQuery } from "@/hooks/core/use-detail-query";
+import { useDetailQuery } from "@/hooks/core/query/use-detail-query";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { fetchBookingHistory } from "@/services/api/query/bookings/booking-history.query";
 import type { BookingHistoryEntry } from "@/types/bookings/booking-history-entry.type";

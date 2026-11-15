@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/core/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/query/create-query-keys.util";
 
 export const jobKeys = createQueryKeys("jobs", {
   postings: (branchId: string, page: number) => ["postings", branchId, page] as const,

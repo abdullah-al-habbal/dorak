@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { BookingStatus } from "@/enums/booking-status.enum";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
 import { clientRatingSchema } from "@/schemas/clients/client-rating.zod";
 
 const localized = z.union([z.string(), z.record(z.string(), z.string().nullable())]);

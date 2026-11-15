@@ -5,10 +5,10 @@ import type { JSX } from "react";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { SubscriptionInterval } from "@/enums/money/subscription-interval.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { PlanFieldsProps } from "@/interfaces/plans/plan-fields-props.interface";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { PlanFormValues } from "@/schemas/plans/plan-form.zod";
 import type { Currency } from "@/types/platform/currency.type";
 

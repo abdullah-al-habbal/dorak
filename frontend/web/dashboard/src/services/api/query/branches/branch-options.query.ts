@@ -1,4 +1,4 @@
-import { BRANCH_OPTIONS_PER_PAGE } from "@/config/working-hours.constant";
+import { BRANCH_OPTIONS_PER_PAGE } from "@/config/ops/working-hours.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { branchOptionListSchema } from "@/schemas/branches/branch-option.zod";
 import { apiRequest } from "@/services/api/core/client";

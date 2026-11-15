@@ -2,11 +2,11 @@ import type { NextResponse } from "next/server";
 
 import { SECONDS_PER_YEAR } from "@/config/backend.constant";
 import { LAST_GUARD_COOKIE } from "@/config/cookies.constant";
-import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { HttpStatus } from "@/enums/http-status.enum";
-import type { BackendResult } from "@/interfaces/core/backend-result.interface";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import { ApiErrorCode } from "@/enums/access/api-error-code.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
+import type { BackendResult } from "@/interfaces/core/query/backend-result.interface";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 import { apiFailure, apiSuccess } from "@/lib/api-response";
 import { failureFromBackend } from "@/services/api/auth/failure-response";
 import { setSessionCookies } from "@/services/api/auth/cookies";

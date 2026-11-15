@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { SubscriptionStatus } from "@/enums/subscription-status.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { SubscriptionStatus } from "@/enums/money/subscription-status.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 export const adminSubscriptionSchema = z.object({
   id: z.string(),

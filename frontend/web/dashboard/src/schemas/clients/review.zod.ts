@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ReviewStatus } from "@/enums/review-status.enum";
+import { ReviewStatus } from "@/enums/people/review-status.enum";
 
 export const reviewSchema = z.object({
   id: z.string(),

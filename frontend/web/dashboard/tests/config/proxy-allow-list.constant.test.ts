@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { PROXY_ALLOW_LIST } from "@/config/proxy-allow-list.constant";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 
 function allowed(method: HttpMethod, path: string, guard: AuthActor): boolean {
   return PROXY_ALLOW_LIST.some((rule) => rule.methods.includes(method) && rule.pattern.test(path) && rule.guards.includes(guard));

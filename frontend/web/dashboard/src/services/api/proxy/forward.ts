@@ -2,9 +2,9 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { ACCESS_COOKIE, CLAIM_COOKIE, LOCALE_COOKIE } from "@/config/cookies.constant";
-import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import { HttpStatus } from "@/enums/http-status.enum";
-import type { HttpMethod } from "@/enums/http-method.enum";
+import { ApiErrorCode } from "@/enums/access/api-error-code.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
+import type { HttpMethod } from "@/enums/access/http-method.enum";
 import { apiFailure } from "@/lib/api-response";
 import { getRequestDictionary } from "@/locales/get-request-dictionary";
 import { resolveLocale } from "@/locales/resolve-locale.util";

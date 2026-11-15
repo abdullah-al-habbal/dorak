@@ -34,8 +34,15 @@ for (const f of files) {
     else if (!exists(spec)) errors.push(`unresolved ${spec} in ${f}`);
   }
 }
-const dest = new Set(moves.map((m) => path.dirname(`src/${m.to}`)));
-for (const d of dest) if (fs.readdirSync(d).length > 30) errors.push(`folder over 30 files: ${d}`);
+const MAX_FILES = 10;
+const EXEMPT = /^src\/(app|locales)(\/|$)|^src\/components\/ui(\/|$)|^src\/services\/api\/auth$/;
+(function density(d) {
+  if (EXEMPT.test(d)) return;
+  const entries = fs.readdirSync(d, { withFileTypes: true });
+  const n = entries.filter((e) => e.isFile()).length;
+  if (n > MAX_FILES) errors.push(`folder over ${MAX_FILES} files: ${d} (${n})`);
+  for (const e of entries) if (e.isDirectory()) density(path.join(d, e.name));
+})("src");
 for (const f of files) if (/(^|\/)index\.tsx?$/.test(f) && moves.some((m) => f.startsWith(`src/${path.dirname(m.to)}`))) errors.push(`barrel added: ${f}`);
 if (errors.length) { console.error(errors.join("\n")); process.exit(1); }
 console.log(`verify-imports OK (${files.length} files scanned)`);

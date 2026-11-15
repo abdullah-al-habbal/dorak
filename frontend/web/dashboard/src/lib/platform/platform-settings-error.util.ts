@@ -1,6 +1,6 @@
-import { SETTINGS_ROOT_ERROR_PREFIX } from "@/config/platform-settings.constant";
-import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
-import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
+import { SETTINGS_ROOT_ERROR_PREFIX } from "@/config/platform/platform-settings.constant";
+import type { MappedFormError } from "@/interfaces/core/query/mapped-form-error.interface";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 
 /** The backend names fields `settings.<key>`; the form's fields are the bare keys. */
 function toFormFieldName(name: string): string {

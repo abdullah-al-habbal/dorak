@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { ResetPasswordScreen } from "@/components/auth/reset-password-screen";
+import { ResetPasswordScreen } from "@/components/auth/screens/reset-password-screen";
 import { RESET_LINK_EMAIL_PARAM, RESET_LINK_TOKEN_PARAM } from "@/config/routes.constant";
 import { parseGuardOrNotFound } from "@/lib/parse-guard";
 

@@ -4,7 +4,7 @@ import { CheckCircle2Icon, PauseCircleIcon } from "lucide-react";
 import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 /** Icon plus text, never colour alone. */
 export function CatalogCategoryStatusBadge({ active }: { active: boolean }): JSX.Element {

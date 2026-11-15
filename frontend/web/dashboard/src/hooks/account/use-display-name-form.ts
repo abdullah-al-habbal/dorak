@@ -4,14 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
 import { accountKeys } from "@/lib/query-keys/account/account-keys";
-import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
-import { displayNameFormSchema } from "@/schemas/account/display-name-form.zod";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
+import { displayNameFormSchema } from "@/schemas/account/account/display-name-form.zod";
 import { updateDisplayName } from "@/services/api/mutation/account/account.mutation";
 import { useAuthStore } from "@/store/auth.store";
-import type { DisplayNameFormValues } from "@/types/account/display-name-form-values.type";
+import type { DisplayNameFormValues } from "@/types/account/forms/display-name-form-values.type";
 
 interface DisplayNameForm {
   form: UseFormReturn<DisplayNameFormValues>;

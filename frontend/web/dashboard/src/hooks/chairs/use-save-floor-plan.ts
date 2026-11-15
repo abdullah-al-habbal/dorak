@@ -2,8 +2,8 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
 import type { FloorPlanDraft } from "@/interfaces/chairs/floor-plan-draft.interface";
 import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
 import { draftToLayoutPayload, movedChairIds } from "@/lib/chairs/floor-plan-draft.util";

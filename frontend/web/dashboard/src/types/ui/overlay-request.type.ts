@@ -14,7 +14,7 @@ import type { BrandDetailOverlayRequest } from "@/interfaces/brands/brand-detail
 import type { CatalogCategoryDetailOverlayRequest } from "@/interfaces/services/catalog-category-detail-overlay-request.interface";
 import type { CatalogCategoryFormOverlayRequest } from "@/interfaces/services/catalog-category-form-overlay-request.interface";
 import type { ChairFormOverlayRequest } from "@/interfaces/chairs/chair-form-overlay-request.interface";
-import type { ConfirmOverlayRequest } from "@/interfaces/ui/confirm-overlay-request.interface";
+import type { ConfirmOverlayRequest } from "@/interfaces/ui/shell/confirm-overlay-request.interface";
 import type { PayoutActionOverlayRequest } from "@/interfaces/earnings/payout-action-overlay-request.interface";
 import type { PlanFormOverlayRequest } from "@/interfaces/plans/plan-form-overlay-request.interface";
 import type { ReviewResolveOverlayRequest } from "@/interfaces/clients/review-resolve-overlay-request.interface";

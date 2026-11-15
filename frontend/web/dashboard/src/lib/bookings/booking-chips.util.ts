@@ -1,6 +1,6 @@
-import type { FilterChip } from "@/interfaces/ui/filter-chip.interface";
+import type { FilterChip } from "@/interfaces/ui/data/filter-chip.interface";
 import type { BookingFilters } from "@/types/bookings/booking-filters.type";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 export const CHIP_KEY = { status: "status", chair: "chair", search: "search", hideCancelled: "hideCancelled" } as const;
 

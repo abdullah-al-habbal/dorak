@@ -6,10 +6,10 @@ import type { JSX } from "react";
 import { ChairServiceSwitch } from "@/components/chairs/chair-service-switch";
 import { ChairStatusBadge } from "@/components/chairs/chair-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import type { DataTableColumn } from "@/interfaces/ui/data/data-table-column.interface";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { Chair } from "@/types/chairs/chair.type";
 
 interface ChairListProps {

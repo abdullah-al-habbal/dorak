@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 import { OverlayContext } from "@/components/overlays/overlay-context";
 import { OverlayHost } from "@/components/overlays/overlay-host";
-import type { OverlayContextValue } from "@/interfaces/ui/overlay-context-value.interface";
+import type { OverlayContextValue } from "@/interfaces/ui/shell/overlay-context-value.interface";
 import type { OverlayRequest } from "@/types/ui/overlay-request.type";
 
 export function OverlayProvider({ children }: { children: ReactNode }) {

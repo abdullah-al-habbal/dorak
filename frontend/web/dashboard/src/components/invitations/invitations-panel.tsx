@@ -12,12 +12,12 @@ import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { INVITATION_FILTER_ALL, INVITATION_STATUSES } from "@/config/invitation.constant";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useActOnInvitation } from "@/hooks/branches/use-act-on-invitation";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useInvitations } from "@/hooks/branches/use-invitations";
-import { useOverlay } from "@/hooks/core/use-overlay";
+import { INVITATION_FILTER_ALL, INVITATION_STATUSES } from "@/config/ops/invitation.constant";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useActOnInvitation } from "@/hooks/branches/invitations/use-act-on-invitation";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useInvitations } from "@/hooks/branches/invitations/use-invitations";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
 import type { InvitationAction } from "@/services/api/mutation/branches/invitation.mutation";
 import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 

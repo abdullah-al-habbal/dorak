@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { parseLocalInput } from "@/lib/bookings/booking-datetime.util";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 type RescheduleValidation = Dictionary["bookings"]["reschedule"]["validation"];
 

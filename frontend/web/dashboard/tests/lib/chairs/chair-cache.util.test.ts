@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ChairStatus } from "@/enums/chair-status.enum";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
 import { withChairStatus } from "@/lib/chairs/chair-cache.util";
 import type { ChairPage } from "@/types/chairs/chair-page.type";
 

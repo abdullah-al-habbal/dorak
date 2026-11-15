@@ -5,10 +5,10 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
-import { OverlayKind } from "@/enums/overlay-kind.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useDeletePlan } from "@/hooks/plans/use-delete-plan";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useOverlay } from "@/hooks/core/use-overlay";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useSavePlan } from "@/hooks/plans/use-save-plan";
 import { emptyPlanForm, formToPlanPayload, planToForm } from "@/lib/plans/plan-form.util";
 import { mapPlanSaveError } from "@/lib/plans/plan-form-error.util";

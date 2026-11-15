@@ -1,9 +1,9 @@
 import { API_ROUTE } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
-import { loginResultSchema } from "@/schemas/core/login-result.zod";
+import { HttpMethod } from "@/enums/access/http-method.enum";
+import { loginResultSchema } from "@/schemas/core/session/login-result.zod";
 import { apiRequest } from "@/services/api/core/client";
-import type { LoginBody } from "@/types/core/login-body.type";
-import type { LoginResult } from "@/types/core/login-result.type";
+import type { LoginBody } from "@/types/core/session/login-body.type";
+import type { LoginResult } from "@/types/core/session/login-result.type";
 
 export function loginMutation(body: LoginBody): Promise<LoginResult> {
   return apiRequest(API_ROUTE.login, { method: HttpMethod.Post, body, schema: loginResultSchema, skipRefresh: true });

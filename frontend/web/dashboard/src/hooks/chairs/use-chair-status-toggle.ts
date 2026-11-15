@@ -1,10 +1,10 @@
 "use client";
 
-import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useOverlay } from "@/hooks/core/use-overlay";
+import { ApiErrorCode } from "@/enums/access/api-error-code.enum";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useUpdateChairStatus } from "@/hooks/chairs/use-update-chair-status";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { Chair } from "@/types/chairs/chair.type";

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 export const currencySchema = z.object({
   code: z.string(),

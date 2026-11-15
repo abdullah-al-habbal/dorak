@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { ClientRelation } from "@/enums/client-relation.enum";
+import { ClientRelation } from "@/enums/people/client-relation.enum";
 import { clientKeys } from "@/lib/query-keys/clients/client-keys";
 import { fetchClientBookings } from "@/services/api/query/clients/client.query";
 import type { ClientBooking } from "@/types/bookings/client-booking.type";

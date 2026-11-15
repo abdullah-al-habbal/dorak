@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import { adminSubscriptionSchema } from "@/schemas/plans/admin-subscription.zod";
 import { apiRequest } from "@/services/api/core/client";
 import type { AdminSubscription } from "@/types/plans/admin-subscription.type";

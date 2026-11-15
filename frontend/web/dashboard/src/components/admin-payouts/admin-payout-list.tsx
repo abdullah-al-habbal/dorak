@@ -6,10 +6,10 @@ import type { JSX } from "react";
 import { PayoutStatusBadge } from "@/components/payouts/payout-status-badge";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
-import { PayoutAction } from "@/enums/payout-action.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { formatPrice, localizedText } from "@/lib/core/booking-format.util";
+import { PayoutAction } from "@/enums/money/payout-action.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import type { DataTableColumn } from "@/interfaces/ui/data/data-table-column.interface";
+import { formatPrice, localizedText } from "@/lib/core/format/booking-format.util";
 import { availablePayoutActions } from "@/lib/earnings/payout-actions.util";
 import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 

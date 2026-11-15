@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { MAX_LAYOUT_VALUE, MIN_CHAIR_SIZE, STAGE_WIDTH } from "@/config/floor-plan.constant";
-import { FloorCanvasUnit } from "@/enums/floor-canvas-unit.enum";
-import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
+import { MAX_LAYOUT_VALUE, MIN_CHAIR_SIZE, STAGE_WIDTH } from "@/config/venue/floor-plan.constant";
+import { FloorCanvasUnit } from "@/enums/venue/floor-canvas-unit.enum";
+import { FloorDecorationType } from "@/enums/venue/floor-decoration-type.enum";
 import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
 import {
   clamp,

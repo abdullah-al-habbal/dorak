@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { AdminUserState } from "@/enums/admin-user-state.enum";
-import { BarberStatus } from "@/enums/barber-status.enum";
-import { ClientBanFilter } from "@/enums/client-ban-filter.enum";
-import { ClientStatus } from "@/enums/client-status.enum";
-import { ReviewStatus } from "@/enums/review-status.enum";
+import { AdminUserState } from "@/enums/access/admin-user-state.enum";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
+import { ClientBanFilter } from "@/enums/people/client-ban-filter.enum";
+import { ClientStatus } from "@/enums/people/client-status.enum";
+import { ReviewStatus } from "@/enums/people/review-status.enum";
 import { adminUserFiltersFromParams, adminUserFiltersToParams, adminUserQueryString, hasAdminUserFilters } from "@/lib/platform/admin-user-filters.util";
 import { barberApprovalFiltersFromParams, barberApprovalFiltersToParams, barberApprovalQueryString, hasBarberApprovalFilters } from "@/lib/stylists/barber-approval-filters.util";
 import { clientFiltersFromParams, clientFiltersToParams, clientQueryString, hasClientFilters } from "@/lib/clients/client-filters.util";

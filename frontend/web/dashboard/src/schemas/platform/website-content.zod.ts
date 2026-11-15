@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { UniverseVisibility } from "@/enums/universe-visibility.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { UniverseVisibility } from "@/enums/people/universe-visibility.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 /** A translatable map as the admin API returns it (`getTranslations`): an object, or an empty list when unset. */
 const translationsSchema = z.union([z.record(z.string(), z.string().nullable()), z.array(z.never())]);

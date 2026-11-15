@@ -1,5 +1,5 @@
-import type { Locale } from "@/enums/locale.enum";
-import type { Weekday } from "@/enums/weekday.enum";
+import type { Locale } from "@/enums/access/locale.enum";
+import type { Weekday } from "@/enums/booking/weekday.enum";
 
 /** 2023-01-01 is a Sunday, so adding the weekday index lands on that day. */
 const SUNDAY_EPOCH = Date.UTC(2023, 0, 1);

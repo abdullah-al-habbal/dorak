@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { BRAND_MAX_DESCRIPTION, BRAND_MAX_NAME } from "@/config/admin-brand.constant";
+import { BRAND_MAX_DESCRIPTION, BRAND_MAX_NAME } from "@/config/platform/admin-brand.constant";
 import { nameField } from "@/schemas/fields/name-field.zod";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 type BrandEditValidation = Dictionary["adminBrands"]["edit"]["validation"];
 

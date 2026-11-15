@@ -1,5 +1,5 @@
-import { Locale } from "@/enums/locale.enum";
-import { TextDirection } from "@/enums/text-direction.enum";
+import { Locale } from "@/enums/access/locale.enum";
+import { TextDirection } from "@/enums/access/text-direction.enum";
 
 export const LOCALES: readonly Locale[] = [Locale.En, Locale.Ar];
 export const DEFAULT_LOCALE = Locale.En;

@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { NativeSelect } from "@/components/ui/native-select";
 import { useBranchForm } from "@/hooks/branches/use-branch-form";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { BranchDetail } from "@/types/branches/branch-detail.type";
 import type { BrandOption } from "@/types/brands/brand-option.type";
 

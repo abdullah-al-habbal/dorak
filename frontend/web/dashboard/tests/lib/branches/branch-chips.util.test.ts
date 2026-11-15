@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BranchStatus } from "@/enums/branch-status.enum";
+import { BranchStatus } from "@/enums/venue/branch-status.enum";
 import { BRANCH_CLEAR_ALL_PATCH, branchPatchForChip, buildBranchChips } from "@/lib/branches/branch-chips.util";
 import { enDictionary } from "@/locales/en/index.constant";
 

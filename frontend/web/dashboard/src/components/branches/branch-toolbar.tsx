@@ -6,9 +6,9 @@ import type { JSX } from "react";
 import { SearchInput } from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
-import { BranchStatus } from "@/enums/branch-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { BranchStatus } from "@/enums/venue/branch-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { BranchFilters } from "@/types/branches/branch-filters.type";
 import type { BrandOption } from "@/types/brands/brand-option.type";
 

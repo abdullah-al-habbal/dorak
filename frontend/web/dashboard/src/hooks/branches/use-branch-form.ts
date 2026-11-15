@@ -5,10 +5,10 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
-import { OverlayKind } from "@/enums/overlay-kind.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useDeleteBranch } from "@/hooks/branches/use-delete-branch";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useOverlay } from "@/hooks/core/use-overlay";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useSaveBranch } from "@/hooks/branches/use-save-branch";
 import { branchToForm, emptyBranchForm, formToBranchPayload } from "@/lib/branches/branch-form.util";
 import { mapBranchSaveError } from "@/lib/branches/branch-form-error.util";

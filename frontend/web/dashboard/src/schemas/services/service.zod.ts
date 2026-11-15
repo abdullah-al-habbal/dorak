@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 const categorySchema = z.object({ id: z.string(), name: localizedTextSchema.nullable().optional() }).nullable().optional();
 

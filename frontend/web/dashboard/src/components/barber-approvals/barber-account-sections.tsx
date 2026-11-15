@@ -3,10 +3,10 @@
 import type { JSX } from "react";
 
 import { ClientBansSection } from "@/components/clients/client-bans-section";
-import { useBarberActivationLog } from "@/hooks/stylists/use-barber-activation-log";
-import { useBarberAffiliations } from "@/hooks/stylists/use-barber-affiliations";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { useBarberActivationLog } from "@/hooks/stylists/invite/use-barber-activation-log";
+import { useBarberAffiliations } from "@/hooks/stylists/invite/use-barber-affiliations";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Ban history, the activation log and the affiliations of one barber. */

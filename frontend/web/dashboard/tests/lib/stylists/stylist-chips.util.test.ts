@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BarberStatus } from "@/enums/barber-status.enum";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
 import { buildStylistChips, STYLIST_CHIP_KEY, stylistPatchForChip } from "@/lib/stylists/stylist-chips.util";
 import { enDictionary } from "@/locales/en/index.constant";
 

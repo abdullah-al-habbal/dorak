@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
-import { PHONE_MAX_LENGTH } from "@/config/field-limit.constant";
+import { PHONE_MAX_LENGTH } from "@/config/money-shell/field-limit.constant";
 import { phoneField } from "@/schemas/fields/phone-field.zod";
 import { zodOutcome } from "@tests/helpers/zod-outcome.helper";
 

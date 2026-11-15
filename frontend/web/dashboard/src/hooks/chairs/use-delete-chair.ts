@@ -2,8 +2,8 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDeleteMutation } from "@/hooks/core/use-delete-mutation";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useDeleteMutation } from "@/hooks/core/query/use-delete-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
 import { deleteChair } from "@/services/api/mutation/chairs/delete-chair.mutation";

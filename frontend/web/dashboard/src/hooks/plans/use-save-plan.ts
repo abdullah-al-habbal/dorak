@@ -2,10 +2,10 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useSaveMutation } from "@/hooks/core/use-save-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useSaveMutation } from "@/hooks/core/query/use-save-mutation";
 import type { PlanPayload } from "@/interfaces/plans/plan-payload.interface";
-import type { SaveVariables } from "@/interfaces/core/save-variables.interface";
+import type { SaveVariables } from "@/interfaces/core/query/save-variables.interface";
 import { adminSubscriptionKeys } from "@/lib/query-keys/plans/admin-subscription-keys";
 import { planKeys } from "@/lib/query-keys/plans/plan-keys";
 import { createPlan, updatePlan } from "@/services/api/mutation/plans/save-plan.mutation";

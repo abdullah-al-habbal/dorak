@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { HttpMethod } from "@/enums/http-method.enum";
+import { HttpMethod } from "@/enums/access/http-method.enum";
 import { matchProxyRule } from "@/services/api/proxy/match-rule.util";
 
 describe("matchProxyRule", () => {

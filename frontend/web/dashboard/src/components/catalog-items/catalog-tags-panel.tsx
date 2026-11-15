@@ -8,11 +8,11 @@ import { ErrorState } from "@/components/common/error-state";
 import { CatalogCategoryStatusBadge } from "@/components/admin-catalog/catalog-category-status-badge";
 import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useCatalogTags } from "@/hooks/services/use-catalog-admin";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useCatalogTags } from "@/hooks/services/catalog/use-catalog-admin";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 
 /** The tags that group catalog items: add, rename, switch on or off, or remove. */
 export function CatalogTagsPanel(): JSX.Element {

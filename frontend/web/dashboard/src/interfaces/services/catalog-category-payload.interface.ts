@@ -1,4 +1,4 @@
-import type { VenueUniverse } from "@/enums/venue-universe.enum";
+import type { VenueUniverse } from "@/enums/people/venue-universe.enum";
 
 /** `SaveCatalogCategoryRequest`: slug and parent are never sent; the backend owns them. */
 export interface CatalogCategoryPayload {

@@ -1,5 +1,5 @@
-import type { BookingStatus } from "@/enums/booking-status.enum";
-import type { ScheduleRange } from "@/enums/schedule-range.enum";
+import type { BookingStatus } from "@/enums/booking/booking-status.enum";
+import type { ScheduleRange } from "@/enums/booking/schedule-range.enum";
 
 export interface ScheduleFilters {
   range: ScheduleRange;

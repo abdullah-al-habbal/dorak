@@ -8,10 +8,10 @@ import { ErrorState } from "@/components/common/error-state";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SkeletonRows } from "@/components/ui/skeleton-row";
-import { BrandStatus } from "@/enums/brand-status.enum";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
 import { useBranchDetail } from "@/hooks/branches/use-branch-detail";
-import { useBrandOptions } from "@/hooks/brands/use-brand-options";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { useBrandOptions } from "@/hooks/brands/owner/use-brand-options";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { Branch } from "@/types/branches/branch.type";
 
 interface BranchFormDialogProps {

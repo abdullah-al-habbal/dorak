@@ -1,5 +1,5 @@
-import { EARNINGS_FLAT_THRESHOLD_PERCENT, EARNINGS_PERCENT } from "@/config/earnings.constant";
-import { TrendDirection } from "@/enums/trend-direction.enum";
+import { EARNINGS_FLAT_THRESHOLD_PERCENT, EARNINGS_PERCENT } from "@/config/money-shell/earnings.constant";
+import { TrendDirection } from "@/enums/ui/trend-direction.enum";
 import type { EarningsTrend } from "@/interfaces/earnings/earnings-trend.interface";
 import type { Earnings } from "@/types/earnings/earnings.type";
 import type { EarningsTotal } from "@/types/earnings/earnings-total.type";

@@ -2,9 +2,9 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { BranchLifecycleAction } from "@/enums/branch-lifecycle-action.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { useFeedbackMutation } from "@/hooks/core/use-feedback-mutation";
+import { BranchLifecycleAction } from "@/enums/venue/branch-lifecycle-action.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
 import type { BranchLifecyclePayload } from "@/interfaces/branches/branch-lifecycle-payload.interface";
 import { brandHistoryKeys } from "@/lib/query-keys/brands/brand-history-keys";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";

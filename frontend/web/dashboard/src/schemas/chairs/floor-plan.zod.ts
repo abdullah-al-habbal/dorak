@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { FloorCanvasUnit } from "@/enums/floor-canvas-unit.enum";
-import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
-import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
-import { FloorZone } from "@/enums/floor-zone.enum";
+import { FloorCanvasUnit } from "@/enums/venue/floor-canvas-unit.enum";
+import { FloorDecorationType } from "@/enums/venue/floor-decoration-type.enum";
+import { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
+import { FloorZone } from "@/enums/people/floor-zone.enum";
 import { chairSchema } from "@/schemas/chairs/chair.zod";
 
 export const floorZoneRectSchema = z.object({

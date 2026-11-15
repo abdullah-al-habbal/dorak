@@ -8,14 +8,14 @@ import { BarberApprovalFields } from "@/components/barber-approvals/barber-appro
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { BarberStatus } from "@/enums/barber-status.enum";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useBarberApproval } from "@/hooks/stylists/use-barber-approval";
-import { useConfirmApproveBarber } from "@/hooks/stylists/use-confirm-approve-barber";
-import { useConfirmBarberMoves } from "@/hooks/stylists/use-confirm-barber-moves";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { BarberStatus } from "@/enums/people/barber-status.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useBarberApproval } from "@/hooks/stylists/approvals/use-barber-approval";
+import { useConfirmApproveBarber } from "@/hooks/stylists/approvals/use-confirm-approve-barber";
+import { useConfirmBarberMoves } from "@/hooks/stylists/invite/use-confirm-barber-moves";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberApprovalDetailDialogProps {

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { chairListSchema, chairSchema } from "@/schemas/chairs/chair.zod";
 import { hoursOverrideInputSchema, hoursOverrideSchema } from "@/schemas/hours/hours-override.zod";
 import { openingHoursSchema } from "@/schemas/hours/opening-hours.zod";
-import { optionalTranslationSchema } from "@/schemas/core/optional-translation.zod";
+import { optionalTranslationSchema } from "@/schemas/core/api/optional-translation.zod";
 import { paymentGatewaySchema } from "@/schemas/platform/payment-gateway.zod";
 import { floorPlanSchema } from "@/schemas/chairs/floor-plan.zod";
 import { stylistSchema } from "@/schemas/stylists/stylist.zod";

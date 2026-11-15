@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { CLIENT_BAN_REASON_MAX, CLIENT_BAN_REASON_MIN } from "@/config/client.constant";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import type { BanDialogCopy } from "@/interfaces/ui/ban-dialog-copy.interface";
-import type { BanSubmission } from "@/interfaces/ui/ban-submission.interface";
+import { CLIENT_BAN_REASON_MAX, CLIENT_BAN_REASON_MIN } from "@/config/venue/client.constant";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import type { BanDialogCopy } from "@/interfaces/ui/data/ban-dialog-copy.interface";
+import type { BanSubmission } from "@/interfaces/ui/data/ban-submission.interface";
 
 interface AccountBanDialogProps {
   copy: BanDialogCopy;

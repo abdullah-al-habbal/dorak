@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import type { ApiErrorCode } from "@/enums/api-error-code.enum";
+import type { ApiErrorCode } from "@/enums/access/api-error-code.enum";
 
 const NO_STORE = { "Cache-Control": "no-store" };
 

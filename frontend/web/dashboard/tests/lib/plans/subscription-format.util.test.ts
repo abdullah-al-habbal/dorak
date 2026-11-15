@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { enDictionary } from "@/locales/en/index.constant";
-import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
+import { SubscriptionInterval } from "@/enums/money/subscription-interval.enum";
 import { featureLabel, intervalLabel } from "@/lib/plans/subscription-format.util";
 
 const { interval, features } = enDictionary.subscription;

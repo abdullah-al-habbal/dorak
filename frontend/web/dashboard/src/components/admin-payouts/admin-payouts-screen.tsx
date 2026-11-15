@@ -10,13 +10,13 @@ import { LoadingButton } from "@/components/buttons/loading-button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import type { PayoutAction } from "@/enums/payout-action.enum";
-import { PayoutStatus } from "@/enums/payout-status.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import type { PayoutAction } from "@/enums/money/payout-action.enum";
+import { PayoutStatus } from "@/enums/money/payout-status.enum";
 import { useAdminPayouts } from "@/hooks/earnings/use-admin-payouts";
 import { useGeneratePayouts } from "@/hooks/earnings/use-generate-payouts";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { usePayoutFilters } from "@/hooks/earnings/use-payout-filters";
 import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 

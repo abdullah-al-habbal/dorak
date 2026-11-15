@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 export const arPlans: Dictionary["plans"] = {
   title: "الخطط",

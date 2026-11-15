@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { optionalTranslationSchema } from "@/schemas/core/optional-translation.zod";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { optionalTranslationSchema } from "@/schemas/core/api/optional-translation.zod";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 /** `GET /branches/{id}/affiliations` (`DashboardAffiliationResource`): the invitations between a branch and barbers. */
 export const branchInvitationSchema = z.object({

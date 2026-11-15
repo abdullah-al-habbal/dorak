@@ -1,7 +1,7 @@
-import { BARBER_APPROVAL_PER_PAGE } from "@/config/barber-approval.constant";
+import { BARBER_APPROVAL_PER_PAGE } from "@/config/ops/barber-approval.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { barberApprovalQueryString } from "@/lib/stylists/barber-approval-filters.util";
-import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/query/resolve-page-info.util";
 import { barberApprovalListSchema } from "@/schemas/stylists/barber-approval.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { BarberApprovalFilters } from "@/types/stylists/barber-approval-filters.type";

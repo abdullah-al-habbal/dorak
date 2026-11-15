@@ -6,9 +6,9 @@ import type { JSX } from "react";
 import { SearchInput } from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { FloorZone } from "@/enums/floor-zone.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { FloorZone } from "@/enums/people/floor-zone.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { ChairFilters } from "@/types/chairs/chair-filters.type";
 import type { BranchOption } from "@/types/branches/branch-option.type";
 

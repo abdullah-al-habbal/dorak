@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ChairStatus } from "@/enums/chair-status.enum";
-import { FloorZone } from "@/enums/floor-zone.enum";
+import { ChairStatus } from "@/enums/venue/chair-status.enum";
+import { FloorZone } from "@/enums/people/floor-zone.enum";
 import { chairFiltersFromParams, chairFiltersToParams, chairQueryString } from "@/lib/chairs/chair-filters.util";
 
 describe("chair filters", () => {

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { STATUS_SEGMENT } from "@/config/routes.constant";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { NotificationEvent } from "@/enums/notification-event.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { NotificationEvent } from "@/enums/ui/notification-event.enum";
 import { isNotificationEvent, notificationEvent, notificationHref } from "@/lib/account/notification-link.util";
-import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
+import type { DashboardNotification } from "@/types/account/profile/dashboard-notification.type";
 
 function row(type: string, data: Record<string, unknown> = {}): DashboardNotification {
   return { id: "n1", type, title: "t", body: "b", data, created_at: "2026-01-01T00:00:00Z" };

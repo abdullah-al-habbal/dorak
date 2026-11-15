@@ -11,15 +11,15 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import { CATALOG_ITEM_DESCRIPTION_MAX, CATALOG_ITEM_MAX_DURATION, CATALOG_ITEM_NAME_MAX } from "@/config/admin-catalog.constant";
-import { HttpStatus } from "@/enums/http-status.enum";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useCatalogTags, useDeleteCatalogItem, useSaveCatalogItem } from "@/hooks/services/use-catalog-admin";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { useServiceCategories } from "@/hooks/services/use-service-categories";
-import { localizedText } from "@/lib/core/booking-format.util";
-import { slugify } from "@/lib/core/slugify.util";
+import { CATALOG_ITEM_DESCRIPTION_MAX, CATALOG_ITEM_MAX_DURATION, CATALOG_ITEM_NAME_MAX } from "@/config/platform/admin-catalog.constant";
+import { HttpStatus } from "@/enums/access/http-status.enum";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useCatalogTags, useDeleteCatalogItem, useSaveCatalogItem } from "@/hooks/services/catalog/use-catalog-admin";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { useServiceCategories } from "@/hooks/services/services/use-service-categories";
+import { localizedText } from "@/lib/core/format/booking-format.util";
+import { slugify } from "@/lib/core/format/slugify.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { CatalogItem } from "@/types/services/catalog-item.type";
 

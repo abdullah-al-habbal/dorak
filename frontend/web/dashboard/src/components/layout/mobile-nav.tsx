@@ -5,10 +5,10 @@ import { MenuIcon } from "lucide-react";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { TextDirection } from "@/enums/text-direction.enum";
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useSidebar } from "@/hooks/core/use-sidebar";
+import { TextDirection } from "@/enums/access/text-direction.enum";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useSidebar } from "@/hooks/core/state/use-sidebar";
 
 export function MobileNav({ actor }: { actor: AuthActor }) {
   const { dictionary, direction } = useI18n();

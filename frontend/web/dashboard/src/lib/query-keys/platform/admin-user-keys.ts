@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/core/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/query/create-query-keys.util";
 import type { AdminUserFilters } from "@/types/platform/admin-user-filters.type";
 
 export const adminUserKeys = createQueryKeys("admin-users", {

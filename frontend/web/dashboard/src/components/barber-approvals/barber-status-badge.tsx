@@ -4,9 +4,9 @@ import { BanIcon } from "lucide-react";
 import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { BARBER_APPROVAL_STATUS_STYLE } from "@/config/barber-approval.constant";
-import type { BarberStatus } from "@/enums/barber-status.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { BARBER_APPROVAL_STATUS_STYLE } from "@/config/ops/barber-approval.constant";
+import type { BarberStatus } from "@/enums/people/barber-status.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 /** A ban outranks the account status, so a banned barber shows the ban badge only. */
 export function BarberStatusBadge({ status, banned = false }: { status: BarberStatus; banned?: boolean }): JSX.Element {

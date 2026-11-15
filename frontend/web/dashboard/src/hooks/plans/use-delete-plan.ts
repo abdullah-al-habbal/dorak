@@ -2,8 +2,8 @@
 
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { useDeleteMutation } from "@/hooks/core/use-delete-mutation";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useDeleteMutation } from "@/hooks/core/query/use-delete-mutation";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { planKeys } from "@/lib/query-keys/plans/plan-keys";
 import { deletePlan } from "@/services/api/mutation/plans/delete-plan.mutation";
 

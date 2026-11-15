@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { loginRoute } from "@/config/routes.constant";
-import type { SessionHydratorProps } from "@/interfaces/ui/session-hydrator-props.interface";
+import type { SessionHydratorProps } from "@/interfaces/ui/shell/session-hydrator-props.interface";
 import { onSessionExpired } from "@/services/api/core/session-expiry.util";
 import { useAuthStore } from "@/store/auth.store";
 

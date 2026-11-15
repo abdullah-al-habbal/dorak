@@ -5,9 +5,9 @@ import { useEffect, useSyncExternalStore } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { LOCALE_COOKIE } from "@/config/cookies.constant";
 import { ROUTE_ROOT } from "@/config/routes.constant";
-import { errorReference } from "@/lib/core/error-view.util";
-import { readClientCookie } from "@/lib/core/cookie.util";
-import { globalErrorView } from "@/lib/core/global-error-copy.util";
+import { errorReference } from "@/lib/core/errors/error-view.util";
+import { readClientCookie } from "@/lib/core/errors/cookie.util";
+import { globalErrorView } from "@/lib/core/errors/global-error-copy.util";
 
 import "@/app/globals.css";
 

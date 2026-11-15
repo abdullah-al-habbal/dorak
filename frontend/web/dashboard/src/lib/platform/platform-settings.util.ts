@@ -1,4 +1,4 @@
-import { SettingKey } from "@/enums/setting-key.enum";
+import { SettingKey } from "@/enums/ui/setting-key.enum";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 export type SettingFormValues = Record<string, string>;

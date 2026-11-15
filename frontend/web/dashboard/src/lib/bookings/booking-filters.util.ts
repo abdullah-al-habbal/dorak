@@ -1,5 +1,5 @@
-import { BookingStatus } from "@/enums/booking-status.enum";
-import { BookingView } from "@/enums/booking-view.enum";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import { BookingView } from "@/enums/booking/booking-view.enum";
 import { addDays, parseDateKey, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
 import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 

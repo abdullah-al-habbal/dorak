@@ -1,9 +1,9 @@
 import type { NextResponse } from "next/server";
 
 import { apiFailure } from "@/lib/api-response";
-import type { BackendResult } from "@/interfaces/core/backend-result.interface";
+import type { BackendResult } from "@/interfaces/core/query/backend-result.interface";
 import { mapBackendFailure } from "@/services/api/auth/failure-map.util";
-import type { Dictionary } from "@/types/core/dictionary.type";
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 export function failureFromBackend(result: BackendResult, dictionary: Dictionary): NextResponse {
   const mapped = mapBackendFailure(result);

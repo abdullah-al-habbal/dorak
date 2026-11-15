@@ -12,8 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import type { ConfirmOverlayRequest } from "@/interfaces/ui/confirm-overlay-request.interface";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import type { ConfirmOverlayRequest } from "@/interfaces/ui/shell/confirm-overlay-request.interface";
 
 interface ConfirmOverlayProps {
   request: ConfirmOverlayRequest;

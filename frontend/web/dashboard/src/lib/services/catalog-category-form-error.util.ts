@@ -1,5 +1,5 @@
-import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
-import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
+import type { MappedFormError } from "@/interfaces/core/query/mapped-form-error.interface";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 
 /** `name.en` becomes the form field `name_en`. */
 function toFormFieldName(name: string): string {

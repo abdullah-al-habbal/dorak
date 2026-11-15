@@ -10,13 +10,13 @@ import { SearchInput } from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { BARBER_CONTACT_PATTERN, BARBER_LOOKUP_MIN, COMMISSION_MAX, COMMISSION_MIN } from "@/config/invitation.constant";
-import { HttpStatus } from "@/enums/http-status.enum";
-import { useBarberLookup } from "@/hooks/stylists/use-barber-lookup";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useInviteBarber } from "@/hooks/stylists/use-invite-barber";
-import { useInviteBarberByContact } from "@/hooks/stylists/use-invite-barber-by-contact";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { BARBER_CONTACT_PATTERN, BARBER_LOOKUP_MIN, COMMISSION_MAX, COMMISSION_MIN } from "@/config/ops/invitation.constant";
+import { HttpStatus } from "@/enums/access/http-status.enum";
+import { useBarberLookup } from "@/hooks/stylists/invite/use-barber-lookup";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useInviteBarber } from "@/hooks/stylists/invite/use-invite-barber";
+import { useInviteBarberByContact } from "@/hooks/stylists/invite/use-invite-barber-by-contact";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 /** Finds an existing barber by name, email or phone and invites them to the branch, with an optional commission. */

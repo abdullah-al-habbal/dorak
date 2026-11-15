@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 import type { Page } from "@playwright/test";
 
-import { PLAN_OPTIONS_LIMIT } from "@/config/plan.constant";
+import { PLAN_OPTIONS_LIMIT } from "@/config/money-shell/plan.constant";
 import { E2E_ADMIN_STORAGE_STATE, E2E_ASSIGNABLE_BRAND_NAME, E2E_PENDING_BRAND_NAME } from "@tests/e2e/support/e2e-env.constant";
 import { dictionaryFor, expectNoHorizontalScroll, resetBackend, signIn } from "@tests/e2e/support/sign-in";
 

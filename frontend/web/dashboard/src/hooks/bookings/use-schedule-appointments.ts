@@ -2,7 +2,7 @@
 
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { useListQuery } from "@/hooks/core/use-list-query";
+import { useListQuery } from "@/hooks/core/query/use-list-query";
 import { scheduleKeys } from "@/lib/query-keys/bookings/schedule-keys";
 import { fetchScheduleAppointments } from "@/services/api/query/bookings/schedule-appointments.query";
 import type { BookingPage } from "@/types/bookings/booking-page.type";

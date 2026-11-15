@@ -12,9 +12,9 @@ import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { useClearHoursOverride } from "@/hooks/hours/use-clear-hours-override";
 import { useHoursOverrides } from "@/hooks/hours/use-hours-overrides";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useSetHoursOverride } from "@/hooks/hours/use-set-hours-override";
-import { formatDay } from "@/lib/core/booking-format.util";
+import { formatDay } from "@/lib/core/format/booking-format.util";
 import { specialDayInput, specialDayIssue } from "@/lib/hours/hours-override.util";
 import type { SpecialDayDraft, SpecialDayKind } from "@/lib/hours/hours-override.util";
 

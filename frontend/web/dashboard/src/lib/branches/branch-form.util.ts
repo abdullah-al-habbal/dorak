@@ -1,7 +1,7 @@
-import { LATITUDE_LIMIT, LONGITUDE_LIMIT } from "@/config/branch.constant";
-import { VenueUniverse } from "@/enums/venue-universe.enum";
+import { LATITUDE_LIMIT, LONGITUDE_LIMIT } from "@/config/venue/branch.constant";
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
 import type { BranchPayload } from "@/interfaces/branches/branch-payload.interface";
-import { parseCoordinate } from "@/lib/core/coordinate.util";
+import { parseCoordinate } from "@/lib/core/format/coordinate.util";
 import type { BranchFormValues } from "@/schemas/branches/branch-form.zod";
 import type { BranchDetail } from "@/types/branches/branch-detail.type";
 

@@ -7,10 +7,10 @@ import { CatalogCategoryStatusBadge } from "@/components/admin-catalog/catalog-c
 import { CatalogItemPreviewList } from "@/components/admin-catalog/catalog-item-preview-list";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { OverlayKind } from "@/enums/overlay-kind.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/core/booking-format.util";
+import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 interface CatalogCategoryDetailDialogProps {

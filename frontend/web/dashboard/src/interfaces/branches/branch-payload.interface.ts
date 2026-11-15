@@ -1,4 +1,4 @@
-import type { VenueUniverse } from "@/enums/venue-universe.enum";
+import type { VenueUniverse } from "@/enums/people/venue-universe.enum";
 
 interface Translated {
   en: string;

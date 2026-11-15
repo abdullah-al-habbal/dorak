@@ -5,9 +5,9 @@ import type { JSX } from "react";
 
 import { BookingStatusBadge } from "@/components/bookings/booking-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { bookingTotal, formatDay, formatTime, localizedText, serviceSummary } from "@/lib/core/booking-format.util";
-import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { bookingTotal, formatDay, formatTime, localizedText, serviceSummary } from "@/lib/core/format/booking-format.util";
+import type { DataTableColumn } from "@/interfaces/ui/data/data-table-column.interface";
 import type { Booking } from "@/types/bookings/booking.type";
 
 interface BookingListProps {

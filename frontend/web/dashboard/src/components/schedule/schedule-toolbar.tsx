@@ -4,9 +4,9 @@ import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
-import { SCHEDULE_RANGES } from "@/config/schedule.constant";
-import { BookingStatus } from "@/enums/booking-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
+import { SCHEDULE_RANGES } from "@/config/ops/schedule.constant";
+import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";
 
 const STATUSES = Object.values(BookingStatus);

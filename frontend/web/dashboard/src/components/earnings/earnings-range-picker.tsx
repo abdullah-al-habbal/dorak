@@ -6,9 +6,9 @@ import type { JSX } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { EARNINGS_PRESETS } from "@/config/earnings.constant";
-import { EarningsPreset } from "@/enums/earnings-preset.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { EARNINGS_PRESETS } from "@/config/money-shell/earnings.constant";
+import { EarningsPreset } from "@/enums/money/earnings-preset.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { detectPreset, EarningsRangeIssue, presetRange, rangeIssue } from "@/lib/earnings/earnings-range.util";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 

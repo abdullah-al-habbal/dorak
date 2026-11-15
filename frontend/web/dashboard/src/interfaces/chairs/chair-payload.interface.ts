@@ -1,5 +1,5 @@
-import type { ChairStatus } from "@/enums/chair-status.enum";
-import type { FloorZone } from "@/enums/floor-zone.enum";
+import type { ChairStatus } from "@/enums/venue/chair-status.enum";
+import type { FloorZone } from "@/enums/people/floor-zone.enum";
 
 export interface ChairLayoutPayload {
   position_x: number;

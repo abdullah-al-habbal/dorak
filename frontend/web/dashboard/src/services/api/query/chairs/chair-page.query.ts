@@ -1,7 +1,7 @@
-import { CHAIR_PER_PAGE } from "@/config/chair-layout.constant";
+import { CHAIR_PER_PAGE } from "@/config/venue/chair-layout.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { chairQueryString } from "@/lib/chairs/chair-filters.util";
-import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/query/resolve-page-info.util";
 import { chairListSchema } from "@/schemas/chairs/chair.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { ChairFilters } from "@/types/chairs/chair-filters.type";

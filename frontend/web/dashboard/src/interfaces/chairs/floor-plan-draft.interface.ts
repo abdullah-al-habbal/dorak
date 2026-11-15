@@ -1,5 +1,5 @@
 import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
-import type { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
+import type { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
 import type { FloorCanvas, FloorDecoration } from "@/types/chairs/floor-plan.type";
 
 /** The editor's working copy. Decorations carry a local key so a drag keeps its identity. */

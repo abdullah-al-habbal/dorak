@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UseMutationResult } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { OpeningHoursPayload } from "@/interfaces/hours/opening-hours-payload.interface";
 import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";

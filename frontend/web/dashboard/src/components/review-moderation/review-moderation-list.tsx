@@ -8,11 +8,11 @@ import { RatingStars } from "@/components/reviews/rating-stars";
 import { ReviewStatusBadge } from "@/components/reviews/review-status-badge";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/table/data-table";
-import { REVIEW_MAX_RATING } from "@/config/review.constant";
-import { ReviewStatus } from "@/enums/review-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import type { AdminReview } from "@/types/clients/admin-review.type";
+import { REVIEW_MAX_RATING } from "@/config/venue/review.constant";
+import { ReviewStatus } from "@/enums/people/review-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import type { DataTableColumn } from "@/interfaces/ui/data/data-table-column.interface";
+import type { AdminReview } from "@/types/clients/reviews/admin-review.type";
 
 interface ReviewModerationListProps {
   reviews: readonly AdminReview[];

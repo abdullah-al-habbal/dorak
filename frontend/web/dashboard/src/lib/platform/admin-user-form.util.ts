@@ -1,6 +1,6 @@
 import type { AdminUserPayload } from "@/interfaces/platform/admin-user-payload.interface";
-import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
-import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
+import type { MappedFormError } from "@/interfaces/core/query/mapped-form-error.interface";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 import type { AdminUserFormValues } from "@/schemas/platform/admin-user-form.zod";
 import type { AdminUser } from "@/types/platform/admin-user.type";
 

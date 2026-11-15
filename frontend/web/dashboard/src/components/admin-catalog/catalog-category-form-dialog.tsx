@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useCatalogCategoryForm } from "@/hooks/services/use-catalog-category-form";
-import { useDictionary } from "@/hooks/core/use-dictionary";
+import { useCatalogCategoryForm } from "@/hooks/services/catalog/use-catalog-category-form";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { isCatalogCategoryInUse } from "@/lib/services/catalog-category-form.util";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 

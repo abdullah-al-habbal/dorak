@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { TrendDirection } from "@/enums/trend-direction.enum";
+import { TrendDirection } from "@/enums/ui/trend-direction.enum";
 import { averageTicket, computeTrend, currencyCodes, totalFor } from "@/lib/earnings/earnings-metrics.util";
 import type { Earnings } from "@/types/earnings/earnings.type";
 

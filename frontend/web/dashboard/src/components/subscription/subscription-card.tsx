@@ -5,9 +5,9 @@ import type { JSX } from "react";
 import { FeatureList } from "@/components/subscription/feature-list";
 import { SubscriptionStatusBadge } from "@/components/subscription/subscription-status-badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { SubscriptionStatus } from "@/enums/subscription-status.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { formatPrice, localizedText } from "@/lib/core/booking-format.util";
+import { SubscriptionStatus } from "@/enums/money/subscription-status.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { formatPrice, localizedText } from "@/lib/core/format/booking-format.util";
 import { intervalLabel } from "@/lib/plans/subscription-format.util";
 import type { Subscription } from "@/types/plans/subscription.type";
 

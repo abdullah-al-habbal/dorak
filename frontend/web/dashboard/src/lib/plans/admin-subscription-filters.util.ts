@@ -1,4 +1,4 @@
-import { SubscriptionStatus } from "@/enums/subscription-status.enum";
+import { SubscriptionStatus } from "@/enums/money/subscription-status.enum";
 import type { AdminSubscriptionFilters } from "@/types/plans/admin-subscription-filters.type";
 
 const STATUSES = new Set<string>(Object.values(SubscriptionStatus));

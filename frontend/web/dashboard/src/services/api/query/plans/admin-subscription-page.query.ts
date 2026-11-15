@@ -1,6 +1,6 @@
-import { ADMIN_SUBSCRIPTION_PER_PAGE } from "@/config/admin-subscription.constant";
+import { ADMIN_SUBSCRIPTION_PER_PAGE } from "@/config/platform/admin-subscription.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/query/resolve-page-info.util";
 import { adminSubscriptionListSchema } from "@/schemas/plans/admin-subscription.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { AdminSubscriptionFilters } from "@/types/plans/admin-subscription-filters.type";

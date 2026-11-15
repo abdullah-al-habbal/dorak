@@ -1,7 +1,7 @@
-import { BRANCH_PER_PAGE } from "@/config/branch.constant";
+import { BRANCH_PER_PAGE } from "@/config/venue/branch.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { branchQueryString } from "@/lib/branches/branch-filters.util";
-import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/query/resolve-page-info.util";
 import { branchListSchema } from "@/schemas/branches/branch.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { BranchFilters } from "@/types/branches/branch-filters.type";

@@ -7,9 +7,9 @@ import {
   MINUTES_PER_DAY,
   MINUTES_PER_HOUR,
   NEW_SHIFT_MINUTES,
-} from "@/config/working-hours.constant";
-import { ShiftIssue } from "@/enums/shift-issue.enum";
-import { Weekday } from "@/enums/weekday.enum";
+} from "@/config/ops/working-hours.constant";
+import { ShiftIssue } from "@/enums/booking/shift-issue.enum";
+import { Weekday } from "@/enums/booking/weekday.enum";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { OpeningHoursPayload } from "@/interfaces/hours/opening-hours-payload.interface";
 import type { ShiftIssueEntry } from "@/interfaces/hours/shift-issue-entry.interface";

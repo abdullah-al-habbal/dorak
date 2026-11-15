@@ -1,4 +1,4 @@
-import { PlanState } from "@/enums/plan-state.enum";
+import { PlanState } from "@/enums/money/plan-state.enum";
 import type { PlanFilters } from "@/types/plans/plan-filters.type";
 
 const STATES = new Set<string>(Object.values(PlanState));

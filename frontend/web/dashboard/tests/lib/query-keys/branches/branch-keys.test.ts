@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { describe, expect, it } from "vitest";
 
-import { BrandStatus } from "@/enums/brand-status.enum";
+import { BrandStatus } from "@/enums/venue/brand-status.enum";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 
 describe("branchKeys brand options", () => {

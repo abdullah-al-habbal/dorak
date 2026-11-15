@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { LoginScreen } from "@/components/auth/login-screen";
+import { LoginScreen } from "@/components/auth/screens/login-screen";
 import { CALLBACK_PARAM, RESET_DONE_PARAM, RESET_DONE_VALUE } from "@/config/routes.constant";
 import { parseGuardOrNotFound } from "@/lib/parse-guard";
 

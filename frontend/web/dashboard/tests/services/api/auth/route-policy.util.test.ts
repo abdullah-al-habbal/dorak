@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { AuthActor } from "@/enums/auth-actor.enum";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
 import { decideRoute, guardFromPath, isSafeCallback } from "@/services/api/auth/route-policy.util";
 
 const base = { search: "", hasSessionCookies: false };

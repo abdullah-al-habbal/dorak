@@ -1,5 +1,5 @@
-import type { BrandStatus } from "@/enums/brand-status.enum";
-import { createQueryKeys } from "@/lib/core/create-query-keys.util";
+import type { BrandStatus } from "@/enums/venue/brand-status.enum";
+import { createQueryKeys } from "@/lib/core/query/create-query-keys.util";
 import type { BranchFilters } from "@/types/branches/branch-filters.type";
 
 export const branchKeys = createQueryKeys("branches", {

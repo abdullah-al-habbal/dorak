@@ -1,8 +1,8 @@
-import { HONEYPOT_FIELD } from "@/config/register-business.constant";
-import type { ExistingOwnerFormValues } from "@/types/core/existing-owner-form-values.type";
-import type { RegisterBusinessBody } from "@/types/core/register-business-body.type";
-import type { RegisterBusinessFormValues } from "@/types/core/register-business-form-values.type";
-import type { RegisterExistingBody } from "@/types/core/register-existing-body.type";
+import { HONEYPOT_FIELD } from "@/config/money-shell/register-business.constant";
+import type { ExistingOwnerFormValues } from "@/types/core/forms/existing-owner-form-values.type";
+import type { RegisterBusinessBody } from "@/types/core/forms/register-business-body.type";
+import type { RegisterBusinessFormValues } from "@/types/core/forms/register-business-form-values.type";
+import type { RegisterExistingBody } from "@/types/core/forms/register-existing-body.type";
 
 type BrandFormValues = Pick<RegisterBusinessFormValues, "brandNameEn" | "brandNameAr" | "currency" | "branchNameEn" | "branchNameAr">;
 

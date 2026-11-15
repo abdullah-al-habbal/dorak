@@ -1,5 +1,0 @@
-import type { z } from "zod";
-
-import type { forgotPasswordFormSchema } from "@/schemas/account/forgot-password-form.zod";
-
-export type ForgotPasswordFormValues = z.input<ReturnType<typeof forgotPasswordFormSchema>>;

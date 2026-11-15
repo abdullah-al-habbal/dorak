@@ -1,5 +1,5 @@
-import type { BookingStatus } from "@/enums/booking-status.enum";
-import type { BookingView } from "@/enums/booking-view.enum";
+import type { BookingStatus } from "@/enums/booking/booking-status.enum";
+import type { BookingView } from "@/enums/booking/booking-view.enum";
 
 export interface BookingFilters {
   view: BookingView;

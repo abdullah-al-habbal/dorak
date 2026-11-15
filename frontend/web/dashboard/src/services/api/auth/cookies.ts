@@ -1,7 +1,7 @@
 import type { NextResponse } from "next/server";
 
 import { ACCESS_COOKIE, CLAIM_COOKIE, REFRESH_COOKIE } from "@/config/cookies.constant";
-import type { SessionTokens } from "@/interfaces/core/session-tokens.interface";
+import type { SessionTokens } from "@/interfaces/core/transport/session-tokens.interface";
 
 function baseOptions(maxAge: number) {
   return {

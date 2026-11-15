@@ -3,13 +3,13 @@
 import { useMemo } from "react";
 import type { JSX } from "react";
 
-import { BranchLifecycleActions } from "@/components/branches/branch-lifecycle-actions";
+import { BranchLifecycleActions } from "@/components/branches/oversight/branch-lifecycle-actions";
 import { BranchStatusBadge } from "@/components/branches/branch-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
-import type { AuthActor } from "@/enums/auth-actor.enum";
-import { useI18n } from "@/hooks/core/use-i18n";
-import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { localizedText } from "@/lib/core/booking-format.util";
+import type { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import type { DataTableColumn } from "@/interfaces/ui/data/data-table-column.interface";
+import { localizedText } from "@/lib/core/format/booking-format.util";
 import type { Branch } from "@/types/branches/branch.type";
 
 interface BranchListProps {

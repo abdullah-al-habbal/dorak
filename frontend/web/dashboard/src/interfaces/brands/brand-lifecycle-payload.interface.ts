@@ -1,4 +1,4 @@
-import type { BrandLifecycleAction } from "@/enums/brand-lifecycle-action.enum";
+import type { BrandLifecycleAction } from "@/enums/venue/brand-lifecycle-action.enum";
 
 export interface BrandLifecyclePayload {
   id: string;

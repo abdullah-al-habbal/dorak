@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo } from "react";
 
-import { useUrlState } from "@/hooks/core/use-url-state";
+import { useUrlState } from "@/hooks/core/state/use-url-state";
 import { rangeFromParams, rangeToParams } from "@/lib/earnings/earnings-range.util";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 

@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 
-import type { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
-import type { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
+import type { FloorDecorationType } from "@/enums/venue/floor-decoration-type.enum";
+import type { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
 import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
 import type { FloorDecorationDraft, FloorPlanDraft, FloorSelection } from "@/interfaces/chairs/floor-plan-draft.interface";
 import { clampChair, clampDecoration, stageSize } from "@/lib/chairs/floor-plan-geometry.util";

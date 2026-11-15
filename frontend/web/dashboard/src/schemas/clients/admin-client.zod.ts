@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { ClientStatus } from "@/enums/client-status.enum";
-import { localizedTextSchema } from "@/schemas/core/localized-text.zod";
+import { ClientStatus } from "@/enums/people/client-status.enum";
+import { localizedTextSchema } from "@/schemas/core/api/localized-text.zod";
 
 /** One ban (`AdminBanResource`). */
 export const clientBanSchema = z.object({

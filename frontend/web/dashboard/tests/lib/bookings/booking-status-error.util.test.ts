@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { HttpStatus } from "@/enums/http-status.enum";
+import { HttpStatus } from "@/enums/access/http-status.enum";
 import { bookingStatusErrorMessage } from "@/lib/bookings/booking-status-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 

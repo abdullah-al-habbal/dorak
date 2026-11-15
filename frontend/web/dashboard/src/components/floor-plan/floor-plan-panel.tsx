@@ -10,11 +10,11 @@ import { FloorPlanStage } from "@/components/floor-plan/floor-plan-stage";
 import { FloorPlanToolbar } from "@/components/floor-plan/floor-plan-toolbar";
 import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import { FLOOR_PLAN_EDIT_MIN_WIDTH_PX } from "@/config/floor-plan.constant";
+import { FLOOR_PLAN_EDIT_MIN_WIDTH_PX } from "@/config/venue/floor-plan.constant";
 import { useFloorPlan } from "@/hooks/chairs/use-floor-plan";
 import { useFloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
-import { useI18n } from "@/hooks/core/use-i18n";
-import { useMediaQuery } from "@/hooks/core/use-media-query";
+import { useI18n } from "@/hooks/core/state/use-i18n";
+import { useMediaQuery } from "@/hooks/core/state/use-media-query";
 import { useSaveFloorPlan } from "@/hooks/chairs/use-save-floor-plan";
 import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 

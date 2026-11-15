@@ -8,9 +8,9 @@ import { LanguagesSection } from "@/components/platform-settings/languages-secti
 import { PaymentGatewaysSection } from "@/components/payment-gateways/payment-gateways-section";
 import { PlatformSettingsForm } from "@/components/platform-settings/platform-settings-form";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AuthActor } from "@/enums/auth-actor.enum";
-import { useDictionary } from "@/hooks/core/use-dictionary";
-import { usePlatformSettings } from "@/hooks/platform/use-platform-settings";
+import { AuthActor } from "@/enums/access/auth-actor.enum";
+import { useDictionary } from "@/hooks/core/state/use-dictionary";
+import { usePlatformSettings } from "@/hooks/platform/settings/use-platform-settings";
 
 /** Platform settings are admin only; the proxy and the backend refuse everyone else too. */
 export function PlatformSettingsScreen({ actor }: { actor: AuthActor }): JSX.Element {
