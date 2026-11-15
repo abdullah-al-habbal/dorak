@@ -34,7 +34,6 @@ Facebook sign-in are unsupported (G9).
 
 | ID | Item | Layer | Size |
 |---|---|---|---|
-| BG-2 | Hide the inline "new category" form for non-admins (the backend already refuses, S8). | dashboard | S |
 | BG-3 | Barber self-reactivation: a barber an admin deactivated can re-enable themselves via `POST /barbers/{barber}/activate`. Decided: block it until an admin reactivates, using `activation_logs.activated_by_id`. | backend, mobile check | M |
 | BG-4 | Public barber resource leaks `email`, `phone`, exact coordinates, `submission_count`, `email_verified_at`. Decided: add a separate public resource (name, bio, rating, rounded location); keep the old fields until both mobile apps ship, then remove. Contract tests pin `email` (`ApiResponseContractTest`). Needs a coordinated mobile release. | backend, mobile | L |
 | BG-5 | By-contact invite (S13) answers the same body for every case but response time differs between a match and no match. | backend | S |
