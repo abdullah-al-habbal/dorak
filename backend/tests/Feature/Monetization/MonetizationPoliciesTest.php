@@ -44,7 +44,7 @@ describe('Monetization policies', function (): void {
             [SubscriptionPlanModel::factory()->create(), ['view', 'update', 'delete']],
             [PaymentGatewayModel::factory()->create(), ['view', 'update', 'delete']],
             [CommissionRuleModel::factory()->create(), ['update', 'delete']],
-            [PayoutModel::factory()->create(), ['view', 'update']],
+            [PayoutModel::factory()->create(), ['view', 'approve', 'markPaid', 'cancel']],
         ];
 
         foreach ($abilities as [$record, $names]) {

@@ -21,7 +21,7 @@ final class MarkPaidPayoutAction extends BaseApiAction
     public function __invoke(TransitionPayoutRequest $request, string $payout): JsonResponse
     {
         $model = PayoutModel::query()->findOrFail($payout);
-        Gate::forUser($request->user('admin_api'))->authorize('update', $model);
+        Gate::forUser($request->user('admin_api'))->authorize('markPaid', $model);
 
         $from = $model->status->value;
         $updated = $this->handler->handle($model, $request->toCommand(PayoutStatus::Paid));

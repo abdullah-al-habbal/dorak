@@ -59,7 +59,6 @@ Facebook sign-in are unsupported (G9).
 - FT-16 Admin job-board write UI (the proxy allow-list already admits the admin since BG-1).
 - FT-17 Suspended-brand banner and blocked-action messages when a write returns 403 (decision A, D8).
 - FT-18 Admin UI for global service categories, if none exists (decision B).
-- FT-19 Confirm payout abilities are separate: create, approve, pay (decision D).
 
 ## 4. Tech debt
 

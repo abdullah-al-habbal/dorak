@@ -23,7 +23,18 @@ final class PayoutPolicy
         return $this->viewAny($actor);
     }
 
-    public function update(mixed $actor, mixed $model): bool
+    /** Decision D: approval, payment and cancellation are separate abilities so a later role split needs no action change. */
+    public function approve(mixed $actor, mixed $model): bool
+    {
+        return $this->viewAny($actor);
+    }
+
+    public function markPaid(mixed $actor, mixed $model): bool
+    {
+        return $this->viewAny($actor);
+    }
+
+    public function cancel(mixed $actor, mixed $model): bool
     {
         return $this->viewAny($actor);
     }
