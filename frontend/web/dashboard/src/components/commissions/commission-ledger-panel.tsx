@@ -14,8 +14,8 @@ import { ALL_BRANDS, SETTLED_ALL, SETTLED_FILTERS } from "@/config/commission.co
 import { useBrandOptions } from "@/hooks/brands/use-brand-options";
 import { useCommissionEntries } from "@/hooks/earnings/use-commissions";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
-import { money, totalsByCurrency } from "@/lib/commission.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { money, totalsByCurrency } from "@/lib/earnings/commission.util";
 
 const FIRST_PAGE = 1;
 

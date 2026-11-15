@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { globalErrorView } from "@/lib/global-error-copy.util";
+import { globalErrorView } from "@/lib/core/global-error-copy.util";
 
 describe("globalErrorView", () => {
   it("uses the saved locale cookie first, with its direction", () => {

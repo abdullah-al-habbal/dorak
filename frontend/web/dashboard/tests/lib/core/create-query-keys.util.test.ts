@@ -6,7 +6,7 @@ import { analyticsKeys } from "@/lib/query-keys/platform/analytics-keys";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
-import { createQueryKeys, queryKey } from "@/lib/create-query-keys.util";
+import { createQueryKeys, queryKey } from "@/lib/core/create-query-keys.util";
 import { earningsKeys } from "@/lib/query-keys/earnings/earnings-keys";
 import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";
 import { payoutKeys } from "@/lib/query-keys/earnings/payout-keys";

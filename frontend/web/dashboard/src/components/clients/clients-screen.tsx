@@ -17,7 +17,7 @@ import { useClients } from "@/hooks/clients/use-clients";
 import { useConfirmUnbanClient } from "@/hooks/clients/use-confirm-unban-client";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { hasClientFilters } from "@/lib/client-filters.util";
+import { hasClientFilters } from "@/lib/clients/client-filters.util";
 import type { AdminClient } from "@/types/clients/admin-client.type";
 
 /** Clients are managed by platform admins only; the proxy and the backend refuse everyone else too. */

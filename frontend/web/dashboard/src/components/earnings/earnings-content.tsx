@@ -18,8 +18,8 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useEarnings } from "@/hooks/earnings/use-earnings";
 import { useEarningsRange } from "@/hooks/earnings/use-earnings-range";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { currencyCodes, totalFor } from "@/lib/earnings-metrics.util";
-import { chartBuckets, dailyBuckets } from "@/lib/earnings-series.util";
+import { currencyCodes, totalFor } from "@/lib/earnings/earnings-metrics.util";
+import { chartBuckets, dailyBuckets } from "@/lib/earnings/earnings-series.util";
 
 const DESCRIPTION_KEY = { [AuthActor.Barber]: "barber", [AuthActor.Owner]: "brand" } as const;
 

@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import { PlanState } from "@/enums/plan-state.enum";
 import { SubscriptionStatus } from "@/enums/subscription-status.enum";
-import { adminSubscriptionFiltersFromParams, adminSubscriptionFiltersToParams } from "@/lib/admin-subscription-filters.util";
-import { planFiltersFromParams, planFiltersToParams } from "@/lib/plan-filters.util";
+import { adminSubscriptionFiltersFromParams, adminSubscriptionFiltersToParams } from "@/lib/plans/admin-subscription-filters.util";
+import { planFiltersFromParams, planFiltersToParams } from "@/lib/plans/plan-filters.util";
 
 describe("plan filters", () => {
   it("reads a known state and page", () => {

@@ -5,10 +5,10 @@ import { BarberStatus } from "@/enums/barber-status.enum";
 import { ClientBanFilter } from "@/enums/client-ban-filter.enum";
 import { ClientStatus } from "@/enums/client-status.enum";
 import { ReviewStatus } from "@/enums/review-status.enum";
-import { adminUserFiltersFromParams, adminUserFiltersToParams, adminUserQueryString, hasAdminUserFilters } from "@/lib/admin-user-filters.util";
-import { barberApprovalFiltersFromParams, barberApprovalFiltersToParams, barberApprovalQueryString, hasBarberApprovalFilters } from "@/lib/barber-approval-filters.util";
-import { clientFiltersFromParams, clientFiltersToParams, clientQueryString, hasClientFilters } from "@/lib/client-filters.util";
-import { reviewModerationFiltersFromParams, reviewModerationFiltersToParams, reviewModerationQueryString } from "@/lib/review-moderation-filters.util";
+import { adminUserFiltersFromParams, adminUserFiltersToParams, adminUserQueryString, hasAdminUserFilters } from "@/lib/platform/admin-user-filters.util";
+import { barberApprovalFiltersFromParams, barberApprovalFiltersToParams, barberApprovalQueryString, hasBarberApprovalFilters } from "@/lib/stylists/barber-approval-filters.util";
+import { clientFiltersFromParams, clientFiltersToParams, clientQueryString, hasClientFilters } from "@/lib/clients/client-filters.util";
+import { reviewModerationFiltersFromParams, reviewModerationFiltersToParams, reviewModerationQueryString } from "@/lib/clients/review-moderation-filters.util";
 
 const params = (query: string): URLSearchParams => new URLSearchParams(query);
 

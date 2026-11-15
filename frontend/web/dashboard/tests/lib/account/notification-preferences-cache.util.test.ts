@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { withNotificationPreference } from "@/lib/notification-preferences-cache.util";
+import { withNotificationPreference } from "@/lib/account/notification-preferences-cache.util";
 
 const ALL_ON = { allows_email_notifications: true, allows_push_notifications: true, allows_booking_notifications: true, allows_system_notifications: true };
 

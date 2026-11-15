@@ -11,7 +11,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useDeleteTestimonial, useWebsiteContent } from "@/hooks/platform/use-website-content";
-import { localeText } from "@/lib/website-content.util";
+import { localeText } from "@/lib/platform/website-content.util";
 import type { Testimonial } from "@/types/platform/website-content.type";
 
 /** The quotes shown in the testimonials sections. */

@@ -1,7 +1,7 @@
 import { QueryClient, QueryObserver, skipToken } from "@tanstack/react-query";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { detailQueryOptions } from "@/lib/detail-query.util";
+import { detailQueryOptions } from "@/lib/core/detail-query.util";
 import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";

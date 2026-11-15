@@ -18,7 +18,7 @@ import { useCatalogItems } from "@/hooks/services/use-catalog-admin";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useServiceCategories } from "@/hooks/services/use-service-categories";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 
 const FIRST_PAGE = 1;
 const ALL = "";

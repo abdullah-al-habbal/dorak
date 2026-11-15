@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { TrendDirection } from "@/enums/trend-direction.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { EarningsTrend } from "@/interfaces/earnings/earnings-trend.interface";
-import { formatPercent } from "@/lib/earnings-format.util";
+import { formatPercent } from "@/lib/earnings/earnings-format.util";
 
 const PRESENTATION = {
   [TrendDirection.Up]: { variant: "success", icon: <ArrowUpRightIcon aria-hidden /> },

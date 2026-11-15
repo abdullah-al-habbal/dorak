@@ -4,7 +4,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useApproveBarber } from "@/hooks/stylists/use-approve-barber";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Opens the approve confirmation for a barber, from the row or from the detail dialog. */

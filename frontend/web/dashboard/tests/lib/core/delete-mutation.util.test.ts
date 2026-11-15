@@ -3,8 +3,8 @@ import { toast } from "sonner";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { HttpStatus } from "@/enums/http-status.enum";
-import { deleteFeedbackOptions } from "@/lib/delete-mutation.util";
-import { feedbackMutationOptions } from "@/lib/feedback-mutation.util";
+import { deleteFeedbackOptions } from "@/lib/core/delete-mutation.util";
+import { feedbackMutationOptions } from "@/lib/core/feedback-mutation.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));

@@ -22,8 +22,8 @@ import { useStylistFilters } from "@/hooks/stylists/use-stylist-filters";
 import { useAuthStore } from "@/store/auth.store";
 import { useStylists } from "@/hooks/stylists/use-stylists";
 import { useUpdateStylistStatus } from "@/hooks/stylists/use-update-stylist-status";
-import { localizedText } from "@/lib/booking-format.util";
-import { buildStylistChips, STYLIST_CLEAR_ALL_PATCH, stylistPatchForChip } from "@/lib/stylist-chips.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { buildStylistChips, STYLIST_CLEAR_ALL_PATCH, stylistPatchForChip } from "@/lib/stylists/stylist-chips.util";
 import type { Stylist } from "@/types/stylists/stylist.type";
 
 export function StylistsScreen({ actor }: { actor: AuthActor }): JSX.Element {

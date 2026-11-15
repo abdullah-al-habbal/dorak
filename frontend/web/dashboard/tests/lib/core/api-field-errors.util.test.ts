@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { hasApiFieldErrors, mapApiFieldErrors } from "@/lib/api-field-errors.util";
+import { hasApiFieldErrors, mapApiFieldErrors } from "@/lib/core/api-field-errors.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 describe("mapApiFieldErrors", () => {

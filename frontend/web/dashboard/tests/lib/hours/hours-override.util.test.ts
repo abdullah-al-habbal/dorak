@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { specialDayInput, specialDayIssue, todayIso } from "@/lib/hours-override.util";
-import type { SpecialDayDraft } from "@/lib/hours-override.util";
+import { specialDayInput, specialDayIssue, todayIso } from "@/lib/hours/hours-override.util";
+import type { SpecialDayDraft } from "@/lib/hours/hours-override.util";
 
 const today = "2026-11-14";
 const hours: SpecialDayDraft = { date: "2026-11-20", kind: "hours", opens: "10:00", closes: "18:00" };

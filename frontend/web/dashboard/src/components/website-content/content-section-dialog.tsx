@@ -15,7 +15,7 @@ import { CONTENT_SORT_MAX, CONTENT_TEXT_MAX, SECTION_BODY_MAX_BYTES } from "@/co
 import { UniverseVisibility } from "@/enums/universe-visibility.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useUpdateContentSection } from "@/hooks/platform/use-website-content";
-import { bodyJson, bodyPreview, localeText, parseBodyObject } from "@/lib/website-content.util";
+import { bodyJson, bodyPreview, localeText, parseBodyObject } from "@/lib/platform/website-content.util";
 import type { ContentSection } from "@/types/platform/website-content.type";
 
 /** Edits a section's text and structured content for both languages, with a live preview of the headline. */

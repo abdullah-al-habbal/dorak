@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { EarningsPreset } from "@/enums/earnings-preset.enum";
-import { daysInRange, detectPreset, presetRange, rangeFromParams, rangeIssue, rangeToParams, EarningsRangeIssue } from "@/lib/earnings-range.util";
+import { daysInRange, detectPreset, presetRange, rangeFromParams, rangeIssue, rangeToParams, EarningsRangeIssue } from "@/lib/earnings/earnings-range.util";
 
 const TODAY = new Date(2026, 2, 15); // 15 March 2026
 

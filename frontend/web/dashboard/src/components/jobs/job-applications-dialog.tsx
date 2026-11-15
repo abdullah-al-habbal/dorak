@@ -16,7 +16,7 @@ import { useJobApplications } from "@/hooks/jobs/use-job-applications";
 import { useMarkApplicationsSeen } from "@/hooks/jobs/use-mark-applications-seen";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useUpdateApplicationStatus } from "@/hooks/jobs/use-update-application-status";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
 import type { JobApplication } from "@/types/jobs/job-application.type";
 

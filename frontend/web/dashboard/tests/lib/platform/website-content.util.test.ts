@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { bodyJson, bodyPreview, localeText, parseBodyObject } from "@/lib/website-content.util";
+import { bodyJson, bodyPreview, localeText, parseBodyObject } from "@/lib/platform/website-content.util";
 
 describe("website content helpers", () => {
   it("reads one locale and treats the API's empty array as unset", () => {

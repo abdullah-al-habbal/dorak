@@ -1,7 +1,7 @@
 "use client";
 
 import { useUrlFilters } from "@/hooks/core/use-url-filters";
-import { adminBrandFiltersFromParams, adminBrandFiltersToParams } from "@/lib/admin-brand-filters.util";
+import { adminBrandFiltersFromParams, adminBrandFiltersToParams } from "@/lib/brands/admin-brand-filters.util";
 import type { AdminBrandFilters } from "@/types/brands/admin-brand-filters.type";
 
 /** The URL is the source of truth for the status filter, the search and the page. */

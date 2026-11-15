@@ -5,8 +5,8 @@ import { BarChart } from "@/components/earnings/bar-chart";
 import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { BarChartDatum } from "@/interfaces/ui/bar-chart-datum.interface";
-import { fillDailyCounts, sumCounts } from "@/lib/analytics-series.util";
-import { formatCount, formatShortDate } from "@/lib/earnings-format.util";
+import { fillDailyCounts, sumCounts } from "@/lib/platform/analytics-series.util";
+import { formatCount, formatShortDate } from "@/lib/earnings/earnings-format.util";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 import type { PlatformAnalytics } from "@/types/platform/platform-analytics.type";
 

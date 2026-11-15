@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/create-query-keys.util";
 import type { AdminCatalogFilters } from "@/types/services/admin-catalog-filters.type";
 
 export const adminCatalogKeys = createQueryKeys("admin-catalog", {

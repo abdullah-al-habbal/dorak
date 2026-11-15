@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { FLOOR_PLAN_LABEL_MAX, ROTATION_STEP } from "@/config/floor-plan.constant";
 import { useI18n } from "@/hooks/core/use-i18n";
 import type { FloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
-import { rotateChair } from "@/lib/floor-plan-geometry.util";
+import { rotateChair } from "@/lib/chairs/floor-plan-geometry.util";
 import type { Chair } from "@/types/chairs/chair.type";
 
 interface NumberFieldProps {

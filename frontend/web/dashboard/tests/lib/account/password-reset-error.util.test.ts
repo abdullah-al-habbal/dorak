@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isInvalidResetLink, isTooManyRequests } from "@/lib/password-reset-error.util";
+import { isInvalidResetLink, isTooManyRequests } from "@/lib/account/password-reset-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 describe("password reset errors", () => {

@@ -6,7 +6,7 @@ import { ClientBansSection } from "@/components/clients/client-bans-section";
 import { useBarberActivationLog } from "@/hooks/stylists/use-barber-activation-log";
 import { useBarberAffiliations } from "@/hooks/stylists/use-barber-affiliations";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Ban history, the activation log and the affiliations of one barber. */

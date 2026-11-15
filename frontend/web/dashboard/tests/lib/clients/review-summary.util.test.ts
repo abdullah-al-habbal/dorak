@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { ratingBars } from "@/lib/review-summary.util";
+import { ratingBars } from "@/lib/clients/review-summary.util";
 
 describe("ratingBars", () => {
   it("lists ratings 5 to 1 with rounded percentages", () => {

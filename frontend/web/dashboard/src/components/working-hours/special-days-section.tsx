@@ -14,9 +14,9 @@ import { useClearHoursOverride } from "@/hooks/hours/use-clear-hours-override";
 import { useHoursOverrides } from "@/hooks/hours/use-hours-overrides";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useSetHoursOverride } from "@/hooks/hours/use-set-hours-override";
-import { formatDay } from "@/lib/booking-format.util";
-import { specialDayInput, specialDayIssue } from "@/lib/hours-override.util";
-import type { SpecialDayDraft, SpecialDayKind } from "@/lib/hours-override.util";
+import { formatDay } from "@/lib/core/booking-format.util";
+import { specialDayInput, specialDayIssue } from "@/lib/hours/hours-override.util";
+import type { SpecialDayDraft, SpecialDayKind } from "@/lib/hours/hours-override.util";
 
 const EMPTY_DRAFT: SpecialDayDraft = { date: "", kind: "closed", opens: "", closes: "" };
 

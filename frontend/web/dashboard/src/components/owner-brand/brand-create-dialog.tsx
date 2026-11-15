@@ -14,7 +14,7 @@ import { OWNER_BRANCH_NAME_MAX } from "@/config/owner-brand.constant";
 import { useBrandCreateForm } from "@/hooks/brands/use-brand-create-form";
 import { useCurrencies } from "@/hooks/platform/use-currencies";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { BrandCreateFormValues } from "@/schemas/brand-create-form.zod";
 
 /** Adds another brand to the owner's account. It starts pending, like the first one. */

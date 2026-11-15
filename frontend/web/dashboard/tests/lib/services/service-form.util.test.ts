@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import { enDictionary } from "@/locales/en/index.constant";
-import { activeTogglePayload, emptyServiceForm, formToServicePayload, newServiceOwner, serviceToForm } from "@/lib/service-form.util";
-import { withServiceActive } from "@/lib/service-cache.util";
-import { formatDuration, formatServicePrice } from "@/lib/service-format.util";
+import { activeTogglePayload, emptyServiceForm, formToServicePayload, newServiceOwner, serviceToForm } from "@/lib/services/service-form.util";
+import { withServiceActive } from "@/lib/services/service-cache.util";
+import { formatDuration, formatServicePrice } from "@/lib/services/service-format.util";
 import { createServiceSchema } from "@/schemas/service-form.zod";
 import type { Service } from "@/types/services/service.type";
 

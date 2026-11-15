@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useOptimisticToggleMutation } from "@/hooks/core/use-optimistic-toggle-mutation";
 import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggle-context.interface";
 import { adminCatalogKeys } from "@/lib/query-keys/services/admin-catalog-keys";
-import { withCategoryActive } from "@/lib/catalog-category-cache.util";
+import { withCategoryActive } from "@/lib/services/catalog-category-cache.util";
 import { serviceKeys } from "@/lib/query-keys/services/service-keys";
 import { setCatalogCategoryActive } from "@/services/api/mutation/save-catalog-category.mutation";
 import type { AdminCatalogCategory, CatalogSubcategory } from "@/types/services/admin-catalog-category.type";

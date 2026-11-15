@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { BranchStatus } from "@/enums/branch-status.enum";
-import { branchFiltersFromParams, branchFiltersToParams, branchQueryString } from "@/lib/branch-filters.util";
+import { branchFiltersFromParams, branchFiltersToParams, branchQueryString } from "@/lib/branches/branch-filters.util";
 
 describe("branch filters", () => {
   it("parses valid params and drops invalid values", () => {

@@ -1,6 +1,6 @@
 import type { BrandUpdatePayload } from "@/interfaces/brands/brand-update-payload.interface";
 import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
-import { mapApiFormError } from "@/lib/map-api-form-error.util";
+import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
 import type { BrandEditFormValues } from "@/schemas/brand-edit-form.zod";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 

@@ -16,9 +16,9 @@ import { PayoutStatus } from "@/enums/payout-status.enum";
 import { useAdminPayoutDetail, usePayoutEntries } from "@/hooks/earnings/use-admin-payout-detail";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
-import { money } from "@/lib/commission.util";
-import { availablePayoutActions } from "@/lib/payout-actions.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { money } from "@/lib/earnings/commission.util";
+import { availablePayoutActions } from "@/lib/earnings/payout-actions.util";
 import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 
 const FIRST_PAGE = 1;

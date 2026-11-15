@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 interface CatalogCategoryDetailDialogProps {

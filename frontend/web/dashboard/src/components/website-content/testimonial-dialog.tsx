@@ -15,7 +15,7 @@ import { AUTHOR_NAME_MAX, CONTENT_SORT_MAX, CONTENT_TEXT_MAX, RATING_VALUES, TES
 import { HttpStatus } from "@/enums/http-status.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useSaveTestimonial } from "@/hooks/platform/use-website-content";
-import { localeText } from "@/lib/website-content.util";
+import { localeText } from "@/lib/platform/website-content.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { ContentSection, Testimonial } from "@/types/platform/website-content.type";
 

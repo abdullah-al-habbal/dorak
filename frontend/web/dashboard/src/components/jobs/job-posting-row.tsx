@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { PostingStatusBadge } from "@/components/jobs/job-status-badges";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
 
 interface JobPostingRowProps {

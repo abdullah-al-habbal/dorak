@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { SETTING_GROUP_ORDER } from "@/config/platform-settings.constant";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { usePlatformSettingsForm } from "@/hooks/platform/use-platform-settings-form";
-import { groupSettings } from "@/lib/platform-settings.util";
+import { groupSettings } from "@/lib/platform/platform-settings.util";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 
 export function PlatformSettingsForm({ settings }: { settings: readonly PlatformSetting[] }): JSX.Element {

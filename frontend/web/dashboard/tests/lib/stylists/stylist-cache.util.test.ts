@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { BarberStatus } from "@/enums/barber-status.enum";
-import { withStylistStatus } from "@/lib/stylist-cache.util";
+import { withStylistStatus } from "@/lib/stylists/stylist-cache.util";
 import type { StylistPage } from "@/types/stylists/stylist-page.type";
 
 const PAGE: StylistPage = {

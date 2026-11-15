@@ -15,8 +15,8 @@ import { useI18n } from "@/hooks/core/use-i18n";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { ShiftIssueEntry } from "@/interfaces/hours/shift-issue-entry.interface";
 import type { Shift } from "@/interfaces/hours/shift.interface";
-import { canAddShift } from "@/lib/opening-hours.util";
-import { weekdayLabel } from "@/lib/weekday-label.util";
+import { canAddShift } from "@/lib/hours/opening-hours.util";
+import { weekdayLabel } from "@/lib/hours/weekday-label.util";
 
 interface WorkingHoursDayProps {
   day: OpeningHoursDay;

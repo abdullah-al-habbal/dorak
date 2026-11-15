@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { PLAN_MAX_DESCRIPTION, PLAN_MAX_INTERVAL_COUNT, PLAN_MAX_NAME, PLAN_MAX_SORT_ORDER } from "@/config/plan.constant";
 import { SubscriptionInterval } from "@/enums/subscription-interval.enum";
-import { parseMinorUnits } from "@/lib/money.util";
+import { parseMinorUnits } from "@/lib/core/money.util";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import type { Dictionary } from "@/types/core/dictionary.type";
 

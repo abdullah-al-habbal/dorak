@@ -6,7 +6,7 @@ import { BarberStatus } from "@/enums/barber-status.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useOptimisticToggleMutation } from "@/hooks/core/use-optimistic-toggle-mutation";
 import type { OptimisticToggleContext } from "@/interfaces/core/optimistic-toggle-context.interface";
-import { withStylistStatus } from "@/lib/stylist-cache.util";
+import { withStylistStatus } from "@/lib/stylists/stylist-cache.util";
 import { stylistKeys } from "@/lib/query-keys/stylists/stylist-keys";
 import { setStylistActive } from "@/services/api/mutation/toggle-stylist.mutation";
 import type { StylistPage } from "@/types/stylists/stylist-page.type";

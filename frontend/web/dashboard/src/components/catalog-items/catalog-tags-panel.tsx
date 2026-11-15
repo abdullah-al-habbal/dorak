@@ -12,7 +12,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useCatalogTags } from "@/hooks/services/use-catalog-admin";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 
 /** The tags that group catalog items: add, rename, switch on or off, or remove. */
 export function CatalogTagsPanel(): JSX.Element {

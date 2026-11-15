@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { ChairStatus } from "@/enums/chair-status.enum";
 import { FloorZone } from "@/enums/floor-zone.enum";
-import { buildChairChips, CHAIR_CHIP_KEY, chairPatchForChip } from "@/lib/chair-chips.util";
+import { buildChairChips, CHAIR_CHIP_KEY, chairPatchForChip } from "@/lib/chairs/chair-chips.util";
 import { enDictionary } from "@/locales/en/index.constant";
 
 describe("chair chips", () => {

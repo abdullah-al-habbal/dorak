@@ -1,4 +1,4 @@
-import { minutesBetween } from "@/lib/booking-date.util";
+import { minutesBetween } from "@/lib/bookings/booking-date.util";
 import type { Booking } from "@/types/bookings/booking.type";
 import type { BookingEventLayout } from "@/types/bookings/booking-event-layout.type";
 

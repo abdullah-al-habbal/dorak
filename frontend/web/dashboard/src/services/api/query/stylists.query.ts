@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { resolvePageInfo } from "@/lib/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
 import { stylistListSchema } from "@/schemas/stylist.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { StylistFilters } from "@/types/stylists/stylist-filters.type";

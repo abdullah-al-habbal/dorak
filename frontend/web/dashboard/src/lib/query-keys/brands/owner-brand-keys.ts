@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/create-query-keys.util";
 
 export const ownerBrandKeys = createQueryKeys("owner-brands", {
   mine: ["mine"] as const,

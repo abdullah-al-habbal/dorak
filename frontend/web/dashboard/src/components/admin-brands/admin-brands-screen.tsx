@@ -16,7 +16,7 @@ import { useAdminBrands } from "@/hooks/brands/use-admin-brands";
 import { useConfirmApproveBrand } from "@/hooks/brands/use-confirm-approve-brand";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { hasAdminBrandFilters } from "@/lib/admin-brand-filters.util";
+import { hasAdminBrandFilters } from "@/lib/brands/admin-brand-filters.util";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** Brand approval is platform-admin only; the proxy and the backend refuse everyone else too. */

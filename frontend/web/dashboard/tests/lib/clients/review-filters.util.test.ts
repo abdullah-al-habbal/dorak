@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { reviewFiltersFromParams, reviewFiltersToParams } from "@/lib/review-filters.util";
+import { reviewFiltersFromParams, reviewFiltersToParams } from "@/lib/clients/review-filters.util";
 
 describe("review filters", () => {
   it("parses the branch and falls back to page 1 on bad input", () => {

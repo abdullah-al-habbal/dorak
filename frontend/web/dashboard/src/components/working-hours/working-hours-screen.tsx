@@ -14,7 +14,7 @@ import { AuthActor } from "@/enums/auth-actor.enum";
 import { useBranchOptions } from "@/hooks/branches/use-branch-options";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOpeningHours } from "@/hooks/hours/use-opening-hours";
-import { hasSavedHours } from "@/lib/opening-hours.util";
+import { hasSavedHours } from "@/lib/hours/opening-hours.util";
 import { useAuthStore } from "@/store/auth.store";
 
 export function WorkingHoursScreen({ actor }: { actor: AuthActor }): JSX.Element {

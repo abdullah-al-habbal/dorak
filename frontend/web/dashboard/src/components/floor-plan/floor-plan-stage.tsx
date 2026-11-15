@@ -7,7 +7,7 @@ import { KEYBOARD_BIG_STEP, KEYBOARD_STEP, ROTATION_STEP, UNISEX_ZONES } from "@
 import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import type { FloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
-import { moveChair, moveDecoration, percentToUnits, pointerToStage, rotateChair, stageSize, unitsToPercent } from "@/lib/floor-plan-geometry.util";
+import { moveChair, moveDecoration, percentToUnits, pointerToStage, rotateChair, stageSize, unitsToPercent } from "@/lib/chairs/floor-plan-geometry.util";
 import { cn } from "@/lib/utils";
 import type { Chair } from "@/types/chairs/chair.type";
 

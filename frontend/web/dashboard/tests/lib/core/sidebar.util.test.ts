@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseSidebarCookie, serializeSidebarState } from "@/lib/sidebar.util";
+import { parseSidebarCookie, serializeSidebarState } from "@/lib/core/sidebar.util";
 
 describe("sidebar cookie", () => {
   it("restores the collapsed state only from the exact collapsed value", () => {

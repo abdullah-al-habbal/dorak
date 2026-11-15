@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { bpsToPercent, money, percentToBps, totalsByCurrency } from "@/lib/commission.util";
+import { bpsToPercent, money, percentToBps, totalsByCurrency } from "@/lib/earnings/commission.util";
 import type { CommissionEntry } from "@/types/earnings/commission.type";
 
 function entry(base: number, commission: number, code?: string): CommissionEntry {

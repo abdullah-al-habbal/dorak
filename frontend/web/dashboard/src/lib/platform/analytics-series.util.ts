@@ -1,4 +1,4 @@
-import { addDays, parseDateKey, toDateKey } from "@/lib/booking-date.util";
+import { addDays, parseDateKey, toDateKey } from "@/lib/bookings/booking-date.util";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 export interface DailyCount {

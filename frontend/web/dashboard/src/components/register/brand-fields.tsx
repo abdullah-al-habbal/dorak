@@ -7,7 +7,7 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { Currency } from "@/types/platform/currency.type";
 
 /** The fields every business sign-up form shares. The forms differ only in the owner fields above these. */

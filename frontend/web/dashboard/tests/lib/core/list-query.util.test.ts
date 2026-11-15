@@ -1,7 +1,7 @@
 import { QueryClient, QueryObserver, keepPreviousData } from "@tanstack/react-query";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { listQueryOptions } from "@/lib/list-query.util";
+import { listQueryOptions } from "@/lib/core/list-query.util";
 
 const FIRST_KEY = ["rows", "list", { page: 1 }] as const;
 const SECOND_KEY = ["rows", "list", { page: 2 }] as const;

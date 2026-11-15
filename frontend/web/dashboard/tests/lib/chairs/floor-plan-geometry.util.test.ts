@@ -15,7 +15,7 @@ import {
   rotateChair,
   stageSize,
   unitsToPercent,
-} from "@/lib/floor-plan-geometry.util";
+} from "@/lib/chairs/floor-plan-geometry.util";
 import type { FloorDecoration } from "@/types/chairs/floor-plan.type";
 
 const stage = { width: 1000, height: 500 };

@@ -7,7 +7,7 @@ import { ErrorState } from "@/components/common/error-state";
 import { SkeletonRows } from "@/components/ui/skeleton-row";
 import { useCatalogCategoryItems } from "@/hooks/services/use-catalog-category-items";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 
 const LOADING_ROWS = 3;
 const LOADING_ROW_CLASS = "h-9";

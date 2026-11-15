@@ -15,7 +15,7 @@ import { accountRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/auth-actor.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useSignOut } from "@/hooks/core/use-sign-out";
-import { initialsOf } from "@/lib/initials.util";
+import { initialsOf } from "@/lib/core/initials.util";
 import { useAuthStore } from "@/store/auth.store";
 import type { MeProfile } from "@/types/account/me-profile.type";
 

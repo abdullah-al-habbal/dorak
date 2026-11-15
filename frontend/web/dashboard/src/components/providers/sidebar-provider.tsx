@@ -7,8 +7,8 @@ import { SidebarContext } from "@/components/providers/sidebar-context";
 import { SIDEBAR_COOKIE } from "@/config/cookies.constant";
 import type { SidebarContextValue } from "@/interfaces/ui/sidebar-context-value.interface";
 import type { SidebarProviderProps } from "@/interfaces/ui/sidebar-provider-props.interface";
-import { writeClientCookie } from "@/lib/cookie.util";
-import { serializeSidebarState } from "@/lib/sidebar.util";
+import { writeClientCookie } from "@/lib/core/cookie.util";
+import { serializeSidebarState } from "@/lib/core/sidebar.util";
 
 export function SidebarProvider({ initialCollapsed, children }: SidebarProviderProps) {
   const pathname = usePathname();

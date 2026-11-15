@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { BookingView } from "@/enums/booking-view.enum";
-import { filtersFromParams, filtersToParams, windowFor } from "@/lib/booking-filters.util";
+import { filtersFromParams, filtersToParams, windowFor } from "@/lib/bookings/booking-filters.util";
 
 const TODAY = new Date(2026, 10, 4);
 

@@ -1,4 +1,4 @@
-import { FIRST_PAGE } from "@/lib/pagination.util";
+import { FIRST_PAGE } from "@/lib/core/pagination.util";
 
 const PAGE_KEY = "page";
 

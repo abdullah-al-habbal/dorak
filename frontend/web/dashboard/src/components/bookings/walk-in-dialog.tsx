@@ -17,9 +17,9 @@ import { useChairOptions } from "@/hooks/chairs/use-chair-options";
 import { useCreateWalkIn } from "@/hooks/bookings/use-create-walk-in";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useServiceOptions } from "@/hooks/services/use-service-options";
-import { defaultWalkInStart, localInputToUtcIso } from "@/lib/booking-datetime.util";
-import { mapBookingFormError } from "@/lib/booking-form-error.util";
-import { localizedText } from "@/lib/booking-format.util";
+import { defaultWalkInStart, localInputToUtcIso } from "@/lib/bookings/booking-datetime.util";
+import { mapBookingFormError } from "@/lib/bookings/booking-form-error.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import { createWalkInSchema } from "@/schemas/walk-in-form.zod";
 import type { WalkInFormValues } from "@/schemas/walk-in-form.zod";
 

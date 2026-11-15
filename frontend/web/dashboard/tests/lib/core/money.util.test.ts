@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { minorUnitsToInput, parseMinorUnits } from "@/lib/money.util";
+import { minorUnitsToInput, parseMinorUnits } from "@/lib/core/money.util";
 
 describe("money util", () => {
   it("converts decimal text to minor units without float drift", () => {

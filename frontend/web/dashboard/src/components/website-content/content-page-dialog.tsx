@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CONTENT_META_MAX, CONTENT_TEXT_MAX } from "@/config/website-content.constant";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useUpdateContentPage } from "@/hooks/platform/use-website-content";
-import { localeText } from "@/lib/website-content.util";
+import { localeText } from "@/lib/platform/website-content.util";
 import type { ContentPage } from "@/types/platform/website-content.type";
 
 /** Edits a page's titles and search descriptions. The slug is fixed. */

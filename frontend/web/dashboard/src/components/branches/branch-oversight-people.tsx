@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { useBranchInvitations } from "@/hooks/branches/use-branch-invitations";
 import { useBranchJobPostings } from "@/hooks/jobs/use-branch-job-postings";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 
 /** The branch's barber invitations and job postings, read-only. */
 export function BranchOversightPeople({ branchId }: { branchId: string }): JSX.Element {

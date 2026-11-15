@@ -1,7 +1,7 @@
 "use client";
 
 import { useUrlFilters } from "@/hooks/core/use-url-filters";
-import { branchFiltersFromParams, branchFiltersToParams } from "@/lib/branch-filters.util";
+import { branchFiltersFromParams, branchFiltersToParams } from "@/lib/branches/branch-filters.util";
 import type { BranchFilters } from "@/types/branches/branch-filters.type";
 
 /** The URL is the source of truth for branch filters. */

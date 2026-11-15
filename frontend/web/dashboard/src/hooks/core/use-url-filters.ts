@@ -1,7 +1,7 @@
 "use client";
 
 import { useUrlState } from "@/hooks/core/use-url-state";
-import { applyFilterPatch } from "@/lib/url-query.util";
+import { applyFilterPatch } from "@/lib/core/url-query.util";
 
 /** URL-backed list filters: `useUrlState` plus the rule that any filter change resets to page 1. */
 export function useUrlFilters<F extends { page: number }>(

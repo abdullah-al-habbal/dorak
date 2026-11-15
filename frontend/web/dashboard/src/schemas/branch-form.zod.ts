@@ -11,7 +11,7 @@ import {
   LONGITUDE_LIMIT,
 } from "@/config/branch.constant";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
-import { parseCoordinate } from "@/lib/coordinate.util";
+import { parseCoordinate } from "@/lib/core/coordinate.util";
 import { emailField } from "@/schemas/fields/email-field.zod";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import { passwordField } from "@/schemas/fields/password-field.zod";

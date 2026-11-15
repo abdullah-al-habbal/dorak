@@ -16,7 +16,7 @@ import { useBarberApprovals } from "@/hooks/stylists/use-barber-approvals";
 import { useConfirmApproveBarber } from "@/hooks/stylists/use-confirm-approve-barber";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { hasBarberApprovalFilters } from "@/lib/barber-approval-filters.util";
+import { hasBarberApprovalFilters } from "@/lib/stylists/barber-approval-filters.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Barber review is platform-admin only; the proxy and the backend refuse everyone else too. */

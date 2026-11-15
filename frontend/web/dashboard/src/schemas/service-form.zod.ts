@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 import { NAME_MAX_LENGTH } from "@/config/field-limit.constant";
-import { parseDuration } from "@/lib/duration.util";
-import { parseMinorUnits } from "@/lib/money.util";
+import { parseDuration } from "@/lib/core/duration.util";
+import { parseMinorUnits } from "@/lib/core/money.util";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import type { Dictionary } from "@/types/core/dictionary.type";
 

@@ -15,7 +15,7 @@ import { BRAND_REASON_MAX, BRAND_REASON_MIN } from "@/config/admin-brand.constan
 import { BrandLifecycleAction } from "@/enums/brand-lifecycle-action.enum";
 import { useBrandLifecycle } from "@/hooks/brands/use-brand-lifecycle";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { BrandReasonOverlayRequest } from "@/interfaces/brands/brand-reason-overlay-request.interface";
 
 interface BrandReasonDialogProps {

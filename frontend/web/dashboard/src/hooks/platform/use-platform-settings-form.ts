@@ -8,9 +8,9 @@ import type { UseFormReturn } from "react-hook-form";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useLeaveWarning } from "@/hooks/core/use-leave-warning";
 import { useSavePlatformSettings } from "@/hooks/platform/use-save-platform-settings";
-import { changedSettings, settingsToForm } from "@/lib/platform-settings.util";
-import type { SettingFormValues } from "@/lib/platform-settings.util";
-import { mapSettingsSaveError } from "@/lib/platform-settings-error.util";
+import { changedSettings, settingsToForm } from "@/lib/platform/platform-settings.util";
+import type { SettingFormValues } from "@/lib/platform/platform-settings.util";
+import { mapSettingsSaveError } from "@/lib/platform/platform-settings-error.util";
 import { createPlatformSettingsSchema } from "@/schemas/platform-settings-form.zod";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 

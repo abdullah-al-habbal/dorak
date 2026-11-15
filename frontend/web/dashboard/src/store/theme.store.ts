@@ -3,8 +3,8 @@ import { create } from "zustand";
 import { THEME_COOKIE } from "@/config/cookies.constant";
 import { ThemeMode } from "@/enums/theme-mode.enum";
 import type { ThemeState } from "@/interfaces/ui/theme-state.interface";
-import { readClientCookie, writeClientCookie } from "@/lib/cookie.util";
-import { applyTheme } from "@/lib/theme.util";
+import { readClientCookie, writeClientCookie } from "@/lib/core/cookie.util";
+import { applyTheme } from "@/lib/core/theme.util";
 import { themeModeSchema } from "@/schemas/theme-mode.zod";
 
 export const useThemeStore = create<ThemeState>((set) => ({

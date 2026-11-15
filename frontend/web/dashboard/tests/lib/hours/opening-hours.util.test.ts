@@ -19,7 +19,7 @@ import {
   updateShift,
   weekFromServer,
   weekToPayload,
-} from "@/lib/opening-hours.util";
+} from "@/lib/hours/opening-hours.util";
 
 const monday: OpeningHoursDay = {
   day_of_week: Weekday.Monday,

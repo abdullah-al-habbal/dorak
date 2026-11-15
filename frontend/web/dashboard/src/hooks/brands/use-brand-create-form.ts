@@ -7,7 +7,7 @@ import type { UseFormReturn } from "react-hook-form";
 
 import { useCreateBrand } from "@/hooks/brands/use-create-brand";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { createFormToBrandPayload, EMPTY_BRAND_CREATE_FORM, mapBrandCreateError } from "@/lib/brand-create-form.util";
+import { createFormToBrandPayload, EMPTY_BRAND_CREATE_FORM, mapBrandCreateError } from "@/lib/brands/brand-create-form.util";
 import { createBrandCreateSchema } from "@/schemas/brand-create-form.zod";
 import type { BrandCreateFormValues } from "@/schemas/brand-create-form.zod";
 

@@ -4,7 +4,7 @@ import { CheckIcon, MinusIcon } from "lucide-react";
 import type { JSX } from "react";
 
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { featureLabel } from "@/lib/subscription-format.util";
+import { featureLabel } from "@/lib/plans/subscription-format.util";
 
 /** Effective flags of the brand. State is icon plus text, never colour alone. */
 export function FeatureList({ features }: { features: Readonly<Record<string, boolean>> }): JSX.Element {

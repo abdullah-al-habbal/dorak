@@ -17,7 +17,7 @@ import { useAssignSubscription } from "@/hooks/plans/use-assign-subscription";
 import { useBrandOptions } from "@/hooks/brands/use-brand-options";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { usePlanOptions } from "@/hooks/plans/use-plan-options";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const LOADING_ROWS = 2;

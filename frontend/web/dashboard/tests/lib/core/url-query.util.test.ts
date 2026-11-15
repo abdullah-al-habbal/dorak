@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { applyFilterPatch, toReplaceHref } from "@/lib/url-query.util";
+import { applyFilterPatch, toReplaceHref } from "@/lib/core/url-query.util";
 
 const PATH = "/dashboard/manager/bookings";
 

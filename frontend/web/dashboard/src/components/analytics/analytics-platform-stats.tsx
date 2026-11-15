@@ -2,7 +2,7 @@ import type { JSX } from "react";
 
 import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { formatCount } from "@/lib/earnings-format.util";
+import { formatCount } from "@/lib/earnings/earnings-format.util";
 import type { PlatformAnalytics } from "@/types/platform/platform-analytics.type";
 
 /** The live size of the platform. These figures ignore the period picker, and the caption says so. */

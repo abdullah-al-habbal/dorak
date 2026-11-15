@@ -3,7 +3,7 @@
 import { useCallback, useMemo } from "react";
 
 import { useUrlFilters } from "@/hooks/core/use-url-filters";
-import { filtersFromParams, filtersToParams } from "@/lib/booking-filters.util";
+import { filtersFromParams, filtersToParams } from "@/lib/bookings/booking-filters.util";
 import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
 /** The URL is the source of truth for view, date and filters, so a link reproduces the screen. */

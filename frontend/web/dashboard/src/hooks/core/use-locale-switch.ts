@@ -5,7 +5,7 @@ import { useTransition } from "react";
 
 import { LOCALE_COOKIE } from "@/config/cookies.constant";
 import type { Locale } from "@/enums/locale.enum";
-import { writeClientCookie } from "@/lib/cookie.util";
+import { writeClientCookie } from "@/lib/core/cookie.util";
 
 export function useLocaleSwitch() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { groupByCategory, UNCATEGORISED_KEY } from "@/lib/service-grouping.util";
+import { groupByCategory, UNCATEGORISED_KEY } from "@/lib/services/service-grouping.util";
 import type { Service } from "@/types/services/service.type";
 
 function service(id: string, category?: { id: string; name: string }): Service {

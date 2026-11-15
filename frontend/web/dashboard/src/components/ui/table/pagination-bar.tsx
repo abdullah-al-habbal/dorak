@@ -5,7 +5,7 @@ import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { clampPage } from "@/lib/pagination.util";
+import { clampPage } from "@/lib/core/pagination.util";
 
 interface PaginationBarProps {
   page: number;

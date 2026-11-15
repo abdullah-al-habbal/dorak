@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { ADMIN_BRAND_MAX_SEARCH, BRAND_STATUS_FILTER_ALL } from "@/config/admin-brand.constant";
 import { BrandStatus } from "@/enums/brand-status.enum";
-import { adminBrandFiltersFromParams, adminBrandFiltersToParams, adminBrandQueryString, hasAdminBrandFilters } from "@/lib/admin-brand-filters.util";
+import { adminBrandFiltersFromParams, adminBrandFiltersToParams, adminBrandQueryString, hasAdminBrandFilters } from "@/lib/brands/admin-brand-filters.util";
 
 describe("admin brand filters", () => {
   it("opens the pending queue on a bare or unknown status", () => {

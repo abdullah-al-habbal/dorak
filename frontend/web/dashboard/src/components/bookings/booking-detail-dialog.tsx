@@ -11,7 +11,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useUpdateBookingStatus } from "@/hooks/bookings/use-update-booking-status";
-import { bookingTotal, formatDay, formatTime, localizedText } from "@/lib/booking-format.util";
+import { bookingTotal, formatDay, formatTime, localizedText } from "@/lib/core/booking-format.util";
 import type { Booking } from "@/types/bookings/booking.type";
 import type { BookingTarget } from "@/types/bookings/booking-target.type";
 

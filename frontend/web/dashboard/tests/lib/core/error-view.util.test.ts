@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import { classifyError, errorReference } from "@/lib/error-view.util";
+import { classifyError, errorReference } from "@/lib/core/error-view.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const failure = (status: number, code: string, requestId?: string) => new ApiClientError({ status, code, message: "", requestId });

@@ -7,7 +7,7 @@ import { BookingStatusBadge } from "@/components/bookings/booking-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
 import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { bookingTotal, formatDay, formatTime, localizedText, serviceSummary } from "@/lib/booking-format.util";
+import { bookingTotal, formatDay, formatTime, localizedText, serviceSummary } from "@/lib/core/booking-format.util";
 import type { Booking } from "@/types/bookings/booking.type";
 
 const DASH = "-";

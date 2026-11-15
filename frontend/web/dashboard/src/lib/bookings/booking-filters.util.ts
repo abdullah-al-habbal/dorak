@@ -1,6 +1,6 @@
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { BookingView } from "@/enums/booking-view.enum";
-import { addDays, parseDateKey, startOfWeek, toDateKey } from "@/lib/booking-date.util";
+import { addDays, parseDateKey, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
 import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
 const STATUSES = new Set<string>(Object.values(BookingStatus));

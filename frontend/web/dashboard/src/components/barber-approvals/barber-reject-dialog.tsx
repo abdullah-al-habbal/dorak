@@ -13,7 +13,7 @@ import { BARBER_REJECT_REASON_MAX, BARBER_REJECT_REASON_MIN } from "@/config/bar
 import { HttpStatus } from "@/enums/http-status.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useRejectBarber } from "@/hooks/stylists/use-reject-barber";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 

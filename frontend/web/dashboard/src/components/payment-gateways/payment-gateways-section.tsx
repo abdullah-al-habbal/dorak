@@ -12,7 +12,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { usePaymentGateways, useSetPaymentGatewayActive } from "@/hooks/platform/use-payment-gateways";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 
 /** The payment gateways. Credentials are write-only: the list shows which keys are set, never their values. */
 export function PaymentGatewaysSection(): JSX.Element {

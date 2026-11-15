@@ -7,8 +7,8 @@ import { SubscriptionStatusBadge } from "@/components/subscription/subscription-
 import { Card, CardContent } from "@/components/ui/card";
 import { SubscriptionStatus } from "@/enums/subscription-status.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { formatPrice, localizedText } from "@/lib/booking-format.util";
-import { intervalLabel } from "@/lib/subscription-format.util";
+import { formatPrice, localizedText } from "@/lib/core/booking-format.util";
+import { intervalLabel } from "@/lib/plans/subscription-format.util";
 import type { Subscription } from "@/types/plans/subscription.type";
 
 export function SubscriptionCard({ subscription }: { subscription: Subscription }): JSX.Element {

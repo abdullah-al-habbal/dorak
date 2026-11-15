@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseCoordinate } from "@/lib/coordinate.util";
+import { parseCoordinate } from "@/lib/core/coordinate.util";
 
 describe("parseCoordinate", () => {
   it("treats an empty field as no coordinate", () => {

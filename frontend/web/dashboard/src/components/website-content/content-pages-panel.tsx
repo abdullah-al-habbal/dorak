@@ -11,7 +11,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useWebsiteContent } from "@/hooks/platform/use-website-content";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 
 /** Every marketing page with its ordered sections; a page and a section each open their own editor. */
 export function ContentPagesPanel(): JSX.Element {

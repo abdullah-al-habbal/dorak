@@ -21,8 +21,8 @@ import { useBookingsQuery } from "@/hooks/bookings/use-bookings-query";
 import { useChairOptions } from "@/hooks/chairs/use-chair-options";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { buildBookingChips, CLEAR_ALL_PATCH, patchForChip } from "@/lib/booking-chips.util";
-import { localizedText } from "@/lib/booking-format.util";
+import { buildBookingChips, CLEAR_ALL_PATCH, patchForChip } from "@/lib/bookings/booking-chips.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { Booking } from "@/types/bookings/booking.type";
 
 export function BookingsScreen({ actor }: { actor: AuthActor }): JSX.Element {

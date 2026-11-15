@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { currentRateIds } from "@/lib/exchange-rate.util";
+import { currentRateIds } from "@/lib/core/exchange-rate.util";
 import type { ExchangeRate } from "@/types/platform/currency-admin.type";
 
 function rate(id: string, from: string, to: string, effective_at: string | null): ExchangeRate {

@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
-import { shiftSegment } from "@/lib/opening-hours.util";
+import { shiftSegment } from "@/lib/hours/opening-hours.util";
 
 /** A 24-hour track with each shift drawn on it, so a break between shifts is visible at a glance. Decorative: the time fields carry the data. */
 export function DayStrip({ day }: { day: OpeningHoursDay }): JSX.Element {

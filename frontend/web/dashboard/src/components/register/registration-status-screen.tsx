@@ -13,8 +13,8 @@ import { useOverlay } from "@/hooks/core/use-overlay";
 import { useResubmitBrand } from "@/hooks/brands/use-resubmit-brand";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOwnerBrands } from "@/hooks/brands/use-owner-brands";
-import { localizedText } from "@/lib/booking-format.util";
-import { REGISTRATION_STEPS, RegistrationStep, currentRegistrationStep, isStepReached } from "@/lib/registration-status.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { REGISTRATION_STEPS, RegistrationStep, currentRegistrationStep, isStepReached } from "@/lib/account/registration-status.util";
 import { cn } from "@/lib/utils";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { AffiliationInitiator } from "@/enums/affiliation-initiator.enum";
 import { AffiliationStatus } from "@/enums/affiliation-status.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { InvitationAction } from "@/services/api/mutation/invitation.mutation";
 import type { BranchInvitation } from "@/types/branches/branch-invitation.type";
 

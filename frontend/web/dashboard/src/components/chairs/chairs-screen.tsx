@@ -20,7 +20,7 @@ import { useChairStatusToggle } from "@/hooks/chairs/use-chair-status-toggle";
 import { useChairs } from "@/hooks/chairs/use-chairs";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { buildChairChips, CHAIR_CLEAR_ALL_PATCH, chairPatchForChip } from "@/lib/chair-chips.util";
+import { buildChairChips, CHAIR_CLEAR_ALL_PATCH, chairPatchForChip } from "@/lib/chairs/chair-chips.util";
 import { useAuthStore } from "@/store/auth.store";
 import type { Chair } from "@/types/chairs/chair.type";
 

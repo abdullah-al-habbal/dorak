@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { initialsOf } from "@/lib/initials.util";
+import { initialsOf } from "@/lib/core/initials.util";
 
 describe("initialsOf", () => {
   it("builds up to two initials", () => {

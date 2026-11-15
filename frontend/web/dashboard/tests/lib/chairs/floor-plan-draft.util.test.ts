@@ -6,8 +6,8 @@ import { FloorCanvasUnit } from "@/enums/floor-canvas-unit.enum";
 import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
 import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
 import { FloorZone } from "@/enums/floor-zone.enum";
-import { chairPayloadWithLayout } from "@/lib/floor-plan-save.util";
-import { draftToLayoutPayload, isDirty, movedChairIds, newDecoration, planToDraft } from "@/lib/floor-plan-draft.util";
+import { chairPayloadWithLayout } from "@/lib/chairs/floor-plan-save.util";
+import { draftToLayoutPayload, isDirty, movedChairIds, newDecoration, planToDraft } from "@/lib/chairs/floor-plan-draft.util";
 import type { Chair } from "@/types/chairs/chair.type";
 import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 

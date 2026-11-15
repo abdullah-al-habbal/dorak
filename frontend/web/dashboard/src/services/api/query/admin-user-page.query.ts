@@ -1,7 +1,7 @@
 import { ADMIN_USER_PER_PAGE } from "@/config/admin-user.constant";
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { adminUserQueryString } from "@/lib/admin-user-filters.util";
-import { resolvePageInfo } from "@/lib/resolve-page-info.util";
+import { adminUserQueryString } from "@/lib/platform/admin-user-filters.util";
+import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
 import { adminUserListSchema } from "@/schemas/admin-user.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { AdminUserFilters } from "@/types/platform/admin-user-filters.type";

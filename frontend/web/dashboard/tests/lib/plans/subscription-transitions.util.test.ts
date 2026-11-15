@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { SubscriptionStatus } from "@/enums/subscription-status.enum";
-import { availableSubscriptionTargets } from "@/lib/subscription-transitions.util";
+import { availableSubscriptionTargets } from "@/lib/plans/subscription-transitions.util";
 
 describe("availableSubscriptionTargets", () => {
   it("mirrors the backend state machine", () => {

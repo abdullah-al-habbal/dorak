@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { VenueUniverse } from "@/enums/venue-universe.enum";
-import { catalogCategoryToForm, emptyCatalogCategoryForm, formToCatalogCategoryPayload, isCatalogCategoryInUse } from "@/lib/catalog-category-form.util";
-import { withCategoryActive } from "@/lib/catalog-category-cache.util";
+import { catalogCategoryToForm, emptyCatalogCategoryForm, formToCatalogCategoryPayload, isCatalogCategoryInUse } from "@/lib/services/catalog-category-form.util";
+import { withCategoryActive } from "@/lib/services/catalog-category-cache.util";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 function category(overrides: Partial<AdminCatalogCategory> = {}): AdminCatalogCategory {

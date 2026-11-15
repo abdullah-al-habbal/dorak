@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { currencyRows } from "@/lib/analytics-money.util";
-import { fillDailyCounts, sumCounts } from "@/lib/analytics-series.util";
+import { currencyRows } from "@/lib/platform/analytics-money.util";
+import { fillDailyCounts, sumCounts } from "@/lib/platform/analytics-series.util";
 
 describe("fillDailyCounts", () => {
   it("returns one entry per day with zeros for the gaps", () => {

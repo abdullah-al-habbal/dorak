@@ -13,7 +13,7 @@ import { useExchangeRates } from "@/hooks/platform/use-admin-currencies";
 import { useDeleteExchangeRate } from "@/hooks/platform/use-delete-exchange-rate";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { currentRateIds } from "@/lib/exchange-rate.util";
+import { currentRateIds } from "@/lib/core/exchange-rate.util";
 import type { ExchangeRate } from "@/types/platform/currency-admin.type";
 
 /** The rate history, newest first. The rate the converter uses for each pair is marked "current". */

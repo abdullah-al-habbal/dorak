@@ -7,7 +7,7 @@ import { PayoutStatusBadge } from "@/components/payouts/payout-status-badge";
 import { DataTable } from "@/components/ui/table/data-table";
 import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { formatPrice, localizedText } from "@/lib/booking-format.util";
+import { formatPrice, localizedText } from "@/lib/core/booking-format.util";
 import type { Payout } from "@/types/earnings/payout.type";
 
 function getPayoutId(payout: Payout): string {

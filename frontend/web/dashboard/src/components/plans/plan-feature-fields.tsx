@@ -4,7 +4,7 @@ import type { JSX } from "react";
 
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { PlanFieldsProps } from "@/interfaces/plans/plan-fields-props.interface";
-import { featureLabel } from "@/lib/subscription-format.util";
+import { featureLabel } from "@/lib/plans/subscription-format.util";
 
 interface PlanFeatureFieldsProps extends PlanFieldsProps {
   featureKeys: readonly string[];

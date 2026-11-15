@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { STATUS_SEGMENT } from "@/config/routes.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { NotificationEvent } from "@/enums/notification-event.enum";
-import { isNotificationEvent, notificationEvent, notificationHref } from "@/lib/notification-link.util";
+import { isNotificationEvent, notificationEvent, notificationHref } from "@/lib/account/notification-link.util";
 import type { DashboardNotification } from "@/types/account/dashboard-notification.type";
 
 function row(type: string, data: Record<string, unknown> = {}): DashboardNotification {

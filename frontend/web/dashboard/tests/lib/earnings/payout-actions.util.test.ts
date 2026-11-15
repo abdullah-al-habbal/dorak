@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { PayoutAction } from "@/enums/payout-action.enum";
 import { PayoutStatus } from "@/enums/payout-status.enum";
-import { availablePayoutActions } from "@/lib/payout-actions.util";
+import { availablePayoutActions } from "@/lib/earnings/payout-actions.util";
 
 describe("availablePayoutActions", () => {
   it("offers approve and cancel on a draft", () => {

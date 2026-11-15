@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { TrendDirection } from "@/enums/trend-direction.enum";
-import { averageTicket, computeTrend, currencyCodes, totalFor } from "@/lib/earnings-metrics.util";
+import { averageTicket, computeTrend, currencyCodes, totalFor } from "@/lib/earnings/earnings-metrics.util";
 import type { Earnings } from "@/types/earnings/earnings.type";
 
 const total = (currency: string, gross: number, count: number) => ({ currency_code: currency, gross_minor: gross, completed_bookings_count: count });

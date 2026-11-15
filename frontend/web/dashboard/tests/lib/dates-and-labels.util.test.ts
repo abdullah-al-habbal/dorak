@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest";
 import { Locale } from "@/enums/locale.enum";
 import { Weekday } from "@/enums/weekday.enum";
 import { DICTIONARIES } from "@/locales/dictionaries.constant";
-import { addDays, minutesBetween, parseDateKey, startOfWeek, toDateKey } from "@/lib/booking-date.util";
-import { actorLabel, isBookingStatus, statusLabel } from "@/lib/booking-status-label.util";
-import { formatCount, formatPercent, formatShortDate } from "@/lib/earnings-format.util";
-import { registerErrorMessage } from "@/lib/register-error.util";
-import { slugify } from "@/lib/slugify.util";
-import { weekdayLabel } from "@/lib/weekday-label.util";
+import { addDays, minutesBetween, parseDateKey, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
+import { actorLabel, isBookingStatus, statusLabel } from "@/lib/bookings/booking-status-label.util";
+import { formatCount, formatPercent, formatShortDate } from "@/lib/earnings/earnings-format.util";
+import { registerErrorMessage } from "@/lib/account/register-error.util";
+import { slugify } from "@/lib/core/slugify.util";
+import { weekdayLabel } from "@/lib/hours/weekday-label.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 describe("date keys", () => {

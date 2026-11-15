@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { mapBookingFormError } from "@/lib/booking-form-error.util";
+import { mapBookingFormError } from "@/lib/bookings/booking-form-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const MESSAGES = { conflict: "conflict", outsideSchedule: "outside", generic: "generic" };

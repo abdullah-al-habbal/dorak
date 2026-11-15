@@ -20,8 +20,8 @@ import { useAdminCatalogFilters } from "@/hooks/services/use-admin-catalog-filte
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useUpdateCatalogCategoryActive } from "@/hooks/services/use-update-catalog-category-active";
-import { hasAdminCatalogFilters } from "@/lib/admin-catalog-filters.util";
-import { localizedText } from "@/lib/booking-format.util";
+import { hasAdminCatalogFilters } from "@/lib/services/admin-catalog-filters.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";
 
 /** The global catalog is platform-admin only; the proxy and the backend refuse everyone else too. */

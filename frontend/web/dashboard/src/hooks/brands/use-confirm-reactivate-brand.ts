@@ -5,7 +5,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useBrandLifecycle } from "@/hooks/brands/use-brand-lifecycle";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 /** Opens the reactivate confirmation for a suspended brand. */

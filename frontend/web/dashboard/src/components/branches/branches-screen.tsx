@@ -17,8 +17,8 @@ import { useBranches } from "@/hooks/branches/use-branches";
 import { useBrandOptions } from "@/hooks/brands/use-brand-options";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
-import { BRANCH_CLEAR_ALL_PATCH, branchPatchForChip, buildBranchChips } from "@/lib/branch-chips.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { BRANCH_CLEAR_ALL_PATCH, branchPatchForChip, buildBranchChips } from "@/lib/branches/branch-chips.util";
 import type { Branch } from "@/types/branches/branch.type";
 
 const BRANCH_ACTORS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];

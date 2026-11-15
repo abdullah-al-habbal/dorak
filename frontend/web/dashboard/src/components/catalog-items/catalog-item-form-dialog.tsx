@@ -18,8 +18,8 @@ import { useCatalogTags, useDeleteCatalogItem, useSaveCatalogItem } from "@/hook
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useServiceCategories } from "@/hooks/services/use-service-categories";
-import { localizedText } from "@/lib/booking-format.util";
-import { slugify } from "@/lib/slugify.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { slugify } from "@/lib/core/slugify.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { CatalogItem } from "@/types/services/catalog-item.type";
 

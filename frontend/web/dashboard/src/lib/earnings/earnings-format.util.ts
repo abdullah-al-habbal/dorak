@@ -1,5 +1,5 @@
 import { EARNINGS_PERCENT } from "@/config/earnings.constant";
-import { parseDateKey } from "@/lib/booking-date.util";
+import { parseDateKey } from "@/lib/bookings/booking-date.util";
 
 /** `0.5` percent points become "0.5%"; whole numbers drop the decimals. */
 export function formatPercent(percent: number, locale: string): string {

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { DEFAULT_CHAIR_LAYOUT } from "@/config/chair-layout.constant";
 import { ChairStatus } from "@/enums/chair-status.enum";
 import { FloorZone } from "@/enums/floor-zone.enum";
-import { chairToForm, emptyChairForm, formToChairPayload, statusChangePayload } from "@/lib/chair-form.util";
+import { chairToForm, emptyChairForm, formToChairPayload, statusChangePayload } from "@/lib/chairs/chair-form.util";
 import type { Chair } from "@/types/chairs/chair.type";
 
 const chair: Chair = {

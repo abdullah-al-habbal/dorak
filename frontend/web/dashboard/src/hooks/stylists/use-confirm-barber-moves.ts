@@ -5,7 +5,7 @@ import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useSetBarberActive } from "@/hooks/stylists/use-set-barber-active";
 import { useUnbanBarber } from "@/hooks/stylists/use-unban-barber";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 interface BarberMoves {

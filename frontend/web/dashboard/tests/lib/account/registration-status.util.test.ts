@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { BrandStatus } from "@/enums/brand-status.enum";
-import { REGISTRATION_STEPS, RegistrationStep, currentRegistrationStep, isStepReached } from "@/lib/registration-status.util";
+import { REGISTRATION_STEPS, RegistrationStep, currentRegistrationStep, isStepReached } from "@/lib/account/registration-status.util";
 
 describe("registration status", () => {
   it("shows a pending brand as under review and an active one as approved", () => {

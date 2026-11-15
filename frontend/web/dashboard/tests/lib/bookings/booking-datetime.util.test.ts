@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { defaultWalkInStart, isoToLocalInput, localInputToUtcIso, parseLocalInput, toLocalInput } from "@/lib/booking-datetime.util";
+import { defaultWalkInStart, isoToLocalInput, localInputToUtcIso, parseLocalInput, toLocalInput } from "@/lib/bookings/booking-datetime.util";
 
 describe("booking datetime util", () => {
   it("round-trips local input through UTC ISO", () => {

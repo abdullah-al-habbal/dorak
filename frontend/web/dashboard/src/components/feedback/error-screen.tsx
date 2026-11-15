@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ROUTE_ROOT } from "@/config/routes.constant";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { classifyError, errorReference } from "@/lib/error-view.util";
+import { classifyError, errorReference } from "@/lib/core/error-view.util";
 
 interface ErrorScreenProps {
   error: unknown;

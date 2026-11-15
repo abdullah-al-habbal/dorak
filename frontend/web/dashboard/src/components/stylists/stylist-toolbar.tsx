@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { BarberStatus } from "@/enums/barber-status.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { BranchOption } from "@/types/branches/branch-option.type";
 import type { ChairOption } from "@/types/chairs/chair-option.type";
 import type { StylistFilters } from "@/types/stylists/stylist-filters.type";

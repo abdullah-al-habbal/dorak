@@ -5,7 +5,7 @@ import {
   EARNINGS_MAX_RANGE_DAYS,
 } from "@/config/earnings.constant";
 import { EarningsPreset } from "@/enums/earnings-preset.enum";
-import { addDays, parseDateKey, toDateKey } from "@/lib/booking-date.util";
+import { addDays, parseDateKey, toDateKey } from "@/lib/bookings/booking-date.util";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 const MS_PER_DAY = 86_400_000;

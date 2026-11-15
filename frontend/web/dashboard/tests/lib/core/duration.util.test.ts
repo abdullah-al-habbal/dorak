@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseDuration, splitDuration } from "@/lib/duration.util";
+import { parseDuration, splitDuration } from "@/lib/core/duration.util";
 
 describe("duration util", () => {
   it("treats empty as no fixed duration and enforces 1-1440", () => {

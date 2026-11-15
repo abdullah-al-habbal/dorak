@@ -1,6 +1,6 @@
 import { HttpStatus } from "@/enums/http-status.enum";
 import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
-import { hasApiFieldErrors } from "@/lib/api-field-errors.util";
+import { hasApiFieldErrors } from "@/lib/core/api-field-errors.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const OUTSIDE_SCHEDULE_CODE = "booking_outside_schedule";

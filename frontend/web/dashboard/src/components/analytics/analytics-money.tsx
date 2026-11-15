@@ -2,9 +2,9 @@ import type { JSX } from "react";
 
 import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { currencyRows } from "@/lib/analytics-money.util";
-import { formatPrice } from "@/lib/booking-format.util";
-import { formatCount } from "@/lib/earnings-format.util";
+import { currencyRows } from "@/lib/platform/analytics-money.util";
+import { formatPrice } from "@/lib/core/booking-format.util";
+import { formatCount } from "@/lib/earnings/earnings-format.util";
 import type { PlatformAnalytics } from "@/types/platform/platform-analytics.type";
 
 /** Recurring revenue, commission and payouts, one block per currency: amounts are never converted between currencies. */

@@ -19,8 +19,8 @@ import { useBrandOptions } from "@/hooks/brands/use-brand-options";
 import { useServiceFilters } from "@/hooks/services/use-service-filters";
 import { useServices } from "@/hooks/services/use-services";
 import { useUpdateServiceActive } from "@/hooks/services/use-update-service-active";
-import { localizedText } from "@/lib/booking-format.util";
-import { groupByCategory } from "@/lib/service-grouping.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { groupByCategory } from "@/lib/services/service-grouping.util";
 import { useAuthStore } from "@/store/auth.store";
 import type { Service } from "@/types/services/service.type";
 

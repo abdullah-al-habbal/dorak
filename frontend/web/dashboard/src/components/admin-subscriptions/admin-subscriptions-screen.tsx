@@ -18,7 +18,7 @@ import { useAdminSubscriptions } from "@/hooks/plans/use-admin-subscriptions";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useUpdateSubscriptionStatus } from "@/hooks/plans/use-update-subscription-status";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { AdminSubscription } from "@/types/plans/admin-subscription.type";
 import type { SubscriptionTarget } from "@/types/plans/subscription-target.type";
 

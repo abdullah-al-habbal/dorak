@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/create-query-keys.util";
 import type { ClientFilters } from "@/types/clients/client-filters.type";
 
 export const clientKeys = createQueryKeys("admin-clients", {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { emptyPlanForm, formToPlanPayload, planToForm } from "@/lib/plan-form.util";
-import { mapPlanSaveError } from "@/lib/plan-form-error.util";
+import { emptyPlanForm, formToPlanPayload, planToForm } from "@/lib/plans/plan-form.util";
+import { mapPlanSaveError } from "@/lib/plans/plan-form-error.util";
 import { planSchema } from "@/schemas/plan.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 

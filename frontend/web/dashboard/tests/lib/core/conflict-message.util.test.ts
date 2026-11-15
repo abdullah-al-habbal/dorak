@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { HttpStatus } from "@/enums/http-status.enum";
-import { conflictMessage } from "@/lib/conflict-message.util";
+import { conflictMessage } from "@/lib/core/conflict-message.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const FALLBACK = "Could not delete.";

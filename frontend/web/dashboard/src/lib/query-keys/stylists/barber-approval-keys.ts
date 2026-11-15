@@ -1,4 +1,4 @@
-import { createQueryKeys } from "@/lib/create-query-keys.util";
+import { createQueryKeys } from "@/lib/core/create-query-keys.util";
 import type { BarberApprovalFilters } from "@/types/stylists/barber-approval-filters.type";
 
 export const barberApprovalKeys = createQueryKeys("barber-approvals", {

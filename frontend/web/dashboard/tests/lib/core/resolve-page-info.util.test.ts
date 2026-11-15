@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { resolvePageInfo } from "@/lib/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
 
 describe("resolvePageInfo", () => {
   it("uses the backend pagination block when it is valid", () => {

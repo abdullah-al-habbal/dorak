@@ -3,7 +3,7 @@ import type { JSX } from "react";
 import { MeterRow } from "@/components/analytics/meter-row";
 import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { formatCount } from "@/lib/earnings-format.util";
+import { formatCount } from "@/lib/earnings/earnings-format.util";
 import type { PlatformAnalytics } from "@/types/platform/platform-analytics.type";
 
 /** Live brand subscriptions (active or past due) per plan. */

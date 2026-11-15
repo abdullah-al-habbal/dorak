@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { HttpStatus } from "@/enums/http-status.enum";
-import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
-import { formErrorMessage, mapApiFormError } from "@/lib/map-api-form-error.util";
+import { mapApiFieldErrors } from "@/lib/core/api-field-errors.util";
+import { formErrorMessage, mapApiFormError } from "@/lib/core/map-api-form-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const validation = (fields: Record<string, string[]>): ApiClientError => new ApiClientError({ status: 422, code: "invalid_request", message: "x", fields });

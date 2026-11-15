@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { csvCell, toCsv } from "@/lib/csv.util";
-import { earningsCsv, earningsFilename } from "@/lib/earnings-csv.util";
+import { csvCell, toCsv } from "@/lib/core/csv.util";
+import { earningsCsv, earningsFilename } from "@/lib/earnings/earnings-csv.util";
 
 describe("csvCell", () => {
   it("quotes values and doubles embedded quotes", () => {

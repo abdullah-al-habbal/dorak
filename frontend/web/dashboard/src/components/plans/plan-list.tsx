@@ -7,8 +7,8 @@ import { PlanStateBadge } from "@/components/plans/plan-state-badge";
 import { DataTable } from "@/components/ui/table/data-table";
 import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { formatPrice, localizedText } from "@/lib/booking-format.util";
-import { featureLabel, intervalLabel } from "@/lib/subscription-format.util";
+import { formatPrice, localizedText } from "@/lib/core/booking-format.util";
+import { featureLabel, intervalLabel } from "@/lib/plans/subscription-format.util";
 import type { Plan } from "@/types/plans/plan.type";
 
 interface PlanListProps {

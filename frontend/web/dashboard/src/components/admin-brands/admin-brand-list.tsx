@@ -10,7 +10,7 @@ import { DataTable } from "@/components/ui/table/data-table";
 import { BrandStatus } from "@/enums/brand-status.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 interface AdminBrandListProps {

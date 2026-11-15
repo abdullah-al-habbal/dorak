@@ -1,5 +1,5 @@
 import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
-import { mapApiFieldErrors } from "@/lib/api-field-errors.util";
+import { mapApiFieldErrors } from "@/lib/core/api-field-errors.util";
 import type { FormFieldNameMapper } from "@/types/core/form-field-name-mapper.type";
 
 /**

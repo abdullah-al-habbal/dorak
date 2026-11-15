@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { EMAIL_MAX_LENGTH, NAME_MAX_LENGTH, PHONE_MAX_LENGTH } from "@/config/field-limit.constant";
-import { parseLocalInput } from "@/lib/booking-datetime.util";
+import { parseLocalInput } from "@/lib/bookings/booking-datetime.util";
 import { emailField } from "@/schemas/fields/email-field.zod";
 import { nameField } from "@/schemas/fields/name-field.zod";
 import { phoneField } from "@/schemas/fields/phone-field.zod";

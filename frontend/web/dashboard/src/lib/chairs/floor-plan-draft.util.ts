@@ -2,8 +2,8 @@ import { DEFAULT_DECORATION_SIZE, PERCENT_MAX, UNISEX_ZONES } from "@/config/flo
 import { FloorDecorationType } from "@/enums/floor-decoration-type.enum";
 import { FloorPlanPreset } from "@/enums/floor-plan-preset.enum";
 import type { FloorDecorationDraft, FloorPlanDraft } from "@/interfaces/chairs/floor-plan-draft.interface";
-import { layoutOf } from "@/lib/chair-form.util";
-import { clampChair, stageSize } from "@/lib/floor-plan-geometry.util";
+import { layoutOf } from "@/lib/chairs/chair-form.util";
+import { clampChair, stageSize } from "@/lib/chairs/floor-plan-geometry.util";
 import type { FloorPlanLayoutPayload } from "@/services/api/mutation/floor-plan.mutation";
 import type { FloorPlan } from "@/types/chairs/floor-plan.type";
 

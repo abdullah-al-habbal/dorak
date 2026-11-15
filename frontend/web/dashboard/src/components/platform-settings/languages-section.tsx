@@ -9,7 +9,7 @@ import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { useAdminLanguages } from "@/hooks/platform/use-admin-languages";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useSetLanguageActive } from "@/hooks/platform/use-set-language-active";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 
 /** The languages the platform has translations for: switched on or off here, never added (a new one needs translations in code). */
 export function LanguagesSection(): JSX.Element {

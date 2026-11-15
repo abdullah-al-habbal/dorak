@@ -15,7 +15,7 @@ import { PayoutAction } from "@/enums/payout-action.enum";
 import { HttpStatus } from "@/enums/http-status.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useTransitionPayout } from "@/hooks/earnings/use-transition-payout";
-import { formatPrice, localizedText } from "@/lib/booking-format.util";
+import { formatPrice, localizedText } from "@/lib/core/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 

@@ -9,8 +9,8 @@ import { DataTable } from "@/components/ui/table/data-table";
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
 import type { EarningsBucket } from "@/interfaces/earnings/earnings-bucket.interface";
-import { formatPrice } from "@/lib/booking-format.util";
-import { formatCount, formatShortDate } from "@/lib/earnings-format.util";
+import { formatPrice } from "@/lib/core/booking-format.util";
+import { formatCount, formatShortDate } from "@/lib/earnings/earnings-format.util";
 
 enum SortKey {
   Date = "date",

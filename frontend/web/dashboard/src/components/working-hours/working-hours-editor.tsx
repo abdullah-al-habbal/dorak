@@ -13,7 +13,7 @@ import { useLeaveWarning } from "@/hooks/core/use-leave-warning";
 import { useSaveOpeningHours } from "@/hooks/hours/use-save-opening-hours";
 import type { OpeningHoursDay } from "@/interfaces/hours/opening-hours-day.interface";
 import type { Shift } from "@/interfaces/hours/shift.interface";
-import { formErrorMessage } from "@/lib/map-api-form-error.util";
+import { formErrorMessage } from "@/lib/core/map-api-form-error.util";
 import {
   NO_ISSUES,
   addShift,
@@ -27,7 +27,7 @@ import {
   updateShift,
   weekFromServer,
   weekToPayload,
-} from "@/lib/opening-hours.util";
+} from "@/lib/hours/opening-hours.util";
 import type { OpeningHoursWeek } from "@/types/hours/opening-hours-week.type";
 
 interface WorkingHoursEditorProps {

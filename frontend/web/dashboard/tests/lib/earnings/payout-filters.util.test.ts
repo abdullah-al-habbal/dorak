@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { PayoutStatus } from "@/enums/payout-status.enum";
-import { payoutFiltersFromParams, payoutFiltersToParams } from "@/lib/payout-filters.util";
+import { payoutFiltersFromParams, payoutFiltersToParams } from "@/lib/earnings/payout-filters.util";
 
 describe("payout filters", () => {
   it("parses a known status and page", () => {

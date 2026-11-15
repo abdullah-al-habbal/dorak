@@ -16,7 +16,7 @@ import { useBarberLookup } from "@/hooks/stylists/use-barber-lookup";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useInviteBarber } from "@/hooks/stylists/use-invite-barber";
 import { useInviteBarberByContact } from "@/hooks/stylists/use-invite-barber-by-contact";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 /** Finds an existing barber by name, email or phone and invites them to the branch, with an optional commission. */

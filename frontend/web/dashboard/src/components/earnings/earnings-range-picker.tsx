@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { EARNINGS_PRESETS } from "@/config/earnings.constant";
 import { EarningsPreset } from "@/enums/earnings-preset.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { detectPreset, EarningsRangeIssue, presetRange, rangeIssue } from "@/lib/earnings-range.util";
+import { detectPreset, EarningsRangeIssue, presetRange, rangeIssue } from "@/lib/earnings/earnings-range.util";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
 
 interface EarningsRangePickerProps {

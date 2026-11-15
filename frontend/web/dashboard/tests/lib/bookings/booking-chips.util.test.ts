@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { BookingView } from "@/enums/booking-view.enum";
-import { buildBookingChips, CHIP_KEY, CLEAR_ALL_PATCH, patchForChip } from "@/lib/booking-chips.util";
+import { buildBookingChips, CHIP_KEY, CLEAR_ALL_PATCH, patchForChip } from "@/lib/bookings/booking-chips.util";
 import { enDictionary } from "@/locales/en/index.constant";
 import type { Dictionary } from "@/types/core/dictionary.type";
 

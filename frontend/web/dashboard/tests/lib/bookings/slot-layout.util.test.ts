@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { BookingStatus } from "@/enums/booking-status.enum";
-import { layoutDay } from "@/lib/slot-layout.util";
+import { layoutDay } from "@/lib/bookings/slot-layout.util";
 import type { Booking } from "@/types/bookings/booking.type";
 
 function booking(id: string, start: string, end: string | null): Booking {

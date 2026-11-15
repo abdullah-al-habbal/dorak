@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { BookingStatus } from "@/enums/booking-status.enum";
 import { ScheduleRange } from "@/enums/schedule-range.enum";
-import { scheduleFiltersFromParams, scheduleFiltersToParams, scheduleWindow } from "@/lib/schedule-filters.util";
+import { scheduleFiltersFromParams, scheduleFiltersToParams, scheduleWindow } from "@/lib/bookings/schedule-filters.util";
 
 describe("schedule filters", () => {
   it("defaults to the upcoming range and page 1", () => {

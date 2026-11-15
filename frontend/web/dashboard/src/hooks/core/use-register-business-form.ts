@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import type { UseFormReturn } from "react-hook-form";
 
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { registerBusinessBody } from "@/lib/register-business.util";
-import { registerErrorMessage } from "@/lib/register-error.util";
+import { registerBusinessBody } from "@/lib/account/register-business.util";
+import { registerErrorMessage } from "@/lib/account/register-error.util";
 import { registerBusinessFormSchema } from "@/schemas/register-business-form.zod";
 import { registerBusiness } from "@/services/api/mutation/register-business.mutation";
 import type { RegisterBusinessFormValues } from "@/types/core/register-business-form-values.type";

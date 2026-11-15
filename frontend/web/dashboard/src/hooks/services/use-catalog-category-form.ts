@@ -10,8 +10,8 @@ import { useDeleteCatalogCategory } from "@/hooks/services/use-delete-catalog-ca
 import { useDictionary } from "@/hooks/core/use-dictionary";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useSaveCatalogCategory } from "@/hooks/services/use-save-catalog-category";
-import { catalogCategoryToForm, emptyCatalogCategoryForm, formToCatalogCategoryPayload } from "@/lib/catalog-category-form.util";
-import { mapCatalogCategorySaveError } from "@/lib/catalog-category-form-error.util";
+import { catalogCategoryToForm, emptyCatalogCategoryForm, formToCatalogCategoryPayload } from "@/lib/services/catalog-category-form.util";
+import { mapCatalogCategorySaveError } from "@/lib/services/catalog-category-form-error.util";
 import { createCatalogCategorySchema } from "@/schemas/catalog-category-form.zod";
 import type { CatalogCategoryFormValues } from "@/schemas/catalog-category-form.zod";
 import type { AdminCatalogCategory } from "@/types/services/admin-catalog-category.type";

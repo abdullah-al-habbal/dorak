@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { createQueryClient } from "@/lib/query-client";
-import { applyTheme } from "@/lib/theme.util";
+import { applyTheme } from "@/lib/core/theme.util";
 import { useThemeStore } from "@/store/theme.store";
 import { ThemeMode } from "@/enums/theme-mode.enum";
 

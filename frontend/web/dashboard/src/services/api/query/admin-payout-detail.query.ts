@@ -1,5 +1,5 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
-import { resolvePageInfo } from "@/lib/resolve-page-info.util";
+import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
 import { adminPayoutSchema } from "@/schemas/admin-payout.zod";
 import { commissionEntryListSchema } from "@/schemas/commission.zod";
 import { apiRequest, apiRequestWithMeta } from "@/services/api/core/client";

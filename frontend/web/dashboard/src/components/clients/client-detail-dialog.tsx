@@ -13,7 +13,7 @@ import { useClientDetail } from "@/hooks/clients/use-client-detail";
 import { useConfirmUnbanClient } from "@/hooks/clients/use-confirm-unban-client";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { AdminClient } from "@/types/clients/admin-client.type";
 
 interface ClientDetailDialogProps {

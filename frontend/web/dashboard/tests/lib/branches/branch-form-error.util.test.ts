@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { mapBranchSaveError } from "@/lib/branch-form-error.util";
+import { mapBranchSaveError } from "@/lib/branches/branch-form-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 const messages = { generic: "generic", planLimit: "plan limit" };

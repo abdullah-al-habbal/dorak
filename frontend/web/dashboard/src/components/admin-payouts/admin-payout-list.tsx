@@ -9,8 +9,8 @@ import { DataTable } from "@/components/ui/table/data-table";
 import { PayoutAction } from "@/enums/payout-action.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
 import type { DataTableColumn } from "@/interfaces/ui/data-table-column.interface";
-import { formatPrice, localizedText } from "@/lib/booking-format.util";
-import { availablePayoutActions } from "@/lib/payout-actions.util";
+import { formatPrice, localizedText } from "@/lib/core/booking-format.util";
+import { availablePayoutActions } from "@/lib/earnings/payout-actions.util";
 import type { AdminPayout } from "@/types/earnings/admin-payout.type";
 
 interface AdminPayoutListProps {

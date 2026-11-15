@@ -14,7 +14,7 @@ import { useBrandOptions } from "@/hooks/brands/use-brand-options";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useClearServiceOverride, useSaveServiceOverride } from "@/hooks/services/use-service-override";
 import { useStylistServiceTerms } from "@/hooks/stylists/use-stylist-service-terms";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { Stylist } from "@/types/stylists/stylist.type";
 
 /** A brand owner's price and duration for a stylist's services, over the stylist's own defaults. */

@@ -1,6 +1,6 @@
 import { HttpStatus } from "@/enums/http-status.enum";
 import type { MappedFormError } from "@/interfaces/core/mapped-form-error.interface";
-import { mapApiFormError } from "@/lib/map-api-form-error.util";
+import { mapApiFormError } from "@/lib/core/map-api-form-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 interface BranchSaveMessages {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { clampPage } from "@/lib/pagination.util";
+import { clampPage } from "@/lib/core/pagination.util";
 
 describe("pagination util", () => {
   it("clamps untrusted pages into range", () => {

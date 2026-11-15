@@ -1,0 +1,67 @@
+{
+  "dirs": [
+    "lib"
+  ],
+  "default": "core",
+  "core": [
+    "^(api-field-errors|conflict-message|cookie|coordinate|create-query-keys|csv|delete-mutation|detail-query|duration|error-view|feedback-mutation|global-error-copy|initials|list-query|map-api-form-error|money|optimistic-toggle-mutation|pagination|resolve-page-info|save-mutation|slugify|theme|url-query|sidebar|booking-format|exchange-rate)\\."
+  ],
+  "rules": [
+    [
+      "job|application",
+      "jobs"
+    ],
+    [
+      "register|registration|password-reset|email",
+      "account"
+    ],
+    [
+      "barber|stylist",
+      "stylists"
+    ],
+    [
+      "booking|walk-in|reschedule|schedule|appointment|slot|calendar",
+      "bookings"
+    ],
+    [
+      "service|catalog",
+      "services"
+    ],
+    [
+      "chair|floor-plan",
+      "chairs"
+    ],
+    [
+      "opening-hours|hours-override|working-hours|shift|weekday|hours",
+      "hours"
+    ],
+    [
+      "earning|commission|payout",
+      "earnings"
+    ],
+    [
+      "client|review|rating",
+      "clients"
+    ],
+    [
+      "plan|subscription|feature-key",
+      "plans"
+    ],
+    [
+      "brand",
+      "brands"
+    ],
+    [
+      "branch|invitation",
+      "branches"
+    ],
+    [
+      "account|notification|password|email-change|display-name|language-preference|profile",
+      "account"
+    ],
+    [
+      "platform|currenc|language|payment-gateway|website-content|analytics|admin-user|exchange-rate|setting",
+      "platform"
+    ]
+  ]
+}

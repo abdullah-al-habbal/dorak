@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { serviceFiltersFromParams, serviceFiltersToParams } from "@/lib/service-filters.util";
+import { serviceFiltersFromParams, serviceFiltersToParams } from "@/lib/services/service-filters.util";
 
 describe("service filters", () => {
   it("reads, trims and bounds the search, and reads the brand", () => {

@@ -1,7 +1,7 @@
 import { DASHBOARD_API } from "@/config/routes.constant";
 import { BookingView } from "@/enums/booking-view.enum";
-import { windowFor } from "@/lib/booking-filters.util";
-import { resolvePageInfo } from "@/lib/resolve-page-info.util";
+import { windowFor } from "@/lib/bookings/booking-filters.util";
+import { resolvePageInfo } from "@/lib/core/resolve-page-info.util";
 import { bookingListSchema } from "@/schemas/booking.zod";
 import { apiRequestWithMeta } from "@/services/api/core/client";
 import type { Booking } from "@/types/bookings/booking.type";

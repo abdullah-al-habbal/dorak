@@ -4,7 +4,7 @@ import type { JSX } from "react";
 
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOpeningHours } from "@/hooks/hours/use-opening-hours";
-import { weekdayLabel } from "@/lib/weekday-label.util";
+import { weekdayLabel } from "@/lib/hours/weekday-label.util";
 
 /** The branch's opening hours, read-only. */
 export function BranchOversightHours({ branchId }: { branchId: string }): JSX.Element {

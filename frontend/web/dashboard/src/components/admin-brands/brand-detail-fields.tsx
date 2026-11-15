@@ -5,7 +5,7 @@ import type { JSX, ReactNode } from "react";
 import { BrandStatusBadge } from "@/components/admin-brands/brand-status-badge";
 import { VenueUniverse } from "@/enums/venue-universe.enum";
 import { useI18n } from "@/hooks/core/use-i18n";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 
 function Field({ label, children }: { label: string; children: ReactNode }): JSX.Element {

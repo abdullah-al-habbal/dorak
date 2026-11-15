@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { chartBuckets, dailyBuckets } from "@/lib/earnings-series.util";
+import { chartBuckets, dailyBuckets } from "@/lib/earnings/earnings-series.util";
 
 const point = (date: string, gross: number, bookings: number, currency = "USD") => ({ date, currency_code: currency, gross_minor: gross, completed_bookings_count: bookings });
 

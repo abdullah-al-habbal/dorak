@@ -1,7 +1,7 @@
 "use client";
 
 import { useUrlFilters } from "@/hooks/core/use-url-filters";
-import { payoutFiltersFromParams, payoutFiltersToParams } from "@/lib/payout-filters.util";
+import { payoutFiltersFromParams, payoutFiltersToParams } from "@/lib/earnings/payout-filters.util";
 import type { PayoutFilters } from "@/types/earnings/payout-filters.type";
 
 /** The URL is the source of truth for the status and page. */

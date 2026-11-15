@@ -11,7 +11,7 @@ import { RESEND_COOLDOWN_SECONDS } from "@/config/register-business.constant";
 import { AuthActor } from "@/enums/auth-actor.enum";
 import { ApiErrorCode } from "@/enums/api-error-code.enum";
 import { useDictionary } from "@/hooks/core/use-dictionary";
-import { registerErrorMessage } from "@/lib/register-error.util";
+import { registerErrorMessage } from "@/lib/account/register-error.util";
 import { verifyCodeFormSchema } from "@/schemas/register-business-form.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import { resendOwnerCode, verifyOwnerCode } from "@/services/api/mutation/register-business.mutation";

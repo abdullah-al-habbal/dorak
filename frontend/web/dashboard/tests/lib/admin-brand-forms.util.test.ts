@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { adminUserToForm, emptyAdminUserForm, formToAdminUserPayload, mapAdminUserSaveError } from "@/lib/admin-user-form.util";
-import { EMPTY_BRAND_CREATE_FORM, createFormToBrandPayload, mapBrandCreateError } from "@/lib/brand-create-form.util";
-import { brandToEditForm, editFormToBrandPayload, mapBrandEditError } from "@/lib/brand-edit-form.util";
+import { adminUserToForm, emptyAdminUserForm, formToAdminUserPayload, mapAdminUserSaveError } from "@/lib/platform/admin-user-form.util";
+import { EMPTY_BRAND_CREATE_FORM, createFormToBrandPayload, mapBrandCreateError } from "@/lib/brands/brand-create-form.util";
+import { brandToEditForm, editFormToBrandPayload, mapBrandEditError } from "@/lib/brands/brand-edit-form.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { AdminBrand } from "@/types/brands/admin-brand.type";
 import type { AdminUser } from "@/types/platform/admin-user.type";

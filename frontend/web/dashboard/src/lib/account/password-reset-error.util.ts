@@ -1,5 +1,5 @@
 import { ApiErrorCode } from "@/enums/api-error-code.enum";
-import { hasApiFieldErrors } from "@/lib/api-field-errors.util";
+import { hasApiFieldErrors } from "@/lib/core/api-field-errors.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 
 /** The reset field the backend names when a link is unknown, used, expired or no longer eligible. */

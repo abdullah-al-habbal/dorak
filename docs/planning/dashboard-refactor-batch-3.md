@@ -71,7 +71,7 @@ invalidating one or more key roots.
 - Hook signatures and the fields callers read stay unchanged.
 
 Outcome: `useFeedbackMutation({ mutationFn, invalidate, successMessage, errorMessage? })`
-(`hooks/core/use-feedback-mutation.ts`, callbacks in `lib/feedback-mutation.util.ts`) now backs
+(`hooks/core/use-feedback-mutation.ts`, callbacks in `lib/core/feedback-mutation.util.ts`) now backs
 eight of the ten hooks. The booking status 409/400 copy moved to `bookingStatusErrorMessage`.
 Create service category (no toast, invalidates on success only) and save opening hours
 (`setQueryData`, no invalidation) keep `useMutation`, because the primitive would change their
@@ -81,7 +81,7 @@ behaviour.
 
 Eleven list hooks repeated `useQuery({ queryKey: xKeys.list(...), queryFn, placeholderData:
 keepPreviousData })`. `useListQuery(queryKey, queryFn, enabled?)` (`hooks/core/use-list-query.ts`,
-options in `lib/list-query.util.ts`) now backs branches, stylists, chairs, services, plans,
+options in `lib/core/list-query.util.ts`) now backs branches, stylists, chairs, services, plans,
 reviews, payouts, admin payouts, admin subscriptions, schedule appointments and bookings.
 Reads that must not show the previous record (booking history, opening hours), that have their
 own cache rule (branch detail, `gcTime: 0`) or that are already a bare `useQuery({ queryKey,
@@ -96,7 +96,7 @@ queryFn })` (earnings, analytics, platform settings, schedule hours, subscriptio
 - **3b.** `components/services/service-category-field.tsx` and
   `components/working-hours/working-hours-editor.tsx` both walked `mapApiFieldErrors` output by
   hand for one message. Both now call `formErrorMessage(error, generic)`
-  (`lib/map-api-form-error.util.ts`), built on `mapApiFormError`, with the same message shown.
+  (`lib/core/map-api-form-error.util.ts`), built on `mapApiFormError`, with the same message shown.
 - **3c.** `usePlanOptions` moves to `useReferenceQuery`. This is the one intended behaviour
   change in Batch 3: the active-plan options are cached for `STALE_TIME.Reference` instead of
   refetched every time the assign dialog opens. Approved by the user. Saving or deleting a plan
@@ -130,7 +130,7 @@ chose the `useUrlState` base named above, which this doc already allowed as the 
 
 Design, three layers:
 
-- `lib/url-query.util.ts`: `toReplaceHref(pathname, query)` (bare pathname for an empty query)
+- `lib/core/url-query.util.ts`: `toReplaceHref(pathname, query)` (bare pathname for an empty query)
   and `applyFilterPatch(filters, patch)` (any non-`page` key resets to page 1).
 - `hooks/core/use-replace-query.ts`: `useReplaceQuery()` returns a stable writer that calls
   `router.replace(href, { scroll: false })`. It is the only place a query string is written.

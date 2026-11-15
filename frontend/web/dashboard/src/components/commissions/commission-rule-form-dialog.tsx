@@ -21,9 +21,9 @@ import { useDeleteCommissionRule, useSaveCommissionRule } from "@/hooks/earnings
 import { useCurrencies } from "@/hooks/platform/use-currencies";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
-import { bpsToPercent, percentToBps } from "@/lib/commission.util";
-import { minorUnitsToInput, parseMinorUnits } from "@/lib/money.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { bpsToPercent, percentToBps } from "@/lib/earnings/commission.util";
+import { minorUnitsToInput, parseMinorUnits } from "@/lib/core/money.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { CommissionRulePayload } from "@/services/api/mutation/commission.mutation";
 import type { CommissionRule } from "@/types/earnings/commission.type";

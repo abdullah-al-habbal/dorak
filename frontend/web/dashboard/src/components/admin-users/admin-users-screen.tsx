@@ -20,7 +20,7 @@ import { useConfirmAdminUserActive } from "@/hooks/platform/use-confirm-admin-us
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
 import { useResendAdminInvite } from "@/hooks/platform/use-resend-admin-invite";
-import { hasAdminUserFilters } from "@/lib/admin-user-filters.util";
+import { hasAdminUserFilters } from "@/lib/platform/admin-user-filters.util";
 import type { AdminUser } from "@/types/platform/admin-user.type";
 
 /** Managing admin accounts is platform-admin only; the proxy and the backend refuse everyone else too. */

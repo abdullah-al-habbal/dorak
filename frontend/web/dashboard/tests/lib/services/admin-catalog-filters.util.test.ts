@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { ADMIN_CATALOG_MAX_SEARCH } from "@/config/admin-catalog.constant";
 import { CatalogCategoryStatus } from "@/enums/catalog-category-status.enum";
-import { adminCatalogFiltersFromParams, adminCatalogFiltersToParams, hasAdminCatalogFilters } from "@/lib/admin-catalog-filters.util";
+import { adminCatalogFiltersFromParams, adminCatalogFiltersToParams, hasAdminCatalogFilters } from "@/lib/services/admin-catalog-filters.util";
 
 describe("admin catalog filters", () => {
   it("lists every status by default and ignores an unknown one", () => {

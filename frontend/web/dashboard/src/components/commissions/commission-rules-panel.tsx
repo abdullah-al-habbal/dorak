@@ -17,8 +17,8 @@ import { useBrandOptions } from "@/hooks/brands/use-brand-options";
 import { useCommissionRules } from "@/hooks/earnings/use-commissions";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
-import { bpsToPercent, money } from "@/lib/commission.util";
+import { localizedText } from "@/lib/core/booking-format.util";
+import { bpsToPercent, money } from "@/lib/earnings/commission.util";
 import type { CommissionRule } from "@/types/earnings/commission.type";
 
 const FIRST_PAGE = 1;

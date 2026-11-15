@@ -1,7 +1,7 @@
 "use client";
 
 import { useUrlFilters } from "@/hooks/core/use-url-filters";
-import { scheduleFiltersFromParams, scheduleFiltersToParams } from "@/lib/schedule-filters.util";
+import { scheduleFiltersFromParams, scheduleFiltersToParams } from "@/lib/bookings/schedule-filters.util";
 import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";
 
 /** The URL is the source of truth for the range, status and page. */

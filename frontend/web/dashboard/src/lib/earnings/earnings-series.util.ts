@@ -1,6 +1,6 @@
 import { EARNINGS_DAYS_PER_WEEK, EARNINGS_MAX_DAILY_BARS } from "@/config/earnings.constant";
-import { addDays, parseDateKey, toDateKey } from "@/lib/booking-date.util";
-import { daysInRange } from "@/lib/earnings-range.util";
+import { addDays, parseDateKey, toDateKey } from "@/lib/bookings/booking-date.util";
+import { daysInRange } from "@/lib/earnings/earnings-range.util";
 import type { EarningsBucket } from "@/interfaces/earnings/earnings-bucket.interface";
 import type { EarningsSeriesPoint } from "@/types/earnings/earnings-series-point.type";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";

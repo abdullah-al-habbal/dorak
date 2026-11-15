@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { SettingGroup } from "@/enums/setting-group.enum";
-import { changedSettings, groupSettings, settingIssues, settingsToForm } from "@/lib/platform-settings.util";
-import { mapSettingsSaveError } from "@/lib/platform-settings-error.util";
+import { changedSettings, groupSettings, settingIssues, settingsToForm } from "@/lib/platform/platform-settings.util";
+import { mapSettingsSaveError } from "@/lib/platform/platform-settings-error.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";
 

@@ -11,7 +11,7 @@ import { OverlayKind } from "@/enums/overlay-kind.enum";
 import { useBranchLifecycle } from "@/hooks/branches/use-branch-lifecycle";
 import { useI18n } from "@/hooks/core/use-i18n";
 import { useOverlay } from "@/hooks/core/use-overlay";
-import { localizedText } from "@/lib/booking-format.util";
+import { localizedText } from "@/lib/core/booking-format.util";
 import type { Branch } from "@/types/branches/branch.type";
 
 interface BranchLifecycleActionsProps {
