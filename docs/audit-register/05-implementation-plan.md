@@ -74,6 +74,9 @@ slices above and are planned in [07](07-missing-features.md). **Out of scope:** 
 ## S1 extension (F-05e to F-05i, decided and implemented 2026-11-15, gates passed, committed locally with S1)
 Decisions D-05 to D-07 ([04](04-decisions-and-open-questions.md) section G); implementation and evidence in [03](03-f05-session-lifecycle.md) section 8. Gates run 2026-11-15: full Pest 2470 passed, Vitest 609 passed, Playwright 441 passed ([03](03-f05-session-lifecycle.md) section 8.6). S10 done (see below). S12 done (see below). S2 done (see below). Next slice: S11.
 
+## S11 (F-04) done 2026-11-15
+One `ActiveLanguageRule` (`modules/Language/Rules`, EN and AR message `language_not_available`) added to `preferred_language` in the shared `UpdateSettingsRequest` (client, barber, branch and dashboard settings, so mobile and dashboard get the same 422). A language row switched off is rejected for new input; a code with no row stays governed by the `Locale` enum; stored preferences, reads and unrelated settings updates are unchanged (users on an inactive language keep it until they change it). No public language list exists (only the admin list, which must show inactive rows), so there is nothing to hide server-side. Tests: `InactiveLanguagePreferenceTest`. Gates: full Pest 2605 passed, pint clean, conventions OK. No dashboard or mobile code changed.
+
 ## S12 (F-09) done 2026-11-15
 Named limiters `dashboard-login` and `dashboard-owner-brand` (`DashboardLoginConstants`, registered in `DashboardServiceProvider`), each counted per IP under its own cache key. `/login` uses `dashboard.dashboard.login_attempts_per_minute`; `/owner/brand` uses the new `owner_brand_attempts_per_minute` (`DASHBOARD_OWNER_BRAND_ATTEMPTS_PER_MINUTE`, falls back to the login value, so the E2E `.env` override of `DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE` keeps covering both). Tests in `DashboardLoginApiTest`. Gates: see commit.
 
