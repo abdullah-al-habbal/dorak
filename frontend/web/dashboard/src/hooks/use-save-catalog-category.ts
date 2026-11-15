@@ -6,8 +6,8 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
 import type { CatalogCategoryPayload } from "@/interfaces/catalog-category-payload.interface";
 import type { SaveVariables } from "@/interfaces/save-variables.interface";
-import { adminCatalogKeys } from "@/lib/admin-catalog-keys";
-import { serviceKeys } from "@/lib/service-keys";
+import { adminCatalogKeys } from "@/lib/query-keys/services/admin-catalog-keys";
+import { serviceKeys } from "@/lib/query-keys/services/service-keys";
 import { createCatalogCategory, updateCatalogCategory } from "@/services/api/mutation/save-catalog-category.mutation";
 import type { CatalogSubcategory } from "@/types/admin-catalog-category.type";
 

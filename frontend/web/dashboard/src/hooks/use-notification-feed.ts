@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { NOTIFICATION_POLL_MS } from "@/config/notification.constant";
-import { notificationKeys } from "@/lib/notification-keys";
+import { notificationKeys } from "@/lib/query-keys/account/notification-keys";
 import { fetchNotificationFeed } from "@/services/api/query/notification-feed.query";
 import type { NotificationFeed } from "@/types/notification-feed.type";
 

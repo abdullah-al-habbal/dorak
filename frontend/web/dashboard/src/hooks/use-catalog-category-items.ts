@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { adminCatalogKeys } from "@/lib/admin-catalog-keys";
+import { adminCatalogKeys } from "@/lib/query-keys/services/admin-catalog-keys";
 import { fetchCatalogCategoryItems } from "@/services/api/query/catalog-category-items.query";
 import type { CatalogItemsPreview } from "@/types/catalog-items-preview.type";
 

@@ -4,7 +4,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { languageAdminKeys } from "@/lib/language-admin-keys";
+import { languageAdminKeys } from "@/lib/query-keys/platform/language-admin-keys";
 import { setLanguageActive } from "@/services/api/mutation/language-admin.mutation";
 import type { AdminLanguage } from "@/types/admin-language.type";
 

@@ -8,7 +8,7 @@ import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { useListQuery } from "@/hooks/use-list-query";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
 import type { SaveVariables } from "@/interfaces/save-variables.interface";
-import { websiteContentKeys } from "@/lib/website-content-keys";
+import { websiteContentKeys } from "@/lib/query-keys/platform/website-content-keys";
 import {
   createTestimonial,
   deleteTestimonial,

@@ -6,8 +6,8 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
 import type { ChairPayload } from "@/interfaces/chair-payload.interface";
 import type { SaveVariables } from "@/interfaces/save-variables.interface";
-import { bookingKeys } from "@/lib/booking-keys";
-import { chairKeys } from "@/lib/chair-keys";
+import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
+import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
 import { createChair, updateChair } from "@/services/api/mutation/save-chair.mutation";
 import type { Chair } from "@/types/chair.type";
 

@@ -4,7 +4,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { ownerBrandKeys } from "@/lib/owner-brand-keys";
+import { ownerBrandKeys } from "@/lib/query-keys/brands/owner-brand-keys";
 import { resubmitBrand } from "@/services/api/mutation/brand-lifecycle.mutation";
 import type { AdminBrand } from "@/types/admin-brand.type";
 

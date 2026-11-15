@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { STALE_TIME } from "@/config/stale-time.constant";
 import { useReferenceQuery } from "@/hooks/use-reference-query";
-import { bookingKeys } from "@/lib/booking-keys";
+import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { fetchChairs } from "@/services/api/query/chairs.query";
 import type { ChairOption } from "@/types/chair-option.type";
 

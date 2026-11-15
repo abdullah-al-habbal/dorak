@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 type Key = readonly unknown[];
 type Factory = Record<string, Key | ((...args: string[]) => Key)>;
 
-const modules = import.meta.glob<Record<string, unknown>>("/src/lib/*-keys.ts", { eager: true });
+const modules = import.meta.glob<Record<string, unknown>>("/src/lib/query-keys/**/*-keys.ts", { eager: true });
 
 function factories(): { file: string; name: string; keys: Factory }[] {
   const found: { file: string; name: string; keys: Factory }[] = [];

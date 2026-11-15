@@ -3,7 +3,7 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useDetailQuery } from "@/hooks/use-detail-query";
-import { branchKeys } from "@/lib/branch-keys";
+import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { fetchBranchDetail } from "@/services/api/query/branch-detail.query";
 import type { BranchDetail } from "@/types/branch-detail.type";
 

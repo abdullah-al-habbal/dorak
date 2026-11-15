@@ -4,8 +4,8 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { branchOversightKeys } from "@/lib/branch-oversight-keys";
-import { jobKeys } from "@/lib/job-keys";
+import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
+import { jobKeys } from "@/lib/query-keys/jobs/job-keys";
 import { updateApplicationStatus } from "@/services/api/mutation/job-board.mutation";
 import type { JobApplication } from "@/types/job-application.type";
 

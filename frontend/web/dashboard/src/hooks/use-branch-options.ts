@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { STALE_TIME } from "@/config/stale-time.constant";
 import { useReferenceQuery } from "@/hooks/use-reference-query";
-import { openingHoursKeys } from "@/lib/opening-hours-keys";
+import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";
 import { fetchBranchOptions } from "@/services/api/query/branch-options.query";
 import type { BranchOption } from "@/types/branch-option.type";
 

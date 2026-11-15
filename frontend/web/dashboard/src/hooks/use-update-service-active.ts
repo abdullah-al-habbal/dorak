@@ -7,7 +7,7 @@ import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutat
 import type { OptimisticToggleContext } from "@/interfaces/optimistic-toggle-context.interface";
 import { activeTogglePayload } from "@/lib/service-form.util";
 import { withServiceActive } from "@/lib/service-cache.util";
-import { serviceKeys } from "@/lib/service-keys";
+import { serviceKeys } from "@/lib/query-keys/services/service-keys";
 import { updateService } from "@/services/api/mutation/save-service.mutation";
 import type { Service } from "@/types/service.type";
 

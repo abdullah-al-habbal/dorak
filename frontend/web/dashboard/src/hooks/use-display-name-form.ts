@@ -6,7 +6,7 @@ import type { UseFormReturn } from "react-hook-form";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { accountKeys } from "@/lib/account-keys";
+import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { mapApiFormError } from "@/lib/map-api-form-error.util";
 import { displayNameFormSchema } from "@/schemas/display-name-form.zod";
 import { updateDisplayName } from "@/services/api/mutation/account.mutation";

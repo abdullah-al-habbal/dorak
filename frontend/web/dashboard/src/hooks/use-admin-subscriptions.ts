@@ -3,7 +3,7 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useListQuery } from "@/hooks/use-list-query";
-import { adminSubscriptionKeys } from "@/lib/admin-subscription-keys";
+import { adminSubscriptionKeys } from "@/lib/query-keys/plans/admin-subscription-keys";
 import { fetchAdminSubscriptionPage } from "@/services/api/query/admin-subscription-page.query";
 import type { AdminSubscriptionFilters } from "@/types/admin-subscription-filters.type";
 import type { AdminSubscriptionPage } from "@/types/admin-subscription-page.type";

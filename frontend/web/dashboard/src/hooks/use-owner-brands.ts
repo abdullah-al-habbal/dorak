@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { ownerBrandKeys } from "@/lib/owner-brand-keys";
+import { ownerBrandKeys } from "@/lib/query-keys/brands/owner-brand-keys";
 import { fetchOwnerBrands } from "@/services/api/query/owner-brands.query";
 import type { AdminBrand } from "@/types/admin-brand.type";
 

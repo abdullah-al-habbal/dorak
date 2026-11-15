@@ -4,7 +4,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDeleteMutation } from "@/hooks/use-delete-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { currencyAdminKeys } from "@/lib/currency-admin-keys";
+import { currencyAdminKeys } from "@/lib/query-keys/platform/currency-admin-keys";
 import { deleteExchangeRate } from "@/services/api/mutation/currency-admin.mutation";
 
 export function useDeleteExchangeRate(): UseMutationResult<void, Error, string> {

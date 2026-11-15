@@ -3,7 +3,7 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useListQuery } from "@/hooks/use-list-query";
-import { stylistKeys } from "@/lib/stylist-keys";
+import { stylistKeys } from "@/lib/query-keys/stylists/stylist-keys";
 import { fetchStylistPage } from "@/services/api/query/stylists.query";
 import type { StylistFilters } from "@/types/stylist-filters.type";
 import type { StylistPage } from "@/types/stylist-page.type";

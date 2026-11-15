@@ -4,7 +4,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { adminSubscriptionKeys } from "@/lib/admin-subscription-keys";
+import { adminSubscriptionKeys } from "@/lib/query-keys/plans/admin-subscription-keys";
 import { conflictMessage } from "@/lib/conflict-message.util";
 import { updateSubscriptionStatus } from "@/services/api/mutation/update-subscription-status.mutation";
 import type { UpdateSubscriptionStatusVariables } from "@/services/api/mutation/update-subscription-status.mutation";

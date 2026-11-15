@@ -2,7 +2,7 @@
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutation";
-import { accountKeys } from "@/lib/account-keys";
+import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { withNotificationPreference } from "@/lib/notification-preferences-cache.util";
 import { updateNotificationPreferences } from "@/services/api/mutation/account.mutation";
 import type { NotificationPreferenceKey } from "@/types/notification-preference-key.type";

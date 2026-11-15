@@ -5,7 +5,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import type { ReviewDisputePayload } from "@/interfaces/review-dispute-payload.interface";
-import { reviewKeys } from "@/lib/review-keys";
+import { reviewKeys } from "@/lib/query-keys/clients/review-keys";
 import { disputeReview } from "@/services/api/mutation/dispute-review.mutation";
 import type { Review } from "@/types/review.type";
 

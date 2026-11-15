@@ -4,7 +4,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { adminUserKeys } from "@/lib/admin-user-keys";
+import { adminUserKeys } from "@/lib/query-keys/platform/admin-user-keys";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import { deactivateAdminUser, reactivateAdminUser } from "@/services/api/mutation/admin-user.mutation";
 import type { AdminUser } from "@/types/admin-user.type";

@@ -4,7 +4,7 @@ import type { Locale } from "@/enums/locale.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import { useLocaleSwitch } from "@/hooks/use-locale-switch";
-import { accountKeys } from "@/lib/account-keys";
+import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { updatePreferredLanguage } from "@/services/api/mutation/account.mutation";
 
 interface LanguagePreference {

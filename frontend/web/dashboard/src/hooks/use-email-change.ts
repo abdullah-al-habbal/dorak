@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { accountKeys } from "@/lib/account-keys";
+import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { requestEmailChange, verifyEmailChange } from "@/services/api/mutation/account.mutation";
 import { useAuthStore } from "@/store/auth.store";
 import type { AccountProfile } from "@/types/account-profile.type";

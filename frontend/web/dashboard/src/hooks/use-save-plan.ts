@@ -6,8 +6,8 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
 import type { PlanPayload } from "@/interfaces/plan-payload.interface";
 import type { SaveVariables } from "@/interfaces/save-variables.interface";
-import { adminSubscriptionKeys } from "@/lib/admin-subscription-keys";
-import { planKeys } from "@/lib/plan-keys";
+import { adminSubscriptionKeys } from "@/lib/query-keys/plans/admin-subscription-keys";
+import { planKeys } from "@/lib/query-keys/plans/plan-keys";
 import { createPlan, updatePlan } from "@/services/api/mutation/save-plan.mutation";
 import type { Plan } from "@/types/plan.type";
 

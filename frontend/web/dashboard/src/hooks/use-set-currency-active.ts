@@ -4,8 +4,8 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { currencyAdminKeys } from "@/lib/currency-admin-keys";
-import { serviceKeys } from "@/lib/service-keys";
+import { currencyAdminKeys } from "@/lib/query-keys/platform/currency-admin-keys";
+import { serviceKeys } from "@/lib/query-keys/services/service-keys";
 import { setCurrencyActive } from "@/services/api/mutation/currency-admin.mutation";
 import type { AdminCurrency } from "@/types/currency-admin.type";
 

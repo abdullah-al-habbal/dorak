@@ -5,9 +5,9 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import type { BrandUpdatePayload } from "@/interfaces/brand-update-payload.interface";
-import { adminBrandKeys } from "@/lib/admin-brand-keys";
-import { branchKeys } from "@/lib/branch-keys";
-import { ownerBrandKeys } from "@/lib/owner-brand-keys";
+import { adminBrandKeys } from "@/lib/query-keys/brands/admin-brand-keys";
+import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
+import { ownerBrandKeys } from "@/lib/query-keys/brands/owner-brand-keys";
 import { updateBrand } from "@/services/api/mutation/brand-lifecycle.mutation";
 import type { AdminBrand } from "@/types/admin-brand.type";
 

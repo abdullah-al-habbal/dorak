@@ -5,7 +5,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { STALE_TIME } from "@/config/stale-time.constant";
 import type { BrandStatus } from "@/enums/brand-status.enum";
 import { useReferenceQuery } from "@/hooks/use-reference-query";
-import { branchKeys } from "@/lib/branch-keys";
+import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { fetchBrandOptions } from "@/services/api/query/brand-options.query";
 import type { BrandOption } from "@/types/brand-option.type";
 

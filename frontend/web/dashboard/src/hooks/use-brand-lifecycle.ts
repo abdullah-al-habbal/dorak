@@ -6,9 +6,9 @@ import { BrandLifecycleAction } from "@/enums/brand-lifecycle-action.enum";
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
 import type { BrandLifecyclePayload } from "@/interfaces/brand-lifecycle-payload.interface";
-import { adminBrandKeys } from "@/lib/admin-brand-keys";
-import { brandHistoryKeys } from "@/lib/brand-history-keys";
-import { branchKeys } from "@/lib/branch-keys";
+import { adminBrandKeys } from "@/lib/query-keys/brands/admin-brand-keys";
+import { brandHistoryKeys } from "@/lib/query-keys/brands/brand-history-keys";
+import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
 import { transitionBrand } from "@/services/api/mutation/brand-lifecycle.mutation";
 import type { AdminBrand } from "@/types/admin-brand.type";
 

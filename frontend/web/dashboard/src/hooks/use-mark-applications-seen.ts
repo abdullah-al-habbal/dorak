@@ -3,8 +3,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { branchOversightKeys } from "@/lib/branch-oversight-keys";
-import { jobKeys } from "@/lib/job-keys";
+import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
+import { jobKeys } from "@/lib/query-keys/jobs/job-keys";
 import { markApplicationsSeen } from "@/services/api/mutation/job-board.mutation";
 import type { MarkApplicationsSeenVariables } from "@/services/api/mutation/job-board.mutation";
 

@@ -6,8 +6,8 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
 import type { BranchPayload } from "@/interfaces/branch-payload.interface";
 import type { SaveVariables } from "@/interfaces/save-variables.interface";
-import { branchKeys } from "@/lib/branch-keys";
-import { openingHoursKeys } from "@/lib/opening-hours-keys";
+import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
+import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";
 import { createBranch, updateBranch } from "@/services/api/mutation/save-branch.mutation";
 import type { BranchDetail } from "@/types/branch-detail.type";
 

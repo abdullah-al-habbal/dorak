@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useDictionary } from "@/hooks/use-dictionary";
 import type { OpeningHoursDay } from "@/interfaces/opening-hours-day.interface";
 import type { OpeningHoursPayload } from "@/interfaces/opening-hours-payload.interface";
-import { openingHoursKeys } from "@/lib/opening-hours-keys";
+import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";
 import { saveOpeningHours } from "@/services/api/mutation/save-opening-hours.mutation";
 
 export function useSaveOpeningHours(branchId: string): UseMutationResult<OpeningHoursDay[], Error, OpeningHoursPayload> {

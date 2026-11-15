@@ -4,8 +4,8 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { branchOversightKeys } from "@/lib/branch-oversight-keys";
-import { invitationKeys } from "@/lib/invitation-keys";
+import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
+import { invitationKeys } from "@/lib/query-keys/branches/invitation-keys";
 import { actOnInvitation } from "@/services/api/mutation/invitation.mutation";
 import type { InvitationAction } from "@/services/api/mutation/invitation.mutation";
 import type { BranchInvitation } from "@/types/branch-invitation.type";

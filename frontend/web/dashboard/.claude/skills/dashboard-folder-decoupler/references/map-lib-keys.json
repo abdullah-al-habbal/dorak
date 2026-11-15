@@ -1,0 +1,18 @@
+{
+  "dir": "lib", "match": "-keys.ts", "target": "lib/query-keys",
+  "domains": {
+    "bookings": ["booking-keys", "schedule-keys"],
+    "branches": ["branch-keys", "branch-oversight-keys", "invitation-keys"],
+    "stylists": ["stylist-keys", "stylist-pricing-keys", "barber-approval-keys"],
+    "services": ["service-keys", "catalog-admin-keys", "admin-catalog-keys"],
+    "chairs": ["chair-keys", "floor-plan-keys"],
+    "hours": ["opening-hours-keys", "hours-override-keys"],
+    "earnings": ["earnings-keys", "commission-keys", "payout-keys", "admin-payout-keys"],
+    "clients": ["client-keys", "review-keys", "review-moderation-keys"],
+    "plans": ["plan-keys", "subscription-keys", "admin-subscription-keys"],
+    "brands": ["admin-brand-keys", "owner-brand-keys", "brand-history-keys"],
+    "account": ["account-keys", "notification-keys"],
+    "platform": ["platform-settings-keys", "currency-admin-keys", "language-admin-keys", "payment-gateway-keys", "website-content-keys", "analytics-keys", "admin-user-keys"],
+    "jobs": ["job-keys"]
+  }
+}

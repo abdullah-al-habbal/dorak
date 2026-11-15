@@ -4,7 +4,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDeleteMutation } from "@/hooks/use-delete-mutation";
 import { useDictionary } from "@/hooks/use-dictionary";
-import { planKeys } from "@/lib/plan-keys";
+import { planKeys } from "@/lib/query-keys/plans/plan-keys";
 import { deletePlan } from "@/services/api/mutation/delete-plan.mutation";
 
 export function useDeletePlan(): UseMutationResult<void, Error, string> {

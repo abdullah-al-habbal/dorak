@@ -4,7 +4,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/use-feedback-mutation";
-import { bookingKeys } from "@/lib/booking-keys";
+import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
 import { bookingStatusErrorMessage } from "@/lib/booking-status-error.util";
 import { updateBookingStatus } from "@/services/api/mutation/update-booking-status.mutation";
 import type { Booking } from "@/types/booking.type";

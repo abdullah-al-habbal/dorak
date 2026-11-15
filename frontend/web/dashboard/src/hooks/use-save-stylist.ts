@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
 import type { StylistPayload } from "@/interfaces/stylist-payload.interface";
 import type { SaveVariables } from "@/interfaces/save-variables.interface";
-import { stylistKeys } from "@/lib/stylist-keys";
+import { stylistKeys } from "@/lib/query-keys/stylists/stylist-keys";
 import { createStylist, updateStylist } from "@/services/api/mutation/save-stylist.mutation";
 import type { Stylist } from "@/types/stylist.type";
 

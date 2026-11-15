@@ -3,7 +3,7 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useListQuery } from "@/hooks/use-list-query";
-import { invitationKeys } from "@/lib/invitation-keys";
+import { invitationKeys } from "@/lib/query-keys/branches/invitation-keys";
 import { fetchInvitationPage } from "@/services/api/query/invitation-page.query";
 import type { InvitationPage } from "@/types/invitation-page.type";
 

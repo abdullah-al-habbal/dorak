@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { STALE_TIME } from "@/config/stale-time.constant";
 import { useReferenceQuery } from "@/hooks/use-reference-query";
-import { serviceKeys } from "@/lib/service-keys";
+import { serviceKeys } from "@/lib/query-keys/services/service-keys";
 import { fetchCurrencies } from "@/services/api/query/currencies.query";
 import type { Currency } from "@/types/currency.type";
 

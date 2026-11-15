@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { clientKeys } from "@/lib/client-keys";
+import { clientKeys } from "@/lib/query-keys/clients/client-keys";
 import { fetchClient } from "@/services/api/query/client.query";
 import type { AdminClient } from "@/types/admin-client.type";
 

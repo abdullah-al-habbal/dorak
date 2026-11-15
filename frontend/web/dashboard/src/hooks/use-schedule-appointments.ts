@@ -3,7 +3,7 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { useListQuery } from "@/hooks/use-list-query";
-import { scheduleKeys } from "@/lib/schedule-keys";
+import { scheduleKeys } from "@/lib/query-keys/bookings/schedule-keys";
 import { fetchScheduleAppointments } from "@/services/api/query/schedule-appointments.query";
 import type { BookingPage } from "@/types/booking-page.type";
 import type { ScheduleFilters } from "@/types/schedule-filters.type";

@@ -1,22 +1,22 @@
 import { describe, expect, it } from "vitest";
 
-import { adminPayoutKeys } from "@/lib/admin-payout-keys";
-import { adminSubscriptionKeys } from "@/lib/admin-subscription-keys";
-import { analyticsKeys } from "@/lib/analytics-keys";
-import { bookingKeys } from "@/lib/booking-keys";
-import { branchKeys } from "@/lib/branch-keys";
-import { chairKeys } from "@/lib/chair-keys";
+import { adminPayoutKeys } from "@/lib/query-keys/earnings/admin-payout-keys";
+import { adminSubscriptionKeys } from "@/lib/query-keys/plans/admin-subscription-keys";
+import { analyticsKeys } from "@/lib/query-keys/platform/analytics-keys";
+import { bookingKeys } from "@/lib/query-keys/bookings/booking-keys";
+import { branchKeys } from "@/lib/query-keys/branches/branch-keys";
+import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
 import { createQueryKeys, queryKey } from "@/lib/create-query-keys.util";
-import { earningsKeys } from "@/lib/earnings-keys";
-import { openingHoursKeys } from "@/lib/opening-hours-keys";
-import { payoutKeys } from "@/lib/payout-keys";
-import { planKeys } from "@/lib/plan-keys";
-import { platformSettingsKeys } from "@/lib/platform-settings-keys";
-import { reviewKeys } from "@/lib/review-keys";
-import { scheduleKeys } from "@/lib/schedule-keys";
-import { serviceKeys } from "@/lib/service-keys";
-import { stylistKeys } from "@/lib/stylist-keys";
-import { subscriptionKeys } from "@/lib/subscription-keys";
+import { earningsKeys } from "@/lib/query-keys/earnings/earnings-keys";
+import { openingHoursKeys } from "@/lib/query-keys/hours/opening-hours-keys";
+import { payoutKeys } from "@/lib/query-keys/earnings/payout-keys";
+import { planKeys } from "@/lib/query-keys/plans/plan-keys";
+import { platformSettingsKeys } from "@/lib/query-keys/platform/platform-settings-keys";
+import { reviewKeys } from "@/lib/query-keys/clients/review-keys";
+import { scheduleKeys } from "@/lib/query-keys/bookings/schedule-keys";
+import { serviceKeys } from "@/lib/query-keys/services/service-keys";
+import { stylistKeys } from "@/lib/query-keys/stylists/stylist-keys";
+import { subscriptionKeys } from "@/lib/query-keys/plans/subscription-keys";
 
 const RANGE = { from: "2026-01-01", to: "2026-01-31" } as never;
 const FILTERS = { search: "a" } as never;

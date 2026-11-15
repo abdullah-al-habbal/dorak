@@ -5,7 +5,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { PLAN_OPTIONS_LIMIT } from "@/config/plan.constant";
 import { PlanState } from "@/enums/plan-state.enum";
 import { useReferenceQuery } from "@/hooks/use-reference-query";
-import { planKeys } from "@/lib/plan-keys";
+import { planKeys } from "@/lib/query-keys/plans/plan-keys";
 import { fetchPlanPage } from "@/services/api/query/plan-page.query";
 import type { Plan } from "@/types/plan.type";
 

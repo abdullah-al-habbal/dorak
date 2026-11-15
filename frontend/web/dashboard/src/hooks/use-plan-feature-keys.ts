@@ -4,7 +4,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 
 import { STALE_TIME } from "@/config/stale-time.constant";
 import { useReferenceQuery } from "@/hooks/use-reference-query";
-import { planKeys } from "@/lib/plan-keys";
+import { planKeys } from "@/lib/query-keys/plans/plan-keys";
 import { fetchPlanFeatureKeys } from "@/services/api/query/plan-feature-keys.query";
 
 /** The flags a plan may unlock; the backend's `BrandFeatures` is the single source. */

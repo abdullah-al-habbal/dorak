@@ -8,7 +8,7 @@ import { useOptimisticToggleMutation } from "@/hooks/use-optimistic-toggle-mutat
 import type { OptimisticToggleContext } from "@/interfaces/optimistic-toggle-context.interface";
 import { withChairStatus } from "@/lib/chair-cache.util";
 import { statusChangePayload } from "@/lib/chair-form.util";
-import { chairKeys } from "@/lib/chair-keys";
+import { chairKeys } from "@/lib/query-keys/chairs/chair-keys";
 import { updateChair } from "@/services/api/mutation/save-chair.mutation";
 import type { ChairPage } from "@/types/chair-page.type";
 import type { Chair } from "@/types/chair.type";

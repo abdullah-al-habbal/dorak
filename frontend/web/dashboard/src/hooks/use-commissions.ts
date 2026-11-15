@@ -7,7 +7,7 @@ import { useDictionary } from "@/hooks/use-dictionary";
 import { useListQuery } from "@/hooks/use-list-query";
 import { useSaveMutation } from "@/hooks/use-save-mutation";
 import type { SaveVariables } from "@/interfaces/save-variables.interface";
-import { commissionKeys } from "@/lib/commission-keys";
+import { commissionKeys } from "@/lib/query-keys/earnings/commission-keys";
 import { createCommissionRule, deleteCommissionRule, updateCommissionRule } from "@/services/api/mutation/commission.mutation";
 import type { CommissionRulePayload } from "@/services/api/mutation/commission.mutation";
 import { fetchCommissionEntries, fetchCommissionRules } from "@/services/api/query/commission.query";
