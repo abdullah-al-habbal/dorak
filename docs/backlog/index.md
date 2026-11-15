@@ -25,9 +25,7 @@ history, for example `git show de6cff09:docs/decisions-required.md` and `git sho
 
 | ID | Question | Notes |
 |---|---|---|
-| BD-1 | Allow jsdom and Testing Library for dashboard component tests? | The register recorded it as waiting for the owner. Blocks UI component tests only; pure-logic Vitest and Playwright are unaffected. |
 | BD-2 | What is "Batch 2"? | Out of scope until defined. It meant three things: a finished dashboard DRY refactor, a planned "Batch 2 mobile fix" (the barber app signs the barber out on 403 `feature_not_enabled`, so the downgrade rule is not applied to barber-initiated affiliation paths), and the handover's own question. |
-| BD-3 | Keep or retire `docs/handover-remaining-work.md`? | Its open items are now in this backlog; the file is older and partly stale. |
 
 Deferred by decision, not to be started: NS-26 plan self-service and billing (D6, manual billing at launch); NS-27 stays closed (D7); Apple and
 Facebook sign-in are unsupported (G9).
@@ -85,7 +83,7 @@ Facebook sign-in are unsupported (G9).
 
 - TS-1 Backend depth (allowed, 401, 403, 404, 422, side effects) for NS-04 admin users, NS-05 and NS-14 disputes, NS-06 brand lifecycle, NS-07 clients and bans, NS-08 barbers and activation log, NS-30 approval queue, NS-09 oversight filters, NS-10 notifications feed, NS-11 rate client, NS-12 hours exceptions, NS-13 owner workspace, NS-15 floor plan, NS-16 invitations, NS-17 job board, NS-18 per-brand pricing, NS-19 currencies, NS-20 languages, NS-21 catalog, NS-22 commission, NS-23 gateways, NS-24 payout detail, NS-25 website content. Re-check which are already covered before writing (several have dedicated Dashboard test files).
 - TS-2 Branch-account ban test; dashboard refresh after a ban; session continuity after suspend, disable or deactivate.
-- TS-3 Dashboard component tests (blocked by BD-1).
+- TS-3 Dashboard component tests (jsdom and Testing Library approved 2026-11-15; add the dev dependencies and the first tests, then update the dashboard guide's testing note).
 - TS-4 Playwright specs missing: floor-plan editor, invitations (`invitations.spec.ts` is written but has never run), per-brand pricing, oversight dialog and hours exceptions, gateways and languages, notifications feed, rate client, review dispute and moderation, mutations of the eight smoke modules (admin invite and deactivate, client ban, barber approve and reject, currency, commission rule, content edits, job postings and applications, owner brand create), owner status page, suspended-brand banner, session expiry.
 - TS-5 A real two-process concurrent-refresh test.
 - TS-6 Mobile: tests with every WP change in sections 3 and 4.
@@ -108,6 +106,7 @@ Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are reso
 - **D-01, D-02, D-05 to D-07 (sessions):** every dashboard request sends `X-Dashboard-Session`, bound to the actor and token; the superseded access token is expired in the database on refresh; the BFF single-flights refresh for 5 seconds; the old claim is revoked after the commit.
 - **D1:** a service is owned by a brand or a barber, never a branch. **D6:** manual billing at launch. **D7:** NS-27 closed. **D8, D9:** brand and branch lifecycle states. **D11:** a pending owner gets one branch of setup, no stylists, invitations or bookings until approval. **D13:** website content is managed in the dashboard.
 - **Platform admin on staffing:** full permissions on affiliations and the job board (2026-11-13). Brand-level affiliations are closed; rejected barbers cannot re-apply to the same posting.
+- **Dashboard component tests (BD-1, 2026-11-15):** `jsdom` and Testing Library are allowed for component tests. **`docs/handover-remaining-work.md` (BD-3, 2026-11-15):** retired; its open items live in this backlog.
 - **Standing rules:** local commits only, never push; pending-brand records are hidden from public reads; backend contract changes are backward compatible for mobile.
 
 Record a new decision here as one line under this heading, with its date, and link the code or doc that implements it. The older full wording is in Git history (see the top of this file).
