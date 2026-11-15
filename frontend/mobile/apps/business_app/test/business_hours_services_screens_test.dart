@@ -6,7 +6,6 @@ import 'package:localization/localization.dart';
 
 import 'package:business_app/src/features/hours/business_hours.bloc.dart';
 import 'package:business_app/src/features/hours/business_hours.screen.dart';
-import 'package:business_app/src/features/services/business_service_form.screen.dart';
 import 'package:business_app/src/features/services/business_services.bloc.dart';
 import 'package:business_app/src/features/services/business_services.screen.dart';
 
@@ -121,7 +120,7 @@ void main() {
 
     setUp(() {
       repository = FakeBranchServiceRepository();
-      bloc = BusinessServicesBloc(repository, FakeBranchHoursRepository());
+      bloc = BusinessServicesBloc(repository);
       addTearDown(bloc.close);
     });
 
@@ -134,7 +133,7 @@ void main() {
       ];
       await _pumpRouter(
         tester,
-        home: BusinessServicesScreen(bloc: bloc, onAdd: () {}, onEdit: (_) {}),
+        home: BusinessServicesScreen(bloc: bloc),
       );
 
       expect(find.text('Haircut'), findsOneWidget);
@@ -148,10 +147,10 @@ void main() {
     ) async {
       await _pumpRouter(
         tester,
-        home: BusinessServicesScreen(bloc: bloc, onAdd: () {}, onEdit: (_) {}),
+        home: BusinessServicesScreen(bloc: bloc),
       );
 
-      expect(find.text('No services yet. Add your first one.'), findsOneWidget);
+      expect(find.text('No services yet. The brand owner adds them.'), findsOneWidget);
     });
 
     testWidgets('a load failure replaces the empty state with the error', (
@@ -160,170 +159,20 @@ void main() {
       repository.failure = StateError('offline');
       await _pumpRouter(
         tester,
-        home: BusinessServicesScreen(bloc: bloc, onAdd: () {}, onEdit: (_) {}),
+        home: BusinessServicesScreen(bloc: bloc),
       );
 
-      expect(find.text('No services yet. Add your first one.'), findsNothing);
+      expect(find.text('No services yet. The brand owner adds them.'), findsNothing);
       expect(find.text('Could not load. Pull to retry.'), findsOneWidget);
     });
 
-    testWidgets('add and row taps are forwarded to the callbacks', (
-      tester,
-    ) async {
+    testWidgets('offers no add button and no edit tap (F-07)', (tester) async {
       repository.services = [_service()];
-      var added = 0;
-      String? edited;
-      await _pumpRouter(
-        tester,
-        home: BusinessServicesScreen(
-          bloc: bloc,
-          onAdd: () => added++,
-          onEdit: (id) => edited = id,
-        ),
-      );
+      await _pumpRouter(tester, home: BusinessServicesScreen(bloc: bloc));
 
-      await tester.tap(find.text('Add service'));
-      await tester.tap(find.text('Haircut'));
-
-      expect(added, 1);
-      expect(edited, 'svc-1');
-    });
-  });
-
-  group('BusinessServiceFormScreen', () {
-    late FakeBranchServiceRepository repository;
-    late FakeBranchHoursRepository branch;
-    late BusinessServicesBloc bloc;
-
-    setUp(() {
-      repository = FakeBranchServiceRepository();
-      branch = FakeBranchHoursRepository();
-      bloc = BusinessServicesBloc(repository, branch);
-      addTearDown(bloc.close);
-    });
-
-    Future<void> openForm(WidgetTester tester, {String? serviceId}) async {
-      await _pumpRouter(
-        tester,
-        home: Builder(
-          builder: (context) => Scaffold(
-            body: TextButton(
-              onPressed: () => context.push(_formRoute),
-              child: const Text('open'),
-            ),
-          ),
-        ),
-        form: BusinessServiceFormScreen(bloc: bloc, serviceId: serviceId),
-      );
-      await tester.tap(find.text('open'));
-      await tester.pumpAndSettle();
-    }
-
-    Finder field(String label) => find.widgetWithText(TextFormField, label);
-
-    testWidgets('an empty submit shows validation errors and saves nothing', (
-      tester,
-    ) async {
-      await openForm(tester);
-
-      await tester.tap(find.text('Save service'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('This field is required.'), findsNWidgets(3));
-      expect(repository.createdName, isNull);
-    });
-
-    testWidgets('a non-numeric price is rejected', (tester) async {
-      await openForm(tester);
-      await tester.enterText(field('Name (English)'), 'Cut');
-      await tester.enterText(field('Name (Arabic)'), 'قص');
-      await tester.enterText(field('Price'), 'abc');
-
-      await tester.tap(find.text('Save service'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Enter a valid number.'), findsOneWidget);
-      expect(repository.createdName, isNull);
-    });
-
-    testWidgets('a valid form creates the service and returns to the list', (
-      tester,
-    ) async {
-      await openForm(tester);
-      await tester.enterText(field('Name (English)'), 'Cut');
-      await tester.enterText(field('Name (Arabic)'), 'قص');
-      await tester.enterText(field('Price'), '12.5');
-
-      await tester.tap(find.text('Save service'));
-      await tester.pumpAndSettle();
-
-      expect(repository.createdBrandId, 'brand-1');
-      expect(repository.createdName, {'en': 'Cut', 'ar': 'قص'});
-      expect(find.text('New service'), findsNothing);
-      expect(find.text('open'), findsOneWidget);
-    });
-
-    testWidgets('a rejected save stays on the form with the error', (
-      tester,
-    ) async {
-      repository.failure = StateError('rejected');
-      await openForm(tester);
-      await tester.enterText(field('Name (English)'), 'Cut');
-      await tester.enterText(field('Name (Arabic)'), 'قص');
-      await tester.enterText(field('Price'), '12.5');
-
-      await tester.tap(find.text('Save service'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('New service'), findsOneWidget);
-    });
-
-    testWidgets('edit mode prefills the stored service and updates it', (
-      tester,
-    ) async {
-      repository.services = [_service()];
-      await bloc.load();
-      await openForm(tester, serviceId: 'svc-1');
-
-      expect(find.text('Edit service'), findsOneWidget);
-      expect(
-        tester.widget<TextFormField>(field('Name (English)')).controller!.text,
-        'Haircut',
-      );
-
-      await tester.enterText(field('Name (Arabic)'), 'قص');
-      await tester.tap(find.text('Save service'));
-      await tester.pumpAndSettle();
-
-      expect(repository.updatedId, 'svc-1');
-    });
-
-    testWidgets('delete asks for confirmation before removing', (tester) async {
-      repository.services = [_service()];
-      await bloc.load();
-      await openForm(tester, serviceId: 'svc-1');
-
-      await tester.tap(find.byTooltip('Delete'));
-      await tester.pumpAndSettle();
-      expect(find.text('Delete this service?'), findsOneWidget);
-
-      await tester.tap(find.text('Cancel'));
-      await tester.pumpAndSettle();
-      expect(repository.deletedId, isNull);
-
-      await tester.tap(find.byTooltip('Delete'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(TextButton, 'Delete'));
-      await tester.pumpAndSettle();
-
-      expect(repository.deletedId, 'svc-1');
-      expect(find.text('open'), findsOneWidget);
-    });
-
-    testWidgets('create mode has no delete action', (tester) async {
-      await openForm(tester);
-
-      expect(find.byTooltip('Delete'), findsNothing);
+      expect(find.text('Add service'), findsNothing);
+      expect(find.byType(FloatingActionButton), findsNothing);
+      expect(find.byIcon(Icons.chevron_right), findsNothing);
     });
   });
 }

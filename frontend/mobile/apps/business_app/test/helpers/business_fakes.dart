@@ -424,10 +424,7 @@ BusinessFeatureBlocs featureBlocsFor({
       staff ?? FakeBranchStaffRepository(),
       activation ?? FakeActivationRepository(),
     ),
-    services: BusinessServicesBloc(
-      services ?? FakeBranchServiceRepository(),
-      hours ?? FakeBranchHoursRepository(),
-    ),
+    services: BusinessServicesBloc(services ?? FakeBranchServiceRepository()),
     hours: BusinessHoursBloc(hours ?? FakeBranchHoursRepository()),
     inbox: BusinessInboxBloc(notifications ?? FakeNotificationRepository()),
     earnings: BusinessEarningsBloc(earnings ?? FakeEarningsRepository()),

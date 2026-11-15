@@ -45,7 +45,8 @@ describe('Dashboard branch, service, review and walk-in policies', function (): 
 
         expect(Gate::forUser($this->admin)->allows('dashboard.service.write', [ServiceableTypeEnum::Barber->value, 'any']))->toBeTrue()
             ->and(Gate::forUser($manager)->denies('dashboard.service.write', [ServiceableTypeEnum::Barber->value, 'any']))->toBeTrue()
-            ->and(Gate::forUser($manager)->denies('dashboard.service.write', [$brand, (string) $this->other->brand_id]))->toBeTrue();
+            ->and(Gate::forUser($manager)->denies('dashboard.service.write', [$brand, (string) $this->other->brand_id]))->toBeTrue()
+            ->and(Gate::forUser($manager)->denies('dashboard.service.write', [$brand, (string) $this->branch->brand_id]))->toBeTrue();
     });
 
     it('keeps review filing and walk-ins on the branch side', function (): void {

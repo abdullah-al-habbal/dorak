@@ -22,7 +22,6 @@ import 'package:business_app/src/features/operations/branch_operations.bloc.dart
 import 'package:business_app/src/features/operations/branch_operations.screen.dart';
 import 'package:business_app/src/features/profile/business_profile.screen.dart';
 import 'package:business_app/src/features/reviews/business_reviews.screen.dart';
-import 'package:business_app/src/features/services/business_service_form.screen.dart';
 import 'package:business_app/src/features/services/business_services.screen.dart';
 import 'package:business_app/src/features/staff/business_staff.screen.dart';
 
@@ -101,8 +100,6 @@ class BusinessAppRouter {
                   path: AppRoutes.services,
                   builder: (context, state) => BusinessServicesScreen(
                     bloc: features.services,
-                    onAdd: () => context.push(AppRoutes.newService),
-                    onEdit: (id) => context.push(AppRoutes.editService(id)),
                   ),
                 ),
               ],
@@ -132,18 +129,6 @@ class BusinessAppRouter {
               ],
             ),
           ],
-        ),
-        GoRoute(
-          path: AppRoutes.newService,
-          builder: (context, state) =>
-              BusinessServiceFormScreen(bloc: features.services),
-        ),
-        GoRoute(
-          path: '${AppRoutes.services}/:${AppRoutes.serviceIdParameter}/edit',
-          builder: (context, state) => BusinessServiceFormScreen(
-            bloc: features.services,
-            serviceId: state.pathParameters[AppRoutes.serviceIdParameter],
-          ),
         ),
         GoRoute(
           path: AppRoutes.hours,

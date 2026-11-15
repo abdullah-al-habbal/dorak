@@ -3,20 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:business_app/src/features/hours/business_hours.bloc.dart';
 import 'package:business_app/src/features/inbox/business_inbox.bloc.dart';
-import 'package:business_app/src/features/services/business_service_draft.entity.dart';
 import 'package:business_app/src/features/services/business_services.bloc.dart';
 import 'package:business_app/src/features/staff/business_staff.bloc.dart';
 
 import 'helpers/business_fakes.dart';
 import 'package:business_app/src/features/hours/hours_issue.entity.dart';
-
-const _draft = BusinessServiceDraft(
-  nameEn: 'Cut',
-  nameAr: 'قص',
-  price: 12.5,
-  currencyCode: 'USD',
-  durationMinutes: 30,
-);
 
 NotificationDto _note(String id, {DateTime? readAt}) => NotificationDto(
   id: id,
@@ -75,49 +66,21 @@ void main() {
   });
 
   group('services', () {
-    test('creates with the profile brand and reloads the list', () async {
-      final services = FakeBranchServiceRepository();
-      final bloc = BusinessServicesBloc(services, FakeBranchHoursRepository());
-
-      expect(await bloc.save(_draft), isTrue);
-
-      expect(services.createdBrandId, 'brand-1');
-      expect(services.createdName, {'en': 'Cut', 'ar': 'قص'});
-      expect(bloc.state.services.single.priceAmountMinor, 1250);
-      await bloc.close();
-    });
-
-    test('updates and deletes by id', () async {
+    test('loads the brand services and exposes load failures', () async {
       final services = FakeBranchServiceRepository()
         ..services = const [
           BusinessServiceDto(id: 's1', serviceableId: 'brand-1', name: 'Cut'),
         ];
-      final bloc = BusinessServicesBloc(services, FakeBranchHoursRepository());
+      final bloc = BusinessServicesBloc(services);
 
-      expect(await bloc.save(_draft, id: 's1'), isTrue);
-      expect(services.updatedId, 's1');
-      expect(await bloc.delete('s1'), isTrue);
-      expect(services.deletedId, 's1');
-      expect(bloc.state.services, isEmpty);
+      await bloc.load();
+      expect(bloc.state.services.single.id, 's1');
+
+      services.failure = StateError('x');
+      await bloc.load();
+      expect(bloc.state.error, isNotNull);
       await bloc.close();
     });
-
-    test(
-      'a rejected save keeps the form usable and reports the error',
-      () async {
-        final services = FakeBranchServiceRepository()
-          ..failure = StateError('x');
-        final bloc = BusinessServicesBloc(
-          services,
-          FakeBranchHoursRepository(),
-        );
-
-        expect(await bloc.save(_draft), isFalse);
-        expect(bloc.state.saving, isFalse);
-        expect(bloc.state.error, isNotNull);
-        await bloc.close();
-      },
-    );
   });
 
   group('hours', () {

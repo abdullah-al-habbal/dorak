@@ -110,15 +110,12 @@ final readonly class DashboardActor implements Authorizable
     }
 
     /**
-     * D1 (Task 54): services are owned by a Brand. A branch manager may
-     * manage their own branch's brand services in addition to a brand owner.
+     * D1 + audit decision C (F-07): services are owned by a Brand, never a Branch,
+     * so only the platform admin and the owner of that brand write them. A branch
+     * manager has no branch-owned service to manage and may only read them.
      */
     public function canManageBrandServices(mixed $brandId): bool
     {
-        if ($this->canManageBrand($brandId)) {
-            return true;
-        }
-
-        return $this->isBranchManager() && (is_string($brandId) || is_int($brandId)) && $this->brandId === (string) $brandId;
+        return $this->canManageBrand($brandId);
     }
 }

@@ -11,15 +11,12 @@ abstract final class AppRoutes {
   static const reviews = '/reviews';
   static const staff = '/staff';
   static const services = '/services';
-  static const newService = '/services/new';
   static const hours = '/hours';
   static const earnings = '/earnings';
   static const inbox = '/inbox';
   static const more = '/more';
-  static const serviceIdParameter = 'serviceId';
   static const jobIdParameter = 'jobId';
 
   static String editJob(String id) => '$jobs/$id/edit';
   static String applicants(String id) => '$jobs/$id/applicants';
-  static String editService(String id) => '$services/$id/edit';
 }

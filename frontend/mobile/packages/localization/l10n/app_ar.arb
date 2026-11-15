@@ -1455,7 +1455,7 @@
   "businessStaffStatusPending": "قيد المراجعة",
   "businessStaffRating": "{rating} ({count})",
   "businessServicesTitle": "الخدمات",
-  "businessServicesEmpty": "لا توجد خدمات بعد. أضف أول خدمة.",
+  "businessServicesEmpty": "لا توجد خدمات بعد. يضيفها مالك العلامة.",
   "businessHoursTitle": "ساعات العمل",
   "businessHoursClosed": "مغلق",
   "businessHoursOpens": "يفتح",

@@ -6,6 +6,7 @@ namespace Modules\Dashboard\Http\Actions\Services;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Dashboard\CQRS\Command\DestroyServiceCommand;
 use Modules\Dashboard\CQRS\Query\ShowServiceQuery;
@@ -30,6 +31,7 @@ final class DestroyServiceAction extends BaseApiAction
             $service,
             $actor->scopedBrandIds(),
         ));
+        Gate::forUser($actor)->authorize('dashboard.service.write', [$model->serviceable_type->value, $model->serviceable_id]);
         $this->writeGuard->ensureServiceableWritable($actor, $model->serviceable_type, $model->serviceable_id);
         $this->destroyHandler->handle($model, new DestroyServiceCommand($service));
 

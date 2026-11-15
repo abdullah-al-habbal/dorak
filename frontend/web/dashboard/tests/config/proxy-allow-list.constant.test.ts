@@ -250,3 +250,32 @@ describe("proxy allow-list: job applications", () => {
     expect(allowed(HttpMethod.Put, `${applications}/mark-seen`, AuthActor.Manager)).toBe(false);
   });
 });
+
+describe("proxy allow-list: brand services (F-07) and global categories (F-02)", () => {
+  it("lets every operations actor read services but only owners and admins write them", () => {
+    for (const guard of [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner]) {
+      expect(allowed(HttpMethod.Get, "services", guard)).toBe(true);
+      expect(allowed(HttpMethod.Get, "services/s1", guard)).toBe(true);
+    }
+    for (const method of [HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete]) {
+      expect(allowed(method, "services/s1", AuthActor.Owner)).toBe(true);
+      expect(allowed(method, "services/s1", AuthActor.Admin)).toBe(true);
+      expect(allowed(method, "services/s1", AuthActor.Manager)).toBe(false);
+      expect(allowed(method, "services/s1", AuthActor.Barber)).toBe(false);
+    }
+    expect(allowed(HttpMethod.Post, "services", AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Post, "services", AuthActor.Owner)).toBe(true);
+  });
+
+  it("keeps stylist writes available to managers", () => {
+    expect(allowed(HttpMethod.Post, "stylists", AuthActor.Manager)).toBe(true);
+  });
+
+  it("lets operations actors list service categories but only the admin create one", () => {
+    expect(allowed(HttpMethod.Get, "service-categories", AuthActor.Manager)).toBe(true);
+    expect(allowed(HttpMethod.Get, "service-categories", AuthActor.Owner)).toBe(true);
+    expect(allowed(HttpMethod.Post, "service-categories", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Post, "service-categories", AuthActor.Owner)).toBe(false);
+    expect(allowed(HttpMethod.Post, "service-categories", AuthActor.Manager)).toBe(false);
+  });
+});

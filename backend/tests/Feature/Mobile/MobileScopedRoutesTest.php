@@ -43,16 +43,19 @@ describe('branch mobile routes', function (): void {
             ->assertJsonCount(1, 'data');
     });
 
-    it('creates updates and deletes a brand service', function (): void {
+    it('refuses a branch-app manager creating, updating or deleting a brand service (F-07)', function (): void {
         $currency = CurrencyModel::factory()->create();
+        $service = OfferedServiceModel::factory()->create(['serviceable_id' => $this->branch->brand_id, 'price_amount_minor' => 1000]);
 
-        $id = $this->withToken($this->token)
-            ->postJson('/api/v1/branch/services', mobileServicePayload($this->branch->brand_id, $currency))
-            ->assertCreated()->json('data.id');
         $this->withToken($this->token)
-            ->putJson("/api/v1/branch/services/{$id}", mobileServicePayload($this->branch->brand_id, $currency, ['price_amount_minor' => 3100]))
-            ->assertOk()->assertJsonPath('data.price_amount_minor', 3100);
-        $this->withToken($this->token)->deleteJson("/api/v1/branch/services/{$id}")->assertOk();
+            ->postJson('/api/v1/branch/services', mobileServicePayload($this->branch->brand_id, $currency))
+            ->assertForbidden();
+        $this->withToken($this->token)
+            ->putJson("/api/v1/branch/services/{$service->id}", mobileServicePayload($this->branch->brand_id, $currency, ['price_amount_minor' => 3100]))
+            ->assertForbidden();
+        $this->withToken($this->token)->deleteJson("/api/v1/branch/services/{$service->id}")->assertForbidden();
+        $this->withToken($this->token)->getJson("/api/v1/branch/services/{$service->id}")
+            ->assertOk()->assertJsonPath('data.price_amount_minor', 1000);
     });
 
     it('rejects creating a service for another brand and hides foreign services', function (): void {

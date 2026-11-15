@@ -3,6 +3,7 @@ import { HttpMethod } from "@/enums/http-method.enum";
 import type { ProxyRule } from "@/interfaces/proxy-rule.interface";
 
 const OPERATIONS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Manager, AuthActor.Owner];
+const SERVICE_WRITERS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];
 const EARNINGS: readonly AuthActor[] = [AuthActor.Manager, AuthActor.Barber, AuthActor.Owner];
 const BRANDS: readonly AuthActor[] = [AuthActor.Admin, AuthActor.Owner];
 const BARBER_ONLY: readonly AuthActor[] = [AuthActor.Barber];
@@ -129,9 +130,12 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   // The barber portal: the Operations routes reject barbers, so these are their own read-only endpoints.
   { methods: [HttpMethod.Get], pattern: /^schedule\/(appointments|hours)$/, guards: BARBER_ONLY },
   { methods: [HttpMethod.Get], pattern: /^earnings$/, guards: EARNINGS },
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^services(/${ID})?$`), guards: OPERATIONS },
+  // F-07: brand services are written by the brand owner (and the platform admin); managers read them only.
+  { methods: [HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^services(/${ID})?$`), guards: SERVICE_WRITERS },
   {
     methods: [HttpMethod.Get, HttpMethod.Post, HttpMethod.Put, HttpMethod.Delete],
-    pattern: new RegExp(`^(services|stylists)(/${ID})?$`),
+    pattern: new RegExp(`^stylists(/${ID})?$`),
     guards: OPERATIONS,
   },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^stylists/${ID}/(activate|deactivate)$`), guards: OPERATIONS },
@@ -141,7 +145,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
     pattern: new RegExp(`^chairs(/${ID})?$`),
     guards: OPERATIONS,
   },
-  { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^service-categories$/, guards: OPERATIONS },
+  { methods: [HttpMethod.Get], pattern: /^service-categories$/, guards: OPERATIONS },
+  // F-02: global categories are created by the platform admin only.
+  { methods: [HttpMethod.Post], pattern: /^service-categories$/, guards: ADMIN_ONLY },
   // NS-15 floor plan editor.
   { methods: [HttpMethod.Get, HttpMethod.Patch], pattern: new RegExp(`^branches/${ID}/floor-plan$`), guards: OPERATIONS },
 ];

@@ -1890,7 +1890,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get businessServicesTitle => 'الخدمات';
 
   @override
-  String get businessServicesEmpty => 'لا توجد خدمات بعد. أضف أول خدمة.';
+  String get businessServicesEmpty => 'لا توجد خدمات بعد. يضيفها مالك العلامة.';
 
   @override
   String get businessHoursTitle => 'ساعات العمل';

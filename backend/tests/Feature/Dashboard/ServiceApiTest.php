@@ -137,7 +137,7 @@ describe('Dashboard Service API', function (): void {
     });
 
     it('assigns a category directly to a service and prefers it over the catalog item category', function (): void {
-        $this->authenticateDashboardActor($this->branch);
+        $this->authenticateDashboardActor($this->admin);
         $currency = CurrencyModel::factory()->create();
         $direct = ServiceCatalogCategoryModel::factory()->create();
         $viaItem = ServiceCatalogCategoryModel::factory()->create();
@@ -166,13 +166,49 @@ describe('Dashboard Service API', function (): void {
             ->assertForbidden();
     });
 
-    it('lets a branch manager create a service for its own brand', function (): void {
+    it('refuses a branch manager creating a service for its own brand (F-07, decision C)', function (): void {
         $this->authenticateDashboardActor($this->branch);
         $currency = CurrencyModel::factory()->create();
 
-        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency))
-            ->assertCreated()
-            ->assertJsonPath('data.serviceable_id', $this->branch->brand_id);
+        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency))->assertForbidden();
+        $this->assertDatabaseMissing('offered_services', ['serviceable_id' => $this->branch->brand_id]);
+    });
+
+    it('refuses a branch manager updating or deleting a brand service but keeps it readable (F-07)', function (): void {
+        $service = OfferedServiceModel::factory()->create(['serviceable_id' => $this->branch->brand_id, 'price_amount_minor' => 1000]);
+        $currency = CurrencyModel::factory()->create();
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->putJson("/api/v1/dashboard/services/{$service->id}", servicePayload($this->branch->brand_id, $currency, ['price_amount_minor' => 9900]))
+            ->assertForbidden();
+        $this->deleteJson("/api/v1/dashboard/services/{$service->id}")->assertForbidden();
+        $this->getJson("/api/v1/dashboard/services/{$service->id}")->assertOk()->assertJsonPath('data.price_amount_minor', 1000);
+        $this->assertDatabaseHas('offered_services', ['id' => $service->id, 'price_amount_minor' => 1000]);
+    });
+
+    it('lets a brand owner create, update and delete services of its own brand (F-07)', function (): void {
+        $owner = ClientModel::factory()->create();
+        $brand = BrandModel::factory()->create(['owner_id' => $owner->id]);
+        $currency = CurrencyModel::factory()->create();
+        $this->authenticateDashboardActor($owner);
+
+        $id = $this->postJson('/api/v1/dashboard/services', servicePayload($brand->id, $currency))
+            ->assertCreated()->json('data.id');
+        $this->putJson("/api/v1/dashboard/services/{$id}", servicePayload($brand->id, $currency, ['price_amount_minor' => 3300]))
+            ->assertOk()->assertJsonPath('data.price_amount_minor', 3300);
+        $this->deleteJson("/api/v1/dashboard/services/{$id}")->assertOk();
+    });
+
+    it('refuses a brand owner writing services of another brand (F-07)', function (): void {
+        $owner = ClientModel::factory()->create();
+        BrandModel::factory()->create(['owner_id' => $owner->id]);
+        $foreign = OfferedServiceModel::factory()->create(['serviceable_id' => $this->branch->brand_id]);
+        $currency = CurrencyModel::factory()->create();
+        $this->authenticateDashboardActor($owner);
+
+        $this->postJson('/api/v1/dashboard/services', servicePayload($this->branch->brand_id, $currency))->assertForbidden();
+        $this->putJson("/api/v1/dashboard/services/{$foreign->id}", servicePayload($this->branch->brand_id, $currency))->assertNotFound();
+        $this->deleteJson("/api/v1/dashboard/services/{$foreign->id}")->assertNotFound();
     });
 });
 

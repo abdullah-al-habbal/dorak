@@ -96,10 +96,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
         DioBranchStaffRepository(_apiClient),
         widget.repository ?? DioManagedBarberRepository(_apiClient),
       ),
-      services: BusinessServicesBloc(
-        DioBranchServiceRepository(_apiClient),
-        DioBranchHoursRepository(_apiClient),
-      ),
+      services: BusinessServicesBloc(DioBranchServiceRepository(_apiClient)),
       hours: BusinessHoursBloc(DioBranchHoursRepository(_apiClient)),
       inbox: BusinessInboxBloc(DioNotificationRepository(_apiClient)),
       earnings: BusinessEarningsBloc(DioEarningsRepository.branch(_apiClient)),

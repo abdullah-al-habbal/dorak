@@ -1897,7 +1897,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessServicesTitle => 'Services';
 
   @override
-  String get businessServicesEmpty => 'No services yet. Add your first one.';
+  String get businessServicesEmpty =>
+      'No services yet. The brand owner adds them.';
 
   @override
   String get businessHoursTitle => 'Working hours';

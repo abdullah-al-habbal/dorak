@@ -3539,7 +3539,7 @@ abstract class AppLocalizations {
   /// businessServicesEmpty
   ///
   /// In en, this message translates to:
-  /// **'No services yet. Add your first one.'**
+  /// **'No services yet. The brand owner adds them.'**
   String get businessServicesEmpty;
 
   /// businessHoursTitle

@@ -1643,7 +1643,7 @@
   "@businessStaffRating": {"description": "businessStaffRating", "placeholders": {"rating": {"type": "String"}, "count": {"type": "int"}}},
   "businessServicesTitle": "Services",
   "@businessServicesTitle": {"description": "businessServicesTitle"},
-  "businessServicesEmpty": "No services yet. Add your first one.",
+  "businessServicesEmpty": "No services yet. The brand owner adds them.",
   "@businessServicesEmpty": {"description": "businessServicesEmpty"},
   "businessHoursTitle": "Working hours",
   "@businessHoursTitle": {"description": "businessHoursTitle"},

@@ -17,7 +17,7 @@ Routes: [index](index.md).
 | Guard | Address | Screens |
 |---|---|---|
 | Admin | `/dashboard/admin` | Overview; Analytics; Bookings (all, with status changes); Brands (approve only); Branches (CRUD); Catalog (category CRUD, items read-only); Payouts (generate, approve, mark paid, cancel); Plans (CRUD); Subscriptions (assign, change status); Settings |
-| Manager | `/dashboard/manager` | Overview; Bookings (walk-in, status, reschedule, cancel); Chairs; Stylists (create, edit, activate); Services; Working hours (up to four shifts); Earnings; Reviews (read-only) |
+| Manager | `/dashboard/manager` | Overview; Bookings (walk-in, status, reschedule, cancel); Chairs; Stylists (create, edit, activate); Services (read-only, F-07); Working hours (up to four shifts); Earnings; Reviews (read-only) |
 | Owner | `/dashboard/owner` | Overview; Bookings across branches; Branches (CRUD, approved brands only); Stylists; Working hours; Earnings; Payouts (read-only); Subscription (read-only) |
 | Barber | `/dashboard/barber` | Overview; Schedule (read-only); Earnings |
 

@@ -9,17 +9,14 @@ import 'package:business_app/src/features/services/business_services.state.dart'
 import 'package:business_app/src/features/shared/feature_error.widget.dart';
 import 'package:business_app/src/features/shared/load_on_init.widget.dart';
 
+/// Read-only: brand services are written by the brand owner and the platform admin (F-07).
 class BusinessServicesScreen extends StatelessWidget {
   const BusinessServicesScreen({
     super.key,
     required this.bloc,
-    required this.onAdd,
-    required this.onEdit,
   });
 
   final BusinessServicesBloc bloc;
-  final VoidCallback onAdd;
-  final ValueChanged<String> onEdit;
 
   String _meta(AppLocalizations l10n, BusinessServiceDto service) {
     final price = MinorUnits.toMajor(
@@ -39,11 +36,6 @@ class BusinessServicesScreen extends StatelessWidget {
       onInit: bloc.load,
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.businessServicesTitle)),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: onAdd,
-          icon: const Icon(Icons.add),
-          label: Text(l10n.staffServiceAdd),
-        ),
         body: BlocBuilder<BusinessServicesBloc, BusinessServicesState>(
           bloc: bloc,
           builder: (context, state) {
@@ -70,8 +62,6 @@ class BusinessServicesScreen extends StatelessWidget {
                       subtitle: Text(
                         '${_meta(l10n, service)} · ${service.isActive ? l10n.staffServiceActive : l10n.staffServiceInactive}',
                       ),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => onEdit(service.id),
                     ),
                 ],
               ),

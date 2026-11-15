@@ -30,16 +30,17 @@ export function ServicesScreen({ actor }: { actor: AuthActor }): JSX.Element {
     const { states } = dictionary.services;
     return <EmptyState variant="forbidden" title={states.forbiddenTitle} body={states.forbiddenBody} />;
   }
-  return <ServicesContent readOnly={actor === AuthActor.Admin} />;
+  // F-07: only the brand owner writes brand services; managers and the admin console read them.
+  return <ServicesContent readOnly={actor !== AuthActor.Owner} showBrandFilter={actor === AuthActor.Admin} />;
 }
 
-function ServicesContent({ readOnly }: { readOnly: boolean }): JSX.Element {
+function ServicesContent({ readOnly, showBrandFilter }: { readOnly: boolean; showBrandFilter: boolean }): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { services: t, bookings } = dictionary;
   const { filters, update } = useServiceFilters();
   const { search, brandId: brandFilter } = filters;
   const brandOptions = useBrandOptions();
-  const brandChoices = readOnly ? (brandOptions.data ?? []) : [];
+  const brandChoices = showBrandFilter ? (brandOptions.data ?? []) : [];
   const overlay = useOverlay();
   const query = useServices(filters);
   const toggleActive = useUpdateServiceActive();

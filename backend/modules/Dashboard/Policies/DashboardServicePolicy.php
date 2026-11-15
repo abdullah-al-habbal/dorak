@@ -9,7 +9,8 @@ use Modules\OfferedService\Enums\ServiceableTypeEnum;
 
 /**
  * Who may create or change an offered service from the dashboard: the platform
- * admin for any owner, and a brand owner only for services of a brand they manage.
+ * admin for any owner, and a brand owner only for services of a brand they own.
+ * Branch managers are read-only here (audit decision C, F-07).
  */
 final class DashboardServicePolicy
 {
