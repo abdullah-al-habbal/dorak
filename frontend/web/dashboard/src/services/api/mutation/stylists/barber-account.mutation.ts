@@ -15,8 +15,8 @@ function barberPath(id: string): string {
 }
 
 /** Switches an approved barber on or off; the backend logs who did it. */
-export function setBarberActive({ id, active }: { id: string; active: boolean }): Promise<BarberApproval> {
-  return apiRequest(`${barberPath(id)}/${active ? "activate" : "deactivate"}`, { method: HttpMethod.Patch, schema: barberApprovalSchema });
+export function setBarberActive({ id, active, reason }: { id: string; active: boolean; reason?: string }): Promise<BarberApproval> {
+  return apiRequest(`${barberPath(id)}/${active ? "activate" : "deactivate"}`, { method: HttpMethod.Patch, body: reason ? { reason } : undefined, schema: barberApprovalSchema });
 }
 
 export function banBarber({ id, reason, expiresAt }: BanBarberPayload): Promise<BarberApproval> {

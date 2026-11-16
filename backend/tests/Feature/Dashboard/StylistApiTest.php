@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Modules\Activation\Models\ActivationLogModel;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Models\BarberModel;
@@ -70,6 +71,16 @@ describe('Dashboard Stylist API', function (): void {
         $this->patchJson("/api/v1/dashboard/stylists/{$stylist->id}/activate")
             ->assertOk()
             ->assertJsonPath('data.status', BarberStatusEnum::Enabled->value);
+    });
+
+    it('records the reason a branch manager gives when deactivating a stylist', function (): void {
+        $stylist = BarberModel::factory()->create();
+        ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $stylist->id]);
+        $this->authenticateDashboardActor($this->branch);
+
+        $this->patchJson("/api/v1/dashboard/stylists/{$stylist->id}/deactivate", ['reason' => 'Left the shop.'])->assertOk();
+
+        expect(ActivationLogModel::query()->where('activable_id', $stylist->id)->value('reason'))->toBe('Left the shop.');
     });
 
     it('filters stylists by chair and status and returns the assigned chair', function (): void {

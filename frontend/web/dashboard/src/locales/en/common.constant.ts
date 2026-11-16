@@ -7,6 +7,7 @@ export const enCommon = {
   close: "Close",
   pagination: { previous: "Previous", next: "Next", page: "Page {page} of {total}" },
   filters: { active: "Active filters", remove: "Remove filter {filter}", clearAll: "Clear all", on: "On" },
+  reason: { label: "Reason (optional)", tooShort: "Use at least {min} characters, or leave it empty." },
   fields: { optional: "Optional", required: "Required" },
   skipToContent: "Skip to content",
   language: "Language",

@@ -8,7 +8,7 @@ import { barberApprovalKeys } from "@/lib/query-keys/stylists/barber-approval-ke
 import { setBarberActive } from "@/services/api/mutation/stylists/barber-account.mutation";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
-export function useSetBarberActive(): UseMutationResult<BarberApproval, Error, { id: string; active: boolean }> {
+export function useSetBarberActive(): UseMutationResult<BarberApproval, Error, { id: string; active: boolean; reason?: string }> {
   const { barberApprovals } = useDictionary();
   return useFeedbackMutation({
     mutationFn: setBarberActive,

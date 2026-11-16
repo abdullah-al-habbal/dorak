@@ -69,8 +69,9 @@ function StylistsContent({ readOnly }: { readOnly: boolean }): JSX.Element {
       description: t.confirm.deactivateBody,
       confirmLabel: t.confirm.deactivate,
       destructive: true,
-      onConfirm: async () => {
-        await status.mutateAsync({ id: stylist.id, active });
+      reason: { label: dictionary.common.reason.label },
+      onConfirm: async (reason) => {
+        await status.mutateAsync({ id: stylist.id, active, reason });
       },
     });
   };

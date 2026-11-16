@@ -9,6 +9,7 @@ export const arCommon: Dictionary["common"] = {
   close: "إغلاق",
   pagination: { previous: "السابق", next: "التالي", page: "الصفحة {page} من {total}" },
   filters: { active: "التصفية النشطة", remove: "إزالة التصفية {filter}", clearAll: "مسح الكل", on: "مفعّل" },
+  reason: { label: "السبب (اختياري)", tooShort: "استخدم {min} أحرف على الأقل، أو اترك الحقل فارغًا." },
   fields: { optional: "اختياري", required: "مطلوب" },
   skipToContent: "انتقل إلى المحتوى",
   language: "اللغة",

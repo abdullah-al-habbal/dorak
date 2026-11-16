@@ -17,6 +17,7 @@ interface BarberMoves {
 export function useConfirmBarberMoves(): BarberMoves {
   const { dictionary, locale } = useI18n();
   const { activation, unbanDialog } = dictionary.barberApprovals;
+  const { common } = dictionary;
   const overlay = useOverlay();
   const { mutateAsync: setActive } = useSetBarberActive();
   const { mutateAsync: unban } = useUnbanBarber();
@@ -30,8 +31,9 @@ export function useConfirmBarberMoves(): BarberMoves {
         description: copy.body.replace("{barber}", localizedText(barber.name, locale)),
         confirmLabel: copy.confirm,
         destructive: !active,
-        onConfirm: async () => {
-          await setActive({ id: barber.id, active });
+        reason: active ? undefined : { label: common.reason.label },
+        onConfirm: async (reason) => {
+          await setActive({ id: barber.id, active, reason });
         },
       });
     },
