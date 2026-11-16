@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { FormEvent, JSX } from "react";
 
+import { CatalogItemAttributesFields } from "@/components/catalog-items/attributes/catalog-item-attributes-fields";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { FormField } from "@/components/common/form-field";
@@ -18,6 +19,7 @@ import { useCatalogTags, useDeleteCatalogItem, useSaveCatalogItem } from "@/hook
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useServiceCategories } from "@/hooks/services/services/use-service-categories";
+import { attributesFromItem, attributesIssue, attributesToPayload } from "@/lib/catalog/catalog-item-attributes.util";
 import { localizedText } from "@/lib/core/format/booking-format.util";
 import { slugify } from "@/lib/core/format/slugify.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
@@ -47,6 +49,7 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
   const [duration, setDuration] = useState(item?.default_duration_minutes ? String(item.default_duration_minutes) : "");
   const [active, setActive] = useState(item?.is_active ?? true);
   const [tagIds, setTagIds] = useState<string[]>(item?.tags.map((tag) => tag.id) ?? []);
+  const [attributes, setAttributes] = useState(() => attributesFromItem(item));
   const [error, setError] = useState<string>();
   const busy = save.isPending || remove.isPending;
   const chosenCategory = categoryId || categories.data?.[0]?.id || "";
@@ -72,6 +75,11 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
       setError(t.form.invalidDuration);
       return;
     }
+    const issue = attributesIssue(attributes);
+    if (issue !== undefined) {
+      setError(t.attributes.issues[issue]);
+      return;
+    }
     try {
       await save.mutateAsync({
         id: item?.id,
@@ -83,6 +91,7 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
           default_duration_minutes: minutes,
           is_active: active,
           tag_ids: tagIds,
+          ...attributesToPayload(attributes),
         },
       });
       onClose();
@@ -140,6 +149,7 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
           <FormField id="item-duration" label={t.form.duration} hint={common.fields.optional}>
             <Input id="item-duration" inputMode="numeric" dir="ltr" autoComplete="off" value={duration} onChange={(event) => setDuration(event.target.value)} />
           </FormField>
+          <CatalogItemAttributesFields value={attributes} onChange={setAttributes} />
           <fieldset className="flex flex-col gap-1">
             <legend className="mb-1 text-sm font-medium">{t.form.tags}</legend>
             {tags.data?.length === 0 ? <p className="text-sm text-muted-foreground">{t.form.noTags}</p> : null}

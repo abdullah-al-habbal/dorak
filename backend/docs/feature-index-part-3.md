@@ -58,3 +58,4 @@ Part 3 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 - `ListBarberAffiliationsAction` [GET /api/v1/barbers/{barber}/affiliations] — list barber's affiliations. Auth:barber
 - Routes: barber-affiliations.php
 - Brand logo upload (FT-9): `POST dashboard/brands/logo` (owner, multipart `file`, JPEG/PNG/WebP up to 2 MB and 4096 px) stores on the `public` disk and returns `{url}` for `logo_url`; the dashboard add-brand form also sends `universe`.
+- Catalog item attributes (FT-12): `PUT admin/catalog-items/{id}` clears `sku`, `price_range`, `maintenance_level`, `style_period_type`, `formality_level`, `default_duration_minutes` and `styling_details` when sent as `null`; `formality_level` is now returned; `price_range.max` must be at least `min`.

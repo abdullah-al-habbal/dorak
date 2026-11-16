@@ -16,6 +16,9 @@ use Modules\ServiceCatalog\Enums\StylePeriodEnum;
 
 final class UpdateCatalogItemRequest extends BaseApiFormRequest
 {
+    /** The optional columns an admin may empty again by sending null (FT-12). */
+    private const array CLEARABLE_COLUMNS = ['sku', 'price_range', 'maintenance_level', 'style_period_type', 'formality_level', 'default_duration_minutes', 'styling_details'];
+
     public function rules(): array
     {
         $id = $this->route('id');
@@ -28,9 +31,9 @@ final class UpdateCatalogItemRequest extends BaseApiFormRequest
             'description.ar' => ['nullable', 'string', 'max:5000'],
             'slug' => ['sometimes', 'string', 'max:255', Rule::unique('service_catalog_items', 'slug')->ignore($id)],
             'sku' => ['nullable', 'string', 'max:100', Rule::unique('service_catalog_items', 'sku')->ignore($id)],
-            'price_range' => ['sometimes', 'array:min,max,currency'],
+            'price_range' => ['sometimes', 'nullable', 'array:min,max,currency'],
             'price_range.min' => ['required_with:price_range', 'numeric', 'min:0', 'max:'.ValidationLimitConstants::VALIDATION_PRICE_MINOR_MAX],
-            'price_range.max' => ['required_with:price_range', 'numeric', 'min:0', 'max:'.ValidationLimitConstants::VALIDATION_PRICE_MINOR_MAX],
+            'price_range.max' => ['required_with:price_range', 'numeric', 'min:0', 'gte:price_range.min', 'max:'.ValidationLimitConstants::VALIDATION_PRICE_MINOR_MAX],
             'price_range.currency' => ['required_with:price_range', 'string', 'size:3'],
             'maintenance_level' => ['nullable', Rule::enum(MaintenanceLevelEnum::class)],
             'style_period_type' => ['nullable', Rule::enum(StylePeriodEnum::class)],
@@ -45,6 +48,20 @@ final class UpdateCatalogItemRequest extends BaseApiFormRequest
             'tag_ids' => ['sometimes', 'array', ValidationLimitConstants::RULE_LIST_MAX],
             'tag_ids.*' => ['uuid', 'exists:service_catalog_item_tags,id'],
         ];
+    }
+
+    /**
+     * Columns the client sent as an explicit null; a missing key leaves the column alone.
+     *
+     * @param  array<string, mixed>  $data
+     * @return list<string>
+     */
+    private function clearedColumns(array $data): array
+    {
+        return array_values(array_filter(
+            self::CLEARABLE_COLUMNS,
+            static fn (string $column): bool => array_key_exists($column, $data) && $data[$column] === null,
+        ));
     }
 
     public function toCommand(string $id): UpdateCatalogItemCommand
@@ -68,6 +85,7 @@ final class UpdateCatalogItemRequest extends BaseApiFormRequest
             isActive: $data['is_active'] ?? null,
             defaultDurationMinutes: $data['default_duration_minutes'] ?? null,
             tagIds: $data['tag_ids'] ?? null,
+            clear: $this->clearedColumns($data),
         );
     }
 }

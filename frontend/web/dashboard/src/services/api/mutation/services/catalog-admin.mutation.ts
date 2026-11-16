@@ -16,6 +16,12 @@ export interface CatalogItemPayload {
   default_duration_minutes: number | null;
   is_active: boolean;
   tag_ids: string[];
+  price_range: { min: number; max: number; currency: string } | null;
+  maintenance_level: string | null;
+  style_period_type: string | null;
+  formality_level: string | null;
+  face_shapes: string[];
+  hair_textures: string[];
 }
 
 export interface CatalogTagPayload {

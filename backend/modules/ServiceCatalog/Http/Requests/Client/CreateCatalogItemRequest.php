@@ -28,7 +28,7 @@ final class CreateCatalogItemRequest extends BaseApiFormRequest
             'sku' => ['nullable', 'string', 'max:100', 'unique:service_catalog_items,sku'],
             'price_range' => ['nullable', 'array:min,max,currency'],
             'price_range.min' => ['required_with:price_range', 'numeric', 'min:0', 'max:'.ValidationLimitConstants::VALIDATION_PRICE_MINOR_MAX],
-            'price_range.max' => ['required_with:price_range', 'numeric', 'min:0', 'max:'.ValidationLimitConstants::VALIDATION_PRICE_MINOR_MAX],
+            'price_range.max' => ['required_with:price_range', 'numeric', 'min:0', 'gte:price_range.min', 'max:'.ValidationLimitConstants::VALIDATION_PRICE_MINOR_MAX],
             'price_range.currency' => ['required_with:price_range', 'string', 'size:3'],
             'maintenance_level' => ['nullable', Rule::enum(MaintenanceLevelEnum::class)],
             'style_period_type' => ['nullable', Rule::enum(StylePeriodEnum::class)],

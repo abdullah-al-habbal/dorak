@@ -45,7 +45,7 @@ Facebook sign-in are unsupported (G9).
 - FT-4 Accepted trade-off to revisit at the next mobile release: Business-app builds before `32d66844` no longer clear the unseen application state.
 
 **Dashboard**
-- FT-12 Catalog media upload (needs a multipart path through the proxy) and the catalog attributes the phase file listed as not done (NS-21).
+- FT-12 Catalog media upload (the proxy's multipart path exists since FT-9; this needs its own route and form). The attributes part is done.
 - FT-13 Website content: onboarding image upload, create and delete of pages and sections, an editor friendlier than JSON (NS-25).
 - FT-14 Show the ledger's per-entry rule snapshot (NS-22); more gateway drivers when they exist (NS-23); owner endpoint and view for a payout's lines (NS-24).
 - FT-15 Language `is_active` must hide a language wherever languages are offered (the backend rejects it for new input since S11) (NS-20).
@@ -86,6 +86,7 @@ Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are reso
 - **FT-8:** a closure range (`PUT hours-overrides`, `date_from`, `date_to`, optional `weekdays`, 366 days at most) expands into the existing per-date exceptions; there is no yearly recurrence rule.
 - **FT-9 (uploads):** the proxy accepts multipart only on a rule flagged `upload: true`, one image under `file` (2 MB, JPEG, PNG or WebP), re-built so nothing else is forwarded. A purpose gets its own backend route (`POST brands/logo` stores on the public disk and returns `url`); FT-12 and FT-13 add theirs the same way. An upload that is never attached to a saved record stays on disk (no cleanup job yet).
 - **FT-11:** opening a vacancy's applications no longer marks them seen; the manager uses "Mark new as seen" (bulk) or "Mark as seen" on a row. There is no way back to new.
+- **FT-12 (attributes):** an admin can clear an optional catalog column by sending an explicit `null` (a missing key still leaves it alone); `price_range.max` must be at least `min`; prices are typed in major units and sent in minor units.
 - **B:** only the platform admin creates global service categories; existing tenant-made ones are kept.
 - **C:** services belong to a brand; the owner and admin write them, a branch manager is read-only.
 - **D:** all admins are equal, no mandatory dual approval; keep creation, approval and payment as separate abilities.

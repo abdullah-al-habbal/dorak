@@ -27,5 +27,7 @@ final readonly class UpdateCatalogItemCommand
         public ?bool $isActive,
         public ?int $defaultDurationMinutes = null,
         public ?array $tagIds = null,
+        /** @var list<string> columns the request sent as an explicit null, to be emptied */
+        public array $clear = [],
     ) {}
 }

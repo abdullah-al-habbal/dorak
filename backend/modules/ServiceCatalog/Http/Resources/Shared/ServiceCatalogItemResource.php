@@ -20,7 +20,7 @@ final class ServiceCatalogItemResource extends JsonResource
             'price_range' => $this->price_range?->toArray(),
             'maintenance_level' => $this->maintenance_level,
             'style_period_type' => $this->style_period_type,
-            'formality_level' => $this->formalityLevel,
+            'formality_level' => $this->formality_level,
             'face_shapes' => $this->face_shapes,
             'hair_textures' => $this->hair_textures,
             'styling_details' => $this->styling_details?->toArray(),

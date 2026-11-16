@@ -30,7 +30,7 @@ final class UpdateCatalogItemHandler
             'default_duration_minutes' => $command->defaultDurationMinutes,
         ], fn ($v) => $v !== null);
 
-        $item->update($data);
+        $item->update([...$data, ...array_fill_keys($command->clear, null)]);
 
         if ($command->tagIds !== null) {
             $item->tags()->sync($command->tagIds);
