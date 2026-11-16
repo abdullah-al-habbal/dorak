@@ -313,6 +313,18 @@ describe("proxy allow-list: brand logo upload (FT-9)", () => {
   });
 
   it("keeps every other rule a JSON rule", () => {
-    expect(PROXY_ALLOW_LIST.filter((rule) => rule.upload).map((rule) => rule.pattern.source)).toEqual(["^brands\\/logo$"]);
+    expect(PROXY_ALLOW_LIST.filter((rule) => rule.upload).map((rule) => rule.pattern.source)).toEqual(["^brands\\/logo$", expect.stringContaining("catalog-items")]);
+  });
+});
+
+describe("proxy allow-list: catalog item media (FT-12)", () => {
+  it("lets only the admin upload (as an upload rule) and remove an item's image", () => {
+    expect(allowed(HttpMethod.Post, "admin/catalog-items/i1/media", AuthActor.Admin)).toBe(true);
+    expect(allowed(HttpMethod.Delete, "admin/catalog-items/i1/media/m1", AuthActor.Admin)).toBe(true);
+    for (const actor of [AuthActor.Owner, AuthActor.Manager, AuthActor.Barber]) {
+      expect(allowed(HttpMethod.Post, "admin/catalog-items/i1/media", actor)).toBe(false);
+      expect(allowed(HttpMethod.Delete, "admin/catalog-items/i1/media/m1", actor)).toBe(false);
+    }
+    expect(PROXY_ALLOW_LIST.find((rule) => rule.pattern.test("admin/catalog-items/i1/media"))?.upload).toBe(true);
   });
 });

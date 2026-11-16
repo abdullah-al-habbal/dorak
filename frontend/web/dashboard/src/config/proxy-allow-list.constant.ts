@@ -128,6 +128,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/catalog-categories/${ID}/active$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^admin\/catalog-items$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^admin/catalog-items/${ID}$`), guards: ADMIN_ONLY },
+  // FT-12: an item's images. The upload takes one multipart image; removing one is a plain call.
+  { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/catalog-items/${ID}/media$`), guards: ADMIN_ONLY, upload: true },
+  { methods: [HttpMethod.Delete], pattern: new RegExp(`^admin/catalog-items/${ID}/media/${ID}$`), guards: ADMIN_ONLY },
   // NS-21 catalog tags (admin only).
   { methods: [HttpMethod.Get, HttpMethod.Post], pattern: /^admin\/catalog-tags$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^admin/catalog-tags/${ID}$`), guards: ADMIN_ONLY },

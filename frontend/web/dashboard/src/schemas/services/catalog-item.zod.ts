@@ -10,6 +10,14 @@ import { optionalTranslationSchema } from "@/schemas/core/api/optional-translati
 
 const tagRefSchema = z.object({ id: z.string(), name: localizedTextSchema, slug: z.string().optional(), group_name: z.string().nullable().optional() });
 
+/** `ServiceCatalogMediumResource`: one image of an item; `image_url` is where the browser loads it from. */
+export const catalogMediumSchema = z.object({
+  id: z.string(),
+  image_url: z.string(),
+  alt_text: z.string().nullable().optional(),
+  sort_order: z.number().int(),
+});
+
 /** `ServiceCatalogItemResource` as the admin item screen reads it (with its category and tags loaded). */
 export const catalogItemSchema = z.object({
   id: z.string(),
@@ -25,6 +33,7 @@ export const catalogItemSchema = z.object({
   formality_level: z.enum(FormalityLevel).nullable().optional(),
   face_shapes: z.array(z.enum(FaceShape)).nullable().optional(),
   hair_textures: z.array(z.enum(HairTexture)).nullable().optional(),
+  media: z.array(catalogMediumSchema).optional().default([]),
   category: z.object({ id: z.string(), name: localizedTextSchema }).optional(),
   tags: z.array(tagRefSchema).optional().default([]),
   is_active: z.boolean(),

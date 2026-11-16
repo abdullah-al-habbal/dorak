@@ -38,6 +38,16 @@ export const enAdminCatalog = {
       invalid: "Check the details. The slug may already be used.",
       failed: "The item couldn't be saved. Try again.",
     },
+    media: {
+      title: "Images",
+      empty: "No images yet.",
+      saveFirst: "Save the item first, then add images.",
+      add: "Add an image",
+      hint: "JPEG, PNG or WebP, up to 2 MB. Saved at once.",
+      remove: "Remove image",
+      issues: { type: "Choose a JPEG, PNG or WebP image.", size: "The image must be 2 MB or smaller." },
+      toast: { added: "Image added.", removed: "Image removed.", addFailed: "The image couldn't be added.", removeFailed: "The image couldn't be removed." },
+    },
     attributes: {
       title: "Style details (optional)",
       priceMin: "Lowest price",

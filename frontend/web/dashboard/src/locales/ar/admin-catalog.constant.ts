@@ -40,6 +40,16 @@ export const arAdminCatalog: Dictionary["adminCatalog"] = {
       invalid: "راجع البيانات. قد يكون المعرّف مستخدماً.",
       failed: "تعذّر حفظ العنصر. حاول مرة أخرى.",
     },
+    media: {
+      title: "الصور",
+      empty: "لا توجد صور بعد.",
+      saveFirst: "احفظ العنصر أولًا ثم أضف الصور.",
+      add: "إضافة صورة",
+      hint: "JPEG أو PNG أو WebP حتى 2 ميغابايت. تُحفظ فورًا.",
+      remove: "إزالة الصورة",
+      issues: { type: "اختر صورة بصيغة JPEG أو PNG أو WebP.", size: "يجب ألا يتجاوز حجم الصورة 2 ميغابايت." },
+      toast: { added: "تمت إضافة الصورة.", removed: "تمت إزالة الصورة.", addFailed: "تعذّرت إضافة الصورة.", removeFailed: "تعذّرت إزالة الصورة." },
+    },
     attributes: {
       title: "تفاصيل الأسلوب (اختياري)",
       priceMin: "أدنى سعر",

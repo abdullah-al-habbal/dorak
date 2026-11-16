@@ -8,4 +8,5 @@ return [
     'category_in_use' => 'This category still has subcategories, catalog items or services. Deactivate it instead.',
     'tag_saved' => 'Tag saved.',
     'tag_deleted' => 'Tag deleted.',
+    'media_limit' => 'An item can have at most :max images.',
 ];

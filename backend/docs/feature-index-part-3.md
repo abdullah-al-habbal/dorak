@@ -59,3 +59,4 @@ Part 3 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 - Routes: barber-affiliations.php
 - Brand logo upload (FT-9): `POST dashboard/brands/logo` (owner, multipart `file`, JPEG/PNG/WebP up to 2 MB and 4096 px) stores on the `public` disk and returns `{url}` for `logo_url`; the dashboard add-brand form also sends `universe`.
 - Catalog item attributes (FT-12): `PUT admin/catalog-items/{id}` clears `sku`, `price_range`, `maintenance_level`, `style_period_type`, `formality_level`, `default_duration_minutes` and `styling_details` when sent as `null`; `formality_level` is now returned; `price_range.max` must be at least `min`.
+- Catalog item media (FT-12): `POST admin/catalog-items/{id}/media` (multipart `file`, JPEG/PNG/WebP, 2 MB, 4096 px, 10 per item) returns the medium with `image_url`; `DELETE admin/catalog-items/{id}/media/{media}` removes it and its file. Item `media` now carries `image_url`.

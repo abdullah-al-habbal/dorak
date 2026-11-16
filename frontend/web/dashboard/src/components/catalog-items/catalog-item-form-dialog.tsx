@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { FormEvent, JSX } from "react";
 
+import { CatalogItemMediaSection } from "@/components/catalog-items/attributes/catalog-item-media-section";
 import { CatalogItemAttributesFields } from "@/components/catalog-items/attributes/catalog-item-attributes-fields";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
@@ -150,6 +151,7 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
             <Input id="item-duration" inputMode="numeric" dir="ltr" autoComplete="off" value={duration} onChange={(event) => setDuration(event.target.value)} />
           </FormField>
           <CatalogItemAttributesFields value={attributes} onChange={setAttributes} />
+          {item ? <CatalogItemMediaSection itemId={item.id} initial={item.media} /> : <p className="text-sm text-muted-foreground">{t.media.saveFirst}</p>}
           <fieldset className="flex flex-col gap-1">
             <legend className="mb-1 text-sm font-medium">{t.form.tags}</legend>
             {tags.data?.length === 0 ? <p className="text-sm text-muted-foreground">{t.form.noTags}</p> : null}
