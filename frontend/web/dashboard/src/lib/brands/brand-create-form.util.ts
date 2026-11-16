@@ -1,14 +1,17 @@
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
 import type { BrandCreatePayload } from "@/interfaces/brands/brand-create-payload.interface";
 import type { MappedFormError } from "@/interfaces/core/query/mapped-form-error.interface";
 import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 import type { BrandCreateFormValues } from "@/schemas/brands/brand-create-form.zod";
 
-export const EMPTY_BRAND_CREATE_FORM: BrandCreateFormValues = { name_en: "", name_ar: "", currency: "", branch_en: "", branch_ar: "" };
+export const EMPTY_BRAND_CREATE_FORM: BrandCreateFormValues = { name_en: "", name_ar: "", currency: "", universe: VenueUniverse.Unisex, branch_en: "", branch_ar: "" };
 
-export function createFormToBrandPayload(values: BrandCreateFormValues): BrandCreatePayload {
+export function createFormToBrandPayload(values: BrandCreateFormValues, logoUrl?: string): BrandCreatePayload {
   return {
     name: { en: values.name_en.trim(), ar: values.name_ar.trim() },
     base_currency_code: values.currency.trim(),
+    universe: values.universe,
+    ...(logoUrl ? { logo_url: logoUrl } : {}),
     first_branch: { name: { en: values.branch_en.trim(), ar: values.branch_ar.trim() } },
   };
 }
@@ -17,6 +20,7 @@ const FIELD_BY_API_NAME: Record<string, keyof BrandCreateFormValues> = {
   "name.en": "name_en",
   "name.ar": "name_ar",
   base_currency_code: "currency",
+  universe: "universe",
   "first_branch.name.en": "branch_en",
   "first_branch.name.ar": "branch_ar",
 };

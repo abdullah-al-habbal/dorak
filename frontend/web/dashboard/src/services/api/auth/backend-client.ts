@@ -13,7 +13,9 @@ const REDIRECT_MIN = 300;
 const REDIRECT_MAX = 399;
 
 function buildHeaders(request: BackendRequest): Headers {
-  const headers = new Headers({ Accept: "application/json", "Content-Type": "application/json" });
+  // A multipart body sets its own Content-Type, with the boundary.
+  const headers = new Headers({ Accept: "application/json" });
+  if (!(request.body instanceof FormData)) headers.set("Content-Type", "application/json");
   if (request.accessToken) headers.set("Authorization", `Bearer ${request.accessToken}`);
   if (request.claim) headers.set(CLAIM_HEADER, request.claim);
   if (request.locale) headers.set("Accept-Language", request.locale);
@@ -31,7 +33,7 @@ export async function backendRequest(request: BackendRequest): Promise<BackendRe
     const response = await fetch(url, {
       method: request.method,
       headers: buildHeaders(request),
-      body: request.body === undefined ? undefined : JSON.stringify(request.body),
+      body: request.body === undefined || request.body instanceof FormData ? request.body : JSON.stringify(request.body),
       cache: "no-store",
       redirect: "manual",
       signal: AbortSignal.timeout(BACKEND_TIMEOUT_MS),

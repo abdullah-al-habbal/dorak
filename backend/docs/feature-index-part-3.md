@@ -57,3 +57,4 @@ Part 3 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 - `RejectAffiliationAction` [POST /api/v1/affiliations/{affiliation}/reject] — reject invite. Auth:barber
 - `ListBarberAffiliationsAction` [GET /api/v1/barbers/{barber}/affiliations] — list barber's affiliations. Auth:barber
 - Routes: barber-affiliations.php
+- Brand logo upload (FT-9): `POST dashboard/brands/logo` (owner, multipart `file`, JPEG/PNG/WebP up to 2 MB and 4096 px) stores on the `public` disk and returns `{url}` for `logo_url`; the dashboard add-brand form also sends `universe`.

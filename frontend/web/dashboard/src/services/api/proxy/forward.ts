@@ -14,6 +14,7 @@ import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { failureFromBackend } from "@/services/api/auth/failure-response";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
 import { matchProxyRule } from "@/services/api/proxy/match-rule.util";
+import { readUploadBody } from "@/services/api/proxy/read-upload.util";
 
 const MAX_BODY_BYTES = 256 * 1024;
 const NO_STORE = { "Cache-Control": "no-store" };
@@ -59,7 +60,7 @@ export async function forwardDashboardRequest(
     return apiFailure(HttpStatus.Forbidden, ApiErrorCode.Forbidden, dictionary.errors.api.forbidden);
   }
 
-  const body = await readJsonBody(request);
+  const body = match.rule.upload ? await readUploadBody(request) : await readJsonBody(request);
   if (!body.ok) return apiFailure(body.status, ApiErrorCode.InvalidRequest, dictionary.errors.api.invalid_request);
 
   const result = await backendRequest({

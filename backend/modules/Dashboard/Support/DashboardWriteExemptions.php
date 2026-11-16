@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Support;
 
 use Modules\Dashboard\Http\Actions\Brands\StoreBrandAction;
+use Modules\Dashboard\Http\Actions\Brands\UploadBrandLogoAction;
 use Modules\Dashboard\Http\Actions\Business\CancelBookingAction;
 use Modules\Dashboard\Http\Actions\Notifications\MarkAllDashboardNotificationsReadAction;
 use Modules\Dashboard\Http\Actions\Notifications\MarkDashboardNotificationReadAction;
@@ -47,6 +48,8 @@ final class DashboardWriteExemptions
         CancelBookingAction::class,
         // The owner of a suspended brand may still open another brand (decision A, point 3). It touches no existing brand or branch.
         StoreBrandAction::class,
+        // Stores one image for the add-brand form and changes no brand or branch, so a suspended tenant has nothing to protect (FT-9).
+        UploadBrandLogoAction::class,
         // Resubmit only works on a Rejected brand (`BrandReviewService::resubmit`), so it can never run on a Suspended one: reviewed, no guard needed.
         ResubmitBrandAction::class,
     ];

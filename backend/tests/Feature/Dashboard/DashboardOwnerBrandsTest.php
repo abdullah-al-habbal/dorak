@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Enums\BranchStatusEnum;
@@ -214,5 +216,53 @@ describe('Edit a brand as an owner (NS-13)', function (): void {
         $this->authenticateDashboardActor(AdminModel::factory()->create());
         $this->putJson(OWNER_BRANDS_URL."/{$brand->id}", ['name' => ['en' => 'Admin edit']])->assertOk();
         expect($brand->fresh()->getTranslation('name', 'en'))->toBe('Admin edit');
+    });
+});
+
+/** FT-9: the logo is uploaded first, then its URL goes into the brand payload. */
+describe('Brand logo upload (FT-9)', function (): void {
+    beforeEach(function (): void {
+        Storage::fake('public');
+    });
+
+    it('stores a logo for an owner and returns its public URL', function (): void {
+        $this->authenticateDashboardActor(ownerBrandsPair()['owner']);
+
+        $response = $this->post(OWNER_BRANDS_URL.'/logo', ['file' => UploadedFile::fake()->image('logo.png', 200, 200)], ['Accept' => 'application/json'])
+            ->assertCreated();
+
+        $files = Storage::disk('public')->allFiles('brand-logos');
+        expect($files)->toHaveCount(1)
+            ->and($response->json('data.url'))->toBe(Storage::disk('public')->url($files[0]))
+            ->and($files[0])->not->toContain('logo.png');
+    });
+
+    it('refuses what is not a small raster image', function (UploadedFile $file): void {
+        $this->authenticateDashboardActor(ownerBrandsPair()['owner']);
+
+        $this->post(OWNER_BRANDS_URL.'/logo', ['file' => $file], ['Accept' => 'application/json'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('file');
+
+        expect(Storage::disk('public')->allFiles())->toBe([]);
+    })->with([
+        'a script' => [fn () => UploadedFile::fake()->createWithContent('logo.png', '<?php echo 1;')],
+        'an svg' => [fn () => UploadedFile::fake()->createWithContent('logo.svg', '<svg xmlns="http://www.w3.org/2000/svg"></svg>')],
+        'too heavy' => [fn () => UploadedFile::fake()->image('logo.png')->size(2049)],
+        'too wide' => [fn () => UploadedFile::fake()->image('logo.png', 4097, 10)],
+    ]);
+
+    it('refuses a missing file, anonymous callers, managers and barbers', function (): void {
+        $this->postJson(OWNER_BRANDS_URL.'/logo')->assertUnauthorized();
+
+        $this->authenticateDashboardActor(ownerBrandsPair()['owner']);
+        $this->postJson(OWNER_BRANDS_URL.'/logo')->assertUnprocessable()->assertJsonValidationErrors('file');
+
+        foreach ([BranchModel::factory()->create(), BarberModel::factory()->create()] as $actor) {
+            $this->authenticateDashboardActor($actor);
+            $this->post(OWNER_BRANDS_URL.'/logo', ['file' => UploadedFile::fake()->image('logo.png')], ['Accept' => 'application/json'])->assertForbidden();
+        }
+
+        expect(Storage::disk('public')->allFiles())->toBe([]);
     });
 });

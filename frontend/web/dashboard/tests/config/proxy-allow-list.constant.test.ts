@@ -304,3 +304,15 @@ describe("proxy allow-list: special days range (FT-8)", () => {
     expect(allowed(HttpMethod.Put, "branches/b1/hours-overrides", AuthActor.Barber)).toBe(false);
   });
 });
+
+describe("proxy allow-list: brand logo upload (FT-9)", () => {
+  it("lets only an owner POST the logo, as an upload rule", () => {
+    expect(allowed(HttpMethod.Post, "brands/logo", AuthActor.Owner)).toBe(true);
+    for (const actor of [AuthActor.Admin, AuthActor.Manager, AuthActor.Barber]) expect(allowed(HttpMethod.Post, "brands/logo", actor)).toBe(false);
+    expect(PROXY_ALLOW_LIST.find((rule) => rule.pattern.test("brands/logo") && rule.methods.includes(HttpMethod.Post))?.upload).toBe(true);
+  });
+
+  it("keeps every other rule a JSON rule", () => {
+    expect(PROXY_ALLOW_LIST.filter((rule) => rule.upload).map((rule) => rule.pattern.source)).toEqual(["^brands\\/logo$"]);
+  });
+});

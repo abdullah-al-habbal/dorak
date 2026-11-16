@@ -16,8 +16,8 @@ async function send(path: string, method: HttpMethod, body: unknown): Promise<Re
       method,
       credentials: "same-origin",
       redirect: "manual",
-      headers: { Accept: "application/json", ...(body === undefined ? {} : { "Content-Type": "application/json" }) },
-      body: body === undefined ? undefined : JSON.stringify(body),
+      headers: { Accept: "application/json", ...(body === undefined || body instanceof FormData ? {} : { "Content-Type": "application/json" }) },
+      body: body === undefined || body instanceof FormData ? body : JSON.stringify(body),
     });
   } catch {
     throw new ApiClientError({ status: 0, code: ApiErrorCode.Network, message: "" });

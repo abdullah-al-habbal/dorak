@@ -32,6 +32,8 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Delete], pattern: new RegExp(`^branches/${ID}$`), guards: BRANDS },
   // The brand pickers and the admin approval list (owners get only their brands).
   { methods: [HttpMethod.Get], pattern: /^brands$/, guards: BRANDS },
+  // FT-9: a logo image goes up first, then its URL goes into the brand payload. Owners only; the backend re-checks.
+  { methods: [HttpMethod.Post], pattern: /^brands\/logo$/, guards: OWNER_ONLY, upload: true },
   // Brand approval: the detail read and the approve action. Admin only; the backend re-checks through `BrandPolicy`.
   { methods: [HttpMethod.Get], pattern: new RegExp(`^brands/${ID}$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/brands/${ID}/approve$`), guards: ADMIN_ONLY },

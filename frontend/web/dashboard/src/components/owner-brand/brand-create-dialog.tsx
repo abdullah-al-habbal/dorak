@@ -8,6 +8,8 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
+import { UPLOAD_IMAGE_ACCEPT } from "@/config/upload.constant";
 import { NativeSelect } from "@/components/ui/native-select";
 import { BRAND_MAX_NAME } from "@/config/platform/admin-brand.constant";
 import { OWNER_BRANCH_NAME_MAX } from "@/config/venue/owner-brand.constant";
@@ -22,7 +24,7 @@ export function BrandCreateDialog({ onClose }: { onClose: () => void }): JSX.Ele
   const { dictionary, locale } = useI18n();
   const { ownerBrand: t, common } = dictionary;
   const currencies = useCurrencies();
-  const { form, busy, submit } = useBrandCreateForm(onClose);
+  const { form, busy, logo, submit } = useBrandCreateForm(onClose);
   const { errors } = form.formState;
   const invalid = (name: keyof BrandCreateFormValues, id: string) => ({ "aria-invalid": Boolean(errors[name]), "aria-describedby": errors[name] ? fieldErrorId(id) : undefined });
 
@@ -52,6 +54,16 @@ export function BrandCreateDialog({ onClose }: { onClose: () => void }): JSX.Ele
                 </option>
               ))}
             </NativeSelect>
+          </FormField>
+          <FormField id="new-brand-universe" label={t.create.universe}>
+            <NativeSelect id="new-brand-universe" {...form.register("universe")}>
+              {Object.values(VenueUniverse).map((value) => (
+                <option key={value} value={value}>{dictionary.branches.universe[value]}</option>
+              ))}
+            </NativeSelect>
+          </FormField>
+          <FormField id="new-brand-logo" label={t.create.logo} hint={t.create.logoHint} error={logo.error}>
+            <Input id="new-brand-logo" type="file" accept={UPLOAD_IMAGE_ACCEPT} aria-invalid={Boolean(logo.error)} aria-describedby={logo.error ? fieldErrorId("new-brand-logo") : undefined} onChange={logo.onPick} />
           </FormField>
           <p className="text-sm text-muted-foreground">{t.create.branchHint}</p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

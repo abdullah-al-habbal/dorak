@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { VenueUniverse } from "@/enums/people/venue-universe.enum";
 import { adminUserToForm, emptyAdminUserForm, formToAdminUserPayload, mapAdminUserSaveError } from "@/lib/platform/admin-user-form.util";
 import { EMPTY_BRAND_CREATE_FORM, createFormToBrandPayload, mapBrandCreateError } from "@/lib/brands/brand-create-form.util";
 import { brandToEditForm, editFormToBrandPayload, mapBrandEditError } from "@/lib/brands/brand-edit-form.util";
@@ -31,12 +32,15 @@ describe("admin user form", () => {
 
 describe("brand create form", () => {
   it("builds the create body with the first branch", () => {
-    expect(EMPTY_BRAND_CREATE_FORM).toEqual({ name_en: "", name_ar: "", currency: "", branch_en: "", branch_ar: "" });
-    expect(createFormToBrandPayload({ name_en: " B ", name_ar: " ب ", currency: " USD ", branch_en: " M ", branch_ar: " م " })).toEqual({
+    expect(EMPTY_BRAND_CREATE_FORM).toEqual({ name_en: "", name_ar: "", currency: "", universe: "unisex", branch_en: "", branch_ar: "" });
+    const values = { name_en: " B ", name_ar: " ب ", currency: " USD ", universe: VenueUniverse.Women, branch_en: " M ", branch_ar: " م " };
+    expect(createFormToBrandPayload(values)).toEqual({
       name: { en: "B", ar: "ب" },
       base_currency_code: "USD",
+      universe: "women",
       first_branch: { name: { en: "M", ar: "م" } },
     });
+    expect(createFormToBrandPayload(values, "https://cdn.test/logo.png")).toMatchObject({ logo_url: "https://cdn.test/logo.png" });
   });
 
   it("renames backend fields and keeps unknown ones", () => {

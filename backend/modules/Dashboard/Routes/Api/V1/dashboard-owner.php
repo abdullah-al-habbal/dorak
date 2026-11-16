@@ -11,6 +11,7 @@ use Modules\Dashboard\Http\Actions\Brands\ListBrandsAction;
 use Modules\Dashboard\Http\Actions\Brands\ShowBrandAction;
 use Modules\Dashboard\Http\Actions\Brands\StoreBrandAction;
 use Modules\Dashboard\Http\Actions\Brands\UpdateBrandAction;
+use Modules\Dashboard\Http\Actions\Brands\UploadBrandLogoAction;
 use Modules\Dashboard\Http\Actions\Earnings\ShowEarningsAction;
 use Modules\Dashboard\Http\Actions\Owner\ResubmitBrandAction;
 use Modules\Dashboard\Http\Actions\Schedule\ListScheduleAppointmentsAction;
@@ -42,6 +43,7 @@ Route::prefix('dashboard')->group(function (): void {
     Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBrandAuthorizationMiddleware::class])->group(function (): void {
         Route::get('/brands', ListBrandsAction::class);
         Route::post('/brands', StoreBrandAction::class);
+        Route::post('/brands/logo', UploadBrandLogoAction::class);
         Route::get('/brands/{brand}', ShowBrandAction::class);
         Route::put('/brands/{brand}', UpdateBrandAction::class);
         Route::post('/brands/{brand}/resubmit', ResubmitBrandAction::class);

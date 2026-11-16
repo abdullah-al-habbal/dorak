@@ -29,12 +29,17 @@ describe("admin user form schema", () => {
 
 describe("brand create form schema", () => {
   const schema = createBrandCreateSchema(en.ownerBrand.create.validation);
-  const valid = { name_en: "B", name_ar: "ب", currency: "USD", branch_en: "Main", branch_ar: "الرئيسي" };
+  const valid = { name_en: "B", name_ar: "ب", currency: "USD", universe: "unisex", branch_en: "Main", branch_ar: "الرئيسي" };
 
   it("accepts a complete form and needs a currency and both branch names", () => {
     expect(schema.safeParse(valid).success).toBe(true);
     expect(zodOutcome(schema, { ...valid, currency: "  " }).messages).toEqual([en.ownerBrand.create.validation.currency]);
     expect(zodOutcome(schema, { ...valid, branch_ar: "" }).messages).toEqual([en.ownerBrand.create.validation.branch]);
+  });
+
+  it("accepts only the three universes", () => {
+    expect(schema.safeParse({ ...valid, universe: "women" }).success).toBe(true);
+    expect(schema.safeParse({ ...valid, universe: "kids" }).success).toBe(false);
   });
 });
 
