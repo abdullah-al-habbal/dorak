@@ -76,4 +76,25 @@ describe("floor plan draft", () => {
     expect(payload.layout_settings).toEqual(layout);
     expect(payload).toMatchObject({ branch_id: "b1", label: "Chair 1", floor_zone: FloorZone.Shared, status: ChairStatus.Available });
   });
+
+  it("starts from the saved zones, else the two default halves, and each chair's zone", () => {
+    expect(planToDraft(plan).zones).toEqual(UNISEX_ZONES.map((zone) => ({ ...zone })));
+    const saved = [{ zone: FloorZone.Men, x: 0, y: 0, width: 30, height: 100 }, { zone: FloorZone.Women, x: 30, y: 0, width: 70, height: 100 }];
+    expect(planToDraft({ ...plan, floor_plan: { ...plan.floor_plan, zones: saved } }).zones).toEqual(saved);
+    expect(planToDraft(plan).chairZones).toEqual({ c1: FloorZone.Shared, c2: FloorZone.Shared });
+  });
+
+  it("sends the dragged zones for the zoned preset", () => {
+    const draft = planToDraft(plan);
+    const moved = { ...draft, preset: FloorPlanPreset.UnisexZoned, zones: draft.zones.map((zone) => (zone.zone === FloorZone.Men ? { ...zone, width: 30 } : zone)) };
+    expect(draftToLayoutPayload(moved).zones.find((zone) => zone.zone === FloorZone.Men)?.width).toBe(30);
+  });
+
+  it("counts a chair whose zone changed as moved and sends the new zone", () => {
+    const saved = planToDraft(plan);
+    const draft = { ...saved, chairZones: { ...saved.chairZones, c1: FloorZone.Women } };
+    expect(movedChairIds(draft, saved)).toEqual(["c1"]);
+    expect(chairPayloadWithLayout(chair, "b1", draft.chairs.c1, draft.chairZones.c1).floor_zone).toBe(FloorZone.Women);
+    expect(chairPayloadWithLayout(chair, "b1", draft.chairs.c1).floor_zone).toBe(FloorZone.Shared);
+  });
 });

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { MAX_LAYOUT_VALUE, MIN_CHAIR_SIZE, STAGE_WIDTH } from "@/config/venue/floor-plan.constant";
 import { FloorCanvasUnit } from "@/enums/venue/floor-canvas-unit.enum";
+import { FloorZone } from "@/enums/people/floor-zone.enum";
 import { FloorDecorationType } from "@/enums/venue/floor-decoration-type.enum";
 import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
 import {
@@ -10,6 +11,7 @@ import {
   clampDecoration,
   moveChair,
   moveDecoration,
+  moveZone,
   percentToUnits,
   pointerToStage,
   rotateChair,
@@ -72,5 +74,15 @@ describe("floor plan geometry", () => {
     const box = { left: 100, top: 50, width: 500, height: 250 };
     expect(pointerToStage(350, 175, box, stage)).toEqual({ x: 500, y: 250 });
     expect(pointerToStage(100, 50, box, stage)).toEqual({ x: 0, y: 0 });
+  });
+});
+
+describe("zones", () => {
+  const zone = { zone: FloorZone.Men, x: 0, y: 0, width: 50, height: 100 };
+
+  it("moves a zone and keeps it inside the canvas", () => {
+    expect(moveZone(zone, 10, 0)).toEqual({ ...zone, x: 10 });
+    expect(moveZone(zone, 80, 20)).toEqual({ ...zone, x: 50, y: 0 });
+    expect(moveZone(zone, -5, -5)).toEqual(zone);
   });
 });

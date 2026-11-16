@@ -45,7 +45,6 @@ Facebook sign-in are unsupported (G9).
 - FT-4 Accepted trade-off to revisit at the next mobile release: Business-app builds before `32d66844` no longer clear the unseen application state.
 
 **Dashboard**
-- FT-10 Draggable floor-plan zones; set a chair's zone from the editor (NS-15).
 - FT-11 Manual control for the "seen" application state (NS-16, NS-17).
 - FT-12 Catalog media upload (needs a multipart path through the proxy) and the catalog attributes the phase file listed as not done (NS-21).
 - FT-13 Website content: onboarding image upload, create and delete of pages and sections, an editor friendlier than JSON (NS-25).

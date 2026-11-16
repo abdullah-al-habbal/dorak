@@ -6,9 +6,10 @@ import type { FloorDecorationType } from "@/enums/venue/floor-decoration-type.en
 import type { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
 import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
 import type { FloorDecorationDraft, FloorPlanDraft, FloorSelection } from "@/interfaces/chairs/floor-plan-draft.interface";
-import { clampChair, clampDecoration, stageSize } from "@/lib/chairs/floor-plan-geometry.util";
+import { clampChair, clampDecoration, clampPercentRect, stageSize } from "@/lib/chairs/floor-plan-geometry.util";
 import { isDirty, newDecoration, planToDraft } from "@/lib/chairs/floor-plan-draft.util";
-import type { FloorCanvas, FloorPlan } from "@/types/chairs/floor-plan.type";
+import type { FloorZone } from "@/enums/people/floor-zone.enum";
+import type { FloorCanvas, FloorPlan, FloorZoneRect } from "@/types/chairs/floor-plan.type";
 
 export interface FloorPlanEditor {
   draft: FloorPlanDraft;
@@ -19,6 +20,8 @@ export interface FloorPlanEditor {
   setPreset: (preset: FloorPlanPreset) => void;
   setCanvas: (patch: Partial<FloorCanvas>) => void;
   setChair: (id: string, layout: ChairLayoutPayload) => void;
+  setChairZone: (id: string, zone: FloorZone) => void;
+  setZone: (zone: FloorZone, patch: Partial<FloorZoneRect>) => void;
   addDecoration: (type: FloorDecorationType) => void;
   setDecoration: (key: string, patch: Partial<FloorDecorationDraft>) => void;
   removeDecoration: (key: string) => void;
@@ -50,6 +53,14 @@ export function useFloorPlanEditor(plan: FloorPlan): FloorPlanEditor {
     setDraft((current) => ({ ...current, chairs: { ...current.chairs, [id]: clampChair(layout, stageSize(current.canvas)) } }));
   }
 
+  function setChairZone(id: string, zone: FloorZone): void {
+    setDraft((current) => ({ ...current, chairZones: { ...current.chairZones, [id]: zone } }));
+  }
+
+  function setZone(zone: FloorZone, patch: Partial<FloorZoneRect>): void {
+    setDraft((current) => ({ ...current, zones: current.zones.map((item) => (item.zone === zone ? { ...clampPercentRect({ ...item, ...patch }), zone } : item)) }));
+  }
+
   function addDecoration(type: FloorDecorationType): void {
     counter.current += 1;
     const item = newDecoration(type, `new-${counter.current}`);
@@ -74,5 +85,5 @@ export function useFloorPlanEditor(plan: FloorPlan): FloorPlanEditor {
     setSelection(null);
   }
 
-  return { draft, saved, selection, dirty: isDirty(draft, saved), select: setSelection, setPreset, setCanvas, setChair, addDecoration, setDecoration, removeDecoration, discard };
+  return { draft, saved, selection, dirty: isDirty(draft, saved), select: setSelection, setPreset, setCanvas, setChair, setChairZone, setZone, addDecoration, setDecoration, removeDecoration, discard };
 }

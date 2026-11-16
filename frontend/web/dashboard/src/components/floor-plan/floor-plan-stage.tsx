@@ -3,16 +3,17 @@
 import { useRef } from "react";
 import type { JSX, KeyboardEvent, PointerEvent } from "react";
 
-import { KEYBOARD_BIG_STEP, KEYBOARD_STEP, ROTATION_STEP, UNISEX_ZONES } from "@/config/venue/floor-plan.constant";
+import { KEYBOARD_BIG_STEP, KEYBOARD_STEP, ROTATION_STEP } from "@/config/venue/floor-plan.constant";
 import { FloorPlanPreset } from "@/enums/venue/floor-plan-preset.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { FloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
-import { moveChair, moveDecoration, percentToUnits, pointerToStage, rotateChair, stageSize, unitsToPercent } from "@/lib/chairs/floor-plan-geometry.util";
+import { moveChair, moveDecoration, moveZone, percentToUnits, pointerToStage, rotateChair, stageSize, unitsToPercent } from "@/lib/chairs/floor-plan-geometry.util";
 import { cn } from "@/lib/utils";
+import type { FloorZone } from "@/enums/people/floor-zone.enum";
 import type { Chair } from "@/types/chairs/chair.type";
 
 interface DragState {
-  kind: "chair" | "decoration";
+  kind: "chair" | "decoration" | "zone";
   id: string;
   offsetX: number;
   offsetY: number;
@@ -56,10 +57,12 @@ export function FloorPlanStage({ editor, chairs, readOnly }: FloorPlanStageProps
       if (layout) editor.setChair(active.id, { ...layout, position_x: at.x - active.offsetX, position_y: at.y - active.offsetY });
       return;
     }
-    const item = draft.decorations.find((candidate) => candidate.key === active.id);
-    if (!item) return;
     const percent = unitsToPercent(at.x - active.offsetX, at.y - active.offsetY, stage);
-    editor.setDecoration(active.id, { x: percent.x, y: percent.y });
+    if (active.kind === "zone") {
+      editor.setZone(active.id as FloorZone, { x: percent.x, y: percent.y });
+      return;
+    }
+    if (draft.decorations.some((candidate) => candidate.key === active.id)) editor.setDecoration(active.id, { x: percent.x, y: percent.y });
   }
 
   function key(event: KeyboardEvent<SVGGElement>, kind: DragState["kind"], id: string): void {
@@ -71,6 +74,10 @@ export function FloorPlanStage({ editor, chairs, readOnly }: FloorPlanStageProps
       if (kind === "chair") {
         const layout = draft.chairs[id];
         if (layout) editor.setChair(id, moveChair(layout, delta[0], delta[1], stage));
+      } else if (kind === "zone") {
+        const zone = draft.zones.find((candidate) => candidate.zone === id);
+        const percent = unitsToPercent(delta[0], delta[1], stage);
+        if (zone) editor.setZone(zone.zone, moveZone(zone, percent.x, percent.y));
       } else {
         const item = draft.decorations.find((candidate) => candidate.key === id);
         const percent = unitsToPercent(delta[0], delta[1], stage);
@@ -103,12 +110,23 @@ export function FloorPlanStage({ editor, chairs, readOnly }: FloorPlanStageProps
       onPointerCancel={() => (drag.current = null)}
     >
       {draft.preset === FloorPlanPreset.UnisexZoned
-        ? UNISEX_ZONES.map((zone) => {
+        ? draft.zones.map((zone) => {
             const box = percentToUnits(zone, stage);
+            const picked = chosen("zone", zone.zone);
             return (
-              <g key={zone.zone} aria-hidden>
-                <rect {...box} className="fill-transparent stroke-border" strokeDasharray="12 8" />
-                <text x={box.x + 16} y={box.y + 32} className="fill-muted-foreground text-[24px]">{t.zone[zone.zone]}</text>
+              <g
+                key={zone.zone}
+                tabIndex={readOnly ? -1 : 0}
+                role="button"
+                aria-label={t.stage.zone.replace("{zone}", t.zone[zone.zone])}
+                aria-pressed={picked}
+                className="cursor-grab outline-none focus-visible:[&>rect]:stroke-ring"
+                onPointerDown={(event) => begin(event, "zone", zone.zone, box.x, box.y)}
+                onKeyDown={(event) => key(event, "zone", zone.zone)}
+                onFocus={() => editor.select({ kind: "zone", id: zone.zone })}
+              >
+                <rect {...box} className={cn("fill-transparent", picked ? "stroke-primary" : "stroke-border")} strokeWidth={picked ? 5 : 2} strokeDasharray="12 8" />
+                <text x={box.x + 16} y={box.y + 32} className="pointer-events-none fill-muted-foreground text-[24px]">{t.zone[zone.zone]}</text>
               </g>
             );
           })

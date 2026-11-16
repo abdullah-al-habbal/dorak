@@ -1,6 +1,6 @@
 import { MAX_LAYOUT_VALUE, MIN_CHAIR_SIZE, PERCENT_MAX, ROTATION_LIMIT, STAGE_WIDTH } from "@/config/venue/floor-plan.constant";
 import type { ChairLayoutPayload } from "@/interfaces/chairs/chair-payload.interface";
-import type { FloorCanvas, FloorDecoration } from "@/types/chairs/floor-plan.type";
+import type { FloorCanvas, FloorDecoration, FloorZoneRect } from "@/types/chairs/floor-plan.type";
 
 export interface StageSize {
   width: number;
@@ -39,15 +39,23 @@ export function rotateChair(layout: ChairLayoutPayload, delta: number): ChairLay
   return { ...layout, rotation: next };
 }
 
-/** Decorations are saved in percent of the canvas. */
-export function clampDecoration(item: FloorDecoration): FloorDecoration {
+/** Decorations and zones are saved in percent of the canvas. */
+export function clampPercentRect<T extends { x: number; y: number; width: number; height: number }>(item: T): T {
   const width = clamp(item.width, 1, PERCENT_MAX);
   const height = clamp(item.height, 1, PERCENT_MAX);
   return { ...item, width, height, x: clamp(item.x, 0, PERCENT_MAX - width), y: clamp(item.y, 0, PERCENT_MAX - height) };
 }
 
+export function clampDecoration(item: FloorDecoration): FloorDecoration {
+  return clampPercentRect(item);
+}
+
 export function moveDecoration(item: FloorDecoration, dxPercent: number, dyPercent: number): FloorDecoration {
   return clampDecoration({ ...item, x: item.x + dxPercent, y: item.y + dyPercent });
+}
+
+export function moveZone(zone: FloorZoneRect, dxPercent: number, dyPercent: number): FloorZoneRect {
+  return clampPercentRect({ ...zone, x: zone.x + dxPercent, y: zone.y + dyPercent });
 }
 
 /** Stage units to percent of the canvas along each axis. */

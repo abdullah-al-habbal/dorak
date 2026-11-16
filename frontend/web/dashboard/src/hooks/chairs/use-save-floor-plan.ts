@@ -28,7 +28,7 @@ export function useSaveFloorPlan(): UseMutationResult<void, Error, SaveFloorPlan
       await saveFloorPlanLayout(branchId, draftToLayoutPayload(draft));
       for (const id of movedChairIds(draft, saved)) {
         const chair = plan.chairs.find((candidate) => candidate.id === id);
-        if (chair) await updateChair(id, chairPayloadWithLayout(chair, branchId, draft.chairs[id]));
+        if (chair) await updateChair(id, chairPayloadWithLayout(chair, branchId, draft.chairs[id], draft.chairZones[id]));
       }
     },
     invalidate: [floorPlanKeys.all, chairKeys.all],
