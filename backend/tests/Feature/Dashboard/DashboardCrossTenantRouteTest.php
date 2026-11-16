@@ -130,6 +130,7 @@ function tenantPayload(string $key, array $ids, string $ownBrandId): array
         'PUT api/v1/dashboard/branches/{branch}' => ['brand_id' => $ownBrandId, 'name' => $translated, 'email' => 'attacker-branch@example.test'],
         'PUT api/v1/dashboard/branches/{branch}/opening-hours' => ['hours' => [['day_of_week' => 1, 'opens_time' => '09:00', 'closes_time' => '17:00']]],
         'PUT api/v1/dashboard/branches/{branch}/hours-overrides/{date}' => ['is_closed' => true],
+        'PUT api/v1/dashboard/branches/{branch}/hours-overrides' => ['date_from' => $timestamp->toDateString(), 'date_to' => $timestamp->toDateString(), 'is_closed' => true],
         'PATCH api/v1/dashboard/branches/{branch}/floor-plan' => ['preset' => 'standard'],
         'POST api/v1/dashboard/branches/{branch}/reviews/{review}/dispute' => ['reason' => 'This review is unfair and wrong.'],
         'POST api/v1/dashboard/branches/{branch}/affiliations' => ['barber_id' => $ids['barber']],

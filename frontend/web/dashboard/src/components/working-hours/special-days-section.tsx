@@ -4,6 +4,7 @@ import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import type { FormEvent, JSX } from "react";
 
+import { WeekdayPicker } from "@/components/working-hours/weekday-picker";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
 import { FormField } from "@/components/common/form-field";
@@ -14,11 +15,12 @@ import { useClearHoursOverride } from "@/hooks/hours/use-clear-hours-override";
 import { useHoursOverrides } from "@/hooks/hours/use-hours-overrides";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useSetHoursOverride } from "@/hooks/hours/use-set-hours-override";
+import { useSetHoursOverrideRange } from "@/hooks/hours/use-set-hours-override-range";
 import { formatDay } from "@/lib/core/format/booking-format.util";
-import { specialDayInput, specialDayIssue } from "@/lib/hours/hours-override.util";
+import { isRangeDraft, specialDayInput, specialDayIssue, specialDayRangeInput } from "@/lib/hours/hours-override.util";
 import type { SpecialDayDraft, SpecialDayKind } from "@/lib/hours/hours-override.util";
 
-const EMPTY_DRAFT: SpecialDayDraft = { date: "", kind: "closed", opens: "", closes: "" };
+const EMPTY_DRAFT: SpecialDayDraft = { date: "", kind: "closed", opens: "", closes: "", endDate: "", weekdays: [] };
 
 /** Closure days and shortened days for one branch. A new entry for a date replaces the earlier one. */
 export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Element {
@@ -26,6 +28,7 @@ export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Elem
   const t = dictionary.workingHours.specialDays;
   const query = useHoursOverrides(branchId);
   const save = useSetHoursOverride();
+  const saveRange = useSetHoursOverrideRange();
   const clear = useClearHoursOverride();
   const [draft, setDraft] = useState<SpecialDayDraft>(EMPTY_DRAFT);
   const [error, setError] = useState<string>();
@@ -39,7 +42,8 @@ export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Elem
       return;
     }
     try {
-      await save.mutateAsync({ branchId, date: draft.date, input: specialDayInput(draft) });
+      if (isRangeDraft(draft)) await saveRange.mutateAsync({ branchId, input: specialDayRangeInput(draft) });
+      else await save.mutateAsync({ branchId, date: draft.date, input: specialDayInput(draft) });
       setDraft(EMPTY_DRAFT);
     } catch {
       setError(t.toast.failed);
@@ -65,6 +69,9 @@ export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Elem
               <option value="hours">{t.specialHours}</option>
             </NativeSelect>
           </FormField>
+          <FormField id="special-day-end" label={t.endDate} hint={t.endDateHint}>
+            <Input id="special-day-end" type="date" dir="ltr" min={draft.date || undefined} value={draft.endDate} onChange={(event) => setDraft({ ...draft, endDate: event.target.value })} />
+          </FormField>
           {draft.kind === "hours" ? (
             <>
               <FormField id="special-day-opens" label={dictionary.workingHours.opensAt}>
@@ -76,8 +83,11 @@ export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Elem
             </>
           ) : null}
         </div>
+        <FormField id="special-day-weekdays" label={t.repeatOn} hint={t.repeatOnHint}>
+          <WeekdayPicker label={t.repeatOn} value={draft.weekdays} onChange={(weekdays) => setDraft({ ...draft, weekdays })} />
+        </FormField>
         <div>
-          <LoadingButton type="submit" loading={save.isPending} loadingLabel={dictionary.common.loading}>{t.add}</LoadingButton>
+          <LoadingButton type="submit" loading={save.isPending || saveRange.isPending} loadingLabel={dictionary.common.loading}>{t.add}</LoadingButton>
         </div>
       </form>
 

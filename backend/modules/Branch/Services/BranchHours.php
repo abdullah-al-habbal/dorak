@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Branch\Services;
 
 use Carbon\CarbonInterface;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Branch\Enums\BranchHoursSource;
@@ -55,6 +56,28 @@ final class BranchHours
             ['branch_id' => $branch->getKey(), 'override_date' => $date],
             $this->hoursAttributes($hours),
         );
+    }
+
+    /**
+     * One exception on every day of `[$from, $to]`, only on the listed weekdays when given.
+     * Existing exceptions on those dates are replaced.
+     *
+     * @param  array{is_closed: bool, opens_time: ?string, closes_time: ?string}  $hours
+     * @param  list<int>|null  $weekdays  0 (Sunday) to 6, like Carbon's `dayOfWeek`
+     * @return list<BranchHoursOverrideModel>
+     */
+    public function setOverrideRange(BranchModel $branch, string $from, string $to, ?array $weekdays, array $hours): array
+    {
+        return DB::transaction(function () use ($branch, $from, $to, $weekdays, $hours): array {
+            $saved = [];
+            foreach (CarbonPeriod::create($from, $to) as $day) {
+                if ($weekdays === null || in_array($day->dayOfWeek, $weekdays, true)) {
+                    $saved[] = $this->setOverride($branch, $day->toDateString(), $hours);
+                }
+            }
+
+            return $saved;
+        });
     }
 
     public function clearOverride(BranchModel $branch, string $date): void

@@ -223,3 +223,61 @@ describe('A special day changes what clients can book (NS-12)', function (): voi
         ])->assertUnprocessable();
     });
 });
+
+/** FT-8: a closure range, optionally recurring on some weekdays. */
+describe('Set a range of special days (FT-8)', function (): void {
+    it('closes every day of the range and replaces earlier exceptions on those dates', function (): void {
+        $branch = BranchModel::factory()->create();
+        BranchHoursOverrideModel::query()->create(['branch_id' => $branch->id, 'override_date' => futureDate(2), 'opens_time' => '10:00', 'closes_time' => '12:00']);
+        $this->authenticateDashboardActor($branch);
+
+        $this->putJson(overrideUrl($branch), ['date_from' => futureDate(1), 'date_to' => futureDate(3), 'is_closed' => true])
+            ->assertOk()
+            ->assertJsonCount(3, 'data')
+            ->assertJsonPath('data.0.date', futureDate(1));
+
+        expect(BranchHoursOverrideModel::query()->where('branch_id', $branch->id)->count())->toBe(3)
+            ->and(BranchHoursOverrideModel::query()->where('branch_id', $branch->id)->where('is_closed', false)->count())->toBe(0);
+    });
+
+    it('applies the hours only on the chosen weekdays', function (): void {
+        $branch = BranchModel::factory()->create();
+        $this->authenticateDashboardActor($branch);
+        $from = Carbon::today()->addDay();
+        $weekday = $from->dayOfWeek;
+
+        $this->putJson(overrideUrl($branch), ['date_from' => $from->toDateString(), 'date_to' => $from->copy()->addDays(20)->toDateString(), 'weekdays' => [$weekday], 'opens_time' => '10:00', 'closes_time' => '14:00'])
+            ->assertOk()
+            ->assertJsonCount(3, 'data');
+
+        $dates = BranchHoursOverrideModel::query()->where('branch_id', $branch->id)->pluck('override_date')->map(fn ($date) => Carbon::parse($date)->dayOfWeek)->unique()->all();
+        expect($dates)->toBe([$weekday]);
+    });
+
+    it('validates the range', function (array $payload): void {
+        $branch = BranchModel::factory()->create();
+        $this->authenticateDashboardActor($branch);
+
+        $this->putJson(overrideUrl($branch), $payload)->assertUnprocessable();
+
+        expect(BranchHoursOverrideModel::query()->count())->toBe(0);
+    })->with([
+        'a past start' => [fn () => ['date_from' => Carbon::yesterday()->toDateString(), 'date_to' => futureDate(), 'is_closed' => true]],
+        'an end before the start' => [fn () => ['date_from' => futureDate(5), 'date_to' => futureDate(2), 'is_closed' => true]],
+        'a range over the limit' => [fn () => ['date_from' => futureDate(1), 'date_to' => futureDate(1 + 366), 'is_closed' => true]],
+        'a weekday out of range' => [fn () => ['date_from' => futureDate(1), 'date_to' => futureDate(3), 'weekdays' => [7], 'is_closed' => true]],
+        'open without times' => [fn () => ['date_from' => futureDate(1), 'date_to' => futureDate(3)]],
+    ]);
+
+    it('answers 404 for another branch and refuses anonymous callers', function (): void {
+        $branch = BranchModel::factory()->create();
+        $payload = ['date_from' => futureDate(1), 'date_to' => futureDate(2), 'is_closed' => true];
+
+        $this->putJson(overrideUrl($branch), $payload)->assertUnauthorized();
+
+        $this->authenticateDashboardActor(BranchModel::factory()->create());
+        $this->putJson(overrideUrl($branch), $payload)->assertNotFound();
+
+        expect(BranchHoursOverrideModel::query()->count())->toBe(0);
+    });
+});

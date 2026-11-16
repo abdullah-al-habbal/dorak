@@ -12,6 +12,7 @@ use Modules\Dashboard\Http\Actions\Branches\ListBranchesAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchHoursOverridesAction;
 use Modules\Dashboard\Http\Actions\Branches\ListBranchReviewsAction;
 use Modules\Dashboard\Http\Actions\Branches\SetBranchHoursOverrideAction;
+use Modules\Dashboard\Http\Actions\Branches\SetBranchHoursOverrideRangeAction;
 use Modules\Dashboard\Http\Actions\Branches\ShowBranchAction;
 use Modules\Dashboard\Http\Actions\Branches\ShowBranchFloorPlanAction;
 use Modules\Dashboard\Http\Actions\Branches\ShowBranchOpeningHoursAction;
@@ -83,6 +84,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::get('/branches/{branch}/opening-hours', ShowBranchOpeningHoursAction::class);
         Route::put('/branches/{branch}/opening-hours', UpdateBranchOpeningHoursAction::class);
         Route::get('/branches/{branch}/hours-overrides', ListBranchHoursOverridesAction::class);
+        Route::put('/branches/{branch}/hours-overrides', SetBranchHoursOverrideRangeAction::class);
         Route::put('/branches/{branch}/hours-overrides/{date}', SetBranchHoursOverrideAction::class)->where('date', '\\d{4}-\\d{2}-\\d{2}');
         Route::delete('/branches/{branch}/hours-overrides/{date}', ClearBranchHoursOverrideAction::class)->where('date', '\\d{4}-\\d{2}-\\d{2}');
         Route::get('/branches/{branch}/floor-plan', ShowBranchFloorPlanAction::class);

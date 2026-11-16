@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { specialDayInput, specialDayIssue, todayIso } from "@/lib/hours/hours-override.util";
+import { isRangeDraft, specialDayInput, specialDayIssue, specialDayRangeInput, todayIso } from "@/lib/hours/hours-override.util";
 import type { SpecialDayDraft } from "@/lib/hours/hours-override.util";
 
 const today = "2026-11-14";
-const hours: SpecialDayDraft = { date: "2026-11-20", kind: "hours", opens: "10:00", closes: "18:00" };
+const hours: SpecialDayDraft = { date: "2026-11-20", kind: "hours", opens: "10:00", closes: "18:00", endDate: "", weekdays: [] };
 
 describe("special day helpers", () => {
   it("formats the local date for a date input", () => {
@@ -19,7 +19,7 @@ describe("special day helpers", () => {
   });
 
   it("needs no times for a closed day", () => {
-    expect(specialDayIssue({ date: "2026-11-20", kind: "closed", opens: "", closes: "" }, today)).toBeUndefined();
+    expect(specialDayIssue({ date: "2026-11-20", kind: "closed", opens: "", closes: "", endDate: "", weekdays: [] }, today)).toBeUndefined();
   });
 
   it("needs both times, with closing after opening", () => {
@@ -33,5 +33,19 @@ describe("special day helpers", () => {
   it("builds the request body", () => {
     expect(specialDayInput({ ...hours, kind: "closed" })).toEqual({ is_closed: true });
     expect(specialDayInput(hours)).toEqual({ is_closed: false, opens_time: "10:00", closes_time: "18:00" });
+  });
+
+  it("flags a last day before the first day and weekdays without a last day", () => {
+    expect(specialDayIssue({ ...hours, endDate: "2026-11-19" }, today)).toBe("range");
+    expect(specialDayIssue({ ...hours, weekdays: [5] }, today)).toBe("repeatNeedsEnd");
+    expect(specialDayIssue({ ...hours, endDate: "2026-12-20", weekdays: [5] }, today)).toBeUndefined();
+  });
+
+  it("sends a range or a weekday filter through the range payload only", () => {
+    expect(isRangeDraft(hours)).toBe(false);
+    const range: SpecialDayDraft = { ...hours, endDate: "2026-12-20", weekdays: [5] };
+    expect(isRangeDraft(range)).toBe(true);
+    expect(specialDayRangeInput(range)).toEqual({ date_from: "2026-11-20", date_to: "2026-12-20", weekdays: [5], is_closed: false, opens_time: "10:00", closes_time: "18:00" });
+    expect(specialDayRangeInput({ ...range, kind: "closed", weekdays: [] })).toEqual({ date_from: "2026-11-20", date_to: "2026-12-20", is_closed: true });
   });
 });

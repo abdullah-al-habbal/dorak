@@ -45,7 +45,6 @@ Facebook sign-in are unsupported (G9).
 - FT-4 Accepted trade-off to revisit at the next mobile release: Business-app builds before `32d66844` no longer clear the unseen application state.
 
 **Dashboard**
-- FT-8 Date ranges and recurring closures (NS-12).
 - FT-9 Logo upload and universe on brand create (NS-13).
 - FT-10 Draggable floor-plan zones; set a chair's zone from the editor (NS-15).
 - FT-11 Manual control for the "seen" application state (NS-16, NS-17).
@@ -87,6 +86,7 @@ Facebook sign-in are unsupported (G9).
 Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are resolved. The ones that shape code, in one line each:
 
 - **A (lifecycle):** a Suspended brand or branch is read-only for owners and managers (403); Pending and Disabled branches stay writable for setup; the platform admin bypasses; cancelling a booking stays allowed. One guard: `DashboardWriteGuard`.
+- **FT-8:** a closure range (`PUT hours-overrides`, `date_from`, `date_to`, optional `weekdays`, 366 days at most) expands into the existing per-date exceptions; there is no yearly recurrence rule.
 - **B:** only the platform admin creates global service categories; existing tenant-made ones are kept.
 - **C:** services belong to a brand; the owner and admin write them, a branch manager is read-only.
 - **D:** all admins are equal, no mandatory dual approval; keep creation, approval and payment as separate abilities.

@@ -16,7 +16,7 @@ import type { ShiftIssueEntry } from "@/interfaces/hours/shift-issue-entry.inter
 import type { Shift } from "@/interfaces/hours/shift.interface";
 import type { OpeningHoursWeek } from "@/types/hours/opening-hours-week.type";
 
-const ALL_DAYS: readonly Weekday[] = [
+export const ALL_DAYS: readonly Weekday[] = [
   Weekday.Sunday,
   Weekday.Monday,
   Weekday.Tuesday,

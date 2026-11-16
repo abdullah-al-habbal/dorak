@@ -36,4 +36,5 @@ return [
     'password_reset_link_invalid' => 'This reset link is invalid or has expired. Request a new one.',
     'password_reset_done' => 'Your password has been reset. Sign in with your new password.',
     'owner_check_email' => 'Check your email: if the details are valid, we sent a verification code.',
+    'hours_override_range_too_long' => 'A range can cover at most :days days.',
 ];

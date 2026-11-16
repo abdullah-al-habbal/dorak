@@ -41,6 +41,7 @@ function setupWriteRoutes(): array
         'update branch' => ['PUT', fn (array $w) => "{$base}/branches/{$w['branch']->id}", fn (array $w) => ['name' => ['en' => 'Renamed', 'ar' => 'اسم'], 'brand_id' => $w['branch']->brand_id, 'email' => 'renamed-branch@example.test']],
         'delete branch' => ['DELETE', fn (array $w) => "{$base}/branches/{$w['branch']->id}", fn () => []],
         'opening hours' => ['PUT', fn (array $w) => "{$base}/branches/{$w['branch']->id}/opening-hours", fn () => ['hours' => [['day_of_week' => 0, 'is_closed' => true]]]],
+        'set hours override range' => ['PUT', fn (array $w) => "{$base}/branches/{$w['branch']->id}/hours-overrides", fn () => ['date_from' => '2030-01-01', 'date_to' => '2030-01-02', 'is_closed' => true]],
         'clear hours override' => ['DELETE', fn (array $w) => "{$base}/branches/{$w['branch']->id}/hours-overrides/2030-01-01", fn () => []],
         'floor plan' => ['PATCH', fn (array $w) => "{$base}/branches/{$w['branch']->id}/floor-plan", fn () => ['preset' => 'compact']],
         'switch off' => ['PATCH', fn (array $w) => "{$base}/branches/{$w['branch']->id}/switch-off", fn () => []],

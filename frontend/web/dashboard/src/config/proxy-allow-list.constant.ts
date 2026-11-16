@@ -36,8 +36,8 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Get], pattern: new RegExp(`^brands/${ID}$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/brands/${ID}/approve$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Get, HttpMethod.Put], pattern: new RegExp(`^branches/${ID}/opening-hours$`), guards: OPERATIONS },
-  // NS-12 closure days and special hours.
-  { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/hours-overrides$`), guards: OPERATIONS },
+  // NS-12 closure days and special hours; the collection PUT sets a date range (FT-8).
+  { methods: [HttpMethod.Get, HttpMethod.Put], pattern: new RegExp(`^branches/${ID}/hours-overrides$`), guards: OPERATIONS },
   { methods: [HttpMethod.Put, HttpMethod.Delete], pattern: new RegExp(`^branches/${ID}/hours-overrides/\\d{4}-\\d{2}-\\d{2}$`), guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^branches/${ID}/reviews$`), guards: OPERATIONS },
   // NS-14: the shop flags a published review; the platform admin only judges disputes (NS-05).

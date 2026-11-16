@@ -296,3 +296,11 @@ describe("proxy allow-list: invite by contact (F-10)", () => {
     expect(allowed(HttpMethod.Post, "branches/b1/affiliations/by-contact/extra", AuthActor.Manager)).toBe(false);
   });
 });
+
+describe("proxy allow-list: special days range (FT-8)", () => {
+  it("lets the manager PUT a range on the collection but never POST or let a barber in", () => {
+    expect(allowed(HttpMethod.Put, "branches/b1/hours-overrides", AuthActor.Manager)).toBe(true);
+    expect(allowed(HttpMethod.Post, "branches/b1/hours-overrides", AuthActor.Manager)).toBe(false);
+    expect(allowed(HttpMethod.Put, "branches/b1/hours-overrides", AuthActor.Barber)).toBe(false);
+  });
+});
