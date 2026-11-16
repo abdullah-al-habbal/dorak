@@ -4,7 +4,6 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
-import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
 import { invitationKeys } from "@/lib/query-keys/branches/invitation-keys";
 import { inviteBarber } from "@/services/api/mutation/branches/invitation.mutation";
 import type { InviteBarberPayload } from "@/services/api/mutation/branches/invitation.mutation";
@@ -20,7 +19,7 @@ export function useInviteBarber(): UseMutationResult<BranchInvitation, Error, In
   const { invitations } = useDictionary();
   return useFeedbackMutation({
     mutationFn: ({ branchId, payload }: InviteVariables) => inviteBarber(branchId, payload),
-    invalidate: [invitationKeys.all, branchOversightKeys.all],
+    invalidate: [invitationKeys.all],
     successMessage: () => invitations.toast.invited,
   });
 }

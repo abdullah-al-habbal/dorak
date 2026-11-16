@@ -4,7 +4,6 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
-import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
 import { jobKeys } from "@/lib/query-keys/jobs/job-keys";
 import { updateApplicationStatus } from "@/services/api/mutation/jobs/job-board.mutation";
 import type { JobApplication } from "@/types/jobs/job-application.type";
@@ -20,7 +19,7 @@ export function useUpdateApplicationStatus(): UseMutationResult<JobApplication, 
   const { jobs } = useDictionary();
   return useFeedbackMutation({
     mutationFn: ({ branchId, postingId, id, status }: StatusVariables) => updateApplicationStatus(branchId, postingId, id, status),
-    invalidate: [jobKeys.all, branchOversightKeys.all],
+    invalidate: [jobKeys.all],
     successMessage: () => jobs.toast.statusUpdated,
     errorMessage: () => jobs.toast.failed,
   });

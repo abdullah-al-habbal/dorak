@@ -3,7 +3,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
 import { jobKeys } from "@/lib/query-keys/jobs/job-keys";
 import { markApplicationsSeen } from "@/services/api/mutation/jobs/job-board.mutation";
 import type { MarkApplicationsSeenVariables } from "@/services/api/mutation/jobs/job-board.mutation";
@@ -14,7 +13,7 @@ export function useMarkApplicationsSeen(): UseMutationResult<void, Error, MarkAp
   return useMutation({
     mutationFn: markApplicationsSeen,
     onSettled: async () => {
-      await Promise.all([client.invalidateQueries({ queryKey: jobKeys.all }), client.invalidateQueries({ queryKey: branchOversightKeys.all })]);
+      await client.invalidateQueries({ queryKey: jobKeys.all });
     },
   });
 }

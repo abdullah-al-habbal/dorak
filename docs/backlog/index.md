@@ -45,7 +45,6 @@ Facebook sign-in are unsupported (G9).
 - FT-4 Accepted trade-off to revisit at the next mobile release: Business-app builds before `32d66844` no longer clear the unseen application state.
 
 **Dashboard**
-- FT-6 Paging for bookings, reviews and the oversight dialog (latest 20 only today).
 - FT-7 Reason prompt on barber deactivation; end a barber's affiliation from the dashboard.
 - FT-8 Date ranges and recurring closures (NS-12).
 - FT-9 Logo upload and universe on brand create (NS-13).

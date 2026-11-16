@@ -1,17 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import type { JSX } from "react";
+
+import { PaginationBar } from "@/components/ui/table/pagination-bar";
 
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useReviews } from "@/hooks/clients/reviews/use-reviews";
 
 const FIRST_PAGE = 1;
 
-/** The branch's latest reviews and rating summary, read-only. */
+/** The branch's reviews, one page at a time, and rating summary, read-only. */
 export function BranchOversightReviews({ branchId }: { branchId: string }): JSX.Element {
   const { dictionary } = useI18n();
   const { branchOversight: t } = dictionary;
-  const query = useReviews(branchId, FIRST_PAGE);
+  const [pageNumber, setPageNumber] = useState(FIRST_PAGE);
+  const query = useReviews(branchId, pageNumber);
+  const page = query.data?.page;
   const summary = query.data?.summary;
 
   return (
@@ -34,6 +39,7 @@ export function BranchOversightReviews({ branchId }: { branchId: string }): JSX.
           </li>
         ))}
       </ul>
+      {page ? <PaginationBar page={page.current_page} totalPages={page.total_pages} label={t.reviews.title} onPageChange={setPageNumber} /> : null}
     </section>
   );
 }

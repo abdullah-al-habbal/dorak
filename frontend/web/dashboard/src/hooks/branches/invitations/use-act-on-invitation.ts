@@ -4,7 +4,6 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
-import { branchOversightKeys } from "@/lib/query-keys/branches/branch-oversight-keys";
 import { invitationKeys } from "@/lib/query-keys/branches/invitation-keys";
 import { actOnInvitation } from "@/services/api/mutation/branches/invitation.mutation";
 import type { InvitationAction } from "@/services/api/mutation/branches/invitation.mutation";
@@ -20,7 +19,7 @@ export function useActOnInvitation(): UseMutationResult<BranchInvitation, Error,
   const { invitations } = useDictionary();
   return useFeedbackMutation({
     mutationFn: ({ branchId, id, action }: ActVariables) => actOnInvitation(branchId, id, action),
-    invalidate: [invitationKeys.all, branchOversightKeys.all],
+    invalidate: [invitationKeys.all],
     successMessage: (_data, { action }) => invitations.toast[action],
     errorMessage: () => invitations.toast.failed,
   });
