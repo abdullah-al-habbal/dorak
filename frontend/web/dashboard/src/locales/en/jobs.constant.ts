@@ -10,7 +10,7 @@ export const enJobs = {
   unknownApplicant: "Applicant",
   rating: "Rating {value}",
   inviteApplicant: "Invite to branch",
-  action: { accept: "Accept", reject: "Reject" },
+  action: { accept: "Accept", reject: "Reject", markSeen: "Mark as seen", markAllSeen: "Mark new as seen" },
   postingStatus: { open: "Open", closed: "Closed", archived: "Archived" },
   applicationStatus: { submitted: "New", seen: "Seen", accepted: "Accepted", rejected: "Rejected" },
   employmentType: { "full-time": "Full time", "part-time": "Part time", contract: "Contract" },
@@ -41,6 +41,7 @@ export const enJobs = {
   },
   toast: {
     created: "Vacancy posted.",
+    markedSeen: "New applications marked as seen.",
     updated: "Posting updated.",
     deleted: "Posting deleted.",
     deleteFailed: "The posting couldn't be deleted.",

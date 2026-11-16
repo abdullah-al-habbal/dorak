@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { JSX } from "react";
 
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { ApplicationRow } from "@/components/jobs/application-row";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PaginationBar } from "@/components/ui/table/pagination-bar";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
-import type { ApplicationStatus } from "@/enums/booking/application-status.enum";
+import { ApplicationStatus } from "@/enums/booking/application-status.enum";
 import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useJobApplications } from "@/hooks/jobs/use-job-applications";
@@ -34,15 +35,12 @@ export function JobApplicationsDialog({ branchId, posting, onClose }: JobApplica
   const { jobs: t } = dictionary;
   const overlay = useOverlay();
   const update = useUpdateApplicationStatus();
-  const { mutate: markSeen } = useMarkApplicationsSeen();
+  const markSeen = useMarkApplicationsSeen();
   const [page, setPage] = useState(FIRST_PAGE);
   const query = useJobApplications(branchId, posting.id, page);
   const items = query.data?.items ?? [];
 
-  // Opening the vacancy is what makes its new applications "seen"; the list read itself stays free of side effects.
-  useEffect(() => {
-    markSeen({ branchId, postingId: posting.id });
-  }, [markSeen, branchId, posting.id]);
+  const hasNew = items.some((application) => application.status === ApplicationStatus.Submitted);
 
   function changeStatus(application: JobApplication, status: ApplicationStatus): void {
     update.mutate({ branchId, postingId: posting.id, id: application.id, status });
@@ -66,6 +64,11 @@ export function JobApplicationsDialog({ branchId, posting, onClose }: JobApplica
           {query.data && items.length === 0 ? <EmptyState title={t.applicationStates.emptyTitle} body={t.applicationStates.emptyBody} /> : null}
           {items.length > 0 ? (
             <>
+              {hasNew ? (
+                <div>
+                  <Button type="button" size="sm" variant="outline" disabled={markSeen.isPending} onClick={() => markSeen.mutate({ branchId, postingId: posting.id })}>{t.action.markAllSeen}</Button>
+                </div>
+              ) : null}
               <ul aria-label={t.applications} className="flex flex-col divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
                 {items.map((application) => (
                   <ApplicationRow key={application.id} application={application} busy={update.isPending} onStatus={changeStatus} onInvite={invite} />

@@ -17,7 +17,7 @@ export async function fetchJobPostingPage(branchId: string, page: number): Promi
   return { items: data, page: resolvePageInfo(meta, data.length, ASSUMED_PER_PAGE, page) };
 }
 
-/** A pure read: the new applications are marked as seen by a separate call (`markApplicationsSeen`). */
+/** A pure read: the new applications are marked as seen by the manager through a separate call (`markApplicationsSeen`). */
 export async function fetchJobApplicationPage(branchId: string, postingId: string, page: number): Promise<JobApplicationPage> {
   const { data, meta } = await apiRequestWithMeta(`${postingsPath(branchId)}/${encodeURIComponent(postingId)}/applications?page=${page}`, { schema: jobApplicationListSchema });
   return { items: data, page: resolvePageInfo(meta, data.length, ASSUMED_PER_PAGE, page) };

@@ -23,6 +23,7 @@ export function ApplicationRow({ application, busy, onStatus, onInvite }: Applic
   const profile = application.profile_snapshot;
   const rating = profile?.rating?.average;
   const accepted = application.status === ApplicationStatus.Accepted;
+  const isNew = application.status === ApplicationStatus.Submitted;
   const rejected = application.status === ApplicationStatus.Rejected;
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(new Date(application.created_at));
 
@@ -38,6 +39,7 @@ export function ApplicationRow({ application, busy, onStatus, onInvite }: Applic
           </span>
         </div>
         <div className="flex flex-wrap gap-2">
+          {isNew ? <Button type="button" size="sm" variant="outline" disabled={busy} onClick={() => onStatus(application, ApplicationStatus.Seen)}>{t.action.markSeen}</Button> : null}
           {accepted ? <Button type="button" size="sm" disabled={busy} onClick={() => onInvite(application)}>{t.inviteApplicant}</Button> : null}
           {!accepted ? <Button type="button" size="sm" disabled={busy} onClick={() => onStatus(application, ApplicationStatus.Accepted)}>{t.action.accept}</Button> : null}
           {!rejected ? <Button type="button" size="sm" variant="outline" disabled={busy} onClick={() => onStatus(application, ApplicationStatus.Rejected)}>{t.action.reject}</Button> : null}

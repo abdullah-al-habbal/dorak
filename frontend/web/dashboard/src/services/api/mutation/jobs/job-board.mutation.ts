@@ -51,7 +51,7 @@ export interface MarkApplicationsSeenVariables {
   postingId: string;
 }
 
-/** Opening a vacancy's applications is a read; marking the new ones as seen is this explicit call. */
+/** Opening a vacancy's applications is a read; marking the new ones as seen is this explicit call, made from the dialog's button. */
 export async function markApplicationsSeen({ branchId, postingId }: MarkApplicationsSeenVariables): Promise<void> {
   await apiRequest(`${postingsPath(branchId)}/${encodeURIComponent(postingId)}/applications/mark-seen`, { method: HttpMethod.Post, schema: z.unknown() });
 }

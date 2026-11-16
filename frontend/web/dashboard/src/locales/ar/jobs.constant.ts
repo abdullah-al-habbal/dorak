@@ -12,7 +12,7 @@ export const arJobs: Dictionary["jobs"] = {
   unknownApplicant: "متقدم",
   rating: "التقييم {value}",
   inviteApplicant: "دعوة إلى الفرع",
-  action: { accept: "قبول", reject: "رفض" },
+  action: { accept: "قبول", reject: "رفض", markSeen: "تعيين كمقروء", markAllSeen: "تعيين الجديدة كمقروءة" },
   postingStatus: { open: "مفتوحة", closed: "مغلقة", archived: "مؤرشفة" },
   applicationStatus: { submitted: "جديد", seen: "تمت المشاهدة", accepted: "مقبول", rejected: "مرفوض" },
   employmentType: { "full-time": "دوام كامل", "part-time": "دوام جزئي", contract: "عقد" },
@@ -43,6 +43,7 @@ export const arJobs: Dictionary["jobs"] = {
   },
   toast: {
     created: "تم نشر الوظيفة.",
+    markedSeen: "تم تعيين الطلبات الجديدة كمقروءة.",
     updated: "تم تحديث الوظيفة.",
     deleted: "تم حذف الوظيفة.",
     deleteFailed: "تعذّر حذف الوظيفة.",
