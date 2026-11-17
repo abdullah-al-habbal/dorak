@@ -25,7 +25,7 @@ import { mapApiFieldErrors } from "@/lib/core/errors/api-field-errors.util";
 import { chairToForm, emptyChairForm, formToChairPayload } from "@/lib/chairs/chair-form.util";
 import { createChairSchema } from "@/schemas/chairs/chair-form.zod";
 import type { ChairFormValues } from "@/schemas/chairs/chair-form.zod";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import type { Chair } from "@/types/chairs/chair.type";
 
 interface ChairFormDialogProps {

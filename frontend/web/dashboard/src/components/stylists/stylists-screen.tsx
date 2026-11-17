@@ -19,7 +19,7 @@ import { useChairOptions } from "@/hooks/chairs/use-chair-options";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useStylistFilters } from "@/hooks/stylists/roster/use-stylist-filters";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import { useStylists } from "@/hooks/stylists/roster/use-stylists";
 import { useUpdateStylistStatus } from "@/hooks/stylists/roster/use-update-stylist-status";
 import { localizedText } from "@/lib/core/format/booking-format.util";

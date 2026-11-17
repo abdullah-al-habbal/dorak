@@ -19,7 +19,7 @@ import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useReviewFilters } from "@/hooks/clients/reviews/use-review-filters";
 import { useReviews } from "@/hooks/clients/reviews/use-reviews";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import type { Review } from "@/types/clients/reviews/review.type";
 
 export function ReviewsScreen({ actor }: { actor: AuthActor }): JSX.Element {

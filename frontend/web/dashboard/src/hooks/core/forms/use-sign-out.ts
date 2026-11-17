@@ -6,7 +6,7 @@ import { useState } from "react";
 import { loginRoute } from "@/config/routes.constant";
 import type { AuthActor } from "@/enums/access/auth-actor.enum";
 import { logoutMutation } from "@/services/api/mutation/core/logout.mutation";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 
 export function useSignOut(actor: AuthActor) {
   const router = useRouter();

@@ -16,7 +16,7 @@ import type { AuthActor } from "@/enums/access/auth-actor.enum";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useSignOut } from "@/hooks/core/forms/use-sign-out";
 import { initialsOf } from "@/lib/core/format/initials.util";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import type { MeProfile } from "@/types/account/profile/me-profile.type";
 
 export function UserMenu({ actor, initialProfile }: { actor: AuthActor; initialProfile: MeProfile }) {

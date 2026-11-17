@@ -6,7 +6,7 @@ import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useFeedbackMutation } from "@/hooks/core/query/use-feedback-mutation";
 import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { requestEmailChange, verifyEmailChange } from "@/services/api/mutation/account/account.mutation";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import type { AccountProfile } from "@/types/account/profile/account-profile.type";
 import type { EmailChangeResult } from "@/types/account/profile/email-change-result.type";
 

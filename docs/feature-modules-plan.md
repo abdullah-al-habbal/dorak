@@ -50,7 +50,7 @@ Not in scope: backend changes, realtime (Echo), notifications wired to the backe
 | Toasts | Sonner `Toaster` in `AppProviders` | Reads the theme store. |
 | Sidebar | `SidebarProvider` (this task) | Replaced the former global Zustand store. See 2.3. |
 | Overlays | `OverlayProvider` (this task) | See 2.4. |
-| Identity | `useAuthStore` | Holds the verified `/me` profile only, never a token. Hydrated by `SessionHydrator`. |
+| Identity | `useAuthStore` | Holds the verified `/me` profile only, never a token. Created per portal and seeded synchronously by `AuthStoreProvider` (no module singleton, so no cross-request leak); `SessionHydrator` only handles session expiry. |
 
 ### 2.3 SidebarProvider
 

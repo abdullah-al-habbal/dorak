@@ -18,7 +18,7 @@ import { useBranchOptions } from "@/hooks/branches/use-branch-options";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useJobPostings } from "@/hooks/jobs/use-job-postings";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 
 const FIRST_PAGE = 1;
 

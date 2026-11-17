@@ -21,7 +21,7 @@ import { useServices } from "@/hooks/services/services/use-services";
 import { useUpdateServiceActive } from "@/hooks/services/services/use-update-service-active";
 import { localizedText } from "@/lib/core/format/booking-format.util";
 import { groupByCategory } from "@/lib/services/service-grouping.util";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import type { Service } from "@/types/services/service.type";
 
 export function ServicesScreen({ actor }: { actor: AuthActor }): JSX.Element {

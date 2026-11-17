@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { AuthStoreProvider } from "@/components/providers/auth-store-provider";
 import { OverlayProvider } from "@/components/overlays/overlay-provider";
 import { PortalShell } from "@/components/layout/portal-shell";
 import { SessionHydrator } from "@/components/providers/session-hydrator";
@@ -20,13 +21,15 @@ export async function PortalSession({ guard, children }: { guard: AuthActor; chi
 
   const collapsed = parseSidebarCookie((await cookies()).get(SIDEBAR_COOKIE)?.value);
   return (
-    <SidebarProvider initialCollapsed={collapsed}>
-      <OverlayProvider>
-        <PortalShell actor={guard} profile={session.profile}>
-          <SessionHydrator actor={guard} profile={session.profile} />
-          {children}
-        </PortalShell>
-      </OverlayProvider>
-    </SidebarProvider>
+    <AuthStoreProvider actor={guard} profile={session.profile}>
+      <SidebarProvider initialCollapsed={collapsed}>
+        <OverlayProvider>
+          <PortalShell actor={guard} profile={session.profile}>
+            <SessionHydrator actor={guard} />
+            {children}
+          </PortalShell>
+        </OverlayProvider>
+      </SidebarProvider>
+    </AuthStoreProvider>
   );
 }

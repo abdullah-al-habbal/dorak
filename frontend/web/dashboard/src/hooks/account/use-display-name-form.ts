@@ -10,7 +10,7 @@ import { accountKeys } from "@/lib/query-keys/account/account-keys";
 import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 import { displayNameFormSchema } from "@/schemas/account/account/display-name-form.zod";
 import { updateDisplayName } from "@/services/api/mutation/account/account.mutation";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import type { DisplayNameFormValues } from "@/types/account/forms/display-name-form-values.type";
 
 interface DisplayNameForm {

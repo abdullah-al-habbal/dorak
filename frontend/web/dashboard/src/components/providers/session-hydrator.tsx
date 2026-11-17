@@ -4,19 +4,14 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { loginRoute } from "@/config/routes.constant";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import type { SessionHydratorProps } from "@/interfaces/ui/shell/session-hydrator-props.interface";
 import { onSessionExpired } from "@/services/api/core/session-expiry.util";
-import { useAuthStore } from "@/store/auth.store";
 
-/** Copies the server-verified session into client stores. Runs only in the browser, so no state leaks between requests. */
-export function SessionHydrator({ actor, profile }: SessionHydratorProps) {
+/** Clears the client session and returns to sign-in when the API reports the session expired. */
+export function SessionHydrator({ actor }: SessionHydratorProps): null {
   const router = useRouter();
-  const setSession = useAuthStore((state) => state.setSession);
   const clearSession = useAuthStore((state) => state.clearSession);
-
-  useEffect(() => {
-    setSession(actor, profile);
-  }, [actor, profile, setSession]);
 
   useEffect(
     () =>

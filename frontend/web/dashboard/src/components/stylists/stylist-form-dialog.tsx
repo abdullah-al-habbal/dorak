@@ -19,7 +19,7 @@ import { useDeleteStylist } from "@/hooks/stylists/roster/use-delete-stylist";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useSaveStylist } from "@/hooks/stylists/roster/use-save-stylist";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import { mapApiFieldErrors } from "@/lib/core/errors/api-field-errors.util";
 import { localizedText } from "@/lib/core/format/booking-format.util";
 import { emptyStylistForm, formToStylistPayload, stylistToForm } from "@/lib/stylists/stylist-form.util";

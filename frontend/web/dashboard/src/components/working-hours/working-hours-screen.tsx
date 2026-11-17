@@ -15,7 +15,7 @@ import { useBranchOptions } from "@/hooks/branches/use-branch-options";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOpeningHours } from "@/hooks/hours/use-opening-hours";
 import { hasSavedHours } from "@/lib/hours/opening-hours.util";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 
 export function WorkingHoursScreen({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary } = useI18n();

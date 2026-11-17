@@ -21,7 +21,7 @@ import { useChairs } from "@/hooks/chairs/use-chairs";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { buildChairChips, CHAIR_CLEAR_ALL_PATCH, chairPatchForChip } from "@/lib/chairs/chair-chips.util";
-import { useAuthStore } from "@/store/auth.store";
+import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 import type { Chair } from "@/types/chairs/chair.type";
 
 export function ChairsScreen({ actor }: { actor: AuthActor }): JSX.Element {
