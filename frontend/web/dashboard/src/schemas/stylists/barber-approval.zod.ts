@@ -28,8 +28,6 @@ export const barberApprovalSchema = z.object({
 
 export const barberApprovalListSchema = z.array(barberApprovalSchema);
 
-export const barberRejectBodySchema = z.object({ reason: z.string().trim().min(3).max(500) });
-
 /** `GET /admin/barbers/{id}/activation-log` (`AdminActivationLogResource`). */
 export const barberActivationLogSchema = z.object({
   id: z.string(),

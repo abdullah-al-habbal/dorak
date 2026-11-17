@@ -21,4 +21,3 @@ export const EARNINGS_PERCENT = 100;
 export const EARNINGS_FLAT_THRESHOLD_PERCENT = 0.5;
 export const EARNINGS_CSV_BOM = "﻿";
 export const EARNINGS_CSV_FORMULA_PREFIXES: readonly string[] = ["=", "+", "-", "@", "\t", "\r"];
-export const EARNINGS_COMPACT_BREAKPOINT_PX = 640;

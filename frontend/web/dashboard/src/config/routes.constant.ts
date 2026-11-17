@@ -1,8 +1,6 @@
 import type { AuthActor } from "@/enums/access/auth-actor.enum";
 
 export const ROUTE_ROOT = "/dashboard";
-export const HOME_ROUTE = "/";
-export const FORBIDDEN_SEGMENT = "forbidden";
 export const LOGIN_SEGMENT = "login";
 export const FORGOT_PASSWORD_SEGMENT = "forgot-password";
 export const RESET_PASSWORD_SEGMENT = "reset-password";
@@ -18,8 +16,6 @@ export const RESET_LINK_TOKEN_PARAM = "token";
 export const RESET_LINK_EMAIL_PARAM = "email";
 export const CALLBACK_PARAM = "callbackUrl";
 
-/** The public owner sign-up page (NS-03). It lives outside the guarded `/dashboard` tree, so no sign-in is needed. */
-export const REGISTER_BUSINESS_ROUTE = "/register/business";
 /** The owner portal page that shows how the review of a new brand is going. */
 export const STATUS_SEGMENT = "status";
 
@@ -46,10 +42,6 @@ export function portalRoot(actor: AuthActor): string {
 
 export function loginRoute(actor: AuthActor): string {
   return `${portalRoot(actor)}/${LOGIN_SEGMENT}`;
-}
-
-export function forbiddenRoute(actor: AuthActor): string {
-  return `${portalRoot(actor)}/${FORBIDDEN_SEGMENT}`;
 }
 
 export function forgotPasswordRoute(actor: AuthActor): string {
