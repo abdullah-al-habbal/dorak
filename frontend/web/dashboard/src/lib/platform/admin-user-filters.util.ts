@@ -1,11 +1,11 @@
 import { ADMIN_USER_MAX_SEARCH, DEFAULT_ADMIN_USER_STATE } from "@/config/platform/admin-user.constant";
 import { AdminUserState } from "@/enums/access/admin-user-state.enum";
+import { isEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { AdminUserFilters } from "@/types/platform/admin-user-filters.type";
 
-const STATES = new Set<string>(Object.values(AdminUserState));
 
 function isState(value: string): value is AdminUserState {
-  return STATES.has(value);
+  return isEnumValue(AdminUserState, value);
 }
 
 export function adminUserFiltersFromParams(params: URLSearchParams): AdminUserFilters {

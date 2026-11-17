@@ -1,6 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { JSX } from "react";
 
 import { SearchInput } from "@/components/common/search-input";
@@ -20,7 +21,6 @@ interface BranchToolbarProps {
   onNew: () => void;
 }
 
-const STATUSES = new Set<string>(Object.values(BranchStatus));
 
 export function BranchToolbar({ filters, brands, onChange, onNew }: BranchToolbarProps): JSX.Element {
   const { dictionary, locale } = useI18n();
@@ -31,7 +31,7 @@ export function BranchToolbar({ filters, brands, onChange, onNew }: BranchToolba
       <SearchInput value={filters.search} label={t.filters.search} onCommit={(search) => onChange({ search })} />
       <label className="w-full sm:w-44">
         <span className="sr-only">{t.filters.status}</span>
-        <NativeSelect value={filters.status ?? ""} onChange={(event) => onChange({ status: STATUSES.has(event.target.value) ? (event.target.value as BranchStatus) : undefined })}>
+        <NativeSelect value={filters.status ?? ""} onChange={(event) => onChange({ status: parseEnumValue(BranchStatus, event.target.value) })}>
           <option value="">{t.filters.allStatuses}</option>
           {Object.values(BranchStatus).map((status) => (
             <option key={status} value={status}>{t.status[status]}</option>

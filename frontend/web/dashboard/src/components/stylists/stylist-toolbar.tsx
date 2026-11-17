@@ -1,6 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { JSX } from "react";
 
 import { SearchInput } from "@/components/common/search-input";
@@ -23,12 +24,6 @@ interface StylistToolbarProps {
   onNew?: () => void;
 }
 
-const STATUSES = new Set<string>(Object.values(BarberStatus));
-
-function parseStatus(value: string): BarberStatus | undefined {
-  return STATUSES.has(value) ? (value as BarberStatus) : undefined;
-}
-
 export function StylistToolbar({ filters, chairs, branches, onChange, onNew }: StylistToolbarProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { stylists: t } = dictionary;
@@ -38,7 +33,7 @@ export function StylistToolbar({ filters, chairs, branches, onChange, onNew }: S
       <SearchInput value={filters.search} label={t.filters.search} onCommit={(search) => onChange({ search })} />
       <label className="w-full sm:w-44">
         <span className="sr-only">{t.filters.status}</span>
-        <NativeSelect value={filters.status ?? ""} onChange={(event) => onChange({ status: parseStatus(event.target.value) })}>
+        <NativeSelect value={filters.status ?? ""} onChange={(event) => onChange({ status: parseEnumValue(BarberStatus, event.target.value) })}>
           <option value="">{t.filters.allStatuses}</option>
           {Object.values(BarberStatus).map((status) => (
             <option key={status} value={status}>{t.status[status]}</option>

@@ -1,13 +1,13 @@
 import { PlanState } from "@/enums/money/plan-state.enum";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { PlanFilters } from "@/types/plans/plan-filters.type";
 
-const STATES = new Set<string>(Object.values(PlanState));
 
 export function planFiltersFromParams(params: URLSearchParams): PlanFilters {
   const page = Number(params.get("page"));
   const state = params.get("state") ?? "";
   return {
-    state: STATES.has(state) ? (state as PlanState) : undefined,
+    state: parseEnumValue(PlanState, state),
     page: Number.isInteger(page) && page > 0 ? page : 1,
   };
 }

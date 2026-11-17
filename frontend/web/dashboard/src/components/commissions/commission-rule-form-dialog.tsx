@@ -22,6 +22,7 @@ import { useCurrencies } from "@/hooks/platform/currencies/use-currencies";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { localizedText } from "@/lib/core/format/booking-format.util";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import { bpsToPercent, percentToBps } from "@/lib/earnings/commission.util";
 import { minorUnitsToInput, parseMinorUnits } from "@/lib/core/format/money.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
@@ -108,7 +109,7 @@ export function CommissionRuleFormDialog({ rule, onClose }: { rule?: CommissionR
         <form onSubmit={submit} noValidate className="flex flex-col gap-4">
           <FormErrorBanner message={error} />
           <FormField id="rule-scope" label={t.form.scope}>
-            <NativeSelect id="rule-scope" value={scope} onChange={(event) => { setScope(event.target.value as CommissionScope); setScopeId(""); }}>
+            <NativeSelect id="rule-scope" value={scope} onChange={(event) => { setScope(parseEnumValue(CommissionScope, event.target.value) ?? scope); setScopeId(""); }}>
               {Object.values(CommissionScope).map((value) => (
                 <option key={value} value={value}>{t.scope[value]}</option>
               ))}
@@ -124,7 +125,7 @@ export function CommissionRuleFormDialog({ rule, onClose }: { rule?: CommissionR
             </FormField>
           )}
           <FormField id="rule-type" label={t.form.type}>
-            <NativeSelect id="rule-type" value={type} onChange={(event) => setType(event.target.value as CommissionType)}>
+            <NativeSelect id="rule-type" value={type} onChange={(event) => setType(parseEnumValue(CommissionType, event.target.value) ?? type)}>
               {Object.values(CommissionType).map((value) => (
                 <option key={value} value={value}>{t.type[value]}</option>
               ))}

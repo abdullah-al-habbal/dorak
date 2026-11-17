@@ -18,7 +18,7 @@ import { useSetHoursOverride } from "@/hooks/hours/use-set-hours-override";
 import { useSetHoursOverrideRange } from "@/hooks/hours/use-set-hours-override-range";
 import { formatDay } from "@/lib/core/format/booking-format.util";
 import { isRangeDraft, specialDayInput, specialDayIssue, specialDayRangeInput } from "@/lib/hours/hours-override.util";
-import type { SpecialDayDraft, SpecialDayKind } from "@/lib/hours/hours-override.util";
+import type { SpecialDayDraft } from "@/lib/hours/hours-override.util";
 
 const EMPTY_DRAFT: SpecialDayDraft = { date: "", kind: "closed", opens: "", closes: "", endDate: "", weekdays: [] };
 
@@ -64,7 +64,7 @@ export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Elem
             <Input id="special-day-date" type="date" dir="ltr" value={draft.date} onChange={(event) => setDraft({ ...draft, date: event.target.value })} />
           </FormField>
           <FormField id="special-day-kind" label={t.kind}>
-            <NativeSelect id="special-day-kind" value={draft.kind} onChange={(event) => setDraft({ ...draft, kind: event.target.value as SpecialDayKind })}>
+            <NativeSelect id="special-day-kind" value={draft.kind} onChange={(event) => setDraft({ ...draft, kind: event.target.value === "hours" ? "hours" : "closed" })}>
               <option value="closed">{t.closedAllDay}</option>
               <option value="hours">{t.specialHours}</option>
             </NativeSelect>

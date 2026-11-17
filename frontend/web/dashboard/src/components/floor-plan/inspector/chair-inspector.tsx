@@ -11,6 +11,7 @@ import { ROTATION_STEP } from "@/config/venue/floor-plan.constant";
 import { FloorZone } from "@/enums/people/floor-zone.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import type { FloorPlanEditor } from "@/hooks/chairs/use-floor-plan-editor";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import { rotateChair } from "@/lib/chairs/floor-plan-geometry.util";
 import type { Chair } from "@/types/chairs/chair.type";
 
@@ -33,7 +34,7 @@ export function ChairInspector({ editor, chair }: { editor: FloorPlanEditor; cha
         <InspectorNumberField id="chair-r" label={t.inspector.rotation} value={layout.rotation ?? 0} onChange={(value) => set({ rotation: value })} />
       </div>
       <FormField id="chair-zone" label={t.inspector.chairZone}>
-        <NativeSelect id="chair-zone" value={editor.draft.chairZones[chair.id] ?? FloorZone.Shared} onChange={(event) => editor.setChairZone(chair.id, event.target.value as FloorZone)}>
+        <NativeSelect id="chair-zone" value={editor.draft.chairZones[chair.id] ?? FloorZone.Shared} onChange={(event) => editor.setChairZone(chair.id, parseEnumValue(FloorZone, event.target.value) ?? FloorZone.Shared)}>
           {Object.values(FloorZone).map((value) => (
             <option key={value} value={value}>{t.zone[value]}</option>
           ))}

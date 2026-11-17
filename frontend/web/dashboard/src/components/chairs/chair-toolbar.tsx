@@ -1,6 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { JSX } from "react";
 
 import { SearchInput } from "@/components/common/search-input";
@@ -21,8 +22,6 @@ interface ChairToolbarProps {
   onNew?: () => void;
 }
 
-const STATUSES = new Set<string>(Object.values(ChairStatus));
-const ZONES = new Set<string>(Object.values(FloorZone));
 
 export function ChairToolbar({ filters, branches, onChange, onNew }: ChairToolbarProps): JSX.Element {
   const { dictionary } = useI18n();
@@ -33,7 +32,7 @@ export function ChairToolbar({ filters, branches, onChange, onNew }: ChairToolba
       <SearchInput value={filters.search} label={t.filters.search} onCommit={(search) => onChange({ search })} />
       <label className="w-full sm:w-44">
         <span className="sr-only">{t.filters.status}</span>
-        <NativeSelect value={filters.status ?? ""} onChange={(event) => onChange({ status: STATUSES.has(event.target.value) ? (event.target.value as ChairStatus) : undefined })}>
+        <NativeSelect value={filters.status ?? ""} onChange={(event) => onChange({ status: parseEnumValue(ChairStatus, event.target.value) })}>
           <option value="">{t.filters.allStatuses}</option>
           {Object.values(ChairStatus).map((status) => (
             <option key={status} value={status}>{t.status[status]}</option>
@@ -42,7 +41,7 @@ export function ChairToolbar({ filters, branches, onChange, onNew }: ChairToolba
       </label>
       <label className="w-full sm:w-44">
         <span className="sr-only">{t.filters.zone}</span>
-        <NativeSelect value={filters.floorZone ?? ""} onChange={(event) => onChange({ floorZone: ZONES.has(event.target.value) ? (event.target.value as FloorZone) : undefined })}>
+        <NativeSelect value={filters.floorZone ?? ""} onChange={(event) => onChange({ floorZone: parseEnumValue(FloorZone, event.target.value) })}>
           <option value="">{t.filters.allZones}</option>
           {Object.values(FloorZone).map((zone) => (
             <option key={zone} value={zone}>{t.zone[zone]}</option>

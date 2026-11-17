@@ -1,10 +1,10 @@
 import { BookingStatus } from "@/enums/booking/booking-status.enum";
+import { isEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
-const STATUSES = new Set<string>(Object.values(BookingStatus));
 
 export function isBookingStatus(value: string): value is BookingStatus {
-  return STATUSES.has(value);
+  return isEnumValue(BookingStatus, value);
 }
 
 /** The localised status name, or the raw value if the backend sends one this build does not know. */

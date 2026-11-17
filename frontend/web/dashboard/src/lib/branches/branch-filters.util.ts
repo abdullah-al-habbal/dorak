@@ -1,8 +1,8 @@
 import { BRANCH_MAX_SEARCH } from "@/config/venue/branch.constant";
 import { BranchStatus } from "@/enums/venue/branch-status.enum";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { BranchFilters } from "@/types/branches/branch-filters.type";
 
-const STATUSES = new Set<string>(Object.values(BranchStatus));
 
 export function branchFiltersFromParams(params: URLSearchParams): BranchFilters {
   const status = params.get("status");
@@ -10,7 +10,7 @@ export function branchFiltersFromParams(params: URLSearchParams): BranchFilters 
   return {
     search: params.get("search")?.slice(0, BRANCH_MAX_SEARCH) || undefined,
     brandId: params.get("brand") || undefined,
-    status: status && STATUSES.has(status) ? (status as BranchStatus) : undefined,
+    status: parseEnumValue(BranchStatus, status),
     page: Number.isInteger(page) && page > 0 ? page : 1,
   };
 }

@@ -1,10 +1,9 @@
 import { BookingStatus } from "@/enums/booking/booking-status.enum";
 import { BookingView } from "@/enums/booking/booking-view.enum";
 import { addDays, parseDateKey, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
-const STATUSES = new Set<string>(Object.values(BookingStatus));
-const VIEWS = new Set<string>(Object.values(BookingView));
 const MAX_SEARCH = 100;
 
 export function defaultFilters(today: Date): BookingFilters {
@@ -18,9 +17,9 @@ export function filtersFromParams(params: URLSearchParams, today: Date): Booking
   const status = params.get("status");
   const page = Number(params.get("page"));
   return {
-    view: view && VIEWS.has(view) ? (view as BookingView) : base.view,
+    view: parseEnumValue(BookingView, view) ?? base.view,
     date: date && parseDateKey(date) ? date : base.date,
-    status: status && STATUSES.has(status) ? (status as BookingStatus) : undefined,
+    status: parseEnumValue(BookingStatus, status),
     chairId: params.get("chair") || undefined,
     search: params.get("search")?.slice(0, MAX_SEARCH) || undefined,
     hideCancelled: params.get("hide_cancelled") === "1" ? true : undefined,

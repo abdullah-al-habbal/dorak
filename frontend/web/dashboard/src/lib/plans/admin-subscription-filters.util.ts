@@ -1,13 +1,13 @@
 import { SubscriptionStatus } from "@/enums/money/subscription-status.enum";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { AdminSubscriptionFilters } from "@/types/plans/admin-subscription-filters.type";
 
-const STATUSES = new Set<string>(Object.values(SubscriptionStatus));
 
 export function adminSubscriptionFiltersFromParams(params: URLSearchParams): AdminSubscriptionFilters {
   const page = Number(params.get("page"));
   const status = params.get("status") ?? "";
   return {
-    status: STATUSES.has(status) ? (status as SubscriptionStatus) : undefined,
+    status: parseEnumValue(SubscriptionStatus, status),
     page: Number.isInteger(page) && page > 0 ? page : 1,
   };
 }

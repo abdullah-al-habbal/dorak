@@ -1,11 +1,11 @@
 import { DEFAULT_REVIEW_MODERATION_STATUS, REVIEW_MODERATION_PER_PAGE } from "@/config/platform/review-moderation.constant";
 import { ReviewStatus } from "@/enums/people/review-status.enum";
+import { isEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { ReviewModerationFilters } from "@/types/clients/reviews/review-moderation-filters.type";
 
-const STATUSES = new Set<string>(Object.values(ReviewStatus));
 
 function isStatus(value: string): value is ReviewStatus {
-  return STATUSES.has(value);
+  return isEnumValue(ReviewStatus, value);
 }
 
 /** A bare or unknown `status` opens the disputed queue. */

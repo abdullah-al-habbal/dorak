@@ -1,13 +1,13 @@
 import { PayoutStatus } from "@/enums/money/payout-status.enum";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { PayoutFilters } from "@/types/earnings/payout-filters.type";
 
-const STATUSES = new Set<string>(Object.values(PayoutStatus));
 
 export function payoutFiltersFromParams(params: URLSearchParams): PayoutFilters {
   const page = Number(params.get("page"));
   const status = params.get("status") ?? "";
   return {
-    status: STATUSES.has(status) ? (status as PayoutStatus) : undefined,
+    status: parseEnumValue(PayoutStatus, status),
     page: Number.isInteger(page) && page > 0 ? page : 1,
   };
 }

@@ -2,10 +2,10 @@ import { SCHEDULE_DAYS_IN_WEEK, SCHEDULE_DEFAULT_RANGE, SCHEDULE_RANGES } from "
 import { BookingStatus } from "@/enums/booking/booking-status.enum";
 import { ScheduleRange } from "@/enums/booking/schedule-range.enum";
 import { addDays, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
+import { parseEnumValue } from "@/lib/core/parse/enum-value.util";
 import type { ScheduleFilters } from "@/types/bookings/schedule-filters.type";
 import type { ScheduleWindow } from "@/types/bookings/schedule-window.type";
 
-const STATUSES = new Set<string>(Object.values(BookingStatus));
 const RANGES = new Set<string>(SCHEDULE_RANGES);
 
 export function scheduleFiltersFromParams(params: URLSearchParams): ScheduleFilters {
@@ -14,7 +14,7 @@ export function scheduleFiltersFromParams(params: URLSearchParams): ScheduleFilt
   const status = params.get("status") ?? "";
   return {
     range: RANGES.has(range) ? (range as ScheduleRange) : SCHEDULE_DEFAULT_RANGE,
-    status: STATUSES.has(status) ? (status as BookingStatus) : undefined,
+    status: parseEnumValue(BookingStatus, status),
     page: Number.isInteger(page) && page > 0 ? page : 1,
   };
 }
