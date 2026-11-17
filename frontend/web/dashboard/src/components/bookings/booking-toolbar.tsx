@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, SearchIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon, PlusIcon } from "lucide-react";
+import { useCallback } from "react";
 
+import { SearchInput } from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { BookingStatus } from "@/enums/booking/booking-status.enum";
 import { BookingView } from "@/enums/booking/booking-view.enum";
@@ -18,7 +18,6 @@ import { cn } from "@/lib/utils";
 import type { ChairOption } from "@/types/chairs/chair-option.type";
 import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
-const SEARCH_DEBOUNCE_MS = 300;
 const DAYS_PER_WEEK = 7;
 const VIEWS = [BookingView.List, BookingView.Day, BookingView.Week] as const;
 
@@ -37,19 +36,8 @@ function parseStatus(value: string): BookingStatus | undefined {
 export function BookingToolbar({ filters, weekStart, chairs, onChange, onNewWalkIn }: BookingToolbarProps) {
   const { locale, direction, dictionary } = useI18n();
   const { bookings: t } = dictionary;
-  const [search, setSearch] = useState(filters.search ?? "");
-
-  // Adopt an external change (for example "Clear filters") without clobbering what is being typed.
-  const [seen, setSeen] = useState(filters.search);
-  if (seen !== filters.search) {
-    setSeen(filters.search);
-    if (search.trim() !== (filters.search ?? "")) setSearch(filters.search ?? "");
-  }
-  useEffect(() => {
-    if (search === (filters.search ?? "")) return;
-    const id = setTimeout(() => onChange({ search: search.trim() || undefined }), SEARCH_DEBOUNCE_MS);
-    return () => clearTimeout(id);
-  }, [search, filters.search, onChange]);
+  // SearchInput restarts its debounce timer when this identity changes, so keep it stable.
+  const commitSearch = useCallback((search: string | undefined) => onChange({ search }), [onChange]);
 
   const day = parseDateKey(filters.date) ?? new Date();
   const step = filters.view === BookingView.Day ? 1 : DAYS_PER_WEEK;
@@ -101,11 +89,7 @@ export function BookingToolbar({ filters, weekStart, chairs, onChange, onNewWalk
       </div>
 
       <div role="group" aria-label={t.filters.toolbar} className="flex flex-wrap items-center gap-2">
-        <label className="relative w-full sm:w-72">
-          <span className="sr-only">{t.filters.search}</span>
-          <SearchIcon className="pointer-events-none absolute inset-y-0 start-3 my-auto size-4 text-muted-foreground" aria-hidden />
-          <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t.filters.search} maxLength={100} className="ps-9" />
-        </label>
+        <SearchInput value={filters.search} label={t.filters.search} onCommit={commitSearch} />
         <label className="w-full sm:w-44">
           <span className="sr-only">{t.filters.status}</span>
           <NativeSelect value={filters.status ?? ""} onChange={(event) => onChange({ status: parseStatus(event.target.value) })}>
