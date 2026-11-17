@@ -6,4 +6,5 @@ export const CONTENT_SORT_MAX = 100000;
 export const SECTION_BODY_MAX_BYTES = 20000;
 export const TESTIMONIALS_SECTION_TYPE = "testimonials";
 export const RATING_VALUES = [1, 2, 3, 4, 5] as const;
+export const DEFAULT_TESTIMONIAL_RATING = 5;
 export type ContentView = "pages" | "testimonials" | "onboarding";

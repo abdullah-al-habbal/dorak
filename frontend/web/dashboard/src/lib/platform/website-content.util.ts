@@ -1,5 +1,5 @@
 import { TESTIMONIALS_SECTION_TYPE } from "@/config/platform/website-content.constant";
-import type { TestimonialSectionOption } from "@/types/platform/testimonial-section-option.type";
+import type { TestimonialSectionOption } from "@/types/platform/content/testimonial-section-option.type";
 import type { ContentPage } from "@/types/platform/website-content.type";
 
 /** Reads one locale of a translatable map; the API returns `[]` when a field was never set. */

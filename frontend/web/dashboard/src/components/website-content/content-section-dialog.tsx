@@ -1,21 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import type { FormEvent, JSX } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
+import type { JSX } from "react";
+import { useForm, useWatch } from "react-hook-form";
 
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
-import { FormField } from "@/components/common/form-field";
+import { FormField, fieldErrorId } from "@/components/common/form-field";
+import { SectionBodyPreview } from "@/components/website-content/section-body-preview";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import { CONTENT_SORT_MAX, CONTENT_TEXT_MAX, SECTION_BODY_MAX_BYTES } from "@/config/platform/website-content.constant";
+import { CONTENT_TEXT_MAX } from "@/config/platform/website-content.constant";
 import { UniverseVisibility } from "@/enums/people/universe-visibility.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useUpdateContentSection } from "@/hooks/platform/settings/use-website-content";
-import { bodyJson, bodyPreview, localeText, parseBodyObject } from "@/lib/platform/website-content.util";
+import { applyFormError } from "@/lib/core/errors/apply-form-error.util";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
+import { formToSectionPayload, mapSectionFieldName, sectionToForm } from "@/lib/platform/website-content-form.util";
+import { createSectionFormSchema } from "@/schemas/platform/content/website-content-form.zod";
+import type { SectionFormValues } from "@/types/platform/content/website-content-form-values.type";
 import type { ContentSection } from "@/types/platform/website-content.type";
 
 /** Edits a section's text and structured content for both languages, with a live preview of the headline. */
@@ -24,113 +31,70 @@ export function ContentSectionDialog({ section, onClose }: { section: ContentSec
   const { content: t, common } = dictionary;
   const f = t.sectionForm;
   const save = useUpdateContentSection();
-  const [titleEn, setTitleEn] = useState(localeText(section.title, "en"));
-  const [titleAr, setTitleAr] = useState(localeText(section.title, "ar"));
-  const [subEn, setSubEn] = useState(localeText(section.subtitle, "en"));
-  const [subAr, setSubAr] = useState(localeText(section.subtitle, "ar"));
-  const [bodyEn, setBodyEn] = useState(bodyJson(section.body, "en"));
-  const [bodyAr, setBodyAr] = useState(bodyJson(section.body, "ar"));
-  const [media, setMedia] = useState(section.media_url ?? "");
-  const [sort, setSort] = useState(String(section.sort_order));
-  const [audience, setAudience] = useState<UniverseVisibility>(section.universe_visibility);
-  const [error, setError] = useState<string>();
-  const previewEn = parseBodyObject(bodyEn);
-  const previewAr = parseBodyObject(bodyAr);
+  const schema = useMemo(() => createSectionFormSchema(f), [f]);
+  const form = useForm<SectionFormValues>({ resolver: zodResolver(schema), defaultValues: sectionToForm(section) });
+  const { errors } = form.formState;
+  const busy = form.formState.isSubmitting || save.isPending;
+  const [bodyEn, bodyAr] = useWatch({ control: form.control, name: ["body_en", "body_ar"] });
+  const invalid = (name: keyof SectionFormValues, id: string) => ({ "aria-invalid": Boolean(errors[name]), "aria-describedby": errors[name] ? fieldErrorId(id) : undefined });
 
-  async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault();
-    setError(undefined);
-    const en = parseBodyObject(bodyEn);
-    const ar = parseBodyObject(bodyAr);
-    const order = Number(sort);
-    if (!en || !ar) {
-      setError(f.invalidJson);
-      return;
-    }
-    if (JSON.stringify({ en, ar }).length > SECTION_BODY_MAX_BYTES) {
-      setError(f.tooLarge);
-      return;
-    }
-    if (!Number.isInteger(order) || order < 0 || order > CONTENT_SORT_MAX) {
-      setError(f.invalidSort);
-      return;
-    }
+  const submit = form.handleSubmit(async (values) => {
     try {
-      await save.mutateAsync({
-        id: section.id,
-        payload: {
-          title: { en: titleEn.trim(), ar: titleAr.trim() },
-          subtitle: { en: subEn.trim(), ar: subAr.trim() },
-          body: { en, ar },
-          media_url: media.trim() === "" ? null : media.trim(),
-          sort_order: order,
-          universe_visibility: audience,
-        },
-      });
+      await save.mutateAsync({ id: section.id, payload: formToSectionPayload(values) });
       onClose();
-    } catch {
-      setError(f.failed);
+    } catch (failure) {
+      applyFormError(form, mapApiFormError(failure, f.failed, mapSectionFieldName));
     }
-  }
+  });
 
   return (
-    <Dialog open onOpenChange={(open) => (open || save.isPending ? undefined : onClose())}>
+    <Dialog open onOpenChange={(open) => (open || busy ? undefined : onClose())}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto overscroll-contain sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>{f.title.replace("{type}", section.section_type)}</DialogTitle>
           <DialogDescription>{f.description}</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-          <FormErrorBanner message={error} />
+          <FormErrorBanner message={errors.root?.message} />
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <FormField id="section-title-en" label={f.titleEn}>
-              <Input id="section-title-en" dir="ltr" maxLength={CONTENT_TEXT_MAX} value={titleEn} onChange={(event) => setTitleEn(event.target.value)} />
+            <FormField id="section-title-en" label={f.titleEn} error={errors.title_en?.message}>
+              <Input id="section-title-en" dir="ltr" maxLength={CONTENT_TEXT_MAX} {...invalid("title_en", "section-title-en")} {...form.register("title_en")} />
             </FormField>
-            <FormField id="section-title-ar" label={f.titleAr}>
-              <Input id="section-title-ar" dir="rtl" maxLength={CONTENT_TEXT_MAX} value={titleAr} onChange={(event) => setTitleAr(event.target.value)} />
+            <FormField id="section-title-ar" label={f.titleAr} error={errors.title_ar?.message}>
+              <Input id="section-title-ar" dir="rtl" maxLength={CONTENT_TEXT_MAX} {...invalid("title_ar", "section-title-ar")} {...form.register("title_ar")} />
             </FormField>
-            <FormField id="section-sub-en" label={f.subtitleEn}>
-              <Input id="section-sub-en" dir="ltr" maxLength={CONTENT_TEXT_MAX} value={subEn} onChange={(event) => setSubEn(event.target.value)} />
+            <FormField id="section-sub-en" label={f.subtitleEn} error={errors.subtitle_en?.message}>
+              <Input id="section-sub-en" dir="ltr" maxLength={CONTENT_TEXT_MAX} {...invalid("subtitle_en", "section-sub-en")} {...form.register("subtitle_en")} />
             </FormField>
-            <FormField id="section-sub-ar" label={f.subtitleAr}>
-              <Input id="section-sub-ar" dir="rtl" maxLength={CONTENT_TEXT_MAX} value={subAr} onChange={(event) => setSubAr(event.target.value)} />
+            <FormField id="section-sub-ar" label={f.subtitleAr} error={errors.subtitle_ar?.message}>
+              <Input id="section-sub-ar" dir="rtl" maxLength={CONTENT_TEXT_MAX} {...invalid("subtitle_ar", "section-sub-ar")} {...form.register("subtitle_ar")} />
             </FormField>
           </div>
-          <FormField id="section-body-en" label={f.bodyEn} hint={f.bodyHint}>
-            <Textarea id="section-body-en" dir="ltr" spellCheck={false} rows={8} className="font-mono text-xs" value={bodyEn} onChange={(event) => setBodyEn(event.target.value)} />
+          <FormField id="section-body-en" label={f.bodyEn} hint={f.bodyHint} error={errors.body_en?.message}>
+            <Textarea id="section-body-en" dir="ltr" spellCheck={false} rows={8} className="font-mono text-xs" {...invalid("body_en", "section-body-en")} {...form.register("body_en")} />
           </FormField>
-          <FormField id="section-body-ar" label={f.bodyAr} hint={f.bodyHint}>
-            <Textarea id="section-body-ar" dir="ltr" spellCheck={false} rows={8} className="font-mono text-xs" value={bodyAr} onChange={(event) => setBodyAr(event.target.value)} />
+          <FormField id="section-body-ar" label={f.bodyAr} hint={f.bodyHint} error={errors.body_ar?.message}>
+            <Textarea id="section-body-ar" dir="ltr" spellCheck={false} rows={8} className="font-mono text-xs" {...invalid("body_ar", "section-body-ar")} {...form.register("body_ar")} />
           </FormField>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <FormField id="section-media" label={f.media}>
-              <Input id="section-media" dir="ltr" maxLength={CONTENT_TEXT_MAX} value={media} onChange={(event) => setMedia(event.target.value)} />
+            <FormField id="section-media" label={f.media} error={errors.media_url?.message}>
+              <Input id="section-media" dir="ltr" maxLength={CONTENT_TEXT_MAX} {...invalid("media_url", "section-media")} {...form.register("media_url")} />
             </FormField>
-            <FormField id="section-sort" label={f.sortOrder}>
-              <Input id="section-sort" inputMode="numeric" dir="ltr" value={sort} onChange={(event) => setSort(event.target.value)} />
+            <FormField id="section-sort" label={f.sortOrder} error={errors.sort?.message}>
+              <Input id="section-sort" inputMode="numeric" dir="ltr" {...invalid("sort", "section-sort")} {...form.register("sort")} />
             </FormField>
-            <FormField id="section-audience" label={f.audience}>
-              <NativeSelect id="section-audience" value={audience} onChange={(event) => setAudience(Object.values(UniverseVisibility).find((value) => value === event.target.value) ?? UniverseVisibility.All)}>
+            <FormField id="section-audience" label={f.audience} error={errors.universe_visibility?.message}>
+              <NativeSelect id="section-audience" {...invalid("universe_visibility", "section-audience")} {...form.register("universe_visibility")}>
                 {Object.values(UniverseVisibility).map((value) => (
                   <option key={value} value={value}>{t.pages.audience[value]}</option>
                 ))}
               </NativeSelect>
             </FormField>
           </div>
-          <section aria-label={f.preview} className="grid grid-cols-1 gap-3 rounded-xl border border-dashed border-border p-3 sm:grid-cols-2">
-            {([["ltr", previewEn], ["rtl", previewAr]] as const).map(([dir, body]) => {
-              const preview = body ? bodyPreview(body) : { heading: "", subheading: "" };
-              return (
-                <div key={dir} dir={dir} className="flex flex-col gap-1">
-                  <span className="text-lg font-semibold">{preview.heading || f.previewEmpty}</span>
-                  {preview.subheading ? <span className="text-sm text-muted-foreground">{preview.subheading}</span> : null}
-                </div>
-              );
-            })}
-          </section>
+          <SectionBodyPreview label={f.preview} emptyLabel={f.previewEmpty} bodyEn={bodyEn} bodyAr={bodyAr} />
           <DialogFooter>
-            <Button type="button" variant="ghost" disabled={save.isPending} onClick={onClose}>{common.cancel}</Button>
-            <LoadingButton type="submit" loading={save.isPending} loadingLabel={common.loading}>{t.save}</LoadingButton>
+            <Button type="button" variant="ghost" disabled={busy} onClick={onClose}>{common.cancel}</Button>
+            <LoadingButton type="submit" loading={busy} loadingLabel={common.loading}>{t.save}</LoadingButton>
           </DialogFooter>
         </form>
       </DialogContent>

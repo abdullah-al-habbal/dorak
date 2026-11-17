@@ -1,5 +1,5 @@
 import type { OverlayKind } from "@/enums/ui/overlay-kind.enum";
-import type { TestimonialSectionOption } from "@/types/platform/testimonial-section-option.type";
+import type { TestimonialSectionOption } from "@/types/platform/content/testimonial-section-option.type";
 import type { ContentPage, ContentSection, Testimonial } from "@/types/platform/website-content.type";
 
 export interface ContentPageOverlayRequest {

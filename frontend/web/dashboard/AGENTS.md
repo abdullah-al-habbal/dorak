@@ -46,6 +46,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Data:** the browser only calls `/api/dashboard/*` and `/api/auth/*`
   (`app/api/**`), never Laravel. Every response is parsed with Zod before use. Server state
   is TanStack Query with keys from one factory per module; client state stays minimal.
+- **Forms:** a dialog with more than one field uses React Hook Form + a Zod schema (built from `schemas/fields/` where a builder exists) + `mapApiFormError`/`applyFormError` for backend failures, with the payload mapping in a `.util.ts` that has unit tests. Plain `useState` is for single-field dialogs (ban, reject, dispute reasons) only.
 - **Backend gaps:** if the UI needs a field, filter or endpoint that the backend lacks, change
   the backend (see the root backend contract policy) instead of adding a frontend workaround.
 - **Auth and security:** tokens live only in HttpOnly cookies. The backend is the authority for
