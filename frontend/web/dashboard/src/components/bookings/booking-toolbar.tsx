@@ -2,6 +2,7 @@
 
 import { ChevronLeftIcon, ChevronRightIcon, PlusIcon } from "lucide-react";
 import { useCallback } from "react";
+import type { JSX } from "react";
 
 import { SearchInput } from "@/components/common/search-input";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,7 @@ function parseStatus(value: string): BookingStatus | undefined {
   return isBookingStatus(value) ? value : undefined;
 }
 
-export function BookingToolbar({ filters, weekStart, chairs, onChange, onNewWalkIn }: BookingToolbarProps) {
+export function BookingToolbar({ filters, weekStart, chairs, onChange, onNewWalkIn }: BookingToolbarProps): JSX.Element {
   const { locale, direction, dictionary } = useI18n();
   const { bookings: t } = dictionary;
   // SearchInput restarts its debounce timer when this identity changes, so keep it stable.

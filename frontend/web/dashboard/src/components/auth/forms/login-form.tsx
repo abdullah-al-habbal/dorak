@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { AlertCircleIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -17,7 +18,7 @@ interface LoginFormProps {
   callbackUrl?: string;
 }
 
-export function LoginForm({ actor, callbackUrl }: LoginFormProps) {
+export function LoginForm({ actor, callbackUrl }: LoginFormProps): JSX.Element {
   const { auth, passwordReset } = useDictionary();
   const { form, onSubmit, formError, submitting } = useLoginForm(actor, callbackUrl);
   const { errors } = form.formState;

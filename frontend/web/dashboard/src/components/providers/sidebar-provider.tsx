@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
+import type { JSX } from "react";
 
 import { SidebarContext } from "@/components/providers/sidebar-context";
 import { SIDEBAR_COOKIE } from "@/config/cookies.constant";
@@ -10,7 +11,7 @@ import type { SidebarProviderProps } from "@/interfaces/ui/shell/sidebar-provide
 import { writeClientCookie } from "@/lib/core/errors/cookie.util";
 import { serializeSidebarState } from "@/lib/core/errors/sidebar.util";
 
-export function SidebarProvider({ initialCollapsed, children }: SidebarProviderProps) {
+export function SidebarProvider({ initialCollapsed, children }: SidebarProviderProps): JSX.Element {
   const pathname = usePathname();
   const [collapsed, setCollapsedState] = useState(initialCollapsed);
   // The sheet stores the path it was opened on, so navigating closes it without an effect.

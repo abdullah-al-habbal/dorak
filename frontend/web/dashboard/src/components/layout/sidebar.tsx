@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
 
 import { SidebarNav } from "@/components/layout/sidebar-nav";
@@ -9,7 +10,7 @@ import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useSidebar } from "@/hooks/core/state/use-sidebar";
 import { cn } from "@/lib/utils";
 
-export function Sidebar({ actor }: { actor: AuthActor }) {
+export function Sidebar({ actor }: { actor: AuthActor }): JSX.Element {
   const { common, shell, auth } = useDictionary();
   const { collapsed, setCollapsed } = useSidebar();
 

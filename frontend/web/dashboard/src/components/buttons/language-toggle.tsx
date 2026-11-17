@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { LanguagesIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useLocaleSwitch } from "@/hooks/core/state/use-locale-switch";
 import { localeSchema } from "@/schemas/core/api/locale.zod";
 
-export function LanguageToggle() {
+export function LanguageToggle(): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { switchTo, pending } = useLocaleSwitch();
 

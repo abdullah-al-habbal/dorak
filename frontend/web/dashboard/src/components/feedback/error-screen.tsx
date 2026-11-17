@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import Link from "next/link";
 
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -14,7 +15,7 @@ interface ErrorScreenProps {
   nested?: boolean;
 }
 
-export function ErrorScreen({ error, onRetry, nested = false }: ErrorScreenProps) {
+export function ErrorScreen({ error, onRetry, nested = false }: ErrorScreenProps): JSX.Element {
   const { common, errors } = useDictionary();
   const kind = classifyError(error);
   const copy = { generic: errors.generic, unavailable: errors.unavailable, rateLimited: errors.rateLimited, forbidden: errors.forbidden }[kind];

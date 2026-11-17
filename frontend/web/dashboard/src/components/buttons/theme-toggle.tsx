@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { themeModeSchema } from "@/schemas/core/api/theme-mode.zod";
 import { useThemeStore } from "@/store/theme.store";
 
-export function ThemeToggle() {
+export function ThemeToggle(): JSX.Element {
   const { common } = useDictionary();
   const mode = useThemeStore((state) => state.mode);
   const setMode = useThemeStore((state) => state.setMode);

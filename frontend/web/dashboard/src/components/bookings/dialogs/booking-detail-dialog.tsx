@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { BookingStatusBadge } from "@/components/bookings/booking-status-badge";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ interface BookingDetailDialogProps {
   onClose: () => void;
 }
 
-export function BookingDetailDialog({ booking, onClose }: BookingDetailDialogProps) {
+export function BookingDetailDialog({ booking, onClose }: BookingDetailDialogProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { bookings: t } = dictionary;
   const overlay = useOverlay();

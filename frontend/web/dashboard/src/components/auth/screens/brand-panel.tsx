@@ -1,9 +1,10 @@
 "use client";
 
+import type { JSX } from "react";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 /** Sign-in side panel. One orchestrated moment: the pole turns once on load, then rests. */
-export function BrandPanel() {
+export function BrandPanel(): JSX.Element {
   const { common, auth } = useDictionary();
 
   return (

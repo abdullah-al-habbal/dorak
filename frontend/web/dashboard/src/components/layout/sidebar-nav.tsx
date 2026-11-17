@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,7 +17,7 @@ interface SidebarNavProps {
   onNavigate?: () => void;
 }
 
-export function SidebarNav({ actor, collapsed, onNavigate }: SidebarNavProps) {
+export function SidebarNav({ actor, collapsed, onNavigate }: SidebarNavProps): JSX.Element {
   const { shell } = useDictionary();
   const pathname = usePathname();
   const root = portalRoot(actor);

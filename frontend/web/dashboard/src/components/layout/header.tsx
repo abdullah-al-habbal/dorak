@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { NotificationsMenu } from "@/components/layout/notifications/notifications-menu";
@@ -9,7 +10,7 @@ import { ThemeToggle } from "@/components/buttons/theme-toggle";
 import type { AuthActor } from "@/enums/access/auth-actor.enum";
 import type { MeProfile } from "@/types/account/profile/me-profile.type";
 
-export function Header({ actor, profile }: { actor: AuthActor; profile: MeProfile }) {
+export function Header({ actor, profile }: { actor: AuthActor; profile: MeProfile }): JSX.Element {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-2 border-b bg-background/80 px-3 backdrop-blur-md sm:px-6">
       <MobileNav actor={actor} />

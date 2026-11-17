@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { JSX } from "react";
 
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormField, fieldErrorId } from "@/components/common/form-field";
@@ -23,7 +24,7 @@ interface ConfirmOverlayProps {
   onClose: () => void;
 }
 
-export function ConfirmOverlay({ request, onClose }: ConfirmOverlayProps) {
+export function ConfirmOverlay({ request, onClose }: ConfirmOverlayProps): JSX.Element {
   const { common } = useDictionary();
   const [pending, setPending] = useState(false);
   const [reason, setReason] = useState("");

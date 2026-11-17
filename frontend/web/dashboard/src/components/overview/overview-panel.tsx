@@ -1,11 +1,12 @@
 "use client";
 
+import type { JSX } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useAuthStore } from "@/hooks/core/state/use-auth-store";
 
-export function OverviewPanel() {
+export function OverviewPanel(): JSX.Element {
   const { shell } = useDictionary();
   const profile = useAuthStore((state) => state.profile);
   const name = profile?.display_name ?? profile?.email ?? "";

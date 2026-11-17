@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { MenuIcon } from "lucide-react";
 
 import { SidebarNav } from "@/components/layout/sidebar-nav";
@@ -10,7 +11,7 @@ import type { AuthActor } from "@/enums/access/auth-actor.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useSidebar } from "@/hooks/core/state/use-sidebar";
 
-export function MobileNav({ actor }: { actor: AuthActor }) {
+export function MobileNav({ actor }: { actor: AuthActor }): JSX.Element {
   const { dictionary, direction } = useI18n();
   const { mobileOpen: open, setMobileOpen: setOpen } = useSidebar();
 

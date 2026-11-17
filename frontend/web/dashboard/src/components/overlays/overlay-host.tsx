@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import { AssignSubscriptionDialog } from "@/components/admin-subscriptions/assign-subscription-dialog";
 import { ReviewResolveDialog } from "@/components/review-moderation/review-resolve-dialog";
 import { AdminUserFormDialog } from "@/components/admin-users/admin-user-form-dialog";
@@ -50,7 +51,7 @@ interface OverlayHostProps {
 }
 
 /** The single mount point for every dialog and sheet. The switch is exhaustive over `OverlayKind`. */
-export function OverlayHost({ request, onClose }: OverlayHostProps) {
+export function OverlayHost({ request, onClose }: OverlayHostProps): JSX.Element | null {
   if (!request) return null;
   switch (request.kind) {
     case OverlayKind.Confirm:

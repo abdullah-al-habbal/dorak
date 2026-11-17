@@ -1,12 +1,13 @@
 "use client";
 
+import type { JSX } from "react";
 import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
 import { ROUTE_ROOT } from "@/config/routes.constant";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
-export function NotFoundScreen() {
+export function NotFoundScreen(): JSX.Element {
   const { errors } = useDictionary();
 
   return (

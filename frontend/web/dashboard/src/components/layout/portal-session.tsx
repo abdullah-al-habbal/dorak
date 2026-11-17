@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
 import { AuthStoreProvider } from "@/components/providers/auth-store-provider";
 import { OverlayProvider } from "@/components/overlays/overlay-provider";
@@ -14,7 +14,7 @@ import { parseSidebarCookie } from "@/lib/core/errors/sidebar.util";
 import { getServerSession } from "@/services/api/auth/server-session";
 
 /** Reads the session at request time, so it must render behind a Suspense boundary. */
-export async function PortalSession({ guard, children }: { guard: AuthActor; children: ReactNode }) {
+export async function PortalSession({ guard, children }: { guard: AuthActor; children: ReactNode }): Promise<JSX.Element> {
   const session = await getServerSession();
   if (!session) redirect(loginRoute(guard));
   if (session.actor !== guard) redirect(portalRoot(session.actor));

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
+import type { JSX } from "react";
 
 import {
   Breadcrumb,
@@ -17,7 +18,7 @@ import { ACCOUNT_SEGMENT, NOTIFICATIONS_SEGMENT, portalRoot } from "@/config/rou
 import type { AuthActor } from "@/enums/access/auth-actor.enum";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
-export function Breadcrumbs({ actor }: { actor: AuthActor }) {
+export function Breadcrumbs({ actor }: { actor: AuthActor }): JSX.Element {
   const { shell, auth } = useDictionary();
   const pathname = usePathname();
   const root = portalRoot(actor);

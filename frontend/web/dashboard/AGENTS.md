@@ -33,11 +33,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Conventions
 
 - **Imports:** `@/` (and `@tests/` in tests) only. Never `./` or `../`. Imports stay at the
-  top of the file. `.claude/skills/monorepo-task-executor/scripts/check-conventions.sh` flags relative imports; there is no
-  ESLint rule for it yet, so check it yourself.
+  top of the file. ESLint (`no-restricted-imports`) rejects relative imports, and
+  `.claude/skills/monorepo-task-executor/scripts/check-conventions.sh` checks them too.
 - **File taxonomy** (details in [src/README.md](src/README.md)): one `.type.ts`,
-  `.interface.ts`, `.zod.ts` or `.enum.ts` per file; constants in `.constant.ts`; pure
-  helpers in `.util.ts`; one hook per file named `use-<name>.ts`; reads in
+  `.interface.ts`, `.zod.ts` or `.enum.ts` per domain concept (the types of one entity may share a file); constants in `.constant.ts`; pure
+  helpers in `.util.ts`; one hook per file named `use-<name>.ts` (a CRUD hook bundle for one entity may share a file); reads in
   `services/api/query/<domain>/*.query.ts`, writes in `services/api/mutation/<domain>/*.mutation.ts`; no
   catch-all names (`types.ts`, `helpers.ts`, `constants.ts`); `lib/utils.ts` is shadcn's generated file and the one exception.
 - **Routes:** all application paths live in `src/config/routes.constant.ts`. Portal layouts
@@ -67,7 +67,7 @@ Reviews flag any re-implementation.
 
 - No explicit `any`. Do not cast external data (API bodies, `JSON.parse`, form input)
   with `as` without a Zod parse or type guard first.
-- Every exported function, hook and component has explicit prop and return types.
+- Every exported function, hook and component has explicit prop and return types (ESLint enforces the return type for exported components under `components/`).
 - Keep modules focused: split a file that passes about 300 lines or a function that passes
   about 40 lines. Extract repeated JSX into sub-component files, not inline render helpers.
 - Four or more related parameters become a typed object.

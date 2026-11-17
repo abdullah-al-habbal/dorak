@@ -2,7 +2,7 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,7 +11,7 @@ import { applyTheme } from "@/lib/core/errors/theme.util";
 import { useThemeStore } from "@/store/theme.store";
 import { ThemeMode } from "@/enums/ui/theme-mode.enum";
 
-export function AppProviders({ children }: { children: ReactNode }) {
+export function AppProviders({ children }: { children: ReactNode }): JSX.Element {
   const [queryClient] = useState(createQueryClient);
   const hydrate = useThemeStore((state) => state.hydrate);
   const mode = useThemeStore((state) => state.mode);

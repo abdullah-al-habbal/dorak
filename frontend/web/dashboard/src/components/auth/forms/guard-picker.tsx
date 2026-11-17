@@ -1,5 +1,6 @@
 "use client";
 
+import type { JSX } from "react";
 import Link from "next/link";
 import { ArrowUpRightIcon } from "lucide-react";
 
@@ -9,7 +10,7 @@ import { AUTH_ACTORS } from "@/config/auth-actors.constant";
 import { loginRoute } from "@/config/routes.constant";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
-export function GuardPicker() {
+export function GuardPicker(): JSX.Element {
   const { common, auth } = useDictionary();
 
   return (

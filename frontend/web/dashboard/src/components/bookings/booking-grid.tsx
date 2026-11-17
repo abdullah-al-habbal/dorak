@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { JSX } from "react";
 
 import { BOOKING_STATUS_STYLE } from "@/config/ops/booking-status-badge.constant";
 import { BookingStatus } from "@/enums/booking/booking-status.enum";
@@ -53,7 +54,7 @@ function useNow(): Date {
   return now;
 }
 
-export function BookingGrid({ bookings, view, date, weekStart, onSelect }: BookingGridProps) {
+export function BookingGrid({ bookings, view, date, weekStart, onSelect }: BookingGridProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { bookings: t } = dictionary;
   const now = useNow();

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
@@ -8,7 +8,7 @@ import type { AuthActor } from "@/enums/access/auth-actor.enum";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { MeProfile } from "@/types/account/profile/me-profile.type";
 
-export function PortalShell({ actor, profile, children }: { actor: AuthActor; profile: MeProfile; children: ReactNode }) {
+export function PortalShell({ actor, profile, children }: { actor: AuthActor; profile: MeProfile; children: ReactNode }): JSX.Element {
   return (
     <div className="flex min-h-dvh">
       <SkipLink />
