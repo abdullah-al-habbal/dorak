@@ -8,6 +8,12 @@ import { apiSuccessBodySchema } from "@/schemas/core/api/api-success-body.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import { reportSessionExpired } from "@/services/api/core/session-expiry.util";
 
+/** Contract drift is a developer concern: log the Zod issues in development only, never show them to users. */
+function logContractDrift(path: string, status: number, issues: unknown): void {
+  if (process.env.NODE_ENV === "production") return;
+  console.error(`[api] response from ${path} (HTTP ${status}) does not match its schema`, issues);
+}
+
 let inflightRefresh: Promise<boolean> | null = null;
 
 async function send(path: string, method: HttpMethod, body: unknown): Promise<Response> {
@@ -38,11 +44,12 @@ async function readBody(response: Response): Promise<unknown> {
   return response.json().catch(() => null);
 }
 
-function toError(status: number, body: unknown): ApiClientError {
+function toError(path: string, status: number, body: unknown): ApiClientError {
   const failure = apiFailureBodySchema.safeParse(body);
   if (failure.success) {
     return new ApiClientError({ status, code: failure.data.error.code, message: failure.data.message, requestId: failure.data.request_id, fields: failure.data.error.fields });
   }
+  logContractDrift(path, status, failure.error.issues);
   return new ApiClientError({ status, code: ApiErrorCode.Server, message: "" });
 }
 
@@ -62,10 +69,17 @@ export async function apiRequestWithMeta<T>(
   }
   const body = await readBody(response);
   if (response.status === HttpStatus.Unauthorized && !options.skipRefresh) reportSessionExpired();
-  if (!response.ok) throw toError(response.status, body);
+  if (!response.ok) throw toError(path, response.status, body);
 
   const success = apiSuccessBodySchema.safeParse(body);
-  const data = success.success ? options.schema.safeParse(success.data.data) : null;
-  if (!success.success || !data?.success) throw new ApiClientError({ status: response.status, code: ApiErrorCode.Server, message: "" });
+  if (!success.success) {
+    logContractDrift(path, response.status, success.error.issues);
+    throw new ApiClientError({ status: response.status, code: ApiErrorCode.Server, message: "" });
+  }
+  const data = options.schema.safeParse(success.data.data);
+  if (!data.success) {
+    logContractDrift(path, response.status, data.error.issues);
+    throw new ApiClientError({ status: response.status, code: ApiErrorCode.Server, message: "" });
+  }
   return { data: data.data, meta: success.data.meta };
 }

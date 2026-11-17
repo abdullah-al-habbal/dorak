@@ -13,7 +13,10 @@ function json(status: number, body: unknown): Response {
 const success = { success: true, message: "", data: { ok: true } };
 const failure = { success: false, message: "nope", error: { code: "session_expired" } };
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
+});
 
 describe("apiRequest", () => {
   it("refreshes once on 401 and retries", async () => {
@@ -42,5 +45,30 @@ describe("apiRequest", () => {
     await expect(apiRequest("/api/x", { schema })).rejects.toMatchObject({ code: "network_error", status: 0 });
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json(200, { success: true, message: "", data: { ok: "yes" } })));
     await expect(apiRequest("/api/x", { schema })).rejects.toMatchObject({ code: "server_error" });
+  });
+
+  it("logs the Zod issues when a success body drifts from its schema", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json(200, { success: true, message: "", data: { ok: "yes" } })));
+    await expect(apiRequest("/api/x", { schema })).rejects.toMatchObject({ code: "server_error", message: "" });
+    expect(errorSpy).toHaveBeenCalledOnce();
+    expect(String(errorSpy.mock.calls[0][0])).toContain("/api/x");
+    expect(JSON.stringify(errorSpy.mock.calls[0][1])).toContain("ok");
+  });
+
+  it("logs an unrecognised failure body", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json(500, { unexpected: true })));
+    await expect(apiRequest("/api/x", { schema })).rejects.toMatchObject({ code: "server_error", status: 500 });
+    expect(errorSpy).toHaveBeenCalledOnce();
+  });
+
+  it("stays silent in production", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json(200, { success: true, message: "", data: { ok: "yes" } })));
+    await expect(apiRequest("/api/x", { schema })).rejects.toBeInstanceOf(ApiClientError);
+    expect(errorSpy).not.toHaveBeenCalled();
+    vi.unstubAllEnvs();
   });
 });
