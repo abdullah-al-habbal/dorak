@@ -18,16 +18,12 @@ import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useDeletePaymentGateway, useSavePaymentGateway } from "@/hooks/platform/settings/use-payment-gateways";
 import { ApiClientError } from "@/services/api/core/api-client-error";
+import { toLocalePair } from "@/lib/core/format/locale-pair.util";
 import type { PaymentGateway } from "@/types/platform/payment-gateway.type";
 
 interface SettingRow {
   key: string;
   value: string;
-}
-
-function pair(value: PaymentGateway["name"] | undefined): { en: string; ar: string } {
-  const source = typeof value === "object" && value !== null ? value : {};
-  return { en: source.en ?? "", ar: source.ar ?? "" };
 }
 
 /** Adds or edits a gateway. Credentials are write-only: they are typed here, sent once and never shown again. */
@@ -40,7 +36,7 @@ export function PaymentGatewayFormDialog({ gateway, onClose }: { gateway?: Payme
   const remove = useDeletePaymentGateway();
   const editing = gateway !== undefined;
   const [code, setCode] = useState(gateway?.code ?? "");
-  const [name, setName] = useState(pair(gateway?.name));
+  const [name, setName] = useState(toLocalePair(gateway?.name));
   const [driver, setDriver] = useState<string>(gateway?.driver ?? PaymentGatewayDriver.Offline);
   const [active, setActive] = useState(gateway?.is_active ?? true);
   const [isDefault, setIsDefault] = useState(gateway?.is_default ?? false);

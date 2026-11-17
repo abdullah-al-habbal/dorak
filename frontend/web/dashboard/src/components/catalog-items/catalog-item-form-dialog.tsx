@@ -24,12 +24,8 @@ import { attributesFromItem, attributesIssue, attributesToPayload } from "@/lib/
 import { localizedText } from "@/lib/core/format/booking-format.util";
 import { slugify } from "@/lib/core/format/slugify.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
+import { toLocalePair } from "@/lib/core/format/locale-pair.util";
 import type { CatalogItem } from "@/types/services/catalog-item.type";
-
-function pair(value: unknown): { en: string; ar: string } {
-  const source = typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};
-  return { en: typeof source.en === "string" ? source.en : "", ar: typeof source.ar === "string" ? source.ar : "" };
-}
 
 /** Adds or edits a global catalog item: names, category, description, default duration, status and tags. */
 export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; onClose: () => void }): JSX.Element {
@@ -42,8 +38,8 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
   const save = useSaveCatalogItem();
   const remove = useDeleteCatalogItem();
   const editing = item !== undefined;
-  const [name, setName] = useState(pair(item?.name));
-  const [description, setDescription] = useState(pair(item?.description));
+  const [name, setName] = useState(toLocalePair(item?.name));
+  const [description, setDescription] = useState(toLocalePair(item?.description));
   const [slug, setSlug] = useState(item?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(editing);
   const [categoryId, setCategoryId] = useState(item?.category_id ?? "");

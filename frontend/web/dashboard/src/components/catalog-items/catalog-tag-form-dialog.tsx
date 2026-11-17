@@ -14,12 +14,8 @@ import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useDeleteCatalogTag, useSaveCatalogTag } from "@/hooks/services/catalog/use-catalog-admin";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { toLocalePair } from "@/lib/core/format/locale-pair.util";
 import type { CatalogTag } from "@/types/services/catalog-item.type";
-
-function pair(value: unknown): { en: string; ar: string } {
-  const source = typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};
-  return { en: typeof source.en === "string" ? source.en : "", ar: typeof source.ar === "string" ? source.ar : "" };
-}
 
 /** Adds or edits a catalog tag. Removing it takes it off every item that carried it. */
 export function CatalogTagFormDialog({ tag, onClose }: { tag?: CatalogTag; onClose: () => void }): JSX.Element {
@@ -30,7 +26,7 @@ export function CatalogTagFormDialog({ tag, onClose }: { tag?: CatalogTag; onClo
   const save = useSaveCatalogTag();
   const remove = useDeleteCatalogTag();
   const editing = tag !== undefined;
-  const [name, setName] = useState(pair(tag?.name));
+  const [name, setName] = useState(toLocalePair(tag?.name));
   const [group, setGroup] = useState(tag?.group_name ?? "");
   const [active, setActive] = useState(tag?.is_active ?? true);
   const [error, setError] = useState<string>();

@@ -20,6 +20,7 @@ import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useSaveJobPosting } from "@/hooks/jobs/use-save-job-posting";
 import { ApiClientError } from "@/services/api/core/api-client-error";
+import { toLocalePair } from "@/lib/core/format/locale-pair.util";
 import type { JobPostingBody } from "@/services/api/mutation/jobs/job-board.mutation";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
 
@@ -27,11 +28,6 @@ interface JobPostingFormDialogProps {
   branchId: string;
   posting?: BranchJobPosting;
   onClose: () => void;
-}
-
-function pair(value: unknown): { en: string; ar: string } {
-  const source = typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};
-  return { en: typeof source.en === "string" ? source.en : "", ar: typeof source.ar === "string" ? source.ar : "" };
 }
 
 /** Creates or edits a vacancy. Editing can also close or reopen it; a plan without the job board answers 403. */
@@ -42,9 +38,9 @@ export function JobPostingFormDialog({ branchId, posting, onClose }: JobPostingF
   const save = useSaveJobPosting();
   const remove = useDeleteJobPosting(branchId);
   const editing = posting !== undefined;
-  const [title, setTitle] = useState(pair(posting?.title));
-  const [description, setDescription] = useState(pair(posting?.description));
-  const [requirements, setRequirements] = useState(pair(posting?.requirements));
+  const [title, setTitle] = useState(toLocalePair(posting?.title));
+  const [description, setDescription] = useState(toLocalePair(posting?.description));
+  const [requirements, setRequirements] = useState(toLocalePair(posting?.requirements));
   const [location, setLocation] = useState(posting?.location ?? "");
   const [employment, setEmployment] = useState(posting?.employment_type ?? EMPLOYMENT_NONE);
   const [status, setStatus] = useState<string>(posting?.status ?? JobPostingStatus.Open);

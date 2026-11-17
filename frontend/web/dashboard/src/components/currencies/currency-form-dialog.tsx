@@ -14,12 +14,8 @@ import { HttpStatus } from "@/enums/access/http-status.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useSaveCurrency } from "@/hooks/platform/currencies/use-save-currency";
 import { ApiClientError } from "@/services/api/core/api-client-error";
+import { toLocalePair } from "@/lib/core/format/locale-pair.util";
 import type { AdminCurrency } from "@/types/platform/currency-admin.type";
-
-function pair(value: AdminCurrency["name"] | undefined): { en: string; ar: string } {
-  const source = typeof value === "object" && value !== null ? value : {};
-  return { en: source.en ?? "", ar: source.ar ?? "" };
-}
 
 /** Adds a currency (the code is chosen once) or edits its names and symbol. */
 export function CurrencyFormDialog({ currency, onClose }: { currency?: AdminCurrency; onClose: () => void }): JSX.Element {
@@ -28,7 +24,7 @@ export function CurrencyFormDialog({ currency, onClose }: { currency?: AdminCurr
   const save = useSaveCurrency();
   const editing = currency !== undefined;
   const [code, setCode] = useState("");
-  const [name, setName] = useState(pair(currency?.name));
+  const [name, setName] = useState(toLocalePair(currency?.name));
   const [symbol, setSymbol] = useState(currency?.symbol ?? "");
   const [error, setError] = useState<string>();
 
