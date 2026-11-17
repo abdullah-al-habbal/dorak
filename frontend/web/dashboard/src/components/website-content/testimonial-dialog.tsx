@@ -17,24 +17,24 @@ import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useSaveTestimonial } from "@/hooks/platform/settings/use-website-content";
 import { localeText } from "@/lib/platform/website-content.util";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import type { ContentSection, Testimonial } from "@/types/platform/website-content.type";
+import type { TestimonialSectionOption } from "@/types/platform/testimonial-section-option.type";
+import type { Testimonial } from "@/types/platform/website-content.type";
 
 const DEFAULT_RATING = 5;
 
 /** Adds or edits a testimonial and picks the section it appears in. */
-export function TestimonialDialog({ testimonial, sections, onClose }: { testimonial?: Testimonial; sections: readonly ContentSection[]; onClose: () => void }): JSX.Element {
+export function TestimonialDialog({ testimonial, sections, onClose }: { testimonial?: Testimonial; sections: readonly TestimonialSectionOption[]; onClose: () => void }): JSX.Element {
   const { dictionary } = useI18n();
   const { content: t, common } = dictionary;
   const f = t.testimonialForm;
   const save = useSaveTestimonial();
   const editing = testimonial !== undefined;
-  const testimonialSections = sections.filter((section) => section.section_type === "testimonials");
   const [author, setAuthor] = useState(testimonial?.author_name ?? "");
   const [titleEn, setTitleEn] = useState(localeText(testimonial?.author_title, "en"));
   const [titleAr, setTitleAr] = useState(localeText(testimonial?.author_title, "ar"));
   const [bodyEn, setBodyEn] = useState(localeText(testimonial?.body, "en"));
   const [bodyAr, setBodyAr] = useState(localeText(testimonial?.body, "ar"));
-  const [sectionId, setSectionId] = useState(testimonial?.section_id ?? testimonialSections[0]?.id ?? "");
+  const [sectionId, setSectionId] = useState(testimonial?.section_id ?? sections[0]?.id ?? "");
   const [rating, setRating] = useState(testimonial?.rating ?? DEFAULT_RATING);
   const [avatar, setAvatar] = useState(testimonial?.avatar_url ?? "");
   const [sort, setSort] = useState(String(testimonial?.sort_order ?? 0));
@@ -101,8 +101,8 @@ export function TestimonialDialog({ testimonial, sections, onClose }: { testimon
             <FormField id="testimonial-section" label={f.section}>
               <NativeSelect id="testimonial-section" value={sectionId} onChange={(event) => setSectionId(event.target.value)}>
                 <option value="">{f.noSection}</option>
-                {testimonialSections.map((section) => (
-                  <option key={section.id} value={section.id}>{section.section_type} · {section.id.slice(0, 8)}</option>
+                {sections.map((section) => (
+                  <option key={section.id} value={section.id}>{section.label}</option>
                 ))}
               </NativeSelect>
             </FormField>

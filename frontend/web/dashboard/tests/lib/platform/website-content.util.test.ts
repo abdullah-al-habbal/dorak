@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { bodyJson, bodyPreview, localeText, parseBodyObject } from "@/lib/platform/website-content.util";
+import { UniverseVisibility } from "@/enums/people/universe-visibility.enum";
+import type { ContentPage } from "@/types/platform/website-content.type";
+
+import { bodyJson, bodyPreview, localeText, parseBodyObject, testimonialSectionOptions } from "@/lib/platform/website-content.util";
 
 describe("website content helpers", () => {
   it("reads one locale and treats the API's empty array as unset", () => {
@@ -26,5 +29,20 @@ describe("website content helpers", () => {
   it("previews the heading and supporting line", () => {
     expect(bodyPreview({ heading: "H", subheading: "S" })).toEqual({ heading: "H", subheading: "S" });
     expect(bodyPreview({ heading: 1 })).toEqual({ heading: "", subheading: "" });
+  });
+});
+
+describe("testimonialSectionOptions", () => {
+  const section = (id: string, type: string, title: unknown) => ({ id, page_id: "p", section_type: type, title, body: {}, sort_order: 1, universe_visibility: UniverseVisibility.All });
+  const pages = [
+    { id: "p", slug: "home", title: {}, sections: [section("s1", "testimonials", { en: "Loved", ar: "محبوب" }), section("s2", "hero", { en: "Hero" }), section("s3", "testimonials", [])] },
+  ] as unknown as ContentPage[];
+
+  it("keeps testimonial sections only and labels them with the page and a title, never an id", () => {
+    expect(testimonialSectionOptions(pages, "en")).toEqual([
+      { id: "s1", label: "/home · Loved" },
+      { id: "s3", label: "/home · testimonials" },
+    ]);
+    expect(testimonialSectionOptions(pages, "ar")[0].label).toBe("/home · محبوب");
   });
 });

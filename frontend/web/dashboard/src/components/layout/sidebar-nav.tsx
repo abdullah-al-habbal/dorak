@@ -22,7 +22,7 @@ export function SidebarNav({ actor, collapsed, onNavigate }: SidebarNavProps) {
   const root = portalRoot(actor);
 
   return (
-    <nav aria-label="Primary" className="flex flex-col gap-0.5">
+    <nav aria-label={shell.primaryNav} className="flex flex-col gap-0.5">
       {NAV_ITEMS[actor].map((item) => {
         const href = item.segment ? `${root}/${item.segment}` : root;
         const active = item.segment ? pathname.startsWith(href) : pathname === root;

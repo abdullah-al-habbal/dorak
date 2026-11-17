@@ -1,3 +1,7 @@
+import { TESTIMONIALS_SECTION_TYPE } from "@/config/platform/website-content.constant";
+import type { TestimonialSectionOption } from "@/types/platform/testimonial-section-option.type";
+import type { ContentPage } from "@/types/platform/website-content.type";
+
 /** Reads one locale of a translatable map; the API returns `[]` when a field was never set. */
 export function localeText(value: unknown, locale: "en" | "ar"): string {
   if (typeof value !== "object" || value === null || Array.isArray(value)) return "";
@@ -26,4 +30,13 @@ export function parseBodyObject(text: string): Record<string, unknown> | undefin
 export function bodyPreview(body: Record<string, unknown>): { heading: string; subheading: string } {
   const read = (key: string): string => (typeof body[key] === "string" ? body[key] : "");
   return { heading: read("heading"), subheading: read("subheading") };
+}
+
+/** The testimonial sections an editor can pick, labelled `/slug · title` (the type stands in for an untitled section). */
+export function testimonialSectionOptions(pages: readonly ContentPage[], locale: "en" | "ar"): TestimonialSectionOption[] {
+  return pages.flatMap((page) =>
+    page.sections
+      .filter((section) => section.section_type === TESTIMONIALS_SECTION_TYPE)
+      .map((section) => ({ id: section.id, label: `/${page.slug} · ${localeText(section.title, locale) || section.section_type}` })),
+  );
 }

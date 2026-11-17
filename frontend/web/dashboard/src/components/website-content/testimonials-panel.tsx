@@ -11,7 +11,7 @@ import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useDeleteTestimonial, useWebsiteContent } from "@/hooks/platform/settings/use-website-content";
-import { localeText } from "@/lib/platform/website-content.util";
+import { localeText, testimonialSectionOptions } from "@/lib/platform/website-content.util";
 import type { Testimonial } from "@/types/platform/website-content.type";
 
 /** The quotes shown in the testimonials sections. */
@@ -22,8 +22,8 @@ export function TestimonialsPanel(): JSX.Element {
   const query = useWebsiteContent();
   const remove = useDeleteTestimonial();
   const items = query.data?.testimonials ?? [];
-  const sections = (query.data?.pages ?? []).flatMap((page) => page.sections);
   const lang = locale === "ar" ? "ar" : "en";
+  const sections = testimonialSectionOptions(query.data?.pages ?? [], lang);
 
   function confirmDelete(item: Testimonial): void {
     overlay.open({
