@@ -10,4 +10,7 @@ return [
     'testimonial_saved' => 'Testimonial saved.',
     'testimonial_deleted' => 'Testimonial deleted.',
     'media_url_untrusted' => 'The image must be a path on this site or an https address on a trusted host.',
+    'page_published' => 'Page published.',
+    'page_unpublished' => 'Page unpublished.',
+    'page_incomplete' => 'A page needs a title and at least one section in both languages before it can be published.',
 ];

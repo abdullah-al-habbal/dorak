@@ -20,6 +20,12 @@ export const enContent = {
     noSections: "This page has no sections.",
     sectionAria: "Edit section {type} of {page}",
     audience: { all: "Everyone", men: "Men", women: "Women" },
+    published: "Published",
+    draft: "Draft",
+    publishAria: "Publish {page}",
+    unpublishAria: "Unpublish {page}",
+    incomplete: "Needs {languages} text before it can be published.",
+    languageNames: { en: "English", ar: "Arabic" },
   },
   pageForm: {
     title: "Edit page: {slug}",
@@ -88,6 +94,9 @@ export const enContent = {
     switchOff: "Switch off {label}",
   },
   toast: {
+    pagePublished: "Page published.",
+    pageUnpublished: "Page unpublished.",
+    publishFailed: "The page couldn't be published. Add the title and every section in both languages.",
     pageSaved: "Page saved.",
     sectionSaved: "Section saved.",
     created: "Testimonial added.",

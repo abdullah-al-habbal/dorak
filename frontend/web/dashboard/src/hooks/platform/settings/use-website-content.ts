@@ -12,6 +12,7 @@ import { websiteContentKeys } from "@/lib/query-keys/platform/website-content-ke
 import {
   createTestimonial,
   deleteTestimonial,
+  setContentPagePublished,
   updateContentPage,
   updateContentSection,
   updateOnboardingConfig,
@@ -41,6 +42,22 @@ export function useUpdateContentPage(): UseMutationResult<ContentPage, Error, Up
     mutationFn: ({ id, payload }: UpdateVariables<PagePayload>) => updateContentPage(id, payload),
     invalidate: [websiteContentKeys.all],
     successMessage: () => content.toast.pageSaved,
+  });
+}
+
+export interface PublishVariables {
+  id: string;
+  published: boolean;
+}
+
+/** Publishing is the one content write that can be refused (an incomplete page), so a failure is toasted. */
+export function useSetContentPagePublished(): UseMutationResult<ContentPage, Error, PublishVariables> {
+  const { content } = useDictionary();
+  return useFeedbackMutation({
+    mutationFn: ({ id, published }: PublishVariables) => setContentPagePublished(id, published),
+    invalidate: [websiteContentKeys.all],
+    successMessage: (_page, { published }) => (published ? content.toast.pagePublished : content.toast.pageUnpublished),
+    errorMessage: () => content.toast.publishFailed,
   });
 }
 

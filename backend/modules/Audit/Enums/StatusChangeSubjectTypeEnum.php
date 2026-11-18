@@ -10,6 +10,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Core\Contracts\MorphAliasEnum;
 use Modules\JobPosting\Models\ApplicationModel;
+use Modules\Marketing\Models\MarketingPageModel;
 
 enum StatusChangeSubjectTypeEnum: string implements MorphAliasEnum
 {
@@ -18,6 +19,7 @@ enum StatusChangeSubjectTypeEnum: string implements MorphAliasEnum
     case Brand = 'brand';
     case Branch = 'branch';
     case JobApplication = 'job_application';
+    case MarketingPage = 'marketing_page';
 
     public function modelClass(): string
     {
@@ -27,6 +29,7 @@ enum StatusChangeSubjectTypeEnum: string implements MorphAliasEnum
             self::Brand => BrandModel::class,
             self::Branch => BranchModel::class,
             self::JobApplication => ApplicationModel::class,
+            self::MarketingPage => MarketingPageModel::class,
         };
     }
 }

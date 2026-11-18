@@ -50,7 +50,7 @@ Status values: `todo`, `in progress`, `done`, `blocked`, `skipped`.
 |---|---|---|---|---|
 | [T1](t01-mobile-release-config.md) | Mobile release configuration | 1 Blockers | none | done |
 | [T2](t02-backend-legal-pages.md) | Backend legal pages and public SEO | 2 Legal pages | none | done |
-| [T3](t03-dashboard-legal-content.md) | Dashboard legal content management | 2 Legal pages | T2 | todo |
+| [T3](t03-dashboard-legal-content.md) | Dashboard legal content management | 2 Legal pages | T2 | done |
 | [T4](t04-backend-feedback.md) | Backend feedback system | 3 Feedback | none | todo |
 | [T5](t05-dashboard-support-inbox.md) | Dashboard support inbox | 3 Feedback | T4 | todo |
 | [T6](t06-barber-account-deletion.md) | Barber account deletion (backend) | 4 Deletion | none | todo |

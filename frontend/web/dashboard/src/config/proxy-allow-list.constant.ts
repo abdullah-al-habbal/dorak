@@ -89,6 +89,7 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   // NS-25 website content (admin only): pages, sections, testimonials and onboarding screens.
   { methods: [HttpMethod.Get], pattern: /^admin\/(marketing-pages|onboarding-configs)$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Put], pattern: new RegExp(`^admin/(marketing-pages|marketing-sections|testimonials|onboarding-configs)/${ID}$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/marketing-pages/${ID}/published$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: /^admin\/testimonials$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Delete], pattern: new RegExp(`^admin/testimonials/${ID}$`), guards: ADMIN_ONLY },
   // NS-07 clients and bans (admin only).

@@ -54,6 +54,7 @@ use Modules\Language\Http\Actions\Admin\ListAdminLanguagesAction;
 use Modules\Language\Http\Actions\Admin\SetLanguageActiveAction;
 use Modules\Marketing\Http\Actions\Admin\DestroyTestimonialAction;
 use Modules\Marketing\Http\Actions\Admin\ListMarketingPagesAction;
+use Modules\Marketing\Http\Actions\Admin\SetMarketingPagePublishedAction;
 use Modules\Marketing\Http\Actions\Admin\StoreTestimonialAction;
 use Modules\Marketing\Http\Actions\Admin\UpdateMarketingPageAction;
 use Modules\Marketing\Http\Actions\Admin\UpdateSectionAction;
@@ -143,6 +144,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::delete('/exchange-rates/{rate}', DestroyExchangeRateAction::class);
         Route::get('/marketing-pages', ListMarketingPagesAction::class);
         Route::put('/marketing-pages/{page}', UpdateMarketingPageAction::class);
+        Route::patch('/marketing-pages/{page}/published', SetMarketingPagePublishedAction::class);
         Route::put('/marketing-sections/{section}', UpdateSectionAction::class);
         Route::post('/testimonials', StoreTestimonialAction::class);
         Route::put('/testimonials/{testimonial}', UpdateTestimonialAction::class);

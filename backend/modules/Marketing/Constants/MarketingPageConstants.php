@@ -17,4 +17,8 @@ final class MarketingPageConstants
     public const string MARKETING_PAGE_CONTACT_SLUG = 'contact';
 
     public const string MARKETING_PAGE_DELETE_ACCOUNT_SLUG = 'delete-account';
+
+    public const string MARKETING_PAGE_STATE_DRAFT = 'draft';
+
+    public const string MARKETING_PAGE_STATE_PUBLISHED = 'published';
 }

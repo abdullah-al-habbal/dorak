@@ -32,6 +32,16 @@ export function bodyPreview(body: Record<string, unknown>): { heading: string; s
   return { heading: read("heading"), subheading: read("subheading") };
 }
 
+/** Which languages still lack text on a page: its title, or the body of any section. A page needs both to be published. */
+export function missingLocales(page: ContentPage): Array<"en" | "ar"> {
+  const locales: Array<"en" | "ar"> = ["en", "ar"];
+  return locales.filter((locale) => {
+    const noTitle = localeText(page.title, locale).trim() === "";
+    const noSectionText = page.sections.length === 0 || page.sections.some((section) => bodyJson(section.body, locale) === "{}");
+    return noTitle || noSectionText;
+  });
+}
+
 /** The testimonial sections an editor can pick, labelled `/slug · title` (the type stands in for an untitled section). */
 export function testimonialSectionOptions(pages: readonly ContentPage[], locale: "en" | "ar"): TestimonialSectionOption[] {
   return pages.flatMap((page) =>

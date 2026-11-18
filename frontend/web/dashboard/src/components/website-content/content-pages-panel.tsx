@@ -6,12 +6,14 @@ import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { TableSkeleton } from "@/components/ui/table/table-skeleton";
 import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
-import { useWebsiteContent } from "@/hooks/platform/settings/use-website-content";
+import { useSetContentPagePublished, useWebsiteContent } from "@/hooks/platform/settings/use-website-content";
 import { localizedText } from "@/lib/core/format/booking-format.util";
+import { missingLocales } from "@/lib/platform/website-content.util";
 
 /** Every marketing page with its ordered sections; a page and a section each open their own editor. */
 export function ContentPagesPanel(): JSX.Element {
@@ -19,6 +21,7 @@ export function ContentPagesPanel(): JSX.Element {
   const t = dictionary.content;
   const overlay = useOverlay();
   const query = useWebsiteContent();
+  const publish = useSetContentPagePublished();
   const pages = query.data?.pages ?? [];
 
   return (
@@ -28,6 +31,9 @@ export function ContentPagesPanel(): JSX.Element {
       {query.data && pages.length === 0 ? <EmptyState title={t.states.emptyPages} body="" /> : null}
       {pages.map((page) => {
         const name = localizedText(page.title, locale);
+        const isPublished = page.published_at !== null;
+        const missing = missingLocales(page);
+        const incomplete = t.pages.incomplete.replace("{languages}", missing.map((code) => t.pages.languageNames[code]).join(", "));
         return (
           <section key={page.id} aria-label={name} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -35,8 +41,18 @@ export function ContentPagesPanel(): JSX.Element {
                 <h2 dir="auto" className="font-heading text-xl font-semibold">{name}</h2>
                 <span dir="ltr" className="tabular text-sm text-muted-foreground">/{page.slug}</span>
               </div>
-              <Button type="button" size="sm" variant="outline" onClick={() => overlay.open({ kind: OverlayKind.ContentPageForm, page })}>{t.pages.editPage}</Button>
+              <div className="flex flex-wrap items-center gap-3">
+                <Badge variant={isPublished ? "default" : "outline"}>{isPublished ? t.pages.published : t.pages.draft}</Badge>
+                <Switch
+                  checked={isPublished}
+                  disabled={publish.isPending || (!isPublished && missing.length > 0)}
+                  aria-label={(isPublished ? t.pages.unpublishAria : t.pages.publishAria).replace("{page}", name)}
+                  onCheckedChange={(checked) => publish.mutate({ id: page.id, published: checked })}
+                />
+                <Button type="button" size="sm" variant="outline" onClick={() => overlay.open({ kind: OverlayKind.ContentPageForm, page })}>{t.pages.editPage}</Button>
+              </div>
             </div>
+            {!isPublished && missing.length > 0 ? <p className="text-sm text-muted-foreground">{incomplete}</p> : null}
             <h3 className="text-sm font-medium">{t.pages.sections}</h3>
             {page.sections.length === 0 ? <p className="text-sm text-muted-foreground">{t.pages.noSections}</p> : null}
             <ul aria-label={t.pages.sections} className="flex flex-col divide-y divide-border">

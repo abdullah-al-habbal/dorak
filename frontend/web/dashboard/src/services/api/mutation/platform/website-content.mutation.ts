@@ -47,6 +47,10 @@ export function updateContentPage(id: string, payload: PagePayload): Promise<Con
   return apiRequest(`${ADMIN}/marketing-pages/${encodeURIComponent(id)}`, { method: HttpMethod.Put, body: payload, schema: contentPageSchema });
 }
 
+export function setContentPagePublished(id: string, published: boolean): Promise<ContentPage> {
+  return apiRequest(`${ADMIN}/marketing-pages/${encodeURIComponent(id)}/published`, { method: HttpMethod.Patch, body: { published }, schema: contentPageSchema });
+}
+
 export function updateContentSection(id: string, payload: SectionPayload): Promise<ContentSection> {
   return apiRequest(`${ADMIN}/marketing-sections/${encodeURIComponent(id)}`, { method: HttpMethod.Put, body: payload, schema: contentSectionSchema });
 }

@@ -22,6 +22,12 @@ export const arContent: Dictionary["content"] = {
     noSections: "لا توجد أقسام في هذه الصفحة.",
     sectionAria: "تعديل القسم {type} في {page}",
     audience: { all: "الجميع", men: "الرجال", women: "النساء" },
+    published: "منشورة",
+    draft: "مسودة",
+    publishAria: "نشر {page}",
+    unpublishAria: "إلغاء نشر {page}",
+    incomplete: "تحتاج إلى نص {languages} قبل النشر.",
+    languageNames: { en: "الإنجليزية", ar: "العربية" },
   },
   pageForm: {
     title: "تعديل الصفحة: {slug}",
@@ -90,6 +96,9 @@ export const arContent: Dictionary["content"] = {
     switchOff: "إيقاف {label}",
   },
   toast: {
+    pagePublished: "تم نشر الصفحة.",
+    pageUnpublished: "تم إلغاء نشر الصفحة.",
+    publishFailed: "تعذّر نشر الصفحة. أضف العنوان وكل الأقسام باللغتين.",
     pageSaved: "تم حفظ الصفحة.",
     sectionSaved: "تم حفظ القسم.",
     created: "تمت إضافة الشهادة.",

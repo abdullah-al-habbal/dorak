@@ -24,6 +24,7 @@ export const contentPageSchema = z.object({
   slug: z.string(),
   title: localizedTextSchema,
   meta_description: translationsSchema.optional(),
+  published_at: z.string().nullable().default(null),
   sections: z.array(contentSectionSchema).optional().default([]),
 });
 

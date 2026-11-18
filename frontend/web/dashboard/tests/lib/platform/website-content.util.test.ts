@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { UniverseVisibility } from "@/enums/people/universe-visibility.enum";
 import type { ContentPage } from "@/types/platform/website-content.type";
 
-import { bodyJson, bodyPreview, localeText, parseBodyObject, testimonialSectionOptions } from "@/lib/platform/website-content.util";
+import { bodyJson, bodyPreview, localeText, missingLocales, parseBodyObject, testimonialSectionOptions } from "@/lib/platform/website-content.util";
 
 describe("website content helpers", () => {
   it("reads one locale and treats the API's empty array as unset", () => {
@@ -44,5 +44,20 @@ describe("testimonialSectionOptions", () => {
       { id: "s3", label: "/home · testimonials" },
     ]);
     expect(testimonialSectionOptions(pages, "ar")[0].label).toBe("/home · محبوب");
+  });
+});
+
+describe("missingLocales", () => {
+  const section = (body: unknown) => ({ id: "s", page_id: "p", section_type: "legal_text", body, sort_order: 0, universe_visibility: UniverseVisibility.All });
+  const page = (overrides: Partial<ContentPage>): ContentPage => ({ id: "p", slug: "privacy", title: { en: "Privacy", ar: "الخصوصية" }, published_at: null, sections: [section({ en: { paragraphs: ["a"] }, ar: { paragraphs: ["ب"] } })], ...overrides }) as ContentPage;
+
+  it("is empty for a page with both titles and every section translated", () => {
+    expect(missingLocales(page({}))).toEqual([]);
+  });
+
+  it("flags a missing title, a missing section translation and a page with no sections", () => {
+    expect(missingLocales(page({ title: { en: "Privacy", ar: " " } }))).toEqual(["ar"]);
+    expect(missingLocales(page({ sections: [section({ en: { paragraphs: ["a"] }, ar: {} })] as ContentPage["sections"] }))).toEqual(["ar"]);
+    expect(missingLocales(page({ sections: [] }))).toEqual(["en", "ar"]);
   });
 });

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Modules\Admin\Models\AdminModel;
+use Modules\Audit\Models\StatusChangeLogModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Marketing\Models\MarketingPageModel;
 use Modules\Marketing\Models\SectionModel;
@@ -88,6 +89,85 @@ describe('Admin marketing pages', function (): void {
 
         $this->authenticateDashboardActor(AdminModel::factory()->create());
         $this->putJson(WEBSITE_PAGES.'/'.fake()->uuid(), $payload)->assertNotFound();
+    });
+});
+
+describe('Admin page publishing (T3)', function (): void {
+    function completeDraft(string $slug = 'privacy'): MarketingPageModel
+    {
+        $page = MarketingPageModel::factory()->draft()->create(['slug' => $slug]);
+        SectionModel::factory()->create([
+            'page_id' => $page->id,
+            'section_type' => 'legal_text',
+            'body' => ['en' => ['paragraphs' => ['Text']], 'ar' => ['paragraphs' => ['نص']]],
+        ]);
+
+        return $page;
+    }
+
+    it('publishes a complete draft, shows it publicly and records who did it', function (): void {
+        $page = completeDraft();
+        $admin = AdminModel::factory()->create();
+        $this->authenticateDashboardActor($admin);
+
+        $this->patchJson(WEBSITE_PAGES."/{$page->id}/published", ['published' => true])
+            ->assertOk()
+            ->assertJsonPath('data.slug', 'privacy')
+            ->assertJsonPath('data.published_at', fn (?string $value): bool => $value !== null);
+
+        expect($page->fresh()->isPublished())->toBeTrue();
+        $this->getJson('/api/v1/marketing/pages/privacy?universe=all')->assertOk();
+        $log = StatusChangeLogModel::query()->where('subject_id', $page->id)->firstOrFail();
+        expect($log->from_status)->toBe('draft')->and($log->to_status)->toBe('published')->and($log->actor_id)->toBe((string) $admin->getKey());
+    });
+
+    it('unpublishes a page and hides it again', function (): void {
+        $page = completeDraft();
+        $page->update(['published_at' => now()->subHour()]);
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->patchJson(WEBSITE_PAGES."/{$page->id}/published", ['published' => false])->assertOk()->assertJsonPath('data.published_at', null);
+
+        expect($page->fresh()->isPublished())->toBeFalse();
+        $this->getJson('/api/v1/marketing/pages/privacy?universe=all')->assertNotFound();
+    });
+
+    it('writes no log when the state does not change', function (): void {
+        $page = completeDraft();
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->patchJson(WEBSITE_PAGES."/{$page->id}/published", ['published' => false])->assertOk();
+
+        expect(StatusChangeLogModel::query()->where('subject_id', $page->id)->count())->toBe(0);
+    });
+
+    it('refuses to publish a page with no section or a missing translation', function (): void {
+        $empty = MarketingPageModel::factory()->draft()->create(['slug' => 'terms']);
+        $halfTranslated = MarketingPageModel::factory()->draft()->create(['slug' => 'about']);
+        SectionModel::factory()->create(['page_id' => $halfTranslated->id, 'body' => ['en' => ['paragraphs' => ['Text']], 'ar' => []]]);
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        foreach ([$empty, $halfTranslated] as $page) {
+            $this->patchJson(WEBSITE_PAGES."/{$page->id}/published", ['published' => true])->assertUnprocessable()->assertJsonValidationErrors('published');
+            expect($page->fresh()->isPublished())->toBeFalse();
+        }
+        expect(StatusChangeLogModel::query()->count())->toBe(0);
+    });
+
+    it('validates the flag, answers 404 for an unknown page and refuses non-admin callers', function (): void {
+        $page = completeDraft();
+        $url = WEBSITE_PAGES."/{$page->id}/published";
+
+        $this->patchJson($url, ['published' => true])->assertUnauthorized();
+
+        $this->authenticateDashboardActor(BranchModel::factory()->create());
+        $this->patchJson($url, ['published' => true])->assertForbidden();
+        expect($page->fresh()->isPublished())->toBeFalse();
+
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+        $this->patchJson($url, [])->assertUnprocessable()->assertJsonValidationErrors('published');
+        $this->patchJson($url, ['published' => 'maybe'])->assertUnprocessable();
+        $this->patchJson(WEBSITE_PAGES.'/'.fake()->uuid().'/published', ['published' => true])->assertNotFound();
     });
 });
 
