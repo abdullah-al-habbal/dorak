@@ -2,14 +2,27 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:core/src/network/api.client.dart';
 import 'package:core/src/notifications/notification_target.entity.dart';
 
 class PushNotificationService {
-  PushNotificationService(this._client);
+  /// [initializeFirebase] and [platformName] default to the real Firebase
+  /// bootstrap and the running platform; tests inject fakes.
+  PushNotificationService(
+    this._client, {
+    Future<void> Function()? initializeFirebase,
+    String Function()? platformName,
+  }) : _initializeFirebase = initializeFirebase ?? Firebase.initializeApp,
+       _platformName = platformName ?? _runningPlatformName;
+
+  static const String _platformIos = 'ios';
+  static const String _platformAndroid = 'android';
 
   final ApiClient _client;
+  final Future<void> Function() _initializeFirebase;
+  final String Function() _platformName;
   StreamSubscription<String>? _tokenRefreshSubscription;
   StreamSubscription<RemoteMessage>? _openedSubscription;
   final StreamController<NotificationTarget> _opened =
@@ -33,9 +46,26 @@ class PushNotificationService {
     _opened.add(NotificationTarget.fromPayload(data: data));
   }
 
+  static String _runningPlatformName() =>
+      defaultTargetPlatform == TargetPlatform.iOS
+      ? _platformIos
+      : _platformAndroid;
+
+  /// Starts push delivery. Push is optional: when Firebase is not configured
+  /// for this build (no `google-services.json` or `GoogleService-Info.plist`)
+  /// or the platform refuses, the app keeps running without notifications and
+  /// a later call may retry.
   Future<void> initialize() async {
     if (_tokenRefreshSubscription != null) return;
-    await Firebase.initializeApp();
+    try {
+      await _start();
+    } on Object catch (error) {
+      debugPrint('Push notifications unavailable: $error');
+    }
+  }
+
+  Future<void> _start() async {
+    await _initializeFirebase();
     await FirebaseMessaging.instance.requestPermission();
     final token = await FirebaseMessaging.instance.getToken();
     if (token != null) await _register(token);
@@ -52,7 +82,7 @@ class PushNotificationService {
 
   Future<void> _register(String token) => _client.post<void>(
     '/user/device-token',
-    data: {'token': token, 'platform_type': 'android'},
+    data: {'token': token, 'platform_type': _platformName()},
     parser: (_) {},
   );
 
