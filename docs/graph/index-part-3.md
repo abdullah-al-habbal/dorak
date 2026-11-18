@@ -55,6 +55,9 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [T11: Privacy and security checks](../readiness/t11-privacy-checks.md)
 - [T12: Dashboard web hygiene](../readiness/t12-dashboard-web-hygiene.md)
 - [T13: Docs and full gates](../readiness/t13-docs-and-gates.md)
+- [T14: Brand owner mobile API](../readiness/t14-owner-mobile-backend-api.md)
+- [T15: Brand owner core layer](../readiness/t15-owner-mobile-core-layer.md)
+- [T16: business_app brand owner experience](../readiness/t16-business-app-owner-experience.md)
 
 ### `docs/planning/`
 
