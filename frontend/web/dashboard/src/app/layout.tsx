@@ -6,6 +6,7 @@ import { RouteProgress } from "@/components/feedback/route-progress";
 import { AppProviders } from "@/components/providers/app-providers";
 import { LocaleBoundary } from "@/components/providers/locale-boundary";
 import { LOCALE_DIRECTION } from "@/config/locales.constant";
+import { NOINDEX_ROBOTS } from "@/config/seo.constant";
 import { PRE_PAINT_SCRIPT } from "@/config/theme.constant";
 import { getServerLocale } from "@/locales/get-server-locale";
 
@@ -23,6 +24,7 @@ const arabic = IBM_Plex_Sans_Arabic({
 export const metadata: Metadata = {
   title: { default: "Dorak", template: "%s · Dorak" },
   description: "Operations workspace for salons and barbershops.",
+  robots: NOINDEX_ROBOTS,
 };
 
 /**

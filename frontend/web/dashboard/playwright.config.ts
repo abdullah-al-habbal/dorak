@@ -6,6 +6,7 @@ const MOBILE = { width: 390, height: 844 };
 const DESKTOP = { width: 1440, height: 900 };
 const ULTRAWIDE = { width: 3440, height: 1440 };
 const BUILD_AND_START_TIMEOUT_MS = 600_000;
+const FIREFOX_SMOKE_SPECS = /(auth|error-pages|seo)\.spec\.ts$/;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -23,6 +24,8 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: DESKTOP } },
     { name: "mobile-390", use: { ...devices["Desktop Chrome"], viewport: MOBILE, hasTouch: true } },
     { name: "ultrawide-3440", use: { ...devices["Desktop Chrome"], viewport: ULTRAWIDE } },
+    // A smoke pass in a second engine: sign-in, the error pages and the page metadata. Not a compatibility claim for every screen.
+    { name: "firefox", testMatch: FIREFOX_SMOKE_SPECS, use: { ...devices["Desktop Firefox"], viewport: DESKTOP } },
   ],
   // Both servers are reused when already running (`php artisan serve`, `npm start`).
   webServer: [

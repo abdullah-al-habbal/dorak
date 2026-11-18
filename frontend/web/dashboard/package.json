@@ -11,7 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:e2e:install": "playwright install chromium",
+    "test:e2e:install": "playwright install chromium firefox",
     "clean:artifacts": "rm -rf .next test-results playwright-report blob-report playwright/.cache tsconfig.tsbuildinfo"
   },
   "dependencies": {
