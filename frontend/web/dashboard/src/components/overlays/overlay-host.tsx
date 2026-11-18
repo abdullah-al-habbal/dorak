@@ -13,6 +13,7 @@ const ReviewResolveDialog = dynamic(() => import("@/components/review-moderation
 const AdminUserFormDialog = dynamic(() => import("@/components/admin-users/admin-user-form-dialog").then((module) => module.AdminUserFormDialog));
 const BarberApprovalDetailDialog = dynamic(() => import("@/components/barber-approvals/barber-approval-detail-dialog").then((module) => module.BarberApprovalDetailDialog));
 const ClientBanDialog = dynamic(() => import("@/components/clients/client-ban-dialog").then((module) => module.ClientBanDialog));
+const FeedbackDetailDialog = dynamic(() => import("@/components/support/feedback-detail-dialog").then((module) => module.FeedbackDetailDialog));
 const ClientDetailDialog = dynamic(() => import("@/components/clients/client-detail-dialog").then((module) => module.ClientDetailDialog));
 const BarberBanDialog = dynamic(() => import("@/components/barber-approvals/barber-ban-dialog").then((module) => module.BarberBanDialog));
 const BarberRejectDialog = dynamic(() => import("@/components/barber-approvals/barber-reject-dialog").then((module) => module.BarberRejectDialog));
@@ -118,6 +119,8 @@ export function OverlayHost({ request, onClose }: OverlayHostProps): JSX.Element
       return <BarberApprovalDetailDialog barber={request.barber} onClose={onClose} />;
     case OverlayKind.BarberBan:
       return <BarberBanDialog barber={request.barber} onClose={onClose} />;
+    case OverlayKind.FeedbackDetail:
+      return <FeedbackDetailDialog report={request.report} onClose={onClose} />;
     case OverlayKind.ClientDetail:
       return <ClientDetailDialog client={request.client} onClose={onClose} />;
     case OverlayKind.ClientBan:

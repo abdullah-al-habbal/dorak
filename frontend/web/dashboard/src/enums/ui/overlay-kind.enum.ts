@@ -23,6 +23,7 @@ export enum OverlayKind {
   BarberBan = "barber-ban",
   ClientDetail = "client-detail",
   ClientBan = "client-ban",
+  FeedbackDetail = "feedback-detail",
   AdminUserForm = "admin-user-form",
   ReviewResolve = "review-resolve",
   CatalogCategoryForm = "catalog-category-form",

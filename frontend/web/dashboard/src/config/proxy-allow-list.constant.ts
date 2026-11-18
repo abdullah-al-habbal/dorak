@@ -92,6 +92,9 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/marketing-pages/${ID}/published$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: /^admin\/testimonials$/, guards: ADMIN_ONLY },
   { methods: [HttpMethod.Delete], pattern: new RegExp(`^admin/testimonials/${ID}$`), guards: ADMIN_ONLY },
+  // Feedback and support reports (admin only): list, read and triage.
+  { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/feedback(/${ID})?$`), guards: ADMIN_ONLY },
+  { methods: [HttpMethod.Patch], pattern: new RegExp(`^admin/feedback/${ID}$`), guards: ADMIN_ONLY },
   // NS-07 clients and bans (admin only).
   { methods: [HttpMethod.Get], pattern: new RegExp(`^admin/clients(/${ID}(/(bookings|reviews))?)?$`), guards: ADMIN_ONLY },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^admin/clients/${ID}/ban$`), guards: ADMIN_ONLY },
