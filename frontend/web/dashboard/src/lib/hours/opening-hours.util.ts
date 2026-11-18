@@ -28,12 +28,12 @@ export const ALL_DAYS: readonly Weekday[] = [
 const PERCENT = 100;
 const TIME_PAD = 2;
 
-export function toMinutes(time: string): number {
+function toMinutes(time: string): number {
   const [hours = "0", minutes = "0"] = time.split(":");
   return Number(hours) * MINUTES_PER_HOUR + Number(minutes);
 }
 
-export function toTime(minutes: number): string {
+function toTime(minutes: number): string {
   const clamped = Math.min(Math.max(minutes, 0), LAST_MINUTE_OF_DAY);
   const hours = String(Math.floor(clamped / MINUTES_PER_HOUR)).padStart(TIME_PAD, "0");
   const rest = String(clamped % MINUTES_PER_HOUR).padStart(TIME_PAD, "0");

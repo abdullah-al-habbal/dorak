@@ -5,7 +5,7 @@ import type { MappedFormError } from "@/interfaces/core/query/mapped-form-error.
 import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { FormFieldNameMapper } from "@/types/core/api/form-field-name-mapper.type";
 
-export const FORM_ROOT_FIELD = "root";
+const FORM_ROOT_FIELD = "root";
 
 /**
  * A `FormFieldNameMapper` from a table of backend field names to form field names. A nested name such as

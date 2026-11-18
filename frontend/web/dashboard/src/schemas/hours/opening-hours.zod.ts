@@ -8,9 +8,9 @@ const timeSchema = z
   .regex(/^\d{2}:\d{2}/)
   .transform((value) => value.slice(0, TIME_LENGTH));
 
-export const shiftSchema = z.object({ opens_time: timeSchema, closes_time: timeSchema });
+const shiftSchema = z.object({ opens_time: timeSchema, closes_time: timeSchema });
 
-export const openingHoursDaySchema = z.object({
+const openingHoursDaySchema = z.object({
   day_of_week: z.enum(Weekday),
   is_closed: z.boolean(),
   shifts: z.array(shiftSchema).default([]),

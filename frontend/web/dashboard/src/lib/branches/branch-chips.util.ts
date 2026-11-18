@@ -2,7 +2,7 @@ import type { FilterChip } from "@/interfaces/ui/data/filter-chip.interface";
 import type { BranchFilters } from "@/types/branches/branch-filters.type";
 import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
-export const BRANCH_CHIP_KEY = { status: "status", brand: "brand", search: "search" } as const;
+const BRANCH_CHIP_KEY = { status: "status", brand: "brand", search: "search" } as const;
 
 interface ChipInput {
   filters: BranchFilters;

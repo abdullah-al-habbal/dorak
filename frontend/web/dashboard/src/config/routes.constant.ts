@@ -2,8 +2,8 @@ import type { AuthActor } from "@/enums/access/auth-actor.enum";
 
 export const ROUTE_ROOT = "/dashboard";
 export const LOGIN_SEGMENT = "login";
-export const FORGOT_PASSWORD_SEGMENT = "forgot-password";
-export const RESET_PASSWORD_SEGMENT = "reset-password";
+const FORGOT_PASSWORD_SEGMENT = "forgot-password";
+const RESET_PASSWORD_SEGMENT = "reset-password";
 export const ACCOUNT_SEGMENT = "account";
 export const NOTIFICATIONS_SEGMENT = "notifications";
 /** Pages under a guard that a signed-out visitor may open. */

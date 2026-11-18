@@ -1,5 +1,5 @@
-export const MIN_DURATION_MINUTES = 1;
-export const MAX_DURATION_MINUTES = 1440;
+const MIN_DURATION_MINUTES = 1;
+const MAX_DURATION_MINUTES = 1440;
 export const DURATION_PRESETS = [15, 30, 45, 60, 90, 120] as const;
 const MINUTES_PER_HOUR = 60;
 

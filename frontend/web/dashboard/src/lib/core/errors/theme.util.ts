@@ -1,7 +1,7 @@
 import { DARK_CLASS, THEME_TRANSITION_CLASS, THEME_TRANSITION_MS } from "@/config/theme.constant";
 import { ThemeMode } from "@/enums/ui/theme-mode.enum";
 
-export function resolvesToDark(mode: ThemeMode, prefersDark: boolean): boolean {
+function resolvesToDark(mode: ThemeMode, prefersDark: boolean): boolean {
   return mode === ThemeMode.Dark || (mode === ThemeMode.System && prefersDark);
 }
 

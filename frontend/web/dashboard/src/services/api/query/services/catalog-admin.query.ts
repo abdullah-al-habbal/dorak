@@ -4,7 +4,7 @@ import { catalogItemListSchema, catalogTagListSchema } from "@/schemas/services/
 import { apiRequest, apiRequestWithMeta } from "@/services/api/core/client";
 import type { CatalogItemPage, CatalogTag } from "@/types/services/catalog-item.type";
 
-export const CATALOG_ITEMS_PER_PAGE = 20;
+const CATALOG_ITEMS_PER_PAGE = 20;
 
 export async function fetchCatalogItemPage(categoryId: string, search: string, page: number): Promise<CatalogItemPage> {
   const params = new URLSearchParams({ page: String(page), per_page: String(CATALOG_ITEMS_PER_PAGE) });

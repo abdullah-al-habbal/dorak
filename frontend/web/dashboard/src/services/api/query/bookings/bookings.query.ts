@@ -22,7 +22,7 @@ function queryString(filters: BookingFilters, weekStart: number, page: number): 
   return params.toString();
 }
 
-export async function fetchBookingPage(filters: BookingFilters, weekStart: number, page: number): Promise<BookingPage> {
+async function fetchBookingPage(filters: BookingFilters, weekStart: number, page: number): Promise<BookingPage> {
   const { data, meta } = await apiRequestWithMeta(`${DASHBOARD_API}/bookings?${queryString(filters, weekStart, page)}`, {
     schema: bookingListSchema,
   });
@@ -30,7 +30,7 @@ export async function fetchBookingPage(filters: BookingFilters, weekStart: numbe
 }
 
 /** Follows the pagination metadata until the window is complete, for the grids. */
-export async function fetchBookingWindow(filters: BookingFilters, weekStart: number): Promise<Booking[]> {
+async function fetchBookingWindow(filters: BookingFilters, weekStart: number): Promise<Booking[]> {
   const first = await fetchBookingPage(filters, weekStart, 1);
   const items = [...first.items];
   for (let page = 2; page <= Math.min(first.page.total_pages, MAX_PAGES); page += 1) {

@@ -6,7 +6,7 @@ import type { BookingFilters } from "@/types/bookings/booking-filters.type";
 
 const MAX_SEARCH = 100;
 
-export function defaultFilters(today: Date): BookingFilters {
+function defaultFilters(today: Date): BookingFilters {
   return { view: BookingView.Week, date: toDateKey(today), page: 1 };
 }
 

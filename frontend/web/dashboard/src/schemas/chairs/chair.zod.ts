@@ -12,7 +12,7 @@ export const chairOptionSchema = z.object({
 
 export const chairOptionListSchema = z.array(chairOptionSchema);
 
-export const chairLayoutSchema = z.object({
+const chairLayoutSchema = z.object({
   position_x: z.number().optional().default(0),
   position_y: z.number().optional().default(0),
   width: z.number().optional().default(60),

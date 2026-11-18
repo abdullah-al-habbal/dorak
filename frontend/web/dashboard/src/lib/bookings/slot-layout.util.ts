@@ -2,10 +2,10 @@ import { minutesBetween } from "@/lib/bookings/booking-date.util";
 import type { Booking } from "@/types/bookings/booking.type";
 import type { BookingEventLayout } from "@/types/bookings/booking-event-layout.type";
 
-export const DEFAULT_DURATION_MINUTES = 30;
-export const MIN_EVENT_MINUTES = 15;
+const DEFAULT_DURATION_MINUTES = 30;
+const MIN_EVENT_MINUTES = 15;
 
-export function bookingEnd(booking: Booking): Date {
+function bookingEnd(booking: Booking): Date {
   const start = new Date(booking.starts_at);
   if (booking.ends_at) return new Date(booking.ends_at);
   const minutes = booking.services.reduce((sum, service) => sum + (service.duration_minutes ?? 0), 0);
