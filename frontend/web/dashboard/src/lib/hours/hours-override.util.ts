@@ -1,3 +1,4 @@
+import { createFieldNameMapper } from "@/lib/core/errors/apply-form-error.util";
 import type { Weekday } from "@/enums/booking/weekday.enum";
 import type { HoursOverrideInput, HoursOverrideRangeInput } from "@/types/hours/hours-override.type";
 
@@ -13,6 +14,8 @@ export interface SpecialDayDraft {
   /** A recurring closure: only these weekdays inside the range. Empty means every day. */
   weekdays: Weekday[];
 }
+
+export const EMPTY_SPECIAL_DAY: SpecialDayDraft = { date: "", kind: "closed", opens: "", closes: "", endDate: "", weekdays: [] };
 
 export type SpecialDayIssue = "date" | "past" | "times" | "order" | "range" | "repeatNeedsEnd";
 
@@ -52,3 +55,5 @@ export function specialDayRangeInput(draft: SpecialDayDraft): HoursOverrideRange
     ...hours,
   };
 }
+
+export const mapSpecialDayFieldName = createFieldNameMapper({ date: "date", date_from: "date", date_to: "endDate", opens_time: "opens", closes_time: "closes", weekdays: "weekdays", is_closed: "kind" });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isRangeDraft, specialDayInput, specialDayIssue, specialDayRangeInput, todayIso } from "@/lib/hours/hours-override.util";
+import { isRangeDraft, mapSpecialDayFieldName, specialDayInput, specialDayIssue, specialDayRangeInput, todayIso } from "@/lib/hours/hours-override.util";
 import type { SpecialDayDraft } from "@/lib/hours/hours-override.util";
 
 const today = "2026-11-14";
@@ -47,5 +47,13 @@ describe("special day helpers", () => {
     expect(isRangeDraft(range)).toBe(true);
     expect(specialDayRangeInput(range)).toEqual({ date_from: "2026-11-20", date_to: "2026-12-20", weekdays: [5], is_closed: false, opens_time: "10:00", closes_time: "18:00" });
     expect(specialDayRangeInput({ ...range, kind: "closed", weekdays: [] })).toEqual({ date_from: "2026-11-20", date_to: "2026-12-20", is_closed: true });
+  });
+});
+
+describe("special day field names", () => {
+  it("maps backend names onto form fields", () => {
+    expect(mapSpecialDayFieldName("date_to")).toBe("endDate");
+    expect(mapSpecialDayFieldName("opens_time")).toBe("opens");
+    expect(mapSpecialDayFieldName("other")).toBe("root");
   });
 });

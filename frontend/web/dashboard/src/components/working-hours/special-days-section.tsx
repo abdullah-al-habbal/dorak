@@ -1,13 +1,15 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2Icon } from "lucide-react";
-import { useState } from "react";
-import type { FormEvent, JSX } from "react";
+import { useMemo } from "react";
+import type { JSX } from "react";
+import { useForm, useWatch } from "react-hook-form";
 
 import { WeekdayPicker } from "@/components/working-hours/weekday-picker";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
-import { FormField } from "@/components/common/form-field";
+import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
@@ -16,11 +18,12 @@ import { useHoursOverrides } from "@/hooks/hours/use-hours-overrides";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useSetHoursOverride } from "@/hooks/hours/use-set-hours-override";
 import { useSetHoursOverrideRange } from "@/hooks/hours/use-set-hours-override-range";
+import { applyFormError } from "@/lib/core/errors/apply-form-error.util";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 import { formatDay } from "@/lib/core/format/booking-format.util";
-import { isRangeDraft, specialDayInput, specialDayIssue, specialDayRangeInput } from "@/lib/hours/hours-override.util";
-import type { SpecialDayDraft } from "@/lib/hours/hours-override.util";
-
-const EMPTY_DRAFT: SpecialDayDraft = { date: "", kind: "closed", opens: "", closes: "", endDate: "", weekdays: [] };
+import { EMPTY_SPECIAL_DAY, isRangeDraft, mapSpecialDayFieldName, specialDayInput, specialDayRangeInput } from "@/lib/hours/hours-override.util";
+import { createSpecialDayFormSchema } from "@/schemas/hours/special-day-form.zod";
+import type { SpecialDayFormValues } from "@/types/hours/special-day-form-values.type";
 
 /** Closure days and shortened days for one branch. A new entry for a date replaces the earlier one. */
 export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Element {
@@ -30,25 +33,21 @@ export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Elem
   const save = useSetHoursOverride();
   const saveRange = useSetHoursOverrideRange();
   const clear = useClearHoursOverride();
-  const [draft, setDraft] = useState<SpecialDayDraft>(EMPTY_DRAFT);
-  const [error, setError] = useState<string>();
+  const schema = useMemo(() => createSpecialDayFormSchema(t.issues), [t.issues]);
+  const form = useForm<SpecialDayFormValues>({ resolver: zodResolver(schema), defaultValues: EMPTY_SPECIAL_DAY });
+  const { errors } = form.formState;
+  const [date, kind, weekdays] = useWatch({ control: form.control, name: ["date", "kind", "weekdays"] });
+  const invalid = (name: keyof SpecialDayFormValues, id: string) => ({ "aria-invalid": Boolean(errors[name]), "aria-describedby": errors[name] ? fieldErrorId(id) : undefined });
 
-  async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault();
-    setError(undefined);
-    const issue = specialDayIssue(draft);
-    if (issue !== undefined) {
-      setError(t.issues[issue]);
-      return;
-    }
+  const submit = form.handleSubmit(async (draft) => {
     try {
       if (isRangeDraft(draft)) await saveRange.mutateAsync({ branchId, input: specialDayRangeInput(draft) });
       else await save.mutateAsync({ branchId, date: draft.date, input: specialDayInput(draft) });
-      setDraft(EMPTY_DRAFT);
-    } catch {
-      setError(t.toast.failed);
+      form.reset(EMPTY_SPECIAL_DAY);
+    } catch (failure) {
+      applyFormError(form, mapApiFormError(failure, t.toast.failed, mapSpecialDayFieldName));
     }
-  }
+  });
 
   return (
     <section aria-labelledby="special-days-title" className="flex flex-col gap-4 rounded-xl border border-border p-4">
@@ -58,36 +57,36 @@ export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Elem
       </div>
 
       <form onSubmit={submit} noValidate className="flex flex-col gap-3">
-        <FormErrorBanner message={error} />
+        <FormErrorBanner message={errors.root?.message} />
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <FormField id="special-day-date" label={t.date}>
-            <Input id="special-day-date" type="date" dir="ltr" value={draft.date} onChange={(event) => setDraft({ ...draft, date: event.target.value })} />
+          <FormField id="special-day-date" label={t.date} error={errors.date?.message}>
+            <Input id="special-day-date" type="date" dir="ltr" {...invalid("date", "special-day-date")} {...form.register("date")} />
           </FormField>
-          <FormField id="special-day-kind" label={t.kind}>
-            <NativeSelect id="special-day-kind" value={draft.kind} onChange={(event) => setDraft({ ...draft, kind: event.target.value === "hours" ? "hours" : "closed" })}>
+          <FormField id="special-day-kind" label={t.kind} error={errors.kind?.message}>
+            <NativeSelect id="special-day-kind" {...form.register("kind")}>
               <option value="closed">{t.closedAllDay}</option>
               <option value="hours">{t.specialHours}</option>
             </NativeSelect>
           </FormField>
-          <FormField id="special-day-end" label={t.endDate} hint={t.endDateHint}>
-            <Input id="special-day-end" type="date" dir="ltr" min={draft.date || undefined} value={draft.endDate} onChange={(event) => setDraft({ ...draft, endDate: event.target.value })} />
+          <FormField id="special-day-end" label={t.endDate} hint={t.endDateHint} error={errors.endDate?.message}>
+            <Input id="special-day-end" type="date" dir="ltr" min={date || undefined} {...invalid("endDate", "special-day-end")} {...form.register("endDate")} />
           </FormField>
-          {draft.kind === "hours" ? (
+          {kind === "hours" ? (
             <>
-              <FormField id="special-day-opens" label={dictionary.workingHours.opensAt}>
-                <Input id="special-day-opens" type="time" dir="ltr" value={draft.opens} onChange={(event) => setDraft({ ...draft, opens: event.target.value })} />
+              <FormField id="special-day-opens" label={dictionary.workingHours.opensAt} error={errors.opens?.message}>
+                <Input id="special-day-opens" type="time" dir="ltr" {...invalid("opens", "special-day-opens")} {...form.register("opens")} />
               </FormField>
-              <FormField id="special-day-closes" label={dictionary.workingHours.closesAt}>
-                <Input id="special-day-closes" type="time" dir="ltr" value={draft.closes} onChange={(event) => setDraft({ ...draft, closes: event.target.value })} />
+              <FormField id="special-day-closes" label={dictionary.workingHours.closesAt} error={errors.closes?.message}>
+                <Input id="special-day-closes" type="time" dir="ltr" {...invalid("closes", "special-day-closes")} {...form.register("closes")} />
               </FormField>
             </>
           ) : null}
         </div>
-        <FormField id="special-day-weekdays" label={t.repeatOn} hint={t.repeatOnHint}>
-          <WeekdayPicker label={t.repeatOn} value={draft.weekdays} onChange={(weekdays) => setDraft({ ...draft, weekdays })} />
+        <FormField id="special-day-weekdays" label={t.repeatOn} hint={t.repeatOnHint} error={errors.weekdays?.message}>
+          <WeekdayPicker label={t.repeatOn} value={weekdays} onChange={(next) => form.setValue("weekdays", next)} />
         </FormField>
         <div>
-          <LoadingButton type="submit" loading={save.isPending || saveRange.isPending} loadingLabel={dictionary.common.loading}>{t.add}</LoadingButton>
+          <LoadingButton type="submit" loading={form.formState.isSubmitting || save.isPending || saveRange.isPending} loadingLabel={dictionary.common.loading}>{t.add}</LoadingButton>
         </div>
       </form>
 
