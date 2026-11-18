@@ -36,6 +36,8 @@ import 'package:client_app/src/features/reviews/branch_reviews.bloc.dart';
 import 'package:client_app/src/features/reviews/branch_reviews.screen.dart';
 import 'package:client_app/src/features/discovery/saved_filters.bloc.dart';
 import 'package:client_app/src/features/profile/delete_account.bloc.dart';
+import 'package:client_app/src/features/support/about_support.screen.dart';
+import 'package:client_app/src/features/support/feedback.screen.dart';
 import 'package:client_app/src/features/profile/discovery_preferences.bloc.dart';
 import 'package:client_app/src/features/profile/discovery_preferences.screen.dart';
 import 'package:client_app/src/features/profile/delete_account.screen.dart';
@@ -80,6 +82,7 @@ class AppRouter {
   final FeedCache? feedCache;
   final SocialCredentialProvider? socialCredentials;
   final AppServices services;
+  final LegalLinks? legalLinks;
   final PasswordRecoveryBloc? recovery;
   final OnboardingConfigBloc? onboardingConfig;
   final BookingBloc? bookings;
@@ -122,6 +125,7 @@ class AppRouter {
     this.feedCache,
     this.socialCredentials,
     AppServices? services,
+    this.legalLinks,
     this.recovery,
     this.onboardingConfig,
     this.bookings,
@@ -750,12 +754,33 @@ class AppRouter {
                   router.push<void>(AppRoutes.profileNotifications),
               onSettings: () => router.push<void>(AppRoutes.profileSettings),
               onDeleteAccount: () => router.push<void>(AppRoutes.profileDelete),
+              onAbout: () => router.push<void>(AppRoutes.profileAbout),
               onDiscoveryPreferences: () =>
                   router.push<void>(AppRoutes.profileDiscoveryPreferences),
             ),
           ),
         ),
         routes: [
+          GoRoute(
+            path: AppRoutes.profileAboutSegment,
+            builder: (context, state) => AboutSupportScreen(
+              legalLinks:
+                  legalLinks ??
+                  LegalLinks.fromApiBaseUrl(ConfigProvider.config.apiBaseUrl),
+              onFeedback: () => router.push<void>(AppRoutes.profileFeedback),
+            ),
+            routes: [
+              GoRoute(
+                path: AppRoutes.profileFeedbackSegment,
+                builder: (context, state) => _scope(
+                  null,
+                  services.createFeedback,
+                  (bloc) =>
+                      FeedbackScreen(bloc: bloc, screenKey: 'profile/about'),
+                ),
+              ),
+            ],
+          ),
           GoRoute(
             path: AppRoutes.profileDiscoveryPreferencesSegment,
             builder: (context, state) => _scope(

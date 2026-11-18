@@ -49,6 +49,7 @@ void main() {
       passwordReset: StaffPasswordResetBloc(staffAuth),
       onLocaleToggle: () {},
       onLogout: () {},
+      onAccountDeleted: () {},
       onAuthenticated: () {},
     );
     addTearDown(router.dispose);

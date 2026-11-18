@@ -15,6 +15,8 @@ abstract final class AppRoutes {
   static const earnings = '/earnings';
   static const inbox = '/inbox';
   static const more = '/more';
+  static const about = '/about';
+  static const feedback = '/about/feedback';
   static const jobIdParameter = 'jobId';
 
   static String editJob(String id) => '$jobs/$id/edit';

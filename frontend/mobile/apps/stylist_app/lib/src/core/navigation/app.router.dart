@@ -25,6 +25,9 @@ import 'package:stylist_app/src/features/reviews/stylist_reviews.screen.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.screen.dart';
 import 'package:stylist_app/src/features/services/stylist_service_form.screen.dart';
 import 'package:stylist_app/src/features/services/stylist_services.screen.dart';
+import 'package:stylist_app/src/features/support/about_support.screen.dart';
+import 'package:stylist_app/src/features/support/delete_account.screen.dart';
+import 'package:stylist_app/src/features/support/feedback.screen.dart';
 import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 
 class StylistAppRouter {
@@ -37,6 +40,8 @@ class StylistAppRouter {
     required VoidCallback onLocaleToggle,
     required VoidCallback onLogout,
     required VoidCallback onAuthenticated,
+    required VoidCallback onAccountDeleted,
+    LegalLinks? legalLinks,
   }) {
     router = GoRouter(
       initialLocation: AppRoutes.login,
@@ -189,6 +194,28 @@ class StylistAppRouter {
           builder: (context, state) => StylistClientHistoryScreen(
             bloc: features.clientHistory,
             clientId: state.pathParameters[AppRoutes.clientIdParameter]!,
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.about,
+          builder: (context, state) => AboutSupportScreen(
+            legalLinks:
+                legalLinks ??
+                LegalLinks.fromApiBaseUrl(ConfigProvider.config.apiBaseUrl),
+            onFeedback: () => context.push(AppRoutes.feedback),
+            onDeleteAccount: () => context.push(AppRoutes.deleteAccount),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.feedback,
+          builder: (context, state) =>
+              FeedbackScreen(bloc: features.feedback, screenKey: 'more/about'),
+        ),
+        GoRoute(
+          path: AppRoutes.deleteAccount,
+          builder: (context, state) => DeleteAccountScreen(
+            bloc: features.deleteAccount,
+            onDeleted: onAccountDeleted,
           ),
         ),
         GoRoute(

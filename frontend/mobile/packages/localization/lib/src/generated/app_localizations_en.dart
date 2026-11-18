@@ -2023,4 +2023,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get feedbackRateLimited =>
       'You sent several messages already. Please try again later.';
+
+  @override
+  String get deleteAccountActiveAffiliation =>
+      'End your work with your brand or branch first, then delete your account.';
 }

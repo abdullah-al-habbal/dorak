@@ -45,6 +45,7 @@ class AppServices {
     required this.createAvatar,
     required this.createChangePassword,
     required this.createDeleteAccount,
+    required this.createFeedback,
     required this.createProfileRepository,
     required this.createNotifications,
     required this.createCurrencyRepository,
@@ -102,6 +103,8 @@ class AppServices {
     createAvatar: () => AvatarBloc(DioProfileRepository(apiClient)),
     createChangePassword: () => ChangePasswordBloc(authRepository),
     createDeleteAccount: () => DeleteAccountBloc(authRepository),
+    createFeedback: () =>
+        FeedbackBloc(DioFeedbackRepository(apiClient), FeedbackApp.client),
     createProfileRepository: () => DioProfileRepository(apiClient),
     createNotifications: () =>
         NotificationsBloc(DioNotificationRepository(apiClient)),
@@ -127,6 +130,7 @@ class AppServices {
   final AvatarBloc Function() createAvatar;
   final ChangePasswordBloc Function() createChangePassword;
   final DeleteAccountBloc Function() createDeleteAccount;
+  final FeedbackBloc Function() createFeedback;
   final ProfileRepository Function() createProfileRepository;
   final NotificationsBloc Function() createNotifications;
   final CurrencyRepository Function() createCurrencyRepository;

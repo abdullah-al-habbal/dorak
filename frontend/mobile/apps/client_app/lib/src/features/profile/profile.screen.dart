@@ -37,6 +37,7 @@ class ProfileScreen extends StatefulWidget {
     required this.onNotifications,
     required this.onSettings,
     required this.onDeleteAccount,
+    required this.onAbout,
     required this.onDiscoveryPreferences,
   });
 
@@ -52,6 +53,7 @@ class ProfileScreen extends StatefulWidget {
   final VoidCallback onNotifications;
   final VoidCallback onSettings;
   final VoidCallback onDeleteAccount;
+  final VoidCallback onAbout;
   final VoidCallback onDiscoveryPreferences;
 
   @override
@@ -185,6 +187,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         context,
                       )!.discoveryPreferencesTitle,
                       onPressed: widget.onDiscoveryPreferences,
+                    ),
+                    const SizedBox(height: DorakDimensions.spacingSmall),
+                    SecondaryButton(
+                      label: AppLocalizations.of(context)!.aboutLegalTitle,
+                      onPressed: widget.onAbout,
                     ),
                     const SizedBox(height: DorakDimensions.spacingSmall),
                     SecondaryButton(

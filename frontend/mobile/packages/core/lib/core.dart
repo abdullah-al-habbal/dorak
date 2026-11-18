@@ -1,5 +1,6 @@
 export 'package:core/src/config/config.barrel.dart';
 export 'package:core/src/external/external.barrel.dart';
+export 'package:core/src/feedback/feedback.barrel.dart';
 export 'package:core/src/location/location.barrel.dart';
 export 'package:core/src/money/money.barrel.dart';
 export 'package:core/src/network/network.barrel.dart';

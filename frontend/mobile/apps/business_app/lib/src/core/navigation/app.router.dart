@@ -24,6 +24,8 @@ import 'package:business_app/src/features/profile/business_profile.screen.dart';
 import 'package:business_app/src/features/reviews/business_reviews.screen.dart';
 import 'package:business_app/src/features/services/business_services.screen.dart';
 import 'package:business_app/src/features/staff/business_staff.screen.dart';
+import 'package:business_app/src/features/support/about_support.screen.dart';
+import 'package:business_app/src/features/support/feedback.screen.dart';
 
 class BusinessAppRouter {
   BusinessAppRouter({
@@ -35,6 +37,7 @@ class BusinessAppRouter {
     required VoidCallback onLocaleToggle,
     required VoidCallback onLogout,
     required VoidCallback onAuthenticated,
+    LegalLinks? legalLinks,
   }) {
     router = GoRouter(
       initialLocation: AppRoutes.login,
@@ -98,9 +101,8 @@ class BusinessAppRouter {
               routes: [
                 GoRoute(
                   path: AppRoutes.services,
-                  builder: (context, state) => BusinessServicesScreen(
-                    bloc: features.services,
-                  ),
+                  builder: (context, state) =>
+                      BusinessServicesScreen(bloc: features.services),
                 ),
               ],
             ),
@@ -186,6 +188,20 @@ class BusinessAppRouter {
           path: AppRoutes.reviews,
           builder: (context, state) =>
               BusinessReviewsScreen(bloc: features.reviews),
+        ),
+        GoRoute(
+          path: AppRoutes.about,
+          builder: (context, state) => AboutSupportScreen(
+            legalLinks:
+                legalLinks ??
+                LegalLinks.fromApiBaseUrl(ConfigProvider.config.apiBaseUrl),
+            onFeedback: () => context.push(AppRoutes.feedback),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.feedback,
+          builder: (context, state) =>
+              FeedbackScreen(bloc: features.feedback, screenKey: 'more/about'),
         ),
       ],
     );

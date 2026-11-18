@@ -1,3 +1,5 @@
+import 'package:core/core.dart';
+
 import 'package:business_app/src/features/affiliations/business_affiliations.bloc.dart';
 import 'package:business_app/src/features/earnings/business_earnings.bloc.dart';
 import 'package:business_app/src/features/floor_plan/business_floor_plan.bloc.dart';
@@ -21,6 +23,7 @@ class BusinessFeatureBlocs {
     required this.hours,
     required this.inbox,
     required this.earnings,
+    required this.feedback,
   });
 
   final BusinessJobsBloc jobs;
@@ -33,6 +36,7 @@ class BusinessFeatureBlocs {
   final BusinessHoursBloc hours;
   final BusinessInboxBloc inbox;
   final BusinessEarningsBloc earnings;
+  final FeedbackBloc feedback;
 
   Future<void> close() => Future.wait([
     jobs.close(),
@@ -45,5 +49,6 @@ class BusinessFeatureBlocs {
     hours.close(),
     inbox.close(),
     earnings.close(),
+    feedback.close(),
   ]);
 }

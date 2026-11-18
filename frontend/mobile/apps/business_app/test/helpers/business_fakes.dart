@@ -407,6 +407,7 @@ BusinessFeatureBlocs featureBlocsFor({
   FakeBranchHoursRepository? hours,
   FakeNotificationRepository? notifications,
   FakeEarningsRepository? earnings,
+  FakeFeedbackRepository? feedbackRepository,
 }) {
   final branch = management ?? FakeBranchManagementRepository();
   return BusinessFeatureBlocs(
@@ -428,5 +429,26 @@ BusinessFeatureBlocs featureBlocsFor({
     hours: BusinessHoursBloc(hours ?? FakeBranchHoursRepository()),
     inbox: BusinessInboxBloc(notifications ?? FakeNotificationRepository()),
     earnings: BusinessEarningsBloc(earnings ?? FakeEarningsRepository()),
+    feedback: FeedbackBloc(
+      feedbackRepository ?? FakeFeedbackRepository(),
+      FeedbackApp.business,
+      appInfo: const FakeAppInfo(),
+      platformName: () => 'android',
+    ),
   );
+}
+
+class FakeAppInfo implements AppInfoProvider {
+  const FakeAppInfo();
+
+  @override
+  Future<String> version() async => '1.0.0+1';
+}
+
+class FakeFeedbackRepository implements FeedbackRepository {
+  final sent = <FeedbackReportRequestDto>[];
+
+  @override
+  Future<void> submit(FeedbackReportRequestDto report) async =>
+      sent.add(report);
 }

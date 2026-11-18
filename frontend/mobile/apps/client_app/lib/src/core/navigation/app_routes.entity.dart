@@ -27,6 +27,8 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String profilePassword = '/profile/password';
   static const String profileDelete = '/profile/delete';
+  static const String profileAbout = '/profile/about';
+  static const String profileFeedback = '/profile/about/feedback';
   static const String profileDiscoveryPreferences =
       '/profile/discovery-preferences';
   static const String profileEdit = '/profile/edit';
@@ -84,6 +86,8 @@ class AppRoutes {
   static const String resetPasswordSuccessSegment = 'success';
   static const String profilePasswordSegment = 'password';
   static const String profileDeleteSegment = 'delete';
+  static const String profileAboutSegment = 'about';
+  static const String profileFeedbackSegment = 'feedback';
   static const String profileDiscoveryPreferencesSegment =
       'discovery-preferences';
   static const String profileEditSegment = 'edit';

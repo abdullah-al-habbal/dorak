@@ -13,6 +13,7 @@ import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
 import 'package:stylist_app/src/features/reviews/stylist_reviews.bloc.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
 import 'package:stylist_app/src/features/services/stylist_services.bloc.dart';
+import 'package:stylist_app/src/features/support/delete_account.bloc.dart';
 
 BookingDto bookingFixture(String id, {BookingStatus? status}) => BookingDto(
   id: id,
@@ -349,6 +350,8 @@ StylistFeatureBlocs featureBlocsFor(
   FakeStylistAppointmentRepository? appointments,
   FakeEarningsRepository? earnings,
   FakeNotificationRepository? notifications,
+  FakeFeedbackRepository? feedbackRepository,
+  FakeAccountRepository? accountRepository,
 }) => StylistFeatureBlocs(
   schedule: StylistScheduleBloc(operations),
   portfolio: StylistPortfolioBloc(operations, picker ?? FakePhotoPicker()),
@@ -377,7 +380,47 @@ StylistFeatureBlocs featureBlocsFor(
   ),
   services: StylistServicesBloc(operations),
   inbox: StylistInboxBloc(notifications ?? FakeNotificationRepository()),
+  feedback: FeedbackBloc(
+    feedbackRepository ?? FakeFeedbackRepository(),
+    FeedbackApp.stylist,
+    appInfo: const FakeAppInfo(),
+    platformName: () => 'android',
+  ),
+  deleteAccount: DeleteAccountBloc(
+    accountRepository ?? FakeAccountRepository(),
+  ),
 );
+
+class FakeAppInfo implements AppInfoProvider {
+  const FakeAppInfo();
+
+  @override
+  Future<String> version() async => '1.0.0+1';
+}
+
+class FakeFeedbackRepository implements FeedbackRepository {
+  final sent = <FeedbackReportRequestDto>[];
+  Object? error;
+
+  @override
+  Future<void> submit(FeedbackReportRequestDto report) async {
+    sent.add(report);
+    final failure = error;
+    if (failure != null) throw failure;
+  }
+}
+
+class FakeAccountRepository implements StaffAccountRepository {
+  final passwords = <String>[];
+  Object? error;
+
+  @override
+  Future<void> deleteAccount(String password) async {
+    passwords.add(password);
+    final failure = error;
+    if (failure != null) throw failure;
+  }
+}
 
 ServiceHistoryDto visitFixture(
   String id, {

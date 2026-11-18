@@ -1779,5 +1779,9 @@
   "feedbackRateLimited": "You sent several messages already. Please try again later.",
   "@feedbackRateLimited": {
     "description": "Shown when the feedback rate limit was hit"
+  },
+  "deleteAccountActiveAffiliation": "End your work with your brand or branch first, then delete your account.",
+  "@deleteAccountActiveAffiliation": {
+    "description": "Shown when a stylist cannot delete the account while working for a brand or branch"
   }
 }

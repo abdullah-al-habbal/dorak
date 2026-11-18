@@ -40,6 +40,7 @@ class StylistMoreScreen extends StatelessWidget {
       ),
       (Icons.work_outline, l10n.stylistMenuJobs, AppRoutes.jobs),
       (Icons.star_outline, l10n.stylistMenuReviews, AppRoutes.reviews),
+      (Icons.info_outline, l10n.aboutLegalTitle, AppRoutes.about),
     ];
     return Scaffold(
       appBar: AppBar(title: Text(l10n.staffMoreTitle)),

@@ -100,6 +100,10 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       hours: BusinessHoursBloc(DioBranchHoursRepository(_apiClient)),
       inbox: BusinessInboxBloc(DioNotificationRepository(_apiClient)),
       earnings: BusinessEarningsBloc(DioEarningsRepository.branch(_apiClient)),
+      feedback: FeedbackBloc(
+        DioFeedbackRepository(_apiClient),
+        FeedbackApp.business,
+      ),
     );
     _router = BusinessAppRouter(
       operations: _operations,

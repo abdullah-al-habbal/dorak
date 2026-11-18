@@ -15,6 +15,9 @@ abstract final class AppRoutes {
   static const earnings = '/earnings';
   static const inbox = '/inbox';
   static const more = '/more';
+  static const about = '/home/about';
+  static const feedback = '/home/about/feedback';
+  static const deleteAccount = '/home/about/delete-account';
   static const serviceIdParameter = 'serviceId';
   static const applications = '/home/jobs/applications';
   static const jobIdParameter = 'jobId';

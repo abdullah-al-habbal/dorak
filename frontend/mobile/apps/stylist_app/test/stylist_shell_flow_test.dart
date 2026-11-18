@@ -66,6 +66,7 @@ void main() {
       passwordReset: StaffPasswordResetBloc(staffAuth),
       onLocaleToggle: () {},
       onLogout: () {},
+      onAccountDeleted: () {},
       onAuthenticated: () {
         authenticatedCalls++;
         router.router.go('/home');

@@ -1494,5 +1494,6 @@
   "feedbackSubmit": "إرسال",
   "feedbackSent": "شكرًا لك. وصلتنا رسالتك.",
   "feedbackFailed": "تعذّر إرسال رسالتك. تحقق من اتصالك وحاول مجددًا.",
-  "feedbackRateLimited": "أرسلت عدة رسائل بالفعل. حاول لاحقًا."
+  "feedbackRateLimited": "أرسلت عدة رسائل بالفعل. حاول لاحقًا.",
+  "deleteAccountActiveAffiliation": "أنهِ عملك مع العلامة التجارية أو الفرع أولاً، ثم احذف حسابك."
 }

@@ -3775,6 +3775,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You sent several messages already. Please try again later.'**
   String get feedbackRateLimited;
+
+  /// Shown when a stylist cannot delete the account while working for a brand or branch
+  ///
+  /// In en, this message translates to:
+  /// **'End your work with your brand or branch first, then delete your account.'**
+  String get deleteAccountActiveAffiliation;
 }
 
 class _AppLocalizationsDelegate

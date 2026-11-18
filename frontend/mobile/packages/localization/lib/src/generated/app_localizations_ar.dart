@@ -2013,4 +2013,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get feedbackRateLimited => 'أرسلت عدة رسائل بالفعل. حاول لاحقًا.';
+
+  @override
+  String get deleteAccountActiveAffiliation =>
+      'أنهِ عملك مع العلامة التجارية أو الفرع أولاً، ثم احذف حسابك.';
 }

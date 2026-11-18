@@ -24,6 +24,7 @@ import 'package:stylist_app/src/features/profile/stylist_profile.bloc.dart';
 import 'package:stylist_app/src/features/reviews/stylist_reviews.bloc.dart';
 import 'package:stylist_app/src/features/schedule/stylist_schedule.bloc.dart';
 import 'package:stylist_app/src/features/services/stylist_services.bloc.dart';
+import 'package:stylist_app/src/features/support/delete_account.bloc.dart';
 import 'package:stylist_app/src/core/locale/app_locales.entity.dart';
 
 class StylistApp extends StatefulWidget {
@@ -100,6 +101,11 @@ class _StylistAppState extends State<StylistApp> {
       earnings: StylistEarningsBloc(DioEarningsRepository.barber(_client)),
       services: StylistServicesBloc(operations),
       inbox: StylistInboxBloc(DioNotificationRepository(_client)),
+      feedback: FeedbackBloc(
+        DioFeedbackRepository(_client),
+        FeedbackApp.stylist,
+      ),
+      deleteAccount: DeleteAccountBloc(staffAuth),
     );
     _router = StylistAppRouter(
       operations: _bloc,
@@ -110,6 +116,7 @@ class _StylistAppState extends State<StylistApp> {
       onLocaleToggle: _toggleLocale,
       onLogout: _logout,
       onAuthenticated: _onAuthenticated,
+      onAccountDeleted: _onUnauthorized,
     );
     unawaited(_restoreSession());
   }

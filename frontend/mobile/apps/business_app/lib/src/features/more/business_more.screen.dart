@@ -38,6 +38,7 @@ class BusinessMoreScreen extends StatelessWidget {
       ),
       (Icons.storefront_outlined, l10n.businessMenuProfile, AppRoutes.profile),
       (Icons.star_outline, l10n.businessMenuReviews, AppRoutes.reviews),
+      (Icons.info_outline, l10n.aboutLegalTitle, AppRoutes.about),
     ];
     return Scaffold(
       appBar: AppBar(title: Text(l10n.staffMoreTitle)),
