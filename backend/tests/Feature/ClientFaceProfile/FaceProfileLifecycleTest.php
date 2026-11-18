@@ -7,6 +7,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Modules\Client\Models\ClientModel;
+use Modules\ClientFaceProfile\Enums\AnalysisSourceEnum;
+use Modules\ClientFaceProfile\Enums\DetectedFaceShapeEnum;
+use Modules\ClientFaceProfile\Models\ClientFaceAnalysisResultModel;
 use Modules\ClientFaceProfile\Models\ClientFaceProfileModel;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
@@ -117,6 +120,31 @@ it('purges photos of clients soft-deleted more than 30 days ago and keeps recent
     expect(ClientFaceProfileModel::query()->find($oldPhotoId))->toBeNull();
     Storage::disk('local')->assertMissing($oldPath);
     expect(ClientFaceProfileModel::query()->find($recentPhotoId))->not->toBeNull();
+});
+
+it('purges the analysis results of long-deleted clients with their photos', function () {
+    $oldClient = ClientModel::factory()->create();
+    $recentClient = ClientModel::factory()->create();
+    $result = fn (ClientModel $client) => ClientFaceAnalysisResultModel::create([
+        'client_id' => $client->id,
+        'analysis_version' => 'v1',
+        'analysis_source' => AnalysisSourceEnum::ThirdPartyApi,
+        'detected_face_shape' => DetectedFaceShapeEnum::Oval,
+        'confidence_ratio' => 0.9,
+        'computed_at' => now(),
+    ]);
+    $oldResult = $result($oldClient);
+    $recentResult = $result($recentClient);
+
+    $oldClient->delete();
+    $oldClient->forceFill(['deleted_at' => now()->subDays(31)])->save();
+    $recentClient->delete();
+    $recentClient->forceFill(['deleted_at' => now()->subDays(10)])->save();
+
+    $this->artisan('face-profile:purge')->assertSuccessful();
+
+    expect(ClientFaceAnalysisResultModel::query()->find($oldResult->id))->toBeNull();
+    expect(ClientFaceAnalysisResultModel::query()->find($recentResult->id))->not->toBeNull();
 });
 
 it('registers the purge command in the scheduler', function () {

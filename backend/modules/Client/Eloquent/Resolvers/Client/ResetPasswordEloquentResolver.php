@@ -8,9 +8,9 @@ use Modules\Client\Models\ClientModel;
 
 final class ResetPasswordEloquentResolver
 {
-    public function findByEmail(string $email): ClientModel
+    public function findByEmail(string $email): ?ClientModel
     {
-        return ClientModel::where('email', $email)->firstOrFail();
+        return ClientModel::where('email', $email)->first();
     }
 
     public function updatePassword(ClientModel $client, string $hashedPassword): void

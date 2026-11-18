@@ -9,10 +9,13 @@ use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class ForgotPasswordRequest extends BaseApiFormRequest
 {
+    /**
+     * No `exists` rule: an unknown email must answer like a known one (T11.3).
+     */
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'exists:clients,email'],
+            'email' => ['required', 'email'],
         ];
     }
 

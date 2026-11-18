@@ -10,10 +10,13 @@ use Modules\Core\Http\Requests\BaseApiFormRequest;
 
 final class ResetPasswordRequest extends BaseApiFormRequest
 {
+    /**
+     * No `exists` rule: an unknown email must answer like a known one (T11.3).
+     */
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'exists:clients,email'],
+            'email' => ['required', 'email'],
             'code' => ['required', 'string', 'size:6'],
             'password' => ['required', 'string', 'min:8', ValidationLimitConstants::RULE_PASSWORD_MAX, 'confirmed'],
         ];

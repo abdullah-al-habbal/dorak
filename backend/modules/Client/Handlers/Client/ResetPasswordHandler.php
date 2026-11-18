@@ -23,9 +23,10 @@ final class ResetPasswordHandler
     public function handle(ResetPasswordCommand $command): ResetPasswordResult
     {
         $client = $this->resolver->findByEmail($command->email);
-        $clientId = (string) $client->id;
+        $clientId = $client === null ? null : (string) $client->id;
 
-        if (! $this->codes->verify($clientId, $command->code)) {
+        // An unknown email fails exactly like a wrong code.
+        if (! $this->codes->verify($clientId, $command->code) || $client === null) {
             return ResetPasswordResult::invalidCode();
         }
 
