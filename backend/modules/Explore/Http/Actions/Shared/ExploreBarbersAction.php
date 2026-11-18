@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Explore\Http\Actions\Shared;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Barber\Http\Resources\Shared\BarberResource;
+use Modules\Barber\Http\Resources\Shared\PublicBarberResource;
 use Modules\ClientInteraction\Services\ClientInteractionRecorder;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Explore\Handlers\Shared\ExploreBarbersHandler;
@@ -25,6 +25,6 @@ final class ExploreBarbersAction extends BaseApiAction
         $barbers = $this->handler->handle($query);
         ExploreSearchLog::record($this->interactions, $request, $barbers->total());
 
-        return $this->paginated(paginator: $barbers, resourceClass: BarberResource::class);
+        return $this->paginated(paginator: $barbers, resourceClass: PublicBarberResource::class);
     }
 }

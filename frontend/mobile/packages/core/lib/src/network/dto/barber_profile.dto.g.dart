@@ -11,7 +11,7 @@ BarberProfileDto _$BarberProfileDtoFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: json['name'] as String,
       bio: json['bio'] as String?,
-      email: json['email'] as String,
+      email: json['email'] as String? ?? '',
       isFreelancer: json['is_freelancer'] as bool? ?? false,
       status:
           $enumDecodeNullable(

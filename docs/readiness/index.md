@@ -60,7 +60,7 @@ Status values: `todo`, `in progress`, `done`, `blocked`, `skipped`.
 | [T15](t15-owner-mobile-core-layer.md) | Brand owner core layer (`packages/core`) | 6 Mobile | T14, T8 | done |
 | [T9](t09-mobile-app-integration.md) | App integration (client, stylist, business) | 6 Mobile | T6, T8 | done |
 | [T16](t16-business-app-owner-experience.md) | `business_app` brand owner experience | 6 Mobile | T9, T14, T15 | done |
-| [T10](t10-public-barber-resource.md) | Public barber resource (BG-4) | 7 Hardening | none | todo |
+| [T10](t10-public-barber-resource.md) | Public barber resource (BG-4) | 7 Hardening | none | done |
 | [T11](t11-privacy-checks.md) | Privacy and security checks | 7 Hardening | none | todo |
 | [T12](t12-dashboard-web-hygiene.md) | Dashboard web hygiene | 7 Hardening | none | todo |
 | [T13](t13-docs-and-gates.md) | Docs and full gates | 8 Close-out | all | todo |

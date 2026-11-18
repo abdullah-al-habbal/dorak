@@ -34,7 +34,7 @@ Facebook sign-in are unsupported (G9).
 
 | ID | Item | Layer | Size |
 |---|---|---|---|
-| BG-4 | Public barber resource leaks `email`, `phone`, exact coordinates, `submission_count`, `email_verified_at`. Decided: add a separate public resource (name, bio, rating, rounded location); keep the old fields until both mobile apps ship, then remove. Contract tests pin `email` (`ApiResponseContractTest`). Needs a coordinated mobile release. | backend, mobile | L |
+| BG-4 (done in T10 except the final field removal) | Public barber resource leaks `email`, `phone`, exact coordinates, `submission_count`, `email_verified_at`. Decided: add a separate public resource (name, bio, rating, rounded location); keep the old fields until both mobile apps ship, then remove. Contract tests pin `email` (`ApiResponseContractTest`). Needs a coordinated mobile release. | backend, mobile | L |
 
 ## 3. Missing features
 

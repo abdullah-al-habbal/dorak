@@ -574,6 +574,7 @@ describe('Explore API', function () {
             $data = $response->json('data');
             expect($data)->toHaveKeys(['id', 'name', 'email', 'is_freelancer', 'status', 'created_at']);
             expect($data['is_freelancer'])->toBeBool();
+            expect($data['email'])->toBe('');
         });
 
         it('returns 404 for non-existent barber', function () {

@@ -6,7 +6,7 @@ namespace Modules\Explore\Http\Resources\Shared;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Barber\Http\Resources\Shared\BarberResource;
+use Modules\Barber\Http\Resources\Shared\PublicBarberResource;
 use Modules\Branch\Http\Resources\Shared\BranchResource;
 
 /**
@@ -26,7 +26,7 @@ final class ExploreSearchItemResource extends JsonResource
             'distance' => $item['distance'],
             'entity' => $item['type'] === 'branch'
                 ? BranchResource::make($item['entity'])->resolve($request)
-                : BarberResource::make($item['entity'])->resolve($request),
+                : PublicBarberResource::make($item['entity'])->resolve($request),
         ];
     }
 }

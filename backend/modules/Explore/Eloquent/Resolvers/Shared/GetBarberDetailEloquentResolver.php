@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Explore\Eloquent\Resolvers\Shared;
 
-use Modules\Barber\Http\Resources\Shared\BarberResource;
+use Modules\Barber\Http\Resources\Shared\PublicBarberResource;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
@@ -29,7 +29,7 @@ final class GetBarberDetailEloquentResolver
             ->findOrFail($query->barberId);
 
         return array_merge(
-            (new BarberResource($barber))->toArray(request()),
+            (new PublicBarberResource($barber))->toArray(request()),
             [
                 'services' => MenuServiceResource::collection($barber->services),
                 'workplaces' => $this->workplaces($barber),

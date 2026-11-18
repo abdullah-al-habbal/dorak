@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Explore\Eloquent\Resolvers\Shared;
 
-use Modules\Barber\Http\Resources\Shared\BarberResource;
+use Modules\Barber\Http\Resources\Shared\PublicBarberResource;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Http\Resources\Shared\BranchResource;
 use Modules\Branch\Models\BranchModel;
@@ -56,7 +56,7 @@ final class GetBranchDetailEloquentResolver
             (new BranchResource($branch))->toArray(request()),
             [
                 'chairs_count' => $branch->chairs->count(),
-                'barbers' => BarberResource::collection($barbers),
+                'barbers' => PublicBarberResource::collection($barbers),
                 'services' => MenuServiceResource::collection($menu),
                 'opening_hours' => $this->hours->week($branch),
                 'today_hours' => $this->hours->forDate((string) $branch->getKey(), now()),

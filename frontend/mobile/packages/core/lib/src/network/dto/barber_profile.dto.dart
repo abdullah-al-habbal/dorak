@@ -12,6 +12,7 @@ class BarberProfileDto {
   final String id;
   final String name;
   final String? bio;
+  @JsonKey(defaultValue: '')
   final String email;
   final bool isFreelancer;
   @JsonKey(
@@ -39,7 +40,7 @@ class BarberProfileDto {
     required this.id,
     required this.name,
     this.bio,
-    required this.email,
+    this.email = '',
     this.isFreelancer = false,
     this.status = BarberStatus.pending,
     this.universe,
