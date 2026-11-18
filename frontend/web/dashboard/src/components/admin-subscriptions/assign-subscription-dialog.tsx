@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import type { FormEvent, JSX } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
+import type { JSX } from "react";
+import { useForm } from "react-hook-form";
 
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { ErrorState } from "@/components/common/error-state";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
-import { FormField } from "@/components/common/form-field";
+import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { NativeSelect } from "@/components/ui/native-select";
@@ -17,8 +19,12 @@ import { useAssignSubscription } from "@/hooks/plans/subscriptions/use-assign-su
 import { useBrandOptions } from "@/hooks/brands/owner/use-brand-options";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { usePlanOptions } from "@/hooks/plans/use-plan-options";
+import { applyFormError } from "@/lib/core/errors/apply-form-error.util";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 import { localizedText } from "@/lib/core/format/booking-format.util";
+import { createAssignSubscriptionFormSchema } from "@/schemas/plans/assign-subscription-form.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
+import type { AssignSubscriptionFormValues } from "@/types/plans/assign-subscription-form-values.type";
 
 const LOADING_ROWS = 2;
 const LOADING_ROW_CLASS = "h-10";
@@ -32,28 +38,27 @@ export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): 
   const brands = useBrandOptions(BrandStatus.Active);
   const plans = usePlanOptions();
   const assign = useAssignSubscription();
-  const [brandId, setBrandId] = useState("");
-  const [planId, setPlanId] = useState("");
-  const [errors, setErrors] = useState<{ brand?: string; plan?: string; form?: string }>({});
+  const schema = useMemo(() => createAssignSubscriptionFormSchema(d.validation), [d.validation]);
+  const form = useForm<AssignSubscriptionFormValues>({ resolver: zodResolver(schema), defaultValues: { brand_id: "", plan_id: "" } });
+  const { errors } = form.formState;
+  const busy = form.formState.isSubmitting || assign.isPending;
   const ready = brands.isSuccess && plans.isSuccess;
   const failed = brands.isError || plans.isError;
+  const invalid = (name: keyof AssignSubscriptionFormValues, id: string) => ({ "aria-invalid": Boolean(errors[name]), "aria-describedby": errors[name] ? fieldErrorId(id) : undefined });
 
-  async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault();
-    const missing = { brand: brandId ? undefined : d.validation.brand, plan: planId ? undefined : d.validation.plan };
-    setErrors(missing);
-    if (missing.brand || missing.plan) return;
+  const submit = form.handleSubmit(async (values) => {
     try {
-      await assign.mutateAsync({ brand_id: brandId, plan_id: planId });
+      await assign.mutateAsync(values);
       onClose();
     } catch (failure) {
       // A 422 carries the backend's reason (for example an inactive plan) in the request language.
-      setErrors({ form: failure instanceof ApiClientError && failure.status === HttpStatus.Unprocessable && failure.message ? failure.message : d.errors.generic });
+      const reason = failure instanceof ApiClientError && failure.status === HttpStatus.Unprocessable && failure.message ? failure.message : d.errors.generic;
+      applyFormError(form, mapApiFormError(failure, reason));
     }
-  }
+  });
 
   return (
-    <Dialog open onOpenChange={(open) => (open || assign.isPending ? undefined : onClose())}>
+    <Dialog open onOpenChange={(open) => (open || busy ? undefined : onClose())}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{d.title}</DialogTitle>
@@ -65,19 +70,19 @@ export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): 
         ) : null}
         {ready ? (
           <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-            <FormErrorBanner message={errors.form} />
+            <FormErrorBanner message={errors.root?.message} />
             {brands.data.length === 0 ? <p role="status" className="rounded-lg bg-warning/15 px-3 py-2 text-sm">{d.noBrands}</p> : null}
             {plans.data.length === 0 ? <p role="status" className="rounded-lg bg-warning/15 px-3 py-2 text-sm">{d.noPlans}</p> : null}
-            <FormField id="assign-brand" label={d.brand} error={errors.brand}>
-              <NativeSelect id="assign-brand" value={brandId} aria-invalid={Boolean(errors.brand)} onChange={(event) => setBrandId(event.target.value)}>
+            <FormField id="assign-brand" label={d.brand} error={errors.brand_id?.message}>
+              <NativeSelect id="assign-brand" {...invalid("brand_id", "assign-brand")} {...form.register("brand_id")}>
                 <option value="">{d.choose}</option>
                 {brands.data.map((brand) => (
                   <option key={brand.id} value={brand.id}>{localizedText(brand.name, locale)}</option>
                 ))}
               </NativeSelect>
             </FormField>
-            <FormField id="assign-plan" label={d.plan} error={errors.plan}>
-              <NativeSelect id="assign-plan" value={planId} aria-invalid={Boolean(errors.plan)} onChange={(event) => setPlanId(event.target.value)}>
+            <FormField id="assign-plan" label={d.plan} error={errors.plan_id?.message}>
+              <NativeSelect id="assign-plan" {...invalid("plan_id", "assign-plan")} {...form.register("plan_id")}>
                 <option value="">{d.choose}</option>
                 {plans.data.map((plan) => (
                   <option key={plan.id} value={plan.id}>{localizedText(plan.name, locale)}</option>
@@ -85,8 +90,8 @@ export function AssignSubscriptionDialog({ onClose }: { onClose: () => void }): 
               </NativeSelect>
             </FormField>
             <DialogFooter>
-              <Button type="button" variant="ghost" disabled={assign.isPending} onClick={onClose}>{d.back}</Button>
-              <LoadingButton type="submit" loading={assign.isPending} loadingLabel={common.loading}>{d.submit}</LoadingButton>
+              <Button type="button" variant="ghost" disabled={busy} onClick={onClose}>{d.back}</Button>
+              <LoadingButton type="submit" loading={busy} loadingLabel={common.loading}>{d.submit}</LoadingButton>
             </DialogFooter>
           </form>
         ) : null}
