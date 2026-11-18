@@ -53,7 +53,7 @@ Status values: `todo`, `in progress`, `done`, `blocked`, `skipped`.
 | [T3](t03-dashboard-legal-content.md) | Dashboard legal content management | 2 Legal pages | T2 | done |
 | [T4](t04-backend-feedback.md) | Backend feedback system | 3 Feedback | none | done |
 | [T5](t05-dashboard-support-inbox.md) | Dashboard support inbox | 3 Feedback | T4 | done |
-| [T6](t06-barber-account-deletion.md) | Barber account deletion (backend) | 4 Deletion | none | todo |
+| [T6](t06-barber-account-deletion.md) | Barber account deletion (backend) | 4 Deletion | none | done |
 | [T7](t07-branch-account-deletion.md) | Branch account deletion | 4 Deletion | confirmed | skipped |
 | [T14](t14-owner-mobile-backend-api.md) | Brand owner mobile API (backend) | 5 Owner mobile | none | todo |
 | [T8](t08-mobile-shared-layer.md) | Shared mobile layer | 6 Mobile | T2, T4 | todo |

@@ -22,4 +22,6 @@ return [
     'activation_not_disabled' => 'Only a deactivated barber can be reactivated.',
     'activation_not_approved' => 'A barber that is pending approval or was rejected cannot be switched on or off.',
     'activation_toggled' => 'Barber updated.',
+    'deleted_barber_name' => 'Deleted stylist',
+    'active_affiliation_block_deletion' => 'End your work with your brand or branch before deleting your account.',
 ];

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Modules\Barber\Http\Actions\Barber\DeleteAccountAction;
 use Modules\Barber\Http\Actions\Barber\DeletePortfolioPhotoAction;
 use Modules\Barber\Http\Actions\Barber\ForgotPasswordAction;
 use Modules\Barber\Http\Actions\Barber\GetProfileAction;
@@ -39,6 +40,11 @@ Route::prefix('barber')->name('barber.')->group(function (): void {
     Route::post('/resubmit', ResubmitAction::class)->name('resubmit')->middleware('throttle:5,1');
     Route::post('/forgot-password', ForgotPasswordAction::class)->name('forgot-password')->middleware('throttle:5,1');
     Route::post('/reset-password', ResetPasswordAction::class)->name('reset-password')->middleware('throttle:5,1');
+
+    // Any signed-in barber may leave: pending, rejected and disabled accounts too (store rule), so no status scope here.
+    Route::middleware(['auth:barber', ApplyPreferredLocaleMiddleware::class.':barber'])->group(function (): void {
+        Route::delete('/account', DeleteAccountAction::class)->name('account.delete')->middleware('throttle:5,1');
+    });
 
     Route::middleware(['auth:barber', EnsureBarberAccountAccess::class.':'.AccountAccessScope::Onboarding->value, ApplyPreferredLocaleMiddleware::class.':barber'])->group(function (): void {
         Route::get('/profile', GetProfileAction::class)->name('profile.show');
