@@ -1,30 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import type { FormEvent, JSX } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
+import type { JSX } from "react";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
-import { FormField } from "@/components/common/form-field";
+import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
-import { GATEWAY_CODE_MAX, GATEWAY_CODE_PATTERN, GATEWAY_NAME_MAX, GATEWAY_SETTING_MAX_ROWS, GATEWAY_SORT_MAX } from "@/config/platform/payment-gateway.constant";
-import { HttpStatus } from "@/enums/access/http-status.enum";
+import { GATEWAY_CODE_MAX, GATEWAY_NAME_MAX, GATEWAY_SETTING_MAX_ROWS } from "@/config/platform/payment-gateway.constant";
 import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { PaymentGatewayDriver } from "@/enums/ui/payment-gateway-driver.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useDeletePaymentGateway, useSavePaymentGateway } from "@/hooks/platform/settings/use-payment-gateways";
-import { ApiClientError } from "@/services/api/core/api-client-error";
-import { toLocalePair } from "@/lib/core/format/locale-pair.util";
+import { applyFormError, formFailureMessage } from "@/lib/core/errors/apply-form-error.util";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
+import { formToGatewayPayload, gatewayToForm, mapGatewayFieldName, normalizeGatewayCode } from "@/lib/platform/payment-gateway-form.util";
+import { createPaymentGatewayFormSchema } from "@/schemas/platform/settings/payment-gateway-form.zod";
 import type { PaymentGateway } from "@/types/platform/payment-gateway.type";
-
-interface SettingRow {
-  key: string;
-  value: string;
-}
+import type { PaymentGatewayFormValues } from "@/types/platform/settings/payment-gateway-form-values.type";
 
 /** Adds or edits a gateway. Credentials are write-only: they are typed here, sent once and never shown again. */
 export function PaymentGatewayFormDialog({ gateway, onClose }: { gateway?: PaymentGateway; onClose: () => void }): JSX.Element {
@@ -35,56 +34,23 @@ export function PaymentGatewayFormDialog({ gateway, onClose }: { gateway?: Payme
   const save = useSavePaymentGateway();
   const remove = useDeletePaymentGateway();
   const editing = gateway !== undefined;
-  const [code, setCode] = useState(gateway?.code ?? "");
-  const [name, setName] = useState(toLocalePair(gateway?.name));
-  const [driver, setDriver] = useState<string>(gateway?.driver ?? PaymentGatewayDriver.Offline);
-  const [active, setActive] = useState(gateway?.is_active ?? true);
-  const [isDefault, setIsDefault] = useState(gateway?.is_default ?? false);
-  const [sortOrder, setSortOrder] = useState(String(gateway?.sort_order ?? 0));
-  const [rows, setRows] = useState<SettingRow[]>([]);
-  const [error, setError] = useState<string>();
-  const busy = save.isPending || remove.isPending;
+  const schema = useMemo(() => createPaymentGatewayFormSchema(t.form), [t.form]);
+  const form = useForm<PaymentGatewayFormValues>({ resolver: zodResolver(schema), defaultValues: gatewayToForm(gateway) });
+  const rows = useFieldArray({ control: form.control, name: "rows" });
+  const { errors } = form.formState;
+  const busy = form.formState.isSubmitting || save.isPending || remove.isPending;
+  const [isActive, isDefault] = useWatch({ control: form.control, name: ["is_active", "is_default"] });
+  const invalid = (name: keyof PaymentGatewayFormValues, id: string) => ({ "aria-invalid": Boolean(errors[name]), "aria-describedby": errors[name] ? fieldErrorId(id) : undefined });
+  const codeField = form.register("code", { onChange: (event) => form.setValue("code", normalizeGatewayCode(event.target.value)) });
 
-  function updateRow(index: number, patch: Partial<SettingRow>): void {
-    setRows(rows.map((row, position) => (position === index ? { ...row, ...patch } : row)));
-  }
-
-  async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault();
-    setError(undefined);
-    const sort = Number(sortOrder);
-    const filled = rows.filter((row) => row.key.trim() !== "");
-    if (!GATEWAY_CODE_PATTERN.test(code) || !name.en.trim() || !name.ar.trim()) {
-      setError(t.form.required);
-      return;
-    }
-    if (!Number.isInteger(sort) || sort < 0 || sort > GATEWAY_SORT_MAX) {
-      setError(t.form.invalidSort);
-      return;
-    }
-    if (new Set(filled.map((row) => row.key.trim())).size !== filled.length) {
-      setError(t.form.duplicateKey);
-      return;
-    }
+  const submit = form.handleSubmit(async (values) => {
     try {
-      await save.mutateAsync({
-        id: gateway?.id,
-        payload: {
-          code,
-          name: { en: name.en.trim(), ar: name.ar.trim() },
-          driver,
-          is_active: active || isDefault,
-          is_default: isDefault,
-          sort_order: sort,
-          ...(filled.length > 0 ? { gateway_settings: Object.fromEntries(filled.map((row) => [row.key.trim(), row.value])) } : {}),
-        },
-      });
-      setRows([]);
+      await save.mutateAsync({ id: gateway?.id, payload: formToGatewayPayload(values) });
       onClose();
     } catch (failure) {
-      setError(failure instanceof ApiClientError && failure.status === HttpStatus.Unprocessable ? t.form.invalid : t.form.failed);
+      applyFormError(form, mapApiFormError(failure, formFailureMessage(failure, t.form), mapGatewayFieldName));
     }
-  }
+  });
 
   function confirmDelete(): void {
     if (!gateway) return;
@@ -109,26 +75,26 @@ export function PaymentGatewayFormDialog({ gateway, onClose }: { gateway?: Payme
           <DialogDescription>{t.form.description}</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} noValidate autoComplete="off" className="flex flex-col gap-4">
-          <FormErrorBanner message={error} />
-          <FormField id="gateway-code" label={t.form.code} hint={t.form.codeHint}>
-            <Input id="gateway-code" dir="ltr" spellCheck={false} autoComplete="off" maxLength={GATEWAY_CODE_MAX} value={code} onChange={(event) => setCode(event.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""))} />
+          <FormErrorBanner message={errors.root?.message} />
+          <FormField id="gateway-code" label={t.form.code} hint={t.form.codeHint} error={errors.code?.message}>
+            <Input id="gateway-code" dir="ltr" spellCheck={false} autoComplete="off" maxLength={GATEWAY_CODE_MAX} {...invalid("code", "gateway-code")} {...codeField} />
           </FormField>
-          <FormField id="gateway-name-en" label={t.form.nameEn}>
-            <Input id="gateway-name-en" dir="ltr" maxLength={GATEWAY_NAME_MAX} value={name.en} onChange={(event) => setName({ ...name, en: event.target.value })} />
+          <FormField id="gateway-name-en" label={t.form.nameEn} error={errors.name_en?.message}>
+            <Input id="gateway-name-en" dir="ltr" maxLength={GATEWAY_NAME_MAX} {...invalid("name_en", "gateway-name-en")} {...form.register("name_en")} />
           </FormField>
-          <FormField id="gateway-name-ar" label={t.form.nameAr}>
-            <Input id="gateway-name-ar" dir="rtl" maxLength={GATEWAY_NAME_MAX} value={name.ar} onChange={(event) => setName({ ...name, ar: event.target.value })} />
+          <FormField id="gateway-name-ar" label={t.form.nameAr} error={errors.name_ar?.message}>
+            <Input id="gateway-name-ar" dir="rtl" maxLength={GATEWAY_NAME_MAX} {...invalid("name_ar", "gateway-name-ar")} {...form.register("name_ar")} />
           </FormField>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <FormField id="gateway-driver" label={t.form.driver}>
-              <NativeSelect id="gateway-driver" value={driver} onChange={(event) => setDriver(event.target.value)}>
+            <FormField id="gateway-driver" label={t.form.driver} error={errors.driver?.message}>
+              <NativeSelect id="gateway-driver" {...invalid("driver", "gateway-driver")} {...form.register("driver")}>
                 {Object.values(PaymentGatewayDriver).map((value) => (
                   <option key={value} value={value}>{t.driver[value]}</option>
                 ))}
               </NativeSelect>
             </FormField>
-            <FormField id="gateway-sort" label={t.form.sortOrder}>
-              <Input id="gateway-sort" inputMode="numeric" dir="ltr" autoComplete="off" value={sortOrder} onChange={(event) => setSortOrder(event.target.value)} />
+            <FormField id="gateway-sort" label={t.form.sortOrder} error={errors.sort?.message}>
+              <Input id="gateway-sort" inputMode="numeric" dir="ltr" autoComplete="off" {...invalid("sort", "gateway-sort")} {...form.register("sort")} />
             </FormField>
           </div>
           <fieldset className="flex flex-col gap-2">
@@ -136,27 +102,28 @@ export function PaymentGatewayFormDialog({ gateway, onClose }: { gateway?: Payme
             <p className="text-sm text-muted-foreground">
               {gateway && gateway.gateway_setting_keys.length > 0 ? t.form.credentialsKept.replace("{keys}", gateway.gateway_setting_keys.join(", ")) : t.form.credentialsHint}
             </p>
-            {rows.map((row, index) => (
-              <div key={index} className="grid grid-cols-[1fr_1fr_auto] items-end gap-2">
+            {rows.fields.map((row, index) => (
+              <div key={row.id} className="grid grid-cols-[1fr_1fr_auto] items-end gap-2">
                 <FormField id={`gateway-key-${index}`} label={t.form.settingKey}>
-                  <Input id={`gateway-key-${index}`} dir="ltr" spellCheck={false} autoComplete="off" value={row.key} onChange={(event) => updateRow(index, { key: event.target.value })} />
+                  <Input id={`gateway-key-${index}`} dir="ltr" spellCheck={false} autoComplete="off" {...form.register(`rows.${index}.key`)} />
                 </FormField>
                 <FormField id={`gateway-value-${index}`} label={t.form.settingValue}>
-                  <Input id={`gateway-value-${index}`} type="password" dir="ltr" spellCheck={false} autoComplete="new-password" value={row.value} onChange={(event) => updateRow(index, { value: event.target.value })} />
+                  <Input id={`gateway-value-${index}`} type="password" dir="ltr" spellCheck={false} autoComplete="new-password" {...form.register(`rows.${index}.value`)} />
                 </FormField>
-                <Button type="button" variant="ghost" size="sm" onClick={() => setRows(rows.filter((_, position) => position !== index))}>{t.form.removeSetting}</Button>
+                <Button type="button" variant="ghost" size="sm" onClick={() => rows.remove(index)}>{t.form.removeSetting}</Button>
               </div>
             ))}
-            {rows.length < GATEWAY_SETTING_MAX_ROWS ? (
-              <Button type="button" variant="outline" size="sm" className="self-start" onClick={() => setRows([...rows, { key: "", value: "" }])}>{rows.length === 0 && editing ? t.form.replaceSettings : t.form.addSetting}</Button>
+            {errors.rows?.message ? <p role="alert" className="text-sm text-destructive">{errors.rows.message}</p> : null}
+            {rows.fields.length < GATEWAY_SETTING_MAX_ROWS ? (
+              <Button type="button" variant="outline" size="sm" className="self-start" onClick={() => rows.append({ key: "", value: "" })}>{rows.fields.length === 0 && editing ? t.form.replaceSettings : t.form.addSetting}</Button>
             ) : null}
           </fieldset>
           <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
-            <input type="checkbox" className="size-4 accent-primary" checked={active || isDefault} disabled={isDefault} onChange={(event) => setActive(event.target.checked)} />
+            <input type="checkbox" className="size-4 accent-primary" checked={isActive || isDefault} disabled={isDefault} onChange={(event) => form.setValue("is_active", event.target.checked)} />
             {t.form.active}
           </label>
           <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
-            <input type="checkbox" className="size-4 accent-primary" checked={isDefault} onChange={(event) => setIsDefault(event.target.checked)} />
+            <input type="checkbox" className="size-4 accent-primary" {...form.register("is_default")} />
             {t.form.makeDefault}
           </label>
           <DialogFooter>
