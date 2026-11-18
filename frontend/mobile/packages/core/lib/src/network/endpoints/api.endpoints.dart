@@ -16,6 +16,7 @@ import 'package:core/src/network/endpoints/history.endpoints.dart';
 import 'package:core/src/network/endpoints/job_posting.endpoints.dart';
 import 'package:core/src/network/endpoints/notification.endpoints.dart';
 import 'package:core/src/network/endpoints/operations.endpoints.dart';
+import 'package:core/src/network/endpoints/owner.endpoints.dart';
 import 'package:core/src/network/endpoints/profile.endpoints.dart';
 import 'package:core/src/network/endpoints/review.endpoints.dart';
 import 'package:core/src/network/endpoints/service_catalog.endpoints.dart';
@@ -45,6 +46,9 @@ class ApiEndpoints {
 
   /// Brand endpoints
   static final brand = _BrandEndpoints();
+
+  /// Brand owner endpoints (`/owner/*`)
+  static final owner = _OwnerEndpoints();
 
   /// Feedback, bug report and support endpoints
   static final feedback = _FeedbackEndpoints();
@@ -202,6 +206,27 @@ class _FaceProfileEndpoints {
   String get recommendations => FaceProfileEndpoints.recommendations;
   String delete(String id) => FaceProfileEndpoints.delete(id);
   String setPrimary(String id) => FaceProfileEndpoints.setPrimary(id);
+}
+
+class _OwnerEndpoints {
+  const _OwnerEndpoints();
+  String get me => OwnerEndpoints.me;
+  String get brands => OwnerEndpoints.brands;
+  String get brandLogo => OwnerEndpoints.brandLogo;
+  String brand(String id) => OwnerEndpoints.brand.replaceFirst('{brand}', id);
+  String brandResubmit(String id) =>
+      OwnerEndpoints.brandResubmit.replaceFirst('{brand}', id);
+  String get branches => OwnerEndpoints.branches;
+  String branch(String id) =>
+      OwnerEndpoints.branch.replaceFirst('{branch}', id);
+  String branchSwitch(String id, {required bool on}) =>
+      (on ? OwnerEndpoints.branchSwitchOn : OwnerEndpoints.branchSwitchOff)
+          .replaceFirst('{branch}', id);
+  String get subscription => OwnerEndpoints.subscription;
+  String get payouts => OwnerEndpoints.payouts;
+  String get services => OwnerEndpoints.services;
+  String service(String id) =>
+      OwnerEndpoints.service.replaceFirst('{service}', id);
 }
 
 class _FeedbackEndpoints {

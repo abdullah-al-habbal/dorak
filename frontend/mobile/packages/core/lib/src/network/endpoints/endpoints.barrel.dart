@@ -17,6 +17,7 @@ export 'package:core/src/network/endpoints/history.endpoints.dart';
 export 'package:core/src/network/endpoints/job_posting.endpoints.dart';
 export 'package:core/src/network/endpoints/notification.endpoints.dart';
 export 'package:core/src/network/endpoints/operations.endpoints.dart';
+export 'package:core/src/network/endpoints/owner.endpoints.dart';
 export 'package:core/src/network/endpoints/profile.endpoints.dart';
 export 'package:core/src/network/endpoints/review.endpoints.dart';
 export 'package:core/src/network/endpoints/service_catalog.endpoints.dart';

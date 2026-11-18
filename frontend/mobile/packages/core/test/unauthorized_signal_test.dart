@@ -87,39 +87,42 @@ void main() {
     expect(api.unauthorizedSignalFired, isFalse);
   });
 
-  test('a business 403 (brand_not_approved) never signs the user out', () async {
-    final dio = Dio(BaseOptions(baseUrl: 'http://test/api/v1'));
-    dio.httpClientAdapter = FakeHttpClientAdapter(
-      (options) => Future.value(
-        ResponseBody.fromString(
-          jsonEncode(
-            errorEnvelope(
-              code: 'brand_not_approved',
-              statusCode: 403,
-              message: 'Brand not approved',
+  test(
+    'a business 403 (brand_not_approved) never signs the user out',
+    () async {
+      final dio = Dio(BaseOptions(baseUrl: 'http://test/api/v1'));
+      dio.httpClientAdapter = FakeHttpClientAdapter(
+        (options) => Future.value(
+          ResponseBody.fromString(
+            jsonEncode(
+              errorEnvelope(
+                code: 'brand_not_approved',
+                statusCode: 403,
+                message: 'Brand not approved',
+              ),
             ),
+            403,
+            headers: {
+              'content-type': ['application/json'],
+            },
           ),
-          403,
-          headers: {
-            'content-type': ['application/json'],
-          },
         ),
-      ),
-    );
-    final api = ApiClient(
-      baseUrl: 'http://test/api/v1',
-      dio: dio,
-      enableLogging: false,
-      maxRetries: 0,
-      tokenProvider: token(),
-    );
+      );
+      final api = ApiClient(
+        baseUrl: 'http://test/api/v1',
+        dio: dio,
+        enableLogging: false,
+        maxRetries: 0,
+        tokenProvider: token(),
+      );
 
-    final error = await failingGet(api, '/affiliations/abc/accept');
+      final error = await failingGet(api, '/affiliations/abc/accept');
 
-    expect(error.isForbidden, isTrue);
-    expect(error.code, 'brand_not_approved');
-    expect(api.unauthorizedSignalFired, isFalse);
-  });
+      expect(error.isForbidden, isTrue);
+      expect(error.code, 'brand_not_approved');
+      expect(api.unauthorizedSignalFired, isFalse);
+    },
+  );
 
   test('auth-lifecycle routes never fire the signal', () async {
     final paths = <String>[
