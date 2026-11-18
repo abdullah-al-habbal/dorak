@@ -26,6 +26,7 @@ use Modules\Core\Providers\ApplicationServiceProvider;
 use Modules\Currency\Providers\CurrencyServiceProvider;
 use Modules\Dashboard\Providers\DashboardServiceProvider;
 use Modules\Explore\Providers\ExploreServiceProvider;
+use Modules\Feedback\Providers\FeedbackServiceProvider;
 use Modules\JobPosting\Providers\JobPostingServiceProvider;
 use Modules\Language\Providers\LanguageServiceProvider;
 use Modules\Marketing\Providers\MarketingServiceProvider;
@@ -45,6 +46,7 @@ return [
     ViewServiceProvider::class,
     HashServiceProvider::class,
     LanguageServiceProvider::class,
+    FeedbackServiceProvider::class,
     CurrencyServiceProvider::class,
     DashboardServiceProvider::class,
     ActivationServiceProvider::class,

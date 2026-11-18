@@ -9,6 +9,7 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Core\Contracts\MorphAliasEnum;
+use Modules\Feedback\Models\FeedbackReportModel;
 use Modules\JobPosting\Models\ApplicationModel;
 use Modules\Marketing\Models\MarketingPageModel;
 
@@ -20,6 +21,7 @@ enum StatusChangeSubjectTypeEnum: string implements MorphAliasEnum
     case Branch = 'branch';
     case JobApplication = 'job_application';
     case MarketingPage = 'marketing_page';
+    case FeedbackReport = 'feedback_report';
 
     public function modelClass(): string
     {
@@ -30,6 +32,7 @@ enum StatusChangeSubjectTypeEnum: string implements MorphAliasEnum
             self::Branch => BranchModel::class,
             self::JobApplication => ApplicationModel::class,
             self::MarketingPage => MarketingPageModel::class,
+            self::FeedbackReport => FeedbackReportModel::class,
         };
     }
 }
