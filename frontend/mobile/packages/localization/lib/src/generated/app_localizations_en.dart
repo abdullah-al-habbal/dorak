@@ -2027,4 +2027,177 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteAccountActiveAffiliation =>
       'End your work with your brand or branch first, then delete your account.';
+
+  @override
+  String get ownerRoleBranch => 'Branch account';
+
+  @override
+  String get ownerRoleOwner => 'Brand owner';
+
+  @override
+  String get ownerRoleLabel => 'Sign in as';
+
+  @override
+  String get ownerRegisterLink => 'Register as a brand owner on the website';
+
+  @override
+  String get ownerHomeTitle => 'My brand';
+
+  @override
+  String get ownerBannerPending =>
+      'Your brand is waiting for approval. Until then you can edit your brand and add one branch; bookings and billing stay locked.';
+
+  @override
+  String ownerBannerRejected(String reason) {
+    return 'Your brand was rejected: $reason';
+  }
+
+  @override
+  String get ownerBannerRejectedNoReason => 'Your brand was rejected.';
+
+  @override
+  String get ownerBannerSuspended =>
+      'Your brand is suspended. You can view everything, but nothing can be changed.';
+
+  @override
+  String get ownerResubmit => 'Send for another review';
+
+  @override
+  String get ownerResubmitted => 'Sent for review.';
+
+  @override
+  String get ownerBrandActive => 'Active';
+
+  @override
+  String get ownerBrandPending => 'Pending approval';
+
+  @override
+  String get ownerBrandRejected => 'Rejected';
+
+  @override
+  String get ownerBrandSuspended => 'Suspended';
+
+  @override
+  String get ownerNoBrandTitle => 'No brand on this account';
+
+  @override
+  String get ownerNoBrandBody =>
+      'Brand owner registration happens on the website. Register there, then sign in again.';
+
+  @override
+  String get ownerMenuBranches => 'Branches';
+
+  @override
+  String get ownerMenuServices => 'Services';
+
+  @override
+  String get ownerMenuBilling => 'Plan and payouts';
+
+  @override
+  String get ownerBranchesTitle => 'Branches';
+
+  @override
+  String get ownerBranchesEmpty => 'No branches yet.';
+
+  @override
+  String get ownerBranchAdd => 'Add a branch';
+
+  @override
+  String get ownerBranchEdit => 'Edit branch';
+
+  @override
+  String get ownerBranchNameEn => 'Name (English)';
+
+  @override
+  String get ownerBranchNameAr => 'Name (Arabic)';
+
+  @override
+  String get ownerBranchEmail => 'Branch login email';
+
+  @override
+  String get ownerBranchPassword => 'Branch login password';
+
+  @override
+  String get ownerBranchPasswordKeep =>
+      'Leave empty to keep the current password';
+
+  @override
+  String get ownerBranchSave => 'Save branch';
+
+  @override
+  String get ownerBranchSaved => 'Branch saved.';
+
+  @override
+  String get ownerBranchOn => 'Open';
+
+  @override
+  String get ownerBranchOff => 'Closed';
+
+  @override
+  String get ownerErrorBrandNotApproved =>
+      'This is available after your brand is approved.';
+
+  @override
+  String get ownerErrorReadOnly => 'A suspended brand cannot be changed.';
+
+  @override
+  String get ownerBillingTitle => 'Plan and payouts';
+
+  @override
+  String get ownerSubscriptionTitle => 'Plan';
+
+  @override
+  String get ownerNoSubscription => 'No plan yet.';
+
+  @override
+  String ownerPlanLine(String plan, String status) {
+    return '$plan · $status';
+  }
+
+  @override
+  String get ownerPayoutsTitle => 'Payouts';
+
+  @override
+  String get ownerPayoutsEmpty => 'No payouts yet.';
+
+  @override
+  String ownerPayoutLine(String amount, String currency, String status) {
+    return '$amount $currency · $status';
+  }
+
+  @override
+  String get ownerServicesTitle => 'Services';
+
+  @override
+  String get ownerServicesEmpty => 'No services yet.';
+
+  @override
+  String get ownerServiceAdd => 'Add a service';
+
+  @override
+  String get ownerServiceEdit => 'Edit service';
+
+  @override
+  String get ownerServiceName => 'Name';
+
+  @override
+  String get ownerServicePrice => 'Price';
+
+  @override
+  String get ownerServiceCurrency => 'Currency code';
+
+  @override
+  String get ownerServiceDuration => 'Duration (minutes)';
+
+  @override
+  String get ownerServiceSave => 'Save service';
+
+  @override
+  String get ownerServiceSaved => 'Service saved.';
+
+  @override
+  String get ownerServiceDelete => 'Delete service';
+
+  @override
+  String get ownerFieldInvalidNumber => 'Enter a valid number';
 }

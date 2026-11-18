@@ -10,13 +10,14 @@ Part 4 of 5 · [Feature Index — Dorak Mobile (Flutter Monorepo)](feature-index
 
 ## Business App (`apps/business_app`)
 
-- Skeleton only — `main.dart` boots `DorakApp`, no features yet.
+- Branch account shell (operations, bookings, floor plan, staff, jobs, hours, services, earnings, inbox, reviews, profile, About and feedback). Full inventory: [`apps/business_app/docs/feature-index.md`](../apps/business_app/docs/feature-index.md) and [`apps/business_app/AGENTS.md`](../apps/business_app/AGENTS.md).
+- Brand owner experience (T16): the login screen has a "Branch account" / "Brand owner" choice; the owner signs in as a client and the role is remembered (`AppRoleProvider`, shared_preferences). Owner shell under `/owner`: brand home with the pending, rejected (reason and resubmit) and suspended banners, branches (list, create, edit, open and close), services (list, create, edit, delete), read-only plan and payouts. Registration stays on the web.
 
 ---
 
 ## Stylist App (`apps/stylist_app`)
 
-- Skeleton only — `main.dart` boots `DorakApp`, no features yet.
+- Working app: sign-up, schedule, portfolio, profile, affiliations, jobs, reviews, services, earnings, inbox, About and feedback, and account deletion (T9). Inventory: [`apps/stylist_app/AGENTS.md`](../apps/stylist_app/AGENTS.md).
 
 ---
 

@@ -1783,5 +1783,77 @@
   "deleteAccountActiveAffiliation": "End your work with your brand or branch first, then delete your account.",
   "@deleteAccountActiveAffiliation": {
     "description": "Shown when a stylist cannot delete the account while working for a brand or branch"
-  }
+  },
+  "ownerRoleBranch": "Branch account",
+  "ownerRoleOwner": "Brand owner",
+  "ownerRoleLabel": "Sign in as",
+  "ownerRegisterLink": "Register as a brand owner on the website",
+  "ownerHomeTitle": "My brand",
+  "ownerBannerPending": "Your brand is waiting for approval. Until then you can edit your brand and add one branch; bookings and billing stay locked.",
+  "ownerBannerRejected": "Your brand was rejected: {reason}",
+  "@ownerBannerRejected": {
+    "placeholders": {
+      "reason": {"type": "String"}
+    }
+  },
+  "ownerBannerRejectedNoReason": "Your brand was rejected.",
+  "ownerBannerSuspended": "Your brand is suspended. You can view everything, but nothing can be changed.",
+  "ownerResubmit": "Send for another review",
+  "ownerResubmitted": "Sent for review.",
+  "ownerBrandActive": "Active",
+  "ownerBrandPending": "Pending approval",
+  "ownerBrandRejected": "Rejected",
+  "ownerBrandSuspended": "Suspended",
+  "ownerNoBrandTitle": "No brand on this account",
+  "ownerNoBrandBody": "Brand owner registration happens on the website. Register there, then sign in again.",
+  "ownerMenuBranches": "Branches",
+  "ownerMenuServices": "Services",
+  "ownerMenuBilling": "Plan and payouts",
+  "ownerBranchesTitle": "Branches",
+  "ownerBranchesEmpty": "No branches yet.",
+  "ownerBranchAdd": "Add a branch",
+  "ownerBranchEdit": "Edit branch",
+  "ownerBranchNameEn": "Name (English)",
+  "ownerBranchNameAr": "Name (Arabic)",
+  "ownerBranchEmail": "Branch login email",
+  "ownerBranchPassword": "Branch login password",
+  "ownerBranchPasswordKeep": "Leave empty to keep the current password",
+  "ownerBranchSave": "Save branch",
+  "ownerBranchSaved": "Branch saved.",
+  "ownerBranchOn": "Open",
+  "ownerBranchOff": "Closed",
+  "ownerErrorBrandNotApproved": "This is available after your brand is approved.",
+  "ownerErrorReadOnly": "A suspended brand cannot be changed.",
+  "ownerBillingTitle": "Plan and payouts",
+  "ownerSubscriptionTitle": "Plan",
+  "ownerNoSubscription": "No plan yet.",
+  "ownerPlanLine": "{plan} · {status}",
+  "@ownerPlanLine": {
+    "placeholders": {
+      "plan": {"type": "String"},
+      "status": {"type": "String"}
+    }
+  },
+  "ownerPayoutsTitle": "Payouts",
+  "ownerPayoutsEmpty": "No payouts yet.",
+  "ownerPayoutLine": "{amount} {currency} · {status}",
+  "@ownerPayoutLine": {
+    "placeholders": {
+      "amount": {"type": "String"},
+      "currency": {"type": "String"},
+      "status": {"type": "String"}
+    }
+  },
+  "ownerServicesTitle": "Services",
+  "ownerServicesEmpty": "No services yet.",
+  "ownerServiceAdd": "Add a service",
+  "ownerServiceEdit": "Edit service",
+  "ownerServiceName": "Name",
+  "ownerServicePrice": "Price",
+  "ownerServiceCurrency": "Currency code",
+  "ownerServiceDuration": "Duration (minutes)",
+  "ownerServiceSave": "Save service",
+  "ownerServiceSaved": "Service saved.",
+  "ownerServiceDelete": "Delete service",
+  "ownerFieldInvalidNumber": "Enter a valid number"
 }

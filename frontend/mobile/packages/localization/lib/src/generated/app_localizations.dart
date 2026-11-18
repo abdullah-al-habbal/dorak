@@ -3781,6 +3781,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'End your work with your brand or branch first, then delete your account.'**
   String get deleteAccountActiveAffiliation;
+
+  /// No description provided for @ownerRoleBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch account'**
+  String get ownerRoleBranch;
+
+  /// No description provided for @ownerRoleOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand owner'**
+  String get ownerRoleOwner;
+
+  /// No description provided for @ownerRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in as'**
+  String get ownerRoleLabel;
+
+  /// No description provided for @ownerRegisterLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Register as a brand owner on the website'**
+  String get ownerRegisterLink;
+
+  /// No description provided for @ownerHomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My brand'**
+  String get ownerHomeTitle;
+
+  /// No description provided for @ownerBannerPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your brand is waiting for approval. Until then you can edit your brand and add one branch; bookings and billing stay locked.'**
+  String get ownerBannerPending;
+
+  /// No description provided for @ownerBannerRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Your brand was rejected: {reason}'**
+  String ownerBannerRejected(String reason);
+
+  /// No description provided for @ownerBannerRejectedNoReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Your brand was rejected.'**
+  String get ownerBannerRejectedNoReason;
+
+  /// No description provided for @ownerBannerSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Your brand is suspended. You can view everything, but nothing can be changed.'**
+  String get ownerBannerSuspended;
+
+  /// No description provided for @ownerResubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send for another review'**
+  String get ownerResubmit;
+
+  /// No description provided for @ownerResubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent for review.'**
+  String get ownerResubmitted;
+
+  /// No description provided for @ownerBrandActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get ownerBrandActive;
+
+  /// No description provided for @ownerBrandPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending approval'**
+  String get ownerBrandPending;
+
+  /// No description provided for @ownerBrandRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get ownerBrandRejected;
+
+  /// No description provided for @ownerBrandSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get ownerBrandSuspended;
+
+  /// No description provided for @ownerNoBrandTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No brand on this account'**
+  String get ownerNoBrandTitle;
+
+  /// No description provided for @ownerNoBrandBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand owner registration happens on the website. Register there, then sign in again.'**
+  String get ownerNoBrandBody;
+
+  /// No description provided for @ownerMenuBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Branches'**
+  String get ownerMenuBranches;
+
+  /// No description provided for @ownerMenuServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get ownerMenuServices;
+
+  /// No description provided for @ownerMenuBilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan and payouts'**
+  String get ownerMenuBilling;
+
+  /// No description provided for @ownerBranchesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Branches'**
+  String get ownerBranchesTitle;
+
+  /// No description provided for @ownerBranchesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No branches yet.'**
+  String get ownerBranchesEmpty;
+
+  /// No description provided for @ownerBranchAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a branch'**
+  String get ownerBranchAdd;
+
+  /// No description provided for @ownerBranchEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit branch'**
+  String get ownerBranchEdit;
+
+  /// No description provided for @ownerBranchNameEn.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (English)'**
+  String get ownerBranchNameEn;
+
+  /// No description provided for @ownerBranchNameAr.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (Arabic)'**
+  String get ownerBranchNameAr;
+
+  /// No description provided for @ownerBranchEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch login email'**
+  String get ownerBranchEmail;
+
+  /// No description provided for @ownerBranchPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch login password'**
+  String get ownerBranchPassword;
+
+  /// No description provided for @ownerBranchPasswordKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty to keep the current password'**
+  String get ownerBranchPasswordKeep;
+
+  /// No description provided for @ownerBranchSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save branch'**
+  String get ownerBranchSave;
+
+  /// No description provided for @ownerBranchSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch saved.'**
+  String get ownerBranchSaved;
+
+  /// No description provided for @ownerBranchOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get ownerBranchOn;
+
+  /// No description provided for @ownerBranchOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get ownerBranchOff;
+
+  /// No description provided for @ownerErrorBrandNotApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'This is available after your brand is approved.'**
+  String get ownerErrorBrandNotApproved;
+
+  /// No description provided for @ownerErrorReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'A suspended brand cannot be changed.'**
+  String get ownerErrorReadOnly;
+
+  /// No description provided for @ownerBillingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan and payouts'**
+  String get ownerBillingTitle;
+
+  /// No description provided for @ownerSubscriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get ownerSubscriptionTitle;
+
+  /// No description provided for @ownerNoSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan yet.'**
+  String get ownerNoSubscription;
+
+  /// No description provided for @ownerPlanLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{plan} · {status}'**
+  String ownerPlanLine(String plan, String status);
+
+  /// No description provided for @ownerPayoutsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payouts'**
+  String get ownerPayoutsTitle;
+
+  /// No description provided for @ownerPayoutsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No payouts yet.'**
+  String get ownerPayoutsEmpty;
+
+  /// No description provided for @ownerPayoutLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} {currency} · {status}'**
+  String ownerPayoutLine(String amount, String currency, String status);
+
+  /// No description provided for @ownerServicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get ownerServicesTitle;
+
+  /// No description provided for @ownerServicesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No services yet.'**
+  String get ownerServicesEmpty;
+
+  /// No description provided for @ownerServiceAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a service'**
+  String get ownerServiceAdd;
+
+  /// No description provided for @ownerServiceEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit service'**
+  String get ownerServiceEdit;
+
+  /// No description provided for @ownerServiceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get ownerServiceName;
+
+  /// No description provided for @ownerServicePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get ownerServicePrice;
+
+  /// No description provided for @ownerServiceCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency code'**
+  String get ownerServiceCurrency;
+
+  /// No description provided for @ownerServiceDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (minutes)'**
+  String get ownerServiceDuration;
+
+  /// No description provided for @ownerServiceSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save service'**
+  String get ownerServiceSave;
+
+  /// No description provided for @ownerServiceSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Service saved.'**
+  String get ownerServiceSaved;
+
+  /// No description provided for @ownerServiceDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete service'**
+  String get ownerServiceDelete;
+
+  /// No description provided for @ownerFieldInvalidNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid number'**
+  String get ownerFieldInvalidNumber;
 }
 
 class _AppLocalizationsDelegate

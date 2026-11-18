@@ -47,6 +47,7 @@ dependencies:
   localization:
     path: ../../packages/localization
   go_router: ^17.5.0
+  shared_preferences: ^2.3.5
 
 dev_dependencies:
   flutter_test:

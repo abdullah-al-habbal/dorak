@@ -26,6 +26,7 @@ import 'package:localization/localization.dart';
 import 'package:business_app/src/features/auth/business_forgot_password.screen.dart';
 
 import 'helpers/business_fakes.dart';
+import 'helpers/owner_fakes.dart';
 import 'helpers/pagination_fixtures.dart';
 
 class _FakeStaffAuth implements StaffAuthRepository {
@@ -158,6 +159,9 @@ void main() {
       onLocaleToggle: () {},
       onLogout: () {},
       onAuthenticated: () => router.router.go('/operations'),
+      owner: ownerBlocsFor(FakeOwnerRepository()),
+      roles: roleAuthFor(),
+      onRegisterAsOwner: () {},
     );
     addTearDown(router.dispose);
     await session.restore();

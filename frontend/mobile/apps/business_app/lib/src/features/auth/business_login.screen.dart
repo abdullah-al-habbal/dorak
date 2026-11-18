@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
 import 'package:business_app/src/core/errors/api_error.entity.dart';
+import 'package:business_app/src/features/owner/app_role.entity.dart';
 
 class BusinessLoginScreen extends StatefulWidget {
   const BusinessLoginScreen({
@@ -13,12 +14,18 @@ class BusinessLoginScreen extends StatefulWidget {
     required this.onAuthenticated,
     required this.onLocaleToggle,
     required this.onForgotPassword,
+    required this.role,
+    required this.onRoleChanged,
+    required this.onRegisterAsOwner,
   });
 
   final StaffSessionBloc session;
   final VoidCallback onAuthenticated;
   final VoidCallback onLocaleToggle;
   final VoidCallback onForgotPassword;
+  final AppRole role;
+  final ValueChanged<AppRole> onRoleChanged;
+  final VoidCallback onRegisterAsOwner;
 
   @override
   State<BusinessLoginScreen> createState() => _BusinessLoginScreenState();
@@ -28,6 +35,12 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  late AppRole _role = widget.role;
+
+  void _selectRole(AppRole role) {
+    setState(() => _role = role);
+    widget.onRoleChanged(role);
+  }
 
   @override
   void dispose() {
@@ -91,6 +104,24 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                       ),
                     ),
                     const SizedBox(height: DorakDimensions.spacingLarge),
+                    Text(l10n.ownerRoleLabel),
+                    const SizedBox(height: DorakDimensions.spacingSmall),
+                    SegmentedButton<AppRole>(
+                      segments: [
+                        ButtonSegment(
+                          value: AppRole.branch,
+                          label: Text(l10n.ownerRoleBranch),
+                        ),
+                        ButtonSegment(
+                          value: AppRole.owner,
+                          label: Text(l10n.ownerRoleOwner),
+                        ),
+                      ],
+                      selected: {_role},
+                      onSelectionChanged: (selection) =>
+                          _selectRole(selection.first),
+                    ),
+                    const SizedBox(height: DorakDimensions.spacingMedium),
                     TextFormField(
                       controller: _email,
                       keyboardType: TextInputType.emailAddress,
@@ -141,6 +172,11 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                       onPressed: widget.onForgotPassword,
                       child: Text(l10n.loginForgotPassword),
                     ),
+                    if (_role == AppRole.owner)
+                      TextButton(
+                        onPressed: widget.onRegisterAsOwner,
+                        child: Text(l10n.ownerRegisterLink),
+                      ),
                   ],
                 ),
               ),

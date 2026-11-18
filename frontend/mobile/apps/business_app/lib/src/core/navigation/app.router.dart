@@ -26,6 +26,15 @@ import 'package:business_app/src/features/services/business_services.screen.dart
 import 'package:business_app/src/features/staff/business_staff.screen.dart';
 import 'package:business_app/src/features/support/about_support.screen.dart';
 import 'package:business_app/src/features/support/feedback.screen.dart';
+import 'package:business_app/src/core/owner_feature_blocs.provider.dart';
+import 'package:business_app/src/features/owner/app_role.entity.dart';
+import 'package:business_app/src/features/owner/owner_billing.screen.dart';
+import 'package:business_app/src/features/owner/owner_branch_form.screen.dart';
+import 'package:business_app/src/features/owner/owner_branches.screen.dart';
+import 'package:business_app/src/features/owner/owner_home.screen.dart';
+import 'package:business_app/src/features/owner/owner_service_form.screen.dart';
+import 'package:business_app/src/features/owner/owner_services.screen.dart';
+import 'package:business_app/src/features/owner/role_auth.repository.dart';
 
 class BusinessAppRouter {
   BusinessAppRouter({
@@ -37,6 +46,9 @@ class BusinessAppRouter {
     required VoidCallback onLocaleToggle,
     required VoidCallback onLogout,
     required VoidCallback onAuthenticated,
+    required OwnerFeatureBlocs owner,
+    required RoleAuthRepository roles,
+    required VoidCallback onRegisterAsOwner,
     LegalLinks? legalLinks,
   }) {
     router = GoRouter(
@@ -46,10 +58,18 @@ class BusinessAppRouter {
         final atLogin = state.matchedLocation == AppRoutes.login;
         final isPublic =
             atLogin || state.matchedLocation == AppRoutes.forgotPassword;
-        if (session.state.isAuthenticated && isPublic) {
-          return AppRoutes.operations;
-        }
+        final isOwner = roles.role == AppRole.owner;
+        final home = isOwner ? AppRoutes.ownerHome : AppRoutes.operations;
+        if (session.state.isAuthenticated && isPublic) return home;
         if (!session.state.isAuthenticated && !isPublic) return AppRoutes.login;
+        if (session.state.isAuthenticated) {
+          final location = state.matchedLocation;
+          final inOwnerArea = location.startsWith(AppRoutes.ownerHome);
+          final shared =
+              location == AppRoutes.about || location == AppRoutes.feedback;
+          if (isOwner && !inOwnerArea && !shared) return home;
+          if (!isOwner && inOwnerArea) return home;
+        }
         return null;
       },
       routes: [
@@ -60,6 +80,79 @@ class BusinessAppRouter {
             onAuthenticated: onAuthenticated,
             onLocaleToggle: onLocaleToggle,
             onForgotPassword: () => router.go(AppRoutes.forgotPassword),
+            role: roles.role,
+            onRoleChanged: (role) => roles.role = role,
+            onRegisterAsOwner: onRegisterAsOwner,
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.ownerHome,
+          builder: (context, state) => OwnerHomeScreen(
+            bloc: owner.home,
+            onNavigate: context.push,
+            onLocaleToggle: onLocaleToggle,
+            onLogout: onLogout,
+            onRegister: onRegisterAsOwner,
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.ownerBranches,
+          builder: (context, state) => OwnerBranchesScreen(
+            bloc: owner.branches,
+            onAdd: () => context.push(AppRoutes.ownerNewBranch),
+            onEdit: (id) => context.push(
+              AppRoutes.ownerEditBranch,
+              extra: owner.branches.state.branches.firstWhere(
+                (branch) => branch.id == id,
+              ),
+            ),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.ownerNewBranch,
+          builder: (context, state) => OwnerBranchFormScreen(
+            bloc: owner.branches,
+            brandId: owner.home.state.brand?.id ?? '',
+            onDone: () => _leave(context, AppRoutes.ownerBranches),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.ownerEditBranch,
+          builder: (context, state) => OwnerBranchFormScreen(
+            bloc: owner.branches,
+            brandId: owner.home.state.brand?.id ?? '',
+            branch: state.extra as OwnerBranchDto?,
+            onDone: () => _leave(context, AppRoutes.ownerBranches),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.ownerBilling,
+          builder: (context, state) => OwnerBillingScreen(bloc: owner.billing),
+        ),
+        GoRoute(
+          path: AppRoutes.ownerServices,
+          builder: (context, state) => OwnerServicesScreen(
+            bloc: owner.services,
+            onAdd: () => context.push(AppRoutes.ownerNewService),
+            onEdit: (service) =>
+                context.push(AppRoutes.ownerEditService, extra: service),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.ownerNewService,
+          builder: (context, state) => OwnerServiceFormScreen(
+            bloc: owner.services,
+            brandId: owner.home.state.brand?.id ?? '',
+            onDone: () => _leave(context, AppRoutes.ownerServices),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.ownerEditService,
+          builder: (context, state) => OwnerServiceFormScreen(
+            bloc: owner.services,
+            brandId: owner.home.state.brand?.id ?? '',
+            service: state.extra as BusinessServiceDto?,
+            onDone: () => _leave(context, AppRoutes.ownerServices),
           ),
         ),
         GoRoute(
@@ -206,6 +299,10 @@ class BusinessAppRouter {
       ],
     );
   }
+
+  /// Closes a form: back when it was pushed, otherwise to its list (deep link).
+  static void _leave(BuildContext context, String fallback) =>
+      context.canPop() ? context.pop() : context.go(fallback);
 
   late final GoRouter router;
   late final StaffSessionRefresh _sessionRefresh;

@@ -23,10 +23,26 @@ import 'package:business_app/src/features/services/business_services.bloc.dart';
 import 'package:business_app/src/features/staff/business_staff.bloc.dart';
 import 'package:business_app/src/core/navigation/notification_location.entity.dart';
 import 'package:business_app/src/core/locale/app_locales.entity.dart';
+import 'package:business_app/src/core/owner_feature_blocs.provider.dart';
+import 'package:business_app/src/features/owner/app_role.entity.dart';
+import 'package:business_app/src/features/owner/app_role.provider.dart';
+import 'package:business_app/src/features/owner/owner_auth.repository.dart';
+import 'package:business_app/src/features/owner/owner_billing.bloc.dart';
+import 'package:business_app/src/features/owner/owner_branches.bloc.dart';
+import 'package:business_app/src/features/owner/owner_home.bloc.dart';
+import 'package:business_app/src/features/owner/owner_services.bloc.dart';
+import 'package:business_app/src/features/owner/role_auth.repository.dart';
+import 'package:business_app/src/features/owner/shared_preferences_app_role.provider.dart';
 
 class DorakBusinessApp extends StatefulWidget {
-  const DorakBusinessApp({super.key, this.tokenStorage, this.repository});
+  const DorakBusinessApp({
+    super.key,
+    this.tokenStorage,
+    this.repository,
+    this.roleProvider,
+  });
 
+  final AppRoleProvider? roleProvider;
   final TokenStorage? tokenStorage;
   final ManagedBarberRepository? repository;
 
@@ -45,6 +61,10 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   late final PushNotificationService _pushNotifications;
   late final BusinessAppRouter _router;
   late final StaffSessionBloc _session;
+  late final RoleAuthRepository _roles;
+  late final OwnerFeatureBlocs _owner;
+  late final ExternalLinkOpener _linkOpener;
+  late final LegalLinks _legalLinks;
   late final StaffPasswordResetBloc _passwordReset;
   late final StreamSubscription<void> _unauthorizedSubscription;
   late final StreamSubscription<NotificationTarget>
@@ -68,8 +88,24 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       _apiClient,
       StaffAuthRoutes.branch(),
     );
-    _session = StaffSessionBloc(staffAuth, _tokenStorage);
-    _passwordReset = StaffPasswordResetBloc(staffAuth);
+    _roles = RoleAuthRepository(
+      branch: staffAuth,
+      owner: OwnerAuthRepository(DioAuthRepository(_apiClient)),
+      roles: widget.roleProvider ?? const SharedPreferencesAppRoleProvider(),
+    );
+    _session = StaffSessionBloc(_roles, _tokenStorage);
+    _passwordReset = StaffPasswordResetBloc(_roles);
+    final ownerApi = DioOwnerRepository(_apiClient);
+    _owner = OwnerFeatureBlocs(
+      home: OwnerHomeCubit(ownerApi),
+      branches: OwnerBranchesCubit(ownerApi),
+      billing: OwnerBillingCubit(ownerApi),
+      services: OwnerServicesCubit(
+        DioBranchServiceRepository(_apiClient, ApiEndpoints.owner.services),
+      ),
+    );
+    _linkOpener = const UrlLauncherExternalLinkOpener();
+    _legalLinks = LegalLinks.fromApiBaseUrl(ConfigProvider.config.apiBaseUrl);
     _unauthorizedSubscription = _apiClient.unauthorizedStream.listen(
       (_) => _onUnauthorized(),
     );
@@ -114,6 +150,9 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       onLocaleToggle: _toggleLocale,
       onLogout: _logout,
       onAuthenticated: _onAuthenticated,
+      owner: _owner,
+      roles: _roles,
+      onRegisterAsOwner: _openOwnerRegistration,
     );
     unawaited(_restoreSession());
   }
@@ -123,6 +162,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     _barbers.close();
     _operations.close();
     unawaited(_features.close());
+    unawaited(_owner.close());
     _router.dispose();
     _session.close();
     _passwordReset.close();
@@ -169,7 +209,11 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
         : AppLocales.english,
   );
 
+  void _openOwnerRegistration() =>
+      unawaited(_linkOpener.open(_legalLinks.ownerRegistration));
+
   Future<void> _restoreSession() async {
+    await _roles.restoreRole();
     await _session.restore();
     if (!mounted || !_session.state.isAuthenticated) return;
     _onAuthenticated();
@@ -178,6 +222,10 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
 
   void _onAuthenticated() {
     _apiClient.resetUnauthorizedSignal();
+    if (_roles.role == AppRole.owner) {
+      _router.router.go(AppRoutes.ownerHome);
+      return;
+    }
     unawaited(_features.inbox.load());
     unawaited(_initializePushNotifications());
     if (_realtime != null) unawaited(_realtime.connect());

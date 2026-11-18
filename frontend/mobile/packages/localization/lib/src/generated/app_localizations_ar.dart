@@ -2017,4 +2017,177 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get deleteAccountActiveAffiliation =>
       'أنهِ عملك مع العلامة التجارية أو الفرع أولاً، ثم احذف حسابك.';
+
+  @override
+  String get ownerRoleBranch => 'حساب الفرع';
+
+  @override
+  String get ownerRoleOwner => 'مالك العلامة التجارية';
+
+  @override
+  String get ownerRoleLabel => 'تسجيل الدخول كـ';
+
+  @override
+  String get ownerRegisterLink => 'سجّل كمالك علامة تجارية على الموقع';
+
+  @override
+  String get ownerHomeTitle => 'علامتي التجارية';
+
+  @override
+  String get ownerBannerPending =>
+      'علامتك التجارية بانتظار الموافقة. يمكنك حتى ذلك الحين تعديلها وإضافة فرع واحد، بينما تبقى الحجوزات والفوترة مقفلة.';
+
+  @override
+  String ownerBannerRejected(String reason) {
+    return 'تم رفض علامتك التجارية: $reason';
+  }
+
+  @override
+  String get ownerBannerRejectedNoReason => 'تم رفض علامتك التجارية.';
+
+  @override
+  String get ownerBannerSuspended =>
+      'علامتك التجارية موقوفة. يمكنك عرض كل شيء ولكن لا يمكن تغيير أي شيء.';
+
+  @override
+  String get ownerResubmit => 'إرسال لمراجعة أخرى';
+
+  @override
+  String get ownerResubmitted => 'تم الإرسال للمراجعة.';
+
+  @override
+  String get ownerBrandActive => 'نشطة';
+
+  @override
+  String get ownerBrandPending => 'بانتظار الموافقة';
+
+  @override
+  String get ownerBrandRejected => 'مرفوضة';
+
+  @override
+  String get ownerBrandSuspended => 'موقوفة';
+
+  @override
+  String get ownerNoBrandTitle => 'لا توجد علامة تجارية لهذا الحساب';
+
+  @override
+  String get ownerNoBrandBody =>
+      'يتم تسجيل مالكي العلامات التجارية على الموقع. سجّل هناك ثم سجّل الدخول مجددًا.';
+
+  @override
+  String get ownerMenuBranches => 'الفروع';
+
+  @override
+  String get ownerMenuServices => 'الخدمات';
+
+  @override
+  String get ownerMenuBilling => 'الباقة والمدفوعات';
+
+  @override
+  String get ownerBranchesTitle => 'الفروع';
+
+  @override
+  String get ownerBranchesEmpty => 'لا توجد فروع بعد.';
+
+  @override
+  String get ownerBranchAdd => 'إضافة فرع';
+
+  @override
+  String get ownerBranchEdit => 'تعديل الفرع';
+
+  @override
+  String get ownerBranchNameEn => 'الاسم (الإنجليزية)';
+
+  @override
+  String get ownerBranchNameAr => 'الاسم (العربية)';
+
+  @override
+  String get ownerBranchEmail => 'البريد الإلكتروني لدخول الفرع';
+
+  @override
+  String get ownerBranchPassword => 'كلمة مرور دخول الفرع';
+
+  @override
+  String get ownerBranchPasswordKeep =>
+      'اتركها فارغة للإبقاء على كلمة المرور الحالية';
+
+  @override
+  String get ownerBranchSave => 'حفظ الفرع';
+
+  @override
+  String get ownerBranchSaved => 'تم حفظ الفرع.';
+
+  @override
+  String get ownerBranchOn => 'مفتوح';
+
+  @override
+  String get ownerBranchOff => 'مغلق';
+
+  @override
+  String get ownerErrorBrandNotApproved =>
+      'هذا متاح بعد الموافقة على علامتك التجارية.';
+
+  @override
+  String get ownerErrorReadOnly => 'لا يمكن تغيير علامة تجارية موقوفة.';
+
+  @override
+  String get ownerBillingTitle => 'الباقة والمدفوعات';
+
+  @override
+  String get ownerSubscriptionTitle => 'الباقة';
+
+  @override
+  String get ownerNoSubscription => 'لا توجد باقة بعد.';
+
+  @override
+  String ownerPlanLine(String plan, String status) {
+    return '$plan · $status';
+  }
+
+  @override
+  String get ownerPayoutsTitle => 'المدفوعات';
+
+  @override
+  String get ownerPayoutsEmpty => 'لا توجد مدفوعات بعد.';
+
+  @override
+  String ownerPayoutLine(String amount, String currency, String status) {
+    return '$amount $currency · $status';
+  }
+
+  @override
+  String get ownerServicesTitle => 'الخدمات';
+
+  @override
+  String get ownerServicesEmpty => 'لا توجد خدمات بعد.';
+
+  @override
+  String get ownerServiceAdd => 'إضافة خدمة';
+
+  @override
+  String get ownerServiceEdit => 'تعديل الخدمة';
+
+  @override
+  String get ownerServiceName => 'الاسم';
+
+  @override
+  String get ownerServicePrice => 'السعر';
+
+  @override
+  String get ownerServiceCurrency => 'رمز العملة';
+
+  @override
+  String get ownerServiceDuration => 'المدة (بالدقائق)';
+
+  @override
+  String get ownerServiceSave => 'حفظ الخدمة';
+
+  @override
+  String get ownerServiceSaved => 'تم حفظ الخدمة.';
+
+  @override
+  String get ownerServiceDelete => 'حذف الخدمة';
+
+  @override
+  String get ownerFieldInvalidNumber => 'أدخل رقمًا صالحًا';
 }
