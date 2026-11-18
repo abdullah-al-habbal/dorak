@@ -4,6 +4,7 @@ export const arShell: Dictionary["shell"] = {
   home: "الرئيسية",
   openMenu: "فتح القائمة",
   primaryNav: "التنقل الرئيسي",
+  breadcrumb: "مسار التنقل",
   collapseSidebar: "طي الشريط الجانبي",
   expandSidebar: "توسيع الشريط الجانبي",
   soon: "قريبًا",

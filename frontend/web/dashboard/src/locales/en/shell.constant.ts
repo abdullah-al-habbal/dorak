@@ -2,6 +2,7 @@ export const enShell = {
   home: "Home",
   openMenu: "Open navigation",
   primaryNav: "Primary",
+  breadcrumb: "Breadcrumb",
   collapseSidebar: "Collapse sidebar",
   expandSidebar: "Expand sidebar",
   soon: "Soon",

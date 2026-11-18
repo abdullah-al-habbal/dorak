@@ -31,7 +31,7 @@ export function Breadcrumbs({ actor }: { actor: AuthActor }): JSX.Element {
   });
 
   return (
-    <Breadcrumb>
+    <Breadcrumb aria-label={shell.breadcrumb}>
       <BreadcrumbList>
         <BreadcrumbItem>
           {crumbs.length === 0 ? (
