@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import type { FormEvent, JSX } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
+import type { JSX } from "react";
+import { useForm } from "react-hook-form";
 
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
-import { FormField } from "@/components/common/form-field";
+import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -13,16 +15,18 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
 import { EMPLOYMENT_NONE, EMPLOYMENT_TYPES, JOB_LOCATION_MAX, JOB_TEXT_MAX, JOB_TITLE_MAX, POSTING_STATUSES } from "@/config/ops/job-board.constant";
 import { HttpStatus } from "@/enums/access/http-status.enum";
-import { JobPostingStatus } from "@/enums/booking/job-posting-status.enum";
 import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useDeleteJobPosting } from "@/hooks/jobs/use-delete-job-posting";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useSaveJobPosting } from "@/hooks/jobs/use-save-job-posting";
+import { applyFormError } from "@/lib/core/errors/apply-form-error.util";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
+import { formToPostingBody, mapPostingFieldName, postingToForm } from "@/lib/jobs/job-posting-form.util";
+import { createJobPostingFormSchema } from "@/schemas/jobs/job-posting-form.zod";
 import { ApiClientError } from "@/services/api/core/api-client-error";
-import { toLocalePair } from "@/lib/core/format/locale-pair.util";
-import type { JobPostingBody } from "@/services/api/mutation/jobs/job-board.mutation";
 import type { BranchJobPosting } from "@/types/jobs/branch-job-posting.type";
+import type { JobPostingFormValues } from "@/types/jobs/job-posting-form-values.type";
 
 interface JobPostingFormDialogProps {
   branchId: string;
@@ -38,38 +42,21 @@ export function JobPostingFormDialog({ branchId, posting, onClose }: JobPostingF
   const save = useSaveJobPosting();
   const remove = useDeleteJobPosting(branchId);
   const editing = posting !== undefined;
-  const [title, setTitle] = useState(toLocalePair(posting?.title));
-  const [description, setDescription] = useState(toLocalePair(posting?.description));
-  const [requirements, setRequirements] = useState(toLocalePair(posting?.requirements));
-  const [location, setLocation] = useState(posting?.location ?? "");
-  const [employment, setEmployment] = useState(posting?.employment_type ?? EMPLOYMENT_NONE);
-  const [status, setStatus] = useState<string>(posting?.status ?? JobPostingStatus.Open);
-  const [error, setError] = useState<string>();
-  const busy = save.isPending || remove.isPending;
+  const schema = useMemo(() => createJobPostingFormSchema(t.form), [t.form]);
+  const form = useForm<JobPostingFormValues>({ resolver: zodResolver(schema), defaultValues: postingToForm(posting) });
+  const { errors } = form.formState;
+  const busy = form.formState.isSubmitting || save.isPending || remove.isPending;
+  const invalid = (name: keyof JobPostingFormValues, id: string) => ({ "aria-invalid": Boolean(errors[name]), "aria-describedby": errors[name] ? fieldErrorId(id) : undefined });
 
-  async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault();
-    setError(undefined);
-    if (!title.en.trim() || !title.ar.trim() || !description.en.trim() || !description.ar.trim()) {
-      setError(t.form.required);
-      return;
-    }
-    const hasRequirements = requirements.en.trim() !== "" || requirements.ar.trim() !== "";
-    const body: JobPostingBody = {
-      title: { en: title.en.trim(), ar: title.ar.trim() },
-      description: { en: description.en.trim(), ar: description.ar.trim() },
-      requirements: hasRequirements ? { en: requirements.en.trim(), ar: requirements.ar.trim() } : null,
-      location: location.trim() === "" ? null : location.trim(),
-      employment_type: employment === EMPLOYMENT_NONE ? null : employment,
-      ...(editing ? { status } : {}),
-    };
+  const submit = form.handleSubmit(async (values) => {
     try {
-      await save.mutateAsync({ id: posting?.id, payload: { branchId, body } });
+      await save.mutateAsync({ id: posting?.id, payload: { branchId, body: formToPostingBody(values, editing) } });
       onClose();
     } catch (failure) {
-      setError(failure instanceof ApiClientError && failure.status === HttpStatus.Forbidden ? t.form.featureOff : t.form.failed);
+      const forbidden = failure instanceof ApiClientError && failure.status === HttpStatus.Forbidden;
+      applyFormError(form, mapApiFormError(failure, forbidden ? t.form.featureOff : t.form.failed, mapPostingFieldName));
     }
-  }
+  });
 
   function confirmDelete(): void {
     if (!posting) return;
@@ -93,31 +80,31 @@ export function JobPostingFormDialog({ branchId, posting, onClose }: JobPostingF
           <DialogDescription>{t.form.description}</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-          <FormErrorBanner message={error} />
-          <FormField id="job-title-en" label={t.form.titleEn}>
-            <Input id="job-title-en" dir="ltr" maxLength={JOB_TITLE_MAX} value={title.en} onChange={(event) => setTitle({ ...title, en: event.target.value })} />
+          <FormErrorBanner message={errors.root?.message} />
+          <FormField id="job-title-en" error={errors.title_en?.message} label={t.form.titleEn}>
+            <Input id="job-title-en" dir="ltr" maxLength={JOB_TITLE_MAX} {...invalid("title_en", "job-title-en")} {...form.register("title_en")} />
           </FormField>
-          <FormField id="job-title-ar" label={t.form.titleAr}>
-            <Input id="job-title-ar" dir="rtl" maxLength={JOB_TITLE_MAX} value={title.ar} onChange={(event) => setTitle({ ...title, ar: event.target.value })} />
+          <FormField id="job-title-ar" error={errors.title_ar?.message} label={t.form.titleAr}>
+            <Input id="job-title-ar" dir="rtl" maxLength={JOB_TITLE_MAX} {...invalid("title_ar", "job-title-ar")} {...form.register("title_ar")} />
           </FormField>
-          <FormField id="job-description-en" label={t.form.descriptionEn}>
-            <Textarea id="job-description-en" dir="ltr" rows={3} maxLength={JOB_TEXT_MAX} value={description.en} onChange={(event) => setDescription({ ...description, en: event.target.value })} />
+          <FormField id="job-description-en" error={errors.description_en?.message} label={t.form.descriptionEn}>
+            <Textarea id="job-description-en" dir="ltr" rows={3} maxLength={JOB_TEXT_MAX} {...invalid("description_en", "job-description-en")} {...form.register("description_en")} />
           </FormField>
-          <FormField id="job-description-ar" label={t.form.descriptionAr}>
-            <Textarea id="job-description-ar" dir="rtl" rows={3} maxLength={JOB_TEXT_MAX} value={description.ar} onChange={(event) => setDescription({ ...description, ar: event.target.value })} />
+          <FormField id="job-description-ar" error={errors.description_ar?.message} label={t.form.descriptionAr}>
+            <Textarea id="job-description-ar" dir="rtl" rows={3} maxLength={JOB_TEXT_MAX} {...invalid("description_ar", "job-description-ar")} {...form.register("description_ar")} />
           </FormField>
-          <FormField id="job-requirements-en" label={t.form.requirementsEn} hint={common.fields.optional}>
-            <Textarea id="job-requirements-en" dir="ltr" rows={2} maxLength={JOB_TEXT_MAX} value={requirements.en} onChange={(event) => setRequirements({ ...requirements, en: event.target.value })} />
+          <FormField id="job-requirements-en" error={errors.requirements_en?.message} label={t.form.requirementsEn} hint={common.fields.optional}>
+            <Textarea id="job-requirements-en" dir="ltr" rows={2} maxLength={JOB_TEXT_MAX} {...invalid("requirements_en", "job-requirements-en")} {...form.register("requirements_en")} />
           </FormField>
-          <FormField id="job-requirements-ar" label={t.form.requirementsAr} hint={common.fields.optional}>
-            <Textarea id="job-requirements-ar" dir="rtl" rows={2} maxLength={JOB_TEXT_MAX} value={requirements.ar} onChange={(event) => setRequirements({ ...requirements, ar: event.target.value })} />
+          <FormField id="job-requirements-ar" error={errors.requirements_ar?.message} label={t.form.requirementsAr} hint={common.fields.optional}>
+            <Textarea id="job-requirements-ar" dir="rtl" rows={2} maxLength={JOB_TEXT_MAX} {...invalid("requirements_ar", "job-requirements-ar")} {...form.register("requirements_ar")} />
           </FormField>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <FormField id="job-location" label={t.form.location} hint={common.fields.optional}>
-              <Input id="job-location" maxLength={JOB_LOCATION_MAX} value={location} onChange={(event) => setLocation(event.target.value)} />
+            <FormField id="job-location" error={errors.location?.message} label={t.form.location} hint={common.fields.optional}>
+              <Input id="job-location" maxLength={JOB_LOCATION_MAX} {...invalid("location", "job-location")} {...form.register("location")} />
             </FormField>
-            <FormField id="job-employment" label={t.form.employment} hint={common.fields.optional}>
-              <NativeSelect id="job-employment" value={employment} onChange={(event) => setEmployment(event.target.value)}>
+            <FormField id="job-employment" error={errors.employment?.message} label={t.form.employment} hint={common.fields.optional}>
+              <NativeSelect id="job-employment" {...invalid("employment", "job-employment")} {...form.register("employment")}>
                 <option value={EMPLOYMENT_NONE}>{t.form.employmentNone}</option>
                 {EMPLOYMENT_TYPES.map((value) => (
                   <option key={value} value={value}>{t.employmentType[value]}</option>
@@ -126,8 +113,8 @@ export function JobPostingFormDialog({ branchId, posting, onClose }: JobPostingF
             </FormField>
           </div>
           {editing ? (
-            <FormField id="job-status" label={t.form.status}>
-              <NativeSelect id="job-status" value={status} onChange={(event) => setStatus(event.target.value)}>
+            <FormField id="job-status" error={errors.status?.message} label={t.form.status}>
+              <NativeSelect id="job-status" {...invalid("status", "job-status")} {...form.register("status")}>
                 {POSTING_STATUSES.map((value) => (
                   <option key={value} value={value}>{t.postingStatus[value]}</option>
                 ))}
