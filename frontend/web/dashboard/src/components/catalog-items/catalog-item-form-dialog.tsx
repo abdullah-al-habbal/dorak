@@ -1,30 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import type { FormEvent, JSX } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo, useState } from "react";
+import type { JSX } from "react";
+import { useForm, useWatch } from "react-hook-form";
 
 import { CatalogItemMediaSection } from "@/components/catalog-items/attributes/catalog-item-media-section";
 import { CatalogItemAttributesFields } from "@/components/catalog-items/attributes/catalog-item-attributes-fields";
 import { LoadingButton } from "@/components/buttons/loading-button";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
-import { FormField } from "@/components/common/form-field";
+import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import { CATALOG_ITEM_DESCRIPTION_MAX, CATALOG_ITEM_MAX_DURATION, CATALOG_ITEM_NAME_MAX } from "@/config/platform/admin-catalog.constant";
-import { HttpStatus } from "@/enums/access/http-status.enum";
+import { CATALOG_ITEM_DESCRIPTION_MAX, CATALOG_ITEM_NAME_MAX } from "@/config/platform/admin-catalog.constant";
 import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useCatalogTags, useDeleteCatalogItem, useSaveCatalogItem } from "@/hooks/services/catalog/use-catalog-admin";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
 import { useServiceCategories } from "@/hooks/services/services/use-service-categories";
-import { attributesFromItem, attributesIssue, attributesToPayload } from "@/lib/catalog/catalog-item-attributes.util";
+import { formToItemPayload, itemToForm, mapItemFieldName, resolveItemCategory } from "@/lib/catalog/catalog-item-form.util";
+import { applyFormError, formFailureMessage } from "@/lib/core/errors/apply-form-error.util";
+import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
 import { localizedText } from "@/lib/core/format/booking-format.util";
 import { slugify } from "@/lib/core/format/slugify.util";
-import { ApiClientError } from "@/services/api/core/api-client-error";
-import { toLocalePair } from "@/lib/core/format/locale-pair.util";
+import { createCatalogItemFormSchema } from "@/schemas/services/catalog/catalog-item-form.zod";
+import type { CatalogItemFormValues } from "@/types/services/catalog/catalog-item-form-values.type";
 import type { CatalogItem } from "@/types/services/catalog-item.type";
 
 /** Adds or edits a global catalog item: names, category, description, default duration, status and tags. */
@@ -38,64 +41,35 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
   const save = useSaveCatalogItem();
   const remove = useDeleteCatalogItem();
   const editing = item !== undefined;
-  const [name, setName] = useState(toLocalePair(item?.name));
-  const [description, setDescription] = useState(toLocalePair(item?.description));
-  const [slug, setSlug] = useState(item?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(editing);
-  const [categoryId, setCategoryId] = useState(item?.category_id ?? "");
-  const [duration, setDuration] = useState(item?.default_duration_minutes ? String(item.default_duration_minutes) : "");
-  const [active, setActive] = useState(item?.is_active ?? true);
-  const [tagIds, setTagIds] = useState<string[]>(item?.tags.map((tag) => tag.id) ?? []);
-  const [attributes, setAttributes] = useState(() => attributesFromItem(item));
-  const [error, setError] = useState<string>();
-  const busy = save.isPending || remove.isPending;
-  const chosenCategory = categoryId || categories.data?.[0]?.id || "";
-
-  function changeName(value: string): void {
-    setName({ ...name, en: value });
-    if (!slugTouched) setSlug(slugify(value));
-  }
+  const schema = useMemo(() => createCatalogItemFormSchema(t), [t]);
+  const form = useForm<CatalogItemFormValues>({ resolver: zodResolver(schema), defaultValues: itemToForm(item) });
+  const { errors } = form.formState;
+  const busy = form.formState.isSubmitting || save.isPending || remove.isPending;
+  const [categoryId, tagIds, attributes] = useWatch({ control: form.control, name: ["category_id", "tag_ids", "attributes"] });
+  const loadedCategories = (categories.data ?? []).map((category) => category.id);
+  const chosenCategory = resolveItemCategory(categoryId, loadedCategories);
+  const invalid = (name: keyof CatalogItemFormValues, id: string) => ({ "aria-invalid": Boolean(errors[name]), "aria-describedby": errors[name] ? fieldErrorId(id) : undefined });
+  const nameEn = form.register("name_en", { onChange: (event) => { if (!slugTouched) form.setValue("slug", slugify(event.target.value)); } });
+  const slugField = form.register("slug", { onChange: (event) => { setSlugTouched(true); form.setValue("slug", slugify(event.target.value)); } });
 
   function toggleTag(id: string, on: boolean): void {
-    setTagIds(on ? [...tagIds, id] : tagIds.filter((value) => value !== id));
+    form.setValue("tag_ids", on ? [...tagIds, id] : tagIds.filter((value) => value !== id));
   }
 
-  async function submit(event: FormEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault();
-    setError(undefined);
-    const minutes = duration.trim() === "" ? null : Number(duration);
-    if (!name.en.trim() || !name.ar.trim() || !slug.trim() || chosenCategory === "") {
-      setError(t.form.required);
-      return;
-    }
-    if (minutes !== null && (!Number.isInteger(minutes) || minutes < 1 || minutes > CATALOG_ITEM_MAX_DURATION)) {
-      setError(t.form.invalidDuration);
-      return;
-    }
-    const issue = attributesIssue(attributes);
-    if (issue !== undefined) {
-      setError(t.attributes.issues[issue]);
+  const submit = form.handleSubmit(async (values) => {
+    const category = resolveItemCategory(values.category_id, loadedCategories);
+    if (category === "") {
+      form.setError("category_id", { message: t.form.required });
       return;
     }
     try {
-      await save.mutateAsync({
-        id: item?.id,
-        payload: {
-          category_id: chosenCategory,
-          name: { en: name.en.trim(), ar: name.ar.trim() },
-          description: { en: description.en.trim() || null, ar: description.ar.trim() || null },
-          slug: slug.trim(),
-          default_duration_minutes: minutes,
-          is_active: active,
-          tag_ids: tagIds,
-          ...attributesToPayload(attributes),
-        },
-      });
+      await save.mutateAsync({ id: item?.id, payload: formToItemPayload(values, category) });
       onClose();
     } catch (failure) {
-      setError(failure instanceof ApiClientError && failure.status === HttpStatus.Unprocessable ? t.form.invalid : t.form.failed);
+      applyFormError(form, mapApiFormError(failure, formFailureMessage(failure, t.form), mapItemFieldName));
     }
-  }
+  });
 
   function confirmDelete(): void {
     if (!item) return;
@@ -120,33 +94,34 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
           <DialogDescription>{t.form.description}</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-          <FormErrorBanner message={error} />
-          <FormField id="item-name-en" label={t.form.nameEn}>
-            <Input id="item-name-en" dir="ltr" maxLength={CATALOG_ITEM_NAME_MAX} value={name.en} onChange={(event) => changeName(event.target.value)} />
+          <FormErrorBanner message={errors.root?.message} />
+          <FormField id="item-name-en" label={t.form.nameEn} error={errors.name_en?.message}>
+            <Input id="item-name-en" dir="ltr" maxLength={CATALOG_ITEM_NAME_MAX} {...invalid("name_en", "item-name-en")} {...nameEn} />
           </FormField>
-          <FormField id="item-name-ar" label={t.form.nameAr}>
-            <Input id="item-name-ar" dir="rtl" maxLength={CATALOG_ITEM_NAME_MAX} value={name.ar} onChange={(event) => setName({ ...name, ar: event.target.value })} />
+          <FormField id="item-name-ar" label={t.form.nameAr} error={errors.name_ar?.message}>
+            <Input id="item-name-ar" dir="rtl" maxLength={CATALOG_ITEM_NAME_MAX} {...invalid("name_ar", "item-name-ar")} {...form.register("name_ar")} />
           </FormField>
-          <FormField id="item-slug" label={t.form.slug} hint={t.form.slugHint}>
-            <Input id="item-slug" dir="ltr" spellCheck={false} maxLength={CATALOG_ITEM_NAME_MAX} value={slug} onChange={(event) => { setSlugTouched(true); setSlug(slugify(event.target.value)); }} />
+          <FormField id="item-slug" label={t.form.slug} hint={t.form.slugHint} error={errors.slug?.message}>
+            <Input id="item-slug" dir="ltr" spellCheck={false} maxLength={CATALOG_ITEM_NAME_MAX} {...invalid("slug", "item-slug")} {...slugField} />
           </FormField>
-          <FormField id="item-category" label={t.form.category}>
-            <NativeSelect id="item-category" value={chosenCategory} disabled={categories.isPending} onChange={(event) => setCategoryId(event.target.value)}>
+          <FormField id="item-category" label={t.form.category} error={errors.category_id?.message}>
+            <NativeSelect id="item-category" value={chosenCategory} disabled={categories.isPending} onChange={(event) => form.setValue("category_id", event.target.value)} {...invalid("category_id", "item-category")}>
               {categories.data?.map((category) => (
                 <option key={category.id} value={category.id}>{localizedText(category.name, locale)}</option>
               ))}
             </NativeSelect>
           </FormField>
-          <FormField id="item-description-en" label={t.form.descriptionEn} hint={common.fields.optional}>
-            <Textarea id="item-description-en" dir="ltr" rows={2} maxLength={CATALOG_ITEM_DESCRIPTION_MAX} value={description.en} onChange={(event) => setDescription({ ...description, en: event.target.value })} />
+          <FormField id="item-description-en" label={t.form.descriptionEn} hint={common.fields.optional} error={errors.description_en?.message}>
+            <Textarea id="item-description-en" dir="ltr" rows={2} maxLength={CATALOG_ITEM_DESCRIPTION_MAX} {...invalid("description_en", "item-description-en")} {...form.register("description_en")} />
           </FormField>
-          <FormField id="item-description-ar" label={t.form.descriptionAr} hint={common.fields.optional}>
-            <Textarea id="item-description-ar" dir="rtl" rows={2} maxLength={CATALOG_ITEM_DESCRIPTION_MAX} value={description.ar} onChange={(event) => setDescription({ ...description, ar: event.target.value })} />
+          <FormField id="item-description-ar" label={t.form.descriptionAr} hint={common.fields.optional} error={errors.description_ar?.message}>
+            <Textarea id="item-description-ar" dir="rtl" rows={2} maxLength={CATALOG_ITEM_DESCRIPTION_MAX} {...invalid("description_ar", "item-description-ar")} {...form.register("description_ar")} />
           </FormField>
-          <FormField id="item-duration" label={t.form.duration} hint={common.fields.optional}>
-            <Input id="item-duration" inputMode="numeric" dir="ltr" autoComplete="off" value={duration} onChange={(event) => setDuration(event.target.value)} />
+          <FormField id="item-duration" label={t.form.duration} hint={common.fields.optional} error={errors.duration?.message}>
+            <Input id="item-duration" inputMode="numeric" dir="ltr" autoComplete="off" {...invalid("duration", "item-duration")} {...form.register("duration")} />
           </FormField>
-          <CatalogItemAttributesFields value={attributes} onChange={setAttributes} />
+          <CatalogItemAttributesFields value={attributes} onChange={(next) => form.setValue("attributes", next, { shouldValidate: form.formState.isSubmitted })} />
+          {errors.attributes?.message ? <p role="alert" className="text-sm text-destructive">{errors.attributes.message}</p> : null}
           {item ? <CatalogItemMediaSection itemId={item.id} initial={item.media} /> : <p className="text-sm text-muted-foreground">{t.media.saveFirst}</p>}
           <fieldset className="flex flex-col gap-1">
             <legend className="mb-1 text-sm font-medium">{t.form.tags}</legend>
@@ -161,7 +136,7 @@ export function CatalogItemFormDialog({ item, onClose }: { item?: CatalogItem; o
             </div>
           </fieldset>
           <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
-            <input type="checkbox" className="size-4 accent-primary" checked={active} onChange={(event) => setActive(event.target.checked)} />
+            <input type="checkbox" className="size-4 accent-primary" {...form.register("is_active")} />
             {t.form.active}
           </label>
           <DialogFooter>
