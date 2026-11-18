@@ -8,6 +8,7 @@ class StaffAuthRoutes {
     required this.refreshToken,
     required this.forgotPassword,
     required this.resetPassword,
+    this.deleteAccount,
   });
 
   factory StaffAuthRoutes.barber() => StaffAuthRoutes(
@@ -16,6 +17,7 @@ class StaffAuthRoutes {
     refreshToken: ApiEndpoints.barberAuth.refreshToken,
     forgotPassword: ApiEndpoints.barberAuth.forgotPassword,
     resetPassword: ApiEndpoints.barberAuth.resetPassword,
+    deleteAccount: ApiEndpoints.barberAuth.deleteAccount,
   );
 
   factory StaffAuthRoutes.branch() => StaffAuthRoutes(
@@ -31,4 +33,7 @@ class StaffAuthRoutes {
   final String refreshToken;
   final String forgotPassword;
   final String resetPassword;
+
+  /// Only barbers can delete their own account; a branch account is removed by its owner or an admin.
+  final String? deleteAccount;
 }

@@ -1940,4 +1940,77 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get socialLoginFailed => 'فشل تسجيل الدخول. حاول مرة أخرى.';
+
+  @override
+  String get aboutLegalTitle => 'حول التطبيق والقانونية';
+
+  @override
+  String get legalPrivacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get legalTermsOfService => 'شروط الاستخدام';
+
+  @override
+  String get legalAboutDorak => 'عن دورك';
+
+  @override
+  String get legalContactUs => 'تواصل معنا';
+
+  @override
+  String get legalDeleteAccountInfo => 'كيفية حذف حسابك';
+
+  @override
+  String appVersionLabel(String version) {
+    return 'الإصدار $version';
+  }
+
+  @override
+  String get openLinkFailed => 'تعذّر فتح الرابط. حاول لاحقًا.';
+
+  @override
+  String get feedbackEntry => 'إرسال ملاحظات';
+
+  @override
+  String get feedbackTitle => 'إرسال ملاحظات';
+
+  @override
+  String get feedbackKindLabel => 'ما نوع رسالتك؟';
+
+  @override
+  String get feedbackKindSuggestion => 'اقتراح';
+
+  @override
+  String get feedbackKindBug => 'خطأ';
+
+  @override
+  String get feedbackKindSupport => 'دعم';
+
+  @override
+  String get feedbackMessageLabel => 'رسالتك';
+
+  @override
+  String get feedbackMessageHint => 'أخبرنا بما حدث أو بما تتمناه';
+
+  @override
+  String get feedbackMessageTooShort => 'اكتب 5 أحرف على الأقل.';
+
+  @override
+  String get feedbackEmailLabel => 'بريدك الإلكتروني';
+
+  @override
+  String get feedbackEmailInvalid =>
+      'أدخل بريدًا إلكترونيًا صالحًا لنتمكن من الرد.';
+
+  @override
+  String get feedbackSubmit => 'إرسال';
+
+  @override
+  String get feedbackSent => 'شكرًا لك. وصلتنا رسالتك.';
+
+  @override
+  String get feedbackFailed =>
+      'تعذّر إرسال رسالتك. تحقق من اتصالك وحاول مجددًا.';
+
+  @override
+  String get feedbackRateLimited => 'أرسلت عدة رسائل بالفعل. حاول لاحقًا.';
 }

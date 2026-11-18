@@ -22,7 +22,16 @@ abstract class StaffAuthRepository {
   });
 }
 
-class DioStaffAuthRepository implements StaffAuthRepository {
+/// Account deletion for the staff guards that allow it (barbers only).
+abstract class StaffAccountRepository {
+  /// Deletes the signed-in account after a password check. Throws a 401
+  /// [ApiException] for a wrong password and a 409 one (`ACCOUNT_HAS_ACTIVE_BOOKINGS`
+  /// or `ACCOUNT_HAS_ACTIVE_AFFILIATION`) while the account is still in use.
+  Future<void> deleteAccount(String password);
+}
+
+class DioStaffAuthRepository
+    implements StaffAuthRepository, StaffAccountRepository {
   const DioStaffAuthRepository(this._client, this._routes);
 
   final ApiClient _client;
@@ -83,6 +92,15 @@ class DioStaffAuthRepository implements StaffAuthRepository {
     },
     parser: _discardBody,
   );
+
+  @override
+  Future<void> deleteAccount(String password) {
+    final path = _routes.deleteAccount;
+    if (path == null) {
+      throw UnsupportedError('This account type cannot delete itself.');
+    }
+    return _client.delete(path, data: {'password': password});
+  }
 
   static void _discardBody(dynamic _) {}
 }

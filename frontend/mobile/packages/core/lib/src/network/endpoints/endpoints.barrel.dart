@@ -6,6 +6,7 @@ export 'package:core/src/network/endpoints/barber_auth.endpoints.dart';
 export 'package:core/src/network/endpoints/booking.endpoints.dart';
 export 'package:core/src/network/endpoints/branch.endpoints.dart';
 export 'package:core/src/network/endpoints/brand.endpoints.dart';
+export 'package:core/src/network/endpoints/feedback.endpoints.dart';
 export 'package:core/src/network/endpoints/branch_auth.endpoints.dart';
 export 'package:core/src/network/endpoints/client_interaction.endpoints.dart';
 export 'package:core/src/network/endpoints/currency.endpoints.dart';

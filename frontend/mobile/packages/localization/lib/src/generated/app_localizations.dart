@@ -3637,6 +3637,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign-in failed. Please try again.'**
   String get socialLoginFailed;
+
+  /// Section title for the About and legal block in settings
+  ///
+  /// In en, this message translates to:
+  /// **'About and legal'**
+  String get aboutLegalTitle;
+
+  /// Link to the public privacy policy page
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get legalPrivacyPolicy;
+
+  /// Link to the public terms page
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of service'**
+  String get legalTermsOfService;
+
+  /// Link to the public about page
+  ///
+  /// In en, this message translates to:
+  /// **'About Dorak'**
+  String get legalAboutDorak;
+
+  /// Link to the public contact page
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us'**
+  String get legalContactUs;
+
+  /// Link to the public delete-account instructions page
+  ///
+  /// In en, this message translates to:
+  /// **'How to delete your account'**
+  String get legalDeleteAccountInfo;
+
+  /// Shows the installed app version
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String appVersionLabel(String version);
+
+  /// Shown when an external link cannot be opened
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the link. Try again later.'**
+  String get openLinkFailed;
+
+  /// Settings entry that opens the feedback form
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get feedbackEntry;
+
+  /// Title of the feedback screen
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get feedbackTitle;
+
+  /// Label above the feedback type choices
+  ///
+  /// In en, this message translates to:
+  /// **'What is it about?'**
+  String get feedbackKindLabel;
+
+  /// Feedback type: a suggestion
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestion'**
+  String get feedbackKindSuggestion;
+
+  /// Feedback type: a bug report
+  ///
+  /// In en, this message translates to:
+  /// **'Bug'**
+  String get feedbackKindBug;
+
+  /// Feedback type: a support request
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get feedbackKindSupport;
+
+  /// Label of the feedback message field
+  ///
+  /// In en, this message translates to:
+  /// **'Your message'**
+  String get feedbackMessageLabel;
+
+  /// Hint of the feedback message field
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what happened or what you would like'**
+  String get feedbackMessageHint;
+
+  /// Validation: the feedback message is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Write at least 5 characters.'**
+  String get feedbackMessageTooShort;
+
+  /// Label of the optional contact email for guests
+  ///
+  /// In en, this message translates to:
+  /// **'Your email'**
+  String get feedbackEmailLabel;
+
+  /// Validation: the guest contact email is missing or invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email so we can reply.'**
+  String get feedbackEmailInvalid;
+
+  /// Button that sends the feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get feedbackSubmit;
+
+  /// Shown after the feedback was sent
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you. We received your message.'**
+  String get feedbackSent;
+
+  /// Shown when sending the feedback failed
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t send your message. Check your connection and try again.'**
+  String get feedbackFailed;
+
+  /// Shown when the feedback rate limit was hit
+  ///
+  /// In en, this message translates to:
+  /// **'You sent several messages already. Please try again later.'**
+  String get feedbackRateLimited;
 }
 
 class _AppLocalizationsDelegate

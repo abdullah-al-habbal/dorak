@@ -56,7 +56,7 @@ Status values: `todo`, `in progress`, `done`, `blocked`, `skipped`.
 | [T6](t06-barber-account-deletion.md) | Barber account deletion (backend) | 4 Deletion | none | done |
 | [T7](t07-branch-account-deletion.md) | Branch account deletion | 4 Deletion | confirmed | skipped |
 | [T14](t14-owner-mobile-backend-api.md) | Brand owner mobile API (backend) | 5 Owner mobile | none | done |
-| [T8](t08-mobile-shared-layer.md) | Shared mobile layer | 6 Mobile | T2, T4 | todo |
+| [T8](t08-mobile-shared-layer.md) | Shared mobile layer | 6 Mobile | T2, T4 | done |
 | [T15](t15-owner-mobile-core-layer.md) | Brand owner core layer (`packages/core`) | 6 Mobile | T14, T8 | todo |
 | [T9](t09-mobile-app-integration.md) | App integration (client, stylist, business) | 6 Mobile | T6, T8 | todo |
 | [T16](t16-business-app-owner-experience.md) | `business_app` brand owner experience | 6 Mobile | T9, T14, T15 | todo |

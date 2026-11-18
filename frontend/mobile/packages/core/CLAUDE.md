@@ -36,7 +36,12 @@ Forbidden, without exception:
   wrong: invert it with a callback or an abstract contract.
 
 Current third-party set: `bloc`, `dio`, `equatable`, `flutter_dotenv`,
-`json_annotation`, `flutter_secure_storage`, `shared_preferences`. Adding
+`json_annotation`, `flutter_secure_storage`, `shared_preferences`,
+`url_launcher` and `package_info_plus` (both approved by the owner on
+2026-11-18, task T8.4: `url_launcher` opens the public legal pages and the web
+owner registration through `ExternalLinkOpener`; `package_info_plus` supplies
+the `app_version` sent with feedback through `AppInfoProvider`; both stay
+behind those two seams so screens and tests never touch a plugin). Adding
 another needs a reason recorded in this file or in `docs/`.
 
 `bloc` is **pure Dart** and is permitted here by

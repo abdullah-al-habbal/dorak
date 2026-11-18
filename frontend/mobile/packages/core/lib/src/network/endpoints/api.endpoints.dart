@@ -9,6 +9,7 @@ import 'package:core/src/network/endpoints/brand.endpoints.dart';
 import 'package:core/src/network/endpoints/client_interaction.endpoints.dart';
 import 'package:core/src/network/endpoints/currency.endpoints.dart';
 import 'package:core/src/network/endpoints/explore.endpoints.dart';
+import 'package:core/src/network/endpoints/feedback.endpoints.dart';
 import 'package:core/src/network/endpoints/face_profile.endpoints.dart';
 import 'package:core/src/network/endpoints/favorite.endpoints.dart';
 import 'package:core/src/network/endpoints/history.endpoints.dart';
@@ -44,6 +45,9 @@ class ApiEndpoints {
 
   /// Brand endpoints
   static final brand = _BrandEndpoints();
+
+  /// Feedback, bug report and support endpoints
+  static final feedback = _FeedbackEndpoints();
 
   /// Branch endpoints
   static final branch = _BranchEndpoints();
@@ -120,6 +124,7 @@ class _BarberAuthEndpoints {
   String get refreshToken => BarberAuthEndpoints.refreshToken;
   String get forgotPassword => BarberAuthEndpoints.forgotPassword;
   String get resetPassword => BarberAuthEndpoints.resetPassword;
+  String get deleteAccount => BarberAuthEndpoints.deleteAccount;
 }
 
 class _BranchAuthEndpoints {
@@ -197,6 +202,11 @@ class _FaceProfileEndpoints {
   String get recommendations => FaceProfileEndpoints.recommendations;
   String delete(String id) => FaceProfileEndpoints.delete(id);
   String setPrimary(String id) => FaceProfileEndpoints.setPrimary(id);
+}
+
+class _FeedbackEndpoints {
+  const _FeedbackEndpoints();
+  String get submit => FeedbackEndpoints.submit;
 }
 
 class _BrandEndpoints {

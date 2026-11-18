@@ -1682,5 +1682,102 @@
   "socialLoginFailed": "Sign-in failed. Please try again.",
   "@socialLoginFailed": {
     "description": "Shown when a social sign-in could not complete"
+  },
+  "aboutLegalTitle": "About and legal",
+  "@aboutLegalTitle": {
+    "description": "Section title for the About and legal block in settings"
+  },
+  "legalPrivacyPolicy": "Privacy policy",
+  "@legalPrivacyPolicy": {
+    "description": "Link to the public privacy policy page"
+  },
+  "legalTermsOfService": "Terms of service",
+  "@legalTermsOfService": {
+    "description": "Link to the public terms page"
+  },
+  "legalAboutDorak": "About Dorak",
+  "@legalAboutDorak": {
+    "description": "Link to the public about page"
+  },
+  "legalContactUs": "Contact us",
+  "@legalContactUs": {
+    "description": "Link to the public contact page"
+  },
+  "legalDeleteAccountInfo": "How to delete your account",
+  "@legalDeleteAccountInfo": {
+    "description": "Link to the public delete-account instructions page"
+  },
+  "appVersionLabel": "Version {version}",
+  "@appVersionLabel": {
+    "description": "Shows the installed app version",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "openLinkFailed": "Couldn't open the link. Try again later.",
+  "@openLinkFailed": {
+    "description": "Shown when an external link cannot be opened"
+  },
+  "feedbackEntry": "Send feedback",
+  "@feedbackEntry": {
+    "description": "Settings entry that opens the feedback form"
+  },
+  "feedbackTitle": "Send feedback",
+  "@feedbackTitle": {
+    "description": "Title of the feedback screen"
+  },
+  "feedbackKindLabel": "What is it about?",
+  "@feedbackKindLabel": {
+    "description": "Label above the feedback type choices"
+  },
+  "feedbackKindSuggestion": "Suggestion",
+  "@feedbackKindSuggestion": {
+    "description": "Feedback type: a suggestion"
+  },
+  "feedbackKindBug": "Bug",
+  "@feedbackKindBug": {
+    "description": "Feedback type: a bug report"
+  },
+  "feedbackKindSupport": "Support",
+  "@feedbackKindSupport": {
+    "description": "Feedback type: a support request"
+  },
+  "feedbackMessageLabel": "Your message",
+  "@feedbackMessageLabel": {
+    "description": "Label of the feedback message field"
+  },
+  "feedbackMessageHint": "Tell us what happened or what you would like",
+  "@feedbackMessageHint": {
+    "description": "Hint of the feedback message field"
+  },
+  "feedbackMessageTooShort": "Write at least 5 characters.",
+  "@feedbackMessageTooShort": {
+    "description": "Validation: the feedback message is too short"
+  },
+  "feedbackEmailLabel": "Your email",
+  "@feedbackEmailLabel": {
+    "description": "Label of the optional contact email for guests"
+  },
+  "feedbackEmailInvalid": "Enter a valid email so we can reply.",
+  "@feedbackEmailInvalid": {
+    "description": "Validation: the guest contact email is missing or invalid"
+  },
+  "feedbackSubmit": "Send",
+  "@feedbackSubmit": {
+    "description": "Button that sends the feedback"
+  },
+  "feedbackSent": "Thank you. We received your message.",
+  "@feedbackSent": {
+    "description": "Shown after the feedback was sent"
+  },
+  "feedbackFailed": "Couldn't send your message. Check your connection and try again.",
+  "@feedbackFailed": {
+    "description": "Shown when sending the feedback failed"
+  },
+  "feedbackRateLimited": "You sent several messages already. Please try again later.",
+  "@feedbackRateLimited": {
+    "description": "Shown when the feedback rate limit was hit"
   }
 }

@@ -2,8 +2,10 @@ library;
 
 export 'package:design_system/src/tokens/tokens.barrel.dart';
 export 'package:design_system/src/theme/dorak_theme.theme.dart';
+export 'package:design_system/src/widgets/about_links.widget.dart';
 export 'package:design_system/src/widgets/app_loader.widget.dart';
 export 'package:design_system/src/widgets/bottom_sheet_modal.widget.dart';
+export 'package:design_system/src/widgets/feedback_form.widget.dart';
 export 'package:design_system/src/widgets/gradient_overlay.widget.dart';
 export 'package:design_system/src/widgets/hero_image.widget.dart';
 export 'package:design_system/src/widgets/locale_switcher.widget.dart';

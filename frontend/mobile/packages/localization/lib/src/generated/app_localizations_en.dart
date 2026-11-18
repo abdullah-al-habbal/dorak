@@ -1949,4 +1949,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get socialLoginFailed => 'Sign-in failed. Please try again.';
+
+  @override
+  String get aboutLegalTitle => 'About and legal';
+
+  @override
+  String get legalPrivacyPolicy => 'Privacy policy';
+
+  @override
+  String get legalTermsOfService => 'Terms of service';
+
+  @override
+  String get legalAboutDorak => 'About Dorak';
+
+  @override
+  String get legalContactUs => 'Contact us';
+
+  @override
+  String get legalDeleteAccountInfo => 'How to delete your account';
+
+  @override
+  String appVersionLabel(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get openLinkFailed => 'Couldn\'t open the link. Try again later.';
+
+  @override
+  String get feedbackEntry => 'Send feedback';
+
+  @override
+  String get feedbackTitle => 'Send feedback';
+
+  @override
+  String get feedbackKindLabel => 'What is it about?';
+
+  @override
+  String get feedbackKindSuggestion => 'Suggestion';
+
+  @override
+  String get feedbackKindBug => 'Bug';
+
+  @override
+  String get feedbackKindSupport => 'Support';
+
+  @override
+  String get feedbackMessageLabel => 'Your message';
+
+  @override
+  String get feedbackMessageHint =>
+      'Tell us what happened or what you would like';
+
+  @override
+  String get feedbackMessageTooShort => 'Write at least 5 characters.';
+
+  @override
+  String get feedbackEmailLabel => 'Your email';
+
+  @override
+  String get feedbackEmailInvalid => 'Enter a valid email so we can reply.';
+
+  @override
+  String get feedbackSubmit => 'Send';
+
+  @override
+  String get feedbackSent => 'Thank you. We received your message.';
+
+  @override
+  String get feedbackFailed =>
+      'Couldn\'t send your message. Check your connection and try again.';
+
+  @override
+  String get feedbackRateLimited =>
+      'You sent several messages already. Please try again later.';
 }

@@ -9,4 +9,5 @@ class BarberAuthEndpoints {
   static const refreshToken = '/barber/refresh-token';
   static const forgotPassword = '/barber/forgot-password';
   static const resetPassword = '/barber/reset-password';
+  static const deleteAccount = '/barber/account';
 }
