@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { applyFormError, createFieldNameMapper } from "@/lib/core/errors/apply-form-error.util";
+import { ApiErrorCode } from "@/enums/access/api-error-code.enum";
+import { applyFormError, createFieldNameMapper, formFailureMessage } from "@/lib/core/errors/apply-form-error.util";
+import { ApiClientError } from "@/services/api/core/api-client-error";
 
 describe("createFieldNameMapper", () => {
   const mapper = createFieldNameMapper({ "body.en": "body_en", sort_order: "sort" });
@@ -41,5 +43,15 @@ describe("applyFormError", () => {
     const form = fakeForm();
     applyFormError(form, { fieldErrors: {} });
     expect(form.setError).not.toHaveBeenCalled();
+  });
+});
+
+describe("formFailureMessage", () => {
+  const messages = { invalid: "Check the details.", failed: "Try again." };
+
+  it("uses the invalid message only for a 422", () => {
+    expect(formFailureMessage(new ApiClientError({ status: 422, code: ApiErrorCode.InvalidRequest, message: "" }), messages)).toBe(messages.invalid);
+    expect(formFailureMessage(new ApiClientError({ status: 500, code: ApiErrorCode.Server, message: "" }), messages)).toBe(messages.failed);
+    expect(formFailureMessage(new Error("boom"), messages)).toBe(messages.failed);
   });
 });

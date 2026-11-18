@@ -1,6 +1,8 @@
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
+import { HttpStatus } from "@/enums/access/http-status.enum";
 import type { MappedFormError } from "@/interfaces/core/query/mapped-form-error.interface";
+import { ApiClientError } from "@/services/api/core/api-client-error";
 import type { FormFieldNameMapper } from "@/types/core/api/form-field-name-mapper.type";
 
 export const FORM_ROOT_FIELD = "root";
@@ -24,4 +26,9 @@ export function applyFormError<TValues extends FieldValues>(form: Pick<UseFormRe
     form.setError(field ?? FORM_ROOT_FIELD, { message });
   }
   if (mapped.formError) form.setError(FORM_ROOT_FIELD, { message: mapped.formError });
+}
+
+/** The form-level message for a failed write: `invalid` when the backend rejected the input (422), else `failed`. */
+export function formFailureMessage(error: unknown, messages: { invalid: string; failed: string }): string {
+  return error instanceof ApiClientError && error.status === HttpStatus.Unprocessable ? messages.invalid : messages.failed;
 }
