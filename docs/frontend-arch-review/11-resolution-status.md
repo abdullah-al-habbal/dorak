@@ -14,7 +14,7 @@ Re-audited against the code on 2026-11-18. Every finding in this review is close
 | F-08 | Closed | `logContractDrift` (dev only). |
 | F-09 | Closed | ESLint `no-restricted-imports` and `explicit-module-boundary-types`. |
 | F-10 | Closed | The 7 listed exports are gone. A fuller scan then removed 4 unused type files and the `export` of 23 values used only inside their own file. 25 exported types remain because they appear in their own file's signatures. |
-| F-11 | Closed | Component tests for the three migrated dialogs and the dialog close label; hook tests for `useLeaveWarning`, `useMediaQuery`, `useUrlFilters` and `useListQuery` in `tests/hooks/`; schema and util tests for every migrated form. |
+| F-11 | Closed (the wider test backlog continues as TS-3) | List-state tests for 15 list screens, reason, ban, money and rule dialog tests, component tests for the three migrated dialogs and the dialog close label; hook tests for `useLeaveWarning`, `useMediaQuery`, `useUrlFilters` and `useListQuery` in `tests/hooks/`; schema and util tests for every migrated form. |
 | F-12 | Closed | Dictionary keys for the nav label and sections. The dialog and sheet close buttons and the breadcrumb label (found in this pass) now use the dictionary too. |
 | F-13 | Closed | `AGENTS.md` reworded. |
 
