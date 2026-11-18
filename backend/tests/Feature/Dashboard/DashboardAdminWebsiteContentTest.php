@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Marketing\Models\MarketingPageModel;
 use Modules\Marketing\Models\SectionModel;
+use Modules\Onboarding\Constants\OnboardingMediaConstants;
 use Modules\Onboarding\Models\OnboardingConfigurationModel;
 
 const WEBSITE_PAGES = '/api/v1/dashboard/admin/marketing-pages';
@@ -160,3 +163,53 @@ function websitePage(string $slug): MarketingPageModel
 {
     return MarketingPageModel::factory()->create(['slug' => $slug]);
 }
+
+describe('Admin onboarding hero upload (FT-13)', function (): void {
+    beforeEach(function (): void {
+        Storage::fake('public');
+    });
+
+    it('replaces the hero, keeps a seeded file and deletes an earlier upload', function (): void {
+        $row = onboardingConfig();
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+        Storage::disk('public')->put($row->hero_image_path, 'seeded');
+
+        $first = $this->post(WEBSITE_ONBOARDING."/{$row->id}/image", ['file' => UploadedFile::fake()->image('a.png', 100, 100)], ['Accept' => 'application/json'])->assertOk();
+        $firstPath = $row->refresh()->hero_image_path;
+        expect($firstPath)->toStartWith(OnboardingMediaConstants::ONBOARDING_MEDIA_DIRECTORY.'/')
+            ->and($first->json('data.hero_image_url'))->toBe(Storage::disk('public')->url($firstPath))
+            ->and(Storage::disk('public')->exists('assets/images/onboarding/en/default/hero.jpg'))->toBeTrue();
+
+        $this->post(WEBSITE_ONBOARDING."/{$row->id}/image", ['file' => UploadedFile::fake()->image('b.jpg', 100, 100)], ['Accept' => 'application/json'])->assertOk();
+
+        expect(Storage::disk('public')->exists($firstPath))->toBeFalse()
+            ->and(Storage::disk('public')->allFiles(OnboardingMediaConstants::ONBOARDING_MEDIA_DIRECTORY))->toHaveCount(1);
+    });
+
+    it('refuses a script, an svg, a heavy or an oversized image and keeps the old hero', function (UploadedFile $file): void {
+        $row = onboardingConfig();
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->post(WEBSITE_ONBOARDING."/{$row->id}/image", ['file' => $file], ['Accept' => 'application/json'])->assertUnprocessable()->assertJsonValidationErrors('file');
+
+        expect($row->refresh()->hero_image_path)->toBe('assets/images/onboarding/en/default/hero.jpg')->and(Storage::disk('public')->allFiles())->toBe([]);
+    })->with([
+        'a script' => [fn () => UploadedFile::fake()->createWithContent('a.png', '<?php echo 1;')],
+        'an svg' => [fn () => UploadedFile::fake()->createWithContent('a.svg', '<svg xmlns="http://www.w3.org/2000/svg"></svg>')],
+        'too heavy' => [fn () => UploadedFile::fake()->image('a.png')->size(OnboardingMediaConstants::ONBOARDING_MEDIA_MAX_KB + 1)],
+        'too wide' => [fn () => UploadedFile::fake()->image('a.png', OnboardingMediaConstants::ONBOARDING_MEDIA_MAX_SIDE + 1, 10)],
+    ]);
+
+    it('refuses anonymous callers and non-admins, and an unknown screen', function (): void {
+        $row = onboardingConfig();
+        $file = ['file' => UploadedFile::fake()->image('a.png')];
+
+        $this->postJson(WEBSITE_ONBOARDING."/{$row->id}/image")->assertUnauthorized();
+        $this->authenticateDashboardActor(BranchModel::factory()->create());
+        $this->post(WEBSITE_ONBOARDING."/{$row->id}/image", $file, ['Accept' => 'application/json'])->assertForbidden();
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+        $this->post(WEBSITE_ONBOARDING.'/'.fake()->uuid().'/image', $file, ['Accept' => 'application/json'])->assertNotFound();
+
+        expect(Storage::disk('public')->allFiles())->toBe([]);
+    });
+});

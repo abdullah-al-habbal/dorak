@@ -60,6 +60,7 @@ use Modules\Marketing\Http\Actions\Admin\UpdateSectionAction;
 use Modules\Marketing\Http\Actions\Admin\UpdateTestimonialAction;
 use Modules\Onboarding\Http\Actions\Admin\ListOnboardingConfigsAction;
 use Modules\Onboarding\Http\Actions\Admin\UpdateOnboardingConfigAction;
+use Modules\Onboarding\Http\Actions\Admin\UploadOnboardingHeroAction;
 use Modules\Payment\Http\Actions\Admin\DestroyPaymentGatewayAction;
 use Modules\Payment\Http\Actions\Admin\ListPaymentGatewaysAction;
 use Modules\Payment\Http\Actions\Admin\SetPaymentGatewayActiveAction;
@@ -148,6 +149,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::delete('/testimonials/{testimonial}', DestroyTestimonialAction::class);
         Route::get('/onboarding-configs', ListOnboardingConfigsAction::class);
         Route::put('/onboarding-configs/{config}', UpdateOnboardingConfigAction::class);
+        Route::post('/onboarding-configs/{config}/image', UploadOnboardingHeroAction::class);
         Route::get('/currencies', ListAdminCurrenciesAction::class);
         Route::get('/languages', ListAdminLanguagesAction::class);
         Route::patch('/languages/{language}/active', SetLanguageActiveAction::class);

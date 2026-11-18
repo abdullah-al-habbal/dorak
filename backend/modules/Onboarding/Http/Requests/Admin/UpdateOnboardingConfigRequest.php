@@ -6,7 +6,7 @@ namespace Modules\Onboarding\Http\Requests\Admin;
 
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
-/** Switches an onboarding hero on or off and orders it. The image itself is replaced by seeding, not here. */
+/** Switches an onboarding hero on or off and orders it. The image is replaced through the separate upload route. */
 final class UpdateOnboardingConfigRequest extends BaseApiFormRequest
 {
     private const int SORT_ORDER_MAX = 100000;
