@@ -18,7 +18,7 @@ final class GetMarketingPageHandler
 
     public function handle(string $slug, string $locale, UniverseVisibilityEnum $universe): ?array
     {
-        $page = $this->pageResolver->findBySlug($slug);
+        $page = $this->pageResolver->findPublishedBySlug($slug);
 
         if ($page === null) {
             return null;

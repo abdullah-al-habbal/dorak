@@ -1,4 +1,4 @@
-<x-website::layouts.app :page="$page" :locale="$locale">
+<x-website::layouts.app :page="$page" :locale="$locale" :seo="$seo">
     @php
         $sections = $page['sections'] ?? [];
         $heroSection = collect($sections)->firstWhere('section_type', 'hero');

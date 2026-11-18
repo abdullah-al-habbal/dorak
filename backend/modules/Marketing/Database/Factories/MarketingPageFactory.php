@@ -23,6 +23,12 @@ final class MarketingPageFactory extends Factory
                 'en' => $this->faker->sentence(6),
                 'ar' => 'وصف الصفحة',
             ],
+            'published_at' => now(),
         ];
+    }
+
+    public function draft(): self
+    {
+        return $this->state(['published_at' => null]);
     }
 }

@@ -15,7 +15,7 @@ final class SectionSeeder extends Seeder
     public function run(): void
     {
         $pageIds = DB::table('marketing_pages')
-            ->whereIn('slug', ['home', 'features', 'pricing'])
+            ->whereIn('slug', array_column(config('marketing.seed_pages'), 'slug'))
             ->pluck('id', 'slug');
 
         $rows = array_map(function (array $section) use ($pageIds): array {
@@ -23,7 +23,7 @@ final class SectionSeeder extends Seeder
             unset($section['page_slug']);
 
             return $section;
-        }, config('marketing.seed_sections'));
+        }, array_merge(config('marketing.seed_sections'), config('marketing.seed_legal_sections')));
 
         $this->bulkInsertOrIgnore('sections', $rows);
     }

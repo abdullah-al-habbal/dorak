@@ -19,6 +19,7 @@ final class AdminMarketingPageResource extends JsonResource
             'slug' => $this->slug,
             'title' => $this->getTranslations('title'),
             'meta_description' => $this->getTranslations('meta_description'),
+            'published_at' => $this->published_at?->toIso8601String(),
             'sections' => AdminSectionResource::collection($this->whenLoaded('sections')),
         ];
     }

@@ -12,6 +12,8 @@ enum SectionTypeEnum: string
     case Testimonials = 'testimonials';
     case Pricing = 'pricing';
     case Cta = 'cta';
+    /** A legal or informational page: an optional heading and a list of plain-text paragraphs. */
+    case LegalText = 'legal_text';
 
     public function label(): string
     {
