@@ -439,10 +439,19 @@ describe('Forgot & Reset Password', function () {
         Mail::assertSent(SendPasswordResetCode::class, fn ($mail) => $mail->hasTo($client->email));
     });
 
-    it('returns 422 for invalid email', function () {
+    it('answers an unknown email like a known one and sends nothing (no account enumeration)', function () {
+        Mail::fake();
+
         $response = $this->postJson('/api/v1/client/forgot-password', [
             'email' => 'nonexistent@example.com',
         ]);
+
+        assertApiEnvelope($response, 200, false);
+        Mail::assertNothingSent();
+    });
+
+    it('returns 422 for a malformed email', function () {
+        $response = $this->postJson('/api/v1/client/forgot-password', ['email' => 'not-an-email']);
 
         $response->assertStatus(422);
     });

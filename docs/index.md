@@ -32,6 +32,7 @@ codeanchors:
 - [Backend](../backend/README.md) — Laravel service and product docs.
 - [Dashboard](../frontend/web/dashboard/AGENTS.md) — Next.js application (the only dashboard).
 - [Mobile](../frontend/mobile/AGENTS.md) — Flutter workspace.
+- [Launch readiness](readiness/index.md) — the T1 to T16 program: status, decisions and implementation notes.
 
 ## Folder graph
 
