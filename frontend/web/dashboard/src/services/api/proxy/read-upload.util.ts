@@ -1,5 +1,6 @@
 import { UPLOAD_ENVELOPE_SLACK_BYTES, UPLOAD_FIELD, UPLOAD_IMAGE_MAX_BYTES, UPLOAD_IMAGE_TYPES } from "@/config/upload.constant";
 import { HttpStatus } from "@/enums/access/http-status.enum";
+import { exceedsDeclaredSize } from "@/services/api/proxy/declared-size.util";
 
 export type UploadResult = { ok: true; body: FormData } | { ok: false; status: number };
 
@@ -14,8 +15,7 @@ export async function readUploadBody(request: Request): Promise<UploadResult> {
   if (!(request.headers.get("content-type") ?? "").toLowerCase().startsWith(MULTIPART)) {
     return { ok: false, status: HttpStatus.BadRequest };
   }
-  const declared = Number(request.headers.get("content-length") ?? "");
-  if (Number.isFinite(declared) && declared > UPLOAD_IMAGE_MAX_BYTES + UPLOAD_ENVELOPE_SLACK_BYTES) {
+  if (exceedsDeclaredSize(request.headers, UPLOAD_IMAGE_MAX_BYTES + UPLOAD_ENVELOPE_SLACK_BYTES)) {
     return { ok: false, status: HttpStatus.PayloadTooLarge };
   }
   const form = await request.formData().catch(() => null);

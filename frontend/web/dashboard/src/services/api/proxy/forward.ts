@@ -13,6 +13,7 @@ import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
 import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { failureFromBackend } from "@/services/api/auth/failure-response";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
+import { exceedsDeclaredSize } from "@/services/api/proxy/declared-size.util";
 import { matchProxyRule } from "@/services/api/proxy/match-rule.util";
 import { readUploadBody } from "@/services/api/proxy/read-upload.util";
 
@@ -22,6 +23,7 @@ const NO_STORE = { "Cache-Control": "no-store" };
 type BodyResult = { ok: true; body: unknown } | { ok: false; status: number };
 
 async function readJsonBody(request: Request): Promise<BodyResult> {
+  if (exceedsDeclaredSize(request.headers, MAX_BODY_BYTES)) return { ok: false, status: HttpStatus.PayloadTooLarge };
   const text = await request.text();
   if (text === "") return { ok: true, body: undefined };
   if (new TextEncoder().encode(text).length > MAX_BODY_BYTES) return { ok: false, status: HttpStatus.PayloadTooLarge };

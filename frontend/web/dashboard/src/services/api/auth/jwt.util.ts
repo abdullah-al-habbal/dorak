@@ -46,7 +46,8 @@ export async function verifyClaim(
   const [header, payload, signature] = parts;
   try {
     const parsedHeader = jwtHeaderSchema.safeParse(decodeJson(header));
-    const secret = parsedHeader.success ? ring[parsedHeader.data.kid] : undefined;
+    // Own keys only: `kid` comes from the cookie, and `constructor` or `__proto__` would otherwise resolve to an inherited value.
+    const secret = parsedHeader.success && Object.hasOwn(ring, parsedHeader.data.kid) ? ring[parsedHeader.data.kid] : undefined;
     if (!secret || !(await verifySignature(secret, `${header}.${payload}`, signature))) return null;
     const claim = sessionClaimSchema.safeParse(decodeJson(payload));
     return claim.success && isLive(claim.data, Math.floor(nowMs / MS_PER_SECOND)) ? claim.data : null;

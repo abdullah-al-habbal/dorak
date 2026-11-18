@@ -32,4 +32,10 @@ describe("verifyClaim", () => {
   it("rejects an unknown role", async () => {
     expect(await verifyClaim(await signClaim({ role: "superuser" }))).toBeNull();
   });
+
+  it("never resolves a key id to an inherited property of the key ring", async () => {
+    // `constructor` is an inherited property, so an unguarded lookup would sign with String(Object) as the secret.
+    const forged = await signClaim({}, String(Object), "constructor");
+    expect(await verifyClaim(forged)).toBeNull();
+  });
 });

@@ -26,6 +26,13 @@ describe("matchProxyRule", () => {
     expect(matchProxyRule(HttpMethod.Get, "bookings/1/../brands").kind).toBe("not-found");
   });
 
+  it("denies dot segments that would walk out of the matched route once the URL is normalised", () => {
+    expect(matchProxyRule(HttpMethod.Post, "bookings/../review").kind).toBe("not-found");
+    expect(matchProxyRule(HttpMethod.Get, "branches/../opening-hours").kind).toBe("not-found");
+    expect(matchProxyRule(HttpMethod.Get, "bookings/./history").kind).toBe("not-found");
+    expect(matchProxyRule(HttpMethod.Get, "bookings/a..b").kind).toBe("allowed");
+  });
+
   it("reports the allowed methods for a known path", () => {
     expect(matchProxyRule(HttpMethod.Delete, "bookings/5")).toEqual({ kind: "method-not-allowed", allow: "GET, PATCH" });
   });

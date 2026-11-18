@@ -8,9 +8,9 @@ function base64Url(bytes: Uint8Array | string): string {
 
 export const TEST_SECRET = SECRET;
 
-export async function signClaim(overrides: Record<string, unknown> = {}, secret: string = SECRET): Promise<string> {
+export async function signClaim(overrides: Record<string, unknown> = {}, secret: string = SECRET, kid: string = "default"): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
-  const header = base64Url(JSON.stringify({ alg: "HS256", typ: "JWT", kid: "default" }));
+  const header = base64Url(JSON.stringify({ alg: "HS256", typ: "JWT", kid }));
   const payload = base64Url(
     JSON.stringify({
       actor_type: "branch",
