@@ -75,6 +75,16 @@ function bookingRaceBlockingCount(string $column, string $id): int
     return BookingModel::query()->where($column, $id)->whereIn('booking_status', BookingStatus::reservationBlockingValues())->count();
 }
 
+/** @return array{token: string, claim: string} A branch manager's dashboard credentials for the given branch. */
+function bookingRaceBranchAccess(BranchModel $branch): array
+{
+    config(['dashboard.dashboard.session_secret' => BOOKING_RACE_SESSION_SECRET]);
+    $actor = new DashboardActor((string) $branch->getKey(), DashboardActorTypeEnum::Branch, 'branch_manager', (string) $branch->getKey(), (string) $branch->brand_id);
+    $access = $branch->createToken('dashboard-session', ['dashboard']);
+
+    return ['token' => $access->plainTextToken, 'claim' => app(DashboardSessionClaim::class)->issue($actor, $access->accessToken->getKey())];
+}
+
 describe('Parallel bookings', function (): void {
     it('lets one of five clients win the same barber and slot and refuses the rest with 409', function (): void {
         $world = bookingRaceWorld();
@@ -182,5 +192,46 @@ describe('Parallel bookings', function (): void {
         }
 
         expect($statuses)->toHaveCount($rounds);
+    });
+
+    it('never ends in a database error when a dashboard confirm races a client booking on the same chair', function (): void {
+        // Confirm used to lock the booking row, then the chair; a create locks the chair, then scans (and locks) the
+        // pending booking it collides with. Opposite orders deadlock (MySQL 1213, HTTP 500). Both now take the chair
+        // first, so the pair must end 200 and 409 every round.
+        $rounds = (int) (getenv('BOOKING_RACE_ROUNDS') ?: 8);
+
+        for ($round = 0; $round < $rounds; $round++) {
+            $world = bookingRaceWorld();
+            $chair = ChairModel::factory()->create(['branch_id' => $world['branch']->id, 'barber_id' => $world['barber']->id]);
+            $pending = BookingModel::factory()->create([
+                'chair_id' => $chair->id,
+                'barber_id' => $world['barber']->id,
+                'branch_id' => $world['branch']->id,
+                'booking_status' => BookingStatus::Pending->value,
+                'starts_at' => $world['slot'],
+                'ends_at' => $world['slot']->copy()->addMinutes(30),
+            ]);
+            $clientToken = bookingRaceClientToken();
+            $manager = bookingRaceBranchAccess($world['branch']);
+            concurrencyCommitFixtures();
+
+            $workers = [
+                'confirm' => concurrencyStart('PATCH', "/api/v1/dashboard/bookings/{$pending->id}", $manager['token'], [
+                    'booking_status' => BookingStatus::Confirmed->value,
+                ], ['X-Dashboard-Session' => $manager['claim']], ['DASHBOARD_SESSION_SECRET' => BOOKING_RACE_SESSION_SECRET, 'APP_DEBUG' => 'true']),
+                'create' => concurrencyStart('POST', '/api/v1/bookings', $clientToken, [
+                    'chair_id' => $chair->id,
+                    'starts_at' => $world['slot']->toIso8601ZuluString(),
+                    'service_ids' => [$world['service']->id],
+                ], bookingRaceFreshKey(), ['APP_DEBUG' => 'true']),
+            ];
+            $results = array_map('concurrencyFinish', $workers);
+
+            expect($results['confirm']['status'])->toBe(200, 'round '.$round.' confirm: '.$results['confirm']['stderr'])
+                ->and($results['create']['status'])->toBe(409, 'round '.$round.' create: '.$results['create']['stderr'])
+                ->and(bookingRaceBlockingCount('chair_id', $chair->id))->toBe(1);
+
+            concurrencyCommitFixtures();
+        }
     });
 });
