@@ -35,6 +35,7 @@ use Modules\Onboarding\Providers\OnboardingServiceProvider;
 use Modules\Payment\Providers\PaymentServiceProvider;
 use Modules\Payout\Providers\PayoutServiceProvider;
 use Modules\Preference\Providers\PreferenceServiceProvider;
+use Modules\ProductCatalog\Providers\ProductCatalogServiceProvider;
 use Modules\Review\Providers\ReviewServiceProvider;
 use Modules\ServiceCatalog\Providers\ServiceCatalogServiceProvider;
 use Modules\Settings\Providers\SettingsServiceProvider;
@@ -79,4 +80,5 @@ return [
     SettingsServiceProvider::class,
     CommissionServiceProvider::class,
     PayoutServiceProvider::class,
+    ProductCatalogServiceProvider::class,
 ];
