@@ -3,6 +3,8 @@
 // modules/Brand/Database/Migrations/0001_01_01_000001_create_brands_table.php
 declare(strict_types=1);
 
+// @contract-migration: pre-release dev schema, an add_* fragment was folded into this create migration (backend/AGENTS.md dev migration rule)
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +26,8 @@ return new class extends Migration
             $table->foreign('base_currency_code')->references('code')->on('currencies');
             $table->string('universe', 10)->default(VenueUniverse::Men->value);
             $table->string('status', 20)->default(BrandStatusEnum::Pending->value)->index();
+            $table->text('status_reason')->nullable();
+            $table->unsignedTinyInteger('submission_count')->default(1);
             $table->timestamps();
         });
     }

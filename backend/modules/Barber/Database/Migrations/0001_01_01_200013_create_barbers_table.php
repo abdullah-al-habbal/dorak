@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+// @contract-migration: pre-release dev schema, an add_* fragment was folded into this create migration (backend/AGENTS.md dev migration rule)
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,6 +25,9 @@ return new class extends Migration
             $table->rememberToken();
             $table->boolean('is_freelancer')->default(false);
             $table->string('status')->default(BarberStatusEnum::Pending->value);
+            $table->text('rejection_reason')->nullable();
+            $table->timestamp('reviewed_at')->nullable();
+            $table->unsignedTinyInteger('submission_count')->default(1);
             $table->boolean('is_workstation_online')->default(false);
             $table->uuid('client_id')->nullable()->index();
             $table->foreignUuid('managed_by_branch_id')->nullable()->constrained('branches')->nullOnDelete();

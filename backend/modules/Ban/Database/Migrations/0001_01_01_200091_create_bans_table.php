@@ -3,6 +3,8 @@
 // modules/Ban/Database/Migrations/0001_01_01_200091_create_bans_table.php
 declare(strict_types=1);
 
+// @contract-migration: pre-release dev schema, an add_* fragment was folded into this create migration (backend/AGENTS.md dev migration rule)
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +20,8 @@ return new class extends Migration
             $table->text('reason')->nullable();
             $table->timestamp('banned_at')->useCurrent();
             $table->timestamp('expires_at')->nullable();
+            $table->timestamp('lifted_at')->nullable();
+            $table->foreignUuid('lifted_by_id')->nullable()->constrained('admins')->nullOnDelete();
             $table->foreignUuid('banned_by_id')->nullable()->constrained('admins')->nullOnDelete();
             $table->timestamps();
 
