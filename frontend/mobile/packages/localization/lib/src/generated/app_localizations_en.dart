@@ -535,6 +535,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get branchNotBookableTitle => 'Booking is not available yet';
+
+  @override
+  String get branchNotBookableMessage =>
+      'This branch has not set up its services or team yet. Check back soon.';
+
+  @override
   String get branchAvailableLabel => 'Available';
 
   @override

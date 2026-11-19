@@ -1052,6 +1052,18 @@ abstract class AppLocalizations {
   /// **'{count} chairs'**
   String branchChairsCount(int count);
 
+  /// Heading shown on a branch profile that has no services or no one to book
+  ///
+  /// In en, this message translates to:
+  /// **'Booking is not available yet'**
+  String get branchNotBookableTitle;
+
+  /// Explains why a branch profile shows no booking options
+  ///
+  /// In en, this message translates to:
+  /// **'This branch has not set up its services or team yet. Check back soon.'**
+  String get branchNotBookableMessage;
+
   /// Floor plan legend for available chairs
   ///
   /// In en, this message translates to:

@@ -535,6 +535,13 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get branchNotBookableTitle => 'الحجز غير متاح بعد';
+
+  @override
+  String get branchNotBookableMessage =>
+      'لم يجهّز هذا الفرع خدماته أو فريقه بعد. عاود المحاولة قريباً.';
+
+  @override
   String get branchAvailableLabel => 'متاح';
 
   @override
