@@ -16,6 +16,8 @@ Part 2 of 3 · [04 — House Rules (The Business Laws)](04-house-rules.md) · [P
 - **E4.** If a booking is for an **at‑home** Barber, then it uses the **client's shared location**, not a floor plan.
 - **E5.** If a Chair becomes **maintenance** after someone booked it, then those existing bookings must be **handled, not silently dropped** (see `08-edge-cases.md`).
 
+*Engineering note (not a business rule):* how E1 and E2 are enforced, where they are not (one client in two places, BD-10) and the lock order every booking write must follow are in [booking concurrency](../../docs/booking-concurrency/index.md).
+
 ---
 
 ## F. Reviews (two‑way trust)

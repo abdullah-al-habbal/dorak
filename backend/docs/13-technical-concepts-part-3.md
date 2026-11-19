@@ -25,6 +25,8 @@ Future<void> updateProfile(String id, Map<String, dynamic> data, int expectedVer
 
 ### Concept 03: Idempotency Keys
 
+> **Audit:** which other write endpoints need a key or a unique constraint (subscription assign, payouts, OTP send, uploads, saved filters), the proposed in-flight claim design and the client retry rules are in [booking concurrency, file 03](../../docs/booking-concurrency/03-idempotency-and-uniqueness.md). The cache sketch below has no in-flight lock and caches only success; it is not the pattern to copy.
+
 **Rule:** Attach a unique ID to every write request. If that exact request gets sent twice (from a double-click, retry, or flaky network), the server recognizes the key it already processed and returns the **same result** instead of doing it again.
 
 **Implementation (built for `POST /bookings` only, where the header is required; see feature-index BG-9; the cache sketch below is not used):**

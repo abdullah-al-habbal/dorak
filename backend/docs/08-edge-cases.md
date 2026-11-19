@@ -19,6 +19,7 @@ codeanchors:
 ### EC‑1 — Two clients tap the same green chair at once ✅
 **Scenario:** Two people select the same chair + slot within the same instant.
 **Behavior:** **Exactly one** booking succeeds; the other immediately sees **"this seat was just taken"** and returns to the floor plan `[E1]`. This is a **hard guarantee** (NFR in `02-prd.md` §9). *How* it's enforced is an engineering concern, not part of these docs.
+**See also:** the engineering audit of this guarantee (lock order, the confirm-versus-create and reschedule-versus-create deadlocks, the retry and 503 gap) is in [booking concurrency](../../docs/booking-concurrency/01-lock-order-and-deadlocks.md).
 
 ### EC‑2 — Chair flips to maintenance after bookings exist ✅(policy)
 **Scenario:** A chair already has future bookings, then is set to **maintenance**.
