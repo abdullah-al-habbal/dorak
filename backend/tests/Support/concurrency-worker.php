@@ -9,9 +9,10 @@ declare(strict_types=1);
  * {"status": <int>, "body": <decoded JSON>} to stdout. It writes READY to stderr once booted, just before the request,
  * so a test can tell "still starting" from "waiting on a lock".
  *
- * Usage: php tests/Support/concurrency-worker.php <METHOD> <uri> <bearer-token> [json-body]
+ * Usage: php tests/Support/concurrency-worker.php <METHOD> <uri> <bearer-token> [json-body] [json-headers]
  */
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Tests\Support\TestDatabaseGuard;
@@ -20,8 +21,35 @@ require __DIR__.'/../../vendor/autoload.php';
 
 [, $method, $uri, $token] = $argv;
 $body = $argv[4] ?? '';
+$extraHeaders = ($argv[5] ?? '') === '' ? [] : json_decode($argv[5], true, 512, JSON_THROW_ON_ERROR);
 
 $app = require __DIR__.'/../../bootstrap/app.php';
+// Print every reported exception to stderr, so a test can tell a lock timeout or deadlock from other 500s.
+$app->extend(ExceptionHandler::class, fn (ExceptionHandler $inner): ExceptionHandler => new class($inner) implements ExceptionHandler
+{
+    public function __construct(private readonly ExceptionHandler $inner) {}
+
+    public function report(Throwable $e): void
+    {
+        fwrite(STDERR, 'EXCEPTION '.$e::class.': '.$e->getMessage()."\n");
+        $this->inner->report($e);
+    }
+
+    public function shouldReport(Throwable $e): bool
+    {
+        return $this->inner->shouldReport($e);
+    }
+
+    public function render($request, Throwable $e)
+    {
+        return $this->inner->render($request, $e);
+    }
+
+    public function renderForConsole($output, Throwable $e): void
+    {
+        $this->inner->renderForConsole($output, $e);
+    }
+});
 $kernel = $app->make(Kernel::class);
 $kernel->bootstrap();
 
@@ -31,11 +59,15 @@ TestDatabaseGuard::assertServer(
     $app->make('db')->connection()->getConfig(),
 );
 
-$request = Request::create($uri, $method, [], [], [], [
+$server = [
     'HTTP_ACCEPT' => 'application/json',
     'HTTP_AUTHORIZATION' => 'Bearer '.$token,
     'CONTENT_TYPE' => 'application/json',
-], $body);
+];
+foreach ($extraHeaders as $name => $value) {
+    $server['HTTP_'.strtoupper(str_replace('-', '_', $name))] = $value;
+}
+$request = Request::create($uri, $method, [], [], [], $server, $body);
 fwrite(STDERR, "READY\n");
 $response = $kernel->handle($request);
 
