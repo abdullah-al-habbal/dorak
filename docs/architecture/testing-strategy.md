@@ -125,6 +125,10 @@ Destructive commands: `migrate:fresh`, `migrate:refresh`, `migrate:reset` and `d
 
 Enforcement: `phpunit.xml` forces MySQL and `dorak_test`; `Tests\Support\TestDatabaseGuard` runs right after the app boots and refuses a parallel worker, a wrong `APP_ENV`, driver, server version, database name, host (a unix socket is refused), port (only 3307) or user before anything is created or migrated. It is an allow-list of configuration, not proof of what the server holds, so never name a development database `dorak_test`. Lock-order tests assert the real `FOR UPDATE` statements; `tests/Concurrency` (group `concurrency`, `composer test:concurrency`, run by CI after the default suite) proves them with separate PHP processes and MySQL sessions against the same `dorak_test`. Those tests commit rows, so the default run excludes them and the schema is rebuilt after every concurrency test; the lock proofs wait on the server's process list instead of sleeping, and the apply race has a variant with the unique index dropped so the lock alone must serialize it. The Playwright suite refuses to run unless `DB_DATABASE=dorak_test`.
 
+## Shared test defaults
+
+`backend/tests/TestCase.php` overrides `json()` so that a `POST /api/v1/bookings` without an `Idempotency-Key` gets a fresh UUID (the header is required, BG-9). A test of the missing-key case sets `$this->omitBookingIdempotencyKey = true`; a test of replays sends its own key with `withHeaders`. Add a default of this kind only for a header or field that is required but irrelevant to most tests, and cover the required case with its own test.
+
 ## Workflow
 
 ```mermaid
@@ -167,3 +171,9 @@ services, dashboard and mobile CI jobs, and a check that rejects duplicate globa
   touching security-sensitive code open the
   [test-engineering skill](../../.claude/skills/test-engineering/SKILL.md) first.
 - The task executor loads it at its implementation step through `gates.md`; the skill judges test quality.
+
+## Process-based concurrency tests
+
+A race between two requests cannot be tested inside the default per-test transaction, because both requests would share one database session. The `concurrency` group (`backend/tests/Concurrency/`, `composer test:concurrency`) starts each request in its own PHP process with its own MySQL session through `backend/tests/Support/concurrency-helpers.php` and `concurrency-worker.php`, and rebuilds the schema after every test. Prove a lock with blocked-then-refused (a third session holds the row, the request must visibly wait, then refuse on the new state); a plain race only proves the outcome. A deadlock hunt repeats the race for several rounds (`BOOKING_RACE_ROUNDS`). Method, current coverage and the open cases: [booking concurrency, test coverage](../booking-concurrency/07-test-coverage.md).
+
+Assert the end state (one row, one live token, one default), not only status codes. Every change to locking, uniqueness, token rotation, one-time codes or idempotency adds such a test; the open list is backlog TS-8 and the findings are in [write paths outside booking](../booking-concurrency/09-write-path-audit.md).

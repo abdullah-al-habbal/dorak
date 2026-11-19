@@ -112,6 +112,7 @@ void main() {
       final repository = DioBookingRepository(clientWith(fake));
 
       final created = await repository.createBooking(
+        idempotencyKey: 'submission-key-0001',
         chairId: 'chair-1',
         barberId: 'barber-1',
         startsAt: DateTime.utc(2026, 9, 10, 14, 30),
@@ -129,46 +130,34 @@ void main() {
       expect(created.id, 'booking-1');
     });
 
-    test(
-      'createBooking sends the idempotency key header only when given',
-      () async {
-        final captured = <RequestOptions>[];
-        final fake = fakeDio(
-          handler: (options) {
-            captured.add(options);
-            return jsonResponse(
-              options,
+    test('createBooking sends the idempotency key header', () async {
+      final captured = <RequestOptions>[];
+      final fake = fakeDio(
+        handler: (options) {
+          captured.add(options);
+          return jsonResponse(
+            options,
+            statusCode: 201,
+            data: successEnvelope(
               statusCode: 201,
-              data: successEnvelope(
-                statusCode: 201,
-                code: 'CREATED',
-                data: booking(),
-              ),
-            );
-          },
-        );
-        final repository = DioBookingRepository(clientWith(fake));
+              code: 'CREATED',
+              data: booking(),
+            ),
+          );
+        },
+      );
+      final repository = DioBookingRepository(clientWith(fake));
 
-        await repository.createBooking(
-          chairId: 'chair-1',
-          startsAt: DateTime.utc(2026, 9, 10, 14, 30),
-          serviceIds: const ['service-1'],
-          idempotencyKey: 'submission-key-0001',
-        );
-        await repository.createBooking(
-          chairId: 'chair-1',
-          startsAt: DateTime.utc(2026, 9, 10, 14, 30),
-          serviceIds: const ['service-1'],
-        );
+      await repository.createBooking(
+        chairId: 'chair-1',
+        startsAt: DateTime.utc(2026, 9, 10, 14, 30),
+        serviceIds: const ['service-1'],
+        idempotencyKey: 'submission-key-0001',
+      );
 
-        expect(
-          captured.first.headers['Idempotency-Key'],
-          'submission-key-0001',
-        );
-        expect(captured.last.headers.containsKey('Idempotency-Key'), isFalse);
-        expect(captured.first.data, isNot(contains('idempotency_key')));
-      },
-    );
+      expect(captured.single.headers['Idempotency-Key'], 'submission-key-0001');
+      expect(captured.first.data, isNot(contains('idempotency_key')));
+    });
 
     test('createBooking posts a barber-only booking with a branch', () async {
       late RequestOptions captured;
@@ -189,6 +178,7 @@ void main() {
       final repository = DioBookingRepository(clientWith(fake));
 
       final created = await repository.createBooking(
+        idempotencyKey: 'submission-key-0001',
         branchId: 'branch-1',
         barberId: 'barber-1',
         startsAt: DateTime.utc(2026, 9, 10, 14, 30),
@@ -220,6 +210,7 @@ void main() {
 
       await expectLater(
         repository.createBooking(
+          idempotencyKey: 'submission-key-0001',
           chairId: 'chair-1',
           serviceIds: const ['service-1'],
           startsAt: DateTime.utc(2026, 9, 10, 14, 30),
@@ -247,6 +238,7 @@ void main() {
         final repository = DioBookingRepository(clientWith(fake));
 
         await repository.createBooking(
+          idempotencyKey: 'submission-key-0001',
           startsAt: DateTime.utc(2026, 9, 10, 14, 30),
           serviceIds: const ['service-1'],
           atHomeStreet: 'Al Hamra Street',
@@ -275,6 +267,7 @@ void main() {
 
       expect(
         () => repository.createBooking(
+          idempotencyKey: 'submission-key-0001',
           chairId: 'chair-1',
           startsAt: DateTime.utc(2026, 9, 10, 14, 30),
           serviceIds: const [],
@@ -296,6 +289,7 @@ void main() {
 
       expect(
         () => repository.createBooking(
+          idempotencyKey: 'submission-key-0001',
           startsAt: DateTime.utc(2026, 9, 10, 14, 30),
           serviceIds: const ['service-1'],
           atHomeLatitude: 33.8938,

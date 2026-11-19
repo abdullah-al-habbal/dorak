@@ -701,7 +701,7 @@ class FakeBookingRepository implements BookingRepository {
     String? atHomeUnit,
     double? atHomeLatitude,
     double? atHomeLongitude,
-    String? idempotencyKey,
+    required String idempotencyKey,
   }) async {
     createCalls++;
     idempotencyKeys.add(idempotencyKey);
@@ -722,7 +722,7 @@ class FakeBookingRepository implements BookingRepository {
   BookingDto? createdBooking;
   Object? createError;
   int createCalls = 0;
-  final List<String?> idempotencyKeys = [];
+  final List<String> idempotencyKeys = [];
   String? lastChairId;
   String? lastBranchId;
   String? lastBarberId;

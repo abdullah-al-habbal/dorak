@@ -8,9 +8,11 @@ namespace Tests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use LogicException;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
+use Modules\Booking\Constants\BookingConstants;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
@@ -22,6 +24,9 @@ use Tests\Support\TestDatabaseGuard;
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
+
+    /** Set by a test that asserts the missing-key behaviour. */
+    protected bool $omitBookingIdempotencyKey = false;
 
     /**
      * Runs before any trait set-up, so before RefreshDatabase's migrate:fresh, and refuses any connection but
@@ -56,6 +61,28 @@ abstract class TestCase extends BaseTestCase
             fn (): string => (string) DB::selectOne('select version() as version')->version,
             DB::connection()->getConfig(),
         );
+    }
+
+    /**
+     * `POST /bookings` requires an `Idempotency-Key`. Tests that are not about the key get a fresh one per request;
+     * a test that sends its own header, or asserts the key is missing, controls it through `withHeaders`.
+     *
+     * @param  string  $method
+     * @param  string  $uri
+     * @param  array<string, mixed>  $data
+     * @param  array<string, string>  $headers
+     * @param  int  $options
+     */
+    public function json($method, $uri, array $data = [], array $headers = [], $options = 0)
+    {
+        $header = BookingConstants::BOOKING_IDEMPOTENCY_HEADER;
+        $sent = array_change_key_case(array_merge($this->defaultHeaders, $headers), CASE_LOWER);
+        if (strtoupper((string) $method) === 'POST' && str_ends_with((string) parse_url((string) $uri, PHP_URL_PATH), '/api/v1/bookings')
+            && ! array_key_exists(strtolower($header), $sent) && ! ($this->omitBookingIdempotencyKey ?? false)) {
+            $headers[$header] = (string) Str::uuid();
+        }
+
+        return parent::json($method, $uri, $data, $headers, $options);
     }
 
     protected function authenticateDashboardActor(AdminModel|BarberModel|BranchModel|ClientModel $model): static

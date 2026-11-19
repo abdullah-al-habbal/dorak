@@ -5,8 +5,10 @@ declare(strict_types=1);
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
+use Modules\Booking\Constants\BookingConstants;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingIdempotencyKeyModel;
 use Modules\Booking\Models\BookingModel;
@@ -62,6 +64,12 @@ function bookingRaceClientToken(): string
 }
 
 /** @return list<int> */
+/** @return array<string, string> A fresh `Idempotency-Key`: `POST /bookings` requires one and these races are not about replays. */
+function bookingRaceFreshKey(): array
+{
+    return [BookingConstants::BOOKING_IDEMPOTENCY_HEADER => (string) Str::uuid()];
+}
+
 function bookingRaceBlockingCount(string $column, string $id): int
 {
     return BookingModel::query()->where($column, $id)->whereIn('booking_status', BookingStatus::reservationBlockingValues())->count();
@@ -78,7 +86,7 @@ describe('Parallel bookings', function (): void {
             'branch_id' => $world['branch']->id,
             'starts_at' => $world['slot']->toIso8601ZuluString(),
             'service_ids' => [$world['service']->id],
-        ]), $tokens);
+        ], bookingRaceFreshKey()), $tokens);
         $results = array_map('concurrencyFinish', $workers);
 
         expect(concurrencyStatuses($results))->toBe([201, 409, 409, 409, 409])
@@ -112,8 +120,8 @@ describe('Parallel bookings', function (): void {
 
         $common = ['starts_at' => $world['slot']->toIso8601ZuluString(), 'service_ids' => [$world['service']->id]];
         $workers = [
-            concurrencyStart('POST', '/api/v1/bookings', $tokens[0], ['chair_id' => $chair->id, ...$common]),
-            concurrencyStart('POST', '/api/v1/bookings', $tokens[1], ['barber_id' => $world['barber']->id, 'branch_id' => $world['branch']->id, ...$common]),
+            concurrencyStart('POST', '/api/v1/bookings', $tokens[0], ['chair_id' => $chair->id, ...$common], bookingRaceFreshKey()),
+            concurrencyStart('POST', '/api/v1/bookings', $tokens[1], ['barber_id' => $world['barber']->id, 'branch_id' => $world['branch']->id, ...$common], bookingRaceFreshKey()),
         ];
         $results = array_map('concurrencyFinish', $workers);
 
@@ -155,7 +163,7 @@ describe('Parallel bookings', function (): void {
                     'chair_id' => $chair->id,
                     'starts_at' => $world['slot']->toIso8601ZuluString(),
                     'service_ids' => [$world['service']->id],
-                ], [], ['APP_DEBUG' => 'true']),
+                ], bookingRaceFreshKey(), ['APP_DEBUG' => 'true']),
             ];
             $results = array_map('concurrencyFinish', $workers);
             $statuses[] = [$results['reschedule']['status'], $results['create']['status']];

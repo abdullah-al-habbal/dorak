@@ -147,6 +147,7 @@ void main() {
           branchApi,
         ).getFloorPlan('branch-1', startsAt: startsAt, durationMinutes: 30);
         await DioBookingRepository(bookingApi).createBooking(
+          idempotencyKey: 'submission-key-0001',
           chairId: 'chair-1',
           startsAt: startsAt,
           serviceIds: const ['service-1'],

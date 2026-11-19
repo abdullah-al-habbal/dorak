@@ -27,7 +27,7 @@ Future<void> updateProfile(String id, Map<String, dynamic> data, int expectedVer
 
 **Rule:** Attach a unique ID to every write request. If that exact request gets sent twice (from a double-click, retry, or flaky network), the server recognizes the key it already processed and returns the **same result** instead of doing it again.
 
-**Implementation (built for `POST /bookings` only, see feature-index BG-9; the cache sketch below is not used):**
+**Implementation (built for `POST /bookings` only, where the header is required; see feature-index BG-9; the cache sketch below is not used):**
 
 ```
 POST /api/v1/bookings

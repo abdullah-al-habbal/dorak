@@ -59,12 +59,17 @@ it('returns the original booking for a retry with the same key and body, without
     Event::assertDispatchedTimes(BookingCreatedEvent::class, 1);
 });
 
-it('treats a retry without a key as before: the second request is a double booking', function (): void {
-    ($this->book)(null)->assertCreated();
-    ($this->book)(null)->assertStatus(409);
+it('requires the key: a missing or blank header is refused and nothing is created', function (?string $key): void {
+    $this->omitBookingIdempotencyKey = true;
 
-    expect(BookingIdempotencyKeyModel::query()->count())->toBe(0);
-});
+    ($this->book)($key)->assertUnprocessable()->assertJsonValidationErrors('idempotency_key');
+
+    expect(BookingModel::query()->count())->toBe(0)
+        ->and(BookingIdempotencyKeyModel::query()->count())->toBe(0);
+})->with([
+    'missing' => [null],
+    'blank' => [''],
+]);
 
 it('refuses the same key with a different request and creates nothing', function (): void {
     ($this->book)()->assertCreated();
@@ -139,9 +144,11 @@ it('rejects a malformed key', function (string $key): void {
 ]);
 
 it('ignores an idempotency_key field in the body', function (): void {
-    ($this->book)(null, ['idempotency_key' => IDEMPOTENCY_KEY])->assertCreated();
+    $this->omitBookingIdempotencyKey = true;
 
-    expect(BookingIdempotencyKeyModel::query()->count())->toBe(0);
+    ($this->book)(null, ['idempotency_key' => IDEMPOTENCY_KEY])->assertUnprocessable()->assertJsonValidationErrors('idempotency_key');
+
+    expect(BookingModel::query()->count())->toBe(0);
 });
 
 it('prunes expired keys daily and keeps live ones', function (): void {

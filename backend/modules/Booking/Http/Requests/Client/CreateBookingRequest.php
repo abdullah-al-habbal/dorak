@@ -22,7 +22,7 @@ final class CreateBookingRequest extends BaseApiFormRequest
     {
         return [
             'idempotency_key' => [
-                'nullable',
+                'required',
                 'string',
                 'min:'.BookingConstants::BOOKING_IDEMPOTENCY_KEY_MIN_LENGTH,
                 'max:'.BookingConstants::BOOKING_IDEMPOTENCY_KEY_MAX_LENGTH,

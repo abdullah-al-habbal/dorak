@@ -21,7 +21,7 @@ abstract class BookingRepository {
     String? atHomeUnit,
     double? atHomeLatitude,
     double? atHomeLongitude,
-    String? idempotencyKey,
+    required String idempotencyKey,
   });
 
   Future<void> cancelBooking(String id);
@@ -73,7 +73,7 @@ class DioBookingRepository implements BookingRepository {
     String? atHomeUnit,
     double? atHomeLatitude,
     double? atHomeLongitude,
-    String? idempotencyKey,
+    required String idempotencyKey,
   }) {
     final atHomeValues = [
       atHomeStreet,
@@ -115,7 +115,7 @@ class DioBookingRepository implements BookingRepository {
             'longitude': atHomeLongitude!,
           },
       },
-      headers: {ApiClientConstants.apiClientIdempotencyHeader: ?idempotencyKey},
+      headers: {ApiClientConstants.apiClientIdempotencyHeader: idempotencyKey},
       parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
   }
