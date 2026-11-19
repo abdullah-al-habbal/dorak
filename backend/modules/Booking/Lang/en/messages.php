@@ -7,6 +7,7 @@ return [
     'not_own_booking' => 'You can only view your own bookings.',
     'cancelled' => 'Booking cancelled successfully.',
     'chair_not_available' => 'This chair is not available for booking.',
+    'idempotency_key_reused' => 'This idempotency key was already used for a different booking request. Send a new key.',
     'double_booking' => 'This seat was just taken. Please choose another time or chair.',
     'invalid_booking_services' => 'Choose active services with a valid duration.',
     'cancel_invalid_status' => 'This booking can no longer be cancelled.',

@@ -94,6 +94,92 @@ void main() {
     );
   });
 
+  group('idempotency key', () {
+    var issued = 0;
+    setUp(() => issued = 0);
+
+    BranchDetailBloc keyedBloc() => BranchDetailBloc(
+      explore,
+      branches,
+      bookings,
+      FakeLocationProvider(),
+      InMemoryAppPreferences(),
+      idempotencyKeyFactory: () => 'key-${++issued}',
+    );
+
+    BranchDetailState ready() => BranchDetailState(
+      branchId: '1',
+      detail: testBranchDetail(),
+      plan: testFloorPlan(),
+      selectedChairId: 'chair-1',
+      selectedServiceIds: const ['service-1'],
+      slots: testSlots(count: 2),
+      selectedTime: testSlotStart(),
+    );
+
+    Future<void> settle() =>
+        Future<void>.delayed(const Duration(milliseconds: 20));
+
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'a submission carries a key',
+      build: keyedBloc,
+      seed: ready,
+      act: (bloc) => bloc.add(const BranchDetailBookingSubmitted()),
+      verify: (_) => expect(bookings.idempotencyKeys, ['key-1']),
+    );
+
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'retrying the same request after a failure reuses the key',
+      build: keyedBloc,
+      seed: ready,
+      setUp: () => bookings.createError = const ApiException(
+        statusCode: 504,
+        code: 'TIMEOUT',
+        message: 'timeout',
+      ),
+      act: (bloc) async {
+        bloc.add(const BranchDetailBookingSubmitted());
+        await settle();
+        bloc.add(const BranchDetailBookingSubmitted());
+      },
+      wait: const Duration(milliseconds: 50),
+      verify: (_) => expect(bookings.idempotencyKeys, ['key-1', 'key-1']),
+    );
+
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'changing the request after a failure starts a new key',
+      build: keyedBloc,
+      seed: ready,
+      setUp: () => bookings.createError = const ApiException(
+        statusCode: 504,
+        code: 'TIMEOUT',
+        message: 'timeout',
+      ),
+      act: (bloc) async {
+        bloc.add(const BranchDetailBookingSubmitted());
+        await settle();
+        bloc.add(BranchDetailSlotSelected(testSlots(count: 2).last.startsAt));
+        await settle();
+        bloc.add(const BranchDetailBookingSubmitted());
+      },
+      wait: const Duration(milliseconds: 50),
+      verify: (_) => expect(bookings.idempotencyKeys, ['key-1', 'key-2']),
+    );
+
+    blocTest<BranchDetailBloc, BranchDetailState>(
+      'a new booking after a success does not reuse the finished key',
+      build: keyedBloc,
+      seed: ready,
+      act: (bloc) async {
+        bloc.add(const BranchDetailBookingSubmitted());
+        await settle();
+        bloc.add(const BranchDetailBookingSubmitted());
+      },
+      wait: const Duration(milliseconds: 50),
+      verify: (_) => expect(bookings.idempotencyKeys, ['key-1', 'key-2']),
+    );
+  });
+
   group('service gate', () {
     blocTest<BranchDetailBloc, BranchDetailState>(
       'without a service canSubmit is false and no booking is created',

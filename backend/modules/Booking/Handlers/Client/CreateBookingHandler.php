@@ -9,21 +9,36 @@ use Modules\Booking\CQRS\Command\Client\CreateBookingCommand;
 use Modules\Booking\Eloquent\Resolvers\Client\CreateBookingEloquentResolver;
 use Modules\Booking\Jobs\SendBookingStatusNotificationJob;
 use Modules\Booking\Models\BookingModel;
+use Modules\Booking\Services\BookingIdempotency;
 use Modules\Booking\ValuesObjects\CreateBookingResult;
 
 final class CreateBookingHandler
 {
     public function __construct(
         private readonly CreateBookingEloquentResolver $resolver,
+        private readonly BookingIdempotency $idempotency,
     ) {}
 
     public function handle(CreateBookingCommand $command): CreateBookingResult
     {
-        $booking = DB::transaction(function () use ($command): BookingModel {
-            return $this->resolver->resolve($command);
-        });
-        SendBookingStatusNotificationJob::dispatch($booking->id, true, app()->getLocale());
+        /** @var array{0: BookingModel, 1: bool} $outcome */
+        $outcome = DB::transaction(function () use ($command): array {
+            $replayed = $this->idempotency->replay($command);
+            if ($replayed !== null) {
+                return [$replayed, true];
+            }
 
-        return new CreateBookingResult(booking: $booking);
+            $booking = $this->resolver->resolve($command);
+            $this->idempotency->remember($command, $booking);
+
+            return [$booking, false];
+        });
+        [$booking, $replayed] = $outcome;
+
+        if (! $replayed) {
+            SendBookingStatusNotificationJob::dispatch($booking->id, true, app()->getLocale());
+        }
+
+        return new CreateBookingResult(booking: $booking, replayed: $replayed);
     }
 }

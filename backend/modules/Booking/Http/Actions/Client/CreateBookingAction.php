@@ -6,12 +6,14 @@ namespace Modules\Booking\Http\Actions\Client;
 
 use Illuminate\Http\JsonResponse;
 use InvalidArgumentException;
+use Modules\Booking\Constants\BookingConstants;
 use Modules\Booking\Eloquent\Resolvers\Shared\ActiveBookingBanException;
 use Modules\Booking\Eloquent\Resolvers\Shared\AtHomeBookingRuleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\BarberNotAffiliatedException;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\ChairNotAvailableException;
 use Modules\Booking\Eloquent\Resolvers\Shared\DoubleBookingException;
+use Modules\Booking\Eloquent\Resolvers\Shared\IdempotencyKeyReusedException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingServicesException;
 use Modules\Booking\Eloquent\Resolvers\Shared\NonDiscoverableBookingEntityException;
 use Modules\Booking\Events\BookingCreatedEvent;
@@ -30,16 +32,22 @@ final class CreateBookingAction extends BaseApiAction
     {
         try {
             $result = $this->handler->handle($request->toCommand());
-            event(new BookingCreatedEvent(
-                $this->eventIdentifier($result->booking->getKey()),
-                $this->eventIdentifier($result->booking->branch_id),
-                $this->eventIdentifier($result->booking->client_id),
-            ));
+            if (! $result->replayed) {
+                event(new BookingCreatedEvent(
+                    $this->eventIdentifier($result->booking->getKey()),
+                    $this->eventIdentifier($result->booking->branch_id),
+                    $this->eventIdentifier($result->booking->client_id),
+                ));
+            }
 
-            return $this->created(
+            $response = $this->created(
                 data: new BookingResource($result->booking),
                 message: __('booking::messages.booking_created'),
             );
+
+            return $result->replayed
+                ? $response->header(BookingConstants::BOOKING_IDEMPOTENCY_REPLAYED_HEADER, 'true')
+                : $response;
         } catch (ChairNotAvailableException) {
             return $this->error(
                 message: __('booking::messages.chair_not_available'),
@@ -50,6 +58,8 @@ final class CreateBookingAction extends BaseApiAction
                 message: __('booking::messages.double_booking'),
                 status: 409,
             );
+        } catch (IdempotencyKeyReusedException $exception) {
+            return $this->error(code: 'idempotency_key_reused', message: $exception->getMessage(), status: 422);
         } catch (InvalidBookingServicesException $exception) {
             return $this->error(
                 message: $exception->getMessage(),

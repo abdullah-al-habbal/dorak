@@ -22,4 +22,18 @@ final class BookingConstants
 
     /** Public availability lookups, per IP. */
     public const int BOOKING_SLOTS_PER_MINUTE = 60;
+
+    public const string BOOKING_IDEMPOTENCY_HEADER = 'Idempotency-Key';
+
+    public const string BOOKING_IDEMPOTENCY_REPLAYED_HEADER = 'Idempotency-Replayed';
+
+    public const int BOOKING_IDEMPOTENCY_KEY_MIN_LENGTH = 8;
+
+    public const int BOOKING_IDEMPOTENCY_KEY_MAX_LENGTH = 64;
+
+    /** Letters, digits and `. _ : -`, so a UUID or a prefixed id both fit. */
+    public const string BOOKING_IDEMPOTENCY_KEY_PATTERN = '/^[A-Za-z0-9._:-]+$/';
+
+    /** A key older than this is forgotten: the same key may then create a new booking. */
+    public const int BOOKING_IDEMPOTENCY_TTL_HOURS = 48;
 }

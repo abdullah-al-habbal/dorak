@@ -10,8 +10,10 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
     this._branches,
     this._bookings,
     this._location,
-    this._preferences,
-  ) : super(BranchDetailState()) {
+    this._preferences, {
+    String Function() idempotencyKeyFactory = IdempotencyKey.generate,
+  }) : _newIdempotencyKey = idempotencyKeyFactory,
+       super(BranchDetailState()) {
     on<BranchDetailStarted>(_onStarted);
     on<BranchDetailChairSelected>(_onChairSelected);
     on<BranchDetailServicesChanged>(_onServicesChanged);
@@ -31,6 +33,12 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
   final BookingRepository _bookings;
   final LocationProvider _location;
   final AppPreferences _preferences;
+  final String Function() _newIdempotencyKey;
+
+  /// The key of the submission that has not succeeded yet. A retry of the same
+  /// request reuses it, so a booking the server already created is returned
+  /// instead of failing as a double booking; changing anything starts a new one.
+  ({String key, String fingerprint})? _pendingSubmission;
 
   int _slotsRequestId = 0;
 
@@ -318,7 +326,14 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
           state.preferredBarberId ??
           (chairId == null ? null : _barberForChair(state.plan, chairId));
       final isBarberOnly = !state.isAtHomeBooking && chairId == null;
+      final idempotencyKey = _idempotencyKeyFor(
+        chairId: chairId,
+        branchId: isBarberOnly ? state.branchId : null,
+        barberId: barberId,
+        startsAt: time,
+      );
       await _bookings.createBooking(
+        idempotencyKey: idempotencyKey,
         chairId: chairId,
         branchId: isBarberOnly ? state.branchId : null,
         barberId: barberId,
@@ -344,12 +359,42 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
           ),
         );
       }
+      _pendingSubmission = null;
       if (emit.isDone) return;
       emit(state.copyWith(isSubmitting: false, succeeded: true));
     } catch (error) {
       if (emit.isDone) return;
       emit(state.copyWith(isSubmitting: false, submitError: error));
     }
+  }
+
+  String _idempotencyKeyFor({
+    required String? chairId,
+    required String? branchId,
+    required String? barberId,
+    required DateTime startsAt,
+  }) {
+    final fingerprint = [
+      chairId,
+      branchId,
+      barberId,
+      startsAt.toUtc().toIso8601String(),
+      (List.of(state.selectedServiceIds)..sort()).join(','),
+      if (state.isAtHomeBooking) ...[
+        state.atHomeStreet.trim(),
+        state.atHomeBuilding.trim(),
+        state.atHomeUnit.trim(),
+        state.atHomeLatitude,
+        state.atHomeLongitude,
+      ],
+    ].join('|');
+    final pending = _pendingSubmission;
+    if (pending != null && pending.fingerprint == fingerprint) {
+      return pending.key;
+    }
+    final key = _newIdempotencyKey();
+    _pendingSubmission = (key: key, fingerprint: fingerprint);
+    return key;
   }
 
   Future<void> _onRetried(

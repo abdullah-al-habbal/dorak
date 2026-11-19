@@ -107,11 +107,16 @@ class ApiClient {
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
+    Map<String, String>? headers,
     required JsonParser<T> parser,
   }) async {
     final response = await _guard(
-      () =>
-          dio.post<dynamic>(path, data: data, queryParameters: queryParameters),
+      () => dio.post<dynamic>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: headers == null ? null : Options(headers: headers),
+      ),
     );
     return _parse(response, parser);
   }

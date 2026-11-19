@@ -129,6 +129,47 @@ void main() {
       expect(created.id, 'booking-1');
     });
 
+    test(
+      'createBooking sends the idempotency key header only when given',
+      () async {
+        final captured = <RequestOptions>[];
+        final fake = fakeDio(
+          handler: (options) {
+            captured.add(options);
+            return jsonResponse(
+              options,
+              statusCode: 201,
+              data: successEnvelope(
+                statusCode: 201,
+                code: 'CREATED',
+                data: booking(),
+              ),
+            );
+          },
+        );
+        final repository = DioBookingRepository(clientWith(fake));
+
+        await repository.createBooking(
+          chairId: 'chair-1',
+          startsAt: DateTime.utc(2026, 9, 10, 14, 30),
+          serviceIds: const ['service-1'],
+          idempotencyKey: 'submission-key-0001',
+        );
+        await repository.createBooking(
+          chairId: 'chair-1',
+          startsAt: DateTime.utc(2026, 9, 10, 14, 30),
+          serviceIds: const ['service-1'],
+        );
+
+        expect(
+          captured.first.headers['Idempotency-Key'],
+          'submission-key-0001',
+        );
+        expect(captured.last.headers.containsKey('Idempotency-Key'), isFalse);
+        expect(captured.first.data, isNot(contains('idempotency_key')));
+      },
+    );
+
     test('createBooking posts a barber-only booking with a branch', () async {
       late RequestOptions captured;
       final fake = fakeDio(

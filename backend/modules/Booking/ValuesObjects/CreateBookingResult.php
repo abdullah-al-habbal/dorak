@@ -10,5 +10,6 @@ final readonly class CreateBookingResult
 {
     public function __construct(
         public BookingModel $booking,
+        public bool $replayed = false,
     ) {}
 }

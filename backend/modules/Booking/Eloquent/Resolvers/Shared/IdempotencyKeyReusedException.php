@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Modules\Booking\Eloquent\Resolvers\Shared;
+
+final class IdempotencyKeyReusedException extends \RuntimeException
+{
+    public function __construct()
+    {
+        parent::__construct(__('booking::messages.idempotency_key_reused'));
+    }
+}

@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core/src/network/api_client_constants.entity.dart';
 
 abstract class BookingRepository {
   Future<PaginatedData<BookingDto>> getBookings({
@@ -20,6 +21,7 @@ abstract class BookingRepository {
     String? atHomeUnit,
     double? atHomeLatitude,
     double? atHomeLongitude,
+    String? idempotencyKey,
   });
 
   Future<void> cancelBooking(String id);
@@ -71,6 +73,7 @@ class DioBookingRepository implements BookingRepository {
     String? atHomeUnit,
     double? atHomeLatitude,
     double? atHomeLongitude,
+    String? idempotencyKey,
   }) {
     final atHomeValues = [
       atHomeStreet,
@@ -112,6 +115,7 @@ class DioBookingRepository implements BookingRepository {
             'longitude': atHomeLongitude!,
           },
       },
+      headers: {ApiClientConstants.apiClientIdempotencyHeader: ?idempotencyKey},
       parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
   }

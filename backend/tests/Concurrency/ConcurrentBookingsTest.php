@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Enums\BookingStatus;
+use Modules\Booking\Models\BookingIdempotencyKeyModel;
 use Modules\Booking\Models\BookingModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Chair\Models\ChairModel;
@@ -82,6 +83,25 @@ describe('Parallel bookings', function (): void {
 
         expect(concurrencyStatuses($results))->toBe([201, 409, 409, 409, 409])
             ->and(bookingRaceBlockingCount('barber_id', $world['barber']->id))->toBe(1);
+    });
+
+    it('turns five simultaneous retries of one keyed request into one booking and four replays', function (): void {
+        $world = bookingRaceWorld();
+        $token = bookingRaceClientToken();
+        concurrencyCommitFixtures();
+
+        $workers = array_map(fn () => concurrencyStart('POST', '/api/v1/bookings', $token, [
+            'barber_id' => $world['barber']->id,
+            'branch_id' => $world['branch']->id,
+            'starts_at' => $world['slot']->toIso8601ZuluString(),
+            'service_ids' => [$world['service']->id],
+        ], ['Idempotency-Key' => 'parallel-retry-0001']), range(1, 5));
+        $results = array_map('concurrencyFinish', $workers);
+
+        expect(concurrencyStatuses($results))->toBe([201, 201, 201, 201, 201])
+            ->and(count(array_unique(array_map(fn (array $result): mixed => $result['body']['data']['id'] ?? null, $results))))->toBe(1)
+            ->and(bookingRaceBlockingCount('barber_id', $world['barber']->id))->toBe(1)
+            ->and(BookingIdempotencyKeyModel::query()->count())->toBe(1);
     });
 
     it('lets one of a chair booking and a barber booking win when both need the same barber and slot', function (): void {
