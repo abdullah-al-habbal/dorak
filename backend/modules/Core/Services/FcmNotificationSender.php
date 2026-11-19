@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Modules\Core\Constants\FcmNotificationConstants;
+use Modules\Core\Enums\FcmConfigurationProblemEnum;
 use Modules\Core\Enums\NotificationDeliveryStatusEnum;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
@@ -25,6 +26,7 @@ final class FcmNotificationSender
 
     public function __construct(
         private readonly NotificationWriter $writer,
+        private readonly FcmCredentialsResolver $credentialsResolver,
     ) {}
 
     /**
@@ -47,10 +49,12 @@ final class FcmNotificationSender
         $notification = $this->writer->record($userType, $userId, $type, $title, $body, $data, $dispatchKey);
 
         $projectId = config('services.fcm.project_id');
-        $credentials = $this->credentials();
+        $credentials = is_string($projectId) && $projectId !== ''
+            ? $this->credentialsResolver->resolve()
+            : FcmConfigurationProblemEnum::ProjectIdMissing;
 
-        if (! is_string($projectId) || $projectId === '' || $credentials === null) {
-            $this->warnMissingCredentialsOnce();
+        if ($credentials instanceof FcmConfigurationProblemEnum) {
+            $this->warnNotConfiguredOnce($credentials);
 
             return $notification;
         }
@@ -76,13 +80,13 @@ final class FcmNotificationSender
         return $notification;
     }
 
-    private function warnMissingCredentialsOnce(): void
+    private function warnNotConfiguredOnce(FcmConfigurationProblemEnum $problem): void
     {
         if ($this->missingCredentialsWarningLogged) {
             return;
         }
 
-        Log::warning('FCM delivery skipped because project credentials are missing.');
+        Log::warning('FCM delivery skipped because project credentials are missing.', ['reason' => $problem->value]);
         $this->missingCredentialsWarningLogged = true;
     }
 
@@ -164,38 +168,6 @@ final class FcmNotificationSender
         }
 
         return Str::limit($summary, 1000);
-    }
-
-    /**
-     * @return array{client_email: string, private_key: string}|null
-     */
-    private function credentials(): ?array
-    {
-        $configured = config('services.fcm.credentials');
-        if (! is_string($configured) || $configured === '') {
-            return null;
-        }
-
-        $json = str_starts_with(ltrim($configured), '{')
-            ? $configured
-            : (is_file($configured) ? file_get_contents($configured) : false);
-
-        if (! is_string($json)) {
-            return null;
-        }
-
-        $credentials = json_decode($json, true);
-
-        if (! is_array($credentials)
-            || ! is_string($credentials['client_email'] ?? null)
-            || ! is_string($credentials['private_key'] ?? null)) {
-            return null;
-        }
-
-        return [
-            'client_email' => $credentials['client_email'],
-            'private_key' => $credentials['private_key'],
-        ];
     }
 
     /**

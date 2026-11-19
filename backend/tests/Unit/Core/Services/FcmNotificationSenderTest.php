@@ -95,7 +95,7 @@ it('logs one warning and skips delivery when credentials are missing', function 
     $sender->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);
 
     Http::assertNothingSent();
-    Log::shouldHaveReceived('warning')->once()->with('FCM delivery skipped because project credentials are missing.');
+    Log::shouldHaveReceived('warning')->once()->with('FCM delivery skipped because project credentials are missing.', ['reason' => 'project_id_missing']);
 });
 
 it('retries a 503 response and lets the queue retry the job after exhaustion', function (): void {
@@ -110,3 +110,21 @@ it('retries a 503 response and lets the queue retry the job after exhaustion', f
         ->toThrow(RequestException::class);
     expect(Http::recorded()->filter(fn (array $pair): bool => str_contains($pair[0]->url(), '/messages:send')))->toHaveCount(3);
 });
+
+it('logs why delivery is skipped for each misconfiguration and never logs the credentials', function (?string $credentials, string $reason): void {
+    config(['services.fcm.project_id' => 'dorak-test', 'services.fcm.credentials' => $credentials]);
+    Http::fake();
+    Log::spy();
+    registerFcmToken('device-token');
+
+    $notification = app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);
+
+    Http::assertNothingSent();
+    expect($notification->exists)->toBeTrue();
+    Log::shouldHaveReceived('warning')->once()->with('FCM delivery skipped because project credentials are missing.', ['reason' => $reason]);
+})->with([
+    'not set' => [null, 'credentials_missing'],
+    'path that is not a file' => ['/nonexistent/fcm-service-account.json', 'credentials_unreadable'],
+    'inline json without a key' => ['{"client_email":"sa@example.test","private_key":"SECRET-KEY-MATERIAL"}x', 'credentials_invalid'],
+    'inline json missing the private key' => ['{"client_email":"sa@example.test"}', 'credentials_invalid'],
+]);
