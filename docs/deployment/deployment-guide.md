@@ -58,4 +58,3 @@ npm run dev
 
 - [Part 2: Firebase configuration](deployment-guide-part-2.md)
 - [Part 3: Release checks](deployment-guide-part-3.md)
-- [Runbook: duplicate job applications and the unique-index migration](duplicate-applications-runbook.md)

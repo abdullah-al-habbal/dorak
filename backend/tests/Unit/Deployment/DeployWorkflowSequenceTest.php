@@ -48,69 +48,44 @@ it('has a deploy script that bash can parse', function (): void {
     expect($process->getExitCode())->toBe(0, $process->getErrorOutput());
 });
 
-it('runs exactly two migrate passes: deferred before the swap, plain in maintenance mode after the first health check', function (): void {
+it('runs exactly one migrate pass, before the swap, then health-checks the live release and restarts the workers', function (): void {
     $script = deployScript();
 
-    expect(substr_count($script, 'artisan migrate --force'))->toBe(2);
+    expect(substr_count($script, 'artisan migrate --force'))->toBe(1);
 
-    $pre = position($script, 'DEFER_CONTRACT_MIGRATIONS=1 flock');
+    $migrate = position($script, 'artisan migrate --force');
     $swap = position($script, 'mv "$RELEASE_DIR" "$CURRENT_DIR"');
-    $health = position($script, 'run_health_check "before the contract migrations"');
-    $down = position($script, 'artisan down --retry=60');
+    $health = position($script, 'run_health_check "after the swap"');
     $workers = position($script, 'artisan queue:restart');
-    $drain = position($script, 'sleep "$DRAIN_SECONDS"');
-    $post = position($script, 'env -u DEFER_CONTRACT_MIGRATIONS flock');
-    $verify = position($script, 'artisan job-applications:verify-unique-index');
-    $pending = position($script, 'artisan migrate:status --pending');
-    $up = position($script, 'artisan up');
-    $healthAfter = position($script, 'run_health_check "after the unique index"');
     $committed = position($script, 'Deployment is now committed');
 
-    expect($pre)->toBeLessThan($swap)
+    expect($migrate)->toBeLessThan($swap)
         ->and($swap)->toBeLessThan($health)
-        ->and($health)->toBeLessThan($down)
-        ->and($down)->toBeLessThan($workers)
-        ->and($workers)->toBeLessThan($drain)
-        ->and($drain)->toBeLessThan($post)
-        ->and($post)->toBeLessThan($verify)
-        ->and($verify)->toBeLessThan($pending)
-        ->and($pending)->toBeLessThan($up)
-        ->and($up)->toBeLessThan($healthAfter)
-        ->and($healthAfter)->toBeLessThan($committed);
-    // The deferral variable is set only inline on the pre-swap command, never exported for the rest of the script.
-    expect(substr_count($script, 'DEFER_CONTRACT_MIGRATIONS=1 flock'))->toBe(1)
-        ->and($script)->not->toContain('export DEFER_CONTRACT_MIGRATIONS');
+        ->and($health)->toBeLessThan($workers)
+        ->and($workers)->toBeLessThan($committed);
 });
 
-it('marks maintenance mode before it starts it, so the trap always lifts it, and lifts it only after the contract step', function (): void {
+it('keeps no deferred contract migration machinery or maintenance mode in the deploy', function (): void {
     $script = deployScript();
 
-    expect(position($script, 'MAINTENANCE_ON=true'))->toBeLessThan(position($script, 'artisan down --retry=60'))
-        ->and(strpos($script, "MAINTENANCE_ON=false\n", position($script, 'artisan up')))->not->toBeFalse();
-    expect($script)->toContain('rm -f -- "$SHARED_DIR/storage/framework/down"');
+    expect($script)->not->toContain('DEFER_CONTRACT_MIGRATIONS')
+        ->and($script)->not->toContain('artisan down')
+        ->and($script)->not->toContain('job-applications:');
 });
 
-it('arms the rollback trap before the first migration and disarms it only after the deferred migrations are verified', function (): void {
+it('arms the rollback trap before the first migration and disarms it only after the health check', function (): void {
     $script = deployScript();
 
-    expect(position($script, 'trap cleanup_failed_release EXIT'))->toBeLessThan(position($script, 'DEFER_CONTRACT_MIGRATIONS=1 flock'));
-    // The disarming assignments sit after the "committed" comment, which itself follows the verification.
+    expect(position($script, 'trap cleanup_failed_release EXIT'))->toBeLessThan(position($script, 'artisan migrate --force'));
     $committed = position($script, 'Deployment is now committed');
     expect(strpos($script, "HAD_PREVIOUS_RELEASE=false\n", $committed))->not->toBeFalse()
         ->and(strpos($script, "RELEASE_IS_LIVE=false\n", $committed))->not->toBeFalse()
-        ->and($committed)->toBeGreaterThan(position($script, 'artisan migrate:status --pending'));
+        ->and($committed)->toBeGreaterThan(position($script, 'run_health_check "after the swap"'));
     expect(position($script, 'MIGRATIONS_APPLIED=true'))->toBeLessThan(position($script, 'mv "$RELEASE_DIR" "$CURRENT_DIR"'));
 });
 
-it('fails the deploy when the deferred pass or its verification fails', function (): void {
-    $script = deployScript();
-
-    expect($script)->toContain('exit "$DEFERRED_RC"')
-        ->and($script)->toContain('Migrations are still pending after the deferred run');
-});
-
 /** Runs the real cleanup function from deploy.yml against throw-away directories. */
-function runDeployTrap(bool $liveAndFailing, bool $hadPrevious = true, bool $maintenance = false): array
+function runDeployTrap(bool $liveAndFailing, bool $hadPrevious = true): array
 {
     $script = deployScript();
     $start = position($script, 'cleanup_failed_release() {');
@@ -125,11 +100,6 @@ function runDeployTrap(bool $liveAndFailing, bool $hadPrevious = true, bool $mai
         file_put_contents($root.'/old_tmp/VERSION', 'old');
     }
 
-    if ($maintenance) {
-        mkdir($root.'/shared/storage/framework', 0o777, true);
-        file_put_contents($root.'/shared/storage/framework/down', '{}');
-    }
-
     $driver = implode("\n", [
         'set -Eeuo pipefail',
         'CURRENT_DIR='.escapeshellarg($root.'/current'),
@@ -138,9 +108,6 @@ function runDeployTrap(bool $liveAndFailing, bool $hadPrevious = true, bool $mai
         'HAD_PREVIOUS_RELEASE='.($liveAndFailing && $hadPrevious ? 'true' : 'false'),
         'RELEASE_IS_LIVE='.($liveAndFailing ? 'true' : 'false'),
         'MIGRATIONS_APPLIED=true',
-        'SHARED_DIR='.escapeshellarg($root.'/shared'),
-        'MAINTENANCE_ON='.($maintenance ? 'true' : 'false'),
-        'INDEX_MAY_EXIST='.($maintenance ? 'true' : 'false'),
         $function,
         'trap cleanup_failed_release EXIT',
         $liveAndFailing ? 'false' : 'exit 0',
@@ -151,9 +118,7 @@ function runDeployTrap(bool $liveAndFailing, bool $hadPrevious = true, bool $mai
     $version = is_file($root.'/current/VERSION') ? file_get_contents($root.'/current/VERSION') : null;
     exec('rm -rf '.escapeshellarg($root));
 
-    $maintenanceLifted = ! is_file($root.'/shared/storage/framework/down');
-
-    return ['exit' => $process->getExitCode(), 'version' => $version, 'maintenanceLifted' => $maintenanceLifted, 'output' => $process->getOutput().$process->getErrorOutput()];
+    return ['exit' => $process->getExitCode(), 'version' => $version, 'output' => $process->getOutput().$process->getErrorOutput()];
 }
 
 it('restores the previous release and warns that the schema stays migrated when the deploy fails after the swap', function (): void {
@@ -175,13 +140,4 @@ it('leaves the new release alone once the deployment is committed and disarmed',
     $result = runDeployTrap(liveAndFailing: false);
 
     expect($result['exit'])->toBe(0)->and($result['version'])->toBe('new');
-});
-
-it('lifts maintenance mode and warns about the unique index when the deploy fails during the contract step', function (): void {
-    $result = runDeployTrap(liveAndFailing: true, maintenance: true);
-
-    expect($result['exit'])->not->toBe(0)
-        ->and($result['version'])->toBe('old')
-        ->and($result['maintenanceLifted'])->toBeTrue()
-        ->and($result['output'])->toContain('unique job application index may exist');
 });

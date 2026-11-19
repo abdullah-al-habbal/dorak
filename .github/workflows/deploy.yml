@@ -30,9 +30,6 @@ env:
   # How many previous releases to keep after a successful deploy, excluding the
   # live one and $OLD_DIR. Pruning never runs on failure.
   DORAK_KEEP_RELEASES: 3
-  # Seconds to wait after the app is in maintenance mode, before the contract migrations, so requests of the previous
-  # release that were already executing at the swap can finish. Keep it above the PHP request time limit of the host.
-  DORAK_DRAIN_SECONDS: 45
   # Hoisted out of the script block on purpose. GitHub treats a `script:` value
   # containing `${{ }}` as a single expression and caps it at 21000 characters,
   # counting the raw indented text. Exceeding it fails the whole workflow file
@@ -68,7 +65,7 @@ jobs:
           username: ${{ secrets.HOSTINGER_USERNAME }}
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.HOSTINGER_SSH_PORT }}
-          envs: DORAK_TARGET,DORAK_SHARED_DIR,DORAK_ENVIRONMENT,DORAK_COMPOSER_FLAGS,DORAK_SEED_ONBOARDING,DORAK_HEALTH_URL,DORAK_KEEP_RELEASES,DORAK_DRAIN_SECONDS,DORAK_SHA,DORAK_REF
+          envs: DORAK_TARGET,DORAK_SHARED_DIR,DORAK_ENVIRONMENT,DORAK_COMPOSER_FLAGS,DORAK_SEED_ONBOARDING,DORAK_HEALTH_URL,DORAK_KEEP_RELEASES,DORAK_SHA,DORAK_REF
           timeout: 60s
           command_timeout: 30m
           script: |
@@ -81,7 +78,6 @@ jobs:
             SEED_ONBOARDING="${DORAK_SEED_ONBOARDING}"
             HEALTH_URL="${DORAK_HEALTH_URL}"
             KEEP_RELEASES="${DORAK_KEEP_RELEASES}"
-            DRAIN_SECONDS="${DORAK_DRAIN_SECONDS}"
             RELEASE_SHA="${DORAK_SHA}"
             BRANCH_NAME="${DORAK_REF}"
 
@@ -104,7 +100,7 @@ jobs:
               "$EXPECTED_PREFIX"/*) : ;;
               *) echo "❌ SHARED_DIR does not look like this server: $SHARED_DIR"; exit 1 ;;
             esac
-            for v in TARGET SHARED_DIR ENVIRONMENT COMPOSER_FLAGS HEALTH_URL KEEP_RELEASES DRAIN_SECONDS RELEASE_SHA BRANCH_NAME; do
+            for v in TARGET SHARED_DIR ENVIRONMENT COMPOSER_FLAGS HEALTH_URL KEEP_RELEASES RELEASE_SHA BRANCH_NAME; do
               eval "val=\${$v:-}"
               [ -n "$val" ] || { echo "❌ $v is empty — env forwarding failed"; exit 1; }
             done
@@ -151,17 +147,9 @@ jobs:
             HAD_PREVIOUS_RELEASE=false   # was there a $CURRENT_DIR before this run
             RELEASE_IS_LIVE=false        # has the release been moved into $CURRENT_DIR
             MIGRATIONS_APPLIED=false
-            MAINTENANCE_ON=false         # has this run put the app in maintenance mode
-            INDEX_MAY_EXIST=false            # set just before the contract migrations run: from then on the unique index may exist
 
             cleanup_failed_release() {
               local rc=$?
-
-              # Maintenance mode is a file in the SHARED storage, so it outlives the release that created it and would
-              # keep every release (including the restored one) answering 503. Always lift it, whatever the outcome.
-              if [ "$MAINTENANCE_ON" = "true" ]; then
-                rm -f -- "$SHARED_DIR/storage/framework/down" || true
-              fi
 
               # Never hold a working directory we are about to delete.
               cd / || true
@@ -186,12 +174,6 @@ jobs:
                 if [ -n "${RELEASE_DIR:-}" ] && [ -d "$RELEASE_DIR" ]; then
                   echo "🧹 Removing incomplete release: $RELEASE_DIR"
                   rm -rf -- "$RELEASE_DIR" || true
-                fi
-
-                if [ "$INDEX_MAY_EXIST" = "true" ]; then
-                  echo "⚠️  The unique job application index may exist. The restored release does not know it: a concurrent"
-                  echo "⚠️  double submit of one barber answers HTTP 500 there, nothing is lost. Roll forward; see"
-                  echo "⚠️  docs/deployment/duplicate-applications-runbook.md."
                 fi
 
                 # The code rolls back. The schema does not. Say so loudly —
@@ -292,9 +274,7 @@ jobs:
             # `-E 99` distinguishes "another deployment holds the lock" (nothing
             # ran, no warning warranted) from "migrate ran and failed".
             set +e
-            # DEFER_CONTRACT_MIGRATIONS=1: migrations that are only safe once the new code serves traffic (the unique
-            # job application index) report SKIPPED here and are NOT recorded; the post-swap step below runs them.
-            DEFER_CONTRACT_MIGRATIONS=1 flock -E 99 -n "$MIGRATE_LOCK" $PHP_BIN artisan migrate --force
+            flock -E 99 -n "$MIGRATE_LOCK" $PHP_BIN artisan migrate --force
             MIGRATE_RC=$?
             set -e
 
@@ -487,56 +467,10 @@ jobs:
               esac
             }
 
-            run_health_check "before the contract migrations"
+            run_health_check "after the swap"
 
-            # ═══════════════════════════════════════════════════════════════
-            # 🔒 Deferred (contract) migrations — maintenance mode, drain, then resolve + index as one unit
-            # ═══════════════════════════════════════════════════════════════
-            # The swap does not stop requests of the previous release that were already executing (check-then-insert, no
-            # lock, no unique-violation handling), nor a long-running queue worker. So, before the contract step:
-            #   1. `artisan down` writes the maintenance file into the SHARED storage: every release, old code included,
-            #      answers 503 to new requests from now on.
-            #   2. `queue:restart` makes workers exit after their current job and boot the new code.
-            #   3. the drain wait lets in-flight requests finish.
-            # The migrations then archive-and-remove duplicates under row locks and build the unique index as ONE unit
-            # (UniqueApplicationIndexInstaller): a duplicate that still slips in makes the index build fail atomically and
-            # the next attempt resolves it. The migration is recorded only when the index exists.
-            # `env -u` guarantees the deferral variable is not inherited, so these migrations cannot be skipped again.
-            # A failure exits non-zero: the EXIT trap restores the previous release and lifts maintenance mode; the schema
-            # is one the previous release accepts (the index is created last and not recorded unless it exists).
-            echo "🛑 Entering maintenance mode"
-            MAINTENANCE_ON=true
-            $PHP_BIN artisan down --retry=60 --refresh=15
+            # Workers keep running the previous release's code until they restart.
             $PHP_BIN artisan queue:restart || echo "⚠️  queue:restart failed; make sure no worker still runs the previous release."
-            echo "⏳ Draining requests of the previous release (${DRAIN_SECONDS}s)"
-            sleep "$DRAIN_SECONDS"
-
-            echo "🔒 Running deferred migrations..."
-            INDEX_MAY_EXIST=true
-            set +e
-            env -u DEFER_CONTRACT_MIGRATIONS flock -E 99 -n "$MIGRATE_LOCK" $PHP_BIN artisan migrate --force
-            DEFERRED_RC=$?
-            set -e
-            if [ "$DEFERRED_RC" -ne 0 ]; then
-              echo "❌ Deferred migrations failed (exit $DEFERRED_RC); restoring the previous release."
-              echo "   Fix the cause (for example: php artisan job-applications:resolve-duplicates), then deploy again."
-              exit "$DEFERRED_RC"
-            fi
-
-            # Proof that nothing stayed deferred: the index exists, no duplicate remains, nothing is pending.
-            env -u DEFER_CONTRACT_MIGRATIONS $PHP_BIN artisan job-applications:verify-unique-index
-            PENDING="$(env -u DEFER_CONTRACT_MIGRATIONS $PHP_BIN artisan migrate:status --pending --no-ansi 2>&1 || true)"
-            case "$PENDING" in
-              *"No pending migrations"*) echo "✅ No pending migrations" ;;
-              *) echo "❌ Migrations are still pending after the deferred run:"; echo "$PENDING"; exit 1 ;;
-            esac
-
-            echo "✅ Leaving maintenance mode"
-            $PHP_BIN artisan up
-            MAINTENANCE_ON=false
-
-            # The first health check ran before the index existed. Check again with the final schema, over real HTTP.
-            run_health_check "after the unique index"
 
             # Only now promote the previous release to the stable rollback name.
             # Until this point the trap can still put it back.
