@@ -123,6 +123,11 @@ final class CreateBookingEloquentResolver
             throw new InvalidBookingServicesException;
         }
 
+        // One booking has one price and one commission base, so its services share a currency (BG-11).
+        if ($services->pluck('currency_code')->unique()->count() > 1) {
+            throw new InvalidBookingServicesException('booking::messages.mixed_currency_services');
+        }
+
         return $services;
     }
 

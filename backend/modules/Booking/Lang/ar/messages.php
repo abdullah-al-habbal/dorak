@@ -19,6 +19,7 @@ return [
     'active_booking_ban' => 'لا يمكن للعميل أو الحلاق المحظور حاليًا إجراء حجز.',
     'entity_not_discoverable' => 'هذا الفرع أو الحلاق غير متاح للحجز.',
     'invalid_services_for_booking' => 'يجب أن تكون خدمات الحجز نشطة ولها مدة محددة.',
+    'mixed_currency_services' => 'يجب أن تكون جميع خدمات الحجز بنفس العملة.',
     'barber_chair_mismatch' => 'الكرسي مرتبط بحلاق مختلف عن الحلاق المطلوب.',
     'barber_not_affiliated' => 'الحلاق غير منتسب إلى هذا الفرع.',
     'at_home_barber_required' => 'الحجز المنزلي يتطلب اختيار حلاق.',

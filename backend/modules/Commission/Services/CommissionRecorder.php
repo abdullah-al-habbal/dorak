@@ -21,7 +21,7 @@ final class CommissionRecorder
      * Records the commission a completed booking owes its brand. Idempotent on
      * the booking; freelance bookings (no branch/brand) and bookings with no
      * applicable rule accrue nothing. A booking is priced in its first
-     * service's currency.
+     * service's currency; booking creation refuses a mix of currencies (`mixed_currency_services`), so every line shares it.
      */
     public function record(BookingModel $booking): ?CommissionEntryModel
     {

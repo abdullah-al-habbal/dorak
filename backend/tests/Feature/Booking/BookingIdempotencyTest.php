@@ -86,6 +86,7 @@ it('does not depend on the order of service ids', function (): void {
         'serviceable_type' => ServiceableTypeEnum::Brand,
         'serviceable_id' => $this->branch->brand_id,
         'duration_minutes' => 15,
+        'currency_code' => $this->service->currency_code,
     ]);
 
     $first = ($this->book)(IDEMPOTENCY_KEY, ['service_ids' => [$this->service->id, $second->id]])->assertCreated();

@@ -8,6 +8,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
@@ -18,7 +19,9 @@ beforeEach(function (): void {
     $this->chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $this->barber->id]);
     $this->slot = Carbon::tomorrow()->startOfDay()->addHours(10);
     $this->actingAs(ClientModel::factory()->create(), 'client');
+    $this->currencyCode = CurrencyModel::factory()->create()->code;
     $this->serviceFor = fn (ServiceableTypeEnum $type, string $id) => OfferedServiceModel::factory()->create([
+        'currency_code' => $this->currencyCode,
         'serviceable_type' => $type,
         'serviceable_id' => $id,
         'duration_minutes' => 30,
@@ -83,6 +86,22 @@ it('rejects a barber_id that differs from the chair barber', function (): void {
         'barber_id' => BarberModel::factory()->create()->id,
         'service_ids' => [$service->id],
     ])->assertUnprocessable();
+
+    $this->assertDatabaseCount('bookings', 0);
+});
+
+it('rejects services priced in different currencies and creates nothing', function (): void {
+    $brandService = ($this->serviceFor)(ServiceableTypeEnum::Brand, $this->brand->id);
+    $otherCurrency = OfferedServiceModel::factory()->create([
+        'serviceable_type' => ServiceableTypeEnum::Barber,
+        'serviceable_id' => $this->barber->id,
+        'duration_minutes' => 30,
+        'currency_code' => CurrencyModel::factory()->create()->code,
+    ]);
+
+    ($this->book)(['service_ids' => [$brandService->id, $otherCurrency->id]])
+        ->assertUnprocessable()
+        ->assertJsonPath('message', __('booking::messages.mixed_currency_services'));
 
     $this->assertDatabaseCount('bookings', 0);
 });

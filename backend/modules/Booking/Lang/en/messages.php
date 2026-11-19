@@ -19,6 +19,7 @@ return [
     'active_booking_ban' => 'A client or barber with an active ban cannot book.',
     'entity_not_discoverable' => 'This branch or barber is not available for booking.',
     'invalid_services_for_booking' => 'Booking services must be active and have a duration.',
+    'mixed_currency_services' => 'All services in one booking must be priced in the same currency.',
     'barber_chair_mismatch' => 'The chair is linked to a different barber than the one requested.',
     'barber_not_affiliated' => 'The barber is not affiliated with this branch.',
     'at_home_barber_required' => 'An at-home booking requires a barber.',
