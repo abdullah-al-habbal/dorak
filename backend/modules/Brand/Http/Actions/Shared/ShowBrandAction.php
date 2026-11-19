@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Branch\Models\BranchModel;
-use Modules\Brand\Http\Resources\Shared\BrandResource;
+use Modules\Brand\Http\Resources\Shared\PublicBrandResource;
 use Modules\Brand\Models\BrandModel;
 use Modules\Core\Http\Actions\BaseApiAction;
 
@@ -16,7 +16,7 @@ final class ShowBrandAction extends BaseApiAction
 {
     public function __invoke(Request $request, string $brand): JsonResponse
     {
-        $brand = BrandModel::active()->with(['owner', 'baseCurrency', 'branches'])->findOrFail($brand);
+        $brand = BrandModel::active()->with(['baseCurrency', 'branches'])->findOrFail($brand);
         $brand->setRelation('branches', $brand->branches
             ->filter(fn (BranchModel $branch): bool => $branch->isEnabled && ! $branch->bans()
                 ->where('banned_at', '<=', now())
@@ -24,6 +24,6 @@ final class ShowBrandAction extends BaseApiAction
                 ->exists())
             ->values());
 
-        return $this->ok(data: new BrandResource($brand));
+        return $this->ok(data: new PublicBrandResource($brand));
     }
 }

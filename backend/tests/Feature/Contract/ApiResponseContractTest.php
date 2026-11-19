@@ -944,7 +944,7 @@ describe('Brand API', function () {
     });
 
     describe('GET /api/v1/brands/{brand}', function () {
-        it('returns brand with nested owner and base_currency', function () {
+        it('returns brand with nested base_currency and no owner data', function () {
             $client = ClientModel::factory()->create();
             $currency = CurrencyModel::factory()->create();
             $brand = BrandModel::factory()->create([
@@ -956,8 +956,8 @@ describe('Brand API', function () {
 
             assertApiEnvelope($response, 200);
             $data = $response->json('data');
-            expect($data)->toHaveKeys(['id', 'name', 'owner', 'base_currency', 'created_at']);
-            expect($data['owner'])->toHaveKeys(['id', 'email']);
+            expect($data)->toHaveKeys(['id', 'name', 'base_currency', 'created_at']);
+            expect($data)->not->toHaveKeys(['owner', 'status_reason', 'submission_count', 'max_submissions']);
             expect($data['base_currency'])->toHaveKeys(['id', 'code']);
         });
     });

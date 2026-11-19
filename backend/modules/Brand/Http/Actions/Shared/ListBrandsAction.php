@@ -7,7 +7,7 @@ namespace Modules\Brand\Http\Actions\Shared;
 use Illuminate\Http\JsonResponse;
 use Modules\Brand\Handlers\Shared\ListBrandsHandler;
 use Modules\Brand\Http\Requests\Shared\ListBrandsRequest;
-use Modules\Brand\Http\Resources\Shared\BrandResource;
+use Modules\Brand\Http\Resources\Shared\PublicBrandResource;
 use Modules\Core\Http\Actions\BaseApiAction;
 
 final class ListBrandsAction extends BaseApiAction
@@ -23,7 +23,7 @@ final class ListBrandsAction extends BaseApiAction
 
         return $this->paginated(
             paginator: $result,
-            resourceClass: BrandResource::class,
+            resourceClass: PublicBrandResource::class,
         );
     }
 }
