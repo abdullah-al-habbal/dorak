@@ -3,13 +3,14 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Modules\Explore\Constants\ExploreRateLimitConstants;
 use Modules\Explore\Http\Actions\Shared\ExploreBarbersAction;
 use Modules\Explore\Http\Actions\Shared\ExploreBranchesAction;
 use Modules\Explore\Http\Actions\Shared\ExploreSearchAction;
 use Modules\Explore\Http\Actions\Shared\GetBarberDetailAction;
 use Modules\Explore\Http\Actions\Shared\GetBranchDetailAction;
 
-Route::prefix('explore')->name('explore.')->group(function (): void {
+Route::prefix('explore')->name('explore.')->middleware('throttle:'.ExploreRateLimitConstants::EXPLORE_LIMITER)->group(function (): void {
     Route::get('/search', ExploreSearchAction::class)->name('search');
     Route::get('/branches', ExploreBranchesAction::class)->name('branches');
     Route::get('/branches/{branch}', GetBranchDetailAction::class)->name('branches.show');
