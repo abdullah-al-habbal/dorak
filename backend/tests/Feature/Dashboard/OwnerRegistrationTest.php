@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Support\Defer\DeferredCallbackCollection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -308,6 +309,15 @@ describe('Never-verified sign-up clean-up', function (): void {
 });
 
 describe('Owner emails', function (): void {
+    it('retries approval and submission emails with a bounded delay', function (): void {
+        foreach ([new OwnerBrandSubmitted('Nour Cuts', 'https://x.test'), new OwnerBrandApproved('Nour Cuts', 'https://x.test')] as $mail) {
+            $job = new SendQueuedMailable($mail);
+
+            expect($job->tries)->toBe(4)
+                ->and($job->backoff())->toBe([60, 300, 900]);
+        }
+    });
+
     it('renders the three review emails in English and Arabic', function (string $locale, string $needle): void {
         $brand = BrandModel::factory()->create();
         $owner = $brand->owner;

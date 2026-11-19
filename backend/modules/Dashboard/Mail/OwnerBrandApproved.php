@@ -9,8 +9,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\Attributes\Backoff;
+use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
+#[Backoff([60, 300, 900])]
+#[Tries(4)]
 final class OwnerBrandApproved extends Mailable implements ShouldQueue
 {
     use Queueable;
@@ -32,5 +38,13 @@ final class OwnerBrandApproved extends Mailable implements ShouldQueue
             'name' => e($this->name),
             'url' => e($this->url),
         ]));
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        Log::error('Owner brand approval email exhausted its queue retries.', [
+            'mailable' => self::class,
+            'exception' => $exception::class,
+        ]);
     }
 }

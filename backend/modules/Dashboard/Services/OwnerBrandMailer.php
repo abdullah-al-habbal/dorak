@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Dashboard\Services;
 
 use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
@@ -79,7 +80,10 @@ final class OwnerBrandMailer
 
             Mail::to((string) $owner->getAttribute('email'))->locale($locale)->send($make($name, $url));
         } catch (Throwable $exception) {
-            report($exception);
+            Log::error('Owner brand email could not be queued.', [
+                'brand_id' => (string) $brand->getKey(),
+                'exception' => $exception::class,
+            ]);
         }
     }
 }
