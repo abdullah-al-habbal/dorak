@@ -77,10 +77,12 @@
             "@php scripts/reset_test_database.php"
         ],
         "test": [
+            "Composer\\Config::disableProcessTimeout",
             "@test:reset",
             "@php artisan test"
         ],
         "test:concurrency": [
+            "Composer\\Config::disableProcessTimeout",
             "@test:reset",
             "@php artisan test --group=concurrency"
         ],
