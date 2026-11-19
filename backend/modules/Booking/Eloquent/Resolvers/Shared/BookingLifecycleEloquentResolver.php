@@ -4,37 +4,37 @@ declare(strict_types=1);
 
 namespace Modules\Booking\Eloquent\Resolvers\Shared;
 
+use Closure;
 use Illuminate\Support\Facades\DB;
 use Modules\Audit\Enums\StatusChangeActorTypeEnum;
 use Modules\Audit\Enums\StatusChangeSubjectTypeEnum;
 use Modules\Audit\Services\StatusChangeLogger;
-use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Constants\BookingConstants;
 use Modules\Booking\CQRS\Command\Client\CancelBookingCommand;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Booking\Queries\BookingAvailability;
+use Modules\Booking\Services\BookingLockOrder;
 use Modules\Booking\Services\BookingTransitionNotifier;
 use Modules\Booking\ValuesObjects\CancelBookingResult;
-use Modules\Chair\Models\ChairModel;
 
 final class BookingLifecycleEloquentResolver
 {
     public function __construct(
         private readonly BookingTransitionNotifier $notifier,
         private readonly StatusChangeLogger $statusChangeLogger,
+        private readonly BookingLockOrder $lockOrder,
     ) {}
 
     public function transitionForDashboard(string|int $bookingId, BookingStatus $target, StatusChangeActorTypeEnum $actorType, string $actorId): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $target, $actorType, $actorId): BookingModel {
-            $booking = BookingModel::query()->with('chair')->lockForUpdate()->findOrFail($bookingId);
+            $booking = $this->lockForTarget($bookingId, $target);
             $fromStatus = $booking->booking_status;
             if (! $booking->booking_status->canTransitionTo($target)) {
                 throw new InvalidBookingTransitionException;
             }
             if ($target === BookingStatus::Confirmed) {
-                $this->lockAssignedResources($booking);
                 $this->ensureNoActiveOverlap($booking);
             }
             $booking->update(['booking_status' => $target]);
@@ -49,15 +49,13 @@ final class BookingLifecycleEloquentResolver
     public function transitionForBranch(string|int $bookingId, string|int $branchId, BookingStatus $target): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $branchId, $target): BookingModel {
-            $booking = BookingModel::query()->forBranch($branchId)
-                ->with('chair')->lockForUpdate()->findOrFail($bookingId);
+            $booking = $this->lockForTarget($bookingId, $target, fn ($query) => $query->forBranch($branchId));
             $fromStatus = $booking->booking_status;
             if (! in_array($target, [BookingStatus::Confirmed, BookingStatus::InProgress, BookingStatus::Completed, BookingStatus::NoShow, BookingStatus::Cancelled], true)
                 || ! $booking->booking_status->canTransitionTo($target)) {
                 throw new InvalidBookingTransitionException;
             }
             if ($target === BookingStatus::Confirmed) {
-                $this->lockAssignedResources($booking);
                 $this->ensureNoActiveOverlap($booking);
             }
             $booking->update(['booking_status' => $target]);
@@ -138,10 +136,7 @@ final class BookingLifecycleEloquentResolver
     public function transitionForBarber(string|int $bookingId, string|int $barberId, BookingStatus $target): BookingModel
     {
         return DB::transaction(function () use ($bookingId, $barberId, $target): BookingModel {
-            $booking = BookingModel::query()
-                ->with('chair')
-                ->lockForUpdate()
-                ->findOrFail($bookingId);
+            $booking = $this->lockForTarget($bookingId, $target);
 
             $fromStatus = $booking->booking_status;
             $isAssigned = $booking->barber_id === $barberId
@@ -156,7 +151,6 @@ final class BookingLifecycleEloquentResolver
             }
 
             if ($target === BookingStatus::Confirmed) {
-                $this->lockAssignedResources($booking);
                 $this->ensureNoActiveOverlap($booking);
             }
 
@@ -182,15 +176,22 @@ final class BookingLifecycleEloquentResolver
         );
     }
 
-    private function lockAssignedResources(BookingModel $booking): void
+    /**
+     * Confirming re-checks overlaps, so it must take its locks in create's order (chair, barber, booking).
+     * Every other transition touches the booking row only and cannot invert against a create.
+     */
+    private function lockForTarget(string|int $bookingId, BookingStatus $target, ?Closure $scope = null): BookingModel
     {
-        if ($booking->chair_id !== null) {
-            ChairModel::query()->lockForUpdate()->findOrFail($booking->chair_id);
+        if ($target === BookingStatus::Confirmed) {
+            return $this->lockOrder->lockBooking($bookingId, $scope, ['chair']);
         }
 
-        if ($booking->barber_id !== null) {
-            BarberModel::query()->lockForUpdate()->findOrFail($booking->barber_id);
+        $query = BookingModel::query();
+        if ($scope !== null) {
+            $scope($query);
         }
+
+        return $query->with('chair')->lockForUpdate()->findOrFail($bookingId);
     }
 
     private function ensureNoActiveOverlap(BookingModel $booking): void

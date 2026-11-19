@@ -1,3 +1,4 @@
+import { DECIMALS, MINOR_UNIT_FACTOR } from "@/lib/core/format/money.util";
 import type { Booking } from "@/types/bookings/booking.type";
 
 type Localized = string | Record<string, string | null> | null | undefined;
@@ -16,9 +17,15 @@ export function formatDay(date: Date, locale: string, options: Intl.DateTimeForm
   return new Intl.DateTimeFormat(locale, options).format(date);
 }
 
+/**
+ * Every currency is stored in hundredths (BG-13), so show exactly two decimals: Intl would otherwise follow the ISO
+ * exponent and show SYP 12.50 as "SYP 13".
+ */
 export function formatPrice(minorUnits: number, currency: string | null | undefined, locale: string): string {
-  if (!currency) return new Intl.NumberFormat(locale).format(minorUnits / 100);
-  return new Intl.NumberFormat(locale, { style: "currency", currency }).format(minorUnits / 100);
+  const fractionDigits = { minimumFractionDigits: DECIMALS, maximumFractionDigits: DECIMALS };
+  const major = minorUnits / MINOR_UNIT_FACTOR;
+  if (!currency) return new Intl.NumberFormat(locale, fractionDigits).format(major);
+  return new Intl.NumberFormat(locale, { style: "currency", currency, ...fractionDigits }).format(major);
 }
 
 export function bookingTotal(booking: Booking, locale: string): string {

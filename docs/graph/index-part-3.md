@@ -14,6 +14,7 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 ### `docs/`
 
 - [Index](../index.md)
+- [Dashboard: feature modules master plan](../feature-modules-plan.md)
 
 ### `docs/architecture/`
 
@@ -24,6 +25,8 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 ### `docs/deployment/`
 
 - [Deployment Guide](../deployment/deployment-guide.md)
+- [Deployment Guide: part 2](../deployment/deployment-guide-part-2.md)
+- [Deployment Guide: part 3](../deployment/deployment-guide-part-3.md)
 
 ### `docs/mobile-audit-g10-g11/`
 
@@ -34,6 +37,75 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [04: Navigation shell gap](../mobile-audit-g10-g11/04-navigation-shell-gap.md)
 - [05: Missing backend routes](../mobile-audit-g10-g11/05-missing-backend-routes.md)
 - [06: MVP scope decisions](../mobile-audit-g10-g11/06-mvp-scope-decisions.md)
+
+### `docs/adr/`
+
+- [ADR 0001: The brand owner is a client account](../adr/0001-brand-owner-as-client.md)
+- [ADR 0002: MVP scope deferrals](../adr/0002-mvp-scope-deferrals.md)
+- [ADR 0003: Dashboard foundation](../adr/0003-new-dashboard-foundation.md)
+- [ADR 0004: Archive the first dashboard](../adr/0004-archive-legacy-dashboard.md)
+
+### `docs/frontend-arch-review/`
+
+- [Frontend architecture review](../frontend-arch-review/index.md)
+- [01 Executive summary](../frontend-arch-review/01-executive-summary.md)
+- [02 Components and hooks](../frontend-arch-review/02-components-and-hooks.md)
+- [03 State management and React patterns](../frontend-arch-review/03-state-management-and-react.md)
+- [04 Data flow and API](../frontend-arch-review/04-data-flow-and-api.md)
+- [05 Files and code organization](../frontend-arch-review/05-files-and-code-organization.md)
+- [06 Types and validation](../frontend-arch-review/06-types-and-validation.md)
+- [07 Dependencies and module boundaries](../frontend-arch-review/07-dependencies-and-module-boundaries.md)
+- [08 Maintainability and technical debt](../frontend-arch-review/08-maintainability-and-technical-debt.md)
+- [09 Prioritized action plan](../frontend-arch-review/09-prioritized-action-plan.md)
+- [10 Performance and bundle](../frontend-arch-review/10-performance-and-bundle.md)
+- [11 Resolution status](../frontend-arch-review/11-resolution-status.md)
+
+### `docs/repo-guides/`
+
+- [Claude guide: part 2](../repo-guides/claude-part-2.md)
+- [Readme: part 2](../repo-guides/readme-part-2.md)
+- [Readme: part 3](../repo-guides/readme-part-3.md)
+
+### `docs/sessions/`
+
+- [Session coordination board](../sessions/index.md)
+
+### `docs/competitor-analysis/`
+
+- [Competitor analysis](../competitor-analysis/index.md)
+- [Toptalla study](../competitor-analysis/toptalla/index.md)
+- [01 Executive summary](../competitor-analysis/toptalla/01-executive-summary.md)
+- [02 Company and evidence](../competitor-analysis/toptalla/02-company-and-evidence.md)
+- [03 Platforms and availability](../competitor-analysis/toptalla/03-platforms-and-availability.md)
+- [04 Product and user experience](../competitor-analysis/toptalla/04-product-and-user-experience.md)
+- [05 Market and geography](../competitor-analysis/toptalla/05-market-and-geography.md)
+- [06 Competitors and positioning](../competitor-analysis/toptalla/06-competitors-and-positioning.md)
+- [07 Digital presence and marketing](../competitor-analysis/toptalla/07-digital-presence-and-marketing.md)
+- [08 Pricing and contracting](../competitor-analysis/toptalla/08-pricing-and-contracting.md)
+- [09 Financial feasibility](../competitor-analysis/toptalla/09-financial-feasibility.md)
+- [10 Technical architecture](../competitor-analysis/toptalla/10-technical-architecture.md)
+- [11 Privacy, compliance and risk](../competitor-analysis/toptalla/11-privacy-compliance-and-risk.md)
+- [12 Validation plan and metrics](../competitor-analysis/toptalla/12-validation-plan-and-metrics.md)
+
+### `docs/product-research/`
+
+- [Product research](../product-research/index.md)
+- [Dorak study](../product-research/dorak/index.md)
+- [Dorak study prompt](../product-research/dorak/study-prompt.md)
+
+### `docs/booking-concurrency/`
+
+- [Booking concurrency, idempotency and client sync](../booking-concurrency/index.md)
+- [01: Lock order and deadlocks](../booking-concurrency/01-lock-order-and-deadlocks.md)
+- [02: Overlap guards](../booking-concurrency/02-overlap-guards.md)
+- [03: Idempotency and uniqueness](../booking-concurrency/03-idempotency-and-uniqueness.md)
+- [04: Hashing and tokens](../booking-concurrency/04-hashing-and-tokens.md)
+- [05: Search and availability](../booking-concurrency/05-search-and-availability.md)
+- [06: Client sync and UX](../booking-concurrency/06-client-sync-and-ux.md)
+- [07: Test coverage](../booking-concurrency/07-test-coverage.md)
+- [08: Remediation plan](../booking-concurrency/08-remediation-plan.md)
+- [09: Write paths outside booking](../booking-concurrency/09-write-path-audit.md)
+- [10: Fix order and conventions](../booking-concurrency/10-fix-order.md)
 
 ### `docs/backlog/`
 
@@ -69,6 +141,7 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Existing Frontend Audit: Endpoints and Models](../planning/existing-frontend-audit-part-3.md)
 - [Existing Frontend Audit: Forms, Workflows, Findings](../planning/existing-frontend-audit-part-4.md)
 - [Remediation Plan](../planning/remediation-plan.md)
+- [Remediation Plan: part 2](../planning/remediation-plan-part-2.md)
 - [Dashboard Refactor: Batch 3](../planning/dashboard-refactor-batch-3.md)
 
 ### `frontend/web/dashboard/`

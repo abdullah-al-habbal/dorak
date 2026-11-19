@@ -59,6 +59,13 @@ logout or expired token re-runs the redirect immediately.
   per-currency gross, commission and net for this month or all time. Reached
   from the More tab at `/earnings`.
 
+- **Brand owner experience (T16):** the login screen offers "Branch account" and
+  "Brand owner". An owner signs in as a client (`/auth/login`); the role is kept in
+  `AppRoleProvider` so the app reopens in the right shell. Owner routes live under `/owner`
+  (brand home with the pending, rejected and suspended banners, branches, services, plan and
+  payouts) on the `/owner/*` API through `DioOwnerRepository`. Owner registration stays on the
+  website. A branch account never reaches `/owner/*` and an owner never reaches the branch shell.
+
 Decision record: [ADR 0002](../../../../docs/adr/0002-mvp-scope-deferrals.md).
 
 ## Continued in

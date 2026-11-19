@@ -1,6 +1,6 @@
 /** The backend stores every price in minor units with two decimals (see formatPrice). */
-const MINOR_UNIT_FACTOR = 100;
-const DECIMALS = 2;
+export const MINOR_UNIT_FACTOR = 100;
+export const DECIMALS = 2;
 const ARABIC_INDIC_ZERO = 0x0660;
 const EASTERN_ARABIC_INDIC_ZERO = 0x06f0;
 const DECIMAL_PATTERN = /^\d+(\.\d{1,2})?$/;

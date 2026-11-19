@@ -6,21 +6,24 @@ import { vi } from "vitest";
 import { BarberApprovalsScreen } from "@/components/barber-approvals/barber-approvals-screen";
 import { AuthActor } from "@/enums/access/auth-actor.enum";
 import { enDictionary } from "@/locales/en/index.constant";
-import { describeListStates } from "@tests/helpers/list-screen.helper";
-import type { ListHarness } from "@tests/helpers/list-screen.helper";
+import { describeListScreen, installFetchBoundary } from "@tests/helpers/list-screen.helper";
 
-const harness = vi.hoisted<ListHarness>(() => ({ query: {}, search: "", refetch: vi.fn() }));
+const nav = vi.hoisted(() => ({ search: "", replace: vi.fn() }));
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/dashboard/x", useSearchParams: () => new URLSearchParams(harness.search) }));
-vi.mock("@/hooks/stylists/approvals/use-barber-approvals", () => ({ useBarberApprovals: () => harness.query }));
-vi.mock("@/hooks/stylists/approvals/use-confirm-approve-barber", () => ({ useConfirmApproveBarber: () => vi.fn() }));
-vi.mock("@/hooks/core/state/use-overlay", () => ({ useOverlay: () => ({ open: vi.fn(), close: vi.fn() }) }));
-vi.mock("@/components/barber-approvals/barber-approval-toolbar", () => ({ BarberApprovalToolbar: () => null }));
-vi.mock("@/components/barber-approvals/barber-approval-list", () => ({ BarberApprovalList: () => <div data-testid="rows" /> }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: nav.replace }), usePathname: () => "/dashboard/test", useSearchParams: () => new URLSearchParams(nav.search) }));
 
-describeListStates({
+const t = enDictionary.barberApprovals;
+const noor = { id: "bb1", name: { en: "Noor Karim", ar: "نور" }, email: "noor@barber.test", status: "pending", created_at: "2026-01-02T10:00:00Z" };
+const sami = { id: "bb2", name: { en: "Sami Dib", ar: "سامي" }, email: "sami@barber.test", status: "enabled", created_at: "2026-01-03T10:00:00Z" };
+
+const server = installFetchBoundary(nav, { listPath: "/admin/barbers?" });
+
+describeListScreen({
   screen: () => <BarberApprovalsScreen actor={AuthActor.Admin} />,
-  forbidden: () => <BarberApprovalsScreen actor={AuthActor.Manager} />,
-  harness,
-  states: { ...enDictionary.barberApprovals.states },
+  forbidden: { screen: () => <BarberApprovalsScreen actor={AuthActor.Manager} />, title: t.states.forbiddenTitle },
+  server,
+  nav,
+  states: { ...t.states },
+  rows: { records: [noor, sami], visibleText: ["Noor Karim", "noor@barber.test", "Sami Dib"] },
+  filtered: { search: "search=zzz", clearLabel: t.filters.clear, sentToApi: "search=zzz" },
 });

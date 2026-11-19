@@ -48,6 +48,18 @@ composer test           # recreates dorak_test clean, then pest sequentially (ne
 
 Before implementing any feature, read `docs/13-technical-concepts.md` — mandatory CRUD patterns (optimistic/pessimistic updates, version locking, idempotency keys, soft delete, PATCH vs PUT, race conditions, batch operations, retry backoff, consistency models, field projection) and Flutter/Laravel integration patterns.
 
+**Booking locks:** any code that locks booking rows takes them in one order: client, chair, barber, then the booking row (after its range scans), and never the booking row first. A lock-order inversion deadlocks (MySQL 1213, HTTP 500). A change to that order needs a process-based test in `tests/Concurrency/` that fails before the fix (see `docs/booking-concurrency/index.md` and `docs/architecture/testing-strategy.md`). `POST /bookings` takes an `Idempotency-Key` header (`Booking/Services/BookingIdempotency`); a new write endpoint that a client may retry after a lost response needs the same treatment (TD-8).
+
+## Concurrency
+
+Beyond the booking locks above, the same rules apply to every other write that two requests can reach at once. Findings and fix order: [docs/booking-concurrency/](../docs/booking-concurrency/09-write-path-audit.md).
+
+- Lock parent before child, and rows of one table in ascending id.
+- A set invariant ("one default", "never zero active", "one live subscription") locks the owning row (or every row of the table in id order) before it checks.
+- A unique index is the guarantee; catch `UniqueConstraintViolationException` and re-read instead of letting a racy `firstOrCreate` answer 500.
+- One-time codes: count the attempt first, compare in constant time, consume once (`Cache::pull`). Token rotation proceeds only if its delete removed one row.
+- A change to this area needs a process-based test in `tests/Concurrency/` that asserts the end state (see the testing strategy); a sequential Pest test does not prove a race.
+
 ## Code conventions
 
 - **Before writing ANY new code, read `.claude/skills/laravel-attributes/SKILL.md`** — full Laravel 13 attribute reference. Use attributes (not properties) for models, jobs, commands, requests, resources, factories, tests, DI.

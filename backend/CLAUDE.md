@@ -43,6 +43,7 @@ Before building, read `docs/02-prd.md` then `docs/feature-index.md` to see what 
 - SMS goes through the `SmsSender` strategy resolved by `SmsSenderFactory` — never call a
   gateway or `Http` from a feature module. New gateways follow `docs/17-sms-delivery.md`;
   failures throw `SmsDeliveryException` (no phone/code/secrets in the message, no retries).
+- Booking row locks are taken in one order: client, chair, barber, then the booking row. Never lock the booking row first (deadlock, 1213). Changing it needs a failing `tests/Concurrency/` test first. See `docs/booking-concurrency/index.md` and `backend/AGENTS.md`.
 
 ## 🗺 Feature Index
 After adding a feature, append entry to `docs/feature-index.md`.

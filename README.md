@@ -47,6 +47,10 @@ and the subsystem guides in each project directory.
 
 Remaining tasks, issues, decisions and missing features are tracked in one place: [`docs/backlog/index.md`](docs/backlog/index.md).
 
+## Competitor analysis
+
+Outside-in studies of competing products live in [`docs/competitor-analysis/`](docs/competitor-analysis/index.md). The first study covers [Toptalla](docs/competitor-analysis/toptalla/index.md).
+
 ## Backend contract policy
 
 The backend is ours to change. When the dashboard needs a contract the API does

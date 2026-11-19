@@ -22,6 +22,7 @@ files in that area.
 - For planned work, read the [backlog](docs/backlog/index.md) (open decisions, bugs,
   missing features, tech debt, test gaps) and update it when an item is done or a
   decision is resolved.
+- Competitor studies (market context, not requirements) are in [docs/competitor-analysis/index.md](docs/competitor-analysis/index.md); the first is [Toptalla](docs/competitor-analysis/toptalla/index.md).
 - Use [the documentation index](docs/index.md) to find maintained product,
   architecture, and engineering documentation.
 - Before changing a subsystem, read its guide:

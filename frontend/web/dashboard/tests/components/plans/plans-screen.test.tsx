@@ -6,20 +6,24 @@ import { vi } from "vitest";
 import { PlansScreen } from "@/components/plans/plans-screen";
 import { AuthActor } from "@/enums/access/auth-actor.enum";
 import { enDictionary } from "@/locales/en/index.constant";
-import { describeListStates } from "@tests/helpers/list-screen.helper";
-import type { ListHarness } from "@tests/helpers/list-screen.helper";
+import { describeListScreen, installFetchBoundary } from "@tests/helpers/list-screen.helper";
 
-const harness = vi.hoisted<ListHarness>(() => ({ query: {}, search: "", refetch: vi.fn() }));
+const nav = vi.hoisted(() => ({ search: "", replace: vi.fn() }));
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/dashboard/x", useSearchParams: () => new URLSearchParams(harness.search) }));
-vi.mock("@/hooks/plans/use-plans", () => ({ usePlans: () => harness.query }));
-vi.mock("@/hooks/core/state/use-overlay", () => ({ useOverlay: () => ({ open: vi.fn(), close: vi.fn() }) }));
-vi.mock("@/components/plans/plan-list", () => ({ PlanList: () => <div data-testid="rows" /> }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: nav.replace }), usePathname: () => "/dashboard/test", useSearchParams: () => new URLSearchParams(nav.search) }));
 
-describeListStates({
+const t = enDictionary.plans;
+const basic = { id: "p1", name: { en: "Basic", ar: "أساسي" }, price_amount_minor: 1000, currency: { code: "USD" }, interval_unit: "month", interval_count: 1, is_active: true, sort_order: 1, feature_keys: [] };
+const pro = { id: "p2", name: { en: "Professional", ar: "محترف" }, price_amount_minor: 5000, currency: { code: "USD" }, interval_unit: "month", interval_count: 1, is_active: false, sort_order: 2, feature_keys: [] };
+
+const server = installFetchBoundary(nav, { listPath: "/admin/subscription-plans?" });
+
+describeListScreen({
   screen: () => <PlansScreen actor={AuthActor.Admin} />,
-  forbidden: () => <PlansScreen actor={AuthActor.Manager} />,
-  harness,
-  filteredSearch: "state=active",
-  states: { ...enDictionary.plans.states },
+  forbidden: { screen: () => <PlansScreen actor={AuthActor.Manager} />, title: t.states.forbiddenTitle },
+  server,
+  nav,
+  states: { ...t.states },
+  rows: { records: [basic, pro], visibleText: ["Basic", "Professional"] },
+  filtered: { search: "state=active", clearLabel: t.filters.clear, sentToApi: "active=" },
 });

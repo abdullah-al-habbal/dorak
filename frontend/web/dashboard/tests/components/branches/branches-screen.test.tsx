@@ -6,22 +6,24 @@ import { vi } from "vitest";
 import { BranchesScreen } from "@/components/branches/branches-screen";
 import { AuthActor } from "@/enums/access/auth-actor.enum";
 import { enDictionary } from "@/locales/en/index.constant";
-import { describeListStates } from "@tests/helpers/list-screen.helper";
-import type { ListHarness } from "@tests/helpers/list-screen.helper";
+import { dataReply, describeListScreen, installFetchBoundary } from "@tests/helpers/list-screen.helper";
 
-const harness = vi.hoisted<ListHarness>(() => ({ query: {}, search: "", refetch: vi.fn() }));
+const nav = vi.hoisted(() => ({ search: "", replace: vi.fn() }));
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/dashboard/x", useSearchParams: () => new URLSearchParams(harness.search) }));
-vi.mock("@/hooks/branches/use-branches", () => ({ useBranches: () => harness.query }));
-vi.mock("@/hooks/brands/owner/use-brand-options", () => ({ useBrandOptions: () => ({ data: [] }) }));
-vi.mock("@/hooks/core/state/use-overlay", () => ({ useOverlay: () => ({ open: vi.fn(), close: vi.fn() }) }));
-vi.mock("@/components/branches/branch-toolbar", () => ({ BranchToolbar: () => null }));
-vi.mock("@/components/common/filter-chips", () => ({ FilterChips: () => null }));
-vi.mock("@/components/branches/branch-list", () => ({ BranchList: () => <div data-testid="rows" /> }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: nav.replace }), usePathname: () => "/dashboard/test", useSearchParams: () => new URLSearchParams(nav.search) }));
 
-describeListStates({
+const t = enDictionary.branches;
+const downtown = { id: "br1", name: { en: "Downtown", ar: "وسط" }, email: "down@branch.test", status: "enabled", brand_id: "b1" };
+const uptown = { id: "br2", name: { en: "Uptown", ar: "علوي" }, email: "up@branch.test", status: "pending", brand_id: "b1" };
+
+const server = installFetchBoundary(nav, { listPath: "/branches?", side: { "/brands?": dataReply([]) } });
+
+describeListScreen({
   screen: () => <BranchesScreen actor={AuthActor.Admin} />,
-  forbidden: () => <BranchesScreen actor={AuthActor.Manager} />,
-  harness,
-  states: { ...enDictionary.branches.states },
+  forbidden: { screen: () => <BranchesScreen actor={AuthActor.Manager} />, title: t.states.forbiddenTitle },
+  server,
+  nav,
+  states: { ...t.states },
+  rows: { records: [downtown, uptown], visibleText: ["Downtown", "down@branch.test", "Uptown"] },
+  filtered: { search: "search=zzz", clearLabel: t.filters.clear, sentToApi: "search=zzz" },
 });

@@ -6,16 +6,15 @@ namespace Modules\Dashboard\Eloquent\Resolvers\Bookings;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Modules\Barber\Models\BarberModel;
 use Modules\Booking\Eloquent\Resolvers\Shared\BookingOutsideScheduleException;
 use Modules\Booking\Eloquent\Resolvers\Shared\InvalidBookingTransitionException;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
 use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
+use Modules\Booking\Services\BookingLockOrder;
 use Modules\Booking\Services\BookingTransitionNotifier;
 use Modules\Branch\Services\BranchHours;
-use Modules\Chair\Models\ChairModel;
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 
 final class RescheduleBookingEloquentResolver
@@ -23,6 +22,7 @@ final class RescheduleBookingEloquentResolver
     public function __construct(
         private readonly BookingTransitionNotifier $notifier,
         private readonly BranchHours $branchHours,
+        private readonly BookingLockOrder $lockOrder,
     ) {}
 
     public function resolve(string|int $bookingId, Carbon $startsAt, Carbon $endsAt): BookingModel
@@ -30,7 +30,7 @@ final class RescheduleBookingEloquentResolver
         return DB::transaction(function () use ($bookingId, $startsAt, $endsAt): BookingModel {
             // Lock order matches CreateBookingEloquentResolver: chair, then barber, then the booking rows. Locking the
             // booking first deadlocked with a create that held the chair and was scanning this booking's slot.
-            $booking = $this->lockInCreateOrder($bookingId);
+            $booking = $this->lockOrder->lockBooking($bookingId);
             if (! in_array($booking->booking_status, [BookingStatus::Pending, BookingStatus::Confirmed], true)) {
                 throw new InvalidBookingTransitionException;
             }
@@ -59,27 +59,5 @@ final class RescheduleBookingEloquentResolver
 
             return $booking;
         });
-    }
-
-    /** Reads the booking's chair and barber, locks them, then locks the booking itself and checks they did not change. */
-    private function lockInCreateOrder(string|int $bookingId): BookingModel
-    {
-        $unlocked = BookingModel::query()->findOrFail($bookingId);
-        $chairId = $unlocked->chair_id;
-        $barberId = $unlocked->barber_id;
-
-        if ($chairId !== null) {
-            ChairModel::query()->lockForUpdate()->findOrFail($chairId);
-        }
-        if ($barberId !== null) {
-            BarberModel::query()->lockForUpdate()->findOrFail($barberId);
-        }
-
-        $booking = BookingModel::query()->lockForUpdate()->findOrFail($bookingId);
-        if ($booking->chair_id !== $chairId || $booking->barber_id !== $barberId) {
-            throw new InvalidBookingTransitionException;
-        }
-
-        return $booking;
     }
 }

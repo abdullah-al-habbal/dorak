@@ -6,21 +6,24 @@ import { vi } from "vitest";
 import { AdminSubscriptionsScreen } from "@/components/admin-subscriptions/admin-subscriptions-screen";
 import { AuthActor } from "@/enums/access/auth-actor.enum";
 import { enDictionary } from "@/locales/en/index.constant";
-import { describeListStates } from "@tests/helpers/list-screen.helper";
-import type { ListHarness } from "@tests/helpers/list-screen.helper";
+import { describeListScreen, installFetchBoundary } from "@tests/helpers/list-screen.helper";
 
-const harness = vi.hoisted<ListHarness>(() => ({ query: {}, search: "", refetch: vi.fn() }));
+const nav = vi.hoisted(() => ({ search: "", replace: vi.fn() }));
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/dashboard/x", useSearchParams: () => new URLSearchParams(harness.search) }));
-vi.mock("@/hooks/plans/subscriptions/use-admin-subscriptions", () => ({ useAdminSubscriptions: () => harness.query }));
-vi.mock("@/hooks/plans/subscriptions/use-update-subscription-status", () => ({ useUpdateSubscriptionStatus: () => ({ mutate: vi.fn(), isPending: false }) }));
-vi.mock("@/hooks/core/state/use-overlay", () => ({ useOverlay: () => ({ open: vi.fn(), close: vi.fn() }) }));
-vi.mock("@/components/admin-subscriptions/admin-subscription-list", () => ({ AdminSubscriptionList: () => <div data-testid="rows" /> }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: nav.replace }), usePathname: () => "/dashboard/test", useSearchParams: () => new URLSearchParams(nav.search) }));
 
-describeListStates({
+const t = enDictionary.adminSubscriptions;
+const live = { id: "s1", status: "active", brand: { id: "b1", name: { en: "Northside Cuts", ar: "الشمال" } }, plan: { id: "p1", name: { en: "Professional", ar: "محترف" } }, starts_at: "2026-01-01T00:00:00Z" };
+const lapsed = { id: "s2", status: "past_due", brand: { id: "b2", name: { en: "Harbor Barbers", ar: "الميناء" } }, plan: { id: "p1", name: { en: "Basic", ar: "أساسي" } }, starts_at: "2026-01-01T00:00:00Z" };
+
+const server = installFetchBoundary(nav, { listPath: "/admin/subscriptions?" });
+
+describeListScreen({
   screen: () => <AdminSubscriptionsScreen actor={AuthActor.Admin} />,
-  forbidden: () => <AdminSubscriptionsScreen actor={AuthActor.Manager} />,
-  harness,
-  filteredSearch: "status=active",
-  states: { ...enDictionary.adminSubscriptions.states },
+  forbidden: { screen: () => <AdminSubscriptionsScreen actor={AuthActor.Manager} />, title: t.states.forbiddenTitle },
+  server,
+  nav,
+  states: { ...t.states },
+  rows: { records: [live, lapsed], visibleText: ["Northside Cuts", "Professional", "Harbor Barbers"] },
+  filtered: { search: "status=active", clearLabel: t.filters.clear, sentToApi: "status=active" },
 });

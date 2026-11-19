@@ -21,7 +21,7 @@ Status: Approved for execution, one task at a time. Source proposal: [provider-p
 | ID | Task | Depends on | Status |
 |---|---|---|---|
 | PC-0 | Decisions recorded in the proposal | none | Done |
-| PC-1 | Pre-implementation reading and verification (no code) | PC-0 | Done (one owner decision open, see PC-1 findings) |
+| PC-1 | Pre-implementation reading and verification (no code) | PC-0 | Done (BD-4 resolved in PC-2) |
 | PC-2 | Backend schema and models | PC-1 | Done (see PC-2 contract) |
 | PC-3 | Permissions and write actions, including stock edits | PC-2 | Not started |
 | PC-4 | Product images | PC-3 | Not started |

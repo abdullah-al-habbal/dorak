@@ -6,20 +6,24 @@ import { vi } from "vitest";
 import { PayoutsScreen } from "@/components/payouts/payouts-screen";
 import { AuthActor } from "@/enums/access/auth-actor.enum";
 import { enDictionary } from "@/locales/en/index.constant";
-import { describeListStates } from "@tests/helpers/list-screen.helper";
-import type { ListHarness } from "@tests/helpers/list-screen.helper";
+import { describeListScreen, installFetchBoundary } from "@tests/helpers/list-screen.helper";
 
-const harness = vi.hoisted<ListHarness>(() => ({ query: {}, search: "", refetch: vi.fn() }));
+const nav = vi.hoisted(() => ({ search: "", replace: vi.fn() }));
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }), usePathname: () => "/dashboard/x", useSearchParams: () => new URLSearchParams(harness.search) }));
-vi.mock("@/hooks/earnings/use-payouts", () => ({ usePayouts: () => harness.query }));
-vi.mock("@/hooks/core/state/use-overlay", () => ({ useOverlay: () => ({ open: vi.fn(), close: vi.fn() }) }));
-vi.mock("@/components/payouts/payout-list", () => ({ PayoutList: () => <div data-testid="rows" /> }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: nav.replace }), usePathname: () => "/dashboard/test", useSearchParams: () => new URLSearchParams(nav.search) }));
 
-describeListStates({
+const t = enDictionary.payouts;
+const march = { id: "po1", status: "approved", direction_type: "platform_to_brand", total_amount_minor: 9900, currency_code: "USD", period_started_at: "2026-03-01T00:00:00Z", period_ended_at: "2026-03-31T00:00:00Z", created_at: "2026-04-01T00:00:00Z" };
+const april = { id: "po2", status: "paid", direction_type: "platform_to_brand", total_amount_minor: 4200, currency_code: "USD", period_started_at: "2026-04-01T00:00:00Z", period_ended_at: "2026-04-30T00:00:00Z", created_at: "2026-05-01T00:00:00Z" };
+
+const server = installFetchBoundary(nav, { listPath: "/payouts?" });
+
+describeListScreen({
   screen: () => <PayoutsScreen actor={AuthActor.Owner} />,
-  forbidden: () => <PayoutsScreen actor={AuthActor.Manager} />,
-  harness,
-  filteredSearch: "status=paid",
-  states: { ...enDictionary.payouts.states },
+  forbidden: { screen: () => <PayoutsScreen actor={AuthActor.Manager} />, title: t.states.forbiddenTitle },
+  server,
+  nav,
+  states: { ...t.states },
+  rows: { records: [march, april], visibleText: [] },
+  filtered: { search: "status=paid", clearLabel: t.filters.clear, sentToApi: "status=paid" },
 });
