@@ -15,6 +15,7 @@ use Modules\Core\Constants\DatabaseSafetyConstants;
 use Modules\Core\Constants\MorphMapConstants;
 use Modules\Core\Contracts\SmsSender;
 use Modules\Core\Models\NotificationDeliveryModel;
+use Modules\Core\Services\ProductionDeliveryGuard;
 use Modules\Core\Services\Sms\SmsSenderFactory;
 
 final class ApplicationServiceProvider extends BaseModuleServiceProvider
@@ -51,6 +52,7 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
 
     protected function afterBoot(): void
     {
+        $this->app->make(ProductionDeliveryGuard::class)->assertSafe();
         $this->prohibitDestructiveDatabaseCommands();
         $this->registerMorphMap();
         $this->registerFactoryResolution();

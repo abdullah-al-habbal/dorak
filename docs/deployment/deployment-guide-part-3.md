@@ -20,8 +20,8 @@ Check these on the production host before the first public release and after eve
 | `APP_ENV` | `production` | Disables the local-only development OTP log lines. |
 | `APP_DEBUG` | `false` | A debug page prints configuration, SQL and secrets. |
 | `LOG_LEVEL` | `warning` or higher | `debug` logs request detail. |
-| `SMS_DRIVER` | `generic_http` (never `log`) | The `log` driver sends nothing; outside production it writes the code to the log, and in production it logs only a masked number, so users never get their code. |
-| `MAIL_MAILER` | a real transport (never `log` or `array`) | Password-reset and verification codes must reach people. |
+| `SMS_DRIVER` | `generic_http` (never `log`) | The `log` driver sends nothing; outside production it writes the code to the log, and in production it logs only a masked number, so users never get their code. The application refuses to boot in production with `log` (`ProductionDeliveryGuard`). |
+| `MAIL_MAILER` | a real transport (never `log` or `array`) | Password-reset and verification codes must reach people. The application refuses to boot in production with `log` or `array`. |
 | `APP_URL` | the public `https://` API origin | Legal links, signed URLs and the website origin in the apps derive from it. |
 | `SESSION_DOMAIN`, `SANCTUM_STATEFUL_DOMAINS` | the dashboard domain only | Limits cookie scope. |
 | `DASHBOARD_SESSION_SECRET` (or `DASHBOARD_SESSION_SECRETS` with an active kid) | a long random value, rotated on a schedule | Signs the dashboard session. |
