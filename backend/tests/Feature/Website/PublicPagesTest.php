@@ -84,6 +84,7 @@ it('keeps the unprefixed marketing pages working and fixes the footer links', fu
 
     $this->get('/features')->assertOk();
     $this->get('/en/features')->assertOk()->assertSee('href="/en/privacy"', false)->assertSee('href="/en/delete-account"', false);
+    $this->get('/en/pricing')->assertOk();
     $this->get('/ar')->assertOk();
 });
 

@@ -98,6 +98,9 @@ jobs:
       - name: Validate Composer configuration
         run: composer validate --strict
 
+      - name: Check formatting
+        run: vendor/bin/pint --test
+
       # --no-scripts is deliberate and must stay. Laravel's post-autoload-dump
       # script runs `artisan package:discover`, which boots the app and loads
       # modules/Core/Config/filesystems.php. That file evaluates

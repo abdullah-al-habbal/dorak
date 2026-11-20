@@ -18,7 +18,18 @@ it('serves the public health and service catalog detail API envelopes', function
     $this->getJson('/api/v1/health')
         ->assertOk()
         ->assertJsonPath('success', true)
-        ->assertJsonStructure(['data' => ['status']]);
+        ->assertJsonStructure(['data' => ['status', 'timestamp', 'checks' => [
+            'app' => ['status'],
+            'database' => ['status'],
+            'cache' => ['status'],
+            'php' => ['status'],
+            'queue' => ['status'],
+        ]]])
+        ->assertJsonMissingPath('data.checks.app.environment')
+        ->assertJsonMissingPath('data.checks.app.debug_mode')
+        ->assertJsonMissingPath('data.checks.database.driver')
+        ->assertJsonMissingPath('data.checks.php.version')
+        ->assertJsonMissingPath('data.checks.php.extensions');
 
     $item = ServiceCatalogItemModel::factory()->create();
     $this->getJson("/api/v1/service-catalog/items/{$item->id}")

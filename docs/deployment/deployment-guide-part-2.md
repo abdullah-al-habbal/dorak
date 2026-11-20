@@ -44,7 +44,9 @@ SANCTUM_STATEFUL_DOMAINS=dashboard.example.com
 SESSION_DOMAIN=.example.com
 ```
 
-Configure CORS to permit the dashboard origin and run a long-lived queue worker.
+Configure CORS to permit the dashboard origin. On shared hosting, use cron to
+run short queue workers (for example `queue:work --stop-when-empty --max-time=50`)
+instead of a long-running worker process.
 
 ### Mobile app `.env` files
 

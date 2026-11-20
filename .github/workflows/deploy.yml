@@ -1,7 +1,7 @@
 name: 🚀 Deploy Dorak Backend
 
-# Manual only while the project is built locally: there is no hosting yet, so a push must not start a deploy.
-# Restore the `push` trigger (branches: master, paths: backend/** and this file) when deployment is back in scope.
+# Manual trigger only. The job is fail-closed until the workflow matches the
+# verified Hostinger document-root and filesystem constraints.
 on:
   workflow_dispatch:
 
@@ -51,6 +51,10 @@ env:
 jobs:
   deploy:
     name: 🚀 Deploy to Hostinger
+    # Fail closed until the release workflow is redesigned for the verified
+    # publichtml document root and outside-root shared directory. The current
+    # release swap would target the wrong path and assumes symlink support.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     # The four HOSTINGER_* secrets live in the `development` environment (Settings, Environments), not repo-wide.
     environment: development

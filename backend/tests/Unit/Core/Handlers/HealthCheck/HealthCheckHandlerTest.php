@@ -83,6 +83,9 @@ it('includes all required check keys', function () {
 
     expect($result)->toHaveKeys(['status', 'timestamp', 'checks']);
     expect($result['checks'])->toHaveKeys(['app', 'database', 'cache', 'php', 'queue']);
+    foreach ($result['checks'] as $check) {
+        expect($check)->toHaveKeys(['status'])->and($check)->toHaveCount(1);
+    }
 });
 
 it('returns timestamp in ISO 8601 format', function () {

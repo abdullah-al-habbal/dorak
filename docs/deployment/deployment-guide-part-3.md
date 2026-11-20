@@ -29,7 +29,7 @@ Check these on the production host before the first public release and after eve
 | Dashboard cookies | `secure` and `httpOnly` | Already set in code when `NODE_ENV=production`; serve the dashboard over HTTPS only. |
 | Storage | `storage:link` done; face photos on the private `local` disk | Face photos must never be reachable from the public disk. |
 | Scheduler | `schedule:run` every minute | Runs `face-profile:purge` (photos and analysis results of clients deleted over the retention period). |
-| Queue | a long-lived worker | Face analysis, notifications and mail. |
+| Queue | Short worker invoked by cron every minute, for example `queue:work --stop-when-empty --max-time=50` | Face analysis, notifications and mail; avoid long-running workers on shared hosting. |
 
 ## Release checks
 

@@ -25,10 +25,18 @@ class HealthCheckHandler
             'queue' => $this->checkQueue(),
         ];
 
+        // Keep implementation details (environment, PHP version/extensions,
+        // database/cache/queue drivers, and database latency) out of this
+        // unauthenticated public endpoint.
+        $publicChecks = array_map(
+            static fn (array $check): array => ['status' => $check['status']],
+            $checks,
+        );
+
         return [
             'status' => $this->resolveOverallStatus($checks),
             'timestamp' => now()->toIso8601String(),
-            'checks' => $checks,
+            'checks' => $publicChecks,
         ];
     }
 

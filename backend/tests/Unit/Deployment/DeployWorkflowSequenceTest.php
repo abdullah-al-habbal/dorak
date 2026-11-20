@@ -48,6 +48,10 @@ it('has a deploy script that bash can parse', function (): void {
     expect($process->getExitCode())->toBe(0, $process->getErrorOutput());
 });
 
+it('keeps Hostinger deployment disabled until the workflow matches the verified hosting layout', function (): void {
+    expect(deployWorkflow())->toContain('if: ${{ false }}');
+});
+
 it('runs exactly one migrate pass, before the swap, then health-checks the live release and restarts the workers', function (): void {
     $script = deployScript();
 
