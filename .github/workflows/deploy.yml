@@ -52,6 +52,8 @@ jobs:
   deploy:
     name: 🚀 Deploy to Hostinger
     runs-on: ubuntu-latest
+    # The four HOSTINGER_* secrets live in the `development` environment (Settings, Environments), not repo-wide.
+    environment: development
 
     steps:
       - name: 🔍 Determine seed flag

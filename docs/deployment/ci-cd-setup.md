@@ -26,7 +26,7 @@ Repository secrets, repository variables and environments were all empty. No wor
 
 ## What to configure in GitHub (Settings, Secrets and variables, Actions)
 
-Recommended: create an environment named `development`, then add the secrets there and add `environment: development` to the deploy job. This is a follow-up; the job does not use an environment yet.
+The deploy job declares `environment: development`, so the secrets must be created in that environment (Settings, Environments, `development`, Environment secrets). Repo-level secrets also resolve, but the job will not start until the environment exists or is auto-created on first run. Optionally add required reviewers to it.
 
 | Secret | Value source |
 |---|---|

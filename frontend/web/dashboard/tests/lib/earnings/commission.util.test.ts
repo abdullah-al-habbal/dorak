@@ -37,6 +37,6 @@ describe("commission helpers", () => {
 
   it("formats money with and without a currency", () => {
     expect(money(1250, "USD", "en")).toBe("$12.50");
-    expect(money(1250, "", "en")).toBe("12.5");
+    expect(money(1250, "", "en")).toBe("12.50");
   });
 });

@@ -169,4 +169,4 @@ jobs:
 
       # Real two-connection tests: they commit rows, so they run after the default suite, which excludes them.
       - name: Run concurrency tests
-        run: php scripts/reset_test_database.php && php artisan test --group=concurrency --without-tty
+        run: php scripts/reset_test_database.php && php artisan test --group=concurrency
