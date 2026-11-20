@@ -5,6 +5,13 @@ name: 🚀 Deploy Dorak Backend
 on:
   workflow_dispatch:
 
+# Server-side prerequisites (verify in Hostinger hPanel; nothing here is guessed):
+#   - GitHub secrets: HOSTINGER_SERVER_IP, HOSTINGER_USERNAME, HOSTINGER_SSH_PRIVATE_KEY, HOSTINGER_SSH_PORT.
+#   - A read-only GitHub deploy key for abdullah-al-habbal/dorak, private half at ~/.ssh/deploy_key on the server.
+#   - $DORAK_SHARED_DIR/.env (mode 600) and the shared storage tree; PHP 8.5 and git >= 2.25 on the server.
+#   - $DORAK_HEALTH_URL must resolve to the site served from $DORAK_TARGET.
+# See docs/deployment/ci-cd-setup.md for the full checklist.
+
 permissions:
   contents: read
 
@@ -23,6 +30,8 @@ env:
   DORAK_TARGET: /home/u685718414/domains/dev-dorak-backend.io/public_html/dev
   DORAK_SHARED_DIR: /home/u685718414/domains/dev-dorak-backend.io/shared
   DORAK_ENVIRONMENT: development
+  # The monorepo that holds backend/. The server clones it over SSH with its deploy key.
+  DORAK_REPOSITORY: abdullah-al-habbal/dorak
   DORAK_COMPOSER_FLAGS: --optimize-autoloader --no-interaction --no-scripts
   # Exercised over real HTTP after the swap. Returns 503 when the database is
   # unreachable, so it fails a broken deployment that `artisan about` passes.
@@ -65,12 +74,13 @@ jobs:
           username: ${{ secrets.HOSTINGER_USERNAME }}
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.HOSTINGER_SSH_PORT }}
-          envs: DORAK_TARGET,DORAK_SHARED_DIR,DORAK_ENVIRONMENT,DORAK_COMPOSER_FLAGS,DORAK_SEED_ONBOARDING,DORAK_HEALTH_URL,DORAK_KEEP_RELEASES,DORAK_SHA,DORAK_REF
+          envs: DORAK_REPOSITORY,DORAK_TARGET,DORAK_SHARED_DIR,DORAK_ENVIRONMENT,DORAK_COMPOSER_FLAGS,DORAK_SEED_ONBOARDING,DORAK_HEALTH_URL,DORAK_KEEP_RELEASES,DORAK_SHA,DORAK_REF
           timeout: 60s
           command_timeout: 30m
           script: |
             set -Eeuo pipefail
 
+            REPOSITORY="${DORAK_REPOSITORY}"
             TARGET="${DORAK_TARGET}"
             SHARED_DIR="${DORAK_SHARED_DIR}"
             ENVIRONMENT="${DORAK_ENVIRONMENT}"
@@ -100,7 +110,7 @@ jobs:
               "$EXPECTED_PREFIX"/*) : ;;
               *) echo "❌ SHARED_DIR does not look like this server: $SHARED_DIR"; exit 1 ;;
             esac
-            for v in TARGET SHARED_DIR ENVIRONMENT COMPOSER_FLAGS HEALTH_URL KEEP_RELEASES RELEASE_SHA BRANCH_NAME; do
+            for v in REPOSITORY TARGET SHARED_DIR ENVIRONMENT COMPOSER_FLAGS HEALTH_URL KEEP_RELEASES RELEASE_SHA BRANCH_NAME; do
               eval "val=\${$v:-}"
               [ -n "$val" ] || { echo "❌ $v is empty — env forwarding failed"; exit 1; }
             done
@@ -137,6 +147,7 @@ jobs:
             # 📁 Release paths + failure cleanup
             # ═══════════════════════════════════════════════════════════════
             RELEASE_DIR="${TARGET}_release_$(date +%Y%m%d_%H%M%S)_${RELEASE_SHA:0:12}"
+            SOURCE_DIR="${RELEASE_DIR}_src"
             CURRENT_DIR="$TARGET"
             OLD_DIR="${CURRENT_DIR}_old"
             OLD_TMP_DIR="${CURRENT_DIR}_old_tmp_${RELEASE_SHA:0:12}"
@@ -168,6 +179,10 @@ jobs:
                   # release must not be left serving. Remove it.
                   echo "🧹 Deployment failed with no previous release; removing the failed release"
                   rm -rf -- "$CURRENT_DIR" || true
+                fi
+
+                if [ -n "${SOURCE_DIR:-}" ] && [ -d "$SOURCE_DIR" ]; then
+                  rm -rf -- "$SOURCE_DIR" || true
                 fi
 
                 # Only reachable when the swap never happened.
@@ -206,9 +221,13 @@ jobs:
             # ═══════════════════════════════════════════════════════════════
             # 📥 Clone the exact commit CI asked for
             # ═══════════════════════════════════════════════════════════════
-            echo "📥 Cloning repository..."
-            git clone --no-checkout git@github-dbnkalhbalbgmail:abdullah-al-habbal/dorak-backend.git "$RELEASE_DIR"
-            cd "$RELEASE_DIR"
+            # The repository is the monorepo; only backend/ is the Laravel app. A sparse
+            # clone fetches that folder, then it is moved to $RELEASE_DIR so every later
+            # step sees the application at the release root, as before.
+            echo "📥 Cloning repository (backend/ only)..."
+            git clone --no-checkout "git@github.com:${DORAK_REPOSITORY}.git" "$SOURCE_DIR"
+            cd "$SOURCE_DIR"
+            git sparse-checkout set backend
             git checkout --detach "$RELEASE_SHA"
 
             ACTUAL_SHA="$(git rev-parse HEAD)"
@@ -216,6 +235,15 @@ jobs:
               echo "❌ Commit mismatch: expected $RELEASE_SHA, got $ACTUAL_SHA"
               exit 1
             fi
+            if [ ! -f backend/artisan ] || [ ! -f backend/composer.json ]; then
+              echo "❌ backend/artisan or backend/composer.json is missing at $RELEASE_SHA"
+              exit 1
+            fi
+
+            cd /
+            mv "$SOURCE_DIR/backend" "$RELEASE_DIR"
+            rm -rf -- "$SOURCE_DIR"
+            cd "$RELEASE_DIR"
 
             # ═══════════════════════════════════════════════════════════════
             # 🔑 Shared .env

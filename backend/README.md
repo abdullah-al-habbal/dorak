@@ -27,8 +27,8 @@ Built for a dual‑universe consumer app (Men's Grooming & Women's Beauty), with
 ### 1. Clone & Install
 
 ```bash
-git clone git@github-dbnkalhbalbgmail:abdullah-al-habbal/dorak-backend.git
-cd backend
+git clone git@github-dbnkalhbalbgmail:abdullah-al-habbal/dorak.git
+cd dorak/backend
 composer install
 ```
 

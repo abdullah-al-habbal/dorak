@@ -1,0 +1,61 @@
+name: Dashboard CI
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "frontend/web/dashboard/**"
+      - ".github/workflows/dashboard-ci.yml"
+  pull_request:
+    branches: ["master"]
+    paths:
+      - "frontend/web/dashboard/**"
+      - ".github/workflows/dashboard-ci.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dashboard-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: frontend/web/dashboard
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      # Placeholders for the build only; the real values live on the host. Not secrets.
+      BACKEND_API_URL: http://127.0.0.1:8000
+      DASHBOARD_SESSION_SECRET: ci-only-session-secret-0123456789abcdef
+      NEXT_TELEMETRY_DISABLED: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/web/dashboard/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build

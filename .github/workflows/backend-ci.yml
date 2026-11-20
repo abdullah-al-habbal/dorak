@@ -15,6 +15,12 @@ on:
 permissions:
   contents: read
 
+# The Laravel app lives in backend/ of the monorepo; every run step executes there.
+# actions/checkout and uses: steps are unaffected by this default.
+defaults:
+  run:
+    working-directory: backend
+
 jobs:
   quality-gate:
     runs-on: ubuntu-latest

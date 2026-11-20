@@ -4,6 +4,7 @@ parentnode: docs.architecture
 childnodes:
   - docs.deployment.part-2
   - docs.deployment.part-3
+  - docs.deployment.ci-cd-setup
 codeanchors:
   - .github/workflows/
   - backend/
@@ -13,7 +14,7 @@ codeanchors:
 
 # Dorak Deployment and Handover Guide
 
-Routes: [documentation graph](../index.md) · [architecture](../architecture/architecture.md).
+Routes: [documentation graph](../index.md) · [architecture](../architecture/architecture.md) · [CI/CD setup and checklist](ci-cd-setup.md).
 
 ## Local startup
 
