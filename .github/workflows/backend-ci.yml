@@ -98,9 +98,6 @@ jobs:
       - name: Validate Composer configuration
         run: composer validate --strict
 
-      - name: Check formatting
-        run: vendor/bin/pint --test
-
       # --no-scripts is deliberate and must stay. Laravel's post-autoload-dump
       # script runs `artisan package:discover`, which boots the app and loads
       # modules/Core/Config/filesystems.php. That file evaluates
@@ -111,6 +108,10 @@ jobs:
       # scripts exits 1. Dependency installation must not depend on app config.
       - name: Install Dependencies
         run: composer install --no-ansi --no-interaction --no-progress --prefer-dist --no-scripts
+
+      # Pint is a dev dependency, so it can only run once Install Dependencies has created vendor/.
+      - name: Check formatting
+        run: vendor/bin/pint --test
 
       # Package discovery is not skipped, only deferred until an environment
       # exists. Running it explicitly here still validates that every service
