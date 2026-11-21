@@ -5,7 +5,7 @@ Calm, dense workbench for people on a shop floor. Cool ink-slate in the dark, la
 Domain: chair, razor, lather, pole stripe, appointment book, brass fittings.
 
 ## Signature
-The barber-pole stripe (`pole-stripe` utility). Only three places: the active nav indicator, the sign-in panel (turns once on load) and the route progress bar. Never decoration elsewhere.
+The barber-pole stripe (`pole-stripe` utility). Only three places: the active nav indicator, the sign-in panel (turns continuously, one stripe tile per 1.4 s loop so the seam is invisible; still under `prefers-reduced-motion`; inset 32px from the panel's top and bottom and 64px from its end edge, mirrored in RTL) and the route progress bar. Never decoration elsewhere.
 
 ## Tokens
 Defined in `src/app/globals.css`. Domain names (`--ink`, `--lather`, `--pole-blue`, `--pole-red`, `--brass`) feed the shadcn names. Light under `:root`, dark under `.dark`; one hue (262), only lightness shifts between surfaces.

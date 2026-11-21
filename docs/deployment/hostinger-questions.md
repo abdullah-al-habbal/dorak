@@ -29,8 +29,9 @@ Never store private keys, `.env` content, or passwords in this document.
 - The live health endpoint returned HTTP 200 on 2026-11-21 with only overall
   status, timestamp, and per-check status values. It no longer exposes
   `APP_ENV`, `APP_DEBUG`, runtime versions, extensions, or database/cache
-  implementation details. `APP_DEBUG=true` remains configured for this
-  development host; this audit did not change it.
+  implementation details. `APP_DEBUG=false` (shared `.env` and cached config)
+  after the 2026-11-21 reset deploy; the earlier `true` was a stale config cache
+  from the old release.
 - Hostinger's access logs are available for up to 7 days. Current web-server
   error log has no entries.
 
@@ -98,14 +99,15 @@ Never store private keys, `.env` content, or passwords in this document.
 ## Hosting readiness notes
 
 - Hostinger's hPanel cron list still needs an owner-side check because this shell has no `crontab` command. Suggested scheduler and bounded queue entries are documented in [CI/CD setup](ci-cd-setup.md); add only after preserving existing jobs.
-- Verify MariaDB compatibility and migration status before deploying the newer local repository revision; the deployed release is an older revision with an older schema.
+- The newer repository revision is deployed (2026-11-21, commit `19e52c81e`). The dev database was reset with `migrate:fresh --seed`; all 73 migrations ran on MariaDB 11.8.9 with none pending. The marketing seed data from the earlier targeted seeders was wiped by the reset and replaced by `DatabaseSeeder` output; re-check `/en/features` and `/en/pricing` if they matter.
 - The missing marketing pages and localized route aliases are live and returned HTTP 200 on 2026-11-21.
 - Three exact temporary upload files were removed from `shared/` after verifying the live patched files; `.before-*` rollback backups were retained.
 
 ## Final report
 
-- **Verdict:** SSH, Git, PHP, Composer, deploy key access, release symlinks, and the `public_html/dev` target are verified. The workflow is structurally compatible, but the live code/schema is older than the local repository.
-- **Blocking gaps:** MariaDB migration compatibility for the newer repository revision; hPanel cron configuration is unverified; local commits are not pushed to GitHub.
-- **Workflow status:** Explicit PHP 8.5 and `composer2`, strict known-host checking, and the actual `public_html/current -> dev` layout are reflected in the manual workflow. Review migrations before a full deploy.
+- **Verdict (2026-11-21):** the backend is deployed and healthy. SSH, Git, PHP 8.5, Composer, the dedicated deploy key, release layout and the `public_html/dev` target are verified by a green deploy (run `44915144212`).
+- **Verified live:** `/api/v1/health` 200 with status-only payload; unknown routes return a bare 404; cached config has `debug => false`; 73 migrations, 0 pending; `jobs` and `failed_jobs` empty; no new Laravel log errors.
+- **Open gaps:** hPanel cron entries are unconfirmed (no `scheduler.log` or `queue-worker.log` exists); no database backup tooling; dashboard hosted on Vercel is not Git-connected.
+- **Workflow:** explicit PHP 8.5 and `composer2`, strict known-host checking, `public_html/current -> dev` layout, optional `reset_database` input (see [CI/CD setup](ci-cd-setup.md)).
 - **GitHub secrets:** `HOSTINGER_SERVER_IP` = `82.25.83.69`; `HOSTINGER_USERNAME` = `u685718414`; `HOSTINGER_SSH_PORT` = `65002`; `HOSTINGER_SSH_PRIVATE_KEY` = a dedicated CI private key (store only in GitHub Secrets, never here).
-- **Decision:** Keep deployment manual. Do not deploy the newer full repository until its migrations are reviewed against MariaDB 11.8.9 and a database backup is available.
+- **Decision:** keep deployment manual. Use `reset_database=true` only for disposable dev data after a migration rewrite.
