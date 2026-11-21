@@ -14,7 +14,7 @@ plugins {
 
 android {
     namespace = "com.dorak.stylist_app"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37 // flutter_secure_storage requires 37; Flutter 3.44 defaults to 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
