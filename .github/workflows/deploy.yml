@@ -4,6 +4,11 @@ name: 🚀 Deploy Dorak Backend
 # existing current -> dev symlink; this workflow replaces the dev release.
 on:
   workflow_dispatch:
+    inputs:
+      reset_database:
+        description: "DESTRUCTIVE: drop every table and re-seed (migrate:fresh --seed). Development database only."
+        type: boolean
+        default: false
 
 # Server-side prerequisites (verify in Hostinger hPanel; nothing here is guessed):
 #   - GitHub secrets: HOSTINGER_SERVER_IP, HOSTINGER_USERNAME, HOSTINGER_SSH_PRIVATE_KEY, HOSTINGER_SSH_PORT.
@@ -48,6 +53,7 @@ env:
   # block it is a plain string and the cap does not apply.
   DORAK_SHA: ${{ github.sha }}
   DORAK_REF: ${{ github.ref_name }}
+  DORAK_RESET_DATABASE: ${{ inputs.reset_database }}
 
 jobs:
   deploy:
@@ -77,7 +83,7 @@ jobs:
           username: ${{ secrets.HOSTINGER_USERNAME }}
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.HOSTINGER_SSH_PORT }}
-          envs: DORAK_REPOSITORY,DORAK_TARGET,DORAK_SHARED_DIR,DORAK_ENVIRONMENT,DORAK_COMPOSER_FLAGS,DORAK_COMPOSER_BIN,DORAK_SEED_ONBOARDING,DORAK_HEALTH_URL,DORAK_KEEP_RELEASES,DORAK_SHA,DORAK_REF
+          envs: DORAK_REPOSITORY,DORAK_TARGET,DORAK_SHARED_DIR,DORAK_ENVIRONMENT,DORAK_COMPOSER_FLAGS,DORAK_COMPOSER_BIN,DORAK_SEED_ONBOARDING,DORAK_HEALTH_URL,DORAK_KEEP_RELEASES,DORAK_SHA,DORAK_REF,DORAK_RESET_DATABASE
           timeout: 60s
           command_timeout: 30m
           script: |
@@ -94,6 +100,7 @@ jobs:
             KEEP_RELEASES="${DORAK_KEEP_RELEASES}"
             RELEASE_SHA="${DORAK_SHA}"
             BRANCH_NAME="${DORAK_REF}"
+            RESET_DATABASE="${DORAK_RESET_DATABASE:-false}"
 
             # ═══════════════════════════════════════════════════════════════
             # 🛡️ Environment sanity — fail fast on a clobbered variable
@@ -306,7 +313,19 @@ jobs:
             # `-E 99` distinguishes "another deployment holds the lock" (nothing
             # ran, no warning warranted) from "migrate ran and failed".
             set +e
-            flock -E 99 -n "$MIGRATE_LOCK" $PHP_BIN artisan migrate --force
+            if [ "$RESET_DATABASE" = "true" ]; then
+              # Disposable development data only: the guard below refuses any
+              # other environment so the flag can never wipe a real database.
+              if [ "$ENVIRONMENT" != "development" ]; then
+                echo "❌ reset_database is only allowed for the development environment (got: $ENVIRONMENT)"
+                exit 1
+              fi
+              echo "💣 reset_database=true: running migrate:fresh --seed"
+              MIGRATE_CMD="migrate:fresh --seed --force"
+            else
+              MIGRATE_CMD="migrate --force"
+            fi
+            flock -E 99 -n "$MIGRATE_LOCK" $PHP_BIN artisan $MIGRATE_CMD
             MIGRATE_RC=$?
             set -e
 
