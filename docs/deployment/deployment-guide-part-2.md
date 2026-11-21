@@ -44,7 +44,7 @@ SANCTUM_STATEFUL_DOMAINS=dashboard.example.com
 SESSION_DOMAIN=.example.com
 ```
 
-Configure CORS to permit the dashboard origin. On shared hosting, use cron to
+The dashboard needs no CORS entry: only its Next.js server calls Laravel (see [Vercel dashboard hosting](vercel-dashboard.md)). CORS matters only for browser clients such as Flutter Web bundles; Laravel's defaults currently allow every origin on `api/*` without credentials (preflight verified 2026-11-22, a real browser request is still untested, backlog RR-12). On shared hosting, use cron to
 run short queue workers (for example `queue:work --stop-when-empty --max-time=50`)
 instead of a long-running worker process.
 

@@ -33,6 +33,14 @@ The dashboard is **not** deployed by any workflow: Vercel builds it (see [Vercel
 - **Flutter Web and CORS:** the web bundles call the API from the browser. There is no `backend/config/cors.php`, so Laravel's framework defaults apply (`api/*`, all origins, no credentials). A real cross-origin request from a deployed web bundle has not been tested; do that before sharing a web build. Where the bundles are hosted is undecided.
 - Last verified run: `44918280902` (verify, 3 APKs of 26-28 MB, 3 web bundles of about 14 MB, all green).
 
+## Local dashboard gate baseline (2026-11-22)
+
+The same steps as `dashboard-ci.yml`, run locally on Node 22.22.1 with the placeholder env (`BACKEND_API_URL`, `DASHBOARD_SESSION_SECRET`, `NEXT_TELEMETRY_DISABLED`), all exit 0: `npm ci`, `npm run lint`, `npx next typegen`, `npm run typecheck`, `npm test` (**203 files, 1075 tests, all passed**), `npm run build`. Commands run from `frontend/web/dashboard/`; run `npm run clean:artifacts` afterwards.
+
+Notes from that run:
+- `npm ci` hit `ERR_SOCKET_TIMEOUT` twice on a flaky connection and left no `node_modules` (it deletes the folder first), so later steps failed with exit 127 (command not found). That is a network symptom, not a code failure. It passed with `npm ci --maxsockets=2 --prefer-offline --fetch-timeout=300000 --fetch-retries=8`.
+- npm printed `EBADENGINE` warnings: `jsdom@30` and related packages want Node `^22.22.2`, while the local Node was 22.22.1. CI uses `node-version: 22` (latest 22.x), so it satisfies them.
+
 ## GitHub state
 
 Last inspected 2026-11-20 (not rechecked since): repository secrets and variables were empty and no workflow reads a repository variable. The four `HOSTINGER_*` secrets live in the `development` **environment**, which the 2026-11-21 deploys used successfully. The `dorak` deploy key is registered (the clone succeeded). Branch protection on `master` was checked on 2026-11-22: `GET branches/master/protection` returns 404, so `master` is **unprotected** and no check is required.

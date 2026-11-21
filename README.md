@@ -24,6 +24,7 @@ workspace used by clients, branch teams, and stylists.
 | `frontend/web/dashboard/` | The dashboard: admin, branch manager, barber and brand-owner portals; server-side API bridge | Next.js 16, React 19, TypeScript, Tailwind 4, shadcn/ui |
 | `frontend/mobile/` | Client, business, and stylist apps plus shared packages | Flutter, Dart, Melos |
 | `docs/` | Cross-project architecture and decision records | Markdown |
+| `scripts/` | Repository-level helpers, e.g. `verify-deploy.sh` (read-only post-deploy smoke test) | Bash |
 
 Start with [the documentation index](docs/index.md),
 and the subsystem guides in each project directory.

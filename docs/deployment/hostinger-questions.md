@@ -107,7 +107,8 @@ Never store private keys, `.env` content, or passwords in this document.
 
 - **Verdict (2026-11-21):** the backend is deployed and healthy. SSH, Git, PHP 8.5, Composer, the dedicated deploy key, release layout and the `public_html/dev` target are verified by a green deploy (run `44915144212`).
 - **Verified live:** `/api/v1/health` 200 with status-only payload; unknown routes return a bare 404; cached config has `debug => false`; 73 migrations, 0 pending; `jobs` and `failed_jobs` empty; no new Laravel log errors.
-- **Open gaps:** hPanel cron entries are unconfirmed (no `scheduler.log` or `queue-worker.log` exists); no database backup tooling; dashboard hosted on Vercel is not Git-connected.
+- **Re-audit 2026-11-22:** health still 200 and the live release is `ec7b19a39` (deploy run `44935178048`). Read-only SSH confirmed `scheduler.log` and `queue-worker.log` still do not exist, so the cron entries are still missing (backlog RR-8).
+- **Open gaps:** hPanel cron entries are unconfirmed (no `scheduler.log` or `queue-worker.log` exists); no database backup tooling; whether the Vercel project auto-deploys on push is unverified (a `Vercel` commit status exists on `origin/master`, see [Vercel dashboard hosting](vercel-dashboard.md)).
 - **Workflow:** explicit PHP 8.5 and `composer2`, strict known-host checking, `public_html/current -> dev` layout, optional `reset_database` input (see [CI/CD setup](ci-cd-setup.md)).
 - **GitHub secrets:** `HOSTINGER_SERVER_IP` = `82.25.83.69`; `HOSTINGER_USERNAME` = `u685718414`; `HOSTINGER_SSH_PORT` = `65002`; `HOSTINGER_SSH_PRIVATE_KEY` = a dedicated CI private key (store only in GitHub Secrets, never here).
 - **Decision:** keep deployment manual. Use `reset_database=true` only for disposable dev data after a migration rewrite.

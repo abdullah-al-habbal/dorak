@@ -38,3 +38,5 @@ Check these on the production host before the first public release and after eve
 3. Run `npm ci && npm run build` in `frontend/web/dashboard`, plus `npm run lint`, `npm run typecheck` and `npm test`.
 4. Apply migrations, deploy the API and queue worker, then inject Firebase files
    during signed mobile builds.
+5. After every deploy run `scripts/verify-deploy.sh` (read-only; no credentials). It checks backend health, a rejected login probe (401), the CORS preflight and the unauthenticated session probe (401), and exits non-zero on any failure or 5xx. Override targets with `BACKEND_URL` and `DASHBOARD_URL`.
+6. Open items that no script can check (cron in hPanel, branch protection, a real admin sign-in, the `dorak.ai` decision, Flutter Web CORS) are tracked as RR-8 to RR-12 in the [backlog](../backlog/index.md).
