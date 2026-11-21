@@ -7,7 +7,7 @@ on:
 
 # Server-side prerequisites (verify in Hostinger hPanel; nothing here is guessed):
 #   - GitHub secrets: HOSTINGER_SERVER_IP, HOSTINGER_USERNAME, HOSTINGER_SSH_PRIVATE_KEY, HOSTINGER_SSH_PORT.
-#   - A read-only GitHub deploy key for abdullah-al-habbal/dorak, private half at ~/.ssh/deploy_key on the server.
+#   - A read-only GitHub deploy key for abdullah-al-habbal/dorak, private half at ~/.ssh/dorak_deploy_key on the server (the older ~/.ssh/deploy_key is bound to another repository and must stay untouched).
 #   - $DORAK_SHARED_DIR/.env (mode 600) and shared storage; PHP 8.5, composer2, and git >= 2.25 on the server.
 #   - $DORAK_HEALTH_URL must resolve to the site served from $DORAK_TARGET.
 # See docs/deployment/ci-cd-setup.md for the full checklist.
@@ -132,7 +132,7 @@ jobs:
             # ═══════════════════════════════════════════════════════════════
             # 🔑 SSH/Git setup
             # ═══════════════════════════════════════════════════════════════
-            DEPLOY_KEY="/home/u685718414/.ssh/deploy_key"
+            DEPLOY_KEY="/home/u685718414/.ssh/dorak_deploy_key"
             export GIT_SSH_COMMAND="ssh -i $DEPLOY_KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
             PHP_BIN="/opt/alt/php85/usr/bin/php"
 

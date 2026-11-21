@@ -58,7 +58,7 @@ Never store private keys, `.env` content, or passwords in this document.
 
 | ID | Question | Answer and analysis | Status / next action |
 |---|---|---|---|
-| C11 | Can a server-side key pull a private GitHub repo, and is port 22 open? | The existing `/home/u685718414/.ssh/deploy_key` read `abdullah-al-habbal/dorak` with `StrictHostKeyChecking=yes`; `git ls-remote` returned master `c386493f20322ca51a719dd6d6ee8ee6245acaea` on 2026-11-21. | `ok`; the workflow uses this key path and strict host verification. |
+| C11 | Can a server-side key pull a private GitHub repo, and is port 22 open? | Port 22 to GitHub works. The old `/home/u685718414/.ssh/deploy_key` authenticates as a deploy key of a different repository (`ssh -T` greets another repo), so it read `dorak` only because `dorak` is public; it would fail if the repo went private. A dedicated key `~/.ssh/dorak_deploy_key` (ED25519, mode 600) was generated on 2026-11-21 and must be registered as a read-only deploy key on `abdullah-al-habbal/dorak`. | `owner action`: register `dorak_deploy_key.pub` in GitHub (Settings, Deploy keys, read-only); the workflow uses this path. Leave `deploy_key` untouched. |
 | C12 | Is GitHub SSH over port 443 a fallback? | Not tested because the configured deploy key successfully read the repository over the normal Git SSH route. | `unverified`; test only if port 22 stops working. |
 
 ## D. Folder layout and web root

@@ -101,3 +101,27 @@ it('returns timestamp in ISO 8601 format', function () {
 
     expect($result['timestamp'])->toMatch('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/');
 });
+
+it('exposes only the status of each check on the public endpoint', function () {
+    $this->resolver->shouldReceive('checkDatabase')->once()->andReturn([
+        'status' => 'ok', 'driver' => 'mysql', 'latency_ms' => 1.0,
+    ]);
+
+    Cache::shouldReceive('put')->once()->andReturn(true);
+    Cache::shouldReceive('get')->once()->andReturn(true);
+    Cache::shouldReceive('forget')->once()->andReturn(true);
+
+    $result = $this->handler->handle();
+
+    expect(array_keys($result['checks']))->toBe(['app', 'database', 'cache', 'php', 'queue']);
+
+    foreach ($result['checks'] as $check) {
+        expect(array_keys($check))->toBe(['status']);
+    }
+
+    expect(json_encode($result))
+        ->not->toContain('environment')
+        ->not->toContain('debug_mode')
+        ->not->toContain('latency_ms')
+        ->not->toContain('driver');
+});

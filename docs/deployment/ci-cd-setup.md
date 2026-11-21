@@ -51,7 +51,7 @@ target is the actual `public_html/dev` release directory; it must never target
 
 ## What to configure on the Hostinger server
 
-1. Confirmed over SSH: Git 2.52.0, PHP 8.5.13 at `/opt/alt/php85/usr/bin/php`, `composer2` 2.9.8, and `proc_open` enabled in CLI. The existing deploy key can read the GitHub repository with strict host-key verification.
+1. Confirmed over SSH: Git 2.52.0, PHP 8.5.13 at `/opt/alt/php85/usr/bin/php`, `composer2` 2.9.8, and `proc_open` enabled in CLI. The old `~/.ssh/deploy_key` is bound to a different GitHub repository and reads `dorak` only because `dorak` is public; the workflow therefore uses the dedicated `~/.ssh/dorak_deploy_key`, which is generated but still has to be registered on GitHub (see the pre-deploy checklist).
 2. The shared `.env` exists at `/home/u685718414/domains/dev-dorak-backend.io/shared/.env` with mode `600`; the deployed release links to it. Shared storage is linked from the release. Shell `ln`, `flock`, and `rsync` are available; the `symlink()` PHP function is disabled.
 3. PHP CLI disables `system`, `exec`, `shell_exec`, and `passthru`; the workflow uses shell commands and Composer's working `proc_open`. It must use the explicit PHP 8.5 path and `composer2`.
 4. The live database is MariaDB 11.8.9, while CI intentionally tests only MySQL 8.4 because `TestDatabaseGuard` rejects MariaDB. Keep this difference documented; test compatibility before applying migrations.
@@ -73,6 +73,15 @@ Use the stable `current` path so release swaps do not require editing cron. Host
 ```
 
 These entries are recommendations, not confirmed active cron configuration. Verify Hostinger's cron interface and preserve unrelated entries before adding them.
+
+## Pre-deploy owner checklist (GitHub and hPanel)
+
+1. GitHub, Settings, Environments: create `development` and add the secrets `HOSTINGER_SERVER_IP` (82.25.83.69), `HOSTINGER_USERNAME` (`u685718414`), `HOSTINGER_SSH_PORT` (read it from hPanel, SSH access) and `HOSTINGER_SSH_PRIVATE_KEY` (a private key whose public half is in the account's authorized keys).
+2. GitHub, Settings, Deploy keys: add the contents of `~/.ssh/dorak_deploy_key.pub` as read-only. Verify with `ssh -i ~/.ssh/dorak_deploy_key -o IdentitiesOnly=yes -T git@github.com` on the server; it must greet `abdullah-al-habbal/dorak`.
+3. GitHub, Settings, Branches: protect `master` and require the Backend CI and Dashboard CI checks.
+4. Server: set `APP_DEBUG=false` in `shared/.env` (keep mode 600). With debug on, any error or unknown route returns a full stack trace with absolute server paths. `/api/v1/health` already hides `environment` and `debug_mode`, so debug is not visible there.
+5. hPanel, Cron Jobs: add the two every-minute entries above.
+6. Push the approved commits, then run the workflow manually.
 
 ## First manual deploy
 
