@@ -1,0 +1,167 @@
+name: Mobile CI
+
+# verify runs on every mobile change. The APK and web builds run only when the
+# workflow is dispatched by hand (MVP market testing); store releases are out
+# of scope until the product has traction.
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "frontend/mobile/**"
+      - ".github/workflows/mobile-ci.yml"
+  pull_request:
+    branches: ["master"]
+    paths:
+      - "frontend/mobile/**"
+      - ".github/workflows/mobile-ci.yml"
+  workflow_dispatch:
+    inputs:
+      build_artifacts:
+        description: "Also build the Android APKs and the Flutter Web bundles"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: "3.44.5"
+
+defaults:
+  run:
+    working-directory: frontend/mobile
+
+jobs:
+  verify:
+    name: Analyze and test (melos)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      # Each app declares .env as an asset, but the file is git-ignored.
+      # The example values are non-secret placeholders and point at the dev API.
+      - name: Create .env files from the examples
+        run: |
+          for app in apps/*/; do
+            cp "${app}.env.example" "${app}.env"
+          done
+
+      - name: Install dependencies
+        run: |
+          dart pub get
+          dart run melos bootstrap
+
+      - name: Generate, analyze, taxonomy and test
+        run: |
+          dart run melos run generate
+          dart run melos run build
+          dart run melos run analyze
+          dart run melos run taxonomy
+          dart run melos run test
+
+  android-apk:
+    name: Android APK (${{ matrix.app }})
+    if: github.event_name == 'workflow_dispatch' && inputs.build_artifacts
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [client_app, business_app, stylist_app]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Create .env from the example
+        run: cp apps/${{ matrix.app }}/.env.example apps/${{ matrix.app }}/.env
+
+      - name: Install dependencies and generate code
+        run: |
+          dart pub get
+          dart run melos bootstrap
+          dart run melos run generate
+          dart run melos run build
+
+      # No key.properties in CI, so Gradle signs with the debug key. Good for
+      # sideloading MVP testers; not accepted by any store.
+      - name: Build APK
+        working-directory: frontend/mobile/apps/${{ matrix.app }}
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.app }}-apk
+          path: frontend/mobile/apps/${{ matrix.app }}/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14
+
+  flutter-web:
+    name: Flutter Web (${{ matrix.app }})
+    if: github.event_name == 'workflow_dispatch' && inputs.build_artifacts
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [client_app, business_app, stylist_app]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Create .env from the example
+        run: cp apps/${{ matrix.app }}/.env.example apps/${{ matrix.app }}/.env
+
+      - name: Install dependencies and generate code
+        run: |
+          dart pub get
+          dart run melos bootstrap
+          dart run melos run generate
+          dart run melos run build
+
+      - name: Build web bundle
+        working-directory: frontend/mobile/apps/${{ matrix.app }}
+        run: flutter build web --release
+
+      - name: Upload web bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.app }}-web
+          path: frontend/mobile/apps/${{ matrix.app }}/build/web
+          if-no-files-found: error
+          retention-days: 14
