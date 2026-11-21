@@ -8,18 +8,20 @@ codeanchors:
 
 # CI/CD setup and manual checklist
 
-Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). Last verified: 2026-11-21 (live checks, GitHub Actions runs and Vercel probes recorded below).
+Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). Last verified: 2026-11-22 (live checks, GitHub Actions runs, commit statuses and Vercel probes recorded below). Read-only smoke test: `scripts/verify-deploy.sh`.
 
 ## Workflows
 
 | File | Trigger | Needs secrets | Runs in |
 |---|---|---|---|
 | `backend-ci.yml` | push and PR on `master`, `backend/**` | none (MySQL 8.4 service, `root/root`) | `backend/` (`defaults.run.working-directory`) |
-| `dashboard-ci.yml` | push and PR on `master`, `frontend/web/dashboard/**` | none (placeholder build env) | `frontend/web/dashboard/` |
+| `dashboard-ci.yml` | push and PR on `master`, `frontend/web/dashboard/**`; `workflow_dispatch` | none (placeholder build env) | `frontend/web/dashboard/` |
 | `mobile-ci.yml` | push and PR on `master`, `frontend/mobile/**`; `workflow_dispatch` (input `build_artifacts`, default true) | none | `frontend/mobile/` |
 | `deploy.yml` | **manual** (`workflow_dispatch`) only; input `reset_database` (default false) | 4 `HOSTINGER_*` secrets | the Hostinger host, over SSH |
 
 The dashboard is **not** deployed by any workflow: Vercel builds it (see [Vercel dashboard hosting](vercel-dashboard.md)).
+
+**Dashboard CI has never run** (2026-11-22: workflow ID `425966822`, zero runs). The file is valid YAML and is on `origin/master`; it is registered, but `gh workflow list` omits it and the GitHub API listing was inconsistent between calls (Backend CI flipped to `deleted` while still viewable by ID). Its push filter fires only for pushes that touch `frontend/web/dashboard/**` or the workflow file, and no such push has produced a run. The `workflow_dispatch` trigger was added so it can be started on demand once pushed; dispatch it once to confirm it is green before requiring it as a branch-protection check.
 
 ### Mobile CI (`mobile-ci.yml`)
 
@@ -33,7 +35,7 @@ The dashboard is **not** deployed by any workflow: Vercel builds it (see [Vercel
 
 ## GitHub state
 
-Last inspected 2026-11-20 (not rechecked since): repository secrets and variables were empty and no workflow reads a repository variable. The four `HOSTINGER_*` secrets live in the `development` **environment**, which the 2026-11-21 deploys used successfully. The `dorak` deploy key is registered (the clone succeeded). Branch protection on `master` is still unverified.
+Last inspected 2026-11-20 (not rechecked since): repository secrets and variables were empty and no workflow reads a repository variable. The four `HOSTINGER_*` secrets live in the `development` **environment**, which the 2026-11-21 deploys used successfully. The `dorak` deploy key is registered (the clone succeeded). Branch protection on `master` was checked on 2026-11-22: `GET branches/master/protection` returns 404, so `master` is **unprotected** and no check is required.
 
 ## What to configure in GitHub (Settings, Secrets and variables, Actions)
 
@@ -83,7 +85,7 @@ target is the actual `public_html/dev` release directory; it must never target
 | Laravel log | only the old failed-migration entry from the 13:23 run; nothing after the reset deploy | `shared/storage/logs` |
 | Seed | `DatabaseSeeder` ran in `development`; 1 admin row | tinker |
 | Cron (`schedule:run`, `queue:work`) | **not confirmed**: `scheduler.log` and `queue-worker.log` do not exist, so the hPanel entries were probably never added. Queued jobs are not processed until they are. | ssh `ls` |
-| Dashboard on Vercel | Ready at `dorak-bay.vercel.app`; reaches the backend | see [Vercel dashboard hosting](vercel-dashboard.md) |
+| Dashboard on Vercel | Ready at `dorak-bay.vercel.app`, built from `ec7b19a39`; reaches the backend; `01dd7e123` is unpushed so not built; successful login unverified | see [Vercel dashboard hosting](vercel-dashboard.md) |
 | Mobile CI | green, APK and web artifacts build | run `44918280902` |
 
 ### Resetting the development database
@@ -111,11 +113,11 @@ These entries are recommendations, not confirmed active cron configuration. Veri
 
 1. GitHub, Settings, Environments: create `development` and add the secrets `HOSTINGER_SERVER_IP` (82.25.83.69), `HOSTINGER_USERNAME` (`u685718414`), `HOSTINGER_SSH_PORT` (read it from hPanel, SSH access) and `HOSTINGER_SSH_PRIVATE_KEY` (a private key whose public half is in the account's authorized keys).
 2. GitHub, Settings, Deploy keys: add the contents of `~/.ssh/dorak_deploy_key.pub` as read-only. Verify with `ssh -i ~/.ssh/dorak_deploy_key -o IdentitiesOnly=yes -T git@github.com` on the server; it must greet `abdullah-al-habbal/dorak`.
-3. GitHub, Settings, Branches: protect `master` and require the Backend CI and Dashboard CI checks.
+3. GitHub, Settings, Branches: protect `master` and require the Backend CI and Dashboard CI checks (currently unprotected; tracked as RR-9 in the [backlog](../backlog/index.md)).
 4. Server: `APP_DEBUG=false` in `shared/.env` (keep mode 600), **done and verified 2026-11-21**. Note the cached config is what Laravel reads: a changed `.env` only takes effect after the next deploy (or `config:cache`). Before the reset deploy the `.env` already said `false` while the stale cache from the old release still said `true`, which is why unknown routes leaked stack traces.
 5. hPanel, Cron Jobs: add the two every-minute entries above.
 6. Push the approved commits, then run the workflow manually (done 2026-11-21).
-7. Vercel: connect the Git repository with root directory `frontend/web/dashboard` (see [Vercel dashboard hosting](vercel-dashboard.md)).
+7. Vercel: confirm in the UI that the Git connection, production branch `master` and root directory `frontend/web/dashboard` are set (a `Vercel` commit status already appears on `origin/master`; see [Vercel dashboard hosting](vercel-dashboard.md)).
 
 ## Manual deploy runbook
 
@@ -123,4 +125,5 @@ These entries are recommendations, not confirmed active cron configuration. Veri
 2. Back up the database (skip for a `reset_database=true` run on disposable dev data).
 3. Dispatch `deploy.yml` (add `-f reset_database=true` only after a migration rewrite). Migrations are not rolled back on failure.
 4. Verify: `curl https://dev-dorak-backend.io/api/v1/health` is 200 with only status fields; an unknown `/api/v1/...` path returns a bare 404; over SSH `grep "'debug'" bootstrap/cache/config.php` shows `false`, `artisan migrate:status` has no pending rows, `jobs`/`failed_jobs` are empty and the newest `shared/storage/logs/laravel-*.log` has no new errors.
-5. Check the hPanel cron entries exist (see above).
+5. Check the hPanel cron entries exist (see above; open item RR-8 in the [backlog](../backlog/index.md)).
+6. Run `scripts/verify-deploy.sh`; it must print `verify-deploy OK`.

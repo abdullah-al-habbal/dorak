@@ -11,6 +11,7 @@ on:
     paths:
       - "frontend/web/dashboard/**"
       - ".github/workflows/dashboard-ci.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read

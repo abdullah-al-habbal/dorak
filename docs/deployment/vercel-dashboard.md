@@ -9,7 +9,7 @@ codeanchors:
 
 # Vercel dashboard hosting (MVP)
 
-Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). Decision: the Next.js dashboard runs on Vercel's free (Hobby) tier for MVP validation. No GitHub workflow deploys it; Vercel builds it. Verified 2026-11-21 by probing the public domain (the Vercel dashboard itself needs a login and was not inspected).
+Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). Decision: the Next.js dashboard runs on Vercel's free (Hobby) tier for MVP validation. No GitHub workflow deploys it; Vercel builds it. Verified 2026-11-21 and re-audited 2026-11-22 by probing the public domain and the GitHub commit status API (the Vercel dashboard itself needs a login and was not inspected).
 
 ## Current state
 
@@ -17,11 +17,13 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). Decision
 |---|---|
 | Project | `dorak` (Vercel team `abdullah-allhabals-projects`) |
 | Production domain | `dorak-bay.vercel.app`; the per-deployment URL answers 302 (Vercel deployment protection or a redirect) |
-| Deployment | Ready; built from `master` at `docs(deployment): record APP_DEBUG=false on the dev host`. Vercel itself lists "Connect Git Repository" as a recommendation, so the project is **not Git-connected**: a push does not redeploy it |
+| Deployment | Ready; built from `origin/master` at `ec7b19a39` (`docs(deployment): record APP_DEBUG=false on the dev host`). GitHub shows a `Vercel` commit status on that commit (`success`, "Deployment has completed", linking to the `dorak` project), so Vercel does read this repository. Whether a push to `master` **auto-deploys**, and which root directory the project uses, still needs the Vercel UI (Settings, Git and General) |
+| Unpushed commits | `01dd7e123` (sign-in pole animation) and `210a1dd18` (deployment docs) exist only locally, so Vercel has not built `01dd7e123`; the live sign-in page predates it |
 | Pages | `/` 200; `/dashboard/{admin,owner,barber}/login` 200 (`manager` not probed); `/dashboard/business/login` and `/dashboard/branch/login` 404 because those are not guards |
 | Backend link | `POST /api/auth/login` with wrong credentials returned the backend's `401 invalid_credentials`, so `BACKEND_API_URL` is set and Hostinger is reachable from Vercel |
 | No session | `GET /api/auth/me` returns `401 session_expired` |
-| **Not verified** | a successful sign-in (the only proof `DASHBOARD_SESSION_SECRET` equals the backend's value; a "session setup failed" error means they differ); the `dorak.ai` domain (DNS and project attachment); Vercel project settings (root directory, Node version) |
+| **Not verified** | a successful sign-in (the only proof `DASHBOARD_SESSION_SECRET` equals the backend's value; a "session setup failed" error means they differ); Vercel project settings (root directory, Node version, auto-deploy on push) |
+| `dorak.ai` | **Not registered**: `dorak.ai` and `www.dorak.ai` return NXDOMAIN and whois reports "Domain not found" (2026-11-22). Nothing to attach until it is bought |
 
 ## Why no CORS or cookie changes are needed
 
@@ -45,11 +47,13 @@ The backend side of the secret lives in `shared/.env` on Hostinger (`backend/.en
 ## Owner actions still open
 
 1. Sign in once as the seeded admin at `https://dorak-bay.vercel.app/dashboard/admin/login` to confirm the secrets match.
-2. Connect the Git repository (Settings, Git) with root `frontend/web/dashboard` so pushes to `master` redeploy. Until then, redeploy by hand to publish dashboard changes (for example the sign-in pole animation, commit `01dd7e123`).
-3. Decide on `dorak.ai`: attach it to the project and point DNS, or drop it.
+2. Open Settings, Git in the Vercel project and confirm the repository is connected, production branch is `master` and the root directory is `frontend/web/dashboard`. After the owner pushes `01dd7e123`, check that a new `Vercel` status appears on the new `origin/master` commit; that proves auto-deploy. If it does not, redeploy by hand.
+3. Decide on `dorak.ai`: it is unregistered. Register it and attach it to the project, or drop it from the docs.
 4. Review the Hobby tier limits before real traffic: it is for non-commercial use.
 
 ## Verifying after a change
+
+`scripts/verify-deploy.sh` runs the read-only probes below plus the CORS preflight and exits non-zero on any failure or 5xx. The manual equivalents:
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" https://dorak-bay.vercel.app/dashboard/admin/login      # 200
