@@ -3,7 +3,7 @@
 import type { JSX } from "react";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
-/** Sign-in side panel. One orchestrated moment: the pole turns once on load, then rests. */
+/** Sign-in side panel. The pole turns continuously (one stripe tile per loop, so the seam is invisible) and stays still for reduced motion. */
 export function BrandPanel(): JSX.Element {
   const { common, auth } = useDictionary();
 
@@ -13,9 +13,9 @@ export function BrandPanel(): JSX.Element {
 
       <div
         aria-hidden
-        className="absolute inset-y-0 end-16 w-14 overflow-hidden rounded-full opacity-90 shadow-[0_0_80px_oklch(0.5_0.21_262/45%)]"
+        className="absolute inset-y-8 end-16 w-14 overflow-hidden rounded-full opacity-90 shadow-[0_0_80px_oklch(0.5_0.21_262/45%)]"
       >
-        <div className="pole-stripe absolute -top-[39.6px] h-[calc(100%+39.6px)] w-full animate-[pole-turn_900ms_var(--ease-out-strong)_1_both]" />
+        <div className="pole-stripe absolute -top-[39.6px] h-[calc(100%+39.6px)] w-full animate-[pole-turn_1400ms_linear_infinite] motion-reduce:animate-none" />
       </div>
 
       <div className="relative max-w-md">

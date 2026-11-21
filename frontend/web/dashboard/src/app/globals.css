@@ -240,6 +240,7 @@
   }
 }
 
+/* One full stripe tile (28px period * sqrt(2) along the Y axis), so an infinite linear loop has no seam. */
 @keyframes pole-turn {
   from {
     transform: translateY(0);
