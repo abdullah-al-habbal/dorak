@@ -93,7 +93,7 @@ target is the actual `public_html/dev` release directory; it must never target
 | Laravel log | only the old failed-migration entry from the 13:23 run; nothing after the reset deploy | `shared/storage/logs` |
 | Seed | `DatabaseSeeder` ran in `development`; 1 admin row | tinker |
 | Cron (`schedule:run`, `queue:work`) | **not confirmed**: `scheduler.log` and `queue-worker.log` do not exist, so the hPanel entries were probably never added. Queued jobs are not processed until they are. | ssh `ls` |
-| Dashboard on Vercel | Ready at `dorak-bay.vercel.app`, built from `ec7b19a39`; reaches the backend; `01dd7e123` is unpushed so not built; successful login unverified | see [Vercel dashboard hosting](vercel-dashboard.md) |
+| Dashboard on Vercel | Ready at `dorak-bay.vercel.app`, built from `ec7b19a39`; reaches the backend; `01dd7e123` is unpushed so not built; admin sign-in verified 2026-11-22 (secrets match) | see [Vercel dashboard hosting](vercel-dashboard.md) |
 | Mobile CI | green, APK and web artifacts build | run `44918280902` |
 
 ### Resetting the development database
