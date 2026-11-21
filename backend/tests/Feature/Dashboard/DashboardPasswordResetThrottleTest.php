@@ -93,9 +93,36 @@ describe('Dashboard password recovery limits', function (): void {
     });
 
     it('refuses a wildcard trusted-proxy setting', function (): void {
-        putenv('TRUSTED_PROXIES=*');
-        $config = require base_path('modules/Core/Config/trustedproxy.php');
-        putenv('TRUSTED_PROXIES');
+        // .env.example defines TRUSTED_PROXIES (empty), and env() reads $_ENV/$_SERVER before putenv, so set all
+        // three sources and restore them exactly, or the test passes only on machines without that variable.
+        $name = 'TRUSTED_PROXIES';
+        $hadEnv = array_key_exists($name, $_ENV);
+        $hadServer = array_key_exists($name, $_SERVER);
+        $oldEnv = $_ENV[$name] ?? null;
+        $oldServer = $_SERVER[$name] ?? null;
+        $oldPutenv = getenv($name);
+
+        putenv("{$name}=*");
+        $_ENV[$name] = '*';
+        $_SERVER[$name] = '*';
+
+        try {
+            $config = require base_path('modules/Core/Config/trustedproxy.php');
+        } finally {
+            $oldPutenv === false ? putenv($name) : putenv("{$name}={$oldPutenv}");
+
+            if ($hadEnv) {
+                $_ENV[$name] = $oldEnv;
+            } else {
+                unset($_ENV[$name]);
+            }
+
+            if ($hadServer) {
+                $_SERVER[$name] = $oldServer;
+            } else {
+                unset($_SERVER[$name]);
+            }
+        }
 
         expect($config['proxies'])->toBeNull();
     });
