@@ -45,6 +45,7 @@ android {
 
     buildTypes {
         release {
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             // Signed with android/key.properties when it exists (git-ignored); otherwise the debug key,
             // so `flutter run --release` still works locally. Store uploads need the real keystore.
             signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
