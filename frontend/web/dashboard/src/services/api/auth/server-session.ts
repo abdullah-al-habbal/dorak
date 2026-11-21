@@ -10,6 +10,7 @@ import { meProfileSchema } from "@/schemas/account/account/me-profile.zod";
 import { backendRequest } from "@/services/api/auth/backend-client";
 import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
+import { getServerLocale } from "@/locales/get-server-locale";
 import type { MeProfile } from "@/types/account/profile/me-profile.type";
 import type { SessionClaim } from "@/types/core/session/session-claim.type";
 
@@ -32,11 +33,13 @@ async function loadSession(): Promise<ServerSession | null> {
   const actor = claim ? actorFromClaim(claim) : null;
   if (!claim || !actor || !accessToken) return null;
 
+  // The backend localises `display_name`; without the page locale the Arabic header shows the English name.
   const result = await backendRequest({
     path: BACKEND_PATH.me,
     method: HttpMethod.Get,
     accessToken,
     claim: claimToken,
+    locale: await getServerLocale(),
   });
   const profile = result.ok ? meProfileSchema.safeParse(result.envelope?.data) : null;
   return profile?.success && profileMatchesClaim(profile.data, claim) ? { actor, profile: profile.data } : null;

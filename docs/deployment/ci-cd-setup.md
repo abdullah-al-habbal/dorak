@@ -41,6 +41,8 @@ Notes from that run:
 - `npm ci` hit `ERR_SOCKET_TIMEOUT` twice on a flaky connection and left no `node_modules` (it deletes the folder first), so later steps failed with exit 127 (command not found). That is a network symptom, not a code failure. It passed with `npm ci --maxsockets=2 --prefer-offline --fetch-timeout=300000 --fetch-retries=8`.
 - npm printed `EBADENGINE` warnings: `jsdom@30` and related packages want Node `^22.22.2`, while the local Node was 22.22.1. CI uses `node-version: 22` (latest 22.x), so it satisfies them.
 
+Dashboard re-run after the Arabic sidebar and header fixes (same steps, all exit 0): `npm test` now shows **204 files, 1077 tests passed** (the baseline above was 203 and 1075).
+
 ## GitHub state
 
 Last inspected 2026-11-20 (not rechecked since): repository secrets and variables were empty and no workflow reads a repository variable. The four `HOSTINGER_*` secrets live in the `development` **environment**, which the 2026-11-21 deploys used successfully. The `dorak` deploy key is registered (the clone succeeded). Branch protection on `master` was checked on 2026-11-22: `GET branches/master/protection` returns 404, so `master` is **unprotected** and no check is required.
@@ -93,7 +95,7 @@ target is the actual `public_html/dev` release directory; it must never target
 | Laravel log | only the old failed-migration entry from the 13:23 run; nothing after the reset deploy | `shared/storage/logs` |
 | Seed | `DatabaseSeeder` ran in `development`; 1 admin row | tinker |
 | Cron (`schedule:run`, `queue:work`) | **not confirmed**: `scheduler.log` and `queue-worker.log` do not exist, so the hPanel entries were probably never added. Queued jobs are not processed until they are. | ssh `ls` |
-| Dashboard on Vercel | Ready at `dorak-bay.vercel.app`, built from `ec7b19a39`; reaches the backend; `01dd7e123` is unpushed so not built; admin sign-in verified 2026-11-22 (secrets match) | see [Vercel dashboard hosting](vercel-dashboard.md) |
+| Dashboard on Vercel | Ready at `dorak-bay.vercel.app`, built from `ec7b19a39`; reaches the backend; `origin/master` is at `2befdb3df` (the earlier local commits were pushed 2026-11-22); admin sign-in verified (secrets match); Arabic sidebar and header fixes pending the next push | see [Vercel dashboard hosting](vercel-dashboard.md) |
 | Mobile CI | green, APK and web artifacts build | run `44918280902` |
 
 ### Resetting the development database
