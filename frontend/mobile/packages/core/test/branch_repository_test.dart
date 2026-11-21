@@ -35,7 +35,7 @@ void main() {
 
       final plan = await repository.getFloorPlan(
         'branch-1',
-        startsAt: DateTime(2026, 10, 1, 15),
+        startsAt: DateTime.parse('2026-10-01T15:00:00+03:00'),
         durationMinutes: 30,
       );
 
