@@ -1,14 +1,14 @@
 name: 🚀 Deploy Dorak Backend
 
-# Manual trigger only. The job is fail-closed until the workflow matches the
-# verified Hostinger document-root and filesystem constraints.
+# Manual trigger only. The server's public_html/.htaccess rewrites through the
+# existing current -> dev symlink; this workflow replaces the dev release.
 on:
   workflow_dispatch:
 
 # Server-side prerequisites (verify in Hostinger hPanel; nothing here is guessed):
 #   - GitHub secrets: HOSTINGER_SERVER_IP, HOSTINGER_USERNAME, HOSTINGER_SSH_PRIVATE_KEY, HOSTINGER_SSH_PORT.
 #   - A read-only GitHub deploy key for abdullah-al-habbal/dorak, private half at ~/.ssh/deploy_key on the server.
-#   - $DORAK_SHARED_DIR/.env (mode 600) and the shared storage tree; PHP 8.5 and git >= 2.25 on the server.
+#   - $DORAK_SHARED_DIR/.env (mode 600) and shared storage; PHP 8.5, composer2, and git >= 2.25 on the server.
 #   - $DORAK_HEALTH_URL must resolve to the site served from $DORAK_TARGET.
 # See docs/deployment/ci-cd-setup.md for the full checklist.
 
@@ -33,6 +33,7 @@ env:
   # The monorepo that holds backend/. The server clones it over SSH with its deploy key.
   DORAK_REPOSITORY: abdullah-al-habbal/dorak
   DORAK_COMPOSER_FLAGS: --optimize-autoloader --no-interaction --no-scripts
+  DORAK_COMPOSER_BIN: composer2
   # Exercised over real HTTP after the swap. Returns 503 when the database is
   # unreachable, so it fails a broken deployment that `artisan about` passes.
   DORAK_HEALTH_URL: https://dev-dorak-backend.io/api/v1/health
@@ -51,10 +52,6 @@ env:
 jobs:
   deploy:
     name: 🚀 Deploy to Hostinger
-    # Fail closed until the release workflow is redesigned for the verified
-    # publichtml document root and outside-root shared directory. The current
-    # release swap would target the wrong path and assumes symlink support.
-    if: ${{ false }}
     runs-on: ubuntu-latest
     # The four HOSTINGER_* secrets live in the `development` environment (Settings, Environments), not repo-wide.
     environment: development
@@ -80,7 +77,7 @@ jobs:
           username: ${{ secrets.HOSTINGER_USERNAME }}
           key: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.HOSTINGER_SSH_PORT }}
-          envs: DORAK_REPOSITORY,DORAK_TARGET,DORAK_SHARED_DIR,DORAK_ENVIRONMENT,DORAK_COMPOSER_FLAGS,DORAK_SEED_ONBOARDING,DORAK_HEALTH_URL,DORAK_KEEP_RELEASES,DORAK_SHA,DORAK_REF
+          envs: DORAK_REPOSITORY,DORAK_TARGET,DORAK_SHARED_DIR,DORAK_ENVIRONMENT,DORAK_COMPOSER_FLAGS,DORAK_COMPOSER_BIN,DORAK_SEED_ONBOARDING,DORAK_HEALTH_URL,DORAK_KEEP_RELEASES,DORAK_SHA,DORAK_REF
           timeout: 60s
           command_timeout: 30m
           script: |
@@ -91,6 +88,7 @@ jobs:
             SHARED_DIR="${DORAK_SHARED_DIR}"
             ENVIRONMENT="${DORAK_ENVIRONMENT}"
             COMPOSER_FLAGS="${DORAK_COMPOSER_FLAGS}"
+            COMPOSER_BIN="${DORAK_COMPOSER_BIN}"
             SEED_ONBOARDING="${DORAK_SEED_ONBOARDING}"
             HEALTH_URL="${DORAK_HEALTH_URL}"
             KEEP_RELEASES="${DORAK_KEEP_RELEASES}"
@@ -116,7 +114,7 @@ jobs:
               "$EXPECTED_PREFIX"/*) : ;;
               *) echo "❌ SHARED_DIR does not look like this server: $SHARED_DIR"; exit 1 ;;
             esac
-            for v in REPOSITORY TARGET SHARED_DIR ENVIRONMENT COMPOSER_FLAGS HEALTH_URL KEEP_RELEASES RELEASE_SHA BRANCH_NAME; do
+            for v in REPOSITORY TARGET SHARED_DIR ENVIRONMENT COMPOSER_FLAGS COMPOSER_BIN HEALTH_URL KEEP_RELEASES RELEASE_SHA BRANCH_NAME; do
               eval "val=\${$v:-}"
               [ -n "$val" ] || { echo "❌ $v is empty — env forwarding failed"; exit 1; }
             done
@@ -135,8 +133,8 @@ jobs:
             # 🔑 SSH/Git setup
             # ═══════════════════════════════════════════════════════════════
             DEPLOY_KEY="/home/u685718414/.ssh/deploy_key"
-            export GIT_SSH_COMMAND="ssh -i $DEPLOY_KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=no"
-            PHP_BIN="$(command -v php8.5 || command -v php || echo /usr/bin/php)"
+            export GIT_SSH_COMMAND="ssh -i $DEPLOY_KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
+            PHP_BIN="/opt/alt/php85/usr/bin/php"
 
             PHP_VERSION="$($PHP_BIN -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')"
             if [ "$PHP_VERSION" != "8.5" ]; then
@@ -287,7 +285,7 @@ jobs:
             # 📦 Install dependencies
             # ═══════════════════════════════════════════════════════════════
             echo "📦 Installing PHP dependencies..."
-            composer install $COMPOSER_FLAGS
+            $COMPOSER_BIN install $COMPOSER_FLAGS
             $PHP_BIN artisan package:discover --ansi
 
             # ═══════════════════════════════════════════════════════════════
@@ -356,9 +354,9 @@ jobs:
             # clone has no config/route/view cache to clear anyway, so the only
             # effect would be collateral damage to the running app.
             # ═══════════════════════════════════════════════════════════════
-            # 🔄 Atomic release swap
+            # 🔄 Replace the directory behind the stable current -> dev symlink
             # ═══════════════════════════════════════════════════════════════
-            echo "🔄 Swapping to new release..."
+            echo "🔄 Replacing the dev release directory..."
 
             cd /
             rm -rf -- "$OLD_TMP_DIR" 2>/dev/null || true

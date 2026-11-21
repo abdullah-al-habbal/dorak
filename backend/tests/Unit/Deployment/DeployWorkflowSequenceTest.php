@@ -48,11 +48,22 @@ it('has a deploy script that bash can parse', function (): void {
     expect($process->getExitCode())->toBe(0, $process->getErrorOutput());
 });
 
-it('keeps Hostinger deployment disabled until the workflow matches the verified hosting layout', function (): void {
-    expect(deployWorkflow())->toContain('if: ${{ false }}');
+it('uses the verified Hostinger paths and explicit CLI tools with strict Git host verification', function (): void {
+    $workflow = deployWorkflow();
+
+    expect($workflow)->toContain('/home/u685718414/domains/dev-dorak-backend.io/public_html/dev')
+        ->toContain('/home/u685718414/domains/dev-dorak-backend.io/shared')
+        ->toContain('PHP_BIN="/opt/alt/php85/usr/bin/php"')
+        ->toContain('COMPOSER_BIN="${DORAK_COMPOSER_BIN}"')
+        ->toContain('DORAK_COMPOSER_BIN: composer2')
+        ->toContain('$COMPOSER_BIN install $COMPOSER_FLAGS')
+        ->toContain('git sparse-checkout set backend')
+        ->toContain('ACTUAL_SHA="$(git rev-parse HEAD)"')
+        ->toContain('StrictHostKeyChecking=yes')
+        ->not->toContain('if: ${{ false }}');
 });
 
-it('runs exactly one migrate pass, before the swap, then health-checks the live release and restarts the workers', function (): void {
+it('runs one migration pass before replacing the release, then health-checks it and restarts workers', function (): void {
     $script = deployScript();
 
     expect(substr_count($script, 'artisan migrate --force'))->toBe(1);
