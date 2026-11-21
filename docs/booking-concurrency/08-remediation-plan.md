@@ -19,15 +19,15 @@ Order of work for the booking findings 1 to 10 in the [index](index.md). The non
 
 | Finding | What | Commit |
 |---|---|---|
-| 1 (reschedule half), 6 (booking create) | Reschedule takes chair, barber, booking; the 1213 deadlock was reproduced first. `Idempotency-Key` on `POST /bookings`, required since `af8cf0565` | `097741742`, `dda9ac13c`, `af8cf0565` |
+| 1 (reschedule and confirm halves), 6 (booking create) | Reschedule takes chair, barber, booking; the 1213 deadlock was reproduced first. `Idempotency-Key` on `POST /bookings`, required since `af8cf0565` | `097741742`, `dda9ac13c`, `af8cf0565` |
 | Throttles | Named limiters on booking and explore routes (BG-10) | `03747a67b` |
 
 ## Order
 
 | Phase | Item | Finding | What | Depends on |
 |---|---|---|---|---|
-| 1 | **BG-17** | 1 | Write the parallel test confirm-versus-create (and accept, start) and watch it fail; then commit `Booking/Services/BookingLockOrder.php` and the `BookingLifecycleEloquentResolver` change that are in the working tree. This item owns committing them: BG-33 (dashboard chair writes) waits for it | none |
-| 1 | **BG-18** | 2 | `DB::transaction($callback, $attempts)` on the booking transactions, and map an exhausted retry to a retryable 503 or 409 with a stable code. Test with a forced 1213 | BG-17, so retries are rare |
+| ~~1~~ | ~~**BG-17**~~ | 1 | **Done** (`cb57adc6a`, by `booking-concurrency-idempotency-hardening`): the parallel confirm-versus-create test fails with 1213 on the old order and passes on `BookingLockOrder`. Left over: barber and branch accept routes have no test of their own ([07](07-test-coverage.md), item 1) | |
+| 1 | **BG-18** | 2 | `DB::transaction($callback, $attempts)` on the booking transactions, and map an exhausted retry to a retryable 503 or 409 with a stable code. Test with a forced 1213. **Taken by `booking-concurrency-idempotency-hardening`** (board Q-12); this file keeps the plan | BG-17 (done) |
 | 2 | **BG-20** | 10 | `client_app`: on a 409 from booking create reload the slots and clear the chosen time; own messages for 429 and 503 (EN and AR) | none (mobile only) |
 | 2 | **BG-19** | 9 | Slot list loads the day once and computes in memory (about 300 to 500 queries down to under 10), with a query-count ceiling in the slot tests and a list-versus-create agreement test | none; touches `BookingAvailability` use, so run after BG-17 to avoid editing the same predicate twice |
 | 3 | **BG-21** | 10 | `RetryInterceptor` honours `Retry-After` and stops retrying lifecycle `PATCH` and `DELETE` on a 5xx without server-side idempotency | fix order convention 7 (idempotent deletes) |
@@ -40,7 +40,7 @@ Phase 1 changes no API shape. BG-18 adds one error code, so it needs a translati
 
 ## Verification per item
 
-- **BG-17:** `composer test:concurrency` shows the new test failing on the current code and passing after; run the reschedule test with `BOOKING_RACE_ROUNDS=40`; full Pest and Pint.
+- **BG-17:** done; the check was `composer test:concurrency` with the new test failing on the old order and passing on HEAD.
 - **BG-18:** a Pest test forces a concurrency exception and asserts the retry and the mapped answer; the concurrency suite still passes.
 - **BG-19:** the query count is asserted, every returned slot books successfully, every omitted slot is refused.
 - **BG-20, BG-21:** bloc and interceptor tests that fail first; `melos verify` exit 0.

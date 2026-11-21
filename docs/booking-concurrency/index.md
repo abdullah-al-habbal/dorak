@@ -43,7 +43,7 @@ Paths are relative to `backend/modules/` unless they start with `frontend/`, `ba
 
 | # | Finding | Severity | Grade | File |
 |---|---|---|---|---|
-| 1 | Confirm, accept and start paths lock the booking first, then the chair and barber. Create holds the chair and scans into that booking's slot. This is a lock-order inversion that can deadlock. Reschedule had the same inversion, was **reproduced** as a real 1213 deadlock (HTTP 500) and fixed in `097741742`; these paths are not fixed and not yet reproduced. | Major | Confirmed | [01](01-lock-order-and-deadlocks.md) |
+| 1 | Confirm paths locked the booking first, then the chair and barber; create holds the chair and scans into that booking's slot, a lock-order inversion that can deadlock. Reschedule and confirm both had it, both were **reproduced** as a real 1213 deadlock (HTTP 500) by a parallel test and are fixed: reschedule in `097741742`, confirm through `BookingLockOrder` (`c386493f2`, proven by `cb57adc6a`). Barber and branch accept routes share the fix but have no test of their own. | Major | Confirmed (reproduced) | [01](01-lock-order-and-deadlocks.md) |
 | 2 | No transaction retries on a deadlock, and a deadlock or lock-wait timeout is not mapped: the client gets HTTP 500 `SERVER_ERROR`. Data stays correct, the request fails. | Major | Confirmed | [01](01-lock-order-and-deadlocks.md) |
 | 3 | `offered_services` rows are locked exclusively on every create. A brand-owned service is one row shared by every branch, so creates for it queue brand-wide. Throughput problem, not integrity. | Major | Confirmed | [01](01-lock-order-and-deadlocks.md) |
 | 4 | Overlap protection is application code only (row locks plus a range scan). MySQL has no exclusion constraint and there is no slot table or generated unique key. | Major | Confirmed | [02](02-overlap-guards.md) |
@@ -78,11 +78,9 @@ Done and committed (BG-9, BG-10, BG-11):
 - `e78c0e24d`: a booking whose services mix currencies is refused (BG-11, by another session).
 - Service-lock tuning (finding 3) was deliberately not done: no throughput evidence ([01](01-lock-order-and-deadlocks.md)); it is now BG-35 in the [fix order](10-fix-order.md).
 
-In the working tree, uncommitted, owned by another session (do not stage from here):
+Done and proven (BG-17): `c386493f2` committed `Booking/Services/BookingLockOrder.php`, used by the confirm paths (`BookingLifecycleEloquentResolver::lockForTarget`) and by reschedule; `cb57adc6a` added the parallel confirm-versus-create test, which fails with 1213 on the old order. Both by the `booking-concurrency-idempotency-hardening` session ([board](../sessions/index.md), Q-10 and Q-12). Create keeps its own lock order and does not call the helper.
 
-- `Booking/Services/BookingLockOrder.php`, used by the confirm paths (`BookingLifecycleEloquentResolver`) and by reschedule: the fix for finding 1. It has no parallel regression test; see [07](07-test-coverage.md), item 1.
-
-Open (backlog BG-17 for finding 1, BG-18 for finding 2): findings 1 (confirm path), 2 (no deadlock retry or mapping), 3 to 5, 7 to 10; BD-10 is a product decision. Files 05, 06 and 08 are listed above but are not written yet (they have no author yet; do not delete the rows). Non-booking write findings are W1 to W15 in [09](09-write-path-audit.md), ordered in [10](10-fix-order.md).
+Open (backlog BG-18 for finding 2, taken by `booking-concurrency-idempotency-hardening`): finding 2 (no deadlock retry or mapping), 3 to 5, 7 to 10; BD-10 is a product decision. Files 05, 06, 07 and 08 are written (by `dorak-5f`). Non-booking write findings are W1 to W15 in [09](09-write-path-audit.md), ordered in [10](10-fix-order.md).
 
 ## Related
 

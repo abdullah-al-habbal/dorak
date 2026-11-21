@@ -13,7 +13,7 @@ codeanchors:
 
 Routes: [booking concurrency](index.md) · [documentation graph](../index.md) · [testing strategy](../architecture/testing-strategy.md)
 
-What the concurrency tests prove, how they are built, and which cases are still unproven. Status on 19 November 2026 (BG-9, BG-10).
+What the concurrency tests prove, how they are built, and which cases are still unproven. Status on 19 November 2026 (BG-9, BG-10, BG-17).
 
 ## Method: one process per request
 
@@ -35,6 +35,7 @@ Two kinds of proof, and they are not equal: *blocked-then-refused* proves a lock
 | Dashboard reschedule racing a create, `BOOKING_RACE_ROUNDS` rounds (default 8) | `ConcurrentBookingsTest` | no 500, and no two blocking bookings overlap. **Reproduced the 1213 deadlock before the fix**; 40 rounds pass after it |
 | Five simultaneous retries with one `Idempotency-Key` | `ConcurrentBookingsTest` | one booking, five identical answers, one key row |
 | Replay, key reuse, expiry, failed attempt, other client's key, missing or malformed key | `Feature/Booking/BookingIdempotencyTest` | the replay contract; a mutation check (replay forced off, reuse check forced off) made 4 of them fail |
+| Dashboard confirm racing a create on the same chair, `BOOKING_RACE_ROUNDS` rounds | `ConcurrentBookingsTest` (`cb57adc6a`, BG-17) | confirm 200 and create 409 every round, one blocking booking. **Fails with MySQL 1213 on the old order** (author's report in board Q-12; not rerun by `dorak-5f`), passes on `BookingLockOrder` |
 | 11th booking write and 61st read per minute, slots by IP, explore by IP, limiter keyed per client | `Feature/Booking/BookingRouteThrottleTest` (6 tests) | the BG-10 limits and their keys |
 | Same key, same request body: the client app reuses it; changed body: new key; success: cleared | `client_app` bloc tests, `idempotency_key_test.dart`, `booking_repository_test.dart` | the app side of the contract |
 
@@ -42,7 +43,7 @@ Mutation checks matter here: each new test was run once against a broken impleme
 
 ## Not proven yet
 
-1. **Confirm, accept and start versus create** (the same inversion as the one that was fixed). The code order says it can deadlock; no test reproduces it. Write the parallel test first, watch it fail, then land the `BookingLockOrder` change that is in the working tree. Do not merge that change on the strength of the reschedule test.
+1. **Barber accept and branch accept versus create.** The dashboard confirm is proven (table above); the two accept routes reach `Confirmed` through the same `lockForTarget` but have no parallel test of their own. Low risk, cheap to add by reusing `bookingRaceWorld`; the start and complete transitions lock the booking row only and do not rescan, so they cannot invert.
 2. **Deadlock retry and mapping.** Nothing proves what a client sees when a 1213 or 1205 still happens. There is no mapping yet (finding 2 in the [index](index.md)); add a test with the fix.
 3. **Walk-in racing a client create** on one slot (a third path to the same locks).
 4. **Service lock contention** (finding 3): needs a measurement, not a pass/fail test.
