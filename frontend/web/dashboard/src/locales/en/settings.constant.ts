@@ -1,6 +1,7 @@
 export const enSettings = {
   title: "Platform settings",
   description: "Limits that apply across the Dorak apps. A saved change takes effect straight away, with no deploy.",
+  unknownSetting: "Unknown setting",
   groups: {
     auth: { title: "Sign-in and verification", description: "How long codes and sessions last and how many tries a person gets." },
     booking: { title: "Bookings and reviews", description: "Service length and the time clients have to dispute a review." },

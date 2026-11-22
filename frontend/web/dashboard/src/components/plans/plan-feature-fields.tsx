@@ -12,7 +12,7 @@ interface PlanFeatureFieldsProps extends PlanFieldsProps {
 
 /** The plan's feature flags as native checkboxes (free keyboard, screen-reader and RTL behaviour). */
 export function PlanFeatureFields({ form, featureKeys }: PlanFeatureFieldsProps): JSX.Element {
-  const { plans: t, subscription } = useDictionary();
+  const { plans: t, subscription, common } = useDictionary();
   return (
     <fieldset className="flex flex-col gap-2">
       <legend className="mb-1 text-sm font-medium">{t.form.features}</legend>
@@ -20,7 +20,8 @@ export function PlanFeatureFields({ form, featureKeys }: PlanFeatureFieldsProps)
       {featureKeys.map((key) => (
         <label key={key} className="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-border bg-card px-3 text-sm">
           <input type="checkbox" value={key} className="size-4 accent-primary" {...form.register("feature_keys")} />
-          {featureLabel(key, subscription.features.labels)}
+          {featureLabel(key, subscription.features.labels, common.unknown)}
+          {Object.hasOwn(subscription.features.labels, key) ? null : <span dir="ltr" translate="no" className="text-xs text-muted-foreground">{key}</span>}
         </label>
       ))}
     </fieldset>

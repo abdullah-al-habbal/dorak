@@ -3,13 +3,14 @@ import type { JSX } from "react";
 import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { currencyRows } from "@/lib/platform/analytics-money.util";
+import { enumLabel } from "@/lib/core/format/enum-label.util";
 import { formatPrice } from "@/lib/core/format/booking-format.util";
 import { formatCount } from "@/lib/earnings/earnings-format.util";
 import type { PlatformAnalytics } from "@/types/platform/platform-analytics.type";
 
 /** Recurring revenue, commission and payouts, one block per currency: amounts are never converted between currencies. */
 export function AnalyticsMoney({ analytics, locale }: { analytics: PlatformAnalytics; locale: string }): JSX.Element {
-  const { analytics: t, payouts } = useDictionary();
+  const { analytics: t, payouts, common } = useDictionary();
   const rows = currencyRows(analytics.subscriptions.recurring_revenue, analytics.commission.pending, analytics.commission.settled);
   const statusLabels: Record<string, string> = payouts.status;
 
@@ -33,7 +34,7 @@ export function AnalyticsMoney({ analytics, locale }: { analytics: PlatformAnaly
                 {analytics.payouts.filter((payout) => payout.currency === row.currency).map((payout) => (
                   <Figure
                     key={payout.status}
-                    label={t.money.payoutLine.replace("{status}", statusLabels[payout.status] ?? payout.status).replace("{count}", formatCount(payout.payouts, locale))}
+                    label={t.money.payoutLine.replace("{status}", enumLabel(statusLabels, payout.status, common.unknown, "payout-status")).replace("{count}", formatCount(payout.payouts, locale))}
                     value={formatPrice(payout.total_amount_minor, row.currency, locale)}
                   />
                 ))}

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { enDictionary } from "@/locales/en/index.constant";
 import { SubscriptionInterval } from "@/enums/money/subscription-interval.enum";
@@ -15,8 +15,9 @@ describe("subscription format", () => {
     expect(intervalLabel(SubscriptionInterval.Month, 3, interval)).toBe("3 months");
   });
 
-  it("labels known features and humanises unknown keys", () => {
-    expect(featureLabel("multi_branch", features.labels)).toBe("Multiple branches");
-    expect(featureLabel("loyalty_points", features.labels)).toBe("Loyalty points");
+  it("labels known features and shows Unknown for a key without a label", () => {
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    expect(featureLabel("multi_branch", features.labels, "Unknown")).toBe("Multiple branches");
+    expect(featureLabel("loyalty_points", features.labels, "Unknown")).toBe("Unknown");
   });
 });

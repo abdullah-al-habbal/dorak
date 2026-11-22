@@ -5,6 +5,7 @@ import { BarChart } from "@/components/earnings/bar-chart";
 import { Card } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import type { BarChartDatum } from "@/interfaces/ui/data/bar-chart-datum.interface";
+import { enumLabel } from "@/lib/core/format/enum-label.util";
 import { fillDailyCounts, sumCounts } from "@/lib/platform/analytics-series.util";
 import { formatCount, formatShortDate } from "@/lib/earnings/earnings-format.util";
 import type { EarningsRange } from "@/types/earnings/earnings-range.type";
@@ -18,7 +19,7 @@ interface AnalyticsBookingsProps {
 
 /** Completed bookings per day, beside the status mix of every booking that starts in the period. */
 export function AnalyticsBookings({ analytics, range, locale }: AnalyticsBookingsProps): JSX.Element {
-  const { analytics: t, bookings } = useDictionary();
+  const { analytics: t, bookings, common } = useDictionary();
   const days = fillDailyCounts(analytics.completed_bookings_series, range);
   const data: BarChartDatum[] = days.map((day) => ({ key: day.date, label: formatShortDate(day.date, locale), value: day.count, valueLabel: formatCount(day.count, locale) }));
   const total = formatCount(analytics.completed_bookings, locale);
@@ -50,7 +51,7 @@ export function AnalyticsBookings({ analytics, range, locale }: AnalyticsBooking
           ) : (
             <ul className="flex flex-col divide-y divide-border">
               {analytics.bookings_by_status.map((entry) => (
-                <MeterRow key={entry.status} label={statusLabels[entry.status] ?? entry.status} valueLabel={formatCount(entry.count, locale)} value={entry.count} total={statusTotal} />
+                <MeterRow key={entry.status} label={enumLabel(statusLabels, entry.status, common.unknown, "booking-status")} valueLabel={formatCount(entry.count, locale)} value={entry.count} total={statusTotal} />
               ))}
             </ul>
           )}

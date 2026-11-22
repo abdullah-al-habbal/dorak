@@ -43,14 +43,14 @@ export function PlanList({ plans, onSelect }: PlanListProps): JSX.Element {
         header: t.columns.features,
         cell: (plan) => (
           <span className="text-muted-foreground">
-            {plan.feature_keys.length === 0 ? t.noFeatures : plan.feature_keys.map((key) => featureLabel(key, subscription.features.labels)).join(", ")}
+            {plan.feature_keys.length === 0 ? t.noFeatures : plan.feature_keys.map((key) => featureLabel(key, subscription.features.labels, dictionary.common.unknown)).join(", ")}
           </span>
         ),
       },
       { id: "order", header: t.columns.order, align: "end", cell: (plan) => <span className="tabular text-muted-foreground">{plan.sort_order}</span> },
       { id: "status", header: t.columns.status, cell: (plan) => <PlanStateBadge active={plan.is_active} /> },
     ],
-    [locale, subscription, t],
+    [locale, subscription, t, dictionary.common.unknown],
   );
 
   return <DataTable caption={t.title} columns={columns} rows={plans} getRowId={getPlanId} onRowSelect={onSelect} rowLabel={(plan) => localizedText(plan.name, locale)} />;

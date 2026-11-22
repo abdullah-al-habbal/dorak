@@ -16,7 +16,7 @@ export function enumLabel(
   return unknownLabel;
 }
 
-function warnUnknownKey(scope: string, key: string | null | undefined): void {
+export function warnUnknownKey(scope: string, key: string | null | undefined): void {
   if (process.env.NODE_ENV === "production") return;
   const id = `${scope}:${String(key)}`;
   if (warned.has(id)) return;

@@ -4,6 +4,7 @@ import type { JSX } from "react";
 
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useStatusHistory } from "@/hooks/core/forms/use-status-history";
+import { enumLabel } from "@/lib/core/format/enum-label.util";
 
 const BRAND_SUBJECT = "brand";
 
@@ -13,7 +14,7 @@ export function BrandHistorySection({ brandId }: { brandId: string }): JSX.Eleme
   const { adminBrands: t } = dictionary;
   const query = useStatusHistory(BRAND_SUBJECT, brandId);
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" });
-  const label = (status: string): string => (status in t.status ? t.status[status as keyof typeof t.status] : status);
+  const label = (status: string): string => enumLabel(t.status, status, dictionary.common.unknown, "brand-status");
 
   return (
     <section aria-label={t.history.title} className="flex flex-col gap-2">
@@ -32,7 +33,7 @@ export function BrandHistorySection({ brandId }: { brandId: string }): JSX.Eleme
               <span className="tabular text-xs text-muted-foreground">
                 {entry.created_at ? date.format(new Date(entry.created_at)) : t.none}
                 {" · "}
-                {t.history.actors[entry.actor_type as keyof typeof t.history.actors] ?? entry.actor_type}
+                {enumLabel(t.history.actors, entry.actor_type, dictionary.common.unknown, "status-change-actor")}
               </span>
               {entry.reason ? <span dir="auto" className="break-words text-muted-foreground">{entry.reason}</span> : null}
             </li>

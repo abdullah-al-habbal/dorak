@@ -7,6 +7,7 @@ import { FormField, fieldErrorId } from "@/components/common/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useI18n } from "@/hooks/core/state/use-i18n";
+import { warnUnknownKey } from "@/lib/core/format/enum-label.util";
 import type { SettingFormValues } from "@/lib/platform/platform-settings.util";
 import { formatCount } from "@/lib/earnings/earnings-format.util";
 import type { PlatformSetting } from "@/types/platform/platform-setting.type";
@@ -23,7 +24,9 @@ export function PlatformSettingField({ setting, form, onResetToDefault }: Platfo
   const key = setting.setting_key;
   const id = `setting-${key}`;
   const copy: Partial<Record<string, { label: string; unit: string }>> = t.keys;
-  const label = copy[key]?.label ?? key;
+  const known = Object.hasOwn(copy, key);
+  const label = known ? (copy[key]?.label ?? t.unknownSetting) : t.unknownSetting;
+  if (!known) warnUnknownKey("platform-setting", key);
   const error = form.formState.errors[key]?.message;
   const atDefault = useWatch({ control: form.control, name: key }) === String(setting.default);
   const number = (value: number): string => formatCount(value, locale);
@@ -41,6 +44,7 @@ export function PlatformSettingField({ setting, form, onResetToDefault }: Platfo
       </FormField>
       <p id={`${id}-hint`} className="tabular text-xs text-muted-foreground">
         {t.field.hint.replace("{default}", number(setting.default)).replace("{min}", number(setting.min)).replace("{max}", number(setting.max))}
+        {known ? null : <span dir="ltr" translate="no" className="ms-2">{key}</span>}
       </p>
     </div>
   );

@@ -1,4 +1,5 @@
 import { SubscriptionInterval } from "@/enums/money/subscription-interval.enum";
+import { enumLabel } from "@/lib/core/format/enum-label.util";
 
 /** Singular and plural wording for "per month" / "every 3 months", supplied by the dictionary. */
 export interface IntervalWording {
@@ -12,9 +13,7 @@ export function intervalLabel(unit: SubscriptionInterval, count: number, wording
   return wording.everyMany[unit].replace("{count}", String(count));
 }
 
-/** `multi_branch` becomes "Multi branch" when the dictionary has no label for the key. */
-export function featureLabel(key: string, labels: Record<string, string>): string {
-  if (labels[key]) return labels[key];
-  const words = key.replace(/_/g, " ").trim();
-  return words.charAt(0).toUpperCase() + words.slice(1);
+/** The dictionary label of a feature key, or the localized "Unknown" text (and a dev warning) when the key has none. */
+export function featureLabel(key: string, labels: Readonly<Record<string, string>>, unknownLabel: string): string {
+  return enumLabel(labels, key, unknownLabel, "brand-feature");
 }
