@@ -16,7 +16,10 @@ use Throwable;
  */
 final class PlatformNotifier
 {
-    public function __construct(private readonly NotificationWriter $writer) {}
+    public function __construct(
+        private readonly NotificationWriter $writer,
+        private readonly NotificationRecipientLocale $recipientLocale,
+    ) {}
 
     /** One row for every active platform admin. */
     public function toAdmins(PlatformEventEnum $event, string $subjectId): void
@@ -41,12 +44,14 @@ final class PlatformNotifier
 
     private function record(DeviceTokenUserTypeEnum $type, string $accountId, PlatformEventEnum $event, string $subjectId): void
     {
+        $locale = $this->recipientLocale->resolve($type, $accountId);
+
         $this->writer->record(
             $type->modelClass(),
             $accountId,
             NotificationTypeEnum::PlatformEvent,
-            $event->title(),
-            $event->body(),
+            $event->title($locale),
+            $event->body($locale),
             ['type' => NotificationTypeEnum::PlatformEvent->value, 'event' => $event->value, 'subject_id' => $subjectId],
             "{$event->value}:{$subjectId}:".now()->format('YmdHi'),
         );
