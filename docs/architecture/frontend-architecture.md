@@ -22,7 +22,7 @@ Routes: [dashboard guide](../../frontend/web/dashboard/AGENTS.md) · [ADR 0003: 
 - `src/app/` holds the App Router pages and layouts under `dashboard/[guard]/`
   (`login/` is public, `(portal)/` is the signed-in shell) and the route handlers
   under `api/`.
-- `src/proxy.ts` guards `/dashboard/**`: it verifies the signed session claim,
+- `src/proxy.ts` also gates the public profile pages (`/brands/[slug]`, `/branches/[slug]`, `/stylists/[slug]`): a slug the backend reports as unknown or hidden is rewritten to `/_not-found` with status 404, because a page that streams its body cannot change the status after the shell is sent (`services/api/public/public-profile-gate.ts`). It guards `/dashboard/**`: it verifies the signed session claim,
   refreshes once, and redirects by guard.
 - `src/components/` holds `ui/` (shadcn on Base UI), layout, providers, overlays and
   feature UI such as `bookings/`.

@@ -43,6 +43,10 @@ Vercel project, Settings:
 | Env `BACKEND_API_URL` | `https://dev-dorak-backend.io` (origin only, no `/api`) |
 | Env `DASHBOARD_SESSION_SECRET` | the same value as the backend's `DASHBOARD_SESSION_SECRET`, at least 32 characters |
 | Env `DASHBOARD_SESSION_SECRETS` (optional) | JSON key ring `{"kid":"secret"}` for rotation; takes precedence |
+| Env `BOOKING_APP_URL` (optional) | Link of the Dorak app that the public profile pages' booking button opens; unset, the pages say booking is in the app |
+| Env `PUBLIC_SITE_URL` (optional) | Public origin of the dashboard site, for canonical and social-preview URLs of `/brands/[slug]`, `/branches/[slug]`, `/stylists/[slug]` |
+
+The public profile pages are the only routes outside `/dashboard` that the proxy touches: for `/brands/[slug]`, `/branches/[slug]` and `/stylists/[slug]` it asks the backend (`BACKEND_API_URL`, `/api/v1/public/...`) first, and a 404 answer becomes a real HTTP 404. A backend error, a rate limit or an outage never becomes a 404; the page then shows its own "unavailable" state. The pages need the backend migrations that add `branches.slug` and `barbers.slug`.
 
 The backend side of the secret lives in `shared/.env` on Hostinger (`backend/.env.example` documents `DASHBOARD_SESSION_SECRET` and `DASHBOARD_SESSION_SECRETS`). Never put the value in the repository or in logs.
 

@@ -32,6 +32,7 @@ history, for example `git show de6cff09:docs/decisions-required.md` and `git sho
 | BD-10 | May one client hold overlapping bookings with different barbers? | Nothing checks it today: the create path locks the client row but only compares each barber's and chair's own bookings (`CreateBookingEloquentResolver`). Found in the BG-9 audit. Decide whether a client may be in two places at once, then add the check next to the client lock. |
 | BD-11 | May one barber sit at several chairs? | `chairs.barber_id` is nullable, not unique, and nothing forbids it. Decide, then either add the unique index or record that it is allowed ([09](../booking-concurrency/09-write-path-audit.md) W9, [10](../booking-concurrency/10-fix-order.md)). |
 | BD-12 | Is phone uniqueness about verified numbers only? | Recommended: verified only, since an unverified number proves nothing. Blocks BG-32 ([09](../booking-concurrency/09-write-path-audit.md) W6, [10](../booking-concurrency/10-fix-order.md)). |
+| BD-13 | Where does the public pages' booking button point, and what is the public site origin? | Set `BOOKING_APP_URL` (store or universal link of the Dorak app) and `PUBLIC_SITE_URL` on Vercel (see [Vercel setup](../deployment/vercel-dashboard.md)). No store link exists in the repository. Until set, the pages say booking is in the app and canonical URLs stay relative. |
 
 Deferred by decision, not to be started: NS-26 plan self-service and billing (D6, manual billing at launch); NS-27 stays closed (D7); Apple and
 Facebook sign-in are unsupported (G9).
@@ -83,6 +84,7 @@ Facebook sign-in are unsupported (G9).
 - FT-20 Booking reminders and a scheduled job (see BG-12); today only status-change pushes exist.
 - FT-21 Privacy: consent records, marketing opt-out and a data-export endpoint (see BG-14).
 - FT-22 Offers, promotions and coupons, deposits and online payment, and deep links to a service or booking: not built; `payment` is offline only (`modules/Payment/Enums/PaymentGatewayDriver.php:10`). Each needs a product decision (BD-6) before it is a task.
+- FT-23 Public profile pages (`/brands/[slug]`, `/branches/[slug]`, `/stylists/[slug]`, Track 2) show no cover photo, gallery, phone, website or social links for a branch or brand (the schema has none; see FT-19c), and no web booking: the button opens `BOOKING_APP_URL` or only names the app. The branch page does not list the branch's tags yet (the API sends them). Also missing: `sitemap.xml`, `robots.txt` entries for the three paths and `generateStaticParams`/ISR if search traffic matters. Each page view costs two backend reads, one in the proxy (real 404) and one in the page.
 
 ## 4. Tech debt
 
