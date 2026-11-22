@@ -30,6 +30,9 @@ function deployScript(): string
     return implode("\n", $lines);
 }
 
+/** The one place the script runs a migration; which command it runs is picked just above it. */
+const DEPLOY_MIGRATE_INVOCATION = 'artisan $MIGRATE_CMD';
+
 function position(string $haystack, string $needle): int
 {
     $position = strpos($haystack, $needle);
@@ -66,9 +69,9 @@ it('uses the verified Hostinger paths and explicit CLI tools with strict Git hos
 it('runs one migration pass before replacing the release, then health-checks it and restarts workers', function (): void {
     $script = deployScript();
 
-    expect(substr_count($script, 'artisan migrate --force'))->toBe(1);
+    expect(substr_count($script, DEPLOY_MIGRATE_INVOCATION))->toBe(1);
 
-    $migrate = position($script, 'artisan migrate --force');
+    $migrate = position($script, DEPLOY_MIGRATE_INVOCATION);
     $swap = position($script, 'mv "$RELEASE_DIR" "$CURRENT_DIR"');
     $health = position($script, 'run_health_check "after the swap"');
     $workers = position($script, 'artisan queue:restart');
@@ -78,6 +81,23 @@ it('runs one migration pass before replacing the release, then health-checks it 
         ->and($swap)->toBeLessThan($health)
         ->and($health)->toBeLessThan($workers)
         ->and($workers)->toBeLessThan($committed);
+});
+
+it('picks plain migrate by default and migrate:fresh --seed only for a guarded development reset', function (): void {
+    $script = deployScript();
+
+    expect(substr_count($script, 'MIGRATE_CMD="migrate --force"'))->toBe(1)
+        ->and(substr_count($script, 'MIGRATE_CMD="migrate:fresh --seed --force"'))->toBe(1);
+
+    $reset = position($script, 'if [ "$RESET_DATABASE" = "true" ]; then');
+    $guard = position($script, 'if [ "$ENVIRONMENT" != "development" ]; then');
+    $fresh = position($script, 'MIGRATE_CMD="migrate:fresh --seed --force"');
+    $plain = position($script, 'MIGRATE_CMD="migrate --force"');
+
+    expect($reset)->toBeLessThan($guard)
+        ->and($guard)->toBeLessThan($fresh)
+        ->and($fresh)->toBeLessThan($plain)
+        ->and($plain)->toBeLessThan(position($script, DEPLOY_MIGRATE_INVOCATION));
 });
 
 it('keeps no deferred contract migration machinery or maintenance mode in the deploy', function (): void {
@@ -91,7 +111,7 @@ it('keeps no deferred contract migration machinery or maintenance mode in the de
 it('arms the rollback trap before the first migration and disarms it only after the health check', function (): void {
     $script = deployScript();
 
-    expect(position($script, 'trap cleanup_failed_release EXIT'))->toBeLessThan(position($script, 'artisan migrate --force'));
+    expect(position($script, 'trap cleanup_failed_release EXIT'))->toBeLessThan(position($script, DEPLOY_MIGRATE_INVOCATION));
     $committed = position($script, 'Deployment is now committed');
     expect(strpos($script, "HAD_PREVIOUS_RELEASE=false\n", $committed))->not->toBeFalse()
         ->and(strpos($script, "RELEASE_IS_LIVE=false\n", $committed))->not->toBeFalse()
