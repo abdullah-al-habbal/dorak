@@ -15,7 +15,22 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
-## Snapshot: 2026-11-22, about 09:00 to 09:15 UTC
+## Snapshot 2: 2026-11-22, 09:27 to 09:29 UTC (after the backend deploy)
+
+Backend deploy: GitHub Actions run [`45007603165`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45007603165), workflow `deploy.yml` dispatched by hand on `master` with `reset_database=false`, built from `ee534091e`. Conclusion **success** (job "Deploy to Hostinger" 32 s: set up job, determine seed flag, deploy via SSH, complete job). Dispatched 09:27:03 UTC, finished 09:27:41 UTC. No database reset was requested, so the seeded data were kept.
+
+| Probe (09:28 UTC) | Before the deploy (snapshot 1) | After the deploy |
+|---|---|---|
+| `GET /api/v1/health` (backend) | `200`, all checks `ok` | `200`, all checks `ok` |
+| `GET /api/v1/public/sitemap` (backend) | `404 RESOURCE_NOT_FOUND` | **`200`**: `data` has `brands` (2), `branches` (2), `stylists` (1); each entry is only `slug` and `updated_at`. Slugs: brands `dorak-demo`, `miller-inc`; branches `branch`, `demo-salon`; stylist `barber`. |
+| `GET /robots.txt` (Vercel) | `200`, no `Sitemap:` line | `200`, **still no `Sitemap:` line** |
+| `GET /sitemap.xml` (Vercel) | `200`, empty `<urlset>` | `200`, **still an empty `<urlset>`** |
+| `GET /brands/none-here`, `/branches/none-here` (Vercel) | `404` each | `404` each |
+| `GET /brands/dorak-demo`, `/branches/demo-salon`, `/stylists/barber` (Vercel) | not probed | `200` each (the listed slugs are real pages) |
+
+Why the Vercel sitemap is still empty: the owner set `PUBLIC_SITE_URL` in the Vercel project, but Vercel applies an environment variable only to **new** deployments, and none was made after it was set. The backend feed now works, so a redeploy of the Vercel project (not a code change) should fill `sitemap.xml` and add the `Sitemap:` line. Not yet verified: re-check after the redeploy.
+
+## Snapshot 1: 2026-11-22, about 09:00 to 09:15 UTC (before the backend deploy)
 
 Observed from a developer machine with `curl`, after `master` and `origin/master` were both at `ee534091e` (`feat(dashboard): branch tags, sitemap.xml and robots.txt for public profiles (FT-23)`).
 
@@ -29,7 +44,7 @@ Observed from a developer machine with `curl`, after `master` and `origin/master
 | Health | `https://dev-dorak-backend.io/api/v1/health` | |
 | Public sitemap feed (new) | `https://dev-dorak-backend.io/api/v1/public/sitemap` | Added in `6949d9721`. |
 | Dashboard `sitemap.xml`, `robots.txt` | `https://dorak-bay.vercel.app/sitemap.xml`, `/robots.txt` | Added in `ee534091e`. |
-| Repository | GitHub `abdullah-al-habbal/dorak`, branch `master` | Vercel builds `master`; no GitHub workflow deploys the dashboard. Hostinger is deployed only by the **manual** `deploy.yml` workflow (`workflow_dispatch`; see [CI/CD setup](ci-cd-setup.md)), so a push alone never updates the backend. |
+| Repository | GitHub `abdullah-al-habbal/dorak`, branch `master` | Vercel builds `master`; no GitHub workflow deploys the dashboard. Hostinger is deployed only by the **manual** `deploy.yml` workflow (`workflow_dispatch`; see [CI/CD setup](ci-cd-setup.md)), so a push alone never updates the backend. Run it from a terminal with `gh workflow run deploy.yml --ref master -f reset_database=false` (needs `gh` signed in), then `gh run watch <run-id> --exit-status`. |
 
 ### Probe results
 
@@ -71,13 +86,13 @@ Run on 2026-11-22 before the push, Playwright **skipped by the owner's instructi
 |---|---|---|
 | `BACKEND_API_URL` | Vercel | `https://dev-dorak-backend.io` (origin only). Set and working: the dashboard's server reaches Laravel. |
 | `DASHBOARD_SESSION_SECRET` | Vercel and Hostinger `shared/.env` | Must be identical on both; at least 32 characters. Matching is proven by the working login and `/me`. Never print or commit it. |
-| `PUBLIC_SITE_URL` | Vercel | **Not set at this snapshot.** Set it to `https://dorak-bay.vercel.app` (no trailing slash). Needed for canonical and social URLs, a non-empty `sitemap.xml` and the `Sitemap:` line of `robots.txt`. Changing it needs a redeploy. |
+| `PUBLIC_SITE_URL` | Vercel | **Set by the owner after snapshot 1, but not yet live in a deployment** (snapshot 2 still shows no `Sitemap:` line, so a redeploy is pending). The value must be `https://dorak-bay.vercel.app` (no trailing slash). It is needed for canonical and social URLs, a non-empty `sitemap.xml` and the `Sitemap:` line of `robots.txt`. Changing it needs a redeploy. |
 | `BOOKING_APP_URL` | Vercel | **Not set (unknown).** There is no store link yet; pages say booking is in the app. See backlog BD-13. |
 | Sitemap limits | backend `PublicProfileConstants::EXPLORE_SITEMAP_MAX_PER_KIND` | 10,000 per kind (brands, branches, stylists). |
 
 ## Known state and risks at this snapshot
 
-- **The backend does not deploy on push.** Dispatch `deploy.yml` from GitHub Actions (input `reset_database`, default false) after each push that changes the backend. The dashboard's `sitemap.xml` reads the backend feed, so the backend must be deployed first. Until then the sitemap is empty (never wrong).
+- **The backend does not deploy on push.** Dispatch `deploy.yml` (input `reset_database`, default false) after each push that changes the backend; this was done at 09:27 UTC (snapshot 2). The dashboard's `sitemap.xml` reads the backend feed, so the backend must be deployed first. Until then the sitemap is empty (never wrong).
 - **Seeded admin password is the default.** `admin@dorak.sy` signs in on the public dev backend with the password from `AdminSeeder` (verified again on this date). This is a known, deliberately deferred risk while the environment holds only seed data (backlog RR-10 and RR-13). Rotate it, and `DASHBOARD_SESSION_SECRET`, before any real user or real data.
 - **Branch photo, gallery, phone, social links and a web booking flow do not exist** in the schema or API (backlog FT-23). Barber phone numbers are private and must stay off the public API.
 - **Two backend reads per public profile view** (proxy 404 gate and the page) stay uncached on purpose (backlog FT-23).
@@ -102,7 +117,9 @@ The signed-in check (`login`, then `/me` with both headers, then `logout`) is do
 
 ## Next owner actions (in order)
 
-1. Dispatch the `deploy.yml` workflow on `master` (`ee534091e` or later; set `reset_database=true` only if a `migrate:fresh --seed` is wanted on dev, which also re-seeds the default admin). Expect the sitemap feed to answer `200`.
-2. Set `PUBLIC_SITE_URL` (and `BOOKING_APP_URL` once an app link exists) on Vercel, then redeploy.
-3. Re-run the probes above and update the snapshot table with the new date and results.
-4. Run the full Playwright suite when the owner allows wiping `dorak_test` (backlog BD-9, RR-1).
+1. ~~Dispatch `deploy.yml`~~ Done 2026-11-22 09:27 UTC (run `45007603165`, success, `reset_database=false`).
+2. Redeploy the Vercel project so it picks up `PUBLIC_SITE_URL=https://dorak-bay.vercel.app` (Vercel dashboard, Deployments, Redeploy; or push a commit). Then expect `/robots.txt` to end with `Sitemap: https://dorak-bay.vercel.app/sitemap.xml` and `/sitemap.xml` to list five `<loc>` entries (two brands, two branches, one stylist).
+3. Push the local documentation commits (`git push`) when ready; code commits `ee534091e` and earlier are already on `origin/master`.
+4. Set `BOOKING_APP_URL` once an app store or universal link exists (backlog BD-13).
+5. Rotate the seeded admin password and `DASHBOARD_SESSION_SECRET` before any real user (backlog RR-10, RR-13).
+6. Run the full Playwright suite when the owner allows wiping `dorak_test` (backlog BD-9, RR-1). It has not run against `ee534091e`.
