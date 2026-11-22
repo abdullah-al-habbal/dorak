@@ -18,7 +18,7 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). Decision
 | Project | `dorak` (Vercel team `abdullah-allhabals-projects`) |
 | Production domain | `dorak-bay.vercel.app`; the per-deployment URL answers 302 (Vercel deployment protection or a redirect) |
 | Deployment | Ready; built from `origin/master` at `ec7b19a39` (`docs(deployment): record APP_DEBUG=false on the dev host`). GitHub shows a `Vercel` commit status on that commit (`success`, "Deployment has completed", linking to the `dorak` project), so Vercel does read this repository. Whether a push to `master` **auto-deploys**, and which root directory the project uses, still needs the Vercel UI (Settings, Git and General) |
-| Pushed state | `origin/master` was fast-forwarded to `2befdb3df` on 2026-11-22, so the sign-in pole animation (`01dd7e123`) and the deployment docs are now on GitHub. Whether Vercel built that push (a new `Vercel` status on `2befdb3df`) is still to be confirmed |
+| Pushed state | `origin/master` was fast-forwarded to `2befdb3df` on 2026-11-22, so the sign-in pole animation (`01dd7e123`) and the deployment docs are now on GitHub. Vercel does build pushes: `ee534091e` (pushed 2026-11-22) added `/sitemap.xml` and `/robots.txt`, and both answered on the production domain minutes later (see [dev environment status](dev-environment-status.md)) |
 | Arabic (RTL) fixes | Two defects seen on `/dashboard/admin` in Arabic: the sidebar showed "الحلاقون" twice (admin items `barberApprovals` and `stylists` shared one Arabic label; `stylists` is now "المصففون", matching its page title) and the header showed the English name "Admin" (the server-side `/me` call did not send the page locale, so the backend returned the English `display_name`; `server-session.ts` now sends it through `getServerLocale()`). Both are fixed in the working tree and reach the live site once Vercel builds the next push. Guard: `tests/locales/shell-nav-labels.test.ts` fails when two items of one portal share a label |
 | Pages | `/` 200; `/dashboard/{admin,owner,barber}/login` 200 (`manager` not probed); `/dashboard/business/login` and `/dashboard/branch/login` 404 because those are not guards |
 | Backend link | `POST /api/auth/login` with wrong credentials returned the backend's `401 invalid_credentials`, so `BACKEND_API_URL` is set and Hostinger is reachable from Vercel |
@@ -56,6 +56,8 @@ The backend side of the secret lives in `shared/.env` on Hostinger (`backend/.en
 2. Open Settings, Git in the Vercel project and confirm the repository is connected, production branch is `master` and the root directory is `frontend/web/dashboard`. Check that a new `Vercel` status appears on the newest `origin/master` commit after the next push; that proves auto-deploy. If it does not, redeploy by hand.
 3. Decide on `dorak.ai`: it is unregistered. Register it and attach it to the project, or drop it from the docs.
 4. Review the Hobby tier limits before real traffic: it is for non-commercial use.
+
+See [dev environment status](dev-environment-status.md) for the dated probe results, URLs and the sitemap and robots checks.
 
 ## Backend `/me` contract
 

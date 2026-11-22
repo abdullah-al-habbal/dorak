@@ -30,6 +30,7 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [CI/CD setup and checklist](../deployment/ci-cd-setup.md)
 - [Hostinger findings and readiness](../deployment/hostinger-questions.md)
 - [Vercel dashboard hosting](../deployment/vercel-dashboard.md)
+- [Dev environment status (dated snapshot of URLs, probes and configs)](../deployment/dev-environment-status.md)
 
 ### `docs/mobile-audit-g10-g11/`
 
