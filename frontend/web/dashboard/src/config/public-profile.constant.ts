@@ -19,3 +19,9 @@ export const META_DESCRIPTION_MAX_LENGTH = 160;
 
 /** The weekday a public hours table starts on (0 is Sunday). */
 export const PUBLIC_WEEK_START = { en: 0, ar: 6 } as const;
+
+/** Backend feed of every indexable public profile slug, for `sitemap.xml`. */
+export const PUBLIC_SITEMAP_API_PATH = `${PUBLIC_PROFILE_API_PREFIX}/sitemap`;
+
+/** Paths a crawler is asked to stay out of: the signed-in workspaces and the API bridge. */
+export const ROBOTS_DISALLOWED_PATHS = ["/dashboard/", "/api/"] as const;

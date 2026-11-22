@@ -56,6 +56,20 @@ describe.each([Locale.En, Locale.Ar])("public profile screens in %s", (locale) =
     expect(container.innerHTML).not.toMatch(/class="[^"]*\b(ml-|mr-|pl-|pr-|left-|right-|text-left|text-right|float-left|float-right)/);
   });
 
+  it("lists the branch tags in the page language, and nothing when there are none", () => {
+    const { container, rerender } = render(screens(locale).branch);
+    const tags = screen.getByRole("list", { name: DICTIONARIES[locale].publicProfile.tags });
+    expect(tags).toHaveTextContent(locale === Locale.Ar ? "أطفال" : "Kids");
+    expect(tags).not.toHaveTextContent(locale === Locale.Ar ? "Kids" : "أطفال");
+    rerender(<BranchProfileScreen branch={{ ...BRANCH, tags: [] }} context={contextOf(locale)} today={1} />);
+    expect(container.querySelector("ul[aria-label]")).toBeNull();
+  });
+
+  it("falls back to the other language for a tag with an empty translation", () => {
+    render(<BranchProfileScreen branch={{ ...BRANCH, tags: [{ en: "Beard", ar: "" }] }} context={contextOf(Locale.Ar)} today={1} />);
+    expect(screen.getByText("Beard")).toBeInTheDocument();
+  });
+
   it("keeps opening times left-to-right inside a right-to-left page", () => {
     const { container } = render(screens(locale).branch);
     const times = container.querySelectorAll("dd[dir='ltr']");

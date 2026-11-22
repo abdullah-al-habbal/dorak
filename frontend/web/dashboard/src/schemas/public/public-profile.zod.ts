@@ -78,3 +78,11 @@ export const publicStylistProfileSchema = z.object({
   workplaces: z.array(workplaceSchema),
   ...ratingFields,
 });
+
+const sitemapEntrySchema = z.object({ slug: z.string(), updated_at: z.string().nullable() });
+
+export const publicSitemapSchema = z.object({
+  brands: z.array(sitemapEntrySchema),
+  branches: z.array(sitemapEntrySchema),
+  stylists: z.array(sitemapEntrySchema),
+});

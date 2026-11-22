@@ -3,6 +3,7 @@ import type { Dictionary } from "@/types/core/shared/dictionary.type";
 export const arPublicProfile: Dictionary["publicProfile"] = {
   brand: "دورك",
   kind: { brand: "نشاط تجاري", branch: "فرع", stylist: "مصفف" },
+  tags: "الوسوم",
   about: "نبذة",
   services: "الخدمات",
   hours: "ساعات العمل",

@@ -23,6 +23,7 @@ Routes: [dashboard guide](../../frontend/web/dashboard/AGENTS.md) · [ADR 0003: 
   (`login/` is public, `(portal)/` is the signed-in shell) and the route handlers
   under `api/`.
 - `src/proxy.ts` also gates the public profile pages (`/brands/[slug]`, `/branches/[slug]`, `/stylists/[slug]`): a slug the backend reports as unknown or hidden is rewritten to `/_not-found` with status 404, because a page that streams its body cannot change the status after the shell is sent (`services/api/public/public-profile-gate.ts`). It guards `/dashboard/**`: it verifies the signed session claim,
+- `src/app/sitemap.ts` and `src/app/robots.ts` serve `/sitemap.xml` and `/robots.txt`. The sitemap lists the brand, branch and stylist profiles from the backend feed `GET /api/v1/public/sitemap` (same visibility rules as the profile endpoints, at most 10,000 per kind) and is empty when `PUBLIC_SITE_URL` is unset or the backend is down. `robots.txt` allows `/`, disallows `/dashboard/` and `/api/`, and links the sitemap. Every other page is `noindex` by default from the root layout; only a found profile sets `index`.
   refreshes once, and redirects by guard.
 - `src/components/` holds `ui/` (shadcn on Base UI), layout, providers, overlays and
   feature UI such as `bookings/`.

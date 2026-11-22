@@ -7,6 +7,7 @@ import { ProfileHero } from "@/components/public/profile-hero";
 import { ProfileSection } from "@/components/public/profile-section";
 import type { PublicProfileContext } from "@/components/public/public-profile-context";
 import { ServiceList } from "@/components/public/service-list";
+import { Badge } from "@/components/ui/badge";
 import { PUBLIC_PROFILE_ROUTE, PUBLIC_WEEK_START } from "@/config/public-profile.constant";
 import { pickText } from "@/lib/public/public-profile.util";
 import type { PublicBranchProfile } from "@/types/public/public-profile.type";
@@ -15,6 +16,7 @@ export function BranchProfileScreen({ branch, context, today }: { branch: Public
   const { locale, dictionary, bookingUrl } = context;
   const t = dictionary.publicProfile;
   const description = pickText(branch.description, locale);
+  const tags = branch.tags.map((tag) => pickText(tag, locale)).filter(Boolean);
   const brandName = branch.brand ? pickText(branch.brand.name, locale) : "";
   return (
     <>
@@ -30,6 +32,11 @@ export function BranchProfileScreen({ branch, context, today }: { branch: Public
       <ProfileSection title={t.about} empty={description ? undefined : t.empty.description}>
         <p className="whitespace-pre-line text-sm leading-relaxed">{description}</p>
       </ProfileSection>
+      {tags.length > 0 ? (
+        <ul aria-label={t.tags} className="flex flex-wrap gap-2">
+          {tags.map((tag) => <li key={tag}><Badge variant="outline">{tag}</Badge></li>)}
+        </ul>
+      ) : null}
       <ProfileSection title={t.services} empty={branch.services.length === 0 ? t.empty.services : undefined}>
         <ServiceList services={branch.services} locale={locale} dictionary={dictionary} />
       </ProfileSection>

@@ -7,9 +7,11 @@ import type {
   publicHoursDaySchema,
   publicServiceSchema,
   publicStylistProfileSchema,
+  publicSitemapSchema,
   publicStylistSummarySchema,
 } from "@/schemas/public/public-profile.zod";
 
+export type PublicSitemap = z.infer<typeof publicSitemapSchema>;
 export type PublicService = z.infer<typeof publicServiceSchema>;
 export type PublicHoursDay = z.infer<typeof publicHoursDaySchema>;
 export type PublicBranchSummary = z.infer<typeof publicBranchSummarySchema>;

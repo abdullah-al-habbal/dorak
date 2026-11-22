@@ -1,6 +1,7 @@
 export const enPublicProfile = {
   brand: "Dorak",
   kind: { brand: "Business", branch: "Branch", stylist: "Stylist" },
+  tags: "Tags",
   about: "About",
   services: "Services",
   hours: "Opening hours",

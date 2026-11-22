@@ -1,13 +1,14 @@
 import type { ZodType } from "zod";
 
 import { BACKEND_TIMEOUT_MS } from "@/config/backend.constant";
-import { PUBLIC_PROFILE_API_PREFIX } from "@/config/public-profile.constant";
+import { PUBLIC_PROFILE_API_PREFIX, PUBLIC_SITEMAP_API_PATH } from "@/config/public-profile.constant";
 import { HttpStatus } from "@/enums/access/http-status.enum";
 import { PublicProfileKind } from "@/enums/public/public-profile-kind.enum";
 import { apiSuccessBodySchema } from "@/schemas/core/api/api-success-body.zod";
 import {
   publicBranchProfileSchema,
   publicBrandProfileSchema,
+  publicSitemapSchema,
   publicStylistProfileSchema,
 } from "@/schemas/public/public-profile.zod";
 import { readBackendUrl } from "@/services/api/auth/session-keys.util";
@@ -16,6 +17,7 @@ import type {
   PublicBranchProfile,
   PublicBrandProfile,
   PublicProfileResult,
+  PublicSitemap,
   PublicStylistProfile,
 } from "@/types/public/public-profile.type";
 
@@ -58,4 +60,21 @@ const PROFILE_SCHEMAS: Record<PublicProfileKind, ZodType<unknown>> = {
 /** Only whether a profile exists: the proxy answers a real 404 for `not-found` before the page streams. */
 export async function fetchPublicProfileStatus({ kind, slug }: PublicProfileTarget): Promise<PublicProfileResult<unknown>["status"]> {
   return (await fetchPublicProfile(kind, slug, PROFILE_SCHEMAS[kind])).status;
+}
+
+/** The slugs of every indexable profile. Any failure is `null`, so a backend outage yields an empty sitemap, never a wrong one. */
+export async function fetchPublicSitemap(): Promise<PublicSitemap | null> {
+  try {
+    const response = await fetch(`${readBackendUrl()}${PUBLIC_SITEMAP_API_PATH}`, {
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+      signal: AbortSignal.timeout(BACKEND_TIMEOUT_MS),
+    });
+    if (!response.ok) return null;
+    const body = apiSuccessBodySchema.safeParse(await response.json().catch(() => null));
+    const sitemap = publicSitemapSchema.safeParse(body.success ? body.data.data : null);
+    return sitemap.success ? sitemap.data : null;
+  } catch {
+    return null;
+  }
 }
