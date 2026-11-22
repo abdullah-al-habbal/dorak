@@ -12,6 +12,6 @@ enum JobPostingTypeEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('jobposting::enums.job_posting_type.'.$this->value);
     }
 }

@@ -13,6 +13,6 @@ enum AffiliationStatus: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('barberaffiliation::enums.affiliation_status.'.$this->value);
     }
 }

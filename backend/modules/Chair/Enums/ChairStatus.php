@@ -12,7 +12,7 @@ enum ChairStatus: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('chair::enums.chair_status.'.$this->value);
     }
 
     public function isBookable(): bool

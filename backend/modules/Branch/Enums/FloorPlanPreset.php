@@ -12,6 +12,6 @@ enum FloorPlanPreset: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('branch::enums.floor_plan_preset.'.$this->value);
     }
 }

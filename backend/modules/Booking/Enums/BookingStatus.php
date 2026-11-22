@@ -15,7 +15,7 @@ enum BookingStatus: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('booking::enums.booking_status.'.$this->value);
     }
 
     public function canTransitionTo(self $target): bool

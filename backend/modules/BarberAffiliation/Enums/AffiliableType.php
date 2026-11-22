@@ -15,7 +15,7 @@ enum AffiliableType: string implements MorphAliasEnum
 
     public function label(): string
     {
-        return $this->value;
+        return __('barberaffiliation::enums.affiliable_type.'.$this->value);
     }
 
     public function modelClass(): string

@@ -12,6 +12,6 @@ enum FloorZone: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('chair::enums.floor_zone.'.$this->value);
     }
 }

@@ -13,12 +13,7 @@ enum BarberStatusEnum: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Enabled => 'Enabled',
-            self::Disabled => 'Disabled',
-            self::Rejected => 'Rejected',
-        };
+        return __('barber::enums.barber_status.'.$this->value);
     }
 
     public function isEnabled(): bool

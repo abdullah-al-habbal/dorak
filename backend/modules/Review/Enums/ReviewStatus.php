@@ -23,6 +23,6 @@ enum ReviewStatus: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('review::enums.review_status.'.$this->value);
     }
 }

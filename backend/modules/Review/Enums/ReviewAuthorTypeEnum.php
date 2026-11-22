@@ -17,7 +17,7 @@ enum ReviewAuthorTypeEnum: string implements MorphAliasEnum
 
     public function label(): string
     {
-        return $this->value;
+        return __('review::enums.review_author_type.'.$this->value);
     }
 
     public function modelClass(): string

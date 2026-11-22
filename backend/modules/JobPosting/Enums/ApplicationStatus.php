@@ -27,6 +27,6 @@ enum ApplicationStatus: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('jobposting::enums.application_status.'.$this->value);
     }
 }

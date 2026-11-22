@@ -12,6 +12,6 @@ enum ChairShape: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('chair::enums.chair_shape.'.$this->value);
     }
 }

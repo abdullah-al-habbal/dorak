@@ -9,4 +9,9 @@ return [
         'disabled' => 'Disabled',
         'suspended' => 'Suspended',
     ],
+    'floor_plan_preset' => [
+        'standard' => 'Standard',
+        'compact' => 'Compact',
+        'unisex_zoned' => 'Unisex zones',
+    ],
 ];
