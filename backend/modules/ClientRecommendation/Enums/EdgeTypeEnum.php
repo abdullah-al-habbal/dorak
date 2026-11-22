@@ -14,6 +14,6 @@ enum EdgeTypeEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('clientrecommendation::enums.edge_type.'.$this->value);
     }
 }

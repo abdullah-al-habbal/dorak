@@ -11,6 +11,6 @@ enum PaymentGatewayDriver: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('payment::enums.payment_gateway_driver.'.$this->value);
     }
 }

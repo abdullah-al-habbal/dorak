@@ -12,11 +12,7 @@ enum ClientStatusEnum: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Enabled => 'Enabled',
-            self::Disabled => 'Disabled',
-        };
+        return __('client::enums.client_status.'.$this->value);
     }
 
     public function isEnabled(): bool

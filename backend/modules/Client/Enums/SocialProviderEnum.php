@@ -10,6 +10,6 @@ enum SocialProviderEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('client::enums.social_provider.'.$this->value);
     }
 }

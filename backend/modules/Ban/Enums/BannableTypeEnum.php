@@ -17,7 +17,7 @@ enum BannableTypeEnum: string implements MorphAliasEnum
 
     public function label(): string
     {
-        return $this->value;
+        return __('ban::enums.bannable_type.'.$this->value);
     }
 
     public function modelClass(): string

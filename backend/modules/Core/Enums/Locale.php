@@ -11,6 +11,6 @@ enum Locale: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('core::enums.locale.'.$this->value);
     }
 }

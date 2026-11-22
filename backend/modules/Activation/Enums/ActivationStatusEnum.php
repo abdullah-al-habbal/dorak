@@ -13,11 +13,7 @@ enum ActivationStatusEnum: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Enabled => 'Enabled',
-            self::Disabled => 'Disabled',
-        };
+        return __('activation::enums.activation_status.'.$this->value);
     }
 
     public function isEnabled(): bool

@@ -14,15 +14,9 @@ use Modules\Core\Enums\Locale;
 function labeledEnums(): array
 {
     $found = [];
-    // Modules whose enums are localized in a later LOC-3 group.
-    $pending = ['Core', 'Dashboard', 'Client', 'Activation', 'Ban', 'ClientRecommendation', 'Language', 'Payment', 'Subscription'];
 
     foreach (glob(dirname(__DIR__, 3).'/modules/*/Enums/*.php') ?: [] as $file) {
         $module = basename(dirname($file, 2));
-        if (in_array($module, $pending, true)) {
-            continue;
-        }
-
         $class = 'Modules\\'.$module.'\\Enums\\'.basename($file, '.php');
         if (enum_exists($class) && is_a($class, BackedEnum::class, true) && method_exists($class, 'label')) {
             $found[$class] = [$class];

@@ -11,6 +11,6 @@ enum TextDirectionEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('language::enums.text_direction.'.$this->value);
     }
 }

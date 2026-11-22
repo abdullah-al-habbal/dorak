@@ -19,7 +19,7 @@ enum ActivableTypeEnum: string implements MorphAliasEnum
 
     public function label(): string
     {
-        return $this->value;
+        return __('activation::enums.activable_type.'.$this->value);
     }
 
     public function modelClass(): string

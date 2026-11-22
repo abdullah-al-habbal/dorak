@@ -15,7 +15,7 @@ enum DashboardActorTypeEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('dashboard::enums.dashboard_actor_type.'.$this->value);
     }
 
     /**

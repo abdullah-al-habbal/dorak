@@ -13,6 +13,6 @@ enum SubscriptionIntervalUnitEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('subscription::enums.subscription_interval_unit.'.$this->value);
     }
 }

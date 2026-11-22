@@ -19,7 +19,7 @@ enum DeviceTokenUserTypeEnum: string implements MorphAliasEnum
 
     public function label(): string
     {
-        return $this->value;
+        return __('core::enums.device_token_user_type.'.$this->value);
     }
 
     public function modelClass(): string
