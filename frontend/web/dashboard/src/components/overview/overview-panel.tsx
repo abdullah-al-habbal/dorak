@@ -1,15 +1,17 @@
 "use client";
 
 import type { JSX } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 import { useAuthStore } from "@/hooks/core/state/use-auth-store";
+import { enumLabel } from "@/lib/core/format/enum-label.util";
 
 export function OverviewPanel(): JSX.Element {
-  const { shell } = useDictionary();
+  const { shell, common } = useDictionary();
   const profile = useAuthStore((state) => state.profile);
   const name = profile?.display_name ?? profile?.email ?? "";
+  // A branch account is the branch, so its display name is the branch name. Other roles have no branch to show.
+  const branchName = profile?.branch_id ? profile.display_name : null;
 
   return (
     <div className="flex flex-col gap-8">
@@ -27,18 +29,8 @@ export function OverviewPanel(): JSX.Element {
           <CardDescription>{profile?.email}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3 text-sm">
-          <Row label={shell.overview.role} value={profile?.role ?? "-"} />
-          <Row label={shell.overview.scope} value={profile?.branch_id ?? "-"} />
-          <div className="flex items-start justify-between gap-4">
-            <span className="text-muted-foreground">{shell.overview.permissions}</span>
-            <span className="flex flex-wrap justify-end gap-1">
-              {profile?.permissions.length ? (
-                profile.permissions.map((permission) => <Badge key={permission} variant="info">{permission}</Badge>)
-              ) : (
-                <Badge variant="secondary">{shell.overview.none}</Badge>
-              )}
-            </span>
-          </div>
+          <Row label={shell.overview.role} value={enumLabel(shell.overview.roles, profile?.role, common.unknown, "role")} />
+          {branchName ? <Row label={shell.overview.scope} value={branchName} /> : null}
         </CardContent>
       </Card>
     </div>

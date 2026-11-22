@@ -70,7 +70,11 @@ export const arShell: Dictionary["shell"] = {
     sessionTitle: "جلستك",
     role: "الدور",
     scope: "الفرع",
-    permissions: "الصلاحيات",
-    none: "لا شيء",
+    roles: {
+      platform_admin: "مشرف المنصة",
+      branch_manager: "مدير الفرع",
+      barber: "مصفف",
+      brand_owner: "مالك العلامة",
+    },
   },
 };

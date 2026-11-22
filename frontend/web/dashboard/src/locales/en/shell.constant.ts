@@ -68,7 +68,11 @@ export const enShell = {
     sessionTitle: "Your session",
     role: "Role",
     scope: "Branch",
-    permissions: "Permissions",
-    none: "None",
+    roles: {
+      platform_admin: "Platform admin",
+      branch_manager: "Branch manager",
+      barber: "Stylist",
+      brand_owner: "Brand owner",
+    },
   },
 } as const;

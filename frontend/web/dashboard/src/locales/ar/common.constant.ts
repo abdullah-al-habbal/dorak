@@ -13,6 +13,7 @@ export const arCommon: Dictionary["common"] = {
   fields: { optional: "اختياري", required: "مطلوب" },
   skipToContent: "انتقل إلى المحتوى",
   language: "اللغة",
+  unknown: "غير معروف",
   theme: {
     label: "المظهر",
     light: "فاتح",

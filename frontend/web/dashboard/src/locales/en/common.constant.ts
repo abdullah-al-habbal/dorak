@@ -11,6 +11,7 @@ export const enCommon = {
   fields: { optional: "Optional", required: "Required" },
   skipToContent: "Skip to content",
   language: "Language",
+  unknown: "Unknown",
   theme: {
     label: "Theme",
     light: "Light",
