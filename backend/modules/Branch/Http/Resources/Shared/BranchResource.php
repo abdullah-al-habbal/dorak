@@ -21,7 +21,7 @@ final class BranchResource extends JsonResource
             'brand_id' => $this->brand_id,
             'description' => $this->localized('description'),
             'address' => $this->localized('address'),
-            'tags' => array_values((array) ($this->offsetGet('tags') ?? [])),
+            'tags' => $this->resource->localizedTags(app()->getLocale()),
             'universe' => $this->offsetGet('universe'),
             'rating_average' => $this->offsetGet('rating_average') === null ? null : (float) $this->offsetGet('rating_average'),
             'rating_count' => (int) ($this->offsetGet('rating_count') ?? 0),

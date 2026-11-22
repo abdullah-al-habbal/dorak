@@ -11,15 +11,14 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Services\BranchHours;
 use Modules\Chair\Models\ChairModel;
 use Modules\Explore\CQRS\Query\Shared\GetBranchDetailQuery;
+use Modules\Explore\Support\BranchMenu;
 use Modules\OfferedService\Http\Resources\Shared\MenuServiceResource;
-use Modules\OfferedService\Models\OfferedServiceModel;
-use Modules\OfferedService\Services\EffectiveServiceTerms;
 
 final class GetBranchDetailEloquentResolver
 {
     public function __construct(
         private readonly BranchHours $hours,
-        private readonly EffectiveServiceTerms $serviceTerms,
+        private readonly BranchMenu $menu,
     ) {}
 
     /**
@@ -40,17 +39,7 @@ final class GetBranchDetailEloquentResolver
             ->unique('id')
             ->values();
 
-        $menu = OfferedServiceModel::query()
-            ->bookable()
-            ->offeredAtShop($branch->getAttribute('brand_id') === null ? null : (string) $branch->getAttribute('brand_id'))
-            ->orderBy('serviceable_type')
-            ->orderBy('price_amount_minor')
-            ->get()
-            ->concat($barbers->flatMap(fn (BarberModel $barber) => $barber->services))
-            ->unique('id')
-            ->values();
-
-        $this->serviceTerms->attach($menu, $branch->getAttribute('brand_id') === null ? null : (string) $branch->getAttribute('brand_id'));
+        $menu = $this->menu->build($branch, $barbers);
 
         return array_merge(
             (new BranchResource($branch))->toArray(request()),

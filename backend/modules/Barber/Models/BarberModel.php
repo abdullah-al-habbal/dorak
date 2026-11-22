@@ -23,6 +23,7 @@ use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Booking\Models\BookingModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Core\Enums\VenueUniverse;
+use Modules\Core\Support\UniqueSlug;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Review\Models\ReviewModel;
 use Spatie\Translatable\Attributes\Translatable;
@@ -39,6 +40,22 @@ class BarberModel extends Authenticatable
     use HasTranslations;
     use HasUuids;
     use Notifiable;
+
+    /** Every barber gets a unique public slug from `name.en`, suffixed `-2`, `-3`… on clashes. */
+    protected static function booted(): void
+    {
+        static::creating(function (BarberModel $barber): void {
+            if (is_string($barber->getAttribute('slug')) && $barber->getAttribute('slug') !== '') {
+                return;
+            }
+
+            $barber->setAttribute('slug', UniqueSlug::make(
+                (string) $barber->getTranslation('name', 'en', false),
+                'stylist',
+                fn (string $slug): bool => self::query()->where('slug', $slug)->exists(),
+            ));
+        });
+    }
 
     protected static function newFactory(): BarberFactory
     {

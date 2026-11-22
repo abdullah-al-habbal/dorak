@@ -40,12 +40,13 @@ describe('PATCH /api/v1/branch/profile', function (): void {
             ->patchJson('/api/v1/branch/profile', [
                 'description' => ['en' => 'Classic cuts since 1990', 'ar' => 'قصات كلاسيكية منذ 1990'],
                 'address' => ['en' => '12 Baghdad St, Damascus', 'ar' => '12 شارع بغداد، دمشق'],
-                'tags' => ['beard', 'kids'],
+                'tags' => [['en' => 'beard', 'ar' => 'لحية'], ['en' => 'kids', 'ar' => 'أطفال']],
             ])
             ->assertOk()
             ->assertJsonPath('data.description', 'Classic cuts since 1990')
             ->assertJsonPath('data.translations.address.ar', '12 شارع بغداد، دمشق')
-            ->assertJsonPath('data.tags', ['beard', 'kids']);
+            ->assertJsonPath('data.tags', ['beard', 'kids'])
+            ->assertJsonPath('data.translations.tags.0.ar', 'لحية');
 
         $fresh = $branch->fresh();
         expect($fresh->getTranslation('description', 'ar'))->toBe('قصات كلاسيكية منذ 1990')

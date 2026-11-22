@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Support\Str;
 use Modules\BarberAffiliation\Enums\AffiliableType;
 use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
@@ -23,6 +22,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\VenueUniverse;
+use Modules\Core\Support\UniqueSlug;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\Preference\Models\PreferenceModel;
@@ -49,7 +49,11 @@ class BrandModel extends Model
                 return;
             }
 
-            $brand->setAttribute('slug', self::uniqueSlug((string) $brand->getTranslation('name', 'en', false)));
+            $brand->setAttribute('slug', UniqueSlug::make(
+                (string) $brand->getTranslation('name', 'en', false),
+                'brand',
+                fn (string $slug): bool => self::query()->where('slug', $slug)->exists(),
+            ));
         });
 
         static::deleting(function (BrandModel $brand): void {
@@ -66,17 +70,6 @@ class BrandModel extends Model
                 })
                 ->update(['status' => AffiliationStatus::Terminated, 'terminated_at' => now()]);
         });
-    }
-
-    public static function uniqueSlug(string $name): string
-    {
-        $base = Str::slug($name) ?: 'brand';
-        $slug = $base;
-        for ($suffix = 2; self::query()->where('slug', $slug)->exists(); $suffix++) {
-            $slug = "{$base}-{$suffix}";
-        }
-
-        return $slug;
     }
 
     protected function casts(): array

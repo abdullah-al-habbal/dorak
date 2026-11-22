@@ -414,6 +414,7 @@ final class E2eDashboardSeeder extends Seeder
         return BranchModel::factory()->create([
             'brand_id' => $brand->id,
             'name' => ['en' => 'E2E Salon', 'ar' => 'صالون الاختبار'],
+            'tags' => [['en' => 'Haircut', 'ar' => 'قص شعر'], ['en' => 'Beard', 'ar' => 'لحية']],
             'email' => self::MANAGER_EMAIL,
             'password' => Hash::make(self::MANAGER_PASSWORD),
         ]);

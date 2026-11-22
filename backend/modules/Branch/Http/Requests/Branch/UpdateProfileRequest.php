@@ -25,7 +25,9 @@ final class UpdateProfileRequest extends BaseApiFormRequest
             'address.en' => ['nullable', 'string', 'max:255'],
             'address.ar' => ['nullable', 'string', 'max:255'],
             'tags' => ['sometimes', 'nullable', 'array', 'max:20'],
-            'tags.*' => ['string', 'max:40'],
+            'tags.*' => ['array:en,ar'],
+            'tags.*.en' => ['required', 'string', 'max:40'],
+            'tags.*.ar' => ['required', 'string', 'max:40'],
         ];
     }
 }

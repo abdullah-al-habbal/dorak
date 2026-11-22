@@ -29,6 +29,7 @@ final class BranchProfileResource extends JsonResource
                 'name' => $this->getTranslations('name'),
                 'description' => $this->getTranslations('description'),
                 'address' => $this->getTranslations('address'),
+                'tags' => $this->tagTranslations(),
             ],
             'opening_hours' => $hours->week($this->resource),
             'today_hours' => $hours->forDate((string) $this->getKey(), now()),

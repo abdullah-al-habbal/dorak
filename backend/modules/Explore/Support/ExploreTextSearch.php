@@ -29,11 +29,12 @@ final class ExploreTextSearch
         }
     }
 
+    /** Matches the text of a list of `{en, ar}` tags (the values only, never the `en` and `ar` keys). */
     public function orMatchJsonList(Builder|QueryBuilder $query, string $column, string $pattern): void
     {
         $grammar = $query instanceof Builder ? $query->getQuery()->getGrammar() : $query->getGrammar();
 
-        $query->orWhereRaw('lower('.$grammar->wrap($column).") like ? escape '!'", [$pattern]);
+        $query->orWhereRaw('json_search(lower('.$grammar->wrap($column).'), \'one\', ?, \'!\', \'$[*].*\') is not null', [$pattern]);
     }
 
     public function tagExists(QueryBuilder $query, ?string $pattern, ?array $tagIds): void

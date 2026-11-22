@@ -24,6 +24,7 @@ class BranchSeeder extends Seeder
                 'en' => 'Branch',
                 'ar' => 'فرع',
             ],
+            'tags' => [['en' => 'Haircut', 'ar' => 'قص شعر'], ['en' => 'Beard', 'ar' => 'لحية']],
             'password' => Hash::make('password'),
             'status' => BranchStatusEnum::Enabled,
         ]);

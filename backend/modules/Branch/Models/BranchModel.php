@@ -26,6 +26,7 @@ use Modules\Branch\Enums\FloorPlanPreset;
 use Modules\Brand\Models\BrandModel;
 use Modules\Chair\Models\ChairModel;
 use Modules\Core\Enums\VenueUniverse;
+use Modules\Core\Support\UniqueSlug;
 use Modules\JobPosting\Enums\JobPostingStatusEnum;
 use Modules\JobPosting\Models\JobPostingModel;
 use Modules\Review\Models\ReviewModel;
@@ -130,12 +131,42 @@ class BranchModel extends Authenticatable
     }
 
     /**
+     * Every tag as `{en, ar}`; a missing language reads as an empty string.
+     *
+     * @return list<array{en: string, ar: string}>
+     */
+    public function tagTranslations(): array
+    {
+        return array_map(
+            fn (mixed $tag): array => ['en' => (string) ($tag['en'] ?? ''), 'ar' => (string) ($tag['ar'] ?? '')],
+            array_values((array) ($this->getAttribute('tags') ?? [])),
+        );
+    }
+
+    /** @return list<string> The tags in one language, falling back to the other when it is empty. */
+    public function localizedTags(string $locale): array
+    {
+        return array_map(
+            fn (array $tag): string => $tag[$locale] ?? '' ?: $tag['en'] ?: $tag['ar'],
+            $this->tagTranslations(),
+        );
+    }
+
+    /**
      * A branch created without a universe inherits its brand's (Task 44), on
      * every creation path (dashboard, brand onboarding).
      */
     protected static function booted(): void
     {
         static::creating(function (BranchModel $branch): void {
+            if (! is_string($branch->getAttribute('slug')) || $branch->getAttribute('slug') === '') {
+                $branch->setAttribute('slug', UniqueSlug::make(
+                    (string) $branch->getTranslation('name', 'en', false),
+                    'branch',
+                    fn (string $slug): bool => self::query()->where('slug', $slug)->exists(),
+                ));
+            }
+
             if ($branch->getAttribute('universe') !== null) {
                 return;
             }

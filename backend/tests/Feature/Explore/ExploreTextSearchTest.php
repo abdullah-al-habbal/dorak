@@ -109,9 +109,20 @@ it('searches barbers by name and service', function (): void {
 
 it('matches branch tags in English and Arabic', function (): void {
     $kids = searchableBranch('Little Cuts');
-    $kids->update(['tags' => ['Kids', 'أطفال']]);
+    $kids->update(['tags' => [['en' => 'Kids', 'ar' => 'أطفال'], ['en' => 'Fades', 'ar' => 'تدريج']]]);
     searchableBranch('Grown Ups');
 
     expect(branchSearchIds('kids'))->toBe([$kids->id])
-        ->and(branchSearchIds('أطفال'))->toBe([$kids->id]);
+        ->and(branchSearchIds('أطفال'))->toBe([$kids->id])
+        ->and(branchSearchIds('fad'))->toBe([$kids->id]);
+});
+
+it('does not match a branch tag by its en or ar keys', function (): void {
+    $brand = BrandModel::factory()->create(['universe' => VenueUniverse::Men, 'name' => ['en' => 'Acme Group', 'ar' => 'مجموعة']]);
+    searchableBranch('Little Cuts', brand: $brand)->update(['tags' => [['en' => 'Kids', 'ar' => 'أطفال']]]);
+    searchableBranch('Grown Ups', brand: $brand)->update(['tags' => [['en' => 'Shaves', 'ar' => 'لحى']]]);
+
+    expect(branchSearchIds('en'))->toBe([])
+        ->and(branchSearchIds('ar'))->toBe([])
+        ->and(branchSearchIds('"en"'))->toBe([]);
 });
