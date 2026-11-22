@@ -16,6 +16,6 @@ enum FaceShapeEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('servicecatalog::enums.face_shape.'.$this->value);
     }
 }

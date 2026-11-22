@@ -15,7 +15,7 @@ function labeledEnums(): array
 {
     $found = [];
     // Modules whose enums are localized in a later LOC-3 group.
-    $pending = ['ServiceCatalog', 'Marketing', 'Preference', 'OfferedService', 'Core', 'Dashboard', 'Client', 'Activation', 'Ban', 'ClientRecommendation', 'Language', 'Payment', 'Subscription'];
+    $pending = ['Core', 'Dashboard', 'Client', 'Activation', 'Ban', 'ClientRecommendation', 'Language', 'Payment', 'Subscription'];
 
     foreach (glob(dirname(__DIR__, 3).'/modules/*/Enums/*.php') ?: [] as $file) {
         $module = basename(dirname($file, 2));

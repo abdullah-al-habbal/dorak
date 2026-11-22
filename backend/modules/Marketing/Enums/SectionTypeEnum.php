@@ -17,6 +17,6 @@ enum SectionTypeEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('marketing::enums.section_type.'.$this->value);
     }
 }

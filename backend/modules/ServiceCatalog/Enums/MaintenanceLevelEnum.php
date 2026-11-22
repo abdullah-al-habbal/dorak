@@ -12,6 +12,6 @@ enum MaintenanceLevelEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('servicecatalog::enums.maintenance_level.'.$this->value);
     }
 }

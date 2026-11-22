@@ -12,6 +12,6 @@ enum UniverseVisibilityEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('marketing::enums.universe_visibility.'.$this->value);
     }
 }

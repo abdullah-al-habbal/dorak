@@ -15,7 +15,7 @@ enum MediableTypeEnum: string implements MorphAliasEnum
 
     public function label(): string
     {
-        return $this->value;
+        return __('servicecatalog::enums.mediable_type.'.$this->value);
     }
 
     public function modelClass(): string

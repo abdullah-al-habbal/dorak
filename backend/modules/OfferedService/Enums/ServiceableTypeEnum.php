@@ -15,7 +15,7 @@ enum ServiceableTypeEnum: string implements MorphAliasEnum
 
     public function label(): string
     {
-        return $this->value;
+        return __('offeredservice::enums.serviceable_type.'.$this->value);
     }
 
     public function modelClass(): string

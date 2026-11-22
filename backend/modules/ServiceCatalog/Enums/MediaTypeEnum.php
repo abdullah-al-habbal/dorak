@@ -11,6 +11,6 @@ enum MediaTypeEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('servicecatalog::enums.media_type.'.$this->value);
     }
 }

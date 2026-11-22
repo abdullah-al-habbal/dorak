@@ -12,6 +12,6 @@ enum FormalityEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('servicecatalog::enums.formality.'.$this->value);
     }
 }

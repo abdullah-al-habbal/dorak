@@ -21,7 +21,7 @@ enum PreferenceableTypeEnum: string implements MorphAliasEnum
 
     public function label(): string
     {
-        return $this->value;
+        return __('preference::enums.preferenceable_type.'.$this->value);
     }
 
     public function modelClass(): string

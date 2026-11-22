@@ -13,6 +13,6 @@ enum HairTextureEnum: string
 
     public function label(): string
     {
-        return $this->value;
+        return __('servicecatalog::enums.hair_texture.'.$this->value);
     }
 }
