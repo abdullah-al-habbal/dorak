@@ -79,6 +79,7 @@ export const enAdminCatalog = {
     newTag: "New tag",
     edit: "Edit",
     noGroup: "No group",
+    tagGroups: { style: "Style", hair_type: "Hair type", face_shape: "Face shape" },
     itemCount: "{count} items",
     confirm: {
       deleteTitle: "Delete this tag?",

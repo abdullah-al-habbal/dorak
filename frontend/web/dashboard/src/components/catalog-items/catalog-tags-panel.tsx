@@ -12,6 +12,7 @@ import { OverlayKind } from "@/enums/ui/overlay-kind.enum";
 import { useCatalogTags } from "@/hooks/services/catalog/use-catalog-admin";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useOverlay } from "@/hooks/core/state/use-overlay";
+import { tagGroupLabel } from "@/lib/catalog/catalog-tag-group.util";
 import { localizedText } from "@/lib/core/format/booking-format.util";
 
 /** The tags that group catalog items: add, rename, switch on or off, or remove. */
@@ -41,7 +42,7 @@ export function CatalogTagsPanel(): JSX.Element {
                 <div className="flex min-w-0 flex-col gap-1">
                   <span dir="auto" className="truncate font-medium">{localizedText(tag.name, locale)}</span>
                   <span className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
-                    <span dir="auto">{tag.group_name || t.noGroup}</span>
+                    <span dir="auto">{tagGroupLabel(tag.group_name, t.tagGroups, t.noGroup)}</span>
                     <span className="tabular">{t.itemCount.replace("{count}", String(tag.items_count))}</span>
                   </span>
                 </div>
