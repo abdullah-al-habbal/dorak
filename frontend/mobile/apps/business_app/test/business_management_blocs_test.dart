@@ -23,14 +23,91 @@ void main() {
 
   test('profile sends only the filled fields', () async {
     final repository = FakeBranchManagementRepository();
-    final bloc = BusinessProfileBloc(repository);
+    final bloc = BusinessProfileBloc(repository, FakeBranchHoursRepository());
     addTearDown(bloc.close);
 
-    await bloc.save(descriptionEnglish: ' Hello ', tags: 'fade, , beard');
+    await bloc.save(
+      descriptionEnglish: ' Hello ',
+      tagsEnglish: 'fade, , beard',
+      tagsArabic: 'تدريج',
+    );
 
     expect(repository.savedDescription, {'en': 'Hello'});
-    expect(repository.savedTags, ['fade', 'beard']);
+    expect(repository.savedTags, [
+      {'en': 'fade', 'ar': 'تدريج'},
+      {'en': 'beard', 'ar': 'beard'},
+    ]);
   });
+
+  test(
+    'profile loads the stored texts and keeps the tags on an untouched save',
+    () async {
+      final repository = FakeBranchManagementRepository();
+      final hours = FakeBranchHoursRepository()
+        ..translations = const BranchProfileTextsDto(
+          description: {'en': 'Hello'},
+          tags: [
+            {'en': 'fade', 'ar': 'تدريج'},
+            {'en': 'beard', 'ar': 'لحية'},
+          ],
+        );
+      final bloc = BusinessProfileBloc(repository, hours);
+      addTearDown(bloc.close);
+
+      await bloc.load();
+      expect(bloc.state.texts!.tags, hours.translations.tags);
+
+      await bloc.save(
+        descriptionEnglish: 'Hello',
+        tagsEnglish: 'fade, beard',
+        tagsArabic: 'تدريج, لحية',
+      );
+
+      expect(repository.savedTags, hours.translations.tags);
+    },
+  );
+
+  test(
+    'profile clears the tags only once the stored texts were loaded',
+    () async {
+      final repository = FakeBranchManagementRepository();
+      final unloaded = BusinessProfileBloc(
+        repository,
+        FakeBranchHoursRepository(),
+      );
+      addTearDown(unloaded.close);
+      await unloaded.save();
+      expect(repository.savedTags, isNull);
+
+      final loaded = BusinessProfileBloc(
+        repository,
+        FakeBranchHoursRepository(),
+      );
+      addTearDown(loaded.close);
+      await loaded.load();
+      await loaded.save();
+      expect(repository.savedTags, isEmpty);
+    },
+  );
+
+  test(
+    'profile texts tolerate the empty list the backend sends for unset text',
+    () {
+      final texts = BranchProfileTextsDto.fromJsonValue({
+        'description': <dynamic>[],
+        'address': {'en': 'Main St', 'ar': ''},
+        'tags': [
+          {'en': 'fade', 'ar': 'تدريج'},
+        ],
+      });
+
+      expect(texts.description, isEmpty);
+      expect(texts.address, {'en': 'Main St'});
+      expect(texts.tags, [
+        {'en': 'fade', 'ar': 'تدريج'},
+      ]);
+    },
+  );
 
   test('reviews load from the branch endpoint', () async {
     final bloc = BusinessReviewsBloc(

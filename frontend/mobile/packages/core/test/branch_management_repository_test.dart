@@ -75,7 +75,9 @@ void main() {
     await repository.updateFloorPlan(preset: 'compact');
     await repository.updateProfile(
       description: {'en': 'Hello'},
-      tags: ['fade'],
+      tags: [
+        {'en': 'fade', 'ar': 'تدريج'},
+      ],
     );
     final reviews = await repository.getReviews();
 
@@ -84,7 +86,9 @@ void main() {
     expect(route(1), 'PATCH /branch/profile');
     expect(requests[1].data, {
       'description': {'en': 'Hello'},
-      'tags': ['fade'],
+      'tags': [
+        {'en': 'fade', 'ar': 'تدريج'},
+      ],
     });
     expect(route(2), 'GET /branch/reviews');
     expect(reviews.data.single.id, 'r1');

@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
@@ -20,7 +21,23 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   final _descriptionAr = TextEditingController();
   final _addressEn = TextEditingController();
   final _addressAr = TextEditingController();
-  final _tags = TextEditingController();
+  final _tagsEn = TextEditingController();
+  final _tagsAr = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc.load();
+  }
+
+  void _fill(BranchProfileTextsDto texts) {
+    _descriptionEn.text = texts.description['en'] ?? '';
+    _descriptionAr.text = texts.description['ar'] ?? '';
+    _addressEn.text = texts.address['en'] ?? '';
+    _addressAr.text = texts.address['ar'] ?? '';
+    _tagsEn.text = texts.tags.map((tag) => tag['en'] ?? '').join(', ');
+    _tagsAr.text = texts.tags.map((tag) => tag['ar'] ?? '').join(', ');
+  }
 
   @override
   void dispose() {
@@ -28,7 +45,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     _descriptionAr.dispose();
     _addressEn.dispose();
     _addressAr.dispose();
-    _tags.dispose();
+    _tagsEn.dispose();
+    _tagsAr.dispose();
     super.dispose();
   }
 
@@ -47,8 +65,11 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.businessProfileTitle)),
-      body: BlocBuilder<BusinessProfileBloc, BusinessProfileState>(
+      body: BlocConsumer<BusinessProfileBloc, BusinessProfileState>(
         bloc: widget.bloc,
+        listenWhen: (previous, current) =>
+            previous.texts == null && current.texts != null,
+        listener: (context, state) => _fill(state.texts!),
         builder: (context, state) => ListView(
           padding: const EdgeInsets.all(16),
           children: [
@@ -64,7 +85,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
             ),
             _field(_addressEn, l10n.businessProfileAddressEnglish),
             _field(_addressAr, l10n.businessProfileAddressArabic),
-            _field(_tags, l10n.businessProfileTags),
+            _field(_tagsEn, l10n.businessProfileTagsEnglish),
+            _field(_tagsAr, l10n.businessProfileTagsArabic),
             if (state.error != null) FeatureError(error: state.error!),
             if (state.saved) Text(l10n.businessSaved),
             const SizedBox(height: 12),
@@ -76,7 +98,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                       descriptionArabic: _descriptionAr.text,
                       addressEnglish: _addressEn.text,
                       addressArabic: _addressAr.text,
-                      tags: _tags.text,
+                      tagsEnglish: _tagsEn.text,
+                      tagsArabic: _tagsAr.text,
                     ),
               child: Text(l10n.businessSave),
             ),

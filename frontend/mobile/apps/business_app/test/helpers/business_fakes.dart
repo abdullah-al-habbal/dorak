@@ -137,7 +137,8 @@ class FakeAffiliationRepository implements AffiliationRepository {
 class FakeBranchManagementRepository implements BranchManagementRepository {
   String? savedPreset;
   Map<String, String>? savedDescription;
-  List<String>? savedTags;
+  List<Map<String, String>>? savedTags;
+  Map<String, String>? savedAddress;
 
   @override
   Future<Map<String, dynamic>> updateFloorPlan({
@@ -152,9 +153,10 @@ class FakeBranchManagementRepository implements BranchManagementRepository {
   Future<void> updateProfile({
     Map<String, String>? description,
     Map<String, String>? address,
-    List<String>? tags,
+    List<Map<String, String>>? tags,
   }) async {
     savedDescription = description;
+    savedAddress = address;
     savedTags = tags;
   }
 
@@ -316,6 +318,7 @@ class FakeBranchServiceRepository implements BranchServiceRepository {
 
 class FakeBranchHoursRepository implements BranchHoursRepository {
   List<BranchOpeningHourDto> hours = const [];
+  BranchProfileTextsDto translations = const BranchProfileTextsDto();
   List<BranchOpeningHourDto>? saved;
   Object? failure;
 
@@ -327,6 +330,7 @@ class FakeBranchHoursRepository implements BranchHoursRepository {
       name: 'Main',
       brandId: 'brand-1',
       openingHours: hours,
+      translations: translations,
     );
   }
 
@@ -416,7 +420,7 @@ BusinessFeatureBlocs featureBlocsFor({
     affiliations: BusinessAffiliationsBloc(
       affiliations ?? FakeAffiliationRepository(),
     ),
-    profile: BusinessProfileBloc(branch),
+    profile: BusinessProfileBloc(branch, hours ?? FakeBranchHoursRepository()),
     reviews: BusinessReviewsBloc(
       branch,
       disputes ?? FakeReviewDisputeRepository(),

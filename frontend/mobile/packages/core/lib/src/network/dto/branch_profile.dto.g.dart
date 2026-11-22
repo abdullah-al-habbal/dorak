@@ -18,4 +18,7 @@ BranchProfileDto _$BranchProfileDtoFromJson(Map<String, dynamic> json) =>
               )
               .toList() ??
           [],
+      translations: json['translations'] == null
+          ? const BranchProfileTextsDto()
+          : BranchProfileTextsDto.fromJsonValue(json['translations']),
     );

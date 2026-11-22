@@ -8,10 +8,11 @@ abstract class BranchManagementRepository {
   });
 
   /// Updates the storefront fields; a null argument is left untouched.
+  /// Each tag is an `{en, ar}` pair, as the backend stores it.
   Future<void> updateProfile({
     Map<String, String>? description,
     Map<String, String>? address,
-    List<String>? tags,
+    List<Map<String, String>>? tags,
   });
 
   Future<PaginatedData<ReviewDto>> getReviews({int perPage = 20});
@@ -35,7 +36,7 @@ class DioBranchManagementRepository implements BranchManagementRepository {
   Future<void> updateProfile({
     Map<String, String>? description,
     Map<String, String>? address,
-    List<String>? tags,
+    List<Map<String, String>>? tags,
   }) => _client.patch<void>(
     ApiEndpoints.branch.profile,
     data: {'description': ?description, 'address': ?address, 'tags': ?tags},

@@ -3140,11 +3140,17 @@ abstract class AppLocalizations {
   /// **'Address (Arabic)'**
   String get businessProfileAddressArabic;
 
-  /// No description provided for @businessProfileTags.
+  /// No description provided for @businessProfileTagsEnglish.
   ///
   /// In en, this message translates to:
-  /// **'Tags (comma separated)'**
-  String get businessProfileTags;
+  /// **'Tags (English, comma separated)'**
+  String get businessProfileTagsEnglish;
+
+  /// No description provided for @businessProfileTagsArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags (Arabic, comma separated)'**
+  String get businessProfileTagsArabic;
 
   /// No description provided for @businessReviewsTitle.
   ///

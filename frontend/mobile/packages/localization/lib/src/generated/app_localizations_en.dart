@@ -1684,7 +1684,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessProfileAddressArabic => 'Address (Arabic)';
 
   @override
-  String get businessProfileTags => 'Tags (comma separated)';
+  String get businessProfileTagsEnglish => 'Tags (English, comma separated)';
+
+  @override
+  String get businessProfileTagsArabic => 'Tags (Arabic, comma separated)';
 
   @override
   String get businessReviewsTitle => 'Reviews';

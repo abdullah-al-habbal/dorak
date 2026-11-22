@@ -1678,7 +1678,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get businessProfileAddressArabic => 'العنوان (العربية)';
 
   @override
-  String get businessProfileTags => 'الوسوم (مفصولة بفواصل)';
+  String get businessProfileTagsEnglish => 'الوسوم (الإنجليزية، مفصولة بفواصل)';
+
+  @override
+  String get businessProfileTagsArabic => 'الوسوم (العربية، مفصولة بفواصل)';
 
   @override
   String get businessReviewsTitle => 'التقييمات';
