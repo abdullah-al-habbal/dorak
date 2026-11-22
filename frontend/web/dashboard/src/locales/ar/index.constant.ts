@@ -1,3 +1,4 @@
+import { arPublicProfile } from "@/locales/ar/public-profile.constant";
 import { arAnalytics } from "@/locales/ar/analytics.constant";
 import { arSettings } from "@/locales/ar/settings.constant";
 import { arAdminPayouts } from "@/locales/ar/admin-payouts.constant";
@@ -81,4 +82,5 @@ export const arDictionary: Dictionary = {
   settings: arSettings,
   earnings: arEarnings,
   errors: arErrors,
+  publicProfile: arPublicProfile,
 };

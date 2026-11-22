@@ -1,3 +1,4 @@
+import { enPublicProfile } from "@/locales/en/public-profile.constant";
 import { enAnalytics } from "@/locales/en/analytics.constant";
 import { enSettings } from "@/locales/en/settings.constant";
 import { enAdminPayouts } from "@/locales/en/admin-payouts.constant";
@@ -80,4 +81,5 @@ export const enDictionary = {
   settings: enSettings,
   earnings: enEarnings,
   errors: enErrors,
+  publicProfile: enPublicProfile,
 } as const;

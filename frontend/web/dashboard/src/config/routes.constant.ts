@@ -63,3 +63,6 @@ export function accountRoute(actor: AuthActor): string {
 export function notificationsRoute(actor: AuthActor): string {
   return `${portalRoot(actor)}/${NOTIFICATIONS_SEGMENT}`;
 }
+
+/** Next's internal not-found route: a proxy rewrite to it answers a real HTTP 404 with the 404 screen. */
+export const NOT_FOUND_ROUTE = "/_not-found";

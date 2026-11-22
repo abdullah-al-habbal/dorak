@@ -1,0 +1,40 @@
+import type { Dictionary } from "@/types/core/shared/dictionary.type";
+
+export const arPublicProfile: Dictionary["publicProfile"] = {
+  brand: "دورك",
+  kind: { brand: "نشاط تجاري", branch: "فرع", stylist: "مصفف" },
+  about: "نبذة",
+  services: "الخدمات",
+  hours: "ساعات العمل",
+  today: "اليوم",
+  closed: "مغلق",
+  branches: "الفروع",
+  stylists: "المصففون",
+  portfolio: "معرض الأعمال",
+  workplaces: "يعمل في",
+  freelancer: "مصفف مستقل",
+  atHome: "في المنزل",
+  free: "مجانًا",
+  partOf: "تابع لـ {name}",
+  rating: "تقييم {rating} من {count} مراجعة",
+  noRatings: "لا توجد مراجعات بعد",
+  empty: {
+    description: "لم تُضف نبذة بعد.",
+    services: "لا توجد خدمات معروضة بعد.",
+    hours: "لم تُنشر ساعات العمل.",
+    branches: "لا توجد فروع متاحة للحجز بعد.",
+    stylists: "لا يوجد مصففون معروضون بعد.",
+    portfolio: "لا توجد صور بعد.",
+  },
+  cta: {
+    title: "احجز زيارتك",
+    body: "اختر الخدمة والموعد من تطبيق دورك.",
+    button: "افتح تطبيق دورك",
+    noLink: "الحجز متاح عبر تطبيق دورك.",
+  },
+  unavailable: {
+    title: "تعذّر تحميل هذه الصفحة الآن",
+    body: "يُرجى المحاولة بعد دقائق.",
+  },
+  metaFallback: "{name} على دورك",
+};

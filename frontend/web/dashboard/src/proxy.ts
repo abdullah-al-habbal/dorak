@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 import { ACCESS_COOKIE, CLAIM_COOKIE, REFRESH_COOKIE } from "@/config/cookies.constant";
+import { NOT_FOUND_ROUTE } from "@/config/routes.constant";
 import { HttpStatus } from "@/enums/access/http-status.enum";
 import { actorFromClaim } from "@/services/api/auth/claim-actor.util";
 import { clearSessionCookies, setSessionCookies } from "@/services/api/auth/cookies";
@@ -9,9 +10,9 @@ import { clientIpFromHeaders } from "@/services/api/auth/client-ip.util";
 import { verifyClaim } from "@/services/api/auth/jwt.util";
 import { refreshSession } from "@/services/api/auth/refresh";
 import { decideRoute } from "@/services/api/auth/route-policy.util";
+import { gatePublicProfile } from "@/services/api/public/public-profile-gate";
+import { parsePublicProfilePath } from "@/lib/public/public-profile-path.util";
 import type { SessionTokens } from "@/interfaces/core/transport/session-tokens.interface";
-
-const NOT_FOUND_PATH = "/_not-found";
 
 async function tryRefresh(request: NextRequest): Promise<SessionTokens | null> {
   const refreshToken = request.cookies.get(REFRESH_COOKIE)?.value;
@@ -21,6 +22,9 @@ async function tryRefresh(request: NextRequest): Promise<SessionTokens | null> {
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
   const { pathname, search } = request.nextUrl;
+  const publicProfile = parsePublicProfilePath(pathname);
+  if (publicProfile) return gatePublicProfile(request, publicProfile);
+
   const claim = await verifyClaim(request.cookies.get(CLAIM_COOKIE)?.value);
   let claimActor = claim ? actorFromClaim(claim) : null;
   let refreshed: SessionTokens | null = null;
@@ -39,7 +43,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
     hasSessionCookies: [CLAIM_COOKIE, ACCESS_COOKIE, REFRESH_COOKIE].some((name) => request.cookies.has(name)),
   });
 
-  if (decision.kind === "not-found") return NextResponse.rewrite(new URL(NOT_FOUND_PATH, request.url), { status: HttpStatus.NotFound });
+  if (decision.kind === "not-found") return NextResponse.rewrite(new URL(NOT_FOUND_ROUTE, request.url), { status: HttpStatus.NotFound });
 
   // A refreshed session on a pass-through request is replayed as a redirect so the new cookies reach the server render.
   const location =
@@ -51,5 +55,5 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/brands/:slug", "/branches/:slug", "/stylists/:slug"],
 };
