@@ -163,3 +163,26 @@ describe('translatable branch tags', function (): void {
         $this->actingAs($branch, 'branch_api')->patchJson('/api/v1/branch/profile', ['tags' => [['en' => 'beard']]])->assertUnprocessable();
     });
 });
+
+describe('public sitemap feed', function (): void {
+    it('lists only the profiles the profile endpoints would show, with no ids or private data', function (): void {
+        $brand = BrandModel::factory()->create(['name' => ['en' => 'Royal Cuts', 'ar' => 'رويال']]);
+        BrandModel::factory()->create(['name' => ['en' => 'Hidden Brand', 'ar' => 'مخفي'], 'status' => BrandStatusEnum::Suspended]);
+        BranchModel::factory()->create(['brand_id' => $brand->id, 'name' => ['en' => 'Downtown', 'ar' => 'وسط']]);
+        BranchModel::factory()->create(['brand_id' => $brand->id, 'name' => ['en' => 'Closed Branch', 'ar' => 'مغلق'], 'status' => BranchStatusEnum::Disabled]);
+        BarberModel::factory()->create(['name' => ['en' => 'Omar Ali', 'ar' => 'عمر']]);
+        BarberModel::factory()->create(['name' => ['en' => 'Off Stylist', 'ar' => 'متوقف'], 'status' => BarberStatusEnum::Disabled]);
+
+        $response = $this->getJson('/api/v1/public/sitemap')->assertOk();
+
+        expect(collect($response->json('data.brands'))->pluck('slug')->all())->toBe(['royal-cuts'])
+            ->and(collect($response->json('data.branches'))->pluck('slug')->all())->toBe(['downtown'])
+            ->and(collect($response->json('data.stylists'))->pluck('slug')->all())->toBe(['omar-ali'])
+            ->and(array_keys($response->json('data.brands.0')))->toBe(['slug', 'updated_at'])
+            ->and($response->getContent())->not->toContain($brand->id);
+    });
+
+    it('is reachable without authentication and returns empty lists on an empty database', function (): void {
+        $this->getJson('/api/v1/public/sitemap')->assertOk()->assertJsonPath('data', ['brands' => [], 'branches' => [], 'stylists' => []]);
+    });
+});

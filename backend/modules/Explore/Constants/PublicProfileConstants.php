@@ -8,4 +8,7 @@ final class PublicProfileConstants
 {
     /** Route constraint of a public profile slug: what `Str::slug` produces. */
     public const string EXPLORE_PROFILE_SLUG_PATTERN = '[a-z0-9]+(?:-[a-z0-9]+)*';
+
+    /** The sitemap lists at most this many profiles of each kind (the sitemap protocol allows 50,000 URLs per file). */
+    public const int EXPLORE_SITEMAP_MAX_PER_KIND = 10000;
 }
