@@ -21,5 +21,7 @@ return [
         'address.ar' => 'Arabic address',
         'bio.en' => 'English bio',
         'bio.ar' => 'Arabic bio',
+        'group_name.en' => 'English group',
+        'group_name.ar' => 'Arabic group',
     ],
 ];

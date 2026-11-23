@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Validator;
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
@@ -115,6 +116,72 @@ describe('Arabic validation files', function (): void {
 
         expect($missing)->toBe([]);
     });
+
+    it('names a missing group in the language of the page', function (): void {
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->withHeaders(['Accept-Language' => 'ar'])
+            ->postJson('/api/v1/dashboard/admin/catalog-tags', ['name' => ['en' => 'Eco', 'ar' => 'بيئة'], 'group_name' => ['en' => 'Values']])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['group_name.ar' => 'الحقل المجموعة بالعربية مطلوب عند وجود المجموعة.']);
+    });
+
+    it('gives every common request field an Arabic name, so no Latin field name reaches an Arabic error', function (string $field): void {
+        app()->setLocale('ar');
+
+        $message = Validator::make([$field => null], [$field => 'required'])->errors()->first($field);
+
+        expect($message)->not->toBe('')->and(preg_match('/[A-Za-z]/', $message))->toBe(0);
+    })->with([
+        'group_name',
+        'search',
+        'q',
+        'code',
+        'is_active',
+        'universe',
+        'sort_order',
+        'latitude',
+        'longitude',
+        'radius',
+        'price_range',
+        'from',
+        'to',
+        'date',
+        'date_from',
+        'date_to',
+        'starts_at',
+        'ends_at',
+        'price_amount_minor',
+        'duration_minutes',
+        'default_duration_minutes',
+        'currency_code',
+        'amount',
+        'commission_percent',
+        'rating',
+        'rating_min',
+        'body',
+        'message',
+        'note',
+        'admin_note',
+        'client_notes',
+        'barber_notes',
+        'cover_letter',
+        'photo',
+        'avatar',
+        'file',
+        'label',
+        'slug',
+        'sku',
+        'bio',
+        'requirements',
+        'subtitle',
+        'home_address',
+        'contact_email',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
+        'weekdays',
+    ]);
 
     it('has the same translatable field names in both languages', function (): void {
         $english = require base_path('modules/Core/Lang/en/validation.php');
