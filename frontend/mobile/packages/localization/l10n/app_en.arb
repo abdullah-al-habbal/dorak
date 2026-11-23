@@ -1465,6 +1465,8 @@
   "stylistAffiliationStatusActive": "Active",
   "stylistAffiliationStatusRejected": "Rejected",
   "stylistAffiliationStatusTerminated": "Terminated",
+  "affiliationStatusUnknown": "Unknown status",
+  "@affiliationStatusUnknown": {"description": "Shown for a barber affiliation whose status this app version does not recognise"},
   "stylistJobsTitle": "Jobs",
   "stylistJobsEmpty": "No open jobs right now.",
   "stylistJobApply": "Apply",

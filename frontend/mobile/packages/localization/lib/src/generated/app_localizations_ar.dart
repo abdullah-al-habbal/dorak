@@ -1497,6 +1497,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get stylistAffiliationStatusTerminated => 'منتهٍ';
 
   @override
+  String get affiliationStatusUnknown => 'حالة غير معروفة';
+
+  @override
   String get stylistJobsTitle => 'الوظائف';
 
   @override

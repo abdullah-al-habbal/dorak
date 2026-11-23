@@ -2780,6 +2780,12 @@ abstract class AppLocalizations {
   /// **'Terminated'**
   String get stylistAffiliationStatusTerminated;
 
+  /// Shown for a barber affiliation whose status this app version does not recognise
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown status'**
+  String get affiliationStatusUnknown;
+
   /// No description provided for @stylistJobsTitle.
   ///
   /// In en, this message translates to:

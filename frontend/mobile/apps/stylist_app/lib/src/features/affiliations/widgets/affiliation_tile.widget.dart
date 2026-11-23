@@ -20,8 +20,8 @@ class AffiliationTile extends StatelessWidget {
     BarberAffiliationStatus.pending => l10n.stylistAffiliationStatusPending,
     BarberAffiliationStatus.active => l10n.stylistAffiliationStatusActive,
     BarberAffiliationStatus.rejected => l10n.stylistAffiliationStatusRejected,
-    BarberAffiliationStatus.terminated ||
-    BarberAffiliationStatus.unknown => l10n.stylistAffiliationStatusTerminated,
+    BarberAffiliationStatus.terminated => l10n.stylistAffiliationStatusTerminated,
+    BarberAffiliationStatus.unknown => l10n.affiliationStatusUnknown,
   };
 
   @override

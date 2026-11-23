@@ -1329,6 +1329,8 @@
   "stylistAffiliationStatusActive": "نشط",
   "stylistAffiliationStatusRejected": "مرفوض",
   "stylistAffiliationStatusTerminated": "منتهٍ",
+  "affiliationStatusUnknown": "حالة غير معروفة",
+  "@affiliationStatusUnknown": {"description": "Shown for a barber affiliation whose status this app version does not recognise"},
   "stylistJobsTitle": "الوظائف",
   "stylistJobsEmpty": "لا توجد وظائف متاحة حاليًا.",
   "stylistJobApply": "تقديم",

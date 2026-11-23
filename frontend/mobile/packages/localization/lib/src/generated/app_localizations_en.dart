@@ -1502,6 +1502,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stylistAffiliationStatusTerminated => 'Terminated';
 
   @override
+  String get affiliationStatusUnknown => 'Unknown status';
+
+  @override
   String get stylistJobsTitle => 'Jobs';
 
   @override
