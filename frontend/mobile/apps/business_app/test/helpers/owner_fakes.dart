@@ -33,7 +33,7 @@ OwnerBrandDto brandFixture({
 
 OwnerBranchDto branchFixture({
   String id = 'branch-1',
-  String status = 'enabled',
+  OwnerBranchStatus status = OwnerBranchStatus.enabled,
 }) => OwnerBranchDto(
   id: id,
   name: const {'en': 'Downtown', 'ar': 'وسط المدينة'},
@@ -107,7 +107,7 @@ class FakeOwnerRepository implements OwnerRepository {
     final index = branches.indexWhere((branch) => branch.id == id);
     branches[index] = branchFixture(
       id: id,
-      status: on ? 'enabled' : 'disabled',
+      status: on ? OwnerBranchStatus.enabled : OwnerBranchStatus.disabled,
     );
   }
 

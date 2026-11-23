@@ -24,6 +24,8 @@ export 'package:core/src/network/dto/owner_profile.dto.dart';
 export 'package:core/src/network/dto/owner_subscription.dto.dart';
 export 'package:core/src/network/owner_access.entity.dart';
 export 'package:core/src/network/owner_brand_status.entity.dart';
+export 'package:core/src/network/owner_branch_status.entity.dart';
+export 'package:core/src/network/barber_affiliation_status.entity.dart';
 export 'package:core/src/network/repositories/owner.repository.dart';
 export 'package:core/src/network/feedback_app.entity.dart';
 export 'package:core/src/network/feedback_kind.entity.dart';

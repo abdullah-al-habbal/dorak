@@ -1,12 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:core/src/network/dto/localized_map.entity.dart';
+import 'package:core/src/network/owner_branch_status.entity.dart';
 
 part 'owner_branch.dto.g.dart';
 
+OwnerBranchStatus _statusFromJson(Object? value) =>
+    OwnerBranchStatus.fromWire(value is String ? value : null);
+
 /// `GET /owner/branches` and `GET /owner/branches/{branch}` (`BranchResource`).
-/// [status] stays a string (`enabled`, `disabled`, `pending`, `suspended`): a value
-/// added by the backend later must not break the list.
+/// [status] decodes to [OwnerBranchStatus]; a value added by the backend later reads
+/// as `unknown` and must not break the list.
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class OwnerBranchDto {
   const OwnerBranchDto({
@@ -14,7 +18,7 @@ class OwnerBranchDto {
     required this.name,
     required this.brandId,
     this.email,
-    this.status = '',
+    this.status = OwnerBranchStatus.unknown,
     this.description = const {},
     this.address = const {},
     this.latitude,
@@ -28,8 +32,8 @@ class OwnerBranchDto {
   final Map<String, String> name;
   final String brandId;
   final String? email;
-  @JsonKey(defaultValue: '')
-  final String status;
+  @JsonKey(fromJson: _statusFromJson)
+  final OwnerBranchStatus status;
   @JsonKey(fromJson: localizedMapFromJson)
   final Map<String, String> description;
   @JsonKey(fromJson: localizedMapFromJson)
@@ -42,7 +46,7 @@ class OwnerBranchDto {
   @JsonKey(defaultValue: 0)
   final int ratingCount;
 
-  bool get isEnabled => status == 'enabled';
+  bool get isEnabled => status == OwnerBranchStatus.enabled;
 
   factory OwnerBranchDto.fromJson(Map<String, dynamic> json) =>
       _$OwnerBranchDtoFromJson(json);

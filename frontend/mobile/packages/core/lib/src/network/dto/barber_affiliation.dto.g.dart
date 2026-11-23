@@ -13,7 +13,7 @@ BarberAffiliationDto _$BarberAffiliationDtoFromJson(
   barberId: json['barber_id'] as String,
   affiliableId: json['affiliable_id'] as String,
   affiliableType: json['affiliable_type'] as String,
-  status: json['status'] as String,
+  status: _statusFromJson(json['status']),
   commissionPercent: (json['commission_percent'] as num?)?.toDouble(),
   invitedAt: json['invited_at'] == null
       ? null

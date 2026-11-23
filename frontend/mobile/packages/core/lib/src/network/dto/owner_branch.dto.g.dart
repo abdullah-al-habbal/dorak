@@ -12,7 +12,9 @@ OwnerBranchDto _$OwnerBranchDtoFromJson(Map<String, dynamic> json) =>
       name: localizedMapFromJson(json['name']),
       brandId: json['brand_id'] as String,
       email: json['email'] as String?,
-      status: json['status'] as String? ?? '',
+      status: json['status'] == null
+          ? OwnerBranchStatus.unknown
+          : _statusFromJson(json['status']),
       description: json['description'] == null
           ? const {}
           : localizedMapFromJson(json['description']),

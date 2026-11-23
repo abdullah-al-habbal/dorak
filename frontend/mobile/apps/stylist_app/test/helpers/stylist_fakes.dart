@@ -262,7 +262,7 @@ class FakeAffiliationRepository implements AffiliationRepository {
       barberId: 'barber-1',
       affiliableId: 'branch-1',
       affiliableType: 'branch',
-      status: 'pending',
+      status: BarberAffiliationStatus.pending,
     ),
   ];
 
@@ -278,7 +278,7 @@ class FakeAffiliationRepository implements AffiliationRepository {
         barberId: 'barber-1',
         affiliableId: 'branch-1',
         affiliableType: 'branch',
-        status: 'active',
+        status: BarberAffiliationStatus.active,
       );
 
   @override
@@ -288,7 +288,7 @@ class FakeAffiliationRepository implements AffiliationRepository {
         barberId: 'barber-1',
         affiliableId: 'branch-1',
         affiliableType: 'branch',
-        status: 'rejected',
+        status: BarberAffiliationStatus.rejected,
       );
 
   @override

@@ -17,10 +17,11 @@ class AffiliationTile extends StatelessWidget {
   final VoidCallback onReject;
 
   String _statusLabel(AppLocalizations l10n) => switch (affiliation.status) {
-    'pending' => l10n.stylistAffiliationStatusPending,
-    'active' => l10n.stylistAffiliationStatusActive,
-    'rejected' => l10n.stylistAffiliationStatusRejected,
-    _ => l10n.stylistAffiliationStatusTerminated,
+    BarberAffiliationStatus.pending => l10n.stylistAffiliationStatusPending,
+    BarberAffiliationStatus.active => l10n.stylistAffiliationStatusActive,
+    BarberAffiliationStatus.rejected => l10n.stylistAffiliationStatusRejected,
+    BarberAffiliationStatus.terminated ||
+    BarberAffiliationStatus.unknown => l10n.stylistAffiliationStatusTerminated,
   };
 
   @override

@@ -235,7 +235,7 @@ void main() {
         expect(page.data.first.latitude, 33.5);
         expect(page.data.first.longitude, 36.3);
         expect(LocalizedName.resolve(page.data.last.name, 'ar'), 'البلدة');
-        expect(page.data.last.status, 'suspended');
+        expect(page.data.last.status, OwnerBranchStatus.suspended);
       },
     );
 
