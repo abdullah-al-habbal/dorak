@@ -97,6 +97,15 @@ class _CountingRepository implements BranchOperationsRepository {
   }) => throw UnimplementedError();
 }
 
+class _FailingChairsRepository extends _CountingRepository {
+  _FailingChairsRepository(this.failure);
+
+  final Object failure;
+
+  @override
+  Future<PaginatedData<FloorChairDto>> getChairs() => Future.error(failure);
+}
+
 void main() {
   late _CountingRepository repository;
   late _FakeRealtime realtime;
@@ -133,4 +142,23 @@ void main() {
 
     expect(repository.bookingLoads, 1);
   });
+
+  test(
+    'one failed request keeps the original error and clears loading',
+    () async {
+      final failure = ApiException(
+        statusCode: 500,
+        code: 'SERVER_ERROR',
+        message: 'chairs unavailable',
+      );
+      final failing = BranchOperationsBloc(_FailingChairsRepository(failure));
+
+      await failing.load();
+
+      expect(failing.state.error, same(failure));
+      expect(failing.state.loading, isFalse);
+      expect(failing.state.profile, isNull);
+      await failing.close();
+    },
+  );
 }

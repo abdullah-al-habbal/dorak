@@ -4,6 +4,15 @@ import 'package:stylist_app/src/features/operations/stylist.bloc.dart';
 
 import 'helpers/stylist_fakes.dart';
 
+class _FailingProfileRepository extends FakeStylistOperationsRepository {
+  _FailingProfileRepository(this.failure);
+
+  final Object failure;
+
+  @override
+  Future<BarberProfileDto> getProfile() => Future.error(failure);
+}
+
 void main() {
   late FakeStylistOperationsRepository repository;
   late StylistBloc bloc;
@@ -46,4 +55,23 @@ void main() {
     expect(bloc.state.appointments, hasLength(2));
     expect(bloc.state.error, failure);
   });
+
+  test(
+    'one failed request keeps the original error and clears loading',
+    () async {
+      final failure = ApiException(
+        statusCode: 500,
+        code: 'SERVER_ERROR',
+        message: 'profile unavailable',
+      );
+      final failing = StylistBloc(_FailingProfileRepository(failure));
+
+      await failing.load();
+
+      expect(failing.state.error, same(failure));
+      expect(failing.state.loading, isFalse);
+      expect(failing.state.appointments, isEmpty);
+      await failing.close();
+    },
+  );
 }

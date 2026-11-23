@@ -13,13 +13,12 @@ class StylistJobsBloc extends Cubit<StylistJobsState> {
   Future<void> load() async {
     emit(state.copyWith(loading: true, clearError: true));
     try {
-      final results = await Future.wait([
-        _repository.getJobs(),
-        _repository.getApplications(),
-      ]);
+      final jobsRequest = _repository.getJobs();
+      final applicationsRequest = _repository.getApplications();
+      await Future.wait([jobsRequest, applicationsRequest]);
       if (isClosed) return;
-      final jobs = results[0] as PaginatedData<JobPostingDto>;
-      final applications = results[1] as PaginatedData<JobApplicationDto>;
+      final jobs = await jobsRequest;
+      final applications = await applicationsRequest;
       emit(
         state.copyWith(
           loading: false,

@@ -21,25 +21,29 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
     final generation = ++_loadGeneration;
     emit(state.copyWith(loading: true, clearError: true));
     try {
-      final results = await Future.wait([
-        _repository.getProfile(),
-        _repository.getDashboard(),
-        _repository.getBookings(),
-        _repository.getChairs(),
+      final profileRequest = _repository.getProfile();
+      final dashboardRequest = _repository.getDashboard();
+      final bookingsRequest = _repository.getBookings();
+      final chairsRequest = _repository.getChairs();
+      await Future.wait([
+        profileRequest,
+        dashboardRequest,
+        bookingsRequest,
+        chairsRequest,
       ]);
       if (isClosed || generation != _loadGeneration) return;
+      final dashboard = await dashboardRequest;
       emit(
         BranchOperationsState(
           loading: false,
-          profile: results[0] as BranchDto,
-          dashboard: results[1] as BranchDashboardDto,
-          bookings: (results[2] as PaginatedData<BookingDto>).data,
-          chairs: (results[3] as PaginatedData<FloorChairDto>).data,
+          profile: await profileRequest,
+          dashboard: dashboard,
+          bookings: (await bookingsRequest).data,
+          chairs: (await chairsRequest).data,
         ),
       );
       if (_realtime != null) {
-        for (final branch
-            in (results[1] as BranchDashboardDto).assignedBranches) {
+        for (final branch in dashboard.assignedBranches) {
           if (_subscribedBranchIds.add(branch.id)) {
             _subscriptions.add(
               _realtime.subscribeToBranch(branch.id, _onRealtime),

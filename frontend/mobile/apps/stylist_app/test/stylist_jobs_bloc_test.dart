@@ -4,6 +4,16 @@ import 'package:stylist_app/src/features/jobs/stylist_jobs.bloc.dart';
 
 import 'helpers/stylist_fakes.dart';
 
+class _FailingApplicationsRepository extends FakeJobPostingRepository {
+  _FailingApplicationsRepository(this.failure);
+
+  final Object failure;
+
+  @override
+  Future<PaginatedData<JobApplicationDto>> getApplications({String? status}) =>
+      Future.error(failure);
+}
+
 void main() {
   late FakeJobPostingRepository repository;
   late StylistJobsBloc bloc;
@@ -33,6 +43,25 @@ void main() {
       expect(bloc.state.hasApplied('job-1'), isTrue);
       expect(bloc.state.error, rejected);
       expect(bloc.state.applyingJobId, isNull);
+    },
+  );
+
+  test(
+    'one failed request keeps the original error and clears loading',
+    () async {
+      final failure = ApiException(
+        statusCode: 500,
+        code: 'SERVER_ERROR',
+        message: 'applications unavailable',
+      );
+      final failing = StylistJobsBloc(_FailingApplicationsRepository(failure));
+
+      await failing.load();
+
+      expect(failing.state.error, same(failure));
+      expect(failing.state.loading, isFalse);
+      expect(failing.state.jobs, isEmpty);
+      await failing.close();
     },
   );
 }

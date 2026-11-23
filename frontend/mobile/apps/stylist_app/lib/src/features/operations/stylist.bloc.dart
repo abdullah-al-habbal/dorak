@@ -21,13 +21,12 @@ class StylistBloc extends Cubit<StylistState> {
     final generation = ++_loadGeneration;
     emit(state.copyWith(loading: true, clearError: true));
     try {
-      final results = await Future.wait([
-        _repository.getTodayAppointments(),
-        _repository.getProfile(),
-      ]);
+      final pageRequest = _repository.getTodayAppointments();
+      final profileRequest = _repository.getProfile();
+      await Future.wait([pageRequest, profileRequest]);
       if (isClosed || generation != _loadGeneration) return;
-      final page = results[0] as PaginatedData<BookingDto>;
-      final profile = results[1] as BarberProfileDto;
+      final page = await pageRequest;
+      final profile = await profileRequest;
       emit(
         state.copyWith(
           loading: false,
