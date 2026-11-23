@@ -69,7 +69,10 @@ class _DorakAppState extends State<DorakApp> {
       tokenProvider: _tokenStorage.read,
       enableLogging: kDebugMode,
     );
-    _pushNotifications = PushNotificationService(_apiClient);
+    _pushNotifications = PushNotificationService(
+      _apiClient,
+      localeResolver: () => _localeBloc.state.languageCode,
+    );
     _realtime = _createRealtime();
     _notificationOpenSubscription = _pushNotifications.opened.listen(
       _openNotification,
@@ -176,6 +179,7 @@ class _DorakAppState extends State<DorakApp> {
 
   void _syncRealtimeWithSession(SessionState state) {
     _openPendingNotification(state);
+    if (state.status.isAuthenticated) unawaited(_initializePushNotifications());
     final realtime = _realtime;
     if (realtime == null) return;
     if (state.status.isAuthenticated) {
@@ -187,6 +191,7 @@ class _DorakAppState extends State<DorakApp> {
 
   void _switchLocale() {
     _localeBloc.add(LocaleToggled());
+    unawaited(_pushNotifications.refreshRegistration());
   }
 
   /// Re-probes the stored token whenever the app returns to the foreground.

@@ -60,7 +60,10 @@ class _StylistAppState extends State<StylistApp> {
       localeResolver: () => _locale.languageCode,
     );
     _realtime = _createRealtime(_tokenStorage);
-    _pushNotifications = PushNotificationService(_client);
+    _pushNotifications = PushNotificationService(
+      _client,
+      localeResolver: () => _locale.languageCode,
+    );
     _notificationOpenSubscription = _pushNotifications.opened.listen(
       _openNotification,
     );
@@ -165,11 +168,14 @@ class _StylistAppState extends State<StylistApp> {
     ),
   );
 
-  void _toggleLocale() => setState(
-    () => _locale = _locale.languageCode == AppLocales.englishCode
-        ? AppLocales.arabic
-        : AppLocales.english,
-  );
+  void _toggleLocale() {
+    setState(
+      () => _locale = _locale.languageCode == AppLocales.englishCode
+          ? AppLocales.arabic
+          : AppLocales.english,
+    );
+    unawaited(_pushNotifications.refreshRegistration());
+  }
 
   Future<void> _restoreSession() async {
     await _session.restore();

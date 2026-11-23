@@ -41,7 +41,8 @@ Current third-party set: `bloc`, `dio`, `equatable`, `flutter_dotenv`,
 2026-11-18, task T8.4: `url_launcher` opens the public legal pages and the web
 owner registration through `ExternalLinkOpener`; `package_info_plus` supplies
 the `app_version` sent with feedback through `AppInfoProvider`; both stay
-behind those two seams so screens and tests never touch a plugin). Adding
+behind those two seams so screens and tests never touch a plugin). `flutter_local_notifications`
+(requested by the owner for the Push P1.3 task, 2026-11-24) shows a push that arrives while the app is open, behind `ForegroundNotificationPresenter` so tests never touch the plugin. Adding
 another needs a reason recorded in this file or in `docs/`.
 
 `bloc` is **pure Dart** and is permitted here by

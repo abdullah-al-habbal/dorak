@@ -80,7 +80,10 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
       localeResolver: () => _locale.languageCode,
     );
     _realtime = _createRealtime();
-    _pushNotifications = PushNotificationService(_apiClient);
+    _pushNotifications = PushNotificationService(
+      _apiClient,
+      localeResolver: () => _locale.languageCode,
+    );
     _notificationOpenSubscription = _pushNotifications.opened.listen(
       _openNotification,
     );
@@ -206,11 +209,14 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     );
   }
 
-  void _toggleLocale() => setState(
-    () => _locale = _locale.languageCode == AppLocales.englishCode
-        ? AppLocales.arabic
-        : AppLocales.english,
-  );
+  void _toggleLocale() {
+    setState(
+      () => _locale = _locale.languageCode == AppLocales.englishCode
+          ? AppLocales.arabic
+          : AppLocales.english,
+    );
+    unawaited(_pushNotifications.refreshRegistration());
+  }
 
   void _openOwnerRegistration() =>
       unawaited(_linkOpener.open(_legalLinks.ownerRegistration));

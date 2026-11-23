@@ -9,6 +9,7 @@ export 'package:core/src/network/locale_codes.entity.dart';
 export 'package:core/src/network/job_application_status.entity.dart';
 export 'package:core/src/network/floor_zone.entity.dart';
 export 'package:core/src/notifications/notification_target.entity.dart';
+export 'package:core/src/notifications/foreground_notification_presenter.provider.dart';
 export 'package:core/src/notifications/push_notification.client.dart';
 export 'package:core/src/network/dto/auth_response.dto.dart';
 export 'package:core/src/network/dto/barber_affiliation.dto.dart';

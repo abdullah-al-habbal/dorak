@@ -42,4 +42,65 @@ void main() {
       expect(attempts, 2);
     });
   });
+
+  group('PushNotificationService.registerToken', () {
+    test('sends the platform, app language and app version', () async {
+      Map<String, dynamic>? body;
+      final fake = fakeDio(
+        handler: (options) {
+          body = options.data as Map<String, dynamic>?;
+          return jsonResponse(
+            options,
+            data: successEnvelope(data: {'id': 'd1'}),
+          );
+        },
+      );
+      final service = PushNotificationService(
+        clientWith(fake),
+        platformName: () => 'ios',
+        localeResolver: () => 'ar',
+        appInfo: const _FixedAppInfo('1.4.2+7'),
+      );
+
+      await service.registerToken('device-token');
+
+      expect(body, {
+        'token': 'device-token',
+        'platform_type': 'ios',
+        'locale': 'ar',
+        'app_version': '1.4.2+7',
+      });
+    });
+
+    test('leaves out the language and version when they are unknown', () async {
+      Map<String, dynamic>? body;
+      final fake = fakeDio(
+        handler: (options) {
+          body = options.data as Map<String, dynamic>?;
+          return jsonResponse(
+            options,
+            data: successEnvelope(data: {'id': 'd1'}),
+          );
+        },
+      );
+      final service = PushNotificationService(
+        clientWith(fake),
+        platformName: () => 'android',
+        appInfo: const _FixedAppInfo(''),
+      );
+
+      await service.registerToken('device-token');
+
+      expect(body, {'token': 'device-token', 'platform_type': 'android'});
+    });
+  });
+}
+
+class _FixedAppInfo implements AppInfoProvider {
+  const _FixedAppInfo(this._version);
+
+  final String _version;
+
+  @override
+  Future<String> version() async => _version;
 }

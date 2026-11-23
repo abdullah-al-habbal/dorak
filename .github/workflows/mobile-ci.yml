@@ -113,13 +113,13 @@ jobs:
       # sideloading MVP testers; not accepted by any store.
       - name: Build APK
         working-directory: frontend/mobile/apps/${{ matrix.app }}
-        run: flutter build apk --release
+        run: flutter build apk --release --flavor dev
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.app }}-apk
-          path: frontend/mobile/apps/${{ matrix.app }}/build/app/outputs/flutter-apk/app-release.apk
+          path: frontend/mobile/apps/${{ matrix.app }}/build/app/outputs/flutter-apk/app-dev-release.apk
           if-no-files-found: error
           retention-days: 14
 

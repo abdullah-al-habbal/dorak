@@ -12,6 +12,16 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Firebase (push) is optional: the google-services plugin is applied only when a config file exists
+// for the flavor being built, so a checkout without the files still builds and runs without push.
+// Place the files, git-ignored, at android/app/src/dev/google-services.json (dev Firebase project)
+// and android/app/src/prod/google-services.json (prod Firebase project).
+val requestedTasks = gradle.startParameter.taskNames.joinToString(" ").lowercase()
+val firebaseFlavor = if ("prod" in requestedTasks) "prod" else "dev"
+if (file("src/$firebaseFlavor/google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 android {
     namespace = "com.dorak.stylist_app"
     compileSdk = 37 // flutter_secure_storage requires 37; Flutter 3.44 defaults to 36
@@ -30,6 +40,19 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        // dev: the development Firebase project and API; installs beside prod (own application id).
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        create("prod") {
+            dimension = "environment"
+        }
     }
 
     signingConfigs {
