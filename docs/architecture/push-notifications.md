@@ -50,7 +50,7 @@ Phase 1 commits (all local):
 | `POST /api/v1/user/device-token` | `auth:client,barber,branch_api,admin_api` | Body `token`, `platform_type`, optional `locale` (`ar`/`en`), optional `app_version`. Idempotent: the unique token is `updateOrCreate`d, a parallel insert is retried, `revoked_at` is cleared, and the row is linked to the current Sanctum token. A token registered by another account **moves** to the caller (a token proves one physical install). Returns `data.id`. |
 | `DELETE /api/v1/user/device-token` | same | Body `token`. Unknown token: success (idempotent). Another account's token: `403` through `DeviceTokenPolicy::revoke`. Sets `revoked_at`. |
 
-Revocation also happens **on logout** of the client, barber and branch guards (`DeviceTokenService::revokeForAccessToken`): only the devices that signed in with the logged-out API token stop receiving pushes; other sign-ins keep theirs. Barber account deletion still deletes the barber's tokens. The dashboard (admin/owner) logout does not touch device tokens (web push is Phase 2).
+Revocation also happens **on logout** of the client, barber and branch guards (`DeviceTokenService::revokeForAccessToken`): only the devices that signed in with the logged-out API token stop receiving pushes; other sign-ins keep theirs. Account deletion (client and barber) erases the account's device tokens; password change and reset, bans, admin deactivation and the dashboard credential revoker revoke them (`DeviceTokenService::revokeAllForAccount` / `deleteAllForAccount`, Push P1.5; tests in `tests/Feature/Core/DeviceTokenAccountLifecycleTest.php`). The dashboard (admin/owner) logout does not touch device tokens (web push is Phase 2).
 
 ### Sending (`FcmNotificationSender`, kept as the direct HTTP v1 client)
 

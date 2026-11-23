@@ -231,3 +231,11 @@ The signed-in check (`login`, then `/me` with both headers, then `logout`) is do
 4. Set `BOOKING_APP_URL` once an app store or universal link exists (backlog BD-13).
 5. Rotate the seeded admin password and `DASHBOARD_SESSION_SECRET` before any real user (backlog RR-10, RR-13).
 6. Run the full Playwright suite when the owner allows wiping `dorak_test` (backlog BD-9, RR-1). It has not run against `ee534091e`.
+
+## Snapshot 8 (2026-11-23): push Phase 1 release
+
+- Pushed `master` up to `fea9c09fd`; dispatched `deploy.yml` with `reset_database=true` (authorised for dev only). Run `45277277114`: success. Vercel deployment for the same commit: success.
+- The reset applied the edited `device_tokens` create migration (`locale`, `app_version`, `access_token_id`, `revoked_at`). The dev database holds seed data only again.
+- `scripts/verify-deploy.sh`: all probes PASS (health 200, no debug details, dashboard login 401, CORS preflight 204, `/me` without a session 401, Arabic validation message).
+- `fea9c09fd` also revokes or erases device tokens on account deletion, password change and reset, bans and deactivation (Push P1.5).
+- Not done: Firebase project files and `FCM_PROJECT_ID` / `FCM_CREDENTIALS` (backlog RR-16, RR-19), so no push is sent yet.
