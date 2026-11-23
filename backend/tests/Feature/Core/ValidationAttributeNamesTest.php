@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
@@ -200,6 +201,115 @@ describe('Arabic validation files', function (): void {
         'customer_phone',
         'weekdays',
     ]);
+
+    it('shows an Arabic name for every named field, nested and list items included, through the real validator', function (): void {
+        app()->setLocale('ar');
+        $names = array_keys((require base_path('lang/ar/validation.php'))['attributes']);
+        $latin = [];
+
+        foreach ($names as $name) {
+            // `tag_ids.*` is checked as the first list item, `schedule.*.start_time` as the first row's field.
+            $path = str_replace('*', '0', $name);
+            $data = [];
+            Arr::set($data, $path, null);
+
+            $message = Validator::make($data, [$name => 'required'])->errors()->first($path);
+
+            if ($message === '' || preg_match('/[A-Za-z]/', $message) === 1) {
+                $latin[$name] = $message;
+            }
+        }
+
+        expect($latin)->toBe([]);
+    });
+
+    /** @return array<string, true> field names the FormRequests validate, nested (`price_range.max`) and wildcard (`tag_ids.*`) keys included */
+    function requestRuleFields(): array
+    {
+        $fields = [];
+
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(base_path('modules'), FilesystemIterator::SKIP_DOTS)) as $file) {
+            if (! str_contains($file->getPathname(), '/Http/Requests/') || $file->getExtension() !== 'php') {
+                continue;
+            }
+
+            preg_match_all("/^\s*'([a-z_][a-z0-9_]*(?:\.(?:\*|[a-z0-9_]+))*)'\s*=>\s*\[/m", (string) file_get_contents($file->getPathname()), $matches);
+
+            foreach ($matches[1] as $field) {
+                $fields[$field] = true;
+            }
+        }
+
+        return $fields;
+    }
+
+    /** Fields no person types or sees as a label: tokens, drivers, filters and feature flags. They show their raw key in an error. */
+    function technicalRequestFields(): array
+    {
+        return [
+            'access_token',
+            'refresh_token',
+            'token',
+            'claim',
+            'idempotency_key',
+            'gateway_token',
+            'gateway_settings',
+            'driver',
+            'payment_intent',
+            'payment_method',
+            'payment_status',
+            'app',
+            'app_version',
+            'platform',
+            'platform_type',
+            'screen',
+            'scope',
+            'scope_id',
+            'related_id',
+            'related_type',
+            'favorited_type',
+            'affiliable_type',
+            'workflow',
+            'filter_criteria',
+            'feature_keys',
+            'feature_keys.*',
+            'external_reference',
+            'actor_type',
+            'booking_status',
+            'force',
+            'cancel_future_bookings',
+            'settled',
+            'unread',
+            'active',
+            'banned',
+        ];
+    }
+
+    it('gives every request field an Arabic name or lists it as technical, so a new field cannot ship without one', function (): void {
+        $plain = array_keys((require base_path('lang/ar/validation.php'))['attributes']);
+        $translatable = array_keys((require base_path('modules/Core/Lang/ar/validation.php'))['attributes']);
+        $fields = array_keys(requestRuleFields());
+
+        $unnamed = array_values(array_diff($fields, $plain, $translatable, technicalRequestFields()));
+
+        expect($unnamed)->toBe([]);
+    });
+
+    it('keeps the technical list honest: no entry is named already or unused by a request', function (): void {
+        $named = array_keys((require base_path('lang/ar/validation.php'))['attributes']);
+        $fields = array_keys(requestRuleFields());
+
+        expect(array_values(array_intersect(technicalRequestFields(), $named)))->toBe([])
+            ->and(array_values(array_diff(technicalRequestFields(), $fields)))->toBe([]);
+    });
+
+    it('writes every Arabic field name without Latin letters', function (): void {
+        $names = [...(require base_path('lang/ar/validation.php'))['attributes'], ...(require base_path('modules/Core/Lang/ar/validation.php'))['attributes']];
+
+        $latin = array_keys(array_filter($names, fn (string $name): bool => preg_match('/[A-Za-z]/', $name) === 1));
+
+        expect($latin)->toBe([]);
+    });
 
     it('has the same translatable field names in both languages', function (): void {
         $english = require base_path('modules/Core/Lang/en/validation.php');
