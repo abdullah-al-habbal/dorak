@@ -10,11 +10,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Constants\DatabaseSafetyConstants;
 use Modules\Core\Constants\MorphMapConstants;
 use Modules\Core\Contracts\SmsSender;
+use Modules\Core\Models\DeviceTokenModel;
 use Modules\Core\Models\NotificationDeliveryModel;
+use Modules\Core\Policies\DeviceTokenPolicy;
 use Modules\Core\Services\ProductionDeliveryGuard;
 use Modules\Core\Services\Sms\SmsSenderFactory;
 
@@ -56,6 +59,7 @@ final class ApplicationServiceProvider extends BaseModuleServiceProvider
         $this->prohibitDestructiveDatabaseCommands();
         $this->registerMorphMap();
         $this->registerFactoryResolution();
+        Gate::policy(DeviceTokenModel::class, DeviceTokenPolicy::class);
         $this->loadAppRoutes();
         Broadcast::routes(['prefix' => 'api/v1', 'middleware' => ['api', 'auth:admin_api,branch_api,barber,client']]);
         require __DIR__.'/../Routes/channels.php';

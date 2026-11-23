@@ -5,27 +5,19 @@ declare(strict_types=1);
 namespace Modules\Core\Http\Actions\Shared;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Core\Enums\DevicePlatformEnum;
-use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 use Modules\Core\Http\Actions\BaseApiAction;
 use Modules\Core\Http\Requests\Shared\RegisterDeviceTokenRequest;
-use Modules\Core\Models\DeviceTokenModel;
+use Modules\Core\Services\DeviceTokenService;
 
 final class RegisterDeviceTokenAction extends BaseApiAction
 {
+    public function __construct(
+        private readonly DeviceTokenService $deviceTokens,
+    ) {}
+
     public function __invoke(RegisterDeviceTokenRequest $request): JsonResponse
     {
-        $actor = $request->user();
-
-        $deviceToken = DeviceTokenModel::query()->updateOrCreate(
-            ['token' => $request->string('token')->toString()],
-            [
-                'user_id' => $actor->getAuthIdentifier(),
-                'user_type' => DeviceTokenUserTypeEnum::from($actor->getMorphClass()),
-                'platform_type' => DevicePlatformEnum::from($request->string('platform_type')->toString()),
-                'last_used_at' => now(),
-            ],
-        );
+        $deviceToken = $this->deviceTokens->register($request->user(), $request->toCommand());
 
         return $this->ok(data: ['id' => $deviceToken->id]);
     }

@@ -128,3 +128,18 @@ it('logs why delivery is skipped for each misconfiguration and never logs the cr
     'inline json without a key' => ['{"client_email":"sa@example.test","private_key":"SECRET-KEY-MATERIAL"}x', 'credentials_invalid'],
     'inline json missing the private key' => ['{"client_email":"sa@example.test"}', 'credentials_invalid'],
 ]);
+
+it('skips a revoked device token', function (): void {
+    configureFcmCredentials();
+    Http::fake([
+        'https://oauth2.googleapis.com/token' => Http::response(['access_token' => 'oauth-access-token', 'expires_in' => 3600]),
+        'https://fcm.googleapis.com/v1/projects/dorak-test-project/messages:send' => Http::response(['name' => 'projects/dorak-test-project/messages/3']),
+    ]);
+    registerFcmToken('active-device-token');
+    registerFcmToken('revoked-device-token')->forceFill(['revoked_at' => now()])->save();
+
+    app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', ['type' => 'booking_status']);
+
+    Http::assertSent(fn (Request $request): bool => ($request['message']['token'] ?? null) === 'active-device-token');
+    Http::assertNotSent(fn (Request $request): bool => ($request['message']['token'] ?? null) === 'revoked-device-token');
+});

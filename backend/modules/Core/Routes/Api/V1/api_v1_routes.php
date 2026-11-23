@@ -11,10 +11,17 @@ use Modules\Core\Http\Actions\Shared\ListNotificationsAction;
 use Modules\Core\Http\Actions\Shared\MarkAllNotificationsReadAction;
 use Modules\Core\Http\Actions\Shared\MarkNotificationReadAction;
 use Modules\Core\Http\Actions\Shared\RegisterDeviceTokenAction;
+use Modules\Core\Http\Actions\Shared\RevokeDeviceTokenAction;
 
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::get('/health', HealthCheckAction::class)->name('health');
-    Route::middleware(['auth:client,barber,branch_api,admin_api', EnsureClientAccountAccess::class, EnsureBranchAccountAccess::class])->post('/user/device-token', RegisterDeviceTokenAction::class)->name('device-token.register');
+    Route::middleware(['auth:client,barber,branch_api,admin_api', EnsureClientAccountAccess::class, EnsureBranchAccountAccess::class])
+        ->prefix('user/device-token')
+        ->name('device-token.')
+        ->group(function (): void {
+            Route::post('/', RegisterDeviceTokenAction::class)->name('register');
+            Route::delete('/', RevokeDeviceTokenAction::class)->name('revoke');
+        });
     Route::middleware(['auth:client,barber,branch_api', EnsureClientAccountAccess::class, EnsureBranchAccountAccess::class])
         ->prefix('notifications')
         ->name('notifications.')

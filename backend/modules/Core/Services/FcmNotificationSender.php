@@ -73,6 +73,7 @@ final class FcmNotificationSender
         DeviceTokenModel::query()
             ->where('user_type', $alias)
             ->where('user_id', $userId)
+            ->whereNull('revoked_at')
             ->whereNotIn('id', $deliveredTokenIds)
             ->get()
             ->each(fn (DeviceTokenModel $deviceToken) => $this->pushToDevice($notification, $deviceToken, $endpoint, $credentials, $payload));

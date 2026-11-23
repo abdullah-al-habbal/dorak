@@ -14,8 +14,10 @@ use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 /**
  * @property string $id
  * @property string $token
+ * @property string|null $locale
+ * @property string|null $app_version
  */
-#[Fillable(['user_id', 'user_type', 'token', 'platform_type', 'last_used_at'])]
+#[Fillable(['user_id', 'user_type', 'token', 'platform_type', 'locale', 'app_version', 'access_token_id', 'last_used_at', 'revoked_at'])]
 #[Table('device_tokens')]
 final class DeviceTokenModel extends Model
 {
@@ -27,6 +29,7 @@ final class DeviceTokenModel extends Model
             'user_type' => DeviceTokenUserTypeEnum::class,
             'platform_type' => DevicePlatformEnum::class,
             'last_used_at' => 'datetime',
+            'revoked_at' => 'datetime',
         ];
     }
 }
