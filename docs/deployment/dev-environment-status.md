@@ -15,6 +15,17 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
+## Snapshot 4: 2026-11-23 (after the TD-18 release, database reset)
+
+Release by `scripts/release-dev.sh --reset-database` from `master` at `b31a11bbc` (TD-3, T1 to T3 badge and enum fallbacks, Arabic validation messages, bilingual catalog tag groups). Backend deploy: workflow `deploy.yml` run [`45163821087`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45163821087), dispatched with `reset_database=true` on purpose: the create migration of `service_catalog_item_tags` was edited (TD-18, waived in the migration guard), so the dev database was dropped and re-seeded. Conclusion **success**. Vercel status of `b31a11bbc`: `success`. `scripts/verify-deploy.sh` passed all 7 checks.
+
+Because of the reset, the dev data created by hand before this release is gone, and the seeded admin (RR-13) was re-created. Playwright has not run against these commits.
+
+| Probe | Result |
+|---|---|
+| `GET /api/v1/public/sitemap` (backend) | `200`; `brands` 2, `branches` 2, `stylists` 1 (the seeded data) |
+| `GET /sitemap.xml`, `GET /robots.txt` (Vercel) | `200` each |
+
 ## Snapshot 3: 2026-11-23, about 10:28 UTC (after the localization release)
 
 Release by `scripts/release-dev.sh` from `master` at `15eed1b1b` (the LOC-1 to LOC-6 and TD-15 localization work, 12 commits pushed). Backend deploy: workflow `deploy.yml` run [`45155362569`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45155362569), dispatched with `reset_database=false`, conclusion **success**. The Vercel status of `15eed1b1b` was `success`. `scripts/verify-deploy.sh` passed all 7 checks. No migration changed.
