@@ -52,6 +52,16 @@ php artisan migrate
 php artisan db:seed
 ```
 
+### Tests and current state
+
+```bash
+composer test:db:up   # MySQL 8.4 test server on 127.0.0.1:3307, database dorak_test
+composer test         # Pest, sequential only (never --parallel)
+vendor/bin/pint --test
+```
+
+Dev URLs, the latest verified results and what is released versus only local are recorded, with dates, in [dev environment status](../docs/deployment/dev-environment-status.md). Arabic wording rules (barber key, المصفف label) are in [localization of machine keys](../docs/architecture/localization-of-machine-keys.md).
+
 ## Continued in
 
 - [Part 2: 4. Development](readme-part-2.md)

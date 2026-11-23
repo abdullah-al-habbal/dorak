@@ -70,6 +70,16 @@ Beyond the booking locks above, the same rules apply to every other write that t
 - **Dev-environment migration rule:** to change an existing table (column, index, rename), edit its original `create_*_table` migration and run `php artisan migrate:fresh --seed`; do not add `add_*`/`alter_*` fragment files. A new migration file is only for a brand-new table. (Applies while the project is pre-release; revisit before the first production deploy.)
 - Test config targets the dedicated MySQL 8.4 test server (never MariaDB; `composer test:db:up` starts it on 127.0.0.1:3307, `composer test:db:down` stops it; DB `dorak_test`, connection forced by `phpunit.xml`, not by `.env.testing`), array cache/session/mail, sync queue
 
+## Localization rules (machine keys vs labels)
+
+- Keep `barber` in database columns, routes, DTO and JSON keys, enum values and translation keys. User-facing Arabic says **المصفف / المصففون** (never الحلاق; the trade "الحلاقة" is fine). Standard and guards: [localization of machine keys](../docs/architecture/localization-of-machine-keys.md); `tests/Feature/Core/ArabicTerminologyTest.php` fails on a regression.
+- Every dashboard write route (`POST`, `PUT`, `PATCH`, `DELETE` under `api/v1/dashboard/`) must carry `ApplyPreferredLocaleMiddleware`, placed after the session check; `tests/Feature/Core/StoredLocaleWriteRoutesTest.php` enforces it. Mobile guards pass the guard name (`ApplyPreferredLocaleMiddleware::class.':barber'`).
+- Every request field needs an Arabic name in `lang/ar/validation.php` (`ValidationAttributeNamesTest`); `tests/Fixtures/wire-enums.json` is kept equal to the backend enums by `WireEnumFixtureTest` and read by the dashboard and mobile tests.
+
+## Current state (dated)
+
+Snapshot of 2026-11-23: local `master` is four commits ahead of `origin/master` (`f2d768a0d`), not pushed or released; the full Pest suite (2954 tests), Pint and the migration guard passed. Live dev URLs, the release path and the open backlog items are in [dev environment status](../docs/deployment/dev-environment-status.md) and [backlog](../docs/backlog/index.md). The test database is the MySQL 8.4 container on `127.0.0.1:3307`: run `composer test:db:up` before any Pest run (a down server fails every test with "not reachable"), and never pass `--parallel`.
+
 ## Continued in
 
 - [Part 2: Remaining Gaps (from docs/02-prd.md §5 + §8)](agents-part-2.md)

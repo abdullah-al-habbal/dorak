@@ -26,7 +26,7 @@ codeanchors:
 - **Client / Customer** (العميل) — A person seeking grooming or beauty services. Discovers shops, books, and reviews.
 - **Brand Owner** (المالك) — The person who owns the Brand. Top authority over **all** its branches, billing, managers, jobs, and affiliations.
 - **Branch Manager** (مدير الفرع) — Runs the day‑to‑day of **one** Branch. Deep but **local** authority; cannot act brand‑wide.
-- **Barber / Stylist** (الحلاق / المصفف) — An **independent professional**. May be freelance (incl. at‑home), affiliated with shops, or both. Owns their own profile, portfolio, and services regardless of affiliation. *(In this product "Barber" covers both men's barbers and women's stylists.)*
+- **Barber / Stylist** (المصفف; the code and API say `barber`, the Arabic UI never says الحلاق) — An **independent professional**. May be freelance (incl. at‑home), affiliated with shops, or both. Owns their own profile, portfolio, and services regardless of affiliation. *(In this product "Barber" covers both men's barbers and women's stylists.)*
 - **Freelancer** — A Barber operating independently, not requiring any shop affiliation; can offer **at‑home** service.
 - **Platform Admin** — The Dorak operator. Manages tenants, currencies, exchange rates, and feature flags across the whole platform.
 

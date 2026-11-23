@@ -98,6 +98,13 @@ a deliberate local break (or a mutation run where approved) to prove the test ca
 
 `backend/tests/Fixtures/wire-enums.json` lists the cases of the backend enums the clients mirror. The Pest test `tests/Feature/Core/WireEnumFixtureTest.php` keeps it equal to the backend (regenerate with `UPDATE_WIRE_ENUMS=1 vendor/bin/pest tests/Feature/Core/WireEnumFixtureTest.php`). The dashboard's `tests/enums/wire-enum-fixture.test.ts` and the mobile `packages/core/test/wire_enum_fixture_test.dart` fail when their enums no longer match it, so a new or renamed backend case fails in all three stacks. Text drift is guarded separately: the dashboard's `tests/locales/dictionaries.constant.test.ts` and the mobile `packages/localization/test/localization_test.dart` check English and Arabic key parity and placeholders, and `tests/Feature/Core/ValidationAttributeNamesTest.php` guards the Arabic validation names. To cover another enum, add it to `wireEnumCases()` and to the two client mirrors lists.
 
+## Language guards (2026-11-23)
+
+- **Terminology:** user-facing Arabic never calls the stylist "الحلاق" (the trade "الحلاقة" is allowed). Guards: `tests/Feature/Core/ArabicTerminologyTest.php` (backend `Lang/ar`), `tests/locales/dictionaries.constant.test.ts` (dashboard) and `packages/localization/test/localization_test.dart` (mobile). Standard: [localization of machine keys](localization-of-machine-keys.md).
+- **Duplicate ARB keys:** the same mobile test counts raw top-level keys, because `jsonDecode` keeps the last duplicate silently.
+- **Stored-language fallback (C1):** `tests/Feature/Core/StoredLocaleWriteRoutesTest.php` fails when a dashboard write route lacks `ApplyPreferredLocaleMiddleware`, and checks owner and barber write routes answer in Arabic without `Accept-Language`.
+- **Allowed-path guard tests (C4):** a test that expects "no exception" first proves the guard still refuses a bad case (`DashboardWriteGuardTest`, `ProductionDeliveryGuardTest`), so a guard that never throws cannot pass.
+
 ## Coverage and mutation testing
 
 On the date of writing there is no coverage driver on the development machine, `infection/infection`

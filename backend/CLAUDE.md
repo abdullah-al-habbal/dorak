@@ -43,6 +43,8 @@ Before building, read `docs/02-prd.md` then `docs/feature-index.md` to see what 
 - SMS goes through the `SmsSender` strategy resolved by `SmsSenderFactory` — never call a
   gateway or `Http` from a feature module. New gateways follow `docs/17-sms-delivery.md`;
   failures throw `SmsDeliveryException` (no phone/code/secrets in the message, no retries).
+- **Arabic labels:** keys stay `barber`; user-facing Arabic says المصفف, never الحلاق (guarded by `ArabicTerminologyTest`). Every dashboard write route needs `ApplyPreferredLocaleMiddleware` (guarded by `StoredLocaleWriteRoutesTest`). Details in `AGENTS.md` and `docs/architecture/localization-of-machine-keys.md`.
+- Pest needs the test database up (`composer test:db:up`, `127.0.0.1:3307`) and runs sequentially, never `--parallel`.
 - Booking row locks are taken in one order: client, chair, barber, then the booking row. Never lock the booking row first (deadlock, 1213). Changing it needs a failing `tests/Concurrency/` test first. See `docs/booking-concurrency/index.md` and `backend/AGENTS.md`.
 
 ## 🗺 Feature Index

@@ -15,6 +15,46 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
+## Snapshot 6: 2026-11-23, 21:09 UTC (2026-11-24 00:09 +03), local work, not released
+
+Nothing was deployed. This snapshot records the repository state after the terminology and test-hardening work, so the next person can tell what is live (snapshot 5, `1f39ce675`) from what is only local.
+
+| Item | Value |
+|---|---|
+| `origin/master` | `f2d768a0d` (docs only on top of the released `1f39ce675`) |
+| Local `master` | `daf476c02`, four commits ahead, **not pushed** |
+| Dev environment | still serves snapshot 5 (old Arabic strings, no language middleware on the settings routes) |
+| Backlog item | RR-15 (release these commits) |
+
+Local commits, oldest first:
+
+| Commit | Change |
+|---|---|
+| `dc35a1076` | duplicate `discoveryTitle` and `discoverySubtitle` ARB keys removed; the mobile localization test counts raw top-level keys |
+| `1a4116f41` | user-facing Arabic says المصفف / المصففون instead of الحلاق in backend `Lang/ar`, dashboard `locales/ar` and `app_ar.arb`; guards in Pest, Vitest and the mobile localization test; standard in [localization of machine keys](../architecture/localization-of-machine-keys.md) |
+| `8b9be4627` | the dashboard, client, barber and branch `settings` routes use `ApplyPreferredLocaleMiddleware`; `StoredLocaleWriteRoutesTest` (C1) and tighter C4 guard tests |
+| `daf476c02` | the D5 deploy item is RR-15 (snapshot 3 keeps RR-14 for the sitemap) |
+
+Gate results on this tree (all run locally on 2026-11-23; no Playwright, by the owner's instruction):
+
+| Gate | Result |
+|---|---|
+| Backend Pest, whole suite, sequential | 2954 passed |
+| Pint, `scripts/check_migrations.php` | passed (no migration changed) |
+| Dashboard Vitest | 221 files, 1208 tests passed |
+| Dashboard lint, typecheck, build | passed |
+| Mobile `dart run melos run verify` | passed |
+| `scripts/check-conventions.sh`, `git diff --check` | passed |
+
+Local configuration these results depend on (no secret values):
+
+| Setting | Value |
+|---|---|
+| Test database | MySQL 8.4 container `dorak-test-db-mysql-1` from `backend/docker-compose.test.yml`, `127.0.0.1:3307`, database `dorak_test`; start with `composer test:db:up`, stop with `composer test:db:down`; left running after this work |
+| Pest | sequential only; `--parallel` is refused by the test guard |
+| Environment URLs | unchanged, see snapshot 1 (backend `https://dev-dorak-backend.io`, dashboard `https://dorak-bay.vercel.app`) |
+| Release path | `scripts/release-dev.sh` (`reset_database=false`), then `scripts/verify-deploy.sh` |
+
 ## Snapshot 5: 2026-11-23 (after the Arabic-validation and enum-drift release, no database reset)
 
 Release by `scripts/release-dev.sh` from `master` at `1f39ce675` (25 commits pushed: the A1 to E chain plus the terminology, affiliation-label and `melos generate` fixes). Backend deploy: workflow `deploy.yml` run [`45243219197`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45243219197) with `reset_database=false`; Vercel deployment for the same commit: success. Playwright was not run.
