@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'invitation_requested' => 'إذا وُجد مصفف مطابق يمكن دعوته، فقد تم إرسال الدعوة.',
-    'chair_stylist_unavailable' => 'الكرسي أو الحلاق المحدد لم يعد متاحًا لهذا الوقت.',
+    'chair_stylist_unavailable' => 'الكرسي أو المصفف المحدد لم يعد متاحًا لهذا الوقت.',
     'invalid_booking_status' => 'حالة الحجز غير صالحة.',
     'assign_branch_chair' => 'يجب على مدير الفرع تعيين كرسي للفرع.',
     'booking_slot_conflict' => 'يتعارض وقت الحجز مع حجز موجود.',
@@ -13,7 +13,7 @@ return [
     'invalid_confirmation_code' => 'رمز التأكيد غير صالح أو منتهي الصلاحية.',
     'barber_other_branch' => 'الحلاق يتبع فرعًا آخر.',
     'chair_has_active_bookings' => 'للكرسي حجوزات نشطة، لذلك لا يمكن تغييره أو حذفه.',
-    'stylist_not_assigned_to_chair' => 'يجب تعيين الحلاق إلى الكرسي المحدد.',
+    'stylist_not_assigned_to_chair' => 'يجب تعيين المصفف إلى الكرسي المحدد.',
     'services_unavailable_for_branch' => 'يجب أن تكون جميع الخدمات متاحة للفرع المحدد.',
     'admin_operation_only' => 'عملية لوحة التحكم هذه متاحة لمسؤولي المنصة فقط.',
     'brand_operation_unavailable' => 'إدارة العلامات التجارية متاحة لمسؤولي المنصة ومالكي العلامات فقط.',

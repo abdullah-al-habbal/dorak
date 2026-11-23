@@ -1124,7 +1124,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get businessLoginSubtitle => 'استخدم حساب الفرع لإدارة العمليات.';
 
   @override
-  String get stylistLoginTitle => 'تسجيل الدخول إلى حساب الحلاق';
+  String get stylistLoginTitle => 'تسجيل الدخول إلى حساب المصفف';
 
   @override
   String get stylistLoginSubtitle => 'أدر مواعيدك وحالة عملك.';

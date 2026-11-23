@@ -1201,7 +1201,7 @@
   "@businessLoginTitle": {"description": "Business app login title"},
   "businessLoginSubtitle": "استخدم حساب الفرع لإدارة العمليات.",
   "@businessLoginSubtitle": {"description": "Business app login subtitle"},
-  "stylistLoginTitle": "تسجيل الدخول إلى حساب الحلاق",
+  "stylistLoginTitle": "تسجيل الدخول إلى حساب المصفف",
   "@stylistLoginTitle": {"description": "Stylist app login title"},
   "stylistLoginSubtitle": "أدر مواعيدك وحالة عملك.",
   "stylistSignUpLink": "جديد في دوراك؟ أنشئ حساب مصفف",

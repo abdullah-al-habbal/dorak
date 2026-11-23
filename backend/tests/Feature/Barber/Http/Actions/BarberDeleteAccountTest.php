@@ -107,7 +107,7 @@ describe('DELETE /api/v1/barber/account when allowed', function (): void {
         $fresh = $barber->fresh();
         expect($fresh)->not->toBeNull()
             ->and($fresh->getTranslation('name', 'en'))->toBe('Deleted stylist')
-            ->and($fresh->getTranslation('name', 'ar'))->toBe('حلاق محذوف')
+            ->and($fresh->getTranslation('name', 'ar'))->toBe('مصفف محذوف')
             ->and($fresh->email)->toBeNull()
             ->and($fresh->phone)->toBeNull()
             ->and(DB::table('barbers')->where('id', $barber->id)->value('bio'))->toBeNull()

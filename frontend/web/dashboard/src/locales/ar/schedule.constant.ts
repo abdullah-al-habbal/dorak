@@ -2,7 +2,7 @@ import type { Dictionary } from "@/types/core/shared/dictionary.type";
 
 export const arSchedule: Dictionary["schedule"] = {
   title: "الجدول",
-  description: "مواعيدك وساعات عملك الأسبوعية. تُعدَّل الساعات من تطبيق الحلاق.",
+  description: "مواعيدك وساعات عملك الأسبوعية. تُعدَّل الساعات من تطبيق المصفف.",
   unknownClient: "عميل",
   columns: { time: "الوقت", client: "العميل", service: "الخدمة", chair: "الكرسي", status: "الحالة", price: "السعر" },
   range: { today: "اليوم", week: "هذا الأسبوع", upcoming: "القادمة" },
@@ -24,7 +24,7 @@ export const arSchedule: Dictionary["schedule"] = {
     filteredBody: "جرّب نطاقًا أو حالة أخرى، أو امسح التصفية.",
     errorTitle: "تعذّر تحميل جدولك",
     errorBody: "تحقق من اتصالك ثم حاول مرة أخرى.",
-    forbiddenTitle: "الجدول مخصص للحلاقين",
+    forbiddenTitle: "الجدول مخصص للمصففين",
     forbiddenBody: "يدير فريق الفرع والعلامة الحجوزات من صفحة الحجوزات.",
     results: "{count} موعد",
   },

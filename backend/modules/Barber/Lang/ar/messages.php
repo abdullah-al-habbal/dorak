@@ -21,7 +21,7 @@ return [
     'activation_not_enabled' => 'لا يمكن إيقاف إلا الحلاق النشط.',
     'activation_not_disabled' => 'لا يمكن إعادة تفعيل إلا الحلاق الموقوف.',
     'activation_not_approved' => 'لا يمكن تفعيل أو إيقاف حلاق قيد المراجعة أو مرفوض.',
-    'deleted_barber_name' => 'حلاق محذوف',
+    'deleted_barber_name' => 'مصفف محذوف',
     'active_affiliation_block_deletion' => 'أنهِ عملك مع العلامة التجارية أو الفرع قبل حذف حسابك.',
     'activation_toggled' => 'تم تحديث الحلاق.',
 ];

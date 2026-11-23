@@ -7,7 +7,7 @@ export const arSupport: Dictionary["support"] = {
   guest: "زائر",
   kind: { suggestion: "اقتراح", bug: "خطأ", support: "دعم" },
   status: { new: "جديد", triaged: "تم الفرز", in_progress: "قيد المعالجة", resolved: "تم الحل", closed: "مغلق", spam: "مزعج" },
-  app: { client: "تطبيق العميل", business: "تطبيق الأعمال", stylist: "تطبيق الحلاق", dashboard: "لوحة التحكم", web: "الموقع" },
+  app: { client: "تطبيق العميل", business: "تطبيق الأعمال", stylist: "تطبيق المصفف", dashboard: "لوحة التحكم", web: "الموقع" },
   platform: { android: "أندرويد", ios: "iOS", web: "ويب" },
   related: { booking: "حجز", branch: "فرع", brand: "علامة تجارية", barber: "حلاق", review: "تقييم" },
   columns: { message: "الرسالة", kind: "النوع", app: "التطبيق", status: "الحالة", created: "تاريخ الاستلام" },
