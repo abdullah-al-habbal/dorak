@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * Readable names for translatable request fields, so a message says "The English name field is required."
  * instead of "The name.en field is required.". BaseApiFormRequest::attributes() applies them to every API request.
- * English only: validation messages are English in every locale today, and Arabic names would mix languages.
+ * The Arabic file has the same keys.
  */
 return [
     'attributes' => [

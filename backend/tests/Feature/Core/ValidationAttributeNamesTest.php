@@ -42,4 +42,56 @@ describe('Readable validation attribute names', function (): void {
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['latitude' => 'The latitude field must be between -90 and 90.']);
     });
+
+    it('answers a dashboard request in Arabic, rule text and field names, when the page is Arabic', function (): void {
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->withHeaders(['Accept-Language' => 'ar'])
+            ->postJson('/api/v1/dashboard/admin/catalog-categories', ['name' => ['en' => '', 'ar' => '']])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors([
+                'name.en' => 'الحقل الاسم بالإنجليزية مطلوب.',
+                'name.ar' => 'الحقل الاسم بالعربية مطلوب.',
+            ]);
+    });
+
+    it('keeps the English text when the page is English', function (): void {
+        $this->authenticateDashboardActor(AdminModel::factory()->create());
+
+        $this->withHeaders(['Accept-Language' => 'en'])
+            ->postJson('/api/v1/dashboard/admin/catalog-categories', ['name' => ['en' => '', 'ar' => '']])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name.en' => 'The English name field is required.']);
+    });
+});
+
+describe('Arabic validation files', function (): void {
+    /** @return list<string> */
+    function validationLineKeys(array $lines, string $prefix = ''): array
+    {
+        $keys = [];
+
+        foreach ($lines as $key => $value) {
+            $path = $prefix.$key;
+            array_push($keys, ...(is_array($value) ? validationLineKeys($value, $path.'.') : [$path]));
+        }
+
+        return $keys;
+    }
+
+    it('translates every rule the framework ships in English', function (): void {
+        $english = require base_path('vendor/laravel/framework/src/Illuminate/Translation/lang/en/validation.php');
+        $arabic = require base_path('lang/ar/validation.php');
+
+        $missing = array_diff(validationLineKeys($english), validationLineKeys($arabic), ['custom.attribute-name.rule-name']);
+
+        expect($missing)->toBe([]);
+    });
+
+    it('has the same translatable field names in both languages', function (): void {
+        $english = require base_path('modules/Core/Lang/en/validation.php');
+        $arabic = require base_path('modules/Core/Lang/ar/validation.php');
+
+        expect(array_keys($arabic['attributes']))->toBe(array_keys($english['attributes']));
+    });
 });

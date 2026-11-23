@@ -77,6 +77,7 @@ use Modules\Payout\Http\Actions\Admin\ListPayoutEntriesAction;
 use Modules\Payout\Http\Actions\Admin\ListPayoutsAction;
 use Modules\Payout\Http\Actions\Admin\MarkPaidPayoutAction;
 use Modules\Payout\Http\Actions\Admin\ShowPayoutAction;
+use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 use Modules\Review\Http\Actions\Admin\ListAdminReviewsAction;
 use Modules\Review\Http\Actions\Admin\ResolveReviewDisputeAction;
 use Modules\ServiceCatalog\Http\Actions\Admin\DestroyCatalogCategoryAction;
@@ -108,7 +109,7 @@ use Modules\Subscription\Http\Actions\Admin\UpdateSubscriptionPlanAction;
 
 // Platform-admin routes under /dashboard/admin.
 Route::prefix('dashboard')->group(function (): void {
-    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardAdminAuthorizationMiddleware::class])->prefix('admin')->group(function (): void {
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardAdminAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->prefix('admin')->group(function (): void {
         Route::patch('/brands/{brand}/approve', ApproveBrandAction::class);
         Route::patch('/brands/{brand}/reject', RejectBrandAction::class);
         Route::patch('/brands/{brand}/suspend', SuspendBrandAction::class);

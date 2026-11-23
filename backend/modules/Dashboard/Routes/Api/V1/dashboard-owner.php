@@ -22,25 +22,26 @@ use Modules\Dashboard\Http\Middleware\DashboardBrandAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardEarningsAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOwnerAuthorizationMiddleware;
 use Modules\Payout\Http\Actions\Owner\ListOwnerPayoutsAction;
+use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 use Modules\Subscription\Http\Actions\Owner\ListOwnerSubscriptionsAction;
 
 // Earnings, schedule, owner and brand-management routes.
 Route::prefix('dashboard')->group(function (): void {
-    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardEarningsAuthorizationMiddleware::class])->group(function (): void {
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardEarningsAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
         Route::get('/earnings', ShowEarningsAction::class);
     });
 
-    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBarberAuthorizationMiddleware::class])->prefix('schedule')->group(function (): void {
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBarberAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->prefix('schedule')->group(function (): void {
         Route::get('/appointments', ListScheduleAppointmentsAction::class);
         Route::get('/hours', ListScheduleHoursAction::class);
     });
 
-    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOwnerAuthorizationMiddleware::class])->group(function (): void {
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOwnerAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
         Route::get('/subscription', ListOwnerSubscriptionsAction::class);
         Route::get('/payouts', ListOwnerPayoutsAction::class);
     });
 
-    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBrandAuthorizationMiddleware::class])->group(function (): void {
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardBrandAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
         Route::get('/brands', ListBrandsAction::class);
         Route::post('/brands', StoreBrandAction::class);
         Route::post('/brands/logo', UploadBrandLogoAction::class);

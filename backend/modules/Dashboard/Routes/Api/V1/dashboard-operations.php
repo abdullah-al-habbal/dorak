@@ -63,10 +63,11 @@ use Modules\Dashboard\Http\Actions\Stylists\StoreStylistAction;
 use Modules\Dashboard\Http\Actions\Stylists\UpdateStylistAction;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
 use Modules\Dashboard\Http\Middleware\DashboardOperationsAuthorizationMiddleware;
+use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
 // Branch operations routes for managers, owners and the admin.
 Route::prefix('dashboard')->group(function (): void {
-    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOperationsAuthorizationMiddleware::class])->group(function (): void {
+    Route::middleware([DashboardAuthorizationMiddleware::class, DashboardOperationsAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
         Route::get('/overview', OverviewAction::class);
         Route::get('/bookings', ListBookingsAction::class);
         Route::post('/bookings/walk-in', CreateWalkInBookingAction::class);
