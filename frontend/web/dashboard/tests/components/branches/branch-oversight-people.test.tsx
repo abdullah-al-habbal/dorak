@@ -57,4 +57,12 @@ describe("BranchOversightPeople", () => {
     expect(screen.getByText("No invitations.")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /next/i })).not.toBeInTheDocument();
   });
+
+  it("shows Unknown for a status the dictionary lacks, never the raw value", () => {
+    vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    invitations.mockReturnValue(pageOf([{ id: "i2", barber_name: { en: "Lee" }, status: "brand_new_state" }], 1, 1));
+    render(wrap(<BranchOversightPeople branchId={BRANCH} />));
+    expect(screen.getByText(enDictionary.common.unknown)).toBeInTheDocument();
+    expect(screen.queryByText("brand_new_state")).not.toBeInTheDocument();
+  });
 });

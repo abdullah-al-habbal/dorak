@@ -7,6 +7,7 @@ import { useBarberActivationLog } from "@/hooks/stylists/invite/use-barber-activ
 import { useBarberAffiliations } from "@/hooks/stylists/invite/use-barber-affiliations";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { localizedText } from "@/lib/core/format/booking-format.util";
+import { enumLabel } from "@/lib/core/format/enum-label.util";
 import type { BarberApproval } from "@/types/stylists/barber-approval.type";
 
 /** Ban history, the activation log and the affiliations of one barber. */
@@ -17,7 +18,8 @@ export function BarberAccountSections({ barber }: { barber: BarberApproval }): J
   const affiliations = useBarberAffiliations(barber.id);
   const date = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" });
   const when = (value: string | null | undefined): string => (value ? date.format(new Date(value)) : t.none);
-  const state = (value: string): string => (value in t.account.states ? t.account.states[value as keyof typeof t.account.states] : value);
+  const state = (value: string): string => enumLabel(t.account.states, value, dictionary.common.unknown, "barber-account-state");
+  const kind = (value: string): string => enumLabel(t.account.kinds, value, dictionary.common.unknown, "affiliable-type");
 
   return (
     <>
@@ -47,7 +49,7 @@ export function BarberAccountSections({ barber }: { barber: BarberApproval }): J
           {affiliations.data?.map((item) => (
             <li key={item.id} className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-sm">
               <span dir="auto" className="truncate">{localizedText(item.affiliable_name, locale) || t.none}</span>
-              <span className="text-muted-foreground">{t.account.kinds[item.affiliable_type as keyof typeof t.account.kinds] ?? item.affiliable_type} · {state(item.status)}</span>
+              <span className="text-muted-foreground">{kind(item.affiliable_type)} · {state(item.status)}</span>
             </li>
           ))}
         </ul>

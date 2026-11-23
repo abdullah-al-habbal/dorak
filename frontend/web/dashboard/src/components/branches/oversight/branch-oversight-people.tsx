@@ -9,6 +9,7 @@ import { useInvitations } from "@/hooks/branches/invitations/use-invitations";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useJobPostings } from "@/hooks/jobs/use-job-postings";
 import { localizedText } from "@/lib/core/format/booking-format.util";
+import { enumLabel } from "@/lib/core/format/enum-label.util";
 
 const FIRST_PAGE = 1;
 
@@ -20,7 +21,7 @@ export function BranchOversightPeople({ branchId }: { branchId: string }): JSX.E
   const [jobPage, setJobPage] = useState(FIRST_PAGE);
   const invitations = useInvitations(branchId, INVITATION_FILTER_ALL, invitationPage);
   const jobs = useJobPostings(branchId, jobPage);
-  const state = (value: string): string => (value in t.states ? t.states[value as keyof typeof t.states] : value);
+  const state = (value: string): string => enumLabel(t.states, value, dictionary.common.unknown, "branch-oversight-state");
 
   return (
     <>
