@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Modules\Admin\Models\AdminModel;
+use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Models\BrandModel;
 use Modules\Client\Models\ClientModel;
@@ -92,6 +93,29 @@ describe('Readable validation attribute names', function (): void {
             ->postJson('/api/v1/dashboard/branches', [])
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['name.en' => 'الحقل الاسم بالإنجليزية مطلوب.']);
+    });
+
+    it('uses the stored Arabic preference of an owner on the brand routes without Accept-Language', function (): void {
+        $owner = ClientModel::factory()->create();
+        BrandModel::factory()->create(['owner_id' => $owner->id]);
+        PreferenceModel::factory()->create(['preferenceable_type' => PreferenceableTypeEnum::Client->value, 'preferenceable_id' => $owner->id, 'preferred_language' => 'ar']);
+        $this->authenticateDashboardActor($owner);
+
+        $this->withServerVariables(['HTTP_ACCEPT_LANGUAGE' => ''])
+            ->postJson('/api/v1/dashboard/brands', [])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name.en' => 'الحقل الاسم بالإنجليزية مطلوب.']);
+    });
+
+    it('uses the stored Arabic preference of a barber on the schedule routes without Accept-Language', function (): void {
+        $barber = BarberModel::factory()->create();
+        PreferenceModel::factory()->create(['preferenceable_type' => PreferenceableTypeEnum::Barber->value, 'preferenceable_id' => $barber->id, 'preferred_language' => 'ar']);
+        $this->authenticateDashboardActor($barber);
+
+        $this->withServerVariables(['HTTP_ACCEPT_LANGUAGE' => ''])
+            ->getJson('/api/v1/dashboard/schedule/appointments?date_from=not-a-date')
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['date_from' => 'يجب أن يطابق الحقل من تاريخ الصيغة Y-m-d.']);
     });
 });
 
