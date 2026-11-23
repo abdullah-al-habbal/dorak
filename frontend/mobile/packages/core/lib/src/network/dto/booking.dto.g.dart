@@ -12,7 +12,11 @@ BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
   endsAt: json['ends_at'] == null
       ? null
       : DateTime.parse(json['ends_at'] as String),
-  status: $enumDecode(_$BookingStatusEnumMap, json['booking_status']),
+  status: $enumDecode(
+    _$BookingStatusEnumMap,
+    json['booking_status'],
+    unknownValue: BookingStatus.unknown,
+  ),
   paymentMethod: json['payment_method'] as String? ?? 'pay_at_salon',
   paymentStatus: json['payment_status'] as String? ?? 'unpaid_in_person',
   cancellationEligible: json['cancellation_eligible'] as bool?,
@@ -69,4 +73,5 @@ const _$BookingStatusEnumMap = {
   BookingStatus.cancelled: 'cancelled',
   BookingStatus.completed: 'completed',
   BookingStatus.noShow: 'no_show',
+  BookingStatus.unknown: 'unknown',
 };

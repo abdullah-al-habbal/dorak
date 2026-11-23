@@ -14,7 +14,7 @@ class BookingDto {
   final String id;
   final DateTime startsAt;
   final DateTime? endsAt;
-  @JsonKey(name: 'booking_status')
+  @JsonKey(name: 'booking_status', unknownEnumValue: BookingStatus.unknown)
   final BookingStatus status;
   @JsonKey(defaultValue: 'pay_at_salon')
   final String paymentMethod;

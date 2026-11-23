@@ -85,6 +85,10 @@ class _BookingTrackerScreenState extends State<BookingTrackerScreen> {
               Icons.cancel_outlined,
               l10n.bookingTrackerCancelled,
             ),
+            BookingStatus.unknown => (
+              Icons.help_outline,
+              l10n.bookingStatusUnknown,
+            ),
           };
           return StatusView(
             icon: icon,

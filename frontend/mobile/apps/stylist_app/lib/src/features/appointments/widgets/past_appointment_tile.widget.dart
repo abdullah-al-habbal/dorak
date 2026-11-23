@@ -15,6 +15,7 @@ class PastAppointmentTile extends StatelessWidget {
     BookingStatus.completed => l10n.bookingStatusCompleted,
     BookingStatus.cancelled => l10n.bookingStatusCancelled,
     BookingStatus.noShow => l10n.bookingStatusNoShow,
+    BookingStatus.unknown => l10n.bookingStatusUnknown,
   };
 
   @override

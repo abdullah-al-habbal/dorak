@@ -13,7 +13,9 @@ enum BookingStatus {
   @JsonValue('completed')
   completed,
   @JsonValue('no_show')
-  noShow;
+  noShow,
+  /// Any status this app version does not know; never sent to the backend.
+  unknown;
 
   static BookingStatus fromValue(String value) => switch (value) {
     'pending' => BookingStatus.pending,
@@ -22,7 +24,7 @@ enum BookingStatus {
     'cancelled' => BookingStatus.cancelled,
     'completed' => BookingStatus.completed,
     'no_show' => BookingStatus.noShow,
-    _ => throw ArgumentError('Unknown booking status: $value'),
+    _ => BookingStatus.unknown,
   };
 
   String get value => switch (this) {
@@ -32,5 +34,6 @@ enum BookingStatus {
     BookingStatus.cancelled => 'cancelled',
     BookingStatus.completed => 'completed',
     BookingStatus.noShow => 'no_show',
+    BookingStatus.unknown => 'unknown',
   };
 }

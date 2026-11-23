@@ -16,6 +16,7 @@ class BookingStatusTransitions {
     BookingStatus.completed: [],
     BookingStatus.cancelled: [],
     BookingStatus.noShow: [],
+    BookingStatus.unknown: [],
   };
 
   static List<BookingStatus> from(BookingStatus currentStatus) =>

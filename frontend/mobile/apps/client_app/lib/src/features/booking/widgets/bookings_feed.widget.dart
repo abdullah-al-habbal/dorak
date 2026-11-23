@@ -148,6 +148,7 @@ class _BookingsFeedState extends State<BookingsFeed> {
       BookingStatus.completed => l10n.bookingStatusCompleted,
       BookingStatus.inProgress => l10n.bookingStatusInProgress,
       BookingStatus.noShow => l10n.bookingStatusNoShow,
+      BookingStatus.unknown => l10n.bookingStatusUnknown,
     };
   }
 
