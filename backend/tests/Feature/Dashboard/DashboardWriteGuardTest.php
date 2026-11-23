@@ -39,8 +39,17 @@ function guardTestAdmin(): DashboardActor
     return DashboardActor::platformAdmin('admin-1');
 }
 
+/** A guard that never throws would also pass every "allowed" test, so each of them first proves it still refuses a suspended brand. */
+function guardTestExpectRefusesSuspendedBrand(): void
+{
+    $suspended = guardTestBranch(BrandStatusEnum::Suspended);
+
+    expect(fn () => app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestOwner($suspended), $suspended))->toThrow(BrandSuspendedException::class);
+}
+
 describe('DashboardWriteGuard (F-01, decision A)', function (): void {
     it('lets a manager and an owner write while the brand and branch are active', function (): void {
+        guardTestExpectRefusesSuspendedBrand();
         $branch = guardTestBranch();
 
         expect(function (): void {
@@ -50,6 +59,7 @@ describe('DashboardWriteGuard (F-01, decision A)', function (): void {
     });
 
     it('keeps Pending and Disabled branches writable for setup (D9)', function (BranchStatusEnum $status): void {
+        guardTestExpectRefusesSuspendedBrand();
         $branch = guardTestBranch(branch: $status);
 
         expect(function (): void {
@@ -59,6 +69,7 @@ describe('DashboardWriteGuard (F-01, decision A)', function (): void {
     })->with([BranchStatusEnum::Pending, BranchStatusEnum::Disabled]);
 
     it('keeps a branch of a Pending brand writable (D9)', function (): void {
+        guardTestExpectRefusesSuspendedBrand();
         $branch = guardTestBranch(BrandStatusEnum::Pending, BranchStatusEnum::Pending);
 
         expect(function (): void {
@@ -82,6 +93,7 @@ describe('DashboardWriteGuard (F-01, decision A)', function (): void {
     })->with(['manager', 'owner']);
 
     it('lets the platform admin act on a suspended brand and branch', function (): void {
+        guardTestExpectRefusesSuspendedBrand();
         $branch = guardTestBranch(BrandStatusEnum::Suspended, BranchStatusEnum::Suspended);
 
         expect(function (): void {

@@ -15,24 +15,26 @@ use Modules\Preference\Http\Actions\Client\GetSettingsAction as ClientGetSetting
 use Modules\Preference\Http\Actions\Client\UpdateSettingsAction as ClientUpdateSettingsAction;
 use Modules\Preference\Http\Actions\Dashboard\GetSettingsAction as DashboardGetSettingsAction;
 use Modules\Preference\Http\Actions\Dashboard\UpdateSettingsAction as DashboardUpdateSettingsAction;
+use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
-Route::middleware(['auth:client', EnsureClientAccountAccess::class])->group(function (): void {
+Route::middleware(['auth:client', EnsureClientAccountAccess::class, ApplyPreferredLocaleMiddleware::class.':client'])->group(function (): void {
     Route::get('/client/settings', ClientGetSettingsAction::class)->name('client.settings.show');
     Route::patch('/client/settings', ClientUpdateSettingsAction::class)->name('client.settings.update');
 });
 
-Route::middleware(['auth:barber', EnsureBarberAccountAccess::class])->group(function (): void {
+Route::middleware(['auth:barber', EnsureBarberAccountAccess::class, ApplyPreferredLocaleMiddleware::class.':barber'])->group(function (): void {
     Route::get('/barber/settings', BarberGetSettingsAction::class)->name('barber.settings.show');
     Route::patch('/barber/settings', BarberUpdateSettingsAction::class)->name('barber.settings.update');
 });
 
-Route::middleware(['auth:branch_api', EnsureBranchAccountAccess::class])->group(function (): void {
+Route::middleware(['auth:branch_api', EnsureBranchAccountAccess::class, ApplyPreferredLocaleMiddleware::class.':branch_api'])->group(function (): void {
     Route::get('/branch/settings', BranchGetSettingsAction::class)->name('branch.settings.show');
     Route::patch('/branch/settings', BranchUpdateSettingsAction::class)->name('branch.settings.update');
 });
 
 Route::prefix('dashboard')->group(function (): void {
-    Route::middleware(DashboardAuthorizationMiddleware::class)->group(function (): void {
+    // The language middleware follows the session check, which sets the actor it reads (D5).
+    Route::middleware([DashboardAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {
         Route::get('/settings', DashboardGetSettingsAction::class)->name('dashboard.settings.show');
         Route::patch('/settings', DashboardUpdateSettingsAction::class)->name('dashboard.settings.update');
     });

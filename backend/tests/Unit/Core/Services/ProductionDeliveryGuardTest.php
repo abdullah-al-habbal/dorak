@@ -14,6 +14,12 @@ function guardIn(string $environment, ?string $sms, ?string $mailer): Production
     return app(ProductionDeliveryGuard::class);
 }
 
+/** An assertSafe() that never throws would pass every "allowed" test, so each of them also proves it still refuses log drivers in production. */
+function expectGuardStillRefusesLogDrivers(): void
+{
+    expect(fn () => guardIn('production', 'log', 'log')->assertSafe())->toThrow(UnsafeDeliveryConfigurationException::class);
+}
+
 afterEach(fn () => app()->detectEnvironment(fn (): string => 'testing'));
 
 it('refuses the log SMS driver in production', function (): void {
@@ -32,18 +38,24 @@ it('names every unsafe driver in one message', function (): void {
 });
 
 it('accepts real drivers in production', function (): void {
+    expectGuardStillRefusesLogDrivers();
+
     expect(function (): void {
         guardIn('production', 'generic_http', 'smtp')->assertSafe();
     })->not->toThrow(Throwable::class);
 });
 
 it('does not trip on unset drivers, which an image build has', function (): void {
+    expectGuardStillRefusesLogDrivers();
+
     expect(function (): void {
         guardIn('production', null, null)->assertSafe();
     })->not->toThrow(Throwable::class);
 });
 
 it('allows the log drivers outside production', function (string $environment): void {
+    expectGuardStillRefusesLogDrivers();
+
     expect(function (): void {
         guardIn($environment, 'log', 'log')->assertSafe();
     })->not->toThrow(Throwable::class);
