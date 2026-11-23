@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:core/core.dart';
 
 import 'package:design_system/design_system.dart';
 import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
@@ -49,8 +50,14 @@ class DiscoveryFilterBar extends StatelessWidget {
           width: double.infinity,
           child: SegmentedButton<String>(
             segments: [
-              ButtonSegment(value: 'men', label: Text(menLabel)),
-              ButtonSegment(value: 'women', label: Text(womenLabel)),
+              ButtonSegment(
+                value: ClientUniverse.men.value,
+                label: Text(menLabel),
+              ),
+              ButtonSegment(
+                value: ClientUniverse.women.value,
+                label: Text(womenLabel),
+              ),
             ],
             selected: {selectedUniverse},
             onSelectionChanged: (selection) =>

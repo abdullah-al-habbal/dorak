@@ -46,10 +46,10 @@ class _FloorPlanGridState extends State<FloorPlanGrid> {
       grouped[zone.zone] = [];
     }
     for (final chair in widget.chairs) {
-      final zone = chair.floorZone ?? 'shared';
+      final zone = chair.floorZone ?? FloorZone.shared.wire;
       (grouped[zone] ??= []).add(chair);
     }
-    const preferredOrder = ['men', 'women', 'shared'];
+    final preferredOrder = [for (final zone in FloorZone.values) zone.wire];
     final ordered = <String, List<FloorChairDto>>{};
     for (final zone in preferredOrder) {
       final chairs = grouped.remove(zone);
@@ -99,10 +99,10 @@ class _FloorPlanGridState extends State<FloorPlanGrid> {
 
   String _zoneLabel(BuildContext context, String zone) {
     final l10n = AppLocalizations.of(context)!;
-    return switch (zone) {
-      'men' => l10n.floorZoneMen,
-      'women' => l10n.floorZoneWomen,
-      _ => l10n.floorZoneShared,
+    return switch (FloorZone.fromWire(zone)) {
+      FloorZone.men => l10n.floorZoneMen,
+      FloorZone.women => l10n.floorZoneWomen,
+      FloorZone.shared || null => l10n.floorZoneShared,
     };
   }
 }

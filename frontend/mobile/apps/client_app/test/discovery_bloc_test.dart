@@ -11,6 +11,10 @@ import 'helpers/fakes.dart';
 import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
 
 void main() {
+  test('the default universe is the client men universe', () {
+    expect(DiscoveryFilters.defaultUniverse, ClientUniverse.men.value);
+  });
+
   late FakeExploreRepository repository;
   late FakeLocationProvider location;
   late FakeFeedCache cache;
