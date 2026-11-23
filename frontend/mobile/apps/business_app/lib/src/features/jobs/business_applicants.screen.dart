@@ -19,16 +19,16 @@ class BusinessApplicantsScreen extends StatelessWidget {
   final BusinessJobsBloc bloc;
   final String jobId;
 
-  String _statusLabel(AppLocalizations l10n, String status) => switch (status) {
-    'seen' => l10n.businessApplicationStatusSeen,
-    'accepted' => l10n.businessApplicationStatusAccepted,
-    'rejected' => l10n.businessApplicationStatusRejected,
-    _ => l10n.businessApplicationStatusSubmitted,
-  };
+  String _statusLabel(AppLocalizations l10n, JobApplicationStatus status) =>
+      switch (status) {
+        JobApplicationStatus.seen => l10n.businessApplicationStatusSeen,
+        JobApplicationStatus.accepted => l10n.businessApplicationStatusAccepted,
+        JobApplicationStatus.rejected => l10n.businessApplicationStatusRejected,
+        JobApplicationStatus.submitted ||
+        JobApplicationStatus.unknown => l10n.businessApplicationStatusSubmitted,
+      };
 
-  bool _decided(JobApplicationDto application) =>
-      application.status == ApplicationDecision.accepted.value ||
-      application.status == ApplicationDecision.rejected.value;
+  bool _decided(JobApplicationDto application) => application.status.isDecided;
 
   @override
   Widget build(BuildContext context) {

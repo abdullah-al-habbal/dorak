@@ -330,7 +330,7 @@ class FakeJobPostingRepository implements JobPostingRepository {
       id: 'application-$applyCalls',
       jobPostingId: jobId,
       barberId: 'barber-1',
-      status: 'submitted',
+      status: JobApplicationStatus.submitted,
     );
   }
 

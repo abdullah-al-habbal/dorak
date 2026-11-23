@@ -61,4 +61,38 @@ void main() {
       }
     });
   });
+
+  group('JobApplicationDto status', () {
+    Map<String, dynamic> application(Object? status) => {
+      'id': 'j1',
+      'job_posting_id': 'job-1',
+      'barber_id': 'barber-1',
+      'status': status,
+    };
+
+    test('reads every status the backend sends', () {
+      for (final status in JobApplicationStatus.values.where(
+        (value) => value != JobApplicationStatus.unknown,
+      )) {
+        expect(
+          JobApplicationDto.fromJson(application(status.wire)).status,
+          status,
+        );
+      }
+    });
+
+    test('an unknown, missing or non-string status reads as unknown', () {
+      for (final value in <Object?>['withdrawn', '', null, 7]) {
+        final dto = JobApplicationDto.fromJson(application(value));
+        expect(dto.status, JobApplicationStatus.unknown);
+        expect(dto.status.isDecided, isFalse);
+      }
+    });
+
+    test('only accepted and rejected are decided', () {
+      expect(JobApplicationStatus.accepted.isDecided, isTrue);
+      expect(JobApplicationStatus.rejected.isDecided, isTrue);
+      expect(JobApplicationStatus.seen.isDecided, isFalse);
+    });
+  });
 }

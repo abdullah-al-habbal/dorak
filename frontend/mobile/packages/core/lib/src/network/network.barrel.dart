@@ -6,6 +6,7 @@ export 'package:core/src/network/realtime_configuration.entity.dart';
 export 'package:core/src/network/realtime_subscription.entity.dart';
 export 'package:core/src/network/localized_name.entity.dart';
 export 'package:core/src/network/locale_codes.entity.dart';
+export 'package:core/src/network/job_application_status.entity.dart';
 export 'package:core/src/notifications/notification_target.entity.dart';
 export 'package:core/src/notifications/push_notification.client.dart';
 export 'package:core/src/network/dto/auth_response.dto.dart';

@@ -30,7 +30,7 @@ class FakeJobPostingRepository implements JobPostingRepository {
       id: 'app-1',
       jobPostingId: 'job-1',
       barberId: 'barber-1',
-      status: 'submitted',
+      status: JobApplicationStatus.submitted,
     ),
   ];
   Map<String, dynamic>? savedValues;
@@ -85,7 +85,7 @@ class FakeJobPostingRepository implements JobPostingRepository {
       id: applicationId,
       jobPostingId: jobId,
       barberId: 'barber-1',
-      status: status,
+      status: JobApplicationStatus.fromWire(status),
     );
   }
 

@@ -11,7 +11,7 @@ JobApplicationDto _$JobApplicationDtoFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       jobPostingId: json['job_posting_id'] as String,
       barberId: json['barber_id'] as String,
-      status: json['status'] as String,
+      status: _statusFromJson(json['status']),
       profileSnapshot: json['profile_snapshot'] == null
           ? null
           : ApplicationProfileSnapshotDto.fromJson(

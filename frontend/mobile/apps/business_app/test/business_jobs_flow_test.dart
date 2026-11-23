@@ -92,7 +92,7 @@ void main() {
       await bloc.decide('job-1', 'app-1', ApplicationDecision.accepted);
 
       expect(repository.decidedStatus, 'accepted');
-      expect(bloc.state.applicants.single.status, 'accepted');
+      expect(bloc.state.applicants.single.status, JobApplicationStatus.accepted);
     },
   );
 

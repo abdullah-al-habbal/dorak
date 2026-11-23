@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
@@ -12,12 +13,14 @@ class StylistApplicationsScreen extends StatelessWidget {
 
   final StylistJobsBloc bloc;
 
-  String _statusLabel(AppLocalizations l10n, String status) => switch (status) {
-    'seen' => l10n.stylistApplicationStatusSeen,
-    'accepted' => l10n.stylistApplicationStatusAccepted,
-    'rejected' => l10n.stylistApplicationStatusRejected,
-    _ => l10n.stylistApplicationStatusSubmitted,
-  };
+  String _statusLabel(AppLocalizations l10n, JobApplicationStatus status) =>
+      switch (status) {
+        JobApplicationStatus.seen => l10n.stylistApplicationStatusSeen,
+        JobApplicationStatus.accepted => l10n.stylistApplicationStatusAccepted,
+        JobApplicationStatus.rejected => l10n.stylistApplicationStatusRejected,
+        JobApplicationStatus.submitted ||
+        JobApplicationStatus.unknown => l10n.stylistApplicationStatusSubmitted,
+      };
 
   @override
   Widget build(BuildContext context) {
