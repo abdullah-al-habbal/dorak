@@ -70,4 +70,4 @@ flow and widget tests exist) run with `flutter test` per package.
 - **Localization:** user-facing strings come from the ARBs; keep English and Arabic keys in parity and
   do not hardcode strings in tests that the UI localises.
 - **Integration tests:** only for flows already covered by an existing pattern; the gate does not run a device.
-- **Gate:** `dart run melos run verify` (generate, build, analyze, taxonomy, test). Format only touched files.
+- **Gate:** `dart run melos run verify` (generate incl. build_runner, analyze, taxonomy, test). Format only touched files.

@@ -41,7 +41,7 @@ If the output differs, trust the output and report the drift.
 | `pestphp/pest-plugin-mutate` 3.0.x is installed as a Pest dependency and unused; `pest --mutate` needs `mutates()` or `covers()` in tests and a coverage driver | `composer show pestphp/pest-plugin-mutate`; `grep -rn "mutates(" backend/tests` |
 | Backend test helpers are global functions declared in test files (142 on this date, no duplicates); a duplicate name is a fatal error for the whole suite | `grep -rhoE "^function [A-Za-z0-9_]+" backend/tests \| sort \| uniq -d` |
 | Dashboard Vitest runs `environment: "node"`; jsdom and Testing Library are installed, but component tests need approval | `frontend/web/dashboard/vitest.config.mts`, its `AGENTS.md` |
-| Mobile gate is `dart run melos run verify` (generate, build, analyze, taxonomy, test) | `frontend/mobile/pubspec.yaml` `melos.scripts` |
+| Mobile gate is `dart run melos run verify` (generate incl. build_runner, analyze, taxonomy, test) | `frontend/mobile/pubspec.yaml` `melos.scripts` |
 | No markdown linter, link checker or Mermaid validator exists in the repo | `ls frontend/web/dashboard/node_modules/.bin \| grep -i -E "markdownlint\|mermaid"` |
 
 ## 1. Risk-based strategy

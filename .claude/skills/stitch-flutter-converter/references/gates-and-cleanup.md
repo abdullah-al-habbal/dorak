@@ -15,7 +15,7 @@ Run from `frontend/mobile/` (use `dart run melos run <script>`; `melos` is not o
 2. `dart run melos run build` after DTO edits.
 3. Focused: `flutter analyze` and `flutter test` in each touched package/app; `dart run tool/check_taxonomy.dart`.
 4. `scripts/check-screen-hygiene.sh` (raw colors, inline strings, svg assets, Navigator 1.0, relative imports, ARB parity).
-5. Full: `dart run melos run verify` (generate, build, analyze, taxonomy, test). Record the test counts.
+5. Full: `dart run melos run verify` (generate incl. build_runner, analyze, taxonomy, test). Record the test counts.
 
 ## Tests to add
 - Bloc test for each new Bloc (loading, success, empty, error, retry, pagination as applicable) using the repository fakes in `apps/client_app/test/helpers`.

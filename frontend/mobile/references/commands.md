@@ -18,8 +18,8 @@ When working with this monorepo via Melos or standard Flutter CLI:
 melos bootstrap
 
 # Run code generation across all packages
-melos run generate      # localization (gen-l10n)
-melos run build         # build_runner (DTO/model codegen)
+melos run generate      # localization (gen-l10n) + build_runner (DTO/model codegen)
+melos run build         # build_runner only (generate runs it too)
 
 # Run static analysis enforcing dot-suffix naming and linting
 melos run analyze
@@ -28,5 +28,5 @@ melos run analyze
 melos run test
 
 # Full verification gate
-melos run verify        # generate → build → analyze → taxonomy → test
+melos run verify        # generate (incl. build_runner) → analyze → taxonomy → test
 ```
