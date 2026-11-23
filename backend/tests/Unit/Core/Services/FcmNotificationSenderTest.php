@@ -199,3 +199,35 @@ it('writes the inbox row in the recipient stored language, not the request langu
 
     expect($notification->title)->toBe(trans('review::messages.notification_review_request_title', [], 'ar'));
 });
+
+it('sends a browser device a web push payload with the language and direction, and no android or apns block', function (): void {
+    configureFcmCredentials();
+    Http::fake([
+        'https://oauth2.googleapis.com/token' => Http::response(['access_token' => 'oauth-access-token', 'expires_in' => 3600]),
+        'https://fcm.googleapis.com/v1/projects/dorak-test-project/messages:send' => Http::response(['name' => 'projects/dorak-test-project/messages/1']),
+    ]);
+    DeviceTokenModel::query()->create([
+        'user_id' => '00000000-0000-4000-8000-000000000001',
+        'user_type' => DeviceTokenUserTypeEnum::Client,
+        'token' => 'browser-device-token',
+        'platform_type' => 'web',
+        'locale' => 'ar',
+        'last_used_at' => now(),
+    ]);
+
+    app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', ['type' => 'booking_status']);
+
+    Http::assertSent(function (Request $request): bool {
+        if (! str_contains($request->url(), 'messages:send')) {
+            return false;
+        }
+        $message = $request['message'];
+
+        return $message['token'] === 'browser-device-token'
+            && $message['webpush']['notification'] === ['title' => 'Title', 'body' => 'Body', 'lang' => 'ar', 'dir' => 'rtl']
+            && $message['webpush']['headers']['Urgency'] === 'high'
+            && ! array_key_exists('android', $message)
+            && ! array_key_exists('apns', $message)
+            && ! array_key_exists('notification', $message);
+    });
+});

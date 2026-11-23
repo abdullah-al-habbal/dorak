@@ -92,7 +92,7 @@ final class FcmNotificationSender
             ->get()
             ->each(function (DeviceTokenModel $deviceToken) use ($notification, $endpoint, $credentials, $message, $data, $accountLocale): void {
                 $locale = $deviceToken->locale ?? $accountLocale;
-                $payload = $this->payloadBuilder->build($message->title($locale), $message->body($locale), $data);
+                $payload = $this->payloadBuilder->build($message->title($locale), $message->body($locale), $data, $locale, $deviceToken->platform_type);
                 $this->pushToDevice($notification, $deviceToken, $endpoint, $credentials, $payload);
             });
 

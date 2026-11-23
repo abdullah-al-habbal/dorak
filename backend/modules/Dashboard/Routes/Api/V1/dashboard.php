@@ -20,6 +20,8 @@ use Modules\Dashboard\Http\Actions\Profile\UpdateNotificationPreferencesAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdatePasswordAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdateProfileAction;
 use Modules\Dashboard\Http\Actions\Profile\VerifyEmailChangeAction;
+use Modules\Dashboard\Http\Actions\Push\RegisterDashboardPushTokenAction;
+use Modules\Dashboard\Http\Actions\Push\RevokeDashboardPushTokenAction;
 use Modules\Dashboard\Http\Actions\Shared\DashboardLoginAction;
 use Modules\Dashboard\Http\Actions\Shared\ForgotDashboardPasswordAction;
 use Modules\Dashboard\Http\Actions\Shared\LogoutAction;
@@ -60,5 +62,7 @@ Route::prefix('dashboard')->group(function (): void {
         Route::patch('/notifications/{notification}/read', MarkDashboardNotificationReadAction::class)->whereUuid('notification');
         Route::get('/profile/notifications', GetNotificationPreferencesAction::class);
         Route::patch('/profile/notifications', UpdateNotificationPreferencesAction::class);
+        Route::post('/push-token', RegisterDashboardPushTokenAction::class);
+        Route::delete('/push-token', RevokeDashboardPushTokenAction::class);
     });
 });

@@ -24,7 +24,7 @@ Written 2026-11-23 21:55 UTC (2026-11-24 00:55 +03). Work done locally on `maste
 | Phase | Scope | Status |
 |---|---|---|
 | 1 | Core push: device-token API, per-device locale, bilingual payload, Flutter FCM in all three apps | **Done locally** (three commits below); the dev deploy with `reset_database=true` is **authorised but not run** |
-| 2 | Dashboard browser push (service worker, permission UX, web token) | Not started |
+| 2 | Dashboard browser push (service worker, permission UX, web token) | Backend done locally (P2.1); dashboard slice in progress |
 | 3 | Analytics and domain events (privacy-safe taxonomy, Firebase Analytics, audit events) | Not started |
 | 4 | Firebase App Distribution and multi-recipient release email (SMTP Hostinger) | Not started |
 
@@ -49,6 +49,11 @@ Phase 1 commits (all local):
 |---|---|---|
 | `POST /api/v1/user/device-token` | `auth:client,barber,branch_api,admin_api` | Body `token`, `platform_type`, optional `locale` (`ar`/`en`), optional `app_version`. Idempotent: the unique token is `updateOrCreate`d, a parallel insert is retried, `revoked_at` is cleared, and the row is linked to the current Sanctum token. A token registered by another account **moves** to the caller (a token proves one physical install). Returns `data.id`. |
 | `DELETE /api/v1/user/device-token` | same | Body `token`. Unknown token: success (idempotent). Another account's token: `403` through `DeviceTokenPolicy::revoke`. Sets `revoked_at`. |
+
+| `POST /api/v1/dashboard/push-token` | dashboard session (`DashboardAuthorizationMiddleware`), any actor: admin, owner, branch, barber | Body `token`, optional `locale`, `app_version`. Platform is always `web`; the row is **not** linked to an API token (dashboard access tokens rotate on refresh). Registers for the signed-in account only. |
+| `DELETE /api/v1/dashboard/push-token` | same | Body `token`. Unknown token: `200`; another account's token: `403` (`DeviceTokenPolicy::revoke`). |
+
+Dashboard logout (`POST /dashboard/logout`) accepts an optional `push_token` and revokes it when it belongs to the account. A web device gets an FCM `webpush` payload (TTL and urgency headers, `lang` and `dir` from its locale) and no android or apns block. Both routes are on the self-account write exemption list. Password change, reset, ban and deactivation revoke web tokens too.
 
 Revocation also happens **on logout** of the client, barber and branch guards (`DeviceTokenService::revokeForAccessToken`): only the devices that signed in with the logged-out API token stop receiving pushes; other sign-ins keep theirs. Account deletion (client and barber) erases the account's device tokens; password change and reset, bans, admin deactivation and the dashboard credential revoker revoke them (`DeviceTokenService::revokeAllForAccount` / `deleteAllForAccount`, Push P1.5; tests in `tests/Feature/Core/DeviceTokenAccountLifecycleTest.php`). The dashboard (admin/owner) logout does not touch device tokens (web push is Phase 2).
 

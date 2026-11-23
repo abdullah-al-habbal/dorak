@@ -23,4 +23,12 @@ final class FcmPayloadConstants
     public const string FCM_APNS_PUSH_TYPE_ALERT = 'alert';
 
     public const int FCM_TTL_SECONDS = 86400;
+
+    public const string FCM_WEBPUSH_TTL_HEADER = 'TTL';
+
+    public const string FCM_WEBPUSH_URGENCY_HEADER = 'Urgency';
+
+    public const string FCM_WEBPUSH_URGENCY_HIGH = 'high';
+
+    public const string FCM_WEBPUSH_RTL_LOCALE = 'ar';
 }

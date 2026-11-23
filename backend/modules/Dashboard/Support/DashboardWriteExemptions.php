@@ -15,6 +15,8 @@ use Modules\Dashboard\Http\Actions\Profile\UpdateNotificationPreferencesAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdatePasswordAction;
 use Modules\Dashboard\Http\Actions\Profile\UpdateProfileAction;
 use Modules\Dashboard\Http\Actions\Profile\VerifyEmailChangeAction;
+use Modules\Dashboard\Http\Actions\Push\RegisterDashboardPushTokenAction;
+use Modules\Dashboard\Http\Actions\Push\RevokeDashboardPushTokenAction;
 use Modules\Dashboard\Http\Actions\ServiceCategories\StoreServiceCategoryAction;
 use Modules\Dashboard\Http\Actions\Shared\LogoutAction;
 use Modules\Preference\Http\Actions\Dashboard\UpdateSettingsAction;
@@ -37,6 +39,9 @@ final class DashboardWriteExemptions
         UpdateProfileAction::class,
         VerifyEmailChangeAction::class,
         LogoutAction::class,
+        // The browser's own push token: touches only the signed-in account's device row, never a brand or branch.
+        RegisterDashboardPushTokenAction::class,
+        RevokeDashboardPushTokenAction::class,
         UpdateSettingsAction::class,
     ];
 

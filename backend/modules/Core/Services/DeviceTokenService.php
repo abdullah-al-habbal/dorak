@@ -42,6 +42,17 @@ final class DeviceTokenService
         $deviceToken->forceFill(['revoked_at' => now()])->save();
     }
 
+    /** Revokes one token only when it belongs to the account (a foreign or unknown token is ignored). */
+    public function revokeOwnedToken(Model $account, string $token): void
+    {
+        DeviceTokenModel::query()
+            ->where('token', $token)
+            ->where('user_id', $account->getKey())
+            ->where('user_type', $account->getMorphClass())
+            ->whereNull('revoked_at')
+            ->update(['revoked_at' => now()]);
+    }
+
     /** Stops pushes to every device that signed in with the given API token (used on logout). */
     public function revokeForAccessToken(int|string|null $accessTokenId): void
     {
