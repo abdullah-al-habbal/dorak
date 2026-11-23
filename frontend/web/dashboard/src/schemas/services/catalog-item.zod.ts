@@ -47,6 +47,8 @@ export const catalogTagSchema = z.object({
   name: localizedTextSchema,
   slug: z.string().optional(),
   group_name: z.string().nullable().optional(),
+  /** The group in both languages; `null` or absent when the tag has no group. */
+  group_name_translations: optionalTranslationSchema.optional(),
   is_active: z.boolean().optional().default(true),
   items_count: z.number().int().optional().default(0),
 });

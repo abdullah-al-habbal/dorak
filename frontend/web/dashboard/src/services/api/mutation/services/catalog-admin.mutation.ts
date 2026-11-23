@@ -26,7 +26,7 @@ export interface CatalogItemPayload {
 
 export interface CatalogTagPayload {
   name: Translated;
-  group_name: string | null;
+  group_name: Translated | null;
   is_active?: boolean;
 }
 

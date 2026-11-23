@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Modules\ServiceCatalog\Http\Resources\Shared\ServiceCatalogItemResource;
 use Modules\ServiceCatalog\Models\ServiceCatalogCategoryModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemModel;
 use Modules\ServiceCatalog\Models\ServiceCatalogItemTagModel;
@@ -47,4 +48,20 @@ it('tags can be attached to item', function () {
 
     expect($item->tags)->toHaveCount(1);
     expect($item->tags->first()->id)->toBe($tag->id);
+});
+
+it('shows a tag group to the apps as one string in the request language', function () {
+    $item = ServiceCatalogItemModel::factory()->create();
+    $item->tags()->attach(ServiceCatalogItemTagModel::factory()->create(['group_name' => ['en' => 'Style', 'ar' => 'النمط']]));
+    $item->tags()->attach(ServiceCatalogItemTagModel::factory()->create());
+    $item->load('tags');
+
+    $groups = function (string $locale) use ($item): array {
+        app()->setLocale($locale);
+        $tags = (new ServiceCatalogItemResource($item))->response()->getData(true)['data']['tags'];
+
+        return collect($tags)->pluck('group_name')->sort()->values()->all();
+    };
+
+    expect($groups('ar'))->toBe([null, 'النمط'])->and($groups('en'))->toBe([null, 'Style']);
 });

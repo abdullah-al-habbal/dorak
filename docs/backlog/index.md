@@ -102,7 +102,6 @@ Facebook sign-in are unsupported (G9).
 - TD-12 No Pennant flag exists below brand level and `BrandFeatures::all()` has a hard-coded return shape (`modules/Brand/Services/BrandFeatures.php:37`), so a new brand flag means editing it. Relevant only if a brand-wide flag is ever chosen over BD-4's per-branch setting.
 - TD-16 One dashboard Vitest test failed once in the first full run of LOC-1 (1157 passed, 1 failed) and passed in two later runs on the same tree; its name was not captured. On 2026-11-23 eight more full runs (1168 tests each) all passed, so it did not reproduce; to catch it, run `npx vitest run` under CPU load and keep the log of any failing run. Re-run `npm test` a few times, find it and fix the cause.
 - TD-17 Notifications written before LOC-4 keep their English `title` and `body`; the mobile inbox shows them as stored. Accepted: no data-cleanup migration while there is no real data (dev migration rule). Revisit if a long-lived environment holds Arabic users.
-- TD-18 Catalog tag `group_name` stays free text (LOC-5a localizes only the keys in `CatalogTagGroup`). If admins need a bilingual group, add a new `service_catalog_tag_groups` table with a translatable `name` and keep `group_name` as the resolved string for mobile. Do not edit the tags `create_*` migration: the CI migration guard rejects a modified migration.
 
 ## 5. Test gaps
 

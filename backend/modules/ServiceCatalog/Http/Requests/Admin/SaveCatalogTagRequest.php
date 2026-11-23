@@ -14,12 +14,15 @@ final class SaveCatalogTagRequest extends BaseApiFormRequest
     public function rules(): array
     {
         $name = 'max:'.ServiceCatalogTagConstants::SERVICE_CATALOG_TAG_NAME_MAX_LENGTH;
+        $group = 'max:'.ServiceCatalogTagConstants::SERVICE_CATALOG_TAG_GROUP_MAX_LENGTH;
 
         return [
             'name' => ['required', 'array:en,ar'],
             'name.en' => ['required', 'string', $name],
             'name.ar' => ['required', 'string', $name],
-            'group_name' => ['nullable', 'string', 'max:'.ServiceCatalogTagConstants::SERVICE_CATALOG_TAG_GROUP_MAX_LENGTH],
+            'group_name' => ['nullable', 'array:en,ar'],
+            'group_name.en' => ['required_with:group_name', 'string', $group],
+            'group_name.ar' => ['required_with:group_name', 'string', $group],
             'is_active' => ['sometimes', 'boolean'],
         ];
     }

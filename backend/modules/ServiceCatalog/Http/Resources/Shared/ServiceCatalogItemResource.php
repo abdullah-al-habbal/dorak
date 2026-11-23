@@ -34,7 +34,7 @@ final class ServiceCatalogItemResource extends JsonResource
                 'id' => $tag->id,
                 'name' => $tag->getTranslations('name'),
                 'slug' => $tag->slug,
-                'group_name' => $tag->group_name,
+                'group_name' => $tag->group_name ?: null,
             ])),
             'media' => $this->whenLoaded('media', fn () => ServiceCatalogMediumResource::collection($this->media)),
             'is_active' => $this->is_active,

@@ -18,7 +18,8 @@ final class AdminCatalogTagResource extends JsonResource
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
             'slug' => $this->slug,
-            'group_name' => $this->group_name,
+            'group_name' => $this->group_name ?: null,
+            'group_name_translations' => $this->getTranslations('group_name') ?: null,
             'is_active' => $this->is_active,
             'items_count' => $this->whenCounted('items'),
         ];

@@ -39,7 +39,7 @@ A machine key is a value the API, a permission check or a state machine depends 
 - `enumLabel(labels, key, unknownLabel, scope)` and `warnUnknownKey()` are in `src/lib/core/format/enum-label.util.ts`.
 - The overview panel maps `profile.role` through `shell.overview.roles` and shows no token abilities. `permissions` in `/dashboard/me` is the token's abilities (`dashboard`, `branch-app`, ...), not a user-facing permission list.
 - An unknown platform setting key shows `settings.unknownSetting` with the key as a `dir="ltr" translate="no"` hint. An unlabeled brand feature key shows "Unknown" with the key beside it in the plan form.
-- **Catalog tag groups.** `group_name` stays free text, and the mobile DTO reads it as a string. `tagGroupLabel()` localizes the known keys in `CatalogTagGroup` (`style`, `hair_type`, `face_shape`) and shows any other value exactly as typed.
+- **Catalog tag groups (TD-18).** `service_catalog_item_tags.group_name` is a translatable JSON column (`{en, ar}`, both required when a group is set). The mobile-facing `tags[].group_name` stays one string, resolved in the request language. The dashboard resources add `group_name_translations` (`{en, ar}` or `null`) for the form, and the tag dialog has one field per language. `tagGroupLabel()` still localizes the legacy keys in `CatalogTagGroup`.
 
 ## Adding a new key
 

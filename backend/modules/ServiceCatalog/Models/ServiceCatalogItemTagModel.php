@@ -16,7 +16,7 @@ use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['name', 'slug', 'group_name', 'is_active'])]
 #[Table('service_catalog_item_tags')]
-#[Translatable(['name'])]
+#[Translatable(['name', 'group_name'])]
 class ServiceCatalogItemTagModel extends Model
 {
     use HasFactory, HasTranslations, HasUuids, SoftDeletes;

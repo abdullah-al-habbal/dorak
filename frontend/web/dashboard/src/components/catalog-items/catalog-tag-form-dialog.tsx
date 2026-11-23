@@ -77,8 +77,11 @@ export function CatalogTagFormDialog({ tag, onClose }: { tag?: CatalogTag; onClo
           <FormField id="tag-name-ar" label={t.form.nameAr} error={errors.name_ar?.message}>
             <Input id="tag-name-ar" dir="rtl" maxLength={CATALOG_TAG_NAME_MAX} {...invalid("name_ar", "tag-name-ar")} {...form.register("name_ar")} />
           </FormField>
-          <FormField id="tag-group" label={t.form.group} hint={common.fields.optional} error={errors.group_name?.message}>
-            <Input id="tag-group" dir="auto" maxLength={CATALOG_TAG_GROUP_MAX} {...invalid("group_name", "tag-group")} {...form.register("group_name")} />
+          <FormField id="tag-group-en" label={t.form.groupEn} hint={common.fields.optional} error={errors.group_name_en?.message}>
+            <Input id="tag-group-en" dir="ltr" maxLength={CATALOG_TAG_GROUP_MAX} {...invalid("group_name_en", "tag-group-en")} {...form.register("group_name_en")} />
+          </FormField>
+          <FormField id="tag-group-ar" label={t.form.groupAr} hint={common.fields.optional} error={errors.group_name_ar?.message}>
+            <Input id="tag-group-ar" dir="rtl" maxLength={CATALOG_TAG_GROUP_MAX} {...invalid("group_name_ar", "tag-group-ar")} {...form.register("group_name_ar")} />
           </FormField>
           <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
             <input type="checkbox" className="size-4 accent-primary" {...form.register("is_active")} />

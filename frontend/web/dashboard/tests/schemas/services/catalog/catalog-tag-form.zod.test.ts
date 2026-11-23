@@ -6,7 +6,7 @@ import { createCatalogTagFormSchema } from "@/schemas/services/catalog/catalog-t
 
 const messages = enDictionary.adminCatalog.tags.form;
 const schema = createCatalogTagFormSchema(messages);
-const valid = { name_en: "Fade", name_ar: "تدرج", group_name: "", is_active: true };
+const valid = { name_en: "Fade", name_ar: "تدرج", group_name_en: "", group_name_ar: "", is_active: true };
 
 describe("catalog tag form schema", () => {
   it("accepts both names with an empty group", () => {
@@ -22,6 +22,16 @@ describe("catalog tag form schema", () => {
   });
 
   it("caps the group length", () => {
-    expect(schema.safeParse({ ...valid, group_name: "x".repeat(CATALOG_TAG_GROUP_MAX + 1) }).success).toBe(false);
+    const long = "x".repeat(CATALOG_TAG_GROUP_MAX + 1);
+    expect(schema.safeParse({ ...valid, group_name_en: long, group_name_ar: "ok" }).success).toBe(false);
+  });
+
+  it("accepts a group in both languages", () => {
+    expect(schema.safeParse({ ...valid, group_name_en: "Style", group_name_ar: "النمط" }).success).toBe(true);
+  });
+
+  it("asks for the missing half when only one group name is filled", () => {
+    const result = schema.safeParse({ ...valid, group_name_en: "Style", group_name_ar: " " });
+    expect(result.error?.issues.map((issue) => [issue.path[0], issue.message])).toEqual([["group_name_ar", messages.groupBoth]]);
   });
 });
