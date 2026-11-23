@@ -1183,6 +1183,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chairStatusMaintenance => 'Under maintenance';
 
   @override
+  String get chairStatusUnknown => 'Unknown status';
+
+  @override
   String get chairMaintenanceConflictTitle => 'Chair has upcoming bookings';
 
   @override

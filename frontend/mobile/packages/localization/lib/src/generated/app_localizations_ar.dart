@@ -1172,6 +1172,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chairStatusMaintenance => 'قيد الصيانة';
 
   @override
+  String get chairStatusUnknown => 'حالة غير معروفة';
+
+  @override
   String get chairMaintenanceConflictTitle => 'للكرسي حجوزات قادمة';
 
   @override

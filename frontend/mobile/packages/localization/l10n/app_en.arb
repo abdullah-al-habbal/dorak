@@ -1336,6 +1336,8 @@
   "@chairStatusOccupied": {"description": "Occupied chair status"},
   "chairStatusMaintenance": "Under maintenance",
   "@chairStatusMaintenance": {"description": "Chair maintenance status"},
+  "chairStatusUnknown": "Unknown status",
+  "@chairStatusUnknown": {"description": "Fallback chair status label for a status this app version does not know"},
   "chairMaintenanceConflictTitle": "Chair has upcoming bookings",
   "@chairMaintenanceConflictTitle": {"description": "Title of the dialog shown when a chair cannot enter maintenance because of upcoming bookings"},
   "chairMaintenanceConflictBody": "{count, plural, =1{1 upcoming booking uses this chair. Setting maintenance will cancel it and notify the client.} other{{count} upcoming bookings use this chair. Setting maintenance will cancel them and notify each client.}}",

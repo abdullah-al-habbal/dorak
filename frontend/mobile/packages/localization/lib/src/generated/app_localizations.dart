@@ -2222,6 +2222,12 @@ abstract class AppLocalizations {
   /// **'Under maintenance'**
   String get chairStatusMaintenance;
 
+  /// Fallback chair status label for a status this app version does not know
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown status'**
+  String get chairStatusUnknown;
+
   /// Title of the dialog shown when a chair cannot enter maintenance because of upcoming bookings
   ///
   /// In en, this message translates to:
