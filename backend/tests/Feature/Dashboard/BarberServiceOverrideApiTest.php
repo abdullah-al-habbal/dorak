@@ -85,6 +85,9 @@ describe('PUT /dashboard/barbers/{barber}/services/{service}/override', function
 
         $this->putJson(($this->overrideUrl)($affiliated, $affiliatedService), ($this->payload)())->assertOk();
         $this->putJson(($this->overrideUrl)($pending, $pendingService), ($this->payload)())->assertForbidden();
+
+        $this->assertDatabaseHas('barber_service_overrides', ['offered_service_id' => $affiliatedService->id, 'brand_id' => $this->brand->id]);
+        $this->assertDatabaseMissing('barber_service_overrides', ['offered_service_id' => $pendingService->id]);
     });
 
     it('forbids an owner of another brand', function (): void {

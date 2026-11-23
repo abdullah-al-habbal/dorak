@@ -43,27 +43,27 @@ describe('DashboardWriteGuard (F-01, decision A)', function (): void {
     it('lets a manager and an owner write while the brand and branch are active', function (): void {
         $branch = guardTestBranch();
 
-        app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestManager($branch), $branch);
-        app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestOwner($branch), $branch);
-
-        expect(true)->toBeTrue();
+        expect(function (): void {
+            app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestManager($branch), $branch);
+            app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestOwner($branch), $branch);
+        })->not->toThrow(Throwable::class);
     });
 
     it('keeps Pending and Disabled branches writable for setup (D9)', function (BranchStatusEnum $status): void {
         $branch = guardTestBranch(branch: $status);
 
-        app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestManager($branch), $branch);
-        app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestOwner($branch), $branch);
-
-        expect(true)->toBeTrue();
+        expect(function (): void {
+            app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestManager($branch), $branch);
+            app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestOwner($branch), $branch);
+        })->not->toThrow(Throwable::class);
     })->with([BranchStatusEnum::Pending, BranchStatusEnum::Disabled]);
 
     it('keeps a branch of a Pending brand writable (D9)', function (): void {
         $branch = guardTestBranch(BrandStatusEnum::Pending, BranchStatusEnum::Pending);
 
-        app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestOwner($branch), $branch);
-
-        expect(true)->toBeTrue();
+        expect(function (): void {
+            app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestOwner($branch), $branch);
+        })->not->toThrow(Throwable::class);
     });
 
     it('refuses every tenant actor on a Suspended brand with brand_suspended', function (string $actor): void {
@@ -84,10 +84,10 @@ describe('DashboardWriteGuard (F-01, decision A)', function (): void {
     it('lets the platform admin act on a suspended brand and branch', function (): void {
         $branch = guardTestBranch(BrandStatusEnum::Suspended, BranchStatusEnum::Suspended);
 
-        app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestAdmin(), $branch);
-        app(DashboardWriteGuard::class)->ensureBrandWritable(guardTestAdmin(), $branch->brand_id);
-
-        expect(true)->toBeTrue();
+        expect(function (): void {
+            app(DashboardWriteGuard::class)->ensureBranchWritable(guardTestAdmin(), $branch);
+            app(DashboardWriteGuard::class)->ensureBrandWritable(guardTestAdmin(), $branch->brand_id);
+        })->not->toThrow(Throwable::class);
     });
 
     it('renders the stable 403 error bodies', function (): void {
@@ -159,12 +159,12 @@ describe('DashboardWriteGuard id-based helpers (S3)', function (): void {
         $guard = app(DashboardWriteGuard::class);
         $owner = guardTestOwner($branch);
 
-        $guard->ensureBranchIdWritable($owner, null);
-        $guard->ensureBranchIdWritable($owner, '00000000-0000-0000-0000-000000000000');
-        $guard->ensureChairWritable($owner, null);
-        $guard->ensureServiceableWritable($owner, 'barber', null);
-
-        expect(true)->toBeTrue();
+        expect(function (): void {
+            $guard->ensureBranchIdWritable($owner, null);
+            $guard->ensureBranchIdWritable($owner, '00000000-0000-0000-0000-000000000000');
+            $guard->ensureChairWritable($owner, null);
+            $guard->ensureServiceableWritable($owner, 'barber', null);
+        })->not->toThrow(Throwable::class);
     });
 
     it('blocks a brand service of a Suspended brand and ignores an independent barber', function (): void {

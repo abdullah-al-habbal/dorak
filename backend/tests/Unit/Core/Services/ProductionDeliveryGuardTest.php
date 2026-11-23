@@ -32,21 +32,21 @@ it('names every unsafe driver in one message', function (): void {
 });
 
 it('accepts real drivers in production', function (): void {
-    guardIn('production', 'generic_http', 'smtp')->assertSafe();
-
-    expect(true)->toBeTrue();
+    expect(function (): void {
+        guardIn('production', 'generic_http', 'smtp')->assertSafe();
+    })->not->toThrow(Throwable::class);
 });
 
 it('does not trip on unset drivers, which an image build has', function (): void {
-    guardIn('production', null, null)->assertSafe();
-
-    expect(true)->toBeTrue();
+    expect(function (): void {
+        guardIn('production', null, null)->assertSafe();
+    })->not->toThrow(Throwable::class);
 });
 
 it('allows the log drivers outside production', function (string $environment): void {
-    guardIn($environment, 'log', 'log')->assertSafe();
-
-    expect(true)->toBeTrue();
+    expect(function (): void {
+        guardIn($environment, 'log', 'log')->assertSafe();
+    })->not->toThrow(Throwable::class);
 })->with(['local', 'testing', 'staging']);
 
 it('is wired into boot: the application does not start in production with log drivers', function (): void {
