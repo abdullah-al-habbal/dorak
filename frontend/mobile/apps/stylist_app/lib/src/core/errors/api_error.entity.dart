@@ -23,10 +23,10 @@ class ApiError {
       return ApiError(message: networkMessage ?? l10n.errorNetwork);
     }
     if (error is ApiException) {
-      if (error.code == 'ACCOUNT_NOT_ACTIVE') {
+      if (error.code == ApiErrorCodeConstants.apiErrorCodeAccountNotActive) {
         return ApiError(message: l10n.authAccountNotActive);
       }
-      if (error.code == 'ACCOUNT_BANNED') {
+      if (error.code == ApiErrorCodeConstants.apiErrorCodeAccountBanned) {
         return ApiError(message: l10n.authAccountSuspended);
       }
       return ApiError(message: fallbackMessage ?? l10n.errorGeneric);

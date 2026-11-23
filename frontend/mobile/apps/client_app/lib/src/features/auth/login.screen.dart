@@ -143,7 +143,8 @@ class _LoginScreenState extends State<LoginScreen>
                       final error =
                           sessionState.error is ApiException &&
                               (sessionState.error! as ApiException).code ==
-                                  'ACCOUNT_BANNED'
+                                  ApiErrorCodeConstants
+                                      .apiErrorCodeAccountBanned
                           ? AuthError(message: l10n.authAccountSuspended)
                           : state.error == null
                           ? null

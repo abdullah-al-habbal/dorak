@@ -25,10 +25,10 @@ class AuthError {
       return AuthError(message: l10n.errorNetwork);
     }
     if (error is ApiException) {
-      if (error.code == 'ACCOUNT_BANNED') {
+      if (error.code == ApiErrorCodeConstants.apiErrorCodeAccountBanned) {
         return AuthError(message: l10n.authAccountSuspended);
       }
-      if (error.code == 'ACCOUNT_NOT_ACTIVE') {
+      if (error.code == ApiErrorCodeConstants.apiErrorCodeAccountNotActive) {
         return AuthError(message: l10n.authAccountNotActive);
       }
       if (error.isUnauthorized || error.isForbidden) {

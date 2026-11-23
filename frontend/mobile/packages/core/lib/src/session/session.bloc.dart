@@ -11,6 +11,7 @@ import 'package:core/src/session/session.event.dart';
 import 'package:core/src/session/session.state.dart';
 import 'package:core/src/session/session_signal.entity.dart';
 import 'package:core/src/storage/token.storage.dart';
+import 'package:core/src/network/exceptions/api_error_code_constants.entity.dart';
 
 class SessionBloc extends Bloc<SessionEvent, SessionState> {
   SessionBloc(this._repository, this._tokenStorage, this._profileRepository)
@@ -204,7 +205,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
             error ??
             const ApiException(
               statusCode: 403,
-              code: 'ACCOUNT_BANNED',
+              code: ApiErrorCodeConstants.apiErrorCodeAccountBanned,
               message: 'Account suspended',
             ),
         signal: SessionSignal.accountBanned,

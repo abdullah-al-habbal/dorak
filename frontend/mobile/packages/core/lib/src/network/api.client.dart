@@ -261,7 +261,7 @@ class ApiClient {
     final code = body['code'] as String? ?? 'UNKNOWN';
     final message = body['message'] as String? ?? 'Request failed';
 
-    if (code == 'VALIDATION_FAILED') {
+    if (code == ApiErrorCodeConstants.apiErrorCodeValidationFailed) {
       final errors = <String, List<String>>{};
       final rawErrors = body['errors'];
       if (rawErrors is Map<String, dynamic>) {

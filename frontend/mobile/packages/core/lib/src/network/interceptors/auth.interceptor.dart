@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import 'package:core/src/network/interceptors/auth_interceptor_constants.entity.dart';
+import 'package:core/src/network/exceptions/api_error_code_constants.entity.dart';
 
 class AuthInterceptor extends Interceptor {
   final Future<String?> Function() tokenProvider;
@@ -43,7 +44,7 @@ class AuthInterceptor extends Interceptor {
     if (carriedBearer && !isAuthLifecycle && (status == 401 || status == 403)) {
       final body = err.response?.data;
       final code = body is Map ? body['code'] : null;
-      if (code == 'ACCOUNT_BANNED') {
+      if (code == ApiErrorCodeConstants.apiErrorCodeAccountBanned) {
         reportAccountBanned();
       } else if (status == 403 &&
           AuthInterceptorConstants.authInterceptorBusinessForbiddenCodes
