@@ -1245,7 +1245,7 @@ class FakeProfileRepository implements ProfileRepository {
   Future<UniversePreferenceDto> updatePreferredUniverse(String universe) async {
     lastUniverse = universe;
     return UniversePreferenceDto(
-      preferredUniverse: ClientUniverse.fromValue(universe),
+      preferredUniverse: ClientUniverse.values.byName(universe),
     );
   }
 

@@ -9,12 +9,6 @@ enum ClientUniverse {
   @JsonValue('women')
   women;
 
-  static ClientUniverse fromValue(String value) => switch (value) {
-    'men' => ClientUniverse.men,
-    'women' => ClientUniverse.women,
-    _ => throw ArgumentError('Unknown ClientUniverse: $value'),
-  };
-
   String get value => switch (this) {
     ClientUniverse.men => 'men',
     ClientUniverse.women => 'women',

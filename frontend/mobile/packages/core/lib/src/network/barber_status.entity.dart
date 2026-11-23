@@ -10,13 +10,6 @@ enum BarberStatus {
   @JsonValue('disabled')
   disabled;
 
-  static BarberStatus fromValue(String value) => switch (value) {
-    'pending' => BarberStatus.pending,
-    'enabled' => BarberStatus.enabled,
-    'disabled' => BarberStatus.disabled,
-    _ => throw ArgumentError('Unknown BarberStatus: $value'),
-  };
-
   String get value => switch (this) {
     BarberStatus.pending => 'pending',
     BarberStatus.enabled => 'enabled',

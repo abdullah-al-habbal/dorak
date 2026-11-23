@@ -10,13 +10,6 @@ enum ReviewSubjectType {
   @JsonValue('client')
   client;
 
-  static ReviewSubjectType fromValue(String value) => switch (value) {
-    'branch' => ReviewSubjectType.branch,
-    'barber' => ReviewSubjectType.barber,
-    'client' => ReviewSubjectType.client,
-    _ => throw ArgumentError('Unknown review subject type: $value'),
-  };
-
   String get value => switch (this) {
     ReviewSubjectType.branch => 'branch',
     ReviewSubjectType.barber => 'barber',
