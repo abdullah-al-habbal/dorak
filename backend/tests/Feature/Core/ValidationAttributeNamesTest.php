@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Brand\Models\BrandModel;
+use Modules\Client\Models\ClientModel;
+use Modules\Preference\Enums\PreferenceableTypeEnum;
+use Modules\Preference\Models\PreferenceModel;
 
 /*
  * BaseApiFormRequest::attributes() names translatable fields readably for every API surface. The error keys stay
@@ -62,6 +66,30 @@ describe('Readable validation attribute names', function (): void {
             ->postJson('/api/v1/dashboard/admin/catalog-categories', ['name' => ['en' => '', 'ar' => '']])
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['name.en' => 'The English name field is required.']);
+    });
+
+    it('uses the stored Arabic preference of an admin when the request carries no Accept-Language', function (): void {
+        $admin = AdminModel::factory()->create();
+        PreferenceModel::factory()->create(['preferenceable_type' => PreferenceableTypeEnum::Admin->value, 'preferenceable_id' => $admin->id, 'preferred_language' => 'ar']);
+        $this->authenticateDashboardActor($admin);
+
+        // The framework's synthetic requests carry a default `en-us` header; the empty value makes it really absent.
+        $this->withServerVariables(['HTTP_ACCEPT_LANGUAGE' => ''])
+            ->postJson('/api/v1/dashboard/admin/catalog-categories', ['name' => ['en' => '', 'ar' => '']])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name.en' => 'الحقل الاسم بالإنجليزية مطلوب.']);
+    });
+
+    it('uses the stored Arabic preference of an owner on the operations routes without Accept-Language', function (): void {
+        $owner = ClientModel::factory()->create();
+        BrandModel::factory()->create(['owner_id' => $owner->id]);
+        PreferenceModel::factory()->create(['preferenceable_type' => PreferenceableTypeEnum::Client->value, 'preferenceable_id' => $owner->id, 'preferred_language' => 'ar']);
+        $this->authenticateDashboardActor($owner);
+
+        $this->withServerVariables(['HTTP_ACCEPT_LANGUAGE' => ''])
+            ->postJson('/api/v1/dashboard/branches', [])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name.en' => 'الحقل الاسم بالإنجليزية مطلوب.']);
     });
 });
 
