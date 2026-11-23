@@ -9,7 +9,7 @@ return [
     ],
     'affiliation_initiator' => [
         'branch' => 'الفرع',
-        'barber' => 'الحلاق',
+        'barber' => 'المصفف',
     ],
     'affiliation_status' => [
         'pending' => 'قيد الانتظار',

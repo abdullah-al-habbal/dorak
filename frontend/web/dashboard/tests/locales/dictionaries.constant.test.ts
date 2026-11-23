@@ -31,4 +31,10 @@ describe("dictionaries", () => {
       expect(JSON.stringify(dictionary)).not.toContain('""');
     }
   });
+
+  it('calls the stylist "المصفف" in Arabic, never "الحلاق" (terminology standard; the trade "الحلاقة" is allowed)', () => {
+    const barberWord = /حلاق(?!ة)/;
+    const offenders = leaves(DICTIONARIES[Locale.Ar]).filter(([, text]) => barberWord.test(text));
+    expect(offenders.map(([path]) => path)).toEqual([]);
+  });
 });

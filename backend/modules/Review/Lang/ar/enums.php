@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'review_author_type' => [
         'branch' => 'الفرع',
-        'barber' => 'الحلاق',
+        'barber' => 'المصفف',
         'client' => 'العميل',
     ],
     'review_status' => [
@@ -16,7 +16,7 @@ return [
     ],
     'review_subject_type' => [
         'branch' => 'الفرع',
-        'barber' => 'الحلاق',
+        'barber' => 'المصفف',
         'client' => 'العميل',
     ],
 ];

@@ -40,7 +40,7 @@
   "@discoveryTitle": {
     "description": "Discovery screen headline"
   },
-  "discoverySubtitle": "استكشف المتاجر القريبة وأفضل الحلاقين والخدمات المتميزة المصممة لاحتياجاتك.",
+  "discoverySubtitle": "استكشف المتاجر القريبة وأفضل المصففين والخدمات المتميزة المصممة لاحتياجاتك.",
   "@discoverySubtitle": {
     "description": "Discovery screen subtitle"
   },
@@ -52,7 +52,7 @@
   "@discoveryCardShops": {
     "description": "Discovery card 1 label"
   },
-  "discoveryCardBarbers": "الحلاقون",
+  "discoveryCardBarbers": "المصففون",
   "@discoveryCardBarbers": {
     "description": "Discovery card 2 label"
   },
@@ -373,7 +373,7 @@
   "@favoritesTitle": {
     "description": "Favorites screen empty state title"
   },
-  "favoritesSubtitle": "اضغط على القلب في صالون أو حلاق لحفظه هنا.",
+  "favoritesSubtitle": "اضغط على القلب في صالون أو مصفف لحفظه هنا.",
   "@favoritesSubtitle": {
     "description": "Favorites screen empty state subtitle"
   },
@@ -584,7 +584,7 @@
   "@branchOccupiedLabel": {
     "description": "Floor plan legend for occupied chairs"
   },
-  "branchBarbersTitle": "الحلاقون",
+  "branchBarbersTitle": "المصففون",
   "@branchBarbersTitle": {
     "description": "Branch detail barbers section title"
   },
@@ -628,23 +628,23 @@
   "@bookingConflictMessage": {
     "description": "Message shown when the server reports a booking conflict"
   },
-  "bookingOutsideScheduleMessage": "الوقت المطلوب خارج جدول الحلاق.",
+  "bookingOutsideScheduleMessage": "الوقت المطلوب خارج جدول المصفف.",
   "@bookingOutsideScheduleMessage": {
     "description": "Message shown when the server rejects a booking outside the barber schedule"
   },
-  "bookingAtHomeBarberRequiredMessage": "الحجز المنزلي يتطلب اختيار حلاق.",
+  "bookingAtHomeBarberRequiredMessage": "الحجز المنزلي يتطلب اختيار مصفف.",
   "@bookingAtHomeBarberRequiredMessage": {
     "description": "Shown when the server rejects an at-home booking without a barber"
   },
-  "bookingAtHomeServiceNotEligibleMessage": "يجب أن تكون كل الخدمات خدمات منزلية يقدّمها الحلاق المختار.",
+  "bookingAtHomeServiceNotEligibleMessage": "يجب أن تكون كل الخدمات خدمات منزلية يقدّمها المصفف المختار.",
   "@bookingAtHomeServiceNotEligibleMessage": {
     "description": "Shown when a selected service is not an at-home service of the barber"
   },
-  "bookingAtHomeNotOfferedMessage": "هذا الحلاق لا يقدّم خدمة منزلية.",
+  "bookingAtHomeNotOfferedMessage": "هذا المصفف لا يقدّم خدمة منزلية.",
   "@bookingAtHomeNotOfferedMessage": {
     "description": "Shown when the barber has no travel radius"
   },
-  "bookingAtHomeOutOfRadiusMessage": "موقعك خارج نطاق تنقّل الحلاق.",
+  "bookingAtHomeOutOfRadiusMessage": "موقعك خارج نطاق تنقّل المصفف.",
   "@bookingAtHomeOutOfRadiusMessage": {
     "description": "Shown when the client location is beyond the barber travel radius"
   },
@@ -1076,11 +1076,11 @@
   "@floorZoneShared": {
     "description": "Floor-plan section for shared chairs"
   },
-  "managerManualBarberTitle": "إضافة حلاق",
+  "managerManualBarberTitle": "إضافة مصفف",
   "@managerManualBarberTitle": {
     "description": "Branch manager manual barber creation title"
   },
-  "managerManualBarberSubtitle": "أنشئ ملف حلاق دون إنشاء حساب لتسجيل الدخول.",
+  "managerManualBarberSubtitle": "أنشئ ملف مصفف دون إنشاء حساب لتسجيل الدخول.",
   "@managerManualBarberSubtitle": {
     "description": "Manual barber creation explanation"
   },
@@ -1100,11 +1100,11 @@
   "@managerBarberPhoneHint": {
     "description": "E.164 phone input hint"
   },
-  "managerBarberPhoneSharedNote": "يمكن لعميل استخدام الرقم نفسه. سيُنشأ ملف حلاق منفصل.",
+  "managerBarberPhoneSharedNote": "يمكن لعميل استخدام الرقم نفسه. سيُنشأ ملف مصفف منفصل.",
   "@managerBarberPhoneSharedNote": {
     "description": "Explains client and barber phone-number sharing"
   },
-  "managerBarberCreate": "إنشاء حلاق",
+  "managerBarberCreate": "إنشاء مصفف",
   "@managerBarberCreate": {
     "description": "Manual barber creation action"
   },
@@ -1112,17 +1112,17 @@
   "@managerBarberPhoneInvalid": {
     "description": "Invalid normalized phone message"
   },
-  "managerBarberCreated": "تم إنشاء الحلاق دون حساب لتسجيل الدخول.",
+  "managerBarberCreated": "تم إنشاء المصفف دون حساب لتسجيل الدخول.",
   "@managerBarberCreated": {
     "description": "Manual barber creation success"
   },
-  "managerBarberCreateError": "تعذر إنشاء الحلاق. حاول مجدداً.",
+  "managerBarberCreateError": "تعذر إنشاء المصفف. حاول مجدداً.",
   "@managerBarberCreateError": {
     "description": "Manual barber creation generic failure"
   },
   "bookingSavedAddressesLabel": "العناوين المحفوظة",
   "bookingFirstAvailable": "أول متاح",
-  "bookingPreferredBarber": "الحلاق المفضل",
+  "bookingPreferredBarber": "المصفف المفضل",
   "bookingSummaryTitle": "ملخص الحجز",
   "bookingTotalPrice": "السعر الإجمالي: {price}",
   "@bookingTotalPrice": {"placeholders": {"price": {}}},

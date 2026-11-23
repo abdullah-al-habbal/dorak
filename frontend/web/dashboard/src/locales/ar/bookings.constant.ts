@@ -29,7 +29,7 @@ export const arBookings: Dictionary["bookings"] = {
     cancelled: "إلغاء الحجز",
     no_show: "تسجيل عدم الحضور",
   },
-  columns: { time: "الوقت", client: "العميل", service: "الخدمة", barber: "الحلاق", chair: "الكرسي", status: "الحالة", price: "السعر" },
+  columns: { time: "الوقت", client: "العميل", service: "الخدمة", barber: "المصفف", chair: "الكرسي", status: "الحالة", price: "السعر" },
   detail: { title: "تفاصيل الحجز", description: "راجع الحجز وانقله إلى خطوته التالية.", noActions: "هذا الحجز مغلق. لا يمكن إجراء تغييرات أخرى.", services: "الخدمات", actions: "الخطوة التالية" },
   confirm: {
     cancelledTitle: "إلغاء هذا الحجز؟",
@@ -48,7 +48,7 @@ export const arBookings: Dictionary["bookings"] = {
     errorTitle: "تعذر تحميل الحجوزات",
     errorBody: "تحقق من اتصالك ثم حاول مرة أخرى.",
     forbiddenTitle: "الحجوزات غير متاحة لدورك",
-    forbiddenBody: "يرى الحلاقون أرباحهم. إدارة الحجوزات لفرق الفرع والعلامة التجارية.",
+    forbiddenBody: "يرى المصففون أرباحهم. إدارة الحجوزات لفرق الفرع والعلامة التجارية.",
     stale: "يتم عرض آخر حجوزات تم تحميلها. فشل التحديث الأخير.",
     results: "{count} حجوزات",
   },
@@ -59,7 +59,7 @@ export const arBookings: Dictionary["bookings"] = {
     error: "تعذر تحميل السجل.",
     from: "من",
     created: "تم الإنشاء",
-    actor: { client: "العميل", barber: "الحلاق", branch: "فريق الفرع", admin: "المسؤول", owner: "المالك", system: "النظام" },
+    actor: { client: "العميل", barber: "المصفف", branch: "فريق الفرع", admin: "المسؤول", owner: "المالك", system: "النظام" },
   },
   walkIn: {
     title: "حجز مباشر جديد",
@@ -77,7 +77,7 @@ export const arBookings: Dictionary["bookings"] = {
     success: "تم إنشاء الحجز المباشر.",
     loadError: "تعذر تحميل الكراسي أو الخدمات.",
     validation: { name: "أدخل اسم العميل.", email: "أدخل بريدًا إلكترونيًا صحيحًا.", chair: "اختر كرسيًا.", services: "اختر خدمة واحدة على الأقل.", start: "اختر وقت بدء في المستقبل." },
-    errors: { conflict: "الكرسي أو الحلاق محجوز في هذا الوقت.", outsideSchedule: "هذا الوقت خارج جدول الحلاق.", generic: "تعذر إنشاء الحجز." },
+    errors: { conflict: "الكرسي أو المصفف محجوز في هذا الوقت.", outsideSchedule: "هذا الوقت خارج جدول المصفف.", generic: "تعذر إنشاء الحجز." },
   },
   reschedule: {
     action: "إعادة الجدولة",
@@ -88,7 +88,7 @@ export const arBookings: Dictionary["bookings"] = {
     submit: "حفظ الوقت الجديد",
     success: "تمت إعادة جدولة الحجز.",
     validation: { start: "اختر وقت البدء.", end: "اختر وقت الانتهاء.", endAfterStart: "يجب أن يكون الانتهاء بعد البدء." },
-    errors: { conflict: "هذا الموعد محجوز. اختر وقتًا آخر.", outsideSchedule: "هذا الوقت خارج جدول الحلاق.", generic: "تعذرت إعادة جدولة الحجز." },
+    errors: { conflict: "هذا الموعد محجوز. اختر وقتًا آخر.", outsideSchedule: "هذا الوقت خارج جدول المصفف.", generic: "تعذرت إعادة جدولة الحجز." },
   },
   rateClient: {
     action: "تقييم العميل",

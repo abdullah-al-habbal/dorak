@@ -23,7 +23,7 @@ export const arJobs: Dictionary["jobs"] = {
   form: {
     createTitle: "وظيفة جديدة",
     editTitle: "تعديل الوظيفة",
-    description: "يراها الحلاقون في لوحة الوظائف. اللغتان مطلوبتان.",
+    description: "يراها المصففون في لوحة الوظائف. اللغتان مطلوبتان.",
     titleEn: "العنوان (الإنجليزية)",
     titleAr: "العنوان (العربية)",
     descriptionEn: "الوصف (الإنجليزية)",
@@ -62,7 +62,7 @@ export const arJobs: Dictionary["jobs"] = {
   },
   applicationStates: {
     emptyTitle: "لا توجد طلبات بعد",
-    emptyBody: "تظهر الطلبات هنا عندما يتقدم الحلاقون.",
+    emptyBody: "تظهر الطلبات هنا عندما يتقدم المصففون.",
     errorTitle: "تعذّر تحميل الطلبات",
     errorBody: "تحقق من اتصالك ثم حاول مرة أخرى.",
   },

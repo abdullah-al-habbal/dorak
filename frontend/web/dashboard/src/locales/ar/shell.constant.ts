@@ -15,7 +15,7 @@ export const arShell: Dictionary["shell"] = {
     analytics: "التحليلات",
     bookings: "الحجوزات",
     branches: "الفروع",
-    barberApprovals: "الحلاقون",
+    barberApprovals: "اعتماد المصففين",
     clients: "العملاء",
     admins: "المشرفون",
     brands: "العلامات التجارية",
@@ -46,7 +46,7 @@ export const arShell: Dictionary["shell"] = {
     unread: "غير مقروء",
     events: {
       brand_submitted: { title: "علامة بانتظار الموافقة", body: "راجع العلامة الجديدة في قائمة الموافقات." },
-      barber_awaiting_approval: { title: "حلاق بانتظار الموافقة", body: "راجع الحلاق الجديد في قائمة الموافقات." },
+      barber_awaiting_approval: { title: "مصفف بانتظار الموافقة", body: "راجع المصفف الجديد في قائمة الموافقات." },
       review_disputed: { title: "تم الاعتراض على تقييم", body: "قرّر هل يبقى التقييم المعترض عليه منشورًا." },
       brand_approved: { title: "تمت الموافقة على علامتك", body: "يمكنك الآن إضافة المصففين وفتح فروعك للعملاء." },
       brand_rejected: { title: "لم تتم الموافقة على علامتك", body: "افتح حالة نشاطك لترى السبب وتعيد الإرسال." },

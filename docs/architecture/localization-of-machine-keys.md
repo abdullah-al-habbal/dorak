@@ -53,3 +53,7 @@ A machine key is a value the API, a permission check or a state machine depends 
 ## Mobile
 
 No mobile file changed. Mobile shows the stored notification `title` and `body` as they are, so new notifications now arrive in the recipient's language. Open mobile items stay in the backlog as TD-2 (string literals) and TD-3 (unknown `BookingStatus`, closed 2026-11-23).
+
+## Terminology: barber (key) and stylist (label)
+
+Machine keys keep the word `barber`: database columns, API routes, DTO and JSON keys, enum backing values and translation keys such as `deleted_barber_name` never change. The person is shown to users as **Stylist** in English and as **المصفف** (plural **المصففون**) in Arabic, in the backend `Lang/ar` files, the dashboard `locales/ar` dictionaries and the mobile `app_ar.arb`. User-facing Arabic never says "الحلاق"; the trade "الحلاقة" (as in "محلات الحلاقة") is still allowed. Counts read "عدد المصففين: {count}" so they are correct for any number. Three guards fail on a regression: `backend/tests/Feature/Core/ArabicTerminologyTest.php`, the dashboard `tests/locales/dictionaries.constant.test.ts` and the mobile `packages/localization/test/localization_test.dart` (which also fails on a duplicate top-level ARB key). Seeded demo and marketing content is not covered by these guards.

@@ -11,7 +11,7 @@ return [
     'device_token_user_type' => [
         'admin' => 'المشرف',
         'branch' => 'الفرع',
-        'barber' => 'الحلاق',
+        'barber' => 'المصفف',
         'client' => 'العميل',
     ],
     'locale' => [

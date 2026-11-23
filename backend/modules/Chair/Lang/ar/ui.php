@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'barber' => 'الحلاق',
+    'barber' => 'المصفف',
     'branch' => 'الفرع',
     'chair' => 'الكرسي',
     'layout_settings' => 'بيانات واجهة المستخدم',

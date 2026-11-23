@@ -25,7 +25,7 @@ export const arStylists: Dictionary["stylists"] = {
     errorBody: "تحقق من اتصالك ثم حاول مرة أخرى.",
     forbiddenTitle: "المصففون غير متاحين لدورك",
     forbiddenBody: "إدارة المصففين لفرق الفرع والعلامة التجارية.",
-    results: "{count} مصففين",
+    results: "عدد المصففين: {count}",
   },
   form: {
     createTitle: "مصفف جديد",

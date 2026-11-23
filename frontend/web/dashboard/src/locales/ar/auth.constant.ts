@@ -28,7 +28,7 @@ export const arAuth: Dictionary["auth"] = {
   actors: {
     admin: { name: "مسؤول المنصة", blurb: "الكتالوج والعلامات التجارية والفوترة وإعدادات المنصة." },
     manager: { name: "مدير الفرع", blurb: "الحجوزات والكراسي وفريق فرعك." },
-    barber: { name: "الحلاق", blurb: "يومك وجدولك وأرباحك." },
+    barber: { name: "المصفف", blurb: "يومك وجدولك وأرباحك." },
     owner: { name: "مالك العلامة", blurb: "الفروع والاشتراك والمدفوعات لعلامتك." },
   },
   brandPanel: {

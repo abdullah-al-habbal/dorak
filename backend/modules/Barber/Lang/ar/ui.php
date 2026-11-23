@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'account' => 'الحساب',
-    'barber_details' => 'تفاصيل الحلاق',
+    'barber_details' => 'تفاصيل المصفف',
     'enabled' => 'مفعّل',
     'leave_empty_to_keep_current_password' => 'اتركه فارغًا للإبقاء على كلمة المرور الحالية',
     'name' => 'الاسم',

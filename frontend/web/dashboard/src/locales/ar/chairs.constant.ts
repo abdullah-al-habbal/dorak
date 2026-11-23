@@ -16,7 +16,7 @@ export const arChairs: Dictionary["chairs"] = {
   },
   status: { available: "متاح", occupied: "مشغول", maintenance: "صيانة" },
   zone: { men: "رجال", women: "نساء", shared: "مشترك" },
-  columns: { label: "الكرسي", zone: "المنطقة", stylist: "الحلاق", status: "الحالة", inService: "في الخدمة" },
+  columns: { label: "الكرسي", zone: "المنطقة", stylist: "المصفف", status: "الحالة", inService: "في الخدمة" },
   none: "-",
   noStylist: "غير معيّن",
   toggle: { inService: "إعادة {name} إلى الخدمة", maintenance: "نقل {name} إلى الصيانة" },

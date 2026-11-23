@@ -41,7 +41,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get discoverySubtitle =>
-      'استكشف المتاجر القريبة وأفضل الحلاقين والخدمات المتميزة المصممة لاحتياجاتك.';
+      'استكشف المتاجر القريبة وأفضل المصففين والخدمات المتميزة المصممة لاحتياجاتك.';
 
   @override
   String get next => 'التالي';
@@ -50,7 +50,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get discoveryCardShops => 'المتاجر';
 
   @override
-  String get discoveryCardBarbers => 'الحلاقون';
+  String get discoveryCardBarbers => 'المصففون';
 
   @override
   String get discoveryCardServices => 'الخدمات';
@@ -354,7 +354,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favoritesTitle => 'لا توجد مفضلات بعد';
 
   @override
-  String get favoritesSubtitle => 'اضغط على القلب في صالون أو حلاق لحفظه هنا.';
+  String get favoritesSubtitle => 'اضغط على القلب في صالون أو مصفف لحفظه هنا.';
 
   @override
   String get favoritesActionLabel => 'اكتشف';
@@ -548,7 +548,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get branchOccupiedLabel => 'مشغول';
 
   @override
-  String get branchBarbersTitle => 'الحلاقون';
+  String get branchBarbersTitle => 'المصففون';
 
   @override
   String get bookingSelectServices => 'اختر الخدمات';
@@ -582,22 +582,22 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم حجز هذا الموعد للتو. اختر وقتًا آخر.';
 
   @override
-  String get bookingOutsideScheduleMessage => 'الوقت المطلوب خارج جدول الحلاق.';
+  String get bookingOutsideScheduleMessage => 'الوقت المطلوب خارج جدول المصفف.';
 
   @override
   String get bookingAtHomeBarberRequiredMessage =>
-      'الحجز المنزلي يتطلب اختيار حلاق.';
+      'الحجز المنزلي يتطلب اختيار مصفف.';
 
   @override
   String get bookingAtHomeServiceNotEligibleMessage =>
-      'يجب أن تكون كل الخدمات خدمات منزلية يقدّمها الحلاق المختار.';
+      'يجب أن تكون كل الخدمات خدمات منزلية يقدّمها المصفف المختار.';
 
   @override
   String get bookingAtHomeNotOfferedMessage =>
-      'هذا الحلاق لا يقدّم خدمة منزلية.';
+      'هذا المصفف لا يقدّم خدمة منزلية.';
 
   @override
-  String get bookingAtHomeOutOfRadiusMessage => 'موقعك خارج نطاق تنقّل الحلاق.';
+  String get bookingAtHomeOutOfRadiusMessage => 'موقعك خارج نطاق تنقّل المصفف.';
 
   @override
   String discoverCompatibilityBadge(int percent) {
@@ -929,11 +929,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get floorZoneShared => 'القسم المشترك';
 
   @override
-  String get managerManualBarberTitle => 'إضافة حلاق';
+  String get managerManualBarberTitle => 'إضافة مصفف';
 
   @override
   String get managerManualBarberSubtitle =>
-      'أنشئ ملف حلاق دون إنشاء حساب لتسجيل الدخول.';
+      'أنشئ ملف مصفف دون إنشاء حساب لتسجيل الدخول.';
 
   @override
   String get managerBarberNameEnglish => 'الاسم بالإنجليزية';
@@ -949,19 +949,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get managerBarberPhoneSharedNote =>
-      'يمكن لعميل استخدام الرقم نفسه. سيُنشأ ملف حلاق منفصل.';
+      'يمكن لعميل استخدام الرقم نفسه. سيُنشأ ملف مصفف منفصل.';
 
   @override
-  String get managerBarberCreate => 'إنشاء حلاق';
+  String get managerBarberCreate => 'إنشاء مصفف';
 
   @override
   String get managerBarberPhoneInvalid => 'أدخل رقم هاتف صالحاً مع رمز البلد.';
 
   @override
-  String get managerBarberCreated => 'تم إنشاء الحلاق دون حساب لتسجيل الدخول.';
+  String get managerBarberCreated => 'تم إنشاء المصفف دون حساب لتسجيل الدخول.';
 
   @override
-  String get managerBarberCreateError => 'تعذر إنشاء الحلاق. حاول مجدداً.';
+  String get managerBarberCreateError => 'تعذر إنشاء المصفف. حاول مجدداً.';
 
   @override
   String get bookingSavedAddressesLabel => 'العناوين المحفوظة';
@@ -970,7 +970,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingFirstAvailable => 'أول متاح';
 
   @override
-  String get bookingPreferredBarber => 'الحلاق المفضل';
+  String get bookingPreferredBarber => 'المصفف المفضل';
 
   @override
   String get bookingSummaryTitle => 'ملخص الحجز';

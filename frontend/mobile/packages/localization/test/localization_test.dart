@@ -65,4 +65,15 @@ void main() {
       expect(duplicates, isEmpty);
     });
   }
+
+  test('Arabic calls the stylist "المصفف", never "الحلاق" (terminology)', () {
+    // "الحلاقة" (the trade) stays allowed; the person is always a stylist.
+    final barberWord = RegExp('حلاق(?!ة)');
+    expect(
+      arabic.entries
+          .where((entry) => barberWord.hasMatch(entry.value))
+          .map((entry) => entry.key),
+      isEmpty,
+    );
+  });
 }

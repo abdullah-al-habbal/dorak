@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'activable_type' => [
         'branch' => 'الفرع',
-        'barber' => 'الحلاق',
+        'barber' => 'المصفف',
         'brand' => 'العلامة التجارية',
         'client' => 'العميل',
     ],

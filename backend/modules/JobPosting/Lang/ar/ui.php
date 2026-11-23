@@ -8,7 +8,7 @@ return [
     'application_details' => 'تفاصيل الطلب',
     'applications' => 'الطلبات',
     'applied' => 'تاريخ التقديم',
-    'barber' => 'الحلاق',
+    'barber' => 'المصفف',
     'branch' => 'الفرع',
     'description' => 'الوصف',
     'description_arabic' => 'الوصف (بالعربية)',

@@ -6,7 +6,7 @@ return [
     'dashboard_actor_type' => [
         'admin' => 'المشرف',
         'branch' => 'الفرع',
-        'barber' => 'الحلاق',
+        'barber' => 'المصفف',
         'owner' => 'مالك العلامة',
     ],
 ];

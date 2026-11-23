@@ -8,7 +8,7 @@ return [
     'affiliated' => 'منتسب',
     'affiliation' => 'الانتساب',
     'affiliation_details' => 'تفاصيل الانتساب',
-    'barber' => 'الحلاق',
+    'barber' => 'المصفف',
     'branch_brand' => 'الفرع/العلامة التجارية',
     'commission' => 'العمولة',
     'commission_percent' => 'نسبة العمولة',
