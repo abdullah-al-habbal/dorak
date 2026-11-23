@@ -2,32 +2,16 @@
 
 import type { JSX } from "react";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/common/status-badge";
 import { APPLICATION_STATUS_STYLE, POSTING_STATUS_STYLE } from "@/config/ops/job-board.constant";
-import { ApplicationStatus } from "@/enums/booking/application-status.enum";
-import { JobPostingStatus } from "@/enums/booking/job-posting-status.enum";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 export function PostingStatusBadge({ status }: { status: string }): JSX.Element {
   const { jobs } = useDictionary();
-  const known = Object.values(JobPostingStatus).find((value) => value === status) ?? JobPostingStatus.Closed;
-  const { variant, icon: Icon } = POSTING_STATUS_STYLE[known];
-  return (
-    <Badge variant={variant}>
-      <Icon aria-hidden />
-      {jobs.postingStatus[known]}
-    </Badge>
-  );
+  return <StatusBadge status={status} styles={POSTING_STATUS_STYLE} labels={jobs.postingStatus} scope="job-posting" />;
 }
 
 export function ApplicationStatusBadge({ status }: { status: string }): JSX.Element {
   const { jobs } = useDictionary();
-  const known = Object.values(ApplicationStatus).find((value) => value === status) ?? ApplicationStatus.Submitted;
-  const { variant, icon: Icon } = APPLICATION_STATUS_STYLE[known];
-  return (
-    <Badge variant={variant}>
-      <Icon aria-hidden />
-      {jobs.applicationStatus[known]}
-    </Badge>
-  );
+  return <StatusBadge status={status} styles={APPLICATION_STATUS_STYLE} labels={jobs.applicationStatus} scope="job-application" />;
 }

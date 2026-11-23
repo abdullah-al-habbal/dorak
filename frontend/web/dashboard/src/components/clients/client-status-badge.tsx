@@ -6,6 +6,7 @@ import type { JSX } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CLIENT_STATUS_STYLE } from "@/config/venue/client.constant";
 import type { ClientStatus } from "@/enums/people/client-status.enum";
+import { StatusBadge } from "@/components/common/status-badge";
 import { useDictionary } from "@/hooks/core/state/use-dictionary";
 
 interface ClientStatusBadgeProps {
@@ -24,11 +25,5 @@ export function ClientStatusBadge({ status, banned }: ClientStatusBadgeProps): J
       </Badge>
     );
   }
-  const { variant, icon: Icon } = CLIENT_STATUS_STYLE[status];
-  return (
-    <Badge variant={variant}>
-      <Icon aria-hidden />
-      {clients.status[status]}
-    </Badge>
-  );
+  return <StatusBadge status={status} styles={CLIENT_STATUS_STYLE} labels={clients.status} scope="client" />;
 }
