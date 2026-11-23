@@ -18,6 +18,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Services\FcmNotificationSender;
+use Modules\Core\Services\LocalizedNotificationMessage;
 
 #[Backoff([10, 30, 60])]
 #[Tries(4)]
@@ -48,11 +49,11 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
         $data = ['type' => 'booking_status', 'booking_id' => $booking->id, 'status' => $booking->booking_status->value];
         if ($this->created) {
             if ($booking->barber_id !== null) {
-                $sender->sendTo(BarberModel::class, $booking->barber_id, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_new_request_title', [], $this->locale), trans('booking::messages.notification_barber_request_body', [], $this->locale), $data, $this->dispatchKey);
+                $sender->sendMessage(BarberModel::class, $booking->barber_id, NotificationTypeEnum::BookingUpdate, LocalizedNotificationMessage::translated('booking::messages.notification_new_request_title', 'booking::messages.notification_barber_request_body'), $data, $this->dispatchKey);
             }
             $branchId = $booking->chair?->branch_id;
             if ($branchId !== null) {
-                $sender->sendTo(BranchModel::class, $branchId, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_new_request_title', [], $this->locale), trans('booking::messages.notification_branch_request_body', [], $this->locale), $data, $this->dispatchKey);
+                $sender->sendMessage(BranchModel::class, $branchId, NotificationTypeEnum::BookingUpdate, LocalizedNotificationMessage::translated('booking::messages.notification_new_request_title', 'booking::messages.notification_branch_request_body'), $data, $this->dispatchKey);
             }
 
             return;
@@ -64,11 +65,11 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
         }
         if ($this->rescheduled) {
             $data = ['type' => 'booking_rescheduled', 'booking_id' => $booking->id, 'status' => $booking->booking_status->value, 'starts_at' => $booking->starts_at->toIso8601String()];
-            $sender->sendTo(ClientModel::class, $booking->client_id, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_rescheduled_title', [], $this->locale), trans('booking::messages.notification_rescheduled_body', ['time' => $booking->starts_at->toDateTimeString()], $this->locale), $data, $this->dispatchKey);
+            $sender->sendMessage(ClientModel::class, $booking->client_id, NotificationTypeEnum::BookingUpdate, LocalizedNotificationMessage::translated('booking::messages.notification_rescheduled_title', 'booking::messages.notification_rescheduled_body', ['time' => $booking->starts_at->toDateTimeString()]), $data, $this->dispatchKey);
 
             return;
         }
-        $sender->sendTo(ClientModel::class, $booking->client_id, NotificationTypeEnum::BookingUpdate, trans('booking::messages.notification_status_title', [], $this->locale), trans('booking::messages.notification_status_body', ['status' => $booking->booking_status->value], $this->locale), $data, $this->dispatchKey);
+        $sender->sendMessage(ClientModel::class, $booking->client_id, NotificationTypeEnum::BookingUpdate, LocalizedNotificationMessage::translated('booking::messages.notification_status_title', 'booking::messages.notification_status_body', ['status' => $booking->booking_status->value]), $data, $this->dispatchKey);
     }
 
     /**
@@ -79,14 +80,13 @@ final class SendBookingStatusNotificationJob implements ShouldQueue
      */
     private function notifyStaff(FcmNotificationSender $sender, BookingModel $booking, array $data): void
     {
-        $title = trans('booking::messages.notification_status_title', [], $this->locale);
-        $body = trans('booking::messages.notification_client_changed_body', ['status' => $booking->booking_status->value], $this->locale);
+        $message = LocalizedNotificationMessage::translated('booking::messages.notification_status_title', 'booking::messages.notification_client_changed_body', ['status' => $booking->booking_status->value]);
         if ($booking->barber_id !== null) {
-            $sender->sendTo(BarberModel::class, $booking->barber_id, NotificationTypeEnum::BookingUpdate, $title, $body, $data, $this->dispatchKey);
+            $sender->sendMessage(BarberModel::class, $booking->barber_id, NotificationTypeEnum::BookingUpdate, $message, $data, $this->dispatchKey);
         }
         $branchId = $booking->branch_id ?? $booking->chair?->branch_id;
         if ($branchId !== null) {
-            $sender->sendTo(BranchModel::class, $branchId, NotificationTypeEnum::BookingUpdate, $title, $body, $data, $this->dispatchKey);
+            $sender->sendMessage(BranchModel::class, $branchId, NotificationTypeEnum::BookingUpdate, $message, $data, $this->dispatchKey);
         }
     }
 }

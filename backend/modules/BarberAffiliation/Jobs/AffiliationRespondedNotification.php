@@ -18,6 +18,7 @@ use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Services\FcmNotificationSender;
+use Modules\Core\Services\LocalizedNotificationMessage;
 
 #[Backoff([10, 30, 60])]
 #[Tries(4)]
@@ -53,12 +54,11 @@ final class AffiliationRespondedNotification implements ShouldQueue
         }
 
         $status = $this->accepted ? 'accepted' : 'rejected';
-        $sender->sendTo(
+        $sender->sendMessage(
             $userType,
             (string) $affiliation->initiated_by_id,
             NotificationTypeEnum::Invite,
-            trans('barberaffiliation::messages.notification_responded_title', [], $this->locale),
-            trans("barberaffiliation::messages.notification_responded_{$status}_body", [], $this->locale),
+            LocalizedNotificationMessage::translated('barberaffiliation::messages.notification_responded_title', "barberaffiliation::messages.notification_responded_{$status}_body"),
             ['type' => NotificationTypeEnum::Invite->value, 'event' => 'affiliation_responded', 'affiliation_id' => $affiliation->id, 'status' => $status],
             $this->dispatchKey,
         );

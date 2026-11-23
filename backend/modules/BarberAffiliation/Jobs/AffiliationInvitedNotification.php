@@ -19,6 +19,7 @@ use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Services\FcmNotificationSender;
+use Modules\Core\Services\LocalizedNotificationMessage;
 
 #[Backoff([10, 30, 60])]
 #[Tries(4)]
@@ -44,18 +45,17 @@ final class AffiliationInvitedNotification implements ShouldQueue
         }
 
         $data = ['type' => NotificationTypeEnum::Invite->value, 'event' => 'affiliation_invited', 'affiliation_id' => $affiliation->id];
-        $title = trans('barberaffiliation::messages.notification_invited_title', [], $this->locale);
 
         if ($affiliation->initiated_by_type === AffiliationInitiatorTypeEnum::Barber) {
             // The barber asked to join; only branches can receive the request.
             if ($affiliation->affiliable_type !== AffiliableType::Branch) {
                 return;
             }
-            $sender->sendTo(BranchModel::class, (string) $affiliation->affiliable_id, NotificationTypeEnum::Invite, $title, trans('barberaffiliation::messages.notification_invited_branch_body', [], $this->locale), $data, $this->dispatchKey);
+            $sender->sendMessage(BranchModel::class, (string) $affiliation->affiliable_id, NotificationTypeEnum::Invite, LocalizedNotificationMessage::translated('barberaffiliation::messages.notification_invited_title', 'barberaffiliation::messages.notification_invited_branch_body'), $data, $this->dispatchKey);
 
             return;
         }
 
-        $sender->sendTo(BarberModel::class, (string) $affiliation->barber_id, NotificationTypeEnum::Invite, $title, trans('barberaffiliation::messages.notification_invited_barber_body', [], $this->locale), $data, $this->dispatchKey);
+        $sender->sendMessage(BarberModel::class, (string) $affiliation->barber_id, NotificationTypeEnum::Invite, LocalizedNotificationMessage::translated('barberaffiliation::messages.notification_invited_title', 'barberaffiliation::messages.notification_invited_barber_body'), $data, $this->dispatchKey);
     }
 }

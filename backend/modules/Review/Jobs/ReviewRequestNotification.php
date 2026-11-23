@@ -17,6 +17,7 @@ use Modules\Booking\Models\BookingModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Services\FcmNotificationSender;
+use Modules\Core\Services\LocalizedNotificationMessage;
 
 #[Backoff([10, 30, 60])]
 #[Tries(4)]
@@ -43,12 +44,11 @@ final class ReviewRequestNotification implements ShouldQueue
             return;
         }
 
-        $sender->sendTo(
+        $sender->sendMessage(
             ClientModel::class,
             (string) $booking->client_id,
             NotificationTypeEnum::ReviewRequest,
-            trans('review::messages.notification_review_request_title', [], $this->locale),
-            trans('review::messages.notification_review_request_body', [], $this->locale),
+            LocalizedNotificationMessage::translated('review::messages.notification_review_request_title', 'review::messages.notification_review_request_body'),
             ['type' => NotificationTypeEnum::ReviewRequest->value, 'event' => 'review_request', 'booking_id' => $booking->id],
             $this->dispatchKey,
         );

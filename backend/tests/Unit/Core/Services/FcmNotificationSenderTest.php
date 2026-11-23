@@ -7,10 +7,14 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
 use Modules\Core\Services\FcmNotificationSender;
+use Modules\Core\Services\LocalizedNotificationMessage;
+use Modules\Preference\Enums\PreferenceableTypeEnum;
+use Modules\Preference\Models\PreferenceModel;
 
 uses(RefreshDatabase::class);
 
@@ -142,4 +146,56 @@ it('skips a revoked device token', function (): void {
 
     Http::assertSent(fn (Request $request): bool => ($request['message']['token'] ?? null) === 'active-device-token');
     Http::assertNotSent(fn (Request $request): bool => ($request['message']['token'] ?? null) === 'revoked-device-token');
+});
+
+it('writes each device push in the device language and adds android and apns delivery settings', function (): void {
+    configureFcmCredentials();
+    Http::fake([
+        'https://oauth2.googleapis.com/token' => Http::response(['access_token' => 'oauth-access-token', 'expires_in' => 3600]),
+        'https://fcm.googleapis.com/v1/projects/dorak-test-project/messages:send' => Http::response(['name' => 'projects/dorak-test-project/messages/4']),
+    ]);
+    registerFcmToken('arabic-device')->forceFill(['locale' => 'ar'])->save();
+    registerFcmToken('english-device')->forceFill(['locale' => 'en'])->save();
+    registerFcmToken('unknown-locale-device');
+
+    app(FcmNotificationSender::class)->sendMessage(
+        'client',
+        '00000000-0000-4000-8000-000000000001',
+        NotificationTypeEnum::ReviewRequest,
+        LocalizedNotificationMessage::translated('review::messages.notification_review_request_title', 'review::messages.notification_review_request_body'),
+        ['type' => 'review_request'],
+    );
+
+    $titles = Http::recorded()
+        ->filter(fn (array $pair): bool => str_contains($pair[0]->url(), '/messages:send'))
+        ->mapWithKeys(fn (array $pair): array => [$pair[0]['message']['token'] => $pair[0]['message']]);
+
+    expect($titles['arabic-device']['notification']['title'])->toBe(trans('review::messages.notification_review_request_title', [], 'ar'))
+        ->and($titles['english-device']['notification']['title'])->toBe(trans('review::messages.notification_review_request_title', [], 'en'))
+        ->and($titles['unknown-locale-device']['notification']['title'])->toBe(trans('review::messages.notification_review_request_title', [], 'en'))
+        ->and($titles['arabic-device']['notification']['title'])->not->toBe($titles['english-device']['notification']['title'])
+        ->and($titles['english-device']['android']['priority'])->toBe('HIGH')
+        ->and($titles['english-device']['android']['notification']['channel_id'])->toBe('dorak_default')
+        ->and($titles['english-device']['apns']['headers']['apns-priority'])->toBe('10')
+        ->and($titles['english-device']['apns']['payload']['aps']['sound'])->toBe('default');
+});
+
+it('writes the inbox row in the recipient stored language, not the request language', function (): void {
+    app()->setLocale('en');
+    $client = ClientModel::factory()->create();
+    PreferenceModel::query()->create([
+        'preferenceable_type' => PreferenceableTypeEnum::Client->value,
+        'preferenceable_id' => $client->id,
+        'preferred_language' => 'ar',
+    ]);
+
+    $notification = app(FcmNotificationSender::class)->sendMessage(
+        'client',
+        $client->id,
+        NotificationTypeEnum::ReviewRequest,
+        LocalizedNotificationMessage::translated('review::messages.notification_review_request_title', 'review::messages.notification_review_request_body'),
+        ['type' => 'review_request'],
+    );
+
+    expect($notification->title)->toBe(trans('review::messages.notification_review_request_title', [], 'ar'));
 });

@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Services\FcmNotificationSender;
+use Modules\Core\Services\LocalizedNotificationMessage;
 use Modules\JobPosting\Models\ApplicationModel;
 
 #[Backoff([10, 30, 60])]
@@ -41,12 +42,11 @@ final class JobApplicationStatusChangedNotification implements ShouldQueue
         }
 
         $status = $application->status->value;
-        $sender->sendTo(
+        $sender->sendMessage(
             BarberModel::class,
             (string) $application->barber_id,
             NotificationTypeEnum::Application,
-            trans('jobposting::messages.notification_application_status_title', [], $this->locale),
-            trans('jobposting::messages.notification_application_status_body', ['status' => $status], $this->locale),
+            LocalizedNotificationMessage::translated('jobposting::messages.notification_application_status_title', 'jobposting::messages.notification_application_status_body', ['status' => $status]),
             ['type' => NotificationTypeEnum::Application->value, 'event' => 'application_status_changed', 'application_id' => $application->id, 'job_posting_id' => $application->job_posting_id, 'status' => $status],
             $this->dispatchKey,
         );

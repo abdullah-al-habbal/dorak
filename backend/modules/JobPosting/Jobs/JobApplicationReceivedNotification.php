@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Modules\Branch\Models\BranchModel;
 use Modules\Core\Enums\NotificationTypeEnum;
 use Modules\Core\Services\FcmNotificationSender;
+use Modules\Core\Services\LocalizedNotificationMessage;
 use Modules\JobPosting\Models\ApplicationModel;
 
 #[Backoff([10, 30, 60])]
@@ -41,12 +42,11 @@ final class JobApplicationReceivedNotification implements ShouldQueue
             return;
         }
 
-        $sender->sendTo(
+        $sender->sendMessage(
             BranchModel::class,
             (string) $branchId,
             NotificationTypeEnum::Application,
-            trans('jobposting::messages.notification_application_received_title', [], $this->locale),
-            trans('jobposting::messages.notification_application_received_body', [], $this->locale),
+            LocalizedNotificationMessage::translated('jobposting::messages.notification_application_received_title', 'jobposting::messages.notification_application_received_body'),
             ['type' => NotificationTypeEnum::Application->value, 'event' => 'application_received', 'application_id' => $application->id, 'job_posting_id' => $application->job_posting_id],
             $this->dispatchKey,
         );

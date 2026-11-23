@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Modules\Core\Constants\FcmNotificationConstants;
+use Modules\Core\Constants\LocaleConstants;
+use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 use Modules\Core\Enums\FcmConfigurationProblemEnum;
 use Modules\Core\Enums\NotificationDeliveryStatusEnum;
 use Modules\Core\Enums\NotificationTypeEnum;
@@ -27,13 +29,12 @@ final class FcmNotificationSender
     public function __construct(
         private readonly NotificationWriter $writer,
         private readonly FcmCredentialsResolver $credentialsResolver,
+        private readonly NotificationRecipientLocale $recipientLocale,
+        private readonly FcmPayloadBuilder $payloadBuilder,
     ) {}
 
     /**
-     * Records the inbox notification for the recipient, then pushes it to each
-     * registered device and records one delivery row per attempt. A dispatch
-     * key keeps a retried job from duplicating the notification or re-pushing
-     * devices that already received it.
+     * Sends a text that is already written, the same in every language.
      *
      * @param  array<string, bool|float|int|string|null>  $data
      */
@@ -46,7 +47,28 @@ final class FcmNotificationSender
         array $data,
         ?string $dispatchKey = null,
     ): NotificationModel {
-        $notification = $this->writer->record($userType, $userId, $type, $title, $body, $data, $dispatchKey);
+        return $this->sendMessage($userType, $userId, $type, LocalizedNotificationMessage::fixed($title, $body), $data, $dispatchKey);
+    }
+
+    /**
+     * Records the inbox notification in the account's stored language, then pushes it to each
+     * registered device in that device's language (its registered locale, else the account's),
+     * and records one delivery row per attempt. A dispatch key keeps a retried job from
+     * duplicating the notification or re-pushing devices that already received it.
+     *
+     * @param  array<string, bool|float|int|string|null>  $data
+     */
+    public function sendMessage(
+        string $userType,
+        string $userId,
+        NotificationTypeEnum $type,
+        LocalizedNotificationMessage $message,
+        array $data,
+        ?string $dispatchKey = null,
+    ): NotificationModel {
+        $alias = $this->writer->morphAlias($userType);
+        $accountLocale = $this->accountLocale($alias, $userId);
+        $notification = $this->writer->record($userType, $userId, $type, $message->title($accountLocale), $message->body($accountLocale), $data, $dispatchKey);
 
         $projectId = config('services.fcm.project_id');
         $credentials = is_string($projectId) && $projectId !== ''
@@ -59,16 +81,8 @@ final class FcmNotificationSender
             return $notification;
         }
 
-        $alias = $this->writer->morphAlias($userType);
         $deliveredTokenIds = $this->writer->deliveredTokenIds($notification);
         $endpoint = "https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send";
-        $payload = [
-            'notification' => ['title' => $title, 'body' => $body],
-            'data' => (object) array_map(
-                static fn (bool|float|int|string|null $value): string => is_scalar($value) ? (string) $value : '',
-                $data,
-            ),
-        ];
 
         DeviceTokenModel::query()
             ->where('user_type', $alias)
@@ -76,9 +90,20 @@ final class FcmNotificationSender
             ->whereNull('revoked_at')
             ->whereNotIn('id', $deliveredTokenIds)
             ->get()
-            ->each(fn (DeviceTokenModel $deviceToken) => $this->pushToDevice($notification, $deviceToken, $endpoint, $credentials, $payload));
+            ->each(function (DeviceTokenModel $deviceToken) use ($notification, $endpoint, $credentials, $message, $data, $accountLocale): void {
+                $locale = $deviceToken->locale ?? $accountLocale;
+                $payload = $this->payloadBuilder->build($message->title($locale), $message->body($locale), $data);
+                $this->pushToDevice($notification, $deviceToken, $endpoint, $credentials, $payload);
+            });
 
         return $notification;
+    }
+
+    private function accountLocale(string $alias, string $userId): string
+    {
+        $type = DeviceTokenUserTypeEnum::tryFrom($alias);
+
+        return $type === null ? LocaleConstants::CORE_DEFAULT_LOCALE : $this->recipientLocale->resolve($type, $userId);
     }
 
     private function warnNotConfiguredOnce(FcmConfigurationProblemEnum $problem): void
@@ -93,7 +118,7 @@ final class FcmNotificationSender
 
     /**
      * @param  array{client_email: string, private_key: string}  $credentials
-     * @param  array{notification: array{title: string, body: string}, data: object}  $payload
+     * @param  array<string, mixed>  $payload
      */
     private function pushToDevice(
         NotificationModel $notification,
