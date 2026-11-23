@@ -385,14 +385,6 @@
   "@profileActionLabel": {
     "description": "Profile empty state action button label"
   },
-  "discoveryTitle": "اعثر على الأنسب لك.",
-  "@discoveryTitle": {
-    "description": "Discovery screen headline"
-  },
-  "discoverySubtitle": "استكشف المتاجر القريبة وأفضل الحلاقين والخدمات المتميزة المصممة لاحتياجاتك.",
-  "@discoverySubtitle": {
-    "description": "Discovery screen subtitle"
-  },
   "locationRequiredTitle": "مطلوب الموقع",
   "@locationRequiredTitle": {
     "description": "Location required screen title"

@@ -49,4 +49,20 @@ void main() {
 
     expect(mismatched, isEmpty);
   });
+
+  for (final locale in ['en', 'ar']) {
+    test('app_$locale.arb declares every top-level key once', () {
+      // jsonDecode keeps the last duplicate silently, so count the raw keys.
+      final keys = RegExp(
+        r'^  "([^"]+)":',
+        multiLine: true,
+      ).allMatches(File('l10n/app_$locale.arb').readAsStringSync());
+      final seen = <String>{};
+      final duplicates = [
+        for (final match in keys)
+          if (!seen.add(match.group(1)!)) match.group(1)!,
+      ];
+      expect(duplicates, isEmpty);
+    });
+  }
 }

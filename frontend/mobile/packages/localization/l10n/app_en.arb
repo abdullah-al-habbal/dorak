@@ -464,14 +464,6 @@
   "@profileActionLabel": {
     "description": "Profile empty state action button label"
   },
-  "discoveryTitle": "Find the perfect fit.",
-  "@discoveryTitle": {
-    "description": "Discovery screen headline"
-  },
-  "discoverySubtitle": "Explore nearby shops, expert barbers, and premium services tailored to your needs.",
-  "@discoverySubtitle": {
-    "description": "Discovery screen subtitle"
-  },
   "locationRequiredTitle": "Location Required",
   "@locationRequiredTitle": {
     "description": "Location required screen title"
