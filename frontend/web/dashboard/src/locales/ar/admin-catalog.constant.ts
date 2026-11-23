@@ -81,7 +81,6 @@ export const arAdminCatalog: Dictionary["adminCatalog"] = {
     newTag: "وسم جديد",
     edit: "تعديل",
     noGroup: "بلا مجموعة",
-    tagGroups: { style: "الأسلوب", hair_type: "نوع الشعر", face_shape: "شكل الوجه" },
     itemCount: "{count} عناصر",
     confirm: {
       deleteTitle: "حذف هذا الوسم؟",
