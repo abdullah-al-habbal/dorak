@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Locale } from "@/enums/access/locale.enum";
 
@@ -25,6 +25,14 @@ async function metadataOf(kind: string): Promise<Record<string, unknown>> {
   const page = await import(`@/app/${kind}/[slug]/page`);
   return page.generateMetadata({ params: Promise.resolve({ slug: "royal" }) });
 }
+
+const COLD_IMPORT_TIMEOUT_MS = 30_000;
+
+// The first import of a page pulls in its whole module graph, which exceeds the default 5 s test timeout on a
+// cold cache or a loaded machine (TD-16). Loading the pages here keeps that cost out of the first test.
+beforeAll(async () => {
+  await Promise.all(PAGES.map(({ kind }) => import(`@/app/${kind}/[slug]/page`)));
+}, COLD_IMPORT_TIMEOUT_MS);
 
 beforeEach(() => {
   vi.stubEnv("PUBLIC_SITE_URL", "https://dorak.example");
