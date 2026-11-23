@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Services\DeviceTokenService;
 
 /**
  * The only way a client account is deleted, for both the client's own
@@ -22,6 +23,10 @@ use Modules\Client\Models\ClientModel;
  */
 final class ClientAccountDeletion
 {
+    public function __construct(
+        private readonly DeviceTokenService $deviceTokens,
+    ) {}
+
     public function hasBlockingBookings(ClientModel $client): bool
     {
         return $client->bookings()
@@ -67,6 +72,7 @@ final class ClientAccountDeletion
     private function anonymise(ClientModel $locked): void
     {
         $locked->tokens()->delete();
+        $this->deviceTokens->deleteAllForAccount($locked);
         $locked->socialAccounts()->delete();
 
         $locked->setTranslations('name', [

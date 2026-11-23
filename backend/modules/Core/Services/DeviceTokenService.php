@@ -54,4 +54,29 @@ final class DeviceTokenService
             ->whereNull('revoked_at')
             ->update(['revoked_at' => now()]);
     }
+
+    /**
+     * Stops pushes to every device of an account whose API tokens were just invalidated (password
+     * change or reset, ban, deactivation). With a kept access token, devices signed in with it stay.
+     */
+    public function revokeAllForAccount(Model $account, int|string|null $keepAccessTokenId = null): void
+    {
+        DeviceTokenModel::query()
+            ->where('user_id', $account->getKey())
+            ->where('user_type', $account->getMorphClass())
+            ->whereNull('revoked_at')
+            ->when($keepAccessTokenId !== null, fn ($query) => $query->where(
+                fn ($inner) => $inner->whereNull('access_token_id')->orWhere('access_token_id', '!=', $keepAccessTokenId),
+            ))
+            ->update(['revoked_at' => now()]);
+    }
+
+    /** Erases every device token of an account (account deletion: no push address may outlive it). */
+    public function deleteAllForAccount(Model $account): void
+    {
+        DeviceTokenModel::query()
+            ->where('user_id', $account->getKey())
+            ->where('user_type', $account->getMorphClass())
+            ->delete();
+    }
 }

@@ -16,7 +16,7 @@ use Modules\BarberAffiliation\Enums\AffiliationStatus;
 use Modules\BarberAffiliation\Models\BarberAffiliationModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Chair\Models\ChairModel;
-use Modules\Core\Models\DeviceTokenModel;
+use Modules\Core\Services\DeviceTokenService;
 
 /**
  * The only way a barber deletes their own account. Barbers have no soft delete and
@@ -27,6 +27,10 @@ use Modules\Core\Models\DeviceTokenModel;
  */
 final class BarberAccountDeletion
 {
+    public function __construct(
+        private readonly DeviceTokenService $deviceTokens,
+    ) {}
+
     public function delete(BarberModel $barber): BarberAccountDeletionOutcome
     {
         $files = [];
@@ -74,7 +78,7 @@ final class BarberAccountDeletion
         $id = $locked->getKey();
 
         $locked->tokens()->delete();
-        DeviceTokenModel::query()->where('user_id', $id)->where('user_type', $locked->getMorphClass())->delete();
+        $this->deviceTokens->deleteAllForAccount($locked);
         $locked->portfolioPhotos()->delete();
         BarberScheduleModel::query()->where('barber_id', $id)->delete();
         ChairModel::query()->where('barber_id', $id)->update(['barber_id' => null]);

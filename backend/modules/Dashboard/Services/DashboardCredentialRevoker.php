@@ -9,6 +9,7 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Services\DeviceTokenService;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Repositories\DashboardRefreshTokenResolver;
 
@@ -22,6 +23,7 @@ final class DashboardCredentialRevoker
     public function __construct(
         private readonly DashboardRefreshTokenResolver $refreshTokens,
         private readonly PasswordBrokerFactory $brokers,
+        private readonly DeviceTokenService $deviceTokens,
     ) {}
 
     public function revokeAll(DashboardActorTypeEnum $actorType, AdminModel|BranchModel|BarberModel|ClientModel $account): void
@@ -38,6 +40,7 @@ final class DashboardCredentialRevoker
         $account->tokens()
             ->when($keepAccessTokenId !== null, fn ($query) => $query->whereKeyNot($keepAccessTokenId))
             ->delete();
+        $this->deviceTokens->revokeAllForAccount($account, $keepAccessTokenId);
 
         $this->refreshTokens->revokeAllFor($actorType, (string) $account->getKey(), $keepRefreshToken);
         $this->brokers->broker($actorType->passwordBroker()->value)->deleteToken($account);

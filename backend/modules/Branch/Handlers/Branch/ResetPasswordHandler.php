@@ -10,6 +10,7 @@ use Modules\Branch\CQRS\Command\Branch\ResetPasswordCommand;
 use Modules\Branch\Repositories\BranchLoginEloquentResolver;
 use Modules\Core\Constants\StaffPasswordResetConstants;
 use Modules\Core\Enums\PasswordBrokerEnum;
+use Modules\Core\Services\DeviceTokenService;
 use Modules\Core\Services\StaffPasswordResetCodes;
 
 final class ResetPasswordHandler
@@ -18,6 +19,7 @@ final class ResetPasswordHandler
         private readonly BranchLoginEloquentResolver $resolver,
         private readonly StaffPasswordResetCodes $codes,
         private readonly PasswordBrokerFactory $brokers,
+        private readonly DeviceTokenService $deviceTokens,
     ) {}
 
     /**
@@ -37,6 +39,7 @@ final class ResetPasswordHandler
 
         $branch->update(['password' => Hash::make($command->password)]);
         $branch->tokens()->delete();
+        $this->deviceTokens->revokeAllForAccount($branch);
         // A dashboard reset link must not outlive a password set in the app.
         $this->brokers->broker(PasswordBrokerEnum::Branches->value)->deleteToken($branch);
 

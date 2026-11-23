@@ -8,13 +8,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Admin\Exceptions\AdminUserGuardException;
 use Modules\Admin\Models\AdminModel;
+use Modules\Core\Services\DeviceTokenService;
 use Modules\Dashboard\Enums\DashboardActorTypeEnum;
 use Modules\Dashboard\Services\DashboardPasswordResetLinkSender;
 
 /** Platform admin accounts: invite, edit, deactivate, reactivate. Every guard runs under a row lock. */
 final class AdminUserService
 {
-    public function __construct(private readonly DashboardPasswordResetLinkSender $links) {}
+    public function __construct(
+        private readonly DashboardPasswordResetLinkSender $links,
+        private readonly DeviceTokenService $deviceTokens,
+    ) {}
 
     /**
      * The colleague never learns a password: the account starts with a random one and the
@@ -68,6 +72,7 @@ final class AdminUserService
 
             $admin->forceFill(['deactivated_at' => $admin->deactivated_at ?? now()])->save();
             $admin->tokens()->delete();
+            $this->deviceTokens->revokeAllForAccount($admin);
 
             return $admin;
         });

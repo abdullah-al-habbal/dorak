@@ -7,9 +7,14 @@ namespace Modules\Client\Repositories;
 use Illuminate\Support\Facades\DB;
 use Modules\Client\CQRS\Command\Client\ChangePasswordCommand;
 use Modules\Client\Models\ClientModel;
+use Modules\Core\Services\DeviceTokenService;
 
 final class ChangePasswordEloquentResolver
 {
+    public function __construct(
+        private readonly DeviceTokenService $deviceTokens,
+    ) {}
+
     public function execute(ChangePasswordCommand $command): void
     {
         $client = ClientModel::findOrFail($command->clientId);
@@ -17,6 +22,7 @@ final class ChangePasswordEloquentResolver
         DB::transaction(function () use ($client, $command): void {
             $client->update(['password' => $command->password]);
             $client->tokens()->delete();
+            $this->deviceTokens->revokeAllForAccount($client);
         });
     }
 }

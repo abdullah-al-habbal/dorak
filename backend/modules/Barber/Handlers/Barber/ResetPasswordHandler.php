@@ -10,6 +10,7 @@ use Modules\Barber\CQRS\Command\Barber\ResetPasswordCommand;
 use Modules\Barber\Repositories\LoginEloquentResolver;
 use Modules\Core\Constants\StaffPasswordResetConstants;
 use Modules\Core\Enums\PasswordBrokerEnum;
+use Modules\Core\Services\DeviceTokenService;
 use Modules\Core\Services\StaffPasswordResetCodes;
 
 final class ResetPasswordHandler
@@ -18,6 +19,7 @@ final class ResetPasswordHandler
         private readonly LoginEloquentResolver $resolver,
         private readonly StaffPasswordResetCodes $codes,
         private readonly PasswordBrokerFactory $brokers,
+        private readonly DeviceTokenService $deviceTokens,
     ) {}
 
     /**
@@ -37,6 +39,7 @@ final class ResetPasswordHandler
 
         $barber->update(['password' => Hash::make($command->password)]);
         $barber->tokens()->delete();
+        $this->deviceTokens->revokeAllForAccount($barber);
         // A dashboard reset link must not outlive a password set in the app.
         $this->brokers->broker(PasswordBrokerEnum::Barbers->value)->deleteToken($barber);
 
