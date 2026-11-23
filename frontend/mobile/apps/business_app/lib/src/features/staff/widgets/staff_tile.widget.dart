@@ -19,6 +19,7 @@ class StaffTile extends StatelessWidget {
     BarberStatus.enabled => l10n.businessStaffStatusEnabled,
     BarberStatus.disabled => l10n.businessStaffStatusDisabled,
     BarberStatus.pending => l10n.businessStaffStatusPending,
+    BarberStatus.rejected => l10n.businessStaffStatusRejected,
   };
 
   @override

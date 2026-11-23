@@ -28,4 +28,5 @@ const _$BarberStatusEnumMap = {
   BarberStatus.pending: 'pending',
   BarberStatus.enabled: 'enabled',
   BarberStatus.disabled: 'disabled',
+  BarberStatus.rejected: 'rejected',
 };

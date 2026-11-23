@@ -8,11 +8,14 @@ enum BarberStatus {
   @JsonValue('enabled')
   enabled,
   @JsonValue('disabled')
-  disabled;
+  disabled,
+  @JsonValue('rejected')
+  rejected;
 
   String get value => switch (this) {
     BarberStatus.pending => 'pending',
     BarberStatus.enabled => 'enabled',
     BarberStatus.disabled => 'disabled',
+    BarberStatus.rejected => 'rejected',
   };
 }

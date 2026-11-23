@@ -1460,6 +1460,7 @@
   "businessStaffStatusEnabled": "مفعّل",
   "businessStaffStatusDisabled": "معطّل",
   "businessStaffStatusPending": "قيد المراجعة",
+  "businessStaffStatusRejected": "مرفوض",
   "businessStaffRating": "{rating} ({count})",
   "businessServicesTitle": "الخدمات",
   "businessServicesEmpty": "لا توجد خدمات بعد. يضيفها مالك العلامة.",

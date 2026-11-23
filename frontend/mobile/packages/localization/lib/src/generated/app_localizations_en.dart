@@ -1902,6 +1902,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessStaffStatusPending => 'Pending';
 
   @override
+  String get businessStaffStatusRejected => 'Rejected';
+
+  @override
   String businessStaffRating(String rating, int count) {
     return '$rating ($count)';
   }

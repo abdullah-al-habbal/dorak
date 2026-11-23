@@ -3548,6 +3548,12 @@ abstract class AppLocalizations {
   /// **'Pending'**
   String get businessStaffStatusPending;
 
+  /// Staff member whose registration was rejected
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get businessStaffStatusRejected;
+
   /// businessStaffRating
   ///
   /// In en, this message translates to:

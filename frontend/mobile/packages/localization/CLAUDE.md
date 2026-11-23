@@ -64,5 +64,7 @@ diff <(grep -oE '^  "[a-zA-Z][a-zA-Z0-9]*"' app_en.arb) \
      <(grep -oE '^  "[a-zA-Z][a-zA-Z0-9]*"' app_ar.arb)
 ```
 
-Empty output means parity. There is no automated parity test — add one if you
-touch this package substantially.
+Empty output means parity. `test/localization_test.dart` also checks it (same keys
+in both files, no empty message, no Arabic placeholder the English lacks), and
+`packages/core/test/wire_enum_fixture_test.dart` checks the wire enums against the
+backend fixture.

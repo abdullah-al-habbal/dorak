@@ -37,6 +37,7 @@ const _$BranchStatusEnumMap = {
   BranchStatus.pending: 'pending',
   BranchStatus.enabled: 'enabled',
   BranchStatus.disabled: 'disabled',
+  BranchStatus.suspended: 'suspended',
 };
 
 const _$VenueUniverseEnumMap = {

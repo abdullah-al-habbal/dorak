@@ -1646,6 +1646,8 @@
   "@businessStaffStatusDisabled": {"description": "businessStaffStatusDisabled"},
   "businessStaffStatusPending": "Pending",
   "@businessStaffStatusPending": {"description": "businessStaffStatusPending"},
+  "businessStaffStatusRejected": "Rejected",
+  "@businessStaffStatusRejected": {"description": "Staff member whose registration was rejected"},
   "businessStaffRating": "{rating} ({count})",
   "@businessStaffRating": {"description": "businessStaffRating", "placeholders": {"rating": {"type": "String"}, "count": {"type": "int"}}},
   "businessServicesTitle": "Services",

@@ -1,0 +1,75 @@
+{
+    "BarberStatus": [
+        "pending",
+        "enabled",
+        "disabled",
+        "rejected"
+    ],
+    "AffiliationStatus": [
+        "pending",
+        "active",
+        "rejected",
+        "terminated"
+    ],
+    "BookingStatus": [
+        "pending",
+        "confirmed",
+        "in_progress",
+        "cancelled",
+        "completed",
+        "no_show"
+    ],
+    "BranchHoursSource": [
+        "weekly",
+        "override"
+    ],
+    "BranchStatus": [
+        "pending",
+        "enabled",
+        "disabled",
+        "suspended"
+    ],
+    "BrandStatus": [
+        "pending",
+        "active",
+        "rejected",
+        "suspended"
+    ],
+    "ChairStatus": [
+        "available",
+        "occupied",
+        "maintenance"
+    ],
+    "FloorZone": [
+        "men",
+        "women",
+        "shared"
+    ],
+    "FaceAnalysisStatus": [
+        "pending",
+        "completed",
+        "failed"
+    ],
+    "VenueUniverse": [
+        "men",
+        "women",
+        "unisex"
+    ],
+    "ApplicationStatus": [
+        "submitted",
+        "seen",
+        "accepted",
+        "rejected"
+    ],
+    "ReviewStatus": [
+        "published",
+        "disputed",
+        "resolved",
+        "hidden"
+    ],
+    "ReviewSubjectType": [
+        "branch",
+        "barber",
+        "client"
+    ]
+}

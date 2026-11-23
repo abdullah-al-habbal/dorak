@@ -7,11 +7,14 @@ enum BranchStatus {
   @JsonValue('enabled')
   enabled,
   @JsonValue('disabled')
-  disabled;
+  disabled,
+  @JsonValue('suspended')
+  suspended;
 
   String get value => switch (this) {
     BranchStatus.pending => 'pending',
     BranchStatus.enabled => 'enabled',
     BranchStatus.disabled => 'disabled',
+    BranchStatus.suspended => 'suspended',
   };
 }

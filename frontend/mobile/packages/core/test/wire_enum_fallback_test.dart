@@ -1,7 +1,10 @@
 import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Map<String, Object?> chairJson({String status = 'available', String? availability}) => {
+Map<String, Object?> chairJson({
+  String status = 'available',
+  String? availability,
+}) => {
   'id': 'chair-1',
   'label': 'A',
   'status': status,
@@ -19,11 +22,14 @@ void main() {
       expect(chair.status, ChairStatus.unknown);
     });
 
-    test('an unrecognised availability reads as absent, not as a known state', () {
-      final chair = FloorChairDto.fromJson(chairJson(availability: 'broken'));
-      expect(chair.availability, isNull);
-      expect(chair.status, ChairStatus.available);
-    });
+    test(
+      'an unrecognised availability reads as absent, not as a known state',
+      () {
+        final chair = FloorChairDto.fromJson(chairJson(availability: 'broken'));
+        expect(chair.availability, isNull);
+        expect(chair.status, ChairStatus.available);
+      },
+    );
 
     test('known values still decode', () {
       final chair = FloorChairDto.fromJson(
@@ -51,6 +57,22 @@ void main() {
         FacePhotoDto.fromJson(photo('completed')).analysisStatus,
         FaceProfileAnalysisStatus.completed,
       );
+    });
+  });
+
+  group('BarberStatus and BranchStatus', () {
+    test('a rejected staff member is rejected, not pending', () {
+      final member = StaffMemberDto.fromJson({
+        'id': 's1',
+        'name': 'K',
+        'status': 'rejected',
+      });
+      expect(member.status, BarberStatus.rejected);
+      expect(member.isActive, isFalse);
+    });
+
+    test('a suspended branch value has its own member', () {
+      expect(BranchStatus.suspended.value, 'suspended');
     });
   });
 }

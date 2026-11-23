@@ -94,6 +94,10 @@ A test is judged by whether it would fail if the feature regressed: persisted st
 changes, boundary status, side effects and failure behaviour. For high-risk rules the skill asks for
 a deliberate local break (or a mutation run where approved) to prove the test can fail.
 
+## Cross-stack drift guards (D2)
+
+`backend/tests/Fixtures/wire-enums.json` lists the cases of the backend enums the clients mirror. The Pest test `tests/Feature/Core/WireEnumFixtureTest.php` keeps it equal to the backend (regenerate with `UPDATE_WIRE_ENUMS=1 vendor/bin/pest tests/Feature/Core/WireEnumFixtureTest.php`). The dashboard's `tests/enums/wire-enum-fixture.test.ts` and the mobile `packages/core/test/wire_enum_fixture_test.dart` fail when their enums no longer match it, so a new or renamed backend case fails in all three stacks. Text drift is guarded separately: the dashboard's `tests/locales/dictionaries.constant.test.ts` and the mobile `packages/localization/test/localization_test.dart` check English and Arabic key parity and placeholders, and `tests/Feature/Core/ValidationAttributeNamesTest.php` guards the Arabic validation names. To cover another enum, add it to `wireEnumCases()` and to the two client mirrors lists.
+
 ## Coverage and mutation testing
 
 On the date of writing there is no coverage driver on the development machine, `infection/infection`
