@@ -100,6 +100,10 @@ Facebook sign-in are unsupported (G9).
 - TD-10 Stale statements: `agents-part-2.md` still calls the face-analysis job a stub although it calls an AI provider, and `backend/AGENTS.md` describes CI as Pint-only while `.github/workflows/backend-ci.yml` runs the test suite and the migration guard (extends TD-6).
 - TD-11 Search is SQL `LIKE` over translatable JSON columns (`modules/Explore/Support/ExploreTextSearch.php`); weak for Arabic normalisation and ranking at scale. Accepted trade-off for now; revisit with real data.
 - TD-12 No Pennant flag exists below brand level and `BrandFeatures::all()` has a hard-coded return shape (`modules/Brand/Services/BrandFeatures.php:37`), so a new brand flag means editing it. Relevant only if a brand-wide flag is ever chosen over BD-4's per-branch setting.
+- TD-15 Dashboard raw-key fallbacks left after LOC-2: `components/barber-approvals/barber-account-sections.tsx` (`state()` at line 20 and `kinds[...] ?? item.affiliable_type` at line 50) and `components/branches/oversight/branch-oversight-people.tsx:23` (`state()`) still show the raw backend value for an unmapped status or type. Move them to `enumLabel()` with `common.unknown`, as in [localizing machine keys](architecture/localization-of-machine-keys.md).
+- TD-16 One dashboard Vitest test failed once in the first full run of LOC-1 (1157 passed, 1 failed) and passed in two later runs on the same tree; its name was not captured. Re-run `npm test` a few times, find it and fix the cause.
+- TD-17 Notifications written before LOC-4 keep their English `title` and `body`; the mobile inbox shows them as stored. Accepted: no data-cleanup migration while there is no real data (dev migration rule). Revisit if a long-lived environment holds Arabic users.
+- TD-18 Catalog tag `group_name` stays free text (LOC-5a localizes only the keys in `CatalogTagGroup`). If admins need a bilingual group, add a new `service_catalog_tag_groups` table with a translatable `name` and keep `group_name` as the resolved string for mobile. Do not edit the tags `create_*` migration: the CI migration guard rejects a modified migration.
 
 ## 5. Test gaps
 

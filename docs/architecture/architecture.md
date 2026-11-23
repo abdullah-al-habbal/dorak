@@ -4,6 +4,7 @@ parentnode: docs.graph
 childnodes:
   - docs.deployment
   - docs.testing-strategy
+  - docs.localization-of-machine-keys
 codeanchors:
   - backend/modules/Booking/
   - frontend/web/dashboard/src/
