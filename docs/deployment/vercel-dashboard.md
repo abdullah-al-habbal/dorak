@@ -61,7 +61,13 @@ See [dev environment status](dev-environment-status.md) for the dated probe resu
 
 ## Backend `/me` contract
 
-`GET /api/v1/dashboard/me` (`Modules\Dashboard\Http\Actions\Shared\MeAction`, route in `modules/Dashboard/Routes/Api/V1/dashboard.php`) needs both `Authorization: Bearer <token>` and the `X-Dashboard-Session: <claim>` header, which `POST /api/v1/dashboard/login` returns (body `{actor_type, email, password}`; `actor_type` is `admin`, `branch`, `barber` or `owner`). The claim is signed with `DASHBOARD_SESSION_SECRET`, so a bare bearer token gets 401. The dashboard's own `GET /api/auth/me` is a separate Next.js route that reads the session cookie. Revoke a test token with `POST /api/v1/dashboard/logout`. Do not print tokens or claims.
+`GET /api/v1/dashboard/me` (`Modules\Dashboard\Http\Actions\Shared\MeAction`, route in `modules/Dashboard/Routes/Api/V1/dashboard.php`) needs both `Authorization: Bearer <token>` and the `X-Dashboard-Session: <claim>` header. `POST /api/v1/dashboard/login` (body `{actor_type, email, password}`; `actor_type` is `admin`, `branch`, `barber` or `owner`) returns the pair in its JSON as `token` and `claim`, with `expires_in`, `refresh_token` and `refresh_expires_in`. The claim is signed with `DASHBOARD_SESSION_SECRET` (or the `DASHBOARD_SESSION_SECRETS` key ring) and is bound to that access token (`tid`) and that actor (`sub`, `actor_type`), so a bare bearer token, an expired or revoked claim, or a claim issued for another token is a 401. The dashboard's own `GET /api/auth/me` is a separate Next.js route that reads the session cookie.
+
+The middleware (`DashboardAuthorizationMiddleware`) tries the guards `admin_api`, `branch_api`, `barber` and `client`, and the token must carry the `dashboard` ability. An inactive admin or a barber that is not enabled is a 401; a banned branch manager is a 403. The roles it assigns are `platform_admin` (admin), `branch_manager` (branch), `barber` and `brand_owner` (owner, a `client` account that owns a brand).
+
+`/me` returns `id`, `actor_type`, `role`, `branch_id`, `brand_id`, `brand_ids`, `display_name` (the localized name in the request language), `email` and `permissions`. `permissions` is the token's abilities (`["dashboard"]` for a dashboard session), not a user-facing permission list. Route groups gate on the actor type: admin routes need `platform_admin`, earnings routes exclude admins, owner routes need `brand_owner`, brand routes accept admin or owner, schedule routes need a barber, and operations routes exclude barbers.
+
+Revoke a test session with `POST /api/v1/dashboard/logout`, which also needs both headers: it revokes the claim, deletes the access token and revokes the refresh token. Do not print tokens or claims.
 
 ## Verifying after a change
 
