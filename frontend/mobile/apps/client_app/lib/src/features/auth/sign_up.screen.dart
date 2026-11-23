@@ -67,7 +67,8 @@ class _SignUpScreenState extends State<SignUpScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = DorakColors.of(context);
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
 
     return Scaffold(
       backgroundColor: colors.background,

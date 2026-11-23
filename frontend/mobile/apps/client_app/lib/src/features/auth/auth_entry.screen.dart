@@ -6,6 +6,7 @@ import 'package:client_app/src/features/auth/widgets/auth_entry_background.widge
 import 'package:client_app/src/features/auth/widgets/auth_entry_content.widget.dart';
 import 'package:client_app/src/features/auth/widgets/auth_entry_header.widget.dart';
 import 'package:client_app/src/features/auth/widgets/auth_shell.widget.dart';
+import 'package:core/core.dart';
 
 class AuthEntryScreen extends StatefulWidget {
   final VoidCallback onLogin;
@@ -70,7 +71,8 @@ class _AuthEntryScreenState extends State<AuthEntryScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = DorakColors.of(context);
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
 
     return Scaffold(
       backgroundColor: colors.background,

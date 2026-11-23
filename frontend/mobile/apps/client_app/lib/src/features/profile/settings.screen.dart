@@ -71,11 +71,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         items: [
                           DropdownMenuItem(
-                            value: 'en',
+                            value: LocaleCodes.english,
                             child: Text(l10n.profileSettingsLanguageEnglish),
                           ),
                           DropdownMenuItem(
-                            value: 'ar',
+                            value: LocaleCodes.arabic,
                             child: Text(l10n.profileSettingsLanguageArabic),
                           ),
                         ],

@@ -8,6 +8,7 @@ import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.event.dart';
 import 'package:client_app/src/features/booking/branch_detail.state.dart';
 import 'package:client_app/src/features/booking/widgets/branch_detail_body.widget.dart';
+import 'package:core/core.dart';
 
 class BranchDetailScreen extends StatefulWidget {
   const BranchDetailScreen({
@@ -53,7 +54,8 @@ class _BranchDetailScreenState extends State<BranchDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
     return Scaffold(
       appBar: AppBar(
         title: BlocBuilder<BranchDetailBloc, BranchDetailState>(

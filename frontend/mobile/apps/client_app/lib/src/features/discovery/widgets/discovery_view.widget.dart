@@ -9,6 +9,7 @@ import 'package:client_app/src/features/discovery/discovery.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.event.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_feed.widget.dart';
+import 'package:core/core.dart';
 
 class DiscoveryView extends StatelessWidget {
   const DiscoveryView({
@@ -33,7 +34,8 @@ class DiscoveryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.discoveryTitle),

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:core/src/network/locale_codes.entity.dart';
 
 part 'onboarding_config.dto.g.dart';
 
@@ -7,7 +8,7 @@ class OnboardingConfigDto {
   @JsonKey(defaultValue: '')
   final String heroImageUrl;
   final String? season;
-  @JsonKey(defaultValue: 'en')
+  @JsonKey(defaultValue: LocaleCodes.english)
   final String locale;
 
   const OnboardingConfigDto({

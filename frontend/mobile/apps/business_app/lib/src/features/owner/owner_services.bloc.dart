@@ -34,7 +34,7 @@ class OwnerServicesCubit extends Cubit<OwnerServicesState> {
   }) async {
     if (state.isSaving) return;
     emit(state.copyWith(isSaving: true, saved: false, clearError: true));
-    final localized = {'en': nameEn, 'ar': nameAr};
+    final localized = {LocaleCodes.english: nameEn, LocaleCodes.arabic: nameAr};
     try {
       if (id == null) {
         await _services.createService(

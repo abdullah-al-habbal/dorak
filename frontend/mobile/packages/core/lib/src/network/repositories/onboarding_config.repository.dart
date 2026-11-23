@@ -12,7 +12,7 @@ class DioOnboardingConfigRepository implements OnboardingConfigRepository {
 
   @override
   Future<OnboardingConfigDto> fetchOnboardingConfig({String? locale}) async {
-    final key = locale ?? 'en';
+    final key = locale ?? LocaleCodes.english;
     final cached = _cache[key];
     if (cached != null) return cached;
 

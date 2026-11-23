@@ -13,6 +13,7 @@ import 'package:client_app/src/features/auth/widgets/auth_entry_background.widge
 import 'package:client_app/src/features/auth/widgets/auth_header.widget.dart';
 import 'package:client_app/src/features/auth/widgets/auth_shell.widget.dart';
 import 'package:client_app/src/features/auth/widgets/create_new_password_content.widget.dart';
+import 'package:core/core.dart';
 
 class CreateNewPasswordScreen extends StatefulWidget {
   final PasswordRecoveryBloc recovery;
@@ -70,7 +71,8 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = DorakColors.of(context);
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
 
     return Scaffold(
       backgroundColor: colors.background,

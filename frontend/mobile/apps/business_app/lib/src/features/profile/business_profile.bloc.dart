@@ -52,8 +52,8 @@ class BusinessProfileBloc extends Cubit<BusinessProfileState> {
   }
 
   Map<String, String> _localized(String english, String arabic) => {
-    if (english.trim().isNotEmpty) 'en': english.trim(),
-    if (arabic.trim().isNotEmpty) 'ar': arabic.trim(),
+    if (english.trim().isNotEmpty) LocaleCodes.english: english.trim(),
+    if (arabic.trim().isNotEmpty) LocaleCodes.arabic: arabic.trim(),
   };
 
   /// Pairs the comma separated English and Arabic tags by position. A tag
@@ -70,8 +70,8 @@ class BusinessProfileBloc extends Cubit<BusinessProfileState> {
     return [
       for (var i = 0; i < count; i++)
         {
-          'en': i < en.length ? en[i] : ar[i],
-          'ar': i < ar.length ? ar[i] : en[i],
+          LocaleCodes.english: i < en.length ? en[i] : ar[i],
+          LocaleCodes.arabic: i < ar.length ? ar[i] : en[i],
         },
     ];
   }

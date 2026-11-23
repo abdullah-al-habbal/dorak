@@ -31,12 +31,16 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   }
 
   void _fill(BranchProfileTextsDto texts) {
-    _descriptionEn.text = texts.description['en'] ?? '';
-    _descriptionAr.text = texts.description['ar'] ?? '';
-    _addressEn.text = texts.address['en'] ?? '';
-    _addressAr.text = texts.address['ar'] ?? '';
-    _tagsEn.text = texts.tags.map((tag) => tag['en'] ?? '').join(', ');
-    _tagsAr.text = texts.tags.map((tag) => tag['ar'] ?? '').join(', ');
+    _descriptionEn.text = texts.description[LocaleCodes.english] ?? '';
+    _descriptionAr.text = texts.description[LocaleCodes.arabic] ?? '';
+    _addressEn.text = texts.address[LocaleCodes.english] ?? '';
+    _addressAr.text = texts.address[LocaleCodes.arabic] ?? '';
+    _tagsEn.text = texts.tags
+        .map((tag) => tag[LocaleCodes.english] ?? '')
+        .join(', ');
+    _tagsAr.text = texts.tags
+        .map((tag) => tag[LocaleCodes.arabic] ?? '')
+        .join(', ');
   }
 
   @override

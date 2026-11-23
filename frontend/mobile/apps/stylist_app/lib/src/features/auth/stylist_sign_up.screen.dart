@@ -9,6 +9,7 @@ import 'package:stylist_app/src/features/auth/stylist_sign_up_step.entity.dart';
 import 'package:stylist_app/src/features/auth/widgets/pending_approval_step.widget.dart';
 import 'package:stylist_app/src/features/auth/widgets/sign_up_form_step.widget.dart';
 import 'package:stylist_app/src/features/auth/widgets/verify_email_step.widget.dart';
+import 'package:core/core.dart';
 
 class StylistSignUpScreen extends StatefulWidget {
   const StylistSignUpScreen({
@@ -77,7 +78,8 @@ class _StylistSignUpScreenState extends State<StylistSignUpScreen> {
           TextButton(
             onPressed: widget.onLocaleToggle,
             child: Text(
-              Localizations.localeOf(context).languageCode == 'en'
+              Localizations.localeOf(context).languageCode ==
+                      LocaleCodes.english
                   ? l10n.localeArabic
                   : l10n.localeEnglish,
             ),

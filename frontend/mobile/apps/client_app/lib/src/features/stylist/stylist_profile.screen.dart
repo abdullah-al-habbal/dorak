@@ -8,6 +8,7 @@ import 'package:client_app/src/features/stylist/stylist_profile.bloc.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.event.dart';
 import 'package:client_app/src/features/stylist/stylist_profile.state.dart';
 import 'package:client_app/src/features/stylist/widgets/stylist_profile_body.widget.dart';
+import 'package:core/core.dart';
 
 class StylistProfileScreen extends StatefulWidget {
   const StylistProfileScreen({
@@ -38,7 +39,8 @@ class _StylistProfileScreenState extends State<StylistProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
     return Scaffold(
       appBar: AppBar(
         title: BlocBuilder<StylistProfileBloc, StylistProfileState>(

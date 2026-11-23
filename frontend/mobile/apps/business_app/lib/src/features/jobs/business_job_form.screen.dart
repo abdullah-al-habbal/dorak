@@ -6,6 +6,7 @@ import 'package:localization/localization.dart';
 import 'package:business_app/src/features/jobs/business_jobs.bloc.dart';
 import 'package:business_app/src/features/jobs/business_jobs.state.dart';
 import 'package:business_app/src/features/shared/feature_error.widget.dart';
+import 'package:core/core.dart';
 
 /// Creates a posting, or edits [jobId] when it is given.
 class BusinessJobFormScreen extends StatefulWidget {
@@ -34,10 +35,10 @@ class _BusinessJobFormScreenState extends State<BusinessJobFormScreen> {
         ? null
         : widget.bloc.state.jobById(widget.jobId!);
     if (job == null) return;
-    _titleEn.text = '${job.title['en'] ?? ''}';
-    _titleAr.text = '${job.title['ar'] ?? ''}';
-    _descriptionEn.text = '${job.description['en'] ?? ''}';
-    _descriptionAr.text = '${job.description['ar'] ?? ''}';
+    _titleEn.text = '${job.title[LocaleCodes.english] ?? ''}';
+    _titleAr.text = '${job.title[LocaleCodes.arabic] ?? ''}';
+    _descriptionEn.text = '${job.description[LocaleCodes.english] ?? ''}';
+    _descriptionAr.text = '${job.description[LocaleCodes.arabic] ?? ''}';
     _location.text = job.location ?? '';
     _type.text = job.employmentType ?? '';
   }
@@ -56,10 +57,13 @@ class _BusinessJobFormScreenState extends State<BusinessJobFormScreen> {
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() != true) return;
     await widget.bloc.save({
-      'title': {'en': _titleEn.text.trim(), 'ar': _titleAr.text.trim()},
+      'title': {
+        LocaleCodes.english: _titleEn.text.trim(),
+        LocaleCodes.arabic: _titleAr.text.trim(),
+      },
       'description': {
-        'en': _descriptionEn.text.trim(),
-        'ar': _descriptionAr.text.trim(),
+        LocaleCodes.english: _descriptionEn.text.trim(),
+        LocaleCodes.arabic: _descriptionAr.text.trim(),
       },
       if (_location.text.trim().isNotEmpty) 'location': _location.text.trim(),
       if (_type.text.trim().isNotEmpty) 'employment_type': _type.text.trim(),

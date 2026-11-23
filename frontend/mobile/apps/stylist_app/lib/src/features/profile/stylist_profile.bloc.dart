@@ -36,8 +36,9 @@ class StylistProfileBloc extends Cubit<StylistProfileState> {
     emit(state.copyWith(saving: true, saved: false, clearError: true));
     try {
       final bio = {
-        if (bioEnglish.trim().isNotEmpty) 'en': bioEnglish.trim(),
-        if (bioArabic.trim().isNotEmpty) 'ar': bioArabic.trim(),
+        if (bioEnglish.trim().isNotEmpty)
+          LocaleCodes.english: bioEnglish.trim(),
+        if (bioArabic.trim().isNotEmpty) LocaleCodes.arabic: bioArabic.trim(),
       };
       if (bio.isNotEmpty) await _repository.updateProfile(bio: bio);
       final profile = await _repository.updateTravelRadius(

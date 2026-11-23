@@ -60,7 +60,8 @@ class _StylistLoginScreenState extends State<StylistLoginScreen> {
           TextButton(
             onPressed: widget.onLocaleToggle,
             child: Text(
-              Localizations.localeOf(context).languageCode == 'en'
+              Localizations.localeOf(context).languageCode ==
+                      LocaleCodes.english
                   ? l10n.localeArabic
                   : l10n.localeEnglish,
             ),

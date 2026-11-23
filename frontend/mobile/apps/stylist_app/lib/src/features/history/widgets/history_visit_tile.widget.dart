@@ -24,7 +24,7 @@ class HistoryVisitTile extends StatelessWidget {
     final names = visit.catalogItem?.name;
     if (names == null || names.isEmpty) return l10n.stylistHistoryVisitFallback;
     final code = Localizations.localeOf(context).languageCode;
-    return names[code] ?? names['en'] ?? names.values.first;
+    return names[code] ?? names[LocaleCodes.english] ?? names.values.first;
   }
 
   String? _typeLabel(String? type) => switch (type) {

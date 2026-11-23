@@ -31,10 +31,10 @@ class OwnerBranchFormScreen extends StatefulWidget {
 class _OwnerBranchFormScreenState extends State<OwnerBranchFormScreen> {
   final _formKey = GlobalKey<FormState>();
   late final _nameEn = TextEditingController(
-    text: widget.branch?.name['en'] ?? '',
+    text: widget.branch?.name[LocaleCodes.english] ?? '',
   );
   late final _nameAr = TextEditingController(
-    text: widget.branch?.name['ar'] ?? '',
+    text: widget.branch?.name[LocaleCodes.arabic] ?? '',
   );
   late final _email = TextEditingController(text: widget.branch?.email ?? '');
   final _password = TextEditingController();

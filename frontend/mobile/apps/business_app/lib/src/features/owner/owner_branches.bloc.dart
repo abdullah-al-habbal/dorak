@@ -43,7 +43,7 @@ class OwnerBranchesCubit extends Cubit<OwnerBranchesState> {
   }) async {
     if (state.isSaving) return;
     emit(state.copyWith(isSaving: true, saved: false, clearError: true));
-    final name = {'en': nameEn, 'ar': nameAr};
+    final name = {LocaleCodes.english: nameEn, LocaleCodes.arabic: nameAr};
     final secret = password == null || password.isEmpty ? null : password;
     try {
       if (id == null) {

@@ -15,6 +15,7 @@ import 'package:core/src/network/paginated_data.dto.dart';
 import 'package:core/src/network/pagination_meta.dto.dart';
 import 'package:core/src/network/api_client_constants.entity.dart';
 import 'package:core/src/network/exceptions/api_error_code_constants.entity.dart';
+import 'package:core/src/network/locale_codes.entity.dart';
 
 typedef JsonParser<T> = T Function(dynamic json);
 
@@ -57,7 +58,11 @@ class ApiClient {
              ),
            ) {
     this.dio.interceptors
-      ..add(LocaleInterceptor(resolver: localeResolver ?? () => 'en'))
+      ..add(
+        LocaleInterceptor(
+          resolver: localeResolver ?? () => LocaleCodes.english,
+        ),
+      )
       ..addAll([
         if (tokenProvider != null)
           AuthInterceptor(

@@ -1,3 +1,5 @@
+import 'package:core/src/network/locale_codes.entity.dart';
+
 /// Public legal pages served by the Dorak website. The slugs match the seeded
 /// marketing pages (`privacy`, `terms`, `about`, `contact`, `delete-account`).
 class LegalLinks {
@@ -29,6 +31,8 @@ class LegalLinks {
   /// The web owner registration; the business app links here (owner sign-up is web only).
   Uri get ownerRegistration => _origin.replace(path: '/register/business');
 
-  Uri _page(String languageCode, String slug) =>
-      _origin.replace(path: '/${languageCode == 'ar' ? 'ar' : 'en'}/$slug');
+  Uri _page(String languageCode, String slug) => _origin.replace(
+    path:
+        '/${languageCode == LocaleCodes.arabic ? LocaleCodes.arabic : LocaleCodes.english}/$slug',
+  );
 }

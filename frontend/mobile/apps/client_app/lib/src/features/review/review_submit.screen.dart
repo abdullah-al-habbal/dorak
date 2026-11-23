@@ -9,6 +9,7 @@ import 'package:client_app/src/features/review/review_submit.event.dart';
 import 'package:client_app/src/features/review/review_submit.state.dart';
 import 'package:client_app/src/features/review/widgets/review_submitted_view.widget.dart';
 import 'package:client_app/src/features/review/widgets/review_submit_form.widget.dart';
+import 'package:core/core.dart';
 
 class ReviewSubmitScreen extends StatefulWidget {
   const ReviewSubmitScreen({
@@ -45,7 +46,8 @@ class _ReviewSubmitScreenState extends State<ReviewSubmitScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.reviewTitle),

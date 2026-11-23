@@ -58,7 +58,8 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = DorakColors.of(context);
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
 
     return Scaffold(
       backgroundColor: colors.background,

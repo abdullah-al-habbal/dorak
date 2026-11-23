@@ -7,6 +7,7 @@ import 'package:client_app/src/features/onboarding/onboarding_config.bloc.dart';
 import 'package:client_app/src/features/onboarding/widgets/onboarding_hero.widget.dart';
 import 'package:client_app/src/features/onboarding/widgets/skip_bottom_sheet.sheet.dart';
 import 'package:client_app/src/features/onboarding/widgets/welcome_content.widget.dart';
+import 'package:core/core.dart';
 
 class WelcomeScreen extends StatefulWidget {
   final OnboardingConfigBloc onboardingConfig;
@@ -78,7 +79,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = DorakColors.of(context);
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isArabic =
+        Localizations.localeOf(context).languageCode == LocaleCodes.arabic;
 
     return Scaffold(
       backgroundColor: colors.background,
