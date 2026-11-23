@@ -15,6 +15,22 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
+## Snapshot 3: 2026-11-23, about 10:28 UTC (after the localization release)
+
+Release by `scripts/release-dev.sh` from `master` at `15eed1b1b` (the LOC-1 to LOC-6 and TD-15 localization work, 12 commits pushed). Backend deploy: workflow `deploy.yml` run [`45155362569`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45155362569), dispatched with `reset_database=false`, conclusion **success**. The Vercel status of `15eed1b1b` was `success`. `scripts/verify-deploy.sh` passed all 7 checks. No migration changed.
+
+| Probe (10:28 UTC) | Result |
+|---|---|
+| `GET /robots.txt` (Vercel) | `200`; now **has** the line `Sitemap: https://dorak-bay.vercel.app/sitemap.xml` |
+| `GET /sitemap.xml` (Vercel) | `200`, `application/xml`; **5** `<url>` entries: `/brands/dorak-demo`, `/brands/miller-inc`, `/branches/branch`, `/branches/demo-salon`, `/stylists/barber` |
+| `GET /api/v1/public/sitemap` (backend) | `200`; `brands` 2, `branches` 2, `stylists` 1 (same slugs) |
+| `GET /brands/dorak-demo` (Vercel) | `200` |
+| `GET /branches/none-here` (Vercel) | `404` |
+
+This closes RR-14: the new Vercel deployment picked up `PUBLIC_SITE_URL`, so the dashboard sitemap now matches the backend feed. `BOOKING_APP_URL` stays unset (BD-13). Playwright has not run against these commits.
+
+Signed-in check of the localization (the seeded admin, through the dashboard login route, then signed out): `GET /api/auth/me` returned `actor_type` `admin`, `role` `platform_admin`, `branch_id` `null`. The server-rendered `/dashboard/admin` page showed one session row, `Role` / `Platform admin` in English and `الدور` / `مشرف المنصة` in Arabic, with no Permissions row, no `dashboard` badge and no Branch row. After logout `GET /api/auth/me` answered `401`. The admin's notification inbox was empty, so the recipient-language notification text was not observed live (it is covered by `tests/Feature/Core/PlatformNotifierLocaleTest.php`).
+
 ## Snapshot 2: 2026-11-22, 09:27 to 09:29 UTC (after the backend deploy)
 
 Backend deploy: GitHub Actions run [`45007603165`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45007603165), workflow `deploy.yml` dispatched by hand on `master` with `reset_database=false`, built from `ee534091e`. Conclusion **success** (job "Deploy to Hostinger" 32 s: set up job, determine seed flag, deploy via SSH, complete job). Dispatched 09:27:03 UTC, finished 09:27:41 UTC. No database reset was requested, so the seeded data were kept.
