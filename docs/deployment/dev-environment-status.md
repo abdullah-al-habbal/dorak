@@ -15,6 +15,12 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
+## Snapshot 5: 2026-11-23 (after the Arabic-validation and enum-drift release, no database reset)
+
+Release by `scripts/release-dev.sh` from `master` at `1f39ce675` (25 commits pushed: the A1 to E chain plus the terminology, affiliation-label and `melos generate` fixes). Backend deploy: workflow `deploy.yml` run [`45243219197`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45243219197) with `reset_database=false`; Vercel deployment for the same commit: success. Playwright was not run.
+
+`scripts/verify-deploy.sh` passed all 9 probes, including the new one: `POST /api/v1/dashboard/login` with an empty body and `Accept-Language: ar` answers `422` with an Arabic validation message. This confirms that the language middleware on the public dashboard routes is live on dev (the item tracked as "D5 needs a deploy" before this release).
+
 ## Snapshot 4: 2026-11-23 (after the TD-18 release, database reset)
 
 Release by `scripts/release-dev.sh --reset-database` from `master` at `b31a11bbc` (TD-3, T1 to T3 badge and enum fallbacks, Arabic validation messages, bilingual catalog tag groups). Backend deploy: workflow `deploy.yml` run [`45163821087`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45163821087), dispatched with `reset_database=true` on purpose: the create migration of `service_catalog_item_tags` was edited (TD-18, waived in the migration guard), so the dev database was dropped and re-seeded. Conclusion **success**. Vercel status of `b31a11bbc`: `success`. `scripts/verify-deploy.sh` passed all 7 checks.
