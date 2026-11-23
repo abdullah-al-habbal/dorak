@@ -9,6 +9,7 @@ class FacePhotoDto {
   final String id;
   final String imageUrl;
   final bool isPrimary;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final FaceProfileAnalysisStatus? analysisStatus;
   final DateTime? uploadedAt;
 

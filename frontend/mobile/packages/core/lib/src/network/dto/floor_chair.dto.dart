@@ -9,7 +9,9 @@ part 'floor_chair.dto.g.dart';
 class FloorChairDto {
   final String id;
   final String? label;
+  @JsonKey(unknownEnumValue: ChairStatus.unknown)
   final ChairStatus status;
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   final ChairStatus? availability;
   final String? floorZone;
   final Map<String, dynamic>? layoutSettings;

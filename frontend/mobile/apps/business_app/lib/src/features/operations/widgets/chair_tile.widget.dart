@@ -18,6 +18,7 @@ class ChairTile extends StatelessWidget {
     ChairStatus.available => l10n.chairStatusAvailable,
     ChairStatus.occupied => l10n.chairStatusOccupied,
     ChairStatus.maintenance => l10n.chairStatusMaintenance,
+    ChairStatus.unknown => l10n.bookingStatusUnknown,
   };
 
   @override

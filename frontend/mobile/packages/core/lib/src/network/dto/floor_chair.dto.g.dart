@@ -6,24 +6,34 @@ part of 'floor_chair.dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FloorChairDto _$FloorChairDtoFromJson(
-  Map<String, dynamic> json,
-) => FloorChairDto(
-  id: json['id'] as String,
-  label: json['label'] as String?,
-  status: $enumDecode(_$ChairStatusEnumMap, json['status']),
-  availability: $enumDecodeNullable(_$ChairStatusEnumMap, json['availability']),
-  floorZone: json['floor_zone'] as String?,
-  layoutSettings: json['layout_settings'] as Map<String, dynamic>?,
-  branchId: json['branch_id'] as String?,
-  barber: json['barber'] == null
-      ? null
-      : FloorChairBarberDto.fromJson(json['barber'] as Map<String, dynamic>),
-  servicesSource: json['services_source'] as String? ?? 'branch',
-);
+FloorChairDto _$FloorChairDtoFromJson(Map<String, dynamic> json) =>
+    FloorChairDto(
+      id: json['id'] as String,
+      label: json['label'] as String?,
+      status: $enumDecode(
+        _$ChairStatusEnumMap,
+        json['status'],
+        unknownValue: ChairStatus.unknown,
+      ),
+      availability: $enumDecodeNullable(
+        _$ChairStatusEnumMap,
+        json['availability'],
+        unknownValue: JsonKey.nullForUndefinedEnumValue,
+      ),
+      floorZone: json['floor_zone'] as String?,
+      layoutSettings: json['layout_settings'] as Map<String, dynamic>?,
+      branchId: json['branch_id'] as String?,
+      barber: json['barber'] == null
+          ? null
+          : FloorChairBarberDto.fromJson(
+              json['barber'] as Map<String, dynamic>,
+            ),
+      servicesSource: json['services_source'] as String? ?? 'branch',
+    );
 
 const _$ChairStatusEnumMap = {
   ChairStatus.available: 'available',
   ChairStatus.occupied: 'occupied',
   ChairStatus.maintenance: 'maintenance',
+  ChairStatus.unknown: 'unknown',
 };

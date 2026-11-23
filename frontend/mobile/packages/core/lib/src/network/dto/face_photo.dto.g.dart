@@ -13,6 +13,7 @@ FacePhotoDto _$FacePhotoDtoFromJson(Map<String, dynamic> json) => FacePhotoDto(
   analysisStatus: $enumDecodeNullable(
     _$FaceProfileAnalysisStatusEnumMap,
     json['analysis_status'],
+    unknownValue: JsonKey.nullForUndefinedEnumValue,
   ),
   uploadedAt: json['uploaded_at'] == null
       ? null
