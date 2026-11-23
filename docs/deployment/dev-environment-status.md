@@ -15,9 +15,27 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
-## Snapshot 6: 2026-11-23, 21:09 UTC (2026-11-24 00:09 +03), local work, not released
+## Snapshot 7: 2026-11-23, 21:16 UTC (after the terminology and settings-route release, no database reset)
 
-Nothing was deployed. This snapshot records the repository state after the terminology and test-hardening work, so the next person can tell what is live (snapshot 5, `1f39ce675`) from what is only local.
+Release by `scripts/release-dev.sh` from `master` at `966e094a7` (the five local commits of snapshot 6 plus the docs commit, pushed together: `f2d768a0d..966e094a7`). Backend deploy: workflow `deploy.yml` run [`45267891146`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45267891146), `reset_database=false`, conclusion **success** (21:15:59 to 21:16:26 UTC). Vercel status of `966e094a7`: `success`. Playwright was not run. This closes RR-15.
+
+`scripts/verify-deploy.sh` passed all 9 probes (health 200 and ok with no debug details, dashboard login with bad credentials 401, CORS preflight 204 with the allow-origin header, `/api/auth/me` without a session 401, Arabic empty-body validation on `/dashboard/login` 422 in Arabic).
+
+Extra read-only probes (empty JSON bodies, so validation fails before anything is written; no credentials used, no data created):
+
+| Probe | Result |
+|---|---|
+| `POST /api/v1/dashboard/login`, `{}` | `422`; `Accept-Language: ar` gives "الحقل actor type مطلوب."; `en` gives "The actor type field is required." (`actor_type` is on the deliberate technical-field list: the dashboard always sends it) |
+| `POST /api/v1/dashboard/password/forgot`, `{}` | same `422` pair |
+| `POST /api/v1/dashboard/owner/register`, `{}` | `422`; Arabic "الحقل اسم المالك مطلوب." and English "The owner.name field is required." |
+| `PATCH /api/v1/dashboard/settings` without a session | `401` |
+| `GET /api/v1/public/sitemap` | `200` |
+
+Not probed live: the stored-language fallback on the signed-in `PATCH /settings` routes, because it needs a signed-in session and the seeded credentials are not used for probes here. It is covered by `StoredLocaleWriteRoutesTest` (backend gate: 2954 tests passed before the release).
+
+## Snapshot 6: 2026-11-23, 21:09 UTC (2026-11-24 00:09 +03), local work before the release (released in snapshot 7)
+
+Nothing was deployed at this point (snapshot 7 is the release). This snapshot records the repository state after the terminology and test-hardening work, so the next person can tell what is live (snapshot 5, `1f39ce675`) from what is only local.
 
 | Item | Value |
 |---|---|

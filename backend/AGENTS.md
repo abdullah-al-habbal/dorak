@@ -78,7 +78,7 @@ Beyond the booking locks above, the same rules apply to every other write that t
 
 ## Current state (dated)
 
-Snapshot of 2026-11-23: local `master` is four commits ahead of `origin/master` (`f2d768a0d`), not pushed or released; the full Pest suite (2954 tests), Pint and the migration guard passed. Live dev URLs, the release path and the open backlog items are in [dev environment status](../docs/deployment/dev-environment-status.md) and [backlog](../docs/backlog/index.md). The test database is the MySQL 8.4 container on `127.0.0.1:3307`: run `composer test:db:up` before any Pest run (a down server fails every test with "not reachable"), and never pass `--parallel`.
+Snapshot of 2026-11-23 21:16 UTC: `master` and `origin/master` are both at `966e094a7`, released to dev with `reset_database=false` (deploy run `45267891146`, `verify-deploy.sh` 9 of 9 passed); the full Pest suite (2954 tests), Pint and the migration guard passed before the release. Live dev URLs, the release path and the open backlog items are in [dev environment status](../docs/deployment/dev-environment-status.md) and [backlog](../docs/backlog/index.md). The test database is the MySQL 8.4 container on `127.0.0.1:3307`: run `composer test:db:up` before any Pest run (a down server fails every test with "not reachable"), and never pass `--parallel`.
 
 ## Continued in
 
