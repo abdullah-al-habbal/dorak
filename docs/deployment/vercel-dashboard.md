@@ -71,7 +71,7 @@ Revoke a test session with `POST /api/v1/dashboard/logout`, which also needs bot
 
 ## Verifying after a change
 
-`scripts/verify-deploy.sh` runs the read-only probes below plus the CORS preflight and exits non-zero on any failure or 5xx. The manual equivalents:
+`scripts/verify-deploy.sh` runs the read-only probes below plus the CORS preflight and exits non-zero on any failure or 5xx. It also posts an empty sign-in to `/api/v1/dashboard/login` with `Accept-Language: ar` (no credentials) and requires a 422 whose message is Arabic, which proves the language middleware and the Arabic lang files are deployed. The manual equivalents:
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" https://dorak-bay.vercel.app/dashboard/admin/login      # 200

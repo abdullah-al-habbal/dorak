@@ -29,18 +29,22 @@ use Modules\Dashboard\Http\Actions\Shared\ResetDashboardPasswordAction;
 use Modules\Dashboard\Http\Middleware\DashboardAuthorizationMiddleware;
 use Modules\Preference\Http\Middleware\ApplyPreferredLocaleMiddleware;
 
-// Public auth, owner sign-up and the routes every signed-in dashboard actor shares.
+// Public auth, owner sign-up and the routes every signed-in dashboard actor shares. The public routes get the
+// language middleware too, so a sign-in form in Arabic gets Arabic validation errors (D5). It is not on the outer
+// group: Laravel keeps one copy of a middleware, and the signed-in group needs it after the session check.
 Route::prefix('dashboard')->group(function (): void {
-    Route::post('/login', DashboardLoginAction::class)->middleware('throttle:'.DashboardLoginConstants::LOGIN_LIMITER);
-    Route::post('/refresh', RefreshSessionAction::class)->middleware('throttle:10,1');
-    Route::post('/password/forgot', ForgotDashboardPasswordAction::class)->middleware('throttle:'.DashboardPasswordResetConstants::DASHBOARD_PASSWORD_FORGOT_LIMITER);
-    Route::post('/password/reset', ResetDashboardPasswordAction::class)->middleware('throttle:'.DashboardPasswordResetConstants::DASHBOARD_PASSWORD_RESET_LIMITER);
+    Route::middleware(ApplyPreferredLocaleMiddleware::class)->group(function (): void {
+        Route::post('/login', DashboardLoginAction::class)->middleware('throttle:'.DashboardLoginConstants::LOGIN_LIMITER);
+        Route::post('/refresh', RefreshSessionAction::class)->middleware('throttle:10,1');
+        Route::post('/password/forgot', ForgotDashboardPasswordAction::class)->middleware('throttle:'.DashboardPasswordResetConstants::DASHBOARD_PASSWORD_FORGOT_LIMITER);
+        Route::post('/password/reset', ResetDashboardPasswordAction::class)->middleware('throttle:'.DashboardPasswordResetConstants::DASHBOARD_PASSWORD_RESET_LIMITER);
 
-    Route::prefix('owner')->group(function (): void {
-        Route::post('/register', RegisterOwnerAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_REGISTER_LIMITER);
-        Route::post('/code/resend', ResendOwnerCodeAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_REGISTER_LIMITER);
-        Route::post('/verify', VerifyOwnerEmailAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_VERIFY_LIMITER);
-        Route::post('/brand', CreateOwnerBrandAction::class)->middleware('throttle:'.DashboardLoginConstants::OWNER_BRAND_LIMITER);
+        Route::prefix('owner')->group(function (): void {
+            Route::post('/register', RegisterOwnerAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_REGISTER_LIMITER);
+            Route::post('/code/resend', ResendOwnerCodeAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_REGISTER_LIMITER);
+            Route::post('/verify', VerifyOwnerEmailAction::class)->middleware('throttle:'.OwnerRegistrationConstants::OWNER_VERIFY_LIMITER);
+            Route::post('/brand', CreateOwnerBrandAction::class)->middleware('throttle:'.DashboardLoginConstants::OWNER_BRAND_LIMITER);
+        });
     });
 
     Route::middleware([DashboardAuthorizationMiddleware::class, ApplyPreferredLocaleMiddleware::class])->group(function (): void {

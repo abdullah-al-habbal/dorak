@@ -95,6 +95,18 @@ describe('Readable validation attribute names', function (): void {
             ->assertJsonValidationErrors(['name.en' => 'الحقل الاسم بالإنجليزية مطلوب.']);
     });
 
+    it('answers the public dashboard login in Arabic when the page is Arabic, and in English otherwise', function (): void {
+        $this->withHeaders(['Accept-Language' => 'ar'])
+            ->postJson('/api/v1/dashboard/login', [])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['email' => 'الحقل البريد الإلكتروني مطلوب.']);
+
+        $this->withHeaders(['Accept-Language' => 'en'])
+            ->postJson('/api/v1/dashboard/login', [])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['email' => 'The email field is required.']);
+    });
+
     it('uses the stored Arabic preference of an owner on the brand routes without Accept-Language', function (): void {
         $owner = ClientModel::factory()->create();
         BrandModel::factory()->create(['owner_id' => $owner->id]);

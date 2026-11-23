@@ -3,6 +3,7 @@
 # Read-only smoke test of the deployed backend (Hostinger) and dashboard (Vercel).
 # Sends no credentials and no secrets; the login probe uses a fake account and must be rejected.
 # Override the targets with BACKEND_URL and DASHBOARD_URL (origins only, no trailing slash).
+# Probes: backend health, dashboard login, CORS preflight, dashboard session, Arabic validation message.
 # Exit code: 0 when every check passes, 1 when any check fails or a host is unreachable.
 set -uo pipefail
 
@@ -78,6 +79,19 @@ fi
 # 4. Dashboard session without a cookie: must be rejected.
 code=$(status_of GET "$DASHBOARD_URL/api/auth/me")
 expect "GET  $DASHBOARD_URL/api/auth/me (no session)" "$code" 401
+
+# 5. Arabic validation: an empty sign-in with Accept-Language: ar must be a 422 whose messages are Arabic.
+#    The empty body sends no credentials. An English message here means the language middleware or lang files are missing.
+ar_body=$(curl -sS -m "$TIMEOUT" -w '\n%{http_code}' -X POST "$BACKEND_URL/api/v1/dashboard/login" \
+  -H 'content-type: application/json' -H 'accept: application/json' -H 'Accept-Language: ar' -d '{}' 2>/dev/null) || ar_body=$'\n000'
+ar_code=${ar_body##*$'\n'}
+expect "POST $BACKEND_URL/api/v1/dashboard/login (empty body, Accept-Language: ar)" "$ar_code" 422
+if [ "$ar_code" = "422" ]; then
+  case "$ar_body" in
+    *'\u0645\u0637\u0644\u0648\u0628'*) pass "validation message is Arabic" ;;
+    *) fail "validation message is not Arabic (expected the word \u0645\u0637\u0644\u0648\u0628 in an escaped JSON message)" ;;
+  esac
+fi
 
 if [ "$failures" -eq 0 ]; then
   echo "verify-deploy OK"

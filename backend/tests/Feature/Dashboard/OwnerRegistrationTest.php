@@ -37,9 +37,9 @@ function ownerRegistrationPayload(string $email = 'new.owner@example.test', arra
 }
 
 /** Runs the work the registration defers until after the response, as the server would. */
-function ownerRegistrationRun(mixed $test, string $uri, array $payload): mixed
+function ownerRegistrationRun(mixed $test, string $uri, array $payload, array $headers = []): mixed
 {
-    $response = $test->postJson("/api/v1/dashboard/owner/{$uri}", $payload);
+    $response = $test->withHeaders($headers)->postJson("/api/v1/dashboard/owner/{$uri}", $payload);
     app(DeferredCallbackCollection::class)->invoke();
 
     return $response;
@@ -332,8 +332,8 @@ describe('Owner emails', function (): void {
         Mail::fake();
         config(['dashboard.dashboard.session_secret' => 'dashboard-session-secret-that-is-at-least-thirty-two-characters']);
         $this->currency = CurrencyModel::factory()->create();
-        app()->setLocale('ar');
-        ownerRegistrationRun($this, 'register', ownerRegistrationPayload());
+        // The Arabic page sends Accept-Language: ar; the public owner routes apply it and the account stores it.
+        ownerRegistrationRun($this, 'register', ownerRegistrationPayload(), ['Accept-Language' => 'ar']);
         $client = ClientModel::query()->where('email', 'new.owner@example.test')->firstOrFail();
         app()->setLocale('en');
 
