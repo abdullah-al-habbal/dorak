@@ -5,6 +5,7 @@ childnodes:
   - docs.deployment
   - docs.testing-strategy
   - docs.localization-of-machine-keys
+  - docs.push-notifications
 codeanchors:
   - backend/modules/Booking/
   - frontend/web/dashboard/src/
@@ -42,10 +43,14 @@ source of truth for every mutation.
 
 ## Push notifications
 
-Authenticated devices register or rotate an FCM token at
-`POST /api/v1/user/device-token`. The API queues booking notifications after
-creation and barber lifecycle changes. Queue workers use `FCM_SERVER_KEY`; if it
-is absent, delivery is deliberately disabled without failing a booking request.
+Authenticated devices register an FCM token (with app language and version) at
+`POST /api/v1/user/device-token` and revoke it at `DELETE` on the same path; a
+logout revokes the devices of that sign-in. Queue workers send through the FCM
+HTTP v1 API with the service account in `FCM_CREDENTIALS` and the project in
+`FCM_PROJECT_ID`; when either is absent, delivery is skipped with one logged
+reason and the inbox row is still written, so a booking request never fails.
+Contract, configuration, verification record and open items:
+[push notifications](push-notifications.md).
 
 ## Production prerequisites
 

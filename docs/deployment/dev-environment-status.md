@@ -15,6 +15,23 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
+## Snapshot 8: 2026-11-23, 21:55 UTC (2026-11-24 00:55 +03), local push-notification work, not deployed
+
+Nothing was pushed or deployed; the live dev environment is still snapshot 7 (`966e094a7`). Local `master` is three feature commits ahead (`46e1d3f39`, `f7e208176`, `1ab76c269`) plus the documentation commit that records them. The dev database **must be rebuilt** (`scripts/release-dev.sh --reset-database`, authorised by the owner on 2026-11-23, not yet run) when this is released, because the `device_tokens` create migration was edited in place; see [push notifications](../architecture/push-notifications.md).
+
+| Item | Value |
+|---|---|
+| Backend Pest, whole suite, sequential | 2964 passed (13397 assertions) |
+| Pint, `scripts/check_migrations.php` | passed (the edited migration carries a `@contract-migration` waiver) |
+| `php artisan migrate:fresh --seed` on the local database | ran |
+| Mobile `dart run melos run verify` | passed |
+| `scripts/check-conventions.sh`, `git diff --check` | passed |
+| Dashboard gates and Playwright | not run (no dashboard file changed; Playwright skipped on request) |
+| Android flavor build | not verified (local NDK is malformed, RR-18) |
+| Real push delivery | not verified (no Firebase project or config yet, RR-16) |
+| Environment URLs | unchanged: backend `https://dev-dorak-backend.io`, dashboard `https://dorak-bay.vercel.app`, repository `https://github.com/abdullah-al-habbal/dorak` |
+| Mobile CI | now builds the `dev` flavor and uploads `app-dev-release.apk` (changed in P1.3, not yet run on GitHub) |
+
 ## Snapshot 7: 2026-11-23, 21:16 UTC (after the terminology and settings-route release, no database reset)
 
 Release by `scripts/release-dev.sh` from `master` at `966e094a7` (the five local commits of snapshot 6 plus the docs commit, pushed together: `f2d768a0d..966e094a7`). Backend deploy: workflow `deploy.yml` run [`45267891146`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45267891146), `reset_database=false`, conclusion **success** (21:15:59 to 21:16:26 UTC). Vercel status of `966e094a7`: `success`. Playwright was not run. This closes RR-15.
