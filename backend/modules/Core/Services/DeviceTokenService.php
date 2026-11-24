@@ -7,6 +7,7 @@ namespace Modules\Core\Services;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Modules\Core\CQRS\Command\Shared\RegisterDeviceTokenCommand;
+use Modules\Core\Enums\DevicePlatformEnum;
 use Modules\Core\Enums\DeviceTokenUserTypeEnum;
 use Modules\Core\Models\DeviceTokenModel;
 
@@ -68,7 +69,9 @@ final class DeviceTokenService
 
     /**
      * Stops pushes to every device of an account whose API tokens were just invalidated (password
-     * change or reset, ban, deactivation). With a kept access token, devices signed in with it stay.
+     * change or reset, ban, deactivation). With a kept access token, devices signed in with it stay,
+     * and so do browsers (web tokens carry no access token, so the one making the change would be
+     * cut off while the dashboard still shows push as on).
      */
     public function revokeAllForAccount(Model $account, int|string|null $keepAccessTokenId = null): void
     {
@@ -76,9 +79,9 @@ final class DeviceTokenService
             ->where('user_id', $account->getKey())
             ->where('user_type', $account->getMorphClass())
             ->whereNull('revoked_at')
-            ->when($keepAccessTokenId !== null, fn ($query) => $query->where(
-                fn ($inner) => $inner->whereNull('access_token_id')->orWhere('access_token_id', '!=', $keepAccessTokenId),
-            ))
+            ->when($keepAccessTokenId !== null, fn ($query) => $query
+                ->where('platform_type', '!=', DevicePlatformEnum::Web->value)
+                ->where(fn ($inner) => $inner->whereNull('access_token_id')->orWhere('access_token_id', '!=', $keepAccessTokenId)))
             ->update(['revoked_at' => now()]);
     }
 

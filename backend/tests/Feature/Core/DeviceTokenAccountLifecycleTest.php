@@ -63,6 +63,22 @@ it('revokes all device tokens of an account but keeps the kept sign-in', functio
     expect($kept->fresh()->revoked_at)->not->toBeNull();
 });
 
+it('keeps browser tokens when a sign-in is kept, and revokes them when none is', function () {
+    $client = ClientModel::factory()->create();
+    $service = app(DeviceTokenService::class);
+    $browser = lifecycleDeviceToken($client, 'browser');
+    $browser->forceFill(['platform_type' => 'web'])->save();
+    $phone = lifecycleDeviceToken($client, 'phone', 8);
+
+    $service->revokeAllForAccount($client, 7);
+
+    expect($browser->fresh()->revoked_at)->toBeNull()->and($phone->fresh()->revoked_at)->not->toBeNull();
+
+    $service->revokeAllForAccount($client);
+
+    expect($browser->fresh()->revoked_at)->not->toBeNull();
+});
+
 it('revokes the device tokens of a banned barber', function () {
     $barber = BarberModel::factory()->create();
     $token = lifecycleDeviceToken($barber, 'barber-ban');
