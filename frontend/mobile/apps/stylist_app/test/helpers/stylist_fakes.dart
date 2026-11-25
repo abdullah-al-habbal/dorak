@@ -85,7 +85,7 @@ class FakeStylistOperationsRepository implements StylistOperationsRepository {
   @override
   Future<PortfolioPhotoDto> uploadPortfolioPhoto(String filePath) async {
     uploadedPath = filePath;
-    return PortfolioPhotoDto(id: 'uploaded', url: 'http://x/u.jpg');
+    return const PortfolioPhotoDto(id: 'uploaded', url: 'http://x/u.jpg');
   }
 
   @override

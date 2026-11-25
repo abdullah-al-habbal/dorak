@@ -34,7 +34,7 @@ class PrimaryButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             vertical: DorakDimensions.spacingMedium,
           ),
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: DorakDimensions.radiusFull,
           ),
           elevation: 0,

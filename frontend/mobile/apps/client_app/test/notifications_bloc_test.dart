@@ -17,7 +17,7 @@ void main() {
 
   NotificationsState loaded([PaginatedData<NotificationDto>? page]) =>
       NotificationsState(
-        page: Paged<NotificationDto>.initial().succeeded(
+        page: const Paged<NotificationDto>.initial().succeeded(
           page ?? repository.firstPage,
         ),
       );

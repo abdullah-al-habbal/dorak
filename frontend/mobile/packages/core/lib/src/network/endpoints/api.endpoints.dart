@@ -27,70 +27,70 @@ class ApiEndpoints {
   ApiEndpoints._();
 
   /// Barber affiliation endpoints
-  static final affiliation = _AffiliationEndpoints();
+  static const affiliation = _AffiliationEndpoints();
 
   /// Application-level endpoints (health, onboarding config)
-  static final app = _AppEndpoints();
+  static const app = _AppEndpoints();
 
   /// Client authentication endpoints
-  static final auth = _AuthEndpoints();
+  static const auth = _AuthEndpoints();
 
   /// Barber/stylist authentication endpoints
-  static final barberAuth = _BarberAuthEndpoints();
+  static const barberAuth = _BarberAuthEndpoints();
 
   /// Branch/business authentication endpoints
-  static final branchAuth = _BranchAuthEndpoints();
+  static const branchAuth = _BranchAuthEndpoints();
 
   /// Booking endpoints
-  static final booking = _BookingEndpoints();
+  static const booking = _BookingEndpoints();
 
   /// Brand endpoints
-  static final brand = _BrandEndpoints();
+  static const brand = _BrandEndpoints();
 
   /// Brand owner endpoints (`/owner/*`)
-  static final owner = _OwnerEndpoints();
+  static const owner = _OwnerEndpoints();
 
   /// Feedback, bug report and support endpoints
-  static final feedback = _FeedbackEndpoints();
+  static const feedback = _FeedbackEndpoints();
 
   /// Branch endpoints
-  static final branch = _BranchEndpoints();
+  static const branch = _BranchEndpoints();
 
   /// Client interaction endpoints (saved filters, discovery preferences)
-  static final clientInteraction = _ClientInteractionEndpoints();
+  static const clientInteraction = _ClientInteractionEndpoints();
 
   /// Currency endpoints
-  static final currency = _CurrencyEndpoints();
+  static const currency = _CurrencyEndpoints();
 
   /// Explore/discovery endpoints
-  static final explore = _ExploreEndpoints();
+  static const explore = _ExploreEndpoints();
 
   /// Face profile endpoints
-  static final faceProfile = _FaceProfileEndpoints();
+  static const faceProfile = _FaceProfileEndpoints();
 
   /// Favorites endpoints
-  static final favorite = _FavoriteEndpoints();
+  static const favorite = _FavoriteEndpoints();
 
   /// History endpoints
-  static final history = _HistoryEndpoints();
+  static const history = _HistoryEndpoints();
 
   /// Job posting endpoints
-  static final jobPosting = _JobPostingEndpoints();
+  static const jobPosting = _JobPostingEndpoints();
 
   /// Notification endpoints
-  static final notification = _NotificationEndpoints();
+  static const notification = _NotificationEndpoints();
 
   /// Operations endpoints (branch & barber operations)
-  static final operations = _OperationsEndpoints();
+  static const operations = _OperationsEndpoints();
 
   /// Client profile endpoints
-  static final profile = _ProfileEndpoints();
+  static const profile = _ProfileEndpoints();
 
   /// Review endpoints
-  static final review = _ReviewEndpoints();
+  static const review = _ReviewEndpoints();
 
   /// Service catalog endpoints
-  static final serviceCatalog = _ServiceCatalogEndpoints();
+  static const serviceCatalog = _ServiceCatalogEndpoints();
 
   /// Health check endpoint
   static const String health = AppEndpoints.health;

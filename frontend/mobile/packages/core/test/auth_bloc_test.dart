@@ -101,7 +101,7 @@ void main() {
       'stores the token, exposes the client and signals the router',
       build: bloc,
       act: (bloc) => bloc.add(
-        LoginRequested(email: 'sara@example.com', password: 'secret123'),
+        const LoginRequested(email: 'sara@example.com', password: 'secret123'),
       ),
       expect: () => [
         const AuthState(isSubmitting: true),
@@ -123,7 +123,7 @@ void main() {
         return AuthBloc(repository, storage);
       },
       act: (bloc) => bloc.add(
-        LoginRequested(email: 'sara@example.com', password: 'wrong'),
+        const LoginRequested(email: 'sara@example.com', password: 'wrong'),
       ),
       expect: () => [
         const AuthState(isSubmitting: true),

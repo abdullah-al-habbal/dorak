@@ -29,7 +29,7 @@ void main() {
   test(
     'applying twice surfaces the backend error without duplicating',
     () async {
-      final rejected = ApiException(
+      const rejected = ApiException(
         statusCode: 422,
         code: 'UNPROCESSABLE_ENTITY',
         message: 'jobposting::messages.already_applied',
@@ -49,7 +49,7 @@ void main() {
   test(
     'one failed request keeps the original error and clears loading',
     () async {
-      final failure = ApiException(
+      const failure = ApiException(
         statusCode: 500,
         code: 'SERVER_ERROR',
         message: 'applications unavailable',

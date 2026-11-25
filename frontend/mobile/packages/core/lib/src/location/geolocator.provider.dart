@@ -7,7 +7,7 @@ class GeolocatorLocationProvider implements LocationProvider {
 
   @override
   Future<LocationPermissionStatus> ensurePermission() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return LocationPermissionStatus.serviceDisabled;
     }

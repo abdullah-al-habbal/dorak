@@ -57,7 +57,7 @@ void main() {
   });
 
   test('a rejected dispute keeps the review and surfaces the error', () async {
-    final failure = ApiException(
+    const failure = ApiException(
       statusCode: 422,
       code: 'REVIEW_VALIDATION_FAILED',
       message: 'review::messages.dispute_not_allowed',

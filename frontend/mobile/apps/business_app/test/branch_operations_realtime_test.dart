@@ -146,7 +146,7 @@ void main() {
   test(
     'one failed request keeps the original error and clears loading',
     () async {
-      final failure = ApiException(
+      const failure = ApiException(
         statusCode: 500,
         code: 'SERVER_ERROR',
         message: 'chairs unavailable',

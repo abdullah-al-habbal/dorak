@@ -5,7 +5,7 @@ void main() {
   barberClientEnumTests();
   group('ClientDto', () {
     test('parses all nine client payload fields', () {
-      final client = ClientDto.fromJson({
+      final client = ClientDto.fromJson(const {
         'id': 'client-1',
         'name': 'Ahmad',
         'email': 'ahmad@example.com',
@@ -31,7 +31,7 @@ void main() {
     });
 
     test('an unverified client has a null emailVerifiedAt', () {
-      final client = ClientDto.fromJson({
+      final client = ClientDto.fromJson(const {
         'id': 'client-1',
         'name': 'Ahmad',
         'email': 'ahmad@example.com',
@@ -58,11 +58,15 @@ void barberClientEnumTests() {
       'ClientDto decodes the preferred universe and ignores unknown ones',
       () {
         expect(
-          ClientDto.fromJson({'preferred_universe': 'women'}).preferredUniverse,
+          ClientDto.fromJson(const {
+            'preferred_universe': 'women',
+          }).preferredUniverse,
           ClientUniverse.women,
         );
         expect(
-          ClientDto.fromJson({'preferred_universe': 'all'}).preferredUniverse,
+          ClientDto.fromJson(const {
+            'preferred_universe': 'all',
+          }).preferredUniverse,
           isNull,
         );
       },

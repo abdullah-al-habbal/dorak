@@ -35,7 +35,7 @@ class SkipBottomSheetContent extends StatelessWidget {
                 backgroundColor: colors.secondaryContainer,
                 foregroundColor: colors.onSecondaryContainer,
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: DorakDimensions.radiusDefault,
                 ),
                 elevation: 0,
@@ -51,7 +51,7 @@ class SkipBottomSheetContent extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                 foregroundColor: colors.error,
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: DorakDimensions.radiusDefault,
                 ),
                 side: BorderSide(color: colors.error.withValues(alpha: 0.2)),

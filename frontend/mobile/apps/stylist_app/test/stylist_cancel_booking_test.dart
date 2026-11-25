@@ -43,7 +43,7 @@ void main() {
   });
 
   test('a rejected cancel keeps the booking and surfaces the error', () async {
-    final failure = ApiException(
+    const failure = ApiException(
       statusCode: 422,
       code: 'UNPROCESSABLE_ENTITY',
       message: 'booking::messages.cancel_too_late',
@@ -59,7 +59,7 @@ void main() {
   test(
     'one failed request keeps the original error and clears loading',
     () async {
-      final failure = ApiException(
+      const failure = ApiException(
         statusCode: 500,
         code: 'SERVER_ERROR',
         message: 'profile unavailable',

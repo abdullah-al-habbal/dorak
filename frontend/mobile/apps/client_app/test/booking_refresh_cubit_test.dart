@@ -49,7 +49,9 @@ class _FakeRealtime implements RealtimeClient {
   Future<void> disconnectForLogout() async {}
 
   @override
-  void dispose() {}
+  void dispose() {
+    connection.close();
+  }
 }
 
 void main() {
@@ -68,7 +70,10 @@ void main() {
     );
   });
 
-  tearDown(() => cubit.close());
+  tearDown(() async {
+    await cubit.close();
+    realtime.dispose();
+  });
 
   test('subscribes to the client channel and cancels on close', () async {
     expect(realtime.subscribedClientId, 'client-1');

@@ -67,7 +67,7 @@ class DorakTheme {
       scaffoldBackgroundColor: c.background,
       fontFamily: fontFamily,
       fontFamilyFallback: fontFamilyFallback,
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         displayLarge: DorakTypography.displayLg,
         headlineLarge: DorakTypography.headlineLg,
         headlineMedium: DorakTypography.headlineMd,
@@ -80,7 +80,7 @@ class DorakTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: DorakDimensions.radiusFull,
           ),
         ),

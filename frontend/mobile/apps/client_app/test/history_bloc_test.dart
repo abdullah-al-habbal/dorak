@@ -31,7 +31,9 @@ void main() {
       'second start is a no-op once items are loaded',
       build: bloc,
       seed: () => HistoryState(
-        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+        page: const Paged<ServiceHistoryDto>.initial().succeeded(
+          testHistoryPage(),
+        ),
       ),
       act: (bloc) => bloc.add(const HistoryStarted()),
       expect: () => [],
@@ -56,7 +58,7 @@ void main() {
       'load more appends the next page',
       build: bloc,
       seed: () => HistoryState(
-        page: Paged<ServiceHistoryDto>.initial().succeeded(
+        page: const Paged<ServiceHistoryDto>.initial().succeeded(
           testHistoryPage(
             items: [testServiceHistory(id: 'history-1')],
             totalPages: 2,
@@ -98,7 +100,9 @@ void main() {
       'rebook submits the slot and marks the booking rebooked',
       build: bloc,
       seed: () => HistoryState(
-        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+        page: const Paged<ServiceHistoryDto>.initial().succeeded(
+          testHistoryPage(),
+        ),
       ),
       act: (bloc) => bloc.add(
         HistoryRebookRequested('history-1', DateTime(2026, 9, 20, 9)),
@@ -116,7 +120,9 @@ void main() {
       'rebook failure records the error and stays on the list',
       build: bloc,
       seed: () => HistoryState(
-        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+        page: const Paged<ServiceHistoryDto>.initial().succeeded(
+          testHistoryPage(),
+        ),
       ),
       setUp: () => repository.rebookError = offline(),
       act: (bloc) => bloc.add(
@@ -133,7 +139,9 @@ void main() {
       'booking conflicts stay in the rebook error state',
       build: bloc,
       seed: () => HistoryState(
-        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+        page: const Paged<ServiceHistoryDto>.initial().succeeded(
+          testHistoryPage(),
+        ),
       ),
       setUp: () => repository.rebookError = const ApiException(
         statusCode: 409,
@@ -161,7 +169,9 @@ void main() {
       'forbidden and missing history errors stay in the rebook error state',
       build: bloc,
       seed: () => HistoryState(
-        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+        page: const Paged<ServiceHistoryDto>.initial().succeeded(
+          testHistoryPage(),
+        ),
       ),
       setUp: () => repository.rebookError = const ApiException(
         statusCode: 403,
@@ -189,7 +199,9 @@ void main() {
       'missing history errors stay in the rebook error state',
       build: bloc,
       seed: () => HistoryState(
-        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+        page: const Paged<ServiceHistoryDto>.initial().succeeded(
+          testHistoryPage(),
+        ),
       ),
       setUp: () => repository.rebookError = const ApiException(
         statusCode: 404,
@@ -217,7 +229,9 @@ void main() {
       'acknowledging the success returns to the list',
       build: bloc,
       seed: () => HistoryState(
-        page: Paged<ServiceHistoryDto>.initial().succeeded(testHistoryPage()),
+        page: const Paged<ServiceHistoryDto>.initial().succeeded(
+          testHistoryPage(),
+        ),
         rebooked: true,
       ),
       act: (bloc) => bloc.add(const HistoryRebookAcknowledged()),

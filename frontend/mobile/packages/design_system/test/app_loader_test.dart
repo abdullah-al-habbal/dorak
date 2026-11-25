@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: DorakTheme.light,
-        home: Scaffold(body: SizedBox.expand(child: AppLoader.page())),
+        home: const Scaffold(body: SizedBox.expand(child: AppLoader.page())),
       ),
     );
 
@@ -26,7 +26,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: DorakTheme.light,
-        home: Scaffold(body: AppLoader.inline(size: 20)),
+        home: const Scaffold(body: AppLoader.inline(size: 20)),
       ),
     );
 

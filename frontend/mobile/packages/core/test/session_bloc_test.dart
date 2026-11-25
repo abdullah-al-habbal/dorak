@@ -144,9 +144,9 @@ void main() {
       act: (bloc) => bloc.add(RestoreRequested()),
       expect: () => [
         const SessionState(isLoading: true),
-        SessionState(
+        const SessionState(
           status: AuthStatus.authenticated,
-          error: const ApiException(
+          error: ApiException(
             statusCode: 500,
             code: 'SERVER_ERROR',
             message: 'boom',
@@ -205,9 +205,9 @@ void main() {
       act: (bloc) => bloc.add(RestoreRequested()),
       expect: () => [
         const SessionState(isLoading: true),
-        SessionState(
+        const SessionState(
           status: AuthStatus.authenticated,
-          error: const ApiException(
+          error: ApiException(
             statusCode: 500,
             code: 'SERVER_ERROR',
             message: 'boom',
@@ -262,7 +262,8 @@ void main() {
     blocTest<SessionBloc, SessionState>(
       'marks the session authenticated with the given client',
       build: bloc,
-      act: (bloc) => bloc.add(SessionAuthenticated(ClientFixtures.authClient)),
+      act: (bloc) =>
+          bloc.add(const SessionAuthenticated(ClientFixtures.authClient)),
       expect: () => [
         const SessionState(
           status: AuthStatus.authenticated,
@@ -279,8 +280,8 @@ void main() {
       'duplicate SessionAuthenticated for the same client is a no-op',
       build: bloc,
       act: (bloc) async {
-        bloc.add(SessionAuthenticated(ClientFixtures.authClient));
-        bloc.add(SessionAuthenticated(ClientFixtures.authClient));
+        bloc.add(const SessionAuthenticated(ClientFixtures.authClient));
+        bloc.add(const SessionAuthenticated(ClientFixtures.authClient));
       },
       expect: () => [
         const SessionState(

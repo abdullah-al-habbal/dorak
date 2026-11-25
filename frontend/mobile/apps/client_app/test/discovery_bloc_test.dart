@@ -79,7 +79,7 @@ void main() {
       expect: () => [
         DiscoveryState(
           locationStatus: LocationPermissionStatus.denied,
-          page: Paged<ExploreSearchItemDto>.initial(),
+          page: const Paged<ExploreSearchItemDto>.initial(),
         ),
       ],
       verify: (_) {
@@ -108,7 +108,7 @@ void main() {
       expect: () => [
         DiscoveryState(
           locationStatus: LocationPermissionStatus.granted,
-          page: Paged<ExploreSearchItemDto>.initial(),
+          page: const Paged<ExploreSearchItemDto>.initial(),
         ),
       ],
       verify: (_) {
@@ -276,7 +276,7 @@ void main() {
         locationStatus: LocationPermissionStatus.granted,
         latitude: 24.7136,
         longitude: 46.6753,
-        page: Paged<ExploreSearchItemDto>.initial().succeeded(
+        page: const Paged<ExploreSearchItemDto>.initial().succeeded(
           asSearchPage(testBranchPage()),
         ),
       ),
@@ -341,7 +341,7 @@ void main() {
         locationStatus: LocationPermissionStatus.granted,
         latitude: 24.7136,
         longitude: 46.6753,
-        page: Paged<ExploreSearchItemDto>.initial().succeeded(
+        page: const Paged<ExploreSearchItemDto>.initial().succeeded(
           asSearchPage(
             testBranchPage(branches: [testBranch(id: 1)], totalPages: 2),
           ),
@@ -368,7 +368,7 @@ void main() {
         locationStatus: LocationPermissionStatus.granted,
         latitude: 24.7136,
         longitude: 46.6753,
-        page: Paged<ExploreSearchItemDto>.initial().succeeded(
+        page: const Paged<ExploreSearchItemDto>.initial().succeeded(
           asSearchPage(
             testBranchPage(branches: [testBranch(id: 1)], totalPages: 2),
           ),
@@ -389,7 +389,7 @@ void main() {
         locationStatus: LocationPermissionStatus.granted,
         latitude: 24.7136,
         longitude: 46.6753,
-        page: Paged<ExploreSearchItemDto>.initial().succeeded(
+        page: const Paged<ExploreSearchItemDto>.initial().succeeded(
           asSearchPage(testBranchPage()),
         ),
       ),

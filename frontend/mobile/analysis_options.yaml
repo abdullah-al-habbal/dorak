@@ -1,18 +1,58 @@
-# Dorak monorepo shared lint baseline.
-# Each app/package analysis_options.yaml includes this file.
+# Dorak monorepo analyzer and lint configuration.
+# This is the only analysis_options.yaml: the analyzer applies it to every app and
+# package. Do not add per-unit copies, because a nested file replaces this one.
+# Exclude globs are relative to this directory.
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  errors:
+    invalid_annotation_target: ignore
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - "**/*.gen.dart"
     - "**/generated/**"
+    - "apps/*/lib/generated_plugin_registrant.dart"
+    - build/**
+    - apps/*/build/**
+    - packages/*/build/**
+    - apps/*/android/**
+    - apps/*/ios/**
+    - apps/*/web/**
+    - apps/*/windows/**
+    - apps/*/macos/**
+    - apps/*/linux/**
+    - third_party/**
 
 linter:
   rules:
-    always_declare_return_types: true
-    always_use_package_imports: true
-    avoid_dynamic_calls: false
+    # Style
     prefer_single_quotes: true
-    unnecessary_lambdas: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_final_locals: true
+    prefer_final_fields: true
+    prefer_final_in_for_each: true
+
+    # Safety
+    avoid_print: true
+    avoid_relative_lib_imports: true
+    always_use_package_imports: true
+    avoid_empty_else: true
+    cancel_subscriptions: true
+    close_sinks: true
+    avoid_dynamic_calls: false
     unawaited_futures: false
+
+    # Readability
+    always_declare_return_types: true
+    annotate_overrides: true
+    prefer_is_empty: true
+    prefer_is_not_empty: true
+    sort_child_properties_last: true
+    use_full_hex_values_for_flutter_colors: true
+    unnecessary_lambdas: true
+
+    # Documentation
+    # public_member_api_docs: true  # Enable when ready for full doc coverage

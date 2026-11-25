@@ -5,6 +5,7 @@ import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:localization/localization.dart';
 
@@ -114,6 +115,7 @@ sessionPair(AuthRepository repository, TokenStorage storage) {
   final coordinator = auth.stream.listen(
     (authState) => coordinateAuthSuccess(authState, session),
   );
+  addTearDown(coordinator.cancel);
   return (auth: auth, session: session, coordinator: coordinator);
 }
 
@@ -1456,9 +1458,9 @@ class FakeReviewRepository implements ReviewRepository {
   String? lastBarberId;
   ReviewDto? submittedReview;
 
-  PaginatedData<ReviewDto> reviewsPage = PaginatedData(
-    data: const [],
-    meta: const PaginationMeta.empty(),
+  PaginatedData<ReviewDto> reviewsPage = const PaginatedData(
+    data: [],
+    meta: PaginationMeta.empty(),
   );
 
   @override

@@ -49,7 +49,9 @@ class BottomSheetModal extends StatelessWidget {
                       height: 4,
                       decoration: BoxDecoration(
                         color: colors.outlineVariant,
-                        borderRadius: BorderRadius.all(Radius.circular(2)),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(2),
+                        ),
                       ),
                     ),
                   ),

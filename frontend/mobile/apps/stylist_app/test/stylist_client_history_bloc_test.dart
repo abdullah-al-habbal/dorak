@@ -49,7 +49,7 @@ void main() {
   });
 
   test('a rejected upload surfaces the error and keeps the visit', () async {
-    history.attachError = ApiException(
+    history.attachError = const ApiException(
       statusCode: 403,
       code: 'FORBIDDEN',
       message: 'forbidden',

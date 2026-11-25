@@ -30,7 +30,7 @@ void main() {
       'second start is a no-op once items are loaded',
       build: bloc,
       seed: () => BookingState(
-        page: Paged<BookingDto>.initial().succeeded(testBookingPage()),
+        page: const Paged<BookingDto>.initial().succeeded(testBookingPage()),
       ),
       act: (bloc) => bloc.add(const BookingsStarted()),
       expect: () => [],
@@ -55,7 +55,7 @@ void main() {
       'switching filter resets and reloads with the new status',
       build: bloc,
       seed: () => BookingState(
-        page: Paged<BookingDto>.initial().succeeded(testBookingPage()),
+        page: const Paged<BookingDto>.initial().succeeded(testBookingPage()),
       ),
       act: (bloc) => bloc.add(const BookingsFilterChanged('past')),
       verify: (bloc) {
@@ -68,7 +68,7 @@ void main() {
       'same filter is a no-op',
       build: bloc,
       seed: () => BookingState(
-        page: Paged<BookingDto>.initial().succeeded(testBookingPage()),
+        page: const Paged<BookingDto>.initial().succeeded(testBookingPage()),
       ),
       act: (bloc) => bloc.add(const BookingsFilterChanged('upcoming')),
       expect: () => [],
@@ -80,7 +80,7 @@ void main() {
       'cancel calls the repository then reloads the list',
       build: bloc,
       seed: () => BookingState(
-        page: Paged<BookingDto>.initial().succeeded(testBookingPage()),
+        page: const Paged<BookingDto>.initial().succeeded(testBookingPage()),
       ),
       act: (bloc) => bloc.add(const BookingsCancelRequested('booking-1')),
       verify: (bloc) {
@@ -95,7 +95,7 @@ void main() {
       'cancel failure keeps the list and records the error',
       build: bloc,
       seed: () => BookingState(
-        page: Paged<BookingDto>.initial().succeeded(testBookingPage()),
+        page: const Paged<BookingDto>.initial().succeeded(testBookingPage()),
       ),
       setUp: () => repository.cancelError = offline(),
       act: (bloc) => bloc.add(const BookingsCancelRequested('booking-1')),
@@ -112,7 +112,7 @@ void main() {
       'load more appends the next page',
       build: bloc,
       seed: () => BookingState(
-        page: Paged<BookingDto>.initial().succeeded(
+        page: const Paged<BookingDto>.initial().succeeded(
           testBookingPage(
             bookings: [testBooking(id: 'booking-1')],
             totalPages: 2,
