@@ -15,7 +15,25 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
-## Snapshot 8: 2026-11-23, 21:55 UTC (2026-11-24 00:55 +03), local push-notification work, not deployed
+## Snapshot 9: 2026-11-25, 12:52 UTC (15:52 +03), local push Phase 2 work, not deployed
+
+**What is live on dev:** backend code of `fea9c09fd` (deploy run [`45277277114`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45277277114), 2026-11-23, `reset_database=true`, success) and the Vercel deployment of the same commit; `origin/master` is at `6ab921c87` (docs only after that). Nothing was pushed or deployed since.
+
+**What is local only:** `master` is 2 commits ahead of `origin/master`: `aa144ecbe` (Push P2.1, dashboard push-token API) and `4897540c0` (Push P2.2, browser tokens survive a password change made from the dashboard). The dashboard browser-push slice is uncommitted and blocked on the `firebase` npm dependency (BD-14). **No migration changed in Phase 2**, so the next release uses `reset_database=false`: `scripts/release-dev.sh`, then `scripts/verify-deploy.sh`, only when the owner asks.
+
+| Item | Value |
+|---|---|
+| Backend Pest, whole suite, sequential, at `4897540c0` | 2974 passed (13449 assertions) |
+| Pint, `scripts/check_migrations.php` (no migration changed), `scripts/check-conventions.sh`, `git diff --check` | passed |
+| Dashboard gates | typecheck fails only on the missing `firebase` imports; build not run; Playwright skipped on request |
+| Real push delivery, browser or phone | not verified: no Firebase project, web config or VAPID key yet (RR-16, RR-19) |
+| Environment URLs | unchanged: backend `https://dev-dorak-backend.io` (health `https://dev-dorak-backend.io/api/v1/health`), dashboard `https://dorak-bay.vercel.app`, repository `https://github.com/abdullah-al-habbal/dorak` |
+| Vercel variables Phase 2 will need (names only) | `NEXT_PUBLIC_FIREBASE_API_KEY`, `_PROJECT_ID`, `_MESSAGING_SENDER_ID`, `_APP_ID`, `_VAPID_KEY`; not set |
+| Backend variables push needs (names only) | `FCM_PROJECT_ID`, `FCM_CREDENTIALS`; not set on dev |
+
+State, contract and open points: [push notifications](../architecture/push-notifications.md) sections 1 and 8; handover: [handover-push-phase-2](../sessions/handover-push-phase-2.md).
+
+## Snapshot 8 (superseded, see the second "Snapshot 8" below for the release): 2026-11-23, 21:55 UTC (2026-11-24 00:55 +03), local push-notification work, not deployed
 
 Nothing was pushed or deployed; the live dev environment is still snapshot 7 (`966e094a7`). Local `master` is three feature commits ahead (`46e1d3f39`, `f7e208176`, `1ab76c269`) plus the documentation commit that records them. The dev database **must be rebuilt** (`scripts/release-dev.sh --reset-database`, authorised by the owner on 2026-11-23, not yet run) when this is released, because the `device_tokens` create migration was edited in place; see [push notifications](../architecture/push-notifications.md).
 

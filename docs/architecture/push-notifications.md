@@ -17,24 +17,29 @@ Routes: [architecture](architecture.md) · [localization of machine keys](locali
 
 This page records **what exists, what was verified, and what is still open** for push notifications, so a person or an AI agent can resume without re-auditing. It is dated: when it and the code disagree, the code wins and this page should be re-dated. **No secret value appears here and none must be added** (names of keys and files only).
 
-Written 2026-11-23 21:55 UTC (2026-11-24 00:55 +03). Work done locally on `master`; **nothing pushed, nothing deployed** (the owner asked for local commits only).
+Written 2026-11-23 21:55 UTC, **re-dated 2026-11-25 12:52 UTC (15:52 +03)**. Phase 1 is on the dev environment (released 2026-11-23, see section 5). Phase 2 is partly local: `origin/master` is at `6ab921c87`, local `master` is **2 commits ahead** (`aa144ecbe`, `4897540c0`), nothing of Phase 2 is deployed, and the dashboard slice is uncommitted. The owner asked for local commits only; **never push without an explicit request**. A handover for the next session is in [handover-push-phase-2](../sessions/handover-push-phase-2.md); the Phase 2 state is section 8 of this page.
 
 ## 1. Phased programme and status
 
 | Phase | Scope | Status |
 |---|---|---|
-| 1 | Core push: device-token API, per-device locale, bilingual payload, Flutter FCM in all three apps | **Done locally** (three commits below); the dev deploy with `reset_database=true` is **authorised but not run** |
-| 2 | Dashboard browser push (service worker, permission UX, web token) | Backend done locally (P2.1); dashboard slice in progress |
+| 1 | Core push: device-token API, per-device locale, bilingual payload, Flutter FCM in all three apps | **Done and released to dev** on 2026-11-23 (deploy run `45277277114`, `reset_database=true`); real delivery waits on RR-16 |
+| 2 | Dashboard browser push (service worker, permission UX, web token) | Backend **done locally** (P2.1 `aa144ecbe`, P2.2 `4897540c0`, not pushed); dashboard slice written but **uncommitted and blocked** on the `firebase` npm dependency (BD-14). Details in section 8 |
 | 3 | Analytics and domain events (privacy-safe taxonomy, Firebase Analytics, audit events) | Not started |
 | 4 | Firebase App Distribution and multi-recipient release email (SMTP Hostinger) | Not started |
 
-Phase 1 commits (all local):
+Commits of the programme, oldest first:
 
-| SHA | Subject |
-|---|---|
-| `46e1d3f39` | `feat(core): device token locale, app version and revocation API (Push P1.1)` |
-| `f7e208176` | `feat(core): per-device bilingual FCM payload with android and apns settings (Push P1.2)` |
-| `1ab76c269` | `feat(mobile): complete FCM wiring with dev/prod flavors and fail-safe Firebase setup (Push P1.3)` |
+| SHA | Subject | On `origin/master` |
+|---|---|---|
+| `46e1d3f39` | `feat(core): device token locale, app version and revocation API (Push P1.1)` | yes |
+| `f7e208176` | `feat(core): per-device bilingual FCM payload with android and apns settings (Push P1.2)` | yes |
+| `1ab76c269` | `feat(mobile): complete FCM wiring with dev/prod flavors and fail-safe Firebase setup (Push P1.3)` | yes |
+| `cada10f95` | `docs: record push notification state, contract, setup and open items (Push P1.4)` | yes |
+| `fea9c09fd` | `fix(core): revoke device tokens on deletion, password change, ban, deactivation (Push P1.5)` | yes |
+| `6ab921c87` | `docs(deployment): snapshot 8, push phase 1 released to dev; close RR-17 (Push P1.6)` | yes |
+| `aa144ecbe` | `feat(core): dashboard web push token API and web push payload (Push P2.1)` | **no, local** |
+| `4897540c0` | `fix(core): keep browser push tokens when a password change keeps the current sign-in (Push P2.2)` | **no, local** |
 
 ## 2. Backend contract
 
@@ -53,9 +58,9 @@ Phase 1 commits (all local):
 | `POST /api/v1/dashboard/push-token` | dashboard session (`DashboardAuthorizationMiddleware`), any actor: admin, owner, branch, barber | Body `token`, optional `locale`, `app_version`. Platform is always `web`; the row is **not** linked to an API token (dashboard access tokens rotate on refresh). Registers for the signed-in account only. |
 | `DELETE /api/v1/dashboard/push-token` | same | Body `token`. Unknown token: `200`; another account's token: `403` (`DeviceTokenPolicy::revoke`). |
 
-Dashboard logout (`POST /dashboard/logout`) accepts an optional `push_token` and revokes it when it belongs to the account. A web device gets an FCM `webpush` payload (TTL and urgency headers, `lang` and `dir` from its locale) and no android or apns block. Both routes are on the self-account write exemption list. Password change, reset, ban and deactivation revoke web tokens too.
+Dashboard logout (`POST /dashboard/logout`) accepts an optional `push_token` and revokes it when it belongs to the account. A web device gets an FCM `webpush` payload (TTL and urgency headers, `lang` and `dir` from its locale) and no android or apns block. Both routes are on the self-account write exemption list. Ban, deactivation and deletion revoke web tokens. A password change that **keeps the current sign-in** (the dashboard's own change) also keeps web tokens, because they carry no access token to match (Push P2.2, `4897540c0`); a reset that keeps no sign-in revokes them. Trade-off: the account's other browsers keep push after a password change made from the dashboard.
 
-Revocation also happens **on logout** of the client, barber and branch guards (`DeviceTokenService::revokeForAccessToken`): only the devices that signed in with the logged-out API token stop receiving pushes; other sign-ins keep theirs. Account deletion (client and barber) erases the account's device tokens; password change and reset, bans, admin deactivation and the dashboard credential revoker revoke them (`DeviceTokenService::revokeAllForAccount` / `deleteAllForAccount`, Push P1.5; tests in `tests/Feature/Core/DeviceTokenAccountLifecycleTest.php`). The dashboard (admin/owner) logout does not touch device tokens (web push is Phase 2).
+Revocation also happens **on logout** of the client, barber and branch guards (`DeviceTokenService::revokeForAccessToken`): only the devices that signed in with the logged-out API token stop receiving pushes; other sign-ins keep theirs. Account deletion (client and barber) erases the account's device tokens; password change and reset, bans, admin deactivation and the dashboard credential revoker revoke them (`DeviceTokenService::revokeAllForAccount` / `deleteAllForAccount`, Push P1.5; tests in `tests/Feature/Core/DeviceTokenAccountLifecycleTest.php`). The dashboard logout revokes only the one web token sent as `push_token` (above); a browser whose storage was cleared keeps its row until a ban, deactivation, a reset or an FCM `UNREGISTERED` answer removes it.
 
 ### Sending (`FcmNotificationSender`, kept as the direct HTTP v1 client)
 
@@ -124,7 +129,7 @@ New tests: `tests/Feature/User/DeviceTokenRegistrationTest.php` (locale/version,
 | FCM endpoint | `https://fcm.googleapis.com/v1/projects/<FCM_PROJECT_ID>/messages:send` (OAuth via `https://oauth2.googleapis.com/token`) |
 | Test database | MySQL 8.4 `dorak-test-db-mysql-1`, `127.0.0.1:3307`, `dorak_test` (`composer test:db:up`) |
 
-**Dev database reset.** Because the `device_tokens` create migration was edited, the deployed dev database does not have the new columns until it is rebuilt. The owner authorised `reset_database=true` for this release. Run it once, after the owner pushes: `scripts/release-dev.sh --reset-database`, then `scripts/verify-deploy.sh`. Until then the deployed dev API would fail on `POST /user/device-token` for the new columns, so **do not deploy this code without the reset**.
+**Dev database reset: done.** The `device_tokens` create migration was edited in place, so the dev database was rebuilt once: `scripts/release-dev.sh --reset-database` on 2026-11-23 (deploy run `45277277114`, success; `scripts/verify-deploy.sh` all PASS). That authorisation is used up; production is never reset. Phase 2 changed **no migration** (`php scripts/check_migrations.php`: no migration changed), so its release uses `reset_database=false`.
 
 ## 6. What the owner must provide to turn push on
 
@@ -141,3 +146,46 @@ New tests: `tests/Feature/User/DeviceTokenRegistrationTest.php` (locale/version,
 - Playwright stays skipped unless the owner asks.
 - Phase 2 may reuse `device_tokens` (`platform_type=web` already exists in `DevicePlatformEnum`) by editing the same create migration, or add a new table only if a separate shape is needed.
 - Phase 3 audit events would be a new table (the only case that justifies a new migration file).
+
+## 8. Phase 2: dashboard browser push (state on 2026-11-25 12:52 UTC)
+
+**Decisions (owner, 2026-11-25).** Roles: browser push for every dashboard actor (admin, owner, branch manager, barber), each scoped to its own account, switched on and off from the account notification settings. Mechanism: lightweight Web Push through FCM Web with a VAPID public key and `public/firebase-messaging-sw.js`; the backend sender stays on FCM HTTP v1 with no extra push package. With any web Firebase or VAPID variable missing the dashboard degrades silently (no toggle action, no crash, no request) until RR-16 is configured. Playwright stays skipped. An owner is a `ClientModel`, so an owner's web token has `user_type = client` and shares pushes with that person's mobile devices (confirm this is wanted: BG-37).
+
+### Backend (committed locally)
+
+| Item | Where |
+|---|---|
+| Register and revoke a browser token | `POST` and `DELETE /api/v1/dashboard/push-token` (section 2), `modules/Dashboard/Http/Actions/Push/`, requests in `modules/Dashboard/Http/Requests/Push/` |
+| Logout revokes the stored token | `LogoutAction` accepts optional `push_token` |
+| Web payload | `FcmPayloadBuilder::build(..., $locale, $platform)`: for `web` only `data` plus `webpush` (TTL and urgency headers, `notification` with `title`, `body`, `lang`, `dir`) |
+| Password-change rule | `DeviceTokenService::revokeAllForAccount` keeps web rows when a sign-in is kept (`4897540c0`) |
+| Tests | `tests/Feature/Dashboard/DashboardPushTokenTest.php` (4), `tests/Unit/Core/Services/FcmNotificationSenderTest.php`, `tests/Feature/Core/DeviceTokenAccountLifecycleTest.php` (5) |
+
+### Dashboard (written, **uncommitted**, `frontend/web/dashboard/`)
+
+`public/firebase-messaging-sw.js` (plain worker, no Firebase code); `src/config/push/web-push.constant.ts`; `src/types/push/`; `src/schemas/push/`; `src/schemas/core/session/logout-body.zod.ts`; `src/lib/push/{web-push-config,web-push-support,web-push-token-storage,firebase-web-push}.util.ts`; `src/services/api/mutation/push/push-token.mutation.ts`; `src/hooks/account/notifications/use-browser-push.ts`; `src/components/account/notifications/browser-push-row.tsx` (mounted in `notifications-section.tsx`); proxy allow-list entries for `push-token` (POST and DELETE, every actor); logout forwards `push_token`; English and Arabic strings in `src/locales/{en,ar}/account.constant.ts`; tests in `tests/lib/push/` and `tests/config/proxy-allow-list.constant.test.ts`.
+
+**Blocker (BD-14):** the `firebase` npm package is not installed and not in `package.json`; typecheck fails only on the four `firebase/app` and `firebase/messaging` imports in `firebase-web-push.util.ts`. Installing it needs the owner's explicit yes.
+
+### Configuration (names only; no value belongs in the repository)
+
+| Name | Where | Meaning |
+|---|---|---|
+| `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`, `NEXT_PUBLIC_FIREBASE_APP_ID`, `NEXT_PUBLIC_FIREBASE_VAPID_KEY` | Vercel environment of the dashboard (listed, commented out, in `frontend/web/dashboard/.env.example`) | Firebase **web app** config and the VAPID public key. All five must be set, else the browser-push row stays inert. Public by design; changing them needs a redeploy |
+| `FCM_PROJECT_ID`, `FCM_CREDENTIALS` | backend `.env` (section 2) | Server side sending; unchanged |
+
+### Verification record (2026-11-25, local)
+
+| Gate | Result |
+|---|---|
+| Backend Pest, whole suite, sequential | **2974 passed** (13449 assertions) at `4897540c0` |
+| `vendor/bin/pint --test`, `php scripts/check_migrations.php`, `scripts/check-conventions.sh`, `git diff --check` | passed |
+| Dashboard ESLint on `src`, Vitest (1223 tests), recorded by the previous session on the uncommitted slice | passed |
+| Dashboard typecheck | **fails**, only on the missing `firebase` imports |
+| Dashboard build, `web-design-guidelines`, shared-primitives review, security review of P2.1 and the stored token | **not run** |
+| Playwright | skipped on the owner's instruction |
+| Real browser delivery, service worker payload shape | **not verified** (no Firebase web config, RR-16) |
+
+### Known open points (backlog)
+
+BD-14 (the `firebase` dependency), BD-15 (the `allows_push_notifications` switch: **nothing in `FcmNotificationSender` reads it**, verified 2026-11-25; its hint says "phones and browsers"), BG-37 (logout revokes only this browser's token; the worker's payload shape and the shared-browser and owner-as-client behaviour are unverified; no component test for `BrowserPushRow`), RR-16 (Firebase web app and VAPID key).
