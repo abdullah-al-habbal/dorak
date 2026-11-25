@@ -15,7 +15,19 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
-## Snapshot 9: 2026-11-25, 12:52 UTC (15:52 +03), local push Phase 2 work, not deployed
+## Snapshot 10: 2026-11-26, push Phase 2 code complete, written before the push to `origin/master`
+
+The owner asked on 2026-11-26 to push `master`. At the time of writing nothing had been pushed since `6ab921c87`; the live dev environment was not probed for this snapshot, so the "live on dev" facts of snapshot 9 are carried over, not re-observed.
+
+| Item | Value |
+|---|---|
+| Waiting to be pushed | `aa144ecbe`, `4897540c0`, `c24afed57`, `36b5bb2dc`, `f2d66230f`, `350f4f937` and the commit that adds this snapshot |
+| Backend release | not done. `.github/workflows/deploy.yml` runs only by manual dispatch. No migration changed in Phase 2, so use `reset_database=false` |
+| Dashboard | Vercel builds pushed commits ([Vercel hosting](vercel-dashboard.md)), so the push can publish the dashboard before the backend push routes exist on dev. With the `NEXT_PUBLIC_FIREBASE_*` variables unset the browser-push row stays hidden and calls nothing |
+| Gates, 2026-11-26 | dashboard lint, typecheck, 1243 Vitest tests and build passed; mobile `melos run verify` passed; Playwright skipped on request |
+| Still not verified | real push delivery (RR-16, RR-19) |
+
+## Snapshot 9 (superseded by snapshot 10): 2026-11-25, 12:52 UTC (15:52 +03), local push Phase 2 work, not deployed
 
 **What is live on dev:** backend code of `fea9c09fd` (deploy run [`45277277114`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45277277114), 2026-11-23, `reset_database=true`, success) and the Vercel deployment of the same commit; `origin/master` is at `6ab921c87` (docs only after that). Nothing was pushed or deployed since.
 

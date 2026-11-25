@@ -17,14 +17,14 @@ Routes: [architecture](architecture.md) · [localization of machine keys](locali
 
 This page records **what exists, what was verified, and what is still open** for push notifications, so a person or an AI agent can resume without re-auditing. It is dated: when it and the code disagree, the code wins and this page should be re-dated. **No secret value appears here and none must be added** (names of keys and files only).
 
-Written 2026-11-23 21:55 UTC, **re-dated 2026-11-25 12:52 UTC (15:52 +03)**. Phase 1 is on the dev environment (released 2026-11-23, see section 5). Phase 2 is partly local: `origin/master` is at `6ab921c87`, local `master` is **2 commits ahead** (`aa144ecbe`, `4897540c0`), nothing of Phase 2 is deployed, and the dashboard slice is uncommitted. The owner asked for local commits only; **never push without an explicit request**. A handover for the next session is in [handover-push-phase-2](../sessions/handover-push-phase-2.md); the Phase 2 state is section 8 of this page.
+Written 2026-11-23 21:55 UTC, **re-dated 2026-11-26**. Phase 1 is on the dev environment (released 2026-11-23, see section 5). Phase 2 code is complete and committed (backend P2.1 and P2.2, dashboard P2.4 `350f4f937`); the backend part is not deployed to dev. When this was written, before the push the owner requested on 2026-11-26, `origin/master` was at `6ab921c87` and local `master` held the Phase 2 commits plus the mobile analyzer commits; run `git log origin/master..HEAD` for the current count. A handover for the earlier session is in [handover-push-phase-2](../sessions/handover-push-phase-2.md); the Phase 2 state is section 8 of this page.
 
 ## 1. Phased programme and status
 
 | Phase | Scope | Status |
 |---|---|---|
 | 1 | Core push: device-token API, per-device locale, bilingual payload, Flutter FCM in all three apps | **Done and released to dev** on 2026-11-23 (deploy run `45277277114`, `reset_database=true`); real delivery waits on RR-16 |
-| 2 | Dashboard browser push (service worker, permission UX, web token) | Backend **done locally** (P2.1 `aa144ecbe`, P2.2 `4897540c0`, not pushed); dashboard slice written but **uncommitted and blocked** on the `firebase` npm dependency (BD-14). Details in section 8 |
+| 2 | Dashboard browser push (service worker, permission UX, web token) | **Code complete** (P2.1 `aa144ecbe`, P2.2 `4897540c0`, P2.4 `350f4f937`); backend not deployed to dev; real delivery not verified (RR-16). Details in section 8 |
 | 3 | Analytics and domain events (privacy-safe taxonomy, Firebase Analytics, audit events) | Not started |
 | 4 | Firebase App Distribution and multi-recipient release email (SMTP Hostinger) | Not started |
 
@@ -38,8 +38,10 @@ Commits of the programme, oldest first:
 | `cada10f95` | `docs: record push notification state, contract, setup and open items (Push P1.4)` | yes |
 | `fea9c09fd` | `fix(core): revoke device tokens on deletion, password change, ban, deactivation (Push P1.5)` | yes |
 | `6ab921c87` | `docs(deployment): snapshot 8, push phase 1 released to dev; close RR-17 (Push P1.6)` | yes |
-| `aa144ecbe` | `feat(core): dashboard web push token API and web push payload (Push P2.1)` | **no, local** |
-| `4897540c0` | `fix(core): keep browser push tokens when a password change keeps the current sign-in (Push P2.2)` | **no, local** |
+| `aa144ecbe` | `feat(core): dashboard web push token API and web push payload (Push P2.1)` | in the 2026-11-26 push |
+| `4897540c0` | `fix(core): keep browser push tokens when a password change keeps the current sign-in (Push P2.2)` | in the 2026-11-26 push |
+| `c24afed57` | `docs: record push state, Phase 2 decisions, configs and URLs (Push P2.3)` | in the 2026-11-26 push |
+| `350f4f937` | `feat(core): dashboard browser push with FCM web (Push P2.4)` | in the 2026-11-26 push |
 
 ## 2. Backend contract
 
@@ -147,11 +149,11 @@ New tests: `tests/Feature/User/DeviceTokenRegistrationTest.php` (locale/version,
 - Phase 2 may reuse `device_tokens` (`platform_type=web` already exists in `DevicePlatformEnum`) by editing the same create migration, or add a new table only if a separate shape is needed.
 - Phase 3 audit events would be a new table (the only case that justifies a new migration file).
 
-## 8. Phase 2: dashboard browser push (state on 2026-11-25 12:52 UTC)
+## 8. Phase 2: dashboard browser push (state on 2026-11-26)
 
 **Decisions (owner, 2026-11-25).** Roles: browser push for every dashboard actor (admin, owner, branch manager, barber), each scoped to its own account, switched on and off from the account notification settings. Mechanism: lightweight Web Push through FCM Web with a VAPID public key and `public/firebase-messaging-sw.js`; the backend sender stays on FCM HTTP v1 with no extra push package. With any web Firebase or VAPID variable missing the dashboard degrades silently (no toggle action, no crash, no request) until RR-16 is configured. Playwright stays skipped. An owner is a `ClientModel`, so an owner's web token has `user_type = client` and shares pushes with that person's mobile devices (confirm this is wanted: BG-37).
 
-### Backend (committed locally)
+### Backend (committed)
 
 | Item | Where |
 |---|---|
@@ -161,11 +163,13 @@ New tests: `tests/Feature/User/DeviceTokenRegistrationTest.php` (locale/version,
 | Password-change rule | `DeviceTokenService::revokeAllForAccount` keeps web rows when a sign-in is kept (`4897540c0`) |
 | Tests | `tests/Feature/Dashboard/DashboardPushTokenTest.php` (4), `tests/Unit/Core/Services/FcmNotificationSenderTest.php`, `tests/Feature/Core/DeviceTokenAccountLifecycleTest.php` (5) |
 
-### Dashboard (written, **uncommitted**, `frontend/web/dashboard/`)
+### Dashboard (committed, `350f4f937`, `frontend/web/dashboard/`)
 
-`public/firebase-messaging-sw.js` (plain worker, no Firebase code); `src/config/push/web-push.constant.ts`; `src/types/push/`; `src/schemas/push/`; `src/schemas/core/session/logout-body.zod.ts`; `src/lib/push/{web-push-config,web-push-support,web-push-token-storage,firebase-web-push}.util.ts`; `src/services/api/mutation/push/push-token.mutation.ts`; `src/hooks/account/notifications/use-browser-push.ts`; `src/components/account/notifications/browser-push-row.tsx` (mounted in `notifications-section.tsx`); proxy allow-list entries for `push-token` (POST and DELETE, every actor); logout forwards `push_token`; English and Arabic strings in `src/locales/{en,ar}/account.constant.ts`; tests in `tests/lib/push/` and `tests/config/proxy-allow-list.constant.test.ts`.
+`public/firebase-messaging-sw.js` (plain worker, no Firebase code); `src/config/push/web-push.constant.ts`; `src/types/push/`; `src/schemas/push/`; `src/schemas/core/session/logout-body.zod.ts`; `src/lib/push/` (config, support, token storage, enable and disable flow in `browser-push-flow.util.ts`, and `firebase-web-push.util.ts`, the only file that imports Firebase, on demand); `src/services/api/mutation/push/push-token.mutation.ts`; `src/hooks/account/notifications/use-browser-push.ts`; `src/components/account/notifications/browser-push-row.tsx`; proxy allow-list entries for `push-token`; logout forwards `push_token`; English and Arabic strings; tests in `tests/lib/push/`, `tests/components/account/browser-push-row.test.tsx` and `tests/config/proxy-allow-list.constant.test.ts`.
 
-**Blocker (BD-14):** the `firebase` npm package is not installed and not in `package.json`; typecheck fails only on the four `firebase/app` and `firebase/messaging` imports in `firebase-web-push.util.ts`. Installing it needs the owner's explicit yes.
+Behaviour: with any of the five values missing the row is not rendered and Firebase is not imported. The browser stores `{ token, owner }`, and the switch reads "on" only for the account that registered it. A failed sign-out keeps the stored token. The hook does not use `useOptimisticToggleMutation` or `useFeedbackMutation`: the change is a browser permission and registration sequence with no query cache to patch or invalidate.
+
+**Dependency (BD-14, resolved):** `firebase` pinned at `12.0.0`. The package also installs `@firebase/firestore`, which depends on `@grpc/grpc-js` with high-severity advisories (BG-38). The dashboard does not import Firestore, and no gRPC or Firestore code was found in the built browser chunks.
 
 ### Configuration (names only; no value belongs in the repository)
 
@@ -174,18 +178,20 @@ New tests: `tests/Feature/User/DeviceTokenRegistrationTest.php` (locale/version,
 | `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`, `NEXT_PUBLIC_FIREBASE_APP_ID`, `NEXT_PUBLIC_FIREBASE_VAPID_KEY` | Vercel environment of the dashboard (listed, commented out, in `frontend/web/dashboard/.env.example`) | Firebase **web app** config and the VAPID public key. All five must be set, else the browser-push row stays inert. Public by design; changing them needs a redeploy |
 | `FCM_PROJECT_ID`, `FCM_CREDENTIALS` | backend `.env` (section 2) | Server side sending; unchanged |
 
-### Verification record (2026-11-25, local)
+### Verification record
 
 | Gate | Result |
 |---|---|
-| Backend Pest, whole suite, sequential | **2974 passed** (13449 assertions) at `4897540c0` |
-| `vendor/bin/pint --test`, `php scripts/check_migrations.php`, `scripts/check-conventions.sh`, `git diff --check` | passed |
-| Dashboard ESLint on `src`, Vitest (1223 tests), recorded by the previous session on the uncommitted slice | passed |
-| Dashboard typecheck | **fails**, only on the missing `firebase` imports |
-| Dashboard build, `web-design-guidelines`, shared-primitives review, security review of P2.1 and the stored token | **not run** |
+| Backend Pest, whole suite, sequential (2026-11-25) | **2974 passed** (13449 assertions) at `4897540c0`; not rerun on 2026-11-26 (no backend file changed since) |
+| `vendor/bin/pint --test`, `php scripts/check_migrations.php` (2026-11-25) | passed; no migration changed in Phase 2 |
+| Dashboard lint, typecheck, Vitest (1243 tests in 226 files), production build (2026-11-26) | passed |
+| `scripts/check-conventions.sh` (task executor), `git diff --check` (2026-11-26) | passed |
+| `web-design-guidelines` on the new row (2026-11-26) | one finding fixed (`aria-live` on the changing hint) |
+| Security review, source only, of the push routes, proxy rule, logout, worker, stored token and dependency (2026-11-26) | no authorization defect found; the account mix-up in the stored state and the token lost on failed sign-out were fixed before commit; BG-37 and BG-38 remain |
+| `npm audit --omit=dev` (2026-11-26) | 4 high through Firestore (BG-38), 4 moderate through `shadcn` |
 | Playwright | skipped on the owner's instruction |
 | Real browser delivery, service worker payload shape | **not verified** (no Firebase web config, RR-16) |
 
 ### Known open points (backlog)
 
-BD-14 (the `firebase` dependency), BD-15 (the `allows_push_notifications` switch: **nothing in `FcmNotificationSender` reads it**, verified 2026-11-25; its hint says "phones and browsers"), BG-37 (logout revokes only this browser's token; the worker's payload shape and the shared-browser and owner-as-client behaviour are unverified; no component test for `BrowserPushRow`), RR-16 (Firebase web app and VAPID key).
+BD-15 (the `allows_push_notifications` switch: **nothing in `FcmNotificationSender` reads it**, verified 2026-11-25; its hint says "phones and browsers"), BG-37 (browser push behaviour still to verify or decide), BG-38 (advisories installed with `firebase`), RR-16 (Firebase web app and VAPID key).
