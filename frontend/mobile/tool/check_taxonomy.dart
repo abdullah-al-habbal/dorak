@@ -25,6 +25,33 @@ const roles = <String>{
 
 const blocRoles = <String>{'bloc', 'event', 'state'};
 
+const analysisOptionsName = 'analysis_options.yaml';
+
+const unscannedDirs = <String>{
+  '.dart_tool',
+  '.git',
+  '.plugin_symlinks',
+  '.symlinks',
+  'Pods',
+  'build',
+  'ephemeral',
+};
+
+Iterable<String> nestedAnalysisOptions(Directory root) sync* {
+  final pending = <Directory>[root];
+  while (pending.isNotEmpty) {
+    final directory = pending.removeLast();
+    for (final entity in directory.listSync(followLinks: false)) {
+      final name = entity.uri.pathSegments.lastWhere((s) => s.isNotEmpty);
+      if (entity is Directory) {
+        if (!unscannedDirs.contains(name)) pending.add(entity);
+      } else if (name == analysisOptionsName && directory.path != root.path) {
+        yield entity.path;
+      }
+    }
+  }
+}
+
 final roleRegex = RegExp(r'^[a-z0-9_]+\.([a-z0-9]+)\.dart$');
 
 void main(List<String> args) {
@@ -35,7 +62,12 @@ void main(List<String> args) {
         Directory('${root.path}/$scope'),
   ];
 
-  final violations = <String>[];
+  final violations = <String>[
+    if (!File('${root.path}/$analysisOptionsName').existsSync())
+      '${root.path}/$analysisOptionsName: the workspace root config is missing',
+    for (final path in nestedAnalysisOptions(root))
+      '$path: only the workspace root $analysisOptionsName is allowed',
+  ];
   for (final scope in dirs) {
     for (final entity in scope.listSync(recursive: true)) {
       if (entity is! File || !entity.path.endsWith('.dart')) continue;

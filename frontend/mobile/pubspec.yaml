@@ -61,7 +61,7 @@ melos:
 
     taxonomy:
       run: dart run tool/check_taxonomy.dart
-      description: Validate dot-suffix file taxonomy and architectural placement.
+      description: Validate file taxonomy, architectural placement and the single analysis_options.yaml.
 
     clean:
       exec:

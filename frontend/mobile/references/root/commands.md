@@ -19,7 +19,7 @@ cd frontend/mobile
 dart run melos run generate    # flutter gen-l10n in packages/localization
 dart run melos run build       # build_runner where json_serializable is declared
 dart run melos run analyze     # flutter analyze, every package
-dart run melos run taxonomy    # dart run tool/check_taxonomy.dart
+dart run melos run taxonomy    # dart run tool/check_taxonomy.dart (also rejects any extra analysis_options.yaml)
 dart run melos run test        # flutter test, every package
 
 dart run melos run verify      # all five, in order — the gate
