@@ -48,9 +48,16 @@ export const arAccount: Dictionary["account"] = {
     description: "اختر ما يخبرك به دوراك.",
     keys: {
       allows_email_notifications: { label: "البريد الإلكتروني", hint: "رسائل إلى بريد تسجيل الدخول." },
-      allows_push_notifications: { label: "الإشعارات الفورية", hint: "تنبيهات على الهواتف التي تستخدم فيها تطبيقات دوراك." },
+      allows_push_notifications: { label: "الإشعارات الفورية", hint: "تنبيهات على الهواتف والمتصفحات التي فعّلت فيها الإشعارات الفورية." },
       allows_booking_notifications: { label: "الحجوزات", hint: "الحجوزات الجديدة والمعدّلة والملغاة." },
       allows_system_notifications: { label: "الحساب والمنصة", hint: "تنبيهات الأمان وتحديثات المنصة." },
+    },
+    browserPush: {
+      label: "هذا المتصفح",
+      hint: "تنبيهات على هذا الحاسوب حتى عند إغلاق لوحة التحكم.",
+      denied: "الإشعارات محظورة لهذا الموقع. اسمح بها من إعدادات المتصفح ثم حاول مرة أخرى.",
+      unsupported: "هذا المتصفح لا يدعم التنبيهات الفورية.",
+      failed: "تعذّر تغيير تنبيهات المتصفح. حاول مرة أخرى.",
     },
     toggleLabel: "إشعارات {setting}",
     turnedOn: "تم تشغيل إشعارات {setting}.",

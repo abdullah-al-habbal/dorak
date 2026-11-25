@@ -21,6 +21,8 @@ export const PROXY_ALLOW_LIST: readonly ProxyRule[] = [
   // `profile/password` is not here: it goes through /api/auth/password/change, which adds the session's refresh token.
   { methods: [HttpMethod.Get, HttpMethod.Patch], pattern: /^(profile|profile\/notifications|settings)$/, guards: EVERY_ACTOR },
   { methods: [HttpMethod.Post], pattern: /^profile\/email\/(change|verify)$/, guards: EVERY_ACTOR },
+  // Browser push: every actor turns it on or off for their own browser only; the backend ties the token to the session's account.
+  { methods: [HttpMethod.Post, HttpMethod.Delete], pattern: /^push-token$/, guards: EVERY_ACTOR },
   { methods: [HttpMethod.Get], pattern: /^overview$/, guards: OPERATIONS },
   { methods: [HttpMethod.Get], pattern: new RegExp(`^bookings(/${ID}(/history)?)?$`), guards: OPERATIONS },
   { methods: [HttpMethod.Post], pattern: new RegExp(`^bookings/(walk-in|${ID}/review)$`), guards: OPERATIONS },

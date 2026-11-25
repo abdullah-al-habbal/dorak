@@ -328,3 +328,16 @@ describe("proxy allow-list: catalog item media (FT-12)", () => {
     expect(PROXY_ALLOW_LIST.find((rule) => rule.pattern.test("admin/catalog-items/i1/media"))?.upload).toBe(true);
   });
 });
+
+describe("proxy allow-list: browser push token", () => {
+  it.each([AuthActor.Admin, AuthActor.Manager, AuthActor.Barber, AuthActor.Owner])("lets the %s register and revoke a token", (guard) => {
+    expect(allowed(HttpMethod.Post, "push-token", guard)).toBe(true);
+    expect(allowed(HttpMethod.Delete, "push-token", guard)).toBe(true);
+  });
+
+  it("allows nothing else on the path", () => {
+    expect(allowed(HttpMethod.Get, "push-token", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Patch, "push-token", AuthActor.Admin)).toBe(false);
+    expect(allowed(HttpMethod.Post, "push-token/abc", AuthActor.Admin)).toBe(false);
+  });
+});

@@ -46,9 +46,16 @@ export const enAccount = {
     description: "Choose what Dorak tells you about.",
     keys: {
       allows_email_notifications: { label: "Email", hint: "Messages to your sign-in email." },
-      allows_push_notifications: { label: "Push", hint: "Alerts on phones where you use the Dorak apps." },
+      allows_push_notifications: { label: "Push", hint: "Alerts on phones and in browsers where you turned push on." },
       allows_booking_notifications: { label: "Bookings", hint: "New, changed and cancelled bookings." },
       allows_system_notifications: { label: "Account and platform", hint: "Security notices and platform updates." },
+    },
+    browserPush: {
+      label: "This browser",
+      hint: "Alerts on this computer, even when the dashboard is closed.",
+      denied: "Notifications are blocked for this site. Allow them in your browser settings, then try again.",
+      unsupported: "This browser can’t show push alerts.",
+      failed: "Browser alerts couldn’t be changed. Try again.",
     },
     toggleLabel: "{setting} notifications",
     turnedOn: "{setting} notifications on.",
