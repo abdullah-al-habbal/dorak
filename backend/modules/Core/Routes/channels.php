@@ -6,9 +6,10 @@ use Illuminate\Support\Facades\Broadcast;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Chair\Constants\ChairBroadcastConstants;
 use Modules\Client\Models\ClientModel;
 
-Broadcast::channel('branch.{branchId}', function (AdminModel|BranchModel|BarberModel $user, string $branchId): bool {
+$branchScopedAccess = function (AdminModel|BranchModel|BarberModel $user, string $branchId): bool {
     if ($user instanceof AdminModel) {
         return true;
     }
@@ -19,7 +20,13 @@ Broadcast::channel('branch.{branchId}', function (AdminModel|BranchModel|BarberM
 
     return $user->chairs()->where('branch_id', $branchId)->exists()
         && BranchModel::query()->find($branchId)?->isOperational() === true;
-}, ['guards' => ['admin_api', 'branch_api', 'barber']]);
+};
+
+$branchScopedGuards = ['guards' => ['admin_api', 'branch_api', 'barber']];
+
+Broadcast::channel('branch.{branchId}', $branchScopedAccess, $branchScopedGuards);
+
+Broadcast::channel(ChairBroadcastConstants::FLOOR_PLAN_CHANNEL_PREFIX.'{branchId}', $branchScopedAccess, $branchScopedGuards);
 
 Broadcast::channel('barber.{barberId}', function (AdminModel|BranchModel|BarberModel $user, string $barberId): bool {
     if ($user instanceof AdminModel) {

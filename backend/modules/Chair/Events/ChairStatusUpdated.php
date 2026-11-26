@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Chair\Events;
 
-use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Modules\Chair\Constants\ChairBroadcastConstants;
 
 final class ChairStatusUpdated implements ShouldBroadcast
 {
@@ -26,9 +27,9 @@ final class ChairStatusUpdated implements ShouldBroadcast
         $this->status = $status;
     }
 
-    public function broadcastOn(): Channel
+    public function broadcastOn(): PrivateChannel
     {
-        return new Channel('floor-plan.'.$this->branchId);
+        return new PrivateChannel(ChairBroadcastConstants::FLOOR_PLAN_CHANNEL_PREFIX.$this->branchId);
     }
 
     public function broadcastAs(): string

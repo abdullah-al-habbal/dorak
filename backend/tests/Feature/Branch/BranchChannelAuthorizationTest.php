@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Broadcasting\BroadcastManager;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Testing\TestResponse;
 use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
@@ -11,6 +12,7 @@ use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Enums\BrandStatusEnum;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\BrandReviewService;
+use Modules\Chair\Events\ChairStatusUpdated;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\Core\Enums\TokenAbility;
@@ -112,4 +114,39 @@ it('still refuses an operational branch the channels of another branch', functio
 
     channelAuth($this, $branch, 'private-branch.'.$other->id)->assertForbidden();
     channelAuth($this, $branch, 'private-barber.'.$otherStylist->id)->assertForbidden();
+});
+
+it('broadcasts chair status on a private floor plan channel', function (): void {
+    $channel = (new ChairStatusUpdated('chair-id', 'branch-id', 'available'))->broadcastOn();
+
+    expect($channel)->toBeInstanceOf(PrivateChannel::class)
+        ->and($channel->name)->toBe('private-floor-plan.branch-id');
+});
+
+it('authorizes an operational branch, its seated stylist and an admin on the floor plan channel', function (): void {
+    ['branch' => $branch, 'stylist' => $stylist] = staffedBranch();
+
+    channelAuth($this, $branch, 'private-floor-plan.'.$branch->id)->assertOk();
+    channelAuth($this, $stylist, 'private-floor-plan.'.$branch->id)->assertOk();
+    channelAuth($this, AdminModel::factory()->create(), 'private-floor-plan.'.$branch->id)->assertOk();
+});
+
+it('refuses the floor plan channel of a non operational branch to the branch and its stylist', function (BrandStatusEnum $brandStatus, BranchStatusEnum $branchStatus): void {
+    ['branch' => $branch, 'stylist' => $stylist] = staffedBranch($brandStatus, $branchStatus);
+
+    channelAuth($this, $branch, 'private-floor-plan.'.$branch->id)->assertForbidden();
+    channelAuth($this, $stylist, 'private-floor-plan.'.$branch->id)->assertForbidden();
+})->with('non operational states');
+
+it('refuses the floor plan channel to other branches, unseated stylists, clients and guests', function (): void {
+    ['owner' => $owner, 'branch' => $branch] = staffedBranch();
+    ['branch' => $other, 'stylist' => $otherStylist] = staffedBranch();
+    $channel = 'private-floor-plan.'.$branch->id;
+
+    channelAuth($this, $other, $channel)->assertForbidden();
+    channelAuth($this, $otherStylist, $channel)->assertForbidden();
+    channelAuth($this, $owner, $channel)->assertForbidden();
+
+    app('auth')->forgetGuards();
+    $this->flushHeaders()->postJson('/api/v1/broadcasting/auth', ['socket_id' => '1234.5678', 'channel_name' => $channel])->assertUnauthorized();
 });
