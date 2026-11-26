@@ -37,7 +37,8 @@ Unauthorized flow:
   `guest`, and raises the signal.
 * The staff apps use `StaffSessionSignals` (`session/`): it subscribes to
   `unauthorizedStream` and `accountBannedStream`, ends the `StaffSessionBloc`
-  session (`unauthorized()` or `accountBanned()`), then runs the app teardown.
+  session (`unauthorized(code)` or `accountBanned()`), then runs the app
+  teardown. `brandSuspended()` ends it the same way when the app asks.
   See `core/interceptors.md` for which responses raise neither signal.
 * `RequireAuthentication` raises `authenticationRequired` (guest-guarded
   action) without touching the session.

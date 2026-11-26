@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
 
@@ -31,7 +32,9 @@ import 'package:business_app/src/features/owner/app_role.entity.dart';
 import 'package:business_app/src/features/owner/owner_billing.screen.dart';
 import 'package:business_app/src/features/owner/owner_branch_form.screen.dart';
 import 'package:business_app/src/features/owner/owner_branches.screen.dart';
+import 'package:business_app/src/features/owner/owner_home.bloc.dart';
 import 'package:business_app/src/features/owner/owner_home.screen.dart';
+import 'package:business_app/src/features/owner/owner_home.state.dart';
 import 'package:business_app/src/features/owner/owner_service_form.screen.dart';
 import 'package:business_app/src/features/owner/owner_services.screen.dart';
 import 'package:business_app/src/features/owner/role_auth.repository.dart';
@@ -97,35 +100,44 @@ class BusinessAppRouter {
         ),
         GoRoute(
           path: AppRoutes.ownerBranches,
-          builder: (context, state) => OwnerBranchesScreen(
-            isReadOnly: owner.home.state.isReadOnly,
-            bloc: owner.branches,
-            onAdd: () => context.push(AppRoutes.ownerNewBranch),
-            onEdit: (id) => context.push(
-              AppRoutes.ownerEditBranch,
-              extra: owner.branches.state.branches.firstWhere(
-                (branch) => branch.id == id,
+          builder: (context, state) => _withOwnerHome(
+            owner.home,
+            (home) => OwnerBranchesScreen(
+              isReadOnly: home.isReadOnly,
+              bloc: owner.branches,
+              onAdd: () => context.push(AppRoutes.ownerNewBranch),
+              onEdit: (id) => context.push(
+                AppRoutes.ownerEditBranch,
+                extra: owner.branches.state.branches.firstWhere(
+                  (branch) => branch.id == id,
+                ),
               ),
             ),
           ),
         ),
         GoRoute(
           path: AppRoutes.ownerNewBranch,
-          builder: (context, state) => OwnerBranchFormScreen(
-            isReadOnly: owner.home.state.isReadOnly,
-            bloc: owner.branches,
-            brandId: owner.home.state.brand?.id ?? '',
-            onDone: () => _leave(context, AppRoutes.ownerBranches),
+          builder: (context, state) => _withOwnerHome(
+            owner.home,
+            (home) => OwnerBranchFormScreen(
+              isReadOnly: home.isReadOnly,
+              bloc: owner.branches,
+              brandId: home.brand?.id ?? '',
+              onDone: () => _leave(context, AppRoutes.ownerBranches),
+            ),
           ),
         ),
         GoRoute(
           path: AppRoutes.ownerEditBranch,
-          builder: (context, state) => OwnerBranchFormScreen(
-            isReadOnly: owner.home.state.isReadOnly,
-            bloc: owner.branches,
-            brandId: owner.home.state.brand?.id ?? '',
-            branch: state.extra as OwnerBranchDto?,
-            onDone: () => _leave(context, AppRoutes.ownerBranches),
+          builder: (context, state) => _withOwnerHome(
+            owner.home,
+            (home) => OwnerBranchFormScreen(
+              isReadOnly: home.isReadOnly,
+              bloc: owner.branches,
+              brandId: home.brand?.id ?? '',
+              branch: state.extra as OwnerBranchDto?,
+              onDone: () => _leave(context, AppRoutes.ownerBranches),
+            ),
           ),
         ),
         GoRoute(
@@ -134,31 +146,40 @@ class BusinessAppRouter {
         ),
         GoRoute(
           path: AppRoutes.ownerServices,
-          builder: (context, state) => OwnerServicesScreen(
-            isReadOnly: owner.home.state.isReadOnly,
-            bloc: owner.services,
-            onAdd: () => context.push(AppRoutes.ownerNewService),
-            onEdit: (service) =>
-                context.push(AppRoutes.ownerEditService, extra: service),
+          builder: (context, state) => _withOwnerHome(
+            owner.home,
+            (home) => OwnerServicesScreen(
+              isReadOnly: home.isReadOnly,
+              bloc: owner.services,
+              onAdd: () => context.push(AppRoutes.ownerNewService),
+              onEdit: (service) =>
+                  context.push(AppRoutes.ownerEditService, extra: service),
+            ),
           ),
         ),
         GoRoute(
           path: AppRoutes.ownerNewService,
-          builder: (context, state) => OwnerServiceFormScreen(
-            isReadOnly: owner.home.state.isReadOnly,
-            bloc: owner.services,
-            brandId: owner.home.state.brand?.id ?? '',
-            onDone: () => _leave(context, AppRoutes.ownerServices),
+          builder: (context, state) => _withOwnerHome(
+            owner.home,
+            (home) => OwnerServiceFormScreen(
+              isReadOnly: home.isReadOnly,
+              bloc: owner.services,
+              brandId: home.brand?.id ?? '',
+              onDone: () => _leave(context, AppRoutes.ownerServices),
+            ),
           ),
         ),
         GoRoute(
           path: AppRoutes.ownerEditService,
-          builder: (context, state) => OwnerServiceFormScreen(
-            isReadOnly: owner.home.state.isReadOnly,
-            bloc: owner.services,
-            brandId: owner.home.state.brand?.id ?? '',
-            service: state.extra as BusinessServiceDto?,
-            onDone: () => _leave(context, AppRoutes.ownerServices),
+          builder: (context, state) => _withOwnerHome(
+            owner.home,
+            (home) => OwnerServiceFormScreen(
+              isReadOnly: home.isReadOnly,
+              bloc: owner.services,
+              brandId: home.brand?.id ?? '',
+              service: state.extra as BusinessServiceDto?,
+              onDone: () => _leave(context, AppRoutes.ownerServices),
+            ),
           ),
         ),
         GoRoute(
@@ -305,6 +326,16 @@ class BusinessAppRouter {
       ],
     );
   }
+
+  /// Rebuilds an open owner screen when the brand changes, so a suspension
+  /// turns it read-only at once.
+  static Widget _withOwnerHome(
+    OwnerHomeCubit home,
+    Widget Function(OwnerHomeState state) builder,
+  ) => BlocBuilder<OwnerHomeCubit, OwnerHomeState>(
+    bloc: home,
+    builder: (context, state) => builder(state),
+  );
 
   /// Closes a form: back when it was pushed, otherwise to its list (deep link).
   static void _leave(BuildContext context, String fallback) =>

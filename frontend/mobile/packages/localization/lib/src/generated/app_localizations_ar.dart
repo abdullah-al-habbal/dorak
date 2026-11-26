@@ -1542,6 +1542,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get businessUpdateFailed => 'تعذر الحفظ. حاول مرة أخرى.';
 
   @override
+  String get businessBrandSuspended =>
+      'نشاطك التجاري معلّق، لذلك لا يمكن استخدام هذا الفرع. تواصل مع مالك النشاط أو الدعم.';
+
+  @override
+  String get businessBranchNotActive =>
+      'هذا الفرع غير نشط حاليًا: ربما تم تعليقه أو إيقافه هو أو النشاط التابع له. تواصل مع مالك النشاط أو الدعم.';
+
+  @override
   String get businessFeatureNotEnabled =>
       'هذه الميزة ليست ضمن باقتك الحالية. قم بالترقية لاستخدامها.';
 

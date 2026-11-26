@@ -43,8 +43,8 @@ Authorization: Bearer <Sanctum token>
 Accept: application/json
 ```
 
-Laravel applies its existing `admin_api`, `branch_api`, and `barber` channel
-policies at `POST /api/v1/broadcasting/auth`; the client never chooses access
+Laravel applies its existing `admin_api`, `branch_api`, `barber` and `client`
+channel policies at `POST /api/v1/broadcasting/auth`; the client never chooses access
 rights. A missing token fails authorization rather than subscribing.
 
 ```dart

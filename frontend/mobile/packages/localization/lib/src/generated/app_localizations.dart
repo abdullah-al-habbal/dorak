@@ -2870,6 +2870,18 @@ abstract class AppLocalizations {
   /// **'Could not save. Please try again.'**
   String get businessUpdateFailed;
 
+  /// No description provided for @businessBrandSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Your business is suspended, so this branch cannot be used. Contact the business owner or support.'**
+  String get businessBrandSuspended;
+
+  /// No description provided for @businessBranchNotActive.
+  ///
+  /// In en, this message translates to:
+  /// **'This branch is not active right now: it or its business may be suspended or switched off. Contact the business owner or support.'**
+  String get businessBranchNotActive;
+
   /// No description provided for @businessFeatureNotEnabled.
   ///
   /// In en, this message translates to:

@@ -31,12 +31,16 @@ class OwnerBrandSummaryDto {
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class OwnerProfileDto {
   const OwnerProfileDto({
+    this.clientId,
     this.isOwner = false,
     this.brandIds = const [],
     this.branchCount = 0,
     this.brands = const [],
   });
 
+  /// The owner's private realtime channel is `client.{clientId}`. Null from a
+  /// backend that does not send it yet.
+  final String? clientId;
   @JsonKey(defaultValue: false)
   final bool isOwner;
   @JsonKey(defaultValue: <String>[])

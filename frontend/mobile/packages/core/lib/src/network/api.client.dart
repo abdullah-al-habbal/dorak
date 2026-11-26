@@ -28,14 +28,22 @@ typedef RawPaginated<T> = ({
 
 class ApiClient {
   final Dio dio;
-  final StreamController<void> _unauthorizedController =
+  final StreamController<String?> _unauthorizedController =
+      StreamController<String?>.broadcast();
+  final StreamController<void> _brandSuspendedController =
       StreamController<void>.broadcast();
   final StreamController<void> _accountBannedController =
       StreamController<void>.broadcast();
   bool _unauthorizedFired = false;
   bool _accountBannedFired = false;
 
-  Stream<void> get unauthorizedStream => _unauthorizedController.stream;
+  /// The session is no longer accepted. Carries the error code of the answer
+  /// that said so, when it had one.
+  Stream<String?> get unauthorizedStream => _unauthorizedController.stream;
+
+  /// A write or read was refused because the brand is suspended; the session
+  /// stays. Fires for every such answer.
+  Stream<void> get brandSuspendedStream => _brandSuspendedController.stream;
   Stream<void> get accountBannedStream => _accountBannedController.stream;
 
   bool get unauthorizedSignalFired => _unauthorizedFired;
@@ -70,16 +78,17 @@ class ApiClient {
             tokenProvider: tokenProvider,
             reportUnauthorized: reportUnauthorized,
             reportAccountBanned: reportAccountBanned,
+            reportBrandSuspended: reportBrandSuspended,
           ),
         if (enableLogging) LoggingInterceptor(),
         RetryInterceptor(dio: this.dio, maxRetries: maxRetries),
       ]);
   }
 
-  void reportUnauthorized() {
+  void reportUnauthorized([String? code]) {
     if (_unauthorizedFired) return;
     _unauthorizedFired = true;
-    _unauthorizedController.add(null);
+    _unauthorizedController.add(code);
   }
 
   void resetUnauthorizedSignal() {
@@ -90,6 +99,13 @@ class ApiClient {
   void dispose() {
     _unauthorizedController.close();
     _accountBannedController.close();
+    _brandSuspendedController.close();
+  }
+
+  void reportBrandSuspended() {
+    if (!_brandSuspendedController.isClosed) {
+      _brandSuspendedController.add(null);
+    }
   }
 
   void reportAccountBanned() {

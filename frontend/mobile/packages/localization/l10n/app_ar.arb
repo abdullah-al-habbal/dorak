@@ -1331,6 +1331,8 @@
   "businessMenuReviews": "التقييمات",
   "businessSave": "حفظ",
   "businessUpdateFailed": "تعذر الحفظ. حاول مرة أخرى.",
+  "businessBrandSuspended": "نشاطك التجاري معلّق، لذلك لا يمكن استخدام هذا الفرع. تواصل مع مالك النشاط أو الدعم.",
+  "businessBranchNotActive": "هذا الفرع غير نشط حاليًا: ربما تم تعليقه أو إيقافه هو أو النشاط التابع له. تواصل مع مالك النشاط أو الدعم.",
   "businessFeatureNotEnabled": "هذه الميزة ليست ضمن باقتك الحالية. قم بالترقية لاستخدامها.",
   "businessJobsTitle": "الوظائف",
   "businessJobsEmpty": "لا توجد وظائف بعد.",

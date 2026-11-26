@@ -46,6 +46,17 @@ The stylist workspace follows the same lifecycle with
 booking events and refreshing the persisted workstation state after
 `workstation.status.toggled`.
 
+## Brand suspension
+
+`brand.suspended` (`RealtimeEvents.brandSuspended`, payload `brandId`, `status`)
+arrives on each enabled branch channel and on the owner's `client.{clientId}`
+channel (`client_id` from `GET /owner/me`). `business_app`'s
+`BrandSuspensionMonitor` listens for the signed-in role: a branch manager is
+signed out with the reason, an owner's brand turns read-only in place. It starts
+on sign-in and stops with the session. If the id lookup or the socket fails, the
+HTTP answers do the same job (`../core/interceptors.md`). Reactivation sends no
+event.
+
 ## Live verification
 
 With an authorized branch account and barber account against a TLS-enabled
@@ -59,6 +70,11 @@ Reverb server:
    state after the event.
 5. Cancel a booking with a reason and confirm both subscriptions receive
    `booking.cancelled`.
+
+6. With a branch manager and an owner signed in, suspend the brand from the
+   dashboard (a queue worker must run). The manager lands on login with the
+   suspension message; the owner's open branch screen loses its add button.
+   Repeat with Reverb stopped: the next refused request has the same effect.
 
 If authorization fails, verify the bearer token guard and the channel ID
 before changing client code; those are enforced by backend channel policies.

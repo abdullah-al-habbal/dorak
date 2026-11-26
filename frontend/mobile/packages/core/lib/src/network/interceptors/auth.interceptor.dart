@@ -5,13 +5,15 @@ import 'package:core/src/network/exceptions/api_error_code_constants.entity.dart
 
 class AuthInterceptor extends Interceptor {
   final Future<String?> Function() tokenProvider;
-  final void Function() reportUnauthorized;
+  final void Function(String? code) reportUnauthorized;
   final void Function() reportAccountBanned;
+  final void Function() reportBrandSuspended;
 
   AuthInterceptor({
     required this.tokenProvider,
     required this.reportUnauthorized,
     required this.reportAccountBanned,
+    required this.reportBrandSuspended,
   });
 
   @override
@@ -50,13 +52,16 @@ class AuthInterceptor extends Interceptor {
           AuthInterceptorConstants.authInterceptorBusinessForbiddenCodes
               .contains(code)) {
         // A business rejection of one action, not a session problem.
+        if (code == ApiErrorCodeConstants.apiErrorCodeBrandSuspended) {
+          reportBrandSuspended();
+        }
       } else if (status == 401 &&
           err.requestOptions.extra[AuthInterceptorConstants
                   .authInterceptorKeepSessionOn401Key] ==
               true) {
         // The call rejected the credential it was sent, not the bearer token.
       } else {
-        reportUnauthorized();
+        reportUnauthorized(code is String ? code : null);
       }
     }
 

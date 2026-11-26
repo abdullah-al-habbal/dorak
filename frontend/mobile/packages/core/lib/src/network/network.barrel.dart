@@ -2,6 +2,7 @@ export 'package:core/src/network/api.client.dart';
 export 'package:core/src/network/idempotency_key.entity.dart';
 export 'package:core/src/network/realtime.client.dart';
 export 'package:core/src/network/realtime_channels.entity.dart';
+export 'package:core/src/network/realtime_events.entity.dart';
 export 'package:core/src/network/realtime_configuration.entity.dart';
 export 'package:core/src/network/realtime_subscription.entity.dart';
 export 'package:core/src/network/localized_name.entity.dart';

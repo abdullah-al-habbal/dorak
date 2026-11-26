@@ -36,6 +36,8 @@ a local ARB string; all three apps use it.
 | `ValidationException`, field with a safe server message | that message |
 | `ValidationException`, field without one | `fieldInvalid` |
 | `ACCOUNT_BANNED` / `ACCOUNT_NOT_ACTIVE` | `authAccountSuspended` / `authAccountNotActive` |
+| `business_app` login: session ended by `brand_suspended` | `businessBrandSuspended` |
+| `business_app` login, branch role: `ACCOUNT_NOT_ACTIVE` | `businessBranchNotActive` (these two are set by the screen) |
 | 401 or 403 where the screen passes `unauthorizedMessage` (login) | `loginErrorInvalidCredentials` |
 | 422 where the screen passes `unprocessableMessage` | that override (for example `recoveryCodeRejected`) |
 | anything else | the screen's `fallbackMessage`, else `errorGeneric` |

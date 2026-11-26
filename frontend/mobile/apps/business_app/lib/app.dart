@@ -19,6 +19,7 @@ import 'package:business_app/src/features/inbox/business_inbox.bloc.dart';
 import 'package:business_app/src/features/jobs/business_jobs.bloc.dart';
 import 'package:business_app/src/features/profile/business_profile.bloc.dart';
 import 'package:business_app/src/features/reviews/business_reviews.bloc.dart';
+import 'package:business_app/src/features/session/brand_suspension.provider.dart';
 import 'package:business_app/src/features/services/business_services.bloc.dart';
 import 'package:business_app/src/features/staff/business_staff.bloc.dart';
 import 'package:business_app/src/core/navigation/notification_location.entity.dart';
@@ -67,6 +68,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   late final LegalLinks _legalLinks;
   late final StaffPasswordResetBloc _passwordReset;
   late final StaffSessionSignals _sessionSignals;
+  late final BrandSuspensionMonitor _brandSuspension;
   late final StreamSubscription<NotificationTarget>
   _notificationOpenSubscription;
 
@@ -114,6 +116,15 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     );
     _linkOpener = const UrlLauncherExternalLinkOpener();
     _legalLinks = LegalLinks.fromApiBaseUrl(ConfigProvider.config.apiBaseUrl);
+    _brandSuspension = BrandSuspensionMonitor(
+      client: _apiClient,
+      realtime: _realtime,
+      role: () => _roles.role,
+      branch: DioBranchOperationsRepository(_apiClient),
+      owner: ownerApi,
+      ownerHome: _owner.home,
+      onBranchSuspended: _sessionSignals.brandSuspended,
+    );
     _barbers = ManualBarberBloc(
       widget.repository ?? DioManagedBarberRepository(_apiClient),
     );
@@ -175,6 +186,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     _session.close();
     _passwordReset.close();
     unawaited(_sessionSignals.dispose());
+    unawaited(_brandSuspension.dispose());
     _notificationOpenSubscription.cancel();
     _realtime?.dispose();
     unawaited(_pushNotifications.dispose());
@@ -233,13 +245,14 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
 
   void _onAuthenticated() {
     _apiClient.resetUnauthorizedSignal();
+    if (_realtime != null) unawaited(_realtime.connect());
+    unawaited(_brandSuspension.start());
     if (_roles.role == AppRole.owner) {
       _router.router.go(AppRoutes.ownerHome);
       return;
     }
     unawaited(_features.inbox.load());
     unawaited(_initializePushNotifications());
-    if (_realtime != null) unawaited(_realtime.connect());
     _router.router.go(AppRoutes.operations);
   }
 
@@ -255,6 +268,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   }
 
   Future<void> _logout() async {
+    _brandSuspension.stop();
     await _session.logout();
     await _pushNotifications.stop();
     await _realtime?.disconnectForLogout();
@@ -263,6 +277,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
 
   /// Teardown after the session is already gone: expired, banned or deleted.
   Future<void> _onSessionEnded() async {
+    _brandSuspension.stop();
     await Future.wait([
       _pushNotifications.stop(),
       if (_realtime != null) _realtime.disconnectForLogout(),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,19 +11,22 @@ class OwnerHomeCubit extends Cubit<OwnerHomeState> {
   OwnerHomeCubit(this._owner) : super(const OwnerHomeState());
 
   final OwnerRepository _owner;
+  int _loadGeneration = 0;
+  bool _isRefreshingBrand = false;
 
   Future<void> load() async {
+    final generation = ++_loadGeneration;
     emit(const OwnerHomeState());
     try {
       final access = await _owner.resolveAccess();
       if (access is! OwnerAccessGranted) {
-        if (!isClosed) {
+        if (!_isStale(generation)) {
           emit(const OwnerHomeState(status: OwnerHomeStatus.noBrand));
         }
         return;
       }
       final brands = await _owner.getBrands();
-      if (isClosed) return;
+      if (_isStale(generation)) return;
       emit(
         brands.isEmpty
             ? const OwnerHomeState(status: OwnerHomeStatus.noBrand)
@@ -31,10 +36,43 @@ class OwnerHomeCubit extends Cubit<OwnerHomeState> {
               ),
       );
     } catch (error) {
-      if (isClosed) return;
+      if (_isStale(generation)) return;
       emit(OwnerHomeState(status: OwnerHomeStatus.failed, error: error));
     }
   }
+
+  /// The platform suspended [brandId]: turn read-only now. A load already in
+  /// flight may predate the suspension, so it starts again.
+  void markSuspended(String brandId) {
+    if (state.status == OwnerHomeStatus.loading) {
+      unawaited(load());
+      return;
+    }
+    final brand = state.brand;
+    if (brand == null || brand.id != brandId) return;
+    emit(state.copyWith(brand: brand.withStatus(OwnerBrandStatus.suspended)));
+  }
+
+  /// Reads the shown brand again without a loading state, after the API said a
+  /// brand is suspended. A failure keeps what is shown; the next one retries.
+  Future<void> refreshBrand() async {
+    final shownId = state.brand?.id;
+    if (shownId == null || _isRefreshingBrand) return;
+    _isRefreshingBrand = true;
+    final generation = _loadGeneration;
+    try {
+      final brands = await _owner.getBrands();
+      if (_isStale(generation)) return;
+      for (final brand in brands.data) {
+        if (brand.id == shownId) emit(state.copyWith(brand: brand));
+      }
+    } catch (_) {
+    } finally {
+      _isRefreshingBrand = false;
+    }
+  }
+
+  bool _isStale(int generation) => isClosed || generation != _loadGeneration;
 
   Future<void> resubmit() async {
     final brand = state.brand;

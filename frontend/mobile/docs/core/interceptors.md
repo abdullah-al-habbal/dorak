@@ -47,9 +47,16 @@ through a single channel:
 
 Both signals fire once per burst. `client_app` maps them to `SessionBloc`
 events; `business_app` and `stylist_app` wire them with `StaffSessionSignals`,
-which calls `StaffSessionBloc.unauthorized()` or `accountBanned()` and then the
-app's teardown (push, realtime, route to login). A banned state is kept after a
-later 401, so the login screen still explains the suspension.
+which calls `StaffSessionBloc.unauthorized(code)` or `accountBanned()` and then
+the app's teardown (push, realtime, route to login). `unauthorizedStream`
+carries the answer's error code. The session keeps a reason for the login screen:
+a ban, a brand suspension or `ACCOUNT_NOT_ACTIVE`. A later plain sign-out never
+erases it; a suspension replaces "not active", and nothing replaces a ban.
+
+A 403 `brand_suspended` keeps the session but is also sent on
+`brandSuspendedStream` (every time). `business_app` ends a branch manager's
+session with it (`StaffSessionSignals.brandSuspended()`) and re-reads an owner's
+brand.
 
 * **Business-rule 403** (`authInterceptorBusinessForbiddenCodes`):
   `brand_not_approved`, `brand_suspended`, `feature_not_enabled`. They reject

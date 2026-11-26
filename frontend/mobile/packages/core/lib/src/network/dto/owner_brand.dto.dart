@@ -47,6 +47,21 @@ class OwnerBrandDto {
   @JsonKey(defaultValue: <String, bool>{})
   final Map<String, bool> features;
 
+  OwnerBrandDto withStatus(OwnerBrandStatus status) => OwnerBrandDto(
+    id: id,
+    name: name,
+    status: status,
+    description: description,
+    logoUrl: logoUrl,
+    slug: slug,
+    universe: universe,
+    statusReason: statusReason,
+    submissionCount: submissionCount,
+    maxSubmissions: maxSubmissions,
+    branchesCount: branchesCount,
+    features: features,
+  );
+
   /// A rejected brand can be resubmitted until the limit is reached.
   bool get canResubmit =>
       status == OwnerBrandStatus.rejected && submissionCount < maxSubmissions;

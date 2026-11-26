@@ -1548,6 +1548,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessUpdateFailed => 'Could not save. Please try again.';
 
   @override
+  String get businessBrandSuspended =>
+      'Your business is suspended, so this branch cannot be used. Contact the business owner or support.';
+
+  @override
+  String get businessBranchNotActive =>
+      'This branch is not active right now: it or its business may be suspended or switched off. Contact the business owner or support.';
+
+  @override
   String get businessFeatureNotEnabled =>
       'This feature is not part of your current plan. Upgrade to use it.';
 

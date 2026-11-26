@@ -48,6 +48,7 @@ void main() {
   late _Storage storage;
   late StaffSessionBloc session;
   late int teardowns;
+  late StaffSessionSignals signals;
 
   Future<ApiClient> signedInClient(int status, String code) async {
     final dio = Dio(BaseOptions(baseUrl: 'http://test/api/v1'));
@@ -67,7 +68,7 @@ void main() {
       maxRetries: 0,
       tokenProvider: storage.read,
     );
-    final signals = StaffSessionSignals(
+    signals = StaffSessionSignals(
       client: api,
       session: session,
       onSessionEnded: () async => teardowns++,
@@ -146,5 +147,81 @@ void main() {
 
     expect(session.state.isAuthenticated, isTrue);
     expect(session.state.isBanned, isFalse);
+  });
+
+  test('an inactive account ends the session and keeps the reason', () async {
+    final api = await signedInClient(403, 'ACCOUNT_NOT_ACTIVE');
+    final codes = <String?>[];
+    final subscription = api.unauthorizedStream.listen(codes.add);
+    addTearDown(subscription.cancel);
+
+    await call(api);
+    await session.unauthorized();
+
+    expect(codes, ['ACCOUNT_NOT_ACTIVE']);
+    expect(session.state.status, StaffAuthStatus.guest);
+    expect(session.state.hasEndReason, isTrue);
+    expect((session.state.error! as ApiException).code, 'ACCOUNT_NOT_ACTIVE');
+    expect(storage.token, isNull);
+    expect(teardowns, 1);
+  });
+
+  test('a brand_suspended answer is reported and keeps the session', () async {
+    final api = await signedInClient(403, 'brand_suspended');
+    var reports = 0;
+    final subscription = api.brandSuspendedStream.listen((_) => reports++);
+    addTearDown(subscription.cancel);
+
+    await call(api);
+    await call(api);
+
+    expect(reports, 2);
+    expect(session.state.isAuthenticated, isTrue);
+    expect(storage.token, 'live-token');
+    expect(teardowns, 0);
+  });
+
+  test('a suspension ends the session and survives a later 401', () async {
+    await signedInClient(401, 'UNAUTHORIZED');
+
+    await signals.brandSuspended();
+    await session.unauthorized();
+    await session.unauthorized('ACCOUNT_NOT_ACTIVE');
+
+    expect(session.state.isBrandSuspended, isTrue);
+    expect(storage.token, isNull);
+    expect(teardowns, 1);
+  });
+
+  test('a suspension replaces the vaguer inactive reason', () async {
+    await signedInClient(403, 'ACCOUNT_NOT_ACTIVE');
+    await session.unauthorized('ACCOUNT_NOT_ACTIVE');
+
+    await session.brandSuspended();
+
+    expect(session.state.isBrandSuspended, isTrue);
+  });
+
+  test('a suspension never replaces a ban', () async {
+    final api = await signedInClient(403, 'ACCOUNT_BANNED');
+    await call(api);
+
+    await session.brandSuspended();
+
+    expect(session.state.isBanned, isTrue);
+  });
+
+  test('a late suspension says nothing after a normal sign-out', () async {
+    await signedInClient(401, 'UNAUTHORIZED');
+    await session.logout();
+
+    await session.brandSuspended();
+
+    expect(session.state.error, isNull);
+  });
+
+  test('the owner profile reads client_id and works without it', () {
+    expect(OwnerProfileDto.fromJson({'client_id': 'c-1'}).clientId, 'c-1');
+    expect(OwnerProfileDto.fromJson(const {}).clientId, isNull);
   });
 }

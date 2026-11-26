@@ -60,6 +60,24 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
     }
   }
 
+  /// A branch account is inactive for reasons of its branch or business, which
+  /// the generic "complete verification" text would not explain.
+  String _errorMessage(AppLocalizations l10n, StaffSessionState state) {
+    if (state.isBrandSuspended) return l10n.businessBrandSuspended;
+    final error = state.error!;
+    if (_role == AppRole.branch &&
+        error is ApiException &&
+        error.code == ApiErrorCodeConstants.apiErrorCodeAccountNotActive) {
+      return l10n.businessBranchNotActive;
+    }
+    return ErrorFeedback.from(
+      error,
+      l10n,
+      unauthorizedMessage: l10n.loginErrorInvalidCredentials,
+      unprocessableMessage: l10n.loginErrorInvalidCredentials,
+    ).message;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -155,16 +173,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                     ),
                     if (state.error != null) ...[
                       const SizedBox(height: DorakDimensions.spacingMedium),
-                      StatusBanner(
-                        message: ErrorFeedback.from(
-                          state.error!,
-                          l10n,
-                          unauthorizedMessage:
-                              l10n.loginErrorInvalidCredentials,
-                          unprocessableMessage:
-                              l10n.loginErrorInvalidCredentials,
-                        ).message,
-                      ),
+                      StatusBanner(message: _errorMessage(l10n, state)),
                     ],
                     const SizedBox(height: DorakDimensions.spacingLarge),
                     PrimaryButton(

@@ -67,25 +67,48 @@ class StaffSessionBloc extends Cubit<StaffSessionState> {
     }
   }
 
-  /// A 401 that follows a ban keeps the suspension, so the login screen can
-  /// still explain it.
-  Future<void> unauthorized() async {
-    if (state.isBanned) return;
+  /// The API stopped accepting the session. [code] is the code of that answer:
+  /// an inactive account is kept as the reason. A plain sign-out never erases a
+  /// reason that is already there.
+  Future<void> unauthorized([String? code]) async {
+    if (state.hasEndReason) return;
+    if (code == ApiErrorCodeConstants.apiErrorCodeAccountNotActive) {
+      return _endWithReason(
+        ApiErrorCodeConstants.apiErrorCodeAccountNotActive,
+        'Account not active',
+      );
+    }
     await _tokenStorage.clear();
-    if (state.isBanned) return;
+    if (state.hasEndReason) return;
     emit(const StaffSessionState(status: StaffAuthStatus.guest));
   }
 
+  /// Ends a session because its brand was suspended. It replaces the vaguer
+  /// "not active" reason, never a ban, and does nothing to a session that
+  /// already ended without a reason (the user signed out).
+  Future<void> brandSuspended() async {
+    if (state.isBanned || (!state.isAuthenticated && !state.hasEndReason)) {
+      return;
+    }
+    await _endWithReason(
+      ApiErrorCodeConstants.apiErrorCodeBrandSuspended,
+      'Brand suspended',
+    );
+  }
+
   /// Ends the session of a banned account and keeps the reason in the state.
-  Future<void> accountBanned() async {
+  Future<void> accountBanned() => _endWithReason(
+    ApiErrorCodeConstants.apiErrorCodeAccountBanned,
+    'Account suspended',
+  );
+
+  /// Emits the reason before clearing, so a signal that arrives while the token
+  /// is being cleared already sees it.
+  Future<void> _endWithReason(String code, String message) async {
     emit(
-      const StaffSessionState(
+      StaffSessionState(
         status: StaffAuthStatus.guest,
-        error: ApiException(
-          statusCode: 403,
-          code: ApiErrorCodeConstants.apiErrorCodeAccountBanned,
-          message: 'Account suspended',
-        ),
+        error: ApiException(statusCode: 403, code: code, message: message),
       ),
     );
     await _tokenStorage.clear();

@@ -17,6 +17,7 @@ OwnerBrandSummaryDto _$OwnerBrandSummaryDtoFromJson(
 OwnerProfileDto _$OwnerProfileDtoFromJson(
   Map<String, dynamic> json,
 ) => OwnerProfileDto(
+  clientId: json['client_id'] as String?,
   isOwner: json['is_owner'] as bool? ?? false,
   brandIds:
       (json['brand_ids'] as List<dynamic>?)?.map((e) => e as String).toList() ??
