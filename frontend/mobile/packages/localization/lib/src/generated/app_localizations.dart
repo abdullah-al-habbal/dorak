@@ -572,12 +572,6 @@ abstract class AppLocalizations {
   /// **'Something went wrong'**
   String get errorTitleGeneric;
 
-  /// Offline state title
-  ///
-  /// In en, this message translates to:
-  /// **'You\'re offline'**
-  String get errorTitleOffline;
-
   /// Fallback empty state title
   ///
   /// In en, this message translates to:
@@ -925,12 +919,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Update Password'**
   String get changePasswordSubmit;
-
-  /// Change password success title
-  ///
-  /// In en, this message translates to:
-  /// **'Password Updated'**
-  String get changePasswordSuccessTitle;
 
   /// Change password success message
   ///
@@ -1826,12 +1814,6 @@ abstract class AppLocalizations {
   /// **'Could not create the barber. Please try again.'**
   String get managerBarberCreateError;
 
-  /// No description provided for @bookingSavedAddressesLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved addresses'**
-  String get bookingSavedAddressesLabel;
-
   /// No description provided for @bookingFirstAvailable.
   ///
   /// In en, this message translates to:
@@ -1939,12 +1921,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit profile'**
   String get profileEditAction;
-
-  /// No description provided for @profileSavedAddressesAction.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved addresses'**
-  String get profileSavedAddressesAction;
 
   /// No description provided for @profileEditTitle.
   ///
@@ -2594,17 +2570,17 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get stylistSave;
 
-  /// No description provided for @stylistSaved.
+  /// No description provided for @commonSaved.
   ///
   /// In en, this message translates to:
   /// **'Saved'**
-  String get stylistSaved;
+  String get commonSaved;
 
-  /// No description provided for @stylistLoadFailed.
+  /// No description provided for @commonLoadFailed.
   ///
   /// In en, this message translates to:
   /// **'Could not load. Pull to retry.'**
-  String get stylistLoadFailed;
+  String get commonLoadFailed;
 
   /// No description provided for @stylistScheduleTitle.
   ///
@@ -2887,18 +2863,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get businessSave;
-
-  /// No description provided for @businessSaved.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved'**
-  String get businessSaved;
-
-  /// No description provided for @businessLoadFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not load. Pull to retry.'**
-  String get businessLoadFailed;
 
   /// No description provided for @businessUpdateFailed.
   ///

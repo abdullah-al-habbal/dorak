@@ -52,8 +52,9 @@ widgets, and `password_recovery.{bloc,event,state}.dart` +
 `recovery_signal.entity.dart`.
 
 **Error messages are resolved locally.** The backend's `message` field is an
-untranslated key; `AuthError.from` maps status + exception type to an ARB
-string. A 422's `errors` map *is* real Laravel copy and is shown per-field.
+untranslated key; `ErrorFeedback.from` maps status + exception type to an ARB
+string. A 422's `errors` map *is* real Laravel copy and is shown per field when
+`SafeServerMessage` accepts it.
 
 
 ## 5. Onboarding flow (Stitch 002–005)

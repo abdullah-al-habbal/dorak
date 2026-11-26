@@ -16,6 +16,7 @@ Referenced from [`../../AGENTS.md`](../../AGENTS.md).
 | a full page | `apps/<app>/lib/src/features/<feature>/<name>.screen.dart` |
 | a widget used by one feature | `.../features/<feature>/widgets/<name>.widget.dart` |
 | a widget reused across apps | `packages/design_system/lib/src/widgets/` |
+| a message for a failed request | `ErrorFeedback` / `InlineError` from `packages/feature_error_feedback`; app-only wording stays in the app |
 | a user-visible string | both ARB files, then `generate` |
 | an API call | a `.repository.dart` in `packages/core`, route constant in the matching `.endpoints.dart` |
 | a wire model | `packages/core/.../dto/<name>.dto.dart` + `build` |

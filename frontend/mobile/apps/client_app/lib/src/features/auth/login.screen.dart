@@ -1,21 +1,20 @@
 import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:design_system/design_system.dart';
 import 'package:localization/localization.dart';
 
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
 import 'package:client_app/src/features/auth/social_credential.provider.dart';
 import 'package:client_app/src/features/auth/social_login.bloc.dart';
 import 'package:client_app/src/features/auth/social_login.event.dart';
 import 'package:client_app/src/features/auth/social_login.state.dart';
-import 'package:client_app/src/features/auth/widgets/social_login_buttons.widget.dart';
 import 'package:client_app/src/features/auth/widgets/auth_entry_background.widget.dart';
 import 'package:client_app/src/features/auth/widgets/auth_header.widget.dart';
 import 'package:client_app/src/features/auth/widgets/auth_shell.widget.dart';
 import 'package:client_app/src/features/auth/widgets/login_content.widget.dart';
+import 'package:client_app/src/features/auth/widgets/social_login_buttons.widget.dart';
 
 class LoginScreen extends StatefulWidget {
   final AuthBloc auth;
@@ -145,10 +144,10 @@ class _LoginScreenState extends State<LoginScreen>
                               (sessionState.error! as ApiException).code ==
                                   ApiErrorCodeConstants
                                       .apiErrorCodeAccountBanned
-                          ? AuthError(message: l10n.authAccountSuspended)
+                          ? ErrorFeedback(message: l10n.authAccountSuspended)
                           : state.error == null
                           ? null
-                          : AuthError.from(
+                          : ErrorFeedback.from(
                               state.error!,
                               l10n,
                               unauthorizedMessage:

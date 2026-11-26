@@ -83,7 +83,7 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                       error: state.error!,
                       fallbackMessage: state.isUpdateError
                           ? l10n.businessUpdateFailed
-                          : l10n.businessLoadFailed,
+                          : l10n.commonLoadFailed,
                     ),
                     FilledButton(
                       onPressed: widget.bloc.load,

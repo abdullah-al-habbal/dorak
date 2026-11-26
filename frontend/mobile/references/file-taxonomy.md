@@ -22,7 +22,7 @@ Referenced from [`../CLAUDE.md`](../CLAUDE.md).
 | `.dto.dart` | Data Transfer Objects for network/storage serialization. | `packages/core`, `apps/*/data` |
 | `.endpoints.dart` | Domain-split API route declarations. | `packages/core/network/endpoints` |
 | `.repository.dart` | Repository contracts and implementations. | `packages/core`, `apps/*` |
-| `.provider.dart` | State management and dependency injection providers. | `core`, `apps/*` |
+| `.provider.dart` | State management and dependency injection providers, and stateless presentation logic in feature packages (which may not hold `.entity.dart`). | `core`, `apps/*`, `packages/feature_*` |
 | `.storage.dart` | Device persistence contracts and implementations (secure storage, preferences, cache). | `packages/core` only |
 | `.navigator.dart` | **DEPRECATED** — legacy route-flow coordinators (removed from `client_app` in Phase 2) | only `business_app`/`stylist_app` stubs |
 | `.router.dart` | Declarative `go_router` route table + redirects. | `apps/*` only |

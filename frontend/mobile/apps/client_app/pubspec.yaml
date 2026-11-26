@@ -59,6 +59,8 @@ dependencies:
     path: ../../packages/core
   design_system:
     path: ../../packages/design_system
+  feature_error_feedback:
+    path: ../../packages/feature_error_feedback
   localization:
     path: ../../packages/localization
   google_sign_in: ^7.2.0

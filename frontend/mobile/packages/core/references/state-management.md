@@ -26,7 +26,7 @@ The unauthorized signal lives on `ApiClient` as a broadcast `unauthorizedStream`
 removed in Phase 4. **Do not add `ChangeNotifier` state here.**
 
 Convention: success sets the owning bloc's signal for the router; failures land
-in `state.error` — screens map via `AuthError.from` (app layer). No Riverpod,
+in `state.error` — screens map via `ErrorFeedback.from` (app layer). No Riverpod,
 Provider or GetIt anywhere.
 
 **The canonical contract is

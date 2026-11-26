@@ -17,7 +17,7 @@ refreshToken() succeeds  -> persist rotated token, authenticated
   other ApiException     -> authenticated, token kept
 ```
 
-Auth-action failures surface in `state.error` (typed via `AuthError.from` in
+Auth-action failures surface in `state.error` (typed via `ErrorFeedback.from` in
 the app). `LogoutRequested` swallows the network failure and always clears local
 state. `SendVerificationCodeRequested` errors are swallowed — registration
 already succeeded. `SessionBloc` raises `sessionExpired` /

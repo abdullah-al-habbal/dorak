@@ -11,10 +11,7 @@ import 'package:business_app/src/features/shared/load_on_init.widget.dart';
 
 /// Read-only: brand services are written by the brand owner and the platform admin (F-07).
 class BusinessServicesScreen extends StatelessWidget {
-  const BusinessServicesScreen({
-    super.key,
-    required this.bloc,
-  });
+  const BusinessServicesScreen({super.key, required this.bloc});
 
   final BusinessServicesBloc bloc;
 
@@ -50,7 +47,7 @@ class BusinessServicesScreen extends StatelessWidget {
                   if (state.error != null)
                     FeatureError(
                       error: state.error!,
-                      fallbackMessage: l10n.businessLoadFailed,
+                      fallbackMessage: l10n.commonLoadFailed,
                     ),
                   if (state.services.isEmpty && state.error == null)
                     Text(l10n.businessServicesEmpty),

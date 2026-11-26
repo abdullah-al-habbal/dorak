@@ -9,6 +9,7 @@ childnodes:
   - mobile.docs
   - mobile.packages.core
   - mobile.packages.design-system
+  - mobile.packages.feature-error-feedback
   - mobile.packages.localization
   - mobile.references.codegen-policy
   - mobile.references.commands

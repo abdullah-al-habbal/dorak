@@ -258,9 +258,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorTitleGeneric => 'Something went wrong';
 
   @override
-  String get errorTitleOffline => 'You\'re offline';
-
-  @override
   String get emptyTitleGeneric => 'Nothing here yet';
 
   @override
@@ -458,9 +455,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changePasswordSubmit => 'Update Password';
-
-  @override
-  String get changePasswordSuccessTitle => 'Password Updated';
 
   @override
   String get changePasswordSuccessMessage => 'Your password has been changed.';
@@ -970,9 +964,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not create the barber. Please try again.';
 
   @override
-  String get bookingSavedAddressesLabel => 'Saved addresses';
-
-  @override
   String get bookingFirstAvailable => 'First available';
 
   @override
@@ -1032,9 +1023,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileEditAction => 'Edit profile';
-
-  @override
-  String get profileSavedAddressesAction => 'Saved addresses';
 
   @override
   String get profileEditTitle => 'Edit profile';
@@ -1407,10 +1395,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stylistSave => 'Save';
 
   @override
-  String get stylistSaved => 'Saved';
+  String get commonSaved => 'Saved';
 
   @override
-  String get stylistLoadFailed => 'Could not load. Pull to retry.';
+  String get commonLoadFailed => 'Could not load. Pull to retry.';
 
   @override
   String get stylistScheduleTitle => 'Weekly hours';
@@ -1555,12 +1543,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get businessSave => 'Save';
-
-  @override
-  String get businessSaved => 'Saved';
-
-  @override
-  String get businessLoadFailed => 'Could not load. Pull to retry.';
 
   @override
   String get businessUpdateFailed => 'Could not save. Please try again.';

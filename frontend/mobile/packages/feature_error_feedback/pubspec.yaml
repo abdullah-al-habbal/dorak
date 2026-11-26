@@ -1,0 +1,25 @@
+name: feature_error_feedback
+description: Shared, localized feedback for API failures.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.12.2
+  flutter: ">=1.17.0"
+
+dependencies:
+  core:
+    path: ../core
+  design_system:
+    path: ../design_system
+  flutter:
+    sdk: flutter
+  localization:
+    path: ../localization
+
+dev_dependencies:
+  dio: ^5.7.0
+  flutter_test:
+    sdk: flutter
+
+resolution: workspace

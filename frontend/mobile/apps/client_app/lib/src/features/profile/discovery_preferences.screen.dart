@@ -1,4 +1,5 @@
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +9,6 @@ import 'package:client_app/src/features/profile/discovery_preferences.bloc.dart'
 import 'package:client_app/src/features/profile/discovery_preferences.state.dart';
 import 'package:client_app/src/features/profile/discovery_preferences_constants.entity.dart';
 import 'package:client_app/src/features/profile/widgets/brand_visibility_sheet.widget.dart';
-import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class DiscoveryPreferencesScreen extends StatefulWidget {
   const DiscoveryPreferencesScreen({super.key, required this.cubit});
@@ -55,7 +55,7 @@ class _DiscoveryPreferencesScreenState
             return StatusView(
               icon: Icons.error_outline,
               title: l10n.errorTitleGeneric,
-              message: LoadErrorMessage.of(l10n, state.error),
+              message: ErrorFeedback.loadMessage(l10n, state.error),
               actionLabel: l10n.actionRetry,
               onAction: widget.cubit.load,
             );

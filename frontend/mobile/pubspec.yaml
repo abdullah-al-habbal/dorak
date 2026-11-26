@@ -12,6 +12,7 @@ workspace:
   - apps/stylist_app
   - packages/design_system
   - packages/core
+  - packages/feature_error_feedback
   - packages/localization
 
 melos:

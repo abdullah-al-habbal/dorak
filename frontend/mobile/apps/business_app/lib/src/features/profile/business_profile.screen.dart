@@ -92,7 +92,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
             _field(_tagsEn, l10n.businessProfileTagsEnglish),
             _field(_tagsAr, l10n.businessProfileTagsArabic),
             if (state.error != null) FeatureError(error: state.error!),
-            if (state.saved) Text(l10n.businessSaved),
+            if (state.saved) Text(l10n.commonSaved),
             const SizedBox(height: 12),
             FilledButton(
               onPressed: state.saving

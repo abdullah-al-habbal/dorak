@@ -56,7 +56,7 @@ class BusinessHoursScreen extends StatelessWidget {
                 if (state.issue == HoursIssue.invalidRange)
                   Text(l10n.businessHoursInvalidRange),
                 if (state.error != null) FeatureError(error: state.error!),
-                if (state.saved) Text(l10n.businessSaved),
+                if (state.saved) Text(l10n.commonSaved),
                 const SizedBox(height: DorakDimensions.spacingMedium),
                 FilledButton(
                   onPressed: state.saving ? null : bloc.save,

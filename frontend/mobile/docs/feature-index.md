@@ -40,6 +40,9 @@ codeanchors:
   - `status_banner.widget.dart` — Track 12: compact inline message row (promoted from auth's `AuthErrorBanner`, used by login/sign-up/verify)
   - `locale_switcher.widget.dart` — shrink-wrap `TextButton`, `label` + `onPressed` (the shared EN/AR toggle button; rendered identically by `OnboardingHeader` and auth's `AuthHeader`/entry)
 
+### feature_error_feedback
+- `ErrorFeedback` (action and load messages, field errors), `SafeServerMessage`, `DeleteAccountErrorMessage`, `ExternalLinkFeedback`, `InlineError`. Used by all three apps; see `packages/feature_error_feedback/AGENTS.md`.
+
 ### localization
 - Source of truth: `l10n/app_en.arb` (template) + `app_ar.arb` (Arabic). Every key exists in BOTH locales.
 - Generated output `lib/src/generated/` via `flutter gen-l10n` (committed, excluded from analyzer/taxonomy).

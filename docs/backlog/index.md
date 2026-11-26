@@ -68,6 +68,8 @@ Facebook sign-in are unsupported (G9).
 | BG-40 | A 403 `feature_not_enabled` or `brand_suspended` signed the user out. Fixed in code (both keep the session; a suspended brand's branch and service screens are read-only; every other 403 still signs out). Open: device check with a suspended brand and a disabled premium feature. | Mobile | S |
 | BG-41 | The business and stylist apps ignored `ACCOUNT_BANNED`, leaving a banned user on a signed-in screen. Fixed in code (session, push and realtime end; login shows the suspension). Open: device check in both apps. | Mobile | S |
 | BG-42 | An error response without a JSON envelope (a proxy 502 or an HTML 401) was reported as no connection, and many screens showed "no connection" for any failure. Fixed in code. Open: device check offline and against a failing server. | Mobile | S |
+| BG-43 | A branch whose brand is suspended while its manager is signed in gets 403 `ACCOUNT_NOT_ACTIVE` (`EnsureBranchAccountAccess`), and the business app signs the manager out without saying why. From source only; not run. | Mobile | S |
+| BG-44 | The owner's read-only mode uses the brand status the app last loaded, so after a new suspension the buttons stay enabled until the owner home reloads. The server rejects the writes (`brand_suspended`). | Mobile | S |
 
 ## 3. Missing features
 
@@ -110,6 +112,8 @@ Facebook sign-in are unsupported (G9).
 - TD-17 Notifications written before LOC-4 keep their English `title` and `body`; the mobile inbox shows them as stored. Accepted: no data-cleanup migration while there is no real data (dev migration rule). Revisit if a long-lived environment holds Arabic users.
 - TD-19 English still mixes "barber" and "stylist" for the same person (about 45 dashboard strings in `src/locales/en/` and about 23 in `app_en.arb`, for example `barber-approvals`, the discovery subtitle and the booking conflict message), while Arabic now says المصفف throughout (2026-11-23). Decide the English standard (the UI mostly says "Stylist"), align it, and extend the terminology guard to English.
 - TD-20 The six notification jobs (`AffiliationInvited`, `AffiliationResponded`, `SendBookingStatus`, `JobApplicationReceived`, `JobApplicationStatusChanged`, `ReviewRequest`) still take a `$locale` constructor argument that is no longer used since the push text is written per recipient and per device (Push P1.2). Remove it together with its dispatch sites and tests.
+- TD-21 Mobile: the three apps still each have their own copy of the feedback screen and of the about/support screen layout; only the link-failure handling is shared (`feature_error_feedback`).
+- TD-22 A wrong password on account deletion answers 401, so the two delete calls opt out of the session-expiry signal (`keepSessionOn401`). A distinct backend code (a 422) would remove the exception; it must stay compatible with released apps.
 
 ## 5. Test gaps
 

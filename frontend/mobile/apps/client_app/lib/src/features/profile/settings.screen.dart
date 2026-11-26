@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
 import 'package:client_app/src/features/profile/settings.bloc.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -127,7 +127,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       if (error != null) ...[
                         const SizedBox(height: DorakDimensions.spacingMedium),
                         Text(
-                          AuthError.from(error, l10n).message,
+                          ErrorFeedback.from(
+                            error,
+                            l10n,
+                            showsFieldMessagesInBanner: true,
+                          ).message,
                           style: TextStyle(
                             color: DorakColors.of(context).error,
                           ),

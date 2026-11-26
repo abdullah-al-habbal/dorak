@@ -37,8 +37,8 @@ Also declared and unused: `forgot-password`, `reset-password`,
    and references ~21, falling back to the key itself. A rejected login returns
    the literal `core::messages.invalid_credentials`. **Never render
    `ApiException.message`.** Map status + type to a local ARB string via
-   `AuthError.from`. The `errors` map on a 422 *is* real Laravel copy and is
-   safe to show per-field.
+   `ErrorFeedback.from`. The `errors` map on a 422 *is* real Laravel copy and is
+   shown per field after `SafeServerMessage` filters it.
 2. **No `GET /client/me`.** There is no way to fetch the current user. This is
    why session restore probes with `refresh-token`.
 3. **`MAIL_MAILER=log`.** Verification and reset codes are written to

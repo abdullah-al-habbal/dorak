@@ -1,10 +1,9 @@
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
-
-import 'package:business_app/src/core/errors/api_error.entity.dart';
 
 class BusinessForgotPasswordScreen extends StatefulWidget {
   const BusinessForgotPasswordScreen({
@@ -95,10 +94,11 @@ class _BusinessForgotPasswordScreenState
     return Padding(
       padding: const EdgeInsets.only(top: DorakDimensions.spacingMedium),
       child: StatusBanner(
-        message: ApiError.from(
+        message: ErrorFeedback.from(
           state.error!,
           l10n,
           fallbackMessage: fallback,
+          showsFieldMessagesInBanner: true,
         ).message,
       ),
     );

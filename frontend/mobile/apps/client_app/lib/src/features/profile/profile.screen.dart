@@ -141,9 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: DorakDimensions.spacingSmall),
                     SecondaryButton(
-                      label: AppLocalizations.of(
-                        context,
-                      )!.profileSavedAddressesAction,
+                      label: AppLocalizations.of(context)!.savedAddressesTitle,
                       onPressed: widget.onSavedAddresses,
                     ),
                     const SizedBox(height: DorakDimensions.spacingSmall),

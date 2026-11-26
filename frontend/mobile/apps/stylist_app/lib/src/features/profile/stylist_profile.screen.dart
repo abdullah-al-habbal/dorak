@@ -77,7 +77,7 @@ class _StylistProfileScreenState extends State<StylistProfileScreen> {
                   onChanged: widget.bloc.setTravelRadius,
                 ),
                 if (state.error != null) FeatureError(error: state.error!),
-                if (state.saved) Text(l10n.stylistSaved),
+                if (state.saved) Text(l10n.commonSaved),
                 FilledButton(
                   onPressed: state.saving
                       ? null

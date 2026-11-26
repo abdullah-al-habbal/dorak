@@ -16,7 +16,7 @@ Implement reusable:
 * Button loading. — `DONE` (`PrimaryButton.isLoading` — was already implemented and used by every auth form; the earlier `PENDING` status was a recording error. `SecondaryButton` deliberately has no `isLoading` — no consumer needs it)
 * Shimmer. — `DONE` (`ShimmerBox`, hand-rolled, no package — `docs/design-system/components/shimmer/text.md`)
 * Empty. — `DONE` (`StatusView` — `docs/design-system/states/empty.md`)
-* Error. — `DONE` (`StatusView` full-page, `StatusBanner` inline; `AuthError.from` stays in the app — `docs/design-system/states/network-error.md`)
+* Error. — `DONE` (`StatusView` full-page, `StatusBanner` inline; `ErrorFeedback.from` stays in the app — `docs/design-system/states/network-error.md`)
 * Offline. — `DONE` (presentation variant of error; no connectivity package — `docs/design-system/states/offline.md`)
 * Retry. — `DONE` (an action on `StatusView`/`StatusBanner`, not a widget — `docs/design-system/states/retry.md`)
 * Session expired. — `DONE` (401/403 on an authenticated request →

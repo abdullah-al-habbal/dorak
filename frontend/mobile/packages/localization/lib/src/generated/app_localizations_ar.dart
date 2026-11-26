@@ -260,9 +260,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorTitleGeneric => 'حدث خطأ ما';
 
   @override
-  String get errorTitleOffline => 'أنت غير متصل بالإنترنت';
-
-  @override
   String get emptyTitleGeneric => 'لا يوجد شيء هنا بعد';
 
   @override
@@ -459,9 +456,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get changePasswordSubmit => 'تحديث كلمة المرور';
-
-  @override
-  String get changePasswordSuccessTitle => 'تم تحديث كلمة المرور';
 
   @override
   String get changePasswordSuccessMessage => 'تم تغيير كلمة المرور الخاصة بك.';
@@ -964,9 +958,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get managerBarberCreateError => 'تعذر إنشاء المصفف. حاول مجدداً.';
 
   @override
-  String get bookingSavedAddressesLabel => 'العناوين المحفوظة';
-
-  @override
   String get bookingFirstAvailable => 'أول متاح';
 
   @override
@@ -1024,9 +1015,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileEditAction => 'تعديل الملف الشخصي';
-
-  @override
-  String get profileSavedAddressesAction => 'العناوين المحفوظة';
 
   @override
   String get profileEditTitle => 'تعديل الملف الشخصي';
@@ -1401,10 +1389,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get stylistSave => 'حفظ';
 
   @override
-  String get stylistSaved => 'تم الحفظ';
+  String get commonSaved => 'تم الحفظ';
 
   @override
-  String get stylistLoadFailed => 'تعذر التحميل. اسحب للمحاولة مجددًا.';
+  String get commonLoadFailed => 'تعذر التحميل. اسحب للمحاولة مجددًا.';
 
   @override
   String get stylistScheduleTitle => 'ساعات العمل الأسبوعية';
@@ -1549,12 +1537,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get businessSave => 'حفظ';
-
-  @override
-  String get businessSaved => 'تم الحفظ';
-
-  @override
-  String get businessLoadFailed => 'تعذر التحميل. اسحب للمحاولة مجددًا.';
 
   @override
   String get businessUpdateFailed => 'تعذر الحفظ. حاول مرة أخرى.';

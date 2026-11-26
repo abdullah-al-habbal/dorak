@@ -36,7 +36,7 @@ through a `BlocBuilder`.
 
 Success and failure never rethrow: auth actions emit `isSubmitting`, land
 failures in `state.error`, and set a one-shot signal on success. The
-app layer maps errors via `AuthError.from` and drives navigation from signals.
+app layer maps errors via `ErrorFeedback.from` and drives navigation from signals.
 
 ## State
 

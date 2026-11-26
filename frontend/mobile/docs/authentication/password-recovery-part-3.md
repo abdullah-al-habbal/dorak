@@ -12,7 +12,7 @@ Part 3 of 3 · [Password Recovery](password-recovery.md) · [Previous](password-
 
 Nothing new was invented. `AuthShell` (layout), `AuthHeader`, `AuthTextField`,
 `OtpInputField`, `StatusBanner`, `PrimaryButton.isLoading`, `AuthValidators`,
-`AuthError.from`, and the 60 s cooldown pattern from `verify_account_content`.
+`ErrorFeedback.from`, and the 60 s cooldown pattern from `verify_account_content`.
 
 **Screen 014 is `StatusView`'s first production consumer** — icon, title, message,
 single action is exactly its shape. That is what validates the Track 12 contract on

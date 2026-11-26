@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
+import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
 import 'package:client_app/src/features/auth/auth_validators.entity.dart';
 import 'package:client_app/src/features/auth/widgets/auth_text_field.widget.dart';
 
@@ -13,7 +12,7 @@ class ForgotPasswordContent extends StatefulWidget {
   final Animation<double> actionsAnimation;
   final void Function(String email) onSubmit;
   final VoidCallback onReturnToLogIn;
-  final AuthError? error;
+  final ErrorFeedback? error;
   final bool isSubmitting;
 
   const ForgotPasswordContent({

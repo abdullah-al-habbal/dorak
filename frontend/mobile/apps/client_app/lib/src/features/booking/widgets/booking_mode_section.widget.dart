@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
@@ -9,7 +10,6 @@ import 'package:client_app/src/features/booking/branch_detail.state.dart';
 import 'package:client_app/src/features/booking/widgets/at_home_booking_fields.widget.dart';
 import 'package:client_app/src/features/booking/widgets/chair_services.widget.dart';
 import 'package:client_app/src/features/booking/widgets/floor_plan_grid.widget.dart';
-import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BookingModeSection extends StatelessWidget {
   const BookingModeSection({
@@ -64,7 +64,7 @@ class BookingModeSection extends StatelessWidget {
         const SizedBox(height: DorakDimensions.spacingLarge),
       ] else if (state.planError != null) ...[
         StatusBanner(
-          message: LoadErrorMessage.of(l10n, state.planError),
+          message: ErrorFeedback.loadMessage(l10n, state.planError),
           actionLabel: l10n.actionRetry,
           onAction: () => bloc.add(const BranchDetailRetried()),
         ),

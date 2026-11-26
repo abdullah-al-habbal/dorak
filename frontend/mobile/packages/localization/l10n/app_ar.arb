@@ -326,10 +326,6 @@
   "@errorTitleGeneric": {
     "description": "Fallback error state title"
   },
-  "errorTitleOffline": "أنت غير متصل بالإنترنت",
-  "@errorTitleOffline": {
-    "description": "Offline state title"
-  },
   "emptyTitleGeneric": "لا يوجد شيء هنا بعد",
   "@emptyTitleGeneric": {
     "description": "Fallback empty state title"
@@ -487,10 +483,6 @@
   "changePasswordSubmit": "تحديث كلمة المرور",
   "@changePasswordSubmit": {
     "description": "Change password submit button label"
-  },
-  "changePasswordSuccessTitle": "تم تحديث كلمة المرور",
-  "@changePasswordSuccessTitle": {
-    "description": "Change password success title"
   },
   "changePasswordSuccessMessage": "تم تغيير كلمة المرور الخاصة بك.",
   "@changePasswordSuccessMessage": {
@@ -1120,7 +1112,6 @@
   "@managerBarberCreateError": {
     "description": "Manual barber creation generic failure"
   },
-  "bookingSavedAddressesLabel": "العناوين المحفوظة",
   "bookingFirstAvailable": "أول متاح",
   "bookingPreferredBarber": "المصفف المفضل",
   "bookingSummaryTitle": "ملخص الحجز",
@@ -1141,7 +1132,6 @@
   "bookingTrackerCancelled": "تم إلغاء هذا الموعد."
   ,"bookingTrackAction": "تتبع الموعد",
   "profileEditAction": "تعديل الملف الشخصي",
-  "profileSavedAddressesAction": "العناوين المحفوظة",
   "profileEditTitle": "تعديل الملف الشخصي",
   "profileSaveAction": "حفظ",
   "profileFullNameLabel": "الاسم الكامل",
@@ -1289,8 +1279,8 @@
   "stylistCancelReasonRequired": "أدخل السبب",
   "stylistCancelKeep": "إبقاء الحجز",
   "stylistSave": "حفظ",
-  "stylistSaved": "تم الحفظ",
-  "stylistLoadFailed": "تعذر التحميل. اسحب للمحاولة مجددًا.",
+  "commonSaved": "تم الحفظ",
+  "commonLoadFailed": "تعذر التحميل. اسحب للمحاولة مجددًا.",
   "stylistScheduleTitle": "ساعات العمل الأسبوعية",
   "stylistScheduleStart": "البداية",
   "stylistScheduleEnd": "النهاية",
@@ -1340,8 +1330,6 @@
   "businessMenuProfile": "ملف الفرع",
   "businessMenuReviews": "التقييمات",
   "businessSave": "حفظ",
-  "businessSaved": "تم الحفظ",
-  "businessLoadFailed": "تعذر التحميل. اسحب للمحاولة مجددًا.",
   "businessUpdateFailed": "تعذر الحفظ. حاول مرة أخرى.",
   "businessFeatureNotEnabled": "هذه الميزة ليست ضمن باقتك الحالية. قم بالترقية لاستخدامها.",
   "businessJobsTitle": "الوظائف",

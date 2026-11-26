@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:localization/localization.dart';
 
 abstract final class BranchBookingError {
@@ -29,10 +30,8 @@ abstract final class BranchBookingError {
       return l10n.bookingConflictMessage;
     }
     if (error is ValidationException) {
-      final fields = error.errors.values
-          .expand((messages) => messages)
-          .join('\n');
-      if (fields.isNotEmpty) return fields;
+      final messages = SafeServerMessage.joined(error);
+      if (messages != null) return messages;
     }
     if (error is StateError) return l10n.bookingAtHomeLocationError;
     if (error is NetworkException) return l10n.errorNetwork;

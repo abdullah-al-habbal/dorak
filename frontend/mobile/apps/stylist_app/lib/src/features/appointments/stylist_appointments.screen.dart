@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
@@ -8,7 +9,6 @@ import 'package:stylist_app/src/features/appointments/stylist_appointments.bloc.
 import 'package:stylist_app/src/features/appointments/stylist_appointments.state.dart';
 import 'package:stylist_app/src/features/appointments/widgets/past_appointment_tile.widget.dart';
 import 'package:stylist_app/src/features/shared/load_on_init.widget.dart';
-import 'package:stylist_app/src/core/errors/api_error.entity.dart';
 
 class StylistAppointmentsScreen extends StatelessWidget {
   const StylistAppointmentsScreen({super.key, required this.bloc});
@@ -78,7 +78,7 @@ class StylistAppointmentsScreen extends StatelessWidget {
       return StatusView(
         icon: Icons.error_outline,
         title: l10n.errorTitleGeneric,
-        message: ApiError.from(state.page.error!, l10n).message,
+        message: ErrorFeedback.loadMessage(l10n, state.page.error),
         actionLabel: l10n.actionRetry,
         onAction: bloc.load,
       );

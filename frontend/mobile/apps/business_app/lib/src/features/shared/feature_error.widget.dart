@@ -1,9 +1,10 @@
 import 'package:core/core.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
-import 'package:business_app/src/core/errors/api_error.entity.dart';
-
+/// The shared inline error with this app's default message and its wording
+/// for a premium feature that is off.
 class FeatureError extends StatelessWidget {
   const FeatureError({super.key, required this.error, this.fallbackMessage});
 
@@ -13,19 +14,12 @@ class FeatureError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final message = error is FeatureNotEnabledException
-        ? l10n.businessFeatureNotEnabled
-        : ApiError.from(
-            error,
-            l10n,
-            fallbackMessage: fallbackMessage ?? l10n.businessUpdateFailed,
-          ).message;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Text(
-        message,
-        style: TextStyle(color: Theme.of(context).colorScheme.error),
-      ),
+    return InlineError(
+      error: error,
+      fallbackMessage: fallbackMessage ?? l10n.businessUpdateFailed,
+      message: error is FeatureNotEnabledException
+          ? l10n.businessFeatureNotEnabled
+          : null,
     );
   }
 }

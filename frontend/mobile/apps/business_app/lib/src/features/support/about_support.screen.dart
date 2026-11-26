@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
@@ -17,14 +18,6 @@ class AboutSupportScreen extends StatelessWidget {
   final VoidCallback onFeedback;
   final ExternalLinkOpener linkOpener;
   final AppInfoProvider appInfo;
-
-  Future<void> _open(BuildContext context, Uri uri) async {
-    final messenger = ScaffoldMessenger.of(context);
-    final failed = AppLocalizations.of(context)!.openLinkFailed;
-    if (!await linkOpener.open(uri)) {
-      messenger.showSnackBar(SnackBar(content: Text(failed)));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,24 +41,43 @@ class AboutSupportScreen extends StatelessWidget {
                 items: [
                   AboutLinkItem(
                     label: l10n.legalPrivacyPolicy,
-                    onTap: () => _open(context, legalLinks.privacy(language)),
+                    onTap: () => ExternalLinkFeedback.open(
+                      context,
+                      linkOpener,
+                      legalLinks.privacy(language),
+                    ),
                   ),
                   AboutLinkItem(
                     label: l10n.legalTermsOfService,
-                    onTap: () => _open(context, legalLinks.terms(language)),
+                    onTap: () => ExternalLinkFeedback.open(
+                      context,
+                      linkOpener,
+                      legalLinks.terms(language),
+                    ),
                   ),
                   AboutLinkItem(
                     label: l10n.legalAboutDorak,
-                    onTap: () => _open(context, legalLinks.about(language)),
+                    onTap: () => ExternalLinkFeedback.open(
+                      context,
+                      linkOpener,
+                      legalLinks.about(language),
+                    ),
                   ),
                   AboutLinkItem(
                     label: l10n.legalContactUs,
-                    onTap: () => _open(context, legalLinks.contact(language)),
+                    onTap: () => ExternalLinkFeedback.open(
+                      context,
+                      linkOpener,
+                      legalLinks.contact(language),
+                    ),
                   ),
                   AboutLinkItem(
                     label: l10n.legalDeleteAccountInfo,
-                    onTap: () =>
-                        _open(context, legalLinks.deleteAccount(language)),
+                    onTap: () => ExternalLinkFeedback.open(
+                      context,
+                      linkOpener,
+                      legalLinks.deleteAccount(language),
+                    ),
                   ),
                 ],
               );

@@ -36,7 +36,7 @@ class StylistJobDetailScreen extends StatelessWidget {
                   ? const Center(child: CircularProgressIndicator())
                   : FeatureError(
                       error: state.error!,
-                      fallbackMessage: l10n.stylistLoadFailed,
+                      fallbackMessage: l10n.commonLoadFailed,
                     );
             }
             return ListView(

@@ -32,7 +32,7 @@ Objectives:
 * Success. — `DONE` (absence of `error` plus data; no separate flag)
 * Empty. — `DONE` (`success && data.isEmpty`, never rendered as an error)
 * Error. — `DONE`. Failures land in `state.error`; blocs never rethrow; the app
-  localizes via `AuthError.from` — a backend `message` is never rendered.
+  localizes via `ErrorFeedback.from` — a backend `message` is never rendered.
 * Refresh. — `DONE` (`docs/state-management/refresh.md`; first-load vs
   load-more vs refresh, and refresh vs filter change)
 * Pagination. — `IN_PROGRESS`. The `Paged<T>` contract exists in

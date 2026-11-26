@@ -103,15 +103,13 @@ void main() {
     expect(find.text('Passwords do not match'), findsOneWidget);
   });
 
-  testWidgets('wrong current password shows a localized field error', (
-    tester,
-  ) async {
-    repository.changePasswordError = const ValidationException(
+  Future<void> submitRefused(WidgetTester tester, String serverMessage) async {
+    repository.changePasswordError = ValidationException(
       statusCode: 422,
       code: 'VALIDATION_FAILED',
       message: 'core::messages.validation_failed',
       errors: {
-        'current_password': ['The current password is incorrect.'],
+        'current_password': [serverMessage],
       },
     );
     final router = await pumpProfile(tester);
@@ -123,8 +121,24 @@ void main() {
       next: 'new-secret123',
       confirm: 'new-secret123',
     );
+  }
+
+  testWidgets('a refused current password shows the server field message', (
+    tester,
+  ) async {
+    await submitRefused(tester, 'The current password is incorrect.');
+
+    expect(find.text('The current password is incorrect.'), findsOneWidget);
+    expect(find.text('core::messages.validation_failed'), findsNothing);
+    expect(find.text('Password Updated'), findsNothing);
+  });
+
+  testWidgets('an untranslated server key falls back to the field text', (
+    tester,
+  ) async {
+    await submitRefused(tester, 'validation.current_password');
 
     expect(find.text('Please check this field'), findsOneWidget);
-    expect(find.text('Password Updated'), findsNothing);
+    expect(find.text('validation.current_password'), findsNothing);
   });
 }

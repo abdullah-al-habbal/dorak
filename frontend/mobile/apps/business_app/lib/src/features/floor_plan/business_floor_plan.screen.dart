@@ -45,7 +45,7 @@ class BusinessFloorPlanScreen extends StatelessWidget {
               ),
             ),
             if (state.error != null) FeatureError(error: state.error!),
-            if (state.saved) Text(l10n.businessSaved),
+            if (state.saved) Text(l10n.commonSaved),
             FilledButton(
               onPressed: state.saving ? null : bloc.save,
               child: Text(l10n.businessSave),

@@ -59,7 +59,7 @@ class StylistScheduleScreen extends StatelessWidget {
                   ),
                 if (issue != null) Text(issue),
                 if (state.error != null) FeatureError(error: state.error!),
-                if (state.saved) Text(l10n.stylistSaved),
+                if (state.saved) Text(l10n.commonSaved),
                 const SizedBox(height: 12),
                 FilledButton(
                   onPressed: state.saving ? null : bloc.save,

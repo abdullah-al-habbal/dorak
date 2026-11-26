@@ -1,11 +1,10 @@
+import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
-import 'package:design_system/design_system.dart';
-
 import 'package:client_app/src/features/profile/face_analysis.state.dart';
 import 'package:client_app/src/features/profile/widgets/face_photo.widget.dart';
-import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class FaceCard extends StatelessWidget {
   const FaceCard({
@@ -52,7 +51,7 @@ class FaceCard extends StatelessWidget {
   }
 
   Widget _errorContent(BuildContext context, AppLocalizations l10n) {
-    final message = LoadErrorMessage.of(l10n, state.error);
+    final message = ErrorFeedback.loadMessage(l10n, state.error);
     return StatusView(
       icon: Icons.error_outline,
       title: l10n.errorTitleGeneric,
@@ -77,7 +76,7 @@ class FaceCard extends StatelessWidget {
               bottom: DorakDimensions.spacingSmall,
             ),
             child: StatusBanner(
-              message: LoadErrorMessage.of(l10n, state.catalogError),
+              message: ErrorFeedback.loadMessage(l10n, state.catalogError),
             ),
           ),
         Row(

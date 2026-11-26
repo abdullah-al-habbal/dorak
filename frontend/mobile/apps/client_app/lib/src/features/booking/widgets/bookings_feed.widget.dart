@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
@@ -12,7 +13,6 @@ import 'package:client_app/src/features/booking/booking.state.dart';
 import 'package:client_app/src/features/booking/booking_eligibility.entity.dart';
 import 'package:client_app/src/features/booking/widgets/booking_card.widget.dart';
 import 'package:client_app/src/features/booking/widgets/bookings_filter.widget.dart';
-import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BookingsFeed extends StatefulWidget {
   const BookingsFeed({
@@ -174,7 +174,7 @@ class _BookingsFeedState extends State<BookingsFeed> {
           vertical: DorakDimensions.spacingSmall,
         ),
         child: StatusBanner(
-          message: LoadErrorMessage.of(l10n, widget.state.page.error),
+          message: ErrorFeedback.loadMessage(l10n, widget.state.page.error),
           actionLabel: l10n.actionRetry,
           onAction: () => widget.bloc.add(const BookingsRetryRequested()),
         ),

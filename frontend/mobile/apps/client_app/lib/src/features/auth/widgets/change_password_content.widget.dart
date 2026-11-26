@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
+import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
 import 'package:client_app/src/features/auth/auth_validators.entity.dart';
 import 'package:client_app/src/features/auth/widgets/auth_text_field.widget.dart';
 
@@ -14,7 +13,7 @@ class ChangePasswordContent extends StatefulWidget {
     required String passwordConfirmation,
   })
   onSubmit;
-  final AuthError? error;
+  final ErrorFeedback? error;
   final bool isSubmitting;
 
   const ChangePasswordContent({
@@ -122,7 +121,7 @@ class _ChangePasswordContentState extends State<ChangePasswordContent> {
     );
   }
 
-  String _bannerMessage(AuthError error) {
+  String _bannerMessage(ErrorFeedback error) {
     final fieldMessages = error.fieldErrors.values
         .expand((messages) => messages)
         .join('\n');

@@ -1,8 +1,8 @@
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
-import 'package:business_app/src/core/errors/api_error.entity.dart';
 import 'package:business_app/src/features/barbers/manual_barber.bloc.dart';
 import 'package:business_app/src/features/barbers/manual_barber.event.dart';
 import 'package:business_app/src/features/barbers/manual_barber.state.dart';
@@ -72,10 +72,11 @@ class _ManualBarberFormState extends State<ManualBarberForm> {
         if (widget.state.error != null) ...[
           const SizedBox(height: DorakDimensions.spacingMedium),
           StatusBanner(
-            message: ApiError.from(
+            message: ErrorFeedback.from(
               widget.state.error!,
               l10n,
               fallbackMessage: l10n.managerBarberCreateError,
+              showsFieldMessagesInBanner: true,
             ).message,
           ),
         ],

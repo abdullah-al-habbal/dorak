@@ -56,7 +56,7 @@ class StylistEarningsScreen extends StatelessWidget {
                   if (state.error != null)
                     FeatureError(
                       error: state.error!,
-                      fallbackMessage: l10n.stylistLoadFailed,
+                      fallbackMessage: l10n.commonLoadFailed,
                     ),
                   if (totals.isEmpty && state.error == null)
                     Padding(

@@ -24,8 +24,8 @@ StatusView(
 Full-page failure of a first load (`Paged<T>.hasFailedFirst`). Pass
 `colors.error` as `iconColor` to switch the neutral default to the error tone.
 The `errorGeneric` / `errorNetwork` ARB message bodies are existing keys; the
-title keys (`errorTitleGeneric`, `errorTitleOffline`) are the Track 12
+title key (`errorTitleGeneric`) is the Track 12
 fallbacks.
 
-Mapping exceptions to ARB strings stays in the app layer (`AuthError.from` is
-the precedent) — `design_system` never resolves a string.
+Mapping exceptions to ARB strings lives in `feature_error_feedback`
+(`ErrorFeedback.from`) and the apps — `design_system` never resolves a string.

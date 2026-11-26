@@ -1,8 +1,8 @@
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
-import 'package:stylist_app/src/core/errors/api_error.entity.dart';
-
+/// The shared inline error with this app's default message.
 class FeatureError extends StatelessWidget {
   const FeatureError({super.key, required this.error, this.fallbackMessage});
 
@@ -12,17 +12,9 @@ class FeatureError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final message = ApiError.from(
-      error,
-      l10n,
+    return InlineError(
+      error: error,
       fallbackMessage: fallbackMessage ?? l10n.stylistUpdateFailed,
-    ).message;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Text(
-        message,
-        style: TextStyle(color: Theme.of(context).colorScheme.error),
-      ),
     );
   }
 }

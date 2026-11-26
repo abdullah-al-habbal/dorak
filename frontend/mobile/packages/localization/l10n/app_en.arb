@@ -326,10 +326,6 @@
   "@errorTitleGeneric": {
     "description": "Fallback error state title"
   },
-  "errorTitleOffline": "You're offline",
-  "@errorTitleOffline": {
-    "description": "Offline state title"
-  },
   "emptyTitleGeneric": "Nothing here yet",
   "@emptyTitleGeneric": {
     "description": "Fallback empty state title"
@@ -577,10 +573,6 @@
   "changePasswordSubmit": "Update Password",
   "@changePasswordSubmit": {
     "description": "Change password submit button label"
-  },
-  "changePasswordSuccessTitle": "Password Updated",
-  "@changePasswordSuccessTitle": {
-    "description": "Change password success title"
   },
   "changePasswordSuccessMessage": "Your password has been changed.",
   "@changePasswordSuccessMessage": {
@@ -1225,7 +1217,6 @@
   "@managerBarberCreateError": {
     "description": "Manual barber creation generic failure"
   },
-  "bookingSavedAddressesLabel": "Saved addresses",
   "bookingFirstAvailable": "First available",
   "bookingPreferredBarber": "Preferred barber",
   "bookingSummaryTitle": "Booking summary",
@@ -1246,7 +1237,6 @@
   "bookingTrackerCancelled": "This appointment was cancelled."
   ,"bookingTrackAction": "Track appointment",
   "profileEditAction": "Edit profile",
-  "profileSavedAddressesAction": "Saved addresses",
   "profileEditTitle": "Edit profile",
   "profileSaveAction": "Save",
   "profileFullNameLabel": "Full name",
@@ -1425,8 +1415,8 @@
   "stylistCancelReasonRequired": "Enter a reason",
   "stylistCancelKeep": "Keep booking",
   "stylistSave": "Save",
-  "stylistSaved": "Saved",
-  "stylistLoadFailed": "Could not load. Pull to retry.",
+  "commonSaved": "Saved",
+  "commonLoadFailed": "Could not load. Pull to retry.",
   "stylistScheduleTitle": "Weekly hours",
   "stylistScheduleStart": "Start",
   "stylistScheduleEnd": "End",
@@ -1476,8 +1466,6 @@
   "businessMenuProfile": "Branch profile",
   "businessMenuReviews": "Reviews",
   "businessSave": "Save",
-  "businessSaved": "Saved",
-  "businessLoadFailed": "Could not load. Pull to retry.",
   "businessUpdateFailed": "Could not save. Please try again.",
   "businessFeatureNotEnabled": "This feature is not part of your current plan. Upgrade to use it.",
   "businessJobsTitle": "Job postings",

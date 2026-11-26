@@ -11,7 +11,7 @@ Part 2 of 3 · [keys](keys.md) · [Previous](keys.md) · [Next](keys-part-3.md)
 **Change password (Track 17)** — `changePasswordTitle` `changePasswordSubtitle`
 `changePasswordCurrentLabel` `changePasswordNewLabel`
 `changePasswordConfirmLabel` `changePasswordSubmit`
-`changePasswordSuccessTitle` `changePasswordSuccessMessage`
+`changePasswordSuccessMessage`
 `changePasswordDone`
 
 **My Bookings (017a)** — `bookingsTabLabel` `bookingFilterUpcoming`

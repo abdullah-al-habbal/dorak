@@ -1,8 +1,7 @@
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
-
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
 
 class SignUpActions extends StatelessWidget {
   const SignUpActions({
@@ -19,7 +18,7 @@ class SignUpActions extends StatelessWidget {
   final Animation<double> animation;
   final AppLocalizations l10n;
   final DorakColors colors;
-  final AuthError? error;
+  final ErrorFeedback? error;
   final bool isSubmitting;
   final VoidCallback onSubmit;
   final VoidCallback onLogInLink;

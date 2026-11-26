@@ -18,7 +18,7 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 `fieldInvalidEmail` `fieldPasswordTooShort` `fieldPasswordMismatch`
 
 **Global states (Track 12)** — `actionRetry` `errorTitleGeneric`
-`errorTitleOffline` `emptyTitleGeneric` `emptyMessageGeneric`
+`emptyTitleGeneric` `emptyMessageGeneric`
 
 **Locale toggle** — `localeArabic` `localeEnglish`
 

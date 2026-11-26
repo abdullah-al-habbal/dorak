@@ -1,16 +1,16 @@
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
+import 'package:client_app/src/features/auth/auth_code_constants.entity.dart';
 import 'package:client_app/src/features/auth/widgets/auth_text_field.widget.dart';
 import 'package:client_app/src/features/profile/phone_verification.bloc.dart';
 import 'package:client_app/src/features/profile/phone_verification.event.dart';
 import 'package:client_app/src/features/profile/phone_verification.state.dart';
 import 'package:client_app/src/features/profile/phone_verification_status.entity.dart';
-import 'package:client_app/src/features/auth/auth_code_constants.entity.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   const PhoneVerificationScreen({
@@ -63,7 +63,12 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
     final rejected = state.status == PhoneVerificationStatus.verifyFailed
         ? l10n.phoneVerifyInvalidCode
         : l10n.phoneVerifyPhoneRejected;
-    return AuthError.from(error, l10n, unprocessableMessage: rejected).message;
+    return ErrorFeedback.from(
+      error,
+      l10n,
+      unprocessableMessage: rejected,
+      showsFieldMessagesInBanner: true,
+    ).message;
   }
 
   @override

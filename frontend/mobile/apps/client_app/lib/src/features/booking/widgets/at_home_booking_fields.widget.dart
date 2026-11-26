@@ -25,9 +25,7 @@ class AtHomeBookingFields extends StatelessWidget {
         if (state.savedAddresses.isNotEmpty) ...[
           DropdownButtonFormField<SavedAddress>(
             key: const Key('at-home-saved-addresses'),
-            decoration: InputDecoration(
-              labelText: l10n.bookingSavedAddressesLabel,
-            ),
+            decoration: InputDecoration(labelText: l10n.savedAddressesTitle),
             items: state.savedAddresses
                 .map(
                   (address) => DropdownMenuItem(

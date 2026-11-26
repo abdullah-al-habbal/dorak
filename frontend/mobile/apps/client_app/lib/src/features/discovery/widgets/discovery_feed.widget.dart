@@ -1,23 +1,22 @@
 import 'dart:async';
 
 import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
-
-import 'package:design_system/design_system.dart';
 
 import 'package:client_app/src/core/formatting/rating_label.entity.dart';
 import 'package:client_app/src/features/discovery/discovery.bloc.dart';
 import 'package:client_app/src/features/discovery/discovery.event.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
 import 'package:client_app/src/features/discovery/discovery_filter_config.entity.dart';
+import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
 import 'package:client_app/src/features/discovery/saved_filters.bloc.dart';
-import 'package:client_app/src/features/discovery/widgets/saved_filters_sheet.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_barber_card.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_filter_bar.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_result_card.widget.dart';
-import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
-import 'package:client_app/src/core/errors/load_error_message.entity.dart';
+import 'package:client_app/src/features/discovery/widgets/saved_filters_sheet.widget.dart';
 
 class DiscoveryFeed extends StatefulWidget {
   const DiscoveryFeed({
@@ -205,7 +204,7 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
                 bottom: DorakDimensions.spacingSmall,
               ),
               child: StatusBanner(
-                message: LoadErrorMessage.of(l10n, state.page.error),
+                message: ErrorFeedback.loadMessage(l10n, state.page.error),
                 actionLabel: l10n.actionRetry,
                 onAction: () => bloc.add(const DiscoveryRetryRequested()),
               ),
@@ -310,7 +309,7 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
           vertical: DorakDimensions.spacingSmall,
         ),
         child: StatusBanner(
-          message: LoadErrorMessage.of(l10n, state.page.error),
+          message: ErrorFeedback.loadMessage(l10n, state.page.error),
           actionLabel: l10n.actionRetry,
           onAction: () => bloc.add(const DiscoveryRetryRequested()),
         ),

@@ -35,7 +35,7 @@ class BusinessStaffScreen extends StatelessWidget {
                   if (state.error != null)
                     FeatureError(
                       error: state.error!,
-                      fallbackMessage: l10n.businessLoadFailed,
+                      fallbackMessage: l10n.commonLoadFailed,
                     ),
                   if (state.staff.isEmpty && state.error == null)
                     Text(l10n.businessStaffEmpty),

@@ -54,10 +54,15 @@ state class is a compile error at every call site, never a silent break.
     Never both for one operation.
 16. Initial, loading and empty are three distinct conditions and must be
     distinguishable from state alone.
-17. Success is the absence of `error` plus populated data — not a separate flag.
+17. For loading data, success is the absence of `error` plus populated data — not
+    a separate flag. **A command (a write) reports success with a one-shot
+    signal** (a signal enum value or a completion flag) that the bloc clears when
+    the next command starts; the UI never infers it from data. New code follows
+    this; existing blocs are not rewritten only for it.
 18. **Empty is `success && data.isEmpty`.** Never conflated with initial, and
     never rendered as an error.
 19. Errors land in `state.error` as `Object?`. **Blocs never rethrow.**
-20. **The UI maps errors to localized strings** — see `AuthError.from`
-    (`apps/client_app/.../auth/auth_error.entity.dart`). A backend `message` is
-    an untranslated key (`core::messages.*`) and is never rendered.
+20. **The UI maps errors to localized strings** — use `ErrorFeedback.from`
+    (`packages/feature_error_feedback`). `ApiException.message` can be an
+    untranslated key (`core::messages.*`) and is never rendered; only safe
+    validation field messages are shown.

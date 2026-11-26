@@ -1,16 +1,15 @@
+import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
-
-import 'package:core/core.dart';
-import 'package:design_system/design_system.dart';
 
 import 'package:client_app/src/features/booking/booking.bloc.dart';
 import 'package:client_app/src/features/booking/booking.event.dart';
 import 'package:client_app/src/features/booking/booking.state.dart';
 import 'package:client_app/src/features/booking/widgets/bookings_feed.widget.dart';
 import 'package:client_app/src/features/booking/widgets/bookings_filter.widget.dart';
-import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BookingsScreen extends StatefulWidget {
   const BookingsScreen({
@@ -63,7 +62,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
               return StatusView(
                 icon: Icons.error_outline,
                 title: l10n.errorTitleGeneric,
-                message: LoadErrorMessage.of(l10n, state.page.error),
+                message: ErrorFeedback.loadMessage(l10n, state.page.error),
                 actionLabel: l10n.actionRetry,
                 onAction: () => widget.bloc.add(const BookingsRetryRequested()),
               );

@@ -101,7 +101,7 @@ void main() {
 
     await pumpScreen(tester);
 
-    expect(find.text(l10n.businessLoadFailed), findsOneWidget);
+    expect(find.text(l10n.commonLoadFailed), findsOneWidget);
     expect(find.text(l10n.businessUpdateFailed), findsNothing);
   });
 
@@ -119,7 +119,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(l10n.businessUpdateFailed), findsOneWidget);
-      expect(find.text(l10n.businessLoadFailed), findsNothing);
+      expect(find.text(l10n.commonLoadFailed), findsNothing);
     });
   }
 
@@ -133,6 +133,6 @@ void main() {
     await bloc.load();
     await tester.pumpAndSettle();
 
-    expect(find.text(l10n.businessLoadFailed), findsOneWidget);
+    expect(find.text(l10n.commonLoadFailed), findsOneWidget);
   });
 }

@@ -18,7 +18,7 @@ The session layer is split into two pure `bloc`s — **no Flutter dependency**:
   + `TokenStorage` (the same storage `SessionBloc` shares), writes the returned
   token, exposes the signed-in `client`, and raises `loginSucceeded` /
   `registrationSucceeded` / `verificationSucceeded`. Failures land in `state.error`
-  (typed via `AuthError.from` in the app). `AuthState` uses `isSubmitting`, not
+  (typed via `ErrorFeedback.from` in the app). `AuthState` uses `isSubmitting`, not
   `isLoading`.
 * `SessionBloc` (`session.bloc.dart` + `session.event.dart` + `session.state.dart`)
   owns the **session truth**: `SessionBloc(AuthRepository, TokenStorage)`. It

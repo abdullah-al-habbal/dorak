@@ -52,7 +52,7 @@ class StylistClientHistoryScreen extends StatelessWidget {
                   if (state.error != null)
                     FeatureError(
                       error: state.error!,
-                      fallbackMessage: l10n.stylistLoadFailed,
+                      fallbackMessage: l10n.commonLoadFailed,
                     ),
                   if (state.visits.isEmpty && state.error == null)
                     Text(l10n.stylistClientHistoryEmpty),

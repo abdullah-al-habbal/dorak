@@ -1,4 +1,6 @@
+import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
@@ -6,7 +8,6 @@ import 'package:localization/localization.dart';
 import 'package:stylist_app/src/features/support/delete_account.bloc.dart';
 import 'package:stylist_app/src/features/support/delete_account.event.dart';
 import 'package:stylist_app/src/features/support/delete_account.state.dart';
-import 'package:stylist_app/src/features/support/delete_account_error.entity.dart';
 
 class DeleteAccountScreen extends StatefulWidget {
   const DeleteAccountScreen({
@@ -59,7 +60,15 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
               const SizedBox(height: DorakDimensions.spacingMedium),
               if (state.error != null) ...[
                 StatusBanner(
-                  message: DeleteAccountError.message(l10n, state.error!),
+                  message: DeleteAccountErrorMessage.of(
+                    l10n,
+                    state.error!,
+                    byCode: {
+                      ApiErrorCodeConstants
+                              .apiErrorCodeAccountHasActiveAffiliation:
+                          l10n.deleteAccountActiveAffiliation,
+                    },
+                  ),
                 ),
                 const SizedBox(height: DorakDimensions.spacingSmall),
               ],

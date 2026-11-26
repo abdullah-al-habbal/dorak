@@ -43,6 +43,8 @@ dependencies:
     path: ../../packages/core
   design_system:
     path: ../../packages/design_system
+  feature_error_feedback:
+    path: ../../packages/feature_error_feedback
   localization:
     path: ../../packages/localization
   go_router: ^17.5.0

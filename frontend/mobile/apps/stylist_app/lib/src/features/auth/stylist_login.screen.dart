@@ -1,10 +1,9 @@
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
-
-import 'package:stylist_app/src/core/errors/api_error.entity.dart';
 
 class StylistLoginScreen extends StatefulWidget {
   const StylistLoginScreen({
@@ -127,10 +126,12 @@ class _StylistLoginScreenState extends State<StylistLoginScreen> {
                     if (state.error != null) ...[
                       const SizedBox(height: DorakDimensions.spacingMedium),
                       StatusBanner(
-                        message: ApiError.from(
+                        message: ErrorFeedback.from(
                           state.error!,
                           l10n,
-                          rejectedCredentialsMessage:
+                          unauthorizedMessage:
+                              l10n.loginErrorInvalidCredentials,
+                          unprocessableMessage:
                               l10n.loginErrorInvalidCredentials,
                         ).message,
                       ),

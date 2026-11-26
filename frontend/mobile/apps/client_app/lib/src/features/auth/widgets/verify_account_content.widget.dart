@@ -1,21 +1,20 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
+import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
+import 'package:client_app/src/features/auth/auth_code_constants.entity.dart';
 import 'package:client_app/src/features/auth/widgets/verification_actions.widget.dart';
 import 'package:client_app/src/features/auth/widgets/verification_code_fields.widget.dart';
 import 'package:client_app/src/features/auth/widgets/verification_header.widget.dart';
-import 'package:client_app/src/features/auth/auth_code_constants.entity.dart';
 
 class VerifyAccountContent extends StatefulWidget {
   final String destination;
   final void Function(String code) onVerify;
   final void Function() onResend;
-  final AuthError? error;
+  final ErrorFeedback? error;
   final bool isVerifying;
   final VoidCallback onSkip;
 
@@ -39,7 +38,7 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
 
   Timer? _cooldownTimer;
   int _cooldown = AuthCodeConstants.resendCooldownSeconds;
-  AuthError? _error;
+  ErrorFeedback? _error;
 
   @override
   void initState() {
@@ -125,7 +124,7 @@ class _VerifyAccountContentState extends State<VerifyAccountContent> {
     final l10n = AppLocalizations.of(context)!;
     final code = _code;
     if (code.length < AuthCodeConstants.codeLength) {
-      setState(() => _error = AuthError(message: l10n.verifyErrorInvalid));
+      setState(() => _error = ErrorFeedback(message: l10n.verifyErrorInvalid));
       return;
     }
 

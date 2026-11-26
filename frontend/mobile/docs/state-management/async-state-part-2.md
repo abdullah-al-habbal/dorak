@@ -34,10 +34,13 @@ arrives literally). Blocs store the raw exception; the screen converts:
 ```dart
 final error = state.error == null
     ? null
-    : AuthError.from(state.error!, l10n,
+    : ErrorFeedback.from(state.error!, l10n,
         unauthorizedMessage: l10n.loginErrorInvalidCredentials);
 ```
 
-`AuthError.from` handles `ValidationException` (per-field errors, which *are*
-real messages and safe to show), `NetworkException`, and `ApiException` by
-status. Anything else falls back to a generic localized string.
+`ErrorFeedback.from` (`packages/feature_error_feedback`) handles every failure.
+The rules, including which server field messages may be shown, are in
+[the authentication flow](../authentication/auth-flow-part-2.md). For a failed
+load use `ErrorFeedback.loadMessage`; for a failed action shown in place use
+`InlineError`. Branch on `ApiFailureKind` (`core`) when behaviour, not wording,
+depends on the kind of failure.

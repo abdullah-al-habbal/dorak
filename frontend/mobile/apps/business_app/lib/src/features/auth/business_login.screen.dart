@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 
-import 'package:business_app/src/core/errors/api_error.entity.dart';
 import 'package:business_app/src/features/owner/app_role.entity.dart';
 
 class BusinessLoginScreen extends StatefulWidget {
@@ -156,10 +156,12 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                     if (state.error != null) ...[
                       const SizedBox(height: DorakDimensions.spacingMedium),
                       StatusBanner(
-                        message: ApiError.from(
+                        message: ErrorFeedback.from(
                           state.error!,
                           l10n,
-                          rejectedCredentialsMessage:
+                          unauthorizedMessage:
+                              l10n.loginErrorInvalidCredentials,
+                          unprocessableMessage:
                               l10n.loginErrorInvalidCredentials,
                         ).message,
                       ),

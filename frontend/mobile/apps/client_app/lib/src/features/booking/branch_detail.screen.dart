@@ -1,15 +1,14 @@
+import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
-
-import 'package:design_system/design_system.dart';
 
 import 'package:client_app/src/features/booking/branch_detail.bloc.dart';
 import 'package:client_app/src/features/booking/branch_detail.event.dart';
 import 'package:client_app/src/features/booking/branch_detail.state.dart';
 import 'package:client_app/src/features/booking/widgets/branch_detail_body.widget.dart';
-import 'package:core/core.dart';
-import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BranchDetailScreen extends StatefulWidget {
   const BranchDetailScreen({
@@ -79,7 +78,7 @@ class _BranchDetailScreenState extends State<BranchDetailScreen> {
             return StatusView(
               icon: Icons.error_outline,
               title: l10n.errorTitleGeneric,
-              message: LoadErrorMessage.of(l10n, state.error),
+              message: ErrorFeedback.loadMessage(l10n, state.error),
               actionLabel: l10n.actionRetry,
               onAction: () => widget.bloc.add(const BranchDetailRetried()),
             );

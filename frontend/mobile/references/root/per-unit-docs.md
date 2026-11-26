@@ -24,7 +24,8 @@ child contradicts nothing, the parent still applies.
 | `apps/stylist_app` | [`AGENTS`](../../apps/stylist_app/AGENTS.md) · [`CLAUDE`](../../apps/stylist_app/CLAUDE.md) | login, today list, cancel, schedule, portfolio, profile, affiliations and jobs (Tasks 82–83) |
 | `packages/core` | [`AGENTS`](../../packages/core/AGENTS.md) · [`CLAUDE`](../../packages/core/CLAUDE.md) | HTTP, config, storage, session, DTOs |
 | `packages/design_system` | [`AGENTS`](../../packages/design_system/AGENTS.md) · [`CLAUDE`](../../packages/design_system/CLAUDE.md) | tokens, theme, fonts, 14 widgets |
-| `packages/localization` | [`AGENTS`](../../packages/localization/AGENTS.md) · [`CLAUDE`](../../packages/localization/CLAUDE.md) | 192 keys, EN + AR |
+| `packages/feature_error_feedback` | [`AGENTS`](../../packages/feature_error_feedback/AGENTS.md) · [`CLAUDE`](../../packages/feature_error_feedback/CLAUDE.md) | failure messages, safe server messages, inline error |
+| `packages/localization` | [`AGENTS`](../../packages/localization/AGENTS.md) · [`CLAUDE`](../../packages/localization/CLAUDE.md) | 668 keys, EN + AR |
 
 Read the child for the unit you are touching **before** editing it. If you touch
 two units, read both.

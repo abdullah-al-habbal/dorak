@@ -21,6 +21,7 @@ apps/
 packages/
   core/            networking, storage, session, DTOs, config
   design_system/   tokens, theme, shared widgets
+  feature_error_feedback/  localized API failure messages and the inline error
   localization/    ARB + generated AppLocalizations (en, ar)
 docs/              specs, flows, tracks, Stitch exports
 tool/              check_taxonomy.dart

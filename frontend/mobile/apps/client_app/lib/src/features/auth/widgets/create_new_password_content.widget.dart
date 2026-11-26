@@ -1,6 +1,6 @@
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
 import 'package:client_app/src/features/auth/widgets/password_actions.widget.dart';
 import 'package:client_app/src/features/auth/widgets/password_fields.widget.dart';
 import 'package:client_app/src/features/auth/widgets/password_header.widget.dart';
@@ -14,7 +14,7 @@ class CreateNewPasswordContent extends StatefulWidget {
     required String passwordConfirmation,
   })
   onSubmit;
-  final AuthError? error;
+  final ErrorFeedback? error;
   final bool isSubmitting;
 
   final bool isCodeRejected;

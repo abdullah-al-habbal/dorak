@@ -45,7 +45,7 @@ class BusinessReviewsScreen extends StatelessWidget {
                   if (state.error != null)
                     FeatureError(
                       error: state.error!,
-                      fallbackMessage: l10n.businessLoadFailed,
+                      fallbackMessage: l10n.commonLoadFailed,
                     ),
                   if (state.reviews.isEmpty && state.error == null)
                     Text(l10n.businessReviewsEmpty),

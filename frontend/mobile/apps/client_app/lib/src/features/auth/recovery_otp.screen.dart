@@ -1,12 +1,11 @@
+import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
+import 'package:feature_error_feedback/feature_error_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:core/core.dart';
-import 'package:design_system/design_system.dart';
 import 'package:localization/localization.dart';
 
-import 'package:client_app/src/features/auth/auth_error.entity.dart';
 import 'package:client_app/src/features/auth/password_recovery.bloc.dart';
 import 'package:client_app/src/features/auth/password_recovery.event.dart';
 import 'package:client_app/src/features/auth/password_recovery.state.dart';
@@ -68,15 +67,16 @@ class RecoveryOtpScreen extends StatelessWidget {
 
   /// A rejected code (422) reads as "invalid or expired" rather than a generic
   /// failure, and the attempt throttle gets its own wait-and-retry message.
-  static AuthError? _errorFor(Object? error, AppLocalizations l10n) {
+  static ErrorFeedback? _errorFor(Object? error, AppLocalizations l10n) {
     if (error == null) return null;
     if (error is ApiException && error.isRateLimited) {
-      return AuthError(message: l10n.recoveryCodeThrottled);
+      return ErrorFeedback(message: l10n.recoveryCodeThrottled);
     }
-    return AuthError.from(
+    return ErrorFeedback.from(
       error,
       l10n,
       unprocessableMessage: l10n.recoveryCodeRejected,
+      showsFieldMessagesInBanner: true,
     );
   }
 }

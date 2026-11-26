@@ -27,16 +27,32 @@ keys while the Client module references eleven more, and the translator falls
 back to returning the key, so a rejected login answers with the literal string
 `core::messages.invalid_credentials`.
 
-`AuthError.from` (`features/auth/auth_error.entity.dart`) maps the exception to
-a local ARB string:
+`ErrorFeedback.from` (`packages/feature_error_feedback`) maps the exception to
+a local ARB string; all three apps use it.
 
 | Caught | Shown |
 | --- | --- |
-| `ValidationException` | per-field `errorText` from `errors` (real Laravel validator messages, safe to show) + a generic banner |
-| `ApiException.isUnauthorized` on login | `loginErrorInvalidCredentials` |
-| `ApiException` 422 on verify | `verifyErrorInvalid` |
 | `NetworkException` | `errorNetwork` |
-| anything else | `errorGeneric` |
+| `ValidationException`, field with a safe server message | that message |
+| `ValidationException`, field without one | `fieldInvalid` |
+| `ACCOUNT_BANNED` / `ACCOUNT_NOT_ACTIVE` | `authAccountSuspended` / `authAccountNotActive` |
+| 401 or 403 where the screen passes `unauthorizedMessage` (login) | `loginErrorInvalidCredentials` |
+| 422 where the screen passes `unprocessableMessage` | that override (for example `recoveryCodeRejected`) |
+| anything else | the screen's `fallbackMessage`, else `errorGeneric` |
+
+**Safe server message** (`SafeServerMessage`): only the `errors` map of a
+`ValidationException`, which the server localizes from `Accept-Language`. It is
+trimmed, non-empty, at most 200 characters, a single line, not a translation key
+(`module::file.key`, `validation.required`) and free of markup.
+
+**Banner for a validation error**, first match: the screen's 422 override → the
+joined safe messages → `fallbackMessage` → `errorGeneric`. The joined messages
+apply only with `showsFieldMessagesInBanner: true`, which is for forms that show
+no inline field errors, so a form never prints a message twice.
+
+Requesting a password-recovery code deliberately treats a validation refusal as
+success (`PasswordRecoveryBloc`), so the form cannot reveal whether an account
+exists. Keep that; do not surface that refusal.
 
 ## Client-side rules
 
