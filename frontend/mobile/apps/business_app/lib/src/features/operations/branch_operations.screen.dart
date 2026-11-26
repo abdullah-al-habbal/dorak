@@ -81,7 +81,9 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
                   children: [
                     FeatureError(
                       error: state.error!,
-                      fallbackMessage: l10n.businessLoadFailed,
+                      fallbackMessage: state.isUpdateError
+                          ? l10n.businessUpdateFailed
+                          : l10n.businessLoadFailed,
                     ),
                     FilledButton(
                       onPressed: widget.bloc.load,

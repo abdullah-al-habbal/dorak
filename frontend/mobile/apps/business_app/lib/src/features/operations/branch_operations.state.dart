@@ -22,6 +22,7 @@ class BranchOperationsState extends Equatable {
     List<BookingDto> bookings = const [],
     List<FloorChairDto> chairs = const [],
     this.error,
+    this.isUpdateError = false,
     this.pendingMaintenance,
   }) : bookings = List.unmodifiable(bookings),
        chairs = List.unmodifiable(chairs);
@@ -32,6 +33,9 @@ class BranchOperationsState extends Equatable {
   final List<BookingDto> bookings;
   final List<FloorChairDto> chairs;
   final Object? error;
+
+  /// Whether [error] came from a chair or booking update rather than a load.
+  final bool isUpdateError;
   final PendingChairMaintenance? pendingMaintenance;
 
   BranchOperationsState copyWith({
@@ -41,6 +45,7 @@ class BranchOperationsState extends Equatable {
     List<BookingDto>? bookings,
     List<FloorChairDto>? chairs,
     Object? error,
+    bool? isUpdateError,
     PendingChairMaintenance? pendingMaintenance,
     bool clearError = false,
     bool clearPendingMaintenance = false,
@@ -51,6 +56,7 @@ class BranchOperationsState extends Equatable {
     bookings: bookings ?? this.bookings,
     chairs: chairs ?? this.chairs,
     error: clearError ? null : error ?? this.error,
+    isUpdateError: isUpdateError ?? this.isUpdateError,
     pendingMaintenance: clearPendingMaintenance
         ? null
         : pendingMaintenance ?? this.pendingMaintenance,
@@ -64,6 +70,7 @@ class BranchOperationsState extends Equatable {
     bookings,
     chairs,
     error,
+    isUpdateError,
     pendingMaintenance,
   ];
 }

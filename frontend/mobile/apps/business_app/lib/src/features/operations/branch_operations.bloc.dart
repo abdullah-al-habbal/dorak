@@ -53,7 +53,7 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
       }
     } catch (error) {
       if (isClosed || generation != _loadGeneration) return;
-      emit(state.copyWith(loading: false, error: error));
+      emit(state.copyWith(loading: false, error: error, isUpdateError: false));
     }
   }
 
@@ -90,7 +90,9 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
         ),
       );
     } catch (error) {
-      if (!isClosed) emit(state.copyWith(error: error));
+      if (!isClosed) {
+        emit(state.copyWith(error: error, isUpdateError: true));
+      }
     }
   }
 
@@ -114,7 +116,9 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
       if (isClosed) return;
       await load();
     } catch (error) {
-      if (!isClosed) emit(state.copyWith(error: error));
+      if (!isClosed) {
+        emit(state.copyWith(error: error, isUpdateError: true));
+      }
     }
   }
 
