@@ -15,7 +15,21 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
-## Snapshot 10: 2026-11-26, push Phase 2 code complete, written before the push to `origin/master`
+## Snapshot 11: 2026-11-26, about 13:49 UTC, BG-46 and BG-47 pushed, not deployed
+
+`master` was pushed up to `35cdba0d4` (`9775e23e1..35cdba0d4`: `f30964ca7` BG-46 and `35cdba0d4` BG-47). No deploy was dispatched. The last deploy run is still [`45277277114`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45277277114) (`fea9c09fd`).
+
+| Item | Value |
+|---|---|
+| Backend CI | [`45832755946`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45832755946): success (3004 tests passed, then 12 more in a second Pest step) |
+| Mobile CI | [`45832755927`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45832755927): success (melos analyze, taxonomy and test; APK and web builds skipped) |
+| Local gates for BG-47 | Pest 3004 passed (13525 assertions); Pint on touched files and `scripts/check-conventions.sh` passed; Playwright skipped on request |
+| Waiting for a deploy | backend code of `aa144ecbe`, `4897540c0`, `7f0aca277`, `f30964ca7`, `35cdba0d4`. No migration changed since `fea9c09fd`, so use `reset_database=false` |
+| `scripts/verify-deploy.sh` (read-only, old backend) | all probes passed; health reports every check `ok`, which does not show that a queue worker runs (RR-8) |
+| Reverb on dev | a WebSocket upgrade to `https://dev-dorak-backend.io/app/<dummy key>` answered a PHP `404`. No Reverb server answers on the host and path the mobile `.env.example` files use (RR-20). The server `.env` was not read |
+| Live realtime checks (BG-43, BG-44, BG-46, BG-47) | not run |
+
+## Snapshot 10 (superseded by snapshot 11): 2026-11-26, push Phase 2 code complete, written before the push to `origin/master`
 
 The owner asked on 2026-11-26 to push `master`. At the time of writing nothing had been pushed since `6ab921c87`; the live dev environment was not probed for this snapshot, so the "live on dev" facts of snapshot 9 are carried over, not re-observed.
 
