@@ -9,6 +9,7 @@ import 'package:stylist_app/src/features/inbox/stylist_inbox.bloc.dart';
 import 'package:stylist_app/src/features/inbox/stylist_inbox.state.dart';
 import 'package:stylist_app/src/features/inbox/widgets/inbox_tile.widget.dart';
 import 'package:stylist_app/src/features/shared/load_on_init.widget.dart';
+import 'package:stylist_app/src/core/errors/api_error.entity.dart';
 
 class StylistInboxScreen extends StatelessWidget {
   const StylistInboxScreen({
@@ -64,7 +65,7 @@ class StylistInboxScreen extends StatelessWidget {
       return StatusView(
         icon: Icons.error_outline,
         title: l10n.errorTitleGeneric,
-        message: l10n.errorNetwork,
+        message: ApiError.from(state.page.error!, l10n).message,
         actionLabel: l10n.actionRetry,
         onAction: bloc.load,
       );

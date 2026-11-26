@@ -99,7 +99,11 @@ class DioStaffAuthRepository
     if (path == null) {
       throw UnsupportedError('This account type cannot delete itself.');
     }
-    return _client.delete(path, data: {'password': password});
+    return _client.delete(
+      path,
+      data: {'password': password},
+      keepSessionOn401: true,
+    );
   }
 
   static void _discardBody(dynamic _) {}

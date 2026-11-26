@@ -5,6 +5,7 @@ import 'package:localization/localization.dart';
 import 'package:client_app/src/features/booking/booking.bloc.dart';
 import 'package:client_app/src/features/booking/booking.event.dart';
 import 'package:client_app/src/features/booking/booking.state.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BookingsFilter extends StatelessWidget {
   const BookingsFilter({super.key, required this.bloc, required this.state});
@@ -26,7 +27,7 @@ class BookingsFilter extends StatelessWidget {
                 bottom: DorakDimensions.spacingSmall,
               ),
               child: StatusBanner(
-                message: l10n.errorNetwork,
+                message: LoadErrorMessage.of(l10n, state.error),
                 actionLabel: l10n.actionRetry,
                 onAction: () => bloc.add(const BookingsRetryRequested()),
               ),

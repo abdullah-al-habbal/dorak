@@ -9,6 +9,7 @@ import 'package:client_app/src/features/booking/branch_detail.state.dart';
 import 'package:client_app/src/features/booking/widgets/at_home_booking_fields.widget.dart';
 import 'package:client_app/src/features/booking/widgets/chair_services.widget.dart';
 import 'package:client_app/src/features/booking/widgets/floor_plan_grid.widget.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BookingModeSection extends StatelessWidget {
   const BookingModeSection({
@@ -61,9 +62,9 @@ class BookingModeSection extends StatelessWidget {
           ChairServices(chair: chair, plan: state.plan!),
         ],
         const SizedBox(height: DorakDimensions.spacingLarge),
-      ] else if (state.planFailed) ...[
+      ] else if (state.planError != null) ...[
         StatusBanner(
-          message: l10n.errorNetwork,
+          message: LoadErrorMessage.of(l10n, state.planError),
           actionLabel: l10n.actionRetry,
           onAction: () => bloc.add(const BranchDetailRetried()),
         ),

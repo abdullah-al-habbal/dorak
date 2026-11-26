@@ -7,6 +7,7 @@ import 'package:localization/localization.dart';
 import 'package:business_app/src/features/owner/owner_error.entity.dart';
 import 'package:business_app/src/features/owner/owner_services.bloc.dart';
 import 'package:business_app/src/features/owner/owner_services.state.dart';
+import 'package:business_app/src/features/owner/owner_status_banner.widget.dart';
 
 class OwnerServiceFormScreen extends StatefulWidget {
   const OwnerServiceFormScreen({
@@ -15,12 +16,16 @@ class OwnerServiceFormScreen extends StatefulWidget {
     required this.brandId,
     this.service,
     required this.onDone,
+    this.isReadOnly = false,
   });
 
   final OwnerServicesCubit bloc;
   final String brandId;
   final BusinessServiceDto? service;
   final VoidCallback onDone;
+
+  /// A suspended brand can be viewed but not changed.
+  final bool isReadOnly;
 
   @override
   State<OwnerServiceFormScreen> createState() => _OwnerServiceFormScreenState();
@@ -143,9 +148,14 @@ class _OwnerServiceFormScreenState extends State<OwnerServiceFormScreen> {
                 StatusBanner(message: OwnerError.message(l10n, state.error!)),
               ],
               const SizedBox(height: DorakDimensions.spacingLarge),
+              if (widget.isReadOnly) ...[
+                const OwnerStatusBanner(status: OwnerBrandStatus.suspended),
+                const SizedBox(height: DorakDimensions.spacingSmall),
+              ],
               PrimaryButton(
                 label: l10n.ownerServiceSave,
                 isLoading: state.isSaving,
+                isDisabled: widget.isReadOnly,
                 onPressed: _submit,
               ),
             ],

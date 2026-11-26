@@ -159,7 +159,8 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
                         message: ApiError.from(
                           state.error!,
                           l10n,
-                          fallbackMessage: l10n.loginErrorInvalidCredentials,
+                          rejectedCredentialsMessage:
+                              l10n.loginErrorInvalidCredentials,
                         ).message,
                       ),
                     ],

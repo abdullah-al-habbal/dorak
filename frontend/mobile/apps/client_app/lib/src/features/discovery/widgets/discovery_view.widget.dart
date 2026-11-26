@@ -10,6 +10,7 @@ import 'package:client_app/src/features/discovery/discovery.event.dart';
 import 'package:client_app/src/features/discovery/discovery.state.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_feed.widget.dart';
 import 'package:core/core.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class DiscoveryView extends StatelessWidget {
   const DiscoveryView({
@@ -62,7 +63,7 @@ class DiscoveryView extends StatelessWidget {
             return StatusView(
               icon: Icons.error_outline,
               title: l10n.errorTitleGeneric,
-              message: l10n.errorNetwork,
+              message: LoadErrorMessage.of(l10n, state.page.error),
               actionLabel: l10n.actionRetry,
               onAction: () => bloc.add(const DiscoveryRetryRequested()),
             );

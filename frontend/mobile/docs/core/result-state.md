@@ -17,8 +17,9 @@ to the UI without leaking transport types.
 
 ## Envelope
 
-`ApiResponse<T>` (`lib/src/network/api_response.dto.dart`) mirrors the
-backend envelope. `ApiClient` unwraps `data`; UI never sees the raw body.
+`ApiClient` reads the backend envelope (`success`, `data`, `code`, `message`,
+`errors`) directly; there is no envelope DTO. It unwraps `data` and throws on
+`success: false`, so the UI never sees the raw body.
 
 ## Exception Taxonomy
 

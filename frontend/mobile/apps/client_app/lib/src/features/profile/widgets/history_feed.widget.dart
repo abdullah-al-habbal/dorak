@@ -7,6 +7,7 @@ import 'package:design_system/design_system.dart';
 import 'package:client_app/src/features/profile/history.state.dart';
 import 'package:client_app/src/features/profile/history_rebook_error.entity.dart';
 import 'package:client_app/src/features/profile/widgets/history_card.widget.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class HistoryFeed extends StatelessWidget {
   const HistoryFeed({
@@ -31,7 +32,7 @@ class HistoryFeed extends StatelessWidget {
       return StatusView(
         icon: Icons.error_outline,
         title: l10n.errorTitleGeneric,
-        message: l10n.errorNetwork,
+        message: LoadErrorMessage.of(l10n, state.page.error),
         actionLabel: l10n.actionRetry,
         onAction: onRetry,
       );
@@ -110,7 +111,7 @@ class HistoryFeed extends StatelessWidget {
           vertical: DorakDimensions.spacingSmall,
         ),
         child: StatusBanner(
-          message: l10n.errorNetwork,
+          message: LoadErrorMessage.of(l10n, state.page.error),
           actionLabel: l10n.actionRetry,
           onAction: onRetry,
         ),

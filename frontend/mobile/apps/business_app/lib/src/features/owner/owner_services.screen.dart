@@ -8,6 +8,7 @@ import 'package:business_app/src/features/owner/owner_error.entity.dart';
 import 'package:business_app/src/features/owner/owner_services.bloc.dart';
 import 'package:business_app/src/features/owner/owner_services.state.dart';
 import 'package:business_app/src/features/shared/load_on_init.widget.dart';
+import 'package:business_app/src/features/owner/owner_status_banner.widget.dart';
 
 class OwnerServicesScreen extends StatelessWidget {
   const OwnerServicesScreen({
@@ -15,10 +16,14 @@ class OwnerServicesScreen extends StatelessWidget {
     required this.bloc,
     required this.onAdd,
     required this.onEdit,
+    this.isReadOnly = false,
   });
 
   final OwnerServicesCubit bloc;
   final VoidCallback onAdd;
+
+  /// A suspended brand can be viewed but not changed.
+  final bool isReadOnly;
   final void Function(BusinessServiceDto service) onEdit;
 
   @override
@@ -28,11 +33,13 @@ class OwnerServicesScreen extends StatelessWidget {
       onInit: bloc.load,
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.ownerServicesTitle)),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: onAdd,
-          icon: const Icon(Icons.add),
-          label: Text(l10n.ownerServiceAdd),
-        ),
+        floatingActionButton: isReadOnly
+            ? null
+            : FloatingActionButton.extended(
+                onPressed: onAdd,
+                icon: const Icon(Icons.add),
+                label: Text(l10n.ownerServiceAdd),
+              ),
         body: BlocBuilder<OwnerServicesCubit, OwnerServicesState>(
           bloc: bloc,
           builder: (context, state) {
@@ -44,6 +51,8 @@ class OwnerServicesScreen extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.all(DorakDimensions.marginMobile),
                 children: [
+                  if (isReadOnly)
+                    const OwnerStatusBanner(status: OwnerBrandStatus.suspended),
                   if (state.error != null)
                     Text(OwnerError.message(l10n, state.error!)),
                   if (state.services.isEmpty && state.error == null)
@@ -60,7 +69,9 @@ class OwnerServicesScreen extends StatelessWidget {
                       trailing: IconButton(
                         tooltip: l10n.ownerServiceDelete,
                         icon: const Icon(Icons.delete_outline),
-                        onPressed: () => bloc.delete(service.id),
+                        onPressed: isReadOnly
+                            ? null
+                            : () => bloc.delete(service.id),
                       ),
                     ),
                 ],

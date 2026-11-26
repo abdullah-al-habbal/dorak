@@ -8,7 +8,7 @@ class BranchDetailState extends Equatable {
     this.detail,
     this.plan,
     this.error,
-    this.planFailed = false,
+    this.planError,
     this.selectedChairId,
     List<String> selectedServiceIds = const [],
     List<SavedAddress> savedAddresses = const [],
@@ -37,7 +37,7 @@ class BranchDetailState extends Equatable {
   final BranchDetailDto? detail;
   final FloorPlanDto? plan;
   final Object? error;
-  final bool planFailed;
+  final Object? planError;
   final String? selectedChairId;
   final List<String> selectedServiceIds;
   final List<SavedAddress> savedAddresses;
@@ -84,7 +84,8 @@ class BranchDetailState extends Equatable {
     FloorPlanDto? plan,
     Object? error,
     bool clearError = false,
-    bool? planFailed,
+    Object? planError,
+    bool clearPlanError = false,
     String? selectedChairId,
     bool clearChair = false,
     List<String>? selectedServiceIds,
@@ -118,7 +119,7 @@ class BranchDetailState extends Equatable {
       detail: detail ?? this.detail,
       plan: plan ?? this.plan,
       error: clearError ? null : error ?? this.error,
-      planFailed: planFailed ?? this.planFailed,
+      planError: clearPlanError ? null : planError ?? this.planError,
       selectedChairId: clearChair
           ? null
           : selectedChairId ?? this.selectedChairId,
@@ -156,7 +157,7 @@ class BranchDetailState extends Equatable {
     detail,
     plan,
     error,
-    planFailed,
+    planError,
     selectedChairId,
     selectedServiceIds,
     savedAddresses,

@@ -12,10 +12,12 @@ class ApiError {
     AppLocalizations l10n, {
     String? networkMessage,
     String? fallbackMessage,
+    String? rejectedCredentialsMessage,
   }) {
     if (error is ValidationException) {
       return ApiError(
-        message: fallbackMessage ?? l10n.errorGeneric,
+        message:
+            rejectedCredentialsMessage ?? fallbackMessage ?? l10n.errorGeneric,
         fieldErrors: error.errors,
       );
     }
@@ -28,6 +30,12 @@ class ApiError {
       }
       if (error.code == ApiErrorCodeConstants.apiErrorCodeAccountBanned) {
         return ApiError(message: l10n.authAccountSuspended);
+      }
+      if (rejectedCredentialsMessage != null &&
+          (error.isUnauthorized ||
+              error.isForbidden ||
+              error.statusCode == 422)) {
+        return ApiError(message: rejectedCredentialsMessage);
       }
       return ApiError(message: fallbackMessage ?? l10n.errorGeneric);
     }

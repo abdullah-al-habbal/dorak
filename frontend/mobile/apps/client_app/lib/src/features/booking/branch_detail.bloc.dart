@@ -58,15 +58,15 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
       final detail = await _explore.getBranchDetail(event.branchId);
       if (emit.isDone) return;
       FloorPlanDto? plan;
-      var planFailed = false;
+      Object? planError;
       try {
         plan = await _branches.getFloorPlan(
           event.branchId,
           startsAt: _defaultAvailabilityTime(),
           durationMinutes: 30,
         );
-      } catch (_) {
-        planFailed = true;
+      } catch (error) {
+        planError = error;
       }
       if (emit.isDone) return;
       emit(
@@ -74,7 +74,8 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
           isLoading: false,
           detail: detail,
           plan: plan,
-          planFailed: planFailed,
+          planError: planError,
+          clearPlanError: planError == null,
           savedAddresses: _preferences.savedAddresses,
         ),
       );
@@ -242,10 +243,10 @@ class BranchDetailBloc extends Bloc<BranchDetailEvent, BranchDetailState> {
         durationMinutes: _selectedDuration(),
       );
       if (emit.isDone) return;
-      emit(state.copyWith(plan: plan, planFailed: false));
-    } catch (_) {
+      emit(state.copyWith(plan: plan, clearPlanError: true));
+    } catch (error) {
       if (emit.isDone) return;
-      emit(state.copyWith(planFailed: true));
+      emit(state.copyWith(planError: error));
     }
   }
 

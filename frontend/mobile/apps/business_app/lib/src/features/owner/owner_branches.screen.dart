@@ -8,6 +8,7 @@ import 'package:business_app/src/features/owner/owner_branches.bloc.dart';
 import 'package:business_app/src/features/owner/owner_branches.state.dart';
 import 'package:business_app/src/features/owner/owner_error.entity.dart';
 import 'package:business_app/src/features/shared/load_on_init.widget.dart';
+import 'package:business_app/src/features/owner/owner_status_banner.widget.dart';
 
 class OwnerBranchesScreen extends StatelessWidget {
   const OwnerBranchesScreen({
@@ -15,10 +16,14 @@ class OwnerBranchesScreen extends StatelessWidget {
     required this.bloc,
     required this.onAdd,
     required this.onEdit,
+    this.isReadOnly = false,
   });
 
   final OwnerBranchesCubit bloc;
   final VoidCallback onAdd;
+
+  /// A suspended brand can be viewed but not changed.
+  final bool isReadOnly;
   final void Function(String id) onEdit;
 
   @override
@@ -29,11 +34,13 @@ class OwnerBranchesScreen extends StatelessWidget {
       onInit: bloc.load,
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.ownerBranchesTitle)),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: onAdd,
-          icon: const Icon(Icons.add),
-          label: Text(l10n.ownerBranchAdd),
-        ),
+        floatingActionButton: isReadOnly
+            ? null
+            : FloatingActionButton.extended(
+                onPressed: onAdd,
+                icon: const Icon(Icons.add),
+                label: Text(l10n.ownerBranchAdd),
+              ),
         body: BlocBuilder<OwnerBranchesCubit, OwnerBranchesState>(
           bloc: bloc,
           builder: (context, state) {
@@ -45,6 +52,8 @@ class OwnerBranchesScreen extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.all(DorakDimensions.marginMobile),
                 children: [
+                  if (isReadOnly)
+                    const OwnerStatusBanner(status: OwnerBrandStatus.suspended),
                   if (state.error != null)
                     Text(OwnerError.message(l10n, state.error!)),
                   if (state.branches.isEmpty && state.error == null)
@@ -66,8 +75,9 @@ class OwnerBranchesScreen extends StatelessWidget {
                             : l10n.ownerBranchOff,
                         child: Switch(
                           value: branch.isEnabled,
-                          onChanged: (on) =>
-                              bloc.switchBranch(branch.id, on: on),
+                          onChanged: isReadOnly
+                              ? null
+                              : (on) => bloc.switchBranch(branch.id, on: on),
                         ),
                       ),
                     ),

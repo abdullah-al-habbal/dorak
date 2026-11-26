@@ -7,6 +7,7 @@ import 'package:localization/localization.dart';
 import 'package:business_app/src/features/owner/owner_branches.bloc.dart';
 import 'package:business_app/src/features/owner/owner_branches.state.dart';
 import 'package:business_app/src/features/owner/owner_error.entity.dart';
+import 'package:business_app/src/features/owner/owner_status_banner.widget.dart';
 
 /// Create (no [branch]) or edit a branch. The branch login password is required
 /// when creating and optional when editing.
@@ -17,12 +18,16 @@ class OwnerBranchFormScreen extends StatefulWidget {
     required this.brandId,
     this.branch,
     required this.onDone,
+    this.isReadOnly = false,
   });
 
   final OwnerBranchesCubit bloc;
   final String brandId;
   final OwnerBranchDto? branch;
   final VoidCallback onDone;
+
+  /// A suspended brand can be viewed but not changed.
+  final bool isReadOnly;
 
   @override
   State<OwnerBranchFormScreen> createState() => _OwnerBranchFormScreenState();
@@ -117,9 +122,14 @@ class _OwnerBranchFormScreenState extends State<OwnerBranchFormScreen> {
                 StatusBanner(message: OwnerError.message(l10n, state.error!)),
               ],
               const SizedBox(height: DorakDimensions.spacingLarge),
+              if (widget.isReadOnly) ...[
+                const OwnerStatusBanner(status: OwnerBrandStatus.suspended),
+                const SizedBox(height: DorakDimensions.spacingSmall),
+              ],
               PrimaryButton(
                 label: l10n.ownerBranchSave,
                 isLoading: state.isSaving,
+                isDisabled: widget.isReadOnly,
                 onPressed: _submit,
               ),
             ],

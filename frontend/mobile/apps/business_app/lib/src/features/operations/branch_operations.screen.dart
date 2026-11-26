@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization/localization.dart';
 import 'package:business_app/src/core/locale/app_locales.entity.dart';
+import 'package:business_app/src/features/shared/feature_error.widget.dart';
 
 class BranchOperationsScreen extends StatefulWidget {
   const BranchOperationsScreen({
@@ -73,9 +74,21 @@ class _BranchOperationsScreenState extends State<BranchOperationsScreen> {
           }
           if (state.error != null) {
             return Center(
-              child: FilledButton(
-                onPressed: widget.bloc.load,
-                child: Text(l10n.businessRetry),
+              child: Padding(
+                padding: const EdgeInsets.all(DorakDimensions.marginMobile),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FeatureError(
+                      error: state.error!,
+                      fallbackMessage: l10n.businessLoadFailed,
+                    ),
+                    FilledButton(
+                      onPressed: widget.bloc.load,
+                      child: Text(l10n.businessRetry),
+                    ),
+                  ],
+                ),
               ),
             );
           }

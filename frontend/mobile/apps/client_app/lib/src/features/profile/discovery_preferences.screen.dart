@@ -8,6 +8,7 @@ import 'package:client_app/src/features/profile/discovery_preferences.bloc.dart'
 import 'package:client_app/src/features/profile/discovery_preferences.state.dart';
 import 'package:client_app/src/features/profile/discovery_preferences_constants.entity.dart';
 import 'package:client_app/src/features/profile/widgets/brand_visibility_sheet.widget.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class DiscoveryPreferencesScreen extends StatefulWidget {
   const DiscoveryPreferencesScreen({super.key, required this.cubit});
@@ -54,7 +55,7 @@ class _DiscoveryPreferencesScreenState
             return StatusView(
               icon: Icons.error_outline,
               title: l10n.errorTitleGeneric,
-              message: l10n.errorNetwork,
+              message: LoadErrorMessage.of(l10n, state.error),
               actionLabel: l10n.actionRetry,
               onAction: widget.cubit.load,
             );

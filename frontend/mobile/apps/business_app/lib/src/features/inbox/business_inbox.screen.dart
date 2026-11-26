@@ -9,6 +9,7 @@ import 'package:business_app/src/features/inbox/business_inbox.bloc.dart';
 import 'package:business_app/src/features/inbox/business_inbox.state.dart';
 import 'package:business_app/src/features/inbox/widgets/inbox_tile.widget.dart';
 import 'package:business_app/src/features/shared/load_on_init.widget.dart';
+import 'package:business_app/src/core/errors/api_error.entity.dart';
 
 class BusinessInboxScreen extends StatelessWidget {
   const BusinessInboxScreen({
@@ -64,7 +65,7 @@ class BusinessInboxScreen extends StatelessWidget {
       return StatusView(
         icon: Icons.error_outline,
         title: l10n.errorTitleGeneric,
-        message: l10n.errorNetwork,
+        message: ApiError.from(state.page.error!, l10n).message,
         actionLabel: l10n.actionRetry,
         onAction: bloc.load,
       );

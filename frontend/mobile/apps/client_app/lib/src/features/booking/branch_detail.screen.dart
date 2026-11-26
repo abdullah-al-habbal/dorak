@@ -9,6 +9,7 @@ import 'package:client_app/src/features/booking/branch_detail.event.dart';
 import 'package:client_app/src/features/booking/branch_detail.state.dart';
 import 'package:client_app/src/features/booking/widgets/branch_detail_body.widget.dart';
 import 'package:core/core.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BranchDetailScreen extends StatefulWidget {
   const BranchDetailScreen({
@@ -78,7 +79,7 @@ class _BranchDetailScreenState extends State<BranchDetailScreen> {
             return StatusView(
               icon: Icons.error_outline,
               title: l10n.errorTitleGeneric,
-              message: l10n.errorNetwork,
+              message: LoadErrorMessage.of(l10n, state.error),
               actionLabel: l10n.actionRetry,
               onAction: () => widget.bloc.add(const BranchDetailRetried()),
             );

@@ -98,6 +98,7 @@ class BusinessAppRouter {
         GoRoute(
           path: AppRoutes.ownerBranches,
           builder: (context, state) => OwnerBranchesScreen(
+            isReadOnly: owner.home.state.isReadOnly,
             bloc: owner.branches,
             onAdd: () => context.push(AppRoutes.ownerNewBranch),
             onEdit: (id) => context.push(
@@ -111,6 +112,7 @@ class BusinessAppRouter {
         GoRoute(
           path: AppRoutes.ownerNewBranch,
           builder: (context, state) => OwnerBranchFormScreen(
+            isReadOnly: owner.home.state.isReadOnly,
             bloc: owner.branches,
             brandId: owner.home.state.brand?.id ?? '',
             onDone: () => _leave(context, AppRoutes.ownerBranches),
@@ -119,6 +121,7 @@ class BusinessAppRouter {
         GoRoute(
           path: AppRoutes.ownerEditBranch,
           builder: (context, state) => OwnerBranchFormScreen(
+            isReadOnly: owner.home.state.isReadOnly,
             bloc: owner.branches,
             brandId: owner.home.state.brand?.id ?? '',
             branch: state.extra as OwnerBranchDto?,
@@ -132,6 +135,7 @@ class BusinessAppRouter {
         GoRoute(
           path: AppRoutes.ownerServices,
           builder: (context, state) => OwnerServicesScreen(
+            isReadOnly: owner.home.state.isReadOnly,
             bloc: owner.services,
             onAdd: () => context.push(AppRoutes.ownerNewService),
             onEdit: (service) =>
@@ -141,6 +145,7 @@ class BusinessAppRouter {
         GoRoute(
           path: AppRoutes.ownerNewService,
           builder: (context, state) => OwnerServiceFormScreen(
+            isReadOnly: owner.home.state.isReadOnly,
             bloc: owner.services,
             brandId: owner.home.state.brand?.id ?? '',
             onDone: () => _leave(context, AppRoutes.ownerServices),
@@ -149,6 +154,7 @@ class BusinessAppRouter {
         GoRoute(
           path: AppRoutes.ownerEditService,
           builder: (context, state) => OwnerServiceFormScreen(
+            isReadOnly: owner.home.state.isReadOnly,
             bloc: owner.services,
             brandId: owner.home.state.brand?.id ?? '',
             service: state.extra as BusinessServiceDto?,

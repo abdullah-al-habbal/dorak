@@ -8,13 +8,17 @@ import 'package:business_app/src/core/errors/api_error.entity.dart';
 class OwnerError {
   const OwnerError._();
 
-  static const notApprovedCode = 'brand_not_approved';
-  static const suspendedCode = 'brand_suspended';
+  static const notApprovedCode =
+      ApiErrorCodeConstants.apiErrorCodeBrandNotApproved;
+  static const suspendedCode = ApiErrorCodeConstants.apiErrorCodeBrandSuspended;
 
   static String message(AppLocalizations l10n, Object error) {
     if (error is ApiException && error is! NetworkException) {
       if (error.code == notApprovedCode) return l10n.ownerErrorBrandNotApproved;
       if (error.code == suspendedCode) return l10n.ownerErrorReadOnly;
+      if (error is FeatureNotEnabledException) {
+        return l10n.businessFeatureNotEnabled;
+      }
     }
     return ApiError.from(
       error,

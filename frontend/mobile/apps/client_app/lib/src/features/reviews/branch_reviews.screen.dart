@@ -6,6 +6,7 @@ import 'package:localization/localization.dart';
 
 import 'package:client_app/src/features/reviews/branch_reviews.bloc.dart';
 import 'package:client_app/src/features/reviews/widgets/review_tile.widget.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BranchReviewsScreen extends StatefulWidget {
   const BranchReviewsScreen({
@@ -41,7 +42,7 @@ class _BranchReviewsScreenState extends State<BranchReviewsScreen> {
             return StatusView(
               icon: Icons.error_outline,
               title: l10n.errorTitleGeneric,
-              message: l10n.errorNetwork,
+              message: LoadErrorMessage.of(l10n, state.error),
               actionLabel: l10n.actionRetry,
               onAction: widget.bloc.retry,
             );

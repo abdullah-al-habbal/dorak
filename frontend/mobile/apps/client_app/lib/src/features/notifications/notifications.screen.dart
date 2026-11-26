@@ -13,6 +13,7 @@ import 'package:client_app/src/features/notifications/notifications.bloc.dart';
 import 'package:client_app/src/features/notifications/notifications.event.dart';
 import 'package:client_app/src/features/notifications/notifications.state.dart';
 import 'package:client_app/src/features/notifications/widgets/notification_tile.widget.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key, required this.bloc});
@@ -94,7 +95,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       return StatusView(
         icon: Icons.error_outline,
         title: l10n.errorTitleGeneric,
-        message: l10n.errorNetwork,
+        message: LoadErrorMessage.of(l10n, state.page.error),
         actionLabel: l10n.actionRetry,
         onAction: () => widget.bloc.add(const NotificationsRetryRequested()),
       );
@@ -130,7 +131,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               return state.error == null
                   ? const SizedBox.shrink()
                   : StatusBanner(
-                      message: l10n.errorNetwork,
+                      message: LoadErrorMessage.of(l10n, state.error),
                       actionLabel: l10n.actionRetry,
                       onAction: () => widget.bloc.add(
                         const NotificationsRefreshRequested(),
@@ -168,7 +169,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     if (state.page.isLoadingMore) return const AppLoader.inline();
     if (state.page.hasFailedMore) {
       return StatusBanner(
-        message: l10n.errorNetwork,
+        message: LoadErrorMessage.of(l10n, state.page.error),
         actionLabel: l10n.actionRetry,
         onAction: () => widget.bloc.add(const NotificationsRetryRequested()),
       );

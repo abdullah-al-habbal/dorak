@@ -187,6 +187,7 @@ class DioAuthRepository implements AuthRepository {
   Future<void> deleteAccount(String password) => _client.delete(
     ApiEndpoints.auth.deleteAccount,
     data: {'password': password},
+    keepSessionOn401: true,
   );
 
   static void _discardBody(dynamic _) {}

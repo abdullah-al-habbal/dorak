@@ -17,6 +17,7 @@ import 'package:client_app/src/features/discovery/widgets/discovery_barber_card.
 import 'package:client_app/src/features/discovery/widgets/discovery_filter_bar.widget.dart';
 import 'package:client_app/src/features/discovery/widgets/discovery_result_card.widget.dart';
 import 'package:client_app/src/features/discovery/discovery_filter_constants.entity.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class DiscoveryFeed extends StatefulWidget {
   const DiscoveryFeed({
@@ -204,7 +205,7 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
                 bottom: DorakDimensions.spacingSmall,
               ),
               child: StatusBanner(
-                message: l10n.errorNetwork,
+                message: LoadErrorMessage.of(l10n, state.page.error),
                 actionLabel: l10n.actionRetry,
                 onAction: () => bloc.add(const DiscoveryRetryRequested()),
               ),
@@ -309,7 +310,7 @@ class _DiscoveryFeedState extends State<DiscoveryFeed> {
           vertical: DorakDimensions.spacingSmall,
         ),
         child: StatusBanner(
-          message: l10n.errorNetwork,
+          message: LoadErrorMessage.of(l10n, state.page.error),
           actionLabel: l10n.actionRetry,
           onAction: () => bloc.add(const DiscoveryRetryRequested()),
         ),

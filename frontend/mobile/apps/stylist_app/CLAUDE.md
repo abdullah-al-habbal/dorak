@@ -27,6 +27,9 @@ inventory). Sections 2–3 are the contract that code follows.
 Permitted: `core`, `design_system`, `localization` as workspace path
 dependencies, plus third-party packages.
 
+`dio` is a **test-only** dev dependency (a real `ApiClient` with a fake adapter,
+or a `NetworkException` in a fake). Never import it from `lib/`.
+
 It declares all three as workspace path dependencies, plus
 `flutter_localizations`.
 

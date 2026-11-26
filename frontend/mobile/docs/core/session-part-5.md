@@ -35,6 +35,10 @@ Unauthorized flow:
 * The app layer forwards the signal to `UnauthorizedDetected`. The session bloc
   dedupes against an already-raised `sessionExpired`, clears the token, drops to
   `guest`, and raises the signal.
+* The staff apps use `StaffSessionSignals` (`session/`): it subscribes to
+  `unauthorizedStream` and `accountBannedStream`, ends the `StaffSessionBloc`
+  session (`unauthorized()` or `accountBanned()`), then runs the app teardown.
+  See `core/interceptors.md` for which responses raise neither signal.
 * `RequireAuthentication` raises `authenticationRequired` (guest-guarded
   action) without touching the session.
 * `SignalAcknowledged` clears a **session** signal; `AuthSignalAcknowledged`

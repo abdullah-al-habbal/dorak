@@ -42,4 +42,6 @@ strictly worse.
 
 Note that Laravel's guard returns a bare `{"message":"Unauthenticated."}` rather
 than the API envelope, so `ApiClient` maps it to `ApiException(401, 'UNKNOWN')`.
-Branch on `isUnauthorized`, never on `code`.
+Branch on `isUnauthorized`, never on `code`. A response whose body is not a JSON
+object keeps its status too, with code `INVALID_RESPONSE` (see
+[exceptions](exceptions.md)).

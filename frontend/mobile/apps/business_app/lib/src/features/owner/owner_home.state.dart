@@ -25,6 +25,8 @@ class OwnerHomeState extends Equatable {
   /// A suspended brand is read-only; a pending one has the D11 limits, enforced by the API.
   OwnerBrandStatus get brandStatus => brand?.status ?? OwnerBrandStatus.unknown;
 
+  bool get isReadOnly => brandStatus == OwnerBrandStatus.suspended;
+
   OwnerHomeState copyWith({
     OwnerHomeStatus? status,
     OwnerBrandDto? brand,

@@ -19,7 +19,6 @@ lib/src/
     config.barrel.dart
   network/
     api.client.dart                      ApiClient + JsonParser<T> + RawPaginated<T>
-    api_response.dto.dart                ApiResponse<T> envelope
     paginated_data.dto.dart              PaginatedData<T>
     pagination_meta.dto.dart             PaginationMeta
     network.barrel.dart
@@ -38,6 +37,7 @@ lib/src/
     session.event.dart                   SessionEvent (restore / logout / 401 / guard / ack / authenticated)
     session.state.dart                   SessionState
     session_signal.entity.dart           SessionSignal
+    staff_session_signals.provider.dart  StaffSessionSignals — 401/403 and ban streams to the staff session
     session.barrel.dart
   storage/
     token.storage.dart                   TokenStorage + SecureTokenStorage

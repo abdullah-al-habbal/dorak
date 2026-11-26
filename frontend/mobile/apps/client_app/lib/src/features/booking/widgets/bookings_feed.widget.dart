@@ -12,6 +12,7 @@ import 'package:client_app/src/features/booking/booking.state.dart';
 import 'package:client_app/src/features/booking/booking_eligibility.entity.dart';
 import 'package:client_app/src/features/booking/widgets/booking_card.widget.dart';
 import 'package:client_app/src/features/booking/widgets/bookings_filter.widget.dart';
+import 'package:client_app/src/core/errors/load_error_message.entity.dart';
 
 class BookingsFeed extends StatefulWidget {
   const BookingsFeed({
@@ -173,7 +174,7 @@ class _BookingsFeedState extends State<BookingsFeed> {
           vertical: DorakDimensions.spacingSmall,
         ),
         child: StatusBanner(
-          message: l10n.errorNetwork,
+          message: LoadErrorMessage.of(l10n, widget.state.page.error),
           actionLabel: l10n.actionRetry,
           onAction: () => widget.bloc.add(const BookingsRetryRequested()),
         ),

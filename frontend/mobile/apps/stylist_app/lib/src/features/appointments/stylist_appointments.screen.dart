@@ -8,6 +8,7 @@ import 'package:stylist_app/src/features/appointments/stylist_appointments.bloc.
 import 'package:stylist_app/src/features/appointments/stylist_appointments.state.dart';
 import 'package:stylist_app/src/features/appointments/widgets/past_appointment_tile.widget.dart';
 import 'package:stylist_app/src/features/shared/load_on_init.widget.dart';
+import 'package:stylist_app/src/core/errors/api_error.entity.dart';
 
 class StylistAppointmentsScreen extends StatelessWidget {
   const StylistAppointmentsScreen({super.key, required this.bloc});
@@ -77,7 +78,7 @@ class StylistAppointmentsScreen extends StatelessWidget {
       return StatusView(
         icon: Icons.error_outline,
         title: l10n.errorTitleGeneric,
-        message: l10n.errorNetwork,
+        message: ApiError.from(state.page.error!, l10n).message,
         actionLabel: l10n.actionRetry,
         onAction: bloc.load,
       );

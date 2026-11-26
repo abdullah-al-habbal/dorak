@@ -59,12 +59,17 @@ class NetworkException extends ApiException {
 
 ## Mapping Rules
 
-* `ApiClient._guard`: envelope body present → `ApiException`/`ValidationException`;
-  no body → `NetworkException`.
-* Non-envelope payload → `ApiException(statusCode, 'INVALID_RESPONSE')`.
+* `ApiClient._guard`: an HTTP response with a JSON object body →
+  `ApiException`/`ValidationException`; **no response** (timeout, offline, DNS,
+  cancel) → `NetworkException`.
+* Any other response body (HTML, text, a list, empty), on success or failure →
+  `ApiException(realStatus, 'INVALID_RESPONSE')`. A proxy 502 is a server
+  failure, never "no connection".
+* UI: only `NetworkException` may say there is no connection.
 * `DioException` of any type never escapes `ApiClient`.
 
 ## Verification
 
 Covered by `packages/core/test/api_client_test.dart` (422, 404, invalid
-payload, transport error) and `test/retry_interceptor_test.dart`.
+payload, transport error), `test/session_retention_test.dart` (non-envelope
+statuses) and `test/retry_interceptor_test.dart`.

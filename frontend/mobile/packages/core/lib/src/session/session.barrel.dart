@@ -12,3 +12,4 @@ export 'package:core/src/session/staff_session.state.dart';
 export 'package:core/src/session/staff_password_reset.bloc.dart';
 export 'package:core/src/session/staff_password_reset.state.dart';
 export 'package:core/src/session/staff_session_refresh.provider.dart';
+export 'package:core/src/session/staff_session_signals.provider.dart';

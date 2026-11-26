@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 
+import 'package:core/src/network/exceptions/api.exception.dart';
+import 'package:core/src/network/exceptions/api_error_code_constants.entity.dart';
 import 'package:core/src/network/repositories/staff_auth.repository.dart';
 import 'package:core/src/session/staff_session.state.dart';
 import 'package:core/src/storage/token.storage.dart';
@@ -65,8 +67,27 @@ class StaffSessionBloc extends Cubit<StaffSessionState> {
     }
   }
 
+  /// A 401 that follows a ban keeps the suspension, so the login screen can
+  /// still explain it.
   Future<void> unauthorized() async {
+    if (state.isBanned) return;
     await _tokenStorage.clear();
+    if (state.isBanned) return;
     emit(const StaffSessionState(status: StaffAuthStatus.guest));
+  }
+
+  /// Ends the session of a banned account and keeps the reason in the state.
+  Future<void> accountBanned() async {
+    emit(
+      const StaffSessionState(
+        status: StaffAuthStatus.guest,
+        error: ApiException(
+          statusCode: 403,
+          code: ApiErrorCodeConstants.apiErrorCodeAccountBanned,
+          message: 'Account suspended',
+        ),
+      ),
+    );
+    await _tokenStorage.clear();
   }
 }

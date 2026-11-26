@@ -8,6 +8,7 @@ import 'package:core/src/network/exceptions/feature_not_enabled.exception.dart';
 import 'package:core/src/network/exceptions/network.exception.dart';
 import 'package:core/src/network/exceptions/validation.exception.dart';
 import 'package:core/src/network/interceptors/auth.interceptor.dart';
+import 'package:core/src/network/interceptors/auth_interceptor_constants.entity.dart';
 import 'package:core/src/network/interceptors/locale.interceptor.dart';
 import 'package:core/src/network/interceptors/logging.interceptor.dart';
 import 'package:core/src/network/interceptors/retry.interceptor.dart';
@@ -155,16 +156,27 @@ class ApiClient {
     return _parse(response, parser);
   }
 
+  /// [keepSessionOn401] is for a call whose 401 rejects a submitted password:
+  /// the caller shows the error and the session is not reported as expired.
   Future<void> delete(
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
+    bool keepSessionOn401 = false,
   }) async {
     final response = await _guard(
       () => dio.delete<dynamic>(
         path,
         data: data,
         queryParameters: queryParameters,
+        options: keepSessionOn401
+            ? Options(
+                extra: <String, dynamic>{
+                  AuthInterceptorConstants.authInterceptorKeepSessionOn401Key:
+                      true,
+                },
+              )
+            : null,
       ),
     );
     _throwIfFailure(_bodyOf(response), response.statusCode ?? 200);
@@ -219,9 +231,12 @@ class ApiClient {
     } on ApiException {
       rethrow;
     } on DioException catch (e) {
-      final body = e.response?.data;
-      if (e.response != null && body is Map<String, dynamic>) {
-        throw _exceptionFrom(body, e.response!.statusCode ?? 0);
+      final response = e.response;
+      if (response != null) {
+        final body = response.data;
+        final status = response.statusCode ?? 0;
+        if (body is Map<String, dynamic>) throw _exceptionFrom(body, status);
+        throw _invalidResponse(status);
       }
       throw NetworkException(
         type: e.type,
@@ -234,14 +249,16 @@ class ApiClient {
   Map<String, dynamic> _bodyOf(Response<dynamic> response) {
     final data = response.data;
     if (data is! Map<String, dynamic>) {
-      throw ApiException(
-        statusCode: response.statusCode ?? 0,
-        code: 'INVALID_RESPONSE',
-        message: 'Unexpected response payload',
-      );
+      throw _invalidResponse(response.statusCode ?? 0);
     }
     return data;
   }
+
+  ApiException _invalidResponse(int statusCode) => ApiException(
+    statusCode: statusCode,
+    code: ApiErrorCodeConstants.apiErrorCodeInvalidResponse,
+    message: 'Unexpected response payload',
+  );
 
   T _parse<T>(Response<dynamic> response, JsonParser<T> parser) {
     final body = _bodyOf(response);

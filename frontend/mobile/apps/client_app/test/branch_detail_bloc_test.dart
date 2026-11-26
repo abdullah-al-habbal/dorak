@@ -59,7 +59,7 @@ void main() {
       verify: (bloc) {
         expect(bloc.state.detail?.name, 'Branch 1');
         expect(bloc.state.plan, isNull);
-        expect(bloc.state.planFailed, isTrue);
+        expect(bloc.state.planError, isNotNull);
       },
     );
   });

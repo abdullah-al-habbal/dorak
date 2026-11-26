@@ -46,7 +46,7 @@ class _StylistAppState extends State<StylistApp> {
   late final StylistSignUpBloc _signUp;
   late final StaffPasswordResetBloc _passwordReset;
   late final TokenStorage _tokenStorage;
-  late final StreamSubscription<void> _unauthorizedSubscription;
+  late final StaffSessionSignals _sessionSignals;
   late final StreamSubscription<NotificationTarget>
   _notificationOpenSubscription;
 
@@ -71,8 +71,10 @@ class _StylistAppState extends State<StylistApp> {
     _session = StaffSessionBloc(staffAuth, _tokenStorage);
     _passwordReset = StaffPasswordResetBloc(staffAuth);
     _signUp = StylistSignUpBloc(DioBarberRegistrationRepository(_client));
-    _unauthorizedSubscription = _client.unauthorizedStream.listen(
-      (_) => _onUnauthorized(),
+    _sessionSignals = StaffSessionSignals(
+      client: _client,
+      session: _session,
+      onSessionEnded: _onSessionEnded,
     );
     final operations = DioStylistOperationsRepository(_client);
     _bloc = StylistBloc(operations, realtime: _realtime);
@@ -119,7 +121,7 @@ class _StylistAppState extends State<StylistApp> {
       onLocaleToggle: _toggleLocale,
       onLogout: _logout,
       onAuthenticated: _onAuthenticated,
-      onAccountDeleted: _onUnauthorized,
+      onAccountDeleted: () => unawaited(_onAccountDeleted()),
     );
     unawaited(_restoreSession());
   }
@@ -130,7 +132,7 @@ class _StylistAppState extends State<StylistApp> {
     _session.close();
     _signUp.close();
     _passwordReset.close();
-    _unauthorizedSubscription.cancel();
+    unawaited(_sessionSignals.dispose());
     _notificationOpenSubscription.cancel();
     _bloc.close();
     unawaited(_features.close());
@@ -211,15 +213,17 @@ class _StylistAppState extends State<StylistApp> {
     if (mounted) _router.router.go(AppRoutes.login);
   }
 
-  void _onUnauthorized() {
-    unawaited(
-      Future.wait([
-        _session.unauthorized(),
-        _pushNotifications.stop(),
-        if (_realtime != null) _realtime.disconnectForLogout(),
-      ]).then((_) {
-        if (mounted) _router.router.go(AppRoutes.login);
-      }),
-    );
+  /// Teardown after the session is already gone: expired, banned or deleted.
+  Future<void> _onSessionEnded() async {
+    await Future.wait([
+      _pushNotifications.stop(),
+      if (_realtime != null) _realtime.disconnectForLogout(),
+    ]);
+    if (mounted) _router.router.go(AppRoutes.login);
+  }
+
+  Future<void> _onAccountDeleted() async {
+    await _session.unauthorized();
+    await _onSessionEnded();
   }
 }

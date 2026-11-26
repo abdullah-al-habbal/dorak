@@ -66,7 +66,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   late final ExternalLinkOpener _linkOpener;
   late final LegalLinks _legalLinks;
   late final StaffPasswordResetBloc _passwordReset;
-  late final StreamSubscription<void> _unauthorizedSubscription;
+  late final StaffSessionSignals _sessionSignals;
   late final StreamSubscription<NotificationTarget>
   _notificationOpenSubscription;
 
@@ -98,6 +98,11 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     );
     _session = StaffSessionBloc(_roles, _tokenStorage);
     _passwordReset = StaffPasswordResetBloc(_roles);
+    _sessionSignals = StaffSessionSignals(
+      client: _apiClient,
+      session: _session,
+      onSessionEnded: _onSessionEnded,
+    );
     final ownerApi = DioOwnerRepository(_apiClient);
     _owner = OwnerFeatureBlocs(
       home: OwnerHomeCubit(ownerApi),
@@ -109,9 +114,6 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     );
     _linkOpener = const UrlLauncherExternalLinkOpener();
     _legalLinks = LegalLinks.fromApiBaseUrl(ConfigProvider.config.apiBaseUrl);
-    _unauthorizedSubscription = _apiClient.unauthorizedStream.listen(
-      (_) => _onUnauthorized(),
-    );
     _barbers = ManualBarberBloc(
       widget.repository ?? DioManagedBarberRepository(_apiClient),
     );
@@ -172,7 +174,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     _router.dispose();
     _session.close();
     _passwordReset.close();
-    _unauthorizedSubscription.cancel();
+    unawaited(_sessionSignals.dispose());
     _notificationOpenSubscription.cancel();
     _realtime?.dispose();
     unawaited(_pushNotifications.dispose());
@@ -259,15 +261,12 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
     if (mounted) _router.router.go(AppRoutes.login);
   }
 
-  void _onUnauthorized() {
-    unawaited(
-      Future.wait([
-        _session.unauthorized(),
-        _pushNotifications.stop(),
-        if (_realtime != null) _realtime.disconnectForLogout(),
-      ]).then((_) {
-        if (mounted) _router.router.go(AppRoutes.login);
-      }),
-    );
+  /// Teardown after the session is already gone: expired, banned or deleted.
+  Future<void> _onSessionEnded() async {
+    await Future.wait([
+      _pushNotifications.stop(),
+      if (_realtime != null) _realtime.disconnectForLogout(),
+    ]);
+    if (mounted) _router.router.go(AppRoutes.login);
   }
 }

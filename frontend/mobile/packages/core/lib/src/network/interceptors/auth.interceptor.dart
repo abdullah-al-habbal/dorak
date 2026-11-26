@@ -50,6 +50,11 @@ class AuthInterceptor extends Interceptor {
           AuthInterceptorConstants.authInterceptorBusinessForbiddenCodes
               .contains(code)) {
         // A business rejection of one action, not a session problem.
+      } else if (status == 401 &&
+          err.requestOptions.extra[AuthInterceptorConstants
+                  .authInterceptorKeepSessionOn401Key] ==
+              true) {
+        // The call rejected the credential it was sent, not the bearer token.
       } else {
         reportUnauthorized();
       }

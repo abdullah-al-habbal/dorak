@@ -11,6 +11,7 @@ import 'package:stylist_app/src/features/operations/widgets/appointment_card.wid
 import 'package:stylist_app/src/features/operations/widgets/cancel_reason.sheet.dart';
 import 'package:stylist_app/src/features/operations/widgets/profile_services_section.widget.dart';
 import 'package:stylist_app/src/core/locale/app_locales.entity.dart';
+import 'package:stylist_app/src/features/shared/feature_error.widget.dart';
 
 class StylistScreen extends StatelessWidget {
   const StylistScreen({
@@ -75,7 +76,7 @@ class StylistScreen extends StatelessWidget {
                     profile: state.profile!,
                     l10n: strings,
                   ),
-                if (state.error != null) Text(strings.stylistUpdateFailed),
+                if (state.error != null) FeatureError(error: state.error!),
                 const SizedBox(height: DorakDimensions.spacingMedium),
                 Text(
                   strings.stylistTodayAppointments,

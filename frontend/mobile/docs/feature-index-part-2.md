@@ -12,7 +12,7 @@ Part 2 of 5 · [Feature Index — Dorak Mobile (Flutter Monorepo)](feature-index
 - `ConfigProvider` — `.env` via dotenv (`app_config.entity.dart`, `config.provider.dart`).
 - `ApiClient` — Dio-based (`api.client.dart`).
 - Interceptors: `auth.interceptor.dart`, `locale.interceptor.dart`, `logging.interceptor.dart`, `retry.interceptor.dart`.
-- Contracts: `ApiResponse<T>` / `api_response.dto.dart`, `PaginatedData<T>`, `PaginationMeta`, exceptions (`ApiException`, `NetworkException`, `ValidationException`). Paging **state** is app-layer Bloc work — the legacy pagination notifiers were deleted (see `docs/state-management/pagination.md`).
+- Contracts: `PaginatedData<T>`, `PaginationMeta`, exceptions (`ApiException`, `NetworkException`, `ValidationException`). Paging **state** is app-layer Bloc work — the legacy pagination notifiers were deleted (see `docs/state-management/pagination.md`).
 - `endpoints/app.endpoints.dart`, `endpoints/auth.endpoints.dart` — domain-split endpoint declarations.
 - `onboarding_config.repository.dart` — `OnboardingConfigRepository` + `OnboardingConfigDto` (GET /api/v1/app/onboarding-config).
 - `auth.repository.dart` — `AuthRepository` + `DioAuthRepository`: login, register (sends `password_confirmation`), logout, refreshToken, sendEmailVerification, verifyEmail, forgotPassword, resetPassword, changePassword (`PATCH /client/password`). DTOs `AuthResponseDto`, `ClientDto`, `TokenResponseDto`.

@@ -1,10 +1,13 @@
 import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:localization/localization.dart';
 
 import 'package:business_app/src/core/navigation/app.router.dart';
+import 'package:business_app/src/core/navigation/app_routes.entity.dart';
+import 'package:business_app/src/features/owner/owner_error.entity.dart';
 import 'package:business_app/src/features/auth/business_login.screen.dart';
 import 'package:business_app/src/features/barbers/manual_barber.bloc.dart';
 import 'package:business_app/src/features/operations/branch_operations.bloc.dart';
@@ -191,6 +194,65 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(owner.calls, ['switch:branch-1:false']);
+  });
+
+  testWidgets('a suspended brand cannot add or switch branches', (
+    tester,
+  ) async {
+    owner = FakeOwnerRepository(
+      brand: brandFixture(status: OwnerBrandStatus.suspended),
+      branches: [branchFixture()],
+    );
+    await pumpApp(tester);
+    router.router.go('/owner');
+    await tester.pumpAndSettle();
+    router.router.go('/owner/branches');
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('nothing can be changed'), findsOneWidget);
+    expect(find.byType(FloatingActionButton), findsNothing);
+    expect(tester.widget<Switch>(find.byType(Switch)).onChanged, isNull);
+  });
+
+  testWidgets('a suspended brand cannot save the branch or service forms', (
+    tester,
+  ) async {
+    owner = FakeOwnerRepository(
+      brand: brandFixture(status: OwnerBrandStatus.suspended),
+    );
+    await pumpApp(tester);
+    router.router.go('/owner');
+    await tester.pumpAndSettle();
+
+    for (final route in [AppRoutes.ownerNewBranch, AppRoutes.ownerNewService]) {
+      router.router.go(route);
+      await tester.pumpAndSettle();
+
+      final save = tester.widget<PrimaryButton>(find.byType(PrimaryButton));
+      expect(save.isDisabled, isTrue, reason: route);
+    }
+    router.router.go('/owner/services');
+    await tester.pumpAndSettle();
+
+    expect(find.byType(FloatingActionButton), findsNothing);
+    expect(owner.calls, isEmpty);
+  });
+
+  test('a premium feature that is off is explained to the owner', () async {
+    final l10n = await AppLocalizations.delegate.load(const Locale('en'));
+
+    expect(
+      OwnerError.message(
+        l10n,
+        const FeatureNotEnabledException(
+          statusCode: 403,
+          code: 'feature_not_enabled',
+          message: 'raw',
+          feature: 'multi_branch',
+        ),
+      ),
+      l10n.businessFeatureNotEnabled,
+    );
   });
 
   testWidgets('creating a branch from the form calls the API', (tester) async {
