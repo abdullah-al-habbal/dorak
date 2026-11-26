@@ -15,6 +15,36 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
+## Snapshot 12: 2026-11-26, about 15:21 UTC, Wave 0 released and checked
+
+`master` is deployed to dev at `96d2f797e` with `reset_database=false`. It contains BG-46, BG-47 and the Symfony security updates. This replaces the "not deployed" state in Snapshot 11.
+
+| Item | Value |
+|---|---|
+| Deploy runs | [`45834871043`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45834871043) (`a712aca7f`), then [`45848023311`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45848023311) (`96d2f797e`): both success |
+| Vercel | success for both commits |
+| `scripts/verify-deploy.sh` | all probes passed after both deploys |
+| Backend CI | [`45846739656`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45846739656) (`96d2f797e`): success |
+| Dashboard CI | [`45835784334`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45835784334) (`a712aca7f`, manual run): success |
+| Mobile CI | [`45832755927`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45832755927) (`35cdba0d4`): success; no mobile file changed since |
+| Backend, local | Pest 3004 passed (13525 assertions) with the updated packages; `pint --test` passed; before the update the migration guard passed and the concurrency tests passed 12 (148 assertions); `composer audit` reports no advisories (it reported 5 before the update) |
+| Dashboard, local | lint and typecheck clean; Vitest 1243 passed; Playwright 487 passed (all configured projects, against `dorak_test` on separate ports, before the Symfony update) |
+| `npm audit` | 14: 4 high (Firebase and gRPC, BG-38), 10 moderate (BG-50) |
+| Dart | `dart pub outdated`: 33 packages can be upgraded within constraints, 11 are held back by constraints. A search of its output and of `dart pub get --dry-run` found no advisory, retracted or discontinued notice. This is not a full vulnerability audit |
+| Not run | local `melos verify` |
+
+### Live channel authorization checks on dev (at `a712aca7f`)
+
+These check whether the server signs a channel subscription. No message delivery was tested (RR-20).
+
+| Check | Result |
+|---|---|
+| Real signing | the branch's own `branch.{id}` and `floor-plan.{id}` signed; a random other branch, floor plan and client refused (403) |
+| Brand suspended | the branch token got 403 on its own `branch.{id}` and `floor-plan.{id}`; the stylist kept their own `barber.{id}` |
+| Brand suspended, API | the profile route and a new branch login answered 403 `ACCOUNT_NOT_ACTIVE`, in English for both `en` and `ar` requests (BG-49) |
+| Brand reactivated | both channels signed again; branch login, profile and logout answered 200. The brand was restored; no booking was cancelled |
+| Not covered | the seeded branch has no seated stylist, so stylist-to-branch, stylist-to-floor-plan and branch-to-stylist channels were not tested live (Pest covers them); the owner channel was not tested |
+
 ## Snapshot 11: 2026-11-26, about 13:49 UTC, BG-46 and BG-47 pushed, not deployed
 
 `master` was pushed up to `35cdba0d4` (`9775e23e1..35cdba0d4`: `f30964ca7` BG-46 and `35cdba0d4` BG-47). No deploy was dispatched. The last deploy run is still [`45277277114`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45277277114) (`fea9c09fd`).
