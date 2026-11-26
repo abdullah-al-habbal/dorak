@@ -12,6 +12,7 @@ use Modules\Branch\Enums\BranchStatusEnum;
 use Modules\Branch\Models\BranchModel;
 use Modules\Brand\Constants\BrandReviewConstants;
 use Modules\Brand\Enums\BrandStatusEnum;
+use Modules\Brand\Events\BrandSuspendedEvent;
 use Modules\Brand\Exceptions\BrandReviewException;
 use Modules\Brand\Models\BrandModel;
 use Modules\Dashboard\Services\OwnerBrandMailer;
@@ -68,6 +69,7 @@ final class BrandReviewService
     public function suspend(string $brandId, string $adminId, string $reason, bool $cancelFutureBookings): BrandModel
     {
         $brand = $this->move($brandId, BrandStatusEnum::Active, BrandStatusEnum::Suspended, $reason, StatusChangeActorTypeEnum::Admin, $adminId);
+        $this->announceSuspension($brand);
         if ($cancelFutureBookings) {
             $this->bookings->cancelFutureBookings($brand, $adminId);
         }
@@ -82,6 +84,15 @@ final class BrandReviewService
         $this->mailer->reactivated($brand);
 
         return $brand;
+    }
+
+    /** Best-effort: a broadcast failure is reported and never stops the suspension, its cancellations or its mail. */
+    private function announceSuspension(BrandModel $brand): void
+    {
+        $branchIds = $brand->branches()->where('status', BranchStatusEnum::Enabled->value)->pluck('id')->map(strval(...))->values()->all();
+        $ownerId = $brand->owner_id === null ? null : (string) $brand->owner_id;
+
+        rescue(fn () => BrandSuspendedEvent::dispatch((string) $brand->getKey(), $branchIds, $ownerId));
     }
 
     private function move(string $brandId, BrandStatusEnum $from, BrandStatusEnum $to, ?string $reason, StatusChangeActorTypeEnum $actor, string $actorId): BrandModel

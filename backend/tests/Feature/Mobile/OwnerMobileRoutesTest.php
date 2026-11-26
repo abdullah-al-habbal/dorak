@@ -33,6 +33,7 @@ describe('GET /owner/me', function (): void {
         $response = $this->withToken($token)->getJson(OWNER_MOBILE.'/me')->assertOk()->assertJsonPath('data.is_owner', true);
 
         $states = collect($response->json('data.brands'))->pluck('status', 'id');
+        expect($response->json('data.client_id'))->toBe((string) $owner->id);
         expect($states[$brand->id])->toBe('pending')->and($states)->toHaveCount(2)->and($response->json('data.branch_count'))->toBe(1);
     });
 

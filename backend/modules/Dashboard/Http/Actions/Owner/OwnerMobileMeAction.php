@@ -32,6 +32,8 @@ final class OwnerMobileMeAction extends BaseApiAction
         $brands = $actor === null ? collect() : BrandModel::query()->whereIn('id', $actor->brandIds)->orderBy('id')->get(['id', 'name', 'status']);
 
         return $this->success(data: [
+            // The owner's private broadcast channel is `client.{client_id}`.
+            'client_id' => (string) $client->getKey(),
             'is_owner' => $actor !== null,
             'brand_ids' => $actor?->brandIds ?? [],
             'branch_count' => count($actor?->branchIds ?? []),
