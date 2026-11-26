@@ -45,7 +45,9 @@ Accept: application/json
 
 Laravel applies its existing `admin_api`, `branch_api`, `barber` and `client`
 channel policies at `POST /api/v1/broadcasting/auth`; the client never chooses access
-rights. A missing token fails authorization rather than subscribing.
+rights. A branch channel, and a branch's view of a stylist channel,
+is refused while the branch is not operational (suspended or inactive brand or
+branch). A missing token fails authorization rather than subscribing.
 
 ```dart
 final realtime = RealtimeClient(

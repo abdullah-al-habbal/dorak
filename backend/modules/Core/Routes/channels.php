@@ -12,11 +12,13 @@ Broadcast::channel('branch.{branchId}', function (AdminModel|BranchModel|BarberM
     if ($user instanceof AdminModel) {
         return true;
     }
+    // A suspended brand or an inactive branch gets no channel, the same rule as its HTTP routes.
     if ($user instanceof BranchModel) {
-        return $user->id === $branchId;
+        return $user->id === $branchId && $user->isOperational();
     }
 
-    return $user->chairs()->where('branch_id', $branchId)->exists();
+    return $user->chairs()->where('branch_id', $branchId)->exists()
+        && BranchModel::query()->find($branchId)?->isOperational() === true;
 }, ['guards' => ['admin_api', 'branch_api', 'barber']]);
 
 Broadcast::channel('barber.{barberId}', function (AdminModel|BranchModel|BarberModel $user, string $barberId): bool {
@@ -27,7 +29,7 @@ Broadcast::channel('barber.{barberId}', function (AdminModel|BranchModel|BarberM
         return $user->id === $barberId;
     }
 
-    return $user->barbers()->whereKey($barberId)->exists();
+    return $user->isOperational() && $user->barbers()->whereKey($barberId)->exists();
 }, ['guards' => ['admin_api', 'branch_api', 'barber']]);
 
 Broadcast::channel('client.{clientId}', fn (ClientModel $user, string $clientId): bool => (string) $user->id === $clientId, ['guards' => ['client']]);
