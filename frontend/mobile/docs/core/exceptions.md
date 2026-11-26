@@ -57,6 +57,20 @@ class NetworkException extends ApiException {
 }
 ```
 
+## Error codes and failure kinds
+
+`ApiErrorCodeConstants` holds every `code` the apps read: the backend generic
+set, the feature codes and the client-made ones. Do not compare against a
+string literal; add the constant first.
+
+`ApiFailureKind.from(error)` classifies a failure without any wording:
+`network`, `server`, `rateLimited`, `unauthorized`, `forbidden`, `conflict`,
+`validation`, `businessCode`, `unknown`. The first match wins: no response →
+not an `ApiException` (`unknown`) → `ValidationException` → a code outside
+`apiGenericErrorCodes` (`businessCode`) → the HTTP status (401, 403, 409, 422,
+429, ≥ 500) → `unknown`, which includes 404. A coded 409 is `businessCode`, so
+a feature that treats every 409 alike keeps reading `statusCode`.
+
 ## Mapping Rules
 
 * `ApiClient._guard`: an HTTP response with a JSON object body →

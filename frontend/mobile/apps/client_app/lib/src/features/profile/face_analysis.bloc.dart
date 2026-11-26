@@ -65,7 +65,8 @@ class FaceAnalysisBloc extends Bloc<FaceAnalysisEvent, FaceAnalysisState> {
     } catch (error) {
       if (emit.isDone) return;
       final limitReached =
-          error is ApiException && error.code == 'face_photo_limit_reached';
+          error is ApiException &&
+          error.code == ApiErrorCodeConstants.apiErrorCodeFacePhotoLimitReached;
       emit(
         state.copyWith(
           status: FaceAnalysisStatus.failed,

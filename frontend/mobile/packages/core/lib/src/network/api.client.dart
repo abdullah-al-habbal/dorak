@@ -275,7 +275,8 @@ class ApiClient {
   }
 
   ApiException _exceptionFrom(Map<String, dynamic> body, int statusCode) {
-    final code = body['code'] as String? ?? 'UNKNOWN';
+    final code =
+        body['code'] as String? ?? ApiErrorCodeConstants.apiErrorCodeUnknown;
     final message = body['message'] as String? ?? 'Request failed';
 
     if (code == ApiErrorCodeConstants.apiErrorCodeValidationFailed) {

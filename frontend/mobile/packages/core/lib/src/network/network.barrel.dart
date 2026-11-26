@@ -94,6 +94,7 @@ export 'package:core/src/network/dto/earnings_total.dto.dart';
 export 'package:core/src/network/dto/earnings.dto.dart';
 export 'package:core/src/network/endpoints/endpoints.barrel.dart';
 export 'package:core/src/network/exceptions/api.exception.dart';
+export 'package:core/src/network/exceptions/api_failure_kind.entity.dart';
 export 'package:core/src/network/exceptions/chair_has_active_bookings.exception.dart';
 export 'package:core/src/network/exceptions/feature_not_enabled.exception.dart';
 export 'package:core/src/network/exceptions/network.exception.dart';

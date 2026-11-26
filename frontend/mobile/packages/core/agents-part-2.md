@@ -24,7 +24,7 @@ lib/src/
     network.barrel.dart
     dto/                                 auth_response · client · onboarding_config · booking* · branch_detail · floor_plan · floor_chair · token_response · service_history · history_barber · history_branch · history_catalog_item · history_media · face_photo · face_analysis_result · avatar · universe_preference · catalog_price_range · catalog_item · barber_profile · barber_service · currency
     endpoints/                           app · auth · booking · branch · explore · history · currency (+ endpoints.barrel.dart, the single export path for every endpoint file; guarded by test/endpoints_barrel_test.dart)
-    exceptions/                          api · network · validation
+    exceptions/                          api · network · validation exceptions · error code constants · ApiFailureKind
     interceptors/                        auth · locale · logging · retry
     repositories/                        auth · onboarding_config · explore · booking · branch · history · face_profile · profile · service_catalog · currency
   session/

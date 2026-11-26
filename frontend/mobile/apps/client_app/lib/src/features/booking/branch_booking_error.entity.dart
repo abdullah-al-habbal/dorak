@@ -5,17 +5,22 @@ abstract final class BranchBookingError {
   static String? atHomeMessage(AppLocalizations l10n, Object? error) {
     if (error is! ApiException) return null;
     return switch (error.code) {
-      'at_home_barber_required' => l10n.bookingAtHomeBarberRequiredMessage,
-      'at_home_service_not_eligible' =>
+      ApiErrorCodeConstants.apiErrorCodeAtHomeBarberRequired =>
+        l10n.bookingAtHomeBarberRequiredMessage,
+      ApiErrorCodeConstants.apiErrorCodeAtHomeServiceNotEligible =>
         l10n.bookingAtHomeServiceNotEligibleMessage,
-      'at_home_not_offered' => l10n.bookingAtHomeNotOfferedMessage,
-      'at_home_out_of_radius' => l10n.bookingAtHomeOutOfRadiusMessage,
+      ApiErrorCodeConstants.apiErrorCodeAtHomeNotOffered =>
+        l10n.bookingAtHomeNotOfferedMessage,
+      ApiErrorCodeConstants.apiErrorCodeAtHomeOutOfRadius =>
+        l10n.bookingAtHomeOutOfRadiusMessage,
       _ => null,
     };
   }
 
   static String submitMessage(AppLocalizations l10n, Object? error) {
-    if (error is ApiException && error.code == 'booking_outside_schedule') {
+    if (error is ApiException &&
+        error.code ==
+            ApiErrorCodeConstants.apiErrorCodeBookingOutsideSchedule) {
       return l10n.bookingOutsideScheduleMessage;
     }
     final atHome = atHomeMessage(l10n, error);
