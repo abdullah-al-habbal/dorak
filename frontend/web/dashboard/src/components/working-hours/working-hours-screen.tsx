@@ -30,7 +30,7 @@ function WorkingHoursContent(): JSX.Element {
   const { dictionary } = useI18n();
   const t = dictionary.workingHours;
   const ownBranchId = useAuthStore((state) => state.profile?.branch_id ?? null);
-  const options = useBranchOptions(ownBranchId === null);
+  const options = useBranchOptions(true);
   const [picked, setPicked] = useState<string | null>(null);
   const branches = options.data ?? [];
   const branchId = ownBranchId ?? picked ?? branches[0]?.id ?? null;
@@ -39,7 +39,7 @@ function WorkingHoursContent(): JSX.Element {
   const choosingBranch = ownBranchId === null;
   const noBranch = choosingBranch && options.isSuccess && branches.length === 0;
   const loading = (choosingBranch && options.isPending) || (branchId !== null && hours.isPending);
-  const failed = options.isError || hours.isError;
+  const failed = (choosingBranch && options.isError) || hours.isError;
   const retry = (): void => {
     if (options.isError) void options.refetch();
     if (hours.isError) void hours.refetch();
@@ -69,7 +69,7 @@ function WorkingHoursContent(): JSX.Element {
         <>
           {!hasSavedHours(hours.data) ? <p role="note" className="rounded-lg bg-warning/15 px-3 py-2 text-sm">{t.notConfigured}</p> : null}
           <WorkingHoursEditor key={branchId} branchId={branchId} initial={hours.data} />
-          <SpecialDaysSection key={`special-${branchId}`} branchId={branchId} />
+          <SpecialDaysSection key={`special-${branchId}`} branchId={branchId} timeZone={branches.find((branch) => branch.id === branchId)?.timezone} />
         </>
       ) : null}
     </div>

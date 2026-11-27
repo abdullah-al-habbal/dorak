@@ -77,7 +77,7 @@ export function BookingDetailDialog({ booking, onClose }: BookingDetailDialogPro
             <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
               <dt className="text-muted-foreground">{t.columns.time}</dt>
               <dd className="tabular">
-                {formatDay(new Date(booking.starts_at), locale, { weekday: "long", day: "numeric", month: "long" })}, {formatTime(booking.starts_at, locale)}
+                {formatDay(new Date(booking.starts_at), locale, { weekday: "long", day: "numeric", month: "long", timeZone: booking.timezone })}, {formatTime(booking.starts_at, locale, booking.timezone)}
               </dd>
               <dt className="text-muted-foreground">{t.columns.status}</dt>
               <dd><BookingStatusBadge status={booking.booking_status} /></dd>

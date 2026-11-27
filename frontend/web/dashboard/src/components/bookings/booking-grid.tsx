@@ -8,6 +8,7 @@ import { BookingStatus } from "@/enums/booking/booking-status.enum";
 import { BookingView } from "@/enums/booking/booking-view.enum";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { addDays, minutesBetween, parseDateKey, startOfWeek, toDateKey } from "@/lib/bookings/booking-date.util";
+import { branchWallClock } from "@/lib/bookings/branch-clock.util";
 import { formatDay, formatTime, localizedText, serviceSummary } from "@/lib/core/format/booking-format.util";
 import { hourRange, layoutDay } from "@/lib/bookings/slot-layout.util";
 import { cn } from "@/lib/utils";
@@ -57,7 +58,10 @@ function useNow(): Date {
 export function BookingGrid({ bookings, view, date, weekStart, onSelect }: BookingGridProps): JSX.Element {
   const { locale, dictionary } = useI18n();
   const { bookings: t } = dictionary;
-  const now = useNow();
+  // "Now" is read on the clock the bookings are drawn on.
+  const instant = useNow();
+  const zone = bookings.find((booking) => booking.timezone)?.timezone;
+  const now = useMemo(() => branchWallClock(instant, zone), [instant, zone]);
   const selected = parseDateKey(date) ?? now;
 
   const columns = useMemo<GridColumn[]>(() => {
@@ -170,7 +174,7 @@ function GridEvent({ event, startHour, locale, continues, onSelect }: GridEventP
     >
       <span className="flex items-center gap-1 font-medium">
         <Icon className="size-3 shrink-0" aria-hidden />
-        <span className="tabular">{formatTime(booking.starts_at, locale)}</span>
+        <span className="tabular">{formatTime(booking.starts_at, locale, booking.timezone)}</span>
         {event.continuesAfter ? <span className="text-muted-foreground">{continues}</span> : null}
       </span>
       <span className="block truncate">{booking.client?.name || dictionary.bookings.unknownClient}</span>

@@ -17,7 +17,7 @@ const ISSUE_FIELD: Record<SpecialDayIssue, string> = {
 };
 
 /** The draft is checked by `specialDayIssue`, so the form and the util never disagree. */
-export function createSpecialDayFormSchema(messages: SpecialDayFormMessages) {
+export function createSpecialDayFormSchema(messages: SpecialDayFormMessages, today?: string) {
   return z
     .object({
       date: z.string(),
@@ -28,7 +28,7 @@ export function createSpecialDayFormSchema(messages: SpecialDayFormMessages) {
       weekdays: z.array(z.enum(Weekday)),
     })
     .superRefine((draft, context) => {
-      const issue = specialDayIssue(draft);
+      const issue = specialDayIssue(draft, today);
       if (issue !== undefined) context.addIssue({ code: "custom", path: [ISSUE_FIELD[issue]], message: messages[issue] });
     });
 }

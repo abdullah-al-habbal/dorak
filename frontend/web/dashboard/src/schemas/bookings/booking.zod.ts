@@ -27,6 +27,7 @@ export const bookingSchema = z.object({
   id: z.string(),
   starts_at: z.string(),
   ends_at: z.string().nullable().optional(),
+  timezone: z.string().optional(),
   booking_status: z.enum(BookingStatus),
   payment_status: z.string().nullable().optional(),
   chair: chairSchema,

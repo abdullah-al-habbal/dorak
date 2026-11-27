@@ -9,8 +9,9 @@ export function localizedText(value: Localized, locale: string): string {
   return value[locale] ?? Object.values(value).find(Boolean) ?? "";
 }
 
-export function formatTime(iso: string, locale: string): string {
-  return new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit" }).format(new Date(iso));
+/** `timeZone` is the branch's zone for an appointment time; without it the browser's zone is used. */
+export function formatTime(iso: string, locale: string, timeZone?: string): string {
+  return new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit", timeZone }).format(new Date(iso));
 }
 
 export function formatDay(date: Date, locale: string, options: Intl.DateTimeFormatOptions): string {

@@ -35,6 +35,7 @@ export const adminClientListSchema = z.array(adminClientSchema);
 export const clientBookingSchema = z.object({
   id: z.string(),
   starts_at: z.string(),
+  timezone: z.string().optional(),
   booking_status: z.string(),
   payment_status: z.string().nullable().optional(),
 });

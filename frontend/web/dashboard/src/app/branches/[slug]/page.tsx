@@ -8,6 +8,7 @@ import { ProfileUnavailable } from "@/components/public/profile-unavailable";
 import { readPublicProfileContext } from "@/components/public/public-profile-context";
 import { PublicProfileShell } from "@/components/public/public-profile-shell";
 import { PUBLIC_PROFILE_ROUTE } from "@/config/public-profile.constant";
+import { branchWallClock } from "@/lib/bookings/branch-clock.util";
 import { buildProfileMetadata } from "@/lib/public/public-profile-metadata.util";
 import { pickText } from "@/lib/public/public-profile.util";
 import { fetchPublicBranch } from "@/services/api/public/public-profile";
@@ -35,7 +36,7 @@ export default async function BranchProfilePage({ params }: PageProps<"/branches
   if (result.status === "not-found") notFound();
   return (
     <PublicProfileShell dictionary={context.dictionary}>
-      {result.status === "found" ? <BranchProfileScreen branch={result.profile} context={context} today={new Date().getDay()} /> : <ProfileUnavailable dictionary={context.dictionary.publicProfile} />}
+      {result.status === "found" ? <BranchProfileScreen branch={result.profile} context={context} today={branchWallClock(new Date(), result.profile.timezone).getDay()} /> : <ProfileUnavailable dictionary={context.dictionary.publicProfile} />}
     </PublicProfileShell>
   );
 }

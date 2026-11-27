@@ -12,7 +12,8 @@ export function ClientActivitySection({ clientId }: { clientId: string }): JSX.E
   const { clients: t, bookings } = dictionary;
   const bookingsQuery = useClientBookings(clientId);
   const reviewsQuery = useClientReviews(clientId);
-  const date = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" });
+  // An appointment time is shown on its branch's clock.
+  const startedAt = (iso: string, timeZone?: string): string => new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short", timeZone }).format(new Date(iso));
   const statusLabel = (status: string): string => (status in bookings.status ? bookings.status[status as keyof typeof bookings.status] : status);
 
   return (
@@ -25,7 +26,7 @@ export function ClientActivitySection({ clientId }: { clientId: string }): JSX.E
         <ul className="flex flex-col gap-1.5">
           {bookingsQuery.data?.map((booking) => (
             <li key={booking.id} className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-sm">
-              <span className="tabular">{date.format(new Date(booking.starts_at))}</span>
+              <span className="tabular">{startedAt(booking.starts_at, booking.timezone)}</span>
               <span className="text-muted-foreground">{statusLabel(booking.booking_status)}</span>
             </li>
           ))}

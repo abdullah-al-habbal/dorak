@@ -20,20 +20,23 @@ import { useSetHoursOverride } from "@/hooks/hours/use-set-hours-override";
 import { useSetHoursOverrideRange } from "@/hooks/hours/use-set-hours-override-range";
 import { applyFormError } from "@/lib/core/errors/apply-form-error.util";
 import { mapApiFormError } from "@/lib/core/errors/map-api-form-error.util";
+import { branchWallClock } from "@/lib/bookings/branch-clock.util";
 import { formatDay } from "@/lib/core/format/booking-format.util";
-import { EMPTY_SPECIAL_DAY, isRangeDraft, mapSpecialDayFieldName, specialDayInput, specialDayRangeInput } from "@/lib/hours/hours-override.util";
+import { EMPTY_SPECIAL_DAY, isRangeDraft, mapSpecialDayFieldName, specialDayInput, specialDayRangeInput, todayIso } from "@/lib/hours/hours-override.util";
 import { createSpecialDayFormSchema } from "@/schemas/hours/special-day-form.zod";
 import type { SpecialDayFormValues } from "@/types/hours/special-day-form-values.type";
 
 /** Closure days and shortened days for one branch. A new entry for a date replaces the earlier one. */
-export function SpecialDaysSection({ branchId }: { branchId: string }): JSX.Element {
+export function SpecialDaysSection({ branchId, timeZone }: { branchId: string; timeZone?: string }): JSX.Element {
   const { dictionary, locale } = useI18n();
   const t = dictionary.workingHours.specialDays;
   const query = useHoursOverrides(branchId);
   const save = useSetHoursOverride();
   const saveRange = useSetHoursOverrideRange();
   const clear = useClearHoursOverride();
-  const schema = useMemo(() => createSpecialDayFormSchema(t.issues), [t.issues]);
+  // "Past" means before today at the branch, which is what the backend checks.
+  const today = todayIso(branchWallClock(new Date(), timeZone));
+  const schema = useMemo(() => createSpecialDayFormSchema(t.issues, today), [t.issues, today]);
   const form = useForm<SpecialDayFormValues>({ resolver: zodResolver(schema), defaultValues: EMPTY_SPECIAL_DAY });
   const { errors } = form.formState;
   const [date, kind, weekdays] = useWatch({ control: form.control, name: ["date", "kind", "weekdays"] });

@@ -28,8 +28,8 @@ export function ScheduleAppointmentList({ bookings }: { bookings: readonly Booki
         primary: true,
         cell: (booking) => (
           <span className="tabular flex flex-col">
-            <span className="font-medium">{formatTime(booking.starts_at, locale)}</span>
-            <span className="text-xs text-muted-foreground">{formatDay(new Date(booking.starts_at), locale, { weekday: "short", day: "numeric", month: "short" })}</span>
+            <span className="font-medium">{formatTime(booking.starts_at, locale, booking.timezone)}</span>
+            <span className="text-xs text-muted-foreground">{formatDay(new Date(booking.starts_at), locale, { weekday: "short", day: "numeric", month: "short", timeZone: booking.timezone })}</span>
           </span>
         ),
       },

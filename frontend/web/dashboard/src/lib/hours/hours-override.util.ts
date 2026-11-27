@@ -19,7 +19,7 @@ export const EMPTY_SPECIAL_DAY: SpecialDayDraft = { date: "", kind: "closed", op
 
 export type SpecialDayIssue = "date" | "past" | "times" | "order" | "range" | "repeatNeedsEnd";
 
-/** Local today as `YYYY-MM-DD`, the format a date input and the backend share. */
+/** Today as `YYYY-MM-DD` from the date's local fields (pass a branch wall-clock date for a branch's today), the format a date input and the backend share. */
 export function todayIso(now: Date = new Date()): string {
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");

@@ -1,9 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { JSX } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { WalkInServicePicker } from "@/components/bookings/dialogs/walk-in-service-picker";
 import { FormErrorBanner } from "@/components/common/form-error-banner";
@@ -17,7 +17,9 @@ import { useChairOptions } from "@/hooks/chairs/use-chair-options";
 import { useCreateWalkIn } from "@/hooks/bookings/use-create-walk-in";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useServiceOptions } from "@/hooks/services/services/use-service-options";
-import { defaultWalkInStart, localInputToUtcIso } from "@/lib/bookings/booking-datetime.util";
+import { useWalkInTimeZone } from "@/hooks/bookings/use-walk-in-time-zone";
+import { defaultWalkInStart } from "@/lib/bookings/booking-datetime.util";
+import { branchInputToUtcIso, branchWallClock } from "@/lib/bookings/branch-clock.util";
 import { mapBookingFormError } from "@/lib/bookings/booking-form-error.util";
 import { localizedText } from "@/lib/core/format/booking-format.util";
 import { createWalkInSchema } from "@/schemas/bookings/walk-in-form.zod";
@@ -32,13 +34,23 @@ export function WalkInDialog({ onClose }: { onClose: () => void }): JSX.Element 
   const chairs = useChairOptions();
   const services = useServiceOptions(true);
   const mutation = useCreateWalkIn();
-  const schema = useMemo(() => createWalkInSchema(w.validation), [w.validation]);
+  const [chairId, setChairId] = useState("");
+  const timeZone = useWalkInTimeZone(chairs.data, chairId);
+  const schema = useMemo(() => createWalkInSchema(w.validation, Date.now, timeZone), [w.validation, timeZone]);
 
   const form = useForm<WalkInFormValues>({
     resolver: zodResolver(schema),
     defaultValues: { customer_name: "", customer_email: "", customer_phone: "", chair_id: "", service_ids: [], starts_at: defaultWalkInStart(new Date()) },
   });
   const { errors, isSubmitting } = form.formState;
+  const { resetField, getFieldState } = form;
+  const chair = useWatch({ control: form.control, name: "chair_id" });
+  if (chair !== chairId) setChairId(chair);
+
+  // The branch's zone arrives after the dialog opens; move the suggested start to its clock unless it was edited.
+  useEffect(() => {
+    if (!getFieldState(START_FIELD).isDirty) resetField(START_FIELD, { defaultValue: defaultWalkInStart(branchWallClock(new Date(), timeZone)) });
+  }, [timeZone, resetField, getFieldState]);
   const formError = errors.root?.message;
 
   const submit = form.handleSubmit(async (values) => {
@@ -55,7 +67,7 @@ export function WalkInDialog({ onClose }: { onClose: () => void }): JSX.Element 
         customer_email: values.customer_email.trim(),
         customer_phone: values.customer_phone?.trim() || undefined,
         service_ids: values.service_ids,
-        starts_at: localInputToUtcIso(values.starts_at),
+        starts_at: branchInputToUtcIso(values.starts_at, timeZone),
       });
       onClose();
     } catch (error) {

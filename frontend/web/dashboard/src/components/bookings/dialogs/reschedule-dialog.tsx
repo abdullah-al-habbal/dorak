@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { useI18n } from "@/hooks/core/state/use-i18n";
 import { useRescheduleBooking } from "@/hooks/bookings/use-reschedule-booking";
-import { isoToLocalInput, localInputToUtcIso, toLocalInput } from "@/lib/bookings/booking-datetime.util";
+import { branchInputToUtcIso, isoToBranchInput } from "@/lib/bookings/branch-clock.util";
 import { mapBookingFormError } from "@/lib/bookings/booking-form-error.util";
 import { createRescheduleSchema } from "@/schemas/bookings/reschedule-form.zod";
 import type { RescheduleFormValues } from "@/schemas/bookings/reschedule-form.zod";
@@ -30,7 +30,7 @@ interface RescheduleDialogProps {
 function initialValues(booking: Booking): RescheduleFormValues {
   const start = new Date(booking.starts_at);
   const end = booking.ends_at ? new Date(booking.ends_at) : new Date(start.getTime() + DEFAULT_DURATION_MS);
-  return { starts_at: isoToLocalInput(booking.starts_at), ends_at: toLocalInput(end) };
+  return { starts_at: isoToBranchInput(booking.starts_at, booking.timezone), ends_at: isoToBranchInput(end.toISOString(), booking.timezone) };
 }
 
 export function RescheduleDialog({ booking, onClose }: RescheduleDialogProps): JSX.Element {
@@ -47,7 +47,7 @@ export function RescheduleDialog({ booking, onClose }: RescheduleDialogProps): J
     try {
       await mutation.mutateAsync({
         id: booking.id,
-        payload: { starts_at: localInputToUtcIso(values.starts_at), ends_at: localInputToUtcIso(values.ends_at) },
+        payload: { starts_at: branchInputToUtcIso(values.starts_at, booking.timezone), ends_at: branchInputToUtcIso(values.ends_at, booking.timezone) },
       });
       onClose();
     } catch (error) {

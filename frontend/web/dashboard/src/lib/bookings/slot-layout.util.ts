@@ -1,4 +1,5 @@
 import { minutesBetween } from "@/lib/bookings/booking-date.util";
+import { branchWallClock } from "@/lib/bookings/branch-clock.util";
 import type { Booking } from "@/types/bookings/booking.type";
 import type { BookingEventLayout } from "@/types/bookings/booking-event-layout.type";
 
@@ -6,14 +7,14 @@ const DEFAULT_DURATION_MINUTES = 30;
 const MIN_EVENT_MINUTES = 15;
 
 function bookingEnd(booking: Booking): Date {
-  const start = new Date(booking.starts_at);
-  if (booking.ends_at) return new Date(booking.ends_at);
+  const start = branchWallClock(booking.starts_at, booking.timezone);
+  if (booking.ends_at) return branchWallClock(booking.ends_at, booking.timezone);
   const minutes = booking.services.reduce((sum, service) => sum + (service.duration_minutes ?? 0), 0);
   return new Date(start.getTime() + (minutes || DEFAULT_DURATION_MINUTES) * 60_000);
 }
 
 /**
- * Places the bookings that touch `day` on a minutes-from-midnight axis (local zone), clipped to the day.
+ * Places the bookings that touch `day` on a minutes-from-midnight axis (each branch's clock), clipped to the day.
  * Overlapping bookings are clustered and share columns, so nothing is drawn on top of anything else.
  */
 export function layoutDay(bookings: readonly Booking[], day: Date): BookingEventLayout[] {
@@ -23,7 +24,7 @@ export function layoutDay(bookings: readonly Booking[], day: Date): BookingEvent
 
   const events = bookings
     .map((booking) => {
-      const start = new Date(booking.starts_at);
+      const start = branchWallClock(booking.starts_at, booking.timezone);
       const end = bookingEnd(booking);
       return { booking, start, end };
     })

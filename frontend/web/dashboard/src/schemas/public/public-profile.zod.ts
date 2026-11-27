@@ -57,6 +57,7 @@ export const publicBranchProfileSchema = z.object({
   description: translationsSchema,
   address: translationsSchema,
   tags: z.array(z.object({ en: z.string(), ar: z.string() })),
+  timezone: z.string().optional(),
   latitude: z.coerce.number().nullable(),
   longitude: z.coerce.number().nullable(),
   brand: publicBrandSummarySchema.nullable(),
