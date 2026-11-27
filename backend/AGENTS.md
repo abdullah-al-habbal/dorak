@@ -28,7 +28,7 @@ composer test           # recreates dorak_test clean, then pest sequentially (ne
 ```
 
 - Gates before calling work done: `vendor/bin/pint --test` and `composer test` (Pest, MySQL `dorak_test`; start it with `composer test:db:up`). Migration changes also need `php scripts/check_migrations.php`.
-- CI (`.github/workflows/backend-ci.yml`) runs the migration guard, Pint, the test suite and the concurrency tests. Git uses the root `.husky/` folder, which has no pre-push hook, so nothing runs the backend gates for you before a push.
+- CI (`.github/workflows/backend-ci.yml`) runs the migration guard, Pint, the test suite and the concurrency tests. The root `.husky/pre-push` hook runs Pint, the migration guard and the test suite (not the concurrency tests) when pushed commits change `backend/`. It works only where Git's `core.hooksPath` is `.husky/_`.
 
 ## Architecture
 

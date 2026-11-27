@@ -177,7 +177,7 @@ coverage, risk and verification status. The format and statuses are in
 | Where | What runs today |
 | --- | --- |
 | GitHub Actions `backend-ci.yml` | migration guard, `composer validate`, PHP syntax check, `php artisan test` on MySQL 8.4 (coverage off) |
-| Local hooks (`.husky`) | commit message format; dashboard lint and typecheck on staged dashboard files |
+| Local hooks (`.husky`) | commit message format; dashboard lint and typecheck on staged dashboard files; before a push that changes `backend/`: Pint, migration guard and Pest |
 | Task executor | the gate order in `gates.md`, including Pint, Pest, dashboard checks, Playwright and `melos verify` |
 
 Recommended future improvements, not part of this work: a coverage-capable CI job (after the
