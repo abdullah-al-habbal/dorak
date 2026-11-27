@@ -1,6 +1,6 @@
 ---
 nodeid: mobile.architecture.decisions.0002-design-system-go-router
-parentnode: mobile.architecture
+parentnode: mobile.docs
 childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/

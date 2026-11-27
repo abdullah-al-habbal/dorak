@@ -31,13 +31,11 @@ Part 4 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-3.md)
 
 ### `frontend/mobile/docs/`
 
-- [Architecture](../../frontend/mobile/docs/architecture.md)
 - [Feature Index](../../frontend/mobile/docs/feature-index.md)
 - [Index](../../frontend/mobile/docs/index.md)
 
 ### `frontend/mobile/docs/architecture/`
 
-- [Coding Conventions](../../frontend/mobile/docs/architecture/coding-conventions.md)
 
 ### `frontend/mobile/docs/architecture/decisions/`
 

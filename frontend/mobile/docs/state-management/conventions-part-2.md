@@ -46,7 +46,8 @@ state class is a compile error at every call site, never a silent break.
 13. `props` lists every field. A field missing from `props` is a silent
     stale-render or missed-redirect bug.
 14. Derived values are getters, never stored — `isAuthenticated`, `hasMore`,
-    `isEmpty`.
+    `isEmpty`. Collections are frozen at the state boundary (`List.unmodifiable`,
+    `Map.unmodifiable`, `Set.unmodifiable`).
 
 ## 4. Loading · success · empty · error
 

@@ -42,8 +42,7 @@ instead of monolithic route files. Export via `endpoints.barrel.dart`.
 ## DTO Mapping
 
 `*.dto.dart` classes own JSON parsing and MUST use `build_runner` +
-`json_serializable` codegen (see `architecture/coding-conventions.md` and
-the [mobile guide](../../AGENTS.md#rules)). Examples: `OnboardingConfigDto`
+`json_serializable` codegen (see the [mobile guide](../../AGENTS.md#rules)). Examples: `OnboardingConfigDto`
 (`{hero_image_url, season, locale}`), `PaginationMeta`, `ApiResponse<T>`,
 `PaginatedData<T>`. Parsers are injected into verbs as `JsonParser<T>`;
 DTOs stay free of Dio/transport types. Regenerate after edits:

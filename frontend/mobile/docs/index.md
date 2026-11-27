@@ -2,7 +2,8 @@
 nodeid: mobile.docs
 parentnode: mobile.guide
 childnodes:
-  - mobile.architecture
+  - mobile.architecture.decisions.0001-bloc-in-core
+  - mobile.architecture.decisions.0002-design-system-go-router
   - mobile.authentication.auth-flow
   - mobile.authentication.password-recovery
   - mobile.core.exceptions
@@ -38,9 +39,9 @@ Repository routes: [mobile guide](../AGENTS.md) · [documentation graph](../../.
 What was built is in the [feature index](feature-index.md); open work is in the [backlog](../../../docs/backlog/index.md).
 Gates are in the [mobile guide](../AGENTS.md).
 
-- Architecture: [state rules](architecture.md), [coding conventions](architecture/coding-conventions.md) and the
-  decisions on [bloc in core](architecture/decisions/0001-bloc-in-core.md) and
-  [go_router in the design system](architecture/decisions/0002-design-system-go-router.md).
+- Architecture decisions: [bloc in core](architecture/decisions/0001-bloc-in-core.md) and
+  [go_router in the design system](architecture/decisions/0002-design-system-go-router.md). Coding rules are in the
+  [mobile guide](../AGENTS.md).
 - Core runtime: [networking](core/networking.md), [interceptors](core/interceptors.md), [session](core/session.md),
   [storage](core/storage.md), [exceptions](core/exceptions.md), [result state](core/result-state.md),
   [runtime lifecycle](runtime/app-lifecycle.md) and [realtime](realtime/reverb.md).

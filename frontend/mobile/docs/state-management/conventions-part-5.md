@@ -16,7 +16,13 @@ Part 5 of 5 · [State Management Conventions](conventions.md) · [Previous](conv
     These are not application state and must not move into a bloc.
 42. A screen never calls a repository, touches storage, or decides where to
     navigate next.
-43. A widget never holds a bloc it was not given.
+43. A widget never holds a bloc it was not given. Builders only render;
+    navigation, dialogs and snackbars go in a `BlocListener` (or the listener of
+    a `BlocConsumer`). Feature state is scoped to its route with a local
+    `BlocProvider` and closed with it; only authentication, session and locale
+    live at the root. Bloc, state and event files don't import Flutter's
+    material or widgets libraries (`dart:ui show Locale` is fine), and a state
+    manager never takes another one as a dependency.
 
 ## 11. Navigation separation
 

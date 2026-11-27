@@ -23,6 +23,8 @@ application state**, **Provider**, **Riverpod**, **GetIt** or any service
 locator. `provider` appears in the lock file only as a transitive dependency of
 `flutter_bloc` (its `InheritedWidget` plumbing) — never import it.
 
+Many feature classes use `Cubit` today. Whether this ban stays is open: backlog BD-17.
+
 ---
 
 ## 1. Bloc

@@ -1,6 +1,6 @@
 ---
 nodeid: mobile.architecture.decisions.0001-bloc-in-core
-parentnode: mobile.architecture
+parentnode: mobile.docs
 childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
