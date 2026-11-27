@@ -8,8 +8,10 @@ can see who receives what. It only ever talks to 127.0.0.1.
     python3 scripts/realtime-local-check.py SECONDS [STEP,STEP...]
 
 Steps: chair (change one chair's status), chair-same (save the same status),
-suspend (suspend the seeded brand; reseed afterwards). See docs/waves/runbook.md.
+suspend (suspend the seeded brand; reseed afterwards), admin-chair (an admin changes
+a chair, which works even while the brand is suspended). See docs/waves/runbook.md.
 """
+import functools
 import json
 import subprocess
 import sys
@@ -66,16 +68,36 @@ def change_chair(branch, same):
     say("chair-same" if same else "chair", "->", target, status, body.get("code"))
 
 
-def suspend_brand():
+@functools.cache
+def admin_session():
     status, body = call("POST", "/dashboard/login", {"actor_type": "admin", "email": "admin@dorak.sy", "password": SEEDED_PASSWORD})
-    admin = body.get("data") or sys.exit(f"admin login {status} {body.get('code')}")
-    claim = {"X-Dashboard-Session": admin["claim"]}
-    brand = call("GET", "/dashboard/brands?per_page=100", token=admin["token"], extra=claim)[1]["data"][0]
-    status, body = call(
-        "PATCH", f"/dashboard/admin/brands/{brand['id']}/suspend",
-        {"reason": "local realtime check", "cancel_future_bookings": False}, admin["token"], claim,
+    return body.get("data") or sys.exit(f"admin login {status} {body.get('code')}")
+
+
+def admin_call(method, path, body=None):
+    admin = admin_session()
+    return call(method, path, body, admin["token"], {"X-Dashboard-Session": admin["claim"]})
+
+
+def suspend_brand(brand_id):
+    status, body = admin_call(
+        "PATCH", f"/dashboard/admin/brands/{brand_id}/suspend",
+        {"reason": "local realtime check", "cancel_future_bookings": False},
     )
     say("suspend", status, body.get("code"))
+
+
+def change_chair_as_admin(branch_id):
+    """The admin may still write after a suspension, so this shows who keeps receiving."""
+    chairs = admin_call("GET", f"/dashboard/chairs?branch_id={branch_id}&per_page=50")[1]["data"]
+    chairs = chairs if isinstance(chairs, list) else chairs["data"]
+    chair = next(c for c in chairs if c["status"] in ("available", "occupied"))
+    target = "occupied" if chair["status"] == "available" else "available"
+    update = {key: chair[key] for key in ("label", "layout_settings")}
+    # Seeded chairs have no zone, and the update route requires one.
+    update["floor_zone"] = chair.get("floor_zone") or "shared"
+    status, body = admin_call("PUT", f"/dashboard/chairs/{chair['id']}", {**update, "branch_id": branch_id, "status": target})
+    say("admin-chair ->", target, status, body.get("code"), body.get("errors") or "")
 
 
 def main():
@@ -84,7 +106,8 @@ def main():
     branch = login("/branch/login", "branch@dorak.sy")
     stylist = login("/barber/login", "barber@dorak.sy")
     owner = login("/client/login", "admin@dorak.sy")
-    branch_id = call("GET", "/branch/profile", token=branch)[1]["data"]["id"]
+    profile = call("GET", "/branch/profile", token=branch)[1]["data"]
+    branch_id, brand_id = profile["id"], profile["brand_id"]
     stylist_id = call("GET", "/barber/profile", token=stylist)[1]["data"]["id"]
     owner_id = call("GET", "/owner/me", token=owner)[1]["data"]["client_id"]
     branch_channels = [f"private-branch.{branch_id}", f"private-floor-plan.{branch_id}"]
@@ -105,7 +128,9 @@ def main():
         if step in ("chair", "chair-same"):
             change_chair(branch, step == "chair-same")
         elif step == "suspend":
-            suspend_brand()
+            suspend_brand(brand_id)
+        elif step == "admin-chair":
+            change_chair_as_admin(branch_id)
         else:
             say("unknown step", step)
     node.wait()

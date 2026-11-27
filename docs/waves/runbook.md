@@ -85,7 +85,7 @@ php artisan queue:work --tries=1 --sleep=1
 Confirm `php artisan config:show database.connections.mysql.database` prints `dorak_test` before migrating. Then, from the repository root:
 
 ```bash
-python3 scripts/realtime-local-check.py 14 chair,chair-same   # steps: chair, chair-same, suspend
+python3 scripts/realtime-local-check.py 14 chair,chair-same   # steps: chair, chair-same, suspend, admin-chair
 ```
 
 It signs in the seeded branch, stylist and owner, lists what each may join, and prints the events they receive (Node 22 or newer). The seed does not seat the stylist, so they are refused the branch channels until you seat them (from `backend/`, same exports; reseed or run this first):
