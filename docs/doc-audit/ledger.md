@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-522 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+512 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 341 files = 182 logical documents |
+| Outside `.claude/` | 331 files = 182 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -28,7 +28,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
-| C4 backend and shared reference | 28 | 21 |
+| C4 backend and shared reference | 28 | 22 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
 
@@ -141,6 +141,16 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `backend/modules/Website/docs/10-c4-containers.md` | delete: pre-code container sketch; the structure is the module itself | C4 website module |
 | `backend/modules/Website/docs/11-frontend-architecture.md` | delete: pre-code structure the code contradicts (`/` isn't redirected to a language prefix); the theming and rendering rules are in the house rules | C4 website module |
 | `docs/deployment/hostinger-questions.md` | extract then delete, applied: a finished question sheet from 2026-11-21; the server facts that still matter moved to the CI/CD guide | C4 deployment |
+| `backend/docs/16-deployment-operations-part-10.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-11.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-2.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-3.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-4.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-5.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-6.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-7.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-8.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
+| `backend/docs/16-deployment-operations-part-9.md` | merge, applied: live policy condensed into the main file; finished investigations and two resolved TODOs dropped | C4 deployment operations |
 
 ## Findings so far
 
@@ -262,7 +272,7 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `backend/docs/10-c4-containers.md` | 3 | 152 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: one client app became three, a dead skill path, and later services noted |
 | `backend/docs/11-backend-architecture.md` | 20 | 1012 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `backend/docs/13-technical-concepts.md` | 21 | 1138 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `backend/docs/16-deployment-operations.md` | 11 | 654 | Operations | operators, agents | 0 / 1 / 4 | high | unreviewed |
+| `backend/docs/16-deployment-operations.md` | 1 | 96 | Operations | operators, agents | 0 / 1 / 4 | high | fix, applied: trigger, branch, cache order and migration counts were out of date, and its never-edit rule ignored the pre-release migration decision; checked against deploy.yml and the guard |
 | `backend/docs/17-sms-delivery.md` | 1 | 51 | Reference | engineers, agents | 0 / 0 / 0 | medium | fix, applied: the production boot guard was missing |
 | `backend/docs/README.md` | 3 | 145 | Reference | engineers, agents | 1 / 2 / 0 | medium | unreviewed |
 | `backend/docs/api-response-standard.md` | 1 | 28 | Reference | engineers, agents | 0 / 0 / 0 | medium | keep: every named class and the architecture test exist |

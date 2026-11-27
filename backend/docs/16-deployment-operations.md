@@ -1,67 +1,96 @@
 ---
 nodeid: backend.16-deployment-operations
 parentnode: backend.docs
-childnodes:
-  - backend.16-deployment-operations.part-2
-  - backend.16-deployment-operations.part-3
-  - backend.16-deployment-operations.part-4
-  - backend.16-deployment-operations.part-5
-  - backend.16-deployment-operations.part-6
-  - backend.16-deployment-operations.part-7
-  - backend.16-deployment-operations.part-8
-  - backend.16-deployment-operations.part-9
-  - backend.16-deployment-operations.part-10
-  - backend.16-deployment-operations.part-11
+childnodes: []
 codeanchors:
   - backend/modules/
+  - backend/scripts/check_migrations.php
+  - .github/workflows/deploy.yml
 ---
 
-# 16 — Deployment Operations & Known Limitations
+# 16 — Deployment operations: migrations, rollback and caches
 
-Scope: the atomic-release deployment in `.github/workflows/deploy.yml` and the
-issues deliberately **not** solved by it. Written during the deployment repair
-that fixed the `config:cache`-before-swap bug.
+How the release in `.github/workflows/deploy.yml` behaves and what that requires of a change. Server setup and the
+runbook are in the [CI/CD guide](../../docs/deployment/ci-cd-setup.md). The workflow runs only on demand and accepts
+only `master`.
 
-Each section below is a standing record, not a task list for that repair.
+## Order of a release
 
----
+`migrate --force`, then the directory swap, then `config:cache`, `route:cache` and `view:cache`, then the health check
+and `queue:restart`.
 
-## Root cause this deployment repair fixed
+- **Caches are built after the swap.** Laravel stores absolute paths in its caches. Building the config cache before
+  the swap once left every path pointing at the renamed release folder, and Laravel recreated that folder on first
+  write. The workflow asserts that no `_release_` path is cached.
+- **Migrations run before the swap**, so the previous release serves traffic against the new schema for a while, and
+  keeps doing so if a later step fails.
+- `view:cache` clears compiled views before writing them, so they don't pile up. Don't add pruning, and don't run
+  `view:clear` or `optimize:clear` before the swap: the previous release shares that directory.
+- `modules/Core/Config/filesystems.php` needs `APP_URL`; without it the application can't boot.
 
-`config:cache` ran **before** the atomic swap. Laravel serialises absolute
-filesystem paths, so the cached config baked
-`…/dev_release_<timestamp>/storage/…`. The next line renamed that directory to
-`dev`, leaving every baked path dangling. Laravel's local driver then recreated
-the release directory on first write — the "ghost release".
+## Migration safety: expand, then contract
 
-Confirmed on the live server, not inferred:
+**Before the first production deploy**, an existing table is changed by editing its `create_*_table` migration
+([backend guide](../AGENTS.md)), which needs the waiver below and a database reset on dev. From then on, a shipped
+migration is never edited, and the rules below apply in full.
 
-```text
-dev/bootstrap/cache/config.php          20 distinct *_release_* paths
-  logging single path   -> …/dev_release_20260820_011154/storage/logs/laravel.log
-  view compiled         -> …/dev_release_20260820_011154/storage/framework/views
-  public disk root      -> …/dev_release_20260820_011154/storage/app/public
-  onboarding source[0]  -> …/dev_release_20260820_011154/database/seeders/assets/…jpg
-                           exists? NO   (real file exists under dev/)
+| Change | Safe in one release? |
+|---|---|
+| New table, new index, new nullable column or foreign key, column with a default | Yes |
+| New unique index on an existing table | No: the old code may still write duplicates |
+| `NOT NULL` without a default on a filled table | No: the old code's inserts fail |
+| Drop, rename, narrow or `->change()` | No: the old code reads what is gone |
+| Removing an enum case or narrowing a cast | No |
+| Data transformation | No |
 
-dev_release_20260820_011154/            NOT a git repository, 14 files:
-  storage/framework/views/*.php         13 compiled Blade files
-  storage/logs/laravel-2026-08-20.log   9289 bytes, actively written
-dev/storage/logs/                       only .gitignore (14 bytes)
+Adding `softDeletes()` passes these rules but changes behaviour: a release without the model trait returns deleted
+rows.
+
+**Enum values are the hidden case.** No migration is involved, so no schema review catches it: removing a case makes
+every row that still holds it throw on read. This has happened here. Do it in three releases: accept the new value and
+keep the old case; move the stored rows and the column default; then remove the old case. Changing the default inside
+a `create_*_table` migration doesn't change an existing database.
+
+### Enforcement
+
+`scripts/check_migrations.php` runs in Backend CI (and in the pre-push hook). It rejects destructive operations in
+the `up()` of a new migration and edits to a shipped migration. A deliberate exception is marked in the file, so
+review sees it:
+
+```php
+// @contract-migration: drop legacy column, no code has referenced it since v2.3
 ```
 
-The ghost contains exactly the three baked paths that get *written* to. Nothing
-else was ever there.
+```bash
+php scripts/check_migrations.php               # against origin/master
+php scripts/check_migrations.php --all         # every migration
+php scripts/check_migrations.php --base=<ref>  # CI adds --require-base
+```
 
-## Continued in
+It doesn't see enum or cast changes, behaviour changes such as soft deletes, or data changes made outside a
+migration. `tests/Unit/Deployment/MigrationGuardTest.php` tests the guard itself.
 
-- [Part 2: TODO 44 — Composer security advisories (separate task)](16-deployment-operations-part-2.md)
-- [Part 3: Production / main isolation — designed, deliberately not imp](16-deployment-operations-part-3.md)
-- [Part 4: What would break if main were naively enabled](16-deployment-operations-part-4.md)
-- [Part 5: Migration safety — the expand/contract policy (enforced)](16-deployment-operations-part-5.md)
-- [Part 6: Enum and cast changes are contract operations](16-deployment-operations-part-6.md)
-- [Part 7: Database rollback policy](16-deployment-operations-part-7.md)
-- [Part 8: What happens when migrations have run and the deployment the](16-deployment-operations-part-8.md)
-- [Part 9: Recovery procedure](16-deployment-operations-part-9.md)
-- [Part 10: Compiled-view retention — investigated, no cleanup needed](16-deployment-operations-part-10.md)
-- [Part 11: Evidence](16-deployment-operations-part-11.md)
+## When a deploy fails after migrating
+
+The workflow restores the previous code. **The schema stays migrated**, and some migrations may be applied while a
+later one failed, because MySQL and MariaDB commit each one separately.
+
+**Never run `artisan migrate:rollback` to recover.** The restored release doesn't have the new migration files, so
+Laravel skips them, rolls back the rest of the batch and exits 0. With a single batch, that drops the whole schema and
+reports success. For the same reason, `down()` methods are for development only.
+
+1. Read the workflow output: did migrations run?
+2. Run `artisan migrate:status` from the restored release.
+3. If every change was safe in one release, do nothing and fix forward. Otherwise restore a backup, or write a
+   corrective forward migration. Never delete rows from the `migrations` table.
+
+Restoring code is safe only when the release follows the table above; a marked exception removes that guarantee.
+
+## Production
+
+There is no production environment: the workflow deploys one development server. Before adding one:
+
+1. Give it its own domain, database, `.env` (with a new `APP_KEY`), storage and logs. Share nothing with dev.
+2. Use a separate workflow file with its own fixed paths and branch guard, so one edit can't point production at dev.
+3. Follow the [production checklist](../../docs/deployment/deployment-guide-part-3.md).
+4. One-time codes are logged only when the environment is `local`; check that production isn't.
