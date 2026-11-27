@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-458 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+455 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 277 files = 163 logical documents |
+| Outside `.claude/` | 274 files = 163 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -29,7 +29,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
 | C4 backend and shared reference | 28 | 28 |
-| C5 mobile and dashboard | 43 | 10 |
+| C5 mobile and dashboard | 43 | 19 |
 | C6 product intent and research | 41 | 0 |
 
 The pilot also reads the push parts of `README.md`, the push handover and the backlog, which sit in C1 and C2.
@@ -204,6 +204,9 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `frontend/mobile/docs/design-system/components/loading/fullscreen.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
 | `frontend/mobile/docs/design-system/components/loading/inline.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
 | `frontend/mobile/docs/design-system/components/shimmer/text.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/navigation/guards-part-2.md` | merge, applied: into the main page | C5 mobile flows and navigation |
+| `frontend/mobile/docs/navigation/routes-part-2.md` | merge, applied: into the main page | C5 mobile flows and navigation |
+| `frontend/mobile/docs/flows/app-launch-part-2.md` | merge, applied: into the main page | C5 mobile flows and navigation |
 
 ## Findings so far
 
@@ -369,18 +372,18 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/docs/core/storage.md` | 3 | 157 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/design-system/index.md` | 1 | 31 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: one page checked against the widget constructors and their use |
 | `frontend/mobile/docs/feature-index.md` | 5 | 279 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/flows/app-launch.md` | 2 | 94 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/flows/guest-access.md` | 1 | 53 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/flows/onboarding.md` | 1 | 67 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/flows/app-launch.md` | 1 | 30 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: the gate now also checks profile completion |
+| `frontend/mobile/docs/flows/guest-access.md` | 1 | 53 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: the home screen is no longer a placeholder |
+| `frontend/mobile/docs/flows/onboarding.md` | 1 | 67 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: old status and history removed; the step table rests on its named test, which wasn't run |
 | `frontend/mobile/docs/index.md` | 1 | 53 | Reference | engineers, agents | 3 / 2 / 0 | medium | extract then delete, applied: the build tracker was out of date; open items are FT-25 and TS-11, and the file is now a router |
-| `frontend/mobile/docs/navigation/guards.md` | 2 | 98 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/navigation/routes.md` | 2 | 109 | Reference | engineers, agents | 1 / 1 / 1 | medium | unreviewed |
+| `frontend/mobile/docs/navigation/guards.md` | 1 | 24 | Reference | engineers, agents | 2 / 1 / 0 | medium | fix, applied: rewritten from the router |
+| `frontend/mobile/docs/navigation/routes.md` | 1 | 45 | Reference | engineers, agents | 1 / 1 / 1 | medium | fix, applied: rewritten from the router; it described a placeholder home and no notification routing |
 | `frontend/mobile/docs/realtime/reverb.md` | 2 | 156 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/runtime/app-lifecycle.md` | 2 | 99 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/screens/authentication/create-new-password.md` | 1 | 44 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/screens/authentication/forgot-password.md` | 1 | 42 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/screens/authentication/password-reset-success.md` | 1 | 48 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/screens/authentication/recovery-otp.md` | 1 | 43 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/screens/authentication/create-new-password.md` | 1 | 44 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep: names checked against the source; behaviour details not rechecked |
+| `frontend/mobile/docs/screens/authentication/forgot-password.md` | 1 | 42 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep, with history removed: names checked against the source; layout, timing and localization details not rechecked |
+| `frontend/mobile/docs/screens/authentication/password-reset-success.md` | 1 | 48 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep, with history removed: names checked against the source; layout, timing and localization details not rechecked |
+| `frontend/mobile/docs/screens/authentication/recovery-otp.md` | 1 | 43 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep: names checked against the source; behaviour details not rechecked |
 | `frontend/mobile/docs/state-management/async-state.md` | 3 | 145 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/state-management/conventions.md` | 5 | 285 | Reference | engineers, agents | 7 / 1 / 0 | medium | fix, applied: merged the older state rules; the Cubit ban conflicts with the code (BD-17) |
 | `frontend/mobile/docs/state-management/index.md` | 2 | 98 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |

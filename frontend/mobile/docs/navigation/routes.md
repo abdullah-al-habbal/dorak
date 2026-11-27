@@ -1,61 +1,45 @@
 ---
 nodeid: mobile.navigation.routes
 parentnode: mobile.docs
-childnodes:
-  - mobile.navigation.routes.part-2
+childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
 
-# Routes
+# Client app routes
 
-Status: `IN_PROGRESS` — go_router route table in place; deep links and nested
-navigation not yet.
-
-## Approach
-
-**`go_router` only** — declarative route table with redirects. No Navigator 1.0,
-no `AppNavigator`, no named-route strings. Navigation lives in
-`apps/client_app/lib/src/core/navigation/`:
+`go_router` only. The code is in `apps/client_app/lib/src/core/navigation/`:
 
 | File | Owns |
-| --- | --- |
-| `app.router.dart` | `AppRouter` — constructs the `GoRouter`, owns the redirect, the launch gate (`AppGate.resolve`) and the session/auth signal listeners, plus all flow wiring (`router.push/go` passed into screens as callbacks) |
-| `app_routes.entity.dart` | `AppRoutes` — path constants (`/splash`, `/auth`, `/auth/login`, `/auth/register`, `/auth/verify`, `/onboarding/welcome|discovery|booking|ai-style`, `/home`) |
-| `app_gate.entity.dart` | `AppGate.resolve` — the post-splash branch, a pure function called from `AppRouter._leaveSplash` (**not** from the redirect) |
+|---|---|
+| `app.router.dart` | `AppRouter`: builds the router, runs the launch gate, listens for session and sign-in signals and passes navigation callbacks into screens |
+| `app_routes.entity.dart` | `AppRoutes`: every path. Read it for the route list |
+| `app_gate.entity.dart` | `AppGate.resolve`: where the app goes after the splash ([launch](../flows/app-launch.md)) |
+| `notification_location.entity.dart` | Where a tapped notification goes |
 
-Screens receive callbacks only and know nothing about their neighbours. Bloc
-never navigates — routing responds to state through the router's redirect and
-listener. **Routing lives in the router, never in a screen or a bloc.**
+The paths cover the splash, the onboarding tour, sign-in and password recovery, profile completion, phone
+verification, and a tabbed shell (`StatefulShellRoute`) with Discover, Bookings, Favorites and Profile. `/home` is a
+legacy path that redirects to Discover.
 
-## The route table
+Screens receive callbacks and don't know their neighbours. A bloc never navigates.
 
-```
-/splash                          SplashScreen
-/onboarding/welcome              -> push /onboarding/discovery ... -> /home
-/onboarding/ai-style             -> context.go('/home') when finished
-/auth                            AuthEntry (Continue as Guest -> go /onboarding/welcome)
-/auth/login  (parent: /auth)     -> context.go('/home') on success
-/auth/register (parent: /auth)   -> push /auth/verify on success
-/auth/verify  (parent: /auth)    -> context.go('/home') on success or skip
-/auth/forgot-password            (parent: /auth)  -> push .../otp on codeSent
-/auth/forgot-password/otp        -> push /auth/reset-password on codeAccepted
-/auth/reset-password             (parent: /auth)  -> push .../success on passwordReset
-/auth/reset-password/success     -> go /auth/login  (go, so the stack is dropped)
-/home                            legacy alias -> redirects to the shell (Discover tab)
-```
+## Signals
 
-Password recovery (Stitch 011–014) is driven by `RecoverySignal`, a third one-shot
-signal alongside `SessionSignal` and `AuthSignal`. Its wrinkle is worth knowing
-before touching it: the backend has no verify-reset-code endpoint, so the OTP screen
-cannot validate the code and a rejected code surfaces on `/auth/reset-password`. See
-`authentication/password-recovery.md`.
+| Signal | Navigation | Why |
+|---|---|---|
+| `SessionSignal.sessionExpired` or `accountBanned` | `go` to `/auth` | Replaces the stack, so a dead session can't be reached with Back |
+| `SessionSignal.authenticationRequired` | `push` `/auth` | Back returns to the guest screen |
+| `AuthSignal.loginSucceeded` | `push` verification if the email isn't verified; otherwise `go` to Discover, or to profile completion first | |
+| `AuthSignal.registrationSucceeded` | `push` verification | |
+| `AuthSignal.verificationSucceeded` | `go` to Discover or profile completion | |
+| `RecoverySignal` (code sent, code accepted, password reset) | `push` the next recovery step ([password recovery](../authentication/password-recovery.md)) | Each step can go back |
+| "Log in" on the reset success screen | `go` to sign-in | The code is used up |
 
-Flow wiring lives in `AppRouter._routes()`: each `GoRoute` receives callbacks
-(`onNext`, `onSkipForNow`, `onLogin`, ...) that the router implements with
-`router.push`/`router.go`. `context.go('/home')` clears the stack by
-construction — there is no `pushAndRemoveUntil` bookkeeping.
+The router acknowledges a signal after acting on it; after a session signal it also calls
+`apiClient.resetUnauthorizedSignal()`.
 
-## Continued in
+## Notifications
 
-- [Part 2: The redirect and the three listeners](routes-part-2.md)
+A tapped review notification opens that review; a booking update opens the bookings list, because the payload has no
+booking object. Invitations, applications and unknown kinds don't navigate. General deep links aren't handled
+(backlog FT-25).

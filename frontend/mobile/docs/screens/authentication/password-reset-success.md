@@ -12,8 +12,6 @@ Route: `/auth/reset-password/success` · Screen: `password_reset_success.screen.
 
 ## The screen is a `StatusView`
 
-This is **`StatusView`'s first production consumer**, and the reason Track 12's
-contract is now validated against something real rather than only its own tests.
 The whole screen body is:
 
 ```dart

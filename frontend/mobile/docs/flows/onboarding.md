@@ -8,7 +8,6 @@ codeanchors:
 
 # Onboarding Flow
 
-Status: `DONE`
 
 ## Entry
 
@@ -47,10 +46,7 @@ fires while the modal route is still on top.
 ## Stack hygiene
 
 Leaving the tour uses `context.go('/home')` — go_router's declarative `go`
-clears the stack by construction. (Pre-Phase 2, `AppNavigator.goHome()` needed
-`pushAndRemoveUntil` because `pushReplacement` swapped only the top route, which
-left the onboarding screens alive beneath Home and reachable by back gesture;
-from inside the sheet it replaced the sheet rather than the screen.)
+clears the stack by construction.
 
 ## Known limitation
 

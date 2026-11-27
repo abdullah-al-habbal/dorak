@@ -8,7 +8,6 @@ codeanchors:
 
 # Guest Access
 
-Status: `DONE`
 
 ## What a guest is
 
@@ -31,20 +30,8 @@ server-side guest session — the client simply sends no `Authorization` header
 exit from that tour lands on Home. A guest that has already dismissed or
 completed the tour goes straight to Home from the launch gate.
 
-Home is currently a placeholder, so there is nothing yet that a guest is denied.
-
-## Not implemented
-
-- **Guest guards.** No screen currently gates itself on authentication, and
-  there is no guest guard on any screen. The mechanism exists though: a
-  guest-guarded action calls `SessionBloc.add(RequireAuthentication())`, which
-  raises the `authenticationRequired` global state and pushes the auth entry
-  screen on top of the current screen (back returns to it). Per-route guest
-  guards are Track 11.
-- **Guest → account migration.** Nothing is carried across when a guest later
-  signs in; there is no local guest state to migrate.
-- **Re-entering auth from Home.** Once a guest reaches Home there is no route
-  back to the auth entry screen — Home has no account affordance yet.
+A guest uses the tabbed shell. An action that needs an account sends `RequireAuthentication`, which opens sign-in on
+top ([guards](../navigation/guards.md)). Nothing is carried over when a guest later signs in.
 
 ## Verification
 

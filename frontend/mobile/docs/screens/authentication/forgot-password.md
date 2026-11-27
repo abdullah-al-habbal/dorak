@@ -10,8 +10,7 @@ codeanchors:
 
 Route: `/auth/forgot-password` · Screen: `forgot_password.screen.dart`
 
-Entry: the "Forgot Password?" link on `/auth/login`. That link was wired to `null`
-until this track, which hid it entirely.
+Entry: the "Forgot Password?" link on `/auth/login`.
 
 ## Layout
 
