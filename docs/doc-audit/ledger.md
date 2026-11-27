@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-574 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+562 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 393 files = 228 logical documents |
+| Outside `.claude/` | 381 files = 216 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -27,7 +27,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C0 pilot: push notifications | 2 | 2 |
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
-| C3 finished or running programmes | 52 | 1 |
+| C3 finished or running programmes | 40 | 1 |
 | C4 backend and shared reference | 32 | 2 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
@@ -89,6 +89,18 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `frontend/mobile/apps/client_app/references/verification.md` | delete, applied: stale flows, counts and status that the code and feature index own | C1 apps |
 | `frontend/mobile/references/root/decisions.md` | merge into the client app decisions, applied | C1 apps |
 | `backend/docs/14-execution-status.md` | delete, applied: the AI "stub" claim was false (F2); the rest is stale or owned by the backlog and the product document | C2 |
+| `docs/frontend-arch-review/01-executive-summary.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/02-components-and-hooks.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/03-state-management-and-react.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/04-data-flow-and-api.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/05-files-and-code-organization.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/06-types-and-validation.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/07-dependencies-and-module-boundaries.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/08-maintainability-and-technical-debt.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/09-prioritized-action-plan.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/10-performance-and-bundle.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/11-resolution-status.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/frontend-arch-review/index.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
 
 ## Findings so far
 
@@ -197,18 +209,6 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `docs/booking-concurrency/10-fix-order.md` | 1 | 64 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | unreviewed |
 | `docs/booking-concurrency/index.md` | 1 | 90 | Temporary | history; agents if linked | 12 / 1 / 0 | medium | unreviewed |
 | `docs/feature-modules-plan.md` | 1 | 460 | Temporary | history; agents if linked | 4 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/01-executive-summary.md` | 1 | 66 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/02-components-and-hooks.md` | 1 | 59 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/03-state-management-and-react.md` | 1 | 59 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/04-data-flow-and-api.md` | 1 | 34 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/05-files-and-code-organization.md` | 1 | 36 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/06-types-and-validation.md` | 1 | 49 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/07-dependencies-and-module-boundaries.md` | 1 | 17 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/08-maintainability-and-technical-debt.md` | 1 | 65 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/09-prioritized-action-plan.md` | 1 | 55 | Temporary | history; agents if linked | 2 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/10-performance-and-bundle.md` | 1 | 46 | Temporary | history; agents if linked | 2 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/11-resolution-status.md` | 1 | 31 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/frontend-arch-review/index.md` | 1 | 17 | Temporary | history; agents if linked | 0 / 1 / 0 | medium | unreviewed |
 | `docs/mobile-audit-g10-g11/01-dto-is-active-bug.md` | 1 | 33 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
 | `docs/mobile-audit-g10-g11/02-token-scope-mismatch.md` | 1 | 35 | Temporary | history; agents if linked | 3 / 1 / 0 | medium | unreviewed |
 | `docs/mobile-audit-g10-g11/03-inbox-scope-definition.md` | 1 | 32 | Temporary | history; agents if linked | 3 / 1 / 0 | medium | unreviewed |

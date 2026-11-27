@@ -51,21 +51,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [ADR 0003: Dashboard foundation](../adr/0003-new-dashboard-foundation.md)
 - [ADR 0004: Archive the first dashboard](../adr/0004-archive-legacy-dashboard.md)
 
-### `docs/frontend-arch-review/`
-
-- [Frontend architecture review](../frontend-arch-review/index.md)
-- [01 Executive summary](../frontend-arch-review/01-executive-summary.md)
-- [02 Components and hooks](../frontend-arch-review/02-components-and-hooks.md)
-- [03 State management and React patterns](../frontend-arch-review/03-state-management-and-react.md)
-- [04 Data flow and API](../frontend-arch-review/04-data-flow-and-api.md)
-- [05 Files and code organization](../frontend-arch-review/05-files-and-code-organization.md)
-- [06 Types and validation](../frontend-arch-review/06-types-and-validation.md)
-- [07 Dependencies and module boundaries](../frontend-arch-review/07-dependencies-and-module-boundaries.md)
-- [08 Maintainability and technical debt](../frontend-arch-review/08-maintainability-and-technical-debt.md)
-- [09 Prioritized action plan](../frontend-arch-review/09-prioritized-action-plan.md)
-- [10 Performance and bundle](../frontend-arch-review/10-performance-and-bundle.md)
-- [11 Resolution status](../frontend-arch-review/11-resolution-status.md)
-
 ### `docs/sessions/`
 
 - [Session coordination board](../sessions/index.md)
