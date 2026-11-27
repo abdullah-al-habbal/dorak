@@ -39,7 +39,8 @@ DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
 QUEUE_CONNECTION=database
-FCM_SERVER_KEY=
+FCM_PROJECT_ID=
+FCM_CREDENTIALS=
 SANCTUM_STATEFUL_DOMAINS=dashboard.example.com
 SESSION_DOMAIN=.example.com
 ```
@@ -51,7 +52,8 @@ instead of a long-running worker process.
 ### Mobile app `.env` files
 
 ```dotenv
-API_BASE_V1_URL=https://api.example.com/api/v1
+API_BASE_URL=https://api.example.com/api
+API_BASE_URL_V1=https://api.example.com/api/v1
 ```
 
 Firebase native configuration supplies the platform-specific messaging values;

@@ -9,23 +9,14 @@ codeanchors:
 
 # Vercel dashboard hosting (MVP)
 
-Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). Decision: the Next.js dashboard runs on Vercel's free (Hobby) tier for MVP validation. No GitHub workflow deploys it; Vercel builds it. Verified 2026-11-21 and re-audited 2026-11-22 (after `master` and `origin/master` were both at `2befdb3df`) by probing the public domain and the GitHub commit status API (the Vercel dashboard itself needs a login and was not inspected).
+Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). Decision: the Next.js dashboard runs on Vercel's free (Hobby) tier for MVP validation. No GitHub workflow deploys it; Vercel builds it.
 
-## Current state
+## Project
 
-| Item | State |
-|---|---|
-| Project | `dorak` (Vercel team `abdullah-allhabals-projects`) |
-| Production domain | `dorak-bay.vercel.app`; the per-deployment URL answers 302 (Vercel deployment protection or a redirect) |
-| Deployment | Ready; built from `origin/master` at `ec7b19a39` (`docs(deployment): record APP_DEBUG=false on the dev host`). GitHub shows a `Vercel` commit status on that commit (`success`, "Deployment has completed", linking to the `dorak` project), so Vercel does read this repository. Whether a push to `master` **auto-deploys**, and which root directory the project uses, still needs the Vercel UI (Settings, Git and General) |
-| Pushed state | `origin/master` was fast-forwarded to `2befdb3df` on 2026-11-22, so the sign-in pole animation (`01dd7e123`) and the deployment docs are now on GitHub. Vercel does build pushes: `ee534091e` (pushed 2026-11-22) added `/sitemap.xml` and `/robots.txt`, and both answered on the production domain minutes later (see [dev environment status](dev-environment-status.md)) |
-| Arabic (RTL) fixes | Two defects seen on `/dashboard/admin` in Arabic: the sidebar showed "الحلاقون" twice (admin items `barberApprovals` and `stylists` shared one Arabic label; `stylists` is now "المصففون", matching its page title) and the header showed the English name "Admin" (the server-side `/me` call did not send the page locale, so the backend returned the English `display_name`; `server-session.ts` now sends it through `getServerLocale()`). Both are fixed in the working tree and reach the live site once Vercel builds the next push. Guard: `tests/locales/shell-nav-labels.test.ts` fails when two items of one portal share a label |
-| Pages | `/` 200; `/dashboard/{admin,owner,barber}/login` 200 (`manager` not probed); `/dashboard/business/login` and `/dashboard/branch/login` 404 because those are not guards |
-| Backend link | `POST /api/auth/login` with wrong credentials returned the backend's `401 invalid_credentials`, so `BACKEND_API_URL` is set and Hostinger is reachable from Vercel |
-| No session | `GET /api/auth/me` returns `401 session_expired` |
-| Sign-in | **Verified 2026-11-22**: the owner signed in at `/dashboard/admin` with the seeded admin, so `DASHBOARD_SESSION_SECRET` matches the backend's value (a "session setup failed" error would mean they differ). Backend proof: `POST /api/v1/dashboard/login` returned 200 and `GET /api/v1/dashboard/me` returned 200 with `actor_type: admin`, `role: platform_admin`, `permissions: ["dashboard"]`; without the `X-Dashboard-Session` claim header the same call returns 401 |
-| **Not verified** | Vercel project settings (root directory, Node version, auto-deploy on push) |
-| `dorak.ai` | **Not registered**: `dorak.ai` and `www.dorak.ai` return NXDOMAIN and whois reports "Domain not found" (2026-11-22). Nothing to attach until it is bought |
+The Vercel project is `dorak` (team `abdullah-allhabals-projects`), served at `dorak-bay.vercel.app`. The guards are
+`admin`, `manager`, `barber` and `owner`; other names are 404. What is deployed and what was probed is in
+[dev environment status](dev-environment-status.md). The project settings need a Vercel sign-in and haven't been
+inspected.
 
 ## Why no CORS or cookie changes are needed
 
@@ -50,14 +41,11 @@ The public profile pages are the only routes outside `/dashboard` that the proxy
 
 The backend side of the secret lives in `shared/.env` on Hostinger (`backend/.env.example` documents `DASHBOARD_SESSION_SECRET` and `DASHBOARD_SESSION_SECRETS`). Never put the value in the repository or in logs.
 
-## Owner actions still open
+## Owner actions
 
-1. ~~Sign in once as the seeded admin~~ Done 2026-11-22. Remaining: change the seeded password and rotate the secret if it was exposed (backlog RR-10, RR-13).
-2. Open Settings, Git in the Vercel project and confirm the repository is connected, production branch is `master` and the root directory is `frontend/web/dashboard`. Check that a new `Vercel` status appears on the newest `origin/master` commit after the next push; that proves auto-deploy. If it does not, redeploy by hand.
-3. Decide on `dorak.ai`: it is unregistered. Register it and attach it to the project, or drop it from the docs.
-4. Review the Hobby tier limits before real traffic: it is for non-commercial use.
-
-See [dev environment status](dev-environment-status.md) for the dated probe results, URLs and the sitemap and robots checks.
+The open ones are in the [backlog](../backlog/index.md): the seeded admin password and secret rotation (RR-10, RR-13),
+and the unregistered `dorak.ai` domain (RR-11). Also confirm in Settings, Git that a push to `master` deploys, and
+review the Hobby tier limits before real traffic (non-commercial use only).
 
 ## Backend `/me` contract
 

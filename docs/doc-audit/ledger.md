@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-523 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+522 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 342 files = 183 logical documents |
+| Outside `.claude/` | 341 files = 182 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -28,7 +28,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
-| C4 backend and shared reference | 29 | 18 |
+| C4 backend and shared reference | 28 | 21 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
 
@@ -140,6 +140,7 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `backend/modules/Website/docs/09-c4-context.md` | delete: pre-code architecture that the code contradicts (no page analytics); no unique rule | C4 website module |
 | `backend/modules/Website/docs/10-c4-containers.md` | delete: pre-code container sketch; the structure is the module itself | C4 website module |
 | `backend/modules/Website/docs/11-frontend-architecture.md` | delete: pre-code structure the code contradicts (`/` isn't redirected to a language prefix); the theming and rendering rules are in the house rules | C4 website module |
+| `docs/deployment/hostinger-questions.md` | extract then delete, applied: a finished question sheet from 2026-11-21; the server facts that still matter moved to the CI/CD guide | C4 deployment |
 
 ## Findings so far
 
@@ -278,10 +279,9 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `docs/architecture/frontend-architecture.md` | 1 | 55 | Reference | engineers, agents | 1 / 2 / 0 | medium | fix, applied in C3: proxy and error rules added and checked against the forwarder |
 | `docs/architecture/localization-of-machine-keys.md` | 1 | 59 | Reference | engineers, agents | 7 / 1 / 1 | medium | keep (status lines trimmed): enum count (45) and named tests match |
 | `docs/architecture/testing-strategy.md` | 1 | 198 | Reference | engineers, agents | 7 / 1 / 2 | medium | fix, applied: CI table was out of date; CI workflows, named tests checked; the rest not rechecked |
-| `docs/deployment/ci-cd-setup.md` | 1 | 139 | Operations | operators, agents | 7 / 1 / 1 | high | unreviewed |
-| `docs/deployment/deployment-guide.md` | 3 | 175 | Operations | operators, agents | 5 / 1 / 0 | high | unreviewed |
-| `docs/deployment/hostinger-questions.md` | 1 | 114 | Operations | operators, agents | 2 / 1 / 0 | high | unreviewed |
-| `docs/deployment/vercel-dashboard.md` | 1 | 83 | Operations | operators, agents | 5 / 1 / 0 | high | unreviewed |
+| `docs/deployment/ci-cd-setup.md` | 1 | 139 | Operations | operators, agents | 7 / 1 / 1 | high | fix, applied: dated status removed (Dashboard CI has run), server facts merged in; server facts not probed again |
+| `docs/deployment/deployment-guide.md` | 3 | 175 | Operations | operators, agents | 5 / 1 / 0 | high | fix, applied: FCM and mobile setting names were wrong; the local startup commands weren't run |
+| `docs/deployment/vercel-dashboard.md` | 1 | 83 | Operations | operators, agents | 5 / 1 / 0 | high | fix, applied: dated status table removed; the Vercel settings and the /me contract weren't rechecked |
 
 ## C5 mobile and dashboard
 

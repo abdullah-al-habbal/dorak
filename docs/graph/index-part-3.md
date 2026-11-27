@@ -29,7 +29,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Deployment Guide: part 2](../deployment/deployment-guide-part-2.md)
 - [Deployment Guide: part 3](../deployment/deployment-guide-part-3.md)
 - [CI/CD setup and checklist](../deployment/ci-cd-setup.md)
-- [Hostinger findings and readiness](../deployment/hostinger-questions.md)
 - [Vercel dashboard hosting](../deployment/vercel-dashboard.md)
 - [Dev environment status (URLs, deployed version, configuration)](../deployment/dev-environment-status.md)
 
