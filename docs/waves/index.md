@@ -91,7 +91,7 @@ touches the sign-in rate limit and Sanctum settings.
 | [2](wave-2.md) | Sign-in and exposure | BG-28, 29, 30, 16, 4, 49, 50 | todo |
 | [3](wave-3.md) | Data correctness | BG-27, 31 to 35, 18, BD-10, TS-8 | todo |
 | [4](wave-4.md) | Booking experience | BG-19, 20, 21, 36, 12 | todo |
-| [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38, 53 | todo (BG-53 done early, not deployed) |
+| [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38, 53 | todo (BG-13 closed; BG-53 done early, not deployed) |
 | [6](wave-6.md) | Completion | FT, TD, TS, leftovers, old docs | todo; split into batches first |
 
 ## How to keep context small

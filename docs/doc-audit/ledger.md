@@ -117,6 +117,8 @@ On that commit Backend CI `46049039941` passed (migration guard, Pint, 3016 test
 `46049039908` passed analyze and test, and the Vercel status was `success`. No backend deploy followed. Audit
 commits after `6aa3d73d0` stay local until the owner asks for a push (DA-1).
 
+| F15 | Open work in the backlog was already done or out of date: BG-13 (fix committed and gated), TD-4 (all 99 keys named are used), RR-2 (struck through), the TD-8 "no `version` column" claim, the TS-4 "`invitations.spec.ts` has never run" note (the full suite on `a712aca7f` includes the file; inferred from the Playwright config), the RR-7 note about uncommitted edits, and a pointer to a deleted mobile inventory in BD-6. | `c386493f2`, ARB key search, `create_branch_products_table.php`, `playwright.config.ts`, `git status` |
+
 ## Routing
 
 The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed on the session board.
@@ -165,7 +167,7 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
 | `backend/docs/14-execution-status.md` | 1 | 28 | Open work | owner, agents | 1 / 1 / 0 | high | fix (F2) |
-| `docs/backlog/index.md` (push rows in C0) | 1 | 190 | Open work | owner, agents | 31 / 2 / 3 | high | fix: push rows applied; rest unreviewed (C2) |
+| `docs/backlog/index.md` (push rows in C0) | 1 | 190 | Open work | owner, agents | 31 / 2 / 3 | high | fix, applied (C2). Checked in code: BG-4, 12, 14, 16, 18, 21, 27 to 35, 39, 41, 45, 49; BD-10, 11, 15; TD-1, 5, 8, 12, 20; FT-18, 19; RR-5, 6, 9, 13. Checked only in part: BG-20, 36, 40, 46, 47, 51; TD-19; FT-1, 17; TS-4. Every other row wasn't rechecked |
 | `docs/sessions/index.md` | 1 | 57 | Open work | owner, agents | 6 / 1 / 0 | high | unreviewed |
 | `docs/waves/index.md` | 1 | 131 | Open work | owner, agents | 12 / 1 / 0 | high | unreviewed |
 | `docs/waves/runbook.md` | 1 | 130 | Operations | operators, agents | 9 / 1 / 2 | high | unreviewed |

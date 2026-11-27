@@ -200,7 +200,7 @@ Everything found in the review that affects this plan. IDs refer to `docs/backlo
 | Brand page returns no products; no client brand screen | Scope limit | deferred | FT-19b |
 | No branch image field; profile has no sections or tabs | Scope limit | PC-8 | FT-19c |
 | Public brand endpoint exposes the owner's email | Separate bug | none (PC-9 mention) | BG-8 |
-| Minor-unit factor is a global 100 | Risk | PC-2, PC-3 | BG-13 |
+| Minor-unit factor is a global 100 | Risk | PC-2, PC-3 | none |
 | "Catalog" already means the service catalog; use the module name `ProductCatalog` | Note | PC-2 | none |
 | Every non-GET dashboard action must call `DashboardWriteGuard` or be exempted, or `DashboardWriteGuardArchitectureTest` fails | Note | PC-3 | none |
 | New `{branch}` routes are exercised by `DashboardCrossTenantRouteTest` | Note | PC-3, PC-6 | none |
