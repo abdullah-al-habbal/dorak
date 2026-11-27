@@ -176,13 +176,15 @@ coverage, risk and verification status. The format and statuses are in
 
 | Where | What runs today |
 | --- | --- |
-| GitHub Actions `backend-ci.yml` | migration guard, `composer validate`, PHP syntax check, `php artisan test` on MySQL 8.4 (coverage off) |
+| GitHub Actions `backend-ci.yml` | migration guard, `composer validate`, Pint, PHP syntax check, `php artisan test` and the concurrency group on MySQL 8.4 |
+| GitHub Actions `dashboard-ci.yml` | lint, typecheck, Vitest, build (no Playwright) |
+| GitHub Actions `mobile-ci.yml` | analyze and tests, and app builds (the workflow decides when builds run) |
 | Local hooks (`.husky`) | commit message format; dashboard lint and typecheck on staged dashboard files; before a push that changes `backend/`: Pint, migration guard and Pest |
 | Task executor | the gate order in `gates.md`, including Pint, Pest, dashboard checks, Playwright and `melos verify` |
 
 Recommended future improvements, not part of this work: a coverage-capable CI job (after the
 `phpunit.xml` source path is fixed and a driver chosen), a scheduled mutation run on critical
-services, dashboard and mobile CI jobs, and a check that rejects duplicate global Pest helper names.
+services, and a check that rejects duplicate global Pest helper names.
 
 ## How to use the skill
 

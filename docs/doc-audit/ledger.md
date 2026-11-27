@@ -28,7 +28,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
-| C4 backend and shared reference | 32 | 2 |
+| C4 backend and shared reference | 32 | 12 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
 
@@ -259,9 +259,9 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `backend/docs/11-backend-architecture.md` | 20 | 1012 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `backend/docs/13-technical-concepts.md` | 21 | 1138 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `backend/docs/16-deployment-operations.md` | 11 | 654 | Operations | operators, agents | 0 / 1 / 4 | high | unreviewed |
-| `backend/docs/17-sms-delivery.md` | 1 | 51 | Reference | engineers, agents | 0 / 0 / 0 | medium | unreviewed |
+| `backend/docs/17-sms-delivery.md` | 1 | 51 | Reference | engineers, agents | 0 / 0 / 0 | medium | fix, applied: the production boot guard was missing |
 | `backend/docs/README.md` | 3 | 145 | Reference | engineers, agents | 1 / 2 / 0 | medium | unreviewed |
-| `backend/docs/api-response-standard.md` | 1 | 28 | Reference | engineers, agents | 0 / 0 / 0 | medium | unreviewed |
+| `backend/docs/api-response-standard.md` | 1 | 28 | Reference | engineers, agents | 0 / 0 / 0 | medium | keep: every named class and the architecture test exist |
 | `backend/docs/feature-index.md` | 8 | 651 | Reference | engineers, agents | 3 / 1 / 0 | medium | unreviewed |
 | `backend/modules/Website/docs/04-house-rules.md` | 1 | 27 | Decisions | owner, engineers | 1 / 1 / 0 | medium | unreviewed |
 | `backend/modules/Website/docs/05-domain-glossary.md` | 1 | 16 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
@@ -270,14 +270,14 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `backend/modules/Website/docs/10-c4-containers.md` | 1 | 44 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `backend/modules/Website/docs/11-frontend-architecture.md` | 1 | 36 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `backend/modules/Website/docs/README.md` | 1 | 51 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `docs/adr/0001-brand-owner-as-client.md` | 1 | 64 | Decisions | owner, engineers | 1 / 1 / 0 | medium | unreviewed |
-| `docs/adr/0002-mvp-scope-deferrals.md` | 1 | 45 | Decisions | owner, engineers | 3 / 1 / 1 | medium | unreviewed |
-| `docs/adr/0003-new-dashboard-foundation.md` | 1 | 41 | Decisions | owner, engineers | 4 / 1 / 0 | medium | unreviewed |
-| `docs/adr/0004-archive-legacy-dashboard.md` | 1 | 47 | Decisions | owner, engineers | 4 / 1 / 0 | medium | unreviewed |
-| `docs/architecture/architecture.md` | 1 | 64 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
-| `docs/architecture/frontend-architecture.md` | 1 | 55 | Reference | engineers, agents | 1 / 2 / 0 | medium | unreviewed |
-| `docs/architecture/localization-of-machine-keys.md` | 1 | 59 | Reference | engineers, agents | 7 / 1 / 1 | medium | unreviewed |
-| `docs/architecture/testing-strategy.md` | 1 | 198 | Reference | engineers, agents | 7 / 1 / 2 | medium | unreviewed |
+| `docs/adr/0001-brand-owner-as-client.md` | 1 | 64 | Decisions | owner, engineers | 1 / 1 / 0 | medium | keep with a dated note: the owner notification bell changed |
+| `docs/adr/0002-mvp-scope-deferrals.md` | 1 | 45 | Decisions | owner, engineers | 3 / 1 / 1 | medium | keep: a dated decision record; whether its scope is still met wasn't checked feature by feature |
+| `docs/adr/0003-new-dashboard-foundation.md` | 1 | 41 | Decisions | owner, engineers | 4 / 1 / 0 | medium | keep with a dated note: all three listed gaps have since changed (forgot and reset routes seen; the other two rest on the guard test and the backlog decision) |
+| `docs/adr/0004-archive-legacy-dashboard.md` | 1 | 47 | Decisions | owner, engineers | 4 / 1 / 0 | medium | keep: history of a finished move; no live claim depends on it |
+| `docs/architecture/architecture.md` | 1 | 64 | Reference | engineers, agents | 4 / 1 / 0 | medium | fix, applied: dashboard auth path and production settings were wrong |
+| `docs/architecture/frontend-architecture.md` | 1 | 55 | Reference | engineers, agents | 1 / 2 / 0 | medium | fix, applied in C3: proxy and error rules added and checked against the forwarder |
+| `docs/architecture/localization-of-machine-keys.md` | 1 | 59 | Reference | engineers, agents | 7 / 1 / 1 | medium | keep (status lines trimmed): enum count (45) and named tests match |
+| `docs/architecture/testing-strategy.md` | 1 | 198 | Reference | engineers, agents | 7 / 1 / 2 | medium | fix, applied: CI table was out of date; CI workflows, named tests checked; the rest not rechecked |
 | `docs/deployment/ci-cd-setup.md` | 1 | 139 | Operations | operators, agents | 7 / 1 / 1 | high | unreviewed |
 | `docs/deployment/deployment-guide.md` | 3 | 175 | Operations | operators, agents | 5 / 1 / 0 | high | unreviewed |
 | `docs/deployment/hostinger-questions.md` | 1 | 114 | Operations | operators, agents | 2 / 1 / 0 | high | unreviewed |

@@ -43,7 +43,7 @@ The audit scanned the 127 files under `backend/modules` that write (`create`, `s
 
 ## Already sound
 
-- Booking create, reschedule and confirm follow one lock order through `BookingLockOrder` (committed in `c386493f2`; its parallel confirm-versus-create test is `cb57adc6a`, BG-17 ; see the [index](index.md)). Cancel paths lock only the booking row, so they cannot invert against create. `ChairStatusService` locks chair, then bookings, matching create.
+- Booking create, reschedule and confirm follow one lock order through `BookingLockOrder` (committed in `c386493f2`; its parallel confirm-versus-create test is `cb57adc6a`, BG-17; see the [index](index.md)). Cancel paths lock only the booking row, so they cannot invert against create. `ChairStatusService` locks chair, then bookings, matching create.
 - Row locks plus checks already protect: affiliations, payout generation and transitions, review submit, job apply and status, branch and brand lifecycle, account bans and deletion, admin deactivation, dashboard refresh rotation, and the booking idempotency key.
 - Unique indexes already exist for commission per booking, reviews, favorites, notification `dedupe_key`, device tokens, service overrides, job applications, social accounts and barber schedules.
 

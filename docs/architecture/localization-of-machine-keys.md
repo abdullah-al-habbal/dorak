@@ -52,7 +52,7 @@ A machine key is a value the API, a permission check or a state machine depends 
 
 ## Mobile
 
-No mobile file changed. Mobile shows the stored notification `title` and `body` as they are, so new notifications now arrive in the recipient's language. Open mobile items stay in the backlog as TD-2 (string literals) and TD-3 (unknown `BookingStatus`, closed 2026-11-23).
+Mobile shows the stored notification `title` and `body` as they are, so new notifications now arrive in the recipient's language. Open mobile items are in the backlog (TD-2, string literals).
 
 ## Terminology: barber (key) and stylist (label)
 

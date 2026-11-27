@@ -37,7 +37,7 @@ codeanchors:
 
 ## Production requirement (G5)
 
-`SMS_DRIVER=generic_http` (with `SMS_HTTP_URL` and any `SMS_HTTP_HEADERS`) must be set in every production and staging environment. `backend/.env.example` defaults to `log` for local development only: with `log`, no SMS leaves the server, so client phone OTPs are never delivered and the code is written to the log. Verify after each deploy with `php artisan tinker` -> `config('services.sms.driver')` returning `generic_http`.
+`SMS_DRIVER=generic_http` (with `SMS_HTTP_URL` and any `SMS_HTTP_HEADERS`) must be set in every production and staging environment. `backend/.env.example` defaults to `log` for local development only: with `log`, no SMS leaves the server, so client phone OTPs are never delivered and the code is written to the log. In production the app refuses to boot while the driver is `log` or the mailer doesn't deliver (`Core/Services/ProductionDeliveryGuard`); other environments aren't guarded. Verify after each deploy with `php artisan tinker` -> `config('services.sms.driver')` returning `generic_http`.
 
 ## Rules
 

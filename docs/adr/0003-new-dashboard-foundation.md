@@ -39,3 +39,10 @@ dashboard was archived on 2026-11-05, see [ADR 0004](0004-archive-legacy-dashboa
 - Dashboard routes outside `/me` and `/profile*` ignore the stored locale
   preference and `Accept-Language`.
 - Access tokens are not revoked on refresh; they expire at their own TTL.
+
+## Since then (checked 2026-11-27)
+
+The three gaps above describe 2026-11-04. The dashboard API now has forgot and reset password routes, dashboard
+route groups apply the preferred locale
+([localization](../architecture/localization-of-machine-keys.md)), and a refresh expires the old access token
+([backlog](../backlog/index.md), session decisions D-01 to D-07).

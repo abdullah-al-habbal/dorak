@@ -62,3 +62,8 @@ owns at least one brand.
   personal notifications, not brand operations.
 - Branch managers remain separate branch accounts (Task 12); linking a manager
   person to a branch is out of scope.
+
+## Since then (checked 2026-11-27)
+
+- The dashboard header now shows the notification bell to every role, owners included. This replaces the point above
+  that hid it from owners (`components/layout/header.tsx`).
