@@ -42,7 +42,7 @@ The slots routes are throttled at 60 per minute per IP (`BOOKING_SLOTS_LIMITER`,
 
 - **No cache and no invalidation.** Every call recomputes. This is fine for correctness: nothing is stale. It means cost grows with every client who opens the booking screen and changes the date or a service.
 - **Advisory result.** The list is read without locks. Between listing and submitting, another client can take the slot; the create answers 409 and the app shows a generic conflict message, without reloading the list ([file 06](06-client-sync-and-ux.md)).
-- **UTC day.** `date` is parsed as a UTC day and `starts_at` is compared with branch hours as a UTC clock time. There is no branch time zone, so hours don't match local time: reproduced on 2026-11-27 (backlog BG-55, and BG-56 for the date the client app sends).
+- **Branch day.** `date` is a calendar date in the branch's time zone (`Asia/Damascus` unless the branch has its own), and the slots are that local day's, sent as UTC instants. A barber slot request with no branch uses the default zone.
 
 ## Options
 
