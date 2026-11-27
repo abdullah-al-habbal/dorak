@@ -8,7 +8,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Http\Requests\Branch\ToggleChairStatusRequest;
 use Modules\Chair\Enums\ChairStatus;
-use Modules\Chair\Events\ChairStatusUpdated;
 use Modules\Chair\Exceptions\ChairHasActiveBookingsException;
 use Modules\Chair\Models\ChairModel;
 use Modules\Chair\Services\ChairStatusService;
@@ -37,12 +36,6 @@ final class ToggleChairStatusAction extends BaseApiAction
                 ['booking_ids' => $conflict->bookingIds],
             );
         }
-
-        event(new ChairStatusUpdated(
-            chairId: $chairModel->id,
-            branchId: $branch->id,
-            status: $status->value,
-        ));
 
         return $this->success(
             data: [

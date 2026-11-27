@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use Illuminate\Broadcasting\BroadcastEvent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
 use Modules\Barber\Models\BarberModel;
 use Modules\BarberAffiliation\Enums\AffiliableType;
@@ -121,7 +124,8 @@ describe('Branch API', function () {
                     'status' => ChairStatus::Available,
                 ]);
 
-                Event::fake();
+                // Only the broadcast is faked, so the model observer still runs.
+                Event::fake([ChairStatusUpdated::class]);
 
                 $response = $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", [
                     'status' => ChairStatus::Maintenance,
@@ -131,7 +135,46 @@ describe('Branch API', function () {
                 $data = $response->json('data');
                 expect($data['status'])->toBe(ChairStatus::Maintenance->value);
 
-                Event::assertDispatched(ChairStatusUpdated::class);
+                Event::assertDispatchedTimes(ChairStatusUpdated::class, 1);
+                Event::assertDispatched(
+                    ChairStatusUpdated::class,
+                    fn (ChairStatusUpdated $event): bool => $event->chairId === $chair->id
+                        && $event->branchId === $this->branch->id
+                        && $event->status === ChairStatus::Maintenance->value,
+                );
+            });
+
+            it('fires no event when the status does not change', function () {
+                $chair = ChairModel::factory()->create([
+                    'branch_id' => $this->branch->id,
+                    'status' => ChairStatus::Available,
+                ]);
+
+                Event::fake([ChairStatusUpdated::class]);
+
+                $this->patchJson("/api/v1/branch/chairs/{$chair->id}/status", [
+                    'status' => ChairStatus::Available,
+                ])->assertOk();
+
+                Event::assertNotDispatched(ChairStatusUpdated::class);
+            });
+
+            it('broadcasts a change only after it is committed', function () {
+                $chair = ChairModel::factory()->create([
+                    'branch_id' => $this->branch->id,
+                    'status' => ChairStatus::Available,
+                ]);
+                Queue::fake();
+
+                expect(fn () => DB::transaction(function () use ($chair): void {
+                    $chair->update(['status' => ChairStatus::Occupied]);
+
+                    throw new RuntimeException('rolled back');
+                }))->toThrow(RuntimeException::class);
+                Queue::assertNotPushed(BroadcastEvent::class);
+
+                DB::transaction(fn () => $chair->refresh()->update(['status' => ChairStatus::Occupied]));
+                Queue::assertPushed(BroadcastEvent::class, 1);
             });
 
             it('returns 404 for chair not belonging to branch', function () {

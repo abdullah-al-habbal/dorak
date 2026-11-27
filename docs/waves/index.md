@@ -26,7 +26,7 @@ codeanchors:
 |---|---|
 | Active wave | [Wave 1: realtime](wave-1.md) |
 | State | in progress since 2026-11-27 |
-| Next task | W1.3 (BG-48, reproduced), then W1.2 |
+| Next task | W1.2 (BG-45) |
 | Last release to dev | `96d2f797e`, 2026-11-26 ([dev status](../deployment/dev-environment-status.md), Snapshot 12) |
 | Blocked on the owner | nothing for Wave 1's local work; see "Owner actions" |
 
