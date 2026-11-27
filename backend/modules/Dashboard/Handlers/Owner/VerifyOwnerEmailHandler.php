@@ -8,6 +8,7 @@ use Modules\Brand\Models\BrandModel;
 use Modules\Client\CQRS\Command\Client\VerifyEmailCommand;
 use Modules\Client\Handlers\Client\VerifyEmailHandler;
 use Modules\Client\Models\ClientModel;
+use Modules\Client\Services\ClientEmailVerificationCodes;
 use Modules\Dashboard\CQRS\Command\VerifyOwnerEmailCommand;
 use Modules\Dashboard\Repositories\DashboardOwnerActorResolver;
 use Modules\Dashboard\Services\OwnerBrandMailer;
@@ -17,12 +18,14 @@ use Modules\Dashboard\Support\DashboardActor;
  * Confirms the emailed code and opens the owner session. A session is issued
  * only by the step that flips an account from unverified to verified, so this
  * is never a way to sign in to an account that was already confirmed.
- * Any failure (unknown email, banned, wrong code) returns null alike.
+ * Any failure (unknown email, banned, wrong code) returns null alike, and each
+ * spends one hash operation, so timing doesn't point out pending sign-ups.
  */
 final class VerifyOwnerEmailHandler
 {
     public function __construct(
         private readonly VerifyEmailHandler $verifier,
+        private readonly ClientEmailVerificationCodes $codes,
         private readonly DashboardOwnerActorResolver $ownerActors,
         private readonly OwnerBrandMailer $mailer,
     ) {}
@@ -32,6 +35,8 @@ final class VerifyOwnerEmailHandler
         $client = ClientModel::query()->where('email', $command->email)->first();
 
         if (! $client instanceof ClientModel || $client->email_verified_at !== null || $client->isBanned()) {
+            $this->codes->refuse($command->code);
+
             return null;
         }
 

@@ -31,11 +31,9 @@ final class ResetPasswordHandler
         $branch = $this->resolver->findByEmail($command->email);
         $id = $branch === null ? null : (string) $branch->id;
 
-        if (! $this->codes->verify(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BRANCH, $id, $command->code)) {
+        if (! $this->codes->redeem(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BRANCH, $id, $command->code)) {
             return false;
         }
-
-        $this->codes->consume(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BRANCH, $id);
 
         $branch->update(['password' => Hash::make($command->password)]);
         $branch->tokens()->delete();

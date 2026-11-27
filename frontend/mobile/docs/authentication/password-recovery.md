@@ -30,9 +30,8 @@ core change was needed.
 
 The complete client auth route list is login, register, social, forgot-password,
 reset-password, logout, refresh-token, avatar, email/verify, email/verify/send.
-**Nothing validates a recovery code on its own.** `ForgotPasswordHandler` stores it
-as `Cache::put("password_reset_{$client->id}", $code, now()->addMinutes(10))`, and
-only `ResetPasswordHandler` reads it back.
+**Nothing validates a recovery code on its own.** The backend keeps only a hash of
+it (`PasswordResetCodeVerifier`), and the app sends it back with `reset-password`.
 
 Consequence, and it is the defining shape of this flow: **the OTP screen (012)
 cannot validate the code.** It collects six digits and carries them in state; the

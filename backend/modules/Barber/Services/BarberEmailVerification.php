@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Barber\Services;
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Modules\Barber\Mail\BarberEmailVerificationCode;
 use Modules\Barber\Models\BarberModel;
 use Modules\Core\Enums\PlatformEventEnum;
+use Modules\Core\Services\OneTimeCodes;
 use Modules\Core\Services\PlatformNotifier;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
@@ -34,8 +33,7 @@ final class BarberEmailVerification
             ]);
         }
 
-        Cache::put($this->codeKey($barberId), Hash::make($code), now()->addMinutes(app(SettingsService::class)->int(SettingKey::BarberEmailVerificationTtlMinutes)));
-        Cache::forget($this->attemptsKey($barberId));
+        app(OneTimeCodes::class)->issue($this->codeKey($barberId), $code, now()->addMinutes(app(SettingsService::class)->int(SettingKey::BarberEmailVerificationTtlMinutes)));
 
         Mail::to((string) $barber->getAttribute('email'))->send(new BarberEmailVerificationCode($code));
 
@@ -45,16 +43,10 @@ final class BarberEmailVerification
     public function verify(BarberModel $barber, string $code): bool
     {
         $barberId = (string) $barber->getKey();
-        $hash = Cache::get($this->codeKey($barberId));
 
-        if (! is_string($hash) || ! Hash::check($code, $hash)) {
-            $this->registerFailedAttempt($barberId);
-
+        if (app(OneTimeCodes::class)->redeem($this->codeKey($barberId), $code, app(SettingsService::class)->int(SettingKey::BarberEmailVerificationMaxAttempts)) === null) {
             return false;
         }
-
-        Cache::forget($this->codeKey($barberId));
-        Cache::forget($this->attemptsKey($barberId));
 
         $barber->forceFill(['email_verified_at' => now()])->save();
         // A verified self-registration reaches the admin queue (NS-30); branch-made barbers never verify here.
@@ -63,31 +55,8 @@ final class BarberEmailVerification
         return true;
     }
 
-    private function registerFailedAttempt(string $barberId): void
-    {
-        $key = $this->attemptsKey($barberId);
-
-        $attempts = Cache::increment($key, 1);
-
-        if ($attempts === false) {
-            Cache::add($key, 1, now()->addMinutes(app(SettingsService::class)->int(SettingKey::BarberEmailVerificationTtlMinutes)));
-
-            $attempts = 1;
-        }
-
-        if ($attempts >= app(SettingsService::class)->int(SettingKey::BarberEmailVerificationMaxAttempts)) {
-            Cache::forget($this->codeKey($barberId));
-            Cache::forget($key);
-        }
-    }
-
     private function codeKey(string $barberId): string
     {
         return "barber_email_verify_{$barberId}";
-    }
-
-    private function attemptsKey(string $barberId): string
-    {
-        return "barber_email_verify_attempts_{$barberId}";
     }
 }

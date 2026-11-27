@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +25,7 @@ use Modules\Client\Mail\SendEmailVerificationCode;
 use Modules\Client\Mail\SendPasswordResetCode;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
+use Modules\Client\Services\ClientEmailVerificationCodes;
 use Modules\ClientHistory\Enums\HistoryMediaType;
 use Modules\ClientInteraction\Enums\FavoritedTypeEnum;
 use Modules\Currency\Models\CurrencyModel;
@@ -386,7 +386,7 @@ describe('Email Verification', function () {
         $client = ClientModel::factory()->unverified()->create();
         $token = $client->createToken('test')->plainTextToken;
 
-        Cache::put("email_verify_{$client->id}", '123456', now()->addMinutes(10));
+        app(ClientEmailVerificationCodes::class)->issue((string) $client->id, '123456');
 
         $response = $this->withToken($token)
             ->postJson('/api/v1/client/email/verify', [
@@ -463,7 +463,7 @@ describe('Forgot & Reset Password', function () {
         Mail::fake();
         $this->postJson('/api/v1/client/forgot-password', ['email' => $client->email]);
 
-        $code = Cache::get("password_reset_{$client->id}");
+        $code = Mail::sent(SendPasswordResetCode::class)->last()->code;
 
         $response = $this->postJson('/api/v1/client/reset-password', [
             'email' => $client->email,

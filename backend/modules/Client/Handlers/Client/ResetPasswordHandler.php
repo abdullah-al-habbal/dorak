@@ -26,11 +26,9 @@ final class ResetPasswordHandler
         $clientId = $client === null ? null : (string) $client->id;
 
         // An unknown email fails exactly like a wrong code.
-        if (! $this->codes->verify($clientId, $command->code) || $client === null) {
+        if (! $this->codes->redeem($clientId, $command->code) || $client === null) {
             return ResetPasswordResult::invalidCode();
         }
-
-        $this->codes->consume($clientId);
 
         $this->resolver->updatePassword($client, Hash::make($command->password));
         $this->resolver->deleteTokens($client);

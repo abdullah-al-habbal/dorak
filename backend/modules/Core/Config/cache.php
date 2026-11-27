@@ -16,7 +16,8 @@ return [
             'connection' => env('DB_CACHE_CONNECTION'),
             'table' => env('DB_CACHE_TABLE'),
             'lock_connection' => env('DB_CACHE_LOCK_CONNECTION'),
-            'lock_table' => env('DB_CACHE_LOCK_TABLE'),
+            // A blank value counts as unset, so the framework's own table name applies: one-time codes take cache locks.
+            'lock_table' => env('DB_CACHE_LOCK_TABLE') ?: null,
         ],
         'file' => [
             'driver' => 'file',

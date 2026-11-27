@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Support\Defer\DeferredCallbackCollection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Modules\Admin\Models\AdminModel;
@@ -18,6 +17,7 @@ use Modules\Client\Mail\SendEmailVerificationCode;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Models\SocialAccountModel;
 use Modules\Client\Services\ClientAccountDeletion;
+use Modules\Client\Services\ClientEmailVerificationCodes;
 use Modules\Currency\Models\CurrencyModel;
 use Modules\Dashboard\Constants\OwnerRegistrationConstants;
 use Modules\Dashboard\Mail\OwnerBrandApproved;
@@ -47,7 +47,7 @@ function ownerRegistrationRun(mixed $test, string $uri, array $payload, array $h
 
 function ownerRegistrationCode(ClientModel $client): string
 {
-    return (string) Cache::get("email_verify_{$client->id}");
+    return Mail::sent(SendEmailVerificationCode::class, fn (SendEmailVerificationCode $mail): bool => $mail->hasTo($client->email))->last()->code;
 }
 
 describe('Owner self-registration', function (): void {
@@ -89,8 +89,38 @@ describe('Owner self-registration', function (): void {
         $this->postJson('/api/v1/dashboard/owner/verify', ['email' => 'nobody@example.test', 'code' => '123456'])->assertUnprocessable();
 
         $verified = ClientModel::factory()->create(['email' => 'verified@example.test']);
-        Cache::put("email_verify_{$verified->id}", '123456', 600);
+        app(ClientEmailVerificationCodes::class)->issue((string) $verified->id, '123456');
         $this->postJson('/api/v1/dashboard/owner/verify', ['email' => $verified->email, 'code' => '123456'])->assertUnprocessable();
+    });
+
+    it('spends one hash on a refused code whether or not a pending account is behind the email (BG-28)', function (string $account): void {
+        $factory = ClientModel::factory()->state(['email' => 'probe@example.test']);
+
+        if ($account === 'verified') {
+            $factory->create();
+        } elseif ($account !== 'unknown') {
+            $client = $factory->unverified()->create();
+            if ($account === 'banned') {
+                BanModel::query()->create(['bannable_type' => $client->getMorphClass(), 'bannable_id' => $client->id, 'banned_at' => now()->subDay(), 'expires_at' => null, 'reason' => 'test']);
+            }
+        }
+        Hash::spy();
+
+        $this->postJson('/api/v1/dashboard/owner/verify', ['email' => 'probe@example.test', 'code' => '000000'])->assertUnprocessable();
+
+        Hash::shouldHaveReceived('make')->once();
+        Hash::shouldNotHaveReceived('check');
+    })->with(['unknown', 'verified', 'banned', 'unverified without a code']);
+
+    it('spends one comparison, and no second hash, on a wrong code for a pending account (BG-28)', function (): void {
+        $client = ClientModel::factory()->unverified()->create();
+        app(ClientEmailVerificationCodes::class)->issue((string) $client->id, '123456');
+        Hash::spy();
+
+        $this->postJson('/api/v1/dashboard/owner/verify', ['email' => $client->email, 'code' => '000000'])->assertUnprocessable();
+
+        Hash::shouldHaveReceived('check')->once();
+        Hash::shouldNotHaveReceived('make');
     });
 
     it('answers a repeat sign-up of an unverified email the same way, resends the code, and changes nothing', function (): void {
@@ -176,7 +206,7 @@ describe('Owner self-registration', function (): void {
 
     it('caps code guesses per email', function (): void {
         $client = ClientModel::factory()->unverified()->create(['email' => 'guess@example.test']);
-        Cache::put("email_verify_{$client->id}", '123456', 600);
+        app(ClientEmailVerificationCodes::class)->issue((string) $client->id, '123456');
         $limit = OwnerRegistrationConstants::OWNER_VERIFY_PER_EMAIL_PER_HOUR;
 
         for ($i = 1; $i <= $limit; $i++) {

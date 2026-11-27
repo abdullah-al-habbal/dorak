@@ -29,10 +29,13 @@ final class UpdateDashboardPasswordHandler
             return false;
         }
 
+        // Burned first and outside the transaction (BG-28): if it fails, the password stays as it was, and the cache
+        // lock never becomes part of the database transaction.
+        $this->mobileCodes->clear($command->actorType, (string) $model->getKey());
+
         DB::transaction(function () use ($model, $command): void {
             $this->resolver->resolve($model, $command->password);
             $this->credentials->revokeOthers($command->actorType, $model, $command->keepAccessTokenId, $command->keepRefreshToken);
-            $this->mobileCodes->clear($command->actorType, (string) $model->getKey());
         });
 
         return true;

@@ -31,11 +31,9 @@ final class ResetPasswordHandler
         $barber = $this->resolver->findResettableByEmail($command->email);
         $id = $barber === null ? null : (string) $barber->id;
 
-        if (! $this->codes->verify(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BARBER, $id, $command->code)) {
+        if (! $this->codes->redeem(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BARBER, $id, $command->code)) {
             return false;
         }
-
-        $this->codes->consume(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BARBER, $id);
 
         $barber->update(['password' => Hash::make($command->password)]);
         $barber->tokens()->delete();

@@ -37,6 +37,16 @@ final class DashboardEmailChangeEloquentResolver
             ->first();
     }
 
+    /** The pending change, locked until the caller's transaction ends (BG-28). */
+    public function findForUpdate(DashboardActor $actor): ?DashboardEmailChangeModel
+    {
+        return DashboardEmailChangeModel::query()
+            ->where('actor_type', $actor->actorType)
+            ->where('actor_id', $actor->id)
+            ->lockForUpdate()
+            ->first();
+    }
+
     public function apply(AdminModel|BranchModel|BarberModel|ClientModel $model, DashboardEmailChangeModel $change): void
     {
         $model->forceFill(['email' => $change->email, 'email_verified_at' => now()])->save();

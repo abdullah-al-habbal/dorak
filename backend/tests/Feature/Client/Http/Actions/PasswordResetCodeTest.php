@@ -6,6 +6,7 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Modules\Client\Mail\SendPasswordResetCode;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Services\PasswordResetCodeVerifier;
 use Modules\Core\Services\TranslatorHandlerService;
@@ -48,7 +49,7 @@ describe('POST /api/v1/client/forgot-password/verify', function (): void {
             ->assertOk()
             ->assertJsonPath('success', true);
 
-        expect(Cache::get("password_reset_{$client->id}"))->toBe('123456');
+        expect(serialize(Cache::get("password_reset_{$client->id}")))->not->toContain('123456');
 
         $this->postJson('/api/v1/client/reset-password', resetWithCode($client, '123456'))->assertOk();
 
@@ -153,7 +154,7 @@ describe('shared reset-code attempt budget', function (): void {
         }
 
         $this->postJson('/api/v1/client/forgot-password', ['email' => $client->email])->assertOk();
-        $code = Cache::get("password_reset_{$client->id}");
+        $code = Mail::sent(SendPasswordResetCode::class)->last()->code;
 
         $this->postJson('/api/v1/client/forgot-password/verify', ['email' => $client->email, 'code' => $code === '000000' ? '111111' : '000000'])
             ->assertStatus(422);

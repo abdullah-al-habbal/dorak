@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Modules\Client\Handlers\Client;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Modules\Client\Mail\SendEmailVerificationCode;
 use Modules\Client\Models\ClientModel;
 use Modules\Client\Repositories\SendEmailVerificationEloquentResolver;
+use Modules\Client\Services\ClientEmailVerificationCodes;
 use Modules\Client\ValuesObjects\SendEmailVerificationResult;
 
 final class SendEmailVerificationHandler
 {
     public function __construct(
         private readonly SendEmailVerificationEloquentResolver $resolver,
+        private readonly ClientEmailVerificationCodes $codes,
     ) {}
 
     public function handle(ClientModel $client): SendEmailVerificationResult
@@ -37,8 +38,7 @@ final class SendEmailVerificationHandler
             ]);
         }
 
-        Cache::put("email_verify_{$client->id}", $code, now()->addMinutes(10));
-        Cache::forget("email_verify_attempts_{$client->id}");
+        $this->codes->issue((string) $client->id, $code);
 
         Mail::to($client->email)->send(new SendEmailVerificationCode($code));
 

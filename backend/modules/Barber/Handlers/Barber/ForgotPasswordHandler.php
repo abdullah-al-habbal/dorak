@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Mail;
 use Modules\Barber\CQRS\Command\Barber\ForgotPasswordCommand;
 use Modules\Barber\Repositories\LoginEloquentResolver;
 use Modules\Client\Mail\SendPasswordResetCode;
+use Modules\Core\Constants\StaffPasswordResetConstants;
+use Modules\Core\Exceptions\OneTimeCodeUnavailableException;
 use Modules\Core\Services\StaffPasswordResetCodes;
 
 final class ForgotPasswordHandler
@@ -31,7 +33,14 @@ final class ForgotPasswordHandler
 
         $code = (string) random_int(100000, 999999);
 
-        $this->codes->issue('barber', (string) $barber->id, $code);
+        try {
+            $this->codes->issue(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BARBER, (string) $barber->id, $code);
+        } catch (OneTimeCodeUnavailableException $exception) {
+            // An error only real accounts can get would name them.
+            report($exception);
+
+            return;
+        }
 
         Mail::to($barber->email)->send(new SendPasswordResetCode($code));
     }

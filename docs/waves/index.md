@@ -13,9 +13,9 @@ codeanchors:
 
 | Field | Value |
 |---|---|
-| Active wave | [Wave 1: realtime](wave-1.md) |
-| State | fixes released; waiting for the owner on W1.4 and Reverb hosting |
-| Next task | Proposed, not yet approved: close [W1.8 and W1.9](wave-1.md#tasks), then [Wave 2](wave-2.md) at W2.1. W1.4 waits for decision 1 |
+| Active wave | [Wave 2: sign-in and exposure](wave-2.md). Wave 1 stays open for W1.4 |
+| State | Wave 2 in progress, local commits only (owner, 2026-11-28: no push or deploy until asked, no database reset, no Playwright) |
+| Next task | [Wave 2](wave-2.md) at W2.2. W1.8 and W1.9 stay open; W1.4 waits for decision 1 |
 | Last release to dev | `7b3814481`, 2026-11-27 ([dev status](../deployment/dev-environment-status.md)) |
 | Blocked on the owner | [Wave 1 decisions](wave-1-decisions.md): open subscriptions (W1.4) and where Reverb runs |
 
@@ -23,7 +23,7 @@ codeanchors:
 
 As of **2026-11-27 18:37 UTC** (21:37, UTC+3). Update this section in place.
 
-**Progress.** Wave 0 is done apart from leftovers (W6.2). Wave 1 is released with W1.4 open. Waves 2 to 4 and 6 haven't started. In Wave 5, W5.7 was done early and the documentation audit closed W5.2.
+**Progress.** Wave 0 is done apart from leftovers (W6.2). Wave 1 is released with W1.4 open. Wave 2 started on 2026-11-28; its task status is in the wave file, and its checks are in that file's log, not in the table below. Waves 3, 4 and 6 haven't started. In Wave 5, W5.7 was done early and the documentation audit closed W5.2. BG-55 and BG-56 are committed locally, not deployed (BG-59).
 
 **Delivered and deployed to dev** (`7b3814481`, no database reset):
 
@@ -67,7 +67,7 @@ documentation audit finished on 2026-11-27; the commits after that push stay loc
 and module config without `env()` defaults (`dfd936cad`). The backend wasn't deployed. Before it is, compare the
 server's `.env` keys (names only) with the changed config files and run the task executor's
 [security review](../../.claude/skills/monorepo-task-executor/references/security-review.md) on `dfd936cad`, which
-touches the sign-in rate limit and Sanctum settings.
+touches the sign-in rate limit and Sanctum settings. Also confirm that dev's `CACHE_STORE` is a shared store (BG-28); one-time codes pending at that deploy stop working.
 
 ## Board
 
@@ -75,7 +75,7 @@ touches the sign-in rate limit and Sanctum settings.
 |---|---|---|---|
 | [0](wave-0.md) | Release and discover | RR-1, RR-2, RR-7 | done 2026-11-26 (leftovers moved to Wave 6) |
 | [1](wave-1.md) | Realtime | BG-45, BG-46, BG-48, BG-51, BG-52 (logged) | released; W1.4 open |
-| [2](wave-2.md) | Sign-in and exposure | BG-28, 29, 30, 16, 4, 49, 50 | todo |
+| [2](wave-2.md) | Sign-in and exposure | BG-28, 29, 30, 16, 4, 49, 50 | doing |
 | [3](wave-3.md) | Data correctness | BG-27, 31 to 35, 18, BD-10, TS-8 | todo |
 | [4](wave-4.md) | Booking experience | BG-19, 20, 21, 36, 12 | todo |
 | [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38, 53 | todo (BG-13 closed; BG-53 done early, not deployed) |

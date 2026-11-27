@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Client\Enums\ClientStatusEnum;
 use Modules\Client\Models\ClientModel;
+use Modules\Client\Services\ClientEmailVerificationCodes;
 
 it('rejects disabled clients before issuing tokens', function (): void {
     $client = ClientModel::factory()->create(['status' => ClientStatusEnum::Disabled]);
@@ -48,7 +48,7 @@ it('issues a verification-only login token to pending clients', function (): voi
 it('activates a pending client after email verification', function (): void {
     $client = ClientModel::factory()->create(['status' => ClientStatusEnum::Pending, 'email_verified_at' => null]);
     $token = $client->createToken('verify', ['email-verification'])->plainTextToken;
-    Cache::put("email_verify_{$client->id}", '123456', now()->addMinutes(10));
+    app(ClientEmailVerificationCodes::class)->issue((string) $client->id, '123456');
 
     $this->withToken($token)->postJson('/api/v1/client/email/verify', ['code' => '123456'])->assertOk();
 

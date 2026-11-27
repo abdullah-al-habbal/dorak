@@ -37,7 +37,7 @@ Paths are relative to `backend/modules/` unless they start with `frontend/`, `ba
 | 5 | The same client can hold overlapping bookings with different barbers: `client_id` is in no overlap query. Decided 2026-11-26: not allowed (BD-10), not implemented. | Major | Confirmed | [02](02-overlap-guards.md) |
 | 6 | No idempotency key on any write endpoint (booking create, walk-in, subscription assign, payouts, uploads, OTP send). A retry after a lost response returns 409 `double_booking`, not the original booking. | Major | Confirmed at audit time; **fixed for booking create** in `dda9ac13c` (header made required in `af8cf0565`); all other endpoints still open (see [03](03-idempotency-and-uniqueness.md)) | [03](03-idempotency-and-uniqueness.md) |
 | 7 | Missing uniqueness: `clients.phone`, one live subscription per brand, payouts, barber affiliations, saved filters, bans. | Major | Reported | [03](03-idempotency-and-uniqueness.md) |
-| 8 | Password-reset codes (client and staff) and the client email-verify code are stored in plaintext in the cache; the email code is compared with `!==`. Verify-and-consume is not atomic. | Minor | Reported | [04](04-hashing-and-tokens.md) |
+| 8 | Password-reset codes (client and staff) and the client email-verify code were stored in plaintext in the cache, the email code was compared with `!==`, and verify-and-consume was not atomic. **Fixed** (BG-28, `Core/Services/OneTimeCodes`). | Minor | Reproduced and fixed | [04](04-hashing-and-tokens.md) |
 | 9 | Slot generation runs one query set per 15-minute candidate: **measured 296 queries (chair only) and 488 (chair and barber)** on an empty branch, behind an IP-keyed throttle (60 per minute). BG-19. | Major | Confirmed (measured) | [05](05-search-and-availability.md) |
 | 10 | At audit time no client sent an idempotency key (`client_app` has sent one for booking create since `dda9ac13c`); the dashboard proxy would still drop the header.  Mobile retries PATCH on 5xx and 429. Conflict, 429 and 503 messages are thin, and nothing reloads slots after a 409. | Major | Reported | [06](06-client-sync-and-ux.md) |
 
@@ -46,7 +46,7 @@ Paths are relative to `backend/modules/` unless they start with `frontend/`, `ba
 1. [Lock order and deadlocks](01-lock-order-and-deadlocks.md): every lock in create, reschedule, confirm and cancel, the inversions, the retry gap, the `offered_services` bottleneck.
 2. [Overlap guards](02-overlap-guards.md): what the database enforces, what only code enforces, the same-client gap, and the options for a real backstop.
 3. [Idempotency and uniqueness](03-idempotency-and-uniqueness.md): endpoint-by-endpoint table, missing unique constraints, the proposed design.
-4. [Hashing and tokens](04-hashing-and-tokens.md): what is hashed, what is not, atomic verify-and-consume.
+4. [Hashing and tokens](04-hashing-and-tokens.md): what is hashed, what is not, and the one-time code rules.
 5. [Search and availability](05-search-and-availability.md): slot cost, throttles, caching and invalidation.
 6. [Client sync and UX](06-client-sync-and-ux.md): dashboard and Flutter behaviour, error mapping, double-submit, retry policy, EN and AR gaps.
 7. [Test coverage](07-test-coverage.md): what the existing concurrency suite proves and the cases still missing.

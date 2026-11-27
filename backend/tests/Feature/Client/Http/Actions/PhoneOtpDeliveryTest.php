@@ -7,6 +7,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Modules\Client\Models\ClientModel;
+use Modules\Client\Services\ClientPhoneOtpCodes;
 
 function genericHttpDriver(): void
 {
@@ -89,7 +90,7 @@ describe('phone OTP through the generic http driver', function (): void {
     it('invalidates a previously valid pending code when a resend fails', function (): void {
         genericHttpDriver();
         $client = ClientModel::factory()->create();
-        Cache::put("phone_otp_{$client->id}", ['phone' => '+963911222333', 'code_hash' => bcrypt('123456')], now()->addMinutes(10));
+        app(ClientPhoneOtpCodes::class)->issue((string) $client->id, '+963911222333', '123456');
         Http::fake(['gateway.test/*' => Http::response('', 502)]);
 
         $this->withToken(deliveryToken($client))

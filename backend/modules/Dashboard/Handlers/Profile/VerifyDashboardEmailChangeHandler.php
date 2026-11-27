@@ -23,7 +23,7 @@ final class VerifyDashboardEmailChangeHandler
     public function handle(AdminModel|BranchModel|BarberModel|ClientModel $model, DashboardActor $actor, VerifyDashboardEmailChangeCommand $command): bool
     {
         return DB::transaction(function () use ($model, $actor, $command): bool {
-            $change = $this->resolver->find($actor);
+            $change = $this->resolver->findForUpdate($actor);
             if ($change === null || $change->expires_at->isPast() || $change->attempts_count >= app(SettingsService::class)->int(SettingKey::DashboardEmailChangeMaxAttempts)) {
                 return false;
             }

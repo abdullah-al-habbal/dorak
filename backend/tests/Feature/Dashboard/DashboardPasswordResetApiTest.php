@@ -241,7 +241,7 @@ describe('Dashboard password recovery', function (): void {
         passwordResetSubmit($this, DashboardActorTypeEnum::Branch, 'both@example.test', passwordResetRequestToken($this, DashboardActorTypeEnum::Branch, 'both@example.test'))->assertOk();
         passwordResetSubmit($this, DashboardActorTypeEnum::Owner, 'owner-both@example.test', Password::broker('clients')->createToken($owner))->assertOk();
 
-        expect(app(StaffPasswordResetCodes::class)->verify(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BRANCH, (string) $branch->id, '123456'))->toBeFalse()
+        expect(app(StaffPasswordResetCodes::class)->redeem(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BRANCH, (string) $branch->id, '123456'))->toBeFalse()
             ->and(app(PasswordResetCodeVerifier::class)->verify((string) $owner->id, '654321'))->toBeFalse();
     });
 

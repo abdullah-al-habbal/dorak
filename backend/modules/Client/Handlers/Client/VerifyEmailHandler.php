@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Client\Handlers\Client;
 
-use Illuminate\Support\Facades\Cache;
 use Modules\Client\CQRS\Command\Client\VerifyEmailCommand;
 use Modules\Client\Eloquent\Resolvers\Client\VerifyEmailEloquentResolver;
+use Modules\Client\Services\ClientEmailVerificationCodes;
 use Modules\Client\ValuesObjects\VerifyEmailResult;
-use Modules\Settings\Enums\SettingKey;
-use Modules\Settings\Services\SettingsService;
 
 final class VerifyEmailHandler
 {
     public function __construct(
         private readonly VerifyEmailEloquentResolver $resolver,
+        private readonly ClientEmailVerificationCodes $codes,
     ) {}
 
     public function handle(VerifyEmailCommand $command): VerifyEmailResult
@@ -25,36 +24,12 @@ final class VerifyEmailHandler
             return VerifyEmailResult::alreadyVerified();
         }
 
-        $cached = Cache::get("email_verify_{$client->id}");
-
-        if ($cached !== $command->code) {
-            $this->registerFailedAttempt($client->id);
-
+        if (! $this->codes->redeem((string) $client->id, $command->code)) {
             return VerifyEmailResult::invalidCode();
         }
-
-        Cache::forget("email_verify_{$client->id}");
-        Cache::forget("email_verify_attempts_{$client->id}");
 
         $this->resolver->markAsVerified($client);
 
         return VerifyEmailResult::success();
-    }
-
-    private function registerFailedAttempt(string $clientId): void
-    {
-        $key = "email_verify_attempts_{$clientId}";
-
-        $attempts = Cache::increment($key, 1);
-
-        if ($attempts === false) {
-            Cache::add($key, 1, now()->addMinutes(10));
-
-            $attempts = 1;
-        }
-
-        if ($attempts >= app(SettingsService::class)->int(SettingKey::ClientEmailVerificationMaxAttempts)) {
-            Cache::forget("email_verify_{$clientId}");
-        }
     }
 }

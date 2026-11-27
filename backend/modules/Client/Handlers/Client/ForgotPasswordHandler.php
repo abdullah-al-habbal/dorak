@@ -11,6 +11,7 @@ use Modules\Client\Mail\SendPasswordResetCode;
 use Modules\Client\Repositories\ForgotPasswordEloquentResolver;
 use Modules\Client\Services\PasswordResetCodeVerifier;
 use Modules\Client\ValuesObjects\ForgotPasswordResult;
+use Modules\Core\Exceptions\OneTimeCodeUnavailableException;
 
 final class ForgotPasswordHandler
 {
@@ -40,7 +41,14 @@ final class ForgotPasswordHandler
             ]);
         }
 
-        $this->codes->issue((string) $client->id, $code);
+        try {
+            $this->codes->issue((string) $client->id, $code);
+        } catch (OneTimeCodeUnavailableException $exception) {
+            // Same answer as for an unknown email: an error only real accounts can get would name them.
+            report($exception);
+
+            return ForgotPasswordResult::success();
+        }
 
         Mail::to($client->email)->send(new SendPasswordResetCode($code));
 

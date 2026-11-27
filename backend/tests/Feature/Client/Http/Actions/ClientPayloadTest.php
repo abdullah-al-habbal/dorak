@@ -92,7 +92,7 @@ describe('PATCH /api/v1/client/profile email change', function (): void {
         $this->app['auth']->forgetGuards();
 
         $this->withToken($token)->postJson('/api/v1/client/email/verify', [
-            'code' => Cache::get("email_verify_{$client->id}"),
+            'code' => Mail::sent(SendEmailVerificationCode::class)->last()->code,
         ])->assertOk();
 
         expect($client->fresh()->email_verified_at)->not->toBeNull();

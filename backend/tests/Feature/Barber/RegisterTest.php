@@ -11,6 +11,7 @@ use Modules\Barber\Enums\BarberStatusEnum;
 use Modules\Barber\Mail\BarberEmailVerificationCode;
 use Modules\Barber\Models\BarberModel;
 use Modules\Barber\Services\BarberReviewService;
+use Modules\Core\Services\OneTimeCodes;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
 
@@ -38,7 +39,7 @@ function registerBarber(array $overrides = []): array
 
 function seedBarberEmailCode(BarberModel $barber, string $code = '123456'): void
 {
-    Cache::put("barber_email_verify_{$barber->id}", Hash::make($code), now()->addMinutes(10));
+    app(OneTimeCodes::class)->issue("barber_email_verify_{$barber->id}", $code, now()->addMinutes(10));
 }
 
 describe('POST /api/v1/barber/register', function (): void {
@@ -211,7 +212,7 @@ describe('barber email verification', function (): void {
         Mail::assertSent(BarberEmailVerificationCode::class, function (BarberEmailVerificationCode $mail) use ($barber): bool {
             $cached = Cache::get("barber_email_verify_{$barber->id}");
 
-            return $cached !== $mail->code && Hash::check($mail->code, $cached);
+            return ! str_contains(serialize($cached), $mail->code) && Hash::check($mail->code, $cached['hash']);
         });
     });
 

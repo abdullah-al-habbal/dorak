@@ -53,7 +53,7 @@ describe('Dashboard password change sessions', function (): void {
             ->and($resolver->rotate($other['refresh']))->toBeNull()
             ->and($resolver->rotate($current['refresh']))->not->toBeNull()
             ->and(Password::broker('branches')->tokenExists($branch, $link))->toBeFalse()
-            ->and(app(StaffPasswordResetCodes::class)->verify(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BRANCH, (string) $branch->id, '123456'))->toBeFalse();
+            ->and(app(StaffPasswordResetCodes::class)->redeem(StaffPasswordResetConstants::STAFF_PASSWORD_RESET_SCOPE_BRANCH, (string) $branch->id, '123456'))->toBeFalse();
         $this->app['auth']->forgetGuards();
         $this->withToken($current['token'])->withHeader('X-Dashboard-Session', $current['claim'])
             ->getJson('/api/v1/dashboard/profile')->assertOk();

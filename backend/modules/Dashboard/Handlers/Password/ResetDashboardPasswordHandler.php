@@ -33,9 +33,13 @@ final class ResetDashboardPasswordHandler
     {
         $account = $this->accounts->find($command->actorType, $command->email);
 
-        if ($account === null) {
+        // Checked before the app code is burned, so a wrong link can't burn it; checked again under the lock below.
+        if ($account === null || ! $this->tokenIsValid($command, $account)) {
             return false;
         }
+
+        // Burned first and outside the transaction (BG-28): if it fails, the password and the link stay as they were.
+        $this->mobileCodes->clear($command->actorType, (string) $account->getKey());
 
         return DB::transaction(fn (): bool => $this->reset($command, $account));
     }
@@ -43,16 +47,19 @@ final class ResetDashboardPasswordHandler
     private function reset(ResetDashboardPasswordCommand $command, AdminModel|BranchModel|BarberModel|ClientModel $account): bool
     {
         $account->newQuery()->whereKey($account->getKey())->lockForUpdate()->first();
-        $broker = $this->brokers->broker($command->actorType->passwordBroker()->value);
 
-        if (! $broker->tokenExists($account, $command->token)) {
+        if (! $this->tokenIsValid($command, $account)) {
             return false;
         }
 
         $account->forceFill(['password' => $command->password])->save();
         $this->credentials->revokeAll($command->actorType, $account);
-        $this->mobileCodes->clear($command->actorType, (string) $account->getKey());
 
         return true;
+    }
+
+    private function tokenIsValid(ResetDashboardPasswordCommand $command, AdminModel|BranchModel|BarberModel|ClientModel $account): bool
+    {
+        return $this->brokers->broker($command->actorType->passwordBroker()->value)->tokenExists($account, $command->token);
     }
 }

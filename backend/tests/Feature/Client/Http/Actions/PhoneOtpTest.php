@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Modules\Client\Models\ClientModel;
+use Modules\Client\Services\ClientPhoneOtpCodes;
 use Modules\Core\Contracts\SmsSender;
 
 final class RecordingSmsSender implements SmsSender
@@ -33,7 +34,7 @@ function phoneOtpToken(ClientModel $client): string
 
 function seedPhoneOtp(ClientModel $client, string $phone, string $code = '123456'): void
 {
-    Cache::put("phone_otp_{$client->id}", ['phone' => $phone, 'code_hash' => Hash::make($code)], now()->addMinutes(10));
+    app(ClientPhoneOtpCodes::class)->issue((string) $client->id, $phone, $code);
 }
 
 describe('POST /api/v1/client/phone/otp', function (): void {
@@ -50,9 +51,9 @@ describe('POST /api/v1/client/phone/otp', function (): void {
         expect($sender->sent[0]['phone'])->toBe('+963911222333');
         preg_match('/\d{6}/', $sender->sent[0]['message'], $match);
         $cached = Cache::get("phone_otp_{$client->id}");
-        expect($cached['phone'])->toBe('+963911222333')
-            ->and($cached)->not->toContain($match[0])
-            ->and(Hash::check($match[0], $cached['code_hash']))->toBeTrue();
+        expect($cached['context']['phone'])->toBe('+963911222333')
+            ->and(serialize($cached))->not->toContain($match[0])
+            ->and(Hash::check($match[0], $cached['hash']))->toBeTrue();
         expect($client->fresh()->phone)->toBeNull();
     });
 
@@ -161,6 +162,27 @@ describe('POST /api/v1/client/phone/verify', function (): void {
             ->assertStatus(422);
 
         expect($client->fresh()->phone_verified_at)->toBeNull();
+    });
+});
+
+describe('A phone code is single use (BG-28)', function (): void {
+    it('uses the code up when the number turns out to be taken, even if the number is freed again', function (): void {
+        $client = ClientModel::factory()->create();
+        seedPhoneOtp($client, '+963911222333');
+        $holder = ClientModel::factory()->phoneVerified('+963911222333')->create();
+        $token = phoneOtpToken($client);
+
+        $this->withToken($token)->postJson('/api/v1/client/phone/verify', ['code' => '123456'])
+            ->assertStatus(422)
+            ->assertJsonPath('message', __('core::messages.phone_already_in_use'));
+        $holder->forceFill(['phone' => null, 'phone_verified_at' => null])->save();
+
+        $this->withToken($token)->postJson('/api/v1/client/phone/verify', ['code' => '123456'])
+            ->assertStatus(422)
+            ->assertJsonPath('message', __('core::messages.invalid_phone_otp'));
+
+        expect($client->fresh()->phone_verified_at)->toBeNull()
+            ->and(Cache::get("phone_otp_{$client->id}"))->toBeNull();
     });
 });
 

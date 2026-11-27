@@ -4,65 +4,59 @@ declare(strict_types=1);
 
 namespace Modules\Client\Services;
 
-use Illuminate\Support\Facades\Cache;
+use Modules\Core\Services\OneTimeCodes;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
 
 final class PasswordResetCodeVerifier
 {
+    public function __construct(
+        private readonly OneTimeCodes $codes,
+        private readonly SettingsService $settings,
+    ) {}
+
     public function issue(string $clientId, string $code): void
     {
-        Cache::put($this->codeKey($clientId), $code, now()->addMinutes(app(SettingsService::class)->int(SettingKey::ClientPasswordResetTtlMinutes)));
-        Cache::forget($this->attemptsKey($clientId));
+        $this->codes->issue($this->codeKey($clientId), $code, now()->addMinutes($this->settings->int(SettingKey::ClientPasswordResetTtlMinutes)));
     }
 
+    /** Whether the code is right, without consuming it (the app's "verify the code" step). */
     public function verify(?string $clientId, string $code): bool
     {
         if ($clientId === null) {
+            $this->codes->refuse($code);
+
             return false;
         }
 
-        $cached = Cache::get($this->codeKey($clientId));
-
-        if (is_string($cached) && hash_equals($cached, $code)) {
-            return true;
-        }
-
-        $this->registerFailedAttempt($clientId);
-
-        return false;
+        return $this->codes->check($this->codeKey($clientId), $code, $this->maxAttempts());
     }
 
+    /** Whether the code is right, consuming it: the step that changes the password. */
+    public function redeem(?string $clientId, string $code): bool
+    {
+        if ($clientId === null) {
+            $this->codes->refuse($code);
+
+            return false;
+        }
+
+        return $this->codes->redeem($this->codeKey($clientId), $code, $this->maxAttempts()) !== null;
+    }
+
+    /** Burns a pending code, if any. */
     public function consume(string $clientId): void
     {
-        Cache::forget($this->codeKey($clientId));
-        Cache::forget($this->attemptsKey($clientId));
+        $this->codes->forget($this->codeKey($clientId));
     }
 
-    private function registerFailedAttempt(string $clientId): void
+    private function maxAttempts(): int
     {
-        $key = $this->attemptsKey($clientId);
-
-        $attempts = Cache::increment($key, 1);
-
-        if ($attempts === false) {
-            Cache::add($key, 1, now()->addMinutes(app(SettingsService::class)->int(SettingKey::ClientPasswordResetTtlMinutes)));
-
-            $attempts = 1;
-        }
-
-        if ($attempts >= app(SettingsService::class)->int(SettingKey::ClientPasswordResetMaxAttempts)) {
-            $this->consume($clientId);
-        }
+        return $this->settings->int(SettingKey::ClientPasswordResetMaxAttempts);
     }
 
     private function codeKey(string $clientId): string
     {
         return "password_reset_{$clientId}";
-    }
-
-    private function attemptsKey(string $clientId): string
-    {
-        return "password_reset_attempts_{$clientId}";
     }
 }

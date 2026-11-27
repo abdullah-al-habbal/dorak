@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Core\Services;
 
-use Illuminate\Support\Facades\Cache;
 use Modules\Settings\Enums\SettingKey;
 use Modules\Settings\Services\SettingsService;
 
@@ -16,60 +15,35 @@ use Modules\Settings\Services\SettingsService;
 final class StaffPasswordResetCodes
 {
     public function __construct(
+        private readonly OneTimeCodes $codes,
         private readonly SettingsService $settings,
     ) {}
 
     public function issue(string $scope, string $accountId, string $code): void
     {
-        Cache::put($this->codeKey($scope, $accountId), $code, now()->addMinutes($this->settings->int(SettingKey::ClientPasswordResetTtlMinutes)));
-        Cache::forget($this->attemptsKey($scope, $accountId));
+        $this->codes->issue($this->codeKey($scope, $accountId), $code, now()->addMinutes($this->settings->int(SettingKey::ClientPasswordResetTtlMinutes)));
     }
 
-    public function verify(string $scope, ?string $accountId, string $code): bool
+    /** Whether the code is right, consuming it. A wrong guess is counted. */
+    public function redeem(string $scope, ?string $accountId, string $code): bool
     {
         if ($accountId === null) {
+            $this->codes->refuse($code);
+
             return false;
         }
 
-        $cached = Cache::get($this->codeKey($scope, $accountId));
-
-        if (is_string($cached) && hash_equals($cached, $code)) {
-            return true;
-        }
-
-        $this->registerFailedAttempt($scope, $accountId);
-
-        return false;
+        return $this->codes->redeem($this->codeKey($scope, $accountId), $code, $this->settings->int(SettingKey::ClientPasswordResetMaxAttempts)) !== null;
     }
 
+    /** Burns a pending code, if any. */
     public function consume(string $scope, string $accountId): void
     {
-        Cache::forget($this->codeKey($scope, $accountId));
-        Cache::forget($this->attemptsKey($scope, $accountId));
-    }
-
-    private function registerFailedAttempt(string $scope, string $accountId): void
-    {
-        $key = $this->attemptsKey($scope, $accountId);
-        $attempts = Cache::increment($key, 1);
-
-        if ($attempts === false) {
-            Cache::add($key, 1, now()->addMinutes($this->settings->int(SettingKey::ClientPasswordResetTtlMinutes)));
-            $attempts = 1;
-        }
-
-        if ($attempts >= $this->settings->int(SettingKey::ClientPasswordResetMaxAttempts)) {
-            $this->consume($scope, $accountId);
-        }
+        $this->codes->forget($this->codeKey($scope, $accountId));
     }
 
     private function codeKey(string $scope, string $accountId): string
     {
         return "staff_password_reset_{$scope}_{$accountId}";
-    }
-
-    private function attemptsKey(string $scope, string $accountId): string
-    {
-        return "staff_password_reset_attempts_{$scope}_{$accountId}";
     }
 }

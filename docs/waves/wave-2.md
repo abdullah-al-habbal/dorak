@@ -8,7 +8,7 @@ codeanchors:
 
 Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlog/index.md)
 
-**State:** todo.
+**State:** doing.
 
 **Goal:** One-time codes and tokens cannot be reused, and public endpoints expose and accept only what they should.
 
@@ -16,7 +16,7 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 
 | Task | Item | What to do | Done when | Status |
 |---|---|---|---|---|
-| W2.1 | BG-28 | One shared service that consumes a code once; hash stored codes ([file 04](../booking-concurrency/04-hashing-and-tokens.md)) | parallel test: one success; wrong guesses stay within the limit | todo |
+| W2.1 | BG-28 | One shared service that consumes a code once; hash stored codes ([file 04](../booking-concurrency/04-hashing-and-tokens.md)) | parallel test: one success; wrong guesses stay within the limit | done |
 | W2.2 | BG-29 | Refresh proceeds only when it deleted exactly one token (Client, Barber, Branch `RefreshTokenHandler.php`) | parallel test: one 200, one 401, one live token | todo |
 | W2.3 | BG-30 | `UnverifiedSignupPurger` rechecks under the client lock | parallel test: a verified client survives | todo |
 | W2.4 | BG-16 | Throttle unauthenticated GET routes | a 429 test per named limiter | todo |
@@ -29,8 +29,10 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 
 - Shared patterns: [fix order](../booking-concurrency/10-fix-order.md) (conventions 4 and 5).
 - Parallel tests go in `backend/tests/Concurrency/` (TS-8).
-- BG-28 needs a shared cache store; check what dev uses without reading secret values. A schema change for hashed codes may need a dev reset.
+- BG-28 needs a shared cache store. What dev sets `CACHE_STORE` to isn't verified (2026-11-28); check the value of that one key before the next backend deploy. No schema change, so no reset; codes pending at the deploy stop working.
 
 ## Log
 
-No entries yet.
+| Date | Commit | Action and evidence |
+|---|---|---|
+| 2026-11-28 | BG-28 `fix(auth)` commit | W2.1 done. Parallel tests for seven flows: 14 passed; with the cache lock and the email-change row lock removed, all 14 failed (extra requests got 200). New tests for failed writes and the owner verify timing path failed before their fix. Timing itself wasn't measured |

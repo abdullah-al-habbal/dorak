@@ -53,7 +53,7 @@ Beyond the booking locks above, the same rules apply to every other write that t
 - Lock parent before child, and rows of one table in ascending id.
 - A set invariant ("one default", "never zero active", "one live subscription") locks the owning row (or every row of the table in id order) before it checks.
 - A unique index is the guarantee; catch `UniqueConstraintViolationException` and re-read instead of letting a racy `firstOrCreate` answer 500.
-- One-time codes: count the attempt first, compare in constant time, consume once (`Cache::pull`). Token rotation proceeds only if its delete removed one row.
+- One-time codes go through `Core\Services\OneTimeCodes` (a code kept in a database row is checked under `lockForUpdate`): consume once, count wrong guesses under the same lock, and stop the dependent work when `issue()` or `forget()` throws. Don't take a code's cache lock inside a database transaction. Token rotation proceeds only if its delete removed one row.
 - A change to this area needs a process-based test in `tests/Concurrency/` that asserts the end state (see the testing strategy); a sequential Pest test does not prove a race.
 
 ## Code conventions
