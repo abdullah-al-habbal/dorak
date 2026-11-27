@@ -51,3 +51,7 @@ Paginated collections all return the same envelope
 (`meta.pagination.{total,count,per_page,current_page,total_pages}`) and are
 consumed through `ApiClient.getPaginated` → `PaginatedData<T>` → `Paged<T>`.
 See `docs/state-management/pagination.md`.
+
+## Branch times (BG-55, BG-56)
+
+- `core` `BranchClock`: slot calls send the picked calendar date; slots, bookings and visits are shown on the branch clock (`utc_offset_minutes` from the backend, the device zone without it); book-again sends the picked time as `starts_at_local`. Mobile CI also runs `slot_date_time_zone_test.dart` with `TZ=Asia/Damascus`.

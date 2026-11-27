@@ -42,6 +42,9 @@ together: [core architecture](../../references/root/core-architecture.md). Consu
 
 ## Behaviour to know
 
+- Appointment times are shown on the branch clock: format the DTO's `…OnBranchClock` getter, never `toLocal()`.
+  Those values are for formatting only; send and compare the UTC instants. A picked date or time that means the
+  branch's clock is sent with `BranchClock.calendarDate` or `wallClockMinute`.
 - Without a `tokenProvider`, `ApiClient` installs no auth interceptor and requests go out unauthenticated without
   an error.
 - The feed cache stores the wire payload, not parsed DTOs, because response DTOs have no `toJson`;
