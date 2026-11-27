@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-492 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+490 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 311 files = 182 logical documents |
+| Outside `.claude/` | 309 files = 182 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -28,7 +28,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
-| C4 backend and shared reference | 28 | 24 |
+| C4 backend and shared reference | 28 | 28 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
 
@@ -170,6 +170,8 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `backend/docs/11-backend-architecture-part-8.md` | merge, applied: module layout kept in the main file; the unbuilt PostgreSQL and pgvector design and the open convention questions of an early draft dropped | C4 backend architecture |
 | `backend/docs/11-backend-architecture-part-9.md` | merge, applied: module layout kept in the main file; the unbuilt PostgreSQL and pgvector design and the open convention questions of an early draft dropped | C4 backend architecture |
 | `backend/docs/11-backend-architecture-group-1.md` | delete, applied: index of the removed parts | C4 backend architecture |
+| `backend/docs/readme-part-2.md` | merge, applied: into the folder index, which now separates product intent from technical reference | C4 backend index |
+| `backend/docs/readme-part-3.md` | merge, applied: into the folder index, which now separates product intent from technical reference | C4 backend index |
 
 ## Findings so far
 
@@ -179,7 +181,7 @@ These are examples from spot checks, not the result of a full review.
 |---|---|---|
 | F1 | The push document says the Phase 2 backend isn't deployed to dev, and `README.md` calls Phase 2 local. Both are out of date. | `aa144ecbe` and `4897540c0` are ancestors of `7b3814481`, recorded as deployed in dev status Snapshot 13. Not probed live. |
 | F2 | `backend/docs/14-execution-status.md` calls `AnalyzeFacePhotoJob` an MVP stub. The code sends the stored image to an AI agent. Backlog BG-14 agrees with the code. | `AnalyzeFacePhotoJob.php`, `FaceAnalysisService.php`. Live provider setup not checked. |
-| F3 | The entity model part 7 says content came from `prd.md`; there is no `backend/docs/prd.md`. It is migration history in a reference document. | `backend/docs/06-entity-model-abstract-part-7.md`, section 6 |
+| F3 | The entity model part 7 says content came from `prd.md`; there is no `backend/docs/prd.md`. It is migration history in a reference document. | `backend/docs/06-entity-model-abstract-part-7.md`, section 6 **Fixed 2026-11-27.** |
 | F4 | Root `AGENTS.md` and `CLAUDE.md` overlap but each has its own content; nested pairs aren't mirrors. | [Policy, section 5](policy.md) |
 | F5 | Two audits in `docs/planning/` have back-links that loop between a hub and part 2. The existing-frontend audit also holds all 6 unresolved code anchors (of 638), which point at the removed legacy dashboard. | back-link and anchor scripts, 2026-11-27 |
 | F6 | Outside Markdown: two workflows name `docs/16-deployment-operations.md`, which doesn't exist; the document is under `backend/docs/`. `backend/scripts/check_migrations.php` also names it; its path wasn't checked. | `backend-ci.yml:73`, `deploy.yml:223` |
@@ -284,18 +286,18 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
 | `backend/README.md` | 1 | 19 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix + merge parts, applied |
-| `backend/docs/04-house-rules.md` | 3 | 184 | Decisions | owner, engineers | 1 / 1 / 1 | medium | unreviewed |
-| `backend/docs/05-domain-glossary.md` | 2 | 98 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `backend/docs/06-entity-model-abstract.md` | 13 | 661 | Reference | engineers, agents | 1 / 1 / 0 | high | fix (F3) |
+| `backend/docs/04-house-rules.md` | 3 | 184 | Decisions | owner, engineers | 1 / 1 / 1 | medium | keep: product intent, not compared rule by rule with the code; known differences are in the backlog |
+| `backend/docs/05-domain-glossary.md` | 2 | 98 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep: product vocabulary; terms not compared with the code |
+| `backend/docs/06-entity-model-abstract.md` | 13 | 661 | Reference | engineers, agents | 1 / 1 / 0 | high | fix, applied (F3): notes citing a file that never existed here removed; the rest is intent, not compared with the schema |
 | `backend/docs/09-c4-context.md` | 2 | 88 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep as product intent: actors and external services; the later services are named from 10 |
 | `backend/docs/10-c4-containers.md` | 3 | 152 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: one client app became three, a dead skill path, and later services noted |
 | `backend/docs/11-backend-architecture.md` | 1 | 56 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: rewritten from the module folders and base provider; convention differences are BD-16 |
 | `backend/docs/13-technical-concepts.md` | 20 | 1051 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: false CORS, response envelope, token and mobile layout claims corrected and the authoring status list removed; the patterns themselves are intent, and the code samples weren't checked |
 | `backend/docs/16-deployment-operations.md` | 1 | 96 | Operations | operators, agents | 0 / 1 / 4 | high | fix, applied: trigger, branch, cache order and migration counts were out of date, and its never-edit rule ignored the pre-release migration decision; checked against deploy.yml and the guard |
 | `backend/docs/17-sms-delivery.md` | 1 | 51 | Reference | engineers, agents | 0 / 0 / 0 | medium | fix, applied: the production boot guard was missing |
-| `backend/docs/README.md` | 3 | 145 | Reference | engineers, agents | 1 / 2 / 0 | medium | unreviewed |
+| `backend/docs/README.md` | 1 | 104 | Reference | engineers, agents | 1 / 2 / 0 | medium | fix, applied: it still said no code or schema existed |
 | `backend/docs/api-response-standard.md` | 1 | 28 | Reference | engineers, agents | 0 / 0 / 0 | medium | keep: every named class and the architecture test exist |
-| `backend/docs/feature-index.md` | 8 | 651 | Reference | engineers, agents | 3 / 1 / 0 | medium | unreviewed |
+| `backend/docs/feature-index.md` | 8 | 651 | Reference | engineers, agents | 3 / 1 / 0 | medium | keep, with fixes: 206 route mentions compared with route:list and the stale ones corrected; the rest of each entry wasn't checked |
 | `backend/modules/Website/docs/04-house-rules.md` | 1 | 27 | Decisions | owner, engineers | 1 / 1 / 0 | medium | keep as product intent: not rewritten to match code; each rule not checked against the site |
 | `backend/modules/Website/docs/05-domain-glossary.md` | 1 | 16 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep as product intent: vocabulary only |
 | `backend/modules/Website/docs/06-content-and-ui-model-abstract.md` | 1 | 43 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep as product intent: not checked against the marketing models |

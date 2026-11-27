@@ -15,7 +15,8 @@ codeanchors:
 
 # Feature Index — Dorak Backend
 
-> **Append entry after adding each feature.** This is the chronological map of every feature built.
+> **Append entry after adding each feature.** This is the chronological map of what was built; an entry describes the
+> feature when it was added. The code and `php artisan route:list` decide what exists now.
 
 ### Domain-Event Notifications (Task 31)
 - Queued jobs (all `afterCommit`, ID-only scalar payloads, stable `dispatchKey`, en+ar copy): `AffiliationInvitedNotification` (`invite`), `AffiliationRespondedNotification` (`invite`), `JobApplicationReceivedNotification` (`application`), `JobApplicationStatusChangedNotification` (`application`), `ReviewRequestNotification` (`review_request`).

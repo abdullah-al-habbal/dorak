@@ -41,7 +41,7 @@ Part 3 of 3 · [04 — House Rules (The Business Laws)](04-house-rules.md) · [P
 
 ## L. Client Intelligence (the Catalog & Personalization law)
 
-> Rules migrated from `prd.md` §8. See also `02-prd.md` §12 and `06-entity-model-abstract.md` §6.
+> See also `02-prd.md` §12 and `06-entity-model-abstract.md` §6.
 
 - **CAT-1.** If a `ServiceCatalogItemModel` exists, then `OfferedServiceModel` **may** reference it via `catalog_item_id`, but is **not required** to. Free-text services remain valid.
 - **CAT-2.** If a `ServiceCatalogItemModel` is deactivated (`is_active = false`), then existing `OfferedServiceModel` references remain valid, but new references are blocked.

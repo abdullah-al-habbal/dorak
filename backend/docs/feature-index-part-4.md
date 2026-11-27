@@ -37,18 +37,17 @@ Part 4 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 - Routes in brands.php under `auth:client` middleware group
 
 ### Activation API (Admin)
-- `ActivateAction` [POST /api/v1/admin/{entity}/{id}/activate] — activate barber/branch. Auth:admin
-- `DeactivateAction` [POST /api/v1/admin/{entity}/{id}/deactivate] — deactivate barber/branch. Auth:admin
+- The generic activate and deactivate routes described here were replaced by per-resource routes under `/api/v1/dashboard/admin/` (for example `PATCH /api/v1/dashboard/admin/barbers/{barber}/activate`). Auth: dashboard admin
 
 ### Chair API
-- `ListChairsAction` [GET /api/v1/chairs] — list chairs. Auth:barber
-- `ShowChairAction` [GET /api/v1/chairs/{chair}] — single chair detail. Auth:barber
-- `UpdateChairAction` [PUT /api/v1/chairs/{chair}] — update chair. Auth:barber
+- `ListChairsAction` [GET /api/v1/chairs] — list chairs. No auth.
+- `ShowChairAction` [GET /api/v1/chairs/{chair}] — single chair detail. No auth.
+- `UpdateChairAction` [PATCH /api/v1/chairs/{chair}] — update chair. Auth: branch manager or admin
 
 ### Currency API
 - `ListCurrenciesAction` [GET /api/v1/currencies] — list currencies. No auth.
-- `ListExchangeRatesAction` [GET /api/v1/exchange-rates] — list exchange rates. Auth:admin
-- `ConvertCurrencyAction` [POST /api/v1/currency/convert] — convert amount. Auth:admin
+- `ListExchangeRatesAction` [GET /api/v1/exchange-rates] — list exchange rates. No auth, throttled.
+- `ConvertCurrencyAction` [GET /api/v1/currency/convert] — convert amount. No auth, throttled.
 
 ### Test Backfill (PRD 13 Phase 1)
 - Booking concurrency: 3 tests — different chairs same slot, same slot different chairs, race condition via direct insert

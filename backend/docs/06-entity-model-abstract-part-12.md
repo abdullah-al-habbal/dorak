@@ -10,7 +10,7 @@ Part 12 of 13 · [06 — Entity Model (Abstract)](06-entity-model-abstract.md) �
 
 ## 7. Client Intelligence Relationship Diagram
 
-> Extended from `prd.md` §7. Dashed lines indicate polymorphic relations.
+> Dashed lines indicate polymorphic relations.
 
 ```mermaid
 erDiagram
