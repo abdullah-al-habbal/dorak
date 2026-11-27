@@ -10,7 +10,7 @@ codeanchors:
 
 # Backlog: remaining tasks, issues and decisions
 
-Routes: [documentation graph](../index.md) · [feature modules plan](../feature-modules-plan.md) · [backend feature index](../../backend/docs/feature-index.md).
+Routes: [documentation graph](../index.md) · [wave tracker](../waves/index.md) (order and status of the work) · [feature modules plan](../feature-modules-plan.md) · [backend feature index](../../backend/docs/feature-index.md).
 
 The single place for what is still open: decisions, bugs, missing features, tech debt and test gaps. It replaced `docs/next-steps/`,
 `docs/audit-register/` and `docs/decisions-required.md` on 2026-11-15. Status of that work at removal: the 30 launch tasks (NS-01 to NS-30)

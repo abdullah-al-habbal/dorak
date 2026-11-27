@@ -114,6 +114,18 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [09: Write paths outside booking](../booking-concurrency/09-write-path-audit.md)
 - [10: Fix order and conventions](../booking-concurrency/10-fix-order.md)
 
+### `docs/waves/`
+
+- [Wave tracker: current position and task status](../waves/index.md)
+- [Wave runbook: commands and traps](../waves/runbook.md)
+- [Wave 0](../waves/wave-0.md)
+- [Wave 1](../waves/wave-1.md)
+- [Wave 2](../waves/wave-2.md)
+- [Wave 3](../waves/wave-3.md)
+- [Wave 4](../waves/wave-4.md)
+- [Wave 5](../waves/wave-5.md)
+- [Wave 6](../waves/wave-6.md)
+
 ### `docs/backlog/`
 
 - [Backlog: remaining tasks, issues and decisions](../backlog/index.md)

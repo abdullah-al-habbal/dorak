@@ -19,6 +19,7 @@ files in that area.
 ## Start here
 
 - Read [README.md](README.md) for the project map and local setup.
+- For the current fix programme, start at the [wave tracker](docs/waves/index.md): read it and only the active wave file, and update both as you work.
 - For planned work, read the [backlog](docs/backlog/index.md) (open decisions, bugs,
   missing features, tech debt, test gaps) and update it when an item is done or a
   decision is resolved.
