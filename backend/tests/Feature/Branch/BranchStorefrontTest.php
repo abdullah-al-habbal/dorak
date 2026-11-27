@@ -15,6 +15,14 @@ use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
+/** The date on the branch clock (Asia/Damascus) at the pinned instant below, when UTC is still on 1 December. */
+const STOREFRONT_BRANCH_TODAY = '2026-12-02';
+
+function storefrontTravelPastBranchMidnight(): void
+{
+    test()->travelTo(Carbon::parse('2026-12-01 22:30:00', 'UTC'));
+}
+
 function storefrontWeek(string $opens = '09:00', string $closes = '21:00'): array
 {
     return array_map(fn (int $weekday): array => [
@@ -55,8 +63,9 @@ describe('PATCH /api/v1/branch/profile', function (): void {
     });
 
     it('returns the hours on GET branch/profile', function (): void {
+        storefrontTravelPastBranchMidnight();
         $branch = BranchModel::factory()->create();
-        BranchOpeningHourModel::query()->create(['branch_id' => $branch->id, 'day_of_week' => now()->dayOfWeek, 'opens_time' => '10:00', 'closes_time' => '18:00']);
+        BranchOpeningHourModel::query()->create(['branch_id' => $branch->id, 'day_of_week' => Carbon::parse(STOREFRONT_BRANCH_TODAY)->dayOfWeek, 'opens_time' => '10:00', 'closes_time' => '18:00']);
 
         $this->actingAs($branch, 'branch_api')
             ->getJson('/api/v1/branch/profile')
@@ -114,17 +123,18 @@ describe('PUT /api/v1/branch/opening-hours', function (): void {
 
 describe('PUT /api/v1/branch/hours-overrides/{date}', function (): void {
     it('returns a same-day override as today_hours in explore', function (): void {
+        storefrontTravelPastBranchMidnight();
         $branch = BranchModel::factory()->create();
         $this->actingAs($branch, 'branch_api')->putJson('/api/v1/branch/opening-hours', ['hours' => storefrontWeek()])->assertOk();
 
         $this->actingAs($branch, 'branch_api')
-            ->putJson('/api/v1/branch/hours-overrides/'.now()->toDateString(), ['opens_time' => '12:00', 'closes_time' => '16:00'])
+            ->putJson('/api/v1/branch/hours-overrides/'.STOREFRONT_BRANCH_TODAY, ['opens_time' => '12:00', 'closes_time' => '16:00'])
             ->assertOk()
             ->assertJsonPath('data.today_hours.source', BranchHoursSource::Override->value);
 
         $this->getJson("/api/v1/explore/branches/{$branch->id}")
             ->assertOk()
-            ->assertJsonPath('data.today_hours.date', now()->toDateString())
+            ->assertJsonPath('data.today_hours.date', STOREFRONT_BRANCH_TODAY)
             ->assertJsonPath('data.today_hours.opens_time', '12:00')
             ->assertJsonPath('data.today_hours.closes_time', '16:00')
             ->assertJsonPath('data.today_hours.source', BranchHoursSource::Override->value)
