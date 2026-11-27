@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-562 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+545 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 381 files = 216 logical documents |
+| Outside `.claude/` | 364 files = 205 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -27,7 +27,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C0 pilot: push notifications | 2 | 2 |
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
-| C3 finished or running programmes | 40 | 1 |
+| C3 finished or running programmes | 29 | 0 |
 | C4 backend and shared reference | 32 | 2 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
@@ -101,6 +101,23 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `docs/frontend-arch-review/10-performance-and-bundle.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
 | `docs/frontend-arch-review/11-resolution-status.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
 | `docs/frontend-arch-review/index.md` | delete, applied: all 13 findings closed (spot-checked in code); the dialog-loading and dictionary reasons moved to `src/README.md` | C3 architecture review |
+| `docs/mobile-audit-g10-g11/01-dto-is-active-bug.md` | delete, applied: findings fixed in code or tracked in the backlog (TD-1, 2, 6, FT-2); the scope decision is ADR 0002 | C3 mobile gap audit |
+| `docs/mobile-audit-g10-g11/02-token-scope-mismatch.md` | delete, applied: findings fixed in code or tracked in the backlog (TD-1, 2, 6, FT-2); the scope decision is ADR 0002 | C3 mobile gap audit |
+| `docs/mobile-audit-g10-g11/03-inbox-scope-definition.md` | delete, applied: findings fixed in code or tracked in the backlog (TD-1, 2, 6, FT-2); the scope decision is ADR 0002 | C3 mobile gap audit |
+| `docs/mobile-audit-g10-g11/04-navigation-shell-gap.md` | delete, applied: findings fixed in code or tracked in the backlog (TD-1, 2, 6, FT-2); the scope decision is ADR 0002 | C3 mobile gap audit |
+| `docs/mobile-audit-g10-g11/05-missing-backend-routes.md` | delete, applied: findings fixed in code or tracked in the backlog (TD-1, 2, 6, FT-2); the scope decision is ADR 0002 | C3 mobile gap audit |
+| `docs/mobile-audit-g10-g11/06-mvp-scope-decisions.md` | delete, applied: findings fixed in code or tracked in the backlog (TD-1, 2, 6, FT-2); the scope decision is ADR 0002 | C3 mobile gap audit |
+| `docs/mobile-audit-g10-g11/index.md` | delete, applied: findings fixed in code or tracked in the backlog (TD-1, 2, 6, FT-2); the scope decision is ADR 0002 | C3 mobile gap audit |
+| `docs/planning/existing-frontend-audit-part-2.md` | delete, applied: inventory of the removed first dashboard (F5); ADR 0003 and 0004 hold the decisions | C3 planning |
+| `docs/planning/existing-frontend-audit-part-3.md` | delete, applied: inventory of the removed first dashboard (F5); ADR 0003 and 0004 hold the decisions | C3 planning |
+| `docs/planning/existing-frontend-audit-part-4.md` | delete, applied: inventory of the removed first dashboard (F5); ADR 0003 and 0004 hold the decisions | C3 planning |
+| `docs/planning/existing-frontend-audit.md` | delete, applied: inventory of the removed first dashboard (F5); ADR 0003 and 0004 hold the decisions | C3 planning |
+| `docs/planning/product-audit-part-2.md` | delete, applied: findings G1 to G17 are resolved and the workflow matrix predates the Filament removal | C3 planning |
+| `docs/planning/product-audit-part-3.md` | delete, applied: findings G1 to G17 are resolved and the workflow matrix predates the Filament removal | C3 planning |
+| `docs/planning/product-audit.md` | delete, applied: findings G1 to G17 are resolved and the workflow matrix predates the Filament removal | C3 planning |
+| `docs/planning/remediation-plan-part-2.md` | extract then delete, applied: the in-person payment rule moved to the backlog; the rest is stale or in code (F18) | C3 planning |
+| `docs/planning/remediation-plan.md` | extract then delete, applied: the in-person payment rule moved to the backlog; the rest is stale or in code (F18) | C3 planning |
+| `docs/planning/dashboard-refactor-batch-3.md` | delete, applied: every step is done; the primitives are listed in the task executor's shared-primitives reference | C3 planning |
 
 ## Findings so far
 
@@ -125,6 +142,7 @@ These are examples from spot checks, not the result of a full review.
 | F15 | Open work in the backlog was already done or out of date: BG-13 (fix committed and gated), TD-4 (all 99 keys named are used), RR-2 (struck through), the TD-8 "no `version` column" claim, the TS-4 "`invitations.spec.ts` has never run" note (the full suite on `a712aca7f` includes the file; inferred from the Playwright config), the RR-7 note about uncommitted edits, and a pointer to a deleted mobile inventory in BD-6. | `c386493f2`, ARB key search, `create_branch_products_table.php`, `playwright.config.ts`, `git status` |
 | F16 | The runbook's second Playwright trap isn't reproduced. The E2E guard checks only the test process, not the server's database. Logged as BG-54, unconfirmed. | `e2e-database-guard.ts`, `playwright.config.ts`, framework `ServeCommand.php` |
 | F17 | `02-prd` section 8, "locked implementation decisions", item 5 says not to build real-time socket occupancy tracking. The code broadcasts chair status over Reverb, and the owner later approved the realtime wave. The product document wasn't rewritten; review in C6. **Owner, not blocking:** mark that decision superseded? | `backend/docs/02-prd-part-3.md`, `ChairStatusUpdated`, wave 1 |
+| F18 | The deleted "MVP Alignment Policies" page was presented as permanent but was wrong: it allowed no `confirmed` to `no_show` transition (the enum already did), and its floor-plan parameters, FCM key name and repository layout were out of date. Only the in-person payment rule was unique; it is now a decision in force. | `BookingStatus.php`, floor plan request, `CreateBookingRequest.php` |
 
 ## Push record
 
@@ -209,17 +227,6 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `docs/booking-concurrency/10-fix-order.md` | 1 | 64 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | unreviewed |
 | `docs/booking-concurrency/index.md` | 1 | 90 | Temporary | history; agents if linked | 12 / 1 / 0 | medium | unreviewed |
 | `docs/feature-modules-plan.md` | 1 | 460 | Temporary | history; agents if linked | 4 / 1 / 0 | medium | unreviewed |
-| `docs/mobile-audit-g10-g11/01-dto-is-active-bug.md` | 1 | 33 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/mobile-audit-g10-g11/02-token-scope-mismatch.md` | 1 | 35 | Temporary | history; agents if linked | 3 / 1 / 0 | medium | unreviewed |
-| `docs/mobile-audit-g10-g11/03-inbox-scope-definition.md` | 1 | 32 | Temporary | history; agents if linked | 3 / 1 / 0 | medium | unreviewed |
-| `docs/mobile-audit-g10-g11/04-navigation-shell-gap.md` | 1 | 28 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/mobile-audit-g10-g11/05-missing-backend-routes.md` | 1 | 31 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/mobile-audit-g10-g11/06-mvp-scope-decisions.md` | 1 | 44 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/mobile-audit-g10-g11/index.md` | 1 | 57 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | unreviewed |
-| `docs/planning/dashboard-refactor-batch-3.md` | 1 | 161 | Temporary | history; agents if linked | 0 / 1 / 0 | medium | unreviewed |
-| `docs/planning/existing-frontend-audit.md` | 4 | 252 | Temporary | history; agents if linked | 0 / 1 / 0 | high | fix (F5) |
-| `docs/planning/product-audit.md` | 3 | 119 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/planning/remediation-plan.md` | 2 | 99 | Temporary | history; agents if linked | 0 / 1 / 0 | medium | unreviewed |
 | `docs/readiness/index.md` | 1 | 90 | Temporary | history; agents if linked | 0 / 1 / 0 | medium | unreviewed |
 | `docs/readiness/t01-mobile-release-config.md` | 1 | 37 | Temporary | history; agents if linked | 1 / 1 / 1 | medium | unreviewed |
 | `docs/readiness/t02-backend-legal-pages.md` | 1 | 30 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |

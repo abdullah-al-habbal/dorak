@@ -34,16 +34,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Vercel dashboard hosting](../deployment/vercel-dashboard.md)
 - [Dev environment status (URLs, deployed version, configuration)](../deployment/dev-environment-status.md)
 
-### `docs/mobile-audit-g10-g11/`
-
-- [Mobile Audit G10/G11: Index](../mobile-audit-g10-g11/index.md)
-- [01: DTO is_active bug](../mobile-audit-g10-g11/01-dto-is-active-bug.md)
-- [02: Token scope mismatch](../mobile-audit-g10-g11/02-token-scope-mismatch.md)
-- [03: Inbox scope definition](../mobile-audit-g10-g11/03-inbox-scope-definition.md)
-- [04: Navigation shell gap](../mobile-audit-g10-g11/04-navigation-shell-gap.md)
-- [05: Missing backend routes](../mobile-audit-g10-g11/05-missing-backend-routes.md)
-- [06: MVP scope decisions](../mobile-audit-g10-g11/06-mvp-scope-decisions.md)
-
 ### `docs/adr/`
 
 - [ADR 0001: The brand owner is a client account](../adr/0001-brand-owner-as-client.md)
@@ -128,19 +118,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [T14: Brand owner mobile API](../readiness/t14-owner-mobile-backend-api.md)
 - [T15: Brand owner core layer](../readiness/t15-owner-mobile-core-layer.md)
 - [T16: business_app brand owner experience](../readiness/t16-business-app-owner-experience.md)
-
-### `docs/planning/`
-
-- [Product Audit](../planning/product-audit.md)
-- [Product Audit: Matrix](../planning/product-audit-part-2.md)
-- [Product Audit: Findings](../planning/product-audit-part-3.md)
-- [Existing Frontend Audit](../planning/existing-frontend-audit.md)
-- [Existing Frontend Audit: Guards](../planning/existing-frontend-audit-part-2.md)
-- [Existing Frontend Audit: Endpoints and Models](../planning/existing-frontend-audit-part-3.md)
-- [Existing Frontend Audit: Forms, Workflows, Findings](../planning/existing-frontend-audit-part-4.md)
-- [Remediation Plan](../planning/remediation-plan.md)
-- [Remediation Plan: part 2](../planning/remediation-plan-part-2.md)
-- [Dashboard Refactor: Batch 3](../planning/dashboard-refactor-batch-3.md)
 
 ### `frontend/web/dashboard/`
 
