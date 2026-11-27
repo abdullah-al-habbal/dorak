@@ -82,6 +82,14 @@ changing files in that area.
   creating a new one. Delete obsolete files; Git keeps the history.
 - Keep status out of reference documents: open work belongs in the backlog, and
   the deployed state in [dev environment status](docs/deployment/dev-environment-status.md).
+- A change that makes a document wrong updates it in the same commit. Don't add
+  task reports, handovers or finished plans; commits hold that history. When a
+  programme ends, move what is still true or open, then delete its files.
+- A new document is listed in [the documentation index](docs/index.md) or
+  `docs/graph/`. Moving or deleting one means updating its links in the same commit.
+- Run `python3 scripts/check_docs.py` after changing Markdown or moving code that a
+  document names in `codeanchors`; Docs CI runs it too. It checks links and the
+  index, not whether the text is true.
 
 ## Testing
 

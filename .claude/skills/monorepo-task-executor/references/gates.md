@@ -38,8 +38,12 @@ Whenever dashboard code, copy, or contracts change, run from that directory: `np
 - After editing ARBs: `flutter gen-l10n` in `packages/localization`; commit the generated output.
 - `dart format` only on touched files. Workspace-wide formatting rewrites unrelated files; revert any it modifies.
 
+## Documentation
+- Always: for each behaviour the task changed, find the documents that describe it (`git grep` the route, class and file names in `*.md`) and correct or delete them, following the root guide's "Documentation" section.
+- When Markdown changed, or a file or folder moved or was deleted: `python3 scripts/check_docs.py` from the repository root.
+
 ## Order of gates
-Preflight audit, implementation, backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, `scripts/check-conventions.sh`, the security review (`references/security-review.md`), hygiene cleanup, then the commit. Each step runs only if the previous passed.
+Preflight audit, implementation, backend Pest and Pint, dashboard lint, typecheck, Vitest and build, **Playwright E2E**, mobile `melos verify`, `scripts/check-conventions.sh`, the documentation check, the security review (`references/security-review.md`), hygiene cleanup, then the commit. Each step runs only if the previous passed.
 
 ## Tests
 When a task writes, reviews or fixes tests, or touches authorization, tenant scope, state transitions or money, apply `../../test-engineering/SKILL.md` (what the tests must prove; the gates above still decide pass or fail).

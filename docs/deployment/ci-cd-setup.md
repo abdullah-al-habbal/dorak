@@ -17,6 +17,7 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). What is 
 | `backend-ci.yml` | push and PR on `master`, `backend/**` | none (MySQL 8.4 service, `root/root`) | `backend/` (`defaults.run.working-directory`) |
 | `dashboard-ci.yml` | push and PR on `master`, `frontend/web/dashboard/**`; `workflow_dispatch` | none (placeholder build env) | `frontend/web/dashboard/` |
 | `mobile-ci.yml` | push and PR on `master`, `frontend/mobile/**`; `workflow_dispatch` (input `build_artifacts`, default true) | none | `frontend/mobile/` |
+| `docs-ci.yml` | push and PR on `master`, every path | none | repository root (`scripts/check_docs.py`) |
 | `deploy.yml` | **manual** (`workflow_dispatch`) only; input `reset_database` (default false) | 4 `HOSTINGER_*` secrets | the Hostinger host, over SSH |
 
 The dashboard is **not** deployed by any workflow: Vercel builds it (see [Vercel dashboard hosting](vercel-dashboard.md)).
