@@ -26,17 +26,17 @@ codeanchors:
 | Field | Value |
 |---|---|
 | Active wave | [Wave 1: realtime](wave-1.md) |
-| State | in progress since 2026-11-27 |
-| Next task | W1.5 and W1.6, then the owner decides W1.4 |
-| Last release to dev | `96d2f797e`, 2026-11-26 ([dev status](../deployment/dev-environment-status.md), Snapshot 12) |
-| Blocked on the owner | nothing for Wave 1's local work; see "Owner actions" |
+| State | fixes released; waiting for the owner on W1.4 and Reverb hosting |
+| Next task | W1.4 once decided; otherwise start [Wave 2](wave-2.md) at W2.1 |
+| Last release to dev | `7b3814481`, 2026-11-27 ([dev status](../deployment/dev-environment-status.md), Snapshot 13) |
+| Blocked on the owner | [Wave 1 decisions](wave-1-decisions.md): open subscriptions (W1.4) and where Reverb runs |
 
 ## Board
 
 | Wave | Goal | Items | State |
 |---|---|---|---|
 | [0](wave-0.md) | Release and discover | RR-1, RR-2, RR-7 | done 2026-11-26 (leftovers moved to Wave 6) |
-| [1](wave-1.md) | Realtime | BG-45, BG-46, BG-48, BG-51, BG-52 (logged) | **in progress** |
+| [1](wave-1.md) | Realtime | BG-45, BG-46, BG-48, BG-51, BG-52 (logged) | released; W1.4 open |
 | [2](wave-2.md) | Sign-in and exposure | BG-28, 29, 30, 16, 4, 49, 50 | todo |
 | [3](wave-3.md) | Data correctness | BG-27, 31 to 35, 18, BD-10, TS-8 | todo |
 | [4](wave-4.md) | Booking experience | BG-19, 20, 21, 36, 12 | todo |
@@ -79,7 +79,7 @@ Status values: `todo`, `doing`, `done`, `blocked`.
 | Item | Needed from the owner |
 |---|---|
 | RR-8 | Add the `schedule:run` and `queue:work` cron entries in hPanel ([CI/CD setup](../deployment/ci-cd-setup.md)) |
-| RR-20 | Choose where Reverb runs, after the options and costs from W1.6 |
+| RR-20 | Choose where Reverb runs: [decision 2](wave-1-decisions.md) |
 | RR-16, RR-19 | Firebase projects, keys and server values; then real push checks |
 | BG-39 to BG-44 | Device checks of fixes already in the code (BG-43 and BG-44 also need live Reverb) |
 | BD-5, BD-6, BD-13 | Open product decisions |

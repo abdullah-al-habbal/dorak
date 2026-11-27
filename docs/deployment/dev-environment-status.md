@@ -15,6 +15,18 @@ Part of the [Dorak Deployment and Handover Guide](deployment-guide.md). This pag
 
 No secret appears on this page, and none must be added (no tokens, claims, `.env` values or session secrets).
 
+## Snapshot 13: 2026-11-27, about 16:19 UTC, Wave 1 fixes released
+
+`master` is deployed to dev at `7b3814481` with `reset_database=false` (BG-45 mobile, BG-48 and BG-51 backend).
+
+| Item | Value |
+|---|---|
+| Deploy run | [`46032475790`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46032475790): success; Vercel success; `scripts/verify-deploy.sh` all probes passed |
+| CI | Backend [`46031236827`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46031236827) and Mobile [`46031236858`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46031236858): success |
+| Local gates | Pest 3009 passed (13534 assertions); concurrency 12 passed; Pint, migration guard and `composer audit` clean; `melos run verify` passed |
+| Not run | dashboard gates and Playwright (no dashboard file or API response shape changed) |
+| Realtime on dev | a WebSocket upgrade with a dummy key still answers `404`: no Reverb server (RR-20). BG-51 is therefore not verified on a hosted server |
+
 ## Snapshot 12: 2026-11-26, about 15:21 UTC, Wave 0 released and checked
 
 `master` is deployed to dev at `96d2f797e` with `reset_database=false`. It contains BG-46, BG-47 and the Symfony security updates. This replaces the "not deployed" state in Snapshot 11.

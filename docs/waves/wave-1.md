@@ -11,7 +11,7 @@ codeanchors:
 
 Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlog/index.md)
 
-**State:** in progress since 2026-11-27.
+**State:** released 2026-11-27. Open: W1.4 only, waiting for [decision 1](wave-1-decisions.md).
 
 **Goal:** Live updates behave correctly, proved locally with a real Reverb server and a queue worker.
 
@@ -26,7 +26,7 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | W1.4 | BG-46 | Decide and build what happens to subscriptions already open after suspension or disable; first check what Reverb supports | a connected, suspended branch stops receiving, shown locally; ask the owner first if the options change behaviour or cost | blocked: [decision 1](wave-1-decisions.md) |
 | W1.5 | BG-43, 44, 46, 47 | Local live checks, including a seated stylist and the owner channel (the dev gaps) | each check recorded with its result; device-only checks stay open | done |
 | W1.6 | RR-20 | Write up Reverb hosting options and costs. Set nothing up on dev | the owner has options and a recommendation | done: [decision 2](wave-1-decisions.md) |
-| W1.7 | release | Wave close ([tracker](index.md#wave-close)) | released, documented, reported | todo |
+| W1.7 | release | Wave close ([tracker](index.md#wave-close)) | released, documented, reported | done |
 
 ## Notes
 
@@ -44,3 +44,4 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | 2026-11-27 | BG-45 commit | W1.2: reproduced in the business app and also the stylist app (tests failed: no listener after sign-in; a load running at sign-out still joined). Fixed; `melos run verify` passed. BG-52 logged |
 | 2026-11-27 | `e90ecbc13` | W1.5, local server side: the seated stylist joined the branch and floor plan channels and the branch joined the stylist's; the owner joined their own channel and was refused the branch's (by design). On suspension the branch channel delivered `brand.suspended` to the branch and the seated stylist (BG-43), and an owner received it on their own channel when their brand was suspended (BG-44; seen in a run that suspended another seeded brand). A chair change after suspension still reached both open floor plan subscriptions (BG-46). Refusal of new joins was not re-run locally (dev check and Pest cover it); app screens were not run on a device |
 | 2026-11-27 | docs | W1.6 and the BG-46 options written; nothing set up |
+| 2026-11-27 | `7b3814481`, deploy `46032475790` | W1.7: gates and security note passed, Backend and Mobile CI passed, dev deployed without a reset, smoke test passed. Security note for BG-51: any origin may now open a socket; every broadcast channel is private and needs a bearer token to join |
