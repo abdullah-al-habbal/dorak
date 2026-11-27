@@ -43,7 +43,7 @@ composer test           # recreates dorak_test clean, then pest sequentially (ne
 
 ## Config & .env
 
-- Rule: `env()` calls in config files take **no default** (2nd argument), and every key has a `.env.example` entry.
+- Rule: `env()` calls in `modules/*/Config/` take **no default** (2nd argument), and every key has a `.env.example` entry (commented out when an empty value would override a fallback). A fallback the application needs is a named constant after `??`. `tests/Feature/Core/ConfigEnvDefaultsTest.php` enforces the first part; the published files in `config/` are exempt (owner, 2026-11-27).
 - `.env` is gitignored. `.env.example` is the reference.
 - `AUTH_MODEL` is hardcoded as `ClientModel::class` in auth.php — not env-driven (no backslash in .env).
 - `MAIL_SENDMAIL_PATH` must be quoted in .env: `"/usr/sbin/sendmail -bs -i"` (space in value).

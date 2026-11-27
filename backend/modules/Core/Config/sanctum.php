@@ -9,7 +9,7 @@ use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 return [
     'guard' => [],
     'expiration' => env('SANCTUM_EXPIRATION'),
-    'token_prefix' => env('SANCTUM_TOKEN_PREFIX', ''),
+    'token_prefix' => env('SANCTUM_TOKEN_PREFIX'),
     'middleware' => [
         'authenticate_session' => AuthenticateSession::class,
         'encrypt_cookies' => EncryptCookies::class,

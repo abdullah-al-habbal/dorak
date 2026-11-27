@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Env;
+use Modules\Core\Constants\BroadcastingConstants;
+
+$reverbScheme = env('REVERB_SCHEME') ?? BroadcastingConstants::BROADCASTING_SECURE_SCHEME;
+
 return [
-    'default' => env('BROADCAST_CONNECTION', 'reverb'),
+    // Read raw: env() turns the value "null" (the null connection) into null, which would look unset.
+    'default' => Env::getRepository()->get('BROADCAST_CONNECTION') ?? BroadcastingConstants::BROADCASTING_DEFAULT_CONNECTION,
 
     'connections' => [
         'reverb' => [
@@ -12,11 +18,11 @@ return [
             'secret' => env('REVERB_APP_SECRET'),
             'app_id' => env('REVERB_APP_ID'),
             'options' => [
-                'cluster' => env('REVERB_CLUSTER', 'mt1'),
+                'cluster' => env('REVERB_CLUSTER') ?? BroadcastingConstants::BROADCASTING_DEFAULT_CLUSTER,
                 'host' => env('REVERB_HOST'),
-                'port' => env('REVERB_PORT', 443),
-                'scheme' => env('REVERB_SCHEME', 'https'),
-                'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
+                'port' => env('REVERB_PORT') ?? BroadcastingConstants::BROADCASTING_DEFAULT_PORT,
+                'scheme' => $reverbScheme,
+                'useTLS' => $reverbScheme === BroadcastingConstants::BROADCASTING_SECURE_SCHEME,
             ],
             'client_options' => [
                 'timeout' => 10,

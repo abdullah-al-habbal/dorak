@@ -2,14 +2,18 @@
 
 declare(strict_types=1);
 
+use Modules\Dashboard\Constants\DashboardConfigConstants;
+
 return [
     'session_secret' => env('DASHBOARD_SESSION_SECRET'),
     'session_secrets' => env('DASHBOARD_SESSION_SECRETS'),
     'active_kid' => env('DASHBOARD_SESSION_ACTIVE_KID'),
     // Failed and successful sign-ins allowed per minute and IP. Raise it only on dev/CI so the Playwright suite can sign in repeatedly.
-    'login_attempts_per_minute' => (int) env('DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE', 5),
+    'login_attempts_per_minute' => (int) (env('DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE') ?? DashboardConfigConstants::DASHBOARD_CONFIG_DEFAULT_ATTEMPTS_PER_MINUTE),
     // Same budget for POST /owner/brand, counted separately from sign-ins. Falls back to the login value so a raised E2E limit covers both.
-    'owner_brand_attempts_per_minute' => (int) env('DASHBOARD_OWNER_BRAND_ATTEMPTS_PER_MINUTE', env('DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE', 5)),
+    'owner_brand_attempts_per_minute' => (int) (env('DASHBOARD_OWNER_BRAND_ATTEMPTS_PER_MINUTE')
+        ?? env('DASHBOARD_LOGIN_ATTEMPTS_PER_MINUTE')
+        ?? DashboardConfigConstants::DASHBOARD_CONFIG_DEFAULT_ATTEMPTS_PER_MINUTE),
     // The public dashboard origin, used to build links in emails (password reset).
-    'frontend_url' => rtrim((string) env('DASHBOARD_URL', 'http://localhost:3000'), '/'),
+    'frontend_url' => rtrim((string) (env('DASHBOARD_URL') ?? DashboardConfigConstants::DASHBOARD_CONFIG_DEFAULT_FRONTEND_URL), '/'),
 ];
