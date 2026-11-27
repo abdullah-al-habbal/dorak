@@ -9,4 +9,5 @@ part of 'slot.dto.dart';
 SlotDto _$SlotDtoFromJson(Map<String, dynamic> json) => SlotDto(
   startsAt: DateTime.parse(json['starts_at'] as String),
   endsAt: DateTime.parse(json['ends_at'] as String),
+  utcOffsetMinutes: (json['utc_offset_minutes'] as num?)?.toInt(),
 );

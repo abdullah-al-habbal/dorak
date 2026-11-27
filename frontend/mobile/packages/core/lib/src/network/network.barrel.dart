@@ -1,4 +1,5 @@
 export 'package:core/src/network/api.client.dart';
+export 'package:core/src/network/branch_clock.entity.dart';
 export 'package:core/src/network/idempotency_key.entity.dart';
 export 'package:core/src/network/realtime.client.dart';
 export 'package:core/src/network/realtime_channels.entity.dart';

@@ -103,7 +103,7 @@ void main() {
       expect(captured.queryParameters['per_page'], 30);
     });
 
-    test('rebookFromHistory posts the slot as a UTC ISO timestamp', () async {
+    test('rebookFromHistory posts the picked time as a branch time', () async {
       late RequestOptions captured;
       final fake = fakeDio(
         handler: (options) {
@@ -128,12 +128,12 @@ void main() {
 
       final created = await repository.rebookFromHistory(
         'history-1',
-        DateTime.utc(2026, 9, 20, 9),
+        DateTime(2026, 9, 20, 9),
       );
 
       expect(captured.path, '/client/history/history-1/rebook');
       expect(captured.method, 'POST');
-      expect(captured.data, {'starts_at': '2026-09-20T09:00:00.000Z'});
+      expect(captured.data, {'starts_at_local': '2026-09-20T09:00'});
       expect(created.id, 'booking-2');
       expect(created.status, BookingStatus.pending);
       expect(created.barber?.name, isNull);

@@ -47,7 +47,7 @@ class DioBranchRepository implements BranchRepository {
     String? barberId,
   }) {
     final query = <String, dynamic>{
-      'date': date.toUtc().toIso8601String().split('T').first,
+      'date': BranchClock.calendarDate(date),
       'service_ids': serviceIds,
     };
     if (chairId != null) {

@@ -25,14 +25,14 @@ class BookingSummarySection extends StatelessWidget {
     children: [
       BookingDetailLine(
         value: LocaleFormatters.dateTime(
-          booking.startsAt.toLocal(),
+          booking.startsAtOnBranchClock,
           localeCode,
         ),
       ),
       if (booking.endsAt != null)
         BookingDetailLine(
           value: l10n.bookingEndTimeLabel(
-            LocaleFormatters.time(booking.endsAt!.toLocal(), localeCode),
+            LocaleFormatters.time(booking.endsAtOnBranchClock!, localeCode),
           ),
         ),
       BookingDetailLine(value: statusLabel(l10n, booking.status)),

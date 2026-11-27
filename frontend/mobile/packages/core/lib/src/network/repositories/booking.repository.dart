@@ -138,7 +138,7 @@ class DioBookingRepository implements BookingRepository {
   }) {
     final isAtHome = atHomeLatitude != null && atHomeLongitude != null;
     final query = <String, dynamic>{
-      'date': date.toUtc().toIso8601String().split('T').first,
+      'date': BranchClock.calendarDate(date),
       'service_ids': serviceIds,
       if (isAtHome) 'is_at_home': 1,
       if (isAtHome) 'latitude': atHomeLatitude,

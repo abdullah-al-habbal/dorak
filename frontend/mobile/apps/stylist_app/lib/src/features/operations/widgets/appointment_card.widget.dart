@@ -35,7 +35,7 @@ class AppointmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final materialL10n = MaterialLocalizations.of(context);
-    final startsAt = booking.startsAt.toLocal();
+    final startsAt = booking.startsAtOnBranchClock;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),

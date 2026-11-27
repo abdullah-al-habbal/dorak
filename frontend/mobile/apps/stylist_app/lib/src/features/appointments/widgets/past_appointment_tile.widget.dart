@@ -22,7 +22,7 @@ class PastAppointmentTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final material = MaterialLocalizations.of(context);
-    final startsAt = booking.startsAt.toLocal();
+    final startsAt = booking.startsAtOnBranchClock;
     final services = booking.services.map((service) => service.name).join(', ');
     return Card(
       child: Padding(

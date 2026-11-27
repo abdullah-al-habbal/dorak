@@ -63,7 +63,10 @@ class BookingSubmitSection extends StatelessWidget {
                   slot.startsAt.isAtSameMomentAs(state.selectedTime!);
               return ChoiceChip(
                 label: Text(
-                  LocaleFormatters.time(slot.startsAt.toLocal(), localeCode),
+                  LocaleFormatters.time(
+                    slot.startsAtOnBranchClock,
+                    localeCode,
+                  ),
                 ),
                 selected: selected,
                 onSelected: (_) =>

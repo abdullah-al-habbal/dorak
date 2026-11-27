@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:core/src/network/booking_status.entity.dart';
+import 'package:core/src/network/branch_clock.entity.dart';
 import 'package:core/src/network/dto/at_home_location.dto.dart';
 import 'package:core/src/network/dto/booking_barber.dto.dart';
 import 'package:core/src/network/dto/booking_chair.dto.dart';
@@ -14,6 +15,7 @@ class BookingDto {
   final String id;
   final DateTime startsAt;
   final DateTime? endsAt;
+  final int? utcOffsetMinutes;
   @JsonKey(name: 'booking_status', unknownEnumValue: BookingStatus.unknown)
   final BookingStatus status;
   @JsonKey(defaultValue: 'pay_at_salon')
@@ -33,6 +35,7 @@ class BookingDto {
     required this.id,
     required this.startsAt,
     this.endsAt,
+    this.utcOffsetMinutes,
     required this.status,
     this.paymentMethod = 'pay_at_salon',
     this.paymentStatus = 'unpaid_in_person',
@@ -45,6 +48,14 @@ class BookingDto {
     this.homeAddress,
     this.createdAt,
   });
+
+  DateTime get startsAtOnBranchClock =>
+      BranchClock.read(startsAt, utcOffsetMinutes);
+
+  DateTime? get endsAtOnBranchClock => switch (endsAt) {
+    final end? => BranchClock.read(end, utcOffsetMinutes),
+    null => null,
+  };
 
   factory BookingDto.fromJson(Map<String, dynamic> json) =>
       _$BookingDtoFromJson(json);

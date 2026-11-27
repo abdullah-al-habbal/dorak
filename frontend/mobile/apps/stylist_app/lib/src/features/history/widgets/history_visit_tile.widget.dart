@@ -36,7 +36,7 @@ class HistoryVisitTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final performedAt = visit.performedAt?.toLocal();
+    final performedAt = visit.performedAtOnBranchClock;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),

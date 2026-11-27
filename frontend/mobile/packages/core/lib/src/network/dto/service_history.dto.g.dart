@@ -14,6 +14,7 @@ ServiceHistoryDto _$ServiceHistoryDtoFromJson(Map<String, dynamic> json) =>
       performedAt: json['performed_at'] == null
           ? null
           : DateTime.parse(json['performed_at'] as String),
+      utcOffsetMinutes: (json['utc_offset_minutes'] as num?)?.toInt(),
       clientRating: json['client_rating'] as num?,
       clientNotes: json['client_notes'] as String?,
       barber: json['barber'] == null

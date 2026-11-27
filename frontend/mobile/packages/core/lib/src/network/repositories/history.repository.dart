@@ -37,10 +37,10 @@ class DioHistoryRepository implements HistoryRepository {
 
   @override
   Future<BookingDto> rebookFromHistory(String historyId, DateTime startsAt) {
-    final formatted = startsAt.toUtc().toIso8601String();
     return _apiClient.post<BookingDto>(
       ApiEndpoints.history.rebookFromHistory(historyId),
-      data: {'starts_at': formatted},
+      // The picked time is on the visit branch's clock; only the backend knows its zone.
+      data: {'starts_at_local': BranchClock.wallClockMinute(startsAt)},
       parser: (json) => BookingDto.fromJson(json as Map<String, dynamic>),
     );
   }

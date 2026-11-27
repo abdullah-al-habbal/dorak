@@ -114,7 +114,7 @@ class _BookingsFeedState extends State<BookingsFeed> {
                     ? null
                     : l10n.bookingEndTimeLabel(
                         LocaleFormatters.time(
-                          booking.endsAt!.toLocal(),
+                          booking.endsAtOnBranchClock!,
                           localeCode,
                         ),
                       ),

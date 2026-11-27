@@ -34,7 +34,7 @@ class HistoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = DorakColors.of(context);
-    final performedAt = item.performedAt;
+    final performedAt = item.performedAtOnBranchClock;
     final metaLines = [
       if (itemName.isNotEmpty) itemName,
       if (item.barber != null) l10n.bookingWithBarber(item.barber!.name),
@@ -56,7 +56,7 @@ class HistoryCard extends StatelessWidget {
                   performedAt == null
                       ? ''
                       : LocaleFormatters.dateTime(
-                          performedAt.toLocal(),
+                          performedAt,
                           localeCode,
                         ),
                   style: DorakTypography.titleLg,

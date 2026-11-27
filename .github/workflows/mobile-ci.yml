@@ -72,6 +72,11 @@ jobs:
           dart run melos run taxonomy
           dart run melos run test
 
+      # CI runs in UTC, where a date shifted by a UTC conversion looks right (BG-56).
+      - name: Slot dates east of UTC
+        working-directory: frontend/mobile/packages/core
+        run: TZ=Asia/Damascus flutter test test/slot_date_time_zone_test.dart
+
   android-apk:
     name: Android APK (${{ matrix.app }})
     if: github.event_name == 'workflow_dispatch' && inputs.build_artifacts

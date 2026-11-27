@@ -12,6 +12,7 @@ BookingDto _$BookingDtoFromJson(Map<String, dynamic> json) => BookingDto(
   endsAt: json['ends_at'] == null
       ? null
       : DateTime.parse(json['ends_at'] as String),
+  utcOffsetMinutes: (json['utc_offset_minutes'] as num?)?.toInt(),
   status: $enumDecode(
     _$BookingStatusEnumMap,
     json['booking_status'],
@@ -53,6 +54,7 @@ Map<String, dynamic> _$BookingDtoToJson(
   'id': instance.id,
   'starts_at': instance.startsAt.toIso8601String(),
   'ends_at': instance.endsAt?.toIso8601String(),
+  'utc_offset_minutes': instance.utcOffsetMinutes,
   'booking_status': _$BookingStatusEnumMap[instance.status]!,
   'payment_method': instance.paymentMethod,
   'payment_status': instance.paymentStatus,
