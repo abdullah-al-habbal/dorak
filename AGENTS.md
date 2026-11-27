@@ -10,9 +10,10 @@ codeanchors:
 
 # Dorak Monorepo Agent Guide
 
-These instructions apply across the repository. A nested `AGENTS.md` or
-`CLAUDE.md` adds the rules for its subsystem and takes precedence when more
-specific; read it before changing files in that area.
+These instructions apply across the repository. This is the one shared guide;
+[CLAUDE.md](CLAUDE.md) imports it. A nested `AGENTS.md` or `CLAUDE.md` adds the
+rules for its subsystem and takes precedence when more specific; read it before
+changing files in that area.
 
 ## Start here
 
@@ -20,7 +21,8 @@ specific; read it before changing files in that area.
 - For the current fix programme, start at the [wave tracker](docs/waves/index.md): read it and only the active wave file, and update both as you work.
 - For planned work, read the [backlog](docs/backlog/index.md) (open decisions, bugs,
   missing features, tech debt, test gaps) and update it when an item is done or a
-  decision is resolved.
+  decision is resolved. Batch 2 and billing (NS-26, NS-27, WP-10) stay out of
+  scope until the owner says so.
 - Competitor studies (market context, not requirements) are in [docs/competitor-analysis/index.md](docs/competitor-analysis/index.md); the first is [Toptalla](docs/competitor-analysis/toptalla/index.md).
 - Current state of live work (what is deployed on dev, URLs, configuration names, open owner decisions): [dev environment status](docs/deployment/dev-environment-status.md) and [push notifications](docs/architecture/push-notifications.md). Parallel sessions coordinate on the [session board](docs/sessions/index.md).
 - Use [the documentation index](docs/index.md) to find maintained product,
@@ -33,10 +35,6 @@ specific; read it before changing files in that area.
   - Mobile: [frontend/mobile/AGENTS.md](frontend/mobile/AGENTS.md),
     [frontend/mobile/CLAUDE.md](frontend/mobile/CLAUDE.md), and the guides in
     the app or package being changed.
-
-## Backlog
-
-- Everything still open lives in [docs/backlog/index.md](docs/backlog/index.md). Batch 2 and WP-10 (billing, NS-27) stay out of scope until the owner says so.
 
 ## Repository-wide rules
 
@@ -56,12 +54,36 @@ specific; read it before changing files in that area.
 - Add focused regression coverage for changed behavior and run the checks
   required by the subsystem guide. Mark work complete only after its
   acceptance criteria and required gates pass.
-- Preserve unrelated working-tree changes. Never use destructive Git commands.
-  Do not push or change remotes unless the user explicitly requests it.
+- Each subsystem guide carries its own security and code-quality rules
+  (authorization and ownership checks, type safety, file and method size limits,
+  magic literals and data clumps, UI performance). Read `backend/AGENTS.md` and
+  `backend/CLAUDE.md`, `frontend/web/dashboard/AGENTS.md`, or
+  `frontend/mobile/CLAUDE.md` before writing code there. They apply in addition
+  to the subsystem's skills.
 - Prefer the reusable [Dorak task executor](.claude/skills/monorepo-task-executor/SKILL.md)
-  for engineering task work.
+  for engineering task work: audit the request, implement the vertical slice, run
+  the applicable gates, and call the work done only on evidence.
 - When the user types `/graphify`, invoke the available Skill tool with
   `skill: "graphify"` before doing anything else.
+
+## Git workflow
+
+- Preserve unrelated working-tree changes and stage only the files a task
+  touches. Never use destructive Git commands or `--no-verify`.
+- Commit locally with a conventional commit type and the task number, for
+  example `fix(catalog): ... (Task 14)`.
+- Push only when the owner asks, or at a wave close under the Delivery decision
+  in the [backlog](docs/backlog/index.md). Never add or change remotes or alter
+  remote tracking unless the owner asks.
+
+## Documentation
+
+- The code decides what the system does; owner decisions and product rules decide
+  what it should do. When they disagree, report it; don't rewrite the rule.
+- One topic per file and one home per fact. Update the owning file before
+  creating a new one. Delete obsolete files; Git keeps the history.
+- Keep status out of reference documents: open work belongs in the backlog, and
+  the deployed state in [dev environment status](docs/deployment/dev-environment-status.md).
 
 ## Testing
 
@@ -73,7 +95,7 @@ specific; read it before changing files in that area.
 - For any dashboard or mobile UI work, use the shared skills in
   [.claude/skills](.claude/skills/README.md): `frontend-design` for visual
   direction, `interface-design` to record and reuse decisions in
-  `.interface-design/system.md`, and the `ui-ux-pro-max` plugin for palettes
+  `.interface-design/system.md` (the dashboard's is in `frontend/web/dashboard/`), and the `ui-ux-pro-max` plugin for palettes
   and type. Do not duplicate them into subprojects.
 - Dashboard work also uses the local `shadcn`, `migrate-radix-to-base`, and
   `web-design-guidelines` skills in `frontend/web/dashboard/.claude/skills/`;

@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-640 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+637 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 459 files = 265 logical documents |
+| Outside `.claude/` | 456 files = 265 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -84,14 +84,14 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
-| `AGENTS.md` | 1 | 108 | Rules | agents, engineers | 4 / 1 / 4 | high | merge (F4) |
-| `CLAUDE.md` | 2 | 144 | Rules | agents, engineers | 1 / 1 / 5 | high | merge (F4) |
-| `README.md` (also in C0) | 3 | 201 | Router | agents, engineers | 9 / 1 / 3 | high | fix: push text applied; rest unreviewed (C1) |
+| `AGENTS.md` | 1 | 130 | Rules | agents, engineers | 4 / 1 / 4 | high | fix, applied |
+| `CLAUDE.md` | 1 | 11 | Rules | agents, engineers | 1 / 1 / 5 | high | merge into AGENTS.md, applied (now an import) |
+| `README.md` (also in C0) | 1 | 146 | Router | agents, engineers | 9 / 1 / 3 | high | merge parts, fix, applied |
 | `backend/AGENTS.md` | 2 | 109 | Rules | agents, engineers | 5 / 2 / 10 | high | unreviewed |
 | `backend/CLAUDE.md` | 1 | 66 | Rules | agents, engineers | 3 / 1 / 1 | high | unreviewed |
 | `backend/process/process.md` | 4 | 221 | Rules | agents, engineers | 0 / 1 / 0 | high | unreviewed |
 | `docs/graph/repo-index.md` | 1 | 29 | Router | agents, engineers | 0 / 1 / 0 | high | unreviewed |
-| `docs/index.md` | 6 | 497 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
+| `docs/index.md` | 6 | 491 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
 | `frontend/mobile/AGENTS.md` | 2 | 94 | Rules | agents, engineers | 24 / 2 / 1 | high | unreviewed |
 | `frontend/mobile/CLAUDE.md` | 2 | 106 | Rules | agents, engineers | 15 / 1 / 1 | high | unreviewed |
 | `frontend/mobile/apps/business_app/AGENTS.md` | 2 | 138 | Rules | agents, engineers | 5 / 1 / 0 | high | unreviewed |

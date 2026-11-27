@@ -66,12 +66,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [10 Performance and bundle](../frontend-arch-review/10-performance-and-bundle.md)
 - [11 Resolution status](../frontend-arch-review/11-resolution-status.md)
 
-### `docs/repo-guides/`
-
-- [Claude guide: part 2](../repo-guides/claude-part-2.md)
-- [Readme: part 2](../repo-guides/readme-part-2.md)
-- [Readme: part 3](../repo-guides/readme-part-3.md)
-
 ### `docs/sessions/`
 
 - [Session coordination board](../sessions/index.md)
