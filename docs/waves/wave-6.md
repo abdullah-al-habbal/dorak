@@ -24,7 +24,7 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 ## Notes
 
 - Product catalog work waits for BD-5.
-- W6.4 overlaps the [documentation audit](../doc-audit/policy.md); check its ledger before starting.
+- The 2026-11-27 documentation audit covered much of W6.4; check the current documents and TD-26 before starting.
 - Billing and "Batch 2" stay out of scope.
 
 ## Log

@@ -77,6 +77,8 @@ changing files in that area.
   what it should do. When they disagree, report it; don't rewrite the rule.
 - One topic per file and one home per fact. Update the owning file before
   creating a new one. Delete obsolete files; Git keeps the history.
+- Mark what the repository can't prove (hosting, stores, third parties) as unverified, with a date. Before
+  deleting or moving a document, search all tracked files for its name, not only Markdown.
 - Keep status out of reference documents: open work belongs in the backlog, and
   the deployed state in [dev environment status](docs/deployment/dev-environment-status.md).
 - A change that makes a document wrong updates it in the same commit. Don't add

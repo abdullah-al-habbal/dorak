@@ -63,8 +63,7 @@ As of **2026-11-27 18:37 UTC** (21:37, UTC+3). Update this section in place.
 **Blockers.** None for Wave 2. See "Now" and "Owner actions".
 
 **Repository.** The owner pushed `master` to `origin` on 2026-11-27, up to `6aa3d73d0`. The
-[documentation audit](../doc-audit/policy.md) runs alongside this programme; its later commits stay local until the
-owner asks for a push. The pushed commits hold the BG-53 fix (`b85a78a6d`), the backend pre-push hook (`087bb631d`)
+documentation audit finished on 2026-11-27; the commits after that push stay local until the owner asks for a push. The pushed commits hold the BG-53 fix (`b85a78a6d`), the backend pre-push hook (`087bb631d`)
 and module config without `env()` defaults (`dfd936cad`). The backend wasn't deployed. Before it is, compare the
 server's `.env` keys (names only) with the changed config files and run the task executor's
 [security review](../../.claude/skills/monorepo-task-executor/references/security-review.md) on `dfd936cad`, which
