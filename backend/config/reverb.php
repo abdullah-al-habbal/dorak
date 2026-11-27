@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'default' => env('REVERB_SERVER', 'reverb'),
     'servers' => [
@@ -42,7 +44,9 @@ return [
                     'scheme' => env('REVERB_SCHEME', 'https'),
                     'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
                 ],
-                'allowed_origins' => ['http://localhost:3000', 'http://127.0.0.1:3000'],
+                // Reverb compares the origin's host, and the native apps send no origin, so only
+                // '*' lets them connect. Access is enforced per private channel with a bearer token.
+                'allowed_origins' => ['*'],
                 'ping_interval' => env('REVERB_APP_PING_INTERVAL', 60),
                 'activity_timeout' => env('REVERB_APP_ACTIVITY_TIMEOUT', 30),
                 'max_connections' => env('REVERB_APP_MAX_CONNECTIONS'),

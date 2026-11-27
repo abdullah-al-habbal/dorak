@@ -33,6 +33,9 @@ The API base URL remains the source of the private-channel auth endpoint:
 `$API_BASE_URL_V1/broadcasting/auth`. Mobile apps do not call the dashboard's
 cookie-only `/api/realtime/auth` BFF route.
 
+The apps send no `Origin` header, so the server's `allowed_origins` must stay `['*']`
+(`backend/config/reverb.php`); with any list, Reverb refuses them (BG-51).
+
 ## Authentication and authorization
 
 Create the client with the same secure token storage used by the app's
