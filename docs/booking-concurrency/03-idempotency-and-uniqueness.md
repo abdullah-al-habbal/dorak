@@ -40,7 +40,7 @@ Client app: `BranchDetailBloc` keeps one `Random.secure` UUID v4 per submission 
 
 What the first audit claim got wrong: it said a retry "returns 409 `double_booking`". True, but it is the whole harm. A retry never created a second booking, because the overlap check refuses it; the client got a false conflict for a booking that existed. The key fixes that error, not a duplicate-row problem.
 
-Product question left open: BD-10 (may one client hold overlapping bookings with different barbers). A key does not touch it.
+A key does not stop one client holding overlapping bookings; that is BD-10 (decided 2026-11-26, not built).
 
 Not yet covered by keys: walk-in, reschedule, cancel, subscription assign, payouts, saved filters, uploads, OTP send (TD-8). The proposal below still applies to them; if a second endpoint needs a key, extract the shared part of `BookingIdempotency` rather than adding another table per endpoint.
 
@@ -89,7 +89,7 @@ Gaps (Reported unless noted):
 - The sketch in `backend/docs/13-technical-concepts-part-3.md:26-70` caches only after a response below 400 and has no in-flight lock; do not copy it as is.
 - Apply to booking create, walk-in, subscription assign, payout generate and mark-paid, saved filters; optional on cancel and reschedule (and dedupe the reschedule event when start and end are unchanged).
 - Make the key optional first (shipped mobile builds send none), required later. **Done for `POST /bookings` (2026-11-19):** no older build is in production, so the header is required there from the start of release; the other endpoints in the list above are still open.
-- Whichever way the working-tree booking implementation is shaped, keep one mechanism for all endpoints rather than a booking-only table, or record why not.
+- Keep one mechanism for all endpoints: extend the shipped booking one instead of adding a table per endpoint, or record why not.
 
 ## Natural unique-violation handling
 

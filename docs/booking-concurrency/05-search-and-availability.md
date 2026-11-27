@@ -11,7 +11,7 @@ codeanchors:
 
 # 5. Search and availability
 
-Routes: [booking concurrency](index.md) · [documentation graph](../index.md) · [lock order](01-lock-order-and-deadlocks.md) · [remediation plan](08-remediation-plan.md)
+Routes: [booking concurrency](index.md) · [documentation graph](../index.md) · [lock order](01-lock-order-and-deadlocks.md)
 
 How the slot endpoints (`GET /branches/{branch}/slots`, `GET /barbers/{barber}/slots`) compute availability, what that costs, and what protects it. Slots are advisory: a slot the API returns can be taken before the client submits, and the create path (file 01) is what decides. Evidence grades are in the [index](index.md#how-to-read-the-evidence).
 
@@ -45,7 +45,7 @@ The slots routes are throttled at 60 per minute per IP (`BOOKING_SLOTS_LIMITER`,
 
 - **No cache and no invalidation.** Every call recomputes. This is fine for correctness: nothing is stale. It means cost grows with every client who opens the booking screen and changes the date or a service.
 - **Advisory result.** The list is read without locks. Between listing and submitting, another client can take the slot; the create answers 409 and the app shows a generic conflict message, without reloading the list ([file 06](06-client-sync-and-ux.md)).
-- **UTC day.** `date` is parsed as a UTC day and `starts_at` is compared with branch hours through `$startsAt->format('H:i')`. Whether that matches a branch's local opening hours is **Unverified**: the branch time-zone handling was not read. Check `BranchHours` and the stored hour columns before changing anything here.
+- **UTC day.** `date` is parsed as a UTC day and `starts_at` is compared with branch hours as a UTC clock time. There is no branch time zone, so hours don't match local time: reproduced on 2026-11-27 (backlog BG-55, and BG-56 for the date the client app sends).
 
 ## Options
 

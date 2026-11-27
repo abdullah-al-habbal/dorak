@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-527 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+526 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 346 files = 187 logical documents |
+| Outside `.claude/` | 345 files = 186 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -27,7 +27,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C0 pilot: push notifications | 2 | 2 |
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
-| C3 finished or running programmes | 11 | 0 |
+| C3 finished or running programmes | 10 | 10 |
 | C4 backend and shared reference | 32 | 2 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
@@ -136,6 +136,7 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `docs/readiness/t15-owner-mobile-core-layer.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
 | `docs/readiness/t16-business-app-owner-experience.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
 | `docs/feature-modules-plan.md` | extract then delete, applied: all twelve modules are built; proxy and error rules moved to the frontend architecture guide, state and data rules to the dashboard source layout, one decision to the backlog. Not moved because the code disagrees or has moved on: branch time zone (F19), sheets for long forms, the chair floor-plan and brand approve-only limits | C3 feature modules plan |
+| `docs/booking-concurrency/08-remediation-plan.md` | extract then delete, applied: its order repeats the backlog, waves and fix order; the database backstop is now TD-25 and the ship checklist is in the index | C3 booking concurrency |
 
 ## Findings so far
 
@@ -234,17 +235,16 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
-| `docs/booking-concurrency/01-lock-order-and-deadlocks.md` | 1 | 77 | Temporary | history; agents if linked | 6 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/02-overlap-guards.md` | 1 | 51 | Temporary | history; agents if linked | 4 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/03-idempotency-and-uniqueness.md` | 1 | 96 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/04-hashing-and-tokens.md` | 1 | 42 | Temporary | history; agents if linked | 5 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/05-search-and-availability.md` | 1 | 59 | Temporary | history; agents if linked | 2 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/06-client-sync-and-ux.md` | 1 | 60 | Temporary | history; agents if linked | 3 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/07-test-coverage.md` | 1 | 59 | Temporary | history; agents if linked | 5 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/08-remediation-plan.md` | 1 | 54 | Temporary | history; agents if linked | 6 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/09-write-path-audit.md` | 1 | 52 | Temporary | history; agents if linked | 6 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/10-fix-order.md` | 1 | 64 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | unreviewed |
-| `docs/booking-concurrency/index.md` | 1 | 90 | Temporary | history; agents if linked | 12 / 1 / 0 | medium | unreviewed |
+| `docs/booking-concurrency/01-lock-order-and-deadlocks.md` | 1 | 77 | Temporary | history; agents if linked | 6 / 1 / 0 | medium | keep (link fixed): open claims match the backlog; code changes since the review are the ones it describes; line numbers not rechecked one by one |
+| `docs/booking-concurrency/02-overlap-guards.md` | 1 | 51 | Temporary | history; agents if linked | 4 / 1 / 0 | medium | fix, applied: BD-10 was shown as open |
+| `docs/booking-concurrency/03-idempotency-and-uniqueness.md` | 1 | 96 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | fix, applied: stale BD-10 and working-tree wording; the Reported gaps stay unverified |
+| `docs/booking-concurrency/04-hashing-and-tokens.md` | 1 | 42 | Temporary | history; agents if linked | 5 / 1 / 0 | medium | keep: the md5 hash and the plain email-code comparison still match; the other rows stay as graded in the file |
+| `docs/booking-concurrency/05-search-and-availability.md` | 1 | 59 | Temporary | history; agents if linked | 2 / 1 / 0 | medium | fix, applied: the UTC question is now answered (BG-55); query counts not measured again |
+| `docs/booking-concurrency/06-client-sync-and-ux.md` | 1 | 60 | Temporary | history; agents if linked | 3 / 1 / 0 | medium | keep (link fixed): matches BG-20 and BG-21; app code not read again beyond those |
+| `docs/booking-concurrency/07-test-coverage.md` | 1 | 59 | Temporary | history; agents if linked | 5 / 1 / 0 | medium | fix, applied: test count and BD-10 |
+| `docs/booking-concurrency/09-write-path-audit.md` | 1 | 52 | Temporary | history; agents if linked | 6 / 1 / 0 | medium | fix, applied: BD-11 is decided; W claims checked with BG-27 to BG-35 in C2 |
+| `docs/booking-concurrency/10-fix-order.md` | 1 | 64 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | fix, applied: BD-11 and BD-12 were listed as open; old no-push rule |
+| `docs/booking-concurrency/index.md` | 1 | 90 | Temporary | history; agents if linked | 12 / 1 / 0 | medium | fix, applied: dated status replaced by a pointer to the backlog; BD-10 shown as decided |
 
 ## C4 backend and shared reference
 

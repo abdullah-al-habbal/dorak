@@ -29,9 +29,9 @@ The slot guard is correct only while every writer follows the same lock order an
 
 ## Same client, different barbers (BD-10)
 
-A client can create two bookings that overlap in time with two different barbers. Nothing in create, walk-in or reschedule looks at `client_id` in an overlap query. This is an open product decision (backlog BD-10): decide whether a client may be in two places at once, then add the check next to the client lock.
+A client can create two bookings that overlap in time with two different barbers. Nothing in create, walk-in or reschedule looks at `client_id` in an overlap query. The owner decided on 2026-11-26 that one client may not hold overlapping bookings (backlog BD-10). The check isn't built yet; it belongs next to the client lock.
 
-Proposed shape if the answer is no:
+Proposed shape:
 
 - Inside the existing client lock, scan the client's active bookings with the shared overlap predicate (`BookingAvailability::apply`) and `lockForUpdate()->exists()`, in create, walk-in and reschedule.
 - A new `ClientDoubleBookingException` extending `ConflictApiException` (409) with its own stable code (for example `client_overlap`) so the dashboard and apps can show a different message from "that slot is taken".
@@ -48,4 +48,4 @@ MySQL 8 has no exclusion constraint (PostgreSQL's `EXCLUDE USING gist` has no eq
 | Slot-claims table with a unique key per `(resource, slot_start)` at a fixed granularity, written in the same transaction | Prevents a double booking even if a lock is skipped | Heavy: a granularity decision, extra writes per booking, backfill, and reschedule must move the claims |
 | Generated "active slot key" column with a unique index | Cheaper than a table | Cannot express a range overlap, only equal starts, so it catches only identical slots |
 
-Recommended default: the first option now, the second only if the audit command ever finds a real violation or the lock discipline proves hard to keep. This is decision 1 in [the remediation plan](08-remediation-plan.md).
+Recommended default: the first option now, the second only if the audit command ever finds a real violation or the lock discipline proves hard to keep.

@@ -13,7 +13,7 @@ codeanchors:
 
 Routes: [booking concurrency](index.md) · [documentation graph](../index.md) · [testing strategy](../architecture/testing-strategy.md)
 
-What the concurrency tests prove, how they are built, and which cases are still unproven. Status on 19 November 2026 (BG-9, BG-10, BG-17).
+What the booking concurrency tests prove, how they are built, and which cases are still unproven (BG-9, BG-10, BG-17).
 
 ## Method: one process per request
 
@@ -22,7 +22,7 @@ The default Pest run wraps each test in one database transaction, so two "simult
 - `tests/Support/concurrency-helpers.php`: `concurrencyStart(method, uri, token, body, headers, env)` launches `tests/Support/concurrency-worker.php` (a Symfony Process); `concurrencyFinish` waits and returns `status`, `body` and `stderr`; `concurrencyStatuses` sorts the codes; `concurrencyLocker()` gives the test a third session to freeze a row; `concurrencyAwaitBlocked` polls the MySQL process list until the request is really stuck on a lock (no `sleep` guess); `concurrencyCommitFixtures` closes the shared transaction so the workers can see the rows.
 - The worker re-runs `TestDatabaseGuard`, takes optional JSON headers (argv 5, used for `Idempotency-Key`) and prints reported exceptions to stderr. A worker's exception is otherwise invisible, and the failure shows up only as a 500.
 - Every test ends with `migrate:fresh`, so committed rows never leak into the next test or the regular suite.
-- The group is excluded from `composer test` and runs with `composer test:concurrency`. `ConcurrentBookingsTest` has 4 tests, 11 with `ConcurrentAnswersTest`.
+- The group is excluded from `composer test` and runs with `composer test:concurrency`. The group has 12 tests: 5 in `ConcurrentBookingsTest` and 7 in `ConcurrentAnswersTest` (counted 2026-11-27, when all 12 passed in CI).
 
 Two kinds of proof, and they are not equal: *blocked-then-refused* proves a lock exists (the request waits, and re-reads state after the holder commits); a *race* proves only the outcome, because a broken lock can pass by luck. The booking races below are outcome proofs. The reschedule race is the exception: it failed before the fix, so it is a real detector.
 
@@ -48,7 +48,7 @@ Mutation checks matter here: each new test was run once against a broken impleme
 3. **Walk-in racing a client create** on one slot (a third path to the same locks).
 4. **Service lock contention** (finding 3): needs a measurement, not a pass/fail test.
 5. **Database-level backstop** for overlaps: no constraint exists, so a path that forgets the locks passes every test above. See [file 02](02-overlap-guards.md).
-6. **Client overlap (BD-10):** nothing to test until the decision is made.
+6. **Client overlap (BD-10):** decided, not built; add the test with the check.
 7. Races on subscription assign, payouts, phone verification and registration ([file 03](03-idempotency-and-uniqueness.md)).
 
 ## Rules for a new concurrency test

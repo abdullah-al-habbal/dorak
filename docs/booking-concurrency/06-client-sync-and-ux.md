@@ -11,7 +11,7 @@ codeanchors:
 
 # 6. Client sync and UX
 
-Routes: [booking concurrency](index.md) · [documentation graph](../index.md) · [idempotency](03-idempotency-and-uniqueness.md) · [remediation plan](08-remediation-plan.md)
+Routes: [booking concurrency](index.md) · [documentation graph](../index.md) · [idempotency](03-idempotency-and-uniqueness.md)
 
 What the apps do when the backend answers 409, 429, 503 or a lost response. Read against the code on 19 November 2026. The dashboard and the business app were only checked at the proxy; the claims below are about `client_app` and the shared `core` network layer unless a row says otherwise.
 

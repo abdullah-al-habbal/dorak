@@ -115,6 +115,7 @@ Facebook sign-in are unsupported (G9).
 - TD-22 A wrong password on account deletion answers 401, so the two delete calls opt out of the session-expiry signal (`keepSessionOn401`). A distinct backend code (a 422) would remove the exception; it must stay compatible with released apps.
 - TD-23 Client app: onboarding screens may clip on short viewports (a non-scrolling `Column`). Carried over from the old mobile guide; not reproduced or rechecked.
 - TD-24 Mobile price format differs by screen: the client app's stylist price and booking screens use a locale decimal pattern (12.50 shows as "12.5"), while other price lines use two fixed decimals (`MinorUnits.toMajor(...).toStringAsFixed(2)`). The amounts are right.
+- TD-25 Overlap protection is application code only: nothing in the database stops two overlapping bookings. The recommended backstop is an audit command plus a Pest test that fails on overlapping active rows per chair, barber and client, not a schema change; the options are in [booking concurrency, file 02](../booking-concurrency/02-overlap-guards.md). Taking on the cost is the owner's call.
 
 ## 5. Test gaps
 

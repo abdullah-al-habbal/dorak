@@ -77,7 +77,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [05: Search and availability](../booking-concurrency/05-search-and-availability.md)
 - [06: Client sync and UX](../booking-concurrency/06-client-sync-and-ux.md)
 - [07: Test coverage](../booking-concurrency/07-test-coverage.md)
-- [08: Remediation plan](../booking-concurrency/08-remediation-plan.md)
 - [09: Write paths outside booking](../booking-concurrency/09-write-path-audit.md)
 - [10: Fix order and conventions](../booking-concurrency/10-fix-order.md)
 

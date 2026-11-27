@@ -9,7 +9,6 @@ childnodes:
   - docs.booking-concurrency.search-and-availability
   - docs.booking-concurrency.client-sync-and-ux
   - docs.booking-concurrency.test-coverage
-  - docs.booking-concurrency.remediation-plan
   - docs.booking-concurrency.write-path-audit
   - docs.booking-concurrency.fix-order
 codeanchors:
@@ -47,7 +46,7 @@ Paths are relative to `backend/modules/` unless they start with `frontend/`, `ba
 | 2 | No transaction retries on a deadlock, and a deadlock or lock-wait timeout is not mapped: the client gets HTTP 500 `SERVER_ERROR`. Data stays correct, the request fails. | Major | Confirmed | [01](01-lock-order-and-deadlocks.md) |
 | 3 | `offered_services` rows are locked exclusively on every create. A brand-owned service is one row shared by every branch, so creates for it queue brand-wide. Throughput problem, not integrity. | Major | Confirmed | [01](01-lock-order-and-deadlocks.md) |
 | 4 | Overlap protection is application code only (row locks plus a range scan). MySQL has no exclusion constraint and there is no slot table or generated unique key. | Major | Confirmed | [02](02-overlap-guards.md) |
-| 5 | The same client can hold overlapping bookings with different barbers: `client_id` is in no overlap query. Open decision BD-10. | Major | Confirmed | [02](02-overlap-guards.md) |
+| 5 | The same client can hold overlapping bookings with different barbers: `client_id` is in no overlap query. Decided 2026-11-26: not allowed (BD-10), not implemented. | Major | Confirmed | [02](02-overlap-guards.md) |
 | 6 | No idempotency key on any write endpoint (booking create, walk-in, subscription assign, payouts, uploads, OTP send). A retry after a lost response returns 409 `double_booking`, not the original booking. | Major | Confirmed at audit time; **fixed for booking create** in `dda9ac13c` (header made required in `af8cf0565`); all other endpoints still open (see [03](03-idempotency-and-uniqueness.md)) | [03](03-idempotency-and-uniqueness.md) |
 | 7 | Missing uniqueness: `clients.phone`, one live subscription per brand, payouts, barber affiliations, saved filters, bans. | Major | Reported | [03](03-idempotency-and-uniqueness.md) |
 | 8 | Password-reset codes (client and staff) and the client email-verify code are stored in plaintext in the cache; the email code is compared with `!==`. Verify-and-consume is not atomic. | Minor | Reported | [04](04-hashing-and-tokens.md) |
@@ -63,28 +62,23 @@ Paths are relative to `backend/modules/` unless they start with `frontend/`, `ba
 5. [Search and availability](05-search-and-availability.md): slot cost, throttles, caching and invalidation.
 6. [Client sync and UX](06-client-sync-and-ux.md): dashboard and Flutter behaviour, error mapping, double-submit, retry policy, EN and AR gaps.
 7. [Test coverage](07-test-coverage.md): what the existing concurrency suite proves and the cases still missing.
-8. [Remediation plan](08-remediation-plan.md): phases, order, decisions, verification, docs to update.
-9. [Write paths outside booking](09-write-path-audit.md): findings W1 to W15 for subscriptions, one-time codes, token refresh, defaults, uniqueness, chair writes, ratings, lost updates, retried deletes and scheduling.
-10. [Fix order and conventions](10-fix-order.md): shared patterns, four phases, the parallel tests each fix needs, and the open decisions BD-11 and BD-12.
+8. [Write paths outside booking](09-write-path-audit.md): findings W1 to W15 for subscriptions, one-time codes, token refresh, defaults, uniqueness, chair writes, ratings, lost updates, retried deletes and scheduling.
+9. [Fix order and conventions](10-fix-order.md): shared patterns, four phases, the parallel tests each fix needs, and the decisions BD-11 and BD-12.
 
-## State on 19 November 2026
+## Status
 
-Done and committed (BG-9, BG-10, BG-11):
+The headline table and files 01 to 07 and 09 describe the code as reviewed on 19 November 2026; later notes are dated. What is still open is in the [backlog](../backlog/index.md), and the order of work is in the [wave tracker](../waves/index.md) and [file 10](10-fix-order.md). Fixed since the review: finding 1 (the deadlock, BG-9 and BG-17) and finding 6 for booking create only.
 
-- `097741742`: reschedule locks chair, barber, then booking row; the parallel suite `backend/tests/Concurrency/ConcurrentBookingsTest.php` (same slot, chair versus barber, reschedule versus create). It reproduced the deadlock first. [01](01-lock-order-and-deadlocks.md), [07](07-test-coverage.md).
-- `dda9ac13c`: `Idempotency-Key` on `POST /bookings` (`BookingIdempotency`, table `booking_idempotency_keys`, 48 h, daily prune), sent by `client_app`. Committed as optional. [03](03-idempotency-and-uniqueness.md).
-- `af8cf0565`: the header is required on `POST /bookings` (the owner confirmed no older build is in production); `TestCase::json()` adds a default key, and the app sends one always.
-- `03747a67b`: named throttles on booking and explore routes (BG-10); other public GET routes are BG-16.
-- `e78c0e24d`: a booking whose services mix currencies is refused (BG-11, by another session).
-- Service-lock tuning (finding 3) was deliberately not done: no throughput evidence ([01](01-lock-order-and-deadlocks.md)); it is now BG-35 in the [fix order](10-fix-order.md).
+When a fix ships:
 
-Done and proven (BG-17): `c386493f2` committed `Booking/Services/BookingLockOrder.php`, used by the confirm paths (`BookingLifecycleEloquentResolver::lockForTarget`) and by reschedule; `cb57adc6a` added the parallel confirm-versus-create test, which fails with 1213 on the old order. Both by the `booking-concurrency-idempotency-hardening` session ([board](../sessions/index.md), Q-10 and Q-12). Create keeps its own lock order and does not call the helper.
-
-Open (backlog BG-18 for finding 2, taken by `booking-concurrency-idempotency-hardening`): finding 2 (no deadlock retry or mapping), 3 to 5, 7 to 10; BD-10 is a product decision. Files 05, 06, 07 and 08 are written (by `dorak-5f`). Non-booking write findings are W1 to W15 in [09](09-write-path-audit.md), ordered in [10](10-fix-order.md).
+- Remove its backlog row and add a line to `backend/docs/feature-index.md`.
+- Edit the finding in the file that owns it, so no fixed finding reads as open.
+- Add the new case to [test coverage](07-test-coverage.md) and remove it from "Not proven yet".
+- Keep the booking-lock paragraph and the "Concurrency" section of `backend/AGENTS.md` true.
 
 ## Related
 
-- [Backlog](../backlog/index.md): BD-10 (client overlap decision), BG-16 (unthrottled public GET routes), TD-8 (version locking, and idempotency for every endpoint but booking create).
+- [Backlog](../backlog/index.md): BD-10 (client overlap, decided and not implemented), BG-16 (unthrottled public GET routes), TD-8 (version locking, and idempotency for every endpoint but booking create).
 - [Testing strategy](../architecture/testing-strategy.md): the process-based concurrency method.
 - `backend/modules/Booking/Services/BookingIdempotency.php` and `backend/docs/feature-index.md` (BG-9 entry) for the shipped idempotency behaviour.
 - `backend/docs/13-technical-concepts-part-3.md` (idempotency design sketch), `backend/docs/04-house-rules-part-2.md` (rule E1, no double booking), `backend/docs/08-edge-cases-part-2.md` (shop double booking).
