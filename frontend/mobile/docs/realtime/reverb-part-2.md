@@ -19,8 +19,10 @@ workspace. `RealtimeClient` adds the private-channel prefix internally.
 
 | Workspace | Core call | Wire channel | Events |
 | --- | --- | --- | --- |
-| Branch operations | `subscribeToBranch(branchId, ...)` | `private-branch.{branchId}` | `booking.created`, `booking.status.updated`, `booking.cancelled` |
-| Stylist workspace | `subscribeToBarber(barberId, ...)` | `private-barber.{barberId}` | `booking.status.updated`, `booking.cancelled`, `workstation.status.toggled` |
+| Branch operations | `subscribeToBranch(branchId, ...)` | `private-branch.{branchId}` | `booking.created`, `booking.status.updated`, `booking.cancelled`, `booking.rescheduled`, `brand.suspended` |
+| Stylist workspace | `subscribeToBarber(barberId, ...)` | `private-barber.{barberId}` | `booking.status.updated`, `booking.cancelled`, `booking.rescheduled`, `workstation.status.toggled` |
+| Client booking, and the owner | `subscribeToClient(clientId, ...)` | `private-client.{clientId}` | `booking.created`, `booking.status.updated`, `booking.cancelled`, `booking.rescheduled`; `brand.suspended` for an owner |
+| No app subscribes | none | `private-floor-plan.{branchId}` | `chair.status.updated`, once per real status change |
 
 Every callback receives the exact broadcast event name and decoded payload.
 Refresh the authoritative HTTP query after an event instead of attempting a
@@ -42,8 +44,8 @@ subscription.cancel();
 ```
 
 The stylist workspace follows the same lifecycle with
-`subscribeToBarber(barberId, ...)`, refreshing appointments for all three
-booking events and refreshing the persisted workstation state after
+`subscribeToBarber(barberId, ...)`, refreshing appointments for each
+booking event and refreshing the persisted workstation state after
 `workstation.status.toggled`.
 
 ## Brand suspension

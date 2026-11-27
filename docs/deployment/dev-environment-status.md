@@ -24,7 +24,10 @@ No secret appears on this page, and none must be added.
 |---|---|---|
 | Backend | `7b3814481`, deploy run [`46032475790`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46032475790), no database reset | 2026-11-27 |
 | Dashboard | Vercel status `success` for that release | 2026-11-27 |
-| `scripts/verify-deploy.sh` | all probes passed after that deploy | 2026-11-27 |
+| `scripts/verify-deploy.sh` | all probes passed | 2026-11-27 17:16 UTC |
+| Public data | `GET /api/v1/public/sitemap` 200; the dashboard's `robots.txt` had its `Disallow` and `Sitemap` lines and `sitemap.xml` had 5 entries | 2026-11-27 17:16 UTC |
+| CI for the deployed commit | Backend [`46031236827`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46031236827) and Mobile [`46031236858`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46031236858): success | 2026-11-27 |
+| Latest Dashboard CI | [`45835784334`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45835784334) (`a712aca7f`, manual run): success | 2026-11-26 |
 | Last dev database reset | deploy run [`45277277114`](https://github.com/abdullah-al-habbal/dorak/actions/runs/45277277114) (`fea9c09fd`) | 2026-11-23 |
 
 ## URLs
@@ -32,6 +35,7 @@ No secret appears on this page, and none must be added.
 | Part | Value |
 |---|---|
 | Backend (Hostinger) | `https://dev-dorak-backend.io` (origin only); health at `/api/v1/health` |
+| API base | `https://dev-dorak-backend.io/api/v1`; private channel authorization at `/broadcasting/auth` under it |
 | Dashboard (Vercel, project `dorak`) | `https://dorak-bay.vercel.app`; admin sign-in `/dashboard/admin/login` |
 | Repository | `https://github.com/abdullah-al-habbal/dorak`, branch `master` |
 
@@ -54,12 +58,13 @@ No secret appears on this page, and none must be added.
 | `FCM_PROJECT_ID`, `FCM_CREDENTIALS` | server `.env` | recorded as not set 2026-11-25; not rechecked (RR-16) |
 | five `NEXT_PUBLIC_FIREBASE_*` | Vercel | recorded as not set 2026-11-25; not rechecked (RR-16) |
 | `REVERB_*`, `BROADCAST_CONNECTION` | server `.env` | not read (RR-20) |
+| Reverb `allowed_origins` | tracked `backend/config/reverb.php` | `['*']` in the deployed commit; it must stay so for the apps (BG-51) |
 
 ## Not working or not verified
 
 | Area | State | Backlog |
 |---|---|---|
-| Realtime | a WebSocket upgrade with a dummy key answered 404 on 2026-11-27: no Reverb server | RR-20 |
+| Realtime | a WebSocket upgrade with a dummy key answered 404 (2026-11-27 17:16 UTC): no Reverb server. Delivery was proved only [locally](../waves/runbook.md#local-realtime-reverb-and-a-queue-worker) | RR-20 |
 | Queue worker and scheduler | not confirmed; a healthy `/health` doesn't prove a worker runs | RR-8 |
 | Push delivery | never verified on a phone or browser | RR-16 |
 | Seeded admin password | was still the default on 2026-11-22 on this public server; rotate before real users or data | RR-10, RR-13 |

@@ -19,6 +19,18 @@ Routes: [wave tracker](index.md) · [backlog](../backlog/index.md) · [gates](..
 - Dev is deployed with `reset_database=false`. A dev-only reset is allowed when a wave edits an existing migration; tell the owner each time. Never reset production.
 - No destructive Git commands, no `--no-verify`.
 
+## Local ports and tools
+
+| Port | Used by |
+|---|---|
+| 3307 | disposable test database (`dorak_test`, `composer test:db:up`) |
+| 8100 | local API for Playwright and realtime checks |
+| 8180 | local Reverb |
+| 3100 | dashboard server for Playwright |
+| 3000, 3001 | another project's containers on the owner's machine: don't touch |
+
+Versions on the owner's machine, 2026-11-27: PHP 8.5.4, Node 22.22.1, Flutter 3.44.5. The realtime check needs Node 22 or newer.
+
 ## Backend (`backend/`)
 
 ```bash
@@ -64,6 +76,8 @@ The full suite took about an hour (487 tests, 2026-11-26). Read the `N passed` l
 dart run melos run verify
 ```
 
+It takes longer than 8 minutes here, so run it in the background (2026-11-27).
+
 ## Release (repository root)
 
 Push, wait for CI on the commit (`gh run list --commit <sha>`), then run `bash scripts/release-dev.sh`: it deploys with no reset, waits for Vercel and runs `scripts/verify-deploy.sh`. Run it only after CI passes; it does not wait for CI itself. A docs-only push needs no backend deploy.
@@ -97,7 +111,9 @@ $barber = Modules\Barber\Models\BarberModel::query()->where("email", "barber@dor
 $branch->chairs()->orderBy("id")->firstOrFail()->forceFill(["barber_id" => $barber->id])->saveQuietly();'
 ```
 
-Reseed after `suspend`. Restart Reverb and the worker after changing code or config, and stop all three before running Pest.
+Reseed after `suspend`. Restart Reverb and the worker after changing code or config, and stop all three before running Pest. Reverb also exited by itself (code 0) when the test database was reset under it, so check it is listening before a run.
+
+Two limits of this check: the probe is a Node client that sends no `Origin`, standing in for the apps, so it doesn't exercise the Flutter client; and seeded chairs have no floor zone, which the admin chair update requires (the script sends `shared`).
 
 ## Dev limits
 

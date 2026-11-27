@@ -19,7 +19,7 @@ codeanchors:
 
 # Wave tracker
 
-**Start here.** This folder tracks the fix programme the owner approved on 2026-11-26: what is next, what was done, and the evidence.
+**Start here.** This folder tracks the fix programme the owner approved on 2026-11-26: find the open problems, rank them and fix them in waves, keeping the docs true. There are no real users or data yet.
 
 ## Now
 
@@ -27,9 +27,52 @@ codeanchors:
 |---|---|
 | Active wave | [Wave 1: realtime](wave-1.md) |
 | State | fixes released; waiting for the owner on W1.4 and Reverb hosting |
-| Next task | W1.4 once decided; otherwise start [Wave 2](wave-2.md) at W2.1 |
+| Next task | Proposed, not yet approved: close [W1.8 and W1.9](wave-1.md#tasks), then [Wave 2](wave-2.md) at W2.1. W1.4 waits for decision 1 |
 | Last release to dev | `7b3814481`, 2026-11-27 ([dev status](../deployment/dev-environment-status.md)) |
 | Blocked on the owner | [Wave 1 decisions](wave-1-decisions.md): open subscriptions (W1.4) and where Reverb runs |
+
+## Where we stand
+
+As of **2026-11-27 17:16 UTC** (20:16, UTC+3). Update this section in place.
+
+**Progress.** Wave 0 is done apart from leftovers (W6.2). Wave 1 is released with W1.4 open. Waves 2 to 6 haven't started.
+
+**Delivered and deployed to dev** (`7b3814481`, no database reset):
+
+| Change | Commit |
+|---|---|
+| Floor plan channel made private (BG-47); channels refused to non-operational branches (BG-46) | `35cdba0d4`, `f30964ca7` |
+| Five Symfony security advisories cleared | `96d2f797e` |
+| Reverb accepts app connections (BG-51). With the earlier list, which was unchanged since the file entered this repository on 2026-10-10, Reverb refused every normal origin and requests with none | `737ab9c6d` |
+| One chair event per change (BG-48) | `a6c843a7c` |
+| Business and stylist apps rejoin live updates after signing in again (BG-45; mobile code, no app release) | `8a779b7b4` |
+| Local realtime check (`scripts/realtime-local-check.py`) | `bcc7a943b`, `e90ecbc13` |
+
+**Check results** (each ran on the commit named, not all on one tree):
+
+| Check | Result | Where and when |
+|---|---|---|
+| Backend Pest | 3009 passed (13534 assertions) | local, `a6c843a7c`, 2026-11-27 |
+| Backend concurrency tests | 12 passed | local, `7b3814481`, 2026-11-27 |
+| Pint, migration guard, `composer audit` | clean | local, 2026-11-27 |
+| `melos run verify` | passed | local, BG-45 tree, 2026-11-27 |
+| Dashboard lint, typecheck, Vitest (1243) | passed | local, `a712aca7f`, 2026-11-26 |
+| Playwright | 487 passed | local, `a712aca7f`, 2026-11-26, before the Symfony update; **not run since** |
+| `npm audit` | 4 high (BG-38), 10 moderate (BG-50) | 2026-11-26 |
+| Backend CI, Mobile CI, deploy, smoke test | success | `7b3814481`, [dev status](../deployment/dev-environment-status.md) |
+
+**Not proven.**
+
+- The Flutter apps haven't received an event from a real server; the local check uses a Node test client.
+- The BG-45 tests use a fake realtime client and call `endSession()` directly. No test covers the two `app.dart` files calling it at sign-out (W1.9).
+- BG-51 loosens a setting and got only a short security note, not the review in the task executor's [security reference](../../.claude/skills/monorepo-task-executor/references/security-review.md) (W1.8). The config sets no connection limit by default and rate limiting is off by default.
+- Nothing realtime works or is verified on dev (RR-20).
+
+**Main open findings.** BG-46: open subscriptions keep receiving after suspension (reproduced). BG-52: the previous account's data stays in two cubits (source only). BG-53: an FCM payload fault might delete device tokens (source and vendor docs only; its priority is an open owner question). BG-38 and BG-50: dashboard advisories. BG-49: English replies to some Arabic requests. Queued broadcasts could wait about a minute with the documented dev cron ([decision 2](wave-1-decisions.md), not measured).
+
+**Blockers.** None for Wave 2. See "Now" and "Owner actions".
+
+**Repository.** The [documentation audit](../doc-audit/policy.md) runs alongside this programme. During it, push only when the owner asks; on 2026-11-27 17:16 UTC local `master` held unpushed audit and documentation commits on top of `origin/master` `873d3edb9`.
 
 ## Board
 
@@ -47,7 +90,7 @@ codeanchors:
 
 1. Read this page, then **only the active wave file**. Open the [runbook](runbook.md) when you need a command.
 2. For one task, read only its backlog row (`grep -n "BG-45" docs/backlog/index.md`), the files it names, and the guide of the subsystem you change.
-3. Do not read finished wave files or the dated dev status history unless a task points there.
+3. Do not read finished wave files or Git history unless a task points there.
 4. Start a new session for each wave. The opening prompt can be: "Read docs/waves/index.md and continue the active wave."
 5. Update the tracker before ending a session, so the next one needs no chat history.
 

@@ -9,8 +9,9 @@ codeanchors:
 
 # Mobile Reverb contract
 
-Status: `DONE` for the mobile client integration. A live environment walkthrough
-remains an operational verification step.
+Delivery is proved only against a local Reverb server with a test client
+(`docs/waves/runbook.md`); no hosted server or app on a device has been checked
+(backlog RR-20).
 
 `packages/core` exposes `RealtimeClient`, backed by `laravel_reverb`. It speaks
 the Pusher protocol used by Laravel Reverb, reconnects after backgrounding, and
@@ -30,8 +31,7 @@ Each app's ignored `.env` must define these values. The committed
 | `REVERB_SERVER_PATH` | Optional reverse-proxy WebSocket path, otherwise empty |
 
 The API base URL remains the source of the private-channel auth endpoint:
-`$API_BASE_URL_V1/broadcasting/auth`. Mobile apps do not call the dashboard's
-cookie-only `/api/realtime/auth` BFF route.
+`$API_BASE_URL_V1/broadcasting/auth`. The dashboard has no realtime client.
 
 The apps send no `Origin` header, so the server's `allowed_origins` must stay `['*']`
 (`backend/config/reverb.php`); with any list, Reverb refuses them (BG-51).
@@ -54,7 +54,8 @@ Laravel applies its existing `admin_api`, `branch_api`, `barber` and `client`
 channel policies at `POST /api/v1/broadcasting/auth`; the client never chooses access
 rights. A branch channel, and a branch's view of a stylist channel,
 is refused while the branch is not operational (suspended or inactive brand or
-branch). A missing token fails authorization rather than subscribing.
+branch). The check applies when a channel is joined: a subscription that is already
+open keeps receiving (BG-46). A missing token fails authorization rather than subscribing.
 
 ```dart
 final realtime = RealtimeClient(

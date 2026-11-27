@@ -98,6 +98,14 @@ a deliberate local break (or a mutation run where approved) to prove the test ca
 
 `backend/tests/Fixtures/wire-enums.json` lists the cases of the backend enums the clients mirror. The Pest test `tests/Feature/Core/WireEnumFixtureTest.php` keeps it equal to the backend (regenerate with `UPDATE_WIRE_ENUMS=1 vendor/bin/pest tests/Feature/Core/WireEnumFixtureTest.php`). The dashboard's `tests/enums/wire-enum-fixture.test.ts` and the mobile `packages/core/test/wire_enum_fixture_test.dart` fail when their enums no longer match it, so a new or renamed backend case fails in all three stacks. Text drift is guarded separately: the dashboard's `tests/locales/dictionaries.constant.test.ts` and the mobile `packages/localization/test/localization_test.dart` check English and Arabic key parity and placeholders, and `tests/Feature/Core/ValidationAttributeNamesTest.php` guards the Arabic validation names. To cover another enum, add it to `wireEnumCases()` and to the two client mirrors lists.
 
+## Realtime
+
+A change to broadcasting, channel rules or the Reverb config is also checked against a real
+local Reverb server with a queue worker ([runbook](../waves/runbook.md#local-realtime-reverb-and-a-queue-worker)):
+who may join, who receives each event, and how many times. Channel authorization tests and faked
+events can't show that a client can connect at all; Reverb once refused every connection while
+those tests passed (BG-51).
+
 ## Language guards (2026-11-23)
 
 - **Terminology:** user-facing Arabic never calls the stylist "الحلاق" (the trade "الحلاقة" is allowed). Guards: `tests/Feature/Core/ArabicTerminologyTest.php` (backend `Lang/ar`), `tests/locales/dictionaries.constant.test.ts` (dashboard) and `packages/localization/test/localization_test.dart` (mobile). Standard: [localization of machine keys](localization-of-machine-keys.md).
