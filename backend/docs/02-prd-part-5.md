@@ -10,7 +10,7 @@ Part 5 of 8 · [02 — Product Requirements Document (PRD)](02-prd.md) · [Previ
 
 ## 12. Client Intelligence Engine
 
-> Migrated from the standalone `prd.md`. This section extends the MVP scope with a personalized grooming discovery platform. Architecture-aligned version lives in `11-backend-architecture.md` §5.
+> Migrated from the standalone `prd.md`. This section extends the MVP scope with a personalized grooming discovery platform. How the backend is laid out: `11-backend-architecture.md`.
 
 ### 12.1 Context & Scope
 

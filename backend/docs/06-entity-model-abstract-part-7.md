@@ -39,4 +39,4 @@ These omissions are intentional: the model stays small enough to ship and flexib
 
 ## 6. Client Intelligence Entities (new — 15 entities, 5 modules)
 
-> Migrated from `prd.md` §5. Naming Convention: every entity uses PascalCase, ends with `Model`, and uses `HasUuids`. Translatable fields use `Spatie\Translatable\HasTranslations`. Full migration schemas in `11-backend-architecture.md` §5.8.
+> Migrated from `prd.md` §5. Naming Convention: every entity uses PascalCase, ends with `Model`, and uses `HasUuids`. Translatable fields use `Spatie\Translatable\HasTranslations`. The schema is in each module's migrations.

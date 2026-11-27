@@ -29,7 +29,7 @@ Part 3 of 3 · [04 — House Rules (The Business Laws)](04-house-rules.md) · [P
 
 ## K. Value Objects (the No-Raw-JSON law)
 
-> Enforced by `11-backend-architecture.md` §5 and implemented in `{Module}/ValuesObjects/`.
+> Implemented in `{Module}/ValuesObjects/`. Some columns are still cast to plain arrays (backlog BD-16).
 
 - **VO-1.** If a database column stores structured data, then its PHP representation **must** be a `final readonly` Value Object in `{Module}/ValuesObjects/`. Never an untyped `array`.
 - **VO-2.** If a Value Object is cast from JSON, then the cast class **must** validate all keys and throw `InvalidArgumentException` on malformed data. No silent defaults.

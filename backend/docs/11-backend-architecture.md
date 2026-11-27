@@ -1,58 +1,56 @@
 ---
 nodeid: backend.11-backend-architecture
 parentnode: backend.docs
-childnodes:
-  - backend.11-backend-architecture.group-1
+childnodes: []
 codeanchors:
   - backend/modules/
 ---
 
-# 11 — Backend Architecture (C4 Level 3: Components & Conventions)
+# 11 — Backend architecture (C4 level 3)
 
-> This is the **component level** that `10-c4-containers.md` deliberately deferred. It describes *how the Laravel backend is structured internally* — the modular layout and the **Action → Handler → EloquentResolver** flow — plus the team's coding conventions. It stays at the **structural / naming / flow** level; **actual code patterns live in the skill** `.claude/skills/laravel-baseline/module-architecture/SKILL.md`, which the Ralph loop reads when building.
-> This document **does not restate business logic** — rules live in `04-house-rules.md`, entities in `06-entity-model-abstract.md`.
+How the Laravel code is laid out. The rules for writing it are in the [backend guide](../AGENTS.md); business rules are
+in the [house rules](04-house-rules.md). The containers around it are in [level 2](10-c4-containers.md).
 
----
+## Modules
 
-## 0. Reconciliations applied (please confirm)
+The code is a modular monolith under `modules/{Name}/`, sharing one database and one request cycle. There is no `app/`
+or `routes/` directory. Every provider is listed by name in `bootstrap/providers.php`; nothing is discovered. Module
+providers extend `Modules\Core\Providers\BaseModuleServiceProvider`, which loads whichever of these exist: config,
+console, web and API routes, migrations, translations and views. API routes are mounted at `/api/v1`. `Modules\Core`
+holds shared configuration and infrastructure.
 
-Three small points were standardized from the draft you provided; correct any that don't match your existing codebase:
+A module has only the folders it needs:
 
-1. **Spelling: `EloquentResolver`** (the draft wrote `EloqunetResolver`). If your real classes use the misspelling, say so and it'll be matched verbatim everywhere.
-2. **Resolvers are per‑action, single‑method** (matching your evolved approach: "each action … one method," "the EloquentResolver … is only also one method"). The earlier draft showed a **module‑level** resolver (`UserEloquentResolver` owning *all* queries). This doc adopts the **per‑action** form (`ListAllBookingsEloquentResolver`) as the default, because it's the whole point of avoiding fat classes. 🟡 *If you actually want one resolver per module with many query methods, that's a one‑line change to the convention.*
-3. **Folders:** Actions in `Http/Actions/`, Handlers in a new `Handlers/`, resolvers kept in `Repositories/` (your draft's folder) — though `Resolvers/` would read truer now that the repository concept is gone. 🟡 *pick one.*
-
----
-
-## 1. Modular by domain
-
-Every feature is a self‑contained **module** under `modules/{Name}/`, owning its entire vertical slice. You understand one module without reading the other nineteen — the boundary is **cognitive**, not a microservice.
-
-| Layer | Location |
+| Folder | Holds |
 |---|---|
-| Migrations | `Database/Migrations/` |
-| Models | `Models/{Entity}Model.php` |
-| Data access (Eloquent) | `Repositories/{Action}EloquentResolver.php` |
-| Presentation | `Presenters/{Name}Presenter.php` |
-| HTTP — validation | `Http/Requests/` |
-| HTTP — entry points | `Http/Actions/{Action}Action.php` |
-| Logic | `Handlers/{Action}Handler.php` |
-| Translations | `lang/{en,ar}/{name}.php` |
-| Blade | `Resources/views/` |
-| Provider | `Providers/{Name}ServiceProvider.php` |
+| `Http/Actions/` | Invokable entry points: HTTP concerns only. There are no controllers |
+| `Http/Requests/`, `Http/Resources/` | Validation; response shapes |
+| `Handlers/` | The logic for one action, in `handle()` |
+| `CQRS/` | Command and query objects passed to handlers |
+| `Eloquent/Resolvers/` | The data access for one action. A few older modules use `Repositories/` |
+| `Queries/`, `Services/` | Query and domain logic shared by several handlers (see BD-16) |
+| `Models/`, `Database/` | Eloquent models; migrations, factories, seeders |
+| `Enums/`, `Constants/`, `ValuesObjects/` | Backed enums, named constants, typed values |
+| `Policies/` | Authorization |
+| `Routes/`, `Lang/` | Routes; English and Arabic strings |
 
-**Modules are not microservices** — they share one DB, one request cycle, and may call each other's resolvers directly.
+## Request flow
 
-PSR‑4 autoloading in `composer.json`:
-
-```json
-"autoload": { "psr-4": { "Modules\\": "modules/" } }
+```mermaid
+flowchart LR
+    REQ["Request"] --> ACT["Action"]
+    ACT --> HAN["Handler"]
+    HAN --> RES["Eloquent resolver"]
+    RES --> MOD["Model"]
+    ACT --> OUT["API resource and response envelope"]
 ```
 
-**Dorak's modules** map one‑to‑one onto the aggregates in `06`: `Auth`, `Brand`, `Branch`, `Chair`, `Barber`, `Affiliation`, `Service`, `Booking`, `Review`, `Job`, `Currency`, `Settings` (plus support modules as needed). One module per aggregate keeps the slice clean.
+One unit of work has one action, one handler and its resolver, named for the action (`CreateBookingAction`,
+`CreateBookingHandler`, `CreateBookingEloquentResolver`), so that no class gathers unrelated methods. Responses use
+the [standard envelope](api-response-standard.md).
 
----
+## Surfaces and engines
 
-## Continued in
-
-- [Parts 2-19](11-backend-architecture-group-1.md)
+The Laravel app serves only the API. The Next.js dashboard is the web surface for every dashboard actor, and the
+Flutter apps use the same API. The database is MySQL ([testing strategy](../../docs/architecture/testing-strategy.md));
+an earlier PostgreSQL and pgvector design for recommendations was not built. Face analysis uses `laravel/ai`.

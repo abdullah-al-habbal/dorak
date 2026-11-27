@@ -44,4 +44,4 @@ This document is the detailed Phase 5 PRD for the Recommendation Module. Related
 | `02-prd.md` | §12 Client Intelligence Engine | Full PRD overview — 5 subsystems, gaps, phasing, house rules, naming reference |
 | `04-house-rules.md` | §L Client Intelligence | All Client Intelligence house rules (CAT-1, HIST-1/2/3, FACE-1/2/3, INT-1, FAV-1, REC-1/2) |
 | `06-entity-model-abstract.md` | §6–8 | Entity definitions, ER diagram, naming reference for all 15 new entities |
-| `11-backend-architecture.md` | §13 Architecture-Aligned PRD (v2.0) | Value Object catalog, CQRS specs, module structure, pgvector setup, AI search strategy, migration schemas |
+| `11-backend-architecture.md` | all | How the backend is laid out |
