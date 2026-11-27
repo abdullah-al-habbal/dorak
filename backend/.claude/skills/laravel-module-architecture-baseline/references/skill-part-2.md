@@ -18,10 +18,8 @@ Part 2 of 2 · [Module Architecture — baseline standard](../SKILL.md) · [Prev
 - [ ] resolver uses constructor‑injected model + `newQuery()`
 - [ ] provider added to `bootstrap/providers.php`; `register()` empty; `boot()` guarded with `File::exists`
 - [ ] both `lang/en` and `lang/ar` present; no hardcoded strings
-- [ ] names follow the `docs/11` §6 convention table
+- [ ] names follow the conventions in this skill
 
 ## When this skill applies in the loop
 
 CRESCENT phase 6 **Plan/Act** — it dictates *where* code goes and *what classes* to create before any line is written. Pair with **migrations** (module‑owned tables + cascades), **validations** (the form requests), **testing** (one test per cited rule), **type‑safety** (enums/DTOs), and the recommended **rbac / tenancy‑isolation / api‑resources / concurrency‑safety** skills.
-
-> Want the concrete code patterns (an Action + Handler + EloquentResolver triad, a `final` model with Spatie translatable casts, a guarded service provider, a panel provider scanner)? Ask and they'll be added as `references/patterns.md` here.

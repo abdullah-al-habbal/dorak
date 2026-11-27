@@ -12,6 +12,9 @@ codeanchors:
 
 # Ralph Loop
 
+> **Dorak:** [dorak-context.md](../crescent/dorak-context.md) and the root `AGENTS.md` override this skill. Its GitLab server, `glab` commands and
+> Jira IDs don't apply here. Never push or open a pull request unless the owner asks.
+
 A Ralph loop is **a deterministic execution loop** over a kanban of independently-grabbable issues. One issue per iteration. No iteration starts until the previous one has either merged or been explicitly parked. The loop is AFK-safe: a human can walk away and the agent produces coherent, reviewable work.
 
 ## Preconditions (refuse to start if any fail)

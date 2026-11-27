@@ -11,6 +11,9 @@ codeanchors:
 
 # To Issues
 
+> **Dorak:** [dorak-context.md](../crescent/dorak-context.md) and the root `AGENTS.md` override this skill. Its GitLab server, `glab` commands and
+> Jira IDs don't apply here. Never push or open a pull request unless the owner asks.
+
 Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
 
 The issue tracker and triage label vocabulary should have been provided to you — run `/setup-matt-pocock-skills` if not.

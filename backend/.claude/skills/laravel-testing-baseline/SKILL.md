@@ -14,7 +14,7 @@ codeanchors:
 
 Tests are how the **specification becomes executable**. This skill turns the docs into the suite that defines "done". It is the testing *policy* and a doc-to-test map — *ask if you want the concrete Pest/PHPUnit code patterns filled in*.
 
-**Fixed stack (from `docs/11` §8):** **Pest + PHPUnit 11**, **MySQL `dorak_test`** (SQLite is not supported), tests in `tests/{Feature,Unit,Integration}/`, **factories in each `modules/{Name}/Database/Factories/`**, run with `composer test`. Tests must be deterministic and make no real external calls.
+**Fixed stack:** **Pest + PHPUnit 11**, **MySQL `dorak_test`** (SQLite is not supported), tests in `tests/{Feature,Unit,Integration}/`, **factories in each `modules/{Name}/Database/Factories/`**, run with `composer test`. Tests must be deterministic and make no real external calls.
 
 ## The core rule
 

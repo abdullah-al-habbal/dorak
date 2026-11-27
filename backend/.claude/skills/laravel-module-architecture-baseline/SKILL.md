@@ -11,11 +11,11 @@ codeanchors:
 
 # Module Architecture — baseline standard
 
-The non‑optional shape of the backend. It overrides default Laravel habits (no `BookingController@index`, no `BookingService`, no `BookingRepository`). Full rationale + folder tour: `docs/11-backend-architecture.md`. This skill is **conventions + a checklist**, not code — *ask to have the concrete Laravel code patterns added as `references/patterns.md`.*
+The non‑optional shape of the backend. It overrides default Laravel habits (no `BookingController@index`, no `BookingService`, no `BookingRepository`). How the backend is laid out today: `docs/11-backend-architecture.md`. Where the code differs from these rules, see backlog BD-16. This skill is **conventions + a checklist**, not code.
 
 ## The hard rules
 
-1. **Everything lives in a module.** New backend code goes under `modules/{Name}/`, never in `app/` (which is glue + providers only). One module per aggregate from `docs/06` (`Brand`, `Branch`, `Chair`, `Barber`, `Affiliation`, `Service`, `Booking`, `Review`, `Job`, `Currency`, `Settings`, `Auth`, …).
+1. **Everything lives in a module.** New backend code goes under `modules/{Name}/`, never in `app/` (the backend has none). One module per aggregate from `docs/06` (`Brand`, `Branch`, `Chair`, `Barber`, `Affiliation`, `Service`, `Booking`, `Review`, `Job`, `Currency`, `Settings`, `Auth`, …).
 2. **No Controller, no Service, no Repository — ever.** Use the triad instead:
    - **Action** — invokable (`__invoke`), in `Http/Actions/`, named `{Verb}{Subject}Action` (e.g. `ListAllBookingsAction`). Thin: take the validated request, call the handler, return via presenter/resource. **No business logic, no Eloquent.**
    - **Handler** — in `Handlers/`, named `{Verb}{Subject}Handler`, **exactly one method `handle()`**. All logic for that one action; enforces the relevant `docs/04` rules; calls the resolver for data.

@@ -24,7 +24,7 @@ Exports live in `docs/stitch/exports/<NNN_name>/`. Run `scripts/preflight.sh` to
 1. **Verify the plan's claimed state against the code.** `plan.md` may say "not implemented" while a feature folder exists (for example `features/discovery`). Grep the app for the feature, routes, and DTOs. If already integrated, verify and clean up; do not re-implement.
 2. **Stitch is not the product.** Compare every data point and behaviour in `code.html` with the backend contract. Inspect real routes (`backend/routes`, `packages/core` endpoints and repositories). If the design shows something the backend lacks, or the plan contradicts the code, stop and report; do not invent endpoints, fields, or fake static data.
 3. **Demo content** (names, ratings, distances, "Sponsored") may live only in tests, fixtures, or dev mocks. The exception is purely illustrative onboarding imagery, which is localized (see `onboarding-flow.md`).
-4. **Locate the owner.** Find the Track and feature-registry ID (for example `CL-09`) in `docs/index.md` and `AGENTS.md`; mirror the structure of existing screens in the same feature folder.
+4. **Locate the owner.** Check the backlog and `docs/feature-index.md` for the feature; mirror the structure of existing screens in the same feature folder.
 5. **Find every consumer.** A new route, DTO, or string usually affects: the router and `app_routes.entity.dart`, `app.dart` DI/dispose, the repository in `core`, both ARB files, existing screens that linked to a placeholder, and tests. If the screen needs backend work that does not exist, hand that to `monorepo-task-executor` rather than faking it.
 
 ## Screens that carry state

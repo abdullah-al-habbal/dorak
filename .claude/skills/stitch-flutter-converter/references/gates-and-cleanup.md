@@ -24,7 +24,7 @@ Run from `frontend/mobile/` (use `dart run melos run <script>`; `melos` is not o
 - Design-system widget test for any new shared widget.
 
 ## Docs to update
-- `docs/index.md` "Current Execution Point" and the track entry; `docs/feature-index.md`; `docs/navigation/routes.md` for new routes; the app/package `AGENTS.md` inventories and counts (ARB keys, widgets, tests).
+- `docs/feature-index.md`; `docs/navigation/routes.md` for new routes; the backlog (`docs/backlog/index.md`) for anything left open.
 - Root `docs/` only if a backend contract changed.
 
 ## Cleanup (only after the gate is green)

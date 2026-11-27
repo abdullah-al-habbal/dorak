@@ -8,7 +8,7 @@ codeanchors:
 
 # Dorak principles for a Stitch conversion
 
-All paths are relative to `frontend/mobile/` (the Melos workspace root). Authority, in order: `CLAUDE.md` (taxonomy + layering), `AGENTS.md` (inventory + decisions), the target app/package `CLAUDE.md`, then `docs/index.md` (tracks, Current Execution Point). If this file disagrees with those, they win; report the drift.
+All paths are relative to `frontend/mobile/` (the Melos workspace root). Authority, in order: `AGENTS.md` (taxonomy, layering, rules), the target app/package `AGENTS.md`, then the documents under `docs/`. If this file disagrees with those, they win; report the drift.
 
 | Principle | Rule |
 | --- | --- |

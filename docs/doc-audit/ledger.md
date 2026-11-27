@@ -451,48 +451,48 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `docs/product-research/index.md` | 1 | 22 | Research | owner, product | 3 / 1 / 0 | low | fix, applied: said the study had not run |
 | `frontend/mobile/docs/future-features/per-page/per-page.md` | 3 | 160 | Intent | owner, product | 0 / 1 / 0 | low | keep: deferred design, now listed as FT-26 |
 
-## Deferred: `.claude/` files
+## `.claude/` files
 
-Audited separately. Each row covers every tracked `.md` under that path (a row ending in `.claude/skills` covers only the files directly in it).
+Audited last, on 2026-11-27; the line counts date from before that. Each row covers every tracked `.md` under that path (a row ending in `.claude/skills` covers only the files directly in it).
 
 | Path | Files | Lines | Verdict |
 |---|---|---|---|
-| `.claude/skills` | 1 | 69 | deferred |
-| `.claude/skills/codebase-cleanup` | 1 | 64 | deferred |
-| `.claude/skills/frontend-design` | 1 | 71 | deferred |
-| `.claude/skills/interface-design` | 1 | 320 | deferred |
-| `.claude/skills/monorepo-task-executor` | 11 | 449 | deferred |
-| `.claude/skills/security-audit` | 15 | 1778 | deferred |
-| `.claude/skills/stitch-flutter-converter` | 11 | 358 | deferred |
-| `.claude/skills/test-engineering` | 3 | 373 | deferred |
-| `backend/.claude/skills` | 3 | 147 | deferred |
-| `backend/.claude/skills/10StrictBackendArchitecture` | 1 | 48 | deferred |
-| `backend/.claude/skills/12StrictEnums` | 3 | 170 | deferred |
-| `backend/.claude/skills/api-response-standard` | 1 | 73 | deferred |
-| `backend/.claude/skills/architecture` | 2 | 91 | deferred |
-| `backend/.claude/skills/coding-standards` | 2 | 97 | deferred |
-| `backend/.claude/skills/cqrs-pattern` | 4 | 219 | deferred |
-| `backend/.claude/skills/crescent` | 3 | 136 | deferred |
-| `backend/.claude/skills/database-conventions` | 1 | 58 | deferred |
-| `backend/.claude/skills/feature-flags` | 1 | 15 | deferred |
-| `backend/.claude/skills/grill-me` | 1 | 15 | deferred |
-| `backend/.claude/skills/how-to-add-a-module` | 2 | 101 | deferred |
-| `backend/.claude/skills/how-to-add-a-route` | 1 | 57 | deferred |
-| `backend/.claude/skills/laravel-attributes` | 6 | 326 | deferred |
-| `backend/.claude/skills/laravel-migrations-baseline` | 1 | 70 | deferred |
-| `backend/.claude/skills/laravel-module-architecture-baseline` | 2 | 85 | deferred |
-| `backend/.claude/skills/laravel-native-abstractions` | 55 | 2949 | deferred |
-| `backend/.claude/skills/laravel-testing-baseline` | 2 | 96 | deferred |
-| `backend/.claude/skills/logging-and-tracing` | 1 | 47 | deferred |
-| `backend/.claude/skills/prototype` | 6 | 283 | deferred |
-| `backend/.claude/skills/qa-plan` | 2 | 113 | deferred |
-| `backend/.claude/skills/ralph-loop` | 3 | 137 | deferred |
-| `backend/.claude/skills/research` | 1 | 63 | deferred |
-| `backend/.claude/skills/testing` | 1 | 46 | deferred |
-| `backend/.claude/skills/to-issues` | 2 | 102 | deferred |
-| `backend/.claude/skills/to-prd` | 2 | 95 | deferred |
-| `backend/.claude/skills/translation-conventions` | 1 | 70 | deferred |
-| `frontend/web/dashboard/.claude/skills/dashboard-folder-decoupler` | 3 | 93 | deferred |
-| `frontend/web/dashboard/.claude/skills/migrate-radix-to-base` | 10 | 2710 | deferred |
-| `frontend/web/dashboard/.claude/skills/shadcn` | 13 | 3337 | deferred |
-| `frontend/web/dashboard/.claude/skills/web-design-guidelines` | 1 | 39 | deferred |
+| `.claude/skills` | 1 | 69 | unreviewed: links and the cleanup script path checked |
+| `.claude/skills/codebase-cleanup` | 1 | 64 | fix, applied: one link now names the shared guide; other instructions not reviewed |
+| `.claude/skills/frontend-design` | 1 | 71 | not audited: treated as a third-party skill; not rewritten |
+| `.claude/skills/interface-design` | 1 | 320 | not audited: treated as a third-party skill; not rewritten |
+| `.claude/skills/monorepo-task-executor` | 11 | 449 | fix, applied: documentation gate added and guide references updated; dashboard primitive paths all exist; other instructions not reviewed |
+| `.claude/skills/security-audit` | 15 | 1778 | not audited: treated as a third-party skill; not rewritten |
+| `.claude/skills/stitch-flutter-converter` | 11 | 358 | fix, applied: removed steps for the deleted mobile tracker and corrected guide paths; the script was syntax-checked, not run |
+| `.claude/skills/test-engineering` | 3 | 373 | fix, applied: guide references and the document-check fact; the other dated facts were not rechecked |
+| `backend/.claude/skills` | 3 | 147 | fix, applied: the part-3 guide link; the rest unreviewed |
+| `backend/.claude/skills/10StrictBackendArchitecture` | 1 | 48 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/12StrictEnums` | 3 | 170 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/api-response-standard` | 1 | 73 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/architecture` | 2 | 91 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/coding-standards` | 2 | 97 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/cqrs-pattern` | 4 | 219 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/crescent` | 3 | 136 | fix, applied: a note puts the Dorak rules first; the body is unchanged (BD-18) |
+| `backend/.claude/skills/database-conventions` | 1 | 58 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/feature-flags` | 1 | 15 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/grill-me` | 1 | 15 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/how-to-add-a-module` | 2 | 101 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/how-to-add-a-route` | 1 | 57 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/laravel-attributes` | 6 | 326 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/laravel-migrations-baseline` | 1 | 70 | fix, applied: removed a pointer to a file that never existed; rules not compared with the migrations |
+| `backend/.claude/skills/laravel-module-architecture-baseline` | 2 | 85 | fix, applied: dead pointers and removed section numbers; its rules differ from the code (BD-16) |
+| `backend/.claude/skills/laravel-native-abstractions` | 55 | 2949 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/laravel-testing-baseline` | 2 | 96 | fix, applied: dead pointer and removed section number; other rules not reviewed |
+| `backend/.claude/skills/logging-and-tracing` | 1 | 47 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/prototype` | 6 | 283 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/qa-plan` | 2 | 113 | fix, applied: a note puts the Dorak rules first; the body is unchanged (BD-18) |
+| `backend/.claude/skills/ralph-loop` | 3 | 137 | fix, applied: a note puts the Dorak rules first; the body is unchanged (BD-18) |
+| `backend/.claude/skills/research` | 1 | 63 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/testing` | 1 | 46 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/to-issues` | 2 | 102 | fix, applied: a note puts the Dorak rules first; the body is unchanged (BD-18) |
+| `backend/.claude/skills/to-prd` | 2 | 95 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `backend/.claude/skills/translation-conventions` | 1 | 70 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `frontend/web/dashboard/.claude/skills/dashboard-folder-decoupler` | 3 | 93 | unreviewed: links and named paths checked and outdated terms searched; instructions not reviewed |
+| `frontend/web/dashboard/.claude/skills/migrate-radix-to-base` | 10 | 2710 | not audited: treated as a third-party skill; not rewritten |
+| `frontend/web/dashboard/.claude/skills/shadcn` | 13 | 3337 | not audited: treated as a third-party skill; not rewritten |
+| `frontend/web/dashboard/.claude/skills/web-design-guidelines` | 1 | 39 | not audited: treated as a third-party skill; not rewritten |

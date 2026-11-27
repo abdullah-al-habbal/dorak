@@ -16,12 +16,12 @@ Read these first when the area applies; this skill adds a cross-stack layer and 
 
 | Topic | Authority (wins on conflict) |
 | --- | --- |
-| Backend test database, `RefreshDatabase`, Pest layout | `backend/.claude/skills/testing`, `backend/AGENTS.md`, `backend/CLAUDE.md` |
+| Backend test database, `RefreshDatabase`, Pest layout | `backend/.claude/skills/testing`, `backend/AGENTS.md` |
 | Which docs rule or edge case needs a test | `backend/.claude/skills/laravel-testing-baseline` (the docs-to-tests map only) |
 | Gate commands and their order | `../monorepo-task-executor/references/gates.md` |
 | Security review of a diff | `../monorepo-task-executor/references/security-review.md` |
 | Dashboard test rules | `frontend/web/dashboard/AGENTS.md` ("Testing and gates") |
-| Mobile test rules | `frontend/mobile/CLAUDE.md` and the guide in the app or package |
+| Mobile test rules | `frontend/mobile/AGENTS.md` and the guide in the app or package |
 
 This skill never edits those files. It does not duplicate the task executor's gates; it says what the
 tests inside those gates must prove.
@@ -42,7 +42,7 @@ If the output differs, trust the output and report the drift.
 | Backend test helpers are global functions declared in test files (142 on this date, no duplicates); a duplicate name is a fatal error for the whole suite | `grep -rhoE "^function [A-Za-z0-9_]+" backend/tests \| sort \| uniq -d` |
 | Dashboard Vitest runs `environment: "node"`; jsdom and Testing Library are installed, but component tests need approval | `frontend/web/dashboard/vitest.config.mts`, its `AGENTS.md` |
 | Mobile gate is `dart run melos run verify` (generate incl. build_runner, analyze, taxonomy, test) | `frontend/mobile/pubspec.yaml` `melos.scripts` |
-| No markdown linter, link checker or Mermaid validator exists in the repo | `ls frontend/web/dashboard/node_modules/.bin \| grep -i -E "markdownlint\|mermaid"` |
+| No markdown linter or Mermaid validator is installed. `scripts/check_docs.py` checks links, anchors, code anchors, backlog IDs and the documentation index outside `.claude/` | `python3 scripts/check_docs.py` |
 
 ## 1. Risk-based strategy
 

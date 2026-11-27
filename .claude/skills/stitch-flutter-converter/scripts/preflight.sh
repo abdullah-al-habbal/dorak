@@ -39,12 +39,9 @@ for other in "$exports"/*/DESIGN.md; do
   [ -f "$dir/DESIGN.md" ] && { cmp -s "$dir/DESIGN.md" "$other" && echo "  same as ${other#$exports/}" || echo "  DIFFERS from ${other#$exports/}"; }
 done
 echo
-echo "== current execution point =="
-grep -n "Current Track" docs/index.md | head -3
-echo
 echo "== guides to read =="
-for g in CLAUDE.md AGENTS.md docs/index.md docs/navigation/routes.md docs/state_management/conventions.md \
-  docs/architecture/coding-conventions.md packages/design_system/AGENTS.md packages/localization/AGENTS.md; do
+for g in AGENTS.md docs/index.md docs/navigation/routes.md docs/state-management/conventions.md \
+  docs/design-system/index.md packages/design_system/AGENTS.md packages/localization/AGENTS.md; do
   [ -f "$g" ] && echo "frontend/mobile/$g"
 done
-echo "plus the target app's CLAUDE.md/AGENTS.md and the existing screens in the same feature folder"
+echo "plus the target app's AGENTS.md and the existing screens in the same feature folder"

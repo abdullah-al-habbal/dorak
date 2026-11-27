@@ -27,5 +27,3 @@ Part 2 of 2 · [Testing — baseline standard](../SKILL.md) · [Previous](../SKI
 ## When this skill applies in the loop
 
 Phase 6 **Test / Review / Verify**, and all of phase 7 **QA**. It defines the stopping conditions the loop checks before marking a ticket Done.
-
-> Want the concrete Pest/PHPUnit patterns (the parallel-request concurrency harness, factory setups, the tenancy-isolation helper)? Ask and they'll be added as `references/patterns.md` in this skill.

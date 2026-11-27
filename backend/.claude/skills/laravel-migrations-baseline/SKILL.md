@@ -10,7 +10,7 @@ codeanchors:
 
 # Migrations — baseline standard
 
-Schema is where the **entities** (`docs/06-entity-model-abstract.md`) and the **cascade laws** (`docs/04-house-rules.md`) become real. Get the cascades wrong and you violate the product's core promises (a deleted brand must not delete barbers; a leaving barber must not lose their data). This skill is **conventions + a checklist**, not code — *ask if you want the concrete Laravel patterns filled in*.
+Schema is where the **entities** (`docs/06-entity-model-abstract.md`) and the **cascade laws** (`docs/04-house-rules.md`) become real. Get the cascades wrong and you violate the product's core promises (a deleted brand must not delete barbers; a leaving barber must not lose their data). This skill is **conventions + a checklist**, not code.
 
 ## Non-negotiables
 
@@ -66,5 +66,3 @@ Before marking a migration done:
 ## When this skill applies in the loop
 
 Phase 6 **Act** (creating/altering schema). Pair with **type-safety** (enums), **concurrency-safety** (booking integrity), and **archive-file** (before destructive change). The matching tests come from the **testing** skill — every cascade rule above should have a test proving it.
-
-> Want the actual Laravel migration code patterns for these (UUIDs, JSON columns, enum casts, `cascadeOnDelete` vs `nullOnDelete`, the polymorphic columns)? Ask and they'll be added as a `references/patterns.md` in this skill.

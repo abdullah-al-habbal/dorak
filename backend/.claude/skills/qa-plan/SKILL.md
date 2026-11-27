@@ -11,6 +11,9 @@ codeanchors:
 
 # QA Plan
 
+> **Dorak:** [dorak-context.md](../crescent/dorak-context.md) and the root `AGENTS.md` override this skill. Its GitLab server, `glab` commands and
+> Jira IDs don't apply here. Never push or open a pull request unless the owner asks.
+
 After the Ralph loop closes the last issue, the feature is **code-complete** — not **shipped**. The QA plan exists so a human can walk the feature end-to-end with confidence, and so anything the agent could not have verified is surfaced before the feature reaches users.
 
 ## Preconditions

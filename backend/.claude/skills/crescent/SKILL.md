@@ -12,6 +12,9 @@ codeanchors:
 
 # CRESCENT — 7-Phase Feature Delivery State Machine
 
+> **Dorak:** [dorak-context.md](dorak-context.md) and the root `AGENTS.md` override this skill. Its GitLab server, `glab` commands and
+> Jira IDs don't apply here. Never push or open a pull request unless the owner asks.
+
 CRESCENT is a strict state machine. You enter at Phase 1 and advance one phase at a time. You do NOT skip, reorder, or merge phases. Each phase has an entry artifact on disk, an exit artifact on disk, and a single dispatch target.
 
 Before any work, load [dorak-context.md](dorak-context.md) — it carries Zad team naming, paths, and tooling rules that every phase obeys.

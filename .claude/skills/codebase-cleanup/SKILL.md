@@ -60,5 +60,5 @@ Afterwards:
 
 ## Related
 
-- Hygiene policy: [Monorepo hygiene](../../../CLAUDE.md) ([AGENTS.md](../../../AGENTS.md)).
+- Hygiene policy: [Monorepo hygiene](../../../AGENTS.md).
 - Task close-out step 8a in the [task executor](../monorepo-task-executor/SKILL.md) uses this skill.

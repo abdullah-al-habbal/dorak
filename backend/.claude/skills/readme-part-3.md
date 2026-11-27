@@ -34,5 +34,5 @@ laravel-native-abstractions/
 Apply the same structure to any skill that outgrows ~500 lines: keep `SKILL.md` as the core
 rules plus a navigation table that says what each supporting file contains and when to load it.
 
-Also read the project-level [AGENTS.md](../../AGENTS.md) for quick-start commands and config
-notes, and [CLAUDE.md](../../CLAUDE.md) for the build protocol.
+Also read the project-level [AGENTS.md](../../AGENTS.md) for quick-start commands, config
+notes and the build protocol.
