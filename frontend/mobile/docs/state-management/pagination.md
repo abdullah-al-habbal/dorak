@@ -12,10 +12,7 @@ codeanchors:
 
 # Pagination
 
-Status: `IN_PROGRESS` — the contract (`Paged<T>`) exists and is tested, but **no
-feature consumes it yet**. It is not marked `DONE` until a real feed validates
-it (expected: Discovery, Stitch 016). If 016 finds the contract does not fit,
-change `Paged<T>` — do not work around it.
+Feature states in the client and business apps hold a `Paged<T>`.
 
 The legacy `PagePaginationNotifier` / `ScrollPaginationNotifier` `ChangeNotifier`s
 were deleted in Phase 4; they had no production consumers. Do not reintroduce a

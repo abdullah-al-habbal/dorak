@@ -8,11 +8,10 @@ codeanchors:
 
 Part 3 of 3 · [Storage](storage.md) · [Previous](storage-part-2.md)
 
-## Feed cache (Track 05 — cache strategy, `DONE`)
+## Feed cache
 
 `FeedCache` / `SharedFeedCache` (`feed_cache.storage.dart`) is the cache
-strategy. Its first consumer is Discovery 016
-(the Discovery feed); nothing else reads it yet.
+strategy. The client app's Discovery bloc reads it.
 
 Design:
 
@@ -46,9 +45,6 @@ if (cached != null && !cached.isStale(DateTime.now())) {
   // render from cache; refresh in the background
 }
 ```
-
-Profile-completion persistence is still absent (Track 05 objective, consumer is
-Track 17). Locale is still in-memory only and resets on restart.
 
 ## Verification
 

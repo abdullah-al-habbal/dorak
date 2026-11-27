@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-455 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+449 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 274 files = 163 logical documents |
+| Outside `.claude/` | 268 files = 162 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -29,7 +29,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
 | C4 backend and shared reference | 28 | 28 |
-| C5 mobile and dashboard | 43 | 19 |
+| C5 mobile and dashboard | 42 | 26 |
 | C6 product intent and research | 41 | 0 |
 
 The pilot also reads the push parts of `README.md`, the push handover and the backlog, which sit in C1 and C2.
@@ -207,6 +207,12 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `frontend/mobile/docs/navigation/guards-part-2.md` | merge, applied: into the main page | C5 mobile flows and navigation |
 | `frontend/mobile/docs/navigation/routes-part-2.md` | merge, applied: into the main page | C5 mobile flows and navigation |
 | `frontend/mobile/docs/flows/app-launch-part-2.md` | merge, applied: into the main page | C5 mobile flows and navigation |
+| `frontend/mobile/apps/client_app/docs/runtime/app-lifecycle-part-2.md` | merge, applied: one lifecycle page now; this was a second copy with an old track's plan | C5 mobile state and lifecycle |
+| `frontend/mobile/apps/client_app/docs/runtime/app-lifecycle-part-3.md` | merge, applied: one lifecycle page now; this was a second copy with an old track's plan | C5 mobile state and lifecycle |
+| `frontend/mobile/apps/client_app/docs/runtime/app-lifecycle-part-4.md` | merge, applied: one lifecycle page now; this was a second copy with an old track's plan | C5 mobile state and lifecycle |
+| `frontend/mobile/apps/client_app/docs/runtime/app-lifecycle.md` | merge, applied: one lifecycle page now; this was a second copy with an old track's plan | C5 mobile state and lifecycle |
+| `frontend/mobile/docs/runtime/app-lifecycle-part-2.md` | merge, applied: into the main page | C5 mobile state and lifecycle |
+| `frontend/mobile/docs/state-management/index-part-2.md` | delete, applied: said paged lists and the concurrency package had no user, which is no longer true | C5 mobile state and lifecycle |
 
 ## Findings so far
 
@@ -357,19 +363,18 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/apps/business_app/docs/feature-index.md` | 1 | 47 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/apps/client_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/mobile/apps/client_app/docs/feature-index.md` | 4 | 231 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/apps/client_app/docs/runtime/app-lifecycle.md` | 4 | 215 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/apps/stylist_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/mobile/apps/stylist_app/docs/feature-index.md` | 1 | 42 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/architecture/decisions/0001-bloc-in-core.md` | 1 | 69 | Decisions | owner, engineers | 5 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/architecture/decisions/0002-design-system-go-router.md` | 1 | 55 | Decisions | owner, engineers | 2 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/authentication/auth-flow.md` | 2 | 132 | Reference | engineers, agents | 3 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/authentication/auth-flow.md` | 2 | 132 | Reference | engineers, agents | 3 / 1 / 0 | medium | fix, applied: stale not-implemented list and backend mail claims removed; the rest wasn't compared with the code |
 | `frontend/mobile/docs/authentication/password-recovery.md` | 3 | 172 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/exceptions.md` | 1 | 89 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/interceptors.md` | 2 | 136 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/networking.md` | 3 | 137 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/result-state.md` | 1 | 58 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/core/session.md` | 5 | 267 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/core/storage.md` | 3 | 157 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/core/session.md` | 5 | 267 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: banned-account signal added and a stale not-implemented list removed; the rest wasn't compared with the code |
+| `frontend/mobile/docs/core/storage.md` | 3 | 157 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: feed cache use corrected from the Discovery bloc; the storage sources weren't readable under this session's permission settings, so the rest is unchecked |
 | `frontend/mobile/docs/design-system/index.md` | 1 | 31 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: one page checked against the widget constructors and their use |
 | `frontend/mobile/docs/feature-index.md` | 5 | 279 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/flows/app-launch.md` | 1 | 30 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: the gate now also checks profile completion |
@@ -379,16 +384,16 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/docs/navigation/guards.md` | 1 | 24 | Reference | engineers, agents | 2 / 1 / 0 | medium | fix, applied: rewritten from the router |
 | `frontend/mobile/docs/navigation/routes.md` | 1 | 45 | Reference | engineers, agents | 1 / 1 / 1 | medium | fix, applied: rewritten from the router; it described a placeholder home and no notification routing |
 | `frontend/mobile/docs/realtime/reverb.md` | 2 | 156 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/runtime/app-lifecycle.md` | 2 | 99 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/runtime/app-lifecycle.md` | 1 | 25 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: checked against app.dart and the session bloc |
 | `frontend/mobile/docs/screens/authentication/create-new-password.md` | 1 | 44 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep: names checked against the source; behaviour details not rechecked |
 | `frontend/mobile/docs/screens/authentication/forgot-password.md` | 1 | 42 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep, with history removed: names checked against the source; layout, timing and localization details not rechecked |
 | `frontend/mobile/docs/screens/authentication/password-reset-success.md` | 1 | 48 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep, with history removed: names checked against the source; layout, timing and localization details not rechecked |
 | `frontend/mobile/docs/screens/authentication/recovery-otp.md` | 1 | 43 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep: names checked against the source; behaviour details not rechecked |
 | `frontend/mobile/docs/state-management/async-state.md` | 3 | 145 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/state-management/conventions.md` | 5 | 285 | Reference | engineers, agents | 7 / 1 / 0 | medium | fix, applied: merged the older state rules; the Cubit ban conflicts with the code (BD-17) |
-| `frontend/mobile/docs/state-management/index.md` | 2 | 98 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/state-management/pagination.md` | 5 | 263 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/state-management/refresh.md` | 2 | 103 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/state-management/index.md` | 1 | 44 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: stale open items removed |
+| `frontend/mobile/docs/state-management/pagination.md` | 5 | 263 | Reference | engineers, agents | 4 / 1 / 0 | medium | fix, applied: it said no feature used the contract; the rest wasn't compared with the code |
+| `frontend/mobile/docs/state-management/refresh.md` | 2 | 103 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: stale status removed; the rest wasn't compared with the code |
 | `frontend/mobile/packages/core/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/mobile/packages/design_system/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/mobile/packages/feature_error_feedback/README.md` | 1 | 15 | Reference | engineers, agents | 0 / 0 / 0 | medium | keep: pointer and test command, read |

@@ -6,7 +6,6 @@ childnodes:
   - mobile.state-management.conventions
   - mobile.state-management.pagination
   - mobile.state-management.refresh
-  - mobile.state-management.part-2
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---
@@ -28,11 +27,10 @@ Everything else on this page elaborates one part of it.
 | [`async-state.md`](./async-state.md) | The five async conditions, `isLoading` vs `isSubmitting`, the `_run` idiom, error mapping, the retry-guard trap |
 | [`refresh.md`](./refresh.md) | First-load vs load-more vs refresh; refresh vs filter change; failed refresh |
 | [`pagination.md`](./pagination.md) | The `Paged<T>` contract, the real backend envelope, the UI decision matrix |
-| `background_operations.md` | **Intentionally empty** — see below |
 
 ## The short version
 
-- **Pure Bloc.** Every state change is an event. No Cubit.
+- **Pure Bloc.** Every state change is an event. No Cubit (the code differs: backlog BD-17).
 - **No `ChangeNotifier` application state, no Provider, no Riverpod, no GetIt.**
 - Shared infrastructure blocs live in `packages/core` with pure `bloc`
   ([ADR 0001](../architecture/decisions/0001-bloc-in-core.md)); feature blocs
@@ -44,7 +42,3 @@ Everything else on this page elaborates one part of it.
   `AppRouter`.
 - Errors are state, not exceptions to rethrow. The UI localizes them; a backend
   `message` is never rendered.
-
-## Continued in
-
-- [Part 2: Current blocs](index-part-2.md)

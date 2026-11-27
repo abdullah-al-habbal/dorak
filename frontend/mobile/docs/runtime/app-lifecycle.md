@@ -1,57 +1,25 @@
 ---
 nodeid: mobile.runtime.app-lifecycle
 parentnode: mobile.docs
-childnodes:
-  - mobile.runtime.app-lifecycle.part-2
+childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
 
-# Application Lifecycle
+# Application lifecycle (client app)
 
-Status: `DONE`
+`DorakApp` (`apps/client_app/lib/app.dart`) owns one `AppLifecycleListener`, created in `initState` and disposed
+with it, so rebuilds don't add listeners. On resume, `_probeSessionOnResume` sends `RestoreRequested` again, because
+a token can be revoked while the app is in the background. It does nothing while the status is `unknown` (the startup
+restore owns it) or while a restore or sign-out is running.
 
-Part of **Track 10** (`docs/index.md`). The remaining objective, "application
-lifecycle", is implemented in `apps/client_app/lib/app.dart` and covered by
-`apps/client_app/test/widget_test.dart`. This doc records the mechanism, the
-guards, and the deliberately-owned gaps so they are not re-derived.
+The restore has the same results as at start ([session](../core/session.md)): a valid token is rotated and kept; a
+401 or 403 clears it and the device becomes a guest; a network failure keeps the session. Other lifecycle states are
+ignored.
 
-## What the app does on resume
+**Limitation:** a resume that finds a revoked token raises no signal, so the user stays on the current screen in the
+guest state. There are no per-route guards ([guards](../navigation/guards.md)).
 
-`_DorakAppState` owns exactly one `AppLifecycleListener`, built in `initState`
-and disposed in `dispose`:
-
-```dart
-_lifecycleListener = AppLifecycleListener(onResume: _probeSessionOnResume);
-```
-
-`_probeSessionOnResume` re-runs the session restore:
-
-```dart
-final session = _sessionBloc.state;
-
-// The startup restore owns the `unknown` status. Racing it would resolve
-// the session twice behind the splash's `session.ready` completer.
-if (session.status == AuthStatus.unknown) return;
-
-// A restore or logout is already running. `RestoreRequested` uses Bloc's
-// default concurrent transformer, so a second one would overlap the first.
-if (session.isLoading) return;
-
-_sessionBloc.add(RestoreRequested());
-```
-
-## Why
-
-A session can die while the app is backgrounded — Sanctum tokens carry no
-server-side expiry and there is no push channel telling the client a token was
-revoked. Without a resume probe the app keeps rendering authenticated UI until
-some later request happens to return a 401.
-
-`RestoreRequested` already defines the correct semantics (see
-`docs/core/session.md`): a valid token rotates and stays; a 401/403 clears to
-`guest`; a `NetworkException` (offline resume) keeps the session.
-
-## Continued in
-
-- [Part 2: Event coverage](app-lifecycle-part-2.md)
+`business_app` and `stylist_app` have no resume listener. Tests: the `application lifecycle` group in
+`apps/client_app/test/widget_test.dart`, driven through the full chain `inactive → hidden → paused → hidden →
+inactive → resumed`, because the framework rejects jumps.

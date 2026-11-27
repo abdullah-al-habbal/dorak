@@ -12,7 +12,7 @@ Part 5 of 5 · [Session Management](session.md) · [Previous](session-part-4.md)
 
 Signals are split by owner, so each bloc's state is type-safe:
 
-* `SessionSignal` (`none | sessionExpired | authenticationRequired`) lives on
+* `SessionSignal` (`none | sessionExpired | accountBanned | authenticationRequired`) lives on
   `SessionState`. `SessionBloc` raises `sessionExpired` (`UnauthorizedDetected`)
   and `authenticationRequired` (`RequireAuthentication`).
 * `AuthSignal` (`none | loginSucceeded | registrationSucceeded |
@@ -52,14 +52,6 @@ clears a stale prompt.
 The app layer (`AppRouter`, see `navigation/guards.md`) owns the two stream
 listeners that re-run the router redirect and react to signals. Core never
 imports app code and never navigates.
-
-## Not yet implemented
-
-Social login and profile-edit endpoints. Password recovery and change-password
-are built in `client_app` (`password_recovery` and `change_password` blocs).
-`client_app` has no logout affordance: `SessionBloc` handles `LogoutRequested`
-but no client screen dispatches it (`business_app` exposes logout on the
-operations screen).
 
 ## Verification
 

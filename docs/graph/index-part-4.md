@@ -15,10 +15,6 @@ Part 4 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-3.md)
 
 - [Feature Index](../../frontend/mobile/apps/client_app/docs/feature-index.md)
 
-### `frontend/mobile/apps/client_app/docs/runtime/`
-
-- [App Lifecycle](../../frontend/mobile/apps/client_app/docs/runtime/app-lifecycle.md)
-
 ### `frontend/mobile/apps/stylist_app/`
 
 - [Agents](../../frontend/mobile/apps/stylist_app/AGENTS.md)

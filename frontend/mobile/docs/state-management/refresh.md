@@ -9,8 +9,7 @@ codeanchors:
 
 # Refresh
 
-Status: `DONE` — conventions defined. No screen implements pull-to-refresh yet;
-the first will be the Discovery feed (Stitch 016).
+Screens with pull-to-refresh use `RefreshIndicator`.
 
 ---
 
