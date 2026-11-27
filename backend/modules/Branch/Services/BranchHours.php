@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Branch\Services;
 
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
@@ -18,10 +19,12 @@ use Modules\Branch\Models\BranchOpeningHourModel;
  * "today's hours". A date's hours are its override when one exists, else the
  * weekly row for its weekday. A branch with no hours configured at all is
  * treated as always open, the same backward-compatible rule as barber
- * schedules (Task 22). Times are wall-clock `H:i` compared in UTC.
+ * schedules (Task 22). Times are wall-clock `H:i` in the branch's time zone.
  */
 final class BranchHours
 {
+    public function __construct(private readonly BranchTimeZones $zones) {}
+
     /**
      * Replaces the listed days. A day carries `shifts`, or the legacy single
      * interval, or is closed; days left out of `$week` are untouched.
@@ -130,12 +133,25 @@ final class BranchHours
             : null;
     }
 
-    /** Whether `[startsAt, endsAt)` lies inside the branch's open hours that day. */
+    /**
+     * The hours for today's date at the branch.
+     *
+     * @return array{date: string, is_closed: bool, opens_time: ?string, closes_time: ?string, shifts: list<array{opens_time: string, closes_time: string}>, source: BranchHoursSource}|null
+     */
+    public function today(string $branchId): ?array
+    {
+        return $this->forDate($branchId, $this->zones->local($branchId, Carbon::now()));
+    }
+
+    /** Whether `[startsAt, endsAt)` lies inside the branch's open hours that day, on the branch's clock. */
     public function covers(?string $branchId, CarbonInterface $startsAt, CarbonInterface $endsAt): bool
     {
         if ($branchId === null) {
             return true;
         }
+
+        $startsAt = $this->zones->local($branchId, $startsAt);
+        $endsAt = $this->zones->local($branchId, $endsAt);
 
         $configured = BranchOpeningHourModel::query()->where('branch_id', $branchId)->exists()
             || BranchHoursOverrideModel::query()->where('branch_id', $branchId)->whereDate('override_date', $startsAt->toDateString())->exists();

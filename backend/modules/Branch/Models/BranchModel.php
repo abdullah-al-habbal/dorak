@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -87,6 +88,12 @@ class BranchModel extends Authenticatable
     public function hoursOverrides(): HasMany
     {
         return $this->hasMany(BranchHoursOverrideModel::class, 'branch_id');
+    }
+
+    /** @return HasOne<BranchTimeZoneModel, $this> */
+    public function timeZoneSetting(): HasOne
+    {
+        return $this->hasOne(BranchTimeZoneModel::class, 'branch_id');
     }
 
     public function brand(): BelongsTo

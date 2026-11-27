@@ -12,6 +12,7 @@ use Modules\Booking\Queries\AtHomeBookingRules;
 use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Services\BranchHours;
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\Chair\Models\ChairModel;
 use Modules\OfferedService\Models\OfferedServiceModel;
 use Modules\OfferedService\Services\EffectiveServiceTerms;
@@ -21,10 +22,11 @@ final class ListSlotsEloquentResolver
     public function __construct(
         private readonly BranchHours $branchHours,
         private readonly EffectiveServiceTerms $serviceTerms,
+        private readonly BranchTimeZones $zones,
     ) {}
 
     /**
-     * @return list<array{starts_at: Carbon, ends_at: Carbon}>
+     * @return list<array{starts_at: Carbon, ends_at: Carbon, time_zone: string}>
      */
     public function resolve(ListSlotsQuery $query): array
     {
@@ -56,12 +58,17 @@ final class ListSlotsEloquentResolver
     }
 
     /**
-     * @return list<array{starts_at: Carbon, ends_at: Carbon}>
+     * The free slots of one calendar day on the branch's clock, as UTC instants.
+     *
+     * @return list<array{starts_at: Carbon, ends_at: Carbon, time_zone: string}>
      */
     private function freeSlots(ListSlotsQuery $query, ?string $barberId, ?string $branchId, int $duration, int $step, int $minLead): array
     {
-        $dayStart = $query->date->copy()->utc()->startOfDay();
-        $dayEnd = $dayStart->copy()->addDay();
+        $zone = $this->zones->for($branchId);
+        // Both midnights are read in the zone, so a day with a clock change keeps its real length.
+        $localDay = Carbon::parse($query->date->toDateString(), $zone)->startOfDay();
+        $dayStart = $localDay->copy()->utc();
+        $dayEnd = $localDay->copy()->addDay()->startOfDay()->utc();
         $earliest = Carbon::now()->utc()->addMinutes($minLead);
 
         $slots = [];
@@ -71,9 +78,9 @@ final class ListSlotsEloquentResolver
             $endsAt = $start->copy()->addMinutes($duration);
 
             if (! $endsAt->greaterThan($dayEnd) && ! $start->lessThan($earliest)
-                && $this->isFree($query, $barberId, $start, $endsAt)
+                && $this->isFree($query, $barberId, $start, $endsAt, $zone)
                 && $this->branchHours->covers($branchId, $start, $endsAt)) {
-                $slots[] = ['starts_at' => $start->copy(), 'ends_at' => $endsAt];
+                $slots[] = ['starts_at' => $start->copy(), 'ends_at' => $endsAt, 'time_zone' => $zone];
             }
 
             $start = $start->copy()->addMinutes($step);
@@ -149,6 +156,7 @@ final class ListSlotsEloquentResolver
         ?string $barberId,
         Carbon $startsAt,
         Carbon $endsAt,
+        string $timeZone,
     ): bool {
         if ($query->chairId !== null && $this->overlaps('chair_id', $query->chairId, $startsAt, $endsAt)) {
             return false;
@@ -158,7 +166,7 @@ final class ListSlotsEloquentResolver
             return false;
         }
 
-        if ($barberId !== null && ! BarberScheduleAvailability::covers($barberId, $startsAt, $endsAt)) {
+        if ($barberId !== null && ! BarberScheduleAvailability::covers($barberId, $startsAt, $endsAt, $timeZone)) {
             return false;
         }
 

@@ -34,7 +34,8 @@ final class ListBarberSlotsRequest extends BaseApiFormRequest
     public function toQuery(string $barberId): ListSlotsQuery
     {
         return new ListSlotsQuery(
-            date: Carbon::parse($this->string('date')->toString())->utc(),
+            // A calendar date; the slot resolver reads it in the booking's zone.
+            date: Carbon::parse($this->string('date')->toString(), 'UTC'),
             serviceIds: $this->stringList('service_ids'),
             barberId: $barberId,
             atHomeLatitude: $this->boolean('is_at_home') ? $this->float('latitude') : null,

@@ -6,6 +6,7 @@ use Carbon\CarbonImmutable;
 use Modules\Admin\Models\AdminModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Services\BranchHours;
+use Modules\Branch\Services\BranchTimeZones;
 
 const MONDAY = 1;
 
@@ -113,6 +114,8 @@ describe('Dashboard branch opening hours', function (): void {
     });
 
     it('covers a booking only when it fits inside a single shift', function (): void {
+        // The instants below are written on the UTC clock.
+        app(BranchTimeZones::class)->set($this->branch->id, 'UTC');
         $this->authenticateDashboardActor($this->branch);
         $this->putJson($this->url, ['hours' => splitWeek()])->assertOk();
         $hours = app(BranchHours::class);

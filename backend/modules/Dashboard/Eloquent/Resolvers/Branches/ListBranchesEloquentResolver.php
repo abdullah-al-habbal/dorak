@@ -14,6 +14,7 @@ final class ListBranchesEloquentResolver
     public function resolve(ListBranchesQuery $query): LengthAwarePaginator
     {
         return BranchModel::query()
+            ->with('timeZoneSetting')
             ->when($query->brandIds !== null, fn ($builder) => $builder->whereIn('brand_id', $query->brandIds))
             ->when($query->branchIds !== null, fn ($builder) => $builder->whereKey($query->branchIds))
             ->when($query->status !== null, fn ($builder) => $builder->where('status', $query->status))

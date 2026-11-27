@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Barber\Http\Resources\Shared\PublicBarberResource;
 use Modules\Branch\Http\Resources\Shared\ChairResource;
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\OfferedService\Http\Resources\Shared\ServiceResource;
 use Modules\OfferedService\Services\EffectiveServiceTerms;
 
@@ -17,11 +18,15 @@ final class BookingResource extends JsonResource
     {
         $endsAt = $this->offsetGet('ends_at');
         $this->applyBrandTerms();
+        $branchId = $this->branchId();
+        $zones = app(BranchTimeZones::class);
 
         return [
             'id' => $this->id,
             'starts_at' => $this->starts_at->toIso8601String(),
             'ends_at' => $endsAt instanceof Carbon ? $endsAt->toIso8601String() : null,
+            'timezone' => $zones->for($branchId),
+            'utc_offset_minutes' => $zones->offsetMinutes($branchId, $this->starts_at),
             'booking_status' => $this->booking_status,
             'payment_method' => $this->payment_method,
             'payment_status' => $this->payment_status,
@@ -40,8 +45,14 @@ final class BookingResource extends JsonResource
             return;
         }
 
-        $branchId = $this->branch_id ?? ($this->resource->relationLoaded('chair') ? $this->chair?->branch_id : null);
         $terms = app(EffectiveServiceTerms::class);
-        $terms->attach($this->services, $terms->brandIdForBranch(is_string($branchId) ? $branchId : null));
+        $terms->attach($this->services, $terms->brandIdForBranch($this->branchId()));
+    }
+
+    private function branchId(): ?string
+    {
+        $branchId = $this->branch_id ?? ($this->resource->relationLoaded('chair') ? $this->chair?->branch_id : null);
+
+        return is_string($branchId) ? $branchId : null;
     }
 }

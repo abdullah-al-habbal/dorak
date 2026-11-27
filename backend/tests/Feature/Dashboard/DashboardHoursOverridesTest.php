@@ -7,6 +7,7 @@ use Modules\Admin\Models\AdminModel;
 use Modules\Barber\Models\BarberModel;
 use Modules\Branch\Models\BranchHoursOverrideModel;
 use Modules\Branch\Models\BranchModel;
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\Brand\Constants\BrandFeatureConstants;
 use Modules\Brand\Models\BrandModel;
 use Modules\Brand\Services\BrandFeatures;
@@ -203,6 +204,8 @@ describe('A special day changes what clients can book (NS-12)', function (): voi
     });
 
     it('limits slots to the special hours and refuses a booking outside them', function (): void {
+        // The slot and booking times below are read on the UTC clock.
+        app(BranchTimeZones::class)->set($this->branch->id, 'UTC');
         $this->authenticateDashboardActor($this->branch);
         $this->putJson(overrideUrl($this->branch, $this->date), ['opens_time' => '10:00', 'closes_time' => '12:00'])->assertOk();
 

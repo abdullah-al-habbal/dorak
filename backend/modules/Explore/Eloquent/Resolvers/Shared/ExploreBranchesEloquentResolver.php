@@ -55,6 +55,7 @@ final class ExploreBranchesEloquentResolver
         $subQuery = $this->applyFilters($subQuery, $payload);
 
         return BranchModel::query()->fromSub($subQuery, 'branches_sub')
+            ->with('timeZoneSetting')
             ->where('distance', '<', $payload->radius)
             ->orderBy('distance');
 

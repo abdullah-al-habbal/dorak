@@ -9,7 +9,8 @@ use Modules\Barber\Models\BarberScheduleModel;
 
 final class BarberScheduleAvailability
 {
-    public static function covers(?string $barberId, Carbon $startsAt, Carbon $endsAt): bool
+    /** Schedule times are wall-clock times in `$timeZone`, the zone of the branch the booking is at. */
+    public static function covers(?string $barberId, Carbon $startsAt, Carbon $endsAt, string $timeZone): bool
     {
         if ($barberId === null) {
             return true;
@@ -23,6 +24,15 @@ final class BarberScheduleAvailability
         // decision is made; configured schedules are enforced.
         if (! $hasSchedule) {
             return true;
+        }
+
+        $startsAt = $startsAt->copy()->setTimezone($timeZone);
+        $endsAt = $endsAt->copy()->setTimezone($timeZone);
+
+        // A schedule is one stretch of a day, so a booking that runs into the next day is outside it. Without
+        // this, an end of 00:00 compares as earlier than any closing time.
+        if (! $startsAt->isSameDay($endsAt)) {
+            return false;
         }
 
         return BarberScheduleModel::query()

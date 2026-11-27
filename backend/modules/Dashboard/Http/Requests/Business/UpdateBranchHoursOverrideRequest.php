@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Dashboard\Http\Requests\Business;
 
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\Branch\Support\OpeningHoursRules;
 use Modules\Core\Http\Requests\BaseApiFormRequest;
 
@@ -14,7 +15,7 @@ final class UpdateBranchHoursOverrideRequest extends BaseApiFormRequest
     public function rules(): array
     {
         return [
-            'date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
+            'date' => ['required', 'date_format:Y-m-d', 'after_or_equal:'.app(BranchTimeZones::class)->today((string) $this->route('branch'))],
             ...OpeningHoursRules::day(),
         ];
     }

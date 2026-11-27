@@ -32,7 +32,7 @@ final class BranchProfileResource extends JsonResource
                 'tags' => $this->tagTranslations(),
             ],
             'opening_hours' => $hours->week($this->resource),
-            'today_hours' => $hours->forDate((string) $this->getKey(), now()),
+            'today_hours' => $hours->today((string) $this->getKey()),
         ];
     }
 }

@@ -37,7 +37,7 @@ final class GetPublicBranchProfileEloquentResolver
             'stylists' => $stylists,
             'services' => $this->menu->build($branch, $stylists),
             'opening_hours' => $this->hours->week($branch),
-            'today_hours' => $this->hours->forDate((string) $branch->getKey(), now()),
+            'today_hours' => $this->hours->today((string) $branch->getKey()),
         ]);
     }
 }

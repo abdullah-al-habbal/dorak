@@ -261,6 +261,7 @@ return [
         'sort_order' => 'ترتيب العرض',
         'latitude' => 'خط العرض',
         'longitude' => 'خط الطول',
+        'timezone' => 'المنطقة الزمنية',
         'radius' => 'نطاق البحث',
         'price_range' => 'نطاق السعر',
         'from' => 'من',

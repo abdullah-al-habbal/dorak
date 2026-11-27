@@ -33,7 +33,8 @@ final class ListBranchSlotsRequest extends BaseApiFormRequest
     public function toQuery(string $branchId): ListSlotsQuery
     {
         return new ListSlotsQuery(
-            date: Carbon::parse($this->string('date')->toString())->utc(),
+            // A calendar date; the slot resolver reads it in the branch's zone.
+            date: Carbon::parse($this->string('date')->toString(), 'UTC'),
             serviceIds: $this->stringList('service_ids'),
             branchId: $branchId,
             chairId: $this->nullableString('chair_id'),

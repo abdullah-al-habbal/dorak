@@ -7,6 +7,7 @@ use Modules\Barber\Models\BarberModel;
 use Modules\Barber\Models\BarberScheduleModel;
 use Modules\Booking\Enums\BookingStatus;
 use Modules\Booking\Models\BookingModel;
+use Modules\Branch\Constants\BranchTimeZoneConstants;
 use Modules\OfferedService\Models\OfferedServiceModel;
 
 beforeEach(function (): void {
@@ -63,8 +64,8 @@ it('returns no slots outside the barber active schedule', function (): void {
     expect($slots)->not->toBeEmpty();
 
     foreach ($slots as $slot) {
-        expect(substr($slot['starts_at'], 11, 5))->toBeGreaterThanOrEqual('09:00');
-        expect(substr($slot['ends_at'], 11, 5))->toBeLessThanOrEqual('11:00');
+        expect(Carbon::parse($slot['starts_at'])->setTimezone(BranchTimeZoneConstants::BRANCH_DEFAULT_TIME_ZONE)->format('H:i'))->toBeGreaterThanOrEqual('09:00');
+        expect(Carbon::parse($slot['ends_at'])->setTimezone(BranchTimeZoneConstants::BRANCH_DEFAULT_TIME_ZONE)->format('H:i'))->toBeLessThanOrEqual('11:00');
     }
 });
 

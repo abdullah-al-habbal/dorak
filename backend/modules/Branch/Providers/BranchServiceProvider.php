@@ -7,6 +7,7 @@ namespace Modules\Branch\Providers;
 use Illuminate\Support\Facades\Gate;
 use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Policies\BranchPolicy;
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\Core\Providers\BaseModuleServiceProvider;
 
 final class BranchServiceProvider extends BaseModuleServiceProvider
@@ -17,6 +18,12 @@ final class BranchServiceProvider extends BaseModuleServiceProvider
         $this->moduleDir = dirname(__DIR__);
         $this->moduleNamespace = __NAMESPACE__;
         $this->moduleName = 'branch';
+    }
+
+    public function register(): void
+    {
+        parent::register();
+        $this->app->scoped(BranchTimeZones::class);
     }
 
     protected function afterBoot(): void

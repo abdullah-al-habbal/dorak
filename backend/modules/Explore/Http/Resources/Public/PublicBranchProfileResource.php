@@ -6,6 +6,7 @@ namespace Modules\Explore\Http\Resources\Public;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Branch\Services\BranchTimeZones;
 
 /**
  * `/branches/{slug}`: what a visitor may see of a discoverable branch. Unlike the app's branch detail it
@@ -30,6 +31,7 @@ final class PublicBranchProfileResource extends JsonResource
             'universe' => $this->offsetGet('universe'),
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
+            'timezone' => app(BranchTimeZones::class)->for((string) $this->resource->getKey()),
             'rating_average' => $this->offsetGet('rating_average') === null ? null : (float) $this->offsetGet('rating_average'),
             'rating_count' => (int) ($this->offsetGet('rating_count') ?? 0),
             'brand' => $this->brand === null ? null : PublicBrandSummaryResource::make($this->brand),

@@ -28,6 +28,7 @@ use Modules\Booking\Queries\BarberScheduleAvailability;
 use Modules\Booking\Queries\BookingAvailability;
 use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Services\BranchHours;
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
@@ -39,6 +40,7 @@ final class CreateBookingEloquentResolver
     public function __construct(
         private readonly BranchHours $branchHours,
         private readonly EffectiveServiceTerms $serviceTerms,
+        private readonly BranchTimeZones $zones,
     ) {}
 
     public function resolve(CreateBookingCommand $command): BookingModel
@@ -73,7 +75,7 @@ final class CreateBookingEloquentResolver
         }
 
         if ($barberId !== null) {
-            $this->ensureBarberBookable($barberId, $command->startsAt, $endsAt);
+            $this->ensureBarberBookable($barberId, $command->startsAt, $endsAt, $this->zones->for($branchId));
         }
 
         return $this->persist($command, $barberId, $branchId, $endsAt);
@@ -182,7 +184,7 @@ final class CreateBookingEloquentResolver
         $this->ensureNoOverlap('chair_id', (string) $chair->getKey(), $startsAt, $endsAt);
     }
 
-    private function ensureBarberBookable(string $barberId, Carbon $startsAt, Carbon $endsAt): void
+    private function ensureBarberBookable(string $barberId, Carbon $startsAt, Carbon $endsAt, string $timeZone): void
     {
         $barber = BarberModel::query()->lockForUpdate()->findOrFail($barberId);
 
@@ -194,7 +196,7 @@ final class CreateBookingEloquentResolver
             throw new NonDiscoverableBookingEntityException;
         }
 
-        if (! BarberScheduleAvailability::covers($barberId, $startsAt, $endsAt)) {
+        if (! BarberScheduleAvailability::covers($barberId, $startsAt, $endsAt, $timeZone)) {
             throw new BookingOutsideScheduleException;
         }
 

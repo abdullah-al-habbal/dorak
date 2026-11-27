@@ -15,6 +15,7 @@ use Modules\Booking\Queries\BookingAvailability;
 use Modules\Booking\Services\BookingLockOrder;
 use Modules\Booking\Services\BookingTransitionNotifier;
 use Modules\Branch\Services\BranchHours;
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\Dashboard\Eloquent\Resolvers\Chairs\ChairHasActiveBookingsException;
 
 final class RescheduleBookingEloquentResolver
@@ -22,6 +23,7 @@ final class RescheduleBookingEloquentResolver
     public function __construct(
         private readonly BookingTransitionNotifier $notifier,
         private readonly BranchHours $branchHours,
+        private readonly BranchTimeZones $zones,
         private readonly BookingLockOrder $lockOrder,
     ) {}
 
@@ -37,7 +39,7 @@ final class RescheduleBookingEloquentResolver
             if (! $this->branchHours->covers($booking->branch_id, $startsAt, $endsAt)) {
                 throw new BookingOutsideScheduleException;
             }
-            if ($booking->barber_id !== null && ! BarberScheduleAvailability::covers($booking->barber_id, $startsAt, $endsAt)) {
+            if ($booking->barber_id !== null && ! BarberScheduleAvailability::covers($booking->barber_id, $startsAt, $endsAt, $this->zones->for($booking->branch_id))) {
                 throw new BookingOutsideScheduleException;
             }
             foreach (['chair_id', 'barber_id'] as $column) {

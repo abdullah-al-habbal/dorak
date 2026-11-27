@@ -6,6 +6,7 @@ namespace Modules\Branch\Http\Resources\Shared;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Branch\Services\BranchTimeZones;
 
 final class BranchResource extends JsonResource
 {
@@ -19,6 +20,7 @@ final class BranchResource extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'brand_id' => $this->brand_id,
+            'timezone' => app(BranchTimeZones::class)->forBranch($this->resource),
             'description' => $this->localized('description'),
             'address' => $this->localized('address'),
             'tags' => $this->resource->localizedTags(app()->getLocale()),

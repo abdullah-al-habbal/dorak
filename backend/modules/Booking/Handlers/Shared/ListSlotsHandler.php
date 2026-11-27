@@ -15,7 +15,7 @@ final class ListSlotsHandler
     ) {}
 
     /**
-     * @return list<array{starts_at: Carbon, ends_at: Carbon}>
+     * @return list<array{starts_at: Carbon, ends_at: Carbon, time_zone: string}>
      */
     public function handle(ListSlotsQuery $query): array
     {

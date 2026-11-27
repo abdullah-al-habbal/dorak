@@ -9,6 +9,7 @@ use Modules\Branch\Enums\BranchHoursSource;
 use Modules\Branch\Models\BranchHoursOverrideModel;
 use Modules\Branch\Models\BranchModel;
 use Modules\Branch\Models\BranchOpeningHourModel;
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\Chair\Models\ChairModel;
 use Modules\Client\Models\ClientModel;
 use Modules\OfferedService\Enums\ServiceableTypeEnum;
@@ -209,6 +210,8 @@ describe('dashboard branch storefront', function (): void {
 describe('booking against branch hours', function (): void {
     beforeEach(function (): void {
         $this->branch = BranchModel::factory()->create();
+        // These cases state hours on the UTC clock; BranchTimeZoneTest covers other zones.
+        app(BranchTimeZones::class)->set($this->branch->id, 'UTC');
         $this->barber = BarberModel::factory()->create();
         $this->chair = ChairModel::factory()->create(['branch_id' => $this->branch->id, 'barber_id' => $this->barber->id]);
         $this->service = OfferedServiceModel::factory()->create(['duration_minutes' => 30, 'serviceable_type' => ServiceableTypeEnum::Brand, 'serviceable_id' => $this->branch->brand_id]);
