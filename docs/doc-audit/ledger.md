@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-587 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+575 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 406 files = 234 logical documents |
+| Outside `.claude/` | 394 files = 229 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -25,7 +25,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | Cluster | Logical documents | Reviewed |
 |---|---|---|
 | C0 pilot: push notifications | 2 | 2 |
-| C1 agent guides and routers | 32 | 17 |
+| C1 agent guides and routers | 27 | 23 |
 | C2 open work | 13 | 2 |
 | C3 finished or running programmes | 52 | 1 |
 | C4 backend and shared reference | 32 | 2 |
@@ -83,6 +83,11 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `frontend/mobile/packages/core/references/storage.md` | delete, applied: inventories the code shows, copies of the core architecture and state contract, or stale claims (such as no current-user route); rules and non-obvious notes moved to the guide | C1 core |
 | `frontend/mobile/packages/core/references/tests.md` | delete, applied: inventories the code shows, copies of the core architecture and state contract, or stale claims (such as no current-user route); rules and non-obvious notes moved to the guide | C1 core |
 | `frontend/mobile/packages/core/references/verification.md` | delete, applied: inventories the code shows, copies of the core architecture and state contract, or stale claims (such as no current-user route); rules and non-obvious notes moved to the guide | C1 core |
+| `frontend/mobile/apps/client_app/references/bootstrap-and-flows.md` | delete, applied: stale flows, counts and status that the code and feature index own | C1 apps |
+| `frontend/mobile/apps/client_app/references/feature-status.md` | delete, applied: stale flows, counts and status that the code and feature index own | C1 apps |
+| `frontend/mobile/apps/client_app/references/tests.md` | delete, applied: stale flows, counts and status that the code and feature index own | C1 apps |
+| `frontend/mobile/apps/client_app/references/verification.md` | delete, applied: stale flows, counts and status that the code and feature index own | C1 apps |
+| `frontend/mobile/references/root/decisions.md` | merge into the client app decisions, applied | C1 apps |
 
 ## Findings so far
 
@@ -126,19 +131,15 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `backend/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 3 / 1 / 1 | high | merge into AGENTS.md, applied (now an import) |
 | `docs/graph/repo-index.md` | 1 | 29 | Router | agents, engineers | 0 / 1 / 0 | high | unreviewed |
 | `docs/index.md` | 6 | 487 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/AGENTS.md` | 1 | 159 | Rules | agents, engineers | 24 / 2 / 1 | high | fix, applied (C1 mobile root) |
+| `frontend/mobile/AGENTS.md` | 1 | 150 | Rules | agents, engineers | 24 / 2 / 1 | high | fix, applied (C1 mobile root) |
 | `frontend/mobile/CLAUDE.md` | 1 | 10 | Rules | agents, engineers | 15 / 1 / 1 | high | merge into `AGENTS.md`, applied (import only) |
-| `frontend/mobile/apps/business_app/AGENTS.md` | 2 | 138 | Rules | agents, engineers | 5 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/apps/business_app/CLAUDE.md` | 2 | 97 | Rules | agents, engineers | 4 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/apps/client_app/AGENTS.md` | 2 | 99 | Rules | agents, engineers | 8 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/apps/client_app/CLAUDE.md` | 2 | 109 | Rules | agents, engineers | 5 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/apps/client_app/references/bootstrap-and-flows.md` | 2 | 133 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/apps/client_app/references/decisions.md` | 1 | 69 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/apps/client_app/references/feature-status.md` | 1 | 57 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/apps/client_app/references/tests.md` | 1 | 52 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/apps/client_app/references/verification.md` | 1 | 26 | Rules | agents, engineers | 0 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/apps/stylist_app/AGENTS.md` | 2 | 145 | Rules | agents, engineers | 6 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/apps/stylist_app/CLAUDE.md` | 2 | 99 | Rules | agents, engineers | 4 / 1 / 0 | high | unreviewed |
+| `frontend/mobile/apps/business_app/AGENTS.md` | 1 | 32 | Rules | agents, engineers | 5 / 1 / 0 | high | fix, applied (C1 apps); behaviour and flow notes not rechecked |
+| `frontend/mobile/apps/business_app/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 4 / 1 / 0 | high | merge into `AGENTS.md`, applied (import only) |
+| `frontend/mobile/apps/client_app/AGENTS.md` | 1 | 41 | Rules | agents, engineers | 8 / 1 / 0 | high | fix, applied (C1 apps); behaviour and flow notes not rechecked |
+| `frontend/mobile/apps/client_app/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 5 / 1 / 0 | high | merge into `AGENTS.md`, applied (import only) |
+| `frontend/mobile/apps/client_app/references/decisions.md` | 1 | 69 | Rules | agents, engineers | 1 / 0 / 0 | high | fix, applied: one list now; most rows not rechecked |
+| `frontend/mobile/apps/stylist_app/AGENTS.md` | 1 | 32 | Rules | agents, engineers | 6 / 1 / 0 | high | fix, applied (C1 apps); behaviour and flow notes not rechecked |
+| `frontend/mobile/apps/stylist_app/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 4 / 1 / 0 | high | merge into `AGENTS.md`, applied (import only) |
 | `frontend/mobile/packages/core/AGENTS.md` | 1 | 57 | Rules | agents, engineers | 10 / 1 / 0 | high | fix, applied (C1 core); feed cache and auth interceptor notes not rechecked |
 | `frontend/mobile/packages/core/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 6 / 1 / 0 | high | merge into `AGENTS.md`, applied (import only) |
 | `frontend/mobile/packages/design_system/AGENTS.md` | 1 | 41 | Rules | agents, engineers | 7 / 1 / 1 | high | fix, applied (C1 packages) |
@@ -148,7 +149,6 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/packages/localization/AGENTS.md` | 1 | 36 | Rules | agents, engineers | 5 / 1 / 1 | high | fix, applied (C1 packages) |
 | `frontend/mobile/packages/localization/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 4 / 1 / 0 | high | merge into `AGENTS.md`, applied (import only) |
 | `frontend/mobile/references/root/core-architecture.md` | 1 | 138 | Rules | agents, engineers | 1 / 0 / 0 | high | fix, applied; envelope, exception table and bloc event names not rechecked |
-| `frontend/mobile/references/root/decisions.md` | 1 | 48 | Rules | agents, engineers | 1 / 0 / 0 | high | fix, applied: disproved rows removed; most remaining rows not rechecked |
 | `frontend/web/dashboard/AGENTS.md` | 1 | 118 | Rules | agents, engineers | 4 / 2 / 1 | high | unreviewed |
 | `frontend/web/dashboard/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 2 / 1 / 1 | high | unreviewed |
 

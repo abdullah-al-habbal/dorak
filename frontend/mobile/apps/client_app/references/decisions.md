@@ -6,26 +6,23 @@ codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
 
-Referenced from [`../AGENTS.md`](../AGENTS.md).
+# Client app decisions that are not in the code
 
-## 7. Decisions that are not in the code
+Referenced from the [app guide](../AGENTS.md).
 
 | Code | Why |
 |---|---|
 | `ApiClient(tokenProvider: _tokenStorage.read)` | Reads storage, not `SessionBloc` — the bloc depends on the client, so the reverse would be a cycle. Also the only thing that installs `AuthInterceptor`. |
 | `unawaited(_session.ready)` in `initState` | Restore overlaps the 2500 ms splash, so the gate adds no wait. |
 | `AppGate` awaits `session.ready`, not `restore()` | `ready` memoises; calling `restore()` would fire a second pass. |
-| `router.go(AppRoutes.home)` on auth/onboarding success | go_router's declarative `go` clears the stack by construction — no `pushAndRemoveUntil` bookkeeping. (Pre-Phase 2, `AppNavigator.goHome` used `pushAndRemoveUntil` because `pushReplacement` swapped only the top route and could replace a sheet.) |
 | `SkipBottomSheet` pops itself before invoking callbacks | Otherwise navigation fires with the modal route still on top. Pops with `context.pop()`. |
 | `_dismissForever` writes in `try`, navigates in `finally` | A failed preference write must not strand the user on the tour. |
 | `onSkipForNow: () => router.go(AppRoutes.home)` with no flag write | Deliberate: `Skip for now` ≠ `Don't show again`. |
 | Register never calls `sendEmailVerification()` | The backend owns the OTP lifecycle — registration dispatches `SendEmailVerificationCodeJob` (after commit, async), so the client has no post-register call to guard. Resend on the verify screen is the only client-side retry. |
 | `onForgotPassword` opens 011 | The parameter is still nullable so the link *can* be hidden. The unused `RecoveryRestarted` event was removed in Task 81; each `RecoveryCodeRequested` overwrites the carried email and code. |
-| A 422 from forgot-password advances anyway | `exists:clients,email` would otherwise leak which addresses have accounts. Neutral copy; only transport failures block. |
 | "Email", not the design's "Email or Phone" | The backend accepts email only — the design label would guarantee a 422. |
 | `AuthEntryBackground` reused by login and sign-up | Deliberately not duplicated into a second blobs widget. |
 | `AuthTextField` / `OtpInputField` are app-local | Promotion to `design_system` is Track 15. |
-| `AuthErrorBanner` promoted to `StatusBanner` (design_system) | Track 12 made the inline error row a global state component; the auth screens are its first consumers, Discovery's footer will be the next. Rule 9 amendment: promotion covers Track 12 global UI states, not just cross-app reuse. |
 | `Wrap` not `Row` in the auth footers | Prompt + link overflow a narrow screen once Arabic or a large text scale widens them. |
 | `SizedBox(height: 24)` around the verify error banner | Reserved height stops the button jumping. |
 | `OtpInputField` drives focus from `onChanged`, `onKeyEvent` only as a bonus | Soft-keyboard deletions arrive on the text-input channel, not the key channel. |
@@ -34,8 +31,6 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 | `dio` as a dev dependency | `NetworkException` carries a `DioExceptionType`; test fakes need it. |
 | `geolocator` as a dev dependency | `LocationProvider` returns a geolocator `Position`; `FakeLocationProvider` + `testPosition` need the type. Same precedent as `dio`. |
 | `DiscoveryBloc` reads `position.latitude/longitude` via inference | Naming the `Position` type would import `geolocator` into app `lib/` — inferred `final position = await …` keeps the dependency in core. |
-| Guest Book Now raises `RequireAuthentication` | The router pushes Auth Entry; authenticated booking is Track 017, so the callback is a no-op for signed-in users. |
-| Profile tab hosts the change-password entry | Profile completion (010) owns the real profile UI; Track 17 adds one `SecondaryButton` below the placeholder `StatusView` pushing `/profile/password` (nested shell route). |
 | Bookings filter renders in the empty state too | The filter was unreachable on an empty list (it lived in the feed header) — `_BookingsFilter` is shared between the empty `Column` and the feed. |
 | Booking times use `intl` directly | Locale-aware `DateFormat.yMMMd(locale).add_Hm()`; `intl: ^0.20.0` pinned same as `localization`. |
 | Cancel is a Material `AlertDialog`, not a sheet | No dialog exists in `design_system` (Track 15); a two-action confirm dialog is the responsible minimum for a destructive action. |
@@ -52,7 +47,6 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 | Notification mark-read reloads page 1 instead of patching the item | `Paged.succeeded` appends when the last trigger was `more`, and the backend orders unread first — refetching keeps order and unread state server-authoritative (same idiom as booking cancel). |
 | Notification inbox lives under `/profile/notifications` | Not a fifth shell tab; entry is a Profile `SecondaryButton`. Tapping a row marks it read and opens the review (`review_request`) or bookings list (`booking_update`) via `NotificationLocation` (Task 31); booking-details deep links still need the booking and stay in Task 78. |
 | History item name resolved from the translations map | `catalog_item.name[localeCode] ?? ['en'] ?? ''` — object keys are locale codes, value is the localized display name. |
-| Profile header name falls back to `profileMemberLabel` | `RefreshTokenAction` returns only `{token}` — no profile data survives a restore, so a restored logged-in user has no known name. Avatar initial falls back to `'?'`. |
 | Rebook slot formatted like `createBooking` | UTC `yyyy-MM-dd HH:mm:ss`, shared convention with 017b booking creation. |
 | Rebook pickers are Material date + time pickers | Same precedent as 017b — no custom time selector (Track 15). |
 | `image_picker` is a runtime dep behind a `PhotoPicker` seam | The scan + avatar uploads live behind the app-local abstract `PhotoPicker`; `ImagePickerPhotoPicker` is the only consumer of the platform plugin, so widget tests inject `FakePhotoPicker` and never hit the gallery. |
@@ -66,4 +60,10 @@ Referenced from [`../AGENTS.md`](../AGENTS.md).
 | Price formatted client-side with `NumberFormat.decimalPattern(localeCode)` | ARB `servicePrice` takes the pre-formatted string + currency code; the bloc formats the number, the screen passes it to the localization |
 | Currencies fetched via public `GET /currencies` | Mapped by id→code in the screen; failure tolerated — prices render without a currency suffix |
 | `buildRouter` fakes `stylistProfile` + `onBarberSelected` | Defaulted per feature so unrelated router tests stay untouched |
-
+| `RecoveryCodeEntered` raises a signal instead of the screen pushing directly | `bloc.add` goes through the event queue, so a direct push could build 013 before the code reached state. Routing on the emitted state makes the ordering correct by construction |
+| Recovery resend calls `forgotPassword`, not `sendEmailVerification` | Different endpoints, different throttles (`email/verify/send` is `throttle:3,1`). Conflating them sends the wrong kind of code |
+| `PasswordRecoveryBloc` lives in `client_app`, not `core` | Session truth is shared infrastructure (ADR 0001); recovery is a client feature flow. Same shape as `OnboardingConfigBloc` — an app bloc over a core repository |
+| 014 exits with `go`, not `push` | The code has been consumed; a completed reset must not be back-navigable |
+| The onboarding hero keeps its asset fallback on a config failure | The bundled asset is always available, so an error view would be strictly worse. The failure is a layered retry, never a replacement |
+| A validation error from forgot-password counts as "code sent" | The screen must not reveal which addresses have accounts. Only transport failures block. |
+| Auth and onboarding success use `router.go(AppRoutes.home)` | `go` clears the stack, so those screens can't be reached with back. |

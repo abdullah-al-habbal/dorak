@@ -1,61 +1,41 @@
 ---
 nodeid: mobile.apps.client-app
 parentnode: mobile.guide
-childnodes:
-  - mobile.apps.client-app.claude
-  - mobile.apps.client-app.feature-index
-  - mobile.apps.client-app.readme
-  - mobile.apps.client-app.references.bootstrap-and-flows
-  - mobile.apps.client-app.references.decisions
-  - mobile.apps.client-app.references.feature-status
-  - mobile.apps.client-app.references.tests
-  - mobile.apps.client-app.references.verification
-  - mobile.apps.client-app.runtime.app-lifecycle
-  - mobile.apps.client-app.part-2
+childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
 
-# AGENTS.md — `apps/client_app`
+# `apps/client_app`
 
-The end-user app. Splash → launch gate → auth or onboarding → Home.
+The customer app, and the reference for bootstrap, navigation and tests. Adds to the [mobile guide](../../AGENTS.md).
+Features: [feature index](docs/feature-index.md).
 
-Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md)
-· Files: [`docs/feature-index.md`](./docs/feature-index.md)
+## Rules
 
-**This app's Dart source has zero comments.** Every non-obvious decision is in
-§7. Read it before "simplifying" anything.
+- Dependencies: `core`, `design_system`, `localization` and `feature_error_feedback`, plus third-party packages.
+  Import a package through its barrel, never its `src/`, and never import another app.
+- `dio` and other types that only fakes need are dev dependencies; don't import them from `lib/`.
+- `lib/main.dart` only boots; `lib/app.dart` holds the root widget and all wiring (constructor injection, no
+  container or service locator). Routes are in `lib/src/core/navigation/`, features in `lib/src/features/`.
+- Screens receive callbacks and render. They don't call repositories, touch storage or choose the next route.
+- Flow logic is in `AppRouter`: it listens to the session and auth blocs, reacts to their signals and
+  acknowledges each one.
+- `LocaleBloc` uses `Locale` as its state and has no state file. That is a sanctioned exception in the
+  [state contract](../../docs/state-management/conventions.md).
+- Feature widgets such as `AuthTextField` and `OtpInputField` stay in the app until another app needs them or
+  Track 15 specifies them.
+- Local assets only for critical UI.
+- `DorakApp`'s optional test parameters stay null in production.
 
----
+Read [the decisions that are not in the code](references/decisions.md) before "simplifying" anything.
 
-## 1. Layout
+## Flows to keep
 
-```
-lib/main.dart                     binding init, dotenv, prefs, runApp
-lib/app.dart                      DorakApp — all DI wiring lives here
-lib/src/core/navigation/
-  app.router.dart              AppRouter — go_router table, redirects, flow wiring
-  app_routes.entity.dart       AppRoutes — path constants
-  app_gate.entity.dart         AppGate.resolve — the post-splash branch
-lib/src/features/
-  splash/                         splash.screen.dart + 2 widgets
-  auth/                           9 screens + 12 widgets + 3 entities
-                                  + password_recovery bloc/event/state (011–014)
-                                  + change_password bloc/event/state + screen (Track 17)
-  onboarding/                     4 screens + 9 widgets + config bloc
-  discovery/                      discovery.{bloc,event,state}.dart + filter entity + screen + 2 widgets (016 feed)
-  booking/                        booking.{bloc,event,state}.dart + screen + card (017a list/cancel)
-                                  branch_detail.{bloc,event,state}.dart + screen + FloorPlanGrid widget (017b detail/create)
-  profile/                        profile.screen.dart (018a: header card + change-password entry + Service History; 018b: avatar header + Face Analysis card + Curated For You)
-                                  history.{bloc,event,state}.dart (018a: paged feed + rebook)
-                                  face_analysis.{bloc,event,state}.dart (018b: upload → pending → re-check, curated via catalog paging)
-                                  avatar.{bloc,event,state}.dart (018b: upload → avatarUrl)
-                                  photo_picker.provider.dart + image_picker_photo_picker.provider.dart (018b: PhotoPicker seam + image_picker impl)
-  stylist/                         stylist_profile.{bloc,event,state}.dart + screen (019: profile from branch-detail barbers entry, `/discover/barber/:barberId`)
-lib/src/core/di/ theme/           empty
-assets/images/                    noise_overlay.png, onboarding_hero.jpg
-```
-
-## Continued in
-
-- [Part 2: More](agents-part-2.md)
+- Registration returns a signed-in token before the email is verified. Verification doesn't block use: the screen
+  offers "Verify later", and only its resend button asks for another code.
+- Logging in skips the onboarding tour; "Continue as Guest" is the way into it. "Skip for now" leaves
+  `dontShowOnboarding` unset, so the tour returns on the next cold start; "Don't show again" and finishing the
+  tour set it.
+- Password recovery ends at Login, not Home. See
+  [password recovery](../../docs/authentication/password-recovery.md).

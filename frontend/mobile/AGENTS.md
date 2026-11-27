@@ -11,7 +11,6 @@ childnodes:
   - mobile.packages.feature-error-feedback
   - mobile.packages.localization
   - mobile.references.root.core-architecture
-  - mobile.references.root.decisions
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/
@@ -22,21 +21,13 @@ codeanchors:
 
 The one shared guide for `frontend/mobile/`; [CLAUDE.md](CLAUDE.md) imports it. It adds to the
 [root guide](../../AGENTS.md). The Dart source has almost no comments, so check the
-[decisions](references/root/decisions.md) before "simplifying" something that looks odd.
+[client app decisions](apps/client_app/references/decisions.md) before "simplifying" something that looks odd.
 
 ## Before changing code
 
 - Read the guides of every app or package you touch. A unit guide may narrow these rules, never relax them.
 
-| Unit | Guides |
-|---|---|
-| `apps/client_app` | [AGENTS](apps/client_app/AGENTS.md) · [CLAUDE](apps/client_app/CLAUDE.md) |
-| `apps/business_app` | [AGENTS](apps/business_app/AGENTS.md) · [CLAUDE](apps/business_app/CLAUDE.md) |
-| `apps/stylist_app` | [AGENTS](apps/stylist_app/AGENTS.md) · [CLAUDE](apps/stylist_app/CLAUDE.md) |
-| `packages/core` | [AGENTS](packages/core/AGENTS.md) · [CLAUDE](packages/core/CLAUDE.md) |
-| `packages/design_system` | [AGENTS](packages/design_system/AGENTS.md) · [CLAUDE](packages/design_system/CLAUDE.md) |
-| `packages/feature_error_feedback` | [AGENTS](packages/feature_error_feedback/AGENTS.md) · [CLAUDE](packages/feature_error_feedback/CLAUDE.md) |
-| `packages/localization` | [AGENTS](packages/localization/AGENTS.md) · [CLAUDE](packages/localization/CLAUDE.md) |
+Units: [apps/client_app](apps/client_app/AGENTS.md), [apps/business_app](apps/business_app/AGENTS.md), [apps/stylist_app](apps/stylist_app/AGENTS.md), [packages/core](packages/core/AGENTS.md), [packages/design_system](packages/design_system/AGENTS.md), [packages/feature_error_feedback](packages/feature_error_feedback/AGENTS.md), [packages/localization](packages/localization/AGENTS.md).
 
 - How it works: [core architecture](references/root/core-architecture.md) and the
   [state contract](docs/state-management/conventions.md) (read it before adding or changing a bloc).
