@@ -29,7 +29,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
 | C4 backend and shared reference | 28 | 28 |
-| C5 mobile and dashboard | 42 | 26 |
+| C5 mobile and dashboard | 42 | 42 |
 | C6 product intent and research | 41 | 0 |
 
 The pilot also reads the push parts of `README.md`, the push handover and the backlog, which sit in C1 and C2.
@@ -360,36 +360,36 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
 | `frontend/mobile/apps/business_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
-| `frontend/mobile/apps/business_app/docs/feature-index.md` | 1 | 47 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/apps/business_app/docs/feature-index.md` | 1 | 47 | Reference | engineers, agents | 2 / 1 / 0 | medium | keep as history: file and class names compared with the source; entries not checked line by line |
 | `frontend/mobile/apps/client_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
-| `frontend/mobile/apps/client_app/docs/feature-index.md` | 4 | 231 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/apps/client_app/docs/feature-index.md` | 4 | 231 | Reference | engineers, agents | 2 / 1 / 0 | medium | keep as history: file and class names compared with the source; entries not checked line by line |
 | `frontend/mobile/apps/stylist_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
-| `frontend/mobile/apps/stylist_app/docs/feature-index.md` | 1 | 42 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/architecture/decisions/0001-bloc-in-core.md` | 1 | 69 | Decisions | owner, engineers | 5 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/architecture/decisions/0002-design-system-go-router.md` | 1 | 55 | Decisions | owner, engineers | 2 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/apps/stylist_app/docs/feature-index.md` | 1 | 42 | Reference | engineers, agents | 2 / 1 / 0 | medium | keep as history: file and class names compared with the source; entries not checked line by line |
+| `frontend/mobile/docs/architecture/decisions/0001-bloc-in-core.md` | 1 | 69 | Decisions | owner, engineers | 5 / 1 / 0 | medium | keep: decision record |
+| `frontend/mobile/docs/architecture/decisions/0002-design-system-go-router.md` | 1 | 55 | Decisions | owner, engineers | 2 / 1 / 0 | medium | keep: decision record |
 | `frontend/mobile/docs/authentication/auth-flow.md` | 2 | 132 | Reference | engineers, agents | 3 / 1 / 0 | medium | fix, applied: stale not-implemented list and backend mail claims removed; the rest wasn't compared with the code |
-| `frontend/mobile/docs/authentication/password-recovery.md` | 3 | 172 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/core/exceptions.md` | 1 | 89 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/core/interceptors.md` | 2 | 136 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/core/networking.md` | 3 | 137 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/core/result-state.md` | 1 | 58 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/authentication/password-recovery.md` | 3 | 172 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: throttling claim was false (checked with route:list); the flow was compared by names only |
+| `frontend/mobile/docs/core/exceptions.md` | 1 | 89 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep: file and class names compared with the source and time-bound wording searched; behaviour not checked line by line |
+| `frontend/mobile/docs/core/interceptors.md` | 2 | 136 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep: file and class names compared with the source and time-bound wording searched; behaviour not checked line by line |
+| `frontend/mobile/docs/core/networking.md` | 3 | 137 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep: file and class names compared with the source and time-bound wording searched; behaviour not checked line by line |
+| `frontend/mobile/docs/core/result-state.md` | 1 | 58 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep: file and class names compared with the source and time-bound wording searched; behaviour not checked line by line |
 | `frontend/mobile/docs/core/session.md` | 5 | 267 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: banned-account signal added and a stale not-implemented list removed; the rest wasn't compared with the code |
 | `frontend/mobile/docs/core/storage.md` | 3 | 157 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: feed cache use corrected from the Discovery bloc; the storage sources weren't readable under this session's permission settings, so the rest is unchecked |
 | `frontend/mobile/docs/design-system/index.md` | 1 | 31 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: one page checked against the widget constructors and their use |
-| `frontend/mobile/docs/feature-index.md` | 5 | 279 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/feature-index.md` | 5 | 279 | Reference | engineers, agents | 4 / 1 / 0 | medium | keep as history: file and class names compared with the source; entries not checked line by line |
 | `frontend/mobile/docs/flows/app-launch.md` | 1 | 30 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: the gate now also checks profile completion |
 | `frontend/mobile/docs/flows/guest-access.md` | 1 | 53 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: the home screen is no longer a placeholder |
 | `frontend/mobile/docs/flows/onboarding.md` | 1 | 67 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: old status and history removed; the step table rests on its named test, which wasn't run |
 | `frontend/mobile/docs/index.md` | 1 | 53 | Reference | engineers, agents | 3 / 2 / 0 | medium | extract then delete, applied: the build tracker was out of date; open items are FT-25 and TS-11, and the file is now a router |
 | `frontend/mobile/docs/navigation/guards.md` | 1 | 24 | Reference | engineers, agents | 2 / 1 / 0 | medium | fix, applied: rewritten from the router |
 | `frontend/mobile/docs/navigation/routes.md` | 1 | 45 | Reference | engineers, agents | 1 / 1 / 1 | medium | fix, applied: rewritten from the router; it described a placeholder home and no notification routing |
-| `frontend/mobile/docs/realtime/reverb.md` | 2 | 156 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/realtime/reverb.md` | 2 | 156 | Reference | engineers, agents | 4 / 1 / 0 | medium | keep: file and class names compared with the source and time-bound wording searched; behaviour not checked line by line |
 | `frontend/mobile/docs/runtime/app-lifecycle.md` | 1 | 25 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: checked against app.dart and the session bloc |
 | `frontend/mobile/docs/screens/authentication/create-new-password.md` | 1 | 44 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep: names checked against the source; behaviour details not rechecked |
 | `frontend/mobile/docs/screens/authentication/forgot-password.md` | 1 | 42 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep, with history removed: names checked against the source; layout, timing and localization details not rechecked |
 | `frontend/mobile/docs/screens/authentication/password-reset-success.md` | 1 | 48 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep, with history removed: names checked against the source; layout, timing and localization details not rechecked |
 | `frontend/mobile/docs/screens/authentication/recovery-otp.md` | 1 | 43 | Reference | engineers, agents | 0 / 1 / 0 | medium | keep: names checked against the source; behaviour details not rechecked |
-| `frontend/mobile/docs/state-management/async-state.md` | 3 | 145 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/state-management/async-state.md` | 3 | 145 | Reference | engineers, agents | 2 / 1 / 0 | medium | keep: file and class names compared with the source and time-bound wording searched; behaviour not checked line by line |
 | `frontend/mobile/docs/state-management/conventions.md` | 5 | 285 | Reference | engineers, agents | 7 / 1 / 0 | medium | fix, applied: merged the older state rules; the Cubit ban conflicts with the code (BD-17) |
 | `frontend/mobile/docs/state-management/index.md` | 1 | 44 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: stale open items removed |
 | `frontend/mobile/docs/state-management/pagination.md` | 5 | 263 | Reference | engineers, agents | 4 / 1 / 0 | medium | fix, applied: it said no feature used the contract; the rest wasn't compared with the code |
@@ -398,9 +398,9 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/packages/design_system/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/mobile/packages/feature_error_feedback/README.md` | 1 | 15 | Reference | engineers, agents | 0 / 0 / 0 | medium | keep: pointer and test command, read |
 | `frontend/mobile/packages/localization/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
-| `frontend/web/dashboard/.interface-design/system.md` | 1 | 81 | Reference | engineers, agents | 1 / 0 / 0 | medium | unreviewed |
-| `frontend/web/dashboard/README.md` | 1 | 40 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/web/dashboard/src/README.md` | 1 | 47 | Reference | engineers, agents | 3 / 0 / 1 | medium | unreviewed |
+| `frontend/web/dashboard/.interface-design/system.md` | 1 | 81 | Reference | engineers, agents | 1 / 0 / 0 | medium | keep: design decisions; a quoted line of old copy is BG-57 |
+| `frontend/web/dashboard/README.md` | 1 | 40 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: it pointed to a folder that does not exist |
+| `frontend/web/dashboard/src/README.md` | 1 | 47 | Reference | engineers, agents | 3 / 0 / 1 | medium | keep, with fixes: names compared with the source |
 
 ## C6 product intent and research
 

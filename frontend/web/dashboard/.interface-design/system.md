@@ -67,7 +67,7 @@ Under 300ms, custom ease-out `cubic-bezier(0.23, 1, 0.32, 1)`, transform and opa
 - Labels and units come from the dictionary keyed by `setting_key`, so a new backend setting shows its raw key until copy is added.
 
 ## Admin catalog (global categories)
-- One table of top-level categories; the row opens a read-only detail dialog (figures in a `dl`, subcategories as status chips, the first 50 catalog items under "Read only. Catalog items are created and edited in the admin panel."). Edit is a separate outlined row button and also sits in the detail footer. Subcategories and items are never editable here.
+- One table of top-level categories; the row opens a read-only detail dialog (figures in a `dl`, subcategories as status chips, the first 50 catalog items under "Read only. Catalog items are created and edited in the admin panel." (that copy is out of date: backlog BG-57)). Edit is a separate outlined row button and also sits in the detail footer. Subcategories and items are never editable here.
 - Counts (catalog items, services) are right-aligned tabular numbers; a subcategory count rides under the name as muted meta text, not a column.
 - The active `Switch` follows the toggle rule: switching on is instant, switching off opens the confirm overlay, which states what it does not do (catalog items stay visible to clients). The same caveat sits under the page description with an info icon, because "deactivate" reads like "unpublish".
 - Delete appears in the edit dialog only for an empty category. For one in use, the button is replaced by a sentence explaining why and pointing to deactivation, never a silently disabled button. The backend still answers 409, surfaced as a toast.

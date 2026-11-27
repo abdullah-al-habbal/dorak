@@ -8,6 +8,8 @@ codeanchors:
 
 # Feature Index — Dorak Business App (`apps/business_app`)
 
+> A log of what was built: an entry describes the feature when it was added. The code decides what exists now.
+
 > **Append entry after adding each feature.** Monorepo-wide index: [`docs/feature-index.md`](../../../docs/feature-index.md).
 
 ---

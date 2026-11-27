@@ -14,19 +14,11 @@ Nothing new was invented. `AuthShell` (layout), `AuthHeader`, `AuthTextField`,
 `OtpInputField`, `StatusBanner`, `PrimaryButton.isLoading`, `AuthValidators`,
 `ErrorFeedback.from`, and the 60 s cooldown pattern from `verify_account_content`.
 
-**Screen 014 is `StatusView`'s first production consumer** — icon, title, message,
-single action is exactly its shape. That is what validates the Track 12 contract on
-something real.
-
 ## 5. Known limits
 
-- **`MAIL_MAILER=log` on dev** — the code only ever reaches
-  `storage/logs/laravel.log`. Read it from there when testing by hand. Pre-existing
-  backend defect, unrelated to this track.
-- **forgot-password is unthrottled** server-side, so the client's 60 s cooldown is
-  the only rate limit. Client-side only, therefore bypassable.
-- No "change password while signed in" — `/client/password` exists but belongs to
-  Track 17.
+- Whether a code arrives depends on the backend's mail setting.
+- The backend throttles `forgot-password` and `reset-password` (5 a minute); the 60 s cooldown in the app is only
+  for the user.
 
 ## 6. Verification
 

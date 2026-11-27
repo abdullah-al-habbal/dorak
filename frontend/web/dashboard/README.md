@@ -1,7 +1,7 @@
 # Dorak Dashboard
 
 Next.js 16 (App Router, Cache Components), React 19, Tailwind 4 and shadcn/ui on Base UI.
-The only dashboard in the monorepo (the first one is archived in `archive/`). One workspace per
+The only dashboard in the monorepo. One workspace per
 role at `/dashboard/<guard>`: `admin`, `manager`, `barber`, `owner`.
 
 ## Run it

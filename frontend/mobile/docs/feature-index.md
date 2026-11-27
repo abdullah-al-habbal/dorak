@@ -12,6 +12,8 @@ codeanchors:
 
 # Feature Index — Dorak Mobile (Flutter Monorepo)
 
+> A log of what was built: an entry describes the feature when it was added. The code decides what exists now.
+
 > **Append entry after adding each feature.** This is the chronological map of every feature built across the monorepo. Per-app indexes: [`apps/client_app/docs/feature-index.md`](../apps/client_app/docs/feature-index.md), [`apps/business_app/docs/feature-index.md`](../apps/business_app/docs/feature-index.md), [`apps/stylist_app/docs/feature-index.md`](../apps/stylist_app/docs/feature-index.md).
 
 ---

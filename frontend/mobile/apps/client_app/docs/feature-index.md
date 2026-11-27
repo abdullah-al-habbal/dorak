@@ -11,6 +11,8 @@ codeanchors:
 
 # Feature Index — Dorak Client App (`apps/client_app`)
 
+> A log of what was built: an entry describes the feature when it was added. The code decides what exists now.
+
 > **Append entry after adding each feature.** Chronological map of features built in the client (end-user) app. Monorepo-wide index: [`docs/feature-index.md`](../../../docs/feature-index.md).
 
 ---
