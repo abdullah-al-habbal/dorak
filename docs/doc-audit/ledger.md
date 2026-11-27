@@ -25,7 +25,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | Cluster | Logical documents | Reviewed |
 |---|---|---|
 | C0 pilot: push notifications | 2 | 2 |
-| C1 agent guides and routers | 27 | 23 |
+| C1 agent guides and routers | 27 | 25 |
 | C2 open work | 13 | 2 |
 | C3 finished or running programmes | 52 | 1 |
 | C4 backend and shared reference | 32 | 2 |
@@ -149,8 +149,8 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/packages/localization/AGENTS.md` | 1 | 36 | Rules | agents, engineers | 5 / 1 / 1 | high | fix, applied (C1 packages) |
 | `frontend/mobile/packages/localization/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 4 / 1 / 0 | high | merge into `AGENTS.md`, applied (import only) |
 | `frontend/mobile/references/root/core-architecture.md` | 1 | 138 | Rules | agents, engineers | 1 / 0 / 0 | high | fix, applied; envelope, exception table and bloc event names not rechecked |
-| `frontend/web/dashboard/AGENTS.md` | 1 | 118 | Rules | agents, engineers | 4 / 2 / 1 | high | unreviewed |
-| `frontend/web/dashboard/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 2 / 1 / 1 | high | unreviewed |
+| `frontend/web/dashboard/AGENTS.md` | 1 | 118 | Rules | agents, engineers | 4 / 2 / 1 | high | keep: named paths, scripts, shared hooks, memo row and E2E database guard checked; behaviour rules not rechecked |
+| `frontend/web/dashboard/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 2 / 1 / 1 | high | keep: already an `@AGENTS.md` import |
 
 ## C2 open work
 

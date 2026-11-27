@@ -78,7 +78,8 @@ wait for the owner's approval, apply, check links, make one local commit. No pus
 ## 5. One shared guide: `AGENTS.md`
 
 Approved direction: `AGENTS.md` is the shared source and `CLAUDE.md` refers to it, **after** confirming that no
-instruction is lost. Checked on 2026-11-27: **the condition isn't met yet.** No guide has been changed.
+instruction is lost. The root, backend and mobile pairs were merged on 2026-11-27. The notes below record the check
+that came before the merges.
 
 **How the pointer must work.** Use an `@AGENTS.md` import line, as `frontend/web/dashboard/CLAUDE.md` already does.
 My understanding is that Claude Code loads `CLAUDE.md` automatically and expands `@` imports, while a plain Markdown
@@ -123,7 +124,7 @@ own. Each nested pair needs a rule-by-rule merge before its `CLAUDE.md` becomes 
 | 0 | inventory: this policy and the ledger | done |
 | 1 | agree the rules | done |
 | 2 | pilot: the push-notification cluster (C0) | applied 2026-11-27 |
-| 3 | clusters C1 to C6, in order | not started |
+| 3 | clusters C1 to C6, in order | C1 agent guides done except routers; C2 to C6 not done (see the ledger) |
 | 4 | prevent regrowth: rules in the root guide and task executor; CI check for links, anchors and routers | not started |
 
 The `.claude/` files get a separate, later audit. Third-party skills shouldn't be rewritten.
