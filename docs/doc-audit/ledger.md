@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-526 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+523 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 345 files = 186 logical documents |
+| Outside `.claude/` | 342 files = 183 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -28,7 +28,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
-| C4 backend and shared reference | 32 | 12 |
+| C4 backend and shared reference | 29 | 18 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
 
@@ -137,6 +137,9 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `docs/readiness/t16-business-app-owner-experience.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
 | `docs/feature-modules-plan.md` | extract then delete, applied: all twelve modules are built; proxy and error rules moved to the frontend architecture guide, state and data rules to the dashboard source layout, one decision to the backlog. Not moved because the code disagrees or has moved on: branch time zone (F19), sheets for long forms, the chair floor-plan and brand approve-only limits | C3 feature modules plan |
 | `docs/booking-concurrency/08-remediation-plan.md` | extract then delete, applied: its order repeats the backlog, waves and fix order; the database backstop is now TD-25 and the ship checklist is in the index | C3 booking concurrency |
+| `backend/modules/Website/docs/09-c4-context.md` | delete: pre-code architecture that the code contradicts (no page analytics); no unique rule | C4 website module |
+| `backend/modules/Website/docs/10-c4-containers.md` | delete: pre-code container sketch; the structure is the module itself | C4 website module |
+| `backend/modules/Website/docs/11-frontend-architecture.md` | delete: pre-code structure the code contradicts (`/` isn't redirected to a language prefix); the theming and rendering rules are in the house rules | C4 website module |
 
 ## Findings so far
 
@@ -254,8 +257,8 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `backend/docs/04-house-rules.md` | 3 | 184 | Decisions | owner, engineers | 1 / 1 / 1 | medium | unreviewed |
 | `backend/docs/05-domain-glossary.md` | 2 | 98 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `backend/docs/06-entity-model-abstract.md` | 13 | 661 | Reference | engineers, agents | 1 / 1 / 0 | high | fix (F3) |
-| `backend/docs/09-c4-context.md` | 2 | 88 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `backend/docs/10-c4-containers.md` | 3 | 152 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
+| `backend/docs/09-c4-context.md` | 2 | 88 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep as product intent: actors and external services; the later services are named from 10 |
+| `backend/docs/10-c4-containers.md` | 3 | 152 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: one client app became three, a dead skill path, and later services noted |
 | `backend/docs/11-backend-architecture.md` | 20 | 1012 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `backend/docs/13-technical-concepts.md` | 21 | 1138 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `backend/docs/16-deployment-operations.md` | 11 | 654 | Operations | operators, agents | 0 / 1 / 4 | high | unreviewed |
@@ -263,13 +266,10 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `backend/docs/README.md` | 3 | 145 | Reference | engineers, agents | 1 / 2 / 0 | medium | unreviewed |
 | `backend/docs/api-response-standard.md` | 1 | 28 | Reference | engineers, agents | 0 / 0 / 0 | medium | keep: every named class and the architecture test exist |
 | `backend/docs/feature-index.md` | 8 | 651 | Reference | engineers, agents | 3 / 1 / 0 | medium | unreviewed |
-| `backend/modules/Website/docs/04-house-rules.md` | 1 | 27 | Decisions | owner, engineers | 1 / 1 / 0 | medium | unreviewed |
-| `backend/modules/Website/docs/05-domain-glossary.md` | 1 | 16 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `backend/modules/Website/docs/06-content-and-ui-model-abstract.md` | 1 | 43 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `backend/modules/Website/docs/09-c4-context.md` | 1 | 33 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `backend/modules/Website/docs/10-c4-containers.md` | 1 | 44 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `backend/modules/Website/docs/11-frontend-architecture.md` | 1 | 36 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `backend/modules/Website/docs/README.md` | 1 | 51 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `backend/modules/Website/docs/04-house-rules.md` | 1 | 27 | Decisions | owner, engineers | 1 / 1 / 0 | medium | keep as product intent: not rewritten to match code; each rule not checked against the site |
+| `backend/modules/Website/docs/05-domain-glossary.md` | 1 | 16 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep as product intent: vocabulary only |
+| `backend/modules/Website/docs/06-content-and-ui-model-abstract.md` | 1 | 43 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep as product intent: not checked against the marketing models |
+| `backend/modules/Website/docs/README.md` | 1 | 51 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: it claimed to be the truth before any code existed |
 | `docs/adr/0001-brand-owner-as-client.md` | 1 | 64 | Decisions | owner, engineers | 1 / 1 / 0 | medium | keep with a dated note: the owner notification bell changed |
 | `docs/adr/0002-mvp-scope-deferrals.md` | 1 | 45 | Decisions | owner, engineers | 3 / 1 / 1 | medium | keep: a dated decision record; whether its scope is still met wasn't checked feature by feature |
 | `docs/adr/0003-new-dashboard-foundation.md` | 1 | 41 | Decisions | owner, engineers | 4 / 1 / 0 | medium | keep with a dated note: all three listed gaps have since changed (forgot and reset routes seen; the other two rest on the guard test and the backlog decision) |

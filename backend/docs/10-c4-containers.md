@@ -10,7 +10,7 @@ codeanchors:
 
 # 10 — C4 Containers (Level 2)
 
-> **Inside the one box.** The major moving parts (the "containers" in C4 terms) and how they talk. This records the **intended technical context** for shared understanding — but contains **no code, no schema, no configuration.** Versions/tools are the owner's choices and should be confirmed at build time.
+> **Inside the one box.** The major moving parts (the "containers" in C4 terms) and how they talk. This records the **intended technical context** for shared understanding. The diagram leaves out parts added later, such as live updates over Reverb, push through Firebase and the AI provider that analyses face photos; see [the architecture overview](../../docs/architecture/architecture.md). It contains **no code, no schema, no configuration.** Versions/tools are the owner's choices and should be confirmed at build time.
 
 ---
 

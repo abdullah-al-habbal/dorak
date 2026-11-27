@@ -10,15 +10,12 @@ childnodes:
   - backend.website.06-content-and-ui-model-abstract
   - backend.website.07-user-flows
   - backend.website.08-edge-cases
-  - backend.website.09-c4-context
-  - backend.website.10-c4-containers
-  - backend.website.11-frontend-architecture
 codeanchors:
   - backend/modules/Website/
 ---
 
 # Dorak Website — Product Documentation
-This folder is the **single source of truth** for the *Dorak Public Website* (Blade/Tailwind) before any code is written. It contains **no code** — only product requirements, UI/UX laws, and content architecture.
+This folder holds the product intent for the *Dorak Public Website* (Blade): requirements, UI and theming rules and the content model. It was written before the code. For what the site does today, read the module code (routes in `modules/Website/Routes/Web/website_routes.php`) and the [feature index](../../../docs/feature-index.md).
 
 ---
 
@@ -34,9 +31,6 @@ This folder is the **single source of truth** for the *Dorak Public Website* (Bl
 | 06 | [`06-content-and-ui-model-abstract.md`](./06-content-and-ui-model-abstract.md) | Marketing content entities (Abstract) | Eng |
 | 07 | [`07-user-flows.md`](./07-user-flows.md) | Step-by-step visitor flows | Eng, Design |
 | 08 | [`08-edge-cases.md`](./08-edge-cases.md) | Hard situations (SEO vs JS, missing translations) | Eng, QA |
-| 09 | [`09-c4-context.md`](./09-c4-context.md) | C4 Level 1 — The site as one box | Eng |
-| 10 | [`10-c4-containers.md`](./10-c4-containers.md) | C4 Level 2 — Blade, Tailwind, Alpine | Eng |
-| 11 | [`11-frontend-architecture.md`](./11-frontend-architecture.md) | Component structure & CSS variable theming | Eng |
 
 ---
 
@@ -48,4 +42,4 @@ This folder is the **single source of truth** for the *Dorak Public Website* (Bl
 ---
 
 ## AI Agent Instructions
-AI coding agents must read these files before generating Blade or Tailwind code. Pay special attention to `04-house-rules.md` to ensure the "No Discrimination" theming law is strictly followed via CSS variables.
+Read these files before changing the site's Blade or styling. Pay special attention to `04-house-rules.md` to ensure the "No Discrimination" theming law is strictly followed via CSS variables.

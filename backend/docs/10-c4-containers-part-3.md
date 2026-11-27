@@ -44,4 +44,4 @@ The look is good, but it is **generated centrally** — no per‑shop front‑en
 - **Notification channels** beyond a minimal default — 🔭 Later.
 - **Stored vs. computed zone layout** — implementation choice within the locked unified-floor-plan rule.
 
-> Levels 1–2 (Context, Containers) align the team on the system's shape. **Level 3 (components)** — the module layout and the Action → Handler → EloquentResolver structure — is now documented in `11-backend-architecture.md`. Actual code patterns live in the engineering skills (`../.claude/skills/laravel-baseline/`), not in this product‑doc set.
+> Levels 1–2 (Context, Containers) align the team on the system's shape. **Level 3 (components)** — the module layout and the Action → Handler → EloquentResolver structure — is now documented in `11-backend-architecture.md`. Code patterns are in the [backend guide](../AGENTS.md) and its skills.

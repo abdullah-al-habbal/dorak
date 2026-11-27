@@ -10,8 +10,8 @@ Part 2 of 3 · [10 — C4 Containers (Level 2)](10-c4-containers.md) · [Previou
 
 ## The containers (plain English)
 
-### Client Mobile App — *Flutter*
-The phone app for **Clients and Barbers**. Its standout job is to **draw the backend‑described floor plan**: it receives a layout description (canvas + components: chairs colored by status, decorations) and renders it as tappable shapes. Tapping a free chair opens booking. It also handles discovery, profiles, at‑home booking (sharing location), reviews, invites, and job applications. It **does not** contain business rules — it asks the API.
+### Mobile apps — *Flutter*
+Three apps: `client_app` for clients, `stylist_app` for barbers, and `business_app` for branches and brand owners. The client app's standout job is to **draw the backend‑described floor plan**: it receives a layout description (canvas + components: chairs colored by status, decorations) and renders it as tappable shapes. Tapping a free chair opens booking. It also handles discovery, profiles, at‑home booking (sharing location), reviews, invites, and job applications. It **does not** contain business rules — it asks the API.
 
 ### Admin / Owner Panel — *Next.js dashboard*
 The management surface for **Owners, Managers, and Platform Admins**. Owners have full business settings, analytics, financial reports, all-branch, and manager-account access; managers are limited to daily operations, staff schedules, and bookings for one branch. MVP floor plans use standard form inputs/presets; drag-and-drop is Phase 3. In practice this is delivered by the Next.js dashboard, which calls the `/api/v1/dashboard/*` routes (see `11-backend-architecture.md` §5).

@@ -52,7 +52,4 @@ Part 2 of 6 · [Documentation Graph](../index.md) · [Previous](../index.md) · 
 - [06 Content And Ui Model Abstract](../../backend/modules/Website/docs/06-content-and-ui-model-abstract.md)
 - [07 User Flows](../../backend/modules/Website/docs/07-user-flows.md)
 - [08 Edge Cases](../../backend/modules/Website/docs/08-edge-cases.md)
-- [09 C4 Context](../../backend/modules/Website/docs/09-c4-context.md)
-- [10 C4 Containers](../../backend/modules/Website/docs/10-c4-containers.md)
-- [11 Frontend Architecture](../../backend/modules/Website/docs/11-frontend-architecture.md)
 - [Readme](../../backend/modules/Website/docs/README.md)
