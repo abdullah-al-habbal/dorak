@@ -3,6 +3,7 @@ nodeid: docs.doc-audit.policy
 parentnode: docs.graph
 childnodes:
   - docs.doc-audit.ledger
+  - docs.doc-audit.pilot
 codeanchors:
   - docs/
 ---
@@ -95,7 +96,7 @@ link loads nothing. Confirm this with a fresh session when the first pointer is 
 | Don't alter remote tracking | `AGENTS.md` covers push and remote changes only |
 | Task executor: audit, vertical slice, gates, done only on evidence | `AGENTS.md` only names the skill |
 
-Keep what only `AGENTS.md` has, such as "(the only dashboard)". The push rule needs a decision first (section 7).
+Keep what only `AGENTS.md` has, such as "(the only dashboard)". The push rule follows DA-1 (section 7).
 
 **Nested pairs.** A line comparison ignoring headings, short lines and spacing gives these counts. It counts
 rewording as different, so they show review effort, not the number of unique rules.
@@ -120,19 +121,21 @@ own. Each nested pair needs a rule-by-rule merge before its `CLAUDE.md` becomes 
 
 | Phase | Work | State |
 |---|---|---|
-| 0 | inventory: this policy and the ledger | done, awaiting review |
-| 1 | agree the rules | sections 1 to 5 agreed or recorded; section 7 open |
-| 2 | pilot: the push-notification cluster (C0) | not started; needs the owner's go-ahead |
+| 0 | inventory: this policy and the ledger | done |
+| 1 | agree the rules | done |
+| 2 | pilot: the push-notification cluster (C0) | [proposed](pilot.md), awaiting approval |
 | 3 | clusters C1 to C6, in order | not started |
 | 4 | prevent regrowth: rules in the root guide and task executor; CI check for links, anchors and routers | not started |
 
 The `.claude/` files get a separate, later audit. Third-party skills shouldn't be rewritten.
 [Wave 6](../waves/wave-6.md) task W6.4 (refresh stale docs) overlaps this audit; link them in C2.
 
-## 7. Open decisions for the owner
+## 7. Audit decisions
 
-| ID | Question | Recommendation |
-|---|---|---|
-| DA-1 | Push rule. Root guides say never push unless asked. The backlog's Delivery decision (2026-11-26) "replaces never push" and pushes at each wave close. | In `AGENTS.md`: push only when the owner asks, or at a wave close under the Delivery decision |
-| DA-2 | Keep the graph frontmatter (`nodeid`, `childnodes`, `codeanchors`) and the `docs/graph` routers? Hand-kept lists can drift. | Decide after the pilot. Keep until then, and learn first whether any tool reads them |
-| DA-3 | `docs/waves/` and `docs/backlog/` are in active use. Audit them while the wave programme runs? | Yes, but only after confirming no session is editing them |
+Approved by the owner on 2026-11-27.
+
+| ID | Decision |
+|---|---|
+| DA-1 | Push rule for the shared guide: push only when the owner asks, or at a wave close under the backlog's Delivery decision. During this audit, push only when the owner explicitly asks. Applied to the guides in C1. |
+| DA-2 | Keep the graph frontmatter and `docs/graph` routers for now; re-evaluate after the pilot. |
+| DA-3 | Audit backlog and wave files only after checking the session board for active writers. |
