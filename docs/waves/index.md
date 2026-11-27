@@ -25,8 +25,8 @@ codeanchors:
 | Field | Value |
 |---|---|
 | Active wave | [Wave 1: realtime](wave-1.md) |
-| State | not started; waiting for the owner's "go" |
-| Next task | W1.1 |
+| State | in progress since 2026-11-27 |
+| Next task | W1.3 (BG-48, reproduced), then W1.2 |
 | Last release to dev | `96d2f797e`, 2026-11-26 ([dev status](../deployment/dev-environment-status.md), Snapshot 12) |
 | Blocked on the owner | nothing for Wave 1's local work; see "Owner actions" |
 
@@ -35,7 +35,7 @@ codeanchors:
 | Wave | Goal | Items | State |
 |---|---|---|---|
 | [0](wave-0.md) | Release and discover | RR-1, RR-2, RR-7 | done 2026-11-26 (leftovers moved to Wave 6) |
-| [1](wave-1.md) | Realtime | BG-45, BG-48, BG-46 | **next** |
+| [1](wave-1.md) | Realtime | BG-45, BG-48, BG-46, BG-51 | **in progress** |
 | [2](wave-2.md) | Sign-in and exposure | BG-28, 29, 30, 16, 4, 49, 50 | todo |
 | [3](wave-3.md) | Data correctness | BG-27, 31 to 35, 18, BD-10, TS-8 | todo |
 | [4](wave-4.md) | Booking experience | BG-19, 20, 21, 36, 12 | todo |

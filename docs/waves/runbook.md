@@ -68,6 +68,37 @@ dart run melos run verify
 
 Push, wait for CI on the commit (`gh run list --commit <sha>`), then run `bash scripts/release-dev.sh`: it deploys with no reset, waits for Vercel and runs `scripts/verify-deploy.sh`. Run it only after CI passes; it does not wait for CI itself. A docs-only push needs no backend deploy.
 
+## Local realtime (Reverb and a queue worker)
+
+From `backend/`, with the test database up. Run these exports in each terminal (local throwaway values):
+
+```bash
+export DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_PORT=3307 DB_USERNAME=root DB_PASSWORD=root DB_DATABASE=dorak_test DB_URL= \
+  BROADCAST_CONNECTION=reverb QUEUE_CONNECTION=database CACHE_STORE=database MAIL_MAILER=log SMS_DRIVER=log FCM_PROJECT_ID= FCM_CREDENTIALS= \
+  REVERB_APP_ID=local-app REVERB_APP_KEY=local-key REVERB_APP_SECRET=local-secret REVERB_HOST=127.0.0.1 REVERB_PORT=8180 REVERB_SCHEME=http REVERB_SCALING_ENABLED=false
+php artisan migrate:fresh --seed --force   # only with the exports above: it wipes the database they name
+php artisan serve --no-reload --host=127.0.0.1 --port=8100
+php artisan reverb:start --host=127.0.0.1 --port=8180 --debug
+php artisan queue:work --tries=1 --sleep=1
+```
+
+Confirm `php artisan config:show database.connections.mysql.database` prints `dorak_test` before migrating. Then, from the repository root:
+
+```bash
+python3 scripts/realtime-local-check.py 14 chair,chair-same   # steps: chair, chair-same, suspend
+```
+
+It signs in the seeded branch, stylist and owner, lists what each may join, and prints the events they receive (Node 22 or newer). The seed does not seat the stylist, so they are refused the branch channels until you seat them (from `backend/`, same exports; reseed or run this first):
+
+```bash
+php artisan tinker --execute='
+$branch = Modules\Branch\Models\BranchModel::query()->where("email", "branch@dorak.sy")->firstOrFail();
+$barber = Modules\Barber\Models\BarberModel::query()->where("email", "barber@dorak.sy")->firstOrFail();
+$branch->chairs()->orderBy("id")->firstOrFail()->forceFill(["barber_id" => $barber->id])->saveQuietly();'
+```
+
+Reseed after `suspend`. Restart Reverb and the worker after changing code or config, and stop all three before running Pest.
+
 ## Dev limits
 
 - Dev sign-in routes are throttled to 5 a minute; honour `Retry-After`.

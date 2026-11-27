@@ -11,7 +11,7 @@ codeanchors:
 
 Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlog/index.md)
 
-**State:** not started; waiting for the owner's "go".
+**State:** in progress since 2026-11-27.
 
 **Goal:** Live updates behave correctly, proved locally with a real Reverb server and a queue worker.
 
@@ -19,7 +19,8 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 
 | Task | Item | What to do | Done when | Status |
 |---|---|---|---|---|
-| W1.1 | setup | Run Reverb and a queue worker locally against `dorak_test`; add the commands to the [runbook](runbook.md) | an authorised client receives a broadcast event, and a refused one does not | todo |
+| W1.1 | setup | Run Reverb and a queue worker locally against `dorak_test`; add the commands to the [runbook](runbook.md) | an authorised client receives a broadcast event, and a refused one does not | done |
+| W1.1a | BG-51 | Let Reverb accept app connections (found in W1.1) | the refusal reproduced, then fixed, with a test | done |
 | W1.2 | BG-45 | Reproduce sign-out then sign-in without restart; fix the remembered channels in `branch_operations.bloc.dart` and `realtime.client.dart` (`disconnectForLogout`) | a failing test first, then passing; `melos verify` passes | todo |
 | W1.3 | BG-48 | Dispatch `ChairStatusUpdated` once per real change (`ChairObserver`, `ToggleChairStatusAction`) | Pest: one event per change, none when unchanged | todo |
 | W1.4 | BG-46 | Decide and build what happens to subscriptions already open after suspension or disable; first check what Reverb supports | a connected, suspended branch stops receiving, shown locally; ask the owner first if the options change behaviour or cost | todo |
@@ -31,8 +32,11 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 
 - Reverb notes for mobile: [reverb.md](../../frontend/mobile/docs/realtime/reverb.md).
 - Channel rules: `backend/modules/Core/Routes/channels.php`.
-- BG-45 and BG-48 come from reading the source; neither has been reproduced.
+- BG-48 is reproduced (see the log). BG-45 comes from reading the source and is not reproduced yet.
 
 ## Log
 
-No entries yet.
+| Date | Commit | Action and evidence |
+|---|---|---|
+| 2026-11-27 | `737ab9c6d` | BG-51 found and fixed: Reverb refused every connection (4009). 3 new tests failed with `InvalidOrigin` before the fix; Pest 3007 passed, Pint passed |
+| 2026-11-27 | this commit | W1.1: local Reverb and worker. Branch, seated stylist and owner joined their channels; the owner was refused the branch channel (403); chair events arrived through the queue. BG-48 reproduced: a real change sent 2 events, saving the same status sent 1 |
