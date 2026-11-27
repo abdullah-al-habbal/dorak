@@ -72,7 +72,6 @@ Facebook sign-in are unsupported (G9).
 | BG-50 | `npm audit` reports 10 moderate advisories, among them `shadcn`, `ts-morph`, `minimatch` and `typescript-eslint` packages. 4 of the 10 and the 4 high ones (BG-38) remain with `--omit=dev`; `shadcn` is listed in `dependencies`, and the source imports only its CSS file. `npm audit fix` without `--force` offers updates (not applied or tested). Apply them with the next dashboard change, so one Playwright run covers both. | Dashboard | S |
 | BG-51 | Reverb refused every connection: `allowed_origins` held full URLs, but Reverb compares only the origin's host, and the apps send no origin. Reproduced on a local Reverb server (`4009 Origin not allowed`, with no origin and with `http://localhost:3000`). Fixed in code (`['*']`; private channels still need a token) and proved locally with delivery through a queue worker. Open: the security review of this setting (W1.8), then a check on a hosted Reverb (RR-20). | Backend | S |
 | BG-52 | `BranchOperationsBloc` and `StylistBloc` keep the previous account's profile and lists after sign-out, until the next load replaces them. From source only; whether another account can see them on screen was not tested. | Mobile | S |
-| BG-53 | `FcmNotificationSender::isInvalidTokenResponse` deletes a device token for any `FcmError` code `INVALID_ARGUMENT`; its other branch also requires the message to mention the token. Firebase documents that the code also covers payload faults and identifies a bad token only when the payload is otherwise valid (read 2026-11-27: [error codes](https://firebase.google.com/docs/cloud-messaging/error-codes), [manage tokens](https://firebase.google.com/docs/cloud-messaging/manage-tokens)), so a faulty message could delete every token it is sent to. Not reproduced: it is not known whether a payload fault carries the `FcmError` detail that the code matches. No test covers it (found 2026-11-27 in the documentation audit, source only). Reproduce with a recorded response, then narrow it with a Pest test. | Backend | S |
 
 ## 3. Missing features
 
@@ -186,7 +185,6 @@ Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are reso
 - **BD-11 (2026-11-26):** a barber holds at most one chair per branch and may work at several branches. Not implemented yet (BG-33).
 - **BD-12 (2026-11-26):** phone numbers are unique among verified numbers only. Not implemented yet (BG-32).
 - **BD-15 (2026-11-26):** turning off `allows_push_notifications` must stop push sends. Not implemented yet.
-- **BG-53 order (2026-11-27):** reproduce it first, ahead of the other Wave 5 tasks, and fix it before push is turned on.
 - **Backend pre-push gate (2026-11-27):** a local hook runs the backend gates when a push changes the backend.
 - **Config defaults (2026-11-27):** the rule that `env()` takes no default applies to `backend/modules/*/Config/`; the published files in `backend/config/` are exempt.
 

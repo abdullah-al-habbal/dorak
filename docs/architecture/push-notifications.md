@@ -62,9 +62,10 @@ So after a password change made from the dashboard, the account's other browsers
   `title`, `body`, `lang` and `dir`.
 - Revoked tokens are skipped. A delivery key stops a retried job from sending again to a device that already got the
   message. 429 and server errors are retried.
-- A token is **deleted** when FCM answers with an `FcmError` code `UNREGISTERED` or `INVALID_ARGUMENT`, a status
-  `UNREGISTERED`, or a status `INVALID_ARGUMENT` whose message mentions the token. Firebase also uses
-  `INVALID_ARGUMENT` for payload faults, so the first case can delete good tokens: backlog BG-53.
+- A token is **deleted** when FCM answers `UNREGISTERED`, or `INVALID_ARGUMENT` with an error that names the
+  token: a `message.token` field violation or a message about the registration token. Firebase also uses
+  `INVALID_ARGUMENT` for payload faults, so that code alone keeps the token (`FcmInvalidTokenDetector`). The error
+  shapes in the tests follow Firebase's documentation; no real FCM response has been checked yet (RR-16).
 - **Fail-safe.** Without a project id or usable credentials, the sender logs the reason once per instance and still
   writes the inbox row.
 
@@ -132,4 +133,4 @@ So after a password change made from the dashboard, the account's other browsers
 
 In the [backlog](../backlog/index.md): FT-21 (phases 3 and 4), FT-2 (job application deep link), FT-20 and BG-12
 (reminders), BD-15 (the push preference doesn't stop sends yet), BG-37 (browser behaviour to verify), BG-38 (Firebase
-advisories), BG-53 (token deletion), TD-20, RR-8 and RR-16. Real delivery to a phone or browser has not been verified.
+advisories), TD-20, RR-8 and RR-16. Real delivery to a phone or browser has not been verified.

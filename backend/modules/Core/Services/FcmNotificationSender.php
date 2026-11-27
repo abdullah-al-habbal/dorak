@@ -31,6 +31,7 @@ final class FcmNotificationSender
         private readonly FcmCredentialsResolver $credentialsResolver,
         private readonly NotificationRecipientLocale $recipientLocale,
         private readonly FcmPayloadBuilder $payloadBuilder,
+        private readonly FcmInvalidTokenDetector $invalidTokenDetector,
     ) {}
 
     /**
@@ -172,7 +173,7 @@ final class FcmNotificationSender
 
         if ($response->status() === 429 || $response->serverError()) {
             $response->throw();
-        } elseif ($this->isInvalidTokenResponse($response->status(), $response->json())) {
+        } elseif ($this->invalidTokenDetector->isDeadToken($response->status(), $response->json())) {
             $deviceToken->delete();
         } else {
             Log::warning('FCM rejected a device notification.', [
@@ -250,43 +251,5 @@ final class FcmNotificationSender
     private function base64UrlEncode(string $value): string
     {
         return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
-    }
-
-    private function isInvalidTokenResponse(int $status, mixed $payload): bool
-    {
-        if ($status < 400 || ! is_array($payload)) {
-            return false;
-        }
-
-        $error = $payload['error'] ?? null;
-        if (! is_array($error)) {
-            return false;
-        }
-
-        $details = $error['details'] ?? [];
-        foreach (is_array($details) ? $details : [] as $detail) {
-            if (! is_array($detail)) {
-                continue;
-            }
-
-            if (($detail['@type'] ?? null) === 'type.googleapis.com/google.firebase.fcm.v1.FcmError'
-                && in_array($detail['errorCode'] ?? null, ['UNREGISTERED', 'INVALID_ARGUMENT'], true)) {
-                return true;
-            }
-        }
-
-        return ($error['status'] ?? null) === 'UNREGISTERED'
-            || ($error['status'] ?? null) === 'INVALID_ARGUMENT' && $this->errorMentionsToken($error);
-    }
-
-    private function errorMentionsToken(mixed $error): bool
-    {
-        if (! is_array($error)) {
-            return false;
-        }
-
-        $message = $error['message'] ?? '';
-
-        return is_string($message) && str_contains(strtolower($message), 'token');
     }
 }

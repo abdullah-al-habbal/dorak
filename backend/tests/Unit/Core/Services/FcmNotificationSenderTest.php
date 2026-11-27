@@ -231,3 +231,47 @@ it('sends a browser device a web push payload with the language and direction, a
             && ! array_key_exists('notification', $message);
     });
 });
+
+/** @return array<string, mixed> */
+function fcmInvalidArgumentError(string $message, ?string $badField = null): array
+{
+    $details = [['@type' => 'type.googleapis.com/google.firebase.fcm.v1.FcmError', 'errorCode' => 'INVALID_ARGUMENT']];
+    if ($badField !== null) {
+        $details[] = ['@type' => 'type.googleapis.com/google.rpc.BadRequest', 'fieldViolations' => [['field' => $badField]]];
+    }
+
+    return ['error' => ['code' => 400, 'status' => 'INVALID_ARGUMENT', 'message' => $message, 'details' => $details]];
+}
+
+it('keeps the device token when FCM blames the payload for an invalid argument', function (string $message, ?string $badField): void {
+    configureFcmCredentials();
+    Http::fake([
+        'https://oauth2.googleapis.com/token' => Http::response(['access_token' => 'oauth-access-token', 'expires_in' => 3600]),
+        'https://fcm.googleapis.com/v1/projects/dorak-test-project/messages:send' => Http::response(fcmInvalidArgumentError($message, $badField), 400),
+    ]);
+    $token = registerFcmToken('healthy-device-token');
+
+    app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);
+
+    expect(DeviceTokenModel::query()->find($token->id))->not->toBeNull();
+})->with([
+    'message too big' => ['Message is too big', null],
+    'bad data field' => ['Invalid value at message.data[0].value', 'message.data[0].value'],
+    'data key that mentions a token' => ['Invalid data payload key: token', 'message.data'],
+]);
+
+it('deletes the device token when FCM says the token itself is invalid', function (string $message, ?string $badField): void {
+    configureFcmCredentials();
+    Http::fake([
+        'https://oauth2.googleapis.com/token' => Http::response(['access_token' => 'oauth-access-token', 'expires_in' => 3600]),
+        'https://fcm.googleapis.com/v1/projects/dorak-test-project/messages:send' => Http::response(fcmInvalidArgumentError($message, $badField), 400),
+    ]);
+    $token = registerFcmToken('malformed-device-token');
+
+    app(FcmNotificationSender::class)->sendTo('client', '00000000-0000-4000-8000-000000000001', NotificationTypeEnum::BookingUpdate, 'Title', 'Body', []);
+
+    expect(DeviceTokenModel::query()->find($token->id))->toBeNull();
+})->with([
+    'registration token message' => ['The registration token is not a valid FCM registration token', null],
+    'token field violation' => ['Request contains an invalid argument.', 'message.token'],
+]);

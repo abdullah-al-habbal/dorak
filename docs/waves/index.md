@@ -68,7 +68,7 @@ As of **2026-11-27 17:16 UTC** (20:16, UTC+3). Update this section in place.
 - BG-51 loosens a setting and got only a short security note, not the review in the task executor's [security reference](../../.claude/skills/monorepo-task-executor/references/security-review.md) (W1.8). The config sets no connection limit by default and rate limiting is off by default.
 - Nothing realtime works or is verified on dev (RR-20).
 
-**Main open findings.** BG-46: open subscriptions keep receiving after suspension (reproduced). BG-52: the previous account's data stays in two cubits (source only). BG-53: an FCM payload fault might delete device tokens (source and vendor docs only; its priority is an open owner question). BG-38 and BG-50: dashboard advisories. BG-49: English replies to some Arabic requests. Queued broadcasts could wait about a minute with the documented dev cron ([decision 2](wave-1-decisions.md), not measured).
+**Main open findings.** BG-46: open subscriptions keep receiving after suspension (reproduced). BG-52: the previous account's data stays in two cubits (source only). BG-53 (an FCM payload fault deleting device tokens) is fixed locally and not deployed. BG-38 and BG-50: dashboard advisories. BG-49: English replies to some Arabic requests. Queued broadcasts could wait about a minute with the documented dev cron ([decision 2](wave-1-decisions.md), not measured).
 
 **Blockers.** None for Wave 2. See "Now" and "Owner actions".
 
@@ -83,7 +83,7 @@ As of **2026-11-27 17:16 UTC** (20:16, UTC+3). Update this section in place.
 | [2](wave-2.md) | Sign-in and exposure | BG-28, 29, 30, 16, 4, 49, 50 | todo |
 | [3](wave-3.md) | Data correctness | BG-27, 31 to 35, 18, BD-10, TS-8 | todo |
 | [4](wave-4.md) | Booking experience | BG-19, 20, 21, 36, 12 | todo |
-| [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38, 53 | todo |
+| [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38, 53 | todo (BG-53 done early, local) |
 | [6](wave-6.md) | Completion | FT, TD, TS, leftovers, old docs | todo; split into batches first |
 
 ## How to keep context small
