@@ -70,19 +70,20 @@ describe('Set and clear a special day (NS-12)', function (): void {
         $this->getJson(overrideUrl($branch))->assertJsonPath('data.0.opens_time', '12:00')->assertJsonPath('data.0.closes_time', '16:30');
     });
 
-    it('lists upcoming days soonest first, today included, and never past days or another branch', function (): void {
+    it('lists upcoming days soonest first from the branch day, and never past days or another branch', function (): void {
+        // 01:30 on 2 December on the branch clock (Asia/Damascus), still 1 December in UTC.
+        $this->travelTo(Carbon::parse('2026-12-01 22:30:00', 'UTC'));
         $branch = BranchModel::factory()->create();
         $other = BranchModel::factory()->create();
-        foreach ([futureDate(5), futureDate(1), Carbon::today()->toDateString()] as $date) {
+        foreach (['2026-12-07', '2026-12-03', '2026-12-02', '2026-12-01'] as $date) {
             BranchHoursOverrideModel::query()->create(['branch_id' => $branch->id, 'override_date' => $date, 'is_closed' => true]);
         }
-        BranchHoursOverrideModel::query()->create(['branch_id' => $branch->id, 'override_date' => Carbon::yesterday()->toDateString(), 'is_closed' => true]);
-        BranchHoursOverrideModel::query()->create(['branch_id' => $other->id, 'override_date' => futureDate(2), 'is_closed' => true]);
+        BranchHoursOverrideModel::query()->create(['branch_id' => $other->id, 'override_date' => '2026-12-04', 'is_closed' => true]);
         $this->authenticateDashboardActor($branch);
 
         $dates = collect($this->getJson(overrideUrl($branch))->assertOk()->json('data'))->pluck('date')->all();
 
-        expect($dates)->toBe([Carbon::today()->toDateString(), futureDate(1), futureDate(5)]);
+        expect($dates)->toBe(['2026-12-02', '2026-12-03', '2026-12-07']);
     });
 
     it('clearing a date with no exception still answers 200 and touches no other date', function (): void {
