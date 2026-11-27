@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-630 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+607 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 449 files = 264 logical documents |
+| Outside `.claude/` | 426 files = 246 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -25,7 +25,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | Cluster | Logical documents | Reviewed |
 |---|---|---|
 | C0 pilot: push notifications | 2 | 2 |
-| C1 agent guides and routers | 62 | 5 |
+| C1 agent guides and routers | 44 | 9 |
 | C2 open work | 13 | 2 |
 | C3 finished or running programmes | 52 | 1 |
 | C4 backend and shared reference | 32 | 2 |
@@ -53,6 +53,24 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 |---|---|---|
 | `docs/sessions/handover-push-phase-2.md` | delete, applied | push pilot |
 | `backend/process/process.md` | delete, applied: unused proposal naming a skills folder that doesn't exist | C1 backend |
+| `frontend/mobile/references/codegen-policy.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/commands.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/dependency-layering.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/file-taxonomy.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/state-and-navigation.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/type-safety.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/commands.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/design-system.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/localization.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/non-negotiable-rules.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/per-unit-docs.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/repository-shape.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/where-new-code-goes.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/file-taxonomy.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/testing-conventions.md` | merge into `frontend/mobile/AGENTS.md`, applied; counts and tables that code shows were dropped | C1 mobile root |
+| `frontend/mobile/references/root/backend-contract.md` | delete, applied: several listed backend defects are fixed; the client rules moved to the guide | C1 mobile root |
+| `frontend/mobile/references/root/feature-inventory.md` | delete, applied: stale; the feature index owns this | C1 mobile root |
+| `frontend/mobile/references/root/known-limitations.md` | extract then delete, applied: backlog TD-23 | C1 mobile root |
 
 ## Findings so far
 
@@ -71,6 +89,8 @@ These are examples from spot checks, not the result of a full review.
 | F9 | `docs/index.md` says every maintained document is listed, apart from stated exclusions. Some outside those exclusions have no router link, for example `backend/docs/17-sms-delivery.md` and `backend/docs/api-response-standard.md`. They may be reachable through a sub-index. | router count of 0 in the tables |
 | F10 | The backend guides said a Husky pre-push hook runs the backend gates and that CI only checks formatting. Git uses the root `.husky/`, which has no `pre-push`; `backend/.husky/pre-push` never runs. CI runs the guard, Pint, tests and concurrency tests. Guides corrected. **Owner: restore a local gate, or leave CI as the gate?** | `git config core.hooksPath`, `.husky/_/h`, `backend-ci.yml` |
 | F11 | Rule "config `env()` calls take no default" isn't followed in `broadcasting.php`, `dashboard.php`, `sanctum.php` and the published `backend/config/` files. Rule kept. **Owner: scope the rule to module config, or fix the code?** | `grep` of `env('X', …)`, 2026-11-27 |
+| F12 | The mobile root references contradicted the code: favorites "no backend route" (routes exist), "no verify-reset-code endpoint" (it exists and the bloc calls it), "no GET current user" (restore loads the profile), three different localization key counts (670 now), `bloc_concurrency` "not a dependency" (client app has it), `core` verify "all five" steps (four). Corrected or removed. | `client-interaction.php:19`, `password_recovery.bloc.dart:65`, `session.bloc.dart:93`, ARB count, `pubspec.yaml` |
+| F13 | Two mobile rule files disagreed: "exactly one top-level class" against "one public class, private helpers allowed"; theme files "allowed in apps" against the taxonomy tool (design system only). Kept the second reading of the first, which the older guide documented as used, and the tool's rule for the second. | former `CLAUDE.md`, `non-negotiable-rules.md`, `tool/check_taxonomy.dart` |
 
 ## Routing
 
@@ -81,21 +101,21 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
 | `docs/architecture/push-notifications.md` | 1 | 135 | Reference | engineers, agents | 8 / 1 / 0 | high | fix, applied |
-| `docs/deployment/dev-environment-status.md` | 1 | 88 | Operations | operators, agents | 12 / 1 / 0 | high | fix, applied |
+| `docs/deployment/dev-environment-status.md` | 1 | 93 | Operations | operators, agents | 12 / 1 / 0 | high | fix, applied |
 
 ## C1 agent guides and routers
 
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
-| `AGENTS.md` | 1 | 130 | Rules | agents, engineers | 4 / 1 / 4 | high | fix, applied |
+| `AGENTS.md` | 1 | 128 | Rules | agents, engineers | 4 / 1 / 4 | high | fix, applied |
 | `CLAUDE.md` | 1 | 11 | Rules | agents, engineers | 1 / 1 / 5 | high | merge into AGENTS.md, applied (now an import) |
 | `README.md` (also in C0) | 1 | 146 | Router | agents, engineers | 9 / 1 / 3 | high | merge parts, fix, applied |
 | `backend/AGENTS.md` | 1 | 128 | Rules | agents, engineers | 5 / 2 / 10 | high | fix + merge CLAUDE and part 2, applied |
 | `backend/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 3 / 1 / 1 | high | merge into AGENTS.md, applied (now an import) |
 | `docs/graph/repo-index.md` | 1 | 29 | Router | agents, engineers | 0 / 1 / 0 | high | unreviewed |
 | `docs/index.md` | 6 | 487 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/AGENTS.md` | 2 | 94 | Rules | agents, engineers | 24 / 2 / 1 | high | unreviewed |
-| `frontend/mobile/CLAUDE.md` | 2 | 106 | Rules | agents, engineers | 15 / 1 / 1 | high | unreviewed |
+| `frontend/mobile/AGENTS.md` | 1 | 159 | Rules | agents, engineers | 24 / 2 / 1 | high | fix, applied (C1 mobile root) |
+| `frontend/mobile/CLAUDE.md` | 1 | 10 | Rules | agents, engineers | 15 / 1 / 1 | high | merge into `AGENTS.md`, applied (import only) |
 | `frontend/mobile/apps/business_app/AGENTS.md` | 2 | 138 | Rules | agents, engineers | 5 / 1 / 0 | high | unreviewed |
 | `frontend/mobile/apps/business_app/CLAUDE.md` | 2 | 97 | Rules | agents, engineers | 4 / 1 / 0 | high | unreviewed |
 | `frontend/mobile/apps/client_app/AGENTS.md` | 2 | 99 | Rules | agents, engineers | 8 / 1 / 0 | high | unreviewed |
@@ -127,26 +147,8 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/packages/localization/AGENTS.md` | 2 | 120 | Rules | agents, engineers | 5 / 1 / 1 | high | unreviewed |
 | `frontend/mobile/packages/localization/CLAUDE.md` | 1 | 70 | Rules | agents, engineers | 4 / 1 / 0 | high | unreviewed |
 | `frontend/mobile/packages/localization/references/keys.md` | 3 | 147 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/codegen-policy.md` | 1 | 34 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/commands.md` | 1 | 32 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/dependency-layering.md` | 1 | 44 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/file-taxonomy.md` | 1 | 31 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/backend-contract.md` | 1 | 57 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/commands.md` | 1 | 35 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/core-architecture.md` | 3 | 190 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/decisions.md` | 1 | 53 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/design-system.md` | 1 | 35 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/feature-inventory.md` | 1 | 70 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/file-taxonomy.md` | 1 | 44 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/known-limitations.md` | 1 | 18 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/localization.md` | 1 | 30 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/non-negotiable-rules.md` | 1 | 47 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/per-unit-docs.md` | 1 | 44 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/repository-shape.md` | 1 | 45 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/testing-conventions.md` | 2 | 92 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/root/where-new-code-goes.md` | 1 | 28 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/state-and-navigation.md` | 1 | 29 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/references/type-safety.md` | 1 | 28 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
+| `frontend/mobile/references/root/core-architecture.md` | 1 | 138 | Rules | agents, engineers | 1 / 0 / 0 | high | fix, applied; envelope, exception table and bloc event names not rechecked |
+| `frontend/mobile/references/root/decisions.md` | 1 | 48 | Rules | agents, engineers | 1 / 0 / 0 | high | fix, applied: disproved rows removed; most remaining rows not rechecked |
 | `frontend/web/dashboard/AGENTS.md` | 1 | 118 | Rules | agents, engineers | 4 / 2 / 1 | high | unreviewed |
 | `frontend/web/dashboard/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 2 / 1 / 1 | high | unreviewed |
 
@@ -156,12 +158,12 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 |---|---|---|---|---|---|---|---|
 | `backend/docs/14-execution-status.md` | 1 | 28 | Open work | owner, agents | 1 / 1 / 0 | high | fix (F2) |
 | `docs/backlog/index.md` (push rows in C0) | 1 | 190 | Open work | owner, agents | 31 / 2 / 3 | high | fix: push rows applied; rest unreviewed (C2) |
-| `docs/sessions/index.md` | 1 | 55 | Open work | owner, agents | 6 / 1 / 0 | high | unreviewed |
-| `docs/waves/index.md` | 1 | 88 | Open work | owner, agents | 12 / 1 / 0 | high | unreviewed |
-| `docs/waves/runbook.md` | 1 | 114 | Operations | operators, agents | 9 / 1 / 2 | high | unreviewed |
+| `docs/sessions/index.md` | 1 | 57 | Open work | owner, agents | 6 / 1 / 0 | high | unreviewed |
+| `docs/waves/index.md` | 1 | 131 | Open work | owner, agents | 12 / 1 / 0 | high | unreviewed |
+| `docs/waves/runbook.md` | 1 | 130 | Operations | operators, agents | 9 / 1 / 2 | high | unreviewed |
 | `docs/waves/wave-0.md` | 1 | 42 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
 | `docs/waves/wave-1-decisions.md` | 1 | 47 | Decisions | owner, engineers | 3 / 1 / 0 | medium | unreviewed |
-| `docs/waves/wave-1.md` | 1 | 47 | Open work | owner, agents | 2 / 1 / 0 | high | unreviewed |
+| `docs/waves/wave-1.md` | 1 | 49 | Open work | owner, agents | 2 / 1 / 0 | high | unreviewed |
 | `docs/waves/wave-2.md` | 1 | 39 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
 | `docs/waves/wave-3.md` | 1 | 41 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
 | `docs/waves/wave-4.md` | 1 | 37 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
@@ -256,7 +258,7 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `docs/architecture/architecture.md` | 1 | 64 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
 | `docs/architecture/frontend-architecture.md` | 1 | 55 | Reference | engineers, agents | 1 / 2 / 0 | medium | unreviewed |
 | `docs/architecture/localization-of-machine-keys.md` | 1 | 59 | Reference | engineers, agents | 7 / 1 / 1 | medium | unreviewed |
-| `docs/architecture/testing-strategy.md` | 1 | 190 | Reference | engineers, agents | 7 / 1 / 2 | medium | unreviewed |
+| `docs/architecture/testing-strategy.md` | 1 | 198 | Reference | engineers, agents | 7 / 1 / 2 | medium | unreviewed |
 | `docs/deployment/ci-cd-setup.md` | 1 | 139 | Operations | operators, agents | 7 / 1 / 1 | high | unreviewed |
 | `docs/deployment/deployment-guide.md` | 3 | 175 | Operations | operators, agents | 5 / 1 / 0 | high | unreviewed |
 | `docs/deployment/hostinger-questions.md` | 1 | 114 | Operations | operators, agents | 2 / 1 / 0 | high | unreviewed |
@@ -307,7 +309,7 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/docs/index.md` | 13 | 723 | Reference | engineers, agents | 3 / 2 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/navigation/guards.md` | 2 | 98 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/navigation/routes.md` | 2 | 109 | Reference | engineers, agents | 1 / 1 / 1 | medium | unreviewed |
-| `frontend/mobile/docs/realtime/reverb.md` | 2 | 153 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/realtime/reverb.md` | 2 | 156 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/runtime/app-lifecycle.md` | 2 | 99 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/screens/authentication/create-new-password.md` | 1 | 44 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/screens/authentication/forgot-password.md` | 1 | 42 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |

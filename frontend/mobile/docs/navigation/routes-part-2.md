@@ -37,7 +37,7 @@ Each is acknowledged immediately after (`SignalAcknowledged` /
 ## Taxonomy
 
 `.router.dart` and `.bloc.dart`/`.event.dart`/`.state.dart` are the current
-navigation/state roles (registered in `CLAUDE.md` §1, enforced by
+navigation/state roles (registered in the [mobile guide](../../AGENTS.md#file-names), enforced by
 `tool/check_taxonomy.dart`, `apps/*` only). `.navigator.dart` is **deprecated** —
 removed from `client_app` in Phase 2; tolerated only in the `business_app` /
 `stylist_app` stubs.

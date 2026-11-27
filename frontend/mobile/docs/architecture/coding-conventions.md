@@ -10,7 +10,7 @@ codeanchors:
 
 ## Code Generation (DTOs & Models)
 
-**Mandatory** (see `CLAUDE.md` § 4b): every `*.dto.dart` uses
+**Mandatory** (see the [mobile guide](../../AGENTS.md#rules)): every `*.dto.dart` uses
 `build_runner` + `json_serializable`. Hand-written `fromJson` is forbidden
 for wire-format models.
 
@@ -55,7 +55,7 @@ class UserDto {
 
 ## File Taxonomy
 
-Dot-suffix roles enforced by `tool/check_taxonomy.dart` (see `CLAUDE.md` § 1).
+Dot-suffix roles enforced by `tool/check_taxonomy.dart` (see the [mobile guide](../../AGENTS.md#file-names)).
 One top-level class per file. Generated files are skipped by the checker.
 
 ## Networking

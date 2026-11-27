@@ -23,7 +23,7 @@ Track 12 (Global UI States). See `docs/index.md` §Track 12.
 
 ## The no-strings rule
 
-`design_system` must never resolve a string (CLAUDE.md §2). Every state
+`design_system` must never resolve a string ([mobile guide](../../AGENTS.md#layers)). Every state
 component takes its copy as constructor parameters; the app layer supplies ARB
 strings (`localization`) and picks the component from bloc state.
 

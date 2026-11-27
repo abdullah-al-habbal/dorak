@@ -17,7 +17,7 @@ Supersedes: the Phase-2 migration plan, which kept `Navigator.pop(context)` in
 `packages/design_system/lib/src/widgets/bottom_sheet_modal.widget.dart` needs to
 dismiss itself when the scrim is tapped, unless the caller supplies `onDismiss`.
 
-Root `CLAUDE.md` §2 lists the design system's permitted local dependencies as
+The root mobile rules list the design system's permitted local dependencies as
 "third-party packages only". `go_router` is literally a third-party package, so
 the matrix does not forbid it — but the rule was written to mean
 presentation-only, with no coupling to application concerns such as routing.
@@ -50,6 +50,6 @@ to take on application dependencies.
 
 ## Related
 
-- Root `CLAUDE.md` §2 — Architectural Boundary Matrix
+- [Mobile guide, Layers](../../../AGENTS.md#layers)
 - `packages/design_system/CLAUDE.md`
 - Only consumer today: `apps/client_app/.../widgets/skip_bottom_sheet.sheet.dart`

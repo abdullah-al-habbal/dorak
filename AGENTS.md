@@ -28,13 +28,11 @@ changing files in that area.
 - Use [the documentation index](docs/index.md) to find maintained product,
   architecture, and engineering documentation.
 - Before changing a subsystem, read its guide:
-  - Backend: [backend/AGENTS.md](backend/AGENTS.md) and
-    [backend/CLAUDE.md](backend/CLAUDE.md).
+  - Backend: [backend/AGENTS.md](backend/AGENTS.md).
   - Dashboard: [frontend/web/dashboard/AGENTS.md](frontend/web/dashboard/AGENTS.md)
     and [frontend/web/dashboard/CLAUDE.md](frontend/web/dashboard/CLAUDE.md).
-  - Mobile: [frontend/mobile/AGENTS.md](frontend/mobile/AGENTS.md),
-    [frontend/mobile/CLAUDE.md](frontend/mobile/CLAUDE.md), and the guides in
-    the app or package being changed.
+  - Mobile: [frontend/mobile/AGENTS.md](frontend/mobile/AGENTS.md) and the
+    guides in the app or package being changed.
 
 ## Repository-wide rules
 
@@ -56,9 +54,9 @@ changing files in that area.
   acceptance criteria and required gates pass.
 - Each subsystem guide carries its own security and code-quality rules
   (authorization and ownership checks, type safety, file and method size limits,
-  magic literals and data clumps, UI performance). Read `backend/AGENTS.md` and
-  `backend/CLAUDE.md`, `frontend/web/dashboard/AGENTS.md`, or
-  `frontend/mobile/CLAUDE.md` before writing code there. They apply in addition
+  magic literals and data clumps, UI performance). Read `backend/AGENTS.md`,
+  `frontend/web/dashboard/AGENTS.md`, or `frontend/mobile/AGENTS.md` before
+  writing code there. They apply in addition
   to the subsystem's skills.
 - Prefer the reusable [Dorak task executor](.claude/skills/monorepo-task-executor/SKILL.md)
   for engineering task work: audit the request, implement the vertical slice, run
