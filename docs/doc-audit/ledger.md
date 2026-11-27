@@ -25,7 +25,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | Cluster | Logical documents | Reviewed |
 |---|---|---|
 | C0 pilot: push notifications | 2 | 2 |
-| C1 agent guides and routers | 27 | 25 |
+| C1 agent guides and routers | 27 | 27 |
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
 | C4 backend and shared reference | 28 | 28 |
@@ -271,8 +271,8 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `README.md` (also in C0) | 1 | 146 | Router | agents, engineers | 9 / 1 / 3 | high | merge parts, fix, applied |
 | `backend/AGENTS.md` | 1 | 128 | Rules | agents, engineers | 5 / 2 / 10 | high | fix + merge CLAUDE and part 2, applied |
 | `backend/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 3 / 1 / 1 | high | merge into AGENTS.md, applied (now an import) |
-| `docs/graph/repo-index.md` | 1 | 29 | Router | agents, engineers | 0 / 1 / 0 | high | unreviewed |
-| `docs/index.md` | 6 | 487 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
+| `docs/graph/repo-index.md` | 1 | 29 | Router | agents, engineers | 0 / 1 / 0 | high | keep: entry-point links checked |
+| `docs/index.md` | 6 | 487 | Router | agents, engineers | 34 / 1 / 0 | high | fix, applied: ten maintained documents were missing from its folder lists; every ledger document outside references and native asset folders is now listed |
 | `frontend/mobile/AGENTS.md` | 1 | 150 | Rules | agents, engineers | 24 / 2 / 1 | high | fix, applied (C1 mobile root) |
 | `frontend/mobile/CLAUDE.md` | 1 | 10 | Rules | agents, engineers | 15 / 1 / 1 | high | merge into `AGENTS.md`, applied (import only) |
 | `frontend/mobile/apps/business_app/AGENTS.md` | 1 | 32 | Rules | agents, engineers | 5 / 1 / 0 | high | fix, applied (C1 apps); behaviour and flow notes not rechecked |

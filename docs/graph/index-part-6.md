@@ -51,3 +51,17 @@ Part 6 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-5.md)
 - [Agents](../../frontend/mobile/packages/localization/AGENTS.md)
 - [Claude](../../frontend/mobile/packages/localization/CLAUDE.md)
 - [Readme](../../frontend/mobile/packages/localization/README.md)
+
+### `frontend/mobile/packages/feature_error_feedback/`
+
+- [Agents](../../frontend/mobile/packages/feature_error_feedback/AGENTS.md)
+- [Claude](../../frontend/mobile/packages/feature_error_feedback/CLAUDE.md)
+- [Readme](../../frontend/mobile/packages/feature_error_feedback/README.md)
+
+### `frontend/web/dashboard/.interface-design/`
+
+- [System](../../frontend/web/dashboard/.interface-design/system.md)
+
+### `frontend/web/dashboard/src/`
+
+- [Readme](../../frontend/web/dashboard/src/README.md)

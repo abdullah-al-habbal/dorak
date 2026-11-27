@@ -122,3 +122,17 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Agents](../../frontend/mobile/apps/client_app/AGENTS.md)
 - [Claude](../../frontend/mobile/apps/client_app/CLAUDE.md)
 - [Readme](../../frontend/mobile/apps/client_app/README.md)
+
+### `docs/product-research/dorak/`
+
+- [Dorak Study](../product-research/dorak/dorak-study.md)
+
+### `docs/product-research/dorak/proposals/`
+
+- [Provider Product Catalog Plan](../product-research/dorak/proposals/provider-product-catalog-plan.md)
+- [Provider Product Catalog](../product-research/dorak/proposals/provider-product-catalog.md)
+
+### `docs/doc-audit/`
+
+- [Ledger](../doc-audit/ledger.md)
+- [Policy](../doc-audit/policy.md)

@@ -13,6 +13,8 @@ Part 2 of 6 · [Documentation Graph](../index.md) · [Previous](../index.md) · 
 
 ### `backend/docs/`
 
+- [Sms Delivery](../../backend/docs/17-sms-delivery.md)
+- [Api Response Standard](../../backend/docs/api-response-standard.md)
 - [01 Vision And Scope](../../backend/docs/01-vision-and-scope.md)
 - [02 Prd](../../backend/docs/02-prd.md)
 - [03 Persona Journeys](../../backend/docs/03-persona-journeys.md)
