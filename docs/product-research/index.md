@@ -19,4 +19,4 @@ A product study is independent. It is produced from this repository and public s
 
 | Product | Hub | State |
 |---|---|---|
-| Dorak | [Dorak study](dorak/index.md) | Study prompt prepared; study not run |
+| Dorak | [Dorak study](dorak/index.md) | Run on 2026-11-18 |

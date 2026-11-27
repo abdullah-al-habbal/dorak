@@ -14,7 +14,6 @@ childnodes:
   - backend.09-c4-context
   - backend.10-c4-containers
   - backend.11-backend-architecture
-  - backend.12-implementation-prd
   - backend.13-technical-concepts
   - backend.16-deployment-operations
   - backend.17-sms-delivery

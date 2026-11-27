@@ -41,7 +41,7 @@ Part 4 of 8 · [02 — Product Requirements Document (PRD)](02-prd.md) · [Previ
 - Flows: `07-user-flows.md` · Edge cases: `08-edge-cases.md`
 - System shape (C4): `09-c4-context.md`, `10-c4-containers.md`
 - Backend architecture (C4 Level 3): `11-backend-architecture.md`
-- Implementation gaps: `12-implementation-prd.md`
+- Open work: the [backlog](../../docs/backlog/index.md)
 - Recommendation module (Phase 5): `05-recommendation-prd.md`
 
 ---

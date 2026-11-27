@@ -12,6 +12,8 @@ codeanchors:
 
 # PRD Phase 5 — Recommendation Module
 
+> This is the design written before the module was built. The database is MySQL, so its PostgreSQL and pgvector parts don't apply. For what exists, read `modules/ClientRecommendation`.
+
 ## 1. Objective
 
 Personalise explore results so clients see relevant barbers/branches first. Two-tier:

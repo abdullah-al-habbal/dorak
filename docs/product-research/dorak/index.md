@@ -15,12 +15,10 @@ This folder holds the study of Dorak itself, written to the same feature-matrix 
 
 ## Status
 
-The study has not been run. Only its harness exists.
+The study was run on 2026-11-18 against commit `56879099b`. It is a dated snapshot, not a description of today's code.
 
-| Item | State |
+| Item | What it is |
 |---|---|
-| [Study prompt](study-prompt.md) | Prepared. It defines the scope, the evidence rules, the feature-matrix contract and the output rules for a future explicit run. |
-| `docs/product-research/dorak/dorak-study.md` | Future output, not created |
-| `docs/product-research/dorak/dorak-feature-matrix.csv` | Future output, not created |
-
-The two output files are the only paths a run may write, and a run must not overwrite them without approval.
+| [Study](dorak-study.md) | The product, market and engineering study |
+| [Feature matrix](dorak-feature-matrix.csv) | Comparable rows for later comparison with competitor studies |
+| [Study prompt](study-prompt.md) | The scope, evidence and output rules. A new run must not overwrite the outputs without approval |

@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-449 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+445 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 268 files = 162 logical documents |
+| Outside `.claude/` | 264 files = 161 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -30,7 +30,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C3 finished or running programmes | 10 | 10 |
 | C4 backend and shared reference | 28 | 28 |
 | C5 mobile and dashboard | 42 | 42 |
-| C6 product intent and research | 41 | 0 |
+| C6 product intent and research | 40 | 40 |
 
 The pilot also reads the push parts of `README.md`, the push handover and the backlog, which sit in C1 and C2.
 
@@ -213,6 +213,10 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `frontend/mobile/apps/client_app/docs/runtime/app-lifecycle.md` | merge, applied: one lifecycle page now; this was a second copy with an old track's plan | C5 mobile state and lifecycle |
 | `frontend/mobile/docs/runtime/app-lifecycle-part-2.md` | merge, applied: into the main page | C5 mobile state and lifecycle |
 | `frontend/mobile/docs/state-management/index-part-2.md` | delete, applied: said paged lists and the concurrency package had no user, which is no longer true | C5 mobile state and lifecycle |
+| `backend/docs/12-implementation-prd-part-2.md` | delete, applied: finished build plan that marked itself historical; it covered a frontend since removed | C6 |
+| `backend/docs/12-implementation-prd-part-3.md` | delete, applied: finished build plan that marked itself historical; it covered a frontend since removed | C6 |
+| `backend/docs/12-implementation-prd-part-4.md` | delete, applied: finished build plan that marked itself historical; it covered a frontend since removed | C6 |
+| `backend/docs/12-implementation-prd.md` | delete, applied: finished build plan that marked itself historical; it covered a frontend since removed | C6 |
 
 ## Findings so far
 
@@ -406,47 +410,46 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
-| `backend/docs/01-vision-and-scope.md` | 3 | 172 | Intent | owner, product | 1 / 1 / 1 | low | unreviewed |
-| `backend/docs/02-prd.md` | 8 | 460 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/03-persona-journeys.md` | 2 | 101 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/05-recommendation-prd.md` | 5 | 272 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/07-user-flows.md` | 4 | 239 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/08-edge-cases.md` | 3 | 159 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/12-implementation-prd.md` | 4 | 233 | Intent | owner, product | 0 / 1 / 0 | low | unreviewed |
-| `backend/docs/marketing/01-brand-dna.md` | 1 | 40 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/marketing/02-platform-setup.md` | 1 | 69 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/marketing/03-content-strategy.md` | 1 | 63 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/marketing/04-launch-campaign.md` | 1 | 50 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/marketing/05-metadata-and-seo.md` | 1 | 22 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/marketing/06-teaser-content-plan.md` | 1 | 20 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/marketing/07-conversion-assets.md` | 1 | 20 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/docs/marketing/08-visual-assets-inventory.md` | 1 | 28 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/modules/Website/docs/01-vision-and-scope.md` | 1 | 35 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/modules/Website/docs/02-prd.md` | 1 | 40 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/modules/Website/docs/03-persona-journeys.md` | 1 | 19 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/modules/Website/docs/07-user-flows.md` | 1 | 31 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `backend/modules/Website/docs/08-edge-cases.md` | 1 | 25 | Intent | owner, product | 1 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/index.md` | 1 | 24 | Research | owner, product | 17 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/01-executive-summary.md` | 1 | 47 | Research | owner, product | 3 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/02-company-and-evidence.md` | 1 | 29 | Research | owner, product | 5 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/03-platforms-and-availability.md` | 1 | 31 | Research | owner, product | 6 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/04-product-and-user-experience.md` | 1 | 38 | Research | owner, product | 7 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/05-market-and-geography.md` | 1 | 42 | Research | owner, product | 7 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/06-competitors-and-positioning.md` | 1 | 36 | Research | owner, product | 6 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/07-digital-presence-and-marketing.md` | 1 | 32 | Research | owner, product | 6 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/08-pricing-and-contracting.md` | 1 | 25 | Research | owner, product | 10 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/09-financial-feasibility.md` | 1 | 38 | Research | owner, product | 6 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/10-technical-architecture.md` | 1 | 27 | Research | owner, product | 6 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/11-privacy-compliance-and-risk.md` | 1 | 37 | Research | owner, product | 7 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/12-validation-plan-and-metrics.md` | 1 | 40 | Research | owner, product | 10 / 1 / 0 | low | unreviewed |
-| `docs/competitor-analysis/toptalla/index.md` | 1 | 71 | Research | owner, product | 16 / 1 / 0 | low | unreviewed |
-| `docs/product-research/dorak/dorak-study.md` | 1 | 278 | Research | owner, product | 0 / 0 / 0 | low | unreviewed |
-| `docs/product-research/dorak/index.md` | 1 | 26 | Research | owner, product | 2 / 1 / 0 | low | unreviewed |
-| `docs/product-research/dorak/proposals/provider-product-catalog-plan.md` | 1 | 234 | Intent | owner, product | 1 / 0 / 0 | low | unreviewed |
-| `docs/product-research/dorak/proposals/provider-product-catalog.md` | 1 | 67 | Intent | owner, product | 2 / 0 / 0 | low | unreviewed |
-| `docs/product-research/dorak/study-prompt.md` | 1 | 101 | Research | owner, product | 4 / 1 / 0 | low | unreviewed |
-| `docs/product-research/index.md` | 1 | 22 | Research | owner, product | 3 / 1 / 0 | low | unreviewed |
-| `frontend/mobile/docs/future-features/per-page/per-page.md` | 3 | 160 | Intent | owner, product | 0 / 1 / 0 | low | unreviewed |
+| `backend/docs/01-vision-and-scope.md` | 3 | 172 | Intent | owner, product | 1 / 1 / 1 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/docs/02-prd.md` | 8 | 460 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/docs/03-persona-journeys.md` | 2 | 101 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/docs/05-recommendation-prd.md` | 5 | 272 | Intent | owner, product | 1 / 1 / 0 | low | fix, applied: marked as a pre-build design; its pgvector parts do not apply |
+| `backend/docs/07-user-flows.md` | 4 | 239 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/docs/08-edge-cases.md` | 3 | 159 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/docs/marketing/01-brand-dna.md` | 1 | 40 | Intent | owner, product | 1 / 1 / 0 | low | keep: marketing intent; not checked against the product |
+| `backend/docs/marketing/02-platform-setup.md` | 1 | 69 | Intent | owner, product | 1 / 1 / 0 | low | keep: marketing intent; not checked against the product |
+| `backend/docs/marketing/03-content-strategy.md` | 1 | 63 | Intent | owner, product | 1 / 1 / 0 | low | keep: marketing intent; not checked against the product |
+| `backend/docs/marketing/04-launch-campaign.md` | 1 | 50 | Intent | owner, product | 1 / 1 / 0 | low | keep: marketing intent; not checked against the product |
+| `backend/docs/marketing/05-metadata-and-seo.md` | 1 | 22 | Intent | owner, product | 1 / 1 / 0 | low | keep: marketing intent; not checked against the product |
+| `backend/docs/marketing/06-teaser-content-plan.md` | 1 | 20 | Intent | owner, product | 1 / 1 / 0 | low | keep: marketing intent; not checked against the product |
+| `backend/docs/marketing/07-conversion-assets.md` | 1 | 20 | Intent | owner, product | 1 / 1 / 0 | low | keep: marketing intent; not checked against the product |
+| `backend/docs/marketing/08-visual-assets-inventory.md` | 1 | 28 | Intent | owner, product | 1 / 1 / 0 | low | keep: marketing intent; not checked against the product |
+| `backend/modules/Website/docs/01-vision-and-scope.md` | 1 | 35 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/modules/Website/docs/02-prd.md` | 1 | 40 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/modules/Website/docs/03-persona-journeys.md` | 1 | 19 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/modules/Website/docs/07-user-flows.md` | 1 | 31 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `backend/modules/Website/docs/08-edge-cases.md` | 1 | 25 | Intent | owner, product | 1 / 1 / 0 | low | keep: product intent, not rewritten to match the code and not compared line by line; links checked |
+| `docs/competitor-analysis/index.md` | 1 | 24 | Research | owner, product | 17 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/01-executive-summary.md` | 1 | 47 | Research | owner, product | 3 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/02-company-and-evidence.md` | 1 | 29 | Research | owner, product | 5 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/03-platforms-and-availability.md` | 1 | 31 | Research | owner, product | 6 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/04-product-and-user-experience.md` | 1 | 38 | Research | owner, product | 7 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/05-market-and-geography.md` | 1 | 42 | Research | owner, product | 7 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/06-competitors-and-positioning.md` | 1 | 36 | Research | owner, product | 6 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/07-digital-presence-and-marketing.md` | 1 | 32 | Research | owner, product | 6 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/08-pricing-and-contracting.md` | 1 | 25 | Research | owner, product | 10 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/09-financial-feasibility.md` | 1 | 38 | Research | owner, product | 6 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/10-technical-architecture.md` | 1 | 27 | Research | owner, product | 6 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/11-privacy-compliance-and-risk.md` | 1 | 37 | Research | owner, product | 7 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/12-validation-plan-and-metrics.md` | 1 | 40 | Research | owner, product | 10 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/competitor-analysis/toptalla/index.md` | 1 | 71 | Research | owner, product | 16 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/product-research/dorak/dorak-study.md` | 1 | 278 | Research | owner, product | 0 / 0 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/product-research/dorak/index.md` | 1 | 26 | Research | owner, product | 2 / 1 / 0 | low | fix, applied: said the study had not run, although both outputs exist |
+| `docs/product-research/dorak/proposals/provider-product-catalog-plan.md` | 1 | 234 | Intent | owner, product | 1 / 0 / 0 | low | keep: live tracker (PC-0 to PC-2 done, matching FT-19); task details not rechecked |
+| `docs/product-research/dorak/proposals/provider-product-catalog.md` | 1 | 67 | Intent | owner, product | 2 / 0 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/product-research/dorak/study-prompt.md` | 1 | 101 | Research | owner, product | 4 / 1 / 0 | low | keep: dated research; sources and figures not rechecked; links checked |
+| `docs/product-research/index.md` | 1 | 22 | Research | owner, product | 3 / 1 / 0 | low | fix, applied: said the study had not run |
+| `frontend/mobile/docs/future-features/per-page/per-page.md` | 3 | 160 | Intent | owner, product | 0 / 1 / 0 | low | keep: deferred design, now listed as FT-26 |
 
 ## Deferred: `.claude/` files
 
