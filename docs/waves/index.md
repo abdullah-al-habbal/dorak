@@ -1,16 +1,4 @@
 ---
-nodeid: docs.waves
-parentnode: docs.graph.part-3
-childnodes:
-  - docs.waves.runbook
-  - docs.waves.wave-1-decisions
-  - docs.waves.wave-0
-  - docs.waves.wave-1
-  - docs.waves.wave-2
-  - docs.waves.wave-3
-  - docs.waves.wave-4
-  - docs.waves.wave-5
-  - docs.waves.wave-6
 codeanchors:
   - backend/
   - frontend/web/dashboard/

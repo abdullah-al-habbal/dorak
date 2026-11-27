@@ -1,7 +1,4 @@
 ---
-nodeid: skills.repo.stitch-flutter-converter.references.gates-and-cleanup
-parentnode: skills.repo.stitch-flutter-converter
-childnodes: []
 codeanchors:
   - frontend/mobile/
 ---

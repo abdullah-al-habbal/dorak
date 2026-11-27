@@ -1,14 +1,4 @@
 ---
-nodeid: backend.02-prd
-parentnode: backend.docs
-childnodes:
-  - backend.02-prd.part-2
-  - backend.02-prd.part-3
-  - backend.02-prd.part-4
-  - backend.02-prd.part-5
-  - backend.02-prd.part-6
-  - backend.02-prd.part-7
-  - backend.02-prd.part-8
 codeanchors:
   - backend/modules/
 ---

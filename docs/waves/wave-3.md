@@ -1,7 +1,4 @@
 ---
-nodeid: docs.waves.wave-3
-parentnode: docs.waves
-childnodes: []
 codeanchors:
   - backend/
   - frontend/

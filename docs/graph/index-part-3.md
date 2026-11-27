@@ -1,7 +1,4 @@
 ---
-nodeid: docs.graph.part-3
-parentnode: docs.graph
-childnodes: []
 codeanchors:
   - docs/
   - backend/

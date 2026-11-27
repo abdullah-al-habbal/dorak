@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.context-container-resources.part-2
-parentnode: skills.backend.laravel-native-abstractions.references.context-container-resources
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

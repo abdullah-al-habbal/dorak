@@ -1,9 +1,6 @@
 ---
 name: logging-and-tracing
 description: Logging via LoggerService with automatic request UUID tracing. Use whenever adding log statements or debugging request flows.
-nodeid: skills.backend.logging-and-tracing
-parentnode: skills.backend
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

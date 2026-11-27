@@ -1,7 +1,4 @@
 ---
-nodeid: docs.adr_0003
-parentnode: docs.decisions
-childnodes: []
 codeanchors:
   - frontend/web/dashboard/
   - backend/modules/Dashboard/

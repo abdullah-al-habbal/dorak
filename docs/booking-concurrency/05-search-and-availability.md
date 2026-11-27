@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.search-and-availability
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - backend/modules/Booking/Eloquent/Resolvers/Shared/ListSlotsEloquentResolver.php
   - backend/modules/Booking/Queries/

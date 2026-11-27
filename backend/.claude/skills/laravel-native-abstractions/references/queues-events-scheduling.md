@@ -1,9 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.queues-events-scheduling
-parentnode: skills.backend.laravel-native-abstractions
-childnodes:
-  - skills.backend.laravel-native-abstractions.references.queues-events-scheduling.part-2
-  - skills.backend.laravel-native-abstractions.references.queues-events-scheduling.part-3
 codeanchors:
   - backend/modules/
 ---

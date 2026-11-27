@@ -1,7 +1,4 @@
 ---
-nodeid: backend.17-sms-delivery
-parentnode: backend.docs
-childnodes: []
 codeanchors:
   - backend/modules/Core/Services/Sms/
   - backend/modules/Core/Contracts/SmsSender.php

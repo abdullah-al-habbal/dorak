@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.lock-order-and-deadlocks
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - backend/modules/Booking/Eloquent/Resolvers/
   - backend/modules/Dashboard/Eloquent/Resolvers/Bookings/

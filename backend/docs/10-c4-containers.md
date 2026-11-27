@@ -1,9 +1,4 @@
 ---
-nodeid: backend.10-c4-containers
-parentnode: backend.docs
-childnodes:
-  - backend.10-c4-containers.part-2
-  - backend.10-c4-containers.part-3
 codeanchors:
   - backend/modules/
 ---

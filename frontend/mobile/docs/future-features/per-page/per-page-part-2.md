@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.future-features.per-page.per-page.part-2
-parentnode: mobile.future-features.per-page.per-page
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

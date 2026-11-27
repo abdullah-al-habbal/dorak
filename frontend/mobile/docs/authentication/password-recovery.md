@@ -1,9 +1,4 @@
 ---
-nodeid: mobile.authentication.password-recovery
-parentnode: mobile.docs
-childnodes:
-  - mobile.authentication.password-recovery.part-2
-  - mobile.authentication.password-recovery.part-3
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

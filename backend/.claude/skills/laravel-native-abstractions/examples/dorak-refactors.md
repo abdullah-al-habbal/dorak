@@ -1,12 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.examples.dorak-refactors
-parentnode: skills.backend.laravel-native-abstractions
-childnodes:
-  - skills.backend.laravel-native-abstractions.examples.dorak-refactors.part-2
-  - skills.backend.laravel-native-abstractions.examples.dorak-refactors.part-3
-  - skills.backend.laravel-native-abstractions.examples.dorak-refactors.part-4
-  - skills.backend.laravel-native-abstractions.examples.dorak-refactors.part-5
-  - skills.backend.laravel-native-abstractions.examples.dorak-refactors.part-6
 codeanchors:
   - backend/modules/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.write-path-audit
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - backend/modules/Subscription/
   - backend/modules/Payment/

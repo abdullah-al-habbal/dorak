@@ -1,8 +1,4 @@
 ---
-nodeid: mobile.authentication.auth-flow
-parentnode: mobile.docs
-childnodes:
-  - mobile.authentication.auth-flow.part-2
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

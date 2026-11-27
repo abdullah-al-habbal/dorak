@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.screens.authentication.recovery-otp
-parentnode: mobile.docs
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

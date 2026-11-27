@@ -1,10 +1,6 @@
 ---
 name: laravel-testing-baseline
 description: Project standard for testing the salon/barbershop platform. Use whenever writing or reviewing tests, defining a ticket's Definition of Done, or running QA. Enforces the core rule that EVERY house rule in docs/04 becomes at least one test, EVERY edge case in docs/08 becomes a test, and EVERY user flow in docs/07 becomes a feature test - including the flagship no-double-booking concurrency test (rule E1 / EC-1) and the tenancy-isolation test (rule H7). Always consult this skill before marking any ticket Done; "done" is defined by these tests, not by vibes.
-nodeid: skills.backend.laravel-testing-baseline
-parentnode: skills.backend
-childnodes:
-  - skills.backend.laravel-testing-baseline.part-2
 codeanchors:
   - backend/modules/
   - backend/tests/

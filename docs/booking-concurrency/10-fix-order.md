@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.fix-order
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - backend/modules/Core/
   - backend/modules/Subscription/

@@ -1,10 +1,6 @@
 ---
 name: coding-standards
 description: "Mandatory PHP coding conventions for this project: strict_types, final classes, PHP 8 attributes, naming suffixes, env() rules. Use whenever writing or reviewing any PHP file — these override generic Laravel defaults."
-nodeid: skills.backend.coding-standards
-parentnode: skills.backend
-childnodes:
-  - skills.backend.coding-standards.part-2
 codeanchors:
   - backend/modules/
 ---

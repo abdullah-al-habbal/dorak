@@ -1,7 +1,4 @@
 ---
-nodeid: docs.testing-strategy
-parentnode: docs.architecture
-childnodes: []
 codeanchors:
   - backend/tests/
   - frontend/web/dashboard/tests/

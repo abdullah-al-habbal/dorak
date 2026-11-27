@@ -1,7 +1,4 @@
 ---
-nodeid: docs.deployment.part-3
-parentnode: docs.deployment
-childnodes: []
 codeanchors:
   - .github/workflows/
   - backend/

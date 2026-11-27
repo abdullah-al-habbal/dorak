@@ -1,7 +1,4 @@
 ---
-nodeid: skills.repo.monorepo-task-executor.references.dashboard-shared-primitives
-parentnode: skills.repo.monorepo-task-executor
-childnodes: []
 codeanchors:
   - frontend/web/dashboard/src/
   - frontend/web/dashboard/tests/

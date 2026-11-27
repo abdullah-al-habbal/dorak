@@ -1,12 +1,4 @@
 ---
-nodeid: docs.deployment
-parentnode: docs.architecture
-childnodes:
-  - docs.deployment.part-2
-  - docs.deployment.part-3
-  - docs.deployment.ci-cd-setup
-  - docs.deployment.vercel-dashboard
-  - docs.deployment.dev-environment-status
 codeanchors:
   - .github/workflows/
   - backend/

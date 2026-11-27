@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.core.storage.part-2
-parentnode: mobile.core.storage
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

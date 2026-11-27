@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.navigation.guards
-parentnode: mobile.docs
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

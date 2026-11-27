@@ -1,8 +1,4 @@
 ---
-nodeid: skills.backend.cqrs-pattern.references.read-example
-parentnode: skills.backend.cqrs-pattern
-childnodes:
-  - skills.backend.cqrs-pattern.references.read-example.part-2
 codeanchors:
   - backend/modules/
 ---

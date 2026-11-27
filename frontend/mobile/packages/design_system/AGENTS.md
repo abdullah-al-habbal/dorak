@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.packages.design-system
-parentnode: mobile.guide
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/design_system/lib/
 ---

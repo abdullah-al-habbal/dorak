@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.packages.core.readme
-parentnode: mobile.packages.core
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

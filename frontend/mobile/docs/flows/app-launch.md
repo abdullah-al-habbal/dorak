@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.flows.app-launch
-parentnode: mobile.docs
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

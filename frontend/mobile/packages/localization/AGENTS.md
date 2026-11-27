@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.packages.localization
-parentnode: mobile.guide
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/localization/lib/
 ---

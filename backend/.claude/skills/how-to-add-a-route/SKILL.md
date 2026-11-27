@@ -1,9 +1,6 @@
 ---
 name: how-to-add-a-route
 description: Route file placement and wiring for API and web routes per module. Use whenever adding a new endpoint to a module's routes.
-nodeid: skills.backend.how-to-add-a-route
-parentnode: skills.backend
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

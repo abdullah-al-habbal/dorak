@@ -1,14 +1,4 @@
 ---
-nodeid: backend.feature-index
-parentnode: backend.docs
-childnodes:
-  - backend.feature-index.part-2
-  - backend.feature-index.part-3
-  - backend.feature-index.part-4
-  - backend.feature-index.part-5
-  - backend.feature-index.part-6
-  - backend.feature-index.part-7
-  - backend.feature-index.part-8
 codeanchors:
   - backend/modules/
 ---

@@ -1,8 +1,4 @@
 ---
-nodeid: mobile.realtime.reverb
-parentnode: mobile.docs
-childnodes:
-  - mobile.realtime.reverb.part-2
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

@@ -1,12 +1,4 @@
 ---
-nodeid: backend.guide
-parentnode: repo.root
-childnodes:
-  - backend.claude
-  - backend.docs
-  - backend.readme
-  - backend.website
-  - skills.backend
 codeanchors:
   - backend/modules/
   - backend/bootstrap/

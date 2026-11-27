@@ -1,8 +1,4 @@
 ---
-nodeid: backend.09-c4-context
-parentnode: backend.docs
-childnodes:
-  - backend.09-c4-context.part-2
 codeanchors:
   - backend/modules/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: backend.11-backend-architecture
-parentnode: backend.docs
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

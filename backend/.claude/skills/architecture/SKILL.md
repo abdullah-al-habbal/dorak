@@ -1,10 +1,6 @@
 ---
 name: architecture
 description: High-level module structure, bootstrap flow, PSR-4 mapping, and dependency direction. Use whenever deciding module placement, understanding the bootstrap order, or checking naming conventions.
-nodeid: skills.backend.architecture
-parentnode: skills.backend
-childnodes:
-  - skills.backend.architecture.part-2
 codeanchors:
   - backend/modules/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: docs.localization-of-machine-keys
-parentnode: docs.architecture
-childnodes: []
 codeanchors:
   - backend/modules/Core/Enums/PlatformEventEnum.php
   - backend/modules/Core/Services/NotificationRecipientLocale.php

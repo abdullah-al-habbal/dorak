@@ -1,7 +1,4 @@
 ---
-nodeid: backend.marketing.01-brand-dna
-parentnode: backend.docs
-childnodes: []
 codeanchors:
   - backend/modules/Marketing/
 ---

@@ -1,11 +1,4 @@
 ---
-nodeid: mobile.state-management.pagination
-parentnode: mobile.state-management
-childnodes:
-  - mobile.state-management.pagination.part-2
-  - mobile.state-management.pagination.part-3
-  - mobile.state-management.pagination.part-4
-  - mobile.state-management.pagination.part-5
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

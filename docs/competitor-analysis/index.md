@@ -1,8 +1,4 @@
 ---
-nodeid: docs.competitor-analysis
-parentnode: docs.graph.part-3
-childnodes:
-  - docs.competitor-analysis.toptalla
 codeanchors:
   - docs/competitor-analysis/
 ---

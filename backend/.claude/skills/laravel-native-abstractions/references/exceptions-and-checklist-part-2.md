@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.exceptions-and-checklist.part-2
-parentnode: skills.backend.laravel-native-abstractions.references.exceptions-and-checklist
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

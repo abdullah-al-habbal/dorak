@@ -1,13 +1,6 @@
 ---
 name: laravel-attributes
 description: MANDATORY reference for all new Laravel 13 PHP code in this repo. Use class attributes (#[Fillable], #[Table], #[Signature], etc.) instead of class properties for Eloquent models, jobs, console commands, controllers, form requests, resources, factories, testing hooks, and container injection. READ BEFORE WRITING any new PHP code. Source: laraveldaily.com "PHP Attributes in Laravel 13: The Ultimate Guide (36 New Attributes)".
-nodeid: skills.backend.laravel-attributes
-parentnode: skills.backend
-childnodes:
-  - skills.backend.laravel-attributes.references.eloquent-attributes
-  - skills.backend.laravel-attributes.references.pre-existing-attributes
-  - skills.backend.laravel-attributes.references.queue-and-console-attributes
-  - skills.backend.laravel-attributes.references.routing-form-resource-factory-testing
 codeanchors:
   - backend/modules/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-attributes.references.queue-and-console-attributes
-parentnode: skills.backend.laravel-attributes
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

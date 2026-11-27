@@ -1,7 +1,4 @@
 ---
-nodeid: backend.marketing.05-metadata-and-seo
-parentnode: backend.docs
-childnodes: []
 codeanchors:
   - backend/modules/Marketing/
 ---

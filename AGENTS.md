@@ -1,7 +1,4 @@
 ---
-nodeid: repo.agents
-parentnode: repo.root
-childnodes: []
 codeanchors:
   - backend/
   - frontend/web/dashboard/
@@ -87,6 +84,7 @@ changing files in that area.
   programme ends, move what is still true or open, then delete its files.
 - A new document is listed in [the documentation index](docs/index.md) or
   `docs/graph/`. Moving or deleting one means updating its links in the same commit.
+- Frontmatter holds `codeanchors` only (skills also keep their own `name` and `description`).
 - Run `python3 scripts/check_docs.py` after changing Markdown or moving code that a
   document names in `codeanchors`; Docs CI runs it too. It checks links and the
   index, not whether the text is true.

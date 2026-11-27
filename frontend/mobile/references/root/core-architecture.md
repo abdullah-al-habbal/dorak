@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.references.root.core-architecture
-parentnode: mobile.guide
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/src/
   - frontend/mobile/apps/client_app/lib/src/core/navigation/

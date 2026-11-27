@@ -1,7 +1,4 @@
 ---
-nodeid: docs.competitor-analysis.toptalla.technical-architecture
-parentnode: docs.competitor-analysis.toptalla
-childnodes: []
 codeanchors:
   - docs/competitor-analysis/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.idempotency-and-uniqueness
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - backend/modules/Booking/
   - backend/modules/Core/Http/Middleware/

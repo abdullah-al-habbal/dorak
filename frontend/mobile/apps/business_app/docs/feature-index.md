@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.apps.business-app.feature-index
-parentnode: mobile.apps.business-app
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/business_app/lib/
 ---

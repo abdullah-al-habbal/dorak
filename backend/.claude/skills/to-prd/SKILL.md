@@ -1,10 +1,6 @@
 ---
 name: to-prd
 description: Turn the current conversation context into a PRD and publish it to the project issue tracker. Use when user wants to create a PRD from the current context.
-nodeid: skills.backend.to-prd
-parentnode: skills.backend
-childnodes:
-  - skills.backend.to-prd.part-2
 codeanchors:
   - backend/docs/
 ---

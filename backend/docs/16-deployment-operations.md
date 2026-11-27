@@ -1,7 +1,4 @@
 ---
-nodeid: backend.16-deployment-operations
-parentnode: backend.docs
-childnodes: []
 codeanchors:
   - backend/modules/
   - backend/scripts/check_migrations.php

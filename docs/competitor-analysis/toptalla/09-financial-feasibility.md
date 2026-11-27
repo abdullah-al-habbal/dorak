@@ -1,7 +1,4 @@
 ---
-nodeid: docs.competitor-analysis.toptalla.financial-feasibility
-parentnode: docs.competitor-analysis.toptalla
-childnodes: []
 codeanchors:
   - docs/competitor-analysis/
 ---

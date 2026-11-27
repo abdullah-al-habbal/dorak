@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.repo-facts
-parentnode: skills.backend.laravel-native-abstractions
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

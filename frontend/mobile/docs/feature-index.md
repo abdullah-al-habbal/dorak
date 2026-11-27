@@ -1,11 +1,4 @@
 ---
-nodeid: mobile.feature-index
-parentnode: mobile.docs
-childnodes:
-  - mobile.feature-index.part-2
-  - mobile.feature-index.part-3
-  - mobile.feature-index.part-4
-  - mobile.feature-index.part-5
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

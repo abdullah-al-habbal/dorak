@@ -1,7 +1,4 @@
 ---
-nodeid: docs.competitor-analysis.toptalla.competitors-and-positioning
-parentnode: docs.competitor-analysis.toptalla
-childnodes: []
 codeanchors:
   - docs/competitor-analysis/
 ---

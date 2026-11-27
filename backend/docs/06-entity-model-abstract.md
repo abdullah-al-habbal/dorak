@@ -1,19 +1,4 @@
 ---
-nodeid: backend.06-entity-model-abstract
-parentnode: backend.docs
-childnodes:
-  - backend.06-entity-model-abstract.part-2
-  - backend.06-entity-model-abstract.part-3
-  - backend.06-entity-model-abstract.part-4
-  - backend.06-entity-model-abstract.part-5
-  - backend.06-entity-model-abstract.part-6
-  - backend.06-entity-model-abstract.part-7
-  - backend.06-entity-model-abstract.part-8
-  - backend.06-entity-model-abstract.part-9
-  - backend.06-entity-model-abstract.part-10
-  - backend.06-entity-model-abstract.part-11
-  - backend.06-entity-model-abstract.part-12
-  - backend.06-entity-model-abstract.part-13
 codeanchors:
   - backend/modules/
 ---

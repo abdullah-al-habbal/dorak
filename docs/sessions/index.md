@@ -1,7 +1,4 @@
 ---
-nodeid: docs.sessions
-parentnode: docs.graph.part-3
-childnodes: []
 codeanchors:
   - docs/
 ---

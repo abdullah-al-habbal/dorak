@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.test-coverage
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - backend/tests/Concurrency/
   - backend/tests/Support/

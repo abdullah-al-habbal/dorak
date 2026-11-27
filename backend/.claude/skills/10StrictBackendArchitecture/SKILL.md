@@ -1,9 +1,6 @@
 ---
 name: strict-backend-architecture
 description: Enforces FormRequest usage, strongly-typed Command/Query objects, strict PHP imports, and Resource composition in the Dorak Laravel backend. Trigger when writing Actions, Handlers, Resources, or Requests.
-nodeid: skills.backend.10-strict-backend-architecture
-parentnode: skills.backend
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

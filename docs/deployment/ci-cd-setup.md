@@ -1,7 +1,4 @@
 ---
-nodeid: docs.deployment.ci-cd-setup
-parentnode: docs.deployment
-childnodes: []
 codeanchors:
   - .github/workflows/
 ---

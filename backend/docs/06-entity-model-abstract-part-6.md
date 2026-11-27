@@ -1,7 +1,4 @@
 ---
-nodeid: backend.06-entity-model-abstract.part-6
-parentnode: backend.06-entity-model-abstract
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

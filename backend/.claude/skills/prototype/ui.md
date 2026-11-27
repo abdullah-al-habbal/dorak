@@ -1,9 +1,4 @@
 ---
-nodeid: skills.backend.prototype.ui
-parentnode: skills.backend.prototype
-childnodes:
-  - skills.backend.prototype.ui.part-2
-  - skills.backend.prototype.ui.part-3
 codeanchors:
   - backend/docs/
 ---

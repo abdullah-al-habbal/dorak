@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.prototype.ui.part-3
-parentnode: skills.backend.prototype.ui
-childnodes: []
 codeanchors:
   - backend/docs/
 ---

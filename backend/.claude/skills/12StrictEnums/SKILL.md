@@ -1,11 +1,6 @@
 ---
 name: strict-enums
 description: Enforce PHP 8.1+ Backed Enums across the Dorak backend AND `json_serializable` + `@JsonKey` across the Flutter frontend. Use whenever creating a new status/type field, writing validation, casting model attributes, or defining Dart DTOs/Entities. All status/type DB columns must use Backed Enums, `Rule::enum` validation, and model casts. All Flutter DTOs/Entities must use `@JsonSerializable`, `@JsonKey`, and `@JsonEnum`.
-nodeid: skills.backend.12-strict-enums
-parentnode: skills.backend
-childnodes:
-  - skills.backend.12-strict-enums.references.flutter-json-serialization
-  - skills.backend.12-strict-enums.part-2
 codeanchors:
   - backend/modules/
 ---

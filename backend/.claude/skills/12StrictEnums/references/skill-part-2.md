@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.12-strict-enums.part-2
-parentnode: skills.backend.12-strict-enums
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

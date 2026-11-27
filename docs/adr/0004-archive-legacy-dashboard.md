@@ -1,7 +1,4 @@
 ---
-nodeid: docs.adr_0004
-parentnode: docs.decisions
-childnodes: []
 codeanchors:
   - frontend/web/dashboard/
   - .husky/

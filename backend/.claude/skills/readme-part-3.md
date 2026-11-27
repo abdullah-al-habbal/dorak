@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.part-3
-parentnode: skills.backend
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

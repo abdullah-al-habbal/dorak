@@ -1,8 +1,4 @@
 ---
-nodeid: backend.05-domain-glossary
-parentnode: backend.docs
-childnodes:
-  - backend.05-domain-glossary.part-2
 codeanchors:
   - backend/modules/
 ---

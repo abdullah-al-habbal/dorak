@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.state-management.async-state.part-3
-parentnode: mobile.state-management.async-state
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

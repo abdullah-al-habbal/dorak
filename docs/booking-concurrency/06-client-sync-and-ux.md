@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.client-sync-and-ux
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/src/network/interceptors/
   - frontend/mobile/packages/core/lib/src/network/exceptions/

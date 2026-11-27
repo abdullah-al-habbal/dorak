@@ -1,7 +1,4 @@
 ---
-nodeid: docs.competitor-analysis.toptalla.market-and-geography
-parentnode: docs.competitor-analysis.toptalla
-childnodes: []
 codeanchors:
   - docs/competitor-analysis/
 ---

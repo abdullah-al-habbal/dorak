@@ -1,8 +1,4 @@
 ---
-nodeid: mobile.core.interceptors
-parentnode: mobile.docs
-childnodes:
-  - mobile.core.interceptors.part-2
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

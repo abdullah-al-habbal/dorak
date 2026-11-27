@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.runtime.app-lifecycle
-parentnode: mobile.docs
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

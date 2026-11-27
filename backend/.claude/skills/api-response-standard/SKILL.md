@@ -1,9 +1,6 @@
 ---
 name: api-response-standard
 description: Unified JSON response shape for all API endpoints. Use whenever building an API action, form request, or error response — every endpoint must return the standard envelope (success, statusCode, code, message, timestamp, data, meta, errors).
-nodeid: skills.backend.api-response-standard
-parentnode: skills.backend
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

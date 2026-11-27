@@ -1,7 +1,4 @@
 ---
-nodeid: backend.marketing.02-platform-setup
-parentnode: backend.docs
-childnodes: []
 codeanchors:
   - backend/modules/Marketing/
 ---

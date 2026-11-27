@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.cache-and-locks.part-2
-parentnode: skills.backend.laravel-native-abstractions.references.cache-and-locks
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

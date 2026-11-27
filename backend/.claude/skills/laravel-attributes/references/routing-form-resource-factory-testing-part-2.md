@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-attributes.references.routing-form-resource-factory-testing.part-2
-parentnode: skills.backend.laravel-attributes.references.routing-form-resource-factory-testing
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

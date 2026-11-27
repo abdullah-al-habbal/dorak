@@ -1,7 +1,4 @@
 ---
-nodeid: docs.competitor-analysis.toptalla.privacy-compliance-and-risk
-parentnode: docs.competitor-analysis.toptalla
-childnodes: []
 codeanchors:
   - docs/competitor-analysis/
 ---

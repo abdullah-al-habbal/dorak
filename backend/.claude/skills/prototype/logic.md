@@ -1,8 +1,4 @@
 ---
-nodeid: skills.backend.prototype.logic
-parentnode: skills.backend.prototype
-childnodes:
-  - skills.backend.prototype.logic.part-2
 codeanchors:
   - backend/docs/
 ---

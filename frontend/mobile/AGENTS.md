@@ -1,16 +1,4 @@
 ---
-nodeid: mobile.guide
-parentnode: repo.root
-childnodes:
-  - mobile.apps.business-app
-  - mobile.apps.client-app
-  - mobile.apps.stylist-app
-  - mobile.docs
-  - mobile.packages.core
-  - mobile.packages.design-system
-  - mobile.packages.feature-error-feedback
-  - mobile.packages.localization
-  - mobile.references.root.core-architecture
 codeanchors:
   - frontend/mobile/apps/
   - frontend/mobile/packages/

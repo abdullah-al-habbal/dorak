@@ -1,7 +1,4 @@
 ---
-nodeid: docs.push-notifications
-parentnode: docs.architecture
-childnodes: []
 codeanchors:
   - backend/modules/Core/Services/FcmNotificationSender.php
   - backend/modules/Core/Services/DeviceTokenService.php

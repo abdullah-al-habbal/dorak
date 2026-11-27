@@ -1,7 +1,4 @@
 ---
-nodeid: backend.website.04-house-rules
-parentnode: backend.website
-childnodes: []
 codeanchors:
   - backend/modules/Website/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.eloquent-relationships.part-3
-parentnode: skills.backend.laravel-native-abstractions.references.eloquent-relationships
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

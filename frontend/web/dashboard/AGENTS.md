@@ -1,9 +1,4 @@
 ---
-nodeid: dashboard.guide
-parentnode: repo.root
-childnodes:
-  - dashboard.architecture
-  - dashboard.claude
 codeanchors:
   - frontend/web/dashboard/src/
   - frontend/web/dashboard/tests/

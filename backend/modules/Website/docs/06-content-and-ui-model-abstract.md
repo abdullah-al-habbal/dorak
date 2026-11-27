@@ -1,7 +1,4 @@
 ---
-nodeid: backend.website.06-content-and-ui-model-abstract
-parentnode: backend.website
-childnodes: []
 codeanchors:
   - backend/modules/Website/
 ---

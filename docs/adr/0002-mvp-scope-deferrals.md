@@ -1,7 +1,4 @@
 ---
-nodeid: docs.adr_0002
-parentnode: docs.decisions
-childnodes: []
 codeanchors:
   - backend/modules/ServiceCatalog/
   - backend/modules/Client/

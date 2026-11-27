@@ -1,8 +1,4 @@
 ---
-nodeid: docs.product-research
-parentnode: docs.graph.part-3
-childnodes:
-  - docs.product-research.dorak
 codeanchors:
   - docs/product-research/
 ---

@@ -1,9 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.http-client
-parentnode: skills.backend.laravel-native-abstractions
-childnodes:
-  - skills.backend.laravel-native-abstractions.references.http-client.part-2
-  - skills.backend.laravel-native-abstractions.references.http-client.part-3
 codeanchors:
   - backend/modules/
 ---

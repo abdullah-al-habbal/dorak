@@ -1,10 +1,6 @@
 ---
 name: laravel-module-architecture-baseline
 description: The mandatory backend architecture standard for this salon/barbershop platform. Use this whenever creating or editing ANY backend class - a new module, an action, a handler, an Eloquent resolver, a presenter, a form request, a model, a service provider - and whenever deciding WHERE a piece of code should live. Enforces the modular-by-domain layout under modules/{Name}/ and the strict Action -> Handler -> EloquentResolver flow (no controllers, no service layer, no repositories; each layer is a single-method final class named by action). Always consult this skill before writing backend code; it overrides default Laravel conventions. Mirrors docs/11.
-nodeid: skills.backend.laravel-module-architecture-baseline
-parentnode: skills.backend
-childnodes:
-  - skills.backend.laravel-module-architecture-baseline.part-2
 codeanchors:
   - backend/modules/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.core.networking.part-2
-parentnode: mobile.core.networking
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

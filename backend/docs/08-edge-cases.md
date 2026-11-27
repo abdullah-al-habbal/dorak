@@ -1,9 +1,4 @@
 ---
-nodeid: backend.08-edge-cases
-parentnode: backend.docs
-childnodes:
-  - backend.08-edge-cases.part-2
-  - backend.08-edge-cases.part-3
 codeanchors:
   - backend/modules/
 ---

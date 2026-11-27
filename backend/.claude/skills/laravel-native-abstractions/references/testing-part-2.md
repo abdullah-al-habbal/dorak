@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.testing.part-2
-parentnode: skills.backend.laravel-native-abstractions.references.testing
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

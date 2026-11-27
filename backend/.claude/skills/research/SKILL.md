@@ -1,9 +1,6 @@
 ---
 name: research
 description: Cache external research (third-party APIs, unfamiliar protocols, vendor SDKs, hard-to-explore code regions) into a single research.md asset scoped to the current feature, so future agent sessions don't re-explore the same ground. Use when the user mentions integrating an external API, building against unfamiliar docs, working with a legacy/sprawling module, or says "research this", "cache the research", "I'll need an external API".
-nodeid: skills.backend.research
-parentnode: skills.backend
-childnodes: []
 codeanchors:
   - backend/docs/
 ---

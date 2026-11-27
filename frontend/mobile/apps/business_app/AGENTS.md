@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.apps.business-app
-parentnode: mobile.guide
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/business_app/lib/
 ---

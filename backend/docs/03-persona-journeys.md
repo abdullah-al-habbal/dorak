@@ -1,8 +1,4 @@
 ---
-nodeid: backend.03-persona-journeys
-parentnode: backend.docs
-childnodes:
-  - backend.03-persona-journeys.part-2
 codeanchors:
   - backend/modules/
 ---

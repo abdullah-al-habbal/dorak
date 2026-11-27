@@ -1,7 +1,4 @@
 ---
-nodeid: skills.repo.stitch-flutter-converter.references.onboarding-flow
-parentnode: skills.repo.stitch-flutter-converter
-childnodes: []
 codeanchors:
   - frontend/mobile/
 ---

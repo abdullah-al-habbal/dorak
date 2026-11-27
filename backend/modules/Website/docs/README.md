@@ -1,15 +1,4 @@
 ---
-nodeid: backend.website
-parentnode: backend.guide
-childnodes:
-  - backend.website.01-vision-and-scope
-  - backend.website.02-prd
-  - backend.website.03-persona-journeys
-  - backend.website.04-house-rules
-  - backend.website.05-domain-glossary
-  - backend.website.06-content-and-ui-model-abstract
-  - backend.website.07-user-flows
-  - backend.website.08-edge-cases
 codeanchors:
   - backend/modules/Website/
 ---

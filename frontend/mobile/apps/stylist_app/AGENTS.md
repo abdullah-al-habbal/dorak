@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.apps.stylist-app
-parentnode: mobile.guide
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/stylist_app/lib/
 ---

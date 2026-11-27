@@ -1,15 +1,4 @@
 ---
-nodeid: docs.graph
-parentnode: repo.root
-childnodes:
-  - docs.architecture
-  - docs.decisions
-  - docs.backlog
-  - docs.graph.part-2
-  - docs.graph.part-3
-  - docs.graph.part-4
-  - docs.graph.part-5
-  - docs.graph.part-6
 codeanchors:
   - docs/
   - backend/

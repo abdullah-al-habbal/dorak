@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.12-strict-enums.references.flutter-json-serialization
-parentnode: skills.backend.12-strict-enums
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

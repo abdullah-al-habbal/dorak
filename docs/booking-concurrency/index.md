@@ -1,16 +1,4 @@
 ---
-nodeid: docs.booking-concurrency
-parentnode: docs.graph.part-3
-childnodes:
-  - docs.booking-concurrency.lock-order-and-deadlocks
-  - docs.booking-concurrency.overlap-guards
-  - docs.booking-concurrency.idempotency-and-uniqueness
-  - docs.booking-concurrency.hashing-and-tokens
-  - docs.booking-concurrency.search-and-availability
-  - docs.booking-concurrency.client-sync-and-ux
-  - docs.booking-concurrency.test-coverage
-  - docs.booking-concurrency.write-path-audit
-  - docs.booking-concurrency.fix-order
 codeanchors:
   - backend/modules/Booking/
   - backend/modules/Dashboard/

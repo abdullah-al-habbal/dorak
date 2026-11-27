@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.apps.client-app
-parentnode: mobile.guide
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

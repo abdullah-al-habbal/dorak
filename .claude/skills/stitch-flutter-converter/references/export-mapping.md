@@ -1,7 +1,4 @@
 ---
-nodeid: skills.repo.stitch-flutter-converter.references.export-mapping
-parentnode: skills.repo.stitch-flutter-converter
-childnodes: []
 codeanchors:
   - frontend/mobile/
 ---

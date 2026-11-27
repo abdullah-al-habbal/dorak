@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.anti-patterns-and-decision-tree.part-2
-parentnode: skills.backend.laravel-native-abstractions.references.anti-patterns-and-decision-tree
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

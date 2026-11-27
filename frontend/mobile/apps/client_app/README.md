@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.apps.client-app.readme
-parentnode: mobile.apps.client-app
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

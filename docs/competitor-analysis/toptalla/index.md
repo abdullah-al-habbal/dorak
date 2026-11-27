@@ -1,19 +1,4 @@
 ---
-nodeid: docs.competitor-analysis.toptalla
-parentnode: docs.competitor-analysis
-childnodes:
-  - docs.competitor-analysis.toptalla.executive-summary
-  - docs.competitor-analysis.toptalla.company-and-evidence
-  - docs.competitor-analysis.toptalla.platforms-and-availability
-  - docs.competitor-analysis.toptalla.product-and-user-experience
-  - docs.competitor-analysis.toptalla.market-and-geography
-  - docs.competitor-analysis.toptalla.competitors-and-positioning
-  - docs.competitor-analysis.toptalla.digital-presence-and-marketing
-  - docs.competitor-analysis.toptalla.pricing-and-contracting
-  - docs.competitor-analysis.toptalla.financial-feasibility
-  - docs.competitor-analysis.toptalla.technical-architecture
-  - docs.competitor-analysis.toptalla.privacy-compliance-and-risk
-  - docs.competitor-analysis.toptalla.validation-plan-and-metrics
 codeanchors:
   - docs/competitor-analysis/
 ---

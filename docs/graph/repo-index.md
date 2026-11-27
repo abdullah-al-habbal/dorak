@@ -1,15 +1,4 @@
 ---
-nodeid: repo.root
-parentnode: null
-childnodes:
-  - backend.guide
-  - dashboard.guide
-  - docs.graph
-  - mobile.guide
-  - repo.agents
-  - repo.claude
-  - repo.readme
-  - skills.repo
 codeanchors:
   - backend/
   - frontend/web/dashboard/

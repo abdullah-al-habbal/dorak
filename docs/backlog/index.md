@@ -1,7 +1,4 @@
 ---
-nodeid: docs.backlog
-parentnode: docs.graph.part-3
-childnodes: []
 codeanchors:
   - backend/modules/
   - frontend/web/dashboard/src/
@@ -28,7 +25,6 @@ The single place for what is still open: decisions, bugs, missing features, tech
 | BD-13 | Where does the public pages' booking button point, and what is the public site origin? | Set `BOOKING_APP_URL` (store or universal link of the Dorak app) and `PUBLIC_SITE_URL` on Vercel (see [Vercel setup](../deployment/vercel-dashboard.md)). No store link exists in the repository. Until set, the pages say booking is in the app, canonical URLs stay relative and `sitemap.xml` is empty (sitemap URLs must be absolute); `robots.txt` then omits its sitemap line. |
 | BD-16 | Which written backend conventions still hold? | Found 2026-11-27 by the documentation audit; the code differs from the older standard, and no rule was changed. (a) The module-architecture skill bans a service layer, but 24 modules have `Services/` (86 files). (b) The old rule to use `newQuery()` rather than `Model::query()` is followed once against 472 `::query()` calls. (c) House rule VO-1 bans untyped arrays for structured columns, but models still cast columns to `array` (for example `bookings.home_address`, the branch floor-plan columns, `chairs.layout_settings`; some such casts are translatable maps). For each: keep and fix the code, or change the rule |
 | BD-17 | Is `Cubit` still banned in the mobile apps? | Found 2026-11-27 by the documentation audit. The [state contract](../../frontend/mobile/docs/state-management/conventions.md) bans `Cubit` everywhere and the [mobile guide](../../frontend/mobile/AGENTS.md) asks for events, but 38 classes extend `Cubit` (28 of them named `…Bloc`) against 16 that extend `Bloc`. Either keep the ban and plan the conversion, or allow `Cubit` and rewrite the rule. No code or rule was changed |
-| BD-19 | Keep the documentation graph metadata (`nodeid`, `parentnode`, `childnodes`, `codeanchors`) and the `docs/graph` routers? | The documentation audit found that no tracked file reads the first three, and that moving documents meant editing many files to keep them right. `scripts/check_docs.py` now checks `codeanchors` and that every document is listed. Recommendation: drop `nodeid`, `parentnode` and `childnodes`; keep `codeanchors` and one index. |
 
 Deferred by decision, not to be started: NS-26 plan self-service and billing (D6, manual billing at launch); NS-27 stays closed (D7); Apple and
 Facebook sign-in are unsupported (G9).
@@ -193,6 +189,7 @@ Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are reso
 - **Live chair status (owner, 2026-11-27):** chair status is sent live over Reverb. This replaces the older product rule against real-time sockets (PRD section 8 item 5, house rule L3); hardware occupancy tracking stays out.
 - **Salon time zone (owner, 2026-11-27):** each branch has its own time zone, `Asia/Damascus` by default. Opening hours, date exceptions and barber schedules are times in that zone. Not implemented yet (BG-55, BG-56).
 - **Workflow skills (BD-18, owner, 2026-11-27):** the four skills written for another team's GitLab server (`crescent`, `ralph-loop`, `qa-plan`, `to-issues`) are deleted, not rewritten.
+- **Document metadata (BD-19, owner, 2026-11-27):** frontmatter keeps `codeanchors` (checked by `scripts/check_docs.py`); `nodeid`, `parentnode` and `childnodes` are removed because no tool read them. `docs/index.md` and its `docs/graph/` pages stay: the check uses them as the document list.
 - **Standing rules:** pending-brand records are hidden from public reads; backend contract changes are backward compatible for mobile.
 - **Delivery (owner, 2026-11-26; replaces "never push"):** there are no real users or data. Work is done in waves, one item per commit; at the end of a wave: gates, push to `master`, CI, dev deploy, smoke test, docs. Batch 2 (BD-2) and billing stay out of scope.
 - **Dev database reset (owner, 2026-11-26):** allowed on dev only, and only when a wave edits an existing migration; say so each time.

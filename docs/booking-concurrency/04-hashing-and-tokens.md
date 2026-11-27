@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.hashing-and-tokens
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - backend/modules/Client/
   - backend/modules/Core/Services/

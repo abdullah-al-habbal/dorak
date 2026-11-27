@@ -1,9 +1,6 @@
 ---
 name: laravel-migrations-baseline
 description: Project standard for writing Laravel database migrations for this salon/barbershop platform. Use whenever creating, editing, or reviewing a migration, adding a table or column, or changing foreign keys / cascade behavior. Enforces that the schema matches the abstract entity model in docs/06 AND the cascade laws in docs/04 (especially A6 and C5) exactly, uses UUID keys and JSON translatable columns, models the three polymorphic links correctly, and is reversible without silent data loss. Always consult this skill before touching any migration, even a small column add.
-nodeid: skills.backend.laravel-migrations-baseline
-parentnode: skills.backend
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: backend.readme
-parentnode: backend.guide
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

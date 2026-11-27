@@ -1,9 +1,4 @@
 ---
-nodeid: backend.01-vision-and-scope
-parentnode: backend.docs
-childnodes:
-  - backend.01-vision-and-scope.part-2
-  - backend.01-vision-and-scope.part-3
 codeanchors:
   - backend/modules/
 ---

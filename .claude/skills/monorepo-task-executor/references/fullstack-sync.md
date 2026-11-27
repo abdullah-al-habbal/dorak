@@ -1,7 +1,4 @@
 ---
-nodeid: skills.repo.monorepo-task-executor.references.fullstack-sync
-parentnode: skills.repo.monorepo-task-executor
-childnodes: []
 codeanchors:
   - backend/
   - frontend/web/dashboard/

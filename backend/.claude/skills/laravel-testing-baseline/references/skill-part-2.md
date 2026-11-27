@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-testing-baseline.part-2
-parentnode: skills.backend.laravel-testing-baseline
-childnodes: []
 codeanchors:
   - backend/modules/
   - backend/tests/

@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.state-management.conventions.part-3
-parentnode: mobile.state-management.conventions
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

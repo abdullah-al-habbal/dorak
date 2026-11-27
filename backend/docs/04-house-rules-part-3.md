@@ -1,7 +1,4 @@
 ---
-nodeid: backend.04-house-rules.part-3
-parentnode: backend.04-house-rules
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

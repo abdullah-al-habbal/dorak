@@ -1,10 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.requests-validation-authorization
-parentnode: skills.backend.laravel-native-abstractions
-childnodes:
-  - skills.backend.laravel-native-abstractions.references.requests-validation-authorization.part-2
-  - skills.backend.laravel-native-abstractions.references.requests-validation-authorization.part-3
-  - skills.backend.laravel-native-abstractions.references.requests-validation-authorization.part-4
 codeanchors:
   - backend/modules/
 ---

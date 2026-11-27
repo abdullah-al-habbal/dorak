@@ -1,8 +1,4 @@
 ---
-nodeid: docs.product-research.dorak
-parentnode: docs.product-research
-childnodes:
-  - docs.product-research.dorak.study-prompt
 codeanchors:
   - docs/product-research/
 ---

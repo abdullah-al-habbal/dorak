@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.part-2
-parentnode: skills.backend.laravel-native-abstractions
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

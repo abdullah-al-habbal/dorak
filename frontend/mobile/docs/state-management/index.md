@@ -1,11 +1,4 @@
 ---
-nodeid: mobile.state-management
-parentnode: mobile.docs
-childnodes:
-  - mobile.state-management.async-state
-  - mobile.state-management.conventions
-  - mobile.state-management.pagination
-  - mobile.state-management.refresh
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

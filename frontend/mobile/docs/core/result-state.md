@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.core.result-state
-parentnode: mobile.docs
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

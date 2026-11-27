@@ -1,7 +1,4 @@
 ---
-nodeid: backend.marketing.04-launch-campaign
-parentnode: backend.docs
-childnodes: []
 codeanchors:
   - backend/modules/Marketing/
 ---

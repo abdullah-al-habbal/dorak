@@ -1,19 +1,6 @@
 ---
 name: monorepo-task-executor
 description: Executes and closes engineering tasks in the Dorak Operations monorepo with a deep audit, 100% full-stack sync (backend, API contract, docs, dashboard, all mobile apps, tests), quality gates, and a local-only commit. Use when asked to run, implement, process, complete, or close a Dorak task such as "implement X" or "close Y".
-nodeid: skills.repo.monorepo-task-executor
-parentnode: skills.repo
-childnodes:
-  - skills.repo.monorepo-task-executor.references.audit-directive
-  - skills.repo.monorepo-task-executor.references.dashboard-shared-primitives
-  - skills.repo.monorepo-task-executor.references.fullstack-sync
-  - skills.repo.monorepo-task-executor.references.gates
-  - skills.repo.monorepo-task-executor.references.gotchas
-  - skills.repo.monorepo-task-executor.references.security-review
-  - skills.repo.monorepo-task-executor.templates.commit-message
-  - skills.repo.monorepo-task-executor.templates.decision-record
-  - skills.repo.monorepo-task-executor.templates.final-report
-  - skills.repo.monorepo-task-executor.templates.implemented-contract
 codeanchors:
   - backend/
   - frontend/web/dashboard/

@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.how-to-add-a-module.part-2
-parentnode: skills.backend.how-to-add-a-module
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

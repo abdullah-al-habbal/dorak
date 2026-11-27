@@ -1,10 +1,4 @@
 ---
-nodeid: skills.repo
-parentnode: repo.root
-childnodes:
-  - skills.repo.monorepo-task-executor
-  - skills.repo.stitch-flutter-converter
-  - skills.repo.codebase-cleanup
 codeanchors:
   - backend/
   - frontend/web/dashboard/

@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.query-builder-and-sql.part-2
-parentnode: skills.backend.laravel-native-abstractions.references.query-builder-and-sql
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

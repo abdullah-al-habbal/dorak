@@ -1,11 +1,4 @@
 ---
-nodeid: backend.05-recommendation-prd
-parentnode: backend.docs
-childnodes:
-  - backend.05-recommendation-prd.part-2
-  - backend.05-recommendation-prd.part-3
-  - backend.05-recommendation-prd.part-4
-  - backend.05-recommendation-prd.part-5
 codeanchors:
   - backend/modules/
 ---

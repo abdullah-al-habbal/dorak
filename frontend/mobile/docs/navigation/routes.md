@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.navigation.routes
-parentnode: mobile.docs
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

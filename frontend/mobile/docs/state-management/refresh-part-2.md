@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.state-management.refresh.part-2
-parentnode: mobile.state-management.refresh
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.to-prd.part-2
-parentnode: skills.backend.to-prd
-childnodes: []
 codeanchors:
   - backend/docs/
 ---

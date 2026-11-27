@@ -1,10 +1,4 @@
 ---
-nodeid: backend.07-user-flows
-parentnode: backend.docs
-childnodes:
-  - backend.07-user-flows.part-2
-  - backend.07-user-flows.part-3
-  - backend.07-user-flows.part-4
 codeanchors:
   - backend/modules/
 ---

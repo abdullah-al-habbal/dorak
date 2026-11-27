@@ -1,7 +1,4 @@
 ---
-nodeid: docs.deployment.dev-environment-status
-parentnode: docs.deployment
-childnodes: []
 codeanchors:
   - scripts/verify-deploy.sh
   - frontend/web/dashboard/src/app/sitemap.ts

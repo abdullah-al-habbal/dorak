@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.coding-standards.part-2
-parentnode: skills.backend.coding-standards
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

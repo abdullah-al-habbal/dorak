@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.screens.authentication.forgot-password
-parentnode: mobile.docs
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

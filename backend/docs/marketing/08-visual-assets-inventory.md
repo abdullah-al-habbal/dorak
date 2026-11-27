@@ -1,7 +1,4 @@
 ---
-nodeid: backend.marketing.08-visual-assets-inventory
-parentnode: backend.docs
-childnodes: []
 codeanchors:
   - backend/modules/Marketing/
 ---

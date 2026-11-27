@@ -1,7 +1,4 @@
 ---
-nodeid: docs.deployment.vercel-dashboard
-parentnode: docs.deployment
-childnodes: []
 codeanchors:
   - frontend/web/dashboard/
   - frontend/web/dashboard/.env.example

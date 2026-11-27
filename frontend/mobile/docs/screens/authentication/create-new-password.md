@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.screens.authentication.create-new-password
-parentnode: mobile.docs
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.decision-order-and-discovery
-parentnode: skills.backend.laravel-native-abstractions
-childnodes: []
 codeanchors:
   - backend/modules/
 ---

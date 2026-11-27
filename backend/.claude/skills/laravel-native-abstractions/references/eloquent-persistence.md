@@ -1,10 +1,4 @@
 ---
-nodeid: skills.backend.laravel-native-abstractions.references.eloquent-persistence
-parentnode: skills.backend.laravel-native-abstractions
-childnodes:
-  - skills.backend.laravel-native-abstractions.references.eloquent-persistence.part-2
-  - skills.backend.laravel-native-abstractions.references.eloquent-persistence.part-3
-  - skills.backend.laravel-native-abstractions.references.eloquent-persistence.part-4
 codeanchors:
   - backend/modules/
 ---

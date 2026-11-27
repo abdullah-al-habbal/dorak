@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.apps.client-app.feature-index.part-4
-parentnode: mobile.apps.client-app.feature-index
-childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---

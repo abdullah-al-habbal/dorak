@@ -1,7 +1,4 @@
 ---
-nodeid: docs.competitor-analysis.toptalla.digital-presence-and-marketing
-parentnode: docs.competitor-analysis.toptalla
-childnodes: []
 codeanchors:
   - docs/competitor-analysis/
 ---

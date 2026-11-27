@@ -1,10 +1,6 @@
 ---
 name: how-to-add-a-module
 description: "Step-by-step guide to scaffold a new module: directory structure, service provider, route wiring, bootstrap registration. Use whenever creating a new domain module."
-nodeid: skills.backend.how-to-add-a-module
-parentnode: skills.backend
-childnodes:
-  - skills.backend.how-to-add-a-module.part-2
 codeanchors:
   - backend/modules/
 ---

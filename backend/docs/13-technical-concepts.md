@@ -1,8 +1,4 @@
 ---
-nodeid: backend.13-technical-concepts
-parentnode: backend.docs
-childnodes:
-  - backend.13-technical-concepts.group-1
 codeanchors:
   - backend/modules/
 ---

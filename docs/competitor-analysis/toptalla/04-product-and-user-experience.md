@@ -1,7 +1,4 @@
 ---
-nodeid: docs.competitor-analysis.toptalla.product-and-user-experience
-parentnode: docs.competitor-analysis.toptalla
-childnodes: []
 codeanchors:
   - docs/competitor-analysis/
 ---

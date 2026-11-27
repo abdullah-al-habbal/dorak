@@ -1,7 +1,4 @@
 ---
-nodeid: docs.booking-concurrency.overlap-guards
-parentnode: docs.booking-concurrency
-childnodes: []
 codeanchors:
   - backend/modules/Booking/Database/Migrations/
   - backend/modules/Booking/Queries/

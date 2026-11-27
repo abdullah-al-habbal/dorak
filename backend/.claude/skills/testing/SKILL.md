@@ -1,9 +1,6 @@
 ---
 name: testing
 description: Test structure, database setup (MySQL, RefreshDatabase), and convention reference. Use whenever writing or running tests — unit, integration, or feature.
-nodeid: skills.backend.testing
-parentnode: skills.backend
-childnodes: []
 codeanchors:
   - backend/modules/
   - backend/tests/

@@ -1,7 +1,4 @@
 ---
-nodeid: skills.repo.stitch-flutter-converter.references.gotchas
-parentnode: skills.repo.stitch-flutter-converter
-childnodes: []
 codeanchors:
   - frontend/mobile/
 ---

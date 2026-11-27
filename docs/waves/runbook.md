@@ -1,7 +1,4 @@
 ---
-nodeid: docs.waves.runbook
-parentnode: docs.waves
-childnodes: []
 codeanchors:
   - backend/docker-compose.test.yml
   - frontend/web/dashboard/playwright.config.ts

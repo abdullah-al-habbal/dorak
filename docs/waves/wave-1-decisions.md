@@ -1,7 +1,4 @@
 ---
-nodeid: docs.waves.wave-1-decisions
-parentnode: docs.waves
-childnodes: []
 codeanchors:
   - backend/config/reverb.php
   - backend/modules/Core/Routes/channels.php

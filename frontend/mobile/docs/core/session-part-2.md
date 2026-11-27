@@ -1,7 +1,4 @@
 ---
-nodeid: mobile.core.session.part-2
-parentnode: mobile.core.session
-childnodes: []
 codeanchors:
   - frontend/mobile/packages/core/lib/
 ---

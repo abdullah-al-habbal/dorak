@@ -1,7 +1,4 @@
 ---
-nodeid: dashboard.architecture
-parentnode: dashboard.guide
-childnodes: []
 codeanchors:
   - frontend/web/dashboard/src/app/
   - frontend/web/dashboard/src/proxy.ts

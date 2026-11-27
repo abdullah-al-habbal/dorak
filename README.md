@@ -1,7 +1,4 @@
 ---
-nodeid: repo.readme
-parentnode: repo.root
-childnodes: []
 codeanchors:
   - backend/
   - frontend/web/dashboard/

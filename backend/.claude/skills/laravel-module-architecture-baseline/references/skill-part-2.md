@@ -1,7 +1,4 @@
 ---
-nodeid: skills.backend.laravel-module-architecture-baseline.part-2
-parentnode: skills.backend.laravel-module-architecture-baseline
-childnodes: []
 codeanchors:
   - backend/modules/
 ---
