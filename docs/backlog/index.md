@@ -186,5 +186,8 @@ Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are reso
 - **BD-11 (2026-11-26):** a barber holds at most one chair per branch and may work at several branches. Not implemented yet (BG-33).
 - **BD-12 (2026-11-26):** phone numbers are unique among verified numbers only. Not implemented yet (BG-32).
 - **BD-15 (2026-11-26):** turning off `allows_push_notifications` must stop push sends. Not implemented yet.
+- **BG-53 order (2026-11-27):** reproduce it first, ahead of the other Wave 5 tasks, and fix it before push is turned on.
+- **Backend pre-push gate (2026-11-27):** a local hook runs the backend gates when a push changes the backend.
+- **Config defaults (2026-11-27):** the rule that `env()` takes no default applies to `backend/modules/*/Config/`; the published files in `backend/config/` are exempt.
 
 Record a new decision here as one line under this heading, with its date, and link the code or doc that implements it. The older full wording is in Git history (see the top of this file).

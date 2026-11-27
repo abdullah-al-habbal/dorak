@@ -29,6 +29,7 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 
 ## Notes
 
+- Owner decision 2026-11-27: W5.7 goes first, ahead of the other tasks of this wave, and before push is turned on.
 - Reference: [push notifications](../architecture/push-notifications.md).
 - Real delivery checks need RR-16 and RR-8.
 
