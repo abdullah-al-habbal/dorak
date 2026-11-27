@@ -110,6 +110,13 @@ These are examples from spot checks, not the result of a full review.
 | F13 | Two mobile rule files disagreed: "exactly one top-level class" against "one public class, private helpers allowed"; theme files "allowed in apps" against the taxonomy tool (design system only). Kept the second reading of the first, which the older guide documented as used, and the tool's rule for the second. | former `CLAUDE.md`, `non-negotiable-rules.md`, `tool/check_taxonomy.dart` |
 | F14 | Checked the realtime claims added by `99311f495`: the dashboard has no realtime client or `/api/realtime` route, no app subscribes to the floor-plan channel (text search), and the events listed per channel match each event's `broadcastOn`. Not checked: "once per real status change" and the recorded test and CI results. The commits it lists as delivered are ancestors of `7b3814481`. | `modules/*/Events/`, `frontend/web/dashboard/src`, `git merge-base` |
 
+## Push record
+
+The owner pushed `master` to `origin` on 2026-11-27, up to `6aa3d73d0` (`git fetch`, then no commits either way).
+On that commit Backend CI `46049039941` passed (migration guard, Pint, 3016 tests, 12 concurrency tests), Mobile CI
+`46049039908` passed analyze and test, and the Vercel status was `success`. No backend deploy followed. Audit
+commits after `6aa3d73d0` stay local until the owner asks for a push (DA-1).
+
 ## Routing
 
 The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed on the session board.

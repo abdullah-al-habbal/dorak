@@ -33,7 +33,7 @@ codeanchors:
 
 ## Where we stand
 
-As of **2026-11-27 17:16 UTC** (20:16, UTC+3). Update this section in place.
+As of **2026-11-27 18:37 UTC** (21:37, UTC+3). Update this section in place.
 
 **Progress.** Wave 0 is done apart from leftovers (W6.2). Wave 1 is released with W1.4 open. Waves 2 to 6 haven't started.
 
@@ -52,13 +52,15 @@ As of **2026-11-27 17:16 UTC** (20:16, UTC+3). Update this section in place.
 
 | Check | Result | Where and when |
 |---|---|---|
-| Backend Pest | 3009 passed (13534 assertions) | local, `a6c843a7c`, 2026-11-27 |
-| Backend concurrency tests | 12 passed | local, `7b3814481`, 2026-11-27 |
-| Pint, migration guard, `composer audit` | clean | local, 2026-11-27 |
+| Backend Pest | 3016 passed (13541 assertions) | Backend CI [`46049039941`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46049039941), `6aa3d73d0`, 2026-11-27 |
+| Backend concurrency tests | 12 passed | same run |
+| Pint, migration guard | passed | same run |
+| `composer audit` | clean | local, 2026-11-27, earlier tree |
 | `melos run verify` | passed | local, BG-45 tree, 2026-11-27 |
 | Dashboard lint, typecheck, Vitest (1243) | passed | local, `a712aca7f`, 2026-11-26 |
 | Playwright | 487 passed | local, `a712aca7f`, 2026-11-26, before the Symfony update; **not run since** |
 | `npm audit` | 4 high (BG-38), 10 moderate (BG-50) | 2026-11-26 |
+| Mobile CI (analyze and test; builds skipped) | success | `6aa3d73d0`, 2026-11-27 |
 | Backend CI, Mobile CI, deploy, smoke test | success | `7b3814481`, [dev status](../deployment/dev-environment-status.md) |
 
 **Not proven.**
@@ -68,15 +70,17 @@ As of **2026-11-27 17:16 UTC** (20:16, UTC+3). Update this section in place.
 - BG-51 loosens a setting and got only a short security note, not the review in the task executor's [security reference](../../.claude/skills/monorepo-task-executor/references/security-review.md) (W1.8). The config sets no connection limit by default and rate limiting is off by default.
 - Nothing realtime works or is verified on dev (RR-20).
 
-**Main open findings.** BG-46: open subscriptions keep receiving after suspension (reproduced). BG-52: the previous account's data stays in two cubits (source only). BG-53 (an FCM payload fault deleting device tokens) is fixed locally and not deployed. BG-38 and BG-50: dashboard advisories. BG-49: English replies to some Arabic requests. Queued broadcasts could wait about a minute with the documented dev cron ([decision 2](wave-1-decisions.md), not measured).
+**Main open findings.** BG-46: open subscriptions keep receiving after suspension (reproduced). BG-52: the previous account's data stays in two cubits (source only). BG-53 (an FCM payload fault deleting device tokens) is fixed and pushed, not deployed. BG-38 and BG-50: dashboard advisories. BG-49: English replies to some Arabic requests. Queued broadcasts could wait about a minute with the documented dev cron ([decision 2](wave-1-decisions.md), not measured).
 
 **Blockers.** None for Wave 2. See "Now" and "Owner actions".
 
-**Repository.** The [documentation audit](../doc-audit/policy.md) runs alongside this programme. During it, push
-only when the owner asks. Local `master` is ahead of `origin/master` `873d3edb9`. Besides documentation, the unpushed
-commits hold the BG-53 fix (`b85a78a6d`), the backend pre-push hook (`087bb631d`) and module config without `env()`
-defaults (`dfd936cad`); none is deployed. Backend Pest passed there on 2026-11-27 (3016 tests, 13541 assertions,
-local, tree of `dfd936cad`); the concurrency tests weren't rerun.
+**Repository.** The owner pushed `master` to `origin` on 2026-11-27, up to `6aa3d73d0`. The
+[documentation audit](../doc-audit/policy.md) runs alongside this programme; its later commits stay local until the
+owner asks for a push. The pushed commits hold the BG-53 fix (`b85a78a6d`), the backend pre-push hook (`087bb631d`)
+and module config without `env()` defaults (`dfd936cad`). The backend wasn't deployed. Before it is, compare the
+server's `.env` keys (names only) with the changed config files and run the task executor's
+[security review](../../.claude/skills/monorepo-task-executor/references/security-review.md) on `dfd936cad`, which
+touches the sign-in rate limit and Sanctum settings.
 
 ## Board
 
@@ -87,7 +91,7 @@ local, tree of `dfd936cad`); the concurrency tests weren't rerun.
 | [2](wave-2.md) | Sign-in and exposure | BG-28, 29, 30, 16, 4, 49, 50 | todo |
 | [3](wave-3.md) | Data correctness | BG-27, 31 to 35, 18, BD-10, TS-8 | todo |
 | [4](wave-4.md) | Booking experience | BG-19, 20, 21, 36, 12 | todo |
-| [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38, 53 | todo (BG-53 done early, local) |
+| [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38, 53 | todo (BG-53 done early, not deployed) |
 | [6](wave-6.md) | Completion | FT, TD, TS, leftovers, old docs | todo; split into batches first |
 
 ## How to keep context small

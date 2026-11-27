@@ -23,7 +23,7 @@ No secret appears on this page, and none must be added.
 | Item | Value | Observed |
 |---|---|---|
 | Backend | `7b3814481`, deploy run [`46032475790`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46032475790), no database reset | 2026-11-27 |
-| Dashboard | Vercel status `success` for that release | 2026-11-27 |
+| Dashboard | Vercel status `success` for that release, and again for the push of `6aa3d73d0`, which changed no dashboard code (not probed) | 2026-11-27 |
 | `scripts/verify-deploy.sh` | all probes passed | 2026-11-27 17:16 UTC |
 | Public data | `GET /api/v1/public/sitemap` 200; the dashboard's `robots.txt` had its `Disallow` and `Sitemap` lines and `sitemap.xml` had 5 entries | 2026-11-27 17:16 UTC |
 | CI for the deployed commit | Backend [`46031236827`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46031236827) and Mobile [`46031236858`](https://github.com/abdullah-al-habbal/dorak/actions/runs/46031236858): success | 2026-11-27 |
