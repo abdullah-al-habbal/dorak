@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-469 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+458 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 288 files = 173 logical documents |
+| Outside `.claude/` | 277 files = 163 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -29,7 +29,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
 | C4 backend and shared reference | 28 | 28 |
-| C5 mobile and dashboard | 53 | 9 |
+| C5 mobile and dashboard | 43 | 10 |
 | C6 product intent and research | 41 | 0 |
 
 The pilot also reads the push parts of `README.md`, the push handover and the backlog, which sit in C1 and C2.
@@ -193,6 +193,17 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `frontend/mobile/apps/stylist_app/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md` | delete, applied: Flutter template text | C5 mobile boilerplate and tracker |
 | `frontend/mobile/docs/architecture.md` | merge, applied: rules missing from the state contract moved there; the payment rule is a backlog decision | C5 mobile rules |
 | `frontend/mobile/docs/architecture/coding-conventions.md` | delete, applied: repeated the mobile guide's rules | C5 mobile rules |
+| `frontend/mobile/docs/design-system/index-part-2.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/states/authentication-required.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/states/empty.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/states/network-error.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/states/offline.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/states/retry.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/states/session-expired.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/components/loading/button.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/components/loading/fullscreen.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/components/loading/inline.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
+| `frontend/mobile/docs/design-system/components/shimmer/text.md` | merge, applied: into the design-system page; said several states had no producer yet, which is no longer true | C5 design system |
 
 ## Findings so far
 
@@ -356,17 +367,7 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/docs/core/result-state.md` | 1 | 58 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/session.md` | 5 | 267 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/storage.md` | 3 | 157 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/components/loading/button.md` | 1 | 31 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/components/loading/fullscreen.md` | 1 | 22 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/components/loading/inline.md` | 1 | 22 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/components/shimmer/text.md` | 1 | 26 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/index.md` | 2 | 95 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/states/authentication-required.md` | 1 | 21 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/states/empty.md` | 1 | 24 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/states/network-error.md` | 1 | 31 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/states/offline.md` | 1 | 30 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/states/retry.md` | 1 | 21 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/design-system/states/session-expired.md` | 1 | 25 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/design-system/index.md` | 1 | 31 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: one page checked against the widget constructors and their use |
 | `frontend/mobile/docs/feature-index.md` | 5 | 279 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/flows/app-launch.md` | 2 | 94 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/flows/guest-access.md` | 1 | 53 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |

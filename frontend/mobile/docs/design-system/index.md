@@ -1,60 +1,31 @@
 ---
 nodeid: mobile.design-system
 parentnode: mobile.docs
-childnodes:
-  - mobile.design-system.components.loading.button
-  - mobile.design-system.components.loading.fullscreen
-  - mobile.design-system.components.loading.inline
-  - mobile.design-system.components.shimmer.text
-  - mobile.design-system.states.authentication-required
-  - mobile.design-system.states.empty
-  - mobile.design-system.states.network-error
-  - mobile.design-system.states.offline
-  - mobile.design-system.states.retry
-  - mobile.design-system.states.session-expired
-  - mobile.design-system.part-2
+childnodes: []
 codeanchors:
   - frontend/mobile/packages/design_system/lib/
 ---
 
-# Design System — States & Loading Components
+# Design system: states and loading
 
-Track 12 (Global UI States). See `docs/index.md` §Track 12.
+Which shared widget shows each state. `design_system` never resolves a string ([mobile guide](../../AGENTS.md#layers)):
+the app passes localized text in and picks the widget from bloc state. Map failures to text with `ErrorFeedback.from`
+(`packages/feature_error_feedback`).
 
-## The no-strings rule
+| State | Use |
+|---|---|
+| Full-page loading | `AppLoader.page()` |
+| Inline loading, such as a list footer | `AppLoader.inline()` (size 20 by default) |
+| Button loading | `PrimaryButton(isLoading: true)`: shows a spinner and blocks presses. `SecondaryButton` has no loading flag |
+| Skeleton | `ShimmerBox(width, height, borderRadius?)`, hand-rolled; no app uses it yet |
+| Empty | `StatusView(icon, title, message?)` in the neutral tone, with feature wording; an action is optional |
+| First load failed | `StatusView` with `iconColor` set to the error colour, plus `actionLabel` and `onAction` |
+| Compact or footer error | `StatusBanner(message, color?, actionLabel?, onAction?)` |
+| Offline | The error state with `errorNetwork` text. There is no connectivity package: the failed request is the signal |
+| Retry | Not a widget: `actionLabel` and `onAction` on the two widgets above. The callback sends the failed event again |
+| Refresh | `RefreshIndicator`; a failed refresh keeps the list and shows a `SnackBar` |
+| Success | No widget |
+| Session expired | No widget: the router goes to sign-in ([guards](../navigation/guards.md)) |
+| Sign-in required | No widget: a guest action sends `RequireAuthentication` and the sign-in entry opens on top |
 
-`design_system` must never resolve a string ([mobile guide](../../AGENTS.md#layers)). Every state
-component takes its copy as constructor parameters; the app layer supplies ARB
-strings (`localization`) and picks the component from bloc state.
-
-## Component map
-
-| Component | Covers | API |
-|---|---|---|
-| `StatusView` | empty · error · offline · retry (as `onAction`) | `icon`, `title`, `message?`, `actionLabel?`, `onAction?`, `iconColor?` |
-| `StatusBanner` | compact inline error/message row | `message`, `color?`, `actionLabel?`, `onAction?` |
-| `AppLoader.page()` | full-page loading | 32px centred, expands |
-| `AppLoader.inline()` | inline loading (list footers) | `size` default 20 |
-| `ShimmerBox` | shimmer skeleton primitive | `width`, `height`, `borderRadius?` |
-| `PrimaryButton.isLoading` | button loading | `isLoading` flag |
-| `RefreshIndicator` / `SnackBar` | refresh + transient failure | framework, no wrapper |
-
-**Retry is an action, not a state.** No `RetryButton` widget exists — retry is
-`actionLabel` + `onAction` on `StatusView` / `StatusBanner`.
-
-## Filled state docs
-
-- [`states/empty.md`](./states/empty.md)
-- [`states/network-error.md`](./states/network-error.md)
-- [`states/offline.md`](./states/offline.md)
-- [`states/retry.md`](./states/retry.md)
-- [`states/session-expired.md`](./states/session-expired.md)
-- [`states/authentication-required.md`](./states/authentication-required.md)
-- [`components/loading/fullscreen.md`](./components/loading/fullscreen.md)
-- [`components/loading/inline.md`](./components/loading/inline.md)
-- [`components/loading/button.md`](./components/loading/button.md)
-- [`components/shimmer/text.md`](./components/shimmer/text.md)
-
-## Continued in
-
-- [Part 2: Deliberately empty](index-part-2.md)
+For paged lists, the state to widget mapping follows [pagination](../state-management/pagination.md).

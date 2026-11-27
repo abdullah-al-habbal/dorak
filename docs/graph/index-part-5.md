@@ -26,22 +26,12 @@ Part 5 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-4.md)
 
 ### `frontend/mobile/docs/design-system/components/loading/`
 
-- [Button](../../frontend/mobile/docs/design-system/components/loading/button.md)
-- [Fullscreen](../../frontend/mobile/docs/design-system/components/loading/fullscreen.md)
-- [Inline](../../frontend/mobile/docs/design-system/components/loading/inline.md)
 
 ### `frontend/mobile/docs/design-system/components/shimmer/`
 
-- [Text](../../frontend/mobile/docs/design-system/components/shimmer/text.md)
 
 ### `frontend/mobile/docs/design-system/states/`
 
-- [Authentication Required](../../frontend/mobile/docs/design-system/states/authentication-required.md)
-- [Empty](../../frontend/mobile/docs/design-system/states/empty.md)
-- [Network Error](../../frontend/mobile/docs/design-system/states/network-error.md)
-- [Offline](../../frontend/mobile/docs/design-system/states/offline.md)
-- [Retry](../../frontend/mobile/docs/design-system/states/retry.md)
-- [Session Expired](../../frontend/mobile/docs/design-system/states/session-expired.md)
 
 ### `frontend/mobile/docs/flows/`
 
