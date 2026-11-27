@@ -72,7 +72,11 @@ As of **2026-11-27 17:16 UTC** (20:16, UTC+3). Update this section in place.
 
 **Blockers.** None for Wave 2. See "Now" and "Owner actions".
 
-**Repository.** The [documentation audit](../doc-audit/policy.md) runs alongside this programme. During it, push only when the owner asks; on 2026-11-27 17:16 UTC local `master` held unpushed audit and documentation commits on top of `origin/master` `873d3edb9`.
+**Repository.** The [documentation audit](../doc-audit/policy.md) runs alongside this programme. During it, push
+only when the owner asks. Local `master` is ahead of `origin/master` `873d3edb9`. Besides documentation, the unpushed
+commits hold the BG-53 fix (`b85a78a6d`), the backend pre-push hook (`087bb631d`) and module config without `env()`
+defaults (`dfd936cad`); none is deployed. Backend Pest passed there on 2026-11-27 (3016 tests, 13541 assertions,
+local, tree of `dfd936cad`); the concurrency tests weren't rerun.
 
 ## Board
 
