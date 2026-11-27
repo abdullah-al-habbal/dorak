@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-490 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+471 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 309 files = 182 logical documents |
+| Outside `.claude/` | 290 files = 175 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -29,7 +29,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
 | C4 backend and shared reference | 28 | 28 |
-| C5 mobile and dashboard | 62 | 0 |
+| C5 mobile and dashboard | 55 | 8 |
 | C6 product intent and research | 41 | 0 |
 
 The pilot also reads the push parts of `README.md`, the push handover and the backlog, which sit in C1 and C2.
@@ -172,6 +172,25 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `backend/docs/11-backend-architecture-group-1.md` | delete, applied: index of the removed parts | C4 backend architecture |
 | `backend/docs/readme-part-2.md` | merge, applied: into the folder index, which now separates product intent from technical reference | C4 backend index |
 | `backend/docs/readme-part-3.md` | merge, applied: into the folder index, which now separates product intent from technical reference | C4 backend index |
+| `frontend/mobile/docs/index-part-10.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-11.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-12.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-13.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-2.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-3.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-4.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-5.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-6.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-7.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-8.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/index-part-9.md` | extract then delete, applied: stale build tracker; open items are FT-25 and TS-11 | C5 mobile boilerplate and tracker |
+| `frontend/mobile/docs/core/background-tasks.md` | delete, applied: contained only whitespace | C5 mobile boilerplate and tracker |
+| `frontend/mobile/packages/core/CHANGELOG.md` | delete, applied: placeholder for an unpublished package | C5 mobile boilerplate and tracker |
+| `frontend/mobile/packages/design_system/CHANGELOG.md` | delete, applied: placeholder for an unpublished package | C5 mobile boilerplate and tracker |
+| `frontend/mobile/packages/localization/CHANGELOG.md` | delete, applied: placeholder for an unpublished package | C5 mobile boilerplate and tracker |
+| `frontend/mobile/apps/business_app/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md` | delete, applied: Flutter template text | C5 mobile boilerplate and tracker |
+| `frontend/mobile/apps/client_app/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md` | delete, applied: Flutter template text | C5 mobile boilerplate and tracker |
+| `frontend/mobile/apps/stylist_app/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md` | delete, applied: Flutter template text | C5 mobile boilerplate and tracker |
 
 ## Findings so far
 
@@ -318,23 +337,19 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
-| `frontend/mobile/apps/business_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/apps/business_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/mobile/apps/business_app/docs/feature-index.md` | 1 | 47 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/apps/business_app/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 0 / 0 | medium | unreviewed |
-| `frontend/mobile/apps/client_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/apps/client_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/mobile/apps/client_app/docs/feature-index.md` | 4 | 231 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/apps/client_app/docs/runtime/app-lifecycle.md` | 4 | 215 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/apps/client_app/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 0 / 0 | medium | unreviewed |
-| `frontend/mobile/apps/stylist_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/apps/stylist_app/README.md` | 1 | 14 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/mobile/apps/stylist_app/docs/feature-index.md` | 1 | 42 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/apps/stylist_app/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 0 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/architecture.md` | 1 | 47 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/architecture/coding-conventions.md` | 1 | 64 | Reference | engineers, agents | 1 / 1 / 1 | medium | unreviewed |
 | `frontend/mobile/docs/architecture/decisions/0001-bloc-in-core.md` | 1 | 69 | Decisions | owner, engineers | 5 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/architecture/decisions/0002-design-system-go-router.md` | 1 | 55 | Decisions | owner, engineers | 2 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/authentication/auth-flow.md` | 2 | 132 | Reference | engineers, agents | 3 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/authentication/password-recovery.md` | 3 | 172 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/core/background-tasks.md` | 1 | 9 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/exceptions.md` | 1 | 89 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/interceptors.md` | 2 | 136 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/core/networking.md` | 3 | 137 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
@@ -356,7 +371,7 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/docs/flows/app-launch.md` | 2 | 94 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/flows/guest-access.md` | 1 | 53 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/flows/onboarding.md` | 1 | 67 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/docs/index.md` | 13 | 723 | Reference | engineers, agents | 3 / 2 / 0 | medium | unreviewed |
+| `frontend/mobile/docs/index.md` | 1 | 53 | Reference | engineers, agents | 3 / 2 / 0 | medium | extract then delete, applied: the build tracker was out of date; open items are FT-25 and TS-11, and the file is now a router |
 | `frontend/mobile/docs/navigation/guards.md` | 2 | 98 | Reference | engineers, agents | 2 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/navigation/routes.md` | 2 | 109 | Reference | engineers, agents | 1 / 1 / 1 | medium | unreviewed |
 | `frontend/mobile/docs/realtime/reverb.md` | 2 | 156 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
@@ -370,13 +385,10 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/docs/state-management/index.md` | 2 | 98 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/state-management/pagination.md` | 5 | 263 | Reference | engineers, agents | 4 / 1 / 0 | medium | unreviewed |
 | `frontend/mobile/docs/state-management/refresh.md` | 2 | 103 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/packages/core/CHANGELOG.md` | 1 | 11 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/packages/core/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/packages/design_system/CHANGELOG.md` | 1 | 11 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/packages/design_system/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/packages/feature_error_feedback/README.md` | 1 | 15 | Reference | engineers, agents | 0 / 0 / 0 | medium | unreviewed |
-| `frontend/mobile/packages/localization/CHANGELOG.md` | 1 | 11 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
-| `frontend/mobile/packages/localization/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `frontend/mobile/packages/core/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
+| `frontend/mobile/packages/design_system/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
+| `frontend/mobile/packages/feature_error_feedback/README.md` | 1 | 15 | Reference | engineers, agents | 0 / 0 / 0 | medium | keep: pointer and test command, read |
+| `frontend/mobile/packages/localization/README.md` | 1 | 13 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: pointed to sections the guides no longer have |
 | `frontend/web/dashboard/.interface-design/system.md` | 1 | 81 | Reference | engineers, agents | 1 / 0 / 0 | medium | unreviewed |
 | `frontend/web/dashboard/README.md` | 1 | 40 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
 | `frontend/web/dashboard/src/README.md` | 1 | 47 | Reference | engineers, agents | 3 / 0 / 1 | medium | unreviewed |

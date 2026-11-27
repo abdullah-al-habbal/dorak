@@ -37,20 +37,17 @@ Part 6 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-5.md)
 ### `frontend/mobile/packages/core/`
 
 - [Agents](../../frontend/mobile/packages/core/AGENTS.md)
-- [Changelog](../../frontend/mobile/packages/core/CHANGELOG.md)
 - [Claude](../../frontend/mobile/packages/core/CLAUDE.md)
 - [Readme](../../frontend/mobile/packages/core/README.md)
 
 ### `frontend/mobile/packages/design_system/`
 
 - [Agents](../../frontend/mobile/packages/design_system/AGENTS.md)
-- [Changelog](../../frontend/mobile/packages/design_system/CHANGELOG.md)
 - [Claude](../../frontend/mobile/packages/design_system/CLAUDE.md)
 - [Readme](../../frontend/mobile/packages/design_system/README.md)
 
 ### `frontend/mobile/packages/localization/`
 
 - [Agents](../../frontend/mobile/packages/localization/AGENTS.md)
-- [Changelog](../../frontend/mobile/packages/localization/CHANGELOG.md)
 - [Claude](../../frontend/mobile/packages/localization/CLAUDE.md)
 - [Readme](../../frontend/mobile/packages/localization/README.md)

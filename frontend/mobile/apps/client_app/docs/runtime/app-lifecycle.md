@@ -11,8 +11,7 @@ codeanchors:
 
 # Application Lifecycle — Dorak Client App (`apps/client_app`)
 
-Track 10 — *Application lifecycle*. Monorepo track index:
-[`docs/index.md`](../../../../docs/index.md).
+Mobile documentation: [index](../../../../docs/index.md).
 
 ---
 

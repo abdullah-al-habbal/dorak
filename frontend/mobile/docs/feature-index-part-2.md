@@ -58,4 +58,4 @@ Part 2 of 5 · [Feature Index — Dorak Mobile (Flutter Monorepo)](feature-index
 - T9 app integration: `core` `FeedbackBloc`; per app `features/support/about_support.screen.dart` and `feedback.screen.dart` (client: `/profile/about`, stylist: `/home/about`, business: `/about`); stylist `features/support/delete_account.*` (`/home/about/delete-account`).
 - `sign_up.screen.dart` + `sign_up_content.widget.dart` (008) — 4 fields; the confirm field feeds `password_confirmation`.
 - `verify_account.screen.dart` + `verify_account_content.widget.dart` + `otp_input_field.widget.dart` (009) — 6-digit code, 60 s resend cooldown, masked destination, non-blocking skip.
-- Shared: `auth_text_field.widget.dart`, `auth_header.widget.dart`, `auth_error_banner.widget.dart`, `auth_validators.entity.dart`, `auth_error.entity.dart` (maps exceptions to local ARB strings — backend `message` values are untranslated keys).
+- Shared: `auth_text_field.widget.dart`, `auth_header.widget.dart`, `auth_validators.entity.dart`. Failed requests become localized messages through `feature_error_feedback` — backend `message` values are untranslated keys.

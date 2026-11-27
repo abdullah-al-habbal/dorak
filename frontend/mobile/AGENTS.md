@@ -31,8 +31,8 @@ Units: [apps/client_app](apps/client_app/AGENTS.md), [apps/business_app](apps/bu
 
 - How it works: [core architecture](references/root/core-architecture.md) and the
   [state contract](docs/state-management/conventions.md) (read it before adding or changing a bloc).
-- Status and features: [mobile documentation](docs/index.md) and the
-  [feature index](docs/feature-index.md). Don't build a later Track early.
+- Documentation and what was built: [mobile documentation](docs/index.md) and the
+  [feature index](docs/feature-index.md). Open work is in the [backlog](../../docs/backlog/index.md).
 
 ## Layers
 
@@ -112,7 +112,7 @@ A lower layer never imports a higher one, and a package never imports an app.
 | device persistence | a `.storage.dart` in core |
 | feature state | a bloc in the feature folder |
 
-Update `docs/feature-index.md`, the app's `docs/feature-index.md` and the Track in `docs/index.md`.
+Update `docs/feature-index.md` and the app's `docs/feature-index.md`.
 
 ## Design system and localization
 

@@ -1,8 +1,7 @@
 ---
 nodeid: mobile.apps.client-app.readme
 parentnode: mobile.apps.client-app
-childnodes:
-  - mobile.apps.client-app.ios-launch-image
+childnodes: []
 codeanchors:
   - frontend/mobile/apps/client_app/lib/
 ---
@@ -11,4 +10,4 @@ codeanchors:
 
 Dorak client mobile app: discovery, booking, reviews, notifications and profile.
 
-See [`AGENTS.md`](AGENTS.md) for the feature inventory and [`CLAUDE.md`](CLAUDE.md) for the scoped rules. Run the gate from `frontend/mobile` with `dart run melos run verify`.
+Rules: [`AGENTS.md`](AGENTS.md). Run the gate from `frontend/mobile` with `dart run melos run verify`.

@@ -54,7 +54,7 @@ codeanchors:
 - `lib/src/features/auth/widgets/auth_text_field.widget.dart` — floating label, rounded-top/sharp-bottom underline, focus + error states, password toggle. Local to the app; promotion to `design_system` is Track 15.
 - `lib/src/features/auth/widgets/auth_header.widget.dart`, `widgets/auth_shell.widget.dart` (responsive layout shared by all auth screens). The inline error row now comes from `design_system`'s `StatusBanner` — `auth_error_banner.widget.dart` was promoted and removed in Track 12.
 - `lib/src/features/auth/auth_validators.entity.dart` — email / min-8 / confirmation-match, mirroring the backend rules.
-- `lib/src/features/auth/auth_error.entity.dart` — maps exceptions to local ARB strings. The backend's own `message` is an untranslated key and must never be rendered.
+- Failed requests become localized messages through `feature_error_feedback`. The backend's own `message` is an untranslated key and must never be rendered.
 
 ### Social login (G9)
 - `lib/src/features/auth/social_login.{bloc,event,state}.dart` — obtains a provider credential through the `SocialCredentialProvider` seam and hands it back as state; `login.screen.dart` forwards a `credentialReady` state to core `AuthBloc` as `SocialLoginSubmitted`, which calls `POST /client/social/{provider}`, stores the Sanctum token and signals the router like a password login.

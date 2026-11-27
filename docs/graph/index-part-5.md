@@ -13,7 +13,6 @@ Part 5 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-4.md)
 
 ### `frontend/mobile/docs/core/`
 
-- [Background Tasks](../../frontend/mobile/docs/core/background-tasks.md)
 - [Exceptions](../../frontend/mobile/docs/core/exceptions.md)
 - [Interceptors](../../frontend/mobile/docs/core/interceptors.md)
 - [Networking](../../frontend/mobile/docs/core/networking.md)
