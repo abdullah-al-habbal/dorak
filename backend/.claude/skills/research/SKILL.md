@@ -29,7 +29,7 @@ Skip if the work is entirely local to well-trodden code. Record the skip in `IDE
 2. **Answer each question** with the minimum evidence to act on it. Use WebFetch / WebSearch for external docs; Read / Grep / Explore agent for codebase regions. Cite every source inline.
 3. **Stop at "good enough to start the prototype."** More research = more rot. Defer the rest to Phase 4.
 4. **Write the cache** to `docs/<JIRA-ID>/<feature-slug>/research.md` using the template below.
-5. **Announce exit** and return control to the `crescent` orchestrator.
+5. **Announce exit** and report where the cache was written.
 
 <research-template>
 # Research — <JIRA-ID> / <feature-slug>

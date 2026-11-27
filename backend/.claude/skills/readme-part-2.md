@@ -37,8 +37,7 @@ Process automation rather than code conventions.
 
 | Skill | Description |
 |-------|-------------|
-| [crescent](crescent/SKILL.md) | 7-phase state machine: Idea → Research → Prototype → PRD → Kanban → Ralph Loop → QA |
-| [research](research/SKILL.md) · [prototype](prototype/SKILL.md) · [to-prd](to-prd/SKILL.md) · [to-issues](to-issues/SKILL.md) · [ralph-loop](ralph-loop/SKILL.md) · [qa-plan](qa-plan/SKILL.md) | Individual CRESCENT phases |
+| [research](research/SKILL.md) · [prototype](prototype/SKILL.md) · [to-prd](to-prd/SKILL.md) | Research, prototype and PRD drafting |
 | [grill-me](grill-me/SKILL.md) | Adversarial review of a proposal or plan |
 
 ---

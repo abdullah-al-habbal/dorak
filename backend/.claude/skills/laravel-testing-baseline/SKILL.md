@@ -20,7 +20,7 @@ Tests are how the **specification becomes executable**. This skill turns the doc
 
 > **Every house rule (`docs/04`) → at least one test. Every edge case (`docs/08`) → a test. Every user flow (`docs/07`) → a feature test.**
 
-A ticket is **not Done** until every house rule and edge case it cites has a passing test. QA (CRESCENT phase 7) is just confirming these exist and pass.
+A ticket is **not Done** until every house rule and edge case it cites has a passing test. QA is just confirming these exist and pass.
 
 ## What to test, by source doc
 

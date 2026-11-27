@@ -8,7 +8,6 @@ childnodes:
   - skills.backend.architecture
   - skills.backend.coding-standards
   - skills.backend.cqrs-pattern
-  - skills.backend.crescent
   - skills.backend.database-conventions
   - skills.backend.feature-flags
   - skills.backend.grill-me
@@ -21,11 +20,8 @@ childnodes:
   - skills.backend.laravel-testing-baseline
   - skills.backend.logging-and-tracing
   - skills.backend.prototype
-  - skills.backend.qa-plan
-  - skills.backend.ralph-loop
   - skills.backend.research
   - skills.backend.testing
-  - skills.backend.to-issues
   - skills.backend.to-prd
   - skills.backend.translation-conventions
   - skills.backend.part-2
