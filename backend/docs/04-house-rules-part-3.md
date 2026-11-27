@@ -21,7 +21,7 @@ Part 3 of 3 · [04 — House Rules (The Business Laws)](04-house-rules.md) · [P
 
 - **L1.** At-home booking requires GPS latitude/longitude plus street, building, and unit/apartment text.
 - **L2.** An MVP booking slot is derived from the total selected-service duration; cancellation is allowed only until two hours before its appointment.
-- **L3.** Chair availability is scheduled-booking-only in the MVP; real-time occupancy is out of scope.
+- **L3.** ~~Chair availability is scheduled-booking-only in the MVP; real-time occupancy is out of scope.~~ **Superseded for live updates (owner, 2026-11-27):** chair status changes are sent live over Reverb (the Wave 1 work). Hardware occupancy tracking is still out.
 - **L4.** Reviews are allowed only after `Completed`. Flagged disputes keep a review unpublished for a 48-hour admin review.
 - **L5.** A manager may create a Barber using name and phone without an app account. One phone may belong to both Client and Barber profiles.
 

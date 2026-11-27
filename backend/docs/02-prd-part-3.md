@@ -58,7 +58,7 @@ These were open during brainstorming and are now **✅ decided**.
 2. **Unisex floor management:** use one unified floor plan with designated men's and women's zones.
 3. **Floor-plan designer:** MVP uses standard form inputs/presets; interactive drag-and-drop is deferred to Phase 3.
 4. **RBAC:** Brand Owners have full business settings, analytics, financial reports, all branches, and branch-manager-account access. Branch Managers are limited to daily operations, staff schedules, and bookings for their own branch.
-5. **Chair availability:** MVP is scheduled-booking-only; do not build real-time socket or hardware occupancy tracking.
+5. **Chair availability:** ~~MVP is scheduled-booking-only; do not build real-time socket or hardware occupancy tracking.~~ **Superseded for live updates (owner, 2026-11-27):** chair status changes are sent live over Reverb (the Wave 1 work). Hardware occupancy tracking is still out.
 6. **Booking and cancellation:** slots are derived from total service duration; cancellation closes two hours before the appointment.
 7. **Reviews and disputes:** reviews require `Completed` status. A flagged dispute holds publication for a 48-hour admin review.
 8. **Barber identity:** managers may add a barber with name and phone without an app account; one phone number may hold both Client and Barber profiles.

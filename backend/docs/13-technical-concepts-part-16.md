@@ -48,7 +48,7 @@ on<StartBookingPolling>((event, emit) async {
 ```
 
 **Laravel Implementation:**
-- MVP chair availability comes from scheduled bookings only; do not add real-time chair-occupancy sockets or hardware tracking yet.
+- Chair status changes are sent live over Reverb (owner, 2026-11-27, replacing the earlier ban on real-time sockets); do not add hardware occupancy tracking.
 - Pull-to-refresh in Flutter for eventually-consistent data
 - Optimistic updates with server confirmation for critical actions
 
