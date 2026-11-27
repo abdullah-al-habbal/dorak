@@ -207,6 +207,7 @@ class _StylistAppState extends State<StylistApp> {
   }
 
   Future<void> _logout() async {
+    _bloc.endSession();
     await _session.logout();
     await _pushNotifications.stop();
     await _realtime?.disconnectForLogout();
@@ -215,6 +216,7 @@ class _StylistAppState extends State<StylistApp> {
 
   /// Teardown after the session is already gone: expired, banned or deleted.
   Future<void> _onSessionEnded() async {
+    _bloc.endSession();
     await Future.wait([
       _pushNotifications.stop(),
       if (_realtime != null) _realtime.disconnectForLogout(),

@@ -42,6 +42,19 @@ class StylistBloc extends Cubit<StylistState> {
     }
   }
 
+  /// Signing out makes the realtime client drop every channel, so the next
+  /// sign-in has to join it again.
+  void endSession() {
+    _loadGeneration++;
+    _leaveChannel();
+    if (state.loading) emit(state.copyWith(loading: false));
+  }
+
+  void _leaveChannel() {
+    _subscription?.cancel();
+    _subscription = null;
+  }
+
   Future<void> setOnline(bool value) async {
     final generation = ++_onlineGeneration;
     emit(state.copyWith(online: value));
@@ -108,7 +121,7 @@ class StylistBloc extends Cubit<StylistState> {
 
   @override
   Future<void> close() {
-    _subscription?.cancel();
+    _leaveChannel();
     return super.close();
   }
 }

@@ -36,6 +36,10 @@ cookie-only `/api/realtime/auth` BFF route.
 The apps send no `Origin` header, so the server's `allowed_origins` must stay `['*']`
 (`backend/config/reverb.php`); with any list, Reverb refuses them (BG-51).
 
+Sign-out calls `disconnectForLogout()`, which drops every channel. A holder that outlives the
+session (`BranchOperationsBloc`, `StylistBloc`) must also forget its subscriptions with
+`endSession()`, or it never rejoins (BG-45).
+
 ## Authentication and authorization
 
 Create the client with the same secure token storage used by the app's

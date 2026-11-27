@@ -5,6 +5,7 @@ import 'helpers/pagination_fixtures.dart';
 
 class _FakeRealtime implements RealtimeClient {
   void Function(String event, Map<String, dynamic> payload)? branchListener;
+  int branchSubscriptions = 0;
 
   @override
   RealtimeSubscription subscribeToBranch(
@@ -12,6 +13,7 @@ class _FakeRealtime implements RealtimeClient {
     void Function(String event, Map<String, dynamic> payload) onEvent,
   ) {
     branchListener = onEvent;
+    branchSubscriptions++;
     return RealtimeSubscription.fromCancel(() {});
   }
 
@@ -37,7 +39,8 @@ class _FakeRealtime implements RealtimeClient {
   Future<void> connect() async {}
 
   @override
-  Future<void> disconnectForLogout() async {}
+  // Like the real client, signing out kills every listener.
+  Future<void> disconnectForLogout() async => branchListener = null;
 
   @override
   void dispose() {}
@@ -135,6 +138,32 @@ void main() {
       expect(repository.bookingLoads, 2);
     });
   }
+
+  test('signing in again rejoins the branch channel', () async {
+    await realtime.disconnectForLogout();
+    bloc.endSession();
+
+    await bloc.load();
+    expect(realtime.branchListener, isNotNull);
+    realtime.branchListener!('booking.created', const {});
+    await Future<void>.delayed(Duration.zero);
+
+    expect(realtime.branchSubscriptions, 2);
+    expect(repository.bookingLoads, 3);
+  });
+
+  test('a load still running at sign-out joins no channel', () async {
+    final late = _FakeRealtime();
+    final pending = BranchOperationsBloc(_CountingRepository(), realtime: late);
+
+    final load = pending.load();
+    pending.endSession();
+    await load;
+
+    expect(late.branchSubscriptions, 0);
+    expect(pending.state.loading, isFalse);
+    await pending.close();
+  });
 
   test('ignores unrelated realtime events', () async {
     realtime.branchListener!('chair.updated', const {});

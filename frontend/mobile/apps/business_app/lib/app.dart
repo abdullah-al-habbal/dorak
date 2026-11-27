@@ -269,6 +269,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
 
   Future<void> _logout() async {
     _brandSuspension.stop();
+    _operations.endSession();
     await _session.logout();
     await _pushNotifications.stop();
     await _realtime?.disconnectForLogout();
@@ -278,6 +279,7 @@ class _DorakBusinessAppState extends State<DorakBusinessApp> {
   /// Teardown after the session is already gone: expired, banned or deleted.
   Future<void> _onSessionEnded() async {
     _brandSuspension.stop();
+    _operations.endSession();
     await Future.wait([
       _pushNotifications.stop(),
       if (_realtime != null) _realtime.disconnectForLogout(),

@@ -6,6 +6,7 @@ import 'helpers/stylist_fakes.dart';
 
 class _FakeRealtime implements RealtimeClient {
   void Function(String event, Map<String, dynamic> payload)? barberListener;
+  int barberSubscriptions = 0;
 
   @override
   RealtimeSubscription subscribeToBarber(
@@ -13,6 +14,7 @@ class _FakeRealtime implements RealtimeClient {
     void Function(String event, Map<String, dynamic> payload) onEvent,
   ) {
     barberListener = onEvent;
+    barberSubscriptions++;
     return RealtimeSubscription.fromCancel(() {});
   }
 
@@ -38,7 +40,8 @@ class _FakeRealtime implements RealtimeClient {
   Future<void> connect() async {}
 
   @override
-  Future<void> disconnectForLogout() async {}
+  // Like the real client, signing out kills every listener.
+  Future<void> disconnectForLogout() async => barberListener = null;
 
   @override
   void dispose() {}
@@ -96,6 +99,32 @@ void main() {
       expect(repository.appointmentLoads, 2);
     });
   }
+
+  test('signing in again rejoins the stylist channel', () async {
+    await realtime.disconnectForLogout();
+    bloc.endSession();
+
+    await bloc.load();
+    expect(realtime.barberListener, isNotNull);
+    realtime.barberListener!('booking.cancelled', const {});
+    await Future<void>.delayed(Duration.zero);
+
+    expect(realtime.barberSubscriptions, 2);
+    expect(repository.appointmentLoads, 3);
+  });
+
+  test('a load still running at sign-out joins no channel', () async {
+    final late = _FakeRealtime();
+    final pending = StylistBloc(_CountingRepository(), realtime: late);
+
+    final load = pending.load();
+    pending.endSession();
+    await load;
+
+    expect(late.barberSubscriptions, 0);
+    expect(pending.state.loading, isFalse);
+    await pending.close();
+  });
 
   test('ignores unrelated realtime events', () async {
     realtime.barberListener!('booking.created', const {});

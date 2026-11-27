@@ -57,6 +57,22 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
     }
   }
 
+  /// Signing out makes the realtime client drop every channel, so the next
+  /// sign-in has to join them again.
+  void endSession() {
+    _loadGeneration++;
+    _leaveChannels();
+    if (state.loading) emit(state.copyWith(loading: false));
+  }
+
+  void _leaveChannels() {
+    for (final subscription in _subscriptions) {
+      subscription.cancel();
+    }
+    _subscriptions.clear();
+    _subscribedBranchIds.clear();
+  }
+
   Future<void> updateChairStatus(
     String id,
     ChairStatus status, {
@@ -134,9 +150,7 @@ class BranchOperationsBloc extends Cubit<BranchOperationsState> {
 
   @override
   Future<void> close() {
-    for (final subscription in _subscriptions) {
-      subscription.cancel();
-    }
+    _leaveChannels();
     return super.close();
   }
 }
