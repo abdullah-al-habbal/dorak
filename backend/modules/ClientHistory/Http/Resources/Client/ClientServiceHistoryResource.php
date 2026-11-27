@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\ClientHistory\Http\Resources\Client;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Branch\Services\BranchTimeZones;
 use Modules\ClientHistory\Services\HistoryMediaPhotoUrl;
 
 final class ClientServiceHistoryResource extends JsonResource
@@ -20,6 +21,7 @@ final class ClientServiceHistoryResource extends JsonResource
             'offered_service_id' => $this->offered_service_id,
             'catalog_item_id' => $this->catalog_item_id,
             'performed_at' => $this->performed_at?->toIso8601String(),
+            'utc_offset_minutes' => $this->performed_at === null ? null : app(BranchTimeZones::class)->offsetMinutes($this->branch_id, $this->performed_at),
             'client_rating' => $this->client_rating,
             'client_notes' => $this->client_notes,
             'barber_notes' => $this->barber_notes,

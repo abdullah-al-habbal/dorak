@@ -270,6 +270,7 @@ return [
         'date_from' => 'من تاريخ',
         'date_to' => 'إلى تاريخ',
         'starts_at' => 'وقت البدء',
+        'starts_at_local' => 'وقت البدء بتوقيت الفرع',
         'ends_at' => 'وقت الانتهاء',
         'price_amount_minor' => 'السعر',
         'duration_minutes' => 'المدة بالدقائق',

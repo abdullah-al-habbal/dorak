@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Modules\Ban\Models\BanModel;
@@ -197,4 +198,47 @@ it('rejects a rebook when the original chair is unavailable', function (): void 
 
     $this->assertDatabaseCount('bookings', 1);
     expect($chair->status)->toBe(ChairStatus::Maintenance);
+});
+
+describe('rebook at a branch time (BG-55)', function (): void {
+    beforeEach(function (): void {
+        Queue::fake();
+        Event::fake();
+        $this->travelTo(Carbon::parse('2026-12-01 00:00:00', 'UTC'));
+        $this->client = ClientModel::factory()->create();
+        $branch = BranchModel::factory()->create();
+        $this->history = rebookHistory($this->client, BarberModel::factory()->create(), $branch->id);
+        $this->rebook = fn (array $body) => $this->actingAs($this->client, 'client')
+            ->postJson("/api/v1/client/history/{$this->history->id}/rebook", $body);
+    });
+
+    it('reads starts_at_local on the clock of the visit branch', function (): void {
+        ($this->rebook)(['starts_at_local' => '2026-12-02T09:00'])
+            ->assertCreated()
+            ->assertJsonPath('data.starts_at', '2026-12-02T06:00:00+00:00');
+    });
+
+    it('refuses a branch time that has already passed there', function (): void {
+        // 02:00 in Damascus on the 1st is 23:00 UTC on the 30th.
+        ($this->rebook)(['starts_at_local' => '2026-12-01T02:00'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['starts_at_local']);
+
+        expect(BookingModel::query()->count())->toBe(0);
+    });
+
+    it('refuses a request with both times or neither', function (array $body, string $field): void {
+        ($this->rebook)($body)->assertUnprocessable()->assertJsonValidationErrors([$field]);
+
+        expect(BookingModel::query()->count())->toBe(0);
+    })->with([
+        'both' => [['starts_at' => '2026-12-02T06:00:00Z', 'starts_at_local' => '2026-12-02T09:00'], 'starts_at'],
+        'neither' => [[], 'starts_at'],
+    ]);
+
+    it('sends the offset of a past visit with the history', function (): void {
+        $this->actingAs($this->client, 'client')->getJson('/api/v1/client/history')
+            ->assertOk()
+            ->assertJsonPath('data.0.utc_offset_minutes', 180);
+    });
 });
