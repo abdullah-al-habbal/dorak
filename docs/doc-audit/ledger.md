@@ -12,25 +12,25 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-641 tracked Markdown files, not counting this audit's two files. Each appears once: as part of a logical document
+640 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 460 files = 266 logical documents (194 are part or group files) |
+| Outside `.claude/` | 459 files = 265 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
 
-| Cluster | Logical documents | Files | Lines |
-|---|---|---|---|
-| C0 pilot: push notifications | 2 | 2 | 524 |
-| C1 agent guides and routers | 63 | 95 | 5,076 |
-| C2 open work | 14 | 14 | 931 |
-| C3 finished or running programmes | 52 | 58 | 3,113 |
-| C4 backend and shared reference | 32 | 112 | 6,360 |
-| C5 mobile and dashboard | 62 | 114 | 5,357 |
-| C6 product intent and research | 41 | 65 | 3,503 |
+| Cluster | Logical documents | Reviewed |
+|---|---|---|
+| C0 pilot: push notifications | 2 | 2 |
+| C1 agent guides and routers | 63 | 3 |
+| C2 open work | 13 | 2 |
+| C3 finished or running programmes | 52 | 1 |
+| C4 backend and shared reference | 32 | 1 |
+| C5 mobile and dashboard | 62 | 0 |
+| C6 product intent and research | 41 | 0 |
 
 The pilot also reads the push parts of `README.md`, the push handover and the backlog, which sit in C1 and C2.
 
@@ -47,6 +47,12 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
   decisions, temporary; `low` = intent and research.
 - **`unreviewed`** says nothing about accuracy.
 
+## Removed documents
+
+| Document | Verdict | Cycle |
+|---|---|---|
+| `docs/sessions/handover-push-phase-2.md` | delete, applied | push pilot |
+
 ## Findings so far
 
 These are examples from spot checks, not the result of a full review.
@@ -59,21 +65,20 @@ These are examples from spot checks, not the result of a full review.
 | F4 | Root `AGENTS.md` and `CLAUDE.md` overlap but each has its own content; nested pairs aren't mirrors. | [Policy, section 5](policy.md) |
 | F5 | Two audits in `docs/planning/` have back-links that loop between a hub and part 2. The existing-frontend audit also holds all 6 unresolved code anchors (of 638), which point at the removed legacy dashboard. | back-link and anchor scripts, 2026-11-27 |
 | F6 | Outside Markdown: two workflows name `docs/16-deployment-operations.md`, which doesn't exist; the document is under `backend/docs/`. `backend/scripts/check_migrations.php` also names it; its path wasn't checked. | `backend-ci.yml:73`, `deploy.yml:223` |
-| F7 | Push rules conflict (policy decision DA-1). | root `AGENTS.md` and `CLAUDE.md`; `docs/backlog/index.md:183`; `docs/waves/index.md:64` |
+| F7 | Push rules conflicted. Decided (DA-1). | root `AGENTS.md` and `CLAUDE.md`; `docs/backlog/index.md:183`; `docs/waves/index.md:64` |
 | F8 | The session board's registry looks out of date: it lists unowned working-tree edits, but the tree was clean when this audit began. Of the sessions on this machine, only one other is live and it isn't in the registry. Cloud sessions and other computers couldn't be listed. | `docs/sessions/index.md`, `git status`, session list |
 | F9 | `docs/index.md` says every maintained document is listed, apart from stated exclusions. Some outside those exclusions have no router link, for example `backend/docs/17-sms-delivery.md` and `backend/docs/api-response-standard.md`. They may be reachable through a sub-index. | router count of 0 in the tables |
 
-## Not routed yet
+## Routing
 
-This audit's two files aren't listed in `docs/index.md` or on the session board, because existing documents are
-frozen during phases 0 and 1.
+The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed on the session board.
 
 ## C0 pilot: push notifications
 
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
-| `docs/architecture/push-notifications.md` | 1 | 197 | Reference | engineers, agents | 8 / 1 / 0 | high | fix (F1) |
-| `docs/deployment/dev-environment-status.md` | 1 | 327 | Operations | operators, agents | 12 / 1 / 0 | high | unreviewed |
+| `docs/architecture/push-notifications.md` | 1 | 135 | Reference | engineers, agents | 8 / 1 / 0 | high | fix, applied |
+| `docs/deployment/dev-environment-status.md` | 1 | 88 | Operations | operators, agents | 12 / 1 / 0 | high | fix, applied |
 
 ## C1 agent guides and routers
 
@@ -81,12 +86,12 @@ frozen during phases 0 and 1.
 |---|---|---|---|---|---|---|---|
 | `AGENTS.md` | 1 | 108 | Rules | agents, engineers | 4 / 1 / 4 | high | merge (F4) |
 | `CLAUDE.md` | 2 | 144 | Rules | agents, engineers | 1 / 1 / 5 | high | merge (F4) |
-| `README.md` (also in C0) | 3 | 201 | Router | agents, engineers | 9 / 1 / 3 | high | fix (F1) |
+| `README.md` (also in C0) | 3 | 201 | Router | agents, engineers | 9 / 1 / 3 | high | fix: push text applied; rest unreviewed (C1) |
 | `backend/AGENTS.md` | 2 | 109 | Rules | agents, engineers | 5 / 2 / 10 | high | unreviewed |
 | `backend/CLAUDE.md` | 1 | 66 | Rules | agents, engineers | 3 / 1 / 1 | high | unreviewed |
 | `backend/process/process.md` | 4 | 221 | Rules | agents, engineers | 0 / 1 / 0 | high | unreviewed |
 | `docs/graph/repo-index.md` | 1 | 29 | Router | agents, engineers | 0 / 1 / 0 | high | unreviewed |
-| `docs/index.md` | 6 | 498 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
+| `docs/index.md` | 6 | 497 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
 | `frontend/mobile/AGENTS.md` | 2 | 94 | Rules | agents, engineers | 24 / 2 / 1 | high | unreviewed |
 | `frontend/mobile/CLAUDE.md` | 2 | 106 | Rules | agents, engineers | 15 / 1 / 1 | high | unreviewed |
 | `frontend/mobile/apps/business_app/AGENTS.md` | 2 | 138 | Rules | agents, engineers | 5 / 1 / 0 | high | unreviewed |
@@ -148,9 +153,8 @@ frozen during phases 0 and 1.
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
 | `backend/docs/14-execution-status.md` | 1 | 28 | Open work | owner, agents | 1 / 1 / 0 | high | fix (F2) |
-| `docs/backlog/index.md` (push rows in C0) | 1 | 191 | Open work | owner, agents | 31 / 2 / 3 | high | unreviewed |
-| `docs/sessions/handover-push-phase-2.md` (also in C0) | 1 | 132 | Temporary | history; agents if linked | 3 / 1 / 0 | medium | unreviewed |
-| `docs/sessions/index.md` | 1 | 54 | Open work | owner, agents | 6 / 1 / 0 | high | unreviewed |
+| `docs/backlog/index.md` (push rows in C0) | 1 | 190 | Open work | owner, agents | 31 / 2 / 3 | high | fix: push rows applied; rest unreviewed (C2) |
+| `docs/sessions/index.md` | 1 | 55 | Open work | owner, agents | 6 / 1 / 0 | high | unreviewed |
 | `docs/waves/index.md` | 1 | 88 | Open work | owner, agents | 12 / 1 / 0 | high | unreviewed |
 | `docs/waves/runbook.md` | 1 | 114 | Operations | operators, agents | 9 / 1 / 2 | high | unreviewed |
 | `docs/waves/wave-0.md` | 1 | 42 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |

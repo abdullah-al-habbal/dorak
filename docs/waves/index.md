@@ -28,7 +28,7 @@ codeanchors:
 | Active wave | [Wave 1: realtime](wave-1.md) |
 | State | fixes released; waiting for the owner on W1.4 and Reverb hosting |
 | Next task | W1.4 once decided; otherwise start [Wave 2](wave-2.md) at W2.1 |
-| Last release to dev | `7b3814481`, 2026-11-27 ([dev status](../deployment/dev-environment-status.md), Snapshot 13) |
+| Last release to dev | `7b3814481`, 2026-11-27 ([dev status](../deployment/dev-environment-status.md)) |
 | Blocked on the owner | [Wave 1 decisions](wave-1-decisions.md): open subscriptions (W1.4) and where Reverb runs |
 
 ## Board
@@ -40,7 +40,7 @@ codeanchors:
 | [2](wave-2.md) | Sign-in and exposure | BG-28, 29, 30, 16, 4, 49, 50 | todo |
 | [3](wave-3.md) | Data correctness | BG-27, 31 to 35, 18, BD-10, TS-8 | todo |
 | [4](wave-4.md) | Booking experience | BG-19, 20, 21, 36, 12 | todo |
-| [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38 | todo |
+| [5](wave-5.md) | Notifications and privacy | BD-15, BG-13, 14, 37, 38, 53 | todo |
 | [6](wave-6.md) | Completion | FT, TD, TS, leftovers, old docs | todo; split into batches first |
 
 ## How to keep context small
@@ -80,7 +80,7 @@ Status values: `todo`, `doing`, `done`, `blocked`.
 |---|---|
 | RR-8 | Add the `schedule:run` and `queue:work` cron entries in hPanel ([CI/CD setup](../deployment/ci-cd-setup.md)) |
 | RR-20 | Choose where Reverb runs: [decision 2](wave-1-decisions.md) |
-| RR-16, RR-19 | Firebase projects, keys and server values; then real push checks |
+| RR-16 | Firebase projects, keys and server values; then real push checks |
 | BG-39 to BG-44 | Device checks of fixes already in the code (BG-43 and BG-44 also need live Reverb) |
 | BD-5, BD-6, BD-13 | Open product decisions |
 | RR-4, 5, 6, 9 to 13, 18 | Release-readiness items for before real users |

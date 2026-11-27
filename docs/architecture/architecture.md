@@ -49,7 +49,7 @@ logout revokes the devices of that sign-in. Queue workers send through the FCM
 HTTP v1 API with the service account in `FCM_CREDENTIALS` and the project in
 `FCM_PROJECT_ID`; when either is absent, delivery is skipped with one logged
 reason and the inbox row is still written, so a booking request never fails.
-Contract, configuration, verification record and open items:
+Contract, configuration and setup:
 [push notifications](push-notifications.md).
 
 ## Production prerequisites

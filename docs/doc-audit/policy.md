@@ -3,7 +3,6 @@ nodeid: docs.doc-audit.policy
 parentnode: docs.graph
 childnodes:
   - docs.doc-audit.ledger
-  - docs.doc-audit.pilot
 codeanchors:
   - docs/
 ---
@@ -123,7 +122,7 @@ own. Each nested pair needs a rule-by-rule merge before its `CLAUDE.md` becomes 
 |---|---|---|
 | 0 | inventory: this policy and the ledger | done |
 | 1 | agree the rules | done |
-| 2 | pilot: the push-notification cluster (C0) | [proposed](pilot.md), awaiting approval |
+| 2 | pilot: the push-notification cluster (C0) | applied 2026-11-27 |
 | 3 | clusters C1 to C6, in order | not started |
 | 4 | prevent regrowth: rules in the root guide and task executor; CI check for links, anchors and routers | not started |
 
@@ -139,3 +138,15 @@ Approved by the owner on 2026-11-27.
 | DA-1 | Push rule for the shared guide: push only when the owner asks, or at a wave close under the backlog's Delivery decision. During this audit, push only when the owner explicitly asks. Applied to the guides in C1. |
 | DA-2 | Keep the graph frontmatter and `docs/graph` routers for now; re-evaluate after the pilot. |
 | DA-3 | Audit backlog and wave files only after checking the session board for active writers. |
+
+**Pilot assessment (DA-2).** Rewriting two documents meant editing 12 other files to keep links true. No tracked
+non-Markdown file reads `nodeid`, `parentnode`, `childnodes` or `codeanchors`, and the router said every document
+was listed while some weren't. The metadata costs upkeep and no tool was found that uses it. Keep it until the audit
+ends (DA-2); whether to retire it is an owner decision for phase 4.
+
+## 8. Autonomous run
+
+On 2026-11-27 the owner asked for the remaining clusters and phases to run as a loop: verify against code, apply,
+check, and commit locally for each cycle, without routine pauses. Stop only when an owner decision is needed, when
+another session is writing the same files, or for an action outside the rules (push, database reset, Playwright).
+This replaces the per-cluster approval in section 4.

@@ -37,7 +37,7 @@ codeanchors:
 - [Competitor analysis](competitor-analysis/index.md) — outside-in studies of competing products.
 - [Booking concurrency](booking-concurrency/index.md) — locks, idempotency, uniqueness and retries for booking and every other backend write path.
 - [Session coordination board](sessions/index.md) — who owns what, and open requests between the Claude sessions working in parallel.
-- [Push notifications](architecture/push-notifications.md) — current state of the push programme (what is live on dev, what is local, open decisions, config names, URLs); handover in [sessions/handover-push-phase-2.md](sessions/handover-push-phase-2.md); dated environment record in [dev environment status](deployment/dev-environment-status.md).
+- [Push notifications](architecture/push-notifications.md) — how push works and how to turn it on; what is deployed is in [dev environment status](deployment/dev-environment-status.md).
 
 ## Folder graph
 

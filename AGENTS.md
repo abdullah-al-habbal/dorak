@@ -22,7 +22,7 @@ specific; read it before changing files in that area.
   missing features, tech debt, test gaps) and update it when an item is done or a
   decision is resolved.
 - Competitor studies (market context, not requirements) are in [docs/competitor-analysis/index.md](docs/competitor-analysis/index.md); the first is [Toptalla](docs/competitor-analysis/toptalla/index.md).
-- Current state of live work (what is deployed on dev, URLs, configuration names, open owner decisions): [dev environment status](docs/deployment/dev-environment-status.md), [push notifications](docs/architecture/push-notifications.md) and the latest handover in [docs/sessions](docs/sessions/index.md).
+- Current state of live work (what is deployed on dev, URLs, configuration names, open owner decisions): [dev environment status](docs/deployment/dev-environment-status.md) and [push notifications](docs/architecture/push-notifications.md). Parallel sessions coordinate on the [session board](docs/sessions/index.md).
 - Use [the documentation index](docs/index.md) to find maintained product,
   architecture, and engineering documentation.
 - Before changing a subsystem, read its guide:

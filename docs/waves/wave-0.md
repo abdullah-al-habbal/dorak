@@ -28,7 +28,7 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 
 ## Notes
 
-Evidence is in [dev environment status](../deployment/dev-environment-status.md), Snapshots 11 and 12. Playwright ran before the Symfony update.
+Evidence is in [dev environment status](../deployment/dev-environment-status.md), Snapshots 11 and 12 (in Git, `873d3edb9`). Playwright ran before the Symfony update.
 
 ## Log
 

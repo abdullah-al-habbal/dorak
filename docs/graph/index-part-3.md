@@ -22,7 +22,7 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [Frontend Architecture](../architecture/frontend-architecture.md)
 - [Testing Strategy](../architecture/testing-strategy.md)
 - [Localizing machine keys](../architecture/localization-of-machine-keys.md)
-- [Push notifications (FCM): state, contract, setup, Phase 2 browser push](../architecture/push-notifications.md)
+- [Push notifications (FCM)](../architecture/push-notifications.md)
 
 ### `docs/deployment/`
 
@@ -32,7 +32,7 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 - [CI/CD setup and checklist](../deployment/ci-cd-setup.md)
 - [Hostinger findings and readiness](../deployment/hostinger-questions.md)
 - [Vercel dashboard hosting](../deployment/vercel-dashboard.md)
-- [Dev environment status (dated snapshot of URLs, probes and configs)](../deployment/dev-environment-status.md)
+- [Dev environment status (URLs, deployed version, configuration)](../deployment/dev-environment-status.md)
 
 ### `docs/mobile-audit-g10-g11/`
 
@@ -75,7 +75,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 ### `docs/sessions/`
 
 - [Session coordination board](../sessions/index.md)
-- [Handover: push programme, Phase 1 release and Phase 2](../sessions/handover-push-phase-2.md)
 
 ### `docs/competitor-analysis/`
 

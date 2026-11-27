@@ -50,7 +50,7 @@ Remaining tasks, issues, decisions and missing features are tracked in one place
 
 ## Current state of live work
 
-The dated record of what is deployed on dev, with URLs, configuration names and gate results, is [dev environment status](docs/deployment/dev-environment-status.md). The push-notification programme (live on dev: Phase 1; local: Phase 2) is in [push notifications](docs/architecture/push-notifications.md), and the next session starts from [handover-push-phase-2](docs/sessions/handover-push-phase-2.md).
+What is deployed on dev, with URLs and configuration names, is in [dev environment status](docs/deployment/dev-environment-status.md). How push notifications work and how to turn them on is in [push notifications](docs/architecture/push-notifications.md).
 
 ## Competitor analysis
 

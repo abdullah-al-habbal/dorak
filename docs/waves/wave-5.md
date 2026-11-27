@@ -24,13 +24,13 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | W5.3 | BG-37 | Verify each browser push risk, then fix the confirmed ones | each risk marked confirmed, fixed or not reproducible | todo |
 | W5.4 | BG-14 | Consent record for face photos, marketing opt-out, data export | the owner approves the scope first; then Pest and client updates | todo |
 | W5.5 | BG-38 | Choose how to handle the Firebase advisories (BD-14 pins the version) | the owner picks an option; gates pass | todo |
+| W5.7 | BG-53 | Reproduce whether a payload fault reaches the token-deletion branch, then narrow it | Pest: a payload error keeps the token; a bad token is still deleted | todo |
 | W5.6 | release | Wave close ([tracker](index.md#wave-close)) | released, documented, reported | todo |
 
 ## Notes
 
 - Reference: [push notifications](../architecture/push-notifications.md).
 - Real delivery checks need RR-16 and RR-8.
-- The backlog uses the ID FT-21 twice (push phases and privacy). Renumber one when W5.4 starts.
 
 ## Log
 
