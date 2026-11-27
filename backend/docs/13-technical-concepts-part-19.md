@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 19 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-18.md) · [Next](13-technical-concepts-part-20.md)
+Part 19 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-18.md)
 
 ### Pattern 03: Feature Module Structure
 
@@ -23,21 +23,6 @@ modules/{Module}/
 └── Providers/
 ```
 
-**Flutter (per feature):**
-```
-lib/Features/{Feature}/
-├── Data/
-│   ├── {Entity}Dto.dart
-│   ├── {Entity}Dto.g.dart
-│   └── {Feature}Repository.dart
-├── Domain/
-│   └── {Entity}Entity.dart
-└── Presentation/
-    ├── {Feature}Bloc.dart
-    ├── Events/
-    ├── States/
-    ├── {Feature}Screen.dart
-    └── Widgets/
-```
+**Flutter:** the layout and file names are set by the [mobile guide](../../frontend/mobile/AGENTS.md).
 
 ---

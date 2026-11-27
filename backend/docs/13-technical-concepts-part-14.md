@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 14 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-13.md) · [Next](13-technical-concepts-part-15.md)
+Part 14 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-13.md) · [Next](13-technical-concepts-part-15.md)
 
 ### Concept 05: Protected Routes & Auth Guards
 

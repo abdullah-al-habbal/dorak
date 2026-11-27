@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 2 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts.md) · [Next](13-technical-concepts-part-3.md)
+Part 2 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts.md) · [Next](13-technical-concepts-part-3.md)
 
 Handler-level decision — no special middleware needed. The Action/Handler pattern already supports both:
 ```php
@@ -30,6 +30,9 @@ final class CreateBookingHandler
 - Prevents silent data loss when two users edit the same record simultaneously
 - Rejected writes indicate **stale data** → refetch and let the user retry
 - Example: Record #482 (version 3) → User A updates → version becomes 4 → User B's update with version 3 is rejected
+
+In this repository only `branch_products` has a `version` column (`ProductCatalog` module); the sample below uses
+`barbers` as an illustration.
 
 **Laravel Implementation:**
 

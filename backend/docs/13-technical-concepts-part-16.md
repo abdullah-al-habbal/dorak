@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 16 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-15.md) · [Next](13-technical-concepts-part-17.md)
+Part 16 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-15.md) · [Next](13-technical-concepts-part-17.md)
 
 ### Concept 08: List Virtualization
 

@@ -9,9 +9,8 @@ codeanchors:
 
 # 13 — Technical Concepts: Mandatory Reference
 
-> **Status:** Active
-> **Scope:** All AI agents must read this before implementing any feature.
-> **Last Updated:** 2026-07-25
+> Read this before implementing a feature. It states patterns to apply, not what is built, and its code samples are
+> illustrative. What exists is in the code and the [feature index](feature-index.md).
 
 ---
 
@@ -58,4 +57,4 @@ on<CreateBooking>((event, emit) async {
 
 ## Continued in
 
-- [Parts 2-20](13-technical-concepts-group-1.md)
+- [Parts 2-19](13-technical-concepts-group-1.md)

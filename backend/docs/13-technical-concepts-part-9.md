@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 9 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-8.md) · [Next](13-technical-concepts-part-10.md)
+Part 9 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-8.md) · [Next](13-technical-concepts-part-10.md)
 
 ### Concept 09: Read Consistency Models
 

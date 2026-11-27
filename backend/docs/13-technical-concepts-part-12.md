@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 12 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-11.md) · [Next](13-technical-concepts-part-13.md)
+Part 12 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-11.md) · [Next](13-technical-concepts-part-13.md)
 
 ### Concept 03: Handling Errors by Status Code
 

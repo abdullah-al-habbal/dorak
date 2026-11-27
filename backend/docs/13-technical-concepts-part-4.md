@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 4 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-3.md) · [Next](13-technical-concepts-part-5.md)
+Part 4 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-3.md) · [Next](13-technical-concepts-part-5.md)
 
 **Flutter Implementation:**
 

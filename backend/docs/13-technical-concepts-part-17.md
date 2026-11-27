@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 17 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-16.md) · [Next](13-technical-concepts-part-18.md)
+Part 17 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-16.md) · [Next](13-technical-concepts-part-18.md)
 
 ### Concept 10: Client-Side Cache Invalidation
 

@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 5 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-4.md) · [Next](13-technical-concepts-part-6.md)
+Part 5 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-4.md) · [Next](13-technical-concepts-part-6.md)
 
 ### Concept 05: PATCH vs PUT
 

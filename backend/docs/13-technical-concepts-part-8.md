@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 8 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-7.md) · [Next](13-technical-concepts-part-9.md)
+Part 8 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-7.md) · [Next](13-technical-concepts-part-9.md)
 
 ### Concept 08: Retry with Exponential Backoff
 

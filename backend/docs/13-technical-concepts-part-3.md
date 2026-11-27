@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 3 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-2.md) · [Next](13-technical-concepts-part-4.md)
+Part 3 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-2.md) · [Next](13-technical-concepts-part-4.md)
 
 ```dart
 // Repository sends expectedVersion with every update

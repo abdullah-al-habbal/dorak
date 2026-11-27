@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-493 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+492 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 312 files = 182 logical documents |
+| Outside `.claude/` | 311 files = 182 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -28,7 +28,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
 | C3 finished or running programmes | 10 | 10 |
-| C4 backend and shared reference | 28 | 23 |
+| C4 backend and shared reference | 28 | 24 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
 
@@ -290,7 +290,7 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `backend/docs/09-c4-context.md` | 2 | 88 | Reference | engineers, agents | 1 / 1 / 0 | medium | keep as product intent: actors and external services; the later services are named from 10 |
 | `backend/docs/10-c4-containers.md` | 3 | 152 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: one client app became three, a dead skill path, and later services noted |
 | `backend/docs/11-backend-architecture.md` | 1 | 56 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix, applied: rewritten from the module folders and base provider; convention differences are BD-16 |
-| `backend/docs/13-technical-concepts.md` | 21 | 1138 | Reference | engineers, agents | 0 / 1 / 0 | medium | unreviewed |
+| `backend/docs/13-technical-concepts.md` | 20 | 1051 | Reference | engineers, agents | 0 / 1 / 0 | medium | fix, applied: false CORS, response envelope, token and mobile layout claims corrected and the authoring status list removed; the patterns themselves are intent, and the code samples weren't checked |
 | `backend/docs/16-deployment-operations.md` | 1 | 96 | Operations | operators, agents | 0 / 1 / 4 | high | fix, applied: trigger, branch, cache order and migration counts were out of date, and its never-edit rule ignored the pre-release migration decision; checked against deploy.yml and the guard |
 | `backend/docs/17-sms-delivery.md` | 1 | 51 | Reference | engineers, agents | 0 / 0 / 0 | medium | fix, applied: the production boot guard was missing |
 | `backend/docs/README.md` | 3 | 145 | Reference | engineers, agents | 1 / 2 / 0 | medium | unreviewed |

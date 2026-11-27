@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 11 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-10.md) · [Next](13-technical-concepts-part-12.md)
+Part 11 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-10.md) · [Next](13-technical-concepts-part-12.md)
 
 ### Concept 02: Debouncing vs Throttling
 

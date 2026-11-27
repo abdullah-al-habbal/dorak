@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 7 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-6.md) · [Next](13-technical-concepts-part-8.md)
+Part 7 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-6.md) · [Next](13-technical-concepts-part-8.md)
 
 ```php
 final class BatchUpdateChairsHandler

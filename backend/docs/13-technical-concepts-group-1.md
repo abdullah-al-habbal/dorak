@@ -20,12 +20,11 @@ childnodes:
   - backend.13-technical-concepts.part-17
   - backend.13-technical-concepts.part-18
   - backend.13-technical-concepts.part-19
-  - backend.13-technical-concepts.part-20
 codeanchors:
   - backend/modules/
 ---
 
-# 13 — Technical Concepts: Mandatory Reference — parts 2-20
+# 13 — Technical Concepts: Mandatory Reference — parts 2-19
 
 Part of [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md).
 
@@ -47,4 +46,3 @@ Part of [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.m
 - [Part 17: Concept 10: Client-Side Cache Invalidation](13-technical-concepts-part-17.md)
 - [Part 18: PART 3: LARAVEL/FLUTTER INTEGRATION PATTERNS](13-technical-concepts-part-18.md)
 - [Part 19: Pattern 03: Feature Module Structure](13-technical-concepts-part-19.md)
-- [Part 20: COMPLETION STATUS](13-technical-concepts-part-20.md)

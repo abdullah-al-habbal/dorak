@@ -55,7 +55,6 @@ Single-process Pest tests cannot show a race; a test that only calls the handler
 
 - Remove the backlog item and add a line to `backend/docs/feature-index.md`.
 - Add the rule to [file 01](01-lock-order-and-deadlocks.md) (lock order), [03](03-idempotency-and-uniqueness.md) (uniqueness) or [04](04-hashing-and-tokens.md) (codes) instead of repeating it here, and delete the matching row in [09](09-write-path-audit.md).
-- Update `backend/docs/13-technical-concepts-part-2.md` (version locking) when TD-8 starts: it describes a `version` column that does not exist.
 - Keep the one-paragraph rules in `backend/AGENTS.md` ("Concurrency") and [testing strategy](../architecture/testing-strategy.md) current.
 
 ## Decisions (owner, 2026-11-26; not implemented)

@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 10 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-9.md) · [Next](13-technical-concepts-part-11.md)
+Part 10 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-9.md) · [Next](13-technical-concepts-part-11.md)
 
 ```dart
 // Repository — request specific fields for list screens

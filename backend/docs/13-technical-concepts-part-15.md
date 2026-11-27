@@ -6,24 +6,15 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 15 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-14.md) · [Next](13-technical-concepts-part-16.md)
+Part 15 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-14.md) · [Next](13-technical-concepts-part-16.md)
 
 ### Concept 06: CORS from the Frontend Side
 
 **Rule:** CORS is a browser security feature. **Flutter mobile apps are NOT affected** — CORS only applies to web browsers.
 
-**Relevant For:**
-- Next.js dashboard (browser calls go through its server-side proxy) → no CORS needed on the API
-- Flutter mobile apps → No CORS concern
-
-**Laravel Implementation (for web):**
-
-```php
-// config/cors.php — already handled by Laravel
-'paths' => ['api/*', 'sanctum/csrf-cookie'],
-'allowed_origins' => ['https://admin.dorak.com'],
-'supports_credentials' => true,
-```
+**In this repository:** the dashboard needs no CORS, because only its server calls the API. The Flutter apps aren't
+affected, except Flutter web builds: there is no `modules/Core/Config/cors.php`, so Laravel's defaults apply (backlog
+RR-12).
 
 ---
 

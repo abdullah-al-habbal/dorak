@@ -6,7 +6,7 @@ codeanchors:
   - backend/modules/
 ---
 
-Part 6 of 20 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-5.md) · [Next](13-technical-concepts-part-7.md)
+Part 6 of 19 · [13 — Technical Concepts: Mandatory Reference](13-technical-concepts.md) · [Previous](13-technical-concepts-part-5.md) · [Next](13-technical-concepts-part-7.md)
 
 ### Concept 06: Race Conditions in Read
 
