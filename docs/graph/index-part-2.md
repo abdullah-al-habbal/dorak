@@ -27,7 +27,6 @@ Part 2 of 6 · [Documentation Graph](../index.md) · [Previous](../index.md) · 
 - [11 Backend Architecture](../../backend/docs/11-backend-architecture.md)
 - [12 Implementation Prd](../../backend/docs/12-implementation-prd.md)
 - [13 Technical Concepts](../../backend/docs/13-technical-concepts.md)
-- [14 Execution Status](../../backend/docs/14-execution-status.md)
 - [16 Deployment Operations](../../backend/docs/16-deployment-operations.md)
 - [Readme](../../backend/docs/README.md)
 - [Feature Index](../../backend/docs/feature-index.md)

@@ -35,7 +35,7 @@ codeanchors:
 
 As of **2026-11-27 18:37 UTC** (21:37, UTC+3). Update this section in place.
 
-**Progress.** Wave 0 is done apart from leftovers (W6.2). Wave 1 is released with W1.4 open. Waves 2 to 6 haven't started.
+**Progress.** Wave 0 is done apart from leftovers (W6.2). Wave 1 is released with W1.4 open. Waves 2 to 4 and 6 haven't started. In Wave 5, W5.7 was done early and the documentation audit closed W5.2.
 
 **Delivered and deployed to dev** (`7b3814481`, no database reset):
 

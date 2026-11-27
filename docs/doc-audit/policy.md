@@ -124,7 +124,7 @@ own. Each nested pair needs a rule-by-rule merge before its `CLAUDE.md` becomes 
 | 0 | inventory: this policy and the ledger | done |
 | 1 | agree the rules | done |
 | 2 | pilot: the push-notification cluster (C0) | applied 2026-11-27 |
-| 3 | clusters C1 to C6, in order | C1 agent guides done except routers; C2 to C6 not done (see the ledger) |
+| 3 | clusters C1 to C6, in order | C1 agent guides done except routers; C2 done (parts not rechecked are named in the ledger); C3 to C6 not done |
 | 4 | prevent regrowth: rules in the root guide and task executor; CI check for links, anchors and routers | not started |
 
 The `.claude/` files get a separate, later audit. Third-party skills shouldn't be rewritten.

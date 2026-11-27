@@ -10,7 +10,7 @@ Part 8 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous]
 
 ## Feature Registry
 
-All backend features are built, tested, and passing; the sections above are the live contract. Pending work lives in [execution status](14-execution-status.md).
+All backend features are built, tested, and passing; the sections above are the live contract. Pending work lives in the [backlog](../../docs/backlog/index.md).
 
 ### Barber panel (retired)
 The barber web panel was retired with the other panels (NS-28); barbers use the stylist app and the light barber dashboard.

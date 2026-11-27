@@ -16,7 +16,6 @@ childnodes:
   - backend.11-backend-architecture
   - backend.12-implementation-prd
   - backend.13-technical-concepts
-  - backend.14-execution-status
   - backend.16-deployment-operations
   - backend.17-sms-delivery
   - backend.feature-index

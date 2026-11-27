@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-575 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+574 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 394 files = 229 logical documents |
+| Outside `.claude/` | 393 files = 228 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -26,7 +26,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 |---|---|---|
 | C0 pilot: push notifications | 2 | 2 |
 | C1 agent guides and routers | 27 | 25 |
-| C2 open work | 13 | 2 |
+| C2 open work | 12 | 12 |
 | C3 finished or running programmes | 52 | 1 |
 | C4 backend and shared reference | 32 | 2 |
 | C5 mobile and dashboard | 62 | 0 |
@@ -88,6 +88,7 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `frontend/mobile/apps/client_app/references/tests.md` | delete, applied: stale flows, counts and status that the code and feature index own | C1 apps |
 | `frontend/mobile/apps/client_app/references/verification.md` | delete, applied: stale flows, counts and status that the code and feature index own | C1 apps |
 | `frontend/mobile/references/root/decisions.md` | merge into the client app decisions, applied | C1 apps |
+| `backend/docs/14-execution-status.md` | delete, applied: the AI "stub" claim was false (F2); the rest is stale or owned by the backlog and the product document | C2 |
 
 ## Findings so far
 
@@ -109,6 +110,9 @@ These are examples from spot checks, not the result of a full review.
 | F12 | The mobile root references contradicted the code: favorites "no backend route" (routes exist), "no verify-reset-code endpoint" (it exists and the bloc calls it), "no GET current user" (restore loads the profile), three different localization key counts (670 now), `bloc_concurrency` "not a dependency" (client app has it), `core` verify "all five" steps (four). Corrected or removed. | `client-interaction.php:19`, `password_recovery.bloc.dart:65`, `session.bloc.dart:93`, ARB count, `pubspec.yaml` |
 | F13 | Two mobile rule files disagreed: "exactly one top-level class" against "one public class, private helpers allowed"; theme files "allowed in apps" against the taxonomy tool (design system only). Kept the second reading of the first, which the older guide documented as used, and the tool's rule for the second. | former `CLAUDE.md`, `non-negotiable-rules.md`, `tool/check_taxonomy.dart` |
 | F14 | Checked the realtime claims added by `99311f495`: the dashboard has no realtime client or `/api/realtime` route, no app subscribes to the floor-plan channel (text search), and the events listed per channel match each event's `broadcastOn`. Not checked: "once per real status change" and the recorded test and CI results. The commits it lists as delivered are ancestors of `7b3814481`. | `modules/*/Events/`, `frontend/web/dashboard/src`, `git merge-base` |
+| F15 | Open work in the backlog was already done or out of date: BG-13 (fix committed and gated), TD-4 (all 99 keys named are used), RR-2 (struck through), the TD-8 "no `version` column" claim, the TS-4 "`invitations.spec.ts` has never run" note (the full suite on `a712aca7f` includes the file; inferred from the Playwright config), the RR-7 note about uncommitted edits, and a pointer to a deleted mobile inventory in BD-6. | `c386493f2`, ARB key search, `create_branch_products_table.php`, `playwright.config.ts`, `git status` |
+| F16 | The runbook's second Playwright trap isn't reproduced. The E2E guard checks only the test process, not the server's database. Logged as BG-54, unconfirmed. | `e2e-database-guard.ts`, `playwright.config.ts`, framework `ServeCommand.php` |
+| F17 | `02-prd` section 8, "locked implementation decisions", item 5 says not to build real-time socket occupancy tracking. The code broadcasts chair status over Reverb, and the owner later approved the realtime wave. The product document wasn't rewritten; review in C6. **Owner, not blocking:** mark that decision superseded? | `backend/docs/02-prd-part-3.md`, `ChairStatusUpdated`, wave 1 |
 
 ## Push record
 
@@ -116,8 +120,6 @@ The owner pushed `master` to `origin` on 2026-11-27, up to `6aa3d73d0` (`git fet
 On that commit Backend CI `46049039941` passed (migration guard, Pint, 3016 tests, 12 concurrency tests), Mobile CI
 `46049039908` passed analyze and test, and the Vercel status was `success`. No backend deploy followed. Audit
 commits after `6aa3d73d0` stay local until the owner asks for a push (DA-1).
-
-| F15 | Open work in the backlog was already done or out of date: BG-13 (fix committed and gated), TD-4 (all 99 keys named are used), RR-2 (struck through), the TD-8 "no `version` column" claim, the TS-4 "`invitations.spec.ts` has never run" note (the full suite on `a712aca7f` includes the file; inferred from the Playwright config), the RR-7 note about uncommitted edits, and a pointer to a deleted mobile inventory in BD-6. | `c386493f2`, ARB key search, `create_branch_products_table.php`, `playwright.config.ts`, `git status` |
 
 ## Routing
 
@@ -166,19 +168,18 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
-| `backend/docs/14-execution-status.md` | 1 | 28 | Open work | owner, agents | 1 / 1 / 0 | high | fix (F2) |
 | `docs/backlog/index.md` (push rows in C0) | 1 | 190 | Open work | owner, agents | 31 / 2 / 3 | high | fix, applied (C2). Checked in code: BG-4, 12, 14, 16, 18, 21, 27 to 35, 39, 41, 45, 49; BD-10, 11, 15; TD-1, 5, 8, 12, 20; FT-18, 19; RR-5, 6, 9, 13. Checked only in part: BG-20, 36, 40, 46, 47, 51; TD-19; FT-1, 17; TS-4. Every other row wasn't rechecked |
-| `docs/sessions/index.md` | 1 | 57 | Open work | owner, agents | 6 / 1 / 0 | high | unreviewed |
-| `docs/waves/index.md` | 1 | 131 | Open work | owner, agents | 12 / 1 / 0 | high | unreviewed |
-| `docs/waves/runbook.md` | 1 | 130 | Operations | operators, agents | 9 / 1 / 2 | high | unreviewed |
-| `docs/waves/wave-0.md` | 1 | 42 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
-| `docs/waves/wave-1-decisions.md` | 1 | 47 | Decisions | owner, engineers | 3 / 1 / 0 | medium | unreviewed |
-| `docs/waves/wave-1.md` | 1 | 49 | Open work | owner, agents | 2 / 1 / 0 | high | unreviewed |
-| `docs/waves/wave-2.md` | 1 | 39 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
-| `docs/waves/wave-3.md` | 1 | 41 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
-| `docs/waves/wave-4.md` | 1 | 37 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
-| `docs/waves/wave-5.md` | 1 | 37 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
-| `docs/waves/wave-6.md` | 1 | 34 | Open work | owner, agents | 1 / 1 / 0 | high | unreviewed |
+| `docs/sessions/index.md` | 1 | 57 | Open work | owner, agents | 6 / 1 / 0 | high | fix, applied (C2): ownerless-edits row removed, claims marked as records, Q-8 answered; older log rows not rechecked |
+| `docs/waves/index.md` | 1 | 131 | Open work | owner, agents | 12 / 1 / 0 | high | fix, applied (C2): push, CI and wave status; local-only and dev results from earlier trees not rerun |
+| `docs/waves/runbook.md` | 1 | 130 | Operations | operators, agents | 9 / 1 / 2 | high | keep: composer, npm and melos scripts, test database ports, release script and realtime script steps checked; procedures not run; Playwright trap 2 not reproduced (F16) |
+| `docs/waves/wave-0.md` | 1 | 42 | Open work | owner, agents | 1 / 1 / 0 | high | keep: cited commits are on master and Snapshots 11 and 12 exist in Git; CI and deploy results not rechecked. Delete with the programme |
+| `docs/waves/wave-1-decisions.md` | 1 | 47 | Decisions | owner, engineers | 3 / 1 / 0 | medium | keep: waiting for the owner; third-party prices and limits are marked unconfirmed and weren't rechecked |
+| `docs/waves/wave-1.md` | 1 | 49 | Open work | owner, agents | 2 / 1 / 0 | high | keep: cited commits are on master and the code for BG-45, 46, 47 and 51 was spot-checked; local run results not rerun |
+| `docs/waves/wave-2.md` | 1 | 39 | Open work | owner, agents | 1 / 1 / 0 | high | keep: tasks match open backlog rows checked in this cycle (BG-50 advisories not rerun) |
+| `docs/waves/wave-3.md` | 1 | 41 | Open work | owner, agents | 1 / 1 / 0 | high | keep: tasks match open backlog rows checked in this cycle |
+| `docs/waves/wave-4.md` | 1 | 37 | Open work | owner, agents | 1 / 1 / 0 | high | keep: tasks match open backlog rows (BG-19 query counts not remeasured) |
+| `docs/waves/wave-5.md` | 1 | 37 | Open work | owner, agents | 1 / 1 / 0 | high | fix, applied (C2): W5.2 and W5.7 done |
+| `docs/waves/wave-6.md` | 1 | 34 | Open work | owner, agents | 1 / 1 / 0 | high | fix, applied (C2): dropped TD-10, linked this audit |
 
 ## C3 finished or running programmes
 
