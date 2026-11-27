@@ -64,6 +64,6 @@ the app layer, and `go_router` is never a core dependency.
 
 ## Related
 
-- `packages/core/CLAUDE.md` §2, §3, §5
+- [Core package guide](../../../packages/core/AGENTS.md)
 - `tool/check_taxonomy.dart` — `blocRoles`
 - `docs/core/session.md`
