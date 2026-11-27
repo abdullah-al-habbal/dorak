@@ -3,6 +3,7 @@ nodeid: docs.waves
 parentnode: docs.graph.part-3
 childnodes:
   - docs.waves.runbook
+  - docs.waves.wave-1-decisions
   - docs.waves.wave-0
   - docs.waves.wave-1
   - docs.waves.wave-2

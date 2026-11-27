@@ -23,9 +23,9 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | W1.1a | BG-51 | Let Reverb accept app connections (found in W1.1) | the refusal reproduced, then fixed, with a test | done |
 | W1.2 | BG-45 | Reproduce sign-out then sign-in without restart; fix the remembered channels in `branch_operations.bloc.dart` and `realtime.client.dart` (`disconnectForLogout`) | a failing test first, then passing; `melos verify` passes | done |
 | W1.3 | BG-48 | Dispatch `ChairStatusUpdated` once per real change (`ChairObserver`, `ToggleChairStatusAction`) | Pest: one event per change, none when unchanged | done |
-| W1.4 | BG-46 | Decide and build what happens to subscriptions already open after suspension or disable; first check what Reverb supports | a connected, suspended branch stops receiving, shown locally; ask the owner first if the options change behaviour or cost | todo |
-| W1.5 | BG-43, 44, 46, 47 | Local live checks, including a seated stylist and the owner channel (the dev gaps) | each check recorded with its result; device-only checks stay open | todo |
-| W1.6 | RR-20 | Write up Reverb hosting options and costs. Set nothing up on dev | the owner has options and a recommendation | todo |
+| W1.4 | BG-46 | Decide and build what happens to subscriptions already open after suspension or disable; first check what Reverb supports | a connected, suspended branch stops receiving, shown locally; ask the owner first if the options change behaviour or cost | blocked: [decision 1](wave-1-decisions.md) |
+| W1.5 | BG-43, 44, 46, 47 | Local live checks, including a seated stylist and the owner channel (the dev gaps) | each check recorded with its result; device-only checks stay open | done |
+| W1.6 | RR-20 | Write up Reverb hosting options and costs. Set nothing up on dev | the owner has options and a recommendation | done: [decision 2](wave-1-decisions.md) |
 | W1.7 | release | Wave close ([tracker](index.md#wave-close)) | released, documented, reported | todo |
 
 ## Notes
@@ -42,3 +42,5 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | 2026-11-27 | `bcc7a943b` | check scripts committed; with a seated stylist, the branch also joined the stylist's channel |
 | 2026-11-27 | BG-48 commit | W1.3: the new tests failed first (2 events; 1 when unchanged); Pest 3009 passed, Pint passed; local Reverb: 1 event per change, none when unchanged |
 | 2026-11-27 | BG-45 commit | W1.2: reproduced in the business app and also the stylist app (tests failed: no listener after sign-in; a load running at sign-out still joined). Fixed; `melos run verify` passed. BG-52 logged |
+| 2026-11-27 | `e90ecbc13` | W1.5, local server side: the seated stylist joined the branch and floor plan channels and the branch joined the stylist's; the owner joined their own channel and was refused the branch's (by design). On suspension the branch channel delivered `brand.suspended` to the branch and the seated stylist (BG-43), and an owner received it on their own channel when their brand was suspended (BG-44; seen in a run that suspended another seeded brand). A chair change after suspension still reached both open floor plan subscriptions (BG-46). Refusal of new joins was not re-run locally (dev check and Pest cover it); app screens were not run on a device |
+| 2026-11-27 | docs | W1.6 and the BG-46 options written; nothing set up |
