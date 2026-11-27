@@ -15,7 +15,7 @@ This guide records the architecture present in `frontend/web/dashboard/`, the on
 dashboard in the monorepo. The code and the decision records are the source of truth;
 this file routes contributors to them.
 
-Routes: [dashboard guide](../../frontend/web/dashboard/AGENTS.md) · [ADR 0003: foundation](../adr/0003-new-dashboard-foundation.md) · [feature modules plan](../feature-modules-plan.md) · [documentation graph](../index.md).
+Routes: [dashboard guide](../../frontend/web/dashboard/AGENTS.md) · [ADR 0003: foundation](../adr/0003-new-dashboard-foundation.md) · [documentation graph](../index.md).
 
 ## Application structure
 
@@ -43,6 +43,19 @@ session claim and `Accept-Language`, and returns the backend envelope unchanged.
 renames paths or reshapes data; Laravel stays the authority for authorization and branch
 scope. Read [ADR 0003](../adr/0003-new-dashboard-foundation.md) before changing this boundary.
 
+### Forwarding and errors
+
+- A path that matches no rule, or has a `.` or `..` segment, is 404; a listed path with the wrong method is 405 with
+  `Allow`. No valid session is 401, and a guard the rule doesn't list is 403.
+- Only the path, query string, body and the caller's address are passed on, with the token, session claim and locale
+  added by the server. Bodies are JSON up to 256 KiB, except on rules flagged `upload: true`. Calls time out after 15
+  seconds, and redirects aren't followed.
+- A successful reply keeps the backend's `message`, `data` and `meta`. A 422 becomes 400 `invalid_request`, with the
+  field errors when the backend sent them and its own message when it didn't. A 409 keeps the backend's message
+  (`services/api/proxy/forward.ts`, `services/api/auth/failure-map.util.ts`).
+- The forwarder doesn't refresh sessions. On a 401 the browser client refreshes once and retries
+  (`services/api/core/client.ts`).
+
 When the UI needs a contract the backend does not provide, the backend is changed (see the
 backend contract policy in the root [README](../../README.md)) rather than adding frontend
 workarounds.
@@ -52,4 +65,4 @@ workarounds.
 Follow the [dashboard guide](../../frontend/web/dashboard/AGENTS.md) and the
 [source layout rules](../../frontend/web/dashboard/src/README.md). Gates: `npm run lint`,
 `npm run typecheck`, `npm test`, `npm run build`. Open work is tracked in the
-[feature modules plan](../feature-modules-plan.md) and [open decisions](../backlog/index.md).
+[backlog](../backlog/index.md).

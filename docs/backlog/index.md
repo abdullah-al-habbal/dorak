@@ -10,7 +10,7 @@ codeanchors:
 
 # Backlog: remaining tasks, issues and decisions
 
-Routes: [documentation graph](../index.md) · [wave tracker](../waves/index.md) (order and status of the work) · [feature modules plan](../feature-modules-plan.md) · [backend feature index](../../backend/docs/feature-index.md).
+Routes: [documentation graph](../index.md) · [wave tracker](../waves/index.md) (order and status of the work) · [backend feature index](../../backend/docs/feature-index.md).
 
 The single place for what is still open: decisions, bugs, missing features, tech debt and test gaps.
 
@@ -69,6 +69,8 @@ Facebook sign-in are unsupported (G9).
 | BG-51 | Reverb refused every connection: `allowed_origins` held full URLs, but Reverb compares only the origin's host, and the apps send no origin. Reproduced on a local Reverb server (`4009 Origin not allowed`, with no origin and with `http://localhost:3000`). Fixed in code (`['*']`; private channels still need a token) and proved locally with delivery through a queue worker. Open: the security review of this setting (W1.8), then a check on a hosted Reverb (RR-20). | Backend | S |
 | BG-52 | `BranchOperationsBloc` and `StylistBloc` keep the previous account's profile and lists after sign-out, until the next load replaces them. From source only; whether another account can see them on screen was not tested. | Mobile | S |
 | BG-54 (unconfirmed) | The E2E database guard checks only the test process's `DB_DATABASE`. The backend server is a separate process: `playwright.config.ts` starts `php artisan serve` without `--no-reload` and reuses a server already on its port, and nothing checks which database that server uses. The [wave runbook](../waves/runbook.md#playwright-two-traps-on-the-owners-machine) says `serve` then drops `DB_*` when `.env` exists. That wasn't reproduced; the framework source suggests it depends on PHP's `variables_order`. If it happens, specs could write to the development database. | Dashboard, tests | S |
+| BG-55 (high; from source, not reproduced; owner decision needed) | There is no salon time zone. The backend runs in UTC (`modules/Core/Config/app.php`), and branch opening hours, date exceptions and barber schedules are `H:i` wall-clock values compared with UTC booking times (`Branch/Services/BranchHours.php`, `Booking/Queries/BarberScheduleAvailability.php`, `ListSlotsEloquentResolver`). No time zone conversion was found for the hours editors, and the apps show slot times in the phone's zone. So in Syria (UTC+3, the only launch market the docs name) a branch set to 09:00 to 18:00 would offer 12:00 to 21:00 local. Decide where the zone lives (one platform zone or one per branch) before changing code. | Backend, dashboard, mobile | L |
+| BG-56 (from source, not reproduced) | East of UTC the client app asks for the previous day's slots: `showDatePicker` returns local midnight, and the slot calls send `date.toUtc()` cut to the date (`packages/core/lib/src/network/repositories/branch.repository.dart`, `booking.repository.dart`). The fix depends on BG-55: send the picked calendar date, and decide which zone a date means. | Mobile | S |
 
 ## 3. Missing features
 
@@ -179,6 +181,7 @@ Product decisions D1 to D13 and audit decisions A to F and D-01 to D-07 are reso
 - **Brand owners on mobile (owner, 2026-11-18):** owners sign in and manage their brand and branches in `business_app`, through bearer-token `owner/*` routes that never grant the `dashboard` ability. Owner registration stays on the web.
 - **Feedback spam (2026-11-18):** rate limits, a honeypot field and a required guest email; no captcha until abuse is seen. Guests and signed-in users may both send feedback.
 - **iOS usage strings (owner, 2026-11-18):** the location strings stay in all three apps.
+- **Barber workspace (2026-11-07):** on the dashboard a barber gets earnings and a read-only schedule; booking actions and weekly hours stay in the stylist app.
 - **Standing rules:** pending-brand records are hidden from public reads; backend contract changes are backward compatible for mobile.
 - **Delivery (owner, 2026-11-26; replaces "never push"):** there are no real users or data. Work is done in waves, one item per commit; at the end of a wave: gates, push to `master`, CI, dev deploy, smoke test, docs. Batch 2 (BD-2) and billing stay out of scope.
 - **Dev database reset (owner, 2026-11-26):** allowed on dev only, and only when a wave edits an existing migration; say so each time.

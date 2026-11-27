@@ -16,7 +16,6 @@ The only dashboard in the monorepo. One workspace per role at
 in the root [AGENTS.md](../../../AGENTS.md) apply; this file adds the dashboard rules.
 
 Docs: [architecture](../../../docs/architecture/frontend-architecture.md) ·
-[feature modules plan](../../../docs/feature-modules-plan.md) ·
 [source layout](src/README.md) · [ADR 0003](../../../docs/adr/0003-new-dashboard-foundation.md) ·
 [design decisions](.interface-design/system.md).
 

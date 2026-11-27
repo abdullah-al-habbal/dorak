@@ -37,6 +37,22 @@ Architecture rules for the dashboard. All imports use the `@/` alias; never `./`
 | `components/` splits | Large screens group into subfolders (`auth/{screens,forms}`, `branches/oversight`, `account/notifications`, `admin-brands/detail`, `bookings/dialogs`, `layout/notifications`). |
 | `tests/` (project root) | Mirrors `src/`; import app code and helpers through `@/` and `@tests/`. |
 
+## State and data
+
+| State | Lives in |
+|---|---|
+| Anything fetched from the backend | TanStack Query, never copied into Zustand |
+| Filters, page, selected date and view | The URL, so a view can be shared and the back button works |
+| The signed-in profile (never a token) | The auth store, created per portal by `AuthStoreProvider` |
+| Theme and sidebar width | Cookies, so the first paint is right |
+| An open dialog | `OverlayProvider`: a feature opens it with `useOverlay()` |
+| Short-lived UI, such as a popover | Component state |
+
+- Cache Components is on: code that reads `cookies()`, `headers()` or `searchParams` renders under a Suspense boundary.
+- Money is integer minor units plus a currency code, formatted with `Intl.NumberFormat`. Totals in different currencies are never added together.
+- CSV is built in the browser through `toCsv` (`lib/core/format/csv.util.ts`), which stops a cell from running as a spreadsheet formula.
+- Each locale is typed against the English dictionary, so a missing key fails the type check.
+
 ## Routing
 
 Paths are guard-segmented: `host/dashboard/<guardName>/...`, which maps to

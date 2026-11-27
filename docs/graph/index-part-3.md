@@ -14,7 +14,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 ### `docs/`
 
 - [Index](../index.md)
-- [Dashboard: feature modules master plan](../feature-modules-plan.md)
 
 ### `docs/architecture/`
 

@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-528 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+527 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 347 files = 188 logical documents |
+| Outside `.claude/` | 346 files = 187 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -27,7 +27,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C0 pilot: push notifications | 2 | 2 |
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
-| C3 finished or running programmes | 12 | 0 |
+| C3 finished or running programmes | 11 | 0 |
 | C4 backend and shared reference | 32 | 2 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
@@ -135,6 +135,7 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `docs/readiness/t14-owner-mobile-backend-api.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
 | `docs/readiness/t15-owner-mobile-core-layer.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
 | `docs/readiness/t16-business-app-owner-experience.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/feature-modules-plan.md` | extract then delete, applied: all twelve modules are built; proxy and error rules moved to the frontend architecture guide, state and data rules to the dashboard source layout, one decision to the backlog. Not moved because the code disagrees or has moved on: branch time zone (F19), sheets for long forms, the chair floor-plan and brand approve-only limits | C3 feature modules plan |
 
 ## Findings so far
 
@@ -160,6 +161,7 @@ These are examples from spot checks, not the result of a full review.
 | F16 | The runbook's second Playwright trap isn't reproduced. The E2E guard checks only the test process, not the server's database. Logged as BG-54, unconfirmed. | `e2e-database-guard.ts`, `playwright.config.ts`, framework `ServeCommand.php` |
 | F17 | `02-prd` section 8, "locked implementation decisions", item 5 says not to build real-time socket occupancy tracking. The code broadcasts chair status over Reverb, and the owner later approved the realtime wave. The product document wasn't rewritten; review in C6. **Owner, not blocking:** mark that decision superseded? | `backend/docs/02-prd-part-3.md`, `ChairStatusUpdated`, wave 1 |
 | F18 | The deleted "MVP Alignment Policies" page was presented as permanent but was wrong: it allowed no `confirmed` to `no_show` transition (the enum already did), and its floor-plan parameters, FCM key name and repository layout were out of date. Only the in-person payment rule was unique; it is now a decision in force. | `BookingStatus.php`, floor plan request, `CreateBookingRequest.php` |
+| F19 | **High, owner decision:** opening hours and barber schedules are compared in UTC with no salon time zone (BG-55), and the client app sends the previous day for slots east of UTC (BG-56). The module plan said the branch time zone is used for display and slot math; no such zone exists. From source only | `BranchHours.php`, `BarberScheduleAvailability.php`, `branch.repository.dart`, `booking.repository.dart` |
 
 ## Push record
 
@@ -243,7 +245,6 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `docs/booking-concurrency/09-write-path-audit.md` | 1 | 52 | Temporary | history; agents if linked | 6 / 1 / 0 | medium | unreviewed |
 | `docs/booking-concurrency/10-fix-order.md` | 1 | 64 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | unreviewed |
 | `docs/booking-concurrency/index.md` | 1 | 90 | Temporary | history; agents if linked | 12 / 1 / 0 | medium | unreviewed |
-| `docs/feature-modules-plan.md` | 1 | 460 | Temporary | history; agents if linked | 4 / 1 / 0 | medium | unreviewed |
 
 ## C4 backend and shared reference
 
