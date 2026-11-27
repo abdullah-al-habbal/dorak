@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-637 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+630 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 456 files = 265 logical documents |
+| Outside `.claude/` | 449 files = 264 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -25,10 +25,10 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | Cluster | Logical documents | Reviewed |
 |---|---|---|
 | C0 pilot: push notifications | 2 | 2 |
-| C1 agent guides and routers | 63 | 3 |
+| C1 agent guides and routers | 62 | 5 |
 | C2 open work | 13 | 2 |
 | C3 finished or running programmes | 52 | 1 |
-| C4 backend and shared reference | 32 | 1 |
+| C4 backend and shared reference | 32 | 2 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
 
@@ -52,6 +52,7 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | Document | Verdict | Cycle |
 |---|---|---|
 | `docs/sessions/handover-push-phase-2.md` | delete, applied | push pilot |
+| `backend/process/process.md` | delete, applied: unused proposal naming a skills folder that doesn't exist | C1 backend |
 
 ## Findings so far
 
@@ -68,6 +69,8 @@ These are examples from spot checks, not the result of a full review.
 | F7 | Push rules conflicted. Decided (DA-1). | root `AGENTS.md` and `CLAUDE.md`; `docs/backlog/index.md:183`; `docs/waves/index.md:64` |
 | F8 | The session board's registry looks out of date: it lists unowned working-tree edits, but the tree was clean when this audit began. Of the sessions on this machine, only one other is live and it isn't in the registry. Cloud sessions and other computers couldn't be listed. | `docs/sessions/index.md`, `git status`, session list |
 | F9 | `docs/index.md` says every maintained document is listed, apart from stated exclusions. Some outside those exclusions have no router link, for example `backend/docs/17-sms-delivery.md` and `backend/docs/api-response-standard.md`. They may be reachable through a sub-index. | router count of 0 in the tables |
+| F10 | The backend guides said a Husky pre-push hook runs the backend gates and that CI only checks formatting. Git uses the root `.husky/`, which has no `pre-push`; `backend/.husky/pre-push` never runs. CI runs the guard, Pint, tests and concurrency tests. Guides corrected. **Owner: restore a local gate, or leave CI as the gate?** | `git config core.hooksPath`, `.husky/_/h`, `backend-ci.yml` |
+| F11 | Rule "config `env()` calls take no default" isn't followed in `broadcasting.php`, `dashboard.php`, `sanctum.php` and the published `backend/config/` files. Rule kept. **Owner: scope the rule to module config, or fix the code?** | `grep` of `env('X', …)`, 2026-11-27 |
 
 ## Routing
 
@@ -87,11 +90,10 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `AGENTS.md` | 1 | 130 | Rules | agents, engineers | 4 / 1 / 4 | high | fix, applied |
 | `CLAUDE.md` | 1 | 11 | Rules | agents, engineers | 1 / 1 / 5 | high | merge into AGENTS.md, applied (now an import) |
 | `README.md` (also in C0) | 1 | 146 | Router | agents, engineers | 9 / 1 / 3 | high | merge parts, fix, applied |
-| `backend/AGENTS.md` | 2 | 109 | Rules | agents, engineers | 5 / 2 / 10 | high | unreviewed |
-| `backend/CLAUDE.md` | 1 | 66 | Rules | agents, engineers | 3 / 1 / 1 | high | unreviewed |
-| `backend/process/process.md` | 4 | 221 | Rules | agents, engineers | 0 / 1 / 0 | high | unreviewed |
+| `backend/AGENTS.md` | 1 | 128 | Rules | agents, engineers | 5 / 2 / 10 | high | fix + merge CLAUDE and part 2, applied |
+| `backend/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 3 / 1 / 1 | high | merge into AGENTS.md, applied (now an import) |
 | `docs/graph/repo-index.md` | 1 | 29 | Router | agents, engineers | 0 / 1 / 0 | high | unreviewed |
-| `docs/index.md` | 6 | 491 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
+| `docs/index.md` | 6 | 487 | Router | agents, engineers | 34 / 1 / 0 | high | unreviewed |
 | `frontend/mobile/AGENTS.md` | 2 | 94 | Rules | agents, engineers | 24 / 2 / 1 | high | unreviewed |
 | `frontend/mobile/CLAUDE.md` | 2 | 106 | Rules | agents, engineers | 15 / 1 / 1 | high | unreviewed |
 | `frontend/mobile/apps/business_app/AGENTS.md` | 2 | 138 | Rules | agents, engineers | 5 / 1 / 0 | high | unreviewed |
@@ -227,7 +229,7 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 
 | Logical document | Files | Lines | Class | Readers | Doc / router / other refs | Risk | Verdict |
 |---|---|---|---|---|---|---|---|
-| `backend/README.md` | 3 | 172 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
+| `backend/README.md` | 1 | 19 | Reference | engineers, agents | 1 / 1 / 0 | medium | fix + merge parts, applied |
 | `backend/docs/04-house-rules.md` | 3 | 184 | Decisions | owner, engineers | 1 / 1 / 1 | medium | unreviewed |
 | `backend/docs/05-domain-glossary.md` | 2 | 98 | Reference | engineers, agents | 1 / 1 / 0 | medium | unreviewed |
 | `backend/docs/06-entity-model-abstract.md` | 13 | 661 | Reference | engineers, agents | 1 / 1 / 0 | high | fix (F3) |

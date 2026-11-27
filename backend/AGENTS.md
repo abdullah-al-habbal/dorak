@@ -4,15 +4,18 @@ parentnode: repo.root
 childnodes:
   - backend.claude
   - backend.docs
-  - backend.process
   - backend.readme
   - backend.website
   - skills.backend
-  - backend.guide.part-2
 codeanchors:
   - backend/modules/
   - backend/bootstrap/
 ---
+
+# Dorak Backend Guide
+
+The one backend guide; [CLAUDE.md](CLAUDE.md) imports it. To see what exists, read the code and
+[the feature index](docs/feature-index.md). `docs/02-prd.md` states intent, not current behaviour.
 
 ## Quick start
 
@@ -24,12 +27,13 @@ composer dev            # server, queue, logs, vite concurrently
 composer test           # recreates dorak_test clean, then pest sequentially (never --parallel; dorak_test is the only test database)
 ```
 
-- Husky pre-push hook runs `pint --test` + `composer test` before every push; CI only checks formatting (`pint --test`). Tests are gated locally, not in CI.
+- Gates before calling work done: `vendor/bin/pint --test` and `composer test` (Pest, MySQL `dorak_test`; start it with `composer test:db:up`). Migration changes also need `php scripts/check_migrations.php`.
+- CI (`.github/workflows/backend-ci.yml`) runs the migration guard, Pint, the test suite and the concurrency tests. Git uses the root `.husky/` folder, which has no pre-push hook, so nothing runs the backend gates for you before a push.
 
 ## Architecture
 
 - **Core module** `Modules\Core` — foundation config, migrations, shared infrastructure. Feature modules (e.g. `Modules\Client`) add their own providers via `bootstrap/providers.php`.
-- No `app/`, `config/`, `routes/` directories
+- No `app/` or `routes/` directory. Application config is in `modules/*/Config/`; the root `config/` holds only published package config.
 - `bootstrap/app.php` registers `AssignRequestUuidMiddleware` globally; API routes return JSON
 - `Modules\Core\Providers\ApplicationServiceProvider::loadAppConfig()` manually `require`s every file in `modules/Core/Config/*.php` and sets config key = filename — Laravel does NOT auto-load these. It **skips when config is cached** (keys already baked into `config.php`; re-requiring would call `env()` which returns null after caching) and **preserves `app.providers`** (injected from `bootstrap/providers.php` — clobbering it breaks provider registration after `config:cache`).
 - Translations loaded from `modules/Core/lang/` under `core::` namespace
@@ -39,8 +43,8 @@ composer test           # recreates dorak_test clean, then pest sequentially (ne
 
 ## Config & .env
 
-- All `env()` calls in config files have **no defaults** (2nd arg removed). Every key equals a `.env` / `.env.example` entry.
-- `.env` is gitignored. `.env.example` is the reference with all ~100 keys.
+- Rule: `env()` calls in config files take **no default** (2nd argument), and every key has a `.env.example` entry.
+- `.env` is gitignored. `.env.example` is the reference.
 - `AUTH_MODEL` is hardcoded as `ClientModel::class` in auth.php — not env-driven (no backslash in .env).
 - `MAIL_SENDMAIL_PATH` must be quoted in .env: `"/usr/sbin/sendmail -bs -i"` (space in value).
 
@@ -76,10 +80,49 @@ Beyond the booking locks above, the same rules apply to every other write that t
 - Every dashboard write route (`POST`, `PUT`, `PATCH`, `DELETE` under `api/v1/dashboard/`) must carry `ApplyPreferredLocaleMiddleware`, placed after the session check; `tests/Feature/Core/StoredLocaleWriteRoutesTest.php` enforces it. Mobile guards pass the guard name (`ApplyPreferredLocaleMiddleware::class.':barber'`).
 - Every request field needs an Arabic name in `lang/ar/validation.php` (`ValidationAttributeNamesTest`); `tests/Fixtures/wire-enums.json` is kept equal to the backend enums by `WireEnumFixtureTest` and read by the dashboard and mobile tests.
 
-## Current state (dated)
+## More rules
 
-Snapshot of 2026-11-23 21:16 UTC: `master` and `origin/master` are both at `966e094a7`, released to dev with `reset_database=false` (deploy run `45267891146`, `verify-deploy.sh` 9 of 9 passed); the full Pest suite (2954 tests), Pint and the migration guard passed before the release. Live dev URLs, the release path and the open backlog items are in [dev environment status](../docs/deployment/dev-environment-status.md) and [backlog](../docs/backlog/index.md). The test database is the MySQL 8.4 container on `127.0.0.1:3307`: run `composer test:db:up` before any Pest run (a down server fails every test with "not reachable"), and never pass `--parallel`.
+- Use PHP class attributes; models end in `Model`, actions in `Action`. Controllers are banned: use invokable Actions. Bilingual fields use Spatie Translatable. Classes are `final`.
+- `BaseModuleServiceProvider` is the base of module providers and auto-mounts `Routes/Api/V1/*.php` at `/api/v1`. A module may split route files by area (for example `dashboard-admin.php`) to stay under 300 lines.
+- Api response shape via `ApiResponseBodyValueObject` + `ApiResponseTrait` (paginated/ok/error). **Don't call `response()->json(`** outside Core's response trait and exception handler (guarded by `ApiResponseArchitectureTest`): domain errors extend `ConflictApiException` (409) or `ForbiddenApiException` (403); middleware and static helpers `use ApiResponseTrait`. See `docs/api-response-standard.md`.
+- **Authorization is not ownership scoping.** A `where('*_id', $actor->id)` query filter is
+  not an authorization check. Any Action that reads or mutates a resource another actor could
+  own MUST authorize via a `*Policy` class + `$this->authorize()` / `Gate::allows()` / `->can()`.
+  See `.claude/skills/laravel-native-abstractions/SKILL.md` (`references/requests-validation-authorization.md`)
+  before adding or touching one of these paths — policies live under `modules/*/Policies/`; some older paths still rely on scoped queries only, so
+  do not copy that pattern into new code.
+  Dashboard actions authorize through `Gate::forUser($actor)->authorize('dashboard.<resource>.<ability>', ...)`;
+  the abilities are defined in `DashboardServiceProvider` and implemented in `modules/Dashboard/Policies/`.
+- All validation lives in a `FormRequest` (`Http/Requests/`), never inline `$request->validate()`
+  in an Action/Handler — see `.claude/skills/10StrictBackendArchitecture/SKILL.md`.
+- Mass assignment is blocked by `#[Fillable([...])]` on every model — never widen it to `*`.
+- Eager-load exactly what a Handler/Resource will access; check query counts for N+1 (Eloquent
+  strict mode is off in this repo, so nothing fails loudly on its own) — see
+  `laravel-native-abstractions` → `references/eloquent-relationships.md`.
+- Keep Actions/Handlers/Resolvers single-purpose: one method, roughly ≤40 lines, one class
+  ≤300 lines. A Handler needing 4+ loose parameters takes a CQRS Command/Query object instead
+  (already the convention — see `cqrs-pattern`).
+- No magic strings/numbers for statuses, codes, or thresholds — use a Backed Enum
+  (`12StrictEnums`) or a named class constant.
+- Class constants live in `Modules\<Module>\Constants\<Domain>Constants` (shared values in
+  `Modules\Core\Constants`), never inside the consuming class. Name them `UPPER_SNAKE` with the
+  domain as prefix (`BRANCH_FLOOR_PLAN_MAX_CANVAS_SIZE`). Migration-local constants are the only exception.
+- SMS goes through the `SmsSender` strategy resolved by `SmsSenderFactory` — never call a
+  gateway or `Http` from a feature module. New gateways follow `docs/17-sms-delivery.md`;
+  failures throw `SmsDeliveryException` (no phone/code/secrets in the message, no retries).
+- Pest needs the test database up (`composer test:db:up`, `127.0.0.1:3307`) and runs sequentially, never `--parallel`.
 
-## Continued in
+## Feature index
+After adding a feature, append entry to `docs/feature-index.md`.
 
-- [Part 2: Remaining Gaps (from docs/02-prd.md §5 + §8)](agents-part-2.md)
+## Skills
+Key skills under `.claude/skills/`:
+| Skill | Trigger |
+|---|---|
+| **Laravel 13 Attributes** (`laravel-attributes`) | **Any new PHP code.** Mandatory read before writing models, jobs, commands, requests, resources, factories, tests, DI. Full attribute reference (36 new + pre-existing). |
+| **Strict Backend Architecture** (`10StrictBackendArchitecture`) | Writing Actions, Resources, Requests, or Handlers. Enforces FormRequests, Command objects, strict imports, Resource composition. |
+
+## Protocol
+1. Read `docs/feature-index.md` and the code; read `docs/02-prd.md` for intent
+2. Read relevant `.claude/skills/*/SKILL.md`
+3. Implement → `vendor/bin/pint --test` + `composer test` (Pest, MySQL `dorak_test`)
