@@ -1,50 +1,36 @@
 ---
 nodeid: mobile.packages.localization
 parentnode: mobile.guide
-childnodes:
-  - mobile.packages.localization.changelog
-  - mobile.packages.localization.claude
-  - mobile.packages.localization.readme
-  - mobile.packages.localization.references.keys
-  - mobile.packages.localization.part-2
+childnodes: []
 codeanchors:
   - frontend/mobile/packages/localization/lib/
 ---
 
-# AGENTS.md — `packages/localization`
+# `packages/localization`
 
-Every user-visible string, EN + AR, via generated `AppLocalizations`.
+Every user-visible string, English and Arabic, as the generated `AppLocalizations`. Adds to the
+[mobile guide](../../AGENTS.md).
 
-Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md)
+## Dependencies
 
----
+`flutter`, `flutter_localizations` and `intl` only. Never `core`, `design_system` or app code. All three apps
+share one pair of ARB files; splitting them needs a deliberate decision, not ad hoc prefixes.
 
-## 1. Layout
+## Rules
 
-```
-l10n/app_en.arb                       template — source of truth
-l10n/app_ar.arb                       Arabic, identical key set
-l10n.yaml                             gen-l10n config
-lib/localization.dart                 barrel — exports app_localizations.dart only
-lib/src/generated/                    committed, never hand-edited
-  app_localizations.dart              abstract AppLocalizations
-  app_localizations_en.dart
-  app_localizations_ar.dart
-```
+- `l10n/app_en.arb` is the template. Every key exists in both ARB files.
+- Arabic is a real translation, never transliterated or left in English. Arabic calls the stylist "المصفف"
+  (a test enforces it).
+- Never edit `lib/src/generated/` by hand. Change the ARB, run `dart run melos run generate` and commit the
+  output.
+- Keys are camelCase with a feature prefix. Search the ARB before adding one; generic keys such as `cancel`,
+  `next` and `errorGeneric` are meant to be shared.
+- Give each key an `@key` description. A `{placeholder}` needs a typed `placeholders` entry.
+- Demo and illustrative text is localized too.
+- A third locale needs a new ARB file and an entry in `preferred-supported-locales` (`l10n.yaml`).
 
-`l10n.yaml`:
+## Checks
 
-```yaml
-arb-dir: l10n
-template-arb-file: app_en.arb
-output-localization-file: app_localizations.dart
-output-dir: lib/src/generated
-output-class: AppLocalizations
-preferred-supported-locales: [en, ar]
-```
-
-Deps: `flutter`, `flutter_localizations`, `intl ^0.20.0`. `flutter: generate: true`.
-
-## Continued in
-
-- [Part 2: 2. Consuming it](agents-part-2.md)
+`test/localization_test.dart` checks equal key sets, no empty messages, placeholder agreement, duplicate keys
+and the stylist term. `packages/core/test/wire_enum_fixture_test.dart` checks wire enums against the backend
+fixture.

@@ -1,63 +1,41 @@
 ---
 nodeid: mobile.packages.design-system
 parentnode: mobile.guide
-childnodes:
-  - mobile.packages.design-system.changelog
-  - mobile.packages.design-system.claude
-  - mobile.packages.design-system.readme
-  - mobile.packages.design-system.references.gotchas-and-missing
-  - mobile.packages.design-system.references.tokens
-  - mobile.packages.design-system.references.widgets
-  - mobile.packages.design-system.part-2
+childnodes: []
 codeanchors:
   - frontend/mobile/packages/design_system/lib/
 ---
 
-# AGENTS.md — `packages/design_system`
+# `packages/design_system`
 
-Tokens, theme, fonts, and cross-app widgets. No strings, no logic, no `core`.
+Tokens, theme, bundled fonts and cross-app widgets. Adds to the [mobile guide](../../AGENTS.md).
 
-Parent: [`../../AGENTS.md`](../../AGENTS.md) · Rules: [`CLAUDE.md`](./CLAUDE.md)
+## Dependencies
 
----
+Flutter and third-party packages only. **Never `localization`, `core` or app code.** `go_router` is here only for
+`BottomSheetModal`'s `context.pop()`
+([ADR 0002](../../docs/architecture/decisions/0002-design-system-go-router.md)), so a consumer needs a `GoRouter`
+ancestor or must pass `onDismiss`. Any further application dependency needs a new ADR.
 
-## 1. Layout
+## Rules
 
-```
-lib/design_system.dart              root barrel — tokens + theme + 14 widgets
-lib/src/tokens/
-  colors.token.dart                 DorakColors
-  typography.token.dart             DorakTypography
-  dimensions.token.dart             DorakDimensions
-  tokens.barrel.dart
-lib/src/theme/
-  dorak_theme.theme.dart            DorakTheme
-lib/src/widgets/                    14 widgets, one class each
-fonts/                              IBM Plex Sans + Arabic, 4 weights each
-```
+- No business logic: widgets take data and callbacks. No network, persistence or app navigation.
+- No strings. Every label is a constructor parameter.
+- Hex literals only in `src/tokens/`. Widgets read `DorakColors.of(context)`, `DorakTypography` and
+  `DorakDimensions`, not `Theme.of`. This is the only package that defines raw colour, type and size values.
+- One widget per `<subject>.widget.dart`, exported from `lib/design_system.dart`. Other roles allowed here are
+  `token`, `theme` and `barrel`.
+- Right-to-left safe: directional alignment and padding, no hardcoded left or right.
+- No unbounded text in a `Row`; use `Flexible` or `Wrap`. Arabic and large text are wider.
+- Add a widget only when more than one app uses it, when Track 15 specifies it, or when it is a shared loading,
+  empty, error, offline, retry or session state. Feature widgets stay in their app.
+- The IBM Plex fonts are declared here; apps don't redeclare them.
 
-Declared-but-empty directories: `lib/src/tokens/{colors,elevation,radii,spacing,typography}/`
-and `lib/src/components/{avatars,bottom_sheets,buttons,cards,inputs}/`. The real
-widgets live in `lib/src/widgets/` — **do not** start using `components/`
-without deciding the convention first.
+## Behaviour to know
 
-
-## 3. Theme
-
-```dart
-DorakTheme.light
-DorakTheme.dark
-DorakTheme.forLocale(locale, brightness)   // swaps to the Arabic family for 'ar'
-```
-
-`_build` maps the full `ColorScheme`, all 10 text styles into `textTheme`, and
-forces `radiusFull` on `elevatedButtonTheme`.
-
-**Not configured:** `inputDecorationTheme`, `outlinedButtonTheme`,
-`textButtonTheme`, `bottomSheetTheme`, `appBarTheme`, `dialogTheme`,
-`snackBarTheme`. Components that need those styles build their own decoration —
-`AuthTextField` in `client_app` is the current example.
-
-## Continued in
-
-- [Part 2: More](agents-part-2.md)
+- `DorakTheme` doesn't configure every component theme. For example it sets no input decoration theme.
+- `BottomSheetModal` is only the sheet body; the caller shows the sheet.
+- `OnboardingHeader` has no back button and isn't a general app bar. Keep its brand flexible with an ellipsis.
+- `HeroImage` takes an `ImageProvider`; choosing asset or network is the caller's job.
+- Don't pass an SVG to `Image.asset`.
+- There is no example app; check rendering in `client_app`. Widget tests are in `test/`.

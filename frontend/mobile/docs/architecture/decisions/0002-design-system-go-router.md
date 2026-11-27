@@ -51,5 +51,5 @@ to take on application dependencies.
 ## Related
 
 - [Mobile guide, Layers](../../../AGENTS.md#layers)
-- `packages/design_system/CLAUDE.md`
+- [Design system guide](../../../packages/design_system/AGENTS.md)
 - Only consumer today: `apps/client_app/.../widgets/skip_bottom_sheet.sheet.dart`

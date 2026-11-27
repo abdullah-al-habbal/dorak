@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-607 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+598 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 426 files = 246 logical documents |
+| Outside `.claude/` | 417 files = 242 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -25,7 +25,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | Cluster | Logical documents | Reviewed |
 |---|---|---|
 | C0 pilot: push notifications | 2 | 2 |
-| C1 agent guides and routers | 44 | 9 |
+| C1 agent guides and routers | 40 | 15 |
 | C2 open work | 13 | 2 |
 | C3 finished or running programmes | 52 | 1 |
 | C4 backend and shared reference | 32 | 2 |
@@ -71,6 +71,10 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `frontend/mobile/references/root/backend-contract.md` | delete, applied: several listed backend defects are fixed; the client rules moved to the guide | C1 mobile root |
 | `frontend/mobile/references/root/feature-inventory.md` | delete, applied: stale; the feature index owns this | C1 mobile root |
 | `frontend/mobile/references/root/known-limitations.md` | extract then delete, applied: backlog TD-23 | C1 mobile root |
+| `frontend/mobile/packages/design_system/references/gotchas-and-missing.md` | delete, applied: code lists this and the counts or claims were stale; gotchas moved to the package guide | C1 packages |
+| `frontend/mobile/packages/design_system/references/tokens.md` | delete, applied: code lists this and the counts or claims were stale; gotchas moved to the package guide | C1 packages |
+| `frontend/mobile/packages/design_system/references/widgets.md` | delete, applied: code lists this and the counts or claims were stale; gotchas moved to the package guide | C1 packages |
+| `frontend/mobile/packages/localization/references/keys.md` | delete, applied: code lists this and the counts or claims were stale; gotchas moved to the package guide | C1 packages |
 
 ## Findings so far
 
@@ -137,16 +141,12 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `frontend/mobile/packages/core/references/storage.md` | 1 | 47 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
 | `frontend/mobile/packages/core/references/tests.md` | 1 | 37 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
 | `frontend/mobile/packages/core/references/verification.md` | 1 | 22 | Rules | agents, engineers | 0 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/packages/design_system/AGENTS.md` | 2 | 100 | Rules | agents, engineers | 7 / 1 / 1 | high | unreviewed |
-| `frontend/mobile/packages/design_system/CLAUDE.md` | 2 | 106 | Rules | agents, engineers | 4 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/packages/design_system/references/gotchas-and-missing.md` | 1 | 38 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/packages/design_system/references/tokens.md` | 1 | 49 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/packages/design_system/references/widgets.md` | 1 | 58 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/packages/feature_error_feedback/AGENTS.md` | 1 | 34 | Rules | agents, engineers | 4 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/packages/feature_error_feedback/CLAUDE.md` | 1 | 29 | Rules | agents, engineers | 3 / 0 / 0 | high | unreviewed |
-| `frontend/mobile/packages/localization/AGENTS.md` | 2 | 120 | Rules | agents, engineers | 5 / 1 / 1 | high | unreviewed |
-| `frontend/mobile/packages/localization/CLAUDE.md` | 1 | 70 | Rules | agents, engineers | 4 / 1 / 0 | high | unreviewed |
-| `frontend/mobile/packages/localization/references/keys.md` | 3 | 147 | Rules | agents, engineers | 1 / 0 / 0 | high | unreviewed |
+| `frontend/mobile/packages/design_system/AGENTS.md` | 1 | 41 | Rules | agents, engineers | 7 / 1 / 1 | high | fix, applied (C1 packages) |
+| `frontend/mobile/packages/design_system/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 4 / 1 / 0 | high | merge into `AGENTS.md`, applied (import only) |
+| `frontend/mobile/packages/feature_error_feedback/AGENTS.md` | 1 | 31 | Rules | agents, engineers | 4 / 0 / 0 | high | fix, applied (C1 packages) |
+| `frontend/mobile/packages/feature_error_feedback/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 3 / 0 / 0 | high | merge into `AGENTS.md`, applied (import only) |
+| `frontend/mobile/packages/localization/AGENTS.md` | 1 | 36 | Rules | agents, engineers | 5 / 1 / 1 | high | fix, applied (C1 packages) |
+| `frontend/mobile/packages/localization/CLAUDE.md` | 1 | 9 | Rules | agents, engineers | 4 / 1 / 0 | high | merge into `AGENTS.md`, applied (import only) |
 | `frontend/mobile/references/root/core-architecture.md` | 1 | 138 | Rules | agents, engineers | 1 / 0 / 0 | high | fix, applied; envelope, exception table and bloc event names not rechecked |
 | `frontend/mobile/references/root/decisions.md` | 1 | 48 | Rules | agents, engineers | 1 / 0 / 0 | high | fix, applied: disproved rows removed; most remaining rows not rechecked |
 | `frontend/web/dashboard/AGENTS.md` | 1 | 118 | Rules | agents, engineers | 4 / 2 / 1 | high | unreviewed |
