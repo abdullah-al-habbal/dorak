@@ -5,7 +5,6 @@ childnodes:
   - docs.architecture
   - docs.decisions
   - docs.backlog
-  - docs.readiness
   - docs.graph.part-2
   - docs.graph.part-3
   - docs.graph.part-4
@@ -29,7 +28,6 @@ codeanchors:
 - [Backend](../backend/README.md) — Laravel service and product docs.
 - [Dashboard](../frontend/web/dashboard/AGENTS.md) — Next.js application (the only dashboard).
 - [Mobile](../frontend/mobile/AGENTS.md) — Flutter workspace.
-- [Launch readiness](readiness/index.md) — the T1 to T16 program: status, decisions and implementation notes.
 - [Product research](product-research/index.md) — studies of Dorak itself (independent of competitor analysis).
 - [Competitor analysis](competitor-analysis/index.md) — outside-in studies of competing products.
 - [Booking concurrency](booking-concurrency/index.md) — locks, idempotency, uniqueness and retries for booking and every other backend write path.

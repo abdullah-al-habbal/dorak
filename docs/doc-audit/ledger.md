@@ -12,12 +12,12 @@ Rules and verdict meanings: [policy](policy.md). Snapshot: commit `873d3edb9`, 2
 
 ## Coverage
 
-545 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
+528 tracked Markdown files, not counting the audit folder. Each appears once: as part of a logical document
 below, or in a deferred `.claude/` row.
 
 | Group | Files |
 |---|---|
-| Outside `.claude/` | 364 files = 205 logical documents |
+| Outside `.claude/` | 347 files = 188 logical documents |
 | `.claude/`, deferred | 181 files |
 
 This corrects the earlier plan's "285 logical documents", which grouped parts by filename only.
@@ -27,7 +27,7 @@ This corrects the earlier plan's "285 logical documents", which grouped parts by
 | C0 pilot: push notifications | 2 | 2 |
 | C1 agent guides and routers | 27 | 25 |
 | C2 open work | 12 | 12 |
-| C3 finished or running programmes | 29 | 0 |
+| C3 finished or running programmes | 12 | 0 |
 | C4 backend and shared reference | 32 | 2 |
 | C5 mobile and dashboard | 62 | 0 |
 | C6 product intent and research | 41 | 0 |
@@ -118,6 +118,23 @@ The pilot also reads the push parts of `README.md`, the push handover and the ba
 | `docs/planning/remediation-plan-part-2.md` | extract then delete, applied: the in-person payment rule moved to the backlog; the rest is stale or in code (F18) | C3 planning |
 | `docs/planning/remediation-plan.md` | extract then delete, applied: the in-person payment rule moved to the backlog; the rest is stale or in code (F18) | C3 planning |
 | `docs/planning/dashboard-refactor-batch-3.md` | delete, applied: every step is done; the primitives are listed in the task executor's shared-primitives reference | C3 planning |
+| `docs/readiness/index.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t01-mobile-release-config.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t02-backend-legal-pages.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t03-dashboard-legal-content.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t04-backend-feedback.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t05-dashboard-support-inbox.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t06-barber-account-deletion.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t07-branch-account-deletion.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t08-mobile-shared-layer.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t09-mobile-app-integration.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t10-public-barber-resource.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t11-privacy-checks.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t12-dashboard-web-hygiene.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t13-docs-and-gates.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t14-owner-mobile-backend-api.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t15-owner-mobile-core-layer.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
+| `docs/readiness/t16-business-app-owner-experience.md` | extract then delete, applied: T1 to T12 and T14 to T16 are done or skipped; open items and owner decisions moved to the backlog (BG-4, BG-15, RR-5, RR-7, RR-21) | C3 readiness |
 
 ## Findings so far
 
@@ -227,23 +244,6 @@ The audit folder is temporary and isn't listed in `docs/index.md`. It is claimed
 | `docs/booking-concurrency/10-fix-order.md` | 1 | 64 | Temporary | history; agents if linked | 7 / 1 / 0 | medium | unreviewed |
 | `docs/booking-concurrency/index.md` | 1 | 90 | Temporary | history; agents if linked | 12 / 1 / 0 | medium | unreviewed |
 | `docs/feature-modules-plan.md` | 1 | 460 | Temporary | history; agents if linked | 4 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/index.md` | 1 | 90 | Temporary | history; agents if linked | 0 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t01-mobile-release-config.md` | 1 | 37 | Temporary | history; agents if linked | 1 / 1 / 1 | medium | unreviewed |
-| `docs/readiness/t02-backend-legal-pages.md` | 1 | 30 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t03-dashboard-legal-content.md` | 1 | 27 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t04-backend-feedback.md` | 1 | 31 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t05-dashboard-support-inbox.md` | 1 | 25 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t06-barber-account-deletion.md` | 1 | 27 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t07-branch-account-deletion.md` | 1 | 17 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t08-mobile-shared-layer.md` | 1 | 26 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t09-mobile-app-integration.md` | 1 | 26 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t10-public-barber-resource.md` | 1 | 28 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t11-privacy-checks.md` | 1 | 27 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t12-dashboard-web-hygiene.md` | 1 | 24 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t13-docs-and-gates.md` | 1 | 20 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t14-owner-mobile-backend-api.md` | 1 | 34 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t15-owner-mobile-core-layer.md` | 1 | 25 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
-| `docs/readiness/t16-business-app-owner-experience.md` | 1 | 30 | Temporary | history; agents if linked | 1 / 1 / 0 | medium | unreviewed |
 
 ## C4 backend and shared reference
 

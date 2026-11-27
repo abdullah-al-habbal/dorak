@@ -99,26 +99,6 @@ Part 3 of 6 · [Documentation Graph](../index.md) · [Previous](index-part-2.md)
 
 - [Backlog: remaining tasks, issues and decisions](../backlog/index.md)
 
-### `docs/readiness/`
-
-- [Release readiness plan](../readiness/index.md)
-- [T1: Mobile release configuration](../readiness/t01-mobile-release-config.md)
-- [T2: Backend legal pages and public SEO](../readiness/t02-backend-legal-pages.md)
-- [T3: Dashboard legal content management](../readiness/t03-dashboard-legal-content.md)
-- [T4: Backend feedback system](../readiness/t04-backend-feedback.md)
-- [T5: Dashboard support inbox](../readiness/t05-dashboard-support-inbox.md)
-- [T6: Barber account deletion](../readiness/t06-barber-account-deletion.md)
-- [T7: Branch account deletion (conditional)](../readiness/t07-branch-account-deletion.md)
-- [T8: Shared mobile layer](../readiness/t08-mobile-shared-layer.md)
-- [T9: App integration](../readiness/t09-mobile-app-integration.md)
-- [T10: Public barber resource](../readiness/t10-public-barber-resource.md)
-- [T11: Privacy and security checks](../readiness/t11-privacy-checks.md)
-- [T12: Dashboard web hygiene](../readiness/t12-dashboard-web-hygiene.md)
-- [T13: Docs and full gates](../readiness/t13-docs-and-gates.md)
-- [T14: Brand owner mobile API](../readiness/t14-owner-mobile-backend-api.md)
-- [T15: Brand owner core layer](../readiness/t15-owner-mobile-core-layer.md)
-- [T16: business_app brand owner experience](../readiness/t16-business-app-owner-experience.md)
-
 ### `frontend/web/dashboard/`
 
 - [Agents](../../frontend/web/dashboard/AGENTS.md)

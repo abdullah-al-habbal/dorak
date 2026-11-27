@@ -134,6 +134,6 @@ Status values: `todo`, `doing`, `done`, `blocked`.
 | RR-16 | Firebase projects, keys and server values; then real push checks |
 | BG-39 to BG-44 | Device checks of fixes already in the code (BG-43 and BG-44 also need live Reverb) |
 | BD-5, BD-6, BD-13 | Open product decisions |
-| RR-4, 5, 6, 9 to 13, 18 | Release-readiness items for before real users |
+| RR-4, 5, 6, 9 to 13, 18, 21 | Release-readiness items for before real users |
 
 Not scheduled: BG-15 (accepted residuals). Out of scope until the owner says so: BD-2 ("Batch 2"), billing (NS-26, NS-27, WP-10).
