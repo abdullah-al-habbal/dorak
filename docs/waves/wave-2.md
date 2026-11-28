@@ -18,6 +18,9 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 |---|---|---|---|---|
 | W2.1 | BG-28 | One shared service that consumes a code once; hash stored codes ([file 04](../booking-concurrency/04-hashing-and-tokens.md)) | parallel test: one success; wrong guesses stay within the limit | done |
 | W2.1a | BG-60 | A password set in an app ends dashboard sessions too, in one transaction with the account lock | reset and signed-in change revoke every session; a failed revocation changes nothing | done |
+| W2.1b | BG-61 | Refuse a password on the two profile routes | 422; password and sessions unchanged | todo |
+| W2.1c | BG-62 | Require the current password to change the email there; client app asks for it | Pest and `melos verify` pass | todo |
+| W2.1d | BG-63 | A branch password set by an admin or owner ends that branch's sessions | every old session is refused; other branches keep theirs | todo |
 | W2.2 | BG-29 | Refresh proceeds only when it deleted exactly one token (Client, Barber, Branch `RefreshTokenHandler.php`) | parallel test: one 200, one 401, one live token | todo |
 | W2.3 | BG-30 | `UnverifiedSignupPurger` rechecks under the client lock | parallel test: a verified client survives | todo |
 | W2.4 | BG-16 | Throttle unauthenticated GET routes | a 429 test per named limiter | todo |
