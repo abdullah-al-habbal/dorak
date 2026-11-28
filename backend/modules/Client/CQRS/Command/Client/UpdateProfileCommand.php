@@ -10,6 +10,5 @@ final readonly class UpdateProfileCommand
         public string $clientId,
         public ?string $name,
         public ?string $email,
-        public ?string $password,
     ) {}
 }

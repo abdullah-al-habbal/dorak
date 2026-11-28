@@ -18,7 +18,7 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 |---|---|---|---|---|
 | W2.1 | BG-28 | One shared service that consumes a code once; hash stored codes ([file 04](../booking-concurrency/04-hashing-and-tokens.md)) | parallel test: one success; wrong guesses stay within the limit | done |
 | W2.1a | BG-60 | A password set in an app ends dashboard sessions too, in one transaction with the account lock | reset and signed-in change revoke every session; a failed revocation changes nothing | done |
-| W2.1b | BG-61 | Refuse a password on the two profile routes | 422; password and sessions unchanged | todo |
+| W2.1b | BG-61 | Refuse a password on the two profile routes | 422; password and sessions unchanged | done |
 | W2.1c | BG-62 | Require the current password to change the email there; client app asks for it | Pest and `melos verify` pass | todo |
 | W2.1d | BG-63 | A branch password set by an admin or owner ends that branch's sessions | every old session is refused; other branches keep theirs | todo |
 | W2.2 | BG-29 | Refresh proceeds only when it deleted exactly one token (Client, Barber, Branch `RefreshTokenHandler.php`) | parallel test: one 200, one 401, one live token | todo |
@@ -41,3 +41,4 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 |---|---|---|
 | 2026-11-28 | BG-28 `fix(auth)` commit | W2.1 done. Parallel tests for seven flows: 14 passed; with the cache lock and the email-change row lock removed, all 14 failed (extra requests got 200). New tests for failed writes and the owner verify timing path failed before their fix. Timing itself wasn't measured |
 | 2026-11-28 | BG-60 `fix(auth)` commit | W2.1a done, taken over from uncommitted work (owner). On an export of the previous commit, a dashboard session survived all three app resets and the client's signed-in change. The three reset cases of the new revocation-failure test failed before the transaction was added (new password kept). No parallel test of the account lock |
+| 2026-11-28 | BG-61 `fix(auth)` commit | W2.1b done. Six cases (client and barber; a value, empty and null) failed before the fix. The client and stylist apps' profile calls send no password, and the dashboard doesn't call these routes. What released app builds send wasn't checked |

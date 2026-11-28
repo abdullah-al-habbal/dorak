@@ -22,7 +22,8 @@ final class UpdateProfileRequest extends BaseApiFormRequest
             'bio.en' => ['sometimes', 'nullable', 'string', 'max:2000'],
             'bio.ar' => ['sometimes', 'nullable', 'string', 'max:2000'],
             'email' => ['nullable', 'email', Rule::unique('barbers', 'email')->ignore($this->user()->id)],
-            'password' => ['nullable', 'string', 'min:8', ValidationLimitConstants::RULE_PASSWORD_MAX, 'confirmed'],
+            // A password has its own routes, which prove who is asking and end the other sessions (BG-61).
+            'password' => ['missing'],
             'is_freelancer' => ['nullable', 'boolean'],
             'universe' => ['nullable', Rule::enum(VenueUniverse::class)],
         ];
@@ -35,7 +36,6 @@ final class UpdateProfileRequest extends BaseApiFormRequest
             name: $this->validated('name'),
             bio: $this->validated('bio'),
             email: $this->validated('email'),
-            password: $this->validated('password'),
             isFreelancer: $this->validated('is_freelancer'),
             universe: $this->validated('universe') === null ? null : VenueUniverse::from((string) $this->validated('universe')),
         );
