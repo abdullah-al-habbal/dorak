@@ -13,6 +13,8 @@ Nothing new was invented. `AuthShell` (layout), `AuthHeader`, `AuthTextField`,
 
 ## 5. Known limits
 
+- A successful reset ends every session of the account, in the apps and on the dashboard. If the backend fails while
+  ending them, the old password stays, but the code is already used up, so the user asks for a new one.
 - Whether a code arrives depends on the backend's mail setting.
 - The backend throttles `forgot-password` and `reset-password` (5 a minute); the 60 s cooldown in the app is only
   for the user.

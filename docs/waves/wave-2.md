@@ -17,6 +17,7 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | Task | Item | What to do | Done when | Status |
 |---|---|---|---|---|
 | W2.1 | BG-28 | One shared service that consumes a code once; hash stored codes ([file 04](../booking-concurrency/04-hashing-and-tokens.md)) | parallel test: one success; wrong guesses stay within the limit | done |
+| W2.1a | BG-60 | A password set in an app ends dashboard sessions too, in one transaction with the account lock | reset and signed-in change revoke every session; a failed revocation changes nothing | done |
 | W2.2 | BG-29 | Refresh proceeds only when it deleted exactly one token (Client, Barber, Branch `RefreshTokenHandler.php`) | parallel test: one 200, one 401, one live token | todo |
 | W2.3 | BG-30 | `UnverifiedSignupPurger` rechecks under the client lock | parallel test: a verified client survives | todo |
 | W2.4 | BG-16 | Throttle unauthenticated GET routes | a 429 test per named limiter | todo |
@@ -36,3 +37,4 @@ Routes: [wave tracker](index.md) · [runbook](runbook.md) · [backlog](../backlo
 | Date | Commit | Action and evidence |
 |---|---|---|
 | 2026-11-28 | BG-28 `fix(auth)` commit | W2.1 done. Parallel tests for seven flows: 14 passed; with the cache lock and the email-change row lock removed, all 14 failed (extra requests got 200). New tests for failed writes and the owner verify timing path failed before their fix. Timing itself wasn't measured |
+| 2026-11-28 | BG-60 `fix(auth)` commit | W2.1a done, taken over from uncommitted work (owner). On an export of the previous commit, a dashboard session survived all three app resets and the client's signed-in change. The three reset cases of the new revocation-failure test failed before the transaction was added (new password kept). No parallel test of the account lock |

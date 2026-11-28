@@ -6,7 +6,7 @@ codeanchors:
 Part 6 of 8 · [Feature Index — Dorak Backend](feature-index.md) · [Previous](feature-index-part-5.md) · [Next](feature-index-part-7.md)
 
 ### Password Change
-- `ChangePasswordAction` [PATCH /api/v1/client/password] — validates `current_password` + new password, updates, revokes all tokens. Auth:client
+- `ChangePasswordAction` [PATCH /api/v1/client/password] — validates `current_password` + new password, updates and ends every session, dashboard included (BG-60). Auth:client
 - `ChangePasswordRequest` — `current_password` validated via `current_password:client` rule
 - 3 contract tests
 

@@ -4,25 +4,22 @@ declare(strict_types=1);
 
 namespace Modules\Client\Repositories;
 
-use Illuminate\Support\Facades\DB;
 use Modules\Client\CQRS\Command\Client\ChangePasswordCommand;
 use Modules\Client\Models\ClientModel;
-use Modules\Core\Services\DeviceTokenService;
+use Modules\Dashboard\Enums\DashboardActorTypeEnum;
+use Modules\Dashboard\Services\AccountPasswordReplacement;
 
 final class ChangePasswordEloquentResolver
 {
     public function __construct(
-        private readonly DeviceTokenService $deviceTokens,
+        private readonly AccountPasswordReplacement $passwords,
     ) {}
 
     public function execute(ChangePasswordCommand $command): void
     {
         $client = ClientModel::findOrFail($command->clientId);
 
-        DB::transaction(function () use ($client, $command): void {
-            $client->update(['password' => $command->password]);
-            $client->tokens()->delete();
-            $this->deviceTokens->revokeAllForAccount($client);
-        });
+        // Every token and dashboard session, and any unused dashboard reset link (BG-60).
+        $this->passwords->replace(DashboardActorTypeEnum::Owner, $client, $command->password);
     }
 }
